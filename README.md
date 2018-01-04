@@ -3,18 +3,13 @@
 
 ***This project is extremely early in the development cycle.*** Ultimately I want to distribute ScottPlot as a stable API (at which time its use will be documented with confidence and permanence). For now, this project should only be assessed for its experimental and educational value.
 
-# Example Usage
+Description | Screenshot
+--- | ---
+When a _reference_ is added to the ScottPlot folder, a ScottPlotUC (user control) appears in the toolbox. Drag/drop it onto a Windows Forms Application, then you can assign data to it with `scottPlotUC1.SetData(Xs, Ys)` (where Xs and Ys are double arrays of the same length). | ![](/doc/uc-usage.png)
+That's it! The output already has axis labels, grid lines, and is interactive (mouse click-drag pans, right-click-drag zooms, and mouse-scroll-wheel zooms). | ![](/doc/uc-output.png)
 
-When a _reference_ is added to the ScottPlot folder, a ScottPlotUC (user control) appears in the toolbox. Drag/drop it onto a Windows Forms Application, then you can assign data to it with `scottPlotUC1.SetData(Xs, Ys)` (where `Xs` and `Ys` are double arrays of the same length). That's it! The output already has axis labels, grid lines, and is interactive (mouse click-drag pans, right-click-drag zooms, and mouse-scroll-wheel zooms).
-
-### Screenshots
-
-![](/doc/uc-usage.png)
-
-![](/doc/uc-output.png)
-
-### Code Sample
-This code fills the graph area with a sine wave plus some noise.
+### Example Code
+This is the actual code behind button1 in the above example. This code fills the graph area with a sine wave plus some noise.
 
 ```C#
 private void button1_Click(object sender, EventArgs e)
@@ -30,7 +25,8 @@ private void button1_Click(object sender, EventArgs e)
 }
 ```
 
-### Example Application: ABF Browser
-Inspired by [my recent efforts toward reading ABF files](https://github.com/swharden/pyABF), I have included an ABF file browser. It is surprisingly fast and responsive (especially when compared to commercial softwared aimed at graphing the same data). I am not actively developing or supporting code to read ABF files at this time.
+### Example Applications
 
-![](/doc/abf-browser.jpg)
+Description | Screenshot
+--- | ---
+**ABF Browser:** Inspired by [my recent efforts toward reading ABF files](https://github.com/swharden/pyABF), I have included an ABF file browser. It is surprisingly fast and responsive (especially when compared to commercial softwared aimed at graphing the same data). I am not actively developing or supporting code to read ABF files at this time. | ![](/doc/abf-browser.jpg)
