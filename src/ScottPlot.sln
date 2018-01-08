@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "console", "console", "{16DB
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GUI", "GUI", "{A431FD35-8ED6-4AE5-8808-992DA2B19310}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "18.01.03 live data", "examples\GUI\18.01.03 live data\18.01.03 live data.csproj", "{A096CFBA-5BF9-4516-B3C1-3F91EC6BC561}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "18.01.03 live data example", "examples\GUI\18.01.03 live data\18.01.03 live data example.csproj", "{A096CFBA-5BF9-4516-B3C1-3F91EC6BC561}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "17.07.23 abf browser", "examples\GUI\17.07.23 abf browser\17.07.23 abf browser.csproj", "{7CD6437C-57B1-467A-9877-79A4235DFA0F}"
 EndProject
@@ -22,6 +22,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "17.07.09 interactive", "examples\GUI\17.07.09 interactive demo\03 interactive sandbox\17.07.09 interactive.csproj", "{01A393D6-38C3-4F7C-B039-001B88F48CDD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "17.09.07 console demo", "examples\console\17.09.07 simple\17.09.07 console demo.csproj", "{8F39DE09-BDA5-4E5D-B432-B1751C708BB6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "18.01.07 live data smooth", "examples\GUI\18.01.07 live data\18.01.07 live data smooth.csproj", "{BECF0C3D-EF50-4780-9D89-23CE0F2EE5D5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "18.01.08 live data audio", "examples\GUI\18.01.08 live data\18.01.08 live data audio.csproj", "{DAC6DFA6-E6FC-4A0E-8EFA-567FA01390AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +57,14 @@ Global
 		{8F39DE09-BDA5-4E5D-B432-B1751C708BB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F39DE09-BDA5-4E5D-B432-B1751C708BB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F39DE09-BDA5-4E5D-B432-B1751C708BB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BECF0C3D-EF50-4780-9D89-23CE0F2EE5D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BECF0C3D-EF50-4780-9D89-23CE0F2EE5D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BECF0C3D-EF50-4780-9D89-23CE0F2EE5D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BECF0C3D-EF50-4780-9D89-23CE0F2EE5D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DAC6DFA6-E6FC-4A0E-8EFA-567FA01390AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAC6DFA6-E6FC-4A0E-8EFA-567FA01390AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAC6DFA6-E6FC-4A0E-8EFA-567FA01390AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAC6DFA6-E6FC-4A0E-8EFA-567FA01390AE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,5 +78,7 @@ Global
 		{DCD87561-BEA4-4DF8-B86D-A09FF5D27319} = {A431FD35-8ED6-4AE5-8808-992DA2B19310}
 		{01A393D6-38C3-4F7C-B039-001B88F48CDD} = {A431FD35-8ED6-4AE5-8808-992DA2B19310}
 		{8F39DE09-BDA5-4E5D-B432-B1751C708BB6} = {16DBDE97-B1CB-4B3B-BADE-A2CAF0AE65C2}
+		{BECF0C3D-EF50-4780-9D89-23CE0F2EE5D5} = {A431FD35-8ED6-4AE5-8808-992DA2B19310}
+		{DAC6DFA6-E6FC-4A0E-8EFA-567FA01390AE} = {A431FD35-8ED6-4AE5-8808-992DA2B19310}
 	EndGlobalSection
 EndGlobal
