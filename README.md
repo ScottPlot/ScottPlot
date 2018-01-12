@@ -9,7 +9,7 @@ When a _reference_ is added to the ScottPlot folder, a ScottPlotUC (user control
 That's it! The output already has axis labels, grid lines, and is interactive (mouse click-drag pans, right-click-drag zooms, and mouse-scroll-wheel zooms). | ![](/doc/uc-output.png)
 
 ### Example Code
-This is the actual code behind button1 in the above example. This code fills the graph area with a sine wave plus some noise. The full code is in [Form1.cs](/src/examples/GUI/04%20ScottPlotUC/Form1.cs).
+This is the actual code behind button1 in the above example. This code fills the graph area with a sine wave plus some noise. The full code is in [Form1.cs](/src/examples/GUI/17.07.16%20user%20control%20demo/Form1.cs).
 
 ```C#
 private void button1_Click(object sender, EventArgs e)
