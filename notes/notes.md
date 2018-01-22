@@ -14,11 +14,11 @@ Build bitmaps one "layer" at a time (bitmap in, bitmap out). Primary categories 
   
 ### Core `ScottPlot` Class Theoretical Interaction
 
-**DOGMA:** ScottPlot will never _store_ any of your data. It will just briefly let you graph it. When you tell it to draw or plot something, it just takes what you already told it about your axis and perform axis-unit-to-pixel mapping then draws some lines and returns the bitmap. Done.
+**DOGMA:** ScottPlot will never _store_ any of your data. It will just briefly let you graph it. When you tell it to draw or plot something, it just takes what you already told it about your axis and perform axis-unit-to-pixel mapping then draw some lines and returns the bitmap. Done.
 
 Create the figure and indicate axis:
 
-```
+```c#
 // init a figure (any of these functions auto-renders `sp.bmpFrame` with axis info)
 sp = ScottPlot(800, 600);
 sp.Resize(640,480);
