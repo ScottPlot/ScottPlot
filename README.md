@@ -1,3 +1,7 @@
+**WARNING: THIS PROJECT IS NOT READY FOR WIDESPREAD USE!** ScottPlot is still in the very early stages of development. Its API has not yet solidified, so building projects around it is not yet recommended. At this time, this repository is intended to track the development of this projet (rather than distribute it).
+
+---
+
 # ScottPlot
 
 ***ScottPlot is an open-source interactive graphing library for .NET written in C#.*** The core of this project is a dependency-free portable class library which takes 2D arrays and graphs them (it can even create JPEG output in console applications). Interactive abilities are made available with a user control which is easy to drop into a windows forms application. ScottPlot was loosely inspired by matplotlib for Python.
