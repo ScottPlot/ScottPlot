@@ -16,6 +16,8 @@ namespace ConsoleApp1
             
             // create a new ScottPlot figure
             Figure fig = new Figure(640, 480);
+            fig.colorBg = Color.White;
+            fig.colorGraph = Color.FromArgb(255, 235, 235, 235);
             fig.title = "ScottPlot Demonstration";
             fig.xLabel = "Elapsed Time (years)";
             fig.yLabel = "Total Awesomeness (cool units)";
