@@ -4,7 +4,9 @@
 
 > **WARNING: THIS PROJECT IS NOT READY FOR WIDESPREAD USE!** ScottPlot is still in the very early stages of development. Its API has not yet solidified, so building projects around it is not yet recommended. At this time, this repository is intended to track the development of this projet (rather than distribute it).
 
-## Use in a Windows Form:
+# Code Examples
+
+## Windows Form
 ```C#
 private void button1_Click(object sender, EventArgs e)
 {
@@ -28,9 +30,11 @@ private void button1_Click(object sender, EventArgs e)
 }
 ```
 
-<img src="/doc/demo-gui.png" width="531">
+<img src="/doc/demo-gui.png" width="531">   
 
-## Use in a Console Application:
+
+
+## Console Application
 ```C#
 static void Main(string[] args)
 {
