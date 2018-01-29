@@ -1,22 +1,28 @@
-**WARNING: THIS PROJECT IS NOT READY FOR WIDESPREAD USE!** ScottPlot is still in the very early stages of development. Its API has not yet solidified, so building projects around it is not yet recommended. At this time, this repository is intended to track the development of this projet (rather than distribute it).
-
----
-
 # ScottPlot
 
-***ScottPlot is an open-source interactive graphing library for .NET written in C#.*** The core of this project is a dependency-free portable class library which takes 2D arrays and graphs them (it can even create JPEG output in console applications). Interactive abilities are made available with a user control which is easy to drop into a windows forms application. ScottPlot was loosely inspired by matplotlib for Python.
+***ScottPlot is an open-source interactive graphing library for .NET written in C#.*** The core of this project is a portable class library which allows a user to supply figure dimensions and scale information and plot data directly on a bitmap buffer relying on ScottPlot to handle unit-to-pixel conversions, drawing of axis labels, tick marks, grid lines, etc. Although ScottPlot was designed with highspeed interactive graphing of large datasets in a GUI environment, its core can generate graphs from within console applications. ScottPlot was loosely inspired by matplotlib for Python.
 
-***The master branch of this project currently contains no code.*** Check out the [latest development branches](https://github.com/swharden/ScottPlot/branches) if you're interested to see where this project is and is going. Development branches are being developed but are unsupported. For an outdated but working project, check out the interactive graphing solutions on the [C#-Data-Visualization](https://github.com/swharden/Csharp-Data-Visualization) project page.
+> **WARNING: THIS PROJECT IS NOT READY FOR WIDESPREAD USE!** ScottPlot is still in the very early stages of development. Its API has not yet solidified, so building projects around it is not yet recommended. At this time, this repository is intended to track the development of this projet (rather than distribute it).
 
-## Screenshots
-_These are screenshots from the [various version branches](https://github.com/swharden/ScottPlot/branches) of this project._
+### Example:
+```C#
+Figure fig = new Figure(640, 480);
+fig.title = "ScottPlot Demonstration";
+fig.xLabel = "Elapsed Time (years)";
+fig.yLabel = "Total Awesomeness (cool units)";
+fig.Axis(-15, 35, -10, 110); // x1, x2, y1, y2
 
-### V3
-![](https://github.com/swharden/ScottPlot/blob/v3/src/ScottPlot/screenshot.png)
+// update the Frame (axis labels, tick marks, etc)
+fig.RedrawFrame();
 
-### V2
-![](https://github.com/swharden/ScottPlot/blob/v2/src/ScottPlotV2/ScottPlotV2/screenshot.png)
+// draw a line directly on the Graphics object in AXIS units
+Point pt1 = new Point(fig.xAxis.UnitToPx(0), fig.yAxis.UnitToPx(13));
+Point pt2 = new Point(fig.xAxis.UnitToPx(32), fig.yAxis.UnitToPx(98));
+fig.gfxGraph.DrawLine(new Pen(new SolidBrush(Color.Blue), 5), pt1, pt2);
 
-### V1
-![](https://github.com/swharden/ScottPlot/blob/v1/doc/uc-output.png)
-![](https://github.com/swharden/ScottPlot/blob/v1/doc/abf-browser.jpg)
+// save the file
+fig.Save("test.png");
+```
+
+### Output:
+<img src="/doc/test.png" width="640">
