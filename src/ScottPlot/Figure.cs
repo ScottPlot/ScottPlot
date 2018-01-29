@@ -50,10 +50,10 @@ namespace ScottPlot
         //private Graph graph;
 
         // the user can set these
-        private Color colorBg = Color.LightGray;
-        private Color colorAxis = Color.Black;
-        private Color colorGrid = Color.LightGray;
-        private Color colorGraph = Color.White;
+        public Color colorBg = Color.LightGray;
+        public Color colorAxis = Color.Black;
+        public Color colorGrid = Color.LightGray;
+        public Color colorGraph = Color.White;
         const string font = "Arial";
         Font fontTicks = new Font(font, 9, FontStyle.Regular);
         Font fontTitle = new Font(font, 16, FontStyle.Bold);
