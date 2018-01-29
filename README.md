@@ -26,6 +26,7 @@ static void Main(string[] args)
 
   // save the file
   fig.Save("test.png");
+}
 ```
 
 <img src="/doc/test.png" width="640">
