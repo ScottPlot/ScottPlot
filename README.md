@@ -17,14 +17,15 @@ static void Main(string[] args)
   fig.yLabel = "Random Walk";
   fig.xLabel = "Sample Number";
 
-  // generate data
-  int pointCount = 123; // number of points which will be in this graph
-  double[] Xs = gen.Sequence(pointCount); // create a series of Xs
+  // generate some data
+  int pointCount = 123;
+  double[] Xs = gen.Sequence(pointCount);
   double[] Ys = gen.RandomWalk(pointCount);
+  
+  // set the axis limits to our data, then zoom out slightly
   fig.ResizeToData(Xs, Ys, .9, .9);
 
-  // make the plot
-  fig.BenchmarkThis();
+  // create a red line plot then a blue scatter plot
   fig.PlotLines(Xs, Ys, 1, Color.Red);
   fig.PlotScatter(Xs, Ys, 5, Color.Blue);
 
