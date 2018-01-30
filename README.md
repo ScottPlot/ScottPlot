@@ -5,7 +5,7 @@
 > **WARNING: THIS PROJECT IS NOT READY FOR WIDESPREAD USE!** ScottPlot is still in the very early stages of development. Its API has not yet solidified, so building projects around it is not yet recommended. At this time, this repository is intended to track the development of this projet (rather than distribute it).
 
 # Code Examples
-For an extensive collection of code examples, check out the output of the [automated test routine](/doc/testOutput)
+***For an extensive collection of current code examples see the [output of the automated test routine](/doc/testOutput)***
 
 ## Console Application
 ```C#
