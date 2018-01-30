@@ -1,4 +1,6 @@
-﻿using System;
+﻿/* minimal-case example drawing a line and showing it in a picturebox */
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;

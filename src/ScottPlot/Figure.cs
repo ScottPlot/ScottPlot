@@ -37,7 +37,6 @@ namespace ScottPlot
     public class Figure
     {
         private Point graphPos = new Point(0, 0);
-        //private Size graphSize = new Size(0, 0);
 
         private Bitmap bmpFrame;
         private Graphics gfxFrame;
@@ -47,28 +46,34 @@ namespace ScottPlot
         public Axis xAxis = new Axis(-10, 10, 100, false);
         public Axis yAxis = new Axis(-10, 10, 100, true);
 
-        //private Graph graph;
+        public Color colorBg;
+        public Color colorAxis;
+        public Color colorGrid;
+        public Color colorGraph;
 
         // the user can set these
-        public Color colorBg = Color.LightGray;
-        public Color colorAxis = Color.Black;
-        public Color colorGrid = Color.LightGray;
-        public Color colorGraph = Color.White;
         const string font = "Arial";
         Font fontTicks = new Font(font, 9, FontStyle.Regular);
-        Font fontTitle = new Font(font, 16, FontStyle.Bold);
+        Font fontTitle = new Font(font, 20, FontStyle.Bold);
         Font fontAxis = new Font(font, 12, FontStyle.Bold);
 
-        public string yLabel = "Membrane Potential (mV)";
-        public string xLabel = "Experiment Duration (ms)";
-        public string title = "Really Cool Experiment";
+        public string yLabel = "";
+        public string xLabel = "";
+        public string title = "";
 
-        public int padL = 50, padT = 32, padR = 10, padB = 47;
+        public int padL = 50, padT = 47, padR = 50, padB = 47;
+
+        public System.Diagnostics.Stopwatch stopwatch;
 
         // A figure object contains what's needed to draw scale bars and axis labels around a graph.
         // The graph itself is its own object which lives inside the figure.
         public Figure(int width, int height)
         {
+            stopwatch = System.Diagnostics.Stopwatch.StartNew();
+            stopwatch.Stop();
+            stopwatch.Reset();
+
+            styleWeb();
             Resize(width, height);
 
             // default to anti-aliasing on
@@ -157,7 +162,7 @@ namespace ScottPlot
 
             // draw labels
             gfxFrame.DrawString(xLabel, fontAxis, brush, new Point(posCx, posB+24), sfCenter);
-            gfxFrame.DrawString(title, fontTitle, brush, new Point(bmpFrame.Width/2,3), sfCenter);
+            gfxFrame.DrawString(title, fontTitle, brush, new Point(bmpFrame.Width/2,8), sfCenter);
             gfxFrame.TranslateTransform(gfxFrame.VisibleClipBounds.Size.Width, 0);
             gfxFrame.RotateTransform(-90);
             gfxFrame.DrawString(yLabel, fontAxis, brush, new Point(-posCy, -bmpFrame.Width+2), sfCenter);
@@ -174,6 +179,13 @@ namespace ScottPlot
         {
             gfxGraph.DrawImage(bmpFrame, new Point(-padL, -padT));
         }
+        
+        public string RenderTimeMessage()
+        {
+            double ms = this.stopwatch.ElapsedTicks * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
+            double hz = 1.0 / ms * 1000.0;
+            return string.Format("{0:0.00 ms} {1:0.00 Hz}", ms, hz);
+        }
 
         /// <summary>
         /// Return a merged bitmap of the frame with the graph added into it
@@ -183,6 +195,20 @@ namespace ScottPlot
             Bitmap bmpMerged = new Bitmap(bmpFrame);
             Graphics gfx = Graphics.FromImage(bmpMerged);
             gfx.DrawImage(bmpGraph, graphPos);
+
+            // draw stamp message
+            if (this.stopwatch.ElapsedTicks>0)
+            {
+                Font fontStamp = new Font(font, 8, FontStyle.Regular);
+                //SolidBrush brushStamp = new SolidBrush(Color.FromArgb(100, 0, 0, 0));
+                SolidBrush brushStamp = new SolidBrush(colorAxis);
+                Point pointStamp = new Point(bmpFrame.Width - padR - 2, bmpFrame.Height - padB - 14);
+                StringFormat sfRight = new StringFormat();
+                sfRight.Alignment = StringAlignment.Far;
+                gfx.DrawString(RenderTimeMessage(), fontStamp, brushStamp, pointStamp, sfRight);
+
+            }
+
             return bmpMerged;
         }
 
@@ -222,6 +248,7 @@ namespace ScottPlot
             if (y2 != null) yAxis.max = (double)y2;
             if (x1 != null || x2 != null) xAxis.RecalculateScale();
             if (y1 != null || y2 != null) yAxis.RecalculateScale();
+            if (x1 != null || x2 != null || y1 != null || y2 != null) RedrawFrame();
         }
 
         /// <summary>
@@ -229,11 +256,86 @@ namespace ScottPlot
         /// A fraction of 2 means that the new width will be 1/2 as wide as the old width.
         /// A fraction of 0.1 means the new width will show 10 times more axis length.
         /// </summary>
-        public void Zoom(double xFrac, double yFrac)
+        public void Zoom(double? xFrac, double? yFrac)
         {
-            xAxis.Zoom(xFrac);
-            yAxis.Zoom(yFrac);
+            if (xFrac!=null) xAxis.Zoom((double)xFrac);
+            if (yFrac!=null) yAxis.Zoom((double)yFrac);
             RedrawFrame();
+        }
+
+
+        public void styleWeb()
+        {
+            colorBg = Color.White;
+            colorGraph = Color.FromArgb(255, 235, 235, 235);
+            colorAxis = Color.Black;
+            colorGrid = Color.LightGray;
+        }
+
+        public void styleForm()
+        {
+            colorBg = SystemColors.Control;
+            colorGraph = Color.White;
+            colorAxis = Color.Black;
+            colorGrid = Color.LightGray;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+        /// <summary>
+        /// Call this before graphing to start a stopwatch. 
+        /// Render time will be displayed when the output graph is rendered.
+        /// </summary>
+        public void BenchmarkThis()
+        {
+            stopwatch.Restart();
+        }
+
+        private Point[] PointsFromArrays(double[] Xs, double[] Ys)
+        {
+            int pointCount = Math.Min(Xs.Length, Ys.Length);
+            Point[] points = new Point[pointCount];
+            for (int i = 0; i < pointCount; i++)
+            {
+                points[i] = new Point(xAxis.UnitToPx(Xs[i]), yAxis.UnitToPx(Ys[i]));
+            }
+            return points;
+        }
+        
+        public void ResizeToData(double[] Xs, double[] Ys, double? zoomX, double? zoomY)
+        {
+            Axis(Xs.Min(), Xs.Max(), Ys.Min(), Ys.Max());
+            Zoom(zoomX, zoomY);
+        }
+
+        public void PlotLines(double[] Xs, double[] Ys, float lineWidth, Color lineColor)
+        {
+            Point[] points = PointsFromArrays(Xs, Ys);
+            Pen penLine = new Pen(new SolidBrush(lineColor), lineWidth);
+            gfxGraph.DrawLines(penLine, points);
+        }
+
+        public void PlotScatter(double[] Xs, double[] Ys, float markerSize, Color markerColor)
+        {
+            Point[] points = PointsFromArrays(Xs, Ys);
+            for (int i=0; i<points.Length; i++)
+            {
+                gfxGraph.FillEllipse(new SolidBrush(markerColor), 
+                                     points[i].X - markerSize / 2, 
+                                     points[i].Y - markerSize / 2, 
+                                     markerSize, markerSize);
+            }
+            
+
         }
 
     }
