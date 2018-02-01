@@ -4,10 +4,7 @@
 
 > **WARNING: THIS PROJECT IS NOT READY FOR WIDESPREAD USE!** ScottPlot is still in the very early stages of development. Its API has not yet solidified, so building projects around it is not yet recommended. At this time, this repository is intended to track the development of this projet (rather than distribute it).
 
-## Example Usage
-A common use of ScottPlot is to graph arrays of X/Y pairs stored in double arrays. In these examples `ScottPlot.Figure.DataGen` is used to generate sample data which we can practice graphing.
-
-### Create Graphs for Windows Forms
+## Windows Forms
 In this example, clicking button1 draws a graph and applies it to a picturebox.
 
 ```C#
@@ -37,7 +34,7 @@ private void button1_Click(object sender, EventArgs e)
 ![](/doc/screenshots/picturebox.png)
 
 
-### Creating Graphs from Console Applications
+## Console Applications
 ScottPlot does not require a GUI to create graphs, as they can be easily saved as BMP, JPG, or PNG files.
 
 ```C#
@@ -68,5 +65,5 @@ static void Main(string[] args)
 ![](/doc/screenshots/console.png)
 
 
-### Cookbook
-***For an extensive collection of current code examples see the [output of the automated test routine](/doc/cookbook)***
+## Cookbook
+For an extensive collection of current code examples see the **[ScottPlot cookbook](/doc/cookbook)*
