@@ -26,7 +26,8 @@ private void button1_Click(object sender, EventArgs e)
   fig.BenchmarkThis();
   fig.PlotLines(Xs, Ys, 1, Color.Red);
   fig.PlotScatter(Xs, Ys, 5, Color.Blue);
-
+  
+  // place the graph onto a picturebox
   pictureBox1.Image = fig.Render();
 }
 ```
