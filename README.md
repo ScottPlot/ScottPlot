@@ -67,4 +67,4 @@ static void Main(string[] args)
 
 
 ## Cookbook
-For an extensive collection of current code examples see the **[ScottPlot cookbook](/doc/cookbook)*
+For an extensive collection of current code examples see the **[ScottPlot cookbook](/doc/cookbook)**
