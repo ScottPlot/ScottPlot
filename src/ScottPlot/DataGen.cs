@@ -10,7 +10,7 @@ namespace ScottPlot
 {
     public class DataGen
     {
-        public static Random rand = new Random();
+        public static Random rand = new Random(0);
 
         /// <summary>
         /// evenly spaced sequence of numbers

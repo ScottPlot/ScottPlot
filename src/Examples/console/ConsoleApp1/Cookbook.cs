@@ -11,7 +11,6 @@ namespace ConsoleApp1
 {
     class Cookbook
     {
-        public static DataGen gen = new ScottPlot.DataGen();
         public static Random rand = new Random();
         
         /// <summary>
@@ -26,9 +25,9 @@ namespace ConsoleApp1
             fig.xLabel = "Sample Number";
 
             // generate data
-            int pointCount = 123; // number of points which will be in this graph
-            double[] Xs = gen.Sequence(pointCount); // create a series of Xs
-            double[] Ys = gen.RandomWalk(pointCount);
+            int pointCount = 123;
+            double[] Xs = fig.gen.Sequence(pointCount);
+            double[] Ys = fig.gen.RandomWalk(pointCount);
             fig.ResizeToData(Xs, Ys, .9, .9);
 
             // make the plot

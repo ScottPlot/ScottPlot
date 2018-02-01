@@ -64,6 +64,7 @@ namespace ScottPlot
         public int padL = 50, padT = 47, padR = 50, padB = 47;
 
         public System.Diagnostics.Stopwatch stopwatch;
+        public DataGen gen = new DataGen(); // for easy access
 
         // A figure object contains what's needed to draw scale bars and axis labels around a graph.
         // The graph itself is its own object which lives inside the figure.

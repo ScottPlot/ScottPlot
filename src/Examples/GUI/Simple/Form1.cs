@@ -24,19 +24,21 @@ namespace Simple
         private void button1_Click(object sender, EventArgs e)
         {
             Figure fig = new Figure(pictureBox1.Width, pictureBox1.Height);
-            fig.colorBg = SystemColors.Control;
-            fig.title = "ScottPlot Demonstration";
-            fig.xLabel = "Elapsed Time (years)";
-            fig.yLabel = "Total Awesomeness (cool units)";
-            fig.Axis(-15, 35, -10, 110); // x1, x2, y1, y2
+            fig.styleForm(); // optimizes colors for forms
+            fig.title = "Plotting Point Arrays";
+            fig.yLabel = "Random Walk";
+            fig.xLabel = "Sample Number";
 
-            // update the Frame (axis labels, tick marks, etc)
-            fig.RedrawFrame();
+            // generate data
+            int pointCount = 123;
+            double[] Xs = fig.gen.Sequence(pointCount);
+            double[] Ys = fig.gen.RandomWalk(pointCount);
+            fig.ResizeToData(Xs, Ys, .9, .9);
 
-            // draw a line directly on the Graphics object in AXIS units
-            Point pt1 = new Point(fig.xAxis.UnitToPx(0), fig.yAxis.UnitToPx(13));
-            Point pt2 = new Point(fig.xAxis.UnitToPx(32), fig.yAxis.UnitToPx(98));
-            fig.gfxGraph.DrawLine(new Pen(new SolidBrush(Color.Blue), 5), pt1, pt2);
+            // make the plot
+            fig.BenchmarkThis();
+            fig.PlotLines(Xs, Ys, 1, Color.Red);
+            fig.PlotScatter(Xs, Ys, 5, Color.Blue);
 
             pictureBox1.Image = fig.Render();
         }
