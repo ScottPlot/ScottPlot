@@ -4,7 +4,7 @@
 
 > **WARNING: THIS PROJECT IS NOT READY FOR WIDESPREAD USE!** ScottPlot is still in the very early stages of development. Its API has not yet solidified, so building projects around it is not yet recommended. At this time, this repository is intended to track the development of this projet (rather than distribute it).
 
-## Windows Forms
+## Use ScottPlot in Windows Forms
 In this example, clicking button1 draws a graph and applies it to a picturebox.
 
 ```C#
@@ -34,7 +34,7 @@ private void button1_Click(object sender, EventArgs e)
 ![](/doc/screenshots/picturebox.png)
 
 
-## Console Applications
+## Use ScottPlot in Console Applications
 ScottPlot does not require a GUI to create graphs, as they can be easily saved as BMP, JPG, or PNG files.
 
 ```C#
