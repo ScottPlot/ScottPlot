@@ -1,7 +1,9 @@
-# ScottPlot API
+# ScottPlot Documentation
+ScottPlot is under active development and evolves frequently. For now, the best way to learn how to use ScottPlot is to [review the cookbook](cookbook).
 
-## Cookbook
-The best place to start learning how to use ScottPlot is to review the [cookbook](cookbook)
+---
+
+# Advanced Functionality
 
 ## Automatic Resizing Plots in Windows Forms
 Here is the optimal strategy for automatically adjusting to window resize events. The full code for this example resides in [/src/Examples/GUI/Resizable/Form1.cs](/src/Examples/GUI/Resizable/Form1.cs).
