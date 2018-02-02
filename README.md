@@ -63,6 +63,12 @@ static void Main(string[] args)
 
 ![](/doc/screenshots/console.png)
 
+## Using ScottPlot
+* In the Solution Explorer, right-click your solution, _add_, _Existing Project_, then select the [/src/ScottPlot](/src/ScottPlot) folder.
+* In the Solution Explorer, right-click your project, _Add_, _Reference_, then under _Projects_ select _ScottPlot_.
+* At the top of your code add `using ScottPlot;`
+
+That's it! You're ready to go. Start by replicating the examples above, then learn more by looking around the [ScottPlot cookbook](/cookcook/).
 
 ## Cookbook
 For an extensive collection of current code examples see the **[ScottPlot cookbook](/doc/cookbook)**
