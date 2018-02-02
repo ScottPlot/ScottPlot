@@ -64,7 +64,8 @@ namespace ConsoleApp1
             string[] pngFiles = System.IO.Directory.GetFiles(outPath, "*.png");
             Array.Sort(pngFiles);
             string md = "# ScottPlot Cookbook\n\n";
-            md += "This document was generated automatically from [Cookbook.cs](/src/Examples/console/ConsoleApp1/Cookbook.cs). ";
+            md += "This document was generated automatically by a [program](/src/Examples/console/ConsoleApp1/Program.cs) ";
+            md += " which pulls examples from [Cookbook.cs](/src/Examples/console/ConsoleApp1/Cookbook.cs). ";
             md += "Since it generates graphs using many different features, it doubles as both a ";
             md += "test script and a cookbook to demonstrate various uses of the ScottPlot API.";
             foreach (string pngFile in pngFiles)

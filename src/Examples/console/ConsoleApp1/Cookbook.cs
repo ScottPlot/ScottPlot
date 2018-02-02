@@ -31,7 +31,7 @@ namespace ConsoleApp1
             fig.ResizeToData(Xs, Ys, .9, .9);
 
             // make the plot
-            fig.BenchmarkThis();
+            //fig.BenchmarkThis();
             fig.PlotLines(Xs, Ys, 1, Color.Red);
             fig.PlotScatter(Xs, Ys, 5, Color.Blue);
 
