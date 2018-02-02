@@ -33,7 +33,7 @@ private void button1_Click(object sender, EventArgs e)
 
 ![](/doc/screenshots/picturebox.png)
 
-Advanced functions such as realtime automatic resizing and animated data in graphs are discussed in the [documentation section](/doc).
+Advanced examples such as realtime resizing and animated data are discussed in [/doc/](/doc).
 
 ## Use ScottPlot in Console Applications
 ScottPlot does not require a GUI to create graphs, as they can be easily saved as BMP, JPG, or PNG files.
