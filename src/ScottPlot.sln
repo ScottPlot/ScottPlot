@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScottPlot", "ScottPlot\Scot
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{D344FBF7-BA75-4479-8FC4-E651870BCF2B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestRoutine", "Examples\console\ConsoleApp1\TestRoutine.csproj", "{D1839E36-95B2-4145-8E56-1E48CAA21378}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cookbook", "Examples\console\ConsoleApp1\Cookbook.csproj", "{D1839E36-95B2-4145-8E56-1E48CAA21378}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simple", "Examples\GUI\Simple\Simple.csproj", "{B71E64A5-CD93-47BB-8323-21522999CDD2}"
 EndProject

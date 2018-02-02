@@ -322,6 +322,12 @@ namespace ScottPlot
         {
             Point[] points = PointsFromArrays(Xs, Ys);
             Pen penLine = new Pen(new SolidBrush(lineColor), lineWidth);
+
+            // adjust the pen caps and joins to make it as smooth as possible
+            penLine.StartCap = System.Drawing.Drawing2D.LineCap.Round;
+            penLine.EndCap = System.Drawing.Drawing2D.LineCap.Round;
+            penLine.LineJoin = System.Drawing.Drawing2D.LineJoin.Round;
+
             gfxGraph.DrawLines(penLine, points);
         }
 
