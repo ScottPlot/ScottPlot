@@ -5,7 +5,6 @@ This document was generated automatically by a [program](/src/Examples/console/C
 ## demo_001
 
 ```C#
-
 /// Create a plot of data from two arrays of doubles (Xs and Ys)
 
 public static void demo_001()
@@ -39,7 +38,6 @@ public static void demo_001()
 ## demo_002
 
 ```C#
-
 /// Zooming
 
 public static void demo_002()
@@ -67,7 +65,6 @@ public static void demo_002()
 ## demo_003
 
 ```C#
-
 /// Changing colors
 
 public static void demo_003()
@@ -100,7 +97,6 @@ public static void demo_003()
 ## demo_004
 
 ```C#
-
 /// Overlapping plots of different sizes and colors
 
 public static void demo_004()
@@ -134,7 +130,6 @@ public static void demo_004()
 ## demo_005
 
 ```C#
-
 /// Demonstrate transparency
 
 public static void demo_005()
@@ -162,6 +157,10 @@ public static void demo_005()
         {
             fig.PlotLines(Xs, fig.gen.RandomWalk(123), 5, colors[i]);
         }
+    }
+
+    fig.Save("output/demo_005.png");
+}
 ```
 ![](demo_005.png)
 
@@ -169,7 +168,6 @@ public static void demo_005()
 ## demo_006
 
 ```C#
-
 /// Scatter plot features
 
 public static void demo_006()
@@ -204,7 +202,6 @@ public static void demo_006()
 ## demo_101
 
 ```C#
-
 /// Draw by directly interacting with the graphics object and position/pixel conversion
 
 public static void demo_101()
