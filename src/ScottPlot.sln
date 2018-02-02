@@ -17,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "console", "console", "{94B4
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevCode", "Examples\console\ConsoleApp2\DevCode.csproj", "{C438E20B-8793-4051-8D36-853EF054BD90}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resizable", "Examples\GUI\Resizable\Resizable.csproj", "{86AFEA7F-5962-4088-9B98-93D881CE6023}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{C438E20B-8793-4051-8D36-853EF054BD90}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C438E20B-8793-4051-8D36-853EF054BD90}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C438E20B-8793-4051-8D36-853EF054BD90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86AFEA7F-5962-4088-9B98-93D881CE6023}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86AFEA7F-5962-4088-9B98-93D881CE6023}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86AFEA7F-5962-4088-9B98-93D881CE6023}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86AFEA7F-5962-4088-9B98-93D881CE6023}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -49,6 +55,7 @@ Global
 		{AD46778C-067E-47F6-A26D-1D624FABC518} = {D344FBF7-BA75-4479-8FC4-E651870BCF2B}
 		{94B4B4F5-FBB5-4B24-A02C-53D2F867D298} = {D344FBF7-BA75-4479-8FC4-E651870BCF2B}
 		{C438E20B-8793-4051-8D36-853EF054BD90} = {94B4B4F5-FBB5-4B24-A02C-53D2F867D298}
+		{86AFEA7F-5962-4088-9B98-93D881CE6023} = {AD46778C-067E-47F6-A26D-1D624FABC518}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {69F124C0-1CE8-46C3-8238-E25AAD6C816E}
