@@ -184,6 +184,9 @@ namespace ConsoleApp1
             fig.Save("output/demo_006.png");
         }
 
+        /// <summary>
+        /// THIS CODE BLOCK IS LEFT HERE FOR PARSING PURPOSES
+        /// </summary>
 
         /*
          * 
@@ -214,6 +217,9 @@ namespace ConsoleApp1
             fig.Save("output/demo_101.png");
         }
 
+        /// <summary>
+        /// THIS CODE BLOCK IS LEFT HERE FOR PARSING PURPOSES
+        /// </summary>
 
     }
 }

@@ -58,12 +58,14 @@ namespace ConsoleApp1
 
             for (int i = 0; i < codeBlocks.Length; i++)
             {
+                if (!codeBlocks[i].Contains("public static void")) continue;
                 codeBlocks[i] = funcFirstLine + codeBlocks[i];
-                codeBlocks[i] = codeBlocks[i].Split(new string[] { funcLastLine }, StringSplitOptions.RemoveEmptyEntries)[0];
-                codeBlocks[i] = codeBlocks[i] + funcLastLine;
+                //codeBlocks[i] = codeBlocks[i].Split(new string[] { funcLastLine }, StringSplitOptions.RemoveEmptyEntries)[0];
+                //codeBlocks[i] = codeBlocks[i] + funcLastLine;
                 codeBlocks[i] = codeBlocks[i].Replace("\n        ", "\n");
                 codeBlocks[i] = codeBlocks[i].Replace("/// <summary>", "");
                 codeBlocks[i] = codeBlocks[i].Replace("/// </summary>", "");
+                codeBlocks[i] = codeBlocks[i].Trim();
                 string functionName;
                 functionName = codeBlocks[i].Split(new string[] { "public static void" }, StringSplitOptions.RemoveEmptyEntries)[1];
                 functionName = functionName.Split(new string[] { "(" }, StringSplitOptions.RemoveEmptyEntries)[0];
