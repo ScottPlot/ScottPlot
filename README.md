@@ -63,7 +63,8 @@ static void Main(string[] args)
 
 ![](/doc/screenshots/console.png)
 
-## Using ScottPlot
+## Installing ScottPlot
+* Download [the latest code (ZIP)](https://github.com/swharden/ScottPlot/archive/master.zip) from this webpage.
 * In the Solution Explorer, right-click your solution, _add_, _Existing Project_, then select the [/src/ScottPlot](/src/ScottPlot) folder.
 * In the Solution Explorer, right-click your project, _Add_, _Reference_, then under _Projects_ select _ScottPlot_.
 * At the top of your code add `using ScottPlot;`
