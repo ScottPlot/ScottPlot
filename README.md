@@ -33,8 +33,6 @@ private void button1_Click(object sender, EventArgs e)
 
 ![](/doc/screenshots/picturebox.png)
 
-Advanced examples such as realtime resizing and animated data are discussed in [/doc/](/doc).
-
 ## Use ScottPlot in Console Applications
 ScottPlot does not require a GUI to create graphs, as they can be easily saved as BMP, JPG, or PNG files.
 
@@ -64,13 +62,12 @@ static void Main(string[] args)
 
 ![](/doc/screenshots/console.png)
 
+## Additional Examples
+* Extensive examples are provided in the **[ScottPlot cookbook](/doc/cookbook)**
+* Advanced techniques like responsive resizing and animated data are discussed in [/doc/](/doc).
+
 ## Installing ScottPlot
 * Download [the latest code (ZIP)](https://github.com/swharden/ScottPlot/archive/master.zip) from this webpage.
 * In the Solution Explorer, right-click your solution, _add_, _Existing Project_, then select the [/src/ScottPlot](/src/ScottPlot) folder.
 * In the Solution Explorer, right-click your project, _Add_, _Reference_, then under _Projects_ select _ScottPlot_.
 * At the top of your code add `using ScottPlot;`
-
-That's it!
-
-## Cookbook
-For an extensive collection of current code examples see the **[ScottPlot cookbook](/doc/cookbook)**
