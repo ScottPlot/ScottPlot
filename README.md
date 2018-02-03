@@ -66,11 +66,11 @@ static void Main(string[] args)
 
 ## Installing ScottPlot
 
-**Download ScottPlot:** Get the [latest ScottPlot (ZIP)](https://github.com/swharden/ScottPlot/archive/master.zip) from this page
+**Download:** Get the [latest ScottPlot (ZIP)](https://github.com/swharden/ScottPlot/archive/master.zip) from this page
 
-**Add the ScottPlot Project to your Solution:** Right-click your solution, _add_, _Existing Project_, then select the [/src/ScottPlot](/src/ScottPlot) folder.
+**Add Project:** Right-click your solution, _add_, _Existing Project_, then select the [/src/ScottPlot](/src/ScottPlot) folder.
 
-**Add a Reference to ScottPlot in your Project:** Right-click your project, _Add_, _Reference_, then under _Projects_ select _ScottPlot_
+**Add Reference:** Right-click your project, _Add_, _Reference_, then under _Projects_ select _ScottPlot_
 
 _That's it!_
 
