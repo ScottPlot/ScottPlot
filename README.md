@@ -66,14 +66,14 @@ static void Main(string[] args)
 
 ## Installing ScottPlot
 
-**1.) Download** the [latest ScottPlot (ZIP)](https://github.com/swharden/ScottPlot/archive/master.zip) from this page.
+#### Download ScottPlot:
+Get the [latest ScottPlot (ZIP)](https://github.com/swharden/ScottPlot/archive/master.zip) from this page
 
-**2.) Add the extracted ScottPlot as a project in your solution.** 
-
+#### Add the ScottPlot Project to your Solution:
 Right-click your solution, _add_, _Existing Project_, then select the [/src/ScottPlot](/src/ScottPlot) folder.
 
-**3.) Add ScottPlot as a reference** to the project you want to use it in. 
+#### Add a Reference to ScottPlot in your Project:
+Right-click your project, _Add_, _Reference_, then under _Projects_ select _ScottPlot_
 
-Right-click the project, _Add_, _Reference_, then under _Projects_ select _ScottPlot_
-
-**That's it!** You can now create a ScottPlot figure with `var fig = new ScottPlot.Figure(640,480)`. Glance over [the ScottPlot cookbook](/doc/cookbook/) to learn how to use all of ScottPlot's features.
+## License
+ScottPlot uses the [MIT License](LICENSE), so use it in whatever you want!
