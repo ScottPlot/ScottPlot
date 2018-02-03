@@ -68,6 +68,7 @@ namespace ScottPlot
         {
             min += Shift;
             max += Shift;
+            RecalculateScale();
         }
 
         /// <summary>

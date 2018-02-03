@@ -1,11 +1,4 @@
-# ScottPlot Cookbook
-
-This document was generated automatically by a [program](/src/Examples/console/ConsoleApp1/Program.cs)  which pulls examples from [Cookbook.cs](/src/Examples/console/ConsoleApp1/Cookbook.cs). Since it generates graphs using many different features, it doubles as both a test script and a cookbook to demonstrate various uses of the ScottPlot API.
-
-## demo_001
-
-```C#
-/// Create a plot of data from two arrays of doubles (Xs and Ys)
+<html><body><h1>ScottPlot Cookbook</h1><script src='https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=desert'></script><table width='100%'><tr><td colspan='2' style='border-top: 5px solid #EEE;'> </tr><tr valign='top'><td width='100%'><h2>demo_001</h2><pre style ='border: none; padding: 10px; border-radius: 15px;' class='prettyprint cs'>/// Create a plot of data from two arrays of doubles (Xs and Ys)
 
 public static void demo_001()
 {
@@ -30,15 +23,7 @@ public static void demo_001()
 
     // save the file
     fig.Save("output/demo_001.png");
-}
-```
-![](demo_001.png)
-
-
-## demo_002
-
-```C#
-/// Zooming
+}</pre></td><td><img src='demo_001.png'></td><tr><td colspan='2' style='border-top: 5px solid #EEE;'> </tr><tr valign='top'><td width='100%'><h2>demo_002</h2><pre style ='border: none; padding: 10px; border-radius: 15px;' class='prettyprint cs'>/// Zooming
 
 public static void demo_002()
 {
@@ -57,15 +42,7 @@ public static void demo_002()
     fig.PlotScatter(Xs, Ys, 5, Color.Blue);
 
     fig.Save("output/demo_002.png");
-}
-```
-![](demo_002.png)
-
-
-## demo_003
-
-```C#
-/// Changing colors
+}</pre></td><td><img src='demo_002.png'></td><tr><td colspan='2' style='border-top: 5px solid #EEE;'> </tr><tr valign='top'><td width='100%'><h2>demo_003</h2><pre style ='border: none; padding: 10px; border-radius: 15px;' class='prettyprint cs'>/// Changing colors
 
 public static void demo_003()
 {
@@ -89,15 +66,7 @@ public static void demo_003()
     fig.PlotScatter(Xs, Ys, 5, Color.White);
 
     fig.Save("output/demo_003.png");
-}
-```
-![](demo_003.png)
-
-
-## demo_004
-
-```C#
-/// Overlapping plots of different sizes and colors
+}</pre></td><td><img src='demo_003.png'></td><tr><td colspan='2' style='border-top: 5px solid #EEE;'> </tr><tr valign='top'><td width='100%'><h2>demo_004</h2><pre style ='border: none; padding: 10px; border-radius: 15px;' class='prettyprint cs'>/// Overlapping plots of different sizes and colors
 
 public static void demo_004()
 {
@@ -122,15 +91,7 @@ public static void demo_004()
     fig.PlotLines(Xs, fig.gen.RandomWalk(123), 7, Color.Violet);
 
     fig.Save("output/demo_004.png");
-}
-```
-![](demo_004.png)
-
-
-## demo_005
-
-```C#
-/// Demonstrate transparency
+}</pre></td><td><img src='demo_004.png'></td><tr><td colspan='2' style='border-top: 5px solid #EEE;'> </tr><tr valign='top'><td width='100%'><h2>demo_005</h2><pre style ='border: none; padding: 10px; border-radius: 15px;' class='prettyprint cs'>/// Demonstrate transparency
 
 public static void demo_005()
 {
@@ -151,24 +112,16 @@ public static void demo_005()
                                    Color.FromArgb(100, 0, 0, 255)}; // blue
 
     fig.BenchmarkThis();
-    for (int i=0; i<colors.Length; i++) // for each color
+    for (int i=0; i&lt;colors.Length; i++) // for each color
     {
-        for (int j=0; j<3; j++) // draw 3 lines
+        for (int j=0; j&lt;3; j++) // draw 3 lines
         {
             fig.PlotLines(Xs, fig.gen.RandomWalk(123), 5, colors[i]);
         }
     }
 
     fig.Save("output/demo_005.png");
-}
-```
-![](demo_005.png)
-
-
-## demo_006
-
-```C#
-/// Scatter plot features
+}</pre></td><td><img src='demo_005.png'></td><tr><td colspan='2' style='border-top: 5px solid #EEE;'> </tr><tr valign='top'><td width='100%'><h2>demo_006</h2><pre style ='border: none; padding: 10px; border-radius: 15px;' class='prettyprint cs'>/// Scatter plot features
 
 public static void demo_006()
 {
@@ -194,15 +147,7 @@ public static void demo_006()
 
     // save the file
     fig.Save("output/demo_006.png");
-}
-```
-![](demo_006.png)
-
-
-## demo_007
-
-```C#
-/// Draw a square with an X in it
+}</pre></td><td><img src='demo_006.png'></td><tr><td colspan='2' style='border-top: 5px solid #EEE;'> </tr><tr valign='top'><td width='100%'><h2>demo_007</h2><pre style ='border: none; padding: 10px; border-radius: 15px;' class='prettyprint cs'>/// Draw a square with an X in it
 
 public static void demo_007()
 {
@@ -223,15 +168,7 @@ public static void demo_007()
 
     // save the file
     fig.Save("output/demo_007.png");
-}
-```
-![](demo_007.png)
-
-
-## demo_008
-
-```C#
-/// Pan by a certain distance (in axis units)
+}</pre></td><td><img src='demo_007.png'></td><tr><td colspan='2' style='border-top: 5px solid #EEE;'> </tr><tr valign='top'><td width='100%'><h2>demo_008</h2><pre style ='border: none; padding: 10px; border-radius: 15px;' class='prettyprint cs'>/// Pan by a certain distance (in axis units)
 
 public static void demo_008()
 {
@@ -253,15 +190,7 @@ public static void demo_008()
 
     // save the file
     fig.Save("output/demo_008.png");
-}
-```
-![](demo_008.png)
-
-
-## demo_009
-
-```C#
-/// Pan by a certain number of PIXELS (useful for mouse tracking)
+}</pre></td><td><img src='demo_008.png'></td><tr><td colspan='2' style='border-top: 5px solid #EEE;'> </tr><tr valign='top'><td width='100%'><h2>demo_009</h2><pre style ='border: none; padding: 10px; border-radius: 15px;' class='prettyprint cs'>/// Pan by a certain number of PIXELS (useful for mouse tracking)
 
 public static void demo_009()
 {
@@ -283,15 +212,7 @@ public static void demo_009()
 
     // save the file
     fig.Save("output/demo_009.png");
-}
-```
-![](demo_009.png)
-
-
-## demo_101
-
-```C#
-/// Draw by directly interacting with the graphics object and position/pixel conversion
+}</pre></td><td><img src='demo_009.png'></td><tr><td colspan='2' style='border-top: 5px solid #EEE;'> </tr><tr valign='top'><td width='100%'><h2>demo_101</h2><pre style ='border: none; padding: 10px; border-radius: 15px;' class='prettyprint cs'>/// Draw by directly interacting with the graphics object and position/pixel conversion
 
 public static void demo_101()
 {
@@ -309,6 +230,4 @@ public static void demo_101()
 
     // save the file
     fig.Save("output/demo_101.png");
-}
-```
-![](demo_101.png)
+}</pre></td><td><img src='demo_101.png'></td></tr></table></html></body>

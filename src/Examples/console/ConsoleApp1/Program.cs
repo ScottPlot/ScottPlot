@@ -29,6 +29,9 @@ namespace ConsoleApp1
             Cookbook.demo_004();
             Cookbook.demo_005();
             Cookbook.demo_006();
+            Cookbook.demo_007();
+            Cookbook.demo_008();
+            Cookbook.demo_009();
 
             // ADVANCED DEMOS
             Cookbook.demo_101();

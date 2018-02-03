@@ -13,8 +13,24 @@ namespace ConsoleApp2
     {
         static void Main(string[] args)
         {
-            Console.Write("\npress ENTER to exit ... ");
-            System.Console.ReadKey();
+
+            var fig = new ScottPlot.Figure(640, 460);
+
+            fig.Zoom(.9, .9);
+            fig.PanPixels(5, 5);
+
+            // draw a blue X
+            fig.PlotLine(-10, 10, -10, 10, 5, Color.Blue);
+            fig.PlotLine(-10, 10, 10, -10, 5, Color.Blue);
+
+            // draw a red rectangle
+            double[] Xs = { -10, 10, 10, -10, -10 };
+            double[] Ys = { -10, -10, 10, 10, -10 };
+            fig.PlotLines(Xs, Ys, 5, Color.Red);
+
+            fig.Save("test.png");
+
+            Console.Write("\nDONE");
         }
     }
 }

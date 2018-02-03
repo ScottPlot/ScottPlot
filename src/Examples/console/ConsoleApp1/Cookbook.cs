@@ -19,7 +19,7 @@ namespace ConsoleApp1
         public static void demo_001()
         {
             // create a new ScottPlot figure
-            Figure fig = new Figure(640, 480);
+            var fig = new ScottPlot.Figure(640, 480);
             fig.title = "Super Special Data";
             fig.yLabel = "Random Walk";
             fig.xLabel = "Sample Number";
@@ -47,7 +47,7 @@ namespace ConsoleApp1
         /// </summary>
         public static void demo_002()
         {
-            Figure fig = new Figure(640, 480);
+            var fig = new ScottPlot.Figure(640, 480);
             fig.title = "Super Special Data";
             fig.yLabel = "Random Walk";
             fig.xLabel = "Sample Number";
@@ -70,7 +70,7 @@ namespace ConsoleApp1
         /// </summary>
         public static void demo_003()
         {
-            Figure fig = new Figure(640, 480);
+            var fig = new ScottPlot.Figure(640, 480);
             fig.title = "Super Special Data";
             fig.yLabel = "Random Walk";
             fig.xLabel = "Sample Number";
@@ -97,7 +97,7 @@ namespace ConsoleApp1
         /// </summary>
         public static void demo_004()
         {
-            Figure fig = new Figure(640, 480);
+            var fig = new ScottPlot.Figure(640, 480);
             fig.title = "Super Special Data";
             fig.yLabel = "Random Walk";
             fig.xLabel = "Sample Number";
@@ -126,7 +126,7 @@ namespace ConsoleApp1
         /// </summary>
         public static void demo_005()
         {
-            Figure fig = new Figure(640, 480);
+            var fig = new ScottPlot.Figure(640, 480);
             fig.title = "Super Special Data";
             fig.yLabel = "Random Walk";
             fig.xLabel = "Sample Number";
@@ -161,7 +161,7 @@ namespace ConsoleApp1
         public static void demo_006()
         {
             // create a new ScottPlot figure
-            Figure fig = new Figure(640, 480);
+            var fig = new ScottPlot.Figure(640, 480);
             fig.title = "Super Special Data";
             fig.yLabel = "Random Walk";
             fig.xLabel = "Sample Number";
@@ -185,6 +185,80 @@ namespace ConsoleApp1
         }
 
         /// <summary>
+        /// Draw a square with an X in it
+        /// </summary>
+        public static void demo_007()
+        {
+            // create a new ScottPlot figure
+            var fig = new ScottPlot.Figure(640, 480);
+
+            // zoom and pan axes before drawing on them
+            fig.Zoom(.8, .8);
+
+            // draw a blue X
+            fig.PlotLine(-10, 10, -10, 10, 5, Color.Blue);
+            fig.PlotLine(-10, 10, 10, -10, 5, Color.Blue);
+
+            // draw a red rectangle
+            double[] Xs = { -10, 10, 10, -10, -10 };
+            double[] Ys = { -10, -10, 10, 10, -10 };
+            fig.PlotLines(Xs, Ys, 5, Color.Red);
+
+            // save the file
+            fig.Save("output/demo_007.png");
+        }
+
+        /// <summary>
+        /// Pan by a certain distance (in axis units)
+        /// </summary>
+        public static void demo_008()
+        {
+            // create a new ScottPlot figure
+            var fig = new ScottPlot.Figure(640, 480);
+
+            // zoom and pan axes before drawing on them
+            fig.Zoom(.8, .8);
+            fig.Pan(4, 4);
+
+            // draw a blue X
+            fig.PlotLine(-10, 10, -10, 10, 5, Color.Blue);
+            fig.PlotLine(-10, 10, 10, -10, 5, Color.Blue);
+
+            // draw a red rectangle
+            double[] Xs = { -10, 10, 10, -10, -10 };
+            double[] Ys = { -10, -10, 10, 10, -10 };
+            fig.PlotLines(Xs, Ys, 5, Color.Red);
+
+            // save the file
+            fig.Save("output/demo_008.png");
+        }
+
+        /// <summary>
+        /// Pan by a certain number of PIXELS (useful for mouse tracking)
+        /// </summary>
+        public static void demo_009()
+        {
+            // create a new ScottPlot figure
+            var fig = new ScottPlot.Figure(640, 480);
+
+            // zoom and pan axes before drawing on them
+            fig.Zoom(.8, .8);
+            fig.PanPixels(100, 100);
+
+            // draw a blue X
+            fig.PlotLine(-10, 10, -10, 10, 5, Color.Blue);
+            fig.PlotLine(-10, 10, 10, -10, 5, Color.Blue);
+
+            // draw a red rectangle
+            double[] Xs = { -10, 10, 10, -10, -10 };
+            double[] Ys = { -10, -10, 10, 10, -10 };
+            fig.PlotLines(Xs, Ys, 5, Color.Red);
+
+            // save the file
+            fig.Save("output/demo_009.png");
+        }
+
+        /// <summary>
         /// THIS CODE BLOCK IS LEFT HERE FOR PARSING PURPOSES
         /// </summary>
 
@@ -202,7 +276,7 @@ namespace ConsoleApp1
         public static void demo_101()
         {
             // create a new ScottPlot figure
-            Figure fig = new Figure(640, 480);
+            var fig = new ScottPlot.Figure(640, 480);
             fig.title = "Direct Graphics Drawing";
             fig.yLabel = "Pure Awesomeness";
             fig.xLabel = "Relative Time (years)";

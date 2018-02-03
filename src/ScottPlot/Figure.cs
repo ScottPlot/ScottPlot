@@ -220,12 +220,13 @@ namespace ScottPlot
         {
             string basename = System.IO.Path.GetFileNameWithoutExtension(filename);
             string extension = System.IO.Path.GetExtension(filename).ToLower();
+            string fullPath = System.IO.Path.GetFullPath(filename);
 
             switch (extension)
             {
                 case ".png":
                     Render().Save(filename, System.Drawing.Imaging.ImageFormat.Png);
-                    Console.WriteLine("saved as PNG");
+                    Console.WriteLine($"saved {fullPath}");
                     break;
                 case ".jpg":
                     Render().Save(filename, System.Drawing.Imaging.ImageFormat.Jpeg);
@@ -264,6 +265,19 @@ namespace ScottPlot
             RedrawFrame();
         }
 
+        public void Pan(double dX, double dY)
+        {
+            xAxis.Pan(dX);
+            yAxis.Pan(dY);
+            RedrawFrame();
+        }
+
+        public void PanPixels(int dX, int dY)
+        {
+            xAxis.Pan(xAxis.unitsPerPx * dX);
+            yAxis.Pan(yAxis.unitsPerPx * dY);
+            RedrawFrame();
+        }
 
         public void styleWeb()
         {
@@ -317,6 +331,13 @@ namespace ScottPlot
             Axis(Xs.Min(), Xs.Max(), Ys.Min(), Ys.Max());
             Zoom(zoomX, zoomY);
         }
+        
+        public void PlotLine(double X1, double X2, double Y1, double Y2, float lineWidth, Color lineColor)
+        {
+            double[] Xs = { X1, X2 };
+            double[] Ys = { Y1, Y2 };
+            PlotLines(Xs, Ys, lineWidth, lineColor);
+        }
 
         public void PlotLines(double[] Xs, double[] Ys, float lineWidth, Color lineColor)
         {
@@ -341,8 +362,14 @@ namespace ScottPlot
                                      points[i].Y - markerSize / 2, 
                                      markerSize, markerSize);
             }
-            
+        }
 
+        public void PlotPoint(double X, double Y, float markerSize, Color markerColor)
+        {
+            gfxGraph.FillEllipse(new SolidBrush(markerColor),
+                                    xAxis.UnitToPx(X) - markerSize / 2,
+                                    yAxis.UnitToPx(Y) - markerSize / 2,
+                                    markerSize, markerSize);
         }
 
     }
