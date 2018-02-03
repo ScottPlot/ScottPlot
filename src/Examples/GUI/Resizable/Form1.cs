@@ -8,14 +8,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using ScottPlot;
-
 namespace Resizable
 {
     public partial class Form1 : Form
     {
 
-        Figure fig;
+        ScottPlot.Figure fig;
         double[] Xs, Ys;
 
         public Form1()
@@ -23,7 +21,7 @@ namespace Resizable
             InitializeComponent();
 
             // create the figure and apply styling
-            fig = new Figure(pictureBox1.Width, pictureBox1.Height);
+            fig = new ScottPlot.Figure(pictureBox1.Width, pictureBox1.Height);
             fig.styleForm();
             fig.title = "Awesome Data";
             fig.yLabel = "Random Walk";

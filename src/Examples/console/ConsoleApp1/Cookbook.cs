@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 using System.Drawing;
-using ScottPlot;
 
 namespace ConsoleApp1
 {

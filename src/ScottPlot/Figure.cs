@@ -372,5 +372,30 @@ namespace ScottPlot
                                     markerSize, markerSize);
         }
 
+
+        /* MOUSE STUFF */
+
+        MouseAxis mousePan = null;
+        MouseAxis mouseZoom = null;
+
+        public void MousePanStart(int xPx, int yPx) { mousePan = new MouseAxis(xAxis, yAxis, xPx, yPx); }
+        public void MousePanEnd() { mousePan = null; }
+        public void MouseZoomStart(int xPx, int yPx) { mouseZoom = new MouseAxis(xAxis, yAxis, xPx, yPx); }
+        public void MouseZoomEnd() { mouseZoom = null; }
+
+        public void MouseMove(int xPx, int yPx)
+        {
+            if (mousePan != null)
+            {
+                mousePan.Pan(xPx, yPx);
+                Axis(mousePan.x1, mousePan.x2, mousePan.y1, mousePan.y2);
+            } else if (mouseZoom != null)
+            {
+                mouseZoom.Zoom(xPx, yPx);
+                Axis(mouseZoom.x1, mouseZoom.x2, mouseZoom.y1, mouseZoom.y2);
+            }
+        }
+
+
     }
 }
