@@ -69,7 +69,7 @@ private void button1_Click(object sender, EventArgs e)
 
 * **Download:** Get the [latest ScottPlot (ZIP)](https://github.com/swharden/ScottPlot/archive/master.zip) from this page
 
-* **Add Project:** Right-click your solution, _add_, _Existing Project_, and select [/src/ScottPlot//src/ScottPlot/ScottPlot.csproj](/src/ScottPlot/ScottPlot.csproj)
+* **Add Project:** Right-click your solution, _add_, _Existing Project_, and select [/src/ScottPlot/ScottPlot.csproj](/src/ScottPlot/ScottPlot.csproj)
 
 * **Add Reference:** Right-click your project, _Add_, _Reference_, then under _Projects_ select _ScottPlot_
 
