@@ -8,7 +8,7 @@ In this example, clicking button1 draws a graph and applies it to a picturebox.
 ```C#
 private void button1_Click(object sender, EventArgs e)
 {
-  Figure fig = new ScottPlot.Figure(pictureBox1.Width, pictureBox1.Height);
+  var fig = new ScottPlot.Figure(pictureBox1.Width, pictureBox1.Height);
   fig.styleForm(); // optimizes colors for forms
   fig.title = "Plotting Point Arrays";
   fig.yLabel = "Random Walk";
@@ -38,7 +38,7 @@ ScottPlot does not require a GUI to create graphs, as they can be easily saved a
 static void Main(string[] args)
 {
   // create a new ScottPlot figure
-  Figure fig = new ScottPlot.Figure(640, 480);
+  var fig = new ScottPlot.Figure(640, 480);
   fig.title = "Plotting Point Arrays";
   fig.yLabel = "Random Walk";
   fig.xLabel = "Sample Number";
