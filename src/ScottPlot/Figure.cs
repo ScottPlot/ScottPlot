@@ -310,9 +310,17 @@ namespace ScottPlot
         /// Call this before graphing to start a stopwatch. 
         /// Render time will be displayed when the output graph is rendered.
         /// </summary>
-        public void BenchmarkThis()
+        public void Benchmark(bool enable=true)
         {
-            stopwatch.Restart();
+            if (enable)
+            {
+                stopwatch.Restart();
+            }
+            else
+            {
+                stopwatch.Stop();
+                stopwatch.Reset();
+            }
         }
 
         private Point[] PointsFromArrays(double[] Xs, double[] Ys)
@@ -377,11 +385,12 @@ namespace ScottPlot
 
         MouseAxis mousePan = null;
         MouseAxis mouseZoom = null;
-
+        
         public void MousePanStart(int xPx, int yPx) { mousePan = new MouseAxis(xAxis, yAxis, xPx, yPx); }
         public void MousePanEnd() { mousePan = null; }
         public void MouseZoomStart(int xPx, int yPx) { mouseZoom = new MouseAxis(xAxis, yAxis, xPx, yPx); }
         public void MouseZoomEnd() { mouseZoom = null; }
+        public bool MouseIsDragging() { return (mousePan != null || mouseZoom != null); }
 
         public void MouseMove(int xPx, int yPx)
         {

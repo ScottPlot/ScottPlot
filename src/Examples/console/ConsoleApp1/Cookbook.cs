@@ -32,7 +32,7 @@ namespace ConsoleApp1
             fig.ResizeToData(Xs, Ys, .9, .9);
 
             // make the plot
-            fig.BenchmarkThis();
+            fig.Benchmark();
             fig.PlotLines(Xs, Ys, 1, Color.Red);
             fig.PlotScatter(Xs, Ys, 5, Color.Blue);
 
@@ -84,7 +84,7 @@ namespace ConsoleApp1
             double[] Ys = fig.gen.RandomWalk(123);
             fig.ResizeToData(Xs, Ys, .9, .9);
 
-            fig.BenchmarkThis();
+            fig.Benchmark();
             fig.PlotLines(Xs, Ys, 1, Color.Gray);
             fig.PlotScatter(Xs, Ys, 5, Color.White);
 
@@ -107,7 +107,7 @@ namespace ConsoleApp1
             // manually define axis
             fig.Axis(-5, 130, -10, 10); 
 
-            fig.BenchmarkThis();
+            fig.Benchmark();
             fig.PlotLines(Xs, fig.gen.RandomWalk(123), 1, Color.Red);
             fig.PlotLines(Xs, fig.gen.RandomWalk(123), 2, Color.Orange);
             fig.PlotLines(Xs, fig.gen.RandomWalk(123), 3, Color.Yellow);
@@ -141,7 +141,7 @@ namespace ConsoleApp1
                                            Color.FromArgb(100, 0, 150, 0),  // green
                                            Color.FromArgb(100, 0, 0, 255)}; // blue
 
-            fig.BenchmarkThis();
+            fig.Benchmark();
             for (int i=0; i<colors.Length; i++) // for each color
             {
                 for (int j=0; j<3; j++) // draw 3 lines
@@ -173,7 +173,7 @@ namespace ConsoleApp1
             fig.Axis(-3, 43, -2, 4);
 
             // make the plot
-            fig.BenchmarkThis();
+            fig.Benchmark();
             fig.PlotScatter(Xs, fig.gen.RandomWalk(pointCount), 2, Color.Black);
             fig.PlotScatter(Xs, fig.gen.RandomWalk(pointCount), 5, Color.Red);
             fig.PlotScatter(Xs, fig.gen.RandomWalk(pointCount), 10, Color.Green);

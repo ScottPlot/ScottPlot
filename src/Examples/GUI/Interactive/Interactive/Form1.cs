@@ -52,11 +52,12 @@ namespace Interactive
         {
             ResizeAndRedraw();
         }
-        
+
+        public bool showBenchmark = false;
         public void ResizeAndRedraw()
         {
             if (fig == null) return;
-            //fig.BenchmarkThis();
+            fig.Benchmark(showBenchmark);
             fig.Resize(pictureBox1.Width, pictureBox1.Height);
             fig.RedrawFrame();
             fig.PlotLines(Xs, Ys, 1, Color.Red);
@@ -69,22 +70,30 @@ namespace Interactive
 
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left) fig.MousePanStart(e.X, e.Y);
-            else if (e.Button == MouseButtons.Right) fig.MouseZoomStart(e.X, e.Y);
-            else if (e.Button == MouseButtons.Middle) Console.WriteLine("mouse down middle");
+            if (e.Button == MouseButtons.Left) fig.MousePanStart(e.X, e.Y); // left-click-drag pans
+            else if (e.Button == MouseButtons.Right) fig.MouseZoomStart(e.X, e.Y); // right-click-drag zooms
         }
         
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left) fig.MousePanEnd();
             else if (e.Button == MouseButtons.Right) fig.MouseZoomEnd();
-            else if (e.Button == MouseButtons.Middle) Console.WriteLine("mouse up middle");
+        }
+        
+        private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Middle) Form1_Load(null, null); // middle click to reset view
+        }
+
+        private void pictureBox1_MouseDoubleClick(object sender, MouseEventArgs e){
+            this.showBenchmark = !this.showBenchmark; // double-click graph to display benchmark stats
+            ResizeAndRedraw();
         }
 
         public bool busyDrawingPlot = false;
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
-            if (busyDrawingPlot == false)
+            if (fig.MouseIsDragging() && busyDrawingPlot == false)
             {
                 fig.MouseMove(e.X, e.Y);
                 busyDrawingPlot = true;
