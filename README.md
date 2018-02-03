@@ -66,13 +66,11 @@ static void Main(string[] args)
 
 ## Installing ScottPlot
 
-**Download:** Get the [latest ScottPlot (ZIP)](https://github.com/swharden/ScottPlot/archive/master.zip) from this page
+1. **Download:** Get the [latest ScottPlot (ZIP)](https://github.com/swharden/ScottPlot/archive/master.zip) from this page
 
-**Add Project:** Right-click your solution, _add_, _Existing Project_, then select the [/src/ScottPlot](/src/ScottPlot) folder.
+2. **Add Project:** Right-click your solution, _add_, _Existing Project_, then select the [/src/ScottPlot](/src/ScottPlot) folder.
 
-**Add Reference:** Right-click your project, _Add_, _Reference_, then under _Projects_ select _ScottPlot_
-
-_That's it!_
+3. **Add Reference:** Right-click your project, _Add_, _Reference_, then under _Projects_ select _ScottPlot_
 
 ## License
 ScottPlot uses the [MIT License](LICENSE), so use it in whatever you want!
