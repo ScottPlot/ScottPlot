@@ -19,6 +19,7 @@ namespace Signal
         }
 
         ScottPlot.Figure fig;
+        int sampleRate = 20000;
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -27,13 +28,14 @@ namespace Signal
             fig.yLabel = "value";
             fig.xLabel = "time (seconds)";
 
-            int pointCount = (int)(nud_sec.Value * 20000);
-            double[] Xs = fig.gen.Sequence(pointCount, 1.0 / 20000.0);
+            
+            int pointCount = (int)(nud_sec.Value * sampleRate);
             double[] Ys = fig.gen.RandomWalk(pointCount);
+            fig.Axis(0, pointCount / sampleRate, null, null);
+            fig.ResizeToData(null, Ys, .9, .9);
 
-            fig.ResizeToData(Xs, Ys, .9, .9);
-
-            fig.PlotLines(Xs, Ys, 1, Color.Red);
+            fig.Benchmark();
+            fig.PlotSignal(Ys, 1.0 / sampleRate);
             pictureBox1.Image = fig.Render();
         }
 

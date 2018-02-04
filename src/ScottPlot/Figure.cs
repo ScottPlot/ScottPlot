@@ -366,6 +366,7 @@ namespace ScottPlot
         public void PlotSignal(double[] dataYs, double pointSpacing=1, double firstPointX=0, double offsetY=0, float lineWidth=1, Color? lineColor=null)
         {
             if (lineColor == null) lineColor = Color.Red;
+            if (dataYs == null) return;
 
             int pointCount = dataYs.Length;
             double lastPointX = firstPointX + dataYs.Length * pointSpacing;

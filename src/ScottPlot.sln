@@ -23,6 +23,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interactive", "Examples\GUI
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Signal", "Examples\GUI\Signal\Signal.csproj", "{1AC977A1-14A6-4B3D-ABD9-10D8DEE4C3E9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UcSignal", "Examples\UserControls\UcSignal\UcSignal.csproj", "{64FE2219-D925-474F-9520-CD276E58E14C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "User Control", "User Control", "{505AC691-500A-4177-86BD-63DADC1917FB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +61,10 @@ Global
 		{1AC977A1-14A6-4B3D-ABD9-10D8DEE4C3E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1AC977A1-14A6-4B3D-ABD9-10D8DEE4C3E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1AC977A1-14A6-4B3D-ABD9-10D8DEE4C3E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64FE2219-D925-474F-9520-CD276E58E14C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64FE2219-D925-474F-9520-CD276E58E14C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64FE2219-D925-474F-9520-CD276E58E14C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64FE2219-D925-474F-9520-CD276E58E14C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -70,6 +78,7 @@ Global
 		{86AFEA7F-5962-4088-9B98-93D881CE6023} = {AD46778C-067E-47F6-A26D-1D624FABC518}
 		{3061292B-5419-4B03-9F5C-B7EE23DC1B73} = {AD46778C-067E-47F6-A26D-1D624FABC518}
 		{1AC977A1-14A6-4B3D-ABD9-10D8DEE4C3E9} = {AD46778C-067E-47F6-A26D-1D624FABC518}
+		{64FE2219-D925-474F-9520-CD276E58E14C} = {505AC691-500A-4177-86BD-63DADC1917FB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {69F124C0-1CE8-46C3-8238-E25AAD6C816E}
