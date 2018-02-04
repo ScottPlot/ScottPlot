@@ -97,7 +97,7 @@ public partial class Form1 : Form
 
 <img src="/doc/screenshots/ucSignal2.png" width="604">
 
-_This graph responds to the mouse: left-click-drag to pan, right-click-drag to zoom, and middle-click to reset to the original axis limits_
+_This graph responds to the mouse: left-click-drag to pan, right-click-drag to zoom_
 
 ## Additional Examples
 * Extensive examples are provided in the **[ScottPlot cookbook](/doc/cookbook/readme.md)**
