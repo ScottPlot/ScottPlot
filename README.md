@@ -34,7 +34,7 @@ static void Main(string[] args)
 ![](/doc/screenshots/console.png)
 
 ## Use ScottPlot in Windows Forms
-In this example, clicking button1 draws a graph and applies it to a picturebox.
+In this example, clicking button1 draws a graph and applies it to a picturebox. 
 
 ```C#
 private void button1_Click(object sender, EventArgs e)
@@ -62,9 +62,10 @@ private void button1_Click(object sender, EventArgs e)
 
 ![](/doc/screenshots/picturebox.png)
 
+Note that this method looks excellent, but graphs are not interactive. Creating interactive graphs requires making handlers to resize and redraw the graph for resize events, click-and-drag, etc. However, all this functionality is pre-packaged in ScottPlot user controls which are designed to respond to resize events, left-click-drag panning, and right-click-drag zooming.
 
 ## ScottPlot User Controls
-ScottPlot user controls simplify the task of creating interactive graphs. Different user controls are optimized for specific tasks. For example, the ucSignal user control is designed to take very large arrays of data (tens of millions of data points) and produce an interactive plot which updates at extremely high speed. Adding a reference to ScottPlot in a Windows Forms project reveals these user controls which can then be dragged and dropped onto your Form.
+ScottPlot user controls simplify the task of creating interactive graphs. Different user controls are optimized for specific tasks. For example, the ucSignal user control is designed to take very large arrays of data (tens of millions of data points) and produce an interactive plot (which pans and zooms with the mouse) updating at extremely high speed. Adding a reference to ScottPlot in a Windows Forms project reveals these user controls which can then be added into your Form.
 
 ![](/doc/screenshots/ucSignalVS.png)
 
