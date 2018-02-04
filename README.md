@@ -62,6 +62,38 @@ private void button1_Click(object sender, EventArgs e)
 
 ![](/doc/screenshots/picturebox.png)
 
+
+## ScottPlot User Controls
+ScottPlot user controls simplify the task of creating interactive graphs. Different user controls are optimized for specific tasks. For example, the ucSignal user control is designed to take very large arrays of data (tens of millions of data points) and produce an interactive plot which updates at extremely high speed.
+
+```C#
+// After creating a new windows application, drag/drop the ucSignal user control onto it.
+// This is the entire code required to produce an interactive graph of one million data points!
+public partial class Form1 : Form
+{
+    public Form1()
+    {
+        InitializeComponent();
+        ucSignal1.showBenchmark = true;
+    }
+
+    private void button1_Click(object sender, EventArgs e)
+    {
+        // create one million points of signal data
+        int pointCount = 1_000_000;
+        double[] Ys = new double[pointCount];
+        for (int i = 0; i < pointCount; i++) Ys[i] = Math.Sin((double)i / 5000);
+        ucSignal1.fig.title = string.Format("{0:n0} Data Points", pointCount);
+
+        // load the data into the user control (and auto-fit axis limits to the data)
+        ucSignal1.Ys = Ys; 
+        ucSignal1.ResetAxis();
+    }
+}
+```
+
+![](/doc/screenshots/ucSignal.png)
+
 ## Additional Examples
 * Extensive examples are provided in the **[ScottPlot cookbook](/doc/cookbook)**
 
