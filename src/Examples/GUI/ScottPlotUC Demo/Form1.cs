@@ -34,19 +34,8 @@ namespace ScottPlotUC_Demo
             timer1.Enabled = false; // turn off live mode
 
             int pointCount = 100;
-            double[] Xs = new double[pointCount];
-
-            // generate randomly-spaced X data
-            double sum = 0;
-            for (int i=0; i<Xs.Length; i++)
-            {
-                Xs[i] = sum;
-                sum += scottPlotUC1.fig.gen.rand.NextDouble();
-            }
-
-            // generate random Y data 
-            scottPlotUC1.Xs = Xs;
-            scottPlotUC1.Ys = scottPlotUC1.fig.gen.RandomWalk(Xs.Length);
+            scottPlotUC1.Xs = scottPlotUC1.fig.gen.Sequence(pointCount);
+            scottPlotUC1.Ys = scottPlotUC1.fig.gen.RandomWalk(pointCount);
             scottPlotUC1.fig.title = string.Format("X/Y Plotting Mode: {0:n0} Points", scottPlotUC1.Ys.Length);
             scottPlotUC1.ResetAxis();
         }
@@ -63,7 +52,7 @@ namespace ScottPlotUC_Demo
 
             if (resetAxis)
             {
-                scottPlotUC1.fig.title = string.Format("Signal Mode: {0:n0} Points", scottPlotUC1.Ys.Length);
+                scottPlotUC1.fig.title = string.Format("Live Signal: {0:n0} Points", scottPlotUC1.Ys.Length);
                 scottPlotUC1.ResetAxis();
             } else
             {

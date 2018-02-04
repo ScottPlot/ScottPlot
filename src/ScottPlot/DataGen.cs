@@ -13,7 +13,7 @@ namespace ScottPlot
         public Random rand = new Random(0);
 
         /// <summary>
-        /// evenly spaced sequence of numbers
+        /// ascending sequence of evenly spaced numbers
         /// </summary>
         public double[] Sequence(int count, double spacing = 1, double offset = 0)
         {
@@ -21,6 +21,21 @@ namespace ScottPlot
             for (int i=0; i<count; i++)
             {
                 vals[i] = i * spacing + offset;
+            }
+            return vals;
+        }
+
+        /// <summary>
+        /// ascending sequence of randomly-spaced X data
+        /// </summary>
+        public double[] SequenceUneven(int count, double spacing = 1, double offset = 0)
+        {
+            double[] vals = new double[count];
+            double sum = 0;
+            for (int i = 0; i < count; i++)
+            {
+                vals[i] = sum;
+                sum += rand.NextDouble();
             }
             return vals;
         }
