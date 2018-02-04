@@ -4,6 +4,9 @@
 
 ![](/doc/screenshots/resize-pan-zoom.gif)
 
+## Demos
+Compiled (EXE) demos are available for download in the [/demos/](/demos) folder. They are a good way to test-out what ScottPlot can do without having to download the source code or learn about the API. For non-interactive demos suitable for console applications, check out the [ScottPlot cookbook](/cookbook/)
+
 ## Use ScottPlot in Console Applications
 ScottPlot does not require a GUI to create graphs, as they can be easily saved as BMP, JPG, or PNG files.
 
