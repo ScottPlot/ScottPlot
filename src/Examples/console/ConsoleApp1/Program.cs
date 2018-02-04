@@ -23,6 +23,7 @@ namespace ConsoleApp1
 
             // BASIC DEMOS
             Console.WriteLine("RUNNING ALL TESTS ...");
+            int i = 0;
             Cookbook.demo_001();
             Cookbook.demo_002();
             Cookbook.demo_003();
@@ -32,6 +33,9 @@ namespace ConsoleApp1
             Cookbook.demo_007();
             Cookbook.demo_008();
             Cookbook.demo_009();
+            Cookbook.demo_010();
+            Cookbook.demo_011();
+            Cookbook.demo_012();
 
             // ADVANCED DEMOS
             Cookbook.demo_101();

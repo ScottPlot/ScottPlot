@@ -24,7 +24,7 @@ public static void demo_001()
     fig.ResizeToData(Xs, Ys, .9, .9);
 
     // make the plot
-    fig.BenchmarkThis();
+    fig.Benchmark();
     fig.PlotLines(Xs, Ys, 1, Color.Red);
     fig.PlotScatter(Xs, Ys, 5, Color.Blue);
 
@@ -84,7 +84,7 @@ public static void demo_003()
     double[] Ys = fig.gen.RandomWalk(123);
     fig.ResizeToData(Xs, Ys, .9, .9);
 
-    fig.BenchmarkThis();
+    fig.Benchmark();
     fig.PlotLines(Xs, Ys, 1, Color.Gray);
     fig.PlotScatter(Xs, Ys, 5, Color.White);
 
@@ -112,7 +112,7 @@ public static void demo_004()
     // manually define axis
     fig.Axis(-5, 130, -10, 10); 
 
-    fig.BenchmarkThis();
+    fig.Benchmark();
     fig.PlotLines(Xs, fig.gen.RandomWalk(123), 1, Color.Red);
     fig.PlotLines(Xs, fig.gen.RandomWalk(123), 2, Color.Orange);
     fig.PlotLines(Xs, fig.gen.RandomWalk(123), 3, Color.Yellow);
@@ -150,7 +150,7 @@ public static void demo_005()
                                    Color.FromArgb(100, 0, 150, 0),  // green
                                    Color.FromArgb(100, 0, 0, 255)}; // blue
 
-    fig.BenchmarkThis();
+    fig.Benchmark();
     for (int i=0; i<colors.Length; i++) // for each color
     {
         for (int j=0; j<3; j++) // draw 3 lines
@@ -186,7 +186,7 @@ public static void demo_006()
     fig.Axis(-3, 43, -2, 4);
 
     // make the plot
-    fig.BenchmarkThis();
+    fig.Benchmark();
     fig.PlotScatter(Xs, fig.gen.RandomWalk(pointCount), 2, Color.Black);
     fig.PlotScatter(Xs, fig.gen.RandomWalk(pointCount), 5, Color.Red);
     fig.PlotScatter(Xs, fig.gen.RandomWalk(pointCount), 10, Color.Green);
@@ -286,6 +286,96 @@ public static void demo_009()
 }
 ```
 ![](demo_009.png)
+
+
+## demo_010
+
+```C#
+/// Plot one million data points using PlotLines() - do not do this!!
+/// For high density data (with a large number of data points) evenly spaced, use PlotSignal().
+/// The purpose of this demonstration is to highlight how much faster PlotSignal() is over PlotLines()
+
+public static void demo_010()
+{
+    // create a new ScottPlot figure
+    var fig = new ScottPlot.Figure(640, 480);
+    fig.title = "1 Million Points with PlotLines()";
+    fig.yLabel = "value";
+    fig.xLabel = "time (seconds)";
+
+    // create ONE MILLION points
+    double[] Xs = fig.gen.Sequence(1_000_000, 1.0 / 20e3); // 20 kHz
+    double[] Ys = fig.gen.RandomWalk(1_000_000);
+    fig.ResizeToData(Xs, Ys, null, .9);
+
+    // using the SLOW METHOD
+    fig.Benchmark();
+    fig.PlotLines(Xs, Ys, 1, Color.Red);
+
+    // save the file
+    fig.Save("output/demo_010.png");
+}
+```
+![](demo_010.png)
+
+
+## demo_011
+
+```C#
+/// Plot one million data points using PlotSignal()
+/// This method is ideal for large amounts of evenly-spaced data.
+
+public static void demo_011()
+{
+    // create a new ScottPlot figure
+    var fig = new ScottPlot.Figure(640, 480);
+    fig.title = "1 Million Points with PlotSignal()";
+    fig.yLabel = "value";
+    fig.xLabel = "time (seconds)";
+
+    // create ONE MILLION points
+    double[] Ys = fig.gen.RandomWalk(1_000_000);
+    fig.ResizeToData(null, Ys, null, .9); // resize Y to data
+    fig.Axis(0, Ys.Length / 20e3,null,null); // resize X manually
+
+    // plot using the FAST METHOD
+    fig.Benchmark();
+    fig.PlotSignal(Ys, 1.0 / 20e3);
+
+    // save the file
+    fig.Save("output/demo_011.png");
+}
+```
+![](demo_011.png)
+
+
+## demo_012
+
+```C#
+/// Stress-test PlotSignal() with 100 MILLION data points
+
+public static void demo_012()
+{
+    // create a new ScottPlot figure
+    var fig = new ScottPlot.Figure(640, 480);
+    fig.title = "100 Million Point Stress-Test";
+    fig.yLabel = "value";
+    fig.xLabel = "time (seconds)";
+
+    // create ONE MILLION points
+    double[] Ys = fig.gen.RandomWalk(100_000_000);
+    fig.ResizeToData(null, Ys, null, .9); // resize Y to data
+    fig.Axis(0, Ys.Length / 20e3, null, null); // resize X manually
+
+    // plot using the FAST METHOD
+    fig.Benchmark();
+    fig.PlotSignal(Ys, 1.0 / 20e3);
+
+    // save the file
+    fig.Save("output/demo_012.png");
+}
+```
+![](demo_012.png)
 
 
 ## demo_101

@@ -16,17 +16,13 @@ namespace ConsoleApp2
 
             var fig = new ScottPlot.Figure(640, 460);
 
-            fig.Zoom(.9, .9);
-            fig.PanPixels(5, 5);
+            double[] Xs = fig.gen.Sequence(1_000_000, 1.0 / 20e3); // 20 kHz
+            double[] Ys = fig.gen.RandomWalk(1_000_000);
+            fig.ResizeToData(Xs, Ys, null, .9);
 
-            // draw a blue X
-            fig.PlotLine(-10, 10, -10, 10, 5, Color.Blue);
-            fig.PlotLine(-10, 10, 10, -10, 5, Color.Blue);
+            fig.Benchmark();
 
-            // draw a red rectangle
-            double[] Xs = { -10, 10, 10, -10, -10 };
-            double[] Ys = { -10, -10, 10, 10, -10 };
-            fig.PlotLines(Xs, Ys, 5, Color.Red);
+            fig.PlotSignal(Ys, 1.0 / 20000);
 
             fig.Save("test.png");
 

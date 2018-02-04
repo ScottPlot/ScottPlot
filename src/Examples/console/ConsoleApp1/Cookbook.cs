@@ -257,6 +257,86 @@ namespace ConsoleApp1
             fig.Save("output/demo_009.png");
         }
 
+
+        /// <summary>
+        /// Plot one million data points using PlotLines() - do not do this!!
+        /// For high density data (with a large number of data points) evenly spaced, use PlotSignal().
+        /// The purpose of this demonstration is to highlight how much faster PlotSignal() is over PlotLines()
+        /// </summary>
+        public static void demo_010()
+        {
+            // create a new ScottPlot figure
+            var fig = new ScottPlot.Figure(640, 480);
+            fig.title = "1 Million Points with PlotLines()";
+            fig.yLabel = "value";
+            fig.xLabel = "time (seconds)";
+
+            // create ONE MILLION points
+            double[] Xs = fig.gen.Sequence(1_000_000, 1.0 / 20e3); // 20 kHz
+            double[] Ys = fig.gen.RandomWalk(1_000_000);
+            fig.ResizeToData(Xs, Ys, null, .9);
+
+            // using the SLOW METHOD
+            fig.Benchmark();
+            fig.PlotLines(Xs, Ys, 1, Color.Red);
+
+            // save the file
+            fig.Save("output/demo_010.png");
+        }
+
+        /// <summary>
+        /// Plot one million data points using PlotSignal()
+        /// This method is ideal for large amounts of evenly-spaced data.
+        /// </summary>
+        public static void demo_011()
+        {
+            // create a new ScottPlot figure
+            var fig = new ScottPlot.Figure(640, 480);
+            fig.title = "1 Million Points with PlotSignal()";
+            fig.yLabel = "value";
+            fig.xLabel = "time (seconds)";
+
+            // create ONE MILLION points
+            double[] Ys = fig.gen.RandomWalk(1_000_000);
+            fig.ResizeToData(null, Ys, null, .9); // resize Y to data
+            fig.Axis(0, Ys.Length / 20e3,null,null); // resize X manually
+
+            // plot using the FAST METHOD
+            fig.Benchmark();
+            fig.PlotSignal(Ys, 1.0 / 20e3);
+
+            // save the file
+            fig.Save("output/demo_011.png");
+        }
+
+        /// <summary>
+        /// Stress-test PlotSignal() with 100 MILLION data points
+        /// </summary>
+        public static void demo_012()
+        {
+            // create a new ScottPlot figure
+            var fig = new ScottPlot.Figure(640, 480);
+            fig.title = "100 Million Point Stress-Test";
+            fig.yLabel = "value";
+            fig.xLabel = "time (seconds)";
+
+            // create ONE MILLION points
+            double[] Ys = fig.gen.RandomWalk(100_000_000);
+            fig.ResizeToData(null, Ys, null, .9); // resize Y to data
+            fig.Axis(0, Ys.Length / 20e3, null, null); // resize X manually
+
+            // plot using the FAST METHOD
+            fig.Benchmark();
+            fig.PlotSignal(Ys, 1.0 / 20e3);
+
+            // save the file
+            fig.Save("output/demo_012.png");
+        }
+
+
+
+
+
         /// <summary>
         /// THIS CODE BLOCK IS LEFT HERE FOR PARSING PURPOSES
         /// </summary>

@@ -336,21 +336,24 @@ namespace ScottPlot
         
         public void ResizeToData(double[] Xs, double[] Ys, double? zoomX, double? zoomY)
         {
-            Axis(Xs.Min(), Xs.Max(), Ys.Min(), Ys.Max());
+            if (Xs != null) Axis(Xs.Min(), Xs.Max(), null, null);
+            if (Ys != null) Axis(null, null, Ys.Min(), Ys.Max());
             Zoom(zoomX, zoomY);
         }
         
-        public void PlotLine(double X1, double X2, double Y1, double Y2, float lineWidth, Color lineColor)
+        public void PlotLine(double X1, double X2, double Y1, double Y2, float lineWidth = 1, Color? lineColor = null)
         {
             double[] Xs = { X1, X2 };
             double[] Ys = { Y1, Y2 };
             PlotLines(Xs, Ys, lineWidth, lineColor);
         }
 
-        public void PlotLines(double[] Xs, double[] Ys, float lineWidth, Color lineColor)
+        public void PlotLines(double[] Xs, double[] Ys, float lineWidth = 1, Color? lineColor = null)
         {
+            if (lineColor == null) lineColor = Color.Red;
+
             Point[] points = PointsFromArrays(Xs, Ys);
-            Pen penLine = new Pen(new SolidBrush(lineColor), lineWidth);
+            Pen penLine = new Pen(new SolidBrush((Color)lineColor), lineWidth);
 
             // adjust the pen caps and joins to make it as smooth as possible
             penLine.StartCap = System.Drawing.Drawing2D.LineCap.Round;
@@ -360,21 +363,63 @@ namespace ScottPlot
             gfxGraph.DrawLines(penLine, points);
         }
 
-        public void PlotScatter(double[] Xs, double[] Ys, float markerSize, Color markerColor)
+        public void PlotSignal(double[] dataYs, double pointSpacing=1, double firstPointX=0, double offsetY=0, float lineWidth=1, Color? lineColor=null)
         {
+            if (lineColor == null) lineColor = Color.Red;
+
+            int pointCount = dataYs.Length;
+            double lastPointX = firstPointX + dataYs.Length * pointSpacing;
+            int dataMinPx = (int)((firstPointX - xAxis.min) / xAxis.unitsPerPx);
+            int dataMaxPx = (int)((lastPointX - xAxis.min) / xAxis.unitsPerPx);
+            double binUnitsPerPx = xAxis.unitsPerPx / pointSpacing;
+
+            List<Point> points = new List<Point>();
+            List<double> Ys = new List<double>();
+
+            for (int i = 0; i < dataYs.Length; i++) Ys.Add(dataYs[i]);
+
+            for (int xPixel = Math.Max(0, dataMinPx); xPixel < Math.Min(bmpGraph.Width, dataMaxPx); xPixel++)
+            {
+                int iLeft = (int)(binUnitsPerPx * (xPixel - dataMinPx));
+                int iRight = (int)(iLeft + binUnitsPerPx);
+                iLeft = Math.Max(iLeft, 0);
+                iRight = Math.Min(Ys.Count - 1, iRight);
+                iRight = Math.Max(iRight, 0);
+                if (iLeft == iRight) continue;
+                double yPxMin = Ys.GetRange(iLeft, iRight - iLeft).Min() + offsetY;
+                double yPxMax = Ys.GetRange(iLeft, iRight - iLeft).Max() + offsetY;
+                points.Add(new Point(xPixel, yAxis.UnitToPx(yPxMin)));
+                points.Add(new Point(xPixel, yAxis.UnitToPx(yPxMax)));
+            }
+
+            Point[] points2 = points.ToArray();
+            Pen penLine = new Pen(new SolidBrush((Color)lineColor), lineWidth);
+
+            System.Drawing.Drawing2D.SmoothingMode originalSmoothingMode = gfxGraph.SmoothingMode;
+            gfxGraph.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None; // no antialiasing
+            gfxGraph.DrawLines(penLine, points2);
+            gfxGraph.SmoothingMode = originalSmoothingMode;
+
+        }
+
+        public void PlotScatter(double[] Xs, double[] Ys, float markerSize = 3, Color? markerColor = null)
+        {
+            if (markerColor == null) markerColor = Color.Blue;
+
             Point[] points = PointsFromArrays(Xs, Ys);
             for (int i=0; i<points.Length; i++)
             {
-                gfxGraph.FillEllipse(new SolidBrush(markerColor), 
+                gfxGraph.FillEllipse(new SolidBrush((Color)markerColor), 
                                      points[i].X - markerSize / 2, 
                                      points[i].Y - markerSize / 2, 
                                      markerSize, markerSize);
             }
         }
 
-        public void PlotPoint(double X, double Y, float markerSize, Color markerColor)
+        public void PlotPoint(double X, double Y, float markerSize = 3, Color? markerColor = null)
         {
-            gfxGraph.FillEllipse(new SolidBrush(markerColor),
+            if (markerColor == null) markerColor = Color.Blue;
+            gfxGraph.FillEllipse(new SolidBrush((Color)markerColor),
                                     xAxis.UnitToPx(X) - markerSize / 2,
                                     yAxis.UnitToPx(Y) - markerSize / 2,
                                     markerSize, markerSize);
