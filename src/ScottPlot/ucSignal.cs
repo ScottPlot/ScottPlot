@@ -21,6 +21,7 @@ namespace ScottPlot
         {
             InitializeComponent();
             fig.styleForm();
+            fig.title = "ScottPlot for Signals";
         }
 
         public void ResetAxis()
