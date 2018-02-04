@@ -64,7 +64,9 @@ private void button1_Click(object sender, EventArgs e)
 
 
 ## ScottPlot User Controls
-ScottPlot user controls simplify the task of creating interactive graphs. Different user controls are optimized for specific tasks. For example, the ucSignal user control is designed to take very large arrays of data (tens of millions of data points) and produce an interactive plot which updates at extremely high speed.
+ScottPlot user controls simplify the task of creating interactive graphs. Different user controls are optimized for specific tasks. For example, the ucSignal user control is designed to take very large arrays of data (tens of millions of data points) and produce an interactive plot which updates at extremely high speed. Adding a reference to ScottPlot in a Windows Forms project reveals these user controls which can then be dragged and dropped onto your Form.
+
+<img src="/doc/screenshots/ucSignalVS.png" width="400">
 
 ```C#
 // After creating a new windows application, drag/drop the ucSignal user control onto it.
