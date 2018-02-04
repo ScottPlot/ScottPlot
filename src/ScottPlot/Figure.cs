@@ -373,32 +373,46 @@ namespace ScottPlot
             int dataMinPx = (int)((firstPointX - xAxis.min) / xAxis.unitsPerPx);
             int dataMaxPx = (int)((lastPointX - xAxis.min) / xAxis.unitsPerPx);
             double binUnitsPerPx = xAxis.unitsPerPx / pointSpacing;
+            double dataPointsPerPixel = xAxis.unitsPerPx / pointSpacing;
 
             List<Point> points = new List<Point>();
             List<double> Ys = new List<double>();
 
-            for (int i = 0; i < dataYs.Length; i++) Ys.Add(dataYs[i]);
+            for (int i = 0; i < dataYs.Length; i++) Ys.Add(dataYs[i]); // copy entire array into list (SLOW!!!)
 
-            for (int xPixel = Math.Max(0, dataMinPx); xPixel < Math.Min(bmpGraph.Width, dataMaxPx); xPixel++)
+            if (dataPointsPerPixel < 1)
             {
-                int iLeft = (int)(binUnitsPerPx * (xPixel - dataMinPx));
-                int iRight = (int)(iLeft + binUnitsPerPx);
-                iLeft = Math.Max(iLeft, 0);
-                iRight = Math.Min(Ys.Count - 1, iRight);
-                iRight = Math.Max(iRight, 0);
-                if (iLeft == iRight) continue;
-                double yPxMin = Ys.GetRange(iLeft, iRight - iLeft).Min() + offsetY;
-                double yPxMax = Ys.GetRange(iLeft, iRight - iLeft).Max() + offsetY;
-                points.Add(new Point(xPixel, yAxis.UnitToPx(yPxMin)));
-                points.Add(new Point(xPixel, yAxis.UnitToPx(yPxMax)));
+                // LOW DENSITY TRADITIONAL X/Y PLOTTING
+                int iLeft = (int)(((xAxis.min - firstPointX) / xAxis.unitsPerPx) * dataPointsPerPixel);
+                int iRight = iLeft + (int)(dataPointsPerPixel * bmpGraph.Width);
+                for (int i = Math.Max(0, iLeft - 2); i < Math.Min(iRight + 3, Ys.Count - 1); i++)
+                {
+                    int xPx = xAxis.UnitToPx((double)i * pointSpacing + firstPointX);
+                    int yPx = yAxis.UnitToPx(Ys[i]);
+                    points.Add(new Point(xPx, yPx));
+                }
+            } else
+            {
+                // BINNING IS REQUIRED FOR HIGH DENSITY PLOTTING
+                for (int xPixel = Math.Max(0, dataMinPx); xPixel < Math.Min(bmpGraph.Width, dataMaxPx); xPixel++)
+                {
+                    int iLeft = (int)(binUnitsPerPx * (xPixel - dataMinPx));
+                    int iRight = (int)(iLeft + binUnitsPerPx);
+                    iLeft = Math.Max(iLeft, 0);
+                    iRight = Math.Min(Ys.Count - 1, iRight);
+                    iRight = Math.Max(iRight, 0);
+                    if (iLeft == iRight) continue;
+                    double yPxMin = Ys.GetRange(iLeft, iRight - iLeft).Min() + offsetY;
+                    double yPxMax = Ys.GetRange(iLeft, iRight - iLeft).Max() + offsetY;
+                    points.Add(new Point(xPixel, yAxis.UnitToPx(yPxMin)));
+                    points.Add(new Point(xPixel, yAxis.UnitToPx(yPxMax)));
+                }
             }
 
-            Point[] points2 = points.ToArray();
             Pen penLine = new Pen(new SolidBrush((Color)lineColor), lineWidth);
-
             System.Drawing.Drawing2D.SmoothingMode originalSmoothingMode = gfxGraph.SmoothingMode;
             gfxGraph.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None; // no antialiasing
-            gfxGraph.DrawLines(penLine, points2);
+            gfxGraph.DrawLines(penLine, points.ToArray());
             gfxGraph.SmoothingMode = originalSmoothingMode;
 
         }
