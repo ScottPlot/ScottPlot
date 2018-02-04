@@ -21,6 +21,11 @@ namespace ScottPlot
         public ScottPlotUC()
         {
             InitializeComponent();
+
+            // add a mousewheel scroll handler
+            pictureBox1.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseWheel);
+
+            // style the plot area
             fig.styleForm();
             fig.Zoom(.8, .8);
             fig.title = "ScottPlot User Control";
@@ -82,6 +87,14 @@ namespace ScottPlot
         private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Middle) ResetAxis(); // middle click to reset view
+        }
+
+        private void pictureBox1_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            double mag = 1.2;
+            if (e.Delta>0) fig.Zoom(mag, mag);
+            else fig.Zoom(1.0 / mag, 1.0 / mag);
+            Redraw();
         }
 
         public bool showBenchmark = false;
