@@ -20,6 +20,7 @@ namespace ScottPlot
         public ucSignal()
         {
             InitializeComponent();
+            fig.styleForm();
         }
 
         public void ResetAxis()
@@ -84,6 +85,11 @@ namespace ScottPlot
         private void pictureBox1_SizeChanged(object sender, EventArgs e)
         {
             UpdateSize();
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -92,7 +92,7 @@ public partial class Form1 : Form
 }
 ```
 
-![](/doc/screenshots/ucSignal.png)
+<img src="/doc/screenshots/ucSignal2.png" width="604">
 
 ## Additional Examples
 * Extensive examples are provided in the **[ScottPlot cookbook](/doc/cookbook)**
