@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace UcSignal.Properties
+namespace ScottPlotUC_Demo.Properties
 {
 
 

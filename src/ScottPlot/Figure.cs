@@ -410,16 +410,25 @@ namespace ScottPlot
             }
 
             Pen penLine = new Pen(new SolidBrush((Color)lineColor), lineWidth);
+            float markerSize = 3;
+            SolidBrush markerBrush = new SolidBrush((Color)lineColor);
             System.Drawing.Drawing2D.SmoothingMode originalSmoothingMode = gfxGraph.SmoothingMode;
             gfxGraph.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None; // no antialiasing
             gfxGraph.DrawLines(penLine, points.ToArray());
+            if (dataPointsPerPixel < .5)
+            {
+                foreach (Point pt in points)
+                {
+                    gfxGraph.FillEllipse(markerBrush, pt.X - markerSize / 2, pt.Y - markerSize / 2, markerSize, markerSize);
+                }
+            }
             gfxGraph.SmoothingMode = originalSmoothingMode;
 
         }
 
         public void PlotScatter(double[] Xs, double[] Ys, float markerSize = 3, Color? markerColor = null)
         {
-            if (markerColor == null) markerColor = Color.Blue;
+            if (markerColor == null) markerColor = Color.Red;
 
             Point[] points = PointsFromArrays(Xs, Ys);
             for (int i=0; i<points.Length; i++)

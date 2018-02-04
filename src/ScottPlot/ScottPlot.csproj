@@ -47,19 +47,19 @@
     <Compile Include="Figure.cs" />
     <Compile Include="DataGen.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ucSignal.cs">
+    <Compile Include="ScottPlotUC.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ucSignal.Designer.cs">
-      <DependentUpon>ucSignal.cs</DependentUpon>
+    <Compile Include="ScottPlotUC.Designer.cs">
+      <DependentUpon>ScottPlotUC.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ucSignal.resx">
-      <DependentUpon>ucSignal.cs</DependentUpon>
+    <EmbeddedResource Include="ScottPlotUC.resx">
+      <DependentUpon>ScottPlotUC.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

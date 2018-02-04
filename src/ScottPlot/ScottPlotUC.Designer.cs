@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot
 {
-    partial class ucSignal
+    partial class ScottPlotUC
     {
         /// <summary> 
         /// Required designer variable.

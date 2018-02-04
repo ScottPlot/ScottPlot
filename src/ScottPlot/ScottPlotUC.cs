@@ -10,26 +10,37 @@ using System.Windows.Forms;
 
 namespace ScottPlot
 {
-    public partial class ucSignal : UserControl
+    public partial class ScottPlotUC : UserControl
     {
 
         public Figure fig = new ScottPlot.Figure(123, 123);
         public double[] Ys = null;
+        public double[] Xs = null;
         public double RATE = 20_000;
-
-        public ucSignal()
+        
+        public ScottPlotUC()
         {
             InitializeComponent();
             fig.styleForm();
-            fig.title = "ScottPlot for Signals";
+            fig.Zoom(.8, .8);
+            fig.title = "ScottPlot User Control";
         }
 
         public void ResetAxis()
         {
-            if (Ys == null) return;
-            fig.Axis(0, 1.0 / RATE * Ys.Length, null, null);
-            fig.ResizeToData(null, Ys, null, .9);
-            Redraw(true);
+            if (Xs != null && Ys != null)
+            {
+                // X/Y pairs
+                fig.ResizeToData(Xs, Ys, .9, .9);
+                Redraw(true);
+
+            } else if (Xs == null && Ys != null)
+            {
+                // Signal mode
+                fig.Axis(0, 1.0 / RATE * Ys.Length, null, null);
+                fig.ResizeToData(null, Ys, null, .9);
+                Redraw(true);
+            }
         }
 
         public void UpdateSize()
@@ -42,7 +53,17 @@ namespace ScottPlot
         {
             fig.Benchmark(showBenchmark);
             if (redrawFrameToo) fig.RedrawFrame();
-            fig.PlotSignal(Ys, 1.0 / RATE);
+
+            // change the plot type depending on the type of data
+            if (Xs == null && Ys != null)
+            {
+                fig.PlotSignal(Ys, 1.0 / RATE);
+            } else if (Xs != null && Ys != null)
+            {
+                fig.PlotLines(Xs, Ys);
+                fig.PlotScatter(Xs, Ys);
+            }
+
             pictureBox1.Image = fig.Render();
         }
 

@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{64FE2219-D925-474F-9520-CD276E58E14C}</ProjectGuid>
+    <ProjectGuid>{C8D5AC19-D590-4467-9833-C13D0ECFBF53}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>UcSignal</RootNamespace>
-    <AssemblyName>UcSignal</AssemblyName>
+    <RootNamespace>ScottPlotUC_Demo</RootNamespace>
+    <AssemblyName>ScottPlotUC Demo</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -80,7 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\ScottPlot\ScottPlot.csproj">
-      <Project>{146d9444-8d80-4049-ab17-55ae852f59e3}</Project>
+      <Project>{146D9444-8D80-4049-AB17-55AE852F59E3}</Project>
       <Name>ScottPlot</Name>
     </ProjectReference>
   </ItemGroup>

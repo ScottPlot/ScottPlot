@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("UcSignal")]
+[assembly: AssemblyTitle("ScottPlotUC Demo")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("UcSignal")]
+[assembly: AssemblyProduct("ScottPlotUC Demo")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("64fe2219-d925-474f-9520-cd276e58e14c")]
+[assembly: Guid("c8d5ac19-d590-4467-9833-c13d0ecfbf53")]
 
 // Version information for an assembly consists of the following four values:
 //
