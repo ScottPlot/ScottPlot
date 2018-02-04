@@ -1,5 +1,5 @@
 # Compiled Demos
-Each of these zip files is a standalone demo compiled as an EXE. Old demos may reflect outdated functionality. If an error occurs at launch, ensure you have installed [Microsoft .NET 4.6.1](dotNet 4.6.1 installer.exe) or later.
+Each of these zip files is a standalone demo compiled as an EXE. Old demos may reflect outdated functionality. If an error occurs at launch, ensure you have installed [Microsoft .NET 4.6.1](dotNet%204.6.1%20installer.exe) or later.
 
 Description|Screenshot
 ---|---
