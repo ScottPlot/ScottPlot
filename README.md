@@ -97,7 +97,7 @@ public partial class Form1 : Form
 <img src="/doc/screenshots/ucSignal2.png" width="604">
 
 ## Additional Examples
-* Extensive examples are provided in the **[ScottPlot cookbook](/doc/cookbook)**
+* Extensive examples are provided in the **[ScottPlot cookbook](/doc/cookbook/readme.md)**
 
 ## Installing ScottPlot
 
