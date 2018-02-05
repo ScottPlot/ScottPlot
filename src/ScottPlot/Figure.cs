@@ -409,6 +409,7 @@ namespace ScottPlot
                 }
             }
 
+            if (points.Count < 2) return;
             Pen penLine = new Pen(new SolidBrush((Color)lineColor), lineWidth);
             float markerSize = 3;
             SolidBrush markerBrush = new SolidBrush((Color)lineColor);

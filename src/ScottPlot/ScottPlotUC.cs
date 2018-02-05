@@ -16,7 +16,35 @@ namespace ScottPlot
         public Figure fig = new ScottPlot.Figure(123, 123);
         public double[] Ys = null;
         public double[] Xs = null;
-        public double RATE = 20_000;
+
+        public class signal
+        {
+            public double[] values;
+            public double sampleRate;
+            public double xSpacing;
+            public double offsetX;
+            public double offsetY;
+            public Color color;
+            public float lineWidth;
+            public string label;
+            
+            public signal(double[] values, double sampleRate, double offsetX = 0, double offsetY = 0, Color? color = null, float lineWidth=1, string label = null)
+            {
+                this.values = values;
+                this.sampleRate = sampleRate;
+                this.xSpacing = 1.0 / sampleRate;
+                this.offsetX = offsetX;
+                this.offsetY = offsetY;
+                if (color == null) color = Color.Red;
+                this.color = (Color)color;
+                this.lineWidth = lineWidth;
+                this.label = label;
+            }
+        }
+
+        public signal[] signals = null;
+
+        public double signalRate = 20_000;
         
         public ScottPlotUC()
         {
@@ -33,19 +61,34 @@ namespace ScottPlot
 
         public void ResetAxis()
         {
-            if (Xs != null && Ys != null)
+            if (signals != null)
+            {
+                // signal mode
+
+                // resize to the first sweep
+                double y1 = signals[0].values.Min() + signals[0].offsetY;
+                double y2 = signals[0].values.Max() + signals[0].offsetY;
+                for (int i=1; i<signals.Length; i++)
+                {
+                    // check later sweeps to see if they're more expansive
+                    y1 = Math.Min(y1, signals[i].values.Min() + signals[i].offsetY);
+                    y2 = Math.Max(y2, signals[i].values.Max() + signals[i].offsetY);
+                }
+
+                // x limits can be calculated
+                double x1 = signals[0].offsetX;
+                double x2 = x1 + (double)signals[0].values.Length / (double)signals[0].sampleRate;
+
+                // apply these limits
+                fig.Axis(x1, x2, y1, y2);
+                fig.Zoom(null, .9);
+            }
+            else if (Xs != null && Ys != null)
             {
                 // X/Y pairs
                 fig.ResizeToData(Xs, Ys, .9, .9);
-                Redraw(true);
-
-            } else if (Xs == null && Ys != null)
-            {
-                // Signal mode
-                fig.Axis(0, 1.0 / RATE * Ys.Length, null, null);
-                fig.ResizeToData(null, Ys, null, .9);
-                Redraw(true);
             }
+            Redraw(true);
         }
 
         public void UpdateSize()
@@ -59,11 +102,18 @@ namespace ScottPlot
             fig.Benchmark(showBenchmark);
             if (redrawFrameToo) fig.RedrawFrame();
 
-            // change the plot type depending on the type of data
-            if (Xs == null && Ys != null)
+            // plot signals (if there are any)
+            if (signals != null)
             {
-                fig.PlotSignal(Ys, 1.0 / RATE);
-            } else if (Xs != null && Ys != null)
+                for (int i = 0; i < signals.Length; i++)
+                {
+                    fig.PlotSignal(signals[i].values, 1.0 / signals[i].sampleRate, signals[i].offsetX, 
+                                   signals[i].offsetY, signals[i].lineWidth, signals[i].color);
+                }
+            }
+
+            // plot XY points (if they're not null)
+            if (Xs != null && Ys != null)
             {
                 fig.PlotLines(Xs, Ys);
                 fig.PlotScatter(Xs, Ys);
