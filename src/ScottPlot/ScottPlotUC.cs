@@ -14,38 +14,79 @@ namespace ScottPlot
     {
 
         public Figure fig = new ScottPlot.Figure(123, 123);
-        public double[] Ys = null;
-        public double[] Xs = null;
 
-        public class signal
+        public class SignalData
         {
             public double[] values;
             public double sampleRate;
             public double xSpacing;
             public double offsetX;
             public double offsetY;
-            public Color color;
             public float lineWidth;
+            public Color lineColor;
             public string label;
             
-            public signal(double[] values, double sampleRate, double offsetX = 0, double offsetY = 0, Color? color = null, float lineWidth=1, string label = null)
+            public SignalData(double[] values, double sampleRate, double offsetX = 0, double offsetY = 0, Color? lineColor = null, float lineWidth=1, string label = null)
             {
                 this.values = values;
                 this.sampleRate = sampleRate;
                 this.xSpacing = 1.0 / sampleRate;
                 this.offsetX = offsetX;
                 this.offsetY = offsetY;
-                if (color == null) color = Color.Red;
-                this.color = (Color)color;
+                if (lineColor == null) lineColor = Color.Red;
+                this.lineColor = (Color)lineColor;
                 this.lineWidth = lineWidth;
                 this.label = label;
             }
         }
 
-        public signal[] signals = null;
+        public class XYData
+        {
+            public double[] Xs;
+            public double[] Ys;
+            public float lineWidth;
+            public Color lineColor;
+            public float markerSize;
+            public Color markerColor;
+            public string label;
 
-        public double signalRate = 20_000;
+            public XYData(double[] Xs, double[] Ys, float lineWidth = 1, Color? lineColor = null, float markerSize=3, Color? markerColor=null, string label = null)
+            {
+                this.Xs = Xs;
+                this.Ys = Ys;
+                this.lineWidth = lineWidth;
+                this.markerSize = markerSize;
+                this.label = label;
+                if (lineColor == null) lineColor = Color.Red;
+                this.lineColor = (Color)lineColor;
+                if (markerColor == null) markerColor = Color.Red;
+                this.markerColor = (Color)markerColor;
+            }
+        }
+
+        public List<SignalData> signalDataList = new List<SignalData>();
+        public List<XYData> xyDataList = new List<XYData>();
         
+        public void PlotXY(double[] Xs, double[] Ys, Color? color = null)
+        {
+            xyDataList.Add(new XYData(Xs, Ys, lineColor: color, markerColor: color));
+            fig.ClearGraph();
+            Redraw();
+        }
+
+        public void PlotSignal(double[] values, double sampleRate, Color? color = null, double offsetX = 0, double offsetY = 0)
+        {
+            signalDataList.Add(new SignalData(values, sampleRate, lineColor: color, offsetX: offsetX, offsetY: offsetY));
+            fig.ClearGraph();
+            Redraw();
+        }
+
+        public void Clear()
+        {
+            xyDataList.Clear();
+            signalDataList.Clear();
+        }
+
         public ScottPlotUC()
         {
             InitializeComponent();
@@ -59,35 +100,49 @@ namespace ScottPlot
             fig.title = "ScottPlot User Control";
         }
 
-        public void ResetAxis()
+        public void AxisSetToData()
         {
-            if (signals != null)
-            {
-                // signal mode
+            double x1 = 0, x2 = 0, y1 = 0, y2 = 0;
 
-                // resize to the first sweep
-                double y1 = signals[0].values.Min() + signals[0].offsetY;
-                double y2 = signals[0].values.Max() + signals[0].offsetY;
-                for (int i=1; i<signals.Length; i++)
+            foreach (XYData xyData in xyDataList)
+            {
+                if (x1 == x2)
                 {
-                    // check later sweeps to see if they're more expansive
-                    y1 = Math.Min(y1, signals[i].values.Min() + signals[i].offsetY);
-                    y2 = Math.Max(y2, signals[i].values.Max() + signals[i].offsetY);
+                    // this is the first data we are scaling to, so just copy its bounds
+                    x1 = xyData.Xs.Min();
+                    x2 = xyData.Xs.Max();
+                    y1 = xyData.Ys.Min();
+                    y2 = xyData.Ys.Max();
+                } else
+                {
+                    // we've seen some data before, so only take it if it expands the axes
+                    x1 = Math.Min(x1, xyData.Xs.Min());
+                    x2 = Math.Max(x2, xyData.Xs.Max());
+                    y1 = Math.Min(y1, xyData.Ys.Min());
+                    y2 = Math.Max(y2, xyData.Ys.Max());
                 }
-
-                // x limits can be calculated
-                double x1 = signals[0].offsetX;
-                double x2 = x1 + (double)signals[0].values.Length / (double)signals[0].sampleRate;
-
-                // apply these limits
-                fig.Axis(x1, x2, y1, y2);
-                fig.Zoom(null, .9);
             }
-            else if (Xs != null && Ys != null)
+            foreach (SignalData signalData in signalDataList)
             {
-                // X/Y pairs
-                fig.ResizeToData(Xs, Ys, .9, .9);
+                if (x1 == x2)
+                {
+                    // this is the first data we are scaling to, so just copy its bounds
+                    x1 = signalData.offsetX;
+                    x2 = signalData.offsetX + signalData.values.Length * signalData.xSpacing;
+                    y1 = signalData.values.Min() + signalData.offsetY;
+                    y2 = signalData.values.Max() + signalData.offsetY;
+                }
+                else
+                {
+                    // we've seen some data before, so only take it if it expands the axes
+                    x1 = Math.Min(x1, signalData.offsetX);
+                    x2 = Math.Max(x2, signalData.offsetX + signalData.values.Length * signalData.xSpacing);
+                    y1 = Math.Min(y1, signalData.values.Min() + signalData.offsetY);
+                    y2 = Math.Max(y2, signalData.values.Max() + signalData.offsetY);
+                }
             }
+            fig.Axis(x1, x2, y1, y2);
+            fig.Zoom(null, .9);
             Redraw(true);
         }
 
@@ -101,27 +156,30 @@ namespace ScottPlot
         {
             fig.Benchmark(showBenchmark);
             if (redrawFrameToo) fig.RedrawFrame();
+            else fig.ClearGraph();
 
-            // plot signals (if there are any)
-            if (signals != null)
+            // plot XY points
+            foreach (XYData xyData in xyDataList)
             {
-                for (int i = 0; i < signals.Length; i++)
-                {
-                    fig.PlotSignal(signals[i].values, 1.0 / signals[i].sampleRate, signals[i].offsetX, 
-                                   signals[i].offsetY, signals[i].lineWidth, signals[i].color);
-                }
+                fig.PlotLines(xyData.Xs, xyData.Ys, xyData.lineWidth, xyData.lineColor);
+                fig.PlotScatter(xyData.Xs, xyData.Ys, xyData.markerSize, xyData.markerColor);
             }
 
-            // plot XY points (if they're not null)
-            if (Xs != null && Ys != null)
+            // plot signals
+            foreach (SignalData signalData in signalDataList)
             {
-                fig.PlotLines(Xs, Ys);
-                fig.PlotScatter(Xs, Ys);
-            }
-
+                fig.PlotSignal(signalData.values, signalData.xSpacing, signalData.offsetX, signalData.offsetY, signalData.lineWidth, signalData.lineColor);
+            }             
+            
             pictureBox1.Image = fig.Render();
         }
 
+
+
+
+
+        /* mouse interaction */
+        
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left) fig.MousePanStart(e.X, e.Y); // left-click-drag pans
@@ -136,7 +194,7 @@ namespace ScottPlot
 
         private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Middle) ResetAxis(); // middle click to reset view
+            if (e.Button == MouseButtons.Middle) AxisSetToData(); // middle click to reset view
         }
 
         private void pictureBox1_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)

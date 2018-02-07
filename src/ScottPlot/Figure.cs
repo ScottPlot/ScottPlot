@@ -51,6 +51,8 @@ namespace ScottPlot
         public Color colorGrid;
         public Color colorGraph;
 
+        public Color randomColor{get{return Color.FromArgb(255, gen.rand.Next(256), gen.rand.Next(256), gen.rand.Next(256));}}
+
         // the user can set these
         const string font = "Arial";
         Font fontTicks = new Font(font, 9, FontStyle.Regular);
@@ -179,13 +181,21 @@ namespace ScottPlot
         public void ClearGraph()
         {
             gfxGraph.DrawImage(bmpFrame, new Point(-padL, -padT));
+            pointCount = 0;
         }
-        
-        public string RenderTimeMessage()
+
+        public long pointCount=0;
+        public string benchmarkMessage
         {
-            double ms = this.stopwatch.ElapsedTicks * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
-            double hz = 1.0 / ms * 1000.0;
-            return string.Format("{0:0.00 ms} {1:0.00 Hz}", ms, hz);
+            get
+            {
+                double ms = this.stopwatch.ElapsedTicks * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
+                double hz = 1.0 / ms * 1000.0;
+                string msg = string.Format("{0:0.00 ms} {1:0.00 Hz}", ms, hz);
+                if (pointCount > 0)
+                    msg = string.Format("rendered {0:n0} points in ", pointCount) + msg;
+                return msg;
+            }
         }
 
         /// <summary>
@@ -201,12 +211,11 @@ namespace ScottPlot
             if (this.stopwatch.ElapsedTicks>0)
             {
                 Font fontStamp = new Font(font, 8, FontStyle.Regular);
-                //SolidBrush brushStamp = new SolidBrush(Color.FromArgb(100, 0, 0, 0));
                 SolidBrush brushStamp = new SolidBrush(colorAxis);
                 Point pointStamp = new Point(bmpFrame.Width - padR - 2, bmpFrame.Height - padB - 14);
                 StringFormat sfRight = new StringFormat();
                 sfRight.Alignment = StringAlignment.Far;
-                gfx.DrawString(RenderTimeMessage(), fontStamp, brushStamp, pointStamp, sfRight);
+                gfx.DrawString(benchmarkMessage, fontStamp, brushStamp, pointStamp, sfRight);
 
             }
 
@@ -360,7 +369,9 @@ namespace ScottPlot
             penLine.EndCap = System.Drawing.Drawing2D.LineCap.Round;
             penLine.LineJoin = System.Drawing.Drawing2D.LineJoin.Round;
 
+            // todo: prevent infinite zooming overflow errors
             gfxGraph.DrawLines(penLine, points);
+            this.pointCount += points.Length;
         }
 
         public void PlotSignal(double[] dataYs, double pointSpacing=1, double firstPointX=0, double offsetY=0, float lineWidth=1, Color? lineColor=null)
@@ -415,6 +426,10 @@ namespace ScottPlot
             SolidBrush markerBrush = new SolidBrush((Color)lineColor);
             System.Drawing.Drawing2D.SmoothingMode originalSmoothingMode = gfxGraph.SmoothingMode;
             gfxGraph.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None; // no antialiasing
+
+
+            // todo: prevent infinite zooming overflow errors
+
             gfxGraph.DrawLines(penLine, points.ToArray());
             if (dataPointsPerPixel < .5)
             {
@@ -423,8 +438,9 @@ namespace ScottPlot
                     gfxGraph.FillEllipse(markerBrush, pt.X - markerSize / 2, pt.Y - markerSize / 2, markerSize, markerSize);
                 }
             }
-            gfxGraph.SmoothingMode = originalSmoothingMode;
 
+            gfxGraph.SmoothingMode = originalSmoothingMode;
+            this.pointCount += dataYs.Length;
         }
 
         public void PlotScatter(double[] Xs, double[] Ys, float markerSize = 3, Color? markerColor = null)
@@ -439,6 +455,7 @@ namespace ScottPlot
                                      points[i].Y - markerSize / 2, 
                                      markerSize, markerSize);
             }
+            pointCount += points.Length;
         }
 
         public void PlotPoint(double X, double Y, float markerSize = 3, Color? markerColor = null)

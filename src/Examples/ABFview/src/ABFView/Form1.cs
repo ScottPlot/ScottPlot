@@ -35,49 +35,44 @@ namespace ABFView
             {
                 // continuous plot
                 scottPlotUC1.fig.title = string.Format("Continuous Plot: {0:n0} Data Points",abf.data.Count);
-                scottPlotUC1.signals = new ScottPlot.ScottPlotUC.signal[]
-                {
-                    new ScottPlot.ScottPlotUC.signal(abf.data.ToArray(), 20_000),
-                };
-                scottPlotUC1.ResetAxis();
+                scottPlotUC1.Clear();
+                scottPlotUC1.PlotSignal(abf.data.ToArray(), 20_000);              
+                scottPlotUC1.AxisSetToData();
 
             } else if (rb_sweep.Checked == true) { 
                 // one sweep at a time
                 scottPlotUC1.fig.title = string.Format("Single Sweep: {0:n0} Data Points", abf.sweepPointCount);
-
-                // get sweep data
-                double[] sweepData = abf.data.GetRange((int)nud_sweep.Value * abf.sweepPointCount, abf.sweepPointCount).ToArray();
-
-                // load it as a signal
-                scottPlotUC1.signals = new ScottPlot.ScottPlotUC.signal[1];
-                scottPlotUC1.signals[0] = new ScottPlot.ScottPlotUC.signal(sweepData, 20_000);
-                scottPlotUC1.ResetAxis();
+                
+                // load subsweep data as a signal
+                scottPlotUC1.Clear();
+                scottPlotUC1.PlotSignal(abf.data.GetRange((int)nud_sweep.Value * abf.sweepPointCount, abf.sweepPointCount).ToArray(), 20_000);
+                scottPlotUC1.AxisSetToData();
 
             } else if (rb_overlap.Checked == true)
             {
                 // all sweeps overlapped
                 scottPlotUC1.fig.title = string.Format("Overlapping Plot: {0:n0} Data Points", abf.data.Count);
-                scottPlotUC1.signals = new ScottPlot.ScottPlotUC.signal[abf.sweepCount];
 
+                scottPlotUC1.Clear();
                 for (int i=0; i < abf.sweepCount; i++)
                 {
-                    double[] sweepData = abf.data.GetRange(i*abf.sweepPointCount,abf.sweepPointCount).ToArray();
-                    scottPlotUC1.signals[i] = new ScottPlot.ScottPlotUC.signal(sweepData, 20_000);
+                    scottPlotUC1.PlotSignal(abf.data.GetRange(i * abf.sweepPointCount, abf.sweepPointCount).ToArray(), 
+                                            sampleRate: 20_000);
                 }
-                scottPlotUC1.ResetAxis();
+                scottPlotUC1.AxisSetToData();
 
             } else if (rb_stacked.Checked == true)
             {
-                // all sweeps overlapped
+                // all sweeps stacked
                 scottPlotUC1.fig.title = string.Format("Stacked Sweeps: {0:n0} Data Points", abf.data.Count);
-                scottPlotUC1.signals = new ScottPlot.ScottPlotUC.signal[abf.sweepCount];
 
+                scottPlotUC1.Clear();
                 for (int i = 0; i < abf.sweepCount; i++)
                 {
-                    double[] sweepData = abf.data.GetRange(i * abf.sweepPointCount, abf.sweepPointCount).ToArray();
-                    scottPlotUC1.signals[i] = new ScottPlot.ScottPlotUC.signal(sweepData, 20_000, 0, i*(int)nud_vsep.Value);
+                    scottPlotUC1.PlotSignal(abf.data.GetRange(i * abf.sweepPointCount, abf.sweepPointCount).ToArray(),
+                                            sampleRate: 20_000, offsetY: i * (int)nud_vsep.Value);
                 }
-                scottPlotUC1.ResetAxis();
+                scottPlotUC1.AxisSetToData();
             }
         }
 
