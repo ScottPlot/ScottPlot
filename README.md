@@ -66,7 +66,7 @@ _Once installed, drag/drop the ScottPlotUC onto your Windows Form and give it da
 ![](/doc/screenshots/ScottPlotUC.png)
 
 ## Object Diagram
-This is the latest automatically-generated class diagram. ScottPlot is still early in development and the API tends to restructure frequently, so I find this view helpful.
+
 ![](/src/ScottPlot.png)
 
 ## License
