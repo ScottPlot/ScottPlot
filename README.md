@@ -32,7 +32,7 @@ pictureBox1.Image = fig.Render();
 ## Save to File from a Console Application
 The ScottPlot.Figure class is fully functional without a GUI! Anything you can do in a Windows Form you can do from a Console Application (saving to a file rather than rending on a picturebox). All examples in the [ScottPlot Cookbook](/doc/cookbook/) can be used in console applications.
 
-```
+```cs
 var fig = new ScottPlot.Figure(pictureBox1.Width, pictureBox1.Height);
 fig.AxisAuto(Xs, Ys);
 fig.PlotLines(Xs, Ys);
