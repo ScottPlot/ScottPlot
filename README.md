@@ -65,7 +65,7 @@ _Once installed, drag/drop the ScottPlotUC onto your Windows Form and give it da
 
 ![](/doc/screenshots/ScottPlotUC.png)
 
-## Object Diagram
+## Class Diagram
 
 ![](/src/ScottPlot.png)
 
