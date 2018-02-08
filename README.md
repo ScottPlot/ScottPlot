@@ -1,40 +1,65 @@
 # ScottPlot
 
-**ScottPlot is an open-source interactive graphing library for .NET written in C#.** It was written to simplify the task of interactively displaying data on a graph that you can left-click-drag to pan and right-click drag to zoom. The core of this project is a portable class library which allows a user to supply figure dimensions and scale information and plot data directly on a bitmap buffer relying on ScottPlot to handle unit-to-pixel conversions, drawing of axis labels, tick marks, grid lines, etc. Although ScottPlot was designed for interactive graphing of large datasets in a GUI environment, its core can generate graphs from within console applications. ScottPlot was loosely inspired by matplotlib for Python.
+**ScottPlot is an open-source interactive graphing library for .NET written in C#.** It was written to simplify the task of interactively displaying data on a graph that you can left-click-drag to pan and right-click drag to zoom. Although ScottPlot was designed for interactive graphing of large datasets in a GUI environment, its core can generate graphs from within console applications. ScottPlot was loosely inspired by matplotlib for Python.
 
 ![](/doc/screenshots/resize-pan-zoom.gif)
 
-## Demos
-**Compiled (EXE) demos are available for download in the [/demos/](/demos) folder.** They are a good way to test-out what ScottPlot can do without having to download the source code or learn about the API. For non-interactive demos suitable for console applications, check out the [ScottPlot cookbook](/doc/cookbook/readme.md)
+# Example Use
+These minimal-case examples demonstrate how to get started graphing data with ScottPlot. Advanced features (transparency, colors, markers, etc) are described in the [documentation folder](/doc/).
 
-## Use ScottPlot in Console Applications
-ScottPlot does not require a GUI to create graphs, as they can be easily saved as BMP, JPG, or PNG files.
+## User Control for Interactive Graphing
+The simplest way to use ScottPlot is to drag/drop the ScottPlotUC (user control) onto a Windows Form, then fill it with some data. It will automatically draw the graph and immedaitely be interactive to the mouse (left-click-drag to pan, right-click-drag to zoom).
 
+```cs
+scottPlotUC1.PlotXY(Xs, Ys); // Make a line graph from double arrays
+scottPlotUC1.AxisAuto(); // Auto-scale the axis to fit the data
+```
 
-![](/doc/screenshots/console.png)
+## Render onto a Picturebox for Static Graphing
+If the goal is just to add a graph to a Windows Form, it can simply be rendered onto a picturebox eliminating the need for a special user control. This can be accomplished by interacting with the ScottPlot.Figure class directly which yields customization options and speed performance beyond that of the user control. Extensive examples are in the [ScottPlot Cookbook](/doc/cookbook/).
 
-## Use ScottPlot in Windows Forms
-In this example, clicking button1 draws a graph and applies it to a picturebox. 
+```cs
+var fig = new ScottPlot.Figure(pictureBox1.Width, pictureBox1.Height);
+fig.AxisAuto(Xs, Ys);
+fig.PlotLines(Xs, Ys);
+pictureBox1.Image = fig.Render();
+```
 
-![](/doc/screenshots/picturebox.png)
+## Save to File from a Console Application
+The ScottPlot.Figure class is fully functional without a GUI! Anything you can do in a Windows Form you can do from a Console Application (saving to a file rather than rending on a picturebox). All examples in the [ScottPlot Cookbook](/doc/cookbook/) can be used in console applications.
 
-Note that this method looks excellent, but graphs are not interactive. Creating interactive graphs requires making handlers to resize and redraw the graph for resize events, click-and-drag, etc. However, all this functionality is pre-packaged in ScottPlot user controls which are designed to respond to resize events, left-click-drag panning, and right-click-drag zooming.
+```
+var fig = new ScottPlot.Figure(pictureBox1.Width, pictureBox1.Height);
+fig.AxisAuto(Xs, Ys);
+fig.PlotLines(Xs, Ys);
+fig.Save("demo.png");
+```
 
-## ScottPlot User Controls for Interactive Graphs
-ScottPlot user controls simplify the task of creating interactive graphs. Different user controls are optimized for specific tasks. For example, the ucSignal user control is designed to take very large arrays of data (tens of millions of data points) and produce an interactive plot (which pans and zooms with the mouse) updating at extremely high speed. Adding a reference to ScottPlot in a Windows Forms project reveals these user controls which can then be added into your Form.
+## Large Dataset Optimization
+ScottPlot was written to interactively display data with _tens of millions_ of data points. A good example of this is a one hour WAV file (3600 seconds at 48 kHz = 172.8 million points). Numerous optimizations provide this functionality for signals (a series of evenly-spaced data points). Rather than graph two double arrays (Xs and Ys), use ScottPlot's signal graphing methods. Additional options (like like X and Y offset) are demonstrated in the [ScottPlot cookbook](/doc/cookbook/readme.md)
 
-![](/doc/screenshots/ScottPlotUC.png)
+```cs
+// Optimized for signals with millions of data points
+fig.PlotSignal(Ys);
 
-## Additional Examples
-* Extensive examples are provided in the **[ScottPlot cookbook](/doc/cookbook/readme.md)**
+// If using the ScottPlotUC user control
+ScottPlotUC1.PlotSignal(Ys); 
+```
 
-## Installing ScottPlot
+## Compiled Demos
+Compiled (EXE) demos are available for download in the [/demos/](/demos) folder. They are a good way to test-out what ScottPlot can do without having to download the source code or learn about the API. For non-interactive demos suitable for console applications, check out the [ScottPlot cookbook](/doc/cookbook/readme.md)
+
+# Installing ScottPlot
 
 * **Download:** Get the [latest ScottPlot (ZIP)](https://github.com/swharden/ScottPlot/archive/master.zip) from this page
 
 * **Add Project:** Right-click your solution, _add_, _Existing Project_, and select [/src/ScottPlot/ScottPlot.csproj](/src/ScottPlot/ScottPlot.csproj)
 
 * **Add Reference:** Right-click your project, _Add_, _Reference_, then under _Projects_ select _ScottPlot_
+
+_Once installed, drag/drop the ScottPlotUC onto your Windows Form and give it data! It will respond to the mouse immediately._
+
+![](/doc/screenshots/ScottPlotUC.png)
 
 ## License
 ScottPlot uses the [MIT License](LICENSE), so use it in whatever you want!
