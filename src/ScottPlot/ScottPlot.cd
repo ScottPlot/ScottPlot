@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" GroupingSetting="Access">
+  <Comment CommentText="To create interactive graphs (mouse-responsive or animated), create a form with a ScottPlotUC (user control) and only interact with the top level.&#xD;&#xA;">
+    <Position X="2.627" Y="1.808" Height="0.644" Width="3.247" />
+  </Comment>
+  <Comment CommentText="For static non-interactive graphs (such as those made by console applications), interact with the Figure class directly.&#xD;&#xA;">
+    <Position X="6.593" Y="1.989" Height="0.344" Width="8.562" />
+  </Comment>
+  <Comment CommentText="If mouse items are null they are ignored. Although the Figure class is not intended to produce interactive graphs directly, keeping the mouse tracking logic inside it makes it easy to produce highly customized user controls later without re-inventing the mouse tracker.">
+    <Position X="6.594" Y="2.768" Height="0.474" Width="8.572" />
+  </Comment>
+  <Comment CommentText="It is sometimes useful to directly access fig.gen when developing. It can synthesize sample data from scratch suitable for graphing. It is also has a central random number generator which is seeded with the same value every time, useful for benchmarking.">
+    <Position X="12.158" Y="13.118" Height="1.363" Width="2.738" />
+  </Comment>
+  <Comment CommentText="The figure class only draws data. It never stores it. Since this is used in cases where advanced customization is desired, more options are exposed.">
+    <Position X="6.604" Y="2.409" Height="0.291" Width="8.542" />
+  </Comment>
+  <Comment CommentText="Data is fed into the user control (with PlotXY and PlotSignal) and accumulates in memory until it is cleared. This is the most common anticipated use point, and is kept intentionally simplistic.">
+    <Position X="2.668" Y="2.529" Height="0.784" Width="3.257" />
+  </Comment>
+  <Class Name="ScottPlot.Axis">
+    <Position X="9.75" Y="3.5" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="ScottPlot.Axis.Tick">
+        <TypeIdentifier>
+          <NewMemberFileName>Axis.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AgwBEAAAgAAQIiAQGAAAAAAABAAACAAAAAAAmAEAAAA=</HashCode>
+      <FileName>Axis.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ScottPlot.DataGen">
+    <Position X="9.75" Y="11.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AgAJAIAACAAggAAAAAAAAEAAAEAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>DataGen.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ScottPlot.Figure">
+    <Position X="6.5" Y="3.5" Width="2.25" />
+    <AssociationLine Name="xAxis" Type="ScottPlot.Axis" FixedToPoint="true">
+      <Path>
+        <Point X="8.75" Y="5.23" />
+        <Point X="9.75" Y="5.23" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="yAxis" Type="ScottPlot.Axis" FixedToPoint="true">
+      <Path>
+        <Point X="8.75" Y="6.05" />
+        <Point X="9.75" Y="6.05" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="MouseAxis" Type="ScottPlot.MouseAxis" FixedFromPoint="true">
+      <Path>
+        <Point X="8.75" Y="11.25" />
+        <Point X="12.75" Y="11.25" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.09" Y="0.09" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAIIAIAAAAREERAAEKBs6CAqYBCAQgoADFBCBgmSggA=</HashCode>
+      <FileName>Figure.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="xAxis" />
+      <Field Name="yAxis" />
+      <Field Name="gen" />
+      <Property Name="MouseAxis" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="ScottPlot.MouseAxis">
+    <Position X="12.75" Y="9" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAEAABAAAAAwAAAACAAYAAAACAAQA=</HashCode>
+      <FileName>Axes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ScottPlot.ScottPlotUC">
+    <Position X="3.25" Y="3.5" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="ScottPlot.ScottPlotUC.SignalData">
+        <TypeIdentifier>
+          <NewMemberFileName>ScottPlotUC.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="ScottPlot.ScottPlotUC.XYData">
+        <TypeIdentifier>
+          <NewMemberFileName>ScottPlotUC.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <AssociationLine Name="fig" Type="ScottPlot.Figure" FixedFromPoint="true">
+      <Path>
+        <Point X="5.5" Y="4.823" />
+        <Point X="6.5" Y="4.823" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAIAEAAKAAQACAAACEAChCAAAAVMAABRAAAABAAAA=</HashCode>
+      <FileName>ScottPlotUC.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="fig" />
+    </ShowAsAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

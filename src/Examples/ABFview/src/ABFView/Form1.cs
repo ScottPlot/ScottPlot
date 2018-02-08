@@ -25,7 +25,7 @@ namespace ABFView
         {
             string abfFileName = @"../../../../data/17o05028_ic_steps.abf";
             abf = new ABF(abfFileName);
-            scottPlotUC1.fig.title = abf.abfID;
+            scottPlotUC1.fig.labelTitle = abf.abfID;
             nud_sweep.Maximum = abf.sweepCount - 1;
         }
 
@@ -34,24 +34,24 @@ namespace ABFView
             if (rb_continuous.Checked == true)
             {
                 // continuous plot
-                scottPlotUC1.fig.title = string.Format("Continuous Plot: {0:n0} Data Points",abf.data.Count);
+                scottPlotUC1.fig.labelTitle = string.Format("Continuous Plot: {0:n0} Data Points",abf.data.Count);
                 scottPlotUC1.Clear();
                 scottPlotUC1.PlotSignal(abf.data.ToArray(), 20_000);              
-                scottPlotUC1.AxisSetToData();
+                scottPlotUC1.AxisAuto();
 
             } else if (rb_sweep.Checked == true) { 
                 // one sweep at a time
-                scottPlotUC1.fig.title = string.Format("Single Sweep: {0:n0} Data Points", abf.sweepPointCount);
+                scottPlotUC1.fig.labelTitle = string.Format("Single Sweep: {0:n0} Data Points", abf.sweepPointCount);
                 
                 // load subsweep data as a signal
                 scottPlotUC1.Clear();
                 scottPlotUC1.PlotSignal(abf.data.GetRange((int)nud_sweep.Value * abf.sweepPointCount, abf.sweepPointCount).ToArray(), 20_000);
-                scottPlotUC1.AxisSetToData();
+                scottPlotUC1.AxisAuto();
 
             } else if (rb_overlap.Checked == true)
             {
                 // all sweeps overlapped
-                scottPlotUC1.fig.title = string.Format("Overlapping Plot: {0:n0} Data Points", abf.data.Count);
+                scottPlotUC1.fig.labelTitle = string.Format("Overlapping Plot: {0:n0} Data Points", abf.data.Count);
 
                 scottPlotUC1.Clear();
                 for (int i=0; i < abf.sweepCount; i++)
@@ -59,12 +59,12 @@ namespace ABFView
                     scottPlotUC1.PlotSignal(abf.data.GetRange(i * abf.sweepPointCount, abf.sweepPointCount).ToArray(), 
                                             sampleRate: 20_000);
                 }
-                scottPlotUC1.AxisSetToData();
+                scottPlotUC1.AxisAuto();
 
             } else if (rb_stacked.Checked == true)
             {
                 // all sweeps stacked
-                scottPlotUC1.fig.title = string.Format("Stacked Sweeps: {0:n0} Data Points", abf.data.Count);
+                scottPlotUC1.fig.labelTitle = string.Format("Stacked Sweeps: {0:n0} Data Points", abf.data.Count);
 
                 scottPlotUC1.Clear();
                 for (int i = 0; i < abf.sweepCount; i++)
@@ -72,7 +72,7 @@ namespace ABFView
                     scottPlotUC1.PlotSignal(abf.data.GetRange(i * abf.sweepPointCount, abf.sweepPointCount).ToArray(),
                                             sampleRate: 20_000, offsetY: i * (int)nud_vsep.Value);
                 }
-                scottPlotUC1.AxisSetToData();
+                scottPlotUC1.AxisAuto();
             }
         }
 

@@ -6,14 +6,6 @@ using System.Threading.Tasks;
 
 namespace ScottPlot
 {   
-    class AxisEdges
-    {
-        public double X1, X2, Y1, Y2;
-        public AxisEdges(double xMin, double xMax, double yMin, double yMax)
-        {
-            X1 = xMin; X2 = xMax; Y1 = yMin; Y2 = yMax;
-        }
-    }
 
     /// <summary>
     /// The MouseAxis class simplifies adjusting axis edges for click-and-drag pan and zoom events.
@@ -28,8 +20,8 @@ namespace ScottPlot
 
         public MouseAxis(Axis xAxis, Axis yAxis, int mouseX, int mouseY)
         {
-            xAxStart = new ScottPlot.Axis(xAxis.min, xAxis.max, xAxis.pxSize, xAxis.pxInverted);
-            yAxStart = new ScottPlot.Axis(yAxis.min, yAxis.max, yAxis.pxSize, yAxis.pxInverted);
+            xAxStart = new ScottPlot.Axis(xAxis.min, xAxis.max, xAxis.pxSize, xAxis.inverted);
+            yAxStart = new ScottPlot.Axis(yAxis.min, yAxis.max, yAxis.pxSize, yAxis.inverted);
             xMouseStart = mouseX;
             yMouseStart = mouseY;
             Pan(0, 0);

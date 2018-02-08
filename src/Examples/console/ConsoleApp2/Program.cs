@@ -18,9 +18,9 @@ namespace ConsoleApp2
 
             double[] Xs = fig.gen.Sequence(1_000_000, 1.0 / 20e3); // 20 kHz
             double[] Ys = fig.gen.RandomWalk(1_000_000);
-            fig.ResizeToData(Xs, Ys, null, .9);
+            fig.AxisAuto(Xs, Ys, null, .9);
 
-            fig.Benchmark();
+            fig.BenchmarkThis();
 
             fig.PlotSignal(Ys, 1.0 / 20000);
 

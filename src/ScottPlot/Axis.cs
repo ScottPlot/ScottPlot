@@ -13,38 +13,34 @@ namespace ScottPlot
         public double min { get; set; }
         public double max { get; set; }
         public int pxSize { get; private set; }
-        public bool pxInverted { get; set; }
+        public bool inverted { get; set; }
 
         // these are calculated
         public double unitsPerPx { get; private set; }
         public double pxPerUnit { get; private set; }
         public double span { get { return max - min; } }
         public double center { get { return (max + min)/2.0; } }
-
-        // these relate to ticks
-        public double[] TickValues { get; private set; }
-        public string[] TickLabels { get; private set; }
-
+        
         /// <summary>
         /// Single-dimensional axis (i.e., x-axis)
         /// </summary>
-        /// <param name="Min">lower bound (units)</param>
-        /// <param name="Max">upper bound (units)</param>
-        /// <param name="pxSize">size of this axis (pixels)</param>
-        /// <param name="pxInverted">inverted axis vs. pixel position (common for Y-axis)</param>
-        public Axis(double Min, double Max, int pxSize = 500, bool pxInverted = false)
+        /// <param name="min">lower bound (units)</param>
+        /// <param name="max">upper bound (units)</param>
+        /// <param name="sizePx">size of this axis (pixels)</param>
+        /// <param name="inverted">inverted axis vs. pixel position (common for Y-axis)</param>
+        public Axis(double min, double max, int sizePx = 500, bool inverted = false)
         {
-            this.min = Min;
-            this.max = Max;
-            this.pxInverted = pxInverted;
-            ResizePx(pxSize);
+            this.min = min;
+            this.max = max;
+            this.inverted = inverted;
+            Resize(sizePx);
         }
 
         /// <summary>
         /// Tell the Axis how large it will be on the screen
         /// </summary>
         /// <param name="sizePx">size of this axis (pixels)</param>
-        public void ResizePx(int sizePx)
+        public void Resize(int sizePx)
         {
             this.pxSize = sizePx;
             RecalculateScale();
@@ -92,10 +88,10 @@ namespace ScottPlot
         /// </summary>
         /// <param name="unit">position (units)</param>
         /// <returns></returns>
-        public int UnitToPx(double unit)
+        public int GetPixel(double unit)
         {
             int px = (int)((unit - min) * pxPerUnit);
-            if (pxInverted) px = pxSize - px;
+            if (inverted) px = pxSize - px;
             return px;
         }
 
@@ -104,9 +100,9 @@ namespace ScottPlot
         /// </summary>
         /// <param name="px">position (pixels)</param>
         /// <returns></returns>
-        public double PxToUnit(int px)
+        public double GetUnit(int px)
         {
-            if (pxInverted) px = pxSize - px;
+            if (inverted) px = pxSize - px;
             return min + (double)px * unitsPerPx;
         }
         
@@ -134,7 +130,7 @@ namespace ScottPlot
         /// <summary>
         /// Return an array of tick objects given a custom target tick count
         /// </summary>
-        public Tick[] CustomTicks(int targetTickCount)
+        public Tick[] GenerateTicks(int targetTickCount)
         {
             List<Tick> ticks = new List<Tick>();
 
@@ -152,7 +148,7 @@ namespace ScottPlot
                         double thisPositionRounded = (double)((int)(thisPosition / tickSize) * tickSize);
                         if (thisPositionRounded > min && thisPositionRounded < max)
                         {
-                            ticks.Add(new Tick(thisPositionRounded, UnitToPx(thisPositionRounded), max - min));
+                            ticks.Add(new Tick(thisPositionRounded, GetPixel(thisPositionRounded), max - min));
                         }
                     }
                 }
@@ -163,44 +159,46 @@ namespace ScottPlot
         /// <summary>
         /// Pre-prepare recommended major and minor ticks
         /// </summary>
-        public Tick[] minorTicks;
-        public Tick[] majorTicks;
+        public Tick[] ticksMajor;
+        public Tick[] ticksMinor;
         private void RecalculateTicks()
         {
             double tick_density_x = pxSize / 70; // approx. 1 tick per this many pixels
-            minorTicks = CustomTicks((int)(tick_density_x * 5)); // relative density of minor to major ticks
-            majorTicks = CustomTicks((int)(tick_density_x * 1));
+            ticksMajor = GenerateTicks((int)(tick_density_x * 5)); // relative density of minor to major ticks
+            ticksMinor = GenerateTicks((int)(tick_density_x * 1));
         }
 
-    }
-
-    /// <summary>
-    /// The Tick object stores details about a single tick and can generate relevant labels.
-    /// </summary>
-    public class Tick
-    {
-        public double value { get; set; }
-        public int pixel { get; set; }
-        public double axisSpan { get; set; }
-
-        public Tick(double value, int pixel, double axisSpan)
+        /// <summary>
+        /// The Tick object stores details about a single tick and can generate relevant labels.
+        /// </summary>
+        public class Tick
         {
-            this.value = value;
-            this.pixel = pixel;
-            this.axisSpan = axisSpan;
-        }
+            public double posUnit { get; set; }
+            public int posPixel { get; set; }
+            public double spanUnits { get; set; }
 
-        public string label
-        {
-            get
+            public Tick(double value, int pixel, double axisSpan)
             {
-                if (axisSpan < .01) return string.Format("{0:0.0000}", value);
-                if (axisSpan < .1) return string.Format("{0:0.000}", value);
-                if (axisSpan < 1) return string.Format("{0:0.00}", value);
-                if (axisSpan < 10) return string.Format("{0:0.0}", value);
-                return string.Format("{0:0}", value);
+                this.posUnit = value;
+                this.posPixel = pixel;
+                this.spanUnits = axisSpan;
+            }
+
+            public string label
+            {
+                get
+                {
+                    if (spanUnits < .01) return string.Format("{0:0.0000}", posUnit);
+                    if (spanUnits < .1) return string.Format("{0:0.000}", posUnit);
+                    if (spanUnits < 1) return string.Format("{0:0.00}", posUnit);
+                    if (spanUnits < 10) return string.Format("{0:0.0}", posUnit);
+                    return string.Format("{0:0}", posUnit);
+                }
             }
         }
+
     }
+
+
 
 }

@@ -5,12 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 
 using System.Drawing;
+using System.Diagnostics;
 
 namespace ScottPlot
 {
     public class DataGen
     {
         public Random rand = new Random(0);
+        private Stopwatch stopwatch = Stopwatch.StartNew();
 
         /// <summary>
         /// ascending sequence of evenly spaced numbers
@@ -66,6 +68,15 @@ namespace ScottPlot
             return vals;
         }
 
+        public double[] SineAnimated(int pointCount = 1000)
+        {
+            double offset = stopwatch.ElapsedMilliseconds / 10;
+            double[] vals = new double[pointCount];
+            for (int i = 0; i < pointCount; i++)
+                vals[i] = Math.Sin(((double)i + offset) / 20);
+            return vals;
+        }
+
         /// <summary>
         /// return random numbers -0.5 to +0.5 times a multiplier and added to an offset
         /// </summary>
@@ -85,15 +96,19 @@ namespace ScottPlot
         /// <summary>
         /// integrated white noise
         /// </summary>
-        public double[] RandomWalk(int count, double mult = 1, double offset = 0)
+        public double[] RandomWalk(int count, double mult = 1, double offset = 0, bool startRandom=false)
         {
             double[] vals = new double[count];
             double runningSum=0;
+
+            if (startRandom) runningSum+=rand.NextDouble() * count / 1000;
+
             for (int i = 0; i < count; i++)
             {
                 runningSum += rand.NextDouble()-.5;
                 vals[i] = runningSum * mult + offset;
             }
+            
             return vals;
         }
 
@@ -124,19 +139,18 @@ namespace ScottPlot
             return vals;
         }
 
-        /// <summary>
-        /// Given an Xs and Ys array (in axis units) return points (in pixel units)
-        /// </summary>
-        /// <returns></returns>
-
-        /*
-        private double GeneratePoisson(float rate)
+        public Color RandomColor(double alpha=1)
         {
-            float res = ((float)rand.Next(100) / 101.0f);
-            var a = -Math.Log(1.0f - res) / rate;
-            return a;
+            alpha = Math.Max(0, Math.Min(alpha, 255));
+            return Color.FromArgb((int)alpha, rand.Next(256), rand.Next(256), rand.Next(256));
         }
-        */
+
+        public Color randomColor {
+            get
+            {
+                return Color.FromArgb(255, rand.Next(256), rand.Next(256), rand.Next(256));
+            }
+        }
 
 
     }

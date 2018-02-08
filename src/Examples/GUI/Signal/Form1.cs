@@ -25,16 +25,16 @@ namespace Signal
         {
             fig = new ScottPlot.Figure(pictureBox1.Width, pictureBox1.Height);
             fig.styleForm();
-            fig.yLabel = "value";
-            fig.xLabel = "time (seconds)";
+            fig.labelY = "value";
+            fig.labelX = "time (seconds)";
 
             
             int pointCount = (int)(nud_sec.Value * sampleRate);
             double[] Ys = fig.gen.RandomWalk(pointCount);
-            fig.Axis(0, pointCount / sampleRate, null, null);
-            fig.ResizeToData(null, Ys, .9, .9);
+            fig.AxisSet(0, pointCount / sampleRate, null, null);
+            fig.AxisAuto(null, Ys, .9, .9);
 
-            fig.Benchmark();
+            fig.BenchmarkThis();
             fig.PlotSignal(Ys, 1.0 / sampleRate);
             pictureBox1.Image = fig.Render();
         }

@@ -29,15 +29,15 @@ namespace Interactive
 
             // create the figure and apply styling
             fig.styleForm();
-            fig.title = "Awesome Data";
-            fig.yLabel = "Random Walk";
-            fig.xLabel = "Sample Number";
+            fig.labelTitle = "Awesome Data";
+            fig.labelY = "Random Walk";
+            fig.labelX = "Sample Number";
 
             // synthesize data
             int pointCount = 123;
             Xs = fig.gen.Sequence(pointCount);
             Ys = fig.gen.RandomWalk(pointCount);
-            fig.ResizeToData(Xs, Ys, .9, .9);
+            fig.AxisAuto(Xs, Ys, .9, .9);
 
             ResizeAndRedraw();
 
@@ -57,9 +57,9 @@ namespace Interactive
         public void ResizeAndRedraw()
         {
             if (fig == null) return;
-            fig.Benchmark(showBenchmark);
+            fig.BenchmarkThis(showBenchmark);
             fig.Resize(pictureBox1.Width, pictureBox1.Height);
-            fig.RedrawFrame();
+            fig.FrameRedraw();
             fig.PlotLines(Xs, Ys, 1, Color.Red);
             fig.PlotScatter(Xs, Ys, 5, Color.Blue);
             pictureBox1.Image = fig.Render();

@@ -23,15 +23,15 @@ namespace Simple
         {
             var fig = new ScottPlot.Figure(pictureBox1.Width, pictureBox1.Height);
             fig.styleForm(); // optimizes colors for forms
-            fig.title = "Plotting Point Arrays";
-            fig.yLabel = "Random Walk";
-            fig.xLabel = "Sample Number";
+            fig.labelTitle = "Plotting Point Arrays";
+            fig.labelY = "Random Walk";
+            fig.labelX = "Sample Number";
 
             // generate data
             int pointCount = 123;
             double[] Xs = fig.gen.Sequence(pointCount);
             double[] Ys = fig.gen.RandomWalk(pointCount);
-            fig.ResizeToData(Xs, Ys, .9, .9);
+            fig.AxisAuto(Xs, Ys, .9, .9);
 
             // make the plot
             //fig.BenchmarkThis();

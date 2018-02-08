@@ -15,7 +15,7 @@ namespace ScottPlot
 
         public Figure fig = new ScottPlot.Figure(123, 123);
 
-        public class SignalData
+        private class SignalData
         {
             public double[] values;
             public double sampleRate;
@@ -40,7 +40,7 @@ namespace ScottPlot
             }
         }
 
-        public class XYData
+        private class XYData
         {
             public double[] Xs;
             public double[] Ys;
@@ -64,27 +64,28 @@ namespace ScottPlot
             }
         }
 
-        public List<SignalData> signalDataList = new List<SignalData>();
-        public List<XYData> xyDataList = new List<XYData>();
+        private List<SignalData> signalDataList = new List<SignalData>();
+        private List<XYData> xyDataList = new List<XYData>();
         
         public void PlotXY(double[] Xs, double[] Ys, Color? color = null)
         {
             xyDataList.Add(new XYData(Xs, Ys, lineColor: color, markerColor: color));
-            fig.ClearGraph();
-            Redraw();
+            fig.GraphClear();
+            Render();
         }
 
         public void PlotSignal(double[] values, double sampleRate, Color? color = null, double offsetX = 0, double offsetY = 0)
         {
             signalDataList.Add(new SignalData(values, sampleRate, lineColor: color, offsetX: offsetX, offsetY: offsetY));
-            fig.ClearGraph();
-            Redraw();
+            fig.GraphClear();
+            Render();
         }
 
-        public void Clear()
+        public void Clear(bool renderAfterClearing=false)
         {
             xyDataList.Clear();
             signalDataList.Clear();
+            if (renderAfterClearing) Render();
         }
 
         public ScottPlotUC()
@@ -97,10 +98,10 @@ namespace ScottPlot
             // style the plot area
             fig.styleForm();
             fig.Zoom(.8, .8);
-            fig.title = "ScottPlot User Control";
+            fig.labelTitle = "ScottPlot User Control";
         }
 
-        public void AxisSetToData()
+        public void AxisAuto()
         {
             double x1 = 0, x2 = 0, y1 = 0, y2 = 0;
 
@@ -141,22 +142,16 @@ namespace ScottPlot
                     y2 = Math.Max(y2, signalData.values.Max() + signalData.offsetY);
                 }
             }
-            fig.Axis(x1, x2, y1, y2);
+            fig.AxisSet(x1, x2, y1, y2);
             fig.Zoom(null, .9);
-            Redraw(true);
+            Render(true);
         }
-
-        public void UpdateSize()
+        
+        private void Render(bool redrawFrame=false)
         {
-            fig.Resize(pictureBox1.Width, pictureBox1.Height);
-            Redraw(true);
-        }
-
-        public void Redraw(bool redrawFrameToo=false)
-        {
-            fig.Benchmark(showBenchmark);
-            if (redrawFrameToo) fig.RedrawFrame();
-            else fig.ClearGraph();
+            fig.BenchmarkThis(showBenchmark);
+            if (redrawFrame) fig.FrameRedraw();
+            else fig.GraphClear();
 
             // plot XY points
             foreach (XYData xyData in xyDataList)
@@ -194,7 +189,7 @@ namespace ScottPlot
 
         private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Middle) AxisSetToData(); // middle click to reset view
+            if (e.Button == MouseButtons.Middle) AxisAuto(); // middle click to reset view
         }
 
         private void pictureBox1_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
@@ -202,24 +197,24 @@ namespace ScottPlot
             double mag = 1.2;
             if (e.Delta>0) fig.Zoom(mag, mag);
             else fig.Zoom(1.0 / mag, 1.0 / mag);
-            Redraw();
+            Render();
         }
 
         public bool showBenchmark = false;
         private void pictureBox1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             this.showBenchmark = !this.showBenchmark; // double-click graph to display benchmark stats
-            Redraw();
+            Render();
         }
 
-        public bool busyDrawingPlot = false;
+        private bool busyDrawingPlot = false;
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
             if (fig.MouseIsDragging() && busyDrawingPlot == false)
             {
                 fig.MouseMove(e.X, e.Y);
                 busyDrawingPlot = true;
-                UpdateSize();
+                Render(true);
                 Application.DoEvents();
                 busyDrawingPlot = false;
             }
@@ -227,7 +222,8 @@ namespace ScottPlot
 
         private void pictureBox1_SizeChanged(object sender, EventArgs e)
         {
-            UpdateSize();
+            fig.Resize(pictureBox1.Width, pictureBox1.Height);
+            Render(true);
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
