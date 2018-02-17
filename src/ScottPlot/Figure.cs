@@ -82,6 +82,7 @@ namespace ScottPlot
             // default to anti-aliasing on
             gfxGraph.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             gfxFrame.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            gfxFrame.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
 
             FrameRedraw();
             GraphClear();
@@ -92,6 +93,10 @@ namespace ScottPlot
         /// </summary>
         public void Resize(int width, int height)
         {
+            // sanity check (make sure the graph area is at least 1px by 1px
+            if (width - padL - padR < 1) width = padL + padR + 1;
+            if (height - padT - padB < 1) height = padT + padB + 1;
+
             // figure resized, so resize the frame bitmap
             bmpFrame = new Bitmap(width, height);
             gfxFrame = Graphics.FromImage(bmpFrame);
@@ -436,15 +441,21 @@ namespace ScottPlot
 
 
             // todo: prevent infinite zooming overflow errors
+            try {
+                gfxGraph.DrawLines(penLine, points.ToArray());
 
-            gfxGraph.DrawLines(penLine, points.ToArray());
-            if (dataPointsPerPixel < .5)
-            {
-                foreach (Point pt in points)
+                if (dataPointsPerPixel < .5)
                 {
-                    gfxGraph.FillEllipse(markerBrush, pt.X - markerSize / 2, pt.Y - markerSize / 2, markerSize, markerSize);
+                    foreach (Point pt in points)
+                    {
+                        gfxGraph.FillEllipse(markerBrush, pt.X - markerSize / 2, pt.Y - markerSize / 2, markerSize, markerSize);
+                    }
                 }
             }
+            catch (Exception ex) {
+                System.Console.WriteLine("Exception plotting");
+            }
+            
 
             gfxGraph.SmoothingMode = originalSmoothingMode;
             this.pointCount += values.Length;
