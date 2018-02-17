@@ -25,8 +25,8 @@ namespace ScottPlot
             public float lineWidth;
             public Color lineColor;
             public string label;
-            
-            public SignalData(double[] values, double sampleRate, double offsetX = 0, double offsetY = 0, Color? lineColor = null, float lineWidth=1, string label = null)
+
+            public SignalData(double[] values, double sampleRate, double offsetX = 0, double offsetY = 0, Color? lineColor = null, float lineWidth = 1, string label = null)
             {
                 this.values = values;
                 this.sampleRate = sampleRate;
@@ -50,7 +50,7 @@ namespace ScottPlot
             public Color markerColor;
             public string label;
 
-            public XYData(double[] Xs, double[] Ys, float lineWidth = 1, Color? lineColor = null, float markerSize=3, Color? markerColor=null, string label = null)
+            public XYData(double[] Xs, double[] Ys, float lineWidth = 1, Color? lineColor = null, float markerSize = 3, Color? markerColor = null, string label = null)
             {
                 this.Xs = Xs;
                 this.Ys = Ys;
@@ -64,16 +64,44 @@ namespace ScottPlot
             }
         }
 
+        private class AxisLine
+        {
+            public double value;
+            public float lineWidth;
+            public Color lineColor;
+            public AxisLine(double Ypos, float lineWidth, Color lineColor, string label = null)
+            {
+                this.value = Ypos;
+                this.lineWidth = lineWidth;
+                this.lineColor = lineColor;
+            }
+        }
+
+
         private List<SignalData> signalDataList = new List<SignalData>();
         private List<XYData> xyDataList = new List<XYData>();
-        
+        private List<AxisLine> hLines = new List<AxisLine>();
+        private List<AxisLine> vLines = new List<AxisLine>();
+
+        public void Hline(double Ypos, float lineWidth, Color lineColor)
+        {
+            hLines.Add(new AxisLine(Ypos, lineWidth, lineColor));
+            Render();
+        }
+
+        public void Vline(double Xpos, float lineWidth, Color lineColor)
+        {
+            vLines.Add(new AxisLine(Xpos, lineWidth, lineColor));
+            Render();
+        }
+
         public void PlotXY(double[] Xs, double[] Ys, Color? color = null)
         {
             xyDataList.Add(new XYData(Xs, Ys, lineColor: color, markerColor: color));
             fig.GraphClear();
             Render();
         }
-
+        
         public void PlotSignal(double[] values, double sampleRate, Color? color = null, double offsetX = 0, double offsetY = 0)
         {
             signalDataList.Add(new SignalData(values, sampleRate, lineColor: color, offsetX: offsetX, offsetY: offsetY));
@@ -81,11 +109,42 @@ namespace ScottPlot
             Render();
         }
 
-        public void Clear(bool renderAfterClearing=false)
+        public void Clear(bool renderAfterClearing = false)
         {
             xyDataList.Clear();
             signalDataList.Clear();
+            hLines.Clear();
+            vLines.Clear();
             if (renderAfterClearing) Render();
+        }
+
+        public void SaveDialog(string filename="output.png")
+        {
+            SaveFileDialog savefile = new SaveFileDialog();
+            savefile.FileName = filename;
+            savefile.Filter = "PNG Files (*.png)|*.png|All files (*.*)|*.*";
+            if (savefile.ShowDialog() == DialogResult.OK) filename = savefile.FileName;
+            else return;
+
+            string basename = System.IO.Path.GetFileNameWithoutExtension(filename);
+            string extension = System.IO.Path.GetExtension(filename).ToLower();
+            string fullPath = System.IO.Path.GetFullPath(filename);
+
+            switch (extension)
+            {
+                case ".png":
+                    pictureBox1.Image.Save(filename, System.Drawing.Imaging.ImageFormat.Png);
+                    break;
+                case ".jpg":
+                    pictureBox1.Image.Save(filename, System.Drawing.Imaging.ImageFormat.Jpeg);
+                    break;
+                case ".bmp":
+                    pictureBox1.Image.Save(filename);
+                    break;
+                default:
+                    //TODO: messagebox error
+                    break;
+            }
         }
 
         public ScottPlotUC()
@@ -142,6 +201,7 @@ namespace ScottPlot
                     y2 = Math.Max(y2, signalData.values.Max() + signalData.offsetY);
                 }
             }
+
             fig.AxisSet(x1, x2, y1, y2);
             fig.Zoom(null, .9);
             Render(true);
@@ -166,6 +226,26 @@ namespace ScottPlot
                 fig.PlotSignal(signalData.values, signalData.xSpacing, signalData.offsetX, signalData.offsetY, signalData.lineWidth, signalData.lineColor);
             }             
             
+            // plot axis lines
+            foreach (AxisLine axisLine in hLines)
+            {
+                fig.PlotLines(
+                    new double[] { fig.xAxis.min, fig.xAxis.max },
+                    new double[] { axisLine.value, axisLine.value },
+                    axisLine.lineWidth, 
+                    axisLine.lineColor
+                    );
+            }
+            foreach (AxisLine axisLine in vLines)
+            {
+                fig.PlotLines(
+                    new double[] { axisLine.value, axisLine.value },
+                    new double[] { fig.yAxis.min, fig.yAxis.max },
+                    axisLine.lineWidth,
+                    axisLine.lineColor
+                    );
+            }
+
             pictureBox1.Image = fig.Render();
         }
 
@@ -225,10 +305,11 @@ namespace ScottPlot
             fig.Resize(pictureBox1.Width, pictureBox1.Height);
             Render(true);
         }
-
-        private void pictureBox1_Click(object sender, EventArgs e)
+        
+        public void SizeUpdate()
         {
-
+            pictureBox1_SizeChanged(null, null);
         }
+
     }
 }
