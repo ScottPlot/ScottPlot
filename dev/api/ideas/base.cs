@@ -1,3 +1,5 @@
+// inheriting and using BASE lets me instantiate with linewidth etc., but wow so many arguments...
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
