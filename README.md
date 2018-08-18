@@ -4,10 +4,11 @@
 
 ![](/doc/screenshots/resize-pan-zoom.gif)
 
-# Example Use
-These minimal-case examples demonstrate how to get started graphing data with ScottPlot. Advanced features (transparency, colors, markers, etc) are described in the [documentation folder](/doc/).
+## ScottPlot Cookbook
+A quick way to learn what ScottPlot can do is to review the automatically-generated cookbook:
+**https://github.com/swharden/ScottPlot/tree/master/doc/cookbook**
 
-## User Control for Interactive Graphing
+## ScottPlot User Control for interactive Graphing
 The simplest way to use ScottPlot is to drag/drop the ScottPlotUC (user control) onto a Windows Form, then fill it with some data. It will automatically draw the graph and immedaitely be interactive to the mouse (left-click-drag to pan, right-click-drag to zoom).
 
 ```cs
@@ -17,7 +18,7 @@ scottPlotUC1.AxisAuto(); // Auto-scale the axis to fit the data
 
 _The animated example above demonstrates this functionality_
 
-## Render onto a Picturebox for Static Graphing
+## ScottPlot for Static Graphing (GUI)
 If the goal is just to add a graph to a Windows Form, it can simply be rendered onto a picturebox eliminating the need for a special user control. This can be accomplished by interacting with the ScottPlot.Figure class directly which yields customization options and speed performance beyond that of the user control. Extensive examples are in the [ScottPlot Cookbook](/doc/cookbook/).
 
 ```cs
@@ -29,7 +30,7 @@ pictureBox1.Image = fig.Render();
 
 <img src="/doc/screenshots/picturebox.png" width="640">
 
-## Save to File from a Console Application
+## ScottPlot for Static Graphing (Console Application)
 The ScottPlot.Figure class is fully functional without a GUI! Anything you can do in a Windows Form you can do from a Console Application (saving to a file rather than rending on a picturebox). All examples in the [ScottPlot Cookbook](/doc/cookbook/) can be used in console applications.
 
 ```cs
@@ -41,7 +42,7 @@ fig.Save("demo.png");
 
 <img src="/doc/screenshots/console.png" width="640">
 
-## Large Dataset Optimization
+## Highspeed Graphing of Large Datasets
 ScottPlot was written to interactively display data with _tens of millions_ of data points. A good example of this is a one hour WAV file (3600 seconds at 48 kHz = 172.8 million points). Numerous optimizations provide this functionality for signals (a series of evenly-spaced data points). Rather than graph two double arrays (Xs and Ys), use ScottPlot's signal graphing methods. Additional options (like like X and Y offset) are demonstrated in the [ScottPlot cookbook](/doc/cookbook/readme.md)
 
 ```cs
@@ -77,7 +78,6 @@ scottPlotUC1.AxisAuto();
 ```
 
 ## Class Diagram
-
 ![](/src/ScottPlot.png)
 
 ## License
