@@ -65,6 +65,17 @@ _Once installed, drag/drop the ScottPlotUC onto your Windows Form and give it da
 
 ![](/doc/screenshots/ScottPlotUC.png)
 
+If _ScottPlotUC_ doesn't appear in the Toolbox, hit F5 (compile) and it will appear.
+
+Once a ScottPlotUC is in your form, you can add data to it using the following code. It makes most sense to drop a button on your form, and call this code when the button is clicked:
+
+```cs
+double[] x = new double[] { 1, 2, 3, 4, 5 };
+double[] y = new double[] { 5, 1, 7, 2, 5 };
+scottPlotUC1.PlotXY(x, y);
+scottPlotUC1.AxisAuto();
+```
+
 ## Class Diagram
 
 ![](/src/ScottPlot.png)
