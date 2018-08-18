@@ -161,9 +161,10 @@ namespace ScottPlot
         /// </summary>
         public Tick[] ticksMajor;
         public Tick[] ticksMinor;
+        public double pixelsPerTick = 70;
         private void RecalculateTicks()
         {
-            double tick_density_x = pxSize / 70; // approx. 1 tick per this many pixels
+            double tick_density_x = pxSize / pixelsPerTick; // approx. 1 tick per this many pixels
             ticksMajor = GenerateTicks((int)(tick_density_x * 5)); // relative density of minor to major ticks
             ticksMinor = GenerateTicks((int)(tick_density_x * 1));
         }
