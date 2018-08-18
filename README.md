@@ -61,11 +61,11 @@ Compiled (EXE) demos are available for download in the [/demos/](/demos) folder.
 
 * **Add Reference:** Right-click your project, _Add_, _Reference_, then under _Projects_ select _ScottPlot_
 
+* **Rebuild:** click _build_, _rebuild solution_, and the ScottPlotUC will appear in your toolbox
+
 _Once installed, drag/drop the ScottPlotUC onto your Windows Form and give it data! It will respond to the mouse immediately._
 
 ![](/doc/screenshots/ScottPlotUC.png)
-
-If _ScottPlotUC_ doesn't appear in the Toolbox, hit F5 (compile) and it will appear.
 
 Once a ScottPlotUC is in your form, you can add data to it using the following code. It makes most sense to drop a button on your form, and call this code when the button is clicked:
 
