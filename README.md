@@ -62,7 +62,7 @@ Compiled (EXE) demos are available for download in the [/demos/](/demos) folder.
 
 * **Add Reference:** Right-click your project, _Add_, _Reference_, then under _Projects_ select _ScottPlot_
 
-* **Rebuild:** click _build_, _rebuild solution_, and the ScottPlotUC will appear in your toolbox
+* **Build:** Right-click _ScottPlot_ (in the solution explorer) and select _build_
 
 _Once installed, drag/drop the ScottPlotUC onto your Windows Form and give it data! It will respond to the mouse immediately._
 
