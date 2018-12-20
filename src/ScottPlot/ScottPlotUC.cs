@@ -95,26 +95,28 @@ namespace ScottPlot
             Render();
         }
 
-        public void PlotXY(double[] Xs, double[] Ys, Color? color = null, int lineWidth = 1, float markerSize=5)
+        public void PlotXY(double[] Xs, double[] Ys, Color? color = null, int lineWidth = 1, float markerSize=5, bool render = true)
         {
             xyDataList.Add(new XYData(Xs, Ys, lineColor: color, markerColor: color, lineWidth: lineWidth, markerSize: markerSize));
             fig.GraphClear();
-            Render();
+            if (render)
+                Render();
         }
         
-        public void PlotSignal(double[] values, double sampleRate, Color? color = null, double offsetX = 0, double offsetY = 0)
+        public void PlotSignal(double[] values, double sampleRate, Color? color = null, double offsetX = 0, double offsetY = 0, bool render = true)
         {
             signalDataList.Add(new SignalData(values, sampleRate, lineColor: color, offsetX: offsetX, offsetY: offsetY));
             fig.GraphClear();
-            Render();
+            if (render)
+                Render();
         }
 
-        public void Clear(bool renderAfterClearing = false)
+        public void Clear(bool renderAfterClearing = false, bool clearXYdata = true, bool clearSignals = true, bool clearHlines = true, bool clearVlines = true)
         {
-            xyDataList.Clear();
-            signalDataList.Clear();
-            hLines.Clear();
-            vLines.Clear();
+            if (clearXYdata) xyDataList.Clear();
+            if (clearSignals) signalDataList.Clear();
+            if (clearHlines) hLines.Clear();
+            if (clearVlines) vLines.Clear();
             if (renderAfterClearing) Render();
         }
 
@@ -222,7 +224,7 @@ namespace ScottPlot
             // plot XY points
             foreach (XYData xyData in xyDataList)
             {
-                if (xyData.lineWidth > 0)
+                if (xyData.lineWidth > 0 && xyData.Xs.Length>1)
                     fig.PlotLines(xyData.Xs, xyData.Ys, xyData.lineWidth, xyData.lineColor);
                 fig.PlotScatter(xyData.Xs, xyData.Ys, xyData.markerSize, xyData.markerColor);
             }
