@@ -95,9 +95,9 @@ namespace ScottPlot
             Render();
         }
 
-        public void PlotXY(double[] Xs, double[] Ys, Color? color = null)
+        public void PlotXY(double[] Xs, double[] Ys, Color? color = null, int lineWidth = 1)
         {
-            xyDataList.Add(new XYData(Xs, Ys, lineColor: color, markerColor: color));
+            xyDataList.Add(new XYData(Xs, Ys, lineColor: color, markerColor: color, lineWidth: lineWidth));
             fig.GraphClear();
             Render();
         }
@@ -216,7 +216,8 @@ namespace ScottPlot
             // plot XY points
             foreach (XYData xyData in xyDataList)
             {
-                fig.PlotLines(xyData.Xs, xyData.Ys, xyData.lineWidth, xyData.lineColor);
+                if (xyData.lineWidth>0)
+                    fig.PlotLines(xyData.Xs, xyData.Ys, xyData.lineWidth, xyData.lineColor);
                 fig.PlotScatter(xyData.Xs, xyData.Ys, xyData.markerSize, xyData.markerColor);
             }
 
@@ -311,5 +312,9 @@ namespace ScottPlot
             pictureBox1_SizeChanged(null, null);
         }
 
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
