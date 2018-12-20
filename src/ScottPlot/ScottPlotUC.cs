@@ -95,9 +95,9 @@ namespace ScottPlot
             Render();
         }
 
-        public void PlotXY(double[] Xs, double[] Ys, Color? color = null, int lineWidth = 1)
+        public void PlotXY(double[] Xs, double[] Ys, Color? color = null, int lineWidth = 1, float markerSize=5)
         {
-            xyDataList.Add(new XYData(Xs, Ys, lineColor: color, markerColor: color, lineWidth: lineWidth));
+            xyDataList.Add(new XYData(Xs, Ys, lineColor: color, markerColor: color, lineWidth: lineWidth, markerSize: markerSize));
             fig.GraphClear();
             Render();
         }
@@ -212,21 +212,21 @@ namespace ScottPlot
             fig.BenchmarkThis(showBenchmark);
             if (redrawFrame) fig.FrameRedraw();
             else fig.GraphClear();
-
-            // plot XY points
-            foreach (XYData xyData in xyDataList)
-            {
-                if (xyData.lineWidth>0)
-                    fig.PlotLines(xyData.Xs, xyData.Ys, xyData.lineWidth, xyData.lineColor);
-                fig.PlotScatter(xyData.Xs, xyData.Ys, xyData.markerSize, xyData.markerColor);
-            }
-
+            
             // plot signals
             foreach (SignalData signalData in signalDataList)
             {
                 fig.PlotSignal(signalData.values, signalData.xSpacing, signalData.offsetX, signalData.offsetY, signalData.lineWidth, signalData.lineColor);
-            }             
-            
+            }
+
+            // plot XY points
+            foreach (XYData xyData in xyDataList)
+            {
+                if (xyData.lineWidth > 0)
+                    fig.PlotLines(xyData.Xs, xyData.Ys, xyData.lineWidth, xyData.lineColor);
+                fig.PlotScatter(xyData.Xs, xyData.Ys, xyData.markerSize, xyData.markerColor);
+            }
+
             // plot axis lines
             foreach (AxisLine axisLine in hLines)
             {
