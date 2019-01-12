@@ -174,7 +174,7 @@ namespace ScottPlot
                     tick.label = string.Format("{0:0.00}", tick.value);
                 } else
                 {
-                    tick.label = string.Format("{0}", tick.value);
+                    tick.label = string.Format("{0:0}", tick.value);
                 }
                 
                 tick.pixel = (int)(tickDelta * pxPerUnit);

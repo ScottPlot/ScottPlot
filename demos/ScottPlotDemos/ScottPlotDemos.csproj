@@ -46,16 +46,43 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
+    <Compile Include="FormMenu.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="FormMenu.Designer.cs">
+      <DependentUpon>FormMenu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormMisc.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormMisc.Designer.cs">
+      <DependentUpon>FormMisc.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormScatter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormScatter.Designer.cs">
+      <DependentUpon>FormScatter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormSignal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormSignal.Designer.cs">
+      <DependentUpon>FormSignal.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="FormMenu.resx">
+      <DependentUpon>FormMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormMisc.resx">
+      <DependentUpon>FormMisc.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormScatter.resx">
+      <DependentUpon>FormScatter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormSignal.resx">
+      <DependentUpon>FormSignal.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

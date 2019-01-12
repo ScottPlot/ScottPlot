@@ -10,11 +10,11 @@ using System.Windows.Forms;
 
 namespace ScottPlotDemos
 {
-    public partial class Form1 : Form
+    public partial class FormMisc : Form
     {
         private Random rand = new Random();
 
-        public Form1()
+        public FormMisc()
         {
             InitializeComponent();
         }
@@ -100,7 +100,8 @@ namespace ScottPlotDemos
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            //scottPlotUC1.plt.settings.title = "ScottPlot Demo: Misc";
+            //scottPlotUC1.plt.settings.displayBenchmark = true;
         }
 
         private void btnWebsite_Click(object sender, EventArgs e)
