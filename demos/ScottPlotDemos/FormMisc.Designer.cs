@@ -1,6 +1,6 @@
 ﻿namespace ScottPlotDemos
 {
-    partial class Form1
+    partial class FormMisc
     {
         /// <summary>
         /// Required designer variable.

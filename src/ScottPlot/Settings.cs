@@ -101,7 +101,9 @@ namespace ScottPlot
 
         ////////////////////////////////////////////////////////////////////////////////////
         // dev settings
-        public bool displayBenchmark = false;
+        public bool benchmarkShow = false;
+        public Color benchmarkColor = Color.Gray;
+        public Brush benchmarkBrush { get { return new SolidBrush(benchmarkColor); } }
 
         ////////////////////////////////////////////////////////////////////////////////////
         // not settings, but commonly used resources

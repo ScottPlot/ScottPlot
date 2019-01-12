@@ -120,12 +120,10 @@ namespace ScottPlot
                 dataPointCount += dataObject.pointCount;
 
             // add debug message
-            if (settings.displayBenchmark)
+            if (settings.benchmarkShow)
             {
-                string debugMessage = $"render count: {renderCount}";
-                debugMessage += String.Format("\ndata points: {0:n0}", dataPointCount);
-                debugMessage += $"\ndraw time: {renderTimeMs:0.00} ms ({Math.Round(renderRateHz, 2)} Hz)";
-                gfxFigure.DrawString(debugMessage, settings.fontTicks, Brushes.Red, settings.dataPlotPosLeft, settings.dataPlotPosTop, settings.sfLeft);
+                string debugMessage = $"rendered {dataPointCount:n0} data points in {renderTimeMs:0.00} ms";
+                gfxFigure.DrawString(debugMessage, settings.fontTicks, settings.benchmarkBrush, settings.dataPlotPosLeft, settings.dataPlotPosTop, settings.sfLeft);
             }
         }
 
