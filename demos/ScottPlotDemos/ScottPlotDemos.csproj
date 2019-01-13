@@ -58,6 +58,12 @@
     <Compile Include="FormMisc.Designer.cs">
       <DependentUpon>FormMisc.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormQuickstart.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormQuickstart.Designer.cs">
+      <DependentUpon>FormQuickstart.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormScatter.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -77,6 +83,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormMisc.resx">
       <DependentUpon>FormMisc.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormQuickstart.resx">
+      <DependentUpon>FormQuickstart.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormScatter.resx">
       <DependentUpon>FormScatter.cs</DependentUpon>
