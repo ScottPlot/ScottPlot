@@ -1,10 +1,13 @@
 # ScottPlot
 
-**ScottPlot is an open-source interactive graphing library for .NET written in C#.** It was written to simplify the task of interactively displaying data on a graph that you can left-click-drag to pan and right-click-drag to zoom. ScottPlot is provided with a Windows Forms user control for easy interactive graphing, but it can also be used in console applications.
+**ScottPlot is an open-source interactive graphing library for .NET written in C#.** It was written to simplify the task of interactively displaying data on a graph that you can left-click-drag to pan and right-click-drag to zoom. ScottPlot works in Windows Forms (as a user control) or in console applications (as a portable class library). [Compiled demos](demos) are available so you can see what using ScottPlot is like without messing around with source code.
 
 ![](demos/demo_scatter.gif)
 
-[Compiled demos](demos) are available so you can see what using ScottPlot is like without messing around with source code.
+## Interactive Plotting of Large Data Sets
+A primary goal of ScottPlot is to allow interactive display of evenly-spaced data containing millions points. ScottPlot has a signal plotting method which is optimized for highspeed display of large arrays with evenly spaced data ideal for plotting signals (e.g., WAV files).
+
+![](demos/demo_signal.gif)
 
 ## Quickstart
 To create a Windows Form Application to display data with ScottPlot, perform these steps:
@@ -43,17 +46,16 @@ scottPlotUC1.Render();
 
 ![](doc/quickstart.png)
 
-## Additional Examples
-The [ScottPlot Cookbook](doc) demonstrates much of what ScottPlot can do.
-
-## Core Concepts & Features
-* No dependencies (just the standard .NET libraries)
-* Windows Forms Applications can use the ScottPlotUC user control
-* Console Applications can use the ScottPlot class (like the [test suite](/tests/) does)
+## Documentation and Additional Examples
 * Simplistic API does not require documentation with a predictive IDE
   * `plt.data` - methods to add or remove data
   * `plt.settings` - control colors, labels, and axis limits
   * `plt.figure` - to get a bitmap buffer or save the graph as a file
-* ScottPlot can interactively display large datasets (10+ million points)
+* The [ScottPlot Cookbook](doc) demonstrates much of what ScottPlot can do.
 
-![](demos/demo_signal.gif)
+## Core Concepts & Features
+* No dependencies (just the standard .NET libraries)
+* ScottPlot can interactively display large datasets (10+ million points)
+* Windows Forms Applications can use the ScottPlotUC user control
+* Console Applications can use the ScottPlot class (like the [test suite](/tests/) does)
+* Free, open-source, permissive [license](LICENSE)
