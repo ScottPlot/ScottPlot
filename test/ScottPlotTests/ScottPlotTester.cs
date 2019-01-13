@@ -60,7 +60,9 @@ namespace ScottPlotTests
             docFolder += "/doc/";
 
             // clear old files in the doc folder
-            foreach (var fname in System.IO.Directory.GetFiles(docFolder))
+            foreach (var fname in System.IO.Directory.GetFiles(docFolder, "*.md"))
+                System.IO.File.Delete(fname);
+            foreach (var fname in System.IO.Directory.GetFiles(docFolder, "*.html"))
                 System.IO.File.Delete(fname);
             foreach (var fname in System.IO.Directory.GetFiles(docFolder + "images/"))
                 System.IO.File.Delete(fname);
@@ -74,7 +76,7 @@ namespace ScottPlotTests
 
         void CleanFolder()
         {
-            foreach (var fname in System.IO.Directory.GetFiles("tests/", "*.*"))
+            foreach (var fname in System.IO.Directory.GetFiles("tests/images/", "*.*"))
                 System.IO.File.Delete(fname);
         }
 
