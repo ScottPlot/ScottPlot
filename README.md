@@ -23,17 +23,21 @@ To create a Windows Form Application to display data with ScottPlot, perform the
 ```cs
 // create some data to plot
 int pointCount = 100;
-double[] xs = new double[pointCount];
-double[] ys = new double[pointCount];
-for (int i=0; i< pointCount; i++)
+double[] dataXs = new double[pointCount];
+double[] dataSin = new double[pointCount];
+double[] dataCos = new double[pointCount];
+for (int i = 0; i < pointCount; i++)
 {
-    xs[i] = i;
-    ys[i] = Math.Sin(i * 2 * Math.PI / pointCount);
+	dataXs[i] = i;
+	dataSin[i] = Math.Sin(i * 2 * Math.PI / pointCount);
+	dataCos[i] = Math.Cos(i * 2 * Math.PI / pointCount);
 }
 
 // plot the data
-scottPlotUC1.plt.data.AddScatter(xs, ys);
+scottPlotUC1.plt.data.AddScatter(dataXs, dataSin);
+scottPlotUC1.plt.data.AddScatter(dataXs, dataCos);
 scottPlotUC1.plt.settings.AxisFit();
+scottPlotUC1.plt.settings.title = "ScottPlot Quickstart";
 scottPlotUC1.Render();
 ```
 
