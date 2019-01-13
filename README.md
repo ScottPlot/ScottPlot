@@ -14,8 +14,8 @@ To create a Windows Form Application to display data with ScottPlot, perform the
   * Download this repository to your computer
   * File -> Add -> Existing Project
   * Select `ScottPlot.csproj` (in the src/ folder)
-* Drag/Drop the ScottPlotUC onto your form
-* Resize the plot as needed (or set `Dock` to `fill`)
+* Drag/Drop the ScottPlotUC (from the toolbox) onto your form
+* Resize the plot as needed (or set its docking mode to fill)
 * Add the code below to your startup sequence.
 * Press F5 to run
 
