@@ -59,6 +59,11 @@ namespace ScottPlotDev2
             Render();
         }
 
+        private void ScottPlotUC_Load(object sender, EventArgs e)
+        {
+            pb_Layout(null, null);
+        }
+
         private void pb_Click(object sender, EventArgs e)
         {
 
@@ -102,6 +107,5 @@ namespace ScottPlotDev2
                 Render();
             }
         }
-
     }
 }
