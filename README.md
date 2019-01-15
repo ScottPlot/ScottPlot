@@ -4,7 +4,7 @@
 
 ![](demos/demo_scatter.gif)
 
-## Interactive Plotting of Large Data Sets
+### Interactive Plotting of Large Data Sets
 A primary goal of ScottPlot is to allow interactive display of evenly-spaced data containing millions points. ScottPlot has a signal plotting method which is optimized for highspeed display of large arrays with evenly spaced data ideal for plotting signals (e.g., WAV files).
 
 ![](demos/demo_signal.gif)
