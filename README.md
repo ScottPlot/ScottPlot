@@ -84,5 +84,5 @@ plt.figure.Save("quickstart2.png");
 * No dependencies (just the standard .NET libraries)
 * ScottPlot can interactively display large datasets (10+ million points)
 * Windows Forms Applications can use the ScottPlotUC user control
-* Console Applications can use the ScottPlot class (like the [test suite](/tests/) does)
+* Console Applications can use the ScottPlot class (like the [test suite](/test/) does)
 * Free, open-source, permissive [license](LICENSE)
