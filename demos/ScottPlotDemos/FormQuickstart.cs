@@ -19,6 +19,37 @@ namespace ScottPlotDemos
 
         private void FormQuickstart_Load(object sender, EventArgs e)
         {
+            QuickstartNonInteractive();
+            QuickstartInteractive();
+        }
+
+        // demonstrate how to use the ScottPlot directly for non-interactive plotting
+        public void QuickstartNonInteractive()
+        {
+            // create some data to plot
+            int pointCount = 100;
+            double[] dataXs = new double[pointCount];
+            double[] dataSin = new double[pointCount];
+            double[] dataCos = new double[pointCount];
+            for (int i = 0; i < pointCount; i++)
+            {
+                dataXs[i] = i;
+                dataSin[i] = Math.Sin(i * 2 * Math.PI / pointCount);
+                dataCos[i] = Math.Cos(i * 2 * Math.PI / pointCount);
+            }
+
+            // plot the data
+            ScottPlot.Plot plt = new ScottPlot.Plot(600, 400);
+            plt.data.AddScatter(dataXs, dataSin);
+            plt.data.AddScatter(dataXs, dataCos);
+            plt.settings.AxisFit();
+            plt.settings.title = "ScottPlot Quickstart";
+            plt.figure.Save("quickstart2.png");
+        }
+
+        // demonstrate how to use the ScottPlotUC for interactive plotting
+        public void QuickstartInteractive()
+        {
             // create some data to plot
             int pointCount = 100;
             double[] dataXs = new double[pointCount];

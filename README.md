@@ -9,8 +9,8 @@ A primary goal of ScottPlot is to allow interactive display of evenly-spaced dat
 
 ![](demos/demo_signal.gif)
 
-## Quickstart
-To create a Windows Form Application to display data with ScottPlot, perform these steps:
+## Quickstart: Windows Forms
+To create a Windows Form Application to interactively display data with ScottPlot, perform these steps:
 
 * Create a new project (Windows Forms App)
 * Add ScottPlot to your solution
@@ -45,6 +45,33 @@ scottPlotUC1.Render();
 ```
 
 ![](doc/quickstart.png)
+
+## Quickstart: Console Applications
+While the previous example uses the ScottPlotUC (user control) to provide interactive graphing for GUI applications, this example shows how to instantiate the ScottPlot class directly, add data, and save the output as a PNG file. This method can be used for console applications.
+
+```cs
+// create some data to plot
+int pointCount = 100;
+double[] dataXs = new double[pointCount];
+double[] dataSin = new double[pointCount];
+double[] dataCos = new double[pointCount];
+for (int i = 0; i < pointCount; i++)
+{
+    dataXs[i] = i;
+    dataSin[i] = Math.Sin(i * 2 * Math.PI / pointCount);
+    dataCos[i] = Math.Cos(i * 2 * Math.PI / pointCount);
+}
+
+// plot the data
+ScottPlot.Plot plt = new ScottPlot.Plot(600, 400);
+plt.data.AddScatter(dataXs, dataSin);
+plt.data.AddScatter(dataXs, dataCos);
+plt.settings.AxisFit();
+plt.settings.title = "ScottPlot Quickstart";
+plt.figure.Save("quickstart2.png");
+```
+
+![](doc/quickstart2.png)
 
 ## Documentation and Additional Examples
 * Simplistic API does not require documentation with a predictive IDE
