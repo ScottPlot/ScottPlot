@@ -69,6 +69,18 @@ namespace ScottPlot
             plotObjects.Clear();
         }
 
+        public void ClearAxisLines()
+        {
+
+            for (int i = 0; i < plotObjects.Count; i++)
+            {
+                Plottables.PlottableThing plotObject = plotObjects[i];
+                if (plotObject is Plottables.AxLine)
+                    plotObjects[i] = null;
+            }
+            plotObjects.RemoveAll(item => item == null);
+        }
+
         ///////////////////////////////////////////////////////////////////////////////////////
         // SCATTER PLOTS
 
