@@ -9,6 +9,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScottPlotTests", "test\Scot
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScottPlotDemos", "demos\ScottPlotDemos\ScottPlotDemos.csproj", "{52DE0C02-5003-4664-93D2-2198DA485FF8}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "fringe demos", "fringe demos", "{C94C65E1-B61B-48C6-AEC6-913E3F0FCA95}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioMonitorCircular", "demos\AudioMonitor\AudioMonitorCircular\AudioMonitorCircular.csproj", "{B31F74D3-6B35-4ABF-8A3B-AFC1136701FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioMonitorFFT", "demos\AudioMonitor\AudioMonitorFFT\AudioMonitorFFT.csproj", "{2954AF60-7C44-4376-8EEF-19FBC77B6386}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,9 +33,21 @@ Global
 		{52DE0C02-5003-4664-93D2-2198DA485FF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52DE0C02-5003-4664-93D2-2198DA485FF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52DE0C02-5003-4664-93D2-2198DA485FF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B31F74D3-6B35-4ABF-8A3B-AFC1136701FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B31F74D3-6B35-4ABF-8A3B-AFC1136701FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B31F74D3-6B35-4ABF-8A3B-AFC1136701FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B31F74D3-6B35-4ABF-8A3B-AFC1136701FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2954AF60-7C44-4376-8EEF-19FBC77B6386}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2954AF60-7C44-4376-8EEF-19FBC77B6386}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2954AF60-7C44-4376-8EEF-19FBC77B6386}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2954AF60-7C44-4376-8EEF-19FBC77B6386}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B31F74D3-6B35-4ABF-8A3B-AFC1136701FC} = {C94C65E1-B61B-48C6-AEC6-913E3F0FCA95}
+		{2954AF60-7C44-4376-8EEF-19FBC77B6386} = {C94C65E1-B61B-48C6-AEC6-913E3F0FCA95}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A519C7C3-A30B-495C-B80C-4A2EABC126B1}

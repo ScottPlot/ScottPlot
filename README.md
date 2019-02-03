@@ -79,6 +79,7 @@ plt.figure.Save("quickstart2.png");
   * `plt.settings` - control colors, labels, and axis limits
   * `plt.figure` - to get a bitmap buffer or save the graph as a file
 * The [ScottPlot Cookbook](doc) demonstrates much of what ScottPlot can do.
+* Additional demos are in the [demos](demos) folder
 
 ## Core Concepts & Features
 * No dependencies (just the standard .NET libraries)
