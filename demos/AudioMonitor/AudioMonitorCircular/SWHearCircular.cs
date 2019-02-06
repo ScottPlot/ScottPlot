@@ -10,7 +10,7 @@ namespace AudioMonitor
     class SWHearCircular
     {
         public int SampleRate = 44100;
-        public int BitRate = 16;
+        public int BitRate;
         int BufferMilliseconds = 20; // must divide evenly into (SampleRate)
         int MicrophoneChannels = 1; // 1 for mono
         public int BuffersRead { get; private set; }
@@ -29,7 +29,8 @@ namespace AudioMonitor
 
             wvin = new WaveInEvent();
             wvin.DeviceNumber = DeviceIndex;
-            wvin.WaveFormat = new NAudio.Wave.WaveFormat(SampleRate, BitRate, MicrophoneChannels);
+            wvin.WaveFormat = new NAudio.Wave.WaveFormat(SampleRate, MicrophoneChannels);
+            BitRate = wvin.WaveFormat.BitsPerSample * 8;
             wvin.DataAvailable += OnDataAvailable;
             wvin.BufferMilliseconds = BufferMilliseconds;
 
@@ -60,7 +61,7 @@ namespace AudioMonitor
             // convert byte array to Int16 array
             int bytesPerSample = BitRate / 8;
             int samplesRecorded = args.BytesRecorded / bytesPerSample;
-            Int16[] lastBuffer = new Int16[samplesRecorded];
+            int[] lastBuffer = new int[samplesRecorded];
             for (int i = 0; i < samplesRecorded; i++)
                 lastBuffer[i] = BitConverter.ToInt16(args.Buffer, i * bytesPerSample);
 
