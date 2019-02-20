@@ -350,7 +350,15 @@ namespace ScottPlot
                 linePen.StartCap = System.Drawing.Drawing2D.LineCap.Round;
                 linePen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
                 linePen.LineJoin = System.Drawing.Drawing2D.LineJoin.Round;
-                gfxData.DrawLines(linePen, points);
+                try
+                {
+                    gfxData.DrawLines(linePen, points);
+                }
+                catch
+                {
+                    Console.WriteLine("Crashed drawing lines");
+                }
+                
             }
 
             // draw markers
@@ -359,15 +367,22 @@ namespace ScottPlot
             Brush markerBrush = new SolidBrush(scatter.style.markerColor);
             if (markerSize > 0)
             {
-                foreach (Point point in points)
+                try
                 {
-                    Rectangle rect = new Rectangle(point.X - markerSize, point.Y - markerSize, markerSize * 2, markerSize * 2);
-                    if (scatter.style.markerShape == Style.MarkerShape.circleFilled)
-                        gfxData.FillEllipse(markerBrush, rect);
-                    else if (scatter.style.markerShape == Style.MarkerShape.circleOpen)
-                        gfxData.DrawEllipse(markerPen, rect);
-                    else
-                        Console.WriteLine("UNKNOWN SHAPE: {scatter.style.markerShape}");
+                    foreach (Point point in points)
+                    {
+                        Rectangle rect = new Rectangle(point.X - markerSize, point.Y - markerSize, markerSize * 2, markerSize * 2);
+                        if (scatter.style.markerShape == Style.MarkerShape.circleFilled)
+                            gfxData.FillEllipse(markerBrush, rect);
+                        else if (scatter.style.markerShape == Style.MarkerShape.circleOpen)
+                            gfxData.DrawEllipse(markerPen, rect);
+                        else
+                            Console.WriteLine("UNKNOWN SHAPE: {scatter.style.markerShape}");
+                    }
+                }
+                catch
+                {
+                    Console.WriteLine($"Crashed drawing markers");
                 }
             }
         }
@@ -378,13 +393,27 @@ namespace ScottPlot
             if (axLine.vertical == true)
             {
                 int x = settings.axisX.UnitToPixel(axLine.position);
-                gfxData.DrawLine(linePen, x, 0, x, settings.dataPlotHeight);
+                try
+                {
+                    gfxData.DrawLine(linePen, x, 0, x, settings.dataPlotHeight);
+                }
+                catch
+                {
+                    Console.WriteLine($"Crashed making a vertical line at: {x}");
+                }
             }
             else
             {
                 int y = settings.axisY.UnitToPixel(axLine.position);
                 y = settings.dataPlotHeight - y;
-                gfxData.DrawLine(linePen, 0, y, settings.dataPlotWidth, y);
+                try
+                {
+                    gfxData.DrawLine(linePen, 0, y, settings.dataPlotWidth, y);
+                }
+                catch
+                {
+                    Console.WriteLine($"Crashed making a horizontal line at: {y}");
+                }
             }
         }
     }
