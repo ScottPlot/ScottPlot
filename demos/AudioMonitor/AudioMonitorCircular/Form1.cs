@@ -12,12 +12,16 @@ namespace AudioMonitor
 {
     public partial class Form1 : Form
     {
-        private SWHearCircular swhear;
-        public bool autoScaleHappened = false;
+        private SwhEar swhear;
 
         public Form1()
         {
             InitializeComponent();
+            scottPlotUC1.plt.settings.figureBgColor = SystemColors.Control;
+            scottPlotUC1.plt.settings.title = "Audio Level (Circular Buffer)";
+            scottPlotUC1.plt.settings.axisLabelX = "Time (seconds)";
+            scottPlotUC1.plt.settings.axisLabelY = "Amplitude (frac max)";
+            scottPlotUC1.plt.settings.SetDataPadding(75, null, null, null);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -63,7 +67,7 @@ namespace AudioMonitor
 
         private void comboMicrophone_SelectedIndexChanged(object sender, EventArgs e)
         {
-            MicrophoneSelected();
+            //MicrophoneSelected();
         }
 
         private void btnStart_Click(object sender, EventArgs e)
@@ -71,18 +75,10 @@ namespace AudioMonitor
             btnStop.Enabled = true;
             btnStart.Enabled = false;
 
-            swhear = new SWHearCircular(comboMicrophone.SelectedIndex);
-            swhear.Open();
-
+            lblStatus.Text = $"Listening to device ID {comboMicrophone.SelectedIndex} ...";
+            swhear = new SwhEar(comboMicrophone.SelectedIndex);
             scottPlotUC1.plt.data.Clear();
-            scottPlotUC1.plt.data.AddSignal(swhear.CircularBuffer, swhear.SampleRate);
-            scottPlotUC1.plt.settings.figureBgColor = SystemColors.Control;
-            scottPlotUC1.plt.settings.title = "Audio Level (Circular Buffer)";
-            scottPlotUC1.plt.settings.axisLabelX = "Time (seconds)";
-            scottPlotUC1.plt.settings.axisLabelY = "Amplitude (frac max)";
-
             timer1.Enabled = true;
-            lblStatus.Text = $"Listening to device ID {swhear.DeviceIndex} ...";
         }
 
         private void btnStop_Click(object sender, EventArgs e)
@@ -90,32 +86,31 @@ namespace AudioMonitor
             btnStop.Enabled = false;
             btnStart.Enabled = true;
 
-            swhear.Close();
+            if (swhear!=null)
+                swhear.Stop();
             timer1.Enabled = false;
         }
 
-        int lastProcessedBuffer = 0;
+        double maxAmplitude = Math.Pow(2, 16);
         private void timer1_Tick(object sender, EventArgs e)
         {
-            if (swhear.BuffersRead == lastProcessedBuffer)
+            if (swhear.values == null)
                 return;
 
+            if (scottPlotUC1.plt.data.Count() == 0)
+            {
+                scottPlotUC1.plt.data.AddSignal(swhear.values, swhear.SAMPLERATE);
+                scottPlotUC1.plt.settings.AxisFit(0, .1);
+                scottPlotUC1.plt.settings.axisY.Set(-maxAmplitude / 2, maxAmplitude / 2);
+            }
+
             // set level meter
-            lastProcessedBuffer = swhear.BuffersRead;
-            double maxAmplitude = Math.Pow(2, 16);
-            double lastBufferPeakFrac = swhear.lastBufferAmplitude / maxAmplitude;
+            double lastBufferPeakFrac = (double)(swhear.lastAmplitude) / maxAmplitude;
             pbLevelMask.Height = pnlLevel.Height - (int)(lastBufferPeakFrac * pnlLevel.Height);
 
             // force a ScottPlot render
             scottPlotUC1.plt.data.ClearAxisLines();
-            scottPlotUC1.plt.data.AddVertLine(swhear.CircularBufferNextIndexSec, lineColor: Color.Red);
-
-            // auto-scale after a few recordings
-            if (swhear.BuffersRead > 10 && autoScaleHappened == false)
-            {
-                scottPlotUC1.plt.settings.AxisFit(0, .5);
-                autoScaleHappened = true;
-            }
+            scottPlotUC1.plt.data.AddVertLine((double)swhear.lastPointUpdated / swhear.SAMPLERATE, lineColor: Color.Red);
             
             // render the image
             scottPlotUC1.Render();
