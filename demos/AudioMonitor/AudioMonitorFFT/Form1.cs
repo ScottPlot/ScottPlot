@@ -63,7 +63,7 @@ namespace AudioMonitor
 
         private void comboMicrophone_SelectedIndexChanged(object sender, EventArgs e)
         {
-            MicrophoneSelected();
+            //MicrophoneSelected();
         }
 
         private void btnStart_Click(object sender, EventArgs e)
