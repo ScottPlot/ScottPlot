@@ -147,6 +147,7 @@ namespace ScottPlot
             dataPadRight = right ?? dataPadRight;
             dataPadBottom = bottom ?? dataPadBottom;
             dataPadTop = top ?? dataPadTop;
+            Resize(0, 0); // TODO: this fixes padding problems in forms - but why???
             AxesRecalculate();
         }
 
