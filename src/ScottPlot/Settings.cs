@@ -131,7 +131,7 @@ namespace ScottPlot
         public void Resize(int newWidthPx, int newHeightPx)
         {
 
-            if (width < minimumWidth)
+            if (newWidthPx < minimumWidth)
             {
                 width = minimumWidth;
                 Console.WriteLine("WARNING: minimum width");
@@ -141,7 +141,7 @@ namespace ScottPlot
                 width = newWidthPx;
             }
 
-            if (height < minimumHeight)
+            if (newHeightPx < minimumHeight)
             {
                 height = minimumHeight;
                 Console.WriteLine("WARNING: minimum height");
