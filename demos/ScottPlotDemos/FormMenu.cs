@@ -40,5 +40,11 @@ namespace ScottPlotDemos
             var f = new FormQuickstart();
             f.ShowDialog();
         }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            var f = new FormStyle();
+            f.ShowDialog();
+        }
     }
 }

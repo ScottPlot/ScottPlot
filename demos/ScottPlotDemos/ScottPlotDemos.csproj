@@ -76,6 +76,12 @@
     <Compile Include="FormSignal.Designer.cs">
       <DependentUpon>FormSignal.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormStyle.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormStyle.Designer.cs">
+      <DependentUpon>FormStyle.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FormMenu.resx">
@@ -92,6 +98,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormSignal.resx">
       <DependentUpon>FormSignal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormStyle.resx">
+      <DependentUpon>FormStyle.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
