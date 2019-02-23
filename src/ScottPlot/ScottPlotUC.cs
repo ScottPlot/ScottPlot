@@ -17,33 +17,46 @@ namespace ScottPlotDev2
         public ScottPlotUC()
         {
             InitializeComponent();
+            Reset();
+        }
+
+        public void Reset()
+        {
             plt = new ScottPlot.Plot();
         }
 
         private void pb_Layout(object sender, LayoutEventArgs e)
         {
-            Render(true);
+            try
+            {
+                Render(true);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"\n\nException:\n{ex.Message}");
+                Console.WriteLine($"\n\nTraceback:\n{ex.StackTrace}");
+            }
         }
 
         private void ScottPlotUC_Load(object sender, EventArgs e)
         {
-            Render(true);
+            try
+            {
+                Render(true);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"\n\nException:\n{ex.Message}");
+                Console.WriteLine($"\n\nTraceback:\n{ex.StackTrace}");
+            }
         }
 
         public void Render(bool resizeToo = false)
         {
-            try
-            {
-                if (resizeToo)
-                    plt.settings.Resize(pb.Width, pb.Height);
-                pb.Image = plt.figure.GetBitmap();
-                Application.DoEvents();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"\n\nEXCEPTION:\n{ex.Message}");
-                Console.WriteLine($"\n\nSTACK TRACE:\n{ex.StackTrace}");
-            }
+            if (resizeToo)
+                plt.settings.Resize(pb.Width, pb.Height);
+            pb.Image = plt.figure.GetBitmap();
+            Application.DoEvents();
         }
 
         #region mouse tracking for pan and zoom
