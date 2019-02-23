@@ -84,9 +84,18 @@ namespace ScottPlot
         ///////////////////////////////////////////////////////////////////////////////////////
         // SCATTER PLOTS
 
+        private double[] AscendingNumbers(int pointCount, double multiplier = 1, double offset = 0)
+        {
+            double[] xs = new double[pointCount];
+            for (int i = 0; i < xs.Length; i++)
+                xs[i] = i * multiplier + offset;
+            return xs;
+        }
+
         // primary function (accepts a style)
         public void AddScatter(double[] xs, double[] ys, Style style)
         {
+            xs = xs ?? AscendingNumbers(ys.Length);
             var scatter = new Plottables.Scatter(xs, ys, style);
             plotObjects.Add(scatter);
         }
@@ -94,6 +103,7 @@ namespace ScottPlot
         // minimal function (minimal arguments)
         public void AddScatter(double[] xs, double[] ys)
         {
+            xs = xs ?? AscendingNumbers(ys.Length);
             AddScatter(xs, ys, new Style(plotObjects.Count()));
         }
 
@@ -102,6 +112,7 @@ namespace ScottPlot
             int markerSize = 3, Color? markerColor = null, Style.MarkerShape markerShape = Style.MarkerShape.circleFilled,
             int lineWidth = 1, Color? lineColor = null, Style.LineStyle lineStyle = Style.LineStyle.solid)
         {
+            xs = xs ?? AscendingNumbers(ys.Length);
             var style = new Style(plotObjects.Count());
             style.markerSize = markerSize;
             style.markerColor = markerColor.GetValueOrDefault(style.markerColor);
