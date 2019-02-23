@@ -130,8 +130,27 @@ namespace ScottPlot
 
         public void Resize(int newWidthPx, int newHeightPx)
         {
-            width = (newWidthPx >= minimumWidth) ? newWidthPx : minimumWidth;
-            height = (newHeightPx >= minimumHeight) ? newHeightPx : minimumHeight;
+
+            if (width < minimumWidth)
+            {
+                width = minimumWidth;
+                Console.WriteLine("WARNING: minimum width");
+            }
+            else
+            {
+                width = newWidthPx;
+            }
+
+            if (height < minimumHeight)
+            {
+                height = minimumHeight;
+                Console.WriteLine("WARNING: minimum height");
+            }
+            else
+            {
+                height = newHeightPx;
+            }
+
             AxesRecalculate();
         }
 
@@ -147,7 +166,6 @@ namespace ScottPlot
             dataPadRight = right ?? dataPadRight;
             dataPadBottom = bottom ?? dataPadBottom;
             dataPadTop = top ?? dataPadTop;
-            Resize(0, 0); // TODO: this fixes padding problems in forms - but why???
             AxesRecalculate();
         }
 

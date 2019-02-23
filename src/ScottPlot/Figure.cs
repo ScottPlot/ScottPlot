@@ -62,7 +62,7 @@ namespace ScottPlot
             System.Diagnostics.Stopwatch renderStopwatch = System.Diagnostics.Stopwatch.StartNew();
 
             // re-initialize bitmap and graphics objects only if needed
-            if (bmpFigure == null || bmpData == null || bmpFigure.Size != settings.Size)
+            if (bmpFigure == null || bmpData == null || bmpFigure.Size != settings.Size || bmpData.Size != settings.dataPlotSize)
             {
                 bmpFigure = new Bitmap(settings.width, settings.height);
                 gfxFigure = Graphics.FromImage(bmpFigure);
