@@ -189,7 +189,7 @@ namespace ScottPlot
             foreach (var tick in settings.axisY.ticksMinor)
             {
                 int pixelY = settings.dataPlotHeight - tick.pixel + settings.dataPlotPosTop;
-                Point pt1, pt2, pt3;
+                Point pt1, pt2;
 
                 if (settings.axisYonLeft == true)
                 {
