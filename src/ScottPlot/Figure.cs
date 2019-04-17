@@ -107,7 +107,10 @@ namespace ScottPlot
             gfxFigure.DrawString(settings.axisLabelX, settings.fontAxis, settings.brushLabels, settings.dataPlotCenterX, settings.height - 25, settings.sfCenter);
             gfxFigure.TranslateTransform(gfxFigure.VisibleClipBounds.Size.Width, 0);
             gfxFigure.RotateTransform(-90);
-            gfxFigure.DrawString(settings.axisLabelY, settings.fontAxis, settings.brushLabels, -settings.dataPlotCenterY, -settings.width + 5, settings.sfCenter);
+            if (settings.axisYonLeft)
+                gfxFigure.DrawString(settings.axisLabelY, settings.fontAxis, settings.brushLabels, -settings.dataPlotCenterY, -settings.width + 5, settings.sfCenter);
+            else
+                gfxFigure.DrawString(settings.axisLabelY, settings.fontAxis, settings.brushLabels, -settings.dataPlotCenterY, -50, settings.sfCenter);
             gfxFigure.ResetTransform();
 
             // see how long that took
@@ -157,40 +160,82 @@ namespace ScottPlot
             int tickYoffsetVert = (int)(settings.fontTicks.Size * .8);
             int tickYoffsetHoriz = (int)(settings.fontTicks.Size * .3);
 
+            // plot the vertial ticks and labels
             foreach (var tick in settings.axisY.ticksMajor)
             {
                 int pixelY = settings.dataPlotHeight - tick.pixel + settings.dataPlotPosTop;
-                Point pt1 = new Point(settings.dataPlotPosLeft, pixelY);
-                Point pt2 = new Point(settings.dataPlotPosLeft - tickSizeMajor - 1, pixelY);
-                Point pt3 = new Point(pt2.X, pt2.Y - tickYoffsetVert);
+                Point pt1, pt2, pt3;
+                StringFormat textAlignment;
+                if (settings.axisYonLeft == true)
+                {
+                    // left-sided Y axis (default)
+                    pt1 = new Point(settings.dataPlotPosLeft, pixelY);
+                    pt2 = new Point(settings.dataPlotPosLeft - tickSizeMajor - 1, pixelY);
+                    pt3 = new Point(pt2.X, pt2.Y - tickYoffsetVert);
+                    textAlignment = settings.sfRight;
+                }
+                else
+                {
+                    // right-sided Y axis
+                    pt1 = new Point(settings.dataPlotPosRight, pixelY);
+                    pt2 = new Point(settings.dataPlotPosRight + tickSizeMajor + 1, pixelY);
+                    pt3 = new Point(pt2.X, pt2.Y - tickYoffsetVert);
+                    textAlignment = settings.sfLeft;
+                }
                 gfxFigure.DrawLine(settings.penAxisTicks, pt1, pt2);
-                gfxFigure.DrawString(tick.label, settings.fontTicks, settings.brushAxisTickLabels, pt3, settings.sfRight);
+                gfxFigure.DrawString(tick.label, settings.fontTicks, settings.brushAxisTickLabels, pt3, textAlignment);
             }
 
             foreach (var tick in settings.axisY.ticksMinor)
             {
                 int pixelY = settings.dataPlotHeight - tick.pixel + settings.dataPlotPosTop;
-                Point pt1 = new Point(settings.dataPlotPosLeft, pixelY);
-                Point pt2 = new Point(settings.dataPlotPosLeft - tickSizeMinor - 1, pixelY);
+                Point pt1, pt2, pt3;
+
+                if (settings.axisYonLeft == true)
+                {
+                    // left-sided Y axis (default)
+                    pt1 = new Point(settings.dataPlotPosLeft, pixelY);
+                    pt2 = new Point(settings.dataPlotPosLeft - tickSizeMinor - 1, pixelY);
+                }
+                else
+                {
+                    // right-sided Y axis
+                    pt1 = new Point(settings.dataPlotPosRight, pixelY);
+                    pt2 = new Point(settings.dataPlotPosRight + tickSizeMinor + 1, pixelY);
+                }
                 gfxFigure.DrawLine(settings.penAxisTicks, pt1, pt2);
             }
 
             foreach (var tick in settings.axisX.ticksMajor)
             {
-                int pixelX = tick.pixel + settings.dataPlotPosLeft;
-                Point pt1 = new Point(pixelX, settings.dataPlotPosBottom);
-                Point pt2 = new Point(pixelX, settings.dataPlotPosBottom + 1 + tickSizeMajor);
-                Point pt3 = new Point(pt2.X, pt2.Y + tickYoffsetHoriz);
-                gfxFigure.DrawLine(settings.penAxisTicks, pt1, pt2);
-                gfxFigure.DrawString(tick.label, settings.fontTicks, settings.brushAxisTickLabels, pt3, settings.sfCenter);
+                if (settings.axisXonBottom)
+                {
+                    int pixelX = tick.pixel + settings.dataPlotPosLeft;
+                    Point pt1 = new Point(pixelX, settings.dataPlotPosBottom);
+                    Point pt2 = new Point(pixelX, settings.dataPlotPosBottom + 1 + tickSizeMajor);
+                    Point pt3 = new Point(pt2.X, pt2.Y + tickYoffsetHoriz);
+                    gfxFigure.DrawLine(settings.penAxisTicks, pt1, pt2);
+                    gfxFigure.DrawString(tick.label, settings.fontTicks, settings.brushAxisTickLabels, pt3, settings.sfCenter);
+                }
+                else
+                {
+                    // TODO: support drawing of X ticks on the top. Currently drawing disabled.
+                }
             }
 
             foreach (var tick in settings.axisX.ticksMinor)
             {
-                int pixelX = tick.pixel + settings.dataPlotPosLeft;
-                Point pt1 = new Point(pixelX, settings.dataPlotPosBottom);
-                Point pt2 = new Point(pixelX, settings.dataPlotPosBottom + 1 + tickSizeMinor);
-                gfxFigure.DrawLine(settings.penAxisTicks, pt1, pt2);
+                if (settings.axisXonBottom)
+                {
+                    int pixelX = tick.pixel + settings.dataPlotPosLeft;
+                    Point pt1 = new Point(pixelX, settings.dataPlotPosBottom);
+                    Point pt2 = new Point(pixelX, settings.dataPlotPosBottom + 1 + tickSizeMinor);
+                    gfxFigure.DrawLine(settings.penAxisTicks, pt1, pt2);
+                }
+                else
+                {
+                    // TODO: support drawing of X ticks on the top. Currently drawing disabled.
+                }
             }
 
             gfxFigure.DrawRectangle(settings.penAxisBorder, settings.dataPlotRectangle);
@@ -358,7 +403,7 @@ namespace ScottPlot
                 {
                     Console.WriteLine("Crashed drawing lines");
                 }
-                
+
             }
 
             // draw markers
