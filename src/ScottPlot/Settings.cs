@@ -67,6 +67,8 @@ namespace ScottPlot
         // axis limits and unit conversions
         public Axis axisX;
         public Axis axisY;
+        public bool axisXonBottom = true;
+        public bool axisYonLeft = true;
 
         ////////////////////////////////////////////////////////////////////////////////////
         // mouse tracking
