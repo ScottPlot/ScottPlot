@@ -73,15 +73,17 @@ plt.figure.Save("quickstart2.png");
 
 ![](doc/quickstart2.png)
 
-## Documentation and Additional Examples
-* Simplistic API does not require documentation with a predictive IDE
-  * `plt.data` - methods to add or remove data
-  * `plt.settings` - control colors, labels, and axis limits
-  * `plt.figure` - to get a bitmap buffer or save the graph as a file
+## Supports Windows Forms and WPF Applications
+* Most [demos](demos) and [examples](/doc/) demonstrate ScottPlot in Windows Forms
+* To see how to use ScottPlot with WPF check out [/doc/wpf/](/doc/wpf/)
 * The [ScottPlot Cookbook](doc) demonstrates much of what ScottPlot can do.
 * Additional demos are in the [demos](demos) folder
 
 ## Core Concepts & Features
+* Simplistic API does not require documentation with a predictive IDE
+  * `plt.data` - methods to add or remove data
+  * `plt.settings` - control colors, labels, and axis limits
+  * `plt.figure` - to get a bitmap buffer or save the graph as a file
 * No dependencies (just the standard .NET libraries)
 * ScottPlot can interactively display large datasets (10+ million points)
 * Windows Forms Applications can use the ScottPlotUC user control
