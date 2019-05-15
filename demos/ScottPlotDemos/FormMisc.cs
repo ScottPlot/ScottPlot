@@ -67,8 +67,8 @@ namespace ScottPlotDemos
             int randomWordIndex = (int)(rand.NextDouble() * randomWords.Length);
             string randomWord = randomWords[randomWordIndex];
             double positionX = rand.NextDouble() * 10;
-            double positionY = rand.NextDouble() * 10;
-            //scottPlotUC1.plt.data.AddText(randomWord, positionX, positionY);
+            double positionY = rand.NextDouble() * 10 - 5;
+            scottPlotUC1.plt.data.AddText(randomWord, positionX, positionY);
             scottPlotUC1.Render();
         }
 
