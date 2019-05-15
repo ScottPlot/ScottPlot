@@ -94,8 +94,10 @@ namespace ScottPlot
                     RenderDataSignal((Plottables.Signal)dataObject);
                 else if (dataObject is Plottables.AxLine)
                     RenderDataAxLine((Plottables.AxLine)dataObject);
+                else if (dataObject is Plottables.Text)
+                    RenderDataText((Plottables.Text)dataObject);
                 else
-                    Console.WriteLine("I don't know how to plot this: " + dataObject.ToString());
+                    throw new Exception($"I don't know how to plot {dataObject}");
             }
             gfxFigure.DrawImage(bmpData, settings.dataPlotOrigin);
 
@@ -459,6 +461,31 @@ namespace ScottPlot
                 {
                     Console.WriteLine($"Crashed making a horizontal line at: {y}");
                 }
+            }
+        }
+
+        private void RenderDataText(Plottables.Text textData)
+        {
+
+            bool drawMarkerPointToo = false;
+            Pen textPen = new Pen(textData.style.lineColor, 1);
+            int xPixel = settings.axisX.UnitToPixel(textData.xPosition);
+            int yPixel = settings.dataPlotHeight - settings.axisY.UnitToPixel(textData.yPosition);
+
+            try
+            {
+                gfxData.DrawString(textData.text, settings.fontTicks, settings.brushLabels, xPixel, yPixel, settings.sfLeft);
+                if (drawMarkerPointToo)
+                {
+                    Brush textMarkerBrush = Brushes.Magenta;
+                    int markerSize = 2;
+                    Rectangle rect = new Rectangle(xPixel - markerSize, yPixel - markerSize, markerSize * 2, markerSize * 2);
+                    gfxData.FillEllipse(textMarkerBrush, rect);
+                }
+            }
+            catch
+            {
+                Console.WriteLine($"Crashed drawing text at: [{xPixel}, {yPixel}]");
             }
         }
     }

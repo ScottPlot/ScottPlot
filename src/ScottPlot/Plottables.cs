@@ -71,5 +71,22 @@ namespace ScottPlot
 
             public override string ToString() { return $"{orientation} line at {position}"; }
         }
+
+        public class Text : PlottableThing
+        {
+            public double xPosition;
+            public double yPosition;
+            public string text;
+
+            public Text(string text, double xPosition, double yPosition, Style style)
+            {
+                this.text = text;
+                this.xPosition = xPosition;
+                this.yPosition = yPosition;
+                this.style = style;
+            }
+
+            public override string ToString() { return $"Text ({text.Length} characters) at [{xPosition}, {yPosition}]"; }
+        }
     }
 }
