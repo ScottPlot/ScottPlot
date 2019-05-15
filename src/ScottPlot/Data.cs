@@ -200,12 +200,16 @@ namespace ScottPlot
             AddAxisLine(y, true, style);
         }
 
-        public string PlotObjectInfo()
+        ///////////////////////////////////////////////////////////////////////////////////////
+        // TEXT
+
+        // detailed function (named arguments)
+        public void AddText(string text, double xPosition, double yPosition, Color? lineColor = null)
         {
-            string txt = "";
-            for (int i = 0; i < plotObjects.Count; i++)
-                txt += $"plot object #{i + 1}: {plotObjects[i].ToString()}\n";
-            return txt.Trim();
+            var style = new Style(plotObjects.Count());
+            style.lineColor = (lineColor != null) ? (Color)lineColor : style.lineColor;
+            plotObjects.Add(new Plottables.Text(text, xPosition, yPosition, style));
         }
+
     }
 }
