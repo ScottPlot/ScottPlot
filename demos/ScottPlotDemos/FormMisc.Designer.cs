@@ -28,8 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnWebsite = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -38,51 +36,21 @@
             this.btnAddSin1k = new System.Windows.Forms.Button();
             this.btnClear = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.buttonAddVline = new System.Windows.Forms.Button();
+            this.btnAddVline = new System.Windows.Forms.Button();
             this.btnAddHline = new System.Windows.Forms.Button();
             this.btnAddXY = new System.Windows.Forms.Button();
-            this.panel2 = new System.Windows.Forms.Panel();
             this.scottPlotUC1 = new ScottPlotDev2.ScottPlotUC();
-            this.tableLayoutPanel1.SuspendLayout();
-            this.panel1.SuspendLayout();
+            this.btnAddText = new System.Windows.Forms.Button();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.panel2.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.panel2, 1, 0);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 1;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(622, 342);
-            this.tableLayoutPanel1.TabIndex = 0;
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.btnSave);
-            this.panel1.Controls.Add(this.btnWebsite);
-            this.panel1.Controls.Add(this.groupBox2);
-            this.panel1.Controls.Add(this.btnClear);
-            this.panel1.Controls.Add(this.groupBox1);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(3, 3);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(154, 336);
-            this.panel1.TabIndex = 0;
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(9, 294);
+            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnSave.Location = new System.Drawing.Point(12, 415);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(117, 23);
+            this.btnSave.Size = new System.Drawing.Size(111, 23);
             this.btnSave.TabIndex = 4;
             this.btnSave.Text = "Save Image";
             this.btnSave.UseVisualStyleBackColor = true;
@@ -90,7 +58,7 @@
             // 
             // btnWebsite
             // 
-            this.btnWebsite.Location = new System.Drawing.Point(9, 9);
+            this.btnWebsite.Location = new System.Drawing.Point(12, 12);
             this.btnWebsite.Name = "btnWebsite";
             this.btnWebsite.Size = new System.Drawing.Size(111, 26);
             this.btnWebsite.TabIndex = 3;
@@ -103,18 +71,20 @@
             this.groupBox2.Controls.Add(this.btnAddSin10M);
             this.groupBox2.Controls.Add(this.btnAddSin1M);
             this.groupBox2.Controls.Add(this.btnAddSin1k);
-            this.groupBox2.Location = new System.Drawing.Point(9, 153);
+            this.groupBox2.Location = new System.Drawing.Point(12, 44);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(117, 106);
+            this.groupBox2.Size = new System.Drawing.Size(111, 106);
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Add Signal (points)";
             // 
             // btnAddSin10M
             // 
+            this.btnAddSin10M.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btnAddSin10M.Location = new System.Drawing.Point(6, 77);
             this.btnAddSin10M.Name = "btnAddSin10M";
-            this.btnAddSin10M.Size = new System.Drawing.Size(75, 23);
+            this.btnAddSin10M.Size = new System.Drawing.Size(99, 23);
             this.btnAddSin10M.TabIndex = 4;
             this.btnAddSin10M.Text = "Sin (10M)";
             this.btnAddSin10M.UseVisualStyleBackColor = true;
@@ -122,9 +92,11 @@
             // 
             // btnAddSin1M
             // 
+            this.btnAddSin1M.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btnAddSin1M.Location = new System.Drawing.Point(6, 48);
             this.btnAddSin1M.Name = "btnAddSin1M";
-            this.btnAddSin1M.Size = new System.Drawing.Size(75, 23);
+            this.btnAddSin1M.Size = new System.Drawing.Size(99, 23);
             this.btnAddSin1M.TabIndex = 3;
             this.btnAddSin1M.Text = "Sin (1M)";
             this.btnAddSin1M.UseVisualStyleBackColor = true;
@@ -132,9 +104,11 @@
             // 
             // btnAddSin1k
             // 
+            this.btnAddSin1k.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btnAddSin1k.Location = new System.Drawing.Point(6, 19);
             this.btnAddSin1k.Name = "btnAddSin1k";
-            this.btnAddSin1k.Size = new System.Drawing.Size(75, 23);
+            this.btnAddSin1k.Size = new System.Drawing.Size(99, 23);
             this.btnAddSin1k.TabIndex = 2;
             this.btnAddSin1k.Text = "Sin (1k)";
             this.btnAddSin1k.UseVisualStyleBackColor = true;
@@ -142,9 +116,10 @@
             // 
             // btnClear
             // 
-            this.btnClear.Location = new System.Drawing.Point(9, 265);
+            this.btnClear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnClear.Location = new System.Drawing.Point(12, 386);
             this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(117, 23);
+            this.btnClear.Size = new System.Drawing.Size(111, 23);
             this.btnClear.TabIndex = 1;
             this.btnClear.Text = "Clear";
             this.btnClear.UseVisualStyleBackColor = true;
@@ -152,31 +127,36 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.buttonAddVline);
+            this.groupBox1.Controls.Add(this.btnAddText);
+            this.groupBox1.Controls.Add(this.btnAddVline);
             this.groupBox1.Controls.Add(this.btnAddHline);
             this.groupBox1.Controls.Add(this.btnAddXY);
-            this.groupBox1.Location = new System.Drawing.Point(9, 41);
+            this.groupBox1.Location = new System.Drawing.Point(12, 156);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(117, 106);
+            this.groupBox1.Size = new System.Drawing.Size(111, 136);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Add Random";
             // 
-            // buttonAddVline
+            // btnAddVline
             // 
-            this.buttonAddVline.Location = new System.Drawing.Point(6, 77);
-            this.buttonAddVline.Name = "buttonAddVline";
-            this.buttonAddVline.Size = new System.Drawing.Size(75, 23);
-            this.buttonAddVline.TabIndex = 4;
-            this.buttonAddVline.Text = "VertLine";
-            this.buttonAddVline.UseVisualStyleBackColor = true;
-            this.buttonAddVline.Click += new System.EventHandler(this.buttonAddVline_Click);
+            this.btnAddVline.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAddVline.Location = new System.Drawing.Point(6, 77);
+            this.btnAddVline.Name = "btnAddVline";
+            this.btnAddVline.Size = new System.Drawing.Size(99, 23);
+            this.btnAddVline.TabIndex = 4;
+            this.btnAddVline.Text = "VertLine";
+            this.btnAddVline.UseVisualStyleBackColor = true;
+            this.btnAddVline.Click += new System.EventHandler(this.buttonAddVline_Click);
             // 
             // btnAddHline
             // 
+            this.btnAddHline.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btnAddHline.Location = new System.Drawing.Point(6, 48);
             this.btnAddHline.Name = "btnAddHline";
-            this.btnAddHline.Size = new System.Drawing.Size(75, 23);
+            this.btnAddHline.Size = new System.Drawing.Size(99, 23);
             this.btnAddHline.TabIndex = 3;
             this.btnAddHline.Text = "HorizLine";
             this.btnAddHline.UseVisualStyleBackColor = true;
@@ -184,57 +164,61 @@
             // 
             // btnAddXY
             // 
+            this.btnAddXY.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btnAddXY.Location = new System.Drawing.Point(6, 19);
             this.btnAddXY.Name = "btnAddXY";
-            this.btnAddXY.Size = new System.Drawing.Size(75, 23);
+            this.btnAddXY.Size = new System.Drawing.Size(99, 23);
             this.btnAddXY.TabIndex = 2;
             this.btnAddXY.Text = "XY Scatter";
             this.btnAddXY.UseVisualStyleBackColor = true;
             this.btnAddXY.Click += new System.EventHandler(this.btnAddXY_Click);
             // 
-            // panel2
-            // 
-            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel2.Controls.Add(this.scottPlotUC1);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(170, 10);
-            this.panel2.Margin = new System.Windows.Forms.Padding(10);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(442, 322);
-            this.panel2.TabIndex = 1;
-            // 
             // scottPlotUC1
             // 
+            this.scottPlotUC1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.scottPlotUC1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.scottPlotUC1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.scottPlotUC1.Location = new System.Drawing.Point(0, 0);
+            this.scottPlotUC1.Location = new System.Drawing.Point(129, 12);
             this.scottPlotUC1.Name = "scottPlotUC1";
-            this.scottPlotUC1.Size = new System.Drawing.Size(440, 320);
+            this.scottPlotUC1.Size = new System.Drawing.Size(629, 426);
             this.scottPlotUC1.TabIndex = 0;
             // 
-            // Form1
+            // btnAddText
+            // 
+            this.btnAddText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAddText.Location = new System.Drawing.Point(6, 106);
+            this.btnAddText.Name = "btnAddText";
+            this.btnAddText.Size = new System.Drawing.Size(99, 23);
+            this.btnAddText.TabIndex = 5;
+            this.btnAddText.Text = "Text";
+            this.btnAddText.UseVisualStyleBackColor = true;
+            this.btnAddText.Click += new System.EventHandler(this.BtnAddText_Click);
+            // 
+            // FormMisc
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(622, 342);
-            this.Controls.Add(this.tableLayoutPanel1);
-            this.Name = "Form1";
+            this.ClientSize = new System.Drawing.Size(770, 450);
+            this.Controls.Add(this.btnWebsite);
+            this.Controls.Add(this.btnSave);
+            this.Controls.Add(this.scottPlotUC1);
+            this.Controls.Add(this.btnClear);
+            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.groupBox1);
+            this.Name = "FormMisc";
             this.Text = "ScottPlot Demo: left-click-drag pan, right-click-drag zoom, middle-click auto-axi" +
     "s";
             this.Load += new System.EventHandler(this.Form1_Load);
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button btnWebsite;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button btnAddSin10M;
@@ -242,12 +226,12 @@
         private System.Windows.Forms.Button btnAddSin1k;
         private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Button buttonAddVline;
+        private System.Windows.Forms.Button btnAddVline;
         private System.Windows.Forms.Button btnAddHline;
         private System.Windows.Forms.Button btnAddXY;
-        private System.Windows.Forms.Panel panel2;
         private ScottPlotDev2.ScottPlotUC scottPlotUC1;
         private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.Button btnAddText;
     }
 }
 

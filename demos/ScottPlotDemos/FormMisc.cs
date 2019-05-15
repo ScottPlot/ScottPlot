@@ -34,9 +34,9 @@ namespace ScottPlotDemos
             {
                 xs.Add(i);
                 if (ys.Count == 0)
-                    ys.Add(rand.NextDouble()*10-5);
+                    ys.Add(rand.NextDouble() * 10 - 5);
                 else
-                    ys.Add(ys[ys.Count() - 1] + rand.NextDouble()-.5);
+                    ys.Add(ys[ys.Count() - 1] + rand.NextDouble() - .5);
             }
 
             scottPlotUC1.plt.data.AddScatter(xs.ToArray(), ys.ToArray());
@@ -55,6 +55,20 @@ namespace ScottPlotDemos
         {
             double x = rand.NextDouble() * 20 - 10;
             scottPlotUC1.plt.data.AddVertLine(x);
+            scottPlotUC1.Render();
+        }
+
+        private void BtnAddText_Click(object sender, EventArgs e)
+        {
+            string[] randomWords = new string[] { "Gnathostomulida", "Rotifera",
+                "Dicyemida", "Orthonectida", "Gastrotricha", "Platyhelminthes",
+                "Hyolitha †", "Annelida", "Brachiopoda", "Bryozoa", "Cycliophora",
+                "Entoprocta", "Mollusca", "Nemertea", "Phoronida" };
+            int randomWordIndex = (int)(rand.NextDouble() * randomWords.Length);
+            string randomWord = randomWords[randomWordIndex];
+            double positionX = rand.NextDouble() * 10;
+            double positionY = rand.NextDouble() * 10;
+            //scottPlotUC1.plt.data.AddText(randomWord, positionX, positionY);
             scottPlotUC1.Render();
         }
 
@@ -108,6 +122,7 @@ namespace ScottPlotDemos
         {
             System.Diagnostics.Process.Start("https://github.com/swharden/ScottPlot");
         }
+
     }
 }
 
