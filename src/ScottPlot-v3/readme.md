@@ -20,12 +20,19 @@ sp.PlotPoint(x, y);
 sp.PlotScatter(xs, ys);
 sp.PlotSignal(ys, sampleRate: 1000);
 sp.PlotAxVline(x);
+sp.PlotAxVlines(xs);
 sp.PlotAxHline(y);
+sp.PlotAxVlines(ys);
 sp.PlotText("hello", x, y);
+sp.Clear();
 
 // style with optional named arguments
 sp.PlotScatter(xs, ys, lineWidth: 2, lineColor: Color.Blue,
                 markerSize: 5, markerColor: Color.Red);
+
+// a Legend will be supported to plot labeled data
+sp.PlotScatter(xs, ysWin, label: "windows");
+sp.PlotScatter(xs, ysLnx, label: "linux");
 
 // zoom around or set axes like this
 sp.Zoom(1.5, 2);
