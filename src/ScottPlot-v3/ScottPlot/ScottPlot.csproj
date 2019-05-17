@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Plottable.cs" />
+    <Compile Include="Ticks.cs" />
     <Compile Include="Tools.cs" />
     <Compile Include="ScottPlot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

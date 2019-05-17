@@ -66,7 +66,7 @@ namespace ScottPlot_Sandbox_Forms
 
         private void BtnBenchmark_Click(object sender, EventArgs e)
         {
-            int benchmarkCount = 10;
+            int benchmarkCount = 20;
             plt.Clear();
             System.Diagnostics.Stopwatch stopwatch = System.Diagnostics.Stopwatch.StartNew();
             for (int i = 0; i < benchmarkCount; i++)
@@ -76,7 +76,7 @@ namespace ScottPlot_Sandbox_Forms
                 Application.DoEvents(); // force display update
             }
             double totalTimeMs = stopwatch.ElapsedTicks * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
-            lblStatus.Text = String.Format("BENCHMARK: {0} frames in {1:00.00}ms = avg {2:0.00}ms/frame ({3:0.00} Hz)",
+            lblStatus.Text = String.Format("BENCHMARK: {0} frames in {1:00.000}ms = avg {2:0.000}ms/frame ({3:0.000} Hz)",
                 benchmarkCount, totalTimeMs, totalTimeMs / benchmarkCount, benchmarkCount / totalTimeMs * 1000.0);
         }
 

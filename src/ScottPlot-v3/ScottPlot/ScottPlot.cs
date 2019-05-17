@@ -54,7 +54,6 @@ namespace ScottPlot
 
         public void Render()
         {
-            Debug.WriteLine($"Rendering plottables (n={plottables.Count})");
             stopwatch.Restart();
             figureGfx.Clear(settings.figureBackgroundColor);
 
@@ -73,18 +72,17 @@ namespace ScottPlot
                 }
             }
 
+            figureGfx.DrawRectangle(Pens.Black, 0, 0, settings.figureSize.Width - 1, settings.figureSize.Height - 1);
+            figureGfx.DrawRectangle(Pens.Black, settings.dataOrigin.X, settings.dataOrigin.Y, settings.dataSize.Width - 1, settings.dataSize.Height - 1);
+
+            Ticks.DrawTicks(figureGfx, settings);
+
             stopwatch.Stop();
             renderTimeMs = stopwatch.ElapsedTicks * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
             renderRateHz = 1000.0 / renderTimeMs;
             renderMessage = string.Format("Rendered {4}x{5} Bitmap with {2} objects ({3} points) in {0:00.000} ms ({1:0.00 Hz})",
                 renderTimeMs, renderRateHz, plottables.Count, pointsPlotted, settings.figureSize.Width, settings.figureSize.Height);
             Debug.WriteLine(renderMessage);
-
-            // draw a frame around the full image (covering-up 1px around the edges)
-            figureGfx.DrawRectangle(Pens.Black, 0, 0, settings.figureSize.Width - 1, settings.figureSize.Height - 1);
-
-            // draw a frame around the data (covering-up 1px around the edges)
-            figureGfx.DrawRectangle(Pens.Black, settings.dataOrigin.X, settings.dataOrigin.Y, settings.dataSize.Width - 1, settings.dataSize.Height - 1);
         }
 
         public Bitmap GetBitmap(bool renderFirst = true)
@@ -128,8 +126,8 @@ namespace ScottPlot
 
         public double[] Axes(double? x1 = null, double? x2 = null, double? y1 = null, double? y2 = null)
         {
-            settings.AxesSet(x1, x2, y1, y2);
-            return settings.axes;
+            settings.AxisSet(x1, x2, y1, y2);
+            return settings.axis;
         }
 
         #endregion
