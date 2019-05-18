@@ -1,30 +1,22 @@
 # ScottPlot
 
-**ScottPlot is an open-source interactive graphing library for .NET written in C#.** It was written to simplify the task of interactively displaying data on a graph that you can left-click-drag to pan and right-click-drag to zoom. ScottPlot works in Windows Forms (as a user control) or in console applications (as a portable class library). [Compiled demos](demos) are available so you can see what using ScottPlot is like without messing around with source code.
+**ScottPlot is an open-source interactive graphing library for .NET written in C#.** 
+In a GUI environment ScottPlot makes it easily to display data interactively (left-click-drag pan, right-click-drag zoom). ScottPlot was designed to be fast enough to interactively display large datasets with millions of points (such as WAV files) at high framerates. In non-GUI environments ScottPlot can create graphs and save them as images.
 
-![](demos/demo_scatter.gif)
+ScottPlot is easy to integrate into .NET projects (including cross-platform solutions) because it has no dependencies outside the .NET framework libraries.
 
-### Interactive Plotting of Large Data Sets
-A primary goal of ScottPlot is to allow interactive display of evenly-spaced data containing millions points. ScottPlot has a signal plotting method which is optimized for highspeed display of large arrays with evenly spaced data ideal for plotting signals (e.g., WAV files).
+## Quickstart
 
-![](demos/demo_signal.gif)
 
-## Quickstart: Windows Forms
-To create a Windows Form Application to interactively display data with ScottPlot, perform these steps:
-
-* Create a new project (Windows Forms App)
-* Add ScottPlot to your solution
-  * Download this repository to your computer
-  * File -> Add -> Existing Project
-  * Select `/src/ScottPlot/ScottPlot.csproj`
-  * Build -> Rebuild Solution
+### Windows Forms Application Quickstart
+* Create a Windows Forms Application
+* Add a reference to the existing project [ScottPlot.csproj](/src/ScottPlot.csproj)
+* Rebuild the solution
 * Drag/Drop the ScottPlotUC (from the toolbox) onto your form
-* Resize the plot as needed (or set its docking mode to fill)
-* Add the code below to your startup sequence.
-* Press F5 to run
+* Add the following code to your startup sequence
 
 ```cs
-// create some data to plot
+// generate some data to plot
 int pointCount = 100;
 double[] dataXs = new double[pointCount];
 double[] dataSin = new double[pointCount];
@@ -37,55 +29,21 @@ for (int i = 0; i < pointCount; i++)
 }
 
 // plot the data
-scottPlotUC1.plt.data.AddScatter(dataXs, dataSin);
-scottPlotUC1.plt.data.AddScatter(dataXs, dataCos);
-scottPlotUC1.plt.settings.AxisFit();
-scottPlotUC1.plt.settings.title = "ScottPlot Quickstart";
-scottPlotUC1.Render();
 ```
 
-![](doc/quickstart.png)
+## Full Documentation
+For many more examples review the [ScottPlot Documentation](doc) section.
 
-## Quickstart: Console Applications
-While the previous example uses the ScottPlotUC (user control) to provide interactive graphing for GUI applications, this example shows how to instantiate the ScottPlot class directly, add data, and save the output as a PNG file. This method can be used for console applications.
 
-```cs
-// create some data to plot
-int pointCount = 100;
-double[] dataXs = new double[pointCount];
-double[] dataSin = new double[pointCount];
-double[] dataCos = new double[pointCount];
-for (int i = 0; i < pointCount; i++)
-{
-    dataXs[i] = i;
-    dataSin[i] = Math.Sin(i * 2 * Math.PI / pointCount);
-    dataCos[i] = Math.Cos(i * 2 * Math.PI / pointCount);
-}
+## Compiled Demos
+These click-to-run demos let you see what ScottPlot can do on your system
+* [demonstration data navigator]()
+* [real-time audio monitor]()
 
-// plot the data
-ScottPlot.Plot plt = new ScottPlot.Plot(600, 400);
-plt.data.AddScatter(dataXs, dataSin);
-plt.data.AddScatter(dataXs, dataCos);
-plt.settings.AxisFit();
-plt.settings.title = "ScottPlot Quickstart";
-plt.figure.Save("quickstart2.png");
-```
+## About ScottPlot
 
-![](doc/quickstart2.png)
+**Author**\
+ScottPlot was created by [Scott Harden](http://www.swharden.com) of [Harden Technologies, LLC](http://tech.swharden.com)
 
-## Supports Windows Forms and WPF Applications
-* Most [demos](demos) and [examples](/doc/) demonstrate ScottPlot in Windows Forms
-* To see how to use ScottPlot with WPF check out [/doc/wpf/](/doc/wpf/)
-* The [ScottPlot Cookbook](doc) demonstrates much of what ScottPlot can do.
-* Additional demos are in the [demos](demos) folder
-
-## Core Concepts & Features
-* Simplistic API does not require documentation with a predictive IDE
-  * `plt.data` - methods to add or remove data
-  * `plt.settings` - control colors, labels, and axis limits
-  * `plt.figure` - to get a bitmap buffer or save the graph as a file
-* No dependencies (just the standard .NET libraries)
-* ScottPlot can interactively display large datasets (10+ million points)
-* Windows Forms Applications can use the ScottPlotUC user control
-* Console Applications can use the ScottPlot class (like the [test suite](/test/) does)
-* Free, open-source, permissive [license](LICENSE)
+**Custom Features & Commissioned Modifications**\
+The author of this project may be available to create customized versions of ScottPlot which incorporate requested features. Inquiries may be sent to [SWHarden@gmail.com](mailto:swharden@gmail.com).
