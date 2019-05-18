@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -12,12 +13,15 @@ namespace ScottPlot_Sandbox_Forms
 {
     public partial class Form1 : Form
     {
-        private ScottPlot.ScottPlot plt = new ScottPlot.ScottPlot();
+        private ScottPlot.ScottPlot plt;
         Random rand = new Random();
 
         public Form1()
         {
             InitializeComponent();
+            plt = new ScottPlot.ScottPlot();
+            plt.settings.figureBackgroundColor = SystemColors.Control;
+
             UpdateSize();
             PlotSomeStuff();
         }
@@ -32,17 +36,10 @@ namespace ScottPlot_Sandbox_Forms
             plt.Resize(pictureBox1.Width, pictureBox1.Height);
         }
 
-        bool renderingNow = false;
-        private void Render(bool forceRender = false)
+        private void Render()
         {
-            if (renderingNow == false || forceRender == true)
-            {
-                renderingNow = true;
-                pictureBox1.Image = plt.GetBitmap();
-                lblStatus.Text = plt.renderMessage;
-                Application.DoEvents();
-                renderingNow = false;
-            }
+            pictureBox1.Image = plt.GetBitmap();
+            Application.DoEvents();
         }
 
         public void PlotSomeStuff()
@@ -73,17 +70,18 @@ namespace ScottPlot_Sandbox_Forms
 
         private void BtnBenchmark_Click(object sender, EventArgs e)
         {
-            int benchmarkCount = 20;
+            Debug.WriteLine("\n\nSTARTING BENCHMARK");
+            int benchmarkCount = 50;
             plt.Clear();
-            System.Diagnostics.Stopwatch stopwatch = System.Diagnostics.Stopwatch.StartNew();
+            double totalTimeMs = 0;
             for (int i = 0; i < benchmarkCount; i++)
             {
                 PlotSomeStuff();
+                totalTimeMs += plt.settings.benchmarkMsec;
                 lblStatus.Text = $"benchmarking {(i + 1) * 100 / benchmarkCount}%";
                 Application.DoEvents(); // force display update
             }
-            double totalTimeMs = stopwatch.ElapsedTicks * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
-            lblStatus.Text = String.Format("BENCHMARK: {0} frames in {1:00.000}ms = avg {2:0.000}ms/frame ({3:0.000} Hz)",
+            lblStatus.Text = String.Format("BENCHMARK: {0} frames in {1:00.000} ms = avg {2:0.000} ms/frame ({3:0.000} Hz)",
                 benchmarkCount, totalTimeMs, totalTimeMs / benchmarkCount, benchmarkCount / totalTimeMs * 1000.0);
         }
 
@@ -129,12 +127,18 @@ namespace ScottPlot_Sandbox_Forms
             Render();
         }
 
+        private bool mouseMoveRedrawInProgress = false;
         private void PictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
+            if (mouseMoveRedrawInProgress)
+                return;
+
             if (Control.MouseButtons != MouseButtons.None)
             {
+                mouseMoveRedrawInProgress = true;
                 plt.settings.MouseMove(Cursor.Position.X, Cursor.Position.Y);
                 Render();
+                mouseMoveRedrawInProgress = false;
             }
         }
 

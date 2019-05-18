@@ -16,6 +16,12 @@ namespace ScottPlot
         public Point dataOrigin { get; private set; }
         public Size dataSize { get; private set; }
 
+        // hold copies of graphics objects to make them easy to plot to
+        public Graphics gfxFigure;
+        public Graphics gfxData;
+        public Bitmap bmpFigure;
+        public Bitmap bmpData;
+
         // axis (replace with class)
         public double[] axis = new double[] { -10, 10, -10, 10 }; // X1, X2, Y1, Y2
         public double xAxisSpan;
@@ -41,11 +47,6 @@ namespace ScottPlot
         public StringFormat sfWest = new StringFormat() { LineAlignment = StringAlignment.Center, Alignment = StringAlignment.Near };
         public StringFormat sfNorthWest = new StringFormat() { LineAlignment = StringAlignment.Near, Alignment = StringAlignment.Near };
 
-        // ticks
-        public readonly Font tickFont = new Font("Segoe UI", 12);
-        public List<Tick> ticksX;
-        public List<Tick> ticksY;
-
         // axis labels
         public bool[] axisFrame = new bool[] { true, true, true, true };
         public readonly Pen axisFramePen = Pens.Black;
@@ -53,14 +54,21 @@ namespace ScottPlot
 
         // title
         public readonly string title = "ScottPlot Title";
-        public readonly Font titleFont = new Font("Segoe UI", 16, FontStyle.Bold);
+        public readonly Font titleFont = new Font("Segoe UI", 20, FontStyle.Bold);
         public readonly Brush titleFontBrush = Brushes.Black;
 
         // axis labels
         public readonly string axisLabelX = "horizontal goodness";
         public readonly string axisLabelY = "vertical awesome";
-        public readonly Font axisLabelFont = new Font("Segoe UI", 16, FontStyle.Bold);
+        public readonly Font axisLabelFont = new Font("Segoe UI", 16);
         public readonly Brush axisLabelBrush = Brushes.Black;
+
+        // axis ticks
+        public readonly Font tickFont = new Font("Segoe UI", 10);
+        public List<Tick> ticksX;
+        public List<Tick> ticksY;
+        public int tickSize = 5;
+        public bool displayTicks = true;
 
         // frame
         public bool dataFrame = true;
@@ -68,12 +76,48 @@ namespace ScottPlot
 
         // debugging
         public readonly Font debugFont = new Font("Consolas", 8);
-        public readonly Brush debugFontBrush = Brushes.Gray;
-        public readonly Brush debugBackgroundBrush = Brushes.White;
-        public readonly Pen debugBorderPen = Pens.Gray;
+        public readonly Brush debugFontBrush = Brushes.Black;
+        public readonly Brush debugBackgroundBrush = new SolidBrush(Color.FromArgb(150, Color.LightYellow));
+        public readonly Pen debugBorderPen = Pens.Black;
+
+        // anti-aliasing
+        public bool antiAliasFigureDrawings = false;
+        public bool antiAliasFigureText = true;
+        public bool antiAliasDataDrawings = false;
+        public bool antiAliasDataText = true;
+
+        // benchmarking
+        public readonly Stopwatch stopwatch = new Stopwatch();
+        public double benchmarkMsec;
+        public double benchmarkHz;
+        public string benchmarkMessage;
+        public bool displayBenchmark = true;
+
+        // plottables
+        public readonly List<Plottable> plottables = new List<Plottable>();
+
+        // grid
+        public bool displayGrid = true;
+        public Pen gridPen = Pens.LightGray;
 
         public Settings()
         {
+        }
+
+        public void BenchmarkStart()
+        {
+            stopwatch.Restart();
+        }
+        public void BenchmarkEnd()
+        {
+            stopwatch.Stop();
+            benchmarkMsec = stopwatch.ElapsedTicks * 1000.0 / Stopwatch.Frequency;
+            benchmarkHz = 1000.0 / benchmarkMsec;
+            benchmarkMessage = "";
+            benchmarkMessage += $"Full render of {plottables.Count} objects {GetTotalPointCount()} points)";
+            benchmarkMessage += string.Format(" took {0:000.000} ms ({1:000.00 Hz})", benchmarkMsec, benchmarkHz);
+            if (!backgroundRenderNeeded)
+                benchmarkMessage = benchmarkMessage.Replace("Full", "Data-only");
         }
 
         public void Resize(int width, int height)
@@ -118,11 +162,11 @@ namespace ScottPlot
                 AxisUpdate();
         }
 
-        public void AxisTighen(Graphics gfxFigure)
+        public void AxisTighen()
         {
-            Ticks ticks = new Ticks(gfxFigure, this);
-            Size maxTickSizeHoriz = ticks.GetMaxHorizontalTickSize();
-            Size maxTickSizeVert = ticks.GetMaxVerticalTickSize();
+            Ticks ticks = new Ticks(this);
+            Size maxTickSizeHoriz = ticks.GetMaxTickSize(ticksX);
+            Size maxTickSizeVert = ticks.GetMaxTickSize(ticksY);
 
             // top
             SizeF titleSize = gfxFigure.MeasureString(title, titleFont);
@@ -142,7 +186,7 @@ namespace ScottPlot
             dataPadding[1] = axisPadding + maxTickSizeHoriz.Width / 2;
         }
 
-        public bool axisRenderNeeded = true;
+        public bool backgroundRenderNeeded = true;
 
         private void AxisUpdate()
         {
@@ -152,7 +196,7 @@ namespace ScottPlot
             yAxisCenter = (axis[3] + axis[2]) / 2;
             xAxisScale = dataSize.Width / xAxisSpan; // px per unit
             yAxisScale = dataSize.Height / yAxisSpan; // px per unit
-            axisRenderNeeded = true;
+            backgroundRenderNeeded = true;
         }
 
         private void AxisPan(double? dx = null, double? dy = null)
@@ -261,6 +305,14 @@ namespace ScottPlot
             int xPx = (int)((x - axis[0]) * xAxisScale);
             int yPx = dataSize.Height - (int)((y - axis[2]) * yAxisScale);
             return new Point(xPx, yPx);
+        }
+
+        public int GetTotalPointCount()
+        {
+            int totalPointCount = 0;
+            foreach (Plottable plottable in plottables)
+                totalPointCount += plottable.pointCount;
+            return totalPointCount;
         }
 
 
