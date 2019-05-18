@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Drawing;
 using System.Diagnostics;
+using System.Drawing;
 
 namespace ScottPlot
 {
@@ -85,15 +82,10 @@ namespace ScottPlot
         public string benchmarkMessage;
         public bool displayBenchmark = false;
 
-        // anti-aliasing
-        public bool antiAliasFigureDrawings = false;
-        public bool antiAliasFigureText = true;
-        public bool antiAliasDataDrawings = false;
-        public bool antiAliasDataText = true;
-
         // plottables
         public readonly List<Plottable> plottables = new List<Plottable>();
         public bool useTwentyColors = false;
+        private bool antiAliasData = true;
 
         // plot colors (https://github.com/vega/vega/wiki/Scales#scale-range-literals)
         string[] plottableColors10 = new string[] { "#1f77b4", "#ff7f0e", "#2ca02c", "#d62728",
@@ -110,11 +102,23 @@ namespace ScottPlot
         public Settings()
         {
         }
-        
+
+        public void SetAntiAlilasing(bool? enableAntiAliasing = null)
+        {
+            if (enableAntiAliasing == null)
+                enableAntiAliasing = antiAliasData;
+
+            if (enableAntiAliasing == true)
+                gfxData.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            else
+                gfxData.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
+        }
+
         public void BenchmarkStart()
         {
             benchmarkStopwatch.Restart();
         }
+
         public void BenchmarkEnd()
         {
             benchmarkStopwatch.Stop();
