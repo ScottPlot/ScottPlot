@@ -12,11 +12,11 @@ namespace ScottPlot
          * Efforts will be taken to stabalize this API (though plottables may change).
          */
 
-        // objects requiring initialization
-        private Bitmap figureBmp;
-        private Graphics figureGfx;
+        private Bitmap bmpFigure;
+        private Bitmap bmpData;
+        private Graphics gfxFigure;
+        private Graphics gfxData;
 
-        // set and forget
         public readonly Settings settings = new Settings();
         private readonly Stopwatch stopwatch = Stopwatch.StartNew();
         public readonly List<Plottable> plottables = new List<Plottable>();
@@ -33,10 +33,10 @@ namespace ScottPlot
 
         public override string ToString()
         {
-            return $"ScottPlot ({settings.figureSize.Width}x{settings.figureSize.Height})";
+            return $"ScottPlot ({settings.figureSize.Width}x{settings.figureSize.Height}) with {plottables.Count} objects ({GetTotalPoints()} points)";
         }
 
-        #region bitmap and graphics
+        #region BITMAP AND GRAPHICS
 
         public void Resize(int width, int height)
         {
@@ -48,53 +48,50 @@ namespace ScottPlot
         public void InitializeBitmaps()
         {
             Debug.WriteLine("reinitializing bitmaps and graphics objects");
-            figureBmp = new Bitmap(settings.figureSize.Width, settings.figureSize.Height);
-            figureGfx = Graphics.FromImage(figureBmp);
+            bmpFigure = new Bitmap(settings.figureSize.Width, settings.figureSize.Height);
+            bmpData = new Bitmap(settings.dataSize.Width, settings.dataSize.Height);
+            gfxFigure = Graphics.FromImage(bmpFigure);
+            gfxData = Graphics.FromImage(bmpData);
         }
 
-        public void Render()
+        public void Render(bool forceBackgroundRender = false, bool benchmark = true)
         {
             stopwatch.Restart();
-            figureGfx.Clear(settings.figureBackgroundColor);
-
-            int pointsPlotted = 0;
-            for (int i = 0; i < plottables.Count; i++)
+            if (settings.axisRenderNeeded || forceBackgroundRender)
             {
-                Plottable pltThing = plottables[i];
-                try
-                {
-                    pltThing.Render(settings, figureGfx);
-                    pointsPlotted += pltThing.pointCount;
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine($"EXCEPTION while rendering {pltThing}:\n{ex}");
-                }
+                renderMessage = "Full render";
+                Renderer.Background(gfxFigure, settings);
+                Renderer.Labels(gfxFigure, settings);
+                Renderer.Ticks(gfxFigure, settings);
+                Renderer.AxisFrame(gfxFigure, settings);
+                settings.axisRenderNeeded = false;
             }
-
-            figureGfx.DrawRectangle(Pens.Black, 0, 0, settings.figureSize.Width - 1, settings.figureSize.Height - 1);
-            figureGfx.DrawRectangle(Pens.Black, settings.dataOrigin.X, settings.dataOrigin.Y, settings.dataSize.Width - 1, settings.dataSize.Height - 1);
-
-            Ticks.DrawTicks(figureGfx, settings);
-
+            else
+            {
+                renderMessage = "Data-only render";
+            }
+            Renderer.DataPlottables(gfxData, settings, plottables);
+            gfxFigure.DrawImage(bmpData, settings.dataOrigin);
             stopwatch.Stop();
+
             renderTimeMs = stopwatch.ElapsedTicks * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
             renderRateHz = 1000.0 / renderTimeMs;
-            renderMessage = string.Format("Rendered {4}x{5} Bitmap with {2} objects ({3} points) in {0:00.000} ms ({1:0.00 Hz})",
-                renderTimeMs, renderRateHz, plottables.Count, pointsPlotted, settings.figureSize.Width, settings.figureSize.Height);
-            Debug.WriteLine(renderMessage);
+            renderMessage = string.Format(renderMessage + " of {2} objects ({3} points) took {0:00.000} ms ({1:0.00 Hz})",
+                renderTimeMs, renderRateHz, plottables.Count, GetTotalPoints(), settings.figureSize.Width, settings.figureSize.Height);
+            if (benchmark)
+                Renderer.Benchmark(gfxFigure, settings, renderMessage);
         }
 
         public Bitmap GetBitmap(bool renderFirst = true)
         {
             if (renderFirst)
                 Render();
-            return figureBmp;
+            return bmpFigure;
         }
 
         #endregion
 
-        #region plottable data
+        #region PLOTTABLE DATA
 
         public void Clear()
         {
@@ -122,12 +119,24 @@ namespace ScottPlot
 
         #endregion
 
-        #region axes
+        #region AXES
 
-        public double[] Axes(double? x1 = null, double? x2 = null, double? y1 = null, double? y2 = null)
+        public double[] Axis(double? x1 = null, double? x2 = null, double? y1 = null, double? y2 = null)
         {
             settings.AxisSet(x1, x2, y1, y2);
             return settings.axis;
+        }
+
+        #endregion
+
+        #region MISC
+
+        public int GetTotalPoints()
+        {
+            int totalPoints = 0;
+            foreach (Plottable plottable in plottables)
+                totalPoints += plottable.pointCount;
+            return totalPoints;
         }
 
         #endregion

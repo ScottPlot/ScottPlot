@@ -9,6 +9,7 @@ namespace ScottPlot
 {
     public class Tick
     {
+
         public string label;
         public double value;
 
@@ -28,7 +29,7 @@ namespace ScottPlot
             yPx = settings.figureSize.Height - yPx - settings.dataPadding[2];
 
             figureGfx.DrawLine(Pens.Black, xPx, yPx, xPx - tickSize, yPx);
-            figureGfx.DrawString(label, settings.tickFont, Brushes.Black, xPx - tickSize, yPx, settings.sfAlignRight);
+            figureGfx.DrawString(label, settings.tickFont, Brushes.Black, xPx - tickSize, yPx, settings.sfEast);
         }
 
         public void DrawHorizontal(Graphics figureGfx, Settings settings)
@@ -38,9 +39,7 @@ namespace ScottPlot
             int yPx = settings.figureSize.Height - settings.dataPadding[2];
 
             figureGfx.DrawLine(Pens.Black, xPx, yPx, xPx, yPx + tickSize);
-            figureGfx.DrawString(label, settings.tickFont, Brushes.Black, xPx, yPx + tickSize, settings.sfAlignCenter);
-
-
+            figureGfx.DrawString(label, settings.tickFont, Brushes.Black, xPx, yPx + tickSize, settings.sfNorth);
         }
 
     }
@@ -87,21 +86,19 @@ namespace ScottPlot
             }
 
             // create the ticks
+            List<Tick> ticks = new List<Tick>();
             if (tickSpacing > 0)
             {
-                List<Tick> ticks = new List<Tick>();
-                int yTickCount = (int)(axisSpan / tickSpacing);
+                int yTickCount = (int)(axisSpan / tickSpacing) + 2;
+                double tickOffset = axisLow % tickSpacing;
                 for (int i = 0; i < yTickCount; i++)
                 {
-                    double value = tickSpacing * i + axisLow;
-                    ticks.Add(new Tick(value));
+                    double value = tickSpacing * i + axisLow - tickOffset;
+                    if (value > axisLow && value < axisHigh)
+                        ticks.Add(new Tick(value));
                 }
-                return ticks;
             }
-            else
-            {
-                return null;
-            }
+            return ticks;
         }
     }
 }

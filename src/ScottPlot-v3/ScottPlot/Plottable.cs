@@ -4,6 +4,19 @@ using System.Drawing;
 namespace ScottPlot
 {
 
+    public static class PlottableDefaults
+    {
+        public static Color LineColor = Color.Black;
+        public static float LineWidth = 1;
+
+        public static Color MarkerColor = Color.Black;
+        public static float MarkerSize = 10;
+
+        public static Color TextColor = Color.Black;
+        public static float TextSize = 12;
+        public static string TextFont = "Segoe UI";
+    }
+
     public abstract class Plottable
     {
         public int pointCount = 0;
@@ -35,8 +48,8 @@ namespace ScottPlot
             this.xs = xs;
             this.ys = ys;
 
-            lineColor = (lineColor != null) ? lineColor : Settings.defaultPlottableLineColor;
-            lineWidth = (lineWidth != null) ? lineWidth : Settings.defaultPlottableLineWidth;
+            lineColor = (lineColor != null) ? lineColor : PlottableDefaults.LineColor;
+            lineWidth = (lineWidth != null) ? lineWidth : PlottableDefaults.LineWidth;
             pen = new Pen((Color)lineColor, (float)lineWidth);
 
             pointCount = xs.Length;
@@ -71,8 +84,8 @@ namespace ScottPlot
         {
             this.x = x;
             this.y = y;
-            this.size = (size != null) ? (float)size : Settings.defaultPlottableMarkerSize;
-            color = (color != null) ? color : Settings.defaultPlottableTextColor;
+            this.size = (size != null) ? (float)size : PlottableDefaults.MarkerSize;
+            color = (color != null) ? color : PlottableDefaults.TextColor;
             brush = new SolidBrush((Color)color);
 
             pointCount = 1;
@@ -108,9 +121,9 @@ namespace ScottPlot
             this.text = text;
             this.x = x;
             this.y = y;
-            color = (color != null) ? color : Settings.defaultPlottableTextColor;
+            color = (color != null) ? color : PlottableDefaults.TextColor;
             brush = new SolidBrush((Color)color);
-            fontSize = (fontSize != null) ? fontSize : Settings.defaultPlottableTextSize;
+            fontSize = (fontSize != null) ? fontSize : PlottableDefaults.TextSize;
             FontStyle fontStyle = (bold == true) ? FontStyle.Bold : FontStyle.Regular;
             font = new Font(fontName, (float)fontSize, fontStyle);
 
