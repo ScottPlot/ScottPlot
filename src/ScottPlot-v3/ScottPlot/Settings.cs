@@ -8,17 +8,6 @@ using System.Diagnostics;
 
 namespace ScottPlot
 {
-    public struct XY
-    {
-        public double x;
-        public double y;
-
-        public XY(double x, double y)
-        {
-            this.x = x;
-            this.y = y;
-        }
-    }
 
     public class Settings
     {
@@ -35,8 +24,6 @@ namespace ScottPlot
         public double yAxisCenter;
         public double xAxisScale;
         public double yAxisScale;
-        public int xAxisOffset;
-        public int yAxisOffset;
 
         // mouse adjustments
         public Point mouseDownLocation = new Point(0, 0);
@@ -44,32 +31,43 @@ namespace ScottPlot
 
         // assigned default values
         public int[] dataPadding = new int[] { 140, 120, 140, 55 }; // X1, X2, Y1, Y2
-        public Color figureBackgroundColor = defaultBackgroundColor;
+        public Color figureBackgroundColor = Color.LightGray;
+        public Color dataBackgroundColor = Color.White;
 
-        // default colors
-        public readonly static Color defaultBackgroundColor = Color.LightGray;
-
-        // useful string format
-        public StringFormat sfAlignRight = new StringFormat() { LineAlignment = StringAlignment.Center, Alignment = StringAlignment.Far };
-        public StringFormat sfAlignCenter = new StringFormat() { LineAlignment = StringAlignment.Near, Alignment = StringAlignment.Center };
+        // useful string formats
+        public StringFormat sfEast = new StringFormat() { LineAlignment = StringAlignment.Center, Alignment = StringAlignment.Far };
+        public StringFormat sfNorth = new StringFormat() { LineAlignment = StringAlignment.Near, Alignment = StringAlignment.Center };
+        public StringFormat sfSouth = new StringFormat() { LineAlignment = StringAlignment.Far, Alignment = StringAlignment.Center };
 
         // ticks
         public readonly Font tickFont = new Font("Segoe UI", 12);
         public List<Tick> ticksX;
         public List<Tick> ticksY;
 
-        // PlottableScatter
-        public readonly static Color defaultPlottableLineColor = Color.Black;
-        public readonly static float defaultPlottableLineWidth = 1;
+        // axis labels
+        public bool[] axisFrame = new bool[] { true, true, true, true };
+        public readonly Pen axisFramePen = Pens.Black;
 
-        // PlottableMarker
-        public readonly static Color defaultPlottableMarkerColor = Color.Black;
-        public readonly static float defaultPlottableMarkerSize = 10;
+        // title
+        public readonly string title = "ScottPlot Title";
+        public readonly Font titleFont = new Font("Segoe UI", 16, FontStyle.Bold);
+        public readonly Brush titleFontBrush = Brushes.Black;
 
-        // PlottableText
-        public readonly static Color defaultPlottableTextColor = Color.Black;
-        public readonly static float defaultPlottableTextSize = 12;
-        public readonly static string defaultPlottableTextFont = "Segoe UI";
+        // axis labels
+        public readonly string axisLabelX = "horizontal goodness";
+        public readonly string axisLabelY = "vertical awesome";
+        public readonly Font axisLabelFont = new Font("Segoe UI", 16, FontStyle.Bold);
+        public readonly Brush axisLabelBrush = Brushes.Black;
+
+        // frame
+        public bool dataFrame = true;
+        public Color dataFrameColor = Color.Black;
+
+        // debugging
+        public readonly Font debugFont = new Font("Consolas", 8);
+        public readonly Brush debugFontBrush = Brushes.Red;
+        public readonly Brush debugBackgroundBrush = Brushes.White;
+        public readonly Pen debugBorderPen = Pens.Red;
 
         public Settings()
         {
@@ -87,43 +85,73 @@ namespace ScottPlot
 
         public void AxisSet(double? x1 = null, double? x2 = null, double? y1 = null, double? y2 = null)
         {
-            axis[0] = (x1 == null) ? -10 : (double)x1;
-            axis[1] = (x2 == null) ? 10 : (double)x2;
-            axis[2] = (y1 == null) ? -10 : (double)y1;
-            axis[3] = (y2 == null) ? 10 : (double)y2;
-            AxisUpdate();
+            bool axisChanged = false;
+
+            if (x1 != null && (double)x1 != axis[0])
+            {
+                axis[0] = (double)x1;
+                axisChanged = true;
+            }
+
+            if (x2 != null && (double)x2 != axis[1])
+            {
+                axis[1] = (double)x2;
+                axisChanged = true;
+            }
+
+            if (y1 != null && (double)y1 != axis[2])
+            {
+                axis[2] = (double)y1;
+                axisChanged = true;
+            }
+
+            if (y2 != null && (double)y2 != axis[3])
+            {
+                axis[3] = (double)y2;
+                axisChanged = true;
+            }
+
+            if (axisChanged)
+                AxisUpdate();
         }
+
+        public bool axisRenderNeeded = true;
+        private bool labelsAreTight = false;
 
         private void AxisUpdate()
         {
-            if (figureSize != null)
-            {
-                xAxisSpan = axis[1] - axis[0];
-                xAxisCenter = (axis[1] + axis[0]) / 2;
-                yAxisSpan = axis[3] - axis[2];
-                yAxisCenter = (axis[3] + axis[2]) / 2;
-                xAxisScale = dataSize.Width / xAxisSpan; // px per unit
-                yAxisScale = dataSize.Height / yAxisSpan; // px per unit
-                xAxisOffset = dataOrigin.X;
-                yAxisOffset = figureSize.Height - dataPadding[2];
-            }
+            xAxisSpan = axis[1] - axis[0];
+            xAxisCenter = (axis[1] + axis[0]) / 2;
+            yAxisSpan = axis[3] - axis[2];
+            yAxisCenter = (axis[3] + axis[2]) / 2;
+            xAxisScale = dataSize.Width / xAxisSpan; // px per unit
+            yAxisScale = dataSize.Height / yAxisSpan; // px per unit
+            axisRenderNeeded = true;
+
+            if (!labelsAreTight)
+                TightenLabels();
         }
 
         private void AxisPan(double? dx = null, double? dy = null)
         {
+            bool axisChanged = false;
+
             if (dx != null && dx != 0)
             {
                 axis[0] += (double)dx;
                 axis[1] += (double)dx;
+                axisChanged = true;
             }
 
             if (dy != null && dy != 0)
             {
                 axis[2] += (double)dy;
                 axis[3] += (double)dy;
+                axisChanged = true;
             }
 
-            AxisUpdate();
+            if (axisChanged)
+                AxisUpdate();
         }
 
         private void AxisPan(int dX, int dY)
@@ -133,11 +161,14 @@ namespace ScottPlot
 
         private void AxisZoom(double xFrac = 1, double yFrac = 1)
         {
+            bool axisChanged = false;
+
             if (xFrac != 1)
             {
                 double halfNewSpan = xAxisSpan / xFrac / 2;
                 axis[0] = xAxisCenter - halfNewSpan;
                 axis[1] = xAxisCenter + halfNewSpan;
+                axisChanged = true;
             }
 
             if (yFrac != 1)
@@ -145,9 +176,11 @@ namespace ScottPlot
                 double halfNewSpan = yAxisSpan / yFrac / 2;
                 axis[2] = yAxisCenter - halfNewSpan;
                 axis[3] = yAxisCenter + halfNewSpan;
+                axisChanged = true;
             }
 
-            AxisUpdate();
+            if (axisChanged)
+                AxisUpdate();
         }
 
         private void AxisZoomPx(int xPx, int yPx)
@@ -202,9 +235,17 @@ namespace ScottPlot
 
         public Point GetPoint(double x, double y)
         {
-            int xPx = (int)((x - axis[0]) * xAxisScale) + xAxisOffset;
-            int yPx = yAxisOffset - (int)((y - axis[2]) * yAxisScale);
+            int xPx = (int)((x - axis[0]) * xAxisScale);
+            int yPx = dataSize.Height - (int)((y - axis[2]) * yAxisScale);
             return new Point(xPx, yPx);
+        }
+
+        public void TightenLabels(int padding = 3)
+        {
+            if (figureSize == null)
+                return;
+            Debug.WriteLine("TIGHTENING LABELS...");
+            labelsAreTight = true;
         }
 
     }

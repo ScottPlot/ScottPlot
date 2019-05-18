@@ -32,10 +32,17 @@ namespace ScottPlot_Sandbox_Forms
             plt.Resize(pictureBox1.Width, pictureBox1.Height);
         }
 
-        private void Render()
+        bool renderingNow = false;
+        private void Render(bool forceRender = false)
         {
-            pictureBox1.Image = plt.GetBitmap();
-            lblStatus.Text = plt.renderMessage;
+            if (renderingNow == false || forceRender == true)
+            {
+                renderingNow = true;
+                pictureBox1.Image = plt.GetBitmap();
+                lblStatus.Text = plt.renderMessage;
+                Application.DoEvents();
+                renderingNow = false;
+            }
         }
 
         public void PlotSomeStuff()
@@ -60,7 +67,7 @@ namespace ScottPlot_Sandbox_Forms
                 ys[i] = rand.NextDouble() * 10;
             }
             plt.PlotScatter(xs, ys);
-            plt.Axes(-1, 11, -1, 11);
+            plt.Axis(-1, 11, -1, 11);
             Render();
         }
 
