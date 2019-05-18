@@ -10,7 +10,7 @@ namespace ScottPlot
     public class Tick
     {
 
-        public string label;
+        public string text;
         public double value;
 
         private const int tickSize = 5;
@@ -18,7 +18,7 @@ namespace ScottPlot
         public Tick(double value)
         {
             this.value = value;
-            label = string.Format("{0:0.00}", value);
+            text = string.Format("{0:0.00}", value);
         }
 
         public void DrawVertical(Graphics figureGfx, Settings settings)
@@ -29,7 +29,7 @@ namespace ScottPlot
             yPx = settings.figureSize.Height - yPx - settings.dataPadding[2];
 
             figureGfx.DrawLine(Pens.Black, xPx, yPx, xPx - tickSize, yPx);
-            figureGfx.DrawString(label, settings.tickFont, Brushes.Black, xPx - tickSize, yPx, settings.sfEast);
+            figureGfx.DrawString(text, settings.tickFont, Brushes.Black, xPx - tickSize, yPx, settings.sfEast);
         }
 
         public void DrawHorizontal(Graphics figureGfx, Settings settings)
@@ -39,30 +39,67 @@ namespace ScottPlot
             int yPx = settings.figureSize.Height - settings.dataPadding[2];
 
             figureGfx.DrawLine(Pens.Black, xPx, yPx, xPx, yPx + tickSize);
-            figureGfx.DrawString(label, settings.tickFont, Brushes.Black, xPx, yPx + tickSize, settings.sfNorth);
+            figureGfx.DrawString(text, settings.tickFont, Brushes.Black, xPx, yPx + tickSize, settings.sfNorth);
         }
 
     }
 
-    public static class Ticks
+    public class Ticks
     {
-        public static void DrawTicks(Graphics figureGfx, Settings settings, bool recalculate = true)
+        Graphics gfxFigure;
+        Settings settings;
+
+        public Ticks(Graphics figureGfx, Settings settings)
         {
-            if (recalculate == true || settings.ticksX == null || settings.ticksY == null)
-            {
-                settings.ticksX = Ticks.GetTicks(settings.axis[0], settings.axis[1], settings.xAxisScale, 40, settings.dataSize.Width);
-                settings.ticksY = Ticks.GetTicks(settings.axis[2], settings.axis[3], settings.yAxisScale, 20, settings.dataSize.Height);
-            }
+            this.gfxFigure = figureGfx;
+            this.settings = settings;
+            Recalculate();
+        }
+
+        public void Recalculate()
+        {
+            settings.ticksX = GetTicks(settings.axis[0], settings.axis[1], settings.xAxisScale, 40, settings.dataSize.Width);
+            settings.ticksY = GetTicks(settings.axis[2], settings.axis[3], settings.yAxisScale, 20, settings.dataSize.Height);
+        }
+
+        public void Render(bool recalculate = true)
+        {
+            if (recalculate)
+                Recalculate();
 
             foreach (Tick tick in settings.ticksX)
-                tick.DrawHorizontal(figureGfx, settings);
+                tick.DrawHorizontal(gfxFigure, settings);
 
             foreach (Tick tick in settings.ticksY)
-                tick.DrawVertical(figureGfx, settings);
+                tick.DrawVertical(gfxFigure, settings);
 
         }
 
-        public static List<Tick> GetTicks(double axisLow, double axisHigh, double axisScale, int tickSpacingPx, int axisSizePx)
+        private Size GetMaxTickSize(List<Tick> ticks)
+        {
+            double largestWidth = 0;
+            double largestHeight = 0;
+            foreach (Tick tick in ticks)
+            {
+                SizeF tickSize = gfxFigure.MeasureString(tick.text, settings.tickFont);
+                if (tickSize.Width > largestWidth)
+                    largestWidth = tickSize.Width;
+                if (tickSize.Height > largestHeight)
+                    largestHeight = tickSize.Height;
+            }
+            return new Size((int)largestWidth, (int)largestHeight);
+        }
+        public Size GetMaxHorizontalTickSize()
+        {
+            return GetMaxTickSize(settings.ticksX);
+        }
+
+        public Size GetMaxVerticalTickSize()
+        {
+            return GetMaxTickSize(settings.ticksY);
+        }
+
+        private List<Tick> GetTicks(double axisLow, double axisHigh, double axisScale, int tickSpacingPx, int axisSizePx)
         {
             double axisSpan = axisHigh - axisLow;
             double tickCountTarget = (double)axisSizePx / tickSpacingPx / 2;
