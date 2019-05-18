@@ -10,23 +10,33 @@ namespace ScottPlot
 {
     public class Renderer
     {
-        public static void Background(Graphics gfxFigure, Settings settings)
+        public static void FigureClear(Settings settings)
         {
-            gfxFigure.Clear(settings.figureBackgroundColor);
+            settings.gfxFigure.Clear(settings.figureBackgroundColor);
         }
 
-        public static void DataPlottables(Graphics gfxData, Settings settings, List<Plottable> plottables)
+        public static void DataBackground(Settings settings)
         {
-            if (gfxData == null)
+            settings.gfxData.Clear(settings.dataBackgroundColor);
+        }
+
+        public static void DataGrid(Settings settings)
+        {
+            Ticks ticks = new Ticks(settings);
+            ticks.RenderGrid();
+        }
+
+        public static void DataPlottables(Settings settings)
+        {
+            if (settings.gfxData == null)
                 return;
 
-            gfxData.Clear(settings.dataBackgroundColor);
-            for (int i = 0; i < plottables.Count; i++)
+            for (int i = 0; i < settings.plottables.Count; i++)
             {
-                Plottable pltThing = plottables[i];
+                Plottable pltThing = settings.plottables[i];
                 try
                 {
-                    pltThing.Render(settings, gfxData);
+                    pltThing.Render(settings);
                 }
                 catch (Exception ex)
                 {
@@ -35,57 +45,57 @@ namespace ScottPlot
             }
         }
 
-        public static void PlaceDataOnFigure(Graphics gfxFigure, Settings settings, Bitmap bmpData)
+        public static void DataPlaceOntoFigure(Settings settings)
         {
-            if (gfxFigure == null || bmpData == null)
+            if (settings.gfxFigure == null || settings.bmpData == null)
                 return;
 
-            gfxFigure.DrawImage(bmpData, settings.dataOrigin);
+            settings.gfxFigure.DrawImage(settings.bmpData, settings.dataOrigin);
         }
 
-        public static void Labels(Graphics gfxFigure, Settings settings)
+        public static void FigureLabels(Settings settings)
         {
             bool drawDebugRectangles = false;
 
-            SizeF titleSizeF = gfxFigure.MeasureString(settings.title, settings.titleFont);
+            SizeF titleSizeF = settings.gfxFigure.MeasureString(settings.title, settings.titleFont);
             Size titleSize = new Size((int)titleSizeF.Width, (int)titleSizeF.Height);
             Point titlePoint = new Point(settings.figureSize.Width / 2, settings.axisPadding);
             titlePoint.X -= titleSize.Width / 2;
-            gfxFigure.DrawString(settings.title, settings.titleFont, settings.titleFontBrush, titlePoint, settings.sfNorthWest);
+            settings.gfxFigure.DrawString(settings.title, settings.titleFont, settings.titleFontBrush, titlePoint, settings.sfNorthWest);
             if (drawDebugRectangles)
-                gfxFigure.DrawRectangle(Pens.Magenta, titlePoint.X, titlePoint.Y, titleSize.Width, titleSize.Height);
+                settings.gfxFigure.DrawRectangle(Pens.Magenta, titlePoint.X, titlePoint.Y, titleSize.Width, titleSize.Height);
 
-            SizeF xLabelSizF = gfxFigure.MeasureString(settings.axisLabelX, settings.axisLabelFont);
+            SizeF xLabelSizF = settings.gfxFigure.MeasureString(settings.axisLabelX, settings.axisLabelFont);
             Size xLabelSize = new Size((int)xLabelSizF.Width, (int)xLabelSizF.Height);
             Point xLabelPoint = new Point(settings.dataSize.Width / 2 + settings.dataOrigin.X, settings.figureSize.Height - settings.axisPadding);
             xLabelPoint.X -= xLabelSize.Width / 2;
             xLabelPoint.Y -= xLabelSize.Height;
-            gfxFigure.DrawString(settings.axisLabelX, settings.axisLabelFont, settings.axisLabelBrush, xLabelPoint, settings.sfNorthWest);
+            settings.gfxFigure.DrawString(settings.axisLabelX, settings.axisLabelFont, settings.axisLabelBrush, xLabelPoint, settings.sfNorthWest);
             if (drawDebugRectangles)
-                gfxFigure.DrawRectangle(Pens.Magenta, xLabelPoint.X, xLabelPoint.Y, xLabelSize.Width, xLabelSize.Height);
+                settings.gfxFigure.DrawRectangle(Pens.Magenta, xLabelPoint.X, xLabelPoint.Y, xLabelSize.Width, xLabelSize.Height);
 
-            gfxFigure.RotateTransform(-90);
-            SizeF yLabelSizF = gfxFigure.MeasureString(settings.axisLabelY, settings.axisLabelFont);
+            
+            SizeF yLabelSizF = settings.gfxFigure.MeasureString(settings.axisLabelY, settings.axisLabelFont);
             Size yLabelSize = new Size((int)yLabelSizF.Width, (int)yLabelSizF.Height);
             Point yLabelPoint = new Point(-settings.dataSize.Height / 2 - settings.dataOrigin.Y, settings.axisPadding);
             yLabelPoint.X -= yLabelSize.Width / 2;
-            gfxFigure.DrawString(settings.axisLabelY, settings.axisLabelFont, settings.axisLabelBrush, yLabelPoint, settings.sfNorthWest);
+            settings.gfxFigure.RotateTransform(-90);
+            settings.gfxFigure.DrawString(settings.axisLabelY, settings.axisLabelFont, settings.axisLabelBrush, yLabelPoint, settings.sfNorthWest);
             if (drawDebugRectangles)
-                gfxFigure.DrawRectangle(Pens.Magenta, yLabelPoint.X, yLabelPoint.Y, yLabelSize.Width, yLabelSize.Height);
-            gfxFigure.ResetTransform();
+                settings.gfxFigure.DrawRectangle(Pens.Magenta, yLabelPoint.X, yLabelPoint.Y, yLabelSize.Width, yLabelSize.Height);
+            settings.gfxFigure.ResetTransform();
         }
 
-        public static void Ticks(Graphics gfxFigure, Settings settings)
+        public static void FigureTicks(Settings settings)
         {
             if (settings.dataSize.Width < 1 || settings.dataSize.Height < 1)
                 return;
 
-            gfxFigure.DrawRectangle(Pens.Black, settings.dataOrigin.X, settings.dataOrigin.Y, settings.dataSize.Width - 1, settings.dataSize.Height - 1);
-            Ticks ticks = new Ticks(gfxFigure, settings);
-            ticks.Render();
+            Ticks ticks = new Ticks(settings);
+            ticks.RenderTicks();
         }
 
-        public static void AxisFrame(Graphics gfxFigure, Settings settings)
+        public static void FigureFrames(Settings settings)
         {
             if (settings.dataSize.Width<1 || settings.dataSize.Height<1)
                 return;
@@ -96,32 +106,30 @@ namespace ScottPlot
             Point br = new Point(settings.dataOrigin.X + settings.dataSize.Width, settings.dataOrigin.Y + settings.dataSize.Height);
 
             if (settings.axisFrame[0])
-                gfxFigure.DrawLine(settings.axisFramePen, tl, bl);
+                settings.gfxFigure.DrawLine(settings.axisFramePen, tl, bl);
             if (settings.axisFrame[1])
-                gfxFigure.DrawLine(settings.axisFramePen, tr, br);
+                settings.gfxFigure.DrawLine(settings.axisFramePen, tr, br);
             if (settings.axisFrame[2])
-                gfxFigure.DrawLine(settings.axisFramePen, bl, br);
+                settings.gfxFigure.DrawLine(settings.axisFramePen, bl, br);
             if (settings.axisFrame[3])
-                gfxFigure.DrawLine(settings.axisFramePen, tl, tr);
+                settings.gfxFigure.DrawLine(settings.axisFramePen, tl, tr);
         }
 
-        public static void Benchmark(Graphics gfxFigure, Settings settings, int plottableCount, int pointCount, double renderTimeMs, double renderRateHz, bool fullRender)
+        public static void Benchmark(Settings settings)
         {
-            string msg = "";
-            msg += $"Full render of {plottableCount} objects ({pointCount} points)";
-            msg += string.Format(" took {0:000.000} ms ({1:000.00 Hz})", renderTimeMs, renderRateHz);
-            if (!fullRender)
-                msg = msg.Replace("Full", "Data-only");
-
-            SizeF textSizeF = gfxFigure.MeasureString(msg, settings.debugFont);
-            Size textSize = new Size((int)textSizeF.Width, (int)textSizeF.Height);
-            Point textLocation = new Point(settings.dataSize.Width + settings.dataOrigin.X, settings.dataSize.Height + settings.dataOrigin.Y);
-            textLocation.X -= textSize.Width + 3;
-            textLocation.Y -= textSize.Height + 3;
-            Rectangle textRect = new Rectangle(textLocation, textSize);
-            gfxFigure.FillRectangle(settings.debugBackgroundBrush, textRect);
-            //gfxFigure.DrawRectangle(settings.debugBorderPen, textRect);
-            gfxFigure.DrawString(msg, settings.debugFont, settings.debugFontBrush, textLocation);
+            if (settings.displayBenchmark)
+            {
+                int debugPadding = 3;
+                SizeF textSizeF = settings.gfxFigure.MeasureString(settings.benchmarkMessage, settings.debugFont);
+                Size textSize = new Size((int)textSizeF.Width, (int)textSizeF.Height);
+                Point textLocation = new Point(settings.dataSize.Width + settings.dataOrigin.X, settings.dataSize.Height + settings.dataOrigin.Y);
+                textLocation.X -= textSize.Width + debugPadding;
+                textLocation.Y -= textSize.Height + debugPadding;
+                Rectangle textRect = new Rectangle(textLocation, textSize);
+                settings.gfxFigure.FillRectangle(settings.debugBackgroundBrush, textRect);
+                settings.gfxFigure.DrawRectangle(settings.debugBorderPen, textRect);
+                settings.gfxFigure.DrawString(settings.benchmarkMessage, settings.debugFont, settings.debugFontBrush, textLocation);
+            }
         }
     }
 }

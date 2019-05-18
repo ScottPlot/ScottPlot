@@ -12,18 +12,7 @@ namespace ScottPlot
          * Efforts will be taken to stabalize this API (though plottables may change).
          */
 
-        private Bitmap bmpFigure;
-        private Bitmap bmpData;
-        private Graphics gfxFigure;
-        private Graphics gfxData;
-
         public readonly Settings settings = new Settings();
-        private readonly Stopwatch stopwatch = Stopwatch.StartNew();
-        public readonly List<Plottable> plottables = new List<Plottable>();
-
-        public double renderTimeMs { get; private set; }
-        public double renderRateHz { get; private set; }
-        public string renderMessage { get; private set; }
 
         public ScottPlot(int width = 600, int height = 800)
         {
@@ -33,8 +22,11 @@ namespace ScottPlot
 
         public override string ToString()
         {
-            return $"ScottPlot ({settings.figureSize.Width}x{settings.figureSize.Height}) with {plottables.Count} objects ({GetTotalPoints()} points)";
+            return $"ScottPlot ({settings.figureSize.Width}x{settings.figureSize.Height}) with {settings.plottables.Count} objects ({GetTotalPoints()} points)";
         }
+
+
+
 
         #region BITMAP AND GRAPHICS
 
@@ -53,96 +45,94 @@ namespace ScottPlot
         {
             Debug.WriteLine("reinitializing bitmaps and graphics objects");
 
+            settings.bmpFigure = null;
+            settings.gfxFigure = null;
+
             if (settings.figureSize.Width > 0 && settings.figureSize.Height > 0)
             {
-                bmpFigure = new Bitmap(settings.figureSize.Width, settings.figureSize.Height);
-                gfxFigure = Graphics.FromImage(bmpFigure);
-            }
-            else
-            {
-                Debug.WriteLine("WARNING: figure area is 0px");
-                bmpFigure = null;
-                gfxFigure = null;
+                settings.bmpFigure = new Bitmap(settings.figureSize.Width, settings.figureSize.Height);
+                settings.gfxFigure = Graphics.FromImage(settings.bmpFigure);
+                settings.gfxFigure.SmoothingMode = (settings.antiAliasFigureDrawings) ? System.Drawing.Drawing2D.SmoothingMode.AntiAlias : System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
+                settings.gfxFigure.TextRenderingHint = (settings.antiAliasFigureText) ? System.Drawing.Text.TextRenderingHint.AntiAlias : System.Drawing.Text.TextRenderingHint.SingleBitPerPixel;
             }
 
             if (settings.dataSize.Width > 0 && settings.dataSize.Height > 0)
             {
-                bmpData = new Bitmap(settings.dataSize.Width, settings.dataSize.Height);
-                gfxData = Graphics.FromImage(bmpData);
+                settings.bmpData = new Bitmap(settings.dataSize.Width, settings.dataSize.Height);
+                settings.gfxData = Graphics.FromImage(settings.bmpData);
+                settings.gfxData.SmoothingMode = (settings.antiAliasDataDrawings) ? System.Drawing.Drawing2D.SmoothingMode.AntiAlias : System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
+                settings.gfxData.TextRenderingHint = (settings.antiAliasDataText) ? System.Drawing.Text.TextRenderingHint.AntiAlias : System.Drawing.Text.TextRenderingHint.SingleBitPerPixel;
             }
-            else
-            {
-                Debug.WriteLine("WARNING: data area is 0px");
-                bmpData = null;
-                gfxData = null;
-            }
+
         }
 
-        public void Render(bool forceBackgroundRender = false, bool benchmark = true)
+        public void Render()
         {
             if (!titenHappened)
                 AxisTighten();
 
-            bool fullRender = (settings.axisRenderNeeded || forceBackgroundRender);
-            stopwatch.Restart();
-
-            if (fullRender)
+            settings.BenchmarkStart();
+            if (settings.backgroundRenderNeeded)
             {
-                renderMessage = "Full render";
-                Renderer.Background(gfxFigure, settings);
-                Renderer.Labels(gfxFigure, settings);
-                Renderer.Ticks(gfxFigure, settings);
-                Renderer.AxisFrame(gfxFigure, settings);
-                settings.axisRenderNeeded = false;
+                Debug.WriteLine("Rendering background");
+                Renderer.FigureClear(settings);
+                Renderer.FigureLabels(settings);
+                Renderer.FigureTicks(settings);
+                Renderer.FigureFrames(settings);
             }
+            Debug.WriteLine("Rendering data");
+            Renderer.DataBackground(settings);
+            Renderer.DataGrid(settings);
+            Renderer.DataPlottables(settings);
+            Renderer.DataPlaceOntoFigure(settings);
+            settings.BenchmarkEnd();
+            Renderer.Benchmark(settings);
+            settings.backgroundRenderNeeded = false;
 
-            Renderer.DataPlottables(gfxData, settings, plottables);
-            Renderer.PlaceDataOnFigure(gfxFigure, settings, bmpData);
-
-            stopwatch.Stop();
-            renderTimeMs = stopwatch.ElapsedTicks * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
-            renderRateHz = 1000.0 / renderTimeMs;
-
-            if (benchmark)
-                Renderer.Benchmark(gfxFigure, settings, plottables.Count, GetTotalPoints(), renderTimeMs, renderRateHz, fullRender);
         }
 
         public Bitmap GetBitmap(bool renderFirst = true)
         {
             if (renderFirst)
                 Render();
-            return bmpFigure;
+            return settings.bmpFigure;
         }
 
         #endregion
+
+
+
 
         #region PLOTTABLE DATA
 
         public void Clear()
         {
             Debug.WriteLine("Clearing plottables");
-            plottables.Clear();
+            settings.plottables.Clear();
         }
 
         public void PlotText(string text, double x, double y)
         {
             PlottableText txt = new PlottableText(text, x, y);
-            plottables.Add(txt);
+            settings.plottables.Add(txt);
         }
 
         public void PlotMarker(double x, double y)
         {
             PlottableMarker mark = new PlottableMarker(x, y);
-            plottables.Add(mark);
+            settings.plottables.Add(mark);
         }
 
         public void PlotScatter(double[] xs, double[] ys)
         {
             PlottableScatter scat = new PlottableScatter(xs, ys);
-            plottables.Add(scat);
+            settings.plottables.Add(scat);
         }
 
         #endregion
+
+
+
 
         #region AXES
 
@@ -156,19 +146,22 @@ namespace ScottPlot
         public void AxisTighten(int padding = 5)
         {
             settings.axisPadding = padding;
-            settings.AxisTighen(gfxFigure);
+            settings.AxisTighen();
             Resize();
             titenHappened = true;
         }
 
         #endregion
 
+
+
+
         #region MISC
 
         public int GetTotalPoints()
         {
             int totalPoints = 0;
-            foreach (Plottable plottable in plottables)
+            foreach (Plottable plottable in settings.plottables)
                 totalPoints += plottable.pointCount;
             return totalPoints;
         }

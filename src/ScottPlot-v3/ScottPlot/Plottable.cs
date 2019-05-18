@@ -22,7 +22,7 @@ namespace ScottPlot
         public int pointCount = 0;
         public string label = null;
 
-        public abstract void Render(Settings settings, Graphics gfx);
+        public abstract void Render(Settings settings);
         public abstract override string ToString();
 
         public void Validate()
@@ -65,12 +65,12 @@ namespace ScottPlot
             throw new NotImplementedException();
         }
 
-        public override void Render(Settings settings, Graphics gfx)
+        public override void Render(Settings settings)
         {
             Point[] points = new Point[xs.Length];
             for (int i = 0; i < xs.Length; i++)
                 points[i] = settings.GetPoint(xs[i], ys[i]);
-            gfx.DrawLines(pen, points);
+            settings.gfxData.DrawLines(pen, points);
         }
     }
     
@@ -100,10 +100,10 @@ namespace ScottPlot
             throw new NotImplementedException();
         }
 
-        public override void Render(Settings settings, Graphics gfx)
+        public override void Render(Settings settings)
         {
             Point point = settings.GetPoint(x, y);
-            gfx.FillEllipse(brush, point.X - size/2, point.Y - size/2, size, size);
+            settings.gfxData.FillEllipse(brush, point.X - size/2, point.Y - size/2, size, size);
         }
 
     }
@@ -140,9 +140,9 @@ namespace ScottPlot
             throw new NotImplementedException();
         }
 
-        public override void Render(Settings settings, Graphics gfx)
+        public override void Render(Settings settings)
         {
-            gfx.DrawString(text, font, brush, settings.GetPoint(x, y));
+            settings.gfxData.DrawString(text, font, brush, settings.GetPoint(x, y));
         }
     }
 }
