@@ -31,13 +31,15 @@ namespace ScottPlot
 
         // assigned default values
         public int[] dataPadding = new int[] { 140, 120, 140, 55 }; // X1, X2, Y1, Y2
-        public Color figureBackgroundColor = Color.LightGray;
+        public Color figureBackgroundColor = Color.White;
         public Color dataBackgroundColor = Color.White;
 
-        // useful string formats
+        // useful string formats (position indicates where their origin is)
         public StringFormat sfEast = new StringFormat() { LineAlignment = StringAlignment.Center, Alignment = StringAlignment.Far };
         public StringFormat sfNorth = new StringFormat() { LineAlignment = StringAlignment.Near, Alignment = StringAlignment.Center };
         public StringFormat sfSouth = new StringFormat() { LineAlignment = StringAlignment.Far, Alignment = StringAlignment.Center };
+        public StringFormat sfWest = new StringFormat() { LineAlignment = StringAlignment.Center, Alignment = StringAlignment.Near };
+        public StringFormat sfNorthWest = new StringFormat() { LineAlignment = StringAlignment.Near, Alignment = StringAlignment.Near };
 
         // ticks
         public readonly Font tickFont = new Font("Segoe UI", 12);
@@ -47,6 +49,7 @@ namespace ScottPlot
         // axis labels
         public bool[] axisFrame = new bool[] { true, true, true, true };
         public readonly Pen axisFramePen = Pens.Black;
+        public int axisPadding = 5;
 
         // title
         public readonly string title = "ScottPlot Title";
@@ -65,9 +68,9 @@ namespace ScottPlot
 
         // debugging
         public readonly Font debugFont = new Font("Consolas", 8);
-        public readonly Brush debugFontBrush = Brushes.Red;
+        public readonly Brush debugFontBrush = Brushes.Gray;
         public readonly Brush debugBackgroundBrush = Brushes.White;
-        public readonly Pen debugBorderPen = Pens.Red;
+        public readonly Pen debugBorderPen = Pens.Gray;
 
         public Settings()
         {
@@ -115,8 +118,31 @@ namespace ScottPlot
                 AxisUpdate();
         }
 
+        public void AxisTighen(Graphics gfxFigure)
+        {
+            Ticks ticks = new Ticks(gfxFigure, this);
+            Size maxTickSizeHoriz = ticks.GetMaxHorizontalTickSize();
+            Size maxTickSizeVert = ticks.GetMaxVerticalTickSize();
+
+            // top
+            SizeF titleSize = gfxFigure.MeasureString(title, titleFont);
+            dataPadding[3] = (int)(titleSize.Height) + axisPadding * 2;
+
+            // bottom
+            SizeF xLabelSize = gfxFigure.MeasureString(axisLabelX, axisLabelFont);
+            dataPadding[2] = (int)(xLabelSize.Height) + axisPadding * 2;
+            dataPadding[2] += maxTickSizeHoriz.Height;
+
+            // left
+            SizeF yLabelSize = gfxFigure.MeasureString(axisLabelY, axisLabelFont);
+            dataPadding[0] = (int)(yLabelSize.Height) + axisPadding * 2;
+            dataPadding[0] += maxTickSizeVert.Width;
+
+            // right
+            dataPadding[1] = axisPadding + maxTickSizeHoriz.Width / 2;
+        }
+
         public bool axisRenderNeeded = true;
-        private bool labelsAreTight = false;
 
         private void AxisUpdate()
         {
@@ -127,9 +153,6 @@ namespace ScottPlot
             xAxisScale = dataSize.Width / xAxisSpan; // px per unit
             yAxisScale = dataSize.Height / yAxisSpan; // px per unit
             axisRenderNeeded = true;
-
-            if (!labelsAreTight)
-                TightenLabels();
         }
 
         private void AxisPan(double? dx = null, double? dy = null)
@@ -240,13 +263,6 @@ namespace ScottPlot
             return new Point(xPx, yPx);
         }
 
-        public void TightenLabels(int padding = 3)
-        {
-            if (figureSize == null)
-                return;
-            Debug.WriteLine("TIGHTENING LABELS...");
-            labelsAreTight = true;
-        }
 
     }
 }
