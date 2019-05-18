@@ -15,6 +15,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demos", "Demos", "{2F78F109
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScottPlotQuickstartForms", "..\demos\ScottPlotQuickstartForms\ScottPlotQuickstartForms.csproj", "{BFF99DC8-D811-4F0B-A229-EE0AFBF838E4}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cookbook", "Cookbook", "{64EFB10C-5309-4D6C-880D-4D5D88319E2B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScottPlotCookbook", "..\demos\ScottPlotCookbook\ScottPlotCookbook.csproj", "{473A8B7C-EDD0-434C-8B02-EA1972D9B4E2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +41,10 @@ Global
 		{BFF99DC8-D811-4F0B-A229-EE0AFBF838E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BFF99DC8-D811-4F0B-A229-EE0AFBF838E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BFF99DC8-D811-4F0B-A229-EE0AFBF838E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{473A8B7C-EDD0-434C-8B02-EA1972D9B4E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{473A8B7C-EDD0-434C-8B02-EA1972D9B4E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{473A8B7C-EDD0-434C-8B02-EA1972D9B4E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{473A8B7C-EDD0-434C-8B02-EA1972D9B4E2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -45,6 +53,7 @@ Global
 		{A3D84ABF-FB0D-4AD4-ADC6-A7AAD50B7777} = {57C10D8E-E94F-482A-BA27-377DBD4BAD6D}
 		{7EA89E5C-4652-458A-A352-B2F48728C1F2} = {57C10D8E-E94F-482A-BA27-377DBD4BAD6D}
 		{BFF99DC8-D811-4F0B-A229-EE0AFBF838E4} = {2F78F109-9976-42FF-8324-9A27EF3BD776}
+		{473A8B7C-EDD0-434C-8B02-EA1972D9B4E2} = {64EFB10C-5309-4D6C-880D-4D5D88319E2B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FBAE082A-173A-4F13-BE31-E6C070513C9C}

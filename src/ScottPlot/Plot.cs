@@ -16,7 +16,6 @@ namespace ScottPlot
 
         public Plot(int width = 600, int height = 800)
         {
-            Debug.WriteLine($"creating new ScottPlot");
             Resize(width, height);
         }
 
@@ -43,8 +42,6 @@ namespace ScottPlot
 
         public void InitializeBitmaps()
         {
-            Debug.WriteLine("reinitializing bitmaps and graphics objects");
-
             settings.bmpFigure = null;
             settings.gfxFigure = null;
 
@@ -52,16 +49,16 @@ namespace ScottPlot
             {
                 settings.bmpFigure = new Bitmap(settings.figureSize.Width, settings.figureSize.Height);
                 settings.gfxFigure = Graphics.FromImage(settings.bmpFigure);
-                settings.gfxFigure.SmoothingMode = (settings.antiAliasFigureDrawings) ? System.Drawing.Drawing2D.SmoothingMode.AntiAlias : System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
-                settings.gfxFigure.TextRenderingHint = (settings.antiAliasFigureText) ? System.Drawing.Text.TextRenderingHint.AntiAlias : System.Drawing.Text.TextRenderingHint.SingleBitPerPixel;
+                settings.gfxFigure.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
+                settings.gfxFigure.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
             }
 
             if (settings.dataSize.Width > 0 && settings.dataSize.Height > 0)
             {
                 settings.bmpData = new Bitmap(settings.dataSize.Width, settings.dataSize.Height);
                 settings.gfxData = Graphics.FromImage(settings.bmpData);
-                settings.gfxData.SmoothingMode = (settings.antiAliasDataDrawings) ? System.Drawing.Drawing2D.SmoothingMode.AntiAlias : System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
-                settings.gfxData.TextRenderingHint = (settings.antiAliasDataText) ? System.Drawing.Text.TextRenderingHint.AntiAlias : System.Drawing.Text.TextRenderingHint.SingleBitPerPixel;
+                settings.gfxData.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
+                settings.SetAntiAlilasing();
             }
 
         }
@@ -98,6 +95,17 @@ namespace ScottPlot
             return settings.bmpFigure;
         }
 
+        public void SaveFig(string filePath, bool renderFirst = true)
+        {
+            if (renderFirst)
+                Render();
+            string folder = System.IO.Path.GetDirectoryName(filePath);
+            if (System.IO.Directory.Exists(folder))
+                settings.bmpFigure.Save(filePath);
+            else
+                throw new Exception($"ERROR: folder does not exist: {folder}");
+        }
+
         #endregion
 
 
@@ -127,6 +135,7 @@ namespace ScottPlot
         {
             if (color == null)
                 color = settings.GetNextColor();
+
             PlottableScatter scat = new PlottableScatter(xs, ys, (Color)color);
             settings.plottables.Add(scat);
         }
