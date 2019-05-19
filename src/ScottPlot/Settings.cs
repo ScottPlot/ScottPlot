@@ -46,30 +46,31 @@ namespace ScottPlot
 
         // axis labels
         public bool[] axisFrame = new bool[] { true, true, true, true };
-        public Pen axisFramePen = Pens.Black;
         public int axisPadding = 5;
 
         // title
-        public string title = "ScottPlot Title";
+        public string title = "";
         public Font titleFont = new Font("Segoe UI", 20, FontStyle.Bold);
-        public Brush titleFontBrush = Brushes.Black;
+        public Color titleColor;
 
         // axis labels
-        public string axisLabelX = "horizontal units";
-        public string axisLabelY = "vertical units";
+        public string axisLabelX = "";
+        public string axisLabelY = "";
         public Font axisLabelFont = new Font("Segoe UI", 16);
-        public Brush axisLabelBrush = Brushes.Black;
+        public Color axisLabelColor = Color.Black;
 
         // axis ticks
         public Font tickFont = new Font("Segoe UI", 10);
         public List<Tick> ticksX;
         public List<Tick> ticksY;
         public int tickSize = 5;
-        public bool displayTicks = true;
+        public Color tickColor = Color.Black;
+        public bool displayFrame = true;
+        public bool displayTicksX = true;
+        public bool displayTicksY = true;
 
         // frame
         public bool dataFrame = true;
-        public Color dataFrameColor = Color.Black;
 
         // benchmarking
         public Font benchmarkFont = new Font("Consolas", 8);
@@ -97,7 +98,7 @@ namespace ScottPlot
 
         // grid
         public bool displayGrid = true;
-        public Pen gridPen = Pens.LightGray;
+        public Color gridColor = Color.LightGray;
 
         public Settings()
         {
@@ -178,6 +179,10 @@ namespace ScottPlot
             Ticks ticks = new Ticks(this);
             Size maxTickSizeHoriz = ticks.GetMaxTickSize(ticksX);
             Size maxTickSizeVert = ticks.GetMaxTickSize(ticksY);
+            if (displayTicksX == false)
+                maxTickSizeHoriz = new Size(0, 0);
+            if (displayTicksY == false)
+                maxTickSizeVert = new Size(0, 0);
 
             // top
             SizeF titleSize = gfxFigure.MeasureString(title, titleFont);
@@ -268,6 +273,36 @@ namespace ScottPlot
             double dXFrac = dX / (Math.Abs(dX) + xAxisSpan);
             double dYFrac = dY / (Math.Abs(dY) + yAxisSpan);
             AxisZoom(Math.Pow(10, dXFrac), Math.Pow(10, dYFrac));
+        }
+
+        public void AxisAuto(double horizontalMargin = .1, double verticalMargin = .1)
+        {
+            axis = null;
+
+            foreach (Plottable plottable in plottables)
+            {
+                double[] limits = plottable.GetLimits();
+                if (axis == null)
+                {
+                    axis = limits;
+                }
+                else
+                {
+                    if (limits[0] < axis[0])
+                        axis[0] = limits[0];
+                    if (limits[1] > axis[1])
+                        axis[1] = limits[1];
+                    if (limits[2] < axis[2])
+                        axis[2] = limits[2];
+                    if (limits[3] > axis[3])
+                        axis[3] = limits[3];
+                }
+            }
+
+            if (axis == null)
+                axis = new double[] { -10, 10, -10, 10 };
+            AxisUpdate();
+            AxisZoom(1 - horizontalMargin, 1 - verticalMargin);
         }
 
         public void Validate()

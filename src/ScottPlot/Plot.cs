@@ -66,18 +66,16 @@ namespace ScottPlot
         public void Render()
         {
             if (!titenHappened)
-                AxisTighten();
+                TightenLayout();
 
             settings.BenchmarkStart();
             if (settings.backgroundRenderNeeded)
             {
-                Debug.WriteLine("Rendering background");
                 Renderer.FigureClear(settings);
                 Renderer.FigureLabels(settings);
                 Renderer.FigureTicks(settings);
                 Renderer.FigureFrames(settings);
             }
-            Debug.WriteLine("Rendering data");
             Renderer.DataBackground(settings);
             Renderer.DataGrid(settings);
             Renderer.DataPlottables(settings);
@@ -119,24 +117,27 @@ namespace ScottPlot
             settings.plottables.Clear();
         }
 
-        public void PlotText(string text, double x, double y)
+        public void PlotText(string text, double x, double y, Color? color = null, float fontSize = 12, bool bold = false)
         {
-            PlottableText txt = new PlottableText(text, x, y);
+            if (color == null)
+                color = Color.Black;
+            PlottableText txt = new PlottableText(text, x, y, color: (Color)color, fontSize: fontSize, bold: bold);
             settings.plottables.Add(txt);
         }
 
-        public void PlotMarker(double x, double y)
-        {
-            PlottableMarker mark = new PlottableMarker(x, y);
-            settings.plottables.Add(mark);
-        }
-
-        public void PlotScatter(double[] xs, double[] ys, Color? color = null)
+        public void PlotPoint(double x, double y, Color? color = null, float markerSize = 5)
         {
             if (color == null)
                 color = settings.GetNextColor();
+            PlottableScatter mark = new PlottableScatter(new double[] { x }, new double[] { y }, color: (Color)color, lineWidth: 0, markerSize: markerSize);
+            settings.plottables.Add(mark);
+        }
 
-            PlottableScatter scat = new PlottableScatter(xs, ys, (Color)color);
+        public void PlotScatter(double[] xs, double[] ys, Color? color = null, float lineWidth = 1, float markerSize = 5)
+        {
+            if (color == null)
+                color = settings.GetNextColor();
+            PlottableScatter scat = new PlottableScatter(xs, ys, color: (Color)color, lineWidth: lineWidth, markerSize: markerSize);
             settings.plottables.Add(scat);
         }
 
@@ -153,8 +154,13 @@ namespace ScottPlot
             return settings.axis;
         }
 
+        public void AxisAuto(double horizontalMargin = 0, double verticalMargin = .1)
+        {
+            settings.AxisAuto(horizontalMargin, verticalMargin);
+        }
+
         private bool titenHappened = false;
-        public void AxisTighten(int padding = 5)
+        public void TightenLayout(int padding = 5)
         {
             settings.axisPadding = padding;
             settings.AxisTighen();
@@ -169,22 +175,19 @@ namespace ScottPlot
 
         #region CUSTOMIZATION
 
-        public string title
+        public void Title(string title="")
         {
-            get { return settings.title; }
-            set { settings.title = value; }
+            settings.title = title;
         }
 
-        public string xLabel
+        public void XLabel(string xLabel = "")
         {
-            get { return settings.axisLabelX; }
-            set { settings.axisLabelX = value; }
+            settings.axisLabelX = xLabel;
         }
 
-        public string yLabel
+        public void YLabel(string yLabel = "")
         {
-            get { return settings.axisLabelY; }
-            set { settings.axisLabelY = value; }
+            settings.axisLabelY = yLabel;
         }
 
         #endregion

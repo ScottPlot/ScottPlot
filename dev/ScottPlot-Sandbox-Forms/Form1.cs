@@ -52,7 +52,7 @@ namespace ScottPlot_Sandbox_Forms
             plt.PlotText("Scott", xFrac, yFrac);
 
             // marker
-            plt.PlotMarker(xFrac, yFrac);
+            plt.PlotPoint(xFrac, yFrac);
 
             // scatter
             int scatterPointCount = 100;

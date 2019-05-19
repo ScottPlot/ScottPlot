@@ -40,8 +40,8 @@ namespace ScottPlot
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
             plt.Axis(0, 1, -1, 1);
-            plt.title = "ScottPlot User Control";
-            plt.yLabel = "Sample Data";
+            plt.Title("ScottPlot User Control");
+            plt.YLabel("Sample Data");
             Render();
         }
 
