@@ -9,95 +9,101 @@ namespace ScottPlotCookbook
 {
     class CookBookManager
     {
-        int width = 640;
-        int height = 480;
-        int figuresPlotted = 0;
-        string outputFolderName = "images";
+
+        private const int figureWidth = 600;
+        private const int figureHeight = 400;
 
         public CookBookManager()
         {
             var plt = new ScottPlot.Plot(); // do this to pre-load modules
         }
 
-        public void GenerateAllFigures(int width, int height)
+        public void GenerateAllFigures(int width, int height, string outputFolderName = "images")
         {
-            this.width = width;
-            this.height = height;
+            Console.WriteLine("Generating all figures...");
+            CleanOutputFolder(outputFolderName);
+            var recipies = new Recipes(outputFolderName, figureWidth, figureHeight);
 
-            Debug.WriteLine("generating data...");
-            Debug.Indent();
-            GenerateData_SinAndCos();
-            Debug.IndentLevel = 0;
+            recipies.Figure_01_Scatter_Sin();
+            recipies.Figure_02_Scatter_Sin_Styled();
+            recipies.Figure_03_Scatter_XY();
+            recipies.Figure_04_Scatter_XY_Lines_Only();
+            recipies.Figure_05_Scatter_XY_Points_Only();
+            recipies.Figure_06_Scatter_XY_Styling();
+            recipies.Figure_07_Point();
+            recipies.Figure_08_Text();
 
-            Debug.WriteLine("preparing output folder...");
-            Debug.Indent();
-            ClearOutputFolder();
-            Debug.IndentLevel = 0;
+            recipies.Figure_20_Small_Plot();
+            recipies.Figure_21_Title_and_Axis_Labels();
+            recipies.Figure_22_Custom_Colors();
+            recipies.Figure_23_Frameless();
 
-            Debug.WriteLine("generating cookbook figures...");
-            Debug.Indent();
-            Figure_Generic();
-            Debug.IndentLevel = 0;
-
-            Debug.WriteLine("generating reports...");
-            GenerateReport();
-            Debug.IndentLevel = 0;
-
-            Debug.WriteLine("COMPLETE");
+            GenerateReport(outputFolderName);
+            Console.WriteLine("COMPLETE");
         }
 
-        public void ClearOutputFolder()
+        public void CleanOutputFolder(string outputFolderName)
         {
             string outputFolder = System.IO.Path.GetFullPath($"./{outputFolderName}/");
-            Debug.WriteLine($"Checking output folder: {outputFolder}");
-            if (System.IO.Directory.Exists(outputFolder))
+            Console.WriteLine($"preparing output folder: {outputFolder}");
+            if (!System.IO.Directory.Exists(outputFolder))
+                System.IO.Directory.CreateDirectory(outputFolder);
+            foreach (string fileName in System.IO.Directory.GetFiles(outputFolder, "*.*"))
+                System.IO.File.Delete(System.IO.Path.Combine(outputFolder, fileName));
+        }
+
+        public string ReadCodeFromFile(string functionName, string fileName = "Recipes.cs")
+        {
+            string code;
+
+            // read contents of file
+            string sourceFilePath = "../../" + fileName;
+            if (System.IO.File.Exists(sourceFilePath))
             {
-                Debug.WriteLine($"confirmed output folder exists");
+                sourceFilePath = System.IO.Path.GetFullPath(sourceFilePath);
+                code = System.IO.File.ReadAllText(sourceFilePath);
             }
             else
             {
-                System.IO.Directory.CreateDirectory(outputFolder);
-                Debug.WriteLine($"output folder created");
+                string message = $"source code file does not exist: {sourceFilePath}";
+                Debug.WriteLine(message);
+                return message;
             }
 
-            foreach (string fileName in System.IO.Directory.GetFiles(outputFolder, "*.*"))
+            // isolate the function
+            functionName = "Figure_" + functionName;
+            int posStart = code.IndexOf($"public void {functionName}()");
+            if (posStart < 0)
             {
-                Debug.WriteLine($"deleting [{fileName}] ...");
-                System.IO.File.Delete(System.IO.Path.Combine(outputFolder, fileName));
+                string message = $"function {functionName}() not found in {sourceFilePath}";
+                Debug.WriteLine(message);
+                return message;
             }
-        }
 
-        double[] dataXs;
-        double[] dataSin;
-        double[] dataCos;
-        public void GenerateData_SinAndCos(int pointCount = 100)
-        {
-            Debug.WriteLine($"simple Sin and Cos for scatter plots ({pointCount} points)");
-            dataXs = new double[pointCount];
-            dataSin = new double[pointCount];
-            dataCos = new double[pointCount];
-            for (int i = 0; i < pointCount; i++)
+            // format the code to be a pretty string
+            int linesToSkip = 2;
+            code = code.Substring(posStart);
+            code = code.Substring(code.IndexOf("        {"));
+            code = code.Substring(0, code.IndexOf("        }"));
+            string[] lines = code.Split('\n');
+            for (int i = 0; i < lines.Length; i++)
             {
-                dataXs[i] = i;
-                dataSin[i] = Math.Sin(i * 2 * Math.PI / pointCount);
-                dataCos[i] = Math.Cos(i * 2 * Math.PI / pointCount);
+                if (lines[i].Length > 12)
+                    lines[i] = lines[i].Substring(12);
+                if (i <= linesToSkip)
+                    lines[i] = "";
+                if (lines[i].StartsWith("Debug") || lines[i].StartsWith("Console"))
+                    lines[i] = "";
             }
+            code = string.Join("\n", lines).Trim();
+            code = code.Replace("ScottPlot.Plot(width, height);", $"ScottPlot.Plot({figureWidth}, {figureHeight});");
+            return code;
         }
 
-        public void Figure_Generic()
+        public void GenerateReport(string outputFolderName)
         {
-            string name = string.Format("{0:000}-{1}", figuresPlotted++, System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "").ToLower());
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            Console.WriteLine("Generating reports...");
 
-            var plt = new ScottPlot.Plot(width, height);
-            plt.PlotScatter(dataXs, dataSin);
-            plt.PlotScatter(dataXs, dataCos);
-            plt.SaveFig(fileName);
-            Debug.WriteLine($"Saved: {fileName}");
-        }
-
-        public void GenerateReport()
-        {
             string html = "";
             string md = "";
 
@@ -108,19 +114,26 @@ namespace ScottPlotCookbook
             {
                 string url = image.Replace("\\", "/");
                 string name = System.IO.Path.GetFileNameWithoutExtension(url);
-                html += $"<h1>{name}</h1><a href='{url}'><img src='{url}' /></a>";
-                md += $"## {name}\n\n![]({url})\n\n";
+                string nameFriendly = name.Replace("_", " ").Substring(3);
+                string code = ReadCodeFromFile(name);
+                string codeHtml = System.Net.WebUtility.HtmlEncode(code);
+                codeHtml = codeHtml.Replace("\n", "<br>");
+                codeHtml = codeHtml.Replace(" ", "&nbsp;");
+
+                html += $"<div style='font-size: 150%; font-family: sans-serif; margin-top: 50px; font-weight: bold;'>{nameFriendly}</div>";
+                html += $"<div style='background-color: #EEE; padding: 5px; margin: 10px; font-family: Consolas;'>{codeHtml}</div>";
+                html += $"<div><a href='{url}'><img src='{url}' /></a></div>";
+
+                md += $"## {nameFriendly}\n\n```cs\n{code}\n```\n\n![]({url})\n\n";
             }
 
             html = $"<html><body>{html}</body></html>";
 
             string pathHtml = System.IO.Path.GetFullPath("cookbook.html");
             System.IO.File.WriteAllText(pathHtml, html);
-            Debug.WriteLine($"Saved HTML: {html}");
 
             string pathMd = System.IO.Path.GetFullPath("cookbook.md");
             System.IO.File.WriteAllText(pathMd, md);
-            Debug.WriteLine($"Saved markdown: {pathMd}");
         }
     }
 }

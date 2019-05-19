@@ -13,11 +13,17 @@ namespace ScottPlot
         public string text;
         public double value;
         public Settings settings;
+        public Pen tickPen;
+        public Brush tickBrush;
+        public Pen gridPen;
 
         public Tick(Settings settings, double value)
         {
             this.value = value;
             this.settings = settings;
+            tickPen = new Pen(settings.tickColor);
+            tickBrush = new SolidBrush(settings.tickColor);
+            gridPen = new Pen(settings.gridColor);
             text = string.Format("{0:0.00}", value);
         }
 
@@ -25,13 +31,13 @@ namespace ScottPlot
         {
             double unitsFromAxisEdge = value - settings.axis[2];
             int yPx = settings.dataSize.Height - (int)(unitsFromAxisEdge * settings.yAxisScale);
-            settings.gfxData.DrawLine(settings.gridPen, 0, yPx, settings.dataSize.Width, yPx);
+            settings.gfxData.DrawLine(gridPen, 0, yPx, settings.dataSize.Width, yPx);
         }
         public void RenderGridVerticalLine(Settings settings)
         {
             double unitsFromAxisEdge = value - settings.axis[0];
             int xPx = (int)(unitsFromAxisEdge * settings.xAxisScale);
-            settings.gfxData.DrawLine(settings.gridPen, xPx, 0, xPx, settings.dataSize.Height);
+            settings.gfxData.DrawLine(gridPen, xPx, 0, xPx, settings.dataSize.Height);
         }
 
         public void RenderTickOnLeft(Settings settings)
@@ -41,8 +47,8 @@ namespace ScottPlot
             int yPx = (int)(unitsFromAxisEdge * settings.yAxisScale);
             yPx = settings.figureSize.Height - yPx - settings.dataPadding[2];
 
-            settings.gfxFigure.DrawLine(Pens.Black, xPx, yPx, xPx - settings.tickSize, yPx);
-            settings.gfxFigure.DrawString(text, settings.tickFont, Brushes.Black, xPx - settings.tickSize, yPx, settings.sfEast);
+            settings.gfxFigure.DrawLine(tickPen, xPx, yPx, xPx - settings.tickSize, yPx);
+            settings.gfxFigure.DrawString(text, settings.tickFont, tickBrush, xPx - settings.tickSize, yPx, settings.sfEast);
         }
 
         public void RenderTickOnBottom(Settings settings)
@@ -51,8 +57,8 @@ namespace ScottPlot
             int xPx = (int)(unitsFromAxisEdge * settings.xAxisScale) + settings.dataPadding[0];
             int yPx = settings.figureSize.Height - settings.dataPadding[2];
 
-            settings.gfxFigure.DrawLine(Pens.Black, xPx, yPx, xPx, yPx + settings.tickSize);
-            settings.gfxFigure.DrawString(text, settings.tickFont, Brushes.Black, xPx, yPx + settings.tickSize, settings.sfNorth);
+            settings.gfxFigure.DrawLine(tickPen, xPx, yPx, xPx, yPx + settings.tickSize);
+            settings.gfxFigure.DrawString(text, settings.tickFont, tickBrush, xPx, yPx + settings.tickSize, settings.sfNorth);
         }
 
     }
@@ -70,13 +76,13 @@ namespace ScottPlot
 
         public void RenderTicks()
         {
-            if (settings.displayTicks)
-            {
+            if (settings.displayTicksX)
                 foreach (Tick tick in settings.ticksX)
                     tick.RenderTickOnBottom(settings);
+
+            if (settings.displayTicksY)
                 foreach (Tick tick in settings.ticksY)
                     tick.RenderTickOnLeft(settings);
-            }
         }
 
         public void RenderGrid()

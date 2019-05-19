@@ -62,7 +62,7 @@ namespace ScottPlot
             SizeF titleSizeF = settings.gfxFigure.MeasureString(settings.title, settings.titleFont);
             Size titleSize = new Size((int)titleSizeF.Width, (int)titleSizeF.Height);
             Point titlePoint = new Point(dataCenterX - titleSize.Width / 2, settings.axisPadding);
-            settings.gfxFigure.DrawString(settings.title, settings.titleFont, settings.titleFontBrush, titlePoint, settings.sfNorthWest);
+            settings.gfxFigure.DrawString(settings.title, settings.titleFont, new SolidBrush(settings.titleColor), titlePoint, settings.sfNorthWest);
             if (drawDebugRectangles)
                 settings.gfxFigure.DrawRectangle(Pens.Magenta, titlePoint.X, titlePoint.Y, titleSize.Width, titleSize.Height);
 
@@ -70,7 +70,7 @@ namespace ScottPlot
             SizeF xLabelSizF = settings.gfxFigure.MeasureString(settings.axisLabelX, settings.axisLabelFont);
             Size xLabelSize = new Size((int)xLabelSizF.Width, (int)xLabelSizF.Height);
             Point xLabelPoint = new Point(dataCenterX - xLabelSize.Width / 2, settings.figureSize.Height - settings.axisPadding - xLabelSize.Height);
-            settings.gfxFigure.DrawString(settings.axisLabelX, settings.axisLabelFont, settings.axisLabelBrush, xLabelPoint, settings.sfNorthWest);
+            settings.gfxFigure.DrawString(settings.axisLabelX, settings.axisLabelFont, new SolidBrush(settings.axisLabelColor), xLabelPoint, settings.sfNorthWest);
             if (drawDebugRectangles)
                 settings.gfxFigure.DrawRectangle(Pens.Magenta, xLabelPoint.X, xLabelPoint.Y, xLabelSize.Width, xLabelSize.Height);
 
@@ -79,7 +79,7 @@ namespace ScottPlot
             Size yLabelSize = new Size((int)yLabelSizF.Width, (int)yLabelSizF.Height);
             Point yLabelPoint = new Point(-dataCenterY - yLabelSize.Width / 2, settings.axisPadding);
             settings.gfxFigure.RotateTransform(-90);
-            settings.gfxFigure.DrawString(settings.axisLabelY, settings.axisLabelFont, settings.axisLabelBrush, yLabelPoint, settings.sfNorthWest);
+            settings.gfxFigure.DrawString(settings.axisLabelY, settings.axisLabelFont, new SolidBrush(settings.axisLabelColor), yLabelPoint, settings.sfNorthWest);
             if (drawDebugRectangles)
                 settings.gfxFigure.DrawRectangle(Pens.Magenta, yLabelPoint.X, yLabelPoint.Y, yLabelSize.Width, yLabelSize.Height);
             settings.gfxFigure.ResetTransform();
@@ -104,14 +104,18 @@ namespace ScottPlot
             Point bl = new Point(settings.dataOrigin.X - 1, settings.dataOrigin.Y + settings.dataSize.Height);
             Point br = new Point(settings.dataOrigin.X + settings.dataSize.Width, settings.dataOrigin.Y + settings.dataSize.Height);
 
-            if (settings.axisFrame[0])
-                settings.gfxFigure.DrawLine(settings.axisFramePen, tl, bl);
-            if (settings.axisFrame[1])
-                settings.gfxFigure.DrawLine(settings.axisFramePen, tr, br);
-            if (settings.axisFrame[2])
-                settings.gfxFigure.DrawLine(settings.axisFramePen, bl, br);
-            if (settings.axisFrame[3])
-                settings.gfxFigure.DrawLine(settings.axisFramePen, tl, tr);
+            if (settings.displayFrame)
+            {
+                Pen axisFramePen = new Pen(settings.tickColor);
+                if (settings.axisFrame[0])
+                    settings.gfxFigure.DrawLine(axisFramePen, tl, bl);
+                if (settings.axisFrame[1])
+                    settings.gfxFigure.DrawLine(axisFramePen, tr, br);
+                if (settings.axisFrame[2])
+                    settings.gfxFigure.DrawLine(axisFramePen, bl, br);
+                if (settings.axisFrame[3])
+                    settings.gfxFigure.DrawLine(axisFramePen, tl, tr);
+            }
         }
 
         public static void Benchmark(Settings settings)
