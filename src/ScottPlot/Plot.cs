@@ -17,6 +17,7 @@ namespace ScottPlot
         public Plot(int width = 600, int height = 800)
         {
             Resize(width, height);
+            TightenLayout();
         }
 
         public override string ToString()
@@ -29,15 +30,14 @@ namespace ScottPlot
 
         #region BITMAP AND GRAPHICS
 
-        public void Resize(int width, int height)
+        public void Resize(int? width = null, int? height = null)
         {
-            settings.Resize(width, height);
+            if (width == null)
+                width = settings.figureSize.Width;
+            if (height == null)
+                height = settings.figureSize.Height;
+            settings.Resize((int)width, (int)height);
             InitializeBitmaps();
-        }
-
-        private void Resize()
-        {
-            Resize(settings.figureSize.Width, settings.figureSize.Height);
         }
 
         public void InitializeBitmaps()
@@ -65,7 +65,7 @@ namespace ScottPlot
 
         public void Render()
         {
-            if (!titenHappened)
+            if (!settings.tighteningOccurred)
                 TightenLayout();
 
             settings.BenchmarkStart();
@@ -83,7 +83,6 @@ namespace ScottPlot
             settings.BenchmarkEnd();
             Renderer.Benchmark(settings);
             settings.backgroundRenderNeeded = false;
-
         }
 
         public Bitmap GetBitmap(bool renderFirst = true)
@@ -148,24 +147,21 @@ namespace ScottPlot
 
         #region AXIS LIMIS
 
-        public double[] Axis(double? x1 = null, double? x2 = null, double? y1 = null, double? y2 = null)
+        public void Axis(double? x1 = null, double? x2 = null, double? y1 = null, double? y2 = null)
         {
             settings.AxisSet(x1, x2, y1, y2);
-            return settings.axis;
         }
 
-        public void AxisAuto(double horizontalMargin = 0, double verticalMargin = .1)
+        public void AxisAuto(double horizontalMargin = .05, double verticalMargin = .1)
         {
             settings.AxisAuto(horizontalMargin, verticalMargin);
         }
 
-        private bool titenHappened = false;
         public void TightenLayout(int padding = 5)
         {
             settings.axisPadding = padding;
             settings.AxisTighen();
             Resize();
-            titenHappened = true;
         }
 
         #endregion
@@ -175,19 +171,22 @@ namespace ScottPlot
 
         #region CUSTOMIZATION
 
-        public void Title(string title="")
+        public void Title(string title = "")
         {
             settings.title = title;
+            TightenLayout();
         }
 
         public void XLabel(string xLabel = "")
         {
             settings.axisLabelX = xLabel;
+            TightenLayout();
         }
 
         public void YLabel(string yLabel = "")
         {
             settings.axisLabelY = yLabel;
+            TightenLayout();
         }
 
         #endregion

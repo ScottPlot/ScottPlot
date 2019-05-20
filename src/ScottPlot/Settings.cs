@@ -28,36 +28,16 @@ namespace ScottPlot
         public double xAxisScale;
         public double yAxisScale;
 
-        // mouse adjustments
-        public Point mouseDownLocation = new Point(0, 0);
-        public double[] mouseDownAxis = new double[4];
-
-        // assigned default values
-        public int[] dataPadding = new int[] { 140, 120, 140, 55 }; // X1, X2, Y1, Y2
+        // background colors
         public Color figureBackgroundColor = Color.White;
         public Color dataBackgroundColor = Color.White;
 
-        // useful string formats (position indicates where their origin is)
-        public StringFormat sfEast = new StringFormat() { LineAlignment = StringAlignment.Center, Alignment = StringAlignment.Far };
-        public StringFormat sfNorth = new StringFormat() { LineAlignment = StringAlignment.Near, Alignment = StringAlignment.Center };
-        public StringFormat sfSouth = new StringFormat() { LineAlignment = StringAlignment.Far, Alignment = StringAlignment.Center };
-        public StringFormat sfWest = new StringFormat() { LineAlignment = StringAlignment.Center, Alignment = StringAlignment.Near };
-        public StringFormat sfNorthWest = new StringFormat() { LineAlignment = StringAlignment.Near, Alignment = StringAlignment.Near };
-
-        // axis labels
-        public bool[] axisFrame = new bool[] { true, true, true, true };
+        // axis settings
         public int axisPadding = 5;
-
-        // title
-        public string title = "";
-        public Font titleFont = new Font("Segoe UI", 20, FontStyle.Bold);
-        public Color titleColor;
-
-        // axis labels
-        public string axisLabelX = "";
-        public string axisLabelY = "";
-        public Font axisLabelFont = new Font("Segoe UI", 16);
-        public Color axisLabelColor = Color.Black;
+        public bool[] displayFrameByAxis = new bool[] { true, true, true, true };
+        public int[] axisLabelPadding = new int[] { 140, 120, 140, 55 }; // X1, X2, Y1, Y2
+        public bool displayAxisFrames = true;
+        public bool tighteningOccurred = false;
 
         // axis ticks
         public Font tickFont = new Font("Segoe UI", 10);
@@ -65,12 +45,21 @@ namespace ScottPlot
         public List<Tick> ticksY;
         public int tickSize = 5;
         public Color tickColor = Color.Black;
-        public bool displayFrame = true;
         public bool displayTicksX = true;
         public bool displayTicksY = true;
 
-        // frame
-        public bool dataFrame = true;
+        // title and axis labels
+        public string title = "";
+        public Font titleFont = new Font("Segoe UI", 20, FontStyle.Bold);
+        public Color titleColor = Color.Black;
+        public string axisLabelX = "";
+        public string axisLabelY = "";
+        public Font axisLabelFont = new Font("Segoe UI", 16);
+        public Color axisLabelColor = Color.Black;
+
+        // grid
+        public bool displayGrid = true;
+        public Color gridColor = Color.LightGray;
 
         // benchmarking
         public Font benchmarkFont = new Font("Consolas", 8);
@@ -83,10 +72,14 @@ namespace ScottPlot
         public string benchmarkMessage;
         public bool displayBenchmark = false;
 
+        // mouse tracking
+        private Point mouseDownLocation = new Point(0, 0);
+        private double[] mouseDownAxis = new double[4];
+
         // plottables
         public readonly List<Plottable> plottables = new List<Plottable>();
         public bool useTwentyColors = false;
-        private bool antiAliasData = true;
+        public bool antiAliasData = true;
 
         // plot colors (https://github.com/vega/vega/wiki/Scales#scale-range-literals)
         string[] plottableColors10 = new string[] { "#1f77b4", "#ff7f0e", "#2ca02c", "#d62728",
@@ -96,9 +89,12 @@ namespace ScottPlot
                 "#8c564b", "#c49c94", "#e377c2", "#f7b6d2", "#7f7f7f", "#c7c7c7",
                 "#bcbd22", "#dbdb8d", "#17becf", "#9edae5", };
 
-        // grid
-        public bool displayGrid = true;
-        public Color gridColor = Color.LightGray;
+        // string formats (position indicates where their origin is)
+        public StringFormat sfEast = new StringFormat() { LineAlignment = StringAlignment.Center, Alignment = StringAlignment.Far };
+        public StringFormat sfNorth = new StringFormat() { LineAlignment = StringAlignment.Near, Alignment = StringAlignment.Center };
+        public StringFormat sfSouth = new StringFormat() { LineAlignment = StringAlignment.Far, Alignment = StringAlignment.Center };
+        public StringFormat sfWest = new StringFormat() { LineAlignment = StringAlignment.Center, Alignment = StringAlignment.Near };
+        public StringFormat sfNorthWest = new StringFormat() { LineAlignment = StringAlignment.Near, Alignment = StringAlignment.Near };
 
         public Settings()
         {
@@ -135,9 +131,9 @@ namespace ScottPlot
         public void Resize(int width, int height)
         {
             figureSize = new Size(width, height);
-            dataOrigin = new Point(dataPadding[0], dataPadding[3]);
-            int dataWidth = figureSize.Width - dataPadding[0] - dataPadding[1];
-            int dataHeight = figureSize.Height - dataPadding[2] - dataPadding[3];
+            dataOrigin = new Point(axisLabelPadding[0], axisLabelPadding[3]);
+            int dataWidth = figureSize.Width - axisLabelPadding[0] - axisLabelPadding[1];
+            int dataHeight = figureSize.Height - axisLabelPadding[2] - axisLabelPadding[3];
             dataSize = new Size(dataWidth, dataHeight);
             AxisUpdate();
         }
@@ -186,20 +182,22 @@ namespace ScottPlot
 
             // top
             SizeF titleSize = gfxFigure.MeasureString(title, titleFont);
-            dataPadding[3] = (int)(titleSize.Height) + axisPadding * 2;
+            axisLabelPadding[3] = (int)(titleSize.Height) + axisPadding * 2;
 
             // bottom
             SizeF xLabelSize = gfxFigure.MeasureString(axisLabelX, axisLabelFont);
-            dataPadding[2] = (int)(xLabelSize.Height) + axisPadding * 2;
-            dataPadding[2] += maxTickSizeHoriz.Height;
+            axisLabelPadding[2] = (int)(xLabelSize.Height) + axisPadding * 2;
+            axisLabelPadding[2] += maxTickSizeHoriz.Height;
 
             // left
             SizeF yLabelSize = gfxFigure.MeasureString(axisLabelY, axisLabelFont);
-            dataPadding[0] = (int)(yLabelSize.Height) + axisPadding * 2;
-            dataPadding[0] += maxTickSizeVert.Width;
+            axisLabelPadding[0] = (int)(yLabelSize.Height) + axisPadding * 2;
+            axisLabelPadding[0] += maxTickSizeVert.Width;
 
             // right
-            dataPadding[1] = axisPadding + maxTickSizeHoriz.Width / 2;
+            axisLabelPadding[1] = axisPadding + maxTickSizeHoriz.Width / 2;
+
+            tighteningOccurred = true;
         }
 
         public bool backgroundRenderNeeded = true;
@@ -235,11 +233,6 @@ namespace ScottPlot
 
             if (axisChanged)
                 AxisUpdate();
-        }
-
-        private void AxisPan(int dX, int dY)
-        {
-            AxisPan(-dX / xAxisScale, dY / yAxisScale);
         }
 
         private void AxisZoom(double xFrac = 1, double yFrac = 1)

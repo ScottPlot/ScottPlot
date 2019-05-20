@@ -104,16 +104,16 @@ namespace ScottPlot
             Point bl = new Point(settings.dataOrigin.X - 1, settings.dataOrigin.Y + settings.dataSize.Height);
             Point br = new Point(settings.dataOrigin.X + settings.dataSize.Width, settings.dataOrigin.Y + settings.dataSize.Height);
 
-            if (settings.displayFrame)
+            if (settings.displayAxisFrames)
             {
                 Pen axisFramePen = new Pen(settings.tickColor);
-                if (settings.axisFrame[0])
+                if (settings.displayFrameByAxis[0])
                     settings.gfxFigure.DrawLine(axisFramePen, tl, bl);
-                if (settings.axisFrame[1])
+                if (settings.displayFrameByAxis[1])
                     settings.gfxFigure.DrawLine(axisFramePen, tr, br);
-                if (settings.axisFrame[2])
+                if (settings.displayFrameByAxis[2])
                     settings.gfxFigure.DrawLine(axisFramePen, bl, br);
-                if (settings.axisFrame[3])
+                if (settings.displayFrameByAxis[3])
                     settings.gfxFigure.DrawLine(axisFramePen, tl, tr);
             }
         }

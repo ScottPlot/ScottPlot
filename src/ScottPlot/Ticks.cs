@@ -45,7 +45,7 @@ namespace ScottPlot
             double unitsFromAxisEdge = value - settings.axis[2];
             int xPx = settings.dataOrigin.X;
             int yPx = (int)(unitsFromAxisEdge * settings.yAxisScale);
-            yPx = settings.figureSize.Height - yPx - settings.dataPadding[2];
+            yPx = settings.figureSize.Height - yPx - settings.axisLabelPadding[2];
 
             settings.gfxFigure.DrawLine(tickPen, xPx, yPx, xPx - settings.tickSize, yPx);
             settings.gfxFigure.DrawString(text, settings.tickFont, tickBrush, xPx - settings.tickSize, yPx, settings.sfEast);
@@ -54,8 +54,8 @@ namespace ScottPlot
         public void RenderTickOnBottom(Settings settings)
         {
             double unitsFromAxisEdge = value - settings.axis[0];
-            int xPx = (int)(unitsFromAxisEdge * settings.xAxisScale) + settings.dataPadding[0];
-            int yPx = settings.figureSize.Height - settings.dataPadding[2];
+            int xPx = (int)(unitsFromAxisEdge * settings.xAxisScale) + settings.axisLabelPadding[0];
+            int yPx = settings.figureSize.Height - settings.axisLabelPadding[2];
 
             settings.gfxFigure.DrawLine(tickPen, xPx, yPx, xPx, yPx + settings.tickSize);
             settings.gfxFigure.DrawString(text, settings.tickFont, tickBrush, xPx, yPx + settings.tickSize, settings.sfNorth);
@@ -143,7 +143,7 @@ namespace ScottPlot
                 for (int i = 0; i < yTickCount; i++)
                 {
                     double value = tickSpacing * i + axisLow - tickOffset;
-                    if (value > axisLow && value < axisHigh)
+                    if (value >= axisLow && value <= axisHigh)
                         ticks.Add(new Tick(settings, value));
                 }
             }

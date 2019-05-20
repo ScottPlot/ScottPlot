@@ -24,21 +24,30 @@ namespace ScottPlotCookbook
             CleanOutputFolder(outputFolderName);
             var recipies = new Recipes(outputFolderName, figureWidth, figureHeight);
 
-            recipies.Figure_01_Scatter_Sin();
-            recipies.Figure_02_Scatter_Sin_Styled();
-            recipies.Figure_03_Scatter_XY();
-            recipies.Figure_04_Scatter_XY_Lines_Only();
-            recipies.Figure_05_Scatter_XY_Points_Only();
-            recipies.Figure_06_Scatter_XY_Styling();
-            recipies.Figure_07_Point();
-            recipies.Figure_08_Text();
+            recipies.Figure_01a_Scatter_Sin();
+            recipies.Figure_01b_Automatic_Margins();
+            recipies.Figure_01c_Defined_Axis_Limits();
+            recipies.Figure_02_Styling_Scatter_Plots();
+            recipies.Figure_03_Plot_XY_Data();
+            recipies.Figure_04_Plot_Lines_Only();
+            recipies.Figure_05_Plot_Points_Only();
+            recipies.Figure_06_Styling_XY_Plots();
+            recipies.Figure_07_Plotting_Points();
+            recipies.Figure_08_Plotting_Text();
+            recipies.Figure_09_Clearing_Plots();
+            recipies.Figure_10_Modifying_Plotted_Data();
 
             recipies.Figure_20_Small_Plot();
-            recipies.Figure_21_Title_and_Axis_Labels();
+            recipies.Figure_21a_Title_and_Axis_Labels();
+            recipies.Figure_21b_Extra_Padding();
             recipies.Figure_22_Custom_Colors();
-            recipies.Figure_23_Frameless();
+            recipies.Figure_23_Frameless_Plot();
+            recipies.Figure_24_Disable_the_Grid();
+            recipies.Figure_25_Corner_Axis_Frame();
+            recipies.Figure_26_Horizontal_Ticks_Only();
 
             GenerateReport(outputFolderName);
+            //ValidateImageHashes(outputFolderName);
             Console.WriteLine("COMPLETE");
         }
 
@@ -83,8 +92,9 @@ namespace ScottPlotCookbook
             // format the code to be a pretty string
             int linesToSkip = 2;
             code = code.Substring(posStart);
-            code = code.Substring(code.IndexOf("        {"));
-            code = code.Substring(0, code.IndexOf("        }"));
+            code = code.Substring(code.IndexOf("\n        {"));
+            code = code.Substring(0, code.IndexOf("\n        }"));
+            code = code.Trim();
             string[] lines = code.Split('\n');
             for (int i = 0; i < lines.Length; i++)
             {
@@ -92,12 +102,49 @@ namespace ScottPlotCookbook
                     lines[i] = lines[i].Substring(12);
                 if (i <= linesToSkip)
                     lines[i] = "";
-                if (lines[i].StartsWith("Debug") || lines[i].StartsWith("Console"))
+                if (lines[i].StartsWith("Debug") || lines[i].StartsWith("Console") || lines[i].EndsWith("// hide"))
                     lines[i] = "";
             }
             code = string.Join("\n", lines).Trim();
             code = code.Replace("ScottPlot.Plot(width, height);", $"ScottPlot.Plot({figureWidth}, {figureHeight});");
             return code;
+        }
+
+        public void ValidateImageHashes(string outputFolderName)
+        {
+            string knownHashes = "";
+
+            var md5 = System.Security.Cryptography.MD5.Create();
+            string[] images = System.IO.Directory.GetFiles($"./{outputFolderName}", "*.png");
+            Array.Sort(images);
+            string sourceCodeToAdd = "";
+            foreach (string filePath in images)
+            {
+                string hashString = "";
+                string fileName = System.IO.Path.GetFileName(filePath);
+                using (var stream = System.IO.File.OpenRead(filePath))
+                {
+                    byte[] hashBytes = md5.ComputeHash(stream);
+                    for (int i = 0; i < hashBytes.Length; i++)
+                        hashString += hashBytes[i].ToString("X2");
+                }
+                if (knownHashes.Contains(hashString))
+                {
+                    Console.WriteLine($"[{hashString}] verified - {fileName}");
+                }
+                else
+                {
+                    Console.WriteLine($"[{hashString}] UNKNOWN - {fileName}");
+                    sourceCodeToAdd += $"knownHashes += \"{hashString}\"; // {fileName}\n";
+                }
+            }
+            if (sourceCodeToAdd.Length > 0)
+            {
+                Console.WriteLine($"\n\nYOU MAY WANT TO ADD THIS SOURCE CODE:\n");
+                Console.WriteLine(sourceCodeToAdd);
+                Console.WriteLine("\npress ENTER to continue...");
+                Console.ReadLine();
+            }
         }
 
         public void GenerateReport(string outputFolderName)
