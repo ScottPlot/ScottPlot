@@ -7,7 +7,7 @@ using System.Drawing;
 
 namespace ScottPlot
 {
-    public class PlottableScatter : Plottable
+    internal class PlottableScatter : Plottable
     {
         public double[] xs;
         public double[] ys;
