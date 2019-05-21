@@ -27,7 +27,10 @@ namespace ScottPlotQuickstartForms
 
             scottPlotUC1.plt.PlotScatter(dataXs, dataSin);
             scottPlotUC1.plt.PlotScatter(dataXs, dataCos);
-            scottPlotUC1.plt.Axis(0, 1, -1, 1);
+            scottPlotUC1.plt.XLabel("experiment time (ms)");
+            scottPlotUC1.plt.YLabel("signal (mV)");
+            scottPlotUC1.plt.Title("Groundbreaking Data");
+            scottPlotUC1.plt.AxisAuto(0);
             scottPlotUC1.Render();
         }
     }
