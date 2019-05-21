@@ -39,7 +39,7 @@ namespace ScottPlot
 
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
-            plt.Axis(0, 1, -1, 1);
+            plt.AxisAuto(0);
             plt.Title("ScottPlot User Control");
             plt.YLabel("Sample Data");
             Render();
