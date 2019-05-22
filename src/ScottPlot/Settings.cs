@@ -100,17 +100,6 @@ namespace ScottPlot
         {
         }
 
-        public void SetAntiAlilasing(bool? enableAntiAliasing = null)
-        {
-            if (enableAntiAliasing == null)
-                enableAntiAliasing = antiAliasData;
-
-            if (enableAntiAliasing == true)
-                gfxData.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-            else
-                gfxData.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
-        }
-
         public void BenchmarkStart()
         {
             benchmarkStopwatch.Restart();
@@ -122,8 +111,10 @@ namespace ScottPlot
             benchmarkMsec = benchmarkStopwatch.ElapsedTicks * 1000.0 / Stopwatch.Frequency;
             benchmarkHz = 1000.0 / benchmarkMsec;
             benchmarkMessage = "";
-            benchmarkMessage += $"Full render of {plottables.Count} objects {GetTotalPointCount()} points)";
-            benchmarkMessage += string.Format(" took {0:000.000} ms ({1:000.00 Hz})", benchmarkMsec, benchmarkHz);
+            benchmarkMessage += string.Format("Full render of {0} objects ({1:n} points)", plottables.Count, GetTotalPointCount());
+            benchmarkMessage += string.Format(" took {0:0.000} ms ({1:0.00 Hz})", benchmarkMsec, benchmarkHz);
+            if (plottables.Count == 1)
+                benchmarkMessage = benchmarkMessage.Replace("objects", "object");
             if (!backgroundRenderNeeded)
                 benchmarkMessage = benchmarkMessage.Replace("Full", "Data-only");
         }
@@ -213,7 +204,7 @@ namespace ScottPlot
             backgroundRenderNeeded = true;
         }
 
-        private void AxisPan(double? dx = null, double? dy = null)
+        public void AxisPan(double? dx = null, double? dy = null)
         {
             bool axisChanged = false;
 
@@ -235,7 +226,7 @@ namespace ScottPlot
                 AxisUpdate();
         }
 
-        private void AxisZoom(double xFrac = 1, double yFrac = 1)
+        public void AxisZoom(double xFrac = 1, double yFrac = 1)
         {
             bool axisChanged = false;
 

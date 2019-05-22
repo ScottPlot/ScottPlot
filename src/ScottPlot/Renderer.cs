@@ -34,14 +34,7 @@ namespace ScottPlot
             for (int i = 0; i < settings.plottables.Count; i++)
             {
                 Plottable pltThing = settings.plottables[i];
-                try
-                {
-                    pltThing.Render(settings);
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine($"EXCEPTION while rendering {pltThing}:\n{ex}");
-                }
+                pltThing.Render(settings);
             }
         }
 

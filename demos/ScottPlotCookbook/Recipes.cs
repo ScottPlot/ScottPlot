@@ -21,8 +21,10 @@ namespace ScottPlotCookbook
             this.width = width;
             this.height = height;
             PrepareDataSmall();
+            dataSignal = ScottPlot.DataGen.SinSweep(1_000_000, 15);
         }
 
+        // small data
         double[] dataXs;
         double[] dataSin;
         double[] dataCos;
@@ -30,6 +32,9 @@ namespace ScottPlotCookbook
         double[] dataRandom2;
         double[] dataRandom3;
         double[] dataRandom4;
+
+        // large data
+        double[] dataSignal;
 
         private void PrepareDataSmall(int pointCount = 50)
         {
@@ -90,6 +95,21 @@ namespace ScottPlotCookbook
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
             plt.Axis(2, 8, .2, 1.1); // x1, x2, y1, y2
+            plt.SaveFig(fileName);
+            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+        }
+
+        public void Figure_01d_Zoom_and_Pan()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            var plt = new ScottPlot.Plot(width, height);
+            plt.PlotScatter(dataXs, dataSin);
+            plt.PlotScatter(dataXs, dataCos);
+            plt.AxisAuto();
+            plt.AxisZoom(2, 2);
+            plt.AxisPan(-10, .5);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
         }
@@ -371,6 +391,46 @@ namespace ScottPlotCookbook
             plt.settings.displayFrameByAxis[0] = false;
             plt.settings.displayFrameByAxis[1] = false;
             plt.settings.displayFrameByAxis[3] = false;
+            plt.SaveFig(fileName);
+            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+        }
+
+        public void Figure_30_Signal()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            // PlotSignal is ideal for plotting large arrays of evenly-spaed data at high framerates.
+            // Note that we are testing it here by plotting an array with one million data points.
+            var plt = new ScottPlot.Plot(width, height);
+            plt.settings.displayBenchmark = true;
+            plt.PlotSignal(dataSignal, sampleRate: 20_000);
+            plt.AxisAuto();
+            plt.SaveFig(fileName);
+            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+        }
+        public void Figure_31_Signal_With_Antialiasing_Off()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            // A slight performance enhancement is achieved when anti-aliasing is disabled
+            var plt = new ScottPlot.Plot(width, height);
+            plt.settings.displayBenchmark = true;
+            plt.PlotSignal(dataSignal, sampleRate: 20_000, antiAlias: false);
+            plt.AxisAuto();
+            plt.SaveFig(fileName);
+            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+        }
+
+        public void Figure_32_Signal_Styling()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            var plt = new ScottPlot.Plot(width, height);
+            plt.PlotSignal(dataSignal, 20000, linewidth: 3, color: Color.Red);
+            plt.AxisAuto();
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
         }

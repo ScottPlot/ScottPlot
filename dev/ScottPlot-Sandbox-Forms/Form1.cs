@@ -13,24 +13,28 @@ namespace ScottPlot_Sandbox_Forms
 {
     public partial class Form1 : Form
     {
+        public double[] ysSinSweep;
+        Random rand = new Random(0);
+
         private ScottPlot.Plot plt;
-        Random rand = new Random();
 
         public Form1()
         {
             InitializeComponent();
+
+            ysSinSweep = ScottPlot.DataGen.SinSweep(100_000);
+
             plt = new ScottPlot.Plot();
             plt.settings.figureBackgroundColor = SystemColors.Control;
 
             UpdateSize();
-            PlotSomeStuff();
+            Benchmark(1);
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
         }
-
+        
         private void UpdateSize()
         {
             plt.Resize(pictureBox1.Width, pictureBox1.Height);
@@ -42,47 +46,45 @@ namespace ScottPlot_Sandbox_Forms
             Application.DoEvents();
         }
 
-        public void PlotSomeStuff()
+        public void PlotXyScatter()
         {
-
-            double xFrac = rand.NextDouble();
-            double yFrac = rand.NextDouble();
-
-            // text
-            plt.PlotText("Scott", xFrac, yFrac);
-
-            // marker
-            plt.PlotPoint(xFrac, yFrac);
-
-            // scatter
-            int scatterPointCount = 100;
-            double[] xs = new double[scatterPointCount];
-            double[] ys = new double[scatterPointCount];
-            for (int i = 0; i < xs.Length; i++)
-            {
-                xs[i] = rand.NextDouble() * 10;
-                ys[i] = rand.NextDouble() * 10;
-            }
+            double[] xs = ScottPlot.DataGen.Random(rand, 100);
+            double[] ys = ScottPlot.DataGen.Random(rand, 100);
             plt.PlotScatter(xs, ys);
-            plt.Axis(-1, 11, -1, 11);
+            plt.AxisAuto();
             Render();
         }
 
-        private void BtnBenchmark_Click(object sender, EventArgs e)
+        public void PlotSignal()
         {
-            Debug.WriteLine("\n\nSTARTING BENCHMARK");
-            int benchmarkCount = 50;
+            plt.Clear();
+            plt.PlotSignal(ysSinSweep);
+            plt.AxisAuto();
+            Render();
+        }
+
+        private void Benchmark(int benchmarkCount = 50)
+        {
+            Debug.WriteLine("\nSTARTING BENCHMARK");
             plt.Clear();
             double totalTimeMs = 0;
             for (int i = 0; i < benchmarkCount; i++)
             {
-                PlotSomeStuff();
+                //PlotXyScatter();
+                PlotSignal();
                 totalTimeMs += plt.settings.benchmarkMsec;
                 lblStatus.Text = $"benchmarking {(i + 1) * 100 / benchmarkCount}%";
                 Application.DoEvents(); // force display update
             }
-            lblStatus.Text = String.Format("BENCHMARK: {0} frames in {1:00.000} ms = avg {2:0.000} ms/frame ({3:0.000} Hz)",
+            string result = String.Format("BENCHMARK: {0} frames in {1:00.000} ms = avg {2:0.000} ms/frame ({3:0.000} Hz)",
                 benchmarkCount, totalTimeMs, totalTimeMs / benchmarkCount, benchmarkCount / totalTimeMs * 1000.0);
+            lblStatus.Text = result;
+            Console.WriteLine(result);
+        }
+
+        private void BtnBenchmark_Click(object sender, EventArgs e)
+        {
+            Benchmark();
         }
 
         private void PictureBox1_SizeChanged(object sender, EventArgs e)
@@ -98,7 +100,7 @@ namespace ScottPlot_Sandbox_Forms
 
         private void Timer1_Tick(object sender, EventArgs e)
         {
-            PlotSomeStuff();
+            PlotXyScatter();
         }
 
         private void CbDark_CheckedChanged(object sender, EventArgs e)
