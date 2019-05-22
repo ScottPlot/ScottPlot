@@ -27,6 +27,7 @@ namespace ScottPlotCookbook
             recipies.Figure_01a_Scatter_Sin();
             recipies.Figure_01b_Automatic_Margins();
             recipies.Figure_01c_Defined_Axis_Limits();
+            recipies.Figure_01d_Zoom_and_Pan();
             recipies.Figure_02_Styling_Scatter_Plots();
             recipies.Figure_03_Plot_XY_Data();
             recipies.Figure_04_Plot_Lines_Only();
@@ -45,6 +46,10 @@ namespace ScottPlotCookbook
             recipies.Figure_24_Disable_the_Grid();
             recipies.Figure_25_Corner_Axis_Frame();
             recipies.Figure_26_Horizontal_Ticks_Only();
+
+            recipies.Figure_30_Signal();
+            recipies.Figure_31_Signal_With_Antialiasing_Off();
+            recipies.Figure_32_Signal_Styling();
 
             GenerateReport(outputFolderName);
             //ValidateImageHashes(outputFolderName);
@@ -181,6 +186,8 @@ namespace ScottPlotCookbook
 
             string pathMd = System.IO.Path.GetFullPath("cookbook.md");
             System.IO.File.WriteAllText(pathMd, md);
+
+            Debug.WriteLine(pathHtml);
         }
     }
 }

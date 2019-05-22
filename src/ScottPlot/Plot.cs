@@ -58,7 +58,6 @@ namespace ScottPlot
                 settings.bmpData = new Bitmap(settings.dataSize.Width, settings.dataSize.Height);
                 settings.gfxData = Graphics.FromImage(settings.bmpData);
                 settings.gfxData.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
-                settings.SetAntiAlilasing();
             }
 
         }
@@ -67,6 +66,11 @@ namespace ScottPlot
         {
             if (!settings.tighteningOccurred)
                 TightenLayout();
+
+            if (settings.antiAliasData)
+                settings.gfxData.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            else
+                settings.gfxData.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
 
             settings.BenchmarkStart();
             if (settings.backgroundRenderNeeded)
@@ -112,7 +116,6 @@ namespace ScottPlot
 
         public void Clear()
         {
-            Debug.WriteLine("Clearing plottables");
             settings.plottables.Clear();
         }
 
@@ -140,6 +143,14 @@ namespace ScottPlot
             settings.plottables.Add(scat);
         }
 
+        public void PlotSignal(double[] ys, double sampleRate = 1, Color? color = null, double linewidth = .5, bool antiAlias = true)
+        {
+            if (color == null)
+                color = settings.GetNextColor();
+            PlottableSignal signal = new PlottableSignal(ys, sampleRate, (Color)color, linewidth: linewidth, antiAlias: antiAlias);
+            settings.plottables.Add(signal);
+        }
+
         #endregion
 
 
@@ -155,6 +166,15 @@ namespace ScottPlot
         public void AxisAuto(double horizontalMargin = .05, double verticalMargin = .1)
         {
             settings.AxisAuto(horizontalMargin, verticalMargin);
+        }
+
+        public void AxisZoom(double xFrac = 1, double yFrac = 1)
+        {
+            settings.AxisZoom(xFrac, yFrac);
+        }
+        public void AxisPan(double dx = 0, double dy = 0)
+        {
+            settings.AxisPan(dx, dy);
         }
 
         public void TightenLayout(int padding = 5)
