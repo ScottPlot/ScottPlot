@@ -51,6 +51,8 @@ namespace ScottPlotCookbook
             recipies.Figure_31_Signal_With_Antialiasing_Off();
             recipies.Figure_32_Signal_Styling();
 
+            recipies.Figure_40_Vertical_and_Horizontal_Lines();
+
             GenerateReport(outputFolderName);
             //ValidateImageHashes(outputFolderName);
             Console.WriteLine("COMPLETE");

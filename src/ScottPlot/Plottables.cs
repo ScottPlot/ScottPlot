@@ -17,7 +17,7 @@ namespace ScottPlot
         public Pen pen;
         public bool antiAlias;
 
-        public PlottableSignal(double[] ys, double sampleRate, Color color, double linewidth, bool antiAlias)
+        public PlottableSignal(double[] ys, double sampleRate, Color color, float linewidth, bool antiAlias)
         {
             this.ys = ys;
             this.sampleRate = sampleRate;
@@ -25,7 +25,7 @@ namespace ScottPlot
             this.antiAlias = antiAlias;
             pointCount = ys.Length;
 
-            pen = new Pen(color, (float)linewidth)
+            pen = new Pen(color, linewidth)
             {
                 // this prevents sharp corners
                 StartCap = System.Drawing.Drawing2D.LineCap.Round,
@@ -51,7 +51,7 @@ namespace ScottPlot
 
         public override void Render(Settings settings)
         {
-            
+
             double dataSpanUnits = ys.Length * samplePeriod;
             double columnSpanUnits = settings.xAxisSpan / settings.dataSize.Width;
             double columnPointCount = (columnSpanUnits / dataSpanUnits) * ys.Length;
@@ -207,6 +207,51 @@ namespace ScottPlot
         public override void Render(Settings settings)
         {
             settings.gfxData.DrawString(text, font, brush, settings.GetPoint(x, y));
+        }
+    }
+
+    public class PlottableAxLine : Plottable
+    {
+        public double position;
+        public bool vertical;
+        public string orientation;
+        public Pen pen;
+
+        public PlottableAxLine(double position, bool vertical, Color color, float lineWidth)
+        {
+            this.position = position;
+            this.vertical = vertical;
+            orientation = (vertical) ? "vertical" : "horizontal";
+            pen = new Pen(color, lineWidth);
+            pointCount = 1;
+        }
+
+        public override string ToString()
+        {
+            return $"PlottableAxLine ({orientation}) at {position}";
+        }
+
+        public override double[] GetLimits()
+        {
+            return new double[] { 0, 0, 0, 0 };
+        }
+
+        public override void Render(Settings settings)
+        {
+            Point pt1, pt2;
+
+            if (vertical)
+            {
+                pt1 = settings.GetPoint(position, settings.axis[2]);
+                pt2 = settings.GetPoint(position, settings.axis[3]);
+            }
+            else
+            {
+                pt1 = settings.GetPoint(settings.axis[0], position);
+                pt2 = settings.GetPoint(settings.axis[1], position);
+            }
+
+            settings.gfxData.DrawLine(pen, pt1, pt2);
         }
     }
 }
