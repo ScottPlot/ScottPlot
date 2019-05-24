@@ -94,5 +94,14 @@ namespace ScottPlot
             plt.settings.displayBenchmark = !plt.settings.displayBenchmark;
             Render();
         }
+
+        private void PbPlot_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Middle)
+            {
+                plt.AxisAuto();
+                Render();
+            }
+        }
     }
 }
