@@ -21,7 +21,7 @@ namespace ScottPlotCookbook
             this.width = width;
             this.height = height;
             PrepareDataSmall();
-            dataSignal = ScottPlot.DataGen.SinSweep(1_000_000, 15);
+            dataSignal = ScottPlot.DataGen.SinSweep(1_000_000, 8);
         }
 
         // small data
@@ -309,18 +309,16 @@ namespace ScottPlotCookbook
 
             var plt = new ScottPlot.Plot(width, height);
 
-            plt.settings.figureBackgroundColor = ColorTranslator.FromHtml("#001021");
-            plt.settings.dataBackgroundColor = ColorTranslator.FromHtml("#021d38");
-            plt.settings.gridColor = ColorTranslator.FromHtml("#273c51");
-            plt.settings.titleColor = Color.White;
-            plt.settings.tickColor = Color.LightGray;
-            plt.settings.axisLabelColor = Color.LightGray;
-
+            Color figureBgColor = ColorTranslator.FromHtml("#001021");
+            Color dataBgColor = ColorTranslator.FromHtml("#021d38");
+            plt.Background(figureBgColor, dataBgColor);
+            plt.Grid(color: ColorTranslator.FromHtml("#273c51"));
+            plt.Ticks(color: Color.LightGray);
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
-            plt.Title("Very Complicated Data");
-            plt.XLabel("Experiment Duration");
-            plt.YLabel("Productivity");
+            plt.Title("Very Complicated Data", Color.White);
+            plt.XLabel("Experiment Duration", Color.LightGray);
+            plt.YLabel("Productivity", Color.LightGray);
             plt.AxisAuto();
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
@@ -332,14 +330,13 @@ namespace ScottPlotCookbook
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
 
             var plt = new ScottPlot.Plot(width, height);
-            plt.settings.figureBackgroundColor = ColorTranslator.FromHtml("#001021");
-            plt.settings.dataBackgroundColor = ColorTranslator.FromHtml("#021d38");
-            plt.settings.gridColor = ColorTranslator.FromHtml("#273c51");
-            plt.settings.displayTicksX = false;
-            plt.settings.displayTicksY = false;
-            plt.settings.displayAxisFrames = false;
+            Color figureBgColor = ColorTranslator.FromHtml("#001021");
+            Color dataBgColor = ColorTranslator.FromHtml("#021d38");
+            plt.Background(figureBgColor, dataBgColor);
+            plt.Grid(color: ColorTranslator.FromHtml("#273c51"));
+            plt.Ticks(displayTicksX: false, displayTicksY: false);
+            plt.Frame(drawFrame: false);
             plt.TightenLayout(padding: 0);
-
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
             plt.AxisAuto(0);
@@ -356,7 +353,7 @@ namespace ScottPlotCookbook
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
             plt.AxisAuto(0);
-            plt.settings.displayGrid = false;
+            plt.Grid(false);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
         }
@@ -370,9 +367,8 @@ namespace ScottPlotCookbook
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
             plt.AxisAuto();
-            plt.settings.displayGrid = false;
-            plt.settings.displayFrameByAxis[1] = false;
-            plt.settings.displayFrameByAxis[3] = false;
+            plt.Grid(false);
+            plt.Frame(byAxis: new bool[] { true, false, true, false });
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
         }
@@ -386,11 +382,9 @@ namespace ScottPlotCookbook
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
             plt.AxisAuto();
-            plt.settings.displayGrid = false;
-            plt.settings.displayTicksY = false;
-            plt.settings.displayFrameByAxis[0] = false;
-            plt.settings.displayFrameByAxis[1] = false;
-            plt.settings.displayFrameByAxis[3] = false;
+            plt.Grid(false);
+            plt.Ticks(displayTicksY: false);
+            plt.Frame(byAxis: new bool[] { false, false, true, false });
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
         }
@@ -403,7 +397,7 @@ namespace ScottPlotCookbook
             // PlotSignal is ideal for plotting large arrays of evenly-spaed data at high framerates.
             // Note that we are testing it here by plotting an array with one million data points.
             var plt = new ScottPlot.Plot(width, height);
-            plt.settings.displayBenchmark = true;
+            plt.Benchmark();
             plt.PlotSignal(dataSignal, sampleRate: 20_000);
             plt.AxisAuto();
             plt.SaveFig(fileName);
@@ -416,7 +410,7 @@ namespace ScottPlotCookbook
 
             // A slight performance enhancement is achieved when anti-aliasing is disabled
             var plt = new ScottPlot.Plot(width, height);
-            plt.settings.displayBenchmark = true;
+            plt.Benchmark();
             plt.PlotSignal(dataSignal, sampleRate: 20_000, antiAlias: false);
             plt.AxisAuto();
             plt.SaveFig(fileName);

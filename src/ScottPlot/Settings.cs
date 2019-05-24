@@ -290,7 +290,24 @@ namespace ScottPlot
             }
 
             if (axis == null)
+            {
                 axis = new double[] { -10, 10, -10, 10 };
+            }
+            else
+            {
+                if (axis[0] == axis[1])
+                {
+                    axis[0] = axis[0] - 1;
+                    axis[1] = axis[1] + 1;
+                }
+
+                if (axis[2] == axis[3])
+                {
+                    axis[2] = axis[2] - 1;
+                    axis[3] = axis[3] + 1;
+                }
+            }
+
             AxisUpdate();
             AxisZoom(1 - horizontalMargin, 1 - verticalMargin);
         }
