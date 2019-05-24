@@ -206,22 +206,85 @@ namespace ScottPlot
 
         #region CUSTOMIZATION
 
-        public void Title(string title = "")
+        public void Title(string title = null, Color? color = null, bool? enable = true)
         {
-            settings.title = title;
+            if (title != null)
+                settings.title = title;
+            if (color != null)
+                settings.titleColor = (Color)color;
+            if (enable != null)
+                if (enable == false)
+                    settings.title = "";
+            settings.backgroundRenderNeeded = true;
             TightenLayout();
         }
 
-        public void XLabel(string xLabel = "")
+        public void XLabel(string xLabel = null, Color? color = null, bool? enable = true)
         {
-            settings.axisLabelX = xLabel;
+            if (xLabel != null)
+                settings.axisLabelX = xLabel;
+            if (enable == false)
+                settings.axisLabelX = "";
+            if (color != null)
+                settings.axisLabelColor = (Color)color;
+            settings.backgroundRenderNeeded = true;
             TightenLayout();
         }
 
-        public void YLabel(string yLabel = "")
+        public void YLabel(string yLabel = null, Color? color = null, bool? enable = true)
         {
-            settings.axisLabelY = yLabel;
+            if (yLabel != null)
+                settings.axisLabelY = yLabel;
+            if (enable == false)
+                settings.axisLabelY = "";
+            if (color != null)
+                settings.axisLabelColor = (Color)color;
+            settings.backgroundRenderNeeded = true;
             TightenLayout();
+        }
+
+        public void Background(Color? figure = null, Color? data = null)
+        {
+            if (figure != null)
+                settings.figureBackgroundColor = (Color)figure;
+            if (data != null)
+                settings.dataBackgroundColor = (Color)data;
+            settings.backgroundRenderNeeded = true;
+        }
+
+        public void Grid(bool? enable = true, Color? color = null)
+        {
+            if (enable != null)
+                settings.displayGrid = (bool)enable;
+            if (color != null)
+                settings.gridColor = (Color)color;
+        }
+
+        public void Ticks(bool? displayTicksX = true, bool? displayTicksY = true, Color? color = null)
+        {
+            if (displayTicksX != null)
+                settings.displayTicksX = (bool)displayTicksX;
+            if (displayTicksY != null)
+                settings.displayTicksY = (bool)displayTicksY;
+            if (color != null)
+                settings.tickColor = (Color)color;
+            settings.backgroundRenderNeeded = true;
+        }
+
+        public void Frame(bool? drawFrame = true, Color? frameColor = null, bool[] byAxis = null)
+        {
+            if (drawFrame != null)
+                settings.displayAxisFrames = (bool)drawFrame;
+            if (frameColor != null)
+                settings.tickColor = (Color)frameColor;
+            if (byAxis != null && byAxis.Length == 4)
+                settings.displayFrameByAxis = byAxis;
+            settings.backgroundRenderNeeded = true;
+        }
+
+        public void Benchmark(bool displayBenchmark = true)
+        {
+            settings.displayBenchmark = displayBenchmark;
         }
 
         #endregion
