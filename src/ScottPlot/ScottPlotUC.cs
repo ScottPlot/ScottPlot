@@ -88,5 +88,11 @@ namespace ScottPlot
             plt.settings.MouseUp();
             Render();
         }
+
+        private void PbPlot_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            plt.settings.displayBenchmark = !plt.settings.displayBenchmark;
+            Render();
+        }
     }
 }
