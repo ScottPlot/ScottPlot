@@ -143,12 +143,27 @@ namespace ScottPlot
             settings.plottables.Add(scat);
         }
 
-        public void PlotSignal(double[] ys, double sampleRate = 1, Color? color = null, double linewidth = .5, bool antiAlias = true)
+        public void PlotSignal(double[] ys, double sampleRate = 1, Color? color = null, float linewidth = 1, bool antiAlias = true)
         {
             if (color == null)
                 color = settings.GetNextColor();
             PlottableSignal signal = new PlottableSignal(ys, sampleRate, (Color)color, linewidth: linewidth, antiAlias: antiAlias);
             settings.plottables.Add(signal);
+        }
+
+        public void PlotVLine(double x, Color? color = null, float lineWidth = 1)
+        {
+            if (color == null)
+                color = settings.GetNextColor();
+            PlottableAxLine axLine = new PlottableAxLine(x, vertical: true, color: (Color)color, lineWidth: lineWidth);
+            settings.plottables.Add(axLine);
+        }
+        public void PlotHLine(double x, Color? color = null, float lineWidth = 1)
+        {
+            if (color == null)
+                color = settings.GetNextColor();
+            PlottableAxLine axLine = new PlottableAxLine(x, vertical: false, color: (Color)color, lineWidth: lineWidth);
+            settings.plottables.Add(axLine);
         }
 
         #endregion

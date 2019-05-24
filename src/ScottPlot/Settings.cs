@@ -265,6 +265,9 @@ namespace ScottPlot
 
             foreach (Plottable plottable in plottables)
             {
+                if (plottable is PlottableAxLine)
+                    continue;
+
                 double[] limits = plottable.GetLimits();
                 if (axis == null)
                 {
@@ -272,10 +275,13 @@ namespace ScottPlot
                 }
                 else
                 {
+                    // horizontal
                     if (limits[0] < axis[0])
                         axis[0] = limits[0];
                     if (limits[1] > axis[1])
                         axis[1] = limits[1];
+
+                    // vertical
                     if (limits[2] < axis[2])
                         axis[2] = limits[2];
                     if (limits[3] > axis[3])
