@@ -1,4 +1,4 @@
-﻿namespace ScottPlotDev2
+﻿namespace ScottPlot
 {
     partial class ScottPlotUC
     {
@@ -28,44 +28,41 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.pb = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.pb)).BeginInit();
+            this.pbPlot = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pbPlot)).BeginInit();
             this.SuspendLayout();
             // 
-            // pb
+            // pbPlot
             // 
-            this.pb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-            this.pb.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.pb.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pb.Location = new System.Drawing.Point(0, 0);
-            this.pb.Name = "pb";
-            this.pb.Size = new System.Drawing.Size(391, 225);
-            this.pb.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pb.TabIndex = 0;
-            this.pb.TabStop = false;
-            this.pb.Layout += new System.Windows.Forms.LayoutEventHandler(this.pb_Layout);
-            this.pb.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pb_MouseClick);
-            this.pb.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pb_MouseDown);
-            this.pb.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pb_MouseMove);
-            this.pb.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pb_MouseUp);
+            this.pbPlot.BackColor = System.Drawing.Color.White;
+            this.pbPlot.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pbPlot.Location = new System.Drawing.Point(0, 0);
+            this.pbPlot.Name = "pbPlot";
+            this.pbPlot.Size = new System.Drawing.Size(500, 350);
+            this.pbPlot.TabIndex = 0;
+            this.pbPlot.TabStop = false;
+            this.pbPlot.SizeChanged += new System.EventHandler(this.PbPlot_SizeChanged);
+            this.pbPlot.MouseClick += new System.Windows.Forms.MouseEventHandler(this.PbPlot_MouseClick);
+            this.pbPlot.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.PbPlot_MouseDoubleClick);
+            this.pbPlot.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PbPlot_MouseDown);
+            this.pbPlot.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PbPlot_MouseMove);
+            this.pbPlot.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PbPlot_MouseUp);
             // 
             // ScottPlotUC
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.Controls.Add(this.pb);
+            this.Controls.Add(this.pbPlot);
             this.Name = "ScottPlotUC";
-            this.Size = new System.Drawing.Size(391, 225);
+            this.Size = new System.Drawing.Size(500, 350);
             this.Load += new System.EventHandler(this.ScottPlotUC_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.pb)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbPlot)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.PictureBox pb;
+        private System.Windows.Forms.PictureBox pbPlot;
     }
 }
