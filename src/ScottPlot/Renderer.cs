@@ -63,7 +63,7 @@ namespace ScottPlot
         {
             int padding = 3;
             int stubWidth = 20;
-            int stubHeight = 4;
+            int stubHeight = 3;
 
             Brush brushText = new SolidBrush(settings.axisLabelColor);
             float legendFontLineHeight = settings.gfxData.MeasureString("TEST", settings.legendFont).Height;
@@ -104,58 +104,6 @@ namespace ScottPlot
                     textLocation.X - padding, textLocation.Y + legendFontLineHeight / 2,
                     textLocation.X - padding - stubWidth, textLocation.Y + legendFontLineHeight / 2);
             }
-
-            // draw colored lines  labels
-
-            /*
-            Size legendSize = new Size(0, 0);
-            string[] legendLabels = new string[settings.plottables.Count()];
-            Point[] legendLocations = new Point[settings.plottables.Count()];
-            int textHalfHeight = (int)(textHeight / 2);
-
-            for (int i = 0; i < settings.plottables.Count(); i++)
-            {
-                legendLabels[i] = settings.plottables[i].label;
-                SizeF textSizeF = settings.gfxData.MeasureString(settings.plottables[i].label, legendFont);
-                if (legendSize.Width < textSizeF.Width)
-                    legendSize.Width = (int)textSizeF.Width;
-                legendSize.Height += (int)textSizeF.Height + padding;
-                Size textSize = new Size((int)textSizeF.Width, (int)textSizeF.Height);
-                Point textLocation = new Point(settings.dataSize.Width, settings.dataSize.Height);
-                textLocation.X -= textSize.Width + padding;
-                textLocation.Y -= textSize.Height + padding;
-                textLocation.Y -= (int)(padding + textSize.Height) * i;
-                legendLocations[i] = textLocation;
-            }
-
-
-            Point textLocation2 = new Point(settings.dataSize.Width, settings.dataSize.Height);
-            textLocation2.X -= legendSize.Width + padding;
-            textLocation2.Y -= legendSize.Height + padding;
-
-            Rectangle legendRect = new Rectangle(textLocation2, legendSize);
-            legendRect.Width += stubWidth + padding;
-            legendRect.X -= stubWidth + padding;
-
-            Brush brushBackground = new SolidBrush(settings.dataBackgroundColor);
-            Pen penBorder = new Pen(settings.tickColor);
-
-            settings.gfxData.FillRectangle(brushBackground, legendRect);
-            settings.gfxData.DrawRectangle(penBorder, legendRect);
-            for (int i = 0; i < settings.plottables.Count(); i++)
-            {
-                settings.gfxData.DrawString(legendLabels[i], legendFont, brushText, legendLocations[i]);
-                if (settings.plottables[i] is PlottableScatter)
-                {
-                    Pen pen = new Pen(((PlottableScatter)settings.plottables[i]).color, stubSize);
-                    settings.gfxData.DrawLine(pen,
-                        legendLocations[i].X,
-                        legendLocations[i].Y + textHalfHeight,
-                        legendLocations[i].X - stubWidth,
-                        legendLocations[i].Y + textHalfHeight);
-                }
-            }
-            */
         }
 
         public static void DataPlaceOntoFigure(Settings settings)
