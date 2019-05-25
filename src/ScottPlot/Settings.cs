@@ -1,212 +1,390 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Text;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-/* code here contains small settings objects which can be passed around instead of functions with lots of arguments */
 
 namespace ScottPlot
 {
+
     public class Settings
     {
+        // these properties get set at instantiation or after size or axis adjustments
+        public Size figureSize { get; private set; }
+        public Point dataOrigin { get; private set; }
+        public Size dataSize { get; private set; }
 
-        ////////////////////////////////////////////////////////////////////////////////////
-        // figure geometry
+        // hold copies of graphics objects to make them easy to plot to
+        public Graphics gfxFigure;
+        public Graphics gfxData;
+        public Bitmap bmpFigure;
+        public Bitmap bmpData;
 
-        public int width;
-        public int height;
+        // axis (replace with class)
+        public double[] axis = new double[] { -10, 10, -10, 10 }; // X1, X2, Y1, Y2
+        public double xAxisSpan;
+        public double yAxisSpan;
+        public double xAxisCenter;
+        public double yAxisCenter;
+        public double xAxisScale;
+        public double yAxisScale;
 
-        public Size Size { get { return new Size(width, height); } }
-        public int centerXpx { get { return width / 2; } }
-        public int centerYpx { get { return height / 2; } }
-
-        public int minimumWidth { get { return dataPadLeft + dataPadTop + 1; } }
-        public int minimumHeight { get { return dataPadTop + dataPadBottom + 1; } }
-
-        ////////////////////////////////////////////////////////////////////////////////////
-        // data area geometry
-
-        public int dataPadLeft = 60;
-        public int dataPadRight = 30;
-        public int dataPadTop = 40;
-        public int dataPadBottom = 50;
-
-        public int dataPlotWidth { get { return width - dataPadLeft - dataPadRight; } }
-        public int dataPlotHeight { get { return height - dataPadTop - dataPadBottom; } }
-        public int dataPlotPosLeft { get { return dataPadLeft; } }
-        public int dataPlotPosRight { get { return dataPlotWidth + dataPadLeft; } }
-        public int dataPlotPosTop { get { return dataPadTop; } }
-        public int dataPlotPosBottom { get { return dataPadTop + dataPlotHeight; } }
-        public int dataPlotCenterX { get { return dataPlotWidth / 2 + dataPadLeft; } }
-        public int dataPlotCenterY { get { return dataPlotHeight / 2 + dataPadTop; } }
-        public Point dataPlotOrigin { get { return new Point(dataPlotPosLeft, dataPlotPosTop); } }
-        public Size dataPlotSize { get { return new Size(dataPlotWidth, dataPlotHeight); } }
-        public Rectangle dataPlotRectangle { get { return new Rectangle(dataPlotOrigin, dataPlotSize); } }
-
-        ////////////////////////////////////////////////////////////////////////////////////
         // background colors
-        public Color figureBgColor = Color.White;
-        public Color dataBgColor = Color.White;
+        public Color figureBackgroundColor = Color.White;
+        public Color dataBackgroundColor = Color.White;
 
-        ////////////////////////////////////////////////////////////////////////////////////
-        // anti-aliasing
-        public bool figureAntiAliasLines = true;
-        public bool figureAntiAliasText = true;
-        public bool dataAntiAliasLines = true;
-        public bool dataAntiAliasText = true;
-        public SmoothingMode figureSmoothingMode { get { return (figureAntiAliasLines) ? SmoothingMode.HighQuality : SmoothingMode.HighSpeed; } }
-        public TextRenderingHint figureTextHint { get { return (figureAntiAliasText) ? TextRenderingHint.AntiAlias : TextRenderingHint.SingleBitPerPixelGridFit; } }
-        public SmoothingMode dataSmoothingMode { get { return (dataAntiAliasLines) ? SmoothingMode.HighQuality : SmoothingMode.HighSpeed; } }
-        public TextRenderingHint dataTextHint { get { return (dataAntiAliasText) ? TextRenderingHint.AntiAlias : TextRenderingHint.SingleBitPerPixelGridFit; } }
+        // axis settings
+        public int axisPadding = 5;
+        public bool[] displayFrameByAxis = new bool[] { true, true, true, true };
+        public int[] axisLabelPadding = new int[] { 140, 120, 140, 55 }; // X1, X2, Y1, Y2
+        public bool displayAxisFrames = true;
+        public bool tighteningOccurred = false;
 
-        ////////////////////////////////////////////////////////////////////////////////////
-        // axis limits and unit conversions
-        public Axis axisX;
-        public Axis axisY;
-        public bool axisXonBottom = true;
-        public bool axisYonLeft = true;
-
-        ////////////////////////////////////////////////////////////////////////////////////
-        // mouse tracking
-        public MouseTracker mouse;
-
-        ////////////////////////////////////////////////////////////////////////////////////
-        // axis styling and labels
-
-        public bool drawAxes = true;
+        // axis ticks
+        public Font tickFont = new Font("Segoe UI", 10);
+        public List<Tick> ticksX;
+        public List<Tick> ticksY;
+        public int tickSize = 5;
         public Color tickColor = Color.Black;
-        public Pen penAxisBorder { get { return new Pen(tickColor); } }
-        public Pen penAxisTicks { get { return new Pen(tickColor); } }
-        public Brush brushAxisTickLabels { get { return new SolidBrush(tickColor); } }
+        public bool displayTicksX = true;
+        public bool displayTicksY = true;
 
-        public Color labelColor = Color.Black;
-        public Brush brushLabels { get { return new SolidBrush(labelColor); } }
+        // title and axis labels
+        public string title = "";
+        public Font titleFont = new Font("Segoe UI", 20, FontStyle.Bold);
+        public Color titleColor = Color.Black;
+        public string axisLabelX = "";
+        public string axisLabelY = "";
+        public Font axisLabelFont = new Font("Segoe UI", 16);
+        public Color axisLabelColor = Color.Black;
 
-        public Font fontTicks = new Font("Arial", 9, FontStyle.Regular);
-        public Font fontTitle = new Font("Arial", 20, FontStyle.Bold);
-        public Font fontAxis = new Font("Arial", 12, FontStyle.Bold);
+        // grid
+        public bool displayGrid = true;
+        public Color gridColor = Color.LightGray;
 
-        public string axisLabelX = "Horizontal Axis (units)";
-        public string axisLabelY = "Vertical Axis (units)";
-        public string title = "Data Title";
+        // legend
+        public bool displayLegend = false;
+        public Font legendFont = new Font("Segoe UI", 12);
 
-        ////////////////////////////////////////////////////////////////////////////////////
-        // grid settings
-        public bool gridEnabled = true;
-        public int gridWidth = 1;
-        public Color gridColor = ColorTranslator.FromHtml("#E6E6E6");
-        public Pen gridPen { get { return new Pen(gridColor, gridWidth); } }
+        // benchmarking
+        public Font benchmarkFont = new Font("Consolas", 8);
+        public Brush benchmarkFontBrush = Brushes.Black;
+        public Brush benchmarkBackgroundBrush = new SolidBrush(Color.FromArgb(150, Color.LightYellow));
+        public Pen benchmarkBorderPen = Pens.Black;
+        public Stopwatch benchmarkStopwatch = new Stopwatch();
+        public double benchmarkMsec;
+        public double benchmarkHz;
+        public string benchmarkMessage;
+        public bool displayBenchmark = false;
 
-        ////////////////////////////////////////////////////////////////////////////////////
-        // dev settings
-        public bool benchmarkShow = false;
-        public Color benchmarkColor = Color.Gray;
-        public Brush benchmarkBrush { get { return new SolidBrush(benchmarkColor); } }
+        // mouse tracking
+        private Point mouseDownLocation = new Point(0, 0);
+        private double[] mouseDownAxis = new double[4];
 
-        ////////////////////////////////////////////////////////////////////////////////////
-        // not settings, but commonly used resources
+        // plottables
+        public readonly List<Plottable> plottables = new List<Plottable>();
+        public bool useTwentyColors = false;
+        public bool antiAliasData = true;
+        public bool antiAliasFigure = true;
 
-        public StringFormat sfCenter = new StringFormat { Alignment = StringAlignment.Center };
-        public StringFormat sfLeft = new StringFormat { Alignment = StringAlignment.Near };
-        public StringFormat sfRight = new StringFormat { Alignment = StringAlignment.Far };
+        // plot colors (https://github.com/vega/vega/wiki/Scales#scale-range-literals)
+        string[] plottableColors10 = new string[] { "#1f77b4", "#ff7f0e", "#2ca02c", "#d62728",
+                    "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf" };
+        string[] plottableColors20 = new string[] { "#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78",
+                "#2ca02c", "#98df8a", "#d62728", "#ff9896", "#9467bd", "#c5b0d5",
+                "#8c564b", "#c49c94", "#e377c2", "#f7b6d2", "#7f7f7f", "#c7c7c7",
+                "#bcbd22", "#dbdb8d", "#17becf", "#9edae5", };
 
-        ////////////////////////////////////////////////////////////////////////////////////
-        // be able to access data if we want
-        private Data data;
+        // string formats (position indicates where their origin is)
+        public StringFormat sfEast = new StringFormat() { LineAlignment = StringAlignment.Center, Alignment = StringAlignment.Far };
+        public StringFormat sfNorth = new StringFormat() { LineAlignment = StringAlignment.Near, Alignment = StringAlignment.Center };
+        public StringFormat sfSouth = new StringFormat() { LineAlignment = StringAlignment.Far, Alignment = StringAlignment.Center };
+        public StringFormat sfWest = new StringFormat() { LineAlignment = StringAlignment.Center, Alignment = StringAlignment.Near };
+        public StringFormat sfNorthWest = new StringFormat() { LineAlignment = StringAlignment.Near, Alignment = StringAlignment.Near };
 
-        ////////////////////////////////////////////////////////////////////////////////////
-        // functions
-
-        public Settings(int pxWidth, int pxHeight, ref Data data)
+        public Settings()
         {
-            axisX = new Axis(tickSpacingPx: 100);
-            axisY = new Axis(tickSpacingPx: 50);
-            mouse = new MouseTracker(ref axisX, ref axisY);
-            this.data = data;
-            Resize(pxWidth, pxHeight);
+
         }
 
-        public void Resize(int newWidthPx, int newHeightPx)
+        public void BenchmarkStart()
         {
+            benchmarkStopwatch.Restart();
+        }
 
-            if (newWidthPx < minimumWidth)
+        public void BenchmarkEnd()
+        {
+            benchmarkStopwatch.Stop();
+            benchmarkMsec = benchmarkStopwatch.ElapsedTicks * 1000.0 / Stopwatch.Frequency;
+            benchmarkHz = 1000.0 / benchmarkMsec;
+            benchmarkMessage = "";
+            benchmarkMessage += string.Format("Full render of {0} objects ({1:n} points)", plottables.Count, GetTotalPointCount());
+            benchmarkMessage += string.Format(" took {0:0.000} ms ({1:0.00 Hz})", benchmarkMsec, benchmarkHz);
+            if (plottables.Count == 1)
+                benchmarkMessage = benchmarkMessage.Replace("objects", "object");
+            if (!backgroundRenderNeeded)
+                benchmarkMessage = benchmarkMessage.Replace("Full", "Data-only");
+        }
+
+        public void Resize(int width, int height)
+        {
+            figureSize = new Size(width, height);
+            dataOrigin = new Point(axisLabelPadding[0], axisLabelPadding[3]);
+            int dataWidth = figureSize.Width - axisLabelPadding[0] - axisLabelPadding[1];
+            int dataHeight = figureSize.Height - axisLabelPadding[2] - axisLabelPadding[3];
+            dataSize = new Size(dataWidth, dataHeight);
+            AxisUpdate();
+        }
+
+        public void AxisSet(double? x1 = null, double? x2 = null, double? y1 = null, double? y2 = null)
+        {
+            bool axisChanged = false;
+
+            if (x1 != null && (double)x1 != axis[0])
             {
-                width = minimumWidth;
-                Console.WriteLine("WARNING: minimum width");
+                axis[0] = (double)x1;
+                axisChanged = true;
+            }
+
+            if (x2 != null && (double)x2 != axis[1])
+            {
+                axis[1] = (double)x2;
+                axisChanged = true;
+            }
+
+            if (y1 != null && (double)y1 != axis[2])
+            {
+                axis[2] = (double)y1;
+                axisChanged = true;
+            }
+
+            if (y2 != null && (double)y2 != axis[3])
+            {
+                axis[3] = (double)y2;
+                axisChanged = true;
+            }
+
+            if (axisChanged)
+                AxisUpdate();
+        }
+
+        public void AxisTighen()
+        {
+            Ticks ticks = new Ticks(this);
+            Size maxTickSizeHoriz = ticks.GetMaxTickSize(ticksX);
+            Size maxTickSizeVert = ticks.GetMaxTickSize(ticksY);
+            if (displayTicksX == false)
+                maxTickSizeHoriz = new Size(0, 0);
+            if (displayTicksY == false)
+                maxTickSizeVert = new Size(0, 0);
+
+            // top
+            SizeF titleSize = gfxFigure.MeasureString(title, titleFont);
+            axisLabelPadding[3] = (int)(titleSize.Height) + axisPadding * 2;
+
+            // bottom
+            SizeF xLabelSize = gfxFigure.MeasureString(axisLabelX, axisLabelFont);
+            axisLabelPadding[2] = (int)(xLabelSize.Height) + axisPadding * 2;
+            axisLabelPadding[2] += maxTickSizeHoriz.Height;
+
+            // left
+            SizeF yLabelSize = gfxFigure.MeasureString(axisLabelY, axisLabelFont);
+            axisLabelPadding[0] = (int)(yLabelSize.Height) + axisPadding * 2;
+            axisLabelPadding[0] += maxTickSizeVert.Width;
+
+            // right
+            axisLabelPadding[1] = axisPadding + maxTickSizeHoriz.Width / 2;
+
+            tighteningOccurred = true;
+        }
+
+        public bool backgroundRenderNeeded = true;
+
+        private void AxisUpdate()
+        {
+            xAxisSpan = axis[1] - axis[0];
+            xAxisCenter = (axis[1] + axis[0]) / 2;
+            yAxisSpan = axis[3] - axis[2];
+            yAxisCenter = (axis[3] + axis[2]) / 2;
+            xAxisScale = dataSize.Width / xAxisSpan; // px per unit
+            yAxisScale = dataSize.Height / yAxisSpan; // px per unit
+            backgroundRenderNeeded = true;
+        }
+
+        public void AxisPan(double? dx = null, double? dy = null)
+        {
+            bool axisChanged = false;
+
+            if (dx != null && dx != 0)
+            {
+                axis[0] += (double)dx;
+                axis[1] += (double)dx;
+                axisChanged = true;
+            }
+
+            if (dy != null && dy != 0)
+            {
+                axis[2] += (double)dy;
+                axis[3] += (double)dy;
+                axisChanged = true;
+            }
+
+            if (axisChanged)
+                AxisUpdate();
+        }
+
+        public void AxisZoom(double xFrac = 1, double yFrac = 1)
+        {
+            bool axisChanged = false;
+
+            if (xFrac != 1)
+            {
+                double halfNewSpan = xAxisSpan / xFrac / 2;
+                axis[0] = xAxisCenter - halfNewSpan;
+                axis[1] = xAxisCenter + halfNewSpan;
+                axisChanged = true;
+            }
+
+            if (yFrac != 1)
+            {
+                double halfNewSpan = yAxisSpan / yFrac / 2;
+                axis[2] = yAxisCenter - halfNewSpan;
+                axis[3] = yAxisCenter + halfNewSpan;
+                axisChanged = true;
+            }
+
+            if (axisChanged)
+                AxisUpdate();
+        }
+
+        private void AxisZoomPx(int xPx, int yPx)
+        {
+            double dX = (double)xPx / xAxisScale;
+            double dY = (double)yPx / yAxisScale;
+            double dXFrac = dX / (Math.Abs(dX) + xAxisSpan);
+            double dYFrac = dY / (Math.Abs(dY) + yAxisSpan);
+            AxisZoom(Math.Pow(10, dXFrac), Math.Pow(10, dYFrac));
+        }
+
+        public void AxisAuto(double horizontalMargin = .1, double verticalMargin = .1)
+        {
+            axis = null;
+
+            foreach (Plottable plottable in plottables)
+            {
+                if (plottable is PlottableAxLine)
+                    continue;
+
+                double[] limits = plottable.GetLimits();
+                if (axis == null)
+                {
+                    axis = limits;
+                }
+                else
+                {
+                    // horizontal
+                    if (limits[0] < axis[0])
+                        axis[0] = limits[0];
+                    if (limits[1] > axis[1])
+                        axis[1] = limits[1];
+
+                    // vertical
+                    if (limits[2] < axis[2])
+                        axis[2] = limits[2];
+                    if (limits[3] > axis[3])
+                        axis[3] = limits[3];
+                }
+            }
+
+            if (axis == null)
+            {
+                axis = new double[] { -10, 10, -10, 10 };
             }
             else
             {
-                width = newWidthPx;
+                if (axis[0] == axis[1])
+                {
+                    axis[0] = axis[0] - 1;
+                    axis[1] = axis[1] + 1;
+                }
+
+                if (axis[2] == axis[3])
+                {
+                    axis[2] = axis[2] - 1;
+                    axis[3] = axis[3] + 1;
+                }
             }
 
-            if (newHeightPx < minimumHeight)
-            {
-                height = minimumHeight;
-                Console.WriteLine("WARNING: minimum height");
-            }
-            else
-            {
-                height = newHeightPx;
-            }
-
-            AxesRecalculate();
+            AxisUpdate();
+            AxisZoom(1 - horizontalMargin, 1 - verticalMargin);
         }
 
-        public void AxesRecalculate()
+        public void Validate()
         {
-            axisX.Resize(dataPlotWidth);
-            axisY.Resize(dataPlotHeight);
+            if (figureSize == null || figureSize.Width < 1 || figureSize.Height < 1)
+                throw new Exception("figure width and height must be greater than 0px");
+            if (axis == null)
+                throw new Exception("axis has not yet been initialized");
         }
 
-        public void SetDataPadding(int? left, int? right, int? bottom, int? top)
+        private bool mouseIsPanning = false;
+        private bool mouseIsZooming = false;
+        public void MouseDown(int cusorPosX, int cursorPosY, bool panning = false, bool zooming = false)
         {
-            dataPadLeft = left ?? dataPadLeft;
-            dataPadRight = right ?? dataPadRight;
-            dataPadBottom = bottom ?? dataPadBottom;
-            dataPadTop = top ?? dataPadTop;
-            AxesRecalculate();
+            mouseDownLocation = new Point(cusorPosX, cursorPosY);
+            mouseIsPanning = panning;
+            mouseIsZooming = zooming;
+            Array.Copy(axis, mouseDownAxis, axis.Length);
         }
 
-        public void AxesSet(double? x1, double? x2, double? y1, double? y2)
+        public void MouseMove(int cursorPosX, int cursorPosY)
         {
-            axisX.Set(x1, x2);
-            axisY.Set(y1, y2);
-        }
-
-        public void AxisFit(double zoomOutX = .1, double zoomOutY = .1)
-        {
-            double[] axisLimits = data.GetAxisLimits();
-
-            if (axisLimits == null)
+            if (mouseIsPanning == false && mouseIsZooming == false)
                 return;
 
-            if (axisLimits[0] < axisLimits[1])
-            {
-                axisX.Set(axisLimits[0], axisLimits[1]);
-                axisX.Zoom(1 - zoomOutX);
-            }
+            Array.Copy(mouseDownAxis, axis, axis.Length);
+            AxisUpdate();
 
-            if (axisLimits[2] < axisLimits[3])
-            {
-                axisY.Set(axisLimits[2], axisLimits[3]);
-                axisY.Zoom(1 - zoomOutY);
-            }
+            int dX = cursorPosX - mouseDownLocation.X;
+            int dY = cursorPosY - mouseDownLocation.Y;
+
+            if (mouseIsPanning)
+                AxisPan(-dX / xAxisScale, dY / yAxisScale);
+            else if (mouseIsZooming)
+                AxisZoomPx(dX, -dY);
         }
 
-        public void AxesZoom(double xZoom = 1.5, double yZoom = 1.5)
+        public void MouseUp()
         {
-            axisX.Zoom(xZoom);
-            axisY.Zoom(yZoom);
+            mouseIsPanning = false;
+            mouseIsZooming = false;
         }
 
-        public void AxesPan(double? dx, double? dy)
+        public Point GetPixel(double locationX, double locationY)
         {
-            if (dx != null) axisX.Pan((double)dx);
-            if (dy != null) axisY.Pan((double)dy);
+            int xPx = (int)((locationX - axis[0]) * xAxisScale);
+            int yPx = dataSize.Height - (int)((locationY - axis[2]) * yAxisScale);
+            return new Point(xPx, yPx);
+        }
+
+        public PointF GetLocation(Point pixelLocation)
+        {
+            double locationX = (pixelLocation.X - dataOrigin.X) / xAxisScale + axis[0];
+            double locationY = axis[3] - (pixelLocation.Y - dataOrigin.Y) / yAxisScale;
+            return new PointF((float)locationX, (float)locationY);
+        }
+
+        public int GetTotalPointCount()
+        {
+            int totalPointCount = 0;
+            foreach (Plottable plottable in plottables)
+                totalPointCount += plottable.pointCount;
+            return totalPointCount;
+        }
+
+        public Color GetNextColor()
+        {
+            string[] colors = (useTwentyColors) ? plottableColors20 : plottableColors10;
+            return ColorTranslator.FromHtml(colors[plottables.Count % colors.Length]);
         }
 
     }

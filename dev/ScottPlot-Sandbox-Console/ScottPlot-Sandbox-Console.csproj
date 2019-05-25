@@ -4,16 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{EE9215C6-01C1-4835-8514-3A708F9291F1}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ScottPlot</RootNamespace>
-    <AssemblyName>ScottPlot</AssemblyName>
+    <ProjectGuid>{7EA89E5C-4652-458A-A352-B2F48728C1F2}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>ScottPlot_Sandbox_Console</RootNamespace>
+    <AssemblyName>ScottPlot-Sandbox-Console</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -33,8 +35,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -43,29 +43,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataGen.cs" />
-    <Compile Include="Plottable.cs" />
-    <Compile Include="Plottables.cs" />
-    <Compile Include="Renderer.cs" />
-    <Compile Include="ScottPlotUC.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="ScottPlotUC.Designer.cs">
-      <DependentUpon>ScottPlotUC.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Ticks.cs" />
-    <Compile Include="Tools.cs" />
-    <Compile Include="Plot.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Settings.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ScottPlotUC.resx">
-      <DependentUpon>ScottPlotUC.cs</DependentUpon>
-    </EmbeddedResource>
+    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram.cd" />
+    <ProjectReference Include="..\..\src\ScottPlot\ScottPlot.csproj">
+      <Project>{ee9215c6-01c1-4835-8514-3a708f9291f1}</Project>
+      <Name>ScottPlot</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

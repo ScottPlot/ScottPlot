@@ -7,123 +7,184 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
 
-namespace ScottPlotDev2
+namespace ScottPlot
 {
     public partial class ScottPlotUC : UserControl
     {
-        public ScottPlot.Plot plt;
+        public Plot plt = new Plot();
+        Stopwatch mouseDownStopwatch = new Stopwatch();
+        private bool mouseMoveRedrawInProgress = false;
 
         public ScottPlotUC()
         {
             InitializeComponent();
-            Reset();
-        }
-
-        public void Reset()
-        {
-            plt = new ScottPlot.Plot();
-        }
-
-        private void pb_Layout(object sender, LayoutEventArgs e)
-        {
-            try
-            {
-                Render(true);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"\n\nException:\n{ex.Message}");
-                Console.WriteLine($"\n\nTraceback:\n{ex.StackTrace}");
-            }
+            pbPlot.MouseWheel += PbPlot_MouseWheel;
+            RightClickMenuSetup();
+            UpdateSize();
+            Render();
         }
 
         private void ScottPlotUC_Load(object sender, EventArgs e)
         {
-            try
-            {
-                Render(true);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"\n\nException:\n{ex.Message}");
-                Console.WriteLine($"\n\nTraceback:\n{ex.StackTrace}");
-            }
+            bool isInFormsDesignerMode = (Process.GetCurrentProcess().ProcessName == "devenv");
+            if (isInFormsDesignerMode)
+                PlotDemoData();
         }
 
-        public ScottPlot.Plot plt2;
-        public void Render(bool resizeToo = false)
+        private void PlotDemoData(int pointCount = 101)
         {
-            if (resizeToo)
-            {
-                plt.settings.Resize(pb.Width, pb.Height);
-                if (plt2 != null)
-                {
-                    plt2.settings.Resize(plt.settings.width, plt.settings.height);
-                }
-            }
+            double pointSpacing = .01;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount, pointSpacing);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
-            if (plt2 == null)
-            {
-                pb.Image = plt.figure.GetBitmap();
-            }
-            else
-            {
-                // if plt2 contains a ScottPlot, match its X axis to the user control then overlay it
-                plt2.settings.axisX.Set(plt.settings.axisX.x1, plt.settings.axisX.x2);
-                Bitmap bmp1 = plt.figure.GetBitmap();
-                Bitmap bmp2 = plt2.figure.GetBitmap();
-                Bitmap bmpMerged = new Bitmap(bmp1);
-                using (Graphics gfx = Graphics.FromImage(bmpMerged))
-                    gfx.DrawImage(bmp2, new Rectangle(0, 0, bmp2.Width, bmp2.Height));
-                pb.Image = bmpMerged;
-            }
-            Application.DoEvents();
-        }
-
-        #region mouse tracking for pan and zoom
-
-        public bool disableMouse = false;
-        private void pb_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (disableMouse) return;
-            plt.settings.mouse.Down();
-        }
-
-        private void pb_MouseUp(object sender, MouseEventArgs e)
-        {
-            if (disableMouse) return;
-            plt.settings.mouse.Up();
+            plt.PlotScatter(dataXs, dataSin);
+            plt.PlotScatter(dataXs, dataCos);
+            plt.AxisAuto(0);
+            plt.Title("ScottPlot User Control");
+            plt.YLabel("Sample Data");
             Render();
         }
 
-        private bool currentlyProcessingMoveEvent = false;
-        private void pb_MouseMove(object sender, MouseEventArgs e)
+        private void UpdateSize()
         {
-            if (disableMouse) return;
-            if (currentlyProcessingMoveEvent)
+            plt.Resize(Width, Height);
+        }
+
+        public void Render()
+        {
+            pbPlot.Image = plt.GetBitmap();
+            Application.DoEvents();
+        }
+
+        private void PbPlot_SizeChanged(object sender, EventArgs e)
+        {
+            Debug.WriteLine("SizeChanged");
+            UpdateSize();
+            Render();
+        }
+
+        private void PbPlot_MouseDown(object sender, MouseEventArgs e)
+        {
+            mouseDownStopwatch.Restart();
+            if (Control.MouseButtons == MouseButtons.Left)
+                plt.settings.MouseDown(Cursor.Position.X, Cursor.Position.Y, panning: true);
+            else if (Control.MouseButtons == MouseButtons.Right)
+                plt.settings.MouseDown(Cursor.Position.X, Cursor.Position.Y, zooming: true);
+        }
+
+        private void PbPlot_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (!mouseMoveRedrawInProgress && Control.MouseButtons != MouseButtons.None)
             {
-                return;
+                mouseMoveRedrawInProgress = true;
+                plt.settings.MouseMove(Cursor.Position.X, Cursor.Position.Y);
+                Render();
+                mouseMoveRedrawInProgress = false;
             }
-            else
+
+            bool showMouseLocation = false;
+            if (showMouseLocation)
             {
-                currentlyProcessingMoveEvent = true;
-                if (plt.settings.mouse.MoveRequiresRender())
+                PointF position = plt.settings.GetLocation(e.Location);
+                Console.WriteLine($"cursor is at {e.Location} which is {position}");
+            }
+            
+        }
+
+        private void PbPlot_MouseUp(object sender, MouseEventArgs e)
+        {
+            plt.settings.MouseMove(Cursor.Position.X, Cursor.Position.Y);
+            plt.settings.MouseUp();
+            Render();
+        }
+
+        private void PbPlot_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            plt.settings.displayBenchmark = !plt.settings.displayBenchmark;
+            Render();
+        }
+
+        private void PbPlot_MouseWheel(object sender, MouseEventArgs e)
+        {
+            if (e.Delta > 0)
+                plt.AxisZoom(1.5, 1.5);
+            else
+                plt.AxisZoom(0.5, 0.5);
+            Render();
+        }
+
+        private ContextMenuStrip cmRightClickMenu;
+        private void RightClickMenuSetup()
+        {
+            cmRightClickMenu = new ContextMenuStrip();
+            cmRightClickMenu.Items.Add("Save Image");
+            cmRightClickMenu.Items.Add("Auto-Axis");
+            cmRightClickMenu.Items.Add("Clear");
+            cmRightClickMenu.Items.Add(new ToolStripSeparator());
+            cmRightClickMenu.Items.Add("Help");
+            int i = cmRightClickMenu.Items.Count - 1;
+            (cmRightClickMenu.Items[i] as ToolStripMenuItem).DropDownItems.Add("left-click-drag to pan");
+            (cmRightClickMenu.Items[i] as ToolStripMenuItem).DropDownItems.Add("right-click-drag to zoom");
+            (cmRightClickMenu.Items[i] as ToolStripMenuItem).DropDownItems.Add("middle-click for auto-axis");
+            (cmRightClickMenu.Items[i] as ToolStripMenuItem).DropDownItems.Add("double-click to toggle benchmark");
+            (cmRightClickMenu.Items[i] as ToolStripMenuItem).DropDownItems[0].Enabled = false;
+            (cmRightClickMenu.Items[i] as ToolStripMenuItem).DropDownItems[1].Enabled = false;
+            (cmRightClickMenu.Items[i] as ToolStripMenuItem).DropDownItems[2].Enabled = false;
+            (cmRightClickMenu.Items[i] as ToolStripMenuItem).DropDownItems[3].Enabled = false;
+            cmRightClickMenu.Items.Add(new ToolStripSeparator());
+            cmRightClickMenu.Items.Add("About ScottPlot");
+        }
+        private void RightClickMenu()
+        {
+            cmRightClickMenu.Show(pbPlot, PointToClient(Cursor.Position));
+            cmRightClickMenu.ItemClicked += new ToolStripItemClickedEventHandler(RightClickMenuItemClicked);
+        }
+
+        private void RightClickMenuItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            ToolStripItem item = e.ClickedItem;
+            switch (item.ToString())
+            {
+                case "Save Image":
+                    cmRightClickMenu.Hide();
+                    SaveFileDialog savefile = new SaveFileDialog();
+                    savefile.FileName = "ScottPlot.png";
+                    savefile.Filter = "PNG Files (*.png)|*.png|All files (*.*)|*.*";
+                    if (savefile.ShowDialog() == DialogResult.OK)
+                        plt.SaveFig(savefile.FileName);
+                    break;
+                case "Auto-Axis":
+                    cmRightClickMenu.Hide();
+                    plt.AxisAuto();
                     Render();
-                currentlyProcessingMoveEvent = false;
+                    break;
+                case "Clear":
+                    cmRightClickMenu.Hide();
+                    plt.Clear();
+                    Render();
+                    break;
+                case "About ScottPlot":
+                    cmRightClickMenu.Hide();
+                    System.Diagnostics.Process.Start("https://github.com/swharden/ScottPlot");
+                    break;
             }
         }
 
-        private void pb_MouseClick(object sender, MouseEventArgs e)
+        private void PbPlot_MouseClick(object sender, MouseEventArgs e)
         {
-            if (disableMouse) return;
+            double mouseDownMsec = mouseDownStopwatch.ElapsedMilliseconds;
             if (e.Button == MouseButtons.Middle)
             {
-                plt.settings.AxisFit();
+                plt.AxisAuto();
                 Render();
             }
+            else if (e.Button == MouseButtons.Right && mouseDownMsec < 100)
+            {
+                RightClickMenu();
+            }
         }
-
-        #endregion
     }
 }

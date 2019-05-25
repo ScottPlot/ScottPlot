@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ScottPlot")]
+[assembly: AssemblyTitle("ScottPlot-Sandbox-Console")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ScottPlot")]
+[assembly: AssemblyProduct("ScottPlot-Sandbox-Console")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("ee9215c6-01c1-4835-8514-3a708f9291f1")]
+[assembly: Guid("7ea89e5c-4652-458a-a352-b2f48728c1f2")]
 
 // Version information for an assembly consists of the following four values:
 //
