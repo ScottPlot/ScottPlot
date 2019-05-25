@@ -80,6 +80,7 @@ namespace ScottPlot
         public readonly List<Plottable> plottables = new List<Plottable>();
         public bool useTwentyColors = false;
         public bool antiAliasData = true;
+        public bool antiAliasFigure = true;
 
         // plot colors (https://github.com/vega/vega/wiki/Scales#scale-range-literals)
         string[] plottableColors10 = new string[] { "#1f77b4", "#ff7f0e", "#2ca02c", "#d62728",
@@ -98,6 +99,7 @@ namespace ScottPlot
 
         public Settings()
         {
+
         }
 
         public void BenchmarkStart()
