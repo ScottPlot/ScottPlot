@@ -1,16 +1,13 @@
 # ScottPlot
 
 **ScottPlot is an open-source interactive graphing library for .NET written in C#.** 
-In a GUI environment ScottPlot makes it easily to display data interactively (left-click-drag pan, right-click-drag zoom). ScottPlot was designed to be fast enough to interactively display large datasets with millions of points (such as WAV files) at high framerates. In non-GUI environments ScottPlot can create graphs and save them as images.
+In a GUI environment ScottPlot makes it easily to display data interactively (left-click-drag pan, right-click-drag zoom). ScottPlot was designed to be fast enough to interactively display large datasets with millions of points (such as WAV files) at high framerates. In non-GUI environments ScottPlot can create graphs and save them as images. ScottPlot is easy to integrate into .NET projects (including cross-platform solutions) because it has no dependencies outside the .NET framework libraries.
 
-ScottPlot is easy to integrate into .NET projects (including cross-platform solutions) because it has no dependencies outside the .NET framework libraries.
+![](/demos/ScottPlotDemo/compiled/ScottPlotDemo.gif)
 
 ## Quickstart
-
-
-### Windows Forms Application Quickstart
 * Create a Windows Forms Application
-* Add a reference to the existing project [ScottPlot.csproj](/src/ScottPlot.csproj)
+* Add an existing project reference to [ScottPlot.csproj](/src/ScottPlot.csproj)
 * Rebuild the solution
 * Drag/Drop the ScottPlotUC (from the toolbox) onto your form
 * Add the following code to your startup sequence
@@ -29,21 +26,34 @@ for (int i = 0; i < pointCount; i++)
 }
 
 // plot the data
+scottPlotUC1.plt.PlotScatter(dataXs, dataSin);
+scottPlotUC1.plt.PlotScatter(dataXs, dataCos);
+scottPlotUC1.plt.XLabel("experiment time (ms)");
+scottPlotUC1.plt.YLabel("signal (mV)");
+scottPlotUC1.plt.Title("ScottPlot Quickstart");
+scottPlotUC1.plt.AxisAuto();
+scottPlotUC1.Render();
 ```
 
-## Full Documentation
-For many more examples review the [ScottPlot Documentation](doc) section.
+![](/demos/ScottPlotQuickstartForms/compiled/ScottPlotQuickstartForms.png)
 
+A compiled quickstart is available for download: [ScottPlotQuickstartForms.zip](/demos/ScottPlotQuickstartForms/compiled/ScottPlotQuickstartForms.zip)
+
+## Documentation
+* The **[ScottPlot Cookbook](/doc/cookbook/README.md)** demonstrates all ScottPlot features
+* ScottPlot mouse actions
+  * Left-click-drag to pan
+  * Right-click-drag to zoom
+  * Mouse scroll-wheel to zoom
+  * Right-click for a dropdown menu
 
 ## Compiled Demos
-These click-to-run demos let you see what ScottPlot can do on your system
-* [demonstration data navigator]()
-* [real-time audio monitor]()
+
+### ScottPlot Demo
+This demo ([ScottPlotDemo.zip](/demos/ScottPlotDemo/compiled/ScottPlotDemo.zip)) demonstrates the display all major plot types. Notice that _millions_ of data points can be displayed on a Signal plot at >100 Hz framerates and comfortably interacted with using the mouse.
+
+![](/demos/ScottPlotDemo/compiled/ScottPlotDemo.png)
 
 ## About ScottPlot
 
-**Author**\
-ScottPlot was created by [Scott Harden](http://www.swharden.com) of [Harden Technologies, LLC](http://tech.swharden.com)
-
-**Custom Features & Commissioned Modifications**\
-The author of this project may be available to create customized versions of ScottPlot which incorporate requested features. Inquiries may be sent to [SWHarden@gmail.com](mailto:swharden@gmail.com).
+ScottPlot was created by [Scott Harden](http://www.SWHarden.com/) of [Harden Technologies, LLC](http://tech.swharden.com). The author of this project may be available for the commissioned creation customized versions of this software which incorporate requested features. Inquiries may be sent to [SWHarden@gmail.com](mailto:swharden@gmail.com).
