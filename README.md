@@ -54,6 +54,12 @@ This demo ([ScottPlotDemo.zip](/demos/ScottPlotDemo/compiled/ScottPlotDemo.zip))
 
 ![](/demos/ScottPlotDemo/compiled/ScottPlotDemo.png)
 
+## Previous Versions
+ScottPlot has been improving with time, and some improvements are associated with breaking code changes. These changes are compartmentalized into major release versions which can be downloaded and used to maintain backward-compatibility:
+* [ScottPlot v3](https://github.com/swharden/ScottPlot/) (May 2019 - present)
+* [ScottPlot v2](https://github.com/swharden/ScottPlot/tree/2.1) (Dec 2018 - May 2019)
+* [ScottPlot v1](https://github.com/swharden/ScottPlot/tree/1.0) (Jan 2018 - Dec 2018)
+
 ## About ScottPlot
 
 ScottPlot was created by [Scott Harden](http://www.SWHarden.com/) of [Harden Technologies, LLC](http://tech.swharden.com). The author of this project may be available for the commissioned creation customized versions of this software which incorporate requested features. Inquiries may be sent to [SWHarden@gmail.com](mailto:swharden@gmail.com).
