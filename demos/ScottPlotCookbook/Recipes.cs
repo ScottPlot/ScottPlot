@@ -113,6 +113,19 @@ namespace ScottPlotCookbook
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
         }
+        public void Figure_01e_Legend()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            var plt = new ScottPlot.Plot(width, height);
+            plt.PlotScatter(dataXs, dataSin, label: "first");
+            plt.PlotScatter(dataXs, dataCos, label: "second");
+            plt.AxisAuto();
+            plt.Legend();
+            plt.SaveFig(fileName);
+            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+        }
 
         public void Figure_02_Styling_Scatter_Plots()
         {

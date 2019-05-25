@@ -143,14 +143,16 @@ namespace ScottPlot
         public Pen pen;
         public Brush brush;
 
-        public PlottableScatter(double[] xs, double[] ys, Color color, double lineWidth, double markerSize)
+        public PlottableScatter(double[] xs, double[] ys, Color color, double lineWidth, double markerSize, string label)
         {
             if (xs.Length != ys.Length)
                 throw new Exception("Xs and Ys must have same length");
 
             this.xs = xs;
             this.ys = ys;
+            this.color = color;
             this.markerSize = (float)markerSize;
+            this.label = label;
             pointCount = xs.Length;
 
             pen = new Pen(color, (float)lineWidth)
