@@ -55,7 +55,7 @@ namespace ScottPlotCookbook
             recipies.Figure_40_Vertical_and_Horizontal_Lines();
 
             GenerateReport(outputFolderName);
-            //ValidateImageHashes(outputFolderName);
+            ValidateImageHashes(outputFolderName);
             Console.WriteLine("COMPLETE");
             Console.ReadLine();
         }
@@ -122,6 +122,30 @@ namespace ScottPlotCookbook
         public void ValidateImageHashes(string outputFolderName)
         {
             string knownHashes = "";
+            knownHashes += "336FA49A099FFE6881D2C5D0B2B5AC9B"; // 01a_Scatter_Sin.png
+            knownHashes += "53D7F12FED78FCBEE642C211D6A073BA"; // 01b_Automatic_Margins.png
+            knownHashes += "AF0CEE68A78E649357F7930B255B062D"; // 01c_Defined_Axis_Limits.png
+            knownHashes += "EC2FC84AADD0128A8E61A7DAD40BAE40"; // 01d_Zoom_and_Pan.png
+            knownHashes += "8EE195CFB60AC8EADD1034E65A405A78"; // 01e_Legend.png
+            knownHashes += "A3736FFCA35E48EEDFE82DE0FC60CE13"; // 02_Styling_Scatter_Plots.png
+            knownHashes += "BC96F9ABB8333D25CC120C8133EFD613"; // 03_Plot_XY_Data.png
+            knownHashes += "F9AE6E651679EB1127C3FEEB0E12F930"; // 04_Plot_Lines_Only.png
+            knownHashes += "A4CE8C1004273D73725946FD54D22D9D"; // 05_Plot_Points_Only.png
+            knownHashes += "327F34CB8838B01D63849D191847F141"; // 06_Styling_XY_Plots.png
+            knownHashes += "36E42889689F15CDCD808ED19632DD81"; // 07_Plotting_Points.png
+            knownHashes += "AF46A072B5118E946F26624F58AA52A1"; // 08_Plotting_Text.png
+            knownHashes += "E89CE1FB91214A3BFD36DCA3409DCACB"; // 09_Clearing_Plots.png
+            knownHashes += "4149DDDC359EBD018CB16FE4D96F3BA0"; // 10_Modifying_Plotted_Data.png
+            knownHashes += "BA0B0F78BBF76E41F50B9250AE88D1B2"; // 20_Small_Plot.png
+            knownHashes += "CF17AC49F1BCEFC55B9529DB49A9750E"; // 21a_Title_and_Axis_Labels.png
+            knownHashes += "5184D9E1DFDD738E48AEB517153D3992"; // 21b_Extra_Padding.png
+            knownHashes += "587B542A25FE9B320EBF72228C1AABD0"; // 22_Custom_Colors.png
+            knownHashes += "F25C121A32FBB4B7E39105E6B6229F2A"; // 23_Frameless_Plot.png
+            knownHashes += "B7219E17329DBA6B3F7CDC6BC3FE16D7"; // 24_Disable_the_Grid.png
+            knownHashes += "F18B4EE14FB45DD1974FAF7DE1613687"; // 25_Corner_Axis_Frame.png
+            knownHashes += "44749276140469A42022E19E6813241D"; // 26_Horizontal_Ticks_Only.png
+            knownHashes += "F2B8269F5703BA6706A2E95E3F128292"; // 32_Signal_Styling.png
+            knownHashes += "2F336992A4E9B18ACC434097827E67D1"; // 40_Vertical_and_Horizontal_Lines.png
 
             var md5 = System.Security.Cryptography.MD5.Create();
             string[] images = System.IO.Directory.GetFiles($"./{outputFolderName}", "*.png");
@@ -131,17 +155,18 @@ namespace ScottPlotCookbook
             {
                 string hashString = "";
                 string fileName = System.IO.Path.GetFileName(filePath);
+
+                // skip images with benchmarks (which change every time)
+                if (fileName.StartsWith("30_Signal") || fileName.StartsWith("31_Signal"))
+                    continue;
+
                 using (var stream = System.IO.File.OpenRead(filePath))
                 {
                     byte[] hashBytes = md5.ComputeHash(stream);
                     for (int i = 0; i < hashBytes.Length; i++)
                         hashString += hashBytes[i].ToString("X2");
                 }
-                if (knownHashes.Contains(hashString))
-                {
-                    Console.WriteLine($"[{hashString}] verified - {fileName}");
-                }
-                else
+                if (!knownHashes.Contains(hashString))
                 {
                     Console.WriteLine($"[{hashString}] UNKNOWN - {fileName}");
                     sourceCodeToAdd += $"knownHashes += \"{hashString}\"; // {fileName}\n";
