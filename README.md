@@ -45,6 +45,7 @@ A compiled quickstart is available for download: [ScottPlotQuickstartForms.zip](
   * Left-click-drag to pan
   * Right-click-drag to zoom
   * Mouse scroll-wheel to zoom
+  * Middle-click for auto-axis
   * Right-click for a dropdown menu
 
 ## Compiled Demos
