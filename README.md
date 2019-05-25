@@ -56,6 +56,11 @@ This demo ([ScottPlotDemo.zip](/demos/ScottPlotDemo/compiled/ScottPlotDemo.zip))
 
 ![](/demos/ScottPlotDemo/compiled/ScottPlotDemo.png)
 
+### Animated Data
+If you plot a double array, updating the array automatically updates the ScottPlot. This demo ([ScottPlotAnimatedSin.zip](demos/ScottPlotAnimatedSin/compiled/ScottPlotAnimatedSin.zip)) plots an array then uses a timer to update it continuously. Note that the graph is still mouse-interactive (panning and zooming). 
+
+![](demos/ScottPlotAnimatedSin/compiled/ScottPlotAnimatedSin.gif)
+
 ## Previous Versions
 ScottPlot has been improving with time, and some improvements are associated with breaking code changes. These changes are compartmentalized into major release versions which can be downloaded and used to maintain backward-compatibility:
 * [ScottPlot v3](https://github.com/swharden/ScottPlot/) (May 2019 - present)
