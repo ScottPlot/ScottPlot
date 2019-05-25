@@ -16,6 +16,8 @@ namespace ScottPlot
 
         public Plot(int width = 600, int height = 800)
         {
+            if (width <= 0 || height <= 0)
+                throw new ArgumentException("width and height must each be greater than 0");
             Resize(width, height);
             TightenLayout();
         }
