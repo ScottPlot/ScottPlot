@@ -24,7 +24,7 @@ namespace ScottPlot
             tickPen = new Pen(settings.tickColor);
             tickBrush = new SolidBrush(settings.tickColor);
             gridPen = new Pen(settings.gridColor);
-            text = string.Format("{0:0.00}", value);
+            text = string.Format("{0}", value);
         }
 
         public void RenderGridHorizontalLine(Settings settings)
@@ -59,6 +59,11 @@ namespace ScottPlot
 
             settings.gfxFigure.DrawLine(tickPen, xPx, yPx, xPx, yPx + settings.tickSize);
             settings.gfxFigure.DrawString(text, settings.tickFont, tickBrush, xPx, yPx + settings.tickSize, settings.sfNorth);
+        }
+
+        public Size TextSize()
+        {
+            return System.Windows.Forms.TextRenderer.MeasureText(text, settings.tickFont);
         }
 
     }
@@ -114,6 +119,9 @@ namespace ScottPlot
         private List<Tick> GetTicks(Settings settings, double axisLow, double axisHigh, double axisScale, int tickSpacingPx, int axisSizePx)
         {
             double axisSpan = axisHigh - axisLow;
+            if (tickSpacingPx == 40) // probably a horizontal axis
+                if (axisSpan < Math.Pow(10, -3) / 2 || axisSpan > Math.Pow(10, 4))
+                    tickSpacingPx = 60;
             double tickCountTarget = (double)axisSizePx / tickSpacingPx / 2;
 
             // determine an ideal tick spacing (multiple of 2, 5, or 10)
