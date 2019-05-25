@@ -34,7 +34,14 @@ namespace ScottPlot
             for (int i = 0; i < settings.plottables.Count; i++)
             {
                 Plottable pltThing = settings.plottables[i];
-                pltThing.Render(settings);
+                try
+                {
+                    pltThing.Render(settings);
+                }
+                catch (OverflowException)
+                {
+                    Debug.WriteLine($"OverflowException plotting: {pltThing}");
+                }
             }
         }
 
