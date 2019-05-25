@@ -145,7 +145,7 @@ namespace ScottPlot
             settings.plottables.Clear();
         }
 
-        public void PlotText(string text, double x, double y, Color? color = null, float fontSize = 12, bool bold = false)
+        public void PlotText(string text, double x, double y, Color? color = null, double fontSize = 12, bool bold = false)
         {
             if (color == null)
                 color = Color.Black;
@@ -153,7 +153,7 @@ namespace ScottPlot
             settings.plottables.Add(txt);
         }
 
-        public void PlotPoint(double x, double y, Color? color = null, float markerSize = 5)
+        public void PlotPoint(double x, double y, Color? color = null, double markerSize = 5)
         {
             if (color == null)
                 color = settings.GetNextColor();
@@ -161,7 +161,7 @@ namespace ScottPlot
             settings.plottables.Add(mark);
         }
 
-        public void PlotScatter(double[] xs, double[] ys, Color? color = null, float lineWidth = 1, float markerSize = 5)
+        public void PlotScatter(double[] xs, double[] ys, Color? color = null, double lineWidth = 1, double markerSize = 5)
         {
             if (color == null)
                 color = settings.GetNextColor();
@@ -169,22 +169,22 @@ namespace ScottPlot
             settings.plottables.Add(scat);
         }
 
-        public void PlotSignal(double[] ys, double sampleRate = 1, Color? color = null, float linewidth = 1)
+        public void PlotSignal(double[] ys, double sampleRate = 1, Color? color = null, double linewidth = 1, double markerSize = 5)
         {
             if (color == null)
                 color = settings.GetNextColor();
-            PlottableSignal signal = new PlottableSignal(ys, sampleRate, (Color)color, linewidth: linewidth);
+            PlottableSignal signal = new PlottableSignal(ys, sampleRate, (Color)color, lineWidth: linewidth, markerSize: markerSize);
             settings.plottables.Add(signal);
         }
 
-        public void PlotVLine(double x, Color? color = null, float lineWidth = 1)
+        public void PlotVLine(double x, Color? color = null, double lineWidth = 1)
         {
             if (color == null)
                 color = settings.GetNextColor();
             PlottableAxLine axLine = new PlottableAxLine(x, vertical: true, color: (Color)color, lineWidth: lineWidth);
             settings.plottables.Add(axLine);
         }
-        public void PlotHLine(double x, Color? color = null, float lineWidth = 1)
+        public void PlotHLine(double x, Color? color = null, double lineWidth = 1)
         {
             if (color == null)
                 color = settings.GetNextColor();

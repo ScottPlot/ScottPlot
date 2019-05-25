@@ -15,17 +15,19 @@ namespace ScottPlot
         public double[] ys;
         public double sampleRate;
         public double samplePeriod;
+        public float markerSize;
         public Pen pen;
         public Brush brush;
 
-        public PlottableSignal(double[] ys, double sampleRate, Color color, float linewidth)
+        public PlottableSignal(double[] ys, double sampleRate, Color color, double lineWidth, double markerSize)
         {
             this.ys = ys;
             this.sampleRate = sampleRate;
             this.samplePeriod = 1.0 / sampleRate;
+            this.markerSize = (float)markerSize;
             pointCount = ys.Length;
             brush = new SolidBrush(color);
-            pen = new Pen(color, linewidth)
+            pen = new Pen(color, (float)lineWidth)
             {
                 // this prevents sharp corners
                 StartCap = System.Drawing.Drawing2D.LineCap.Round,
@@ -49,18 +51,23 @@ namespace ScottPlot
             return limits;
         }
 
-        public override void Render(Settings settings)
+        private void RenderLowDensity(Settings settings, int visibleIndex1, int visibleIndex2)
         {
+            List<Point> linePoints = new List<Point>(visibleIndex2 - visibleIndex1 + 2);
+            if (visibleIndex2 > ys.Length - 2)
+                visibleIndex2 = ys.Length - 2;
+            if (visibleIndex1 < 0)
+                visibleIndex1 = 0;
+            for (int i = visibleIndex1; i <= visibleIndex2 + 1; i++)
+                linePoints.Add(settings.GetPoint(samplePeriod * i, ys[i]));
 
-            double dataSpanUnits = ys.Length * samplePeriod;
-            double columnSpanUnits = settings.xAxisSpan / settings.dataSize.Width;
-            double columnPointCount = (columnSpanUnits / dataSpanUnits) * ys.Length;
-            double offsetUnits = settings.axis[0];
-            double offsetPoints = offsetUnits / samplePeriod;
-            int visibleIndex1 = (int)(offsetPoints);
-            int visibleIndex2 = (int)(offsetPoints + columnPointCount * (settings.dataSize.Width + 1));
-            int visiblePointCount = visibleIndex2 - visibleIndex1;
+            settings.gfxData.DrawLines(pen, linePoints.ToArray());
+            foreach (Point point in linePoints)
+                settings.gfxData.FillEllipse(brush, point.X - markerSize / 2, point.Y - markerSize / 2, markerSize, markerSize);
+        }
 
+        private void RenderHighDensity(Settings settings, double offsetPoints, double columnPointCount)
+        {
             List<Point> linePoints = new List<Point>(settings.dataSize.Width * 2 + 1);
             for (int xPx = 0; xPx < settings.dataSize.Width; xPx++)
             {
@@ -102,30 +109,26 @@ namespace ScottPlot
                 }
             }
 
-            SmoothingMode originalDataAntiAliasMode = settings.gfxData.SmoothingMode;
-            if (settings.antiAliasData)
-                settings.gfxData.SmoothingMode = SmoothingMode.AntiAlias;
-            else
-                settings.gfxData.SmoothingMode = SmoothingMode.None;
-
             if (linePoints.Count > 0)
-            {
                 settings.gfxData.DrawLines(pen, linePoints.ToArray());
-                if (visiblePointCount < settings.dataSize.Width)
-                {
-                    for (int i = visibleIndex1; i < visibleIndex2; i++)
-                    {
-                        Point point = settings.GetPoint(samplePeriod * i, ys[i]);
-                        int markerWidth = 4;
-                        int markerWidthHalf = markerWidth / 2;
-                        Rectangle rect = new Rectangle(point.X - markerWidthHalf, point.Y - markerWidthHalf, markerWidth, markerWidth);
-                        settings.gfxData.DrawEllipse(pen, rect);
-                    }
-                }
-            }
+        }
 
-            settings.gfxData.SmoothingMode = originalDataAntiAliasMode;
+        public override void Render(Settings settings)
+        {
 
+            double dataSpanUnits = ys.Length * samplePeriod;
+            double columnSpanUnits = settings.xAxisSpan / settings.dataSize.Width;
+            double columnPointCount = (columnSpanUnits / dataSpanUnits) * ys.Length;
+            double offsetUnits = settings.axis[0];
+            double offsetPoints = offsetUnits / samplePeriod;
+            int visibleIndex1 = (int)(offsetPoints);
+            int visibleIndex2 = (int)(offsetPoints + columnPointCount * (settings.dataSize.Width + 1));
+            int visiblePointCount = visibleIndex2 - visibleIndex1;
+
+            if (visiblePointCount > settings.dataSize.Width)
+                RenderHighDensity(settings, offsetPoints, columnPointCount);
+            else
+                RenderLowDensity(settings, visibleIndex1, visibleIndex2);
         }
     }
 
@@ -138,17 +141,17 @@ namespace ScottPlot
         public Pen pen;
         public Brush brush;
 
-        public PlottableScatter(double[] xs, double[] ys, Color color, float lineWidth, float markerSize)
+        public PlottableScatter(double[] xs, double[] ys, Color color, double lineWidth, double markerSize)
         {
             if (xs.Length != ys.Length)
                 throw new Exception("Xs and Ys must have same length");
 
             this.xs = xs;
             this.ys = ys;
-            this.markerSize = markerSize;
+            this.markerSize = (float)markerSize;
             pointCount = xs.Length;
 
-            pen = new Pen(color, lineWidth)
+            pen = new Pen(color, (float)lineWidth)
             {
                 // this prevents sharp corners
                 StartCap = System.Drawing.Drawing2D.LineCap.Round,
@@ -198,7 +201,7 @@ namespace ScottPlot
         public Brush brush;
         public Font font;
 
-        public PlottableText(string text, double x, double y, Color color, string fontName = "Arial", float fontSize = 12, bool bold = false)
+        public PlottableText(string text, double x, double y, Color color, string fontName = "Arial", double fontSize = 12, bool bold = false)
         {
             this.text = text;
             this.x = x;
@@ -233,12 +236,12 @@ namespace ScottPlot
         public string orientation;
         public Pen pen;
 
-        public PlottableAxLine(double position, bool vertical, Color color, float lineWidth)
+        public PlottableAxLine(double position, bool vertical, Color color, double lineWidth)
         {
             this.position = position;
             this.vertical = vertical;
             orientation = (vertical) ? "vertical" : "horizontal";
-            pen = new Pen(color, lineWidth);
+            pen = new Pen(color, (float)lineWidth);
             pointCount = 1;
         }
 
