@@ -355,11 +355,18 @@ namespace ScottPlot
             mouseIsZooming = false;
         }
 
-        public Point GetPoint(double x, double y)
+        public Point GetPixel(double locationX, double locationY)
         {
-            int xPx = (int)((x - axis[0]) * xAxisScale);
-            int yPx = dataSize.Height - (int)((y - axis[2]) * yAxisScale);
+            int xPx = (int)((locationX - axis[0]) * xAxisScale);
+            int yPx = dataSize.Height - (int)((locationY - axis[2]) * yAxisScale);
             return new Point(xPx, yPx);
+        }
+
+        public PointF GetLocation(Point pixelLocation)
+        {
+            double locationX = (pixelLocation.X - dataOrigin.X) / xAxisScale + axis[0];
+            double locationY = axis[3] - (pixelLocation.Y - dataOrigin.Y) / yAxisScale;
+            return new PointF((float)locationX, (float)locationY);
         }
 
         public int GetTotalPointCount()

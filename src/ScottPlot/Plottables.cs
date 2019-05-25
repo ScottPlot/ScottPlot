@@ -61,7 +61,7 @@ namespace ScottPlot
             if (visibleIndex1 < 0)
                 visibleIndex1 = 0;
             for (int i = visibleIndex1; i <= visibleIndex2 + 1; i++)
-                linePoints.Add(settings.GetPoint(samplePeriod * i + xOffset, ys[i]));
+                linePoints.Add(settings.GetPixel(samplePeriod * i + xOffset, ys[i]));
 
             settings.gfxData.DrawLines(pen, linePoints.ToArray());
             foreach (Point point in linePoints)
@@ -95,8 +95,8 @@ namespace ScottPlot
                     if (ys[i] > highestValue)
                         highestValue = ys[i];
                 }
-                int yPxHigh = settings.GetPoint(0, lowestValue).Y;
-                int yPxLow = settings.GetPoint(0, highestValue).Y;
+                int yPxHigh = settings.GetPixel(0, lowestValue).Y;
+                int yPxLow = settings.GetPixel(0, highestValue).Y;
 
                 // adjust order of points to enhance anti-aliasing
                 if ((linePoints.Count < 2) || (yPxLow < linePoints[linePoints.Count - 1].Y))
@@ -183,7 +183,7 @@ namespace ScottPlot
         {
             Point[] points = new Point[xs.Length];
             for (int i = 0; i < xs.Length; i++)
-                points[i] = settings.GetPoint(xs[i], ys[i]);
+                points[i] = settings.GetPixel(xs[i], ys[i]);
 
             if (pen.Width > 0)
                 settings.gfxData.DrawLines(pen, points);
@@ -227,7 +227,7 @@ namespace ScottPlot
 
         public override void Render(Settings settings)
         {
-            settings.gfxData.DrawString(text, font, brush, settings.GetPoint(x, y));
+            settings.gfxData.DrawString(text, font, brush, settings.GetPixel(x, y));
         }
     }
 
@@ -263,13 +263,13 @@ namespace ScottPlot
 
             if (vertical)
             {
-                pt1 = settings.GetPoint(position, settings.axis[2]);
-                pt2 = settings.GetPoint(position, settings.axis[3]);
+                pt1 = settings.GetPixel(position, settings.axis[2]);
+                pt2 = settings.GetPixel(position, settings.axis[3]);
             }
             else
             {
-                pt1 = settings.GetPoint(settings.axis[0], position);
-                pt2 = settings.GetPoint(settings.axis[1], position);
+                pt1 = settings.GetPixel(settings.axis[0], position);
+                pt2 = settings.GetPixel(settings.axis[1], position);
             }
 
             settings.gfxData.DrawLine(pen, pt1, pt2);

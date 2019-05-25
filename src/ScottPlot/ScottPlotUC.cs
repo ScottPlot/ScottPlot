@@ -83,6 +83,14 @@ namespace ScottPlot
                 Render();
                 mouseMoveRedrawInProgress = false;
             }
+
+            const bool showMouseLocation = true;
+            if (showMouseLocation)
+            {
+                PointF position = plt.settings.GetLocation(e.Location);
+                Console.WriteLine($"cursor is at {e.Location} which is {position}");
+            }
+            
         }
 
         private void PbPlot_MouseUp(object sender, MouseEventArgs e)
