@@ -48,6 +48,8 @@ namespace ScottPlotDemo
             BackColor = SystemColors.Control;
             cbDark.ForeColor = Color.Black;
             cbBenchmark.ForeColor = Color.Black;
+            cbAntiAliasData.ForeColor = Color.Black;
+            cbAntiAliasFigure.ForeColor = Color.Black;
 
             scottPlotUC1.plt.Background(SystemColors.Control, Color.White);
             scottPlotUC1.plt.Title(color: Color.Black);
@@ -63,6 +65,8 @@ namespace ScottPlotDemo
             BackColor = ColorTranslator.FromHtml("#161d31");
             cbDark.ForeColor = Color.White;
             cbBenchmark.ForeColor = Color.White;
+            cbAntiAliasData.ForeColor = Color.White;
+            cbAntiAliasFigure.ForeColor = Color.White;
 
             scottPlotUC1.plt.Background(ColorTranslator.FromHtml("#161d31"), ColorTranslator.FromHtml("#202941"));
             scottPlotUC1.plt.Title(color: ColorTranslator.FromHtml("#dddddd"));
@@ -110,7 +114,7 @@ namespace ScottPlotDemo
             double[] ys = ScottPlot.DataGen.Sin(pointCount: 100,
                 oscillations: 2,
                 phase: rand.NextDouble(),
-                mult: rand.NextDouble() * 10,
+                mult: rand.NextDouble() * 10 + 1,
                 offset: rand.NextDouble() * 10 - 5);
 
             scottPlotUC1.plt.PlotScatter(xs, ys);
