@@ -130,11 +130,17 @@ namespace ScottPlot
         {
             if (renderFirst)
                 Render();
+            filePath = System.IO.Path.GetFullPath(filePath);
             string folder = System.IO.Path.GetDirectoryName(filePath);
             if (System.IO.Directory.Exists(folder))
+            {
                 settings.bmpFigure.Save(filePath);
+                Console.WriteLine($"Wrote: {filePath}");
+            }
             else
+            {
                 throw new Exception($"ERROR: folder does not exist: {folder}");
+            }
         }
 
         #endregion
