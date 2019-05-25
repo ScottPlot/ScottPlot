@@ -47,6 +47,7 @@ A compiled quickstart is available for download: [ScottPlotQuickstartForms.zip](
   * Mouse scroll-wheel to zoom
   * Middle-click for auto-axis
   * Right-click for a dropdown menu
+  * Double-click to display benchmark
 
 ## Compiled Demos
 
