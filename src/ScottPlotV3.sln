@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Forms Quickstart", "..\demo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cookbook", "..\demos\ScottPlotCookbook\Cookbook.csproj", "{473A8B7C-EDD0-434C-8B02-EA1972D9B4E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Forms Demo", "ScottPlotDemo\Forms Demo.csproj", "{457437C7-31D2-4823-AC19-5241586DC861}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Forms Demo", "..\demos\ScottPlotDemo\Forms Demo.csproj", "{457437C7-31D2-4823-AC19-5241586DC861}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
