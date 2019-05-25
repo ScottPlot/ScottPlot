@@ -16,15 +16,17 @@ namespace ScottPlot
         public double sampleRate;
         public double samplePeriod;
         public float markerSize;
+        public double xOffset;
         public Pen pen;
         public Brush brush;
 
-        public PlottableSignal(double[] ys, double sampleRate, Color color, double lineWidth, double markerSize)
+        public PlottableSignal(double[] ys, double sampleRate, double xOffset, Color color, double lineWidth, double markerSize)
         {
             this.ys = ys;
             this.sampleRate = sampleRate;
             this.samplePeriod = 1.0 / sampleRate;
             this.markerSize = (float)markerSize;
+            this.xOffset = xOffset;
             pointCount = ys.Length;
             brush = new SolidBrush(color);
             pen = new Pen(color, (float)lineWidth)
@@ -59,7 +61,7 @@ namespace ScottPlot
             if (visibleIndex1 < 0)
                 visibleIndex1 = 0;
             for (int i = visibleIndex1; i <= visibleIndex2 + 1; i++)
-                linePoints.Add(settings.GetPoint(samplePeriod * i, ys[i]));
+                linePoints.Add(settings.GetPoint(samplePeriod * i + xOffset, ys[i]));
 
             settings.gfxData.DrawLines(pen, linePoints.ToArray());
             foreach (Point point in linePoints)
@@ -119,7 +121,7 @@ namespace ScottPlot
             double dataSpanUnits = ys.Length * samplePeriod;
             double columnSpanUnits = settings.xAxisSpan / settings.dataSize.Width;
             double columnPointCount = (columnSpanUnits / dataSpanUnits) * ys.Length;
-            double offsetUnits = settings.axis[0];
+            double offsetUnits = settings.axis[0] - xOffset;
             double offsetPoints = offsetUnits / samplePeriod;
             int visibleIndex1 = (int)(offsetPoints);
             int visibleIndex2 = (int)(offsetPoints + columnPointCount * (settings.dataSize.Width + 1));
