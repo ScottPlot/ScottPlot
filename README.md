@@ -6,6 +6,8 @@ In a GUI environment ScottPlot makes it easy to display data interactively (left
 ![](/demos/ScottPlotDemo/compiled/ScottPlotDemo.gif)
 
 ## Quickstart
+This quickstart demonstrates how to add an interactive ScottPlot to a Windows Forms Application using the ScottPlotUC (user control). The full source code for this demo is in [demos/ScottPlotQuickstartForms](/demos/ScottPlotQuickstartForms) and a compiled version is also available ([ScottPlotQuickstartForms.zip](/demos/ScottPlotQuickstartForms/compiled/ScottPlotQuickstartForms.zip)).  ScottPlot also has a [Console Application quickstart](/doc/quickstart-console.md) and a [WPF Application quickstart](/doc/quickstart-wpf.md) for those interested in using ScottPlot in other application frameworks. 
+
 * Create a Windows Forms Application
 * Add an existing project reference to [ScottPlot.csproj](/src/ScottPlot.csproj)
 * Rebuild the solution
@@ -24,7 +26,9 @@ for (int i = 0; i < pointCount; i++)
 	dataSin[i] = Math.Sin(i * 2 * Math.PI / pointCount);
 	dataCos[i] = Math.Cos(i * 2 * Math.PI / pointCount);
 }
+```
 
+```cs
 // plot the data
 scottPlotUC1.plt.PlotScatter(dataXs, dataSin);
 scottPlotUC1.plt.PlotScatter(dataXs, dataCos);
@@ -37,7 +41,6 @@ scottPlotUC1.Render();
 
 ![](/demos/ScottPlotQuickstartForms/compiled/ScottPlotQuickstartForms.png)
 
-A compiled quickstart is available for download: [ScottPlotQuickstartForms.zip](/demos/ScottPlotQuickstartForms/compiled/ScottPlotQuickstartForms.zip)
 
 ## Documentation
 * The **[ScottPlot Cookbook](/doc/cookbook/README.md)** demonstrates all ScottPlot features
@@ -52,12 +55,12 @@ A compiled quickstart is available for download: [ScottPlotQuickstartForms.zip](
 ## Compiled Demos
 
 ### ScottPlot Demo
-This demo ([ScottPlotDemo.zip](/demos/ScottPlotDemo/compiled/ScottPlotDemo.zip)) demonstrates the display all major plot types. Notice that _millions_ of data points can be displayed on a Signal plot at >100 Hz framerates and comfortably interacted with using the mouse.
+This demo ([ScottPlotDemo.zip](/demos/ScottPlotDemo/compiled/ScottPlotDemo.zip)) demonstrates the display all major plot types. Notice that _millions_ of data points can be displayed on a Signal plot at >100 Hz framerates and comfortably interacted with using the mouse. Source code for this demo is in [/demos/ScottPlotDemo/](/demos/ScottPlotDemo/).
 
 ![](/demos/ScottPlotDemo/compiled/ScottPlotDemo.png)
 
 ### Animated Data
-If you plot a double array, updating the array automatically updates the ScottPlot. This demo ([ScottPlotAnimatedSin.zip](demos/ScottPlotAnimatedSin/compiled/ScottPlotAnimatedSin.zip)) plots an array then uses a timer to update it continuously. Note that the graph is still mouse-interactive (panning and zooming). 
+If you plot a double array, updating the array automatically updates the ScottPlot. This demo ([ScottPlotAnimatedSin.zip](demos/ScottPlotAnimatedSin/compiled/ScottPlotAnimatedSin.zip)) plots an array then uses a timer to update it continuously. Note that the graph is still mouse-interactive (panning and zooming). Source code for this demo is in [/demos/ScottPlotAnimatedSin/](/demos/ScottPlotAnimatedSin/).
 
 ![](demos/ScottPlotAnimatedSin/compiled/ScottPlotAnimatedSin.gif)
 
