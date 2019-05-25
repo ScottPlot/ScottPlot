@@ -6,7 +6,7 @@ In a GUI environment ScottPlot makes it easy to display data interactively (left
 ![](/demos/ScottPlotDemo/compiled/ScottPlotDemo.gif)
 
 ## Quickstart
-This quickstart demonstrates how to add an interactive ScottPlot to a Windows Forms Application using the ScottPlotUC (user control). The full source code for this demo is in [demos/ScottPlotQuickstartForms](/demos/ScottPlotQuickstartForms) and a compiled version is also available ([ScottPlotQuickstartForms.zip](/demos/ScottPlotQuickstartForms/compiled/ScottPlotQuickstartForms.zip)).  ScottPlot also has a [Console Application quickstart](/doc/quickstart-console.md) and a [WPF Application quickstart](/doc/quickstart-wpf.md) for those interested in using ScottPlot in other application frameworks. 
+This quickstart demonstrates how to add an interactive ScottPlot to a Windows Forms Application using the ScottPlotUC (user control). The full source code for this demo is in [demos/ScottPlotQuickstartForms](/demos/ScottPlotQuickstartForms) and a compiled version is also available ([ScottPlotQuickstartForms.zip](/demos/ScottPlotQuickstartForms/compiled/ScottPlotQuickstartForms.zip)).  ScottPlot also has a [Console Application quickstart](/doc/quickstart-console.md) and a [WPF Application quickstart](/doc/quickstart-WPF.md) for those interested in using ScottPlot in other application frameworks. 
 
 * Create a Windows Forms Application
 * Add an existing project reference to [ScottPlot.csproj](/src/ScottPlot.csproj)
