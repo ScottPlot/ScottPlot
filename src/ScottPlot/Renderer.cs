@@ -45,6 +45,121 @@ namespace ScottPlot
             }
         }
 
+        private class LegendItem
+        {
+            public string label;
+            public int plottableIndex;
+            public Color color;
+
+            public LegendItem(string label, int plottableIndex, Color color)
+            {
+                this.label = label;
+                this.plottableIndex = plottableIndex;
+                this.color = color;
+            }
+        }
+
+        public static void DataLegend(Settings settings)
+        {
+            int padding = 3;
+            int stubWidth = 20;
+            int stubHeight = 4;
+
+            Font legendFont = new Font(settings.legendFont, settings.legendFontSize);
+            Brush brushText = new SolidBrush(settings.axisLabelColor);
+            float legendFontLineHeight = settings.gfxData.MeasureString("TEST", legendFont).Height;
+            float legendFontMaxWidth = 0;
+
+            // populate list of filled labels
+            List<LegendItem> legendItems = new List<LegendItem>();
+            for (int i = 0; i < settings.plottables.Count(); i++)
+            {
+                if (settings.plottables[i].label != null)
+                {
+                    legendItems.Add(new LegendItem(settings.plottables[i].label, i, settings.plottables[i].color));
+                    float thisItemFontWidth = settings.gfxData.MeasureString(settings.plottables[i].label, legendFont).Width;
+                    if (thisItemFontWidth > legendFontMaxWidth)
+                        legendFontMaxWidth = thisItemFontWidth;
+                }
+            }
+            legendItems.Reverse();
+
+            // draw the frame and border
+            float frameWidth = padding * 2 + legendFontMaxWidth + padding + stubWidth;
+            float frameHeight = padding * 2 + legendFontLineHeight * settings.plottables.Count();
+            Size frameSize = new Size((int)frameWidth, (int)frameHeight);
+            Point frameLoc = new Point((int)(settings.dataSize.Width - frameWidth - padding),
+                (int)(settings.dataSize.Height - frameHeight - padding));
+            Rectangle frameRect = new Rectangle(frameLoc, frameSize);
+            settings.gfxData.FillRectangle(new SolidBrush(settings.dataBackgroundColor), frameRect);
+            settings.gfxData.DrawRectangle(new Pen(settings.tickColor), frameRect);
+
+            // draw the individual labels
+            for (int i = 0; i < legendItems.Count; i++)
+            {
+                Point textLocation = new Point(settings.dataSize.Width, settings.dataSize.Height);
+                textLocation.X -= (int)legendFontMaxWidth + padding * 2;
+                textLocation.Y -= (int)(legendFontLineHeight * (i + 1)) + padding * 2;
+                settings.gfxData.DrawString(legendItems[i].label, legendFont, brushText, textLocation);
+
+                settings.gfxData.DrawLine(new Pen(legendItems[i].color, stubHeight),
+                    textLocation.X - padding, textLocation.Y + legendFontLineHeight / 2,
+                    textLocation.X - padding - stubWidth, textLocation.Y + legendFontLineHeight / 2);
+            }
+
+            // draw colored lines  labels
+
+            /*
+            Size legendSize = new Size(0, 0);
+            string[] legendLabels = new string[settings.plottables.Count()];
+            Point[] legendLocations = new Point[settings.plottables.Count()];
+            int textHalfHeight = (int)(textHeight / 2);
+
+            for (int i = 0; i < settings.plottables.Count(); i++)
+            {
+                legendLabels[i] = settings.plottables[i].label;
+                SizeF textSizeF = settings.gfxData.MeasureString(settings.plottables[i].label, legendFont);
+                if (legendSize.Width < textSizeF.Width)
+                    legendSize.Width = (int)textSizeF.Width;
+                legendSize.Height += (int)textSizeF.Height + padding;
+                Size textSize = new Size((int)textSizeF.Width, (int)textSizeF.Height);
+                Point textLocation = new Point(settings.dataSize.Width, settings.dataSize.Height);
+                textLocation.X -= textSize.Width + padding;
+                textLocation.Y -= textSize.Height + padding;
+                textLocation.Y -= (int)(padding + textSize.Height) * i;
+                legendLocations[i] = textLocation;
+            }
+
+
+            Point textLocation2 = new Point(settings.dataSize.Width, settings.dataSize.Height);
+            textLocation2.X -= legendSize.Width + padding;
+            textLocation2.Y -= legendSize.Height + padding;
+
+            Rectangle legendRect = new Rectangle(textLocation2, legendSize);
+            legendRect.Width += stubWidth + padding;
+            legendRect.X -= stubWidth + padding;
+
+            Brush brushBackground = new SolidBrush(settings.dataBackgroundColor);
+            Pen penBorder = new Pen(settings.tickColor);
+
+            settings.gfxData.FillRectangle(brushBackground, legendRect);
+            settings.gfxData.DrawRectangle(penBorder, legendRect);
+            for (int i = 0; i < settings.plottables.Count(); i++)
+            {
+                settings.gfxData.DrawString(legendLabels[i], legendFont, brushText, legendLocations[i]);
+                if (settings.plottables[i] is PlottableScatter)
+                {
+                    Pen pen = new Pen(((PlottableScatter)settings.plottables[i]).color, stubSize);
+                    settings.gfxData.DrawLine(pen,
+                        legendLocations[i].X,
+                        legendLocations[i].Y + textHalfHeight,
+                        legendLocations[i].X - stubWidth,
+                        legendLocations[i].Y + textHalfHeight);
+                }
+            }
+            */
+        }
+
         public static void DataPlaceOntoFigure(Settings settings)
         {
             if (settings.gfxFigure == null || settings.bmpData == null)

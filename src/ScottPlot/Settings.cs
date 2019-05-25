@@ -61,6 +61,11 @@ namespace ScottPlot
         public bool displayGrid = true;
         public Color gridColor = Color.LightGray;
 
+        // legend
+        public bool displayLegend = false;
+        public float legendFontSize = 12;
+        public string legendFont = "Segoe UI";
+
         // benchmarking
         public Font benchmarkFont = new Font("Consolas", 8);
         public Brush benchmarkFontBrush = Brushes.Black;

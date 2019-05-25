@@ -28,6 +28,7 @@ namespace ScottPlotCookbook
             recipies.Figure_01b_Automatic_Margins();
             recipies.Figure_01c_Defined_Axis_Limits();
             recipies.Figure_01d_Zoom_and_Pan();
+            recipies.Figure_01e_Legend();
             recipies.Figure_02_Styling_Scatter_Plots();
             recipies.Figure_03_Plot_XY_Data();
             recipies.Figure_04_Plot_Lines_Only();
@@ -56,6 +57,7 @@ namespace ScottPlotCookbook
             GenerateReport(outputFolderName);
             //ValidateImageHashes(outputFolderName);
             Console.WriteLine("COMPLETE");
+            Console.ReadLine();
         }
 
         public void CleanOutputFolder(string outputFolderName)

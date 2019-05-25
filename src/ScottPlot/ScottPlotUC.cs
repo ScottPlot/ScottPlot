@@ -85,7 +85,7 @@ namespace ScottPlot
                 mouseMoveRedrawInProgress = false;
             }
 
-            const bool showMouseLocation = false;
+            bool showMouseLocation = false;
             if (showMouseLocation)
             {
                 PointF position = plt.settings.GetLocation(e.Location);

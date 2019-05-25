@@ -109,6 +109,8 @@ namespace ScottPlot
             Renderer.DataBackground(settings);
             Renderer.DataGrid(settings);
             Renderer.DataPlottables(settings);
+            if (settings.displayLegend)
+                Renderer.DataLegend(settings);
             Renderer.DataPlaceOntoFigure(settings);
             settings.BenchmarkEnd();
             Renderer.Benchmark(settings);
@@ -153,19 +155,19 @@ namespace ScottPlot
             settings.plottables.Add(txt);
         }
 
-        public void PlotPoint(double x, double y, Color? color = null, double markerSize = 5)
+        public void PlotPoint(double x, double y, Color? color = null, double markerSize = 5, string label = null)
         {
             if (color == null)
                 color = settings.GetNextColor();
-            PlottableScatter mark = new PlottableScatter(new double[] { x }, new double[] { y }, color: (Color)color, lineWidth: 0, markerSize: markerSize);
+            PlottableScatter mark = new PlottableScatter(new double[] { x }, new double[] { y }, color: (Color)color, lineWidth: 0, markerSize: markerSize, label: label);
             settings.plottables.Add(mark);
         }
 
-        public void PlotScatter(double[] xs, double[] ys, Color? color = null, double lineWidth = 1, double markerSize = 5)
+        public void PlotScatter(double[] xs, double[] ys, Color? color = null, double lineWidth = 1, double markerSize = 5, string label = null)
         {
             if (color == null)
                 color = settings.GetNextColor();
-            PlottableScatter scat = new PlottableScatter(xs, ys, color: (Color)color, lineWidth: lineWidth, markerSize: markerSize);
+            PlottableScatter scat = new PlottableScatter(xs, ys, color: (Color)color, lineWidth: lineWidth, markerSize: markerSize, label: label);
             settings.plottables.Add(scat);
         }
 
@@ -267,6 +269,11 @@ namespace ScottPlot
                 settings.axisLabelColor = (Color)color;
             settings.backgroundRenderNeeded = true;
             TightenLayout();
+        }
+
+        public void Legend(bool enableLegend = true)
+        {
+            settings.displayLegend = enableLegend;
         }
 
         public void Background(Color? figure = null, Color? data = null)
