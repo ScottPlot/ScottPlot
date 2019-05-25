@@ -24,7 +24,7 @@ namespace ScottPlot
             tickPen = new Pen(settings.tickColor);
             tickBrush = new SolidBrush(settings.tickColor);
             gridPen = new Pen(settings.gridColor);
-            text = string.Format("{0}", value);
+            text = string.Format("{0}", Math.Round(value, 10));
         }
 
         public void RenderGridHorizontalLine(Settings settings)

@@ -169,11 +169,11 @@ namespace ScottPlot
             settings.plottables.Add(scat);
         }
 
-        public void PlotSignal(double[] ys, double sampleRate = 1, Color? color = null, double linewidth = 1, double markerSize = 5)
+        public void PlotSignal(double[] ys, double sampleRate = 1, double xOffset = 0, Color? color = null, double linewidth = 1, double markerSize = 5)
         {
             if (color == null)
                 color = settings.GetNextColor();
-            PlottableSignal signal = new PlottableSignal(ys, sampleRate, (Color)color, lineWidth: linewidth, markerSize: markerSize);
+            PlottableSignal signal = new PlottableSignal(ys, sampleRate, xOffset, (Color)color, lineWidth: linewidth, markerSize: markerSize);
             settings.plottables.Add(signal);
         }
 
