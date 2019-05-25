@@ -20,6 +20,7 @@ namespace ScottPlot
         public ScottPlotUC()
         {
             InitializeComponent();
+            pbPlot.MouseWheel += PbPlot_MouseWheel;
             RightClickMenuSetup();
             UpdateSize();
             Render();
@@ -84,7 +85,7 @@ namespace ScottPlot
                 mouseMoveRedrawInProgress = false;
             }
 
-            const bool showMouseLocation = true;
+            const bool showMouseLocation = false;
             if (showMouseLocation)
             {
                 PointF position = plt.settings.GetLocation(e.Location);
@@ -103,6 +104,15 @@ namespace ScottPlot
         private void PbPlot_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             plt.settings.displayBenchmark = !plt.settings.displayBenchmark;
+            Render();
+        }
+
+        private void PbPlot_MouseWheel(object sender, MouseEventArgs e)
+        {
+            if (e.Delta > 0)
+                plt.AxisZoom(1.5, 1.5);
+            else
+                plt.AxisZoom(0.5, 0.5);
             Render();
         }
 
