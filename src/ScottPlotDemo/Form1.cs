@@ -24,7 +24,9 @@ namespace ScottPlotDemo
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            BtnScatterSin_Click(null, null);
+            BtnScatterSin_Click(null, null);
+            BtnScatterSin_Click(null, null);
         }
 
         private void Clear()
@@ -84,6 +86,18 @@ namespace ScottPlotDemo
             else
                 StyleLight();
         }
+        private void CbAntiAliasFigure_CheckedChanged(object sender, EventArgs e)
+        {
+            scottPlotUC1.plt.AntiAlias(cbAntiAliasFigure.Checked, cbAntiAliasData.Checked);
+            scottPlotUC1.Render();
+        }
+
+        private void CbAntiAliasData_CheckedChanged(object sender, EventArgs e)
+        {
+            scottPlotUC1.plt.AntiAlias(cbAntiAliasFigure.Checked, cbAntiAliasData.Checked);
+            scottPlotUC1.Render();
+        }
+
 
         private void BtnClear_Click(object sender, EventArgs e)
         {
@@ -178,5 +192,6 @@ namespace ScottPlotDemo
         {
             RandomWalk(10_000_000);
         }
+
     }
 }

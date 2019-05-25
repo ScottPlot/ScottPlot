@@ -42,11 +42,13 @@
             this.cbDark = new System.Windows.Forms.CheckBox();
             this.scottPlotUC1 = new ScottPlot.ScottPlotUC();
             this.btnText = new System.Windows.Forms.Button();
+            this.cbAntiAliasData = new System.Windows.Forms.CheckBox();
+            this.cbAntiAliasFigure = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // btnClear
             // 
-            this.btnClear.Location = new System.Drawing.Point(97, 13);
+            this.btnClear.Location = new System.Drawing.Point(771, 11);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(75, 23);
             this.btnClear.TabIndex = 1;
@@ -56,7 +58,7 @@
             // 
             // btnScatterRandom
             // 
-            this.btnScatterRandom.Location = new System.Drawing.Point(284, 41);
+            this.btnScatterRandom.Location = new System.Drawing.Point(305, 40);
             this.btnScatterRandom.Name = "btnScatterRandom";
             this.btnScatterRandom.Size = new System.Drawing.Size(126, 23);
             this.btnScatterRandom.TabIndex = 2;
@@ -66,7 +68,7 @@
             // 
             // btnScatterSin
             // 
-            this.btnScatterSin.Location = new System.Drawing.Point(284, 12);
+            this.btnScatterSin.Location = new System.Drawing.Point(305, 11);
             this.btnScatterSin.Name = "btnScatterSin";
             this.btnScatterSin.Size = new System.Drawing.Size(126, 23);
             this.btnScatterSin.TabIndex = 3;
@@ -76,7 +78,7 @@
             // 
             // btnMarker
             // 
-            this.btnMarker.Location = new System.Drawing.Point(178, 13);
+            this.btnMarker.Location = new System.Drawing.Point(199, 12);
             this.btnMarker.Name = "btnMarker";
             this.btnMarker.Size = new System.Drawing.Size(100, 23);
             this.btnMarker.TabIndex = 4;
@@ -86,7 +88,7 @@
             // 
             // btnSignal1k
             // 
-            this.btnSignal1k.Location = new System.Drawing.Point(486, 12);
+            this.btnSignal1k.Location = new System.Drawing.Point(507, 11);
             this.btnSignal1k.Name = "btnSignal1k";
             this.btnSignal1k.Size = new System.Drawing.Size(126, 23);
             this.btnSignal1k.TabIndex = 5;
@@ -96,7 +98,7 @@
             // 
             // btnSignal100k
             // 
-            this.btnSignal100k.Location = new System.Drawing.Point(486, 41);
+            this.btnSignal100k.Location = new System.Drawing.Point(507, 40);
             this.btnSignal100k.Name = "btnSignal100k";
             this.btnSignal100k.Size = new System.Drawing.Size(126, 23);
             this.btnSignal100k.TabIndex = 6;
@@ -106,7 +108,7 @@
             // 
             // btnSignal1m
             // 
-            this.btnSignal1m.Location = new System.Drawing.Point(618, 12);
+            this.btnSignal1m.Location = new System.Drawing.Point(639, 11);
             this.btnSignal1m.Name = "btnSignal1m";
             this.btnSignal1m.Size = new System.Drawing.Size(126, 23);
             this.btnSignal1m.TabIndex = 7;
@@ -116,7 +118,7 @@
             // 
             // btnSignal100m
             // 
-            this.btnSignal100m.Location = new System.Drawing.Point(618, 41);
+            this.btnSignal100m.Location = new System.Drawing.Point(639, 40);
             this.btnSignal100m.Name = "btnSignal100m";
             this.btnSignal100m.Size = new System.Drawing.Size(126, 23);
             this.btnSignal100m.TabIndex = 8;
@@ -126,7 +128,7 @@
             // 
             // btnVline
             // 
-            this.btnVline.Location = new System.Drawing.Point(416, 12);
+            this.btnVline.Location = new System.Drawing.Point(437, 11);
             this.btnVline.Name = "btnVline";
             this.btnVline.Size = new System.Drawing.Size(64, 23);
             this.btnVline.TabIndex = 9;
@@ -136,7 +138,7 @@
             // 
             // btnHline
             // 
-            this.btnHline.Location = new System.Drawing.Point(416, 41);
+            this.btnHline.Location = new System.Drawing.Point(437, 40);
             this.btnHline.Name = "btnHline";
             this.btnHline.Size = new System.Drawing.Size(64, 23);
             this.btnHline.TabIndex = 10;
@@ -173,12 +175,12 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.scottPlotUC1.Location = new System.Drawing.Point(12, 70);
             this.scottPlotUC1.Name = "scottPlotUC1";
-            this.scottPlotUC1.Size = new System.Drawing.Size(731, 417);
+            this.scottPlotUC1.Size = new System.Drawing.Size(831, 417);
             this.scottPlotUC1.TabIndex = 0;
             // 
             // btnText
             // 
-            this.btnText.Location = new System.Drawing.Point(178, 41);
+            this.btnText.Location = new System.Drawing.Point(199, 40);
             this.btnText.Name = "btnText";
             this.btnText.Size = new System.Drawing.Size(100, 23);
             this.btnText.TabIndex = 13;
@@ -186,11 +188,39 @@
             this.btnText.UseVisualStyleBackColor = true;
             this.btnText.Click += new System.EventHandler(this.BtnText_Click);
             // 
+            // cbAntiAliasData
+            // 
+            this.cbAntiAliasData.AutoSize = true;
+            this.cbAntiAliasData.Checked = true;
+            this.cbAntiAliasData.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbAntiAliasData.Location = new System.Drawing.Point(97, 45);
+            this.cbAntiAliasData.Name = "cbAntiAliasData";
+            this.cbAntiAliasData.Size = new System.Drawing.Size(91, 17);
+            this.cbAntiAliasData.TabIndex = 14;
+            this.cbAntiAliasData.Text = "anti-alias data";
+            this.cbAntiAliasData.UseVisualStyleBackColor = true;
+            this.cbAntiAliasData.CheckedChanged += new System.EventHandler(this.CbAntiAliasData_CheckedChanged);
+            // 
+            // cbAntiAliasFigure
+            // 
+            this.cbAntiAliasFigure.AutoSize = true;
+            this.cbAntiAliasFigure.Checked = true;
+            this.cbAntiAliasFigure.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbAntiAliasFigure.Location = new System.Drawing.Point(97, 16);
+            this.cbAntiAliasFigure.Name = "cbAntiAliasFigure";
+            this.cbAntiAliasFigure.Size = new System.Drawing.Size(96, 17);
+            this.cbAntiAliasFigure.TabIndex = 15;
+            this.cbAntiAliasFigure.Text = "anti-alias figure";
+            this.cbAntiAliasFigure.UseVisualStyleBackColor = true;
+            this.cbAntiAliasFigure.CheckedChanged += new System.EventHandler(this.CbAntiAliasFigure_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(755, 499);
+            this.ClientSize = new System.Drawing.Size(855, 499);
+            this.Controls.Add(this.cbAntiAliasFigure);
+            this.Controls.Add(this.cbAntiAliasData);
             this.Controls.Add(this.btnText);
             this.Controls.Add(this.cbDark);
             this.Controls.Add(this.cbBenchmark);
@@ -229,6 +259,8 @@
         private System.Windows.Forms.CheckBox cbBenchmark;
         private System.Windows.Forms.CheckBox cbDark;
         private System.Windows.Forms.Button btnText;
+        private System.Windows.Forms.CheckBox cbAntiAliasData;
+        private System.Windows.Forms.CheckBox cbAntiAliasFigure;
     }
 }
 

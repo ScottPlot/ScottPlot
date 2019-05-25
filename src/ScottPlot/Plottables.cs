@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Diagnostics;
+using System.Drawing.Drawing2D;
 
 namespace ScottPlot
 {
@@ -15,16 +16,15 @@ namespace ScottPlot
         public double sampleRate;
         public double samplePeriod;
         public Pen pen;
-        public bool antiAlias;
+        public Brush brush;
 
-        public PlottableSignal(double[] ys, double sampleRate, Color color, float linewidth, bool antiAlias)
+        public PlottableSignal(double[] ys, double sampleRate, Color color, float linewidth)
         {
             this.ys = ys;
             this.sampleRate = sampleRate;
             this.samplePeriod = 1.0 / sampleRate;
-            this.antiAlias = antiAlias;
             pointCount = ys.Length;
-
+            brush = new SolidBrush(color);
             pen = new Pen(color, linewidth)
             {
                 // this prevents sharp corners
@@ -57,8 +57,11 @@ namespace ScottPlot
             double columnPointCount = (columnSpanUnits / dataSpanUnits) * ys.Length;
             double offsetUnits = settings.axis[0];
             double offsetPoints = offsetUnits / samplePeriod;
+            int visibleIndex1 = (int)(offsetPoints);
+            int visibleIndex2 = (int)(offsetPoints + columnPointCount * (settings.dataSize.Width + 1));
+            int visiblePointCount = visibleIndex2 - visibleIndex1;
 
-            List<Point> points = new List<Point>(settings.dataSize.Width * 2 + 1);
+            List<Point> linePoints = new List<Point>(settings.dataSize.Width * 2 + 1);
             for (int xPx = 0; xPx < settings.dataSize.Width; xPx++)
             {
                 // determine data indexes for this pixel column
@@ -87,28 +90,41 @@ namespace ScottPlot
                 int yPxLow = settings.GetPoint(0, highestValue).Y;
 
                 // adjust order of points to enhance anti-aliasing
-                if ((points.Count < 2) || (yPxLow < points[points.Count - 1].Y))
+                if ((linePoints.Count < 2) || (yPxLow < linePoints[linePoints.Count - 1].Y))
                 {
-                    points.Add(new Point(xPx, yPxLow));
-                    points.Add(new Point(xPx, yPxHigh));
+                    linePoints.Add(new Point(xPx, yPxLow));
+                    linePoints.Add(new Point(xPx, yPxHigh));
                 }
                 else
                 {
-                    points.Add(new Point(xPx, yPxHigh));
-                    points.Add(new Point(xPx, yPxLow));
+                    linePoints.Add(new Point(xPx, yPxHigh));
+                    linePoints.Add(new Point(xPx, yPxLow));
                 }
             }
 
-            var originalAntiAliasingMode = settings.gfxData.SmoothingMode;
-            if (antiAlias)
-                settings.gfxData.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            SmoothingMode originalDataAntiAliasMode = settings.gfxData.SmoothingMode;
+            if (settings.antiAliasData)
+                settings.gfxData.SmoothingMode = SmoothingMode.AntiAlias;
             else
-                settings.gfxData.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
+                settings.gfxData.SmoothingMode = SmoothingMode.None;
 
-            if (points.Count > 0)
-                settings.gfxData.DrawLines(pen, points.ToArray());
+            if (linePoints.Count > 0)
+            {
+                settings.gfxData.DrawLines(pen, linePoints.ToArray());
+                if (visiblePointCount < settings.dataSize.Width)
+                {
+                    for (int i = visibleIndex1; i < visibleIndex2; i++)
+                    {
+                        Point point = settings.GetPoint(samplePeriod * i, ys[i]);
+                        int markerWidth = 4;
+                        int markerWidthHalf = markerWidth / 2;
+                        Rectangle rect = new Rectangle(point.X - markerWidthHalf, point.Y - markerWidthHalf, markerWidth, markerWidth);
+                        settings.gfxData.DrawEllipse(pen, rect);
+                    }
+                }
+            }
 
-            settings.gfxData.SmoothingMode = originalAntiAliasingMode;
+            settings.gfxData.SmoothingMode = originalDataAntiAliasMode;
 
         }
     }

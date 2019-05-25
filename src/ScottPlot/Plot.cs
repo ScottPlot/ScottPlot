@@ -49,17 +49,46 @@ namespace ScottPlot
             {
                 settings.bmpFigure = new Bitmap(settings.figureSize.Width, settings.figureSize.Height);
                 settings.gfxFigure = Graphics.FromImage(settings.bmpFigure);
-                settings.gfxFigure.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
-                settings.gfxFigure.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
             }
 
             if (settings.dataSize.Width > 0 && settings.dataSize.Height > 0)
             {
                 settings.bmpData = new Bitmap(settings.dataSize.Width, settings.dataSize.Height);
                 settings.gfxData = Graphics.FromImage(settings.bmpData);
-                settings.gfxData.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
             }
 
+        }
+
+        public void UpdateAntiAliasing()
+        {
+
+            if (settings.gfxFigure != null)
+            {
+                if (settings.antiAliasFigure)
+                {
+                    settings.gfxFigure.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                    settings.gfxFigure.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
+                }
+                else
+                {
+                    settings.gfxFigure.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
+                    settings.gfxFigure.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
+                }
+            }
+
+            if (settings.gfxData != null)
+            {
+                if (settings.antiAliasData)
+                {
+                    settings.gfxData.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                    settings.gfxData.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
+                }
+                else
+                {
+                    settings.gfxData.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
+                    settings.gfxData.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
+                }
+            }
         }
 
         public void Render()
@@ -67,10 +96,7 @@ namespace ScottPlot
             if (!settings.tighteningOccurred)
                 TightenLayout();
 
-            if (settings.antiAliasData)
-                settings.gfxData.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-            else
-                settings.gfxData.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
+            UpdateAntiAliasing();
 
             settings.BenchmarkStart();
             if (settings.backgroundRenderNeeded)
@@ -143,11 +169,11 @@ namespace ScottPlot
             settings.plottables.Add(scat);
         }
 
-        public void PlotSignal(double[] ys, double sampleRate = 1, Color? color = null, float linewidth = 1, bool antiAlias = true)
+        public void PlotSignal(double[] ys, double sampleRate = 1, Color? color = null, float linewidth = 1)
         {
             if (color == null)
                 color = settings.GetNextColor();
-            PlottableSignal signal = new PlottableSignal(ys, sampleRate, (Color)color, linewidth: linewidth, antiAlias: antiAlias);
+            PlottableSignal signal = new PlottableSignal(ys, sampleRate, (Color)color, linewidth: linewidth);
             settings.plottables.Add(signal);
         }
 
@@ -285,6 +311,13 @@ namespace ScottPlot
         public void Benchmark(bool displayBenchmark = true)
         {
             settings.displayBenchmark = displayBenchmark;
+        }
+
+        public void AntiAlias(bool figure = true, bool data = false)
+        {
+            settings.antiAliasFigure = figure;
+            settings.antiAliasData = data;
+            settings.backgroundRenderNeeded = true;
         }
 
         #endregion

@@ -411,7 +411,8 @@ namespace ScottPlotCookbook
             // A slight performance enhancement is achieved when anti-aliasing is disabled
             var plt = new ScottPlot.Plot(width, height);
             plt.Benchmark();
-            plt.PlotSignal(dataSignal, sampleRate: 20_000, antiAlias: false);
+            plt.AntiAlias(true, false);
+            plt.PlotSignal(dataSignal, sampleRate: 20_000);
             plt.AxisAuto();
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
