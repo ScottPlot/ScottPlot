@@ -65,9 +65,8 @@ namespace ScottPlot
             int stubWidth = 20;
             int stubHeight = 4;
 
-            Font legendFont = new Font(settings.legendFont, settings.legendFontSize);
             Brush brushText = new SolidBrush(settings.axisLabelColor);
-            float legendFontLineHeight = settings.gfxData.MeasureString("TEST", legendFont).Height;
+            float legendFontLineHeight = settings.gfxData.MeasureString("TEST", settings.legendFont).Height;
             float legendFontMaxWidth = 0;
 
             // populate list of filled labels
@@ -77,7 +76,7 @@ namespace ScottPlot
                 if (settings.plottables[i].label != null)
                 {
                     legendItems.Add(new LegendItem(settings.plottables[i].label, i, settings.plottables[i].color));
-                    float thisItemFontWidth = settings.gfxData.MeasureString(settings.plottables[i].label, legendFont).Width;
+                    float thisItemFontWidth = settings.gfxData.MeasureString(settings.plottables[i].label, settings.legendFont).Width;
                     if (thisItemFontWidth > legendFontMaxWidth)
                         legendFontMaxWidth = thisItemFontWidth;
                 }
@@ -100,8 +99,7 @@ namespace ScottPlot
                 Point textLocation = new Point(settings.dataSize.Width, settings.dataSize.Height);
                 textLocation.X -= (int)legendFontMaxWidth + padding * 2;
                 textLocation.Y -= (int)(legendFontLineHeight * (i + 1)) + padding * 2;
-                settings.gfxData.DrawString(legendItems[i].label, legendFont, brushText, textLocation);
-
+                settings.gfxData.DrawString(legendItems[i].label, settings.legendFont, brushText, textLocation);
                 settings.gfxData.DrawLine(new Pen(legendItems[i].color, stubHeight),
                     textLocation.X - padding, textLocation.Y + legendFontLineHeight / 2,
                     textLocation.X - padding - stubWidth, textLocation.Y + legendFontLineHeight / 2);

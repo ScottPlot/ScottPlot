@@ -63,8 +63,7 @@ namespace ScottPlot
 
         // legend
         public bool displayLegend = false;
-        public float legendFontSize = 12;
-        public string legendFont = "Segoe UI";
+        public Font legendFont = new Font("Segoe UI", 12);
 
         // benchmarking
         public Font benchmarkFont = new Font("Consolas", 8);
