@@ -457,6 +457,169 @@ namespace ScottPlotCookbook
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
         }
+
+        public void Figure_50_StyleBlue1()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            var plt = new ScottPlot.Plot(width, height);
+            plt.PlotScatter(dataXs, dataSin, label: "sin");
+            plt.PlotScatter(dataXs, dataCos, label: "cos");
+            plt.Title("Very Complicated Data");
+            plt.XLabel("Experiment Duration");
+            plt.YLabel("Productivity");
+            plt.Legend();
+            plt.Style(ScottPlot.Style.Blue1);
+            plt.AxisAuto(0);
+            plt.SaveFig(fileName);
+            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+        }
+
+        public void Figure_51_StyleBlue2()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            var plt = new ScottPlot.Plot(width, height);
+            plt.PlotScatter(dataXs, dataSin, label: "sin");
+            plt.PlotScatter(dataXs, dataCos, label: "cos");
+            plt.Title("Very Complicated Data");
+            plt.XLabel("Experiment Duration");
+            plt.YLabel("Productivity");
+            plt.Legend();
+            plt.Style(ScottPlot.Style.Blue2);
+            plt.AxisAuto(0);
+            plt.SaveFig(fileName);
+            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+        }
+
+        public void Figure_52_StyleBlue3()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            var plt = new ScottPlot.Plot(width, height);
+            plt.PlotScatter(dataXs, dataSin, label: "sin");
+            plt.PlotScatter(dataXs, dataCos, label: "cos");
+            plt.Title("Very Complicated Data");
+            plt.XLabel("Experiment Duration");
+            plt.YLabel("Productivity");
+            plt.Legend();
+            plt.Style(ScottPlot.Style.Blue3);
+            plt.AxisAuto(0);
+            plt.SaveFig(fileName);
+            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+        }
+
+        public void Figure_53_StyleLight1()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            var plt = new ScottPlot.Plot(width, height);
+            plt.PlotScatter(dataXs, dataSin, label: "sin");
+            plt.PlotScatter(dataXs, dataCos, label: "cos");
+            plt.Title("Very Complicated Data");
+            plt.XLabel("Experiment Duration");
+            plt.YLabel("Productivity");
+            plt.Legend();
+            plt.Style(ScottPlot.Style.Light1);
+            plt.AxisAuto(0);
+            plt.SaveFig(fileName);
+            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+        }
+
+        public void Figure_54_StyleLight2()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            var plt = new ScottPlot.Plot(width, height);
+            plt.PlotScatter(dataXs, dataSin, label: "sin");
+            plt.PlotScatter(dataXs, dataCos, label: "cos");
+            plt.Title("Very Complicated Data");
+            plt.XLabel("Experiment Duration");
+            plt.YLabel("Productivity");
+            plt.Legend();
+            plt.Style(ScottPlot.Style.Light2);
+            plt.AxisAuto(0);
+            plt.SaveFig(fileName);
+            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+        }
+
+        public void Figure_55_StyleGray1()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            var plt = new ScottPlot.Plot(width, height);
+            plt.PlotScatter(dataXs, dataSin, label: "sin");
+            plt.PlotScatter(dataXs, dataCos, label: "cos");
+            plt.Title("Very Complicated Data");
+            plt.XLabel("Experiment Duration");
+            plt.YLabel("Productivity");
+            plt.Legend();
+            plt.Style(ScottPlot.Style.Gray1);
+            plt.AxisAuto(0);
+            plt.SaveFig(fileName);
+            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+        }
+
+        public void Figure_56_StyleGray2()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            var plt = new ScottPlot.Plot(width, height);
+            plt.PlotScatter(dataXs, dataSin, label: "sin");
+            plt.PlotScatter(dataXs, dataCos, label: "cos");
+            plt.Title("Very Complicated Data");
+            plt.XLabel("Experiment Duration");
+            plt.YLabel("Productivity");
+            plt.Legend();
+            plt.Style(ScottPlot.Style.Gray2);
+            plt.AxisAuto(0);
+            plt.SaveFig(fileName);
+            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+        }
+
+        public void Figure_57_StyleBlack()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            var plt = new ScottPlot.Plot(width, height);
+            plt.PlotScatter(dataXs, dataSin, label: "sin");
+            plt.PlotScatter(dataXs, dataCos, label: "cos");
+            plt.Title("Very Complicated Data");
+            plt.XLabel("Experiment Duration");
+            plt.YLabel("Productivity");
+            plt.Legend();
+            plt.Style(ScottPlot.Style.Black);
+            plt.AxisAuto(0);
+            plt.SaveFig(fileName);
+            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+        }
+
+        public void Figure_58_StyleDefault()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            var plt = new ScottPlot.Plot(width, height);
+            plt.PlotScatter(dataXs, dataSin, label: "sin");
+            plt.PlotScatter(dataXs, dataCos, label: "cos");
+            plt.Title("Very Complicated Data");
+            plt.XLabel("Experiment Duration");
+            plt.YLabel("Productivity");
+            plt.Legend();
+            plt.Style(ScottPlot.Style.Default);
+            plt.AxisAuto(0);
+            plt.SaveFig(fileName);
+            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+        }
+
         #endregion
 
     }

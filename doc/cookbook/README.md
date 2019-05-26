@@ -371,3 +371,156 @@ plt.SaveFig(fileName);
 
 ![](./images/40_Vertical_and_Horizontal_Lines.png)
 
+## StyleBlue1
+
+```cs
+var plt = new ScottPlot.Plot(600, 400);
+plt.PlotScatter(dataXs, dataSin, label: "sin");
+plt.PlotScatter(dataXs, dataCos, label: "cos");
+plt.Title("Very Complicated Data");
+plt.XLabel("Experiment Duration");
+plt.YLabel("Productivity");
+plt.Legend();
+plt.Style(ScottPlot.Style.Blue1);
+plt.AxisAuto(0);
+plt.SaveFig(fileName);
+```
+
+![](./images/50_StyleBlue1.png)
+
+## StyleBlue2
+
+```cs
+var plt = new ScottPlot.Plot(600, 400);
+plt.PlotScatter(dataXs, dataSin, label: "sin");
+plt.PlotScatter(dataXs, dataCos, label: "cos");
+plt.Title("Very Complicated Data");
+plt.XLabel("Experiment Duration");
+plt.YLabel("Productivity");
+plt.Legend();
+plt.Style(ScottPlot.Style.Blue2);
+plt.AxisAuto(0);
+plt.SaveFig(fileName);
+```
+
+![](./images/51_StyleBlue2.png)
+
+## StyleBlue3
+
+```cs
+var plt = new ScottPlot.Plot(600, 400);
+plt.PlotScatter(dataXs, dataSin, label: "sin");
+plt.PlotScatter(dataXs, dataCos, label: "cos");
+plt.Title("Very Complicated Data");
+plt.XLabel("Experiment Duration");
+plt.YLabel("Productivity");
+plt.Legend();
+plt.Style(ScottPlot.Style.Blue3);
+plt.AxisAuto(0);
+plt.SaveFig(fileName);
+```
+
+![](./images/52_StyleBlue3.png)
+
+## StyleLight1
+
+```cs
+var plt = new ScottPlot.Plot(600, 400);
+plt.PlotScatter(dataXs, dataSin, label: "sin");
+plt.PlotScatter(dataXs, dataCos, label: "cos");
+plt.Title("Very Complicated Data");
+plt.XLabel("Experiment Duration");
+plt.YLabel("Productivity");
+plt.Legend();
+plt.Style(ScottPlot.Style.Light1);
+plt.AxisAuto(0);
+plt.SaveFig(fileName);
+```
+
+![](./images/53_StyleLight1.png)
+
+## StyleLight2
+
+```cs
+var plt = new ScottPlot.Plot(600, 400);
+plt.PlotScatter(dataXs, dataSin, label: "sin");
+plt.PlotScatter(dataXs, dataCos, label: "cos");
+plt.Title("Very Complicated Data");
+plt.XLabel("Experiment Duration");
+plt.YLabel("Productivity");
+plt.Legend();
+plt.Style(ScottPlot.Style.Light2);
+plt.AxisAuto(0);
+plt.SaveFig(fileName);
+```
+
+![](./images/54_StyleLight2.png)
+
+## StyleGray1
+
+```cs
+var plt = new ScottPlot.Plot(600, 400);
+plt.PlotScatter(dataXs, dataSin, label: "sin");
+plt.PlotScatter(dataXs, dataCos, label: "cos");
+plt.Title("Very Complicated Data");
+plt.XLabel("Experiment Duration");
+plt.YLabel("Productivity");
+plt.Legend();
+plt.Style(ScottPlot.Style.Gray1);
+plt.AxisAuto(0);
+plt.SaveFig(fileName);
+```
+
+![](./images/55_StyleGray1.png)
+
+## StyleGray2
+
+```cs
+var plt = new ScottPlot.Plot(600, 400);
+plt.PlotScatter(dataXs, dataSin, label: "sin");
+plt.PlotScatter(dataXs, dataCos, label: "cos");
+plt.Title("Very Complicated Data");
+plt.XLabel("Experiment Duration");
+plt.YLabel("Productivity");
+plt.Legend();
+plt.Style(ScottPlot.Style.Gray2);
+plt.AxisAuto(0);
+plt.SaveFig(fileName);
+```
+
+![](./images/56_StyleGray2.png)
+
+## StyleBlack
+
+```cs
+var plt = new ScottPlot.Plot(600, 400);
+plt.PlotScatter(dataXs, dataSin, label: "sin");
+plt.PlotScatter(dataXs, dataCos, label: "cos");
+plt.Title("Very Complicated Data");
+plt.XLabel("Experiment Duration");
+plt.YLabel("Productivity");
+plt.Legend();
+plt.Style(ScottPlot.Style.Black);
+plt.AxisAuto(0);
+plt.SaveFig(fileName);
+```
+
+![](./images/57_StyleBlack.png)
+
+## StyleDefault
+
+```cs
+var plt = new ScottPlot.Plot(600, 400);
+plt.PlotScatter(dataXs, dataSin, label: "sin");
+plt.PlotScatter(dataXs, dataCos, label: "cos");
+plt.Title("Very Complicated Data");
+plt.XLabel("Experiment Duration");
+plt.YLabel("Productivity");
+plt.Legend();
+plt.Style(ScottPlot.Style.Default);
+plt.AxisAuto(0);
+plt.SaveFig(fileName);
+```
+
+![](./images/58_StyleDefault.png)
+
