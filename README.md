@@ -72,7 +72,7 @@ Compiled version: [ScottPlotQuickstartForms.zip](/demos/ScottPlotQuickstartForms
 ![](demos/ScottPlotAnimatedSin/compiled/ScottPlotAnimatedSin.gif)
 
 ### Audio Monitor
-* This demo uses two ScottPlot plots to display audio data in real time. The signal (PCM, top) and frequency (FFT, bottom) components are continuously updated at a high framerate and are both mouse-interactive. Audio processing is provide by the [nAudio](https://github.com/naudio/NAudio) library.
+* This demo uses two ScottPlot plots to display audio data in real time. The signal (PCM, top) and frequency (FFT, bottom) components are continuously updated at a high framerate and are both mouse-interactive. Audio processing is provided by the [nAudio](https://github.com/naudio/NAudio) library.
 * Compiled demo: [ScottPlotAudioMonitor.zip](/demos/ScottPlotAudioMonitor/compiled/ScottPlotAudioMonitor.zip)
 * Source code: [/demos/ScottPlotAudioMonitor/](/demos/ScottPlotAudioMonitor/)
 
