@@ -20,13 +20,15 @@ namespace ScottPlot
         public Pen pen;
         public Brush brush;
 
-        public PlottableSignal(double[] ys, double sampleRate, double xOffset, Color color, double lineWidth, double markerSize)
+        public PlottableSignal(double[] ys, double sampleRate, double xOffset, Color color, double lineWidth, double markerSize, string label)
         {
             this.ys = ys;
             this.sampleRate = sampleRate;
             this.samplePeriod = 1.0 / sampleRate;
             this.markerSize = (float)markerSize;
             this.xOffset = xOffset;
+            this.label = label;
+            this.color = color;
             pointCount = ys.Length;
             brush = new SolidBrush(color);
             pen = new Pen(color, (float)lineWidth)
