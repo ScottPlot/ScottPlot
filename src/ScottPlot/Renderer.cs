@@ -85,7 +85,7 @@ namespace ScottPlot
 
             // draw the frame and border
             float frameWidth = padding * 2 + legendFontMaxWidth + padding + stubWidth;
-            float frameHeight = padding * 2 + legendFontLineHeight * settings.plottables.Count();
+            float frameHeight = padding * 2 + legendFontLineHeight * legendItems.Count();
             Size frameSize = new Size((int)frameWidth, (int)frameHeight);
             Point frameLoc = new Point((int)(settings.dataSize.Width - frameWidth - padding),
                 (int)(settings.dataSize.Height - frameHeight - padding));
