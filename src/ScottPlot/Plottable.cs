@@ -10,7 +10,7 @@ namespace ScottPlot
     public abstract class Plottable
     {
         public int pointCount = 0;
-        public string label = "no label";
+        public string label = null;
         public Color color = Color.Black;
 
         public abstract void Render(Settings settings);

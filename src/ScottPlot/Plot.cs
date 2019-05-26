@@ -194,6 +194,7 @@ namespace ScottPlot
             PlottableAxLine axLine = new PlottableAxLine(x, vertical: true, color: (Color)color, lineWidth: lineWidth);
             settings.plottables.Add(axLine);
         }
+
         public void PlotHLine(double x, Color? color = null, double lineWidth = 1)
         {
             if (color == null)
