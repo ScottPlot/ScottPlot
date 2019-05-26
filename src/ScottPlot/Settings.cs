@@ -64,6 +64,9 @@ namespace ScottPlot
         // legend
         public bool displayLegend = false;
         public Font legendFont = new Font("Segoe UI", 12);
+        public Color legendFontColor = Color.Black;
+        public Color legendBackColor = Color.White;
+        public Color legendFrameColor = Color.Black;
 
         // benchmarking
         public Font benchmarkFont = new Font("Consolas", 8);
