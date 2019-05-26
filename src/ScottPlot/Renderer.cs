@@ -65,7 +65,7 @@ namespace ScottPlot
             int stubWidth = 20;
             int stubHeight = 3;
 
-            Brush brushText = new SolidBrush(settings.axisLabelColor);
+            Brush brushText = new SolidBrush(settings.legendFontColor);
             float legendFontLineHeight = settings.gfxData.MeasureString("TEST", settings.legendFont).Height;
             float legendFontMaxWidth = 0;
 
@@ -90,8 +90,8 @@ namespace ScottPlot
             Point frameLoc = new Point((int)(settings.dataSize.Width - frameWidth - padding),
                 (int)(settings.dataSize.Height - frameHeight - padding));
             Rectangle frameRect = new Rectangle(frameLoc, frameSize);
-            settings.gfxData.FillRectangle(new SolidBrush(settings.dataBackgroundColor), frameRect);
-            settings.gfxData.DrawRectangle(new Pen(settings.tickColor), frameRect);
+            settings.gfxData.FillRectangle(new SolidBrush(settings.legendBackColor), frameRect);
+            settings.gfxData.DrawRectangle(new Pen(settings.legendFrameColor), frameRect);
 
             // draw the individual labels
             for (int i = 0; i < legendItems.Count; i++)

@@ -286,9 +286,15 @@ namespace ScottPlot
             TightenLayout();
         }
 
-        public void Legend(bool enableLegend = true)
+        public void Legend(bool enableLegend = true, Color? fontColor = null, Color? backColor = null, Color? frameColor = null)
         {
             settings.displayLegend = enableLegend;
+            if (fontColor != null)
+                settings.legendFontColor = (Color)fontColor;
+            if (backColor != null)
+                settings.legendBackColor = (Color)backColor;
+            if (frameColor != null)
+                settings.legendFrameColor = (Color)frameColor;
         }
 
         public void Background(Color? figure = null, Color? data = null)
