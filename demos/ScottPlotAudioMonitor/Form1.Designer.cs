@@ -33,7 +33,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.btnStart = new System.Windows.Forms.Button();
             this.btnStop = new System.Windows.Forms.Button();
-            this.cbFFT = new System.Windows.Forms.CheckBox();
             this.scottPlotUC1 = new ScottPlot.ScottPlotUC();
             this.timerPlot = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -77,16 +76,6 @@
             this.btnStop.Text = "Stop";
             this.btnStop.UseVisualStyleBackColor = true;
             this.btnStop.Click += new System.EventHandler(this.BtnStop_Click);
-            // 
-            // cbFFT
-            // 
-            this.cbFFT.AutoSize = true;
-            this.cbFFT.Location = new System.Drawing.Point(462, 16);
-            this.cbFFT.Name = "cbFFT";
-            this.cbFFT.Size = new System.Drawing.Size(45, 17);
-            this.cbFFT.TabIndex = 4;
-            this.cbFFT.Text = "FFT";
-            this.cbFFT.UseVisualStyleBackColor = true;
             // 
             // scottPlotUC1
             // 
@@ -133,7 +122,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(623, 538);
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Controls.Add(this.cbFFT);
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.btnStart);
             this.Controls.Add(this.label1);
@@ -153,7 +141,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.Button btnStop;
-        private System.Windows.Forms.CheckBox cbFFT;
         private ScottPlot.ScottPlotUC scottPlotUC1;
         private System.Windows.Forms.Timer timerPlot;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;

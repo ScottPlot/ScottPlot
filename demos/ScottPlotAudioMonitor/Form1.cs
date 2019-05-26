@@ -37,12 +37,12 @@ namespace ScottPlotAudioMonitor
 
         private void StylePcm()
         {
-            scottPlotUC1.plt.Title("ScottPlot Audio Monitor (PCM)", fontSize: 14);
-            scottPlotUC1.plt.YLabel("Amplitude", fontSize: 12);
+            scottPlotUC1.plt.Title("");
+            scottPlotUC1.plt.YLabel("PCM (amplitude)", fontSize: 12);
             scottPlotUC1.plt.XLabel("Time (millisec)", fontSize: 12);
             scottPlotUC1.Render();
 
-            scottPlotUC2.plt.Title("ScottPlot Audio Monitor (FFT)", fontSize: 14);
+            scottPlotUC2.plt.Title("");
             scottPlotUC2.plt.YLabel("FFT (power)", fontSize: 12);
             scottPlotUC2.plt.XLabel("Frequency (kHz)", fontSize: 12);
             scottPlotUC2.Render();
@@ -139,8 +139,10 @@ namespace ScottPlotAudioMonitor
                 {
                     scottPlotUC1.plt.PlotSignal(dataPcm, wvin.WaveFormat.SampleRate / 1000.0, markerSize: 0);
                     scottPlotUC1.plt.AxisAuto(0, .5);
+                    scottPlotUC1.plt.TightenLayout();
                     scottPlotUC2.plt.PlotSignal(dataFft, (double)wvin.WaveFormat.SampleRate / dataFft.Length, markerSize: 0);
                     scottPlotUC2.plt.AxisAuto(0);
+                    scottPlotUC1.plt.TightenLayout();
                 }
                 scottPlotUC1.Render();
                 scottPlotUC2.Render();
