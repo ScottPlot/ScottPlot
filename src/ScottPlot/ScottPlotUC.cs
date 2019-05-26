@@ -20,6 +20,7 @@ namespace ScottPlot
         public ScottPlotUC()
         {
             InitializeComponent();
+            plt.Background(SystemColors.Control);
             pbPlot.MouseWheel += PbPlot_MouseWheel;
             RightClickMenuSetup();
             UpdateSize();
