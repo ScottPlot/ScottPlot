@@ -17,10 +17,11 @@ namespace ScottPlot
         public double samplePeriod;
         public float markerSize;
         public double xOffset;
+        public double yOffset;
         public Pen pen;
         public Brush brush;
 
-        public PlottableSignal(double[] ys, double sampleRate, double xOffset, Color color, double lineWidth, double markerSize, string label)
+        public PlottableSignal(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label)
         {
             this.ys = ys;
             this.sampleRate = sampleRate;
@@ -29,6 +30,7 @@ namespace ScottPlot
             this.xOffset = xOffset;
             this.label = label;
             this.color = color;
+            this.yOffset = yOffset;
             pointCount = ys.Length;
             brush = new SolidBrush(color);
             pen = new Pen(color, (float)lineWidth)
@@ -48,10 +50,10 @@ namespace ScottPlot
         public override double[] GetLimits()
         {
             double[] limits = new double[4];
-            limits[0] = 0;
-            limits[1] = samplePeriod * ys.Length;
-            limits[2] = ys.Min();
-            limits[3] = ys.Max();
+            limits[0] = 0 + xOffset;
+            limits[1] = samplePeriod * ys.Length + xOffset;
+            limits[2] = ys.Min() + yOffset;
+            limits[3] = ys.Max() + yOffset;
             return limits;
         }
 
@@ -63,7 +65,7 @@ namespace ScottPlot
             if (visibleIndex1 < 0)
                 visibleIndex1 = 0;
             for (int i = visibleIndex1; i <= visibleIndex2 + 1; i++)
-                linePoints.Add(settings.GetPixel(samplePeriod * i + xOffset, ys[i]));
+                linePoints.Add(settings.GetPixel(samplePeriod * i + xOffset, ys[i] + yOffset));
 
             settings.gfxData.DrawLines(pen, linePoints.ToArray());
             foreach (Point point in linePoints)
@@ -97,8 +99,8 @@ namespace ScottPlot
                     if (ys[i] > highestValue)
                         highestValue = ys[i];
                 }
-                int yPxHigh = settings.GetPixel(0, lowestValue).Y;
-                int yPxLow = settings.GetPixel(0, highestValue).Y;
+                int yPxHigh = settings.GetPixel(0, lowestValue + yOffset).Y;
+                int yPxLow = settings.GetPixel(0, highestValue + yOffset).Y;
 
                 // adjust order of points to enhance anti-aliasing
                 if ((linePoints.Count < 2) || (yPxLow < linePoints[linePoints.Count - 1].Y))
