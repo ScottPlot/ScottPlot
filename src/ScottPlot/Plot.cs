@@ -242,7 +242,7 @@ namespace ScottPlot
 
         #region CUSTOMIZATION
 
-        public void Title(string title = null, Color? color = null, bool? enable = true)
+        public void Title(string title = null, Color? color = null, bool? enable = true, float? fontSize = 12)
         {
             if (title != null)
                 settings.title = title;
@@ -251,11 +251,13 @@ namespace ScottPlot
             if (enable != null)
                 if (enable == false)
                     settings.title = "";
+            if (fontSize != null)
+                settings.titleFont = new Font(settings.titleFont.FontFamily, (float)fontSize, settings.titleFont.Style);
             settings.backgroundRenderNeeded = true;
             TightenLayout();
         }
 
-        public void XLabel(string xLabel = null, Color? color = null, bool? enable = true)
+        public void XLabel(string xLabel = null, Color? color = null, bool? enable = true, float? fontSize = 12)
         {
             if (xLabel != null)
                 settings.axisLabelX = xLabel;
@@ -263,11 +265,13 @@ namespace ScottPlot
                 settings.axisLabelX = "";
             if (color != null)
                 settings.axisLabelColor = (Color)color;
+            if (fontSize != null)
+                settings.axisLabelFont = new Font(settings.axisLabelFont.FontFamily, (float)fontSize, settings.axisLabelFont.Style);
             settings.backgroundRenderNeeded = true;
             TightenLayout();
         }
 
-        public void YLabel(string yLabel = null, Color? color = null, bool? enable = true)
+        public void YLabel(string yLabel = null, Color? color = null, bool? enable = true, float? fontSize = 12)
         {
             if (yLabel != null)
                 settings.axisLabelY = yLabel;
@@ -275,6 +279,8 @@ namespace ScottPlot
                 settings.axisLabelY = "";
             if (color != null)
                 settings.axisLabelColor = (Color)color;
+            if (fontSize != null)
+                settings.axisLabelFont = new Font(settings.axisLabelFont.FontFamily, (float)fontSize, settings.axisLabelFont.Style);
             settings.backgroundRenderNeeded = true;
             TightenLayout();
         }

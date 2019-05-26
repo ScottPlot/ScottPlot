@@ -58,14 +58,25 @@ Compiled version: [ScottPlotQuickstartForms.zip](/demos/ScottPlotQuickstartForms
 ## Compiled Demos
 
 ### ScottPlot Demo
-This demo ([ScottPlotDemo.zip](/demos/ScottPlotDemo/compiled/ScottPlotDemo.zip)) demonstrates the display all major plot types. Notice that _millions_ of data points can be displayed on a Signal plot at >100 Hz framerates and comfortably interacted with using the mouse. Source code for this demo is in [/demos/ScottPlotDemo/](/demos/ScottPlotDemo/).
+* This demo demonstrates the display all major ScottPlot plot types. Notice that _millions_ of data points can be displayed using a Signal plot at >100 Hz framerates and comfortably interacted with using the mouse.
+* Compiled demo: [ScottPlotDemo.zip](/demos/ScottPlotDemo/compiled/ScottPlotDemo.zip)
+* Source code: [/demos/ScottPlotDemo/](/demos/ScottPlotDemo/)
 
 ![](/demos/ScottPlotDemo/compiled/ScottPlotDemo.png)
 
 ### Animated Data
-If you plot a double array, updating the array automatically updates the ScottPlot. This demo ([ScottPlotAnimatedSin.zip](demos/ScottPlotAnimatedSin/compiled/ScottPlotAnimatedSin.zip)) plots an array then uses a timer to update it continuously. Note that the graph is still mouse-interactive (panning and zooming). Source code for this demo is in [/demos/ScottPlotAnimatedSin/](/demos/ScottPlotAnimatedSin/).
+* If you plot a double array with ScottPlot, later updating the original array automatically updates the data in ScottPlot. This simple demo plots an array then uses a timer to update it continuously. Note that the graph is still mouse-interactive (panning and zooming) while continuously updating. 
+* Compiled demo: [ScottPlotAnimatedSin.zip](demos/ScottPlotAnimatedSin/compiled/ScottPlotAnimatedSin.zip)
+* Source code: [/demos/ScottPlotAnimatedSin/](/demos/ScottPlotAnimatedSin/)
 
 ![](demos/ScottPlotAnimatedSin/compiled/ScottPlotAnimatedSin.gif)
+
+### Audio Monitor
+* This demo uses two ScottPlot plots to display audio data in real time. The signal (PCM, top) and frequency (FFT, bottom) components are continuously updated at a high framerate and are both mouse-interactive. Audio processing is provide by the [nAudio](https://github.com/naudio/NAudio) library.
+* Compiled demo: [ScottPlotAudioMonitor.zip](/demos/ScottPlotAudioMonitor/compiled/ScottPlotAudioMonitor.zip)
+* Source code: [/demos/ScottPlotAudioMonitor/](/demos/ScottPlotAudioMonitor/)
+
+![](/demos/ScottPlotAudioMonitor/compiled/ScottPlotAudioMonitor.gif)
 
 ## Previous Versions
 ScottPlot has been improving with time, and some improvements are associated with breaking code changes. These changes are compartmentalized into major release versions which can be downloaded and used to maintain backward-compatibility:
