@@ -53,6 +53,7 @@
     <Compile Include="ScottPlotUC.Designer.cs">
       <DependentUpon>ScottPlotUC.cs</DependentUpon>
     </Compile>
+    <Compile Include="Style.cs" />
     <Compile Include="Ticks.cs" />
     <Compile Include="Tools.cs" />
     <Compile Include="Plot.cs" />

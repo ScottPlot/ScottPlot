@@ -348,6 +348,98 @@ namespace ScottPlot
             settings.backgroundRenderNeeded = true;
         }
 
+        public void Style(Color figBg, Color dataBg, Color grid, Color tick, Color label, Color title)
+        {
+            settings.figureBackgroundColor = figBg;
+            settings.dataBackgroundColor = dataBg;
+            settings.gridColor = grid;
+            settings.tickColor = tick;
+            settings.axisLabelColor = label;
+            settings.titleColor = title;
+            settings.legendBackColor = dataBg;
+            settings.legendFrameColor = tick;
+            settings.legendFontColor = label;
+        }
+
+        public void Style(Style ps)
+        {
+            switch (ps)
+            {
+                case (ScottPlot.Style.Black):
+                    Style(figBg: Color.Black,
+                        dataBg: Color.Black,
+                        grid: ColorTranslator.FromHtml("#2d2d2d"),
+                        tick: ColorTranslator.FromHtml("#757575"),
+                        label: ColorTranslator.FromHtml("#b9b9ba"),
+                        title: ColorTranslator.FromHtml("#FFFFFF"));
+                    break;
+                case (ScottPlot.Style.Blue1):
+                    Style(figBg: ColorTranslator.FromHtml("#07263b"),
+                        dataBg: ColorTranslator.FromHtml("#0b3049"),
+                        grid: ColorTranslator.FromHtml("#0e3d54"),
+                        tick: ColorTranslator.FromHtml("#145665"),
+                        label: ColorTranslator.FromHtml("#b5bec5"),
+                        title: ColorTranslator.FromHtml("#d0dae2"));
+                    break;
+                case (ScottPlot.Style.Blue2):
+                    Style(figBg: ColorTranslator.FromHtml("#1b2138"),
+                        dataBg: ColorTranslator.FromHtml("#252c48"),
+                        grid: ColorTranslator.FromHtml("#2c334e"),
+                        tick: ColorTranslator.FromHtml("#bbbdc4"),
+                        label: ColorTranslator.FromHtml("#bbbdc4"),
+                        title: ColorTranslator.FromHtml("#d8dbe3"));
+                    break;
+                case (ScottPlot.Style.Blue3):
+                    Style(figBg: ColorTranslator.FromHtml("#001021"),
+                        dataBg: ColorTranslator.FromHtml("#021d38"),
+                        grid: ColorTranslator.FromHtml("#273c51"),
+                        tick: ColorTranslator.FromHtml("#d3d3d3"),
+                        label: ColorTranslator.FromHtml("#d3d3d3"),
+                        title: ColorTranslator.FromHtml("#FFFFFF"));
+                    break;
+                case (ScottPlot.Style.Gray1):
+                    Style(figBg: ColorTranslator.FromHtml("#31363a"),
+                        dataBg: ColorTranslator.FromHtml("#3a4149"),
+                        grid: ColorTranslator.FromHtml("#444b52"),
+                        tick: ColorTranslator.FromHtml("#757a80"),
+                        label: ColorTranslator.FromHtml("#d6d7d8"),
+                        title: ColorTranslator.FromHtml("#FFFFFF"));
+                    break;
+                case (ScottPlot.Style.Gray2):
+                    Style(figBg: ColorTranslator.FromHtml("#131519"),
+                        dataBg: ColorTranslator.FromHtml("#262626"),
+                        grid: ColorTranslator.FromHtml("#2d2d2d"),
+                        tick: ColorTranslator.FromHtml("#757575"),
+                        label: ColorTranslator.FromHtml("#b9b9ba"),
+                        title: ColorTranslator.FromHtml("#FFFFFF"));
+                    break;
+                case (ScottPlot.Style.Light1):
+                    Style(figBg: ColorTranslator.FromHtml("#FFFFFF"),
+                        dataBg: ColorTranslator.FromHtml("#FFFFFF"),
+                        grid: ColorTranslator.FromHtml("#ededed "),
+                        tick: ColorTranslator.FromHtml("#7f7f7f"),
+                        label: ColorTranslator.FromHtml("#000000"),
+                        title: ColorTranslator.FromHtml("#000000"));
+                    break;
+                case (ScottPlot.Style.Light2):
+                    Style(figBg: ColorTranslator.FromHtml("#e4e6ec"),
+                        dataBg: ColorTranslator.FromHtml("#f1f3f7"),
+                        grid: ColorTranslator.FromHtml("#e5e7ea"),
+                        tick: ColorTranslator.FromHtml("#77787b"),
+                        label: ColorTranslator.FromHtml("#000000"),
+                        title: ColorTranslator.FromHtml("#000000"));
+                    break;
+                default:
+                    Style(figBg: Color.White,
+                        dataBg: Color.White,
+                        grid: Color.LightGray,
+                        tick: Color.Black,
+                        label: Color.Black,
+                        title: Color.Black);
+                    break;
+            }
+        }
+
         #endregion
 
 

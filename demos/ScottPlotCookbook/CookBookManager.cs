@@ -54,6 +54,16 @@ namespace ScottPlotCookbook
 
             recipies.Figure_40_Vertical_and_Horizontal_Lines();
 
+            recipies.Figure_50_StyleBlue1();
+            recipies.Figure_51_StyleBlue2();
+            recipies.Figure_52_StyleBlue3();
+            recipies.Figure_53_StyleLight1();
+            recipies.Figure_54_StyleLight2();
+            recipies.Figure_55_StyleGray1();
+            recipies.Figure_56_StyleGray2();
+            recipies.Figure_57_StyleBlack();
+            recipies.Figure_58_StyleDefault();
+
             GenerateReport(outputFolderName);
             ValidateImageHashes(outputFolderName);
             Console.WriteLine("COMPLETE");
@@ -137,15 +147,24 @@ namespace ScottPlotCookbook
             knownHashes += "E89CE1FB91214A3BFD36DCA3409DCACB"; // 09_Clearing_Plots.png
             knownHashes += "4149DDDC359EBD018CB16FE4D96F3BA0"; // 10_Modifying_Plotted_Data.png
             knownHashes += "BA0B0F78BBF76E41F50B9250AE88D1B2"; // 20_Small_Plot.png
-            knownHashes += "CF17AC49F1BCEFC55B9529DB49A9750E"; // 21a_Title_and_Axis_Labels.png
-            knownHashes += "5184D9E1DFDD738E48AEB517153D3992"; // 21b_Extra_Padding.png
-            knownHashes += "587B542A25FE9B320EBF72228C1AABD0"; // 22_Custom_Colors.png
+            knownHashes += "9B46257F74B67B6B1217B8FBB6AD3ACE"; // 21a_Title_and_Axis_Labels.png
+            knownHashes += "C74AFBB386C11DC426F6007C92F1CD7E"; // 21b_Extra_Padding.png
+            knownHashes += "1115C46702B261DE0B5F1480A2103545"; // 22_Custom_Colors.png
             knownHashes += "F25C121A32FBB4B7E39105E6B6229F2A"; // 23_Frameless_Plot.png
             knownHashes += "B7219E17329DBA6B3F7CDC6BC3FE16D7"; // 24_Disable_the_Grid.png
             knownHashes += "F18B4EE14FB45DD1974FAF7DE1613687"; // 25_Corner_Axis_Frame.png
             knownHashes += "44749276140469A42022E19E6813241D"; // 26_Horizontal_Ticks_Only.png
             knownHashes += "F2B8269F5703BA6706A2E95E3F128292"; // 32_Signal_Styling.png
             knownHashes += "2F336992A4E9B18ACC434097827E67D1"; // 40_Vertical_and_Horizontal_Lines.png
+            knownHashes += "3C060D6B0148F681B33F72EE6BEBC5E3"; // 50_StyleBlue1.png
+            knownHashes += "297DB26AD844889C39ADC2AB7D16CCD0"; // 51_StyleBlue2.png
+            knownHashes += "53BE566ACA0E24F27835F8C6F2917428"; // 52_StyleBlue3.png
+            knownHashes += "A2AD6143A980A45883650ABEBF9C8547"; // 53_StyleLight1.png
+            knownHashes += "D134211A2F8A61D4C76A3CC71E7EE7ED"; // 54_StyleLight2.png
+            knownHashes += "9C2006DC977C6431BCBE3142399E58BF"; // 55_StyleGray1.png
+            knownHashes += "817740ADD481F93C3C76E0722EA6EFB8"; // 56_StyleGray2.png
+            knownHashes += "CF423BE40B79587587EF20EF7F833049"; // 57_StyleBlack.png
+            knownHashes += "8E83044E828DFE1E12633ADC42EB1D5B"; // 58_StyleDefault.png
 
             var md5 = System.Security.Cryptography.MD5.Create();
             string[] images = System.IO.Directory.GetFiles($"./{outputFolderName}", "*.png");
