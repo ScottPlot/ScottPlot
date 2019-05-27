@@ -127,15 +127,15 @@ namespace ScottPlotAudioMonitor
         {
             if (dataPcm == null || dataFft == null)
             {
-                if (scottPlotUC1.plt.settings.plottables.Count > 0)
+                if (scottPlotUC1.plt.GetPlotObjects().Count > 0)
                     scottPlotUC1.plt.Clear();
-                if (scottPlotUC2.plt.settings.plottables.Count > 0)
+                if (scottPlotUC2.plt.GetPlotObjects().Count > 0)
                     scottPlotUC2.plt.Clear();
                 return;
             }
             else
             {
-                if (scottPlotUC1.plt.settings.plottables.Count == 0)
+                if (scottPlotUC1.plt.GetPlotObjects().Count == 0)
                 {
                     scottPlotUC1.plt.PlotSignal(dataPcm, wvin.WaveFormat.SampleRate / 1000.0, markerSize: 0);
                     scottPlotUC1.plt.AxisAuto(0, .5);
