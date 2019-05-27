@@ -5,6 +5,7 @@ using System.Drawing;
 
 namespace ScottPlot
 {
+
     public class Plot
     {
         /* This class provides a simple way to accumulate plottables.
@@ -12,12 +13,15 @@ namespace ScottPlot
          * Efforts will be taken to stabalize this API (though plottables may change).
          */
 
-        public readonly Settings settings = new Settings();
+        private readonly Settings settings;
+        public readonly MouseTracker mouseTracker;
 
         public Plot(int width = 600, int height = 800)
         {
             if (width <= 0 || height <= 0)
                 throw new ArgumentException("width and height must each be greater than 0");
+            settings = new Settings();
+            mouseTracker = new MouseTracker(settings);
             Resize(width, height);
             TightenLayout();
         }
@@ -203,6 +207,11 @@ namespace ScottPlot
             settings.plottables.Add(axLine);
         }
 
+        public List<Plottable> GetPlotObjects()
+        {
+            return settings.plottables;
+        }
+
         #endregion
 
 
@@ -336,9 +345,12 @@ namespace ScottPlot
             settings.backgroundRenderNeeded = true;
         }
 
-        public void Benchmark(bool displayBenchmark = true)
+        public void Benchmark(bool? displayBenchmark = true, bool? toggle = false)
         {
-            settings.displayBenchmark = displayBenchmark;
+            if (displayBenchmark != null)
+                settings.displayBenchmark = (bool)displayBenchmark;
+            if (toggle != null)
+                settings.displayBenchmark = !settings.displayBenchmark;
         }
 
         public void AntiAlias(bool figure = true, bool data = false)
@@ -428,6 +440,14 @@ namespace ScottPlot
                         tick: ColorTranslator.FromHtml("#77787b"),
                         label: ColorTranslator.FromHtml("#000000"),
                         title: ColorTranslator.FromHtml("#000000"));
+                    break;
+                case (ScottPlot.Style.Control):
+                    Style(figBg: SystemColors.Control,
+                        dataBg: Color.White,
+                        grid: Color.LightGray,
+                        tick: Color.Black,
+                        label: Color.Black,
+                        title: Color.Black);
                     break;
                 default:
                     Style(figBg: Color.White,
