@@ -364,6 +364,8 @@ namespace ScottPlot
 
         public Point GetPixel(double locationX, double locationY)
         {
+            // Return the pixel location on the data bitmap corresponding to an X/Y location.
+            // This is useful when drawing graphics on the data bitmap.
             int xPx = (int)((locationX - axis[0]) * xAxisScale);
             int yPx = dataSize.Height - (int)((locationY - axis[2]) * yAxisScale);
             return new Point(xPx, yPx);
@@ -371,6 +373,8 @@ namespace ScottPlot
 
         public PointF GetLocation(Point pixelLocation)
         {
+            // Return the X/Y location corresponding to a pixel position on the figure bitmap.
+            // This is useful for converting a mouse position to an X/Y coordinate.
             double locationX = (pixelLocation.X - dataOrigin.X) / xAxisScale + axis[0];
             double locationY = axis[3] - (pixelLocation.Y - dataOrigin.Y) / yAxisScale;
             return new PointF((float)locationX, (float)locationY);
