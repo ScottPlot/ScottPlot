@@ -18,7 +18,7 @@ namespace ScottPlot
         public ScottPlotUC()
         {
             InitializeComponent();
-            plt.Background(SystemColors.Control);
+            plt.Style(ScottPlot.Style.Control);
             pbPlot.MouseWheel += PbPlot_MouseWheel;
             RightClickMenuSetup();
             UpdateSize();
@@ -83,7 +83,8 @@ namespace ScottPlot
         private void PbPlot_MouseMove(object sender, MouseEventArgs e)
         {
             plt.mouseTracker.MouseMove();
-            Render(skipIfBusy: true);
+            if (e.Button != MouseButtons.None)
+                Render(skipIfBusy: true);
         }
 
         private void PbPlot_MouseUp(object sender, MouseEventArgs e)

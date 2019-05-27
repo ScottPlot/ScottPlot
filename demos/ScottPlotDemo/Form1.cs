@@ -50,30 +50,18 @@ namespace ScottPlotDemo
             cbBenchmark.ForeColor = Color.Black;
             cbAntiAliasData.ForeColor = Color.Black;
             cbAntiAliasFigure.ForeColor = Color.Black;
-
-            scottPlotUC1.plt.Background(SystemColors.Control, Color.White);
-            scottPlotUC1.plt.Title(color: Color.Black);
-            scottPlotUC1.plt.YLabel(color: Color.Black);
-            scottPlotUC1.plt.XLabel(color: Color.Black);
-            scottPlotUC1.plt.Ticks(color: Color.Black);
-            scottPlotUC1.plt.Grid(color: Color.LightGray);
+            scottPlotUC1.plt.Style(ScottPlot.Style.Control);
             scottPlotUC1.Render();
         }
 
         private void StyleDark()
         {
-            BackColor = ColorTranslator.FromHtml("#161d31");
+            BackColor = ColorTranslator.FromHtml("#07263b");
             cbDark.ForeColor = Color.White;
             cbBenchmark.ForeColor = Color.White;
             cbAntiAliasData.ForeColor = Color.White;
             cbAntiAliasFigure.ForeColor = Color.White;
-
-            scottPlotUC1.plt.Background(ColorTranslator.FromHtml("#161d31"), ColorTranslator.FromHtml("#202941"));
-            scottPlotUC1.plt.Title(color: ColorTranslator.FromHtml("#dddddd"));
-            scottPlotUC1.plt.YLabel(color: ColorTranslator.FromHtml("#289bb4"));
-            scottPlotUC1.plt.XLabel(color: ColorTranslator.FromHtml("#289bb4"));
-            scottPlotUC1.plt.Ticks(color: ColorTranslator.FromHtml("#31516b"));
-            scottPlotUC1.plt.Grid(color: ColorTranslator.FromHtml("#26314c"));
+            scottPlotUC1.plt.Style(ScottPlot.Style.Blue1);
             scottPlotUC1.Render();
         }
 

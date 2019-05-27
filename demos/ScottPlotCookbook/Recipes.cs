@@ -324,7 +324,7 @@ namespace ScottPlotCookbook
 
             Color figureBgColor = ColorTranslator.FromHtml("#001021");
             Color dataBgColor = ColorTranslator.FromHtml("#021d38");
-            plt.Background(figureBgColor, dataBgColor);
+            plt.Style(figBg: figureBgColor, dataBg: dataBgColor);
             plt.Grid(color: ColorTranslator.FromHtml("#273c51"));
             plt.Ticks(color: Color.LightGray);
             plt.PlotScatter(dataXs, dataSin);
@@ -345,7 +345,7 @@ namespace ScottPlotCookbook
             var plt = new ScottPlot.Plot(width, height);
             Color figureBgColor = ColorTranslator.FromHtml("#001021");
             Color dataBgColor = ColorTranslator.FromHtml("#021d38");
-            plt.Background(figureBgColor, dataBgColor);
+            plt.Style(figBg: figureBgColor, dataBg: dataBgColor);
             plt.Grid(color: ColorTranslator.FromHtml("#273c51"));
             plt.Ticks(displayTicksX: false, displayTicksY: false);
             plt.Frame(drawFrame: false);
@@ -381,7 +381,7 @@ namespace ScottPlotCookbook
             plt.PlotScatter(dataXs, dataCos);
             plt.AxisAuto();
             plt.Grid(false);
-            plt.Frame(byAxis: new bool[] { true, false, true, false });
+            plt.Frame(right: false, top: false);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
         }
@@ -397,7 +397,7 @@ namespace ScottPlotCookbook
             plt.AxisAuto();
             plt.Grid(false);
             plt.Ticks(displayTicksY: false);
-            plt.Frame(byAxis: new bool[] { false, false, true, false });
+            plt.Frame(left: false, right: false, top: false);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
         }
