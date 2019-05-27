@@ -254,21 +254,7 @@ namespace ScottPlot
                 totalPoints += plottable.pointCount;
             return totalPoints;
         }
-
-        /// <summary>
-        /// Add a legend made from the labels given to plot objects
-        /// </summary>
-        public void Legend(bool enableLegend = true, Color? fontColor = null, Color? backColor = null, Color? frameColor = null)
-        {
-            settings.displayLegend = enableLegend;
-            if (fontColor != null)
-                settings.legendFontColor = (Color)fontColor;
-            if (backColor != null)
-                settings.legendBackColor = (Color)backColor;
-            if (frameColor != null)
-                settings.legendFrameColor = (Color)frameColor;
-        }
-
+        
         #endregion
 
         #region Axis Settings
@@ -365,6 +351,20 @@ namespace ScottPlot
             TightenLayout();
         }
 
+        /// <summary>
+        /// Add a legend made from the labels given to plot objects
+        /// </summary>
+        public void Legend(bool enableLegend = true, Color? fontColor = null, Color? backColor = null, Color? frameColor = null)
+        {
+            settings.displayLegend = enableLegend;
+            if (fontColor != null)
+                settings.legendFontColor = (Color)fontColor;
+            if (backColor != null)
+                settings.legendBackColor = (Color)backColor;
+            if (frameColor != null)
+                settings.legendFrameColor = (Color)frameColor;
+        }
+
         #endregion
 
         #region Styling and Misc Graph Settings
@@ -446,7 +446,7 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Set colors of many of the commen elements with named elements
+        /// Set colors of many of the common elements with named elements
         /// </summary>
         public void Style(Color? figBg = null, Color? dataBg = null, Color? grid = null, Color? tick = null, Color? label = null, Color? title = null)
         {

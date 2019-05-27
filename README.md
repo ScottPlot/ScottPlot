@@ -46,6 +46,7 @@ Full source code: [demos/ScottPlotQuickstartForms](/demos/ScottPlotQuickstartFor
 Compiled version: [ScottPlotQuickstartForms.zip](/demos/ScottPlotQuickstartForms/compiled/ScottPlotQuickstartForms.zip)
 
 ## Documentation
+* The **[ScottPlot API](/doc/)** outlines how to use ScottPlot
 * The **[ScottPlot Cookbook](/doc/cookbook/README.md)** demonstrates all ScottPlot features
 * ScottPlot mouse actions
   * Left-click-drag to pan
