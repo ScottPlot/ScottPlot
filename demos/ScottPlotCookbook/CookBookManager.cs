@@ -144,7 +144,7 @@ namespace ScottPlotCookbook
             knownHashes += "A4CE8C1004273D73725946FD54D22D9D"; // 05_Plot_Points_Only.png
             knownHashes += "327F34CB8838B01D63849D191847F141"; // 06_Styling_XY_Plots.png
             knownHashes += "36E42889689F15CDCD808ED19632DD81"; // 07_Plotting_Points.png
-            knownHashes += "AF46A072B5118E946F26624F58AA52A1"; // 08_Plotting_Text.png
+            knownHashes += "0C7C583C47960CFAD299DFED88875B84"; // 08_Plotting_Text.png
             knownHashes += "E89CE1FB91214A3BFD36DCA3409DCACB"; // 09_Clearing_Plots.png
             knownHashes += "4149DDDC359EBD018CB16FE4D96F3BA0"; // 10_Modifying_Plotted_Data.png
             knownHashes += "BA0B0F78BBF76E41F50B9250AE88D1B2"; // 20_Small_Plot.png

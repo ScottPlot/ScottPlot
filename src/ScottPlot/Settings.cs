@@ -5,7 +5,10 @@ using System.Drawing;
 
 namespace ScottPlot
 {
-
+    /// <summary>
+    /// This class stores settings and data necessary to create a ScottPlot.
+    /// It is a data transfer object which is easy to pass but inaccessible to users.
+    /// </summary>
     public class Settings
     {
         // these properties get set at instantiation or after size or axis adjustments
@@ -124,7 +127,7 @@ namespace ScottPlot
             benchmarkMessage += string.Format(" took {0:0.000} ms ({1:0.00 Hz})", benchmarkMsec, benchmarkHz);
             if (plottables.Count == 1)
                 benchmarkMessage = benchmarkMessage.Replace("objects", "object");
-            if (!backgroundRenderNeeded)
+            if (!bmpFigureRenderRequired)
                 benchmarkMessage = benchmarkMessage.Replace("Full", "Data-only");
         }
 
@@ -200,7 +203,7 @@ namespace ScottPlot
             tighteningOccurred = true;
         }
 
-        public bool backgroundRenderNeeded = true;
+        public bool bmpFigureRenderRequired = true;
 
         private void AxisUpdate()
         {
@@ -210,7 +213,7 @@ namespace ScottPlot
             yAxisCenter = (axis[3] + axis[2]) / 2;
             xAxisScale = dataSize.Width / xAxisSpan; // px per unit
             yAxisScale = dataSize.Height / yAxisSpan; // px per unit
-            backgroundRenderNeeded = true;
+            bmpFigureRenderRequired = true;
         }
 
         public void AxisPan(double? dx = null, double? dy = null)

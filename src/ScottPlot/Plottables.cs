@@ -209,11 +209,12 @@ namespace ScottPlot
         public Brush brush;
         public Font font;
 
-        public PlottableText(string text, double x, double y, Color color, string fontName = "Arial", double fontSize = 12, bool bold = false)
+        public PlottableText(string text, double x, double y, Color color, string fontName, double fontSize, bool bold, string label)
         {
             this.text = text;
             this.x = x;
             this.y = y;
+            this.label = label;
             brush = new SolidBrush(color);
             FontStyle fontStyle = (bold == true) ? FontStyle.Bold : FontStyle.Regular;
             font = new Font(fontName, (float)fontSize, fontStyle);
@@ -244,10 +245,11 @@ namespace ScottPlot
         public string orientation;
         public Pen pen;
 
-        public PlottableAxLine(double position, bool vertical, Color color, double lineWidth)
+        public PlottableAxLine(double position, bool vertical, Color color, double lineWidth, string label)
         {
             this.position = position;
             this.vertical = vertical;
+            this.label = label;
             orientation = (vertical) ? "vertical" : "horizontal";
             pen = new Pen(color, (float)lineWidth);
             pointCount = 1;

@@ -5,17 +5,20 @@ using System.Drawing;
 
 namespace ScottPlot
 {
-
+    /// <summary>
+    /// The <c>Plot</c> class is used to collect and graph data.
+    /// </summary>
     public class Plot
     {
-        /* This class provides a simple way to accumulate plottables.
-         * Plottables may have more features in them than ScottPlot provides access to.
-         * Efforts will be taken to stabalize this API (though plottables may change).
-         */
 
         private readonly Settings settings;
         public readonly MouseTracker mouseTracker;
 
+        /// <summary>
+        /// Create a new ScottPlot with the given dimensions
+        /// </summary>
+        /// <param name="width">image width (pixels)</param>
+        /// <param name="height">image height (pixels)</param>
         public Plot(int width = 600, int height = 800)
         {
             if (width <= 0 || height <= 0)
@@ -28,14 +31,16 @@ namespace ScottPlot
 
         public override string ToString()
         {
-            return $"ScottPlot ({settings.figureSize.Width}x{settings.figureSize.Height}) with {settings.plottables.Count} objects ({GetTotalPoints()} points)";
+            return $"ScottPlot ({settings.figureSize.Width}x{settings.figureSize.Height}) with {GetPlottables().Count} objects ({GetTotalPoints()} points)";
         }
 
+        #region Bitmaps, Graphics, and Drawing Settings
 
-
-
-        #region BITMAP AND GRAPHICS
-
+        /// <summary>
+        /// Resize the ScottPlot to the given dimensions
+        /// </summary>
+        /// <param name="width">image width (pixels)</param>
+        /// <param name="height">image height (pixels)</param>
         public void Resize(int? width = null, int? height = null)
         {
             if (width == null)
@@ -46,7 +51,7 @@ namespace ScottPlot
             InitializeBitmaps();
         }
 
-        public void InitializeBitmaps()
+        private void InitializeBitmaps()
         {
             settings.bmpFigure = null;
             settings.gfxFigure = null;
@@ -65,7 +70,7 @@ namespace ScottPlot
 
         }
 
-        public void UpdateAntiAliasing()
+        private void UpdateAntiAliasingSettings()
         {
 
             if (settings.gfxFigure != null)
@@ -97,20 +102,21 @@ namespace ScottPlot
             }
         }
 
-        public void Render()
+        private void RenderBitmap()
         {
             if (!settings.tighteningOccurred)
                 TightenLayout();
 
-            UpdateAntiAliasing();
+            UpdateAntiAliasingSettings();
 
             settings.BenchmarkStart();
-            if (settings.backgroundRenderNeeded)
+            if (settings.bmpFigureRenderRequired)
             {
                 Renderer.FigureClear(settings);
                 Renderer.FigureLabels(settings);
                 Renderer.FigureTicks(settings);
                 Renderer.FigureFrames(settings);
+                settings.bmpFigureRenderRequired = false;
             }
             Renderer.DataBackground(settings);
             Renderer.DataGrid(settings);
@@ -120,20 +126,25 @@ namespace ScottPlot
             Renderer.DataPlaceOntoFigure(settings);
             settings.BenchmarkEnd();
             Renderer.Benchmark(settings);
-            settings.backgroundRenderNeeded = false;
         }
 
+        /// <summary>
+        /// Return the ScottPlot as a Bitmap
+        /// </summary>
         public Bitmap GetBitmap(bool renderFirst = true)
         {
             if (renderFirst)
-                Render();
+                RenderBitmap();
             return settings.bmpFigure;
         }
 
+        /// <summary>
+        /// Save the ScottPlot as an image file
+        /// </summary>
         public void SaveFig(string filePath, bool renderFirst = true)
         {
             if (renderFirst)
-                Render();
+                RenderBitmap();
             filePath = System.IO.Path.GetFullPath(filePath);
             string folder = System.IO.Path.GetDirectoryName(filePath);
             if (System.IO.Directory.Exists(folder))
@@ -149,24 +160,30 @@ namespace ScottPlot
 
         #endregion
 
+        #region Managing Plottable Data
 
-
-
-        #region PLOTTABLE DATA
-
+        /// <summary>
+        /// Clear all plot objects
+        /// </summary>
         public void Clear()
         {
             settings.plottables.Clear();
         }
 
-        public void PlotText(string text, double x, double y, Color? color = null, double fontSize = 12, bool bold = false)
+        /// <summary>
+        /// Plot text at a specific location
+        /// </summary>
+        public void PlotText(string text, double x, double y, Color? color = null, string fontName = "Arial", double fontSize = 12, bool bold = false, string label = null)
         {
             if (color == null)
-                color = Color.Black;
-            PlottableText txt = new PlottableText(text, x, y, color: (Color)color, fontSize: fontSize, bold: bold);
+                color = settings.GetNextColor();
+            PlottableText txt = new PlottableText(text, x, y, color: (Color)color, fontName: fontName, fontSize: fontSize, bold: bold, label: label);
             settings.plottables.Add(txt);
         }
 
+        /// <summary>
+        /// Plot a single point at a specific location
+        /// </summary>
         public void PlotPoint(double x, double y, Color? color = null, double markerSize = 5, string label = null)
         {
             if (color == null)
@@ -175,6 +192,9 @@ namespace ScottPlot
             settings.plottables.Add(mark);
         }
 
+        /// <summary>
+        /// Plot a scatter plot from X and Y points
+        /// </summary>
         public void PlotScatter(double[] xs, double[] ys, Color? color = null, double lineWidth = 1, double markerSize = 5, string label = null)
         {
             if (color == null)
@@ -183,6 +203,9 @@ namespace ScottPlot
             settings.plottables.Add(scat);
         }
 
+        /// <summary>
+        /// Plot evenly-spaced data (optimized for speed)
+        /// </summary>
         public void PlotSignal(double[] ys, double sampleRate = 1, double xOffset = 0, double yOffset = 0, Color? color = null, double linewidth = 1, double markerSize = 5, string label = null)
         {
             if (color == null)
@@ -191,110 +214,50 @@ namespace ScottPlot
             settings.plottables.Add(signal);
         }
 
-        public void PlotVLine(double x, Color? color = null, double lineWidth = 1)
+        /// <summary>
+        /// Plot a vertical line at the given X position
+        /// </summary>
+        public void PlotVLine(double x, Color? color = null, double lineWidth = 1, string label = null)
         {
             if (color == null)
                 color = settings.GetNextColor();
-            PlottableAxLine axLine = new PlottableAxLine(x, vertical: true, color: (Color)color, lineWidth: lineWidth);
+            PlottableAxLine axLine = new PlottableAxLine(x, vertical: true, color: (Color)color, lineWidth: lineWidth, label: label);
             settings.plottables.Add(axLine);
         }
 
-        public void PlotHLine(double x, Color? color = null, double lineWidth = 1)
+        /// <summary>
+        /// Plot a horizontal line at the given Y position
+        /// </summary>
+        public void PlotHLine(double x, Color? color = null, double lineWidth = 1, string label = null)
         {
             if (color == null)
                 color = settings.GetNextColor();
-            PlottableAxLine axLine = new PlottableAxLine(x, vertical: false, color: (Color)color, lineWidth: lineWidth);
+            PlottableAxLine axLine = new PlottableAxLine(x, vertical: false, color: (Color)color, lineWidth: lineWidth, label: label);
             settings.plottables.Add(axLine);
         }
 
-        public List<Plottable> GetPlotObjects()
+        /// <summary>
+        /// Get a list of all plotted objects (useful for modifying their properties)
+        /// </summary>
+        public List<Plottable> GetPlottables()
         {
             return settings.plottables;
         }
 
-        #endregion
-
-
-
-
-        #region AXIS LIMIS
-
-        public void Axis(double? x1 = null, double? x2 = null, double? y1 = null, double? y2 = null)
+        /// <summary>
+        /// Get the total number of data points across all plottable objects
+        /// </summary>
+        public int GetTotalPoints()
         {
-            settings.AxisSet(x1, x2, y1, y2);
+            int totalPoints = 0;
+            foreach (Plottable plottable in settings.plottables)
+                totalPoints += plottable.pointCount;
+            return totalPoints;
         }
 
-        public void AxisAuto(double horizontalMargin = .05, double verticalMargin = .1)
-        {
-            settings.AxisAuto(horizontalMargin, verticalMargin);
-        }
-
-        public void AxisZoom(double xFrac = 1, double yFrac = 1)
-        {
-            settings.AxisZoom(xFrac, yFrac);
-        }
-        public void AxisPan(double dx = 0, double dy = 0)
-        {
-            settings.AxisPan(dx, dy);
-        }
-
-        public void TightenLayout(int padding = 5)
-        {
-            settings.axisPadding = padding;
-            settings.AxisTighen();
-            Resize();
-        }
-
-        #endregion
-
-
-
-
-        #region CUSTOMIZATION
-
-        public void Title(string title = null, Color? color = null, bool? enable = true, float? fontSize = 12)
-        {
-            if (title != null)
-                settings.title = title;
-            if (color != null)
-                settings.titleColor = (Color)color;
-            if (enable != null)
-                if (enable == false)
-                    settings.title = "";
-            if (fontSize != null)
-                settings.titleFont = new Font(settings.titleFont.FontFamily, (float)fontSize, settings.titleFont.Style);
-            settings.backgroundRenderNeeded = true;
-            TightenLayout();
-        }
-
-        public void XLabel(string xLabel = null, Color? color = null, bool? enable = true, float? fontSize = 12)
-        {
-            if (xLabel != null)
-                settings.axisLabelX = xLabel;
-            if (enable == false)
-                settings.axisLabelX = "";
-            if (color != null)
-                settings.axisLabelColor = (Color)color;
-            if (fontSize != null)
-                settings.axisLabelFont = new Font(settings.axisLabelFont.FontFamily, (float)fontSize, settings.axisLabelFont.Style);
-            settings.backgroundRenderNeeded = true;
-            TightenLayout();
-        }
-
-        public void YLabel(string yLabel = null, Color? color = null, bool? enable = true, float? fontSize = 12)
-        {
-            if (yLabel != null)
-                settings.axisLabelY = yLabel;
-            if (enable == false)
-                settings.axisLabelY = "";
-            if (color != null)
-                settings.axisLabelColor = (Color)color;
-            if (fontSize != null)
-                settings.axisLabelFont = new Font(settings.axisLabelFont.FontFamily, (float)fontSize, settings.axisLabelFont.Style);
-            settings.backgroundRenderNeeded = true;
-            TightenLayout();
-        }
-
+        /// <summary>
+        /// Add a legend made from the labels given to plot objects
+        /// </summary>
         public void Legend(bool enableLegend = true, Color? fontColor = null, Color? backColor = null, Color? frameColor = null)
         {
             settings.displayLegend = enableLegend;
@@ -306,23 +269,109 @@ namespace ScottPlot
                 settings.legendFrameColor = (Color)frameColor;
         }
 
-        public void Background(Color? figure = null, Color? data = null)
+        #endregion
+
+        #region Axis Settings
+
+        /// <summary>
+        /// Manually set axis limits
+        /// </summary>
+        /// <returns>axis limits [x1, x2, y1, y2]</returns>
+        public double[] Axis(double? x1 = null, double? x2 = null, double? y1 = null, double? y2 = null)
         {
-            if (figure != null)
-                settings.figureBackgroundColor = (Color)figure;
-            if (data != null)
-                settings.dataBackgroundColor = (Color)data;
-            settings.backgroundRenderNeeded = true;
+            settings.AxisSet(x1, x2, y1, y2);
+            return settings.axis;
         }
 
-        public void Grid(bool? enable = true, Color? color = null)
+        /// <summary>
+        /// Automatically adjust axis limits to fit the data
+        /// </summary>
+        /// <param name="horizontalMargin">fraction to pad data horizontally</param>
+        /// <param name="verticalMargin">fraction to pad data vertically</param>
+        public void AxisAuto(double horizontalMargin = .05, double verticalMargin = .1)
         {
-            if (enable != null)
-                settings.displayGrid = (bool)enable;
+            settings.AxisAuto(horizontalMargin, verticalMargin);
+        }
+
+        /// <summary>
+        /// Zoom in or out by a given fraction (greater than 1 zooms in)
+        /// </summary>
+        public void AxisZoom(double xFrac = 1, double yFrac = 1)
+        {
+            settings.AxisZoom(xFrac, yFrac);
+        }
+
+        /// <summary>
+        /// Pan by a given amount (in X/Y units)
+        /// </summary>
+        public void AxisPan(double dx = 0, double dy = 0)
+        {
+            settings.AxisPan(dx, dy);
+        }
+
+        #endregion
+
+        #region Labels
+
+        /// <summary>
+        /// Set the title of the ScottPlot
+        /// </summary>
+        public void Title(string title = null, Color? color = null, bool? enable = true, float? fontSize = 12)
+        {
+            if (title != null)
+                settings.title = title;
             if (color != null)
-                settings.gridColor = (Color)color;
+                settings.titleColor = (Color)color;
+            if (enable != null)
+                if (enable == false)
+                    settings.title = "";
+            if (fontSize != null)
+                settings.titleFont = new Font(settings.titleFont.FontFamily, (float)fontSize, settings.titleFont.Style);
+            settings.bmpFigureRenderRequired = true;
+            TightenLayout();
         }
 
+        /// <summary>
+        /// Set the horizontal axis label
+        /// </summary>
+        public void XLabel(string xLabel = null, Color? color = null, bool? enable = true, float? fontSize = 12)
+        {
+            if (xLabel != null)
+                settings.axisLabelX = xLabel;
+            if (enable == false)
+                settings.axisLabelX = "";
+            if (color != null)
+                settings.axisLabelColor = (Color)color;
+            if (fontSize != null)
+                settings.axisLabelFont = new Font(settings.axisLabelFont.FontFamily, (float)fontSize, settings.axisLabelFont.Style);
+            settings.bmpFigureRenderRequired = true;
+            TightenLayout();
+        }
+
+        /// <summary>
+        /// Set the vertical axis label
+        /// </summary>
+        public void YLabel(string yLabel = null, Color? color = null, bool? enable = true, float? fontSize = 12)
+        {
+            if (yLabel != null)
+                settings.axisLabelY = yLabel;
+            if (enable == false)
+                settings.axisLabelY = "";
+            if (color != null)
+                settings.axisLabelColor = (Color)color;
+            if (fontSize != null)
+                settings.axisLabelFont = new Font(settings.axisLabelFont.FontFamily, (float)fontSize, settings.axisLabelFont.Style);
+            settings.bmpFigureRenderRequired = true;
+            TightenLayout();
+        }
+
+        #endregion
+
+        #region Styling and Misc Graph Settings
+
+        /// <summary>
+        /// Control axis tick visibility and styling
+        /// </summary>
         public void Ticks(bool? displayTicksX = true, bool? displayTicksY = true, Color? color = null)
         {
             if (displayTicksX != null)
@@ -331,51 +380,103 @@ namespace ScottPlot
                 settings.displayTicksY = (bool)displayTicksY;
             if (color != null)
                 settings.tickColor = (Color)color;
-            settings.backgroundRenderNeeded = true;
+            settings.bmpFigureRenderRequired = true;
         }
 
-        public void Frame(bool? drawFrame = true, Color? frameColor = null, bool[] byAxis = null)
+        /// <summary>
+        /// Control grid visibility and color
+        /// </summary>
+        public void Grid(bool? enable = true, Color? color = null)
+        {
+            if (enable != null)
+                settings.displayGrid = (bool)enable;
+            if (color != null)
+                settings.gridColor = (Color)color;
+        }
+
+        /// <summary>
+        /// Control visibility and style of the data area frame
+        /// </summary>
+        public void Frame(bool? drawFrame = true, Color? frameColor = null, bool? left = true, bool? right = true, bool? bottom = true, bool? top = true)
         {
             if (drawFrame != null)
                 settings.displayAxisFrames = (bool)drawFrame;
             if (frameColor != null)
                 settings.tickColor = (Color)frameColor;
-            if (byAxis != null && byAxis.Length == 4)
-                settings.displayFrameByAxis = byAxis;
-            settings.backgroundRenderNeeded = true;
+            if (left != null)
+                settings.displayFrameByAxis[0] = (bool)left;
+            if (right != null)
+                settings.displayFrameByAxis[1] = (bool)right;
+            if (bottom != null)
+                settings.displayFrameByAxis[2] = (bool)bottom;
+            if (top != null)
+                settings.displayFrameByAxis[3] = (bool)top;
+            settings.bmpFigureRenderRequired = true;
         }
 
-        public void Benchmark(bool? displayBenchmark = true, bool? toggle = false)
+        /// <summary>
+        /// Control visibility of benchmark information on the data area
+        /// </summary>
+        public void Benchmark(bool show = true, bool toggle = false)
         {
-            if (displayBenchmark != null)
-                settings.displayBenchmark = (bool)displayBenchmark;
-            if (toggle != null)
-                settings.displayBenchmark = !settings.displayBenchmark;
+            if (toggle)
+                settings.displayBenchmark = (settings.displayBenchmark) ? false : true;
+            else
+                settings.displayBenchmark = show;
         }
 
+        /// <summary>
+        /// Set anti-aliasing of the figure and the data
+        /// </summary>
         public void AntiAlias(bool figure = true, bool data = false)
         {
             settings.antiAliasFigure = figure;
             settings.antiAliasData = data;
-            settings.backgroundRenderNeeded = true;
+            settings.bmpFigureRenderRequired = true;
         }
 
-        public void Style(Color figBg, Color dataBg, Color grid, Color tick, Color label, Color title)
+        /// <summary>
+        /// Reduce space between data and labels (title, ticks, axis legends, etc)
+        /// </summary>
+        public void TightenLayout(int padding = 5)
         {
-            settings.figureBackgroundColor = figBg;
-            settings.dataBackgroundColor = dataBg;
-            settings.gridColor = grid;
-            settings.tickColor = tick;
-            settings.axisLabelColor = label;
-            settings.titleColor = title;
-            settings.legendBackColor = dataBg;
-            settings.legendFrameColor = tick;
-            settings.legendFontColor = label;
+            settings.axisPadding = padding;
+            settings.AxisTighen();
+            Resize();
         }
 
-        public void Style(Style ps)
+        /// <summary>
+        /// Set colors of many of the commen elements with named elements
+        /// </summary>
+        public void Style(Color? figBg = null, Color? dataBg = null, Color? grid = null, Color? tick = null, Color? label = null, Color? title = null)
         {
-            switch (ps)
+            if (figBg != null)
+                settings.figureBackgroundColor = (Color)figBg;
+            if (dataBg != null)
+                settings.dataBackgroundColor = (Color)dataBg;
+            if (grid != null)
+                settings.gridColor = (Color)grid;
+            if (tick != null)
+                settings.tickColor = (Color)tick;
+            if (label != null)
+                settings.axisLabelColor = (Color)label;
+            if (title != null)
+                settings.titleColor = (Color)title;
+            if (dataBg != null)
+                settings.legendBackColor = (Color)dataBg;
+            if (tick != null)
+                settings.legendFrameColor = (Color)tick;
+            if (label != null)
+                settings.legendFontColor = (Color)label;
+            settings.bmpFigureRenderRequired = true;
+        }
+
+        /// <summary>
+        /// Set the style using saved color combinations
+        /// </summary>
+        public void Style(Style style)
+        {
+            switch (style)
             {
                 case (ScottPlot.Style.Black):
                     Style(figBg: Color.Black,
@@ -462,19 +563,5 @@ namespace ScottPlot
 
         #endregion
 
-
-
-
-        #region MISC
-
-        public int GetTotalPoints()
-        {
-            int totalPoints = 0;
-            foreach (Plottable plottable in settings.plottables)
-                totalPoints += plottable.pointCount;
-            return totalPoints;
-        }
-
-        #endregion
     }
 }
