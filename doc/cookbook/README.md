@@ -524,3 +524,21 @@ plt.SaveFig(fileName);
 
 ![](./images/58_StyleDefault.png)
 
+## StyleControl
+
+```cs
+var plt = new ScottPlot.Plot(600, 400);
+plt.PlotScatter(dataXs, dataSin, label: "sin");
+plt.PlotScatter(dataXs, dataCos, label: "cos");
+plt.Title("Very Complicated Data");
+plt.XLabel("Experiment Duration");
+plt.YLabel("Productivity");
+plt.Legend();
+plt.Style(ScottPlot.Style.Control);
+plt.AxisAuto(0);
+plt.SaveFig(fileName);
+```
+
+![](./images/59_StyleControl.png)
+
+

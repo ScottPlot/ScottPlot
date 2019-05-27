@@ -63,6 +63,7 @@ namespace ScottPlotCookbook
             recipies.Figure_56_StyleGray2();
             recipies.Figure_57_StyleBlack();
             recipies.Figure_58_StyleDefault();
+            recipies.Figure_59_StyleControl();
 
             GenerateReport(outputFolderName);
             ValidateImageHashes(outputFolderName);
@@ -165,6 +166,7 @@ namespace ScottPlotCookbook
             knownHashes += "817740ADD481F93C3C76E0722EA6EFB8"; // 56_StyleGray2.png
             knownHashes += "CF423BE40B79587587EF20EF7F833049"; // 57_StyleBlack.png
             knownHashes += "8E83044E828DFE1E12633ADC42EB1D5B"; // 58_StyleDefault.png
+            knownHashes += "A419B4DBC69B08663A6C570F8C8C708D"; // 59_StyleControl.png
 
             var md5 = System.Security.Cryptography.MD5.Create();
             string[] images = System.IO.Directory.GetFiles($"./{outputFolderName}", "*.png");

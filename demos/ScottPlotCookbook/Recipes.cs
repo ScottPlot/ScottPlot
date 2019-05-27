@@ -620,6 +620,24 @@ namespace ScottPlotCookbook
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
         }
 
+        public void Figure_59_StyleControl()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            var plt = new ScottPlot.Plot(width, height);
+            plt.PlotScatter(dataXs, dataSin, label: "sin");
+            plt.PlotScatter(dataXs, dataCos, label: "cos");
+            plt.Title("Very Complicated Data");
+            plt.XLabel("Experiment Duration");
+            plt.YLabel("Productivity");
+            plt.Legend();
+            plt.Style(ScottPlot.Style.Control);
+            plt.AxisAuto(0);
+            plt.SaveFig(fileName);
+            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+        }
+
         #endregion
 
     }

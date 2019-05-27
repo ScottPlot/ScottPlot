@@ -9,6 +9,7 @@ namespace ScottPlot
     public enum Style
     {
         Default,
+        Control,
         Blue1,
         Blue2,
         Blue3,
