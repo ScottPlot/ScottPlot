@@ -79,7 +79,7 @@ Compiled version: [ScottPlotQuickstartForms.zip](/demos/ScottPlotQuickstartForms
 ![](/demos/ScottPlotAudioMonitor/compiled/ScottPlotAudioMonitor.gif)
 
 ## Previous Versions
-ScottPlot has been improving with time, and some improvements are associated with breaking code changes. These changes are compartmentalized into major release versions which can be downloaded and used to maintain backward-compatibility:
+ScottPlot has improved in performance and simplicity over time. Changes which resulted in a change to the API were compartmentalized into major release versions. It is recommended you use the latest version of ScottPlot for new projects, but all versions can be downloaded for backward-compatibility with existing projects. Each version has its own cookbook demonstrating how to use the API.
 * [ScottPlot v3](https://github.com/swharden/ScottPlot/) (May 2019 - present)
 * [ScottPlot v2](https://github.com/swharden/ScottPlot/tree/2.1) (Dec 2018 - May 2019)
 * [ScottPlot v1](https://github.com/swharden/ScottPlot/tree/1.0) (Jan 2018 - Dec 2018)
