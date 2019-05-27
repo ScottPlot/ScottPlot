@@ -14,8 +14,6 @@ namespace ScottPlot
     public partial class ScottPlotUC : UserControl
     {
         public Plot plt = new Plot();
-        Stopwatch mouseDownStopwatch = new Stopwatch();
-        private bool mouseMoveRedrawInProgress = false;
 
         public ScottPlotUC()
         {
@@ -54,10 +52,20 @@ namespace ScottPlot
             plt.Resize(Width, Height);
         }
 
-        public void Render()
+        private bool busyRendering = false;
+        public void Render(bool skipIfBusy = false)
         {
-            pbPlot.Image = plt.GetBitmap();
-            Application.DoEvents();
+            if (skipIfBusy && busyRendering)
+            {
+                return;
+            }
+            else
+            {
+                busyRendering = true;
+                pbPlot.Image = plt.GetBitmap();
+                Application.DoEvents();
+                busyRendering = false;
+            }
         }
 
         private void PbPlot_SizeChanged(object sender, EventArgs e)
@@ -69,42 +77,24 @@ namespace ScottPlot
 
         private void PbPlot_MouseDown(object sender, MouseEventArgs e)
         {
-            mouseDownStopwatch.Restart();
-            if (Control.MouseButtons == MouseButtons.Left)
-                plt.settings.MouseDown(Cursor.Position.X, Cursor.Position.Y, panning: true);
-            else if (Control.MouseButtons == MouseButtons.Right)
-                plt.settings.MouseDown(Cursor.Position.X, Cursor.Position.Y, zooming: true);
+            plt.mouseTracker.MouseDown();
         }
 
         private void PbPlot_MouseMove(object sender, MouseEventArgs e)
         {
-            if (!mouseMoveRedrawInProgress && Control.MouseButtons != MouseButtons.None)
-            {
-                mouseMoveRedrawInProgress = true;
-                plt.settings.MouseMove(Cursor.Position.X, Cursor.Position.Y);
-                Render();
-                mouseMoveRedrawInProgress = false;
-            }
-
-            bool showMouseLocation = false;
-            if (showMouseLocation)
-            {
-                PointF position = plt.settings.GetLocation(e.Location);
-                Console.WriteLine($"cursor is at {e.Location} which is {position}");
-            }
-            
+            plt.mouseTracker.MouseMove();
+            Render(skipIfBusy: true);
         }
 
         private void PbPlot_MouseUp(object sender, MouseEventArgs e)
         {
-            plt.settings.MouseMove(Cursor.Position.X, Cursor.Position.Y);
-            plt.settings.MouseUp();
-            Render();
+            plt.mouseTracker.MouseUp();
+            Render(true);
         }
 
         private void PbPlot_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            plt.settings.displayBenchmark = !plt.settings.displayBenchmark;
+            plt.Benchmark(toggle: true);
             Render();
         }
 
@@ -176,7 +166,7 @@ namespace ScottPlot
 
         private void PbPlot_MouseClick(object sender, MouseEventArgs e)
         {
-            double mouseDownMsec = mouseDownStopwatch.ElapsedMilliseconds;
+            double mouseDownMsec = plt.mouseTracker.mouseDownStopwatch.ElapsedMilliseconds;
             if (e.Button == MouseButtons.Middle)
             {
                 plt.AxisAuto();
