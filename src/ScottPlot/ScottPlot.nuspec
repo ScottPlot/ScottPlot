@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package >
+	<metadata>
+		<id>ScottPlot</id>
+		<title>ScottPlot</title>
+		<version>3.0.1</version>
+		<authors>Scott W Harden</authors>
+		<owners>swharden</owners>
+		<projectUrl>https://github.com/swharden/ScottPlot</projectUrl>
+		<license type="expression">MIT</license>
+		<iconUrl>https://raw.githubusercontent.com/swharden/ScottPlot/master/graphics/icon/icon.png</iconUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<releaseNotes>Initial release of ScottPlot v3</releaseNotes>
+		<description>Interactive Graphing Library for .NET</description>
+		<tags>plotting plot data graph chart signal C#</tags>
+	</metadata>
+	<files>
+		<file src="readme.txt" target="" />
+		<file src="readme.md" target="" />
+	</files>
+</package>
