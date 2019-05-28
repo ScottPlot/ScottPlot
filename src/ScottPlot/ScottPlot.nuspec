@@ -8,7 +8,7 @@
 		<owners>swharden</owners>
 		<projectUrl>https://github.com/swharden/ScottPlot</projectUrl>
 		<license type="expression">MIT</license>
-		<iconUrl>https://raw.githubusercontent.com/swharden/ScottPlot/master/graphics/icon/icon.png</iconUrl>
+		<iconUrl>https://raw.githubusercontent.com/swharden/ScottPlot/master/dev/icon/icon.png</iconUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<releaseNotes>Initial release of ScottPlot v3</releaseNotes>
 		<description>Interactive Graphing Library for .NET</description>
