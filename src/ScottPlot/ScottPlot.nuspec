@@ -12,7 +12,7 @@
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<releaseNotes>Initial release of ScottPlot v3</releaseNotes>
 		<description>Interactive Graphing Library for .NET</description>
-		<tags>plotting plot data graph chart signal C#</tags>
+		<tags>plotting plot data graph chart signal C# data-visualization</tags>
 	</metadata>
 	<files>
 		<file src="readme.txt" target="" />
