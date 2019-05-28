@@ -6,7 +6,7 @@ In a GUI environment ScottPlot makes it easy to display data interactively (left
 ![](/demos/ScottPlotDemo/compiled/ScottPlotDemo.gif)
 
 ## Quickstart (NuGet)
-1. Install ScottPlot using NuGet
+1. Install [ScottPlot using NuGet](https://www.nuget.org/packages/ScottPlot/)
 2. Drag/Drop the ScottPlotUC (from the toolbox) onto your Form
 3. Add the following code to your startup sequence:
 
