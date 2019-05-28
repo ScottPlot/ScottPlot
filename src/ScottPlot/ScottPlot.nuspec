@@ -3,14 +3,14 @@
 	<metadata>
 		<id>ScottPlot</id>
 		<title>ScottPlot</title>
-		<version>3.0.1</version>
+		<version>3.0.2</version>
 		<authors>Scott W Harden</authors>
 		<owners>swharden</owners>
 		<projectUrl>https://github.com/swharden/ScottPlot</projectUrl>
 		<license type="expression">MIT</license>
 		<iconUrl>https://raw.githubusercontent.com/swharden/ScottPlot/master/dev/icon/icon.png</iconUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
-		<releaseNotes>Initial release of ScottPlot v3</releaseNotes>
+		<releaseNotes>Recompiled for .NET 4.5 Framework</releaseNotes>
 		<description>Interactive Graphing Library for .NET</description>
 		<tags>plotting plot data graph chart signal C# data-visualization</tags>
 	</metadata>
