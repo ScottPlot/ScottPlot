@@ -1,7 +1,7 @@
 # ScottPlot
 ScottPlot is an open-source interactive graphing library for .NET written in C#. In a GUI environment ScottPlot makes it easy to display data interactively (left-click-drag pan, right-click-drag zoom). ScottPlot was designed to be fast enough to interactively display large datasets with millions of points (such as WAV files) at high framerates. In non-GUI environments ScottPlot can create graphs and save them as images.
 
-![](https://raw.githubusercontent.com/swharden/ScottPlot/master/demos/ScottPlotDemo/compiled/ScottPlotDemo-small.gif)
+[![](https://raw.githubusercontent.com/swharden/ScottPlot/master/demos/ScottPlotDemo/compiled/ScottPlotDemo-small.gif)](https://github.com/swharden/ScottPlot)
 
 ## Links
 * [Project page](https://github.com/swharden/ScottPlot)
