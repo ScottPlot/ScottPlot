@@ -25,8 +25,6 @@
 		
 
 ### Quickstart: Console Application ###
-
-	1) Add this code to your startup sequence:
 	
 	double[] xs = new double[] { 1, 2, 3, 4, 5 };
 	double[] ys = new double[] { 1, 4, 9, 16, 25 };
