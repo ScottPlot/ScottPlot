@@ -118,12 +118,15 @@ namespace ScottPlot
                 Renderer.FigureFrames(settings);
                 settings.bmpFigureRenderRequired = false;
             }
-            Renderer.DataBackground(settings);
-            Renderer.DataGrid(settings);
-            Renderer.DataPlottables(settings);
-            if (settings.displayLegend)
-                Renderer.DataLegend(settings);
-            Renderer.DataPlaceOntoFigure(settings);
+            if (settings.gfxData != null)
+            {
+                Renderer.DataBackground(settings);
+                Renderer.DataGrid(settings);
+                Renderer.DataPlottables(settings);
+                if (settings.displayLegend)
+                    Renderer.DataLegend(settings);
+                Renderer.DataPlaceOntoFigure(settings);
+            }
             settings.BenchmarkEnd();
             Renderer.Benchmark(settings);
         }
