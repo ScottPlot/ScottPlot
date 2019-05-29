@@ -11,7 +11,7 @@
 		<iconUrl>https://raw.githubusercontent.com/swharden/ScottPlot/master/dev/icon/icon.png</iconUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<releaseNotes>improved reference to System.Drawing</releaseNotes>
-		<description>ScottPlot is an open-source interactive graphing library for .NET</description>
+		<description>ScottPlot is a free and open-source interactive graphing library for .NET</description>
 		<tags>plotting plot data graph chart signal C# data-visualization</tags>
 		<frameworkAssemblies>
 			<frameworkAssembly assemblyName="System.Drawing" />
