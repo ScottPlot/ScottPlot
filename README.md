@@ -20,6 +20,8 @@ scottPlotUC1.Render();
 
 ![](/dev/nuget/quickstart.png)
 
+* Review the [documentation](/doc/) pages to learn how to use additional ScottPlot features
+
 ## Quickstart (from source)
 This quickstart demonstrates how to add an interactive ScottPlot to a Windows Forms Application using the ScottPlotUC (user control) from the source code folder. Note that ScottPlot also has a [Console Application quickstart](/doc/quickstart-console.md) and a [WPF Application quickstart](/doc/quickstart-WPF.md) for those interested in using ScottPlot in other application frameworks. 
 
@@ -54,9 +56,9 @@ scottPlotUC1.Render();
 
 ![](/demos/ScottPlotQuickstartForms/compiled/ScottPlotQuickstartForms.png)
 
-Full source code: [demos/ScottPlotQuickstartForms](/demos/ScottPlotQuickstartForms) 
-
-Compiled version: [ScottPlotQuickstartForms.zip](/demos/ScottPlotQuickstartForms/compiled/ScottPlotQuickstartForms.zip)
+* Review the [documentation](/doc/) pages to learn how to use additional ScottPlot features
+* Full source code: [demos/ScottPlotQuickstartForms](/demos/ScottPlotQuickstartForms) 
+* Compiled version: [ScottPlotQuickstartForms.zip](/demos/ScottPlotQuickstartForms/compiled/ScottPlotQuickstartForms.zip)
 
 ## Documentation
 * The **[ScottPlot API](/doc/)** outlines how to use ScottPlot
