@@ -12,12 +12,14 @@ namespace ScottPlot
     {
         public static void FigureClear(Settings settings)
         {
-            settings.gfxFigure.Clear(settings.figureBackgroundColor);
+            if (settings.gfxFigure != null)
+                settings.gfxFigure.Clear(settings.figureBackgroundColor);
         }
 
         public static void DataBackground(Settings settings)
         {
-            settings.gfxData.Clear(settings.dataBackgroundColor);
+            if (settings.gfxData != null)
+                settings.gfxData.Clear(settings.dataBackgroundColor);
         }
 
         public static void DataGrid(Settings settings)
@@ -116,6 +118,9 @@ namespace ScottPlot
 
         public static void FigureLabels(Settings settings, bool drawDebugRectangles = false)
         {
+            if (settings.gfxFigure == null)
+                return;
+
             int dataCenterX = settings.dataSize.Width / 2 + settings.dataOrigin.X;
             int dataCenterY = settings.dataSize.Height / 2 + settings.dataOrigin.Y;
 

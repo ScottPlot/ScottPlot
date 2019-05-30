@@ -47,6 +47,12 @@ namespace ScottPlot
                 width = settings.figureSize.Width;
             if (height == null)
                 height = settings.figureSize.Height;
+
+            if (width < 1)
+                width = 1;
+            if (height < 1)
+                height = 1;
+
             settings.Resize((int)width, (int)height);
             InitializeBitmaps();
         }
@@ -55,6 +61,8 @@ namespace ScottPlot
         {
             settings.bmpFigure = null;
             settings.gfxFigure = null;
+            settings.bmpData = null;
+            settings.gfxData = null;
 
             if (settings.figureSize.Width > 0 && settings.figureSize.Height > 0)
             {
