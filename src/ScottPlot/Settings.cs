@@ -275,29 +275,56 @@ namespace ScottPlot
         {
             axis = null;
 
+            List<Plottable> plottables2d = new List<Plottable>();
+            List<PlottableAxLine> axisLines = new List<PlottableAxLine>();
+
             foreach (Plottable plottable in plottables)
             {
-                if (plottable is PlottableAxLine)
-                    continue;
+                if (plottable is PlottableAxLine axLine)
+                    axisLines.Add(axLine);
+                else
+                    plottables2d.Add(plottable);
+            }
 
+            foreach (Plottable plottable in plottables2d)
+            {
                 double[] limits = plottable.GetLimits();
+
                 if (axis == null)
                 {
                     axis = limits;
                 }
                 else
                 {
-                    // horizontal
                     if (limits[0] < axis[0])
                         axis[0] = limits[0];
                     if (limits[1] > axis[1])
                         axis[1] = limits[1];
-
-                    // vertical
                     if (limits[2] < axis[2])
                         axis[2] = limits[2];
                     if (limits[3] > axis[3])
                         axis[3] = limits[3];
+                }
+            }
+
+            foreach (PlottableAxLine axLine in axisLines)
+            {
+                if (axis == null)
+                    continue;
+
+                if (axLine.vertical)
+                {
+                    if (axLine.position < axis[0])
+                        axis[0] = axLine.position;
+                    if (axLine.position > axis[1])
+                        axis[1] = axLine.position;
+                }
+                else
+                {
+                    if (axLine.position < axis[2])
+                        axis[2] = axLine.position;
+                    if (axLine.position > axis[3])
+                        axis[3] = axLine.position;
                 }
             }
 
