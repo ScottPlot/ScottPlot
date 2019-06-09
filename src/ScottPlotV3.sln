@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quickstart Console", "..\de
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo - Audio Monitor", "..\demos\ScottPlotAudioMonitor\Demo - Audio Monitor.csproj", "{2E6961D3-B575-4412-84B5-779171B6E2B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev - Draggable Markers", "..\..\..\..\Source\Repos\ScottPlotDraggableMarkers\Dev - Draggable Markers.csproj", "{510F292C-D3FD-4C50-B4BE-D554F4CC5302}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo - Draggable Axis Lines", "..\demos\ScottPlotDraggableMarkers\Demo - Draggable Axis Lines.csproj", "{510F292C-D3FD-4C50-B4BE-D554F4CC5302}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
