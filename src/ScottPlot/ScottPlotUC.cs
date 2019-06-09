@@ -99,9 +99,18 @@ namespace ScottPlot
                 handler(this, e);
         }
 
+        public event EventHandler MouseMoved;
+        protected virtual void OnMouseMoved(EventArgs e)
+        {
+            var handler = MouseMoved;
+            if (handler != null)
+                handler(this, e);
+        }
+
         private void PbPlot_MouseMove(object sender, MouseEventArgs e)
         {
             plt.mouseTracker.MouseMove(e.Location);
+            OnMouseMoved(EventArgs.Empty);
 
             // do things based on if the mouse is over a plottable object
             var hoverPlottable = plt.mouseTracker.PlottableUnderCursor(e.Location);

@@ -306,6 +306,41 @@ namespace ScottPlot
             settings.AxisPan(dx, dy);
         }
 
+        /// <summary>
+        /// Return the axis coordinates of a pixel location (relative to the ScottPlot)
+        /// </summary>
+        public PointF CoordinateFromPixel(int pixelX, int pixelY)
+        {
+            return settings.GetLocation(pixelX, pixelY);
+        }
+
+        /// <summary>
+        /// Return the axis coordinates of a pixel location (relative to the ScottPlot)
+        /// </summary>
+        public PointF CoordinateFromPixel(Point pixel)
+        {
+            return CoordinateFromPixel(pixel.X, pixel.Y);
+        }
+
+        /// <summary>
+        /// Return the pixel position for the given coordinate on the axis
+        /// </summary>
+        public Point CoordinateToPixel(double locationX, double locationY)
+        {
+            Point pixelLocation = settings.GetPixel(locationX, locationY);
+            pixelLocation.X += settings.dataOrigin.X;
+            pixelLocation.Y += settings.dataOrigin.Y;
+            return pixelLocation;
+        }
+
+        /// <summary>
+        /// Return the pixel position for the given coordinate on the axis
+        /// </summary>
+        public Point CoordinateToPixel(PointF location)
+        {
+            return CoordinateToPixel(location.X, location.Y);
+        }
+
         #endregion
 
         #region Labels

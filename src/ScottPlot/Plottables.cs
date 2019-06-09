@@ -10,7 +10,7 @@ using System.Drawing.Drawing2D;
 namespace ScottPlot
 {
 
-    internal class PlottableSignal : Plottable
+    public class PlottableSignal : Plottable
     {
         public double[] ys;
         public double sampleRate;
@@ -139,7 +139,7 @@ namespace ScottPlot
     }
 
 
-    internal class PlottableScatter : Plottable
+    public class PlottableScatter : Plottable
     {
         public double[] xs;
         public double[] ys;
