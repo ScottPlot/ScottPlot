@@ -342,7 +342,7 @@ namespace ScottPlot
             Array.Copy(axis, mouseDownAxis, axis.Length);
         }
 
-        public void MouseMove(int cursorPosX, int cursorPosY)
+        public void MouseMoveAxis(int cursorPosX, int cursorPosY)
         {
             if (mouseIsPanning == false && mouseIsZooming == false)
                 return;
@@ -359,7 +359,7 @@ namespace ScottPlot
                 AxisZoomPx(dX, -dY);
         }
 
-        public void MouseUp()
+        public void MouseUpAxis()
         {
             mouseIsPanning = false;
             mouseIsZooming = false;
@@ -374,12 +374,12 @@ namespace ScottPlot
             return new Point(xPx, yPx);
         }
 
-        public PointF GetLocation(Point pixelLocation)
+        public PointF GetLocation(int pixelX, int pixelY)
         {
             // Return the X/Y location corresponding to a pixel position on the figure bitmap.
             // This is useful for converting a mouse position to an X/Y coordinate.
-            double locationX = (pixelLocation.X - dataOrigin.X) / xAxisScale + axis[0];
-            double locationY = axis[3] - (pixelLocation.Y - dataOrigin.Y) / yAxisScale;
+            double locationX = (pixelX - dataOrigin.X) / xAxisScale + axis[0];
+            double locationY = axis[3] - (pixelY - dataOrigin.Y) / yAxisScale;
             return new PointF((float)locationX, (float)locationY);
         }
 
@@ -395,6 +395,28 @@ namespace ScottPlot
         {
             string[] colors = (useTwentyColors) ? plottableColors20 : plottableColors10;
             return ColorTranslator.FromHtml(colors[plottables.Count % colors.Length]);
+        }
+
+        public void Clear(bool axLines = true, bool scatters = true, bool signals = true, bool text = true)
+        {
+            List<int> indicesToDelete = new List<int>();
+            for (int i = 0; i < plottables.Count; i++)
+            {
+                if (plottables[i] is PlottableAxLine && axLines)
+                    indicesToDelete.Add(i);
+                else if (plottables[i] is PlottableScatter && scatters)
+                    indicesToDelete.Add(i);
+                else if (plottables[i] is PlottableSignal && signals)
+                    indicesToDelete.Add(i);
+                else if (plottables[i] is PlottableText && text)
+                    indicesToDelete.Add(i);
+            }
+            indicesToDelete.Reverse();
+
+            for (int i = 0; i < indicesToDelete.Count; i++)
+            {
+                plottables.RemoveAt(indicesToDelete[i]);
+            }
         }
 
     }
