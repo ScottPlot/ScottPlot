@@ -244,12 +244,14 @@ namespace ScottPlot
         public bool vertical;
         public string orientation;
         public Pen pen;
+        public bool draggable;
 
-        public PlottableAxLine(double position, bool vertical, Color color, double lineWidth, string label)
+        public PlottableAxLine(double position, bool vertical, Color color, double lineWidth, string label, bool draggable)
         {
             this.position = position;
             this.vertical = vertical;
             this.label = label;
+            this.draggable = draggable;
             orientation = (vertical) ? "vertical" : "horizontal";
             pen = new Pen(color, (float)lineWidth);
             pointCount = 1;

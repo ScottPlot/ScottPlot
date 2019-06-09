@@ -176,9 +176,9 @@ namespace ScottPlot
         /// <summary>
         /// Clear all plot objects
         /// </summary>
-        public void Clear()
+        public void Clear(bool axisLines = true, bool scatterPlots = true, bool signalPlots = true, bool text = true)
         {
-            settings.plottables.Clear();
+            settings.Clear(axisLines, scatterPlots, signalPlots, text);
         }
 
         /// <summary>
@@ -228,22 +228,22 @@ namespace ScottPlot
         /// <summary>
         /// Plot a vertical line at the given X position
         /// </summary>
-        public void PlotVLine(double x, Color? color = null, double lineWidth = 1, string label = null)
+        public void PlotVLine(double x, Color? color = null, double lineWidth = 1, string label = null, bool draggable = false)
         {
             if (color == null)
                 color = settings.GetNextColor();
-            PlottableAxLine axLine = new PlottableAxLine(x, vertical: true, color: (Color)color, lineWidth: lineWidth, label: label);
+            PlottableAxLine axLine = new PlottableAxLine(x, vertical: true, color: (Color)color, lineWidth: lineWidth, label: label, draggable: draggable);
             settings.plottables.Add(axLine);
         }
 
         /// <summary>
         /// Plot a horizontal line at the given Y position
         /// </summary>
-        public void PlotHLine(double x, Color? color = null, double lineWidth = 1, string label = null)
+        public void PlotHLine(double x, Color? color = null, double lineWidth = 1, string label = null, bool draggable = false)
         {
             if (color == null)
                 color = settings.GetNextColor();
-            PlottableAxLine axLine = new PlottableAxLine(x, vertical: false, color: (Color)color, lineWidth: lineWidth, label: label);
+            PlottableAxLine axLine = new PlottableAxLine(x, vertical: false, color: (Color)color, lineWidth: lineWidth, label: label, draggable: draggable);
             settings.plottables.Add(axLine);
         }
 
@@ -265,7 +265,7 @@ namespace ScottPlot
                 totalPoints += plottable.pointCount;
             return totalPoints;
         }
-        
+
         #endregion
 
         #region Axis Settings

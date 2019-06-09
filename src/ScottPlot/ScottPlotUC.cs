@@ -75,22 +75,71 @@ namespace ScottPlot
             Render();
         }
 
+        public event EventHandler MouseDownOnPlottable;
+        protected virtual void OnMouseDownOnPlottable(EventArgs e)
+        {
+            var handler = MouseDownOnPlottable;
+            if (handler != null)
+                handler(this, e);
+        }
+
         private void PbPlot_MouseDown(object sender, MouseEventArgs e)
         {
-            plt.mouseTracker.MouseDown();
+            plt.mouseTracker.MouseDown(e.Location);
+            if (plt.mouseTracker.PlottableUnderCursor(e.Location) != null)
+                OnMouseDownOnPlottable(EventArgs.Empty);
+        }
+
+
+        public event EventHandler MouseDragPlottable;
+        protected virtual void OnMouseDragPlottable(EventArgs e)
+        {
+            var handler = MouseDragPlottable;
+            if (handler != null)
+                handler(this, e);
         }
 
         private void PbPlot_MouseMove(object sender, MouseEventArgs e)
         {
-            plt.mouseTracker.MouseMove();
+            plt.mouseTracker.MouseMove(e.Location);
+
+            // do things based on if the mouse is over a plottable object
+            var hoverPlottable = plt.mouseTracker.PlottableUnderCursor(e.Location);
+            if (hoverPlottable != null)
+            {
+                if (e.Button != MouseButtons.None)
+                    OnMouseDragPlottable(EventArgs.Empty);
+                if (hoverPlottable is PlottableAxLine axLine)
+                {
+                    if (axLine.vertical == true)
+                        pbPlot.Cursor = Cursors.SizeWE;
+                    else
+                        pbPlot.Cursor = Cursors.SizeNS;
+                }
+            }
+            else
+            {
+                pbPlot.Cursor = Cursors.Arrow;
+            }
+
             if (e.Button != MouseButtons.None)
                 Render(skipIfBusy: true);
         }
 
+        public event EventHandler MouseDropPlottable;
+        protected virtual void OnMouseDropPlottable(EventArgs e)
+        {
+            var handler = MouseDropPlottable;
+            if (handler != null)
+                handler(this, e);
+        }
+
         private void PbPlot_MouseUp(object sender, MouseEventArgs e)
         {
-            plt.mouseTracker.MouseUp();
+            plt.mouseTracker.MouseUp(e.Location);
             Render(true);
+            if (plt.mouseTracker.PlottableUnderCursor(e.Location) != null)
+                OnMouseDropPlottable(EventArgs.Empty);
         }
 
         private void PbPlot_MouseDoubleClick(object sender, MouseEventArgs e)
