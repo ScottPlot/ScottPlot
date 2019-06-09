@@ -217,11 +217,11 @@ namespace ScottPlot
         /// <summary>
         /// Plot evenly-spaced data (optimized for speed)
         /// </summary>
-        public void PlotSignal(double[] ys, double sampleRate = 1, double xOffset = 0, double yOffset = 0, Color? color = null, double linewidth = 1, double markerSize = 5, string label = null)
+        public void PlotSignal(double[] ys, double sampleRate = 1, double xOffset = 0, double yOffset = 0, Color? color = null, double lineWidth = 1, double markerSize = 5, string label = null)
         {
             if (color == null)
                 color = settings.GetNextColor();
-            PlottableSignal signal = new PlottableSignal(ys, sampleRate, xOffset, yOffset, (Color)color, lineWidth: linewidth, markerSize: markerSize, label: label);
+            PlottableSignal signal = new PlottableSignal(ys, sampleRate, xOffset, yOffset, (Color)color, lineWidth: lineWidth, markerSize: markerSize, label: label);
             settings.plottables.Add(signal);
         }
 
