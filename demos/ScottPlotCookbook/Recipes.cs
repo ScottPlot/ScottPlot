@@ -437,7 +437,7 @@ namespace ScottPlotCookbook
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
 
             var plt = new ScottPlot.Plot(width, height);
-            plt.PlotSignal(dataSignal, 20000, linewidth: 3, color: Color.Red);
+            plt.PlotSignal(dataSignal, 20000, lineWidth: 3, color: Color.Red);
             plt.AxisAuto();
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
