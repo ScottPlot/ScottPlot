@@ -285,9 +285,10 @@ namespace ScottPlot
         /// </summary>
         /// <param name="horizontalMargin">fraction to pad data horizontally</param>
         /// <param name="verticalMargin">fraction to pad data vertically</param>
-        public void AxisAuto(double horizontalMargin = .05, double verticalMargin = .1)
+        public void AxisAuto(double horizontalMargin = .05, double verticalMargin = .1, int tightenPadding = 5)
         {
             settings.AxisAuto(horizontalMargin, verticalMargin);
+            TightenLayout(tightenPadding);
         }
 
         /// <summary>
