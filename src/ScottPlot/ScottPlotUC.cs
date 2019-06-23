@@ -70,7 +70,6 @@ namespace ScottPlot
 
         private void PbPlot_SizeChanged(object sender, EventArgs e)
         {
-            Debug.WriteLine("SizeChanged");
             UpdateSize();
             Render();
         }
