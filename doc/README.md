@@ -16,13 +16,14 @@ Method | Description
 ---|---
 `plt.PlotText()` | Plot text at a specific location
 `plt.PlotPoint()` | Plot a single point at a specific location
-`plt.PlotScatter()` | Plot a scatter plot from X and Y points (with optional error bars)
+`plt.PlotScatter()` | Plot a scatter plot from X and Y points
 `plt.PlotSignal()` | Plot evenly-spaced data (optimized for speed)
+`plt.PlotBar()` | Plot X and Y points as a bar graph
 `plt.PlotVLine()` | Plot a vertical line at the given X position
 `plt.PlotHLine()` | Plot a horizontal line at the given Y position
 `plt.Clear()` | Clears all plotted objects
-`plt.GetPlottables()` | Get a list of all plotted objects (useful for modifying their properties)
-`plt.GetTotalPoints()` | Get the total number of data points across all plottable objects
+`plt.GetPlottables()` | Get all plotted objects (useful for modifying their data after they've already been plotted)
+`plt.GetTotalPoints()` | Total points across all plottable objects
 
 ### Axes
 

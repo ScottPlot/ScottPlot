@@ -66,6 +66,8 @@ namespace ScottPlotCookbook
             recipies.Figure_59_StyleControl();
 
             recipies.Figure_60_Plotting_With_Errorbars();
+            recipies.Figure_61_Plot_Bar_Data();
+            recipies.Figure_62_Plot_Bar_Data_Fancy();
 
             GenerateReport(outputFolderName);
             ValidateImageHashes(outputFolderName);
@@ -135,40 +137,44 @@ namespace ScottPlotCookbook
         public void ValidateImageHashes(string outputFolderName)
         {
             string knownHashes = "";
-            knownHashes += "336FA49A099FFE6881D2C5D0B2B5AC9B"; // 01a_Scatter_Sin.png
-            knownHashes += "53D7F12FED78FCBEE642C211D6A073BA"; // 01b_Automatic_Margins.png
+            knownHashes += "F1BF24218B13F98AF1B52EE6D2FE1F81"; // 01a_Scatter_Sin.png
+            knownHashes += "5398EEDD564CC6152F354502CDAE8F1C"; // 01b_Automatic_Margins.png
+            knownHashes += "5A479D3AA181AF49F521B5A5E00A3BD6"; // 01d_Zoom_and_Pan.png
+            knownHashes += "FAD229B3D6D9930857961F3F0EFDDEA8"; // 01e_Legend.png
+            knownHashes += "B5AEA70494FC7E9C7E3E6FEAD123BEC6"; // 02_Styling_Scatter_Plots.png
+            knownHashes += "5D29D3600F22FBC55614461206739252"; // 04_Plot_Lines_Only.png
+            knownHashes += "C55A4672469D6112A42757C0AE14B029"; // 05_Plot_Points_Only.png
+            knownHashes += "9492F419A62982ABA8EA7C95D823A078"; // 06_Styling_XY_Plots.png
+            knownHashes += "5B6B5791ADB1CDE4898E370B0E07B0C8"; // 07_Plotting_Points.png
+            knownHashes += "3CB596AF995E0A0463EBC3FA6AC918B3"; // 08_Plotting_Text.png
+            knownHashes += "DE08A7F272BCB2D513DDCB92C8EAE61C"; // 09_Clearing_Plots.png
+            knownHashes += "E89FFE5ED7A23469A849DBC7E882E701"; // 10_Modifying_Plotted_Data.png
+            knownHashes += "CDE7A970B392899AF1D891A94495C297"; // 20_Small_Plot.png
+            knownHashes += "FD8D51D822F47E8CD757369831F1479C"; // 22_Custom_Colors.png
+            knownHashes += "1A384F0231B728C98DAD5F235939626A"; // 23_Frameless_Plot.png
+            knownHashes += "F1AE329A8C901CD85A83E0A8D8126AE4"; // 24_Disable_the_Grid.png
+            knownHashes += "1DD94924518186E386B8B6744362B0F2"; // 25_Corner_Axis_Frame.png
+            knownHashes += "701D37B85C3316FCD865F4CFAA31AB26"; // 26_Horizontal_Ticks_Only.png
+            knownHashes += "D2939FAC08DF7095D6C9E04AE0A92DD7"; // 32_Signal_Styling.png
+            knownHashes += "917AEA31B8D1766984AA1513FF8F75D8"; // 40_Vertical_and_Horizontal_Lines.png
+            knownHashes += "C45A631C4260ACC22E8CE768D7123803"; // 50_StyleBlue1.png
+            knownHashes += "AA832CD0A0B6118203BB2A7AE4E5B0C8"; // 51_StyleBlue2.png
+            knownHashes += "17472BB102312A0E5749265CAE6FA664"; // 52_StyleBlue3.png
+            knownHashes += "18A08A98DEABBA8D07E2BAA6536C4BF4"; // 53_StyleLight1.png
+            knownHashes += "8C694D2A044845B078FA159A4DE707DC"; // 54_StyleLight2.png
+            knownHashes += "3CA4FF2051D836C9EC3D681E6F74EA0F"; // 55_StyleGray1.png
+            knownHashes += "FB11487B08871FA5DC449A04CA1866B1"; // 56_StyleGray2.png
+            knownHashes += "BA3F8414CF88A5B07EE2A2DC990B1E8A"; // 57_StyleBlack.png
+            knownHashes += "E9AB4B8B21026C8A8F1ECCDDBD5889C3"; // 58_StyleDefault.png
+            knownHashes += "FE164ACD044F0A0F6CA858C4E2891BC5"; // 59_StyleControl.png
+            knownHashes += "C7150625F8158F607EBB840663967D22"; // 60_Plotting_With_Errorbars.png
+            knownHashes += "0E70C73BEA58AE15467363592E839E26"; // 61_Plot_Bar_Data.png
+            knownHashes += "342298588383BB3CF748FFA48D618438"; // 62_Plot_Bar_Data_Fancy.png
+
             knownHashes += "AF0CEE68A78E649357F7930B255B062D"; // 01c_Defined_Axis_Limits.png
-            knownHashes += "EC2FC84AADD0128A8E61A7DAD40BAE40"; // 01d_Zoom_and_Pan.png
-            knownHashes += "8EE195CFB60AC8EADD1034E65A405A78"; // 01e_Legend.png
-            knownHashes += "A3736FFCA35E48EEDFE82DE0FC60CE13"; // 02_Styling_Scatter_Plots.png
             knownHashes += "BC96F9ABB8333D25CC120C8133EFD613"; // 03_Plot_XY_Data.png
-            knownHashes += "F9AE6E651679EB1127C3FEEB0E12F930"; // 04_Plot_Lines_Only.png
-            knownHashes += "A4CE8C1004273D73725946FD54D22D9D"; // 05_Plot_Points_Only.png
-            knownHashes += "327F34CB8838B01D63849D191847F141"; // 06_Styling_XY_Plots.png
-            knownHashes += "36E42889689F15CDCD808ED19632DD81"; // 07_Plotting_Points.png
-            knownHashes += "0C7C583C47960CFAD299DFED88875B84"; // 08_Plotting_Text.png
-            knownHashes += "E89CE1FB91214A3BFD36DCA3409DCACB"; // 09_Clearing_Plots.png
-            knownHashes += "4149DDDC359EBD018CB16FE4D96F3BA0"; // 10_Modifying_Plotted_Data.png
-            knownHashes += "BA0B0F78BBF76E41F50B9250AE88D1B2"; // 20_Small_Plot.png
             knownHashes += "9B46257F74B67B6B1217B8FBB6AD3ACE"; // 21a_Title_and_Axis_Labels.png
             knownHashes += "C74AFBB386C11DC426F6007C92F1CD7E"; // 21b_Extra_Padding.png
-            knownHashes += "1115C46702B261DE0B5F1480A2103545"; // 22_Custom_Colors.png
-            knownHashes += "F25C121A32FBB4B7E39105E6B6229F2A"; // 23_Frameless_Plot.png
-            knownHashes += "B7219E17329DBA6B3F7CDC6BC3FE16D7"; // 24_Disable_the_Grid.png
-            knownHashes += "F18B4EE14FB45DD1974FAF7DE1613687"; // 25_Corner_Axis_Frame.png
-            knownHashes += "44749276140469A42022E19E6813241D"; // 26_Horizontal_Ticks_Only.png
-            knownHashes += "F2B8269F5703BA6706A2E95E3F128292"; // 32_Signal_Styling.png
-            knownHashes += "2F336992A4E9B18ACC434097827E67D1"; // 40_Vertical_and_Horizontal_Lines.png
-            knownHashes += "3C060D6B0148F681B33F72EE6BEBC5E3"; // 50_StyleBlue1.png
-            knownHashes += "297DB26AD844889C39ADC2AB7D16CCD0"; // 51_StyleBlue2.png
-            knownHashes += "53BE566ACA0E24F27835F8C6F2917428"; // 52_StyleBlue3.png
-            knownHashes += "A2AD6143A980A45883650ABEBF9C8547"; // 53_StyleLight1.png
-            knownHashes += "D134211A2F8A61D4C76A3CC71E7EE7ED"; // 54_StyleLight2.png
-            knownHashes += "9C2006DC977C6431BCBE3142399E58BF"; // 55_StyleGray1.png
-            knownHashes += "817740ADD481F93C3C76E0722EA6EFB8"; // 56_StyleGray2.png
-            knownHashes += "CF423BE40B79587587EF20EF7F833049"; // 57_StyleBlack.png
-            knownHashes += "8E83044E828DFE1E12633ADC42EB1D5B"; // 58_StyleDefault.png
-            knownHashes += "A419B4DBC69B08663A6C570F8C8C708D"; // 59_StyleControl.png
 
             var md5 = System.Security.Cryptography.MD5.Create();
             string[] images = System.IO.Directory.GetFiles($"./{outputFolderName}", "*.png");

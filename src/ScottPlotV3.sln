@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo - Hover Point Display"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo - Scatter Plot Error Bars", "..\demos\ScottPlotErrorLines\Demo - Scatter Plot Error Bars.csproj", "{D680FD7B-9FEE-4AE4-A617-A911740428E5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo - Bar Graph", "..\demos\ScottPlotDemoBarGraph\Demo - Bar Graph.csproj", "{1CD22B04-073A-4B68-A58D-6376A012F68C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,10 @@ Global
 		{D680FD7B-9FEE-4AE4-A617-A911740428E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D680FD7B-9FEE-4AE4-A617-A911740428E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D680FD7B-9FEE-4AE4-A617-A911740428E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CD22B04-073A-4B68-A58D-6376A012F68C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CD22B04-073A-4B68-A58D-6376A012F68C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CD22B04-073A-4B68-A58D-6376A012F68C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CD22B04-073A-4B68-A58D-6376A012F68C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -92,6 +98,7 @@ Global
 		{510F292C-D3FD-4C50-B4BE-D554F4CC5302} = {2F78F109-9976-42FF-8324-9A27EF3BD776}
 		{87931F18-6DFE-4106-A542-E2758157B780} = {2F78F109-9976-42FF-8324-9A27EF3BD776}
 		{D680FD7B-9FEE-4AE4-A617-A911740428E5} = {2F78F109-9976-42FF-8324-9A27EF3BD776}
+		{1CD22B04-073A-4B68-A58D-6376A012F68C} = {2F78F109-9976-42FF-8324-9A27EF3BD776}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FBAE082A-173A-4F13-BE31-E6C070513C9C}

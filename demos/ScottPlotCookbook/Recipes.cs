@@ -263,8 +263,6 @@ namespace ScottPlotCookbook
         }
         #endregion
 
-        #region customization and styling
-
         public void Figure_20_Small_Plot()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
@@ -682,7 +680,59 @@ namespace ScottPlotCookbook
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
         }
 
-        #endregion
+        public void Figure_61_Plot_Bar_Data()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            // create demo data to use for errorbars
+            double[] yErr = new double[dataSin.Length];
+            for (int i = 0; i < yErr.Length; i++)
+                yErr[i] = dataSin[i]/5;
+
+            var plt = new ScottPlot.Plot(width, height);
+            plt.Title("Bar Plot With Error Bars");
+            plt.PlotBar(dataXs, dataSin, errorY: yErr);
+            plt.AxisAuto();
+            plt.SaveFig(fileName);
+            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+        }
+
+        public void Figure_62_Plot_Bar_Data_Fancy()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            // generate some more complex data
+            Random rand = new Random(0);
+            int pointCount = 10;
+            double[] Xs = new double[pointCount];
+            double[] dataA = new double[pointCount];
+            double[] errorA = new double[pointCount];
+            double[] XsB = new double[pointCount];
+            double[] dataB = new double[pointCount];
+            double[] errorB = new double[pointCount];
+            for (int i=0; i<pointCount; i++)
+            {
+                Xs[i] = i * 10;
+                dataA[i] = rand.NextDouble() * 100;
+                dataB[i] = rand.NextDouble() * 100;
+                errorA[i] = rand.NextDouble() * 10;
+                errorB[i] = rand.NextDouble() * 10;
+            }
+
+            var plt = new ScottPlot.Plot(width, height);
+            plt.Title("Multiple Bar Plots");
+            plt.Grid(false);
+            // we customize barWidth and xOffset to squeeze grouped bars together
+            plt.PlotBar(Xs, dataA, errorY: errorA, label: "data A", barWidth: 4, xOffset: -2);
+            plt.PlotBar(Xs, dataB, errorY: errorB, label: "data B", barWidth: 4, xOffset: 2);
+            plt.AxisAuto();
+            plt.Axis(null, null, 0, null);
+            plt.Legend();
+            plt.SaveFig(fileName);
+            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+        }
 
     }
 }
