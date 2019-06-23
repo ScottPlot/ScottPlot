@@ -424,7 +424,7 @@ namespace ScottPlot
             return ColorTranslator.FromHtml(colors[plottables.Count % colors.Length]);
         }
 
-        public void Clear(bool axLines = true, bool scatters = true, bool signals = true, bool text = true)
+        public void Clear(bool axLines = true, bool scatters = true, bool signals = true, bool text = true, bool bar = true)
         {
             List<int> indicesToDelete = new List<int>();
             for (int i = 0; i < plottables.Count; i++)
@@ -436,6 +436,8 @@ namespace ScottPlot
                 else if (plottables[i] is PlottableSignal && signals)
                     indicesToDelete.Add(i);
                 else if (plottables[i] is PlottableText && text)
+                    indicesToDelete.Add(i);
+                else if (plottables[i] is PlottableBar && bar)
                     indicesToDelete.Add(i);
             }
             indicesToDelete.Reverse();

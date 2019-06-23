@@ -176,9 +176,9 @@ namespace ScottPlot
         /// <summary>
         /// Clear all plot objects
         /// </summary>
-        public void Clear(bool axisLines = true, bool scatterPlots = true, bool signalPlots = true, bool text = true)
+        public void Clear(bool axisLines = true, bool scatterPlots = true, bool signalPlots = true, bool text = true, bool bar = true)
         {
-            settings.Clear(axisLines, scatterPlots, signalPlots, text);
+            settings.Clear(axisLines, scatterPlots, signalPlots, text, bar);
         }
 
         /// <summary>
@@ -227,6 +227,19 @@ namespace ScottPlot
                 color = settings.GetNextColor();
             PlottableSignal signal = new PlottableSignal(ys, sampleRate, xOffset, yOffset, (Color)color, lineWidth: lineWidth, markerSize: markerSize, label: label);
             settings.plottables.Add(signal);
+        }
+
+        /// <summary>
+        /// Plot data for a bar graph
+        /// </summary>
+        public void PlotBar(double[] xs, double[] ys, double? barWidth = null, double xOffset = 0, Color? color = null, string label = null, double[] errorY = null, double errorLineWidth = 1, double errorCapSize = 3)
+        {
+            if (color == null)
+                color = settings.GetNextColor();
+            if (barWidth == null)
+                barWidth = (xs[1] - xs[0]) * .8;
+            PlottableBar bar = new PlottableBar(xs, ys, (double)barWidth, xOffset, (Color)color, label: label, yErr: errorY, errorLineWidth: errorLineWidth, errorCapSize: errorCapSize);
+            settings.plottables.Add(bar);
         }
 
         /// <summary>
