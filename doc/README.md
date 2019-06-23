@@ -16,7 +16,7 @@ Method | Description
 ---|---
 `plt.PlotText()` | Plot text at a specific location
 `plt.PlotPoint()` | Plot a single point at a specific location
-`plt.PlotScatter()` | Plot a scatter plot from X and Y points
+`plt.PlotScatter()` | Plot a scatter plot from X and Y points (with optional error bars)
 `plt.PlotSignal()` | Plot evenly-spaced data (optimized for speed)
 `plt.PlotVLine()` | Plot a vertical line at the given X position
 `plt.PlotHLine()` | Plot a horizontal line at the given Y position

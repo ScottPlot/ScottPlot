@@ -65,6 +65,8 @@ namespace ScottPlotCookbook
             recipies.Figure_58_StyleDefault();
             recipies.Figure_59_StyleControl();
 
+            recipies.Figure_60_Plotting_With_Errorbars();
+
             GenerateReport(outputFolderName);
             ValidateImageHashes(outputFolderName);
             Console.WriteLine("COMPLETE");

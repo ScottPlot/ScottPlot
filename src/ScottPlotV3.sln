@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo - Draggable Axis Lines
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo - Hover Point Display", "..\demos\ScottPlotShowValueOnHover\Demo - Hover Point Display.csproj", "{87931F18-6DFE-4106-A542-E2758157B780}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo - Scatter Plot Error Bars", "..\demos\ScottPlotErrorLines\Demo - Scatter Plot Error Bars.csproj", "{D680FD7B-9FEE-4AE4-A617-A911740428E5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,10 @@ Global
 		{87931F18-6DFE-4106-A542-E2758157B780}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{87931F18-6DFE-4106-A542-E2758157B780}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{87931F18-6DFE-4106-A542-E2758157B780}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D680FD7B-9FEE-4AE4-A617-A911740428E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D680FD7B-9FEE-4AE4-A617-A911740428E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D680FD7B-9FEE-4AE4-A617-A911740428E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D680FD7B-9FEE-4AE4-A617-A911740428E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -85,6 +91,7 @@ Global
 		{2E6961D3-B575-4412-84B5-779171B6E2B6} = {2F78F109-9976-42FF-8324-9A27EF3BD776}
 		{510F292C-D3FD-4C50-B4BE-D554F4CC5302} = {2F78F109-9976-42FF-8324-9A27EF3BD776}
 		{87931F18-6DFE-4106-A542-E2758157B780} = {2F78F109-9976-42FF-8324-9A27EF3BD776}
+		{D680FD7B-9FEE-4AE4-A617-A911740428E5} = {2F78F109-9976-42FF-8324-9A27EF3BD776}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FBAE082A-173A-4F13-BE31-E6C070513C9C}
