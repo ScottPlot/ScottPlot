@@ -638,6 +638,50 @@ namespace ScottPlotCookbook
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
         }
 
+        public void Figure_60_Plotting_With_Errorbars()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            var plt = new ScottPlot.Plot(width, height);
+            plt.Grid(false);
+
+            for (int plotNumber = 0; plotNumber < 3; plotNumber++)
+            {
+                // create random data to plot
+                Random rand = new Random(plotNumber);
+                int pointCount = 20;
+                double[] dataX = new double[pointCount];
+                double[] dataY = new double[pointCount];
+                double[] errorY = new double[pointCount];
+                double[] errorX = new double[pointCount];
+                for (int i = 0; i < pointCount; i++)
+                {
+                    dataX[i] = i + rand.NextDouble();
+                    dataY[i] = rand.NextDouble() * 100 + 100 * plotNumber;
+                    errorX[i] = rand.NextDouble();
+                    errorY[i] = rand.NextDouble() * 10;
+                }
+
+                // demonstrate different ways to plot errorbars
+                if (plotNumber == 0)
+                    plt.PlotScatter(dataX, dataY, lineWidth: 0, errorY: errorY, errorX: errorX,
+                        label: $"X and Y errors");
+                else if (plotNumber == 1)
+                    plt.PlotScatter(dataX, dataY, lineWidth: 0, errorY: errorY,
+                        label: $"Y errors only");
+                else
+                    plt.PlotScatter(dataX, dataY, errorY: errorY, errorX: errorX,
+                        label: $"Connected Errors");
+            }
+
+            plt.Title("Scatter Plot with Errorbars");
+            plt.AxisAuto();
+            plt.Legend();
+            plt.SaveFig(fileName);
+            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+        }
+
         #endregion
 
     }

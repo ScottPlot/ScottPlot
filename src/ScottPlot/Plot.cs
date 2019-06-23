@@ -195,22 +195,26 @@ namespace ScottPlot
         /// <summary>
         /// Plot a single point at a specific location
         /// </summary>
-        public void PlotPoint(double x, double y, Color? color = null, double markerSize = 5, string label = null)
+        public void PlotPoint(double x, double y, Color? color = null, double markerSize = 5, string label = null, double? errorX = null, double? errorY = null, double errorLineWidth = 1, double errorCapSize = 3)
         {
             if (color == null)
                 color = settings.GetNextColor();
-            PlottableScatter mark = new PlottableScatter(new double[] { x }, new double[] { y }, color: (Color)color, lineWidth: 0, markerSize: markerSize, label: label);
+
+            double[] errorXarray = (errorX != null) ? new double[] { (double)errorX } : null;
+            double[] errorYarray = (errorY != null) ? new double[] { (double)errorY } : null;
+
+            PlottableScatter mark = new PlottableScatter(new double[] { x }, new double[] { y }, color: (Color)color, lineWidth: 0, markerSize: markerSize, label: label, errorX: errorXarray, errorY: errorYarray, errorLineWidth: errorLineWidth, errorCapSize: errorCapSize);
             settings.plottables.Add(mark);
         }
 
         /// <summary>
         /// Plot a scatter plot from X and Y points
         /// </summary>
-        public void PlotScatter(double[] xs, double[] ys, Color? color = null, double lineWidth = 1, double markerSize = 5, string label = null)
+        public void PlotScatter(double[] xs, double[] ys, Color? color = null, double lineWidth = 1, double markerSize = 5, string label = null, double[] errorX = null, double[] errorY = null, double errorLineWidth = 1, double errorCapSize = 3)
         {
             if (color == null)
                 color = settings.GetNextColor();
-            PlottableScatter scat = new PlottableScatter(xs, ys, color: (Color)color, lineWidth: lineWidth, markerSize: markerSize, label: label);
+            PlottableScatter scat = new PlottableScatter(xs, ys, color: (Color)color, lineWidth: lineWidth, markerSize: markerSize, label: label, errorX: errorX, errorY: errorY, errorLineWidth: errorLineWidth, errorCapSize: errorCapSize);
             settings.plottables.Add(scat);
         }
 
