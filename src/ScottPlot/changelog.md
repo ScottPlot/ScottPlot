@@ -1,5 +1,9 @@
 # ScottPlot Changelog
 
+## ScottPlot 3.0.5
+_Published on [NuGet](https://www.nuget.org/packages/ScottPlot/) on 2019-06-23_
+* fixes a bug (discussed in [issue 11](https://github.com/swharden/ScottPlot/issues/11)) to improve pan and zoom performance.
+
 ## ScottPlot 3.0.4
 _Published on [NuGet](https://www.nuget.org/packages/ScottPlot/) on 2019-06-23_
 
