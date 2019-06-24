@@ -63,7 +63,7 @@ namespace ScottPlot
             {
                 busyRendering = true;
                 pbPlot.Image = plt.GetBitmap();
-                if (plt.mouseTracker.IsPanningOrZooming())
+                if (plt.mouseTracker.IsDraggingSomething())
                     Application.DoEvents();
                 busyRendering = false;
             }

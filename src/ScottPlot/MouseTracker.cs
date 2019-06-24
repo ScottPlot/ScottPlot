@@ -20,7 +20,7 @@ namespace ScottPlot
             this.settings = settings;
         }
 
-        public bool IsPanningOrZooming()
+        public bool IsDraggingSomething()
         {
             if (settings.mouseIsPanning)
                 return true;
