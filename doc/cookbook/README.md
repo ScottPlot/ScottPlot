@@ -351,7 +351,7 @@ plt.SaveFig(fileName);
 
 ```cs
 var plt = new ScottPlot.Plot(600, 400);
-plt.PlotSignal(dataSignal, 20000, linewidth: 3, color: Color.Red);
+plt.PlotSignal(dataSignal, 20000, lineWidth: 3, color: Color.Red);
 plt.AxisAuto();
 plt.SaveFig(fileName);
 ```
@@ -541,4 +541,99 @@ plt.SaveFig(fileName);
 ```
 
 ![](./images/59_StyleControl.png)
+
+## Plotting With Errorbars
+
+```cs
+var plt = new ScottPlot.Plot(600, 400);
+plt.Grid(false);
+
+for (int plotNumber = 0; plotNumber < 3; plotNumber++)
+{
+    // create random data to plot
+    Random rand = new Random(plotNumber);
+    int pointCount = 20;
+    double[] dataX = new double[pointCount];
+    double[] dataY = new double[pointCount];
+    double[] errorY = new double[pointCount];
+    double[] errorX = new double[pointCount];
+    for (int i = 0; i < pointCount; i++)
+    {
+        dataX[i] = i + rand.NextDouble();
+        dataY[i] = rand.NextDouble() * 100 + 100 * plotNumber;
+        errorX[i] = rand.NextDouble();
+        errorY[i] = rand.NextDouble() * 10;
+    }
+
+    // demonstrate different ways to plot errorbars
+    if (plotNumber == 0)
+        plt.PlotScatter(dataX, dataY, lineWidth: 0, errorY: errorY, errorX: errorX,
+            label: $"X and Y errors");
+    else if (plotNumber == 1)
+        plt.PlotScatter(dataX, dataY, lineWidth: 0, errorY: errorY,
+            label: $"Y errors only");
+    else
+        plt.PlotScatter(dataX, dataY, errorY: errorY, errorX: errorX,
+            label: $"Connected Errors");
+}
+
+plt.Title("Scatter Plot with Errorbars");
+plt.AxisAuto();
+plt.Legend();
+plt.SaveFig(fileName);
+```
+
+![](./images/60_Plotting_With_Errorbars.png)
+
+## Plot Bar Data
+
+```cs
+// create demo data to use for errorbars
+double[] yErr = new double[dataSin.Length];
+for (int i = 0; i < yErr.Length; i++)
+    yErr[i] = dataSin[i]/5;
+
+var plt = new ScottPlot.Plot(600, 400);
+plt.Title("Bar Plot With Error Bars");
+plt.PlotBar(dataXs, dataSin, errorY: yErr);
+plt.AxisAuto();
+plt.SaveFig(fileName);
+```
+
+![](./images/61_Plot_Bar_Data.png)
+
+## Plot Bar Data Fancy
+
+```cs
+// generate some more complex data
+Random rand = new Random(0);
+int pointCount = 10;
+double[] Xs = new double[pointCount];
+double[] dataA = new double[pointCount];
+double[] errorA = new double[pointCount];
+double[] XsB = new double[pointCount];
+double[] dataB = new double[pointCount];
+double[] errorB = new double[pointCount];
+for (int i=0; i<pointCount; i++)
+{
+    Xs[i] = i * 10;
+    dataA[i] = rand.NextDouble() * 100;
+    dataB[i] = rand.NextDouble() * 100;
+    errorA[i] = rand.NextDouble() * 10;
+    errorB[i] = rand.NextDouble() * 10;
+}
+
+var plt = new ScottPlot.Plot(600, 400);
+plt.Title("Multiple Bar Plots");
+plt.Grid(false);
+// we customize barWidth and xOffset to squeeze grouped bars together
+plt.PlotBar(Xs, dataA, errorY: errorA, label: "data A", barWidth: 4, xOffset: -2);
+plt.PlotBar(Xs, dataB, errorY: errorB, label: "data B", barWidth: 4, xOffset: 2);
+plt.AxisAuto();
+plt.Axis(null, null, 0, null);
+plt.Legend();
+plt.SaveFig(fileName);
+```
+
+![](./images/62_Plot_Bar_Data_Fancy.png)
 
