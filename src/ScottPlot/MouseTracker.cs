@@ -20,6 +20,18 @@ namespace ScottPlot
             this.settings = settings;
         }
 
+        public bool IsPanningOrZooming()
+        {
+            if (settings.mouseIsPanning)
+                return true;
+            if (settings.mouseIsZooming)
+                return true;
+            if (draggingObject != null)
+                return true;
+            else
+                return false;
+        }
+
         public void MouseDown(Point eLocation)
         {
             draggingObject = PlottableUnderCursor(eLocation);

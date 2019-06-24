@@ -359,8 +359,8 @@ namespace ScottPlot
                 throw new Exception("axis has not yet been initialized");
         }
 
-        private bool mouseIsPanning = false;
-        private bool mouseIsZooming = false;
+        public bool mouseIsPanning = false;
+        public bool mouseIsZooming = false;
         public void MouseDown(int cusorPosX, int cursorPosY, bool panning = false, bool zooming = false)
         {
             mouseDownLocation = new Point(cusorPosX, cursorPosY);
