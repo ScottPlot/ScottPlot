@@ -16,12 +16,14 @@ namespace ScottPlot
         public float errorLineWidth;
         public float errorCapSize;
         public float markerSize;
+        public bool stepDisplay;
         public Pen penLine;
         public Pen penLineError;
         public Brush brush;
 
         public PlottableScatter(double[] xs, double[] ys, Color color, double lineWidth, double markerSize, string label,
-            double[] errorX, double[] errorY, double errorLineWidth, double errorCapSize)
+            double[] errorX, double[] errorY, double errorLineWidth, double errorCapSize,
+            bool stepDisplay)
         {
             if (xs.Length != ys.Length)
                 throw new Exception("Xs and Ys must have same length");
@@ -45,7 +47,7 @@ namespace ScottPlot
             this.errorY = errorY;
             this.errorLineWidth = (float)errorLineWidth;
             this.errorCapSize = (float)errorCapSize;
-
+            this.stepDisplay = stepDisplay;
 
             pointCount = xs.Length;
 
@@ -126,9 +128,19 @@ namespace ScottPlot
 
         public override void Render(Settings settings)
         {
-            Point[] points = new Point[xs.Length];
+            PointF[] points = new PointF[xs.Length];
             for (int i = 0; i < xs.Length; i++)
                 points[i] = settings.GetPixel(xs[i], ys[i]);
+
+            PointF[] pointsStep = null;
+            if (stepDisplay)
+            {
+                pointsStep = new PointF[xs.Length * 2 - 1];
+                for (int i = 0; i < points.Length; i++)
+                    pointsStep[i * 2] = points[i];
+                for (int i = 0; i < points.Length - 1; i++)
+                    pointsStep[i * 2 + 1] = new PointF(points[i+1].X, points[i].Y);
+            }
 
             if (errorY != null)
             {
@@ -161,7 +173,12 @@ namespace ScottPlot
             }
 
             if (penLine.Width > 0)
-                settings.gfxData.DrawLines(penLine, points);
+            {
+                if (stepDisplay)
+                    settings.gfxData.DrawLines(penLine, pointsStep);
+                else
+                    settings.gfxData.DrawLines(penLine, points);
+            }
 
             if (markerSize > 0)
                 for (int i = 0; i < points.Length; i++)
