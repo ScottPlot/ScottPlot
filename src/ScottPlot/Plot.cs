@@ -159,14 +159,9 @@ namespace ScottPlot
             filePath = System.IO.Path.GetFullPath(filePath);
             string folder = System.IO.Path.GetDirectoryName(filePath);
             if (System.IO.Directory.Exists(folder))
-            {
                 settings.bmpFigure.Save(filePath);
-                Console.WriteLine($"Wrote: {filePath}");
-            }
             else
-            {
                 throw new Exception($"ERROR: folder does not exist: {folder}");
-            }
         }
 
         #endregion
@@ -210,7 +205,7 @@ namespace ScottPlot
         /// <summary>
         /// Plot a scatter plot from X and Y points
         /// </summary>
-        public void PlotScatter(double[] xs, double[] ys, Color? color = null, double lineWidth = 1, double markerSize = 5, string label = null, double[] errorX = null, double[] errorY = null, double errorLineWidth = 1, double errorCapSize = 3, bool stepDisplay = true)
+        public void PlotScatter(double[] xs, double[] ys, Color? color = null, double lineWidth = 1, double markerSize = 5, string label = null, double[] errorX = null, double[] errorY = null, double errorLineWidth = 1, double errorCapSize = 3, bool stepDisplay = false)
         {
             if (color == null)
                 color = settings.GetNextColor();
