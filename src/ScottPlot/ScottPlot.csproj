@@ -47,7 +47,12 @@
     <Compile Include="DataGen.cs" />
     <Compile Include="MouseTracker.cs" />
     <Compile Include="Plottable.cs" />
+    <Compile Include="PlottableAxLine.cs" />
+    <Compile Include="PlottableBar.cs" />
     <Compile Include="Plottables.cs" />
+    <Compile Include="PlottableScatter.cs" />
+    <Compile Include="PlottableSignal.cs" />
+    <Compile Include="PlottableText.cs" />
     <Compile Include="Renderer.cs" />
     <Compile Include="ScottPlotUC.cs">
       <SubType>UserControl</SubType>
