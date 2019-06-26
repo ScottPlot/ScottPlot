@@ -734,5 +734,17 @@ namespace ScottPlotCookbook
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
         }
 
+        public void Figure_63_Step_Plot()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            var plt = new ScottPlot.Plot(width, height);
+            plt.PlotScatter(dataXs, dataSin, stepDisplay: true);
+            plt.PlotScatter(dataXs, dataCos, stepDisplay: true, markerSize: 0);
+            plt.AxisAuto();
+            plt.SaveFig(fileName);
+            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+        }
     }
 }

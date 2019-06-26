@@ -68,6 +68,7 @@ namespace ScottPlotCookbook
             recipies.Figure_60_Plotting_With_Errorbars();
             recipies.Figure_61_Plot_Bar_Data();
             recipies.Figure_62_Plot_Bar_Data_Fancy();
+            recipies.Figure_63_Step_Plot();
 
             GenerateReport(outputFolderName);
             ValidateImageHashes(outputFolderName);
@@ -170,11 +171,11 @@ namespace ScottPlotCookbook
             knownHashes += "C7150625F8158F607EBB840663967D22"; // 60_Plotting_With_Errorbars.png
             knownHashes += "0E70C73BEA58AE15467363592E839E26"; // 61_Plot_Bar_Data.png
             knownHashes += "342298588383BB3CF748FFA48D618438"; // 62_Plot_Bar_Data_Fancy.png
-
             knownHashes += "AF0CEE68A78E649357F7930B255B062D"; // 01c_Defined_Axis_Limits.png
             knownHashes += "BC96F9ABB8333D25CC120C8133EFD613"; // 03_Plot_XY_Data.png
             knownHashes += "9B46257F74B67B6B1217B8FBB6AD3ACE"; // 21a_Title_and_Axis_Labels.png
             knownHashes += "C74AFBB386C11DC426F6007C92F1CD7E"; // 21b_Extra_Padding.png
+            knownHashes += "CDF51C783DFFF8D6BE83CD754946F85A"; // 63_Step_Plot.png
 
             var md5 = System.Security.Cryptography.MD5.Create();
             string[] images = System.IO.Directory.GetFiles($"./{outputFolderName}", "*.png");
