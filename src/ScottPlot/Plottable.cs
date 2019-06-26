@@ -24,6 +24,4 @@ namespace ScottPlot
 
         public abstract double[] GetLimits();
     }
-
-
 }
