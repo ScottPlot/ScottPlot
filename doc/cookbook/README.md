@@ -637,3 +637,15 @@ plt.SaveFig(fileName);
 
 ![](./images/62_Plot_Bar_Data_Fancy.png)
 
+## Step Plot
+
+```cs
+var plt = new ScottPlot.Plot(600, 400);
+plt.PlotScatter(dataXs, dataSin, stepDisplay: true);
+plt.PlotScatter(dataXs, dataCos, stepDisplay: true, markerSize: 0);
+plt.AxisAuto();
+plt.SaveFig(fileName);
+```
+
+![](./images/63_Step_Plot.png)
+
