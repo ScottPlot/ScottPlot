@@ -51,6 +51,7 @@
             this.cbLogScale.TabIndex = 1;
             this.cbLogScale.Text = "log scale";
             this.cbLogScale.UseVisualStyleBackColor = true;
+            this.cbLogScale.CheckedChanged += new System.EventHandler(this.CbLogScale_CheckedChanged);
             // 
             // Form1
             // 
