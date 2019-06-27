@@ -75,8 +75,8 @@ namespace ScottPlot
         public Ticks(Settings settings)
         {
             this.settings = settings;
-            settings.ticksX = GetTicks(settings, settings.axis[0], settings.axis[1], settings.xAxisScale, 40, settings.dataSize.Width);
-            settings.ticksY = GetTicks(settings, settings.axis[2], settings.axis[3], settings.yAxisScale, 20, settings.dataSize.Height);
+            settings.ticksX = GetTicks(settings, settings.axis[0], settings.axis[1], settings.xAxisScale, 40, settings.dataSize.Width, settings.gridSpacingX);
+            settings.ticksY = GetTicks(settings, settings.axis[2], settings.axis[3], settings.yAxisScale, 20, settings.dataSize.Height, settings.gridSpacingY);
         }
 
         public void RenderTicks()
@@ -116,7 +116,7 @@ namespace ScottPlot
             return new Size((int)largestWidth, (int)largestHeight);
         }
 
-        private List<Tick> GetTicks(Settings settings, double axisLow, double axisHigh, double axisScale, int tickSpacingPx, int axisSizePx)
+        private List<Tick> GetTicks(Settings settings, double axisLow, double axisHigh, double axisScale, int tickSpacingPx, int axisSizePx, double useThisSpacing = 0)
         {
             double axisSpan = axisHigh - axisLow;
             if (tickSpacingPx == 40) // probably a horizontal axis
@@ -124,21 +124,28 @@ namespace ScottPlot
                     tickSpacingPx = 60;
             double tickCountTarget = (double)axisSizePx / tickSpacingPx / 2;
 
-            // determine an ideal tick spacing (multiple of 2, 5, or 10)
             double tickSpacing = 0;
-            for (int tickSpacingPower = 10; tickSpacingPower > -10; tickSpacingPower--)
+            if (useThisSpacing > 0)
             {
-                tickSpacing = Math.Pow(10, tickSpacingPower);
-                if (tickSpacing > axisSpan)
-                    continue;
-                double tickCount = axisSpan / tickSpacing;
-                if (tickCount >= tickCountTarget)
+                tickSpacing = useThisSpacing;
+            }
+            else
+            {
+                // determine an ideal tick spacing (multiple of 2, 5, or 10)
+                for (int tickSpacingPower = 10; tickSpacingPower > -10; tickSpacingPower--)
                 {
-                    if (tickCount >= tickCountTarget * 5)
-                        tickSpacing *= 5;
-                    else if (tickCount >= tickCountTarget * 2)
-                        tickSpacing *= 2;
-                    break;
+                    tickSpacing = Math.Pow(10, tickSpacingPower);
+                    if (tickSpacing > axisSpan)
+                        continue;
+                    double tickCount = axisSpan / tickSpacing;
+                    if (tickCount >= tickCountTarget)
+                    {
+                        if (tickCount >= tickCountTarget * 5)
+                            tickSpacing *= 5;
+                        else if (tickCount >= tickCountTarget * 2)
+                            tickSpacing *= 2;
+                        break;
+                    }
                 }
             }
 

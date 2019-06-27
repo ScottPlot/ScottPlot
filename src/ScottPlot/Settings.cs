@@ -63,6 +63,8 @@ namespace ScottPlot
         // grid
         public bool displayGrid = true;
         public Color gridColor = Color.LightGray;
+        public double gridSpacingX = 0;
+        public double gridSpacingY = 0;
 
         // legend
         public bool displayLegend = false;

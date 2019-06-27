@@ -445,12 +445,14 @@ namespace ScottPlot
         /// <summary>
         /// Control grid visibility and color
         /// </summary>
-        public void Grid(bool? enable = true, Color? color = null)
+        public void Grid(bool? enable = true, Color? color = null, double? xSpacing = null, double? ySpacing = null)
         {
             if (enable != null)
                 settings.displayGrid = (bool)enable;
             if (color != null)
                 settings.gridColor = (Color)color;
+            settings.gridSpacingX = (xSpacing == null) ? 0 : (double)xSpacing;
+            settings.gridSpacingY = (ySpacing == null) ? 0 : (double)ySpacing;
         }
 
         /// <summary>
