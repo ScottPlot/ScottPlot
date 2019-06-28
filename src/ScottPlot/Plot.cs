@@ -453,6 +453,7 @@ namespace ScottPlot
                 settings.gridColor = (Color)color;
             settings.gridSpacingX = (xSpacing == null) ? 0 : (double)xSpacing;
             settings.gridSpacingY = (ySpacing == null) ? 0 : (double)ySpacing;
+            settings.bmpFigureRenderRequired = true;
         }
 
         /// <summary>
