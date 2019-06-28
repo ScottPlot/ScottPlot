@@ -55,6 +55,20 @@ namespace ScottPlot
             return ys;
         }
 
+        public static double[] RandomNormal(Random rand, int pointCount, double mean = .5, double stdDev = .5)
+        {
+            double[] values = new double[pointCount];
+            for (int i = 0; i < values.Length; i++)
+            {
+                double u1 = 1.0 - rand.NextDouble();
+                double u2 = 1.0 - rand.NextDouble();
+                double randStdNormal = Math.Sqrt(-2.0 * Math.Log(u1)) * Math.Sin(2.0 * Math.PI * u2);
+                double randNormal = mean + stdDev * randStdNormal;
+                values[i] = randNormal;
+            }
+            return values;
+        }
+
         public static Color RandomColor(Random rand, int min = 0, int max = 255)
         {
             int r = rand.Next(min, max);
