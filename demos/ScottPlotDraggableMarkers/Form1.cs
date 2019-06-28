@@ -29,12 +29,13 @@ namespace ScottPlotDraggableMarkers
             scottPlotUC1.plt.AxisAuto();
             scottPlotUC1.Render();
             UpdateMessage();
+            BtnAddVline_Click(null, null);
         }
 
         private void BtnAddHline_Click(object sender, EventArgs e)
         {
             double position = rand.NextDouble() * 2 - 1;
-            scottPlotUC1.plt.PlotHLine(position, draggable: true);
+            scottPlotUC1.plt.PlotHLine(position, draggable: true, dragLimitLower: -1, dragLimitUpper: 1);
             scottPlotUC1.Render();
             UpdateMessage();
         }
@@ -42,7 +43,7 @@ namespace ScottPlotDraggableMarkers
         private void BtnAddVline_Click(object sender, EventArgs e)
         {
             double position = rand.NextDouble() * 50;
-            scottPlotUC1.plt.PlotVLine(position, draggable: true);
+            scottPlotUC1.plt.PlotVLine(position, draggable: true, dragLimitLower: 0, dragLimitUpper: 49);
             scottPlotUC1.Render();
             UpdateMessage();
         }
