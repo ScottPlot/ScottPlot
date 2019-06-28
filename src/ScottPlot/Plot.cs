@@ -240,22 +240,22 @@ namespace ScottPlot
         /// <summary>
         /// Plot a vertical line at the given X position
         /// </summary>
-        public void PlotVLine(double x, Color? color = null, double lineWidth = 1, string label = null, bool draggable = false)
+        public void PlotVLine(double x, Color? color = null, double lineWidth = 1, string label = null, bool draggable = false, double dragLimitLower = double.NegativeInfinity, double dragLimitUpper = double.PositiveInfinity)
         {
             if (color == null)
                 color = settings.GetNextColor();
-            PlottableAxLine axLine = new PlottableAxLine(x, vertical: true, color: (Color)color, lineWidth: lineWidth, label: label, draggable: draggable);
+            PlottableAxLine axLine = new PlottableAxLine(x, vertical: true, color: (Color)color, lineWidth: lineWidth, label: label, draggable: draggable, dragLimitLower: dragLimitLower, dragLimitUpper: dragLimitUpper);
             settings.plottables.Add(axLine);
         }
 
         /// <summary>
         /// Plot a horizontal line at the given Y position
         /// </summary>
-        public void PlotHLine(double x, Color? color = null, double lineWidth = 1, string label = null, bool draggable = false)
+        public void PlotHLine(double x, Color? color = null, double lineWidth = 1, string label = null, bool draggable = false, double dragLimitLower = double.NegativeInfinity, double dragLimitUpper = double.PositiveInfinity)
         {
             if (color == null)
                 color = settings.GetNextColor();
-            PlottableAxLine axLine = new PlottableAxLine(x, vertical: false, color: (Color)color, lineWidth: lineWidth, label: label, draggable: draggable);
+            PlottableAxLine axLine = new PlottableAxLine(x, vertical: false, color: (Color)color, lineWidth: lineWidth, label: label, draggable: draggable, dragLimitLower: dragLimitLower, dragLimitUpper: dragLimitUpper);
             settings.plottables.Add(axLine);
         }
 

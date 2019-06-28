@@ -64,6 +64,11 @@ namespace ScottPlot
                         axLine.position = newPosition.X;
                     else
                         axLine.position = newPosition.Y;
+
+                    if (axLine.position < axLine.dragLimitLower)
+                        axLine.position = axLine.dragLimitLower;
+                    else if (axLine.position > axLine.dragLimitUpper)
+                        axLine.position = axLine.dragLimitUpper;
                 }
             }
         }
