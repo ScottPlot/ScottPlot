@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo - Custom Grid", "..\de
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo - Log Scale", "ScottPlotDemoLogScale\Demo - Log Scale.csproj", "{9EF2753F-D672-46FD-9009-A00585812CC4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo - Histogram", "..\demos\ScottPlotDemoHistogram\Demo - Histogram.csproj", "{EC9F6EEA-CA64-4166-B851-4102B1CD9030}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -95,6 +97,10 @@ Global
 		{9EF2753F-D672-46FD-9009-A00585812CC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9EF2753F-D672-46FD-9009-A00585812CC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9EF2753F-D672-46FD-9009-A00585812CC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC9F6EEA-CA64-4166-B851-4102B1CD9030}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC9F6EEA-CA64-4166-B851-4102B1CD9030}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC9F6EEA-CA64-4166-B851-4102B1CD9030}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC9F6EEA-CA64-4166-B851-4102B1CD9030}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -113,6 +119,7 @@ Global
 		{1CD22B04-073A-4B68-A58D-6376A012F68C} = {2F78F109-9976-42FF-8324-9A27EF3BD776}
 		{327A566E-F3C4-461F-8301-3B115A96255C} = {2F78F109-9976-42FF-8324-9A27EF3BD776}
 		{9EF2753F-D672-46FD-9009-A00585812CC4} = {2F78F109-9976-42FF-8324-9A27EF3BD776}
+		{EC9F6EEA-CA64-4166-B851-4102B1CD9030} = {2F78F109-9976-42FF-8324-9A27EF3BD776}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FBAE082A-173A-4F13-BE31-E6C070513C9C}
