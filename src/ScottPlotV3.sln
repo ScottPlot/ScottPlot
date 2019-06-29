@@ -31,7 +31,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo - Bar Graph", "..\demo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo - Custom Grid", "..\demos\ScottPlotDemoCustomGrid\Demo - Custom Grid.csproj", "{327A566E-F3C4-461F-8301-3B115A96255C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo - Log Scale", "ScottPlotDemoLogScale\Demo - Log Scale.csproj", "{9EF2753F-D672-46FD-9009-A00585812CC4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo - Log Scale", "..\demos\ScottPlotDemoLogScale\Demo - Log Scale.csproj", "{9EF2753F-D672-46FD-9009-A00585812CC4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo - Histogram", "..\demos\ScottPlotDemoHistogram\Demo - Histogram.csproj", "{EC9F6EEA-CA64-4166-B851-4102B1CD9030}"
 EndProject
