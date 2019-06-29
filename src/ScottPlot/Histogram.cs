@@ -50,9 +50,10 @@ namespace ScottPlot
                 max += binSize;
             }
 
-            BinBySize((double)binSize, (double)min, (double)max);            
+            bins = BinBySize((double)binSize, (double)min, (double)max);            
             counts = GetHistogram(values, bins, ignoreOutOfBounds);
-            UpdateFracAndCph();
+            countsFrac = GetNormalized(counts);
+            cumulativeFrac = GetCumulative(countsFrac);
         }
 
         public static double GetMean(double[] values)
@@ -73,25 +74,30 @@ namespace ScottPlot
             return Math.Sqrt(meanVarianceSquared);
         }
 
-        private void UpdateFracAndCph()
+        private static double[] GetNormalized(double[] values)
         {
-            countsFrac = new double[counts.Length];
+            double[] countsFrac = new double[values.Length];
             for (int i = 0; i < countsFrac.Length; i++)
-                countsFrac[i] = counts[i] / counts.Sum();
-
-            cumulativeFrac = new double[counts.Length];
-            cumulativeFrac[0] = counts[0];
-            for (int i = 1; i < cumulativeFrac.Length; i++)
-                cumulativeFrac[i] = cumulativeFrac[i - 1] + counts[i];
+                countsFrac[i] = values[i] / values.Sum();
+            return countsFrac;
+        }
+        private static double[] GetCumulative(double[] values)
+        {
+            double[] cumulaltive = new double[values.Length];
+            cumulaltive[0] = values[0];
+            for (int i = 1; i < cumulaltive.Length; i++)
+                cumulaltive[i] = cumulaltive[i - 1] + values[i];
+            return cumulaltive;
         }
 
-        public void BinBySize(double binSize, double min, double max)
+        public static double[] BinBySize(double binSize, double min, double max)
         {
             double span = (double)max - (double)min;
             int binCount = (int)(span / binSize) + 1;
-            bins = new double[binCount];
+            double[] bins = new double[binCount];
             for (int i = 0; i < bins.Length; i++)
                 bins[i] = i * (double)binSize + (double)min;
+            return bins;
         }
 
         private static double[] GetHistogram(double[] values, double[] bins, bool ignoreOutOfBounds = true)
