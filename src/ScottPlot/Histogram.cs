@@ -13,19 +13,68 @@ namespace ScottPlot
         public double[] counts;
         public double[] countsFrac;
         public double[] cumulativeFrac;
-        public double binSpacing { get { return bins[1] - bins[0]; } }
 
-        public Histogram(double[] values)
+        public readonly double mean;
+        public readonly double stdev;
+
+        public Histogram(double[] values, double? min = null, double? max = null, double? binSize = null, double? binCount = null, bool ignoreOutOfBounds = true)
         {
             this.values = values;
-            BinByCount(50);
-            //BinBySize(5);
+            mean = GetMean(values);
+            stdev = GetStdev(values);
+
+            if (min == null)
+                min = mean - stdev * 3;
+            if (max == null)
+                max = mean + stdev * 3;
+            if (min >= max)
+                throw new ArgumentException($"max ({max}) cannot be greater than min ({min})");
+            double span = (double)max - (double)min;
+
+            if ((binCount != null) && (binSize != null))
+                throw new ArgumentException("binCount and binSize cannot both be given");
+
+            double defaultBinCount = 100;
+            if (binSize == null)
+            {
+                if (binCount == null)
+                    binSize = span / defaultBinCount;
+                else
+                    binSize = span / binCount;
+            }
+
+            if (ignoreOutOfBounds == false)
+            {
+                // add an extra bin on each side of the histogram
+                min -= binSize;
+                max += binSize;
+            }
+
+            BinBySize((double)binSize, (double)min, (double)max);            
+            counts = GetHistogram(values, bins, ignoreOutOfBounds);
+            UpdateFracAndCph();
         }
 
-        private void UpdateCountsFromBins()
+        public static double GetMean(double[] values)
         {
-            counts = GetHistogram(values, bins);
+            return values.Sum() / values.Length;
+        }
 
+        public static double GetStdev(double[] values)
+        {
+            double mean = GetMean(values);
+            double sumVarianceSquared = 0;
+            for (int i = 0; i < values.Length; i++)
+            {
+                double variance = Math.Abs(mean - values[i]);
+                sumVarianceSquared += variance * variance;
+            }
+            double meanVarianceSquared = sumVarianceSquared / values.Length;
+            return Math.Sqrt(meanVarianceSquared);
+        }
+
+        private void UpdateFracAndCph()
+        {
             countsFrac = new double[counts.Length];
             for (int i = 0; i < countsFrac.Length; i++)
                 countsFrac[i] = counts[i] / counts.Sum();
@@ -36,31 +85,16 @@ namespace ScottPlot
                 cumulativeFrac[i] = cumulativeFrac[i - 1] + counts[i];
         }
 
-        public void BinBySize(double binSize, double? min = null, double? max = null)
+        public void BinBySize(double binSize, double min, double max)
         {
-            min = (min == null) ? values.Min() : (double)min;
-            max = (max == null) ? values.Max() : (double)max;
             double span = (double)max - (double)min;
             int binCount = (int)(span / binSize) + 1;
             bins = new double[binCount];
             for (int i = 0; i < bins.Length; i++)
                 bins[i] = i * (double)binSize + (double)min;
-            UpdateCountsFromBins();
         }
 
-        public void BinByCount(int binCount, double? min = null, double? max = null)
-        {
-            min = (min == null) ? values.Min() : (double)min;
-            max = (max == null) ? values.Max() : (double)max;
-            double span = (double)max - (double)min;
-            double binSize = span / binCount;
-            bins = new double[binCount];
-            for (int i = 0; i < bins.Length; i++)
-                bins[i] = i * (double)binSize + (double)min;
-            UpdateCountsFromBins();
-        }
-
-        private static double[] GetHistogram(double[] values, double[] bins)
+        private static double[] GetHistogram(double[] values, double[] bins, bool ignoreOutOfBounds = true)
         {
             double binSize = bins[1] - bins[0];
             double[] counts = new double[bins.Length];
@@ -68,11 +102,19 @@ namespace ScottPlot
             {
                 int index = (int)((values[i] - bins[0]) / binSize);
                 if (index < 0)
-                    counts[0] += 1;
+                {
+                    if (!ignoreOutOfBounds)
+                        counts[0] += 1;
+                }
                 else if (index >= counts.Length)
-                    counts[counts.Length - 1] += 1;
+                {
+                    if (!ignoreOutOfBounds)
+                        counts[counts.Length - 1] += 1;
+                }
                 else
+                {
                     counts[index] += 1;
+                }
             }
             return counts;
         }

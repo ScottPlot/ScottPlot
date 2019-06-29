@@ -57,6 +57,8 @@ namespace ScottPlot
 
         public static double[] RandomNormal(Random rand, int pointCount, double mean = .5, double stdDev = .5)
         {
+            if (rand == null)
+                rand = new Random();
             double[] values = new double[pointCount];
             for (int i = 0; i < values.Length; i++)
             {
