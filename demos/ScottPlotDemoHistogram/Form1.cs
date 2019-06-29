@@ -15,74 +15,167 @@ namespace ScottPlotDemoHistogram
         public Form1()
         {
             InitializeComponent();
+            GenerateData();
+            PlotHistogram();
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            Button1_Click(null, null);
+
         }
 
-        private void Button1_Click(object sender, EventArgs e)
+        double[] values;
+        private void GenerateData()
         {
-            int pointCount = (int)nudPoints.Value;
-            double[] randomValues = ScottPlot.DataGen.RandomNormal(new Random(), pointCount, 50, 25);
-            double[] xs = ScottPlot.DataGen.Consecutive(pointCount);
+            values = ScottPlot.DataGen.RandomNormal(null, (int)nudPointCount.Value, 50, 20);
+            PlotValues();
+        }
 
-            var hist = new ScottPlot.Histogram(randomValues);
-
+        private void PlotValues()
+        {
+            double[] xs = ScottPlot.DataGen.Consecutive(values.Length, 1, 1);
             scottPlotUC1.plt.Clear();
-            scottPlotUC1.plt.Title("Original Data");
-            scottPlotUC1.plt.XLabel("Sample Number");
-            scottPlotUC1.plt.YLabel("Value");
-            scottPlotUC1.plt.PlotScatter(xs, randomValues, lineWidth: 0);
+            scottPlotUC1.plt.Title("Normally Distributed Random Data");
+            scottPlotUC1.plt.YLabel("Value (units)");
+            scottPlotUC1.plt.XLabel("Point Number");
+            scottPlotUC1.plt.PlotScatter(xs, values, lineWidth: 0);
             scottPlotUC1.plt.AxisAuto();
             scottPlotUC1.Render();
+        }
 
-            scottPlotUC2.plt.Clear();
+        private void PlotHistogram()
+        {
+            double? min = (double)nudMin.Value;
+            double? max = (double)nudMax.Value;
+
+            if (cbMinAuto.Checked) min = null;
+            if (cbMaxAuto.Checked) max = null;
+
+            double? binSize = (double)nudBinSize.Value;
+            double? binCount = (double)nudBinCount.Value;
+
+            if (cbBinSizeAuto.Checked) binSize = null;
+            if (cbBinCountAuto.Checked) binCount = null;
+
+            // ignore binCount if both binSize and binCount are given
+            if ((binSize != null) && (binCount != null))
+                binCount = null;
+
+            bool ignoreOutOfBounds = cbIgnoreOutOfBounds.Checked;
+
+            var hist = new ScottPlot.Histogram(values, min, max, binSize, binCount, ignoreOutOfBounds);
+
             if (cbCount.Checked)
-            {
-                scottPlotUC2.plt.Title("Histogram");
-                scottPlotUC2.plt.XLabel("Value");
-                scottPlotUC2.plt.YLabel("Count (#)");
-                scottPlotUC2.plt.PlotBar(hist.bins, hist.counts);
-            }
+                PlotHistogramCount(hist.bins, hist.counts);
             else if (cbNorm.Checked)
-            {
-                scottPlotUC2.plt.Title("Normalized Histogram");
-                scottPlotUC2.plt.XLabel("Value");
-                scottPlotUC2.plt.YLabel("Probability");
-                scottPlotUC2.plt.PlotBar(hist.bins, hist.countsFrac);
-            }
-            else if (cbCumulative.Checked)
-            {
-                scottPlotUC2.plt.Title("Cumulative Probability Histogram");
-                scottPlotUC2.plt.XLabel("Value");
-                scottPlotUC2.plt.YLabel("Probability");
-                scottPlotUC2.plt.PlotBar(hist.bins, hist.cumulativeFrac);
-            }
-            else
-            {
-                throw new NotImplementedException();
-            }
+                PlotHistogramFrac(hist.bins, hist.countsFrac);
+            else if (cbCph.Checked)
+                PlotHistogramCumulative(hist.bins, hist.cumulativeFrac);
+        }
 
-            scottPlotUC2.plt.PlotHLine(0, color: Color.Black);
+        private void PlotHistogramCount(double[] bins, double[] counts)
+        {
+            scottPlotUC2.plt.Clear();
+            scottPlotUC2.plt.Title("Histogram");
+            scottPlotUC2.plt.YLabel("Count (#)");
+            scottPlotUC2.plt.XLabel("Value (units)");
+            if (rbGraphBar.Checked)
+                scottPlotUC2.plt.PlotBar(bins, counts);
+            else
+                scottPlotUC2.plt.PlotScatter(bins, counts, stepDisplay: true, markerSize: 0);
+            scottPlotUC2.plt.PlotHLine(0, Color.Black);
             scottPlotUC2.plt.AxisAuto();
             scottPlotUC2.Render();
         }
 
-        private void CbNorm_CheckedChanged(object sender, EventArgs e)
+        private void PlotHistogramFrac(double[] bins, double[] fracs)
         {
-            Button1_Click(null, null);
+            scottPlotUC2.plt.Clear();
+            scottPlotUC2.plt.Title("Probability Histogram");
+            scottPlotUC2.plt.YLabel("Probability (fraction)");
+            scottPlotUC2.plt.XLabel("Value (units)");
+            if (rbGraphBar.Checked)
+                scottPlotUC2.plt.PlotBar(bins, fracs);
+            else
+                scottPlotUC2.plt.PlotScatter(bins, fracs, stepDisplay: true, markerSize: 0);
+            scottPlotUC2.plt.PlotHLine(0, Color.Black);
+            scottPlotUC2.plt.AxisAuto();
+            scottPlotUC2.Render();
         }
 
-        private void CbCumulative_CheckedChanged(object sender, EventArgs e)
+        private void PlotHistogramCumulative(double[] bins, double[] cumFracs)
         {
-            Button1_Click(null, null);
+            scottPlotUC2.plt.Clear();
+            scottPlotUC2.plt.Title("Cumulative Probability Histogram");
+            scottPlotUC2.plt.YLabel("Probability (fraction)");
+            scottPlotUC2.plt.XLabel("Value (units)");
+            if (rbGraphBar.Checked)
+                scottPlotUC2.plt.PlotBar(bins, cumFracs);
+            else
+                scottPlotUC2.plt.PlotScatter(bins, cumFracs, stepDisplay: true, markerSize: 0);
+            scottPlotUC2.plt.PlotHLine(0, Color.Black);
+            scottPlotUC2.plt.AxisAuto();
+            scottPlotUC2.Render();
+        }
+
+        private void BtnGenerateData_Click(object sender, EventArgs e)
+        {
+            GenerateData();
+            PlotHistogram();
+        }
+
+        private void RbGraphBar_CheckedChanged(object sender, EventArgs e)
+        {
+            PlotHistogram();
+        }
+
+        private void RbGraphStep_CheckedChanged(object sender, EventArgs e)
+        {
+            PlotHistogram();
         }
 
         private void CbCount_CheckedChanged(object sender, EventArgs e)
         {
-            Button1_Click(null, null);
+            PlotHistogram();
+        }
+
+        private void CbNorm_CheckedChanged(object sender, EventArgs e)
+        {
+            PlotHistogram();
+        }
+
+        private void CbCph_CheckedChanged(object sender, EventArgs e)
+        {
+            PlotHistogram();
+        }
+
+        private void CbMinAuto_CheckedChanged(object sender, EventArgs e)
+        {
+            nudMin.Enabled = !cbMinAuto.Checked;
+            PlotHistogram();
+        }
+
+        private void CbMaxAuto_CheckedChanged(object sender, EventArgs e)
+        {
+            nudMax.Enabled = !cbMaxAuto.Checked;
+            PlotHistogram();
+        }
+
+        private void CbBinSizeAuto_CheckedChanged(object sender, EventArgs e)
+        {
+            nudBinSize.Enabled = !cbBinSizeAuto.Checked;
+            PlotHistogram();
+        }
+
+        private void CbBinCountAuto_CheckedChanged(object sender, EventArgs e)
+        {
+            nudBinCount.Enabled = !cbBinCountAuto.Checked;
+            PlotHistogram();
+        }
+
+        private void CbIgnoreOutOfBounds_CheckedChanged(object sender, EventArgs e)
+        {
+            PlotHistogram();
         }
     }
 }
