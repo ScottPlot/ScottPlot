@@ -30,6 +30,7 @@ namespace ScottPlot
         public double yAxisCenter;
         public double xAxisScale;
         public double yAxisScale;
+        public bool axisHasBeenIntentionallySet = false;
 
         // background colors
         public Color figureBackgroundColor = Color.White;
@@ -145,33 +146,20 @@ namespace ScottPlot
 
         public void AxisSet(double? x1 = null, double? x2 = null, double? y1 = null, double? y2 = null)
         {
-            bool axisChanged = false;
-
             if (x1 != null && (double)x1 != axis[0])
-            {
                 axis[0] = (double)x1;
-                axisChanged = true;
-            }
 
             if (x2 != null && (double)x2 != axis[1])
-            {
                 axis[1] = (double)x2;
-                axisChanged = true;
-            }
 
             if (y1 != null && (double)y1 != axis[2])
-            {
                 axis[2] = (double)y1;
-                axisChanged = true;
-            }
 
             if (y2 != null && (double)y2 != axis[3])
-            {
                 axis[3] = (double)y2;
-                axisChanged = true;
-            }
 
-            if (axisChanged)
+            axisHasBeenIntentionallySet = true;
+            if (x1 != null || x2 != null || y1 != null || y2 != null)
                 AxisUpdate();
         }
 
@@ -353,6 +341,7 @@ namespace ScottPlot
                 }
             }
 
+            axisHasBeenIntentionallySet = true;
             AxisUpdate();
             AxisZoom(1 - horizontalMargin, 1 - verticalMargin);
         }
