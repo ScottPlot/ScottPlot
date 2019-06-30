@@ -1,5 +1,22 @@
 # ScottPlot Changelog
 
+## ScottPlot 3.0.6
+_Published on [NuGet](https://www.nuget.org/packages/ScottPlot/) on 2019-06-30_
+
+### Major Changes
+* **Bar plot:** The plot module now has a `Bar()` method that lets users create various types of bar plots, as seen in [cookbook#plot-bar-data](https://github.com/swharden/ScottPlot/tree/master/doc/cookbook#plot-bar-data)
+* **Histogram:** The new `ScottPlot.Histogram` class has tools to create and analyze histogram data (including cumulative probability). Examples of this can be seen at [cookbook#histogram](https://github.com/swharden/ScottPlot/tree/master/doc/cookbook#histogram) and [cookbook#cph](https://github.com/swharden/ScottPlot/tree/master/doc/cookbook#cph)
+* **Step plot:** Scatter plots can now render as step plots. Use this feature by setting the `stepDisplay` argument with `PlotScatter()` as seen in the [cookbook#step-plot](https://github.com/swharden/ScottPlot/tree/master/doc/cookbook#step-plot)
+* **Manual grid spacing:** Users can now manually define the grid density by setting the `xSpacing` and `ySpacing` arguments in `Grid()` as seen in [cookbook#manual-grid-spacing](https://github.com/swharden/ScottPlot/tree/master/doc/cookbook#manual-grid-spacing)
+* **Draggable axis lines:** Axis lines can be dragged with the mouse if the `draggable` argument is set to `true` in `PlotHLine()` and `PlotHLine()`. Draggable axis line limits can also be set by defining additional arguments. The [DraggableMarkers](https://github.com/swharden/ScottPlot/tree/master/demos/ScottPlotDraggableMarkers) program was created to demonstrate this feature.
+
+### Minor Changes
+* using the scrollwheel to zoom now zooms to the cursor position rather than the center of the plot area
+* `ScottPlot.DataGen.RandomNormal()` was created to create arbitrary amounts of normally-distributed random data
+* fixed bug causing axis line color to appear incorrectly in the legend
+* `AxisAuto()` is now called automatically on the first render. This means users no longer have to call this function manually for most applications. This simplifies quickstart programs to just: instantiate plot, plot data, render (now 3 lines in total instead of 4).
+* throw exceptions if scatter, bar, or signal data inputs are null (rather than failing later)
+
 ## ScottPlot 3.0.5
 _Published on [NuGet](https://www.nuget.org/packages/ScottPlot/) on 2019-06-23_
 * fixes a bug (discussed in [issue 11](https://github.com/swharden/ScottPlot/issues/11)) to improve pan and zoom performance.
