@@ -22,6 +22,8 @@ namespace ScottPlot
 
         public PlottableBar(double[] xs, double[] ys, double barWidth, double xOffset, Color color, string label, double[] yErr, double errorLineWidth = 1, double errorCapSize = 3)
         {
+            if ((xs == null) || (ys == null))
+                throw new Exception("X and Y data cannot be null");
             if (xs.Length != ys.Length)
                 throw new ArgumentException("X positions must be the same length as Y values");
             if (yErr != null && yErr.Length != xs.Length)

@@ -25,6 +25,10 @@ namespace ScottPlot
             double[] errorX, double[] errorY, double errorLineWidth, double errorCapSize,
             bool stepDisplay)
         {
+
+            if ((xs == null) || (ys == null))
+                throw new Exception("X and Y data cannot be null");
+
             if (xs.Length != ys.Length)
                 throw new Exception("Xs and Ys must have same length");
 
