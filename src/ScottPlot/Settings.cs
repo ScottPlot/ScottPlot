@@ -208,28 +208,32 @@ namespace ScottPlot
 
         public void AxisPan(double? dx = null, double? dy = null)
         {
-            bool axisChanged = false;
+            if (!axisHasBeenIntentionallySet)
+                AxisAuto();
 
-            if (dx != null && dx != 0)
+            bool shiftedX = (dx != null && dx != 0);
+            bool shiftedY = (dy != null && dy != 0);
+
+            if (shiftedX)
             {
                 axis[0] += (double)dx;
                 axis[1] += (double)dx;
-                axisChanged = true;
             }
 
-            if (dy != null && dy != 0)
+            if (shiftedY)
             {
                 axis[2] += (double)dy;
                 axis[3] += (double)dy;
-                axisChanged = true;
             }
 
-            if (axisChanged)
+            if (shiftedX || shiftedY)
                 AxisUpdate();
         }
 
         public void AxisZoom(double xFrac = 1, double yFrac = 1, PointF? zoomCenter = null)
         {
+            if (!axisHasBeenIntentionallySet)
+                AxisAuto();
 
             if (zoomCenter == null)
             {
