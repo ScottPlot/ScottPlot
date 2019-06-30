@@ -113,9 +113,15 @@ namespace ScottPlot
         private void RenderBitmap()
         {
             if (!settings.axisHasBeenIntentionallySet && settings.plottables.Count > 0)
+            {
                 settings.AxisAuto();
-            if (!settings.tighteningOccurred)
                 TightenLayout();
+            }
+
+            if (!settings.tighteningOccurred)
+            {
+                TightenLayout();
+            }
 
             UpdateAntiAliasingSettings();
 
@@ -290,6 +296,10 @@ namespace ScottPlot
         /// <returns>axis limits [x1, x2, y1, y2]</returns>
         public double[] Axis(double? x1 = null, double? x2 = null, double? y1 = null, double? y2 = null)
         {
+            bool someValuesAreNull = (x1 == null) || (x2 == null) || (y1 == null) || (y2 == null);
+            if (someValuesAreNull && !settings.axisHasBeenIntentionallySet)
+                settings.AxisAuto();
+
             settings.AxisSet(x1, x2, y1, y2);
             return settings.axis;
         }
@@ -504,6 +514,8 @@ namespace ScottPlot
         /// </summary>
         public void TightenLayout(int padding = 5)
         {
+            if (!settings.axisHasBeenIntentionallySet && settings.plottables.Count > 0)
+                settings.AxisAuto();
             settings.axisPadding = padding;
             settings.AxisTighen();
             Resize();
