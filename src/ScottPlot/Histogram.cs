@@ -93,7 +93,7 @@ namespace ScottPlot
         public static double[] BinBySize(double binSize, double min, double max)
         {
             double span = (double)max - (double)min;
-            int binCount = (int)(span / binSize) + 1;
+            int binCount = (int)(span / binSize);
             double[] bins = new double[binCount];
             for (int i = 0; i < bins.Length; i++)
                 bins[i] = i * (double)binSize + (double)min;
