@@ -3,7 +3,7 @@
 ## Cookbook
 One of the best places to get started learning how to use ScottPlot is to check out all of the example graphs that make-up the [ScottPlot cookbook](cookbook).
 
-## ScottPlot API
+## ScottPlot.Plot
 The core of ScottPlot is the ScottPlot.Plot() class. Users only need to interact with its top-level methods. The following code creates a new plot 600px by 400px:
 
 ```cs
@@ -77,3 +77,8 @@ ScottPlotUC1.Render();
 ```
 
 If you are plotting data which is continuously changing, call the Render() function every time the data changes. For rapidly-changing data, add a timer to your application and have it repeatedly call the Render() function.
+
+## ScottPlot Tools
+A few useful classes are provided with ScottPlot:
+* `ScottPlot.DataGen` contains several methods which _generate_ data. This is a good way to create datasets to practice plotting.
+* `ScottPlot.Histogram` contains methods for taking in a dataset, binning it, and providing an easy way to access the bin counts. Extra tools are included to create cumulative probability histogram (CPH) plots.
