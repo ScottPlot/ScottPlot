@@ -558,7 +558,7 @@ plt.SaveFig(fileName);
 // create demo data to use for errorbars
 double[] yErr = new double[dataSin.Length];
 for (int i = 0; i < yErr.Length; i++)
-    yErr[i] = dataSin[i]/5 + .025;
+    yErr[i] = dataSin[i] / 5 + .025;
 
 var plt = new ScottPlot.Plot(600, 400);
 plt.Title("Bar Plot With Error Bars");
@@ -580,7 +580,7 @@ double[] errorA = new double[pointCount];
 double[] XsB = new double[pointCount];
 double[] dataB = new double[pointCount];
 double[] errorB = new double[pointCount];
-for (int i=0; i<pointCount; i++)
+for (int i = 0; i < pointCount; i++)
 {
     Xs[i] = i * 10;
     dataA[i] = rand.NextDouble() * 100;
@@ -612,4 +612,58 @@ plt.SaveFig(fileName);
 ```
 
 ![](./images/63_Step_Plot.png)
+
+## Manual Grid Spacing
+
+```cs
+var plt = new ScottPlot.Plot(600, 400);
+plt.PlotScatter(dataXs, dataSin);
+plt.PlotScatter(dataXs, dataCos);
+plt.Grid(xSpacing: 2, ySpacing: .1);
+plt.SaveFig(fileName);
+```
+
+![](./images/64_Manual_Grid_Spacing.png)
+
+## Histogram
+
+```cs
+Random rand = new Random(0);
+double[] values1 = ScottPlot.DataGen.RandomNormal(rand, pointCount: 1000, mean: 50, stdDev: 20);
+var hist1 = new ScottPlot.Histogram(values1, min: 0, max: 100);
+
+var plt = new ScottPlot.Plot(600, 400);
+plt.Title("Histogram");
+plt.YLabel("Count (#)");
+plt.XLabel("Value (units)");
+plt.PlotBar(hist1.bins, hist1.counts, barWidth: 1);
+plt.Axis(null, null, 0, null);
+plt.SaveFig(fileName);
+```
+
+![](./images/65_Histogram.png)
+
+## CPH
+
+```cs
+Random rand = new Random(0);
+double[] values1 = ScottPlot.DataGen.RandomNormal(rand, pointCount: 1000, mean: 50, stdDev: 20);
+double[] values2 = ScottPlot.DataGen.RandomNormal(rand, pointCount: 1000, mean: 45, stdDev: 25);
+var hist1 = new ScottPlot.Histogram(values1, min: 0, max: 100);
+var hist2 = new ScottPlot.Histogram(values2, min: 0, max: 100);
+
+var plt = new ScottPlot.Plot(600, 400);
+plt.Title("Cumulative Probability Histogram");
+plt.YLabel("Probability (fraction)");
+plt.XLabel("Value (units)");
+plt.PlotScatter(hist1.bins, hist1.cumulativeFrac, label: "sample A",
+    stepDisplay: true, markerSize: 0, lineWidth: 1.5);
+plt.PlotScatter(hist2.bins, hist2.cumulativeFrac, label: "sample B",
+    stepDisplay: true, markerSize: 0, lineWidth: 1.5);
+plt.Legend();
+plt.Axis(null, null, 0, 1);
+plt.SaveFig(fileName);
+```
+
+![](./images/66_CPH.png)
 
