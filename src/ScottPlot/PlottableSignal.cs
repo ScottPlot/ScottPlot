@@ -20,6 +20,10 @@ namespace ScottPlot
 
         public PlottableSignal(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label)
         {
+
+            if (ys == null)
+                throw new Exception("Y data cannot be null");
+
             this.ys = ys;
             this.sampleRate = sampleRate;
             this.samplePeriod = 1.0 / sampleRate;
