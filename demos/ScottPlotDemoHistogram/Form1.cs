@@ -64,6 +64,17 @@ namespace ScottPlotDemoHistogram
             bool ignoreOutOfBounds = cbIgnoreOutOfBounds.Checked;
 
             var hist = new ScottPlot.Histogram(values, min, max, binSize, binCount, ignoreOutOfBounds);
+
+            binSize = hist.bins[1] - hist.bins[0];
+            if (nudMin.Enabled == false)
+                nudMin.Value = (decimal)hist.bins[0];
+            if (nudMax.Enabled == false)
+                nudMax.Value = (decimal)(hist.bins[hist.bins.Length - 1] + binSize);
+            if (nudBinSize.Enabled == false)
+                nudBinSize.Value = (decimal)binSize;
+            if (nudBinCount.Enabled == false)
+                nudBinCount.Value = (decimal)hist.bins.Length;
+
             lbBins.Items.Clear();
             foreach (double bin in hist.bins)
                 lbBins.Items.Add(bin.ToString());
