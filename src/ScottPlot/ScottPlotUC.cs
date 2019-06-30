@@ -159,10 +159,12 @@ namespace ScottPlot
 
         private void PbPlot_MouseWheel(object sender, MouseEventArgs e)
         {
+            double zoomAmount = 0.15;
+            PointF zoomCenter = plt.CoordinateFromPixel(e.Location);
             if (e.Delta > 0)
-                plt.AxisZoom(1.5, 1.5);
+                plt.AxisZoom(1 + zoomAmount, 1 + zoomAmount, zoomCenter);
             else
-                plt.AxisZoom(0.5, 0.5);
+                plt.AxisZoom(1 - zoomAmount, 1 - zoomAmount, zoomCenter);
             Render();
         }
 

@@ -306,9 +306,9 @@ namespace ScottPlot
         /// <summary>
         /// Zoom in or out by a given fraction (greater than 1 zooms in)
         /// </summary>
-        public void AxisZoom(double xFrac = 1, double yFrac = 1)
+        public void AxisZoom(double xFrac = 1, double yFrac = 1, PointF? zoomCenter = null)
         {
-            settings.AxisZoom(xFrac, yFrac);
+            settings.AxisZoom(xFrac, yFrac, zoomCenter);
         }
 
         /// <summary>
