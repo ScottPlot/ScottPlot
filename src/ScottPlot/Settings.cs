@@ -240,27 +240,31 @@ namespace ScottPlot
                 AxisUpdate();
         }
 
-        public void AxisZoom(double xFrac = 1, double yFrac = 1)
+        public void AxisZoom(double xFrac = 1, double yFrac = 1, PointF? zoomCenter = null)
         {
-            bool axisChanged = false;
 
-            if (xFrac != 1)
+            if (zoomCenter == null)
             {
-                double halfNewSpan = xAxisSpan / xFrac / 2;
-                axis[0] = xAxisCenter - halfNewSpan;
-                axis[1] = xAxisCenter + halfNewSpan;
-                axisChanged = true;
+                double halfNewXspan = xAxisSpan / xFrac / 2;
+                double halfNewYspan = yAxisSpan / yFrac / 2;
+                axis[0] = xAxisCenter - halfNewXspan;
+                axis[1] = xAxisCenter + halfNewXspan;
+                axis[2] = yAxisCenter - halfNewYspan;
+                axis[3] = yAxisCenter + halfNewYspan;
+            }
+            else
+            {
+                double spanLeft = zoomCenter.Value.X - axis[0];
+                double spanRight = axis[1] - zoomCenter.Value.X;
+                double spanTop = zoomCenter.Value.Y - axis[2];
+                double spanBot = axis[3] - zoomCenter.Value.Y;
+                axis[0] = zoomCenter.Value.X - spanLeft / xFrac;
+                axis[1] = zoomCenter.Value.X + spanRight / xFrac;
+                axis[2] = zoomCenter.Value.Y - spanTop / xFrac;
+                axis[3] = zoomCenter.Value.Y + spanBot / xFrac;
             }
 
-            if (yFrac != 1)
-            {
-                double halfNewSpan = yAxisSpan / yFrac / 2;
-                axis[2] = yAxisCenter - halfNewSpan;
-                axis[3] = yAxisCenter + halfNewSpan;
-                axisChanged = true;
-            }
-
-            if (axisChanged)
+            if ((xFrac != 1) || (yFrac != 1))
                 AxisUpdate();
         }
 
