@@ -29,7 +29,6 @@ private void Window_Loaded(object sender, RoutedEventArgs e)
                                             (int)canvasPlot.ActualHeight);
     plt.PlotScatter(dataXs, dataSin);
     plt.PlotScatter(dataXs, dataCos);
-    plt.AxisAuto();
     plt.Title("ScottPlot WPF Demo");
     imagePlot.Source = bmpImageFromBmp(plt.GetBitmap());
 }

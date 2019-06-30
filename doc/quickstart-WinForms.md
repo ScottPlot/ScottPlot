@@ -44,7 +44,6 @@ scottPlotUC1.plt.PlotScatter(dataXs, dataCos);
 scottPlotUC1.plt.XLabel("experiment time (ms)");
 scottPlotUC1.plt.YLabel("signal (mV)");
 scottPlotUC1.plt.Title("ScottPlot Quickstart");
-scottPlotUC1.plt.AxisAuto();
 scottPlotUC1.Render();
 ```
 
