@@ -93,7 +93,7 @@ namespace ScottPlotDemoHistogram
             scottPlotUC2.plt.YLabel("Count (#)");
             scottPlotUC2.plt.XLabel("Value (units)");
             if (rbGraphBar.Checked)
-                scottPlotUC2.plt.PlotBar(bins, counts);
+                scottPlotUC2.plt.PlotBar(bins, counts, barWidth: bins[1] - bins[0]);
             else
                 scottPlotUC2.plt.PlotScatter(bins, counts, stepDisplay: true, markerSize: 0);
             scottPlotUC2.plt.PlotHLine(0, Color.Black);

@@ -106,7 +106,8 @@ namespace ScottPlot
                 float xOffsetPx = (float)(xOffset * settings.xAxisScale);
                 barLeftPx += xOffsetPx;
 
-                settings.gfxData.FillRectangle(brush, barLeftPx, barTopPx, barWidthPx, -barHeightPx);
+                settings.gfxData.FillRectangle(brush, barLeftPx - (float).5, barTopPx, barWidthPx + (float).5, -barHeightPx);
+                settings.gfxData.DrawRectangle(pen, barLeftPx - (float).5, barTopPx, barWidthPx + (float).5, -barHeightPx);
 
                 if (yErr != null)
                 {
