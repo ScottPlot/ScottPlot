@@ -68,7 +68,6 @@ namespace ScottPlotCookbook
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
-            plt.AxisAuto();
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
         }
@@ -107,7 +106,6 @@ namespace ScottPlotCookbook
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
-            plt.AxisAuto();
             plt.AxisZoom(2, 2);
             plt.AxisPan(-10, .5);
             plt.SaveFig(fileName);
@@ -121,7 +119,6 @@ namespace ScottPlotCookbook
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin, label: "first");
             plt.PlotScatter(dataXs, dataCos, label: "second");
-            plt.AxisAuto();
             plt.Legend();
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
@@ -147,7 +144,6 @@ namespace ScottPlotCookbook
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataRandom1, dataRandom2);
-            plt.AxisAuto();
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
         }
@@ -160,7 +156,6 @@ namespace ScottPlotCookbook
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataRandom1, dataRandom2, markerSize: 0);
             plt.PlotScatter(dataRandom3, dataRandom4, markerSize: 0);
-            plt.AxisAuto();
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
         }
@@ -173,7 +168,6 @@ namespace ScottPlotCookbook
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataRandom1, dataRandom2, lineWidth: 0);
             plt.PlotScatter(dataRandom3, dataRandom4, lineWidth: 0);
-            plt.AxisAuto();
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
         }
@@ -186,7 +180,6 @@ namespace ScottPlotCookbook
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataRandom1, dataRandom2, color: Color.Magenta, lineWidth: 3, markerSize: 15);
             plt.PlotScatter(dataRandom3, dataRandom4, color: Color.Green, lineWidth: 3, markerSize: 15);
-            plt.AxisAuto();
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
         }
@@ -201,7 +194,6 @@ namespace ScottPlotCookbook
             plt.PlotScatter(dataXs, dataCos);
             plt.PlotPoint(25, 0.8);
             plt.PlotPoint(30, 0.3, color: Color.Magenta, markerSize: 15);
-            plt.AxisAuto(0);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
         }
@@ -218,7 +210,6 @@ namespace ScottPlotCookbook
             plt.PlotPoint(30, 0.3, color: Color.Magenta, markerSize: 15);
             plt.PlotText("important point", 25, 0.8);
             plt.PlotText("more important", 30, .3, fontSize: 16, bold: true);
-            plt.AxisAuto(0);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
         }
@@ -233,7 +224,6 @@ namespace ScottPlotCookbook
             plt.PlotScatter(dataXs, dataCos);
             plt.Clear();
             plt.PlotScatter(dataRandom3, dataRandom4);
-            plt.AxisAuto();
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
         }
@@ -256,7 +246,6 @@ namespace ScottPlotCookbook
                 dataCos[i] = 2 * i / 10.0;
             }
 
-            plt.AxisAuto();
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
             PrepareDataSmall(); // hide
@@ -271,7 +260,6 @@ namespace ScottPlotCookbook
             var plt = new ScottPlot.Plot(200, 150);
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
-            plt.AxisAuto(0);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
         }
@@ -284,7 +272,6 @@ namespace ScottPlotCookbook
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
-            plt.AxisAuto(0);
 
             plt.Title("Very Complicated Data");
             plt.XLabel("Experiment Duration");
@@ -302,11 +289,11 @@ namespace ScottPlotCookbook
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
-            plt.AxisAuto(0);
 
             plt.Title("Very Complicated Data");
             plt.XLabel("Experiment Duration");
             plt.YLabel("Productivity");
+
             plt.TightenLayout(padding: 40);
 
             plt.SaveFig(fileName);
@@ -330,7 +317,6 @@ namespace ScottPlotCookbook
             plt.Title("Very Complicated Data", Color.White);
             plt.XLabel("Experiment Duration", Color.LightGray);
             plt.YLabel("Productivity", Color.LightGray);
-            plt.AxisAuto();
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
         }
@@ -347,10 +333,9 @@ namespace ScottPlotCookbook
             plt.Grid(color: ColorTranslator.FromHtml("#273c51"));
             plt.Ticks(displayTicksX: false, displayTicksY: false);
             plt.Frame(drawFrame: false);
-            plt.TightenLayout(padding: 0);
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
-            plt.AxisAuto(0);
+            plt.TightenLayout(padding: 0);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
         }
@@ -363,7 +348,6 @@ namespace ScottPlotCookbook
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
-            plt.AxisAuto(0);
             plt.Grid(false);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
@@ -377,7 +361,6 @@ namespace ScottPlotCookbook
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
-            plt.AxisAuto();
             plt.Grid(false);
             plt.Frame(right: false, top: false);
             plt.SaveFig(fileName);
@@ -392,7 +375,6 @@ namespace ScottPlotCookbook
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
-            plt.AxisAuto();
             plt.Grid(false);
             plt.Ticks(displayTicksY: false);
             plt.Frame(left: false, right: false, top: false);
@@ -410,7 +392,6 @@ namespace ScottPlotCookbook
             var plt = new ScottPlot.Plot(width, height);
             plt.Benchmark();
             plt.PlotSignal(dataSignal, sampleRate: 20_000);
-            plt.AxisAuto();
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
         }
@@ -424,7 +405,6 @@ namespace ScottPlotCookbook
             plt.Benchmark();
             plt.AntiAlias(true, false);
             plt.PlotSignal(dataSignal, sampleRate: 20_000);
-            plt.AxisAuto();
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
         }
@@ -436,7 +416,6 @@ namespace ScottPlotCookbook
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotSignal(dataSignal, 20000, lineWidth: 3, color: Color.Red);
-            plt.AxisAuto();
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
         }
@@ -451,7 +430,6 @@ namespace ScottPlotCookbook
             plt.PlotScatter(dataXs, dataCos);
             plt.PlotVLine(17);
             plt.PlotHLine(-.25, color: Color.Red, lineWidth: 3);
-            plt.AxisAuto();
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
         }
@@ -469,7 +447,6 @@ namespace ScottPlotCookbook
             plt.YLabel("Productivity");
             plt.Legend();
             plt.Style(ScottPlot.Style.Blue1);
-            plt.AxisAuto(0);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
         }
@@ -487,7 +464,6 @@ namespace ScottPlotCookbook
             plt.YLabel("Productivity");
             plt.Legend();
             plt.Style(ScottPlot.Style.Blue2);
-            plt.AxisAuto(0);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
         }
@@ -505,7 +481,6 @@ namespace ScottPlotCookbook
             plt.YLabel("Productivity");
             plt.Legend();
             plt.Style(ScottPlot.Style.Blue3);
-            plt.AxisAuto(0);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
         }
@@ -523,7 +498,6 @@ namespace ScottPlotCookbook
             plt.YLabel("Productivity");
             plt.Legend();
             plt.Style(ScottPlot.Style.Light1);
-            plt.AxisAuto(0);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
         }
@@ -541,7 +515,6 @@ namespace ScottPlotCookbook
             plt.YLabel("Productivity");
             plt.Legend();
             plt.Style(ScottPlot.Style.Light2);
-            plt.AxisAuto(0);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
         }
@@ -559,7 +532,6 @@ namespace ScottPlotCookbook
             plt.YLabel("Productivity");
             plt.Legend();
             plt.Style(ScottPlot.Style.Gray1);
-            plt.AxisAuto(0);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
         }
@@ -577,7 +549,6 @@ namespace ScottPlotCookbook
             plt.YLabel("Productivity");
             plt.Legend();
             plt.Style(ScottPlot.Style.Gray2);
-            plt.AxisAuto(0);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
         }
@@ -595,7 +566,6 @@ namespace ScottPlotCookbook
             plt.YLabel("Productivity");
             plt.Legend();
             plt.Style(ScottPlot.Style.Black);
-            plt.AxisAuto(0);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
         }
@@ -613,7 +583,6 @@ namespace ScottPlotCookbook
             plt.YLabel("Productivity");
             plt.Legend();
             plt.Style(ScottPlot.Style.Default);
-            plt.AxisAuto(0);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
         }
@@ -631,7 +600,6 @@ namespace ScottPlotCookbook
             plt.YLabel("Productivity");
             plt.Legend();
             plt.Style(ScottPlot.Style.Control);
-            plt.AxisAuto(0);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
         }
@@ -674,7 +642,6 @@ namespace ScottPlotCookbook
             }
 
             plt.Title("Scatter Plot with Errorbars");
-            plt.AxisAuto();
             plt.Legend();
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
@@ -688,12 +655,11 @@ namespace ScottPlotCookbook
             // create demo data to use for errorbars
             double[] yErr = new double[dataSin.Length];
             for (int i = 0; i < yErr.Length; i++)
-                yErr[i] = dataSin[i]/5;
+                yErr[i] = dataSin[i]/5 + .025;
 
             var plt = new ScottPlot.Plot(width, height);
             plt.Title("Bar Plot With Error Bars");
-            plt.PlotBar(dataXs, dataSin, errorY: yErr);
-            plt.AxisAuto();
+            plt.PlotBar(dataXs, dataSin, barWidth: .5, errorY: yErr, errorCapSize: 2);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
         }
@@ -725,9 +691,8 @@ namespace ScottPlotCookbook
             plt.Title("Multiple Bar Plots");
             plt.Grid(false);
             // we customize barWidth and xOffset to squeeze grouped bars together
-            plt.PlotBar(Xs, dataA, errorY: errorA, label: "data A", barWidth: 4, xOffset: -2);
-            plt.PlotBar(Xs, dataB, errorY: errorB, label: "data B", barWidth: 4, xOffset: 2);
-            plt.AxisAuto();
+            plt.PlotBar(Xs, dataA, errorY: errorA, label: "data A", barWidth: 3.2, xOffset: -2);
+            plt.PlotBar(Xs, dataB, errorY: errorB, label: "data B", barWidth: 3.2, xOffset: 2);
             plt.Axis(null, null, 0, null);
             plt.Legend();
             plt.SaveFig(fileName);
@@ -742,7 +707,6 @@ namespace ScottPlotCookbook
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin, stepDisplay: true);
             plt.PlotScatter(dataXs, dataCos, stepDisplay: true, markerSize: 0);
-            plt.AxisAuto();
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
         }
