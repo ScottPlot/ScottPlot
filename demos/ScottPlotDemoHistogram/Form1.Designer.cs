@@ -54,6 +54,8 @@
             this.rbGraphStep = new System.Windows.Forms.RadioButton();
             this.scottPlotUC2 = new ScottPlot.ScottPlotUC();
             this.scottPlotUC1 = new ScottPlot.ScottPlotUC();
+            this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.lbBins = new System.Windows.Forms.ListBox();
             ((System.ComponentModel.ISupportInitialize)(this.nudPointCount)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -67,6 +69,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudBinCount)).BeginInit();
             this.groupBox7.SuspendLayout();
             this.groupBox8.SuspendLayout();
+            this.groupBox9.SuspendLayout();
             this.SuspendLayout();
             // 
             // nudPointCount
@@ -411,9 +414,9 @@
             this.scottPlotUC2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.scottPlotUC2.Location = new System.Drawing.Point(617, 12);
+            this.scottPlotUC2.Location = new System.Drawing.Point(738, 12);
             this.scottPlotUC2.Name = "scottPlotUC2";
-            this.scottPlotUC2.Size = new System.Drawing.Size(425, 388);
+            this.scottPlotUC2.Size = new System.Drawing.Size(474, 388);
             this.scottPlotUC2.TabIndex = 8;
             // 
             // scottPlotUC1
@@ -425,11 +428,31 @@
             this.scottPlotUC1.Size = new System.Drawing.Size(425, 388);
             this.scottPlotUC1.TabIndex = 0;
             // 
+            // groupBox9
+            // 
+            this.groupBox9.Controls.Add(this.lbBins);
+            this.groupBox9.Location = new System.Drawing.Point(617, 12);
+            this.groupBox9.Name = "groupBox9";
+            this.groupBox9.Size = new System.Drawing.Size(115, 386);
+            this.groupBox9.TabIndex = 23;
+            this.groupBox9.TabStop = false;
+            this.groupBox9.Text = "Bins";
+            // 
+            // lbBins
+            // 
+            this.lbBins.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbBins.FormattingEnabled = true;
+            this.lbBins.Location = new System.Drawing.Point(3, 16);
+            this.lbBins.Name = "lbBins";
+            this.lbBins.Size = new System.Drawing.Size(109, 367);
+            this.lbBins.TabIndex = 0;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1048, 408);
+            this.ClientSize = new System.Drawing.Size(1218, 408);
+            this.Controls.Add(this.groupBox9);
             this.Controls.Add(this.groupBox8);
             this.Controls.Add(this.groupBox7);
             this.Controls.Add(this.groupBox6);
@@ -463,6 +486,7 @@
             this.groupBox7.PerformLayout();
             this.groupBox8.ResumeLayout(false);
             this.groupBox8.PerformLayout();
+            this.groupBox9.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -495,6 +519,8 @@
         private System.Windows.Forms.GroupBox groupBox8;
         private System.Windows.Forms.RadioButton rbGraphBar;
         private System.Windows.Forms.RadioButton rbGraphStep;
+        private System.Windows.Forms.GroupBox groupBox9;
+        private System.Windows.Forms.ListBox lbBins;
     }
 }
 
