@@ -69,6 +69,9 @@ namespace ScottPlotCookbook
             recipies.Figure_61_Plot_Bar_Data();
             recipies.Figure_62_Plot_Bar_Data_Fancy();
             recipies.Figure_63_Step_Plot();
+            recipies.Figure_64_Manual_Grid_Spacing();
+            recipies.Figure_65_Histogram();
+            recipies.Figure_66_CPH();
 
             GenerateReport(outputFolderName);
             ValidateImageHashes(outputFolderName);

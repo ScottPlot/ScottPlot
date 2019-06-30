@@ -11,6 +11,7 @@ namespace ScottPlot
         public double[] values;
         public double[] bins;
         public double[] counts;
+        public double[] cumulativeCounts;
         public double[] countsFrac;
         public double[] cumulativeFrac;
 
@@ -52,6 +53,7 @@ namespace ScottPlot
 
             bins = BinBySize((double)binSize, (double)min, (double)max);            
             counts = GetHistogram(values, bins, ignoreOutOfBounds);
+            cumulativeCounts = GetCumulative(counts);
             countsFrac = GetNormalized(counts);
             cumulativeFrac = GetCumulative(countsFrac);
         }
