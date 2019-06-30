@@ -22,7 +22,6 @@ plt.PlotScatter(dataXs, dataCos);
 plt.Title("ScottPlot Quickstart (console)");
 plt.XLabel("experiment time (ms)");
 plt.YLabel("signal (mV)");
-plt.AxisAuto();
 plt.SaveFig("console.png");
 ```
 

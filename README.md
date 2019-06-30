@@ -14,7 +14,6 @@ In a GUI environment ScottPlot makes it easy to display data interactively (left
 double[] xs = new double[] {1, 2, 3, 4, 5};
 double[] ys = new double[] {1, 4, 9, 16, 25};
 scottPlotUC1.plt.PlotScatter(xs, ys);
-scottPlotUC1.plt.AxisAuto();
 scottPlotUC1.Render();
 ```
 
