@@ -112,6 +112,8 @@ namespace ScottPlot
 
         private void RenderBitmap()
         {
+            if (!settings.axisHasBeenIntentionallySet && settings.plottables.Count > 0)
+                settings.AxisAuto();
             if (!settings.tighteningOccurred)
                 TightenLayout();
 

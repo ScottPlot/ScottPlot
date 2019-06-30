@@ -39,7 +39,6 @@ namespace ScottPlotDemoHistogram
             scottPlotUC1.plt.YLabel("Value (units)");
             scottPlotUC1.plt.XLabel("Point Number");
             scottPlotUC1.plt.PlotScatter(xs, values, lineWidth: 0);
-            scottPlotUC1.plt.AxisAuto();
             scottPlotUC1.Render();
         }
 
@@ -98,7 +97,6 @@ namespace ScottPlotDemoHistogram
             else
                 scottPlotUC2.plt.PlotScatter(bins, counts, stepDisplay: true, markerSize: 0);
             scottPlotUC2.plt.PlotHLine(0, Color.Black);
-            scottPlotUC2.plt.AxisAuto();
             scottPlotUC2.Render();
         }
 
@@ -113,7 +111,6 @@ namespace ScottPlotDemoHistogram
             else
                 scottPlotUC2.plt.PlotScatter(bins, fracs, stepDisplay: true, markerSize: 0);
             scottPlotUC2.plt.PlotHLine(0, Color.Black);
-            scottPlotUC2.plt.AxisAuto();
             scottPlotUC2.Render();
         }
 
@@ -128,7 +125,6 @@ namespace ScottPlotDemoHistogram
             else
                 scottPlotUC2.plt.PlotScatter(bins, cumFracs, stepDisplay: true, markerSize: 0);
             scottPlotUC2.plt.PlotHLine(0, Color.Black);
-            scottPlotUC2.plt.AxisAuto();
             scottPlotUC2.Render();
         }
 
