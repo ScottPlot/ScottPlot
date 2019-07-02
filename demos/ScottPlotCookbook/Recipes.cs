@@ -60,7 +60,7 @@ namespace ScottPlotCookbook
 
         #region plot types
 
-        public void Figure_01a_Scatter_Sin()
+        public string Figure_01a_Scatter_Sin()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -70,9 +70,10 @@ namespace ScottPlotCookbook
             plt.PlotScatter(dataXs, dataCos);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
-        public void Figure_01b_Automatic_Margins()
+        public string Figure_01b_Automatic_Margins()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -83,9 +84,10 @@ namespace ScottPlotCookbook
             plt.AxisAuto(0, .5); // no horizontal padding, 50% vertical padding
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
-        public void Figure_01c_Defined_Axis_Limits()
+        public string Figure_01c_Defined_Axis_Limits()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -96,9 +98,10 @@ namespace ScottPlotCookbook
             plt.Axis(2, 8, .2, 1.1); // x1, x2, y1, y2
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
-        public void Figure_01d_Zoom_and_Pan()
+        public string Figure_01d_Zoom_and_Pan()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -110,8 +113,9 @@ namespace ScottPlotCookbook
             plt.AxisPan(-10, .5);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
-        public void Figure_01e_Legend()
+        public string Figure_01e_Legend()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -122,9 +126,10 @@ namespace ScottPlotCookbook
             plt.Legend();
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
-        public void Figure_02_Styling_Scatter_Plots()
+        public string Figure_02_Styling_Scatter_Plots()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -135,9 +140,10 @@ namespace ScottPlotCookbook
             plt.AxisAuto(0); // no horizontal margin (default 10% vertical margin)
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
-        public void Figure_03_Plot_XY_Data()
+        public string Figure_03_Plot_XY_Data()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -146,9 +152,10 @@ namespace ScottPlotCookbook
             plt.PlotScatter(dataRandom1, dataRandom2);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
-        public void Figure_04_Plot_Lines_Only()
+        public string Figure_04_Plot_Lines_Only()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -158,9 +165,10 @@ namespace ScottPlotCookbook
             plt.PlotScatter(dataRandom3, dataRandom4, markerSize: 0);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
-        public void Figure_05_Plot_Points_Only()
+        public string Figure_05_Plot_Points_Only()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -170,9 +178,10 @@ namespace ScottPlotCookbook
             plt.PlotScatter(dataRandom3, dataRandom4, lineWidth: 0);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
-        public void Figure_06_Styling_XY_Plots()
+        public string Figure_06_Styling_XY_Plots()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -182,9 +191,10 @@ namespace ScottPlotCookbook
             plt.PlotScatter(dataRandom3, dataRandom4, color: Color.Green, lineWidth: 3, markerSize: 15);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
-        public void Figure_07_Plotting_Points()
+        public string Figure_07_Plotting_Points()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -196,9 +206,10 @@ namespace ScottPlotCookbook
             plt.PlotPoint(30, 0.3, color: Color.Magenta, markerSize: 15);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
-        public void Figure_08_Plotting_Text()
+        public string Figure_08_Plotting_Text()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -212,9 +223,10 @@ namespace ScottPlotCookbook
             plt.PlotText("more important", 30, .3, fontSize: 16, bold: true);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
-        public void Figure_09_Clearing_Plots()
+        public string Figure_09_Clearing_Plots()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -226,9 +238,10 @@ namespace ScottPlotCookbook
             plt.PlotScatter(dataRandom3, dataRandom4);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
-        public void Figure_10_Modifying_Plotted_Data()
+        public string Figure_10_Modifying_Plotted_Data()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -249,10 +262,11 @@ namespace ScottPlotCookbook
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
             PrepareDataSmall(); // hide
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
         #endregion
 
-        public void Figure_20_Small_Plot()
+        public string Figure_20_Small_Plot()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -262,9 +276,10 @@ namespace ScottPlotCookbook
             plt.PlotScatter(dataXs, dataCos);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
-        public void Figure_21a_Title_and_Axis_Labels()
+        public string Figure_21a_Title_and_Axis_Labels()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -279,9 +294,10 @@ namespace ScottPlotCookbook
 
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
-        public void Figure_21b_Extra_Padding()
+        public string Figure_21b_Extra_Padding()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -298,9 +314,10 @@ namespace ScottPlotCookbook
 
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
-        public void Figure_22_Custom_Colors()
+        public string Figure_22_Custom_Colors()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -319,9 +336,10 @@ namespace ScottPlotCookbook
             plt.YLabel("Productivity", Color.LightGray);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
-        public void Figure_23_Frameless_Plot()
+        public string Figure_23_Frameless_Plot()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -338,9 +356,10 @@ namespace ScottPlotCookbook
             plt.TightenLayout(padding: 0);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
-        public void Figure_24_Disable_the_Grid()
+        public string Figure_24_Disable_the_Grid()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -351,9 +370,10 @@ namespace ScottPlotCookbook
             plt.Grid(false);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
-        public void Figure_25_Corner_Axis_Frame()
+        public string Figure_25_Corner_Axis_Frame()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -365,9 +385,10 @@ namespace ScottPlotCookbook
             plt.Frame(right: false, top: false);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
-        public void Figure_26_Horizontal_Ticks_Only()
+        public string Figure_26_Horizontal_Ticks_Only()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -380,9 +401,10 @@ namespace ScottPlotCookbook
             plt.Frame(left: false, right: false, top: false);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
-        public void Figure_30_Signal()
+        public string Figure_30_Signal()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -394,8 +416,9 @@ namespace ScottPlotCookbook
             plt.PlotSignal(dataSignal, sampleRate: 20_000);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
-        public void Figure_31_Signal_With_Antialiasing_Off()
+        public string Figure_31_Signal_With_Antialiasing_Off()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -407,9 +430,10 @@ namespace ScottPlotCookbook
             plt.PlotSignal(dataSignal, sampleRate: 20_000);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
-        public void Figure_32_Signal_Styling()
+        public string Figure_32_Signal_Styling()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -418,9 +442,10 @@ namespace ScottPlotCookbook
             plt.PlotSignal(dataSignal, 20000, lineWidth: 3, color: Color.Red);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
-        public void Figure_40_Vertical_and_Horizontal_Lines()
+        public string Figure_40_Vertical_and_Horizontal_Lines()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -432,9 +457,10 @@ namespace ScottPlotCookbook
             plt.PlotHLine(-.25, color: Color.Red, lineWidth: 3);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
-        public void Figure_50_StyleBlue1()
+        public string Figure_50_StyleBlue1()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -449,9 +475,10 @@ namespace ScottPlotCookbook
             plt.Style(ScottPlot.Style.Blue1);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
-        public void Figure_51_StyleBlue2()
+        public string Figure_51_StyleBlue2()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -466,9 +493,10 @@ namespace ScottPlotCookbook
             plt.Style(ScottPlot.Style.Blue2);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
-        public void Figure_52_StyleBlue3()
+        public string Figure_52_StyleBlue3()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -483,9 +511,10 @@ namespace ScottPlotCookbook
             plt.Style(ScottPlot.Style.Blue3);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
-        public void Figure_53_StyleLight1()
+        public string Figure_53_StyleLight1()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -500,9 +529,10 @@ namespace ScottPlotCookbook
             plt.Style(ScottPlot.Style.Light1);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
-        public void Figure_54_StyleLight2()
+        public string Figure_54_StyleLight2()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -517,9 +547,10 @@ namespace ScottPlotCookbook
             plt.Style(ScottPlot.Style.Light2);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
-        public void Figure_55_StyleGray1()
+        public string Figure_55_StyleGray1()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -534,9 +565,10 @@ namespace ScottPlotCookbook
             plt.Style(ScottPlot.Style.Gray1);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
-        public void Figure_56_StyleGray2()
+        public string Figure_56_StyleGray2()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -551,9 +583,10 @@ namespace ScottPlotCookbook
             plt.Style(ScottPlot.Style.Gray2);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
-        public void Figure_57_StyleBlack()
+        public string Figure_57_StyleBlack()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -568,9 +601,10 @@ namespace ScottPlotCookbook
             plt.Style(ScottPlot.Style.Black);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
-        public void Figure_58_StyleDefault()
+        public string Figure_58_StyleDefault()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -585,9 +619,10 @@ namespace ScottPlotCookbook
             plt.Style(ScottPlot.Style.Default);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
-        public void Figure_59_StyleControl()
+        public string Figure_59_StyleControl()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -602,9 +637,10 @@ namespace ScottPlotCookbook
             plt.Style(ScottPlot.Style.Control);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
-        public void Figure_60_Plotting_With_Errorbars()
+        public string Figure_60_Plotting_With_Errorbars()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -645,9 +681,10 @@ namespace ScottPlotCookbook
             plt.Legend();
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
-        public void Figure_61_Plot_Bar_Data()
+        public string Figure_61_Plot_Bar_Data()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -662,9 +699,10 @@ namespace ScottPlotCookbook
             plt.PlotBar(dataXs, dataSin, barWidth: .5, errorY: yErr, errorCapSize: 2);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
-        public void Figure_62_Plot_Bar_Data_Fancy()
+        public string Figure_62_Plot_Bar_Data_Fancy()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -697,9 +735,10 @@ namespace ScottPlotCookbook
             plt.Legend();
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
-        public void Figure_63_Step_Plot()
+        public string Figure_63_Step_Plot()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -709,9 +748,10 @@ namespace ScottPlotCookbook
             plt.PlotStep(dataXs, dataCos);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
-        public void Figure_64_Manual_Grid_Spacing()
+        public string Figure_64_Manual_Grid_Spacing()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -722,9 +762,10 @@ namespace ScottPlotCookbook
             plt.Grid(xSpacing: 2, ySpacing: .1);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
-        public void Figure_65_Histogram()
+        public string Figure_65_Histogram()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -741,8 +782,10 @@ namespace ScottPlotCookbook
             plt.Axis(null, null, 0, null);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
-        public void Figure_66_CPH()
+
+        public string Figure_66_CPH()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -763,6 +806,7 @@ namespace ScottPlotCookbook
             plt.Axis(null, null, 0, 1);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
     }
 }

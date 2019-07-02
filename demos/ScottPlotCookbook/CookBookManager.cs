@@ -24,58 +24,60 @@ namespace ScottPlotCookbook
             CleanOutputFolder(outputFolderName);
             var recipies = new Recipes(outputFolderName, figureWidth, figureHeight);
 
-            recipies.Figure_01a_Scatter_Sin();
-            recipies.Figure_01b_Automatic_Margins();
-            recipies.Figure_01c_Defined_Axis_Limits();
-            recipies.Figure_01d_Zoom_and_Pan();
-            recipies.Figure_01e_Legend();
-            recipies.Figure_02_Styling_Scatter_Plots();
-            recipies.Figure_03_Plot_XY_Data();
-            recipies.Figure_04_Plot_Lines_Only();
-            recipies.Figure_05_Plot_Points_Only();
-            recipies.Figure_06_Styling_XY_Plots();
-            recipies.Figure_07_Plotting_Points();
-            recipies.Figure_08_Plotting_Text();
-            recipies.Figure_09_Clearing_Plots();
-            recipies.Figure_10_Modifying_Plotted_Data();
+            List<string> hashes = new List<string>();
 
-            recipies.Figure_20_Small_Plot();
-            recipies.Figure_21a_Title_and_Axis_Labels();
-            recipies.Figure_21b_Extra_Padding();
-            recipies.Figure_22_Custom_Colors();
-            recipies.Figure_23_Frameless_Plot();
-            recipies.Figure_24_Disable_the_Grid();
-            recipies.Figure_25_Corner_Axis_Frame();
-            recipies.Figure_26_Horizontal_Ticks_Only();
+            hashes.Add(recipies.Figure_01a_Scatter_Sin());
+            hashes.Add(recipies.Figure_01b_Automatic_Margins());
+            hashes.Add(recipies.Figure_01c_Defined_Axis_Limits());
+            hashes.Add(recipies.Figure_01d_Zoom_and_Pan());
+            hashes.Add(recipies.Figure_01e_Legend());
+            hashes.Add(recipies.Figure_02_Styling_Scatter_Plots());
+            hashes.Add(recipies.Figure_03_Plot_XY_Data());
+            hashes.Add(recipies.Figure_04_Plot_Lines_Only());
+            hashes.Add(recipies.Figure_05_Plot_Points_Only());
+            hashes.Add(recipies.Figure_06_Styling_XY_Plots());
+            hashes.Add(recipies.Figure_07_Plotting_Points());
+            hashes.Add(recipies.Figure_08_Plotting_Text());
+            hashes.Add(recipies.Figure_09_Clearing_Plots());
+            hashes.Add(recipies.Figure_10_Modifying_Plotted_Data());
 
-            recipies.Figure_30_Signal();
-            recipies.Figure_31_Signal_With_Antialiasing_Off();
-            recipies.Figure_32_Signal_Styling();
+            hashes.Add(recipies.Figure_20_Small_Plot());
+            hashes.Add(recipies.Figure_21a_Title_and_Axis_Labels());
+            hashes.Add(recipies.Figure_21b_Extra_Padding());
+            hashes.Add(recipies.Figure_22_Custom_Colors());
+            hashes.Add(recipies.Figure_23_Frameless_Plot());
+            hashes.Add(recipies.Figure_24_Disable_the_Grid());
+            hashes.Add(recipies.Figure_25_Corner_Axis_Frame());
+            hashes.Add(recipies.Figure_26_Horizontal_Ticks_Only());
 
-            recipies.Figure_40_Vertical_and_Horizontal_Lines();
+            hashes.Add(recipies.Figure_30_Signal());
+            hashes.Add(recipies.Figure_31_Signal_With_Antialiasing_Off());
+            hashes.Add(recipies.Figure_32_Signal_Styling());
 
-            recipies.Figure_50_StyleBlue1();
-            recipies.Figure_51_StyleBlue2();
-            recipies.Figure_52_StyleBlue3();
-            recipies.Figure_53_StyleLight1();
-            recipies.Figure_54_StyleLight2();
-            recipies.Figure_55_StyleGray1();
-            recipies.Figure_56_StyleGray2();
-            recipies.Figure_57_StyleBlack();
-            recipies.Figure_58_StyleDefault();
-            recipies.Figure_59_StyleControl();
+            hashes.Add(recipies.Figure_40_Vertical_and_Horizontal_Lines());
 
-            recipies.Figure_60_Plotting_With_Errorbars();
-            recipies.Figure_61_Plot_Bar_Data();
-            recipies.Figure_62_Plot_Bar_Data_Fancy();
-            recipies.Figure_63_Step_Plot();
-            recipies.Figure_64_Manual_Grid_Spacing();
-            recipies.Figure_65_Histogram();
-            recipies.Figure_66_CPH();
+            hashes.Add(recipies.Figure_50_StyleBlue1());
+            hashes.Add(recipies.Figure_51_StyleBlue2());
+            hashes.Add(recipies.Figure_52_StyleBlue3());
+            hashes.Add(recipies.Figure_53_StyleLight1());
+            hashes.Add(recipies.Figure_54_StyleLight2());
+            hashes.Add(recipies.Figure_55_StyleGray1());
+            hashes.Add(recipies.Figure_56_StyleGray2());
+            hashes.Add(recipies.Figure_57_StyleBlack());
+            hashes.Add(recipies.Figure_58_StyleDefault());
+            hashes.Add(recipies.Figure_59_StyleControl());
 
-            GenerateReport(outputFolderName);
-            ValidateImageHashes(outputFolderName);
-            Console.WriteLine("COMPLETE");
+            hashes.Add(recipies.Figure_60_Plotting_With_Errorbars());
+            hashes.Add(recipies.Figure_61_Plot_Bar_Data());
+            hashes.Add(recipies.Figure_62_Plot_Bar_Data_Fancy());
+            hashes.Add(recipies.Figure_63_Step_Plot());
+            hashes.Add(recipies.Figure_64_Manual_Grid_Spacing());
+            hashes.Add(recipies.Figure_65_Histogram());
+            hashes.Add(recipies.Figure_66_CPH());
+
+            ValidateImageHashes(hashes.ToArray());
+
+            Console.WriteLine("\nCOOKBOOK GENERATION COMPLETE");
             Console.ReadLine();
         }
 
@@ -138,79 +140,83 @@ namespace ScottPlotCookbook
             return code;
         }
 
-        public void ValidateImageHashes(string outputFolderName)
+        public void ValidateImageHashes(string[] hashLines)
         {
-            string knownHashes = "";
-            knownHashes += "F1BF24218B13F98AF1B52EE6D2FE1F81"; // 01a_Scatter_Sin.png
-            knownHashes += "5398EEDD564CC6152F354502CDAE8F1C"; // 01b_Automatic_Margins.png
-            knownHashes += "5A479D3AA181AF49F521B5A5E00A3BD6"; // 01d_Zoom_and_Pan.png
-            knownHashes += "FAD229B3D6D9930857961F3F0EFDDEA8"; // 01e_Legend.png
-            knownHashes += "B5AEA70494FC7E9C7E3E6FEAD123BEC6"; // 02_Styling_Scatter_Plots.png
-            knownHashes += "5D29D3600F22FBC55614461206739252"; // 04_Plot_Lines_Only.png
-            knownHashes += "C55A4672469D6112A42757C0AE14B029"; // 05_Plot_Points_Only.png
-            knownHashes += "9492F419A62982ABA8EA7C95D823A078"; // 06_Styling_XY_Plots.png
-            knownHashes += "5B6B5791ADB1CDE4898E370B0E07B0C8"; // 07_Plotting_Points.png
-            knownHashes += "3CB596AF995E0A0463EBC3FA6AC918B3"; // 08_Plotting_Text.png
-            knownHashes += "DE08A7F272BCB2D513DDCB92C8EAE61C"; // 09_Clearing_Plots.png
-            knownHashes += "E89FFE5ED7A23469A849DBC7E882E701"; // 10_Modifying_Plotted_Data.png
-            knownHashes += "CDE7A970B392899AF1D891A94495C297"; // 20_Small_Plot.png
-            knownHashes += "FD8D51D822F47E8CD757369831F1479C"; // 22_Custom_Colors.png
-            knownHashes += "1A384F0231B728C98DAD5F235939626A"; // 23_Frameless_Plot.png
-            knownHashes += "F1AE329A8C901CD85A83E0A8D8126AE4"; // 24_Disable_the_Grid.png
-            knownHashes += "1DD94924518186E386B8B6744362B0F2"; // 25_Corner_Axis_Frame.png
-            knownHashes += "701D37B85C3316FCD865F4CFAA31AB26"; // 26_Horizontal_Ticks_Only.png
-            knownHashes += "D2939FAC08DF7095D6C9E04AE0A92DD7"; // 32_Signal_Styling.png
-            knownHashes += "917AEA31B8D1766984AA1513FF8F75D8"; // 40_Vertical_and_Horizontal_Lines.png
-            knownHashes += "C45A631C4260ACC22E8CE768D7123803"; // 50_StyleBlue1.png
-            knownHashes += "AA832CD0A0B6118203BB2A7AE4E5B0C8"; // 51_StyleBlue2.png
-            knownHashes += "17472BB102312A0E5749265CAE6FA664"; // 52_StyleBlue3.png
-            knownHashes += "18A08A98DEABBA8D07E2BAA6536C4BF4"; // 53_StyleLight1.png
-            knownHashes += "8C694D2A044845B078FA159A4DE707DC"; // 54_StyleLight2.png
-            knownHashes += "3CA4FF2051D836C9EC3D681E6F74EA0F"; // 55_StyleGray1.png
-            knownHashes += "FB11487B08871FA5DC449A04CA1866B1"; // 56_StyleGray2.png
-            knownHashes += "BA3F8414CF88A5B07EE2A2DC990B1E8A"; // 57_StyleBlack.png
-            knownHashes += "E9AB4B8B21026C8A8F1ECCDDBD5889C3"; // 58_StyleDefault.png
-            knownHashes += "FE164ACD044F0A0F6CA858C4E2891BC5"; // 59_StyleControl.png
-            knownHashes += "C7150625F8158F607EBB840663967D22"; // 60_Plotting_With_Errorbars.png
-            knownHashes += "0E70C73BEA58AE15467363592E839E26"; // 61_Plot_Bar_Data.png
-            knownHashes += "342298588383BB3CF748FFA48D618438"; // 62_Plot_Bar_Data_Fancy.png
-            knownHashes += "AF0CEE68A78E649357F7930B255B062D"; // 01c_Defined_Axis_Limits.png
-            knownHashes += "BC96F9ABB8333D25CC120C8133EFD613"; // 03_Plot_XY_Data.png
-            knownHashes += "9B46257F74B67B6B1217B8FBB6AD3ACE"; // 21a_Title_and_Axis_Labels.png
-            knownHashes += "C74AFBB386C11DC426F6007C92F1CD7E"; // 21b_Extra_Padding.png
-            knownHashes += "CDF51C783DFFF8D6BE83CD754946F85A"; // 63_Step_Plot.png
+            string dontHashFunctions = "";
+            dontHashFunctions += "30_Signal()\n"; // changes due to benchmark label
+            dontHashFunctions += "31_Signal_With_Antialiasing_Off()\n"; // changes due to benchmark label
 
-            var md5 = System.Security.Cryptography.MD5.Create();
-            string[] images = System.IO.Directory.GetFiles($"./{outputFolderName}", "*.png");
-            Array.Sort(images);
-            string sourceCodeToAdd = "";
-            foreach (string filePath in images)
+            string knownHahes = "";
+            knownHahes += "F19AAD6C7E8831AE6950D7466C27CC09 01a_Scatter_Sin()\n";
+            knownHahes += "2ACE246498ED9751FEDF869C6F0602E8 01b_Automatic_Margins()\n";
+            knownHahes += "79A4E9CA633B3A95AA69C2CF28351BF2 01c_Defined_Axis_Limits()\n";
+            knownHahes += "E3187703C560CAC6C13C86FF91279B22 01d_Zoom_and_Pan()\n";
+            knownHahes += "27BF96B88858EC007B4BBA92D8252DBF 01e_Legend()\n";
+            knownHahes += "6CC2D90F79EEAE0A0534522292C09901 02_Styling_Scatter_Plots()\n";
+            knownHahes += "29FCEEC7E7B8517C59877B6C8EBD03A1 03_Plot_XY_Data()\n";
+            knownHahes += "BD4BD41AB890F6B3A96E3DF118AFC5BC 04_Plot_Lines_Only()\n";
+            knownHahes += "D232B7DC34989D5128B45BAA3A2AFBD5 05_Plot_Points_Only()\n";
+            knownHahes += "2A1E94173C51B411F0AB69F0E715DC3A 06_Styling_XY_Plots()\n";
+            knownHahes += "49EBD7AD30439E771ECD7CB5E7A32E2C 07_Plotting_Points()\n";
+            knownHahes += "00F8E55344AA4B997AC750EF4433A538 08_Plotting_Text()\n";
+            knownHahes += "CE36993D993E01F96EDF544E4404C03C 09_Clearing_Plots()\n";
+            knownHahes += "63483359F18FC63792D75817C0B26B83 10_Modifying_Plotted_Data()\n";
+            knownHahes += "93F00155ABC24CE2F3EC377FB8CC991C 20_Small_Plot()\n";
+            knownHahes += "C1C14875B085144B5CF6BCBF62BD379E 21a_Title_and_Axis_Labels()\n";
+            knownHahes += "1D44E0EC1E97211BD05E96405B346A7A 21b_Extra_Padding()\n";
+            knownHahes += "46E3B3CCE955204526A4AE2BD4CD8B40 22_Custom_Colors()\n";
+            knownHahes += "97128192B975404E99C093952871BE64 23_Frameless_Plot()\n";
+            knownHahes += "2AE685629FE075F399C04718468D6D4D 24_Disable_the_Grid()\n";
+            knownHahes += "8F04D5A37EE745EAA20A7D2B0A2C37D6 25_Corner_Axis_Frame()\n";
+            knownHahes += "FA7F5D79DD7881A8E683CC905B31A115 26_Horizontal_Ticks_Only()\n";
+            knownHahes += "027C1965628073DC1C3C63FFD6CFC2A4 30_Signal()\n";
+            knownHahes += "A195BF94C538C5249E4B56505EF12D3A 31_Signal_With_Antialiasing_Off()\n";
+            knownHahes += "B662FD3A0D5BA1DA8C8DBDFA2529F16A 32_Signal_Styling()\n";
+            knownHahes += "8257EACCFDB5AA8717187CCB4CFFE383 40_Vertical_and_Horizontal_Lines()\n";
+            knownHahes += "05EFB448C0C216AA100835739A9A2DE2 50_StyleBlue1()\n";
+            knownHahes += "F52223B082A0F977751E69EA355887CC 51_StyleBlue2()\n";
+            knownHahes += "7D2D35B91727B67E8D81C28C03490527 52_StyleBlue3()\n";
+            knownHahes += "51685FE67C19F9BB5D667EB057533E0D 53_StyleLight1()\n";
+            knownHahes += "FE1A97953EF3B0A4FC8FED6053D3A815 54_StyleLight2()\n";
+            knownHahes += "E5D30E489832856E2D480F23032A0862 55_StyleGray1()\n";
+            knownHahes += "D280C85A67025A467BADA3E28B43E3D7 56_StyleGray2()\n";
+            knownHahes += "869C57A78ABF7120D58DA737C041D19B 57_StyleBlack()\n";
+            knownHahes += "C02D5F2DC9A164EEDB2D04B22A6093F1 58_StyleDefault()\n";
+            knownHahes += "148788132B3AA9A3C81EA066F8EFD1EE 59_StyleControl()\n";
+            knownHahes += "DA9828A14CDDFA2CAC31EA214C57F3FE 60_Plotting_With_Errorbars()\n";
+            knownHahes += "5568C8AD48CE9D734B1A27E1A8639E22 61_Plot_Bar_Data()\n";
+            knownHahes += "9AE51BF77753951F7E71BE38CE4BC276 62_Plot_Bar_Data_Fancy()\n";
+            knownHahes += "63462062CE1EC40B74F6919174C46737 63_Step_Plot()\n";
+            knownHahes += "71C7AD954E03BB5580D6253379FAA368 64_Manual_Grid_Spacing()\n";
+            knownHahes += "9D1542421E6B8ACC5428BF9A07479AA7 65_Histogram()\n";
+            knownHahes += "BEA38BDABDA26A61C1F46802F225D68E 66_CPH()\n";
+
+            string hashCodeNeeded = "";
+
+            foreach (string hashLine in hashLines)
             {
-                string hashString = "";
-                string fileName = System.IO.Path.GetFileName(filePath);
 
-                // skip images with benchmarks (which change every time)
-                if (fileName.StartsWith("30_Signal") || fileName.StartsWith("31_Signal"))
+                string[] hashParts = hashLine.Split(':');
+                string functionName = hashParts[0] + "()";
+                string hash = hashParts[1];
+
+                if (dontHashFunctions.Contains(functionName))
                     continue;
 
-                using (var stream = System.IO.File.OpenRead(filePath))
-                {
-                    byte[] hashBytes = md5.ComputeHash(stream);
-                    for (int i = 0; i < hashBytes.Length; i++)
-                        hashString += hashBytes[i].ToString("X2");
-                }
-                if (!knownHashes.Contains(hashString))
-                {
-                    Console.WriteLine($"[{hashString}] UNKNOWN - {fileName}");
-                    sourceCodeToAdd += $"knownHashes += \"{hashString}\"; // {fileName}\n";
-                }
+                if (!knownHahes.Contains(hash))
+                    hashCodeNeeded += $"knownHahes += \"{hash} {functionName}\\n\";\n";
+                else
+                    Console.WriteLine($"Validated hash ({hash}) for {functionName}");
             }
-            if (sourceCodeToAdd.Length > 0)
+
+            if (hashCodeNeeded.Length == 0)
             {
-                Console.WriteLine($"\n\nYOU MAY WANT TO ADD THIS SOURCE CODE:\n");
-                Console.WriteLine(sourceCodeToAdd);
-                Console.WriteLine("\npress ENTER to continue...");
-                Console.ReadLine();
+                Console.WriteLine("\nAll hashes verified unchanged.");
+            }
+            else
+            {
+                Console.WriteLine("\nWARNING: HASH CODES CHANGED!");
+                Console.WriteLine(hashCodeNeeded);
             }
         }
 
