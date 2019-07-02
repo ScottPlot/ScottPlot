@@ -606,8 +606,8 @@ plt.SaveFig(fileName);
 
 ```cs
 var plt = new ScottPlot.Plot(600, 400);
-plt.PlotScatter(dataXs, dataSin, stepDisplay: true);
-plt.PlotScatter(dataXs, dataCos, stepDisplay: true, markerSize: 0);
+plt.PlotStep(dataXs, dataSin);
+plt.PlotStep(dataXs, dataCos);
 plt.SaveFig(fileName);
 ```
 
@@ -656,10 +656,8 @@ var plt = new ScottPlot.Plot(600, 400);
 plt.Title("Cumulative Probability Histogram");
 plt.YLabel("Probability (fraction)");
 plt.XLabel("Value (units)");
-plt.PlotScatter(hist1.bins, hist1.cumulativeFrac, label: "sample A",
-    stepDisplay: true, markerSize: 0, lineWidth: 1.5);
-plt.PlotScatter(hist2.bins, hist2.cumulativeFrac, label: "sample B",
-    stepDisplay: true, markerSize: 0, lineWidth: 1.5);
+plt.PlotStep(hist1.bins, hist1.cumulativeFrac, lineWidth: 1.5, label: "sample A");
+plt.PlotStep(hist2.bins, hist2.cumulativeFrac, lineWidth: 1.5, label: "sample B");
 plt.Legend();
 plt.Axis(null, null, 0, 1);
 plt.SaveFig(fileName);

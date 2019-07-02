@@ -95,7 +95,7 @@ namespace ScottPlotDemoHistogram
             if (rbGraphBar.Checked)
                 scottPlotUC2.plt.PlotBar(bins, counts, barWidth: bins[1] - bins[0]);
             else
-                scottPlotUC2.plt.PlotScatter(bins, counts, stepDisplay: true, markerSize: 0);
+                scottPlotUC2.plt.PlotStep(bins, counts);
             scottPlotUC2.plt.PlotHLine(0, Color.Black);
             scottPlotUC2.Render();
         }
@@ -109,7 +109,7 @@ namespace ScottPlotDemoHistogram
             if (rbGraphBar.Checked)
                 scottPlotUC2.plt.PlotBar(bins, fracs);
             else
-                scottPlotUC2.plt.PlotScatter(bins, fracs, stepDisplay: true, markerSize: 0);
+                scottPlotUC2.plt.PlotStep(bins, fracs);
             scottPlotUC2.plt.PlotHLine(0, Color.Black);
             scottPlotUC2.Render();
         }
@@ -123,7 +123,7 @@ namespace ScottPlotDemoHistogram
             if (rbGraphBar.Checked)
                 scottPlotUC2.plt.PlotBar(bins, cumFracs);
             else
-                scottPlotUC2.plt.PlotScatter(bins, cumFracs, stepDisplay: true, markerSize: 0);
+                scottPlotUC2.plt.PlotScatter(bins, cumFracs);
             scottPlotUC2.plt.PlotHLine(0, Color.Black);
             scottPlotUC2.Render();
         }
