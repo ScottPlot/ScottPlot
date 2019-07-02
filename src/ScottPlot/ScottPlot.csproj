@@ -47,9 +47,11 @@
     <Compile Include="DataGen.cs" />
     <Compile Include="Histogram.cs" />
     <Compile Include="MouseTracker.cs" />
+    <Compile Include="OHLC.cs" />
     <Compile Include="Plottable.cs" />
     <Compile Include="PlottableAxLine.cs" />
     <Compile Include="PlottableBar.cs" />
+    <Compile Include="PlottableOHLC.cs" />
     <Compile Include="PlottableScatter.cs" />
     <Compile Include="PlottableSignal.cs" />
     <Compile Include="PlottableText.cs" />
