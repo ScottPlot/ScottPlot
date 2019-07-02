@@ -9,6 +9,8 @@ var plt = new ScottPlot.Plot(600, 400);
 plt.PlotScatter(dataXs, dataSin);
 plt.PlotScatter(dataXs, dataCos);
 plt.SaveFig(fileName);
+
+string hash = ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/01a_Scatter_Sin.png)

@@ -78,7 +78,10 @@ namespace ScottPlotCookbook
             ValidateImageHashes(hashes.ToArray());
 
             Console.WriteLine("\nCOOKBOOK GENERATION COMPLETE");
-            Console.ReadLine();
+            Console.WriteLine("\nOptionally update the cookbook with:");
+            string cookBookCopierPath = System.IO.Path.GetFullPath("../../");
+            Console.WriteLine($"cd \"{cookBookCopierPath}\" & \"COPY-COOKBOOK.bat\"");
+            Console.WriteLine();
         }
 
         public void CleanOutputFolder(string outputFolderName)

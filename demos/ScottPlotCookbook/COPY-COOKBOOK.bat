@@ -1,4 +1,3 @@
-::dir .\bin\Debug\images
 del /q ..\..\doc\cookbook\images\*.*
 copy .\bin\Debug\images\*.* ..\..\doc\cookbook\images\*.*
 del /q ..\..\doc\cookbook\README.md
