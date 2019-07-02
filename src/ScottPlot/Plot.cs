@@ -257,6 +257,15 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Plot open/high/low/close data
+        /// </summary>
+        public void PlotOHLC(OHLC[] ohlcs)
+        {
+            PlottableOHLC ohlc = new PlottableOHLC(ohlcs);
+            settings.plottables.Add(ohlc);
+        }
+
+        /// <summary>
         /// Plot a vertical line at the given X position
         /// </summary>
         public void PlotVLine(double x, Color? color = null, double lineWidth = 1, string label = null, bool draggable = false, double dragLimitLower = double.NegativeInfinity, double dragLimitUpper = double.PositiveInfinity)

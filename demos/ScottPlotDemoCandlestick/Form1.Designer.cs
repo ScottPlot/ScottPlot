@@ -72,6 +72,7 @@
             this.Controls.Add(this.scottPlotUC1);
             this.Name = "Form1";
             this.Text = "ScottPlot Candlestick Demo";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
 
         }
