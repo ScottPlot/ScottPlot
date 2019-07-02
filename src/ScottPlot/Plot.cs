@@ -213,12 +213,23 @@ namespace ScottPlot
         /// <summary>
         /// Plot a scatter plot from X and Y points
         /// </summary>
-        public void PlotScatter(double[] xs, double[] ys, Color? color = null, double lineWidth = 1, double markerSize = 5, string label = null, double[] errorX = null, double[] errorY = null, double errorLineWidth = 1, double errorCapSize = 3, bool stepDisplay = false)
+        public void PlotScatter(double[] xs, double[] ys, Color? color = null, double lineWidth = 1, double markerSize = 5, string label = null, double[] errorX = null, double[] errorY = null, double errorLineWidth = 1, double errorCapSize = 3)
         {
             if (color == null)
                 color = settings.GetNextColor();
-            PlottableScatter scat = new PlottableScatter(xs, ys, color: (Color)color, lineWidth: lineWidth, markerSize: markerSize, label: label, errorX: errorX, errorY: errorY, errorLineWidth: errorLineWidth, errorCapSize: errorCapSize, stepDisplay: stepDisplay);
+            PlottableScatter scat = new PlottableScatter(xs, ys, color: (Color)color, lineWidth: lineWidth, markerSize: markerSize, label: label, errorX: errorX, errorY: errorY, errorLineWidth: errorLineWidth, errorCapSize: errorCapSize, stepDisplay: false);
             settings.plottables.Add(scat);
+        }
+
+        /// <summary>
+        /// Create a step plot from X and Y points
+        /// </summary>
+        public void PlotStep(double[] xs, double[] ys, Color? color = null, double lineWidth = 1, string label = null)
+        {
+            if (color == null)
+                color = settings.GetNextColor();
+            PlottableScatter step = new PlottableScatter(xs, ys, color: (Color)color, lineWidth: lineWidth, markerSize: 0, label: label, errorX: null, errorY: null, errorLineWidth: 0, errorCapSize: 0, stepDisplay: true);
+            settings.plottables.Add(step);
         }
 
         /// <summary>
