@@ -42,6 +42,9 @@ namespace ScottPlotDemoCandlestick
                 volumes[i] = 1000 + rand.NextDouble() * 500;
             }
 
+            scottPlotUC1.plt.Style(ScottPlot.Style.Black);
+            scottPlotUC1.plt.Grid(false);
+
             scottPlotUC1.plt.Clear();
             scottPlotUC1.plt.YLabel("Share Price", fontSize: 10);
             scottPlotUC1.plt.Title("ScottPlot Candlestick Demo");
