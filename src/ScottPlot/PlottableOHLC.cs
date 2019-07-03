@@ -66,6 +66,11 @@ namespace ScottPlot
 
         public void RenderCandles(Settings settings)
         {
+            double fractionalTickWidth = .7;
+            double spacingTime = ohlcs[1].epochSeconds - ohlcs[0].epochSeconds;
+            double spacingPx = spacingTime * settings.xAxisScale;
+            float boxWidth = (float)(spacingPx / 2 * fractionalTickWidth);
+
             foreach (OHLC ohlc in ohlcs)
             {
                 Pen pen = (ohlc.closedHigher) ? penUp : penDown;
@@ -84,7 +89,6 @@ namespace ScottPlot
                 // the candle
                 Point boxLowerLeft = settings.GetPixel(ohlc.epochSeconds, ohlc.lowestOpenClose);
                 Point boxUpperRight = settings.GetPixel(ohlc.epochSeconds, ohlc.highestOpenClose);
-                float boxWidth = 2;
                 settings.gfxData.FillRectangle(brush, boxLowerLeft.X - boxWidth, boxUpperRight.Y, boxWidth * 2, boxLowerLeft.Y - boxUpperRight.Y);
             }
         }
