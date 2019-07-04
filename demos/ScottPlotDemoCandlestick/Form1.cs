@@ -42,13 +42,15 @@ namespace ScottPlotDemoCandlestick
                 volumes[i] = 1000 + rand.NextDouble() * 500;
             }
 
-            scottPlotUC1.plt.Style(ScottPlot.Style.Black);
-            scottPlotUC1.plt.Grid(false);
-
+            //scottPlotUC1.plt.Style(ScottPlot.Style.Black);
+            //scottPlotUC1.plt.Grid(false);
             scottPlotUC1.plt.Clear();
             scottPlotUC1.plt.YLabel("Share Price", fontSize: 10);
             scottPlotUC1.plt.Title("ScottPlot Candlestick Demo");
-            scottPlotUC1.plt.PlotOHLC(ohlcs);
+            if (rbCandle.Checked)
+                scottPlotUC1.plt.PlotCandlestick(ohlcs);
+            else
+                scottPlotUC1.plt.PlotOHLC(ohlcs);
             scottPlotUC1.plt.AxisAuto();
             scottPlotUC1.Render();
 
@@ -61,6 +63,16 @@ namespace ScottPlotDemoCandlestick
         }
 
         private void Button1_Click(object sender, EventArgs e)
+        {
+            GenerateNewData();
+        }
+
+        private void RbCandle_CheckedChanged(object sender, EventArgs e)
+        {
+            GenerateNewData();
+        }
+
+        private void RbOHLC_CheckedChanged(object sender, EventArgs e)
         {
             GenerateNewData();
         }
