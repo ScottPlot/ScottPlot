@@ -61,7 +61,10 @@ namespace ScottPlot
 
         public override void Render(Settings settings)
         {
-            RenderCandles(settings);
+            if (displayCandles)
+                RenderCandles(settings);
+            else
+                RenderOhlc(settings);
         }
 
         public void RenderCandles(Settings settings)
@@ -75,6 +78,7 @@ namespace ScottPlot
             {
                 Pen pen = (ohlc.closedHigher) ? penUp : penDown;
                 Brush brush = (ohlc.closedHigher) ? brushUp : brushDown;
+                pen.Width = 2;
 
                 // the wick below the box
                 Point wickLowBot = settings.GetPixel(ohlc.epochSeconds, ohlc.low);
@@ -95,7 +99,28 @@ namespace ScottPlot
 
         public void RenderOhlc(Settings settings)
         {
-            throw new NotImplementedException("Only candles supported at this time.");
+            double fractionalTickWidth = 1;
+            double spacingTime = ohlcs[1].epochSeconds - ohlcs[0].epochSeconds;
+            double spacingPx = spacingTime * settings.xAxisScale;
+            float boxWidth = (float)(spacingPx / 2 * fractionalTickWidth);
+
+            foreach (OHLC ohlc in ohlcs)
+            {
+                Pen pen = (ohlc.closedHigher) ? penUp : penDown;
+                pen.Width = 2;
+
+                // the main line
+                Point wickTop = settings.GetPixel(ohlc.epochSeconds, ohlc.low);
+                Point wickBot = settings.GetPixel(ohlc.epochSeconds, ohlc.high);
+                settings.gfxData.DrawLine(pen, wickBot, wickTop);
+
+                // open and close lines
+                float xPx = wickTop.X;
+                float yPxOpen = (float)settings.GetPixel(0, ohlc.open).Y;
+                float yPxClose = (float)settings.GetPixel(0, ohlc.close).Y;
+                settings.gfxData.DrawLine(pen, xPx - boxWidth, yPxOpen, xPx, yPxOpen);
+                settings.gfxData.DrawLine(pen, xPx + boxWidth, yPxClose, xPx, yPxClose);
+            }
         }
     }
 }

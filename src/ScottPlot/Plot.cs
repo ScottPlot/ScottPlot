@@ -179,9 +179,9 @@ namespace ScottPlot
         /// <summary>
         /// Clear all plot objects
         /// </summary>
-        public void Clear(bool axisLines = true, bool scatterPlots = true, bool signalPlots = true, bool text = true, bool bar = true)
+        public void Clear(bool axisLines = true, bool scatterPlots = true, bool signalPlots = true, bool text = true, bool bar = true, bool finance = true)
         {
-            settings.Clear(axisLines, scatterPlots, signalPlots, text, bar);
+            settings.Clear(axisLines, scatterPlots, signalPlots, text, bar, finance);
         }
 
         /// <summary>
@@ -257,11 +257,20 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Plot open/high/low/close data
+        /// Plot open/high/low/close data as a traditional OHLC plot
         /// </summary>
         public void PlotOHLC(OHLC[] ohlcs)
         {
-            PlottableOHLC ohlc = new PlottableOHLC(ohlcs);
+            PlottableOHLC ohlc = new PlottableOHLC(ohlcs, displayCandles: false);
+            settings.plottables.Add(ohlc);
+        }
+
+        /// <summary>
+        /// Plot open/high/low/close data as a candlestick plot
+        /// </summary>
+        public void PlotCandlestick(OHLC[] ohlcs)
+        {
+            PlottableOHLC ohlc = new PlottableOHLC(ohlcs, displayCandles: true);
             settings.plottables.Add(ohlc);
         }
 
