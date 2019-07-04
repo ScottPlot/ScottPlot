@@ -44,7 +44,7 @@ namespace ScottPlot
 
         public override void Render(Settings settings)
         {
-            Point pt1, pt2;
+            PointF pt1, pt2;
 
             if (vertical)
             {

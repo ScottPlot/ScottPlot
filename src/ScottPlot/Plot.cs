@@ -379,9 +379,9 @@ namespace ScottPlot
         /// <summary>
         /// Return the pixel position for the given coordinate on the axis
         /// </summary>
-        public Point CoordinateToPixel(double locationX, double locationY)
+        public PointF CoordinateToPixel(double locationX, double locationY)
         {
-            Point pixelLocation = settings.GetPixel(locationX, locationY);
+            PointF pixelLocation = settings.GetPixel(locationX, locationY);
             pixelLocation.X += settings.dataOrigin.X;
             pixelLocation.Y += settings.dataOrigin.Y;
             return pixelLocation;
@@ -390,7 +390,7 @@ namespace ScottPlot
         /// <summary>
         /// Return the pixel position for the given coordinate on the axis
         /// </summary>
-        public Point CoordinateToPixel(PointF location)
+        public PointF CoordinateToPixel(PointF location)
         {
             return CoordinateToPixel(location.X, location.Y);
         }
