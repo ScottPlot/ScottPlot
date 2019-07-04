@@ -81,18 +81,18 @@ namespace ScottPlot
                 pen.Width = 2;
 
                 // the wick below the box
-                Point wickLowBot = settings.GetPixel(ohlc.epochSeconds, ohlc.low);
-                Point wickLowTop = settings.GetPixel(ohlc.epochSeconds, ohlc.lowestOpenClose);
+                PointF wickLowBot = settings.GetPixel(ohlc.epochSeconds, ohlc.low);
+                PointF wickLowTop = settings.GetPixel(ohlc.epochSeconds, ohlc.lowestOpenClose);
                 settings.gfxData.DrawLine(pen, wickLowBot, wickLowTop);
 
                 // the wick above the box
-                Point wickHighBot = settings.GetPixel(ohlc.epochSeconds, ohlc.highestOpenClose);
-                Point wickHighTop = settings.GetPixel(ohlc.epochSeconds, ohlc.high);
+                PointF wickHighBot = settings.GetPixel(ohlc.epochSeconds, ohlc.highestOpenClose);
+                PointF wickHighTop = settings.GetPixel(ohlc.epochSeconds, ohlc.high);
                 settings.gfxData.DrawLine(pen, wickHighBot, wickHighTop);
 
                 // the candle
-                Point boxLowerLeft = settings.GetPixel(ohlc.epochSeconds, ohlc.lowestOpenClose);
-                Point boxUpperRight = settings.GetPixel(ohlc.epochSeconds, ohlc.highestOpenClose);
+                PointF boxLowerLeft = settings.GetPixel(ohlc.epochSeconds, ohlc.lowestOpenClose);
+                PointF boxUpperRight = settings.GetPixel(ohlc.epochSeconds, ohlc.highestOpenClose);
                 settings.gfxData.FillRectangle(brush, boxLowerLeft.X - boxWidth, boxUpperRight.Y, boxWidth * 2, boxLowerLeft.Y - boxUpperRight.Y);
             }
         }
@@ -110,8 +110,8 @@ namespace ScottPlot
                 pen.Width = 2;
 
                 // the main line
-                Point wickTop = settings.GetPixel(ohlc.epochSeconds, ohlc.low);
-                Point wickBot = settings.GetPixel(ohlc.epochSeconds, ohlc.high);
+                PointF wickTop = settings.GetPixel(ohlc.epochSeconds, ohlc.low);
+                PointF wickBot = settings.GetPixel(ohlc.epochSeconds, ohlc.high);
                 settings.gfxData.DrawLine(pen, wickBot, wickTop);
 
                 // open and close lines

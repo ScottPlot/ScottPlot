@@ -102,13 +102,13 @@ namespace ScottPlot
 
                     if (axLine.vertical == true)
                     {
-                        Point linePosPx = settings.GetPixel(axLine.position, 0);
+                        PointF linePosPx = settings.GetPixel(axLine.position, 0);
                         if (Math.Abs(linePosPx.X - eLocation.X) < 5)
                             return axLine;
                     }
                     else
                     {
-                        Point linePosPx = settings.GetPixel(0, axLine.position);
+                        PointF linePosPx = settings.GetPixel(0, axLine.position);
                         if (Math.Abs(linePosPx.Y - eLocation.Y) < 5)
                             return axLine;
                     }

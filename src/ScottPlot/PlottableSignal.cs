@@ -60,7 +60,7 @@ namespace ScottPlot
 
         private void RenderLowDensity(Settings settings, int visibleIndex1, int visibleIndex2)
         {
-            List<Point> linePoints = new List<Point>(visibleIndex2 - visibleIndex1 + 2);
+            List<PointF> linePoints = new List<PointF>(visibleIndex2 - visibleIndex1 + 2);
             if (visibleIndex2 > ys.Length - 2)
                 visibleIndex2 = ys.Length - 2;
             if (visibleIndex1 < 0)
@@ -69,13 +69,13 @@ namespace ScottPlot
                 linePoints.Add(settings.GetPixel(samplePeriod * i + xOffset, ys[i] + yOffset));
 
             settings.gfxData.DrawLines(pen, linePoints.ToArray());
-            foreach (Point point in linePoints)
+            foreach (PointF point in linePoints)
                 settings.gfxData.FillEllipse(brush, point.X - markerSize / 2, point.Y - markerSize / 2, markerSize, markerSize);
         }
 
         private void RenderHighDensity(Settings settings, double offsetPoints, double columnPointCount)
         {
-            List<Point> linePoints = new List<Point>(settings.dataSize.Width * 2 + 1);
+            List<PointF> linePoints = new List<PointF>(settings.dataSize.Width * 2 + 1);
             for (int xPx = 0; xPx < settings.dataSize.Width; xPx++)
             {
                 // determine data indexes for this pixel column
@@ -100,19 +100,19 @@ namespace ScottPlot
                     if (ys[i] > highestValue)
                         highestValue = ys[i];
                 }
-                int yPxHigh = settings.GetPixel(0, lowestValue + yOffset).Y;
-                int yPxLow = settings.GetPixel(0, highestValue + yOffset).Y;
+                float yPxHigh = settings.GetPixel(0, lowestValue + yOffset).Y;
+                float yPxLow = settings.GetPixel(0, highestValue + yOffset).Y;
 
                 // adjust order of points to enhance anti-aliasing
                 if ((linePoints.Count < 2) || (yPxLow < linePoints[linePoints.Count - 1].Y))
                 {
-                    linePoints.Add(new Point(xPx, yPxLow));
-                    linePoints.Add(new Point(xPx, yPxHigh));
+                    linePoints.Add(new PointF(xPx, yPxLow));
+                    linePoints.Add(new PointF(xPx, yPxHigh));
                 }
                 else
                 {
-                    linePoints.Add(new Point(xPx, yPxHigh));
-                    linePoints.Add(new Point(xPx, yPxLow));
+                    linePoints.Add(new PointF(xPx, yPxHigh));
+                    linePoints.Add(new PointF(xPx, yPxLow));
                 }
             }
 
