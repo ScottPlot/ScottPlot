@@ -56,6 +56,13 @@ Method | Description
 `plt.TightenLayout()` | Reduce space between data and labels
 `plt.Style()` | Set colors of all of the plot elements
 
+### Matching Functions
+
+Method | Description
+---|---
+`plt.MatchAxis()` | use axis limits from another ScottPlot
+`plt.MatchPadding()` | use frame padding from another ScottPlot
+
 ### Image Settings
 
 Method | Description
