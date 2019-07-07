@@ -222,6 +222,7 @@ namespace ScottPlot
                 case "Auto-Axis":
                     cmRightClickMenu.Hide();
                     plt.AxisAuto();
+                    OnMouseDragged(EventArgs.Empty);
                     Render();
                     break;
                 case "Clear":
@@ -242,6 +243,7 @@ namespace ScottPlot
             if (e.Button == MouseButtons.Middle)
             {
                 plt.AxisAuto();
+                OnMouseDragged(EventArgs.Empty);
                 Render();
             }
             else if (e.Button == MouseButtons.Right && mouseDownMsec < 100)

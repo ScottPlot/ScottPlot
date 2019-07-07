@@ -52,13 +52,15 @@ namespace ScottPlotDemoCandlestick
             else
                 scottPlotUC1.plt.PlotOHLC(ohlcs);
             scottPlotUC1.plt.AxisAuto();
-            scottPlotUC1.Render();
 
             scottPlotUC2.plt.Clear();
             scottPlotUC2.plt.YLabel("Volume", fontSize: 10);
             scottPlotUC2.plt.PlotBar(timestamps, volumes, barWidth: .5);
             scottPlotUC2.plt.AxisAuto(.01, .1);
             scottPlotUC2.plt.Axis(null, null, 0, null);
+
+            scottPlotUC1.plt.MatchPadding(scottPlotUC2.plt, horizontal: true, vertical: false);
+            scottPlotUC1.Render();
             scottPlotUC2.Render();
         }
 
@@ -75,6 +77,18 @@ namespace ScottPlotDemoCandlestick
         private void RbOHLC_CheckedChanged(object sender, EventArgs e)
         {
             GenerateNewData();
+        }
+
+        private void ScottPlotUC1_MouseDragged(object sender, EventArgs e)
+        {
+            scottPlotUC2.plt.MatchAxis(scottPlotUC1.plt, horizontal: true, vertical: false);
+            scottPlotUC2.Render();
+        }
+
+        private void ScottPlotUC2_MouseDragged(object sender, EventArgs e)
+        {
+            scottPlotUC1.plt.MatchAxis(scottPlotUC2.plt, horizontal: true, vertical: false);
+            scottPlotUC1.Render();
         }
     }
 }
