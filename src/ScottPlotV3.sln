@@ -37,6 +37,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo - Histogram", "..\demo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo - Candlestick", "..\demos\ScottPlotDemoCandlestick\Demo - Candlestick.csproj", "{D8B701C1-456D-4252-8455-8E4920C0F85A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo - Incoming Data", "..\demos\ScottPlotDemoIncomingData\Demo - Incoming Data.csproj", "{D245F573-FDDE-4FCB-B187-3910AD8515AF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -107,6 +109,10 @@ Global
 		{D8B701C1-456D-4252-8455-8E4920C0F85A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D8B701C1-456D-4252-8455-8E4920C0F85A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D8B701C1-456D-4252-8455-8E4920C0F85A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D245F573-FDDE-4FCB-B187-3910AD8515AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D245F573-FDDE-4FCB-B187-3910AD8515AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D245F573-FDDE-4FCB-B187-3910AD8515AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D245F573-FDDE-4FCB-B187-3910AD8515AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -127,6 +133,7 @@ Global
 		{9EF2753F-D672-46FD-9009-A00585812CC4} = {2F78F109-9976-42FF-8324-9A27EF3BD776}
 		{EC9F6EEA-CA64-4166-B851-4102B1CD9030} = {2F78F109-9976-42FF-8324-9A27EF3BD776}
 		{D8B701C1-456D-4252-8455-8E4920C0F85A} = {2F78F109-9976-42FF-8324-9A27EF3BD776}
+		{D245F573-FDDE-4FCB-B187-3910AD8515AF} = {2F78F109-9976-42FF-8324-9A27EF3BD776}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FBAE082A-173A-4F13-BE31-E6C070513C9C}
