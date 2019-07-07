@@ -53,6 +53,7 @@
             this.rbCandle.Name = "rbCandle";
             this.rbCandle.Size = new System.Drawing.Size(57, 17);
             this.rbCandle.TabIndex = 3;
+            this.rbCandle.TabStop = true;
             this.rbCandle.Text = "candle";
             this.rbCandle.UseVisualStyleBackColor = true;
             this.rbCandle.CheckedChanged += new System.EventHandler(this.RbCandle_CheckedChanged);
@@ -76,6 +77,7 @@
             this.scottPlotUC2.Name = "scottPlotUC2";
             this.scottPlotUC2.Size = new System.Drawing.Size(785, 116);
             this.scottPlotUC2.TabIndex = 2;
+            this.scottPlotUC2.MouseDragged += new System.EventHandler(this.ScottPlotUC2_MouseDragged);
             // 
             // scottPlotUC1
             // 
@@ -86,6 +88,7 @@
             this.scottPlotUC1.Name = "scottPlotUC1";
             this.scottPlotUC1.Size = new System.Drawing.Size(785, 311);
             this.scottPlotUC1.TabIndex = 0;
+            this.scottPlotUC1.MouseDragged += new System.EventHandler(this.ScottPlotUC1_MouseDragged);
             // 
             // Form1
             // 

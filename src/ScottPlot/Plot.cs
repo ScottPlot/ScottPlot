@@ -551,6 +551,42 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Use frame padding from an existing ScottPlot
+        /// </summary>
+        public void MatchPadding(ScottPlot.Plot sourcePlot, bool horizontal = true, bool vertical = true)
+        {
+            if (horizontal)
+            {
+                settings.axisLabelPadding[0] = sourcePlot.settings.axisLabelPadding[0];
+                settings.axisLabelPadding[1] = sourcePlot.settings.axisLabelPadding[1];
+            }
+            if (vertical)
+            {
+                settings.axisLabelPadding[2] = sourcePlot.settings.axisLabelPadding[2];
+                settings.axisLabelPadding[3] = sourcePlot.settings.axisLabelPadding[3];
+            }
+            Resize();
+        }
+
+        /// <summary>
+        /// Use axis limits from an existing ScottPlot
+        /// </summary>
+        public void MatchAxis(ScottPlot.Plot sourcePlot, bool horizontal = true, bool vertical = true)
+        {
+            if (horizontal)
+            {
+                settings.axis[0] = sourcePlot.settings.axis[0];
+                settings.axis[1] = sourcePlot.settings.axis[1];
+            }
+            if (vertical)
+            {
+                settings.axis[2] = sourcePlot.settings.axis[2];
+                settings.axis[3] = sourcePlot.settings.axis[3];
+            }
+            Resize();
+        }
+
+        /// <summary>
         /// Set colors of many of the common elements with named elements
         /// </summary>
         public void Style(Color? figBg = null, Color? dataBg = null, Color? grid = null, Color? tick = null, Color? label = null, Color? title = null)
