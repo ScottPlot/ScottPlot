@@ -83,12 +83,10 @@ namespace ScottPlot
             var data = new double[pointCount];
             data[0] = offset;
             for (int i = 1; i < data.Length; i++)
-                data[i] = data[i - 1] + (rand.NextDouble() * 2 - 1);
+                data[i] = data[i - 1] + (rand.NextDouble() * 2 - 1) * mult;
             double maxVal = data.Max();
             double minVal = data.Min();
             double span = maxVal - minVal;
-            for (int i = 0; i < data.Length; i++)
-                data[i] = data[i] / span * mult;
             return data;
         }
     }
