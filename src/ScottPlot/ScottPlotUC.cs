@@ -107,6 +107,14 @@ namespace ScottPlot
                 handler(this, e);
         }
 
+        public event EventHandler MouseDragged;
+        protected virtual void OnMouseDragged(EventArgs e)
+        {
+            var handler = MouseDragged;
+            if (handler != null)
+                handler(this, e);
+        }
+
         private void PbPlot_MouseMove(object sender, MouseEventArgs e)
         {
             plt.mouseTracker.MouseMove(e.Location);
@@ -132,7 +140,10 @@ namespace ScottPlot
             }
 
             if (e.Button != MouseButtons.None)
+            {
                 Render(skipIfBusy: true);
+                OnMouseDragged(EventArgs.Empty);
+            }
         }
 
         public event EventHandler MouseDropPlottable;
