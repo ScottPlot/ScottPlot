@@ -90,8 +90,8 @@ namespace ScottPlot
         public Plottable PlottableUnderCursor(Point eLocation)
         {
             // adjust pixel location to correspond to data frame
-            eLocation.X -= settings.dataOrigin.X;
-            eLocation.Y -= settings.dataOrigin.Y;
+            eLocation.X -= settings.DataOrigin.X;
+            eLocation.Y -= settings.DataOrigin.Y;
 
             for (int i = 0; i < settings.plottables.Count; i++)
             {
