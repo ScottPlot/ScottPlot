@@ -75,8 +75,8 @@ namespace ScottPlot
 
         private void RenderHighDensity(Settings settings, double offsetPoints, double columnPointCount)
         {
-            List<PointF> linePoints = new List<PointF>(settings.dataSize.Width * 2 + 1);
-            for (int xPx = 0; xPx < settings.dataSize.Width; xPx++)
+            List<PointF> linePoints = new List<PointF>(settings.DataSize.Width * 2 + 1);
+            for (int xPx = 0; xPx < settings.DataSize.Width; xPx++)
             {
                 // determine data indexes for this pixel column
                 int index1 = (int)(offsetPoints + columnPointCount * xPx);
@@ -124,15 +124,15 @@ namespace ScottPlot
         {
 
             double dataSpanUnits = ys.Length * samplePeriod;
-            double columnSpanUnits = settings.xAxisSpan / settings.dataSize.Width;
+            double columnSpanUnits = settings.xAxisSpan / settings.DataSize.Width;
             double columnPointCount = (columnSpanUnits / dataSpanUnits) * ys.Length;
             double offsetUnits = settings.axis[0] - xOffset;
             double offsetPoints = offsetUnits / samplePeriod;
             int visibleIndex1 = (int)(offsetPoints);
-            int visibleIndex2 = (int)(offsetPoints + columnPointCount * (settings.dataSize.Width + 1));
+            int visibleIndex2 = (int)(offsetPoints + columnPointCount * (settings.DataSize.Width + 1));
             int visiblePointCount = visibleIndex2 - visibleIndex1;
 
-            if (visiblePointCount > settings.dataSize.Width)
+            if (visiblePointCount > settings.DataSize.Width)
                 RenderHighDensity(settings, offsetPoints, columnPointCount);
             else
                 RenderLowDensity(settings, visibleIndex1, visibleIndex2);

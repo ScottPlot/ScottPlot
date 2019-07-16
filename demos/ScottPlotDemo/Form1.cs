@@ -105,9 +105,9 @@ namespace ScottPlotDemo
                 mult: rand.NextDouble() * 10 + 1,
                 offset: rand.NextDouble() * 10 - 5);
 
-            scottPlotUC1.plt.PlotScatter(xs, ys,null ,1,5,"e alloraciao",null, null, 1,3);
+            scottPlotUC1.plt.PlotScatter(xs, ys,null,1,6,"Ciao a tutti");
             scottPlotUC1.plt.AxisAuto();
-            scottPlotUC1.plt.Legend(true, null, null, null, "TopRight");
+            //scottPlotUC1.plt.Legend();
 
            scottPlotUC1.Render();
         }

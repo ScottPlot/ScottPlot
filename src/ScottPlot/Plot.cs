@@ -31,7 +31,7 @@ namespace ScottPlot
 
         public override string ToString()
         {
-            return $"ScottPlot ({settings.figureSize.Width}x{settings.figureSize.Height}) with {GetPlottables().Count} objects ({GetTotalPoints()} points)";
+            return $"ScottPlot ({settings.FigureSize.Width}x{settings.FigureSize.Height}) with {GetPlottables().Count} objects ({GetTotalPoints()} points)";
         }
 
         #region Bitmaps, Graphics, and Drawing Settings
@@ -44,9 +44,9 @@ namespace ScottPlot
         public void Resize(int? width = null, int? height = null)
         {
             if (width == null)
-                width = settings.figureSize.Width;
+                width = settings.FigureSize.Width;
             if (height == null)
-                height = settings.figureSize.Height;
+                height = settings.FigureSize.Height;
 
             if (width < 1)
                 width = 1;
@@ -64,15 +64,15 @@ namespace ScottPlot
             settings.bmpData = null;
             settings.gfxData = null;
 
-            if (settings.figureSize.Width > 0 && settings.figureSize.Height > 0)
+            if (settings.FigureSize.Width > 0 && settings.FigureSize.Height > 0)
             {
-                settings.bmpFigure = new Bitmap(settings.figureSize.Width, settings.figureSize.Height);
+                settings.bmpFigure = new Bitmap(settings.FigureSize.Width, settings.FigureSize.Height);
                 settings.gfxFigure = Graphics.FromImage(settings.bmpFigure);
             }
 
-            if (settings.dataSize.Width > 0 && settings.dataSize.Height > 0)
+            if (settings.DataSize.Width > 0 && settings.DataSize.Height > 0)
             {
-                settings.bmpData = new Bitmap(settings.dataSize.Width, settings.dataSize.Height);
+                settings.bmpData = new Bitmap(settings.DataSize.Width, settings.DataSize.Height);
                 settings.gfxData = Graphics.FromImage(settings.bmpData);
             }
 
@@ -179,9 +179,9 @@ namespace ScottPlot
         /// <summary>
         /// Clear all plot objects
         /// </summary>
-        public void Clear(bool axisLines = true, bool scatterPlots = true, bool signalPlots = true, bool text = true, bool bar = true, bool finance = true)
+        public void Clear(bool axisLines = true, bool scatterPlots = true, bool signalPlots = true, bool text = true, bool bar = true, bool finance = true, bool legend = true)
         {
-            settings.Clear(axisLines, scatterPlots, signalPlots, text, bar, finance);
+            settings.Clear(axisLines, scatterPlots, signalPlots, text, bar, finance, legend);
         }
 
         /// <summary>
@@ -382,8 +382,8 @@ namespace ScottPlot
         public PointF CoordinateToPixel(double locationX, double locationY)
         {
             PointF pixelLocation = settings.GetPixel(locationX, locationY);
-            pixelLocation.X += settings.dataOrigin.X;
-            pixelLocation.Y += settings.dataOrigin.Y;
+            pixelLocation.X += settings.DataOrigin.X;
+            pixelLocation.Y += settings.DataOrigin.Y;
             return pixelLocation;
         }
 
@@ -454,7 +454,7 @@ namespace ScottPlot
         /// <summary>
         /// Add a legend made from the labels given to plot objects
         /// </summary>
-        public void Legend(bool enableLegend = true, Color? fontColor = null, Color? backColor = null, Color? frameColor = null, String position = null)
+        public void Legend(bool enableLegend = true, Color? fontColor = null, Color? backColor = null, Color? frameColor = null, string position = "BottomRight")
         {
             settings.displayLegend = enableLegend;
             if (fontColor != null)
@@ -463,8 +463,14 @@ namespace ScottPlot
                 settings.legendBackColor = (Color)backColor;
             if (frameColor != null)
                 settings.legendFrameColor = (Color)frameColor;
-            if (position != null)
-                settings.legendPosition  = (String)position;
+            if (position is null)
+            {
+                settings.legendPosition = null;
+            }
+            else
+            {
+                settings.legendPosition = position;
+            }
 
         }
 
