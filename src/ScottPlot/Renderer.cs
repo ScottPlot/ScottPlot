@@ -89,18 +89,79 @@ namespace ScottPlot
             float frameWidth = padding * 2 + legendFontMaxWidth + padding + stubWidth;
             float frameHeight = padding * 2 + legendFontLineHeight * legendItems.Count();
             Size frameSize = new Size((int)frameWidth, (int)frameHeight);
+
             Point frameLoc = new Point((int)(settings.dataSize.Width - frameWidth - padding),
-                (int)(settings.dataSize.Height - frameHeight - padding));
+                 (int)(settings.dataSize.Height - frameHeight - padding));
+
+            if (settings.legendAvailablePositions.Contains(settings.legendPosition))
+            {
+                if (settings.legendPosition is "BottomRight")
+                {
+                    frameLoc.X = (int)(settings.dataSize.Width - frameWidth - padding);
+                    frameLoc.Y = (int)(settings.dataSize.Height - frameHeight - padding);
+                }
+                else if (settings.legendPosition is "TopLeft")
+                {
+                    frameLoc.X = (int)(padding);
+                    frameLoc.Y = (int)(padding);
+                }
+                else if (settings.legendPosition is "BottomLeft")
+                {
+                    frameLoc.X = (int)(padding);
+                    frameLoc.Y = (int)(settings.dataSize.Height - frameHeight - padding);
+                }
+                else if (settings.legendPosition is "TopRight")
+                {
+                    frameLoc.X = (int)(settings.dataSize.Width - frameWidth - padding);
+                    frameLoc.Y = (int)(padding);
+                }
+            }
+            else
+            {
+                frameLoc.X = (int)(settings.dataSize.Width - frameWidth - padding);
+                frameLoc.Y = (int)(settings.dataSize.Height - frameHeight - padding);
+            }
+
+
             Rectangle frameRect = new Rectangle(frameLoc, frameSize);
             settings.gfxData.FillRectangle(new SolidBrush(settings.legendBackColor), frameRect);
             settings.gfxData.DrawRectangle(new Pen(settings.legendFrameColor), frameRect);
 
             // draw the individual labels
+            Point textLocation = new Point(settings.dataSize.Width, settings.dataSize.Height);
+            if (settings.legendAvailablePositions.Contains(settings.legendPosition))
+            {
+                if (settings.legendPosition is "BottomRight")
+                {
+                    textLocation.X = (int)(settings.dataSize.Width-(legendFontMaxWidth + padding));
+                    textLocation.Y = settings.dataSize.Height - padding*2;
+                }
+                else if (settings.legendPosition is "TopLeft")
+                {
+                    textLocation.X = (int)(frameWidth - legendFontMaxWidth + padding );
+                    textLocation.Y = (int)(frameHeight);
+                }
+                else if (settings.legendPosition is "BottomLeft")
+                {
+                    textLocation.X = (int)(frameWidth - legendFontMaxWidth + padding);
+                    textLocation.Y = settings.dataSize.Height - padding*2;
+                }
+                else if (settings.legendPosition is "TopRight")
+                {
+                    textLocation.X = (int)(settings.dataSize.Width - (legendFontMaxWidth + padding));
+                    textLocation.Y = (int)(frameHeight );
+                }
+            }
+            else
+            {
+                textLocation.X = (int)(settings.dataSize.Width - (legendFontMaxWidth + padding));
+                textLocation.Y = settings.dataSize.Height - padding;
+            }
+
             for (int i = 0; i < legendItems.Count; i++)
             {
-                Point textLocation = new Point(settings.dataSize.Width, settings.dataSize.Height);
-                textLocation.X -= (int)legendFontMaxWidth + padding * 2;
-                textLocation.Y -= (int)(legendFontLineHeight * (i + 1)) + padding * 2;
+                //textLocation.X -= (int)legendFontMaxWidth + padding * 2;
+                textLocation.Y -= (int)(legendFontLineHeight  );
                 settings.gfxData.DrawString(legendItems[i].label, settings.legendFont, brushText, textLocation);
                 settings.gfxData.DrawLine(new Pen(legendItems[i].color, stubHeight),
                     textLocation.X - padding, textLocation.Y + legendFontLineHeight / 2,

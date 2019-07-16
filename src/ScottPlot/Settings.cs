@@ -73,6 +73,8 @@ namespace ScottPlot
         public Color legendFontColor = Color.Black;
         public Color legendBackColor = Color.White;
         public Color legendFrameColor = Color.Black;
+        public string[] legendAvailablePositions = new string[] { "TopLeft", "TopRight", "BottomLeft", "BottomRight" };
+        public string legendPosition = "BottomRight";
 
         // benchmarking
         public Font benchmarkFont = new Font("Consolas", 8);
