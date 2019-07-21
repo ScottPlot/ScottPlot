@@ -107,8 +107,7 @@ namespace ScottPlotDemo
 
             scottPlotUC1.plt.PlotScatter(xs, ys);
             scottPlotUC1.plt.AxisAuto();
-
-           scottPlotUC1.Render();
+            scottPlotUC1.Render();
         }
 
         private void BtnScatterRandom_Click(object sender, EventArgs e)
