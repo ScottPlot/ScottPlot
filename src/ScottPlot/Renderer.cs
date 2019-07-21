@@ -132,23 +132,23 @@ namespace ScottPlot
             {
                 if (settings.legendLocation is "BottomRight")
                 {
-                    textLocation.X = (int)(settings.dataSize.Width-(legendFontMaxWidth + padding));
-                    textLocation.Y = settings.dataSize.Height - padding*2;
+                    textLocation.X = (int)(settings.dataSize.Width - (legendFontMaxWidth + padding));
+                    textLocation.Y = settings.dataSize.Height - padding * 2;
                 }
                 else if (settings.legendLocation is "TopLeft")
                 {
-                    textLocation.X = (int)(frameWidth - legendFontMaxWidth + padding );
+                    textLocation.X = (int)(frameWidth - legendFontMaxWidth + padding);
                     textLocation.Y = (int)(frameHeight);
                 }
                 else if (settings.legendLocation is "BottomLeft")
                 {
                     textLocation.X = (int)(frameWidth - legendFontMaxWidth + padding);
-                    textLocation.Y = settings.dataSize.Height - padding*2;
+                    textLocation.Y = settings.dataSize.Height - padding * 2;
                 }
                 else if (settings.legendLocation is "TopRight")
                 {
                     textLocation.X = (int)(settings.dataSize.Width - (legendFontMaxWidth + padding));
-                    textLocation.Y = (int)(frameHeight );
+                    textLocation.Y = (int)(frameHeight);
                 }
             }
             else
@@ -162,13 +162,13 @@ namespace ScottPlot
 
                 for (int i = 0; i < legendItems.Count; i++)
                 {
-                    //textLocation.X -= (int)legendFontMaxWidth + padding * 2;
-                    textLocation.Y -= (int)(legendFontLineHeight  );
+                    textLocation.Y -= (int)(legendFontLineHeight);
 
-                        settings.gfxData.DrawString(legendItems[i].label, settings.legendFont, brushText, textLocation);
-                        settings.gfxData.DrawLine(new Pen(legendItems[i].color, stubHeight),
-                            textLocation.X - padding, textLocation.Y + legendFontLineHeight / 2,
-                            textLocation.X - padding - stubWidth, textLocation.Y + legendFontLineHeight / 2);
+                    settings.gfxData.DrawString(legendItems[i].label, settings.legendFont, brushText, textLocation);
+                    settings.gfxData.DrawLine(new Pen(legendItems[i].color, stubHeight),
+
+                    textLocation.X - padding, textLocation.Y + legendFontLineHeight / 2,
+                    textLocation.X - padding - stubWidth, textLocation.Y + legendFontLineHeight / 2);
                 }
             }
         }
