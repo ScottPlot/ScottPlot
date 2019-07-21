@@ -93,24 +93,24 @@ namespace ScottPlot
             Point frameLoc = new Point((int)(settings.dataSize.Width - frameWidth - padding),
                  (int)(settings.dataSize.Height - frameHeight - padding));
 
-            if (settings.legendAvailablePositions.Contains(settings.legendPosition))
+            if (settings.legendAvailablePositions.Contains(settings.legendLocation))
             {
-                if (settings.legendPosition is "BottomRight")
+                if (settings.legendLocation is "BottomRight")
                 {
                     frameLoc.X = (int)(settings.dataSize.Width - frameWidth - padding);
                     frameLoc.Y = (int)(settings.dataSize.Height - frameHeight - padding);
                 }
-                else if (settings.legendPosition is "TopLeft")
+                else if (settings.legendLocation is "TopLeft")
                 {
                     frameLoc.X = (int)(padding);
                     frameLoc.Y = (int)(padding);
                 }
-                else if (settings.legendPosition is "BottomLeft")
+                else if (settings.legendLocation is "BottomLeft")
                 {
                     frameLoc.X = (int)(padding);
                     frameLoc.Y = (int)(settings.dataSize.Height - frameHeight - padding);
                 }
-                else if (settings.legendPosition is "TopRight")
+                else if (settings.legendLocation is "TopRight")
                 {
                     frameLoc.X = (int)(settings.dataSize.Width - frameWidth - padding);
                     frameLoc.Y = (int)(padding);
@@ -119,7 +119,7 @@ namespace ScottPlot
 
 
             Rectangle frameRect = new Rectangle(frameLoc, frameSize);
-            if (settings.legendAvailablePositions.Contains(settings.legendPosition))
+            if (settings.legendAvailablePositions.Contains(settings.legendLocation))
             {
                 settings.gfxData.FillRectangle(new SolidBrush(settings.legendBackColor), frameRect);
                 settings.gfxData.DrawRectangle(new Pen(settings.legendFrameColor), frameRect);
@@ -128,24 +128,24 @@ namespace ScottPlot
 
             // draw the individual labels
             Point textLocation = new Point(settings.dataSize.Width, settings.dataSize.Height);
-            if (settings.legendAvailablePositions.Contains(settings.legendPosition))
+            if (settings.legendAvailablePositions.Contains(settings.legendLocation))
             {
-                if (settings.legendPosition is "BottomRight")
+                if (settings.legendLocation is "BottomRight")
                 {
                     textLocation.X = (int)(settings.dataSize.Width-(legendFontMaxWidth + padding));
                     textLocation.Y = settings.dataSize.Height - padding*2;
                 }
-                else if (settings.legendPosition is "TopLeft")
+                else if (settings.legendLocation is "TopLeft")
                 {
                     textLocation.X = (int)(frameWidth - legendFontMaxWidth + padding );
                     textLocation.Y = (int)(frameHeight);
                 }
-                else if (settings.legendPosition is "BottomLeft")
+                else if (settings.legendLocation is "BottomLeft")
                 {
                     textLocation.X = (int)(frameWidth - legendFontMaxWidth + padding);
                     textLocation.Y = settings.dataSize.Height - padding*2;
                 }
-                else if (settings.legendPosition is "TopRight")
+                else if (settings.legendLocation is "TopRight")
                 {
                     textLocation.X = (int)(settings.dataSize.Width - (legendFontMaxWidth + padding));
                     textLocation.Y = (int)(frameHeight );
@@ -157,7 +157,7 @@ namespace ScottPlot
                 textLocation.Y = settings.dataSize.Height - padding;
             }
 
-            if (settings.legendAvailablePositions.Contains(settings.legendPosition))
+            if (settings.legendAvailablePositions.Contains(settings.legendLocation))
             {
 
                 for (int i = 0; i < legendItems.Count; i++)
