@@ -78,7 +78,9 @@ namespace ScottPlot
         public event EventHandler MouseDownOnPlottable;
         protected virtual void OnMouseDownOnPlottable(EventArgs e)
         {
-            MouseDownOnPlottable?.Invoke(this, e);
+            var handler = MouseDownOnPlottable;
+            if (handler != null)
+                handler(this, e);
         }
 
         private void PbPlot_MouseDown(object sender, MouseEventArgs e)
@@ -92,19 +94,25 @@ namespace ScottPlot
         public event EventHandler MouseDragPlottable;
         protected virtual void OnMouseDragPlottable(EventArgs e)
         {
-            MouseDragPlottable?.Invoke(this, e);
+            var handler = MouseDragPlottable;
+            if (handler != null)
+                handler(this, e);
         }
 
         public event EventHandler MouseMoved;
         protected virtual void OnMouseMoved(EventArgs e)
         {
-            MouseMoved?.Invoke(this, e);
+            var handler = MouseMoved;
+            if (handler != null)
+                handler(this, e);
         }
 
         public event EventHandler MouseDragged;
         protected virtual void OnMouseDragged(EventArgs e)
         {
-            MouseDragged?.Invoke(this, e);
+            var handler = MouseDragged;
+            if (handler != null)
+                handler(this, e);
         }
 
         private void PbPlot_MouseMove(object sender, MouseEventArgs e)
@@ -141,7 +149,9 @@ namespace ScottPlot
         public event EventHandler MouseDropPlottable;
         protected virtual void OnMouseDropPlottable(EventArgs e)
         {
-            MouseDropPlottable?.Invoke(this, e);
+            var handler = MouseDropPlottable;
+            if (handler != null)
+                handler(this, e);
         }
 
         private void PbPlot_MouseUp(object sender, MouseEventArgs e)
@@ -203,11 +213,9 @@ namespace ScottPlot
             {
                 case "Save Image":
                     cmRightClickMenu.Hide();
-                    SaveFileDialog savefile = new SaveFileDialog
-                    {
-                        FileName = "ScottPlot.png",
-                        Filter = "PNG Files (*.png)|*.png|All files (*.*)|*.*"
-                    };
+                    SaveFileDialog savefile = new SaveFileDialog();
+                    savefile.FileName = "ScottPlot.png";
+                    savefile.Filter = "PNG Files (*.png)|*.png|All files (*.*)|*.*";
                     if (savefile.ShowDialog() == DialogResult.OK)
                         plt.SaveFig(savefile.FileName);
                     break;
