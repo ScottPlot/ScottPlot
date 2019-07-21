@@ -73,6 +73,8 @@ namespace ScottPlot
         public Color legendFontColor = Color.Black;
         public Color legendBackColor = Color.White;
         public Color legendFrameColor = Color.Black;
+        public string[] legendAvailablePositions = new string[] { "TopLeft", "TopRight", "BottomLeft", "BottomRight" };
+        public string legendLocation = "BottomRight";
 
         // benchmarking
         public Font benchmarkFont = new Font("Consolas", 8);
@@ -423,7 +425,7 @@ namespace ScottPlot
             return ColorTranslator.FromHtml(colors[plottables.Count % colors.Length]);
         }
 
-        public void Clear(bool axLines = true, bool scatters = true, bool signals = true, bool text = true, bool bar = true, bool finance = true)
+        public void Clear(bool axLines = true, bool scatters = true, bool signals = true, bool text = true, bool bar = true, bool finance = true, bool legend = true)
         {
             List<int> indicesToDelete = new List<int>();
             for (int i = 0; i < plottables.Count; i++)
@@ -447,6 +449,14 @@ namespace ScottPlot
             {
                 plottables.RemoveAt(indicesToDelete[i]);
             }
+
+            if (legend)
+            {
+                legendLocation = null;
+            }
+
+
+
         }
 
     }

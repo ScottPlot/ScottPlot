@@ -179,9 +179,9 @@ namespace ScottPlot
         /// <summary>
         /// Clear all plot objects
         /// </summary>
-        public void Clear(bool axisLines = true, bool scatterPlots = true, bool signalPlots = true, bool text = true, bool bar = true, bool finance = true)
+        public void Clear(bool axisLines = true, bool scatterPlots = true, bool signalPlots = true, bool text = true, bool bar = true, bool finance = true, bool legend = true)
         {
-            settings.Clear(axisLines, scatterPlots, signalPlots, text, bar, finance);
+            settings.Clear(axisLines, scatterPlots, signalPlots, text, bar, finance, legend);
         }
 
         /// <summary>
@@ -454,7 +454,7 @@ namespace ScottPlot
         /// <summary>
         /// Add a legend made from the labels given to plot objects
         /// </summary>
-        public void Legend(bool enableLegend = true, Color? fontColor = null, Color? backColor = null, Color? frameColor = null)
+        public void Legend(bool enableLegend = true, Color? fontColor = null, Color? backColor = null, Color? frameColor = null, string location = "BottomRight")
         {
             settings.displayLegend = enableLegend;
             if (fontColor != null)
@@ -463,6 +463,7 @@ namespace ScottPlot
                 settings.legendBackColor = (Color)backColor;
             if (frameColor != null)
                 settings.legendFrameColor = (Color)frameColor;
+            settings.legendLocation = location;
         }
 
         #endregion
