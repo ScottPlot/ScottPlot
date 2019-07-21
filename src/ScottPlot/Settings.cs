@@ -12,9 +12,9 @@ namespace ScottPlot
     public class Settings
     {
         // these properties get set at instantiation or after size or axis adjustments
-        public Size FigureSize { get; private set; }
-        public Point DataOrigin { get; private set; }
-        public Size DataSize { get; private set; }
+        public Size figureSize { get; private set; }
+        public Point dataOrigin { get; private set; }
+        public Size dataSize { get; private set; }
 
         // hold copies of graphics objects to make them easy to plot to
         public Graphics gfxFigure;
@@ -138,11 +138,11 @@ namespace ScottPlot
 
         public void Resize(int width, int height)
         {
-            FigureSize = new Size(width, height);
-            DataOrigin = new Point(axisLabelPadding[0], axisLabelPadding[3]);
-            int dataWidth = FigureSize.Width - axisLabelPadding[0] - axisLabelPadding[1];
-            int dataHeight = FigureSize.Height - axisLabelPadding[2] - axisLabelPadding[3];
-            DataSize = new Size(dataWidth, dataHeight);
+            figureSize = new Size(width, height);
+            dataOrigin = new Point(axisLabelPadding[0], axisLabelPadding[3]);
+            int dataWidth = figureSize.Width - axisLabelPadding[0] - axisLabelPadding[1];
+            int dataHeight = figureSize.Height - axisLabelPadding[2] - axisLabelPadding[3];
+            dataSize = new Size(dataWidth, dataHeight);
             AxisUpdate();
         }
 
@@ -203,8 +203,8 @@ namespace ScottPlot
             xAxisCenter = (axis[1] + axis[0]) / 2;
             yAxisSpan = axis[3] - axis[2];
             yAxisCenter = (axis[3] + axis[2]) / 2;
-            xAxisScale = DataSize.Width / xAxisSpan; // px per unit
-            yAxisScale = DataSize.Height / yAxisSpan; // px per unit
+            xAxisScale = dataSize.Width / xAxisSpan; // px per unit
+            yAxisScale = dataSize.Height / yAxisSpan; // px per unit
             bmpFigureRenderRequired = true;
         }
 
@@ -354,7 +354,7 @@ namespace ScottPlot
 
         public void Validate()
         {
-            if (FigureSize == null || FigureSize.Width < 1 || FigureSize.Height < 1)
+            if (figureSize == null || figureSize.Width < 1 || figureSize.Height < 1)
                 throw new Exception("figure width and height must be greater than 0px");
             if (axis == null)
                 throw new Exception("axis has not yet been initialized");
@@ -398,7 +398,7 @@ namespace ScottPlot
             // Return the pixel location on the data bitmap corresponding to an X/Y location.
             // This is useful when drawing graphics on the data bitmap.
             float xPx = (float)((locationX - axis[0]) * xAxisScale);
-            float yPx = DataSize.Height - (float)((locationY - axis[2]) * yAxisScale);
+            float yPx = dataSize.Height - (float)((locationY - axis[2]) * yAxisScale);
             return new PointF(xPx, yPx);
         }
 
@@ -406,8 +406,8 @@ namespace ScottPlot
         {
             // Return the X/Y location corresponding to a pixel position on the figure bitmap.
             // This is useful for converting a mouse position to an X/Y coordinate.
-            double locationX = (pixelX - DataOrigin.X) / xAxisScale + axis[0];
-            double locationY = axis[3] - (pixelY - DataOrigin.Y) / yAxisScale;
+            double locationX = (pixelX - dataOrigin.X) / xAxisScale + axis[0];
+            double locationY = axis[3] - (pixelY - dataOrigin.Y) / yAxisScale;
             return new PointF((float)locationX, (float)locationY);
         }
 

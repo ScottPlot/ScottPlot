@@ -31,7 +31,7 @@ namespace ScottPlot
 
         public override string ToString()
         {
-            return $"ScottPlot ({settings.FigureSize.Width}x{settings.FigureSize.Height}) with {GetPlottables().Count} objects ({GetTotalPoints()} points)";
+            return $"ScottPlot ({settings.figureSize.Width}x{settings.figureSize.Height}) with {GetPlottables().Count} objects ({GetTotalPoints()} points)";
         }
 
         #region Bitmaps, Graphics, and Drawing Settings
@@ -44,9 +44,9 @@ namespace ScottPlot
         public void Resize(int? width = null, int? height = null)
         {
             if (width == null)
-                width = settings.FigureSize.Width;
+                width = settings.figureSize.Width;
             if (height == null)
-                height = settings.FigureSize.Height;
+                height = settings.figureSize.Height;
 
             if (width < 1)
                 width = 1;
@@ -64,15 +64,15 @@ namespace ScottPlot
             settings.bmpData = null;
             settings.gfxData = null;
 
-            if (settings.FigureSize.Width > 0 && settings.FigureSize.Height > 0)
+            if (settings.figureSize.Width > 0 && settings.figureSize.Height > 0)
             {
-                settings.bmpFigure = new Bitmap(settings.FigureSize.Width, settings.FigureSize.Height);
+                settings.bmpFigure = new Bitmap(settings.figureSize.Width, settings.figureSize.Height);
                 settings.gfxFigure = Graphics.FromImage(settings.bmpFigure);
             }
 
-            if (settings.DataSize.Width > 0 && settings.DataSize.Height > 0)
+            if (settings.dataSize.Width > 0 && settings.dataSize.Height > 0)
             {
-                settings.bmpData = new Bitmap(settings.DataSize.Width, settings.DataSize.Height);
+                settings.bmpData = new Bitmap(settings.dataSize.Width, settings.dataSize.Height);
                 settings.gfxData = Graphics.FromImage(settings.bmpData);
             }
 
@@ -382,8 +382,8 @@ namespace ScottPlot
         public PointF CoordinateToPixel(double locationX, double locationY)
         {
             PointF pixelLocation = settings.GetPixel(locationX, locationY);
-            pixelLocation.X += settings.DataOrigin.X;
-            pixelLocation.Y += settings.DataOrigin.Y;
+            pixelLocation.X += settings.dataOrigin.X;
+            pixelLocation.Y += settings.dataOrigin.Y;
             return pixelLocation;
         }
 
