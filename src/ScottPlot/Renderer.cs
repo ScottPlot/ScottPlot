@@ -90,15 +90,15 @@ namespace ScottPlot
             float frameHeight = padding * 2 + legendFontLineHeight * legendItems.Count();
             Size frameSize = new Size((int)frameWidth, (int)frameHeight);
 
-            Point frameLoc = new Point((int)(settings.DataSize.Width - frameWidth - padding),
-                 (int)(settings.DataSize.Height - frameHeight - padding));
+            Point frameLoc = new Point((int)(settings.dataSize.Width - frameWidth - padding),
+                 (int)(settings.dataSize.Height - frameHeight - padding));
 
             if (settings.legendAvailablePositions.Contains(settings.legendPosition))
             {
                 if (settings.legendPosition is "BottomRight")
                 {
-                    frameLoc.X = (int)(settings.DataSize.Width - frameWidth - padding);
-                    frameLoc.Y = (int)(settings.DataSize.Height - frameHeight - padding);
+                    frameLoc.X = (int)(settings.dataSize.Width - frameWidth - padding);
+                    frameLoc.Y = (int)(settings.dataSize.Height - frameHeight - padding);
                 }
                 else if (settings.legendPosition is "TopLeft")
                 {
@@ -108,11 +108,11 @@ namespace ScottPlot
                 else if (settings.legendPosition is "BottomLeft")
                 {
                     frameLoc.X = (int)(padding);
-                    frameLoc.Y = (int)(settings.DataSize.Height - frameHeight - padding);
+                    frameLoc.Y = (int)(settings.dataSize.Height - frameHeight - padding);
                 }
                 else if (settings.legendPosition is "TopRight")
                 {
-                    frameLoc.X = (int)(settings.DataSize.Width - frameWidth - padding);
+                    frameLoc.X = (int)(settings.dataSize.Width - frameWidth - padding);
                     frameLoc.Y = (int)(padding);
                 }
             }
@@ -127,13 +127,13 @@ namespace ScottPlot
 
 
             // draw the individual labels
-            Point textLocation = new Point(settings.DataSize.Width, settings.DataSize.Height);
+            Point textLocation = new Point(settings.dataSize.Width, settings.dataSize.Height);
             if (settings.legendAvailablePositions.Contains(settings.legendPosition))
             {
                 if (settings.legendPosition is "BottomRight")
                 {
-                    textLocation.X = (int)(settings.DataSize.Width-(legendFontMaxWidth + padding));
-                    textLocation.Y = settings.DataSize.Height - padding*2;
+                    textLocation.X = (int)(settings.dataSize.Width-(legendFontMaxWidth + padding));
+                    textLocation.Y = settings.dataSize.Height - padding*2;
                 }
                 else if (settings.legendPosition is "TopLeft")
                 {
@@ -143,18 +143,18 @@ namespace ScottPlot
                 else if (settings.legendPosition is "BottomLeft")
                 {
                     textLocation.X = (int)(frameWidth - legendFontMaxWidth + padding);
-                    textLocation.Y = settings.DataSize.Height - padding*2;
+                    textLocation.Y = settings.dataSize.Height - padding*2;
                 }
                 else if (settings.legendPosition is "TopRight")
                 {
-                    textLocation.X = (int)(settings.DataSize.Width - (legendFontMaxWidth + padding));
+                    textLocation.X = (int)(settings.dataSize.Width - (legendFontMaxWidth + padding));
                     textLocation.Y = (int)(frameHeight );
                 }
             }
             else
             {
-                textLocation.X = (int)(settings.DataSize.Width - (legendFontMaxWidth + padding));
-                textLocation.Y = settings.DataSize.Height - padding;
+                textLocation.X = (int)(settings.dataSize.Width - (legendFontMaxWidth + padding));
+                textLocation.Y = settings.dataSize.Height - padding;
             }
 
             if (settings.legendAvailablePositions.Contains(settings.legendPosition))
@@ -178,7 +178,7 @@ namespace ScottPlot
             if (settings.gfxFigure == null || settings.bmpData == null)
                 return;
 
-            settings.gfxFigure.DrawImage(settings.bmpData, settings.DataOrigin);
+            settings.gfxFigure.DrawImage(settings.bmpData, settings.dataOrigin);
         }
 
         public static void FigureLabels(Settings settings, bool drawDebugRectangles = false)
@@ -186,8 +186,8 @@ namespace ScottPlot
             if (settings.gfxFigure == null)
                 return;
 
-            int dataCenterX = settings.DataSize.Width / 2 + settings.DataOrigin.X;
-            int dataCenterY = settings.DataSize.Height / 2 + settings.DataOrigin.Y;
+            int dataCenterX = settings.dataSize.Width / 2 + settings.dataOrigin.X;
+            int dataCenterY = settings.dataSize.Height / 2 + settings.dataOrigin.Y;
 
             // title
             SizeF titleSizeF = settings.gfxFigure.MeasureString(settings.title, settings.titleFont);
@@ -200,7 +200,7 @@ namespace ScottPlot
             // horizontal axis label
             SizeF xLabelSizF = settings.gfxFigure.MeasureString(settings.axisLabelX, settings.axisLabelFont);
             Size xLabelSize = new Size((int)xLabelSizF.Width, (int)xLabelSizF.Height);
-            Point xLabelPoint = new Point(dataCenterX - xLabelSize.Width / 2, settings.FigureSize.Height - settings.axisPadding - xLabelSize.Height);
+            Point xLabelPoint = new Point(dataCenterX - xLabelSize.Width / 2, settings.figureSize.Height - settings.axisPadding - xLabelSize.Height);
             settings.gfxFigure.DrawString(settings.axisLabelX, settings.axisLabelFont, new SolidBrush(settings.axisLabelColor), xLabelPoint, settings.sfNorthWest);
             if (drawDebugRectangles)
                 settings.gfxFigure.DrawRectangle(Pens.Magenta, xLabelPoint.X, xLabelPoint.Y, xLabelSize.Width, xLabelSize.Height);
@@ -218,7 +218,7 @@ namespace ScottPlot
 
         public static void FigureTicks(Settings settings)
         {
-            if (settings.DataSize.Width < 1 || settings.DataSize.Height < 1)
+            if (settings.dataSize.Width < 1 || settings.dataSize.Height < 1)
                 return;
 
             Ticks ticks = new Ticks(settings);
@@ -227,13 +227,13 @@ namespace ScottPlot
 
         public static void FigureFrames(Settings settings)
         {
-            if (settings.DataSize.Width < 1 || settings.DataSize.Height < 1)
+            if (settings.dataSize.Width < 1 || settings.dataSize.Height < 1)
                 return;
 
-            Point tl = new Point(settings.DataOrigin.X - 1, settings.DataOrigin.Y - 1);
-            Point tr = new Point(settings.DataOrigin.X + settings.DataSize.Width, settings.DataOrigin.Y - 1);
-            Point bl = new Point(settings.DataOrigin.X - 1, settings.DataOrigin.Y + settings.DataSize.Height);
-            Point br = new Point(settings.DataOrigin.X + settings.DataSize.Width, settings.DataOrigin.Y + settings.DataSize.Height);
+            Point tl = new Point(settings.dataOrigin.X - 1, settings.dataOrigin.Y - 1);
+            Point tr = new Point(settings.dataOrigin.X + settings.dataSize.Width, settings.dataOrigin.Y - 1);
+            Point bl = new Point(settings.dataOrigin.X - 1, settings.dataOrigin.Y + settings.dataSize.Height);
+            Point br = new Point(settings.dataOrigin.X + settings.dataSize.Width, settings.dataOrigin.Y + settings.dataSize.Height);
 
             if (settings.displayAxisFrames)
             {
@@ -256,7 +256,7 @@ namespace ScottPlot
                 int debugPadding = 3;
                 SizeF textSizeF = settings.gfxFigure.MeasureString(settings.benchmarkMessage, settings.benchmarkFont);
                 Size textSize = new Size((int)textSizeF.Width, (int)textSizeF.Height);
-                Point textLocation = new Point(settings.DataSize.Width + settings.DataOrigin.X, settings.DataSize.Height + settings.DataOrigin.Y);
+                Point textLocation = new Point(settings.dataSize.Width + settings.dataOrigin.X, settings.dataSize.Height + settings.dataOrigin.Y);
                 textLocation.X -= textSize.Width + debugPadding;
                 textLocation.Y -= textSize.Height + debugPadding;
                 Rectangle textRect = new Rectangle(textLocation, textSize);
