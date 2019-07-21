@@ -74,7 +74,7 @@ namespace ScottPlot
         public Color legendBackColor = Color.White;
         public Color legendFrameColor = Color.Black;
         public string[] legendAvailablePositions = new string[] { "TopLeft", "TopRight", "BottomLeft", "BottomRight" };
-        public string legendPosition = "BottomRight";
+        public string legendLocation = "BottomRight";
 
         // benchmarking
         public Font benchmarkFont = new Font("Consolas", 8);
@@ -452,7 +452,7 @@ namespace ScottPlot
 
             if (legend)
             {
-                legendPosition = null;
+                legendLocation = null;
             }
 
 
