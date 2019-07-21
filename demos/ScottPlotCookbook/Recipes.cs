@@ -123,7 +123,7 @@ namespace ScottPlotCookbook
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin, label: "first");
             plt.PlotScatter(dataXs, dataCos, label: "second");
-            plt.Legend();
+            plt.Legend(position: "BottomLeft");
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
             return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
