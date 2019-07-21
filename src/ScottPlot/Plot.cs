@@ -463,15 +463,7 @@ namespace ScottPlot
                 settings.legendBackColor = (Color)backColor;
             if (frameColor != null)
                 settings.legendFrameColor = (Color)frameColor;
-            if (location is null)
-            {
-                settings.legendPosition = null;
-            }
-            else
-            {
-                settings.legendPosition = location;
-            }
-
+            settings.legendPosition = location;
         }
 
         #endregion
