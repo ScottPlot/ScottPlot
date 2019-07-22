@@ -40,10 +40,10 @@
             this.btnHline = new System.Windows.Forms.Button();
             this.cbBenchmark = new System.Windows.Forms.CheckBox();
             this.cbDark = new System.Windows.Forms.CheckBox();
-            this.scottPlotUC1 = new ScottPlot.ScottPlotUC();
             this.btnText = new System.Windows.Forms.Button();
             this.cbAntiAliasData = new System.Windows.Forms.CheckBox();
             this.cbAntiAliasFigure = new System.Windows.Forms.CheckBox();
+            this.scottPlotUC1 = new ScottPlot.ScottPlotUC();
             this.SuspendLayout();
             // 
             // btnClear
@@ -168,16 +168,6 @@
             this.cbDark.UseVisualStyleBackColor = true;
             this.cbDark.CheckedChanged += new System.EventHandler(this.CbDark_CheckedChanged);
             // 
-            // scottPlotUC1
-            // 
-            this.scottPlotUC1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.scottPlotUC1.Location = new System.Drawing.Point(12, 70);
-            this.scottPlotUC1.Name = "scottPlotUC1";
-            this.scottPlotUC1.Size = new System.Drawing.Size(831, 417);
-            this.scottPlotUC1.TabIndex = 0;
-            // 
             // btnText
             // 
             this.btnText.Location = new System.Drawing.Point(199, 40);
@@ -214,11 +204,21 @@
             this.cbAntiAliasFigure.UseVisualStyleBackColor = true;
             this.cbAntiAliasFigure.CheckedChanged += new System.EventHandler(this.CbAntiAliasFigure_CheckedChanged);
             // 
+            // scottPlotUC1
+            // 
+            this.scottPlotUC1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.scottPlotUC1.Location = new System.Drawing.Point(12, 70);
+            this.scottPlotUC1.Name = "scottPlotUC1";
+            this.scottPlotUC1.Size = new System.Drawing.Size(836, 389);
+            this.scottPlotUC1.TabIndex = 0;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(855, 499);
+            this.ClientSize = new System.Drawing.Size(860, 471);
             this.Controls.Add(this.cbAntiAliasFigure);
             this.Controls.Add(this.cbAntiAliasData);
             this.Controls.Add(this.btnText);
