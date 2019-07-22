@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="DataGen.cs" />
     <Compile Include="Histogram.cs" />
+    <Compile Include="Legend.cs" />
     <Compile Include="MouseTracker.cs" />
     <Compile Include="OHLC.cs" />
     <Compile Include="Plottable.cs" />

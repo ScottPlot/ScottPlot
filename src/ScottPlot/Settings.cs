@@ -68,13 +68,12 @@ namespace ScottPlot
         public double gridSpacingY = 0;
 
         // legend
-        public bool displayLegend = false;
+        //public bool displayLegend = false;
         public Font legendFont = new Font("Segoe UI", 12);
         public Color legendFontColor = Color.Black;
         public Color legendBackColor = Color.White;
         public Color legendFrameColor = Color.Black;
-        public enum legendAvailablePositions { TopLeft, TopRight, BottomLeft, BottomRight, TopCenter, BottomCenter, MiddleLeft, MiddleRight,None };
-        public int legendLocation = (int)legendAvailablePositions.BottomRight; 
+        public legendLocation legendLocation = legendLocation.none; 
 
         // benchmarking
         public Font benchmarkFont = new Font("Consolas", 8);
@@ -425,7 +424,7 @@ namespace ScottPlot
             return ColorTranslator.FromHtml(colors[plottables.Count % colors.Length]);
         }
 
-        public void Clear(bool axLines = true, bool scatters = true, bool signals = true, bool text = true, bool bar = true, bool finance = true, bool legend = true)
+        public void Clear(bool axLines = true, bool scatters = true, bool signals = true, bool text = true, bool bar = true, bool finance = true)
         {
             List<int> indicesToDelete = new List<int>();
             for (int i = 0; i < plottables.Count; i++)
@@ -449,13 +448,6 @@ namespace ScottPlot
             {
                 plottables.RemoveAt(indicesToDelete[i]);
             }
-
-            if (!legend)
-            {
-                legendLocation = (int)legendAvailablePositions.None;
-            }
-
-
 
         }
 
