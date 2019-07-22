@@ -73,8 +73,8 @@ namespace ScottPlot
         public Color legendFontColor = Color.Black;
         public Color legendBackColor = Color.White;
         public Color legendFrameColor = Color.Black;
-        public string[] legendAvailablePositions = new string[] { "TopLeft", "TopRight", "BottomLeft", "BottomRight" };
-        public string legendLocation = "BottomRight";
+        public enum legendAvailablePositions { TopLeft, TopRight, BottomLeft, BottomRight, TopCenter, BottomCenter, MiddleLeft, MiddleRight,None };
+        public int legendLocation = (int)legendAvailablePositions.BottomRight; 
 
         // benchmarking
         public Font benchmarkFont = new Font("Consolas", 8);
@@ -450,9 +450,9 @@ namespace ScottPlot
                 plottables.RemoveAt(indicesToDelete[i]);
             }
 
-            if (legend)
+            if (!legend)
             {
-                legendLocation = null;
+                legendLocation = (int)legendAvailablePositions.None;
             }
 
 

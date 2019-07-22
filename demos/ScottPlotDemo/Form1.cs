@@ -22,11 +22,68 @@ namespace ScottPlotDemo
             Clear();
         }
 
+        public int legendSelectedPosition = (int)ScottPlot.Settings.legendAvailablePositions.None;
+
         private void Form1_Load(object sender, EventArgs e)
         {
             BtnScatterSin_Click(null, null);
             BtnScatterSin_Click(null, null);
             BtnScatterSin_Click(null, null);
+
+            this.rbNone.CheckedChanged += new System.EventHandler(this.Rb_CheckedChanged);
+            this.rbBottomCenter.CheckedChanged += new System.EventHandler(this.Rb_CheckedChanged);
+            this.rbBottomLeft.CheckedChanged += new System.EventHandler(this.Rb_CheckedChanged);
+            this.rbBottomRight.CheckedChanged += new System.EventHandler(this.Rb_CheckedChanged);
+            this.rbMiddleLeft.CheckedChanged += new System.EventHandler(this.Rb_CheckedChanged);
+            this.rbMiddleRight.CheckedChanged += new System.EventHandler(this.Rb_CheckedChanged);
+            this.rbTopCenter.CheckedChanged += new System.EventHandler(this.Rb_CheckedChanged);
+            this.rbTopLeft.CheckedChanged += new System.EventHandler(this.Rb_CheckedChanged);
+            this.rbTopRight.CheckedChanged += new System.EventHandler(this.Rb_CheckedChanged);
+
+
+        }
+        private void Rb_CheckedChanged(object sender, EventArgs e)
+        {
+            String sendername = (string)((RadioButton)sender).Name;
+
+            switch (sendername)
+            {
+                case "rbNone":
+                    legendSelectedPosition = (int)ScottPlot.Settings.legendAvailablePositions.None;
+                    break;
+                case "rbBottomCenter":
+                    legendSelectedPosition = (int)ScottPlot.Settings.legendAvailablePositions.BottomCenter ;
+                    break;
+                case "rbBottomLeft":
+                    legendSelectedPosition = (int)ScottPlot.Settings.legendAvailablePositions.BottomLeft ;
+                    break;
+                case "rbBottomRight":
+                    legendSelectedPosition = (int)ScottPlot.Settings.legendAvailablePositions.BottomRight;
+                    break;
+                case "rbMiddleLeft":
+                    legendSelectedPosition = (int)ScottPlot.Settings.legendAvailablePositions.MiddleLeft ;
+                    break;
+                case "rbMiddleRight":
+                    legendSelectedPosition = (int)ScottPlot.Settings.legendAvailablePositions.MiddleRight;
+                    break;
+                case "rbTopCenter":
+                    legendSelectedPosition = (int)ScottPlot.Settings.legendAvailablePositions.TopCenter;
+                    break;
+                case "rbTopLeft":
+                    legendSelectedPosition = (int)ScottPlot.Settings.legendAvailablePositions.TopLeft;
+                    break;
+                case "rbTopRight":
+                    legendSelectedPosition = (int)ScottPlot.Settings.legendAvailablePositions.TopRight;
+                    break;
+
+                default:
+                    legendSelectedPosition = (int)ScottPlot.Settings.legendAvailablePositions.None;
+                    break;
+
+            }
+            scottPlotUC1.plt.Legend(true, null, null, null, legendSelectedPosition);
+            scottPlotUC1.Render();
+
         }
 
         private void Clear()
@@ -105,8 +162,9 @@ namespace ScottPlotDemo
                 mult: rand.NextDouble() * 10 + 1,
                 offset: rand.NextDouble() * 10 - 5);
 
-            scottPlotUC1.plt.PlotScatter(xs, ys);
+            scottPlotUC1.plt.PlotScatter(xs, ys, label:"Hello World");
             scottPlotUC1.plt.AxisAuto();
+            scottPlotUC1.plt.Legend(true, null, null, null, legendSelectedPosition);
             scottPlotUC1.Render();
         }
 
@@ -184,6 +242,7 @@ namespace ScottPlotDemo
         {
             RandomWalk(10_000_000);
         }
+
 
     }
 }
