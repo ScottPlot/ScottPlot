@@ -63,6 +63,10 @@ namespace ScottPlot
 
         public static void DataLegend(Settings settings)
         {
+
+            if (settings.legendLocation == legendLocation.none)
+                return;
+
             int padding = 3;
             int stubWidth = 20;
             int stubHeight = 3;
@@ -82,6 +86,14 @@ namespace ScottPlot
                     if (thisItemFontWidth > legendFontMaxWidth)
                         legendFontMaxWidth = thisItemFontWidth;
                 }
+                else
+                {
+                    legendItems.Add(new LegendItem("", i, settings.plottables[i].color));
+                    float thisItemFontWidth = settings.gfxData.MeasureString(settings.plottables[i].label, settings.legendFont).Width;
+                    if (thisItemFontWidth > legendFontMaxWidth)
+                        legendFontMaxWidth = thisItemFontWidth;
+
+                }
             }
             legendItems.Reverse();
 
@@ -90,76 +102,77 @@ namespace ScottPlot
             float frameHeight = padding * 2 + legendFontLineHeight * legendItems.Count();
             Size frameSize = new Size((int)frameWidth, (int)frameHeight);
 
-            Point frameLoc = new Point((int)(settings.dataSize.Width - frameWidth - padding),
+            Point frameLocation = new Point((int)(settings.dataSize.Width - frameWidth - padding),
                  (int)(settings.dataSize.Height - frameHeight - padding));
 
-            if (settings.legendAvailablePositions.Contains(settings.legendLocation))
+            Point textLocation = new Point(settings.dataSize.Width, settings.dataSize.Height);
+
+            switch (settings.legendLocation)
             {
-                if (settings.legendLocation is "BottomRight")
-                {
-                    frameLoc.X = (int)(settings.dataSize.Width - frameWidth - padding);
-                    frameLoc.Y = (int)(settings.dataSize.Height - frameHeight - padding);
-                }
-                else if (settings.legendLocation is "TopLeft")
-                {
-                    frameLoc.X = (int)(padding);
-                    frameLoc.Y = (int)(padding);
-                }
-                else if (settings.legendLocation is "BottomLeft")
-                {
-                    frameLoc.X = (int)(padding);
-                    frameLoc.Y = (int)(settings.dataSize.Height - frameHeight - padding);
-                }
-                else if (settings.legendLocation is "TopRight")
-                {
-                    frameLoc.X = (int)(settings.dataSize.Width - frameWidth - padding);
-                    frameLoc.Y = (int)(padding);
-                }
+                case (legendLocation.none):
+                    break;
+                case (legendLocation.lowerRight):
+                    frameLocation.X = (int)(settings.dataSize.Width - frameWidth - padding);
+                    frameLocation.Y = (int)(settings.dataSize.Height - frameHeight - padding);
+                    textLocation.X = (int)(settings.dataSize.Width - (legendFontMaxWidth + padding));
+                    textLocation.Y = settings.dataSize.Height - padding * 2;
+                    break;
+                case (legendLocation.upperLeft):
+                    frameLocation.X = (int)(padding);
+                    frameLocation.Y = (int)(padding);
+                    textLocation.X = (int)(frameWidth - legendFontMaxWidth + padding);
+                    textLocation.Y = (int)(frameHeight);
+                    break;
+                case (legendLocation.lowerLeft):
+                    frameLocation.X = (int)(padding);
+                    frameLocation.Y = (int)(settings.dataSize.Height - frameHeight - padding);
+                    textLocation.X = (int)(frameWidth - legendFontMaxWidth + padding);
+                    textLocation.Y = settings.dataSize.Height - padding * 2;
+                    break;
+                case (legendLocation.upperRight):
+                    frameLocation.X = (int)(settings.dataSize.Width - frameWidth - padding);
+                    frameLocation.Y = (int)(padding);
+                    textLocation.X = (int)(settings.dataSize.Width - (legendFontMaxWidth + padding));
+                    textLocation.Y = (int)(frameHeight);
+                    break;
+                case (legendLocation.upperCenter):
+                    frameLocation.X = (int)((settings.dataSize.Width) / 2 - frameWidth / 2 - padding * 5);
+                    frameLocation.Y = (int)(padding);
+                    textLocation.X = (int)(settings.dataSize.Width / 2 - legendFontMaxWidth / 2 + padding / 2);
+                    textLocation.Y = (int)(frameHeight);
+                    break;
+                case (legendLocation.lowerCenter):
+                    frameLocation.X = (int)((settings.dataSize.Width) / 2 - frameWidth / 2 - padding * 5);
+                    frameLocation.Y = (int)(settings.dataSize.Height - frameHeight - padding);
+                    textLocation.X = (int)(settings.dataSize.Width / 2 - legendFontMaxWidth / 2 + padding / 2);
+                    textLocation.Y = settings.dataSize.Height - padding * 2;
+                    break;
+                case (legendLocation.centerLeft):
+                    frameLocation.X = (int)(padding);
+                    frameLocation.Y = (int)(settings.dataSize.Height / 2 - frameHeight / 2 - padding);
+                    textLocation.X = (int)(frameWidth - legendFontMaxWidth + padding);
+                    textLocation.Y = (int)(settings.dataSize.Height / 2 + frameHeight / 2 - padding * 2);
+                    break;
+                case (legendLocation.centerRight):
+                    frameLocation.X = (int)(settings.dataSize.Width - frameWidth - padding);
+                    frameLocation.Y = (int)(settings.dataSize.Height / 2 - frameHeight / 2 - padding);
+                    textLocation.X = (int)(settings.dataSize.Width - (legendFontMaxWidth + padding));
+                    textLocation.Y = (int)(settings.dataSize.Height / 2 + frameHeight / 2 - padding * 2);
+                    break;
+                default:
+                    throw new NotImplementedException($"legend location {settings.legendLocation} is not supported");
             }
 
 
-            Rectangle frameRect = new Rectangle(frameLoc, frameSize);
-            if (settings.legendAvailablePositions.Contains(settings.legendLocation))
+            Rectangle frameRect = new Rectangle(frameLocation, frameSize);
+            if (settings.legendLocation != legendLocation.none)
             {
                 settings.gfxData.FillRectangle(new SolidBrush(settings.legendBackColor), frameRect);
                 settings.gfxData.DrawRectangle(new Pen(settings.legendFrameColor), frameRect);
             }
 
-
-            // draw the individual labels
-            Point textLocation = new Point(settings.dataSize.Width, settings.dataSize.Height);
-            if (settings.legendAvailablePositions.Contains(settings.legendLocation))
+            if (settings.legendLocation != legendLocation.none)
             {
-                if (settings.legendLocation is "BottomRight")
-                {
-                    textLocation.X = (int)(settings.dataSize.Width - (legendFontMaxWidth + padding));
-                    textLocation.Y = settings.dataSize.Height - padding * 2;
-                }
-                else if (settings.legendLocation is "TopLeft")
-                {
-                    textLocation.X = (int)(frameWidth - legendFontMaxWidth + padding);
-                    textLocation.Y = (int)(frameHeight);
-                }
-                else if (settings.legendLocation is "BottomLeft")
-                {
-                    textLocation.X = (int)(frameWidth - legendFontMaxWidth + padding);
-                    textLocation.Y = settings.dataSize.Height - padding * 2;
-                }
-                else if (settings.legendLocation is "TopRight")
-                {
-                    textLocation.X = (int)(settings.dataSize.Width - (legendFontMaxWidth + padding));
-                    textLocation.Y = (int)(frameHeight);
-                }
-            }
-            else
-            {
-                textLocation.X = (int)(settings.dataSize.Width - (legendFontMaxWidth + padding));
-                textLocation.Y = settings.dataSize.Height - padding;
-            }
-
-            if (settings.legendAvailablePositions.Contains(settings.legendLocation))
-            {
-
                 for (int i = 0; i < legendItems.Count; i++)
                 {
                     textLocation.Y -= (int)(legendFontLineHeight);

@@ -139,8 +139,7 @@ namespace ScottPlot
                 Renderer.DataBackground(settings);
                 Renderer.DataGrid(settings);
                 Renderer.DataPlottables(settings);
-                if (settings.displayLegend)
-                    Renderer.DataLegend(settings);
+                Renderer.DataLegend(settings);
                 Renderer.DataPlaceOntoFigure(settings);
             }
             settings.BenchmarkEnd();
@@ -179,9 +178,9 @@ namespace ScottPlot
         /// <summary>
         /// Clear all plot objects
         /// </summary>
-        public void Clear(bool axisLines = true, bool scatterPlots = true, bool signalPlots = true, bool text = true, bool bar = true, bool finance = true, bool legend = true)
+        public void Clear(bool axisLines = true, bool scatterPlots = true, bool signalPlots = true, bool text = true, bool bar = true, bool finance = true)
         {
-            settings.Clear(axisLines, scatterPlots, signalPlots, text, bar, finance, legend);
+            settings.Clear(axisLines, scatterPlots, signalPlots, text, bar, finance);
         }
 
         /// <summary>
@@ -454,16 +453,19 @@ namespace ScottPlot
         /// <summary>
         /// Add a legend made from the labels given to plot objects
         /// </summary>
-        public void Legend(bool enableLegend = true, Color? fontColor = null, Color? backColor = null, Color? frameColor = null, string location = "BottomRight")
+        public void Legend(bool enableLegend = true, Color? fontColor = null, Color? backColor = null, Color? frameColor = null, legendLocation location = legendLocation.lowerRight)
         {
-            settings.displayLegend = enableLegend;
             if (fontColor != null)
                 settings.legendFontColor = (Color)fontColor;
             if (backColor != null)
                 settings.legendBackColor = (Color)backColor;
             if (frameColor != null)
                 settings.legendFrameColor = (Color)frameColor;
-            settings.legendLocation = location;
+
+            if (enableLegend)
+                settings.legendLocation = location;
+            else
+                settings.legendLocation = legendLocation.none;
         }
 
         #endregion
