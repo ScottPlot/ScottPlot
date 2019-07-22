@@ -82,6 +82,14 @@ namespace ScottPlot
                     if (thisItemFontWidth > legendFontMaxWidth)
                         legendFontMaxWidth = thisItemFontWidth;
                 }
+                else
+                {
+                    legendItems.Add(new LegendItem("", i, settings.plottables[i].color));
+                    float thisItemFontWidth = settings.gfxData.MeasureString(settings.plottables[i].label, settings.legendFont).Width;
+                    if (thisItemFontWidth > legendFontMaxWidth)
+                        legendFontMaxWidth = thisItemFontWidth;
+
+                }
             }
             legendItems.Reverse();
 
@@ -93,33 +101,53 @@ namespace ScottPlot
             Point frameLoc = new Point((int)(settings.dataSize.Width - frameWidth - padding),
                  (int)(settings.dataSize.Height - frameHeight - padding));
 
-            if (settings.legendAvailablePositions.Contains(settings.legendLocation))
+            if (settings.legendLocation != (int)Settings.legendAvailablePositions.None)
             {
-                if (settings.legendLocation is "BottomRight")
+                if (settings.legendLocation == (int)Settings.legendAvailablePositions.BottomRight)
                 {
                     frameLoc.X = (int)(settings.dataSize.Width - frameWidth - padding);
                     frameLoc.Y = (int)(settings.dataSize.Height - frameHeight - padding);
                 }
-                else if (settings.legendLocation is "TopLeft")
+                else if (settings.legendLocation == (int)Settings.legendAvailablePositions.TopLeft)
                 {
                     frameLoc.X = (int)(padding);
                     frameLoc.Y = (int)(padding);
                 }
-                else if (settings.legendLocation is "BottomLeft")
+                else if (settings.legendLocation == (int)Settings.legendAvailablePositions.BottomLeft)
                 {
                     frameLoc.X = (int)(padding);
                     frameLoc.Y = (int)(settings.dataSize.Height - frameHeight - padding);
                 }
-                else if (settings.legendLocation is "TopRight")
+                else if (settings.legendLocation == (int)Settings.legendAvailablePositions.TopRight)
                 {
                     frameLoc.X = (int)(settings.dataSize.Width - frameWidth - padding);
                     frameLoc.Y = (int)(padding);
                 }
+                else if (settings.legendLocation == (int)Settings.legendAvailablePositions.TopCenter )
+                {
+                    frameLoc.X = (int)((settings.dataSize.Width)/2 - frameWidth/2 - padding*5);
+                    frameLoc.Y = (int)(padding);
+                }
+                else if (settings.legendLocation == (int)Settings.legendAvailablePositions.BottomCenter)
+                {
+                    frameLoc.X = (int)((settings.dataSize.Width)/2  -frameWidth/2 - padding*5);
+                    frameLoc.Y = (int)(settings.dataSize.Height - frameHeight - padding);
+                }
+                else if (settings.legendLocation == (int)Settings.legendAvailablePositions.MiddleLeft)
+                {
+                    frameLoc.X = (int)(padding);
+                    frameLoc.Y = (int)(settings.dataSize.Height/2 - frameHeight/2 - padding);
+                }
+                else if (settings.legendLocation == (int)Settings.legendAvailablePositions.MiddleRight)
+                {
+                    frameLoc.X = (int)(settings.dataSize.Width - frameWidth - padding);
+                    frameLoc.Y = (int)(settings.dataSize.Height/2 - frameHeight/2 - padding);
+                }
+
             }
 
-
             Rectangle frameRect = new Rectangle(frameLoc, frameSize);
-            if (settings.legendAvailablePositions.Contains(settings.legendLocation))
+            if (settings.legendLocation != (int)Settings.legendAvailablePositions.None)
             {
                 settings.gfxData.FillRectangle(new SolidBrush(settings.legendBackColor), frameRect);
                 settings.gfxData.DrawRectangle(new Pen(settings.legendFrameColor), frameRect);
@@ -128,28 +156,50 @@ namespace ScottPlot
 
             // draw the individual labels
             Point textLocation = new Point(settings.dataSize.Width, settings.dataSize.Height);
-            if (settings.legendAvailablePositions.Contains(settings.legendLocation))
+
+            if (settings.legendLocation != (int)Settings.legendAvailablePositions.None)
             {
-                if (settings.legendLocation is "BottomRight")
+                if (settings.legendLocation == (int)Settings.legendAvailablePositions.BottomRight)
                 {
                     textLocation.X = (int)(settings.dataSize.Width - (legendFontMaxWidth + padding));
                     textLocation.Y = settings.dataSize.Height - padding * 2;
                 }
-                else if (settings.legendLocation is "TopLeft")
+                else if (settings.legendLocation == (int)Settings.legendAvailablePositions.TopLeft)
                 {
                     textLocation.X = (int)(frameWidth - legendFontMaxWidth + padding);
                     textLocation.Y = (int)(frameHeight);
                 }
-                else if (settings.legendLocation is "BottomLeft")
+                else if (settings.legendLocation == (int)Settings.legendAvailablePositions.BottomLeft)
                 {
                     textLocation.X = (int)(frameWidth - legendFontMaxWidth + padding);
                     textLocation.Y = settings.dataSize.Height - padding * 2;
                 }
-                else if (settings.legendLocation is "TopRight")
+                else if (settings.legendLocation == (int)Settings.legendAvailablePositions.TopRight)
                 {
                     textLocation.X = (int)(settings.dataSize.Width - (legendFontMaxWidth + padding));
                     textLocation.Y = (int)(frameHeight);
                 }
+                else if (settings.legendLocation == (int)Settings.legendAvailablePositions.TopCenter)
+                {
+                    textLocation.X = (int)(settings.dataSize.Width /2 - legendFontMaxWidth/2 + padding/2);
+                    textLocation.Y = (int)(frameHeight);
+                }
+                else if (settings.legendLocation == (int)Settings.legendAvailablePositions.BottomCenter)
+                {
+                    textLocation.X = (int)(settings.dataSize.Width/2 - legendFontMaxWidth/2 + padding/2);
+                    textLocation.Y = settings.dataSize.Height - padding * 2;
+                }
+                else if (settings.legendLocation == (int)Settings.legendAvailablePositions.MiddleLeft )
+                {
+                    textLocation.X = (int)(frameWidth - legendFontMaxWidth + padding);
+                    textLocation.Y = (int)(settings.dataSize.Height/2 + frameHeight/2- padding * 2);
+                }
+                else if (settings.legendLocation == (int)Settings.legendAvailablePositions.MiddleRight)
+                {
+                    textLocation.X = (int)(settings.dataSize.Width - (legendFontMaxWidth + padding));
+                    textLocation.Y = (int)(settings.dataSize.Height/2 + frameHeight / 2 - padding * 2);
+                }
+
             }
             else
             {
@@ -157,7 +207,7 @@ namespace ScottPlot
                 textLocation.Y = settings.dataSize.Height - padding;
             }
 
-            if (settings.legendAvailablePositions.Contains(settings.legendLocation))
+            if (settings.legendLocation != (int)Settings.legendAvailablePositions.None)
             {
 
                 for (int i = 0; i < legendItems.Count; i++)
