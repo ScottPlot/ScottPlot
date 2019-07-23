@@ -147,13 +147,13 @@ namespace ScottPlot
                     textLocation.X = (int)(settings.dataSize.Width / 2 - legendFontMaxWidth / 2 + padding / 2);
                     textLocation.Y = settings.dataSize.Height - padding * 2;
                     break;
-                case (legendLocation.centerLeft):
+                case (legendLocation.middleLeft):
                     frameLocation.X = (int)(padding);
                     frameLocation.Y = (int)(settings.dataSize.Height / 2 - frameHeight / 2 - padding);
                     textLocation.X = (int)(frameWidth - legendFontMaxWidth + padding);
                     textLocation.Y = (int)(settings.dataSize.Height / 2 + frameHeight / 2 - padding * 2);
                     break;
-                case (legendLocation.centerRight):
+                case (legendLocation.middleRight):
                     frameLocation.X = (int)(settings.dataSize.Width - frameWidth - padding);
                     frameLocation.Y = (int)(settings.dataSize.Height / 2 - frameHeight / 2 - padding);
                     textLocation.X = (int)(settings.dataSize.Width - (legendFontMaxWidth + padding));
@@ -168,25 +168,25 @@ namespace ScottPlot
             Point shadowLocation = new Point();
             switch (settings.dropShadowDirection)
             {
-                case (dropShadowDirection.lowerRight):
+                case (legendShadowDirection.lowerRight):
                 {
                     shadowLocation.X = frameRect.X + 2;
                     shadowLocation.Y = frameRect.Y + 2;
                     break;
                 }
-                case (dropShadowDirection.lowerLeft):
+                case (legendShadowDirection.lowerLeft):
                     {
                         shadowLocation.X = frameRect.X - 2;
                         shadowLocation.Y = frameRect.Y + 2;
                         break;
                     }
-                case (dropShadowDirection.upperRight):
+                case (legendShadowDirection.upperRight):
                     {
                         shadowLocation.X = frameRect.X + 2;
                         shadowLocation.Y = frameRect.Y - 2;
                         break;
                     }
-                case (dropShadowDirection.upperLeft):
+                case (legendShadowDirection.upperLeft):
                     {
                         shadowLocation.X = frameRect.X - 2;
                         shadowLocation.Y = frameRect.Y - 2;
@@ -194,7 +194,7 @@ namespace ScottPlot
                     }
                 default:
                     {
-                        settings.dropShadowDirection = dropShadowDirection.none;
+                        settings.dropShadowDirection = legendShadowDirection.none;
                         break;
                     }
 
@@ -203,7 +203,7 @@ namespace ScottPlot
             Rectangle shadowRect = new Rectangle(shadowLocation, frameSize);
             if (settings.legendLocation != legendLocation.none)
             {
-                if (settings.dropShadowDirection != dropShadowDirection.none)
+                if (settings.dropShadowDirection != legendShadowDirection.none)
                 {
                     settings.gfxData.FillRectangle(new SolidBrush(settings.shadowColor), shadowRect);
                 }
