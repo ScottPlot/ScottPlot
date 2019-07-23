@@ -71,7 +71,7 @@ namespace ScottPlot
         public Font legendFont = new Font("Segoe UI", 12);
         public Color legendFontColor = Color.Black;
         public Color legendBackColor = Color.White;
-        public Color legendShadowColor = Color.DimGray;
+        public Color legendShadowColor = Color.FromArgb(75, 0, 0, 0);
         public Color legendFrameColor = Color.Black;
         public legendLocation legendLocation = legendLocation.none;
         public shadowDirection legendShadowDirection = shadowDirection.none;
