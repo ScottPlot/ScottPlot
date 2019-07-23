@@ -18,4 +18,12 @@ namespace ScottPlot
         upperCenter,
         lowerCenter,
     }
+    public enum dropShadowDirection
+    {
+        none,
+        upperLeft,
+        upperRight,
+        lowerLeft,
+        lowerRight,
+    }
 }
