@@ -71,12 +71,18 @@ namespace ScottPlotAudioMonitor
                 double fftRight = Math.Abs(fftFull[fftPoints - i - 1].X + fftFull[fftPoints - i - 1].Y);
                 dataFft[i] = fftLeft + fftRight;
             }
+            dataMaxValue = new double[fftPoints / 2];
+            double maxvalue = dataFft.Max();
+            datamaxValueIndex = dataFft.ToList().IndexOf(maxvalue);
+            dataMaxValue[datamaxValueIndex] = dataFft.Max();
         }
 
         private NAudio.Wave.WaveInEvent wvin;
 
         double[] dataPcm;
         double[] dataFft;
+        double[] dataMaxValue;
+        int datamaxValueIndex;
 
         private void OnDataAvailable(object sender, NAudio.Wave.WaveInEventArgs args)
         {
@@ -98,9 +104,11 @@ namespace ScottPlotAudioMonitor
         {
             if (wvin == null)
             {
-                wvin = new NAudio.Wave.WaveInEvent();
-                wvin.DeviceNumber = DeviceIndex;
-                wvin.WaveFormat = new NAudio.Wave.WaveFormat(sampleRate, bitRate, channels);
+                wvin = new NAudio.Wave.WaveInEvent
+                {
+                    DeviceNumber = DeviceIndex,
+                    WaveFormat = new NAudio.Wave.WaveFormat(sampleRate, bitRate, channels)
+                };
                 wvin.DataAvailable += OnDataAvailable;
                 wvin.BufferMilliseconds = bufferMilliseconds;
                 if (start)
@@ -144,6 +152,8 @@ namespace ScottPlotAudioMonitor
                     scottPlotUC2.plt.AxisAuto(0);
                     scottPlotUC1.plt.TightenLayout();
                 }
+                scottPlotUC2.plt.PlotSignal(dataMaxValue, (double)wvin.WaveFormat.SampleRate / dataFft.Length, markerSize: 0);
+
                 scottPlotUC1.Render();
                 scottPlotUC2.Render();
             }

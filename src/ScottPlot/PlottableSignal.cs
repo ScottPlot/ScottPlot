@@ -17,14 +17,11 @@ namespace ScottPlot
         public double yOffset;
         public Pen pen;
         public Brush brush;
+        public double dataMax;
 
-        public PlottableSignal(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label)
+        public PlottableSignal(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, double dataMax)
         {
-
-            if (ys == null)
-                throw new Exception("Y data cannot be null");
-
-            this.ys = ys;
+            this.ys = ys ?? throw new Exception("Y data cannot be null");
             this.sampleRate = sampleRate;
             this.samplePeriod = 1.0 / sampleRate;
             this.markerSize = (float)markerSize;
@@ -41,6 +38,8 @@ namespace ScottPlot
                 EndCap = System.Drawing.Drawing2D.LineCap.Round,
                 LineJoin = System.Drawing.Drawing2D.LineJoin.Round
             };
+            this.dataMax = dataMax;
+
         }
 
         public override string ToString()

@@ -68,11 +68,12 @@ namespace ScottPlot
         public double gridSpacingY = 0;
 
         // legend
-        public bool displayLegend = false;
+        //public bool displayLegend = false;
         public Font legendFont = new Font("Segoe UI", 12);
         public Color legendFontColor = Color.Black;
         public Color legendBackColor = Color.White;
         public Color legendFrameColor = Color.Black;
+        public legendLocation legendLocation = legendLocation.none; 
 
         // benchmarking
         public Font benchmarkFont = new Font("Consolas", 8);
@@ -447,6 +448,7 @@ namespace ScottPlot
             {
                 plottables.RemoveAt(indicesToDelete[i]);
             }
+
         }
 
     }

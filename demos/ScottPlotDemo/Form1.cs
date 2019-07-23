@@ -185,5 +185,6 @@ namespace ScottPlotDemo
             RandomWalk(10_000_000);
         }
 
+
     }
 }
