@@ -205,7 +205,7 @@ namespace ScottPlot
             {
                 if (settings.legendShadowDirection != shadowDirection.none)
                 {
-                    settings.gfxData.FillRectangle(new SolidBrush(settings.shadowColor), shadowRect);
+                    settings.gfxData.FillRectangle(new SolidBrush(settings.legendShadowColor), shadowRect);
                 }
                 settings.gfxData.FillRectangle(new SolidBrush(settings.legendBackColor), frameRect);
                 settings.gfxData.DrawRectangle(new Pen(settings.legendFrameColor), frameRect);
