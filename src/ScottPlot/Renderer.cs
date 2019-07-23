@@ -165,8 +165,48 @@ namespace ScottPlot
 
 
             Rectangle frameRect = new Rectangle(frameLocation, frameSize);
+            Point shadowLocation = new Point();
+            switch (settings.dropShadowDirection)
+            {
+                case (dropShadowDirection.lowerRight):
+                {
+                    shadowLocation.X = frameRect.X + 2;
+                    shadowLocation.Y = frameRect.Y + 2;
+                    break;
+                }
+                case (dropShadowDirection.lowerLeft):
+                    {
+                        shadowLocation.X = frameRect.X - 2;
+                        shadowLocation.Y = frameRect.Y + 2;
+                        break;
+                    }
+                case (dropShadowDirection.upperRight):
+                    {
+                        shadowLocation.X = frameRect.X + 2;
+                        shadowLocation.Y = frameRect.Y - 2;
+                        break;
+                    }
+                case (dropShadowDirection.upperLeft):
+                    {
+                        shadowLocation.X = frameRect.X - 2;
+                        shadowLocation.Y = frameRect.Y - 2;
+                        break;
+                    }
+                default:
+                    {
+                        settings.dropShadowDirection = dropShadowDirection.none;
+                        break;
+                    }
+
+            }
+
+            Rectangle shadowRect = new Rectangle(shadowLocation, frameSize);
             if (settings.legendLocation != legendLocation.none)
             {
+                if (settings.dropShadowDirection != dropShadowDirection.none)
+                {
+                    settings.gfxData.FillRectangle(new SolidBrush(settings.shadowColor), shadowRect);
+                }
                 settings.gfxData.FillRectangle(new SolidBrush(settings.legendBackColor), frameRect);
                 settings.gfxData.DrawRectangle(new Pen(settings.legendFrameColor), frameRect);
             }

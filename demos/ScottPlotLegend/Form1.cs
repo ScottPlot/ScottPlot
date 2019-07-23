@@ -24,6 +24,11 @@ namespace Legend
             cbLocations.Items.AddRange(legendLocationStrings);
             cbLocations.SelectedItem = cbLocations.Items[0];
 
+            string[] dropShadowDirectionStrings = Enum.GetNames(typeof(ScottPlot.dropShadowDirection));
+            cbShadowDirection.Items.AddRange(dropShadowDirectionStrings);
+            cbShadowDirection.SelectedItem = cbShadowDirection.Items[0];
+
+
             Random rand = new Random();
             int pointCount = 100;
             double[] xs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -36,13 +41,18 @@ namespace Legend
             scottPlotUC1.Render();
         }
 
-        private void CbLocations_SelectedIndexChanged(object sender, EventArgs e)
+        private void Cboxes_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string locationString = cbLocations.SelectedItem.ToString();
-            ScottPlot.legendLocation location = (ScottPlot.legendLocation)Enum.Parse(typeof(ScottPlot.legendLocation), locationString);
-            Console.WriteLine($"legend location: {location}");
-            scottPlotUC1.plt.Legend(location: location);
-            scottPlotUC1.Render();
+            if (cbLocations.SelectedItem != null && cbShadowDirection.SelectedItem != null) 
+            {
+                string locationString = cbLocations.SelectedItem.ToString();
+                ScottPlot.legendLocation location = (ScottPlot.legendLocation)Enum.Parse(typeof(ScottPlot.legendLocation), locationString);
+                string dropShadowString = cbShadowDirection.SelectedItem.ToString();
+                ScottPlot.dropShadowDirection dropShadowDirection = (ScottPlot.dropShadowDirection)Enum.Parse(typeof(ScottPlot.dropShadowDirection), dropShadowString);
+                Console.WriteLine($"legend location: {dropShadowString}");
+                scottPlotUC1.plt.Legend(location: location, shadowDirection: dropShadowDirection);
+                scottPlotUC1.Render();
+            }
         }
     }
 }
