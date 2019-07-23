@@ -166,27 +166,27 @@ namespace ScottPlot
 
             Rectangle frameRect = new Rectangle(frameLocation, frameSize);
             Point shadowLocation = new Point();
-            switch (settings.dropShadowDirection)
+            switch (settings.legendShadowDirection)
             {
-                case (legendShadowDirection.lowerRight):
+                case (shadowDirection.lowerRight):
                 {
                     shadowLocation.X = frameRect.X + 2;
                     shadowLocation.Y = frameRect.Y + 2;
                     break;
                 }
-                case (legendShadowDirection.lowerLeft):
+                case (shadowDirection.lowerLeft):
                     {
                         shadowLocation.X = frameRect.X - 2;
                         shadowLocation.Y = frameRect.Y + 2;
                         break;
                     }
-                case (legendShadowDirection.upperRight):
+                case (shadowDirection.upperRight):
                     {
                         shadowLocation.X = frameRect.X + 2;
                         shadowLocation.Y = frameRect.Y - 2;
                         break;
                     }
-                case (legendShadowDirection.upperLeft):
+                case (shadowDirection.upperLeft):
                     {
                         shadowLocation.X = frameRect.X - 2;
                         shadowLocation.Y = frameRect.Y - 2;
@@ -194,7 +194,7 @@ namespace ScottPlot
                     }
                 default:
                     {
-                        settings.dropShadowDirection = legendShadowDirection.none;
+                        settings.legendShadowDirection = shadowDirection.none;
                         break;
                     }
 
@@ -203,7 +203,7 @@ namespace ScottPlot
             Rectangle shadowRect = new Rectangle(shadowLocation, frameSize);
             if (settings.legendLocation != legendLocation.none)
             {
-                if (settings.dropShadowDirection != legendShadowDirection.none)
+                if (settings.legendShadowDirection != shadowDirection.none)
                 {
                     settings.gfxData.FillRectangle(new SolidBrush(settings.shadowColor), shadowRect);
                 }

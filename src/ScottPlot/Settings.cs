@@ -75,7 +75,7 @@ namespace ScottPlot
         public Color shadowColor = Color.DimGray;
         public Color legendFrameColor = Color.Black;
         public legendLocation legendLocation = legendLocation.none;
-        public legendShadowDirection dropShadowDirection = legendShadowDirection.none;
+        public shadowDirection legendShadowDirection = shadowDirection.none;
 
         // benchmarking
         public Font benchmarkFont = new Font("Consolas", 8);
