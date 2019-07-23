@@ -24,7 +24,7 @@ namespace Legend
             cbLocations.Items.AddRange(legendLocationStrings);
             cbLocations.SelectedItem = cbLocations.Items[0];
 
-            string[] dropShadowDirectionStrings = Enum.GetNames(typeof(ScottPlot.legendShadowDirection));
+            string[] dropShadowDirectionStrings = Enum.GetNames(typeof(ScottPlot.shadowDirection));
             cbShadowDirection.Items.AddRange(dropShadowDirectionStrings);
             cbShadowDirection.SelectedItem = cbShadowDirection.Items[0];
 
@@ -48,7 +48,7 @@ namespace Legend
                 string locationString = cbLocations.SelectedItem.ToString();
                 ScottPlot.legendLocation location = (ScottPlot.legendLocation)Enum.Parse(typeof(ScottPlot.legendLocation), locationString);
                 string dropShadowString = cbShadowDirection.SelectedItem.ToString();
-                ScottPlot.legendShadowDirection dropShadowDirection = (ScottPlot.legendShadowDirection)Enum.Parse(typeof(ScottPlot.legendShadowDirection), dropShadowString);
+                ScottPlot.shadowDirection dropShadowDirection = (ScottPlot.shadowDirection)Enum.Parse(typeof(ScottPlot.shadowDirection), dropShadowString);
                 Console.WriteLine($"legend location: {dropShadowString}");
                 scottPlotUC1.plt.Legend(location: location, shadowDirection: dropShadowDirection);
                 scottPlotUC1.Render();
