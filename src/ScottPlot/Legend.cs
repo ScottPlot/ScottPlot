@@ -11,11 +11,20 @@ namespace ScottPlot
         none,
         upperLeft,
         upperRight,
+        upperCenter,
+        middleLeft,
+        middleRight,
         lowerLeft,
         lowerRight,
-        centerLeft,
-        centerRight,
-        upperCenter,
         lowerCenter,
+    }
+
+    public enum shadowDirection
+    {
+        none,
+        upperLeft,
+        upperRight,
+        lowerLeft,
+        lowerRight,
     }
 }

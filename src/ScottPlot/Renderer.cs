@@ -97,16 +97,13 @@ namespace ScottPlot
             }
             legendItems.Reverse();
 
-            // draw the frame and border
+            // figure out where the legend should be
             float frameWidth = padding * 2 + legendFontMaxWidth + padding + stubWidth;
             float frameHeight = padding * 2 + legendFontLineHeight * legendItems.Count();
             Size frameSize = new Size((int)frameWidth, (int)frameHeight);
-
             Point frameLocation = new Point((int)(settings.dataSize.Width - frameWidth - padding),
                  (int)(settings.dataSize.Height - frameHeight - padding));
-
             Point textLocation = new Point(settings.dataSize.Width, settings.dataSize.Height);
-
             switch (settings.legendLocation)
             {
                 case (legendLocation.none):
@@ -147,13 +144,13 @@ namespace ScottPlot
                     textLocation.X = (int)(settings.dataSize.Width / 2 - legendFontMaxWidth / 2 + padding / 2);
                     textLocation.Y = settings.dataSize.Height - padding * 2;
                     break;
-                case (legendLocation.centerLeft):
+                case (legendLocation.middleLeft):
                     frameLocation.X = (int)(padding);
                     frameLocation.Y = (int)(settings.dataSize.Height / 2 - frameHeight / 2 - padding);
                     textLocation.X = (int)(frameWidth - legendFontMaxWidth + padding);
                     textLocation.Y = (int)(settings.dataSize.Height / 2 + frameHeight / 2 - padding * 2);
                     break;
-                case (legendLocation.centerRight):
+                case (legendLocation.middleRight):
                     frameLocation.X = (int)(settings.dataSize.Width - frameWidth - padding);
                     frameLocation.Y = (int)(settings.dataSize.Height / 2 - frameHeight / 2 - padding);
                     textLocation.X = (int)(settings.dataSize.Width - (legendFontMaxWidth + padding));
@@ -162,11 +159,40 @@ namespace ScottPlot
                 default:
                     throw new NotImplementedException($"legend location {settings.legendLocation} is not supported");
             }
-
-
             Rectangle frameRect = new Rectangle(frameLocation, frameSize);
+
+            // figure out where the legend should be
+            Point shadowLocation = new Point();
+            switch (settings.legendShadowDirection)
+            {
+                case (shadowDirection.lowerRight):
+                    shadowLocation.X = frameRect.X + 2;
+                    shadowLocation.Y = frameRect.Y + 2;
+                    break;
+                case (shadowDirection.lowerLeft):
+                    shadowLocation.X = frameRect.X - 2;
+                    shadowLocation.Y = frameRect.Y + 2;
+                    break;
+                case (shadowDirection.upperRight):
+                    shadowLocation.X = frameRect.X + 2;
+                    shadowLocation.Y = frameRect.Y - 2;
+                    break;
+                case (shadowDirection.upperLeft):
+                    shadowLocation.X = frameRect.X - 2;
+                    shadowLocation.Y = frameRect.Y - 2;
+                    break;
+                default:
+                    settings.legendShadowDirection = shadowDirection.none;
+                    break;
+            }
+            Rectangle shadowRect = new Rectangle(shadowLocation, frameSize);
+
+            // draw the legend background
+
             if (settings.legendLocation != legendLocation.none)
             {
+                if (settings.legendShadowDirection != shadowDirection.none)
+                    settings.gfxData.FillRectangle(new SolidBrush(settings.legendShadowColor), shadowRect);
                 settings.gfxData.FillRectangle(new SolidBrush(settings.legendBackColor), frameRect);
                 settings.gfxData.DrawRectangle(new Pen(settings.legendFrameColor), frameRect);
             }
