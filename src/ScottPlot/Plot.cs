@@ -284,6 +284,11 @@ namespace ScottPlot
             settings.plottables.Add(axLine);
         }
 
+        public void RemovePlottable(Plottable toBeRemoved)
+        {
+            settings.plottables.Remove(toBeRemoved);
+        }
+
         /// <summary>
         /// Plot a horizontal line at the given Y position
         /// </summary>
@@ -331,6 +336,17 @@ namespace ScottPlot
             settings.AxisSet(x1, x2, y1, y2);
             return settings.axis;
         }
+
+        /// <summary>
+        /// Get axis limits
+        /// </summary>
+        /// <returns>axis limits [x1, x2, y1, y2]</returns>
+        public double[] GetAxis()
+        {
+            return settings.axis;
+        }
+
+
 
         /// <summary>
         /// Automatically adjust axis limits to fit the data

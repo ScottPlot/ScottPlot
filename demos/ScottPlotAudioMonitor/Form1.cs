@@ -71,18 +71,12 @@ namespace ScottPlotAudioMonitor
                 double fftRight = Math.Abs(fftFull[fftPoints - i - 1].X + fftFull[fftPoints - i - 1].Y);
                 dataFft[i] = fftLeft + fftRight;
             }
-            dataMaxValue = new double[fftPoints / 2];
-            double maxvalue = dataFft.Max();
-            datamaxValueIndex = dataFft.ToList().IndexOf(maxvalue);
-            dataMaxValue[datamaxValueIndex] = dataFft.Max();
         }
 
         private NAudio.Wave.WaveInEvent wvin;
 
         double[] dataPcm;
         double[] dataFft;
-        double[] dataMaxValue;
-        int datamaxValueIndex;
 
         private void OnDataAvailable(object sender, NAudio.Wave.WaveInEventArgs args)
         {
@@ -152,10 +146,38 @@ namespace ScottPlotAudioMonitor
                     scottPlotUC2.plt.AxisAuto(0);
                     scottPlotUC1.plt.TightenLayout();
                 }
-                scottPlotUC2.plt.PlotSignal(dataMaxValue, (double)wvin.WaveFormat.SampleRate / dataFft.Length, markerSize: 0);
 
+
+                List<ScottPlot.Plottable> plottables = scottPlotUC2.plt.GetPlottables();
+
+                //for (int p = plottables.Count - 1; p >= 0; p--)
+                //{
+                //    if (plottables[p].GetType().Name == "PlottableAxLine")
+                //    {
+                //        scottPlotUC2.plt.RemovePlottable(plottables[p]);
+                //    }
+                //}
+                // Reverse for cicle to avoid shifting back of plottables when removing one.
+                // foreach can't be used for the same reason, as enumeration is forward.
+                //
+                //
+                // Using Reflection slows the plotting considerably, therefore
+                // being only 2 plottables, and the [1] item is the vline
+                // it's easier to remove it altogether.
+                // 
+
+                if (plottables.Count>1)
+                    scottPlotUC2.plt.RemovePlottable(plottables[1]);
+
+                double dataMax = dataFft.Max();
+                int dataMaxIndex = dataFft.ToList().IndexOf(dataMax);
+                double dataMaxFrequency = dataMaxIndex * (scottPlotUC2.plt.GetAxis()[1] - scottPlotUC2.plt.GetAxis()[0]) / scottPlotUC2.plt.GetTotalPoints();
+
+                scottPlotUC2.plt.PlotVLine(dataMaxFrequency, color: Color.Black, label: dataMax.ToString(), lineWidth: 5);
+                               
                 scottPlotUC1.Render();
                 scottPlotUC2.Render();
+
             }
         }
     }

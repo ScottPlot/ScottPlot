@@ -88,7 +88,6 @@
             // timerPlot
             // 
             this.timerPlot.Enabled = true;
-            this.timerPlot.Interval = 20;
             this.timerPlot.Tick += new System.EventHandler(this.TimerPlot_Tick);
             // 
             // tableLayoutPanel1
