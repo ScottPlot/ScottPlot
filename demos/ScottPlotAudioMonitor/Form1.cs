@@ -137,16 +137,47 @@ namespace ScottPlotAudioMonitor
             {
                 if (scottPlotUC1.plt.GetPlottables().Count == 0)
                 {
+                    // plot the PCM (raw signal)
                     scottPlotUC1.plt.PlotSignal(dataPcm, wvin.WaveFormat.SampleRate / 1000.0, markerSize: 0);
                     scottPlotUC1.plt.AxisAuto(0, .5);
-                    scottPlotUC1.plt.TightenLayout();
-                    scottPlotUC2.plt.PlotSignal(dataFft, (double)wvin.WaveFormat.SampleRate / dataFft.Length, markerSize: 0);
+
+                    // plot the FFT (frequency power)
+                    double fftSampleRate = dataFft.Length / (double)wvin.WaveFormat.SampleRate * 2;
+                    scottPlotUC2.plt.PlotSignal(dataFft, fftSampleRate * 1000.0, markerSize: 0);
                     scottPlotUC2.plt.AxisAuto(0);
-                    scottPlotUC1.plt.TightenLayout();
                 }
+
+                // update vertical line at peak frequency
+                double peakFrequency = getPeakFrequency();
+                Console.WriteLine($"Peak frequency: {peakFrequency} Hz");
+                scottPlotUC2.plt.Clear(signalPlots: false, axisLines: true);
+                scottPlotUC2.plt.PlotVLine(peakFrequency / 1000.0, color: Color.Red, 
+                    label: string.Format("peak {0:0} Hz", peakFrequency));
+                scottPlotUC2.plt.Legend(location: ScottPlot.legendLocation.upperRight);
+
                 scottPlotUC1.Render();
                 scottPlotUC2.Render();
             }
+        }
+
+        double getPeakFrequency(double ignoreBelowHz = 200)
+        {
+            double pointSpacingHz = (double)wvin.WaveFormat.SampleRate / dataFft.Length / 2;
+
+            double peakAmplitude = 0;
+            double peakIndex = 0;
+            int lowestIndex = (int)(ignoreBelowHz / pointSpacingHz);
+            for (int i = lowestIndex; i < dataFft.Length; i++)
+            {
+                if (dataFft[i] > peakAmplitude)
+                {
+                    peakAmplitude = dataFft[i];
+                    peakIndex = i;
+                }
+            }
+
+            double peakFrequency = (peakIndex) * pointSpacingHz;
+            return peakFrequency;
         }
     }
 }
