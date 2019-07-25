@@ -47,15 +47,16 @@
     <Compile Include="DataGen.cs" />
     <Compile Include="Histogram.cs" />
     <Compile Include="Legend.cs" />
+    <Compile Include="Markers.cs" />
     <Compile Include="MouseTracker.cs" />
-    <Compile Include="OHLC.cs" />
-    <Compile Include="Plottable.cs" />
-    <Compile Include="PlottableAxLine.cs" />
-    <Compile Include="PlottableBar.cs" />
-    <Compile Include="PlottableOHLC.cs" />
-    <Compile Include="PlottableScatter.cs" />
-    <Compile Include="PlottableSignal.cs" />
-    <Compile Include="PlottableText.cs" />
+    <Compile Include="plottables\OHLC.cs" />
+    <Compile Include="plottables\Plottable.cs" />
+    <Compile Include="plottables\PlottableAxLine.cs" />
+    <Compile Include="plottables\PlottableBar.cs" />
+    <Compile Include="plottables\PlottableOHLC.cs" />
+    <Compile Include="plottables\PlottableScatter.cs" />
+    <Compile Include="plottables\PlottableSignal.cs" />
+    <Compile Include="plottables\PlottableText.cs" />
     <Compile Include="Renderer.cs" />
     <Compile Include="ScottPlotUC.cs">
       <SubType>UserControl</SubType>
@@ -66,7 +67,7 @@
     <Compile Include="Style.cs" />
     <Compile Include="Ticks.cs" />
     <Compile Include="Tools.cs" />
-    <Compile Include="Plot.cs" />
+    <Compile Include="plottables\Plot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />
   </ItemGroup>
