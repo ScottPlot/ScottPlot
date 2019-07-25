@@ -30,11 +30,14 @@
         {
             this.cbLocations = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.scottPlotUC1 = new ScottPlot.ScottPlotUC();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.cbShadowDirection = new System.Windows.Forms.ComboBox();
+            this.scottPlotUC1 = new ScottPlot.ScottPlotUC();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.cbMarker = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // cbLocations
@@ -59,25 +62,15 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Legend Location";
             // 
-            // scottPlotUC1
-            // 
-            this.scottPlotUC1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.scottPlotUC1.Location = new System.Drawing.Point(12, 65);
-            this.scottPlotUC1.Name = "scottPlotUC1";
-            this.scottPlotUC1.Size = new System.Drawing.Size(610, 354);
-            this.scottPlotUC1.TabIndex = 2;
-            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.cbShadowDirection);
-            this.groupBox2.Location = new System.Drawing.Point(246, 12);
+            this.groupBox2.Location = new System.Drawing.Point(218, 12);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(200, 47);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Drop shadow direction";
+            this.groupBox2.Text = "Legend Shadow";
             // 
             // cbShadowDirection
             // 
@@ -91,11 +84,44 @@
             this.cbShadowDirection.TabIndex = 0;
             this.cbShadowDirection.SelectedIndexChanged += new System.EventHandler(this.Cboxes_SelectedIndexChanged);
             // 
+            // scottPlotUC1
+            // 
+            this.scottPlotUC1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.scottPlotUC1.Location = new System.Drawing.Point(12, 65);
+            this.scottPlotUC1.Name = "scottPlotUC1";
+            this.scottPlotUC1.Size = new System.Drawing.Size(610, 354);
+            this.scottPlotUC1.TabIndex = 2;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.cbMarker);
+            this.groupBox3.Location = new System.Drawing.Point(424, 12);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(200, 47);
+            this.groupBox3.TabIndex = 3;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Marker Shape";
+            // 
+            // cbMarker
+            // 
+            this.cbMarker.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbMarker.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbMarker.FormattingEnabled = true;
+            this.cbMarker.Location = new System.Drawing.Point(6, 19);
+            this.cbMarker.Name = "cbMarker";
+            this.cbMarker.Size = new System.Drawing.Size(188, 21);
+            this.cbMarker.TabIndex = 0;
+            this.cbMarker.SelectedIndexChanged += new System.EventHandler(this.CbMarker_SelectedIndexChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(634, 431);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.scottPlotUC1);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -104,6 +130,7 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -115,6 +142,8 @@
         private ScottPlot.ScottPlotUC scottPlotUC1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.ComboBox cbShadowDirection;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.ComboBox cbMarker;
     }
 }
 
