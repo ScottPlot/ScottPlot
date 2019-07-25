@@ -34,11 +34,11 @@ namespace ScottPlot
             //settings.gfxData.DrawLine(gridPen, 0, yPx, settings.dataSize.Width, yPx);
             int tempY = (int)(yPx + settings.dataSize.Height * Math.Sin(Radians(settings.angleAxis)));
             int tempX = (int)(settings.dataSize.Width * Math.Cos(Radians(settings.angleAxis)));
-            Console.WriteLine(tempY);
+            //Console.WriteLine(tempY);
             settings.gfxData.DrawLine(gridPen, 0, yPx,tempX , tempY);
         }
 
-        private double Radians(double angleAxis)
+        public static double Radians(double angleAxis)
         {
             return Math.PI * angleAxis / 180.0;
         }
@@ -47,7 +47,12 @@ namespace ScottPlot
         {
             double unitsFromAxisEdge = value - settings.axis[0];
             int xPx = (int)(unitsFromAxisEdge * settings.xAxisScale);
-            settings.gfxData.DrawLine(gridPen, xPx, 0, xPx, settings.dataSize.Height);
+            //settings.gfxData.DrawLine(gridPen, xPx, 0, xPx, settings.dataSize.Height);
+            int tempY = (int)(settings.dataSize.Width * Math.Cos(-Radians(settings.angleAxis) ));
+            int tempX = (int)(xPx+settings.dataSize.Height * Math.Sin( -Radians(settings.angleAxis) ));
+            //Console.WriteLine(tempY);
+            settings.gfxData.DrawLine(gridPen, xPx, 0, tempX, tempY);
+
         }
 
         public void RenderTickOnLeft(Settings settings)
