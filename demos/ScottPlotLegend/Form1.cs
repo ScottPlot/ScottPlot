@@ -28,31 +28,57 @@ namespace Legend
             cbShadowDirection.Items.AddRange(dropShadowDirectionStrings);
             cbShadowDirection.SelectedItem = cbShadowDirection.Items[0];
 
+            string[] markerStrings = Enum.GetNames(typeof(ScottPlot.MarkerShape));
+            cbMarker.Items.AddRange(markerStrings);
+            cbMarker.SelectedItem = cbMarker.Items[0];
 
+            Application.DoEvents();
+
+            UpdatePlot();
+        }
+
+        private void UpdatePlot()
+        {
+            // create random data
             Random rand = new Random();
             int pointCount = 100;
             double[] xs = ScottPlot.DataGen.Consecutive(pointCount);
             double[] ys1 = ScottPlot.DataGen.RandomWalk(rand, pointCount);
             double[] ys2 = ScottPlot.DataGen.RandomWalk(rand, pointCount);
             double[] ys3 = ScottPlot.DataGen.RandomWalk(rand, pointCount);
-            scottPlotUC1.plt.PlotScatter(xs, ys1, label: "one");
-            scottPlotUC1.plt.PlotScatter(xs, ys2, label: "two");
-            scottPlotUC1.plt.PlotScatter(xs, ys3, label: "three");
-            scottPlotUC1.Render();
-        }
 
-        private void Cboxes_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (cbLocations.SelectedItem != null && cbShadowDirection.SelectedItem != null) 
+            // plot the data
+            ScottPlot.MarkerShape markerShape = ScottPlot.MarkerShape.filledCircle;
+            if (cbMarker.SelectedItem != null)
+                markerShape = (ScottPlot.MarkerShape)Enum.Parse(typeof(ScottPlot.MarkerShape), cbMarker.SelectedItem.ToString());
+
+            scottPlotUC1.plt.Clear();
+            scottPlotUC1.plt.PlotScatter(xs, ys1, label: "one", markerShape: markerShape);
+            scottPlotUC1.plt.PlotScatter(xs, ys2, label: "two", markerShape: markerShape);
+            scottPlotUC1.plt.PlotScatter(xs, ys3, label: "three", markerShape: markerShape);
+
+            // optionally use a legend
+            if (cbLocations.SelectedItem != null && cbShadowDirection.SelectedItem != null)
             {
                 string locationString = cbLocations.SelectedItem.ToString();
                 ScottPlot.legendLocation location = (ScottPlot.legendLocation)Enum.Parse(typeof(ScottPlot.legendLocation), locationString);
                 string dropShadowString = cbShadowDirection.SelectedItem.ToString();
                 ScottPlot.shadowDirection dropShadowDirection = (ScottPlot.shadowDirection)Enum.Parse(typeof(ScottPlot.shadowDirection), dropShadowString);
-                Console.WriteLine($"legend location: {dropShadowString}");
                 scottPlotUC1.plt.Legend(location: location, shadowDirection: dropShadowDirection);
-                scottPlotUC1.Render();
             }
+
+            scottPlotUC1.plt.AxisAuto();
+            scottPlotUC1.Render();
+        }
+
+        private void Cboxes_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdatePlot();
+        }
+
+        private void CbMarker_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdatePlot();
         }
     }
 }
