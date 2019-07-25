@@ -17,13 +17,13 @@ namespace ScottPlot
         public float errorCapSize;
         public float markerSize;
         public bool stepDisplay;
+        public MarkerShape markerShape;
         public Pen penLine;
         public Pen penLineError;
         public Brush brush;
 
         public PlottableScatter(double[] xs, double[] ys, Color color, double lineWidth, double markerSize, string label,
-            double[] errorX, double[] errorY, double errorLineWidth, double errorCapSize,
-            bool stepDisplay)
+            double[] errorX, double[] errorY, double errorLineWidth, double errorCapSize, bool stepDisplay, MarkerShape markerShape)
         {
 
             if ((xs == null) || (ys == null))
@@ -52,6 +52,7 @@ namespace ScottPlot
             this.errorLineWidth = (float)errorLineWidth;
             this.errorCapSize = (float)errorCapSize;
             this.stepDisplay = stepDisplay;
+            this.markerShape = markerShape;
 
             pointCount = xs.Length;
 
@@ -184,9 +185,9 @@ namespace ScottPlot
                     settings.gfxData.DrawLines(penLine, points);
             }
 
-            if (markerSize > 0)
+            if ((markerSize > 0) && (markerShape != MarkerShape.none))
                 for (int i = 0; i < points.Length; i++)
-                    settings.gfxData.FillEllipse(brush, points[i].X - markerSize / 2, points[i].Y - markerSize / 2, markerSize, markerSize);
+                    MarkerTools.DrawMarker(settings.gfxData, points[i], markerShape, markerSize, color);
 
         }
     }
