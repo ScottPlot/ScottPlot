@@ -113,14 +113,14 @@ namespace ScottPlotDemo
             double[] yfirsts = new double[xs.Length];
             for (int i = 0; i < xs.Length ; i++)
             {
-                xfirsts[i] = xs[i] * Math.Cos(ScottPlot.Tick.Radians(axisAngle)) - ys[i] * Math.Sin(ScottPlot.Tick.Radians(axisAngle));
-                yfirsts[i] = xs[i] * Math.Sin(ScottPlot.Tick.Radians(axisAngle)) + ys[i] * Math.Cos(ScottPlot.Tick.Radians(axisAngle));
+                xfirsts[i] = Math.Sqrt(Math.Pow(xs[i],2)+Math.Pow(ys[i],2)) * Math.Cos(ScottPlot.Tick.Radians(-axisAngle));
+                yfirsts[i] = Math.Sqrt(Math.Pow(xs[i], 2) + Math.Pow(ys[i], 2)) * Math.Sin(ScottPlot.Tick.Radians(-axisAngle));
             }
 
 
             //scottPlotUC1.plt.PlotScatter(xs, ys);
             scottPlotUC1.plt.PlotScatter(xfirsts, yfirsts);
-            scottPlotUC1.plt.AxisAuto();
+            scottPlotUC1.plt.Axis(0,10,0,10);
             scottPlotUC1.Render();
         }
 
@@ -159,6 +159,7 @@ namespace ScottPlotDemo
         {
             double position = rand.NextDouble() * 20 - 10;
             double width = (float)(rand.NextDouble() * 5 + 1);
+
             scottPlotUC1.plt.PlotVLine(position, lineWidth: (float)width);
             scottPlotUC1.Render();
         }
