@@ -318,6 +318,12 @@ namespace ScottPlot
 
         #region Axis Settings
 
+        public double[] AxisAngle(double angle)
+        {
+            settings.Angle(angle);
+            return settings.axis;
+        }
+
         /// <summary>
         /// Manually set axis limits
         /// </summary>

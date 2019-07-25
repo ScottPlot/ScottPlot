@@ -31,8 +31,18 @@ namespace ScottPlot
         {
             double unitsFromAxisEdge = value - settings.axis[2];
             int yPx = settings.dataSize.Height - (int)(unitsFromAxisEdge * settings.yAxisScale);
-            settings.gfxData.DrawLine(gridPen, 0, yPx, settings.dataSize.Width, yPx);
+            //settings.gfxData.DrawLine(gridPen, 0, yPx, settings.dataSize.Width, yPx);
+            int tempY = (int)(yPx + settings.dataSize.Height * Math.Sin(Radians(settings.angleAxis)));
+            int tempX = (int)(settings.dataSize.Width * Math.Cos(Radians(settings.angleAxis)));
+            Console.WriteLine(tempY);
+            settings.gfxData.DrawLine(gridPen, 0, yPx,tempX , tempY);
         }
+
+        private double Radians(double angleAxis)
+        {
+            return Math.PI * angleAxis / 180.0;
+        }
+
         public void RenderGridVerticalLine(Settings settings)
         {
             double unitsFromAxisEdge = value - settings.axis[0];
@@ -118,6 +128,7 @@ namespace ScottPlot
 
         private List<Tick> GetTicks(Settings settings, double axisLow, double axisHigh, double axisScale, int tickSpacingPx, int axisSizePx, double useThisSpacing = 0)
         {
+
             double axisSpan = axisHigh - axisLow;
             if (tickSpacingPx == 40) // probably a horizontal axis
                 if (axisSpan < Math.Pow(10, -3) / 2 || axisSpan > Math.Pow(10, 4))

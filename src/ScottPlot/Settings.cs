@@ -60,6 +60,7 @@ namespace ScottPlot
         public string axisLabelY = "";
         public Font axisLabelFont = new Font("Segoe UI", 16);
         public Color axisLabelColor = Color.Black;
+        public double angleAxis = 0;
 
         // grid
         public bool displayGrid = true;
@@ -350,6 +351,11 @@ namespace ScottPlot
             axisHasBeenIntentionallySet = true;
             AxisUpdate();
             AxisZoom(1 - horizontalMargin, 1 - verticalMargin);
+        }
+
+        public void Angle(double angle)
+        {
+            angleAxis = angle;
         }
 
         public void Validate()

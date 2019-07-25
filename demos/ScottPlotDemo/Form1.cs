@@ -105,7 +105,19 @@ namespace ScottPlotDemo
                 mult: rand.NextDouble() * 10 + 1,
                 offset: rand.NextDouble() * 10 - 5);
 
-            scottPlotUC1.plt.PlotScatter(xs, ys);
+            scottPlotUC1.plt.AxisAngle(30);
+
+            double[] xfirsts = new double[xs.Length];
+            double[] yfirsts = new double[xs.Length];
+            for (int i = 0; i < xs.Length - 1; i++)
+            {
+                xfirsts[i] = xs[i] * Math.Cos(-0.5235988) - ys[i] * Math.Sin(-0.5235988);
+                yfirsts[i] = xs[i] * Math.Sin(-0.5235988) + ys[i] * Math.Cos(-0.5235988);
+            }
+
+
+            //scottPlotUC1.plt.PlotScatter(xs, ys);
+            scottPlotUC1.plt.PlotScatter(xs, yfirsts);
             scottPlotUC1.plt.AxisAuto();
             scottPlotUC1.Render();
         }
@@ -161,6 +173,7 @@ namespace ScottPlotDemo
         {
             double[] data = ScottPlot.DataGen.RandomWalk(rand, pointCount, 10, rand.NextDouble() * 10 - 5);
             scottPlotUC1.plt.PlotSignal(data, data.Length * 0.1);
+            scottPlotUC1.plt.AxisAngle(30);
             scottPlotUC1.plt.AxisAuto();
             scottPlotUC1.Render();
         }
