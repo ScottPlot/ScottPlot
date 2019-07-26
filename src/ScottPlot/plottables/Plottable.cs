@@ -12,6 +12,7 @@ namespace ScottPlot
         public int pointCount = 0;
         public string label = null;
         public Color color = Color.Black;
+        public MarkerShape markerShape = MarkerShape.none;
 
         public abstract void Render(Settings settings);
         public abstract override string ToString();
