@@ -41,8 +41,9 @@ namespace Legend
         {
             // create random data
             Random rand = new Random();
-            int pointCount = 100;
+            int pointCount = 5;
             double[] xs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] ys = new double[] { 1E15, 4E15, 9E15, 16E15, 25E15 };
             double[] ys1 = ScottPlot.DataGen.RandomWalk(rand, pointCount);
             double[] ys2 = ScottPlot.DataGen.RandomWalk(rand, pointCount);
             double[] ys3 = ScottPlot.DataGen.RandomWalk(rand, pointCount);
@@ -53,9 +54,11 @@ namespace Legend
                 markerShape = (ScottPlot.MarkerShape)Enum.Parse(typeof(ScottPlot.MarkerShape), cbMarker.SelectedItem.ToString());
 
             scottPlotUC1.plt.Clear();
+            scottPlotUC1.plt.PlotScatter(xs, ys, label: "large ys", markerShape: markerShape, markerSize: (double)numericUpDown1.Value);
             scottPlotUC1.plt.PlotScatter(xs, ys1, label: "one", markerShape: markerShape, markerSize: (double)numericUpDown1.Value);
             scottPlotUC1.plt.PlotScatter(xs, ys2, label: "two", markerShape: markerShape, markerSize: (double)numericUpDown1.Value);
             scottPlotUC1.plt.PlotScatter(xs, ys3, label: "three", markerShape: markerShape, markerSize: (double)numericUpDown1.Value);
+
 
             // optionally use a legend
             if (cbLocations.SelectedItem != null && cbShadowDirection.SelectedItem != null)
