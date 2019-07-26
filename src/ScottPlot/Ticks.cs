@@ -138,13 +138,17 @@ namespace ScottPlot
                     if (tickSpacing > axisSpan)
                         continue;
                     double tickCount = axisSpan / tickSpacing;
-                    if (tickCount >= tickCountTarget)
+                    while (tickCount > tickCountTarget)
                     {
-                        if (tickCount >= tickCountTarget * 5)
+                        if (tickCount >= tickCountTarget * 10)
+                            tickSpacing *= 10;
+                        else if (tickCount >= tickCountTarget * 5)
                             tickSpacing *= 5;
                         else if (tickCount >= tickCountTarget * 2)
                             tickSpacing *= 2;
-                        break;
+                        else if (tickCount >= tickCountTarget)
+                            tickCountTarget = tickCount;
+                        tickCount = axisSpan / tickSpacing;
                     }
                 }
             }
