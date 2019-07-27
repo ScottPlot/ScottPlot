@@ -89,5 +89,31 @@ namespace ScottPlot
             double span = maxVal - minVal;
             return data;
         }
+
+        public static OHLC[] RandomStockPrices(Random rand, int pointCount, double mult = 10, double startingPrice = 123.45)
+        {
+
+            double[] basePrices = ScottPlot.DataGen.RandomWalk(rand, pointCount, mult, startingPrice);
+
+            OHLC[] ohlcs = new OHLC[pointCount];
+
+            for (int i = 0; i < ohlcs.Length; i++)
+            {
+                double open = rand.NextDouble() * 10 + 50;
+                double close = rand.NextDouble() * 10 + 50;
+                double high = Math.Max(open, close) + rand.NextDouble() * 10;
+                double low = Math.Min(open, close) - rand.NextDouble() * 10;
+
+                // offset prices by randomwalk
+                open += basePrices[i];
+                close += basePrices[i];
+                high += basePrices[i];
+                low += basePrices[i];
+
+                ohlcs[i] = new ScottPlot.OHLC(open, high, low, close, i);
+            }
+
+            return ohlcs;
+        }
     }
 }

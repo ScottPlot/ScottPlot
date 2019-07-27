@@ -28,22 +28,10 @@ namespace ScottPlotDemoCandlestick
             Random rand = new Random();
 
             int pointCount = 100;
-            ScottPlot.OHLC[] ohlcs = new ScottPlot.OHLC[pointCount];
-            double[] timestamps = new double[pointCount];
-            double[] volumes = new double[pointCount];
-            for (int i=0; i< ohlcs.Length; i++)
-            {
-                double open = rand.NextDouble() * 10 + 50;
-                double close = rand.NextDouble() * 10 + 50;
-                double high = Math.Max(open, close) + rand.NextDouble() * 10;
-                double low = Math.Min(open, close) - rand.NextDouble() * 10;
-                ohlcs[i] = new ScottPlot.OHLC(open, high, low, close, i);
-                timestamps[i] = i;
-                volumes[i] = 1000 + rand.NextDouble() * 500;
-            }
+            ScottPlot.OHLC[] ohlcs = ScottPlot.DataGen.RandomStockPrices(rand, pointCount);
+            double[] timestamps = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] volumes = ScottPlot.DataGen.Random(rand, pointCount, 500, 1000);
 
-            //scottPlotUC1.plt.Style(ScottPlot.Style.Black);
-            //scottPlotUC1.plt.Grid(false);
             scottPlotUC1.plt.Clear();
             scottPlotUC1.plt.YLabel("Share Price", fontSize: 10);
             scottPlotUC1.plt.Title("ScottPlot Candlestick Demo");
