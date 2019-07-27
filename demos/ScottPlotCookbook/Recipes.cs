@@ -135,8 +135,9 @@ namespace ScottPlotCookbook
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
 
             var plt = new ScottPlot.Plot(width, height);
-            plt.PlotScatter(dataXs, dataSin, markerShape: ScottPlot.MarkerShape.openCircle);
-            plt.PlotScatter(dataXs, dataCos, markerShape: ScottPlot.MarkerShape.filledSquare);
+            plt.PlotScatter(dataXs, dataSin, label: "sin", markerShape: ScottPlot.MarkerShape.openCircle);
+            plt.PlotScatter(dataXs, dataCos, label: "cos", markerShape: ScottPlot.MarkerShape.filledSquare);
+            plt.Legend();
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
             return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
