@@ -7,7 +7,7 @@
     <ProjectGuid>{B185493F-A7E2-46A4-8E43-D88F47325D87}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>ScottPlotQuickstartWPF</RootNamespace>
-    <AssemblyName>ScottPlotQuickstartWPF</AssemblyName>
+    <AssemblyName>quickstart wpf</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -96,7 +96,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\ScottPlot\ScottPlot.csproj">
+    <ProjectReference Include="..\..\..\src\ScottPlot\ScottPlot.csproj">
       <Project>{ee9215c6-01c1-4835-8514-3a708f9291f1}</Project>
       <Name>ScottPlot</Name>
     </ProjectReference>

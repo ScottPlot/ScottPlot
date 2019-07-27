@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BFF99DC8-D811-4F0B-A229-EE0AFBF838E4}</ProjectGuid>
+    <ProjectGuid>{2E6961D3-B575-4412-84B5-779171B6E2B6}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>ScottPlotQuickstartForms</RootNamespace>
-    <AssemblyName>ScottPlotQuickstartForms</AssemblyName>
+    <RootNamespace>ScottPlotAudioMonitor</RootNamespace>
+    <AssemblyName>audio monitor</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NAudio, Version=1.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\src\packages\NAudio.1.9.0\lib\net35\NAudio.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -66,6 +69,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -80,8 +84,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\ScottPlot\ScottPlot.csproj">
-      <Project>{ee9215c6-01c1-4835-8514-3a708f9291f1}</Project>
+    <ProjectReference Include="..\..\..\src\ScottPlot\ScottPlot.csproj">
+      <Project>{EE9215C6-01C1-4835-8514-3A708F9291F1}</Project>
       <Name>ScottPlot</Name>
     </ProjectReference>
   </ItemGroup>

@@ -4,12 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{97C4E8D4-A215-49A9-9A82-31F7F8C004A9}</ProjectGuid>
+    <ProjectGuid>{D245F573-FDDE-4FCB-B187-3910AD8515AF}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Legend</RootNamespace>
-    <AssemblyName>Legend</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <RootNamespace>ScottPlotDemoIncomingData</RootNamespace>
+    <AssemblyName>ScottPlotDemoIncomingData</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -45,16 +46,43 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
+    <Compile Include="FormCircularBuffer.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="FormCircularBuffer.Designer.cs">
+      <DependentUpon>FormCircularBuffer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormGrowingArray.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormGrowingArray.Designer.cs">
+      <DependentUpon>FormGrowingArray.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormMain.Designer.cs">
+      <DependentUpon>FormMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormRollingBuffer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormRollingBuffer.Designer.cs">
+      <DependentUpon>FormRollingBuffer.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="FormCircularBuffer.resx">
+      <DependentUpon>FormCircularBuffer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormGrowingArray.resx">
+      <DependentUpon>FormGrowingArray.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormMain.resx">
+      <DependentUpon>FormMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormRollingBuffer.resx">
+      <DependentUpon>FormRollingBuffer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -79,7 +107,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\ScottPlot\ScottPlot.csproj">
+    <ProjectReference Include="..\..\..\src\ScottPlot\ScottPlot.csproj">
       <Project>{ee9215c6-01c1-4835-8514-3a708f9291f1}</Project>
       <Name>ScottPlot</Name>
     </ProjectReference>
