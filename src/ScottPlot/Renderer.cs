@@ -52,12 +52,14 @@ namespace ScottPlot
             public string label;
             public int plottableIndex;
             public Color color;
+            public MarkerShape markerShape;
 
-            public LegendItem(string label, int plottableIndex, Color color)
+            public LegendItem(string label, int plottableIndex, Color color, MarkerShape markerShape)
             {
                 this.label = label;
                 this.plottableIndex = plottableIndex;
                 this.color = color;
+                this.markerShape = markerShape;
             }
         }
 
@@ -81,7 +83,8 @@ namespace ScottPlot
             {
                 if (settings.plottables[i].label != null)
                 {
-                    legendItems.Add(new LegendItem(settings.plottables[i].label, i, settings.plottables[i].color));
+                    var legendItem = new LegendItem(settings.plottables[i].label, i, settings.plottables[i].color, settings.plottables[i].markerShape);
+                    legendItems.Add(legendItem);
                     float thisItemFontWidth = settings.gfxData.MeasureString(settings.plottables[i].label, settings.legendFont).Width;
                     if (thisItemFontWidth > legendFontMaxWidth)
                         legendFontMaxWidth = thisItemFontWidth;
@@ -210,7 +213,7 @@ namespace ScottPlot
                     SizeF bounds = new SizeF(5, 5);
                     RectangleF rect = new RectangleF(corner1, bounds);
 
-                    switch (settings.plottables[i].markerShape)
+                    switch (legendItems[i].markerShape)
                     { 
                         case MarkerShape.none:
                             settings.gfxData.DrawLine(new Pen(legendItems[i].color, stubHeight),
