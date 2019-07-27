@@ -822,5 +822,43 @@ namespace ScottPlotCookbook
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
             return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
+
+        public string Figure_67_Candlestick()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            Random rand = new Random(0);
+            int pointCount = 60;
+            ScottPlot.OHLC[] ohlcs = ScottPlot.DataGen.RandomStockPrices(rand, pointCount);
+
+            var plt = new ScottPlot.Plot(width, height);
+            plt.Title("Candlestick Chart");
+            plt.YLabel("Stock Price (USD)");
+            plt.XLabel("Day (into Q4)");
+            plt.PlotCandlestick(ohlcs);
+            plt.SaveFig(fileName);
+            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
+        }
+
+        public string Figure_68_OHLC()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            Random rand = new Random(0);
+            int pointCount = 60;
+            ScottPlot.OHLC[] ohlcs = ScottPlot.DataGen.RandomStockPrices(rand, pointCount);
+
+            var plt = new ScottPlot.Plot(width, height);
+            plt.Title("Open/High/Low/Close (OHLC) Chart");
+            plt.YLabel("Stock Price (USD)");
+            plt.XLabel("Day (into Q4)");
+            plt.PlotOHLC(ohlcs);
+            plt.SaveFig(fileName);
+            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
+        }
     }
 }
