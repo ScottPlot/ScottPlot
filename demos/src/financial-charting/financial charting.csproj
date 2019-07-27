@@ -7,7 +7,7 @@
     <ProjectGuid>{D8B701C1-456D-4252-8455-8E4920C0F85A}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>ScottPlotDemoCandlestick</RootNamespace>
-    <AssemblyName>ScottPlotDemoCandlestick</AssemblyName>
+    <AssemblyName>financial charting</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

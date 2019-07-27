@@ -7,7 +7,7 @@
     <ProjectGuid>{EC9F6EEA-CA64-4166-B851-4102B1CD9030}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>ScottPlotDemoHistogram</RootNamespace>
-    <AssemblyName>ScottPlotDemoHistogram</AssemblyName>
+    <AssemblyName>histogram</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

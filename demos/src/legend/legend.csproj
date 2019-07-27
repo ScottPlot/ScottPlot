@@ -7,7 +7,7 @@
     <ProjectGuid>{97C4E8D4-A215-49A9-9A82-31F7F8C004A9}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Legend</RootNamespace>
-    <AssemblyName>Legend</AssemblyName>
+    <AssemblyName>legend</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
