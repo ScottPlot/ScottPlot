@@ -80,6 +80,8 @@ namespace ScottPlotCookbook
 
             ValidateImageHashes(hashes.ToArray());
 
+            GenerateReport(outputFolderName);
+
             Console.WriteLine("\nCOOKBOOK GENERATION COMPLETE");
             Console.WriteLine("\nOptionally update the cookbook with:");
             string cookBookCopierPath = System.IO.Path.GetFullPath("../../");
@@ -117,7 +119,7 @@ namespace ScottPlotCookbook
 
             // isolate the function
             functionName = "Figure_" + functionName;
-            int posStart = code.IndexOf($"public void {functionName}()");
+            int posStart = code.IndexOf($"public string {functionName}()");
             if (posStart < 0)
             {
                 string message = $"function {functionName}() not found in {sourceFilePath}";
