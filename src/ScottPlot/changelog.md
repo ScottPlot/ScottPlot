@@ -1,5 +1,20 @@
 # ScottPlot Changelog
 
+## ScottPlot 3.0.7
+_Published on [NuGet](https://www.nuget.org/packages/ScottPlot/) on 2019-07-27_
+
+### Major Changes
+* **New plot type `plt.PlotStep()`:** demonstrated in the [cookbook](https://github.com/swharden/ScottPlot/blob/master/doc/cookbook/README.md#step-plot).  An interactive example is in the demos folder.
+* **New plot type `plt.PlotCandlestick()`:** demonstrated in the [cookbook](https://github.com/swharden/ScottPlot/blob/master/doc/cookbook/README.md#candlestick). An interactive example is in the demos folder.
+* **New plot type `plt.PlotOHLC()`:** demonstrated in the [cookbook](https://github.com/swharden/ScottPlot/blob/master/doc/cookbook/README.md#ohlc).  An interactive example is in the demos folder.
+* **`plt.MatchPadding()`:** copies the data frame layout from one ScottPlot onto another (useful for making plots of matching size). An interactive example is in the demos folder.
+* **`plt.MatchAxis()`:** copies the axes from one ScottPlot onto another (useful for making plots match one or both axis). An interactive example is in the demos folder.
+* **`plt.Legend()` improvements**
+  * The `location` argument allows the user to place the legend at one of 9 different places on the plot. See the [cookbook example](https://github.com/swharden/ScottPlot/tree/master/doc/cookbook#legend).
+  * The `shadowDirection` argument allows the user to control if a shadow is shown and at what angle.
+* **Custom marker shapes** can be specified using the `markerShape` argument. See the [cookbook example](https://github.com/swharden/ScottPlot/tree/master/doc/cookbook#custom-marker-shapes).
+
+
 ## ScottPlot 3.0.6
 _Published on [NuGet](https://www.nuget.org/packages/ScottPlot/) on 2019-06-30_
 
