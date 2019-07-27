@@ -75,6 +75,8 @@ namespace ScottPlotCookbook
             hashes.Add(recipies.Figure_64_Manual_Grid_Spacing());
             hashes.Add(recipies.Figure_65_Histogram());
             hashes.Add(recipies.Figure_66_CPH());
+            hashes.Add(recipies.Figure_67_Candlestick());
+            hashes.Add(recipies.Figure_68_OHLC());
 
             ValidateImageHashes(hashes.ToArray());
 
@@ -193,6 +195,8 @@ namespace ScottPlotCookbook
             knownHahes += "DCC984120C142F91AF13438641BC15FE 64_Manual_Grid_Spacing()\n";
             knownHahes += "7789995EFF9D69CB6132AEEDC8083687 65_Histogram()\n";
             knownHahes += "F3A1F0FC4E0027E0DDE4B6950DF3B534 66_CPH()\n";
+            knownHahes += "79698A6E3CC91FDD36810332C05C58D9 67_Candlestick()\n";
+            knownHahes += "8DA76CAA67E3AB76C70E63F48B7ABCE6 68_OHLC()\n";
 
             string hashCodeNeeded = "";
 
