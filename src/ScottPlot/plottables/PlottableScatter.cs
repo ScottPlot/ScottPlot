@@ -17,7 +17,6 @@ namespace ScottPlot
         public float errorCapSize;
         public float markerSize;
         public bool stepDisplay;
-        public MarkerShape markerShape;
         public Pen penLine;
         public Pen penLineError;
         public Brush brush;

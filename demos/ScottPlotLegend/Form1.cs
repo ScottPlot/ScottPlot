@@ -53,9 +53,10 @@ namespace Legend
                 markerShape = (ScottPlot.MarkerShape)Enum.Parse(typeof(ScottPlot.MarkerShape), cbMarker.SelectedItem.ToString());
 
             scottPlotUC1.plt.Clear();
-            scottPlotUC1.plt.PlotScatter(xs, ys1, label: "one", markerShape: markerShape);
-            scottPlotUC1.plt.PlotScatter(xs, ys2, label: "two", markerShape: markerShape);
-            scottPlotUC1.plt.PlotScatter(xs, ys3, label: "three", markerShape: markerShape);
+            scottPlotUC1.plt.PlotScatter(xs, ys1, label: "one", markerShape: markerShape, markerSize: (double)nudMarkerSize.Value);
+            scottPlotUC1.plt.PlotScatter(xs, ys2, label: "two", markerShape: markerShape, markerSize: (double)nudMarkerSize.Value);
+            scottPlotUC1.plt.PlotScatter(xs, ys3, label: "three", markerShape: markerShape, markerSize: (double)nudMarkerSize.Value);
+
 
             // optionally use a legend
             if (cbLocations.SelectedItem != null && cbShadowDirection.SelectedItem != null)
@@ -77,6 +78,11 @@ namespace Legend
         }
 
         private void CbMarker_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdatePlot();
+        }
+
+        private void NudMarkerSize_ValueChanged(object sender, EventArgs e)
         {
             UpdatePlot();
         }

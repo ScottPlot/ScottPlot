@@ -86,14 +86,6 @@ namespace ScottPlot
                     if (thisItemFontWidth > legendFontMaxWidth)
                         legendFontMaxWidth = thisItemFontWidth;
                 }
-                else
-                {
-                    legendItems.Add(new LegendItem("", i, settings.plottables[i].color));
-                    float thisItemFontWidth = settings.gfxData.MeasureString(settings.plottables[i].label, settings.legendFont).Width;
-                    if (thisItemFontWidth > legendFontMaxWidth)
-                        legendFontMaxWidth = thisItemFontWidth;
-
-                }
             }
             legendItems.Reverse();
 
@@ -204,10 +196,121 @@ namespace ScottPlot
                     textLocation.Y -= (int)(legendFontLineHeight);
 
                     settings.gfxData.DrawString(legendItems[i].label, settings.legendFont, brushText, textLocation);
-                    settings.gfxData.DrawLine(new Pen(legendItems[i].color, stubHeight),
 
-                    textLocation.X - padding, textLocation.Y + legendFontLineHeight / 2,
-                    textLocation.X - padding - stubWidth, textLocation.Y + legendFontLineHeight / 2);
+                    //Determine whether a standard stub or a marker shall be plotted
+                    Brush brushMarker = new SolidBrush(legendItems[i].color);
+                    Pen pen = new Pen(legendItems[i].color);
+                    PointF corner1 = new PointF(textLocation.X - stubWidth+5, textLocation.Y + 3*padding );
+                    PointF center = new PointF
+                    {
+                        X = corner1.X + 3,
+                        Y = corner1.Y + 3
+                    };
+
+                    SizeF bounds = new SizeF(5, 5);
+                    RectangleF rect = new RectangleF(corner1, bounds);
+
+                    switch (settings.plottables[i].markerShape)
+                    { 
+                        case MarkerShape.none:
+                            settings.gfxData.DrawLine(new Pen(legendItems[i].color, stubHeight),
+                                textLocation.X - padding, textLocation.Y + legendFontLineHeight / 2,
+                                textLocation.X - padding - stubWidth, textLocation.Y + legendFontLineHeight / 2);
+                            break;
+                        case MarkerShape.asterisk:
+                            Font drawFontAsterisk = new Font("CourierNew", 16);
+                            Point markerPositionAsterisk = new Point(textLocation.X - stubWidth, (int)(textLocation.Y + legendFontLineHeight / 4));
+                            settings.gfxData.DrawString("*", drawFontAsterisk, brushMarker, markerPositionAsterisk);
+                            break;
+                        case MarkerShape.cross:
+                            Font drawFontCross = new Font("CourierNew", 12);
+                            Point markerPositionCross = new Point(textLocation.X - stubWidth, (int)(textLocation.Y + legendFontLineHeight / 8));
+                            settings.gfxData.DrawString("+", drawFontCross, brushMarker, markerPositionCross);
+                            break;
+                        case MarkerShape.eks:
+                            Font drawFontEks = new Font("CourierNew", 12);
+                            Point markerPositionEks = new Point(textLocation.X - stubWidth, (int)(textLocation.Y ));
+                            settings.gfxData.DrawString("x", drawFontEks, brushMarker, markerPositionEks);
+                            break;
+                        case MarkerShape.filledCircle:
+                            settings.gfxData.FillEllipse(brushMarker, rect);
+                            break;
+                        case MarkerShape.filledDiamond:
+                            // Create points that define polygon.
+                            PointF point1 = new PointF(center.X, center.Y + 3);
+                            PointF point2 = new PointF(center.X - 3, center.Y);
+                            PointF point3 = new PointF(center.X, center.Y - 3);
+                            PointF point4 = new PointF(center.X + 3, center.Y);
+
+                            PointF[] curvePoints = { point1, point2, point3, point4 };
+
+                            //Draw polygon to screen
+                            settings.gfxData.FillPolygon(brushMarker, curvePoints);
+                            break;
+                        case MarkerShape.filledSquare:
+                            settings.gfxData.FillRectangle(brushMarker, rect);
+                            break;
+                        case MarkerShape.hashTag:
+                            Font drawFontHashtag = new Font("CourierNew", 12);
+                            Point markerPositionHashTag = new Point(textLocation.X - stubWidth, (int)(textLocation.Y + legendFontLineHeight / 8));
+                            settings.gfxData.DrawString("#", drawFontHashtag, brushMarker, markerPositionHashTag);
+                            break;
+                        case MarkerShape.openCircle:
+                            settings.gfxData.DrawEllipse(pen, rect);
+                            break;
+                        case MarkerShape.openDiamond:
+                            // Create points that define polygon.
+                            PointF point5 = new PointF(center.X, center.Y + 3);
+                            PointF point6 = new PointF(center.X - 3, center.Y);
+                            PointF point7 = new PointF(center.X, center.Y - 3);
+                            PointF point8 = new PointF(center.X + 3, center.Y);
+
+                            PointF[] curvePoints2 = { point5, point6, point7, point8 };
+
+                            //Draw polygon to screen
+                            settings.gfxData.DrawPolygon(pen, curvePoints2);
+                            break;
+                        case MarkerShape.openSquare:
+                            settings.gfxData.DrawRectangle(pen, corner1.X, corner1.Y, 5, 5);
+                            break;
+                        case MarkerShape.triDown:
+                            // Create points that define polygon.
+                            PointF point14 = new PointF(center.X, center.Y + 6);
+                            PointF point15 = new PointF(center.X, center.Y);
+                            PointF point16 = new PointF(center.X - 6 * (float)0.866, center.Y - 6 * (float)0.5);
+                            PointF point17 = new PointF(center.X, center.Y);
+                            PointF point18 = new PointF(center.X + 6 * (float)0.866, center.Y - 6 * (float)0.5);
+
+
+                            PointF[] curvePoints4 = { point17, point14, point15, point16, point17, point18 };
+
+                            //Draw polygon to screen
+                            settings.gfxData.DrawPolygon(pen, curvePoints4);
+
+                            break;
+
+                        case MarkerShape.triUp:
+                            // Create points that define polygon.
+                            PointF point9 = new PointF(center.X, center.Y - 6);
+                            PointF point10 = new PointF(center.X, center.Y);
+                            PointF point11 = new PointF(center.X - 6 * (float)0.866, center.Y + 6 * (float)0.5);
+                            PointF point12 = new PointF(center.X, center.Y);
+                            PointF point13 = new PointF(center.X + 6 * (float)0.866, center.Y + 6 * (float)0.5);
+
+
+                            PointF[] curvePoints3 = { point12, point9, point10, point11, point12, point13 };
+                            //Draw polygon to screen
+                            settings.gfxData.DrawPolygon(pen, curvePoints3);
+                            break;
+
+                        case MarkerShape.verticalBar:
+                            Font drawFontVertical = new Font("CourierNew", 12);
+                            Point markerPositionVertical = new Point(textLocation.X - stubWidth, (int)(textLocation.Y));
+                            settings.gfxData.DrawString("|", drawFontVertical, brushMarker, markerPositionVertical);
+                            break;
+
+
+                    }
                 }
             }
         }
