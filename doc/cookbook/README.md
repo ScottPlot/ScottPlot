@@ -9,8 +9,6 @@ var plt = new ScottPlot.Plot(600, 400);
 plt.PlotScatter(dataXs, dataSin);
 plt.PlotScatter(dataXs, dataCos);
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/01a_Scatter_Sin.png)
@@ -23,8 +21,6 @@ plt.PlotScatter(dataXs, dataSin);
 plt.PlotScatter(dataXs, dataCos);
 plt.AxisAuto(0, .5); // no horizontal padding, 50% vertical padding
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/01b_Automatic_Margins.png)
@@ -37,8 +33,6 @@ plt.PlotScatter(dataXs, dataSin);
 plt.PlotScatter(dataXs, dataCos);
 plt.Axis(2, 8, .2, 1.1); // x1, x2, y1, y2
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/01c_Defined_Axis_Limits.png)
@@ -52,8 +46,6 @@ plt.PlotScatter(dataXs, dataCos);
 plt.AxisZoom(2, 2);
 plt.AxisPan(-10, .5);
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/01d_Zoom_and_Pan.png)
@@ -66,8 +58,6 @@ plt.PlotScatter(dataXs, dataSin, label: "first");
 plt.PlotScatter(dataXs, dataCos, label: "second");
 plt.Legend(location: ScottPlot.legendLocation.lowerLeft);
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/01e_Legend.png)
@@ -80,8 +70,6 @@ plt.PlotScatter(dataXs, dataSin, label: "sin", markerShape: ScottPlot.MarkerShap
 plt.PlotScatter(dataXs, dataCos, label: "cos", markerShape: ScottPlot.MarkerShape.filledSquare);
 plt.Legend();
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/01f_Custom_Marker_Shapes.png)
@@ -94,8 +82,6 @@ plt.PlotScatter(dataXs, dataSin, color: Color.Magenta, lineWidth: 0, markerSize:
 plt.PlotScatter(dataXs, dataCos, color: Color.Green, lineWidth: 5, markerSize: 0);
 plt.AxisAuto(0); // no horizontal margin (default 10% vertical margin)
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/02_Styling_Scatter_Plots.png)
@@ -106,8 +92,6 @@ return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 var plt = new ScottPlot.Plot(600, 400);
 plt.PlotScatter(dataRandom1, dataRandom2);
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/03_Plot_XY_Data.png)
@@ -119,8 +103,6 @@ var plt = new ScottPlot.Plot(600, 400);
 plt.PlotScatter(dataRandom1, dataRandom2, markerSize: 0);
 plt.PlotScatter(dataRandom3, dataRandom4, markerSize: 0);
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/04_Plot_Lines_Only.png)
@@ -132,8 +114,6 @@ var plt = new ScottPlot.Plot(600, 400);
 plt.PlotScatter(dataRandom1, dataRandom2, lineWidth: 0);
 plt.PlotScatter(dataRandom3, dataRandom4, lineWidth: 0);
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/05_Plot_Points_Only.png)
@@ -145,8 +125,6 @@ var plt = new ScottPlot.Plot(600, 400);
 plt.PlotScatter(dataRandom1, dataRandom2, color: Color.Magenta, lineWidth: 3, markerSize: 15);
 plt.PlotScatter(dataRandom3, dataRandom4, color: Color.Green, lineWidth: 3, markerSize: 15);
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/06_Styling_XY_Plots.png)
@@ -160,8 +138,6 @@ plt.PlotScatter(dataXs, dataCos);
 plt.PlotPoint(25, 0.8);
 plt.PlotPoint(30, 0.3, color: Color.Magenta, markerSize: 15);
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/07_Plotting_Points.png)
@@ -177,8 +153,6 @@ plt.PlotPoint(30, 0.3, color: Color.Magenta, markerSize: 15);
 plt.PlotText("important point", 25, 0.8);
 plt.PlotText("more important", 30, .3, fontSize: 16, bold: true);
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/08_Plotting_Text.png)
@@ -192,8 +166,6 @@ plt.PlotScatter(dataXs, dataCos);
 plt.Clear();
 plt.PlotScatter(dataRandom3, dataRandom4);
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/09_Clearing_Plots.png)
@@ -217,7 +189,6 @@ for (int i = 10; i < 20; i++)
 plt.SaveFig(fileName);
 
 PrepareDataSmall(); // hide
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/10_Modifying_Plotted_Data.png)
@@ -229,8 +200,6 @@ var plt = new ScottPlot.Plot(200, 150);
 plt.PlotScatter(dataXs, dataSin);
 plt.PlotScatter(dataXs, dataCos);
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/20_Small_Plot.png)
@@ -247,8 +216,6 @@ plt.XLabel("Experiment Duration");
 plt.YLabel("Productivity");
 
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/21a_Title_and_Axis_Labels.png)
@@ -267,8 +234,6 @@ plt.YLabel("Productivity");
 plt.TightenLayout(padding: 40);
 
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/21b_Extra_Padding.png)
@@ -289,8 +254,6 @@ plt.Title("Very Complicated Data", Color.White);
 plt.XLabel("Experiment Duration", Color.LightGray);
 plt.YLabel("Productivity", Color.LightGray);
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/22_Custom_Colors.png)
@@ -309,8 +272,6 @@ plt.PlotScatter(dataXs, dataSin);
 plt.PlotScatter(dataXs, dataCos);
 plt.TightenLayout(padding: 0);
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/23_Frameless_Plot.png)
@@ -323,8 +284,6 @@ plt.PlotScatter(dataXs, dataSin);
 plt.PlotScatter(dataXs, dataCos);
 plt.Grid(false);
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/24_Disable_the_Grid.png)
@@ -338,8 +297,6 @@ plt.PlotScatter(dataXs, dataCos);
 plt.Grid(false);
 plt.Frame(right: false, top: false);
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/25_Corner_Axis_Frame.png)
@@ -354,8 +311,6 @@ plt.Grid(false);
 plt.Ticks(displayTicksY: false);
 plt.Frame(left: false, right: false, top: false);
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/26_Horizontal_Ticks_Only.png)
@@ -369,8 +324,6 @@ var plt = new ScottPlot.Plot(600, 400);
 plt.Benchmark();
 plt.PlotSignal(dataSignal, sampleRate: 20_000);
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/30_Signal.png)
@@ -384,8 +337,6 @@ plt.Benchmark();
 plt.AntiAlias(true, false);
 plt.PlotSignal(dataSignal, sampleRate: 20_000);
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/31_Signal_With_Antialiasing_Off.png)
@@ -396,8 +347,6 @@ return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 var plt = new ScottPlot.Plot(600, 400);
 plt.PlotSignal(dataSignal, 20000, lineWidth: 3, color: Color.Red);
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/32_Signal_Styling.png)
@@ -411,8 +360,6 @@ plt.PlotScatter(dataXs, dataCos);
 plt.PlotVLine(17);
 plt.PlotHLine(-.25, color: Color.Red, lineWidth: 3);
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/40_Vertical_and_Horizontal_Lines.png)
@@ -429,8 +376,6 @@ plt.YLabel("Productivity");
 plt.Legend();
 plt.Style(ScottPlot.Style.Blue1);
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/50_StyleBlue1.png)
@@ -447,8 +392,6 @@ plt.YLabel("Productivity");
 plt.Legend();
 plt.Style(ScottPlot.Style.Blue2);
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/51_StyleBlue2.png)
@@ -465,8 +408,6 @@ plt.YLabel("Productivity");
 plt.Legend();
 plt.Style(ScottPlot.Style.Blue3);
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/52_StyleBlue3.png)
@@ -483,8 +424,6 @@ plt.YLabel("Productivity");
 plt.Legend();
 plt.Style(ScottPlot.Style.Light1);
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/53_StyleLight1.png)
@@ -501,8 +440,6 @@ plt.YLabel("Productivity");
 plt.Legend();
 plt.Style(ScottPlot.Style.Light2);
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/54_StyleLight2.png)
@@ -519,8 +456,6 @@ plt.YLabel("Productivity");
 plt.Legend();
 plt.Style(ScottPlot.Style.Gray1);
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/55_StyleGray1.png)
@@ -537,8 +472,6 @@ plt.YLabel("Productivity");
 plt.Legend();
 plt.Style(ScottPlot.Style.Gray2);
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/56_StyleGray2.png)
@@ -555,8 +488,6 @@ plt.YLabel("Productivity");
 plt.Legend();
 plt.Style(ScottPlot.Style.Black);
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/57_StyleBlack.png)
@@ -573,8 +504,6 @@ plt.YLabel("Productivity");
 plt.Legend();
 plt.Style(ScottPlot.Style.Default);
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/58_StyleDefault.png)
@@ -591,8 +520,6 @@ plt.YLabel("Productivity");
 plt.Legend();
 plt.Style(ScottPlot.Style.Control);
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/59_StyleControl.png)
@@ -635,8 +562,6 @@ for (int plotNumber = 0; plotNumber < 3; plotNumber++)
 plt.Title("Scatter Plot with Errorbars");
 plt.Legend();
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/60_Plotting_With_Errorbars.png)
@@ -653,8 +578,6 @@ var plt = new ScottPlot.Plot(600, 400);
 plt.Title("Bar Plot With Error Bars");
 plt.PlotBar(dataXs, dataSin, barWidth: .5, errorY: yErr, errorCapSize: 2);
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/61_Plot_Bar_Data.png)
@@ -689,8 +612,6 @@ plt.PlotBar(Xs, dataB, errorY: errorB, label: "data B", barWidth: 3.2, xOffset: 
 plt.Axis(null, null, 0, null);
 plt.Legend();
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/62_Plot_Bar_Data_Fancy.png)
@@ -702,8 +623,6 @@ var plt = new ScottPlot.Plot(600, 400);
 plt.PlotStep(dataXs, dataSin);
 plt.PlotStep(dataXs, dataCos);
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/63_Step_Plot.png)
@@ -716,8 +635,6 @@ plt.PlotScatter(dataXs, dataSin);
 plt.PlotScatter(dataXs, dataCos);
 plt.Grid(xSpacing: 2, ySpacing: .1);
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/64_Manual_Grid_Spacing.png)
@@ -736,8 +653,6 @@ plt.XLabel("Value (units)");
 plt.PlotBar(hist1.bins, hist1.counts, barWidth: 1);
 plt.Axis(null, null, 0, null);
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/65_Histogram.png)
@@ -760,8 +675,6 @@ plt.PlotStep(hist2.bins, hist2.cumulativeFrac, lineWidth: 1.5, label: "sample B"
 plt.Legend();
 plt.Axis(null, null, 0, 1);
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/66_CPH.png)
@@ -779,8 +692,6 @@ plt.YLabel("Stock Price (USD)");
 plt.XLabel("Day (into Q4)");
 plt.PlotCandlestick(ohlcs);
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/67_Candlestick.png)
@@ -798,8 +709,6 @@ plt.YLabel("Stock Price (USD)");
 plt.XLabel("Day (into Q4)");
 plt.PlotOHLC(ohlcs);
 plt.SaveFig(fileName);
-
-return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
 ```
 
 ![](./images/68_OHLC.png)
