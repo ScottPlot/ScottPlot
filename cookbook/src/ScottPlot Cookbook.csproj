@@ -7,7 +7,7 @@
     <ProjectGuid>{473A8B7C-EDD0-434C-8B02-EA1972D9B4E2}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>ScottPlotCookbook</RootNamespace>
-    <AssemblyName>ScottPlotCookbook</AssemblyName>
+    <AssemblyName>ScottPlot Cookbook</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
