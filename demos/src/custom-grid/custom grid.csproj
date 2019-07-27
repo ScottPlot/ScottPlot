@@ -7,7 +7,7 @@
     <ProjectGuid>{327A566E-F3C4-461F-8301-3B115A96255C}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>ScottPlotDemoCustomGrid</RootNamespace>
-    <AssemblyName>ScottPlotDemoCustomGrid</AssemblyName>
+    <AssemblyName>custom grid</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
