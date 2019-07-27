@@ -142,6 +142,8 @@ namespace ScottPlotCookbook
                     lines[i] = "";
                 if (lines[i].StartsWith("Debug") || lines[i].StartsWith("Console") || lines[i].EndsWith("// hide"))
                     lines[i] = "";
+                if (lines[i].Contains("BitmapHash"))
+                    lines[i] = "";
             }
             code = string.Join("\n", lines).Trim();
             code = code.Replace("ScottPlot.Plot(width, height);", $"ScottPlot.Plot({figureWidth}, {figureHeight});");
