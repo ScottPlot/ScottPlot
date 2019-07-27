@@ -1,2 +1,5 @@
-# Demonstration Code
-Each folder here is its own self-contained project solution. Many folders have a `compiled` folder which contains a ZIP of a click-to-run (EXE) version of the program.
+# ScottPlot Demos
+
+The easiest way to see what ScottPlot can do is to check out the compiled demos: [ScottPlot-Demos.zip](ScottPlot-Demos.zip)
+
+Source code for all demos is in the [/demos/src/](/demos/src/) folder
