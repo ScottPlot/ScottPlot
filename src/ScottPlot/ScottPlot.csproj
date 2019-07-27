@@ -67,7 +67,7 @@
     <Compile Include="Style.cs" />
     <Compile Include="Ticks.cs" />
     <Compile Include="Tools.cs" />
-    <Compile Include="plottables\Plot.cs" />
+    <Compile Include="Plot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />
   </ItemGroup>
