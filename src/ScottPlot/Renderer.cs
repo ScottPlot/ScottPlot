@@ -86,14 +86,6 @@ namespace ScottPlot
                     if (thisItemFontWidth > legendFontMaxWidth)
                         legendFontMaxWidth = thisItemFontWidth;
                 }
-                //else
-                //{
-                //    legendItems.Add(new LegendItem("", i, settings.plottables[i].color));
-                //    float thisItemFontWidth = settings.gfxData.MeasureString(settings.plottables[i].label, settings.legendFont).Width;
-                //    if (thisItemFontWidth > legendFontMaxWidth)
-                //        legendFontMaxWidth = thisItemFontWidth;
-
-                //}
             }
             legendItems.Reverse();
 

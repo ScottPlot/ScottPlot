@@ -35,13 +35,13 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.cbMarker = new System.Windows.Forms.ComboBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.nudMarkerSize = new System.Windows.Forms.NumericUpDown();
             this.scottPlotUC1 = new ScottPlot.ScottPlotUC();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudMarkerSize)).BeginInit();
             this.SuspendLayout();
             // 
             // cbLocations
@@ -112,7 +112,7 @@
             // 
             // groupBox4
             // 
-            this.groupBox4.Controls.Add(this.numericUpDown1);
+            this.groupBox4.Controls.Add(this.nudMarkerSize);
             this.groupBox4.Location = new System.Drawing.Point(516, 12);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(92, 47);
@@ -120,28 +120,19 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Marker size";
             // 
-            // numericUpDown1
+            // nudMarkerSize
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(7, 19);
-            this.numericUpDown1.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numericUpDown1.Minimum = new decimal(new int[] {
+            this.nudMarkerSize.DecimalPlaces = 1;
+            this.nudMarkerSize.Location = new System.Drawing.Point(7, 19);
+            this.nudMarkerSize.Name = "nudMarkerSize";
+            this.nudMarkerSize.Size = new System.Drawing.Size(79, 20);
+            this.nudMarkerSize.TabIndex = 0;
+            this.nudMarkerSize.Value = new decimal(new int[] {
             4,
             0,
             0,
             0});
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(79, 20);
-            this.numericUpDown1.TabIndex = 0;
-            this.numericUpDown1.Value = new decimal(new int[] {
-            4,
-            0,
-            0,
-            0});
-            this.numericUpDown1.ValueChanged += new System.EventHandler(this.NumericUpDown1_ValueChanged);
+            this.nudMarkerSize.ValueChanged += new System.EventHandler(this.NudMarkerSize_ValueChanged);
             // 
             // scottPlotUC1
             // 
@@ -170,7 +161,7 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudMarkerSize)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -185,7 +176,7 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.ComboBox cbMarker;
         private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.NumericUpDown nudMarkerSize;
     }
 }
 
