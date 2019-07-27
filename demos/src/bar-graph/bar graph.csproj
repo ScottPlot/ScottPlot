@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A4F0ACF5-19C2-47D8-A220-CFE7A6670E70}</ProjectGuid>
+    <ProjectGuid>{1CD22B04-073A-4B68-A58D-6376A012F68C}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>ScottPlotAnimatedSin</RootNamespace>
-    <AssemblyName>ScottPlotAnimatedSin</AssemblyName>
+    <RootNamespace>ScottPlotDemoBarGraph</RootNamespace>
+    <AssemblyName>ScottPlotDemoBarGraph</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -80,7 +80,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\ScottPlot\ScottPlot.csproj">
+    <ProjectReference Include="..\..\..\src\ScottPlot\ScottPlot.csproj">
       <Project>{EE9215C6-01C1-4835-8514-3A708F9291F1}</Project>
       <Name>ScottPlot</Name>
     </ProjectReference>

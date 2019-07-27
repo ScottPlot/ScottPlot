@@ -7,7 +7,7 @@
     <ProjectGuid>{C1520C6F-3F2A-40FD-9097-472D5FCA06FB}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>ScottPlotQuickstartConsole</RootNamespace>
-    <AssemblyName>ScottPlotQuickstartConsole</AssemblyName>
+    <AssemblyName>quickstart console</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -51,7 +51,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\ScottPlot\ScottPlot.csproj">
+    <ProjectReference Include="..\..\..\src\ScottPlot\ScottPlot.csproj">
       <Project>{ee9215c6-01c1-4835-8514-3a708f9291f1}</Project>
       <Name>ScottPlot</Name>
     </ProjectReference>

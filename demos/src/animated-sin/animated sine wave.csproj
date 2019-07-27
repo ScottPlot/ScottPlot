@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D8B701C1-456D-4252-8455-8E4920C0F85A}</ProjectGuid>
+    <ProjectGuid>{A4F0ACF5-19C2-47D8-A220-CFE7A6670E70}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>ScottPlotDemoCandlestick</RootNamespace>
-    <AssemblyName>ScottPlotDemoCandlestick</AssemblyName>
+    <RootNamespace>ScottPlotAnimatedSin</RootNamespace>
+    <AssemblyName>animated sine wave</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -80,7 +80,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\ScottPlot\ScottPlot.csproj">
+    <ProjectReference Include="..\..\..\src\ScottPlot\ScottPlot.csproj">
       <Project>{EE9215C6-01C1-4835-8514-3A708F9291F1}</Project>
       <Name>ScottPlot</Name>
     </ProjectReference>

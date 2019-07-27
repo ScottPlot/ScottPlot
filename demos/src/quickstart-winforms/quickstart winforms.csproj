@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D680FD7B-9FEE-4AE4-A617-A911740428E5}</ProjectGuid>
+    <ProjectGuid>{BFF99DC8-D811-4F0B-A229-EE0AFBF838E4}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>ScottPlotErrorLines</RootNamespace>
-    <AssemblyName>ScottPlotErrorLines</AssemblyName>
+    <RootNamespace>ScottPlotQuickstartForms</RootNamespace>
+    <AssemblyName>quickstart winforms</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -80,8 +80,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\ScottPlot\ScottPlot.csproj">
-      <Project>{EE9215C6-01C1-4835-8514-3A708F9291F1}</Project>
+    <ProjectReference Include="..\..\..\src\ScottPlot\ScottPlot.csproj">
+      <Project>{ee9215c6-01c1-4835-8514-3a708f9291f1}</Project>
       <Name>ScottPlot</Name>
     </ProjectReference>
   </ItemGroup>

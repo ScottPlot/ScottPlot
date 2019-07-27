@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{510F292C-D3FD-4C50-B4BE-D554F4CC5302}</ProjectGuid>
+    <ProjectGuid>{EC9F6EEA-CA64-4166-B851-4102B1CD9030}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>ScottPlotDraggableMarkers</RootNamespace>
-    <AssemblyName>ScottPlotDraggableMarkers</AssemblyName>
+    <RootNamespace>ScottPlotDemoHistogram</RootNamespace>
+    <AssemblyName>ScottPlotDemoHistogram</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -54,12 +54,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ScottPlotMarkersUC.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="ScottPlotMarkersUC.Designer.cs">
-      <DependentUpon>ScottPlotMarkersUC.cs</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -72,9 +66,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="ScottPlotMarkersUC.resx">
-      <DependentUpon>ScottPlotMarkersUC.cs</DependentUpon>
-    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -89,7 +80,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\ScottPlot\ScottPlot.csproj">
+    <ProjectReference Include="..\..\..\src\ScottPlot\ScottPlot.csproj">
       <Project>{EE9215C6-01C1-4835-8514-3A708F9291F1}</Project>
       <Name>ScottPlot</Name>
     </ProjectReference>
