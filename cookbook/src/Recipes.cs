@@ -418,6 +418,40 @@ namespace ScottPlotCookbook
             return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
+        public string Figure_27_Very_Large_Numbers()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            Random rand = new Random(0);
+            int pointCount = 100;
+            double[] largeXs = ScottPlot.DataGen.Consecutive(pointCount, 1e42);
+            double[] largeYs = ScottPlot.DataGen.Random(rand, pointCount, 1e123);
+
+            var plt = new ScottPlot.Plot(width, height);
+            plt.PlotScatter(largeXs, largeYs);
+            plt.SaveFig(fileName);
+            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
+        }
+
+        public string Figure_28_Very_Small_Numbers()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            Random rand = new Random(1);
+            int pointCount = 100;
+            double[] smallXs = ScottPlot.DataGen.Consecutive(pointCount, 1e-42);
+            double[] xmallYs = ScottPlot.DataGen.Random(rand, pointCount, 1e-123);
+
+            var plt = new ScottPlot.Plot(width, height);
+            plt.PlotScatter(smallXs, xmallYs);
+            plt.SaveFig(fileName);
+            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
+        }
+
         public string Figure_30_Signal()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
