@@ -50,6 +50,8 @@ namespace ScottPlotCookbook
             hashes.Add(recipies.Figure_24_Disable_the_Grid());
             hashes.Add(recipies.Figure_25_Corner_Axis_Frame());
             hashes.Add(recipies.Figure_26_Horizontal_Ticks_Only());
+            hashes.Add(recipies.Figure_27_Very_Large_Numbers());
+            hashes.Add(recipies.Figure_28_Very_Small_Numbers());
 
             hashes.Add(recipies.Figure_30_Signal());
             hashes.Add(recipies.Figure_31_Signal_With_Antialiasing_Off());

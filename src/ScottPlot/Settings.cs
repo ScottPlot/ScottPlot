@@ -177,13 +177,18 @@ namespace ScottPlot
             if (displayTicksY == false)
                 maxTickSizeVert = new Size(0, 0);
 
+            SizeF biggestTickSize = gfxFigure.MeasureString("-888", tickFont);
+            int tickHeight = (int)biggestTickSize.Height;
+
             // top
             SizeF titleSize = gfxFigure.MeasureString(title, titleFont);
-            axisLabelPadding[3] = (int)(titleSize.Height) + axisPadding * 2;
+            int titleHeight = (int)(titleSize.Height);
+            axisLabelPadding[3] = Math.Max(titleHeight, tickHeight) + axisPadding * 2;
 
             // bottom
             SizeF xLabelSize = gfxFigure.MeasureString(axisLabelX, axisLabelFont);
-            axisLabelPadding[2] = (int)(xLabelSize.Height) + axisPadding * 2;
+            int xLabelHeight = (int)(xLabelSize.Height);
+            axisLabelPadding[2] = Math.Max(xLabelHeight, tickHeight) + axisPadding * 2;
             axisLabelPadding[2] += maxTickSizeHoriz.Height;
 
             // left
@@ -193,6 +198,10 @@ namespace ScottPlot
 
             // right
             axisLabelPadding[1] = axisPadding + maxTickSizeHoriz.Width / 2;
+
+            // override for frameles
+            if (axisPadding == 0)
+                axisLabelPadding = new int[] { 0, 0, 0, 0 };
 
             tighteningOccurred = true;
         }

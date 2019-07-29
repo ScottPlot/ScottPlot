@@ -31,3 +31,4 @@ if __name__ == "__main__":
     copyImages()
     copyReadme()
     print("DONE")
+    input()

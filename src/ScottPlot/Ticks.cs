@@ -33,7 +33,7 @@ namespace ScottPlot
             get
             {
                 double dividedValue = value / Math.Pow(10, exponent);
-                return string.Format("{0}", dividedValue);
+                return string.Format("{0}", Math.Round(dividedValue, 2));
             }
         }
 
@@ -115,19 +115,25 @@ namespace ScottPlot
 
         private void RenderTickMultipliers()
         {
-            string multiplierLabelX = settings.ticksX[0].textMultiplier;
-            SizeF multiplierLabelXsize = settings.gfxFigure.MeasureString(multiplierLabelX, settings.tickFont);
-            settings.gfxFigure.DrawString(multiplierLabelX, settings.tickFont, settings.ticksX[0].tickBrush,
-                settings.dataOrigin.X + settings.dataSize.Width,
-                settings.dataOrigin.Y + settings.dataSize.Height + multiplierLabelXsize.Height,
-                settings.sfNorthEast);
+            if (settings.ticksX.Count > 0)
+            {
+                string multiplierLabelX = settings.ticksX[0].textMultiplier;
+                SizeF multiplierLabelXsize = settings.gfxFigure.MeasureString(multiplierLabelX, settings.tickFont);
+                settings.gfxFigure.DrawString(multiplierLabelX, settings.tickFont, settings.ticksX[0].tickBrush,
+                    settings.dataOrigin.X + settings.dataSize.Width,
+                    settings.dataOrigin.Y + settings.dataSize.Height + multiplierLabelXsize.Height,
+                    settings.sfNorthEast);
+            }
 
-            string multiplierLabelY = settings.ticksY[0].textMultiplier;
-            SizeF multiplierLabelYsize = settings.gfxFigure.MeasureString(multiplierLabelX, settings.tickFont);
-            settings.gfxFigure.DrawString(multiplierLabelY, settings.tickFont, settings.ticksY[0].tickBrush,
-                settings.dataOrigin.X,
-                settings.dataOrigin.Y,
-                settings.sfSouthWest);
+            if (settings.ticksY.Count > 0)
+            {
+                string multiplierLabelY = settings.ticksY[0].textMultiplier;
+                SizeF multiplierLabelYsize = settings.gfxFigure.MeasureString(multiplierLabelY, settings.tickFont);
+                settings.gfxFigure.DrawString(multiplierLabelY, settings.tickFont, settings.ticksY[0].tickBrush,
+                    settings.dataOrigin.X,
+                    settings.dataOrigin.Y,
+                    settings.sfSouthWest);
+            }
         }
 
         public void RenderGrid()

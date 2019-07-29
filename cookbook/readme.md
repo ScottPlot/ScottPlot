@@ -315,6 +315,36 @@ plt.SaveFig(fileName);
 
 ![](./images/26_Horizontal_Ticks_Only.png)
 
+## Very Large Numbers
+
+```cs
+Random rand = new Random(0);
+int pointCount = 100;
+double[] largeXs = ScottPlot.DataGen.Consecutive(pointCount, 1e42);
+double[] largeYs = ScottPlot.DataGen.Random(rand, pointCount, 1e123);
+
+var plt = new ScottPlot.Plot(600, 400);
+plt.PlotScatter(largeXs, largeYs);
+plt.SaveFig(fileName);
+```
+
+![](./images/27_Very_Large_Numbers.png)
+
+## Very Small Numbers
+
+```cs
+Random rand = new Random(1);
+int pointCount = 100;
+double[] smallXs = ScottPlot.DataGen.Consecutive(pointCount, 1e-42);
+double[] xmallYs = ScottPlot.DataGen.Random(rand, pointCount, 1e-123);
+
+var plt = new ScottPlot.Plot(600, 400);
+plt.PlotScatter(smallXs, xmallYs);
+plt.SaveFig(fileName);
+```
+
+![](./images/28_Very_Small_Numbers.png)
+
 ## Signal
 
 ```cs
