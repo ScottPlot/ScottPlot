@@ -42,7 +42,7 @@ namespace ScottPlot
             get
             {
                 if (exponent != 0)
-                    return string.Format("10^{0}", exponent);
+                    return string.Format("10e{0}", exponent);
                 else
                     return "";
             }
