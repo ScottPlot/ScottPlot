@@ -1,7 +1,8 @@
 # ScottPlot Documentation
 
-## Cookbook
-One of the best places to get started learning how to use ScottPlot is to check out all of the example graphs that make-up the [ScottPlot cookbook](cookbook).
+* **Quickstart guides** are available in the [/demos/](/demos/) folder.
+* **[The ScottPlot Cookbook](/cookbook)** is one of the best ways to quickly learn about all the ScottPlot features.
+* **Demo applications** are in the [/demos/](/demos/) folder.
 
 ## ScottPlot.Plot
 The core of ScottPlot is the ScottPlot.Plot() class. Users only need to interact with its top-level methods. The following code creates a new plot 600px by 400px:
