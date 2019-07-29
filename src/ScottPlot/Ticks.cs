@@ -10,21 +10,42 @@ namespace ScottPlot
     public class Tick
     {
 
-        public string text;
+        //public string text;
         public double value;
         public Settings settings;
         public Pen tickPen;
         public Brush tickBrush;
         public Pen gridPen;
+        public int exponent;
 
-        public Tick(Settings settings, double value)
+        public Tick(Settings settings, double value, int exponent = 0)
         {
             this.value = value;
             this.settings = settings;
+            this.exponent = exponent;
             tickPen = new Pen(settings.tickColor);
             tickBrush = new SolidBrush(settings.tickColor);
             gridPen = new Pen(settings.gridColor);
-            text = string.Format("{0}", Math.Round(value, 10));
+        }
+
+        public string text
+        {
+            get
+            {
+                double dividedValue = value / Math.Pow(10, exponent);
+                return string.Format("{0}", dividedValue);
+            }
+        }
+
+        public string textMultiplier
+        {
+            get
+            {
+                if (exponent != 0)
+                    return string.Format("10^{0}", exponent);
+                else
+                    return "";
+            }
         }
 
         public void RenderGridHorizontalLine(Settings settings)
@@ -75,7 +96,7 @@ namespace ScottPlot
         public Ticks(Settings settings)
         {
             this.settings = settings;
-            settings.ticksX = GetTicks(settings, settings.axis[0], settings.axis[1], settings.xAxisScale, 40, settings.dataSize.Width, settings.gridSpacingX);
+            settings.ticksX = GetTicks(settings, settings.axis[0], settings.axis[1], settings.xAxisScale, 30, settings.dataSize.Width, settings.gridSpacingX);
             settings.ticksY = GetTicks(settings, settings.axis[2], settings.axis[3], settings.yAxisScale, 20, settings.dataSize.Height, settings.gridSpacingY);
         }
 
@@ -88,6 +109,25 @@ namespace ScottPlot
             if (settings.displayTicksY)
                 foreach (Tick tick in settings.ticksY)
                     tick.RenderTickOnLeft(settings);
+
+            RenderTickMultipliers();
+        }
+
+        private void RenderTickMultipliers()
+        {
+            string multiplierLabelX = settings.ticksX[0].textMultiplier;
+            SizeF multiplierLabelXsize = settings.gfxFigure.MeasureString(multiplierLabelX, settings.tickFont);
+            settings.gfxFigure.DrawString(multiplierLabelX, settings.tickFont, settings.ticksX[0].tickBrush,
+                settings.dataOrigin.X + settings.dataSize.Width,
+                settings.dataOrigin.Y + settings.dataSize.Height + multiplierLabelXsize.Height,
+                settings.sfNorthEast);
+
+            string multiplierLabelY = settings.ticksY[0].textMultiplier;
+            SizeF multiplierLabelYsize = settings.gfxFigure.MeasureString(multiplierLabelX, settings.tickFont);
+            settings.gfxFigure.DrawString(multiplierLabelY, settings.tickFont, settings.ticksY[0].tickBrush,
+                settings.dataOrigin.X,
+                settings.dataOrigin.Y,
+                settings.sfSouthWest);
         }
 
         public void RenderGrid()
@@ -103,6 +143,11 @@ namespace ScottPlot
 
         public Size GetMaxTickSize(List<Tick> ticks)
         {
+            string longestTickLabel = "-888"; // manually limit this with exponential notation
+            SizeF longestTickSize = settings.gfxFigure.MeasureString(longestTickLabel, settings.tickFont);
+            return new Size((int)longestTickSize.Width, (int)longestTickSize.Height);
+
+            /*
             double largestWidth = 0;
             double largestHeight = 0;
             foreach (Tick tick in ticks)
@@ -114,6 +159,7 @@ namespace ScottPlot
                     largestHeight = tickSize.Height;
             }
             return new Size((int)largestWidth, (int)largestHeight);
+            */
         }
 
         private List<Tick> GetTicks(Settings settings, double axisLow, double axisHigh, double axisScale, int tickSpacingPx, int axisSizePx, double useThisSpacing = 0)
@@ -132,7 +178,7 @@ namespace ScottPlot
             else
             {
                 // determine an ideal tick spacing (multiple of 2, 5, or 10)
-                for (int tickSpacingPower = 10; tickSpacingPower > -10; tickSpacingPower--)
+                for (int tickSpacingPower = 1000; tickSpacingPower > -1000; tickSpacingPower--)
                 {
                     tickSpacing = Math.Pow(10, tickSpacingPower);
                     if (tickSpacing > axisSpan)
@@ -149,6 +195,19 @@ namespace ScottPlot
                 }
             }
 
+            // determine the exponential notation for the axis span
+            int exponent;
+            double largestValue = Math.Max(Math.Abs(axisLow), Math.Abs(axisHigh));
+            for (exponent = -1000; exponent < 1000; exponent++)
+            {
+                if (Math.Pow(10, exponent) > largestValue)
+                    break;
+            }
+            exponent -= 2;
+            if (Math.Abs(exponent) < 2)
+                exponent = 0;
+
+
             // create the ticks
             List<Tick> ticks = new List<Tick>();
             if (tickSpacing > 0)
@@ -159,7 +218,7 @@ namespace ScottPlot
                 {
                     double value = tickSpacing * i + axisLow - tickOffset;
                     if (value >= axisLow && value <= axisHigh)
-                        ticks.Add(new Tick(settings, value));
+                        ticks.Add(new Tick(settings, value, exponent));
                 }
             }
             return ticks;
