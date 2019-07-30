@@ -70,6 +70,7 @@
     <Compile Include="Plot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="UserControlTools.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ScottPlotUC.resx">
