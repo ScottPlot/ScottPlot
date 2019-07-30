@@ -37,11 +37,14 @@
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.nudMarkerSize = new System.Windows.Forms.NumericUpDown();
             this.scottPlotUC1 = new ScottPlot.ScottPlotUC();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.cbPenStyle = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudMarkerSize)).BeginInit();
+            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // cbLocations
@@ -71,7 +74,7 @@
             this.groupBox2.Controls.Add(this.cbShadowDirection);
             this.groupBox2.Location = new System.Drawing.Point(198, 12);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(200, 47);
+            this.groupBox2.Size = new System.Drawing.Size(112, 47);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Legend Shadow";
@@ -82,18 +85,18 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cbShadowDirection.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbShadowDirection.FormattingEnabled = true;
-            this.cbShadowDirection.Location = new System.Drawing.Point(6, 19);
+            this.cbShadowDirection.Location = new System.Drawing.Point(0, 18);
             this.cbShadowDirection.Name = "cbShadowDirection";
-            this.cbShadowDirection.Size = new System.Drawing.Size(188, 21);
+            this.cbShadowDirection.Size = new System.Drawing.Size(100, 21);
             this.cbShadowDirection.TabIndex = 0;
             this.cbShadowDirection.SelectedIndexChanged += new System.EventHandler(this.Cboxes_SelectedIndexChanged);
             // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.cbMarker);
-            this.groupBox3.Location = new System.Drawing.Point(404, 12);
+            this.groupBox3.Location = new System.Drawing.Point(316, 12);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(112, 47);
+            this.groupBox3.Size = new System.Drawing.Size(99, 47);
             this.groupBox3.TabIndex = 3;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Marker Shape";
@@ -106,14 +109,14 @@
             this.cbMarker.FormattingEnabled = true;
             this.cbMarker.Location = new System.Drawing.Point(6, 19);
             this.cbMarker.Name = "cbMarker";
-            this.cbMarker.Size = new System.Drawing.Size(100, 21);
+            this.cbMarker.Size = new System.Drawing.Size(87, 21);
             this.cbMarker.TabIndex = 0;
-            this.cbMarker.SelectedIndexChanged += new System.EventHandler(this.CbMarker_SelectedIndexChanged);
+            this.cbMarker.SelectedIndexChanged += new System.EventHandler(this.Cboxes_SelectedIndexChanged);
             // 
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.nudMarkerSize);
-            this.groupBox4.Location = new System.Drawing.Point(516, 12);
+            this.groupBox4.Location = new System.Drawing.Point(421, 12);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(92, 47);
             this.groupBox4.TabIndex = 3;
@@ -132,7 +135,7 @@
             0,
             0,
             0});
-            this.nudMarkerSize.ValueChanged += new System.EventHandler(this.NudMarkerSize_ValueChanged);
+            this.nudMarkerSize.ValueChanged += new System.EventHandler(this.Cboxes_SelectedIndexChanged);
             // 
             // scottPlotUC1
             // 
@@ -144,12 +147,35 @@
             this.scottPlotUC1.Size = new System.Drawing.Size(610, 354);
             this.scottPlotUC1.TabIndex = 2;
             // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.cbPenStyle);
+            this.groupBox5.Location = new System.Drawing.Point(519, 12);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(103, 47);
+            this.groupBox5.TabIndex = 3;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Pen Style";
+            // 
+            // cbPenStyle
+            // 
+            this.cbPenStyle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbPenStyle.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbPenStyle.FormattingEnabled = true;
+            this.cbPenStyle.Location = new System.Drawing.Point(6, 19);
+            this.cbPenStyle.Name = "cbPenStyle";
+            this.cbPenStyle.Size = new System.Drawing.Size(91, 21);
+            this.cbPenStyle.TabIndex = 0;
+            this.cbPenStyle.SelectedIndexChanged += new System.EventHandler(this.Cboxes_SelectedIndexChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(634, 431);
             this.Controls.Add(this.groupBox4);
+            this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.scottPlotUC1);
             this.Controls.Add(this.groupBox2);
@@ -162,6 +188,7 @@
             this.groupBox3.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.nudMarkerSize)).EndInit();
+            this.groupBox5.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -177,6 +204,8 @@
         private System.Windows.Forms.ComboBox cbMarker;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.NumericUpDown nudMarkerSize;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.ComboBox cbPenStyle;
     }
 }
 

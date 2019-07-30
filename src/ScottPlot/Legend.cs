@@ -37,15 +37,18 @@ namespace ScottPlot
             public int plottableIndex;
             public Color color;
             public MarkerShape markerShape;
+            public PenType penType;
 
-            public LegendItem(string label, int plottableIndex, Color color, MarkerShape markerShape)
+            public LegendItem(string label, int plottableIndex, Color color, MarkerShape markerShape, PenType penType)
             {
                 this.label = label;
                 this.plottableIndex = plottableIndex;
                 this.color = color;
                 this.markerShape = markerShape;
-            }
+                this.penType = penType;
+
         }
+    }
 
         public static void DrawLegend(Settings settings)
         {
@@ -54,7 +57,7 @@ namespace ScottPlot
                 return;
 
             int padding = 3;
-            int stubWidth = 20;
+            int stubWidth = 40;
             int stubHeight = 3;
 
             Brush brushText = new SolidBrush(settings.legendFontColor);
@@ -67,7 +70,7 @@ namespace ScottPlot
             {
                 if (settings.plottables[i].label != null)
                 {
-                    var legendItem = new LegendItem(settings.plottables[i].label, i, settings.plottables[i].color, settings.plottables[i].markerShape);
+                    var legendItem = new LegendItem(settings.plottables[i].label, i, settings.plottables[i].color, settings.plottables[i].markerShape, settings.plottables[i].penType);
                     legendItems.Add(legendItem);
                     float thisItemFontWidth = settings.gfxData.MeasureString(settings.plottables[i].label, settings.legendFont).Width;
                     if (thisItemFontWidth > legendFontMaxWidth)
@@ -186,8 +189,31 @@ namespace ScottPlot
 
                     //Determine whether a standard stub or a marker shall be plotted
                     Brush brushMarker = new SolidBrush(legendItems[i].color);
-                    Pen pen = new Pen(legendItems[i].color);
-                    PointF corner1 = new PointF(textLocation.X - stubWidth + 5, textLocation.Y + 3 * padding);
+                    Pen pen = new Pen(legendItems[i].color, stubHeight);
+
+                    Pen penLight = new Pen(legendItems[i].color, 2);
+
+                    switch (settings.plottables[i].penType)
+                    {
+                        case PenType.Solid:
+                            penLight.DashStyle = System.Drawing.Drawing2D.DashStyle.Solid;
+                            break;
+                        case PenType.Dash:
+                            penLight.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+                            break;
+                        case PenType.DashDot:
+                            penLight.DashStyle = System.Drawing.Drawing2D.DashStyle.DashDot;
+                            break;
+                        case PenType.DashDotDot:
+                            penLight.DashStyle = System.Drawing.Drawing2D.DashStyle.DashDotDot;
+                            break;
+                        case PenType.Dot:
+                            penLight.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
+                        break;
+                    }
+
+
+                PointF corner1 = new PointF(textLocation.X - stubWidth + 5, textLocation.Y + 3 * padding);
                     PointF center = new PointF
                     {
                         X = corner1.X + 3,
@@ -197,12 +223,15 @@ namespace ScottPlot
                     SizeF bounds = new SizeF(5, 5);
                     RectangleF rect = new RectangleF(corner1, bounds);
 
+                    settings.gfxData.DrawLine(penLight,
+                        textLocation.X - padding, textLocation.Y + legendFontLineHeight / 2,
+                        textLocation.X - padding - stubWidth, textLocation.Y + legendFontLineHeight / 2);
+                    
+
                     switch (legendItems[i].markerShape)
                     {
                         case MarkerShape.none:
-                            settings.gfxData.DrawLine(new Pen(legendItems[i].color, stubHeight),
-                                textLocation.X - padding, textLocation.Y + legendFontLineHeight / 2,
-                                textLocation.X - padding - stubWidth, textLocation.Y + legendFontLineHeight / 2);
+                            //Nothing to do because the Drawline needs to be there for all cases, and it's already there
                             break;
                         case MarkerShape.asterisk:
                             Font drawFontAsterisk = new Font("CourierNew", 16);

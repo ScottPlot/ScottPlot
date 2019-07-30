@@ -13,6 +13,7 @@ namespace ScottPlot
         public string label = null;
         public Color color = Color.Black;
         public MarkerShape markerShape = MarkerShape.none;
+        public PenType penType = PenType.Solid;
         public abstract void Render(Settings settings);
         public abstract override string ToString();
         public abstract double[] GetLimits();

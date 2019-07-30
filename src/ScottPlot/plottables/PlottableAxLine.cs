@@ -18,7 +18,7 @@ namespace ScottPlot
         public double dragLimitUpper;
 
         public PlottableAxLine(double position, bool vertical, Color color, double lineWidth, string label,
-            bool draggable, double dragLimitLower, double dragLimitUpper)
+            bool draggable, double dragLimitLower, double dragLimitUpper, PenType penType)
         {
             this.position = position;
             this.vertical = vertical;
@@ -30,6 +30,30 @@ namespace ScottPlot
             orientation = (vertical) ? "vertical" : "horizontal";
             pen = new Pen(color, (float)lineWidth);
             pointCount = 1;
+
+            switch (penType)
+            {
+                case PenType.Solid:
+                    pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Solid;
+                    break;
+                case PenType.Dash:
+                    pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+                    pen.DashPattern = new float[] { 8.0F, 4.0F };
+                    break;
+                case PenType.DashDot:
+                    pen.DashStyle = System.Drawing.Drawing2D.DashStyle.DashDot;
+                    pen.DashPattern = new float[] { 8.0F, 4.0F, 2.0F, 4.0F };
+                    break;
+                case PenType.DashDotDot:
+                    pen.DashStyle = System.Drawing.Drawing2D.DashStyle.DashDotDot;
+                    pen.DashPattern = new float[] { 8.0F, 4.0F, 2.0F, 4.0F, 2.0F, 4.0F };
+                    break;
+                case PenType.Dot:
+                    pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
+                    pen.DashPattern = new float[] { 2.0F, 4.0F };
+                    break;
+
+            }
         }
 
         public override string ToString()

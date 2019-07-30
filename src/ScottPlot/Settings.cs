@@ -75,6 +75,7 @@ namespace ScottPlot
         public Color legendFrameColor = Color.Black;
         public legendLocation legendLocation = legendLocation.none;
         public shadowDirection legendShadowDirection = shadowDirection.none;
+        public PenType penType = PenType.Solid;
 
         // benchmarking
         public Font benchmarkFont = new Font("Consolas", 8);
