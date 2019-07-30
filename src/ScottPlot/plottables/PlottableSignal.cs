@@ -137,5 +137,10 @@ namespace ScottPlot
             else
                 RenderLowDensity(settings, visibleIndex1, visibleIndex2);
         }
+
+        public override void SaveCSV(string filePath)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
