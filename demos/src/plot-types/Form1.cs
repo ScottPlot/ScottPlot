@@ -145,7 +145,7 @@ namespace ScottPlotDemo
         {
             double position = rand.NextDouble() * 20 - 10;
             double width = (float)(rand.NextDouble() * 5 + 1);
-            scottPlotUC1.plt.PlotVLine(position, lineWidth: (float)width);
+            scottPlotUC1.plt.PlotVLine(position, lineWidth: (float)width, draggable: true);
             scottPlotUC1.Render();
         }
 
@@ -153,7 +153,7 @@ namespace ScottPlotDemo
         {
             double position = rand.NextDouble() * 20 - 10;
             double width = (float)(rand.NextDouble() * 5 + 1);
-            scottPlotUC1.plt.PlotHLine(position, lineWidth: (float)width);
+            scottPlotUC1.plt.PlotHLine(position, lineWidth: (float)width, draggable: true);
             scottPlotUC1.Render();
         }
 
