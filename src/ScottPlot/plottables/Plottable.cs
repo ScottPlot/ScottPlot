@@ -13,16 +13,8 @@ namespace ScottPlot
         public string label = null;
         public Color color = Color.Black;
         public MarkerShape markerShape = MarkerShape.none;
-
         public abstract void Render(Settings settings);
         public abstract override string ToString();
-
-        public void Validate()
-        {
-            if (pointCount == 0)
-                throw new System.Exception("pointCount must be >0");
-        }
-
         public abstract double[] GetLimits();
     }
 }
