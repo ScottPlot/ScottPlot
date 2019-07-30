@@ -87,7 +87,7 @@ namespace ScottPlotCookbook
             Console.WriteLine("\nCOOKBOOK GENERATION COMPLETE");
             Console.WriteLine("\nOptionally update the cookbook with:");
             string cookBookCopierPath = System.IO.Path.GetFullPath("../../");
-            Console.WriteLine($"cd \"{cookBookCopierPath}\" & \"COPY-COOKBOOK.bat\"");
+            Console.WriteLine($"cd \"{cookBookCopierPath}\" & python UPDATE_COOKBOOK.py");
             Console.WriteLine();
         }
 
