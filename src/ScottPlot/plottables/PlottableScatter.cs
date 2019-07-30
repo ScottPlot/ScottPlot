@@ -189,5 +189,10 @@ namespace ScottPlot
                     MarkerTools.DrawMarker(settings.gfxData, points[i], markerShape, markerSize, color);
 
         }
+
+        public override void SaveCSV(string filePath)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

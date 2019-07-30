@@ -122,5 +122,10 @@ namespace ScottPlot
                 settings.gfxData.DrawLine(pen, xPx + boxWidth, yPxClose, xPx, yPxClose);
             }
         }
+
+        public override void SaveCSV(string filePath)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

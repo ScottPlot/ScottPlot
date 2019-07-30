@@ -45,5 +45,10 @@ namespace ScottPlot
         {
             settings.gfxData.DrawString(text, font, brush, settings.GetPixel(x, y));
         }
+
+        public override void SaveCSV(string filePath)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
