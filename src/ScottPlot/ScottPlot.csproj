@@ -32,16 +32,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataGen.cs" />
@@ -64,6 +68,9 @@
     <Compile Include="ScottPlotUC.Designer.cs">
       <DependentUpon>ScottPlotUC.cs</DependentUpon>
     </Compile>
+    <Compile Include="ScottPlotWPF.xaml.cs">
+      <DependentUpon>ScottPlotWPF.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Style.cs" />
     <Compile Include="Ticks.cs" />
     <Compile Include="Tools.cs" />
@@ -80,6 +87,12 @@
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
     <None Include="ScottPlot.nuspec" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="ScottPlotWPF.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

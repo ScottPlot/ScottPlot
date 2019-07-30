@@ -32,6 +32,12 @@ namespace ScottPlot
                 return false;
         }
 
+        public void MouseDown(System.Windows.Point mousePoint)
+        {
+            Point eLocation = new Point((int)mousePoint.X, (int)mousePoint.Y);
+            MouseDown(eLocation);
+        }
+
         public void MouseDown(Point eLocation)
         {
             draggingObject = PlottableUnderCursor(eLocation);
@@ -47,6 +53,12 @@ namespace ScottPlot
             {
                 PointF newPosition = settings.GetLocation(eLocation.X, eLocation.Y);
             }
+        }
+
+        public void MouseMove(System.Windows.Point mousePoint)
+        {
+            Point eLocation = new Point((int)mousePoint.X, (int)mousePoint.Y);
+            MouseMove(eLocation);
         }
 
         public void MouseMove(Point eLocation)
@@ -71,6 +83,12 @@ namespace ScottPlot
                         axLine.position = axLine.dragLimitUpper;
                 }
             }
+        }
+
+        public void MouseUp(System.Windows.Point mousePoint)
+        {
+            Point eLocation = new Point((int)mousePoint.X, (int)mousePoint.Y);
+            MouseUp(eLocation);
         }
 
         public void MouseUp(Point eLocation)

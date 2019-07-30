@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Media.Imaging;
 
 namespace ScottPlot
 {
@@ -22,6 +23,18 @@ namespace ScottPlot
             plt.AxisAuto(0);
             plt.Title("ScottPlot User Control");
             plt.YLabel("Sample Data");
+        }
+
+        public static BitmapImage bmpImageFromBmp(System.Drawing.Bitmap bmp)
+        {
+            System.IO.MemoryStream stream = new System.IO.MemoryStream();
+            ((System.Drawing.Bitmap)bmp).Save(stream, System.Drawing.Imaging.ImageFormat.Bmp);
+            BitmapImage bmpImage = new BitmapImage();
+            bmpImage.BeginInit();
+            stream.Seek(0, System.IO.SeekOrigin.Begin);
+            bmpImage.StreamSource = stream;
+            bmpImage.EndInit();
+            return bmpImage;
         }
 
         public static ContextMenuStrip GetRightClickMenu()
