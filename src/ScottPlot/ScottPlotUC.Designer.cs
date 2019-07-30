@@ -55,7 +55,6 @@
             this.Controls.Add(this.pbPlot);
             this.Name = "ScottPlotUC";
             this.Size = new System.Drawing.Size(500, 350);
-            this.Load += new System.EventHandler(this.ScottPlotUC_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pbPlot)).EndInit();
             this.ResumeLayout(false);
 
