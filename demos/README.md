@@ -73,50 +73,35 @@ scottPlotUC1.Render();
 
 Full source code is in [/demos/src/](/demos/src/)
 
-_Note: A WPF user control which proves mouse interactivity does not exist at this time. This method creates a graph as a Bitmap then applied it to an Image object._
+Using the WPF user control is the same as the WinForms user control. Virtually all your interaction is with the `scottPlotUC1.plt` object (use it just like the plot object in the [cookbook](/cookbook)), then optionally force a render with `scottPlotUC1.render()`. The user control handles mouse interactivity (left-click-drag pan, right-click-drag zoom).
 
 ```xml
-<Canvas Name="canvasPlot" Height="Auto" Width="Auto">
-    <Image Name="imagePlot" Width="{Binding ActualWidth}" Height="{Binding ActualHeight}"/>
-</Canvas>
+<ScottPlot:ScottPlotWPF Name="scottPlotUC1" Margin="10"/>
+<Button Content="Add Plot" Click="AddPlot"/>
+<Button Content="Clear" Click="Clear"/>
 ```
 
 ```cs
-private void Window_Loaded(object sender, RoutedEventArgs e)
+public MainWindow()
 {
-    // generate some data to plot
-    int pointCount = 100;
-    double[] dataXs = new double[pointCount];
-    double[] dataSin = new double[pointCount];
-    double[] dataCos = new double[pointCount];
-    for (int i = 0; i < pointCount; i++)
-    {
-        dataXs[i] = i;
-        dataSin[i] = Math.Sin(i * 2 * Math.PI / pointCount);
-        dataCos[i] = Math.Cos(i * 2 * Math.PI / pointCount);
-    }
-
-    // plot the data
-    ScottPlot.Plot plt = new ScottPlot.Plot((int)canvasPlot.ActualWidth, 
-                                            (int)canvasPlot.ActualHeight);
-    plt.PlotScatter(dataXs, dataSin);
-    plt.PlotScatter(dataXs, dataCos);
-    plt.Title("ScottPlot WPF Demo");
-    imagePlot.Source = bmpImageFromBmp(plt.GetBitmap());
+    InitializeComponent();
+    scottPlotUC1.plt.Title("WPF Demo");
+    scottPlotUC1.plt.YLabel("signal level");
+    scottPlotUC1.plt.XLabel("horizontal units");
 }
-```
 
-```cs
-public BitmapImage bmpImageFromBmp(System.Drawing.Bitmap bmp)
+private void AddPlot(object sender, RoutedEventArgs e)
 {
-    System.IO.MemoryStream stream = new System.IO.MemoryStream();
-    ((System.Drawing.Bitmap)bmp).Save(stream, System.Drawing.Imaging.ImageFormat.Bmp);
-    BitmapImage bmpImage = new BitmapImage();
-    bmpImage.BeginInit();
-    stream.Seek(0, System.IO.SeekOrigin.Begin);
-    bmpImage.StreamSource = stream;
-    bmpImage.EndInit();
-    return bmpImage;
+    Random rand = new Random();
+    scottPlotUC1.plt.PlotSignal(ScottPlot.DataGen.RandomWalk(rand, 1000));
+    scottPlotUC1.plt.AxisAuto();
+    scottPlotUC1.Render();
+}
+
+private void Clear(object sender, RoutedEventArgs e)
+{
+    scottPlotUC1.plt.Clear();
+    scottPlotUC1.Render();
 }
 ```
 
