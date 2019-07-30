@@ -894,5 +894,31 @@ namespace ScottPlotCookbook
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
             return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
+
+        public string Figure_70_Save_Scatter_Data()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            var plt = new ScottPlot.Plot(width, height);
+            plt.PlotScatter(dataXs, dataSin);
+            plt.GetPlottables()[0].SaveCSV("scatter.csv");
+            plt.SaveFig(fileName);
+            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
+        }
+
+        public string Figure_71_Save_Signal_Data()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            var plt = new ScottPlot.Plot(width, height);
+            plt.PlotSignal(dataCos, sampleRate: 20_000);
+            plt.GetPlottables()[0].SaveCSV("signal.csv");
+            plt.SaveFig(fileName);
+            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
+        }
     }
 }
