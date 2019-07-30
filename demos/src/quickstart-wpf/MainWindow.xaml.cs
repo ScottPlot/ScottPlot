@@ -20,15 +20,27 @@ namespace ScottPlotQuickstartWPF
     /// </summary>
     public partial class MainWindow : Window
     {
+        Random rand = new Random();
+
         public MainWindow()
         {
             InitializeComponent();
-
-            int pointCount = 100;
-            double[] xs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] ys = ScottPlot.DataGen.Sin(pointCount);
             scottPlotUC1.plt.Title("WPF Demo");
-            scottPlotUC1.plt.PlotScatter(xs, ys);
+            scottPlotUC1.plt.YLabel("signal level");
+            scottPlotUC1.plt.XLabel("horizontal units");
+        }
+
+        private void AddPlot(object sender, RoutedEventArgs e)
+        {
+            scottPlotUC1.plt.PlotSignal(ScottPlot.DataGen.RandomWalk(rand, 1000));
+            scottPlotUC1.plt.AxisAuto();
+            scottPlotUC1.Render();
+        }
+
+        private void Clear(object sender, RoutedEventArgs e)
+        {
+            scottPlotUC1.plt.Clear();
+            scottPlotUC1.Render();
         }
     }
 }

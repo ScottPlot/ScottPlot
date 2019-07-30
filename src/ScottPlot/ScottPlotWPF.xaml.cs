@@ -47,24 +47,24 @@ namespace ScottPlot
             Render(skipIfCurrentlyRendering: false);
         }
 
-        private void ImagePlot_MouseDown(object sender, MouseButtonEventArgs e)
+        private void UserControl_MouseDown(object sender, MouseButtonEventArgs e)
         {
             plt.mouseTracker.MouseDown(e.GetPosition(this));
+            CaptureMouse();
         }
 
-        private void CanvasPlot_MouseMove(object sender, MouseEventArgs e)
+        private void UserControl_MouseMove(object sender, MouseEventArgs e)
         {
             plt.mouseTracker.MouseMove(e.GetPosition(this));
-            Console.WriteLine(e.GetPosition(this));
-
             if ((Mouse.LeftButton == MouseButtonState.Pressed) || (Mouse.RightButton == MouseButtonState.Pressed))
                 Render(skipIfCurrentlyRendering: true);
         }
 
-        private void ImagePlot_MouseUp(object sender, MouseButtonEventArgs e)
+        private void UserControl_MouseUp(object sender, MouseButtonEventArgs e)
         {
             plt.mouseTracker.MouseUp(e.GetPosition(this));
             Render(skipIfCurrentlyRendering: false);
+            ReleaseMouseCapture();
         }
     }
 }
