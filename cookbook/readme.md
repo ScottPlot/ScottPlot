@@ -743,3 +743,25 @@ plt.SaveFig(fileName);
 
 ![](./images/68_OHLC.png)
 
+## Save Scatter Data
+
+```cs
+var plt = new ScottPlot.Plot(600, 400);
+plt.PlotScatter(dataXs, dataSin);
+plt.GetPlottables()[0].SaveCSV("scatter.csv");
+plt.SaveFig(fileName);
+```
+
+![](./images/70_Save_Scatter_Data.png)
+
+## Save Signal Data
+
+```cs
+var plt = new ScottPlot.Plot(600, 400);
+plt.PlotSignal(dataCos, sampleRate: 20_000);
+plt.GetPlottables()[0].SaveCSV("signal.csv");
+plt.SaveFig(fileName);
+```
+
+![](./images/71_Save_Signal_Data.png)
+
