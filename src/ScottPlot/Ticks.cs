@@ -96,7 +96,7 @@ namespace ScottPlot
         public Ticks(Settings settings)
         {
             this.settings = settings;
-            settings.ticksX = GetTicks(settings, settings.axis[0], settings.axis[1], settings.xAxisScale, 30, settings.dataSize.Width, settings.gridSpacingX);
+            settings.ticksX = GetTicks(settings, settings.axis[0], settings.axis[1], settings.xAxisScale, 40, settings.dataSize.Width, settings.gridSpacingX);
             settings.ticksY = GetTicks(settings, settings.axis[2], settings.axis[3], settings.yAxisScale, 20, settings.dataSize.Height, settings.gridSpacingY);
         }
 
@@ -149,7 +149,7 @@ namespace ScottPlot
 
         public Size GetMaxTickSize(List<Tick> ticks)
         {
-            string longestTickLabel = "-888"; // manually limit this with exponential notation
+            string longestTickLabel = "-88888"; // manually limit this with exponential notation
             SizeF longestTickSize = settings.gfxFigure.MeasureString(longestTickLabel, settings.tickFont);
             return new Size((int)longestTickSize.Width, (int)longestTickSize.Height);
 
@@ -210,7 +210,7 @@ namespace ScottPlot
                     break;
             }
             exponent -= 2;
-            if (Math.Abs(exponent) < 2)
+            if (Math.Abs(exponent) < 4)
                 exponent = 0;
 
 
