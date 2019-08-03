@@ -80,6 +80,10 @@ namespace ScottPlotCookbook
             hashes.Add(recipies.Figure_67_Candlestick());
             hashes.Add(recipies.Figure_68_OHLC());
 
+            hashes.Add(recipies.Figure_70_Save_Scatter_Data());
+            hashes.Add(recipies.Figure_71_Save_Signal_Data());
+            hashes.Add(recipies.Figure_72_Custom_Fonts());
+
             ValidateImageHashes(hashes.ToArray());
 
             GenerateReport(outputFolderName);

@@ -19,4 +19,16 @@ namespace ScottPlot
         Gray2,
         Black
     }
+
+    public enum TextAlginment
+    {
+        upperLeft,
+        upperRight,
+        upperCenter,
+        middleLeft,
+        middleRight,
+        lowerLeft,
+        lowerRight,
+        lowerCenter,
+    }
 }

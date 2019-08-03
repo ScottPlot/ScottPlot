@@ -77,19 +77,19 @@ namespace ScottPlot
                 settings.gfxFigure.DrawRectangle(Pens.Magenta, titlePoint.X, titlePoint.Y, titleSize.Width, titleSize.Height);
 
             // horizontal axis label
-            SizeF xLabelSizF = settings.gfxFigure.MeasureString(settings.axisLabelX, settings.axisLabelFont);
+            SizeF xLabelSizF = settings.gfxFigure.MeasureString(settings.axisLabelX, settings.axisLabelFontX);
             Size xLabelSize = new Size((int)xLabelSizF.Width, (int)xLabelSizF.Height);
             Point xLabelPoint = new Point(dataCenterX - xLabelSize.Width / 2, settings.figureSize.Height - settings.axisPadding - xLabelSize.Height);
-            settings.gfxFigure.DrawString(settings.axisLabelX, settings.axisLabelFont, new SolidBrush(settings.axisLabelColor), xLabelPoint, settings.sfNorthWest);
+            settings.gfxFigure.DrawString(settings.axisLabelX, settings.axisLabelFontX, new SolidBrush(settings.axisLabelColorX), xLabelPoint, settings.sfNorthWest);
             if (drawDebugRectangles)
                 settings.gfxFigure.DrawRectangle(Pens.Magenta, xLabelPoint.X, xLabelPoint.Y, xLabelSize.Width, xLabelSize.Height);
 
             // vertical axis label
-            SizeF yLabelSizF = settings.gfxFigure.MeasureString(settings.axisLabelY, settings.axisLabelFont);
+            SizeF yLabelSizF = settings.gfxFigure.MeasureString(settings.axisLabelY, settings.axisLabelFontY);
             Size yLabelSize = new Size((int)yLabelSizF.Width, (int)yLabelSizF.Height);
             Point yLabelPoint = new Point(-dataCenterY - yLabelSize.Width / 2, settings.axisPadding);
             settings.gfxFigure.RotateTransform(-90);
-            settings.gfxFigure.DrawString(settings.axisLabelY, settings.axisLabelFont, new SolidBrush(settings.axisLabelColor), yLabelPoint, settings.sfNorthWest);
+            settings.gfxFigure.DrawString(settings.axisLabelY, settings.axisLabelFontY, new SolidBrush(settings.axisLabelColorY), yLabelPoint, settings.sfNorthWest);
             if (drawDebugRectangles)
                 settings.gfxFigure.DrawRectangle(Pens.Magenta, yLabelPoint.X, yLabelPoint.Y, yLabelSize.Width, yLabelSize.Height);
             settings.gfxFigure.ResetTransform();
