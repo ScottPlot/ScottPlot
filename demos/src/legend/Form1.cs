@@ -74,7 +74,8 @@ namespace Legend
                 ScottPlot.legendLocation location = (ScottPlot.legendLocation)Enum.Parse(typeof(ScottPlot.legendLocation), locationString);
                 string dropShadowString = cbShadowDirection.SelectedItem.ToString();
                 ScottPlot.shadowDirection dropShadowDirection = (ScottPlot.shadowDirection)Enum.Parse(typeof(ScottPlot.shadowDirection), dropShadowString);
-                scottPlotUC1.plt.Legend(location: location, shadowDirection: dropShadowDirection, penType: penType);
+                Font font = new Font("Segoe UI", (int)nupFontSize.Value);
+                scottPlotUC1.plt.Legend(location: location, shadowDirection: dropShadowDirection, penType: penType, font: font);
             }
 
             scottPlotUC1.plt.AxisAuto();
@@ -85,7 +86,6 @@ namespace Legend
         {
             UpdatePlot();
         }
-
 
     }
 }
