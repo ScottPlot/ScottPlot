@@ -186,11 +186,12 @@ namespace ScottPlot
         /// <summary>
         /// Plot text at a specific location
         /// </summary>
-        public void PlotText(string text, double x, double y, Color? color = null, string fontName = "Arial", double fontSize = 12, bool bold = false, string label = null)
+        public void PlotText(string text, double x, double y, Color? color = null, string fontName = "Arial", double fontSize = 12, bool bold = false, string label = null, TextAlginment alignment = TextAlginment.upperLeft)
         {
             if (color == null)
                 color = settings.GetNextColor();
-            PlottableText txt = new PlottableText(text, x, y, color: (Color)color, fontName: fontName, fontSize: fontSize, bold: bold, label: label);
+            fontName = ScottPlot.Tools.VerifyFont(fontName);
+            PlottableText txt = new PlottableText(text, x, y, color: (Color)color, fontName: fontName, fontSize: fontSize, bold: bold, label: label, alignment: alignment);
             settings.plottables.Add(txt);
         }
 
@@ -401,7 +402,7 @@ namespace ScottPlot
         /// <summary>
         /// Set the title of the ScottPlot
         /// </summary>
-        public void Title(string title = null, Color? color = null, bool? enable = true, float? fontSize = 12)
+        public void Title(string title = null, bool? enable = true, string fontName = "Arial", float fontSize = 12, Color? color = null, bool bold = false)
         {
             if (title != null)
                 settings.title = title;
@@ -410,8 +411,11 @@ namespace ScottPlot
             if (enable != null)
                 if (enable == false)
                     settings.title = "";
-            if (fontSize != null)
-                settings.titleFont = new Font(settings.titleFont.FontFamily, (float)fontSize, settings.titleFont.Style);
+
+            fontName = ScottPlot.Tools.VerifyFont(fontName);
+            FontStyle fontStyle = (bold) ? FontStyle.Bold : FontStyle.Regular;
+
+            settings.titleFont = new Font(fontName, fontSize, fontStyle);
             settings.bmpFigureRenderRequired = true;
             TightenLayout();
         }
@@ -419,16 +423,19 @@ namespace ScottPlot
         /// <summary>
         /// Set the horizontal axis label
         /// </summary>
-        public void XLabel(string xLabel = null, Color? color = null, bool? enable = true, float? fontSize = 12)
+        public void XLabel(string xLabel = null, Color? color = null, bool? enable = true, string fontName = "Arial", float fontSize = 12, bool bold = false)
         {
             if (xLabel != null)
                 settings.axisLabelX = xLabel;
             if (enable == false)
                 settings.axisLabelX = "";
             if (color != null)
-                settings.axisLabelColor = (Color)color;
-            if (fontSize != null)
-                settings.axisLabelFont = new Font(settings.axisLabelFont.FontFamily, (float)fontSize, settings.axisLabelFont.Style);
+                settings.axisLabelColorX = (Color)color;
+
+            fontName = ScottPlot.Tools.VerifyFont(fontName);
+            FontStyle fontStyle = (bold) ? FontStyle.Bold : FontStyle.Regular;
+            settings.axisLabelFontX = new Font(fontName, fontSize, fontStyle);
+
             settings.bmpFigureRenderRequired = true;
             TightenLayout();
         }
@@ -436,16 +443,19 @@ namespace ScottPlot
         /// <summary>
         /// Set the vertical axis label
         /// </summary>
-        public void YLabel(string yLabel = null, Color? color = null, bool? enable = true, float? fontSize = 12)
+        public void YLabel(string yLabel = null, bool? enable = true, string fontName = "Arial", float fontSize = 12, Color? color = null, bool bold = false)
         {
             if (yLabel != null)
                 settings.axisLabelY = yLabel;
             if (enable == false)
                 settings.axisLabelY = "";
             if (color != null)
-                settings.axisLabelColor = (Color)color;
-            if (fontSize != null)
-                settings.axisLabelFont = new Font(settings.axisLabelFont.FontFamily, (float)fontSize, settings.axisLabelFont.Style);
+                settings.axisLabelColorY = (Color)color;
+
+            fontName = ScottPlot.Tools.VerifyFont(fontName);
+            FontStyle fontStyle = (bold) ? FontStyle.Bold : FontStyle.Regular;
+            settings.axisLabelFontY = new Font(fontName, fontSize, fontStyle);
+
             settings.bmpFigureRenderRequired = true;
             TightenLayout();
         }
@@ -609,7 +619,9 @@ namespace ScottPlot
             if (tick != null)
                 settings.tickColor = (Color)tick;
             if (label != null)
-                settings.axisLabelColor = (Color)label;
+                settings.axisLabelColorX = (Color)label;
+            if (label != null)
+                settings.axisLabelColorY = (Color)label;
             if (title != null)
                 settings.titleColor = (Color)title;
             if (dataBg != null)
