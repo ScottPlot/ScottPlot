@@ -18,7 +18,7 @@ namespace ScottPlot
         public double dragLimitUpper;
 
         public PlottableAxLine(double position, bool vertical, Color color, double lineWidth, string label,
-            bool draggable, double dragLimitLower, double dragLimitUpper, PenType penType)
+            bool draggable, double dragLimitLower, double dragLimitUpper, LineStyle lineStyle)
         {
             this.position = position;
             this.vertical = vertical;
@@ -31,24 +31,24 @@ namespace ScottPlot
             pen = new Pen(color, (float)lineWidth);
             pointCount = 1;
 
-            switch (penType)
+            switch (lineStyle)
             {
-                case PenType.Solid:
+                case LineStyle.Solid:
                     pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Solid;
                     break;
-                case PenType.Dash:
+                case LineStyle.Dash:
                     pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
                     pen.DashPattern = new float[] { 8.0F, 4.0F };
                     break;
-                case PenType.DashDot:
+                case LineStyle.DashDot:
                     pen.DashStyle = System.Drawing.Drawing2D.DashStyle.DashDot;
                     pen.DashPattern = new float[] { 8.0F, 4.0F, 2.0F, 4.0F };
                     break;
-                case PenType.DashDotDot:
+                case LineStyle.DashDotDot:
                     pen.DashStyle = System.Drawing.Drawing2D.DashStyle.DashDotDot;
                     pen.DashPattern = new float[] { 8.0F, 4.0F, 2.0F, 4.0F, 2.0F, 4.0F };
                     break;
-                case PenType.Dot:
+                case LineStyle.Dot:
                     pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
                     pen.DashPattern = new float[] { 2.0F, 4.0F };
                     break;

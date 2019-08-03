@@ -178,7 +178,7 @@ namespace ScottPlot
             settings.plottables.Add(txt);
         }
 
-        public void PlotPoint(double x, double y, Color? color = null, double markerSize = 5, string label = null, double? errorX = null, double? errorY = null, double errorLineWidth = 1, double errorCapSize = 3, MarkerShape markerShape = MarkerShape.filledCircle, PenType penType = PenType.Solid)
+        public void PlotPoint(double x, double y, Color? color = null, double markerSize = 5, string label = null, double? errorX = null, double? errorY = null, double errorLineWidth = 1, double errorCapSize = 3, MarkerShape markerShape = MarkerShape.filledCircle, LineStyle lineStyle = LineStyle.Solid)
         {
             if (color == null)
                 color = settings.GetNextColor();
@@ -186,15 +186,15 @@ namespace ScottPlot
             double[] errorXarray = (errorX != null) ? new double[] { (double)errorX } : null;
             double[] errorYarray = (errorY != null) ? new double[] { (double)errorY } : null;
 
-            PlottableScatter mark = new PlottableScatter(new double[] { x }, new double[] { y }, color: (Color)color, lineWidth: 0, markerSize: markerSize, label: label, errorX: errorXarray, errorY: errorYarray, errorLineWidth: errorLineWidth, errorCapSize: errorCapSize, stepDisplay: false, markerShape: markerShape, penType: penType);
+            PlottableScatter mark = new PlottableScatter(new double[] { x }, new double[] { y }, color: (Color)color, lineWidth: 0, markerSize: markerSize, label: label, errorX: errorXarray, errorY: errorYarray, errorLineWidth: errorLineWidth, errorCapSize: errorCapSize, stepDisplay: false, markerShape: markerShape, lineStyle: lineStyle);
             settings.plottables.Add(mark);
         }
 
-        public void PlotScatter(double[] xs, double[] ys, Color? color = null, double lineWidth = 1, double markerSize = 5, string label = null, double[] errorX = null, double[] errorY = null, double errorLineWidth = 1, double errorCapSize = 3, MarkerShape markerShape = MarkerShape.filledCircle, PenType penType = PenType.Solid)
+        public void PlotScatter(double[] xs, double[] ys, Color? color = null, double lineWidth = 1, double markerSize = 5, string label = null, double[] errorX = null, double[] errorY = null, double errorLineWidth = 1, double errorCapSize = 3, MarkerShape markerShape = MarkerShape.filledCircle, LineStyle lineStyle = LineStyle.Solid)
         {
             if (color == null)
                 color = settings.GetNextColor();
-            PlottableScatter scat = new PlottableScatter(xs, ys, color: (Color)color, lineWidth: lineWidth, markerSize: markerSize, label: label, errorX: errorX, errorY: errorY, errorLineWidth: errorLineWidth, errorCapSize: errorCapSize, stepDisplay: false, markerShape: markerShape, penType: penType);
+            PlottableScatter scat = new PlottableScatter(xs, ys, color: (Color)color, lineWidth: lineWidth, markerSize: markerSize, label: label, errorX: errorX, errorY: errorY, errorLineWidth: errorLineWidth, errorCapSize: errorCapSize, stepDisplay: false, markerShape: markerShape, lineStyle: lineStyle);
             settings.plottables.Add(scat);
         }
 
@@ -202,7 +202,7 @@ namespace ScottPlot
         {
             if (color == null)
                 color = settings.GetNextColor();
-            PlottableScatter step = new PlottableScatter(xs, ys, color: (Color)color, lineWidth: lineWidth, markerSize: 0, label: label, errorX: null, errorY: null, errorLineWidth: 0, errorCapSize: 0, stepDisplay: true, markerShape: MarkerShape.none, penType: PenType.Solid);
+            PlottableScatter step = new PlottableScatter(xs, ys, color: (Color)color, lineWidth: lineWidth, markerSize: 0, label: label, errorX: null, errorY: null, errorLineWidth: 0, errorCapSize: 0, stepDisplay: true, markerShape: MarkerShape.none, lineStyle: LineStyle.Solid);
             settings.plottables.Add(step);
         }
 
@@ -236,19 +236,19 @@ namespace ScottPlot
             settings.plottables.Add(ohlc);
         }
 
-        public void PlotVLine(double x, Color? color = null, double lineWidth = 1, string label = null, bool draggable = false, double dragLimitLower = double.NegativeInfinity, double dragLimitUpper = double.PositiveInfinity, PenType penType = PenType.Solid)
+        public void PlotVLine(double x, Color? color = null, double lineWidth = 1, string label = null, bool draggable = false, double dragLimitLower = double.NegativeInfinity, double dragLimitUpper = double.PositiveInfinity, LineStyle lineStyle = LineStyle.Solid)
         {
             if (color == null)
                 color = settings.GetNextColor();
-            PlottableAxLine axLine = new PlottableAxLine(x, vertical: true, color: (Color)color, lineWidth: lineWidth, label: label, draggable: draggable, dragLimitLower: dragLimitLower, dragLimitUpper: dragLimitUpper, penType: penType);
+            PlottableAxLine axLine = new PlottableAxLine(x, vertical: true, color: (Color)color, lineWidth: lineWidth, label: label, draggable: draggable, dragLimitLower: dragLimitLower, dragLimitUpper: dragLimitUpper, lineStyle: lineStyle);
             settings.plottables.Add(axLine);
         }
 
-        public void PlotHLine(double x, Color? color = null, double lineWidth = 1, string label = null, bool draggable = false, double dragLimitLower = double.NegativeInfinity, double dragLimitUpper = double.PositiveInfinity, PenType penType = PenType.Solid)
+        public void PlotHLine(double x, Color? color = null, double lineWidth = 1, string label = null, bool draggable = false, double dragLimitLower = double.NegativeInfinity, double dragLimitUpper = double.PositiveInfinity, LineStyle lineStyle = LineStyle.Solid)
         {
             if (color == null)
                 color = settings.GetNextColor();
-            PlottableAxLine axLine = new PlottableAxLine(x, vertical: false, color: (Color)color, lineWidth: lineWidth, label: label, draggable: draggable, dragLimitLower: dragLimitLower, dragLimitUpper: dragLimitUpper, penType: penType);
+            PlottableAxLine axLine = new PlottableAxLine(x, vertical: false, color: (Color)color, lineWidth: lineWidth, label: label, draggable: draggable, dragLimitLower: dragLimitLower, dragLimitUpper: dragLimitUpper, lineStyle: lineStyle);
             settings.plottables.Add(axLine);
         }
 
@@ -374,7 +374,7 @@ namespace ScottPlot
             TightenLayout();
         }
 
-        public void Legend(bool enableLegend = true, string fontName = "Segoe UI", float fontSize = 12, bool bold = false, Color? fontColor = null, Color? backColor = null, Color? frameColor = null, legendLocation location = legendLocation.lowerRight, shadowDirection shadowDirection = shadowDirection.lowerRight, PenType penType = PenType.Solid)
+        public void Legend(bool enableLegend = true, string fontName = "Segoe UI", float fontSize = 12, bool bold = false, Color? fontColor = null, Color? backColor = null, Color? frameColor = null, legendLocation location = legendLocation.lowerRight, shadowDirection shadowDirection = shadowDirection.lowerRight, LineStyle lineStyle = LineStyle.Solid)
         {
             if (fontColor != null)
                 settings.legendFontColor = (Color)fontColor;
@@ -382,11 +382,6 @@ namespace ScottPlot
                 settings.legendBackColor = (Color)backColor;
             if (frameColor != null)
                 settings.legendFrameColor = (Color)frameColor;
-            settings.penType = penType;
-
-            fontName = ScottPlot.Tools.VerifyFont(fontName);
-            FontStyle fontStyle = (bold) ? FontStyle.Bold : FontStyle.Regular;
-            settings.legendFont = new Font(fontName, fontSize, fontStyle);
 
             fontName = ScottPlot.Tools.VerifyFont(fontName);
             FontStyle fontStyle = (bold) ? FontStyle.Bold : FontStyle.Regular;

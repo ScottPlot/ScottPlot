@@ -37,9 +37,9 @@ namespace ScottPlot
             public int plottableIndex;
             public Color color;
             public MarkerShape markerShape;
-            public PenType penType;
+            public LineStyle penType;
 
-            public LegendItem(string label, int plottableIndex, Color color, MarkerShape markerShape, PenType penType)
+            public LegendItem(string label, int plottableIndex, Color color, MarkerShape markerShape, LineStyle penType)
             {
                 this.label = label;
                 this.plottableIndex = plottableIndex;
@@ -70,7 +70,7 @@ namespace ScottPlot
             {
                 if (settings.plottables[i].label != null)
                 {
-                    var legendItem = new LegendItem(settings.plottables[i].label, i, settings.plottables[i].color, settings.plottables[i].markerShape, settings.plottables[i].penType);
+                    var legendItem = new LegendItem(settings.plottables[i].label, i, settings.plottables[i].color, settings.plottables[i].markerShape, settings.plottables[i].lineStyle);
                     legendItems.Add(legendItem);
                     float thisItemFontWidth = settings.gfxData.MeasureString(settings.plottables[i].label, settings.legendFont).Width;
                     if (thisItemFontWidth > legendFontMaxWidth)
@@ -194,21 +194,21 @@ namespace ScottPlot
                     Pen penLight = new Pen(legendItems[i].color, 1);
                     Pen penMarker = new Pen(legendItems[i].color, 1);
 
-                    switch (settings.plottables[i].penType)
+                    switch (settings.plottables[i].lineStyle)
                     {
-                        case PenType.Solid:
+                        case LineStyle.Solid:
                             penLight.DashStyle = System.Drawing.Drawing2D.DashStyle.Solid;
                             break;
-                        case PenType.Dash:
+                        case LineStyle.Dash:
                             penLight.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
                             break;
-                        case PenType.DashDot:
+                        case LineStyle.DashDot:
                             penLight.DashStyle = System.Drawing.Drawing2D.DashStyle.DashDot;
                             break;
-                        case PenType.DashDotDot:
+                        case LineStyle.DashDotDot:
                             penLight.DashStyle = System.Drawing.Drawing2D.DashStyle.DashDotDot;
                             break;
-                        case PenType.Dot:
+                        case LineStyle.Dot:
                             penLight.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
                         break;
                     }
