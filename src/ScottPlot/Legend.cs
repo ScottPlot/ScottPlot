@@ -58,7 +58,6 @@ namespace ScottPlot
 
             int padding = 3;
             int stubWidth = 40 * (int)settings.legendFont.Size/12;
-            int stubHeight = 3;
 
             Brush brushText = new SolidBrush(settings.legendFontColor);
             float legendFontLineHeight = settings.gfxData.MeasureString("TEST", settings.legendFont).Height;
