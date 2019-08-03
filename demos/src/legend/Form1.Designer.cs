@@ -125,7 +125,7 @@
             this.groupBox4.Size = new System.Drawing.Size(92, 47);
             this.groupBox4.TabIndex = 3;
             this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Marker size";
+            this.groupBox4.Text = "Marker Size";
             // 
             // nudMarkerSize
             // 
@@ -149,7 +149,7 @@
             this.groupBox5.Size = new System.Drawing.Size(103, 47);
             this.groupBox5.TabIndex = 3;
             this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Pen Style";
+            this.groupBox5.Text = "Line Style";
             // 
             // cbPenStyle
             // 
@@ -168,10 +168,10 @@
             this.groupBox6.Controls.Add(this.nupFontSize);
             this.groupBox6.Location = new System.Drawing.Point(628, 12);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(103, 47);
+            this.groupBox6.Size = new System.Drawing.Size(115, 47);
             this.groupBox6.TabIndex = 3;
             this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Legend font size";
+            this.groupBox6.Text = "Legend Font Size";
             // 
             // nupFontSize
             // 
@@ -188,7 +188,7 @@
             0,
             0});
             this.nupFontSize.Name = "nupFontSize";
-            this.nupFontSize.Size = new System.Drawing.Size(79, 20);
+            this.nupFontSize.Size = new System.Drawing.Size(103, 20);
             this.nupFontSize.TabIndex = 1;
             this.nupFontSize.Value = new decimal(new int[] {
             12,
@@ -204,14 +204,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.scottPlotUC1.Location = new System.Drawing.Point(12, 65);
             this.scottPlotUC1.Name = "scottPlotUC1";
-            this.scottPlotUC1.Size = new System.Drawing.Size(747, 354);
+            this.scottPlotUC1.Size = new System.Drawing.Size(737, 354);
             this.scottPlotUC1.TabIndex = 2;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(771, 431);
+            this.ClientSize = new System.Drawing.Size(761, 431);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.groupBox5);

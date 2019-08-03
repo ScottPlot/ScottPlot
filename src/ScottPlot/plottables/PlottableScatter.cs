@@ -22,7 +22,7 @@ namespace ScottPlot
         public Brush brush;
 
         public PlottableScatter(double[] xs, double[] ys, Color color, double lineWidth, double markerSize, string label,
-            double[] errorX, double[] errorY, double errorLineWidth, double errorCapSize, bool stepDisplay, MarkerShape markerShape, PenType penType)
+            double[] errorX, double[] errorY, double errorLineWidth, double errorCapSize, bool stepDisplay, MarkerShape markerShape, LineStyle lineStyle)
         {
 
             if ((xs == null) || (ys == null))
@@ -52,7 +52,7 @@ namespace ScottPlot
             this.errorCapSize = (float)errorCapSize;
             this.stepDisplay = stepDisplay;
             this.markerShape = markerShape;
-            this.penType = penType;
+            this.lineStyle = lineStyle;
 
             pointCount = xs.Length;
 
@@ -73,24 +73,24 @@ namespace ScottPlot
                 LineJoin = System.Drawing.Drawing2D.LineJoin.Round
             };
 
-            switch (penType)
+            switch (lineStyle)
             {
-                case PenType.Solid:
+                case LineStyle.Solid:
                     penLine.DashStyle = System.Drawing.Drawing2D.DashStyle.Solid;
                     break;
-                case PenType.Dash:
+                case LineStyle.Dash:
                     penLine.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
                     penLine.DashPattern = new float[] { 8.0F, 4.0F };
                     break;
-                case PenType.DashDot:
+                case LineStyle.DashDot:
                     penLine.DashStyle = System.Drawing.Drawing2D.DashStyle.DashDot;
                     penLine.DashPattern = new float[] { 8.0F, 4.0F, 2.0F, 4.0F };
                     break;
-                case PenType.DashDotDot:
+                case LineStyle.DashDotDot:
                     penLine.DashStyle = System.Drawing.Drawing2D.DashStyle.DashDotDot;
                     penLine.DashPattern = new float[] { 8.0F, 4.0F, 2.0F, 4.0F, 2.0F, 4.0F };
                     break;
-                case PenType.Dot:
+                case LineStyle.Dot:
                     penLine.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
                     penLine.DashPattern = new float[] { 2.0F, 4.0F };
                     break;

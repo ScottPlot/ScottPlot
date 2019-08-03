@@ -48,7 +48,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PenType.cs" />
     <Compile Include="DataGen.cs" />
     <Compile Include="Histogram.cs" />
     <Compile Include="Legend.cs" />
