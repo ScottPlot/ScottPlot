@@ -22,19 +22,19 @@ namespace Legend
         {
             string[] legendLocationStrings = Enum.GetNames(typeof(ScottPlot.legendLocation));
             cbLocations.Items.AddRange(legendLocationStrings);
-            cbLocations.SelectedItem = cbLocations.Items[0];
+            cbLocations.SelectedItem = cbLocations.Items[1];
 
             string[] dropShadowDirectionStrings = Enum.GetNames(typeof(ScottPlot.shadowDirection));
             cbShadowDirection.Items.AddRange(dropShadowDirectionStrings);
-            cbShadowDirection.SelectedItem = cbShadowDirection.Items[0];
+            cbShadowDirection.SelectedItem = cbShadowDirection.Items[4];
 
             string[] markerStrings = Enum.GetNames(typeof(ScottPlot.MarkerShape));
             cbMarker.Items.AddRange(markerStrings);
-            cbMarker.SelectedItem = cbMarker.Items[0];
+            cbMarker.SelectedItem = cbMarker.Items[1];
 
             string[] penStyleStrings = Enum.GetNames(typeof(ScottPlot.PenType));
             cbPenStyle.Items.AddRange(penStyleStrings);
-            cbPenStyle.SelectedItem = cbPenStyle.Items[0];
+            cbPenStyle.SelectedItem = cbPenStyle.Items[1];
 
             Application.DoEvents();
 
