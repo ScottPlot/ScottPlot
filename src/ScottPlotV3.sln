@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.28803.452
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScottPlot", "ScottPlot\ScottPlot.csproj", "{EE9215C6-01C1-4835-8514-3A708F9291F1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScottPlot Cookbook", "..\cookbook\src\ScottPlot Cookbook.csproj", "{473A8B7C-EDD0-434C-8B02-EA1972D9B4E2}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demos", "Demos", "{2F78F109-9976-42FF-8324-9A27EF3BD776}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cookbook", "Cookbook", "{99FC7B64-7C92-4657-B59B-8D83ECE6ED5A}"
@@ -37,9 +39,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "quickstart winforms", "..\d
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "quickstart wpf", "..\demos\src\quickstart-wpf\quickstart wpf.csproj", "{B185493F-A7E2-46A4-8E43-D88F47325D87}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScottPlot Cookbook", "..\cookbook\src\ScottPlot Cookbook.csproj", "{473A8B7C-EDD0-434C-8B02-EA1972D9B4E2}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wav file viewer", "..\demos\wav-file-viewer\wav file viewer.csproj", "{9EA905FA-66DA-46D7-AA85-02CD40CE2833}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wav file viewer", "..\demos\src\wav-file-viewer\wav file viewer.csproj", "{9EA905FA-66DA-46D7-AA85-02CD40CE2833}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
