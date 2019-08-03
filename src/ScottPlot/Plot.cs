@@ -244,12 +244,53 @@ namespace ScottPlot
             settings.plottables.Add(axLine);
         }
 
+        public void PlotVSpan(double y1, double y2, Color? color = null, double alpha = .5, string label = null, bool draggable = false, double dragLimitLower = double.NegativeInfinity, double dragLimitUpper = double.PositiveInfinity)
+        {
+            if (color == null)
+                color = settings.GetNextColor();
+
+            settings.plottables.Add(
+                new PlottableAxSpan(
+                    position1: y1,
+                    position2: y2,
+                    vertical: true,
+                    color: (Color)color,
+                    alpha: alpha,
+                    label: label,
+                    draggable: draggable,
+                    dragLimitLower: dragLimitLower,
+                    dragLimitUpper: dragLimitUpper
+                    )
+                );
+        }
+
         public void PlotHLine(double x, Color? color = null, double lineWidth = 1, string label = null, bool draggable = false, double dragLimitLower = double.NegativeInfinity, double dragLimitUpper = double.PositiveInfinity, LineStyle lineStyle = LineStyle.Solid)
         {
             if (color == null)
                 color = settings.GetNextColor();
             PlottableAxLine axLine = new PlottableAxLine(x, vertical: false, color: (Color)color, lineWidth: lineWidth, label: label, draggable: draggable, dragLimitLower: dragLimitLower, dragLimitUpper: dragLimitUpper, lineStyle: lineStyle);
             settings.plottables.Add(axLine);
+        }
+
+
+        public void PlotHSpan(double x1, double x2, Color? color = null, double alpha = .5, string label = null, bool draggable = false, double dragLimitLower = double.NegativeInfinity, double dragLimitUpper = double.PositiveInfinity)
+        {
+            if (color == null)
+                color = settings.GetNextColor();
+
+            settings.plottables.Add(
+                new PlottableAxSpan(
+                    position1: x1,
+                    position2: x2,
+                    vertical: false,
+                    color: (Color)color,
+                    alpha: alpha,
+                    label: label,
+                    draggable: draggable,
+                    dragLimitLower: dragLimitLower,
+                    dragLimitUpper: dragLimitUpper
+                    )
+                );
         }
 
         public List<Plottable> GetPlottables()

@@ -528,9 +528,23 @@ namespace ScottPlotCookbook
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
 
             var plt = new ScottPlot.Plot(width, height);
-            plt.PlotScatter(dataXs, dataSin);
-            plt.PlotScatter(dataXs, dataCos);
+
+            // things plotted after before spans are covered by them
+            plt.PlotScatter(dataXs, dataSin, label: "below", 
+                color: Color.Red, markerShape: ScottPlot.MarkerShape.filledCircle);
+
+            // vertical lines and horizontal spans both take X-axis positions
             plt.PlotVLine(17, label: "vertical line");
+            plt.PlotVSpan(19, 27, label: "horizontal span", color: Color.Blue);
+
+            // horizontal lines and vertical spans both take Y-axis positions
+            plt.PlotHLine(-.6, label: "horizontal line");
+            plt.PlotHSpan(-.25, 0.33, label: "vertical span", color: Color.Green);
+
+            // things plotted after are displayed on top of the spans
+            plt.PlotScatter(dataXs, dataCos, label: "above",
+                color: Color.Red, markerShape: ScottPlot.MarkerShape.filledSquare);
+
             plt.Legend();
 
             plt.SaveFig(fileName);

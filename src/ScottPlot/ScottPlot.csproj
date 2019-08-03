@@ -56,6 +56,7 @@
     <Compile Include="plottables\OHLC.cs" />
     <Compile Include="plottables\Plottable.cs" />
     <Compile Include="plottables\PlottableAxLine.cs" />
+    <Compile Include="plottables\PlottableAxSpan.cs" />
     <Compile Include="plottables\PlottableBar.cs" />
     <Compile Include="plottables\PlottableOHLC.cs" />
     <Compile Include="plottables\PlottableScatter.cs" />
