@@ -47,8 +47,8 @@ namespace ScottPlot
                 this.markerShape = markerShape;
                 this.penType = penType;
 
+            }
         }
-    }
 
         public static void DrawLegend(Settings settings)
         {
@@ -57,7 +57,7 @@ namespace ScottPlot
                 return;
 
             int padding = 3;
-            int stubWidth = 40 * (int)settings.legendFont.Size/12;
+            int stubWidth = 40 * (int)settings.legendFont.Size / 12;
 
             Brush brushText = new SolidBrush(settings.legendFontColor);
             float legendFontLineHeight = settings.gfxData.MeasureString("TEST", settings.legendFont).Height;
@@ -209,24 +209,24 @@ namespace ScottPlot
                             break;
                         case LineStyle.Dot:
                             penLight.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
-                        break;
+                            break;
                     }
 
 
-                PointF corner1 = new PointF(textLocation.X - stubWidth + settings.legendFont.Size / 4, textLocation.Y + settings.legendFont.Size / 4 * padding);
+                    PointF corner1 = new PointF(textLocation.X - stubWidth + settings.legendFont.Size / 4, textLocation.Y + settings.legendFont.Size / 4 * padding);
                     PointF center = new PointF
                     {
                         X = corner1.X + settings.legendFont.Size / 4,
                         Y = corner1.Y + settings.legendFont.Size / 4
                     };
 
-                    SizeF bounds = new SizeF(settings.legendFont.Size/2, settings.legendFont.Size/2);
+                    SizeF bounds = new SizeF(settings.legendFont.Size / 2, settings.legendFont.Size / 2);
                     RectangleF rect = new RectangleF(corner1, bounds);
 
                     settings.gfxData.DrawLine(penLight,
                         textLocation.X - padding, textLocation.Y + legendFontLineHeight / 2,
                         textLocation.X - padding - stubWidth, textLocation.Y + legendFontLineHeight / 2);
-                    
+
 
                     switch (legendItems[i].markerShape)
                     {
@@ -244,7 +244,7 @@ namespace ScottPlot
                             settings.gfxData.DrawString("+", drawFontCross, brushMarker, markerPositionCross);
                             break;
                         case MarkerShape.eks:
-                            Font drawFontEks = new Font("CourierNew",  settings.legendFont.Size);
+                            Font drawFontEks = new Font("CourierNew", settings.legendFont.Size);
                             Point markerPositionEks = new Point(textLocation.X - stubWidth, (int)(textLocation.Y));
                             settings.gfxData.DrawString("x", drawFontEks, brushMarker, markerPositionEks);
                             break;
@@ -253,10 +253,10 @@ namespace ScottPlot
                             break;
                         case MarkerShape.filledDiamond:
                             // Create points that define polygon.
-                            PointF point1 = new PointF(center.X, center.Y + settings.legendFont.Size/4);
-                            PointF point2 = new PointF(center.X - settings.legendFont.Size/4, center.Y);
-                            PointF point3 = new PointF(center.X, center.Y - settings.legendFont.Size/4);
-                            PointF point4 = new PointF(center.X + settings.legendFont.Size/4, center.Y);
+                            PointF point1 = new PointF(center.X, center.Y + settings.legendFont.Size / 4);
+                            PointF point2 = new PointF(center.X - settings.legendFont.Size / 4, center.Y);
+                            PointF point3 = new PointF(center.X, center.Y - settings.legendFont.Size / 4);
+                            PointF point4 = new PointF(center.X + settings.legendFont.Size / 4, center.Y);
 
                             PointF[] curvePoints = { point1, point2, point3, point4 };
 
@@ -276,10 +276,10 @@ namespace ScottPlot
                             break;
                         case MarkerShape.openDiamond:
                             // Create points that define polygon.
-                            PointF point5 = new PointF(center.X, center.Y + settings.legendFont.Size/4);
-                            PointF point6 = new PointF(center.X - settings.legendFont.Size/4, center.Y);
-                            PointF point7 = new PointF(center.X, center.Y - settings.legendFont.Size/4);
-                            PointF point8 = new PointF(center.X + settings.legendFont.Size/4, center.Y);
+                            PointF point5 = new PointF(center.X, center.Y + settings.legendFont.Size / 4);
+                            PointF point6 = new PointF(center.X - settings.legendFont.Size / 4, center.Y);
+                            PointF point7 = new PointF(center.X, center.Y - settings.legendFont.Size / 4);
+                            PointF point8 = new PointF(center.X + settings.legendFont.Size / 4, center.Y);
 
                             PointF[] curvePoints2 = { point5, point6, point7, point8 };
 
@@ -287,15 +287,15 @@ namespace ScottPlot
                             settings.gfxData.DrawPolygon(penMarker, curvePoints2);
                             break;
                         case MarkerShape.openSquare:
-                            settings.gfxData.DrawRectangle(penMarker, corner1.X, corner1.Y, settings.legendFont.Size/2, settings.legendFont.Size/2);
+                            settings.gfxData.DrawRectangle(penMarker, corner1.X, corner1.Y, settings.legendFont.Size / 2, settings.legendFont.Size / 2);
                             break;
                         case MarkerShape.triDown:
                             // Create points that define polygon.
-                            PointF point14 = new PointF(center.X, center.Y +  settings.legendFont.Size/2);
+                            PointF point14 = new PointF(center.X, center.Y + settings.legendFont.Size / 2);
                             PointF point15 = new PointF(center.X, center.Y);
-                            PointF point16 = new PointF(center.X -  settings.legendFont.Size / 2* (float)0.866, center.Y -  settings.legendFont.Size/2 * (float)0.5);
+                            PointF point16 = new PointF(center.X - settings.legendFont.Size / 2 * (float)0.866, center.Y - settings.legendFont.Size / 2 * (float)0.5);
                             PointF point17 = new PointF(center.X, center.Y);
-                            PointF point18 = new PointF(center.X + settings.legendFont.Size / 2 * (float)0.866, center.Y -  settings.legendFont.Size/2 * (float)0.5);
+                            PointF point18 = new PointF(center.X + settings.legendFont.Size / 2 * (float)0.866, center.Y - settings.legendFont.Size / 2 * (float)0.5);
 
 
                             PointF[] curvePoints4 = { point17, point14, point15, point16, point17, point18 };
@@ -307,11 +307,11 @@ namespace ScottPlot
 
                         case MarkerShape.triUp:
                             // Create points that define polygon.
-                            PointF point9 = new PointF(center.X, center.Y - settings.legendFont.Size/2);
+                            PointF point9 = new PointF(center.X, center.Y - settings.legendFont.Size / 2);
                             PointF point10 = new PointF(center.X, center.Y);
-                            PointF point11 = new PointF(center.X - settings.legendFont.Size/2 * (float)0.866, center.Y + settings.legendFont.Size/2 * (float)0.5);
+                            PointF point11 = new PointF(center.X - settings.legendFont.Size / 2 * (float)0.866, center.Y + settings.legendFont.Size / 2 * (float)0.5);
                             PointF point12 = new PointF(center.X, center.Y);
-                            PointF point13 = new PointF(center.X + settings.legendFont.Size/2 * (float)0.866, center.Y + settings.legendFont.Size/2 * (float)0.5);
+                            PointF point13 = new PointF(center.X + settings.legendFont.Size / 2 * (float)0.866, center.Y + settings.legendFont.Size / 2 * (float)0.5);
 
 
                             PointF[] curvePoints3 = { point12, point9, point10, point11, point12, point13 };
