@@ -11,7 +11,10 @@ PATH_HERE = os.path.abspath(os.path.dirname(__file__))
 
 
 def cleanFolder():
-    for path in glob.glob(f"{PATH_HERE}/bin/*"):
+    for path in glob.glob(f"{PATH_HERE}/bin/*.dll"):
+        print(f"deleting {os.path.basename(path)}")
+        os.remove(path)
+    for path in glob.glob(f"{PATH_HERE}/bin/*.exe"):
         print(f"deleting {os.path.basename(path)}")
         os.remove(path)
 
