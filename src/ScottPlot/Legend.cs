@@ -179,6 +179,7 @@ namespace ScottPlot
                     break;
             }
 
+            textLocation.Y += padding;
             return new Point[] { frameLocation, textLocation, shadowLocation };
         }
 
