@@ -24,12 +24,12 @@ namespace ScottPlot
             this.position1 = position1;
             this.position2 = position2;
             this.vertical = vertical;
-            this.color = color;
+            this.color = Color.FromArgb((int)(alpha * 255), color.R, color.G, color.B);
             this.label = label;
             this.draggable = draggable;
             this.dragLimitLower = dragLimitLower;
             this.dragLimitUpper = dragLimitUpper;
-            brush = new SolidBrush(Color.FromArgb((int)(alpha * 255), color.R, color.G, color.B));
+            brush = new SolidBrush(this.color);
             orientation = (vertical) ? "vertical" : "horizontal";
             pointCount = 1;
         }

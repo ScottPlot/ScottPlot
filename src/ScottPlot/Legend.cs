@@ -190,29 +190,31 @@ namespace ScottPlot
 
         private static void DrawLegendItemLine(Plottable plottable, Settings settings, Point textLocation, int padding, int stubWidth, float legendFontLineHeight)
         {
+            Pen pen = new Pen(plottable.color, 1);
 
-            Pen penLight = new Pen(plottable.color, 1);
+            if (plottable is PlottableAxSpan)
+                pen.Width = 10;
 
             switch (plottable.lineStyle)
             {
                 case LineStyle.Solid:
-                    penLight.DashStyle = System.Drawing.Drawing2D.DashStyle.Solid;
+                    pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Solid;
                     break;
                 case LineStyle.Dash:
-                    penLight.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+                    pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
                     break;
                 case LineStyle.DashDot:
-                    penLight.DashStyle = System.Drawing.Drawing2D.DashStyle.DashDot;
+                    pen.DashStyle = System.Drawing.Drawing2D.DashStyle.DashDot;
                     break;
                 case LineStyle.DashDotDot:
-                    penLight.DashStyle = System.Drawing.Drawing2D.DashStyle.DashDotDot;
+                    pen.DashStyle = System.Drawing.Drawing2D.DashStyle.DashDotDot;
                     break;
                 case LineStyle.Dot:
-                    penLight.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
+                    pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
                     break;
             }
 
-            settings.gfxData.DrawLine(penLight,
+            settings.gfxData.DrawLine(pen,
                 textLocation.X - padding, textLocation.Y + legendFontLineHeight / 2,
                 textLocation.X - padding - stubWidth, textLocation.Y + legendFontLineHeight / 2);
         }
