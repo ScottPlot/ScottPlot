@@ -186,7 +186,7 @@ namespace ScottPlot
         /// <summary>
         /// Plot text at a specific location
         /// </summary>
-        public void PlotText(string text, double x, double y, Color? color = null, string fontName = "Arial", double fontSize = 12, bool bold = false, string label = null, TextAlginment alignment = TextAlginment.upperLeft)
+        public void PlotText(string text, double x, double y, Color? color = null, string fontName = "Segoe UI", double fontSize = 12, bool bold = false, string label = null, TextAlginment alignment = TextAlginment.upperLeft)
         {
             if (color == null)
                 color = settings.GetNextColor();
@@ -402,7 +402,7 @@ namespace ScottPlot
         /// <summary>
         /// Set the title of the ScottPlot
         /// </summary>
-        public void Title(string title = null, bool? enable = true, string fontName = "Arial", float fontSize = 12, Color? color = null, bool bold = false)
+        public void Title(string title = null, bool? enable = true, string fontName = "Segoe UI", float fontSize = 12, Color? color = null, bool bold = true)
         {
             if (title != null)
                 settings.title = title;
@@ -423,7 +423,7 @@ namespace ScottPlot
         /// <summary>
         /// Set the horizontal axis label
         /// </summary>
-        public void XLabel(string xLabel = null, Color? color = null, bool? enable = true, string fontName = "Arial", float fontSize = 12, bool bold = false)
+        public void XLabel(string xLabel = null, Color? color = null, bool? enable = true, string fontName = "Segoe UI", float fontSize = 12, bool bold = false)
         {
             if (xLabel != null)
                 settings.axisLabelX = xLabel;
@@ -443,7 +443,7 @@ namespace ScottPlot
         /// <summary>
         /// Set the vertical axis label
         /// </summary>
-        public void YLabel(string yLabel = null, bool? enable = true, string fontName = "Arial", float fontSize = 12, Color? color = null, bool bold = false)
+        public void YLabel(string yLabel = null, bool? enable = true, string fontName = "Segoe UI", float fontSize = 12, Color? color = null, bool bold = false)
         {
             if (yLabel != null)
                 settings.axisLabelY = yLabel;
