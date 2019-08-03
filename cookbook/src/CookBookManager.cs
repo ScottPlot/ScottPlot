@@ -37,6 +37,7 @@ namespace ScottPlotCookbook
             hashes.Add(recipies.Figure_04_Plot_Lines_Only());
             hashes.Add(recipies.Figure_05_Plot_Points_Only());
             hashes.Add(recipies.Figure_06_Styling_XY_Plots());
+            hashes.Add(recipies.Figure_06b_Custom_LineStyles());
             hashes.Add(recipies.Figure_07_Plotting_Points());
             hashes.Add(recipies.Figure_08_Plotting_Text());
             hashes.Add(recipies.Figure_09_Clearing_Plots());
@@ -58,6 +59,7 @@ namespace ScottPlotCookbook
             hashes.Add(recipies.Figure_32_Signal_Styling());
 
             hashes.Add(recipies.Figure_40_Vertical_and_Horizontal_Lines());
+            hashes.Add(recipies.Figure_41_Axis_Spans());
 
             hashes.Add(recipies.Figure_50_StyleBlue1());
             hashes.Add(recipies.Figure_51_StyleBlue2());
