@@ -388,6 +388,10 @@ namespace ScottPlot
             FontStyle fontStyle = (bold) ? FontStyle.Bold : FontStyle.Regular;
             settings.legendFont = new Font(fontName, fontSize, fontStyle);
 
+            fontName = ScottPlot.Tools.VerifyFont(fontName);
+            FontStyle fontStyle = (bold) ? FontStyle.Bold : FontStyle.Regular;
+            settings.legendFont = new Font(fontName, fontSize, fontStyle);
+
             if (enableLegend)
             {
                 settings.legendLocation = location;
