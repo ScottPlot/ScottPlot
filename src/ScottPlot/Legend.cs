@@ -57,7 +57,7 @@ namespace ScottPlot
                 return;
 
             int padding = 3;
-            int stubWidth = 40;
+            int stubWidth = 40 * (int)settings.legendFont.Size/12;
             int stubHeight = 3;
 
             Brush brushText = new SolidBrush(settings.legendFontColor);
@@ -189,9 +189,10 @@ namespace ScottPlot
 
                     //Determine whether a standard stub or a marker shall be plotted
                     Brush brushMarker = new SolidBrush(legendItems[i].color);
-                    Pen pen = new Pen(legendItems[i].color, stubHeight);
+                    //Pen pen = new Pen(legendItems[i].color, stubHeight);
 
-                    Pen penLight = new Pen(legendItems[i].color, 2);
+                    Pen penLight = new Pen(legendItems[i].color, 1);
+                    Pen penMarker = new Pen(legendItems[i].color, 1);
 
                     switch (settings.plottables[i].penType)
                     {
@@ -213,14 +214,14 @@ namespace ScottPlot
                     }
 
 
-                PointF corner1 = new PointF(textLocation.X - stubWidth + 5, textLocation.Y + 3 * padding);
+                PointF corner1 = new PointF(textLocation.X - stubWidth + settings.legendFont.Size / 4, textLocation.Y + settings.legendFont.Size / 4 * padding);
                     PointF center = new PointF
                     {
-                        X = corner1.X + 3,
-                        Y = corner1.Y + 3
+                        X = corner1.X + settings.legendFont.Size / 4,
+                        Y = corner1.Y + settings.legendFont.Size / 4
                     };
 
-                    SizeF bounds = new SizeF(5, 5);
+                    SizeF bounds = new SizeF(settings.legendFont.Size/2, settings.legendFont.Size/2);
                     RectangleF rect = new RectangleF(corner1, bounds);
 
                     settings.gfxData.DrawLine(penLight,
@@ -234,17 +235,17 @@ namespace ScottPlot
                             //Nothing to do because the Drawline needs to be there for all cases, and it's already there
                             break;
                         case MarkerShape.asterisk:
-                            Font drawFontAsterisk = new Font("CourierNew", 16);
+                            Font drawFontAsterisk = new Font("CourierNew", settings.legendFont.Size);
                             Point markerPositionAsterisk = new Point(textLocation.X - stubWidth, (int)(textLocation.Y + legendFontLineHeight / 4));
                             settings.gfxData.DrawString("*", drawFontAsterisk, brushMarker, markerPositionAsterisk);
                             break;
                         case MarkerShape.cross:
-                            Font drawFontCross = new Font("CourierNew", 12);
+                            Font drawFontCross = new Font("CourierNew", settings.legendFont.Size);
                             Point markerPositionCross = new Point(textLocation.X - stubWidth, (int)(textLocation.Y + legendFontLineHeight / 8));
                             settings.gfxData.DrawString("+", drawFontCross, brushMarker, markerPositionCross);
                             break;
                         case MarkerShape.eks:
-                            Font drawFontEks = new Font("CourierNew", 12);
+                            Font drawFontEks = new Font("CourierNew",  settings.legendFont.Size);
                             Point markerPositionEks = new Point(textLocation.X - stubWidth, (int)(textLocation.Y));
                             settings.gfxData.DrawString("x", drawFontEks, brushMarker, markerPositionEks);
                             break;
@@ -253,10 +254,10 @@ namespace ScottPlot
                             break;
                         case MarkerShape.filledDiamond:
                             // Create points that define polygon.
-                            PointF point1 = new PointF(center.X, center.Y + 3);
-                            PointF point2 = new PointF(center.X - 3, center.Y);
-                            PointF point3 = new PointF(center.X, center.Y - 3);
-                            PointF point4 = new PointF(center.X + 3, center.Y);
+                            PointF point1 = new PointF(center.X, center.Y + settings.legendFont.Size/4);
+                            PointF point2 = new PointF(center.X - settings.legendFont.Size/4, center.Y);
+                            PointF point3 = new PointF(center.X, center.Y - settings.legendFont.Size/4);
+                            PointF point4 = new PointF(center.X + settings.legendFont.Size/4, center.Y);
 
                             PointF[] curvePoints = { point1, point2, point3, point4 };
 
@@ -267,60 +268,60 @@ namespace ScottPlot
                             settings.gfxData.FillRectangle(brushMarker, rect);
                             break;
                         case MarkerShape.hashTag:
-                            Font drawFontHashtag = new Font("CourierNew", 12);
+                            Font drawFontHashtag = new Font("CourierNew", settings.legendFont.Size);
                             Point markerPositionHashTag = new Point(textLocation.X - stubWidth, (int)(textLocation.Y + legendFontLineHeight / 8));
                             settings.gfxData.DrawString("#", drawFontHashtag, brushMarker, markerPositionHashTag);
                             break;
                         case MarkerShape.openCircle:
-                            settings.gfxData.DrawEllipse(pen, rect);
+                            settings.gfxData.DrawEllipse(penMarker, rect);
                             break;
                         case MarkerShape.openDiamond:
                             // Create points that define polygon.
-                            PointF point5 = new PointF(center.X, center.Y + 3);
-                            PointF point6 = new PointF(center.X - 3, center.Y);
-                            PointF point7 = new PointF(center.X, center.Y - 3);
-                            PointF point8 = new PointF(center.X + 3, center.Y);
+                            PointF point5 = new PointF(center.X, center.Y + settings.legendFont.Size/4);
+                            PointF point6 = new PointF(center.X - settings.legendFont.Size/4, center.Y);
+                            PointF point7 = new PointF(center.X, center.Y - settings.legendFont.Size/4);
+                            PointF point8 = new PointF(center.X + settings.legendFont.Size/4, center.Y);
 
                             PointF[] curvePoints2 = { point5, point6, point7, point8 };
 
                             //Draw polygon to screen
-                            settings.gfxData.DrawPolygon(pen, curvePoints2);
+                            settings.gfxData.DrawPolygon(penMarker, curvePoints2);
                             break;
                         case MarkerShape.openSquare:
-                            settings.gfxData.DrawRectangle(pen, corner1.X, corner1.Y, 5, 5);
+                            settings.gfxData.DrawRectangle(penMarker, corner1.X, corner1.Y, settings.legendFont.Size/2, settings.legendFont.Size/2);
                             break;
                         case MarkerShape.triDown:
                             // Create points that define polygon.
-                            PointF point14 = new PointF(center.X, center.Y + 6);
+                            PointF point14 = new PointF(center.X, center.Y +  settings.legendFont.Size/2);
                             PointF point15 = new PointF(center.X, center.Y);
-                            PointF point16 = new PointF(center.X - 6 * (float)0.866, center.Y - 6 * (float)0.5);
+                            PointF point16 = new PointF(center.X -  settings.legendFont.Size / 2* (float)0.866, center.Y -  settings.legendFont.Size/2 * (float)0.5);
                             PointF point17 = new PointF(center.X, center.Y);
-                            PointF point18 = new PointF(center.X + 6 * (float)0.866, center.Y - 6 * (float)0.5);
+                            PointF point18 = new PointF(center.X + settings.legendFont.Size / 2 * (float)0.866, center.Y -  settings.legendFont.Size/2 * (float)0.5);
 
 
                             PointF[] curvePoints4 = { point17, point14, point15, point16, point17, point18 };
 
                             //Draw polygon to screen
-                            settings.gfxData.DrawPolygon(pen, curvePoints4);
+                            settings.gfxData.DrawPolygon(penMarker, curvePoints4);
 
                             break;
 
                         case MarkerShape.triUp:
                             // Create points that define polygon.
-                            PointF point9 = new PointF(center.X, center.Y - 6);
+                            PointF point9 = new PointF(center.X, center.Y - settings.legendFont.Size/2);
                             PointF point10 = new PointF(center.X, center.Y);
-                            PointF point11 = new PointF(center.X - 6 * (float)0.866, center.Y + 6 * (float)0.5);
+                            PointF point11 = new PointF(center.X - settings.legendFont.Size/2 * (float)0.866, center.Y + settings.legendFont.Size/2 * (float)0.5);
                             PointF point12 = new PointF(center.X, center.Y);
-                            PointF point13 = new PointF(center.X + 6 * (float)0.866, center.Y + 6 * (float)0.5);
+                            PointF point13 = new PointF(center.X + settings.legendFont.Size/2 * (float)0.866, center.Y + settings.legendFont.Size/2 * (float)0.5);
 
 
                             PointF[] curvePoints3 = { point12, point9, point10, point11, point12, point13 };
                             //Draw polygon to screen
-                            settings.gfxData.DrawPolygon(pen, curvePoints3);
+                            settings.gfxData.DrawPolygon(penMarker, curvePoints3);
                             break;
 
                         case MarkerShape.verticalBar:
-                            Font drawFontVertical = new Font("CourierNew", 12);
+                            Font drawFontVertical = new Font("CourierNew", settings.legendFont.Size);
                             Point markerPositionVertical = new Point(textLocation.X - stubWidth, (int)(textLocation.Y));
                             settings.gfxData.DrawString("|", drawFontVertical, brushMarker, markerPositionVertical);
                             break;

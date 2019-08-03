@@ -463,7 +463,7 @@ namespace ScottPlot
         /// <summary>
         /// Add a legend made from the labels given to plot objects
         /// </summary>
-        public void Legend(bool enableLegend = true, Color? fontColor = null, Color? backColor = null, Color? frameColor = null, legendLocation location = legendLocation.lowerRight, shadowDirection shadowDirection = shadowDirection.lowerRight, PenType penType = PenType.Solid)
+        public void Legend(bool enableLegend = true, Color? fontColor = null, Color? backColor = null, Color? frameColor = null, legendLocation location = legendLocation.lowerRight, shadowDirection shadowDirection = shadowDirection.lowerRight, PenType penType = PenType.Solid, Font font = null)
         {
             if (fontColor != null)
                 settings.legendFontColor = (Color)fontColor;
@@ -477,6 +477,8 @@ namespace ScottPlot
                 settings.legendLocation = location;
                 settings.legendShadowDirection = shadowDirection;
                 settings.penType = penType;
+                if (font != null)
+                    settings.legendFont = font;
             }
             else
             {

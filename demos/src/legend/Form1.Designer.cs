@@ -36,15 +36,19 @@
             this.cbMarker = new System.Windows.Forms.ComboBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.nudMarkerSize = new System.Windows.Forms.NumericUpDown();
-            this.scottPlotUC1 = new ScottPlot.ScottPlotUC();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.cbPenStyle = new System.Windows.Forms.ComboBox();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.nupFontSize = new System.Windows.Forms.NumericUpDown();
+            this.scottPlotUC1 = new ScottPlot.ScottPlotUC();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudMarkerSize)).BeginInit();
             this.groupBox5.SuspendLayout();
+            this.groupBox6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nupFontSize)).BeginInit();
             this.SuspendLayout();
             // 
             // cbLocations
@@ -137,16 +141,6 @@
             0});
             this.nudMarkerSize.ValueChanged += new System.EventHandler(this.Cboxes_SelectedIndexChanged);
             // 
-            // scottPlotUC1
-            // 
-            this.scottPlotUC1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.scottPlotUC1.Location = new System.Drawing.Point(12, 65);
-            this.scottPlotUC1.Name = "scottPlotUC1";
-            this.scottPlotUC1.Size = new System.Drawing.Size(610, 354);
-            this.scottPlotUC1.TabIndex = 2;
-            // 
             // groupBox5
             // 
             this.groupBox5.Controls.Add(this.cbPenStyle);
@@ -169,12 +163,57 @@
             this.cbPenStyle.TabIndex = 0;
             this.cbPenStyle.SelectedIndexChanged += new System.EventHandler(this.Cboxes_SelectedIndexChanged);
             // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.nupFontSize);
+            this.groupBox6.Location = new System.Drawing.Point(628, 12);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(103, 47);
+            this.groupBox6.TabIndex = 3;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Legend font size";
+            // 
+            // nupFontSize
+            // 
+            this.nupFontSize.DecimalPlaces = 1;
+            this.nupFontSize.Location = new System.Drawing.Point(6, 19);
+            this.nupFontSize.Maximum = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
+            this.nupFontSize.Minimum = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.nupFontSize.Name = "nupFontSize";
+            this.nupFontSize.Size = new System.Drawing.Size(79, 20);
+            this.nupFontSize.TabIndex = 1;
+            this.nupFontSize.Value = new decimal(new int[] {
+            12,
+            0,
+            0,
+            0});
+            this.nupFontSize.ValueChanged += new System.EventHandler(this.Cboxes_SelectedIndexChanged);
+            // 
+            // scottPlotUC1
+            // 
+            this.scottPlotUC1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.scottPlotUC1.Location = new System.Drawing.Point(12, 65);
+            this.scottPlotUC1.Name = "scottPlotUC1";
+            this.scottPlotUC1.Size = new System.Drawing.Size(747, 354);
+            this.scottPlotUC1.TabIndex = 2;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(634, 431);
+            this.ClientSize = new System.Drawing.Size(771, 431);
             this.Controls.Add(this.groupBox4);
+            this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.scottPlotUC1);
@@ -189,6 +228,8 @@
             this.groupBox4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.nudMarkerSize)).EndInit();
             this.groupBox5.ResumeLayout(false);
+            this.groupBox6.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.nupFontSize)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -206,6 +247,8 @@
         private System.Windows.Forms.NumericUpDown nudMarkerSize;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.ComboBox cbPenStyle;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.NumericUpDown nupFontSize;
     }
 }
 
