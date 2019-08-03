@@ -140,7 +140,10 @@ namespace ScottPlot
 
         public override void SaveCSV(string filePath)
         {
-            throw new NotImplementedException();
+            StringBuilder csv = new StringBuilder();
+            for (int i = 0; i < ys.Length; i++)
+                csv.AppendFormat("{0}, {1}\n", xOffset + i * samplePeriod, ys[i]);
+            System.IO.File.WriteAllText(filePath, csv.ToString());
         }
     }
 }
