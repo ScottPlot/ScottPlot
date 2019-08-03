@@ -22,7 +22,7 @@ namespace ScottPlot
         public Brush brush;
 
         public PlottableScatter(double[] xs, double[] ys, Color color, double lineWidth, double markerSize, string label,
-            double[] errorX, double[] errorY, double errorLineWidth, double errorCapSize, bool stepDisplay, MarkerShape markerShape)
+            double[] errorX, double[] errorY, double errorLineWidth, double errorCapSize, bool stepDisplay, MarkerShape markerShape, LineStyle lineStyle)
         {
 
             if ((xs == null) || (ys == null))
@@ -52,6 +52,7 @@ namespace ScottPlot
             this.errorCapSize = (float)errorCapSize;
             this.stepDisplay = stepDisplay;
             this.markerShape = markerShape;
+            this.lineStyle = lineStyle;
 
             pointCount = xs.Length;
 
@@ -71,6 +72,31 @@ namespace ScottPlot
                 EndCap = System.Drawing.Drawing2D.LineCap.Round,
                 LineJoin = System.Drawing.Drawing2D.LineJoin.Round
             };
+
+            switch (lineStyle)
+            {
+                case LineStyle.Solid:
+                    penLine.DashStyle = System.Drawing.Drawing2D.DashStyle.Solid;
+                    break;
+                case LineStyle.Dash:
+                    penLine.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+                    penLine.DashPattern = new float[] { 8.0F, 4.0F };
+                    break;
+                case LineStyle.DashDot:
+                    penLine.DashStyle = System.Drawing.Drawing2D.DashStyle.DashDot;
+                    penLine.DashPattern = new float[] { 8.0F, 4.0F, 2.0F, 4.0F };
+                    break;
+                case LineStyle.DashDotDot:
+                    penLine.DashStyle = System.Drawing.Drawing2D.DashStyle.DashDotDot;
+                    penLine.DashPattern = new float[] { 8.0F, 4.0F, 2.0F, 4.0F, 2.0F, 4.0F };
+                    break;
+                case LineStyle.Dot:
+                    penLine.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
+                    penLine.DashPattern = new float[] { 2.0F, 4.0F };
+                    break;
+
+            }
+
 
             penLineError = new Pen(color, (float)errorLineWidth)
             {

@@ -31,4 +31,13 @@ namespace ScottPlot
         lowerRight,
         lowerCenter,
     }
+
+    public enum LineStyle
+    {
+        Solid,
+        Dash,
+        DashDot,
+        DashDotDot,
+        Dot
+    }
 }
