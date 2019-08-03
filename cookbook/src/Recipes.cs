@@ -345,9 +345,9 @@ namespace ScottPlotCookbook
             plt.Ticks(color: Color.LightGray);
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
-            plt.Title("Very Complicated Data", Color.White);
-            plt.XLabel("Experiment Duration", Color.LightGray);
-            plt.YLabel("Productivity", Color.LightGray);
+            plt.Title("Very Complicated Data", color: Color.White);
+            plt.XLabel("Experiment Duration", color: Color.LightGray);
+            plt.YLabel("Productivity", color: Color.LightGray);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
             return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
@@ -916,6 +916,28 @@ namespace ScottPlotCookbook
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotSignal(dataCos, sampleRate: 20_000);
             plt.GetPlottables()[0].SaveCSV("signal.csv");
+            plt.SaveFig(fileName);
+            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
+        }
+
+        public string Figure_72_Custom_Fonts()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            var plt = new ScottPlot.Plot(width, height);
+            plt.Title("Impressive Graph", fontName: "courier new", fontSize: 24, color: Color.Purple, bold: true);
+            plt.YLabel("vertical units", fontName: "impact", fontSize: 24, color: Color.Red, bold: true);
+            plt.XLabel("horizontal units", fontName: "georgia", fontSize: 24, color: Color.Blue, bold: true);
+            plt.PlotScatter(dataXs, dataSin, label: "sin");
+            plt.PlotScatter(dataXs, dataCos, label: "cos");
+            plt.PlotText("very graph", 25, .8, fontName: "comic sans ms", fontSize: 24, color: Color.Blue, bold: true);
+            plt.PlotText("so data", 0, 0, fontName: "comic sans ms", fontSize: 42, color: Color.Magenta, bold: true);
+            plt.PlotText("many documentation", 3, -.6, fontName: "comic sans ms", fontSize: 18, color: Color.DarkCyan, bold: true);
+            plt.PlotText("wow.", 10, .6, fontName: "comic sans ms", fontSize: 36, color: Color.Green, bold: true);
+            plt.PlotText("NuGet", 32, 0, fontName: "comic sans ms", fontSize: 24, color: Color.Gold, bold: true);
+            plt.Legend();
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
             return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());

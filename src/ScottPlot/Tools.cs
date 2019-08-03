@@ -56,5 +56,15 @@ namespace ScottPlot
             bmp.UnlockBits(bmpData);
             return bytes;
         }
+
+        public static string VerifyFont(string fontName)
+        {
+            foreach (FontFamily font in System.Drawing.FontFamily.Families)
+            {
+                if (fontName.ToUpper() == font.Name.ToUpper())
+                    return font.Name;
+            }
+            throw new Exception($"Font not found: {fontName}");
+        }
     }
 }
