@@ -22,15 +22,19 @@ namespace Legend
         {
             string[] legendLocationStrings = Enum.GetNames(typeof(ScottPlot.legendLocation));
             cbLocations.Items.AddRange(legendLocationStrings);
-            cbLocations.SelectedItem = cbLocations.Items[0];
+            cbLocations.SelectedItem = cbLocations.Items[1];
 
             string[] dropShadowDirectionStrings = Enum.GetNames(typeof(ScottPlot.shadowDirection));
             cbShadowDirection.Items.AddRange(dropShadowDirectionStrings);
-            cbShadowDirection.SelectedItem = cbShadowDirection.Items[0];
+            cbShadowDirection.SelectedItem = cbShadowDirection.Items[4];
 
             string[] markerStrings = Enum.GetNames(typeof(ScottPlot.MarkerShape));
             cbMarker.Items.AddRange(markerStrings);
-            cbMarker.SelectedItem = cbMarker.Items[0];
+            cbMarker.SelectedItem = cbMarker.Items[1];
+
+            string[] penStyleStrings = Enum.GetNames(typeof(ScottPlot.LineStyle));
+            cbPenStyle.Items.AddRange(penStyleStrings);
+            cbPenStyle.SelectedItem = cbPenStyle.Items[1];
 
             Application.DoEvents();
 
@@ -52,10 +56,15 @@ namespace Legend
             if (cbMarker.SelectedItem != null)
                 markerShape = (ScottPlot.MarkerShape)Enum.Parse(typeof(ScottPlot.MarkerShape), cbMarker.SelectedItem.ToString());
 
+            ScottPlot.LineStyle penType = ScottPlot.LineStyle.Solid;
+            if (cbPenStyle.SelectedItem != null)
+                penType = (ScottPlot.LineStyle)Enum.Parse(typeof(ScottPlot.LineStyle), cbPenStyle.SelectedItem.ToString());
+
+
             scottPlotUC1.plt.Clear();
-            scottPlotUC1.plt.PlotScatter(xs, ys1, label: "one", markerShape: markerShape, markerSize: (double)nudMarkerSize.Value);
-            scottPlotUC1.plt.PlotScatter(xs, ys2, label: "two", markerShape: markerShape, markerSize: (double)nudMarkerSize.Value);
-            scottPlotUC1.plt.PlotScatter(xs, ys3, label: "three", markerShape: markerShape, markerSize: (double)nudMarkerSize.Value);
+            scottPlotUC1.plt.PlotScatter(xs, ys1, label: "one", markerShape: markerShape, markerSize: (double)nudMarkerSize.Value, lineStyle: penType);
+            scottPlotUC1.plt.PlotScatter(xs, ys2, label: "two", markerShape: markerShape, markerSize: (double)nudMarkerSize.Value, lineStyle: penType);
+            scottPlotUC1.plt.PlotScatter(xs, ys3, label: "three", markerShape: markerShape, markerSize: (double)nudMarkerSize.Value, lineStyle: penType);
 
 
             // optionally use a legend
@@ -65,7 +74,7 @@ namespace Legend
                 ScottPlot.legendLocation location = (ScottPlot.legendLocation)Enum.Parse(typeof(ScottPlot.legendLocation), locationString);
                 string dropShadowString = cbShadowDirection.SelectedItem.ToString();
                 ScottPlot.shadowDirection dropShadowDirection = (ScottPlot.shadowDirection)Enum.Parse(typeof(ScottPlot.shadowDirection), dropShadowString);
-                scottPlotUC1.plt.Legend(location: location, shadowDirection: dropShadowDirection);
+                scottPlotUC1.plt.Legend(location: location, shadowDirection: dropShadowDirection, fontSize: (float)nupFontSize.Value);
             }
 
             scottPlotUC1.plt.AxisAuto();
@@ -77,14 +86,5 @@ namespace Legend
             UpdatePlot();
         }
 
-        private void CbMarker_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            UpdatePlot();
-        }
-
-        private void NudMarkerSize_ValueChanged(object sender, EventArgs e)
-        {
-            UpdatePlot();
-        }
     }
 }
