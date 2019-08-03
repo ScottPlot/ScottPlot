@@ -208,6 +208,20 @@ namespace ScottPlotCookbook
             return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
+        public string Figure_06b_Custom_LineStyles()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            var plt = new ScottPlot.Plot(width, height);
+            plt.PlotScatter(dataRandom1, dataRandom2, label: "dash", lineStyle: ScottPlot.LineStyle.Dash);
+            plt.PlotScatter(dataRandom3, dataRandom4, label: "dash dot dot", lineStyle: ScottPlot.LineStyle.DashDotDot);
+            plt.Legend();
+            plt.SaveFig(fileName);
+            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
+        }
+
         public string Figure_07_Plotting_Points()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
@@ -503,6 +517,22 @@ namespace ScottPlotCookbook
             plt.PlotScatter(dataXs, dataCos);
             plt.PlotVLine(17);
             plt.PlotHLine(-.25, color: Color.Red, lineWidth: 3);
+            plt.SaveFig(fileName);
+            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
+        }
+
+        public string Figure_41_Axis_Spans()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            var plt = new ScottPlot.Plot(width, height);
+            plt.PlotScatter(dataXs, dataSin);
+            plt.PlotScatter(dataXs, dataCos);
+            plt.PlotVLine(17, label: "vertical line");
+            plt.Legend();
+
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
             return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());

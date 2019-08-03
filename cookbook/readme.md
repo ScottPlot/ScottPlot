@@ -129,6 +129,18 @@ plt.SaveFig(fileName);
 
 ![](./images/06_Styling_XY_Plots.png)
 
+##  Custom LineStyles
+
+```cs
+var plt = new ScottPlot.Plot(600, 400);
+plt.PlotScatter(dataRandom1, dataRandom2, label: "dash", lineStyle: ScottPlot.LineStyle.Dash);
+plt.PlotScatter(dataRandom3, dataRandom4, label: "dash dot dot", lineStyle: ScottPlot.LineStyle.DashDotDot);
+plt.Legend();
+plt.SaveFig(fileName);
+```
+
+![](./images/06b_Custom_LineStyles.png)
+
 ## Plotting Points
 
 ```cs
@@ -393,6 +405,20 @@ plt.SaveFig(fileName);
 ```
 
 ![](./images/40_Vertical_and_Horizontal_Lines.png)
+
+## Axis Spans
+
+```cs
+var plt = new ScottPlot.Plot(600, 400);
+plt.PlotScatter(dataXs, dataSin);
+plt.PlotScatter(dataXs, dataCos);
+plt.PlotVLine(17, label: "vertical line");
+plt.Legend();
+
+plt.SaveFig(fileName);
+```
+
+![](./images/41_Axis_Spans.png)
 
 ## StyleBlue1
 
