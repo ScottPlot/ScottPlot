@@ -14,8 +14,9 @@ namespace ScottPlot
         public string text;
         public Brush brush;
         public Font font;
+        public TextAlginment alignment;
 
-        public PlottableText(string text, double x, double y, Color color, string fontName, double fontSize, bool bold, string label)
+        public PlottableText(string text, double x, double y, Color color, string fontName, double fontSize, bool bold, string label, TextAlginment alignment)
         {
             if (text == null)
                 throw new Exception("Text cannot be null");
@@ -24,6 +25,7 @@ namespace ScottPlot
             this.x = x;
             this.y = y;
             this.label = label;
+            this.alignment = alignment;
             brush = new SolidBrush(color);
             FontStyle fontStyle = (bold == true) ? FontStyle.Bold : FontStyle.Regular;
             font = new Font(fontName, (float)fontSize, fontStyle);
