@@ -84,8 +84,8 @@ namespace ScottPlot
                     SizeF labelSize = settings.gfxData.MeasureString(plottable.label, settings.legendFont);
                     if (labelSize.Width > maxLabelSize.Width)
                         maxLabelSize.Width = labelSize.Width;
-                    if (labelSize.Height > maxLabelSize.Width)
-                        maxLabelSize.Width = labelSize.Height;
+                    if (labelSize.Height > maxLabelSize.Height)
+                        maxLabelSize.Height = labelSize.Height;
                 }
             }
 
