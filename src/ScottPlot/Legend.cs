@@ -75,15 +75,17 @@ namespace ScottPlot
 
         public static SizeF MaxLegendLabelSize(Settings settings)
         {
-            SizeF maxLabelSize = new SizeF(0, settings.gfxData.MeasureString("TEST", settings.legendFont).Height);
+            SizeF maxLabelSize = new SizeF();
 
-            for (int i = 0; i < settings.plottables.Count(); i++)
+            foreach (Plottable plottable in settings.plottables)
             {
-                if (settings.plottables[i].label != null)
+                if (plottable.label != null)
                 {
-                    float labelWidth = settings.gfxData.MeasureString(settings.plottables[i].label, settings.legendFont).Width;
-                    if (labelWidth > maxLabelSize.Width)
-                        maxLabelSize.Width = labelWidth;
+                    SizeF labelSize = settings.gfxData.MeasureString(plottable.label, settings.legendFont);
+                    if (labelSize.Width > maxLabelSize.Width)
+                        maxLabelSize.Width = labelSize.Width;
+                    if (labelSize.Height > maxLabelSize.Width)
+                        maxLabelSize.Width = labelSize.Height;
                 }
             }
 
