@@ -68,9 +68,12 @@ namespace ScottPlot
             for (int i = visibleIndex1; i <= visibleIndex2 + 1; i++)
                 linePoints.Add(settings.GetPixel(samplePeriod * i + xOffset, ys[i] + yOffset));
 
-            settings.gfxData.DrawLines(pen, linePoints.ToArray());
-            foreach (PointF point in linePoints)
-                settings.gfxData.FillEllipse(brush, point.X - markerSize / 2, point.Y - markerSize / 2, markerSize, markerSize);
+            if (linePoints.Count > 1)
+            {
+                settings.gfxData.DrawLines(pen, linePoints.ToArray());
+                foreach (PointF point in linePoints)
+                    settings.gfxData.FillEllipse(brush, point.X - markerSize / 2, point.Y - markerSize / 2, markerSize, markerSize);
+            }
         }
 
         private void RenderHighDensity(Settings settings, double offsetPoints, double columnPointCount)
