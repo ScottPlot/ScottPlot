@@ -99,7 +99,7 @@ namespace ScottPlot
 
             SizeF longestTickSize = GetMaxTickSize(null);
             int tickSpacingPxX = (int)longestTickSize.Width;
-            int tickSpacingPxY = (int)longestTickSize.Height;
+            int tickSpacingPxY = (int)longestTickSize.Height * 2;
             if (settings.xAxisSpan < .5)
                 tickSpacingPxX += 10;
             if (settings.xAxisSpan < .005)
