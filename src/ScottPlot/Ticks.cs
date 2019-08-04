@@ -33,7 +33,7 @@ namespace ScottPlot
             get
             {
                 double dividedValue = value / Math.Pow(10, exponent);
-                return string.Format("{0}", Math.Round(dividedValue, 2));
+                return string.Format("{0}", Math.Round(dividedValue, 5));
             }
         }
 
@@ -96,8 +96,17 @@ namespace ScottPlot
         public Ticks(Settings settings)
         {
             this.settings = settings;
-            settings.ticksX = GetTicks(settings, settings.axis[0], settings.axis[1], settings.xAxisScale, 40, settings.dataSize.Width, settings.gridSpacingX);
-            settings.ticksY = GetTicks(settings, settings.axis[2], settings.axis[3], settings.yAxisScale, 20, settings.dataSize.Height, settings.gridSpacingY);
+
+            SizeF longestTickSize = GetMaxTickSize(null);
+            int tickSpacingPxX = (int)longestTickSize.Width;
+            int tickSpacingPxY = (int)longestTickSize.Height;
+            if (settings.xAxisSpan < .5)
+                tickSpacingPxX += 10;
+            if (settings.xAxisSpan < .005)
+                tickSpacingPxX += 10;
+
+            settings.ticksX = GetTicks(settings, settings.axis[0], settings.axis[1], settings.xAxisScale, tickSpacingPxX, settings.dataSize.Width, settings.gridSpacingX);
+            settings.ticksY = GetTicks(settings, settings.axis[2], settings.axis[3], settings.yAxisScale, tickSpacingPxY, settings.dataSize.Height, settings.gridSpacingY);
         }
 
         public void RenderTicks()
