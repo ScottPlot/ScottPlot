@@ -169,7 +169,7 @@ namespace ScottPlot
             settings.Clear(axisLines, scatterPlots, signalPlots, text, bar, finance);
         }
 
-        public void PlotText(string text, double x, double y, Color? color = null, string fontName = "Segoe UI", double fontSize = 12, bool bold = false, string label = null, TextAlginment alignment = TextAlginment.upperLeft)
+        public void PlotText(string text, double x, double y, Color? color = null, string fontName = "Segoe UI", double fontSize = 12, bool bold = false, string label = null, TextAlignment alignment = TextAlignment.upperLeft)
         {
             if (color == null)
                 color = settings.GetNextColor();
