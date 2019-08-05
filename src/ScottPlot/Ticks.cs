@@ -33,6 +33,11 @@ namespace ScottPlot
             get
             {
                 double dividedValue = value / Math.Pow(10, exponent);
+                while (dividedValue > 10 | dividedValue < -10)
+                {
+                    exponent++;
+                    dividedValue /= 10;
+                }
                 return string.Format("{0}", Math.Round(dividedValue, 5));
             }
         }
@@ -211,27 +216,21 @@ namespace ScottPlot
             }
 
             // determine the exponential notation for the axis span
-            int exponent;
             double largestValue = Math.Max(Math.Abs(axisLow), Math.Abs(axisHigh));
-            for (exponent = -1000; exponent < 1000; exponent++)
-            {
-                if (Math.Pow(10, exponent) > largestValue)
-                    break;
-            }
-            exponent -= 2;
-            if (Math.Abs(exponent) < 4)
-                exponent = 0;
+            int exponent = (int)Math.Log10(largestValue);
+            while (Math.Abs(axisHigh - axisLow) < Math.Pow(10, exponent))
+                exponent--;
 
 
-            // create the ticks
-            List<Tick> ticks = new List<Tick>();
+                // create the ticks
+                List<Tick> ticks = new List<Tick>();
             if (tickSpacing > 0)
             {
                 int yTickCount = (int)(axisSpan / tickSpacing) + 2;
                 double tickOffset = axisLow % tickSpacing;
                 for (int i = 0; i < yTickCount; i++)
                 {
-                    double value = tickSpacing * i + axisLow - tickOffset;
+                    double value = tickSpacing * i + axisLow - tickOffset ;
                     if (value >= axisLow && value <= axisHigh)
                         ticks.Add(new Tick(settings, value, exponent));
                 }
