@@ -20,7 +20,7 @@ namespace ScottPlot
         Black
     }
 
-    public enum TextAlginment
+    public enum TextAlignment
     {
         upperLeft,
         upperRight,
@@ -30,6 +30,7 @@ namespace ScottPlot
         lowerLeft,
         lowerRight,
         lowerCenter,
+        middleCenter
     }
 
     public enum LineStyle

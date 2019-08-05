@@ -37,6 +37,9 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
@@ -53,6 +56,7 @@
     <Compile Include="Legend.cs" />
     <Compile Include="Markers.cs" />
     <Compile Include="MouseTracker.cs" />
+    <Compile Include="TicksExperimental.cs" />
     <Compile Include="plottables\OHLC.cs" />
     <Compile Include="plottables\Plottable.cs" />
     <Compile Include="plottables\PlottableAxLine.cs" />
@@ -87,6 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
+    <None Include="packages.config" />
     <None Include="ScottPlot.nuspec" />
   </ItemGroup>
   <ItemGroup>
