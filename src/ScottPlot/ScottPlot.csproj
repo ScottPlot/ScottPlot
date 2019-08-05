@@ -56,7 +56,7 @@
     <Compile Include="Legend.cs" />
     <Compile Include="Markers.cs" />
     <Compile Include="MouseTracker.cs" />
-    <Compile Include="Nice.cs" />
+    <Compile Include="TicksExperimental.cs" />
     <Compile Include="plottables\OHLC.cs" />
     <Compile Include="plottables\Plottable.cs" />
     <Compile Include="plottables\PlottableAxLine.cs" />
