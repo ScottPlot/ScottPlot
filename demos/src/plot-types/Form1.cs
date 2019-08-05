@@ -136,8 +136,6 @@ namespace ScottPlotDemo
             double y = rand.NextDouble() * 20 - 10;
             float fontSize = (float)(rand.NextDouble() * 20 + 8);
             Color fontColor = ScottPlot.DataGen.RandomColor(rand);
-            //The following was used for testing
-            //ScottPlot.TextAlignment alignment = (ScottPlot.TextAlignment)Enum.Parse(typeof(ScottPlot.TextAlignment), cbTextAlignment.Text);
             scottPlotUC1.plt.PlotText("demo", x, y, fontSize: fontSize, color: fontColor);
             scottPlotUC1.plt.AxisAuto();
             scottPlotUC1.Render();
