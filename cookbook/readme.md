@@ -163,7 +163,7 @@ plt.PlotScatter(dataXs, dataCos);
 plt.PlotPoint(25, 0.8);
 plt.PlotPoint(30, 0.3, color: Color.Magenta, markerSize: 15);
 plt.PlotText("important point", 25, 0.8);
-plt.PlotText("more important", 30, .3, fontSize: 16, bold: true);
+plt.PlotText("more important", 30, .3, fontSize: 16, bold: true, alignment: ScottPlot.TextAlignment.upperCenter);
 plt.SaveFig(fileName);
 ```
 
