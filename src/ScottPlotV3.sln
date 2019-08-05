@@ -43,7 +43,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wav file viewer", "..\demos
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "extreme axes", "..\demos\src\extreme-axes\extreme axes.csproj", "{42F4FB2D-BE7C-428A-89FB-C3E67A4E709C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tick-tester", "..\demos\tick-tester\tick-tester.csproj", "{045C5B51-BF5B-4602-903D-1084730DDEE6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tick-tester", "..\demos\dev\tick-tester\tick-tester.csproj", "{045C5B51-BF5B-4602-903D-1084730DDEE6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
