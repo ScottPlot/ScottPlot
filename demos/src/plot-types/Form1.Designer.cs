@@ -44,6 +44,7 @@
             this.cbAntiAliasData = new System.Windows.Forms.CheckBox();
             this.cbAntiAliasFigure = new System.Windows.Forms.CheckBox();
             this.scottPlotUC1 = new ScottPlot.ScottPlotUC();
+            this.BtnSignalConst10M = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnClear
@@ -214,11 +215,22 @@
             this.scottPlotUC1.Size = new System.Drawing.Size(836, 389);
             this.scottPlotUC1.TabIndex = 0;
             // 
+            // BtnSignalConst10M
+            // 
+            this.BtnSignalConst10M.Location = new System.Drawing.Point(771, 40);
+            this.BtnSignalConst10M.Name = "BtnSignalConst10M";
+            this.BtnSignalConst10M.Size = new System.Drawing.Size(75, 22);
+            this.BtnSignalConst10M.TabIndex = 16;
+            this.BtnSignalConst10M.Text = "Const 10M";
+            this.BtnSignalConst10M.UseVisualStyleBackColor = true;
+            this.BtnSignalConst10M.Click += new System.EventHandler(this.BtnSignalConst10M_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(860, 471);
+            this.Controls.Add(this.BtnSignalConst10M);
             this.Controls.Add(this.cbAntiAliasFigure);
             this.Controls.Add(this.cbAntiAliasData);
             this.Controls.Add(this.btnText);
@@ -261,6 +273,7 @@
         private System.Windows.Forms.Button btnText;
         private System.Windows.Forms.CheckBox cbAntiAliasData;
         private System.Windows.Forms.CheckBox cbAntiAliasFigure;
+        private System.Windows.Forms.Button BtnSignalConst10M;
     }
 }
 
