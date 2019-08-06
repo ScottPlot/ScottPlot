@@ -5,13 +5,11 @@ using System.Threading.Tasks;
 
 namespace ScottPlot
 {
-    // Uses Segmented tree to process MinMaxQueries(bottleneck for large signals)
-    // allow to draw responsitive plots up to 30M points in Any CPU mode, 
-    // 60M points in x64 mode, more is array type limitations
-    // Loosing ability to change source array with automatic redraw (Const),  
-    // call UpdateTrees() manualy  take a time (Update not implemented in plot)
-    // using additional space 4X signal memory, and preprocess time O(n)
-    public class PlottableSignalConst:PlottableSignal
+    // Variation of PlottableSignal that uses a segmented tree for faster min/max range queries
+    // - frequent min/max lookups are a bottleneck displaying large signals
+    // - limited to 30M points (60M in x64 mode) due to memory (tree uses 4X memory)
+    // - if source array is changed UpdateTrees() must be called
+    public class PlottableSignalConst : PlottableSignal
     {
         // using 4 x signal memory to story trees, can be optimized in cost of code readability
         double[] TreeMin;
@@ -19,15 +17,13 @@ namespace ScottPlot
         bool TreesReady = false;
         public PlottableSignalConst(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label) : base(ys, sampleRate, xOffset, yOffset, color, lineWidth, markerSize, label)
         {
-           UpdateTrees(); 
+            UpdateTrees();
         }
 
-        public void  UpdateTrees()
+        public void UpdateTrees()
         {
-            TreesReady = false;
             // O(n) to build trees
-
-            
+            TreesReady = false;
             Task.Run(() =>
             {
                 try
@@ -46,27 +42,30 @@ namespace ScottPlot
                         TreeMax[i] = ys[i - n];
                     for (int i = n - 1; i > 0; i--)
                         TreeMax[i] = Math.Max(TreeMax[2 * i], TreeMax[2 * i + 1]);
+
+                    TreesReady = true;
                 }
                 catch (System.OutOfMemoryException ex)
                 {
-                    // free references to allow  GC clear them
                     TreeMin = null;
                     TreeMax = null;
-                    // Trees not computed, using standart alg
+                    TreesReady = false;
                     return;
                 }
-                TreesReady = true;
             });
         }
 
         //  O(log(n)) for each range min/max query
         protected override void MinMaxRangeQuery(int l, int r, out double lowestValue, out double highestValue)
         {
+            // if the tree calculation isn't finished or if it crashed
             if (!TreesReady)
             {
+                // use the original (slower) min/max calculated method
                 base.MinMaxRangeQuery(l, r, out lowestValue, out highestValue);
                 return;
-            }            
+            }
+
             lowestValue = double.MaxValue;
             highestValue = double.MinValue;
             int n = TreeMin.Length / 2;
@@ -89,7 +88,7 @@ namespace ScottPlot
                 // go up one level
                 l = (l + 1) / 2;
                 r = (r - 1) / 2;
-            }           
+            }
         }
     }
 }
