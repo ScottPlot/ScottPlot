@@ -69,16 +69,17 @@ namespace ScottPlot
             lowestValue = double.MaxValue;
             highestValue = double.MinValue;
             int n = TreeMin.Length / 2;
-            if (l>r)
+            if (l > r)
             {
                 int temp = r;
                 r = l;
                 l = temp;
             }
-            if ( l == r)
+            if (l == r)
             {
                 lowestValue = ys[l];
                 highestValue = ys[l];
+                return;
             }
             l += n - 1;
             r += n - 1;
