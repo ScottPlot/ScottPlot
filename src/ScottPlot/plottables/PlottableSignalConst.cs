@@ -17,7 +17,8 @@ namespace ScottPlot
         bool TreesReady = false;
         public PlottableSignalConst(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label) : base(ys, sampleRate, xOffset, yOffset, color, lineWidth, markerSize, label)
         {
-            UpdateTrees();
+            if (ys.Length >= 5_000)
+                UpdateTrees();
         }
 
         public void UpdateTrees()
