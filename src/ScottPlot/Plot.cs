@@ -214,6 +214,14 @@ namespace ScottPlot
             settings.plottables.Add(signal);
         }
 
+        public void PlotSignalConst(double[] ys, double sampleRate = 1, double xOffset = 0, double yOffset = 0, Color? color = null, double lineWidth = 1, double markerSize = 5, string label = null)
+        {
+            if (color == null)
+                color = settings.GetNextColor();
+            PlottableSignal signal = new PlottableSignalConst(ys, sampleRate, xOffset, yOffset, (Color)color, lineWidth: lineWidth, markerSize: markerSize, label: label);
+            settings.plottables.Add(signal);
+        }
+
         public void PlotBar(double[] xs, double[] ys, double? barWidth = null, double xOffset = 0, Color? color = null, string label = null, double[] errorY = null, double errorLineWidth = 1, double errorCapSize = 3)
         {
             if (color == null)
