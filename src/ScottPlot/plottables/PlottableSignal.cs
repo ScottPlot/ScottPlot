@@ -94,15 +94,8 @@ namespace ScottPlot
                     index2 = ys.Length - 1;
 
                 // get the min and max value for this column
-                double lowestValue = ys[index1];
-                double highestValue = ys[index1];
-                for (int i = index1; i < index2; i++)
-                {
-                    if (ys[i] < lowestValue)
-                        lowestValue = ys[i];
-                    if (ys[i] > highestValue)
-                        highestValue = ys[i];
-                }
+                double lowestValue, highestValue;
+                MinMaxRangeQuery(index1, index2, out lowestValue, out highestValue);
                 float yPxHigh = settings.GetPixel(0, lowestValue + yOffset).Y;
                 float yPxLow = settings.GetPixel(0, highestValue + yOffset).Y;
 
@@ -121,6 +114,19 @@ namespace ScottPlot
 
             if (linePoints.Count > 0)
                 settings.gfxData.DrawLines(pen, linePoints.ToArray());
+        }
+
+        protected virtual void MinMaxRangeQuery(int index1, int index2, out double lowestValue, out double highestValue)
+        {
+            lowestValue = ys[index1];
+            highestValue = ys[index1];
+            for (int i = index1; i < index2; i++)
+            {
+                if (ys[i] < lowestValue)
+                    lowestValue = ys[i];
+                if (ys[i] > highestValue)
+                    highestValue = ys[i];
+            }
         }
 
         public override void Render(Settings settings)
