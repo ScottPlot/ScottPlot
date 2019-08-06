@@ -214,11 +214,11 @@ namespace ScottPlot
             settings.plottables.Add(signal);
         }
 
-        public void PlotSignalConst(double[] ys, double sampleRate = 1, double xOffset = 0, double yOffset = 0, Color? color = null, double lineWidth = 1, double markerSize = 5, string label = null)
+        public void PlotSignalConst(double[] ys, double sampleRate = 1, double xOffset = 0, double yOffset = 0, Color? color = null, double lineWidth = 1, double markerSize = 5, string label = null, bool useThreading = true)
         {
             if (color == null)
                 color = settings.GetNextColor();
-            PlottableSignal signal = new PlottableSignalConst(ys, sampleRate, xOffset, yOffset, (Color)color, lineWidth: lineWidth, markerSize: markerSize, label: label);
+            PlottableSignal signal = new PlottableSignalConst(ys, sampleRate, xOffset, yOffset, (Color)color, lineWidth: lineWidth, markerSize: markerSize, label: label, useThreading: useThreading);
             settings.plottables.Add(signal);
         }
 

@@ -14,45 +14,50 @@ namespace ScottPlot
         // using 4 x signal memory to story trees, can be optimized in cost of code readability
         double[] TreeMin;
         double[] TreeMax;
-        bool TreesReady = false;
-        public PlottableSignalConst(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label) : base(ys, sampleRate, xOffset, yOffset, color, lineWidth, markerSize, label)
+        public bool TreesReady = false;
+        public PlottableSignalConst(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, bool useThreading) : base(ys, sampleRate, xOffset, yOffset, color, lineWidth, markerSize, label)
         {
-            UpdateTrees();
+            if (useThreading)
+                UpdateTreesInBackground();
+            else
+                UpdateTrees();
+        }
+
+        public void UpdateTreesInBackground()
+        {
+            Task.Run(() => { UpdateTrees(); });
         }
 
         public void UpdateTrees()
         {
             // O(n) to build trees
             TreesReady = false;
-            Task.Run(() =>
+            try
             {
-                try
-                {
-                    // Size up to pow2
-                    int n = (1 << ((int)Math.Log(ys.Length - 1, 2) + 1));
+                // Size up to pow2
+                int n = (1 << ((int)Math.Log(ys.Length - 1, 2) + 1));
 
-                    TreeMin = Enumerable.Repeat(double.MaxValue, 2 * n).ToArray();
-                    for (int i = n; i < n + ys.Length; i++)
-                        TreeMin[i] = ys[i - n];
-                    for (int i = n - 1; i > 0; i--)
-                        TreeMin[i] = Math.Min(TreeMin[2 * i], TreeMin[2 * i + 1]);
+                TreeMin = Enumerable.Repeat(double.MaxValue, 2 * n).ToArray();
+                for (int i = n; i < n + ys.Length; i++)
+                    TreeMin[i] = ys[i - n];
+                for (int i = n - 1; i > 0; i--)
+                    TreeMin[i] = Math.Min(TreeMin[2 * i], TreeMin[2 * i + 1]);
 
-                    TreeMax = Enumerable.Repeat(double.MinValue, 2 * n).ToArray();
-                    for (int i = n; i < n + ys.Length; i++)
-                        TreeMax[i] = ys[i - n];
-                    for (int i = n - 1; i > 0; i--)
-                        TreeMax[i] = Math.Max(TreeMax[2 * i], TreeMax[2 * i + 1]);
+                TreeMax = Enumerable.Repeat(double.MinValue, 2 * n).ToArray();
+                for (int i = n; i < n + ys.Length; i++)
+                    TreeMax[i] = ys[i - n];
+                for (int i = n - 1; i > 0; i--)
+                    TreeMax[i] = Math.Max(TreeMax[2 * i], TreeMax[2 * i + 1]);
 
-                    TreesReady = true;
-                }
-                catch (System.OutOfMemoryException ex)
-                {
-                    TreeMin = null;
-                    TreeMax = null;
-                    TreesReady = false;
-                    return;
-                }
-            });
+                TreesReady = true;
+            }
+            catch (System.OutOfMemoryException ex)
+            {
+                TreeMin = null;
+                TreeMax = null;
+                TreesReady = false;
+                return;
+            }
         }
 
         //  O(log(n)) for each range min/max query
