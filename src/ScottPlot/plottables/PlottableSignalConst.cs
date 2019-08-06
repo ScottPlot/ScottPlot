@@ -17,8 +17,7 @@ namespace ScottPlot
         bool TreesReady = false;
         public PlottableSignalConst(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label) : base(ys, sampleRate, xOffset, yOffset, color, lineWidth, markerSize, label)
         {
-            if (ys.Length >= 5_000)
-                UpdateTrees();
+            UpdateTrees();
         }
 
         public void UpdateTrees()
@@ -70,6 +69,17 @@ namespace ScottPlot
             lowestValue = double.MaxValue;
             highestValue = double.MinValue;
             int n = TreeMin.Length / 2;
+            if (l>r)
+            {
+                int temp = r;
+                r = l;
+                l = temp;
+            }
+            if ( l == r)
+            {
+                lowestValue = ys[l];
+                highestValue = ys[l];
+            }
             l += n - 1;
             r += n - 1;
             while (l <= r)
