@@ -19,7 +19,7 @@ namespace ScottPlot
         /// </summary>
         /// <param name="width">image width (pixels)</param>
         /// <param name="height">image height (pixels)</param>
-        public Plot(int width = 600, int height = 800)
+        public Plot(int width = 800, int height = 600)
         {
             if (width <= 0 || height <= 0)
                 throw new ArgumentException("width and height must each be greater than 0");
