@@ -150,7 +150,7 @@ namespace ScottPlot
             if (x < 0)
                 return GetCeiling(x * -1, intervals, basee * -1);
             double z = Math.Pow(basee, Math.Ceiling(Math.Log(x, basee)) - 1.0);
-            double r = x / z;
+            //double r = x / z;
             for (int i = intervals.Length - 1; i > 0; i--)
             {
                 double result = intervals[i] * z;
@@ -166,7 +166,7 @@ namespace ScottPlot
             if (x == 0)
                 return 0;
             double z = Math.Pow(basee, Math.Ceiling(Math.Log(x, basee)) - 1.0);
-            double r = x / z;
+            //double r = x / z;
             double result;
             double cutoff;
             for (int i = 0; i < intervals.Length - 1; i++)
