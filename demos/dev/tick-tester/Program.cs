@@ -36,14 +36,10 @@ namespace tick_tester
 
         static void DisplayTicksForRange(double low, double high)
         {
-            double[] tickPositions = new double[] { };
-
-            double[] tickPositionsMantissas;
-            int tickPositionsExponent;
-            double offset;
+            double[] tickPositions;
 
             tickPositions = ScottPlot.TicksExperimental.GetTicks(low, high);
-            ScottPlot.TicksExperimental.GetMantissasExponentOffset(tickPositions, out tickPositionsMantissas, out tickPositionsExponent, out offset);
+            ScottPlot.TicksExperimental.GetMantissasExponentOffset(tickPositions, out double[] tickPositionsMantissas, out int tickPositionsExponent, out double offset);
             string multiplierString = ScottPlot.TicksExperimental.GetMultiplierString(offset, tickPositionsExponent);
 
             Console.Write($"{tickPositionsMantissas.Length} ticks in [{low} - {high}]: ");
