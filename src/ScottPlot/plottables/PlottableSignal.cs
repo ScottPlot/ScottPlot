@@ -78,16 +78,19 @@ namespace ScottPlot
 
         private void RenderHighDensity(Settings settings, double offsetPoints, double columnPointCount)
         {
-            List<PointF> linePoints = new List<PointF>(settings.dataSize.Width * 2 + 1);
-            for (int xPx = 0; xPx < settings.dataSize.Width; xPx++)
+            int xPxStart = (int)Math.Ceiling((-1 - offsetPoints) / columnPointCount - 1);
+            int xPxEnd = (int)Math.Ceiling((ys.Length - offsetPoints) / columnPointCount);
+            xPxStart = Math.Max(0, xPxStart);
+            xPxEnd = Math.Min(settings.dataSize.Width, xPxEnd);
+            if (xPxStart >= xPxEnd)
+                return;
+            List<PointF> linePoints = new List<PointF>((xPxEnd - xPxStart) * 2 + 1);
+            for (int xPx = xPxStart; xPx < xPxEnd; xPx++)
             {
                 // determine data indexes for this pixel column
                 int index1 = (int)(offsetPoints + columnPointCount * xPx);
                 int index2 = (int)(offsetPoints + columnPointCount * (xPx + 1));
 
-                // skip invalid data index values
-                if ((index2 < 0) || (index1 > ys.Length - 1))
-                    continue;
                 if (index1 < 0)
                     index1 = 0;
                 if (index2 > ys.Length - 1)
