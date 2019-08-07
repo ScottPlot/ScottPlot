@@ -4,13 +4,15 @@
 
 using System;
 using System.Globalization;
+using System.Linq;
+using System.Text;
 
 namespace ScottPlot
 {
     public class IncorrectTime : Exception
     {
     }
-        public class TicksExperimental
+    public class TicksExperimental
     {
         private static double[] intervals = { 1.0, 2.0, 2.5, 3.0, 5.0, 10.0 };
         private static double[] int_intervals = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 8.0, 10.0 };
@@ -58,16 +60,69 @@ namespace ScottPlot
 
             }
 
-            double[] tickPositions = { };
             double t = lo_t;
+            double[] ticksPosition = new double[] { };
             while (t <= hi_t)
             {
-                Array.Resize(ref tickPositions, tickPositions.Length + 1);
-                tickPositions[tickPositions.Length - 1] = t;
+                Array.Resize(ref ticksPosition, ticksPosition.Length + 1);
+                ticksPosition[ticksPosition.Length - 1] = t;
                 t += delta_t;
             }
 
-            return tickPositions;
+            return ticksPosition;
+        }
+        public static void GetMantissasExponentOffset(double[] tickPositions, out double[] tickPositionsMantissas, out int tickPositionsExponent, out double offset)
+        {
+            tickPositionsMantissas = new double[] { };
+            int[] Exponents = new int[] { };
+            Array.Resize<double>(ref tickPositionsMantissas, tickPositions.Length);
+            Array.Resize<int>(ref Exponents, tickPositions.Length);
+            char[] charseparator = new char[] { 'E' };
+
+
+            string tick;
+            for (int i = 0; i < tickPositions.Length ; i++)
+            {
+                tick=(tickPositions[i]).ToString("E3");
+                string[] result =  tick.Split(charseparator);
+                tickPositionsMantissas[i] = double.Parse(result[0]);
+                Exponents[i] = int.Parse(result[1]);
+            }
+
+            //Make sure Exponents are all the same within the tickPositions and Exponent > 3
+            tickPositionsExponent = Exponents.Max();
+            if (Math.Abs(tickPositionsExponent) > 3)
+            {
+                if (Exponents.Max() != Exponents.Min())
+                {
+                    for (int i = 0; i < tickPositions.Length; i++)
+                    {
+                        tickPositionsMantissas[i] = Math.Round((tickPositions[i]) / tickPositionsExponent, 3);
+                    }
+                }
+            }
+            else
+            {
+                tickPositionsExponent = 0;
+                for (int i = 0; i < tickPositions.Length; i++)
+                {
+                    tickPositionsMantissas[i] = Math.Round(tickPositions[i],3);
+                }
+            }
+
+            //Check if offset is needed
+            if (tickPositionsMantissas.Max() - tickPositionsMantissas.Min() == 0)
+            {
+                offset = tickPositions.Min() ;
+                for (int i = 0; i < tickPositions.Length; i++)
+                {
+                    tickPositionsMantissas[i] = Math.Round((tickPositions[i]-offset) / tickPositionsExponent, 3);
+                }
+            }
+            else
+            {
+                offset = 0;
+            }
         }
 
         private static double GetCeiling(double x, double[] intervals, double basee = 10.0)
@@ -124,7 +179,6 @@ namespace ScottPlot
             return intervals[intervals.Length - 1] * z;
 
         }
-
         private static double[] GetYearTicks(DateTime lo, DateTime hi, int ticks = 5, double basee = 10.0)
         {
             int lo_year = lo.Year;
@@ -138,7 +192,6 @@ namespace ScottPlot
 
             return result;
         }
-
         private static double[] GetMonthTicks(DateTime lo, DateTime hi, int ticks = 5, double basee = 10.0)
         {
             int lo_year = lo.Year;
@@ -164,7 +217,6 @@ namespace ScottPlot
 
             return result;
         }
-
         private static double[] GetWeekTicks(DateTime lo, DateTime hi, int ticks = 5, double basee = 10.0)
         {
             Calendar myCalendar = CultureInfo.InvariantCulture.Calendar;
@@ -185,7 +237,6 @@ namespace ScottPlot
 
             return result;
         }
-
         private static double[] GetDayTicks(DateTime lo, DateTime hi, int ticks = 5, double basee = 10.0)
         {
             Calendar myCalendar = CultureInfo.InvariantCulture.Calendar;
@@ -203,7 +254,6 @@ namespace ScottPlot
 
             return result;
         }
-
         private static double[] GetHourTicks(DateTime lo, DateTime hi, int ticks = 5, double basee = 10.0)
         {
             Calendar myCalendar = CultureInfo.InvariantCulture.Calendar;
@@ -221,7 +271,6 @@ namespace ScottPlot
 
             return result;
         }
-
         private static double[] GetMinuteTicks(DateTime lo, DateTime hi, int ticks = 5, double basee = 60.0)
         {
             Calendar myCalendar = CultureInfo.InvariantCulture.Calendar;
@@ -239,7 +288,6 @@ namespace ScottPlot
 
             return result;
         }
-
         private static double[] GetSecondTicks(DateTime lo, DateTime hi, int ticks = 5, double basee = 60.0)
         {
             Calendar myCalendar = CultureInfo.InvariantCulture.Calendar;
@@ -257,7 +305,6 @@ namespace ScottPlot
 
             return result;
         }
-
         private static double[] GetMillisecondTicks(DateTime lo, DateTime hi, int ticks = 5, double basee = 10.0)
         {
             Calendar myCalendar = CultureInfo.InvariantCulture.Calendar;
@@ -275,9 +322,6 @@ namespace ScottPlot
 
             return result;
         }
-
-
-
         public static double[] GetTicksForTime(DateTime lo, DateTime hi, int ticks = 5, double basee = 10.0)
         {
             try
@@ -338,6 +382,114 @@ namespace ScottPlot
                 }
             }
         }
+        private static string GetSuperscript(int digit)
+        {
+            switch (digit)
+            {
+                case 0:
+                    return "\x2070";
 
+                case 1:
+                    return "\x00B9";
+
+                case 2:
+                    return "\x00B2";
+
+                case 3:
+                    return "\x00B3";
+
+                case 4:
+                    return "\x2074";
+
+                case 5:
+                    return "\x2075";
+
+                case 6:
+                    return "\x2076";
+
+                case 7:
+                    return "\x2077";
+
+                case 8:
+                    return "\x2078";
+
+                case 9:
+                    return "\x2079";
+
+                default:
+                    return string.Empty;
+            }
+        }
+        public static string GetMultiplierString(double offset, int exp)
+        {
+
+            if (Math.Abs(exp) > 3)
+            {
+
+                var sb = new StringBuilder();
+                var sbOffset = new StringBuilder();
+                bool isNegative = false;
+                bool isOffsetNegative = false;
+
+                if (exp < 0)
+                {
+                    isNegative = true;
+                    exp = -exp;
+                }
+                while (exp != 0)
+                {
+                    sb.Insert(0, GetSuperscript(exp % 10));
+                    exp /= 10;
+                }
+
+                if (isNegative)
+                {
+                    sb.Insert(0, "\x207B");
+                }
+                if (offset != 0)
+                    {
+                    if (Math.Abs(offset) < 1000)
+                    {
+                        return Math.Round(offset, 3).ToString() + "+10" + sb.ToString();
+                    }
+                    else //if offset requires exponent
+                    {
+                        string offsetTick = (offset).ToString("E3");
+                        char[] charseparator = new char[] { 'E' };
+                        string[] result = offsetTick.Split(charseparator);
+                        double offsetMantissa = double.Parse(result[0]);
+                        int offsetExponent = int.Parse(result[1]);
+
+                        if (offsetExponent < 0)
+                        {
+                            isOffsetNegative = true;
+                            offsetExponent = -offsetExponent;
+                        }
+
+                        while (offsetExponent != 0)
+                        {
+                            sbOffset.Insert(0, GetSuperscript(offsetExponent % 10));
+                            offsetExponent /= 10;
+                        }
+
+                        if (isOffsetNegative)
+                        {
+                            sbOffset.Insert(0, "\x207B");
+                        }
+                        return  "x10" + sb.ToString() + Math.Round(offsetMantissa, 3).ToString() + "x10" + sbOffset.ToString();
+                    }
+
+                }
+                else
+                {
+                    return "x10" + sb.ToString();
+                }
+            }
+            if (offset != 0)
+            {
+                return offset.ToString();
+            }
+            return "";
+        }
     }
 }
