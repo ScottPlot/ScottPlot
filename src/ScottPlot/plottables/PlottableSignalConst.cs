@@ -132,5 +132,16 @@ namespace ScottPlot
                 r = (r - 1) / 2;
             }
         }
+
+        public override double[] GetLimits()
+        {
+            double[] limits = new double[4];
+            limits[0] = 0 + xOffset;
+            limits[1] = samplePeriod * ys.Length + xOffset;
+            MinMaxRangeQuery(0, ys.Length - 1, out limits[2], out limits[3]);
+            limits[2] += yOffset;
+            limits[3] += yOffset;
+            return limits;
+        }
     }
 }
