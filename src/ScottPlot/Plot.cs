@@ -206,19 +206,19 @@ namespace ScottPlot
             settings.plottables.Add(step);
         }
 
-        public void PlotSignal(double[] ys, double sampleRate = 1, double xOffset = 0, double yOffset = 0, Color? color = null, double lineWidth = 1, double markerSize = 5, string label = null, bool useParallel = false)
+        public void PlotSignal(double[] ys, double sampleRate = 1, double xOffset = 0, double yOffset = 0, Color? color = null, double lineWidth = 1, double markerSize = 5, string label = null)
         {
             if (color == null)
                 color = settings.GetNextColor();
-            PlottableSignal signal = new PlottableSignal(ys, sampleRate, xOffset, yOffset, (Color)color, lineWidth: lineWidth, markerSize: markerSize, label: label) { useParallel = useParallel };
+            PlottableSignal signal = new PlottableSignal(ys, sampleRate, xOffset, yOffset, (Color)color, lineWidth: lineWidth, markerSize: markerSize, label: label, useParallel: settings.useParallel);
             settings.plottables.Add(signal);
         }
 
-        public void PlotSignalConst(double[] ys, double sampleRate = 1, double xOffset = 0, double yOffset = 0, Color? color = null, double lineWidth = 1, double markerSize = 5, string label = null, bool useThreading = true)
+        public void PlotSignalConst(double[] ys, double sampleRate = 1, double xOffset = 0, double yOffset = 0, Color? color = null, double lineWidth = 1, double markerSize = 5, string label = null)
         {
             if (color == null)
                 color = settings.GetNextColor();
-            PlottableSignal signal = new PlottableSignalConst(ys, sampleRate, xOffset, yOffset, (Color)color, lineWidth: lineWidth, markerSize: markerSize, label: label, useThreading: useThreading);
+            PlottableSignal signal = new PlottableSignalConst(ys, sampleRate, xOffset, yOffset, (Color)color, lineWidth: lineWidth, markerSize: markerSize, label: label, useParallel: settings.useParallel);
             settings.plottables.Add(signal);
         }
 
@@ -655,6 +655,13 @@ namespace ScottPlot
                         title: Color.Black);
                     break;
             }
+        }
+
+        public void Parallel(bool useParallel)
+        {
+            settings.useParallel = useParallel;
+            foreach (var plottable in GetPlottables())
+                plottable.useParallel = useParallel;
         }
 
         #endregion
