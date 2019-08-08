@@ -473,7 +473,8 @@ namespace ScottPlotCookbook
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
 
-            // PlotSignal() is much faster than PlotScatter() for large arrays of evenly-spaed data
+            // PlotSignal() is much faster than PlotScatter() for large arrays of evenly-spaed data.
+            // To plot more than 2GB of data, enable "gcAllowVeryLargeObjects" in App.config (Google it)
 
             var plt = new ScottPlot.Plot(width, height);
             plt.Title("Displaying 10 million points with PlotSignal()");

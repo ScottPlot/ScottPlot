@@ -360,7 +360,8 @@ plt.SaveFig(fileName);
 ##  Signal
 
 ```cs
-// PlotSignal() is much faster than PlotScatter() for large arrays of evenly-spaed data
+// PlotSignal() is much faster than PlotScatter() for large arrays of evenly-spaed data.
+// To plot more than 2GB of data, enable "gcAllowVeryLargeObjects" in App.config (Google it)
 
 var plt = new ScottPlot.Plot(600, 400);
 plt.Title("Displaying 10 million points with PlotSignal()");
