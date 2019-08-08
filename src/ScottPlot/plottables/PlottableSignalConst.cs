@@ -143,5 +143,10 @@ namespace ScottPlot
             limits[3] += yOffset;
             return limits;
         }
+
+        public override string ToString()
+        {
+            return $"PlottableSignalConst with {pointCount} points, trees {(TreesReady ? "" : "not")} calculated";
+        }
     }
 }
