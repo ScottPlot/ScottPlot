@@ -44,7 +44,7 @@
             this.cbAntiAliasData = new System.Windows.Forms.CheckBox();
             this.cbAntiAliasFigure = new System.Windows.Forms.CheckBox();
             this.scottPlotUC1 = new ScottPlot.ScottPlotUC();
-            this.BtnParallel10M = new System.Windows.Forms.Button();
+            this.cbParallel = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // btnClear
@@ -215,22 +215,23 @@
             this.scottPlotUC1.Size = new System.Drawing.Size(836, 389);
             this.scottPlotUC1.TabIndex = 0;
             // 
-            // BtnParallel10M
+            // cbParallel
             // 
-            this.BtnParallel10M.Location = new System.Drawing.Point(771, 40);
-            this.BtnParallel10M.Name = "BtnParallel10M";
-            this.BtnParallel10M.Size = new System.Drawing.Size(75, 22);
-            this.BtnParallel10M.TabIndex = 16;
-            this.BtnParallel10M.Text = "SignalP(10M)";
-            this.BtnParallel10M.UseVisualStyleBackColor = true;
-            this.BtnParallel10M.Click += new System.EventHandler(this.BtnParallel10M_Click);
+            this.cbParallel.AutoSize = true;
+            this.cbParallel.Location = new System.Drawing.Point(771, 44);
+            this.cbParallel.Name = "cbParallel";
+            this.cbParallel.Size = new System.Drawing.Size(59, 17);
+            this.cbParallel.TabIndex = 16;
+            this.cbParallel.Text = "parallel";
+            this.cbParallel.UseVisualStyleBackColor = true;
+            this.cbParallel.CheckedChanged += new System.EventHandler(this.CbParallel_CheckedChanged);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(860, 471);
-            this.Controls.Add(this.BtnParallel10M);
+            this.Controls.Add(this.cbParallel);
             this.Controls.Add(this.cbAntiAliasFigure);
             this.Controls.Add(this.cbAntiAliasData);
             this.Controls.Add(this.btnText);
@@ -273,7 +274,7 @@
         private System.Windows.Forms.Button btnText;
         private System.Windows.Forms.CheckBox cbAntiAliasData;
         private System.Windows.Forms.CheckBox cbAntiAliasFigure;
-        private System.Windows.Forms.Button BtnParallel10M;
+        private System.Windows.Forms.CheckBox cbParallel;
     }
 }
 

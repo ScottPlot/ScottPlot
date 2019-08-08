@@ -185,13 +185,9 @@ namespace ScottPlotDemo
             RandomWalk(10_000_000);
         }
 
-        private void BtnParallel10M_Click(object sender, EventArgs e)
+        private void CbParallel_CheckedChanged(object sender, EventArgs e)
         {
-            int pointCount = 10_000_000;
-            double[] data = ScottPlot.DataGen.RandomWalk(rand, pointCount, 10, rand.NextDouble() * 10 - 5);
-            scottPlotUC1.plt.PlotSignal(data, data.Length * 0.1, useParallel: true);
-            scottPlotUC1.plt.AxisAuto();
-            scottPlotUC1.Render();
+            scottPlotUC1.plt.Parallel(cbParallel.Checked);
         }
     }
 }

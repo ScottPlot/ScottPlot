@@ -17,9 +17,8 @@ namespace ScottPlot
         public double yOffset;
         public Pen pen;
         public Brush brush;
-        public bool useParallel;
 
-        public PlottableSignal(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label)
+        public PlottableSignal(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, bool useParallel)
         {
 
             if (ys == null)
@@ -32,7 +31,8 @@ namespace ScottPlot
             this.xOffset = xOffset;
             this.label = label;
             this.color = color;
-            this.yOffset = yOffset;            
+            this.yOffset = yOffset;
+            this.useParallel = useParallel;
             pointCount = ys.Length;
             brush = new SolidBrush(color);
             pen = new Pen(color, (float)lineWidth)
