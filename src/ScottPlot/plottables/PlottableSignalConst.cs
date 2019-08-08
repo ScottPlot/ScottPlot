@@ -37,27 +37,27 @@ namespace ScottPlot
             try
             {
                 // Size up to pow2
-                int n = (1 << ((int)Math.Log(ys.Length - 1, 2) + 1));                
+                int n = (1 << ((int)Math.Log(ys.Length - 1, 2) + 1));
                 TreeMin = new double[n];
                 TreeMax = new double[n];
                 // fill bottom layer of tree                
-                for (int i = 0; i < ys.Length/2; i++ ) // with source array pairs min/max
+                for (int i = 0; i < ys.Length / 2; i++) // with source array pairs min/max
                 {
                     TreeMin[n / 2 + i] = Math.Min(ys[i * 2], ys[i * 2 + 1]);
                     TreeMax[n / 2 + i] = Math.Max(ys[i * 2], ys[i * 2 + 1]);
-                }                
+                }
                 if (ys.Length % 2 == 1) // if array size odd, last element haven't pair to compare
                 {
                     TreeMin[n / 2 + ys.Length / 2] = ys[ys.Length - 1];
                     TreeMax[n / 2 + ys.Length / 2] = ys[ys.Length - 1];
                 }
-                for (int i = n/2+ (ys.Length+1)/2; i < n; i++) // min/max for pairs of nonexistent elements
+                for (int i = n / 2 + (ys.Length + 1) / 2; i < n; i++) // min/max for pairs of nonexistent elements
                 {
                     TreeMin[i] = double.MaxValue;
                     TreeMax[i] = double.MinValue;
                 }
                 // fill other layers
-                for (int i = n/2 - 1; i > 0; i--)
+                for (int i = n / 2 - 1; i > 0; i--)
                 {
                     TreeMin[i] = Math.Min(TreeMin[2 * i], TreeMin[2 * i + 1]);
                     TreeMax[i] = Math.Max(TreeMax[2 * i], TreeMax[2 * i + 1]);
@@ -105,7 +105,7 @@ namespace ScottPlot
             {
                 lowestValue = Math.Min(lowestValue, ys[l]);
                 highestValue = Math.Max(highestValue, ys[l]);
-            }            
+            }
             if ((r & 1) == 1) // r is right child
             {
                 lowestValue = Math.Min(lowestValue, ys[r]);
@@ -116,12 +116,12 @@ namespace ScottPlot
             r = (r + n) / 2;
             // next iterations on tree
             while (l <= r)
-            {                
+            {
                 if ((l & 1) == 1) // l is right child
                 {
                     lowestValue = Math.Min(lowestValue, TreeMin[l]);
                     highestValue = Math.Max(highestValue, TreeMax[l]);
-                }                
+                }
                 if ((r & 1) != 1) // r is left child
                 {
                     lowestValue = Math.Min(lowestValue, TreeMin[r]);
