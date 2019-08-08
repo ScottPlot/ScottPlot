@@ -131,7 +131,6 @@ namespace ScottPlot
 
         public override void Render(Settings settings)
         {
-
             double dataSpanUnits = ys.Length * samplePeriod;
             double columnSpanUnits = settings.xAxisSpan / settings.dataSize.Width;
             double columnPointCount = (columnSpanUnits / dataSpanUnits) * ys.Length;
@@ -140,8 +139,10 @@ namespace ScottPlot
             int visibleIndex1 = (int)(offsetPoints);
             int visibleIndex2 = (int)(offsetPoints + columnPointCount * (settings.dataSize.Width + 1));
             int visiblePointCount = visibleIndex2 - visibleIndex1;
+            double pointsPerPixelColumn = visiblePointCount / settings.dataSize.Width;
+            bool extremelyZoomedOut = (pointsPerPixelColumn < 0);
 
-            if (visiblePointCount > settings.dataSize.Width)
+            if ((pointsPerPixelColumn > 1) || extremelyZoomedOut)
                 RenderHighDensity(settings, offsetPoints, columnPointCount);
             else
                 RenderLowDensity(settings, visibleIndex1, visibleIndex2);
