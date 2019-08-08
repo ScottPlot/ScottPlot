@@ -81,10 +81,10 @@ namespace ScottPlot
 
 
             string tick;
-            for (int i = 0; i < tickPositions.Length ; i++)
+            for (int i = 0; i < tickPositions.Length; i++)
             {
-                tick=(tickPositions[i]).ToString("E3");
-                string[] result =  tick.Split(charseparator);
+                tick = (tickPositions[i]).ToString("E3");
+                string[] result = tick.Split(charseparator);
                 tickPositionsMantissas[i] = double.Parse(result[0]);
                 Exponents[i] = int.Parse(result[1]);
             }
@@ -106,17 +106,17 @@ namespace ScottPlot
                 tickPositionsExponent = 0;
                 for (int i = 0; i < tickPositions.Length; i++)
                 {
-                    tickPositionsMantissas[i] = Math.Round(tickPositions[i],3);
+                    tickPositionsMantissas[i] = Math.Round(tickPositions[i], 3);
                 }
             }
 
             //Check if offset is needed
             if (tickPositionsMantissas.Max() - tickPositionsMantissas.Min() == 0)
             {
-                offset = tickPositions.Min() ;
+                offset = tickPositions.Min();
                 for (int i = 0; i < tickPositions.Length; i++)
                 {
-                    tickPositionsMantissas[i] = Math.Round((tickPositions[i]-offset) / tickPositionsExponent, 3);
+                    tickPositionsMantissas[i] = Math.Round((tickPositions[i] - offset) / tickPositionsExponent, 3);
                 }
             }
             else
@@ -179,6 +179,7 @@ namespace ScottPlot
             return intervals[intervals.Length - 1] * z;
 
         }
+
         private static double[] GetYearTicks(DateTime lo, DateTime hi, int ticks = 5, double basee = 10.0)
         {
             int lo_year = lo.Year;
@@ -186,12 +187,10 @@ namespace ScottPlot
 
             if (hi > new DateTime(hi_year, 1, 1))
                 hi_year += 1;
-            if (hi_year - lo_year < (ticks - 1))
-                throw new IncorrectTime();
-            double[] result = GetTicks(lo_year, hi_year, ticks, intervals: int_intervals, basee);
 
-            return result;
+            return GetTicks(lo_year, hi_year, ticks, intervals: int_intervals, basee);
         }
+
         private static double[] GetMonthTicks(DateTime lo, DateTime hi, int ticks = 5, double basee = 10.0)
         {
             int lo_year = lo.Year;
@@ -210,13 +209,10 @@ namespace ScottPlot
                     hi_month += 1;
                 }
             int delta_year = hi_year - lo_year;
-            if (delta_year * 12 + hi_month - lo_month < (ticks - 1))
-                throw new IncorrectTime();
 
-            double[] result = GetTicks(lo_month, delta_year * 12 + hi_month, ticks, intervals: int_12_intervals, basee);
-
-            return result;
+            return GetTicks(lo_month, delta_year * 12 + hi_month, ticks, intervals: int_12_intervals, basee);
         }
+
         private static double[] GetWeekTicks(DateTime lo, DateTime hi, int ticks = 5, double basee = 10.0)
         {
             Calendar myCalendar = CultureInfo.InvariantCulture.Calendar;
@@ -230,13 +226,10 @@ namespace ScottPlot
             hi_week += ts_hi / 7;
 
             int delta_weeks = hi_week - lo_week;
-            if (delta_weeks < (ticks - 1))
-                throw new IncorrectTime();
 
-            double[] result = GetTicks(0, delta_weeks, ticks, intervals: int_intervals, basee);
-
-            return result;
+            return GetTicks(0, delta_weeks, ticks, intervals: int_intervals, basee);
         }
+
         private static double[] GetDayTicks(DateTime lo, DateTime hi, int ticks = 5, double basee = 10.0)
         {
             Calendar myCalendar = CultureInfo.InvariantCulture.Calendar;
@@ -247,13 +240,10 @@ namespace ScottPlot
                 hi_day += 1;
 
             int delta_days = hi_day - lo_day;
-            if (delta_days < (ticks - 1))
-                throw new IncorrectTime();
 
-            double[] result = GetTicks(0, delta_days, ticks, intervals: int_intervals, basee);
-
-            return result;
+            return GetTicks(0, delta_days, ticks, intervals: int_intervals, basee);
         }
+
         private static double[] GetHourTicks(DateTime lo, DateTime hi, int ticks = 5, double basee = 10.0)
         {
             Calendar myCalendar = CultureInfo.InvariantCulture.Calendar;
@@ -264,13 +254,10 @@ namespace ScottPlot
                 hi_hour += 1;
 
             int delta_hours = hi_hour - lo_hour;
-            if (delta_hours < (ticks - 1))
-                throw new IncorrectTime();
 
-            double[] result = GetTicks(0, delta_hours, ticks, intervals: int_12_intervals, basee: 24.0);
-
-            return result;
+            return GetTicks(0, delta_hours, ticks, intervals: int_12_intervals, basee: 24.0);
         }
+
         private static double[] GetMinuteTicks(DateTime lo, DateTime hi, int ticks = 5, double basee = 60.0)
         {
             Calendar myCalendar = CultureInfo.InvariantCulture.Calendar;
@@ -281,13 +268,10 @@ namespace ScottPlot
                 hi_minute += 1;
 
             int delta_minute = hi_minute - lo_minute;
-            if (delta_minute < (ticks - 1))
-                throw new IncorrectTime();
 
-            double[] result = GetTicks(0, delta_minute, ticks, intervals: int_60_intervals, basee: 60.0);
-
-            return result;
+            return GetTicks(0, delta_minute, ticks, intervals: int_60_intervals, basee: 60.0);
         }
+
         private static double[] GetSecondTicks(DateTime lo, DateTime hi, int ticks = 5, double basee = 60.0)
         {
             Calendar myCalendar = CultureInfo.InvariantCulture.Calendar;
@@ -298,13 +282,10 @@ namespace ScottPlot
                 hi_second += 1;
 
             int delta_second = hi_second - lo_second;
-            if (delta_second < (ticks - 1))
-                throw new IncorrectTime();
 
-            double[] result = GetTicks(0, delta_second, ticks, intervals: int_60_intervals, basee: 60.0);
-
-            return result;
+            return GetTicks(0, delta_second, ticks, intervals: int_60_intervals, basee: 60.0);
         }
+
         private static double[] GetMillisecondTicks(DateTime lo, DateTime hi, int ticks = 5, double basee = 10.0)
         {
             Calendar myCalendar = CultureInfo.InvariantCulture.Calendar;
@@ -315,73 +296,31 @@ namespace ScottPlot
                 hi_millisecond += 1;
 
             int delta_millisecond = hi_millisecond - lo_millisecond;
-            if (delta_millisecond < (ticks - 1))
-                throw new ArgumentException();
 
-            double[] result = GetTicks(0, delta_millisecond, ticks, intervals: int_intervals, basee: 10.0);
-
-            return result;
+            return GetTicks(0, delta_millisecond, ticks, intervals: int_intervals, basee: 10.0);
         }
+
         public static double[] GetTicksForTime(DateTime lo, DateTime hi, int ticks = 5, double basee = 10.0)
         {
-            try
-            {
+            TimeSpan span = hi.Subtract(lo);
+            if (span.TotalDays / 365 > ticks)
                 return GetYearTicks(lo, hi, ticks, basee);
-            }
-            catch (IncorrectTime)
-            {
-                try
-                {
-                    return GetMonthTicks(lo, hi, ticks, basee);
-                }
-                catch (IncorrectTime)
-                {
-                    try
-                    {
-                        return GetWeekTicks(lo, hi, ticks, basee);
-                    }
-                    catch (IncorrectTime)
-                    {
-                        try
-                        {
-                            return GetDayTicks(lo, hi, ticks, basee);
-                        }
-                        catch (IncorrectTime)
-                        {
-                            try
-                            {
-                                return GetHourTicks(lo, hi, ticks, basee);
-                            }
-                            catch (IncorrectTime)
-                            {
-                                try
-                                {
-                                    return GetMinuteTicks(lo, hi, ticks, basee);
-                                }
-                                catch (IncorrectTime)
-                                {
-                                    try
-                                    {
-                                        return GetSecondTicks(lo, hi, ticks, basee);
-                                    }
-                                    catch (IncorrectTime)
-                                    {
-                                        try
-                                        {
-                                            return GetMillisecondTicks(lo, hi, ticks, basee);
-                                        }
-                                        catch (ArgumentException)
-                                        {
-                                            throw new ArgumentException();
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            else if (span.TotalDays / 365 * 12 > ticks)
+                return GetMonthTicks(lo, hi, ticks, basee);
+            else if (span.TotalDays / 7 > ticks)
+                return GetWeekTicks(lo, hi, ticks, basee);
+            else if (span.TotalDays > ticks)
+                return GetDayTicks(lo, hi, ticks, basee);
+            else if (span.TotalHours > ticks)
+                return GetHourTicks(lo, hi, ticks, basee);
+            else if (span.TotalMinutes > ticks)
+                return GetMinuteTicks(lo, hi, ticks, basee);
+            else if (span.TotalSeconds > ticks)
+                return GetSecondTicks(lo, hi, ticks, basee);
+            else
+                return GetMillisecondTicks(lo, hi, ticks, basee);
         }
+
         private static string GetSuperscript(int digit)
         {
             switch (digit)
@@ -447,7 +386,7 @@ namespace ScottPlot
                     sb.Insert(0, "\x207B");
                 }
                 if (offset != 0)
-                    {
+                {
                     if (Math.Abs(offset) < 1000)
                     {
                         return Math.Round(offset, 3).ToString() + "+10" + sb.ToString();
@@ -476,7 +415,7 @@ namespace ScottPlot
                         {
                             sbOffset.Insert(0, "\x207B");
                         }
-                        return  "x10" + sb.ToString() + Math.Round(offsetMantissa, 3).ToString() + "x10" + sbOffset.ToString();
+                        return "x10" + sb.ToString() + Math.Round(offsetMantissa, 3).ToString() + "x10" + sbOffset.ToString();
                     }
 
                 }
