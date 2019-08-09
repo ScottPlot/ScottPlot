@@ -57,6 +57,7 @@
     <Compile Include="Markers.cs" />
     <Compile Include="MouseTracker.cs" />
     <Compile Include="plottables\PlottableSignalConst.cs" />
+    <Compile Include="TickCollection.cs" />
     <Compile Include="TicksExperimental.cs" />
     <Compile Include="plottables\OHLC.cs" />
     <Compile Include="plottables\Plottable.cs" />
