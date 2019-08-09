@@ -12,6 +12,16 @@ namespace tick_tester
         //all comments to be stripped out when done
         //right click on output window and uncheck "Exception messages" to clean output
         {
+
+            double bigNumber = Math.Pow(23.456, 9);
+            double smallNumber = Math.Pow(23.456, -9);
+
+            DisplayTicksForRange(-bigNumber, bigNumber);
+            DisplayTicksForRange(9876 * bigNumber, 9877 * bigNumber);
+            DisplayTicksForRange(-smallNumber, smallNumber);
+            DisplayTicksForRange(9876 * smallNumber, 9877 * smallNumber);
+
+            /*
             DisplayTicksForRange(-10, 10);
             DisplayTicksForRange(-50, 50);
             DisplayTicksForRange(-77, 123);
@@ -27,9 +37,7 @@ namespace tick_tester
             DisplayTicksForTime(new DateTime(2019, 6, 1, 6, 0, 0), new DateTime(2019, 6, 1, 6, 12, 15)); //minutes
             DisplayTicksForTime(new DateTime(2019, 6, 1, 6, 12, 0), new DateTime(2019, 6, 1, 6, 12, 15)); //seconds
             DisplayTicksForTime(DateTime.Now, DateTime.Now);
-            //this returns the milliseconds between 
-            //two samples of Datetime.Now
-            //6ms on average on my PC
+            */
 
             Console.WriteLine();
 
