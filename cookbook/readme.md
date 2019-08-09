@@ -357,37 +357,43 @@ plt.SaveFig(fileName);
 
 ![](./images/28_Very_Small_Numbers.png)
 
-## Signal
+##  Signal
 
 ```cs
-// PlotSignal is ideal for plotting large arrays of evenly-spaed data at high framerates.
-// Note that we are testing it here by plotting an array with one million data points.
+// PlotSignal() is much faster than PlotScatter() for large arrays of evenly-spaed data.
+// To plot more than 2GB of data, enable "gcAllowVeryLargeObjects" in App.config (Google it)
+
 var plt = new ScottPlot.Plot(600, 400);
+plt.Title("Displaying 10 million points with PlotSignal()");
 plt.Benchmark();
-plt.PlotSignal(dataSignal, sampleRate: 20_000);
+plt.PlotSignal(tenMillionPoints, sampleRate: 20_000);
 plt.SaveFig(fileName);
 ```
 
-![](./images/30_Signal.png)
+![](./images/30a_Signal.png)
 
-## Signal With Antialiasing Off
+##  SignalConst
 
 ```cs
-// A slight performance enhancement is achieved when anti-aliasing is disabled
+// SignalConst() is faster than PlotSignal() for very large data plots
+// - its data cannot be modified after it is loaded
+// - here threading was turned off so it renders properly in a console application
+// - in GUI applications threading allows it to initially render faster
+
 var plt = new ScottPlot.Plot(600, 400);
+plt.Title("Displaying 10 million points with PlotSignalConst()");
 plt.Benchmark();
-plt.AntiAlias(true, false);
-plt.PlotSignal(dataSignal, sampleRate: 20_000);
+plt.PlotSignalConst(tenMillionPoints, sampleRate: 20_000, useThreading: false);
 plt.SaveFig(fileName);
 ```
 
-![](./images/31_Signal_With_Antialiasing_Off.png)
+![](./images/30c_SignalConst.png)
 
 ## Signal Styling
 
 ```cs
 var plt = new ScottPlot.Plot(600, 400);
-plt.PlotSignal(dataSignal, 20000, lineWidth: 3, color: Color.Red);
+plt.PlotSignal(oneMillionPoints, 20000, lineWidth: 3, color: Color.Red);
 plt.SaveFig(fileName);
 ```
 

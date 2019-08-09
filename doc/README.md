@@ -19,6 +19,7 @@ Method | Description
 `plt.PlotPoint()` | Plot a single point at a specific location
 `plt.PlotScatter()` | Plot a scatter plot from X and Y points
 `plt.PlotSignal()` | Plot evenly-spaced data (optimized for speed)
+`plt.PlotSignalConst()` | Even faster, but cannot change data once plotted
 `plt.PlotBar()` | Plot X and Y points as a bar graph
 `plt.PlotStep()` | Plot X and Y points as a step graph
 `plt.PlotVLine()` | Plot a vertical line at the given X position

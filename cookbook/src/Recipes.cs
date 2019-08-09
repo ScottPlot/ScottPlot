@@ -21,7 +21,8 @@ namespace ScottPlotCookbook
             this.width = width;
             this.height = height;
             PrepareDataSmall();
-            dataSignal = ScottPlot.DataGen.SinSweep(1_000_000, 8);
+            oneMillionPoints = ScottPlot.DataGen.SinSweep(1_000_000, 8);
+            tenMillionPoints = ScottPlot.DataGen.SinSweep(10_000_000, 8);
         }
 
         // small data
@@ -34,7 +35,8 @@ namespace ScottPlotCookbook
         double[] dataRandom4;
 
         // large data
-        double[] dataSignal;
+        double[] oneMillionPoints;
+        double[] tenMillionPoints;
 
         private void PrepareDataSmall(int pointCount = 50)
         {
@@ -466,30 +468,37 @@ namespace ScottPlotCookbook
             return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
-        public string Figure_30_Signal()
+        public string Figure_30a_Signal()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
 
-            // PlotSignal is ideal for plotting large arrays of evenly-spaed data at high framerates.
-            // Note that we are testing it here by plotting an array with one million data points.
+            // PlotSignal() is much faster than PlotScatter() for large arrays of evenly-spaed data.
+            // To plot more than 2GB of data, enable "gcAllowVeryLargeObjects" in App.config (Google it)
+
             var plt = new ScottPlot.Plot(width, height);
+            plt.Title("Displaying 10 million points with PlotSignal()");
             plt.Benchmark();
-            plt.PlotSignal(dataSignal, sampleRate: 20_000);
+            plt.PlotSignal(tenMillionPoints, sampleRate: 20_000);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
             return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
-        public string Figure_31_Signal_With_Antialiasing_Off()
+
+        public string Figure_30c_SignalConst()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
 
-            // A slight performance enhancement is achieved when anti-aliasing is disabled
+            // SignalConst() is faster than PlotSignal() for very large data plots
+            // - its data cannot be modified after it is loaded
+            // - here threading was turned off so it renders properly in a console application
+            // - in GUI applications threading allows it to initially render faster
+
             var plt = new ScottPlot.Plot(width, height);
+            plt.Title("Displaying 10 million points with PlotSignalConst()");
             plt.Benchmark();
-            plt.AntiAlias(true, false);
-            plt.PlotSignal(dataSignal, sampleRate: 20_000);
+            plt.PlotSignalConst(tenMillionPoints, sampleRate: 20_000, useThreading: false);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
             return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
@@ -501,7 +510,7 @@ namespace ScottPlotCookbook
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
 
             var plt = new ScottPlot.Plot(width, height);
-            plt.PlotSignal(dataSignal, 20000, lineWidth: 3, color: Color.Red);
+            plt.PlotSignal(oneMillionPoints, 20000, lineWidth: 3, color: Color.Red);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
             return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
