@@ -19,7 +19,7 @@ namespace ScottPlot
         /// </summary>
         /// <param name="width">image width (pixels)</param>
         /// <param name="height">image height (pixels)</param>
-        public Plot(int width = 600, int height = 800)
+        public Plot(int width = 800, int height = 600)
         {
             if (width <= 0 || height <= 0)
                 throw new ArgumentException("width and height must each be greater than 0");
@@ -211,6 +211,14 @@ namespace ScottPlot
             if (color == null)
                 color = settings.GetNextColor();
             PlottableSignal signal = new PlottableSignal(ys, sampleRate, xOffset, yOffset, (Color)color, lineWidth: lineWidth, markerSize: markerSize, label: label);
+            settings.plottables.Add(signal);
+        }
+
+        public void PlotSignalConst(double[] ys, double sampleRate = 1, double xOffset = 0, double yOffset = 0, Color? color = null, double lineWidth = 1, double markerSize = 5, string label = null, bool useThreading = true)
+        {
+            if (color == null)
+                color = settings.GetNextColor();
+            PlottableSignal signal = new PlottableSignalConst(ys, sampleRate, xOffset, yOffset, (Color)color, lineWidth: lineWidth, markerSize: markerSize, label: label, useThreading: useThreading);
             settings.plottables.Add(signal);
         }
 
