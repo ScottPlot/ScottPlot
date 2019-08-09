@@ -15,7 +15,7 @@ namespace tick_tester
             DisplayTicksForRange(-10, 10);
             DisplayTicksForRange(-50, 50);
             DisplayTicksForRange(-77, 123);
-            DisplayTicksForRange(-12345678, -12345678+1);
+            DisplayTicksForRange(-12345678, -12345678 + 1);
             DisplayTicksForRange(-1234567812345678, -1234567812345678 + 1);
             DisplayTicksForRange(.00000010, .00000011);
             DisplayTicksForRange(.0000001000001, .0000001000002); //does not render correctly
@@ -26,10 +26,11 @@ namespace tick_tester
             DisplayTicksForTime(new DateTime(2019, 6, 1, 6, 0, 0), new DateTime(2019, 6, 1, 11, 12, 15)); //hours
             DisplayTicksForTime(new DateTime(2019, 6, 1, 6, 0, 0), new DateTime(2019, 6, 1, 6, 12, 15)); //minutes
             DisplayTicksForTime(new DateTime(2019, 6, 1, 6, 12, 0), new DateTime(2019, 6, 1, 6, 12, 15)); //seconds
-            DisplayTicksForTime(DateTime.Now, DateTime.Now); 
+            DisplayTicksForTime(DateTime.Now, DateTime.Now);
             //this returns the milliseconds between 
             //two samples of Datetime.Now
             //6ms on average on my PC
+
             Console.WriteLine();
 
         }
@@ -42,20 +43,22 @@ namespace tick_tester
             ScottPlot.TicksExperimental.GetMantissasExponentOffset(tickPositions, out double[] tickPositionsMantissas, out int tickPositionsExponent, out double offset);
             string multiplierString = ScottPlot.TicksExperimental.GetMultiplierString(offset, tickPositionsExponent);
 
-            Console.Write($"{tickPositionsMantissas.Length} ticks in [{low} - {high}]: ");
+            Console.WriteLine($"\nValue range: [{low}, {high}]");
+            Console.Write("  tick labels: ");
             foreach (double tickPositionsMantissa in tickPositionsMantissas)
-                Console.Write(tickPositionsMantissa + " ");
-             if (multiplierString != "")
-                Console.Write($". Multiplier is {multiplierString}");  //does not render in console because of unicode characters
-            Console.WriteLine();
+                Console.Write(tickPositionsMantissa + "  ");
+            Console.WriteLine($"\n  modifier: {multiplierString}");
+
         }
         static void DisplayTicksForTime(DateTime low, DateTime high)
         {
 
             double[] tickPositions = ScottPlot.TicksExperimental.GetTicksForTime(low, high);
-            Console.Write($"{tickPositions.Length} ticks in [{low} - {high}]: ");
+
+            Console.WriteLine($"\nTime range: [{low}, {high}]");
+            Console.Write("  tick labels: ");
             foreach (double tickPosition in tickPositions)
-                Console.Write(tickPosition + " ");
+                Console.Write(tickPosition + "  ");
             Console.WriteLine();
         }
 
