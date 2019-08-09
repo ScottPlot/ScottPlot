@@ -12,20 +12,18 @@ namespace ScottPlot
     public class IncorrectTime : Exception
     {
     }
-    public class TicksExperimental
+    public class TickCalculator
     {
-        private static double[] intervals = { 1.0, 2.0, 2.5, 3.0, 5.0, 10.0 };
+        private static double[] intervals = { 1.0, 2.0, 2.5, 5.0, 10.0 };
         private static double[] int_intervals = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 8.0, 10.0 };
         private static double[] int_12_intervals = { 1.0, 2.0, 3.0, 4.0, 6.0, 12.0 };
         private static double[] int_60_intervals = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 10.0, 12.0, 15.0, 20.0, 30.0 };
-
-
 
         public static double[] GetTicks(double lo, double hi, int ticks = 5, double[] intervals = null, double basee = 10.0)
         {
 
             if (intervals == null)
-                intervals = TicksExperimental.intervals;
+                intervals = TickCalculator.intervals;
 
             if (lo > hi)
                 throw new Exception("Low value greater than high value.");
@@ -144,7 +142,7 @@ namespace ScottPlot
         private static double GetCeiling(double x, double[] intervals, double basee = 10.0)
         {
             if (intervals == null)
-                intervals = TicksExperimental.intervals;
+                intervals = TickCalculator.intervals;
             if (x == 0)
                 return 0;
             if (x < 0)
@@ -160,7 +158,7 @@ namespace ScottPlot
         private static double GetFloor(double x, double[] intervals, double basee = 10.0)
         {
             if (intervals == null)
-                intervals = TicksExperimental.intervals;
+                intervals = TickCalculator.intervals;
             if (x == 0)
                 return 0;
             if (x < 0)
@@ -178,7 +176,7 @@ namespace ScottPlot
         private static double GetRound(double x, double[] intervals, double basee = 10.0)
         {
             if (intervals == null)
-                intervals = TicksExperimental.intervals;
+                intervals = TickCalculator.intervals;
             if (x == 0)
                 return 0;
             double z = Math.Pow(basee, Math.Ceiling(Math.Log(x, basee)) - 1.0);

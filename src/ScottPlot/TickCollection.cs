@@ -8,26 +8,36 @@ namespace ScottPlot
 {
     public class TickCollection
     {
-        double[] tickPositions;
-        string[] tickLabels;
-        string cornerLabel;
+        public double[] tickPositions;
+        public string[] tickLabels;
+        public string cornerLabel;
 
         public TickCollection(double low, double high)
         {
             // TODO: refactor this part
-            tickPositions = ScottPlot.TicksExperimental.GetTicks(low, high);
-            ScottPlot.TicksExperimental.GetMantissasExponentOffset(tickPositions, out double[] tickPositionsMantissas, out int tickPositionsExponent, out double offset);
-            string multiplierString = ScottPlot.TicksExperimental.GetMultiplierString(offset, tickPositionsExponent);
+            tickPositions = ScottPlot.TickCalculator.GetTicks(low, high);
+            ScottPlot.TickCalculator.GetMantissasExponentOffset(tickPositions, out double[] tickPositionsMantissas, out int tickPositionsExponent, out double offset);
+            string multiplierString = ScottPlot.TickCalculator.GetMultiplierString(offset, tickPositionsExponent);
             tickLabels = new string[tickPositions.Length];
             for (int i = 0; i < tickPositions.Length; i++)
                 tickLabels[i] = tickPositionsMantissas[i].ToString();
-            cornerLabel = $"{offset} & 10^{tickPositionsExponent}";
+            string offsetLabel = offset.ToString();
+            if (offset > 0)
+                offsetLabel = "+" + offsetLabel;
+            offsetLabel = offsetLabel.Replace("E+", "E");
+
+            cornerLabel = "";
+
+            if (tickPositionsExponent != 0)
+                cornerLabel = $"1E{tickPositionsExponent}";
+            if (offset != 0)
+                cornerLabel += $" {offsetLabel}";
         }
 
         public TickCollection(DateTime low, DateTime high)
         {
             // TODO: refactor this part
-            tickPositions = ScottPlot.TicksExperimental.GetTicksForTime(low, high);
+            tickPositions = ScottPlot.TickCalculator.GetTicksForTime(low, high);
             tickLabels = new string[tickPositions.Length];
             for (int i = 0; i < tickPositions.Length; i++)
                 tickLabels[i] = tickPositions[i].ToString();
