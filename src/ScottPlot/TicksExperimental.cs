@@ -93,7 +93,9 @@ namespace ScottPlot
             tickPositionsExponent = Exponents.Max();
             if (Math.Abs(tickPositionsExponent) > 3)
             {
-                if (Exponents.Max() != Exponents.Min())
+                bool ticksHaveExponents = (Exponents.Min() != 0);
+                bool ticksHaveDifferentExponents = (Exponents.Max() != Exponents.Min());
+                if (ticksHaveExponents && ticksHaveDifferentExponents)
                 {
                     for (int i = 0; i < tickPositions.Length; i++)
                     {
