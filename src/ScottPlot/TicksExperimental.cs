@@ -97,7 +97,7 @@ namespace ScottPlot
                 {
                     for (int i = 0; i < tickPositions.Length; i++)
                     {
-                        tickPositionsMantissas[i] = Math.Round((tickPositions[i]) / tickPositionsExponent, 3);
+                        tickPositionsMantissas[i] = Math.Round((tickPositions[i]) / Math.Pow(10,tickPositionsExponent), 3);
                     }
                 }
             }
@@ -111,14 +111,30 @@ namespace ScottPlot
             }
 
             //Check if offset is needed
-            if (tickPositionsMantissas.Max() - tickPositionsMantissas.Min() == 0)
+            if (Math.Round(tickPositionsMantissas.Max(), 2) - Math.Round(tickPositionsMantissas.Min(), 2) == 0)
             {
                 offset = tickPositions.Min();
-                for (int i = 0; i < tickPositions.Length; i++)
+                //for (int i = 0; i < tickPositions.Length; i++)
+                //{
+                //    tickPositionsMantissas[i] = Math.Round((tickPositions[i] - offset) / Math.Pow(10,tickPositionsExponent), 3);
+                //}
+                while (Math.Round(tickPositionsMantissas.Max(),2) - Math.Round(tickPositionsMantissas.Min(),2) == 0)
                 {
-                    tickPositionsMantissas[i] = Math.Round((tickPositions[i] - offset) / tickPositionsExponent, 3);
+                    for (int i = 0; i < tickPositionsMantissas.Length; i++)
+                    {
+                        tickPositionsMantissas[i]= (tickPositions[i]-offset)/Math.Pow(10,tickPositionsExponent);
+                    }
+                    tickPositionsExponent -= 1;
                 }
+
+                for (int i = 0; i < tickPositionsMantissas.Length; i++)
+                {
+                    tickPositionsMantissas[i] = Math.Round(tickPositionsMantissas[i], 3);
+                }
+
+
             }
+
             else
             {
                 offset = 0;
