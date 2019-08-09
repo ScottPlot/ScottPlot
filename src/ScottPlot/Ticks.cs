@@ -17,12 +17,16 @@ namespace ScottPlot
         public Brush tickBrush;
         public Pen gridPen;
         public int exponent;
+        public string label;
+        public string modifier;
 
-        public Tick(Settings settings, double value, int exponent = 0)
+        public Tick(Settings settings, double value, int exponent = 0, string label = null, string modifier = null)
         {
             this.value = value;
             this.settings = settings;
             this.exponent = exponent;
+            this.label = label;
+            this.modifier = modifier;
             tickPen = new Pen(settings.tickColor);
             tickBrush = new SolidBrush(settings.tickColor);
             gridPen = new Pen(settings.gridColor);
@@ -32,6 +36,9 @@ namespace ScottPlot
         {
             get
             {
+                if (label != null)
+                    return label;
+
                 double dividedValue = value / Math.Pow(10, exponent);
 
                 if (exponent != 0)
@@ -50,6 +57,9 @@ namespace ScottPlot
         {
             get
             {
+                if (modifier != null)
+                    return modifier;
+
                 if (exponent != 0)
                     return string.Format("10e{0}", exponent);
                 else
@@ -101,6 +111,7 @@ namespace ScottPlot
     public class Ticks
     {
         Settings settings;
+        public bool USE_EXPERIMENTAL_TICKS = true;
 
         public Ticks(Settings settings)
         {
@@ -114,8 +125,17 @@ namespace ScottPlot
             if (settings.xAxisSpan < .005)
                 tickSpacingPxX += 10;
 
-            settings.ticksX = GetTicks(settings, settings.axis[0], settings.axis[1], settings.xAxisScale, tickSpacingPxX, settings.dataSize.Width, settings.gridSpacingX);
-            settings.ticksY = GetTicks(settings, settings.axis[2], settings.axis[3], settings.yAxisScale, tickSpacingPxY, settings.dataSize.Height, settings.gridSpacingY);
+            if (USE_EXPERIMENTAL_TICKS)
+            {
+                settings.ticksX = GetTicksExperimental(settings.axis[0], settings.axis[1]);
+                settings.ticksY = GetTicksExperimental(settings.axis[2], settings.axis[3]);
+            }
+            else
+            {
+                settings.ticksX = GetTicks(settings, settings.axis[0], settings.axis[1], settings.xAxisScale, tickSpacingPxX, settings.dataSize.Width, settings.gridSpacingX);
+                settings.ticksY = GetTicks(settings, settings.axis[2], settings.axis[3], settings.yAxisScale, tickSpacingPxY, settings.dataSize.Height, settings.gridSpacingY);
+            }
+
         }
 
         public void RenderTicks()
@@ -184,6 +204,21 @@ namespace ScottPlot
             }
             return new Size((int)largestWidth, (int)largestHeight);
             */
+        }
+
+        private List<Tick> GetTicksExperimental(double low, double high)
+        {
+            var tickPositions = TicksExperimental.GetTicks(low, high);
+            TicksExperimental.GetMantissasExponentOffset(tickPositions, out double[] tickPositionsMantissas, out int tickPositionsExponent, out double offset);
+            string multiplierString = TicksExperimental.GetMultiplierString(offset, tickPositionsExponent);
+            List<Tick> ticks = new List<Tick>();
+            for (int i = 0; i < tickPositions.Length; i++)
+            {
+                string tickLabel = tickPositionsMantissas[i].ToString();
+                var tick = new Tick(settings: settings, value: tickPositions[i], exponent: 0, label: tickLabel, modifier: multiplierString);
+                ticks.Add(tick);
+            }
+            return ticks;
         }
 
         private List<Tick> GetTicks(Settings settings, double axisLow, double axisHigh, double axisScale, int tickSpacingPx, int axisSizePx, double useThisSpacing = 0)
