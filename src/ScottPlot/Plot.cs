@@ -469,8 +469,8 @@ namespace ScottPlot
                 settings.displayGrid = (bool)enable;
             if (color != null)
                 settings.gridColor = (Color)color;
-            settings.gridSpacingX = (xSpacing == null) ? 0 : (double)xSpacing;
-            settings.gridSpacingY = (ySpacing == null) ? 0 : (double)ySpacing;
+            settings.tickSpacingX = (xSpacing == null) ? 0 : (double)xSpacing;
+            settings.tickSpacingY = (ySpacing == null) ? 0 : (double)ySpacing;
             settings.bmpFigureRenderRequired = true;
         }
 

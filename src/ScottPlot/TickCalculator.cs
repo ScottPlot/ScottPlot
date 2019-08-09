@@ -1,8 +1,4 @@
-﻿/* EXPERIMENTAL TICK CODE
- * Code here relates to the generation of tick mark positions and labels.
- */
-
-using System;
+﻿using System;
 using System.Globalization;
 using System.Linq;
 using System.Text;
