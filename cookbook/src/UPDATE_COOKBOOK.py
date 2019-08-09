@@ -12,9 +12,7 @@ def copyImages():
         imageFileName = os.path.basename(imageFilePath)
 
         # skip files that change a lot
-        if imageFileName.startswith("30_Signal"):
-            continue
-        if imageFileName.startswith("31_Signal"):
+        if imageFileName.startswith("30"):
             continue
 
         destination = os.path.join(PATH_DEST+"/images/", imageFileName)

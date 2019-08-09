@@ -160,7 +160,7 @@ namespace ScottPlotDemo
         private void RandomWalk(int pointCount)
         {
             double[] data = ScottPlot.DataGen.RandomWalk(rand, pointCount, 10, rand.NextDouble() * 10 - 5);
-            scottPlotUC1.plt.PlotSignal(data, data.Length * 0.1);
+            scottPlotUC1.plt.PlotSignalConst(data, data.Length * 0.1);
             scottPlotUC1.plt.AxisAuto();
             scottPlotUC1.Render();
         }
@@ -184,7 +184,5 @@ namespace ScottPlotDemo
         {
             RandomWalk(10_000_000);
         }
-
-
     }
 }
