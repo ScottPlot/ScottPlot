@@ -4,6 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+/* 
+ * The TickCollection class is responsible for determining ideal tick positions
+ * and creating their labels and a corner label (containing an offset, mantissa, 
+ * and base-10 exponent).
+ * 
+ */
+
 namespace ScottPlot
 {
     public class TickCollection
