@@ -154,7 +154,7 @@ namespace ScottPlot
             int visiblePointCount = visibleIndex2 - visibleIndex1;
             double pointsPerPixelColumn = visiblePointCount / settings.dataSize.Width;
 
-            if ((pointsPerPixelColumn / 10 >= ys.Length) || (pointsPerPixelColumn <= 0))
+            if ((pointsPerPixelColumn / 10 >= ys.Length) || (pointsPerPixelColumn < 0))
                 RenderSingleLine(settings);
             else if (pointsPerPixelColumn > 1)
                 RenderHighDensity(settings, offsetPoints, columnPointCount);
