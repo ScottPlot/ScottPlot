@@ -71,8 +71,8 @@ namespace ScottPlot
         // grid
         public bool displayGrid = true;
         public Color gridColor = Color.LightGray;
-        public double gridSpacingX = 0;
-        public double gridSpacingY = 0;
+        public double tickSpacingX = 0;
+        public double tickSpacingY = 0;
 
         // legend
         public Font legendFont = new Font("Segoe UI", 12);

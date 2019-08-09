@@ -12,10 +12,17 @@ namespace ScottPlot
         public string[] tickLabels;
         public string cornerLabel;
 
-        public TickCollection(double low, double high)
+        public TickCollection(double low, double high, double? tickSpacing = null)
         {
+            if (tickSpacing == 0)
+                tickSpacing = null;
+
             // TODO: refactor this part
             tickPositions = ScottPlot.TickCalculator.GetTicks(low, high);
+
+            if (tickSpacing != null)
+                throw new NotImplementedException("manual tick spacing not yet supported");
+
             ScottPlot.TickCalculator.GetMantissasExponentOffset(tickPositions, out double[] tickPositionsMantissas, out int tickPositionsExponent, out double offset);
             string multiplierString = ScottPlot.TickCalculator.GetMultiplierString(offset, tickPositionsExponent);
             tickLabels = new string[tickPositions.Length];

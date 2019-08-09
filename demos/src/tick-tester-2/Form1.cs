@@ -23,6 +23,7 @@ namespace tick_tester_2
         private void Form1_Load(object sender, EventArgs e)
         {
             scottPlotUC1.plt.PlotSignal(ScottPlot.DataGen.Sin(100));
+            //scottPlotUC1.plt.Grid(xSpacing: 10);
             scottPlotUC1.plt.AxisAuto();
             scottPlotUC1.Render();
         }
