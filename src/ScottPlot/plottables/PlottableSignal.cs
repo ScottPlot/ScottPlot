@@ -58,8 +58,19 @@ namespace ScottPlot
             return limits;
         }
 
+        private void RenderSingleLine(Settings settings)
+        {
+            // this function is for when the graph is zoomed so far out its entire display is a single vertical pixel column
+
+            PointF point1 = settings.GetPixel(xOffset, (float)ys.Min() + yOffset);
+            PointF point2 = settings.GetPixel(xOffset, (float)ys.Max() + yOffset);
+            settings.gfxData.DrawLine(pen, point1, point2);
+        }
+
         private void RenderLowDensity(Settings settings, int visibleIndex1, int visibleIndex2)
         {
+            // this function is for when the graph is zoomed in so individual data points can be seen
+
             List<PointF> linePoints = new List<PointF>(visibleIndex2 - visibleIndex1 + 2);
             if (visibleIndex2 > ys.Length - 2)
                 visibleIndex2 = ys.Length - 2;
@@ -78,6 +89,8 @@ namespace ScottPlot
 
         private void RenderHighDensity(Settings settings, double offsetPoints, double columnPointCount)
         {
+            // this function is for when the graph is zoomed out so each pixel column represents the vertical span of multiple data points
+
             List<PointF> linePoints = new List<PointF>(settings.dataSize.Width * 2 + 1);
             for (int xPx = 0; xPx < settings.dataSize.Width; xPx++)
             {
@@ -94,15 +107,8 @@ namespace ScottPlot
                     index2 = ys.Length - 1;
 
                 // get the min and max value for this column
-                double lowestValue = ys[index1];
-                double highestValue = ys[index1];
-                for (int i = index1; i < index2; i++)
-                {
-                    if (ys[i] < lowestValue)
-                        lowestValue = ys[i];
-                    if (ys[i] > highestValue)
-                        highestValue = ys[i];
-                }
+                double lowestValue, highestValue;
+                MinMaxRangeQuery(index1, index2, out lowestValue, out highestValue);
                 float yPxHigh = settings.GetPixel(0, lowestValue + yOffset).Y;
                 float yPxLow = settings.GetPixel(0, highestValue + yOffset).Y;
 
@@ -123,9 +129,21 @@ namespace ScottPlot
                 settings.gfxData.DrawLines(pen, linePoints.ToArray());
         }
 
+        protected virtual void MinMaxRangeQuery(int index1, int index2, out double lowestValue, out double highestValue)
+        {
+            lowestValue = ys[index1];
+            highestValue = ys[index1];
+            for (int i = index1; i < index2; i++)
+            {
+                if (ys[i] < lowestValue)
+                    lowestValue = ys[i];
+                if (ys[i] > highestValue)
+                    highestValue = ys[i];
+            }
+        }
+
         public override void Render(Settings settings)
         {
-
             double dataSpanUnits = ys.Length * samplePeriod;
             double columnSpanUnits = settings.xAxisSpan / settings.dataSize.Width;
             double columnPointCount = (columnSpanUnits / dataSpanUnits) * ys.Length;
@@ -134,8 +152,15 @@ namespace ScottPlot
             int visibleIndex1 = (int)(offsetPoints);
             int visibleIndex2 = (int)(offsetPoints + columnPointCount * (settings.dataSize.Width + 1));
             int visiblePointCount = visibleIndex2 - visibleIndex1;
+            double pointsPerPixelColumn = visiblePointCount / settings.dataSize.Width;
 
-            if (visiblePointCount > settings.dataSize.Width)
+            PointF firstPoint = settings.GetPixel(xOffset, ys.First() + yOffset);
+            PointF lastPoint = settings.GetPixel(samplePeriod * (ys.Length - 1) + xOffset, ys.Last() + yOffset);
+            double dataWidthPx = lastPoint.X - firstPoint.X;
+
+            if (dataWidthPx <= 1)
+                RenderSingleLine(settings);
+            else if (pointsPerPixelColumn > 1)
                 RenderHighDensity(settings, offsetPoints, columnPointCount);
             else
                 RenderLowDensity(settings, visibleIndex1, visibleIndex2);
