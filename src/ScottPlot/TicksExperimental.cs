@@ -99,7 +99,7 @@ namespace ScottPlot
                 {
                     for (int i = 0; i < tickPositions.Length; i++)
                     {
-                        tickPositionsMantissas[i] = Math.Round((tickPositions[i]) / tickPositionsExponent, 3);
+                        tickPositionsMantissas[i] = Math.Round((tickPositions[i]) / Math.Pow(10, tickPositionsExponent), 3);
                     }
                 }
             }
