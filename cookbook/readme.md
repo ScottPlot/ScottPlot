@@ -74,6 +74,29 @@ plt.SaveFig(fileName);
 
 ![](./images/01f_Custom_Marker_Shapes.png)
 
+##  All Marker Shapes
+
+```cs
+var plt = new ScottPlot.Plot(600, 400);
+plt.Title("ScottPlot Marker Shapes");
+plt.Grid(false);
+
+// plot a sine wave for every marker available
+string[] markerShapeNames = Enum.GetNames(typeof(ScottPlot.MarkerShape));
+for (int i = 0; i < markerShapeNames.Length; i++)
+{
+    string markerShapeName = markerShapeNames[i];
+    var markerShape = (ScottPlot.MarkerShape)System.Enum.Parse(typeof(ScottPlot.MarkerShape), markerShapeName);
+    double[] stackedSin = ScottPlot.DataGen.Sin(dataXs.Length, 2, -i);
+    plt.PlotScatter(dataXs, stackedSin, label: markerShapeNames[i], markerShape: markerShape);
+}
+
+plt.Legend(fontSize: 10);
+plt.SaveFig(fileName);
+```
+
+![](./images/01g_All_Marker_Shapes.png)
+
 ## Styling Scatter Plots
 
 ```cs
