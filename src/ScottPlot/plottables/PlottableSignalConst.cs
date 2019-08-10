@@ -54,6 +54,25 @@ namespace ScottPlot
             }
         }
 
+        public void UpdateRange(int from, int to, double[] newData, int dataFrom = 0)
+        {
+            // simle and useless implementation, temponary stub
+            for (int i = from; i < to; i++)
+            {
+                UpdateElement(i, newData[i + dataFrom]);
+            }
+        }
+
+        public void UpdateRange(int from, double[] newData)
+        {
+            UpdateRange(from, newData.Length, newData);
+        }
+
+        public void UpdateRange(double[] newData)
+        {
+            UpdateRange(0, newData.Length, newData);
+        }
+
         public void UpdateTreesInBackground()
         {
             Task.Run(() => { UpdateTrees(); });
