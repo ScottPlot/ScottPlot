@@ -28,24 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.scottPlotUC1 = new ScottPlot.ScottPlotUC();
             this.btnNormal = new System.Windows.Forms.Button();
             this.btnBig = new System.Windows.Forms.Button();
             this.btnSmall = new System.Windows.Forms.Button();
             this.buttonBigOffset = new System.Windows.Forms.Button();
             this.btnSmallOffset = new System.Windows.Forms.Button();
             this.btnWav = new System.Windows.Forms.Button();
+            this.scottPlotUC1 = new ScottPlot.ScottPlotUC();
             this.SuspendLayout();
-            // 
-            // scottPlotUC1
-            // 
-            this.scottPlotUC1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.scottPlotUC1.Location = new System.Drawing.Point(12, 41);
-            this.scottPlotUC1.Name = "scottPlotUC1";
-            this.scottPlotUC1.Size = new System.Drawing.Size(750, 386);
-            this.scottPlotUC1.TabIndex = 0;
             // 
             // btnNormal
             // 
@@ -106,6 +96,17 @@
             this.btnWav.Text = "wav";
             this.btnWav.UseVisualStyleBackColor = true;
             this.btnWav.Click += new System.EventHandler(this.BtnWav_Click);
+            // 
+            // scottPlotUC1
+            // 
+            this.scottPlotUC1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.scottPlotUC1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.scottPlotUC1.Location = new System.Drawing.Point(12, 41);
+            this.scottPlotUC1.Name = "scottPlotUC1";
+            this.scottPlotUC1.Size = new System.Drawing.Size(750, 386);
+            this.scottPlotUC1.TabIndex = 0;
             // 
             // Form1
             // 

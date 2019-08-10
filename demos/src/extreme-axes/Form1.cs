@@ -19,6 +19,8 @@ namespace extreme_axes
         {
             InitializeComponent();
             scottPlotUC1.plt.PlotSignal(ScottPlot.DataGen.Sin(1000), lineWidth: 3);
+            scottPlotUC1.plt.XLabel("Horizontal Axis");
+            scottPlotUC1.plt.YLabel("Vertical Axis");
             scottPlotUC1.plt.AxisAuto();
             scottPlotUC1.Render();
         }
