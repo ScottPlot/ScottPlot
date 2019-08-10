@@ -349,8 +349,6 @@ double bigNumber = 9876;
 
 var plt = new ScottPlot.Plot(600, 400);
 plt.Title("panned far and really zoomed in");
-plt.PlotScatter(dataXs, dataSin);
-plt.PlotScatter(dataXs, dataCos);
 plt.Axis(bigNumber, bigNumber + .00001, bigNumber, bigNumber + .00001);
 plt.SaveFig(fileName);
 ```
