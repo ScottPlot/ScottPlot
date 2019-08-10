@@ -135,8 +135,8 @@ namespace ScottPlot
 
         private void RenderHighDensity(Settings settings, double offsetPoints, double columnPointCount)
         {
-            /*
-            TODO: RESOLVE THIS CONFLICT
+            // this function is for when the graph is zoomed out so each pixel column represents the vertical span of multiple data points
+
             int xPxStart = (int)Math.Ceiling((-1 - offsetPoints) / columnPointCount - 1);
             int xPxEnd = (int)Math.Ceiling((ys.Length - offsetPoints) / columnPointCount);
             xPxStart = Math.Max(0, xPxStart);
@@ -145,13 +145,6 @@ namespace ScottPlot
                 return;
             List<PointF> linePoints = new List<PointF>((xPxEnd - xPxStart) * 2 + 1);
             for (int xPx = xPxStart; xPx < xPxEnd; xPx++)
-            */
-
-            // this function is for when the graph is zoomed out so each pixel column represents the vertical span of multiple data points
-
-            List<PointF> linePoints = new List<PointF>(settings.dataSize.Width * 2 + 1);
-            for (int xPx = 0; xPx < settings.dataSize.Width; xPx++)
-
             {
                 // determine data indexes for this pixel column
                 int index1 = (int)(offsetPoints + columnPointCount * xPx);
@@ -214,24 +207,22 @@ namespace ScottPlot
             PointF lastPoint = settings.GetPixel(samplePeriod * (ys.Length - 1) + xOffset, ys.Last() + yOffset);
             double dataWidthPx = lastPoint.X - firstPoint.X;
 
-            /*
-            TODO: RESOLVE THIS CONFLICT
-            if (visiblePointCount > settings.dataSize.Width)
+            // use different rendering methods based on how dense the data is on screen
+            if (dataWidthPx <= 1)
+            {
+                RenderSingleLine(settings);
+            }
+            else if (pointsPerPixelColumn > 1)
             {
                 if (useParallel)
                     RenderHighDensityParallel(settings, offsetPoints, columnPointCount);
                 else
                     RenderHighDensity(settings, offsetPoints, columnPointCount);
             }
-            */
-            
-            if (dataWidthPx <= 1)
-                RenderSingleLine(settings);
-            else if (pointsPerPixelColumn > 1)
-                RenderHighDensity(settings, offsetPoints, columnPointCount);
-
             else
+            {
                 RenderLowDensity(settings, visibleIndex1, visibleIndex2);
+            }
         }
 
         public override void SaveCSV(string filePath)
