@@ -57,7 +57,6 @@
     <Compile Include="Markers.cs" />
     <Compile Include="MouseTracker.cs" />
     <Compile Include="plottables\PlottableSignalConst.cs" />
-    <Compile Include="TicksExperimental.cs" />
     <Compile Include="plottables\OHLC.cs" />
     <Compile Include="plottables\Plottable.cs" />
     <Compile Include="plottables\PlottableAxLine.cs" />
@@ -78,7 +77,8 @@
       <DependentUpon>ScottPlotWPF.xaml</DependentUpon>
     </Compile>
     <Compile Include="Style.cs" />
-    <Compile Include="Ticks.cs" />
+    <Compile Include="TickCollection.cs" />
+    <Compile Include="TickExperimental.cs" />
     <Compile Include="Tools.cs" />
     <Compile Include="Plot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

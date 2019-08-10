@@ -24,8 +24,26 @@ namespace ScottPlot
 
         public static void DataGrid(Settings settings)
         {
-            Ticks ticks = new Ticks(settings);
-            ticks.RenderGrid();
+            if (settings.displayGrid == false)
+                return;
+
+            Pen pen = new Pen(settings.gridColor);
+
+            for (int i = 0; i < settings.tickCollectionX.tickPositions.Length; i++)
+            {
+                double value = settings.tickCollectionX.tickPositions[i];
+                double unitsFromAxisEdge = value - settings.axis[0];
+                int xPx = (int)(unitsFromAxisEdge * settings.xAxisScale);
+                settings.gfxData.DrawLine(pen, xPx, 0, xPx, settings.dataSize.Height);
+            }
+
+            for (int i = 0; i < settings.tickCollectionY.tickPositions.Length; i++)
+            {
+                double value = settings.tickCollectionY.tickPositions[i];
+                double unitsFromAxisEdge = value - settings.axis[2];
+                int yPx = settings.dataSize.Height - (int)(unitsFromAxisEdge * settings.yAxisScale);
+                settings.gfxData.DrawLine(pen, 0, yPx, settings.dataSize.Width, yPx);
+            }
         }
 
         public static void DataPlottables(Settings settings)
@@ -100,8 +118,12 @@ namespace ScottPlot
             if (settings.dataSize.Width < 1 || settings.dataSize.Height < 1)
                 return;
 
-            Ticks ticks = new Ticks(settings);
-            ticks.RenderTicks();
+            settings.tickCollectionX = new TickCollection(settings, false);
+            settings.tickCollectionY = new TickCollection(settings, true);
+
+            RenderTicksOnLeft(settings);
+            RenderTicksOnBottom(settings);
+            RenderTickMultipliers(settings);
         }
 
         public static void FigureFrames(Settings settings)
@@ -142,6 +164,69 @@ namespace ScottPlot
                 settings.gfxFigure.FillRectangle(settings.benchmarkBackgroundBrush, textRect);
                 settings.gfxFigure.DrawRectangle(settings.benchmarkBorderPen, textRect);
                 settings.gfxFigure.DrawString(settings.benchmarkMessage, settings.benchmarkFont, settings.benchmarkFontBrush, textLocation);
+            }
+        }
+
+        public static void RenderTicksOnLeft(Settings settings)
+        {
+            Pen pen = new Pen(settings.tickColor);
+            Brush brush = new SolidBrush(settings.tickColor);
+
+            for (int i = 0; i < settings.tickCollectionY.tickPositions.Length; i++)
+            {
+                double value = settings.tickCollectionY.tickPositions[i];
+                string text = settings.tickCollectionY.tickLabels[i];
+
+                double unitsFromAxisEdge = value - settings.axis[2];
+                int xPx = settings.dataOrigin.X;
+                int yPx = (int)(unitsFromAxisEdge * settings.yAxisScale);
+                yPx = settings.figureSize.Height - yPx - settings.axisLabelPadding[2];
+
+                settings.gfxFigure.DrawLine(pen, xPx, yPx, xPx - settings.tickSize, yPx);
+                settings.gfxFigure.DrawString(text, settings.tickFont, brush, xPx - settings.tickSize, yPx, settings.sfEast);
+            }
+
+        }
+
+        public static void RenderTicksOnBottom(Settings settings)
+        {
+            Pen pen = new Pen(settings.tickColor);
+            Brush brush = new SolidBrush(settings.tickColor);
+
+            for (int i = 0; i < settings.tickCollectionX.tickPositions.Length; i++)
+            {
+                double value = settings.tickCollectionX.tickPositions[i];
+                string text = settings.tickCollectionX.tickLabels[i];
+
+                double unitsFromAxisEdge = value - settings.axis[0];
+                int xPx = (int)(unitsFromAxisEdge * settings.xAxisScale) + settings.axisLabelPadding[0];
+                int yPx = settings.figureSize.Height - settings.axisLabelPadding[2];
+
+                settings.gfxFigure.DrawLine(pen, xPx, yPx, xPx, yPx + settings.tickSize);
+                settings.gfxFigure.DrawString(text, settings.tickFont, brush, xPx, yPx + settings.tickSize, settings.sfNorth);
+            }
+        }
+
+        private static void RenderTickMultipliers(Settings settings)
+        {
+            Brush brush = new SolidBrush(settings.tickColor);
+
+            if (settings.tickCollectionX.cornerLabel != "")
+            {
+                SizeF multiplierLabelXsize = settings.gfxFigure.MeasureString(settings.tickCollectionX.cornerLabel, settings.tickFont);
+                settings.gfxFigure.DrawString(settings.tickCollectionX.cornerLabel, settings.tickFont, brush,
+                    settings.dataOrigin.X + settings.dataSize.Width,
+                    settings.dataOrigin.Y + settings.dataSize.Height + multiplierLabelXsize.Height,
+                    settings.sfNorthEast);
+            }
+
+            if (settings.tickCollectionY.cornerLabel != "")
+            {
+                //SizeF multiplierLabelYsize = settings.gfxFigure.MeasureString(settings.tickCollectionY.cornerLabel, settings.tickFont);
+                settings.gfxFigure.DrawString(settings.tickCollectionY.cornerLabel, settings.tickFont, brush,
+                    settings.dataOrigin.X,
+                    settings.dataOrigin.Y,
+                    settings.sfSouthWest);
             }
         }
     }

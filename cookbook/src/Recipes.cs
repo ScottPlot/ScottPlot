@@ -441,8 +441,8 @@ namespace ScottPlotCookbook
 
             Random rand = new Random(0);
             int pointCount = 100;
-            double[] largeXs = ScottPlot.DataGen.Consecutive(pointCount, 1e42);
-            double[] largeYs = ScottPlot.DataGen.Random(rand, pointCount, 1e123);
+            double[] largeXs = ScottPlot.DataGen.Consecutive(pointCount, 1e17);
+            double[] largeYs = ScottPlot.DataGen.Random(rand, pointCount, 1e21);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(largeXs, largeYs);
@@ -451,18 +451,29 @@ namespace ScottPlotCookbook
             return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
-        public string Figure_28_Very_Small_Numbers()
+        public string Figure_28_Axis_Exponent_And_Offset()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
 
-            Random rand = new Random(1);
-            int pointCount = 100;
-            double[] smallXs = ScottPlot.DataGen.Consecutive(pointCount, 1e-42);
-            double[] xmallYs = ScottPlot.DataGen.Random(rand, pointCount, 1e-123);
+            double bigNumber = 9876;
 
             var plt = new ScottPlot.Plot(width, height);
-            plt.PlotScatter(smallXs, xmallYs);
+            plt.Title("panned far and really zoomed in");
+            plt.Axis(bigNumber, bigNumber + .00001, bigNumber, bigNumber + .00001);
+            plt.SaveFig(fileName);
+            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
+        }
+
+        public string Figure_29_Very_Large_Images()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            var plt = new ScottPlot.Plot(2000, 1000);
+            plt.PlotScatter(dataXs, dataSin);
+            plt.PlotScatter(dataXs, dataCos);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
             return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
@@ -473,7 +484,8 @@ namespace ScottPlotCookbook
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
 
-            // PlotSignal() is much faster than PlotScatter() for large arrays of evenly-spaed data
+            // PlotSignal() is much faster than PlotScatter() for large arrays of evenly-spaed data.
+            // To plot more than 2GB of data, enable "gcAllowVeryLargeObjects" in App.config (Google it)
 
             var plt = new ScottPlot.Plot(width, height);
             plt.Title("Displaying 10 million points with PlotSignal()");
@@ -538,7 +550,7 @@ namespace ScottPlotCookbook
             var plt = new ScottPlot.Plot(width, height);
 
             // things plotted after before spans are covered by them
-            plt.PlotScatter(dataXs, dataSin, label: "below", 
+            plt.PlotScatter(dataXs, dataSin, label: "below",
                 color: Color.Red, markerShape: ScottPlot.MarkerShape.filledCircle);
 
             // vertical lines and horizontal spans both take X-axis positions
