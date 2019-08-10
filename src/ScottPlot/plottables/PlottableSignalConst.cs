@@ -25,7 +25,7 @@ namespace ScottPlot
                 UpdateTrees();
         }
 
-        public void UpdateElement(int index, double newValue)
+        public void updateData(int index, double newValue)
         {
             ys[index] = newValue;
             // Update Tree, can be optimized
@@ -63,7 +63,7 @@ namespace ScottPlot
             }
         }
 
-        public void UpdateRange(int from, int to, double[] newData, int fromData = 0)
+        public void updateData(int from, int to, double[] newData, int fromData = 0)
         {
             int n = TreeMin.Length;
             //update source signal
@@ -127,14 +127,14 @@ namespace ScottPlot
             }
         }
 
-        public void UpdateRange(int from, double[] newData)
+        public void updateData(int from, double[] newData)
         {
-            UpdateRange(from, newData.Length, newData);
+            updateData(from, newData.Length, newData);
         }
 
-        public void UpdateRange(double[] newData)
+        public void updateData(double[] newData)
         {
-            UpdateRange(0, newData.Length, newData);
+            updateData(0, newData.Length, newData);
         }
 
         public void UpdateTreesInBackground()
