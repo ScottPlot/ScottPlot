@@ -89,13 +89,37 @@ namespace ScottPlot
             }
             from = (n / 2 + from / 2) / 2;
             to = (n / 2 + to / 2) / 2;
-
+            double candidate;
             while (from != 0) // up to root elem, that is [1], [0] - is free elem
             {
-                for (int i = from; i <= to; i++) // Recalc all level nodes in range 
+                if (from != to)
                 {
-                    TreeMin[i] = Math.Min(TreeMin[i * 2], TreeMin[i * 2 + 1]);
-                    TreeMax[i] = Math.Max(TreeMax[i * 2], TreeMax[i * 2 + 1]);
+                    for (int i = from; i <= to; i++) // Recalc all level nodes in range 
+                    {
+                        TreeMin[i] = Math.Min(TreeMin[i * 2], TreeMin[i * 2 + 1]);
+                        TreeMax[i] = Math.Max(TreeMax[i * 2], TreeMax[i * 2 + 1]);
+                    }
+                }
+                else
+                {
+                    // left == rigth, so no need more from to loop
+                    for (int i = from; i > 0; i /= 2) // up to root node
+                    {
+                        candidate = Math.Min(TreeMin[i * 2], TreeMin[i * 2 + 1]);
+                        if (TreeMin[i] == candidate) // if node same then new value don't need to recalc all upper
+                            break;
+                        TreeMin[i] = candidate;
+                    }
+
+                    for (int i = from; i > 0; i /= 2) // up to root node
+                    {
+                        candidate = Math.Max(TreeMax[i * 2], TreeMax[i * 2 + 1]);
+                        if (TreeMax[i] == candidate) // if node same then new value don't need to recalc all upper
+                            break;
+                        TreeMax[i] = candidate;
+                    }
+                    // all work done exit while loop
+                    break;
                 }
                 // level up
                 from = from / 2;
