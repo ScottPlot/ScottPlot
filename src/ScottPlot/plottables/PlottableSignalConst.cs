@@ -25,6 +25,118 @@ namespace ScottPlot
                 UpdateTrees();
         }
 
+        public void updateData(int index, double newValue)
+        {
+            ys[index] = newValue;
+            // Update Tree, can be optimized
+            int n = TreeMin.Length;
+            if (index == ys.Length - 1) // last elem haven't pair
+            {
+                TreeMin[n / 2 + index / 2] = ys[index];
+                TreeMax[n / 2 + index / 2] = ys[index];
+            }
+            else if (index % 2 == 0) // even elem have right pair
+            {
+                TreeMin[n / 2 + index / 2] = Math.Min(ys[index], ys[index + 1]);
+                TreeMax[n / 2 + index / 2] = Math.Max(ys[index], ys[index + 1]);
+            }
+            else // odd elem have left pair
+            {
+                TreeMin[n / 2 + index / 2] = Math.Min(ys[index], ys[index - 1]);
+                TreeMax[n / 2 + index / 2] = Math.Max(ys[index], ys[index - 1]);
+            }
+
+            double candidate;
+            for (int i = (n / 2 + index / 2) / 2; i > 0; i /= 2)
+            {
+                candidate = Math.Min(TreeMin[i * 2], TreeMin[i * 2 + 1]);
+                if (TreeMin[i] == candidate) // if node same then new value don't need to recalc all upper
+                    break;
+                TreeMin[i] = candidate;
+            }
+            for (int i = (n / 2 + index / 2) / 2; i > 0; i /= 2)
+            {
+                candidate = Math.Max(TreeMax[i * 2], TreeMax[i * 2 + 1]);
+                if (TreeMax[i] == candidate) // if node same then new value don't need to recalc all upper
+                    break;
+                TreeMax[i] = candidate;
+            }
+        }
+
+        public void updateData(int from, int to, double[] newData, int fromData = 0)
+        {
+            int n = TreeMin.Length;
+            //update source signal
+            for (int i = from; i < to; i++)
+            {
+                ys[i] = newData[i - from + fromData];
+            }
+            
+            for (int i = n / 2 + from / 2; i < n / 2 + to / 2; i++)
+            {
+                TreeMin[i] = Math.Min(ys[i * 2 - n], ys[i * 2 + 1 - n]);
+                TreeMax[i] = Math.Max(ys[i * 2 - n], ys[i * 2 + 1 - n]);
+            }
+            if (to == ys.Length) // last elem haven't pair
+            {
+                TreeMin[n / 2 + to / 2] = ys[to - 1];
+                TreeMax[n / 2 + to / 2] = ys[to - 1];
+            }
+            else if (to % 2 == 1) //last elem even(to-1) and not last
+            {
+                TreeMin[n / 2 + to / 2] = Math.Min(ys[to - 1], ys[to]);
+                TreeMax[n / 2 + to / 2] = Math.Max(ys[to - 1], ys[to]);
+            }
+            from = (n / 2 + from / 2) / 2;
+            to = (n / 2 + to / 2) / 2;
+            double candidate;
+            while (from != 0) // up to root elem, that is [1], [0] - is free elem
+            {
+                if (from != to)
+                {
+                    for (int i = from; i <= to; i++) // Recalc all level nodes in range 
+                    {
+                        TreeMin[i] = Math.Min(TreeMin[i * 2], TreeMin[i * 2 + 1]);
+                        TreeMax[i] = Math.Max(TreeMax[i * 2], TreeMax[i * 2 + 1]);
+                    }
+                }
+                else
+                {
+                    // left == rigth, so no need more from to loop
+                    for (int i = from; i > 0; i /= 2) // up to root node
+                    {
+                        candidate = Math.Min(TreeMin[i * 2], TreeMin[i * 2 + 1]);
+                        if (TreeMin[i] == candidate) // if node same then new value don't need to recalc all upper
+                            break;
+                        TreeMin[i] = candidate;
+                    }
+
+                    for (int i = from; i > 0; i /= 2) // up to root node
+                    {
+                        candidate = Math.Max(TreeMax[i * 2], TreeMax[i * 2 + 1]);
+                        if (TreeMax[i] == candidate) // if node same then new value don't need to recalc all upper
+                            break;
+                        TreeMax[i] = candidate;
+                    }
+                    // all work done exit while loop
+                    break;
+                }
+                // level up
+                from = from / 2;
+                to = to / 2;
+            }
+        }
+
+        public void updateData(int from, double[] newData)
+        {
+            updateData(from, newData.Length, newData);
+        }
+
+        public void updateData(double[] newData)
+        {
+            updateData(0, newData.Length, newData);
+        }
+
         public void UpdateTreesInBackground()
         {
             Task.Run(() => { UpdateTrees(); });
