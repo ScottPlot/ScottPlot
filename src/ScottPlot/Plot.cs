@@ -162,23 +162,24 @@ namespace ScottPlot
 
         #endregion
 
-        #region Managing Plottable Data
+        #region Managing Plot Objects
 
         public void Clear(bool axisLines = true, bool scatterPlots = true, bool signalPlots = true, bool text = true, bool bar = true, bool finance = true)
         {
             settings.Clear(axisLines, scatterPlots, signalPlots, text, bar, finance);
         }
 
-        public void PlotText(string text, double x, double y, Color? color = null, string fontName = "Segoe UI", double fontSize = 12, bool bold = false, string label = null, TextAlignment alignment = TextAlignment.upperLeft)
+        public PlottableText PlotText(string text, double x, double y, Color? color = null, string fontName = "Segoe UI", double fontSize = 12, bool bold = false, string label = null, TextAlignment alignment = TextAlignment.upperLeft)
         {
             if (color == null)
                 color = settings.GetNextColor();
             fontName = ScottPlot.Tools.VerifyFont(fontName);
             PlottableText txt = new PlottableText(text, x, y, color: (Color)color, fontName: fontName, fontSize: fontSize, bold: bold, label: label, alignment: alignment);
             settings.plottables.Add(txt);
+            return txt;
         }
 
-        public void PlotPoint(double x, double y, Color? color = null, double markerSize = 5, string label = null, double? errorX = null, double? errorY = null, double errorLineWidth = 1, double errorCapSize = 3, MarkerShape markerShape = MarkerShape.filledCircle, LineStyle lineStyle = LineStyle.Solid)
+        public PlottableScatter PlotPoint(double x, double y, Color? color = null, double markerSize = 5, string label = null, double? errorX = null, double? errorY = null, double errorLineWidth = 1, double errorCapSize = 3, MarkerShape markerShape = MarkerShape.filledCircle, LineStyle lineStyle = LineStyle.Solid)
         {
             if (color == null)
                 color = settings.GetNextColor();
@@ -188,42 +189,46 @@ namespace ScottPlot
 
             PlottableScatter mark = new PlottableScatter(new double[] { x }, new double[] { y }, color: (Color)color, lineWidth: 0, markerSize: markerSize, label: label, errorX: errorXarray, errorY: errorYarray, errorLineWidth: errorLineWidth, errorCapSize: errorCapSize, stepDisplay: false, markerShape: markerShape, lineStyle: lineStyle);
             settings.plottables.Add(mark);
+            return mark;
         }
 
-        public void PlotScatter(double[] xs, double[] ys, Color? color = null, double lineWidth = 1, double markerSize = 5, string label = null, double[] errorX = null, double[] errorY = null, double errorLineWidth = 1, double errorCapSize = 3, MarkerShape markerShape = MarkerShape.filledCircle, LineStyle lineStyle = LineStyle.Solid)
+        public PlottableScatter PlotScatter(double[] xs, double[] ys, Color? color = null, double lineWidth = 1, double markerSize = 5, string label = null, double[] errorX = null, double[] errorY = null, double errorLineWidth = 1, double errorCapSize = 3, MarkerShape markerShape = MarkerShape.filledCircle, LineStyle lineStyle = LineStyle.Solid)
         {
             if (color == null)
                 color = settings.GetNextColor();
             PlottableScatter scat = new PlottableScatter(xs, ys, color: (Color)color, lineWidth: lineWidth, markerSize: markerSize, label: label, errorX: errorX, errorY: errorY, errorLineWidth: errorLineWidth, errorCapSize: errorCapSize, stepDisplay: false, markerShape: markerShape, lineStyle: lineStyle);
             settings.plottables.Add(scat);
+            return scat;
         }
 
-        public void PlotStep(double[] xs, double[] ys, Color? color = null, double lineWidth = 1, string label = null)
+        public PlottableScatter PlotStep(double[] xs, double[] ys, Color? color = null, double lineWidth = 1, string label = null)
         {
             if (color == null)
                 color = settings.GetNextColor();
             PlottableScatter step = new PlottableScatter(xs, ys, color: (Color)color, lineWidth: lineWidth, markerSize: 0, label: label, errorX: null, errorY: null, errorLineWidth: 0, errorCapSize: 0, stepDisplay: true, markerShape: MarkerShape.none, lineStyle: LineStyle.Solid);
             settings.plottables.Add(step);
+            return step;
         }
 
-        public void PlotSignal(double[] ys, double sampleRate = 1, double xOffset = 0, double yOffset = 0, Color? color = null, double lineWidth = 1, double markerSize = 5, string label = null)
+        public PlottableSignal PlotSignal(double[] ys, double sampleRate = 1, double xOffset = 0, double yOffset = 0, Color? color = null, double lineWidth = 1, double markerSize = 5, string label = null)
         {
             if (color == null)
                 color = settings.GetNextColor();
             PlottableSignal signal = new PlottableSignal(ys, sampleRate, xOffset, yOffset, (Color)color, lineWidth: lineWidth, markerSize: markerSize, label: label, useParallel: settings.useParallel);
             settings.plottables.Add(signal);
+            return signal;
         }
 
-        public PlottableSignal PlotSignalConst(double[] ys, double sampleRate = 1, double xOffset = 0, double yOffset = 0, Color? color = null, double lineWidth = 1, double markerSize = 5, string label = null)
+        public PlottableSignalConst PlotSignalConst(double[] ys, double sampleRate = 1, double xOffset = 0, double yOffset = 0, Color? color = null, double lineWidth = 1, double markerSize = 5, string label = null)
         {
             if (color == null)
                 color = settings.GetNextColor();
-            PlottableSignal signal = new PlottableSignalConst(ys, sampleRate, xOffset, yOffset, (Color)color, lineWidth: lineWidth, markerSize: markerSize, label: label, useParallel: settings.useParallel);
+            PlottableSignalConst signal = new PlottableSignalConst(ys, sampleRate, xOffset, yOffset, (Color)color, lineWidth: lineWidth, markerSize: markerSize, label: label, useParallel: settings.useParallel);
             settings.plottables.Add(signal);
             return signal;
         }
 
-        public void PlotBar(double[] xs, double[] ys, double? barWidth = null, double xOffset = 0, Color? color = null, string label = null, double[] errorY = null, double errorLineWidth = 1, double errorCapSize = 3)
+        public PlottableBar PlotBar(double[] xs, double[] ys, double? barWidth = null, double xOffset = 0, Color? color = null, string label = null, double[] errorY = null, double errorLineWidth = 1, double errorCapSize = 3)
         {
             if (color == null)
                 color = settings.GetNextColor();
@@ -231,35 +236,38 @@ namespace ScottPlot
                 barWidth = (xs[1] - xs[0]) * .8;
             PlottableBar bar = new PlottableBar(xs, ys, (double)barWidth, xOffset, (Color)color, label: label, yErr: errorY, errorLineWidth: errorLineWidth, errorCapSize: errorCapSize);
             settings.plottables.Add(bar);
+            return bar;
         }
 
-        public void PlotOHLC(OHLC[] ohlcs)
+        public PlottableOHLC PlotOHLC(OHLC[] ohlcs)
         {
             PlottableOHLC ohlc = new PlottableOHLC(ohlcs, displayCandles: false);
             settings.plottables.Add(ohlc);
+            return ohlc;
         }
 
-        public void PlotCandlestick(OHLC[] ohlcs)
+        public PlottableOHLC PlotCandlestick(OHLC[] ohlcs)
         {
             PlottableOHLC ohlc = new PlottableOHLC(ohlcs, displayCandles: true);
             settings.plottables.Add(ohlc);
+            return ohlc;
         }
 
-        public void PlotVLine(double x, Color? color = null, double lineWidth = 1, string label = null, bool draggable = false, double dragLimitLower = double.NegativeInfinity, double dragLimitUpper = double.PositiveInfinity, LineStyle lineStyle = LineStyle.Solid)
+        public PlottableAxLine PlotVLine(double x, Color? color = null, double lineWidth = 1, string label = null, bool draggable = false, double dragLimitLower = double.NegativeInfinity, double dragLimitUpper = double.PositiveInfinity, LineStyle lineStyle = LineStyle.Solid)
         {
             if (color == null)
                 color = settings.GetNextColor();
             PlottableAxLine axLine = new PlottableAxLine(x, vertical: true, color: (Color)color, lineWidth: lineWidth, label: label, draggable: draggable, dragLimitLower: dragLimitLower, dragLimitUpper: dragLimitUpper, lineStyle: lineStyle);
             settings.plottables.Add(axLine);
+            return axLine;
         }
 
-        public void PlotVSpan(double y1, double y2, Color? color = null, double alpha = .5, string label = null, bool draggable = false, double dragLimitLower = double.NegativeInfinity, double dragLimitUpper = double.PositiveInfinity)
+        public PlottableAxSpan PlotVSpan(double y1, double y2, Color? color = null, double alpha = .5, string label = null, bool draggable = false, double dragLimitLower = double.NegativeInfinity, double dragLimitUpper = double.PositiveInfinity)
         {
             if (color == null)
                 color = settings.GetNextColor();
 
-            settings.plottables.Add(
-                new PlottableAxSpan(
+            var axisSpan = new PlottableAxSpan(
                     position1: y1,
                     position2: y2,
                     vertical: true,
@@ -269,26 +277,28 @@ namespace ScottPlot
                     draggable: draggable,
                     dragLimitLower: dragLimitLower,
                     dragLimitUpper: dragLimitUpper
-                    )
-                );
+                    );
+
+            settings.plottables.Add(axisSpan);
+            return axisSpan;
         }
 
-        public void PlotHLine(double x, Color? color = null, double lineWidth = 1, string label = null, bool draggable = false, double dragLimitLower = double.NegativeInfinity, double dragLimitUpper = double.PositiveInfinity, LineStyle lineStyle = LineStyle.Solid)
+        public PlottableAxLine PlotHLine(double x, Color? color = null, double lineWidth = 1, string label = null, bool draggable = false, double dragLimitLower = double.NegativeInfinity, double dragLimitUpper = double.PositiveInfinity, LineStyle lineStyle = LineStyle.Solid)
         {
             if (color == null)
                 color = settings.GetNextColor();
             PlottableAxLine axLine = new PlottableAxLine(x, vertical: false, color: (Color)color, lineWidth: lineWidth, label: label, draggable: draggable, dragLimitLower: dragLimitLower, dragLimitUpper: dragLimitUpper, lineStyle: lineStyle);
             settings.plottables.Add(axLine);
+            return axLine;
         }
 
 
-        public void PlotHSpan(double x1, double x2, Color? color = null, double alpha = .5, string label = null, bool draggable = false, double dragLimitLower = double.NegativeInfinity, double dragLimitUpper = double.PositiveInfinity)
+        public PlottableAxSpan PlotHSpan(double x1, double x2, Color? color = null, double alpha = .5, string label = null, bool draggable = false, double dragLimitLower = double.NegativeInfinity, double dragLimitUpper = double.PositiveInfinity)
         {
             if (color == null)
                 color = settings.GetNextColor();
 
-            settings.plottables.Add(
-                new PlottableAxSpan(
+            var axisSpan = new PlottableAxSpan(
                     position1: x1,
                     position2: x2,
                     vertical: false,
@@ -298,18 +308,24 @@ namespace ScottPlot
                     draggable: draggable,
                     dragLimitLower: dragLimitLower,
                     dragLimitUpper: dragLimitUpper
-                    )
-                );
+                    );
+
+            settings.plottables.Add(axisSpan);
+            return axisSpan;
         }
 
         public List<Plottable> GetPlottables()
         {
+            // This function is useful because the end user really isn't 
+            // intended to interact with the settincs class directly.
             return settings.plottables;
         }
 
         public Settings GetSettings()
         {
-            return settings; // this is only intended to be used for testing
+            // The user really should not interact with the settings class directly.
+            // This is exposed here to aid in testing.
+            return settings;
         }
 
         public int GetTotalPoints()
