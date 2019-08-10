@@ -22,7 +22,7 @@ namespace ScottPlot
             double low, high, tickSpacing;
             int maxTickCount;
 
-            SizeF maxTickLabelSize = settings.gfxData.MeasureString("-9999", settings.tickFont);
+            SizeF maxTickLabelSize = settings.gfxData.MeasureString(settings.longestPossibleTickLabel, settings.tickFont);
             if (verticalAxis)
             {
                 low = settings.axis[2];
@@ -92,11 +92,11 @@ namespace ScottPlot
 
             double exponent = (int)(Math.Log10(range));
             double multiplier = 1;
-            if ((exponent < -2) || (exponent > 3))
+            if (Math.Abs(exponent) > 2)
                 multiplier = Math.Pow(10, exponent);
 
             double offset = positions.First();
-            if (Math.Abs(offset / range) < 1000)
+            if (Math.Abs(offset / range) < 10)
                 offset = 0;
 
             for (int i = 0; i < positions.Length; i++)

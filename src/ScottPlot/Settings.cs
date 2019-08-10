@@ -51,6 +51,7 @@ namespace ScottPlot
         public Color tickColor = Color.Black;
         public bool displayTicksX = true;
         public bool displayTicksY = true;
+        public string longestPossibleTickLabel = "-8888";
 
         // title and axis labels
         public string title = "";
@@ -176,7 +177,9 @@ namespace ScottPlot
 
         public void AxisTighen()
         {
-            SizeF biggestTickSize = gfxFigure.MeasureString("-888", tickFont);
+            // "tighten" the plot by reducing whitespce between labels, data, and the edge of the figure
+
+            SizeF biggestTickSize = gfxFigure.MeasureString(longestPossibleTickLabel, tickFont);
             int tickHeight = (int)biggestTickSize.Height;
 
             // top
