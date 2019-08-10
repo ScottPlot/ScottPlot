@@ -45,8 +45,8 @@ namespace ScottPlot
 
         // axis ticks
         public Font tickFont = new Font("Segoe UI", 10);
-        public List<Tick> ticksX;
-        public List<Tick> ticksY;
+        public TickCollection tickCollectionX;
+        public TickCollection tickCollectionY;
         public int tickSize = 5;
         public Color tickColor = Color.Black;
         public bool displayTicksX = true;
@@ -68,8 +68,8 @@ namespace ScottPlot
         // grid
         public bool displayGrid = true;
         public Color gridColor = Color.LightGray;
-        public double gridSpacingX = 0;
-        public double gridSpacingY = 0;
+        public double tickSpacingX = 0;
+        public double tickSpacingY = 0;
 
         // legend
         public Font legendFont = new Font("Segoe UI", 12);
@@ -176,14 +176,6 @@ namespace ScottPlot
 
         public void AxisTighen()
         {
-            Ticks ticks = new Ticks(this);
-            Size maxTickSizeHoriz = ticks.GetMaxTickSize(ticksX);
-            Size maxTickSizeVert = ticks.GetMaxTickSize(ticksY);
-            if (displayTicksX == false)
-                maxTickSizeHoriz = new Size(0, 0);
-            if (displayTicksY == false)
-                maxTickSizeVert = new Size(0, 0);
-
             SizeF biggestTickSize = gfxFigure.MeasureString("-888", tickFont);
             int tickHeight = (int)biggestTickSize.Height;
 
@@ -196,15 +188,15 @@ namespace ScottPlot
             SizeF xLabelSize = gfxFigure.MeasureString(axisLabelX, axisLabelFontX);
             int xLabelHeight = (int)(xLabelSize.Height);
             axisLabelPadding[2] = Math.Max(xLabelHeight, tickHeight) + axisPadding * 2;
-            axisLabelPadding[2] += maxTickSizeHoriz.Height;
+            axisLabelPadding[2] += (int)biggestTickSize.Height;
 
             // left
             SizeF yLabelSize = gfxFigure.MeasureString(axisLabelY, axisLabelFontY);
             axisLabelPadding[0] = (int)(yLabelSize.Height) + axisPadding * 2;
-            axisLabelPadding[0] += maxTickSizeVert.Width;
+            axisLabelPadding[0] += (int)biggestTickSize.Width;
 
             // right
-            axisLabelPadding[1] = axisPadding + maxTickSizeHoriz.Width / 2;
+            axisLabelPadding[1] = axisPadding + (int)biggestTickSize.Width / 2;
 
             // override for frameles
             if (axisPadding == 0)

@@ -16,9 +16,9 @@ namespace wav_file_viewer
         {
             InitializeComponent();
             if (System.IO.File.Exists("mozart.wav"))
-            {
                 LoadFile("mozart.wav");
-            }
+            else if (System.IO.File.Exists("../../mozart.wav"))
+                LoadFile("../../mozart.wav");
         }
 
         private void BtnSelectFile_Click(object sender, EventArgs e)

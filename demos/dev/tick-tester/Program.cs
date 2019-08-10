@@ -9,22 +9,49 @@ namespace tick_tester
     class Program
     {
         static void Main(string[] args)
+        //all comments to be stripped out when done
+        //right click on output window and uncheck "Exception messages" to clean output
         {
-            DisplayTicksForRange(-10, 10);
-            DisplayTicksForRange(-50, 50);
-            DisplayTicksForRange(-77, 123);
-            DisplayTicksForRange(-12345678, -12345678+1);
-            DisplayTicksForRange(-1234567812345678, -1234567812345678 + 1);
-            DisplayTicksForRange(.00000010, .00000011);
+            double bigNumber = Math.Pow(23.456, 9);
+            double smallNumber = Math.Pow(23.456, -9);
+
+            DisplayTicks(-bigNumber, bigNumber);
+            DisplayTicks(9876 * bigNumber, 9877 * bigNumber);
+            DisplayTicks(-smallNumber, smallNumber);
+            DisplayTicks(9876 * smallNumber, 9877 * smallNumber);
+
+            DisplayTicks(-17, 17);
+            DisplayTicks(-50, 50);
+            DisplayTicks(-77, 123);
+            DisplayTicks(-12345678, -12345678 + 1);
+            DisplayTicks(-1234567812345678, -1234567812345678 + 1);
+            DisplayTicks(.00000010, .00000011);
+            DisplayTicks(.0000001000001, .0000001000002); //does not render correctly
+            DisplayTicks(100000001, 200000001);
+
+            /*
+            DisplayTicks(new DateTime(1492, 10, 12), new DateTime(1776, 10, 3)); //years
+            DisplayTicks(new DateTime(1915, 1, 1), new DateTime(1918, 1, 1));  //months
+            DisplayTicks(new DateTime(2019, 6, 1, 6, 0, 0), new DateTime(2019, 6, 1, 11, 12, 15)); //hours
+            DisplayTicks(new DateTime(2019, 6, 1, 6, 0, 0), new DateTime(2019, 6, 1, 6, 12, 15)); //minutes
+            DisplayTicks(new DateTime(2019, 6, 1, 6, 12, 0), new DateTime(2019, 6, 1, 6, 12, 15)); //seconds
+            DisplayTicks(DateTime.Now, DateTime.Now);
+            */
         }
 
-        static void DisplayTicksForRange(double low, double high)
+        static void DisplayTicks(double low, double high)
         {
-            double[] tickPositions = ScottPlot.TicksExperimental.GetTicks(low, high);
-            Console.Write($"{tickPositions.Length} ticks in [{low} - {high}]: ");
-            foreach (double tickPosition in tickPositions)
-                Console.Write(tickPosition + " ");
-            Console.WriteLine();
+            var plt = new ScottPlot.Plot();
+            plt.Axis(low, high);
+            var ticks = new ScottPlot.TickCollection(plt.GetSettings());
+            Console.WriteLine(ticks);
         }
+
+        static void DisplayTicks(DateTime low, DateTime high)
+        {
+            //var ticks = new ScottPlot.TickCollection(low, high);
+            //Console.WriteLine(ticks);
+        }
+
     }
 }

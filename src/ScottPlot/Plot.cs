@@ -306,6 +306,11 @@ namespace ScottPlot
             return settings.plottables;
         }
 
+        public Settings GetSettings()
+        {
+            return settings; // this is only intended to be used for testing
+        }
+
         public int GetTotalPoints()
         {
             int totalPoints = 0;
@@ -469,8 +474,8 @@ namespace ScottPlot
                 settings.displayGrid = (bool)enable;
             if (color != null)
                 settings.gridColor = (Color)color;
-            settings.gridSpacingX = (xSpacing == null) ? 0 : (double)xSpacing;
-            settings.gridSpacingY = (ySpacing == null) ? 0 : (double)ySpacing;
+            settings.tickSpacingX = (xSpacing == null) ? 0 : (double)xSpacing;
+            settings.tickSpacingY = (ySpacing == null) ? 0 : (double)ySpacing;
             settings.bmpFigureRenderRequired = true;
         }
 
