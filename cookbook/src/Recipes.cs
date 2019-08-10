@@ -280,9 +280,10 @@ namespace ScottPlotCookbook
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
 
-            // Even after an array is given to ScottPlot plotted, its contents 
-            // can be updated and they will be displayed at the next render.
-            // This is epsecially useful to know for creating live data displays.
+            // After an array is plotted with PlotSignal() or PlotScatter() its contents 
+            //   can be updated (by changing values in the array) and they will be displayed 
+            //   at the next render. This makes it easy to create live displays.
+
             for (int i = 10; i < 20; i++)
             {
                 dataSin[i] = i / 10.0;
@@ -294,6 +295,29 @@ namespace ScottPlotCookbook
             PrepareDataSmall(); // hide
             return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
+
+        public string Figure_11_Modify_Styles_After_Plotting()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            var plt = new ScottPlot.Plot(width, height);
+
+            // All Plot functions return the object that was just created.
+            var scatter1 = plt.PlotScatter(dataXs, dataSin);
+            var scatter2 = plt.PlotScatter(dataXs, dataCos);
+            var horizontalLine = plt.PlotHLine(0, lineWidth: 3);
+
+            // This allows you to modify the object's properties later.
+            scatter1.color = Color.Pink;
+            scatter2.markerShape = ScottPlot.MarkerShape.openCircle;
+            horizontalLine.position = 0.7654;
+
+            plt.SaveFig(fileName);
+            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
+        }
+
         #endregion
 
         public string Figure_20_Small_Plot()

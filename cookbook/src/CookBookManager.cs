@@ -42,6 +42,7 @@ namespace ScottPlotCookbook
             hashes.Add(recipies.Figure_08_Plotting_Text());
             hashes.Add(recipies.Figure_09_Clearing_Plots());
             hashes.Add(recipies.Figure_10_Modifying_Plotted_Data());
+            hashes.Add(recipies.Figure_11_Modify_Styles_After_Plotting());
 
             hashes.Add(recipies.Figure_20_Small_Plot());
             hashes.Add(recipies.Figure_21a_Title_and_Axis_Labels());

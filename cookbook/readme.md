@@ -189,9 +189,10 @@ var plt = new ScottPlot.Plot(600, 400);
 plt.PlotScatter(dataXs, dataSin);
 plt.PlotScatter(dataXs, dataCos);
 
-// Even after an array is given to ScottPlot plotted, its contents 
-// can be updated and they will be displayed at the next render.
-// This is epsecially useful to know for creating live data displays.
+// After an array is plotted with PlotSignal() or PlotScatter() its contents 
+//   can be updated (by changing values in the array) and they will be displayed 
+//   at the next render. This makes it easy to create live displays.
+
 for (int i = 10; i < 20; i++)
 {
     dataSin[i] = i / 10.0;
@@ -204,6 +205,26 @@ PrepareDataSmall(); // hide
 ```
 
 ![](./images/10_Modifying_Plotted_Data.png)
+
+## Modify Styles After Plotting
+
+```cs
+var plt = new ScottPlot.Plot(600, 400);
+
+// All Plot functions return the object that was just created.
+var scatter1 = plt.PlotScatter(dataXs, dataSin);
+var scatter2 = plt.PlotScatter(dataXs, dataCos);
+var horizontalLine = plt.PlotHLine(0, lineWidth: 3);
+
+// This allows you to modify the object's properties later.
+scatter1.color = Color.Pink;
+scatter2.markerShape = ScottPlot.MarkerShape.openCircle;
+horizontalLine.position = 0.7654;
+
+plt.SaveFig(fileName);
+```
+
+![](./images/11_Modify_Styles_After_Plotting.png)
 
 ## Small Plot
 
