@@ -66,5 +66,28 @@ namespace ScottPlot
             }
             throw new Exception($"Font not found: {fontName}");
         }
+
+        public static string ScientificNotation(double value, int decimalPlaces = 2, bool preceedWithPlus = true)
+        {
+            string output;
+
+            if ((Math.Abs(value) > .0001) && (Math.Abs(value) < 10000))
+            {
+                value = Math.Round(value, decimalPlaces);
+                output = value.ToString();
+            } else
+            {
+                int exponent = (int)Math.Log10(value);
+                double multiplier = Math.Pow(10, exponent);
+                double mantissa = value / multiplier;
+                mantissa = Math.Round(mantissa, decimalPlaces);
+                output = $"{mantissa}e{exponent}";
+            }
+
+            if (preceedWithPlus && !output.StartsWith("-"))
+                output = "+" + output;
+
+            return output;
+        }
     }
 }
