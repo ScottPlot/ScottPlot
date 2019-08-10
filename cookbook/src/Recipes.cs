@@ -460,8 +460,6 @@ namespace ScottPlotCookbook
 
             var plt = new ScottPlot.Plot(width, height);
             plt.Title("panned far and really zoomed in");
-            plt.PlotScatter(dataXs, dataSin);
-            plt.PlotScatter(dataXs, dataCos);
             plt.Axis(bigNumber, bigNumber + .00001, bigNumber, bigNumber + .00001);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");

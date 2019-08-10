@@ -24,6 +24,9 @@ namespace ScottPlot
 
         public static void DataGrid(Settings settings)
         {
+            if (settings.displayGrid == false)
+                return;
+
             Pen pen = new Pen(settings.gridColor);
 
             for (int i = 0; i < settings.tickCollectionX.tickPositions.Length; i++)

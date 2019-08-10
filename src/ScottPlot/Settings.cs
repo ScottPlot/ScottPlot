@@ -45,11 +45,8 @@ namespace ScottPlot
 
         // axis ticks
         public Font tickFont = new Font("Segoe UI", 10);
-        //public List<Tick> ticksX;
-        //public List<Tick> ticksY;
         public TickCollection tickCollectionX;
         public TickCollection tickCollectionY;
-
         public int tickSize = 5;
         public Color tickColor = Color.Black;
         public bool displayTicksX = true;
