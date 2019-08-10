@@ -34,7 +34,7 @@ namespace ScottPlot
             {
                 low = settings.axis[0];
                 high = settings.axis[1];
-                maxTickCount = (int)(settings.dataSize.Width / maxTickLabelSize.Width);
+                maxTickCount = (int)(settings.dataSize.Width / maxTickLabelSize.Width * 1.2);
                 tickSpacing = (settings.tickSpacingX != 0) ? settings.tickSpacingX : GetIdealTickSpacing(low, high, maxTickCount);
             }
 
