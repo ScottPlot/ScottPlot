@@ -62,11 +62,21 @@ namespace ScottPlot
             {
                 ys[i] = newData[i - from + fromData];
             }
-            //TODO check last element
+            
             for (int i = n / 2 + from / 2; i < n / 2 + to / 2; i++)
             {
                 TreeMin[i] = Math.Min(ys[i * 2 - n], ys[i * 2 + 1 - n]);
                 TreeMax[i] = Math.Max(ys[i * 2 - n], ys[i * 2 + 1 - n]);
+            }
+            if (to == ys.Length) // last elem haven't pair
+            {
+                TreeMin[n / 2 + to / 2] = ys[to - 1];
+                TreeMax[n / 2 + to / 2] = ys[to - 1];
+            }
+            else if (to % 2 == 1) //last elem even(to-1) and not last
+            {
+                TreeMin[n / 2 + to / 2] = Math.Min(ys[to - 1], ys[to]);
+                TreeMax[n / 2 + to / 2] = Math.Max(ys[to - 1], ys[to]);
             }
             from = (n / 2 + from / 2) / 2;
             to = (n / 2 + to / 2) / 2;
