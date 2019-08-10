@@ -169,6 +169,9 @@ namespace ScottPlot
 
         public static void RenderTicksOnLeft(Settings settings)
         {
+            if (!settings.displayTicksY)
+                return;
+
             Pen pen = new Pen(settings.tickColor);
             Brush brush = new SolidBrush(settings.tickColor);
 
@@ -190,6 +193,9 @@ namespace ScottPlot
 
         public static void RenderTicksOnBottom(Settings settings)
         {
+            if (!settings.displayTicksX)
+                return;
+
             Pen pen = new Pen(settings.tickColor);
             Brush brush = new SolidBrush(settings.tickColor);
 
@@ -211,7 +217,7 @@ namespace ScottPlot
         {
             Brush brush = new SolidBrush(settings.tickColor);
 
-            if (settings.tickCollectionX.cornerLabel != "")
+            if ((settings.tickCollectionX.cornerLabel != "") && settings.displayTicksX)
             {
                 SizeF multiplierLabelXsize = settings.gfxFigure.MeasureString(settings.tickCollectionX.cornerLabel, settings.tickFont);
                 settings.gfxFigure.DrawString(settings.tickCollectionX.cornerLabel, settings.tickFont, brush,
@@ -220,7 +226,7 @@ namespace ScottPlot
                     settings.sfNorthEast);
             }
 
-            if (settings.tickCollectionY.cornerLabel != "")
+            if ((settings.tickCollectionY.cornerLabel != "") && settings.displayTicksY)
             {
                 //SizeF multiplierLabelYsize = settings.gfxFigure.MeasureString(settings.tickCollectionY.cornerLabel, settings.tickFont);
                 settings.gfxFigure.DrawString(settings.tickCollectionY.cornerLabel, settings.tickFont, brush,
