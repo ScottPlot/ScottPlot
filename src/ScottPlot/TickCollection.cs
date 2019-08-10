@@ -108,9 +108,7 @@ namespace ScottPlot
             if (multiplier != 1)
                 cornerLabel += $"e{exponent}";
             if (offset != 0)
-                cornerLabel += $" +{offset}";
-            cornerLabel = cornerLabel.Replace("E", "e");
-            cornerLabel = cornerLabel.Replace("e+", "e");
+                cornerLabel += string.Format(" +{0:E2}", offset).Replace("E", "e").Replace("e+", "e").Replace("+-", "-");
         }
 
     }
