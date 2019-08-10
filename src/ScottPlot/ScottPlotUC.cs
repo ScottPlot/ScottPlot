@@ -114,7 +114,7 @@ namespace ScottPlot
                 helpMenu.DropDownItems.Add("middle-click for auto-axis");
                 helpMenu.DropDownItems.Add("double-click to toggle benchmark");
                 helpMenu.DropDownItems.Add(new ToolStripSeparator());
-                helpMenu.DropDownItems.Add("About ScottPlot");
+                helpMenu.DropDownItems.Add($"About ScottPlot {ScottPlot.Tools.GetVersionString()}");
                 helpMenu.DropDownItems[0].Enabled = false;
                 helpMenu.DropDownItems[1].Enabled = false;
                 helpMenu.DropDownItems[2].Enabled = false;

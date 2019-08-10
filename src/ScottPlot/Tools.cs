@@ -24,6 +24,12 @@ namespace ScottPlot
             return new SolidBrush(GetRandomColor());
         }
 
+        public static string GetVersionString()
+        {
+            Version scottPlotVersion = typeof(ScottPlot.Plot).Assembly.GetName().Version;
+            return scottPlotVersion.ToString();
+        }
+
         public static string BitmapHash(Bitmap bmp)
         {
             byte[] bmpBytes = BitmapToBytes(bmp);

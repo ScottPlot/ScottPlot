@@ -41,7 +41,11 @@ namespace ScottPlot
         {
             Console.WriteLine("CLICKED:" + item.ToString());
             SaveFileDialog savefile = new SaveFileDialog();
-            switch (item.ToString())
+            string itemName = item.ToString();
+            if (itemName.StartsWith("About"))
+                itemName = "About";
+
+            switch (itemName)
             {
                 case "Save Image":
                     rightClickMenu.Hide();
@@ -65,7 +69,7 @@ namespace ScottPlot
                     rightClickMenu.Hide();
                     plt.Clear();
                     break;
-                case "About ScottPlot":
+                case "About":
                     rightClickMenu.Hide();
                     System.Diagnostics.Process.Start("https://github.com/swharden/ScottPlot");
                     break;
