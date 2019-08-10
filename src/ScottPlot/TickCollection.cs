@@ -106,9 +106,9 @@ namespace ScottPlot
             }
 
             if (multiplier != 1)
-                cornerLabel += $"e{exponent}";
+                cornerLabel += $"e{exponent} ";
             if (offset != 0)
-                cornerLabel += string.Format(" +{0:E2}", offset).Replace("E", "e").Replace("e+", "e").Replace("+-", "-");
+                cornerLabel += Tools.ScientificNotation(offset);
         }
 
     }
