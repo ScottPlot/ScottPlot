@@ -20,11 +20,7 @@ namespace ScottPlotDemo
             InitializeComponent();
             SetLabels();
             StyleLight();
-            Clear();
-        }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
             BtnScatterSin_Click(null, null);
             BtnScatterSin_Click(null, null);
             BtnScatterSin_Click(null, null);
@@ -158,108 +154,33 @@ namespace ScottPlotDemo
             scottPlotUC1.Render();
         }
 
-        private void RandomWalk(int pointCount)
+        private void PlotSignalRandomWalk(int pointCount)
         {
-            data = ScottPlot.DataGen.RandomWalk(rand, pointCount, 10, rand.NextDouble() * 10 - 5);
-            signal = scottPlotUC1.plt.PlotSignalConst(data, data.Length * 0.1);
-            //scottPlotUC1.plt.PlotSignal(data, data.Length * 0.1);
+            double[] data = ScottPlot.DataGen.RandomWalk(rand, pointCount, 10, rand.NextDouble() * 10 - 5);
+            scottPlotUC1.plt.PlotSignalConst(data);
             scottPlotUC1.plt.AxisAuto();
             scottPlotUC1.Render();
         }
 
         private void BtnSignal1k_Click(object sender, EventArgs e)
         {
-            RandomWalk(1_000);
+            PlotSignalRandomWalk(1_000);
         }
 
         private void BtnSignal100k_Click(object sender, EventArgs e)
         {
-            RandomWalk(100_000);
+            PlotSignalRandomWalk(100_000);
         }
 
         private void BtnSignal1m_Click(object sender, EventArgs e)
         {
-            RandomWalk(1_000_000);
+            PlotSignalRandomWalk(1_000_000);
         }
 
         private void BtnSignal10m_Click(object sender, EventArgs e)
         {
-            RandomWalk(10_000_000);
+            PlotSignalRandomWalk(10_000_000);
         }
 
-        // some global params for updates
-        ScottPlot.PlottableSignal signal;
-        double[] data;
-        bool busy = false;
-        private void BtnUpdateSignal_click(object sender, EventArgs e)
-        {
-            btnUpdateSignal.Enabled = false;
-            int updateRangeSize = 1_000_000; // 0 means update by element
-            System.Timers.Timer timer;
-            // timer for auto redraw plot every 200 ms 
-            timer = new System.Timers.Timer(200);
-            timer.SynchronizingObject = this;
-            timer.Elapsed += (o, arg) =>
-            {
-                if (busy) // simple mutex
-                    return;
-                busy = true;                
-                scottPlotUC1.Render();
-                busy = false;
-            };
-            timer.AutoReset = true;
-            timer.Start();
-            
-            var pointstoUpdateCount = data.Length;
-            // using simple implementation of RandomWalk,
-            // because RandomWalk do usless min/max calculation, 
-            var newSignal = new double[pointstoUpdateCount];
-            newSignal[0] = rand.NextDouble() * 10 - 5;
-            for (int i = 1; i < pointstoUpdateCount; i++)
-            {
-                newSignal[i] = newSignal[i - 1] + (rand.NextDouble() * 2 - 1) * 10;
-            }              
-            // run plot data updates at max speed in background thread                
-            Task.Run(() =>
-            {
-                if (signal is ScottPlot.PlottableSignalConst)
-                {
-                    var signalConst = signal as ScottPlot.PlottableSignalConst;
-                    signalConst.updateData(0, rand.NextDouble() * 10 - 5);
-                    if (updateRangeSize < 1)
-                    {                        
-                        for (int i = 1; i < pointstoUpdateCount; i++)
-                            signalConst.updateData(i, newSignal[i]);                
-                    }
-                    else
-                    {
-                        
-                        for (int i = 0; i < pointstoUpdateCount - updateRangeSize; i+=updateRangeSize)
-                        {
-                            signalConst.updateData(i, i + updateRangeSize, newSignal, i);
-                        }
-                        int lastPiece = (pointstoUpdateCount-updateRangeSize)/updateRangeSize * updateRangeSize;
-                        signalConst.updateData(lastPiece, pointstoUpdateCount, newSignal, lastPiece);
-
-                    }
-                }
-                else
-                {
-                    data[0] = rand.NextDouble() * 10 - 5;
-                    for (int i = 1; i < pointstoUpdateCount; i++)
-                        data[i] = newSignal[i];
-                }
-                timer.Stop();
-                timer.Dispose();
-                // last update to make it look perfect and able to new run
-                this.Invoke((MethodInvoker)(() =>
-                {
-                    while (busy)
-                        Thread.Sleep(100);
-                    scottPlotUC1.Render();
-                    btnUpdateSignal.Enabled = true;
-                }));
-            });
-        }
     }
 }

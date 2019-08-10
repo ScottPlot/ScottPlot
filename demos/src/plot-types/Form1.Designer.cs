@@ -44,7 +44,6 @@
             this.cbAntiAliasData = new System.Windows.Forms.CheckBox();
             this.cbAntiAliasFigure = new System.Windows.Forms.CheckBox();
             this.scottPlotUC1 = new ScottPlot.ScottPlotUC();
-            this.btnUpdateSignal = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnClear
@@ -215,22 +214,11 @@
             this.scottPlotUC1.Size = new System.Drawing.Size(836, 389);
             this.scottPlotUC1.TabIndex = 0;
             // 
-            // btnUpdateSignal
-            // 
-            this.btnUpdateSignal.Location = new System.Drawing.Point(771, 39);
-            this.btnUpdateSignal.Name = "btnUpdateSignal";
-            this.btnUpdateSignal.Size = new System.Drawing.Size(75, 23);
-            this.btnUpdateSignal.TabIndex = 16;
-            this.btnUpdateSignal.Text = "Update Sig";
-            this.btnUpdateSignal.UseVisualStyleBackColor = true;
-            this.btnUpdateSignal.Click += new System.EventHandler(this.BtnUpdateSignal_click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(860, 471);
-            this.Controls.Add(this.btnUpdateSignal);
             this.Controls.Add(this.cbAntiAliasFigure);
             this.Controls.Add(this.cbAntiAliasData);
             this.Controls.Add(this.btnText);
@@ -249,7 +237,6 @@
             this.Controls.Add(this.scottPlotUC1);
             this.Name = "Form1";
             this.Text = "ScottPlot Demo";
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -273,7 +260,6 @@
         private System.Windows.Forms.Button btnText;
         private System.Windows.Forms.CheckBox cbAntiAliasData;
         private System.Windows.Forms.CheckBox cbAntiAliasFigure;
-        private System.Windows.Forms.Button btnUpdateSignal;
     }
 }
 
