@@ -27,7 +27,7 @@ namespace ScottPlot
         {
             InitializeComponent();
             if (System.Diagnostics.Process.GetCurrentProcess().ProcessName == "devenv")
-                UserControlTools.DesignerModeDemoPlot(plt);
+                Tools.DesignerModeDemoPlot(plt);
             CanvasPlot_SizeChanged(null, null);
         }
 
@@ -36,7 +36,7 @@ namespace ScottPlot
             if (!(skipIfCurrentlyRendering && currentlyRendering))
             {
                 currentlyRendering = true;
-                imagePlot.Source = UserControlTools.bmpImageFromBmp(plt.GetBitmap());
+                imagePlot.Source = Tools.bmpImageFromBmp(plt.GetBitmap());
                 currentlyRendering = false;
             }
         }

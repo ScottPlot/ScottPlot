@@ -17,7 +17,7 @@ namespace ScottPlot
             plt.Style(ScottPlot.Style.Control);
             pbPlot.MouseWheel += PbPlot_MouseWheel;
             if (Process.GetCurrentProcess().ProcessName == "devenv")
-                ScottPlot.UserControlTools.DesignerModeDemoPlot(plt);
+                ScottPlot.Tools.DesignerModeDemoPlot(plt);
             PbPlot_SizeChanged(null, null);
         }
 
@@ -146,7 +146,7 @@ namespace ScottPlot
         private void RightClickMenuItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             rightClickMenu.Hide();
-            UserControlTools.RightClickMenuItemClicked(e.ClickedItem, rightClickMenu, plt);
+            Tools.RightClickMenuItemClicked(e.ClickedItem, rightClickMenu, plt);
             Render(skipIfCurrentlyRendering: false);
         }
 
