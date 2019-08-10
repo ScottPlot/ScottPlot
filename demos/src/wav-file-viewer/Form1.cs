@@ -35,7 +35,10 @@ namespace wav_file_viewer
             tbCurrentFile.Text = wavFilePath;
 
             double[] wavData = ReadWavFile(wavFilePath);
-            scottPlotUC1.plt.PlotSignal(wavData, sampleRate: 8000, color: Color.Red);
+
+            // here PlotSignalConst() is used over PlotSignal() because it's faster and the source data does not change.
+
+            scottPlotUC1.plt.PlotSignalConst(wavData, sampleRate: 8000, color: Color.Red);
             scottPlotUC1.plt.AxisAuto();
             scottPlotUC1.plt.YLabel("Amplitue");
             scottPlotUC1.plt.XLabel("Time (seconds)");
