@@ -145,6 +145,31 @@ namespace ScottPlotCookbook
             return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
+        public string Figure_01g_All_Marker_Shapes()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            var plt = new ScottPlot.Plot(width, height);
+            plt.Title("ScottPlot Marker Shapes");
+            plt.Grid(false);
+
+            // plot a sine wave for every marker available
+            string[] markerShapeNames = Enum.GetNames(typeof(ScottPlot.MarkerShape));
+            for (int i = 0; i < markerShapeNames.Length; i++)
+            {
+                string markerShapeName = markerShapeNames[i];
+                var markerShape = (ScottPlot.MarkerShape)System.Enum.Parse(typeof(ScottPlot.MarkerShape), markerShapeName);
+                double[] stackedSin = ScottPlot.DataGen.Sin(dataXs.Length, 2, -i);
+                plt.PlotScatter(dataXs, stackedSin, label: markerShapeNames[i], markerShape: markerShape);
+            }
+
+            plt.Legend(fontSize: 10);
+            plt.SaveFig(fileName);
+            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
+        }
+
         public string Figure_02_Styling_Scatter_Plots()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");

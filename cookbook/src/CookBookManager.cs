@@ -32,6 +32,7 @@ namespace ScottPlotCookbook
             hashes.Add(recipies.Figure_01d_Zoom_and_Pan());
             hashes.Add(recipies.Figure_01e_Legend());
             hashes.Add(recipies.Figure_01f_Custom_Marker_Shapes());
+            hashes.Add(recipies.Figure_01g_All_Marker_Shapes());
             hashes.Add(recipies.Figure_02_Styling_Scatter_Plots());
             hashes.Add(recipies.Figure_03_Plot_XY_Data());
             hashes.Add(recipies.Figure_04_Plot_Lines_Only());
