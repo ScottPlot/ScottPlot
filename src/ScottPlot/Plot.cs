@@ -106,15 +106,10 @@ namespace ScottPlot
         private void RenderBitmap()
         {
             if (!settings.axisHasBeenIntentionallySet && settings.plottables.Count > 0)
-            {
                 settings.AxisAuto();
-                TightenLayout();
-            }
 
             if (!settings.tighteningOccurred)
-            {
                 TightenLayout();
-            }
 
             UpdateAntiAliasingSettings();
 
@@ -251,7 +246,6 @@ namespace ScottPlot
                 );
 
             settings.plottables.Add(scatterPlot);
-
             return scatterPlot;
         }
 
@@ -303,6 +297,7 @@ namespace ScottPlot
         {
             if (color == null)
                 color = settings.GetNextColor();
+
             PlottableScatter stepPlot = new PlottableScatter(
                 xs: xs,
                 ys: ys,
@@ -318,6 +313,7 @@ namespace ScottPlot
                 markerShape: MarkerShape.none,
                 lineStyle: LineStyle.Solid
                 );
+
             settings.plottables.Add(stepPlot);
             return stepPlot;
         }
@@ -365,6 +361,7 @@ namespace ScottPlot
         {
             if (color == null)
                 color = settings.GetNextColor();
+
             PlottableSignalConst signal = new PlottableSignalConst(
                 ys: ys,
                 sampleRate: sampleRate,
@@ -376,6 +373,7 @@ namespace ScottPlot
                 label: label,
                 useParallel: settings.useParallel
                 );
+
             settings.plottables.Add(signal);
             return signal;
         }
