@@ -35,7 +35,7 @@
             this.btnSignal1k = new System.Windows.Forms.Button();
             this.btnSignal100k = new System.Windows.Forms.Button();
             this.btnSignal1m = new System.Windows.Forms.Button();
-            this.btnSignal100m = new System.Windows.Forms.Button();
+            this.btnSignal10m = new System.Windows.Forms.Button();
             this.btnVline = new System.Windows.Forms.Button();
             this.btnHline = new System.Windows.Forms.Button();
             this.cbBenchmark = new System.Windows.Forms.CheckBox();
@@ -44,6 +44,7 @@
             this.cbAntiAliasData = new System.Windows.Forms.CheckBox();
             this.cbAntiAliasFigure = new System.Windows.Forms.CheckBox();
             this.scottPlotUC1 = new ScottPlot.ScottPlotUC();
+            this.btnUpdateSignal = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnClear
@@ -116,15 +117,15 @@
             this.btnSignal1m.UseVisualStyleBackColor = true;
             this.btnSignal1m.Click += new System.EventHandler(this.BtnSignal1m_Click);
             // 
-            // btnSignal100m
+            // btnSignal10m
             // 
-            this.btnSignal100m.Location = new System.Drawing.Point(639, 40);
-            this.btnSignal100m.Name = "btnSignal100m";
-            this.btnSignal100m.Size = new System.Drawing.Size(126, 23);
-            this.btnSignal100m.TabIndex = 8;
-            this.btnSignal100m.Text = "Signal (10M points)";
-            this.btnSignal100m.UseVisualStyleBackColor = true;
-            this.btnSignal100m.Click += new System.EventHandler(this.BtnSignal100m_Click);
+            this.btnSignal10m.Location = new System.Drawing.Point(639, 40);
+            this.btnSignal10m.Name = "btnSignal10m";
+            this.btnSignal10m.Size = new System.Drawing.Size(126, 23);
+            this.btnSignal10m.TabIndex = 8;
+            this.btnSignal10m.Text = "Signal (10M points)";
+            this.btnSignal10m.UseVisualStyleBackColor = true;
+            this.btnSignal10m.Click += new System.EventHandler(this.BtnSignal10m_Click);
             // 
             // btnVline
             // 
@@ -214,11 +215,22 @@
             this.scottPlotUC1.Size = new System.Drawing.Size(836, 389);
             this.scottPlotUC1.TabIndex = 0;
             // 
+            // btnUpdateSignal
+            // 
+            this.btnUpdateSignal.Location = new System.Drawing.Point(771, 39);
+            this.btnUpdateSignal.Name = "btnUpdateSignal";
+            this.btnUpdateSignal.Size = new System.Drawing.Size(75, 23);
+            this.btnUpdateSignal.TabIndex = 16;
+            this.btnUpdateSignal.Text = "Update Sig";
+            this.btnUpdateSignal.UseVisualStyleBackColor = true;
+            this.btnUpdateSignal.Click += new System.EventHandler(this.BtnUpdateSignal_click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(860, 471);
+            this.Controls.Add(this.btnUpdateSignal);
             this.Controls.Add(this.cbAntiAliasFigure);
             this.Controls.Add(this.cbAntiAliasData);
             this.Controls.Add(this.btnText);
@@ -226,7 +238,7 @@
             this.Controls.Add(this.cbBenchmark);
             this.Controls.Add(this.btnHline);
             this.Controls.Add(this.btnVline);
-            this.Controls.Add(this.btnSignal100m);
+            this.Controls.Add(this.btnSignal10m);
             this.Controls.Add(this.btnSignal1m);
             this.Controls.Add(this.btnSignal100k);
             this.Controls.Add(this.btnSignal1k);
@@ -253,7 +265,7 @@
         private System.Windows.Forms.Button btnSignal1k;
         private System.Windows.Forms.Button btnSignal100k;
         private System.Windows.Forms.Button btnSignal1m;
-        private System.Windows.Forms.Button btnSignal100m;
+        private System.Windows.Forms.Button btnSignal10m;
         private System.Windows.Forms.Button btnVline;
         private System.Windows.Forms.Button btnHline;
         private System.Windows.Forms.CheckBox cbBenchmark;
@@ -261,6 +273,7 @@
         private System.Windows.Forms.Button btnText;
         private System.Windows.Forms.CheckBox cbAntiAliasData;
         private System.Windows.Forms.CheckBox cbAntiAliasFigure;
+        private System.Windows.Forms.Button btnUpdateSignal;
     }
 }
 
