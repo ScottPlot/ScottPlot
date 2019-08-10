@@ -54,12 +54,33 @@ namespace ScottPlot
             }
         }
 
-        public void UpdateRange(int from, int to, double[] newData, int dataFrom = 0)
+        public void UpdateRange(int from, int to, double[] newData, int fromData = 0)
         {
-            // simle and useless implementation, temponary stub
+            int n = TreeMin.Length;
+            //update source signal
             for (int i = from; i < to; i++)
             {
-                UpdateElement(i, newData[i + dataFrom]);
+                ys[i] = newData[i - from + fromData];
+            }
+            //TODO check last element
+            for (int i = n / 2 + from / 2; i < n / 2 + to / 2; i++)
+            {
+                TreeMin[i] = Math.Min(ys[i * 2 - n], ys[i * 2 + 1 - n]);
+                TreeMax[i] = Math.Max(ys[i * 2 - n], ys[i * 2 + 1 - n]);
+            }
+            from = (n / 2 + from / 2) / 2;
+            to = (n / 2 + to / 2) / 2;
+
+            while (from != 0) // up to root elem, that is [1], [0] - is free elem
+            {
+                for (int i = from; i <= to; i++) // Recalc all level nodes in range 
+                {
+                    TreeMin[i] = Math.Min(TreeMin[i * 2], TreeMin[i * 2 + 1]);
+                    TreeMax[i] = Math.Max(TreeMax[i * 2], TreeMax[i * 2 + 1]);
+                }
+                // level up
+                from = from / 2;
+                to = to / 2;
             }
         }
 
