@@ -225,21 +225,21 @@ namespace ScottPlotDemo
                 if (signal is ScottPlot.PlottableSignalConst)
                 {
                     var signalConst = signal as ScottPlot.PlottableSignalConst;
-                    signalConst.UpdateElement(0, rand.NextDouble() * 10 - 5);
+                    signalConst.updateData(0, rand.NextDouble() * 10 - 5);
                     if (updateRangeSize < 1)
                     {                        
                         for (int i = 1; i < pointstoUpdateCount; i++)
-                            signalConst.UpdateElement(i, newSignal[i]);                
+                            signalConst.updateData(i, newSignal[i]);                
                     }
                     else
                     {
                         
                         for (int i = 0; i < pointstoUpdateCount - updateRangeSize; i+=updateRangeSize)
                         {
-                            signalConst.UpdateRange(i, i + updateRangeSize, newSignal, i);
+                            signalConst.updateData(i, i + updateRangeSize, newSignal, i);
                         }
                         int lastPiece = (pointstoUpdateCount-updateRangeSize)/updateRangeSize * updateRangeSize;
-                        signalConst.UpdateRange(lastPiece, pointstoUpdateCount, newSignal, lastPiece);
+                        signalConst.updateData(lastPiece, pointstoUpdateCount, newSignal, lastPiece);
 
                     }
                 }
