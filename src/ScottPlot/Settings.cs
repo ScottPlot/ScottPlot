@@ -118,6 +118,9 @@ namespace ScottPlot
         public StringFormat sfSouthWest = new StringFormat() { LineAlignment = StringAlignment.Far, Alignment = StringAlignment.Near };
         public StringFormat sfWest = new StringFormat() { LineAlignment = StringAlignment.Center, Alignment = StringAlignment.Near };
 
+        // experimental settings
+        public bool useParallel = false;
+
         public Settings()
         {
 

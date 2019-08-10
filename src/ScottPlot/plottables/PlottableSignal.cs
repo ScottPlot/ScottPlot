@@ -18,7 +18,7 @@ namespace ScottPlot
         public Pen pen;
         public Brush brush;
 
-        public PlottableSignal(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label)
+        public PlottableSignal(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, bool useParallel)
         {
 
             if (ys == null)
@@ -32,6 +32,7 @@ namespace ScottPlot
             this.label = label;
             this.color = color;
             this.yOffset = yOffset;
+            this.useParallel = useParallel;
             pointCount = ys.Length;
             brush = new SolidBrush(color);
             pen = new Pen(color, (float)lineWidth)
@@ -87,20 +88,68 @@ namespace ScottPlot
             }
         }
 
-        private void RenderHighDensity(Settings settings, double offsetPoints, double columnPointCount)
+        private void RenderHighDensityParallel(Settings settings, double offsetPoints, double columnPointCount)
         {
-            // this function is for when the graph is zoomed out so each pixel column represents the vertical span of multiple data points
-
-            List<PointF> linePoints = new List<PointF>(settings.dataSize.Width * 2 + 1);
-            for (int xPx = 0; xPx < settings.dataSize.Width; xPx++)
+            int xPxStart = (int)Math.Ceiling((-1 - offsetPoints) / columnPointCount - 1);
+            int xPxEnd = (int)Math.Ceiling((ys.Length - offsetPoints) / columnPointCount);
+            xPxStart = Math.Max(0, xPxStart);
+            xPxEnd = Math.Min(settings.dataSize.Width, xPxEnd);
+            if (xPxStart >= xPxEnd)
+                return;
+            PointF[] linePoints = new PointF[(xPxEnd - xPxStart) * 2];
+            Parallel.For(xPxStart, xPxEnd, xPx =>
             {
                 // determine data indexes for this pixel column
                 int index1 = (int)(offsetPoints + columnPointCount * xPx);
                 int index2 = (int)(offsetPoints + columnPointCount * (xPx + 1));
 
-                // skip invalid data index values
-                if ((index2 < 0) || (index1 > ys.Length - 1))
-                    continue;
+                if (index1 < 0)
+                    index1 = 0;
+                if (index2 > ys.Length - 1)
+                    index2 = ys.Length - 1;
+
+                // get the min and max value for this column
+                double lowestValue, highestValue;
+                MinMaxRangeQuery(index1, index2, out lowestValue, out highestValue);
+                float yPxHigh = settings.GetPixel(0, lowestValue + yOffset).Y;
+                float yPxLow = settings.GetPixel(0, highestValue + yOffset).Y;
+
+                linePoints[(xPx - xPxStart) * 2] = new PointF(xPx, yPxLow);
+                linePoints[(xPx - xPxStart) * 2 + 1] = new PointF(xPx, yPxHigh);
+            });
+
+            // adjust order of points to enhance anti-aliasing
+            PointF buf;
+            for (int i = 1; i < linePoints.Length / 2; i++)
+            {
+                if (linePoints[i * 2].Y >= linePoints[i * 2 - 1].Y)
+                {
+                    buf = linePoints[i * 2];
+                    linePoints[i * 2] = linePoints[i * 2 + 1];
+                    linePoints[i * 2 + 1] = buf;
+                }
+            }
+
+            settings.gfxData.DrawLines(pen, linePoints);
+        }
+
+        private void RenderHighDensity(Settings settings, double offsetPoints, double columnPointCount)
+        {
+            // this function is for when the graph is zoomed out so each pixel column represents the vertical span of multiple data points
+
+            int xPxStart = (int)Math.Ceiling((-1 - offsetPoints) / columnPointCount - 1);
+            int xPxEnd = (int)Math.Ceiling((ys.Length - offsetPoints) / columnPointCount);
+            xPxStart = Math.Max(0, xPxStart);
+            xPxEnd = Math.Min(settings.dataSize.Width, xPxEnd);
+            if (xPxStart >= xPxEnd)
+                return;
+            List<PointF> linePoints = new List<PointF>((xPxEnd - xPxStart) * 2 + 1);
+            for (int xPx = xPxStart; xPx < xPxEnd; xPx++)
+            {
+                // determine data indexes for this pixel column
+                int index1 = (int)(offsetPoints + columnPointCount * xPx);
+                int index2 = (int)(offsetPoints + columnPointCount * (xPx + 1));
+
                 if (index1 < 0)
                     index1 = 0;
                 if (index2 > ys.Length - 1)
@@ -158,12 +207,22 @@ namespace ScottPlot
             PointF lastPoint = settings.GetPixel(samplePeriod * (ys.Length - 1) + xOffset, ys.Last() + yOffset);
             double dataWidthPx = lastPoint.X - firstPoint.X;
 
+            // use different rendering methods based on how dense the data is on screen
             if (dataWidthPx <= 1)
+            {
                 RenderSingleLine(settings);
+            }
             else if (pointsPerPixelColumn > 1)
-                RenderHighDensity(settings, offsetPoints, columnPointCount);
+            {
+                if (useParallel)
+                    RenderHighDensityParallel(settings, offsetPoints, columnPointCount);
+                else
+                    RenderHighDensity(settings, offsetPoints, columnPointCount);
+            }
             else
+            {
                 RenderLowDensity(settings, visibleIndex1, visibleIndex2);
+            }
         }
 
         public override void SaveCSV(string filePath)
