@@ -25,6 +25,35 @@ namespace ScottPlot
                 UpdateTrees();
         }
 
+        public void UpdateElement(int index, double newValue)
+        {
+            ys[index] = newValue;
+            // Update Tree, can be optimized
+            int n = TreeMin.Length;
+            if (index == ys.Length - 1) // last elem haven't pair
+            {
+                TreeMin[n / 2 + index / 2] = ys[index];
+                TreeMax[n / 2 + index / 2] = ys[index];
+            }
+            else if (index % 2 == 0) // even elem have right pair
+            {
+                TreeMin[n / 2 + index / 2] = Math.Min(ys[index], ys[index + 1]);
+                TreeMax[n / 2 + index / 2] = Math.Max(ys[index], ys[index + 1]);
+            }
+            else // odd elem have left pair
+            {
+                TreeMin[n / 2 + index / 2] = Math.Min(ys[index], ys[index - 1]);
+                TreeMax[n / 2 + index / 2] = Math.Max(ys[index], ys[index - 1]);
+            }
+            // update tree up to root, can be optimized - if no realy change node value just  break.
+            //  dificulties with double compaire. and need different loops for min/max
+            for (int i = (n / 2 + index / 2) / 2; i > 0; i--)
+            {
+                TreeMin[i] = Math.Min(TreeMin[i * 2], TreeMin[i * 2 + 1]);
+                TreeMax[i] = Math.Max(TreeMax[i * 2], TreeMax[i * 2 + 1]);
+            }
+        }
+
         public void UpdateTreesInBackground()
         {
             Task.Run(() => { UpdateTrees(); });
