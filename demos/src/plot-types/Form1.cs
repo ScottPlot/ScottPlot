@@ -182,9 +182,9 @@ namespace ScottPlotDemo
             RandomWalk(1_000_000);
         }
 
-        private void BtnSignal100m_Click(object sender, EventArgs e)
+        private void BtnSignal10m_Click(object sender, EventArgs e)
         {
-            RandomWalk(60_000_000);
+            RandomWalk(10_000_000);
         }
 
         // some global params for updates
