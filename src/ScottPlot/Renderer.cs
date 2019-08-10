@@ -115,8 +115,9 @@ namespace ScottPlot
             if (settings.dataSize.Width < 1 || settings.dataSize.Height < 1)
                 return;
 
-            settings.tickCollectionX = new TickCollection(settings.axis[0], settings.axis[1], settings.tickSpacingX);
-            settings.tickCollectionY = new TickCollection(settings.axis[2], settings.axis[3], settings.tickSpacingY);
+            settings.tickCollectionX = new TickCollection(settings, false);
+            settings.tickCollectionY = new TickCollection(settings, true);
+
             RenderTicksOnLeft(settings);
             RenderTicksOnBottom(settings);
             RenderTickMultipliers(settings);

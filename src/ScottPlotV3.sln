@@ -49,7 +49,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dev", "dev", "{E6316F83-E34
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "benchmark", "..\demos\dev\benchmark\benchmark.csproj", "{F91ADD43-01D3-4AD6-959C-6E2FA6B63BBB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tick-tester-2", "..\demos\src\tick-tester-2\tick-tester-2.csproj", "{E3C5B3CC-118C-4866-B793-F120EA9DA8F8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tick tester", "..\demos\src\tick-tester-2\tick tester.csproj", "{E3C5B3CC-118C-4866-B793-F120EA9DA8F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
