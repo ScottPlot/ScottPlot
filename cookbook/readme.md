@@ -332,8 +332,8 @@ plt.SaveFig(fileName);
 ```cs
 Random rand = new Random(0);
 int pointCount = 100;
-double[] largeXs = ScottPlot.DataGen.Consecutive(pointCount, 1e42);
-double[] largeYs = ScottPlot.DataGen.Random(rand, pointCount, 1e123);
+double[] largeXs = ScottPlot.DataGen.Consecutive(pointCount, 1e17);
+double[] largeYs = ScottPlot.DataGen.Random(rand, pointCount, 1e21);
 
 var plt = new ScottPlot.Plot(600, 400);
 plt.PlotScatter(largeXs, largeYs);
@@ -342,20 +342,31 @@ plt.SaveFig(fileName);
 
 ![](./images/27_Very_Large_Numbers.png)
 
-## Very Small Numbers
+## Axis Exponent And Offset
 
 ```cs
-Random rand = new Random(1);
-int pointCount = 100;
-double[] smallXs = ScottPlot.DataGen.Consecutive(pointCount, 1e-42);
-double[] xmallYs = ScottPlot.DataGen.Random(rand, pointCount, 1e-123);
+double bigNumber = 9876;
 
 var plt = new ScottPlot.Plot(600, 400);
-plt.PlotScatter(smallXs, xmallYs);
+plt.Title("panned far and really zoomed in");
+plt.PlotScatter(dataXs, dataSin);
+plt.PlotScatter(dataXs, dataCos);
+plt.Axis(bigNumber, bigNumber + .00001, bigNumber, bigNumber + .00001);
 plt.SaveFig(fileName);
 ```
 
-![](./images/28_Very_Small_Numbers.png)
+![](./images/28_Axis_Exponent_And_Offset.png)
+
+## Very Large Images
+
+```cs
+var plt = new ScottPlot.Plot(2000, 1000);
+plt.PlotScatter(dataXs, dataSin);
+plt.PlotScatter(dataXs, dataCos);
+plt.SaveFig(fileName);
+```
+
+![](./images/29_Very_Large_Images.png)
 
 ##  Signal
 
@@ -418,7 +429,7 @@ plt.SaveFig(fileName);
 var plt = new ScottPlot.Plot(600, 400);
 
 // things plotted after before spans are covered by them
-plt.PlotScatter(dataXs, dataSin, label: "below", 
+plt.PlotScatter(dataXs, dataSin, label: "below",
     color: Color.Red, markerShape: ScottPlot.MarkerShape.filledCircle);
 
 // vertical lines and horizontal spans both take X-axis positions
