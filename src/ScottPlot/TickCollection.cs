@@ -72,7 +72,7 @@ namespace ScottPlot
             {
                 tickSpacings.Add(tickSpacings.Last() / divBy[divisions++ % divBy.Length]);
                 int tickCount = (int)(range / tickSpacings.Last());
-                if (tickCount > maxTickCount)
+                if ((tickCount > maxTickCount) || (tickSpacings.Count > 1000))
                     break;
             }
 
