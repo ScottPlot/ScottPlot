@@ -184,7 +184,7 @@ namespace ScottPlotDemo
 
         private void BtnSignal100m_Click(object sender, EventArgs e)
         {
-            RandomWalk(10_000_000);
+            RandomWalk(60_000_000);
         }
 
         // some global params for updates
@@ -194,6 +194,7 @@ namespace ScottPlotDemo
         private void BtnUpdateSignal_click(object sender, EventArgs e)
         {
             btnUpdateSignal.Enabled = false;
+            int updateRangeSize = 5_000_000;
             System.Timers.Timer timer;
             // timer for auto redraw plot every 200 ms 
             timer = new System.Timers.Timer(200);
@@ -208,7 +209,16 @@ namespace ScottPlotDemo
             };
             timer.AutoReset = true;
             timer.Start();
+            
             var pointstoUpdateCount = data.Length;
+            // using simple implementation of RandomWalk,
+            // because RandomWalk do usless min/max calculation, 
+            var newSignal = new double[pointstoUpdateCount];
+            newSignal[0] = rand.NextDouble() * 10 - 5;
+            for (int i = 1; i < pointstoUpdateCount; i++)
+            {
+                newSignal[i] = newSignal[i - 1] + (rand.NextDouble() * 2 - 1) * 10;
+            }              
             // run plot data updates at max speed in background thread                
             Task.Run(() =>
             {
@@ -216,14 +226,28 @@ namespace ScottPlotDemo
                 {
                     var signalConst = signal as ScottPlot.PlottableSignalConst;
                     signalConst.UpdateElement(0, rand.NextDouble() * 10 - 5);
-                    for (int i = 1; i < pointstoUpdateCount; i++)
-                        signalConst.UpdateElement(i, signalConst.ys[i - 1] + (rand.NextDouble() * 2 - 1) * 10); // stolen from RandomWalk                   
+                    if (updateRangeSize < 1)
+                    {
+                        for (int i = 1; i < pointstoUpdateCount; i++)
+                            signalConst.UpdateElement(i, newSignal[i]);                
+                    }
+                    else
+                    {
+                        
+                        for (int i = 0; i < pointstoUpdateCount - updateRangeSize; i+=updateRangeSize)
+                        {
+                            signalConst.UpdateRange(i, i + updateRangeSize, newSignal, i);
+                        }
+                        int lastPiece = (pointstoUpdateCount-updateRangeSize)/updateRangeSize * updateRangeSize;
+                        signalConst.UpdateRange(lastPiece, pointstoUpdateCount, newSignal, lastPiece);
+
+                    }
                 }
                 else
                 {
                     data[0] = rand.NextDouble() * 10 - 5;
                     for (int i = 1; i < pointstoUpdateCount; i++)
-                        data[i] = data[i - 1] + (rand.NextDouble() * 2 - 1) * 10;
+                        data[i] = newSignal[i];
                 }
                 timer.Stop();
                 timer.Dispose();
