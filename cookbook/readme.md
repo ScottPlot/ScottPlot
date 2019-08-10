@@ -381,6 +381,22 @@ plt.SaveFig(fileName);
 
 ![](./images/30a_Signal.png)
 
+##  Signal With Parallel Processing
+
+```cs
+// PlotSignal() can get a speed boost using parallel processing.
+// this isn't extensively tested yet, so use this feature at your own risk.
+
+var plt = new ScottPlot.Plot(600, 400);
+plt.Title("Displaying 10 million points with PlotSignal() + parallel");
+plt.Benchmark();
+plt.Parallel(true);
+plt.PlotSignal(tenMillionPoints, sampleRate: 20_000);
+plt.SaveFig(fileName);
+```
+
+![](./images/30b_Signal_With_Parallel_Processing.png)
+
 ##  SignalConst
 
 ```cs
@@ -392,7 +408,7 @@ plt.SaveFig(fileName);
 var plt = new ScottPlot.Plot(600, 400);
 plt.Title("Displaying 10 million points with PlotSignalConst()");
 plt.Benchmark();
-plt.PlotSignalConst(tenMillionPoints, sampleRate: 20_000, useThreading: false);
+plt.PlotSignalConst(tenMillionPoints, sampleRate: 20_000);
 plt.SaveFig(fileName);
 ```
 
