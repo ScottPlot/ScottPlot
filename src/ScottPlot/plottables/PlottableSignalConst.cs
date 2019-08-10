@@ -17,9 +17,9 @@ namespace ScottPlot
         double[] TreeMin;
         double[] TreeMax;
         public bool TreesReady = false;
-        public PlottableSignalConst(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, bool useThreading) : base(ys, sampleRate, xOffset, yOffset, color, lineWidth, markerSize, label)
+        public PlottableSignalConst(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, bool useParallel) : base(ys, sampleRate, xOffset, yOffset, color, lineWidth, markerSize, label, useParallel)
         {
-            if (useThreading)
+            if (useParallel)
                 UpdateTreesInBackground();
             else
                 UpdateTrees();

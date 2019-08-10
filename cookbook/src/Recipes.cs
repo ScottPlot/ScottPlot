@@ -496,6 +496,24 @@ namespace ScottPlotCookbook
             return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
+        public string Figure_30b_Signal_With_Parallel_Processing()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            // PlotSignal() can get a speed boost using parallel processing.
+            // this isn't extensively tested yet, so use this feature at your own risk.
+
+            var plt = new ScottPlot.Plot(width, height);
+            plt.Title("Displaying 10 million points with PlotSignal() + parallel");
+            plt.Benchmark();
+            plt.Parallel(true);
+            plt.PlotSignal(tenMillionPoints, sampleRate: 20_000);
+            plt.SaveFig(fileName);
+            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
+        }
+
         public string Figure_30c_SignalConst()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
@@ -509,7 +527,7 @@ namespace ScottPlotCookbook
             var plt = new ScottPlot.Plot(width, height);
             plt.Title("Displaying 10 million points with PlotSignalConst()");
             plt.Benchmark();
-            plt.PlotSignalConst(tenMillionPoints, sampleRate: 20_000, useThreading: false);
+            plt.PlotSignalConst(tenMillionPoints, sampleRate: 20_000);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
             return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
