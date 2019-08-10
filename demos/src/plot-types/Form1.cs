@@ -194,7 +194,7 @@ namespace ScottPlotDemo
         private void BtnUpdateSignal_click(object sender, EventArgs e)
         {
             btnUpdateSignal.Enabled = false;
-            int updateRangeSize = 5_000_000;
+            int updateRangeSize = 0;
             System.Timers.Timer timer;
             // timer for auto redraw plot every 200 ms 
             timer = new System.Timers.Timer(200);
@@ -227,7 +227,7 @@ namespace ScottPlotDemo
                     var signalConst = signal as ScottPlot.PlottableSignalConst;
                     signalConst.UpdateElement(0, rand.NextDouble() * 10 - 5);
                     if (updateRangeSize < 1)
-                    {
+                    {                        
                         for (int i = 1; i < pointstoUpdateCount; i++)
                             signalConst.UpdateElement(i, newSignal[i]);                
                     }

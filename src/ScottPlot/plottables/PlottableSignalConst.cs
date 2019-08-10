@@ -45,12 +45,21 @@ namespace ScottPlot
                 TreeMin[n / 2 + index / 2] = Math.Min(ys[index], ys[index - 1]);
                 TreeMax[n / 2 + index / 2] = Math.Max(ys[index], ys[index - 1]);
             }
-            // update tree up to root, can be optimized - if no realy change node value just  break.
-            //  dificulties with double compaire. and need different loops for min/max
+
+            double candidate;
             for (int i = (n / 2 + index / 2) / 2; i > 0; i /= 2)
             {
-                TreeMin[i] = Math.Min(TreeMin[i * 2], TreeMin[i * 2 + 1]);
-                TreeMax[i] = Math.Max(TreeMax[i * 2], TreeMax[i * 2 + 1]);
+                candidate = Math.Min(TreeMin[i * 2], TreeMin[i * 2 + 1]);
+                if (TreeMin[i] == candidate) // if node same then new value don't need to recalc all upper
+                    break;
+                TreeMin[i] = candidate;
+            }
+            for (int i = (n / 2 + index / 2) / 2; i > 0; i /= 2)
+            {
+                candidate = Math.Max(TreeMax[i * 2], TreeMax[i * 2 + 1]);
+                if (TreeMax[i] == candidate) // if node same then new value don't need to recalc all upper
+                    break;
+                TreeMax[i] = candidate;
             }
         }
 
