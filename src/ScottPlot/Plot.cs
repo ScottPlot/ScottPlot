@@ -14,6 +14,7 @@ namespace ScottPlot
 {
     public class Plot
     {
+        public bool PixelFormat32bppPArgb = true;
         private readonly Settings settings;
         public readonly MouseTracker mouseTracker;
 
@@ -60,13 +61,19 @@ namespace ScottPlot
 
             if (settings.figureSize.Width > 0 && settings.figureSize.Height > 0)
             {
-                settings.bmpFigure = new Bitmap(settings.figureSize.Width, settings.figureSize.Height, PixelFormat.Format32bppPArgb);
+                if (PixelFormat32bppPArgb)
+                    settings.bmpFigure = new Bitmap(settings.figureSize.Width, settings.figureSize.Height, PixelFormat.Format32bppPArgb);
+                else
+                    settings.bmpFigure = new Bitmap(settings.figureSize.Width, settings.figureSize.Height);
                 settings.gfxFigure = Graphics.FromImage(settings.bmpFigure);
             }
 
             if (settings.dataSize.Width > 0 && settings.dataSize.Height > 0)
             {
-                settings.bmpData = new Bitmap(settings.dataSize.Width, settings.dataSize.Height, PixelFormat.Format32bppPArgb);
+                if (PixelFormat32bppPArgb)
+                    settings.bmpData = new Bitmap(settings.dataSize.Width, settings.dataSize.Height, PixelFormat.Format32bppPArgb);
+                else
+                    settings.bmpData = new Bitmap(settings.dataSize.Width, settings.dataSize.Height);
                 settings.gfxData = Graphics.FromImage(settings.bmpData);
             }
 
