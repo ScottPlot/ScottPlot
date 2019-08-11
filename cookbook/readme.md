@@ -88,7 +88,7 @@ for (int i = 0; i < markerShapeNames.Length; i++)
     string markerShapeName = markerShapeNames[i];
     var markerShape = (ScottPlot.MarkerShape)System.Enum.Parse(typeof(ScottPlot.MarkerShape), markerShapeName);
     double[] stackedSin = ScottPlot.DataGen.Sin(dataXs.Length, 2, -i);
-    plt.PlotScatter(dataXs, stackedSin, label: markerShapeNames[i], markerShape: markerShape);
+    plt.PlotScatter(dataXs, stackedSin, label: markerShapeName, markerShape: markerShape);
 }
 
 plt.Legend(fontSize: 10);
