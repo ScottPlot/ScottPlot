@@ -31,6 +31,9 @@ namespace serial_data_plotter
             scottPlotUC1.plt.PlotSignal(values.values2, 50, markerSize: 0, label: "ADC 2");
             scottPlotUC1.plt.PlotSignal(values.values3, 50, markerSize: 0, label: "ADC 3");
             scottPlotUC1.plt.PlotSignal(values.values4, 50, markerSize: 0, label: "ADC 4");
+            scottPlotUC1.plt.Title("Sensor Data");
+            scottPlotUC1.plt.YLabel("ADC Value");
+            scottPlotUC1.plt.XLabel("Time (seconds)");
             scottPlotUC1.plt.Legend();
             scottPlotUC1.plt.AxisAuto();
             scottPlotUC1.plt.Axis(y2: 32000);
