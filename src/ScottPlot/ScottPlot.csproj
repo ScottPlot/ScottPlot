@@ -1,104 +1,21 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{EE9215C6-01C1-4835-8514-3A708F9291F1}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ScottPlot</RootNamespace>
-    <AssemblyName>ScottPlot</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="DataGen.cs" />
-    <Compile Include="Histogram.cs" />
-    <Compile Include="Legend.cs" />
-    <Compile Include="Markers.cs" />
-    <Compile Include="MouseTracker.cs" />
-    <Compile Include="plottables\PlottableSignalConst.cs" />
-    <Compile Include="plottables\OHLC.cs" />
-    <Compile Include="plottables\Plottable.cs" />
-    <Compile Include="plottables\PlottableAxLine.cs" />
-    <Compile Include="plottables\PlottableAxSpan.cs" />
-    <Compile Include="plottables\PlottableBar.cs" />
-    <Compile Include="plottables\PlottableOHLC.cs" />
-    <Compile Include="plottables\PlottableScatter.cs" />
-    <Compile Include="plottables\PlottableSignal.cs" />
-    <Compile Include="plottables\PlottableText.cs" />
-    <Compile Include="Renderer.cs" />
-    <Compile Include="ScottPlotUC.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="ScottPlotUC.Designer.cs">
-      <DependentUpon>ScottPlotUC.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ScottPlotWPF.xaml.cs">
-      <DependentUpon>ScottPlotWPF.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Style.cs" />
-    <Compile Include="TickCollection.cs" />
-    <Compile Include="TickExperimental.cs" />
-    <Compile Include="Tools.cs" />
-    <Compile Include="Plot.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Settings.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="ScottPlotUC.resx">
-      <DependentUpon>ScottPlotUC.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram.cd" />
-    <None Include="packages.config" />
-    <None Include="ScottPlot.nuspec" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="ScottPlotWPF.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+	<PropertyGroup>
+		<TargetFrameworks>netcoreapp3.0;net45</TargetFrameworks>
+		<AssemblyName>ScottPlot</AssemblyName>
+		<RootNamespace>ScottPlot</RootNamespace>
+		<UseWindowsForms>true</UseWindowsForms>
+		<UseWPF>true</UseWPF>
+		<AssemblyTitle>ScottPlot</AssemblyTitle>
+		<AssemblyProduct>ScottPlot</AssemblyProduct>
+		<AssemblyVersion>3.1.0.0</AssemblyVersion>
+		<AssemblyFileVersion>3.1.0.0</AssemblyFileVersion>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Update="ScottPlotWPF.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</None>
+	</ItemGroup>
+
 </Project>
