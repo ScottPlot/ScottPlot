@@ -41,6 +41,7 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.lblLastLine = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.scottPlotUC1 = new ScottPlot.ScottPlotUC();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -137,6 +138,7 @@
             // 
             // timer1
             // 
+            this.timer1.Interval = 20;
             this.timer1.Tick += new System.EventHandler(this.Timer1_Tick);
             // 
             // lblLastLine
@@ -161,11 +163,22 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Incoming Data";
             // 
+            // scottPlotUC1
+            // 
+            this.scottPlotUC1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.scottPlotUC1.Location = new System.Drawing.Point(12, 82);
+            this.scottPlotUC1.Name = "scottPlotUC1";
+            this.scottPlotUC1.Size = new System.Drawing.Size(776, 356);
+            this.scottPlotUC1.TabIndex = 3;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.scottPlotUC1);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Name = "Form1";
@@ -193,6 +206,7 @@
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Label lblLastLine;
         private System.Windows.Forms.GroupBox groupBox2;
+        private ScottPlot.ScottPlotUC scottPlotUC1;
     }
 }
 
