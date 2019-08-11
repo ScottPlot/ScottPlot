@@ -8,11 +8,13 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace ScottPlot
 {
     public class Plot
     {
+        public PixelFormat pixelFormat = PixelFormat.Format32bppPArgb;
         private readonly Settings settings;
         public readonly MouseTracker mouseTracker;
 
@@ -59,13 +61,13 @@ namespace ScottPlot
 
             if (settings.figureSize.Width > 0 && settings.figureSize.Height > 0)
             {
-                settings.bmpFigure = new Bitmap(settings.figureSize.Width, settings.figureSize.Height);
+                settings.bmpFigure = new Bitmap(settings.figureSize.Width, settings.figureSize.Height, pixelFormat);
                 settings.gfxFigure = Graphics.FromImage(settings.bmpFigure);
             }
 
             if (settings.dataSize.Width > 0 && settings.dataSize.Height > 0)
             {
-                settings.bmpData = new Bitmap(settings.dataSize.Width, settings.dataSize.Height);
+                settings.bmpData = new Bitmap(settings.dataSize.Width, settings.dataSize.Height, pixelFormat);
                 settings.gfxData = Graphics.FromImage(settings.bmpData);
             }
 
