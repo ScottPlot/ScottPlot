@@ -1,7 +1,7 @@
 # ScottPlot
 
 **ScottPlot is a free and open-source interactive graphing library for .NET written in C#.** 
-In a GUI environment ScottPlot makes it easy to display data interactively (left-click-drag pan, right-click-drag zoom), and in non-GUI environments ScottPlot can be used to create graphs and save them as images. ScottPlot is easy to use because it is available on NuGet and it has no dependencies outside the .NET Framework (or .NET Core) standard libraries.
+In a GUI environment ScottPlot makes it easy to display data interactively (left-click-drag pan, right-click-drag zoom), and in non-GUI environments ScottPlot can be used to create graphs and save them as images. ScottPlot is easy to use because it is available on NuGet and it has no dependencies outside the .NET framework libraries.
 
 ![](/demos/src/plot-types/ScottPlot-screenshot.gif)
 
@@ -45,9 +45,6 @@ If you plot a double array with ScottPlot, later updating the original array aut
 ScottPlot can plot data quickly allowing for high framerates. The _audio monitor.exe_ demo (in [/demos](/demos)) uses two ScottPlot plots to display audio data in real time. The signal (PCM, top) and frequency (FFT, bottom) components are continuously updated at a high framerate and are both mouse-interactive.
 
 ![](/demos/src/audio-monitor/screenshot.gif)
-
-### Support for .NET Core
-This project is currently configured as a .NET class library, but it will compile as a .NET Core library as well. This may be useful for people wanting to use ScottPlot in cross-platform applications.
 
 ## About ScottPlot
 
