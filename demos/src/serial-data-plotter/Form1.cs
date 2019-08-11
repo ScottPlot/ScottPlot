@@ -14,7 +14,8 @@ namespace serial_data_plotter
     public partial class Form1 : Form
     {
         SerialPort ser;
-        static List<string> lines = new List<string>();
+        static string serLastLine;
+        static AdcValuesLoop values = new AdcValuesLoop();
 
         public Form1()
         {
@@ -25,6 +26,14 @@ namespace serial_data_plotter
         private void Form1_Load(object sender, EventArgs e)
         {
             PopulateSerialComboBoxes();
+
+            scottPlotUC1.plt.PlotSignal(values.values1, 50, markerSize: 0, label: "ADC 1");
+            scottPlotUC1.plt.PlotSignal(values.values2, 50, markerSize: 0, label: "ADC 2");
+            scottPlotUC1.plt.PlotSignal(values.values3, 50, markerSize: 0, label: "ADC 3");
+            scottPlotUC1.plt.PlotSignal(values.values4, 50, markerSize: 0, label: "ADC 4");
+            scottPlotUC1.plt.Legend();
+            scottPlotUC1.plt.AxisAuto();
+            scottPlotUC1.plt.Axis(y2: 32000);
         }
 
         private void PopulateSerialComboBoxes()
@@ -47,6 +56,8 @@ namespace serial_data_plotter
         {
             if (ser == null || !ser.IsOpen)
             {
+                values.Clear();
+
                 string com = cbPort.SelectedItem.ToString();
                 int baud = int.Parse(cbBaud.SelectedItem.ToString());
 
@@ -61,6 +72,7 @@ namespace serial_data_plotter
                 cbBaud.Enabled = false;
                 cbFlow.Enabled = false;
                 timer1.Enabled = true;
+                lblLastLine.Enabled = true;
             }
             else
             {
@@ -71,6 +83,7 @@ namespace serial_data_plotter
                 cbPort.Enabled = true;
                 cbBaud.Enabled = true;
                 cbFlow.Enabled = true;
+                lblLastLine.Enabled = false;
             }
 
         }
@@ -81,7 +94,8 @@ namespace serial_data_plotter
             {
                 SerialPort sp = (SerialPort)sender;
                 string line = (sp.ReadExisting() + sp.ReadLine()).Trim();
-                lines.Add(line);
+                serLastLine = line;
+                values.ParseCsvLine(line);
             }
             catch (System.IO.IOException exc)
             {
@@ -92,11 +106,10 @@ namespace serial_data_plotter
 
         private void Timer1_Tick(object sender, EventArgs e)
         {
-            if (lines.Count > 0)
-            {
-                lblLastLine.Text = lines.Last();
-                lines.Clear();
-            }
+            lblLastLine.Text = serLastLine;
+            scottPlotUC1.plt.Clear(scatterPlots: false, signalPlots: false);
+            scottPlotUC1.plt.PlotVLine(values.nextIndex / 50.0, color: Color.Red, lineWidth: 2);
+            scottPlotUC1.Render();
         }
     }
 }
