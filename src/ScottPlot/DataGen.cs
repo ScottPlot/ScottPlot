@@ -71,6 +71,14 @@ namespace ScottPlot
             return values;
         }
 
+        public static double[] NoisySin(Random rand, int pointCount, double oscillations = 1, double noiseLevel = .5)
+        {
+            double[] values = Sin(pointCount, oscillations);
+            for (int i = 0; i < values.Length; i++)
+                values[i] += rand.NextDouble() * noiseLevel;
+            return values;
+        }
+
         public static Color RandomColor(Random rand, int min = 0, int max = 255)
         {
             int r = rand.Next(min, max);
