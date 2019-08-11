@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.452
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScottPlot", "ScottPlot\ScottPlot.csproj", "{EE9215C6-01C1-4835-8514-3A708F9291F1}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScottPlot Cookbook", "..\cookbook\src\ScottPlot Cookbook.csproj", "{473A8B7C-EDD0-434C-8B02-EA1972D9B4E2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demos", "Demos", "{2F78F109-9976-42FF-8324-9A27EF3BD776}"
@@ -55,14 +57,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "benchmark", "..\demos\src\b
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "serial data plotter", "..\demos\src\serial-data-plotter\serial data plotter.csproj", "{2B5B75CE-9EFE-498A-B29E-18F509C8F65F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot", "ScottPlot\ScottPlot.csproj", "{21289DE9-922B-468D-9DC6-A20B70E993E0}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EE9215C6-01C1-4835-8514-3A708F9291F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE9215C6-01C1-4835-8514-3A708F9291F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE9215C6-01C1-4835-8514-3A708F9291F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE9215C6-01C1-4835-8514-3A708F9291F1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{473A8B7C-EDD0-434C-8B02-EA1972D9B4E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{473A8B7C-EDD0-434C-8B02-EA1972D9B4E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{473A8B7C-EDD0-434C-8B02-EA1972D9B4E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -155,10 +159,6 @@ Global
 		{2B5B75CE-9EFE-498A-B29E-18F509C8F65F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B5B75CE-9EFE-498A-B29E-18F509C8F65F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B5B75CE-9EFE-498A-B29E-18F509C8F65F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{21289DE9-922B-468D-9DC6-A20B70E993E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{21289DE9-922B-468D-9DC6-A20B70E993E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{21289DE9-922B-468D-9DC6-A20B70E993E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{21289DE9-922B-468D-9DC6-A20B70E993E0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
