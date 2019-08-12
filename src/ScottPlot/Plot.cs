@@ -136,6 +136,22 @@ namespace ScottPlot
             Renderer.Benchmark(settings);
         }
 
+        public Bitmap GetBitmap(bool antiAliasFigure, bool antiAliasDataa)
+        {
+            // save currently using AA settings
+            bool currentAAFigure = settings.antiAliasFigure;
+            bool currentAAData = settings.antiAliasData;
+            // set new settings for render
+            settings.antiAliasFigure = antiAliasFigure;
+            settings.antiAliasData = antiAliasDataa;
+
+            RenderBitmap();
+            // restore saved AA settings
+            settings.antiAliasFigure = currentAAFigure;
+            settings.antiAliasData = currentAAData;
+            return settings.bmpFigure;
+        }
+
         public Bitmap GetBitmap(bool renderFirst = true)
         {
             if (renderFirst)
