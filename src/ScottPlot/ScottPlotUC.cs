@@ -21,6 +21,18 @@ namespace ScottPlot
             PbPlot_SizeChanged(null, null);
         }
 
+        public void Render(bool skipIfCurrentlyRendering, bool antiAliasFigure, bool antiAliasData)
+        {
+            if (!(skipIfCurrentlyRendering && currentlyRendering))
+            {
+                currentlyRendering = true;
+                pbPlot.Image = plt.GetBitmap(antiAliasFigure, antiAliasData);
+                if (plt.mouseTracker.IsDraggingSomething())
+                    Application.DoEvents();
+                currentlyRendering = false;
+            }
+        }
+
         public void Render(bool skipIfCurrentlyRendering = false)
         {
             if (!(skipIfCurrentlyRendering && currentlyRendering))
