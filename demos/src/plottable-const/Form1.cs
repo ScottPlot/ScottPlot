@@ -27,6 +27,7 @@ namespace plottable_const
         {
             data = ScottPlot.DataGen.RandomWalk(rand, 10_000_000);
             signal = scottPlotUC1.plt.PlotSignalConst(data);
+            scottPlotUC1.useDynamicAA = true;
             scottPlotUC1.plt.Benchmark();
             scottPlotUC1.Render();
         }

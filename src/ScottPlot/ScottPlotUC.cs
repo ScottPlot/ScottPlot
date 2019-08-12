@@ -56,7 +56,10 @@ namespace ScottPlot
         private void PbPlot_SizeChanged(object sender, EventArgs e)
         {
             plt.Resize(Width, Height);
-            Render(skipIfCurrentlyRendering: false);
+            if (useDynamicAA)
+                Render(false, dynamicAAFigureHigh, dynamicAADataHigh); // use high settings for Resize
+            else
+                Render(skipIfCurrentlyRendering: false);
         }
 
         private void PbPlot_MouseDown(object sender, MouseEventArgs e)
@@ -91,7 +94,10 @@ namespace ScottPlot
 
             if (e.Button != MouseButtons.None)
             {
-                Render(skipIfCurrentlyRendering: true);
+                if (useDynamicAA)
+                    Render(true, dynamicAAFigureLow, dynamicAADataLow); // use low settings on pan or zoom
+                else
+                    Render(skipIfCurrentlyRendering: true);
                 OnMouseDragged(EventArgs.Empty);
             }
         }
@@ -99,7 +105,10 @@ namespace ScottPlot
         private void PbPlot_MouseUp(object sender, MouseEventArgs e)
         {
             plt.mouseTracker.MouseUp(e.Location);
-            Render(skipIfCurrentlyRendering: false);
+            if (useDynamicAA)
+                Render(false, dynamicAAFigureHigh, dynamicAADataHigh); // use high settings then mouse up
+            else
+                Render(skipIfCurrentlyRendering: false);
             if (plt.mouseTracker.PlottableUnderCursor(e.Location) != null)
                 OnMouseDropPlottable(EventArgs.Empty);
         }
@@ -109,7 +118,10 @@ namespace ScottPlot
             if (e.Button == MouseButtons.Middle)
             {
                 plt.AxisAuto();
-                Render(skipIfCurrentlyRendering: false);
+                if (useDynamicAA)
+                    Render(false, dynamicAAFigureHigh, dynamicAADataHigh); // use high settings on middle button (AutoAxis)
+                else
+                    Render(skipIfCurrentlyRendering: false);
             }
             else if (e.Button == MouseButtons.Right && plt.mouseTracker.mouseDownStopwatch.ElapsedMilliseconds < 100)
             {
@@ -149,7 +161,10 @@ namespace ScottPlot
         private void PbPlot_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             plt.Benchmark(toggle: true);
-            Render(skipIfCurrentlyRendering: false);
+            if (useDynamicAA)
+                Render(false, dynamicAAFigureHigh, dynamicAADataHigh); // use high settings on double click?, is this render before context menu
+            else
+                Render(skipIfCurrentlyRendering: false);
         }
 
         private void PbPlot_MouseWheel(object sender, MouseEventArgs e)
@@ -160,14 +175,22 @@ namespace ScottPlot
                 plt.AxisZoom(1 + zoomAmount, 1 + zoomAmount, zoomCenter);
             else
                 plt.AxisZoom(1 - zoomAmount, 1 - zoomAmount, zoomCenter);
-            Render(skipIfCurrentlyRendering: false);
+            // lost in performance, must call high only on last MouseWhell, but no way to check
+            // may be implement on timer, because typicaly mouse wheel event called close in time
+            if (useDynamicAA)
+                Render(false, dynamicAAFigureHigh, dynamicAADataHigh); 
+            else
+                Render(skipIfCurrentlyRendering: false);
         }
 
         private void RightClickMenuItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             rightClickMenu.Hide();
             Tools.RightClickMenuItemClicked(e.ClickedItem, rightClickMenu, plt);
-            Render(skipIfCurrentlyRendering: false);
+            if (useDynamicAA)
+                Render(false, dynamicAAFigureHigh, dynamicAADataHigh); // use high settings
+            else
+                Render(skipIfCurrentlyRendering: false);
         }
 
         public event EventHandler MouseDownOnPlottable;
