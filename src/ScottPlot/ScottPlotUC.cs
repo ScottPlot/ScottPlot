@@ -9,7 +9,7 @@ namespace ScottPlot
     {
         public Plot plt = new Plot();
 
-        public bool lowQualityWhileDragging = false;
+        public bool lowQualityWhileDragging = true;
 
         private bool currentlyRendering = false;
         private ContextMenuStrip rightClickMenu;
