@@ -11,11 +11,6 @@ namespace ScottPlot
 
         public bool lowQualityWhileDragging = false;
 
-        private bool dynamicAAFigureLow = true;  // setting for AAFigure at interactions
-        private bool dynamicAADataLow = false;   // settings for AAData at interactions
-        private bool dynamicAAFigureHigh = true; // setting for AAFigure at Static
-        private bool dynamicAADataHigh = true;   // setting for AAData at Static
-
         private bool currentlyRendering = false;
         private ContextMenuStrip rightClickMenu;
 
