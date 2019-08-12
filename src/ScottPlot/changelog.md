@@ -1,5 +1,49 @@
 # ScottPlot Changelog
 
+## ScottPlot 3.0.9
+
+_Published on [NuGet](https://www.nuget.org/packages/ScottPlot/) on 2019-08-12_
+
+### Major Changes
+* **WPF User Control**: See [demos#wpf-application](https://github.com/swharden/ScottPlot/tree/master/demos#wpf-application) for a quickstart demo.
+* **New Plot Type: `PlotSignalConst()`** for extremely large arrays of data which are not expected to change after being plotted. Plots generated with this method can be much faster than PlotSignal(). See [cookbook#signalconst](https://github.com/swharden/ScottPlot/tree/master/cookbook#signalconst) for example usage. _Special thanks to @StendProg for work on this feature._
+* **Greatly improved axis tick labels.** Axis tick labels are now less likely to overlap with axis labels, and it displays very large and very small numbers well using exponential notation. For an example see [cookbook#axis-exponent-and-offset](https://github.com/swharden/ScottPlot/tree/master/cookbook#axis-exponent-and-offset). _Special thanks to @Padanian for work on this feature._
+* **Parallel processing support for PlotSignal()**. When parallel processing is enabled PlotSignal() can now use it to render graphs faster. For details see [cookbook#signal-with-parallel-processing](https://github.com/swharden/ScottPlot/tree/master/cookbook#signal-with-parallel-processing). _Special thanks to @StendProg for work on this feature._
+* **Every `Plot` function now returns a `Plottable`.** When creating things like scatter plots, text, and axis lines, the returned object can now be used to update the data, position, styling, or call plot-type-specific methods. For an example see [cookbook#modify-styles-after-plotting](https://github.com/swharden/ScottPlot/tree/master/cookbook#modify-styles-after-plotting).
+
+### Minor Changes
+* right-click menu now displays ScottPlot and .NET Framework version
+* improved rendering of extremely zoomed-out signals 
+* rendering speed increased now that Format32bppPArgb is the default PixelFormat (thanks @StendProg)
+* DataGen.NoisySin() was added
+* Code was tested in .NET Core 3.0 preview and compiled without error. Therefore, the next release will likely be for .NET Core 3.0 (Thanks @petarpetrovt)
+* User controls now render graphs with anti-alias mode off (faster) while the mouse is being dragged. Upon release a high quality render is performed.
+
+## ScottPlot 3.0.8
+
+_Published on [NuGet](https://www.nuget.org/packages/ScottPlot/) on 2019-08-04_
+
+### Major Changes
+* **WPF User Control:** A ScottPlotWPF user control was created to allow provide a simple mouse-interactive ScottPlot control to WPF applications. It is not as full-featured as the winforms control (it lacks a right-click menu and click-and-drag functions), but it is simple to review the code (<100 lines of [.xaml](https://github.com/swharden/ScottPlot/blob/master/src/ScottPlot/ScottPlotWPF.xaml) and [.xaml.cs](https://github.com/swharden/ScottPlot/blob/master/src/ScottPlot/ScottPlotWPF.xaml.cs)) and easy to use. See the [WPF Application Quickstart](https://github.com/swharden/ScottPlot/tree/master/demos#wpf-application) guide for details.
+* **New plot type `plt.AxisSpan()`:** [demonstrated in the cookbook](https://github.com/swharden/ScottPlot/tree/master/cookbook#axis-spans) - shades a region of the graph (semi-transparency is supported).
+
+### Minor Changes
+* **improved tick marks**
+  * Vertical ticks no longer overlap with vertical axis label (#47)
+  * When axis tick labels contain very large or very small numbers, scientific notation mode is engaged (see [cookbook example](https://github.com/swharden/ScottPlot/tree/master/cookbook#very-large-numbers)).
+  * Horizontal tick mark spacing increased to prevent overlapping
+  * Vertical tick mark spacing increased to be consistent with horizontal tick spacing
+* **CSV data export**
+  * Plottable objects now have a `SaveCSV(filename)` method. See the [cookbook example](https://github.com/swharden/ScottPlot/tree/master/cookbook#save-scatter-data).
+  * Scatter and Signal plot data can be saved from the user control through the right-click menu.
+* Added `lineStyle` arguments to Scatter plots (see the [cookbook example](https://github.com/swharden/ScottPlot/tree/master/cookbook#custom-linestyles))
+* Improved legend ([see cookbook example](https://github.com/swharden/ScottPlot/tree/master/cookbook#legend))
+  * ability to set location
+  * ability to set shadow direction
+  * markers and lines rendered in legend
+* Improved ability to use custom fonts ([see cookbook example](https://github.com/swharden/ScottPlot/tree/master/cookbook#custom-fonts))
+* Segoe UI is now the default font for all plot components
+
 ## ScottPlot 3.0.7
 _Published on [NuGet](https://www.nuget.org/packages/ScottPlot/) on 2019-07-27_
 
