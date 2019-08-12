@@ -13,6 +13,7 @@ namespace ScottPlot
     {
         public Stopwatch mouseDownStopwatch = new Stopwatch();
         private Plottable draggingObject;
+        public bool lowQualityWhileDragging = true;
 
         private readonly Settings settings;
         public MouseTracker(Settings settings)

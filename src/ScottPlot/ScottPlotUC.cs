@@ -21,12 +21,12 @@ namespace ScottPlot
             PbPlot_SizeChanged(null, null);
         }
 
-        public void Render(bool skipIfCurrentlyRendering = false)
+        public void Render(bool skipIfCurrentlyRendering = false, bool lowQuality = false)
         {
             if (!(skipIfCurrentlyRendering && currentlyRendering))
             {
                 currentlyRendering = true;
-                pbPlot.Image = plt.GetBitmap();
+                pbPlot.Image = plt.GetBitmap(true, lowQuality);
                 if (plt.mouseTracker.IsDraggingSomething())
                     Application.DoEvents();
                 currentlyRendering = false;
@@ -71,7 +71,7 @@ namespace ScottPlot
 
             if (e.Button != MouseButtons.None)
             {
-                Render(skipIfCurrentlyRendering: true);
+                Render(skipIfCurrentlyRendering: true, lowQuality: plt.mouseTracker.lowQualityWhileDragging);
                 OnMouseDragged(EventArgs.Empty);
             }
         }
@@ -102,9 +102,11 @@ namespace ScottPlot
                 if (plt.GetPlottables().Count > 0)
                     if ((plt.GetPlottables()[0] is PlottableScatter) || (plt.GetPlottables()[0] is PlottableSignal))
                         saveDataMenuItem.Enabled = true;
-
+                
                 rightClickMenu.Items.Add("Auto-Axis");
                 rightClickMenu.Items.Add("Clear");
+                rightClickMenu.Items.Add(new ToolStripSeparator());
+                rightClickMenu.Items.Add("Toggle quality while dragging");
                 rightClickMenu.Items.Add(new ToolStripSeparator());
                 rightClickMenu.Items.Add("Help");
 

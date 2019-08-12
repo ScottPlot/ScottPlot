@@ -157,6 +157,9 @@ namespace ScottPlot
                     rightClickMenu.Hide();
                     plt.Clear();
                     break;
+                case "Toggle quality while dragging":
+                    plt.mouseTracker.lowQualityWhileDragging = !plt.mouseTracker.lowQualityWhileDragging;
+                    break;
                 case "About":
                     rightClickMenu.Hide();
                     System.Diagnostics.Process.Start("https://github.com/swharden/ScottPlot");
