@@ -32,6 +32,11 @@ namespace ScottPlot
             return scottPlotVersion.ToString();
         }
 
+        public static string GetFrameworkVersionString()
+        {
+            return $".NET {Environment.Version.ToString()}";
+        }
+
         public static string BitmapHash(Bitmap bmp)
         {
             byte[] bmpBytes = BitmapToBytes(bmp);
@@ -160,7 +165,7 @@ namespace ScottPlot
                 case "Toggle quality while dragging":
                     plt.mouseTracker.lowQualityWhileDragging = !plt.mouseTracker.lowQualityWhileDragging;
                     break;
-                case "About":
+                case "ScottPlot":
                     rightClickMenu.Hide();
                     System.Diagnostics.Process.Start("https://github.com/swharden/ScottPlot");
                     break;
