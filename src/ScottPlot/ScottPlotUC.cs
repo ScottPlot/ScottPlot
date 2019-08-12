@@ -8,9 +8,6 @@ namespace ScottPlot
     public partial class ScottPlotUC : UserControl
     {
         public Plot plt = new Plot();
-
-        public bool lowQualityWhileDragging = true;
-
         private bool currentlyRendering = false;
         private ContextMenuStrip rightClickMenu;
 
@@ -74,7 +71,7 @@ namespace ScottPlot
 
             if (e.Button != MouseButtons.None)
             {
-                Render(true, lowQualityWhileDragging);
+                Render(skipIfCurrentlyRendering: true, lowQuality: plt.mouseTracker.lowQualityWhileDragging);
                 OnMouseDragged(EventArgs.Empty);
             }
         }
@@ -105,9 +102,11 @@ namespace ScottPlot
                 if (plt.GetPlottables().Count > 0)
                     if ((plt.GetPlottables()[0] is PlottableScatter) || (plt.GetPlottables()[0] is PlottableSignal))
                         saveDataMenuItem.Enabled = true;
-
+                
                 rightClickMenu.Items.Add("Auto-Axis");
                 rightClickMenu.Items.Add("Clear");
+                rightClickMenu.Items.Add(new ToolStripSeparator());
+                rightClickMenu.Items.Add("Toggle quality while dragging");
                 rightClickMenu.Items.Add(new ToolStripSeparator());
                 rightClickMenu.Items.Add("Help");
 
