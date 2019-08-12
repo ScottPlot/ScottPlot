@@ -9,7 +9,7 @@ namespace ScottPlot
     {
         public Plot plt = new Plot();
 
-        public bool useDynamicAA = false;
+        public bool lowQualityWhileDragging = false;
 
         private bool dynamicAAFigureLow = true;  // setting for AAFigure at interactions
         private bool dynamicAADataLow = false;   // settings for AAData at interactions
@@ -29,24 +29,12 @@ namespace ScottPlot
             PbPlot_SizeChanged(null, null);
         }
 
-        public void Render(bool skipIfCurrentlyRendering, bool antiAliasFigure, bool antiAliasData)
+        public void Render(bool skipIfCurrentlyRendering = false, bool lowQuality = false)
         {
             if (!(skipIfCurrentlyRendering && currentlyRendering))
             {
                 currentlyRendering = true;
-                pbPlot.Image = plt.GetBitmap(antiAliasFigure, antiAliasData);
-                if (plt.mouseTracker.IsDraggingSomething())
-                    Application.DoEvents();
-                currentlyRendering = false;
-            }
-        }
-
-        public void Render(bool skipIfCurrentlyRendering = false)
-        {
-            if (!(skipIfCurrentlyRendering && currentlyRendering))
-            {
-                currentlyRendering = true;
-                pbPlot.Image = plt.GetBitmap();
+                pbPlot.Image = plt.GetBitmap(true, lowQuality);
                 if (plt.mouseTracker.IsDraggingSomething())
                     Application.DoEvents();
                 currentlyRendering = false;
@@ -56,10 +44,7 @@ namespace ScottPlot
         private void PbPlot_SizeChanged(object sender, EventArgs e)
         {
             plt.Resize(Width, Height);
-            if (useDynamicAA)
-                Render(false, dynamicAAFigureHigh, dynamicAADataHigh); // use high settings for Resize
-            else
-                Render(skipIfCurrentlyRendering: false);
+            Render(skipIfCurrentlyRendering: false);
         }
 
         private void PbPlot_MouseDown(object sender, MouseEventArgs e)
@@ -94,10 +79,7 @@ namespace ScottPlot
 
             if (e.Button != MouseButtons.None)
             {
-                if (useDynamicAA)
-                    Render(true, dynamicAAFigureLow, dynamicAADataLow); // use low settings on pan or zoom
-                else
-                    Render(skipIfCurrentlyRendering: true);
+                Render(true, lowQualityWhileDragging);
                 OnMouseDragged(EventArgs.Empty);
             }
         }
@@ -105,10 +87,7 @@ namespace ScottPlot
         private void PbPlot_MouseUp(object sender, MouseEventArgs e)
         {
             plt.mouseTracker.MouseUp(e.Location);
-            if (useDynamicAA)
-                Render(false, dynamicAAFigureHigh, dynamicAADataHigh); // use high settings then mouse up
-            else
-                Render(skipIfCurrentlyRendering: false);
+            Render(skipIfCurrentlyRendering: false);
             if (plt.mouseTracker.PlottableUnderCursor(e.Location) != null)
                 OnMouseDropPlottable(EventArgs.Empty);
         }
@@ -118,10 +97,7 @@ namespace ScottPlot
             if (e.Button == MouseButtons.Middle)
             {
                 plt.AxisAuto();
-                if (useDynamicAA)
-                    Render(false, dynamicAAFigureHigh, dynamicAADataHigh); // use high settings on middle button (AutoAxis)
-                else
-                    Render(skipIfCurrentlyRendering: false);
+                Render(skipIfCurrentlyRendering: false);
             }
             else if (e.Button == MouseButtons.Right && plt.mouseTracker.mouseDownStopwatch.ElapsedMilliseconds < 100)
             {
@@ -161,10 +137,7 @@ namespace ScottPlot
         private void PbPlot_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             plt.Benchmark(toggle: true);
-            if (useDynamicAA)
-                Render(false, dynamicAAFigureHigh, dynamicAADataHigh); // use high settings on double click?, is this render before context menu
-            else
-                Render(skipIfCurrentlyRendering: false);
+            Render(skipIfCurrentlyRendering: false);
         }
 
         private void PbPlot_MouseWheel(object sender, MouseEventArgs e)
@@ -175,22 +148,14 @@ namespace ScottPlot
                 plt.AxisZoom(1 + zoomAmount, 1 + zoomAmount, zoomCenter);
             else
                 plt.AxisZoom(1 - zoomAmount, 1 - zoomAmount, zoomCenter);
-            // lost in performance, must call high only on last MouseWhell, but no way to check
-            // may be implement on timer, because typicaly mouse wheel event called close in time
-            if (useDynamicAA)
-                Render(false, dynamicAAFigureHigh, dynamicAADataHigh); 
-            else
-                Render(skipIfCurrentlyRendering: false);
+            Render(skipIfCurrentlyRendering: false);
         }
 
         private void RightClickMenuItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             rightClickMenu.Hide();
             Tools.RightClickMenuItemClicked(e.ClickedItem, rightClickMenu, plt);
-            if (useDynamicAA)
-                Render(false, dynamicAAFigureHigh, dynamicAADataHigh); // use high settings
-            else
-                Render(skipIfCurrentlyRendering: false);
+            Render(skipIfCurrentlyRendering: false);
         }
 
         public event EventHandler MouseDownOnPlottable;

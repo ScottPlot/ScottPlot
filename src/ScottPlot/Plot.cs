@@ -136,26 +136,21 @@ namespace ScottPlot
             Renderer.Benchmark(settings);
         }
 
-        public Bitmap GetBitmap(bool antiAliasFigure, bool antiAliasDataa)
-        {
-            // save currently using AA settings
-            bool currentAAFigure = settings.antiAliasFigure;
-            bool currentAAData = settings.antiAliasData;
-            // set new settings for render
-            settings.antiAliasFigure = antiAliasFigure;
-            settings.antiAliasData = antiAliasDataa;
-
-            RenderBitmap();
-            // restore saved AA settings
-            settings.antiAliasFigure = currentAAFigure;
-            settings.antiAliasData = currentAAData;
-            return settings.bmpFigure;
-        }
-
-        public Bitmap GetBitmap(bool renderFirst = true)
-        {
-            if (renderFirst)
-                RenderBitmap();
+        public Bitmap GetBitmap(bool renderFirst = true, bool lowQuality = false)
+        {          
+            if (lowQuality)
+            {
+                bool currentAAData = settings.antiAliasData; // save currently using AA setting
+                settings.antiAliasData = false; // disable AA for render
+                if (renderFirst)
+                    RenderBitmap();
+                settings.antiAliasData = currentAAData; // restore saved AA setting
+            }
+            else
+            {
+                if (renderFirst)
+                    RenderBitmap();
+            }                            
             return settings.bmpFigure;
         }
 
