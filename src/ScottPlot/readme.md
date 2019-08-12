@@ -5,9 +5,9 @@ In a GUI environment ScottPlot makes it easy to display data interactively (left
 [![](https://raw.githubusercontent.com/swharden/ScottPlot/master/demos/src/plot-types/ScottPlot-screenshot-small.gif)](https://github.com/swharden/ScottPlot)
 
 ## Links
-* [Project page](https://github.com/swharden/ScottPlot)
-* [Documentation](https://github.com/swharden/ScottPlot/tree/master/doc)
-* [Cookbook](https://github.com/swharden/ScottPlot/tree/master/doc/cookbook)
+* [Cookbook](https://github.com/swharden/ScottPlot/tree/master/cookbook)
+* [API Documentation](https://github.com/swharden/ScottPlot/tree/master/doc)
+* [ScottPlot on GitHub](https://github.com/swharden/ScottPlot)
 
 ## Quickstart: Windows Forms
 
