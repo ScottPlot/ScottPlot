@@ -30,13 +30,13 @@ namespace ScottPlotQuickstartForms
                 dataCos[i] = Math.Cos(i * 2 * Math.PI / pointCount);
             }
 
-            scottPlotUC1.plt.PlotScatter(dataXs, dataSin);
-            scottPlotUC1.plt.PlotScatter(dataXs, dataCos);
-            scottPlotUC1.plt.XLabel("experiment time (ms)");
-            scottPlotUC1.plt.YLabel("signal (mV)");
-            scottPlotUC1.plt.Title("ScottPlot Quickstart");
-            scottPlotUC1.plt.AxisAuto();
-            scottPlotUC1.Render();
+            interactivePlot1.plt.PlotScatter(dataXs, dataSin);
+            interactivePlot1.plt.PlotScatter(dataXs, dataCos);
+            interactivePlot1.plt.XLabel("experiment time (ms)");
+            interactivePlot1.plt.YLabel("signal (mV)");
+            interactivePlot1.plt.Title("ScottPlot Quickstart");
+            interactivePlot1.plt.AxisAuto();
+            interactivePlot1.Render();
         }
     }
 }

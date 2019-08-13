@@ -52,8 +52,8 @@
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.rbGraphBar = new System.Windows.Forms.RadioButton();
             this.rbGraphStep = new System.Windows.Forms.RadioButton();
-            this.scottPlotUC2 = new ScottPlot.ScottPlotUC();
-            this.scottPlotUC1 = new ScottPlot.ScottPlotUC();
+            this.scottPlotUC2 = new ScottPlot.FormsPlot();
+            this.scottPlotUC1 = new ScottPlot.FormsPlot();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.lbBins = new System.Windows.Forms.ListBox();
             ((System.ComponentModel.ISupportInitialize)(this.nudPointCount)).BeginInit();
@@ -493,9 +493,9 @@
 
         #endregion
 
-        private ScottPlot.ScottPlotUC scottPlotUC1;
+        private ScottPlot.FormsPlot scottPlotUC1;
         private System.Windows.Forms.NumericUpDown nudPointCount;
-        private ScottPlot.ScottPlotUC scottPlotUC2;
+        private ScottPlot.FormsPlot scottPlotUC2;
         private System.Windows.Forms.RadioButton cbCount;
         private System.Windows.Forms.RadioButton cbCph;
         private System.Windows.Forms.RadioButton cbNorm;

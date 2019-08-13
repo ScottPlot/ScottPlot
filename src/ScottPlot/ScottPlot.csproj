@@ -53,25 +53,25 @@
     <Compile Include="Legend.cs" />
     <Compile Include="Markers.cs" />
     <Compile Include="MouseTracker.cs" />
-    <Compile Include="plottables\PlottableSignalConst.cs" />
-    <Compile Include="plottables\OHLC.cs" />
-    <Compile Include="plottables\Plottable.cs" />
-    <Compile Include="plottables\PlottableAxLine.cs" />
-    <Compile Include="plottables\PlottableAxSpan.cs" />
-    <Compile Include="plottables\PlottableBar.cs" />
-    <Compile Include="plottables\PlottableOHLC.cs" />
-    <Compile Include="plottables\PlottableScatter.cs" />
-    <Compile Include="plottables\PlottableSignal.cs" />
-    <Compile Include="plottables\PlottableText.cs" />
+    <Compile Include="Plottables\PlottableSignalConst.cs" />
+    <Compile Include="Plottables\OHLC.cs" />
+    <Compile Include="Plottables\Plottable.cs" />
+    <Compile Include="Plottables\PlottableAxLine.cs" />
+    <Compile Include="Plottables\PlottableAxSpan.cs" />
+    <Compile Include="Plottables\PlottableBar.cs" />
+    <Compile Include="Plottables\PlottableOHLC.cs" />
+    <Compile Include="Plottables\PlottableScatter.cs" />
+    <Compile Include="Plottables\PlottableSignal.cs" />
+    <Compile Include="Plottables\PlottableText.cs" />
     <Compile Include="Renderer.cs" />
-    <Compile Include="ScottPlotUC.cs">
+    <Compile Include="UserControls\FormsPlot.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ScottPlotUC.Designer.cs">
-      <DependentUpon>ScottPlotUC.cs</DependentUpon>
+    <Compile Include="UserControls\FormsPlot.Designer.cs">
+      <DependentUpon>FormsPlot.cs</DependentUpon>
     </Compile>
-    <Compile Include="ScottPlotWPF.xaml.cs">
-      <DependentUpon>ScottPlotWPF.xaml</DependentUpon>
+    <Compile Include="UserControls\WPFplot.xaml.cs">
+      <DependentUpon>WPFplot.xaml</DependentUpon>
     </Compile>
     <Compile Include="Style.cs" />
     <Compile Include="TickCollection.cs" />
@@ -82,16 +82,12 @@
     <Compile Include="Settings.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ScottPlotUC.resx">
-      <DependentUpon>ScottPlotUC.cs</DependentUpon>
+    <EmbeddedResource Include="UserControls\FormsPlot.resx">
+      <DependentUpon>FormsPlot.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram.cd" />
-    <None Include="ScottPlot.nuspec" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="ScottPlotWPF.xaml">
+    <Page Include="UserControls\WPFplot.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -34,7 +34,7 @@
             this.buttonBigOffset = new System.Windows.Forms.Button();
             this.btnSmallOffset = new System.Windows.Forms.Button();
             this.btnWav = new System.Windows.Forms.Button();
-            this.scottPlotUC1 = new ScottPlot.ScottPlotUC();
+            this.scottPlotUC1 = new ScottPlot.FormsPlot();
             this.SuspendLayout();
             // 
             // btnNormal
@@ -128,7 +128,7 @@
 
         #endregion
 
-        private ScottPlot.ScottPlotUC scottPlotUC1;
+        private ScottPlot.FormsPlot scottPlotUC1;
         private System.Windows.Forms.Button btnNormal;
         private System.Windows.Forms.Button btnBig;
         private System.Windows.Forms.Button btnSmall;

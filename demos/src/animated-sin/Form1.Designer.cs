@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.scottPlotUC1 = new ScottPlot.ScottPlotUC();
+            this.scottPlotUC1 = new ScottPlot.FormsPlot();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
@@ -61,7 +61,7 @@
 
         #endregion
 
-        private ScottPlot.ScottPlotUC scottPlotUC1;
+        private ScottPlot.FormsPlot scottPlotUC1;
         private System.Windows.Forms.Timer timer1;
     }
 }

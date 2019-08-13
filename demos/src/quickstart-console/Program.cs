@@ -32,6 +32,7 @@ namespace ScottPlotQuickstartConsole
             plt.AxisAuto();
             plt.SaveFig("console.png");
 
+            Console.WriteLine($"Saved {System.IO.Path.GetFullPath("console.png")}");
             Console.WriteLine("press ENTER to exit...");
             Console.ReadLine();
         }

@@ -31,8 +31,8 @@
             this.button1 = new System.Windows.Forms.Button();
             this.rbCandle = new System.Windows.Forms.RadioButton();
             this.rbOHLC = new System.Windows.Forms.RadioButton();
-            this.scottPlotUC2 = new ScottPlot.ScottPlotUC();
-            this.scottPlotUC1 = new ScottPlot.ScottPlotUC();
+            this.scottPlotUC2 = new ScottPlot.FormsPlot();
+            this.scottPlotUC1 = new ScottPlot.FormsPlot();
             this.SuspendLayout();
             // 
             // button1
@@ -110,9 +110,9 @@
 
         #endregion
 
-        private ScottPlot.ScottPlotUC scottPlotUC1;
+        private ScottPlot.FormsPlot scottPlotUC1;
         private System.Windows.Forms.Button button1;
-        private ScottPlot.ScottPlotUC scottPlotUC2;
+        private ScottPlot.FormsPlot scottPlotUC2;
         private System.Windows.Forms.RadioButton rbCandle;
         private System.Windows.Forms.RadioButton rbOHLC;
     }

@@ -30,7 +30,7 @@
         {
             this.btnSelectFile = new System.Windows.Forms.Button();
             this.tbCurrentFile = new System.Windows.Forms.TextBox();
-            this.scottPlotUC1 = new ScottPlot.ScottPlotUC();
+            this.scottPlotUC1 = new ScottPlot.FormsPlot();
             this.SuspendLayout();
             // 
             // btnSelectFile
@@ -80,7 +80,7 @@
 
         private System.Windows.Forms.Button btnSelectFile;
         private System.Windows.Forms.TextBox tbCurrentFile;
-        private ScottPlot.ScottPlotUC scottPlotUC1;
+        private ScottPlot.FormsPlot scottPlotUC1;
     }
 }
 

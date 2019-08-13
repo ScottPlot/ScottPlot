@@ -22,7 +22,7 @@ namespace ScottPlotDraggableMarkers
 
         }
 
-        public void ConnectToScottPlotUC(ScottPlot.ScottPlotUC SPltUC)
+        public void ConnectToScottPlotUC(ScottPlot.FormsPlot SPltUC)
         {
 
         }

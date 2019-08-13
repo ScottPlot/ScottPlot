@@ -18,7 +18,7 @@ namespace ScottPlot
     /// <summary>
     /// Interaction logic for ScottPlotWPF.xaml
     /// </summary>
-    public partial class ScottPlotWPF : UserControl
+    public partial class WPFplot : UserControl
     {
         public Plot plt = new Plot();
 
@@ -26,7 +26,7 @@ namespace ScottPlot
 
         private bool currentlyRendering = false;
 
-        public ScottPlotWPF()
+        public WPFplot()
         {
             InitializeComponent();
             if (System.Diagnostics.Process.GetCurrentProcess().ProcessName == "devenv")

@@ -40,7 +40,7 @@
             this.cbPenStyle = new System.Windows.Forms.ComboBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.nupFontSize = new System.Windows.Forms.NumericUpDown();
-            this.scottPlotUC1 = new ScottPlot.ScottPlotUC();
+            this.scottPlotUC1 = new ScottPlot.FormsPlot();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -238,7 +238,7 @@
 
         private System.Windows.Forms.ComboBox cbLocations;
         private System.Windows.Forms.GroupBox groupBox1;
-        private ScottPlot.ScottPlotUC scottPlotUC1;
+        private ScottPlot.FormsPlot scottPlotUC1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.ComboBox cbShadowDirection;
         private System.Windows.Forms.GroupBox groupBox3;

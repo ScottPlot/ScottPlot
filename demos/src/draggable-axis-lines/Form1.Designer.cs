@@ -31,7 +31,7 @@
             this.btnAddHline = new System.Windows.Forms.Button();
             this.btnAddVline = new System.Windows.Forms.Button();
             this.btnClearLines = new System.Windows.Forms.Button();
-            this.scottPlotUC1 = new ScottPlot.ScottPlotUC();
+            this.scottPlotUC1 = new ScottPlot.FormsPlot();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
             // 
@@ -111,7 +111,7 @@
         private System.Windows.Forms.Button btnAddHline;
         private System.Windows.Forms.Button btnAddVline;
         private System.Windows.Forms.Button btnClearLines;
-        private ScottPlot.ScottPlotUC scottPlotUC1;
+        private ScottPlot.FormsPlot scottPlotUC1;
         private System.Windows.Forms.RichTextBox richTextBox1;
     }
 }

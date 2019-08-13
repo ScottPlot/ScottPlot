@@ -5,13 +5,16 @@ using System.Diagnostics;
 
 namespace ScottPlot
 {
-    public partial class ScottPlotUC : UserControl
+    // this could be used for backwards-compatbility with the old name
+    //public class ScottPlotUC : WinFormsPlot {}
+
+    public partial class FormsPlot : UserControl
     {
         public Plot plt = new Plot();
         private bool currentlyRendering = false;
         private ContextMenuStrip rightClickMenu;
 
-        public ScottPlotUC()
+        public FormsPlot()
         {
             InitializeComponent();
             plt.Style(ScottPlot.Style.Control);
