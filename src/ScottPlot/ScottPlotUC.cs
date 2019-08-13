@@ -10,6 +10,7 @@ namespace ScottPlot
         public Plot plt = new Plot();
         private bool currentlyRendering = false;
         private ContextMenuStrip rightClickMenu;
+        private System.Timers.Timer timer;
 
         public ScottPlotUC()
         {
@@ -19,6 +20,13 @@ namespace ScottPlot
             if (Process.GetCurrentProcess().ProcessName == "devenv")
                 ScottPlot.Tools.DesignerModeDemoPlot(plt);
             PbPlot_SizeChanged(null, null);
+            timer = new System.Timers.Timer()
+            {
+                AutoReset = false,
+                SynchronizingObject = this,
+                Enabled = false,
+            };
+            timer.Elapsed +=  (o, arg) =>  Render(skipIfCurrentlyRendering: false);
         }
 
         public void Render(bool skipIfCurrentlyRendering = false, bool lowQuality = false)
@@ -133,7 +141,7 @@ namespace ScottPlot
             plt.Benchmark(toggle: true);
             Render(skipIfCurrentlyRendering: false);
         }
-
+        
         private void PbPlot_MouseWheel(object sender, MouseEventArgs e)
         {
             double zoomAmount = 0.15;
@@ -142,7 +150,19 @@ namespace ScottPlot
                 plt.AxisZoom(1 + zoomAmount, 1 + zoomAmount, zoomCenter);
             else
                 plt.AxisZoom(1 - zoomAmount, 1 - zoomAmount, zoomCenter);
-            Render(skipIfCurrentlyRendering: false);
+
+            if (plt.mouseTracker.mouseWheelHQRenderDelay > 0)
+            {
+                if (timer.Enabled) // reset timer if new MW event occurred before timer elapsed
+                {
+                    timer.Stop();
+                }
+                Render(false, true);
+                timer.Interval = plt.mouseTracker.mouseWheelHQRenderDelay; // delay in ms
+                timer.Start();
+            }
+            else
+                Render(skipIfCurrentlyRendering: false);
         }
 
         private void RightClickMenuItemClicked(object sender, ToolStripItemClickedEventArgs e)
