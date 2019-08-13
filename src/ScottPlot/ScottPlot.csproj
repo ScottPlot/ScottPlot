@@ -14,6 +14,12 @@
 		<Authors>Scott Harden</Authors>
 		<Version>3.1.0</Version>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<Copyright />
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<Description>ScottPlot is a free and open-source interactive graphing library for .NET</Description>
+		<PackageTags>plotting plot data graph chart signal C# data-visualization winforms dotnetcore netcore</PackageTags>
+		<PackageProjectUrl>https://github.com/swharden/ScottPlot</PackageProjectUrl>
+		<PackageIconUrl>https://raw.githubusercontent.com/swharden/ScottPlot/master/dev/icon/icon.png</PackageIconUrl>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net45|AnyCPU'">
