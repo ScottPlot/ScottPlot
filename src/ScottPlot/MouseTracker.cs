@@ -14,6 +14,7 @@ namespace ScottPlot
         public Stopwatch mouseDownStopwatch = new Stopwatch();
         private Plottable draggingObject;
         public bool lowQualityWhileDragging = true;
+        public int mouseWheelHQRenderDelay = 500; // in milliseconds, 0 meens disabled
 
         private readonly Settings settings;
         public MouseTracker(Settings settings)
