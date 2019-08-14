@@ -15,22 +15,26 @@ namespace ScottPlot
         public ScottPlotUC()
         {
             InitializeComponent();
-            plt.Style(ScottPlot.Style.Control);
-            pbPlot.MouseWheel += PbPlot_MouseWheel;
-            if (Process.GetCurrentProcess().ProcessName == "devenv")
-                ScottPlot.Tools.DesignerModeDemoPlot(plt);
-            PbPlot_SizeChanged(null, null);
-            timer = new System.Timers.Timer()
+            timer = new System.Timers.Timer() // create before first render call
             {
                 AutoReset = false,
                 SynchronizingObject = this,
                 Enabled = false,
             };
-            timer.Elapsed +=  (o, arg) =>  Render(skipIfCurrentlyRendering: false);
+            timer.Elapsed += (o, arg) => Render(skipIfCurrentlyRendering: false);
+            plt.Style(ScottPlot.Style.Control);
+            pbPlot.MouseWheel += PbPlot_MouseWheel;
+            if (Process.GetCurrentProcess().ProcessName == "devenv")
+                ScottPlot.Tools.DesignerModeDemoPlot(plt);
+            PbPlot_SizeChanged(null, null);
+
+            
         }
 
         public void Render(bool skipIfCurrentlyRendering = false, bool lowQuality = false)
         {
+            if (timer.Enabled) // at any reason stop timer, it always set correct after render call
+                timer.Stop();
             if (!(skipIfCurrentlyRendering && currentlyRendering))
             {
                 currentlyRendering = true;
@@ -79,7 +83,7 @@ namespace ScottPlot
 
             if (e.Button != MouseButtons.None)
             {
-                Render(skipIfCurrentlyRendering: true, lowQuality: plt.mouseTracker.lowQualityWhileDragging);
+                Render(skipIfCurrentlyRendering: true, lowQuality: plt.mouseTracker.lowQualityWhileInteracting);
                 OnMouseDragged(EventArgs.Empty);
             }
         }
@@ -87,7 +91,14 @@ namespace ScottPlot
         private void PbPlot_MouseUp(object sender, MouseEventArgs e)
         {
             plt.mouseTracker.MouseUp(e.Location);
-            Render(skipIfCurrentlyRendering: false);
+            if (plt.mouseTracker.lowQualityWhileInteracting && plt.mouseTracker.mouseUpHQRenderDelay > 0)
+            {
+                Render(false, true); // LQ render
+                timer.Interval = plt.mouseTracker.mouseUpHQRenderDelay;
+                timer.Start(); // set delay for HQ render on MouseUp
+            }
+            else // HQ render at LQ - off, or mouseUpRenderDelay == 0
+                Render(skipIfCurrentlyRendering: false);
             if (plt.mouseTracker.PlottableUnderCursor(e.Location) != null)
                 OnMouseDropPlottable(EventArgs.Empty);
         }
@@ -141,7 +152,7 @@ namespace ScottPlot
             plt.Benchmark(toggle: true);
             Render(skipIfCurrentlyRendering: false);
         }
-        
+
         private void PbPlot_MouseWheel(object sender, MouseEventArgs e)
         {
             double zoomAmount = 0.15;
@@ -151,12 +162,8 @@ namespace ScottPlot
             else
                 plt.AxisZoom(1 - zoomAmount, 1 - zoomAmount, zoomCenter);
 
-            if (plt.mouseTracker.mouseWheelHQRenderDelay > 0)
+            if (plt.mouseTracker.lowQualityWhileInteracting && plt.mouseTracker.mouseWheelHQRenderDelay > 0)
             {
-                if (timer.Enabled) // reset timer if new MW event occurred before timer elapsed
-                {
-                    timer.Stop();
-                }
                 Render(false, true);
                 timer.Interval = plt.mouseTracker.mouseWheelHQRenderDelay; // delay in ms
                 timer.Start();
