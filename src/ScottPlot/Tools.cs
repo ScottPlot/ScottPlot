@@ -163,7 +163,7 @@ namespace ScottPlot
                     plt.Clear();
                     break;
                 case "Toggle quality while dragging":
-                    plt.mouseTracker.lowQualityWhileDragging = !plt.mouseTracker.lowQualityWhileDragging;
+                    plt.mouseTracker.lowQualityWhileInteracting = !plt.mouseTracker.lowQualityWhileInteracting;
                     break;
                 case "ScottPlot":
                     rightClickMenu.Hide();
