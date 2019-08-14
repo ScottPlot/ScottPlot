@@ -45,6 +45,8 @@ namespace ScottPlot
         {
             if (!(skipIfCurrentlyRendering && currentlyRendering))
             {
+                if (timer.IsEnabled)
+                    timer.Stop();
                 currentlyRendering = true;
                 imagePlot.Source = Tools.bmpImageFromBmp(plt.GetBitmap(true, lowQuality));
                 currentlyRendering = false;
