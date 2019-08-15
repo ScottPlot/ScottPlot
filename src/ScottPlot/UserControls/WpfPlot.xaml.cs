@@ -19,7 +19,7 @@ namespace ScottPlot
     /// <summary>
     /// Interaction logic for ScottPlotWPF.xaml
     /// </summary>
-    public partial class ScottPlotWPF : UserControl
+    public partial class WpfPlot : UserControl
     {
         public Plot plt = new Plot();
 
@@ -27,7 +27,7 @@ namespace ScottPlot
 
         private bool currentlyRendering = false;
 
-        public ScottPlotWPF()
+        public WpfPlot()
         {
             InitializeComponent();
             timer = new DispatcherTimer(); // WPF supports only DispatcherTimer

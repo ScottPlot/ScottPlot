@@ -41,7 +41,7 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.lblLastLine = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.scottPlotUC1 = new ScottPlot.ScottPlotUC();
+            this.scottPlotUC1 = new ScottPlot.FormsPlot();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -206,7 +206,7 @@
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Label lblLastLine;
         private System.Windows.Forms.GroupBox groupBox2;
-        private ScottPlot.ScottPlotUC scottPlotUC1;
+        private ScottPlot.FormsPlot scottPlotUC1;
     }
 }
 

@@ -30,7 +30,7 @@
         {
             this.btnAdd = new System.Windows.Forms.Button();
             this.btnClear = new System.Windows.Forms.Button();
-            this.scottPlotUC1 = new ScottPlot.ScottPlotUC();
+            this.scottPlotUC1 = new ScottPlot.FormsPlot();
             this.SuspendLayout();
             // 
             // btnAdd
@@ -80,7 +80,7 @@
 
         #endregion
 
-        private ScottPlot.ScottPlotUC scottPlotUC1;
+        private ScottPlot.FormsPlot scottPlotUC1;
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.Button btnClear;
     }

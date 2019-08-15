@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.scottPlotUC1 = new ScottPlot.ScottPlotUC();
+            this.scottPlotUC1 = new ScottPlot.FormsPlot();
             this.btnUpdateData = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -68,7 +68,7 @@
 
         #endregion
 
-        private ScottPlot.ScottPlotUC scottPlotUC1;
+        private ScottPlot.FormsPlot scottPlotUC1;
         private System.Windows.Forms.Button btnUpdateData;
     }
 }

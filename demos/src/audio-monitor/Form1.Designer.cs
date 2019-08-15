@@ -33,10 +33,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.btnStart = new System.Windows.Forms.Button();
             this.btnStop = new System.Windows.Forms.Button();
-            this.scottPlotUC1 = new ScottPlot.ScottPlotUC();
+            this.scottPlotUC1 = new ScottPlot.FormsPlot();
             this.timerPlot = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.scottPlotUC2 = new ScottPlot.ScottPlotUC();
+            this.scottPlotUC2 = new ScottPlot.FormsPlot();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -141,10 +141,10 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.Button btnStop;
-        private ScottPlot.ScottPlotUC scottPlotUC1;
+        private ScottPlot.FormsPlot scottPlotUC1;
         private System.Windows.Forms.Timer timerPlot;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private ScottPlot.ScottPlotUC scottPlotUC2;
+        private ScottPlot.FormsPlot scottPlotUC2;
     }
 }
 
