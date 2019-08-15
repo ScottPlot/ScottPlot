@@ -43,7 +43,7 @@
             this.btnText = new System.Windows.Forms.Button();
             this.cbAntiAliasData = new System.Windows.Forms.CheckBox();
             this.cbAntiAliasFigure = new System.Windows.Forms.CheckBox();
-            this.scottPlotUC1 = new ScottPlot.FormsPlot();
+            this.formsPlot1 = new ScottPlot.FormsPlot();
             this.SuspendLayout();
             // 
             // btnClear
@@ -204,15 +204,15 @@
             this.cbAntiAliasFigure.UseVisualStyleBackColor = true;
             this.cbAntiAliasFigure.CheckedChanged += new System.EventHandler(this.CbAntiAliasFigure_CheckedChanged);
             // 
-            // scottPlotUC1
+            // formsPlot1
             // 
-            this.scottPlotUC1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.formsPlot1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.scottPlotUC1.Location = new System.Drawing.Point(12, 70);
-            this.scottPlotUC1.Name = "scottPlotUC1";
-            this.scottPlotUC1.Size = new System.Drawing.Size(836, 389);
-            this.scottPlotUC1.TabIndex = 0;
+            this.formsPlot1.Location = new System.Drawing.Point(12, 70);
+            this.formsPlot1.Name = "formsPlot1";
+            this.formsPlot1.Size = new System.Drawing.Size(836, 389);
+            this.formsPlot1.TabIndex = 0;
             // 
             // Form1
             // 
@@ -234,7 +234,7 @@
             this.Controls.Add(this.btnScatterSin);
             this.Controls.Add(this.btnScatterRandom);
             this.Controls.Add(this.btnClear);
-            this.Controls.Add(this.scottPlotUC1);
+            this.Controls.Add(this.formsPlot1);
             this.Name = "Form1";
             this.Text = "ScottPlot Demo";
             this.ResumeLayout(false);
@@ -244,7 +244,7 @@
 
         #endregion
 
-        private ScottPlot.FormsPlot scottPlotUC1;
+        private ScottPlot.FormsPlot formsPlot1;
         private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.Button btnScatterRandom;
         private System.Windows.Forms.Button btnScatterSin;

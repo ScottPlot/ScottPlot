@@ -27,12 +27,12 @@ namespace ScottPlotAnimatedSin
             for (int i = 0; i < pointCount; i++)
                 dataXs[i] = i;
 
-            scottPlotUC1.plt.PlotScatter(dataXs, dataSin);
-            scottPlotUC1.plt.PlotScatter(dataXs, dataCos);
-            scottPlotUC1.plt.Title("ScottPlot Animated Sin Demo");
-            scottPlotUC1.plt.YLabel("signal");
-            scottPlotUC1.plt.XLabel("phase");
-            scottPlotUC1.plt.AxisAuto(0);
+            formsPlot1.plt.PlotScatter(dataXs, dataSin);
+            formsPlot1.plt.PlotScatter(dataXs, dataCos);
+            formsPlot1.plt.Title("ScottPlot Animated Sin Demo");
+            formsPlot1.plt.YLabel("signal");
+            formsPlot1.plt.XLabel("phase");
+            formsPlot1.plt.AxisAuto(0);
 
         }
 
@@ -45,7 +45,7 @@ namespace ScottPlotAnimatedSin
                 dataCos[i] = Math.Cos(i * 3 * Math.PI / dataSin.Length + offset) * .5;
             }
                 
-            scottPlotUC1.Render();
+            formsPlot1.Render();
         }
 
         private void Timer1_Tick(object sender, EventArgs e)

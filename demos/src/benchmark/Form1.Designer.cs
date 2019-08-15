@@ -32,9 +32,9 @@
             this.nudIterations = new System.Windows.Forms.NumericUpDown();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.scottPlotUC1 = new ScottPlot.FormsPlot();
+            this.formsPlot1 = new ScottPlot.FormsPlot();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.scottPlotUC2 = new ScottPlot.FormsPlot();
+            this.formsPlot2 = new ScottPlot.FormsPlot();
             this.btnRun = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -95,7 +95,7 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.scottPlotUC1);
+            this.groupBox3.Controls.Add(this.formsPlot1);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox3.Location = new System.Drawing.Point(3, 3);
             this.groupBox3.Name = "groupBox3";
@@ -104,17 +104,17 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Test Plot";
             // 
-            // scottPlotUC1
+            // formsPlot1
             // 
-            this.scottPlotUC1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.scottPlotUC1.Location = new System.Drawing.Point(3, 16);
-            this.scottPlotUC1.Name = "scottPlotUC1";
-            this.scottPlotUC1.Size = new System.Drawing.Size(685, 465);
-            this.scottPlotUC1.TabIndex = 0;
+            this.formsPlot1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.formsPlot1.Location = new System.Drawing.Point(3, 16);
+            this.formsPlot1.Name = "formsPlot1";
+            this.formsPlot1.Size = new System.Drawing.Size(685, 465);
+            this.formsPlot1.TabIndex = 0;
             // 
             // groupBox4
             // 
-            this.groupBox4.Controls.Add(this.scottPlotUC2);
+            this.groupBox4.Controls.Add(this.formsPlot2);
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox4.Location = new System.Drawing.Point(700, 3);
             this.groupBox4.Name = "groupBox4";
@@ -123,13 +123,13 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Benchmark Results";
             // 
-            // scottPlotUC2
+            // formsPlot2
             // 
-            this.scottPlotUC2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.scottPlotUC2.Location = new System.Drawing.Point(3, 16);
-            this.scottPlotUC2.Name = "scottPlotUC2";
-            this.scottPlotUC2.Size = new System.Drawing.Size(685, 465);
-            this.scottPlotUC2.TabIndex = 1;
+            this.formsPlot2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.formsPlot2.Location = new System.Drawing.Point(3, 16);
+            this.formsPlot2.Name = "formsPlot2";
+            this.formsPlot2.Size = new System.Drawing.Size(685, 465);
+            this.formsPlot2.TabIndex = 1;
             // 
             // btnRun
             // 
@@ -199,8 +199,8 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.GroupBox groupBox4;
-        private ScottPlot.FormsPlot scottPlotUC1;
-        private ScottPlot.FormsPlot scottPlotUC2;
+        private ScottPlot.FormsPlot formsPlot1;
+        private ScottPlot.FormsPlot formsPlot2;
         private System.Windows.Forms.Button btnRun;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;

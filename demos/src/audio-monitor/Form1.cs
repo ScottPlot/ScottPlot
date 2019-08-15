@@ -37,15 +37,15 @@ namespace ScottPlotAudioMonitor
 
         private void StylePcm()
         {
-            scottPlotUC1.plt.Title("");
-            scottPlotUC1.plt.YLabel("PCM (amplitude)", fontSize: 12);
-            scottPlotUC1.plt.XLabel("Time (millisec)", fontSize: 12);
-            scottPlotUC1.Render();
+            formsPlot1.plt.Title("");
+            formsPlot1.plt.YLabel("PCM (amplitude)", fontSize: 12);
+            formsPlot1.plt.XLabel("Time (millisec)", fontSize: 12);
+            formsPlot1.Render();
 
-            scottPlotUC2.plt.Title("");
-            scottPlotUC2.plt.YLabel("FFT (power)", fontSize: 12);
-            scottPlotUC2.plt.XLabel("Frequency (kHz)", fontSize: 12);
-            scottPlotUC2.Render();
+            formsPlot2.plt.Title("");
+            formsPlot2.plt.YLabel("FFT (power)", fontSize: 12);
+            formsPlot2.plt.XLabel("Frequency (kHz)", fontSize: 12);
+            formsPlot2.Render();
         }
 
         private void updateFFT()
@@ -127,36 +127,36 @@ namespace ScottPlotAudioMonitor
         {
             if (dataPcm == null || dataFft == null)
             {
-                if (scottPlotUC1.plt.GetPlottables().Count > 0)
-                    scottPlotUC1.plt.Clear();
-                if (scottPlotUC2.plt.GetPlottables().Count > 0)
-                    scottPlotUC2.plt.Clear();
+                if (formsPlot1.plt.GetPlottables().Count > 0)
+                    formsPlot1.plt.Clear();
+                if (formsPlot2.plt.GetPlottables().Count > 0)
+                    formsPlot2.plt.Clear();
                 return;
             }
             else
             {
-                if (scottPlotUC1.plt.GetPlottables().Count == 0)
+                if (formsPlot1.plt.GetPlottables().Count == 0)
                 {
                     // plot the PCM (raw signal)
-                    scottPlotUC1.plt.PlotSignal(dataPcm, wvin.WaveFormat.SampleRate / 1000.0, markerSize: 0);
-                    scottPlotUC1.plt.AxisAuto(0, .5);
+                    formsPlot1.plt.PlotSignal(dataPcm, wvin.WaveFormat.SampleRate / 1000.0, markerSize: 0);
+                    formsPlot1.plt.AxisAuto(0, .5);
 
                     // plot the FFT (frequency power)
                     double fftSampleRate = dataFft.Length / (double)wvin.WaveFormat.SampleRate * 2;
-                    scottPlotUC2.plt.PlotSignal(dataFft, fftSampleRate * 1000.0, markerSize: 0);
-                    scottPlotUC2.plt.AxisAuto(0);
+                    formsPlot2.plt.PlotSignal(dataFft, fftSampleRate * 1000.0, markerSize: 0);
+                    formsPlot2.plt.AxisAuto(0);
                 }
 
                 // update vertical line at peak frequency
                 double peakFrequency = getPeakFrequency();
                 Console.WriteLine($"Peak frequency: {peakFrequency} Hz");
-                scottPlotUC2.plt.Clear(signalPlots: false, axisLines: true);
-                scottPlotUC2.plt.PlotVLine(peakFrequency / 1000.0, color: Color.Red, 
+                formsPlot2.plt.Clear(signalPlots: false, axisLines: true);
+                formsPlot2.plt.PlotVLine(peakFrequency / 1000.0, color: Color.Red, 
                     label: string.Format("peak {0:0} Hz", peakFrequency));
-                scottPlotUC2.plt.Legend(location: ScottPlot.legendLocation.upperRight);
+                formsPlot2.plt.Legend(location: ScottPlot.legendLocation.upperRight);
 
-                scottPlotUC1.Render();
-                scottPlotUC2.Render();
+                formsPlot1.Render();
+                formsPlot2.Render();
             }
         }
 

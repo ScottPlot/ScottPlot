@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.btnAdd = new System.Windows.Forms.Button();
-            this.scottPlotUC1 = new ScottPlot.FormsPlot();
+            this.formsPlot1 = new ScottPlot.FormsPlot();
             this.btnClear = new System.Windows.Forms.Button();
             this.cbConnect = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
@@ -44,15 +44,15 @@
             this.btnAdd.UseVisualStyleBackColor = true;
             this.btnAdd.Click += new System.EventHandler(this.Button1_Click);
             // 
-            // scottPlotUC1
+            // formsPlot1
             // 
-            this.scottPlotUC1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.formsPlot1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.scottPlotUC1.Location = new System.Drawing.Point(12, 12);
-            this.scottPlotUC1.Name = "scottPlotUC1";
-            this.scottPlotUC1.Size = new System.Drawing.Size(757, 409);
-            this.scottPlotUC1.TabIndex = 0;
+            this.formsPlot1.Location = new System.Drawing.Point(12, 12);
+            this.formsPlot1.Name = "formsPlot1";
+            this.formsPlot1.Size = new System.Drawing.Size(757, 409);
+            this.formsPlot1.TabIndex = 0;
             // 
             // btnClear
             // 
@@ -82,7 +82,7 @@
             this.Controls.Add(this.cbConnect);
             this.Controls.Add(this.btnClear);
             this.Controls.Add(this.btnAdd);
-            this.Controls.Add(this.scottPlotUC1);
+            this.Controls.Add(this.formsPlot1);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -93,7 +93,7 @@
 
         #endregion
 
-        private ScottPlot.FormsPlot scottPlotUC1;
+        private ScottPlot.FormsPlot formsPlot1;
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.CheckBox cbConnect;

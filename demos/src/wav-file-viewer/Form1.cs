@@ -38,12 +38,12 @@ namespace wav_file_viewer
 
             // here PlotSignalConst() is used over PlotSignal() because it's faster and the source data does not change.
 
-            scottPlotUC1.plt.PlotSignalConst(wavData, sampleRate: 8000, color: Color.Red);
-            scottPlotUC1.plt.AxisAuto();
-            scottPlotUC1.plt.YLabel("Amplitue");
-            scottPlotUC1.plt.XLabel("Time (seconds)");
-            scottPlotUC1.plt.Title(System.IO.Path.GetFileName(wavFilePath));
-            scottPlotUC1.Render();
+            formsPlot1.plt.PlotSignalConst(wavData, sampleRate: 8000, color: Color.Red);
+            formsPlot1.plt.AxisAuto();
+            formsPlot1.plt.YLabel("Amplitue");
+            formsPlot1.plt.XLabel("Time (seconds)");
+            formsPlot1.plt.Title(System.IO.Path.GetFileName(wavFilePath));
+            formsPlot1.Render();
         }
 
         private double[] ReadWavFile(string wavFilePath)

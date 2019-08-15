@@ -36,7 +36,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.cbShowGrid = new System.Windows.Forms.CheckBox();
-            this.scottPlotUC1 = new ScottPlot.FormsPlot();
+            this.formsPlot1 = new ScottPlot.FormsPlot();
             this.gbSpacing.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudX)).BeginInit();
@@ -174,15 +174,15 @@
             this.cbShowGrid.UseVisualStyleBackColor = true;
             this.cbShowGrid.CheckedChanged += new System.EventHandler(this.CbShowGrid_CheckedChanged);
             // 
-            // scottPlotUC1
+            // formsPlot1
             // 
-            this.scottPlotUC1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.formsPlot1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.scottPlotUC1.Location = new System.Drawing.Point(188, 12);
-            this.scottPlotUC1.Name = "scottPlotUC1";
-            this.scottPlotUC1.Size = new System.Drawing.Size(657, 392);
-            this.scottPlotUC1.TabIndex = 0;
+            this.formsPlot1.Location = new System.Drawing.Point(188, 12);
+            this.formsPlot1.Name = "formsPlot1";
+            this.formsPlot1.Size = new System.Drawing.Size(657, 392);
+            this.formsPlot1.TabIndex = 0;
             // 
             // Form1
             // 
@@ -191,7 +191,7 @@
             this.ClientSize = new System.Drawing.Size(857, 416);
             this.Controls.Add(this.cbShowGrid);
             this.Controls.Add(this.gbSpacing);
-            this.Controls.Add(this.scottPlotUC1);
+            this.Controls.Add(this.formsPlot1);
             this.Name = "Form1";
             this.Text = "ScottPlot Grid Demo";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -206,7 +206,7 @@
 
         #endregion
 
-        private ScottPlot.FormsPlot scottPlotUC1;
+        private ScottPlot.FormsPlot formsPlot1;
         private System.Windows.Forms.GroupBox gbSpacing;
         private System.Windows.Forms.CheckBox cbShowGrid;
         private System.Windows.Forms.CheckBox cbAutoY;

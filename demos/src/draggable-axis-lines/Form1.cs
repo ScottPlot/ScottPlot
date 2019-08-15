@@ -24,10 +24,10 @@ namespace ScottPlotDraggableMarkers
             int pointCount = 50;
             double[] Ys = ScottPlot.DataGen.Sin(pointCount, 2);
             double[] Xs = ScottPlot.DataGen.Consecutive(pointCount);
-            scottPlotUC1.plt.Grid(false);
-            scottPlotUC1.plt.PlotScatter(Xs, Ys);
-            scottPlotUC1.plt.AxisAuto();
-            scottPlotUC1.Render();
+            formsPlot1.plt.Grid(false);
+            formsPlot1.plt.PlotScatter(Xs, Ys);
+            formsPlot1.plt.AxisAuto();
+            formsPlot1.Render();
             UpdateMessage();
             BtnAddVline_Click(null, null);
         }
@@ -35,23 +35,23 @@ namespace ScottPlotDraggableMarkers
         private void BtnAddHline_Click(object sender, EventArgs e)
         {
             double position = rand.NextDouble() * 2 - 1;
-            scottPlotUC1.plt.PlotHLine(position, draggable: true, dragLimitLower: -1, dragLimitUpper: 1);
-            scottPlotUC1.Render();
+            formsPlot1.plt.PlotHLine(position, draggable: true, dragLimitLower: -1, dragLimitUpper: 1);
+            formsPlot1.Render();
             UpdateMessage();
         }
 
         private void BtnAddVline_Click(object sender, EventArgs e)
         {
             double position = rand.NextDouble() * 50;
-            scottPlotUC1.plt.PlotVLine(position, draggable: true, dragLimitLower: 0, dragLimitUpper: 49);
-            scottPlotUC1.Render();
+            formsPlot1.plt.PlotVLine(position, draggable: true, dragLimitLower: 0, dragLimitUpper: 49);
+            formsPlot1.Render();
             UpdateMessage();
         }
 
         private void BtnClearLines_Click(object sender, EventArgs e)
         {
-            scottPlotUC1.plt.Clear(scatterPlots: false);
-            scottPlotUC1.Render();
+            formsPlot1.plt.Clear(scatterPlots: false);
+            formsPlot1.Render();
             UpdateMessage();
         }
 
@@ -59,7 +59,7 @@ namespace ScottPlotDraggableMarkers
         {
 
             string msg = "";
-            var plottables = scottPlotUC1.plt.GetPlottables();
+            var plottables = formsPlot1.plt.GetPlottables();
             for (int i = 0; i < plottables.Count; i++)
             {
                 if (plottables[i] is ScottPlot.PlottableAxLine axLine)

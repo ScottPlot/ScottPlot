@@ -40,7 +40,7 @@
             this.cbPenStyle = new System.Windows.Forms.ComboBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.nupFontSize = new System.Windows.Forms.NumericUpDown();
-            this.scottPlotUC1 = new ScottPlot.FormsPlot();
+            this.formsPlot1 = new ScottPlot.FormsPlot();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -197,15 +197,15 @@
             0});
             this.nupFontSize.ValueChanged += new System.EventHandler(this.Cboxes_SelectedIndexChanged);
             // 
-            // scottPlotUC1
+            // formsPlot1
             // 
-            this.scottPlotUC1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.formsPlot1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.scottPlotUC1.Location = new System.Drawing.Point(12, 65);
-            this.scottPlotUC1.Name = "scottPlotUC1";
-            this.scottPlotUC1.Size = new System.Drawing.Size(737, 354);
-            this.scottPlotUC1.TabIndex = 2;
+            this.formsPlot1.Location = new System.Drawing.Point(12, 65);
+            this.formsPlot1.Name = "formsPlot1";
+            this.formsPlot1.Size = new System.Drawing.Size(737, 354);
+            this.formsPlot1.TabIndex = 2;
             // 
             // Form1
             // 
@@ -216,9 +216,9 @@
             this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.scottPlotUC1);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.formsPlot1);
             this.Name = "Form1";
             this.Text = "ScottPlot Legend Test";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -238,7 +238,7 @@
 
         private System.Windows.Forms.ComboBox cbLocations;
         private System.Windows.Forms.GroupBox groupBox1;
-        private ScottPlot.FormsPlot scottPlotUC1;
+        private ScottPlot.FormsPlot formsPlot1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.ComboBox cbShadowDirection;
         private System.Windows.Forms.GroupBox groupBox3;

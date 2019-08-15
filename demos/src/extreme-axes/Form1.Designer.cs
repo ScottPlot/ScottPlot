@@ -34,7 +34,7 @@
             this.buttonBigOffset = new System.Windows.Forms.Button();
             this.btnSmallOffset = new System.Windows.Forms.Button();
             this.btnWav = new System.Windows.Forms.Button();
-            this.scottPlotUC1 = new ScottPlot.FormsPlot();
+            this.formsPlot1 = new ScottPlot.FormsPlot();
             this.SuspendLayout();
             // 
             // btnNormal
@@ -97,16 +97,16 @@
             this.btnWav.UseVisualStyleBackColor = true;
             this.btnWav.Click += new System.EventHandler(this.BtnWav_Click);
             // 
-            // scottPlotUC1
+            // formsPlot1
             // 
-            this.scottPlotUC1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.formsPlot1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.scottPlotUC1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.scottPlotUC1.Location = new System.Drawing.Point(12, 41);
-            this.scottPlotUC1.Name = "scottPlotUC1";
-            this.scottPlotUC1.Size = new System.Drawing.Size(750, 386);
-            this.scottPlotUC1.TabIndex = 0;
+            this.formsPlot1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.formsPlot1.Location = new System.Drawing.Point(12, 41);
+            this.formsPlot1.Name = "formsPlot1";
+            this.formsPlot1.Size = new System.Drawing.Size(750, 386);
+            this.formsPlot1.TabIndex = 0;
             // 
             // Form1
             // 
@@ -119,7 +119,7 @@
             this.Controls.Add(this.btnSmall);
             this.Controls.Add(this.btnBig);
             this.Controls.Add(this.btnNormal);
-            this.Controls.Add(this.scottPlotUC1);
+            this.Controls.Add(this.formsPlot1);
             this.Name = "Form1";
             this.Text = "ScottPlot Demo - extreme axis tester";
             this.ResumeLayout(false);
@@ -128,7 +128,7 @@
 
         #endregion
 
-        private ScottPlot.FormsPlot scottPlotUC1;
+        private ScottPlot.FormsPlot formsPlot1;
         private System.Windows.Forms.Button btnNormal;
         private System.Windows.Forms.Button btnBig;
         private System.Windows.Forms.Button btnSmall;
