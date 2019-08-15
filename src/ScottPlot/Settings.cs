@@ -93,8 +93,8 @@ namespace ScottPlot
         public bool displayBenchmark = false;
 
         // mouse tracking
-        private Point mouseDownLocation = new Point(0, 0);
-        private double[] mouseDownAxis = new double[4];
+        public Point mouseDownLocation = new Point(0, 0);
+        public double[] mouseDownAxis = new double[4];
 
         // plottables
         public readonly List<Plottable> plottables = new List<Plottable>();

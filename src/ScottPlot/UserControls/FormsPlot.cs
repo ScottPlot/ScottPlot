@@ -26,8 +26,6 @@ namespace ScottPlot
             if (Process.GetCurrentProcess().ProcessName == "devenv")
                 ScottPlot.Tools.DesignerModeDemoPlot(plt);
             PbPlot_SizeChanged(null, null);
-
-            
         }
 
         public void Render(bool skipIfCurrentlyRendering = false, bool lowQuality = false)
@@ -42,6 +40,15 @@ namespace ScottPlot
                     Application.DoEvents();
                 currentlyRendering = false;
             }
+        }
+
+        private void LaunchMenu()
+        {
+            plt.GetSettings().mouseIsPanning = false;
+            plt.GetSettings().mouseIsZooming = false;
+
+            var frm = new UserControls.FormSettings(plt);
+            frm.ShowDialog();
         }
 
         private void PbPlot_SizeChanged(object sender, EventArgs e)
@@ -89,6 +96,12 @@ namespace ScottPlot
 
         private void PbPlot_MouseUp(object sender, MouseEventArgs e)
         {
+            if (!plt.mouseTracker.MouseHasMoved())
+            {
+                LaunchMenu();
+                return;
+            }
+
             plt.mouseTracker.MouseUp(e.Location);
             if (plt.mouseTracker.lowQualityWhileInteracting && plt.mouseTracker.mouseUpHQRenderDelay > 0)
             {
@@ -111,11 +124,7 @@ namespace ScottPlot
             }
             else if (e.Button == MouseButtons.Right && plt.mouseTracker.mouseDownStopwatch.ElapsedMilliseconds < 100)
             {
-                /*
-                 * RIGHT-CLICK MENU FOR NOW IS A WORK IN PROGRESS
-                 */
-                var frm = new UserControls.FormSettings(plt);
-                frm.ShowDialog();
+                LaunchMenu();
             }
         }
 
