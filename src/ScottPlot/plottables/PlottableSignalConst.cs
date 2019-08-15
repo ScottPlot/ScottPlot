@@ -17,8 +17,11 @@ namespace ScottPlot
         // using 4 x signal memory in worst case: ys.Length is (Pow2 +1);        
         double[] TreeMin;
         double[] TreeMax;
+        float[] TreeMinF;
+        float[] TreeMaxF;
         private int n = 0; // size of each Tree
         public bool TreesReady = false;
+        private bool singlePrecision = false; // float type for trees, which uses half memory
         public PlottableSignalConst(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, bool useParallel) : base(ys, sampleRate, xOffset, yOffset, color, lineWidth, markerSize, label, useParallel)
         {
             if (useParallel)
@@ -150,34 +153,69 @@ namespace ScottPlot
             {
                 // Size up to pow2
                 n = (1 << ((int)Math.Log(ys.Length - 1, 2) + 1));
-                TreeMin = new double[n];
-                TreeMax = new double[n];
-                // fill bottom layer of tree                
-                for (int i = 0; i < ys.Length / 2; i++) // with source array pairs min/max
+                if (singlePrecision == false)
                 {
-                    TreeMin[n / 2 + i] = Math.Min(ys[i * 2], ys[i * 2 + 1]);
-                    TreeMax[n / 2 + i] = Math.Max(ys[i * 2], ys[i * 2 + 1]);
+                    TreeMin = new double[n];
+                    TreeMax = new double[n];
                 }
-                if (ys.Length % 2 == 1) // if array size odd, last element haven't pair to compare
+                else
                 {
-                    TreeMin[n / 2 + ys.Length / 2] = ys[ys.Length - 1];
-                    TreeMax[n / 2 + ys.Length / 2] = ys[ys.Length - 1];
+                    TreeMinF = new float[n];
+                    TreeMaxF = new float[n];
                 }
-                for (int i = n / 2 + (ys.Length + 1) / 2; i < n; i++) // min/max for pairs of nonexistent elements
-                {
-                    TreeMin[i] = double.MaxValue;
-                    TreeMax[i] = double.MinValue;
-                }
-                // fill other layers
-                for (int i = n / 2 - 1; i > 0; i--)
-                {
-                    TreeMin[i] = Math.Min(TreeMin[2 * i], TreeMin[2 * i + 1]);
-                    TreeMax[i] = Math.Max(TreeMax[2 * i], TreeMax[2 * i + 1]);
-                }
+                // fill bottom layer of tree
 
+                if (singlePrecision == false)
+                {
+                    for (int i = 0; i < ys.Length / 2; i++) // with source array pairs min/max
+                    {
+                        TreeMin[n / 2 + i] = Math.Min(ys[i * 2], ys[i * 2 + 1]);
+                        TreeMax[n / 2 + i] = Math.Max(ys[i * 2], ys[i * 2 + 1]);
+                    }
+                    if (ys.Length % 2 == 1) // if array size odd, last element haven't pair to compare
+                    {
+                        TreeMin[n / 2 + ys.Length / 2] = ys[ys.Length - 1];
+                        TreeMax[n / 2 + ys.Length / 2] = ys[ys.Length - 1];
+                    }
+                    for (int i = n / 2 + (ys.Length + 1) / 2; i < n; i++) // min/max for pairs of nonexistent elements
+                    {
+                        TreeMin[i] = double.MaxValue;
+                        TreeMax[i] = double.MinValue;
+                    }
+                    // fill other layers
+                    for (int i = n / 2 - 1; i > 0; i--)
+                    {
+                        TreeMin[i] = Math.Min(TreeMin[2 * i], TreeMin[2 * i + 1]);
+                        TreeMax[i] = Math.Max(TreeMax[2 * i], TreeMax[2 * i + 1]);
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < ys.Length / 2; i++) // with source array pairs min/max
+                    {
+                        TreeMinF[n / 2 + i] = (float)Math.Min(ys[i * 2], ys[i * 2 + 1]);
+                        TreeMaxF[n / 2 + i] = (float)Math.Max(ys[i * 2], ys[i * 2 + 1]);
+                    }
+                    if (ys.Length % 2 == 1) // if array size odd, last element haven't pair to compare
+                    {
+                        TreeMinF[n / 2 + ys.Length / 2] = (float)ys[ys.Length - 1];
+                        TreeMaxF[n / 2 + ys.Length / 2] = (float)ys[ys.Length - 1];
+                    }
+                    for (int i = n / 2 + (ys.Length + 1) / 2; i < n; i++) // min/max for pairs of nonexistent elements
+                    {
+                        TreeMinF[i] = float.MaxValue;
+                        TreeMaxF[i] = float.MinValue;
+                    }
+                    // fill other layers
+                    for (int i = n / 2 - 1; i > 0; i--)
+                    {
+                        TreeMinF[i] = (float)Math.Min(TreeMinF[2 * i], TreeMinF[2 * i + 1]);
+                        TreeMaxF[i] = (float)Math.Max(TreeMaxF[2 * i], TreeMaxF[2 * i + 1]);
+                    }
+                }
                 TreesReady = true;
             }
-            catch (System.OutOfMemoryException)
+            catch (OutOfMemoryException)
             {
                 TreeMin = null;
                 TreeMax = null;
@@ -198,7 +236,7 @@ namespace ScottPlot
             }
 
             lowestValue = double.MaxValue;
-            highestValue = double.MinValue;            
+            highestValue = double.MinValue;
             if (l > r)
             {
                 int temp = r;
@@ -228,15 +266,31 @@ namespace ScottPlot
             // next iterations on tree
             while (l <= r)
             {
-                if ((l & 1) == 1) // l is right child
+                if (singlePrecision == false)
                 {
-                    lowestValue = Math.Min(lowestValue, TreeMin[l]);
-                    highestValue = Math.Max(highestValue, TreeMax[l]);
+                    if ((l & 1) == 1) // l is right child
+                    {
+                        lowestValue = Math.Min(lowestValue, TreeMin[l]);
+                        highestValue = Math.Max(highestValue, TreeMax[l]);
+                    }
+                    if ((r & 1) != 1) // r is left child
+                    {
+                        lowestValue = Math.Min(lowestValue, TreeMin[r]);
+                        highestValue = Math.Max(highestValue, TreeMax[r]);
+                    }
                 }
-                if ((r & 1) != 1) // r is left child
+                else
                 {
-                    lowestValue = Math.Min(lowestValue, TreeMin[r]);
-                    highestValue = Math.Max(highestValue, TreeMax[r]);
+                    if ((l & 1) == 1) // l is right child
+                    {
+                        lowestValue = Math.Min(lowestValue, TreeMinF[l]);
+                        highestValue = Math.Max(highestValue, TreeMaxF[l]);
+                    }
+                    if ((r & 1) != 1) // r is left child
+                    {
+                        lowestValue = Math.Min(lowestValue, TreeMinF[r]);
+                        highestValue = Math.Max(highestValue, TreeMaxF[r]);
+                    }
                 }
                 // go up one level
                 l = (l + 1) / 2;
