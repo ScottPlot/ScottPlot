@@ -9,7 +9,6 @@ namespace ScottPlot
     {
         public Plot plt = new Plot();
         private bool currentlyRendering = false;
-        private ContextMenuStrip rightClickMenu;
         private System.Timers.Timer timer;
 
         public FormsPlot()
@@ -112,38 +111,11 @@ namespace ScottPlot
             }
             else if (e.Button == MouseButtons.Right && plt.mouseTracker.mouseDownStopwatch.ElapsedMilliseconds < 100)
             {
-                rightClickMenu = new ContextMenuStrip();
-                rightClickMenu.Items.Add("Save Image");
-
-                rightClickMenu.Items.Add("Save Data");
-                ToolStripMenuItem saveDataMenuItem = (ToolStripMenuItem)rightClickMenu.Items[rightClickMenu.Items.Count - 1];
-                saveDataMenuItem.Enabled = false;
-                if (plt.GetPlottables().Count > 0)
-                    if ((plt.GetPlottables()[0] is PlottableScatter) || (plt.GetPlottables()[0] is PlottableSignal))
-                        saveDataMenuItem.Enabled = true;
-                
-                rightClickMenu.Items.Add("Auto-Axis");
-                rightClickMenu.Items.Add("Clear");
-                rightClickMenu.Items.Add(new ToolStripSeparator());
-                rightClickMenu.Items.Add("Toggle quality while dragging");
-                rightClickMenu.Items.Add(new ToolStripSeparator());
-                rightClickMenu.Items.Add("Help");
-
-                ToolStripMenuItem helpMenu = (ToolStripMenuItem)rightClickMenu.Items[rightClickMenu.Items.Count - 1];
-                helpMenu.DropDownItems.Add("left-click-drag to pan");
-                helpMenu.DropDownItems.Add("right-click-drag to zoom");
-                helpMenu.DropDownItems.Add("middle-click for auto-axis");
-                helpMenu.DropDownItems.Add("double-click to toggle benchmark");
-                helpMenu.DropDownItems.Add(new ToolStripSeparator());
-                helpMenu.DropDownItems.Add($"ScottPlot {Tools.GetVersionString()} ({Tools.GetFrameworkVersionString()})");
-                helpMenu.DropDownItems[0].Enabled = false;
-                helpMenu.DropDownItems[1].Enabled = false;
-                helpMenu.DropDownItems[2].Enabled = false;
-                helpMenu.DropDownItems[3].Enabled = false;
-
-                rightClickMenu.Show(pbPlot, PointToClient(Cursor.Position));
-                rightClickMenu.ItemClicked += new ToolStripItemClickedEventHandler(RightClickMenuItemClicked);
-                helpMenu.DropDownItemClicked += new ToolStripItemClickedEventHandler(RightClickMenuItemClicked);
+                /*
+                 * RIGHT-CLICK MENU FOR NOW IS A WORK IN PROGRESS
+                 */
+                var frm = new UserControls.FormSettings(plt);
+                frm.ShowDialog();
             }
         }
 
@@ -170,13 +142,6 @@ namespace ScottPlot
             }
             else
                 Render(skipIfCurrentlyRendering: false);
-        }
-
-        private void RightClickMenuItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-            rightClickMenu.Hide();
-            Tools.RightClickMenuItemClicked(e.ClickedItem, rightClickMenu, plt);
-            Render(skipIfCurrentlyRendering: false);
         }
 
         public event EventHandler MouseDownOnPlottable;
