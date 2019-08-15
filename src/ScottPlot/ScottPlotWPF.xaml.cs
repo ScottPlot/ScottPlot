@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace ScottPlot
 {
@@ -22,13 +23,19 @@ namespace ScottPlot
     {
         public Plot plt = new Plot();
 
-        public bool lowQualityWhileDragging = false;
+        private DispatcherTimer timer;        
 
         private bool currentlyRendering = false;
 
         public ScottPlotWPF()
         {
             InitializeComponent();
+            timer = new DispatcherTimer(); // WPF supports only DispatcherTimer
+            timer.Tick += (o, arg) =>
+            {
+                timer.Stop(); // AutoReset = false
+                Render(skipIfCurrentlyRendering: false);
+            };
             if (System.Diagnostics.Process.GetCurrentProcess().ProcessName == "devenv")
                 Tools.DesignerModeDemoPlot(plt);
             CanvasPlot_SizeChanged(null, null);
@@ -38,6 +45,8 @@ namespace ScottPlot
         {
             if (!(skipIfCurrentlyRendering && currentlyRendering))
             {
+                if (timer.IsEnabled)
+                    timer.Stop();
                 currentlyRendering = true;
                 imagePlot.Source = Tools.bmpImageFromBmp(plt.GetBitmap(true, lowQuality));
                 currentlyRendering = false;
@@ -60,13 +69,20 @@ namespace ScottPlot
         {
             plt.mouseTracker.MouseMove(e.GetPosition(this));
             if ((Mouse.LeftButton == MouseButtonState.Pressed) || (Mouse.RightButton == MouseButtonState.Pressed))
-                Render(skipIfCurrentlyRendering: true, lowQualityWhileDragging);
+                Render(skipIfCurrentlyRendering: true, plt.mouseTracker.lowQualityWhileInteracting);
         }
 
         private void UserControl_MouseUp(object sender, MouseButtonEventArgs e)
         {
             plt.mouseTracker.MouseUp(e.GetPosition(this));
-            Render(skipIfCurrentlyRendering: false);
+            if (plt.mouseTracker.lowQualityWhileInteracting && plt.mouseTracker.mouseUpHQRenderDelay > 0)
+            {
+                Render(false, true);
+                timer.Interval = TimeSpan.FromMilliseconds(plt.mouseTracker.mouseUpHQRenderDelay);
+                timer.Start();
+            }
+            else
+                Render(skipIfCurrentlyRendering: false);
             ReleaseMouseCapture();
         }
     }
