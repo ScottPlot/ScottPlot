@@ -258,8 +258,15 @@ namespace ScottPlot
             TreesReady = false;
             try
             {
+                if (ys.Length == 0)
+                    throw new ArgumentOutOfRangeException($"Array cant't be empty");
                 // Size up to pow2
-                n = (1 << ((int)Math.Log(ys.Length - 1, 2) + 1));
+                if (ys.Length > 0x40_00_00_00) // pow 2 must be more then int.MaxValue
+                    throw new ArgumentOutOfRangeException($"Array higher then {0x40_00_00_00} not supported by SignalConst");
+                int pow2 = 1;
+                while (pow2 < 0x40_00_00_00 && pow2 < ys.Length)
+                    pow2 <<= 1;
+                n = pow2;
                 if (singlePrecision == false)
                 {
                     TreeMin = new double[n];
