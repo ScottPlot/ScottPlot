@@ -5,14 +5,14 @@ using System.Diagnostics;
 
 namespace ScottPlot
 {
-    public partial class ScottPlotUC : UserControl
+    public partial class FormsPlot : UserControl
     {
         public Plot plt = new Plot();
         private bool currentlyRendering = false;
         private ContextMenuStrip rightClickMenu;
         private System.Timers.Timer timer;
 
-        public ScottPlotUC()
+        public FormsPlot()
         {
             InitializeComponent();
             timer = new System.Timers.Timer() // create before first render call

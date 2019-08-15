@@ -32,9 +32,9 @@
             this.nudIterations = new System.Windows.Forms.NumericUpDown();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.scottPlotUC1 = new ScottPlot.ScottPlotUC();
+            this.scottPlotUC1 = new ScottPlot.FormsPlot();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.scottPlotUC2 = new ScottPlot.ScottPlotUC();
+            this.scottPlotUC2 = new ScottPlot.FormsPlot();
             this.btnRun = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -199,8 +199,8 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.GroupBox groupBox4;
-        private ScottPlot.ScottPlotUC scottPlotUC1;
-        private ScottPlot.ScottPlotUC scottPlotUC2;
+        private ScottPlot.FormsPlot scottPlotUC1;
+        private ScottPlot.FormsPlot scottPlotUC2;
         private System.Windows.Forms.Button btnRun;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;

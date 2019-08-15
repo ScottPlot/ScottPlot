@@ -43,7 +43,7 @@
             this.btnText = new System.Windows.Forms.Button();
             this.cbAntiAliasData = new System.Windows.Forms.CheckBox();
             this.cbAntiAliasFigure = new System.Windows.Forms.CheckBox();
-            this.scottPlotUC1 = new ScottPlot.ScottPlotUC();
+            this.scottPlotUC1 = new ScottPlot.FormsPlot();
             this.SuspendLayout();
             // 
             // btnClear
@@ -244,7 +244,7 @@
 
         #endregion
 
-        private ScottPlot.ScottPlotUC scottPlotUC1;
+        private ScottPlot.FormsPlot scottPlotUC1;
         private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.Button btnScatterRandom;
         private System.Windows.Forms.Button btnScatterSin;
