@@ -22,11 +22,19 @@ namespace ScottPlot.UserControls
             UpdateTextBoxesFromAxes();
             lblVersion.Text = $"Version {Tools.GetVersionString()} ({Tools.GetFrameworkVersionString()})";
             UpdatePlotObjectList();
+            UpdateQualityChecks();
         }
 
         private void FormSettings_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void UpdateQualityChecks()
+        {
+            rbQualityLow.Checked = !plt.GetSettings().antiAliasData;
+            rbQualityHigh.Checked = plt.GetSettings().antiAliasData;
+            cbQualityLowWhileDragging.Checked = plt.mouseTracker.lowQualityWhileInteracting;
         }
 
         private void UpdateTextBoxesFromAxes()
@@ -61,21 +69,6 @@ namespace ScottPlot.UserControls
             this.Close();
         }
 
-        private void RbAliasAlways_CheckedChanged(object sender, EventArgs e)
-        {
-            plt.AntiAlias(true, true);
-        }
-
-        private void RbAliasNever_CheckedChanged(object sender, EventArgs e)
-        {
-            plt.AntiAlias(false, false);
-        }
-
-        private void RbAliasDynamic_CheckedChanged(object sender, EventArgs e)
-        {
-            plt.AntiAlias(true, true);
-        }
-
         private void LblGitHub_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start("https://github.com/swharden/ScottPlot");
@@ -102,6 +95,21 @@ namespace ScottPlot.UserControls
             savefile.Filter = "CSV Files (*.csv)|*.csv|All files (*.*)|*.*";
             if (savefile.ShowDialog() == DialogResult.OK)
                 plottable.SaveCSV(savefile.FileName);
+        }
+
+        private void RbQualityLow_CheckedChanged(object sender, EventArgs e)
+        {
+            plt.AntiAlias(rbQualityHigh.Checked, rbQualityHigh.Checked);
+        }
+
+        private void RbQualityHigh_CheckedChanged(object sender, EventArgs e)
+        {
+            plt.AntiAlias(rbQualityHigh.Checked, rbQualityHigh.Checked);
+        }
+
+        private void CbQualityLowWhileDragging_CheckedChanged(object sender, EventArgs e)
+        {
+            plt.mouseTracker.lowQualityWhileInteracting = cbQualityLowWhileDragging.Checked;
         }
     }
 }

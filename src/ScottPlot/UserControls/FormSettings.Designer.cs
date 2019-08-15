@@ -30,6 +30,7 @@
         {
             this.btnFitData = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnApplyAxes = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -39,19 +40,18 @@
             this.tbX2 = new System.Windows.Forms.TextBox();
             this.tbX1 = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.lblGitHub = new System.Windows.Forms.Label();
             this.lblVersion = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.rbAliasDynamic = new System.Windows.Forms.RadioButton();
-            this.rbAliasNever = new System.Windows.Forms.RadioButton();
-            this.rbAliasAlways = new System.Windows.Forms.RadioButton();
+            this.cbQualityLowWhileDragging = new System.Windows.Forms.CheckBox();
+            this.rbQualityHigh = new System.Windows.Forms.RadioButton();
+            this.rbQualityLow = new System.Windows.Forms.RadioButton();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.lbPlotObjects = new System.Windows.Forms.ListBox();
             this.btnExportCSV = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnDown = new System.Windows.Forms.Button();
             this.btnUp = new System.Windows.Forms.Button();
-            this.btnApplyAxes = new System.Windows.Forms.Button();
-            this.lblGitHub = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -88,6 +88,16 @@
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Axis Limits";
+            // 
+            // btnApplyAxes
+            // 
+            this.btnApplyAxes.Location = new System.Drawing.Point(177, 85);
+            this.btnApplyAxes.Name = "btnApplyAxes";
+            this.btnApplyAxes.Size = new System.Drawing.Size(100, 23);
+            this.btnApplyAxes.TabIndex = 10;
+            this.btnApplyAxes.Text = "Apply";
+            this.btnApplyAxes.UseVisualStyleBackColor = true;
+            this.btnApplyAxes.Click += new System.EventHandler(this.BtnApplyAxes_Click);
             // 
             // label4
             // 
@@ -166,6 +176,20 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "ScottPlot";
             // 
+            // lblGitHub
+            // 
+            this.lblGitHub.AutoSize = true;
+            this.lblGitHub.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lblGitHub.ForeColor = System.Drawing.Color.Blue;
+            this.lblGitHub.Location = new System.Drawing.Point(6, 38);
+            this.lblGitHub.Name = "lblGitHub";
+            this.lblGitHub.Size = new System.Drawing.Size(194, 13);
+            this.lblGitHub.TabIndex = 7;
+            this.lblGitHub.Text = "https://github.com/swharden/ScottPlot";
+            this.lblGitHub.Click += new System.EventHandler(this.LblGitHub_Click);
+            this.lblGitHub.MouseEnter += new System.EventHandler(this.LblGitHub_MouseEnter);
+            this.lblGitHub.MouseLeave += new System.EventHandler(this.LblGitHub_MouseLeave);
+            // 
             // lblVersion
             // 
             this.lblVersion.AutoSize = true;
@@ -179,51 +203,50 @@
             // 
             this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox3.Controls.Add(this.rbAliasDynamic);
-            this.groupBox3.Controls.Add(this.rbAliasNever);
-            this.groupBox3.Controls.Add(this.rbAliasAlways);
+            this.groupBox3.Controls.Add(this.cbQualityLowWhileDragging);
+            this.groupBox3.Controls.Add(this.rbQualityHigh);
+            this.groupBox3.Controls.Add(this.rbQualityLow);
             this.groupBox3.Location = new System.Drawing.Point(12, 137);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(297, 47);
             this.groupBox3.TabIndex = 5;
             this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Anti-Aliasing";
+            this.groupBox3.Text = "Image Quality";
             // 
-            // rbAliasDynamic
+            // cbQualityLowWhileDragging
             // 
-            this.rbAliasDynamic.AutoSize = true;
-            this.rbAliasDynamic.Location = new System.Drawing.Point(162, 19);
-            this.rbAliasDynamic.Name = "rbAliasDynamic";
-            this.rbAliasDynamic.Size = new System.Drawing.Size(108, 17);
-            this.rbAliasDynamic.TabIndex = 2;
-            this.rbAliasDynamic.TabStop = true;
-            this.rbAliasDynamic.Text = "off while dragging";
-            this.rbAliasDynamic.UseVisualStyleBackColor = true;
-            this.rbAliasDynamic.CheckedChanged += new System.EventHandler(this.RbAliasDynamic_CheckedChanged);
+            this.cbQualityLowWhileDragging.AutoSize = true;
+            this.cbQualityLowWhileDragging.Location = new System.Drawing.Point(104, 19);
+            this.cbQualityLowWhileDragging.Name = "cbQualityLowWhileDragging";
+            this.cbQualityLowWhileDragging.Size = new System.Drawing.Size(113, 17);
+            this.cbQualityLowWhileDragging.TabIndex = 2;
+            this.cbQualityLowWhileDragging.Text = "low while dragging";
+            this.cbQualityLowWhileDragging.UseVisualStyleBackColor = true;
+            this.cbQualityLowWhileDragging.CheckedChanged += new System.EventHandler(this.CbQualityLowWhileDragging_CheckedChanged);
             // 
-            // rbAliasNever
+            // rbQualityHigh
             // 
-            this.rbAliasNever.AutoSize = true;
-            this.rbAliasNever.Location = new System.Drawing.Point(84, 19);
-            this.rbAliasNever.Name = "rbAliasNever";
-            this.rbAliasNever.Size = new System.Drawing.Size(52, 17);
-            this.rbAliasNever.TabIndex = 1;
-            this.rbAliasNever.TabStop = true;
-            this.rbAliasNever.Text = "never";
-            this.rbAliasNever.UseVisualStyleBackColor = true;
-            this.rbAliasNever.CheckedChanged += new System.EventHandler(this.RbAliasNever_CheckedChanged);
+            this.rbQualityHigh.AutoSize = true;
+            this.rbQualityHigh.Location = new System.Drawing.Point(53, 19);
+            this.rbQualityHigh.Name = "rbQualityHigh";
+            this.rbQualityHigh.Size = new System.Drawing.Size(45, 17);
+            this.rbQualityHigh.TabIndex = 1;
+            this.rbQualityHigh.TabStop = true;
+            this.rbQualityHigh.Text = "high";
+            this.rbQualityHigh.UseVisualStyleBackColor = true;
+            this.rbQualityHigh.CheckedChanged += new System.EventHandler(this.RbQualityHigh_CheckedChanged);
             // 
-            // rbAliasAlways
+            // rbQualityLow
             // 
-            this.rbAliasAlways.AutoSize = true;
-            this.rbAliasAlways.Location = new System.Drawing.Point(6, 19);
-            this.rbAliasAlways.Name = "rbAliasAlways";
-            this.rbAliasAlways.Size = new System.Drawing.Size(57, 17);
-            this.rbAliasAlways.TabIndex = 0;
-            this.rbAliasAlways.TabStop = true;
-            this.rbAliasAlways.Text = "always";
-            this.rbAliasAlways.UseVisualStyleBackColor = true;
-            this.rbAliasAlways.CheckedChanged += new System.EventHandler(this.RbAliasAlways_CheckedChanged);
+            this.rbQualityLow.AutoSize = true;
+            this.rbQualityLow.Location = new System.Drawing.Point(6, 19);
+            this.rbQualityLow.Name = "rbQualityLow";
+            this.rbQualityLow.Size = new System.Drawing.Size(41, 17);
+            this.rbQualityLow.TabIndex = 0;
+            this.rbQualityLow.TabStop = true;
+            this.rbQualityLow.Text = "low";
+            this.rbQualityLow.UseVisualStyleBackColor = true;
+            this.rbQualityLow.CheckedChanged += new System.EventHandler(this.RbQualityLow_CheckedChanged);
             // 
             // groupBox4
             // 
@@ -297,30 +320,6 @@
             this.btnUp.Text = "up";
             this.btnUp.UseVisualStyleBackColor = true;
             // 
-            // btnApplyAxes
-            // 
-            this.btnApplyAxes.Location = new System.Drawing.Point(177, 85);
-            this.btnApplyAxes.Name = "btnApplyAxes";
-            this.btnApplyAxes.Size = new System.Drawing.Size(100, 23);
-            this.btnApplyAxes.TabIndex = 10;
-            this.btnApplyAxes.Text = "Apply";
-            this.btnApplyAxes.UseVisualStyleBackColor = true;
-            this.btnApplyAxes.Click += new System.EventHandler(this.BtnApplyAxes_Click);
-            // 
-            // lblGitHub
-            // 
-            this.lblGitHub.AutoSize = true;
-            this.lblGitHub.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lblGitHub.ForeColor = System.Drawing.Color.Blue;
-            this.lblGitHub.Location = new System.Drawing.Point(6, 38);
-            this.lblGitHub.Name = "lblGitHub";
-            this.lblGitHub.Size = new System.Drawing.Size(194, 13);
-            this.lblGitHub.TabIndex = 7;
-            this.lblGitHub.Text = "https://github.com/swharden/ScottPlot";
-            this.lblGitHub.Click += new System.EventHandler(this.LblGitHub_Click);
-            this.lblGitHub.MouseEnter += new System.EventHandler(this.LblGitHub_MouseEnter);
-            this.lblGitHub.MouseLeave += new System.EventHandler(this.LblGitHub_MouseLeave);
-            // 
             // FormSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -359,9 +358,8 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label lblVersion;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.RadioButton rbAliasDynamic;
-        private System.Windows.Forms.RadioButton rbAliasNever;
-        private System.Windows.Forms.RadioButton rbAliasAlways;
+        private System.Windows.Forms.RadioButton rbQualityHigh;
+        private System.Windows.Forms.RadioButton rbQualityLow;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.Button btnExportCSV;
         private System.Windows.Forms.Button btnDelete;
@@ -370,5 +368,6 @@
         private System.Windows.Forms.ListBox lbPlotObjects;
         private System.Windows.Forms.Button btnApplyAxes;
         private System.Windows.Forms.Label lblGitHub;
+        private System.Windows.Forms.CheckBox cbQualityLowWhileDragging;
     }
 }

@@ -9,31 +9,37 @@ namespace ScottPlot
     {
         public Plot plt = new Plot();
         private bool currentlyRendering = false;
-        private System.Timers.Timer timer;
+        private System.Timers.Timer lastInteractionTimer;
         ContextMenuStrip rightClickMenu;
 
         public FormsPlot()
         {
             InitializeComponent();
             SetupMenu();
-            timer = new System.Timers.Timer() // create before first render call
+            SetupTimers();
+            plt.Style(ScottPlot.Style.Control);
+            pbPlot.MouseWheel += PbPlot_MouseWheel;
+            if (Process.GetCurrentProcess().ProcessName == "devenv")
+                Tools.DesignerModeDemoPlot(plt);
+            PbPlot_SizeChanged(null, null);
+        }
+
+        public void SetupTimers()
+        {
+            lastInteractionTimer = new System.Timers.Timer()
             {
                 AutoReset = false,
                 SynchronizingObject = this,
                 Enabled = false,
             };
-            timer.Elapsed += (o, arg) => Render(skipIfCurrentlyRendering: false);
-            plt.Style(ScottPlot.Style.Control);
-            pbPlot.MouseWheel += PbPlot_MouseWheel;
-            if (Process.GetCurrentProcess().ProcessName == "devenv")
-                ScottPlot.Tools.DesignerModeDemoPlot(plt);
-            PbPlot_SizeChanged(null, null);
+            lastInteractionTimer.Elapsed += (o, arg) => Render(skipIfCurrentlyRendering: false);
         }
 
         public void Render(bool skipIfCurrentlyRendering = false, bool lowQuality = false)
         {
-            if (timer.Enabled) // at any reason stop timer, it always set correct after render call
-                timer.Stop();
+            if (lastInteractionTimer.Enabled)
+                lastInteractionTimer.Stop();
+
             if (!(skipIfCurrentlyRendering && currentlyRendering))
             {
                 currentlyRendering = true;
@@ -57,9 +63,8 @@ namespace ScottPlot
         {
             plt.GetSettings().mouseIsPanning = false;
             plt.GetSettings().mouseIsZooming = false;
-
             rightClickMenu.Show(pbPlot, PointToClient(Cursor.Position));
-
+            Render(skipIfCurrentlyRendering: false, lowQuality: false);
         }
 
         private void RightClickMenuItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -140,8 +145,8 @@ namespace ScottPlot
             if (plt.mouseTracker.lowQualityWhileInteracting && plt.mouseTracker.mouseUpHQRenderDelay > 0)
             {
                 Render(false, true); // LQ render
-                timer.Interval = plt.mouseTracker.mouseUpHQRenderDelay;
-                timer.Start(); // set delay for HQ render on MouseUp
+                lastInteractionTimer.Interval = plt.mouseTracker.mouseUpHQRenderDelay;
+                lastInteractionTimer.Start(); // set delay for HQ render on MouseUp
             }
             else // HQ render at LQ - off, or mouseUpRenderDelay == 0
                 Render(skipIfCurrentlyRendering: false);
@@ -180,8 +185,8 @@ namespace ScottPlot
             if (plt.mouseTracker.lowQualityWhileInteracting && plt.mouseTracker.mouseWheelHQRenderDelay > 0)
             {
                 Render(false, true);
-                timer.Interval = plt.mouseTracker.mouseWheelHQRenderDelay; // delay in ms
-                timer.Start();
+                lastInteractionTimer.Interval = plt.mouseTracker.mouseWheelHQRenderDelay; // delay in ms
+                lastInteractionTimer.Start();
             }
             else
                 Render(skipIfCurrentlyRendering: false);
