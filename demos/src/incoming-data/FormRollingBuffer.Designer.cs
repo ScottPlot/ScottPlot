@@ -31,7 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.cbIncoming = new System.Windows.Forms.CheckBox();
             this.timerNewData = new System.Windows.Forms.Timer(this.components);
-            this.scottPlotUC1 = new ScottPlot.FormsPlot();
+            this.formsPlot1 = new ScottPlot.FormsPlot();
             this.SuspendLayout();
             // 
             // cbIncoming
@@ -53,13 +53,13 @@
             this.timerNewData.Interval = 20;
             this.timerNewData.Tick += new System.EventHandler(this.TimerNewData_Tick);
             // 
-            // scottPlotUC1
+            // formsPlot1
             // 
-            this.scottPlotUC1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.scottPlotUC1.Location = new System.Drawing.Point(0, 0);
-            this.scottPlotUC1.Name = "scottPlotUC1";
-            this.scottPlotUC1.Size = new System.Drawing.Size(800, 450);
-            this.scottPlotUC1.TabIndex = 0;
+            this.formsPlot1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.formsPlot1.Location = new System.Drawing.Point(0, 0);
+            this.formsPlot1.Name = "formsPlot1";
+            this.formsPlot1.Size = new System.Drawing.Size(800, 450);
+            this.formsPlot1.TabIndex = 0;
             // 
             // FormRollingBuffer
             // 
@@ -67,7 +67,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.cbIncoming);
-            this.Controls.Add(this.scottPlotUC1);
+            this.Controls.Add(this.formsPlot1);
             this.Name = "FormRollingBuffer";
             this.Text = "FormRollingBuffer";
             this.ResumeLayout(false);
@@ -77,7 +77,7 @@
 
         #endregion
 
-        private ScottPlot.FormsPlot scottPlotUC1;
+        private ScottPlot.FormsPlot formsPlot1;
         private System.Windows.Forms.CheckBox cbIncoming;
         private System.Windows.Forms.Timer timerNewData;
     }

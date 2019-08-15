@@ -18,12 +18,12 @@ namespace ScottPlotDemoIncomingData
         {
             InitializeComponent();
             InitArray();
-            scottPlotUC1.plt.YLabel("Value");
-            scottPlotUC1.plt.XLabel("Data Point");
-            scottPlotUC1.plt.Title("Plotting a Circular Array");
+            formsPlot1.plt.YLabel("Value");
+            formsPlot1.plt.XLabel("Data Point");
+            formsPlot1.plt.Title("Plotting a Circular Array");
 
             // since the array never changes once it's created, we can plot it immediately
-            scottPlotUC1.plt.PlotSignal(largeBuffer);
+            formsPlot1.plt.PlotSignal(largeBuffer);
         }
 
         int smallBufferSize = 10;
@@ -51,10 +51,10 @@ namespace ScottPlotDemoIncomingData
                 nextIndex = 0;
 
             // update the plot
-            scottPlotUC1.plt.AxisAuto(0);
-            scottPlotUC1.plt.Clear(signalPlots: false); // clear just the old vertical line
-            scottPlotUC1.plt.PlotVLine(nextIndex, color: Color.Red, lineWidth: 2);
-            scottPlotUC1.Render();
+            formsPlot1.plt.AxisAuto(0);
+            formsPlot1.plt.Clear(signalPlots: false); // clear just the old vertical line
+            formsPlot1.plt.PlotVLine(nextIndex, color: Color.Red, lineWidth: 2);
+            formsPlot1.Render();
         }
 
         private void CbIncoming_CheckedChanged(object sender, EventArgs e)
