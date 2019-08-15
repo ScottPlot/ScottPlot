@@ -9,14 +9,17 @@ namespace ScottPlot
     // Variation of PlottableSignal that uses a segmented tree for faster min/max range queries
     // - frequent min/max lookups are a bottleneck displaying large signals
     // - limited to 60M points (250M in x64 mode) due to memory (tree uses from 2X to 4X memory)
+    // - signlePrecision = true halves memory usage and make x86 limit to 120M points
     // - in x64 mode limit can be up to maximum array size (2G points) with special solution and 64 GB RAM (not tested)
     // - if source array is changed UpdateTrees() must be called
+    // - source array can be change by call updateData(), updating by ranges much faster.
     public class PlottableSignalConst : PlottableSignal
     {
         // using 2 x signal memory in best case: ys.Length is Pow2 
         // using 4 x signal memory in worst case: ys.Length is (Pow2 +1);        
         double[] TreeMin;
         double[] TreeMax;
+        // signlePrecision Trees, halves additional memory usage
         float[] TreeMinF;
         float[] TreeMaxF;
         private int n = 0; // size of each Tree
