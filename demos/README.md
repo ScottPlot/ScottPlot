@@ -42,7 +42,7 @@ plt.SaveFig("console.png");
 Full source code is in [/demos/src/](/demos/src/)
 
 1. Install ScottPlot using NuGet
-2. Drag/Drop the ScottPlotUC (from the toolbox) onto your Form
+2. Drag/Drop the FormsPlot (from the toolbox) onto your Form
 3. Add the following code to your startup sequence:
 
 ```cs
@@ -59,12 +59,12 @@ for (int i = 0; i < pointCount; i++)
 }
 
 // plot the data
-scottPlotUC1.plt.PlotScatter(dataXs, dataSin);
-scottPlotUC1.plt.PlotScatter(dataXs, dataCos);
-scottPlotUC1.plt.XLabel("experiment time (ms)");
-scottPlotUC1.plt.YLabel("signal (mV)");
-scottPlotUC1.plt.Title("ScottPlot Quickstart");
-scottPlotUC1.Render();
+formsPlot1.plt.PlotScatter(dataXs, dataSin);
+formsPlot1.plt.PlotScatter(dataXs, dataCos);
+formsPlot1.plt.XLabel("experiment time (ms)");
+formsPlot1.plt.YLabel("signal (mV)");
+formsPlot1.plt.Title("ScottPlot Quickstart");
+formsPlot1.Render();
 ```
 
 ![](/demos/src/quickstart-winforms/screenshot.png)
@@ -73,10 +73,10 @@ scottPlotUC1.Render();
 
 Full source code is in [/demos/src/](/demos/src/)
 
-Using the WPF user control is the same as the WinForms user control. Virtually all your interaction is with the `scottPlotUC1.plt` object (use it just like the plot object in the [cookbook](/cookbook)), then optionally force a render with `scottPlotUC1.render()`. The user control handles mouse interactivity (left-click-drag pan, right-click-drag zoom).
+Using the WPF user control is the same as the WinForms user control. Virtually all your interaction is with the `wpfPlot1.plt` object (use it just like the plot object in the [cookbook](/cookbook)), then optionally force a render with `wpfPlot1.render()`. The user control handles mouse interactivity (left-click-drag pan, right-click-drag zoom).
 
 ```xml
-<ScottPlot:ScottPlotWPF Name="scottPlotUC1" Margin="10"/>
+<ScottPlot:ScottPlotWPF Name="wpfPlot1" Margin="10"/>
 <Button Content="Add Plot" Click="AddPlot"/>
 <Button Content="Clear" Click="Clear"/>
 ```
@@ -85,23 +85,23 @@ Using the WPF user control is the same as the WinForms user control. Virtually a
 public MainWindow()
 {
     InitializeComponent();
-    scottPlotUC1.plt.Title("WPF Demo");
-    scottPlotUC1.plt.YLabel("signal level");
-    scottPlotUC1.plt.XLabel("horizontal units");
+    wpfPlot1.plt.Title("WPF Demo");
+    wpfPlot1.plt.YLabel("signal level");
+    wpfPlot1.plt.XLabel("horizontal units");
 }
 
 private void AddPlot(object sender, RoutedEventArgs e)
 {
     Random rand = new Random();
-    scottPlotUC1.plt.PlotSignal(ScottPlot.DataGen.RandomWalk(rand, 1000));
-    scottPlotUC1.plt.AxisAuto();
-    scottPlotUC1.Render();
+    wpfPlot1.plt.PlotSignal(ScottPlot.DataGen.RandomWalk(rand, 1000));
+    wpfPlot1.plt.AxisAuto();
+    wpfPlot1.Render();
 }
 
 private void Clear(object sender, RoutedEventArgs e)
 {
-    scottPlotUC1.plt.Clear();
-    scottPlotUC1.Render();
+    wpfPlot1.plt.Clear();
+    wpfPlot1.Render();
 }
 ```
 
