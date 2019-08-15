@@ -9,7 +9,6 @@ using System.Text;
 // This file contains many useful functions to plot custom DateTime ranges. Eventually support for time ranges
 // will be added to the TickCollection class, and these functions will prove useful. 
 
-/*
 namespace ScottPlot
 {
 
@@ -475,4 +474,3 @@ public class TickExperimentalPADANIAN
     }
 }
 }
-*/
