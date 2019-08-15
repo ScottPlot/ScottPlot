@@ -344,12 +344,6 @@ namespace ScottPlot
 
             lowestValue = double.MaxValue;
             highestValue = double.MinValue;
-            if (l > r)
-            {
-                int temp = r;
-                r = l;
-                l = temp;
-            }
             if (l == r)
             {
                 lowestValue = ys[l];
