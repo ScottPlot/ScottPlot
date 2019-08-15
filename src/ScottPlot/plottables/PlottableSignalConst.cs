@@ -177,7 +177,7 @@ namespace ScottPlot
 
                 TreesReady = true;
             }
-            catch (System.OutOfMemoryException ex)
+            catch (System.OutOfMemoryException)
             {
                 TreeMin = null;
                 TreeMax = null;
