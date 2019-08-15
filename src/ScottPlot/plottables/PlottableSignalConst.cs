@@ -25,8 +25,9 @@ namespace ScottPlot
         private int n = 0; // size of each Tree
         public bool TreesReady = false;
         private bool singlePrecision = false; // float type for trees, which uses half memory
-        public PlottableSignalConst(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, bool useParallel) : base(ys, sampleRate, xOffset, yOffset, color, lineWidth, markerSize, label, useParallel)
+        public PlottableSignalConst(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, bool useParallel, bool singlePrecision = false) : base(ys, sampleRate, xOffset, yOffset, color, lineWidth, markerSize, label, useParallel)
         {
+            this.singlePrecision = singlePrecision;
             if (useParallel)
                 UpdateTreesInBackground();
             else
