@@ -49,7 +49,8 @@ namespace ScottPlot
                     break;
             }
             tickPositions = positions.ToArray();
-            GetPrettyTickLabels(tickPositions, out tickLabels, out cornerLabel);
+            GetPrettyTickLabels(tickPositions, out tickLabels, out cornerLabel,
+                settings.useMultiplierNotation, settings.useOffsetNotation, settings.useExponentialNotation);
         }
 
         public override string ToString()
@@ -79,7 +80,8 @@ namespace ScottPlot
             return tickSpacings[tickSpacings.Count - 3];
         }
 
-        public void GetPrettyTickLabels(double[] positions, out string[] labels, out string cornerLabel)
+        public void GetPrettyTickLabels(double[] positions, out string[] labels, out string cornerLabel,
+            bool useMultiplierNotation, bool useOffsetNotation, bool useExponentialNotation)
         {
             // given positions returns nicely-formatted labels (with offset and multiplier)
 
@@ -91,13 +93,21 @@ namespace ScottPlot
             double range = positions.Last() - positions.First();
 
             double exponent = (int)(Math.Log10(range));
-            double multiplier = 1;
-            if (Math.Abs(exponent) > 2)
-                multiplier = Math.Pow(10, exponent);
 
-            double offset = positions.First();
-            if (Math.Abs(offset / range) < 10)
-                offset = 0;
+            double multiplier = 1;
+            if (useMultiplierNotation)
+            {
+                if (Math.Abs(exponent) > 2)
+                    multiplier = Math.Pow(10, exponent);
+            }
+
+            double offset = 0;
+            if (useOffsetNotation)
+            {
+                offset = positions.First();
+                if (Math.Abs(offset / range) < 10)
+                    offset = 0;
+            }
 
             for (int i = 0; i < positions.Length; i++)
             {
@@ -105,10 +115,21 @@ namespace ScottPlot
                 labels[i] = Math.Round(adjustedPosition, 5).ToString();
             }
 
-            if (multiplier != 1)
-                cornerLabel += $"e{exponent} ";
-            if (offset != 0)
-                cornerLabel += Tools.ScientificNotation(offset);
+            if (useExponentialNotation)
+            {
+                if (multiplier != 1)
+                    cornerLabel += $"e{exponent} ";
+                if (offset != 0)
+                    cornerLabel += Tools.ScientificNotation(offset);
+            }
+            else
+            {
+                if (multiplier != 1)
+                    cornerLabel += multiplier.ToString("F99").TrimEnd('0');
+                if (offset != 0)
+                    cornerLabel += " +" + offset.ToString("F99").TrimEnd('0');
+                cornerLabel = cornerLabel.Replace("+-", "-");
+            }
         }
 
     }

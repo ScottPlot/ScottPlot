@@ -572,6 +572,7 @@ namespace ScottPlot
         {
             // The user really should not interact with the settings class directly.
             // This is exposed here to aid in testing.
+            Console.WriteLine("WARNING: GetSettings() is only for development and testing");
             return settings;
         }
 
@@ -769,7 +770,10 @@ namespace ScottPlot
         public void Ticks(
             bool? displayTicksX = true,
             bool? displayTicksY = true,
-            Color? color = null
+            Color? color = null,
+            bool? useMultiplierNotation = null,
+            bool? useOffsetNotation = null,
+            bool? useExponentialNotation = null
             )
         {
             if (displayTicksX != null)
@@ -778,6 +782,13 @@ namespace ScottPlot
                 settings.displayTicksY = (bool)displayTicksY;
             if (color != null)
                 settings.tickColor = (Color)color;
+            if (useMultiplierNotation != null)
+                settings.useMultiplierNotation = (bool)useMultiplierNotation;
+            if (useOffsetNotation != null)
+                settings.useOffsetNotation = (bool)useOffsetNotation;
+            if (useExponentialNotation != null)
+                settings.useExponentialNotation = (bool)useExponentialNotation;
+
             settings.bmpFigureRenderRequired = true;
         }
 

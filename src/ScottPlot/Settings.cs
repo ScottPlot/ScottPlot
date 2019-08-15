@@ -52,6 +52,9 @@ namespace ScottPlot
         public bool displayTicksX = true;
         public bool displayTicksY = true;
         public string longestPossibleTickLabel = "-8888";
+        public bool useMultiplierNotation = true;
+        public bool useOffsetNotation = true;
+        public bool useExponentialNotation = true;
 
         // title and axis labels
         public string title = "";
