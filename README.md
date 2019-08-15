@@ -7,14 +7,14 @@ In a GUI environment ScottPlot makes it easy to display data interactively (left
 
 ## Quickstart
 1. Install ScottPlot using [NuGet](https://www.nuget.org/packages/ScottPlot/)
-2. Drag/Drop the ScottPlotUC (from the toolbox) onto your Form
+2. Drag/Drop the FormsPlot (from the toolbox) onto your Form
 3. Add the following code to your startup sequence
 
 ```cs
 double[] xs = new double[] {1, 2, 3, 4, 5};
 double[] ys = new double[] {1, 4, 9, 16, 25};
-scottPlotUC1.plt.PlotScatter(xs, ys);
-scottPlotUC1.Render();
+formsPlot1.plt.PlotScatter(xs, ys);
+formsPlot1.Render();
 ```
 
 You now have a mouse-interactive graph! Left-click-drag to pan, right-click-drag to zoom, and double-click to toggle benchmark display. Check out the [ScottPlot Cookbook](/cookbook) to see some of the ways graphs can be customized.
