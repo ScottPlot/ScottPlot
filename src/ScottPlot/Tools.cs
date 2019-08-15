@@ -130,6 +130,7 @@ namespace ScottPlot
             return bmpImage;
         }
 
+        /*
         public static void RightClickMenuItemClicked(ToolStripItem item, ContextMenuStrip rightClickMenu, ScottPlot.Plot plt)
         {
             Console.WriteLine("CLICKED:" + item.ToString());
@@ -171,5 +172,6 @@ namespace ScottPlot
                     break;
             }
         }
+        */
     }
 }
