@@ -130,6 +130,15 @@ namespace ScottPlot
             return bmpImage;
         }
 
+        public static void SaveImageDialog(Plot plt)
+        {
+            SaveFileDialog savefile = new SaveFileDialog();
+            savefile.FileName = "ScottPlot.png";
+            savefile.Filter = "PNG Files (*.png)|*.png|All files (*.*)|*.*";
+            if (savefile.ShowDialog() == DialogResult.OK)
+                plt.SaveFig(savefile.FileName);
+        }
+
         /*
         public static void RightClickMenuItemClicked(ToolStripItem item, ContextMenuStrip rightClickMenu, ScottPlot.Plot plt)
         {

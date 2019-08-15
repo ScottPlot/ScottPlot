@@ -10,10 +10,12 @@ namespace ScottPlot
         public Plot plt = new Plot();
         private bool currentlyRendering = false;
         private System.Timers.Timer timer;
+        ContextMenuStrip rightClickMenu;
 
         public FormsPlot()
         {
             InitializeComponent();
+            SetupMenu();
             timer = new System.Timers.Timer() // create before first render call
             {
                 AutoReset = false,
@@ -42,13 +44,45 @@ namespace ScottPlot
             }
         }
 
+        private void SetupMenu()
+        {
+            rightClickMenu = new ContextMenuStrip();
+            rightClickMenu.Items.Add("Save Image");
+            rightClickMenu.Items.Add("Settings");
+            rightClickMenu.Items.Add("Help");
+            rightClickMenu.ItemClicked += new ToolStripItemClickedEventHandler(RightClickMenuItemClicked);
+        }
+
         private void LaunchMenu()
         {
             plt.GetSettings().mouseIsPanning = false;
             plt.GetSettings().mouseIsZooming = false;
 
-            var frm = new UserControls.FormSettings(plt);
-            frm.ShowDialog();
+            rightClickMenu.Show(pbPlot, PointToClient(Cursor.Position));
+
+        }
+
+        private void RightClickMenuItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            rightClickMenu.Hide();
+            switch (e.ClickedItem.Text)
+            {
+                case "Save Image":
+                    Tools.SaveImageDialog(plt);
+                    break;
+
+                case "Settings":
+                    var frm = new UserControls.FormSettings(plt);
+                    frm.ShowDialog();
+                    break;
+
+                case "Help":
+                    System.Diagnostics.Process.Start("https://github.com/swharden/ScottPlot");
+                    break;
+
+                default:
+                    throw new NotImplementedException();
+            }
         }
 
         private void PbPlot_SizeChanged(object sender, EventArgs e)
