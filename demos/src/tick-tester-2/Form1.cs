@@ -65,5 +65,23 @@ namespace tick_tester_2
                 formsPlot1.plt.Grid();
             formsPlot1.Render();
         }
+
+        private void CheckBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            formsPlot1.plt.Ticks(useMultiplierNotation: checkBox2.Checked);
+            formsPlot1.Render();
+        }
+
+        private void CheckBox3_CheckedChanged(object sender, EventArgs e)
+        {
+            formsPlot1.plt.Ticks(useOffsetNotation: checkBox3.Checked);
+            formsPlot1.Render();
+        }
+
+        private void CheckBox4_CheckedChanged(object sender, EventArgs e)
+        {
+            formsPlot1.plt.Ticks(useExponentialNotation: checkBox4.Checked);
+            formsPlot1.Render();
+        }
     }
 }
