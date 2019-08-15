@@ -26,9 +26,9 @@ namespace plottable_const
         private void Form1_Load(object sender, EventArgs e)
         {
             data = ScottPlot.DataGen.RandomWalk(rand, 10_000_000);
-            signal = scottPlotUC1.plt.PlotSignalConst(data);
-            scottPlotUC1.plt.Benchmark();
-            scottPlotUC1.Render();
+            signal = formsPlot1.plt.PlotSignalConst(data);
+            formsPlot1.plt.Benchmark();
+            formsPlot1.Render();
         }
 
         private void BtnUpdateData_Click(object sender, EventArgs e)
@@ -44,7 +44,7 @@ namespace plottable_const
                 if (busy) // simple mutex
                     return;
                 busy = true;
-                scottPlotUC1.Render();
+                formsPlot1.Render();
                 busy = false;
             };
             timer.AutoReset = true;
@@ -96,7 +96,7 @@ namespace plottable_const
                 {
                     while (busy)
                         Thread.Sleep(100);
-                    scottPlotUC1.Render();
+                    formsPlot1.Render();
                     btnUpdateData.Enabled = true;
                 }));
             });

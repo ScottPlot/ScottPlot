@@ -52,8 +52,8 @@
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.rbGraphBar = new System.Windows.Forms.RadioButton();
             this.rbGraphStep = new System.Windows.Forms.RadioButton();
-            this.scottPlotUC2 = new ScottPlot.FormsPlot();
-            this.scottPlotUC1 = new ScottPlot.FormsPlot();
+            this.formsPlot2 = new ScottPlot.FormsPlot();
+            this.formsPlot1 = new ScottPlot.FormsPlot();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.lbBins = new System.Windows.Forms.ListBox();
             ((System.ComponentModel.ISupportInitialize)(this.nudPointCount)).BeginInit();
@@ -409,24 +409,24 @@
             this.rbGraphStep.UseVisualStyleBackColor = true;
             this.rbGraphStep.CheckedChanged += new System.EventHandler(this.RbGraphStep_CheckedChanged);
             // 
-            // scottPlotUC2
+            // formsPlot2
             // 
-            this.scottPlotUC2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.formsPlot2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.scottPlotUC2.Location = new System.Drawing.Point(738, 12);
-            this.scottPlotUC2.Name = "scottPlotUC2";
-            this.scottPlotUC2.Size = new System.Drawing.Size(474, 388);
-            this.scottPlotUC2.TabIndex = 8;
+            this.formsPlot2.Location = new System.Drawing.Point(738, 12);
+            this.formsPlot2.Name = "formsPlot2";
+            this.formsPlot2.Size = new System.Drawing.Size(474, 388);
+            this.formsPlot2.TabIndex = 8;
             // 
-            // scottPlotUC1
+            // formsPlot1
             // 
-            this.scottPlotUC1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.formsPlot1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.scottPlotUC1.Location = new System.Drawing.Point(12, 12);
-            this.scottPlotUC1.Name = "scottPlotUC1";
-            this.scottPlotUC1.Size = new System.Drawing.Size(425, 388);
-            this.scottPlotUC1.TabIndex = 0;
+            this.formsPlot1.Location = new System.Drawing.Point(12, 12);
+            this.formsPlot1.Name = "formsPlot1";
+            this.formsPlot1.Size = new System.Drawing.Size(425, 388);
+            this.formsPlot1.TabIndex = 0;
             // 
             // groupBox9
             // 
@@ -461,8 +461,8 @@
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.scottPlotUC2);
-            this.Controls.Add(this.scottPlotUC1);
+            this.Controls.Add(this.formsPlot2);
+            this.Controls.Add(this.formsPlot1);
             this.Name = "Form1";
             this.Text = "ScottPlot Histogram Demo";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -493,9 +493,9 @@
 
         #endregion
 
-        private ScottPlot.FormsPlot scottPlotUC1;
+        private ScottPlot.FormsPlot formsPlot1;
         private System.Windows.Forms.NumericUpDown nudPointCount;
-        private ScottPlot.FormsPlot scottPlotUC2;
+        private ScottPlot.FormsPlot formsPlot2;
         private System.Windows.Forms.RadioButton cbCount;
         private System.Windows.Forms.RadioButton cbCph;
         private System.Windows.Forms.RadioButton cbNorm;

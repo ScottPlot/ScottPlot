@@ -20,11 +20,11 @@ namespace ScottPlotDemoCustomGrid
         private void Form1_Load(object sender, EventArgs e)
         {
             Random rand = new Random();
-            scottPlotUC1.plt.PlotScatter(ScottPlot.DataGen.Consecutive(100), ScottPlot.DataGen.RandomWalk(rand, 100));
-            scottPlotUC1.plt.PlotScatter(ScottPlot.DataGen.Consecutive(100), ScottPlot.DataGen.RandomWalk(rand, 100));
-            scottPlotUC1.plt.PlotScatter(ScottPlot.DataGen.Consecutive(100), ScottPlot.DataGen.RandomWalk(rand, 100));
-            scottPlotUC1.plt.AxisAuto();
-            scottPlotUC1.Render();
+            formsPlot1.plt.PlotScatter(ScottPlot.DataGen.Consecutive(100), ScottPlot.DataGen.RandomWalk(rand, 100));
+            formsPlot1.plt.PlotScatter(ScottPlot.DataGen.Consecutive(100), ScottPlot.DataGen.RandomWalk(rand, 100));
+            formsPlot1.plt.PlotScatter(ScottPlot.DataGen.Consecutive(100), ScottPlot.DataGen.RandomWalk(rand, 100));
+            formsPlot1.plt.AxisAuto();
+            formsPlot1.Render();
         }
 
         public void UpdateGridToReflectGui()
@@ -37,15 +37,15 @@ namespace ScottPlotDemoCustomGrid
             if (nudY.Enabled)
                 ySpacing = (double)nudY.Value;
 
-            scottPlotUC1.plt.Grid(xSpacing: xSpacing, ySpacing: ySpacing);
-            scottPlotUC1.Render();
+            formsPlot1.plt.Grid(xSpacing: xSpacing, ySpacing: ySpacing);
+            formsPlot1.Render();
         }
 
         private void CbShowGrid_CheckedChanged(object sender, EventArgs e)
         {
             gbSpacing.Enabled = cbShowGrid.Checked;
-            scottPlotUC1.plt.Grid(cbShowGrid.Checked);
-            scottPlotUC1.Render();
+            formsPlot1.plt.Grid(cbShowGrid.Checked);
+            formsPlot1.Render();
         }
 
         private void NudX_ValueChanged(object sender, EventArgs e)

@@ -31,7 +31,7 @@
             this.btnAddHline = new System.Windows.Forms.Button();
             this.btnAddVline = new System.Windows.Forms.Button();
             this.btnClearLines = new System.Windows.Forms.Button();
-            this.scottPlotUC1 = new ScottPlot.FormsPlot();
+            this.formsPlot1 = new ScottPlot.FormsPlot();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
             // 
@@ -65,18 +65,18 @@
             this.btnClearLines.UseVisualStyleBackColor = true;
             this.btnClearLines.Click += new System.EventHandler(this.BtnClearLines_Click);
             // 
-            // scottPlotUC1
+            // formsPlot1
             // 
-            this.scottPlotUC1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.formsPlot1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.scottPlotUC1.Location = new System.Drawing.Point(182, 12);
-            this.scottPlotUC1.Name = "scottPlotUC1";
-            this.scottPlotUC1.Size = new System.Drawing.Size(558, 333);
-            this.scottPlotUC1.TabIndex = 5;
-            this.scottPlotUC1.MouseDownOnPlottable += new System.EventHandler(this.ScottPlotUC1_MouseDownOnPlottable);
-            this.scottPlotUC1.MouseDragPlottable += new System.EventHandler(this.ScottPlotUC1_MouseDragPlottable);
-            this.scottPlotUC1.MouseDropPlottable += new System.EventHandler(this.ScottPlotUC1_MouseDropPlottable);
+            this.formsPlot1.Location = new System.Drawing.Point(182, 12);
+            this.formsPlot1.Name = "formsPlot1";
+            this.formsPlot1.Size = new System.Drawing.Size(558, 333);
+            this.formsPlot1.TabIndex = 5;
+            this.formsPlot1.MouseDownOnPlottable += new System.EventHandler(this.ScottPlotUC1_MouseDownOnPlottable);
+            this.formsPlot1.MouseDragPlottable += new System.EventHandler(this.ScottPlotUC1_MouseDragPlottable);
+            this.formsPlot1.MouseDropPlottable += new System.EventHandler(this.ScottPlotUC1_MouseDropPlottable);
             // 
             // richTextBox1
             // 
@@ -95,7 +95,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(752, 357);
-            this.Controls.Add(this.scottPlotUC1);
+            this.Controls.Add(this.formsPlot1);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.btnClearLines);
             this.Controls.Add(this.btnAddVline);
@@ -111,7 +111,7 @@
         private System.Windows.Forms.Button btnAddHline;
         private System.Windows.Forms.Button btnAddVline;
         private System.Windows.Forms.Button btnClearLines;
-        private ScottPlot.FormsPlot scottPlotUC1;
+        private ScottPlot.FormsPlot formsPlot1;
         private System.Windows.Forms.RichTextBox richTextBox1;
     }
 }

@@ -34,12 +34,12 @@ namespace ScottPlotDemoHistogram
         private void PlotValues()
         {
             double[] xs = ScottPlot.DataGen.Consecutive(values.Length, 1, 1);
-            scottPlotUC1.plt.Clear();
-            scottPlotUC1.plt.Title("Normally Distributed Random Data");
-            scottPlotUC1.plt.YLabel("Value (units)");
-            scottPlotUC1.plt.XLabel("Point Number");
-            scottPlotUC1.plt.PlotScatter(xs, values, lineWidth: 0);
-            scottPlotUC1.Render();
+            formsPlot1.plt.Clear();
+            formsPlot1.plt.Title("Normally Distributed Random Data");
+            formsPlot1.plt.YLabel("Value (units)");
+            formsPlot1.plt.XLabel("Point Number");
+            formsPlot1.plt.PlotScatter(xs, values, lineWidth: 0);
+            formsPlot1.Render();
         }
 
         private void PlotHistogram()
@@ -88,44 +88,44 @@ namespace ScottPlotDemoHistogram
 
         private void PlotHistogramCount(double[] bins, double[] counts)
         {
-            scottPlotUC2.plt.Clear();
-            scottPlotUC2.plt.Title("Histogram");
-            scottPlotUC2.plt.YLabel("Count (#)");
-            scottPlotUC2.plt.XLabel("Value (units)");
+            formsPlot2.plt.Clear();
+            formsPlot2.plt.Title("Histogram");
+            formsPlot2.plt.YLabel("Count (#)");
+            formsPlot2.plt.XLabel("Value (units)");
             if (rbGraphBar.Checked)
-                scottPlotUC2.plt.PlotBar(bins, counts, barWidth: bins[1] - bins[0]);
+                formsPlot2.plt.PlotBar(bins, counts, barWidth: bins[1] - bins[0]);
             else
-                scottPlotUC2.plt.PlotStep(bins, counts);
-            scottPlotUC2.plt.PlotHLine(0, Color.Black);
-            scottPlotUC2.Render();
+                formsPlot2.plt.PlotStep(bins, counts);
+            formsPlot2.plt.PlotHLine(0, Color.Black);
+            formsPlot2.Render();
         }
 
         private void PlotHistogramFrac(double[] bins, double[] fracs)
         {
-            scottPlotUC2.plt.Clear();
-            scottPlotUC2.plt.Title("Probability Histogram");
-            scottPlotUC2.plt.YLabel("Probability (fraction)");
-            scottPlotUC2.plt.XLabel("Value (units)");
+            formsPlot2.plt.Clear();
+            formsPlot2.plt.Title("Probability Histogram");
+            formsPlot2.plt.YLabel("Probability (fraction)");
+            formsPlot2.plt.XLabel("Value (units)");
             if (rbGraphBar.Checked)
-                scottPlotUC2.plt.PlotBar(bins, fracs);
+                formsPlot2.plt.PlotBar(bins, fracs);
             else
-                scottPlotUC2.plt.PlotStep(bins, fracs);
-            scottPlotUC2.plt.PlotHLine(0, Color.Black);
-            scottPlotUC2.Render();
+                formsPlot2.plt.PlotStep(bins, fracs);
+            formsPlot2.plt.PlotHLine(0, Color.Black);
+            formsPlot2.Render();
         }
 
         private void PlotHistogramCumulative(double[] bins, double[] cumFracs)
         {
-            scottPlotUC2.plt.Clear();
-            scottPlotUC2.plt.Title("Cumulative Probability Histogram");
-            scottPlotUC2.plt.YLabel("Probability (fraction)");
-            scottPlotUC2.plt.XLabel("Value (units)");
+            formsPlot2.plt.Clear();
+            formsPlot2.plt.Title("Cumulative Probability Histogram");
+            formsPlot2.plt.YLabel("Probability (fraction)");
+            formsPlot2.plt.XLabel("Value (units)");
             if (rbGraphBar.Checked)
-                scottPlotUC2.plt.PlotBar(bins, cumFracs);
+                formsPlot2.plt.PlotBar(bins, cumFracs);
             else
-                scottPlotUC2.plt.PlotScatter(bins, cumFracs);
-            scottPlotUC2.plt.PlotHLine(0, Color.Black);
-            scottPlotUC2.Render();
+                formsPlot2.plt.PlotScatter(bins, cumFracs);
+            formsPlot2.plt.PlotHLine(0, Color.Black);
+            formsPlot2.Render();
         }
 
         private void BtnGenerateData_Click(object sender, EventArgs e)

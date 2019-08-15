@@ -21,9 +21,9 @@ namespace benchmark
             InitializeComponent();
             CreateData();
 
-            scottPlotUC1.plt.Benchmark();
-            scottPlotUC1.plt.YLabel("vertical units");
-            scottPlotUC1.plt.XLabel("horizontal units");
+            formsPlot1.plt.Benchmark();
+            formsPlot1.plt.YLabel("vertical units");
+            formsPlot1.plt.XLabel("horizontal units");
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -44,18 +44,18 @@ namespace benchmark
 
         private void PlotScatter100()
         {
-            scottPlotUC1.plt.Title("Scatter Plot (100 points)");
-            scottPlotUC1.plt.Clear();
-            scottPlotUC1.plt.PlotScatter(xs100, ys100);
-            scottPlotUC1.Render();
+            formsPlot1.plt.Title("Scatter Plot (100 points)");
+            formsPlot1.plt.Clear();
+            formsPlot1.plt.PlotScatter(xs100, ys100);
+            formsPlot1.Render();
         }
 
         private void PlotSignal10M()
         {
-            scottPlotUC1.plt.Title("Signal Plot (10 million points)");
-            scottPlotUC1.plt.Clear();
-            scottPlotUC1.plt.PlotSignal(tenMillionPoints);
-            scottPlotUC1.Render();
+            formsPlot1.plt.Title("Signal Plot (10 million points)");
+            formsPlot1.plt.Clear();
+            formsPlot1.plt.PlotSignal(tenMillionPoints);
+            formsPlot1.Render();
         }
 
         private void PlotResults(double[] timesMsec)
@@ -65,17 +65,17 @@ namespace benchmark
             double median = timesMsec[(int)(timesMsec.Length / 2)];
 
             var hist = new ScottPlot.Histogram(timesMsec);
-            scottPlotUC2.plt.Clear();
-            scottPlotUC2.plt.PlotBar(hist.bins, hist.counts);
-            scottPlotUC2.plt.PlotVLine(mean, lineWidth: 3, label: "mean");
-            scottPlotUC2.plt.PlotVLine(median, lineWidth: 3, label: "median", lineStyle: ScottPlot.LineStyle.Dot);
-            scottPlotUC2.plt.Legend();
-            scottPlotUC2.plt.AxisAuto();
-            scottPlotUC2.plt.Axis(y1: 0);
-            scottPlotUC2.plt.YLabel("Count");
-            scottPlotUC2.plt.XLabel("Render Time (ms)");
-            scottPlotUC2.plt.Title($"Median: {median} ms");
-            scottPlotUC2.Render();
+            formsPlot2.plt.Clear();
+            formsPlot2.plt.PlotBar(hist.bins, hist.counts);
+            formsPlot2.plt.PlotVLine(mean, lineWidth: 3, label: "mean");
+            formsPlot2.plt.PlotVLine(median, lineWidth: 3, label: "median", lineStyle: ScottPlot.LineStyle.Dot);
+            formsPlot2.plt.Legend();
+            formsPlot2.plt.AxisAuto();
+            formsPlot2.plt.Axis(y1: 0);
+            formsPlot2.plt.YLabel("Count");
+            formsPlot2.plt.XLabel("Render Time (ms)");
+            formsPlot2.plt.Title($"Median: {median} ms");
+            formsPlot2.Render();
         }
 
         private void RunBenchmark()
@@ -85,7 +85,7 @@ namespace benchmark
             cbPlotType.Enabled = false;
 
             double[] timesMsec = new double[(int)nudIterations.Value];
-            var settings = scottPlotUC1.plt.GetSettings();
+            var settings = formsPlot1.plt.GetSettings();
             progressBar1.Maximum = (int)nudIterations.Value;
 
             for (int i = 0; i < nudIterations.Value; i++)
@@ -103,7 +103,7 @@ namespace benchmark
                         throw new NotImplementedException();
                 }
                 if (i == 0)
-                    scottPlotUC1.plt.AxisAuto();
+                    formsPlot1.plt.AxisAuto();
                 Application.DoEvents();
                 timesMsec[i] = settings.benchmarkMsec;
             }

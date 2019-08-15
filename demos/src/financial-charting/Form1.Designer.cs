@@ -31,8 +31,8 @@
             this.button1 = new System.Windows.Forms.Button();
             this.rbCandle = new System.Windows.Forms.RadioButton();
             this.rbOHLC = new System.Windows.Forms.RadioButton();
-            this.scottPlotUC2 = new ScottPlot.FormsPlot();
-            this.scottPlotUC1 = new ScottPlot.FormsPlot();
+            this.formsPlot2 = new ScottPlot.FormsPlot();
+            this.formsPlot1 = new ScottPlot.FormsPlot();
             this.SuspendLayout();
             // 
             // button1
@@ -69,26 +69,26 @@
             this.rbOHLC.UseVisualStyleBackColor = true;
             this.rbOHLC.CheckedChanged += new System.EventHandler(this.RbOHLC_CheckedChanged);
             // 
-            // scottPlotUC2
+            // formsPlot2
             // 
-            this.scottPlotUC2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.formsPlot2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.scottPlotUC2.Location = new System.Drawing.Point(12, 329);
-            this.scottPlotUC2.Name = "scottPlotUC2";
-            this.scottPlotUC2.Size = new System.Drawing.Size(785, 116);
-            this.scottPlotUC2.TabIndex = 2;
-            this.scottPlotUC2.MouseDragged += new System.EventHandler(this.ScottPlotUC2_MouseDragged);
+            this.formsPlot2.Location = new System.Drawing.Point(12, 329);
+            this.formsPlot2.Name = "formsPlot2";
+            this.formsPlot2.Size = new System.Drawing.Size(785, 116);
+            this.formsPlot2.TabIndex = 2;
+            this.formsPlot2.MouseDragged += new System.EventHandler(this.ScottPlotUC2_MouseDragged);
             // 
-            // scottPlotUC1
+            // formsPlot1
             // 
-            this.scottPlotUC1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.formsPlot1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.scottPlotUC1.Location = new System.Drawing.Point(12, 12);
-            this.scottPlotUC1.Name = "scottPlotUC1";
-            this.scottPlotUC1.Size = new System.Drawing.Size(785, 311);
-            this.scottPlotUC1.TabIndex = 0;
-            this.scottPlotUC1.MouseDragged += new System.EventHandler(this.ScottPlotUC1_MouseDragged);
+            this.formsPlot1.Location = new System.Drawing.Point(12, 12);
+            this.formsPlot1.Name = "formsPlot1";
+            this.formsPlot1.Size = new System.Drawing.Size(785, 311);
+            this.formsPlot1.TabIndex = 0;
+            this.formsPlot1.MouseDragged += new System.EventHandler(this.ScottPlotUC1_MouseDragged);
             // 
             // Form1
             // 
@@ -97,9 +97,9 @@
             this.ClientSize = new System.Drawing.Size(809, 457);
             this.Controls.Add(this.rbOHLC);
             this.Controls.Add(this.rbCandle);
-            this.Controls.Add(this.scottPlotUC2);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.scottPlotUC1);
+            this.Controls.Add(this.formsPlot1);
+            this.Controls.Add(this.formsPlot2);
             this.Name = "Form1";
             this.Text = "ScottPlot Candlestick Demo";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -110,9 +110,9 @@
 
         #endregion
 
-        private ScottPlot.FormsPlot scottPlotUC1;
+        private ScottPlot.FormsPlot formsPlot1;
         private System.Windows.Forms.Button button1;
-        private ScottPlot.FormsPlot scottPlotUC2;
+        private ScottPlot.FormsPlot formsPlot2;
         private System.Windows.Forms.RadioButton rbCandle;
         private System.Windows.Forms.RadioButton rbOHLC;
     }

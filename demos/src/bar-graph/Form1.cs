@@ -15,9 +15,9 @@ namespace ScottPlotDemoBarGraph
         public Form1()
         {
             InitializeComponent();
-            scottPlotUC1.plt.Title("Demo Bar Graph");
-            scottPlotUC1.plt.Grid(false);
-            scottPlotUC1.plt.PlotHLine(0, color: Color.Black);
+            formsPlot1.plt.Title("Demo Bar Graph");
+            formsPlot1.plt.Grid(false);
+            formsPlot1.plt.PlotHLine(0, color: Color.Black);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -39,17 +39,17 @@ namespace ScottPlotDemoBarGraph
                 dataY[i] = Math.Sin(frac * Math.PI) * 10 + rand.NextDouble() * 5 - 5;
                 errorY[i] = rand.NextDouble() * 2;
             }
-            string label = $"Bar {scottPlotUC1.plt.GetPlottables().Count}";
-            scottPlotUC1.plt.PlotBar(dataX, dataY, errorY: errorY, label: label);
-            scottPlotUC1.plt.Legend();
-            scottPlotUC1.plt.AxisAuto();
-            scottPlotUC1.Render();
+            string label = $"Bar {formsPlot1.plt.GetPlottables().Count}";
+            formsPlot1.plt.PlotBar(dataX, dataY, errorY: errorY, label: label);
+            formsPlot1.plt.Legend();
+            formsPlot1.plt.AxisAuto();
+            formsPlot1.Render();
         }
 
         private void BtnClear_Click(object sender, EventArgs e)
         {
-            scottPlotUC1.plt.Clear(axisLines: false);
-            scottPlotUC1.Render();
+            formsPlot1.plt.Clear(axisLines: false);
+            formsPlot1.Render();
         }
     }
 }

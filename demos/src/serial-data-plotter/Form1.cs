@@ -27,16 +27,16 @@ namespace serial_data_plotter
         {
             PopulateSerialComboBoxes();
 
-            scottPlotUC1.plt.PlotSignal(values.values1, 50, markerSize: 0, label: "ADC 1");
-            scottPlotUC1.plt.PlotSignal(values.values2, 50, markerSize: 0, label: "ADC 2");
-            scottPlotUC1.plt.PlotSignal(values.values3, 50, markerSize: 0, label: "ADC 3");
-            scottPlotUC1.plt.PlotSignal(values.values4, 50, markerSize: 0, label: "ADC 4");
-            scottPlotUC1.plt.Title("Sensor Data");
-            scottPlotUC1.plt.YLabel("ADC Value");
-            scottPlotUC1.plt.XLabel("Time (seconds)");
-            scottPlotUC1.plt.Legend();
-            scottPlotUC1.plt.AxisAuto();
-            scottPlotUC1.plt.Axis(y2: 32000);
+            formsPlot1.plt.PlotSignal(values.values1, 50, markerSize: 0, label: "ADC 1");
+            formsPlot1.plt.PlotSignal(values.values2, 50, markerSize: 0, label: "ADC 2");
+            formsPlot1.plt.PlotSignal(values.values3, 50, markerSize: 0, label: "ADC 3");
+            formsPlot1.plt.PlotSignal(values.values4, 50, markerSize: 0, label: "ADC 4");
+            formsPlot1.plt.Title("Sensor Data");
+            formsPlot1.plt.YLabel("ADC Value");
+            formsPlot1.plt.XLabel("Time (seconds)");
+            formsPlot1.plt.Legend();
+            formsPlot1.plt.AxisAuto();
+            formsPlot1.plt.Axis(y2: 32000);
         }
 
         private void PopulateSerialComboBoxes()
@@ -110,9 +110,9 @@ namespace serial_data_plotter
         private void Timer1_Tick(object sender, EventArgs e)
         {
             lblLastLine.Text = serLastLine;
-            scottPlotUC1.plt.Clear(scatterPlots: false, signalPlots: false);
-            scottPlotUC1.plt.PlotVLine(values.nextIndex / 50.0, color: Color.Red, lineWidth: 2);
-            scottPlotUC1.Render();
+            formsPlot1.plt.Clear(scatterPlots: false, signalPlots: false);
+            formsPlot1.plt.PlotVLine(values.nextIndex / 50.0, color: Color.Red, lineWidth: 2);
+            formsPlot1.Render();
         }
     }
 }

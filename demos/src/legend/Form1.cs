@@ -61,10 +61,10 @@ namespace Legend
                 penType = (ScottPlot.LineStyle)Enum.Parse(typeof(ScottPlot.LineStyle), cbPenStyle.SelectedItem.ToString());
 
 
-            scottPlotUC1.plt.Clear();
-            scottPlotUC1.plt.PlotScatter(xs, ys1, label: "one", markerShape: markerShape, markerSize: (double)nudMarkerSize.Value, lineStyle: penType);
-            scottPlotUC1.plt.PlotScatter(xs, ys2, label: "two", markerShape: markerShape, markerSize: (double)nudMarkerSize.Value, lineStyle: penType);
-            scottPlotUC1.plt.PlotScatter(xs, ys3, label: "three", markerShape: markerShape, markerSize: (double)nudMarkerSize.Value, lineStyle: penType);
+            formsPlot1.plt.Clear();
+            formsPlot1.plt.PlotScatter(xs, ys1, label: "one", markerShape: markerShape, markerSize: (double)nudMarkerSize.Value, lineStyle: penType);
+            formsPlot1.plt.PlotScatter(xs, ys2, label: "two", markerShape: markerShape, markerSize: (double)nudMarkerSize.Value, lineStyle: penType);
+            formsPlot1.plt.PlotScatter(xs, ys3, label: "three", markerShape: markerShape, markerSize: (double)nudMarkerSize.Value, lineStyle: penType);
 
 
             // optionally use a legend
@@ -74,11 +74,11 @@ namespace Legend
                 ScottPlot.legendLocation location = (ScottPlot.legendLocation)Enum.Parse(typeof(ScottPlot.legendLocation), locationString);
                 string dropShadowString = cbShadowDirection.SelectedItem.ToString();
                 ScottPlot.shadowDirection dropShadowDirection = (ScottPlot.shadowDirection)Enum.Parse(typeof(ScottPlot.shadowDirection), dropShadowString);
-                scottPlotUC1.plt.Legend(location: location, shadowDirection: dropShadowDirection, fontSize: (float)nupFontSize.Value);
+                formsPlot1.plt.Legend(location: location, shadowDirection: dropShadowDirection, fontSize: (float)nupFontSize.Value);
             }
 
-            scottPlotUC1.plt.AxisAuto();
-            scottPlotUC1.Render();
+            formsPlot1.plt.AxisAuto();
+            formsPlot1.Render();
         }
 
         private void Cboxes_SelectedIndexChanged(object sender, EventArgs e)

@@ -32,24 +32,24 @@ namespace ScottPlotDemoCandlestick
             double[] timestamps = ScottPlot.DataGen.Consecutive(pointCount);
             double[] volumes = ScottPlot.DataGen.Random(rand, pointCount, 500, 1000);
 
-            scottPlotUC1.plt.Clear();
-            scottPlotUC1.plt.YLabel("Share Price", fontSize: 10);
-            scottPlotUC1.plt.Title("ScottPlot Candlestick Demo");
+            formsPlot1.plt.Clear();
+            formsPlot1.plt.YLabel("Share Price", fontSize: 10);
+            formsPlot1.plt.Title("ScottPlot Candlestick Demo");
             if (rbCandle.Checked)
-                scottPlotUC1.plt.PlotCandlestick(ohlcs);
+                formsPlot1.plt.PlotCandlestick(ohlcs);
             else
-                scottPlotUC1.plt.PlotOHLC(ohlcs);
-            scottPlotUC1.plt.AxisAuto();
+                formsPlot1.plt.PlotOHLC(ohlcs);
+            formsPlot1.plt.AxisAuto();
 
-            scottPlotUC2.plt.Clear();
-            scottPlotUC2.plt.YLabel("Volume", fontSize: 10);
-            scottPlotUC2.plt.PlotBar(timestamps, volumes, barWidth: .5);
-            scottPlotUC2.plt.AxisAuto(.01, .1);
-            scottPlotUC2.plt.Axis(null, null, 0, null);
+            formsPlot2.plt.Clear();
+            formsPlot2.plt.YLabel("Volume", fontSize: 10);
+            formsPlot2.plt.PlotBar(timestamps, volumes, barWidth: .5);
+            formsPlot2.plt.AxisAuto(.01, .1);
+            formsPlot2.plt.Axis(null, null, 0, null);
 
-            scottPlotUC1.plt.MatchPadding(scottPlotUC2.plt, horizontal: true, vertical: false);
-            scottPlotUC1.Render();
-            scottPlotUC2.Render();
+            formsPlot1.plt.MatchPadding(formsPlot2.plt, horizontal: true, vertical: false);
+            formsPlot1.Render();
+            formsPlot2.Render();
         }
 
         private void Button1_Click(object sender, EventArgs e)
@@ -69,14 +69,14 @@ namespace ScottPlotDemoCandlestick
 
         private void ScottPlotUC1_MouseDragged(object sender, EventArgs e)
         {
-            scottPlotUC2.plt.MatchAxis(scottPlotUC1.plt, horizontal: true, vertical: false);
-            scottPlotUC2.Render();
+            formsPlot2.plt.MatchAxis(formsPlot1.plt, horizontal: true, vertical: false);
+            formsPlot2.Render();
         }
 
         private void ScottPlotUC2_MouseDragged(object sender, EventArgs e)
         {
-            scottPlotUC1.plt.MatchAxis(scottPlotUC2.plt, horizontal: true, vertical: false);
-            scottPlotUC1.Render();
+            formsPlot1.plt.MatchAxis(formsPlot2.plt, horizontal: true, vertical: false);
+            formsPlot1.Render();
         }
     }
 }

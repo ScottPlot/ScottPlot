@@ -22,49 +22,49 @@ namespace tick_tester_2
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            scottPlotUC1.plt.PlotSignal(ScottPlot.DataGen.Sin(100));
+            formsPlot1.plt.PlotSignal(ScottPlot.DataGen.Sin(100));
             //scottPlotUC1.plt.Grid(xSpacing: 10);
-            scottPlotUC1.plt.AxisAuto();
-            scottPlotUC1.Render();
+            formsPlot1.plt.AxisAuto();
+            formsPlot1.Render();
         }
 
         private void Button1_Click(object sender, EventArgs e)
         {
-            scottPlotUC1.plt.AxisAuto();
-            scottPlotUC1.Render();
+            formsPlot1.plt.AxisAuto();
+            formsPlot1.Render();
         }
 
         private void Button2_Click(object sender, EventArgs e)
         {
-            scottPlotUC1.plt.Axis(-bigNumber, bigNumber, null, null);
-            scottPlotUC1.Render();
+            formsPlot1.plt.Axis(-bigNumber, bigNumber, null, null);
+            formsPlot1.Render();
         }
 
         private void Button3_Click(object sender, EventArgs e)
         {
-            scottPlotUC1.plt.Axis(9876 * bigNumber, 9877 * bigNumber, null, null);
-            scottPlotUC1.Render();
+            formsPlot1.plt.Axis(9876 * bigNumber, 9877 * bigNumber, null, null);
+            formsPlot1.Render();
         }
 
         private void Button5_Click(object sender, EventArgs e)
         {
-            scottPlotUC1.plt.Axis(-smallNumber, smallNumber, null, null);
-            scottPlotUC1.Render();
+            formsPlot1.plt.Axis(-smallNumber, smallNumber, null, null);
+            formsPlot1.Render();
         }
 
         private void Button4_Click(object sender, EventArgs e)
         {
-            scottPlotUC1.plt.Axis(9876 * smallNumber, 9877 * smallNumber, null, null);
-            scottPlotUC1.Render();
+            formsPlot1.plt.Axis(9876 * smallNumber, 9877 * smallNumber, null, null);
+            formsPlot1.Render();
         }
 
         private void CheckBox1_CheckedChanged(object sender, EventArgs e)
         {
             if (checkBox1.Checked)
-                scottPlotUC1.plt.Grid(xSpacing: 5, ySpacing: .5);
+                formsPlot1.plt.Grid(xSpacing: 5, ySpacing: .5);
             else
-                scottPlotUC1.plt.Grid();
-            scottPlotUC1.Render();
+                formsPlot1.plt.Grid();
+            formsPlot1.Render();
         }
     }
 }
