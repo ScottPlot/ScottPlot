@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,6 +17,7 @@ namespace ScottPlot
         // using 4 x signal memory in worst case: ys.Length is (Pow2 +1);        
         double[] TreeMin;
         double[] TreeMax;
+        private int n = 0; // size of each Tree
         public bool TreesReady = false;
         public PlottableSignalConst(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, bool useParallel) : base(ys, sampleRate, xOffset, yOffset, color, lineWidth, markerSize, label, useParallel)
         {
@@ -28,8 +30,7 @@ namespace ScottPlot
         public void updateData(int index, double newValue)
         {
             ys[index] = newValue;
-            // Update Tree, can be optimized
-            int n = TreeMin.Length;
+            // Update Tree, can be optimized            
             if (index == ys.Length - 1) // last elem haven't pair
             {
                 TreeMin[n / 2 + index / 2] = ys[index];
@@ -64,8 +65,7 @@ namespace ScottPlot
         }
 
         public void updateData(int from, int to, double[] newData, int fromData = 0)
-        {
-            int n = TreeMin.Length;
+        {            
             //update source signal
             for (int i = from; i < to; i++)
             {
@@ -149,7 +149,7 @@ namespace ScottPlot
             try
             {
                 // Size up to pow2
-                int n = (1 << ((int)Math.Log(ys.Length - 1, 2) + 1));
+                n = (1 << ((int)Math.Log(ys.Length - 1, 2) + 1));
                 TreeMin = new double[n];
                 TreeMax = new double[n];
                 // fill bottom layer of tree                
@@ -198,8 +198,7 @@ namespace ScottPlot
             }
 
             lowestValue = double.MaxValue;
-            highestValue = double.MinValue;
-            int n = TreeMin.Length;
+            highestValue = double.MinValue;            
             if (l > r)
             {
                 int temp = r;
