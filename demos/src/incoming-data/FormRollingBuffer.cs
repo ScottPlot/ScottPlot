@@ -18,12 +18,12 @@ namespace ScottPlotDemoIncomingData
         {
             InitializeComponent();
             InitArray();
-            scottPlotUC1.plt.YLabel("Value");
-            scottPlotUC1.plt.XLabel("Data Point");
-            scottPlotUC1.plt.Title("Plotting a Rolling Array");
+            formsPlot1.plt.YLabel("Value");
+            formsPlot1.plt.XLabel("Data Point");
+            formsPlot1.plt.Title("Plotting a Rolling Array");
 
             // since the array never changes once it's created, we can plot it immediately
-            scottPlotUC1.plt.PlotSignal(largeBuffer); 
+            formsPlot1.plt.PlotSignal(largeBuffer); 
         }
 
         int smallBufferSize = 10;
@@ -51,8 +51,8 @@ namespace ScottPlotDemoIncomingData
             Array.Copy(smallBuffer, 0, largeBuffer, largeBuffer.Length - smallBuffer.Length, smallBuffer.Length);
 
             // update the plot
-            scottPlotUC1.plt.AxisAuto(0);
-            scottPlotUC1.Render();
+            formsPlot1.plt.AxisAuto(0);
+            formsPlot1.Render();
 
             // note: If new data comes in at extremely high frequency, you don't want to update the plot that often.
             //  In this case create a separate timer just for updating the plot. 

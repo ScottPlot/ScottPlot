@@ -18,9 +18,9 @@ namespace ScottPlotDemoIncomingData
         public FormGrowingArray()
         {
             InitializeComponent();
-            scottPlotUC1.plt.YLabel("Value");
-            scottPlotUC1.plt.XLabel("Data Point");
-            scottPlotUC1.plt.Title("Plotting a Growing Array");
+            formsPlot1.plt.YLabel("Value");
+            formsPlot1.plt.XLabel("Data Point");
+            formsPlot1.plt.Title("Plotting a Growing Array");
         }
         
         private void CbIncoming_CheckedChanged(object sender, EventArgs e)
@@ -56,10 +56,10 @@ namespace ScottPlotDemoIncomingData
             if (dataHasBeenUpdated)
             {
                 dataHasBeenUpdated = false;
-                scottPlotUC1.plt.Clear();
-                scottPlotUC1.plt.PlotSignal(dataYs);
-                scottPlotUC1.plt.AxisAuto();
-                scottPlotUC1.Render();
+                formsPlot1.plt.Clear();
+                formsPlot1.plt.PlotSignal(dataYs);
+                formsPlot1.plt.AxisAuto();
+                formsPlot1.Render();
             }
         }
     }
