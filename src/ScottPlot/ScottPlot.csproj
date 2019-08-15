@@ -87,7 +87,6 @@
     </Compile>
     <Compile Include="Style.cs" />
     <Compile Include="TickCollection.cs" />
-    <Compile Include="TickExperimental.cs" />
     <Compile Include="Tools.cs" />
     <Compile Include="Plot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
