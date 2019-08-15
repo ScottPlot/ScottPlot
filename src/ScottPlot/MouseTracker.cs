@@ -41,6 +41,16 @@ namespace ScottPlot
             MouseDown(eLocation);
         }
 
+        public bool MouseHasMoved()
+        {
+            if (settings.mouseDownLocation.X != Cursor.Position.X)
+                return true;
+            else if (settings.mouseDownLocation.Y != Cursor.Position.Y)
+                return true;
+            else
+                return false;
+        }
+
         public void MouseDown(Point eLocation)
         {
             draggingObject = PlottableUnderCursor(eLocation);
