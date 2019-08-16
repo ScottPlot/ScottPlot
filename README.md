@@ -8,7 +8,7 @@ with just a few lines of code (see the [ScottPlot Cookbook](/cookbook/) for exam
 
 In graphical environments plots can be displayed interactively (left-click-drag to pan and right-click-drag to zoom) and in console applications plots can be created and saved as images. 
 
-ScottPlot targets multiple frameworks (.NET Framework 4.5 and .NET Core 3.0), has user controls for WinForms and WPF, and is available on NuGet.
+ScottPlot targets multiple frameworks (.NET Framework 4.5 and .NET Core 3.0), has user controls for WinForms and WPF, and is available on NuGet with no dependencies.
 
 ## Quickstart
 1. Install ScottPlot using [NuGet](https://www.nuget.org/packages/ScottPlot/)
