@@ -39,9 +39,6 @@
             this.tbY1 = new System.Windows.Forms.TextBox();
             this.tbX2 = new System.Windows.Forms.TextBox();
             this.tbX1 = new System.Windows.Forms.TextBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.lblGitHub = new System.Windows.Forms.Label();
-            this.lblVersion = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.cbQualityLowWhileDragging = new System.Windows.Forms.CheckBox();
             this.rbQualityHigh = new System.Windows.Forms.RadioButton();
@@ -52,10 +49,13 @@
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnDown = new System.Windows.Forms.Button();
             this.btnUp = new System.Windows.Forms.Button();
+            this.lblVersion = new System.Windows.Forms.Label();
+            this.lblGitHub = new System.Windows.Forms.Label();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnFitData
@@ -162,42 +162,6 @@
             this.tbX1.Name = "tbX1";
             this.tbX1.Size = new System.Drawing.Size(100, 20);
             this.tbX1.TabIndex = 2;
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox2.Controls.Add(this.lblGitHub);
-            this.groupBox2.Controls.Add(this.lblVersion);
-            this.groupBox2.Location = new System.Drawing.Point(12, 190);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(297, 61);
-            this.groupBox2.TabIndex = 4;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "ScottPlot";
-            // 
-            // lblGitHub
-            // 
-            this.lblGitHub.AutoSize = true;
-            this.lblGitHub.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lblGitHub.ForeColor = System.Drawing.Color.Blue;
-            this.lblGitHub.Location = new System.Drawing.Point(6, 38);
-            this.lblGitHub.Name = "lblGitHub";
-            this.lblGitHub.Size = new System.Drawing.Size(194, 13);
-            this.lblGitHub.TabIndex = 7;
-            this.lblGitHub.Text = "https://github.com/swharden/ScottPlot";
-            this.lblGitHub.Click += new System.EventHandler(this.LblGitHub_Click);
-            this.lblGitHub.MouseEnter += new System.EventHandler(this.LblGitHub_MouseEnter);
-            this.lblGitHub.MouseLeave += new System.EventHandler(this.LblGitHub_MouseLeave);
-            // 
-            // lblVersion
-            // 
-            this.lblVersion.AutoSize = true;
-            this.lblVersion.Location = new System.Drawing.Point(6, 18);
-            this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Size = new System.Drawing.Size(45, 13);
-            this.lblVersion.TabIndex = 6;
-            this.lblVersion.Text = "Version:";
             // 
             // groupBox3
             // 
@@ -320,6 +284,42 @@
             this.btnUp.Text = "up";
             this.btnUp.UseVisualStyleBackColor = true;
             // 
+            // lblVersion
+            // 
+            this.lblVersion.AutoSize = true;
+            this.lblVersion.Location = new System.Drawing.Point(6, 18);
+            this.lblVersion.Name = "lblVersion";
+            this.lblVersion.Size = new System.Drawing.Size(45, 13);
+            this.lblVersion.TabIndex = 6;
+            this.lblVersion.Text = "Version:";
+            // 
+            // lblGitHub
+            // 
+            this.lblGitHub.AutoSize = true;
+            this.lblGitHub.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lblGitHub.ForeColor = System.Drawing.Color.Blue;
+            this.lblGitHub.Location = new System.Drawing.Point(6, 38);
+            this.lblGitHub.Name = "lblGitHub";
+            this.lblGitHub.Size = new System.Drawing.Size(194, 13);
+            this.lblGitHub.TabIndex = 7;
+            this.lblGitHub.Text = "https://github.com/swharden/ScottPlot";
+            this.lblGitHub.Click += new System.EventHandler(this.LblGitHub_Click);
+            this.lblGitHub.MouseEnter += new System.EventHandler(this.LblGitHub_MouseEnter);
+            this.lblGitHub.MouseLeave += new System.EventHandler(this.LblGitHub_MouseLeave);
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.lblGitHub);
+            this.groupBox2.Controls.Add(this.lblVersion);
+            this.groupBox2.Location = new System.Drawing.Point(12, 190);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(297, 61);
+            this.groupBox2.TabIndex = 4;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "ScottPlot";
+            // 
             // FormSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -334,11 +334,11 @@
             this.Load += new System.EventHandler(this.FormSettings_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.groupBox4.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -355,8 +355,6 @@
         private System.Windows.Forms.TextBox tbY2;
         private System.Windows.Forms.TextBox tbX2;
         private System.Windows.Forms.TextBox tbX1;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Label lblVersion;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.RadioButton rbQualityHigh;
         private System.Windows.Forms.RadioButton rbQualityLow;
@@ -367,7 +365,9 @@
         private System.Windows.Forms.Button btnUp;
         private System.Windows.Forms.ListBox lbPlotObjects;
         private System.Windows.Forms.Button btnApplyAxes;
-        private System.Windows.Forms.Label lblGitHub;
         private System.Windows.Forms.CheckBox cbQualityLowWhileDragging;
+        private System.Windows.Forms.Label lblVersion;
+        private System.Windows.Forms.Label lblGitHub;
+        private System.Windows.Forms.GroupBox groupBox2;
     }
 }

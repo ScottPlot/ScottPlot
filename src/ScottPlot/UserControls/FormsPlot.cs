@@ -77,12 +77,13 @@ namespace ScottPlot
                     break;
 
                 case "Settings":
-                    var frm = new UserControls.FormSettings(plt);
-                    frm.ShowDialog();
+                    var formSettings = new UserControls.FormSettings(plt);
+                    formSettings.ShowDialog();
                     break;
 
                 case "Help":
-                    System.Diagnostics.Process.Start("https://github.com/swharden/ScottPlot");
+                    var formHelp = new UserControls.FormHelp();
+                    formHelp.ShowDialog();
                     break;
 
                 default:
