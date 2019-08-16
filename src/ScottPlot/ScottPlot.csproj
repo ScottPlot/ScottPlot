@@ -104,9 +104,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ScottPlot.nuspec" />
-  </ItemGroup>
-  <ItemGroup>
     <Page Include="UserControls\WpfPlot.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
