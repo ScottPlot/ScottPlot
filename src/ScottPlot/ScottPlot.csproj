@@ -64,6 +64,12 @@
     <Compile Include="Plottables\PlottableSignal.cs" />
     <Compile Include="Plottables\PlottableText.cs" />
     <Compile Include="Renderer.cs" />
+    <Compile Include="UserControls\FormHelp.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserControls\FormHelp.Designer.cs">
+      <DependentUpon>FormHelp.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\FormSettings.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -76,12 +82,6 @@
     <Compile Include="UserControls\FormsPlot.Designer.cs">
       <DependentUpon>FormsPlot.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\FormSaveData.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UserControls\FormSaveData.Designer.cs">
-      <DependentUpon>FormSaveData.cs</DependentUpon>
-    </Compile>
     <Compile Include="UserControls\WpfPlot.xaml.cs">
       <DependentUpon>WpfPlot.xaml</DependentUpon>
     </Compile>
@@ -93,14 +93,14 @@
     <Compile Include="Settings.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="UserControls\FormHelp.resx">
+      <DependentUpon>FormHelp.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UserControls\FormSettings.resx">
       <DependentUpon>FormSettings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControls\FormsPlot.resx">
       <DependentUpon>FormsPlot.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UserControls\FormSaveData.resx">
-      <DependentUpon>FormSaveData.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
