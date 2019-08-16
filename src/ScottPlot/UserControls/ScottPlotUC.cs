@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace ScottPlot
 {
-
+    [System.ComponentModel.ToolboxItem(false)]
     [Obsolete("ScottPlotUC has been renamed to FormsPlot", true)]
-    public partial class ScottPlotUC : FormsPlot {}
-
+    public partial class ScottPlotUC : FormsPlot { }
 }
