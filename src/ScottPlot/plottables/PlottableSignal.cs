@@ -7,7 +7,7 @@ using System.Drawing;
 
 namespace ScottPlot
 {
-    public class PlottableSignal<T> : Plottable where T : struct, IComparable<T>
+    public class PlottableSignal<T> : Plottable
     {
         public T[] ys;
         public double sampleRate;
@@ -54,8 +54,8 @@ namespace ScottPlot
             double[] limits = new double[4];
             limits[0] = 0 + xOffset;
             limits[1] = samplePeriod * ys.Length + xOffset;
-            limits[2] = (double)(object)ys.Min() + yOffset;
-            limits[3] = (double)(object)ys.Max() + yOffset;
+            limits[2] = Convert.ToDouble(ys.Min()) + yOffset;
+            limits[3] = Convert.ToDouble(ys.Max()) + yOffset;
             return limits;
         }
 
@@ -177,20 +177,38 @@ namespace ScottPlot
             if (linePoints.Count > 0)
                 settings.gfxData.DrawLines(pen, linePoints.ToArray());
         }
-
+        
         protected virtual void MinMaxRangeQuery(int index1, int index2, out double lowestValue, out double highestValue)
         {
-            T lowestValueT = ys[index1];
-            T highestValueT = ys[index1];
-            for (int i = index1; i < index2; i++)
+            double[] dArr = (ys as double[]);
+            float[] fArr = (ys as float[]);
+            if (dArr != null)
             {
-                if (ys[i].CompareTo(lowestValueT) < 0)
-                    lowestValueT = ys[i];
-                if (ys[i].CompareTo(highestValueT) > 0)
-                    highestValueT = ys[i];
+                
+                lowestValue = dArr[index1];
+                highestValue = dArr[index1];
+                for (int i = index1; i < index2; i++)
+                {
+                    if (dArr[i] < lowestValue)
+                        lowestValue = dArr[i];
+                    if (dArr[i] > highestValue)
+                        highestValue = dArr[i];
+                }
             }
-            lowestValue = (double)(object)lowestValueT;
-            highestValue = (double)(object)highestValueT;
+            else if (fArr != null)
+            {
+                lowestValue = fArr[index1];
+                highestValue = fArr[index1];
+                for (int i = index1; i < index2; i++)
+                {
+                    if (fArr[i] < lowestValue)
+                        lowestValue = fArr[i];
+                    if (fArr[i] > highestValue)
+                        highestValue = fArr[i];
+                }
+            }
+            else
+                throw new ArgumentException("Unsuported array type, use double[] or float[] only");            
         }
 
         public override void Render(Settings settings)
@@ -205,8 +223,8 @@ namespace ScottPlot
             int visiblePointCount = visibleIndex2 - visibleIndex1;
             double pointsPerPixelColumn = visiblePointCount / settings.dataSize.Width;
 
-            PointF firstPoint = settings.GetPixel(xOffset, (double)(object)ys.First() + yOffset);
-            PointF lastPoint = settings.GetPixel(samplePeriod * (ys.Length - 1) + xOffset, (double)(object)ys.Last() + yOffset);
+            PointF firstPoint = settings.GetPixel(xOffset, Convert.ToDouble(ys.First()) + yOffset);
+            PointF lastPoint = settings.GetPixel(samplePeriod * (ys.Length - 1) + xOffset, Convert.ToDouble(ys.Last()) + yOffset);
             double dataWidthPx = lastPoint.X - firstPoint.X;
 
             // use different rendering methods based on how dense the data is on screen
