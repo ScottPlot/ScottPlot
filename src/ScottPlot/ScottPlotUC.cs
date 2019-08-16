@@ -5,42 +5,24 @@ using System.Diagnostics;
 
 namespace ScottPlot
 {
-
-    public partial class FormsPlot : UserControl
+    public partial class ScottPlotUC : UserControl
     {
         public Plot plt = new Plot();
         private bool currentlyRendering = false;
-        private System.Timers.Timer lastInteractionTimer;
-        ContextMenuStrip rightClickMenu;
+        private ContextMenuStrip rightClickMenu;
 
-        public FormsPlot()
+        public ScottPlotUC()
         {
             InitializeComponent();
-            SetupMenu();
-            SetupTimers();
             plt.Style(ScottPlot.Style.Control);
             pbPlot.MouseWheel += PbPlot_MouseWheel;
             if (Process.GetCurrentProcess().ProcessName == "devenv")
-                Tools.DesignerModeDemoPlot(plt);
+                ScottPlot.Tools.DesignerModeDemoPlot(plt);
             PbPlot_SizeChanged(null, null);
-        }
-
-        public void SetupTimers()
-        {
-            lastInteractionTimer = new System.Timers.Timer()
-            {
-                AutoReset = false,
-                SynchronizingObject = this,
-                Enabled = false,
-            };
-            lastInteractionTimer.Elapsed += (o, arg) => Render(skipIfCurrentlyRendering: false);
         }
 
         public void Render(bool skipIfCurrentlyRendering = false, bool lowQuality = false)
         {
-            if (lastInteractionTimer.Enabled)
-                lastInteractionTimer.Stop();
-
             if (!(skipIfCurrentlyRendering && currentlyRendering))
             {
                 currentlyRendering = true;
@@ -48,47 +30,6 @@ namespace ScottPlot
                 if (plt.mouseTracker.IsDraggingSomething())
                     Application.DoEvents();
                 currentlyRendering = false;
-            }
-        }
-
-        private void SetupMenu()
-        {
-            rightClickMenu = new ContextMenuStrip();
-            rightClickMenu.Items.Add("Save Image");
-            rightClickMenu.Items.Add("Settings");
-            rightClickMenu.Items.Add("Help");
-            rightClickMenu.ItemClicked += new ToolStripItemClickedEventHandler(RightClickMenuItemClicked);
-        }
-
-        private void LaunchMenu()
-        {
-            plt.GetSettings().mouseIsPanning = false;
-            plt.GetSettings().mouseIsZooming = false;
-            rightClickMenu.Show(pbPlot, PointToClient(Cursor.Position));
-            Render(skipIfCurrentlyRendering: false, lowQuality: false);
-        }
-
-        private void RightClickMenuItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-            rightClickMenu.Hide();
-            switch (e.ClickedItem.Text)
-            {
-                case "Save Image":
-                    Tools.SaveImageDialog(plt);
-                    break;
-
-                case "Settings":
-                    var formSettings = new UserControls.FormSettings(plt);
-                    formSettings.ShowDialog();
-                    break;
-
-                case "Help":
-                    var formHelp = new UserControls.FormHelp();
-                    formHelp.ShowDialog();
-                    break;
-
-                default:
-                    throw new NotImplementedException();
             }
         }
 
@@ -130,28 +71,15 @@ namespace ScottPlot
 
             if (e.Button != MouseButtons.None)
             {
-                Render(skipIfCurrentlyRendering: true, lowQuality: plt.mouseTracker.lowQualityWhileInteracting);
+                Render(skipIfCurrentlyRendering: true, lowQuality: plt.mouseTracker.lowQualityWhileDragging);
                 OnMouseDragged(EventArgs.Empty);
             }
         }
 
         private void PbPlot_MouseUp(object sender, MouseEventArgs e)
         {
-            if (!plt.mouseTracker.MouseHasMoved())
-            {
-                LaunchMenu();
-                return;
-            }
-
             plt.mouseTracker.MouseUp(e.Location);
-            if (plt.mouseTracker.lowQualityWhileInteracting && plt.mouseTracker.mouseUpHQRenderDelay > 0)
-            {
-                Render(false, true); // LQ render
-                lastInteractionTimer.Interval = plt.mouseTracker.mouseUpHQRenderDelay;
-                lastInteractionTimer.Start(); // set delay for HQ render on MouseUp
-            }
-            else // HQ render at LQ - off, or mouseUpRenderDelay == 0
-                Render(skipIfCurrentlyRendering: false);
+            Render(skipIfCurrentlyRendering: false);
             if (plt.mouseTracker.PlottableUnderCursor(e.Location) != null)
                 OnMouseDropPlottable(EventArgs.Empty);
         }
@@ -165,7 +93,38 @@ namespace ScottPlot
             }
             else if (e.Button == MouseButtons.Right && plt.mouseTracker.mouseDownStopwatch.ElapsedMilliseconds < 100)
             {
-                LaunchMenu();
+                rightClickMenu = new ContextMenuStrip();
+                rightClickMenu.Items.Add("Save Image");
+
+                rightClickMenu.Items.Add("Save Data");
+                ToolStripMenuItem saveDataMenuItem = (ToolStripMenuItem)rightClickMenu.Items[rightClickMenu.Items.Count - 1];
+                saveDataMenuItem.Enabled = false;
+                if (plt.GetPlottables().Count > 0)
+                    if ((plt.GetPlottables()[0] is PlottableScatter) || (plt.GetPlottables()[0] is PlottableSignal))
+                        saveDataMenuItem.Enabled = true;
+                
+                rightClickMenu.Items.Add("Auto-Axis");
+                rightClickMenu.Items.Add("Clear");
+                rightClickMenu.Items.Add(new ToolStripSeparator());
+                rightClickMenu.Items.Add("Toggle quality while dragging");
+                rightClickMenu.Items.Add(new ToolStripSeparator());
+                rightClickMenu.Items.Add("Help");
+
+                ToolStripMenuItem helpMenu = (ToolStripMenuItem)rightClickMenu.Items[rightClickMenu.Items.Count - 1];
+                helpMenu.DropDownItems.Add("left-click-drag to pan");
+                helpMenu.DropDownItems.Add("right-click-drag to zoom");
+                helpMenu.DropDownItems.Add("middle-click for auto-axis");
+                helpMenu.DropDownItems.Add("double-click to toggle benchmark");
+                helpMenu.DropDownItems.Add(new ToolStripSeparator());
+                helpMenu.DropDownItems.Add($"ScottPlot {Tools.GetVersionString()} ({Tools.GetFrameworkVersionString()})");
+                helpMenu.DropDownItems[0].Enabled = false;
+                helpMenu.DropDownItems[1].Enabled = false;
+                helpMenu.DropDownItems[2].Enabled = false;
+                helpMenu.DropDownItems[3].Enabled = false;
+
+                rightClickMenu.Show(pbPlot, PointToClient(Cursor.Position));
+                rightClickMenu.ItemClicked += new ToolStripItemClickedEventHandler(RightClickMenuItemClicked);
+                helpMenu.DropDownItemClicked += new ToolStripItemClickedEventHandler(RightClickMenuItemClicked);
             }
         }
 
@@ -183,15 +142,14 @@ namespace ScottPlot
                 plt.AxisZoom(1 + zoomAmount, 1 + zoomAmount, zoomCenter);
             else
                 plt.AxisZoom(1 - zoomAmount, 1 - zoomAmount, zoomCenter);
+            Render(skipIfCurrentlyRendering: false);
+        }
 
-            if (plt.mouseTracker.lowQualityWhileInteracting && plt.mouseTracker.mouseWheelHQRenderDelay > 0)
-            {
-                Render(false, true);
-                lastInteractionTimer.Interval = plt.mouseTracker.mouseWheelHQRenderDelay; // delay in ms
-                lastInteractionTimer.Start();
-            }
-            else
-                Render(skipIfCurrentlyRendering: false);
+        private void RightClickMenuItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            rightClickMenu.Hide();
+            Tools.RightClickMenuItemClicked(e.ClickedItem, rightClickMenu, plt);
+            Render(skipIfCurrentlyRendering: false);
         }
 
         public event EventHandler MouseDownOnPlottable;
