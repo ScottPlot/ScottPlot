@@ -386,7 +386,7 @@ namespace ScottPlot
             Array.Copy(axis, mouseDownAxis, axis.Length);
         }
 
-        public void MouseMoveAxis(int cursorPosX, int cursorPosY)
+        public void MouseMoveAxis(int cursorPosX, int cursorPosY, bool lockVertical, bool lockHorizontal)
         {
             if (mouseIsPanning == false && mouseIsZooming == false)
                 return;
@@ -396,6 +396,11 @@ namespace ScottPlot
 
             int dX = cursorPosX - mouseDownLocation.X;
             int dY = cursorPosY - mouseDownLocation.Y;
+
+            if (lockVertical)
+                dY = 0;
+            if (lockHorizontal)
+                dX = 0;
 
             if (mouseIsPanning)
                 AxisPan(-dX / xAxisScale, dY / yAxisScale);

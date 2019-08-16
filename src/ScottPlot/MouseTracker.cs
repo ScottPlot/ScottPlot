@@ -35,6 +35,27 @@ namespace ScottPlot
                 return false;
         }
 
+        public bool ctrlIsDown()
+        {
+            bool leftCtrl = System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.LeftCtrl);
+            bool rightCtrl = System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.RightCtrl);
+            return (leftCtrl || rightCtrl);
+        }
+
+        public bool altIsDown()
+        {
+            bool leftAlt = System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.LeftAlt);
+            bool rightAlt = System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.RightAlt);
+            return (leftAlt || rightAlt);
+        }
+
+        public bool shiftIsDown()
+        {
+            bool leftShift = System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.LeftShift);
+            bool rightShift = System.Windows.Input.Keyboard.IsKeyDown(System.Windows.Input.Key.RightShift);
+            return (leftShift || rightShift);
+        }
+
         public void MouseDown(System.Windows.Point mousePoint)
         {
             Point eLocation = new Point((int)mousePoint.X, (int)mousePoint.Y);
@@ -78,7 +99,7 @@ namespace ScottPlot
         {
             if (draggingObject == null)
             {
-                settings.MouseMoveAxis(Cursor.Position.X, Cursor.Position.Y);
+                settings.MouseMoveAxis(Cursor.Position.X, Cursor.Position.Y, ctrlIsDown(), altIsDown());
             }
             else
             {
@@ -108,7 +129,7 @@ namespace ScottPlot
         {
             if (draggingObject == null)
             {
-                settings.MouseMoveAxis(Cursor.Position.X, Cursor.Position.Y);
+                settings.MouseMoveAxis(Cursor.Position.X, Cursor.Position.Y, ctrlIsDown(), altIsDown());
                 settings.MouseUpAxis();
             }
             else
