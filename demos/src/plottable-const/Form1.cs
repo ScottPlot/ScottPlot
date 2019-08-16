@@ -13,7 +13,7 @@ namespace plottable_const
 {
     public partial class Form1 : Form
     {
-        ScottPlot.PlottableSignal signal;
+        ScottPlot.PlottableSignal<double> signal;
         Random rand = new Random();
         double[] data;
         bool busy = false;
@@ -26,7 +26,7 @@ namespace plottable_const
         private void Form1_Load(object sender, EventArgs e)
         {
             data = ScottPlot.DataGen.RandomWalk(rand, 10_000_000);
-            signal = formsPlot1.plt.PlotSignalConst(data);
+            signal = formsPlot1.plt.PlotSignal(data);
             formsPlot1.plt.Benchmark();
             formsPlot1.Render();
         }

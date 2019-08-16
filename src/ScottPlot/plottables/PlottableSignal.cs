@@ -7,9 +7,9 @@ using System.Drawing;
 
 namespace ScottPlot
 {
-    public class PlottableSignal : Plottable
+    public class PlottableSignal<T> : Plottable where T : struct, IComparable<T>
     {
-        public double[] ys;
+        public T[] ys;
         public double sampleRate;
         public double samplePeriod;
         public float markerSize;
@@ -18,7 +18,7 @@ namespace ScottPlot
         public Pen pen;
         public Brush brush;
 
-        public PlottableSignal(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, bool useParallel)
+        public PlottableSignal(T[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, bool useParallel)
         {
 
             if (ys == null)
@@ -54,8 +54,8 @@ namespace ScottPlot
             double[] limits = new double[4];
             limits[0] = 0 + xOffset;
             limits[1] = samplePeriod * ys.Length + xOffset;
-            limits[2] = ys.Min() + yOffset;
-            limits[3] = ys.Max() + yOffset;
+            limits[2] = (double)(object)ys.Min() + yOffset;
+            limits[3] = (double)(object)ys.Max() + yOffset;
             return limits;
         }
 
@@ -63,8 +63,8 @@ namespace ScottPlot
         {
             // this function is for when the graph is zoomed so far out its entire display is a single vertical pixel column
 
-            PointF point1 = settings.GetPixel(xOffset, (float)ys.Min() + yOffset);
-            PointF point2 = settings.GetPixel(xOffset, (float)ys.Max() + yOffset);
+            PointF point1 = settings.GetPixel(xOffset, (float)(object)ys.Min() + yOffset);
+            PointF point2 = settings.GetPixel(xOffset, (float)(object)ys.Max() + yOffset);
             settings.gfxData.DrawLine(pen, point1, point2);
         }
 
@@ -78,7 +78,7 @@ namespace ScottPlot
             if (visibleIndex1 < 0)
                 visibleIndex1 = 0;
             for (int i = visibleIndex1; i <= visibleIndex2 + 1; i++)
-                linePoints.Add(settings.GetPixel(samplePeriod * i + xOffset, ys[i] + yOffset));
+                linePoints.Add(settings.GetPixel(samplePeriod * i + xOffset, (double)(object)ys[i] + yOffset));
 
             if (linePoints.Count > 1)
             {
@@ -180,15 +180,17 @@ namespace ScottPlot
 
         protected virtual void MinMaxRangeQuery(int index1, int index2, out double lowestValue, out double highestValue)
         {
-            lowestValue = ys[index1];
-            highestValue = ys[index1];
+            T lowestValueT = ys[index1];
+            T highestValueT = ys[index1];
             for (int i = index1; i < index2; i++)
             {
-                if (ys[i] < lowestValue)
-                    lowestValue = ys[i];
-                if (ys[i] > highestValue)
-                    highestValue = ys[i];
+                if (ys[i].CompareTo(lowestValueT) < 0)
+                    lowestValueT = ys[i];
+                if (ys[i].CompareTo(highestValueT) > 0)
+                    highestValueT = ys[i];
             }
+            lowestValue = (double)(object)lowestValueT;
+            highestValue = (double)(object)highestValueT;
         }
 
         public override void Render(Settings settings)
@@ -203,8 +205,8 @@ namespace ScottPlot
             int visiblePointCount = visibleIndex2 - visibleIndex1;
             double pointsPerPixelColumn = visiblePointCount / settings.dataSize.Width;
 
-            PointF firstPoint = settings.GetPixel(xOffset, ys.First() + yOffset);
-            PointF lastPoint = settings.GetPixel(samplePeriod * (ys.Length - 1) + xOffset, ys.Last() + yOffset);
+            PointF firstPoint = settings.GetPixel(xOffset, (double)(object)ys.First() + yOffset);
+            PointF lastPoint = settings.GetPixel(samplePeriod * (ys.Length - 1) + xOffset, (double)(object)ys.Last() + yOffset);
             double dataWidthPx = lastPoint.X - firstPoint.X;
 
             // use different rendering methods based on how dense the data is on screen
