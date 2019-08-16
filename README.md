@@ -51,9 +51,6 @@ ScottPlot can plot data quickly allowing for high framerates. The _audio monitor
 
 ![](/demos/src/audio-monitor/screenshot.gif)
 
-### Support for .NET Core
-This project is currently configured as a .NET (4.5) class library, but the source files can be loaded into a .NET Core library as well (tested on .NET Core 3.0). This may be useful for people wanting to use ScottPlot in cross-platform applications.
-
 ## About ScottPlot
 
 ScottPlot was created by [Scott Harden](http://www.SWHarden.com/) ([Harden Technologies, LLC](http://tech.swharden.com)) with many contributions from the user community. To inquire about the development special features or customized versions of this software for consumer applications, contact the author at [SWHarden@gmail.com](mailto:swharden@gmail.com).
