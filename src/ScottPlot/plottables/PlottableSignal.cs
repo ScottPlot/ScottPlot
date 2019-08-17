@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using System.Linq.Expressions;
 
 namespace ScottPlot
 {
@@ -17,13 +18,34 @@ namespace ScottPlot
         public double yOffset;
         public Pen pen;
         public Brush brush;
+        // precompiled lambda expressions for fast math on generic
+        private static Func<T, T, bool> LessThanExp;
+        private static Func<T, T, bool> GreaterThanExp;
+        private void InitExp()
+        {
+            ParameterExpression paramA = Expression.Parameter(typeof(T), "a");
+            ParameterExpression paramB = Expression.Parameter(typeof(T), "b");
+            // add the parameters together
+            BinaryExpression bodyLessThan = Expression.LessThan(paramA, paramB);
+            BinaryExpression bodyGreaterThan = Expression.GreaterThan(paramA, paramB);
+            // compile it
+            LessThanExp = Expression.Lambda<Func<T, T, bool>>(bodyLessThan, paramA, paramB).Compile();
+            GreaterThanExp = Expression.Lambda<Func<T, T, bool>>(bodyGreaterThan, paramA, paramB).Compile();
+        }
 
         public PlottableSignal(T[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, bool useParallel)
-        {
-
+        {            
             if (ys == null)
                 throw new Exception("Y data cannot be null");
-
+            try // runtime check
+            {
+                Convert.ToDouble(new T());
+            }
+            catch
+            {
+                throw new ArgumentOutOfRangeException("Unsupported data type, provide convertable to double data types");
+            }
+            InitExp();
             this.ys = ys;
             this.sampleRate = sampleRate;
             this.samplePeriod = 1.0 / sampleRate;
@@ -180,6 +202,18 @@ namespace ScottPlot
         
         protected virtual void MinMaxRangeQuery(int index1, int index2, out double lowestValue, out double highestValue)
         {
+            T lowestValueT = ys[index1];
+            T highestValueT = ys[index1];
+            for (int i = index1; i < index2; i++)
+            {
+                if (LessThanExp(ys[i], lowestValueT))
+                    lowestValueT = ys[i];
+                if (GreaterThanExp(ys[i],highestValueT))
+                    highestValueT = ys[i];
+            }
+            lowestValue = Convert.ToDouble(lowestValueT);
+            highestValue = Convert.ToDouble(highestValueT);                
+            /*
             double[] dArr = (ys as double[]);
             float[] fArr = (ys as float[]);
             if (dArr != null)
@@ -208,7 +242,8 @@ namespace ScottPlot
                 }
             }
             else
-                throw new ArgumentException("Unsuported array type, use double[] or float[] only");            
+                throw new ArgumentException("Unsuported array type, use double[] or float[] only");  
+            */
         }
 
         public override void Render(Settings settings)
