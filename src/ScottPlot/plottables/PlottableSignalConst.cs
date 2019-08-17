@@ -299,7 +299,7 @@ namespace ScottPlot
 
         public override string ToString()
         {
-            return $"PlottableSignalConst with {pointCount} points, trees {(TreesReady ? "" : "not")} calculated";
+            return $"PlottableSignalConst with {pointCount} points ({typeof(T).Name}), trees {(TreesReady ? "" : "not")} calculated";
         }
     }
 }

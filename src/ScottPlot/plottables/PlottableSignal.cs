@@ -68,7 +68,7 @@ namespace ScottPlot
 
         public override string ToString()
         {
-            return $"PlottableSignal with {pointCount} points";
+            return $"PlottableSignal with {pointCount} points ({typeof(T).Name})";
         }
 
         public override double[] GetLimits()
