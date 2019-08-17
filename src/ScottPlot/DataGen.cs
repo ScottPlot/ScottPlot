@@ -67,6 +67,14 @@ namespace ScottPlot
             return ys;
         }
 
+        public static int[] RandomInts(Random rand, int pointCount, double multiplier = 1, double offset = 0)
+        {
+            int[] ys = new int[pointCount];
+            for (int i = 0; i < pointCount; i++)
+                ys[i] = (int)(rand.NextDouble() * multiplier + offset);
+            return ys;
+        }
+
         public static double[] RandomNormal(Random rand, int pointCount, double mean = .5, double stdDev = .5)
         {
             if (rand == null)
