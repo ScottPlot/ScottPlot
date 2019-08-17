@@ -139,48 +139,5 @@ namespace ScottPlot
                 plt.SaveFig(savefile.FileName);
         }
 
-        /*
-        public static void RightClickMenuItemClicked(ToolStripItem item, ContextMenuStrip rightClickMenu, ScottPlot.Plot plt)
-        {
-            Console.WriteLine("CLICKED:" + item.ToString());
-            SaveFileDialog savefile = new SaveFileDialog();
-            string itemName = item.ToString();
-            if (itemName.StartsWith("About"))
-                itemName = "About";
-
-            switch (itemName)
-            {
-                case "Save Image":
-                    rightClickMenu.Hide();
-                    savefile.FileName = "ScottPlot.png";
-                    savefile.Filter = "PNG Files (*.png)|*.png|All files (*.*)|*.*";
-                    if (savefile.ShowDialog() == DialogResult.OK)
-                        plt.SaveFig(savefile.FileName);
-                    break;
-                case "Save Data":
-                    savefile.Title = "Save data for the first plot object";
-                    savefile.FileName = "data.csv";
-                    savefile.Filter = "CSV Files (*.csv)|*.csv|All files (*.*)|*.*";
-                    if (savefile.ShowDialog() == DialogResult.OK)
-                        plt.GetPlottables()[0].SaveCSV(savefile.FileName);
-                    break;
-                case "Auto-Axis":
-                    rightClickMenu.Hide();
-                    plt.AxisAuto();
-                    break;
-                case "Clear":
-                    rightClickMenu.Hide();
-                    plt.Clear();
-                    break;
-                case "Toggle quality while dragging":
-                    plt.mouseTracker.lowQualityWhileInteracting = !plt.mouseTracker.lowQualityWhileInteracting;
-                    break;
-                case "ScottPlot":
-                    rightClickMenu.Hide();
-                    System.Diagnostics.Process.Start("https://github.com/swharden/ScottPlot");
-                    break;
-            }
-        }
-        */
     }
 }
