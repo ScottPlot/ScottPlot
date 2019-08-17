@@ -84,9 +84,10 @@ namespace ScottPlot
         private void RenderSingleLine(Settings settings)
         {
             // this function is for when the graph is zoomed so far out its entire display is a single vertical pixel column
-
-            PointF point1 = settings.GetPixel(xOffset, Convert.ToDouble(ys.Min()) + yOffset);
-            PointF point2 = settings.GetPixel(xOffset, Convert.ToDouble(ys.Max()) + yOffset);
+            double ymax, ymin;
+            MinMaxRangeQuery(0, ys.Length - 1, out ymin, out ymax); // speed improvement then this called from SignalConst           
+            PointF point1 = settings.GetPixel(xOffset, ymin + yOffset);
+            PointF point2 = settings.GetPixel(xOffset, ymax + yOffset);
             settings.gfxData.DrawLine(pen, point1, point2);
         }
 
@@ -258,8 +259,8 @@ namespace ScottPlot
             int visiblePointCount = visibleIndex2 - visibleIndex1;
             double pointsPerPixelColumn = visiblePointCount / settings.dataSize.Width;
 
-            PointF firstPoint = settings.GetPixel(xOffset, Convert.ToDouble(ys.First()) + yOffset);
-            PointF lastPoint = settings.GetPixel(samplePeriod * (ys.Length - 1) + xOffset, Convert.ToDouble(ys.Last()) + yOffset);
+            PointF firstPoint = settings.GetPixel(xOffset, Convert.ToDouble(ys[0]) + yOffset);
+            PointF lastPoint = settings.GetPixel(samplePeriod * (ys.Length - 1) + xOffset, Convert.ToDouble(ys[ys.Length - 1]) + yOffset);
             double dataWidthPx = lastPoint.X - firstPoint.X;
 
             // use different rendering methods based on how dense the data is on screen
