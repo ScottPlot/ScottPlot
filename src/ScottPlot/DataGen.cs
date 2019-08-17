@@ -38,6 +38,18 @@ namespace ScottPlot
             return data;
         }
 
+        public static byte[] SinSweepByte(int pointCount, double density = 50.0)
+        {
+            byte[] data = new byte[pointCount];
+            for (int i = 0; i < data.Length; i++)
+            {
+                double t = (double)i / pointCount * density;
+                double tSquared = Math.Pow(t, 2);
+                data[i] = (byte)(Math.Sin(tSquared) * 120 + 128);
+            }
+            return data;
+        }
+
         public static double[] Cos(int pointCount, double oscillations = 1)
         {
             double sinScale = 2 * Math.PI * oscillations / pointCount;
