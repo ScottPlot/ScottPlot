@@ -457,6 +457,8 @@ namespace ScottPlot
                     indicesToDelete.Add(i);
                 else if (plottables[i].GetType().GetGenericTypeDefinition() == typeof(PlottableSignal<>))                
                     indicesToDelete.Add(i);
+                else if (plottables[i].GetType().GetGenericTypeDefinition() == typeof(PlottableSignalConst<>))
+                    indicesToDelete.Add(i);
                 else if (plottables[i] is PlottableText && text)
                     indicesToDelete.Add(i);
                 else if (plottables[i] is PlottableBar && bar)
