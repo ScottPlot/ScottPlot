@@ -455,7 +455,9 @@ namespace ScottPlot
                     indicesToDelete.Add(i);
                 else if (plottables[i] is PlottableScatter && scatters)
                     indicesToDelete.Add(i);
-                else if (plottables[i] is PlottableSignal && signals)
+                else if (plottables[i] is PlottableSignal && signals)                
+                    indicesToDelete.Add(i);
+                else if (plottables[i].GetType().IsGenericType && plottables[i].GetType().GetGenericTypeDefinition() == typeof(PlottableSignalConst<>) && signals)
                     indicesToDelete.Add(i);
                 else if (plottables[i] is PlottableText && text)
                     indicesToDelete.Add(i);

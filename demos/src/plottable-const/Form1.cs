@@ -13,7 +13,7 @@ namespace plottable_const
 {
     public partial class Form1 : Form
     {
-        ScottPlot.PlottableSignal signal;
+        ScottPlot.Plottable signal;
         Random rand = new Random();
         double[] data;
         bool busy = false;
@@ -27,6 +27,7 @@ namespace plottable_const
         {
             data = ScottPlot.DataGen.RandomWalk(rand, 10_000_000);
             signal = formsPlot1.plt.PlotSignalConst(data);
+            formsPlot1.plt.PlotSignalConst(data.Select(x=>(int)x).ToArray());
             formsPlot1.plt.Benchmark();
             formsPlot1.Render();
         }
@@ -62,9 +63,9 @@ namespace plottable_const
             // run plot data updates at max speed in background thread                
             Task.Run(() =>
             {
-                if (signal is ScottPlot.PlottableSignalConst)
+                if (signal is ScottPlot.PlottableSignalConst<double>)
                 {
-                    var signalConst = signal as ScottPlot.PlottableSignalConst;
+                    var signalConst = signal as ScottPlot.PlottableSignalConst<double>;
                     signalConst.updateData(0, rand.NextDouble() * 10 - 5);
                     if (updateRangeSize < 1)
                     {
@@ -98,7 +99,7 @@ namespace plottable_const
                         Thread.Sleep(100);
                     formsPlot1.Render();
                     btnUpdateData.Enabled = true;
-                }));
+                }));                
             });
         }
     }
