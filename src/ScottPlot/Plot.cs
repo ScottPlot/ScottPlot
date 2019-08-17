@@ -369,8 +369,7 @@ namespace ScottPlot
             Color? color = null,
             double lineWidth = 1,
             double markerSize = 5,
-            string label = null,
-            bool singlePrecision = false
+            string label = null
             ) where T: struct, IComparable
         {
             if (color == null)
@@ -385,8 +384,7 @@ namespace ScottPlot
                 lineWidth: lineWidth,
                 markerSize: markerSize,
                 label: label,
-                useParallel: settings.useParallel,
-                singlePrecision: singlePrecision
+                useParallel: settings.useParallel
                 );
 
             settings.plottables.Add(signal);

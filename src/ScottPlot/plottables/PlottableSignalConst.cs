@@ -46,7 +46,7 @@ namespace ScottPlot
             MaxValue = Expression.Lambda<Func<T>>(bodyMaxValue).Compile();
             MinValue = Expression.Lambda<Func<T>>(bodyMinValue).Compile();
         }
-        public PlottableSignalConst(T[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, bool useParallel, bool singlePrecision = false) : base(ys, sampleRate, xOffset, yOffset, color, lineWidth, markerSize, label, useParallel)
+        public PlottableSignalConst(T[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, bool useParallel) : base(ys, sampleRate, xOffset, yOffset, color, lineWidth, markerSize, label, useParallel)
         {
             try // runtime check
             {               
