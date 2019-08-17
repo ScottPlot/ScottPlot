@@ -30,8 +30,9 @@ namespace ScottPlot
 
         public override string ToString()
         {
-            string sizeString = $"{settings.figureSize.Width}x{settings.figureSize.Height}";
-            return $"ScottPlot ({sizeString}) with {GetPlottables().Count} objects ({GetTotalPoints()} points)";
+            return string.Format($"ScottPlot ({0:n0} x {1:n0}) with {2:n0} objects ({3:n0} points)",
+                settings.figureSize.Width, settings.figureSize.Height, 
+                GetPlottables().Count, GetTotalPoints());
         }
 
         #region Bitmaps, Graphics, and Drawing Settings
@@ -137,7 +138,7 @@ namespace ScottPlot
         }
 
         public Bitmap GetBitmap(bool renderFirst = true, bool lowQuality = false)
-        {          
+        {
             if (lowQuality)
             {
                 bool currentAAData = settings.antiAliasData; // save currently using AA setting
@@ -150,7 +151,7 @@ namespace ScottPlot
             {
                 if (renderFirst)
                     RenderBitmap();
-            }                            
+            }
             return settings.bmpFigure;
         }
 
@@ -370,7 +371,7 @@ namespace ScottPlot
             double lineWidth = 1,
             double markerSize = 5,
             string label = null
-            ) where T: struct, IComparable
+            ) where T : struct, IComparable
         {
             if (color == null)
                 color = settings.GetNextColor();
@@ -587,9 +588,9 @@ namespace ScottPlot
         #region Axis Settings
 
         public double[] Axis(
-            double? x1 = null, 
-            double? x2 = null, 
-            double? y1 = null, 
+            double? x1 = null,
+            double? x2 = null,
+            double? y1 = null,
             double? y2 = null
             )
         {
@@ -602,8 +603,8 @@ namespace ScottPlot
         }
 
         public void AxisAuto(
-            double horizontalMargin = .05, 
-            double verticalMargin = .1, 
+            double horizontalMargin = .05,
+            double verticalMargin = .1,
             int tightenPadding = 5
             )
         {
@@ -612,8 +613,8 @@ namespace ScottPlot
         }
 
         public void AxisZoom(
-            double xFrac = 1, 
-            double yFrac = 1, 
+            double xFrac = 1,
+            double yFrac = 1,
             PointF? zoomCenter = null
             )
         {

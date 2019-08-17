@@ -141,7 +141,7 @@ namespace ScottPlot
             benchmarkMsec = benchmarkStopwatch.ElapsedTicks * 1000.0 / Stopwatch.Frequency;
             benchmarkHz = 1000.0 / benchmarkMsec;
             benchmarkMessage = "";
-            benchmarkMessage += string.Format("Full render of {0} objects ({1:n} points)", plottables.Count, GetTotalPointCount());
+            benchmarkMessage += string.Format("Full render of {0:n0} objects ({1:n0} points)", plottables.Count, GetTotalPointCount());
             benchmarkMessage += string.Format(" took {0:0.000} ms ({1:0.00 Hz})", benchmarkMsec, benchmarkHz);
             if (plottables.Count == 1)
                 benchmarkMessage = benchmarkMessage.Replace("objects", "object");
