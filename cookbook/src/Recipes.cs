@@ -571,11 +571,12 @@ namespace ScottPlotCookbook
             // SignalConst() is faster than PlotSignal() for very large data plots
             // - its data cannot be modified after it is loaded
             // - here threading was turned off so it renders properly in a console application
-            // - in GUI applications threading allows it to initially render faster
+            // - in GUI applications threading allows it to initially render faster but here it is turned off
 
             var plt = new ScottPlot.Plot(width, height);
             plt.Title("Displaying 10 million points with PlotSignalConst()");
             plt.Benchmark();
+            plt.Parallel(false);
             plt.PlotSignalConst(tenMillionPoints, sampleRate: 20_000);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
@@ -593,6 +594,7 @@ namespace ScottPlotCookbook
             var plt = new ScottPlot.Plot(width, height);
             plt.Title("Display One Billion points with PlotSignalConst()");
             plt.Benchmark();
+            plt.Parallel(false);
             plt.PlotSignalConst(oneBillionPoints, sampleRate: 20_000_000);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
