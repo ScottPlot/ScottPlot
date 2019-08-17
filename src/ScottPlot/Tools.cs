@@ -88,7 +88,8 @@ namespace ScottPlot
             {
                 value = Math.Round(value, decimalPlaces);
                 output = value.ToString();
-            } else
+            }
+            else
             {
                 int exponent = (int)Math.Log10(value);
                 double multiplier = Math.Pow(10, exponent);
@@ -139,5 +140,27 @@ namespace ScottPlot
                 plt.SaveFig(savefile.FileName);
         }
 
+        private static double[] DoubleArray<T>(T[] dataIn)
+        {
+            double[] dataOut = new double[dataIn.Length];
+            for (int i = 0; i < dataIn.Length; i++)
+                dataOut[i] = Convert.ToDouble(dataIn[i]);
+            return dataOut;
+        }
+
+        public static double[] DoubleArray(byte[] dataIn)
+        {
+            return DoubleArray<byte>(dataIn);
+        }
+
+        public static double[] DoubleArray(int[] dataIn)
+        {
+            return DoubleArray<int>(dataIn);
+        }
+
+        public static double[] DoubleArray(float[] dataIn)
+        {
+            return DoubleArray<float>(dataIn);
+        }
     }
 }
