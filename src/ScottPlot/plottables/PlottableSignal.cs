@@ -78,7 +78,7 @@ namespace ScottPlot
             if (visibleIndex1 < 0)
                 visibleIndex1 = 0;
             for (int i = visibleIndex1; i <= visibleIndex2 + 1; i++)
-                linePoints.Add(settings.GetPixel(samplePeriod * i + xOffset, (double)(object)ys[i] + yOffset));
+                linePoints.Add(settings.GetPixel(samplePeriod * i + xOffset, Convert.ToDouble(ys[i]) + yOffset));
 
             if (linePoints.Count > 1)
             {

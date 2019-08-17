@@ -361,8 +361,8 @@ namespace ScottPlot
             return signal;
         }
 
-        public PlottableSignalConst PlotSignalConst(
-            double[] ys,
+        public PlottableSignalConst<T> PlotSignalConst<T>(
+            T[] ys,
             double sampleRate = 1,
             double xOffset = 0,
             double yOffset = 0,
@@ -376,7 +376,7 @@ namespace ScottPlot
             if (color == null)
                 color = settings.GetNextColor();
 
-            PlottableSignalConst signal = new PlottableSignalConst(
+            PlottableSignalConst<T> signal = new PlottableSignalConst<T>(
                 ys: ys,
                 sampleRate: sampleRate,
                 xOffset: xOffset,
