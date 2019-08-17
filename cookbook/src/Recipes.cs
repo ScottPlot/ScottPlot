@@ -582,6 +582,23 @@ namespace ScottPlotCookbook
             return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
+        public string Figure_30d_SignalConst_One_Billion_Points()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            // SignalConst() accepts generic data types (here a byte array with a billion points)
+            byte[] oneBillionPoints = ScottPlot.DataGen.SinSweepByte(1_000_000_000, 8);
+
+            var plt = new ScottPlot.Plot(width, height);
+            plt.Title("Display One Billion points with PlotSignalConst()");
+            plt.Benchmark();
+            plt.PlotSignalConst(oneBillionPoints, sampleRate: 20_000_000);
+            plt.SaveFig(fileName);
+            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
+        }
+
         public string Figure_32_Signal_Styling()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
