@@ -26,7 +26,7 @@ namespace plottable_const
         private void Form1_Load(object sender, EventArgs e)
         {
             data = ScottPlot.DataGen.RandomWalk(rand, 10_000_000);
-            signal = formsPlot1.plt.PlotSignal(data.Select(x=>(float)x).ToArray());
+            signal = formsPlot1.plt.PlotSignalConst(data.Select(x=>(float)x).ToArray());
             formsPlot1.plt.Benchmark();
             formsPlot1.Render();
         }
