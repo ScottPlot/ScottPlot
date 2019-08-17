@@ -10,11 +10,10 @@ namespace ScottPlot
     // Variation of PlottableSignal that uses a segmented tree for faster min/max range queries
     // - frequent min/max lookups are a bottleneck displaying large signals
     // - limited to 60M points (250M in x64 mode) due to memory (tree uses from 2X to 4X memory)
-    // - signlePrecision = true halves memory usage and make x86 limit to 120M points
     // - in x64 mode limit can be up to maximum array size (2G points) with special solution and 64 GB RAM (not tested)
     // - if source array is changed UpdateTrees() must be called
     // - source array can be change by call updateData(), updating by ranges much faster.
-    public class PlottableSignalConst<T> : PlottableSignal<T>
+    public class PlottableSignalConst<T> : PlottableSignal<T> where T : struct, IComparable
     {
         // using 2 x signal memory in best case: ys.Length is Pow2 
         // using 4 x signal memory in worst case: ys.Length is (Pow2 +1);        
@@ -22,31 +21,41 @@ namespace ScottPlot
         T[] TreeMax;
         private int n = 0; // size of each Tree
         public bool TreesReady = false;
-        private bool singlePrecision = false; // float type for trees, which uses half memory
-
+        // precompiled lambda expressions for fast math on generic
         private static Func<T, T, T> MinExp;
         private static Func<T, T, T> MaxExp;
         private static Func<T, T, bool> EqualExp;
         private static Func<T> MaxValue;
         private static Func<T> MinValue;
-        public PlottableSignalConst(T[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, bool useParallel, bool singlePrecision = false) : base(ys, sampleRate, xOffset, yOffset, color, lineWidth, markerSize, label, useParallel)
-        {            
+
+        private void InitExp()
+        {
             ParameterExpression paramA = Expression.Parameter(typeof(T), "a");
             ParameterExpression paramB = Expression.Parameter(typeof(T), "b");
             // add the parameters together
-            Expression bodyMin = Expression.Condition(Expression.LessThanOrEqual(paramA, paramB), paramA,paramB);
-            Expression bodyMax = Expression.Condition(Expression.GreaterThanOrEqual(paramA, paramB), paramA, paramB);
+            ConditionalExpression bodyMin = Expression.Condition(Expression.LessThanOrEqual(paramA, paramB), paramA, paramB);
+            ConditionalExpression bodyMax = Expression.Condition(Expression.GreaterThanOrEqual(paramA, paramB), paramA, paramB);
             BinaryExpression bodyEqual = Expression.Equal(paramA, paramB);
-            Expression bodyMaxValue = Expression.MakeMemberAccess(null, typeof(T).GetField("MaxValue"));
-            Expression bodyMinValue = Expression.MakeMemberAccess(null, typeof(T).GetField("MinValue"));
+            MemberExpression bodyMaxValue = Expression.MakeMemberAccess(null, typeof(T).GetField("MaxValue"));
+            MemberExpression bodyMinValue = Expression.MakeMemberAccess(null, typeof(T).GetField("MinValue"));
             // compile it
             MinExp = Expression.Lambda<Func<T, T, T>>(bodyMin, paramA, paramB).Compile();
             MaxExp = Expression.Lambda<Func<T, T, T>>(bodyMax, paramA, paramB).Compile();
             EqualExp = Expression.Lambda<Func<T, T, bool>>(bodyEqual, paramA, paramB).Compile();
-            MaxValue = Expression.Lambda<Func<T>>(bodyMaxValue).Compile(); 
+            MaxValue = Expression.Lambda<Func<T>>(bodyMaxValue).Compile();
             MinValue = Expression.Lambda<Func<T>>(bodyMinValue).Compile();
-
-            this.singlePrecision = singlePrecision;
+        }
+        public PlottableSignalConst(T[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, bool useParallel, bool singlePrecision = false) : base(ys, sampleRate, xOffset, yOffset, color, lineWidth, markerSize, label, useParallel)
+        {
+            try // runtime check
+            {               
+                Convert.ToDouble(new T());
+            }
+            catch 
+            {
+                throw new ArgumentOutOfRangeException("Unsupported data type, provide convertable to double data types");
+            }
+            InitExp();
             if (useParallel)
                 UpdateTreesInBackground();
             else
@@ -56,7 +65,6 @@ namespace ScottPlot
         public void updateData(int index, T newValue)
         {
             ys[index] = newValue;
-
             // Update Tree, can be optimized            
             if (index == ys.Length - 1) // last elem haven't pair
             {
@@ -239,7 +247,7 @@ namespace ScottPlot
             T highestValueT = MinValue();
             if (l == r)
             {
-                lowestValue = highestValue = Convert.ToDouble(ys[l]);                
+                lowestValue = highestValue = Convert.ToDouble(ys[l]);
                 return;
             }
             // first iteration on source array that virtualy bottom of tree

@@ -340,7 +340,7 @@ namespace ScottPlot
             double lineWidth = 1,
             double markerSize = 5,
             string label = null
-            )
+            ) where T: struct, IComparable
         {
             if (color == null)
                 color = settings.GetNextColor();
@@ -371,7 +371,7 @@ namespace ScottPlot
             double markerSize = 5,
             string label = null,
             bool singlePrecision = false
-            )
+            ) where T: struct, IComparable
         {
             if (color == null)
                 color = settings.GetNextColor();
