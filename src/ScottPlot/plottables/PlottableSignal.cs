@@ -8,44 +8,23 @@ using System.Linq.Expressions;
 
 namespace ScottPlot
 {
-    public class PlottableSignal<T> : Plottable where T : struct, IComparable
+    public class PlottableSignal: Plottable
     {
-        public T[] ys;
+        // Any changes must be sync with PlottableSignalConst
+        public double[] ys;
         public double sampleRate;
         public double samplePeriod;
         public float markerSize;
         public double xOffset;
         public double yOffset;
         public Pen pen;
-        public Brush brush;
-        // precompiled lambda expressions for fast math on generic
-        private static Func<T, T, bool> LessThanExp;
-        private static Func<T, T, bool> GreaterThanExp;
-        private void InitExp()
-        {
-            ParameterExpression paramA = Expression.Parameter(typeof(T), "a");
-            ParameterExpression paramB = Expression.Parameter(typeof(T), "b");
-            // add the parameters together
-            BinaryExpression bodyLessThan = Expression.LessThan(paramA, paramB);
-            BinaryExpression bodyGreaterThan = Expression.GreaterThan(paramA, paramB);
-            // compile it
-            LessThanExp = Expression.Lambda<Func<T, T, bool>>(bodyLessThan, paramA, paramB).Compile();
-            GreaterThanExp = Expression.Lambda<Func<T, T, bool>>(bodyGreaterThan, paramA, paramB).Compile();
-        }
+        public Brush brush;       
 
-        public PlottableSignal(T[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, bool useParallel)
+        public PlottableSignal(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, bool useParallel)
         {            
             if (ys == null)
                 throw new Exception("Y data cannot be null");
-            try // runtime check
-            {
-                Convert.ToDouble(new T());
-            }
-            catch
-            {
-                throw new ArgumentOutOfRangeException("Unsupported data type, provide convertable to double data types");
-            }
-            InitExp();
+            
             this.ys = ys;
             this.sampleRate = sampleRate;
             this.samplePeriod = 1.0 / sampleRate;
@@ -68,7 +47,7 @@ namespace ScottPlot
 
         public override string ToString()
         {
-            return $"PlottableSignal with {pointCount} points ({typeof(T).Name})";
+            return $"PlottableSignal with {pointCount} points";
         }
 
         public override double[] GetLimits()
@@ -76,18 +55,16 @@ namespace ScottPlot
             double[] limits = new double[4];
             limits[0] = 0 + xOffset;
             limits[1] = samplePeriod * ys.Length + xOffset;
-            limits[2] = Convert.ToDouble(ys.Min()) + yOffset;
-            limits[3] = Convert.ToDouble(ys.Max()) + yOffset;
+            limits[2] = ys.Min() + yOffset;
+            limits[3] = ys.Max() + yOffset;
             return limits;
         }
 
         private void RenderSingleLine(Settings settings)
         {
-            // this function is for when the graph is zoomed so far out its entire display is a single vertical pixel column
-            double ymax, ymin;
-            MinMaxRangeQuery(0, ys.Length - 1, out ymin, out ymax); // speed improvement then this called from SignalConst           
-            PointF point1 = settings.GetPixel(xOffset, ymin + yOffset);
-            PointF point2 = settings.GetPixel(xOffset, ymax + yOffset);
+            // this function is for when the graph is zoomed so far out its entire display is a single vertical pixel column                     
+            PointF point1 = settings.GetPixel(xOffset, ys.Min() + yOffset);
+            PointF point2 = settings.GetPixel(xOffset, ys.Max() + yOffset);
             settings.gfxData.DrawLine(pen, point1, point2);
         }
 
@@ -101,7 +78,7 @@ namespace ScottPlot
             if (visibleIndex1 < 0)
                 visibleIndex1 = 0;
             for (int i = visibleIndex1; i <= visibleIndex2 + 1; i++)
-                linePoints.Add(settings.GetPixel(samplePeriod * i + xOffset, Convert.ToDouble(ys[i]) + yOffset));
+                linePoints.Add(settings.GetPixel(samplePeriod * i + xOffset, ys[i] + yOffset));
 
             if (linePoints.Count > 1)
             {
@@ -131,9 +108,16 @@ namespace ScottPlot
                 if (index2 > ys.Length - 1)
                     index2 = ys.Length - 1;
 
-                // get the min and max value for this column
-                double lowestValue, highestValue;
-                MinMaxRangeQuery(index1, index2, out lowestValue, out highestValue);
+                // get the min and max value for this column                
+                double lowestValue = ys[index1];
+                double highestValue = ys[index1];
+                for (int i = index1; i < index2; i++)
+                {
+                    if (ys[i] < lowestValue)
+                        lowestValue = ys[i];
+                    if (ys[i] > highestValue)
+                        highestValue = ys[i];
+                }
                 float yPxHigh = settings.GetPixel(0, lowestValue + yOffset).Y;
                 float yPxLow = settings.GetPixel(0, highestValue + yOffset).Y;
 
@@ -178,9 +162,16 @@ namespace ScottPlot
                 if (index2 > ys.Length - 1)
                     index2 = ys.Length - 1;
 
-                // get the min and max value for this column
-                double lowestValue, highestValue;
-                MinMaxRangeQuery(index1, index2, out lowestValue, out highestValue);
+                // get the min and max value for this column                
+                double lowestValue = ys[index1];
+                double highestValue = ys[index1];
+                for (int i = index1; i < index2; i++)
+                {
+                    if (ys[i] < lowestValue)
+                        lowestValue = ys[i];
+                    if (ys[i] > highestValue)
+                        highestValue = ys[i];
+                }
                 float yPxHigh = settings.GetPixel(0, lowestValue + yOffset).Y;
                 float yPxLow = settings.GetPixel(0, highestValue + yOffset).Y;
 
@@ -199,53 +190,7 @@ namespace ScottPlot
 
             if (linePoints.Count > 0)
                 settings.gfxData.DrawLines(pen, linePoints.ToArray());
-        }
-        
-        protected virtual void MinMaxRangeQuery(int index1, int index2, out double lowestValue, out double highestValue)
-        {
-            T lowestValueT = ys[index1];
-            T highestValueT = ys[index1];
-            for (int i = index1; i < index2; i++)
-            {
-                if (LessThanExp(ys[i], lowestValueT))
-                    lowestValueT = ys[i];
-                if (GreaterThanExp(ys[i],highestValueT))
-                    highestValueT = ys[i];
-            }
-            lowestValue = Convert.ToDouble(lowestValueT);
-            highestValue = Convert.ToDouble(highestValueT);                
-            /*
-            double[] dArr = (ys as double[]);
-            float[] fArr = (ys as float[]);
-            if (dArr != null)
-            {
-                
-                lowestValue = dArr[index1];
-                highestValue = dArr[index1];
-                for (int i = index1; i < index2; i++)
-                {
-                    if (dArr[i] < lowestValue)
-                        lowestValue = dArr[i];
-                    if (dArr[i] > highestValue)
-                        highestValue = dArr[i];
-                }
-            }
-            else if (fArr != null)
-            {
-                lowestValue = fArr[index1];
-                highestValue = fArr[index1];
-                for (int i = index1; i < index2; i++)
-                {
-                    if (fArr[i] < lowestValue)
-                        lowestValue = fArr[i];
-                    if (fArr[i] > highestValue)
-                        highestValue = fArr[i];
-                }
-            }
-            else
-                throw new ArgumentException("Unsuported array type, use double[] or float[] only");  
-            */
-        }
+        }               
 
         public override void Render(Settings settings)
         {
@@ -259,8 +204,8 @@ namespace ScottPlot
             int visiblePointCount = visibleIndex2 - visibleIndex1;
             double pointsPerPixelColumn = visiblePointCount / settings.dataSize.Width;
 
-            PointF firstPoint = settings.GetPixel(xOffset, Convert.ToDouble(ys[0]) + yOffset);
-            PointF lastPoint = settings.GetPixel(samplePeriod * (ys.Length - 1) + xOffset, Convert.ToDouble(ys[ys.Length - 1]) + yOffset);
+            PointF firstPoint = settings.GetPixel(xOffset, ys[0] + yOffset);
+            PointF lastPoint = settings.GetPixel(samplePeriod * (ys.Length - 1) + xOffset, ys[ys.Length - 1] + yOffset);
             double dataWidthPx = lastPoint.X - firstPoint.X;
 
             // use different rendering methods based on how dense the data is on screen

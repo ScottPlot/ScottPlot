@@ -331,8 +331,8 @@ namespace ScottPlot
             return stepPlot;
         }
 
-        public PlottableSignal<T> PlotSignal<T>(
-            T[] ys,
+        public PlottableSignal PlotSignal(
+            double[] ys,
             double sampleRate = 1,
             double xOffset = 0,
             double yOffset = 0,
@@ -340,12 +340,12 @@ namespace ScottPlot
             double lineWidth = 1,
             double markerSize = 5,
             string label = null
-            ) where T: struct, IComparable
+            )
         {
             if (color == null)
                 color = settings.GetNextColor();
 
-            PlottableSignal<T> signal = new PlottableSignal<T>(
+            PlottableSignal signal = new PlottableSignal(
                 ys: ys,
                 sampleRate: sampleRate,
                 xOffset: xOffset,
