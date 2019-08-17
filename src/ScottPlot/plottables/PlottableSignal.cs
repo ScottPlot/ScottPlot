@@ -7,7 +7,7 @@ using System.Drawing;
 
 namespace ScottPlot
 {
-    public class PlottableSignal<T> : Plottable
+    public class PlottableSignal<T> : Plottable where T : struct, IComparable
     {
         public T[] ys;
         public double sampleRate;
