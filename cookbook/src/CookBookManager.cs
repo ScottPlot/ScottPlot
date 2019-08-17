@@ -60,7 +60,7 @@ namespace ScottPlotCookbook
             hashes.Add(recipies.Figure_30a_Signal());
             hashes.Add(recipies.Figure_30b_Signal_With_Parallel_Processing());
             hashes.Add(recipies.Figure_30c_SignalConst());
-            hashes.Add(recipies.Figure_30d_SignalConst_One_Billion_Points()); // WARNING: SLOW!
+            //hashes.Add(recipies.Figure_30d_SignalConst_One_Billion_Points()); // SLOW!
             hashes.Add(recipies.Figure_32_Signal_Styling());
 
             hashes.Add(recipies.Figure_40_Vertical_and_Horizontal_Lines());
