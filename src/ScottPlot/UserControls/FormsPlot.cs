@@ -60,8 +60,9 @@ namespace ScottPlot
             rightClickMenu.ItemClicked += new ToolStripItemClickedEventHandler(RightClickMenuItemClicked);
         }
 
-        private void LaunchMenu()
+        public void LaunchMenu()
         {
+            // override this to use your own custom menu
             plt.GetSettings().mouseIsPanning = false;
             plt.GetSettings().mouseIsZooming = false;
             rightClickMenu.Show(pbPlot, PointToClient(Cursor.Position));
@@ -137,7 +138,7 @@ namespace ScottPlot
 
         private void PbPlot_MouseUp(object sender, MouseEventArgs e)
         {
-            if (!plt.mouseTracker.MouseHasMoved())
+            if ((!plt.mouseTracker.MouseHasMoved()) && (e.Button == MouseButtons.Right))
             {
                 LaunchMenu();
                 return;
