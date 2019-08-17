@@ -361,22 +361,21 @@ namespace ScottPlot
             return signal;
         }
 
-        public PlottableSignalConst PlotSignalConst(
-            double[] ys,
+        public PlottableSignalConst<T> PlotSignalConst<T>(
+            T[] ys,
             double sampleRate = 1,
             double xOffset = 0,
             double yOffset = 0,
             Color? color = null,
             double lineWidth = 1,
             double markerSize = 5,
-            string label = null,
-            bool singlePrecision = false
-            )
+            string label = null
+            ) where T: struct, IComparable
         {
             if (color == null)
                 color = settings.GetNextColor();
 
-            PlottableSignalConst signal = new PlottableSignalConst(
+            PlottableSignalConst<T> signal = new PlottableSignalConst<T>(
                 ys: ys,
                 sampleRate: sampleRate,
                 xOffset: xOffset,
@@ -385,8 +384,7 @@ namespace ScottPlot
                 lineWidth: lineWidth,
                 markerSize: markerSize,
                 label: label,
-                useParallel: settings.useParallel,
-                singlePrecision: singlePrecision
+                useParallel: settings.useParallel
                 );
 
             settings.plottables.Add(signal);
