@@ -85,8 +85,8 @@ namespace ScottPlot
         {
             // this function is for when the graph is zoomed so far out its entire display is a single vertical pixel column
 
-            PointF point1 = settings.GetPixel(xOffset, (float)(object)ys.Min() + yOffset);
-            PointF point2 = settings.GetPixel(xOffset, (float)(object)ys.Max() + yOffset);
+            PointF point1 = settings.GetPixel(xOffset, Convert.ToDouble(ys.Min()) + yOffset);
+            PointF point2 = settings.GetPixel(xOffset, Convert.ToDouble(ys.Max()) + yOffset);
             settings.gfxData.DrawLine(pen, point1, point2);
         }
 
