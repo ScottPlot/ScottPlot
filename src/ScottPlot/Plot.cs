@@ -136,14 +136,11 @@ namespace ScottPlot
             if (!settings.tighteningOccurred)
                 TightenLayout();
 
-            if (settings.legendLocation != legendLocation.none) // Update legendFrameSize before updateAntiAliasing
-            {
-                settings.legendFrame = LegendTools.GetLegendFrame(settings, settings.gfxLegend);
-                if (settings.legendFrame.Size != settings.bmpLegend.Size)
-                {
-                    InitializeLegend(settings.legendFrame.Size); // allocate new bmp for legend
-                }
-            }
+            settings.legendFrame = LegendTools.GetLegendFrame(settings, settings.gfxLegend);
+
+            // TODO: this only re-renders the legend if the size changes. What if the colors change?
+            if (settings.legendFrame.Size != settings.bmpLegend.Size)
+                InitializeLegend(settings.legendFrame.Size);
 
             UpdateAntiAliasingSettings();
 
@@ -161,9 +158,9 @@ namespace ScottPlot
                 Renderer.DataBackground(settings);
                 Renderer.DataGrid(settings);
                 Renderer.DataPlottables(settings);               
-                Renderer.DataLegend(settings);
-                Renderer.DataPlaceOntoFigure(settings);
-                Renderer.LegendPlaceOntoFigure(settings);
+                Renderer.CreateLegendBitmap(settings);
+                Renderer.PlaceDataOntoFigure(settings);
+                Renderer.PlaceLegendOntoFigure(settings);
             }
             settings.BenchmarkEnd();
             Renderer.Benchmark(settings);

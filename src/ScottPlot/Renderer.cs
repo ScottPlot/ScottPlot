@@ -65,12 +65,12 @@ namespace ScottPlot
             }
         }
 
-        public static void DataLegend(Settings settings)
+        public static void CreateLegendBitmap(Settings settings)
         {
             LegendTools.DrawLegend(settings);
         }
 
-        public static void LegendPlaceOntoFigure(Settings settings)
+        public static void PlaceLegendOntoFigure(Settings settings)
         {
             if (settings.gfxFigure == null || settings.gfxLegend == null)
                 return;            
@@ -82,7 +82,7 @@ namespace ScottPlot
             }
         }
 
-        public static void DataPlaceOntoFigure(Settings settings)
+        public static void PlaceDataOntoFigure(Settings settings)
         {
             if (settings.gfxFigure == null || settings.bmpData == null)
                 return;
