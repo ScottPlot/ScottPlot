@@ -56,9 +56,11 @@ namespace ScottPlot
         private void InitializeBitmaps()
         {
             settings.bmpFigure = null;
-            settings.gfxFigure = null;
+            settings.gfxFigure = null;            
             settings.bmpData = null;
             settings.gfxData = null;
+            settings.gfxLegend = null;
+            settings.bmpLegend = null;
 
             if (settings.figureSize.Width > 0 && settings.figureSize.Height > 0)
             {
@@ -70,6 +72,11 @@ namespace ScottPlot
             {
                 settings.bmpData = new Bitmap(settings.dataSize.Width, settings.dataSize.Height, pixelFormat);
                 settings.gfxData = Graphics.FromImage(settings.bmpData);
+            }
+            if (settings.dataSize.Width > 0 && settings.dataSize.Height > 0)
+            {
+                settings.bmpLegend = new Bitmap(settings.dataSize.Width, settings.dataSize.Height, pixelFormat);
+                settings.gfxLegend = Graphics.FromImage(settings.bmpLegend);
             }
 
         }
@@ -104,6 +111,19 @@ namespace ScottPlot
                     settings.gfxData.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
                 }
             }
+            if (settings.gfxLegend != null)
+            {
+                if (settings.antiAliasData)
+                {
+                    settings.gfxLegend.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                    settings.gfxLegend.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
+                }
+                else
+                {
+                    settings.gfxLegend.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
+                    settings.gfxLegend.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
+                }
+            }
         }
 
         private void RenderBitmap()
@@ -130,7 +150,7 @@ namespace ScottPlot
                 Renderer.DataBackground(settings);
                 Renderer.DataGrid(settings);
                 Renderer.DataPlottables(settings);
-                Renderer.DataLegend(settings);
+                Renderer.DataLegend(settings, settings.gfxLegend);
                 Renderer.DataPlaceOntoFigure(settings);
             }
             settings.BenchmarkEnd();
