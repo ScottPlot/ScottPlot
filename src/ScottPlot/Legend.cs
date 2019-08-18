@@ -34,9 +34,6 @@ namespace ScottPlot
 
         public static Rectangle GetLegendFrame(Settings settings, Graphics gfxLegend)
         {
-            if (settings.legendLocation == legendLocation.none)
-                return new Rectangle(0, 0, 1, 1);
-
             // note which plottables are to be included in the legend
             List<int> plottableIndexesNeedingLegend = new List<int>();
             for (int i = 0; i < settings.plottables.Count(); i++)
@@ -62,11 +59,9 @@ namespace ScottPlot
                                 new Size(frameSize.Width + Math.Abs(frameLocation.X - shadowLocation.X) + 1,
                                 frameSize.Height + Math.Abs(frameLocation.Y - shadowLocation.Y) + 1));
         }
+
         public static void DrawLegend(Settings settings)
         {
-            if (settings.legendLocation == legendLocation.none)
-                return;
-
             // note which plottables are to be included in the legend
             List<int> plottableIndexesNeedingLegend = new List<int>();
             for (int i = 0; i < settings.plottables.Count(); i++)
@@ -138,12 +133,15 @@ namespace ScottPlot
             Point textLocation = new Point();
             Point shadowLocation = new Point();
 
+            // calculate locations even if it's not going to be displayed
+            legendLocation loc = settings.legendLocation;
+            if (loc == legendLocation.none)
+                loc = legendLocation.lowerRight;
+
             int frameWidth = frameSize.Width;
             int frameHeight = frameSize.Height;
-            switch (settings.legendLocation)
+            switch (loc)
             {
-                case (legendLocation.none):
-                    return null;
                 case (legendLocation.lowerRight):
                     frameLocation.X = (int)(settings.dataSize.Width - frameWidth - padding);
                     frameLocation.Y = (int)(settings.dataSize.Height - frameHeight - padding);
