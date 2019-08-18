@@ -138,6 +138,9 @@ namespace ScottPlot
 
         public double[] MinorFromMajor(double[] majorTicks, double minorTicksPerMajorTick, double lowerLimit, double upperLimit)
         {
+            if ((majorTicks == null) || (majorTicks.Length < 2))
+                return null;
+
             double majorTickSpacing = majorTicks[1] - majorTicks[0];
             double minorTickSpacing = majorTickSpacing / minorTicksPerMajorTick;
             double lowerBound = majorTicks.First() - majorTickSpacing;

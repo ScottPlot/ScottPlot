@@ -634,10 +634,12 @@ namespace ScottPlot
         public void AxisAuto(
             double horizontalMargin = .05,
             double verticalMargin = .1,
-            int tightenPadding = 5
+            int tightenPadding = 5,
+            bool xExpandOnly = false,
+            bool yExpandOnly = false
             )
         {
-            settings.AxisAuto(horizontalMargin, verticalMargin);
+            settings.AxisAuto(horizontalMargin, verticalMargin, xExpandOnly, yExpandOnly);
             TightenLayout(tightenPadding);
         }
 

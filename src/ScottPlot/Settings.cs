@@ -293,12 +293,19 @@ namespace ScottPlot
             AxisZoom(Math.Pow(10, dXFrac), Math.Pow(10, dYFrac));
         }
 
-        public void AxisAuto(double horizontalMargin = .1, double verticalMargin = .1)
+        public void AxisAuto(double horizontalMargin = .1, double verticalMargin = .1, bool xExpandOnly = false, bool yExpandOnly = false)
         {
             axis = null;
 
             List<Plottable> plottables2d = new List<Plottable>();
             List<PlottableAxLine> axisLines = new List<PlottableAxLine>();
+
+            double[] original = null;
+            if (axis != null)
+            {
+                original = new double[4];
+                Array.Copy(axis, 0, original, 0, 4);
+            }
 
             foreach (Plottable plottable in plottables)
             {
@@ -367,6 +374,18 @@ namespace ScottPlot
                     axis[2] = axis[2] - 1;
                     axis[3] = axis[3] + 1;
                 }
+            }
+
+            if (xExpandOnly && original!=null)
+            {
+                axis[0] = Math.Min(axis[0], original[0]);
+                axis[1] = Math.Max(axis[1], original[1]);
+            }
+
+            if (yExpandOnly && original != null)
+            {
+                axis[2] = Math.Min(axis[2], original[2]);
+                axis[3] = Math.Max(axis[3], original[3]);
             }
 
             axisHasBeenIntentionallySet = true;
@@ -461,7 +480,7 @@ namespace ScottPlot
                     indicesToDelete.Add(i);
                 else if (plottables[i] is PlottableScatter && scatters)
                     indicesToDelete.Add(i);
-                else if (plottables[i] is PlottableSignal && signals)                
+                else if (plottables[i] is PlottableSignal && signals)
                     indicesToDelete.Add(i);
                 else if (plottables[i].GetType().IsGenericType && plottables[i].GetType().GetGenericTypeDefinition() == typeof(PlottableSignalConst<>) && signals)
                     indicesToDelete.Add(i);
