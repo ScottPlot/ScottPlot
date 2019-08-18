@@ -67,7 +67,7 @@ namespace ScottPlot
 
         public static void DataLegend(Settings settings)
         {
-            LegendTools.DrawLegend(settings);
+            LegendTools.DrawLegend(settings, settings.gfxData);
         }
 
         public static void DataPlaceOntoFigure(Settings settings)
