@@ -40,6 +40,8 @@
             this.cbPenStyle = new System.Windows.Forms.ComboBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.nupFontSize = new System.Windows.Forms.NumericUpDown();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.pbLegend = new System.Windows.Forms.PictureBox();
             this.formsPlot1 = new ScottPlot.FormsPlot();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -49,6 +51,8 @@
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nupFontSize)).BeginInit();
+            this.groupBox7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLegend)).BeginInit();
             this.SuspendLayout();
             // 
             // cbLocations
@@ -197,6 +201,28 @@
             0});
             this.nupFontSize.ValueChanged += new System.EventHandler(this.Cboxes_SelectedIndexChanged);
             // 
+            // groupBox7
+            // 
+            this.groupBox7.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox7.Controls.Add(this.pbLegend);
+            this.groupBox7.Location = new System.Drawing.Point(599, 65);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(258, 414);
+            this.groupBox7.TabIndex = 4;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "External Legend";
+            // 
+            // pbLegend
+            // 
+            this.pbLegend.BackColor = System.Drawing.SystemColors.Control;
+            this.pbLegend.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.pbLegend.Location = new System.Drawing.Point(6, 19);
+            this.pbLegend.Name = "pbLegend";
+            this.pbLegend.Size = new System.Drawing.Size(246, 389);
+            this.pbLegend.TabIndex = 0;
+            this.pbLegend.TabStop = false;
+            // 
             // formsPlot1
             // 
             this.formsPlot1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -204,14 +230,15 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.formsPlot1.Location = new System.Drawing.Point(12, 65);
             this.formsPlot1.Name = "formsPlot1";
-            this.formsPlot1.Size = new System.Drawing.Size(737, 354);
+            this.formsPlot1.Size = new System.Drawing.Size(581, 414);
             this.formsPlot1.TabIndex = 2;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(761, 431);
+            this.ClientSize = new System.Drawing.Size(875, 491);
+            this.Controls.Add(this.groupBox7);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.groupBox5);
@@ -230,6 +257,8 @@
             this.groupBox5.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.nupFontSize)).EndInit();
+            this.groupBox7.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pbLegend)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -249,6 +278,8 @@
         private System.Windows.Forms.ComboBox cbPenStyle;
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.NumericUpDown nupFontSize;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.PictureBox pbLegend;
     }
 }
 

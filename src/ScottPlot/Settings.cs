@@ -19,8 +19,11 @@ namespace ScottPlot
         // hold copies of graphics objects to make them easy to plot to
         public Graphics gfxFigure;
         public Graphics gfxData;
+        public Graphics gfxLegend;
         public Bitmap bmpFigure;
         public Bitmap bmpData;
+        public Bitmap bmpLegend;
+
 
         // axis (replace with class)
         public double[] axis = new double[] { -10, 10, -10, 10 }; // X1, X2, Y1, Y2
@@ -83,6 +86,7 @@ namespace ScottPlot
         public Color legendFrameColor = Color.Black;
         public legendLocation legendLocation = legendLocation.none;
         public shadowDirection legendShadowDirection = shadowDirection.none;
+        public Rectangle legendFrame = new Rectangle(0, 0, 1, 1);
 
         // benchmarking
         public Font benchmarkFont = new Font("Consolas", 8);
@@ -104,6 +108,7 @@ namespace ScottPlot
         public bool useTwentyColors = false;
         public bool antiAliasData = true;
         public bool antiAliasFigure = true;
+        public bool antiAliasLegend = true;
 
         // plot colors (https://github.com/vega/vega/wiki/Scales#scale-range-literals)
         string[] plottableColors10 = new string[] { "#1f77b4", "#ff7f0e", "#2ca02c", "#d62728",
