@@ -70,13 +70,19 @@ namespace ScottPlot
             LegendTools.DrawLegend(settings, gfxLegend);
         }
 
-        public static void DataPlaceOntoFigure(Settings settings)
+        public static void DataPlaceOntoFigure(Settings settings, Rectangle legendFrame)
         {
             if (settings.gfxFigure == null || settings.bmpData == null)
                 return;
 
             settings.gfxFigure.DrawImage(settings.bmpData, settings.dataOrigin);
-            settings.gfxFigure.DrawImage(settings.bmpLegend, settings.dataOrigin);
+
+            if (settings.legendLocation != ScottPlot.legendLocation.none)
+            {
+                Point legendLocation = new Point(settings.dataOrigin.X + legendFrame.Location.X,
+                settings.dataOrigin.Y + legendFrame.Location.Y);
+                settings.gfxFigure.DrawImage(settings.bmpLegend, legendLocation);
+            }
         }
 
         public static void FigureLabels(Settings settings, bool drawDebugRectangles = false)

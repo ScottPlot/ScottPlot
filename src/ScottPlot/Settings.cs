@@ -86,6 +86,7 @@ namespace ScottPlot
         public Color legendFrameColor = Color.Black;
         public legendLocation legendLocation = legendLocation.none;
         public shadowDirection legendShadowDirection = shadowDirection.none;
+        public Rectangle legendFrame = new Rectangle(0, 0, 1, 1);
 
         // benchmarking
         public Font benchmarkFont = new Font("Consolas", 8);
