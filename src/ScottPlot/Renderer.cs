@@ -201,7 +201,7 @@ namespace ScottPlot
                 settings.gfxFigure.DrawString(text, settings.tickFont, brush, xPx - settings.tickSize, yPx, settings.sfEast);
             }
 
-            if (settings.displayTicksYminor)
+            if (settings.displayTicksYminor && settings.tickCollectionY.tickPositionsMinor != null)
             {
                 foreach (var value in settings.tickCollectionY.tickPositionsMinor)
                 {
@@ -236,7 +236,7 @@ namespace ScottPlot
                 settings.gfxFigure.DrawString(text, settings.tickFont, brush, xPx, yPx + settings.tickSize, settings.sfNorth);
             }
 
-            if (settings.displayTicksXminor)
+            if (settings.displayTicksXminor && settings.tickCollectionX.tickPositionsMinor != null)
             {
                 foreach (var value in settings.tickCollectionX.tickPositionsMinor)
                 {
