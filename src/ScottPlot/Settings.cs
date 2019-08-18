@@ -295,10 +295,6 @@ namespace ScottPlot
 
         public void AxisAuto(double horizontalMargin = .1, double verticalMargin = .1, bool xExpandOnly = false, bool yExpandOnly = false)
         {
-            axis = null;
-
-            List<Plottable> plottables2d = new List<Plottable>();
-            List<PlottableAxLine> axisLines = new List<PlottableAxLine>();
 
             double[] original = null;
             if (axis != null)
@@ -306,6 +302,12 @@ namespace ScottPlot
                 original = new double[4];
                 Array.Copy(axis, 0, original, 0, 4);
             }
+
+            axis = null;
+
+            List<Plottable> plottables2d = new List<Plottable>();
+            List<PlottableAxLine> axisLines = new List<PlottableAxLine>();
+
 
             foreach (Plottable plottable in plottables)
             {
@@ -376,21 +378,23 @@ namespace ScottPlot
                 }
             }
 
-            if (xExpandOnly && original!=null)
+            axisHasBeenIntentionallySet = true;
+            AxisUpdate();
+            AxisZoom(1 - horizontalMargin, 1 - verticalMargin);
+
+            if (xExpandOnly && original != null)
             {
                 axis[0] = Math.Min(axis[0], original[0]);
                 axis[1] = Math.Max(axis[1], original[1]);
+                AxisUpdate();
             }
 
             if (yExpandOnly && original != null)
             {
                 axis[2] = Math.Min(axis[2], original[2]);
                 axis[3] = Math.Max(axis[3], original[3]);
+                AxisUpdate();
             }
-
-            axisHasBeenIntentionallySet = true;
-            AxisUpdate();
-            AxisZoom(1 - horizontalMargin, 1 - verticalMargin);
         }
 
         public void Validate()
