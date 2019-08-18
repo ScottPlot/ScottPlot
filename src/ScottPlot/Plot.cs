@@ -801,8 +801,10 @@ namespace ScottPlot
         #region Styling and Misc Graph Settings
 
         public void Ticks(
-            bool? displayTicksX = true,
-            bool? displayTicksY = true,
+            bool? displayTicksX = null,
+            bool? displayTicksY = null,
+            bool? displayTicksXminor = null,
+            bool? displayTicksYminor = null,
             Color? color = null,
             bool? useMultiplierNotation = null,
             bool? useOffsetNotation = null,
@@ -821,6 +823,10 @@ namespace ScottPlot
                 settings.useOffsetNotation = (bool)useOffsetNotation;
             if (useExponentialNotation != null)
                 settings.useExponentialNotation = (bool)useExponentialNotation;
+            if (displayTicksXminor != null)
+                settings.displayTicksXminor = (bool)displayTicksXminor;
+            if (displayTicksYminor != null)
+                settings.displayTicksYminor = (bool)displayTicksYminor;
 
             settings.bmpFigureRenderRequired = true;
         }

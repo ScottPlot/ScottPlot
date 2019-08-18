@@ -24,7 +24,6 @@ namespace ScottPlot
         public Bitmap bmpData;
         public Bitmap bmpLegend;
 
-
         // axis (replace with class)
         public double[] axis = new double[] { -10, 10, -10, 10 }; // X1, X2, Y1, Y2
         public double xAxisSpan;
@@ -53,7 +52,9 @@ namespace ScottPlot
         public int tickSize = 5;
         public Color tickColor = Color.Black;
         public bool displayTicksX = true;
+        public bool displayTicksXminor = true;
         public bool displayTicksY = true;
+        public bool displayTicksYminor = true;
         public string longestPossibleTickLabel = "-8888";
         public bool useMultiplierNotation = true;
         public bool useOffsetNotation = true;

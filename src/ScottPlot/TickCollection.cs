@@ -13,7 +13,8 @@ namespace ScottPlot
         // to inspect the tick font and ensure tick labels will not overlap. 
         // It also respects manually defined tick spacing settings set via plt.Grid().
 
-        public double[] tickPositions;
+        public double[] tickPositionsMajor;
+        public double[] tickPositionsMinor;
         public string[] tickLabels;
         public string cornerLabel;
 
@@ -48,8 +49,11 @@ namespace ScottPlot
                 if (positions.Count > 999)
                     break;
             }
-            tickPositions = positions.ToArray();
-            GetPrettyTickLabels(tickPositions, out tickLabels, out cornerLabel,
+
+            tickPositionsMajor = positions.ToArray();
+            tickPositionsMinor = MinorFromMajor(tickPositionsMajor, 5, low, high);
+
+            GetPrettyTickLabels(tickPositionsMajor, out tickLabels, out cornerLabel,
                 settings.useMultiplierNotation, settings.useOffsetNotation, settings.useExponentialNotation);
         }
 
@@ -132,5 +136,19 @@ namespace ScottPlot
             }
         }
 
+        public double[] MinorFromMajor(double[] majorTicks, double minorTicksPerMajorTick, double lowerLimit, double upperLimit)
+        {
+            double majorTickSpacing = majorTicks[1] - majorTicks[0];
+            double minorTickSpacing = majorTickSpacing / minorTicksPerMajorTick;
+            double lowerBound = majorTicks.First() - majorTickSpacing;
+            double upperBound = majorTicks.Last() + majorTickSpacing;
+
+            List<double> minorTicks = new List<double>();
+            for (double pos = lowerBound; pos < upperBound; pos += minorTickSpacing)
+                if ((pos > lowerLimit) && (pos < upperLimit))
+                    minorTicks.Add(pos);
+
+            return minorTicks.ToArray();
+        }
     }
 }
