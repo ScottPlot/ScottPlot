@@ -794,6 +794,11 @@ namespace ScottPlot
             }
         }
 
+        public Bitmap GetLegendBitmap()
+        {
+            return settings.bmpLegend;
+        }
+
         #endregion
 
         #region Styling and Misc Graph Settings
