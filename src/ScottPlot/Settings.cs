@@ -19,8 +19,11 @@ namespace ScottPlot
         // hold copies of graphics objects to make them easy to plot to
         public Graphics gfxFigure;
         public Graphics gfxData;
+        public Graphics gfxLegend;
         public Bitmap bmpFigure;
         public Bitmap bmpData;
+        public Bitmap bmpLegend;
+
 
         // axis (replace with class)
         public double[] axis = new double[] { -10, 10, -10, 10 }; // X1, X2, Y1, Y2

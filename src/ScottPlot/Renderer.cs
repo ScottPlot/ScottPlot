@@ -65,9 +65,9 @@ namespace ScottPlot
             }
         }
 
-        public static void DataLegend(Settings settings)
+        public static void DataLegend(Settings settings, Graphics gfxLegend)
         {
-            LegendTools.DrawLegend(settings, settings.gfxData);
+            LegendTools.DrawLegend(settings, gfxLegend);
         }
 
         public static void DataPlaceOntoFigure(Settings settings)
@@ -76,6 +76,7 @@ namespace ScottPlot
                 return;
 
             settings.gfxFigure.DrawImage(settings.bmpData, settings.dataOrigin);
+            settings.gfxFigure.DrawImage(settings.bmpLegend, settings.dataOrigin);
         }
 
         public static void FigureLabels(Settings settings, bool drawDebugRectangles = false)
