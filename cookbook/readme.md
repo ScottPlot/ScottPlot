@@ -459,22 +459,6 @@ plt.SaveFig(fileName);
 
 ![](./images/30c_SignalConst.png)
 
-##  SignalConst One Billion Points
-
-```cs
-// SignalConst() accepts generic data types (here a byte array with a billion points)
-byte[] oneBillionPoints = ScottPlot.DataGen.SinSweepByte(1_000_000_000, 8);
-
-var plt = new ScottPlot.Plot(600, 400);
-plt.Title("Display One Billion points with PlotSignalConst()");
-plt.Benchmark();
-plt.Parallel(false);
-plt.PlotSignalConst(oneBillionPoints, sampleRate: 20_000_000);
-plt.SaveFig(fileName);
-```
-
-![](./images/30d_SignalConst_One_Billion_Points.png)
-
 ## Signal Styling
 
 ```cs
