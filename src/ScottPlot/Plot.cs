@@ -53,6 +53,12 @@ namespace ScottPlot
             InitializeBitmaps();
         }
 
+        private void InitializeLegend(Size size)
+        {
+            settings.bmpLegend = new Bitmap(size.Width, size.Height, pixelFormat);
+            settings.gfxLegend = Graphics.FromImage(settings.bmpLegend);
+        }
+
         private void InitializeBitmaps()
         {
             settings.bmpFigure = null;
@@ -73,12 +79,8 @@ namespace ScottPlot
                 settings.bmpData = new Bitmap(settings.dataSize.Width, settings.dataSize.Height, pixelFormat);
                 settings.gfxData = Graphics.FromImage(settings.bmpData);
             }
-            if (settings.dataSize.Width > 0 && settings.dataSize.Height > 0)
-            {
-                settings.bmpLegend = new Bitmap(settings.dataSize.Width, settings.dataSize.Height, pixelFormat);
-                settings.gfxLegend = Graphics.FromImage(settings.bmpLegend);
-            }
 
+            InitializeLegend(new Size(1, 1));
         }
 
         private void UpdateAntiAliasingSettings()
@@ -134,6 +136,15 @@ namespace ScottPlot
             if (!settings.tighteningOccurred)
                 TightenLayout();
 
+            if (settings.legendLocation != legendLocation.none)
+            {
+                settings.legendFrame = LegendTools.GetLegendFrame(settings, settings.gfxLegend);
+                if (settings.legendFrame.Size != settings.bmpLegend.Size)
+                {
+                    InitializeLegend(settings.legendFrame.Size);
+                }
+            }
+
             UpdateAntiAliasingSettings();
 
             settings.BenchmarkStart();
@@ -149,9 +160,9 @@ namespace ScottPlot
             {
                 Renderer.DataBackground(settings);
                 Renderer.DataGrid(settings);
-                Renderer.DataPlottables(settings);
+                Renderer.DataPlottables(settings);               
                 Renderer.DataLegend(settings, settings.gfxLegend);
-                Renderer.DataPlaceOntoFigure(settings);
+                Renderer.DataPlaceOntoFigure(settings, settings.legendFrame);
             }
             settings.BenchmarkEnd();
             Renderer.Benchmark(settings);

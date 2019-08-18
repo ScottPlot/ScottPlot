@@ -31,6 +31,37 @@ namespace ScottPlot
 
     public class LegendTools
     {
+
+        public static Rectangle GetLegendFrame(Settings settings, Graphics gfxLegend)
+        {
+            if (settings.legendLocation == legendLocation.none)
+                return new Rectangle(0, 0, 1, 1);
+
+            // note which plottables are to be included in the legend
+            List<int> plottableIndexesNeedingLegend = new List<int>();
+            for (int i = 0; i < settings.plottables.Count(); i++)
+                if (settings.plottables[i].label != null)
+                    plottableIndexesNeedingLegend.Add(i);
+            plottableIndexesNeedingLegend.Reverse();
+
+            // figure out where on the graph things should be
+            int padding = 3;
+            int stubWidth = 40 * (int)settings.legendFont.Size / 12;
+            SizeF maxLabelSize = MaxLegendLabelSize(settings, gfxLegend);
+            float frameWidth = padding * 2 + maxLabelSize.Width + padding + stubWidth;
+            float frameHeight = padding * 2 + maxLabelSize.Height * plottableIndexesNeedingLegend.Count();
+            Size frameSize = new Size((int)frameWidth, (int)frameHeight);
+            Point[] frameAndTextLocations = GetLocations(settings, padding * 2, frameSize, maxLabelSize.Width);
+            Point frameLocation = frameAndTextLocations[0];
+            Point textLocation = frameAndTextLocations[1];
+            Point shadowLocation = frameAndTextLocations[2];
+            Rectangle frameRect = new Rectangle(frameLocation, frameSize);
+            Rectangle shadowRect = new Rectangle(shadowLocation, frameSize);
+            Point fullFrameLocation = new Point(Math.Min(frameLocation.X, shadowLocation.X), Math.Min(frameLocation.Y, shadowLocation.Y));
+            return new Rectangle(fullFrameLocation,
+                                new Size(frameSize.Width + Math.Abs(frameLocation.X - shadowLocation.X) + 1,
+                                frameSize.Height + Math.Abs(frameLocation.Y - shadowLocation.Y) + 1));
+        }
         public static void DrawLegend(Settings settings, Graphics gfxLegend)
         {
             if (settings.legendLocation == legendLocation.none)
@@ -54,8 +85,16 @@ namespace ScottPlot
             Point frameLocation = frameAndTextLocations[0];
             Point textLocation = frameAndTextLocations[1];
             Point shadowLocation = frameAndTextLocations[2];
-            Rectangle frameRect = new Rectangle(frameLocation, frameSize);
-            Rectangle shadowRect = new Rectangle(shadowLocation, frameSize);
+
+            // move legend to 0,0 position
+            Point frameZeroOffset = new Point(frameLocation.X > shadowLocation.X ? frameLocation.X - shadowLocation.X : 0,
+                                              frameLocation.Y > shadowLocation.Y ? frameLocation.Y - shadowLocation.Y : 0);
+            textLocation.X -= frameLocation.X - frameZeroOffset.X;
+            textLocation.Y -= frameLocation.Y - frameZeroOffset.Y;
+            Rectangle frameRect = new Rectangle(frameZeroOffset, frameSize);
+            Rectangle shadowRect = new Rectangle(new Point(shadowLocation.X > frameLocation.X ? shadowLocation.X - frameLocation.X : 0,
+                                                           shadowLocation.Y > frameLocation.Y ? shadowLocation.Y - frameLocation.Y : 0)
+                    , frameSize);
 
             // draw the legend background and shadow
             if (settings.legendShadowDirection != shadowDirection.none)
