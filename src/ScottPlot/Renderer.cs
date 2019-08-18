@@ -65,24 +65,29 @@ namespace ScottPlot
             }
         }
 
-        public static void DataLegend(Settings settings, Graphics gfxLegend)
+        public static void DataLegend(Settings settings)
         {
-            LegendTools.DrawLegend(settings, gfxLegend);
+            LegendTools.DrawLegend(settings);
         }
 
-        public static void DataPlaceOntoFigure(Settings settings, Rectangle legendFrame)
+        public static void LegendPlaceOntoFigure(Settings settings)
+        {
+            if (settings.gfxFigure == null || settings.gfxLegend == null)
+                return;            
+            if (settings.legendLocation != ScottPlot.legendLocation.none)
+            {
+                Point legendLocation = new Point(settings.dataOrigin.X + settings.legendFrame.Location.X,
+                settings.dataOrigin.Y + settings.legendFrame.Location.Y);
+                settings.gfxFigure.DrawImage(settings.bmpLegend, legendLocation);
+            }
+        }
+
+        public static void DataPlaceOntoFigure(Settings settings)
         {
             if (settings.gfxFigure == null || settings.bmpData == null)
                 return;
 
             settings.gfxFigure.DrawImage(settings.bmpData, settings.dataOrigin);
-
-            if (settings.legendLocation != ScottPlot.legendLocation.none)
-            {
-                Point legendLocation = new Point(settings.dataOrigin.X + legendFrame.Location.X,
-                settings.dataOrigin.Y + legendFrame.Location.Y);
-                settings.gfxFigure.DrawImage(settings.bmpLegend, legendLocation);
-            }
         }
 
         public static void FigureLabels(Settings settings, bool drawDebugRectangles = false)
