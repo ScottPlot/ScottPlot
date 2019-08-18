@@ -79,6 +79,8 @@ namespace Legend
 
             formsPlot1.plt.AxisAuto();
             formsPlot1.Render();
+
+            pbLegend.BackgroundImage = formsPlot1.plt.GetLegendBitmap();
         }
 
         private void Cboxes_SelectedIndexChanged(object sender, EventArgs e)
