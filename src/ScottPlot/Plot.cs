@@ -136,12 +136,12 @@ namespace ScottPlot
             if (!settings.tighteningOccurred)
                 TightenLayout();
 
-            if (settings.legendLocation != legendLocation.none)
+            if (settings.legendLocation != legendLocation.none) // Update legendFrameSize before updateAntiAliasing
             {
                 settings.legendFrame = LegendTools.GetLegendFrame(settings, settings.gfxLegend);
                 if (settings.legendFrame.Size != settings.bmpLegend.Size)
                 {
-                    InitializeLegend(settings.legendFrame.Size);
+                    InitializeLegend(settings.legendFrame.Size); // allocate new bmp for legend
                 }
             }
 
@@ -161,8 +161,9 @@ namespace ScottPlot
                 Renderer.DataBackground(settings);
                 Renderer.DataGrid(settings);
                 Renderer.DataPlottables(settings);               
-                Renderer.DataLegend(settings, settings.gfxLegend);
-                Renderer.DataPlaceOntoFigure(settings, settings.legendFrame);
+                Renderer.DataLegend(settings);
+                Renderer.DataPlaceOntoFigure(settings);
+                Renderer.LegendPlaceOntoFigure(settings);
             }
             settings.BenchmarkEnd();
             Renderer.Benchmark(settings);
