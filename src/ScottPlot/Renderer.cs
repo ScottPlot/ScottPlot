@@ -65,12 +65,24 @@ namespace ScottPlot
             }
         }
 
-        public static void DataLegend(Settings settings)
+        public static void CreateLegendBitmap(Settings settings)
         {
             LegendTools.DrawLegend(settings);
         }
 
-        public static void DataPlaceOntoFigure(Settings settings)
+        public static void PlaceLegendOntoFigure(Settings settings)
+        {
+            if (settings.gfxFigure == null || settings.gfxLegend == null)
+                return;            
+            if (settings.legendLocation != ScottPlot.legendLocation.none)
+            {
+                Point legendLocation = new Point(settings.dataOrigin.X + settings.legendFrame.Location.X,
+                settings.dataOrigin.Y + settings.legendFrame.Location.Y);
+                settings.gfxFigure.DrawImage(settings.bmpLegend, legendLocation);
+            }
+        }
+
+        public static void PlaceDataOntoFigure(Settings settings)
         {
             if (settings.gfxFigure == null || settings.bmpData == null)
                 return;

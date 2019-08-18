@@ -53,12 +53,20 @@ namespace ScottPlot
             InitializeBitmaps();
         }
 
+        private void InitializeLegend(Size size)
+        {
+            settings.bmpLegend = new Bitmap(size.Width, size.Height, pixelFormat);
+            settings.gfxLegend = Graphics.FromImage(settings.bmpLegend);
+        }
+
         private void InitializeBitmaps()
         {
             settings.bmpFigure = null;
-            settings.gfxFigure = null;
+            settings.gfxFigure = null;            
             settings.bmpData = null;
             settings.gfxData = null;
+            settings.gfxLegend = null;
+            settings.bmpLegend = null;
 
             if (settings.figureSize.Width > 0 && settings.figureSize.Height > 0)
             {
@@ -72,6 +80,7 @@ namespace ScottPlot
                 settings.gfxData = Graphics.FromImage(settings.bmpData);
             }
 
+            InitializeLegend(new Size(1, 1));
         }
 
         private void UpdateAntiAliasingSettings()
@@ -104,6 +113,19 @@ namespace ScottPlot
                     settings.gfxData.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
                 }
             }
+            if (settings.gfxLegend != null)
+            {
+                if (settings.antiAliasLegend)
+                {
+                    settings.gfxLegend.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                    settings.gfxLegend.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
+                }
+                else
+                {
+                    settings.gfxLegend.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
+                    settings.gfxLegend.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
+                }
+            }
         }
 
         private void RenderBitmap()
@@ -113,6 +135,12 @@ namespace ScottPlot
 
             if (!settings.tighteningOccurred)
                 TightenLayout();
+
+            settings.legendFrame = LegendTools.GetLegendFrame(settings, settings.gfxLegend);
+
+            // TODO: this only re-renders the legend if the size changes. What if the colors change?
+            if (settings.legendFrame.Size != settings.bmpLegend.Size)
+                InitializeLegend(settings.legendFrame.Size);
 
             UpdateAntiAliasingSettings();
 
@@ -129,9 +157,10 @@ namespace ScottPlot
             {
                 Renderer.DataBackground(settings);
                 Renderer.DataGrid(settings);
-                Renderer.DataPlottables(settings);
-                Renderer.DataLegend(settings);
-                Renderer.DataPlaceOntoFigure(settings);
+                Renderer.DataPlottables(settings);               
+                Renderer.CreateLegendBitmap(settings);
+                Renderer.PlaceDataOntoFigure(settings);
+                Renderer.PlaceLegendOntoFigure(settings);
             }
             settings.BenchmarkEnd();
             Renderer.Benchmark(settings);
@@ -762,6 +791,11 @@ namespace ScottPlot
             }
         }
 
+        public Bitmap GetLegendBitmap()
+        {
+            return settings.bmpLegend;
+        }
+
         #endregion
 
         #region Styling and Misc Graph Settings
@@ -839,10 +873,11 @@ namespace ScottPlot
                 settings.displayBenchmark = show;
         }
 
-        public void AntiAlias(bool figure = true, bool data = false)
+        public void AntiAlias(bool figure = true, bool data = false, bool legend = false)
         {
             settings.antiAliasFigure = figure;
             settings.antiAliasData = data;
+            settings.antiAliasLegend = legend;
             settings.bmpFigureRenderRequired = true;
         }
 
