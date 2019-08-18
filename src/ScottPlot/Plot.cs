@@ -31,7 +31,7 @@ namespace ScottPlot
         public override string ToString()
         {
             return string.Format($"ScottPlot ({0:n0} x {1:n0}) with {2:n0} objects ({3:n0} points)",
-                settings.figureSize.Width, settings.figureSize.Height, 
+                settings.figureSize.Width, settings.figureSize.Height,
                 GetPlottables().Count, GetTotalPoints());
         }
 
@@ -62,7 +62,7 @@ namespace ScottPlot
         private void InitializeBitmaps()
         {
             settings.bmpFigure = null;
-            settings.gfxFigure = null;            
+            settings.gfxFigure = null;
             settings.bmpData = null;
             settings.gfxData = null;
             settings.gfxLegend = null;
@@ -157,7 +157,7 @@ namespace ScottPlot
             {
                 Renderer.DataBackground(settings);
                 Renderer.DataGrid(settings);
-                Renderer.DataPlottables(settings);               
+                Renderer.DataPlottables(settings);
                 Renderer.CreateLegendBitmap(settings);
                 Renderer.PlaceDataOntoFigure(settings);
                 Renderer.PlaceLegendOntoFigure(settings);
