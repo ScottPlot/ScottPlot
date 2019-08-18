@@ -113,7 +113,7 @@ namespace ScottPlot
             }
             if (settings.gfxLegend != null)
             {
-                if (settings.antiAliasData)
+                if (settings.antiAliasLegend)
                 {
                     settings.gfxLegend.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                     settings.gfxLegend.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
@@ -859,10 +859,11 @@ namespace ScottPlot
                 settings.displayBenchmark = show;
         }
 
-        public void AntiAlias(bool figure = true, bool data = false)
+        public void AntiAlias(bool figure = true, bool data = false, bool legend = false)
         {
             settings.antiAliasFigure = figure;
             settings.antiAliasData = data;
+            settings.antiAliasLegend = legend;
             settings.bmpFigureRenderRequired = true;
         }
 
