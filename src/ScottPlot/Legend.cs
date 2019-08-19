@@ -92,6 +92,7 @@ namespace ScottPlot
             Rectangle frameRect = new Rectangle(frameZeroOffset, frameSize);
             Rectangle shadowRect = new Rectangle(shadowZeroOffset, frameSize);
 
+            settings.gfxLegend.Clear(settings.legendBackColor);
             // draw the legend background and shadow
             if (settings.legendShadowDirection != shadowDirection.none)
                 settings.gfxLegend.FillRectangle(new SolidBrush(settings.legendShadowColor), shadowRect);
