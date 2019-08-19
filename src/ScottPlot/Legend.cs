@@ -168,28 +168,28 @@ namespace ScottPlot
                     textLocation.Y = (int)(frameHeight);
                     break;
                 case (legendLocation.upperCenter):
-                    frameLocation.X = (int)((settings.dataSize.Width) / 2 - frameWidth / 2 - padding * 5);
+                    frameLocation.X = (int)((settings.dataSize.Width) / 2 - frameWidth / 2);
                     frameLocation.Y = (int)(padding);
-                    textLocation.X = (int)(settings.dataSize.Width / 2 - legendFontMaxWidth / 2 + padding / 2);
+                    textLocation.X = (int)(frameLocation.X + frameWidth - legendFontMaxWidth);
                     textLocation.Y = (int)(frameHeight);
                     break;
                 case (legendLocation.lowerCenter):
-                    frameLocation.X = (int)((settings.dataSize.Width) / 2 - frameWidth / 2 - padding * 5);
+                    frameLocation.X = (int)((settings.dataSize.Width) / 2 - frameWidth / 2);
                     frameLocation.Y = (int)(settings.dataSize.Height - frameHeight - padding);
-                    textLocation.X = (int)(settings.dataSize.Width / 2 - legendFontMaxWidth / 2 + padding / 2);
+                    textLocation.X = (int)(frameLocation.X + frameWidth - legendFontMaxWidth);
                     textLocation.Y = settings.dataSize.Height - padding * 2;
                     break;
                 case (legendLocation.middleLeft):
                     frameLocation.X = (int)(padding);
-                    frameLocation.Y = (int)(settings.dataSize.Height / 2 - frameHeight / 2 - padding);
+                    frameLocation.Y = (int)(settings.dataSize.Height / 2 - frameHeight / 2);
                     textLocation.X = (int)(frameWidth - legendFontMaxWidth + padding);
-                    textLocation.Y = (int)(settings.dataSize.Height / 2 + frameHeight / 2 - padding * 2);
+                    textLocation.Y = (int)(frameLocation.Y + frameHeight - padding);
                     break;
                 case (legendLocation.middleRight):
                     frameLocation.X = (int)(settings.dataSize.Width - frameWidth - padding);
-                    frameLocation.Y = (int)(settings.dataSize.Height / 2 - frameHeight / 2 - padding);
+                    frameLocation.Y = (int)(settings.dataSize.Height / 2 - frameHeight / 2);
                     textLocation.X = (int)(settings.dataSize.Width - (legendFontMaxWidth + padding));
-                    textLocation.Y = (int)(settings.dataSize.Height / 2 + frameHeight / 2 - padding * 2);
+                    textLocation.Y = (int)(frameLocation.Y + frameHeight - padding);
                     break;
                 default:
                     throw new NotImplementedException($"legend location {settings.legendLocation} is not supported");
