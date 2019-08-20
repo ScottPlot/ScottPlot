@@ -1,8 +1,6 @@
 # ScottPlot
 
-**ScottPlot is a free and open-source interactive plotting library for .NET** 
-which makes it easy to interactively display data in a variety of formats. You can generate line plots, bar charts, error charts, scatter plots, etc.,
-with just a few lines of code (see the [ScottPlot Cookbook](/cookbook/) for examples). 
+**ScottPlot is a free and open-source interactive plotting library for .NET** which makes it easy to interactively display data in a variety of formats. You can create interactive line plots, bar charts, scatter plots, etc., with just a few lines of code (see the [ScottPlot Cookbook](/cookbook) for examples). 
 
 ![](/demos/src/plot-types/ScottPlot-screenshot.gif)
 
