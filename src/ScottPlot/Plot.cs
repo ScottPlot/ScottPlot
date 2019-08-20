@@ -188,12 +188,26 @@ namespace ScottPlot
         {
             if (renderFirst)
                 RenderBitmap();
+
             filePath = System.IO.Path.GetFullPath(filePath);
-            string folder = System.IO.Path.GetDirectoryName(filePath);
-            if (System.IO.Directory.Exists(folder))
-                settings.bmpFigure.Save(filePath);
+            string fileFolder = System.IO.Path.GetDirectoryName(filePath);
+            if (!System.IO.Directory.Exists(fileFolder))
+                throw new Exception($"ERROR: folder does not exist: {fileFolder}");
+
+            ImageFormat imageFormat;
+            string extension = System.IO.Path.GetExtension(filePath).ToUpper();
+            if (extension == ".JPG" || extension == ".JPEG")
+                imageFormat = ImageFormat.Jpeg; // TODO: use jpgEncoder to set custom compression level
+            else if (extension == ".PNG")
+                imageFormat = ImageFormat.Png;
+            else if (extension == ".TIF" || extension == ".TIFF")
+                imageFormat = ImageFormat.Tiff;
+            else if (extension == ".BMP")
+                imageFormat = ImageFormat.Bmp;
             else
-                throw new Exception($"ERROR: folder does not exist: {folder}");
+                throw new NotImplementedException("Extension not supported: " + extension);
+
+            settings.bmpFigure.Save(filePath, imageFormat);
         }
 
         #endregion

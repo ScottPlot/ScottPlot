@@ -135,7 +135,11 @@ namespace ScottPlot
         {
             SaveFileDialog savefile = new SaveFileDialog();
             savefile.FileName = "ScottPlot.png";
-            savefile.Filter = "PNG Files (*.png)|*.png|All files (*.*)|*.*";
+            savefile.Filter = "PNG Files (*.png)|*.png;*.png";
+            savefile.Filter += "|JPG Files (*.jpg, *.jpeg)|*.jpg;*.jpeg";
+            savefile.Filter += "|BMP Files (*.bmp)|*.bmp;*.bmp";
+            savefile.Filter += "|TIF files (*.tif, *.tiff)|*.tif;*.tiff";
+            savefile.Filter += "|All files (*.*)|*.*";
             if (savefile.ShowDialog() == DialogResult.OK)
                 plt.SaveFig(savefile.FileName);
         }
