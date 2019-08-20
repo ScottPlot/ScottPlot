@@ -65,7 +65,7 @@ namespace Legend
             formsPlot1.plt.PlotScatter(xs, ys1, label: "one", markerShape: markerShape, markerSize: (double)nudMarkerSize.Value, lineStyle: penType);
             formsPlot1.plt.PlotScatter(xs, ys2, label: "two", markerShape: markerShape, markerSize: (double)nudMarkerSize.Value, lineStyle: penType);
             formsPlot1.plt.PlotScatter(xs, ys3, label: "three", markerShape: markerShape, markerSize: (double)nudMarkerSize.Value, lineStyle: penType);
-
+            formsPlot1.plt.PlotVLine(57, lineStyle: ScottPlot.LineStyle.DashDotDot, lineWidth: 3, label: "vertLine");
 
             // optionally use a legend
             if (cbLocations.SelectedItem != null && cbShadowDirection.SelectedItem != null)
