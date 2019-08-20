@@ -51,6 +51,20 @@ ScottPlot can plot data quickly allowing for high framerates. The _audio monitor
 
 ![](/demos/src/audio-monitor/screenshot.gif)
 
+## Cookbook
+The [ScottPlot Cookbook](/cookbook) is the best way to both see what ScottPlot can do and learn how to use most of the ScottPlot features. Every in [/cookbook](/cookbook) is shown next to the code used to create it. Here are some samples:
+
+<img src="https://raw.githubusercontent.com/swharden/ScottPlot/master/cookbook/images/02_Styling_Scatter_Plots.png" width="200"> 
+<img src="https://raw.githubusercontent.com/swharden/ScottPlot/master/cookbook/images/06b_Custom_LineStyles.png" width="200"> 
+<img src="https://raw.githubusercontent.com/swharden/ScottPlot/master/cookbook/images/22_Custom_Colors.png" width="200"> 
+<img src="https://raw.githubusercontent.com/swharden/ScottPlot/master/cookbook/images/25_Corner_Axis_Frame.png" width="200"> 
+<img src="https://raw.githubusercontent.com/swharden/ScottPlot/master/cookbook/images/30a_Signal.png" width="200"> 
+<img src="https://raw.githubusercontent.com/swharden/ScottPlot/master/cookbook/images/41_Axis_Spans.png" width="200"> 
+<img src="https://raw.githubusercontent.com/swharden/ScottPlot/master/cookbook/images/62_Plot_Bar_Data_Fancy.png" width="200"> 
+<img src="https://raw.githubusercontent.com/swharden/ScottPlot/master/cookbook/images/65_Histogram.png" width="200"> 
+<img src="https://raw.githubusercontent.com/swharden/ScottPlot/master/cookbook/images/66_CPH.png" width="200"> 
+<img src="https://raw.githubusercontent.com/swharden/ScottPlot/master/cookbook/images/67_Candlestick.png" width="200"> 
+
 ## About ScottPlot
 
 ScottPlot was created by [Scott Harden](http://www.SWHarden.com/) ([Harden Technologies, LLC](http://tech.swharden.com)) with many contributions from the user community. To inquire about the development special features or customized versions of this software for consumer applications, contact the author at [SWHarden@gmail.com](mailto:swharden@gmail.com).
