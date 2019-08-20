@@ -8,7 +8,7 @@ I made a sample application to demonstrate how to do this type of mouse tracking
 * [compiled click-to-run demo](https://github.com/swharden/ScottPlot/tree/master/demos/ScottPlotShowValueOnHover/compiled) (ZIP)
 
 ### Screenshot
-![](https://raw.githubusercontent.com/swharden/ScottPlot/master/demos/ScottPlotShowValueOnHover/screenshot.png)
+![](screenshot.png)
 
 ### Theory
 
