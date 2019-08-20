@@ -1,5 +1,31 @@
 # ScottPlot Changelog
 
+## ScottPlot 3.1.0
+
+_Published on [NuGet](https://www.nuget.org/packages/ScottPlot/) on 2019-08-19_
+
+### Major Changes
+* User controls were renamed
+  * `ScottPlotUC` was renamed to `FormsPlot`
+  * `ScottPlotWPF` was renamed to `WpfPlot`
+* The right-click menu has improved. It responds faster and has improved controls to adjust plot settings.
+* Plots can now be saved in BMP, PNG, JPG, and TIF format
+* Holding `CTRL` while click-dragging locks the horizontal axis
+* Holding `ALT` while click-dragging locks the vertical axis
+* Minor ticks are now displayed (and can be turned on or off with `Ticks()`)
+* Legend can be accessed for external display with `GetLegendBitmap()`
+
+### Minor Changes
+* anti-aliasing is turned off while click-dragging to increase responsiveness (#93, @StendProg)
+* PlotSignalConst has several improvements (@StendProg)
+  * It can can now accept a generic inputs
+  * A demo has been added demonstrating highspeed interactive plotting of _one billion_ data points.
+  * It is now slightly faster by default
+  * It can use single-precision floating point calculations to further enhance performance
+* Legend draws more reliably (#104, #106, @StendProg)
+* `AxisAuto()` now has `expandOnly` arguments
+* Axis lines with custom lineStyles display properly in the legend
+
 ## ScottPlot 3.0.9
 
 _Published on [NuGet](https://www.nuget.org/packages/ScottPlot/) on 2019-08-12_
