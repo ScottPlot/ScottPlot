@@ -11,6 +11,8 @@ In graphical environments plots can be displayed interactively (left-click-drag 
 ScottPlot targets multiple frameworks (.NET Framework 4.5 and .NET Core 3.0), has user controls for WinForms and WPF, and is [available on NuGet](https://www.nuget.org/packages/ScottPlot/) with no dependencies.
 
 ## Quickstart
+This quickstart is for Windows Forms Applications. Similar quickstarts for Console Applications and WPF Applications are in [/demos](/demos)
+
 1. Install ScottPlot using [NuGet](https://www.nuget.org/packages/ScottPlot/)
 2. Drag/Drop the FormsPlot (from the toolbox) onto your Form
 3. Add the following code to your startup sequence
