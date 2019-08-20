@@ -1,28 +1,30 @@
 # ScottPlot
-**ScottPlot is a free and open-source interactive graphing library for .NET written in C#.** 
-In a GUI environment ScottPlot makes it easy to display data interactively (left-click-drag pan, right-click-drag zoom), and in non-GUI environments ScottPlot can be used to create graphs and save them as images. ScottPlot was designed to be fast enough to interactively display large datasets with millions of points at high framerates. ScottPlot is easy to integrate into .NET projects because it is [available on NuGet](https://www.nuget.org/packages/ScottPlot/) and has no dependencies outside the .NET framework libraries.
+**ScottPlot is a free and open-source interactive plotting library for .NET** 
+which makes it easy to interactively display data in a variety of formats. You can generate line plots, bar charts, error charts, scatter plots, etc.,
+with just a few lines of code (see the [ScottPlot Cookbook](/cookbook/) for examples). 
 
 [![](https://raw.githubusercontent.com/swharden/ScottPlot/master/demos/src/plot-types/ScottPlot-screenshot-small.gif)](https://github.com/swharden/ScottPlot)
 
-## Links
-* [Cookbook](https://github.com/swharden/ScottPlot/tree/master/cookbook)
-* [API Documentation](https://github.com/swharden/ScottPlot/tree/master/doc)
-* [ScottPlot on GitHub](https://github.com/swharden/ScottPlot)
+In graphical environments plots can be displayed interactively (left-click-drag to pan and right-click-drag to zoom) and in console applications plots can be created and saved as images. 
 
-## Quickstart: Windows Forms
+ScottPlot targets multiple frameworks (.NET Framework 4.5 and .NET Core 3.0), has user controls for WinForms and WPF, and is [available on NuGet](https://www.nuget.org/packages/ScottPlot/) with no dependencies.
 
- 1. Drag/Drop ScottPlotUC (from the toolbox) onto your form
+## Quickstart
+
+### Windows Forms Application
+
+ 1. Drag/Drop FormsPlot (from the toolbox) onto your form.
  2. Add this code to your startup sequence:
 
 ```cs
 double[] xs = new double[] {1, 2, 3, 4, 5};
 double[] ys = new double[] {1, 4, 9, 16, 25};
-scottPlotUC1.plt.PlotScatter(xs, ys);
-scottPlotUC1.Render();
+formsPlot1.plt.PlotScatter(xs, ys);
+formsPlot1.Render();
 ```
 
-## Quickstart: Console Application ###
-	
+### Console Application
+
 ```cs
 double[] xs = new double[] { 1, 2, 3, 4, 5 };
 double[] ys = new double[] { 1, 4, 9, 16, 25 };
@@ -30,3 +32,26 @@ var plt = new ScottPlot.Plot(600, 400);
 plt.PlotScatter(xs, ys);
 plt.SaveFig("demo.png");
 ```
+
+### WPF Application
+
+ 1. Drag/Drop WpfPlot (from the toolbox) onto your form.
+ 2. Add this code to your startup sequence:
+
+```xml
+<ScottPlot:ScottPlotWPF Name="wpfPlot1" Margin="10"/>
+<Button Content="Add Plot" Click="AddPlot"/>
+<Button Content="Clear" Click="Clear"/>
+```
+
+```cs
+double[] xs = new double[] {1, 2, 3, 4, 5};
+double[] ys = new double[] {1, 4, 9, 16, 25};
+wpfPlot1.plt.PlotScatter(xs, ys);
+wpfPlot1.Render();
+```
+
+## Links
+* [Cookbook](https://github.com/swharden/ScottPlot/blob/master/cookbook)
+* [Documentation](https://github.com/swharden/ScottPlot/tree/master/doc)
+* [ScottPlot on GitHub](https://github.com/swharden/ScottPlot)
