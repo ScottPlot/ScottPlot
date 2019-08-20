@@ -27,6 +27,7 @@ namespace ScottPlot
             this.draggable = draggable;
             this.dragLimitLower = dragLimitLower;
             this.dragLimitUpper = dragLimitUpper;
+            this.lineStyle = lineStyle;
             orientation = (vertical) ? "vertical" : "horizontal";
             pen = new Pen(color, (float)lineWidth);
             pointCount = 1;
