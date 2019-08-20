@@ -3,10 +3,6 @@ After thinking about it a lot, I decided not to include this into the ScottPlot 
 
 I made a sample application to demonstrate how to do this type of mouse tracking. It highlights points closest to the mouse and displays their value. The source code [Form1.cs](https://github.com/swharden/ScottPlot/blob/master/demos/ScottPlotShowValueOnHover/Form1.cs) is big, but it isn't too crazy, and can be customized to do whatever your application needs to do.
 
-### Demo Program
-* [source code](https://github.com/swharden/ScottPlot/tree/master/demos/ScottPlotShowValueOnHover)
-* [compiled click-to-run demo](https://github.com/swharden/ScottPlot/tree/master/demos/ScottPlotShowValueOnHover/compiled) (ZIP)
-
 ### Screenshot
 ![](screenshot.png)
 
