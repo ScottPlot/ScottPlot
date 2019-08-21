@@ -159,6 +159,8 @@ namespace ScottPlot
 
                 if (index1 < 0)
                     index1 = 0;
+                if (index1 > ys.Length - 1)
+                    index1 = ys.Length - 1;
                 if (index2 > ys.Length - 1)
                     index2 = ys.Length - 1;
 
