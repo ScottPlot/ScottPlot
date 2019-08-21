@@ -57,6 +57,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Misc", "Misc", "{748BADFA-C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "one-billion-points", "..\demos\src\one-billion-points\one-billion-points.csproj", "{1A645563-008E-4E13-9E9A-F43B9885000C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "time axis", "..\demos\src\time-axis\time axis.csproj", "{E5CCE477-4285-41CA-AEBA-BE973D0F1B4D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -155,6 +157,10 @@ Global
 		{1A645563-008E-4E13-9E9A-F43B9885000C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A645563-008E-4E13-9E9A-F43B9885000C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A645563-008E-4E13-9E9A-F43B9885000C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5CCE477-4285-41CA-AEBA-BE973D0F1B4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5CCE477-4285-41CA-AEBA-BE973D0F1B4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5CCE477-4285-41CA-AEBA-BE973D0F1B4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5CCE477-4285-41CA-AEBA-BE973D0F1B4D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -184,6 +190,7 @@ Global
 		{1F1529C5-CECC-4443-A081-4B15FAAF5EE7} = {2F78F109-9976-42FF-8324-9A27EF3BD776}
 		{748BADFA-C291-4FCF-B2DC-4475006BF0A5} = {2F78F109-9976-42FF-8324-9A27EF3BD776}
 		{1A645563-008E-4E13-9E9A-F43B9885000C} = {748BADFA-C291-4FCF-B2DC-4475006BF0A5}
+		{E5CCE477-4285-41CA-AEBA-BE973D0F1B4D} = {748BADFA-C291-4FCF-B2DC-4475006BF0A5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FBAE082A-173A-4F13-BE31-E6C070513C9C}

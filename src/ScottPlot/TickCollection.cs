@@ -18,8 +18,9 @@ namespace ScottPlot
         public string[] tickLabels;
         public string cornerLabel;
 
-        public TickCollection(Settings settings, bool verticalAxis = false)
+        public TickCollection(Settings settings, bool verticalAxis = false, bool dateFormat = false)
         {
+
             double low, high, tickSpacing;
             int maxTickCount;
 
@@ -53,8 +54,50 @@ namespace ScottPlot
             tickPositionsMajor = positions.ToArray();
             tickPositionsMinor = MinorFromMajor(tickPositionsMajor, 5, low, high);
 
-            GetPrettyTickLabels(tickPositionsMajor, out tickLabels, out cornerLabel,
-                settings.useMultiplierNotation, settings.useOffsetNotation, settings.useExponentialNotation);
+            if (dateFormat)
+            {
+                TimeSpan dtTickSep;
+                string dtFmt = null;
+
+                try
+                {
+                    dtTickSep = DateTime.FromOADate(tickPositionsMajor[1]) - DateTime.FromOADate(tickPositionsMajor[0]);
+                    if (dtTickSep.TotalDays > 365 * 5)
+                        dtFmt = "{0:yyyy}";
+                    else if (dtTickSep.TotalDays > 365)
+                        dtFmt = "{0:yyyy-MM}";
+                    else if (dtTickSep.TotalDays > .5)
+                        dtFmt = "{0:yyyy-MM-dd}";
+                    else if (dtTickSep.TotalMinutes > .5)
+                        dtFmt = "{0:yyyy-MM-dd\nH:mm}";
+                    else
+                        dtFmt = "{0:yyyy-MM-dd\nH:mm:ss}";
+                }
+                catch
+                {
+                }
+
+                tickLabels = new string[tickPositionsMajor.Length];
+                for (int i = 0; i < tickPositionsMajor.Length; i++)
+                {
+                    DateTime dt;
+                    try
+                    {
+                        dt = DateTime.FromOADate(tickPositionsMajor[i]);
+                        string lbl = string.Format(dtFmt, dt);
+                        tickLabels[i] = lbl;
+                    }
+                    catch
+                    {
+                        tickLabels[i] = "?";
+                    }
+                }
+            }
+            else
+            {
+                GetPrettyTickLabels(tickPositionsMajor, out tickLabels, out cornerLabel,
+                    settings.useMultiplierNotation, settings.useOffsetNotation, settings.useExponentialNotation);
+            }
         }
 
         public override string ToString()
