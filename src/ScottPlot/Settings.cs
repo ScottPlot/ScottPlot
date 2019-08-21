@@ -277,8 +277,8 @@ namespace ScottPlot
                 double spanBot = axis[3] - zoomCenter.Value.Y;
                 axis[0] = zoomCenter.Value.X - spanLeft / xFrac;
                 axis[1] = zoomCenter.Value.X + spanRight / xFrac;
-                axis[2] = zoomCenter.Value.Y - spanTop / xFrac;
-                axis[3] = zoomCenter.Value.Y + spanBot / xFrac;
+                axis[2] = zoomCenter.Value.Y - spanTop / yFrac;
+                axis[3] = zoomCenter.Value.Y + spanBot / yFrac;
             }
 
             if ((xFrac != 1) || (yFrac != 1))
