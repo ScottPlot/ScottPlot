@@ -18,6 +18,8 @@ namespace time_axis
             formsPlot1.plt.Ticks(dateTimeX: cbHorizontal.Checked);
             Random rand = new Random();
             formsPlot1.plt.PlotSignal(ScottPlot.DataGen.RandomWalk(rand, 100_000), 1000);
+            formsPlot1.plt.YLabel("awesomeness");
+            formsPlot1.plt.XLabel("experimental date");
             formsPlot1.Render();
         }
 

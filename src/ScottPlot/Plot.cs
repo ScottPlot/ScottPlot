@@ -850,6 +850,14 @@ namespace ScottPlot
             if (dateTimeY != null)
                 settings.tickDateTimeY = (bool)dateTimeY;
 
+            if (dateTimeX != null || dateTimeY != null)
+            {
+                // why these in this order? voodoo magic
+                TightenLayout();
+                RenderBitmap();
+                TightenLayout();
+            }
+
             settings.bmpFigureRenderRequired = true;
         }
 
