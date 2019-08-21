@@ -3,7 +3,7 @@
 	<metadata>
 		<id>ScottPlot</id>
 		<title>ScottPlot</title>
-		<version>3.1.1</version>
+		<version>3.1.2</version>
 		<authors>Scott W Harden</authors>
 		<owners>swharden</owners>
 		<projectUrl>https://github.com/swharden/ScottPlot</projectUrl>
@@ -12,7 +12,7 @@
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<releaseNotes>https://github.com/swharden/ScottPlot/releases</releaseNotes>
 		<description>ScottPlot is a free and open-source interactive plotting library for .NET</description>
-		<tags>plot graph data chart signal line C# data-visualization</tags>
+		<tags>plot graph data chart signal line C# winforms forms wpf</tags>
 		<frameworkAssemblies>
 			<frameworkAssembly assemblyName="System.Drawing" />
 		</frameworkAssemblies>
