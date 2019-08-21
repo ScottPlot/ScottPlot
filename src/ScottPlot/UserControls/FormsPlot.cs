@@ -104,6 +104,10 @@ namespace ScottPlot
             plt.mouseTracker.MouseDown(e.Location);
             if (plt.mouseTracker.PlottableUnderCursor(e.Location) != null)
                 OnMouseDownOnPlottable(EventArgs.Empty);
+            else if (plt.mouseTracker.MouseIsOverHorizontalAxis(e.Location))
+                Console.WriteLine("X AXIS CLICK");
+            else if (plt.mouseTracker.MouseIsOverVerticalAxis(e.Location))
+                Console.WriteLine("Y AXIS CLICK");
         }
 
         private void PbPlot_MouseMove(object sender, MouseEventArgs e)
@@ -111,11 +115,14 @@ namespace ScottPlot
             plt.mouseTracker.MouseMove(e.Location);
             OnMouseMoved(EventArgs.Empty);
 
-            var plottableUnderCursor = plt.mouseTracker.PlottableUnderCursor(e.Location);
+            Plottable plottableUnderCursor = plt.mouseTracker.PlottableUnderCursor(e.Location);
             if (plottableUnderCursor != null)
             {
+                // send the mousemove event in case we are draggint this thing
                 if (e.Button != MouseButtons.None)
                     OnMouseDragPlottable(EventArgs.Empty);
+
+                // set the cursor based on whether the plottable is movable or not
                 if (plottableUnderCursor is PlottableAxLine axLine)
                 {
                     if (axLine.vertical == true)
@@ -123,17 +130,29 @@ namespace ScottPlot
                     else
                         pbPlot.Cursor = Cursors.SizeNS;
                 }
+                else
+                {
+                    pbPlot.Cursor = Cursors.Arrow;
+                }
             }
             else
             {
-                pbPlot.Cursor = Cursors.Arrow;
+                // the mouse moved not over a plottable
+                if (plt.mouseTracker.MouseIsOverHorizontalAxis(e.Location))
+                    pbPlot.Cursor = Cursors.SizeWE;
+                else if (plt.mouseTracker.MouseIsOverVerticalAxis(e.Location))
+                    pbPlot.Cursor = Cursors.SizeNS;
+                else
+                    pbPlot.Cursor = Cursors.Arrow;
             }
 
+            // always render if a mouse button is down
             if (e.Button != MouseButtons.None)
             {
                 Render(skipIfCurrentlyRendering: true, lowQuality: plt.mouseTracker.lowQualityWhileInteracting);
                 OnMouseDragged(EventArgs.Empty);
             }
+
         }
 
         private void PbPlot_MouseUp(object sender, MouseEventArgs e)
@@ -178,12 +197,20 @@ namespace ScottPlot
 
         private void PbPlot_MouseWheel(object sender, MouseEventArgs e)
         {
-            double zoomAmount = 0.15;
             PointF zoomCenter = plt.CoordinateFromPixel(e.Location);
+
+            double zoomAmountY = 0.15;
+            if (plt.mouseTracker.ctrlIsDown())
+                zoomAmountY = 0;
+
+            double zoomAmountX = 0.15;
+            if (plt.mouseTracker.altIsDown())
+                zoomAmountX = 0;
+
             if (e.Delta > 0)
-                plt.AxisZoom(1 + zoomAmount, 1 + zoomAmount, zoomCenter);
+                plt.AxisZoom(1 + zoomAmountX, 1 + zoomAmountY, zoomCenter);
             else
-                plt.AxisZoom(1 - zoomAmount, 1 - zoomAmount, zoomCenter);
+                plt.AxisZoom(1 - zoomAmountX, 1 - zoomAmountY, zoomCenter);
 
             if (plt.mouseTracker.lowQualityWhileInteracting && plt.mouseTracker.mouseWheelHQRenderDelay > 0)
             {
