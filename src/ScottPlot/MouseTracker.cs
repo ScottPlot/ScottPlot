@@ -147,14 +147,8 @@ namespace ScottPlot
                 var lowerLeft = settings.GetLocation(xs.Min(), ys.Max());
                 var upperRight = settings.GetLocation(xs.Max(), ys.Min());
                 settings.AxisSet(lowerLeft.X, upperRight.X, lowerLeft.Y, upperRight.Y);
-
                 settings.mouseZoomRectangleIsHappening = false;
             }
-            else
-            {
-                settings.AxisAuto();
-            }
-
         }
 
         public Plottable PlottableUnderCursor(Point eLocation)
@@ -224,6 +218,12 @@ namespace ScottPlot
             if ((loc.Y < y1) || (loc.Y > y2))
                 return false;
             return true;
+        }
+
+        public void MiddleButtonClicked()
+        {
+            if (!settings.mouseZoomRectangleIsHappening)
+                settings.AxisAuto();
         }
     }
 }
