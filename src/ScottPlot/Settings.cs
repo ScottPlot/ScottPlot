@@ -53,8 +53,10 @@ namespace ScottPlot
         public Color tickColor = Color.Black;
         public bool displayTicksX = true;
         public bool displayTicksXminor = true;
+        public bool tickDateTimeX = false;
         public bool displayTicksY = true;
         public bool displayTicksYminor = true;
+        public bool tickDateTimeY = false;
         public string longestPossibleTickLabel = "-8888";
         public bool useMultiplierNotation = true;
         public bool useOffsetNotation = true;

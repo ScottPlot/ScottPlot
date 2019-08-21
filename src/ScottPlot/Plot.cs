@@ -824,7 +824,9 @@ namespace ScottPlot
             Color? color = null,
             bool? useMultiplierNotation = null,
             bool? useOffsetNotation = null,
-            bool? useExponentialNotation = null
+            bool? useExponentialNotation = null,
+            bool? dateTimeX = null,
+            bool? dateTimeY = null
             )
         {
             if (displayTicksX != null)
@@ -843,6 +845,10 @@ namespace ScottPlot
                 settings.displayTicksXminor = (bool)displayTicksXminor;
             if (displayTicksYminor != null)
                 settings.displayTicksYminor = (bool)displayTicksYminor;
+            if (dateTimeX != null)
+                settings.tickDateTimeX = (bool)dateTimeX;
+            if (dateTimeY != null)
+                settings.tickDateTimeY = (bool)dateTimeY;
 
             settings.bmpFigureRenderRequired = true;
         }
