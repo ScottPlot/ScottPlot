@@ -158,6 +158,7 @@ namespace ScottPlot
                 Renderer.DataBackground(settings);
                 Renderer.DataGrid(settings);
                 Renderer.DataPlottables(settings);
+                Renderer.MouseZoomRectangle(settings);
                 Renderer.CreateLegendBitmap(settings);
                 Renderer.PlaceDataOntoFigure(settings);
                 Renderer.PlaceLegendOntoFigure(settings);

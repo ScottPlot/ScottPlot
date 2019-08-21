@@ -263,12 +263,29 @@ namespace ScottPlot
 
             if ((settings.tickCollectionY.cornerLabel != "") && settings.displayTicksY)
             {
-                //SizeF multiplierLabelYsize = settings.gfxFigure.MeasureString(settings.tickCollectionY.cornerLabel, settings.tickFont);
                 settings.gfxFigure.DrawString(settings.tickCollectionY.cornerLabel, settings.tickFont, brush,
                     settings.dataOrigin.X,
                     settings.dataOrigin.Y,
                     settings.sfSouthWest);
             }
+        }
+
+        public static void MouseZoomRectangle(Settings settings)
+        {
+            if (!settings.mouseZoomRectangleIsHappening)
+                return;
+
+            int[] xs = new int[] { settings.mouseZoomDownLocation.X, settings.mouseZoomCurrentLocation.X };
+            int[] ys = new int[] { settings.mouseZoomDownLocation.Y, settings.mouseZoomCurrentLocation.Y };
+            Rectangle rect = new Rectangle(xs.Min(), ys.Min(), xs.Max() - xs.Min(), ys.Max() - ys.Min());
+            rect.X -= settings.dataOrigin.X;
+            rect.Y -= settings.dataOrigin.Y;
+
+            Pen outline = new Pen(Color.FromArgb(100, 255, 0, 0));
+            Brush fill = new SolidBrush(Color.FromArgb(50, 255, 0, 0));
+
+            settings.gfxData.DrawRectangle(outline, rect);
+            settings.gfxData.FillRectangle(fill, rect);
         }
     }
 }
