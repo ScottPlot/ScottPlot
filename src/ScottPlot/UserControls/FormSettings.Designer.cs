@@ -239,10 +239,12 @@
             this.lbPlotObjects.Name = "lbPlotObjects";
             this.lbPlotObjects.Size = new System.Drawing.Size(285, 225);
             this.lbPlotObjects.TabIndex = 4;
+            this.lbPlotObjects.SelectedIndexChanged += new System.EventHandler(this.LbPlotObjects_SelectedIndexChanged);
             // 
             // btnExportCSV
             // 
             this.btnExportCSV.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnExportCSV.Enabled = false;
             this.btnExportCSV.Location = new System.Drawing.Point(177, 250);
             this.btnExportCSV.Name = "btnExportCSV";
             this.btnExportCSV.Size = new System.Drawing.Size(93, 23);

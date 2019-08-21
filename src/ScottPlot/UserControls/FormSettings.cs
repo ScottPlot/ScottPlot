@@ -111,5 +111,13 @@ namespace ScottPlot.UserControls
         {
             plt.mouseTracker.lowQualityWhileInteracting = cbQualityLowWhileDragging.Checked;
         }
+
+        private void LbPlotObjects_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lbPlotObjects.Items.Count > 0 && lbPlotObjects.SelectedItem != null)
+                btnExportCSV.Enabled = true;
+            else
+                btnExportCSV.Enabled = false;
+        }
     }
 }
