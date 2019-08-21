@@ -105,6 +105,11 @@ namespace ScottPlot
         public Point mouseDownLocation = new Point(0, 0);
         public double[] mouseDownAxis = new double[4];
 
+        // mouse middle-click-zooming
+        public Point mouseZoomDownLocation = new Point(0, 0);
+        public Point mouseZoomCurrentLocation = new Point(0, 0);
+        public bool mouseZoomRectangleIsHappening = false;
+
         // plottables
         public readonly List<Plottable> plottables = new List<Plottable>();
         public bool useTwentyColors = false;
@@ -220,7 +225,7 @@ namespace ScottPlot
 
         public bool bmpFigureRenderRequired = true;
 
-        private void AxisUpdate()
+        public void AxisUpdate()
         {
             xAxisSpan = axis[1] - axis[0];
             xAxisCenter = (axis[1] + axis[0]) / 2;
@@ -442,6 +447,12 @@ namespace ScottPlot
         {
             mouseIsPanning = false;
             mouseIsZooming = false;
+        }
+
+        public void MouseZoomRectMove(Point eLocation)
+        {
+            mouseZoomCurrentLocation = eLocation;
+            mouseZoomRectangleIsHappening = true;
         }
 
         public PointF GetPixel(double locationX, double locationY)

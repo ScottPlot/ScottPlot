@@ -12,10 +12,10 @@ namespace ScottPlot
     public class MouseTracker
     {
         public Stopwatch mouseDownStopwatch = new Stopwatch();
-        private Plottable draggingObject;
+        private Plottable plottableBeingDragged;
         public bool lowQualityWhileInteracting = true;
-        public int mouseWheelHQRenderDelay = 500; // in milliseconds, 0 - disabled
-        public int mouseUpHQRenderDelay = 300;    // in milliseconds, 0 - immediate HQ render on MouseUP
+        public int mouseWheelHQRenderDelay = 500;
+        public int mouseUpHQRenderDelay = 300;
 
         private readonly Settings settings;
         public MouseTracker(Settings settings)
@@ -29,7 +29,7 @@ namespace ScottPlot
                 return true;
             if (settings.mouseIsZooming)
                 return true;
-            if (draggingObject != null)
+            if (plottableBeingDragged != null)
                 return true;
             else
                 return false;
@@ -74,8 +74,8 @@ namespace ScottPlot
 
         public void MouseDown(Point eLocation)
         {
-            draggingObject = PlottableUnderCursor(eLocation);
-            if (draggingObject == null)
+            plottableBeingDragged = PlottableUnderCursor(eLocation);
+            if (plottableBeingDragged == null)
             {
                 mouseDownStopwatch.Restart();
                 if (Control.MouseButtons == MouseButtons.Left)
@@ -83,10 +83,9 @@ namespace ScottPlot
                 else if (Control.MouseButtons == MouseButtons.Right)
                     settings.MouseDown(Cursor.Position.X, Cursor.Position.Y, zooming: true);
             }
-            else
-            {
-                PointF newPosition = settings.GetLocation(eLocation.X, eLocation.Y);
-            }
+
+            if (Control.MouseButtons == MouseButtons.Middle)
+                settings.mouseZoomDownLocation = eLocation;
         }
 
         public void MouseMove(System.Windows.Point mousePoint)
@@ -97,14 +96,17 @@ namespace ScottPlot
 
         public void MouseMove(Point eLocation)
         {
-            if (draggingObject == null)
+            if (plottableBeingDragged == null)
             {
-                settings.MouseMoveAxis(Cursor.Position.X, Cursor.Position.Y, ctrlIsDown(), altIsDown());
+                if (Control.MouseButtons == MouseButtons.Left || Control.MouseButtons == MouseButtons.Right)
+                    settings.MouseMoveAxis(Cursor.Position.X, Cursor.Position.Y, ctrlIsDown(), altIsDown());
+                else if (Control.MouseButtons == MouseButtons.Middle)
+                    settings.MouseZoomRectMove(eLocation);
             }
             else
             {
                 PointF newPosition = settings.GetLocation(eLocation.X, eLocation.Y);
-                if (draggingObject is PlottableAxLine axLine)
+                if (plottableBeingDragged is PlottableAxLine axLine)
                 {
                     if (axLine.vertical)
                         axLine.position = newPosition.X;
@@ -127,7 +129,7 @@ namespace ScottPlot
 
         public void MouseUp(Point eLocation)
         {
-            if (draggingObject == null)
+            if (plottableBeingDragged == null)
             {
                 settings.MouseMoveAxis(Cursor.Position.X, Cursor.Position.Y, ctrlIsDown(), altIsDown());
                 settings.MouseUpAxis();
@@ -135,8 +137,24 @@ namespace ScottPlot
             else
             {
                 PointF newPosition = settings.GetLocation(eLocation.X, eLocation.Y);
-                draggingObject = null;
+                plottableBeingDragged = null;
             }
+
+            if (settings.mouseZoomRectangleIsHappening)
+            {
+                int[] xs = new int[] { settings.mouseZoomDownLocation.X, settings.mouseZoomCurrentLocation.X };
+                int[] ys = new int[] { settings.mouseZoomDownLocation.Y, settings.mouseZoomCurrentLocation.Y };
+                var lowerLeft = settings.GetLocation(xs.Min(), ys.Max());
+                var upperRight = settings.GetLocation(xs.Max(), ys.Min());
+                settings.AxisSet(lowerLeft.X, upperRight.X, lowerLeft.Y, upperRight.Y);
+
+                settings.mouseZoomRectangleIsHappening = false;
+            }
+            else
+            {
+                settings.AxisAuto();
+            }
+
         }
 
         public Plottable PlottableUnderCursor(Point eLocation)
@@ -166,9 +184,7 @@ namespace ScottPlot
                     }
                 }
             }
-
             return null;
-
         }
 
         public bool MouseIsOverHorizontalAxis(Point loc)
@@ -188,6 +204,19 @@ namespace ScottPlot
         {
             int x1 = settings.dataOrigin.X - (int)settings.tickCollectionY.maxLabelSize.Width;
             int x2 = settings.dataOrigin.X;
+            int y1 = settings.dataOrigin.Y;
+            int y2 = settings.dataOrigin.Y + settings.dataSize.Height;
+            if ((loc.X < x1) || (loc.X > x2))
+                return false;
+            if ((loc.Y < y1) || (loc.Y > y2))
+                return false;
+            return true;
+        }
+
+        public bool MouseIsOverDataArea(Point loc)
+        {
+            int x1 = settings.dataOrigin.X;
+            int x2 = settings.dataOrigin.X + settings.dataSize.Width;
             int y1 = settings.dataOrigin.Y;
             int y2 = settings.dataOrigin.Y + settings.dataSize.Height;
             if ((loc.X < x1) || (loc.X > x2))
