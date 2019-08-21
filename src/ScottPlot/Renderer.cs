@@ -73,7 +73,7 @@ namespace ScottPlot
         public static void PlaceLegendOntoFigure(Settings settings)
         {
             if (settings.gfxFigure == null || settings.gfxLegend == null)
-                return;            
+                return;
             if (settings.legendLocation != ScottPlot.legendLocation.none)
             {
                 Point legendLocation = new Point(settings.dataOrigin.X + settings.legendFrame.Location.X,
@@ -130,8 +130,8 @@ namespace ScottPlot
             if (settings.dataSize.Width < 1 || settings.dataSize.Height < 1)
                 return;
 
-            settings.tickCollectionX = new TickCollection(settings, false);
-            settings.tickCollectionY = new TickCollection(settings, true);
+            settings.tickCollectionX = new TickCollection(settings, false, settings.tickDateTimeX);
+            settings.tickCollectionY = new TickCollection(settings, true, settings.tickDateTimeY);
 
             RenderTicksOnLeft(settings);
             RenderTicksOnBottom(settings);
