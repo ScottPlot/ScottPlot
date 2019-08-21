@@ -81,6 +81,7 @@ namespace ScottPlot
                 case "Settings":
                     var formSettings = new UserControls.FormSettings(plt);
                     formSettings.ShowDialog();
+                    Render();
                     break;
 
                 case "Help":
