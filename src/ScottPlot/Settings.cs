@@ -57,7 +57,6 @@ namespace ScottPlot
         public bool displayTicksY = true;
         public bool displayTicksYminor = true;
         public bool tickDateTimeY = false;
-        public string longestPossibleTickLabel = "-8888";
         public bool useMultiplierNotation = true;
         public bool useOffsetNotation = true;
         public bool useExponentialNotation = true;
@@ -190,27 +189,27 @@ namespace ScottPlot
         {
             // "tighten" the plot by reducing whitespce between labels, data, and the edge of the figure
 
-            SizeF biggestTickSize = gfxFigure.MeasureString(longestPossibleTickLabel, tickFont);
-            int tickHeight = (int)biggestTickSize.Height;
+            if (tickCollectionX == null)
+                return;
 
             // top
             SizeF titleSize = gfxFigure.MeasureString(title, titleFont);
             int titleHeight = (int)(titleSize.Height);
-            axisLabelPadding[3] = Math.Max(titleHeight, tickHeight) + axisPadding * 2;
+            axisLabelPadding[3] = Math.Max(titleHeight, (int)tickCollectionX.maxLabelSize.Height) + axisPadding * 2;
 
             // bottom
             SizeF xLabelSize = gfxFigure.MeasureString(axisLabelX, axisLabelFontX);
             int xLabelHeight = (int)(xLabelSize.Height);
-            axisLabelPadding[2] = Math.Max(xLabelHeight, tickHeight) + axisPadding * 2;
-            axisLabelPadding[2] += (int)biggestTickSize.Height;
+            axisLabelPadding[2] = Math.Max(xLabelHeight, (int)tickCollectionX.maxLabelSize.Height) + axisPadding * 2;
+            axisLabelPadding[2] += xLabelHeight;
 
             // left
             SizeF yLabelSize = gfxFigure.MeasureString(axisLabelY, axisLabelFontY);
             axisLabelPadding[0] = (int)(yLabelSize.Height) + axisPadding * 2;
-            axisLabelPadding[0] += (int)biggestTickSize.Width;
+            axisLabelPadding[0] += (int)tickCollectionY.maxLabelSize.Width;
 
             // right
-            axisLabelPadding[1] = axisPadding + (int)biggestTickSize.Width / 2;
+            axisLabelPadding[1] = axisPadding + (int)tickCollectionY.maxLabelSize.Width / 2;
 
             // override for frameles
             if (axisPadding == 0)

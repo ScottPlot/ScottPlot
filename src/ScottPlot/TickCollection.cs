@@ -17,6 +17,7 @@ namespace ScottPlot
         public double[] tickPositionsMinor;
         public string[] tickLabels;
         public string cornerLabel;
+        public SizeF maxLabelSize;
 
         public TickCollection(Settings settings, bool verticalAxis = false, bool dateFormat = false)
         {
@@ -24,19 +25,21 @@ namespace ScottPlot
             double low, high, tickSpacing;
             int maxTickCount;
 
-            SizeF maxTickLabelSize = settings.gfxData.MeasureString(settings.longestPossibleTickLabel, settings.tickFont);
+            string longestLabel = (dateFormat) ? "2019-08-20\n20:42:17" : "-8888";
+            maxLabelSize = settings.gfxData.MeasureString(longestLabel, settings.tickFont);
+
             if (verticalAxis)
             {
                 low = settings.axis[2];
                 high = settings.axis[3];
-                maxTickCount = (int)(settings.dataSize.Height / maxTickLabelSize.Height);
+                maxTickCount = (int)(settings.dataSize.Height / maxLabelSize.Height);
                 tickSpacing = (settings.tickSpacingX != 0) ? settings.tickSpacingY : GetIdealTickSpacing(low, high, maxTickCount);
             }
             else
             {
                 low = settings.axis[0];
                 high = settings.axis[1];
-                maxTickCount = (int)(settings.dataSize.Width / maxTickLabelSize.Width * 1.2);
+                maxTickCount = (int)(settings.dataSize.Width / maxLabelSize.Width * 1.2);
                 tickSpacing = (settings.tickSpacingX != 0) ? settings.tickSpacingX : GetIdealTickSpacing(low, high, maxTickCount);
             }
 
@@ -50,53 +53,18 @@ namespace ScottPlot
                 if (positions.Count > 999)
                     break;
             }
-
             tickPositionsMajor = positions.ToArray();
-            tickPositionsMinor = MinorFromMajor(tickPositionsMajor, 5, low, high);
 
             if (dateFormat)
             {
-                TimeSpan dtTickSep;
-                string dtFmt = null;
-
-                try
-                {
-                    dtTickSep = DateTime.FromOADate(tickPositionsMajor[1]) - DateTime.FromOADate(tickPositionsMajor[0]);
-                    if (dtTickSep.TotalDays > 365 * 5)
-                        dtFmt = "{0:yyyy}";
-                    else if (dtTickSep.TotalDays > 365)
-                        dtFmt = "{0:yyyy-MM}";
-                    else if (dtTickSep.TotalDays > .5)
-                        dtFmt = "{0:yyyy-MM-dd}";
-                    else if (dtTickSep.TotalMinutes > .5)
-                        dtFmt = "{0:yyyy-MM-dd\nH:mm}";
-                    else
-                        dtFmt = "{0:yyyy-MM-dd\nH:mm:ss}";
-                }
-                catch
-                {
-                }
-
-                tickLabels = new string[tickPositionsMajor.Length];
-                for (int i = 0; i < tickPositionsMajor.Length; i++)
-                {
-                    DateTime dt;
-                    try
-                    {
-                        dt = DateTime.FromOADate(tickPositionsMajor[i]);
-                        string lbl = string.Format(dtFmt, dt);
-                        tickLabels[i] = lbl;
-                    }
-                    catch
-                    {
-                        tickLabels[i] = "?";
-                    }
-                }
+                tickLabels = GetDateLabels(tickPositionsMajor);
+                tickPositionsMinor = null;
             }
             else
             {
                 GetPrettyTickLabels(tickPositionsMajor, out tickLabels, out cornerLabel,
                     settings.useMultiplierNotation, settings.useOffsetNotation, settings.useExponentialNotation);
+                tickPositionsMinor = MinorFromMajor(tickPositionsMajor, 5, low, high);
             }
         }
 
@@ -195,6 +163,48 @@ namespace ScottPlot
                     minorTicks.Add(pos);
 
             return minorTicks.ToArray();
+        }
+
+        public static string[] GetDateLabels(double[] ticksOADate)
+        {
+
+            TimeSpan dtTickSep;
+            string dtFmt = null;
+
+            try
+            {
+                dtTickSep = DateTime.FromOADate(ticksOADate[1]) - DateTime.FromOADate(ticksOADate[0]);
+                if (dtTickSep.TotalDays > 365 * 5)
+                    dtFmt = "{0:yyyy}";
+                else if (dtTickSep.TotalDays > 365)
+                    dtFmt = "{0:yyyy-MM}";
+                else if (dtTickSep.TotalDays > .5)
+                    dtFmt = "{0:yyyy-MM-dd}";
+                else if (dtTickSep.TotalMinutes > .5)
+                    dtFmt = "{0:yyyy-MM-dd\nH:mm}";
+                else
+                    dtFmt = "{0:yyyy-MM-dd\nH:mm:ss}";
+            }
+            catch
+            {
+            }
+
+            string[] labels = new string[ticksOADate.Length];
+            for (int i = 0; i < ticksOADate.Length; i++)
+            {
+                DateTime dt;
+                try
+                {
+                    dt = DateTime.FromOADate(ticksOADate[i]);
+                    string lbl = string.Format(dtFmt, dt);
+                    labels[i] = lbl;
+                }
+                catch
+                {
+                    labels[i] = "?";
+                }
+            }
+            return labels;
         }
     }
 }
