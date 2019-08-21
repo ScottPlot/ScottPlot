@@ -166,6 +166,8 @@ namespace ScottPlot
                 Render(skipIfCurrentlyRendering: false);
             else if (e.Button == MouseButtons.Right && plt.mouseTracker.mouseDownStopwatch.ElapsedMilliseconds < 100)
                 LaunchMenu();
+            if (e.Button == MouseButtons.Middle)
+                plt.mouseTracker.MiddleButtonClicked();
         }
 
         private void PbPlot_MouseDoubleClick(object sender, MouseEventArgs e)
