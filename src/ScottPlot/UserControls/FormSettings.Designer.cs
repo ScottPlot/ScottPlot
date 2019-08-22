@@ -28,13 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnFitData = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.btnApplyAxes = new System.Windows.Forms.Button();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.btnSave = new System.Windows.Forms.Button();
             this.tbY2 = new System.Windows.Forms.TextBox();
             this.tbY1 = new System.Windows.Forms.TextBox();
             this.tbX2 = new System.Windows.Forms.TextBox();
@@ -46,133 +40,80 @@
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.lbPlotObjects = new System.Windows.Forms.ListBox();
             this.btnExportCSV = new System.Windows.Forms.Button();
-            this.btnDelete = new System.Windows.Forms.Button();
-            this.btnDown = new System.Windows.Forms.Button();
-            this.btnUp = new System.Windows.Forms.Button();
-            this.lblVersion = new System.Windows.Forms.Label();
-            this.lblGitHub = new System.Windows.Forms.Label();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.groupBox1.SuspendLayout();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.cbYdateTime = new System.Windows.Forms.CheckBox();
+            this.cbYminor = new System.Windows.Forms.CheckBox();
+            this.btnFitDataY = new System.Windows.Forms.Button();
+            this.tbYlabel = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.cbXdateTime = new System.Windows.Forms.CheckBox();
+            this.cbXminor = new System.Windows.Forms.CheckBox();
+            this.btnFitDataX = new System.Windows.Forms.Button();
+            this.tbXlabel = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cbTicksMult = new System.Windows.Forms.CheckBox();
+            this.cbTicksOffset = new System.Windows.Forms.CheckBox();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
-            this.groupBox2.SuspendLayout();
+            this.groupBox5.SuspendLayout();
+            this.groupBox6.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // btnFitData
+            // btnSave
             // 
-            this.btnFitData.Location = new System.Drawing.Point(71, 85);
-            this.btnFitData.Name = "btnFitData";
-            this.btnFitData.Size = new System.Drawing.Size(100, 23);
-            this.btnFitData.TabIndex = 0;
-            this.btnFitData.Text = "Fit Data";
-            this.btnFitData.UseVisualStyleBackColor = true;
-            this.btnFitData.Click += new System.EventHandler(this.BtnFitData_Click);
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.btnApplyAxes);
-            this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.btnFitData);
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.tbY2);
-            this.groupBox1.Controls.Add(this.tbY1);
-            this.groupBox1.Controls.Add(this.tbX2);
-            this.groupBox1.Controls.Add(this.tbX1);
-            this.groupBox1.Location = new System.Drawing.Point(12, 12);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(297, 119);
-            this.groupBox1.TabIndex = 3;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Axis Limits";
-            // 
-            // btnApplyAxes
-            // 
-            this.btnApplyAxes.Location = new System.Drawing.Point(177, 85);
-            this.btnApplyAxes.Name = "btnApplyAxes";
-            this.btnApplyAxes.Size = new System.Drawing.Size(100, 23);
-            this.btnApplyAxes.TabIndex = 10;
-            this.btnApplyAxes.Text = "Apply";
-            this.btnApplyAxes.UseVisualStyleBackColor = true;
-            this.btnApplyAxes.Click += new System.EventHandler(this.BtnApplyAxes_Click);
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(210, 17);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(34, 13);
-            this.label4.TabIndex = 9;
-            this.label4.Text = "upper";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(103, 17);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(32, 13);
-            this.label3.TabIndex = 8;
-            this.label3.Text = "lower";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(10, 62);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(44, 13);
-            this.label2.TabIndex = 7;
-            this.label2.Text = "vertical:";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(10, 36);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(55, 13);
-            this.label1.TabIndex = 6;
-            this.label1.Text = "horizontal:";
+            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSave.Location = new System.Drawing.Point(390, 441);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(59, 23);
+            this.btnSave.TabIndex = 10;
+            this.btnSave.Text = "Save";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.BtnSave_Click);
             // 
             // tbY2
             // 
-            this.tbY2.Location = new System.Drawing.Point(177, 59);
+            this.tbY2.Location = new System.Drawing.Point(64, 44);
             this.tbY2.Name = "tbY2";
             this.tbY2.Size = new System.Drawing.Size(100, 20);
             this.tbY2.TabIndex = 4;
             // 
             // tbY1
             // 
-            this.tbY1.Location = new System.Drawing.Point(71, 59);
+            this.tbY1.Location = new System.Drawing.Point(64, 70);
             this.tbY1.Name = "tbY1";
             this.tbY1.Size = new System.Drawing.Size(100, 20);
             this.tbY1.TabIndex = 5;
             // 
             // tbX2
             // 
-            this.tbX2.Location = new System.Drawing.Point(177, 33);
+            this.tbX2.Location = new System.Drawing.Point(64, 44);
             this.tbX2.Name = "tbX2";
             this.tbX2.Size = new System.Drawing.Size(100, 20);
             this.tbX2.TabIndex = 3;
             // 
             // tbX1
             // 
-            this.tbX1.Location = new System.Drawing.Point(71, 33);
+            this.tbX1.Location = new System.Drawing.Point(64, 70);
             this.tbX1.Name = "tbX1";
             this.tbX1.Size = new System.Drawing.Size(100, 20);
             this.tbX1.TabIndex = 2;
             // 
             // groupBox3
             // 
-            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox3.Controls.Add(this.cbQualityLowWhileDragging);
             this.groupBox3.Controls.Add(this.rbQualityHigh);
             this.groupBox3.Controls.Add(this.rbQualityLow);
-            this.groupBox3.Location = new System.Drawing.Point(12, 137);
+            this.groupBox3.Location = new System.Drawing.Point(12, 417);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(297, 47);
+            this.groupBox3.Size = new System.Drawing.Size(245, 47);
             this.groupBox3.TabIndex = 5;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Image Quality";
@@ -186,7 +127,6 @@
             this.cbQualityLowWhileDragging.TabIndex = 2;
             this.cbQualityLowWhileDragging.Text = "low while dragging";
             this.cbQualityLowWhileDragging.UseVisualStyleBackColor = true;
-            this.cbQualityLowWhileDragging.CheckedChanged += new System.EventHandler(this.CbQualityLowWhileDragging_CheckedChanged);
             // 
             // rbQualityHigh
             // 
@@ -198,7 +138,6 @@
             this.rbQualityHigh.TabStop = true;
             this.rbQualityHigh.Text = "high";
             this.rbQualityHigh.UseVisualStyleBackColor = true;
-            this.rbQualityHigh.CheckedChanged += new System.EventHandler(this.RbQualityHigh_CheckedChanged);
             // 
             // rbQualityLow
             // 
@@ -210,24 +149,19 @@
             this.rbQualityLow.TabStop = true;
             this.rbQualityLow.Text = "low";
             this.rbQualityLow.UseVisualStyleBackColor = true;
-            this.rbQualityLow.CheckedChanged += new System.EventHandler(this.RbQualityLow_CheckedChanged);
             // 
             // groupBox4
             // 
-            this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox4.Controls.Add(this.lbPlotObjects);
             this.groupBox4.Controls.Add(this.btnExportCSV);
-            this.groupBox4.Controls.Add(this.btnDelete);
-            this.groupBox4.Controls.Add(this.btnDown);
-            this.groupBox4.Controls.Add(this.btnUp);
-            this.groupBox4.Location = new System.Drawing.Point(12, 257);
+            this.groupBox4.Location = new System.Drawing.Point(263, 12);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(297, 279);
+            this.groupBox4.Size = new System.Drawing.Size(251, 399);
             this.groupBox4.TabIndex = 6;
             this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Plot Objects";
+            this.groupBox4.Text = "Data Export";
             // 
             // lbPlotObjects
             // 
@@ -237,7 +171,8 @@
             this.lbPlotObjects.FormattingEnabled = true;
             this.lbPlotObjects.Location = new System.Drawing.Point(6, 19);
             this.lbPlotObjects.Name = "lbPlotObjects";
-            this.lbPlotObjects.Size = new System.Drawing.Size(285, 225);
+            this.lbPlotObjects.ScrollAlwaysVisible = true;
+            this.lbPlotObjects.Size = new System.Drawing.Size(239, 342);
             this.lbPlotObjects.TabIndex = 4;
             this.lbPlotObjects.SelectedIndexChanged += new System.EventHandler(this.LbPlotObjects_SelectedIndexChanged);
             // 
@@ -245,114 +180,249 @@
             // 
             this.btnExportCSV.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnExportCSV.Enabled = false;
-            this.btnExportCSV.Location = new System.Drawing.Point(177, 250);
+            this.btnExportCSV.Location = new System.Drawing.Point(6, 370);
             this.btnExportCSV.Name = "btnExportCSV";
-            this.btnExportCSV.Size = new System.Drawing.Size(93, 23);
+            this.btnExportCSV.Size = new System.Drawing.Size(76, 23);
             this.btnExportCSV.TabIndex = 3;
             this.btnExportCSV.Text = "export CSV";
             this.btnExportCSV.UseVisualStyleBackColor = true;
             this.btnExportCSV.Click += new System.EventHandler(this.BtnExportCSV_Click);
             // 
-            // btnDelete
+            // groupBox5
             // 
-            this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnDelete.Enabled = false;
-            this.btnDelete.Location = new System.Drawing.Point(112, 250);
-            this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(59, 23);
-            this.btnDelete.TabIndex = 2;
-            this.btnDelete.Text = "delete";
-            this.btnDelete.UseVisualStyleBackColor = true;
+            this.groupBox5.Controls.Add(this.cbYdateTime);
+            this.groupBox5.Controls.Add(this.cbYminor);
+            this.groupBox5.Controls.Add(this.btnFitDataY);
+            this.groupBox5.Controls.Add(this.tbYlabel);
+            this.groupBox5.Controls.Add(this.label7);
+            this.groupBox5.Controls.Add(this.label6);
+            this.groupBox5.Controls.Add(this.label5);
+            this.groupBox5.Controls.Add(this.tbY1);
+            this.groupBox5.Controls.Add(this.tbY2);
+            this.groupBox5.Location = new System.Drawing.Point(12, 12);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(245, 170);
+            this.groupBox5.TabIndex = 12;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Vertical Axis";
             // 
-            // btnDown
+            // cbYdateTime
             // 
-            this.btnDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnDown.Enabled = false;
-            this.btnDown.Location = new System.Drawing.Point(57, 250);
-            this.btnDown.Name = "btnDown";
-            this.btnDown.Size = new System.Drawing.Size(49, 23);
-            this.btnDown.TabIndex = 1;
-            this.btnDown.Text = "down";
-            this.btnDown.UseVisualStyleBackColor = true;
+            this.cbYdateTime.AutoSize = true;
+            this.cbYdateTime.Location = new System.Drawing.Point(64, 148);
+            this.cbYdateTime.Name = "cbYdateTime";
+            this.cbYdateTime.Size = new System.Drawing.Size(122, 17);
+            this.cbYdateTime.TabIndex = 15;
+            this.cbYdateTime.Text = "date and time format";
+            this.cbYdateTime.UseVisualStyleBackColor = true;
             // 
-            // btnUp
+            // cbYminor
             // 
-            this.btnUp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnUp.Enabled = false;
-            this.btnUp.Location = new System.Drawing.Point(6, 250);
-            this.btnUp.Name = "btnUp";
-            this.btnUp.Size = new System.Drawing.Size(45, 23);
-            this.btnUp.TabIndex = 0;
-            this.btnUp.Text = "up";
-            this.btnUp.UseVisualStyleBackColor = true;
+            this.cbYminor.AutoSize = true;
+            this.cbYminor.Location = new System.Drawing.Point(64, 125);
+            this.cbYminor.Name = "cbYminor";
+            this.cbYminor.Size = new System.Drawing.Size(104, 17);
+            this.cbYminor.TabIndex = 14;
+            this.cbYminor.Text = "show minor ticks";
+            this.cbYminor.UseVisualStyleBackColor = true;
             // 
-            // lblVersion
+            // btnFitDataY
             // 
-            this.lblVersion.AutoSize = true;
-            this.lblVersion.Location = new System.Drawing.Point(6, 18);
-            this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Size = new System.Drawing.Size(45, 13);
-            this.lblVersion.TabIndex = 6;
-            this.lblVersion.Text = "Version:";
+            this.btnFitDataY.Location = new System.Drawing.Point(64, 96);
+            this.btnFitDataY.Name = "btnFitDataY";
+            this.btnFitDataY.Size = new System.Drawing.Size(100, 23);
+            this.btnFitDataY.TabIndex = 13;
+            this.btnFitDataY.Text = "Fit data";
+            this.btnFitDataY.UseVisualStyleBackColor = true;
+            this.btnFitDataY.Click += new System.EventHandler(this.BtnFitDataY_Click);
             // 
-            // lblGitHub
+            // tbYlabel
             // 
-            this.lblGitHub.AutoSize = true;
-            this.lblGitHub.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lblGitHub.ForeColor = System.Drawing.Color.Blue;
-            this.lblGitHub.Location = new System.Drawing.Point(6, 38);
-            this.lblGitHub.Name = "lblGitHub";
-            this.lblGitHub.Size = new System.Drawing.Size(194, 13);
-            this.lblGitHub.TabIndex = 7;
-            this.lblGitHub.Text = "https://github.com/swharden/ScottPlot";
-            this.lblGitHub.Click += new System.EventHandler(this.LblGitHub_Click);
-            this.lblGitHub.MouseEnter += new System.EventHandler(this.LblGitHub_MouseEnter);
-            this.lblGitHub.MouseLeave += new System.EventHandler(this.LblGitHub_MouseLeave);
+            this.tbYlabel.Location = new System.Drawing.Point(64, 18);
+            this.tbYlabel.Name = "tbYlabel";
+            this.tbYlabel.Size = new System.Drawing.Size(170, 20);
+            this.tbYlabel.TabIndex = 12;
             // 
-            // groupBox2
+            // label7
             // 
-            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox2.Controls.Add(this.lblGitHub);
-            this.groupBox2.Controls.Add(this.lblVersion);
-            this.groupBox2.Location = new System.Drawing.Point(12, 190);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(297, 61);
-            this.groupBox2.TabIndex = 4;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "ScottPlot";
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(6, 21);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(29, 13);
+            this.label7.TabIndex = 11;
+            this.label7.Text = "label";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 47);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(54, 13);
+            this.label6.TabIndex = 10;
+            this.label6.Text = "upper limit";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 73);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(52, 13);
+            this.label5.TabIndex = 9;
+            this.label5.Text = "lower limit";
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.cbXdateTime);
+            this.groupBox6.Controls.Add(this.cbXminor);
+            this.groupBox6.Controls.Add(this.btnFitDataX);
+            this.groupBox6.Controls.Add(this.tbXlabel);
+            this.groupBox6.Controls.Add(this.label8);
+            this.groupBox6.Controls.Add(this.label9);
+            this.groupBox6.Controls.Add(this.label10);
+            this.groupBox6.Controls.Add(this.tbX2);
+            this.groupBox6.Controls.Add(this.tbX1);
+            this.groupBox6.Location = new System.Drawing.Point(12, 188);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(245, 170);
+            this.groupBox6.TabIndex = 13;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Horizontal Axis";
+            // 
+            // cbXdateTime
+            // 
+            this.cbXdateTime.AutoSize = true;
+            this.cbXdateTime.Location = new System.Drawing.Point(64, 148);
+            this.cbXdateTime.Name = "cbXdateTime";
+            this.cbXdateTime.Size = new System.Drawing.Size(122, 17);
+            this.cbXdateTime.TabIndex = 16;
+            this.cbXdateTime.Text = "date and time format";
+            this.cbXdateTime.UseVisualStyleBackColor = true;
+            // 
+            // cbXminor
+            // 
+            this.cbXminor.AutoSize = true;
+            this.cbXminor.Location = new System.Drawing.Point(64, 125);
+            this.cbXminor.Name = "cbXminor";
+            this.cbXminor.Size = new System.Drawing.Size(104, 17);
+            this.cbXminor.TabIndex = 15;
+            this.cbXminor.Text = "show minor ticks";
+            this.cbXminor.UseVisualStyleBackColor = true;
+            // 
+            // btnFitDataX
+            // 
+            this.btnFitDataX.Location = new System.Drawing.Point(64, 96);
+            this.btnFitDataX.Name = "btnFitDataX";
+            this.btnFitDataX.Size = new System.Drawing.Size(100, 23);
+            this.btnFitDataX.TabIndex = 14;
+            this.btnFitDataX.Text = "Fit data";
+            this.btnFitDataX.UseVisualStyleBackColor = true;
+            this.btnFitDataX.Click += new System.EventHandler(this.BtnFitDataX_Click);
+            // 
+            // tbXlabel
+            // 
+            this.tbXlabel.Location = new System.Drawing.Point(64, 18);
+            this.tbXlabel.Name = "tbXlabel";
+            this.tbXlabel.Size = new System.Drawing.Size(170, 20);
+            this.tbXlabel.TabIndex = 12;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(6, 21);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(29, 13);
+            this.label8.TabIndex = 11;
+            this.label8.Text = "label";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(6, 47);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(54, 13);
+            this.label9.TabIndex = 10;
+            this.label9.Text = "upper limit";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(6, 73);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(52, 13);
+            this.label10.TabIndex = 9;
+            this.label10.Text = "lower limit";
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCancel.Location = new System.Drawing.Point(455, 441);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(59, 23);
+            this.btnCancel.TabIndex = 14;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.BtnCancel_Click);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.cbTicksMult);
+            this.groupBox1.Controls.Add(this.cbTicksOffset);
+            this.groupBox1.Location = new System.Drawing.Point(12, 364);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(245, 47);
+            this.groupBox1.TabIndex = 15;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Tick Display";
+            // 
+            // cbTicksMult
+            // 
+            this.cbTicksMult.AutoSize = true;
+            this.cbTicksMult.Location = new System.Drawing.Point(64, 19);
+            this.cbTicksMult.Name = "cbTicksMult";
+            this.cbTicksMult.Size = new System.Drawing.Size(66, 17);
+            this.cbTicksMult.TabIndex = 2;
+            this.cbTicksMult.Text = "multiplier";
+            this.cbTicksMult.UseVisualStyleBackColor = true;
+            // 
+            // cbTicksOffset
+            // 
+            this.cbTicksOffset.AutoSize = true;
+            this.cbTicksOffset.Location = new System.Drawing.Point(6, 19);
+            this.cbTicksOffset.Name = "cbTicksOffset";
+            this.cbTicksOffset.Size = new System.Drawing.Size(52, 17);
+            this.cbTicksOffset.TabIndex = 2;
+            this.cbTicksOffset.Text = "offset";
+            this.cbTicksOffset.UseVisualStyleBackColor = true;
             // 
             // FormSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(321, 548);
+            this.ClientSize = new System.Drawing.Size(526, 476);
+            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.btnCancel);
+            this.Controls.Add(this.btnSave);
+            this.Controls.Add(this.groupBox6);
+            this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.groupBox1);
             this.Name = "FormSettings";
-            this.Text = "ScottPlot Settings";
+            this.Text = "Plot Settings";
             this.Load += new System.EventHandler(this.FormSettings_Load);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.groupBox4.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Button btnFitData;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox tbY1;
         private System.Windows.Forms.TextBox tbY2;
         private System.Windows.Forms.TextBox tbX2;
@@ -362,14 +432,28 @@
         private System.Windows.Forms.RadioButton rbQualityLow;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.Button btnExportCSV;
-        private System.Windows.Forms.Button btnDelete;
-        private System.Windows.Forms.Button btnDown;
-        private System.Windows.Forms.Button btnUp;
         private System.Windows.Forms.ListBox lbPlotObjects;
-        private System.Windows.Forms.Button btnApplyAxes;
+        private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.CheckBox cbQualityLowWhileDragging;
-        private System.Windows.Forms.Label lblVersion;
-        private System.Windows.Forms.Label lblGitHub;
-        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.Button btnFitDataY;
+        private System.Windows.Forms.TextBox tbYlabel;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.Button btnFitDataX;
+        private System.Windows.Forms.TextBox tbXlabel;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.CheckBox cbTicksMult;
+        private System.Windows.Forms.CheckBox cbTicksOffset;
+        private System.Windows.Forms.CheckBox cbYminor;
+        private System.Windows.Forms.CheckBox cbXminor;
+        private System.Windows.Forms.CheckBox cbYdateTime;
+        private System.Windows.Forms.CheckBox cbXdateTime;
     }
 }

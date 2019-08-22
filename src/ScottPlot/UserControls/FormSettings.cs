@@ -19,10 +19,7 @@ namespace ScottPlot.UserControls
         {
             this.plt = plt;
             InitializeComponent();
-            UpdateTextBoxesFromAxes();
-            lblVersion.Text = $"Version {Tools.GetVersionString()} ({Tools.GetFrameworkVersionString()})";
-            UpdatePlotObjectList();
-            UpdateQualityChecks();
+            PopualteGuiFromPlot();
         }
 
         private void FormSettings_Load(object sender, EventArgs e)
@@ -30,58 +27,47 @@ namespace ScottPlot.UserControls
 
         }
 
-        private void UpdateQualityChecks()
+        private void PopualteGuiFromPlot()
         {
+            // vertical axis
+            tbYlabel.Text = plt.GetSettings().axisLabelY;
+            tbY2.Text = Math.Round(plt.Axis()[3], 4).ToString();
+            tbY1.Text = Math.Round(plt.Axis()[2], 4).ToString();
+            cbYminor.Checked = plt.GetSettings().displayTicksYminor;
+            cbYdateTime.Checked = plt.GetSettings().tickDateTimeY;
+
+            // horizontal axis
+            tbXlabel.Text = plt.GetSettings().axisLabelX;
+            tbX2.Text = Math.Round(plt.Axis()[1], 4).ToString();
+            tbX1.Text = Math.Round(plt.Axis()[0], 4).ToString();
+            cbXminor.Checked = plt.GetSettings().displayTicksXminor;
+            cbXdateTime.Checked = plt.GetSettings().tickDateTimeX;
+
+            // tick display options
+            cbTicksOffset.Checked = plt.GetSettings().useOffsetNotation;
+            cbTicksMult.Checked = plt.GetSettings().useMultiplierNotation;
+
+            // image quality
             rbQualityLow.Checked = !plt.GetSettings().antiAliasData;
             rbQualityHigh.Checked = plt.GetSettings().antiAliasData;
             cbQualityLowWhileDragging.Checked = plt.mouseTracker.lowQualityWhileInteracting;
-        }
 
-        private void UpdateTextBoxesFromAxes()
-        {
-            tbX1.Text = Math.Round(plt.Axis()[0], 4).ToString();
-            tbX2.Text = Math.Round(plt.Axis()[1], 4).ToString();
-            tbY1.Text = Math.Round(plt.Axis()[2], 4).ToString();
-            tbY2.Text = Math.Round(plt.Axis()[3], 4).ToString();
-        }
-
-        private void UpdatePlotObjectList()
-        {
+            // list of plottables
             lbPlotObjects.Items.Clear();
             foreach (var plotObject in plt.GetPlottables())
                 lbPlotObjects.Items.Add(plotObject);
         }
 
-        private void BtnFitData_Click(object sender, EventArgs e)
+        private void BtnFitDataY_Click(object sender, EventArgs e)
         {
-            plt.AxisAuto();
-            UpdateTextBoxesFromAxes();
+            plt.AxisAutoY();
+            PopualteGuiFromPlot();
         }
 
-        private void BtnApplyAxes_Click(object sender, EventArgs e)
+        private void BtnFitDataX_Click(object sender, EventArgs e)
         {
-            double x1, x2, y1, y2;
-            double.TryParse(tbX1.Text, out x1);
-            double.TryParse(tbX2.Text, out x2);
-            double.TryParse(tbY1.Text, out y1);
-            double.TryParse(tbY2.Text, out y2);
-            plt.Axis(x1, x2, y1, y2);
-            this.Close();
-        }
-
-        private void LblGitHub_Click(object sender, EventArgs e)
-        {
-            System.Diagnostics.Process.Start("https://github.com/swharden/ScottPlot");
-        }
-
-        private void LblGitHub_MouseEnter(object sender, EventArgs e)
-        {
-            lblGitHub.Font = new Font(label1.Font.Name, label1.Font.SizeInPoints, FontStyle.Underline);
-        }
-
-        private void LblGitHub_MouseLeave(object sender, EventArgs e)
-        {
-            lblGitHub.Font = new Font(label1.Font.Name, label1.Font.SizeInPoints, FontStyle.Regular);
+            plt.AxisAutoX();
+            PopualteGuiFromPlot();
         }
 
         private void BtnExportCSV_Click(object sender, EventArgs e)
@@ -97,27 +83,48 @@ namespace ScottPlot.UserControls
                 plottable.SaveCSV(savefile.FileName);
         }
 
-        private void RbQualityLow_CheckedChanged(object sender, EventArgs e)
-        {
-            plt.AntiAlias(rbQualityHigh.Checked, rbQualityHigh.Checked);
-        }
-
-        private void RbQualityHigh_CheckedChanged(object sender, EventArgs e)
-        {
-            plt.AntiAlias(rbQualityHigh.Checked, rbQualityHigh.Checked);
-        }
-
-        private void CbQualityLowWhileDragging_CheckedChanged(object sender, EventArgs e)
-        {
-            plt.mouseTracker.lowQualityWhileInteracting = cbQualityLowWhileDragging.Checked;
-        }
-
         private void LbPlotObjects_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (lbPlotObjects.Items.Count > 0 && lbPlotObjects.SelectedItem != null)
                 btnExportCSV.Enabled = true;
             else
                 btnExportCSV.Enabled = false;
+        }
+
+        private void BtnSave_Click(object sender, EventArgs e)
+        {
+            var settings = plt.GetSettings();
+
+            // vertical axis
+            plt.YLabel(tbYlabel.Text);
+            plt.Ticks(displayTicksYminor: cbYminor.Checked, dateTimeY: cbYdateTime.Checked);
+            double y1, y2;
+            double.TryParse(tbY1.Text, out y1);
+            double.TryParse(tbY2.Text, out y2);
+            plt.Axis(y1: y1, y2: y2);
+
+            // horizontal axis
+            plt.XLabel(tbXlabel.Text);
+            plt.Ticks(displayTicksXminor: cbXminor.Checked, dateTimeX: cbXdateTime.Checked);
+            double x1, x2;
+            double.TryParse(tbX1.Text, out x1);
+            double.TryParse(tbX2.Text, out x2);
+            plt.Axis(x1: x1, x2: x2);
+
+            // tick display options
+            plt.Ticks(useOffsetNotation: cbTicksOffset.Checked, useMultiplierNotation: cbTicksMult.Checked);
+
+
+            // image quality
+            plt.AntiAlias(figure: rbQualityHigh.Checked, data: rbQualityHigh.Checked);
+            plt.mouseTracker.lowQualityWhileInteracting = cbQualityLowWhileDragging.Checked;
+
+            this.Close();
+        }
+
+        private void BtnCancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
