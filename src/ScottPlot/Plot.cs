@@ -658,6 +658,28 @@ namespace ScottPlot
             TightenLayout(tightenPadding);
         }
 
+        public void AxisAutoX(
+            double margin = .05,
+            bool expandOnly = false
+            )
+        {
+            double oldY1 = settings.axis[2];
+            double oldY2 = settings.axis[3];
+            AxisAuto(horizontalMargin: margin, xExpandOnly: expandOnly);
+            Axis(y1: oldY1, y2: oldY2);
+        }
+
+        public void AxisAutoY(
+            double margin = .1,
+            bool expandOnly = false
+            )
+        {
+            double oldX1 = settings.axis[0];
+            double oldX2 = settings.axis[1];
+            AxisAuto(verticalMargin: margin, yExpandOnly: expandOnly);
+            Axis(x1: oldX1, x2: oldX2);
+        }
+
         public void AxisZoom(
             double xFrac = 1,
             double yFrac = 1,
