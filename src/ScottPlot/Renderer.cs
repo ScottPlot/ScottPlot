@@ -15,14 +15,16 @@ namespace ScottPlot
             if (settings.gfxFigure != null)
                 settings.gfxFigure.Clear(settings.figureBackgroundColor);
         }
-
-        public static void DataBackground(Settings settings)
+        // Allow replace static methods at runtime
+        public static Action<Settings> DataBackground { get; set; } = DataBackgroundImpl;
+        public static void DataBackgroundImpl(Settings settings)
         {
             if (settings.gfxData != null)
                 settings.gfxData.Clear(settings.dataBackgroundColor);
         }
 
-        public static void DataGrid(Settings settings)
+        public static Action<Settings> DataGrid { get; set; } = DataGridImpl;
+        public static void DataGridImpl(Settings settings)
         {
             if (settings.displayGrid == false)
                 return;
@@ -82,7 +84,8 @@ namespace ScottPlot
             }
         }
 
-        public static void PlaceDataOntoFigure(Settings settings)
+        public static Action<Settings> PlaceDataOntoFigure { get; set; } = PlaceDataOntoFigureImpl;
+        public static void PlaceDataOntoFigureImpl(Settings settings)
         {
             if (settings.gfxFigure == null || settings.bmpData == null)
                 return;

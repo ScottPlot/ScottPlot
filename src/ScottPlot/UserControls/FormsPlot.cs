@@ -51,7 +51,7 @@ namespace ScottPlot
             }
         }
 
-        private void SetupMenu()
+        protected void SetupMenu()
         {
             rightClickMenu = new ContextMenuStrip();
             rightClickMenu.Items.Add("Save Image");
@@ -94,7 +94,7 @@ namespace ScottPlot
             }
         }
 
-        private void PbPlot_SizeChanged(object sender, EventArgs e)
+        protected void PbPlot_SizeChanged(object sender, EventArgs e)
         {
             plt.Resize(Width, Height);
             Render(skipIfCurrentlyRendering: false);
@@ -177,7 +177,7 @@ namespace ScottPlot
             Render(skipIfCurrentlyRendering: false);
         }
 
-        private void PbPlot_MouseWheel(object sender, MouseEventArgs e)
+        protected void PbPlot_MouseWheel(object sender, MouseEventArgs e)
         {
             PointF zoomCenter = plt.CoordinateFromPixel(e.Location);
 

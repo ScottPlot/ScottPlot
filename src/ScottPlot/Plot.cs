@@ -15,8 +15,14 @@ namespace ScottPlot
     public class Plot
     {
         public PixelFormat pixelFormat = PixelFormat.Format32bppPArgb;
-        private readonly Settings settings;
+        protected readonly Settings settings;
         public readonly MouseTracker mouseTracker;
+
+        protected Plot(Settings settings) // for setting readonly field
+        {
+            this.settings = settings;
+            mouseTracker = new MouseTracker(settings);
+        }
 
         public Plot(int width = 800, int height = 600)
         {
@@ -59,7 +65,7 @@ namespace ScottPlot
             settings.gfxLegend = Graphics.FromImage(settings.bmpLegend);
         }
 
-        private void InitializeBitmaps()
+        protected virtual void InitializeBitmaps()
         {
             settings.bmpFigure = null;
             settings.gfxFigure = null;
@@ -128,7 +134,7 @@ namespace ScottPlot
             }
         }
 
-        private void RenderBitmap()
+        protected void RenderBitmap()
         {
             if (!settings.axisHasBeenIntentionallySet && settings.plottables.Count > 0)
                 settings.AxisAuto();
@@ -406,7 +412,7 @@ namespace ScottPlot
             return signal;
         }
 
-        public PlottableSignalConst<T> PlotSignalConst<T>(
+        public virtual PlottableSignalConst<T> PlotSignalConst<T>(
             T[] ys,
             double sampleRate = 1,
             double xOffset = 0,

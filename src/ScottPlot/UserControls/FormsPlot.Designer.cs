@@ -62,6 +62,6 @@
 
         #endregion
 
-        private System.Windows.Forms.PictureBox pbPlot;
+        protected System.Windows.Forms.PictureBox pbPlot;
     }
 }
