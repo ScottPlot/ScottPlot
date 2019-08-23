@@ -30,6 +30,9 @@ namespace plottable_const
             formsPlot1.plt.PlotSignalConst(data.Select(x=>(int)x).ToArray());
             formsPlot1.plt.Benchmark();
             formsPlot1.Render();
+            formsPlotSkia1.plt.PlotSignalConst(data.Select(x => (int)x).ToArray());
+            formsPlotSkia1.plt.Benchmark();
+            formsPlotSkia1.Render();
         }
 
         private void BtnUpdateData_Click(object sender, EventArgs e)
