@@ -9,6 +9,7 @@ namespace ScottPlot
     public partial class FormsPlot : UserControl
     {
         public Plot plt = new Plot();
+
         private bool currentlyRendering = false;
         private System.Timers.Timer lastInteractionTimer;
         ContextMenuStrip rightClickMenu;
@@ -51,6 +52,21 @@ namespace ScottPlot
             }
         }
 
+        private bool enableRightClickMenu = true;
+        public void Configure(
+            bool? enablePanning = null,
+            bool? enableZooming = null,
+            bool? enableRightClickMenu = null
+            )
+        {
+            if (enablePanning != null)
+                plt.mouseTracker.enablePanning = (bool)enablePanning;
+            if (enableZooming != null)
+                plt.mouseTracker.enableZooming = (bool)enableZooming;
+            if (enableRightClickMenu != null)
+                this.enableRightClickMenu = (bool)enableRightClickMenu;
+        }
+
         private void SetupMenu()
         {
             rightClickMenu = new ContextMenuStrip();
@@ -60,13 +76,14 @@ namespace ScottPlot
             rightClickMenu.ItemClicked += new ToolStripItemClickedEventHandler(RightClickMenuItemClicked);
         }
 
-        public void LaunchMenu()
+        public virtual void LaunchMenu()
         {
             // override this to use your own custom menu
-            plt.GetSettings().mouseIsPanning = false;
-            plt.GetSettings().mouseIsZooming = false;
-            rightClickMenu.Show(pbPlot, PointToClient(Cursor.Position));
-            Render(skipIfCurrentlyRendering: false, lowQuality: false);
+            if (enableRightClickMenu)
+            {
+                rightClickMenu.Show(pbPlot, PointToClient(Cursor.Position));
+                Render(skipIfCurrentlyRendering: false, lowQuality: false);
+            }
         }
 
         private void RightClickMenuItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -159,10 +176,13 @@ namespace ScottPlot
 
             if (plt.mouseTracker.PlottableUnderCursor(e.Location) != null)
                 OnMouseDropPlottable(EventArgs.Empty);
+
+            plt.mouseTracker.MouseIs(false, false);
         }
 
         private void PbPlot_MouseClick(object sender, MouseEventArgs e)
         {
+            OnMouseClicked(e);
             if (e.Button == MouseButtons.Middle)
                 Render(skipIfCurrentlyRendering: false);
             else if (e.Button == MouseButtons.Right && plt.mouseTracker.mouseDownStopwatch.ElapsedMilliseconds < 100)
@@ -209,10 +229,12 @@ namespace ScottPlot
         public event EventHandler MouseMoved;
         public event EventHandler MouseDragged;
         public event EventHandler MouseDropPlottable;
+        public event MouseEventHandler MouseClicked;
         protected virtual void OnMouseDownOnPlottable(EventArgs e) { MouseDownOnPlottable?.Invoke(this, e); }
         protected virtual void OnMouseDragPlottable(EventArgs e) { MouseDragPlottable?.Invoke(this, e); }
         protected virtual void OnMouseMoved(EventArgs e) { MouseMoved?.Invoke(this, e); }
         protected virtual void OnMouseDragged(EventArgs e) { MouseDragged?.Invoke(this, e); }
         protected virtual void OnMouseDropPlottable(EventArgs e) { MouseDropPlottable?.Invoke(this, e); }
+        protected virtual void OnMouseClicked(MouseEventArgs e) { MouseClicked?.Invoke(this, e); }
     }
 }
