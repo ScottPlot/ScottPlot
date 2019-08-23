@@ -45,7 +45,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "extreme axes", "..\demos\sr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tick tester", "..\demos\src\tick-tester-2\tick tester.csproj", "{E3C5B3CC-118C-4866-B793-F120EA9DA8F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "plottableConst", "..\demos\src\plottable-const\plottableConst.csproj", "{B6CBD66D-272B-4A7F-915D-0F6E04F2BF64}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "signalConst", "..\demos\src\plottable-const\signalConst.csproj", "{B6CBD66D-272B-4A7F-915D-0F6E04F2BF64}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "benchmark", "..\demos\src\benchmark\benchmark.csproj", "{1C772DC2-D78B-4571-82DA-FBD2116E1B07}"
 EndProject
@@ -55,9 +55,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Quickstarts", "Quickstarts"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Misc", "Misc", "{748BADFA-C291-4FCF-B2DC-4475006BF0A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "one-billion-points", "..\demos\src\one-billion-points\one-billion-points.csproj", "{1A645563-008E-4E13-9E9A-F43B9885000C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "one billion points", "..\demos\src\one-billion-points\one billion points.csproj", "{1A645563-008E-4E13-9E9A-F43B9885000C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "time axis", "..\demos\src\time-axis\time axis.csproj", "{E5CCE477-4285-41CA-AEBA-BE973D0F1B4D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "user control settings", "..\demos\src\user-control-settings\user control settings.csproj", "{7B5ACCD9-E14A-4C08-8B04-EF0E8E2FAEF3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -161,6 +163,10 @@ Global
 		{E5CCE477-4285-41CA-AEBA-BE973D0F1B4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E5CCE477-4285-41CA-AEBA-BE973D0F1B4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E5CCE477-4285-41CA-AEBA-BE973D0F1B4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B5ACCD9-E14A-4C08-8B04-EF0E8E2FAEF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B5ACCD9-E14A-4C08-8B04-EF0E8E2FAEF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B5ACCD9-E14A-4C08-8B04-EF0E8E2FAEF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B5ACCD9-E14A-4C08-8B04-EF0E8E2FAEF3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -191,6 +197,7 @@ Global
 		{748BADFA-C291-4FCF-B2DC-4475006BF0A5} = {2F78F109-9976-42FF-8324-9A27EF3BD776}
 		{1A645563-008E-4E13-9E9A-F43B9885000C} = {748BADFA-C291-4FCF-B2DC-4475006BF0A5}
 		{E5CCE477-4285-41CA-AEBA-BE973D0F1B4D} = {748BADFA-C291-4FCF-B2DC-4475006BF0A5}
+		{7B5ACCD9-E14A-4C08-8B04-EF0E8E2FAEF3} = {748BADFA-C291-4FCF-B2DC-4475006BF0A5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FBAE082A-173A-4F13-BE31-E6C070513C9C}
