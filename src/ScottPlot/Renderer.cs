@@ -20,7 +20,7 @@ namespace ScottPlot
         public static void DataBackgroundImpl(Settings settings)
         {
             if (settings.gfxData != null)
-                settings.gfxData.Clear(settings.dataBackgroundColor);
+                settings.dataBackend.Clear(settings.dataBackgroundColor);                
         }
 
         public static Action<Settings> DataGrid { get; set; } = DataGridImpl;
@@ -36,7 +36,7 @@ namespace ScottPlot
                 double value = settings.tickCollectionX.tickPositionsMajor[i];
                 double unitsFromAxisEdge = value - settings.axis[0];
                 int xPx = (int)(unitsFromAxisEdge * settings.xAxisScale);
-                settings.gfxData.DrawLine(pen, xPx, 0, xPx, settings.dataSize.Height);
+                settings.dataBackend.DrawLine(pen, xPx, 0, xPx, settings.dataSize.Height);
             }
 
             for (int i = 0; i < settings.tickCollectionY.tickPositionsMajor.Length; i++)
@@ -44,15 +44,14 @@ namespace ScottPlot
                 double value = settings.tickCollectionY.tickPositionsMajor[i];
                 double unitsFromAxisEdge = value - settings.axis[2];
                 int yPx = settings.dataSize.Height - (int)(unitsFromAxisEdge * settings.yAxisScale);
-                settings.gfxData.DrawLine(pen, 0, yPx, settings.dataSize.Width, yPx);
+                settings.dataBackend.DrawLine(pen, 0, yPx, settings.dataSize.Width, yPx);
             }
         }
 
         public static void DataPlottables(Settings settings)
         {
             if (settings.gfxData == null)
-                return;
-
+                return;            
             for (int i = 0; i < settings.plottables.Count; i++)
             {
                 Plottable pltThing = settings.plottables[i];
@@ -89,8 +88,7 @@ namespace ScottPlot
         {
             if (settings.gfxFigure == null || settings.bmpData == null)
                 return;
-
-            settings.gfxFigure.DrawImage(settings.bmpData, settings.dataOrigin);
+            settings.gfxFigure.DrawImage(settings.dataBackend.GetBitmap(), settings.dataOrigin);            
         }
 
         public static void FigureLabels(Settings settings, bool drawDebugRectangles = false)
@@ -287,8 +285,8 @@ namespace ScottPlot
             Pen outline = new Pen(Color.FromArgb(100, 255, 0, 0));
             Brush fill = new SolidBrush(Color.FromArgb(50, 255, 0, 0));
 
-            settings.gfxData.DrawRectangle(outline, rect);
-            settings.gfxData.FillRectangle(fill, rect);
+            settings.dataBackend.DrawRectangle(outline, rect);
+            settings.dataBackend.FillRectangle(fill, rect);
         }
     }
 }

@@ -49,7 +49,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataGen.cs" />
+    <Compile Include="GDIbackend.cs" />
     <Compile Include="Histogram.cs" />
+    <Compile Include="IGraphicBackend.cs" />
     <Compile Include="Legend.cs" />
     <Compile Include="Markers.cs" />
     <Compile Include="MouseTracker.cs" />

@@ -64,7 +64,7 @@ namespace ScottPlot
             float x = topLeft.X - 1;
             float y = lowerRight.Y - 1;
 
-            settings.gfxData.FillRectangle(brush, x, y, width, height);
+            settings.dataBackend.FillRectangle(brush, x, y, width, height);
         }
 
         public override void SaveCSV(string filePath)

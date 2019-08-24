@@ -83,17 +83,17 @@ namespace ScottPlot
                 // the wick below the box
                 PointF wickLowBot = settings.GetPixel(ohlc.epochSeconds, ohlc.low);
                 PointF wickLowTop = settings.GetPixel(ohlc.epochSeconds, ohlc.lowestOpenClose);
-                settings.gfxData.DrawLine(pen, wickLowBot, wickLowTop);
+                settings.dataBackend.DrawLine(pen, wickLowBot, wickLowTop);
 
                 // the wick above the box
                 PointF wickHighBot = settings.GetPixel(ohlc.epochSeconds, ohlc.highestOpenClose);
                 PointF wickHighTop = settings.GetPixel(ohlc.epochSeconds, ohlc.high);
-                settings.gfxData.DrawLine(pen, wickHighBot, wickHighTop);
+                settings.dataBackend.DrawLine(pen, wickHighBot, wickHighTop);
 
                 // the candle
                 PointF boxLowerLeft = settings.GetPixel(ohlc.epochSeconds, ohlc.lowestOpenClose);
                 PointF boxUpperRight = settings.GetPixel(ohlc.epochSeconds, ohlc.highestOpenClose);
-                settings.gfxData.FillRectangle(brush, boxLowerLeft.X - boxWidth, boxUpperRight.Y, boxWidth * 2, boxLowerLeft.Y - boxUpperRight.Y);
+                settings.dataBackend.FillRectangle(brush, boxLowerLeft.X - boxWidth, boxUpperRight.Y, boxWidth * 2, boxLowerLeft.Y - boxUpperRight.Y);
             }
         }
 
@@ -112,14 +112,14 @@ namespace ScottPlot
                 // the main line
                 PointF wickTop = settings.GetPixel(ohlc.epochSeconds, ohlc.low);
                 PointF wickBot = settings.GetPixel(ohlc.epochSeconds, ohlc.high);
-                settings.gfxData.DrawLine(pen, wickBot, wickTop);
+                settings.dataBackend.DrawLine(pen, wickBot, wickTop);
 
                 // open and close lines
                 float xPx = wickTop.X;
                 float yPxOpen = (float)settings.GetPixel(0, ohlc.open).Y;
                 float yPxClose = (float)settings.GetPixel(0, ohlc.close).Y;
-                settings.gfxData.DrawLine(pen, xPx - boxWidth, yPxOpen, xPx, yPxOpen);
-                settings.gfxData.DrawLine(pen, xPx + boxWidth, yPxClose, xPx, yPxClose);
+                settings.dataBackend.DrawLine(pen, xPx - boxWidth, yPxOpen, xPx, yPxOpen);
+                settings.dataBackend.DrawLine(pen, xPx + boxWidth, yPxClose, xPx, yPxClose);
             }
         }
 

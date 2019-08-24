@@ -26,7 +26,7 @@ namespace ScottPlot
             int maxTickCount;
 
             string longestLabel = (dateFormat) ? "2019-08-20\n20:42:17" : "-8888";
-            maxLabelSize = settings.gfxData.MeasureString(longestLabel, settings.tickFont);
+            maxLabelSize = settings.gfxFigure.MeasureString(longestLabel, settings.tickFont);
 
             if (verticalAxis)
             {

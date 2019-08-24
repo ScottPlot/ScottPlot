@@ -181,9 +181,9 @@ namespace ScottPlot
                     float xCenter = errorBelow.X;
                     float yTop = errorAbove.Y;
                     float yBot = errorBelow.Y;
-                    settings.gfxData.DrawLine(penLineError, xCenter, yBot, xCenter, yTop);
-                    settings.gfxData.DrawLine(penLineError, xCenter - errorCapSize, yBot, xCenter + errorCapSize, yBot);
-                    settings.gfxData.DrawLine(penLineError, xCenter - errorCapSize, yTop, xCenter + errorCapSize, yTop);
+                    settings.dataBackend.DrawLine(penLineError, xCenter, yBot, xCenter, yTop);
+                    settings.dataBackend.DrawLine(penLineError, xCenter - errorCapSize, yBot, xCenter + errorCapSize, yBot);
+                    settings.dataBackend.DrawLine(penLineError, xCenter - errorCapSize, yTop, xCenter + errorCapSize, yTop);
                 }
             }
 
@@ -196,23 +196,23 @@ namespace ScottPlot
                     float yCenter = errorLeft.Y;
                     float xLeft = errorLeft.X;
                     float xRight = errorRight.X;
-                    settings.gfxData.DrawLine(penLineError, xLeft, yCenter, xRight, yCenter);
-                    settings.gfxData.DrawLine(penLineError, xLeft, yCenter - errorCapSize, xLeft, yCenter + errorCapSize);
-                    settings.gfxData.DrawLine(penLineError, xRight, yCenter - errorCapSize, xRight, yCenter + errorCapSize);
+                    settings.dataBackend.DrawLine(penLineError, xLeft, yCenter, xRight, yCenter);
+                    settings.dataBackend.DrawLine(penLineError, xLeft, yCenter - errorCapSize, xLeft, yCenter + errorCapSize);
+                    settings.dataBackend.DrawLine(penLineError, xRight, yCenter - errorCapSize, xRight, yCenter + errorCapSize);
                 }
             }
 
             if (penLine.Width > 0)
             {
                 if (stepDisplay)
-                    settings.gfxData.DrawLines(penLine, pointsStep);
+                    settings.dataBackend.DrawLines(penLine, pointsStep);
                 else
-                    settings.gfxData.DrawLines(penLine, points);
+                    settings.dataBackend.DrawLines(penLine, points);
             }
 
             if ((markerSize > 0) && (markerShape != MarkerShape.none))
                 for (int i = 0; i < points.Length; i++)
-                    MarkerTools.DrawMarker(settings.gfxData, points[i], markerShape, markerSize, color);
+                    MarkerTools.DrawMarker(settings.dataBackend, points[i], markerShape, markerSize, color);
 
         }
 

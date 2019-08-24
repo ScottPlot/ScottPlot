@@ -23,6 +23,7 @@ namespace ScottPlot
         public Bitmap bmpFigure;
         public Bitmap bmpData;
         public Bitmap bmpLegend;
+        public IGraphicBackend dataBackend;
 
         // axis (replace with class)
         public double[] axis = new double[] { -10, 10, -10, 10 }; // X1, X2, Y1, Y2

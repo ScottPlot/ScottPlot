@@ -47,7 +47,7 @@ namespace ScottPlot
             PointF textLocationPoint = new PointF();
 
             SizeF stringSize = new SizeF();
-            stringSize = settings.gfxData.MeasureString(text, font);
+            stringSize = settings.dataBackend.MeasureString(text, font);
 
             switch (this.alignment)
             {
@@ -88,7 +88,7 @@ namespace ScottPlot
                     break;
             }
 
-            settings.gfxData.DrawString(text, font, brush, textLocationPoint);
+            settings.dataBackend.DrawString(text, font, brush, textLocationPoint);
         }
 
         public override void SaveCSV(string filePath)

@@ -106,8 +106,8 @@ namespace ScottPlot
                 float xOffsetPx = (float)(xOffset * settings.xAxisScale);
                 barLeftPx += xOffsetPx;
 
-                settings.gfxData.FillRectangle(brush, barLeftPx - (float).5, barTopPx, barWidthPx + (float).5, -barHeightPx);
-                settings.gfxData.DrawRectangle(pen, barLeftPx - (float).5, barTopPx, barWidthPx + (float).5, -barHeightPx);
+                settings.dataBackend.FillRectangle(brush, barLeftPx - (float).5, barTopPx, barWidthPx + (float).5, -barHeightPx);
+                settings.dataBackend.DrawRectangle(pen, barLeftPx - (float).5, barTopPx, barWidthPx + (float).5, -barHeightPx);
 
                 if (yErr != null)
                 {
@@ -115,9 +115,9 @@ namespace ScottPlot
                     float x = peakCenter.X + xOffsetPx;
                     float y = peakCenter.Y;
                     float errorPx = (float)(yErr[i] * settings.yAxisScale);
-                    settings.gfxData.DrawLine(pen, x, y - errorPx, x, y + errorPx);
-                    settings.gfxData.DrawLine(pen, x - errorCapSize, y - errorPx, x + errorCapSize, y - errorPx);
-                    settings.gfxData.DrawLine(pen, x - errorCapSize, y + errorPx, x + errorCapSize, y + errorPx);
+                    settings.dataBackend.DrawLine(pen, x, y - errorPx, x, y + errorPx);
+                    settings.dataBackend.DrawLine(pen, x - errorCapSize, y - errorPx, x + errorCapSize, y - errorPx);
+                    settings.dataBackend.DrawLine(pen, x - errorCapSize, y + errorPx, x + errorCapSize, y + errorPx);
                 }
             }
         }

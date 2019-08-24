@@ -27,7 +27,7 @@ namespace ScottPlot
 
     public class MarkerTools
     {
-        public static void DrawMarker(Graphics gfx, PointF pixelLocation, MarkerShape shape, float size, Color color)
+        public static void DrawMarker(IGraphicBackend backend, PointF pixelLocation, MarkerShape shape, float size, Color color)
         {
 
             Pen pen = new Pen(color);
@@ -41,16 +41,16 @@ namespace ScottPlot
             switch (shape)
             {
                 case MarkerShape.filledCircle:
-                    gfx.FillEllipse(brush, rect);
+                    backend.FillEllipse(brush, rect);
                     break;
                 case MarkerShape.openCircle:
-                    gfx.DrawEllipse(pen, rect);
+                    backend.DrawEllipse(pen, rect);
                     break;
                 case MarkerShape.filledSquare:
-                    gfx.FillRectangle(brush, rect);
+                    backend.FillRectangle(brush, rect);
                     break;
                 case MarkerShape.openSquare:
-                    gfx.DrawRectangle(pen, corner1.X, corner1.Y, size, size);
+                    backend.DrawRectangle(pen, corner1.X, corner1.Y, size, size);
                     break;
                 case MarkerShape.filledDiamond:
 
@@ -63,7 +63,7 @@ namespace ScottPlot
                     PointF[] curvePoints = { point1, point2, point3, point4};
 
                     //Draw polygon to screen
-                    gfx.FillPolygon(brush, curvePoints);
+                    backend.FillPolygon(brush, curvePoints);
                     break;
                 case MarkerShape.openDiamond:
 
@@ -76,42 +76,42 @@ namespace ScottPlot
                     PointF[] curvePoints2 = { point5, point6, point7, point8};
 
                     //Draw polygon to screen
-                    gfx.DrawPolygon(pen, curvePoints2);
+                    backend.DrawPolygon(pen, curvePoints2);
 
                     break;
-                case MarkerShape.asterisk:
+                case MarkerShape.asterisk:                    
                     Font drawFont = new Font("CourierNew", size*3);
-                    SizeF textSize = gfx.MeasureString("*", drawFont);
+                    SizeF textSize = backend.MeasureString("*", drawFont);
                     PointF asteriskPoint = new PointF(pixelLocation.X - textSize.Width/2, pixelLocation.Y-textSize.Height/4 );
-                    gfx.DrawString("*", drawFont, brush, asteriskPoint);
+                    backend.DrawString("*", drawFont, brush, asteriskPoint);
 
                     break;
                 case MarkerShape.hashTag:
                     Font drawFont2 = new Font("CourierNew", size*2);
-                    SizeF textSize2 = gfx.MeasureString("#", drawFont2);
+                    SizeF textSize2 = backend.MeasureString("#", drawFont2);
                     PointF asteriskPoint2 = new PointF(pixelLocation.X - textSize2.Width / 2, pixelLocation.Y - textSize2.Height / 3);
-                    gfx.DrawString("#", drawFont2, brush, asteriskPoint2);
+                    backend.DrawString("#", drawFont2, brush, asteriskPoint2);
 
                     break;
                 case MarkerShape.cross:
                     Font drawFont3 = new Font("CourierNew", size*2);
-                    SizeF textSize3 = gfx.MeasureString("+", drawFont3);
+                    SizeF textSize3 = backend.MeasureString("+", drawFont3);
                     PointF asteriskPoint3 = new PointF(pixelLocation.X -  textSize3.Width / (5/2), pixelLocation.Y - textSize3.Height / 2);
-                    gfx.DrawString("+", drawFont3, brush, asteriskPoint3);
+                    backend.DrawString("+", drawFont3, brush, asteriskPoint3);
 
                     break;
                 case MarkerShape.eks:
                     Font drawFont4 = new Font("CourierNew", size*2);
-                    SizeF textSize4 = gfx.MeasureString("x", drawFont4);
+                    SizeF textSize4 = backend.MeasureString("x", drawFont4);
                     PointF asteriskPoint4 = new PointF(pixelLocation.X - textSize4.Width / (5 / 2), pixelLocation.Y - textSize4.Height / 2);
-                    gfx.DrawString("x", drawFont4, brush, asteriskPoint4);
+                    backend.DrawString("x", drawFont4, brush, asteriskPoint4);
 
                     break;
                 case MarkerShape.verticalBar:
                     Font drawFont5 = new Font("CourierNew", size*2);
-                    SizeF textSize5 = gfx.MeasureString("|", drawFont5);
+                    SizeF textSize5 = backend.MeasureString("|", drawFont5);
                     PointF asteriskPoint5 = new PointF(pixelLocation.X - textSize5.Width / (5 / 2), pixelLocation.Y - textSize5.Height / 2);
-                    gfx.DrawString("|", drawFont5, brush, asteriskPoint5);
+                    backend.DrawString("|", drawFont5, brush, asteriskPoint5);
 
                     break;
                 case MarkerShape.triUp:
@@ -126,7 +126,7 @@ namespace ScottPlot
                     PointF[] curvePoints3 = { point12, point9, point10, point11, point12, point13 };
 
                     //Draw polygon to screen
-                    gfx.DrawPolygon(pen, curvePoints3);
+                    backend.DrawPolygon(pen, curvePoints3);
 
                     break;
                 case MarkerShape.triDown:
@@ -141,7 +141,7 @@ namespace ScottPlot
                     PointF[] curvePoints4 = { point17, point14, point15, point16, point17, point18 };
 
                     //Draw polygon to screen
-                    gfx.DrawPolygon(pen, curvePoints4);
+                    backend.DrawPolygon(pen, curvePoints4);
 
                     break;
                 default:

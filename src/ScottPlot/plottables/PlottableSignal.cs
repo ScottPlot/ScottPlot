@@ -65,7 +65,7 @@ namespace ScottPlot
             // this function is for when the graph is zoomed so far out its entire display is a single vertical pixel column                     
             PointF point1 = settings.GetPixel(xOffset, ys.Min() + yOffset);
             PointF point2 = settings.GetPixel(xOffset, ys.Max() + yOffset);
-            settings.gfxData.DrawLine(pen, point1, point2);
+            settings.dataBackend.DrawLine(pen, point1, point2);
         }
 
         private void RenderLowDensity(Settings settings, int visibleIndex1, int visibleIndex2)
@@ -82,9 +82,9 @@ namespace ScottPlot
 
             if (linePoints.Count > 1)
             {
-                settings.gfxData.DrawLines(pen, linePoints.ToArray());
+                settings.dataBackend.DrawLines(pen, linePoints.ToArray());
                 foreach (PointF point in linePoints)
-                    settings.gfxData.FillEllipse(brush, point.X - markerSize / 2, point.Y - markerSize / 2, markerSize, markerSize);
+                    settings.dataBackend.FillEllipse(brush, point.X - markerSize / 2, point.Y - markerSize / 2, markerSize, markerSize);
             }
         }
 
@@ -137,7 +137,7 @@ namespace ScottPlot
                 }
             }
 
-            settings.gfxData.DrawLines(pen, linePoints);
+            settings.dataBackend.DrawLines(pen, linePoints);
         }
 
         private void RenderHighDensity(Settings settings, double offsetPoints, double columnPointCount)
@@ -191,7 +191,7 @@ namespace ScottPlot
             }
 
             if (linePoints.Count > 0)
-                settings.gfxData.DrawLines(pen, linePoints.ToArray());
+                settings.dataBackend.DrawLines(pen, linePoints.ToArray());
         }               
 
         public override void Render(Settings settings)

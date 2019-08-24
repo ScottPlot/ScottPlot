@@ -15,6 +15,7 @@ namespace ScottPlotSkia
         {
             if (width <= 0 || height <= 0)
                 throw new ArgumentException("width and height must each be greater than 0");
+            GetSettings().dataBackend = new GDIbackend(width, height, pixelFormat);
             Resize(width, height);
             TightenLayout();
         }

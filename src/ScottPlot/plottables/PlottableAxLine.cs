@@ -82,7 +82,7 @@ namespace ScottPlot
                 pt2 = settings.GetPixel(settings.axis[1], position);
             }
 
-            settings.gfxData.DrawLine(pen, pt1, pt2);
+            settings.dataBackend.DrawLine(pen, pt1, pt2);
         }
 
         public override void SaveCSV(string filePath)

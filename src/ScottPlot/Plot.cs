@@ -24,12 +24,14 @@ namespace ScottPlot
             mouseTracker = new MouseTracker(settings);
         }
 
-        public Plot(int width = 800, int height = 600)
+        public Plot(int width = 800, int height = 600, IGraphicBackend backendData = null)
         {
             if (width <= 0 || height <= 0)
                 throw new ArgumentException("width and height must each be greater than 0");
             settings = new Settings();
             mouseTracker = new MouseTracker(settings);
+            if (backendData == null)
+                settings.dataBackend = new GDIbackend(width, height, pixelFormat);
             Resize(width, height);
             TightenLayout();
         }
@@ -54,8 +56,9 @@ namespace ScottPlot
                 width = 1;
             if (height < 1)
                 height = 1;
-
+                      
             settings.Resize((int)width, (int)height);
+            settings.dataBackend.Resize(settings.dataSize.Width, settings.dataSize.Height);
             InitializeBitmaps();
         }
 
@@ -105,7 +108,7 @@ namespace ScottPlot
                     settings.gfxFigure.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
                 }
             }
-
+            settings.dataBackend.SetAntiAlias(settings.antiAliasData);
             if (settings.gfxData != null)
             {
                 if (settings.antiAliasData)
