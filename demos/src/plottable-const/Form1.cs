@@ -25,18 +25,11 @@ namespace plottable_const
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //data = ScottPlot.DataGen.RandomWalk(rand, 10_000_000);
-            for (int i = 0; i < 10; i++)
-            {
-                data = ScottPlot.DataGen.Random(rand, 1_000_000);
-                signal = formsPlot1.plt.PlotSignalConst(data);
-                //formsPlot1.plt.PlotSignalConst(data.Select(x=>(int)x).ToArray());
-                formsPlot1.plt.Benchmark();
-                formsPlot1.Render();
-                formsPlotSkia1.plt.PlotSignalConst(data);
-                formsPlotSkia1.plt.Benchmark();
-                formsPlotSkia1.Render();
-            }
+            data = ScottPlot.DataGen.RandomWalk(rand, 10_000_000);
+            signal = formsPlot1.plt.PlotSignalConst(data);
+            formsPlot1.plt.PlotSignalConst(data.Select(x=>(int)x).ToArray());
+            formsPlot1.plt.Benchmark();
+            formsPlot1.Render();
         }
 
         private void BtnUpdateData_Click(object sender, EventArgs e)
