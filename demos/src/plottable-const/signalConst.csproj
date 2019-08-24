@@ -7,7 +7,7 @@
     <ProjectGuid>{B6CBD66D-272B-4A7F-915D-0F6E04F2BF64}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>plottable_const</RootNamespace>
-    <AssemblyName>signalConst</AssemblyName>
+    <AssemblyName>plottableConst</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
