@@ -15,7 +15,7 @@
     </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -118,13 +118,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ScottPlotSkia.csproj">
+    <ProjectReference Include="..\..\..\src\ScottPlot\ScottPlot.csproj">
+      <Project>{ee9215c6-01c1-4835-8514-3a708f9291f1}</Project>
+      <Name>ScottPlot</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ScottPlotSkia\ScottPlotSkia.csproj">
       <Project>{ea9c6d01-8158-42dc-91b3-079ec2353839}</Project>
       <Name>ScottPlotSkia</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\src\ScottPlot\ScottPlot.csproj">
-      <Project>{EE9215C6-01C1-4835-8514-3A708F9291F1}</Project>
-      <Name>ScottPlot</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -29,7 +29,11 @@ namespace ScottPlotSkia
         }
         public FormsPlotSkia()
         {
-            InitializeComponent();
+            if (Process.GetCurrentProcess().ProcessName == "devenv")
+            {
+                return;
+            }
+                InitializeComponent();
 
             OpenGL.Egl.IsRequired = true;
             string version1 = Gl.GetString(StringName.Version);
@@ -55,6 +59,7 @@ namespace ScottPlotSkia
             pbPlot.MouseWheel += PbPlot_MouseWheel;
             if (Process.GetCurrentProcess().ProcessName == "devenv")
             {
+                
                 Tools.DesignerModeDemoPlot(plt);
                 plt.Title("ScottPlotSkia User Control");
             }

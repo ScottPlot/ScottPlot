@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.28803.452
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScottPlot", "..\..\src\ScottPlot\ScottPlot.csproj", "{EE9215C6-01C1-4835-8514-3A708F9291F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScottPlotSkia", "ScottPlotSkia.csproj", "{EA9C6D01-8158-42DC-91B3-079EC2353839}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScottPlotSkia", "ScottPlotSkia\ScottPlotSkia.csproj", "{EA9C6D01-8158-42DC-91B3-079EC2353839}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "signalConst with Skia", "plottable-const-skia\signalConst with Skia.csproj", "{078C3C46-CDF6-4FE0-9D3E-6D2CF8CA31A0}"
 EndProject
