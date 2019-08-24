@@ -45,7 +45,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "extreme axes", "..\demos\sr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tick tester", "..\demos\src\tick-tester-2\tick tester.csproj", "{E3C5B3CC-118C-4866-B793-F120EA9DA8F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "plottableConst", "..\demos\src\plottable-const\plottableConst.csproj", "{B6CBD66D-272B-4A7F-915D-0F6E04F2BF64}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "signalConst", "..\demos\src\plottable-const\signalConst.csproj", "{B6CBD66D-272B-4A7F-915D-0F6E04F2BF64}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "benchmark", "..\demos\src\benchmark\benchmark.csproj", "{1C772DC2-D78B-4571-82DA-FBD2116E1B07}"
 EndProject
