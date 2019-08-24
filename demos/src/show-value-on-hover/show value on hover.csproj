@@ -7,7 +7,7 @@
     <ProjectGuid>{87931F18-6DFE-4106-A542-E2758157B780}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>ScottPlotShowValueOnHover</RootNamespace>
-    <AssemblyName>ScottPlotShowValueOnHover</AssemblyName>
+    <AssemblyName>show value on hover</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -80,7 +80,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\ScottPlot\ScottPlot.csproj">
+    <ProjectReference Include="..\..\..\src\ScottPlot\ScottPlot.csproj">
       <Project>{ee9215c6-01c1-4835-8514-3a708f9291f1}</Project>
       <Name>ScottPlot</Name>
     </ProjectReference>
