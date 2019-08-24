@@ -16,6 +16,8 @@ namespace ScottPlot
         public bool lowQualityWhileInteracting = true;
         public int mouseWheelHQRenderDelay = 500;
         public int mouseUpHQRenderDelay = 300;
+        public bool enablePanning = true;
+        public bool enableZooming = true;
 
         private readonly Settings settings;
         public MouseTracker(Settings settings)
@@ -78,9 +80,9 @@ namespace ScottPlot
             if (plottableBeingDragged == null)
             {
                 mouseDownStopwatch.Restart();
-                if (Control.MouseButtons == MouseButtons.Left)
+                if ((Control.MouseButtons == MouseButtons.Left) && (enablePanning))
                     settings.MouseDown(Cursor.Position.X, Cursor.Position.Y, panning: true);
-                else if (Control.MouseButtons == MouseButtons.Right)
+                else if ((Control.MouseButtons == MouseButtons.Right) && (enableZooming))
                     settings.MouseDown(Cursor.Position.X, Cursor.Position.Y, zooming: true);
             }
 
@@ -98,7 +100,7 @@ namespace ScottPlot
         {
             if (plottableBeingDragged == null)
             {
-                if (Control.MouseButtons == MouseButtons.Left || Control.MouseButtons == MouseButtons.Right)
+                if ((Control.MouseButtons == MouseButtons.Left) || (Control.MouseButtons == MouseButtons.Right))
                     settings.MouseMoveAxis(Cursor.Position.X, Cursor.Position.Y, ctrlIsDown(), altIsDown());
                 else if (Control.MouseButtons == MouseButtons.Middle)
                     settings.MouseZoomRectMove(eLocation);
@@ -224,6 +226,12 @@ namespace ScottPlot
         {
             if (!settings.mouseZoomRectangleIsHappening)
                 settings.AxisAuto();
+        }
+
+        public void MouseIs(bool panning, bool zooming)
+        {
+            settings.mouseIsPanning = panning;
+            settings.mouseIsZooming = zooming;
         }
     }
 }

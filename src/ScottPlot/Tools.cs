@@ -166,5 +166,15 @@ namespace ScottPlot
         {
             return DoubleArray<float>(dataIn);
         }
+
+        public static void ApplyBaselineSubtraction(double[] data, int index1, int index2)
+        {
+            double baselineSum = 0;
+            for (int i = index1; i < index2; i++)
+                baselineSum += data[i];
+            double baselineAverage = baselineSum / (index2 - index1);
+            for (int i = 0; i < data.Length; i++)
+                data[i] -= baselineAverage;
+        }
     }
 }
