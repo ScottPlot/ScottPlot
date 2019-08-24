@@ -15,7 +15,7 @@ namespace ScottPlot
     public class Plot
     {
         public PixelFormat pixelFormat = PixelFormat.Format32bppPArgb;
-        protected readonly Settings settings;
+        private readonly Settings settings;
         public readonly MouseTracker mouseTracker;
 
         protected Plot(Settings settings) // for setting readonly field
@@ -32,6 +32,8 @@ namespace ScottPlot
             mouseTracker = new MouseTracker(settings);
             if (backendData == null)
                 settings.dataBackend = new GDIbackend(width, height, pixelFormat);
+            else
+                settings.dataBackend = backendData;
             Resize(width, height);
             TightenLayout();
         }
@@ -57,8 +59,7 @@ namespace ScottPlot
             if (height < 1)
                 height = 1;
                       
-            settings.Resize((int)width, (int)height);
-            settings.dataBackend.Resize(settings.dataSize.Width, settings.dataSize.Height);
+            settings.Resize((int)width, (int)height);            
             InitializeBitmaps();
         }
 
@@ -68,7 +69,7 @@ namespace ScottPlot
             settings.gfxLegend = Graphics.FromImage(settings.bmpLegend);
         }
 
-        protected virtual void InitializeBitmaps()
+        private void InitializeBitmaps()
         {
             settings.bmpFigure = null;
             settings.gfxFigure = null;
@@ -80,6 +81,8 @@ namespace ScottPlot
                 settings.bmpFigure = new Bitmap(settings.figureSize.Width, settings.figureSize.Height, pixelFormat);
                 settings.gfxFigure = Graphics.FromImage(settings.bmpFigure);
             }
+
+            settings.dataBackend.Resize(settings.dataSize.Width, settings.dataSize.Height);
 
             InitializeLegend(new Size(1, 1));
         }
@@ -118,7 +121,7 @@ namespace ScottPlot
             }
         }
 
-        protected void RenderBitmap()
+        private void RenderBitmap()
         {
             if (!settings.axisHasBeenIntentionallySet && settings.plottables.Count > 0)
                 settings.AxisAuto();
@@ -396,7 +399,7 @@ namespace ScottPlot
             return signal;
         }
 
-        public virtual PlottableSignalConst<T> PlotSignalConst<T>(
+        public PlottableSignalConst<T> PlotSignalConst<T>(
             T[] ys,
             double sampleRate = 1,
             double xOffset = 0,

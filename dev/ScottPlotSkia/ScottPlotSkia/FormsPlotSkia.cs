@@ -18,11 +18,11 @@ namespace ScottPlotSkia
         DeviceContext device;
         INativePBuffer pbuff;
         IntPtr ctx;
+        SkiaBackend skiaBackend;
 
         private void OnDispose(object sender, EventArgs e)
         {
-            (plt.GetSettings() as SettingsSkia).surface?.Dispose();
-            (plt.GetSettings() as SettingsSkia).context?.Dispose();
+            skiaBackend?.Dispose();
             device.DeleteContext(ctx);
             device?.Dispose();
             pbuff?.Dispose();
@@ -48,11 +48,8 @@ namespace ScottPlotSkia
 
             this.Disposed += OnDispose;
 
-            Renderer.DataBackground = RendererSkia.DataBackgroundSkia;
-            Renderer.DataGrid = RendererSkia.DataGridSkia;
-            Renderer.PlaceDataOntoFigure = RendererSkia.PlaceDataOntoFigureSkia;
-
-            plt = new PlotSkia();
+            skiaBackend = new SkiaBackend(800, 600);
+            plt = new Plot(backendData:skiaBackend);
             SetupMenu();
             SetupTimers();
             plt.Style(ScottPlot.Style.Control);
