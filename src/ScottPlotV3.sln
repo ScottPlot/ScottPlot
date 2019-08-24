@@ -63,6 +63,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "user control settings", "..
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eeg-viewer", "..\demos\src\eeg-viewer\eeg-viewer.csproj", "{3438622A-6970-4AC1-A793-363DB21C658A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "show value on hover", "..\demos\src\show-value-on-hover\show value on hover.csproj", "{87931F18-6DFE-4106-A542-E2758157B780}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -173,6 +175,10 @@ Global
 		{3438622A-6970-4AC1-A793-363DB21C658A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3438622A-6970-4AC1-A793-363DB21C658A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3438622A-6970-4AC1-A793-363DB21C658A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87931F18-6DFE-4106-A542-E2758157B780}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87931F18-6DFE-4106-A542-E2758157B780}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87931F18-6DFE-4106-A542-E2758157B780}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87931F18-6DFE-4106-A542-E2758157B780}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -205,6 +211,7 @@ Global
 		{E5CCE477-4285-41CA-AEBA-BE973D0F1B4D} = {748BADFA-C291-4FCF-B2DC-4475006BF0A5}
 		{7B5ACCD9-E14A-4C08-8B04-EF0E8E2FAEF3} = {748BADFA-C291-4FCF-B2DC-4475006BF0A5}
 		{3438622A-6970-4AC1-A793-363DB21C658A} = {748BADFA-C291-4FCF-B2DC-4475006BF0A5}
+		{87931F18-6DFE-4106-A542-E2758157B780} = {748BADFA-C291-4FCF-B2DC-4475006BF0A5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FBAE082A-173A-4F13-BE31-E6C070513C9C}
