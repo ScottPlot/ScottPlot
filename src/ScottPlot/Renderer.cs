@@ -19,8 +19,7 @@ namespace ScottPlot
         public static Action<Settings> DataBackground { get; set; } = DataBackgroundImpl;
         public static void DataBackgroundImpl(Settings settings)
         {
-            if (settings.gfxData != null)
-                settings.dataBackend.Clear(settings.dataBackgroundColor);                
+            settings.dataBackend.Clear(settings.dataBackgroundColor);                
         }
 
         public static Action<Settings> DataGrid { get; set; } = DataGridImpl;
@@ -49,9 +48,7 @@ namespace ScottPlot
         }
 
         public static void DataPlottables(Settings settings)
-        {
-            if (settings.gfxData == null)
-                return;            
+        {            
             for (int i = 0; i < settings.plottables.Count; i++)
             {
                 Plottable pltThing = settings.plottables[i];
@@ -86,8 +83,6 @@ namespace ScottPlot
         public static Action<Settings> PlaceDataOntoFigure { get; set; } = PlaceDataOntoFigureImpl;
         public static void PlaceDataOntoFigureImpl(Settings settings)
         {
-            if (settings.gfxFigure == null || settings.bmpData == null)
-                return;
             settings.gfxFigure.DrawImage(settings.dataBackend.GetBitmap(), settings.dataOrigin);            
         }
 

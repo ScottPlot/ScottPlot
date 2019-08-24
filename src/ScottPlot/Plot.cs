@@ -72,8 +72,6 @@ namespace ScottPlot
         {
             settings.bmpFigure = null;
             settings.gfxFigure = null;
-            settings.bmpData = null;
-            settings.gfxData = null;
             settings.gfxLegend = null;
             settings.bmpLegend = null;
 
@@ -81,12 +79,6 @@ namespace ScottPlot
             {
                 settings.bmpFigure = new Bitmap(settings.figureSize.Width, settings.figureSize.Height, pixelFormat);
                 settings.gfxFigure = Graphics.FromImage(settings.bmpFigure);
-            }
-
-            if (settings.dataSize.Width > 0 && settings.dataSize.Height > 0)
-            {
-                settings.bmpData = new Bitmap(settings.dataSize.Width, settings.dataSize.Height, pixelFormat);
-                settings.gfxData = Graphics.FromImage(settings.bmpData);
             }
 
             InitializeLegend(new Size(1, 1));
@@ -108,20 +100,9 @@ namespace ScottPlot
                     settings.gfxFigure.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
                 }
             }
+
             settings.dataBackend.SetAntiAlias(settings.antiAliasData);
-            if (settings.gfxData != null)
-            {
-                if (settings.antiAliasData)
-                {
-                    settings.gfxData.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                    settings.gfxData.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
-                }
-                else
-                {
-                    settings.gfxData.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
-                    settings.gfxData.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
-                }
-            }
+
             if (settings.gfxLegend != null)
             {
                 if (settings.antiAliasLegend)
@@ -162,7 +143,7 @@ namespace ScottPlot
                 Renderer.FigureFrames(settings);
                 settings.bmpFigureRenderRequired = false;
             }
-            if (settings.gfxData != null)
+            if (settings.dataBackend != null)
             {
                 Renderer.DataBackground(settings);
                 Renderer.DataGrid(settings);

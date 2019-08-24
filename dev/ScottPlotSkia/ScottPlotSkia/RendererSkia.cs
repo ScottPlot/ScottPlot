@@ -63,8 +63,6 @@ namespace ScottPlotSkia
                 Renderer.PlaceDataOntoFigureImpl(settings);
             else
             {
-                if (settings.gfxFigure == null || settings.bmpData == null)
-                    return;
                 var snapshot = settingsSkia.surface.Snapshot();
                 var bitmap = snapshot.ToBitmap();
                 settings.gfxFigure.DrawImage(bitmap, settings.dataOrigin);

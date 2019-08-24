@@ -70,7 +70,7 @@ namespace ScottPlotSkia
             MinMaxRangeQuery(0, ys.Length - 1, out yMin, out yMax);
             PointF point1 = settings.GetPixel(xOffset, yMin + yOffset);
             PointF point2 = settings.GetPixel(xOffset, yMax + yOffset);
-            settings.gfxData.DrawLine(pen, point1, point2);
+            //settings.gfxData.DrawLine(pen, point1, point2);
         }
 
         private void RenderLowDensity(Settings settings, int visibleIndex1, int visibleIndex2)
