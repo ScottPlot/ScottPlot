@@ -249,6 +249,25 @@ plt.SaveFig(fileName);
 
 ![](./images/11_Modify_Styles_After_Plotting.png)
 
+## Date Axis
+
+```cs
+Random rand = new Random(0);
+double[] price = ScottPlot.DataGen.RandomWalk(rand, 60 * 8);
+DateTime start = new DateTime(2019, 08, 25, 8, 30, 00);
+double pointsPerDay = 24 * 60; // one point per minute
+
+var plt = new ScottPlot.Plot(600, 400);
+plt.PlotSignal(price, sampleRate: pointsPerDay, xOffset: start.ToOADate());
+plt.Ticks(dateTimeX: true);
+plt.YLabel("Price");
+plt.XLabel("Date and Time");
+
+plt.SaveFig(fileName);
+```
+
+![](./images/12_Date_Axis.png)
+
 ## Small Plot
 
 ```cs
