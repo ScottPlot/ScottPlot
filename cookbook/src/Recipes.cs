@@ -453,7 +453,6 @@ namespace ScottPlotCookbook
             plt.Frame(drawFrame: false);
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
-            plt.TightenLayout(padding: 0);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
             return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
@@ -542,8 +541,6 @@ namespace ScottPlotCookbook
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
 
             var plt = new ScottPlot.Plot(width, height);
-            plt.XLabel("horizontal units");
-            plt.YLabel("vertical units");
             plt.PlotSignal(tenMillionPoints);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
@@ -556,8 +553,6 @@ namespace ScottPlotCookbook
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
 
             var plt = new ScottPlot.Plot(width, height);
-            plt.XLabel("horizontal units");
-            plt.YLabel("vertical units");
             plt.PlotSignal(tenMillionPoints);
             plt.Ticks(useMultiplierNotation: false); // <-- THIS
             plt.SaveFig(fileName);
