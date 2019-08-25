@@ -515,7 +515,7 @@ namespace ScottPlotCookbook
             return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
-        public string Figure_28b_Default_Tick_Labels()
+        public string Figure_28b_Multiplier_Notation_Default()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
@@ -529,7 +529,7 @@ namespace ScottPlotCookbook
             return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
-        public string Figure_28c_Custom_Tick_Labels()
+        public string Figure_28c_Multiplier_Notation_Disabled()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
