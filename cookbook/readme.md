@@ -399,6 +399,31 @@ plt.SaveFig(fileName);
 
 ![](./images/28_Axis_Exponent_And_Offset.png)
 
+##  Default Tick Labels
+
+```cs
+var plt = new ScottPlot.Plot(600, 400);
+plt.XLabel("horizontal units");
+plt.YLabel("vertical units");
+plt.PlotSignal(tenMillionPoints);
+plt.SaveFig(fileName);
+```
+
+![](./images/28b_Default_Tick_Labels.png)
+
+##  Custom Tick Labels
+
+```cs
+var plt = new ScottPlot.Plot(600, 400);
+plt.XLabel("horizontal units");
+plt.YLabel("vertical units");
+plt.PlotSignal(tenMillionPoints);
+plt.Ticks(useMultiplierNotation: false); // <-- THIS
+plt.SaveFig(fileName);
+```
+
+![](./images/28c_Custom_Tick_Labels.png)
+
 ## Very Large Images
 
 ```cs
