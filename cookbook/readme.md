@@ -345,7 +345,6 @@ plt.Ticks(displayTicksX: false, displayTicksY: false);
 plt.Frame(drawFrame: false);
 plt.PlotScatter(dataXs, dataSin);
 plt.PlotScatter(dataXs, dataCos);
-plt.TightenLayout(padding: 0);
 plt.SaveFig(fileName);
 ```
 
@@ -422,8 +421,6 @@ plt.SaveFig(fileName);
 
 ```cs
 var plt = new ScottPlot.Plot(600, 400);
-plt.XLabel("horizontal units");
-plt.YLabel("vertical units");
 plt.PlotSignal(tenMillionPoints);
 plt.SaveFig(fileName);
 ```
@@ -434,8 +431,6 @@ plt.SaveFig(fileName);
 
 ```cs
 var plt = new ScottPlot.Plot(600, 400);
-plt.XLabel("horizontal units");
-plt.YLabel("vertical units");
 plt.PlotSignal(tenMillionPoints);
 plt.Ticks(useMultiplierNotation: false); // <-- THIS
 plt.SaveFig(fileName);
