@@ -399,7 +399,7 @@ plt.SaveFig(fileName);
 
 ![](./images/28_Axis_Exponent_And_Offset.png)
 
-##  Default Tick Labels
+##  Multiplier Notation Default
 
 ```cs
 var plt = new ScottPlot.Plot(600, 400);
@@ -409,9 +409,9 @@ plt.PlotSignal(tenMillionPoints);
 plt.SaveFig(fileName);
 ```
 
-![](./images/28b_Default_Tick_Labels.png)
+![](./images/28b_Multiplier_Notation_Default.png)
 
-##  Custom Tick Labels
+##  Multiplier Notation Disabled
 
 ```cs
 var plt = new ScottPlot.Plot(600, 400);
@@ -422,7 +422,7 @@ plt.Ticks(useMultiplierNotation: false); // <-- THIS
 plt.SaveFig(fileName);
 ```
 
-![](./images/28c_Custom_Tick_Labels.png)
+![](./images/28c_Multiplier_Notation_Disabled.png)
 
 ## Very Large Images
 
