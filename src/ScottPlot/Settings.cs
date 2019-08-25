@@ -199,18 +199,16 @@ namespace ScottPlot
 
             // top
             SizeF titleSize = gfxFigure.MeasureString(title, titleFont);
-            int titleHeight = (int)(titleSize.Height);
-            axisLabelPadding[3] = Math.Max(titleHeight, (int)tickCollectionX.maxLabelSize.Height) + axisPadding * 2;
+            axisLabelPadding[3] = Math.Max((int)titleSize.Height, (int)tickCollectionX.maxLabelSize.Height) + axisPadding * 2;
 
             // bottom
             SizeF xLabelSize = gfxFigure.MeasureString(axisLabelX, axisLabelFontX);
-            int xLabelHeight = (int)(xLabelSize.Height);
-            axisLabelPadding[2] = Math.Max(xLabelHeight, (int)tickCollectionX.maxLabelSize.Height) + axisPadding * 2;
-            axisLabelPadding[2] += xLabelHeight;
+            axisLabelPadding[2] = Math.Max((int)xLabelSize.Height, (int)tickCollectionX.maxLabelSize.Height) + axisPadding * 2;
+            axisLabelPadding[2] += (int)xLabelSize.Height;
 
             // left
             SizeF yLabelSize = gfxFigure.MeasureString(axisLabelY, axisLabelFontY);
-            axisLabelPadding[0] = (int)(yLabelSize.Height) + axisPadding * 2;
+            axisLabelPadding[0] = (int)yLabelSize.Height + axisPadding * 2;
             axisLabelPadding[0] += (int)tickCollectionY.maxLabelSize.Width;
 
             // right
