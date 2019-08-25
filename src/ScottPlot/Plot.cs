@@ -134,7 +134,12 @@ namespace ScottPlot
                 settings.AxisAuto();
 
             if (!settings.tighteningOccurred)
+            {
+                // ticks must be populated before the layout can be tightened
+                Renderer.FigureTicks(settings);
                 TightenLayout();
+                // only after the layout is tightened can the ticks be properly decided
+            }
 
             settings.legendFrame = LegendTools.GetLegendFrame(settings, settings.gfxLegend);
 
