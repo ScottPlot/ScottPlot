@@ -197,25 +197,31 @@ namespace ScottPlot
             if (tickCollectionX == null)
                 return;
 
+            int tickLetterHeight = (int)gfxFigure.MeasureString("test", tickFont).Height;
+
             // top
-            SizeF titleSize = gfxFigure.MeasureString(title, titleFont);
-            axisLabelPadding[3] = Math.Max((int)titleSize.Height, (int)tickCollectionX.maxLabelSize.Height) + axisPadding * 2;
+            int titleHeight = (int)gfxFigure.MeasureString(title, titleFont).Height;
+            axisLabelPadding[3] = 1;
+            axisLabelPadding[3] += Math.Max(titleHeight, tickLetterHeight);
+            axisLabelPadding[3] += axisPadding * 2;
 
             // bottom
-            SizeF xLabelSize = gfxFigure.MeasureString(axisLabelX, axisLabelFontX);
-            axisLabelPadding[2] = Math.Max((int)xLabelSize.Height, (int)tickCollectionX.maxLabelSize.Height) + axisPadding * 2;
-            axisLabelPadding[2] += (int)xLabelSize.Height;
+            axisLabelPadding[2] = (int)tickCollectionX.maxLabelSize.Height;
+            axisLabelPadding[2] += tickLetterHeight;
+            axisLabelPadding[2] += axisPadding * 2;
 
             // left
             SizeF yLabelSize = gfxFigure.MeasureString(axisLabelY, axisLabelFontY);
-            axisLabelPadding[0] = (int)yLabelSize.Height + axisPadding * 2;
+            axisLabelPadding[0] = (int)yLabelSize.Height;
             axisLabelPadding[0] += (int)tickCollectionY.maxLabelSize.Width;
+            axisLabelPadding[0] += axisPadding * 2;
 
             // right
-            axisLabelPadding[1] = axisPadding + (int)tickCollectionY.maxLabelSize.Width / 2;
+            axisLabelPadding[1] = (int)tickCollectionY.maxLabelSize.Width / 2;
+            axisLabelPadding[1] += axisPadding * 2;
 
             // override for frameles
-            if (axisPadding == 0)
+            if (!displayAxisFrames)
                 axisLabelPadding = new int[] { 0, 0, 0, 0 };
 
             tighteningOccurred = true;
