@@ -41,7 +41,7 @@ namespace ScottPlot
         // axis settings
         public int axisPadding = 5;
         public bool[] displayFrameByAxis = new bool[] { true, true, true, true };
-        public int[] axisLabelPadding = new int[] { 140, 120, 140, 55 }; // X1, X2, Y1, Y2
+        public int[] axisLabelPadding = new int[] { 5, 5, 5, 5 }; // X1, X2, Y1, Y2
         public bool displayAxisFrames = true;
         public bool tighteningOccurred = false;
 
