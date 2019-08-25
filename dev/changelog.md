@@ -1,5 +1,19 @@
 # ScottPlot Changelog
 
+## ScottPlot 3.1.3
+
+_Published on [NuGet](https://www.nuget.org/packages/ScottPlot/) on 2019-08-25_
+
+### Minor Changes
+* FormsPlot improvements
+  * middle-click-drag zooms into a rectangle
+  * CTRL+scroll to lock vertical axis
+  * ALT+scroll to loch horizontal axis
+  * Improved (and overridable) right-click menu
+* Added additional options to `plt.Ticks()`
+  * rudimentary support for date tick labels (`dateTimeX` and `dateTimeY`)
+  * options to customize notation (`useExponentialNotation`, `useOffsetNotation`, and `useMultiplierNotation`)
+
 ## ScottPlot 3.1.0
 
 _Published on [NuGet](https://www.nuget.org/packages/ScottPlot/) on 2019-08-19_
