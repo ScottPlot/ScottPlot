@@ -60,6 +60,7 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.cbTicksMult = new System.Windows.Forms.CheckBox();
             this.cbTicksOffset = new System.Windows.Forms.CheckBox();
+            this.cbGrid = new System.Windows.Forms.CheckBox();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -365,6 +366,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.cbGrid);
             this.groupBox1.Controls.Add(this.cbTicksMult);
             this.groupBox1.Controls.Add(this.cbTicksOffset);
             this.groupBox1.Location = new System.Drawing.Point(12, 364);
@@ -393,6 +395,17 @@
             this.cbTicksOffset.TabIndex = 2;
             this.cbTicksOffset.Text = "offset";
             this.cbTicksOffset.UseVisualStyleBackColor = true;
+            // 
+            // cbGrid
+            // 
+            this.cbGrid.AutoSize = true;
+            this.cbGrid.Location = new System.Drawing.Point(136, 19);
+            this.cbGrid.Name = "cbGrid";
+            this.cbGrid.Size = new System.Drawing.Size(43, 17);
+            this.cbGrid.TabIndex = 3;
+            this.cbGrid.Text = "grid";
+            this.cbGrid.UseVisualStyleBackColor = true;
+            this.cbGrid.CheckedChanged += new System.EventHandler(this.CbGrid_CheckedChanged);
             // 
             // FormSettings
             // 
@@ -455,5 +468,6 @@
         private System.Windows.Forms.CheckBox cbXminor;
         private System.Windows.Forms.CheckBox cbYdateTime;
         private System.Windows.Forms.CheckBox cbXdateTime;
+        private System.Windows.Forms.CheckBox cbGrid;
     }
 }
