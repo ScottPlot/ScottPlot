@@ -99,29 +99,23 @@ namespace ScottPlot
             int dataCenterY = settings.dataSize.Height / 2 + settings.dataOrigin.Y;
 
             // title
-            SizeF titleSizeF = settings.title.GetDimensions(settings.gfxFigure);
-            Size titleSize = new Size((int)titleSizeF.Width, (int)titleSizeF.Height);
-            Point titlePoint = new Point(dataCenterX - titleSize.Width / 2, settings.axisPadding);
+            Point titlePoint = new Point(dataCenterX - (int)settings.title.width / 2, settings.axisPadding);
             settings.gfxFigure.DrawString(settings.title.text, settings.title.font, new SolidBrush(settings.title.color), titlePoint, settings.sfNorthWest);
             if (drawDebugRectangles)
-                settings.gfxFigure.DrawRectangle(Pens.Magenta, titlePoint.X, titlePoint.Y, titleSize.Width, titleSize.Height);
+                settings.gfxFigure.DrawRectangle(Pens.Magenta, titlePoint.X, titlePoint.Y, (int)settings.title.width, (int)settings.title.height);
 
             // horizontal axis label
-            SizeF xLabelSizF = settings.xLabel.GetDimensions(settings.gfxFigure);
-            Size xLabelSize = new Size((int)xLabelSizF.Width, (int)xLabelSizF.Height);
-            Point xLabelPoint = new Point(dataCenterX - xLabelSize.Width / 2, settings.figureSize.Height - settings.axisPadding - xLabelSize.Height);
+            Point xLabelPoint = new Point(dataCenterX - (int)settings.xLabel.width / 2, settings.figureSize.Height - settings.axisPadding - (int)settings.xLabel.height);
             settings.gfxFigure.DrawString(settings.xLabel.text, settings.xLabel.font, new SolidBrush(settings.xLabel.color), xLabelPoint, settings.sfNorthWest);
             if (drawDebugRectangles)
-                settings.gfxFigure.DrawRectangle(Pens.Magenta, xLabelPoint.X, xLabelPoint.Y, xLabelSize.Width, xLabelSize.Height);
+                settings.gfxFigure.DrawRectangle(Pens.Magenta, xLabelPoint.X, xLabelPoint.Y, (int)settings.xLabel.width, (int)settings.xLabel.height);
 
             // vertical axis label
-            SizeF yLabelSizF = settings.yLabel.GetDimensions(settings.gfxFigure);
-            Size yLabelSize = new Size((int)yLabelSizF.Width, (int)yLabelSizF.Height);
-            Point yLabelPoint = new Point(-dataCenterY - yLabelSize.Width / 2, settings.axisPadding);
+            Point yLabelPoint = new Point(-dataCenterY - (int)settings.yLabel.width / 2, settings.axisPadding);
             settings.gfxFigure.RotateTransform(-90);
             settings.gfxFigure.DrawString(settings.yLabel.text, settings.yLabel.font, new SolidBrush(settings.yLabel.color), yLabelPoint, settings.sfNorthWest);
             if (drawDebugRectangles)
-                settings.gfxFigure.DrawRectangle(Pens.Magenta, yLabelPoint.X, yLabelPoint.Y, yLabelSize.Width, yLabelSize.Height);
+                settings.gfxFigure.DrawRectangle(Pens.Magenta, yLabelPoint.X, yLabelPoint.Y, (int)settings.yLabel.width, (int)settings.yLabel.height);
             settings.gfxFigure.ResetTransform();
         }
 
