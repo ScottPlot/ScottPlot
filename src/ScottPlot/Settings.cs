@@ -24,6 +24,12 @@ namespace ScottPlot
         public Bitmap bmpData;
         public Bitmap bmpLegend;
 
+        // new config objects (https://github.com/swharden/ScottPlot/issues/120)
+        public Config.Title title = new Config.Title();
+        public Config.XLabel xLabel = new Config.XLabel();
+        public Config.YLabel yLabel = new Config.YLabel();
+        public Config.Misc misc = new Config.Misc();
+
         // axis (replace with class)
         public double[] axis = new double[] { -10, 10, -10, 10 }; // X1, X2, Y1, Y2
         public double xAxisSpan;
@@ -33,10 +39,6 @@ namespace ScottPlot
         public double xAxisScale;
         public double yAxisScale;
         public bool axisHasBeenIntentionallySet = false;
-
-        // background colors
-        public Color figureBackgroundColor = Color.White;
-        public Color dataBackgroundColor = Color.White;
 
         // axis settings
         public int axisPadding = 5;
@@ -60,11 +62,6 @@ namespace ScottPlot
         public bool useMultiplierNotation = true;
         public bool useOffsetNotation = true;
         public bool useExponentialNotation = true;
-
-        // title and axis labels
-        public Config.Title title = new Config.Title();
-        public Config.XLabel xLabel = new Config.XLabel();
-        public Config.YLabel yLabel = new Config.YLabel();
 
         // grid
         public bool displayGrid = true;
