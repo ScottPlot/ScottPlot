@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config\Benchmark.cs" />
+    <Compile Include="Config\Grid.cs" />
     <Compile Include="Config\Misc.cs" />
     <Compile Include="DataGen.cs" />
     <Compile Include="Histogram.cs" />

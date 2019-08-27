@@ -30,6 +30,7 @@ namespace ScottPlot
         public Config.YLabel yLabel = new Config.YLabel();
         public Config.Misc misc = new Config.Misc();
         public Config.Benchmark benchmark = new Config.Benchmark();
+        public Config.Grid grid = new Config.Grid();
 
         // axis (replace with class)
         public double[] axis = new double[] { -10, 10, -10, 10 }; // X1, X2, Y1, Y2
@@ -63,10 +64,6 @@ namespace ScottPlot
         public bool useMultiplierNotation = true;
         public bool useOffsetNotation = true;
         public bool useExponentialNotation = true;
-
-        // grid
-        public bool displayGrid = true;
-        public Color gridColor = Color.LightGray;
         public double tickSpacingX = 0;
         public double tickSpacingY = 0;
 
