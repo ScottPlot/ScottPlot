@@ -29,6 +29,7 @@ namespace ScottPlot
         public Config.XLabel xLabel = new Config.XLabel();
         public Config.YLabel yLabel = new Config.YLabel();
         public Config.Misc misc = new Config.Misc();
+        public Config.Benchmark benchmark = new Config.Benchmark();
 
         // axis (replace with class)
         public double[] axis = new double[] { -10, 10, -10, 10 }; // X1, X2, Y1, Y2
@@ -78,18 +79,7 @@ namespace ScottPlot
         public legendLocation legendLocation = legendLocation.none;
         public shadowDirection legendShadowDirection = shadowDirection.none;
         public Rectangle legendFrame = new Rectangle(0, 0, 1, 1);
-
-        // benchmarking
-        public Font benchmarkFont = new Font("Consolas", 8);
-        public Brush benchmarkFontBrush = Brushes.Black;
-        public Brush benchmarkBackgroundBrush = new SolidBrush(Color.FromArgb(150, Color.LightYellow));
-        public Pen benchmarkBorderPen = Pens.Black;
-        public Stopwatch benchmarkStopwatch = new Stopwatch();
-        public double benchmarkMsec;
-        public double benchmarkHz;
-        public string benchmarkMessage;
-        public bool displayBenchmark = false;
-
+        
         // mouse tracking
         public Point mouseDownLocation = new Point(0, 0);
         public double[] mouseDownAxis = new double[4];
@@ -133,21 +123,24 @@ namespace ScottPlot
 
         public void BenchmarkStart()
         {
-            benchmarkStopwatch.Restart();
+            benchmark.stopwatch.Restart();
         }
 
         public void BenchmarkEnd()
         {
-            benchmarkStopwatch.Stop();
-            benchmarkMsec = benchmarkStopwatch.ElapsedTicks * 1000.0 / Stopwatch.Frequency;
-            benchmarkHz = 1000.0 / benchmarkMsec;
+            // TODO: move this functionality inside benchmark class
+            benchmark.stopwatch.Stop();
+            benchmark.msec = benchmark.stopwatch.ElapsedTicks * 1000.0 / Stopwatch.Frequency;
+            benchmark.hz = 1000.0 / benchmark.msec;
+            string benchmarkMessage;
             benchmarkMessage = "";
             benchmarkMessage += string.Format("Full render of {0:n0} objects ({1:n0} points)", plottables.Count, GetTotalPointCount());
-            benchmarkMessage += string.Format(" took {0:0.000} ms ({1:0.00 Hz})", benchmarkMsec, benchmarkHz);
+            benchmarkMessage += string.Format(" took {0:0.000} ms ({1:0.00 Hz})", benchmark.msec, benchmark.hz);
             if (plottables.Count == 1)
                 benchmarkMessage = benchmarkMessage.Replace("objects", "object");
             if (!bmpFigureRenderRequired)
                 benchmarkMessage = benchmarkMessage.Replace("Full", "Data-only");
+            benchmark.text = benchmarkMessage;
         }
 
         public void Resize(int width, int height)

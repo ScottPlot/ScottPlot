@@ -50,6 +50,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config\Benchmark.cs" />
     <Compile Include="Config\Misc.cs" />
     <Compile Include="DataGen.cs" />
     <Compile Include="Histogram.cs" />

@@ -158,18 +158,16 @@ namespace ScottPlot
 
         public static void Benchmark(Settings settings)
         {
-            if (settings.displayBenchmark)
+            if (settings.benchmark.visible)
             {
                 int debugPadding = 3;
-                SizeF textSizeF = settings.gfxFigure.MeasureString(settings.benchmarkMessage, settings.benchmarkFont);
-                Size textSize = new Size((int)textSizeF.Width, (int)textSizeF.Height);
-                Point textLocation = new Point(settings.dataSize.Width + settings.dataOrigin.X, settings.dataSize.Height + settings.dataOrigin.Y);
-                textLocation.X -= textSize.Width + debugPadding;
-                textLocation.Y -= textSize.Height + debugPadding;
-                Rectangle textRect = new Rectangle(textLocation, textSize);
-                settings.gfxFigure.FillRectangle(settings.benchmarkBackgroundBrush, textRect);
-                settings.gfxFigure.DrawRectangle(settings.benchmarkBorderPen, textRect);
-                settings.gfxFigure.DrawString(settings.benchmarkMessage, settings.benchmarkFont, settings.benchmarkFontBrush, textLocation);
+                PointF textLocation = new PointF(settings.dataSize.Width + settings.dataOrigin.X, settings.dataSize.Height + settings.dataOrigin.Y);
+                textLocation.X -= settings.benchmark.width + debugPadding;
+                textLocation.Y -= settings.benchmark.height + debugPadding;
+                RectangleF textRect = new RectangleF(textLocation, settings.benchmark.size);
+                settings.gfxFigure.FillRectangle(new SolidBrush(settings.benchmark.colorBackground), textRect);
+                settings.gfxFigure.DrawRectangle(new Pen(settings.benchmark.colorBorder), Rectangle.Round(textRect));
+                settings.gfxFigure.DrawString(settings.benchmark.text, settings.benchmark.font, new SolidBrush(settings.benchmark.color), textLocation);
             }
         }
 
