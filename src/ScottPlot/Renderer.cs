@@ -99,10 +99,10 @@ namespace ScottPlot
             int dataCenterY = settings.dataSize.Height / 2 + settings.dataOrigin.Y;
 
             // title
-            SizeF titleSizeF = settings.gfxFigure.MeasureString(settings.title, settings.titleFont);
+            SizeF titleSizeF = settings.title.GetDimensions(settings.gfxFigure);
             Size titleSize = new Size((int)titleSizeF.Width, (int)titleSizeF.Height);
             Point titlePoint = new Point(dataCenterX - titleSize.Width / 2, settings.axisPadding);
-            settings.gfxFigure.DrawString(settings.title, settings.titleFont, new SolidBrush(settings.titleColor), titlePoint, settings.sfNorthWest);
+            settings.gfxFigure.DrawString(settings.title.text, settings.title.font, new SolidBrush(settings.title.color), titlePoint, settings.sfNorthWest);
             if (drawDebugRectangles)
                 settings.gfxFigure.DrawRectangle(Pens.Magenta, titlePoint.X, titlePoint.Y, titleSize.Width, titleSize.Height);
 
