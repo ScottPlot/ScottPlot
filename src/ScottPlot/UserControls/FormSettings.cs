@@ -48,6 +48,9 @@ namespace ScottPlot.UserControls
             cbTicksMult.Checked = plt.GetSettings().useMultiplierNotation;
             cbGrid.Checked = plt.GetSettings().displayGrid;
 
+            // legend
+            cbLegend.Checked = (plt.GetSettings().legendLocation == legendLocation.none) ? false : true;
+
             // image quality
             rbQualityLow.Checked = !plt.GetSettings().antiAliasData;
             rbQualityHigh.Checked = plt.GetSettings().antiAliasData;
@@ -131,6 +134,11 @@ namespace ScottPlot.UserControls
         private void CbGrid_CheckedChanged(object sender, EventArgs e)
         {
             plt.Grid(enable: cbGrid.Checked);
+        }
+
+        private void CbLegend_CheckedChanged(object sender, EventArgs e)
+        {
+            plt.Legend(enableLegend: cbLegend.Checked);
         }
     }
 }
