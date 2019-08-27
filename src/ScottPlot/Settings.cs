@@ -192,9 +192,8 @@ namespace ScottPlot
             int tickLetterHeight = (int)gfxFigure.MeasureString("test", tickFont).Height;
 
             // top
-            int titleHeight = (int)title.GetDimensions(gfxFigure).Height;
             axisLabelPadding[3] = 1;
-            axisLabelPadding[3] += Math.Max(titleHeight, tickLetterHeight);
+            axisLabelPadding[3] += Math.Max((int)title.height, tickLetterHeight);
             axisLabelPadding[3] += axisPadding;
 
             // bottom

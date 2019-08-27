@@ -63,9 +63,30 @@ namespace ScottPlot.Config
             }
         }
 
-        public SizeF GetDimensions(Graphics gfx)
+        private Graphics gfx = Graphics.FromHwnd(IntPtr.Zero);
+
+        public SizeF size
         {
-            return gfx.MeasureString(text, font);
+            get
+            {
+                return gfx.MeasureString(text, font);
+            }
+        }
+
+        public float width
+        {
+            get
+            {
+                return size.Width;
+            }
+        }
+
+        public float height
+        {
+            get
+            {
+                return size.Height;
+            }
         }
     }
 }
