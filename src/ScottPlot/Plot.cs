@@ -755,7 +755,7 @@ namespace ScottPlot
             string xLabel = null,
             Color? color = null,
             bool? enable = true,
-            string fontName = "Segoe UI",
+            string fontName = null,
             float fontSize = 12,
             bool bold = false
             )
@@ -766,8 +766,10 @@ namespace ScottPlot
                 settings.axisLabelX = "";
             if (color != null)
                 settings.axisLabelColorX = (Color)color;
+            if (fontName == null)
+                fontName = settings.axisLabelFontX.Name;
 
-            fontName = ScottPlot.Tools.VerifyFont(fontName);
+            fontName = Tools.VerifyFont(fontName);
             FontStyle fontStyle = (bold) ? FontStyle.Bold : FontStyle.Regular;
             settings.axisLabelFontX = new Font(fontName, fontSize, fontStyle);
 
@@ -778,9 +780,9 @@ namespace ScottPlot
         public void YLabel(
             string yLabel = null,
             bool? enable = true,
-            string fontName = "Segoe UI",
-            float fontSize = 12, Color?
-            color = null,
+            string fontName = null,
+            float fontSize = 12, 
+            Color? color = null,
             bool bold = false
             )
         {
@@ -790,8 +792,10 @@ namespace ScottPlot
                 settings.axisLabelY = "";
             if (color != null)
                 settings.axisLabelColorY = (Color)color;
+            if (fontName == null)
+                fontName = settings.axisLabelFontY.Name;
 
-            fontName = ScottPlot.Tools.VerifyFont(fontName);
+            fontName = Tools.VerifyFont(fontName);
             FontStyle fontStyle = (bold) ? FontStyle.Bold : FontStyle.Regular;
             settings.axisLabelFontY = new Font(fontName, fontSize, fontStyle);
 
