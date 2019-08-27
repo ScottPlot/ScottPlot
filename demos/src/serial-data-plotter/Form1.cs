@@ -15,7 +15,7 @@ namespace serial_data_plotter
     {
         SerialPort ser;
         static string serLastLine;
-        static AdcValuesLoop values = new AdcValuesLoop();
+        static AdcValuesLoop values = new AdcValuesLoop(valueCount: 500000);
 
         public Form1()
         {
@@ -29,8 +29,8 @@ namespace serial_data_plotter
 
             formsPlot1.plt.PlotSignal(values.values1, 50, markerSize: 0, label: "ADC 1");
             formsPlot1.plt.PlotSignal(values.values2, 50, markerSize: 0, label: "ADC 2");
-            formsPlot1.plt.PlotSignal(values.values3, 50, markerSize: 0, label: "ADC 3");
-            formsPlot1.plt.PlotSignal(values.values4, 50, markerSize: 0, label: "ADC 4");
+            //formsPlot1.plt.PlotSignal(values.values3, 50, markerSize: 0, label: "ADC 3");
+            //formsPlot1.plt.PlotSignal(values.values4, 50, markerSize: 0, label: "ADC 4");
             formsPlot1.plt.Title("Sensor Data");
             formsPlot1.plt.YLabel("ADC Value");
             formsPlot1.plt.XLabel("Time (seconds)");
