@@ -62,9 +62,7 @@ namespace ScottPlot
         public bool useExponentialNotation = true;
 
         // title and axis labels
-        public string title = "";
-        public Font titleFont = new Font("Segoe UI", 20, FontStyle.Bold);
-        public Color titleColor = Color.Black;
+        public Config.Title title = new Config.Title();
 
         public string axisLabelX = "";
         public Font axisLabelFontX = new Font("Segoe UI", 16);
@@ -200,7 +198,7 @@ namespace ScottPlot
             int tickLetterHeight = (int)gfxFigure.MeasureString("test", tickFont).Height;
 
             // top
-            int titleHeight = (int)gfxFigure.MeasureString(title, titleFont).Height;
+            int titleHeight = (int)title.GetDimensions(gfxFigure).Height;
             axisLabelPadding[3] = 1;
             axisLabelPadding[3] += Math.Max(titleHeight, tickLetterHeight);
             axisLabelPadding[3] += axisPadding;

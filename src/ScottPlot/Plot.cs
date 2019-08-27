@@ -729,24 +729,20 @@ namespace ScottPlot
         public void Title(
             string title = null,
             bool? enable = true,
-            string fontName = "Segoe UI",
-            float fontSize = 12,
+            string fontName = null,
+            float? fontSize = null,
             Color? color = null,
-            bool bold = true
+            bool? bold = null
             )
         {
-            if (title != null)
-                settings.title = title;
-            if (color != null)
-                settings.titleColor = (Color)color;
-            if (enable != null)
-                if (enable == false)
-                    settings.title = "";
+            
+            settings.title.text = title ?? settings.title.text;
+            settings.title.visible = enable ?? settings.title.visible;
+            settings.title.fontName = fontName ?? settings.title.fontName;
+            settings.title.fontSize = fontSize ?? settings.title.fontSize;
+            settings.title.color = color ?? settings.title.color;
+            settings.title.bold = bold ?? settings.title.bold;
 
-            fontName = ScottPlot.Tools.VerifyFont(fontName);
-            FontStyle fontStyle = (bold) ? FontStyle.Bold : FontStyle.Regular;
-
-            settings.titleFont = new Font(fontName, fontSize, fontStyle);
             settings.bmpFigureRenderRequired = true;
             TightenLayout();
         }
@@ -1010,7 +1006,7 @@ namespace ScottPlot
             if (label != null)
                 settings.axisLabelColorY = (Color)label;
             if (title != null)
-                settings.titleColor = (Color)title;
+                settings.title.color = (Color)title;
             if (dataBg != null)
                 settings.legendBackColor = (Color)dataBg;
             if (tick != null)
