@@ -53,6 +53,7 @@
     <Compile Include="Config\Benchmark.cs" />
     <Compile Include="Config\Grid.cs" />
     <Compile Include="Config\Misc.cs" />
+    <Compile Include="Config\Colors.cs" />
     <Compile Include="DataGen.cs" />
     <Compile Include="Histogram.cs" />
     <Compile Include="Legend.cs" />
