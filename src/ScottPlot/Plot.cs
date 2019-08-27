@@ -878,18 +878,18 @@ namespace ScottPlot
         }
 
         public void Grid(
-            bool? enable = true,
+            bool? enable = null,
             Color? color = null,
             double? xSpacing = null,
             double? ySpacing = null
             )
         {
-            if (enable != null)
-                settings.displayGrid = (bool)enable;
-            if (color != null)
-                settings.gridColor = (Color)color;
+            settings.grid.visible = enable ?? settings.grid.visible;
+            settings.grid.color = color ?? settings.grid.color;
+
             settings.tickSpacingX = (xSpacing == null) ? 0 : (double)xSpacing;
             settings.tickSpacingY = (ySpacing == null) ? 0 : (double)ySpacing;
+
             settings.bmpFigureRenderRequired = true;
         }
 
@@ -986,7 +986,7 @@ namespace ScottPlot
             if (dataBg != null)
                 settings.misc.dataBackgroundColor = (Color)dataBg;
             if (grid != null)
-                settings.gridColor = (Color)grid;
+                settings.grid.color = (Color)grid;
             if (tick != null)
                 settings.tickColor = (Color)tick;
             if (label != null)
