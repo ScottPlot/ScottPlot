@@ -63,14 +63,8 @@ namespace ScottPlot
 
         // title and axis labels
         public Config.Title title = new Config.Title();
-
-        public string axisLabelX = "";
-        public Font axisLabelFontX = new Font("Segoe UI", 16);
-        public Color axisLabelColorX = Color.Black;
-
-        public string axisLabelY = "";
-        public Font axisLabelFontY = new Font("Segoe UI", 16);
-        public Color axisLabelColorY = Color.Black;
+        public Config.XLabel xLabel = new Config.XLabel();
+        public Config.YLabel yLabel = new Config.YLabel();
 
         // grid
         public bool displayGrid = true;
@@ -204,13 +198,13 @@ namespace ScottPlot
             axisLabelPadding[3] += axisPadding;
 
             // bottom
-            int xLabelHeight = (int)gfxFigure.MeasureString(axisLabelX, axisLabelFontX).Height;
+            int xLabelHeight = (int)gfxFigure.MeasureString(xLabel.text, xLabel.font).Height;
             axisLabelPadding[2] = Math.Max(xLabelHeight, tickLetterHeight);
             axisLabelPadding[2] += tickLetterHeight;
             axisLabelPadding[2] += axisPadding;
 
             // left
-            SizeF yLabelSize = gfxFigure.MeasureString(axisLabelY, axisLabelFontY);
+            SizeF yLabelSize = gfxFigure.MeasureString(yLabel.text, yLabel.font);
             axisLabelPadding[0] = (int)yLabelSize.Height;
             axisLabelPadding[0] += (int)tickCollectionY.maxLabelSize.Width;
             axisLabelPadding[0] += axisPadding;

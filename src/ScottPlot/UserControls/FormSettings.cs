@@ -30,14 +30,14 @@ namespace ScottPlot.UserControls
         private void PopualteGuiFromPlot()
         {
             // vertical axis
-            tbYlabel.Text = plt.GetSettings().axisLabelY;
+            tbYlabel.Text = plt.GetSettings().yLabel.text;
             tbY2.Text = Math.Round(plt.Axis()[3], 4).ToString();
             tbY1.Text = Math.Round(plt.Axis()[2], 4).ToString();
             cbYminor.Checked = plt.GetSettings().displayTicksYminor;
             cbYdateTime.Checked = plt.GetSettings().tickDateTimeY;
 
             // horizontal axis
-            tbXlabel.Text = plt.GetSettings().axisLabelX;
+            tbXlabel.Text = plt.GetSettings().xLabel.text;
             tbX2.Text = Math.Round(plt.Axis()[1], 4).ToString();
             tbX1.Text = Math.Round(plt.Axis()[0], 4).ToString();
             cbXminor.Checked = plt.GetSettings().displayTicksXminor;
