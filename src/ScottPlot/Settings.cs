@@ -31,6 +31,7 @@ namespace ScottPlot
         public Config.Misc misc = new Config.Misc();
         public Config.Benchmark benchmark = new Config.Benchmark();
         public Config.Grid grid = new Config.Grid();
+        public Config.Colors colors = new Config.Colors();
 
         // axis (replace with class)
         public double[] axis = new double[] { -10, 10, -10, 10 }; // X1, X2, Y1, Y2
@@ -88,18 +89,9 @@ namespace ScottPlot
 
         // plottables
         public readonly List<Plottable> plottables = new List<Plottable>();
-        public bool useTwentyColors = false;
         public bool antiAliasData = true;
         public bool antiAliasFigure = true;
         public bool antiAliasLegend = true;
-
-        // plot colors (https://github.com/vega/vega/wiki/Scales#scale-range-literals)
-        string[] plottableColors10 = new string[] { "#1f77b4", "#ff7f0e", "#2ca02c", "#d62728",
-                    "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf" };
-        string[] plottableColors20 = new string[] { "#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78",
-                "#2ca02c", "#98df8a", "#d62728", "#ff9896", "#9467bd", "#c5b0d5",
-                "#8c564b", "#c49c94", "#e377c2", "#f7b6d2", "#7f7f7f", "#c7c7c7",
-                "#bcbd22", "#dbdb8d", "#17becf", "#9edae5", };
 
         // string formats (position indicates where their origin is)
         public StringFormat sfEast = new StringFormat() { LineAlignment = StringAlignment.Center, Alignment = StringAlignment.Far };
@@ -116,6 +108,11 @@ namespace ScottPlot
         public Settings()
         {
 
+        }
+
+        public Color GetNextColor()
+        {
+            return colors.GetColor(plottables.Count);
         }
 
         public void BenchmarkStart()
@@ -464,11 +461,6 @@ namespace ScottPlot
             return totalPointCount;
         }
 
-        public Color GetNextColor()
-        {
-            string[] colors = (useTwentyColors) ? plottableColors20 : plottableColors10;
-            return ColorTranslator.FromHtml(colors[plottables.Count % colors.Length]);
-        }
 
         public void Clear(bool axLines = true, bool scatters = true, bool signals = true, bool text = true, bool bar = true, bool finance = true)
         {
