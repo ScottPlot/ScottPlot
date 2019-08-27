@@ -46,6 +46,7 @@ namespace ScottPlot.UserControls
             // tick display options
             cbTicksOffset.Checked = plt.GetSettings().useOffsetNotation;
             cbTicksMult.Checked = plt.GetSettings().useMultiplierNotation;
+            cbGrid.Checked = plt.GetSettings().displayGrid;
 
             // image quality
             rbQualityLow.Checked = !plt.GetSettings().antiAliasData;
@@ -124,7 +125,12 @@ namespace ScottPlot.UserControls
 
         private void BtnCancel_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
+        }
+
+        private void CbGrid_CheckedChanged(object sender, EventArgs e)
+        {
+            plt.Grid(enable: cbGrid.Checked);
         }
     }
 }
