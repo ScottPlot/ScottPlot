@@ -920,9 +920,9 @@ namespace ScottPlot
         public void Benchmark(bool show = true, bool toggle = false)
         {
             if (toggle)
-                settings.displayBenchmark = (settings.displayBenchmark) ? false : true;
+                settings.benchmark.visible = !settings.benchmark.visible;
             else
-                settings.displayBenchmark = show;
+                settings.benchmark.visible = show;
         }
 
         public void AntiAlias(bool figure = true, bool data = false, bool legend = false)
