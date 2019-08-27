@@ -13,13 +13,13 @@ namespace ScottPlot
         public static void FigureClear(Settings settings)
         {
             if (settings.gfxFigure != null)
-                settings.gfxFigure.Clear(settings.figureBackgroundColor);
+                settings.gfxFigure.Clear(settings.misc.figureBackgroundColor);
         }
 
         public static void DataBackground(Settings settings)
         {
             if (settings.gfxData != null)
-                settings.gfxData.Clear(settings.dataBackgroundColor);
+                settings.gfxData.Clear(settings.misc.dataBackgroundColor);
         }
 
         public static void DataGrid(Settings settings)

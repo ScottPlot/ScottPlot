@@ -982,9 +982,9 @@ namespace ScottPlot
             )
         {
             if (figBg != null)
-                settings.figureBackgroundColor = (Color)figBg;
+                settings.misc.figureBackgroundColor = (Color)figBg;
             if (dataBg != null)
-                settings.dataBackgroundColor = (Color)dataBg;
+                settings.misc.dataBackgroundColor = (Color)dataBg;
             if (grid != null)
                 settings.gridColor = (Color)grid;
             if (tick != null)
