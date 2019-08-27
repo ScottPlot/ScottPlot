@@ -60,6 +60,9 @@ namespace ScottPlot.UserControls
             lbPlotObjects.Items.Clear();
             foreach (var plotObject in plt.GetPlottables())
                 lbPlotObjects.Items.Add(plotObject);
+
+            // list of color styles
+            cbStyle.Items.AddRange(Enum.GetNames(typeof(Style)));
         }
 
         private void BtnFitDataY_Click(object sender, EventArgs e)
@@ -118,27 +121,25 @@ namespace ScottPlot.UserControls
             // tick display options
             plt.Ticks(useOffsetNotation: cbTicksOffset.Checked, useMultiplierNotation: cbTicksMult.Checked);
 
-
             // image quality
             plt.AntiAlias(figure: rbQualityHigh.Checked, data: rbQualityHigh.Checked);
             plt.mouseTracker.lowQualityWhileInteracting = cbQualityLowWhileDragging.Checked;
 
-            this.Close();
+            // misc
+            plt.Grid(enable: cbGrid.Checked);
+            plt.Legend(enableLegend: cbLegend.Checked);
+            if (cbStyle.Text != "")
+            {
+                Style newStyle = (Style)Enum.Parse(typeof(Style), cbStyle.Text);
+                plt.Style(newStyle);
+            }
+
+            Close();
         }
 
         private void BtnCancel_Click(object sender, EventArgs e)
         {
             Close();
-        }
-
-        private void CbGrid_CheckedChanged(object sender, EventArgs e)
-        {
-            plt.Grid(enable: cbGrid.Checked);
-        }
-
-        private void CbLegend_CheckedChanged(object sender, EventArgs e)
-        {
-            plt.Legend(enableLegend: cbLegend.Checked);
         }
     }
 }

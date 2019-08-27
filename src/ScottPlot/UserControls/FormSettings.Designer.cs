@@ -63,12 +63,15 @@
             this.cbTicksOffset = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.cbLegend = new System.Windows.Forms.CheckBox();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.cbStyle = new System.Windows.Forms.ComboBox();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox7.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnSave
@@ -115,7 +118,7 @@
             this.groupBox3.Controls.Add(this.cbQualityLowWhileDragging);
             this.groupBox3.Controls.Add(this.rbQualityHigh);
             this.groupBox3.Controls.Add(this.rbQualityLow);
-            this.groupBox3.Location = new System.Drawing.Point(12, 417);
+            this.groupBox3.Location = new System.Drawing.Point(263, 241);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(245, 47);
             this.groupBox3.TabIndex = 5;
@@ -162,7 +165,7 @@
             this.groupBox4.Controls.Add(this.btnExportCSV);
             this.groupBox4.Location = new System.Drawing.Point(263, 12);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(251, 346);
+            this.groupBox4.Size = new System.Drawing.Size(251, 170);
             this.groupBox4.TabIndex = 6;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Data Export";
@@ -176,7 +179,7 @@
             this.lbPlotObjects.Location = new System.Drawing.Point(6, 19);
             this.lbPlotObjects.Name = "lbPlotObjects";
             this.lbPlotObjects.ScrollAlwaysVisible = true;
-            this.lbPlotObjects.Size = new System.Drawing.Size(239, 277);
+            this.lbPlotObjects.Size = new System.Drawing.Size(239, 108);
             this.lbPlotObjects.TabIndex = 4;
             this.lbPlotObjects.SelectedIndexChanged += new System.EventHandler(this.LbPlotObjects_SelectedIndexChanged);
             // 
@@ -184,7 +187,7 @@
             // 
             this.btnExportCSV.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnExportCSV.Enabled = false;
-            this.btnExportCSV.Location = new System.Drawing.Point(6, 317);
+            this.btnExportCSV.Location = new System.Drawing.Point(6, 141);
             this.btnExportCSV.Name = "btnExportCSV";
             this.btnExportCSV.Size = new System.Drawing.Size(76, 23);
             this.btnExportCSV.TabIndex = 3;
@@ -388,7 +391,6 @@
             this.cbGrid.TabIndex = 3;
             this.cbGrid.Text = "grid";
             this.cbGrid.UseVisualStyleBackColor = true;
-            this.cbGrid.CheckedChanged += new System.EventHandler(this.CbGrid_CheckedChanged);
             // 
             // cbTicksMult
             // 
@@ -413,7 +415,7 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.cbLegend);
-            this.groupBox2.Location = new System.Drawing.Point(263, 364);
+            this.groupBox2.Location = new System.Drawing.Point(263, 188);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(245, 47);
             this.groupBox2.TabIndex = 16;
@@ -429,13 +431,34 @@
             this.cbLegend.TabIndex = 2;
             this.cbLegend.Text = "display on graph";
             this.cbLegend.UseVisualStyleBackColor = true;
-            this.cbLegend.CheckedChanged += new System.EventHandler(this.CbLegend_CheckedChanged);
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.cbStyle);
+            this.groupBox7.Location = new System.Drawing.Point(263, 294);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(245, 47);
+            this.groupBox7.TabIndex = 17;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "Color Style";
+            // 
+            // cbStyle
+            // 
+            this.cbStyle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbStyle.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbStyle.FormattingEnabled = true;
+            this.cbStyle.Location = new System.Drawing.Point(6, 19);
+            this.cbStyle.Name = "cbStyle";
+            this.cbStyle.Size = new System.Drawing.Size(233, 21);
+            this.cbStyle.TabIndex = 0;
             // 
             // FormSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(526, 476);
+            this.Controls.Add(this.groupBox7);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnCancel);
@@ -458,6 +481,7 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox7.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -498,5 +522,7 @@
         private System.Windows.Forms.CheckBox cbGrid;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.CheckBox cbLegend;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.ComboBox cbStyle;
     }
 }
