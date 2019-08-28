@@ -194,7 +194,7 @@ namespace ScottPlot
             int x1 = settings.dataOrigin.X;
             int x2 = x1 + settings.dataSize.Width;
             int y1 = settings.dataOrigin.Y + settings.dataSize.Height;
-            int y2 = y1 + (int)settings.tickCollectionY.maxLabelSize.Height;
+            int y2 = y1 + (int)settings.ticks.tickCollectionY.maxLabelSize.Height;
             if ((loc.X < x1) || (loc.X > x2))
                 return false;
             if ((loc.Y < y1) || (loc.Y > y2))
@@ -204,7 +204,7 @@ namespace ScottPlot
 
         public bool MouseIsOverVerticalAxis(Point loc)
         {
-            int x1 = settings.dataOrigin.X - (int)settings.tickCollectionY.maxLabelSize.Width;
+            int x1 = settings.dataOrigin.X - (int)settings.ticks.tickCollectionY.maxLabelSize.Width;
             int x2 = settings.dataOrigin.X;
             int y1 = settings.dataOrigin.Y;
             int y2 = settings.dataOrigin.Y + settings.dataSize.Height;
