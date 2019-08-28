@@ -17,11 +17,11 @@ namespace ScottPlot
     public class Settings
     {
         // these properties get set at instantiation or after size or axis adjustments
-        public Size figureSize { get; private set; } // TODO: this pass through to bmpFigure.Size and Resize()
+        public Size figureSize { get; private set; }
         public Point dataOrigin { get; private set; }
         public Size dataSize { get; private set; }
 
-        // hold copies of graphics objects to make them easy to plot to
+        // Eventually move graphics objects to their own module.
         public Graphics gfxFigure;
         public Graphics gfxData;
         public Graphics gfxLegend;
@@ -44,32 +44,15 @@ namespace ScottPlot
         public Config.Layout layout = new Config.Layout();
         public Config.Ticks ticks = new Config.Ticks();
         public Config.Legend legend = new Config.Legend();
+        public Config.Mouse mouse = new Config.Mouse();
 
         // scales calculations must occur at this level because the axes are unaware of pixel dimensions
         public double xAxisScale { get { return bmpData.Width / axes.x.span; } }
         public double yAxisScale { get { return bmpData.Height / axes.y.span; } }
 
-        // mouse tracking
-        public Point mouseDownLocation = new Point(0, 0);
-        public double[] mouseDownLimits = new double[4];
+        // this has to be here because color module is unaware of plottables list
+        public Color GetNextColor() { return colors.GetColor(plottables.Count); }
 
-        // mouse middle-click-zooming
-        public Point mouseZoomDownLocation = new Point(0, 0);
-        public Point mouseZoomCurrentLocation = new Point(0, 0);
-        public bool mouseZoomRectangleIsHappening = false;
-
-        // experimental settings
-        public bool useParallel = false;
-
-        public Settings()
-        {
-
-        }
-
-        public Color GetNextColor()
-        {
-            return colors.GetColor(plottables.Count);
-        }
 
         public void Resize(int width, int height)
         {
@@ -78,7 +61,6 @@ namespace ScottPlot
             int dataWidth = figureSize.Width - layout.paddingBySide[0] - layout.paddingBySide[1];
             int dataHeight = figureSize.Height - layout.paddingBySide[2] - layout.paddingBySide[3];
             dataSize = new Size(dataWidth, dataHeight);
-            AxisUpdate();
         }
 
         public void AxisSet(double? x1 = null, double? x2 = null, double? y1 = null, double? y2 = null)
@@ -88,7 +70,6 @@ namespace ScottPlot
             axes.y.min = y1 ?? axes.y.min;
             axes.y.max = y2 ?? axes.y.max;
             axes.hasBeenSet = true;
-            AxisUpdate();
         }
 
         public void AxisTighen()
@@ -130,11 +111,6 @@ namespace ScottPlot
 
         public bool bmpFigureRenderRequired = true;
 
-        public void AxisUpdate()
-        {
-            bmpFigureRenderRequired = true;
-        }
-
         public void AxisPan(double? dx = null, double? dy = null)
         {
             if (!axes.hasBeenSet)
@@ -145,8 +121,6 @@ namespace ScottPlot
 
             if (dy != null)
                 axes.y.Pan((double)dy);
-
-            AxisUpdate();
         }
 
         public void AxisZoom(double xFrac = 1, double yFrac = 1, PointF? zoomCenter = null)
@@ -164,8 +138,6 @@ namespace ScottPlot
                 axes.x.Zoom(xFrac, (double)((PointF)zoomCenter).X);
                 axes.y.Zoom(yFrac, (double)((PointF)zoomCenter).Y);
             }
-
-            AxisUpdate();
         }
 
         private void AxisZoomPx(int xPx, int yPx)
@@ -262,21 +234,18 @@ namespace ScottPlot
             axes.y.max = newAxes[3];
 
             axes.hasBeenSet = true;
-            AxisUpdate();
             AxisZoom(1 - horizontalMargin, 1 - verticalMargin);
 
             if (xExpandOnly && original != null)
             {
                 axes.x.min = Math.Min(axes.x.min, original[0]);
                 axes.x.max = Math.Max(axes.x.max, original[1]);
-                AxisUpdate();
             }
 
             if (yExpandOnly && original != null)
             {
                 axes.y.min = Math.Min(axes.y.min, original[2]);
                 axes.y.max = Math.Max(axes.y.max, original[3]);
-                AxisUpdate();
             }
 
         }
@@ -291,10 +260,10 @@ namespace ScottPlot
         public bool mouseIsZooming = false;
         public void MouseDown(int cusorPosX, int cursorPosY, bool panning = false, bool zooming = false)
         {
-            mouseDownLocation = new Point(cusorPosX, cursorPosY);
+            mouse.downLoc = new Point(cusorPosX, cursorPosY);
             mouseIsPanning = panning;
             mouseIsZooming = zooming;
-            Array.Copy(axes.limits, mouseDownLimits, 4);
+            Array.Copy(axes.limits, mouse.downLimits, 4);
         }
 
         public void MouseMoveAxis(int cursorPosX, int cursorPosY, bool lockVertical, bool lockHorizontal)
@@ -302,16 +271,13 @@ namespace ScottPlot
             if (mouseIsPanning == false && mouseIsZooming == false)
                 return;
 
-            axes.x.min = mouseDownLimits[0];
-            axes.x.max = mouseDownLimits[1];
-            axes.y.min = mouseDownLimits[2];
-            axes.y.max = mouseDownLimits[3];
+            axes.x.min = mouse.downLimits[0];
+            axes.x.max = mouse.downLimits[1];
+            axes.y.min = mouse.downLimits[2];
+            axes.y.max = mouse.downLimits[3];
 
-            Console.WriteLine($"reset to original limits: {axes}");
-            AxisUpdate();
-
-            int dX = cursorPosX - mouseDownLocation.X;
-            int dY = cursorPosY - mouseDownLocation.Y;
+            int dX = cursorPosX - mouse.downLoc.X;
+            int dY = cursorPosY - mouse.downLoc.Y;
 
             if (lockVertical)
                 dY = 0;
@@ -333,8 +299,8 @@ namespace ScottPlot
 
         public void MouseZoomRectMove(Point eLocation)
         {
-            mouseZoomCurrentLocation = eLocation;
-            mouseZoomRectangleIsHappening = true;
+            mouse.currentLoc = eLocation;
+            mouse.rectangleIsHappening = true;
         }
 
         public PointF GetPixel(double locationX, double locationY)

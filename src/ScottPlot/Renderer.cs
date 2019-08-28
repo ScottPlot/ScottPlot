@@ -264,11 +264,11 @@ namespace ScottPlot
 
         public static void MouseZoomRectangle(Settings settings)
         {
-            if (!settings.mouseZoomRectangleIsHappening)
+            if (!settings.mouse.rectangleIsHappening)
                 return;
 
-            int[] xs = new int[] { settings.mouseZoomDownLocation.X, settings.mouseZoomCurrentLocation.X };
-            int[] ys = new int[] { settings.mouseZoomDownLocation.Y, settings.mouseZoomCurrentLocation.Y };
+            int[] xs = new int[] { settings.mouse.downMiddle.X, settings.mouse.currentLoc.X };
+            int[] ys = new int[] { settings.mouse.downMiddle.Y, settings.mouse.currentLoc.Y };
             Rectangle rect = new Rectangle(xs.Min(), ys.Min(), xs.Max() - xs.Min(), ys.Max() - ys.Min());
             rect.X -= settings.dataOrigin.X;
             rect.Y -= settings.dataOrigin.Y;

@@ -58,6 +58,7 @@
     <Compile Include="Config\Legend.cs" />
     <Compile Include="Config\Misc.cs" />
     <Compile Include="Config\Colors.cs" />
+    <Compile Include="Config\Mouse.cs" />
     <Compile Include="Config\Ticks.cs" />
     <Compile Include="DataGen.cs" />
     <Compile Include="Histogram.cs" />

@@ -405,7 +405,7 @@ namespace ScottPlot
                 lineWidth: lineWidth,
                 markerSize: markerSize,
                 label: label,
-                useParallel: settings.useParallel
+                useParallel: settings.misc.useParallel
                 );
 
             settings.plottables.Add(signal);
@@ -435,7 +435,7 @@ namespace ScottPlot
                 lineWidth: lineWidth,
                 markerSize: markerSize,
                 label: label,
-                useParallel: settings.useParallel
+                useParallel: settings.misc.useParallel
                 );
 
             settings.plottables.Add(signal);
@@ -1014,9 +1014,11 @@ namespace ScottPlot
         {
             // after refactoring the settings module this seems to due to axis/bitmap interactions
             throw new NotImplementedException("parallel processing should not be enabled at this time");
+            /*
             settings.useParallel = useParallel;
             foreach (var plottable in GetPlottables())
                 plottable.useParallel = useParallel;
+            */
         }
 
         #endregion
