@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 
+// TODO: move plottables to their own module
+// TODO: move mouse/axes interaction functions into the mouse module somehow
+
 namespace ScottPlot
 {
     /// <summary>
@@ -56,20 +59,12 @@ namespace ScottPlot
 
         public void Resize(int width, int height)
         {
+            // TODO: data origin should be calculated at render time, not now.
             figureSize = new Size(width, height);
             dataOrigin = new Point(layout.paddingBySide[0], layout.paddingBySide[3]);
             int dataWidth = figureSize.Width - layout.paddingBySide[0] - layout.paddingBySide[1];
             int dataHeight = figureSize.Height - layout.paddingBySide[2] - layout.paddingBySide[3];
             dataSize = new Size(dataWidth, dataHeight);
-        }
-
-        public void AxisSet(double? x1 = null, double? x2 = null, double? y1 = null, double? y2 = null)
-        {
-            axes.x.min = x1 ?? axes.x.min;
-            axes.x.max = x2 ?? axes.x.max;
-            axes.y.min = y1 ?? axes.y.min;
-            axes.y.max = y2 ?? axes.y.max;
-            axes.hasBeenSet = true;
         }
 
         public void AxisTighen()
@@ -109,56 +104,32 @@ namespace ScottPlot
             layout.tighteningOccurred = true;
         }
 
-        public bool bmpFigureRenderRequired = true;
-
-        public void AxisPan(double? dx = null, double? dy = null)
+        public void AxesPanPx(int dxPx, int dyPx)
         {
             if (!axes.hasBeenSet)
                 AxisAuto();
-
-            if (dx != null)
-                axes.x.Pan((double)dx);
-
-            if (dy != null)
-                axes.y.Pan((double)dy);
+            axes.x.Pan((double)dxPx / xAxisScale);
+            axes.y.Pan((double)dyPx / yAxisScale);
         }
 
-        public void AxisZoom(double xFrac = 1, double yFrac = 1, PointF? zoomCenter = null)
-        {
-            if (!axes.hasBeenSet)
-                AxisAuto();
-
-            if (zoomCenter == null)
-            {
-                axes.x.Zoom(xFrac);
-                axes.y.Zoom(yFrac);
-            }
-            else
-            {
-                axes.x.Zoom(xFrac, (double)((PointF)zoomCenter).X);
-                axes.y.Zoom(yFrac, (double)((PointF)zoomCenter).Y);
-            }
-        }
-
-        private void AxisZoomPx(int xPx, int yPx)
+        private void AxesZoomPx(int xPx, int yPx)
         {
             double dX = (double)xPx / xAxisScale;
             double dY = (double)yPx / yAxisScale;
             double dXFrac = dX / (Math.Abs(dX) + axes.x.span);
             double dYFrac = dY / (Math.Abs(dY) + axes.y.span);
-            AxisZoom(Math.Pow(10, dXFrac), Math.Pow(10, dYFrac));
+            axes.Zoom(Math.Pow(10, dXFrac), Math.Pow(10, dYFrac));
         }
 
         public void AxisAuto(double horizontalMargin = .1, double verticalMargin = .1, bool xExpandOnly = false, bool yExpandOnly = false)
         {
+            // TODO: WHY IS THIS SO LONG???
 
             double[] original = new double[4] { axes.x.min, axes.x.max, axes.y.min, axes.y.max };
-
             double[] newAxes = new double[4];
 
             List<Plottable> plottables2d = new List<Plottable>();
             List<PlottableAxLine> axisLines = new List<PlottableAxLine>();
-
             foreach (Plottable plottable in plottables)
             {
                 if (plottable is PlottableAxLine axLine)
@@ -234,7 +205,7 @@ namespace ScottPlot
             axes.y.max = newAxes[3];
 
             axes.hasBeenSet = true;
-            AxisZoom(1 - horizontalMargin, 1 - verticalMargin);
+            axes.Zoom(1 - horizontalMargin, 1 - verticalMargin);
 
             if (xExpandOnly && original != null)
             {
@@ -250,25 +221,17 @@ namespace ScottPlot
 
         }
 
-        public void Validate()
-        {
-            if (figureSize == null || figureSize.Width < 1 || figureSize.Height < 1)
-                throw new Exception("figure width and height must be greater than 0px");
-        }
-
-        public bool mouseIsPanning = false;
-        public bool mouseIsZooming = false;
         public void MouseDown(int cusorPosX, int cursorPosY, bool panning = false, bool zooming = false)
         {
             mouse.downLoc = new Point(cusorPosX, cursorPosY);
-            mouseIsPanning = panning;
-            mouseIsZooming = zooming;
+            mouse.isPanning = panning;
+            mouse.isZooming = zooming;
             Array.Copy(axes.limits, mouse.downLimits, 4);
         }
 
         public void MouseMoveAxis(int cursorPosX, int cursorPosY, bool lockVertical, bool lockHorizontal)
         {
-            if (mouseIsPanning == false && mouseIsZooming == false)
+            if (mouse.isPanning == false && mouse.isZooming == false)
                 return;
 
             axes.x.min = mouse.downLimits[0];
@@ -284,17 +247,17 @@ namespace ScottPlot
             if (lockHorizontal)
                 dX = 0;
 
-            if (mouseIsPanning)
-                AxisPan(-dX / xAxisScale, dY / yAxisScale);
+            if (mouse.isPanning)
+                AxesPanPx(-dX, dY);
 
-            if (mouseIsZooming)
-                AxisZoomPx(dX, -dY);
+            if (mouse.isZooming)
+                AxesZoomPx(dX, -dY);
         }
 
         public void MouseUpAxis()
         {
-            mouseIsPanning = false;
-            mouseIsZooming = false;
+            mouse.isPanning = false;
+            mouse.isZooming = false;
         }
 
         public void MouseZoomRectMove(Point eLocation)
@@ -329,7 +292,6 @@ namespace ScottPlot
             return totalPointCount;
         }
 
-
         public void Clear(bool axLines = true, bool scatters = true, bool signals = true, bool text = true, bool bar = true, bool finance = true)
         {
             List<int> indicesToDelete = new List<int>();
@@ -356,8 +318,6 @@ namespace ScottPlot
             {
                 plottables.RemoveAt(indicesToDelete[i]);
             }
-
         }
-
     }
 }

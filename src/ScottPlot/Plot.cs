@@ -150,14 +150,15 @@ namespace ScottPlot
             UpdateAntiAliasingSettings();
 
             settings.benchmark.Start();
-            if (settings.bmpFigureRenderRequired)
+            if (settings.gfxFigure != null)
             {
+                // TODO: I removed "settings.bmpFigureRenderRequired" so the frame is currently being redrawn every time
                 Renderer.FigureClear(settings);
                 Renderer.FigureLabels(settings);
                 Renderer.FigureTicks(settings);
                 Renderer.FigureFrames(settings);
-                settings.bmpFigureRenderRequired = false;
             }
+
             if (settings.gfxData != null)
             {
                 Renderer.DataBackground(settings);
@@ -648,7 +649,7 @@ namespace ScottPlot
             if (someValuesAreNull && !settings.axes.hasBeenSet)
                 settings.AxisAuto();
 
-            settings.AxisSet(x1, x2, y1, y2);
+            settings.axes.Set(x1, x2, y1, y2);
             return settings.axes.limits;
         }
 
@@ -692,12 +693,13 @@ namespace ScottPlot
             PointF? zoomCenter = null
             )
         {
-            settings.AxisZoom(xFrac, yFrac, zoomCenter);
+            settings.axes.Zoom(xFrac, yFrac, zoomCenter);
         }
 
         public void AxisPan(double dx = 0, double dy = 0)
         {
-            settings.AxisPan(dx, dy);
+            settings.axes.x.Pan(dx);
+            settings.axes.y.Pan(dy);
         }
 
         public PointF CoordinateFromPixel(int pixelX, int pixelY)
@@ -744,7 +746,6 @@ namespace ScottPlot
             settings.title.color = color ?? settings.title.color;
             settings.title.bold = bold ?? settings.title.bold;
 
-            settings.bmpFigureRenderRequired = true;
             TightenLayout();
         }
 
@@ -764,7 +765,6 @@ namespace ScottPlot
             settings.xLabel.fontSize = fontSize ?? settings.xLabel.fontSize;
             settings.xLabel.bold = bold ?? settings.xLabel.bold;
 
-            settings.bmpFigureRenderRequired = true;
             TightenLayout();
         }
 
@@ -784,7 +784,6 @@ namespace ScottPlot
             settings.yLabel.fontSize = fontSize ?? settings.yLabel.fontSize;
             settings.yLabel.bold = bold ?? settings.yLabel.bold;
 
-            settings.bmpFigureRenderRequired = true;
             TightenLayout();
         }
 
@@ -874,8 +873,6 @@ namespace ScottPlot
                 RenderBitmap();
                 TightenLayout();
             }
-
-            settings.bmpFigureRenderRequired = true;
         }
 
         public void Grid(
@@ -890,8 +887,6 @@ namespace ScottPlot
 
             settings.ticks.manualSpacingX = (xSpacing == null) ? 0 : (double)xSpacing;
             settings.ticks.manualSpacingY = (ySpacing == null) ? 0 : (double)ySpacing;
-
-            settings.bmpFigureRenderRequired = true;
         }
 
         public void Frame(
@@ -915,7 +910,6 @@ namespace ScottPlot
                 settings.layout.displayFrameByAxis[2] = (bool)bottom;
             if (top != null)
                 settings.layout.displayFrameByAxis[3] = (bool)top;
-            settings.bmpFigureRenderRequired = true;
         }
 
         public void Benchmark(bool show = true, bool toggle = false)
@@ -931,7 +925,6 @@ namespace ScottPlot
             settings.misc.antiAliasFigure = figure;
             settings.misc.antiAliasData = data;
             settings.legend.antiAlias = legend;
-            settings.bmpFigureRenderRequired = true;
         }
 
         public void TightenLayout(int padding = 5)
@@ -1002,7 +995,6 @@ namespace ScottPlot
                 settings.legend.colorFrame = (Color)tick;
             if (label != null)
                 settings.legend.colorText = (Color)label;
-            settings.bmpFigureRenderRequired = true;
         }
 
         public void Style(Style style)

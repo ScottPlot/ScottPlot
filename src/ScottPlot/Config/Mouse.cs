@@ -12,10 +12,13 @@ namespace ScottPlot.Config
         // mouse tracking
         public Point downLoc = new Point(0, 0);
         public double[] downLimits = new double[4];
+        public bool isPanning = false;
+        public bool isZooming = false;
 
         // mouse middle-click-zooming
         public Point downMiddle = new Point(0, 0);
         public Point currentLoc = new Point(0, 0);
         public bool rectangleIsHappening = false;
+
     }
 }
