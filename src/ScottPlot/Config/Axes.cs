@@ -13,7 +13,13 @@ namespace ScottPlot.Config
         public Axis x = new Axis();
         public Axis y = new Axis();
 
-        public bool hasBeenSet = false;
+        public bool hasBeenSet
+        {
+            get
+            {
+                return ((x.hasBeenSet) || (y.hasBeenSet));
+            }
+        }
 
         public double[] limits
         {
@@ -34,7 +40,6 @@ namespace ScottPlot.Config
             x.max = x2 ?? x.max;
             y.min = y1 ?? y.min;
             y.max = y2 ?? y.max;
-            hasBeenSet = true;
         }
 
         public void Set(double[] limits)
@@ -46,7 +51,6 @@ namespace ScottPlot.Config
             x.max = limits[1];
             y.min = limits[2];
             y.max = limits[3];
-            hasBeenSet = true;
         }
 
         public void Expand(double[] limits)

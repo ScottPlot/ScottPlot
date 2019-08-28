@@ -693,11 +693,15 @@ namespace ScottPlot
             PointF? zoomCenter = null
             )
         {
+            if (!settings.axes.hasBeenSet)
+                settings.AxisAuto();
             settings.axes.Zoom(xFrac, yFrac, zoomCenter);
         }
 
         public void AxisPan(double dx = 0, double dy = 0)
         {
+            if (!settings.axes.hasBeenSet)
+                settings.AxisAuto();
             settings.axes.x.Pan(dx);
             settings.axes.y.Pan(dy);
         }

@@ -8,10 +8,35 @@ namespace ScottPlot.Config
 {
     public class Axis
     {
-        public double min;
-        public double max;
+        public bool hasBeenSet = false;
 
-        //scale = pixels / span; // px per unit
+        private double _min;
+        public double min
+        {
+            get
+            {
+                return _min;
+            }
+            set
+            {
+                _min = value;
+                hasBeenSet = true;
+            }
+        }
+
+        private double _max;
+        public double max
+        {
+            get
+            {
+                return _max;
+            }
+            set
+            {
+                _max = value;
+                hasBeenSet = true;
+            }
+        }
 
         public double span
         {
