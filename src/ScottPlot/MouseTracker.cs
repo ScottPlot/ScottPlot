@@ -101,9 +101,15 @@ namespace ScottPlot
             if (plottableBeingDragged == null)
             {
                 if ((Control.MouseButtons == MouseButtons.Left) || (Control.MouseButtons == MouseButtons.Right))
+                {
+                    // left-click-dragging or right-click-dragging
                     settings.MouseMoveAxis(Cursor.Position.X, Cursor.Position.Y, ctrlIsDown(), altIsDown());
+                }
                 else if (Control.MouseButtons == MouseButtons.Middle)
+                {
+                    // middlg-click-dragging
                     settings.MouseZoomRectMove(eLocation);
+                }
             }
             else
             {

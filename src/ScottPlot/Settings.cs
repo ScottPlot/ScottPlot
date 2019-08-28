@@ -23,6 +23,11 @@ namespace ScottPlot
         public Bitmap bmpFigure;
         public Bitmap bmpData;
         public Bitmap bmpLegend;
+        public bool antiAliasData = true;
+        public bool antiAliasFigure = true;
+
+        // plottables
+        public readonly List<Plottable> plottables = new List<Plottable>();
 
         // new config objects (https://github.com/swharden/ScottPlot/issues/120)
         public Config.Title title = new Config.Title();
@@ -32,16 +37,10 @@ namespace ScottPlot
         public Config.Benchmark benchmark = new Config.Benchmark();
         public Config.Grid grid = new Config.Grid();
         public Config.Colors colors = new Config.Colors();
+        public Config.Axes axes = new Config.Axes();
 
-        // axis (replace with class)
-        public double[] axis = new double[] { -10, 10, -10, 10 }; // X1, X2, Y1, Y2
-        public double xAxisSpan;
-        public double yAxisSpan;
-        public double xAxisCenter;
-        public double yAxisCenter;
-        public double xAxisScale;
-        public double yAxisScale;
-        public bool axisHasBeenIntentionallySet = false;
+        public double xAxisScale { get { return bmpData.Width / axes.x.span; } }
+        public double yAxisScale { get { return bmpData.Height / axes.y.span; } }
 
         // axis settings
         public int axisPadding = 5;
@@ -77,30 +76,16 @@ namespace ScottPlot
         public legendLocation legendLocation = legendLocation.none;
         public shadowDirection legendShadowDirection = shadowDirection.none;
         public Rectangle legendFrame = new Rectangle(0, 0, 1, 1);
-        
+        public bool antiAliasLegend = true;
+
         // mouse tracking
         public Point mouseDownLocation = new Point(0, 0);
-        public double[] mouseDownAxis = new double[4];
+        public double[] mouseDownLimits = new double[4];
 
         // mouse middle-click-zooming
         public Point mouseZoomDownLocation = new Point(0, 0);
         public Point mouseZoomCurrentLocation = new Point(0, 0);
         public bool mouseZoomRectangleIsHappening = false;
-
-        // plottables
-        public readonly List<Plottable> plottables = new List<Plottable>();
-        public bool antiAliasData = true;
-        public bool antiAliasFigure = true;
-        public bool antiAliasLegend = true;
-
-        // string formats (position indicates where their origin is)
-        public StringFormat sfEast = new StringFormat() { LineAlignment = StringAlignment.Center, Alignment = StringAlignment.Far };
-        public StringFormat sfNorth = new StringFormat() { LineAlignment = StringAlignment.Near, Alignment = StringAlignment.Center };
-        public StringFormat sfNorthWest = new StringFormat() { LineAlignment = StringAlignment.Near, Alignment = StringAlignment.Near };
-        public StringFormat sfNorthEast = new StringFormat() { LineAlignment = StringAlignment.Near, Alignment = StringAlignment.Far };
-        public StringFormat sfSouth = new StringFormat() { LineAlignment = StringAlignment.Far, Alignment = StringAlignment.Center };
-        public StringFormat sfSouthWest = new StringFormat() { LineAlignment = StringAlignment.Far, Alignment = StringAlignment.Near };
-        public StringFormat sfWest = new StringFormat() { LineAlignment = StringAlignment.Center, Alignment = StringAlignment.Near };
 
         // experimental settings
         public bool useParallel = false;
@@ -149,21 +134,12 @@ namespace ScottPlot
 
         public void AxisSet(double? x1 = null, double? x2 = null, double? y1 = null, double? y2 = null)
         {
-            if (x1 != null && (double)x1 != axis[0])
-                axis[0] = (double)x1;
-
-            if (x2 != null && (double)x2 != axis[1])
-                axis[1] = (double)x2;
-
-            if (y1 != null && (double)y1 != axis[2])
-                axis[2] = (double)y1;
-
-            if (y2 != null && (double)y2 != axis[3])
-                axis[3] = (double)y2;
-
-            axisHasBeenIntentionallySet = true;
-            if (x1 != null || x2 != null || y1 != null || y2 != null)
-                AxisUpdate();
+            axes.x.min = x1 ?? axes.x.min;
+            axes.x.max = x2 ?? axes.x.max;
+            axes.y.min = y1 ?? axes.y.min;
+            axes.y.max = y2 ?? axes.y.max;
+            axes.hasBeenSet = true;
+            AxisUpdate();
         }
 
         public void AxisTighen()
@@ -207,93 +183,60 @@ namespace ScottPlot
 
         public void AxisUpdate()
         {
-            xAxisSpan = axis[1] - axis[0];
-            xAxisCenter = (axis[1] + axis[0]) / 2;
-            yAxisSpan = axis[3] - axis[2];
-            yAxisCenter = (axis[3] + axis[2]) / 2;
-            xAxisScale = dataSize.Width / xAxisSpan; // px per unit
-            yAxisScale = dataSize.Height / yAxisSpan; // px per unit
             bmpFigureRenderRequired = true;
         }
 
         public void AxisPan(double? dx = null, double? dy = null)
         {
-            if (!axisHasBeenIntentionallySet)
+            if (!axes.hasBeenSet)
                 AxisAuto();
 
-            bool shiftedX = (dx != null && dx != 0);
-            bool shiftedY = (dy != null && dy != 0);
+            if (dx != null)
+                axes.x.Pan((double)dx);
 
-            if (shiftedX)
-            {
-                axis[0] += (double)dx;
-                axis[1] += (double)dx;
-            }
+            if (dy != null)
+                axes.y.Pan((double)dy);
 
-            if (shiftedY)
-            {
-                axis[2] += (double)dy;
-                axis[3] += (double)dy;
-            }
-
-            if (shiftedX || shiftedY)
-                AxisUpdate();
+            AxisUpdate();
         }
 
         public void AxisZoom(double xFrac = 1, double yFrac = 1, PointF? zoomCenter = null)
         {
-            if (!axisHasBeenIntentionallySet)
+            if (!axes.hasBeenSet)
                 AxisAuto();
 
             if (zoomCenter == null)
             {
-                double halfNewXspan = xAxisSpan / xFrac / 2;
-                double halfNewYspan = yAxisSpan / yFrac / 2;
-                axis[0] = xAxisCenter - halfNewXspan;
-                axis[1] = xAxisCenter + halfNewXspan;
-                axis[2] = yAxisCenter - halfNewYspan;
-                axis[3] = yAxisCenter + halfNewYspan;
+                axes.x.Zoom(xFrac);
+                axes.y.Zoom(yFrac);
             }
             else
             {
-                double spanLeft = zoomCenter.Value.X - axis[0];
-                double spanRight = axis[1] - zoomCenter.Value.X;
-                double spanTop = zoomCenter.Value.Y - axis[2];
-                double spanBot = axis[3] - zoomCenter.Value.Y;
-                axis[0] = zoomCenter.Value.X - spanLeft / xFrac;
-                axis[1] = zoomCenter.Value.X + spanRight / xFrac;
-                axis[2] = zoomCenter.Value.Y - spanTop / yFrac;
-                axis[3] = zoomCenter.Value.Y + spanBot / yFrac;
+                axes.x.Zoom(xFrac, (double)((PointF)zoomCenter).X);
+                axes.y.Zoom(yFrac, (double)((PointF)zoomCenter).Y);
             }
 
-            if ((xFrac != 1) || (yFrac != 1))
-                AxisUpdate();
+            AxisUpdate();
         }
 
         private void AxisZoomPx(int xPx, int yPx)
         {
             double dX = (double)xPx / xAxisScale;
             double dY = (double)yPx / yAxisScale;
-            double dXFrac = dX / (Math.Abs(dX) + xAxisSpan);
-            double dYFrac = dY / (Math.Abs(dY) + yAxisSpan);
+            double dXFrac = dX / (Math.Abs(dX) + axes.x.span);
+            double dYFrac = dY / (Math.Abs(dY) + axes.y.span);
             AxisZoom(Math.Pow(10, dXFrac), Math.Pow(10, dYFrac));
         }
 
         public void AxisAuto(double horizontalMargin = .1, double verticalMargin = .1, bool xExpandOnly = false, bool yExpandOnly = false)
         {
 
-            double[] original = null;
-            if (axis != null)
-            {
-                original = new double[4];
-                Array.Copy(axis, 0, original, 0, 4);
-            }
+            double[] original = new double[4] { axes.x.min, axes.x.max, axes.y.min, axes.y.max };
 
-            axis = null;
+            double[] newAxes = new double[4];
 
             List<Plottable> plottables2d = new List<Plottable>();
             List<PlottableAxLine> axisLines = new List<PlottableAxLine>();
-
 
             foreach (Plottable plottable in plottables)
             {
@@ -307,88 +250,92 @@ namespace ScottPlot
             {
                 double[] limits = plottable.GetLimits();
 
-                if (axis == null)
+                if (newAxes == null)
                 {
-                    axis = limits;
+                    newAxes = limits;
                 }
                 else
                 {
-                    if (limits[0] < axis[0])
-                        axis[0] = limits[0];
-                    if (limits[1] > axis[1])
-                        axis[1] = limits[1];
-                    if (limits[2] < axis[2])
-                        axis[2] = limits[2];
-                    if (limits[3] > axis[3])
-                        axis[3] = limits[3];
+                    if (limits[0] < newAxes[0])
+                        newAxes[0] = limits[0];
+                    if (limits[1] > newAxes[1])
+                        newAxes[1] = limits[1];
+                    if (limits[2] < newAxes[2])
+                        newAxes[2] = limits[2];
+                    if (limits[3] > newAxes[3])
+                        newAxes[3] = limits[3];
                 }
             }
 
             foreach (PlottableAxLine axLine in axisLines)
             {
-                if (axis == null)
+                if (newAxes == null)
                     continue;
 
                 if (axLine.vertical)
                 {
-                    if (axLine.position < axis[0])
-                        axis[0] = axLine.position;
-                    if (axLine.position > axis[1])
-                        axis[1] = axLine.position;
+                    if (axLine.position < newAxes[0])
+                        newAxes[0] = axLine.position;
+                    if (axLine.position > newAxes[1])
+                        newAxes[1] = axLine.position;
                 }
                 else
                 {
-                    if (axLine.position < axis[2])
-                        axis[2] = axLine.position;
-                    if (axLine.position > axis[3])
-                        axis[3] = axLine.position;
+                    if (axLine.position < newAxes[2])
+                        newAxes[2] = axLine.position;
+                    if (axLine.position > newAxes[3])
+                        newAxes[3] = axLine.position;
                 }
             }
 
-            if (axis == null)
+            if (newAxes == null)
             {
-                axis = new double[] { -10, 10, -10, 10 };
+                newAxes = new double[] { -10, 10, -10, 10 };
             }
             else
             {
-                if (axis[0] == axis[1])
+                if (newAxes[0] == newAxes[1])
                 {
-                    axis[0] = axis[0] - 1;
-                    axis[1] = axis[1] + 1;
+                    newAxes[0] = newAxes[0] - 1;
+                    newAxes[1] = newAxes[1] + 1;
                 }
 
-                if (axis[2] == axis[3])
+                if (newAxes[2] == newAxes[3])
                 {
-                    axis[2] = axis[2] - 1;
-                    axis[3] = axis[3] + 1;
+                    newAxes[2] = newAxes[2] - 1;
+                    newAxes[3] = newAxes[3] + 1;
                 }
             }
 
-            axisHasBeenIntentionallySet = true;
+            axes.x.min = newAxes[0];
+            axes.x.max = newAxes[1];
+            axes.y.min = newAxes[2];
+            axes.y.max = newAxes[3];
+
+            axes.hasBeenSet = true;
             AxisUpdate();
             AxisZoom(1 - horizontalMargin, 1 - verticalMargin);
 
             if (xExpandOnly && original != null)
             {
-                axis[0] = Math.Min(axis[0], original[0]);
-                axis[1] = Math.Max(axis[1], original[1]);
+                axes.x.min = Math.Min(axes.x.min, original[0]);
+                axes.x.max = Math.Max(axes.x.max, original[1]);
                 AxisUpdate();
             }
 
             if (yExpandOnly && original != null)
             {
-                axis[2] = Math.Min(axis[2], original[2]);
-                axis[3] = Math.Max(axis[3], original[3]);
+                axes.y.min = Math.Min(axes.y.min, original[2]);
+                axes.y.max = Math.Max(axes.y.max, original[3]);
                 AxisUpdate();
             }
+
         }
 
         public void Validate()
         {
             if (figureSize == null || figureSize.Width < 1 || figureSize.Height < 1)
                 throw new Exception("figure width and height must be greater than 0px");
-            if (axis == null)
-                throw new Exception("axis has not yet been initialized");
         }
 
         public bool mouseIsPanning = false;
@@ -398,7 +345,7 @@ namespace ScottPlot
             mouseDownLocation = new Point(cusorPosX, cursorPosY);
             mouseIsPanning = panning;
             mouseIsZooming = zooming;
-            Array.Copy(axis, mouseDownAxis, axis.Length);
+            Array.Copy(axes.limits, mouseDownLimits, 4);
         }
 
         public void MouseMoveAxis(int cursorPosX, int cursorPosY, bool lockVertical, bool lockHorizontal)
@@ -406,7 +353,12 @@ namespace ScottPlot
             if (mouseIsPanning == false && mouseIsZooming == false)
                 return;
 
-            Array.Copy(mouseDownAxis, axis, axis.Length);
+            axes.x.min = mouseDownLimits[0];
+            axes.x.max = mouseDownLimits[1];
+            axes.y.min = mouseDownLimits[2];
+            axes.y.max = mouseDownLimits[3];
+
+            Console.WriteLine($"reset to original limits: {axes}");
             AxisUpdate();
 
             int dX = cursorPosX - mouseDownLocation.X;
@@ -419,7 +371,8 @@ namespace ScottPlot
 
             if (mouseIsPanning)
                 AxisPan(-dX / xAxisScale, dY / yAxisScale);
-            else if (mouseIsZooming)
+
+            if (mouseIsZooming)
                 AxisZoomPx(dX, -dY);
         }
 
@@ -439,8 +392,8 @@ namespace ScottPlot
         {
             // Return the pixel location on the data bitmap corresponding to an X/Y location.
             // This is useful when drawing graphics on the data bitmap.
-            float xPx = (float)((locationX - axis[0]) * xAxisScale);
-            float yPx = dataSize.Height - (float)((locationY - axis[2]) * yAxisScale);
+            float xPx = (float)((locationX - axes.x.min) * xAxisScale);
+            float yPx = dataSize.Height - (float)((locationY - axes.y.min) * yAxisScale);
             return new PointF(xPx, yPx);
         }
 
@@ -448,8 +401,8 @@ namespace ScottPlot
         {
             // Return the X/Y location corresponding to a pixel position on the figure bitmap.
             // This is useful for converting a mouse position to an X/Y coordinate.
-            double locationX = (pixelX - dataOrigin.X) / xAxisScale + axis[0];
-            double locationY = axis[3] - (pixelY - dataOrigin.Y) / yAxisScale;
+            double locationX = (pixelX - dataOrigin.X) / xAxisScale + axes.x.min;
+            double locationY = axes.y.max - (pixelY - dataOrigin.Y) / yAxisScale;
             return new PointF((float)locationX, (float)locationY);
         }
 
