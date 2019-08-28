@@ -31,24 +31,18 @@ namespace ScottPlot
 
         // new config objects (https://github.com/swharden/ScottPlot/issues/120)
         public Config.Title title = new Config.Title();
-        public Config.XLabel xLabel = new Config.XLabel();
-        public Config.YLabel yLabel = new Config.YLabel();
+        public Config.TextLabel xLabel = new Config.TextLabel() { fontSize = 16 };
+        public Config.TextLabel yLabel = new Config.TextLabel() { fontSize = 16 };
         public Config.Misc misc = new Config.Misc();
         public Config.Benchmark benchmark = new Config.Benchmark();
         public Config.Grid grid = new Config.Grid();
         public Config.Colors colors = new Config.Colors();
         public Config.Axes axes = new Config.Axes();
+        public Config.Layout layout = new Config.Layout();
 
         public double xAxisScale { get { return bmpData.Width / axes.x.span; } }
         public double yAxisScale { get { return bmpData.Height / axes.y.span; } }
-
-        // axis settings
-        public int axisPadding = 5;
-        public bool[] displayFrameByAxis = new bool[] { true, true, true, true };
-        public int[] axisLabelPadding = new int[] { 5, 5, 5, 5 }; // X1, X2, Y1, Y2
-        public bool displayAxisFrames = true;
-        public bool tighteningOccurred = false;
-
+        
         // axis ticks
         public Font tickFont = new Font("Segoe UI", 10);
         public TickCollection tickCollectionX;
@@ -103,9 +97,9 @@ namespace ScottPlot
         public void Resize(int width, int height)
         {
             figureSize = new Size(width, height);
-            dataOrigin = new Point(axisLabelPadding[0], axisLabelPadding[3]);
-            int dataWidth = figureSize.Width - axisLabelPadding[0] - axisLabelPadding[1];
-            int dataHeight = figureSize.Height - axisLabelPadding[2] - axisLabelPadding[3];
+            dataOrigin = new Point(layout.paddingBySide[0], layout.paddingBySide[3]);
+            int dataWidth = figureSize.Width - layout.paddingBySide[0] - layout.paddingBySide[1];
+            int dataHeight = figureSize.Height - layout.paddingBySide[2] - layout.paddingBySide[3];
             dataSize = new Size(dataWidth, dataHeight);
             AxisUpdate();
         }
@@ -130,31 +124,31 @@ namespace ScottPlot
             int tickLetterHeight = (int)gfxFigure.MeasureString("test", tickFont).Height;
 
             // top
-            axisLabelPadding[3] = 1;
-            axisLabelPadding[3] += Math.Max((int)title.height, tickLetterHeight);
-            axisLabelPadding[3] += axisPadding;
+            layout.paddingBySide[3] = 1;
+            layout.paddingBySide[3] += Math.Max((int)title.height, tickLetterHeight);
+            layout.paddingBySide[3] += layout.padOnAllSides;
 
             // bottom
             int xLabelHeight = (int)gfxFigure.MeasureString(xLabel.text, xLabel.font).Height;
-            axisLabelPadding[2] = Math.Max(xLabelHeight, tickLetterHeight);
-            axisLabelPadding[2] += tickLetterHeight;
-            axisLabelPadding[2] += axisPadding;
+            layout.paddingBySide[2] = Math.Max(xLabelHeight, tickLetterHeight);
+            layout.paddingBySide[2] += tickLetterHeight;
+            layout.paddingBySide[2] += layout.padOnAllSides;
 
             // left
             SizeF yLabelSize = gfxFigure.MeasureString(yLabel.text, yLabel.font);
-            axisLabelPadding[0] = (int)yLabelSize.Height;
-            axisLabelPadding[0] += (int)tickCollectionY.maxLabelSize.Width;
-            axisLabelPadding[0] += axisPadding;
+            layout.paddingBySide[0] = (int)yLabelSize.Height;
+            layout.paddingBySide[0] += (int)tickCollectionY.maxLabelSize.Width;
+            layout.paddingBySide[0] += layout.padOnAllSides;
 
             // right
-            axisLabelPadding[1] = (int)tickCollectionY.maxLabelSize.Width / 2;
-            axisLabelPadding[1] += axisPadding;
+            layout.paddingBySide[1] = (int)tickCollectionY.maxLabelSize.Width / 2;
+            layout.paddingBySide[1] += layout.padOnAllSides;
 
             // override for frameles
-            if (!displayAxisFrames)
-                axisLabelPadding = new int[] { 0, 0, 0, 0 };
+            if (!layout.displayAxisFrames)
+                layout.paddingBySide = new int[] { 0, 0, 0, 0 };
 
-            tighteningOccurred = true;
+            layout.tighteningOccurred = true;
         }
 
         public bool bmpFigureRenderRequired = true;

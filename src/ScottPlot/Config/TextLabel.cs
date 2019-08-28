@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ScottPlot.Config
 {
-    public abstract class TextLabel
+    public class TextLabel
     {
 
         public TextLabel()

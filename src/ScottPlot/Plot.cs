@@ -133,7 +133,7 @@ namespace ScottPlot
             if (!settings.axes.hasBeenSet && settings.plottables.Count > 0)
                 settings.AxisAuto();
 
-            if (!settings.tighteningOccurred)
+            if (!settings.layout.tighteningOccurred)
             {
                 // ticks must be populated before the layout can be tightened
                 Renderer.FigureTicks(settings);
@@ -904,17 +904,17 @@ namespace ScottPlot
             )
         {
             if (drawFrame != null)
-                settings.displayAxisFrames = (bool)drawFrame;
+                settings.layout.displayAxisFrames = (bool)drawFrame;
             if (frameColor != null)
                 settings.tickColor = (Color)frameColor;
             if (left != null)
-                settings.displayFrameByAxis[0] = (bool)left;
+                settings.layout.displayFrameByAxis[0] = (bool)left;
             if (right != null)
-                settings.displayFrameByAxis[1] = (bool)right;
+                settings.layout.displayFrameByAxis[1] = (bool)right;
             if (bottom != null)
-                settings.displayFrameByAxis[2] = (bool)bottom;
+                settings.layout.displayFrameByAxis[2] = (bool)bottom;
             if (top != null)
-                settings.displayFrameByAxis[3] = (bool)top;
+                settings.layout.displayFrameByAxis[3] = (bool)top;
             settings.bmpFigureRenderRequired = true;
         }
 
@@ -938,7 +938,7 @@ namespace ScottPlot
         {
             if (!settings.axes.hasBeenSet && settings.plottables.Count > 0)
                 settings.AxisAuto();
-            settings.axisPadding = padding;
+            settings.layout.padOnAllSides = padding;
             settings.AxisTighen();
             Resize();
         }
@@ -947,13 +947,13 @@ namespace ScottPlot
         {
             if (horizontal)
             {
-                settings.axisLabelPadding[0] = sourcePlot.settings.axisLabelPadding[0];
-                settings.axisLabelPadding[1] = sourcePlot.settings.axisLabelPadding[1];
+                settings.layout.paddingBySide[0] = sourcePlot.settings.layout.paddingBySide[0];
+                settings.layout.paddingBySide[1] = sourcePlot.settings.layout.paddingBySide[1];
             }
             if (vertical)
             {
-                settings.axisLabelPadding[2] = sourcePlot.settings.axisLabelPadding[2];
-                settings.axisLabelPadding[3] = sourcePlot.settings.axisLabelPadding[3];
+                settings.layout.paddingBySide[2] = sourcePlot.settings.layout.paddingBySide[2];
+                settings.layout.paddingBySide[3] = sourcePlot.settings.layout.paddingBySide[3];
             }
             Resize();
         }
