@@ -132,7 +132,6 @@ namespace ScottPlot
                 }
             }
 
-            axes.hasBeenSet = true;
             axes.Zoom(1 - horizontalMargin, 1 - verticalMargin);
         }
 

@@ -24,7 +24,7 @@ namespace ScottPlot.Config
 
         private Graphics gfx = Graphics.FromHwnd(IntPtr.Zero);
 
-        public string text = "?";
+        public string text = "";
         public bool visible = true;
 
         public float fontSize = 12;
