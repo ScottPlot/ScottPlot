@@ -66,9 +66,9 @@ namespace ScottPlot
 
         public bool MouseHasMoved()
         {
-            if (settings.mouseDownLocation.X != Cursor.Position.X)
+            if (settings.mouse.downLoc.X != Cursor.Position.X)
                 return true;
-            else if (settings.mouseDownLocation.Y != Cursor.Position.Y)
+            else if (settings.mouse.downLoc.Y != Cursor.Position.Y)
                 return true;
             else
                 return false;
@@ -87,7 +87,7 @@ namespace ScottPlot
             }
 
             if (Control.MouseButtons == MouseButtons.Middle)
-                settings.mouseZoomDownLocation = eLocation;
+                settings.mouse.downMiddle = eLocation;
         }
 
         public void MouseMove(System.Windows.Point mousePoint)
@@ -148,14 +148,14 @@ namespace ScottPlot
                 plottableBeingDragged = null;
             }
 
-            if (settings.mouseZoomRectangleIsHappening)
+            if (settings.mouse.rectangleIsHappening)
             {
-                int[] xs = new int[] { settings.mouseZoomDownLocation.X, settings.mouseZoomCurrentLocation.X };
-                int[] ys = new int[] { settings.mouseZoomDownLocation.Y, settings.mouseZoomCurrentLocation.Y };
+                int[] xs = new int[] { settings.mouse.downMiddle.X, settings.mouse.currentLoc.X };
+                int[] ys = new int[] { settings.mouse.downMiddle.Y, settings.mouse.currentLoc.Y };
                 var lowerLeft = settings.GetLocation(xs.Min(), ys.Max());
                 var upperRight = settings.GetLocation(xs.Max(), ys.Min());
                 settings.AxisSet(lowerLeft.X, upperRight.X, lowerLeft.Y, upperRight.Y);
-                settings.mouseZoomRectangleIsHappening = false;
+                settings.mouse.rectangleIsHappening = false;
             }
         }
 
@@ -230,7 +230,7 @@ namespace ScottPlot
 
         public void MiddleButtonClicked()
         {
-            if (!settings.mouseZoomRectangleIsHappening)
+            if (!settings.mouse.rectangleIsHappening)
                 settings.AxisAuto();
         }
 
