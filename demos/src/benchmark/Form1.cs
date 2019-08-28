@@ -105,7 +105,7 @@ namespace benchmark
                 if (i == 0)
                     formsPlot1.plt.AxisAuto();
                 Application.DoEvents();
-                timesMsec[i] = settings.benchmarkMsec;
+                timesMsec[i] = settings.benchmark.msec;
             }
 
             progressBar1.Value = 0;
