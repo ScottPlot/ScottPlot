@@ -26,21 +26,21 @@ namespace ScottPlot
             int maxTickCount;
 
             string longestLabel = (dateFormat) ? "2019-08-20\n20:42:17" : "-8888";
-            maxLabelSize = settings.gfxData.MeasureString(longestLabel, settings.tickFont);
+            maxLabelSize = settings.gfxData.MeasureString(longestLabel, settings.ticks.tickFont);
 
             if (verticalAxis)
             {
                 low = settings.axes.y.min;
                 high = settings.axes.y.max;
                 maxTickCount = (int)(settings.dataSize.Height / maxLabelSize.Height);
-                tickSpacing = (settings.tickSpacingX != 0) ? settings.tickSpacingY : GetIdealTickSpacing(low, high, maxTickCount);
+                tickSpacing = (settings.ticks.tickSpacingX != 0) ? settings.ticks.tickSpacingY : GetIdealTickSpacing(low, high, maxTickCount);
             }
             else
             {
                 low = settings.axes.x.min;
                 high = settings.axes.x.max;
                 maxTickCount = (int)(settings.dataSize.Width / maxLabelSize.Width * 1.2);
-                tickSpacing = (settings.tickSpacingX != 0) ? settings.tickSpacingX : GetIdealTickSpacing(low, high, maxTickCount);
+                tickSpacing = (settings.ticks.tickSpacingX != 0) ? settings.ticks.tickSpacingX : GetIdealTickSpacing(low, high, maxTickCount);
             }
 
             // now that tick spacing is known, populate the list of ticks and labels
@@ -63,7 +63,7 @@ namespace ScottPlot
             else
             {
                 GetPrettyTickLabels(tickPositionsMajor, out tickLabels, out cornerLabel,
-                    settings.useMultiplierNotation, settings.useOffsetNotation, settings.useExponentialNotation);
+                    settings.ticks.useMultiplierNotation, settings.ticks.useOffsetNotation, settings.ticks.useExponentialNotation);
                 tickPositionsMinor = MinorFromMajor(tickPositionsMajor, 5, low, high);
             }
         }

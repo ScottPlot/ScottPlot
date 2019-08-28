@@ -6,8 +6,13 @@ using System.Drawing;
 namespace ScottPlot
 {
     /// <summary>
+    /// 
     /// This class stores settings and data necessary to create a ScottPlot.
-    /// It is a data transfer object which is easy to pass but inaccessible to users.
+    /// It is a data transfer object which is easy to pass but should be inaccessible to end users.
+    /// 
+    /// If you are passed this object, you have EVERYTHING you need to render an image.
+    /// An ultimate goal is for this settings object to be able to be passed to different rendering engines.
+    /// 
     /// </summary>
     public class Settings
     {
@@ -37,29 +42,12 @@ namespace ScottPlot
         public Config.Colors colors = new Config.Colors();
         public Config.Axes axes = new Config.Axes();
         public Config.Layout layout = new Config.Layout();
+        public Config.Ticks ticks = new Config.Ticks();
 
         // scales calculations must occur at this level because the axes are unaware of pixel dimensions
         public double xAxisScale { get { return bmpData.Width / axes.x.span; } }
         public double yAxisScale { get { return bmpData.Height / axes.y.span; } }
         
-        // axis ticks
-        public Font tickFont = new Font("Segoe UI", 10);
-        public TickCollection tickCollectionX;
-        public TickCollection tickCollectionY;
-        public int tickSize = 5;
-        public Color tickColor = Color.Black;
-        public bool displayTicksX = true;
-        public bool displayTicksXminor = true;
-        public bool tickDateTimeX = false;
-        public bool displayTicksY = true;
-        public bool displayTicksYminor = true;
-        public bool tickDateTimeY = false;
-        public bool useMultiplierNotation = true;
-        public bool useOffsetNotation = true;
-        public bool useExponentialNotation = true;
-        public double tickSpacingX = 0;
-        public double tickSpacingY = 0;
-
         // legend
         public Font legendFont = new Font("Segoe UI", 12);
         public Color legendFontColor = Color.Black;
@@ -117,10 +105,10 @@ namespace ScottPlot
         {
             // "tighten" the plot by reducing whitespce between labels, data, and the edge of the figure
 
-            if (tickCollectionX == null)
+            if (ticks.tickCollectionX == null)
                 return;
 
-            int tickLetterHeight = (int)gfxFigure.MeasureString("test", tickFont).Height;
+            int tickLetterHeight = (int)gfxFigure.MeasureString("test", ticks.tickFont).Height;
 
             // top
             layout.paddingBySide[3] = 1;
@@ -136,11 +124,11 @@ namespace ScottPlot
             // left
             SizeF yLabelSize = gfxFigure.MeasureString(yLabel.text, yLabel.font);
             layout.paddingBySide[0] = (int)yLabelSize.Height;
-            layout.paddingBySide[0] += (int)tickCollectionY.maxLabelSize.Width;
+            layout.paddingBySide[0] += (int)ticks.tickCollectionY.maxLabelSize.Width;
             layout.paddingBySide[0] += layout.padOnAllSides;
 
             // right
-            layout.paddingBySide[1] = (int)tickCollectionY.maxLabelSize.Width / 2;
+            layout.paddingBySide[1] = (int)ticks.tickCollectionY.maxLabelSize.Width / 2;
             layout.paddingBySide[1] += layout.padOnAllSides;
 
             // override for frameles
