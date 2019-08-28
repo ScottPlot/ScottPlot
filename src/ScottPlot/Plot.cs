@@ -149,7 +149,7 @@ namespace ScottPlot
 
             UpdateAntiAliasingSettings();
 
-            settings.BenchmarkStart();
+            settings.benchmark.Start();
             if (settings.bmpFigureRenderRequired)
             {
                 Renderer.FigureClear(settings);
@@ -168,7 +168,8 @@ namespace ScottPlot
                 Renderer.PlaceDataOntoFigure(settings);
                 Renderer.PlaceLegendOntoFigure(settings);
             }
-            settings.BenchmarkEnd();
+            settings.benchmark.Stop();
+            settings.benchmark.UpdateMessage(settings.plottables.Count, settings.GetTotalPointCount());
             Renderer.Benchmark(settings);
         }
 
