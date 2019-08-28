@@ -50,13 +50,13 @@ namespace ScottPlot
 
             if (vertical)
             {
-                topLeft = settings.GetPixel(position1, settings.axis[2]);
-                lowerRight = settings.GetPixel(position2, settings.axis[3]);
+                topLeft = settings.GetPixel(position1, settings.axes.y.min);
+                lowerRight = settings.GetPixel(position2, settings.axes.y.max);
             }
             else
             {
-                topLeft = settings.GetPixel(settings.axis[0], position1);
-                lowerRight = settings.GetPixel(settings.axis[1], position2);
+                topLeft = settings.GetPixel(settings.axes.x.min, position1);
+                lowerRight = settings.GetPixel(settings.axes.x.max, position2);
             }
 
             float width = lowerRight.X - topLeft.X + 1;

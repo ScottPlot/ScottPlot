@@ -30,15 +30,15 @@ namespace ScottPlot
 
             if (verticalAxis)
             {
-                low = settings.axis[2];
-                high = settings.axis[3];
+                low = settings.axes.y.min;
+                high = settings.axes.y.max;
                 maxTickCount = (int)(settings.dataSize.Height / maxLabelSize.Height);
                 tickSpacing = (settings.tickSpacingX != 0) ? settings.tickSpacingY : GetIdealTickSpacing(low, high, maxTickCount);
             }
             else
             {
-                low = settings.axis[0];
-                high = settings.axis[1];
+                low = settings.axes.x.min;
+                high = settings.axes.x.max;
                 maxTickCount = (int)(settings.dataSize.Width / maxLabelSize.Width * 1.2);
                 tickSpacing = (settings.tickSpacingX != 0) ? settings.tickSpacingX : GetIdealTickSpacing(low, high, maxTickCount);
             }

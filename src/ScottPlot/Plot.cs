@@ -130,7 +130,7 @@ namespace ScottPlot
 
         private void RenderBitmap()
         {
-            if (!settings.axisHasBeenIntentionallySet && settings.plottables.Count > 0)
+            if (!settings.axes.hasBeenSet && settings.plottables.Count > 0)
                 settings.AxisAuto();
 
             if (!settings.tighteningOccurred)
@@ -644,11 +644,11 @@ namespace ScottPlot
             )
         {
             bool someValuesAreNull = (x1 == null) || (x2 == null) || (y1 == null) || (y2 == null);
-            if (someValuesAreNull && !settings.axisHasBeenIntentionallySet)
+            if (someValuesAreNull && !settings.axes.hasBeenSet)
                 settings.AxisAuto();
 
             settings.AxisSet(x1, x2, y1, y2);
-            return settings.axis;
+            return settings.axes.limits;
         }
 
         public void AxisAuto(
@@ -668,8 +668,8 @@ namespace ScottPlot
             bool expandOnly = false
             )
         {
-            double oldY1 = settings.axis[2];
-            double oldY2 = settings.axis[3];
+            double oldY1 = settings.axes.y.min;
+            double oldY2 = settings.axes.y.max;
             AxisAuto(horizontalMargin: margin, xExpandOnly: expandOnly);
             Axis(y1: oldY1, y2: oldY2);
         }
@@ -679,8 +679,8 @@ namespace ScottPlot
             bool expandOnly = false
             )
         {
-            double oldX1 = settings.axis[0];
-            double oldX2 = settings.axis[1];
+            double oldX1 = settings.axes.x.min;
+            double oldX2 = settings.axes.x.max;
             AxisAuto(verticalMargin: margin, yExpandOnly: expandOnly);
             Axis(x1: oldX1, x2: oldX2);
         }
@@ -935,7 +935,7 @@ namespace ScottPlot
 
         public void TightenLayout(int padding = 5)
         {
-            if (!settings.axisHasBeenIntentionallySet && settings.plottables.Count > 0)
+            if (!settings.axes.hasBeenSet && settings.plottables.Count > 0)
                 settings.AxisAuto();
             settings.axisPadding = padding;
             settings.AxisTighen();
@@ -961,13 +961,13 @@ namespace ScottPlot
         {
             if (horizontal)
             {
-                settings.axis[0] = sourcePlot.settings.axis[0];
-                settings.axis[1] = sourcePlot.settings.axis[1];
+                settings.axes.x.min = sourcePlot.settings.axes.x.min;
+                settings.axes.x.max = sourcePlot.settings.axes.x.max;
             }
             if (vertical)
             {
-                settings.axis[2] = sourcePlot.settings.axis[2];
-                settings.axis[3] = sourcePlot.settings.axis[3];
+                settings.axes.y.min = sourcePlot.settings.axes.y.min;
+                settings.axes.y.max = sourcePlot.settings.axes.y.max;
             }
             Resize();
         }
@@ -1011,6 +1011,8 @@ namespace ScottPlot
 
         public void Parallel(bool useParallel)
         {
+            // after refactoring the settings module this seems to due to axis/bitmap interactions
+            throw new NotImplementedException("parallel processing should not be enabled at this time");
             settings.useParallel = useParallel;
             foreach (var plottable in GetPlottables())
                 plottable.useParallel = useParallel;

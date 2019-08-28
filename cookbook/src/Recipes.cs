@@ -621,7 +621,6 @@ namespace ScottPlotCookbook
             var plt = new ScottPlot.Plot(width, height);
             plt.Title("Displaying 10 million points with PlotSignalConst()");
             plt.Benchmark();
-            plt.Parallel(false);
             plt.PlotSignalConst(tenMillionPoints, sampleRate: 20_000);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
