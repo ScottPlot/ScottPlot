@@ -33,15 +33,15 @@ namespace ScottPlot.UserControls
             tbYlabel.Text = plt.GetSettings().yLabel.text;
             tbY2.Text = Math.Round(plt.Axis()[3], 4).ToString();
             tbY1.Text = Math.Round(plt.Axis()[2], 4).ToString();
-            cbYminor.Checked = plt.GetSettings().ticks.displayTicksYminor;
-            cbYdateTime.Checked = plt.GetSettings().ticks.tickDateTimeY;
+            cbYminor.Checked = plt.GetSettings().ticks.displayYminor;
+            cbYdateTime.Checked = plt.GetSettings().ticks.timeFormatY;
 
             // horizontal axis
             tbXlabel.Text = plt.GetSettings().xLabel.text;
             tbX2.Text = Math.Round(plt.Axis()[1], 4).ToString();
             tbX1.Text = Math.Round(plt.Axis()[0], 4).ToString();
-            cbXminor.Checked = plt.GetSettings().ticks.displayTicksXminor;
-            cbXdateTime.Checked = plt.GetSettings().ticks.tickDateTimeX;
+            cbXminor.Checked = plt.GetSettings().ticks.displayXminor;
+            cbXdateTime.Checked = plt.GetSettings().ticks.timeFormatX;
 
             // tick display options
             cbTicksOffset.Checked = plt.GetSettings().ticks.useOffsetNotation;

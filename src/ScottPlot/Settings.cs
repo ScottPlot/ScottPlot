@@ -95,10 +95,10 @@ namespace ScottPlot
         {
             // "tighten" the plot by reducing whitespce between labels, data, and the edge of the figure
 
-            if (ticks.tickCollectionX == null)
+            if (ticks.x == null)
                 return;
 
-            int tickLetterHeight = (int)gfxFigure.MeasureString("test", ticks.tickFont).Height;
+            int tickLetterHeight = (int)gfxFigure.MeasureString("test", ticks.font).Height;
 
             // top
             layout.paddingBySide[3] = 1;
@@ -114,11 +114,11 @@ namespace ScottPlot
             // left
             SizeF yLabelSize = gfxFigure.MeasureString(yLabel.text, yLabel.font);
             layout.paddingBySide[0] = (int)yLabelSize.Height;
-            layout.paddingBySide[0] += (int)ticks.tickCollectionY.maxLabelSize.Width;
+            layout.paddingBySide[0] += (int)ticks.y.maxLabelSize.Width;
             layout.paddingBySide[0] += layout.padOnAllSides;
 
             // right
-            layout.paddingBySide[1] = (int)ticks.tickCollectionY.maxLabelSize.Width / 2;
+            layout.paddingBySide[1] = (int)ticks.y.maxLabelSize.Width / 2;
             layout.paddingBySide[1] += layout.padOnAllSides;
 
             // override for frameles
