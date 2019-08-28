@@ -9,6 +9,10 @@ namespace ScottPlot.Config
 {
     public class Misc
     {
+        // drawing options
+        public bool antiAliasData = true;
+        public bool antiAliasFigure = true;
+
         // background colors
         public Color figureBackgroundColor = Color.White;
         public Color dataBackgroundColor = Color.White;

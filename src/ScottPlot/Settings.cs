@@ -23,8 +23,6 @@ namespace ScottPlot
         public Bitmap bmpFigure;
         public Bitmap bmpData;
         public Bitmap bmpLegend;
-        public bool antiAliasData = true;
-        public bool antiAliasFigure = true;
 
         // plottables
         public readonly List<Plottable> plottables = new List<Plottable>();
@@ -40,6 +38,7 @@ namespace ScottPlot
         public Config.Axes axes = new Config.Axes();
         public Config.Layout layout = new Config.Layout();
 
+        // scales calculations must occur at this level because the axes are unaware of pixel dimensions
         public double xAxisScale { get { return bmpData.Width / axes.x.span; } }
         public double yAxisScale { get { return bmpData.Height / axes.y.span; } }
         
