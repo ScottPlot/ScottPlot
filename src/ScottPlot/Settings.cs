@@ -123,11 +123,7 @@ namespace ScottPlot
 
         public void AxisAuto(double horizontalMargin = .1, double verticalMargin = .1, bool xExpandOnly = false, bool yExpandOnly = false)
         {
-            // TODO: WHY IS THIS SO LONG???
-
-            double[] original = new double[4] { axes.x.min, axes.x.max, axes.y.min, axes.y.max };
-            double[] newAxes = new double[4];
-
+            // separately adjust on plottables vs. axis lines
             List<Plottable> plottables2d = new List<Plottable>();
             List<PlottableAxLine> axisLines = new List<PlottableAxLine>();
             foreach (Plottable plottable in plottables)
@@ -138,87 +134,44 @@ namespace ScottPlot
                     plottables2d.Add(plottable);
             }
 
-            foreach (Plottable plottable in plottables2d)
+            // expand on non-axis lines first
+            if (plottables2d.Count == 0)
             {
-                double[] limits = plottable.GetLimits();
-
-                if (newAxes == null)
-                {
-                    newAxes = limits;
-                }
-                else
-                {
-                    if (limits[0] < newAxes[0])
-                        newAxes[0] = limits[0];
-                    if (limits[1] > newAxes[1])
-                        newAxes[1] = limits[1];
-                    if (limits[2] < newAxes[2])
-                        newAxes[2] = limits[2];
-                    if (limits[3] > newAxes[3])
-                        newAxes[3] = limits[3];
-                }
-            }
-
-            foreach (PlottableAxLine axLine in axisLines)
-            {
-                if (newAxes == null)
-                    continue;
-
-                if (axLine.vertical)
-                {
-                    if (axLine.position < newAxes[0])
-                        newAxes[0] = axLine.position;
-                    if (axLine.position > newAxes[1])
-                        newAxes[1] = axLine.position;
-                }
-                else
-                {
-                    if (axLine.position < newAxes[2])
-                        newAxes[2] = axLine.position;
-                    if (axLine.position > newAxes[3])
-                        newAxes[3] = axLine.position;
-                }
-            }
-
-            if (newAxes == null)
-            {
-                newAxes = new double[] { -10, 10, -10, 10 };
+                axes.Set(-10, 10, -10, 10);
             }
             else
             {
-                if (newAxes[0] == newAxes[1])
+                axes.Set(plottables[0].GetLimits());
+                foreach (Plottable plottable in plottables)
                 {
-                    newAxes[0] = newAxes[0] - 1;
-                    newAxes[1] = newAxes[1] + 1;
-                }
-
-                if (newAxes[2] == newAxes[3])
-                {
-                    newAxes[2] = newAxes[2] - 1;
-                    newAxes[3] = newAxes[3] + 1;
+                    if (!(plottable is PlottableAxLine axLine))
+                        axes.Expand(plottable.GetLimits());
                 }
             }
 
-            axes.x.min = newAxes[0];
-            axes.x.max = newAxes[1];
-            axes.y.min = newAxes[2];
-            axes.y.max = newAxes[3];
+            // expand on axis lines last
+            foreach (Plottable plottable in plottables)
+            {
+                if (plottable is PlottableAxLine axLine)
+                {
+                    var axl = (PlottableAxLine)plottable;
+                    double[] limits = plottable.GetLimits();
+                    if (axl.vertical)
+                    {
+                        limits[2] = axes.y.min;
+                        limits[3] = axes.y.max;
+                    }
+                    else
+                    {
+                        limits[0] = axes.x.min;
+                        limits[1] = axes.x.max;
+                    }
+                    axes.Expand(limits);
+                }
+            }
 
             axes.hasBeenSet = true;
             axes.Zoom(1 - horizontalMargin, 1 - verticalMargin);
-
-            if (xExpandOnly && original != null)
-            {
-                axes.x.min = Math.Min(axes.x.min, original[0]);
-                axes.x.max = Math.Max(axes.x.max, original[1]);
-            }
-
-            if (yExpandOnly && original != null)
-            {
-                axes.y.min = Math.Min(axes.y.min, original[2]);
-                axes.y.max = Math.Max(axes.y.max, original[3]);
-            }
-
         }
 
         public void MouseDown(int cusorPosX, int cursorPosY, bool panning = false, bool zooming = false)

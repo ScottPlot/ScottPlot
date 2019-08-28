@@ -37,6 +37,29 @@ namespace ScottPlot.Config
             hasBeenSet = true;
         }
 
+        public void Set(double[] limits)
+        {
+            if ((limits == null) || (limits.Length != 4))
+                throw new ArgumentException();
+
+            x.min = limits[0];
+            x.max = limits[1];
+            y.min = limits[2];
+            y.max = limits[3];
+            hasBeenSet = true;
+        }
+
+        public void Expand(double[] limits)
+        {
+            if ((limits == null) || (limits.Length != 4))
+                throw new ArgumentException();
+
+            x.min = Math.Min(limits[0], x.min);
+            x.max = Math.Max(limits[1], x.max);
+            y.min = Math.Min(limits[2], y.min);
+            y.max = Math.Max(limits[3], y.max);
+        }
+
         public void Zoom(double xFrac = 1, double yFrac = 1, PointF? zoomCenter = null)
         {
             if (zoomCenter == null)
