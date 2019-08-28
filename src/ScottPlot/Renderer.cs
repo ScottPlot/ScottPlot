@@ -29,17 +29,17 @@ namespace ScottPlot
 
             Pen pen = new Pen(settings.grid.color);
 
-            for (int i = 0; i < settings.ticks.tickCollectionX.tickPositionsMajor.Length; i++)
+            for (int i = 0; i < settings.ticks.x.tickPositionsMajor.Length; i++)
             {
-                double value = settings.ticks.tickCollectionX.tickPositionsMajor[i];
+                double value = settings.ticks.x.tickPositionsMajor[i];
                 double unitsFromAxisEdge = value - settings.axes.x.min;
                 int xPx = (int)(unitsFromAxisEdge * settings.xAxisScale);
                 settings.gfxData.DrawLine(pen, xPx, 0, xPx, settings.dataSize.Height);
             }
 
-            for (int i = 0; i < settings.ticks.tickCollectionY.tickPositionsMajor.Length; i++)
+            for (int i = 0; i < settings.ticks.y.tickPositionsMajor.Length; i++)
             {
-                double value = settings.ticks.tickCollectionY.tickPositionsMajor[i];
+                double value = settings.ticks.y.tickPositionsMajor[i];
                 double unitsFromAxisEdge = value - settings.axes.y.min;
                 int yPx = settings.dataSize.Height - (int)(unitsFromAxisEdge * settings.yAxisScale);
                 settings.gfxData.DrawLine(pen, 0, yPx, settings.dataSize.Width, yPx);
@@ -124,8 +124,8 @@ namespace ScottPlot
             if (settings.dataSize.Width < 1 || settings.dataSize.Height < 1)
                 return;
 
-            settings.ticks.tickCollectionX = new TickCollection(settings, false, settings.ticks.tickDateTimeX);
-            settings.ticks.tickCollectionY = new TickCollection(settings, true, settings.ticks.tickDateTimeY);
+            settings.ticks.x = new TickCollection(settings, false, settings.ticks.timeFormatX);
+            settings.ticks.y = new TickCollection(settings, true, settings.ticks.timeFormatY);
 
             RenderTicksOnLeft(settings);
             RenderTicksOnBottom(settings);
@@ -144,7 +144,7 @@ namespace ScottPlot
 
             if (settings.layout.displayAxisFrames)
             {
-                Pen axisFramePen = new Pen(settings.ticks.tickColor);
+                Pen axisFramePen = new Pen(settings.ticks.color);
                 if (settings.layout.displayFrameByAxis[0])
                     settings.gfxFigure.DrawLine(axisFramePen, tl, bl);
                 if (settings.layout.displayFrameByAxis[1])
@@ -173,35 +173,35 @@ namespace ScottPlot
 
         public static void RenderTicksOnLeft(Settings settings)
         {
-            if (!settings.ticks.displayTicksY)
+            if (!settings.ticks.displayYmajor)
                 return;
 
-            Pen pen = new Pen(settings.ticks.tickColor);
-            Brush brush = new SolidBrush(settings.ticks.tickColor);
+            Pen pen = new Pen(settings.ticks.color);
+            Brush brush = new SolidBrush(settings.ticks.color);
 
-            for (int i = 0; i < settings.ticks.tickCollectionY.tickPositionsMajor.Length; i++)
+            for (int i = 0; i < settings.ticks.y.tickPositionsMajor.Length; i++)
             {
-                double value = settings.ticks.tickCollectionY.tickPositionsMajor[i];
-                string text = settings.ticks.tickCollectionY.tickLabels[i];
+                double value = settings.ticks.y.tickPositionsMajor[i];
+                string text = settings.ticks.y.tickLabels[i];
 
                 double unitsFromAxisEdge = value - settings.axes.y.min;
                 int xPx = settings.dataOrigin.X - 1;
                 int yPx = (int)(unitsFromAxisEdge * settings.yAxisScale);
                 yPx = settings.figureSize.Height - yPx - settings.layout.paddingBySide[2];
 
-                settings.gfxFigure.DrawLine(pen, xPx, yPx, xPx - settings.ticks.tickSize, yPx);
-                settings.gfxFigure.DrawString(text, settings.ticks.tickFont, brush, xPx - settings.ticks.tickSize, yPx, settings.misc.sfEast);
+                settings.gfxFigure.DrawLine(pen, xPx, yPx, xPx - settings.ticks.size, yPx);
+                settings.gfxFigure.DrawString(text, settings.ticks.font, brush, xPx - settings.ticks.size, yPx, settings.misc.sfEast);
             }
 
-            if (settings.ticks.displayTicksYminor && settings.ticks.tickCollectionY.tickPositionsMinor != null)
+            if (settings.ticks.displayYminor && settings.ticks.y.tickPositionsMinor != null)
             {
-                foreach (var value in settings.ticks.tickCollectionY.tickPositionsMinor)
+                foreach (var value in settings.ticks.y.tickPositionsMinor)
                 {
                     double unitsFromAxisEdge = value - settings.axes.y.min;
                     int xPx = settings.dataOrigin.X - 1;
                     int yPx = (int)(unitsFromAxisEdge * settings.yAxisScale);
                     yPx = settings.figureSize.Height - yPx - settings.layout.paddingBySide[2];
-                    settings.gfxFigure.DrawLine(pen, xPx, yPx, xPx - settings.ticks.tickSize / 2, yPx);
+                    settings.gfxFigure.DrawLine(pen, xPx, yPx, xPx - settings.ticks.size / 2, yPx);
                 }
             }
 
@@ -209,53 +209,53 @@ namespace ScottPlot
 
         public static void RenderTicksOnBottom(Settings settings)
         {
-            if (!settings.ticks.displayTicksX)
+            if (!settings.ticks.displayXmajor)
                 return;
 
-            Pen pen = new Pen(settings.ticks.tickColor);
-            Brush brush = new SolidBrush(settings.ticks.tickColor);
+            Pen pen = new Pen(settings.ticks.color);
+            Brush brush = new SolidBrush(settings.ticks.color);
 
-            for (int i = 0; i < settings.ticks.tickCollectionX.tickPositionsMajor.Length; i++)
+            for (int i = 0; i < settings.ticks.x.tickPositionsMajor.Length; i++)
             {
-                double value = settings.ticks.tickCollectionX.tickPositionsMajor[i];
-                string text = settings.ticks.tickCollectionX.tickLabels[i];
+                double value = settings.ticks.x.tickPositionsMajor[i];
+                string text = settings.ticks.x.tickLabels[i];
 
                 double unitsFromAxisEdge = value - settings.axes.x.min;
                 int xPx = (int)(unitsFromAxisEdge * settings.xAxisScale) + settings.layout.paddingBySide[0];
                 int yPx = settings.figureSize.Height - settings.layout.paddingBySide[2];
 
-                settings.gfxFigure.DrawLine(pen, xPx, yPx, xPx, yPx + settings.ticks.tickSize);
-                settings.gfxFigure.DrawString(text, settings.ticks.tickFont, brush, xPx, yPx + settings.ticks.tickSize, settings.misc.sfNorth);
+                settings.gfxFigure.DrawLine(pen, xPx, yPx, xPx, yPx + settings.ticks.size);
+                settings.gfxFigure.DrawString(text, settings.ticks.font, brush, xPx, yPx + settings.ticks.size, settings.misc.sfNorth);
             }
 
-            if (settings.ticks.displayTicksXminor && settings.ticks.tickCollectionX.tickPositionsMinor != null)
+            if (settings.ticks.displayXminor && settings.ticks.x.tickPositionsMinor != null)
             {
-                foreach (var value in settings.ticks.tickCollectionX.tickPositionsMinor)
+                foreach (var value in settings.ticks.x.tickPositionsMinor)
                 {
                     double unitsFromAxisEdge = value - settings.axes.x.min;
                     int xPx = (int)(unitsFromAxisEdge * settings.xAxisScale) + settings.layout.paddingBySide[0];
                     int yPx = settings.figureSize.Height - settings.layout.paddingBySide[2];
-                    settings.gfxFigure.DrawLine(pen, xPx, yPx, xPx, yPx + settings.ticks.tickSize / 2);
+                    settings.gfxFigure.DrawLine(pen, xPx, yPx, xPx, yPx + settings.ticks.size / 2);
                 }
             }
         }
 
         private static void RenderTickMultipliers(Settings settings)
         {
-            Brush brush = new SolidBrush(settings.ticks.tickColor);
+            Brush brush = new SolidBrush(settings.ticks.color);
 
-            if ((settings.ticks.tickCollectionX.cornerLabel != "") && settings.ticks.displayTicksX)
+            if ((settings.ticks.x.cornerLabel != "") && settings.ticks.displayXmajor)
             {
-                SizeF multiplierLabelXsize = settings.gfxFigure.MeasureString(settings.ticks.tickCollectionX.cornerLabel, settings.ticks.tickFont);
-                settings.gfxFigure.DrawString(settings.ticks.tickCollectionX.cornerLabel, settings.ticks.tickFont, brush,
+                SizeF multiplierLabelXsize = settings.gfxFigure.MeasureString(settings.ticks.x.cornerLabel, settings.ticks.font);
+                settings.gfxFigure.DrawString(settings.ticks.x.cornerLabel, settings.ticks.font, brush,
                     settings.dataOrigin.X + settings.dataSize.Width,
                     settings.dataOrigin.Y + settings.dataSize.Height + multiplierLabelXsize.Height,
                     settings.misc.sfNorthEast);
             }
 
-            if ((settings.ticks.tickCollectionY.cornerLabel != "") && settings.ticks.displayTicksY)
+            if ((settings.ticks.y.cornerLabel != "") && settings.ticks.displayYmajor)
             {
-                settings.gfxFigure.DrawString(settings.ticks.tickCollectionY.cornerLabel, settings.ticks.tickFont, brush,
+                settings.gfxFigure.DrawString(settings.ticks.y.cornerLabel, settings.ticks.font, brush,
                     settings.dataOrigin.X,
                     settings.dataOrigin.Y,
                     settings.misc.sfSouthWest);

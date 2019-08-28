@@ -26,21 +26,21 @@ namespace ScottPlot
             int maxTickCount;
 
             string longestLabel = (dateFormat) ? "2019-08-20\n20:42:17" : "-8888";
-            maxLabelSize = settings.gfxData.MeasureString(longestLabel, settings.ticks.tickFont);
+            maxLabelSize = settings.gfxData.MeasureString(longestLabel, settings.ticks.font);
 
             if (verticalAxis)
             {
                 low = settings.axes.y.min;
                 high = settings.axes.y.max;
                 maxTickCount = (int)(settings.dataSize.Height / maxLabelSize.Height);
-                tickSpacing = (settings.ticks.tickSpacingX != 0) ? settings.ticks.tickSpacingY : GetIdealTickSpacing(low, high, maxTickCount);
+                tickSpacing = (settings.ticks.manualSpacingX != 0) ? settings.ticks.manualSpacingY : GetIdealTickSpacing(low, high, maxTickCount);
             }
             else
             {
                 low = settings.axes.x.min;
                 high = settings.axes.x.max;
                 maxTickCount = (int)(settings.dataSize.Width / maxLabelSize.Width * 1.2);
-                tickSpacing = (settings.ticks.tickSpacingX != 0) ? settings.ticks.tickSpacingX : GetIdealTickSpacing(low, high, maxTickCount);
+                tickSpacing = (settings.ticks.manualSpacingX != 0) ? settings.ticks.manualSpacingX : GetIdealTickSpacing(low, high, maxTickCount);
             }
 
             // now that tick spacing is known, populate the list of ticks and labels

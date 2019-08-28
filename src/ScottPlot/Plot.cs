@@ -847,11 +847,11 @@ namespace ScottPlot
             )
         {
             if (displayTicksX != null)
-                settings.ticks.displayTicksX = (bool)displayTicksX;
+                settings.ticks.displayXmajor = (bool)displayTicksX;
             if (displayTicksY != null)
-                settings.ticks.displayTicksY = (bool)displayTicksY;
+                settings.ticks.displayYmajor = (bool)displayTicksY;
             if (color != null)
-                settings.ticks.tickColor = (Color)color;
+                settings.ticks.color = (Color)color;
             if (useMultiplierNotation != null)
                 settings.ticks.useMultiplierNotation = (bool)useMultiplierNotation;
             if (useOffsetNotation != null)
@@ -859,13 +859,13 @@ namespace ScottPlot
             if (useExponentialNotation != null)
                 settings.ticks.useExponentialNotation = (bool)useExponentialNotation;
             if (displayTicksXminor != null)
-                settings.ticks.displayTicksXminor = (bool)displayTicksXminor;
+                settings.ticks.displayXminor = (bool)displayTicksXminor;
             if (displayTicksYminor != null)
-                settings.ticks.displayTicksYminor = (bool)displayTicksYminor;
+                settings.ticks.displayYminor = (bool)displayTicksYminor;
             if (dateTimeX != null)
-                settings.ticks.tickDateTimeX = (bool)dateTimeX;
+                settings.ticks.timeFormatX = (bool)dateTimeX;
             if (dateTimeY != null)
-                settings.ticks.tickDateTimeY = (bool)dateTimeY;
+                settings.ticks.timeFormatY = (bool)dateTimeY;
 
             if (dateTimeX != null || dateTimeY != null)
             {
@@ -888,8 +888,8 @@ namespace ScottPlot
             settings.grid.visible = enable ?? settings.grid.visible;
             settings.grid.color = color ?? settings.grid.color;
 
-            settings.ticks.tickSpacingX = (xSpacing == null) ? 0 : (double)xSpacing;
-            settings.ticks.tickSpacingY = (ySpacing == null) ? 0 : (double)ySpacing;
+            settings.ticks.manualSpacingX = (xSpacing == null) ? 0 : (double)xSpacing;
+            settings.ticks.manualSpacingY = (ySpacing == null) ? 0 : (double)ySpacing;
 
             settings.bmpFigureRenderRequired = true;
         }
@@ -906,7 +906,7 @@ namespace ScottPlot
             if (drawFrame != null)
                 settings.layout.displayAxisFrames = (bool)drawFrame;
             if (frameColor != null)
-                settings.ticks.tickColor = (Color)frameColor;
+                settings.ticks.color = (Color)frameColor;
             if (left != null)
                 settings.layout.displayFrameByAxis[0] = (bool)left;
             if (right != null)
@@ -989,7 +989,7 @@ namespace ScottPlot
             if (grid != null)
                 settings.grid.color = (Color)grid;
             if (tick != null)
-                settings.ticks.tickColor = (Color)tick;
+                settings.ticks.color = (Color)tick;
             if (label != null)
                 settings.xLabel.color = (Color)label;
             if (label != null)
