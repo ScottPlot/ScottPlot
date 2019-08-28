@@ -52,8 +52,8 @@ namespace ScottPlot.UserControls
             cbLegend.Checked = (plt.GetSettings().legendLocation == legendLocation.none) ? false : true;
 
             // image quality
-            rbQualityLow.Checked = !plt.GetSettings().antiAliasData;
-            rbQualityHigh.Checked = plt.GetSettings().antiAliasData;
+            rbQualityLow.Checked = !plt.GetSettings().misc.antiAliasData;
+            rbQualityHigh.Checked = plt.GetSettings().misc.antiAliasData;
             cbQualityLowWhileDragging.Checked = plt.mouseTracker.lowQualityWhileInteracting;
 
             // list of plottables

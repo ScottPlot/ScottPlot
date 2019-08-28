@@ -88,7 +88,7 @@ namespace ScottPlot
 
             if (settings.gfxFigure != null)
             {
-                if (settings.antiAliasFigure)
+                if (settings.misc.antiAliasFigure)
                 {
                     settings.gfxFigure.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                     settings.gfxFigure.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
@@ -102,7 +102,7 @@ namespace ScottPlot
 
             if (settings.gfxData != null)
             {
-                if (settings.antiAliasData)
+                if (settings.misc.antiAliasData)
                 {
                     settings.gfxData.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                     settings.gfxData.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
@@ -177,11 +177,11 @@ namespace ScottPlot
         {
             if (lowQuality)
             {
-                bool currentAAData = settings.antiAliasData; // save currently using AA setting
-                settings.antiAliasData = false; // disable AA for render
+                bool currentAAData = settings.misc.antiAliasData; // save currently using AA setting
+                settings.misc.antiAliasData = false; // disable AA for render
                 if (renderFirst)
                     RenderBitmap();
-                settings.antiAliasData = currentAAData; // restore saved AA setting
+                settings.misc.antiAliasData = currentAAData; // restore saved AA setting
             }
             else
             {
@@ -928,8 +928,8 @@ namespace ScottPlot
 
         public void AntiAlias(bool figure = true, bool data = false, bool legend = false)
         {
-            settings.antiAliasFigure = figure;
-            settings.antiAliasData = data;
+            settings.misc.antiAliasFigure = figure;
+            settings.misc.antiAliasData = data;
             settings.antiAliasLegend = legend;
             settings.bmpFigureRenderRequired = true;
         }
