@@ -77,7 +77,6 @@
     <Compile Include="Plottables\PlottableText.cs" />
     <Compile Include="Renderer.cs" />
     <Compile Include="Config\TextLabel.cs" />
-    <Compile Include="Config\Title.cs" />
     <Compile Include="UserControls\FormHelp.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -932,7 +932,7 @@ namespace ScottPlot
             if (!settings.axes.hasBeenSet && settings.plottables.Count > 0)
                 settings.AxisAuto();
             settings.layout.padOnAllSides = padding;
-            settings.AxisTighen();
+            settings.layout.Tighten(settings.ticks, settings.title, settings.xLabel, settings.yLabel);
             Resize();
         }
 

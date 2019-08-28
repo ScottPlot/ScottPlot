@@ -36,7 +36,7 @@ namespace ScottPlot
         public readonly List<Plottable> plottables = new List<Plottable>();
 
         // new config objects (https://github.com/swharden/ScottPlot/issues/120)
-        public Config.Title title = new Config.Title();
+        public Config.TextLabel title = new Config.TextLabel() { fontSize = 16, bold = true };
         public Config.TextLabel xLabel = new Config.TextLabel() { fontSize = 16 };
         public Config.TextLabel yLabel = new Config.TextLabel() { fontSize = 16 };
         public Config.Misc misc = new Config.Misc();
@@ -56,7 +56,6 @@ namespace ScottPlot
         // this has to be here because color module is unaware of plottables list
         public Color GetNextColor() { return colors.GetColor(plottables.Count); }
 
-
         public void Resize(int width, int height)
         {
             // TODO: data origin should be calculated at render time, not now.
@@ -65,43 +64,6 @@ namespace ScottPlot
             int dataWidth = figureSize.Width - layout.paddingBySide[0] - layout.paddingBySide[1];
             int dataHeight = figureSize.Height - layout.paddingBySide[2] - layout.paddingBySide[3];
             dataSize = new Size(dataWidth, dataHeight);
-        }
-
-        public void AxisTighen()
-        {
-            // "tighten" the plot by reducing whitespce between labels, data, and the edge of the figure
-
-            if (ticks.x == null)
-                return;
-
-            int tickLetterHeight = (int)gfxFigure.MeasureString("test", ticks.font).Height;
-
-            // top
-            layout.paddingBySide[3] = 1;
-            layout.paddingBySide[3] += Math.Max((int)title.height, tickLetterHeight);
-            layout.paddingBySide[3] += layout.padOnAllSides;
-
-            // bottom
-            int xLabelHeight = (int)gfxFigure.MeasureString(xLabel.text, xLabel.font).Height;
-            layout.paddingBySide[2] = Math.Max(xLabelHeight, tickLetterHeight);
-            layout.paddingBySide[2] += tickLetterHeight;
-            layout.paddingBySide[2] += layout.padOnAllSides;
-
-            // left
-            SizeF yLabelSize = gfxFigure.MeasureString(yLabel.text, yLabel.font);
-            layout.paddingBySide[0] = (int)yLabelSize.Height;
-            layout.paddingBySide[0] += (int)ticks.y.maxLabelSize.Width;
-            layout.paddingBySide[0] += layout.padOnAllSides;
-
-            // right
-            layout.paddingBySide[1] = (int)ticks.y.maxLabelSize.Width / 2;
-            layout.paddingBySide[1] += layout.padOnAllSides;
-
-            // override for frameles
-            if (!layout.displayAxisFrames)
-                layout.paddingBySide = new int[] { 0, 0, 0, 0 };
-
-            layout.tighteningOccurred = true;
         }
 
         public void AxesPanPx(int dxPx, int dyPx)
@@ -187,10 +149,7 @@ namespace ScottPlot
             if (mouse.isPanning == false && mouse.isZooming == false)
                 return;
 
-            axes.x.min = mouse.downLimits[0];
-            axes.x.max = mouse.downLimits[1];
-            axes.y.min = mouse.downLimits[2];
-            axes.y.max = mouse.downLimits[3];
+            axes.Set(mouse.downLimits);
 
             int dX = cursorPosX - mouse.downLoc.X;
             int dY = cursorPosY - mouse.downLoc.Y;
