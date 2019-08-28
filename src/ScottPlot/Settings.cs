@@ -100,28 +100,6 @@ namespace ScottPlot
             return colors.GetColor(plottables.Count);
         }
 
-        public void BenchmarkStart()
-        {
-            benchmark.stopwatch.Restart();
-        }
-
-        public void BenchmarkEnd()
-        {
-            // TODO: move this functionality inside benchmark class
-            benchmark.stopwatch.Stop();
-            benchmark.msec = benchmark.stopwatch.ElapsedTicks * 1000.0 / Stopwatch.Frequency;
-            benchmark.hz = 1000.0 / benchmark.msec;
-            string benchmarkMessage;
-            benchmarkMessage = "";
-            benchmarkMessage += string.Format("Full render of {0:n0} objects ({1:n0} points)", plottables.Count, GetTotalPointCount());
-            benchmarkMessage += string.Format(" took {0:0.000} ms ({1:0.00 Hz})", benchmark.msec, benchmark.hz);
-            if (plottables.Count == 1)
-                benchmarkMessage = benchmarkMessage.Replace("objects", "object");
-            if (!bmpFigureRenderRequired)
-                benchmarkMessage = benchmarkMessage.Replace("Full", "Data-only");
-            benchmark.text = benchmarkMessage;
-        }
-
         public void Resize(int width, int height)
         {
             figureSize = new Size(width, height);
