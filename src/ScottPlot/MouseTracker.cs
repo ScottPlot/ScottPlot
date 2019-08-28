@@ -27,9 +27,9 @@ namespace ScottPlot
 
         public bool IsDraggingSomething()
         {
-            if (settings.mouseIsPanning)
+            if (settings.mouse.isPanning)
                 return true;
-            if (settings.mouseIsZooming)
+            if (settings.mouse.isZooming)
                 return true;
             if (plottableBeingDragged != null)
                 return true;
@@ -154,7 +154,7 @@ namespace ScottPlot
                 int[] ys = new int[] { settings.mouse.downMiddle.Y, settings.mouse.currentLoc.Y };
                 var lowerLeft = settings.GetLocation(xs.Min(), ys.Max());
                 var upperRight = settings.GetLocation(xs.Max(), ys.Min());
-                settings.AxisSet(lowerLeft.X, upperRight.X, lowerLeft.Y, upperRight.Y);
+                settings.axes.Set(lowerLeft.X, upperRight.X, lowerLeft.Y, upperRight.Y);
                 settings.mouse.rectangleIsHappening = false;
             }
         }
@@ -236,8 +236,8 @@ namespace ScottPlot
 
         public void MouseIs(bool panning, bool zooming)
         {
-            settings.mouseIsPanning = panning;
-            settings.mouseIsZooming = zooming;
+            settings.mouse.isPanning = panning;
+            settings.mouse.isZooming = zooming;
         }
     }
 }
