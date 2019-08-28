@@ -115,7 +115,7 @@ namespace ScottPlot
             }
             if (settings.gfxLegend != null)
             {
-                if (settings.antiAliasLegend)
+                if (settings.legend.antiAlias)
                 {
                     settings.gfxLegend.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                     settings.gfxLegend.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
@@ -141,11 +141,11 @@ namespace ScottPlot
                 // only after the layout is tightened can the ticks be properly decided
             }
 
-            settings.legendFrame = LegendTools.GetLegendFrame(settings, settings.gfxLegend);
+            settings.legend.rect = LegendTools.GetLegendFrame(settings, settings.gfxLegend);
 
             // TODO: this only re-renders the legend if the size changes. What if the colors change?
-            if (settings.legendFrame.Size != settings.bmpLegend.Size)
-                InitializeLegend(settings.legendFrame.Size);
+            if (settings.legend.rect.Size != settings.bmpLegend.Size)
+                InitializeLegend(settings.legend.rect.Size);
 
             UpdateAntiAliasingSettings();
 
@@ -802,25 +802,25 @@ namespace ScottPlot
             )
         {
             if (fontColor != null)
-                settings.legendFontColor = (Color)fontColor;
+                settings.legend.colorText = (Color)fontColor;
             if (backColor != null)
-                settings.legendBackColor = (Color)backColor;
+                settings.legend.colorBackground = (Color)backColor;
             if (frameColor != null)
-                settings.legendFrameColor = (Color)frameColor;
+                settings.legend.colorFrame = (Color)frameColor;
 
             fontName = ScottPlot.Tools.VerifyFont(fontName);
             FontStyle fontStyle = (bold) ? FontStyle.Bold : FontStyle.Regular;
-            settings.legendFont = new Font(fontName, fontSize, fontStyle);
+            settings.legend.font = new Font(fontName, fontSize, fontStyle);
 
             if (enableLegend)
             {
-                settings.legendLocation = location;
-                settings.legendShadowDirection = shadowDirection;
+                settings.legend.location = location;
+                settings.legend.shadow = shadowDirection;
             }
             else
             {
-                settings.legendLocation = legendLocation.none;
-                settings.legendShadowDirection = shadowDirection.none;
+                settings.legend.location = legendLocation.none;
+                settings.legend.shadow = shadowDirection.none;
             }
         }
 
@@ -930,7 +930,7 @@ namespace ScottPlot
         {
             settings.misc.antiAliasFigure = figure;
             settings.misc.antiAliasData = data;
-            settings.antiAliasLegend = legend;
+            settings.legend.antiAlias = legend;
             settings.bmpFigureRenderRequired = true;
         }
 
@@ -997,11 +997,11 @@ namespace ScottPlot
             if (title != null)
                 settings.title.color = (Color)title;
             if (dataBg != null)
-                settings.legendBackColor = (Color)dataBg;
+                settings.legend.colorBackground = (Color)dataBg;
             if (tick != null)
-                settings.legendFrameColor = (Color)tick;
+                settings.legend.colorFrame = (Color)tick;
             if (label != null)
-                settings.legendFontColor = (Color)label;
+                settings.legend.colorText = (Color)label;
             settings.bmpFigureRenderRequired = true;
         }
 
