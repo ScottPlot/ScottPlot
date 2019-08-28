@@ -17,7 +17,7 @@ namespace ScottPlot
     public class Settings
     {
         // these properties get set at instantiation or after size or axis adjustments
-        public Size figureSize { get; private set; }
+        public Size figureSize { get; private set; } // TODO: this pass through to bmpFigure.Size and Resize()
         public Point dataOrigin { get; private set; }
         public Size dataSize { get; private set; }
 
@@ -43,21 +43,11 @@ namespace ScottPlot
         public Config.Axes axes = new Config.Axes();
         public Config.Layout layout = new Config.Layout();
         public Config.Ticks ticks = new Config.Ticks();
+        public Config.Legend legend = new Config.Legend();
 
         // scales calculations must occur at this level because the axes are unaware of pixel dimensions
         public double xAxisScale { get { return bmpData.Width / axes.x.span; } }
         public double yAxisScale { get { return bmpData.Height / axes.y.span; } }
-        
-        // legend
-        public Font legendFont = new Font("Segoe UI", 12);
-        public Color legendFontColor = Color.Black;
-        public Color legendBackColor = Color.White;
-        public Color legendShadowColor = Color.FromArgb(75, 0, 0, 0);
-        public Color legendFrameColor = Color.Black;
-        public legendLocation legendLocation = legendLocation.none;
-        public shadowDirection legendShadowDirection = shadowDirection.none;
-        public Rectangle legendFrame = new Rectangle(0, 0, 1, 1);
-        public bool antiAliasLegend = true;
 
         // mouse tracking
         public Point mouseDownLocation = new Point(0, 0);

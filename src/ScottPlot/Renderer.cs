@@ -74,10 +74,10 @@ namespace ScottPlot
         {
             if (settings.gfxFigure == null || settings.gfxLegend == null)
                 return;
-            if (settings.legendLocation != ScottPlot.legendLocation.none)
+            if (settings.legend.location != ScottPlot.legendLocation.none)
             {
-                Point legendLocation = new Point(settings.dataOrigin.X + settings.legendFrame.Location.X,
-                settings.dataOrigin.Y + settings.legendFrame.Location.Y);
+                Point legendLocation = new Point(settings.dataOrigin.X + settings.legend.rect.Location.X,
+                settings.dataOrigin.Y + settings.legend.rect.Location.Y);
                 settings.gfxFigure.DrawImage(settings.bmpLegend, legendLocation);
             }
         }

@@ -43,7 +43,7 @@ namespace ScottPlot
 
             // figure out where on the graph things should be
             int padding = 3;
-            int stubWidth = 40 * (int)settings.legendFont.Size / 12;
+            int stubWidth = 40 * (int)settings.legend.font.Size / 12;
             SizeF maxLabelSize = MaxLegendLabelSize(settings);
             float frameWidth = padding * 2 + maxLabelSize.Width + padding + stubWidth;
             float frameHeight = padding * 2 + maxLabelSize.Height * plottableIndexesNeedingLegend.Count();
@@ -71,7 +71,7 @@ namespace ScottPlot
 
             // figure out where on the graph things should be
             int padding = 3;
-            int stubWidth = 40 * (int)settings.legendFont.Size / 12;
+            int stubWidth = 40 * (int)settings.legend.font.Size / 12;
             SizeF maxLabelSize = MaxLegendLabelSize(settings);
             float frameWidth = padding * 2 + maxLabelSize.Width + padding + stubWidth;
             float frameHeight = padding * 2 + maxLabelSize.Height * plottableIndexesNeedingLegend.Count();
@@ -92,12 +92,12 @@ namespace ScottPlot
             Rectangle frameRect = new Rectangle(frameZeroOffset, frameSize);
             Rectangle shadowRect = new Rectangle(shadowZeroOffset, frameSize);
 
-            settings.gfxLegend.Clear(settings.legendBackColor);
+            settings.gfxLegend.Clear(settings.legend.colorBackground);
             // draw the legend background and shadow
-            if (settings.legendShadowDirection != shadowDirection.none)
-                settings.gfxLegend.FillRectangle(new SolidBrush(settings.legendShadowColor), shadowRect);
-            settings.gfxLegend.FillRectangle(new SolidBrush(settings.legendBackColor), frameRect);
-            settings.gfxLegend.DrawRectangle(new Pen(settings.legendFrameColor), frameRect);
+            if (settings.legend.shadow != shadowDirection.none)
+                settings.gfxLegend.FillRectangle(new SolidBrush(settings.legend.colorShadow), shadowRect);
+            settings.gfxLegend.FillRectangle(new SolidBrush(settings.legend.colorBackground), frameRect);
+            settings.gfxLegend.DrawRectangle(new Pen(settings.legend.colorFrame), frameRect);
 
             // draw the lines, markers, and text for each legend item
             foreach (int i in plottableIndexesNeedingLegend)
@@ -117,7 +117,7 @@ namespace ScottPlot
             {
                 if (plottable.label != null)
                 {
-                    SizeF labelSize = settings.gfxLegend.MeasureString(plottable.label, settings.legendFont);
+                    SizeF labelSize = settings.gfxLegend.MeasureString(plottable.label, settings.legend.font);
                     if (labelSize.Width > maxLabelSize.Width)
                         maxLabelSize.Width = labelSize.Width;
                     if (labelSize.Height > maxLabelSize.Height)
@@ -135,7 +135,7 @@ namespace ScottPlot
             Point shadowLocation = new Point();
 
             // calculate locations even if it's not going to be displayed
-            legendLocation loc = settings.legendLocation;
+            legendLocation loc = settings.legend.location;
             if (loc == legendLocation.none)
                 loc = legendLocation.lowerRight;
 
@@ -192,10 +192,10 @@ namespace ScottPlot
                     textLocation.Y = (int)(frameLocation.Y + frameHeight - padding);
                     break;
                 default:
-                    throw new NotImplementedException($"legend location {settings.legendLocation} is not supported");
+                    throw new NotImplementedException($"legend location {settings.legend.location} is not supported");
             }
 
-            switch (settings.legendShadowDirection)
+            switch (settings.legend.shadow)
             {
                 case (shadowDirection.lowerRight):
                     shadowLocation.X = frameLocation.X + 2;
@@ -214,7 +214,7 @@ namespace ScottPlot
                     shadowLocation.Y = frameLocation.Y - 2;
                     break;
                 default:
-                    settings.legendShadowDirection = shadowDirection.none;
+                    settings.legend.shadow = shadowDirection.none;
                     break;
             }
 
@@ -224,8 +224,8 @@ namespace ScottPlot
 
         private static void DrawLegendItemString(Plottable plottable, Settings settings, Point textLocation, int padding, int stubWidth, float legendFontLineHeight)
         {
-            Brush brushText = new SolidBrush(settings.legendFontColor);
-            settings.gfxLegend.DrawString(plottable.label, settings.legendFont, brushText, textLocation);
+            Brush brushText = new SolidBrush(settings.legend.colorText);
+            settings.gfxLegend.DrawString(plottable.label, settings.legend.font, brushText, textLocation);
         }
 
         private static void DrawLegendItemLine(Plottable plottable, Settings settings, Point textLocation, int padding, int stubWidth, float legendFontLineHeight)
@@ -264,14 +264,14 @@ namespace ScottPlot
             Brush brushMarker = new SolidBrush(plottable.color);
             Pen penMarker = new Pen(plottable.color, 1);
 
-            PointF corner1 = new PointF(textLocation.X - stubWidth + settings.legendFont.Size / 4, textLocation.Y + settings.legendFont.Size / 4 * padding);
+            PointF corner1 = new PointF(textLocation.X - stubWidth + settings.legend.font.Size / 4, textLocation.Y + settings.legend.font.Size / 4 * padding);
             PointF center = new PointF
             {
-                X = corner1.X + settings.legendFont.Size / 4,
-                Y = corner1.Y + settings.legendFont.Size / 4
+                X = corner1.X + settings.legend.font.Size / 4,
+                Y = corner1.Y + settings.legend.font.Size / 4
             };
 
-            SizeF bounds = new SizeF(settings.legendFont.Size / 2, settings.legendFont.Size / 2);
+            SizeF bounds = new SizeF(settings.legend.font.Size / 2, settings.legend.font.Size / 2);
             RectangleF rect = new RectangleF(corner1, bounds);
 
             switch (plottable.markerShape)
@@ -280,17 +280,17 @@ namespace ScottPlot
                     //Nothing to do because the Drawline needs to be there for all cases, and it's already there
                     break;
                 case MarkerShape.asterisk:
-                    Font drawFontAsterisk = new Font("CourierNew", settings.legendFont.Size);
+                    Font drawFontAsterisk = new Font("CourierNew", settings.legend.font.Size);
                     Point markerPositionAsterisk = new Point(textLocation.X - stubWidth, (int)(textLocation.Y + legendFontLineHeight / 4));
                     settings.gfxLegend.DrawString("*", drawFontAsterisk, brushMarker, markerPositionAsterisk);
                     break;
                 case MarkerShape.cross:
-                    Font drawFontCross = new Font("CourierNew", settings.legendFont.Size);
+                    Font drawFontCross = new Font("CourierNew", settings.legend.font.Size);
                     Point markerPositionCross = new Point(textLocation.X - stubWidth, (int)(textLocation.Y + legendFontLineHeight / 8));
                     settings.gfxLegend.DrawString("+", drawFontCross, brushMarker, markerPositionCross);
                     break;
                 case MarkerShape.eks:
-                    Font drawFontEks = new Font("CourierNew", settings.legendFont.Size);
+                    Font drawFontEks = new Font("CourierNew", settings.legend.font.Size);
                     Point markerPositionEks = new Point(textLocation.X - stubWidth, (int)(textLocation.Y));
                     settings.gfxLegend.DrawString("x", drawFontEks, brushMarker, markerPositionEks);
                     break;
@@ -299,10 +299,10 @@ namespace ScottPlot
                     break;
                 case MarkerShape.filledDiamond:
                     // Create points that define polygon.
-                    PointF point1 = new PointF(center.X, center.Y + settings.legendFont.Size / 4);
-                    PointF point2 = new PointF(center.X - settings.legendFont.Size / 4, center.Y);
-                    PointF point3 = new PointF(center.X, center.Y - settings.legendFont.Size / 4);
-                    PointF point4 = new PointF(center.X + settings.legendFont.Size / 4, center.Y);
+                    PointF point1 = new PointF(center.X, center.Y + settings.legend.font.Size / 4);
+                    PointF point2 = new PointF(center.X - settings.legend.font.Size / 4, center.Y);
+                    PointF point3 = new PointF(center.X, center.Y - settings.legend.font.Size / 4);
+                    PointF point4 = new PointF(center.X + settings.legend.font.Size / 4, center.Y);
 
                     PointF[] curvePoints = { point1, point2, point3, point4 };
 
@@ -313,7 +313,7 @@ namespace ScottPlot
                     settings.gfxLegend.FillRectangle(brushMarker, rect);
                     break;
                 case MarkerShape.hashTag:
-                    Font drawFontHashtag = new Font("CourierNew", settings.legendFont.Size);
+                    Font drawFontHashtag = new Font("CourierNew", settings.legend.font.Size);
                     Point markerPositionHashTag = new Point(textLocation.X - stubWidth, (int)(textLocation.Y + legendFontLineHeight / 8));
                     settings.gfxLegend.DrawString("#", drawFontHashtag, brushMarker, markerPositionHashTag);
                     break;
@@ -322,10 +322,10 @@ namespace ScottPlot
                     break;
                 case MarkerShape.openDiamond:
                     // Create points that define polygon.
-                    PointF point5 = new PointF(center.X, center.Y + settings.legendFont.Size / 4);
-                    PointF point6 = new PointF(center.X - settings.legendFont.Size / 4, center.Y);
-                    PointF point7 = new PointF(center.X, center.Y - settings.legendFont.Size / 4);
-                    PointF point8 = new PointF(center.X + settings.legendFont.Size / 4, center.Y);
+                    PointF point5 = new PointF(center.X, center.Y + settings.legend.font.Size / 4);
+                    PointF point6 = new PointF(center.X - settings.legend.font.Size / 4, center.Y);
+                    PointF point7 = new PointF(center.X, center.Y - settings.legend.font.Size / 4);
+                    PointF point8 = new PointF(center.X + settings.legend.font.Size / 4, center.Y);
 
                     PointF[] curvePoints2 = { point5, point6, point7, point8 };
 
@@ -333,15 +333,15 @@ namespace ScottPlot
                     settings.gfxLegend.DrawPolygon(penMarker, curvePoints2);
                     break;
                 case MarkerShape.openSquare:
-                    settings.gfxLegend.DrawRectangle(penMarker, corner1.X, corner1.Y, settings.legendFont.Size / 2, settings.legendFont.Size / 2);
+                    settings.gfxLegend.DrawRectangle(penMarker, corner1.X, corner1.Y, settings.legend.font.Size / 2, settings.legend.font.Size / 2);
                     break;
                 case MarkerShape.triDown:
                     // Create points that define polygon.
-                    PointF point14 = new PointF(center.X, center.Y + settings.legendFont.Size / 2);
+                    PointF point14 = new PointF(center.X, center.Y + settings.legend.font.Size / 2);
                     PointF point15 = new PointF(center.X, center.Y);
-                    PointF point16 = new PointF(center.X - settings.legendFont.Size / 2 * (float)0.866, center.Y - settings.legendFont.Size / 2 * (float)0.5);
+                    PointF point16 = new PointF(center.X - settings.legend.font.Size / 2 * (float)0.866, center.Y - settings.legend.font.Size / 2 * (float)0.5);
                     PointF point17 = new PointF(center.X, center.Y);
-                    PointF point18 = new PointF(center.X + settings.legendFont.Size / 2 * (float)0.866, center.Y - settings.legendFont.Size / 2 * (float)0.5);
+                    PointF point18 = new PointF(center.X + settings.legend.font.Size / 2 * (float)0.866, center.Y - settings.legend.font.Size / 2 * (float)0.5);
 
                     PointF[] curvePoints4 = { point17, point14, point15, point16, point17, point18 };
 
@@ -352,11 +352,11 @@ namespace ScottPlot
 
                 case MarkerShape.triUp:
                     // Create points that define polygon.
-                    PointF point9 = new PointF(center.X, center.Y - settings.legendFont.Size / 2);
+                    PointF point9 = new PointF(center.X, center.Y - settings.legend.font.Size / 2);
                     PointF point10 = new PointF(center.X, center.Y);
-                    PointF point11 = new PointF(center.X - settings.legendFont.Size / 2 * (float)0.866, center.Y + settings.legendFont.Size / 2 * (float)0.5);
+                    PointF point11 = new PointF(center.X - settings.legend.font.Size / 2 * (float)0.866, center.Y + settings.legend.font.Size / 2 * (float)0.5);
                     PointF point12 = new PointF(center.X, center.Y);
-                    PointF point13 = new PointF(center.X + settings.legendFont.Size / 2 * (float)0.866, center.Y + settings.legendFont.Size / 2 * (float)0.5);
+                    PointF point13 = new PointF(center.X + settings.legend.font.Size / 2 * (float)0.866, center.Y + settings.legend.font.Size / 2 * (float)0.5);
 
                     PointF[] curvePoints3 = { point12, point9, point10, point11, point12, point13 };
                     //Draw polygon to screen
@@ -364,7 +364,7 @@ namespace ScottPlot
                     break;
 
                 case MarkerShape.verticalBar:
-                    Font drawFontVertical = new Font("CourierNew", settings.legendFont.Size);
+                    Font drawFontVertical = new Font("CourierNew", settings.legend.font.Size);
                     Point markerPositionVertical = new Point(textLocation.X - stubWidth, (int)(textLocation.Y));
                     settings.gfxLegend.DrawString("|", drawFontVertical, brushMarker, markerPositionVertical);
                     break;
