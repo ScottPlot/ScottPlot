@@ -70,7 +70,8 @@ namespace ScottPlotSkia
 
         public void DrawRectangle(Pen pen, Rectangle rect)
         {
-            throw new NotImplementedException();
+            SKPaint paint = new SKPaint() { Color = pen.Color.ToSKColor(), IsAntialias = AA, Style = SKPaintStyle.Stroke };
+            canvas.DrawRect(rect.ToSKRect(), paint);
         }
 
         public void DrawString(string text, Font font, Brush brush, PointF point)
@@ -96,7 +97,8 @@ namespace ScottPlotSkia
 
         public void FillRectangle(Brush brush, RectangleF rect)
         {
-            throw new NotImplementedException();
+            SKPaint paint = new SKPaint() { Color = (brush as SolidBrush).Color.ToSKColor(), IsAntialias = AA };
+            canvas.DrawRect(new SKRect(rect.Left, rect.Top, rect.Right, rect.Bottom), paint);
         }
 
         public void FillRectangle(Brush brush, float x, float y, float widht, float height)
@@ -106,7 +108,7 @@ namespace ScottPlotSkia
 
         public Bitmap GetBitmap()
         {
-            return fakeBitmap;            
+            return fakeBitmap;
         }
 
         public SizeF MeasureString(string text, Font font)
@@ -115,7 +117,7 @@ namespace ScottPlotSkia
         }
 
         public void Resize(int width, int height)
-        {           
+        {
         }
 
         public void SetAntiAlias(bool enabled)
