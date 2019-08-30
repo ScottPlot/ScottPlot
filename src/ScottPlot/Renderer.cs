@@ -18,7 +18,7 @@ namespace ScottPlot
 
         public static void DataBackground(Settings settings)
         {
-            settings.dataBackend.Clear(settings.misc.dataBackgroundColo);                
+            settings.dataBackend.Clear(settings.misc.dataBackgroundColor);                
         }
 
         public static void DataGrid(Settings settings)

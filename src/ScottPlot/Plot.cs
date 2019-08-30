@@ -104,7 +104,7 @@ namespace ScottPlot
                 }
             }
 
-            settings.dataBackend.SetAntiAlias(settings.misc.antiAliasDataa);
+            settings.dataBackend.SetAntiAlias(settings.misc.antiAliasData);
             if (settings.gfxLegend != null)
             {
                 if (settings.legend.antiAlias)
