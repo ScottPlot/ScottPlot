@@ -164,7 +164,7 @@ namespace ScottPlot
                 Size textSize = new Size((int)textSizeF.Width, (int)textSizeF.Height);
                 Point textLocation = new Point(settings.dataSize.Width + settings.dataOrigin.X, settings.dataSize.Height + settings.dataOrigin.Y);
                 textLocation.X -= textSize.Width + debugPadding;
-                textLocation.Y -= textSize.Height + debugPadding;
+                textLocation.Y -= textSize.Height + debugPadding - 20;
                 Rectangle textRect = new Rectangle(textLocation, textSize);
                 settings.gfxFigure.FillRectangle(settings.benchmarkBackgroundBrush, textRect);
                 settings.gfxFigure.DrawRectangle(settings.benchmarkBorderPen, textRect);

@@ -26,7 +26,7 @@ namespace plottable_const
         private void Form1_Load(object sender, EventArgs e)
         {
             //data = ScottPlot.DataGen.RandomWalk(rand, 10_000_000);
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 1; i++)
             {
                 data = ScottPlot.DataGen.Random(rand, 1_000_000);
 
