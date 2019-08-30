@@ -16,7 +16,6 @@ namespace ScottPlotSkia
 {
     public partial class FormsPlotSkia : FormsPlot
     {
-        private bool designMode;
         SKColorType colorType = SKColorType.Rgba8888;
         SkiaBackend skiaBackend;
         GRBackendRenderTarget renderTarget;
@@ -39,14 +38,14 @@ namespace ScottPlotSkia
             Disposed += OnDispose;
 
             glControl1 = new OpenTK.GLControl(new GraphicsMode(new ColorFormat(8, 8, 8, 8), 24, 8, 4));
-            glControl1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));            
-            this.glControl1.Location = new System.Drawing.Point(77, 35);
+            glControl1.BackColor = Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));            
+            this.glControl1.Location = new Point(77, 35);
             this.glControl1.Name = "glControl1";
-            this.glControl1.Size = new System.Drawing.Size(403, 293);
+            this.glControl1.Size = new Size(403, 293);
             this.glControl1.TabIndex = 1;
 
             glControl1.VSync = false;
-            glControl1.Paint += new System.Windows.Forms.PaintEventHandler(this.GlControl1_Paint);
+            glControl1.Paint += new PaintEventHandler(this.GlControl1_Paint);
 
             glControl1.MouseClick += new MouseEventHandler(this.PbPlot_MouseClick);
             glControl1.MouseDoubleClick += new MouseEventHandler(this.PbPlot_MouseDoubleClick);
@@ -58,11 +57,7 @@ namespace ScottPlotSkia
             glControl1.BringToFront();
 
             skiaBackend = new SkiaBackend();
-            plt = new Plot(backendData: skiaBackend);
-            pbPlot.SizeChanged += (o, e) =>
-            {
-                glControl1.SetBounds(plt.GetSettings().dataOrigin.X, plt.GetSettings().dataOrigin.Y, plt.GetSettings().dataSize.Width, plt.GetSettings().dataSize.Height);
-            };          
+            plt = new Plot(backendData: skiaBackend);        
             PbPlot_SizeChanged(null, null);
         }
 
@@ -82,7 +77,7 @@ namespace ScottPlotSkia
                 currentlyRendering = false;
             }
         }
-
+        
         private void GlControl1_Paint(object sender, PaintEventArgs e)
         {
             Control senderControl = (Control)sender;
@@ -90,7 +85,7 @@ namespace ScottPlotSkia
             if (context == null)
             {
                 var glInterface = GRGlInterface.CreateNativeGlInterface();
-                context = GRContext.Create(GRBackend.OpenGL, glInterface);
+                context = GRContext.Create(GRBackend.OpenGL, glInterface);               
             }
 
             if (renderTarget == null || surface == null || renderTarget.Width != senderControl.Width || renderTarget.Height != senderControl.Height)
@@ -105,13 +100,18 @@ namespace ScottPlotSkia
                 surface?.Dispose();
                 surface = SKSurface.Create(context, renderTarget, GRSurfaceOrigin.BottomLeft, SKColorType.Rgba8888);
             }
-
+            
 
             skiaBackend.canvas = surface.Canvas;
             pbPlot.Image = plt.GetBitmap();
 
             surface.Canvas.Flush();
             glControl1.SwapBuffers();
+            if (glControl1.Size != plt.GetSettings().dataSize || glControl1.Location != plt.GetSettings().dataOrigin)
+            {
+                glControl1.SetBounds(plt.GetSettings().dataOrigin.X, plt.GetSettings().dataOrigin.Y, plt.GetSettings().dataSize.Width, plt.GetSettings().dataSize.Height);
+                glControl1.Invalidate();
+            }
         }
     }
 }

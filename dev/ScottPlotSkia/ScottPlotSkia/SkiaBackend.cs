@@ -17,6 +17,7 @@ namespace ScottPlotSkia
         private Bitmap fakeBitmap = new Bitmap(10, 10);
         public SkiaBackend()
         {
+            canvas = new SKCanvas(fakeBitmap.ToSKBitmap());
         }
 
         public void Clear(Color color)
@@ -114,7 +115,7 @@ namespace ScottPlotSkia
         }
 
         public void Resize(int width, int height)
-        {
+        {           
         }
 
         public void SetAntiAlias(bool enabled)
