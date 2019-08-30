@@ -8,59 +8,98 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ScottPlot;
-using OpenGL;
-using System.Diagnostics;
+using SkiaSharp;
+using OpenTK.Graphics.ES30;
 
 namespace ScottPlotSkia
 {
     public partial class FormsPlotSkia : FormsPlot
     {
-        DeviceContext device;
-        INativePBuffer pbuff;
-        IntPtr ctx;
+        private bool designMode;
+        SKColorType colorType = SKColorType.Rgba8888;
         SkiaBackend skiaBackend;
+        GRBackendRenderTarget renderTarget;
+        SKSurface surface;
+        GRContext context;
 
-        private void OnDispose(object sender, EventArgs e)
+        private void OnDispose(Object sender, EventArgs e)
         {
-            skiaBackend?.Dispose();
-            device.DeleteContext(ctx);
-            device?.Dispose();
-            pbuff?.Dispose();
+            renderTarget?.Dispose();
+            surface?.Dispose();
+            context?.Dispose();
         }
         public FormsPlotSkia()
         {
-            if (Process.GetCurrentProcess().ProcessName == "devenv")
-            {
+            if (LicenseManager.UsageMode == LicenseUsageMode.Designtime)
                 return;
-            }
-                InitializeComponent();
+            InitializeComponent();
+            
+            Disposed += OnDispose;
+            
+            glControl1.MouseClick += new MouseEventHandler(this.PbPlot_MouseClick);
+            glControl1.MouseDoubleClick += new MouseEventHandler(this.PbPlot_MouseDoubleClick);
+            glControl1.MouseDown += new MouseEventHandler(this.PbPlot_MouseDown);
+            glControl1.MouseMove += new MouseEventHandler(this.PbPlot_MouseMove);
+            glControl1.MouseUp += new MouseEventHandler(this.PbPlot_MouseUp);
+            glControl1.MouseWheel += PbPlot_MouseWheel;
 
-            OpenGL.Egl.IsRequired = true;
-            string version1 = Gl.GetString(StringName.Version);
-            pbuff = DeviceContext.CreatePBuffer(new DevicePixelFormat(24), 10000, 10000);
-            device = DeviceContext.Create(pbuff);
-            ctx = device.CreateContext(IntPtr.Zero);
-            if (device.MakeCurrent(ctx) == false)
-                throw new InvalidOperationException();
-            // ForDebug
-            var t = OpenGL.Egl.IsAvailable;
-            string version = Gl.GetString(StringName.Version);
+            skiaBackend = new SkiaBackend();
+            plt = new Plot(backendData: skiaBackend);
+            pbPlot.SizeChanged += (o, e) =>
+            {
+                glControl1.SetBounds(plt.GetSettings().dataOrigin.X, plt.GetSettings().dataOrigin.Y, plt.GetSettings().dataSize.Width, plt.GetSettings().dataSize.Height);
+            };
+            PbPlot_SizeChanged(null, null);
+        }
 
-            this.Disposed += OnDispose;
-
-            skiaBackend = new SkiaBackend(800, 600);
-            plt = new Plot(backendData:skiaBackend);
-            SetupMenu();
-            SetupTimers();
-            plt.Style(ScottPlot.Style.Control);
-            pbPlot.MouseWheel += PbPlot_MouseWheel;
-            if (Process.GetCurrentProcess().ProcessName == "devenv")
+        public override void Render(bool skipIfCurrentlyRendering = false, bool lowQuality = false)
+        {
+            if (lastInteractionTimer.Enabled)
+                lastInteractionTimer.Stop();
+            
+            if (!(skipIfCurrentlyRendering && currentlyRendering))
             {
                 
-                Tools.DesignerModeDemoPlot(plt);
-                plt.Title("ScottPlotSkia User Control");
+                currentlyRendering = true;
+                skiaBackend?.SetAntiAlias(!lowQuality);
+                glControl1?.Invalidate();
+                if (plt.mouseTracker.IsDraggingSomething())
+                    Application.DoEvents();
+                currentlyRendering = false;
             }
-            PbPlot_SizeChanged(null, null);
+        }
+
+        private void GlControl1_Paint(object sender, PaintEventArgs e)
+        {
+            Control senderControl = (Control)sender;
+            // create the contexts if not done already
+            if (context == null)
+            {
+                var glInterface = GRGlInterface.CreateNativeGlInterface();
+                context = GRContext.Create(GRBackend.OpenGL, glInterface);
+            }
+
+            if (renderTarget == null || surface == null || renderTarget.Width != senderControl.Width || renderTarget.Height != senderControl.Height)
+            {
+                renderTarget?.Dispose();
+
+
+                GL.GetInteger(GetPName.FramebufferBinding, out var framebuffer);
+                GL.GetInteger(GetPName.StencilBits, out var stencil);
+                var glInfo = new GRGlFramebufferInfo((uint)framebuffer, colorType.ToGlSizedFormat());
+                renderTarget = new GRBackendRenderTarget(senderControl.Width, senderControl.Height, context.GetMaxSurfaceSampleCount(colorType), stencil, glInfo);
+               
+               
+                surface?.Dispose();
+                surface = SKSurface.Create(context, renderTarget, GRSurfaceOrigin.BottomLeft, SKColorType.Rgba8888);
+            }
+
+
+            skiaBackend.canvas = surface.Canvas;
+            pbPlot.Image = plt.GetBitmap();
+
+            surface.Canvas.Flush();
+            glControl1.SwapBuffers();
         }
     }
 }

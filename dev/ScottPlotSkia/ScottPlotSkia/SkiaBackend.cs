@@ -10,41 +10,20 @@ using System.Threading.Tasks;
 
 namespace ScottPlotSkia
 {
-    public class SkiaBackend : IGraphicBackend, IDisposable
+    public class SkiaBackend : IGraphicBackend
     {
-        GRContext context = null;
-        SKSurface surface = null;
-        SKCanvas canvas = null;
-        bool AA = true;
-        public SkiaBackend(int width, int height)
+        public SKCanvas canvas = null;
+        public bool AA = true;
+        private Bitmap fakeBitmap = new Bitmap(10, 10);
+        public SkiaBackend()
         {
-            var info = new SKImageInfo(width, height);
-
-            try
-            {
-                var glInterface = GRGlInterface.CreateNativeAngleInterface();
-                context = GRContext.Create(GRBackend.OpenGL, glInterface);
-            }
-            catch
-            {
-                context = GRContext.Create(GRBackend.OpenGL);
-            }
-
-            surface?.Dispose();
-            surface = SKSurface.Create(context, true, info);
-            canvas = surface.Canvas;
         }
+
         public void Clear(Color color)
         {
             canvas.Clear(color.ToSKColor());
         }
 
-        public void Dispose()
-        {
-            canvas?.Dispose();
-            surface?.Dispose();
-            context?.Dispose();
-        }
 
         public void DrawEllipse(Pen pen, RectangleF rect)
         {
@@ -74,9 +53,8 @@ namespace ScottPlotSkia
             {
                 Color = pen.Color.ToSKColor(),
                 IsAntialias = AA,
-
             };
-            canvas.DrawPoints(SKPointMode.Polygon, linePoints.Select(x => x.ToSKPoint()).ToArray(), paint);
+            canvas.DrawPoints(SKPointMode.Polygon, linePoints.Select(x => new SKPoint(x.X + 0.5f, x.Y + 0.5f)).ToArray(), paint);
         }
 
         public void DrawPolygon(Pen pen, PointF[] curvePoints)
@@ -127,10 +105,7 @@ namespace ScottPlotSkia
 
         public Bitmap GetBitmap()
         {
-            var snapshot = surface.Snapshot();
-            var bitmap = snapshot.ToBitmap();
-            snapshot.Dispose();
-            return bitmap; // must be disposed            
+            return fakeBitmap;            
         }
 
         public SizeF MeasureString(string text, Font font)
@@ -140,14 +115,6 @@ namespace ScottPlotSkia
 
         public void Resize(int width, int height)
         {
-            if (width > 0 && height > 0)
-            {
-                var info = new SKImageInfo(width, height);
-                canvas?.Dispose();
-                surface?.Dispose();
-                surface = SKSurface.Create(context, true, info);
-                canvas = surface.Canvas;
-            }
         }
 
         public void SetAntiAlias(bool enabled)

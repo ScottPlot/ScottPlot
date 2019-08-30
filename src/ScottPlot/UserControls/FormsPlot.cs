@@ -10,8 +10,8 @@ namespace ScottPlot
     {
         public Plot plt = new Plot();
 
-        private bool currentlyRendering = false;
-        private System.Timers.Timer lastInteractionTimer;
+        protected bool currentlyRendering = false;
+        protected System.Timers.Timer lastInteractionTimer;
         ContextMenuStrip rightClickMenu;
 
         public FormsPlot()
@@ -37,7 +37,7 @@ namespace ScottPlot
             lastInteractionTimer.Elapsed += (o, arg) => Render(skipIfCurrentlyRendering: false);
         }
 
-        public void Render(bool skipIfCurrentlyRendering = false, bool lowQuality = false)
+        public virtual void Render(bool skipIfCurrentlyRendering = false, bool lowQuality = false)
         {
             if (lastInteractionTimer.Enabled)
                 lastInteractionTimer.Stop();
@@ -117,14 +117,14 @@ namespace ScottPlot
             Render(skipIfCurrentlyRendering: false);
         }
 
-        private void PbPlot_MouseDown(object sender, MouseEventArgs e)
+        protected void PbPlot_MouseDown(object sender, MouseEventArgs e)
         {
             plt.mouseTracker.MouseDown(e.Location);
             if (plt.mouseTracker.PlottableUnderCursor(e.Location) != null)
                 OnMouseDownOnPlottable(EventArgs.Empty);
         }
 
-        private void PbPlot_MouseMove(object sender, MouseEventArgs e)
+        protected void PbPlot_MouseMove(object sender, MouseEventArgs e)
         {
             plt.mouseTracker.MouseMove(e.Location);
             OnMouseMoved(EventArgs.Empty);
@@ -154,7 +154,7 @@ namespace ScottPlot
             }
         }
 
-        private void PbPlot_MouseUp(object sender, MouseEventArgs e)
+        protected void PbPlot_MouseUp(object sender, MouseEventArgs e)
         {
             if ((!plt.mouseTracker.MouseHasMoved()) && (e.Button == MouseButtons.Right))
             {
@@ -180,7 +180,7 @@ namespace ScottPlot
             plt.mouseTracker.MouseIs(false, false);
         }
 
-        private void PbPlot_MouseClick(object sender, MouseEventArgs e)
+        protected void PbPlot_MouseClick(object sender, MouseEventArgs e)
         {
             OnMouseClicked(e);
             if (e.Button == MouseButtons.Middle)
@@ -191,7 +191,7 @@ namespace ScottPlot
                 plt.mouseTracker.MiddleButtonClicked();
         }
 
-        private void PbPlot_MouseDoubleClick(object sender, MouseEventArgs e)
+        protected void PbPlot_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             plt.Benchmark(toggle: true);
             Render(skipIfCurrentlyRendering: false);
