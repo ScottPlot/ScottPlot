@@ -10,7 +10,7 @@ namespace ScottPlot
 {
     public class GDIbackend : IGraphicBackend
     {
-        private  Bitmap bmp;
+        private Bitmap bmp;
         private Graphics gfx;
         private PixelFormat pixelFormat;
         public GDIbackend(int width, int height, PixelFormat pixelFormat)
@@ -18,7 +18,7 @@ namespace ScottPlot
             this.pixelFormat = pixelFormat;
             bmp = new Bitmap(width, height, pixelFormat);
             gfx = Graphics.FromImage(bmp);
-            
+
         }
 
         public void SetAntiAlias(bool enabled)
@@ -39,7 +39,7 @@ namespace ScottPlot
         {
             return bmp;
         }
-        
+
         public void Resize(int width, int height)
         {
             if (width > 0 && height > 0)
@@ -66,6 +66,14 @@ namespace ScottPlot
         public void DrawLine(Pen pen, float x1, float y1, float x2, float y2)
         {
             gfx.DrawLine(pen, x1, y1, x2, y2);
+        }
+
+        public void FillCircles(Brush brush, PointF[] points, float radius)
+        {
+            foreach (var point in points)
+            {
+                gfx.FillEllipse(brush, point.X - radius / 2, point.Y - radius / 2, radius, radius);
+            }
         }
 
         public void DrawLines(Pen pen, PointF[] linePoints)

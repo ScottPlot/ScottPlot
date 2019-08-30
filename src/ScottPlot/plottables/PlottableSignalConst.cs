@@ -16,7 +16,7 @@ namespace ScottPlot
     // - if source array is changed UpdateTrees() must be called
     // - source array can be change by call updateData(), updating by ranges much faster.
     public class PlottableSignalConst<T> : Plottable where T : struct, IComparable
-    {    
+    {
         // Any changes must be sync with PlottableSignal
         public T[] ys;
         public double sampleRate;
@@ -86,14 +86,14 @@ namespace ScottPlot
                 LineJoin = System.Drawing.Drawing2D.LineJoin.Round
             };
             try // runtime check
-            {               
+            {
                 Convert.ToDouble(new T());
             }
-            catch 
+            catch
             {
                 throw new ArgumentOutOfRangeException("Unsupported data type, provide convertable to double data types");
             }
-            InitExp();         
+            InitExp();
             if (useParallel)
                 UpdateTreesInBackground();
             else
@@ -350,7 +350,7 @@ namespace ScottPlot
         {
             // this function is for when the graph is zoomed so far out its entire display is a single vertical pixel column
             double yMin, yMax;
-            MinMaxRangeQuery(0, ys.Length - 1, out yMin, out yMax);            
+            MinMaxRangeQuery(0, ys.Length - 1, out yMin, out yMax);
             PointF point1 = settings.GetPixel(xOffset, yMin + yOffset);
             PointF point2 = settings.GetPixel(xOffset, yMax + yOffset);
             settings.dataBackend.DrawLine(pen, point1, point2);
@@ -370,9 +370,9 @@ namespace ScottPlot
 
             if (linePoints.Count > 1)
             {
-                settings.dataBackend.DrawLines(pen, linePoints.ToArray());
-                foreach (PointF point in linePoints)
-                    settings.dataBackend.FillEllipse(brush, point.X - markerSize / 2, point.Y - markerSize / 2, markerSize, markerSize);
+                var pointsArray = linePoints.ToArray();
+                settings.dataBackend.DrawLines(pen, pointsArray);
+                settings.dataBackend.FillCircles(brush, pointsArray, markerSize);
             }
         }
 
@@ -443,7 +443,7 @@ namespace ScottPlot
                     index2 = ys.Length - 1;
 
                 // get the min and max value for this column                
-                double lowestValue, highestValue;                
+                double lowestValue, highestValue;
                 MinMaxRangeQuery(index1, index2, out lowestValue, out highestValue);
                 float yPxHigh = settings.GetPixel(0, lowestValue + yOffset).Y;
                 float yPxLow = settings.GetPixel(0, highestValue + yOffset).Y;

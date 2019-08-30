@@ -18,6 +18,7 @@ namespace ScottPlot
         void DrawLine(Pen pen, float x1, float y1, float x2, float y2);
         void DrawLine(Pen pen, PointF start, PointF end);
         void DrawLines(Pen pen, PointF[] linePoints);
+        void FillCircles(Brush brush, PointF[] points, float radius);
         void FillEllipse(Brush brush, float x, float y, float widht, float height);
 
         void FillEllipse(Brush brush, RectangleF rect);

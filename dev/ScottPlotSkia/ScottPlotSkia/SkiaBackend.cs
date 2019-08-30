@@ -25,6 +25,11 @@ namespace ScottPlotSkia
             canvas.Clear(color.ToSKColor());
         }
 
+        public void FillCircles(Brush brush, PointF[] points, float radius)
+        {
+            SKPaint paint = new SKPaint() { Color = (brush as SolidBrush).Color.ToSKColor(), IsAntialias = AA, StrokeWidth = radius, StrokeCap = SKStrokeCap.Round };
+            canvas.DrawPoints(SKPointMode.Points, points.Select(x => x.ToSKPoint()).ToArray(), paint);
+        }
 
         public void DrawEllipse(Pen pen, RectangleF rect)
         {
