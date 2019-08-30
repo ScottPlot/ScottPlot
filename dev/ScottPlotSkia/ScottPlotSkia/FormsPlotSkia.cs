@@ -31,10 +31,14 @@ namespace ScottPlotSkia
         }
         public FormsPlotSkia()
         {
-            if (LicenseManager.UsageMode == LicenseUsageMode.Designtime)
-                return;
             InitializeComponent();
-
+            if (LicenseManager.UsageMode == LicenseUsageMode.Designtime)
+            {
+                Tools.DesignerModeDemoPlot(plt);
+                plt.Style(ScottPlot.Style.Control);
+                base.Render();
+                return;
+            }
             Disposed += OnDispose;
 
             glControl1 = new OpenTK.GLControl(new GraphicsMode(new ColorFormat(8, 8, 8, 8), 24, 8, 4));
@@ -58,6 +62,7 @@ namespace ScottPlotSkia
 
             skiaBackend = new SkiaBackend();
             plt = new Plot(backendData: skiaBackend);
+            plt.Style(ScottPlot.Style.Control);
             PbPlot_SizeChanged(null, null);
         }
 
