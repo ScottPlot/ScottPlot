@@ -156,7 +156,7 @@ namespace ScottPlot
                 int debugPadding = 3;
                 PointF textLocation = new PointF(settings.dataSize.Width + settings.dataOrigin.X, settings.dataSize.Height + settings.dataOrigin.Y);
                 textLocation.X -= settings.benchmark.width + debugPadding;
-                textLocation.Y -= settings.benchmark.height + debugPadding;
+                textLocation.Y -= settings.benchmark.height + debugPadding - 20;
                 RectangleF textRect = new RectangleF(textLocation, settings.benchmark.size);
                 settings.gfxFigure.FillRectangle(new SolidBrush(settings.benchmark.colorBackground), textRect);
                 settings.gfxFigure.DrawRectangle(new Pen(settings.benchmark.colorBorder), Rectangle.Round(textRect));
