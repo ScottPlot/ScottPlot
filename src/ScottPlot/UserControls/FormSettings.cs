@@ -30,32 +30,39 @@ namespace ScottPlot.UserControls
         private void PopualteGuiFromPlot()
         {
             // vertical axis
-            tbYlabel.Text = plt.GetSettings().axisLabelY;
+            tbYlabel.Text = plt.GetSettings().yLabel.text;
             tbY2.Text = Math.Round(plt.Axis()[3], 4).ToString();
             tbY1.Text = Math.Round(plt.Axis()[2], 4).ToString();
-            cbYminor.Checked = plt.GetSettings().displayTicksYminor;
-            cbYdateTime.Checked = plt.GetSettings().tickDateTimeY;
+            cbYminor.Checked = plt.GetSettings().ticks.displayYminor;
+            cbYdateTime.Checked = plt.GetSettings().ticks.timeFormatY;
 
             // horizontal axis
-            tbXlabel.Text = plt.GetSettings().axisLabelX;
+            tbXlabel.Text = plt.GetSettings().xLabel.text;
             tbX2.Text = Math.Round(plt.Axis()[1], 4).ToString();
             tbX1.Text = Math.Round(plt.Axis()[0], 4).ToString();
-            cbXminor.Checked = plt.GetSettings().displayTicksXminor;
-            cbXdateTime.Checked = plt.GetSettings().tickDateTimeX;
+            cbXminor.Checked = plt.GetSettings().ticks.displayXminor;
+            cbXdateTime.Checked = plt.GetSettings().ticks.timeFormatX;
 
             // tick display options
-            cbTicksOffset.Checked = plt.GetSettings().useOffsetNotation;
-            cbTicksMult.Checked = plt.GetSettings().useMultiplierNotation;
+            cbTicksOffset.Checked = plt.GetSettings().ticks.useOffsetNotation;
+            cbTicksMult.Checked = plt.GetSettings().ticks.useMultiplierNotation;
+            cbGrid.Checked = plt.GetSettings().grid.visible;
+
+            // legend
+            cbLegend.Checked = (plt.GetSettings().legend.location == legendLocation.none) ? false : true;
 
             // image quality
-            rbQualityLow.Checked = !plt.GetSettings().antiAliasData;
-            rbQualityHigh.Checked = plt.GetSettings().antiAliasData;
+            rbQualityLow.Checked = !plt.GetSettings().misc.antiAliasData;
+            rbQualityHigh.Checked = plt.GetSettings().misc.antiAliasData;
             cbQualityLowWhileDragging.Checked = plt.mouseTracker.lowQualityWhileInteracting;
 
             // list of plottables
             lbPlotObjects.Items.Clear();
             foreach (var plotObject in plt.GetPlottables())
                 lbPlotObjects.Items.Add(plotObject);
+
+            // list of color styles
+            cbStyle.Items.AddRange(Enum.GetNames(typeof(Style)));
         }
 
         private void BtnFitDataY_Click(object sender, EventArgs e)
@@ -114,17 +121,25 @@ namespace ScottPlot.UserControls
             // tick display options
             plt.Ticks(useOffsetNotation: cbTicksOffset.Checked, useMultiplierNotation: cbTicksMult.Checked);
 
-
             // image quality
             plt.AntiAlias(figure: rbQualityHigh.Checked, data: rbQualityHigh.Checked);
             plt.mouseTracker.lowQualityWhileInteracting = cbQualityLowWhileDragging.Checked;
 
-            this.Close();
+            // misc
+            plt.Grid(enable: cbGrid.Checked);
+            plt.Legend(enableLegend: cbLegend.Checked);
+            if (cbStyle.Text != "")
+            {
+                Style newStyle = (Style)Enum.Parse(typeof(Style), cbStyle.Text);
+                plt.Style(newStyle);
+            }
+
+            Close();
         }
 
         private void BtnCancel_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
     }
 }

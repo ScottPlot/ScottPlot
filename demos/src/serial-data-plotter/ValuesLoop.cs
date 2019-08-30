@@ -53,6 +53,11 @@ namespace serial_data_plotter
             double[] values = new double[parts.Length];
             for (int i = 0; i < parts.Length; i++)
                 double.TryParse(parts[i], out values[i]);
+
+            for (int i = 0; i < parts.Length; i++)
+                if (values[i] > 64000)
+                    values[i] = 0;
+
             Add(values);
         }
     }

@@ -27,9 +27,9 @@ namespace ScottPlot
 
         public bool IsDraggingSomething()
         {
-            if (settings.mouseIsPanning)
+            if (settings.mouse.isPanning)
                 return true;
-            if (settings.mouseIsZooming)
+            if (settings.mouse.isZooming)
                 return true;
             if (plottableBeingDragged != null)
                 return true;
@@ -66,9 +66,9 @@ namespace ScottPlot
 
         public bool MouseHasMoved()
         {
-            if (settings.mouseDownLocation.X != Cursor.Position.X)
+            if (settings.mouse.downLoc.X != Cursor.Position.X)
                 return true;
-            else if (settings.mouseDownLocation.Y != Cursor.Position.Y)
+            else if (settings.mouse.downLoc.Y != Cursor.Position.Y)
                 return true;
             else
                 return false;
@@ -87,7 +87,7 @@ namespace ScottPlot
             }
 
             if (Control.MouseButtons == MouseButtons.Middle)
-                settings.mouseZoomDownLocation = eLocation;
+                settings.mouse.downMiddle = eLocation;
         }
 
         public void MouseMove(System.Windows.Point mousePoint)
@@ -101,9 +101,15 @@ namespace ScottPlot
             if (plottableBeingDragged == null)
             {
                 if ((Control.MouseButtons == MouseButtons.Left) || (Control.MouseButtons == MouseButtons.Right))
+                {
+                    // left-click-dragging or right-click-dragging
                     settings.MouseMoveAxis(Cursor.Position.X, Cursor.Position.Y, ctrlIsDown(), altIsDown());
+                }
                 else if (Control.MouseButtons == MouseButtons.Middle)
+                {
+                    // middlg-click-dragging
                     settings.MouseZoomRectMove(eLocation);
+                }
             }
             else
             {
@@ -142,14 +148,14 @@ namespace ScottPlot
                 plottableBeingDragged = null;
             }
 
-            if (settings.mouseZoomRectangleIsHappening)
+            if (settings.mouse.rectangleIsHappening)
             {
-                int[] xs = new int[] { settings.mouseZoomDownLocation.X, settings.mouseZoomCurrentLocation.X };
-                int[] ys = new int[] { settings.mouseZoomDownLocation.Y, settings.mouseZoomCurrentLocation.Y };
+                int[] xs = new int[] { settings.mouse.downMiddle.X, settings.mouse.currentLoc.X };
+                int[] ys = new int[] { settings.mouse.downMiddle.Y, settings.mouse.currentLoc.Y };
                 var lowerLeft = settings.GetLocation(xs.Min(), ys.Max());
                 var upperRight = settings.GetLocation(xs.Max(), ys.Min());
-                settings.AxisSet(lowerLeft.X, upperRight.X, lowerLeft.Y, upperRight.Y);
-                settings.mouseZoomRectangleIsHappening = false;
+                settings.axes.Set(lowerLeft.X, upperRight.X, lowerLeft.Y, upperRight.Y);
+                settings.mouse.rectangleIsHappening = false;
             }
         }
 
@@ -188,7 +194,7 @@ namespace ScottPlot
             int x1 = settings.dataOrigin.X;
             int x2 = x1 + settings.dataSize.Width;
             int y1 = settings.dataOrigin.Y + settings.dataSize.Height;
-            int y2 = y1 + (int)settings.tickCollectionY.maxLabelSize.Height;
+            int y2 = y1 + (int)settings.ticks.y.maxLabelSize.Height;
             if ((loc.X < x1) || (loc.X > x2))
                 return false;
             if ((loc.Y < y1) || (loc.Y > y2))
@@ -198,7 +204,7 @@ namespace ScottPlot
 
         public bool MouseIsOverVerticalAxis(Point loc)
         {
-            int x1 = settings.dataOrigin.X - (int)settings.tickCollectionY.maxLabelSize.Width;
+            int x1 = settings.dataOrigin.X - (int)settings.ticks.y.maxLabelSize.Width;
             int x2 = settings.dataOrigin.X;
             int y1 = settings.dataOrigin.Y;
             int y2 = settings.dataOrigin.Y + settings.dataSize.Height;
@@ -224,14 +230,14 @@ namespace ScottPlot
 
         public void MiddleButtonClicked()
         {
-            if (!settings.mouseZoomRectangleIsHappening)
+            if (!settings.mouse.rectangleIsHappening)
                 settings.AxisAuto();
         }
 
         public void MouseIs(bool panning, bool zooming)
         {
-            settings.mouseIsPanning = panning;
-            settings.mouseIsZooming = zooming;
+            settings.mouse.isPanning = panning;
+            settings.mouse.isZooming = zooming;
         }
     }
 }

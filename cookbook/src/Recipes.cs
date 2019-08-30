@@ -343,6 +343,27 @@ namespace ScottPlotCookbook
             return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
+        public string Figure_12_Date_Axis()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            Random rand = new Random(0);
+            double[] price = ScottPlot.DataGen.RandomWalk(rand, 60 * 8);
+            DateTime start = new DateTime(2019, 08, 25, 8, 30, 00);
+            double pointsPerDay = 24 * 60; // one point per minute
+
+            var plt = new ScottPlot.Plot(width, height);
+            plt.PlotSignal(price, sampleRate: pointsPerDay, xOffset: start.ToOADate());
+            plt.Ticks(dateTimeX: true);
+            plt.YLabel("Price");
+            plt.XLabel("Date and Time");
+
+            plt.SaveFig(fileName);
+            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
+        }
+
         #endregion
 
         public string Figure_20_Small_Plot()
@@ -432,7 +453,6 @@ namespace ScottPlotCookbook
             plt.Frame(drawFrame: false);
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
-            plt.TightenLayout(padding: 0);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
             return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
@@ -515,6 +535,31 @@ namespace ScottPlotCookbook
             return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
+        public string Figure_28b_Multiplier_Notation_Default()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            var plt = new ScottPlot.Plot(width, height);
+            plt.PlotSignal(tenMillionPoints);
+            plt.SaveFig(fileName);
+            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
+        }
+
+        public string Figure_28c_Multiplier_Notation_Disabled()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            var plt = new ScottPlot.Plot(width, height);
+            plt.PlotSignal(tenMillionPoints);
+            plt.Ticks(useMultiplierNotation: false); // <-- THIS
+            plt.SaveFig(fileName);
+            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
+        }
+
         public string Figure_29_Very_Large_Images()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
@@ -576,7 +621,6 @@ namespace ScottPlotCookbook
             var plt = new ScottPlot.Plot(width, height);
             plt.Title("Displaying 10 million points with PlotSignalConst()");
             plt.Benchmark();
-            plt.Parallel(false);
             plt.PlotSignalConst(tenMillionPoints, sampleRate: 20_000);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");

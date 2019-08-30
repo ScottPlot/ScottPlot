@@ -197,9 +197,9 @@ namespace ScottPlot
         public override void Render(Settings settings)
         {
             double dataSpanUnits = ys.Length * samplePeriod;
-            double columnSpanUnits = settings.xAxisSpan / settings.dataSize.Width;
+            double columnSpanUnits = settings.axes.x.span / settings.dataSize.Width;
             double columnPointCount = (columnSpanUnits / dataSpanUnits) * ys.Length;
-            double offsetUnits = settings.axis[0] - xOffset;
+            double offsetUnits = settings.axes.x.min - xOffset;
             double offsetPoints = offsetUnits / samplePeriod;
             int visibleIndex1 = (int)(offsetPoints);
             int visibleIndex2 = (int)(offsetPoints + columnPointCount * (settings.dataSize.Width + 1));

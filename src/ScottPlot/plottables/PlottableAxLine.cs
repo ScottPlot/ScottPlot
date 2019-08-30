@@ -73,13 +73,13 @@ namespace ScottPlot
 
             if (vertical)
             {
-                pt1 = settings.GetPixel(position, settings.axis[2]);
-                pt2 = settings.GetPixel(position, settings.axis[3]);
+                pt1 = settings.GetPixel(position, settings.axes.y.min);
+                pt2 = settings.GetPixel(position, settings.axes.y.max);
             }
             else
             {
-                pt1 = settings.GetPixel(settings.axis[0], position);
-                pt2 = settings.GetPixel(settings.axis[1], position);
+                pt1 = settings.GetPixel(settings.axes.x.min, position);
+                pt2 = settings.GetPixel(settings.axes.x.max, position);
             }
 
             settings.dataBackend.DrawLine(pen, pt1, pt2);

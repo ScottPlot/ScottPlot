@@ -22,6 +22,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -48,6 +50,16 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config\Axes.cs" />
+    <Compile Include="Config\Benchmark.cs" />
+    <Compile Include="Config\Axis.cs" />
+    <Compile Include="Config\Grid.cs" />
+    <Compile Include="Config\Layout.cs" />
+    <Compile Include="Config\Legend.cs" />
+    <Compile Include="Config\Misc.cs" />
+    <Compile Include="Config\Colors.cs" />
+    <Compile Include="Config\Mouse.cs" />
+    <Compile Include="Config\Ticks.cs" />
     <Compile Include="DataGen.cs" />
     <Compile Include="GDIbackend.cs" />
     <Compile Include="Histogram.cs" />
@@ -66,6 +78,7 @@
     <Compile Include="Plottables\PlottableSignal.cs" />
     <Compile Include="Plottables\PlottableText.cs" />
     <Compile Include="Renderer.cs" />
+    <Compile Include="Config\TextLabel.cs" />
     <Compile Include="UserControls\FormHelp.cs">
       <SubType>Form</SubType>
     </Compile>

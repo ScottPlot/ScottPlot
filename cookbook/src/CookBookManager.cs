@@ -44,6 +44,7 @@ namespace ScottPlotCookbook
             hashes.Add(recipies.Figure_09_Clearing_Plots());
             hashes.Add(recipies.Figure_10_Modifying_Plotted_Data());
             hashes.Add(recipies.Figure_11_Modify_Styles_After_Plotting());
+            hashes.Add(recipies.Figure_12_Date_Axis());
 
             hashes.Add(recipies.Figure_20_Small_Plot());
             hashes.Add(recipies.Figure_21a_Title_and_Axis_Labels());
@@ -55,10 +56,12 @@ namespace ScottPlotCookbook
             hashes.Add(recipies.Figure_26_Horizontal_Ticks_Only());
             hashes.Add(recipies.Figure_27_Very_Large_Numbers());
             hashes.Add(recipies.Figure_28_Axis_Exponent_And_Offset());
+            hashes.Add(recipies.Figure_28b_Multiplier_Notation_Default());
+            hashes.Add(recipies.Figure_28c_Multiplier_Notation_Disabled());
             hashes.Add(recipies.Figure_29_Very_Large_Images());
 
             hashes.Add(recipies.Figure_30a_Signal());
-            hashes.Add(recipies.Figure_30b_Signal_With_Parallel_Processing());
+            //hashes.Add(recipies.Figure_30b_Signal_With_Parallel_Processing());
             hashes.Add(recipies.Figure_30c_SignalConst());
             //hashes.Add(recipies.Figure_30d_SignalConst_One_Billion_Points()); // SLOW!
             hashes.Add(recipies.Figure_32_Signal_Styling());

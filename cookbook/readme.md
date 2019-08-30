@@ -249,6 +249,25 @@ plt.SaveFig(fileName);
 
 ![](./images/11_Modify_Styles_After_Plotting.png)
 
+## Date Axis
+
+```cs
+Random rand = new Random(0);
+double[] price = ScottPlot.DataGen.RandomWalk(rand, 60 * 8);
+DateTime start = new DateTime(2019, 08, 25, 8, 30, 00);
+double pointsPerDay = 24 * 60; // one point per minute
+
+var plt = new ScottPlot.Plot(600, 400);
+plt.PlotSignal(price, sampleRate: pointsPerDay, xOffset: start.ToOADate());
+plt.Ticks(dateTimeX: true);
+plt.YLabel("Price");
+plt.XLabel("Date and Time");
+
+plt.SaveFig(fileName);
+```
+
+![](./images/12_Date_Axis.png)
+
 ## Small Plot
 
 ```cs
@@ -326,7 +345,6 @@ plt.Ticks(displayTicksX: false, displayTicksY: false);
 plt.Frame(drawFrame: false);
 plt.PlotScatter(dataXs, dataSin);
 plt.PlotScatter(dataXs, dataCos);
-plt.TightenLayout(padding: 0);
 plt.SaveFig(fileName);
 ```
 
@@ -399,6 +417,27 @@ plt.SaveFig(fileName);
 
 ![](./images/28_Axis_Exponent_And_Offset.png)
 
+##  Multiplier Notation Default
+
+```cs
+var plt = new ScottPlot.Plot(600, 400);
+plt.PlotSignal(tenMillionPoints);
+plt.SaveFig(fileName);
+```
+
+![](./images/28b_Multiplier_Notation_Default.png)
+
+##  Multiplier Notation Disabled
+
+```cs
+var plt = new ScottPlot.Plot(600, 400);
+plt.PlotSignal(tenMillionPoints);
+plt.Ticks(useMultiplierNotation: false); // <-- THIS
+plt.SaveFig(fileName);
+```
+
+![](./images/28c_Multiplier_Notation_Disabled.png)
+
 ## Very Large Images
 
 ```cs
@@ -425,22 +464,6 @@ plt.SaveFig(fileName);
 
 ![](./images/30a_Signal.png)
 
-##  Signal With Parallel Processing
-
-```cs
-// PlotSignal() can get a speed boost using parallel processing.
-// this isn't extensively tested yet, so use this feature at your own risk.
-
-var plt = new ScottPlot.Plot(600, 400);
-plt.Title("Displaying 10 million points with PlotSignal() + parallel");
-plt.Benchmark();
-plt.Parallel(true);
-plt.PlotSignal(tenMillionPoints, sampleRate: 20_000);
-plt.SaveFig(fileName);
-```
-
-![](./images/30b_Signal_With_Parallel_Processing.png)
-
 ##  SignalConst
 
 ```cs
@@ -452,7 +475,6 @@ plt.SaveFig(fileName);
 var plt = new ScottPlot.Plot(600, 400);
 plt.Title("Displaying 10 million points with PlotSignalConst()");
 plt.Benchmark();
-plt.Parallel(false);
 plt.PlotSignalConst(tenMillionPoints, sampleRate: 20_000);
 plt.SaveFig(fileName);
 ```

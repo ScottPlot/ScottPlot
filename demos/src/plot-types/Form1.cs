@@ -18,6 +18,10 @@ namespace ScottPlotDemo
         public Form1()
         {
             InitializeComponent();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
             SetLabels();
             StyleLight();
 
@@ -181,6 +185,5 @@ namespace ScottPlotDemo
         {
             PlotSignalRandomWalk(10_000_000);
         }
-
     }
 }
