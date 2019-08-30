@@ -18,12 +18,6 @@ namespace ScottPlot
         private readonly Settings settings;
         public readonly MouseTracker mouseTracker;
 
-        protected Plot(Settings settings) // for setting readonly field
-        {
-            this.settings = settings;
-            mouseTracker = new MouseTracker(settings);
-        }
-
         public Plot(int width = 800, int height = 600, IGraphicBackend backendData = null)
         {
             if (width <= 0 || height <= 0)
@@ -58,8 +52,8 @@ namespace ScottPlot
                 width = 1;
             if (height < 1)
                 height = 1;
-                      
-            settings.Resize((int)width, (int)height);            
+
+            settings.Resize((int)width, (int)height);
             InitializeBitmaps();
         }
 
@@ -733,7 +727,7 @@ namespace ScottPlot
             bool? bold = null
             )
         {
-            
+
             settings.title.text = title ?? settings.title.text;
             settings.title.visible = enable ?? settings.title.visible;
             settings.title.fontName = fontName ?? settings.title.fontName;
@@ -767,7 +761,7 @@ namespace ScottPlot
             string yLabel = null,
             bool? enable = null,
             string fontName = null,
-            float? fontSize = null, 
+            float? fontSize = null,
             Color? color = null,
             bool? bold = null
             )
