@@ -103,7 +103,7 @@ namespace ScottPlotSkia
             
 
             skiaBackend.canvas = surface.Canvas;
-            pbPlot.Image = plt.GetBitmap();
+            pbPlot.Image = plt.GetBitmap(true, !skiaBackend.AA);
 
             surface.Canvas.Flush();
             glControl1.SwapBuffers();
