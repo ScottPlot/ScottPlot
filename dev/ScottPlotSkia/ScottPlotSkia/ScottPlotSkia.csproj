@@ -72,6 +72,7 @@
       <DependentUpon>FormsPlotSkia.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SkaiExtensions.cs" />
     <Compile Include="SkiaBackend.cs" />
   </ItemGroup>
   <ItemGroup>

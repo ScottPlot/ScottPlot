@@ -39,8 +39,7 @@ namespace ScottPlotSkia
         // uses for drawing grid lines so only pen.Color can be used
         public void DrawLine(Pen pen, int x1, int y1, int x2, int y2)
         {
-            using (var paint = new SKPaint() { Color = pen.Color.ToSKColor(), IsAntialias = AA })
-                canvas.DrawLine((float)x1, (float)y1, (float)x2, (float)y2, paint);
+            canvas.DrawLine((float)x1, (float)y1, (float)x2, (float)y2, pen.ToSKPaint(AA));
         }
 
         public void DrawLine(Pen pen, PointF start, PointF end)
@@ -55,12 +54,7 @@ namespace ScottPlotSkia
 
         public void DrawLines(Pen pen, PointF[] linePoints)
         {
-            var paint = new SKPaint()
-            {
-                Color = pen.Color.ToSKColor(),
-                IsAntialias = AA,
-            };
-            canvas.DrawPoints(SKPointMode.Polygon, linePoints.Select(x => new SKPoint(x.X + 0.5f, x.Y + 0.5f)).ToArray(), paint);
+            canvas.DrawPoints(SKPointMode.Polygon, linePoints.Select(x => new SKPoint(x.X + 0.5f, x.Y + 0.5f)).ToArray(), pen.ToSKPaint(AA));
         }
 
         public void DrawPolygon(Pen pen, PointF[] curvePoints)
@@ -86,8 +80,7 @@ namespace ScottPlotSkia
 
         public void FillEllipse(Brush brush, float x, float y, float widht, float height)
         {
-            SKPaint paint = new SKPaint() { Color = (brush as SolidBrush).Color.ToSKColor(), IsAntialias = AA };
-            canvas.DrawOval(SKRect.Create(x, y, widht, height), paint);
+            canvas.DrawOval(SKRect.Create(x, y, widht, height), brush.ToSKPaint());
         }
 
         public void FillEllipse(Brush brush, RectangleF rect)
@@ -102,8 +95,7 @@ namespace ScottPlotSkia
 
         public void FillRectangle(Brush brush, RectangleF rect)
         {
-            SKPaint paint = new SKPaint() { Color = (brush as SolidBrush).Color.ToSKColor(), IsAntialias = AA };
-            canvas.DrawRect(new SKRect(rect.Left, rect.Top, rect.Right, rect.Bottom), paint);
+            canvas.DrawRect(new SKRect(rect.Left, rect.Top, rect.Right, rect.Bottom), brush.ToSKPaint(AA));
         }
 
         public void FillRectangle(Brush brush, float x, float y, float widht, float height)
