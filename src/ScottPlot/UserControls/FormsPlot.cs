@@ -149,7 +149,10 @@ namespace ScottPlot
 
             if (e.Button != MouseButtons.None)
             {
-                Render(skipIfCurrentlyRendering: true, lowQuality: plt.mouseTracker.lowQualityWhileInteracting);
+                bool skipIfBusy = true;
+                if (e.Button == MouseButtons.Middle)
+                    skipIfBusy = false;
+                Render(skipIfCurrentlyRendering: skipIfBusy, lowQuality: plt.mouseTracker.lowQualityWhileInteracting);
                 OnMouseDragged(EventArgs.Empty);
             }
         }
