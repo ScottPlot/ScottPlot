@@ -29,8 +29,8 @@ namespace ScottPlotCookbook
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
-            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin);
@@ -47,8 +47,8 @@ namespace ScottPlotCookbook
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
-            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin);
@@ -66,8 +66,8 @@ namespace ScottPlotCookbook
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
-            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin);
@@ -85,8 +85,8 @@ namespace ScottPlotCookbook
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
-            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin);
@@ -104,8 +104,8 @@ namespace ScottPlotCookbook
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
-            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin, label: "first");
@@ -123,8 +123,8 @@ namespace ScottPlotCookbook
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
-            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin, label: "sin", markerShape: ScottPlot.MarkerShape.openCircle);
@@ -142,8 +142,8 @@ namespace ScottPlotCookbook
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
-            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.Title("ScottPlot Marker Shapes");
@@ -172,8 +172,8 @@ namespace ScottPlotCookbook
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
-            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin, color: Color.Magenta, lineWidth: 0, markerSize: 10);
@@ -289,8 +289,8 @@ namespace ScottPlotCookbook
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
-            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin);
@@ -309,8 +309,8 @@ namespace ScottPlotCookbook
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
-            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin);
@@ -331,8 +331,8 @@ namespace ScottPlotCookbook
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
-            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             Random rand = new Random(0);
             double[] dataRandom1 = ScottPlot.DataGen.RandomNormal(rand, pointCount, 1);
@@ -355,8 +355,8 @@ namespace ScottPlotCookbook
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
-            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin);
@@ -384,8 +384,8 @@ namespace ScottPlotCookbook
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
-            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot(width, height);
 
@@ -432,8 +432,8 @@ namespace ScottPlotCookbook
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
-            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot(200, 150);
             plt.PlotScatter(dataXs, dataSin);
@@ -450,8 +450,8 @@ namespace ScottPlotCookbook
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
-            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin);
@@ -473,8 +473,8 @@ namespace ScottPlotCookbook
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
-            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin);
@@ -498,8 +498,8 @@ namespace ScottPlotCookbook
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
-            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot(width, height);
             Color figureBgColor = ColorTranslator.FromHtml("#001021");
@@ -524,8 +524,8 @@ namespace ScottPlotCookbook
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
-            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot(width, height);
             Color figureBgColor = ColorTranslator.FromHtml("#001021");
@@ -548,8 +548,8 @@ namespace ScottPlotCookbook
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
-            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin);
@@ -567,8 +567,8 @@ namespace ScottPlotCookbook
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
-            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin);
@@ -587,8 +587,8 @@ namespace ScottPlotCookbook
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
-            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin);
@@ -669,8 +669,8 @@ namespace ScottPlotCookbook
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
-            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot(2000, 1000);
             plt.PlotScatter(dataXs, dataSin);
@@ -779,8 +779,8 @@ namespace ScottPlotCookbook
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
-            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin);
@@ -799,8 +799,8 @@ namespace ScottPlotCookbook
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
-            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot(width, height);
 
@@ -834,8 +834,8 @@ namespace ScottPlotCookbook
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
-            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin, label: "sin");
@@ -857,8 +857,8 @@ namespace ScottPlotCookbook
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
-            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin, label: "sin");
@@ -880,8 +880,8 @@ namespace ScottPlotCookbook
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
-            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin, label: "sin");
@@ -903,8 +903,8 @@ namespace ScottPlotCookbook
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
-            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin, label: "sin");
@@ -926,8 +926,8 @@ namespace ScottPlotCookbook
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
-            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin, label: "sin");
@@ -949,8 +949,8 @@ namespace ScottPlotCookbook
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
-            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin, label: "sin");
@@ -972,8 +972,8 @@ namespace ScottPlotCookbook
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
-            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin, label: "sin");
@@ -995,8 +995,8 @@ namespace ScottPlotCookbook
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
-            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin, label: "sin");
@@ -1018,8 +1018,8 @@ namespace ScottPlotCookbook
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
-            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin, label: "sin");
@@ -1041,8 +1041,8 @@ namespace ScottPlotCookbook
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
-            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin, label: "sin");
@@ -1108,8 +1108,8 @@ namespace ScottPlotCookbook
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
-            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             // create demo data to use for errorbars
             double[] yErr = new double[dataSin.Length];
@@ -1166,8 +1166,8 @@ namespace ScottPlotCookbook
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
-            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotStep(dataXs, dataSin);
@@ -1184,8 +1184,8 @@ namespace ScottPlotCookbook
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
-            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin);
@@ -1285,7 +1285,7 @@ namespace ScottPlotCookbook
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin);
@@ -1301,7 +1301,7 @@ namespace ScottPlotCookbook
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
 
             int pointCount = 50;
-            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotSignal(dataCos, sampleRate: 20_000);
@@ -1318,8 +1318,8 @@ namespace ScottPlotCookbook
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
-            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.Title("Impressive Graph", fontName: "courier new", fontSize: 24, color: Color.Purple, bold: true);
