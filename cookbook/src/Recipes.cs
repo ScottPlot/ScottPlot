@@ -20,52 +20,17 @@ namespace ScottPlotCookbook
             this.outputFolderName = outputFolderName;
             this.width = width;
             this.height = height;
-            PrepareDataSmall();
-            oneMillionPoints = ScottPlot.DataGen.SinSweep(1_000_000, 8);
-            tenMillionPoints = ScottPlot.DataGen.SinSweep(10_000_000, 8);
         }
-
-        // small data
-        double[] dataXs;
-        double[] dataSin;
-        double[] dataCos;
-        double[] dataRandom1;
-        double[] dataRandom2;
-        double[] dataRandom3;
-        double[] dataRandom4;
-
-        // large data
-        double[] oneMillionPoints;
-        double[] tenMillionPoints;
-
-        private void PrepareDataSmall(int pointCount = 50)
-        {
-            dataXs = new double[pointCount];
-            dataSin = new double[pointCount];
-            dataCos = new double[pointCount];
-            dataRandom1 = new double[pointCount];
-            dataRandom2 = new double[pointCount];
-            dataRandom3 = new double[pointCount];
-            dataRandom4 = new double[pointCount];
-
-            for (int i = 0; i < pointCount; i++)
-            {
-                dataXs[i] = i;
-                dataSin[i] = Math.Sin(i * 2 * Math.PI / pointCount);
-                dataCos[i] = Math.Cos(i * 2 * Math.PI / pointCount);
-                dataRandom1[i] = rand.NextDouble() * 100 - 50;
-                dataRandom2[i] = rand.NextDouble() * 100 - 50;
-                dataRandom3[i] = rand.NextDouble() * 100;
-                dataRandom4[i] = rand.NextDouble() * 100;
-            }
-        }
-
-        #region plot types
 
         public string Figure_01a_Scatter_Sin()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin);
@@ -79,6 +44,11 @@ namespace ScottPlotCookbook
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin);
@@ -94,6 +64,11 @@ namespace ScottPlotCookbook
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
 
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
@@ -107,6 +82,11 @@ namespace ScottPlotCookbook
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin);
@@ -122,6 +102,11 @@ namespace ScottPlotCookbook
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
 
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin, label: "first");
             plt.PlotScatter(dataXs, dataCos, label: "second");
@@ -135,6 +120,11 @@ namespace ScottPlotCookbook
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin, label: "sin", markerShape: ScottPlot.MarkerShape.openCircle);
@@ -150,6 +140,11 @@ namespace ScottPlotCookbook
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
 
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+
             var plt = new ScottPlot.Plot(width, height);
             plt.Title("ScottPlot Marker Shapes");
             plt.Grid(false);
@@ -159,7 +154,7 @@ namespace ScottPlotCookbook
             for (int i = 0; i < markerShapeNames.Length; i++)
             {
                 string markerShapeName = markerShapeNames[i];
-                var markerShape = (ScottPlot.MarkerShape)System.Enum.Parse(typeof(ScottPlot.MarkerShape), markerShapeName);
+                var markerShape = (ScottPlot.MarkerShape)Enum.Parse(typeof(ScottPlot.MarkerShape), markerShapeName);
                 double[] stackedSin = ScottPlot.DataGen.Sin(dataXs.Length, 2, -i);
                 plt.PlotScatter(dataXs, stackedSin, label: markerShapeName, markerShape: markerShape);
             }
@@ -175,6 +170,11 @@ namespace ScottPlotCookbook
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
 
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin, color: Color.Magenta, lineWidth: 0, markerSize: 10);
             plt.PlotScatter(dataXs, dataCos, color: Color.Green, lineWidth: 5, markerSize: 0);
@@ -189,6 +189,11 @@ namespace ScottPlotCookbook
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
 
+            Random rand = new Random(0);
+            int pointCount = 50;
+            double[] dataRandom1 = ScottPlot.DataGen.RandomNormal(rand, pointCount);
+            double[] dataRandom2 = ScottPlot.DataGen.RandomNormal(rand, pointCount);
+
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataRandom1, dataRandom2);
             plt.SaveFig(fileName);
@@ -200,6 +205,13 @@ namespace ScottPlotCookbook
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            Random rand = new Random(0);
+            int pointCount = 50;
+            double[] dataRandom1 = ScottPlot.DataGen.RandomNormal(rand, pointCount, 1);
+            double[] dataRandom2 = ScottPlot.DataGen.RandomNormal(rand, pointCount, 2);
+            double[] dataRandom3 = ScottPlot.DataGen.RandomNormal(rand, pointCount, 3);
+            double[] dataRandom4 = ScottPlot.DataGen.RandomNormal(rand, pointCount, 4);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataRandom1, dataRandom2, markerSize: 0);
@@ -214,6 +226,13 @@ namespace ScottPlotCookbook
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
 
+            Random rand = new Random(0);
+            int pointCount = 50;
+            double[] dataRandom1 = ScottPlot.DataGen.RandomNormal(rand, pointCount, 1);
+            double[] dataRandom2 = ScottPlot.DataGen.RandomNormal(rand, pointCount, 2);
+            double[] dataRandom3 = ScottPlot.DataGen.RandomNormal(rand, pointCount, 3);
+            double[] dataRandom4 = ScottPlot.DataGen.RandomNormal(rand, pointCount, 4);
+
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataRandom1, dataRandom2, lineWidth: 0);
             plt.PlotScatter(dataRandom3, dataRandom4, lineWidth: 0);
@@ -227,6 +246,13 @@ namespace ScottPlotCookbook
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
 
+            Random rand = new Random(0);
+            int pointCount = 50;
+            double[] dataRandom1 = ScottPlot.DataGen.RandomNormal(rand, pointCount, 1);
+            double[] dataRandom2 = ScottPlot.DataGen.RandomNormal(rand, pointCount, 2);
+            double[] dataRandom3 = ScottPlot.DataGen.RandomNormal(rand, pointCount, 3);
+            double[] dataRandom4 = ScottPlot.DataGen.RandomNormal(rand, pointCount, 4);
+
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataRandom1, dataRandom2, color: Color.Magenta, lineWidth: 3, markerSize: 15);
             plt.PlotScatter(dataRandom3, dataRandom4, color: Color.Green, lineWidth: 3, markerSize: 15);
@@ -239,6 +265,13 @@ namespace ScottPlotCookbook
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            Random rand = new Random(0);
+            int pointCount = 50;
+            double[] dataRandom1 = ScottPlot.DataGen.RandomNormal(rand, pointCount, 1);
+            double[] dataRandom2 = ScottPlot.DataGen.RandomNormal(rand, pointCount, 2);
+            double[] dataRandom3 = ScottPlot.DataGen.RandomNormal(rand, pointCount, 3);
+            double[] dataRandom4 = ScottPlot.DataGen.RandomNormal(rand, pointCount, 4);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataRandom1, dataRandom2, label: "dash", lineStyle: ScottPlot.LineStyle.Dash);
@@ -254,6 +287,11 @@ namespace ScottPlotCookbook
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
 
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
@@ -268,6 +306,11 @@ namespace ScottPlotCookbook
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin);
@@ -286,11 +329,20 @@ namespace ScottPlotCookbook
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
 
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+
+            Random rand = new Random(0);
+            double[] dataRandom1 = ScottPlot.DataGen.RandomNormal(rand, pointCount, 1);
+            double[] dataRandom2 = ScottPlot.DataGen.RandomNormal(rand, pointCount, 2);
+
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
             plt.Clear();
-            plt.PlotScatter(dataRandom3, dataRandom4);
+            plt.PlotScatter(dataRandom1, dataRandom2);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
             return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
@@ -300,6 +352,11 @@ namespace ScottPlotCookbook
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin);
@@ -317,7 +374,6 @@ namespace ScottPlotCookbook
 
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
-            PrepareDataSmall(); // hide
             return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
@@ -325,6 +381,11 @@ namespace ScottPlotCookbook
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
 
             var plt = new ScottPlot.Plot(width, height);
 
@@ -364,12 +425,15 @@ namespace ScottPlotCookbook
             return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
-        #endregion
-
         public string Figure_20_Small_Plot()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
 
             var plt = new ScottPlot.Plot(200, 150);
             plt.PlotScatter(dataXs, dataSin);
@@ -383,6 +447,11 @@ namespace ScottPlotCookbook
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin);
@@ -401,6 +470,11 @@ namespace ScottPlotCookbook
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin);
@@ -422,8 +496,12 @@ namespace ScottPlotCookbook
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
 
-            var plt = new ScottPlot.Plot(width, height);
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
 
+            var plt = new ScottPlot.Plot(width, height);
             Color figureBgColor = ColorTranslator.FromHtml("#001021");
             Color dataBgColor = ColorTranslator.FromHtml("#021d38");
             plt.Style(figBg: figureBgColor, dataBg: dataBgColor);
@@ -444,6 +522,11 @@ namespace ScottPlotCookbook
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
 
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+
             var plt = new ScottPlot.Plot(width, height);
             Color figureBgColor = ColorTranslator.FromHtml("#001021");
             Color dataBgColor = ColorTranslator.FromHtml("#021d38");
@@ -463,6 +546,11 @@ namespace ScottPlotCookbook
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
 
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
@@ -476,6 +564,11 @@ namespace ScottPlotCookbook
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin);
@@ -491,6 +584,11 @@ namespace ScottPlotCookbook
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin);
@@ -540,6 +638,8 @@ namespace ScottPlotCookbook
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
 
+            double[] tenMillionPoints = ScottPlot.DataGen.SinSweep(10_000_000, 8);
+
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotSignal(tenMillionPoints);
             plt.SaveFig(fileName);
@@ -551,6 +651,8 @@ namespace ScottPlotCookbook
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            double[] tenMillionPoints = ScottPlot.DataGen.SinSweep(10_000_000, 8);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotSignal(tenMillionPoints);
@@ -565,6 +667,11 @@ namespace ScottPlotCookbook
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
 
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+
             var plt = new ScottPlot.Plot(2000, 1000);
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
@@ -577,6 +684,8 @@ namespace ScottPlotCookbook
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            double[] tenMillionPoints = ScottPlot.DataGen.SinSweep(10_000_000, 8);
 
             // PlotSignal() is much faster than PlotScatter() for large arrays of evenly-spaed data.
             // To plot more than 2GB of data, enable "gcAllowVeryLargeObjects" in App.config (Google it)
@@ -595,6 +704,8 @@ namespace ScottPlotCookbook
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
 
+            double[] tenMillionPoints = ScottPlot.DataGen.SinSweep(10_000_000, 8);
+
             // PlotSignal() can get a speed boost using parallel processing.
             // this isn't extensively tested yet, so use this feature at your own risk.
 
@@ -612,6 +723,8 @@ namespace ScottPlotCookbook
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            double[] tenMillionPoints = ScottPlot.DataGen.SinSweep(10_000_000, 8);
 
             // SignalConst() is faster than PlotSignal() for very large data plots
             // - its data cannot be modified after it is loaded
@@ -650,8 +763,10 @@ namespace ScottPlotCookbook
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
 
+            double[] tenMillionPoints = ScottPlot.DataGen.SinSweep(10_000_000, 8);
+
             var plt = new ScottPlot.Plot(width, height);
-            plt.PlotSignal(oneMillionPoints, 20000, lineWidth: 3, color: Color.Red);
+            plt.PlotSignal(tenMillionPoints, 20000, lineWidth: 3, color: Color.Red);
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
             return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
@@ -661,6 +776,11 @@ namespace ScottPlotCookbook
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin);
@@ -676,6 +796,11 @@ namespace ScottPlotCookbook
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
 
             var plt = new ScottPlot.Plot(width, height);
 
@@ -707,6 +832,11 @@ namespace ScottPlotCookbook
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
 
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin, label: "sin");
             plt.PlotScatter(dataXs, dataCos, label: "cos");
@@ -724,6 +854,11 @@ namespace ScottPlotCookbook
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin, label: "sin");
@@ -743,6 +878,11 @@ namespace ScottPlotCookbook
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
 
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin, label: "sin");
             plt.PlotScatter(dataXs, dataCos, label: "cos");
@@ -760,6 +900,11 @@ namespace ScottPlotCookbook
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin, label: "sin");
@@ -779,6 +924,11 @@ namespace ScottPlotCookbook
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
 
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin, label: "sin");
             plt.PlotScatter(dataXs, dataCos, label: "cos");
@@ -796,6 +946,11 @@ namespace ScottPlotCookbook
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin, label: "sin");
@@ -815,6 +970,11 @@ namespace ScottPlotCookbook
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
 
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin, label: "sin");
             plt.PlotScatter(dataXs, dataCos, label: "cos");
@@ -832,6 +992,11 @@ namespace ScottPlotCookbook
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin, label: "sin");
@@ -851,6 +1016,11 @@ namespace ScottPlotCookbook
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
 
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin, label: "sin");
             plt.PlotScatter(dataXs, dataCos, label: "cos");
@@ -868,6 +1038,11 @@ namespace ScottPlotCookbook
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin, label: "sin");
@@ -931,6 +1106,11 @@ namespace ScottPlotCookbook
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
 
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+
             // create demo data to use for errorbars
             double[] yErr = new double[dataSin.Length];
             for (int i = 0; i < yErr.Length; i++)
@@ -955,7 +1135,6 @@ namespace ScottPlotCookbook
             double[] Xs = new double[pointCount];
             double[] dataA = new double[pointCount];
             double[] errorA = new double[pointCount];
-            double[] XsB = new double[pointCount];
             double[] dataB = new double[pointCount];
             double[] errorB = new double[pointCount];
             for (int i = 0; i < pointCount; i++)
@@ -970,7 +1149,7 @@ namespace ScottPlotCookbook
             var plt = new ScottPlot.Plot(width, height);
             plt.Title("Multiple Bar Plots");
             plt.Grid(false);
-            // we customize barWidth and xOffset to squeeze grouped bars together
+            // customize barWidth and xOffset to squeeze grouped bars together
             plt.PlotBar(Xs, dataA, errorY: errorA, label: "data A", barWidth: 3.2, xOffset: -2);
             plt.PlotBar(Xs, dataB, errorY: errorB, label: "data B", barWidth: 3.2, xOffset: 2);
             plt.Axis(null, null, 0, null);
@@ -985,6 +1164,11 @@ namespace ScottPlotCookbook
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
 
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotStep(dataXs, dataSin);
             plt.PlotStep(dataXs, dataCos);
@@ -997,6 +1181,11 @@ namespace ScottPlotCookbook
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin);
@@ -1094,6 +1283,10 @@ namespace ScottPlotCookbook
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
 
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
+
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin);
             plt.GetPlottables()[0].SaveCSV("scatter.csv");
@@ -1107,6 +1300,9 @@ namespace ScottPlotCookbook
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
 
+            int pointCount = 50;
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
+
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotSignal(dataCos, sampleRate: 20_000);
             plt.GetPlottables()[0].SaveCSV("signal.csv");
@@ -1119,6 +1315,11 @@ namespace ScottPlotCookbook
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount, 2);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount, 2);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.Title("Impressive Graph", fontName: "courier new", fontSize: 24, color: Color.Purple, bold: true);
