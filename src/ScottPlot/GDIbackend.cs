@@ -110,6 +110,10 @@ namespace ScottPlot
         {
             gfx.DrawRectangle(pen, rect);
         }
+        public void DrawRectangles(Pen pen, RectangleF[] rects)
+        {
+            gfx.DrawRectangles(pen, rects);
+        }
 
         public void DrawRectangle(Pen pen, float x, float y, float width, float height)
         {
@@ -134,6 +138,125 @@ namespace ScottPlot
         public SizeF MeasureString(string text, Font font)
         {
             return gfx.MeasureString(text, font);
+        }
+
+        public void DrawMarkers(PointF[] points, MarkerShape shape, float markerSize, Color color)
+        {
+            Pen pen = new Pen(color);
+            Brush brush = new SolidBrush(color);
+            IEnumerable<RectangleF> rects = points.Select(p => new RectangleF(p.X - markerSize / 2, p.Y - markerSize / 2, markerSize, markerSize));
+            switch (shape)
+            {
+                case MarkerShape.filledCircle:
+                    foreach (var rect in rects)
+                        FillEllipse(brush, rect);
+                    break;
+                case MarkerShape.openCircle:
+                    foreach (var rect in rects)
+                        DrawEllipse(pen, rect);
+                    break;
+                case MarkerShape.filledSquare:
+                    foreach (var rect in rects)
+                        FillRectangle(brush, rect);
+                    break;
+                case MarkerShape.openSquare:
+                    DrawRectangles(pen, rects.ToArray());
+                    break;
+                case MarkerShape.filledDiamond:
+                    PointF[] curvePoints =
+                    {
+                        new PointF(0, markerSize /2),
+                        new PointF(-markerSize/2, 0),
+                        new PointF(0, - markerSize/2),
+                        new PointF(markerSize/2, 0)
+                    };
+                    var polys = points.Select(p => curvePoints.Select(cp => new PointF(p.X + cp.X, p.Y + cp.Y)));
+                    foreach (var poly in polys)
+                        FillPolygon(brush, poly.ToArray());
+                    break;
+                case MarkerShape.openDiamond:
+                    PointF[] curvePoints2 =
+                    {
+                        new PointF(0, markerSize /2),
+                        new PointF(-markerSize/2, 0),
+                        new PointF(0, - markerSize/2),
+                        new PointF(markerSize/2, 0)
+                    };
+                    var polys1 = points.Select(p => curvePoints2.Select(cp => new PointF(p.X + cp.X, p.Y + cp.Y)));
+                    foreach (var poly in polys1)
+                        DrawPolygon(pen, poly.ToArray());
+                    break;
+                case MarkerShape.asterisk:
+                    Font drawFont = new Font("CourierNew", markerSize * 3);
+                    SizeF textSize = MeasureString("*", drawFont);
+                    var asteriskPoints = points.Select(p => new PointF(p.X - textSize.Width / 2, p.Y - textSize.Height / 4));
+                    foreach (var aPoint in asteriskPoints)
+                        DrawString("*", drawFont, brush, aPoint);
+                    break;
+                case MarkerShape.hashTag:
+                    Font drawFont2 = new Font("CourierNew", markerSize * 2);
+                    SizeF textSize2 = MeasureString("#", drawFont2);
+                    var asteriskPoints2 = points.Select(p => new PointF(p.X - textSize2.Width / 2, p.Y - textSize2.Height / 3));
+                    foreach (var aPoint in asteriskPoints2)
+                        DrawString("#", drawFont2, brush, aPoint);
+                    break;
+                case MarkerShape.cross:
+                    Font drawFont3 = new Font("CourierNew", markerSize * 2);
+                    SizeF textSize3 = MeasureString("+", drawFont3);
+                    var asteriskPoints3 = points.Select(p => new PointF(p.X - textSize3.Width / (5 / 2), p.Y - textSize3.Height / 2));
+                    foreach (var aPoint in asteriskPoints3)
+                        DrawString("+", drawFont3, brush, aPoint);
+                    break;
+                case MarkerShape.eks:
+                    Font drawFont4 = new Font("CourierNew", markerSize * 2);
+                    SizeF textSize4 = MeasureString("x", drawFont4);
+                    var asteriskPoints4 = points.Select(p => new PointF(p.X - textSize4.Width / (5 / 2), p.Y - textSize4.Height / 2));
+                    foreach (var aPoint in asteriskPoints4)
+                        DrawString("x", drawFont4, brush, aPoint);
+                    break;
+                case MarkerShape.verticalBar:
+                    Font drawFont5 = new Font("CourierNew", markerSize * 2);
+                    SizeF textSize5 = MeasureString("|", drawFont5);
+                    var asteriskPoints5 = points.Select(p => new PointF(p.X - textSize5.Width / (5 / 2), p.Y - textSize5.Height / 2));
+                    foreach (var aPoint in asteriskPoints5)
+                        DrawString("|", drawFont5, brush, aPoint);
+                    break;
+                case MarkerShape.triUp:
+                    // Create points that define polygon.
+                    PointF[] curvePoints3 =
+                    {
+                        new PointF(0,0),
+                        new PointF(0, -markerSize),
+                        new PointF(0, 0),
+                        new PointF(0 - markerSize * 0.866f, markerSize * 0.5f),
+                        new PointF(0,0),
+                        new PointF(0 + markerSize * 0.866f, markerSize * 0.5f)
+                    };
+                    var polys3 = points.Select(p => curvePoints3.Select(cp => new PointF(p.X + cp.X, p.Y + cp.Y)));
+
+                    //Draw polygon to screen
+                    foreach (var poly in polys3)
+                        DrawPolygon(pen, poly.ToArray());
+                    break;
+                case MarkerShape.triDown:
+                    // Create points that define polygon.
+                    PointF[] curvePoints4 =
+                    {
+                        new PointF(0, 0),
+                        new PointF(0, markerSize),
+                        new PointF(0, 0),
+                        new PointF(-markerSize * 0.866f, -markerSize * 0.5f),
+                        new PointF(0, 0),
+                        new PointF(markerSize * 0.866f, -markerSize * 0.5f)
+                    };
+                    var polys4 = points.Select(p => curvePoints4.Select(cp => new PointF(p.X + cp.X, p.Y + cp.Y)));
+                    //Draw polygons to screen
+                    foreach (var poly in polys4)
+                        DrawPolygon(pen, poly.ToArray());
+                    break;
+                default:
+                    throw new NotImplementedException($"unsupported marker type: {shape}");
+            }
         }
     }
 }

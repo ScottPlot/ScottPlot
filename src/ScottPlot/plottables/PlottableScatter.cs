@@ -169,7 +169,7 @@ namespace ScottPlot
                 for (int i = 0; i < points.Length; i++)
                     pointsStep[i * 2] = points[i];
                 for (int i = 0; i < points.Length - 1; i++)
-                    pointsStep[i * 2 + 1] = new PointF(points[i+1].X, points[i].Y);
+                    pointsStep[i * 2 + 1] = new PointF(points[i + 1].X, points[i].Y);
             }
 
             if (errorY != null)
@@ -211,9 +211,7 @@ namespace ScottPlot
             }
 
             if ((markerSize > 0) && (markerShape != MarkerShape.none))
-                for (int i = 0; i < points.Length; i++)
-                    MarkerTools.DrawMarker(settings.dataBackend, points[i], markerShape, markerSize, color);
-
+                settings.dataBackend.DrawMarkers(points, markerShape, markerSize, color);
         }
 
         public override void SaveCSV(string filePath)

@@ -31,5 +31,6 @@ namespace ScottPlot
         void DrawPolygon(Pen pen, PointF[] curvePoints);
         void DrawString(string text, Font font, Brush brush, PointF point);
         SizeF MeasureString(string text, Font font);
+        void DrawMarkers(PointF[] points, MarkerShape shape, float markerSize, Color color);
     }
 }

@@ -80,12 +80,12 @@ namespace ScottPlotSkia
 
         public void FillEllipse(Brush brush, float x, float y, float widht, float height)
         {
-            canvas.DrawOval(SKRect.Create(x, y, widht, height), brush.ToSKPaint());
+            canvas.DrawOval(SKRect.Create(x, y, widht, height), brush.ToSKPaint(AA));
         }
 
         public void FillEllipse(Brush brush, RectangleF rect)
         {
-            throw new NotImplementedException();
+            canvas.DrawOval(rect.ToSKRect(), brush.ToSKPaint(AA));
         }
 
         public void FillPolygon(Brush brush, PointF[] curvePoints)
@@ -120,6 +120,11 @@ namespace ScottPlotSkia
         public void SetAntiAlias(bool enabled)
         {
             AA = enabled;
+        }
+
+        public void DrawMarkers(PointF[] points, MarkerShape shape, float markerSize, Color color)
+        {
+            throw new NotImplementedException();
         }
     }
 }

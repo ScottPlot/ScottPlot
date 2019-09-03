@@ -25,23 +25,27 @@ namespace plottable_const
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //data = ScottPlot.DataGen.RandomWalk(rand, 10_000_000);
-            for (int i = 0; i < 1; i++)
+
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
+
+            var plt = new ScottPlot.Plot(600, 400);
+            plt.Title("ScottPlot Marker Shapes");
+            plt.Grid(false);
+
+            // plot a sine wave for every marker available
+            string[] markerShapeNames = Enum.GetNames(typeof(ScottPlot.MarkerShape));
+            for (int i = 0; i < markerShapeNames.Length; i++)
             {
-                data = ScottPlot.DataGen.Random(rand, 1_000_000);
-
-                signal = formsPlot1.plt.PlotSignalConst(data);
-                formsPlot1.plt.Benchmark();
-                formsPlot1.plt.Axis(0, 1234);
-                formsPlot1.plt.Title("GDK+");
-                formsPlot1.Render();
-
-                signal = formsPlotSkia1.plt.PlotSignalConst(data);
-                formsPlotSkia1.plt.Benchmark();
-                formsPlotSkia1.plt.Axis(0, 1234);
-                formsPlotSkia1.plt.Title("Skia");
-                formsPlotSkia1.Render();
+                string markerShapeName = markerShapeNames[i];
+                var markerShape = (ScottPlot.MarkerShape)Enum.Parse(typeof(ScottPlot.MarkerShape), markerShapeName);
+                double[] stackedSin = ScottPlot.DataGen.Sin(dataXs.Length, 2, -i);
+                formsPlot1.plt.PlotScatter(dataXs, stackedSin, label: markerShapeName, markerShape: markerShape, markerSize: 10);
             }
+
+            formsPlot1.Render();
         }
 
         private void BtnUpdateData_Click(object sender, EventArgs e)

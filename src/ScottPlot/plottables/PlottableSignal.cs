@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 
 namespace ScottPlot
 {
-    public class PlottableSignal: Plottable
+    public class PlottableSignal : Plottable
     {
         // Any changes must be sync with PlottableSignalConst
         public double[] ys;
@@ -18,13 +18,13 @@ namespace ScottPlot
         public double xOffset;
         public double yOffset;
         public Pen pen;
-        public Brush brush;       
+        public Brush brush;
 
         public PlottableSignal(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, bool useParallel)
-        {            
+        {
             if (ys == null)
                 throw new Exception("Y data cannot be null");
-            
+
             this.ys = ys;
             this.sampleRate = sampleRate;
             this.samplePeriod = 1.0 / sampleRate;
@@ -82,9 +82,9 @@ namespace ScottPlot
 
             if (linePoints.Count > 1)
             {
-                settings.dataBackend.DrawLines(pen, linePoints.ToArray());
-                foreach (PointF point in linePoints)
-                    settings.dataBackend.FillEllipse(brush, point.X - markerSize / 2, point.Y - markerSize / 2, markerSize, markerSize);
+                var pointsArray = linePoints.ToArray();
+                settings.dataBackend.DrawLines(pen, pointsArray);
+                settings.dataBackend.FillCircles(brush, pointsArray, markerSize);
             }
         }
 
@@ -192,7 +192,7 @@ namespace ScottPlot
 
             if (linePoints.Count > 0)
                 settings.dataBackend.DrawLines(pen, linePoints.ToArray());
-        }               
+        }
 
         public override void Render(Settings settings)
         {
