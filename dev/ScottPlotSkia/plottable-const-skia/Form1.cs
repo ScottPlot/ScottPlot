@@ -43,9 +43,11 @@ namespace plottable_const
                 var markerShape = (ScottPlot.MarkerShape)Enum.Parse(typeof(ScottPlot.MarkerShape), markerShapeName);
                 double[] stackedSin = ScottPlot.DataGen.Sin(dataXs.Length, 2, -i);
                 formsPlot1.plt.PlotScatter(dataXs, stackedSin, label: markerShapeName, markerShape: markerShape, markerSize: 10);
+                formsPlotSkia1.plt.PlotScatter(dataXs, stackedSin, label: markerShapeName, markerShape: markerShape, markerSize: 10);
             }
 
             formsPlot1.Render();
+            formsPlotSkia1.Render();
         }
 
         private void BtnUpdateData_Click(object sender, EventArgs e)
@@ -115,7 +117,7 @@ namespace plottable_const
                         Thread.Sleep(100);
                     formsPlot1.Render();
                     btnUpdateData.Enabled = true;
-                }));                
+                }));
             });
         }
     }
