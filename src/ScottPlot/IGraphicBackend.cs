@@ -25,8 +25,10 @@ namespace ScottPlot
         void FillEllipse(Brush brush, RectangleF rect);
         void DrawEllipse(Pen pen, RectangleF rect);
         void FillRectangle(Brush brush, RectangleF rect);
+        void FillRectangles(Brush brush, RectangleF[] rects);
         void FillRectangle(Brush brush, float x, float y, float widht, float height);
         void DrawRectangle(Pen pen, Rectangle rect);
+        void DrawRectangles(Pen pen, RectangleF[] rects);
         void DrawRectangle(Pen pen, float x, float y, float width, float height);
         void FillPolygon(Brush brush, PointF[] curvePoints);
         void DrawPolygon(Pen pen, PointF[] curvePoints);

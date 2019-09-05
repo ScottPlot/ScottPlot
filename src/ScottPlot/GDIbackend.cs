@@ -114,6 +114,12 @@ namespace ScottPlot
             gfx.FillRectangle(brush, x, y, width, height);
         }
 
+        public void FillRectangles(Brush brush, RectangleF[] rects)
+        {
+            foreach (var rect in rects)
+                gfx.FillRectangle(brush, rect);
+        }
+
         public void DrawRectangle(Pen pen, Rectangle rect)
         {
             gfx.DrawRectangle(pen, rect);

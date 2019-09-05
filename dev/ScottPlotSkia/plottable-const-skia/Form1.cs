@@ -25,20 +25,22 @@ namespace plottable_const
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            Random rand = new Random(0);
-            int pointCount = 2000;
-            double[] dataRandom1 = ScottPlot.DataGen.RandomNormal(rand, pointCount, 1);
-            double[] dataRandom2 = ScottPlot.DataGen.RandomNormal(rand, pointCount, 2);
-            double[] dataRandom3 = ScottPlot.DataGen.RandomNormal(rand, pointCount, 3);
-            double[] dataRandom4 = ScottPlot.DataGen.RandomNormal(rand, pointCount, 4);
-            
-            formsPlot1.plt.PlotScatter(dataRandom1, dataRandom2, lineWidth: 3, label: "dash", lineStyle: ScottPlot.LineStyle.Dash);
-            formsPlot1.plt.PlotScatter(dataRandom3, dataRandom4, lineWidth: 3, label: "dash dot dot", lineStyle: ScottPlot.LineStyle.DashDotDot);
+            int pointCount = 5000;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
-            formsPlotSkia1.plt.PlotScatter(dataRandom1, dataRandom2, lineWidth: 3, label: "dash", lineStyle: ScottPlot.LineStyle.Dash);
-            formsPlotSkia1.plt.PlotScatter(dataRandom3, dataRandom4, lineWidth: 3, label: "dash dot dot", lineStyle: ScottPlot.LineStyle.DashDotDot);
-            formsPlot1.plt.Legend();
-            
+            // create demo data to use for errorbars
+            double[] yErr = new double[dataSin.Length];
+            for (int i = 0; i < yErr.Length; i++)
+                yErr[i] = dataSin[i] / 5 + .025;
+
+            var plt = new ScottPlot.Plot(600, 400);
+            formsPlot1.plt.Title("Bar Plot With Error Bars");
+            formsPlot1.plt.PlotBar(dataXs, dataSin, barWidth: .5, errorY: yErr, errorCapSize: 2);
+            formsPlotSkia1.plt.PlotBar(dataXs, dataSin, barWidth: .5, errorY: yErr, errorCapSize: 2);
+
+
 
             formsPlot1.Render();
             formsPlotSkia1.Render();

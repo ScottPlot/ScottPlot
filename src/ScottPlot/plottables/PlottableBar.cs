@@ -83,6 +83,8 @@ namespace ScottPlot
 
         public override void Render(Settings settings)
         {
+            List<RectangleF> rects = new List<RectangleF>();
+            List<PointF> yErrs = new List<PointF>();
             for (int i = 0; i < pointCount; i++)
             {
                 PointF barTop;
@@ -105,9 +107,7 @@ namespace ScottPlot
                 float barLeftPx = barTop.X - barWidthPx / 2;
                 float xOffsetPx = (float)(xOffset * settings.xAxisScale);
                 barLeftPx += xOffsetPx;
-
-                settings.dataBackend.FillRectangle(brush, barLeftPx - (float).5, barTopPx, barWidthPx + (float).5, -barHeightPx);
-                settings.dataBackend.DrawRectangle(pen, barLeftPx - (float).5, barTopPx, barWidthPx + (float).5, -barHeightPx);
+                rects.Add(new RectangleF(barLeftPx - (float).5, barTopPx, barWidthPx + (float).5, -barHeightPx));
 
                 if (yErr != null)
                 {
@@ -115,11 +115,18 @@ namespace ScottPlot
                     float x = peakCenter.X + xOffsetPx;
                     float y = peakCenter.Y;
                     float errorPx = (float)(yErr[i] * settings.yAxisScale);
-                    settings.dataBackend.DrawLine(pen, x, y - errorPx, x, y + errorPx);
-                    settings.dataBackend.DrawLine(pen, x - errorCapSize, y - errorPx, x + errorCapSize, y - errorPx);
-                    settings.dataBackend.DrawLine(pen, x - errorCapSize, y + errorPx, x + errorCapSize, y + errorPx);
+                    yErrs.Add(new PointF(x, y - errorPx));
+                    yErrs.Add(new PointF(x, y + errorPx));
+                    yErrs.Add(new PointF(x - errorCapSize, y - errorPx));
+                    yErrs.Add(new PointF(x + errorCapSize, y - errorPx));
+                    yErrs.Add(new PointF(x - errorCapSize, y + errorPx));
+                    yErrs.Add(new PointF(x + errorCapSize, y + errorPx));
                 }
             }
+            settings.dataBackend.FillRectangles(brush, rects.ToArray());
+            settings.dataBackend.DrawRectangles(pen, rects.ToArray());
+            if (yErrs != null)
+                settings.dataBackend.DrawLinesPaired(pen, yErrs.ToArray());
         }
 
         public override void SaveCSV(string filePath)

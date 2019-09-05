@@ -78,6 +78,16 @@ namespace ScottPlotSkia
             canvas.DrawRect(rect.ToSKRect(), paint);
         }
 
+        public void DrawRectangles(Pen pen, RectangleF[] rects)
+        {
+            using (var path = new SKPath())
+            {
+                foreach (var rect in rects)
+                    path.AddRect(rect.ToSKRect());
+                canvas.DrawPath(path, pen.ToSKPaint());
+            }
+        }
+
         public void DrawString(string text, Font font, Brush brush, PointF point)
         {
             throw new NotImplementedException();
@@ -106,6 +116,16 @@ namespace ScottPlotSkia
         public void FillRectangle(Brush brush, float x, float y, float widht, float height)
         {
             throw new NotImplementedException();
+        }
+
+        public void FillRectangles(Brush brush, RectangleF[] rects)
+        {
+            using (var path = new SKPath())
+            {
+                foreach (var rect in rects)
+                    path.AddRect(rect.ToSKRect());
+                canvas.DrawPath(path, brush.ToSKPaint());
+            }
         }
 
         public Bitmap GetBitmap()
