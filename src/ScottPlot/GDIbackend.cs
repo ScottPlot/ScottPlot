@@ -81,6 +81,14 @@ namespace ScottPlot
             gfx.DrawLines(pen, linePoints);
         }
 
+        public void DrawLinesPaired(Pen pen, PointF[] linePoints)
+        {
+            for (int i = 0; i < linePoints.Length; i += 2)
+            {
+                gfx.DrawLine(pen, linePoints[i], linePoints[i + 1]);
+            }
+        }
+
         public void FillEllipse(Brush brush, float x, float y, float widht, float height)
         {
             gfx.FillEllipse(brush, x, y, widht, height);

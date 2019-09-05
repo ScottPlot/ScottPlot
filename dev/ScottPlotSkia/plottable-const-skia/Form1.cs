@@ -25,25 +25,45 @@ namespace plottable_const
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
-            int pointCount = 50;
-            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
-            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
-
-            var plt = new ScottPlot.Plot(600, 400);
-            plt.Title("ScottPlot Marker Shapes");
-            plt.Grid(false);
-
-            // plot a sine wave for every marker available
-            string[] markerShapeNames = Enum.GetNames(typeof(ScottPlot.MarkerShape));
-            for (int i = 0; i < markerShapeNames.Length; i++)
+            for (int plotNumber = 0; plotNumber < 3; plotNumber++)
             {
-                string markerShapeName = markerShapeNames[i];
-                var markerShape = (ScottPlot.MarkerShape)Enum.Parse(typeof(ScottPlot.MarkerShape), markerShapeName);
-                double[] stackedSin = ScottPlot.DataGen.Sin(dataXs.Length, 2, -i);
-                formsPlot1.plt.PlotScatter(dataXs, stackedSin, label: markerShapeName, markerShape: markerShape, markerSize: 10);
-                formsPlotSkia1.plt.PlotScatter(dataXs, stackedSin, label: markerShapeName, markerShape: markerShape, markerSize: 10);
+                // create random data to plot
+                Random rand = new Random(plotNumber);
+                int pointCount = 5000;
+                double[] dataX = new double[pointCount];
+                double[] dataY = new double[pointCount];
+                double[] errorY = new double[pointCount];
+                double[] errorX = new double[pointCount];
+                for (int i = 0; i < pointCount; i++)
+                {
+                    dataX[i] = i + rand.NextDouble();
+                    dataY[i] = rand.NextDouble() * 100 + 100 * plotNumber;
+                    errorX[i] = rand.NextDouble();
+                    errorY[i] = rand.NextDouble() * 10;
+                }
+
+                // demonstrate different ways to plot errorbars
+                if (plotNumber == 0)
+                {
+                    formsPlot1.plt.PlotScatter(dataX, dataY, lineWidth: 0, errorY: errorY, errorX: errorX,
+                        label: $"X and Y errors");
+                    formsPlotSkia1.plt.PlotScatter(dataX, dataY, lineWidth: 0, errorY: errorY, errorX: errorX,
+                        label: $"X and Y errors");
+                }
+                else if (plotNumber == 1)
+                {
+                    formsPlot1.plt.PlotScatter(dataX, dataY, lineWidth: 0, errorY: errorY,
+                        label: $"Y errors only");
+                    formsPlotSkia1.plt.PlotScatter(dataX, dataY, lineWidth: 0, errorY: errorY,
+                        label: $"Y errors only");
+                }
+                else
+                {
+                    formsPlot1.plt.PlotScatter(dataX, dataY, errorY: errorY, errorX: errorX,
+                        label: $"Connected Errors");
+                    formsPlotSkia1.plt.PlotScatter(dataX, dataY, errorY: errorY, errorX: errorX,
+                        label: $"Connected Errors");
+                }
             }
 
             formsPlot1.Render();

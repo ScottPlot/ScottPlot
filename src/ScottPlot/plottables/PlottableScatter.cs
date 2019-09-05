@@ -174,32 +174,48 @@ namespace ScottPlot
 
             if (errorY != null)
             {
-                for (int i = 0; i < points.Length; i++)
+                var errorYpoints = points.Select((p, i) =>
                 {
                     PointF errorBelow = settings.GetPixel(xs[i], ys[i] - errorY[i]);
                     PointF errorAbove = settings.GetPixel(xs[i], ys[i] + errorY[i]);
                     float xCenter = errorBelow.X;
                     float yTop = errorAbove.Y;
                     float yBot = errorBelow.Y;
-                    settings.dataBackend.DrawLine(penLineError, xCenter, yBot, xCenter, yTop);
-                    settings.dataBackend.DrawLine(penLineError, xCenter - errorCapSize, yBot, xCenter + errorCapSize, yBot);
-                    settings.dataBackend.DrawLine(penLineError, xCenter - errorCapSize, yTop, xCenter + errorCapSize, yTop);
-                }
+                    return new PointF[]
+                    {
+                        new PointF(xCenter, yBot),
+                        new PointF(xCenter, yTop),
+                        new PointF(xCenter - errorCapSize, yBot),
+                        new PointF(xCenter + errorCapSize, yBot),
+                        new PointF(xCenter - errorCapSize, yTop),
+                        new PointF(xCenter + errorCapSize, yTop)
+                    };
+                });
+                var errorYLinesToDraw = errorYpoints.SelectMany(e => e);
+                settings.dataBackend.DrawLinesPaired(penLineError, errorYLinesToDraw.ToArray());
             }
 
             if (errorX != null)
             {
-                for (int i = 0; i < points.Length; i++)
+                var errorXpoints = points.Select((p, i) =>
                 {
                     PointF errorLeft = settings.GetPixel(xs[i] - errorX[i], ys[i]);
                     PointF errorRight = settings.GetPixel(xs[i] + errorX[i], ys[i]);
                     float yCenter = errorLeft.Y;
                     float xLeft = errorLeft.X;
                     float xRight = errorRight.X;
-                    settings.dataBackend.DrawLine(penLineError, xLeft, yCenter, xRight, yCenter);
-                    settings.dataBackend.DrawLine(penLineError, xLeft, yCenter - errorCapSize, xLeft, yCenter + errorCapSize);
-                    settings.dataBackend.DrawLine(penLineError, xRight, yCenter - errorCapSize, xRight, yCenter + errorCapSize);
-                }
+                    return new PointF[]
+                    {
+                        new PointF(xLeft, yCenter),
+                        new PointF(xRight, yCenter),
+                        new PointF(xLeft, yCenter - errorCapSize),
+                        new PointF(xLeft, yCenter + errorCapSize),
+                        new PointF(xRight, yCenter - errorCapSize),
+                        new PointF(xRight, yCenter + errorCapSize)
+                    };
+                });
+                var errorXLinesToDraw = errorXpoints.SelectMany(e => e);
+                settings.dataBackend.DrawLinesPaired(penLineError, errorXLinesToDraw.ToArray());
             }
 
             if (penLine.Width > 0)

@@ -57,6 +57,11 @@ namespace ScottPlotSkia
             canvas.DrawPoints(SKPointMode.Polygon, linePoints.Select(x => new SKPoint(x.X + 0.5f, x.Y + 0.5f)).ToArray(), pen.ToSKPaint(AA));
         }
 
+        public void DrawLinesPaired(Pen pen, PointF[] linePoints)
+        {
+            canvas.DrawPoints(SKPointMode.Lines, linePoints.Select(x => new SKPoint(x.X + 0.5f, x.Y + 0.5f)).ToArray(), pen.ToSKPaint(AA));
+        }
+
         public void DrawPolygon(Pen pen, PointF[] curvePoints)
         {
             throw new NotImplementedException();
