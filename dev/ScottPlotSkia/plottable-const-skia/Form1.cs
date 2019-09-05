@@ -25,46 +25,20 @@ namespace plottable_const
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            for (int plotNumber = 0; plotNumber < 3; plotNumber++)
-            {
-                // create random data to plot
-                Random rand = new Random(plotNumber);
-                int pointCount = 5000;
-                double[] dataX = new double[pointCount];
-                double[] dataY = new double[pointCount];
-                double[] errorY = new double[pointCount];
-                double[] errorX = new double[pointCount];
-                for (int i = 0; i < pointCount; i++)
-                {
-                    dataX[i] = i + rand.NextDouble();
-                    dataY[i] = rand.NextDouble() * 100 + 100 * plotNumber;
-                    errorX[i] = rand.NextDouble();
-                    errorY[i] = rand.NextDouble() * 10;
-                }
+            Random rand = new Random(0);
+            int pointCount = 2000;
+            double[] dataRandom1 = ScottPlot.DataGen.RandomNormal(rand, pointCount, 1);
+            double[] dataRandom2 = ScottPlot.DataGen.RandomNormal(rand, pointCount, 2);
+            double[] dataRandom3 = ScottPlot.DataGen.RandomNormal(rand, pointCount, 3);
+            double[] dataRandom4 = ScottPlot.DataGen.RandomNormal(rand, pointCount, 4);
+            
+            formsPlot1.plt.PlotScatter(dataRandom1, dataRandom2, lineWidth: 3, label: "dash", lineStyle: ScottPlot.LineStyle.Dash);
+            formsPlot1.plt.PlotScatter(dataRandom3, dataRandom4, lineWidth: 3, label: "dash dot dot", lineStyle: ScottPlot.LineStyle.DashDotDot);
 
-                // demonstrate different ways to plot errorbars
-                if (plotNumber == 0)
-                {
-                    formsPlot1.plt.PlotScatter(dataX, dataY, lineWidth: 0, errorY: errorY, errorX: errorX,
-                        label: $"X and Y errors");
-                    formsPlotSkia1.plt.PlotScatter(dataX, dataY, lineWidth: 0, errorY: errorY, errorX: errorX,
-                        label: $"X and Y errors");
-                }
-                else if (plotNumber == 1)
-                {
-                    formsPlot1.plt.PlotScatter(dataX, dataY, lineWidth: 0, errorY: errorY,
-                        label: $"Y errors only");
-                    formsPlotSkia1.plt.PlotScatter(dataX, dataY, lineWidth: 0, errorY: errorY,
-                        label: $"Y errors only");
-                }
-                else
-                {
-                    formsPlot1.plt.PlotScatter(dataX, dataY, errorY: errorY, errorX: errorX,
-                        label: $"Connected Errors");
-                    formsPlotSkia1.plt.PlotScatter(dataX, dataY, errorY: errorY, errorX: errorX,
-                        label: $"Connected Errors");
-                }
-            }
+            formsPlotSkia1.plt.PlotScatter(dataRandom1, dataRandom2, lineWidth: 3, label: "dash", lineStyle: ScottPlot.LineStyle.Dash);
+            formsPlotSkia1.plt.PlotScatter(dataRandom3, dataRandom4, lineWidth: 3, label: "dash dot dot", lineStyle: ScottPlot.LineStyle.DashDotDot);
+            formsPlot1.plt.Legend();
+            
 
             formsPlot1.Render();
             formsPlotSkia1.Render();
