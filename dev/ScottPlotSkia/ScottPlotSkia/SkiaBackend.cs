@@ -172,7 +172,6 @@ namespace ScottPlotSkia
                         foreach (var p in points)
                         {
                             path.AddRect(new SKRect(p.X - markerSize / 2, p.Y - markerSize / 2, p.X + markerSize / 2, p.Y + markerSize / 2));
-                            path.AddRect(new SKRect(p.X - markerSize / 2, p.Y - markerSize / 2, p.X + markerSize / 2, p.Y + markerSize / 2));
                         }
                         paint.Style = SKPaintStyle.Fill;
                         break;
