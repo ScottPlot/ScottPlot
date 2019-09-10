@@ -115,7 +115,7 @@ namespace ScottPlotSkia
 
         public void FillRectangle(Brush brush, float x, float y, float widht, float height)
         {
-            throw new NotImplementedException();
+            canvas.DrawRect(x, y, widht, height, brush.ToSKPaint());
         }
 
         public void FillRectangles(Brush brush, RectangleF[] rects)
