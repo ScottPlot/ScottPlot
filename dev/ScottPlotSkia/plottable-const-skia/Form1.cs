@@ -25,44 +25,13 @@ namespace plottable_const
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            int pointCount = 50;
-            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
-            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
+            Random rand = new Random(0);
+            int pointCount = 5000;
+            ScottPlot.OHLC[] ohlcs = ScottPlot.DataGen.RandomStockPrices(rand, pointCount);
 
 
-
-            // things plotted after before spans are covered by them
-            formsPlot1.plt.PlotScatter(dataXs, dataSin, label: "below",
-                color: Color.Red, markerShape: ScottPlot.MarkerShape.filledCircle);
-
-            // vertical lines and horizontal spans both take X-axis positions
-            formsPlot1.plt.PlotVLine(17, label: "vertical line");
-            formsPlot1.plt.PlotVSpan(19, 27, label: "horizontal span", color: Color.Blue);
-
-            // horizontal lines and vertical spans both take Y-axis positions
-            formsPlot1.plt.PlotHLine(-.6, label: "horizontal line");
-            formsPlot1.plt.PlotHSpan(-.25, 0.33, label: "vertical span", color: Color.Green);
-
-            // things plotted after are displayed on top of the spans
-            formsPlot1.plt.PlotScatter(dataXs, dataCos, label: "above",
-                color: Color.Red, markerShape: ScottPlot.MarkerShape.filledSquare);
-
-            // things plotted after before spans are covered by them
-            formsPlotSkia1.plt.PlotScatter(dataXs, dataSin, label: "below",
-                color: Color.Red, markerShape: ScottPlot.MarkerShape.filledCircle);
-
-            // vertical lines and horizontal spans both take X-axis positions
-            formsPlotSkia1.plt.PlotVLine(17, label: "vertical line");
-            formsPlotSkia1.plt.PlotVSpan(19, 27, label: "horizontal span", color: Color.Blue);
-
-            // horizontal lines and vertical spans both take Y-axis positions
-            formsPlotSkia1.plt.PlotHLine(-.6, label: "horizontal line");
-            formsPlotSkia1.plt.PlotHSpan(-.25, 0.33, label: "vertical span", color: Color.Green);
-
-            // things plotted after are displayed on top of the spans
-            formsPlotSkia1.plt.PlotScatter(dataXs, dataCos, label: "above",
-                color: Color.Red, markerShape: ScottPlot.MarkerShape.filledSquare);
+            formsPlot1.plt.PlotCandlestick(ohlcs);
+            formsPlotSkia1.plt.PlotCandlestick(ohlcs);
 
             formsPlot1.Render();
             formsPlotSkia1.Render();

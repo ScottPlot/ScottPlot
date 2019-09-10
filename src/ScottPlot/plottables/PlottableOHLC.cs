@@ -74,27 +74,54 @@ namespace ScottPlot
             double spacingPx = spacingTime * settings.xAxisScale;
             float boxWidth = (float)(spacingPx / 2 * fractionalTickWidth);
 
+            List<PointF> ohlcsHigherPoints = new List<PointF>();
+            List<PointF> ohlcsLowerPoints = new List<PointF>();
+
+            List<RectangleF> ohlcsHigherRects = new List<RectangleF>();
+            List<RectangleF> ohlcsLowerRects = new List<RectangleF>();
+
             foreach (OHLC ohlc in ohlcs)
             {
-                Pen pen = (ohlc.closedHigher) ? penUp : penDown;
-                Brush brush = (ohlc.closedHigher) ? brushUp : brushDown;
-                pen.Width = 2;
-
                 // the wick below the box
                 PointF wickLowBot = settings.GetPixel(ohlc.epochSeconds, ohlc.low);
                 PointF wickLowTop = settings.GetPixel(ohlc.epochSeconds, ohlc.lowestOpenClose);
-                settings.dataBackend.DrawLine(pen, wickLowBot, wickLowTop);
 
                 // the wick above the box
                 PointF wickHighBot = settings.GetPixel(ohlc.epochSeconds, ohlc.highestOpenClose);
                 PointF wickHighTop = settings.GetPixel(ohlc.epochSeconds, ohlc.high);
-                settings.dataBackend.DrawLine(pen, wickHighBot, wickHighTop);
 
                 // the candle
                 PointF boxLowerLeft = settings.GetPixel(ohlc.epochSeconds, ohlc.lowestOpenClose);
                 PointF boxUpperRight = settings.GetPixel(ohlc.epochSeconds, ohlc.highestOpenClose);
-                settings.dataBackend.FillRectangle(brush, boxLowerLeft.X - boxWidth, boxUpperRight.Y, boxWidth * 2, boxLowerLeft.Y - boxUpperRight.Y);
+
+                if (ohlc.closedHigher)
+                {
+                    ohlcsHigherPoints.Add(wickLowBot);
+                    ohlcsHigherPoints.Add(wickLowTop);
+
+                    ohlcsHigherPoints.Add(wickHighBot);
+                    ohlcsHigherPoints.Add(wickHighTop);
+
+                    ohlcsHigherRects.Add(new RectangleF(boxLowerLeft.X - boxWidth, boxUpperRight.Y, boxWidth * 2, boxLowerLeft.Y - boxUpperRight.Y));
+                }
+                else
+                {
+                    ohlcsLowerPoints.Add(wickLowBot);
+                    ohlcsLowerPoints.Add(wickLowTop);
+
+                    ohlcsLowerPoints.Add(wickHighBot);
+                    ohlcsLowerPoints.Add(wickHighTop);
+
+                    ohlcsLowerRects.Add(new RectangleF(boxLowerLeft.X - boxWidth, boxUpperRight.Y, boxWidth * 2, boxLowerLeft.Y - boxUpperRight.Y));
+                }
             }
+            penUp.Width = 2;
+            penDown.Width = 2;
+            settings.dataBackend.DrawLinesPaired(penUp, ohlcsHigherPoints.ToArray());
+            settings.dataBackend.DrawLinesPaired(penDown, ohlcsLowerPoints.ToArray());
+
+            settings.dataBackend.FillRectangles(brushUp, ohlcsHigherRects.ToArray());
+            settings.dataBackend.FillRectangles(brushDown, ohlcsLowerRects.ToArray());
         }
 
         public void RenderOhlc(Settings settings)
@@ -104,23 +131,31 @@ namespace ScottPlot
             double spacingPx = spacingTime * settings.xAxisScale;
             float boxWidth = (float)(spacingPx / 2 * fractionalTickWidth);
 
-            foreach (OHLC ohlc in ohlcs)
+            var ohlcsPoints = ohlcs.Select(x =>
             {
-                Pen pen = (ohlc.closedHigher) ? penUp : penDown;
-                pen.Width = 2;
-
-                // the main line
-                PointF wickTop = settings.GetPixel(ohlc.epochSeconds, ohlc.low);
-                PointF wickBot = settings.GetPixel(ohlc.epochSeconds, ohlc.high);
-                settings.dataBackend.DrawLine(pen, wickBot, wickTop);
+                PointF wickTop = settings.GetPixel(x.epochSeconds, x.low);
+                PointF wickBot = settings.GetPixel(x.epochSeconds, x.high);
 
                 // open and close lines
                 float xPx = wickTop.X;
-                float yPxOpen = (float)settings.GetPixel(0, ohlc.open).Y;
-                float yPxClose = (float)settings.GetPixel(0, ohlc.close).Y;
-                settings.dataBackend.DrawLine(pen, xPx - boxWidth, yPxOpen, xPx, yPxOpen);
-                settings.dataBackend.DrawLine(pen, xPx + boxWidth, yPxClose, xPx, yPxClose);
-            }
+                float yPxOpen = (float)settings.GetPixel(0, x.open).Y;
+                float yPxClose = (float)settings.GetPixel(0, x.close).Y;
+                var res = new PointF[]
+                {
+                    wickBot, wickTop,
+                    new PointF(xPx - boxWidth, yPxOpen), new PointF(xPx, yPxOpen),
+                    new PointF(xPx + boxWidth, yPxClose), new PointF(xPx, yPxClose)
+                };
+                return new Tuple<OHLC, PointF[]>(x, res);
+            });
+
+            var ohlcsHigher = ohlcsPoints.Where(t => t.Item1.closedHigher).Select(x => x.Item2).SelectMany(x => x);
+            var ohlcsLower = ohlcsPoints.Where(t => !t.Item1.closedHigher).Select(x => x.Item2).SelectMany(x => x);
+
+            penUp.Width = 2;
+            penDown.Width = 2;
+            settings.dataBackend.DrawLinesPaired(penUp, ohlcsHigher.ToArray());
+            settings.dataBackend.DrawLinesPaired(penDown, ohlcsLower.ToArray());
         }
 
         public override void SaveCSV(string filePath)
