@@ -44,7 +44,7 @@ namespace ScottPlotSkia
 
         public void DrawLine(Pen pen, PointF start, PointF end)
         {
-            throw new NotImplementedException();
+            canvas.DrawLine(start.ToSKPoint(), end.ToSKPoint(), pen.ToSKPaint());
         }
 
         public void DrawLine(Pen pen, float x1, float y1, float x2, float y2)
