@@ -26,6 +26,7 @@ namespace ScottPlotAnimatedSin
             dataCos = new double[pointCount];
             for (int i = 0; i < pointCount; i++)
                 dataXs[i] = i;
+            UpdateData();
 
             formsPlot1.plt.PlotScatter(dataXs, dataSin);
             formsPlot1.plt.PlotScatter(dataXs, dataCos);
@@ -36,7 +37,7 @@ namespace ScottPlotAnimatedSin
 
         }
 
-        private void UpdateDataAndPlot()
+        private void UpdateData()
         {
             double offset = (double)DateTime.Now.Ticks / TimeSpan.TicksPerSecond;
             for (int i = 0; i < dataSin.Length; i++)
@@ -45,12 +46,12 @@ namespace ScottPlotAnimatedSin
                 dataCos[i] = Math.Cos(i * 3 * Math.PI / dataSin.Length + offset) * .5;
             }
                 
-            formsPlot1.Render();
         }
 
         private void Timer1_Tick(object sender, EventArgs e)
         {
-            UpdateDataAndPlot();
+            UpdateData();
+            formsPlot1.Render();
         }
     }
 }

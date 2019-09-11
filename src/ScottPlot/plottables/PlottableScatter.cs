@@ -218,7 +218,7 @@ namespace ScottPlot
                 settings.dataBackend.DrawLinesPaired(penLineError, errorXLinesToDraw.ToArray());
             }
 
-            if (penLine.Width > 0)
+            if (penLine.Width > 0 && points.Length > 1)
             {
                 if (stepDisplay)
                     settings.dataBackend.DrawLines(penLine, pointsStep);

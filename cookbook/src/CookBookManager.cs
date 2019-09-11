@@ -49,6 +49,7 @@ namespace ScottPlotCookbook
             hashes.Add(recipies.Figure_20_Small_Plot());
             hashes.Add(recipies.Figure_21a_Title_and_Axis_Labels());
             hashes.Add(recipies.Figure_21b_Extra_Padding());
+            hashes.Add(recipies.Figure_21c_Automatic_Left_Padding());
             hashes.Add(recipies.Figure_22_Custom_Colors());
             hashes.Add(recipies.Figure_23_Frameless_Plot());
             hashes.Add(recipies.Figure_24_Disable_the_Grid());

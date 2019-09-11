@@ -65,6 +65,7 @@
             this.cbLegend = new System.Windows.Forms.CheckBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.cbStyle = new System.Windows.Forms.ComboBox();
+            this.btnTighten = new System.Windows.Forms.Button();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -453,11 +454,22 @@
             this.cbStyle.Size = new System.Drawing.Size(233, 21);
             this.cbStyle.TabIndex = 0;
             // 
+            // btnTighten
+            // 
+            this.btnTighten.Location = new System.Drawing.Point(12, 417);
+            this.btnTighten.Name = "btnTighten";
+            this.btnTighten.Size = new System.Drawing.Size(130, 23);
+            this.btnTighten.TabIndex = 18;
+            this.btnTighten.Text = "Tighten Layout";
+            this.btnTighten.UseVisualStyleBackColor = true;
+            this.btnTighten.Click += new System.EventHandler(this.BtnTighten_Click);
+            // 
             // FormSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(526, 476);
+            this.Controls.Add(this.btnTighten);
             this.Controls.Add(this.groupBox7);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -524,5 +536,6 @@
         private System.Windows.Forms.CheckBox cbLegend;
         private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.ComboBox cbStyle;
+        private System.Windows.Forms.Button btnTighten;
     }
 }

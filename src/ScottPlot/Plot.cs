@@ -916,11 +916,14 @@ namespace ScottPlot
             settings.legend.antiAlias = legend;
         }
 
-        public void TightenLayout(int padding = 5)
+        public void TightenLayout(int? padding = null)
         {
             if (!settings.axes.hasBeenSet && settings.plottables.Count > 0)
                 settings.AxisAuto();
-            settings.layout.padOnAllSides = padding;
+            if (padding != null)
+                settings.layout.padOnAllSides = (int)padding;
+            settings.ticks?.x?.Recalculate(settings, false);
+            settings.ticks?.y?.Recalculate(settings, true);
             settings.layout.Tighten(settings.ticks, settings.title, settings.xLabel, settings.yLabel);
             Resize();
         }
