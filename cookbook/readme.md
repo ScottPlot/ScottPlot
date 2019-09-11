@@ -440,10 +440,7 @@ plt.YLabel("vertical units");
 plt.XLabel("horizontal units");
 
 // this can be problematic because Y labels get very large
-plt.Ticks(useOffsetNotation: false, useMultiplierNotation: false, useExponentialNotation: false);
-
-// tighening the layout can help!
-plt.TightenLayout();
+plt.Ticks(useOffsetNotation: false, useMultiplierNotation: false);
 
 plt.SaveFig(fileName);
 ```

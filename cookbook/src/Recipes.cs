@@ -507,9 +507,6 @@ namespace ScottPlotCookbook
             // this can be problematic because Y labels get very large
             plt.Ticks(useOffsetNotation: false, useMultiplierNotation: false);
 
-            // tighening the layout can help!
-            plt.TightenLayout();
-
             plt.SaveFig(fileName);
             Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
             return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
