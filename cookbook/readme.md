@@ -428,6 +428,28 @@ plt.SaveFig(fileName);
 
 ![](./images/21b_Extra_Padding.png)
 
+##  Automatic Left Padding
+
+```cs
+var plt = new ScottPlot.Plot(600, 400);
+Random rand = new Random(0);
+double[] xs = ScottPlot.DataGen.Consecutive(100);
+double[] ys = ScottPlot.DataGen.RandomWalk(rand, 100, 1e2, 1e15);
+plt.PlotScatter(xs, ys);
+plt.YLabel("vertical units");
+plt.XLabel("horizontal units");
+
+// this can be problematic because Y labels get very large
+plt.Ticks(useOffsetNotation: false, useMultiplierNotation: false, useExponentialNotation: false);
+
+// tighening the layout can help!
+plt.TightenLayout();
+
+plt.SaveFig(fileName);
+```
+
+![](./images/21c_Automatic_Left_Padding.png)
+
 ## Custom Colors
 
 ```cs
