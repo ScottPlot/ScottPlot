@@ -90,7 +90,7 @@ namespace ScottPlotSkia
 
         public void DrawString(string text, Font font, Brush brush, PointF point)
         {
-            var paint = font.ToSKPaint(brush, AA);
+            var paint = font.ToSKPaint(brush, true);
             point.Y += paint.TextSize;
             canvas.DrawText(text, point.X, point.Y, paint);
         }
