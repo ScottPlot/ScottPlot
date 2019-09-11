@@ -90,7 +90,8 @@ namespace ScottPlotSkia
 
         public void DrawString(string text, Font font, Brush brush, PointF point)
         {
-            var paint = font.ToSKPaint(brush, AA);                        
+            var paint = font.ToSKPaint(brush, AA);
+            point.Y += paint.TextSize;
             canvas.DrawText(text, point.X, point.Y, paint);
         }
 
@@ -137,7 +138,7 @@ namespace ScottPlotSkia
         public SizeF MeasureString(string text, Font font)
         {
             SKPaint paint = new SKPaint() { TextSize = font.Size * 100 / 72 }; // point to pixel = 100 / 72
-            return new SizeF(paint.MeasureText(text), paint.TextSize);            
+            return new SizeF(paint.MeasureText(text), paint.TextSize);
         }
 
         public void Resize(int width, int height)

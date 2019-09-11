@@ -18,7 +18,7 @@ namespace ScottPlot
 
         public static void DataBackground(Settings settings)
         {
-            settings.dataBackend.Clear(settings.misc.dataBackgroundColor);                
+            settings.dataBackend.Clear(settings.misc.dataBackgroundColor);
         }
 
         public static void DataGrid(Settings settings)
@@ -46,7 +46,7 @@ namespace ScottPlot
         }
 
         public static void DataPlottables(Settings settings)
-        {            
+        {
             for (int i = 0; i < settings.plottables.Count; i++)
             {
                 Plottable pltThing = settings.plottables[i];
@@ -80,7 +80,7 @@ namespace ScottPlot
 
         public static void PlaceDataOntoFigure(Settings settings)
         {
-            settings.gfxFigure.DrawImage(settings.dataBackend.GetBitmap(), settings.dataOrigin);            
+            settings.gfxFigure.DrawImage(settings.dataBackend.GetBitmap(), settings.dataOrigin);
         }
 
         public static void FigureLabels(Settings settings, bool drawDebugRectangles = false)
@@ -155,12 +155,12 @@ namespace ScottPlot
             {
                 int debugPadding = 3;
                 PointF textLocation = new PointF(settings.dataSize.Width + settings.dataOrigin.X, settings.dataSize.Height + settings.dataOrigin.Y);
-                textLocation.X -= settings.benchmark.width + debugPadding;
-                textLocation.Y -= settings.benchmark.height + debugPadding - 20;
+                textLocation.X -= settings.benchmark.width + debugPadding + settings.dataOrigin.X;
+                textLocation.Y -= settings.benchmark.height + debugPadding + settings.dataOrigin.Y;
                 RectangleF textRect = new RectangleF(textLocation, settings.benchmark.size);
-                settings.gfxFigure.FillRectangle(new SolidBrush(settings.benchmark.colorBackground), textRect);
-                settings.gfxFigure.DrawRectangle(new Pen(settings.benchmark.colorBorder), Rectangle.Round(textRect));
-                settings.gfxFigure.DrawString(settings.benchmark.text, settings.benchmark.font, new SolidBrush(settings.benchmark.color), textLocation);
+                settings.dataBackend.FillRectangle(new SolidBrush(settings.benchmark.colorBackground), textRect);
+                settings.dataBackend.DrawRectangle(new Pen(settings.benchmark.colorBorder), Rectangle.Round(textRect));
+                settings.dataBackend.DrawString(settings.benchmark.text, settings.benchmark.font, new SolidBrush(settings.benchmark.color), textLocation);
             }
         }
 
