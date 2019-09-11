@@ -26,11 +26,8 @@ namespace ScottPlot
 
         // Eventually move graphics objects to their own module.
         public Graphics gfxFigure;
-        public Graphics gfxData;
-        public Graphics gfxLegend;
         public Bitmap bmpFigure;
-        public Bitmap bmpData;
-        public Bitmap bmpLegend;
+        public IGraphicBackend legendBackend;
         public IGraphicBackend dataBackend;
 
         // plottables

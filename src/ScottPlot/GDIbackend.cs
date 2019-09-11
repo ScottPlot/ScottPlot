@@ -20,7 +20,10 @@ namespace ScottPlot
             gfx = Graphics.FromImage(bmp);
 
         }
-
+        public Size GetSize()
+        {
+            return bmp.Size;
+        }
         public void SetAntiAlias(bool enabled)
         {
             if (enabled)

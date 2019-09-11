@@ -68,13 +68,13 @@ namespace ScottPlot
 
         public static void PlaceLegendOntoFigure(Settings settings)
         {
-            if (settings.gfxFigure == null || settings.gfxLegend == null)
+            if (settings.gfxFigure == null)
                 return;
             if (settings.legend.location != ScottPlot.legendLocation.none)
             {
                 Point legendLocation = new Point(settings.dataOrigin.X + settings.legend.rect.Location.X,
                 settings.dataOrigin.Y + settings.legend.rect.Location.Y);
-                settings.gfxFigure.DrawImage(settings.bmpLegend, legendLocation);
+                settings.gfxFigure.DrawImage(settings.legendBackend.GetBitmap(), legendLocation);
             }
         }
 

@@ -18,7 +18,7 @@ namespace ScottPlot
         private readonly Settings settings;
         public readonly MouseTracker mouseTracker;
 
-        public Plot(int width = 800, int height = 600, IGraphicBackend backendData = null)
+        public Plot(int width = 800, int height = 600, IGraphicBackend backendData = null, IGraphicBackend backendLegend = null)
         {
             if (width <= 0 || height <= 0)
                 throw new ArgumentException("width and height must each be greater than 0");
@@ -28,6 +28,10 @@ namespace ScottPlot
                 settings.dataBackend = new GDIbackend(width, height, pixelFormat);
             else
                 settings.dataBackend = backendData;
+            if (backendLegend == null)
+                settings.legendBackend = new GDIbackend(1, 1, pixelFormat);
+            else
+                settings.legendBackend = backendLegend;
             Resize(width, height);
             TightenLayout();
         }
@@ -59,16 +63,13 @@ namespace ScottPlot
 
         private void InitializeLegend(Size size)
         {
-            settings.bmpLegend = new Bitmap(size.Width, size.Height, pixelFormat);
-            settings.gfxLegend = Graphics.FromImage(settings.bmpLegend);
+            settings.legendBackend.Resize(size.Width, size.Height);
         }
 
         private void InitializeBitmaps()
         {
             settings.bmpFigure = null;
             settings.gfxFigure = null;
-            settings.gfxLegend = null;
-            settings.bmpLegend = null;
 
             if (settings.figureSize.Width > 0 && settings.figureSize.Height > 0)
             {
@@ -99,19 +100,7 @@ namespace ScottPlot
             }
 
             settings.dataBackend.SetAntiAlias(settings.misc.antiAliasData);
-            if (settings.gfxLegend != null)
-            {
-                if (settings.legend.antiAlias)
-                {
-                    settings.gfxLegend.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                    settings.gfxLegend.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
-                }
-                else
-                {
-                    settings.gfxLegend.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
-                    settings.gfxLegend.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
-                }
-            }
+            settings.legendBackend.SetAntiAlias(settings.legend.antiAlias);
         }
 
         private void RenderBitmap()
@@ -127,10 +116,10 @@ namespace ScottPlot
                 // only after the layout is tightened can the ticks be properly decided
             }
 
-            settings.legend.rect = LegendTools.GetLegendFrame(settings, settings.gfxLegend);
+            settings.legend.rect = LegendTools.GetLegendFrame(settings);
 
             // TODO: this only re-renders the legend if the size changes. What if the colors change?
-            if (settings.legend.rect.Size != settings.bmpLegend.Size)
+            if (settings.legend.rect.Size != settings.legendBackend.GetSize())
                 InitializeLegend(settings.legend.rect.Size);
 
             UpdateAntiAliasingSettings();
@@ -814,7 +803,7 @@ namespace ScottPlot
 
         public Bitmap GetLegendBitmap()
         {
-            return settings.bmpLegend;
+            return settings.legendBackend.GetBitmap();
         }
 
         #endregion
