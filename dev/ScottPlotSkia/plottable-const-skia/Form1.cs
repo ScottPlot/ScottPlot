@@ -25,16 +25,35 @@ namespace plottable_const
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            Random rand = new Random(0);
-            int pointCount = 5000;
-            ScottPlot.OHLC[] ohlcs = ScottPlot.DataGen.RandomStockPrices(rand, pointCount);
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
+            var plt = formsPlot1.plt;
+            plt.Title("Impressive Graph", fontName: "courier new", fontSize: 24, color: Color.Purple, bold: true);
+            plt.YLabel("vertical units", fontName: "impact", fontSize: 24, color: Color.Red, bold: true);
+            plt.XLabel("horizontal units", fontName: "georgia", fontSize: 24, color: Color.Blue, bold: true);
+            plt.PlotScatter(dataXs, dataSin, label: "sin");
+            plt.PlotScatter(dataXs, dataCos, label: "cos");
+            plt.PlotText("very graph", 25, .8, fontName: "comic sans ms", fontSize: 24, color: Color.Blue, bold: true);
+            plt.PlotText("so data", 0, 0, fontName: "comic sans ms", fontSize: 42, color: Color.Magenta, bold: true);
+            plt.PlotText("many documentation", 3, -.6, fontName: "comic sans ms", fontSize: 18, color: Color.DarkCyan, bold: true);
+            plt.PlotText("wow.", 10, .6, fontName: "comic sans ms", fontSize: 36, color: Color.Green, bold: true);
+            plt.PlotText("NuGet", 32, 0, fontName: "comic sans ms", fontSize: 24, color: Color.Gold, bold: true);
+            plt.Legend(fontName: "comic sans ms", fontSize: 16, bold: true, fontColor: Color.DarkBlue);
 
-            formsPlot1.plt.PlotCandlestick(ohlcs);
-            formsPlotSkia1.plt.PlotCandlestick(ohlcs);
-
-            formsPlot1.Render();
-            formsPlotSkia1.Render();
+            formsPlotSkia1.plt.Title("Impressive Graph", fontName: "courier new", fontSize: 24, color: Color.Purple, bold: true);
+            formsPlotSkia1.plt.YLabel("vertical units", fontName: "impact", fontSize: 24, color: Color.Red, bold: true);
+            formsPlotSkia1.plt.XLabel("horizontal units", fontName: "georgia", fontSize: 24, color: Color.Blue, bold: true);
+            formsPlotSkia1.plt.PlotScatter(dataXs, dataSin, label: "sin");
+            formsPlotSkia1.plt.PlotScatter(dataXs, dataCos, label: "cos");
+            formsPlotSkia1.plt.PlotText("very graph", 25, .8, fontName: "comic sans ms", fontSize: 24, color: Color.Blue, bold: true);
+            formsPlotSkia1.plt.PlotText("so data", 0, 0, fontName: "comic sans ms", fontSize: 42, color: Color.Magenta, bold: true);
+            formsPlotSkia1.plt.PlotText("many documentation", 3, -.6, fontName: "comic sans ms", fontSize: 18, color: Color.DarkCyan, bold: true);
+            formsPlotSkia1.plt.PlotText("wow.", 10, .6, fontName: "comic sans ms", fontSize: 36, color: Color.Green, bold: true);
+            formsPlotSkia1.plt.PlotText("NuGet", 32, 0, fontName: "comic sans ms", fontSize: 24, color: Color.Gold, bold: true);
+            formsPlotSkia1.plt.Legend(fontName: "comic sans ms", fontSize: 16, bold: true, fontColor: Color.DarkBlue);
         }
 
         private void BtnUpdateData_Click(object sender, EventArgs e)

@@ -90,7 +90,8 @@ namespace ScottPlotSkia
 
         public void DrawString(string text, Font font, Brush brush, PointF point)
         {
-            throw new NotImplementedException();
+            var paint = font.ToSKPaint(brush, AA);                        
+            canvas.DrawText(text, point.X, point.Y, paint);
         }
 
         public void FillEllipse(Brush brush, float x, float y, float widht, float height)
@@ -115,7 +116,7 @@ namespace ScottPlotSkia
 
         public void FillRectangle(Brush brush, float x, float y, float widht, float height)
         {
-            canvas.DrawRect(x, y, widht, height, brush.ToSKPaint());
+            canvas.DrawRect(x, y, widht, height, brush.ToSKPaint(AA));
         }
 
         public void FillRectangles(Brush brush, RectangleF[] rects)
@@ -124,7 +125,7 @@ namespace ScottPlotSkia
             {
                 foreach (var rect in rects)
                     path.AddRect(rect.ToSKRect());
-                canvas.DrawPath(path, brush.ToSKPaint());
+                canvas.DrawPath(path, brush.ToSKPaint(AA));
             }
         }
 
@@ -135,7 +136,8 @@ namespace ScottPlotSkia
 
         public SizeF MeasureString(string text, Font font)
         {
-            throw new NotImplementedException();
+            SKPaint paint = new SKPaint() { TextSize = font.Size * 100 / 72 }; // point to pixel = 100 / 72
+            return new SizeF(paint.MeasureText(text), paint.TextSize);            
         }
 
         public void Resize(int width, int height)

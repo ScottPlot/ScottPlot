@@ -69,5 +69,31 @@ namespace ScottPlotSkia
             result.Style = SKPaintStyle.Fill;
             return result;
         }
+
+        public static SKFontStyle ToSKFontStyle(this FontStyle style)
+        {
+            if (style == FontStyle.Regular)
+                return SKFontStyle.Normal;
+            if ((style & FontStyle.Bold) != 0 && (style & FontStyle.Italic) != 0)
+                return SKFontStyle.BoldItalic;
+            if ((style & FontStyle.Bold) != 0)
+                return SKFontStyle.Bold;
+            if ((style & FontStyle.Italic) != 0)
+                return SKFontStyle.Italic;
+            return SKFontStyle.Normal;
+        }
+
+        public static SKPaint ToSKPaint(this Font font, Brush brush, bool AntiAlias = false)
+        {
+            SKPaint result = new SKPaint();
+            result.IsAntialias = AntiAlias;
+            var solidBrush = brush as SolidBrush;
+            if (solidBrush == null)
+                throw new ArgumentOutOfRangeException("Unsupported brush type: " + brush.GetType().ToString());
+            result.Color = solidBrush.Color.ToSKColor();
+            result.TextSize = font.SizeInPoints * 100 / 72; // skiaMeasure in pixel 100/inch, GDI+ measure in points 72/inch
+            result.Typeface = SKTypeface.FromFamilyName(font.FontFamily.Name, font.Style.ToSKFontStyle());
+            return result;
+        }
     }
 }
