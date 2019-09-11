@@ -937,6 +937,8 @@ namespace ScottPlot
                 settings.AxisAuto();
             if (padding != null)
                 settings.layout.padOnAllSides = (int)padding;
+            settings.ticks?.x?.Recalculate(settings, false);
+            settings.ticks?.y?.Recalculate(settings, true);
             settings.layout.Tighten(settings.ticks, settings.title, settings.xLabel, settings.yLabel);
             Resize();
         }

@@ -491,6 +491,30 @@ namespace ScottPlotCookbook
             return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
         }
 
+        public string Figure_21c_Automatic_Left_Padding()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+
+            var plt = new ScottPlot.Plot(width, height);
+            Random rand = new Random(0);
+            double[] xs = ScottPlot.DataGen.Consecutive(100);
+            double[] ys = ScottPlot.DataGen.RandomWalk(rand, 100, 1e2, 1e15);
+            plt.PlotScatter(xs, ys);
+            plt.YLabel("vertical units");
+            plt.XLabel("horizontal units");
+
+            // this can be problematic because Y labels get very large
+            plt.Ticks(useOffsetNotation: false, useMultiplierNotation: false);
+
+            // tighening the layout can help!
+            plt.TightenLayout();
+
+            plt.SaveFig(fileName);
+            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            return name + ":" + ScottPlot.Tools.BitmapHash(plt.GetBitmap());
+        }
+
         public string Figure_22_Custom_Colors()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
