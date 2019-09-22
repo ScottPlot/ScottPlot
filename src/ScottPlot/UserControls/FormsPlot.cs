@@ -23,7 +23,7 @@ namespace ScottPlot
             plt.Style(ScottPlot.Style.Control);
             pbPlot.MouseWheel += PbPlot_MouseWheel;
 
-            if (LicenseManager.UsageMode == LicenseUsageMode.Designtime)
+            if (Process.GetCurrentProcess().ProcessName == "devenv")
                 Tools.DesignerModeDemoPlot(plt);
 
             PbPlot_SizeChanged(null, null);
@@ -50,9 +50,19 @@ namespace ScottPlot
 
         public void Render(bool skipIfCurrentlyRendering = false, bool lowQuality = false)
         {
-            if (LicenseManager.UsageMode == LicenseUsageMode.Designtime)
+            if (Process.GetCurrentProcess().ProcessName == "devenv")
+            {
                 if (!isStandardDpi())
+                {
+                    lblStatus.Text = "Rendering disabled in designer mode when using DPI scaling";
+                    lblStatus.Visible = true;
                     return;
+                }
+                else
+                {
+                    lblStatus.Visible = false;
+                }
+            }
 
             if (lastInteractionTimer.Enabled)
                 lastInteractionTimer.Stop();
