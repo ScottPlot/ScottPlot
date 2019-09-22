@@ -93,9 +93,26 @@ namespace ScottPlot.UserControls
         private void LbPlotObjects_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (lbPlotObjects.Items.Count > 0 && lbPlotObjects.SelectedItem != null)
+            {
+                int plotObjectIndex = lbPlotObjects.SelectedIndex;
+                var plottable = plt.GetPlottables()[plotObjectIndex];
+
                 btnExportCSV.Enabled = true;
+                tbLabel.Enabled = true;
+                tbLabel.Text = plottable.label;
+            }
             else
+            {
                 btnExportCSV.Enabled = false;
+                tbLabel.Enabled = false;
+            }
+        }
+
+        private void TbLabel_TextChanged(object sender, EventArgs e)
+        {
+            int plotObjectIndex = lbPlotObjects.SelectedIndex;
+            var plottable = plt.GetPlottables()[plotObjectIndex];
+            plottable.label = tbLabel.Text;
         }
 
         private void BtnSave_Click(object sender, EventArgs e)
@@ -146,5 +163,6 @@ namespace ScottPlot.UserControls
         {
             plt.TightenLayout();
         }
+
     }
 }
