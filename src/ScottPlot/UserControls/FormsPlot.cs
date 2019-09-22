@@ -24,8 +24,7 @@ namespace ScottPlot
             pbPlot.MouseWheel += PbPlot_MouseWheel;
 
             if (LicenseManager.UsageMode == LicenseUsageMode.Designtime)
-                if (isStandardDpi())
-                    Tools.DesignerModeDemoPlot(plt);
+                Tools.DesignerModeDemoPlot(plt);
 
             PbPlot_SizeChanged(null, null);
         }
@@ -51,6 +50,10 @@ namespace ScottPlot
 
         public void Render(bool skipIfCurrentlyRendering = false, bool lowQuality = false)
         {
+            if (LicenseManager.UsageMode == LicenseUsageMode.Designtime)
+                if (!isStandardDpi())
+                    return;
+
             if (lastInteractionTimer.Enabled)
                 lastInteractionTimer.Stop();
 
