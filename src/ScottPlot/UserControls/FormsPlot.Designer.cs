@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.pbPlot = new System.Windows.Forms.PictureBox();
+            this.lblStatus = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbPlot)).BeginInit();
             this.SuspendLayout();
             // 
@@ -48,20 +49,36 @@
             this.pbPlot.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PbPlot_MouseMove);
             this.pbPlot.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PbPlot_MouseUp);
             // 
-            // ScottPlotUC
+            // lblStatus
+            // 
+            this.lblStatus.AutoSize = true;
+            this.lblStatus.BackColor = System.Drawing.Color.Red;
+            this.lblStatus.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblStatus.ForeColor = System.Drawing.Color.Yellow;
+            this.lblStatus.Location = new System.Drawing.Point(10, 10);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(110, 17);
+            this.lblStatus.TabIndex = 1;
+            this.lblStatus.Text = "ERROR MESSAGE";
+            this.lblStatus.Visible = false;
+            // 
+            // FormsPlot
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.pbPlot);
-            this.Name = "ScottPlotUC";
+            this.Name = "FormsPlot";
             this.Size = new System.Drawing.Size(500, 350);
             ((System.ComponentModel.ISupportInitialize)(this.pbPlot)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
         private System.Windows.Forms.PictureBox pbPlot;
+        private System.Windows.Forms.Label lblStatus;
     }
 }
