@@ -1,5 +1,19 @@
 # ScottPlot Changelog
 
+## ScottPlot 3.1.4
+_Published on [NuGet](https://www.nuget.org/packages/ScottPlot/) on 2019-09-22_
+
+### Major Changes
+* middle-click-drag zooms into a rectangle drawn with the mouse
+
+### Minor Changes
+* fixed bug that caused user control to crash Visual Studio on some systems that used DPI scaling (#125, #111). _Thanks @ab-tools and @bukkideme for your work on this._
+* fixed poor rendering for extremely small plots
+* fixed bug when making a scatter plot with a single point (#126). _Thanks @bonzaiferroni for your work on this._
+* added more options to right-click settings menu (grid options, legend options, axis labels, editable plot labels, etc.)
+* improved axis padding and image tightening
+* greatly refactored the settings module (no change in functionality)
+
 ## ScottPlot 3.1.3
 
 _Published on [NuGet](https://www.nuget.org/packages/ScottPlot/) on 2019-08-25_
