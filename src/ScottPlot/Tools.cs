@@ -119,6 +119,22 @@ namespace ScottPlot
             plt.YLabel("Sample Data");
         }
 
+        public static Bitmap DesignerModeBitmap(Size size)
+        {
+            Bitmap bmp = new Bitmap(size.Width, size.Height);
+
+            {
+                Graphics gfx = Graphics.FromImage(bmp);
+                gfx.Clear(ColorTranslator.FromHtml("#003366"));
+                Brush brsh = new SolidBrush(ColorTranslator.FromHtml("#006699"));
+                FontFamily ff = new FontFamily(Tools.VerifyFont("Segoe UI"));
+                gfx.DrawString("ScottPlot", new Font(ff, 24, FontStyle.Bold), brsh, 10, 10);
+                gfx.DrawString($"version {GetVersionString()}", new Font(ff, 12, FontStyle.Italic), brsh, 12, 45);
+            }
+
+            return bmp;
+        }
+
         public static BitmapImage bmpImageFromBmp(System.Drawing.Bitmap bmp)
         {
             System.IO.MemoryStream stream = new System.IO.MemoryStream();
