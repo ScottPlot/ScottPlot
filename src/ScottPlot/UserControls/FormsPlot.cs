@@ -22,10 +22,6 @@ namespace ScottPlot
             SetupTimers();
             plt.Style(ScottPlot.Style.Control);
             pbPlot.MouseWheel += PbPlot_MouseWheel;
-
-            if (Process.GetCurrentProcess().ProcessName == "devenv")
-                Tools.DesignerModeDemoPlot(plt);
-
             PbPlot_SizeChanged(null, null);
         }
 
@@ -52,16 +48,8 @@ namespace ScottPlot
         {
             if (Process.GetCurrentProcess().ProcessName == "devenv")
             {
-                if (!isStandardDpi())
-                {
-                    lblStatus.Text = "Rendering disabled in designer mode when using DPI scaling";
-                    lblStatus.Visible = true;
-                    return;
-                }
-                else
-                {
-                    lblStatus.Visible = false;
-                }
+                pbPlot.Image = Tools.DesignerModeBitmap(pbPlot.Size);
+                return;
             }
 
             if (lastInteractionTimer.Enabled)
