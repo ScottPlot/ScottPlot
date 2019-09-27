@@ -48,7 +48,14 @@ namespace ScottPlot
         {
             if (Process.GetCurrentProcess().ProcessName == "devenv")
             {
-                pbPlot.Image = Tools.DesignerModeBitmap(pbPlot.Size);
+                try
+                {
+                    pbPlot.Image = Tools.DesignerModeBitmap(pbPlot.Size);
+                }
+                catch
+                {
+                    pbPlot.BackColor = Color.Red;
+                }
                 return;
             }
 
