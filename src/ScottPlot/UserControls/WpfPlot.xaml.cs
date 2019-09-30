@@ -66,8 +66,11 @@ namespace ScottPlot
 
         private void UserControl_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            plt.mouseTracker.MouseDown(e.GetPosition(this));
-            CaptureMouse();
+            if (e.ChangedButton == MouseButton.Left || e.ChangedButton == MouseButton.Right)
+            {
+                plt.mouseTracker.MouseDown(e.GetPosition(this));
+                CaptureMouse();
+            }
         }
 
         private void UserControl_MouseMove(object sender, MouseEventArgs e)
@@ -79,15 +82,25 @@ namespace ScottPlot
 
         private void UserControl_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            plt.mouseTracker.MouseUp(e.GetPosition(this));
-            if (plt.mouseTracker.lowQualityWhileInteracting && plt.mouseTracker.mouseUpHQRenderDelay > 0)
+            if (e.ChangedButton == MouseButton.Left || e.ChangedButton == MouseButton.Right)
             {
-                Render(false, true);
-                timer.Interval = TimeSpan.FromMilliseconds(plt.mouseTracker.mouseUpHQRenderDelay);
-                timer.Start();
+                plt.mouseTracker.MouseUp(e.GetPosition(this));
+                if (plt.mouseTracker.lowQualityWhileInteracting && plt.mouseTracker.mouseUpHQRenderDelay > 0)
+                {
+                    Render(false, true);
+                    timer.Interval = TimeSpan.FromMilliseconds(plt.mouseTracker.mouseUpHQRenderDelay);
+                    timer.Start();
+                }
+                else
+                {
+                    Render(skipIfCurrentlyRendering: false);
+                }
             }
-            else
+            else if (e.ChangedButton == MouseButton.Middle)
+            {
+                plt.AxisAuto();
                 Render(skipIfCurrentlyRendering: false);
+            }
             ReleaseMouseCapture();
         }
     }
