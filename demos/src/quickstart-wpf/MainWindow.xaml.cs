@@ -28,6 +28,7 @@ namespace ScottPlotQuickstartWPF
             wpfPlot1.plt.Title("WPF Demo");
             wpfPlot1.plt.YLabel("signal level");
             wpfPlot1.plt.XLabel("horizontal units");
+            AddPlot(null, null);
         }
 
         private void AddPlot(object sender, RoutedEventArgs e)
