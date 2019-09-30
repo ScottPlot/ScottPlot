@@ -55,9 +55,7 @@ namespace ScottPlot
 
         private void CanvasPlot_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            DpiScale sc = VisualTreeHelper.GetDpi(this);
-            plt.Resize((int)(canvasPlot.ActualWidth * sc.DpiScaleX),
-                (int)(canvasPlot.ActualHeight * sc.DpiScaleY));
+            plt.Resize((int)canvasPlot.ActualWidth, (int)canvasPlot.ActualHeight);
             Render(skipIfCurrentlyRendering: false);
         }
 
