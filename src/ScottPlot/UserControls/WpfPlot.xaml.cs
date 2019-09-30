@@ -103,5 +103,26 @@ namespace ScottPlot
             }
             ReleaseMouseCapture();
         }
+
+        private void UserControl_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            // note: AxisZoom's zoomCenter argument could be used to zoom to the cursor (see code in FormsPlot.cs).
+            // However, this requires some work and testing to ensure it works if DPI scaling is used too.
+            // Currently, scroll-wheel zooming simply zooms in and out of the center of the plot.
+
+            double zoomAmountY = 0.15;
+            double zoomAmountX = 0.15;
+
+            if (e.Delta > 1)
+            {
+                plt.AxisZoom(1 + zoomAmountX, 1 + zoomAmountY);
+            }
+            else
+            {
+                plt.AxisZoom(1 - zoomAmountX, 1 - zoomAmountY);
+            }
+
+            Render(skipIfCurrentlyRendering: false);
+        }
     }
 }
