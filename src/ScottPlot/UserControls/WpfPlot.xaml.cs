@@ -55,7 +55,9 @@ namespace ScottPlot
 
         private void CanvasPlot_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            plt.Resize((int)canvasPlot.ActualWidth, (int)canvasPlot.ActualHeight);
+            double xs = plt.GetSettings().gfxFigure.DpiX / 96;
+            double ys = plt.GetSettings().gfxFigure.DpiY / 96;
+            plt.Resize((int)(canvasPlot.ActualWidth * xs), (int)(canvasPlot.ActualHeight * ys));
             Render(skipIfCurrentlyRendering: false);
         }
 
