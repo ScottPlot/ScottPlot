@@ -23,7 +23,7 @@ namespace ScottPlot
     {
         public Plot plt = new Plot();
 
-        private DispatcherTimer timer;        
+        private DispatcherTimer timer;
 
         private bool currentlyRendering = false;
 
@@ -55,14 +55,22 @@ namespace ScottPlot
 
         private void CanvasPlot_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            plt.Resize((int)canvasPlot.ActualWidth, (int)canvasPlot.ActualHeight);
+            double dpiScaleX = plt.GetSettings().gfxFigure.DpiX / 96;
+            double dpiScaleY = plt.GetSettings().gfxFigure.DpiY / 96;
+            plt.Resize(
+                width: (int)(canvasPlot.ActualWidth * dpiScaleX),
+                height: (int)(canvasPlot.ActualHeight * dpiScaleY)
+                );
             Render(skipIfCurrentlyRendering: false);
         }
 
         private void UserControl_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            plt.mouseTracker.MouseDown(e.GetPosition(this));
-            CaptureMouse();
+            if (e.ChangedButton == MouseButton.Left || e.ChangedButton == MouseButton.Right)
+            {
+                plt.mouseTracker.MouseDown(e.GetPosition(this));
+                CaptureMouse();
+            }
         }
 
         private void UserControl_MouseMove(object sender, MouseEventArgs e)
@@ -74,16 +82,47 @@ namespace ScottPlot
 
         private void UserControl_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            plt.mouseTracker.MouseUp(e.GetPosition(this));
-            if (plt.mouseTracker.lowQualityWhileInteracting && plt.mouseTracker.mouseUpHQRenderDelay > 0)
+            if (e.ChangedButton == MouseButton.Left || e.ChangedButton == MouseButton.Right)
             {
-                Render(false, true);
-                timer.Interval = TimeSpan.FromMilliseconds(plt.mouseTracker.mouseUpHQRenderDelay);
-                timer.Start();
+                plt.mouseTracker.MouseUp(e.GetPosition(this));
+                if (plt.mouseTracker.lowQualityWhileInteracting && plt.mouseTracker.mouseUpHQRenderDelay > 0)
+                {
+                    Render(false, true);
+                    timer.Interval = TimeSpan.FromMilliseconds(plt.mouseTracker.mouseUpHQRenderDelay);
+                    timer.Start();
+                }
+                else
+                {
+                    Render(skipIfCurrentlyRendering: false);
+                }
+            }
+            else if (e.ChangedButton == MouseButton.Middle)
+            {
+                plt.AxisAuto();
+                Render(skipIfCurrentlyRendering: false);
+            }
+            ReleaseMouseCapture();
+        }
+
+        private void UserControl_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            // note: AxisZoom's zoomCenter argument could be used to zoom to the cursor (see code in FormsPlot.cs).
+            // However, this requires some work and testing to ensure it works if DPI scaling is used too.
+            // Currently, scroll-wheel zooming simply zooms in and out of the center of the plot.
+
+            double zoomAmountY = 0.15;
+            double zoomAmountX = 0.15;
+
+            if (e.Delta > 1)
+            {
+                plt.AxisZoom(1 + zoomAmountX, 1 + zoomAmountY);
             }
             else
-                Render(skipIfCurrentlyRendering: false);
-            ReleaseMouseCapture();
+            {
+                plt.AxisZoom(1 - zoomAmountX, 1 - zoomAmountY);
+            }
+
+            Render(skipIfCurrentlyRendering: false);
         }
     }
 }
