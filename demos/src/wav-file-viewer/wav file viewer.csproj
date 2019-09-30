@@ -8,9 +8,10 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>wav_file_viewer</RootNamespace>
     <AssemblyName>wav file viewer</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -68,6 +69,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -84,7 +86,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\ScottPlot\ScottPlot.csproj">
-      <Project>{EE9215C6-01C1-4835-8514-3A708F9291F1}</Project>
+      <Project>{ee9215c6-01c1-4835-8514-3a708f9291f1}</Project>
       <Name>ScottPlot</Name>
     </ProjectReference>
   </ItemGroup>
