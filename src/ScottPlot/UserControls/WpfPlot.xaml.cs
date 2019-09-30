@@ -23,7 +23,7 @@ namespace ScottPlot
     {
         public Plot plt = new Plot();
 
-        private DispatcherTimer timer;        
+        private DispatcherTimer timer;
 
         private bool currentlyRendering = false;
 
