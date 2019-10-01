@@ -36,7 +36,7 @@ namespace ScottPlot
                 timer.Stop(); // AutoReset = false
                 Render(skipIfCurrentlyRendering: false);
             };
-            if (System.Diagnostics.Process.GetCurrentProcess().ProcessName == "devenv")
+            if (System.ComponentModel.LicenseManager.UsageMode == System.ComponentModel.LicenseUsageMode.Designtime)
                 Tools.DesignerModeDemoPlot(plt);
             CanvasPlot_SizeChanged(null, null);
         }
