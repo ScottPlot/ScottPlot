@@ -59,8 +59,7 @@ namespace ScottPlot
                 return;
             }
 
-            if (lastInteractionTimer.Enabled)
-                lastInteractionTimer.Stop();
+            lastInteractionTimer?.Stop();
 
             if (!(skipIfCurrentlyRendering && currentlyRendering))
             {
