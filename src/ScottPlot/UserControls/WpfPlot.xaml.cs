@@ -36,13 +36,27 @@ namespace ScottPlot
                 timer.Stop(); // AutoReset = false
                 Render(skipIfCurrentlyRendering: false);
             };
-            if (System.ComponentModel.LicenseManager.UsageMode == System.ComponentModel.LicenseUsageMode.Designtime)
-                Tools.DesignerModeDemoPlot(plt);
             CanvasPlot_SizeChanged(null, null);
         }
 
         public void Render(bool skipIfCurrentlyRendering = false, bool lowQuality = false)
         {
+
+            if (System.ComponentModel.LicenseManager.UsageMode == System.ComponentModel.LicenseUsageMode.Designtime)
+            {
+                try
+                {
+                    System.Drawing.Size controlPixelSize = new System.Drawing.Size(scaledWidth, scaledHeight);
+                    System.Drawing.Bitmap bmp = Tools.DesignerModeBitmap(controlPixelSize);
+                    imagePlot.Source = Tools.bmpImageFromBmp(bmp);
+                }
+                catch
+                {
+
+                }
+                return;
+            }
+
             if (!(skipIfCurrentlyRendering && currentlyRendering))
             {
                 if (timer.IsEnabled)
@@ -53,14 +67,27 @@ namespace ScottPlot
             }
         }
 
+        private int scaledWidth
+        {
+            get
+            {
+                double dpiScaleX = plt.GetSettings().gfxFigure.DpiX / 96;
+                return (int)(canvasPlot.ActualWidth * dpiScaleX);
+            }
+        }
+
+        private int scaledHeight
+        {
+            get
+            {
+                double dpiScaleY = plt.GetSettings().gfxFigure.DpiY / 96;
+                return (int)(canvasPlot.ActualHeight * dpiScaleY);
+            }
+        }
+
         private void CanvasPlot_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            double dpiScaleX = plt.GetSettings().gfxFigure.DpiX / 96;
-            double dpiScaleY = plt.GetSettings().gfxFigure.DpiY / 96;
-            plt.Resize(
-                width: (int)(canvasPlot.ActualWidth * dpiScaleX),
-                height: (int)(canvasPlot.ActualHeight * dpiScaleY)
-                );
+            plt.Resize(scaledWidth, scaledHeight);
             Render(skipIfCurrentlyRendering: false);
         }
 
