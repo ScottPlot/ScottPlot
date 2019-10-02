@@ -61,9 +61,9 @@ namespace ScottPlot
             // TODO: data origin should be calculated at render time, not now.
             figureSize = new Size(width, height);
             dataOrigin = new Point(layout.paddingBySide[0], layout.paddingBySide[3]);
-            int dataWidth = figureSize.Width - layout.paddingBySide[0] - layout.paddingBySide[1];
-            int dataHeight = figureSize.Height - layout.paddingBySide[2] - layout.paddingBySide[3];
-            dataSize = new Size(dataWidth, dataHeight);
+            int w = Math.Max(figureSize.Width - layout.paddingBySide[0] - layout.paddingBySide[1], 0);
+            int h = Math.Max(figureSize.Height - layout.paddingBySide[2] - layout.paddingBySide[3], 0);
+            dataSize = new Size(w, h);
         }
 
         public void AxesPanPx(int dxPx, int dyPx)
