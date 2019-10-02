@@ -8,8 +8,14 @@
         mc:Ignorable="d"
         Title="ScottPlot - WPF Demo" Height="404.808" Width="594.586">
     <Grid>
-        <ScottPlot:WpfPlot Name="wpfPlot1" Margin="10"/>
-        <Button Content="Add Plot" HorizontalAlignment="Left" Margin="422,10,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="2.805,-1.893" Click="AddPlot"/>
-        <Button Content="Clear" HorizontalAlignment="Left" Margin="502,10,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="2.805,-1.893" Click="Clear"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button  Content="Add Plot" Width="75"  Click="AddPlot"/>
+            <Button  Content="Clear"    Width="75"  Click="Clear"  Margin="10,0,0,0"/>
+        </StackPanel>
+        <ScottPlot:WpfPlot Grid.Row="1" Name="wpfPlot1" />
     </Grid>
 </Window>
