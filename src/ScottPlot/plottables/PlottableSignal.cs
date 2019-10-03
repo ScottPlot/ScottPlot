@@ -205,13 +205,14 @@ namespace ScottPlot
             int visibleIndex2 = (int)(offsetPoints + columnPointCount * (settings.dataSize.Width + 1));
             int visiblePointCount = visibleIndex2 - visibleIndex1;
             double pointsPerPixelColumn = visiblePointCount / settings.dataSize.Width;
+            double dataWidthPx2 = visibleIndex2 - visibleIndex1 + 2;
 
             PointF firstPoint = settings.GetPixel(xOffset, ys[0] + yOffset);
             PointF lastPoint = settings.GetPixel(samplePeriod * (ys.Length - 1) + xOffset, ys[ys.Length - 1] + yOffset);
             double dataWidthPx = lastPoint.X - firstPoint.X;
 
             // use different rendering methods based on how dense the data is on screen
-            if (dataWidthPx <= 1)
+            if ((dataWidthPx <= 1) || (dataWidthPx2 <= 1))
             {
                 RenderSingleLine(settings);
             }
