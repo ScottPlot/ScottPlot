@@ -63,6 +63,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eeg-viewer", "..\demos\src\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "show value on hover", "..\demos\src\show-value-on-hover\show value on hover.csproj", "{87931F18-6DFE-4106-A542-E2758157B780}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScottPlotTests", "..\tests\ScottPlotTests\ScottPlotTests.csproj", "{953AB099-D640-4693-ABE2-58AB3872571D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{9079BA40-167F-405F-87AA-7D7062CFBE8B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -173,6 +177,10 @@ Global
 		{87931F18-6DFE-4106-A542-E2758157B780}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{87931F18-6DFE-4106-A542-E2758157B780}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{87931F18-6DFE-4106-A542-E2758157B780}.Release|Any CPU.Build.0 = Release|Any CPU
+		{953AB099-D640-4693-ABE2-58AB3872571D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{953AB099-D640-4693-ABE2-58AB3872571D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{953AB099-D640-4693-ABE2-58AB3872571D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{953AB099-D640-4693-ABE2-58AB3872571D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -205,6 +213,7 @@ Global
 		{7B5ACCD9-E14A-4C08-8B04-EF0E8E2FAEF3} = {748BADFA-C291-4FCF-B2DC-4475006BF0A5}
 		{3438622A-6970-4AC1-A793-363DB21C658A} = {748BADFA-C291-4FCF-B2DC-4475006BF0A5}
 		{87931F18-6DFE-4106-A542-E2758157B780} = {748BADFA-C291-4FCF-B2DC-4475006BF0A5}
+		{953AB099-D640-4693-ABE2-58AB3872571D} = {9079BA40-167F-405F-87AA-7D7062CFBE8B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FBAE082A-173A-4F13-BE31-E6C070513C9C}
