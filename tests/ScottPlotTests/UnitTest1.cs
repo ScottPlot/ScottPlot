@@ -31,7 +31,7 @@ namespace ScottPlotTests
         {
             {
                 var plt = new ScottPlot.Plot(1, 1);
-                string file = Path.GetRandomFileName() + ".bmp";
+                string file = Path.GetTempPath() + "test.bmp";
                 plt.SaveFig(file);
                 Bitmap bmp = new Bitmap(file);
                 Assert.AreEqual(bmp.Width, 1);
@@ -40,15 +40,11 @@ namespace ScottPlotTests
 
             {
                 var plt = new ScottPlot.Plot(1, 1);
-                string file = Path.GetRandomFileName() + ".bmp";
-                try
-                {
-                    plt.SaveFig(file, renderFirst: false);
-                }
-                catch (Exception ex)
-                {
-                    Assert.Fail("Expected no exception, but got: " + ex.Message);
-                }
+                string file = Path.GetTempPath() + "test.png";
+                plt.SaveFig(file, renderFirst: false);
+                Bitmap bmp = new Bitmap(file);
+                Assert.AreEqual(bmp.Width, 1);
+                Assert.AreEqual(bmp.Height, 1);
             }
         }
     }
