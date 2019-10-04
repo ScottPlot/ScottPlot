@@ -119,6 +119,67 @@ namespace ScottPlot
             plt.YLabel("Sample Data");
         }
 
+        public static Bitmap DesignerModeBitmap(Size size)
+        {
+            Bitmap bmp = new Bitmap(size.Width, size.Height);
+
+            {
+                Graphics gfx = Graphics.FromImage(bmp);
+                gfx.Clear(ColorTranslator.FromHtml("#003366"));
+                Brush brushLogo = new SolidBrush(ColorTranslator.FromHtml("#FFFFFF"));
+                Brush brushMeasurements = new SolidBrush(ColorTranslator.FromHtml("#006699"));
+                Pen pen = new Pen(ColorTranslator.FromHtml("#006699"), 3);
+                pen.StartCap = System.Drawing.Drawing2D.LineCap.Round;
+                pen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
+                float arrowSize = 7;
+                float padding = 3;
+
+                // logo
+                FontFamily ff = new FontFamily(Tools.VerifyFont("Segoe UI"));
+                gfx.DrawString("ScottPlot", new Font(ff, 24, FontStyle.Bold), brushLogo, 10, 10);
+                var titleSize = gfx.MeasureString("ScottPlot", new Font(ff, 24, FontStyle.Bold));
+                gfx.DrawString($"version {GetVersionString()}", new Font(ff, 12, FontStyle.Italic), brushLogo, 12, (int)(10 + titleSize.Height * .7));
+
+                // horizontal line
+                PointF left = new PointF(padding, size.Height / 2);
+                PointF leftA = new PointF(left.X + arrowSize, left.Y + arrowSize);
+                PointF leftB = new PointF(left.X + arrowSize, left.Y - arrowSize);
+                PointF right = new PointF(size.Width - padding, size.Height / 2);
+                PointF rightA = new PointF(right.X - arrowSize, right.Y + arrowSize);
+                PointF rightB = new PointF(right.X - arrowSize, right.Y - arrowSize);
+                gfx.DrawLine(pen, left, right);
+                gfx.DrawLine(pen, left, leftA);
+                gfx.DrawLine(pen, left, leftB);
+                gfx.DrawLine(pen, right, rightA);
+                gfx.DrawLine(pen, right, rightB);
+
+                // vertical line
+                PointF top = new PointF(size.Width / 2, padding);
+                PointF topA = new PointF(top.X - arrowSize, top.Y + arrowSize);
+                PointF topB = new PointF(top.X + arrowSize, top.Y + arrowSize);
+                PointF bot = new PointF(size.Width / 2, size.Height - padding);
+                PointF botA = new PointF(bot.X - arrowSize, bot.Y - arrowSize);
+                PointF botB = new PointF(bot.X + arrowSize, bot.Y - arrowSize);
+                gfx.DrawLine(pen, top, bot);
+                gfx.DrawLine(pen, bot, botA);
+                gfx.DrawLine(pen, bot, botB);
+                gfx.DrawLine(pen, top, topA);
+                gfx.DrawLine(pen, top, topB);
+
+                // size text
+                gfx.DrawString($"{size.Width}px",
+                    new Font(ff, 12, FontStyle.Bold), brushMeasurements,
+                    (float)(size.Width * .2), (float)(size.Height * .5));
+
+                gfx.RotateTransform(-90);
+                gfx.DrawString($"{size.Height}px",
+                    new Font(ff, 12, FontStyle.Bold), brushMeasurements,
+                    (float)(-size.Height * .4), (float)(size.Width * .5));
+            }
+
+            return bmp;
+        }
+
         public static BitmapImage bmpImageFromBmp(System.Drawing.Bitmap bmp)
         {
             System.IO.MemoryStream stream = new System.IO.MemoryStream();

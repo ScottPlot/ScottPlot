@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.ComponentModel;
 
 namespace ScottPlot
 {
@@ -21,8 +22,6 @@ namespace ScottPlot
             SetupTimers();
             plt.Style(ScottPlot.Style.Control);
             pbPlot.MouseWheel += PbPlot_MouseWheel;
-            if (Process.GetCurrentProcess().ProcessName == "devenv")
-                Tools.DesignerModeDemoPlot(plt);
             PbPlot_SizeChanged(null, null);
         }
 
@@ -37,10 +36,30 @@ namespace ScottPlot
             lastInteractionTimer.Elapsed += (o, arg) => Render(skipIfCurrentlyRendering: false);
         }
 
+        public bool isStandardDpi()
+        {
+            int expectedDpi = 96;
+            int dpi = (int)plt.GetSettings().gfxFigure.DpiX;
+            int dpiY = (int)plt.GetSettings().gfxFigure.DpiY;
+            return (dpi == expectedDpi) && (dpiY == expectedDpi);
+        }
+
         public virtual void Render(bool skipIfCurrentlyRendering = false, bool lowQuality = false)
         {
-            if (lastInteractionTimer.Enabled)
-                lastInteractionTimer.Stop();
+            if (Process.GetCurrentProcess().ProcessName == "devenv")
+            {
+                try
+                {
+                    pbPlot.Image = Tools.DesignerModeBitmap(pbPlot.Size);
+                }
+                catch
+                {
+                    pbPlot.BackColor = Color.Red;
+                }
+                return;
+            }
+
+            lastInteractionTimer?.Stop();
 
             if (!(skipIfCurrentlyRendering && currentlyRendering))
             {

@@ -48,12 +48,12 @@
             this.pbPlot.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PbPlot_MouseMove);
             this.pbPlot.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PbPlot_MouseUp);
             // 
-            // ScottPlotUC
+            // FormsPlot
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.pbPlot);
-            this.Name = "ScottPlotUC";
+            this.Name = "FormsPlot";
             this.Size = new System.Drawing.Size(500, 350);
             ((System.ComponentModel.ISupportInitialize)(this.pbPlot)).EndInit();
             this.ResumeLayout(false);
