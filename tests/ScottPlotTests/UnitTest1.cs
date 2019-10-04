@@ -33,18 +33,22 @@ namespace ScottPlotTests
                 var plt = new ScottPlot.Plot(1, 1);
                 string file = Path.GetTempPath() + "test.bmp";
                 plt.SaveFig(file);
-                Bitmap bmp = new Bitmap(file);
-                Assert.AreEqual(bmp.Width, 1);
-                Assert.AreEqual(bmp.Height, 1);
+                using (Bitmap bmp = new Bitmap(file))
+                {
+                    Assert.AreEqual(bmp.Width, 1);
+                    Assert.AreEqual(bmp.Height, 1);
+                }
             }
 
             {
                 var plt = new ScottPlot.Plot(1, 1);
                 string file = Path.GetTempPath() + "test.png";
                 plt.SaveFig(file, renderFirst: false);
-                Bitmap bmp = new Bitmap(file);
-                Assert.AreEqual(bmp.Width, 1);
-                Assert.AreEqual(bmp.Height, 1);
+                using (Bitmap bmp = new Bitmap(file))
+                {
+                    Assert.AreEqual(bmp.Width, 1);
+                    Assert.AreEqual(bmp.Height, 1);
+                }
             }
         }
     }
