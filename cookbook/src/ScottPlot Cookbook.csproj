@@ -51,7 +51,6 @@
     <Compile Include="CookBookManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Recipes.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -60,6 +59,10 @@
     <ProjectReference Include="..\..\src\ScottPlot\ScottPlot.csproj">
       <Project>{ee9215c6-01c1-4835-8514-3a708f9291f1}</Project>
       <Name>ScottPlot</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\tests\ScottPlotTests\ScottPlotTests.csproj">
+      <Project>{953ab099-d640-4693-abe2-58ab3872571d}</Project>
+      <Name>ScottPlotTests</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
