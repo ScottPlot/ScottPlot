@@ -31,7 +31,7 @@ namespace ScottPlotTests
         {
             {
                 var plt = new ScottPlot.Plot(1, 1);
-                string file = Path.GetTempPath() + "test.bmp";
+                string file = Path.GetRandomFileName() + ".bmp";
                 plt.SaveFig(file);
                 Bitmap bmp = new Bitmap(file);
                 Assert.AreEqual(bmp.Width, 1);
@@ -40,7 +40,7 @@ namespace ScottPlotTests
 
             {
                 var plt = new ScottPlot.Plot(1, 1);
-                string file = Path.GetTempPath() + "test.bmp";
+                string file = Path.GetRandomFileName() + ".bmp";
                 try
                 {
                     plt.SaveFig(file, renderFirst: false);
