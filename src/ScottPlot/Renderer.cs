@@ -63,7 +63,10 @@ namespace ScottPlot
 
         public static void CreateLegendBitmap(Settings settings)
         {
+            settings.legendBackend.SetDrawRect(new Rectangle(settings.legend.rect.Location.X,
+                settings.legend.rect.Location.Y, settings.legend.rect.Width, settings.legend.rect.Height));
             LegendTools.DrawLegend(settings);
+            settings.legendBackend.ClearDrawRect();
         }
 
         public static void PlaceLegendOntoFigure(Settings settings)

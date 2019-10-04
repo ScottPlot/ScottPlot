@@ -275,5 +275,15 @@ namespace ScottPlot
                     throw new NotImplementedException($"unsupported marker type: {shape}");
             }
         }
+
+        public void SetDrawRect(Rectangle rect)
+        {
+            return; 
+        }
+
+        public void ClearDrawRect()
+        {
+            return;
+        }
     }
 }

@@ -55,7 +55,7 @@ namespace ScottPlotSkia
 
         public void DrawLine(Pen pen, float x1, float y1, float x2, float y2)
         {
-            throw new NotImplementedException();
+            canvas.DrawLine(new SKPoint(x1, y1), new SKPoint(x2, y2), pen.ToSKPaint());
         }
 
         public void DrawLines(Pen pen, PointF[] linePoints)
@@ -143,7 +143,7 @@ namespace ScottPlotSkia
 
         public SizeF MeasureString(string text, Font font)
         {
-            SKPaint paint = new SKPaint() { TextSize = font.Size * 100 / 72 }; // point to pixel = 100 / 72
+            SKPaint paint = new SKPaint() { TextSize = font.Size * 2 };
             return new SizeF(paint.MeasureText(text), paint.TextSize);
         }
 
@@ -316,6 +316,18 @@ namespace ScottPlotSkia
                 }
                 canvas.DrawPath(path, paint);
             }
+        }
+        int state = 0;
+        public void SetDrawRect(Rectangle rect)
+        {
+            state = canvas.Save();
+            canvas.Translate(rect.Left, rect.Top);
+            canvas.ClipRect(new SKRect(0, 0, rect.Width, rect.Height));
+        }
+
+        public void ClearDrawRect()
+        {
+            canvas.RestoreToCount(state);
         }
     }
 }

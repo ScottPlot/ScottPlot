@@ -18,6 +18,7 @@ namespace ScottPlotSkia
     {
         SKColorType colorType = SKColorType.Rgba8888;
         SkiaBackend skiaBackend;
+        SkiaBackend legendBackend;
         GRBackendRenderTarget renderTarget;
         SKSurface surface;
         GRContext context;
@@ -61,7 +62,8 @@ namespace ScottPlotSkia
             glControl1.BringToFront();
 
             skiaBackend = new SkiaBackend();
-            plt = new Plot(backendData: skiaBackend);
+            legendBackend = new SkiaBackend();
+            plt = new Plot(backendData: skiaBackend, backendLegend: legendBackend);
             plt.Style(ScottPlot.Style.Control);
             PbPlot_SizeChanged(null, null);
         }
@@ -140,6 +142,7 @@ namespace ScottPlotSkia
             }
 
             skiaBackend.canvas = surface.Canvas;
+            legendBackend.canvas = surface.Canvas;
             pbPlot.Image = plt.GetBitmap(true, !skiaBackend.AA);
 
             surface.Canvas.Flush();
