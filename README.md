@@ -1,6 +1,8 @@
 # ScottPlot
 
 [![Build Status](https://dev.azure.com/swharden/swharden/_apis/build/status/swharden.ScottPlot?branchName=master)](https://dev.azure.com/swharden/swharden/_build/latest?definitionId=2&branchName=master)
+[![Azure DevOps tests](https://img.shields.io/azure-devops/tests/swharden/swharden/2)](https://dev.azure.com/swharden/swharden/_build/latest?definitionId=2&branchName=master)
+[![ScottPlot NuGet](https://img.shields.io/nuget/vpre/ScottPlot.svg?maxAge=2592000&label=ScottPlot%20NuGet)](https://www.nuget.org/packages/ScottPlot/)
 
 **ScottPlot is a free and open-source interactive plotting library for .NET** which makes it easy to interactively display data in a variety of formats. You can create interactive line plots, bar charts, scatter plots, etc., with just a few lines of code (see the [ScottPlot Cookbook](/cookbook) for examples). 
 
