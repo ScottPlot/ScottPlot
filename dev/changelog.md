@@ -1,5 +1,14 @@
 # ScottPlot Changelog
 
+## ScottPlot 3.1.5
+_Published on [NuGet](https://www.nuget.org/packages/ScottPlot/) on 2019-10-06_
+
+### Minor Changes
+* WPF user control improved support for display scaling (Thanks @morningkyle)
+* Fixed bug that crashed on extreme zoom-outs (Thanks @morningkyle)
+* WPF user control improvements (middle-click autoaxis, scrollwheel zoom)
+* ScottPlot user control has a new look in designer mode. Exceptions in user controls in designer mode can crash Visual Studio, so this risk is greatly reduced by not attempting to render a ScottPlot _inside_ Visual Studio.
+
 ## ScottPlot 3.1.4
 _Published on [NuGet](https://www.nuget.org/packages/ScottPlot/) on 2019-09-22_
 
