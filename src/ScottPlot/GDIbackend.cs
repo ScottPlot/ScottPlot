@@ -20,6 +20,20 @@ namespace ScottPlot
             gfx = Graphics.FromImage(bmp);
 
         }
+
+        public void RotateTransform(float angle)
+        {
+            gfx.RotateTransform(angle);
+        }
+        public void ResetRotateTransform()
+        {
+            gfx.ResetTransform();
+        }
+
+        public void DrawImage(Image image, Point point)
+        {
+            gfx.DrawImage(image, point);
+        }
         public Size GetSize()
         {
             return bmp.Size;
@@ -145,6 +159,11 @@ namespace ScottPlot
         public void DrawPolygon(Pen pen, PointF[] curvePoints)
         {
             gfx.DrawPolygon(pen, curvePoints);
+        }
+
+        public void DrawString(string text, Font font, Brush brush, PointF point, StringFormat format)
+        {
+            gfx.DrawString(text, font, brush, point, format);
         }
 
         public void DrawString(string text, Font font, Brush brush, PointF point)
@@ -278,7 +297,7 @@ namespace ScottPlot
 
         public void SetDrawRect(Rectangle rect)
         {
-            return; 
+            return;
         }
 
         public void ClearDrawRect()

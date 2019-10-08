@@ -29,12 +29,12 @@ namespace ScottPlot
         public void UpdateLongestLabel(Settings settings, bool verticalAxis = false)
         {
             string longestLabel = (dateFormat) ? "2019-08-20\n20:42:17" : "-8888";
-            maxLabelSize = settings.gfxFigure.MeasureString(longestLabel, settings.ticks.font);
+            maxLabelSize = settings.figureBackend.MeasureString(longestLabel, settings.ticks.font);
             if (tickLabels != null)
             {
                 foreach (string tickLabel in tickLabels)
                 {
-                    SizeF tickLabelSize = settings.gfxFigure.MeasureString(tickLabel, settings.ticks.font);
+                    SizeF tickLabelSize = settings.figureBackend.MeasureString(tickLabel, settings.ticks.font);
                     maxLabelSize.Width = Math.Max(maxLabelSize.Width, tickLabelSize.Width);
                     maxLabelSize.Height = Math.Max(maxLabelSize.Height, tickLabelSize.Height);
                 }

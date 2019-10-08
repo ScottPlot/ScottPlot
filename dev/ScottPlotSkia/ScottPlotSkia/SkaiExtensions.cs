@@ -27,6 +27,21 @@ namespace ScottPlotSkia
             }
         }
 
+        public static SKTextAlign ToSKTextAlign(this StringAlignment align)
+        {
+            switch (align)
+            {
+                case StringAlignment.Near:
+                    return SKTextAlign.Left;
+                case StringAlignment.Center:
+                    return SKTextAlign.Center;
+                case StringAlignment.Far:
+                    return SKTextAlign.Right;
+                default:
+                    return SKTextAlign.Left;
+            }
+        }
+
         public static SKStrokeCap ToSKStrokeCap(this LineCap cap)
         {
             switch (cap)

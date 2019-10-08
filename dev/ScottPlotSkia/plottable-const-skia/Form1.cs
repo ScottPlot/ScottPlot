@@ -42,7 +42,7 @@ namespace plottable_const
             plt.PlotText("wow.", 10, .6, fontName: "comic sans ms", fontSize: 36, color: Color.Green, bold: true);
             plt.PlotText("NuGet", 32, 0, fontName: "comic sans ms", fontSize: 24, color: Color.Gold, bold: true);
             plt.Legend(fontName: "comic sans ms", fontSize: 16, bold: true, fontColor: Color.DarkBlue);
-
+            plt.Title("TEST title");
             formsPlotSkia1.plt.Title("Impressive Graph", fontName: "courier new", fontSize: 24, color: Color.Purple, bold: true);
             formsPlotSkia1.plt.YLabel("vertical units", fontName: "impact", fontSize: 24, color: Color.Red, bold: true);
             formsPlotSkia1.plt.XLabel("horizontal units", fontName: "georgia", fontSize: 24, color: Color.Blue, bold: true);
@@ -54,6 +54,7 @@ namespace plottable_const
             formsPlotSkia1.plt.PlotText("wow.", 10, .6, fontName: "comic sans ms", fontSize: 36, color: Color.Green, bold: true);
             formsPlotSkia1.plt.PlotText("NuGet", 32, 0, fontName: "comic sans ms", fontSize: 24, color: Color.Gold, bold: true);
             formsPlotSkia1.plt.Legend(fontName: "comic sans ms", fontSize: 16, bold: true, fontColor: Color.DarkBlue);
+            formsPlotSkia1.plt.Title("TEST title");
         }
 
         private void BtnUpdateData_Click(object sender, EventArgs e)

@@ -18,12 +18,16 @@ namespace ScottPlot
         private readonly Settings settings;
         public readonly MouseTracker mouseTracker;
 
-        public Plot(int width = 800, int height = 600, IGraphicBackend backendData = null, IGraphicBackend backendLegend = null)
+        public Plot(int width = 800, int height = 600, IGraphicBackend backendFigure = null, IGraphicBackend backendData = null, IGraphicBackend backendLegend = null)
         {
             if (width <= 0 || height <= 0)
                 throw new ArgumentException("width and height must each be greater than 0");
             settings = new Settings();
             mouseTracker = new MouseTracker(settings);
+            if (backendFigure == null)
+                settings.figureBackend = new GDIbackend(width, height, pixelFormat);
+            else
+                settings.figureBackend = backendFigure;
             if (backendData == null)
                 settings.dataBackend = new GDIbackend(width, height, pixelFormat);
             else
@@ -73,9 +77,11 @@ namespace ScottPlot
 
             if (settings.figureSize.Width > 0 && settings.figureSize.Height > 0)
             {
+                settings.figureBackend.Resize(settings.figureSize.Width, settings.figureSize.Height);
                 settings.bmpFigure = new Bitmap(settings.figureSize.Width, settings.figureSize.Height, pixelFormat);
                 settings.gfxFigure = Graphics.FromImage(settings.bmpFigure);
             }
+
 
             settings.dataBackend.Resize(settings.dataSize.Width, settings.dataSize.Height);
 
@@ -98,7 +104,7 @@ namespace ScottPlot
                     settings.gfxFigure.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
                 }
             }
-
+            settings.figureBackend.SetAntiAlias(settings.misc.antiAliasFigure);
             settings.dataBackend.SetAntiAlias(settings.misc.antiAliasData);
             settings.legendBackend.SetAntiAlias(settings.legend.antiAlias);
         }
@@ -125,22 +131,26 @@ namespace ScottPlot
             UpdateAntiAliasingSettings();
 
             settings.benchmark.Start();
-            if (settings.gfxFigure != null)
+            if (settings.figureBackend != null)
             {
                 // TODO: I removed "settings.bmpFigureRenderRequired" so the frame is currently being redrawn every time
+                //settings.figureBackend.SetDrawRect(new Rectangle(new Point(0, 0), settings.figureSize));
                 Renderer.FigureClear(settings);
                 Renderer.FigureLabels(settings);
                 Renderer.FigureTicks(settings);
                 Renderer.FigureFrames(settings);
+                //settings.figureBackend.ClearDrawRect();
             }
             if (settings.dataBackend != null)
             {
+                settings.dataBackend.SetDrawRect(new Rectangle(settings.dataOrigin, settings.dataSize));
                 Renderer.DataBackground(settings);
                 Renderer.DataGrid(settings);
                 Renderer.DataPlottables(settings);
+                settings.dataBackend.ClearDrawRect();
+                Renderer.PlaceDataOntoFigure(settings);
                 Renderer.MouseZoomRectangle(settings);
                 Renderer.CreateLegendBitmap(settings);
-                Renderer.PlaceDataOntoFigure(settings);
                 Renderer.PlaceLegendOntoFigure(settings);
             }
             settings.benchmark.Stop();
@@ -163,7 +173,7 @@ namespace ScottPlot
                 if (renderFirst)
                     RenderBitmap();
             }
-            return settings.bmpFigure;
+            return settings.figureBackend.GetBitmap();
         }
 
         public void SaveFig(string filePath, bool renderFirst = true)
@@ -189,7 +199,7 @@ namespace ScottPlot
             else
                 throw new NotImplementedException("Extension not supported: " + extension);
 
-            settings.bmpFigure.Save(filePath, imageFormat);
+            settings.figureBackend.GetBitmap().Save(filePath, imageFormat);
         }
 
         #endregion

@@ -12,8 +12,7 @@ namespace ScottPlot
     {
         public static void FigureClear(Settings settings)
         {
-            if (settings.gfxFigure != null)
-                settings.gfxFigure.Clear(settings.misc.figureBackgroundColor);
+            settings.figureBackend.Clear(settings.misc.figureBackgroundColor);            
         }
 
         public static void DataBackground(Settings settings)
@@ -63,56 +62,57 @@ namespace ScottPlot
 
         public static void CreateLegendBitmap(Settings settings)
         {
-            settings.legendBackend.SetDrawRect(new Rectangle(settings.legend.rect.Location.X,
-                settings.legend.rect.Location.Y, settings.legend.rect.Width, settings.legend.rect.Height));
+            settings.legendBackend.SetDrawRect(new Rectangle(settings.legend.rect.Location.X + settings.dataOrigin.X,
+                settings.legend.rect.Location.Y + settings.dataOrigin.Y,
+                settings.legend.rect.Width, settings.legend.rect.Height));
             LegendTools.DrawLegend(settings);
             settings.legendBackend.ClearDrawRect();
         }
 
         public static void PlaceLegendOntoFigure(Settings settings)
         {
-            if (settings.gfxFigure == null)
+            if (settings.figureBackend == null)
                 return;
             if (settings.legend.location != ScottPlot.legendLocation.none)
             {
                 Point legendLocation = new Point(settings.dataOrigin.X + settings.legend.rect.Location.X,
                 settings.dataOrigin.Y + settings.legend.rect.Location.Y);
-                settings.gfxFigure.DrawImage(settings.legendBackend.GetBitmap(), legendLocation);
+                settings.figureBackend.DrawImage(settings.legendBackend.GetBitmap(), legendLocation);
             }
         }
 
         public static void PlaceDataOntoFigure(Settings settings)
         {
-            settings.gfxFigure.DrawImage(settings.dataBackend.GetBitmap(), settings.dataOrigin);
+            settings.figureBackend.DrawImage(settings.dataBackend.GetBitmap(), settings.dataOrigin);
         }
 
         public static void FigureLabels(Settings settings, bool drawDebugRectangles = false)
         {
-            if (settings.gfxFigure == null)
+            if (settings.figureBackend == null)
                 return;
 
             int dataCenterX = settings.dataSize.Width / 2 + settings.dataOrigin.X;
             int dataCenterY = settings.dataSize.Height / 2 + settings.dataOrigin.Y;
 
             // title
-            Point titlePoint = new Point(dataCenterX - (int)settings.title.width / 2, settings.layout.padOnAllSides);
-            settings.gfxFigure.DrawString(settings.title.text, settings.title.font, new SolidBrush(settings.title.color), titlePoint, settings.misc.sfNorthWest);
+            Point titlePoint = new Point(dataCenterX - (int)settings.title.width / 2, settings.layout.padOnAllSides);            
+            settings.figureBackend.DrawString(settings.title.text, settings.title.font, new SolidBrush(settings.title.color), titlePoint, settings.misc.sfNorthWest);
             if (drawDebugRectangles)
-                settings.gfxFigure.DrawRectangle(Pens.Magenta, titlePoint.X, titlePoint.Y, (int)settings.title.width, (int)settings.title.height);
+                settings.figureBackend.DrawRectangle(Pens.Magenta, titlePoint.X, titlePoint.Y, (int)settings.title.width, (int)settings.title.height);
 
             // horizontal axis label
             Point xLabelPoint = new Point(dataCenterX - (int)settings.xLabel.width / 2, settings.figureSize.Height - settings.layout.padOnAllSides - (int)settings.xLabel.height);
-            settings.gfxFigure.DrawString(settings.xLabel.text, settings.xLabel.font, new SolidBrush(settings.xLabel.color), xLabelPoint, settings.misc.sfNorthWest);
+            settings.figureBackend.DrawString(settings.xLabel.text, settings.xLabel.font, new SolidBrush(settings.xLabel.color), xLabelPoint, settings.misc.sfNorthWest);
             if (drawDebugRectangles)
-                settings.gfxFigure.DrawRectangle(Pens.Magenta, xLabelPoint.X, xLabelPoint.Y, (int)settings.xLabel.width, (int)settings.xLabel.height);
+                settings.figureBackend.DrawRectangle(Pens.Magenta, xLabelPoint.X, xLabelPoint.Y, (int)settings.xLabel.width, (int)settings.xLabel.height);
 
             // vertical axis label
             Point yLabelPoint = new Point(-dataCenterY - (int)settings.yLabel.width / 2, settings.layout.padOnAllSides);
-            settings.gfxFigure.RotateTransform(-90);
-            settings.gfxFigure.DrawString(settings.yLabel.text, settings.yLabel.font, new SolidBrush(settings.yLabel.color), yLabelPoint, settings.misc.sfNorthWest);
+            settings.figureBackend.RotateTransform(-90);
+            settings.figureBackend.DrawString(settings.yLabel.text, settings.yLabel.font, new SolidBrush(settings.yLabel.color), yLabelPoint, settings.misc.sfNorthWest);
             if (drawDebugRectangles)
-                settings.gfxFigure.DrawRectangle(Pens.Magenta, yLabelPoint.X, yLabelPoint.Y, (int)settings.yLabel.width, (int)settings.yLabel.height);
-            settings.gfxFigure.ResetTransform();
+                settings.figureBackend.DrawRectangle(Pens.Magenta, yLabelPoint.X, yLabelPoint.Y, (int)settings.yLabel.width, (int)settings.yLabel.height);
+            settings.figureBackend.ResetRotateTransform();
         }
 
         public static void FigureTicks(Settings settings)
@@ -142,13 +142,13 @@ namespace ScottPlot
             {
                 Pen axisFramePen = new Pen(settings.ticks.color);
                 if (settings.layout.displayFrameByAxis[0])
-                    settings.gfxFigure.DrawLine(axisFramePen, tl, bl);
+                    settings.figureBackend.DrawLine(axisFramePen, tl, bl);
                 if (settings.layout.displayFrameByAxis[1])
-                    settings.gfxFigure.DrawLine(axisFramePen, tr, br);
+                    settings.figureBackend.DrawLine(axisFramePen, tr, br);
                 if (settings.layout.displayFrameByAxis[2])
-                    settings.gfxFigure.DrawLine(axisFramePen, bl, br);
+                    settings.figureBackend.DrawLine(axisFramePen, bl, br);
                 if (settings.layout.displayFrameByAxis[3])
-                    settings.gfxFigure.DrawLine(axisFramePen, tl, tr);
+                    settings.figureBackend.DrawLine(axisFramePen, tl, tr);
             }
         }
 
@@ -158,12 +158,12 @@ namespace ScottPlot
             {
                 int debugPadding = 3;
                 PointF textLocation = new PointF(settings.dataSize.Width + settings.dataOrigin.X, settings.dataSize.Height + settings.dataOrigin.Y);
-                textLocation.X -= settings.benchmark.width + debugPadding + settings.dataOrigin.X;
-                textLocation.Y -= settings.benchmark.height + debugPadding + settings.dataOrigin.Y;
+                textLocation.X -= settings.benchmark.width + debugPadding;
+                textLocation.Y -= settings.benchmark.height + debugPadding;
                 RectangleF textRect = new RectangleF(textLocation, settings.benchmark.size);
-                settings.dataBackend.FillRectangle(new SolidBrush(settings.benchmark.colorBackground), textRect);
-                settings.dataBackend.DrawRectangle(new Pen(settings.benchmark.colorBorder), Rectangle.Round(textRect));
-                settings.dataBackend.DrawString(settings.benchmark.text, settings.benchmark.font, new SolidBrush(settings.benchmark.color), textLocation);
+                settings.figureBackend.FillRectangle(new SolidBrush(settings.benchmark.colorBackground), textRect);
+                settings.figureBackend.DrawRectangle(new Pen(settings.benchmark.colorBorder), Rectangle.Round(textRect));
+                settings.figureBackend.DrawString(settings.benchmark.text, settings.benchmark.font, new SolidBrush(settings.benchmark.color), textLocation);
             }
         }
 
@@ -185,8 +185,8 @@ namespace ScottPlot
                 int yPx = (int)(unitsFromAxisEdge * settings.yAxisScale);
                 yPx = settings.figureSize.Height - yPx - settings.layout.paddingBySide[2];
 
-                settings.gfxFigure.DrawLine(pen, xPx, yPx, xPx - settings.ticks.size, yPx);
-                settings.gfxFigure.DrawString(text, settings.ticks.font, brush, xPx - settings.ticks.size, yPx, settings.misc.sfEast);
+                settings.figureBackend.DrawLine(pen, xPx, yPx, xPx - settings.ticks.size, yPx);
+                settings.figureBackend.DrawString(text, settings.ticks.font, brush, new PointF(xPx - settings.ticks.size, yPx), settings.misc.sfEast);
             }
 
             if (settings.ticks.displayYminor && settings.ticks.y.tickPositionsMinor != null)
@@ -197,7 +197,7 @@ namespace ScottPlot
                     int xPx = settings.dataOrigin.X - 1;
                     int yPx = (int)(unitsFromAxisEdge * settings.yAxisScale);
                     yPx = settings.figureSize.Height - yPx - settings.layout.paddingBySide[2];
-                    settings.gfxFigure.DrawLine(pen, xPx, yPx, xPx - settings.ticks.size / 2, yPx);
+                    settings.figureBackend.DrawLine(pen, xPx, yPx, xPx - settings.ticks.size / 2, yPx);
                 }
             }
 
@@ -220,8 +220,8 @@ namespace ScottPlot
                 int xPx = (int)(unitsFromAxisEdge * settings.xAxisScale) + settings.layout.paddingBySide[0];
                 int yPx = settings.figureSize.Height - settings.layout.paddingBySide[2];
 
-                settings.gfxFigure.DrawLine(pen, xPx, yPx, xPx, yPx + settings.ticks.size);
-                settings.gfxFigure.DrawString(text, settings.ticks.font, brush, xPx, yPx + settings.ticks.size, settings.misc.sfNorth);
+                settings.figureBackend.DrawLine(pen, xPx, yPx, xPx, yPx + settings.ticks.size);
+                settings.figureBackend.DrawString(text, settings.ticks.font, brush, new PointF(xPx, yPx + settings.ticks.size), settings.misc.sfNorth);
             }
 
             if (settings.ticks.displayXminor && settings.ticks.x.tickPositionsMinor != null)
@@ -231,7 +231,7 @@ namespace ScottPlot
                     double unitsFromAxisEdge = value - settings.axes.x.min;
                     int xPx = (int)(unitsFromAxisEdge * settings.xAxisScale) + settings.layout.paddingBySide[0];
                     int yPx = settings.figureSize.Height - settings.layout.paddingBySide[2];
-                    settings.gfxFigure.DrawLine(pen, xPx, yPx, xPx, yPx + settings.ticks.size / 2);
+                    settings.figureBackend.DrawLine(pen, xPx, yPx, xPx, yPx + settings.ticks.size / 2);
                 }
             }
         }
@@ -242,18 +242,19 @@ namespace ScottPlot
 
             if ((settings.ticks.x.cornerLabel != "") && settings.ticks.displayXmajor)
             {
-                SizeF multiplierLabelXsize = settings.gfxFigure.MeasureString(settings.ticks.x.cornerLabel, settings.ticks.font);
-                settings.gfxFigure.DrawString(settings.ticks.x.cornerLabel, settings.ticks.font, brush,
-                    settings.dataOrigin.X + settings.dataSize.Width,
-                    settings.dataOrigin.Y + settings.dataSize.Height + multiplierLabelXsize.Height,
+                SizeF multiplierLabelXsize = settings.figureBackend.MeasureString(settings.ticks.x.cornerLabel, settings.ticks.font);
+                settings.figureBackend.DrawString(settings.ticks.x.cornerLabel, settings.ticks.font, brush,
+                    new PointF(settings.dataOrigin.X + settings.dataSize.Width,
+                    settings.dataOrigin.Y + settings.dataSize.Height + multiplierLabelXsize.Height),
                     settings.misc.sfNorthEast);
             }
 
             if ((settings.ticks.y.cornerLabel != "") && settings.ticks.displayYmajor)
             {
-                settings.gfxFigure.DrawString(settings.ticks.y.cornerLabel, settings.ticks.font, brush,
-                    settings.dataOrigin.X,
-                    settings.dataOrigin.Y,
+                // TODO process correct line align - far in skia
+                settings.figureBackend.DrawString(settings.ticks.y.cornerLabel, settings.ticks.font, brush,
+                    new PointF(settings.dataOrigin.X,
+                    settings.dataOrigin.Y),
                     settings.misc.sfSouthWest);
             }
         }

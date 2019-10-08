@@ -21,9 +21,25 @@ namespace ScottPlotSkia
             canvas = new SKCanvas(fakeBitmap.ToSKBitmap());
         }
 
+        public void DrawImage(Image image, Point point)
+        {
+            // do nothing
+        }
+
         public Size GetSize()
         {
             return fakeBitmap.Size;
+        }
+        int rotateState;
+        public void RotateTransform(float angle)
+        {
+            rotateState = canvas.Save();
+            canvas.RotateDegrees(angle);
+        }
+
+        public void ResetRotateTransform()
+        {
+            canvas.RestoreToCount(rotateState);
         }
 
         public void Clear(Color color)
@@ -92,6 +108,14 @@ namespace ScottPlotSkia
                     path.AddRect(rect.ToSKRect());
                 canvas.DrawPath(path, pen.ToSKPaint());
             }
+        }
+
+        public void DrawString(string text, Font font, Brush brush, PointF point, StringFormat format)
+        {
+            var paint = font.ToSKPaint(brush, true);
+            paint.TextAlign = format.Alignment.ToSKTextAlign();
+            point.Y += paint.TextSize;
+            canvas.DrawText(text, point.X, point.Y, paint);
         }
 
         public void DrawString(string text, Font font, Brush brush, PointF point)

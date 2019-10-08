@@ -14,7 +14,10 @@ namespace ScottPlot
         Bitmap GetBitmap();
         void Resize(int width, int height);
         void Clear(Color color);
+        void RotateTransform(float angle);
+        void ResetRotateTransform();
 
+        void DrawImage(Image image, Point point);
         void DrawLine(Pen pen, int x1, int y1, int x2, int y2);
         void DrawLine(Pen pen, float x1, float y1, float x2, float y2);
         void DrawLine(Pen pen, PointF start, PointF end);
@@ -33,6 +36,7 @@ namespace ScottPlot
         void DrawRectangle(Pen pen, float x, float y, float width, float height);
         void FillPolygon(Brush brush, PointF[] curvePoints);
         void DrawPolygon(Pen pen, PointF[] curvePoints);
+        void DrawString(string text, Font font, Brush brush, PointF point, StringFormat format);
         void DrawString(string text, Font font, Brush brush, PointF point);
         SizeF MeasureString(string text, Font font);
         void DrawMarkers(PointF[] points, MarkerShape shape, float markerSize, Color color);

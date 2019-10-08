@@ -17,6 +17,7 @@ namespace ScottPlotSkia
     public partial class FormsPlotSkia : FormsPlot
     {
         SKColorType colorType = SKColorType.Rgba8888;
+        SkiaBackend figureBackend;
         SkiaBackend skiaBackend;
         SkiaBackend legendBackend;
         GRBackendRenderTarget renderTarget;
@@ -47,6 +48,7 @@ namespace ScottPlotSkia
             this.glControl1.Location = new Point(77, 35);
             this.glControl1.Name = "glControl1";
             this.glControl1.Size = new Size(403, 293);
+            this.glControl1.Dock = DockStyle.Fill;
             this.glControl1.TabIndex = 1;
 
             glControl1.VSync = false;
@@ -63,7 +65,8 @@ namespace ScottPlotSkia
 
             skiaBackend = new SkiaBackend();
             legendBackend = new SkiaBackend();
-            plt = new Plot(backendData: skiaBackend, backendLegend: legendBackend);
+            figureBackend = new SkiaBackend();
+            plt = new Plot(backendFigure: figureBackend, backendData: skiaBackend, backendLegend: legendBackend);
             plt.Style(ScottPlot.Style.Control);
             PbPlot_SizeChanged(null, null);
         }
@@ -140,18 +143,18 @@ namespace ScottPlotSkia
                 surface?.Dispose();
                 surface = SKSurface.Create(context, renderTarget, GRSurfaceOrigin.BottomLeft, SKColorType.Rgba8888);
             }
-
+            figureBackend.canvas = surface.Canvas;
             skiaBackend.canvas = surface.Canvas;
             legendBackend.canvas = surface.Canvas;
             pbPlot.Image = plt.GetBitmap(true, !skiaBackend.AA);
 
             surface.Canvas.Flush();
             glControl1.SwapBuffers();
-            if (glControl1.Size != plt.GetSettings().dataSize || glControl1.Location != plt.GetSettings().dataOrigin)
-            {
-                glControl1.SetBounds(plt.GetSettings().dataOrigin.X, plt.GetSettings().dataOrigin.Y, plt.GetSettings().dataSize.Width, plt.GetSettings().dataSize.Height);
-                glControl1.Invalidate();
-            }
+            //if (glControl1.Size != plt.GetSettings().dataSize || glControl1.Location != plt.GetSettings().dataOrigin)
+            //{
+            //    glControl1.SetBounds(plt.GetSettings().dataOrigin.X, plt.GetSettings().dataOrigin.Y, plt.GetSettings().dataSize.Width, plt.GetSettings().dataSize.Height);
+            //    glControl1.Invalidate();
+            //}
         }
     }
 }
