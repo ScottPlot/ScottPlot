@@ -25,8 +25,6 @@ namespace ScottPlot
         public Size dataSize { get; private set; }
 
         // Eventually move graphics objects to their own module.
-        public Graphics gfxFigure;
-        public Bitmap bmpFigure;
         public IGraphicBackend figureBackend;
         public IGraphicBackend legendBackend;
         public IGraphicBackend dataBackend;

@@ -21,6 +21,10 @@ namespace ScottPlotSkia
             canvas = new SKCanvas(fakeBitmap.ToSKBitmap());
         }
 
+        // default value, Dpi problem so complex
+        public float DpiX => 96;
+        public float DpiY => 96;
+
         public void DrawImage(Image image, Point point)
         {
             // do nothing

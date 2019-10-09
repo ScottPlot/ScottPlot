@@ -9,6 +9,8 @@ namespace ScottPlot
 {
     public interface IGraphicBackend
     {
+        float DpiX { get; }
+        float DpiY { get; }
         Size GetSize();
         void SetAntiAlias(bool enabled);
         Bitmap GetBitmap();

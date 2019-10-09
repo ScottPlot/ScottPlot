@@ -21,6 +21,8 @@ namespace ScottPlot
 
         }
 
+        public float DpiX => gfx.DpiX;
+        public float DpiY => gfx.DpiY;
         public void RotateTransform(float angle)
         {
             gfx.RotateTransform(angle);

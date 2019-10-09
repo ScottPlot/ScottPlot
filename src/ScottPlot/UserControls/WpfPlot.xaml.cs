@@ -71,7 +71,7 @@ namespace ScottPlot
         {
             get
             {
-                double dpiScaleX = plt.GetSettings().gfxFigure.DpiX / 96;
+                double dpiScaleX = plt.GetSettings().figureBackend.DpiX / 96;
                 return (int)(canvasPlot.ActualWidth * dpiScaleX);
             }
         }
@@ -80,7 +80,7 @@ namespace ScottPlot
         {
             get
             {
-                double dpiScaleY = plt.GetSettings().gfxFigure.DpiY / 96;
+                double dpiScaleY = plt.GetSettings().figureBackend.DpiY / 96;
                 return (int)(canvasPlot.ActualHeight * dpiScaleY);
             }
         }

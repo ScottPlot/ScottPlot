@@ -72,17 +72,10 @@ namespace ScottPlot
 
         private void InitializeBitmaps()
         {
-            settings.bmpFigure = null;
-            settings.gfxFigure = null;
-
             if (settings.figureSize.Width > 0 && settings.figureSize.Height > 0)
             {
                 settings.figureBackend.Resize(settings.figureSize.Width, settings.figureSize.Height);
-                settings.bmpFigure = new Bitmap(settings.figureSize.Width, settings.figureSize.Height, pixelFormat);
-                settings.gfxFigure = Graphics.FromImage(settings.bmpFigure);
             }
-
-
             settings.dataBackend.Resize(settings.dataSize.Width, settings.dataSize.Height);
 
             InitializeLegend(new Size(1, 1));
@@ -90,20 +83,6 @@ namespace ScottPlot
 
         private void UpdateAntiAliasingSettings()
         {
-
-            if (settings.gfxFigure != null)
-            {
-                if (settings.misc.antiAliasFigure)
-                {
-                    settings.gfxFigure.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                    settings.gfxFigure.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
-                }
-                else
-                {
-                    settings.gfxFigure.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
-                    settings.gfxFigure.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
-                }
-            }
             settings.figureBackend.SetAntiAlias(settings.misc.antiAliasFigure);
             settings.dataBackend.SetAntiAlias(settings.misc.antiAliasData);
             settings.legendBackend.SetAntiAlias(settings.legend.antiAlias);

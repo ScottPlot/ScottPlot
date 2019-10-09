@@ -39,8 +39,8 @@ namespace ScottPlot
         public bool isStandardDpi()
         {
             int expectedDpi = 96;
-            int dpi = (int)plt.GetSettings().gfxFigure.DpiX;
-            int dpiY = (int)plt.GetSettings().gfxFigure.DpiY;
+            int dpi = (int)plt.GetSettings().figureBackend.DpiX;
+            int dpiY = (int)plt.GetSettings().figureBackend.DpiY;
             return (dpi == expectedDpi) && (dpiY == expectedDpi);
         }
 
