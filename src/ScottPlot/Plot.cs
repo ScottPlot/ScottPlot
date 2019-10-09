@@ -141,7 +141,7 @@ namespace ScottPlot
                 Renderer.FigureFrames(settings);
                 //settings.figureBackend.ClearDrawRect();
             }
-            if (settings.dataBackend != null)
+            if (settings.dataSize.Width > 0 && settings.dataSize.Height > 0)
             {
                 settings.dataBackend.SetDrawRect(new Rectangle(settings.dataOrigin, settings.dataSize));
                 Renderer.DataBackground(settings);
