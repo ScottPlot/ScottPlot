@@ -70,7 +70,10 @@ namespace ScottPlot
         {
             gfx.Clear(color);
         }
-
+        public void DrawLine(Pen pen, Point start, Point end)
+        {
+            gfx.DrawLine(pen, start, end);
+        }
         public void DrawLine(Pen pen, PointF start, PointF end)
         {
             gfx.DrawLine(pen, start, end);

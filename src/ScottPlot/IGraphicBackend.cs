@@ -20,6 +20,7 @@ namespace ScottPlot
         void DrawImage(Image image, Point point);
         void DrawLine(Pen pen, int x1, int y1, int x2, int y2);
         void DrawLine(Pen pen, float x1, float y1, float x2, float y2);
+        void DrawLine(Pen pen, Point start, Point end);
         void DrawLine(Pen pen, PointF start, PointF end);
         void DrawLines(Pen pen, PointF[] linePoints);
         void DrawLinesPaired(Pen pen, PointF[] linePoints);

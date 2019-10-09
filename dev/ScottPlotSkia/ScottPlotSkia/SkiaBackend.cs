@@ -58,12 +58,16 @@ namespace ScottPlotSkia
             throw new NotImplementedException();
         }
 
-        // uses for drawing grid lines so only pen.Color can be used
+        // int args means pixel center, and Skia have center on .5 coord instead of GDI .0
         public void DrawLine(Pen pen, int x1, int y1, int x2, int y2)
         {
-            canvas.DrawLine((float)x1, (float)y1, (float)x2, (float)y2, pen.ToSKPaint(AA));
+            canvas.DrawLine(x1 + 0.5f, y1 + 0.5f, x2 + 0.5f, y2 + 0.5f, pen.ToSKPaint(AA));
         }
 
+        public void DrawLine(Pen pen, Point start, Point end)
+        {
+            DrawLine(pen, start.X, start.Y, end.X, end.Y);
+        }
         public void DrawLine(Pen pen, PointF start, PointF end)
         {
             canvas.DrawLine(start.ToSKPoint(), end.ToSKPoint(), pen.ToSKPaint());
