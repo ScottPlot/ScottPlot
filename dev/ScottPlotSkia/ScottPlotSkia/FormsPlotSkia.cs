@@ -73,36 +73,31 @@ namespace ScottPlotSkia
 
         public void glControl_MouseClick(object sender, MouseEventArgs e)
         {
-            MouseEventArgs pbplotE = new MouseEventArgs(e.Button, e.Clicks, e.X + plt.GetSettings().dataOrigin.X,
-                e.Y + plt.GetSettings().dataOrigin.Y, e.Delta);
+            MouseEventArgs pbplotE = new MouseEventArgs(e.Button, e.Clicks, e.X, e.Y, e.Delta);
             PbPlot_MouseClick(sender, pbplotE);
         }
 
         public void glControl_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            MouseEventArgs pbplotE = new MouseEventArgs(e.Button, e.Clicks, e.X + plt.GetSettings().dataOrigin.X,
-                e.Y + plt.GetSettings().dataOrigin.Y, e.Delta);
+            MouseEventArgs pbplotE = new MouseEventArgs(e.Button, e.Clicks, e.X, e.Y, e.Delta);
             PbPlot_MouseDoubleClick(sender, pbplotE);
         }
 
         public void glControl_MouseDown(object sender, MouseEventArgs e)
         {
-            MouseEventArgs pbplotE = new MouseEventArgs(e.Button, e.Clicks, e.X + plt.GetSettings().dataOrigin.X,
-                e.Y + plt.GetSettings().dataOrigin.Y, e.Delta);
+            MouseEventArgs pbplotE = new MouseEventArgs(e.Button, e.Clicks, e.X, e.Y, e.Delta);
             PbPlot_MouseDown(sender, pbplotE);
         }
 
         public void glControl_MouseMove(object sender, MouseEventArgs e)
         {
-            MouseEventArgs pbplotE = new MouseEventArgs(e.Button, e.Clicks, e.X + plt.GetSettings().dataOrigin.X,
-                e.Y + plt.GetSettings().dataOrigin.Y, e.Delta);
+            MouseEventArgs pbplotE = new MouseEventArgs(e.Button, e.Clicks, e.X, e.Y, e.Delta);
             PbPlot_MouseMove(sender, pbplotE);
         }
 
         public void glControl_MouseUp(object sender, MouseEventArgs e)
         {
-            MouseEventArgs pbplotE = new MouseEventArgs(e.Button, e.Clicks, e.X + plt.GetSettings().dataOrigin.X,
-                e.Y + plt.GetSettings().dataOrigin.Y, e.Delta);
+            MouseEventArgs pbplotE = new MouseEventArgs(e.Button, e.Clicks, e.X, e.Y, e.Delta);
             PbPlot_MouseUp(sender, pbplotE);
         }
 
