@@ -54,11 +54,11 @@ namespace ScottPlotSkia
             glControl1.VSync = false;
             glControl1.Paint += new PaintEventHandler(this.GlControl1_Paint);
 
-            glControl1.MouseClick += new MouseEventHandler(this.glControl_MouseClick);
-            glControl1.MouseDoubleClick += new MouseEventHandler(this.glControl_MouseDoubleClick);
-            glControl1.MouseDown += new MouseEventHandler(this.glControl_MouseDown);
-            glControl1.MouseMove += new MouseEventHandler(this.glControl_MouseMove);
-            glControl1.MouseUp += new MouseEventHandler(this.PbPlot_MouseUp);
+            glControl1.MouseClick += PbPlot_MouseClick;
+            glControl1.MouseDoubleClick += PbPlot_MouseDoubleClick;
+            glControl1.MouseDown += PbPlot_MouseDown;
+            glControl1.MouseMove += PbPlot_MouseMove;
+            glControl1.MouseUp += PbPlot_MouseUp;
             glControl1.MouseWheel += PbPlot_MouseWheel;
             this.Controls.Add(this.glControl1);
             glControl1.BringToFront();
@@ -69,37 +69,7 @@ namespace ScottPlotSkia
             plt = new Plot(backendFigure: figureBackend, backendData: skiaBackend, backendLegend: legendBackend);
             plt.Style(ScottPlot.Style.Control);
             PbPlot_SizeChanged(null, null);
-        }
-
-        public void glControl_MouseClick(object sender, MouseEventArgs e)
-        {
-            MouseEventArgs pbplotE = new MouseEventArgs(e.Button, e.Clicks, e.X, e.Y, e.Delta);
-            PbPlot_MouseClick(sender, pbplotE);
-        }
-
-        public void glControl_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            MouseEventArgs pbplotE = new MouseEventArgs(e.Button, e.Clicks, e.X, e.Y, e.Delta);
-            PbPlot_MouseDoubleClick(sender, pbplotE);
-        }
-
-        public void glControl_MouseDown(object sender, MouseEventArgs e)
-        {
-            MouseEventArgs pbplotE = new MouseEventArgs(e.Button, e.Clicks, e.X, e.Y, e.Delta);
-            PbPlot_MouseDown(sender, pbplotE);
-        }
-
-        public void glControl_MouseMove(object sender, MouseEventArgs e)
-        {
-            MouseEventArgs pbplotE = new MouseEventArgs(e.Button, e.Clicks, e.X, e.Y, e.Delta);
-            PbPlot_MouseMove(sender, pbplotE);
-        }
-
-        public void glControl_MouseUp(object sender, MouseEventArgs e)
-        {
-            MouseEventArgs pbplotE = new MouseEventArgs(e.Button, e.Clicks, e.X, e.Y, e.Delta);
-            PbPlot_MouseUp(sender, pbplotE);
-        }
+        }        
 
         public override void Render(bool skipIfCurrentlyRendering = false, bool lowQuality = false)
         {
