@@ -126,6 +126,11 @@ namespace ScottPlot
             gfx.DrawEllipse(pen, rect);
         }
 
+        public void FillRectangle(Brush brush, Rectangle rect)
+        {
+            gfx.FillRectangle(brush, rect);
+        }
+
         public void FillRectangle(Brush brush, RectangleF rect)
         {
             gfx.FillRectangle(brush, rect);

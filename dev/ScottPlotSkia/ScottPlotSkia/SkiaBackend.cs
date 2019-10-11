@@ -105,7 +105,7 @@ namespace ScottPlotSkia
         public void DrawRectangle(Pen pen, Rectangle rect)
         {
             SKPaint paint = new SKPaint() { Color = pen.Color.ToSKColor(), IsAntialias = AA, Style = SKPaintStyle.Stroke };
-            canvas.DrawRect(rect.ToSKRect(), paint);
+            canvas.DrawRect(new SKRect(rect.Left + 0.5f, rect.Top + 0.5f, rect.Right + 0.5f, rect.Bottom + 0.5f), paint);
         }
 
         public void DrawRectangles(Pen pen, RectangleF[] rects)
@@ -148,6 +148,10 @@ namespace ScottPlotSkia
             throw new NotImplementedException();
         }
 
+        public void FillRectangle(Brush brush, Rectangle rect)
+        {
+            canvas.DrawRect(new SKRect(rect.Left + 0.5f, rect.Top + 0.5f, rect.Right + 0.5f, rect.Bottom + 0.5f), brush.ToSKPaint(AA));
+        }
         public void FillRectangle(Brush brush, RectangleF rect)
         {
             canvas.DrawRect(new SKRect(rect.Left, rect.Top, rect.Right, rect.Bottom), brush.ToSKPaint(AA));

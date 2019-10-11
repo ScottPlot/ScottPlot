@@ -31,6 +31,7 @@ namespace ScottPlot
 
         void FillEllipse(Brush brush, RectangleF rect);
         void DrawEllipse(Pen pen, RectangleF rect);
+        void FillRectangle(Brush brush, Rectangle rect);
         void FillRectangle(Brush brush, RectangleF rect);
         void FillRectangles(Brush brush, RectangleF[] rects);
         void FillRectangle(Brush brush, float x, float y, float widht, float height);
