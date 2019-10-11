@@ -1009,15 +1009,13 @@ namespace ScottPlot
             StyleTools.SetStyle(this, style);
         }
 
+        [Obsolete]
         public void Parallel(bool useParallel)
         {
-            // after refactoring the settings module this seems to due to axis/bitmap interactions
-            throw new NotImplementedException("parallel processing should not be enabled at this time");
-            /*
-            settings.useParallel = useParallel;
+            throw new NotImplementedException("parallel processing should not used enabled at this time");
+
             foreach (var plottable in GetPlottables())
                 plottable.useParallel = useParallel;
-            */
         }
 
         #endregion
