@@ -122,7 +122,12 @@ namespace ScottPlotSkia
         {
             var paint = font.ToSKPaint(brush, true);
             paint.TextAlign = format.Alignment.ToSKTextAlign();
-            point.Y += paint.TextSize;
+            if (format.LineAlignment == StringAlignment.Near)
+                point.Y += paint.TextSize;
+            else if (format.LineAlignment == StringAlignment.Far)
+                point.Y -= paint.FontSpacing - paint.TextSize;
+            else if (format.LineAlignment == StringAlignment.Center)
+                point.Y += paint.TextSize / 2;
             canvas.DrawText(text, point.X, point.Y, paint);
         }
 
