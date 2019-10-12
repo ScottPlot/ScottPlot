@@ -14,9 +14,10 @@ namespace ScottPlot
         private bool currentlyRendering = false;
         private System.Timers.Timer lastInteractionTimer;
         ContextMenuStrip rightClickMenu;
-
+        private bool designerMode = false;
         public FormsPlot()
         {
+            designerMode = Process.GetCurrentProcess().ProcessName == "devenv";
             InitializeComponent();
             SetupMenu();
             SetupTimers();
@@ -46,7 +47,7 @@ namespace ScottPlot
 
         public void Render(bool skipIfCurrentlyRendering = false, bool lowQuality = false)
         {
-            if (Process.GetCurrentProcess().ProcessName == "devenv")
+            if (designerMode)
             {
                 try
                 {
