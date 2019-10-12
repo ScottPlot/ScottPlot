@@ -24,6 +24,7 @@ namespace ScottPlotSkia
         SKSurface surface;
         GRContext context;
         OpenTK.GLControl glControl1;
+        private bool designerMode = false;
 
         private void OnDispose(Object sender, EventArgs e)
         {
@@ -34,7 +35,8 @@ namespace ScottPlotSkia
         public FormsPlotSkia()
         {
             InitializeComponent();
-            if (LicenseManager.UsageMode == LicenseUsageMode.Designtime)
+            designerMode = (LicenseManager.UsageMode == LicenseUsageMode.Designtime);
+            if (designerMode)
             {
                 Tools.DesignerModeDemoPlot(plt);
                 plt.Style(ScottPlot.Style.Control);
@@ -69,10 +71,16 @@ namespace ScottPlotSkia
             plt = new Plot(backendFigure: figureBackend, backendData: skiaBackend, backendLegend: legendBackend);
             plt.Style(ScottPlot.Style.Control);
             PbPlot_SizeChanged(null, null);
-        }        
+        }
 
         public override void Render(bool skipIfCurrentlyRendering = false, bool lowQuality = false)
         {
+            if (designerMode)
+            {
+                base.Render();
+                return;
+            }
+
             if (lastInteractionTimer.Enabled)
                 lastInteractionTimer.Stop();
 
@@ -115,11 +123,6 @@ namespace ScottPlotSkia
 
             surface.Canvas.Flush();
             glControl1.SwapBuffers();
-            //if (glControl1.Size != plt.GetSettings().dataSize || glControl1.Location != plt.GetSettings().dataOrigin)
-            //{
-            //    glControl1.SetBounds(plt.GetSettings().dataOrigin.X, plt.GetSettings().dataOrigin.Y, plt.GetSettings().dataSize.Width, plt.GetSettings().dataSize.Height);
-            //    glControl1.Invalidate();
-            //}
         }
     }
 }
