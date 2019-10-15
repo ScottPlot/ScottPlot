@@ -166,6 +166,10 @@ namespace ScottPlot
                     pbPlot.Cursor = Cursors.Arrow;
                 }
             }
+            else
+            {
+                pbPlot.Cursor = Cursors.Arrow;
+            }
 
             if (e.Button != MouseButtons.None)
             {
