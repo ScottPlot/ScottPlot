@@ -111,6 +111,18 @@ namespace ScottPlot
                 }
             }
 
+            // special case for scatter plots with a single point
+            if (axes.x.span == 0)
+            {
+                axes.x.min -= 1.5;
+                axes.x.max += 1.5;
+            }
+            if (axes.y.span == 0)
+            {
+                axes.y.min -= 1.5;
+                axes.y.max += 1.5;
+            }
+
             // expand on axis lines last
             foreach (Plottable plottable in plottables)
             {
