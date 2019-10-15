@@ -95,9 +95,6 @@
     <Compile Include="UserControls\FormsPlot.Designer.cs">
       <DependentUpon>FormsPlot.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\ScottPlotUC.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="UserControls\WpfPlot.xaml.cs">
       <DependentUpon>WpfPlot.xaml</DependentUpon>
     </Compile>
