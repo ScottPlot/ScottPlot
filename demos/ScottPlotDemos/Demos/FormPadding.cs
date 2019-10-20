@@ -27,6 +27,7 @@ namespace ScottPlotDemos
             formsPlot1.plt.PlotScatter(dataXs, dataSin);
             formsPlot1.plt.PlotScatter(dataXs, dataCos);
             formsPlot1.plt.Grid(false);
+            formsPlot1.plt.Style(figBg: Color.LightBlue); // aid visibility
             formsPlot1.Render();
         }
 
