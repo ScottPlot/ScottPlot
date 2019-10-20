@@ -875,8 +875,9 @@ namespace ScottPlot
                 // why these in this order? voodoo magic
                 TightenLayout();
                 RenderBitmap();
-                TightenLayout();
             }
+
+            TightenLayout();
         }
 
         public void Grid(
@@ -914,6 +915,7 @@ namespace ScottPlot
                 settings.layout.displayFrameByAxis[2] = (bool)bottom;
             if (top != null)
                 settings.layout.displayFrameByAxis[3] = (bool)top;
+            TightenLayout();
         }
 
         public void Benchmark(bool show = true, bool toggle = false)
