@@ -184,6 +184,12 @@
     <Compile Include="FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="Demos\FormPadding.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Demos\FormPadding.Designer.cs">
+      <DependentUpon>FormPadding.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Demos\FormBenchmark.resx">
@@ -227,6 +233,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Demos\FormLegend.resx">
       <DependentUpon>FormLegend.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Demos\FormPadding.resx">
+      <DependentUpon>FormPadding.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Demos\FormQuickstart.resx">
       <DependentUpon>FormQuickstart.cs</DependentUpon>

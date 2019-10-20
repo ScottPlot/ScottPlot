@@ -157,5 +157,11 @@ namespace ScottPlotDemos
             using (var frm = new FormWavViewer())
                 frm.ShowDialog();
         }
+
+        private void btnPadding_Click(object sender, EventArgs e)
+        {
+            using (var frm = new FormPadding())
+                frm.ShowDialog();
+        }
     }
 }
