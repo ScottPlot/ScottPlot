@@ -178,6 +178,12 @@
     <Compile Include="Demos\FormWavViewer.Designer.cs">
       <DependentUpon>FormWavViewer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Demos\FormLinkedPlots.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Demos\FormLinkedPlots.Designer.cs">
+      <DependentUpon>FormLinkedPlots.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -260,6 +266,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Demos\FormWavViewer.resx">
       <DependentUpon>FormWavViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Demos\FormLinkedPlots.resx">
+      <DependentUpon>FormLinkedPlots.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>

@@ -163,5 +163,11 @@ namespace ScottPlotDemos
             using (var frm = new FormPadding())
                 frm.ShowDialog();
         }
+
+        private void btnLinkedPlots_Click(object sender, EventArgs e)
+        {
+            using (var frm = new FormLinkedPlots())
+                frm.ShowDialog();
+        }
     }
 }
