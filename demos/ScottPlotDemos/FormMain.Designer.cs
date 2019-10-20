@@ -50,6 +50,12 @@
             this.btnHistogram = new System.Windows.Forms.Button();
             this.btnFinancial = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.btnGrowingRoll = new System.Windows.Forms.Button();
+            this.btnGrowingCircular = new System.Windows.Forms.Button();
+            this.btnGrowingArray = new System.Windows.Forms.Button();
+            this.btnAnimated = new System.Windows.Forms.Button();
+            this.label10 = new System.Windows.Forms.Label();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.btnBenchmark = new System.Windows.Forms.Button();
@@ -60,26 +66,21 @@
             this.btnTickTester = new System.Windows.Forms.Button();
             this.btnExtremeAxes = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.btnGrowingRoll = new System.Windows.Forms.Button();
-            this.btnGrowingCircular = new System.Windows.Forms.Button();
-            this.btnGrowingArray = new System.Windows.Forms.Button();
-            this.btnAnimated = new System.Windows.Forms.Button();
-            this.label10 = new System.Windows.Forms.Label();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.lblGitHubUrl = new System.Windows.Forms.Label();
             this.lblVersion = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.btnPadding = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox4.SuspendLayout();
-            this.tabPage2.SuspendLayout();
             this.tabPage5.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -177,7 +178,7 @@
             // 
             // btnWavFileViewer
             // 
-            this.btnWavFileViewer.Location = new System.Drawing.Point(168, 131);
+            this.btnWavFileViewer.Location = new System.Drawing.Point(294, 111);
             this.btnWavFileViewer.Name = "btnWavFileViewer";
             this.btnWavFileViewer.Size = new System.Drawing.Size(106, 23);
             this.btnWavFileViewer.TabIndex = 17;
@@ -218,11 +219,12 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.btnPadding);
             this.groupBox2.Controls.Add(this.btnCustomGrid);
             this.groupBox2.Controls.Add(this.btnLegend);
             this.groupBox2.Location = new System.Drawing.Point(162, 25);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(120, 80);
+            this.groupBox2.Size = new System.Drawing.Size(120, 109);
             this.groupBox2.TabIndex = 15;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Styling";
@@ -318,6 +320,69 @@
             this.label6.Size = new System.Drawing.Size(354, 13);
             this.label6.TabIndex = 3;
             this.label6.Text = "Examples of what ScottPlot can do in more advanced / uncommon cases";
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.btnGrowingRoll);
+            this.tabPage2.Controls.Add(this.btnGrowingCircular);
+            this.tabPage2.Controls.Add(this.btnGrowingArray);
+            this.tabPage2.Controls.Add(this.btnAnimated);
+            this.tabPage2.Controls.Add(this.label10);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Size = new System.Drawing.Size(505, 246);
+            this.tabPage2.TabIndex = 5;
+            this.tabPage2.Text = "Live Data";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // btnGrowingRoll
+            // 
+            this.btnGrowingRoll.Location = new System.Drawing.Point(6, 112);
+            this.btnGrowingRoll.Name = "btnGrowingRoll";
+            this.btnGrowingRoll.Size = new System.Drawing.Size(137, 23);
+            this.btnGrowingRoll.TabIndex = 12;
+            this.btnGrowingRoll.Text = "Rolling Buffer";
+            this.btnGrowingRoll.UseVisualStyleBackColor = true;
+            this.btnGrowingRoll.Click += new System.EventHandler(this.btnGrowingRoll_Click);
+            // 
+            // btnGrowingCircular
+            // 
+            this.btnGrowingCircular.Location = new System.Drawing.Point(6, 83);
+            this.btnGrowingCircular.Name = "btnGrowingCircular";
+            this.btnGrowingCircular.Size = new System.Drawing.Size(137, 23);
+            this.btnGrowingCircular.TabIndex = 11;
+            this.btnGrowingCircular.Text = "Circular Buffer";
+            this.btnGrowingCircular.UseVisualStyleBackColor = true;
+            this.btnGrowingCircular.Click += new System.EventHandler(this.btnGrowingCircular_Click);
+            // 
+            // btnGrowingArray
+            // 
+            this.btnGrowingArray.Location = new System.Drawing.Point(6, 54);
+            this.btnGrowingArray.Name = "btnGrowingArray";
+            this.btnGrowingArray.Size = new System.Drawing.Size(137, 23);
+            this.btnGrowingArray.TabIndex = 10;
+            this.btnGrowingArray.Text = "Growing Array";
+            this.btnGrowingArray.UseVisualStyleBackColor = true;
+            this.btnGrowingArray.Click += new System.EventHandler(this.btnGrowingArray_Click);
+            // 
+            // btnAnimated
+            // 
+            this.btnAnimated.Location = new System.Drawing.Point(6, 25);
+            this.btnAnimated.Name = "btnAnimated";
+            this.btnAnimated.Size = new System.Drawing.Size(137, 23);
+            this.btnAnimated.TabIndex = 9;
+            this.btnAnimated.Text = "Animated Data";
+            this.btnAnimated.UseVisualStyleBackColor = true;
+            this.btnAnimated.Click += new System.EventHandler(this.btnAnimated_Click);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(3, 6);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(244, 13);
+            this.label10.TabIndex = 8;
+            this.label10.Text = "Demonstrate how to plot constantly-changing data";
             // 
             // tabPage4
             // 
@@ -424,69 +489,6 @@
             this.label7.TabIndex = 7;
             this.label7.Text = "These programs are useful for developers";
             // 
-            // tabPage2
-            // 
-            this.tabPage2.Controls.Add(this.btnGrowingRoll);
-            this.tabPage2.Controls.Add(this.btnGrowingCircular);
-            this.tabPage2.Controls.Add(this.btnGrowingArray);
-            this.tabPage2.Controls.Add(this.btnAnimated);
-            this.tabPage2.Controls.Add(this.label10);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Size = new System.Drawing.Size(505, 246);
-            this.tabPage2.TabIndex = 5;
-            this.tabPage2.Text = "Live Data";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // btnGrowingRoll
-            // 
-            this.btnGrowingRoll.Location = new System.Drawing.Point(6, 112);
-            this.btnGrowingRoll.Name = "btnGrowingRoll";
-            this.btnGrowingRoll.Size = new System.Drawing.Size(137, 23);
-            this.btnGrowingRoll.TabIndex = 12;
-            this.btnGrowingRoll.Text = "Rolling Buffer";
-            this.btnGrowingRoll.UseVisualStyleBackColor = true;
-            this.btnGrowingRoll.Click += new System.EventHandler(this.btnGrowingRoll_Click);
-            // 
-            // btnGrowingCircular
-            // 
-            this.btnGrowingCircular.Location = new System.Drawing.Point(6, 83);
-            this.btnGrowingCircular.Name = "btnGrowingCircular";
-            this.btnGrowingCircular.Size = new System.Drawing.Size(137, 23);
-            this.btnGrowingCircular.TabIndex = 11;
-            this.btnGrowingCircular.Text = "Circular Buffer";
-            this.btnGrowingCircular.UseVisualStyleBackColor = true;
-            this.btnGrowingCircular.Click += new System.EventHandler(this.btnGrowingCircular_Click);
-            // 
-            // btnGrowingArray
-            // 
-            this.btnGrowingArray.Location = new System.Drawing.Point(6, 54);
-            this.btnGrowingArray.Name = "btnGrowingArray";
-            this.btnGrowingArray.Size = new System.Drawing.Size(137, 23);
-            this.btnGrowingArray.TabIndex = 10;
-            this.btnGrowingArray.Text = "Growing Array";
-            this.btnGrowingArray.UseVisualStyleBackColor = true;
-            this.btnGrowingArray.Click += new System.EventHandler(this.btnGrowingArray_Click);
-            // 
-            // btnAnimated
-            // 
-            this.btnAnimated.Location = new System.Drawing.Point(6, 25);
-            this.btnAnimated.Name = "btnAnimated";
-            this.btnAnimated.Size = new System.Drawing.Size(137, 23);
-            this.btnAnimated.TabIndex = 9;
-            this.btnAnimated.Text = "Animated Data";
-            this.btnAnimated.UseVisualStyleBackColor = true;
-            this.btnAnimated.Click += new System.EventHandler(this.btnAnimated_Click);
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(3, 6);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(244, 13);
-            this.label10.TabIndex = 8;
-            this.label10.Text = "Demonstrate how to plot constantly-changing data";
-            // 
             // tabPage5
             // 
             this.tabPage5.Controls.Add(this.lblGitHubUrl);
@@ -540,6 +542,16 @@
             this.label3.Text = "ScottPlot";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // btnPadding
+            // 
+            this.btnPadding.Location = new System.Drawing.Point(6, 77);
+            this.btnPadding.Name = "btnPadding";
+            this.btnPadding.Size = new System.Drawing.Size(106, 23);
+            this.btnPadding.TabIndex = 17;
+            this.btnPadding.Text = "Padding";
+            this.btnPadding.UseVisualStyleBackColor = true;
+            this.btnPadding.Click += new System.EventHandler(this.btnPadding_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -558,12 +570,12 @@
             this.groupBox3.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
-            this.tabPage2.PerformLayout();
             this.tabPage5.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -613,6 +625,7 @@
         private System.Windows.Forms.Button btnTimeAxis;
         private System.Windows.Forms.Button btnUserControlSettings;
         private System.Windows.Forms.Button btnWavFileViewer;
+        private System.Windows.Forms.Button btnPadding;
     }
 }
 
