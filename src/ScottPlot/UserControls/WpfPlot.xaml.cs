@@ -19,6 +19,9 @@ namespace ScottPlot
     /// <summary>
     /// Interaction logic for ScottPlotWPF.xaml
     /// </summary>
+
+    [System.ComponentModel.ToolboxItem(true)]
+    [System.ComponentModel.DesignTimeVisible(true)]
     public partial class WpfPlot : UserControl
     {
         public Plot plt = new Plot();
