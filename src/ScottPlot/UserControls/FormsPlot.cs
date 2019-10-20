@@ -178,6 +178,7 @@ namespace ScottPlot
                     skipIfBusy = false;
                 Render(skipIfCurrentlyRendering: skipIfBusy, lowQuality: plt.mouseTracker.lowQualityWhileInteracting);
                 OnMouseDragged(EventArgs.Empty);
+                AxesChanged?.Invoke(this, e);
             }
         }
 
@@ -216,6 +217,7 @@ namespace ScottPlot
                 LaunchMenu();
             if (e.Button == MouseButtons.Middle)
                 plt.mouseTracker.MiddleButtonClicked();
+            AxesChanged?.Invoke(this, e);
         }
 
         private void PbPlot_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -249,6 +251,8 @@ namespace ScottPlot
             }
             else
                 Render(skipIfCurrentlyRendering: false);
+
+            AxesChanged?.Invoke(this, e);
         }
 
         public event EventHandler MouseDownOnPlottable;
@@ -256,6 +260,7 @@ namespace ScottPlot
         public event EventHandler MouseMoved;
         public event EventHandler MouseDragged;
         public event EventHandler MouseDropPlottable;
+        public event EventHandler AxesChanged;
         public event MouseEventHandler MouseClicked;
         protected virtual void OnMouseDownOnPlottable(EventArgs e) { MouseDownOnPlottable?.Invoke(this, e); }
         protected virtual void OnMouseDragPlottable(EventArgs e) { MouseDragPlottable?.Invoke(this, e); }
