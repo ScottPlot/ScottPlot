@@ -51,6 +51,13 @@ namespace ScottPlot.Config
             paddingBySide[1] = (int)ticks.y.maxLabelSize.Width / 2;
             paddingBySide[1] += padOnAllSides;
 
+            // use no padding on sides with sides with disabled frames
+            for (int i = 0; i < 4; i++)
+            {
+                if (!displayFrameByAxis[i])
+                    paddingBySide[i] = 0;
+            }
+
             // override for frameles
             if (!displayAxisFrames)
                 paddingBySide = new int[] { 0, 0, 0, 0 };
