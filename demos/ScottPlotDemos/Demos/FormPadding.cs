@@ -28,7 +28,7 @@ namespace ScottPlotDemos
             formsPlot1.plt.PlotScatter(dataXs, dataCos);
             formsPlot1.plt.Grid(false);
             formsPlot1.plt.Style(figBg: Color.LightBlue); // aid visibility
-            formsPlot1.plt.Axis(x1: 0, x2: 50); // test tick visibility when using manually-defined axes
+            formsPlot1.plt.Axis(x1: 0, x2: 50, y1: -1, y2: 1); // test tick visibility when using manually-defined axes
             formsPlot1.Render();
         }
 
