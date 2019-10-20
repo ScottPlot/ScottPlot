@@ -50,8 +50,10 @@ namespace ScottPlot
         public Config.Mouse mouse = new Config.Mouse();
 
         // scales calculations must occur at this level because the axes are unaware of pixel dimensions
-        public double xAxisScale { get { return bmpData.Width / axes.x.span; } }
-        public double yAxisScale { get { return bmpData.Height / axes.y.span; } }
+        public double xAxisScale { get { return bmpData.Width / axes.x.span; } } // pixels per unit
+        public double yAxisScale { get { return bmpData.Height / axes.y.span; } } // pixels per unit
+        public double xAxisUnitsPerPixel { get { return 1.0 / xAxisScale; } }
+        public double yAxisUnitsPerPixel { get { return 1.0 / yAxisScale; } }
 
         // this has to be here because color module is unaware of plottables list
         public Color GetNextColor() { return colors.GetColor(plottables.Count); }
