@@ -41,6 +41,7 @@
             this.btnUserControlSettings = new System.Windows.Forms.Button();
             this.btnHover = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnPadding = new System.Windows.Forms.Button();
             this.btnCustomGrid = new System.Windows.Forms.Button();
             this.btnLegend = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -70,7 +71,7 @@
             this.lblGitHubUrl = new System.Windows.Forms.Label();
             this.lblVersion = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.btnPadding = new System.Windows.Forms.Button();
+            this.btnLinkedPlots = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage3.SuspendLayout();
@@ -178,7 +179,7 @@
             // 
             // btnWavFileViewer
             // 
-            this.btnWavFileViewer.Location = new System.Drawing.Point(294, 111);
+            this.btnWavFileViewer.Location = new System.Drawing.Point(308, 168);
             this.btnWavFileViewer.Name = "btnWavFileViewer";
             this.btnWavFileViewer.Size = new System.Drawing.Size(106, 23);
             this.btnWavFileViewer.TabIndex = 17;
@@ -219,15 +220,26 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.btnLinkedPlots);
             this.groupBox2.Controls.Add(this.btnPadding);
             this.groupBox2.Controls.Add(this.btnCustomGrid);
             this.groupBox2.Controls.Add(this.btnLegend);
             this.groupBox2.Location = new System.Drawing.Point(162, 25);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(120, 109);
+            this.groupBox2.Size = new System.Drawing.Size(120, 137);
             this.groupBox2.TabIndex = 15;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Styling";
+            // 
+            // btnPadding
+            // 
+            this.btnPadding.Location = new System.Drawing.Point(6, 77);
+            this.btnPadding.Name = "btnPadding";
+            this.btnPadding.Size = new System.Drawing.Size(106, 23);
+            this.btnPadding.TabIndex = 17;
+            this.btnPadding.Text = "Padding";
+            this.btnPadding.UseVisualStyleBackColor = true;
+            this.btnPadding.Click += new System.EventHandler(this.btnPadding_Click);
             // 
             // btnCustomGrid
             // 
@@ -542,15 +554,15 @@
             this.label3.Text = "ScottPlot";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // btnPadding
+            // btnLinkedPlots
             // 
-            this.btnPadding.Location = new System.Drawing.Point(6, 77);
-            this.btnPadding.Name = "btnPadding";
-            this.btnPadding.Size = new System.Drawing.Size(106, 23);
-            this.btnPadding.TabIndex = 17;
-            this.btnPadding.Text = "Padding";
-            this.btnPadding.UseVisualStyleBackColor = true;
-            this.btnPadding.Click += new System.EventHandler(this.btnPadding_Click);
+            this.btnLinkedPlots.Location = new System.Drawing.Point(6, 106);
+            this.btnLinkedPlots.Name = "btnLinkedPlots";
+            this.btnLinkedPlots.Size = new System.Drawing.Size(106, 23);
+            this.btnLinkedPlots.TabIndex = 18;
+            this.btnLinkedPlots.Text = "Linked Plots";
+            this.btnLinkedPlots.UseVisualStyleBackColor = true;
+            this.btnLinkedPlots.Click += new System.EventHandler(this.btnLinkedPlots_Click);
             // 
             // FormMain
             // 
@@ -626,6 +638,7 @@
         private System.Windows.Forms.Button btnUserControlSettings;
         private System.Windows.Forms.Button btnWavFileViewer;
         private System.Windows.Forms.Button btnPadding;
+        private System.Windows.Forms.Button btnLinkedPlots;
     }
 }
 
