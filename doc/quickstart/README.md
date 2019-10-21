@@ -64,13 +64,33 @@ formsPlot1.Render();
 
 ### WPF Application
 
-Using the WPF user control is the same as the WinForms user control. Virtually all your interaction is with the `wpfPlot1.plt` object (use it just like the plot object in the [cookbook](/cookbook)), then optionally force a render with `wpfPlot1.render()`. The user control handles mouse interactivity (left-click-drag pan, right-click-drag zoom).
+Using the WPF user control is the same as the WinForms user control. Virtually all your interaction is with the `plt` object contained inside the user control (use it just like `plt` is used in the [cookbook](/cookbook)), then optionally force a render with `wpfPlot1.render()`. 
 
-```xml
-<ScottPlot:ScottPlotWPF Name="wpfPlot1" Margin="10"/>
-<Button Content="Add Plot" Click="AddPlot"/>
-<Button Content="Clear" Click="Clear"/>
+* add the `xmlns` namespace and assembly reference to your `Window`
+* add `<ScottPlot:WpfPlot Name="wpfPlot1"/>` to your layout
+* interact with `wpfPlot1.plt` in code
+
+_note: This procedure works even if WpfPlot does not appear in the toolbox._
+
+#### MainWindow.xaml
+
+```xaml
+<Window x:Class="WpfApp4.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp4"
+        xmlns:ScottPlot="clr-namespace:ScottPlot;assembly=ScottPlot"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <ScottPlot:WpfPlot Name="wpfPlot1"/>
+    </Grid>
+</Window>
 ```
+
+#### MainWindow.xaml.cs
 
 ```cs
 public MainWindow()
@@ -79,19 +99,11 @@ public MainWindow()
     wpfPlot1.plt.Title("WPF Demo");
     wpfPlot1.plt.YLabel("signal level");
     wpfPlot1.plt.XLabel("horizontal units");
-}
-
-private void AddPlot(object sender, RoutedEventArgs e)
-{
     Random rand = new Random();
-    wpfPlot1.plt.PlotSignal(ScottPlot.DataGen.RandomWalk(rand, 1000));
+    wpfPlot1.plt.PlotSignal(ScottPlot.DataGen.RandomWalk(rand, 10_000));
+    wpfPlot1.plt.PlotSignal(ScottPlot.DataGen.RandomWalk(rand, 10_000));
+    wpfPlot1.plt.PlotSignal(ScottPlot.DataGen.RandomWalk(rand, 10_000));
     wpfPlot1.plt.AxisAuto();
-    wpfPlot1.Render();
-}
-
-private void Clear(object sender, RoutedEventArgs e)
-{
-    wpfPlot1.plt.Clear();
     wpfPlot1.Render();
 }
 ```
