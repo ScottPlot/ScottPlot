@@ -846,7 +846,9 @@ namespace ScottPlot
             bool? useOffsetNotation = null,
             bool? useExponentialNotation = null,
             bool? dateTimeX = null,
-            bool? dateTimeY = null
+            bool? dateTimeY = null,
+            bool? rulerModeX = null,
+            bool? rulerModeY = null
             )
         {
             if (displayTicksX != null)
@@ -869,6 +871,10 @@ namespace ScottPlot
                 settings.ticks.timeFormatX = (bool)dateTimeX;
             if (dateTimeY != null)
                 settings.ticks.timeFormatY = (bool)dateTimeY;
+            if (rulerModeX != null)
+                settings.ticks.rulerModeX = (bool)rulerModeX;
+            if (rulerModeY != null)
+                settings.ticks.rulerModeY = (bool)rulerModeY;
 
             if (dateTimeX != null || dateTimeY != null)
             {

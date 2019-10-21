@@ -25,8 +25,8 @@ namespace ScottPlotTests
             if (!System.IO.Directory.Exists(this.outputPath))
                 System.IO.Directory.CreateDirectory(this.outputPath);
 
-            this.width = 600;
-            this.height = 400;
+            this.width = 640;
+            this.height = 480;
         }
 
         public Recipes(string outputPath, int width, int height)
@@ -441,7 +441,7 @@ namespace ScottPlotTests
         }
 
         [TestMethod]
-        public void Figure_13_RulerMode()
+        public void Figure_13_Ruler_Mode()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
@@ -455,7 +455,9 @@ namespace ScottPlotTests
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
 
-            plt.Ticks();
+            plt.Frame(right: false, top: false);
+            plt.Ticks(rulerModeX: true, rulerModeY: true); // enable ruler mode like this
+            plt.AxisAuto(0, 0);
 
             if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
             Console.WriteLine($"Saved: {fileName}");

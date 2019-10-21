@@ -189,8 +189,16 @@ namespace ScottPlot
                 int yPx = (int)(unitsFromAxisEdge * settings.yAxisScale);
                 yPx = settings.figureSize.Height - yPx - settings.layout.paddingBySide[2];
 
-                settings.gfxFigure.DrawLine(pen, xPx, yPx, xPx - settings.ticks.size, yPx);
-                settings.gfxFigure.DrawString(text, settings.ticks.font, brush, xPx - settings.ticks.size, yPx, settings.misc.sfEast);
+                if (settings.ticks.rulerModeY)
+                {
+                    settings.gfxFigure.DrawLine(pen, xPx, yPx, xPx - settings.ticks.size - settings.ticks.font.Height, yPx);
+                    settings.gfxFigure.DrawString(text, settings.ticks.font, brush, xPx - settings.ticks.size, yPx, settings.misc.sfSouthEast);
+                }
+                else
+                {
+                    settings.gfxFigure.DrawLine(pen, xPx, yPx, xPx - settings.ticks.size, yPx);
+                    settings.gfxFigure.DrawString(text, settings.ticks.font, brush, xPx - settings.ticks.size, yPx, settings.misc.sfEast);
+                }
             }
 
             if (settings.ticks.displayYminor && settings.ticks.y.tickPositionsMinor != null)
@@ -224,8 +232,16 @@ namespace ScottPlot
                 int xPx = (int)(unitsFromAxisEdge * settings.xAxisScale) + settings.layout.paddingBySide[0];
                 int yPx = settings.figureSize.Height - settings.layout.paddingBySide[2];
 
-                settings.gfxFigure.DrawLine(pen, xPx, yPx, xPx, yPx + settings.ticks.size);
-                settings.gfxFigure.DrawString(text, settings.ticks.font, brush, xPx, yPx + settings.ticks.size, settings.misc.sfNorth);
+                if (settings.ticks.rulerModeX)
+                {
+                    settings.gfxFigure.DrawLine(pen, xPx, yPx, xPx, yPx + settings.ticks.size + settings.ticks.font.Height);
+                    settings.gfxFigure.DrawString(text, settings.ticks.font, brush, xPx, yPx + settings.ticks.size, settings.misc.sfNorthWest);
+                }
+                else
+                {
+                    settings.gfxFigure.DrawLine(pen, xPx, yPx, xPx, yPx + settings.ticks.size);
+                    settings.gfxFigure.DrawString(text, settings.ticks.font, brush, xPx, yPx + settings.ticks.size, settings.misc.sfNorth);
+                }
             }
 
             if (settings.ticks.displayXminor && settings.ticks.x.tickPositionsMinor != null)
