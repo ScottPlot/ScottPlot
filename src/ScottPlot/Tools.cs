@@ -119,28 +119,29 @@ namespace ScottPlot
             plt.YLabel("Sample Data");
         }
 
-        public static Bitmap DesignerModeBitmap(Size size)
+        public static Bitmap DesignerModeBitmap(Size size, bool drawArrows = false)
         {
             Bitmap bmp = new Bitmap(size.Width, size.Height);
 
+            Graphics gfx = Graphics.FromImage(bmp);
+            gfx.Clear(ColorTranslator.FromHtml("#003366"));
+            Brush brushLogo = new SolidBrush(ColorTranslator.FromHtml("#FFFFFF"));
+            Brush brushMeasurements = new SolidBrush(ColorTranslator.FromHtml("#006699"));
+            Pen pen = new Pen(ColorTranslator.FromHtml("#006699"), 3);
+            pen.StartCap = System.Drawing.Drawing2D.LineCap.Round;
+            pen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
+            float arrowSize = 7;
+            float padding = 3;
+
+            // logo
+            FontFamily ff = new FontFamily(Tools.VerifyFont("Segoe UI"));
+            gfx.DrawString("ScottPlot", new Font(ff, 24, FontStyle.Bold), brushLogo, 10, 10);
+            var titleSize = gfx.MeasureString("ScottPlot", new Font(ff, 24, FontStyle.Bold));
+            gfx.DrawString($"version {GetVersionString()}", new Font(ff, 12, FontStyle.Italic), brushLogo, 12, (int)(10 + titleSize.Height * .7));
+
+            if (drawArrows)
             {
-                Graphics gfx = Graphics.FromImage(bmp);
-                gfx.Clear(ColorTranslator.FromHtml("#003366"));
-                Brush brushLogo = new SolidBrush(ColorTranslator.FromHtml("#FFFFFF"));
-                Brush brushMeasurements = new SolidBrush(ColorTranslator.FromHtml("#006699"));
-                Pen pen = new Pen(ColorTranslator.FromHtml("#006699"), 3);
-                pen.StartCap = System.Drawing.Drawing2D.LineCap.Round;
-                pen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
-                float arrowSize = 7;
-                float padding = 3;
-
-                // logo
-                FontFamily ff = new FontFamily(Tools.VerifyFont("Segoe UI"));
-                gfx.DrawString("ScottPlot", new Font(ff, 24, FontStyle.Bold), brushLogo, 10, 10);
-                var titleSize = gfx.MeasureString("ScottPlot", new Font(ff, 24, FontStyle.Bold));
-                gfx.DrawString($"version {GetVersionString()}", new Font(ff, 12, FontStyle.Italic), brushLogo, 12, (int)(10 + titleSize.Height * .7));
-
-                // horizontal line
+                // horizontal arrow
                 PointF left = new PointF(padding, size.Height / 2);
                 PointF leftA = new PointF(left.X + arrowSize, left.Y + arrowSize);
                 PointF leftB = new PointF(left.X + arrowSize, left.Y - arrowSize);
@@ -152,8 +153,11 @@ namespace ScottPlot
                 gfx.DrawLine(pen, left, leftB);
                 gfx.DrawLine(pen, right, rightA);
                 gfx.DrawLine(pen, right, rightB);
+                gfx.DrawString($"{size.Width}px",
+                    new Font(ff, 12, FontStyle.Bold), brushMeasurements,
+                    (float)(size.Width * .2), (float)(size.Height * .5));
 
-                // vertical line
+                // vertical arrow
                 PointF top = new PointF(size.Width / 2, padding);
                 PointF topA = new PointF(top.X - arrowSize, top.Y + arrowSize);
                 PointF topB = new PointF(top.X + arrowSize, top.Y + arrowSize);
@@ -165,12 +169,6 @@ namespace ScottPlot
                 gfx.DrawLine(pen, bot, botB);
                 gfx.DrawLine(pen, top, topA);
                 gfx.DrawLine(pen, top, topB);
-
-                // size text
-                gfx.DrawString($"{size.Width}px",
-                    new Font(ff, 12, FontStyle.Bold), brushMeasurements,
-                    (float)(size.Width * .2), (float)(size.Height * .5));
-
                 gfx.RotateTransform(-90);
                 gfx.DrawString($"{size.Height}px",
                     new Font(ff, 12, FontStyle.Bold), brushMeasurements,
