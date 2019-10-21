@@ -24,6 +24,9 @@ namespace ScottPlot.Config
         public bool timeFormatX = false;
         public bool timeFormatY = false;
 
+        public bool rulerModeX = false;
+        public bool rulerModeY = false;
+
         public bool displayYmajor = true;
         public bool displayYminor = true;
 

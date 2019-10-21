@@ -45,7 +45,7 @@ namespace ScottPlotCookbook
             recipies.Figure_10_Modifying_Plotted_Data();
             recipies.Figure_11_Modify_Styles_After_Plotting();
             recipies.Figure_12_Date_Axis();
-            recipies.Figure_13_RulerMode();
+            recipies.Figure_13_Ruler_Mode();
 
             recipies.Figure_20_Small_Plot();
             recipies.Figure_21a_Title_and_Axis_Labels();
