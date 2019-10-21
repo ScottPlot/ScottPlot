@@ -1,6 +1,6 @@
 **ScottPlot is a free and open-source interactive plotting library for .NET** which makes it easy to interactively display data in a variety of formats. You can create interactive line plots, bar charts, scatter plots, etc., with just a few lines of code (see the [ScottPlot Cookbook](https://github.com/swharden/ScottPlot/tree/master/cookbook) for examples). 
 
-[![](https://raw.githubusercontent.com/swharden/ScottPlot/master/demos/src/plot-types/ScottPlot-screenshot-small.gif)](https://github.com/swharden/ScottPlot)
+[![](https://raw.githubusercontent.com/swharden/ScottPlot/master/demos/ScottPlot-screenshot.gif)](https://github.com/swharden/ScottPlot)
 
 In graphical environments plots can be displayed interactively (left-click-drag to pan and right-click-drag to zoom) and in console applications plots can be created and saved as images. 
 
