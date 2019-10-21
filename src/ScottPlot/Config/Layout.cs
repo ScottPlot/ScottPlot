@@ -38,7 +38,8 @@ namespace ScottPlot.Config
             // bottom
             int xLabelHeight = (int)gfx.MeasureString(xLabel.text, xLabel.font).Height;
             paddingBySide[2] = Math.Max(xLabelHeight, tickLetterHeight);
-            paddingBySide[2] += tickLetterHeight;
+            if (xLabel.visible && xLabel.text != "")
+                paddingBySide[2] += tickLetterHeight;
             paddingBySide[2] += padOnAllSides;
 
             // left
