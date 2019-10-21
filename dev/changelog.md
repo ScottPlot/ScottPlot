@@ -1,5 +1,19 @@
 # ScottPlot Changelog
 
+## ScottPlot 3.1.6
+_Published on [NuGet](https://www.nuget.org/packages/ScottPlot/) on 2019-10-20_
+
+### Minor Changes
+* reduced designer mode checks to increase render speed (Thanks @StendProg)
+* fixed cursor bug that occurred when draggable axis lines were used (Thanks Kamran)
+* fully deleted the outdated `ScottPlotUC`
+* fixed infinite zoom bug caused by calling AxisAuto() when plotting a single point (or perfectly straight horizontal or vertical line)
+* added `ToolboxItem` and `DesignTimeVisible` delegates to WpfPlot control to try to get it to appear in the toolbox (but it doesn't seem to be working)
+* improved figure padding when axes frames are disabled (Thanks @citizen3942)
+* improved rendering of ticks at the edge of the plottable area (Thanks @citizen3942)
+* added `AxesChanged` event to user control to make it easier to sync axes between multiple plots (see linked plots demo)
+* disabled drawing of arrows on user control in designer mode
+
 ## ScottPlot 3.1.5
 _Published on [NuGet](https://www.nuget.org/packages/ScottPlot/) on 2019-10-06_
 
