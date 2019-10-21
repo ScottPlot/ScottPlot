@@ -1022,8 +1022,8 @@ namespace ScottPlot
         {
             throw new NotImplementedException("parallel processing should not used enabled at this time");
 
-            foreach (var plottable in GetPlottables())
-                plottable.useParallel = useParallel;
+            //foreach (var plottable in GetPlottables())
+                //plottable.useParallel = useParallel;
         }
 
         #endregion
