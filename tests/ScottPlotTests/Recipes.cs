@@ -14,20 +14,24 @@ namespace ScottPlotTests
     {
         int width;
         int height;
-        string outputFolderName;
+        string outputPath;
         Random rand = new Random(0);
-
 
         public Recipes()
         {
-            outputFolderName = null;
-            width = 600;
-            height = 400;
+            // this constructor is only used when manually running individual tests
+
+            this.outputPath = System.IO.Path.GetFullPath("manualTests");
+            if (!System.IO.Directory.Exists(this.outputPath))
+                System.IO.Directory.CreateDirectory(this.outputPath);
+
+            this.width = 600;
+            this.height = 400;
         }
 
-        public Recipes(string outputFolderName, int width, int height)
+        public Recipes(string outputPath, int width, int height)
         {
-            this.outputFolderName = outputFolderName;
+            this.outputPath = outputPath;
             this.width = width;
             this.height = height;
         }
@@ -36,7 +40,7 @@ namespace ScottPlotTests
         public void Figure_01a_Scatter_Sin()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -46,15 +50,15 @@ namespace ScottPlotTests
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_01b_Automatic_Margins()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -65,15 +69,15 @@ namespace ScottPlotTests
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
             plt.AxisAuto(0, .5); // no horizontal padding, 50% vertical padding
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_01c_Defined_Axis_Limits()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -84,15 +88,15 @@ namespace ScottPlotTests
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
             plt.Axis(2, 8, .2, 1.1); // x1, x2, y1, y2
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_01d_Zoom_and_Pan()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -104,15 +108,15 @@ namespace ScottPlotTests
             plt.PlotScatter(dataXs, dataCos);
             plt.AxisZoom(2, 2);
             plt.AxisPan(-10, .5);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_01e_Legend()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -123,15 +127,15 @@ namespace ScottPlotTests
             plt.PlotScatter(dataXs, dataSin, label: "first");
             plt.PlotScatter(dataXs, dataCos, label: "second");
             plt.Legend(location: ScottPlot.legendLocation.lowerLeft);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_01f_Custom_Marker_Shapes()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -142,15 +146,15 @@ namespace ScottPlotTests
             plt.PlotScatter(dataXs, dataSin, label: "sin", markerShape: ScottPlot.MarkerShape.openCircle);
             plt.PlotScatter(dataXs, dataCos, label: "cos", markerShape: ScottPlot.MarkerShape.filledSquare);
             plt.Legend();
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_01g_All_Marker_Shapes()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -172,15 +176,15 @@ namespace ScottPlotTests
             }
 
             plt.Legend(fontSize: 10);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_02_Styling_Scatter_Plots()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -191,15 +195,15 @@ namespace ScottPlotTests
             plt.PlotScatter(dataXs, dataSin, color: Color.Magenta, lineWidth: 0, markerSize: 10);
             plt.PlotScatter(dataXs, dataCos, color: Color.Green, lineWidth: 5, markerSize: 0);
             plt.AxisAuto(0); // no horizontal margin (default 10% vertical margin)
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_03_Plot_XY_Data()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             Random rand = new Random(0);
             int pointCount = 50;
@@ -208,15 +212,15 @@ namespace ScottPlotTests
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataRandom1, dataRandom2);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_04_Plot_Lines_Only()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             Random rand = new Random(0);
             int pointCount = 50;
@@ -228,15 +232,15 @@ namespace ScottPlotTests
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataRandom1, dataRandom2, markerSize: 0);
             plt.PlotScatter(dataRandom3, dataRandom4, markerSize: 0);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_05_Plot_Points_Only()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             Random rand = new Random(0);
             int pointCount = 50;
@@ -248,15 +252,15 @@ namespace ScottPlotTests
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataRandom1, dataRandom2, lineWidth: 0);
             plt.PlotScatter(dataRandom3, dataRandom4, lineWidth: 0);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_06_Styling_XY_Plots()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             Random rand = new Random(0);
             int pointCount = 50;
@@ -268,15 +272,15 @@ namespace ScottPlotTests
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataRandom1, dataRandom2, color: Color.Magenta, lineWidth: 3, markerSize: 15);
             plt.PlotScatter(dataRandom3, dataRandom4, color: Color.Green, lineWidth: 3, markerSize: 15);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_06b_Custom_LineStyles()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             Random rand = new Random(0);
             int pointCount = 50;
@@ -289,15 +293,15 @@ namespace ScottPlotTests
             plt.PlotScatter(dataRandom1, dataRandom2, label: "dash", lineStyle: ScottPlot.LineStyle.Dash);
             plt.PlotScatter(dataRandom3, dataRandom4, label: "dash dot dot", lineStyle: ScottPlot.LineStyle.DashDotDot);
             plt.Legend();
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_07_Plotting_Points()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -309,15 +313,15 @@ namespace ScottPlotTests
             plt.PlotScatter(dataXs, dataCos);
             plt.PlotPoint(25, 0.8);
             plt.PlotPoint(30, 0.3, color: Color.Magenta, markerSize: 15);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_08_Plotting_Text()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -331,15 +335,15 @@ namespace ScottPlotTests
             plt.PlotPoint(30, 0.3, color: Color.Magenta, markerSize: 15);
             plt.PlotText("important point", 25, 0.8);
             plt.PlotText("more important", 30, .3, fontSize: 16, bold: true, alignment: ScottPlot.TextAlignment.upperCenter);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_09_Clearing_Plots()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -355,15 +359,15 @@ namespace ScottPlotTests
             plt.PlotScatter(dataXs, dataCos);
             plt.Clear();
             plt.PlotScatter(dataRandom1, dataRandom2);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_10_Modifying_Plotted_Data()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -384,15 +388,15 @@ namespace ScottPlotTests
                 dataCos[i] = 2 * i / 10.0;
             }
 
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_11_Modify_Styles_After_Plotting()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -411,15 +415,15 @@ namespace ScottPlotTests
             scatter2.markerShape = ScottPlot.MarkerShape.openCircle;
             horizontalLine.position = 0.7654;
 
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_12_Date_Axis()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             Random rand = new Random(0);
             double[] price = ScottPlot.DataGen.RandomWalk(rand, 60 * 8);
@@ -432,15 +436,36 @@ namespace ScottPlotTests
             plt.YLabel("Price");
             plt.XLabel("Date and Time");
 
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
+        }
+
+        [TestMethod]
+        public void Figure_13_RulerMode()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
+
+            var plt = new ScottPlot.Plot(width, height);
+            plt.PlotScatter(dataXs, dataSin);
+            plt.PlotScatter(dataXs, dataCos);
+
+            plt.Ticks();
+
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_20_Small_Plot()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -450,15 +475,15 @@ namespace ScottPlotTests
             var plt = new ScottPlot.Plot(200, 150);
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_21a_Title_and_Axis_Labels()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -473,15 +498,15 @@ namespace ScottPlotTests
             plt.XLabel("Experiment Duration");
             plt.YLabel("Productivity");
 
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_21b_Extra_Padding()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -498,15 +523,15 @@ namespace ScottPlotTests
 
             plt.TightenLayout(padding: 40);
 
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_21c_Automatic_Left_Padding()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             var plt = new ScottPlot.Plot(width, height);
             Random rand = new Random(0);
@@ -519,15 +544,15 @@ namespace ScottPlotTests
             // this can be problematic because Y labels get very large
             plt.Ticks(useOffsetNotation: false, useMultiplierNotation: false);
 
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_22_Custom_Colors()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -545,15 +570,15 @@ namespace ScottPlotTests
             plt.Title("Very Complicated Data", color: Color.White);
             plt.XLabel("Experiment Duration", color: Color.LightGray);
             plt.YLabel("Productivity", color: Color.LightGray);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_23_Frameless_Plot()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -569,15 +594,15 @@ namespace ScottPlotTests
             plt.Frame(drawFrame: false);
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_24_Disable_the_Grid()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -588,15 +613,15 @@ namespace ScottPlotTests
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
             plt.Grid(false);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_25_Corner_Axis_Frame()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -608,15 +633,15 @@ namespace ScottPlotTests
             plt.PlotScatter(dataXs, dataCos);
             plt.Grid(false);
             plt.Frame(right: false, top: false);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_26_Horizontal_Ticks_Only()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -629,15 +654,15 @@ namespace ScottPlotTests
             plt.Grid(false);
             plt.Ticks(displayTicksY: false);
             plt.Frame(left: false, right: false, top: false);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_27_Very_Large_Numbers()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             Random rand = new Random(0);
             int pointCount = 100;
@@ -646,58 +671,58 @@ namespace ScottPlotTests
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(largeXs, largeYs);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_28_Axis_Exponent_And_Offset()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             double bigNumber = 9876;
 
             var plt = new ScottPlot.Plot(width, height);
             plt.Title("panned far and really zoomed in");
             plt.Axis(bigNumber, bigNumber + .00001, bigNumber, bigNumber + .00001);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_28b_Multiplier_Notation_Default()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             double[] tenMillionPoints = ScottPlot.DataGen.SinSweep(10_000_000, 8);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotSignal(tenMillionPoints);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         public void Figure_28c_Multiplier_Notation_Disabled()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             double[] tenMillionPoints = ScottPlot.DataGen.SinSweep(10_000_000, 8);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotSignal(tenMillionPoints);
             plt.Ticks(useMultiplierNotation: false); // <-- THIS
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_29_Very_Large_Images()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -707,15 +732,15 @@ namespace ScottPlotTests
             var plt = new ScottPlot.Plot(2000, 1000);
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_30a_Signal()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             double[] tenMillionPoints = ScottPlot.DataGen.SinSweep(10_000_000, 8);
 
@@ -726,15 +751,15 @@ namespace ScottPlotTests
             plt.Title("Displaying 10 million points with PlotSignal()");
             plt.Benchmark();
             plt.PlotSignal(tenMillionPoints, sampleRate: 20_000);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         //[TestMethod]
         public void Figure_30b_Signal_With_Parallel_Processing()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             double[] tenMillionPoints = ScottPlot.DataGen.SinSweep(10_000_000, 8);
 
@@ -746,15 +771,15 @@ namespace ScottPlotTests
             plt.Benchmark();
             plt.Parallel(true);
             plt.PlotSignal(tenMillionPoints, sampleRate: 20_000);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_30c_SignalConst()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             double[] tenMillionPoints = ScottPlot.DataGen.SinSweep(10_000_000, 8);
 
@@ -767,15 +792,15 @@ namespace ScottPlotTests
             plt.Title("Displaying 10 million points with PlotSignalConst()");
             plt.Benchmark();
             plt.PlotSignalConst(tenMillionPoints, sampleRate: 20_000);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         //[TestMethod]
         public void Figure_30d_SignalConst_One_Billion_Points()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             // SignalConst() accepts generic data types (here a byte array with a billion points)
             byte[] oneBillionPoints = ScottPlot.DataGen.SinSweepByte(1_000_000_000, 8);
@@ -785,29 +810,29 @@ namespace ScottPlotTests
             plt.Benchmark();
             plt.Parallel(false);
             plt.PlotSignalConst(oneBillionPoints, sampleRate: 20_000_000);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_32_Signal_Styling()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             double[] tenMillionPoints = ScottPlot.DataGen.SinSweep(10_000_000, 8);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotSignal(tenMillionPoints, 20000, lineWidth: 3, color: Color.Red);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_40_Vertical_and_Horizontal_Lines()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -819,15 +844,15 @@ namespace ScottPlotTests
             plt.PlotScatter(dataXs, dataCos);
             plt.PlotVLine(17);
             plt.PlotHLine(-.25, color: Color.Red, lineWidth: 3);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_41_Axis_Spans()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -854,15 +879,15 @@ namespace ScottPlotTests
 
             plt.Legend();
 
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_50_StyleBlue1()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -877,15 +902,15 @@ namespace ScottPlotTests
             plt.YLabel("Productivity");
             plt.Legend();
             plt.Style(ScottPlot.Style.Blue1);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_51_StyleBlue2()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -900,15 +925,15 @@ namespace ScottPlotTests
             plt.YLabel("Productivity");
             plt.Legend();
             plt.Style(ScottPlot.Style.Blue2);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_52_StyleBlue3()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -923,15 +948,15 @@ namespace ScottPlotTests
             plt.YLabel("Productivity");
             plt.Legend();
             plt.Style(ScottPlot.Style.Blue3);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_53_StyleLight1()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -946,15 +971,15 @@ namespace ScottPlotTests
             plt.YLabel("Productivity");
             plt.Legend();
             plt.Style(ScottPlot.Style.Light1);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_54_StyleLight2()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -969,15 +994,15 @@ namespace ScottPlotTests
             plt.YLabel("Productivity");
             plt.Legend();
             plt.Style(ScottPlot.Style.Light2);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_55_StyleGray1()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -992,15 +1017,15 @@ namespace ScottPlotTests
             plt.YLabel("Productivity");
             plt.Legend();
             plt.Style(ScottPlot.Style.Gray1);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_56_StyleGray2()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -1015,15 +1040,15 @@ namespace ScottPlotTests
             plt.YLabel("Productivity");
             plt.Legend();
             plt.Style(ScottPlot.Style.Gray2);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_57_StyleBlack()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -1038,15 +1063,15 @@ namespace ScottPlotTests
             plt.YLabel("Productivity");
             plt.Legend();
             plt.Style(ScottPlot.Style.Black);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_58_StyleDefault()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -1061,15 +1086,15 @@ namespace ScottPlotTests
             plt.YLabel("Productivity");
             plt.Legend();
             plt.Style(ScottPlot.Style.Default);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_59_StyleControl()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -1084,15 +1109,15 @@ namespace ScottPlotTests
             plt.YLabel("Productivity");
             plt.Legend();
             plt.Style(ScottPlot.Style.Control);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_60_Plotting_With_Errorbars()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             var plt = new ScottPlot.Plot(width, height);
             plt.Grid(false);
@@ -1128,15 +1153,15 @@ namespace ScottPlotTests
 
             plt.Title("Scatter Plot with Errorbars");
             plt.Legend();
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_61_Plot_Bar_Data()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -1151,15 +1176,15 @@ namespace ScottPlotTests
             var plt = new ScottPlot.Plot(width, height);
             plt.Title("Bar Plot With Error Bars");
             plt.PlotBar(dataXs, dataSin, barWidth: .5, errorY: yErr, errorCapSize: 2);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_62_Plot_Bar_Data_Fancy()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             // generate some more complex data
             Random rand = new Random(0);
@@ -1186,15 +1211,15 @@ namespace ScottPlotTests
             plt.PlotBar(Xs, dataB, errorY: errorB, label: "data B", barWidth: 3.2, xOffset: 2);
             plt.Axis(null, null, 0, null);
             plt.Legend();
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_63_Step_Plot()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -1204,15 +1229,15 @@ namespace ScottPlotTests
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotStep(dataXs, dataSin);
             plt.PlotStep(dataXs, dataCos);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_64_Manual_Grid_Spacing()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -1223,14 +1248,14 @@ namespace ScottPlotTests
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
             plt.Grid(xSpacing: 2, ySpacing: .1);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         public void Figure_65_Histogram()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             Random rand = new Random(0);
             double[] values1 = ScottPlot.DataGen.RandomNormal(rand, pointCount: 1000, mean: 50, stdDev: 20);
@@ -1242,15 +1267,15 @@ namespace ScottPlotTests
             plt.XLabel("Value (units)");
             plt.PlotBar(hist1.bins, hist1.counts, barWidth: 1);
             plt.Axis(null, null, 0, null);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_66_CPH()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             Random rand = new Random(0);
             double[] values1 = ScottPlot.DataGen.RandomNormal(rand, pointCount: 1000, mean: 50, stdDev: 20);
@@ -1266,15 +1291,15 @@ namespace ScottPlotTests
             plt.PlotStep(hist2.bins, hist2.cumulativeFrac, lineWidth: 1.5, label: "sample B");
             plt.Legend();
             plt.Axis(null, null, 0, 1);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_67_Candlestick()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             Random rand = new Random(0);
             int pointCount = 60;
@@ -1285,15 +1310,15 @@ namespace ScottPlotTests
             plt.YLabel("Stock Price (USD)");
             plt.XLabel("Day (into Q4)");
             plt.PlotCandlestick(ohlcs);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_68_OHLC()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             Random rand = new Random(0);
             int pointCount = 60;
@@ -1304,15 +1329,15 @@ namespace ScottPlotTests
             plt.YLabel("Stock Price (USD)");
             plt.XLabel("Day (into Q4)");
             plt.PlotOHLC(ohlcs);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_70_Save_Scatter_Data()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -1321,15 +1346,15 @@ namespace ScottPlotTests
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin);
             plt.GetPlottables()[0].SaveCSV("scatter.csv");
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_71_Save_Signal_Data()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             int pointCount = 50;
             double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
@@ -1337,15 +1362,15 @@ namespace ScottPlotTests
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotSignal(dataCos, sampleRate: 20_000);
             plt.GetPlottables()[0].SaveCSV("signal.csv");
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
 
         [TestMethod]
         public void Figure_72_Custom_Fonts()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputFolderName}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -1364,8 +1389,8 @@ namespace ScottPlotTests
             plt.PlotText("wow.", 10, .6, fontName: "comic sans ms", fontSize: 36, color: Color.Green, bold: true);
             plt.PlotText("NuGet", 32, 0, fontName: "comic sans ms", fontSize: 24, color: Color.Gold, bold: true);
             plt.Legend(fontName: "comic sans ms", fontSize: 16, bold: true, fontColor: Color.DarkBlue);
-            if (outputFolderName != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {System.IO.Path.GetFileName(fileName)}");
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
     }
 }
