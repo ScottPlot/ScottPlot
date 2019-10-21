@@ -32,20 +32,40 @@ plt.SaveFig("demo.png");
 
 ### WPF Application
 
- 1. Drag/Drop WpfPlot (from the toolbox) onto your form.
- 2. Add this code to your startup sequence:
+#### MainWindow.xaml
 
-```xml
-<ScottPlot:ScottPlotWPF Name="wpfPlot1" Margin="10"/>
-<Button Content="Add Plot" Click="AddPlot"/>
-<Button Content="Clear" Click="Clear"/>
+```xaml
+<Window x:Class="WpfApp4.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp4"
+        xmlns:ScottPlot="clr-namespace:ScottPlot;assembly=ScottPlot"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <ScottPlot:WpfPlot Name="wpfPlot1"/>
+    </Grid>
+</Window>
 ```
 
+#### MainWindow.xaml.cs
+
 ```cs
-double[] xs = new double[] {1, 2, 3, 4, 5};
-double[] ys = new double[] {1, 4, 9, 16, 25};
-wpfPlot1.plt.PlotScatter(xs, ys);
-wpfPlot1.Render();
+public MainWindow()
+{
+    InitializeComponent();
+    wpfPlot1.plt.Title("WPF Demo");
+    wpfPlot1.plt.YLabel("signal level");
+    wpfPlot1.plt.XLabel("horizontal units");
+    Random rand = new Random();
+    wpfPlot1.plt.PlotSignal(ScottPlot.DataGen.RandomWalk(rand, 10_000));
+    wpfPlot1.plt.PlotSignal(ScottPlot.DataGen.RandomWalk(rand, 10_000));
+    wpfPlot1.plt.PlotSignal(ScottPlot.DataGen.RandomWalk(rand, 10_000));
+    wpfPlot1.plt.AxisAuto();
+    wpfPlot1.Render();
+}
 ```
 
 ## Links
