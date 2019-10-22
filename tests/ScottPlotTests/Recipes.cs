@@ -499,7 +499,7 @@ namespace ScottPlotTests
         }
 
         [TestMethod]
-        public void Figure_21b_Extra_Padding()
+        public void Figure_21b_Custom_Padding()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
@@ -513,11 +513,22 @@ namespace ScottPlotTests
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
 
+            plt.Style(figBg: Color.LightBlue);
+            plt.Ticks(rulerModeX: true);
+
             plt.Title("Very Complicated Data");
-            plt.XLabel("Experiment Duration");
             plt.YLabel("Productivity");
 
-            plt.TightenLayout(padding: 40);
+            // customize update the layout as desired
+            plt.TightenLayout();
+            var layout = plt.GetSettings().layout;
+            layout.titleHeight = 123;
+            layout.yScaleWidth = 70;
+            layout.xLabelHeight = 0;
+            layout.Update(width, height);
+
+            // then force a resize (because the data area changed size)
+            plt.Resize(width, height);
 
             if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
             Console.WriteLine($"Saved: {fileName}");
@@ -539,6 +550,9 @@ namespace ScottPlotTests
 
             // this can be problematic because Y labels get very large
             plt.Ticks(useOffsetNotation: false, useMultiplierNotation: false);
+
+            // tightening with a render is the best way to get the axes right
+            plt.TightenLayout(render: true);
 
             if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
             Console.WriteLine($"Saved: {fileName}");

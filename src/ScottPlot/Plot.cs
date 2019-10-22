@@ -656,13 +656,12 @@ namespace ScottPlot
         public void AxisAuto(
             double horizontalMargin = .05,
             double verticalMargin = .1,
-            int tightenPadding = 5,
             bool xExpandOnly = false,
             bool yExpandOnly = false
             )
         {
             settings.AxisAuto(horizontalMargin, verticalMargin, xExpandOnly, yExpandOnly);
-            TightenLayout(tightenPadding);
+            TightenLayout();
         }
 
         public void AxisAutoX(
@@ -939,17 +938,15 @@ namespace ScottPlot
             settings.legend.antiAlias = legend;
         }
 
-        public void TightenLayout(int? padding = null)
+        public void TightenLayout(bool render = false)
         {
-            settings.TightenLayout();
+            if (render)
+                GetBitmap();
             if (!settings.axes.hasBeenSet && settings.plottables.Count > 0)
                 settings.AxisAuto();
-
-            if (padding != null)
-                Console.WriteLine("WARNING: padding is no longer defined this way"); // TODO: throw exception?
-
-            settings.ticks?.x?.Recalculate(settings, false);
-            settings.ticks?.y?.Recalculate(settings, true);
+            settings.ticks?.x?.Recalculate(settings, false); // this probably never happens
+            settings.ticks?.y?.Recalculate(settings, true); // this probably never happens
+            settings.TightenLayout();
             Resize();
         }
 
