@@ -20,9 +20,9 @@ namespace ScottPlot
     public class Settings
     {
         // these properties get set at instantiation or after size or axis adjustments
-        public Size figureSize { get { return layoutNEW.plot.Size; } }
-        public Point dataOrigin { get { return layoutNEW.data.Location; } }
-        public Size dataSize { get { return layoutNEW.data.Size; } }
+        public Size figureSize { get { return layout.plot.Size; } }
+        public Point dataOrigin { get { return layout.data.Location; } }
+        public Size dataSize { get { return layout.data.Size; } }
 
         // Eventually move graphics objects to their own module.
         public Graphics gfxFigure;
@@ -44,8 +44,7 @@ namespace ScottPlot
         public Config.Grid grid = new Config.Grid();
         public Config.Colors colors = new Config.Colors();
         public Config.Axes axes = new Config.Axes();
-        public Config.LayoutOLD layoutOLD = new Config.LayoutOLD();
-        public readonly Config.layoutNEW layoutNEW = new Config.layoutNEW();
+        public readonly Config.Layout layout = new Config.Layout();
         public Config.Ticks ticks = new Config.Ticks();
         public Config.Legend legend = new Config.Legend();
         public Config.Mouse mouse = new Config.Mouse();
@@ -61,25 +60,26 @@ namespace ScottPlot
 
         public void Resize(int width, int height)
         {
-            layoutNEW.Update(width, height);
+            layout.Update(width, height);
         }
 
         public void TightenLayout()
         {
             // update the layout with sizes based on configuration in settings
 
-            layoutNEW.titleHeight = (int)title.size.Height + 3;
+            layout.titleHeight = (int)title.size.Height + 3;
 
-            layoutNEW.y2LabelWidth = 1;
-            layoutNEW.y2ScaleWidth = 1;
+            layout.y2LabelWidth = 1;
+            layout.y2ScaleWidth = 1;
 
-            layoutNEW.yLabelWidth = (int)yLabel.size.Height + 3;
-            layoutNEW.yScaleWidth = 40; // TODO: make this expand automatically for large ticks
+            layout.yLabelWidth = (int)yLabel.size.Height + 3;
+            layout.yScaleWidth = 40; // TODO: make this expand automatically for large ticks
 
-            layoutNEW.xLabelHeight = (int)xLabel.size.Height + 3;
-            layoutNEW.xScaleHeight = 20; // TODO: come from tick font
+            layout.xLabelHeight = (int)xLabel.size.Height + 3;
+            layout.xScaleHeight = 20; // TODO: come from tick font
 
-            layoutNEW.Update(figureSize.Width, figureSize.Height);
+            layout.Update(figureSize.Width, figureSize.Height);
+            layout.tighteningOccurred = true;
         }
 
         public void AxesPanPx(int dxPx, int dyPx)

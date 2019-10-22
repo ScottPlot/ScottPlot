@@ -13,7 +13,7 @@ namespace ScottPlotTests
         [TestMethod]
         public void Test_SHRect()
         {
-            var layout = new ScottPlot.Config.layoutNEW(600, 400);
+            var layout = new ScottPlot.Config.Layout(600, 400);
         }
     }
 }

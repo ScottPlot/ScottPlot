@@ -17,6 +17,9 @@ namespace ScottPlot.Config
         public int Width { get { return right - left; } }
         public int Height { get { return bottom - top; } }
         public Point Location { get { return new Point(left, top); } }
+        public Point Center { get { return new Point(CenterX, CenterY); } }
+        public int CenterX { get { return (int)((right + left) / 2); } }
+        public int CenterY { get { return (int)((bottom + top) / 2); } }
         public Size Size { get { return new Size(Width, Height); } }
         public Rectangle Rectangle { get { return new Rectangle(Location, Size); } }
         public bool isValid { get { return (left < right) && (top < bottom); } }

@@ -133,7 +133,7 @@ namespace ScottPlot
             if (!settings.axes.hasBeenSet && settings.plottables.Count > 0)
                 settings.AxisAuto();
 
-            if (!settings.layoutOLD.tighteningOccurred)
+            if (!settings.layout.tighteningOccurred)
             {
                 // ticks must be populated before the layout can be tightened
                 Renderer.FigureTicks(settings);
@@ -910,17 +910,17 @@ namespace ScottPlot
             )
         {
             if (drawFrame != null)
-                settings.layoutOLD.displayAxisFrames = (bool)drawFrame;
+                settings.layout.displayAxisFrames = (bool)drawFrame;
             if (frameColor != null)
                 settings.ticks.color = (Color)frameColor;
             if (left != null)
-                settings.layoutOLD.displayFrameByAxis[0] = (bool)left;
+                settings.layout.displayFrameByAxis[0] = (bool)left;
             if (right != null)
-                settings.layoutOLD.displayFrameByAxis[1] = (bool)right;
+                settings.layout.displayFrameByAxis[1] = (bool)right;
             if (bottom != null)
-                settings.layoutOLD.displayFrameByAxis[2] = (bool)bottom;
+                settings.layout.displayFrameByAxis[2] = (bool)bottom;
             if (top != null)
-                settings.layoutOLD.displayFrameByAxis[3] = (bool)top;
+                settings.layout.displayFrameByAxis[3] = (bool)top;
             TightenLayout();
         }
 
@@ -944,27 +944,19 @@ namespace ScottPlot
             settings.TightenLayout();
             if (!settings.axes.hasBeenSet && settings.plottables.Count > 0)
                 settings.AxisAuto();
+
             if (padding != null)
-                settings.layoutOLD.padOnAllSides = (int)padding;
+                Console.WriteLine("WARNING: padding is no longer defined this way"); // TODO: throw exception?
+
             settings.ticks?.x?.Recalculate(settings, false);
             settings.ticks?.y?.Recalculate(settings, true);
-            settings.layoutOLD.Tighten(settings.ticks, settings.title, settings.xLabel, settings.yLabel);
             Resize();
         }
 
         public void MatchPadding(Plot sourcePlot, bool horizontal = true, bool vertical = true)
         {
-            if (horizontal)
-            {
-                settings.layoutOLD.paddingBySide[0] = sourcePlot.settings.layoutOLD.paddingBySide[0];
-                settings.layoutOLD.paddingBySide[1] = sourcePlot.settings.layoutOLD.paddingBySide[1];
-            }
-            if (vertical)
-            {
-                settings.layoutOLD.paddingBySide[2] = sourcePlot.settings.layoutOLD.paddingBySide[2];
-                settings.layoutOLD.paddingBySide[3] = sourcePlot.settings.layoutOLD.paddingBySide[3];
-            }
             Resize();
+            throw new NotImplementedException(); // TODO: match new layout system like this
         }
 
         public void MatchAxis(Plot sourcePlot, bool horizontal = true, bool vertical = true)
