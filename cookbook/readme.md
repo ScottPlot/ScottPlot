@@ -484,6 +484,25 @@ plt.SaveFig("Figure_21c_Automatic_Left_Padding.png");
 
 ![](./images/21c_Automatic_Left_Padding.png)
 
+##  Single Axis With No Padding
+
+```cs
+var plt = new ScottPlot.Plot(600, 400);
+Random rand = new Random(0);
+double[] xs = ScottPlot.DataGen.Consecutive(100);
+double[] ys = ScottPlot.DataGen.RandomWalk(rand, 100, 1e2, 1e15);
+plt.PlotScatter(xs, ys);
+plt.Style(figBg: Color.LightBlue);
+
+plt.Ticks(rulerModeX: true, displayTicksY: false);
+plt.Frame(left: false, right: false, top: false);
+plt.TightenLayout(render: true);
+
+plt.SaveFig("Figure_21d_Single_Axis_With_No_Padding.png");
+```
+
+![](./images/21d_Single_Axis_With_No_Padding.png)
+
 ## Custom Colors
 
 ```cs
