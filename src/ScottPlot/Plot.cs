@@ -133,7 +133,7 @@ namespace ScottPlot
             if (!settings.axes.hasBeenSet && settings.plottables.Count > 0)
                 settings.AxisAuto();
 
-            if (!settings.layout.tighteningOccurred)
+            if (!settings.layoutOLD.tighteningOccurred)
             {
                 // ticks must be populated before the layout can be tightened
                 Renderer.FigureTicks(settings);
@@ -910,17 +910,17 @@ namespace ScottPlot
             )
         {
             if (drawFrame != null)
-                settings.layout.displayAxisFrames = (bool)drawFrame;
+                settings.layoutOLD.displayAxisFrames = (bool)drawFrame;
             if (frameColor != null)
                 settings.ticks.color = (Color)frameColor;
             if (left != null)
-                settings.layout.displayFrameByAxis[0] = (bool)left;
+                settings.layoutOLD.displayFrameByAxis[0] = (bool)left;
             if (right != null)
-                settings.layout.displayFrameByAxis[1] = (bool)right;
+                settings.layoutOLD.displayFrameByAxis[1] = (bool)right;
             if (bottom != null)
-                settings.layout.displayFrameByAxis[2] = (bool)bottom;
+                settings.layoutOLD.displayFrameByAxis[2] = (bool)bottom;
             if (top != null)
-                settings.layout.displayFrameByAxis[3] = (bool)top;
+                settings.layoutOLD.displayFrameByAxis[3] = (bool)top;
             TightenLayout();
         }
 
@@ -944,10 +944,10 @@ namespace ScottPlot
             if (!settings.axes.hasBeenSet && settings.plottables.Count > 0)
                 settings.AxisAuto();
             if (padding != null)
-                settings.layout.padOnAllSides = (int)padding;
+                settings.layoutOLD.padOnAllSides = (int)padding;
             settings.ticks?.x?.Recalculate(settings, false);
             settings.ticks?.y?.Recalculate(settings, true);
-            settings.layout.Tighten(settings.ticks, settings.title, settings.xLabel, settings.yLabel);
+            settings.layoutOLD.Tighten(settings.ticks, settings.title, settings.xLabel, settings.yLabel);
             Resize();
         }
 
@@ -955,13 +955,13 @@ namespace ScottPlot
         {
             if (horizontal)
             {
-                settings.layout.paddingBySide[0] = sourcePlot.settings.layout.paddingBySide[0];
-                settings.layout.paddingBySide[1] = sourcePlot.settings.layout.paddingBySide[1];
+                settings.layoutOLD.paddingBySide[0] = sourcePlot.settings.layoutOLD.paddingBySide[0];
+                settings.layoutOLD.paddingBySide[1] = sourcePlot.settings.layoutOLD.paddingBySide[1];
             }
             if (vertical)
             {
-                settings.layout.paddingBySide[2] = sourcePlot.settings.layout.paddingBySide[2];
-                settings.layout.paddingBySide[3] = sourcePlot.settings.layout.paddingBySide[3];
+                settings.layoutOLD.paddingBySide[2] = sourcePlot.settings.layoutOLD.paddingBySide[2];
+                settings.layoutOLD.paddingBySide[3] = sourcePlot.settings.layoutOLD.paddingBySide[3];
             }
             Resize();
         }

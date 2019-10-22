@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ScottPlot.Config
 {
-    public class Layout
+    public class LayoutOLD
     {
         // settings here relate to positioning of objects on the figure
 

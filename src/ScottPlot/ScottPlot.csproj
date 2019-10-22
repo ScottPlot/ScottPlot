@@ -54,7 +54,7 @@
     <Compile Include="Config\Benchmark.cs" />
     <Compile Include="Config\Axis.cs" />
     <Compile Include="Config\Grid.cs" />
-    <Compile Include="Config\Layout.cs" />
+    <Compile Include="Config\LayoutOLD.cs" />
     <Compile Include="Config\Legend.cs" />
     <Compile Include="Config\Misc.cs" />
     <Compile Include="Config\Colors.cs" />

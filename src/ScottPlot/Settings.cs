@@ -44,7 +44,7 @@ namespace ScottPlot
         public Config.Grid grid = new Config.Grid();
         public Config.Colors colors = new Config.Colors();
         public Config.Axes axes = new Config.Axes();
-        public Config.Layout layout = new Config.Layout();
+        public Config.LayoutOLD layoutOLD = new Config.LayoutOLD();
         public Config.Ticks ticks = new Config.Ticks();
         public Config.Legend legend = new Config.Legend();
         public Config.Mouse mouse = new Config.Mouse();
@@ -62,9 +62,9 @@ namespace ScottPlot
         {
             // TODO: data origin should be calculated at render time, not now.
             figureSize = new Size(width, height);
-            dataOrigin = new Point(layout.paddingBySide[0], layout.paddingBySide[3]);
-            int dataWidth = figureSize.Width - layout.paddingBySide[0] - layout.paddingBySide[1];
-            int dataHeight = figureSize.Height - layout.paddingBySide[2] - layout.paddingBySide[3];
+            dataOrigin = new Point(layoutOLD.paddingBySide[0], layoutOLD.paddingBySide[3]);
+            int dataWidth = figureSize.Width - layoutOLD.paddingBySide[0] - layoutOLD.paddingBySide[1];
+            int dataHeight = figureSize.Height - layoutOLD.paddingBySide[2] - layoutOLD.paddingBySide[3];
             dataSize = new Size(dataWidth, dataHeight);
         }
 
