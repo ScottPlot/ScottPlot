@@ -51,6 +51,7 @@ namespace ScottPlotCookbook
             recipies.Figure_21a_Title_and_Axis_Labels();
             recipies.Figure_21b_Custom_Padding();
             recipies.Figure_21c_Automatic_Left_Padding();
+            recipies.Figure_21d_Single_Axis_With_No_Padding();
             recipies.Figure_22_Custom_Colors();
             recipies.Figure_23_Frameless_Plot();
             recipies.Figure_24_Disable_the_Grid();

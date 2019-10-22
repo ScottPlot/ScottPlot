@@ -559,6 +559,27 @@ namespace ScottPlotTests
         }
 
         [TestMethod]
+        public void Figure_21d_Single_Axis_With_No_Padding()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+
+            var plt = new ScottPlot.Plot(width, height);
+            Random rand = new Random(0);
+            double[] xs = ScottPlot.DataGen.Consecutive(100);
+            double[] ys = ScottPlot.DataGen.RandomWalk(rand, 100, 1e2, 1e15);
+            plt.PlotScatter(xs, ys);
+            plt.Style(figBg: Color.LightBlue);
+
+            plt.Ticks(rulerModeX: true, displayTicksY: false);
+            plt.Frame(left: false, right: false, top: false);
+            plt.TightenLayout(render: true);
+
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
+        }
+
+        [TestMethod]
         public void Figure_22_Custom_Colors()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");

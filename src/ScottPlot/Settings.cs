@@ -83,6 +83,25 @@ namespace ScottPlot
             if (ticks?.x?.maxLabelSize.Height > layout.xScaleHeight)
                 layout.xScaleHeight = (int)ticks.x.maxLabelSize.Height;
 
+            // collapse things that are hidden or empty
+            if (!ticks.displayXmajor)
+                layout.xScaleHeight = 0;
+            if (!ticks.displayYmajor)
+                layout.yScaleWidth = 0;
+            if (title.text == "")
+                layout.titleHeight = 0;
+            if (yLabel.text == "")
+                layout.yLabelWidth = 0;
+            if (xLabel.text == "")
+                layout.xLabelHeight = 0;
+
+            // eliminate all right-side pixels if right-frame is not drawn
+            if (!layout.displayFrameByAxis[1])
+            {
+                layout.yLabelWidth = 0;
+                layout.y2ScaleWidth = 0;
+            }
+
             layout.Update(figureSize.Width, figureSize.Height);
             layout.tighteningOccurred = true;
         }
