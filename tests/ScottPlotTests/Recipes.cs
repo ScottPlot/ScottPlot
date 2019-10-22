@@ -519,7 +519,7 @@ namespace ScottPlotTests
             plt.Title("Very Complicated Data");
             plt.YLabel("Productivity");
 
-            // customize update the layout as desired
+            // customize update the layout as desired (this is a bit of a hack, but it works)
             plt.TightenLayout();
             var layout = plt.GetSettings().layout;
             layout.titleHeight = 123;
@@ -527,7 +527,7 @@ namespace ScottPlotTests
             layout.xLabelHeight = 0;
             layout.Update(width, height);
 
-            // then force a resize (because the data area changed size)
+            // then force a resize (so the ticks recalculate based on the new data area)
             plt.Resize(width, height);
 
             if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
@@ -571,6 +571,7 @@ namespace ScottPlotTests
             plt.PlotScatter(xs, ys);
             plt.Style(figBg: Color.LightBlue);
 
+            // customize your tick and frame style then tighten the layout
             plt.Ticks(rulerModeX: true, displayTicksY: false);
             plt.Frame(left: false, right: false, top: false);
             plt.TightenLayout(render: true);
