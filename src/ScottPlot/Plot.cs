@@ -941,6 +941,7 @@ namespace ScottPlot
 
         public void TightenLayout(int? padding = null)
         {
+            settings.TightenLayout();
             if (!settings.axes.hasBeenSet && settings.plottables.Count > 0)
                 settings.AxisAuto();
             if (padding != null)

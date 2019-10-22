@@ -53,6 +53,7 @@
     <Compile Include="AutoAxis.cs" />
     <Compile Include="Layout.cs" />
     <Compile Include="Recipes.cs" />
+    <Compile Include="SHRect.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
