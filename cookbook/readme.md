@@ -439,23 +439,12 @@ double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 var plt = new ScottPlot.Plot(600, 400);
 plt.PlotScatter(dataXs, dataSin);
 plt.PlotScatter(dataXs, dataCos);
-
 plt.Style(figBg: Color.LightBlue);
-plt.Ticks(rulerModeX: true);
 
-plt.Title("Very Complicated Data");
-plt.YLabel("Productivity");
-
-// customize update the layout as desired (this is a bit of a hack, but it works)
-plt.TightenLayout();
-var layout = plt.GetSettings().layout;
-layout.titleHeight = 123;
-layout.yScaleWidth = 70;
-layout.xLabelHeight = 0;
-layout.Update(width, height);
-
-// then force a resize (so the ticks recalculate based on the new data area)
-plt.Resize(width, height);
+// Layout component sizes are typically auto-calculated by TightenLayout()
+// Plots without title or axis labels typically extend right to the edge of the image
+// You can call Layout() to manually define the sizes of plot components
+plt.Layout(yScaleWidth: 80, titleHeight: 50, xLabelHeight: 20, y2LabelWidth: 20);
 
 plt.SaveFig("Figure_21b_Custom_Padding.png");
 ```
