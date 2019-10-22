@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 
@@ -938,8 +939,11 @@ namespace ScottPlot
             settings.legend.antiAlias = legend;
         }
 
-        public void TightenLayout(bool render = false)
+        public void TightenLayout(int? padding = null, bool render = false)
         {
+            if (padding != null)
+                Debug.WriteLine("WARNING: TightenLayout()'s padding argument is no longer used. Use Layout() instead.");
+
             if (render)
                 GetBitmap();
             if (!settings.axes.hasBeenSet && settings.plottables.Count > 0)
@@ -947,6 +951,29 @@ namespace ScottPlot
             settings.ticks?.x?.Recalculate(settings, false); // this probably never happens
             settings.ticks?.y?.Recalculate(settings, true); // this probably never happens
             settings.TightenLayout();
+            Resize();
+        }
+
+        public void Layout(
+                double? yLabelWidth = null,
+                double? yScaleWidth = null,
+                double? y2LabelWidth = null,
+                double? y2ScaleWidth = null,
+                double? titleHeight = null,
+                double? xLabelHeight = null,
+                double? xScaleHeight = null
+            )
+        {
+            TightenLayout(render: true);
+
+            if (yLabelWidth != null) settings.layout.yLabelWidth = (int)yLabelWidth;
+            if (yScaleWidth != null) settings.layout.yScaleWidth = (int)yScaleWidth;
+            if (y2LabelWidth != null) settings.layout.y2LabelWidth = (int)y2LabelWidth;
+            if (y2ScaleWidth != null) settings.layout.y2ScaleWidth = (int)y2ScaleWidth;
+            if (titleHeight != null) settings.layout.titleHeight = (int)titleHeight;
+            if (xLabelHeight != null) settings.layout.xLabelHeight = (int)xLabelHeight;
+            if (xScaleHeight != null) settings.layout.xScaleHeight = (int)xScaleHeight;
+
             Resize();
         }
 
