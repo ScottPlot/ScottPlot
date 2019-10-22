@@ -73,10 +73,15 @@ namespace ScottPlot
             layout.y2ScaleWidth = 1;
 
             layout.yLabelWidth = (int)yLabel.size.Height + 3;
-            layout.yScaleWidth = 40; // TODO: make this expand automatically for large ticks
-
             layout.xLabelHeight = (int)xLabel.size.Height + 3;
-            layout.xScaleHeight = 20; // TODO: come from tick font
+
+            // automatically increase yScale size to accomodate wide ticks
+            if (ticks?.y?.maxLabelSize.Width > layout.yScaleWidth)
+                layout.yScaleWidth = (int)ticks.y.maxLabelSize.Width;
+
+            // automatically increase xScale size to accomodate high ticks
+            if (ticks?.x?.maxLabelSize.Height > layout.xScaleHeight)
+                layout.xScaleHeight = (int)ticks.x.maxLabelSize.Height;
 
             layout.Update(figureSize.Width, figureSize.Height);
             layout.tighteningOccurred = true;
