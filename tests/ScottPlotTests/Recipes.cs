@@ -12,21 +12,15 @@ namespace ScottPlotTests
     [TestClass]
     public class Recipes
     {
-        int width;
-        int height;
+        int width = 640;
+        int height = 480;
         string outputPath;
-        Random rand = new Random(0);
 
         public Recipes()
         {
-            // this constructor is only used when manually running individual tests
-
             this.outputPath = System.IO.Path.GetFullPath("manualTests");
             if (!System.IO.Directory.Exists(this.outputPath))
                 System.IO.Directory.CreateDirectory(this.outputPath);
-
-            this.width = 640;
-            this.height = 480;
         }
 
         public Recipes(string outputPath, int width, int height)
