@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ScottPlot.Config
 {
-    public class layoutNEW
+    public class Layout
     {
         // users can configure these
         public int yLabelWidth = 20;
@@ -18,6 +18,11 @@ namespace ScottPlot.Config
         public int titleHeight = 20;
         public int xLabelHeight = 20;
         public int xScaleHeight = 20;
+
+        public bool[] displayFrameByAxis; // TODO: MOVE THIS TO ANOTHER CLASS
+        public bool displayAxisFrames = true; // TODO: MOVE THIS TO ANOTHER CLASS
+
+        public bool tighteningOccurred = false;
 
         public SHRect plot { get; private set; }
         public SHRect data { get; private set; }
@@ -30,12 +35,13 @@ namespace ScottPlot.Config
         public SHRect xLabel { get; private set; }
         public SHRect xScale { get; private set; }
 
-        public layoutNEW()
+        public Layout()
         {
+            displayFrameByAxis = new bool[] { true, true, true, true };
             Update(640, 480);
         }
 
-        public layoutNEW(int width, int height)
+        public Layout(int width, int height)
         {
             Update(width, height);
         }
