@@ -36,7 +36,7 @@ namespace WindowsFormsAppFramework
             formsPlot1.plt.PlotScatter(dataXs, dataCos);
             formsPlot1.plt.XLabel("experiment time (ms)");
             formsPlot1.plt.YLabel("signal (mV)");
-            formsPlot1.plt.Title("ScottPlot Quickstart");
+            formsPlot1.plt.Title("ScottPlot WinForms Quickstart");
             formsPlot1.Render();
         }
     }
