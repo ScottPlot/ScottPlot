@@ -19,6 +19,8 @@ namespace ScottPlot
             InitializeComponent();
             plt.Style(ScottPlot.Style.Control);
             pbPlot.MouseWheel += PbPlot_MouseWheel;
+
+            PbPlot_MouseUp(null, null);
             PbPlot_SizeChanged(null, null);
         }
 
@@ -35,6 +37,8 @@ namespace ScottPlot
                 {
                     currentlyRendering = true;
                     pbPlot.Image = plt.GetBitmap(true, lowQuality);
+                    if (isMouseDragging)
+                        Application.DoEvents();
                     currentlyRendering = false;
                 }
             }
@@ -64,40 +68,97 @@ namespace ScottPlot
 
         #endregion
 
-        private void RightClickMenuItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
+        #region mouse tracking
 
+        private Point? mouseLeftDownLocation, mouseRightDownLocation, mouseMiddleDownLocation;
+        private Point mouseLocation;
+        double[] axisLimitsOnMouseDown;
+        private bool isMouseDragging
+        {
+            get
+            {
+                if (axisLimitsOnMouseDown is null)
+                    return false;
+
+                if (mouseLeftDownLocation != null) return true;
+                else if (mouseRightDownLocation != null) return true;
+                else if (mouseMiddleDownLocation != null) return true;
+
+                return false;
+            }
         }
 
         private void PbPlot_MouseDown(object sender, MouseEventArgs e)
         {
+            if (e.Button == MouseButtons.Left) mouseLeftDownLocation = e.Location;
+            else if (e.Button == MouseButtons.Right) mouseRightDownLocation = e.Location;
+            else if (e.Button == MouseButtons.Middle) mouseMiddleDownLocation = e.Location;
 
+            axisLimitsOnMouseDown = plt.Axis();
         }
 
         private void PbPlot_MouseMove(object sender, MouseEventArgs e)
         {
+            mouseLocation = e.Location;
 
+            if (isMouseDragging)
+            {
+                plt.Axis(axisLimitsOnMouseDown);
+
+                if (mouseLeftDownLocation != null)
+                {
+                    int deltaX = ((Point)mouseLeftDownLocation).X - mouseLocation.X;
+                    int deltaY = mouseLocation.Y - ((Point)mouseLeftDownLocation).Y;
+                    plt.GetSettings().AxesPanPx(deltaX, deltaY);
+                    Render(true);
+                }
+
+                if (mouseRightDownLocation != null)
+                {
+                    int deltaX = ((Point)mouseRightDownLocation).X - mouseLocation.X;
+                    int deltaY = mouseLocation.Y - ((Point)mouseRightDownLocation).Y;
+                    plt.GetSettings().AxesZoomPx(-deltaX, -deltaY);
+                    Render(true);
+                }
+            }
         }
 
         private void PbPlot_MouseUp(object sender, MouseEventArgs e)
         {
-
+            mouseLeftDownLocation = null;
+            mouseRightDownLocation = null;
+            mouseMiddleDownLocation = null;
+            axisLimitsOnMouseDown = null;
         }
 
+        #endregion
+
+        #region mouse clicking
+        
         private void PbPlot_MouseClick(object sender, MouseEventArgs e)
         {
-
+            if (e.Button == MouseButtons.Middle)
+            {
+                plt.AxisAuto();
+                Render();
+            }
         }
 
         private void PbPlot_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-
+            plt.Benchmark(toggle: true);
+            Render();
         }
 
         private void PbPlot_MouseWheel(object sender, MouseEventArgs e)
         {
-
+            double xFrac = (e.Delta > 0) ? 1.15 : 0.85;
+            double yFrac = (e.Delta > 0) ? 1.15 : 0.85;
+            plt.AxisZoom(xFrac, yFrac, plt.CoordinateFromPixel(e.Location));
+            Render();
         }
+
+        #endregion
 
         #region custom events
 

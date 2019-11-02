@@ -652,6 +652,13 @@ namespace ScottPlot
             return settings.axes.limits;
         }
 
+        public void Axis(double[] axisLimits)
+        {
+            if ((axisLimits == null) || (axisLimits.Length != 4))
+                throw new ArgumentException("axis limits must contain 4 elements");
+            Axis(axisLimits[0], axisLimits[1], axisLimits[2], axisLimits[3]);
+        }
+
         public void AxisAuto(
             double horizontalMargin = .05,
             double verticalMargin = .1,
@@ -740,7 +747,7 @@ namespace ScottPlot
             bool? bold = null
             )
         {
-            
+
             settings.title.text = title ?? settings.title.text;
             settings.title.visible = enable ?? settings.title.visible;
             settings.title.fontName = fontName ?? settings.title.fontName;
@@ -774,7 +781,7 @@ namespace ScottPlot
             string yLabel = null,
             bool? enable = null,
             string fontName = null,
-            float? fontSize = null, 
+            float? fontSize = null,
             Color? color = null,
             bool? bold = null
             )
@@ -1038,7 +1045,7 @@ namespace ScottPlot
             throw new NotImplementedException("parallel processing should not used enabled at this time");
 
             //foreach (var plottable in GetPlottables())
-                //plottable.useParallel = useParallel;
+            //plottable.useParallel = useParallel;
         }
 
         #endregion
