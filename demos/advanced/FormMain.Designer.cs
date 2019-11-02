@@ -41,6 +41,7 @@
             this.btnUserControlSettings = new System.Windows.Forms.Button();
             this.btnHover = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnLinkedPlots = new System.Windows.Forms.Button();
             this.btnPadding = new System.Windows.Forms.Button();
             this.btnCustomGrid = new System.Windows.Forms.Button();
             this.btnLegend = new System.Windows.Forms.Button();
@@ -71,7 +72,6 @@
             this.lblGitHubUrl = new System.Windows.Forms.Label();
             this.lblVersion = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.btnLinkedPlots = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage3.SuspendLayout();
@@ -231,6 +231,16 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Styling";
             // 
+            // btnLinkedPlots
+            // 
+            this.btnLinkedPlots.Location = new System.Drawing.Point(6, 106);
+            this.btnLinkedPlots.Name = "btnLinkedPlots";
+            this.btnLinkedPlots.Size = new System.Drawing.Size(106, 23);
+            this.btnLinkedPlots.TabIndex = 18;
+            this.btnLinkedPlots.Text = "Linked Plots";
+            this.btnLinkedPlots.UseVisualStyleBackColor = true;
+            this.btnLinkedPlots.Click += new System.EventHandler(this.btnLinkedPlots_Click);
+            // 
             // btnPadding
             // 
             this.btnPadding.Location = new System.Drawing.Point(6, 77);
@@ -249,6 +259,7 @@
             this.btnCustomGrid.TabIndex = 16;
             this.btnCustomGrid.Text = "Custom Grid";
             this.btnCustomGrid.UseVisualStyleBackColor = true;
+            this.btnCustomGrid.Click += new System.EventHandler(this.btnCustomGrid_Click_1);
             // 
             // btnLegend
             // 
@@ -553,16 +564,6 @@
             this.label3.TabIndex = 8;
             this.label3.Text = "ScottPlot";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // btnLinkedPlots
-            // 
-            this.btnLinkedPlots.Location = new System.Drawing.Point(6, 106);
-            this.btnLinkedPlots.Name = "btnLinkedPlots";
-            this.btnLinkedPlots.Size = new System.Drawing.Size(106, 23);
-            this.btnLinkedPlots.TabIndex = 18;
-            this.btnLinkedPlots.Text = "Linked Plots";
-            this.btnLinkedPlots.UseVisualStyleBackColor = true;
-            this.btnLinkedPlots.Click += new System.EventHandler(this.btnLinkedPlots_Click);
             // 
             // FormMain
             // 
