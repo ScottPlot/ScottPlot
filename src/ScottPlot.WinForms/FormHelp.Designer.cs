@@ -73,9 +73,7 @@
             this.richTextBox1.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedBoth;
             this.richTextBox1.Size = new System.Drawing.Size(380, 248);
             this.richTextBox1.TabIndex = 8;
-            this.richTextBox1.Text = "Left-click-drag: pan\nRight-click-drag: zoom\nMidde-click: auto-axis\nhold CTRL to l" +
-    "ock vertical axis\nhold ALT to lock horizontal axis\ndouble-click to display bench" +
-    "mark";
+            this.richTextBox1.Text = "asdf";
             // 
             // btnScottPlotGithub
             // 

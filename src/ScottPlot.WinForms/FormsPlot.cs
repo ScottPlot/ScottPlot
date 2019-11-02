@@ -13,9 +13,17 @@ namespace ScottPlot
         private readonly Settings settings;
         private readonly bool isDesignerMode;
 
+        ContextMenuStrip rightClickMenu;
         public FormsPlot()
         {
             InitializeComponent();
+
+            rightClickMenu = new ContextMenuStrip();
+            rightClickMenu.Items.Add("Save Image");
+            rightClickMenu.Items.Add("Settings");
+            rightClickMenu.Items.Add("Help");
+            rightClickMenu.ItemClicked += new ToolStripItemClickedEventHandler(RightClickMenuItemClicked);
+
             pbPlot.MouseWheel += PbPlot_MouseWheel;
 
             isDesignerMode = Process.GetCurrentProcess().ProcessName == "devenv";
@@ -200,6 +208,17 @@ namespace ScottPlot
                 }
             }
 
+            if (mouseRightDownLocation != null)
+            {
+                int deltaX = Math.Abs(((Point)mouseRightDownLocation).X - mouseLocation.X);
+                int deltaY = Math.Abs(((Point)mouseRightDownLocation).Y - mouseLocation.Y);
+                if (deltaX < 3 && deltaY < 3)
+                {
+                    // right-click menu
+                    rightClickMenu.Show(pbPlot, PointToClient(Cursor.Position));
+                }
+            }
+
             if (isMouseDragging)
                 OnMouseDragged(EventArgs.Empty);
 
@@ -242,6 +261,43 @@ namespace ScottPlot
             plt.AxisZoom(xFrac, yFrac, plt.CoordinateFromPixel(e.Location));
             Render();
             OnAxisChanged();
+        }
+
+        #endregion
+
+        #region menus and forms
+
+        private void RightClickMenuItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            rightClickMenu.Hide();
+            switch (e.ClickedItem.Text)
+            {
+                case "Save Image":
+                    SaveFileDialog savefile = new SaveFileDialog();
+                    savefile.FileName = "ScottPlot.png";
+                    savefile.Filter = "PNG Files (*.png)|*.png;*.png";
+                    savefile.Filter += "|JPG Files (*.jpg, *.jpeg)|*.jpg;*.jpeg";
+                    savefile.Filter += "|BMP Files (*.bmp)|*.bmp;*.bmp";
+                    savefile.Filter += "|TIF files (*.tif, *.tiff)|*.tif;*.tiff";
+                    savefile.Filter += "|All files (*.*)|*.*";
+                    if (savefile.ShowDialog() == DialogResult.OK)
+                        plt.SaveFig(savefile.FileName);
+                    break;
+
+                case "Settings":
+                    var formSettings = new UserControls.FormSettings(plt);
+                    formSettings.ShowDialog();
+                    Render();
+                    break;
+
+                case "Help":
+                    var formHelp = new UserControls.FormHelp();
+                    formHelp.ShowDialog();
+                    break;
+
+                default:
+                    throw new NotImplementedException();
+            }
         }
 
         #endregion
