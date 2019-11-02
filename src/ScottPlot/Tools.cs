@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
-using System.Windows.Media.Imaging;
 
 namespace ScottPlot
 {
@@ -176,31 +174,6 @@ namespace ScottPlot
             }
 
             return bmp;
-        }
-
-        public static BitmapImage bmpImageFromBmp(System.Drawing.Bitmap bmp)
-        {
-            System.IO.MemoryStream stream = new System.IO.MemoryStream();
-            ((System.Drawing.Bitmap)bmp).Save(stream, System.Drawing.Imaging.ImageFormat.Bmp);
-            BitmapImage bmpImage = new BitmapImage();
-            bmpImage.BeginInit();
-            stream.Seek(0, System.IO.SeekOrigin.Begin);
-            bmpImage.StreamSource = stream;
-            bmpImage.EndInit();
-            return bmpImage;
-        }
-
-        public static void SaveImageDialog(Plot plt)
-        {
-            SaveFileDialog savefile = new SaveFileDialog();
-            savefile.FileName = "ScottPlot.png";
-            savefile.Filter = "PNG Files (*.png)|*.png;*.png";
-            savefile.Filter += "|JPG Files (*.jpg, *.jpeg)|*.jpg;*.jpeg";
-            savefile.Filter += "|BMP Files (*.bmp)|*.bmp;*.bmp";
-            savefile.Filter += "|TIF files (*.tif, *.tiff)|*.tif;*.tiff";
-            savefile.Filter += "|All files (*.*)|*.*";
-            if (savefile.ShowDialog() == DialogResult.OK)
-                plt.SaveFig(savefile.FileName);
         }
 
         private static double[] DoubleArray<T>(T[] dataIn)

@@ -1,130 +1,25 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{EE9215C6-01C1-4835-8514-3A708F9291F1}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ScottPlot</RootNamespace>
-    <AssemblyName>ScottPlot</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+    <PackageIcon>icon.png</PackageIcon>
+    <StartupObject />
+    <Version>4.0.0</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>ScottPlot is a free and open-source plotting library for .NET</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/swharden/ScottPlot</PackageProjectUrl>
+    <PackageIconUrl></PackageIconUrl>
+    <PackageTags>plot graph data chart signal line C# winforms forms wpf</PackageTags>
+    <PackageReleaseNotes>https://github.com/swharden/ScottPlot/releases</PackageReleaseNotes>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>
-    </DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
+    <PackageReference Include="System.Drawing.Common" Version="4.6.0" />
+    <None Include="icon.png" Pack="true" PackagePath="\"/>
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Config\Axes.cs" />
-    <Compile Include="Config\Benchmark.cs" />
-    <Compile Include="Config\Axis.cs" />
-    <Compile Include="Config\Grid.cs" />
-    <Compile Include="Config\Layout.cs" />
-    <Compile Include="Config\Legend.cs" />
-    <Compile Include="Config\Misc.cs" />
-    <Compile Include="Config\Colors.cs" />
-    <Compile Include="Config\Mouse.cs" />
-    <Compile Include="Config\SHRect.cs" />
-    <Compile Include="Config\Ticks.cs" />
-    <Compile Include="DataGen.cs" />
-    <Compile Include="Histogram.cs" />
-    <Compile Include="Legend.cs" />
-    <Compile Include="Markers.cs" />
-    <Compile Include="MouseTracker.cs" />
-    <Compile Include="Plottables\PlottableSignalConst.cs" />
-    <Compile Include="Plottables\OHLC.cs" />
-    <Compile Include="Plottables\Plottable.cs" />
-    <Compile Include="Plottables\PlottableAxLine.cs" />
-    <Compile Include="Plottables\PlottableAxSpan.cs" />
-    <Compile Include="Plottables\PlottableBar.cs" />
-    <Compile Include="Plottables\PlottableOHLC.cs" />
-    <Compile Include="Plottables\PlottableScatter.cs" />
-    <Compile Include="Plottables\PlottableSignal.cs" />
-    <Compile Include="Plottables\PlottableText.cs" />
-    <Compile Include="Renderer.cs" />
-    <Compile Include="Config\TextLabel.cs" />
-    <Compile Include="UserControls\FormHelp.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UserControls\FormHelp.Designer.cs">
-      <DependentUpon>FormHelp.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\FormSettings.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UserControls\FormSettings.Designer.cs">
-      <DependentUpon>FormSettings.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\FormsPlot.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserControls\FormsPlot.Designer.cs">
-      <DependentUpon>FormsPlot.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\WpfPlot.xaml.cs">
-      <DependentUpon>WpfPlot.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Style.cs" />
-    <Compile Include="TickCollection.cs" />
-    <Compile Include="Tools.cs" />
-    <Compile Include="Plot.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Settings.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="UserControls\FormHelp.resx">
-      <DependentUpon>FormHelp.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UserControls\FormSettings.resx">
-      <DependentUpon>FormSettings.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UserControls\FormsPlot.resx">
-      <DependentUpon>FormsPlot.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="UserControls\WpfPlot.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ScottPlot.nuspec" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
 </Project>
