@@ -27,7 +27,8 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- task: VSTest@2
+- task: DotNetCoreCLI@2
   inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    command: test
+    projects: 'tests/ScottPlotTests/ScottPlotTests.csproj'
+    arguments: '--configuration $(buildConfiguration)'
