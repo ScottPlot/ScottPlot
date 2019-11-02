@@ -21,7 +21,15 @@ namespace ScottPlot.UserControls
 
         private void FormHelp_Load(object sender, EventArgs e)
         {
-
+            StringBuilder msg = new StringBuilder();
+            msg.AppendLine("Left-click-drag: pan");
+            msg.AppendLine("Right-click-drag: zoom");
+            msg.AppendLine("Middle-click-drag: zoom region");
+            msg.AppendLine("");
+            msg.AppendLine("Right-click: show menu");
+            msg.AppendLine("Middle-click: auto-axis");
+            msg.AppendLine("Double-click: show benchmark");
+            richTextBox1.Text = msg.ToString();
         }
 
         private void BtnScottPlotGithub_Click(object sender, EventArgs e)
@@ -31,7 +39,7 @@ namespace ScottPlot.UserControls
 
         private void BtnClose_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
     }
 }
