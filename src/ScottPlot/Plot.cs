@@ -17,14 +17,12 @@ namespace ScottPlot
     {
         public PixelFormat pixelFormat = PixelFormat.Format32bppPArgb;
         private readonly Settings settings;
-        public readonly MouseTracker mouseTracker;
 
         public Plot(int width = 800, int height = 600)
         {
             if (width <= 0 || height <= 0)
                 throw new ArgumentException("width and height must each be greater than 0");
             settings = new Settings();
-            mouseTracker = new MouseTracker(settings);
             Resize(width, height);
             TightenLayout();
         }
