@@ -64,7 +64,7 @@ namespace ScottPlot
 
         #region user control configuration
 
-        private bool enablePadding;
+        private bool enablePanning;
         private bool enableZooming;
         private bool enableRightClickMenu;
         private bool lowQualityWhileDragging;
@@ -75,7 +75,7 @@ namespace ScottPlot
             bool? lowQualityWhileDragging = null
             )
         {
-            if (enablePanning != null) this.enablePadding = (bool)enablePanning;
+            if (enablePanning != null) this.enablePanning = (bool)enablePanning;
             if (enableZooming != null) this.enableZooming = (bool)enableZooming;
             if (enableRightClickMenu != null) this.enableRightClickMenu = (bool)enableRightClickMenu;
             if (lowQualityWhileDragging != null) this.lowQualityWhileDragging = (bool)lowQualityWhileDragging;
@@ -116,8 +116,8 @@ namespace ScottPlot
             else
             {
                 // mouse is being used for click and zoom
-                if (e.Button == MouseButtons.Left) mouseLeftDownLocation = e.Location;
-                else if (e.Button == MouseButtons.Right) mouseRightDownLocation = e.Location;
+                if (e.Button == MouseButtons.Left && enablePanning) mouseLeftDownLocation = e.Location;
+                else if (e.Button == MouseButtons.Right && enableZooming) mouseRightDownLocation = e.Location;
                 else if (e.Button == MouseButtons.Middle) mouseMiddleDownLocation = e.Location;
                 axisLimitsOnMouseDown = plt.Axis();
             }
@@ -212,11 +212,8 @@ namespace ScottPlot
             {
                 int deltaX = Math.Abs(((Point)mouseRightDownLocation).X - mouseLocation.X);
                 int deltaY = Math.Abs(((Point)mouseRightDownLocation).Y - mouseLocation.Y);
-                if (deltaX < 3 && deltaY < 3)
-                {
-                    // right-click menu
+                if (deltaX < 3 && deltaY < 3 && enableRightClickMenu)
                     rightClickMenu.Show(pbPlot, PointToClient(Cursor.Position));
-                }
             }
 
             if (isMouseDragging)
