@@ -99,23 +99,24 @@ namespace ScottPlot
 
             draggingAxLine = settings.GetDraggableAxisLineUnderCursor(e.Location);
 
-            if (draggingAxLine is null)
+            if (draggingAxLine != null)
             {
-                // mouse being used for click and zoom
+                OnMouseDownOnPlottable(EventArgs.Empty);
+            }
+            else
+            {
+                // mouse is being used for click and zoom
                 if (e.Button == MouseButtons.Left) mouseLeftDownLocation = e.Location;
                 else if (e.Button == MouseButtons.Right) mouseRightDownLocation = e.Location;
                 else if (e.Button == MouseButtons.Middle) mouseMiddleDownLocation = e.Location;
                 axisLimitsOnMouseDown = plt.Axis();
-            }
-            else
-            {
-
             }
         }
 
         private void PbPlot_MouseMove(object sender, MouseEventArgs e)
         {
             mouseLocation = e.Location;
+            OnMouseMoved(EventArgs.Empty);
 
             if (isMouseDragging)
             {
@@ -155,6 +156,7 @@ namespace ScottPlot
                 var pos = plt.CoordinateFromPixel(e.Location);
                 draggingAxLine.position = (draggingAxLine.vertical) ? pos.X : pos.Y;
                 pbPlot.Cursor = (draggingAxLine.vertical == true) ? Cursors.SizeWE : Cursors.SizeNS;
+                OnMouseDragPlottable(EventArgs.Empty);
                 Render(true);
                 return;
             }
@@ -190,6 +192,14 @@ namespace ScottPlot
                         );
                 }
             }
+
+            if (isMouseDragging)
+                OnMouseDragged(EventArgs.Empty);
+
+            if (draggingAxLine != null)
+                OnMouseDropPlottable(EventArgs.Empty);
+
+            OnMouseClicked(e);
 
             mouseLeftDownLocation = null;
             mouseRightDownLocation = null;
