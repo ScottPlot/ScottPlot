@@ -61,11 +61,6 @@
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="FormHelp.resx" />
-    <EmbeddedResource Include="FormSettings.resx" />
-    <EmbeddedResource Include="FormsPlot.resx" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\ScottPlot\ScottPlot.csproj">
       <Project>{ee9215c6-01c1-4835-8514-3a708f9291f1}</Project>
       <Name>ScottPlot</Name>

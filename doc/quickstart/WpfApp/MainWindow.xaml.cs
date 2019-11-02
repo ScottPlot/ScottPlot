@@ -23,7 +23,7 @@ namespace WpfApp
         public MainWindow()
         {
             InitializeComponent();
-            wpfPlot1.plt.Title("WPF Demo");
+            wpfPlot1.plt.Title("ScottPlot WPF QuickStart");
             wpfPlot1.plt.YLabel("signal level");
             wpfPlot1.plt.XLabel("horizontal units");
             Random rand = new Random();
