@@ -13,9 +13,6 @@ namespace ScottPlot
         private readonly Settings settings;
         private readonly bool isDesignerMode;
 
-        // TODO: render non-anti-aliased while click-dragging
-        // TODO: call OnAxisChanged
-
         public FormsPlot()
         {
             InitializeComponent();
@@ -62,15 +59,18 @@ namespace ScottPlot
         private bool enablePadding;
         private bool enableZooming;
         private bool enableRightClickMenu;
+        private bool lowQualityWhileDragging;
         public void Configure(
             bool? enablePanning = null,
             bool? enableZooming = null,
-            bool? enableRightClickMenu = null
+            bool? enableRightClickMenu = null,
+            bool? lowQualityWhileDragging = null
             )
         {
             if (enablePanning != null) this.enablePadding = (bool)enablePanning;
             if (enableZooming != null) this.enableZooming = (bool)enableZooming;
             if (enableRightClickMenu != null) this.enableRightClickMenu = (bool)enableRightClickMenu;
+            if (lowQualityWhileDragging != null) this.lowQualityWhileDragging = (bool)lowQualityWhileDragging;
         }
 
         #endregion
@@ -149,7 +149,8 @@ namespace ScottPlot
                     settings.mouseMiddleRect = new Rectangle(origin, size);
                 }
 
-                Render(true);
+                Render(true, lowQuality: lowQualityWhileDragging);
+                //OnAxisChanged(); // dont want to throw this too often
                 return;
             }
 
@@ -202,6 +203,9 @@ namespace ScottPlot
             if (isMouseDragging)
                 OnMouseDragged(EventArgs.Empty);
 
+            if (isMouseDragging)
+                OnAxisChanged();
+
             if (draggingAxLine != null)
                 OnMouseDropPlottable(EventArgs.Empty);
 
@@ -237,6 +241,7 @@ namespace ScottPlot
             double yFrac = (e.Delta > 0) ? 1.15 : 0.85;
             plt.AxisZoom(xFrac, yFrac, plt.CoordinateFromPixel(e.Location));
             Render();
+            OnAxisChanged();
         }
 
         #endregion
