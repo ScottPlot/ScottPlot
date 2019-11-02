@@ -16,14 +16,14 @@ namespace ScottPlot
 
         public FormsPlot()
         {
-            isDesignerMode = Process.GetCurrentProcess().ProcessName == "devenv";
             InitializeComponent();
+            pbPlot.MouseWheel += PbPlot_MouseWheel;
+
+            isDesignerMode = Process.GetCurrentProcess().ProcessName == "devenv";
 
             plt = new Plot();
+            plt.Style(Style.Control);
             settings = plt.GetSettings(showWarning: false);
-
-            plt.Style(ScottPlot.Style.Control);
-            pbPlot.MouseWheel += PbPlot_MouseWheel;
 
             PbPlot_MouseUp(null, null);
             PbPlot_SizeChanged(null, null);
@@ -93,13 +93,24 @@ namespace ScottPlot
             }
         }
 
+        PlottableAxLine draggingAxLine = null;
         private void PbPlot_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left) mouseLeftDownLocation = e.Location;
-            else if (e.Button == MouseButtons.Right) mouseRightDownLocation = e.Location;
-            else if (e.Button == MouseButtons.Middle) mouseMiddleDownLocation = e.Location;
 
-            axisLimitsOnMouseDown = plt.Axis();
+            draggingAxLine = settings.GetDraggableAxisLineUnderCursor(e.Location);
+
+            if (draggingAxLine is null)
+            {
+                // mouse being used for click and zoom
+                if (e.Button == MouseButtons.Left) mouseLeftDownLocation = e.Location;
+                else if (e.Button == MouseButtons.Right) mouseRightDownLocation = e.Location;
+                else if (e.Button == MouseButtons.Middle) mouseMiddleDownLocation = e.Location;
+                axisLimitsOnMouseDown = plt.Axis();
+            }
+            else
+            {
+
+            }
         }
 
         private void PbPlot_MouseMove(object sender, MouseEventArgs e)
@@ -136,7 +147,23 @@ namespace ScottPlot
                 }
 
                 Render(true);
+                return;
             }
+
+            if (draggingAxLine != null)
+            {
+                var pos = plt.CoordinateFromPixel(e.Location);
+                draggingAxLine.position = (draggingAxLine.vertical) ? pos.X : pos.Y;
+                pbPlot.Cursor = (draggingAxLine.vertical == true) ? Cursors.SizeWE : Cursors.SizeNS;
+                Render(true);
+                return;
+            }
+
+            var axLineUnderCursor = settings.GetDraggableAxisLineUnderCursor(e.Location);
+            if (axLineUnderCursor is null)
+                pbPlot.Cursor = Cursors.Arrow;
+            else
+                pbPlot.Cursor = (axLineUnderCursor.vertical == true) ? Cursors.SizeWE : Cursors.SizeNS;
         }
 
         private void PbPlot_MouseUp(object sender, MouseEventArgs e)
@@ -169,6 +196,7 @@ namespace ScottPlot
             mouseMiddleDownLocation = null;
             axisLimitsOnMouseDown = null;
             settings.mouseMiddleRect = null;
+            draggingAxLine = null;
             Render();
         }
 
