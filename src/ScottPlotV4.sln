@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.28803.452
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot", "ScottPlot\ScottPlot.csproj", "{EE9215C6-01C1-4835-8514-3A708F9291F1}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "quickstart", "quickstart", "{53FCADED-EA87-4CDF-84AB-F57561E1B9A1}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "quickstarts", "quickstarts", "{53FCADED-EA87-4CDF-84AB-F57561E1B9A1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleAppCore", "..\doc\quickstart\ConsoleAppCore\ConsoleAppCore.csproj", "{DC837DD1-D722-40E9-AB4E-DC704FAD08B7}"
 EndProject
@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsFormsApp", "..\doc\q
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScottPlot.WinForms", "ScottPlot.WinForms\ScottPlot.WinForms.csproj", "{1561FB75-F36A-44DC-BBA7-DA15DFF997ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApp", "..\doc\quickstart\WpfApp\WpfApp.csproj", "{54EA28CD-6903-4394-BC81-71920CD28575}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApplication", "..\doc\quickstart\WpfApp\WpfApplication.csproj", "{54EA28CD-6903-4394-BC81-71920CD28575}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScottPlot.WPF", "ScottPlot.WPF\ScottPlot.WPF.csproj", "{C94967B9-731F-4F59-ABFD-685E3D03B298}"
 EndProject

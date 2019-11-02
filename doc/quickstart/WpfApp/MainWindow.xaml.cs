@@ -23,14 +23,10 @@ namespace WpfApp
         public MainWindow()
         {
             InitializeComponent();
-            wpfPlot1.plt.Title("ScottPlot WPF QuickStart");
-            wpfPlot1.plt.YLabel("signal level");
-            wpfPlot1.plt.XLabel("horizontal units");
-            Random rand = new Random();
-            wpfPlot1.plt.PlotSignal(ScottPlot.DataGen.RandomWalk(rand, 10_000));
-            wpfPlot1.plt.PlotSignal(ScottPlot.DataGen.RandomWalk(rand, 10_000));
-            wpfPlot1.plt.PlotSignal(ScottPlot.DataGen.RandomWalk(rand, 10_000));
-            wpfPlot1.plt.AxisAuto();
+
+            wpfPlot1.plt.PlotSignal(ScottPlot.DataGen.Sin(1000));
+            wpfPlot1.plt.PlotSignal(ScottPlot.DataGen.Cos(1000));
+            wpfPlot1.plt.Title("ScottPlot WPF Quickstart");
             wpfPlot1.Render();
         }
     }
