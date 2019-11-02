@@ -617,11 +617,14 @@ namespace ScottPlot
             return settings.plottables;
         }
 
-        public Settings GetSettings()
+        public Settings GetSettings(bool showWarning = true)
         {
-            // The user really should not interact with the settings class directly.
-            // This is exposed here to aid in testing.
-            Console.WriteLine("WARNING: GetSettings() is only for development and testing");
+            if (showWarning)
+            {
+                // The user really should not interact with the settings class directly.
+                // This is exposed here to aid in testing.
+                Console.WriteLine("WARNING: GetSettings() is only for development and testing");
+            }
             return settings;
         }
 
@@ -985,6 +988,10 @@ namespace ScottPlot
         public void MatchPadding(Plot sourcePlot, bool horizontal = true, bool vertical = true)
         {
             Resize();
+
+            // add a bunch of stuff like this?
+            settings.layout.titleHeight = sourcePlot.GetSettings().layout.titleHeight;
+
             throw new NotImplementedException(); // TODO: match new layout system like this
         }
 

@@ -47,7 +47,9 @@ namespace ScottPlot
         public readonly Config.Layout layout = new Config.Layout();
         public Config.Ticks ticks = new Config.Ticks();
         public Config.Legend legend = new Config.Legend();
-        public Config.Mouse mouse = new Config.Mouse();
+
+        // mouse interaction
+        public Rectangle? mouseMiddleRect = null;
 
         // scales calculations must occur at this level because the axes are unaware of pixel dimensions
         public double xAxisScale { get { return bmpData.Width / axes.x.span; } } // pixels per unit
@@ -185,48 +187,6 @@ namespace ScottPlot
             }
 
             axes.Zoom(1 - horizontalMargin, 1 - verticalMargin);
-        }
-
-        public void MouseDown(int cusorPosX, int cursorPosY, bool panning = false, bool zooming = false)
-        {
-            mouse.downLoc = new Point(cusorPosX, cursorPosY);
-            mouse.isPanning = panning;
-            mouse.isZooming = zooming;
-            Array.Copy(axes.limits, mouse.downLimits, 4);
-        }
-
-        public void MouseMoveAxis(int cursorPosX, int cursorPosY, bool lockVertical, bool lockHorizontal)
-        {
-            if (mouse.isPanning == false && mouse.isZooming == false)
-                return;
-
-            axes.Set(mouse.downLimits);
-
-            int dX = cursorPosX - mouse.downLoc.X;
-            int dY = cursorPosY - mouse.downLoc.Y;
-
-            if (lockVertical)
-                dY = 0;
-            if (lockHorizontal)
-                dX = 0;
-
-            if (mouse.isPanning)
-                AxesPanPx(-dX, dY);
-
-            if (mouse.isZooming)
-                AxesZoomPx(dX, -dY);
-        }
-
-        public void MouseUpAxis()
-        {
-            mouse.isPanning = false;
-            mouse.isZooming = false;
-        }
-
-        public void MouseZoomRectMove(Point eLocation)
-        {
-            mouse.currentLoc = eLocation;
-            mouse.rectangleIsHappening = true;
         }
 
         public PointF GetPixel(double locationX, double locationY)

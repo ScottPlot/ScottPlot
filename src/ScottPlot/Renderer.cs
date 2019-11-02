@@ -289,20 +289,13 @@ namespace ScottPlot
 
         public static void MouseZoomRectangle(Settings settings)
         {
-            if (!settings.mouse.rectangleIsHappening)
-                return;
-
-            int[] xs = new int[] { settings.mouse.downMiddle.X, settings.mouse.currentLoc.X };
-            int[] ys = new int[] { settings.mouse.downMiddle.Y, settings.mouse.currentLoc.Y };
-            Rectangle rect = new Rectangle(xs.Min(), ys.Min(), xs.Max() - xs.Min(), ys.Max() - ys.Min());
-            rect.X -= settings.dataOrigin.X;
-            rect.Y -= settings.dataOrigin.Y;
-
-            Pen outline = new Pen(Color.FromArgb(100, 255, 0, 0));
-            Brush fill = new SolidBrush(Color.FromArgb(50, 255, 0, 0));
-
-            settings.gfxData.DrawRectangle(outline, rect);
-            settings.gfxData.FillRectangle(fill, rect);
+            if (settings.mouseMiddleRect != null)
+            {
+                Pen outline = new Pen(Color.FromArgb(100, 255, 0, 0));
+                Brush fill = new SolidBrush(Color.FromArgb(50, 255, 0, 0));
+                settings.gfxData.DrawRectangle(outline, (Rectangle)settings.mouseMiddleRect);
+                settings.gfxData.FillRectangle(fill, (Rectangle)settings.mouseMiddleRect);
+            }
         }
     }
 }

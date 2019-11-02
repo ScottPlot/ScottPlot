@@ -21,6 +21,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApp", "..\doc\quickstart
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScottPlot.WPF", "ScottPlot.WPF\ScottPlot.WPF.csproj", "{C94967B9-731F-4F59-ABFD-685E3D03B298}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "demos", "demos", "{058D58CE-F944-478E-9548-EF801E38FAD9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinForms Demos", "..\demos\advanced\WinForms Demos.csproj", "{131209BD-82D1-4D8E-A253-BD264563B4D5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +63,10 @@ Global
 		{C94967B9-731F-4F59-ABFD-685E3D03B298}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C94967B9-731F-4F59-ABFD-685E3D03B298}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C94967B9-731F-4F59-ABFD-685E3D03B298}.Release|Any CPU.Build.0 = Release|Any CPU
+		{131209BD-82D1-4D8E-A253-BD264563B4D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{131209BD-82D1-4D8E-A253-BD264563B4D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{131209BD-82D1-4D8E-A253-BD264563B4D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{131209BD-82D1-4D8E-A253-BD264563B4D5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -68,6 +76,7 @@ Global
 		{EEB6BABF-E05E-4A43-A67B-2A954AD526CE} = {53FCADED-EA87-4CDF-84AB-F57561E1B9A1}
 		{F389C60B-EC58-468F-A787-A647EF824FAA} = {53FCADED-EA87-4CDF-84AB-F57561E1B9A1}
 		{54EA28CD-6903-4394-BC81-71920CD28575} = {53FCADED-EA87-4CDF-84AB-F57561E1B9A1}
+		{131209BD-82D1-4D8E-A253-BD264563B4D5} = {058D58CE-F944-478E-9548-EF801E38FAD9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FBAE082A-173A-4F13-BE31-E6C070513C9C}
