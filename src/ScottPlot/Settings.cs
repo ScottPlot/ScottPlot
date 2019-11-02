@@ -114,7 +114,7 @@ namespace ScottPlot
             axes.y.Pan((double)dyPx / yAxisScale);
         }
 
-        private void AxesZoomPx(int xPx, int yPx)
+        public void AxesZoomPx(int xPx, int yPx)
         {
             double dX = (double)xPx / xAxisScale;
             double dY = (double)yPx / yAxisScale;
