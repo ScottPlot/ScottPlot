@@ -11,7 +11,6 @@ namespace ScottPlot
     {
         public Plot plt = new Plot();
 
-        private bool currentlyRendering = false;
         private System.Timers.Timer lastInteractionTimer;
         ContextMenuStrip rightClickMenu;
         private bool designerMode = false;
@@ -62,6 +61,7 @@ namespace ScottPlot
 
             lastInteractionTimer?.Stop();
 
+            /*
             if (!(skipIfCurrentlyRendering && currentlyRendering))
             {
                 currentlyRendering = true;
@@ -70,6 +70,7 @@ namespace ScottPlot
                     Application.DoEvents();
                 currentlyRendering = false;
             }
+            */
         }
 
         private bool enableRightClickMenu = true;
@@ -79,12 +80,14 @@ namespace ScottPlot
             bool? enableRightClickMenu = null
             )
         {
+            /*
             if (enablePanning != null)
                 plt.mouseTracker.enablePanning = (bool)enablePanning;
             if (enableZooming != null)
                 plt.mouseTracker.enableZooming = (bool)enableZooming;
             if (enableRightClickMenu != null)
                 this.enableRightClickMenu = (bool)enableRightClickMenu;
+                */
         }
 
         private void SetupMenu()
@@ -108,6 +111,7 @@ namespace ScottPlot
 
         private void RightClickMenuItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
+            /*
             rightClickMenu.Hide();
             switch (e.ClickedItem.Text)
             {
@@ -129,6 +133,7 @@ namespace ScottPlot
                 default:
                     throw new NotImplementedException();
             }
+            */
         }
 
         private void PbPlot_SizeChanged(object sender, EventArgs e)
@@ -139,13 +144,16 @@ namespace ScottPlot
 
         private void PbPlot_MouseDown(object sender, MouseEventArgs e)
         {
+            /*
             plt.mouseTracker.MouseDown(e.Location);
             if (plt.mouseTracker.PlottableUnderCursor(e.Location) != null)
                 OnMouseDownOnPlottable(EventArgs.Empty);
+                */
         }
 
         private void PbPlot_MouseMove(object sender, MouseEventArgs e)
         {
+            /*
             plt.mouseTracker.MouseMove(e.Location);
             OnMouseMoved(EventArgs.Empty);
 
@@ -180,10 +188,12 @@ namespace ScottPlot
                 OnMouseDragged(EventArgs.Empty);
                 AxesChanged?.Invoke(this, e);
             }
+            */
         }
 
         private void PbPlot_MouseUp(object sender, MouseEventArgs e)
         {
+            /*
             if ((!plt.mouseTracker.MouseHasMoved()) && (e.Button == MouseButtons.Right))
             {
                 LaunchMenu();
@@ -206,10 +216,12 @@ namespace ScottPlot
                 OnMouseDropPlottable(EventArgs.Empty);
 
             plt.mouseTracker.MouseIs(false, false);
+            */
         }
 
         private void PbPlot_MouseClick(object sender, MouseEventArgs e)
         {
+            /*
             OnMouseClicked(e);
             if (e.Button == MouseButtons.Middle)
                 Render(skipIfCurrentlyRendering: false);
@@ -218,16 +230,20 @@ namespace ScottPlot
             if (e.Button == MouseButtons.Middle)
                 plt.mouseTracker.MiddleButtonClicked();
             AxesChanged?.Invoke(this, e);
+            */
         }
 
         private void PbPlot_MouseDoubleClick(object sender, MouseEventArgs e)
         {
+            /*
             plt.Benchmark(toggle: true);
             Render(skipIfCurrentlyRendering: false);
+            */
         }
 
         private void PbPlot_MouseWheel(object sender, MouseEventArgs e)
         {
+            /*
             PointF zoomCenter = plt.CoordinateFromPixel(e.Location);
 
             double zoomAmountY = 0.15;
@@ -253,6 +269,7 @@ namespace ScottPlot
                 Render(skipIfCurrentlyRendering: false);
 
             AxesChanged?.Invoke(this, e);
+            */
         }
 
         public event EventHandler MouseDownOnPlottable;

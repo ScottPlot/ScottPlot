@@ -42,6 +42,18 @@ namespace ScottPlot
             CanvasPlot_SizeChanged(null, null);
         }
 
+        public static BitmapImage bmpImageFromBmp(System.Drawing.Bitmap bmp)
+        {
+            System.IO.MemoryStream stream = new System.IO.MemoryStream();
+            ((System.Drawing.Bitmap)bmp).Save(stream, System.Drawing.Imaging.ImageFormat.Bmp);
+            BitmapImage bmpImage = new BitmapImage();
+            bmpImage.BeginInit();
+            stream.Seek(0, System.IO.SeekOrigin.Begin);
+            bmpImage.StreamSource = stream;
+            bmpImage.EndInit();
+            return bmpImage;
+        }
+
         public void Render(bool skipIfCurrentlyRendering = false, bool lowQuality = false)
         {
 
@@ -51,7 +63,7 @@ namespace ScottPlot
                 {
                     System.Drawing.Size controlPixelSize = new System.Drawing.Size(scaledWidth, scaledHeight);
                     System.Drawing.Bitmap bmp = Tools.DesignerModeBitmap(controlPixelSize);
-                    imagePlot.Source = Tools.bmpImageFromBmp(bmp);
+                    imagePlot.Source = bmpImageFromBmp(bmp);
                 }
                 catch
                 {
@@ -65,7 +77,7 @@ namespace ScottPlot
                 if (timer.IsEnabled)
                     timer.Stop();
                 currentlyRendering = true;
-                imagePlot.Source = Tools.bmpImageFromBmp(plt.GetBitmap(true, lowQuality));
+                imagePlot.Source = bmpImageFromBmp(plt.GetBitmap(true, lowQuality));
                 currentlyRendering = false;
             }
         }
@@ -96,22 +108,27 @@ namespace ScottPlot
 
         private void UserControl_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            /*
             if (e.ChangedButton == MouseButton.Left || e.ChangedButton == MouseButton.Right)
             {
                 plt.mouseTracker.MouseDown(e.GetPosition(this));
                 CaptureMouse();
             }
+            */
         }
 
         private void UserControl_MouseMove(object sender, MouseEventArgs e)
         {
+            /*
             plt.mouseTracker.MouseMove(e.GetPosition(this));
             if ((Mouse.LeftButton == MouseButtonState.Pressed) || (Mouse.RightButton == MouseButtonState.Pressed))
                 Render(skipIfCurrentlyRendering: true, plt.mouseTracker.lowQualityWhileInteracting);
+                */
         }
 
         private void UserControl_MouseUp(object sender, MouseButtonEventArgs e)
         {
+            /*
             if (e.ChangedButton == MouseButton.Left || e.ChangedButton == MouseButton.Right)
             {
                 plt.mouseTracker.MouseUp(e.GetPosition(this));
@@ -132,6 +149,7 @@ namespace ScottPlot
                 Render(skipIfCurrentlyRendering: false);
             }
             ReleaseMouseCapture();
+            */
         }
 
         private void UserControl_MouseWheel(object sender, MouseWheelEventArgs e)
