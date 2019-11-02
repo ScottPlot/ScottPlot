@@ -54,7 +54,7 @@ namespace ScottPlot.UserControls
             // image quality
             rbQualityLow.Checked = !plt.GetSettings().misc.antiAliasData;
             rbQualityHigh.Checked = plt.GetSettings().misc.antiAliasData;
-            cbQualityLowWhileDragging.Checked = plt.mouseTracker.lowQualityWhileInteracting;
+            //cbQualityLowWhileDragging.Checked = plt.mouseTracker.lowQualityWhileInteracting;
 
             // list of plottables
             lbPlotObjects.Items.Clear();
@@ -140,7 +140,7 @@ namespace ScottPlot.UserControls
 
             // image quality
             plt.AntiAlias(figure: rbQualityHigh.Checked, data: rbQualityHigh.Checked);
-            plt.mouseTracker.lowQualityWhileInteracting = cbQualityLowWhileDragging.Checked;
+            //plt.mouseTracker.lowQualityWhileInteracting = cbQualityLowWhileDragging.Checked;
 
             // misc
             plt.Grid(enable: cbGrid.Checked);
