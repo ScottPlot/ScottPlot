@@ -11,8 +11,10 @@ namespace ScottPlot
     {
         public readonly Plot plt;
         private readonly Settings settings;
-
         private readonly bool isDesignerMode;
+
+        // TODO: render non-anti-aliased while click-dragging
+        // TODO: call OnAxisChanged
 
         public FormsPlot()
         {
@@ -191,6 +193,10 @@ namespace ScottPlot
                             y2: plt.CoordinateFromPixel(topLeft).Y
                         );
                 }
+                else
+                {
+                    plt.AxisAuto();
+                }
             }
 
             if (isMouseDragging)
@@ -216,11 +222,7 @@ namespace ScottPlot
 
         private void PbPlot_MouseClick(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Middle)
-            {
-                plt.AxisAuto();
-                Render();
-            }
+
         }
 
         private void PbPlot_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -254,6 +256,7 @@ namespace ScottPlot
         protected virtual void OnMouseDragged(EventArgs e) { MouseDragged?.Invoke(this, e); }
         protected virtual void OnMouseDropPlottable(EventArgs e) { MouseDropPlottable?.Invoke(this, e); }
         protected virtual void OnMouseClicked(MouseEventArgs e) { MouseClicked?.Invoke(this, e); }
+        protected virtual void OnAxisChanged() { AxesChanged?.Invoke(this, null); }
 
         #endregion
     }
