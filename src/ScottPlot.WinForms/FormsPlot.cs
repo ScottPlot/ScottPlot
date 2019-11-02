@@ -9,7 +9,8 @@ namespace ScottPlot
 
     public partial class FormsPlot : UserControl
     {
-        public Plot plt = new Plot();
+        public readonly Plot plt;
+        private readonly Settings settings;
 
         private readonly bool isDesignerMode;
 
@@ -17,6 +18,10 @@ namespace ScottPlot
         {
             isDesignerMode = Process.GetCurrentProcess().ProcessName == "devenv";
             InitializeComponent();
+
+            plt = new Plot();
+            settings = plt.GetSettings(showWarning: false);
+
             plt.Style(ScottPlot.Style.Control);
             pbPlot.MouseWheel += PbPlot_MouseWheel;
 
@@ -109,32 +114,68 @@ namespace ScottPlot
                 {
                     int deltaX = ((Point)mouseLeftDownLocation).X - mouseLocation.X;
                     int deltaY = mouseLocation.Y - ((Point)mouseLeftDownLocation).Y;
-                    plt.GetSettings().AxesPanPx(deltaX, deltaY);
-                    Render(true);
+                    settings.AxesPanPx(deltaX, deltaY);
                 }
-
-                if (mouseRightDownLocation != null)
+                else if (mouseRightDownLocation != null)
                 {
                     int deltaX = ((Point)mouseRightDownLocation).X - mouseLocation.X;
                     int deltaY = mouseLocation.Y - ((Point)mouseRightDownLocation).Y;
-                    plt.GetSettings().AxesZoomPx(-deltaX, -deltaY);
-                    Render(true);
+                    settings.AxesZoomPx(-deltaX, -deltaY);
                 }
+                else if (mouseMiddleDownLocation != null)
+                {
+                    int x1 = Math.Min(mouseLocation.X, ((Point)mouseMiddleDownLocation).X);
+                    int x2 = Math.Max(mouseLocation.X, ((Point)mouseMiddleDownLocation).X);
+                    int y1 = Math.Min(mouseLocation.Y, ((Point)mouseMiddleDownLocation).Y);
+                    int y2 = Math.Max(mouseLocation.Y, ((Point)mouseMiddleDownLocation).Y);
+
+                    Point origin = new Point(x1 - settings.dataOrigin.X, y1 - settings.dataOrigin.Y);
+                    Size size = new Size(x2 - x1, y2 - y1);
+
+                    settings.mouseMiddleRect = new Rectangle(origin, size);
+                }
+
+                Render(true);
             }
         }
 
         private void PbPlot_MouseUp(object sender, MouseEventArgs e)
         {
+            if (mouseMiddleDownLocation != null)
+            {
+                int x1 = Math.Min(mouseLocation.X, ((Point)mouseMiddleDownLocation).X);
+                int x2 = Math.Max(mouseLocation.X, ((Point)mouseMiddleDownLocation).X);
+                int y1 = Math.Min(mouseLocation.Y, ((Point)mouseMiddleDownLocation).Y);
+                int y2 = Math.Max(mouseLocation.Y, ((Point)mouseMiddleDownLocation).Y);
+
+                Point topLeft = new Point(x1, y1);
+                Size size = new Size(x2 - x1, y2 - y1);
+                Point botRight = new Point(topLeft.X + size.Width, topLeft.Y + size.Height);
+
+                if ((size.Width > 2) && (size.Height > 2))
+                {
+                    // only change axes if suffeciently large square was drawn
+                    plt.Axis(
+                            x1: plt.CoordinateFromPixel(topLeft).X,
+                            x2: plt.CoordinateFromPixel(botRight).X,
+                            y1: plt.CoordinateFromPixel(botRight).Y,
+                            y2: plt.CoordinateFromPixel(topLeft).Y
+                        );
+                }
+            }
+
             mouseLeftDownLocation = null;
             mouseRightDownLocation = null;
             mouseMiddleDownLocation = null;
             axisLimitsOnMouseDown = null;
+            settings.mouseMiddleRect = null;
+            Render();
         }
 
         #endregion
 
         #region mouse clicking
-        
+
         private void PbPlot_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Middle)
