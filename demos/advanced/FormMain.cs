@@ -20,7 +20,8 @@ namespace ScottPlotDemos
         private void FormMain_Load(object sender, EventArgs e)
         {
             lblVersion.Text = ScottPlot.Tools.GetVersionString();
-            btnPlotTypes_Click(null, null);
+            //btnPlotTypes_Click(null, null);
+            btnDraggableAxisLines_Click(null, null);
         }
         private void lblGitHubUrl_Click(object sender, EventArgs e)
         {
