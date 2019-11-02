@@ -47,7 +47,7 @@ namespace ScottPlotDemos
             formsPlot2.plt.AxisAuto(.01, .1);
             formsPlot2.plt.Axis(null, null, 0, null);
 
-            formsPlot1.plt.MatchPadding(formsPlot2.plt, horizontal: true, vertical: false);
+            formsPlot1.plt.MatchLayout(formsPlot2.plt, horizontal: true, vertical: false);
             formsPlot1.Render();
             formsPlot2.Render();
         }

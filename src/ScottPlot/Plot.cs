@@ -985,14 +985,26 @@ namespace ScottPlot
             Resize();
         }
 
-        public void MatchPadding(Plot sourcePlot, bool horizontal = true, bool vertical = true)
+        public void MatchLayout(Plot sourcePlot, bool horizontal = true, bool vertical = true)
         {
             Resize();
 
-            // add a bunch of stuff like this?
-            settings.layout.titleHeight = sourcePlot.GetSettings().layout.titleHeight;
+            var sourceLayout = sourcePlot.GetSettings(false).layout;
 
-            throw new NotImplementedException(); // TODO: match new layout system like this
+            if (horizontal)
+            {
+                settings.layout.yLabelWidth = sourceLayout.yLabelWidth;
+                settings.layout.y2LabelWidth = sourceLayout.y2LabelWidth;
+                settings.layout.yScaleWidth = sourceLayout.yScaleWidth;
+                settings.layout.y2ScaleWidth = sourceLayout.y2ScaleWidth;
+            }
+
+            if (vertical)
+            {
+                settings.layout.titleHeight = sourceLayout.titleHeight;
+                settings.layout.xLabelHeight = sourceLayout.xLabelHeight;
+                settings.layout.xScaleHeight = sourceLayout.xScaleHeight;
+            }
         }
 
         public void MatchAxis(Plot sourcePlot, bool horizontal = true, bool vertical = true)
