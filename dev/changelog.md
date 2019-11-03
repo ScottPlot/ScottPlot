@@ -1,5 +1,21 @@
 # ScottPlot Changelog
 
+## ScottPlot 4.0.1
+_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-11-03_
+
+### Major Changes
+* **ScottPlot now targets .NET Standard 2.0** so in addition to .NET Framework projects it can now be used in .NET Core applications, ASP projects, Xamarin apps, etc.
+* **The WinForms control has its own package** ([ScottPlot.WinForms](https://www.nuget.org/packages/ScottPlot.WinForms/)) which targets both .NET Framework 4.6.1 and  .NET Core 3.0. Thanks for your early efforts on this @petarpetrovt
+* **The WPF control has its own package** ([ScottPlot.WPF](https://www.nuget.org/packages/ScottPlot.WPF/)) targeting .NET Core 3.0.
+
+
+### Minor Changes
+* better layout system and control of padding (Thanks @citizen3942)
+* added ruler mode to `plt.Ticks()` (Thanks @citizen3942)
+* `plt.MatchLayout()` no longer throws exceptions
+* eliminated `MouseTracker` class (tracking is now in user controls)
+* Use NUnit (not MSTest) for tests
+
 ## ScottPlot 3.1.6
 _Published on [NuGet](https://www.nuget.org/packages/ScottPlot/) on 2019-10-20_
 
