@@ -7,7 +7,6 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <PackageIcon>icon.png</PackageIcon>
     <StartupObject />
-    <Version>4.0.0</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>ScottPlot is a free and open-source plotting library for .NET</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -15,11 +14,14 @@
     <PackageIconUrl></PackageIconUrl>
     <PackageTags>plot graph data chart signal line C# winforms forms wpf</PackageTags>
     <PackageReleaseNotes>https://github.com/swharden/ScottPlot/releases</PackageReleaseNotes>
+    <Version>4.0.1</Version>
+    <AssemblyVersion>4.0.1.0</AssemblyVersion>
+    <FileVersion>4.0.1.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="System.Drawing.Common" Version="4.6.0" />
-    <None Include="icon.png" Pack="true" PackagePath="\"/>
+    <None Include="icon.png" Pack="true" PackagePath="\" />
   </ItemGroup>
 
 </Project>
