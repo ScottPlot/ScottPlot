@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\ScottPlot.WPF\ScottPlot.WPF.csproj" />
+    <PackageReference Include="ScottPlot.WPF" Version="1.0.0" />
   </ItemGroup>
 
 </Project>

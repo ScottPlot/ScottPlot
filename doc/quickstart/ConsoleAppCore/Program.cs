@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 
 namespace ConsoleAppCore
 {
@@ -7,15 +6,15 @@ namespace ConsoleAppCore
     {
         static void Main(string[] args)
         {
-            string outFilePath = System.IO.Path.GetFullPath("consoleAppCore.png");
+            string outputFilePath = System.IO.Path.GetFullPath("consoleAppCore.png");
 
-            var plot = new ScottPlot.Plot(640, 480);
-            plot.Title("Console Application Quickstart (.NET Core)");
-            plot.PlotSignal(ScottPlot.DataGen.Sin(100));
-            plot.PlotSignal(ScottPlot.DataGen.Cos(100));
-            plot.SaveFig(outFilePath);
+            var plt = new ScottPlot.Plot(640, 480);
+            plt.Title("ScottPlot QuickStart: Console Application (.NET Core)");
+            plt.PlotSignal(ScottPlot.DataGen.Sin(50));
+            plt.PlotSignal(ScottPlot.DataGen.Cos(50));
+            plt.SaveFig(outputFilePath);
 
-            Debug.WriteLine($"Wrote: {outFilePath}");
+            Console.WriteLine($"Saved: {outputFilePath}");
         }
     }
 }

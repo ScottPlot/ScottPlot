@@ -24,9 +24,9 @@ namespace WpfApp
         {
             InitializeComponent();
 
-            wpfPlot1.plt.PlotSignal(ScottPlot.DataGen.Sin(1000));
-            wpfPlot1.plt.PlotSignal(ScottPlot.DataGen.Cos(1000));
-            wpfPlot1.plt.Title("ScottPlot WPF Quickstart");
+            wpfPlot1.plt.Title("ScottPlot QuickStart: WPF");
+            wpfPlot1.plt.PlotSignal(ScottPlot.DataGen.Sin(50));
+            wpfPlot1.plt.PlotSignal(ScottPlot.DataGen.Cos(50));
             wpfPlot1.Render();
         }
     }

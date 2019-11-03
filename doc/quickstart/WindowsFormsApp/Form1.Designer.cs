@@ -1,4 +1,4 @@
-﻿namespace WindowsFormsAppFramework
+﻿namespace WindowsFormsApp1
 {
     partial class Form1
     {
@@ -48,7 +48,7 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.formsPlot1);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "ScottPlot Quickstart";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
 
