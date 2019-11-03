@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\ScottPlot\ScottPlot.csproj" />
+    <ProjectReference Include="..\src\ScottPlot\ScottPlot.csproj" />
   </ItemGroup>
 
 </Project>
