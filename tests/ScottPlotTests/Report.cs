@@ -8,31 +8,50 @@ namespace ScottPlotTests
     {
         public static void GenerateHTML(string outputPath)
         {
+            string imageFolder = System.IO.Path.Join(outputPath, "images");
+            if (!System.IO.Directory.Exists(imageFolder))
+                throw new ArgumentException("incorrect path to cookbook image folder");
+
             string sourcePath = System.IO.Path.GetFullPath(outputPath + "/../../../../Cookbook.cs");
             if (!System.IO.File.Exists(sourcePath))
                 throw new ArgumentException("incorrect path to cookbook source code");
             string source = System.IO.File.ReadAllText(sourcePath);
 
-            StringBuilder sb = new StringBuilder("<h1>ScottPlot Cookbook</h1>\n");
-            string[] imagePaths = System.IO.Directory.GetFiles(outputPath, "*.png");
+            StringBuilder html = new StringBuilder("<h1>ScottPlot Cookbook</h1>");
+            StringBuilder md = new StringBuilder("# ScottPlot Cookbook");
+
+            string[] imagePaths = System.IO.Directory.GetFiles(imageFolder, "*.png");
             foreach (string path in imagePaths)
             {
                 string functionName = System.IO.Path.GetFileNameWithoutExtension(path);
                 string functionSource = GetFunctionSource(functionName, source);
-                sb.AppendLine($"<h2><br>{functionName}</h2>");
-                sb.AppendLine($"<img src='{functionName}.png'>");
-                sb.AppendLine("<pre style='font-family: monospace; background-color: #DDD; padding: 10px;'>");
-                sb.AppendLine(functionSource);
-                sb.AppendLine("</pre>");
+                string cleanName = functionName.Substring(functionName.IndexOf('_') + 1).Replace("_", " ");
+
+                html.AppendLine($"<h2><br>{cleanName}</h2>");
+                html.AppendLine($"<img src='images/{functionName}.png'>");
+                html.AppendLine("<pre style='font-family: monospace; background-color: #DDD; padding: 10px;'>");
+                html.AppendLine(functionSource);
+                html.AppendLine("</pre>");
+
+                md.AppendLine();
+                md.AppendLine();
+                md.AppendLine($"## {cleanName}");
+                md.AppendLine();
+                md.AppendLine($"```cs\n{functionSource}\n```");
+                md.AppendLine();
+                md.AppendLine($"![](images/{functionName}.png)");
+                md.AppendLine();
+                md.AppendLine();
             }
 
-            sb.Insert(0, "<body style='background-color: #EEE; margin: 30px;'>");
-            sb.AppendLine("</body>");
+            html.Insert(0, "<body style='background-color: #EEE; margin: 30px;'>");
+            html.AppendLine("</body>");
 
-            sb.Insert(0, "<html>");
-            sb.AppendLine("</html>");
+            html.Insert(0, "<html>");
+            html.AppendLine("</html>");
 
-            System.IO.File.WriteAllText(System.IO.Path.Join(outputPath, "cookbook.html"), sb.ToString());
+            System.IO.File.WriteAllText(System.IO.Path.Join(outputPath, "cookbook.html"), html.ToString());
+            System.IO.File.WriteAllText(System.IO.Path.Join(outputPath, "readme.md"), md.ToString());
         }
 
         static string GetFunctionSource(string functionName, string code)
@@ -50,10 +69,14 @@ namespace ScottPlotTests
             string[] lines = code.Split('\n');
             for (int i = 0; i < lines.Length; i++)
             {
+                if (i == 1 || i == 2)
+                    lines[i] = "";
+                if (lines[i].Contains("Saved:"))
+                    lines[i] = "";
                 if (lines[i].Length > 12)
                     lines[i] = lines[i].Substring(12);
-                //if (lines[i].Contains("Tools.SaveFig"))
-                //lines[i] = $"figure.Save(600, 400, \"{functionName}.png\");";
+                if (lines[i].Contains("SaveFig"))
+                    lines[i] = $"figure.Save(600, 400, \"{functionName}.png\");";
             }
             code = string.Join("\n", lines).Trim();
             return code;
