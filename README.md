@@ -6,17 +6,15 @@
 
 **ScottPlot is a free and open-source graphing library for .NET** which makes it easy to display data in a variety of formats (line plots, bar charts, scatter plots, etc.) with just a few lines of code (see the **[ScottPlot Cookbook](/cookbook)** for examples). User controls are available for WinForms and WPF to allow interactive display of data.
 
-![](demos/ScottPlot-screenshot.gif)
+![](dev/nuget/ScottPlot.gif)
 
-In graphical environments plots can be displayed interactively (left-click-drag to pan and right-click-drag to zoom) and in console applications plots can be created and saved as images. ScottPlot targets multiple frameworks (.NET Framework 4.5 and .NET Core 3.0), has user controls for WinForms and WPF, and is [available on NuGet](https://www.nuget.org/packages/ScottPlot/).
+### NuGet Packages
 
-## NuGet Packages
-
-Package | Target Frameworks | Purpose
+NuGet Package | Target Framework(s) | Purpose
 ---|---|---
-ScottPlot | .NET Standard 2.0 | Plot data and save or return a bitmap
-ScottPlot.WinForms | .NET Framework 4.6.1 / .NET Core 3.0 | User control for mouse-interactive plots
-ScottPlot.WPF | .NET Core 3.0 | User control for mouse-interactive plots
+[ScottPlot](https://www.nuget.org/packages/ScottPlot/) | .NET Standard 2.0 | Plot data and save or return a bitmap
+[ScottPlot.WinForms](https://www.nuget.org/packages/ScottPlot.WinForms/) | .NET Framework 4.6.1 <br> .NET Core 3.0 | User control for mouse-interactive plots
+[ScottPlot.WPF](https://www.nuget.org/packages/ScottPlot.WPF/) | .NET Core 3.0 | User control for mouse-interactive plots
 
 ## Quickstart
 
@@ -69,8 +67,8 @@ The **[ScottPlot Cookbook](/cookbook)** is the best way to both see what ScottPl
 <img src="https://raw.githubusercontent.com/swharden/ScottPlot/master/cookbook/images/02_Styling_Scatter_Plots.png" width="200"><img src="https://raw.githubusercontent.com/swharden/ScottPlot/master/cookbook/images/06b_Custom_LineStyles.png" width="200"><img src="https://raw.githubusercontent.com/swharden/ScottPlot/master/cookbook/images/22_Custom_Colors.png" width="200"><img src="https://raw.githubusercontent.com/swharden/ScottPlot/master/cookbook/images/25_Corner_Axis_Frame.png" width="200"><img src="https://raw.githubusercontent.com/swharden/ScottPlot/master/cookbook/images/30a_Signal.png" width="200"><img src="https://raw.githubusercontent.com/swharden/ScottPlot/master/cookbook/images/41_Axis_Spans.png" width="200"><img src="https://raw.githubusercontent.com/swharden/ScottPlot/master/cookbook/images/62_Plot_Bar_Data_Fancy.png" width="200"><img src="https://raw.githubusercontent.com/swharden/ScottPlot/master/cookbook/images/65_Histogram.png" width="200"><img src="https://raw.githubusercontent.com/swharden/ScottPlot/master/cookbook/images/66_CPH.png" width="200"><img src="https://raw.githubusercontent.com/swharden/ScottPlot/master/cookbook/images/67_Candlestick.png" width="200"> 
 
 ## Demos
-* Download the demos as a click-to-run EXE: [ScottPlotDemos.zip]()
-* Source code for these demos is in [/demos](/demos)
+* Download the demos as a click-to-run EXE: **[ScottPlotDemos.zip](/demos/ScottPlotDemos.zip)**
+* Source code demos is in: [/demos](/demos)
 * The demo project demonstrates advanced topics such as:
   * Animated plots
   * Plotting changing (or growing) data
