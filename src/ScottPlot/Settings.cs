@@ -65,14 +65,15 @@ namespace ScottPlot
             layout.Update(width, height);
         }
 
-        public void TightenLayout()
+        public void TightenLayout(int padLeft = 15, int padRight = 15, int padBottom = 15, int padTop = 15)
         {
             // update the layout with sizes based on configuration in settings
 
             layout.titleHeight = (int)title.size.Height + 3;
 
-            layout.y2LabelWidth = 1;
-            layout.y2ScaleWidth = 1;
+            // disable y2 label and scale by default
+            layout.y2LabelWidth = 0;
+            layout.y2ScaleWidth = 0;
 
             layout.yLabelWidth = (int)yLabel.size.Height + 3;
             layout.xLabelHeight = (int)xLabel.size.Height + 3;
@@ -103,6 +104,12 @@ namespace ScottPlot
                 layout.yLabelWidth = 0;
                 layout.y2ScaleWidth = 0;
             }
+
+            // expand edges to accomodate argument padding
+            layout.yLabelWidth = Math.Max(layout.yLabelWidth, padLeft);
+            layout.y2LabelWidth = Math.Max(layout.y2LabelWidth, padRight);
+            layout.xLabelHeight = Math.Max(layout.xLabelHeight, padBottom);
+            layout.titleHeight = Math.Max(layout.xLabelHeight, padTop);
 
             layout.Update(figureSize.Width, figureSize.Height);
             layout.tighteningOccurred = true;

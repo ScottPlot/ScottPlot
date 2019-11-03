@@ -949,16 +949,17 @@ namespace ScottPlot
 
         public void TightenLayout(int? padding = null, bool render = false)
         {
-            if (padding != null)
-                Debug.WriteLine("WARNING: TightenLayout()'s padding argument is no longer used. Use Layout() instead.");
-
             if (render)
                 GetBitmap();
             if (!settings.axes.hasBeenSet && settings.plottables.Count > 0)
                 settings.AxisAuto();
+
             settings.ticks?.x?.Recalculate(settings, false); // this probably never happens
             settings.ticks?.y?.Recalculate(settings, true); // this probably never happens
-            settings.TightenLayout();
+
+            int pad = (padding is null) ? 15 : (int)padding;
+            settings.TightenLayout(pad, pad, pad, pad);
+
             Resize();
         }
 
