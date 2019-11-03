@@ -13,6 +13,9 @@
     <PackageTags>plot graph data chart signal line C# winforms forms wpf</PackageTags>
     <PackageReleaseNotes>https://github.com/swharden/ScottPlot/releases</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>4.0.1</Version>
+    <AssemblyVersion>4.0.1.0</AssemblyVersion>
+    <FileVersion>4.0.1.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
