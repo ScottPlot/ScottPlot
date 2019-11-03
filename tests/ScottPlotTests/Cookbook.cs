@@ -15,8 +15,7 @@ namespace ScottPlotTests
         public Cookbook()
         {
             outputPath = System.IO.Path.GetFullPath("cookbook");
-            if (!System.IO.Directory.Exists(outputPath))
-                System.IO.Directory.CreateDirectory(outputPath);
+            SetUp();
         }
 
         [OneTimeSetUp]
@@ -25,7 +24,7 @@ namespace ScottPlotTests
             if (System.IO.Directory.Exists(outputPath))
                 System.IO.Directory.Delete(outputPath, true);
             System.IO.Directory.CreateDirectory(outputPath);
-            Console.WriteLine($"Cleared output folder: {outputPath}");
+            System.IO.Directory.CreateDirectory(outputPath+"/images/");
         }
 
         [TearDown]
@@ -38,7 +37,7 @@ namespace ScottPlotTests
         public void Figure_01a_Scatter_Sin()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -56,7 +55,7 @@ namespace ScottPlotTests
         public void Figure_01b_Automatic_Margins()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -75,7 +74,7 @@ namespace ScottPlotTests
         public void Figure_01c_Defined_Axis_Limits()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -94,7 +93,7 @@ namespace ScottPlotTests
         public void Figure_01d_Zoom_and_Pan()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -114,7 +113,7 @@ namespace ScottPlotTests
         public void Figure_01e_Legend()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -133,7 +132,7 @@ namespace ScottPlotTests
         public void Figure_01f_Custom_Marker_Shapes()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -152,7 +151,7 @@ namespace ScottPlotTests
         public void Figure_01g_All_Marker_Shapes()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -182,7 +181,7 @@ namespace ScottPlotTests
         public void Figure_02_Styling_Scatter_Plots()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -201,7 +200,7 @@ namespace ScottPlotTests
         public void Figure_03_Plot_XY_Data()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             Random rand = new Random(0);
             int pointCount = 50;
@@ -218,7 +217,7 @@ namespace ScottPlotTests
         public void Figure_04_Plot_Lines_Only()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             Random rand = new Random(0);
             int pointCount = 50;
@@ -238,7 +237,7 @@ namespace ScottPlotTests
         public void Figure_05_Plot_Points_Only()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             Random rand = new Random(0);
             int pointCount = 50;
@@ -258,7 +257,7 @@ namespace ScottPlotTests
         public void Figure_06_Styling_XY_Plots()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             Random rand = new Random(0);
             int pointCount = 50;
@@ -278,7 +277,7 @@ namespace ScottPlotTests
         public void Figure_06b_Custom_LineStyles()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             Random rand = new Random(0);
             int pointCount = 50;
@@ -299,7 +298,7 @@ namespace ScottPlotTests
         public void Figure_07_Plotting_Points()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -319,7 +318,7 @@ namespace ScottPlotTests
         public void Figure_08_Plotting_Text()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -341,7 +340,7 @@ namespace ScottPlotTests
         public void Figure_09_Clearing_Plots()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -365,7 +364,7 @@ namespace ScottPlotTests
         public void Figure_10_Modifying_Plotted_Data()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -394,7 +393,7 @@ namespace ScottPlotTests
         public void Figure_11_Modify_Styles_After_Plotting()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -421,7 +420,7 @@ namespace ScottPlotTests
         public void Figure_12_Date_Axis()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             Random rand = new Random(0);
             double[] price = ScottPlot.DataGen.RandomWalk(rand, 60 * 8);
@@ -442,7 +441,7 @@ namespace ScottPlotTests
         public void Figure_13_Ruler_Mode()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -465,7 +464,7 @@ namespace ScottPlotTests
         public void Figure_20_Small_Plot()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -483,7 +482,7 @@ namespace ScottPlotTests
         public void Figure_21a_Title_and_Axis_Labels()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -506,7 +505,7 @@ namespace ScottPlotTests
         public void Figure_21b_Custom_Padding()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -531,7 +530,7 @@ namespace ScottPlotTests
         public void Figure_21c_Automatic_Left_Padding()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             var plt = new ScottPlot.Plot(width, height);
             Random rand = new Random(0);
@@ -555,7 +554,7 @@ namespace ScottPlotTests
         public void Figure_21d_Single_Axis_With_No_Padding()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             var plt = new ScottPlot.Plot(width, height);
             Random rand = new Random(0);
@@ -577,7 +576,7 @@ namespace ScottPlotTests
         public void Figure_22_Custom_Colors()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -603,7 +602,7 @@ namespace ScottPlotTests
         public void Figure_23_Frameless_Plot()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -627,7 +626,7 @@ namespace ScottPlotTests
         public void Figure_24_Disable_the_Grid()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -646,7 +645,7 @@ namespace ScottPlotTests
         public void Figure_25_Corner_Axis_Frame()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -666,7 +665,7 @@ namespace ScottPlotTests
         public void Figure_26_Horizontal_Ticks_Only()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -687,7 +686,7 @@ namespace ScottPlotTests
         public void Figure_27_Very_Large_Numbers()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             Random rand = new Random(0);
             int pointCount = 100;
@@ -704,7 +703,7 @@ namespace ScottPlotTests
         public void Figure_28_Axis_Exponent_And_Offset()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             double bigNumber = 9876;
 
@@ -719,7 +718,7 @@ namespace ScottPlotTests
         public void Figure_28b_Multiplier_Notation_Default()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             double[] tenMillionPoints = ScottPlot.DataGen.SinSweep(10_000_000, 8);
 
@@ -732,7 +731,7 @@ namespace ScottPlotTests
         public void Figure_28c_Multiplier_Notation_Disabled()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             double[] tenMillionPoints = ScottPlot.DataGen.SinSweep(10_000_000, 8);
 
@@ -747,7 +746,7 @@ namespace ScottPlotTests
         public void Figure_29_Very_Large_Images()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -765,7 +764,7 @@ namespace ScottPlotTests
         public void Figure_30a_Signal()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             double[] tenMillionPoints = ScottPlot.DataGen.SinSweep(10_000_000, 8);
 
@@ -784,7 +783,7 @@ namespace ScottPlotTests
         public void Figure_30c_SignalConst()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             double[] tenMillionPoints = ScottPlot.DataGen.SinSweep(10_000_000, 8);
 
@@ -805,7 +804,7 @@ namespace ScottPlotTests
         public void Figure_30d_SignalConst_One_Billion_Points()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             // SignalConst() accepts generic data types (here a byte array with a billion points)
             byte[] oneBillionPoints = ScottPlot.DataGen.SinSweepByte(1_000_000_000, 8);
@@ -822,7 +821,7 @@ namespace ScottPlotTests
         public void Figure_32_Signal_Styling()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             double[] tenMillionPoints = ScottPlot.DataGen.SinSweep(10_000_000, 8);
 
@@ -836,7 +835,7 @@ namespace ScottPlotTests
         public void Figure_40_Vertical_and_Horizontal_Lines()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -856,7 +855,7 @@ namespace ScottPlotTests
         public void Figure_41_Axis_Spans()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -891,7 +890,7 @@ namespace ScottPlotTests
         public void Figure_50_StyleBlue1()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -914,7 +913,7 @@ namespace ScottPlotTests
         public void Figure_51_StyleBlue2()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -937,7 +936,7 @@ namespace ScottPlotTests
         public void Figure_52_StyleBlue3()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -960,7 +959,7 @@ namespace ScottPlotTests
         public void Figure_53_StyleLight1()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -983,7 +982,7 @@ namespace ScottPlotTests
         public void Figure_54_StyleLight2()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -1006,7 +1005,7 @@ namespace ScottPlotTests
         public void Figure_55_StyleGray1()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -1029,7 +1028,7 @@ namespace ScottPlotTests
         public void Figure_56_StyleGray2()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -1052,7 +1051,7 @@ namespace ScottPlotTests
         public void Figure_57_StyleBlack()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -1075,7 +1074,7 @@ namespace ScottPlotTests
         public void Figure_58_StyleDefault()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -1098,7 +1097,7 @@ namespace ScottPlotTests
         public void Figure_59_StyleControl()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -1121,7 +1120,7 @@ namespace ScottPlotTests
         public void Figure_60_Plotting_With_Errorbars()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             var plt = new ScottPlot.Plot(width, height);
             plt.Grid(false);
@@ -1165,7 +1164,7 @@ namespace ScottPlotTests
         public void Figure_61_Plot_Bar_Data()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -1188,7 +1187,7 @@ namespace ScottPlotTests
         public void Figure_62_Plot_Bar_Data_Fancy()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             // generate some more complex data
             Random rand = new Random(0);
@@ -1223,7 +1222,7 @@ namespace ScottPlotTests
         public void Figure_63_Step_Plot()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -1241,7 +1240,7 @@ namespace ScottPlotTests
         public void Figure_64_Manual_Grid_Spacing()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -1259,7 +1258,7 @@ namespace ScottPlotTests
         public void Figure_65_Histogram()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             Random rand = new Random(0);
             double[] values1 = ScottPlot.DataGen.RandomNormal(rand, pointCount: 1000, mean: 50, stdDev: 20);
@@ -1279,7 +1278,7 @@ namespace ScottPlotTests
         public void Figure_66_CPH()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             Random rand = new Random(0);
             double[] values1 = ScottPlot.DataGen.RandomNormal(rand, pointCount: 1000, mean: 50, stdDev: 20);
@@ -1303,7 +1302,7 @@ namespace ScottPlotTests
         public void Figure_67_Candlestick()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             Random rand = new Random(0);
             int pointCount = 60;
@@ -1322,7 +1321,7 @@ namespace ScottPlotTests
         public void Figure_68_OHLC()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             Random rand = new Random(0);
             int pointCount = 60;
@@ -1341,7 +1340,7 @@ namespace ScottPlotTests
         public void Figure_70_Save_Scatter_Data()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
@@ -1358,7 +1357,7 @@ namespace ScottPlotTests
         public void Figure_71_Save_Signal_Data()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             int pointCount = 50;
             double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
@@ -1374,7 +1373,7 @@ namespace ScottPlotTests
         public void Figure_72_Custom_Fonts()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             int pointCount = 50;
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
