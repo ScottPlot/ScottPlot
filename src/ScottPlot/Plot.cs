@@ -17,14 +17,12 @@ namespace ScottPlot
     {
         public PixelFormat pixelFormat = PixelFormat.Format32bppPArgb;
         private readonly Settings settings;
-        public readonly MouseTracker mouseTracker;
 
         public Plot(int width = 800, int height = 600)
         {
             if (width <= 0 || height <= 0)
                 throw new ArgumentException("width and height must each be greater than 0");
             settings = new Settings();
-            mouseTracker = new MouseTracker(settings);
             Resize(width, height);
             TightenLayout();
         }
@@ -619,11 +617,14 @@ namespace ScottPlot
             return settings.plottables;
         }
 
-        public Settings GetSettings()
+        public Settings GetSettings(bool showWarning = true)
         {
-            // The user really should not interact with the settings class directly.
-            // This is exposed here to aid in testing.
-            Console.WriteLine("WARNING: GetSettings() is only for development and testing");
+            if (showWarning)
+            {
+                // The user really should not interact with the settings class directly.
+                // This is exposed here to aid in testing.
+                Console.WriteLine("WARNING: GetSettings() is only for development and testing");
+            }
             return settings;
         }
 
@@ -652,6 +653,13 @@ namespace ScottPlot
 
             settings.axes.Set(x1, x2, y1, y2);
             return settings.axes.limits;
+        }
+
+        public void Axis(double[] axisLimits)
+        {
+            if ((axisLimits == null) || (axisLimits.Length != 4))
+                throw new ArgumentException("axis limits must contain 4 elements");
+            Axis(axisLimits[0], axisLimits[1], axisLimits[2], axisLimits[3]);
         }
 
         public void AxisAuto(
@@ -742,7 +750,7 @@ namespace ScottPlot
             bool? bold = null
             )
         {
-            
+
             settings.title.text = title ?? settings.title.text;
             settings.title.visible = enable ?? settings.title.visible;
             settings.title.fontName = fontName ?? settings.title.fontName;
@@ -776,7 +784,7 @@ namespace ScottPlot
             string yLabel = null,
             bool? enable = null,
             string fontName = null,
-            float? fontSize = null, 
+            float? fontSize = null,
             Color? color = null,
             bool? bold = null
             )
@@ -941,16 +949,17 @@ namespace ScottPlot
 
         public void TightenLayout(int? padding = null, bool render = false)
         {
-            if (padding != null)
-                Debug.WriteLine("WARNING: TightenLayout()'s padding argument is no longer used. Use Layout() instead.");
-
             if (render)
                 GetBitmap();
             if (!settings.axes.hasBeenSet && settings.plottables.Count > 0)
                 settings.AxisAuto();
+
             settings.ticks?.x?.Recalculate(settings, false); // this probably never happens
             settings.ticks?.y?.Recalculate(settings, true); // this probably never happens
-            settings.TightenLayout();
+
+            int pad = (padding is null) ? 15 : (int)padding;
+            settings.TightenLayout(pad, pad, pad, pad);
+
             Resize();
         }
 
@@ -977,10 +986,26 @@ namespace ScottPlot
             Resize();
         }
 
-        public void MatchPadding(Plot sourcePlot, bool horizontal = true, bool vertical = true)
+        public void MatchLayout(Plot sourcePlot, bool horizontal = true, bool vertical = true)
         {
             Resize();
-            throw new NotImplementedException(); // TODO: match new layout system like this
+
+            var sourceLayout = sourcePlot.GetSettings(false).layout;
+
+            if (horizontal)
+            {
+                settings.layout.yLabelWidth = sourceLayout.yLabelWidth;
+                settings.layout.y2LabelWidth = sourceLayout.y2LabelWidth;
+                settings.layout.yScaleWidth = sourceLayout.yScaleWidth;
+                settings.layout.y2ScaleWidth = sourceLayout.y2ScaleWidth;
+            }
+
+            if (vertical)
+            {
+                settings.layout.titleHeight = sourceLayout.titleHeight;
+                settings.layout.xLabelHeight = sourceLayout.xLabelHeight;
+                settings.layout.xScaleHeight = sourceLayout.xScaleHeight;
+            }
         }
 
         public void MatchAxis(Plot sourcePlot, bool horizontal = true, bool vertical = true)
@@ -1040,7 +1065,7 @@ namespace ScottPlot
             throw new NotImplementedException("parallel processing should not used enabled at this time");
 
             //foreach (var plottable in GetPlottables())
-                //plottable.useParallel = useParallel;
+            //plottable.useParallel = useParallel;
         }
 
         #endregion

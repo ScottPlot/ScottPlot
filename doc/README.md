@@ -1,11 +1,15 @@
 # ScottPlot Documentation
 
-* **Quickstart guides** are available in the [/demos/](/demos/) folder.
-* **[The ScottPlot Cookbook](/cookbook)** is one of the best ways to quickly learn about all the ScottPlot features.
-* **Demo applications** are in the [/demos/](/demos/) folder.
+* [Quickstart Guides](https://github.com/swharden/ScottPlot#quickstart)
+* [ScottPlot Cookbook](https://github.com/swharden/ScottPlot#cookbook)
+* [Demo Applications](https://github.com/swharden/ScottPlot#demos)
 
-## ScottPlot.Plot
-The core of ScottPlot is the ScottPlot.Plot() class. Users only need to interact with its top-level methods. The following code creates a new plot 600px by 400px:
+## API Notes
+
+> Warning, this isn't updated as often as it should be. It is possible there are small errors.
+
+### The `Plot` object
+The core of ScottPlot is the `ScottPlot.Plot` object. Virtually all use of ScottPlot involves creating a Plot and interacting with its top-level methods:
 
 ```cs
 var plt = new ScottPlot.Plot(600, 400);
@@ -73,22 +77,7 @@ Method | Description
 `plt.GetBitmap()` | Returns the graph as a System.Drawing.Bitmap
 `plt.SaveFig()` | Saves the graph as an image
 
-## FormsPlot User Control
-The ScottPlot user control (FormsPlot) contains a ScottPlot object pre-initialized (FormsPlot.plt) as well as extra bindings to track the mouse and resize the plot as the control changes shape. You can access this ScottPlot plot object and use all the methods listed above:
-
-```cs
-FormsPlot1.plt.PlotSignal(demoData);
-```
-
-The user control also comes with a Render() function which tells the ScottPlot object to render the graph as a bitmap and display it. This function is called automatically on click-and-drag mouse events (panning and zooming), but you need to call it manually after adding data or changing the graph in some way.
-
-```cs
-FormsPlot1.Render();
-```
-
-If you are plotting data which is continuously changing, call the Render() function every time the data changes. For rapidly-changing data, add a timer to your application and have it repeatedly call the Render() function.
-
-## ScottPlot Tools
+## Tools
 A few useful classes are provided with ScottPlot:
 * `ScottPlot.DataGen` contains several methods which _generate_ data. This is a good way to create datasets to practice plotting.
 * `ScottPlot.Histogram` contains methods for taking in a dataset, binning it, and providing an easy way to access the bin counts. Extra tools are included to create cumulative probability histogram (CPH) plots.
