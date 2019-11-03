@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace ScottPlotTests
 {
-    [TestClass]
     public class Layout
     {
         string outputPath;
@@ -21,7 +20,7 @@ namespace ScottPlotTests
                 System.IO.Directory.CreateDirectory(this.outputPath);
         }
 
-        [TestMethod]
+        [Test]
         public void Test_Layout()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
