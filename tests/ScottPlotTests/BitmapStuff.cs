@@ -1,14 +1,13 @@
-﻿using System;
+﻿using NUnit.Framework;
+using System;
 using System.Drawing;
 using System.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ScottPlotTests
 {
-    [TestClass]
-    public class UnitTest1
+    public class BitmapStuff
     {
-        [TestMethod]
+        [Test]
         public void TestGetBitmap()
         {
             {
@@ -26,7 +25,7 @@ namespace ScottPlotTests
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestSaveFig()
         {
             {
