@@ -18,7 +18,12 @@ namespace ScottPlotTests
             string source = System.IO.File.ReadAllText(sourcePath);
 
             StringBuilder html = new StringBuilder("<h1>ScottPlot Cookbook</h1>");
+            html.AppendLine($"<br><br>The ScottPlot cookbook is a collection of small code examples which demonstrate how to create various types of plots using ScottPlot.");
+            html.AppendLine($"<br><br><i>This cookbook was automatically generated using ScottPlot {ScottPlot.Tools.GetVersionString()}</i>");
+
             StringBuilder md = new StringBuilder("# ScottPlot Cookbook");
+            md.AppendLine($"\nThe ScottPlot cookbook is a collection of small code examples which demonstrate how to create various types of plots using ScottPlot.");
+            md.AppendLine($"\n_This cookbook was [automatically generated](/tests) using ScottPlot {ScottPlot.Tools.GetVersionString()}_");
 
             string[] imagePaths = System.IO.Directory.GetFiles(imageFolder, "*.png");
             foreach (string path in imagePaths)
@@ -76,7 +81,7 @@ namespace ScottPlotTests
                 if (lines[i].Length > 12)
                     lines[i] = lines[i].Substring(12);
                 if (lines[i].Contains("SaveFig"))
-                    lines[i] = $"figure.Save(600, 400, \"{functionName}.png\");";
+                    lines[i] = $"plt.Save(600, 400, \"{functionName}.png\");";
             }
             code = string.Join("\n", lines).Trim();
             return code;
