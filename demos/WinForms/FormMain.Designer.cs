@@ -72,6 +72,8 @@
             this.lblGitHubUrl = new System.Windows.Forms.Label();
             this.lblVersion = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.btnSignal = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage3.SuspendLayout();
@@ -103,6 +105,8 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.label5);
+            this.tabPage1.Controls.Add(this.btnSignal);
             this.tabPage1.Controls.Add(this.label4);
             this.tabPage1.Controls.Add(this.btnQuickstart);
             this.tabPage1.Controls.Add(this.label2);
@@ -565,6 +569,25 @@
             this.label3.Text = "ScottPlot";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // btnSignal
+            // 
+            this.btnSignal.Location = new System.Drawing.Point(9, 86);
+            this.btnSignal.Name = "btnSignal";
+            this.btnSignal.Size = new System.Drawing.Size(88, 23);
+            this.btnSignal.TabIndex = 5;
+            this.btnSignal.Text = "Signal";
+            this.btnSignal.UseVisualStyleBackColor = true;
+            this.btnSignal.Click += new System.EventHandler(this.btnSignal_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(103, 91);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(124, 13);
+            this.label5.TabIndex = 6;
+            this.label5.Text = "Display high density data";
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -640,6 +663,8 @@
         private System.Windows.Forms.Button btnWavFileViewer;
         private System.Windows.Forms.Button btnPadding;
         private System.Windows.Forms.Button btnLinkedPlots;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button btnSignal;
     }
 }
 
