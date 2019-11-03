@@ -1,4 +1,8 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ConsoleAppFramework
 {
@@ -6,15 +10,15 @@ namespace ConsoleAppFramework
     {
         static void Main(string[] args)
         {
-            string outFilePath = System.IO.Path.GetFullPath("consoleAppFramework.png");
+            string outputFilePath = System.IO.Path.GetFullPath("consoleAppFramework.png");
 
-            var plot = new ScottPlot.Plot(640, 480);
-            plot.Title("Console Application Quickstart (.NET Framework)");
-            plot.PlotSignal(ScottPlot.DataGen.Sin(100));
-            plot.PlotSignal(ScottPlot.DataGen.Cos(100));
-            plot.SaveFig(outFilePath);
+            var plt = new ScottPlot.Plot(640, 480);
+            plt.Title("ScottPlot QuickStart: Console Application (.NET Framework)");
+            plt.PlotSignal(ScottPlot.DataGen.Sin(50));
+            plt.PlotSignal(ScottPlot.DataGen.Cos(50));
+            plt.SaveFig(outputFilePath);
 
-            Debug.WriteLine($"Wrote: {outFilePath}");
+            Console.WriteLine($"Saved: {outputFilePath}");
         }
     }
 }
