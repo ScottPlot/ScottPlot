@@ -64,10 +64,10 @@ namespace ScottPlot
 
         #region user control configuration
 
-        private bool enablePanning;
-        private bool enableZooming;
-        private bool enableRightClickMenu;
-        private bool lowQualityWhileDragging;
+        private bool enablePanning = true;
+        private bool enableZooming = true;
+        private bool enableRightClickMenu = true;
+        private bool lowQualityWhileDragging = true;
         public void Configure(
             bool? enablePanning = null,
             bool? enableZooming = null,
@@ -106,7 +106,6 @@ namespace ScottPlot
         PlottableAxLine draggingAxLine = null;
         private void PbPlot_MouseDown(object sender, MouseEventArgs e)
         {
-
             draggingAxLine = settings.GetDraggableAxisLineUnderCursor(e.Location);
 
             if (draggingAxLine != null)
