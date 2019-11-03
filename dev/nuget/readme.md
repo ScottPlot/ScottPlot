@@ -8,4 +8,4 @@
 
 ## Screenshot
 
-[![](https://raw.githubusercontent.com/swharden/ScottPlot/master/demos/ScottPlot.gif)](https://github.com/swharden/ScottPlot)
+[![](https://raw.githubusercontent.com/swharden/ScottPlot/master/dev/nuget/ScottPlot.gif)](https://github.com/swharden/ScottPlot)
