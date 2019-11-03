@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace ScottPlotTests
 {
-    public class Tests
+    public class UnitTest1
     {
         [Test]
         public void TestGetBitmap()
