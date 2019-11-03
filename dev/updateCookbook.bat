@@ -1,4 +1,4 @@
-set cbSource="..\tests\ScottPlotTests\bin\Debug\netcoreapp3.0\cookbook"
+set cbSource="..\tests\bin\Debug\netcoreapp3.0\cookbook"
 set cbDest="..\cookbook"
 
 :: clear contents of the current cookbook
