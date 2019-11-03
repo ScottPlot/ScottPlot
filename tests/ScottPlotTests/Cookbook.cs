@@ -8,8 +8,8 @@ namespace ScottPlotTests
     [TestFixture]
     public class Cookbook
     {
-        readonly int width = 640;
-        readonly int height = 480;
+        readonly int width = 600;
+        readonly int height = 400;
         public readonly string outputPath;
 
         public Cookbook()
@@ -34,7 +34,7 @@ namespace ScottPlotTests
         }
 
         [Test]
-        public void Figure_01a_Scatter_Sin()
+        public void Figure_01a_Quickstart()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
@@ -47,6 +47,9 @@ namespace ScottPlotTests
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
+            plt.Title("ScottPlot Quickstart");
+            plt.XLabel("Time (seconds)");
+            plt.YLabel("Potential (V)");
             if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
             Console.WriteLine($"Saved: {fileName}");
         }
@@ -566,7 +569,7 @@ namespace ScottPlotTests
             // customize your tick and frame style then tighten the layout
             plt.Ticks(rulerModeX: true, displayTicksY: false);
             plt.Frame(left: false, right: false, top: false);
-            plt.TightenLayout(render: true);
+            plt.TightenLayout(padding: 0, render: true);
 
             if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
             Console.WriteLine($"Saved: {fileName}");
