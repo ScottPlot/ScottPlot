@@ -20,9 +20,11 @@ namespace ScottPlotDemos
         private void FormMain_Load(object sender, EventArgs e)
         {
             lblVersion.Text = ScottPlot.Tools.GetVersionString();
-            btnPlotTypes_Click(null, null);
+            //btnPlotTypes_Click(null, null);
             //btnDraggableAxisLines_Click(null, null);
+            //btnSignal_Click(null, null);
         }
+
         private void lblGitHubUrl_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start("https://github.com/swharden/ScottPlot");
@@ -175,6 +177,12 @@ namespace ScottPlotDemos
         private void btnCustomGrid_Click_1(object sender, EventArgs e)
         {
             using (var frm = new FormCustomGrid())
+                frm.ShowDialog();
+        }
+
+        private void btnSignal_Click(object sender, EventArgs e)
+        {
+            using (var frm = new FormSignal())
                 frm.ShowDialog();
         }
     }
