@@ -23,7 +23,7 @@ namespace ScottPlotTests
 
             StringBuilder md = new StringBuilder("# ScottPlot Cookbook");
             md.AppendLine($"\nThe ScottPlot cookbook is a collection of small code examples which demonstrate how to create various types of plots using ScottPlot.");
-            md.AppendLine($"\n_This cookbook was [automatically generated](/tests) using ScottPlot {ScottPlot.Tools.GetVersionString()}_");
+            md.AppendLine($"\n_This cookbook was [automatically generated](/tests/ScottPlotTests/Cookbook.cs) using ScottPlot {ScottPlot.Tools.GetVersionString()}_");
 
             string[] imagePaths = System.IO.Directory.GetFiles(imageFolder, "*.png");
             foreach (string path in imagePaths)
