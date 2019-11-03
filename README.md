@@ -8,8 +8,6 @@
 
 ![](dev/nuget/ScottPlot.gif)
 
-### NuGet Packages
-
 NuGet Package | Target Framework(s) | Purpose
 ---|---|---
 [ScottPlot](https://www.nuget.org/packages/ScottPlot/) | .NET Standard 2.0 | Plot data and save or return a bitmap
