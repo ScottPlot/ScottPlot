@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace ScottPlotTests
 {
-    [TestClass]
     public class AutoAxis
     {
-        [TestMethod]
+        [Test]
         public void Test_AutoAxis_ScatterDiagonalLine()
         {
             var plt = new ScottPlot.Plot();
@@ -28,7 +27,7 @@ namespace ScottPlotTests
             //plt.SaveFig(System.IO.Path.GetFullPath(name + ".png"));
         }
 
-        [TestMethod]
+        [Test]
         public void Test_AutoAxis_ScatterSinglePoint()
         {
             var plt = new ScottPlot.Plot();
@@ -41,12 +40,9 @@ namespace ScottPlotTests
 
             Assert.IsTrue(plt.GetSettings().axes.x.span > 0);
             Assert.IsTrue(plt.GetSettings().axes.y.span > 0);
-
-            //string name = System.Reflection.MethodBase.GetCurrentMethod().Name ;
-            //plt.SaveFig(System.IO.Path.GetFullPath(name + ".png"));
         }
 
-        [TestMethod]
+        [Test]
         public void Test_AutoAxis_ScatterHorizontalLine()
         {
             var plt = new ScottPlot.Plot();
@@ -58,12 +54,9 @@ namespace ScottPlotTests
 
             Assert.IsTrue(plt.GetSettings().axes.x.span > 0);
             Assert.IsTrue(plt.GetSettings().axes.y.span > 0);
-
-            //string name = System.Reflection.MethodBase.GetCurrentMethod().Name;
-            //plt.SaveFig(System.IO.Path.GetFullPath(name + ".png"));
         }
 
-        [TestMethod]
+        [Test]
         public void Test_AutoAxis_ScatterVerticalLine()
         {
             var plt = new ScottPlot.Plot();
@@ -76,9 +69,6 @@ namespace ScottPlotTests
 
             Assert.IsTrue(plt.GetSettings().axes.x.span > 0);
             Assert.IsTrue(plt.GetSettings().axes.y.span > 0);
-
-            //string name = System.Reflection.MethodBase.GetCurrentMethod().Name;
-            //plt.SaveFig(System.IO.Path.GetFullPath(name + ".png"));
         }
     }
 }
