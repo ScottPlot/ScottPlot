@@ -61,6 +61,8 @@ namespace ScottPlot
 
         public static double[] Random(Random rand, int pointCount, double multiplier = 1, double offset = 0)
         {
+            if (rand is null)
+                rand = new Random();
             double[] ys = new double[pointCount];
             for (int i = 0; i < pointCount; i++)
                 ys[i] = rand.NextDouble() * multiplier + offset;
@@ -69,6 +71,8 @@ namespace ScottPlot
 
         public static int[] RandomInts(Random rand, int pointCount, double multiplier = 1, double offset = 0)
         {
+            if (rand is null)
+                rand = new Random();
             int[] ys = new int[pointCount];
             for (int i = 0; i < pointCount; i++)
                 ys[i] = (int)(rand.NextDouble() * multiplier + offset);
@@ -93,6 +97,8 @@ namespace ScottPlot
 
         public static double[] NoisySin(Random rand, int pointCount, double oscillations = 1, double noiseLevel = .5)
         {
+            if (rand is null)
+                rand = new Random();
             double[] values = Sin(pointCount, oscillations);
             for (int i = 0; i < values.Length; i++)
                 values[i] += rand.NextDouble() * noiseLevel;
@@ -101,6 +107,8 @@ namespace ScottPlot
 
         public static Color RandomColor(Random rand, int min = 0, int max = 255)
         {
+            if (rand is null)
+                rand = new Random();
             int r = rand.Next(min, max);
             int g = rand.Next(min, max);
             int b = rand.Next(min, max);
@@ -108,6 +116,8 @@ namespace ScottPlot
         }
         public static double[] RandomWalk(Random rand, int pointCount, double mult = 1, double offset = 0)
         {
+            if (rand is null)
+                rand = new Random();
             var data = new double[pointCount];
             data[0] = offset;
             for (int i = 1; i < data.Length; i++)
@@ -120,6 +130,8 @@ namespace ScottPlot
 
         public static OHLC[] RandomStockPrices(Random rand, int pointCount, double mult = 10, double startingPrice = 123.45)
         {
+            if (rand is null)
+                rand = new Random();
 
             double[] basePrices = ScottPlot.DataGen.RandomWalk(rand, pointCount, mult, startingPrice);
 
