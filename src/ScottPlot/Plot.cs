@@ -1010,6 +1010,9 @@ namespace ScottPlot
 
         public void MatchAxis(Plot sourcePlot, bool horizontal = true, bool vertical = true)
         {
+            if (!sourcePlot.GetSettings(showWarning: false).axes.hasBeenSet)
+                sourcePlot.AxisAuto();
+
             if (horizontal)
             {
                 settings.axes.x.min = sourcePlot.settings.axes.x.min;
