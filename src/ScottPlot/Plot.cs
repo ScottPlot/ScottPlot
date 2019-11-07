@@ -249,7 +249,8 @@ namespace ScottPlot
             double fontSize = 12,
             bool bold = false,
             string label = null,
-            TextAlignment alignment = TextAlignment.upperLeft
+            TextAlignment alignment = TextAlignment.middleLeft,
+            double rotation = 0
             )
         {
             if (color == null)
@@ -266,7 +267,8 @@ namespace ScottPlot
                 fontSize: fontSize,
                 bold: bold,
                 label: label,
-                alignment: alignment
+                alignment: alignment,
+                rotation: rotation
                 );
 
             settings.plottables.Add(plottableText);
