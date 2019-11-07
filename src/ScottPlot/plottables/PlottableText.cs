@@ -11,16 +11,18 @@ namespace ScottPlot
     {
         public double x;
         public double y;
+        public double rotation;
         public string text;
         public Brush brush;
         public Font font;
         public TextAlignment alignment;
 
-        public PlottableText(string text, double x, double y, Color color, string fontName, double fontSize, bool bold, string label, TextAlignment alignment)
+        public PlottableText(string text, double x, double y, Color color, string fontName, double fontSize, bool bold, string label, TextAlignment alignment, double rotation)
         {
             this.text = text ?? throw new Exception("Text cannot be null");
             this.x = x;
             this.y = y;
+            this.rotation = rotation;
             this.label = label;
             this.alignment = alignment;
             brush = new SolidBrush(color);
@@ -46,10 +48,9 @@ namespace ScottPlot
             PointF defaultPoint = settings.GetPixel(x, y);
             PointF textLocationPoint = new PointF();
 
-            SizeF stringSize = new SizeF();
-            stringSize = settings.gfxData.MeasureString(text, font);
+            SizeF stringSize = settings.gfxData.MeasureString(text, font);
 
-            switch (this.alignment)
+            switch (alignment)
             {
                 case TextAlignment.lowerCenter:
                     textLocationPoint.Y = defaultPoint.Y - stringSize.Height;
@@ -64,16 +65,16 @@ namespace ScottPlot
                     textLocationPoint.X = defaultPoint.X - stringSize.Width;
                     break;
                 case TextAlignment.middleLeft:
-                    textLocationPoint.Y = defaultPoint.Y - stringSize.Height/2;
+                    textLocationPoint.Y = defaultPoint.Y - stringSize.Height / 2;
                     textLocationPoint.X = defaultPoint.X;
                     break;
                 case TextAlignment.middleRight:
-                    textLocationPoint.Y = defaultPoint.Y - stringSize.Height/2;
+                    textLocationPoint.Y = defaultPoint.Y - stringSize.Height / 2;
                     textLocationPoint.X = defaultPoint.X - stringSize.Width;
                     break;
                 case TextAlignment.upperCenter:
                     textLocationPoint.Y = defaultPoint.Y;
-                    textLocationPoint.X = defaultPoint.X - stringSize.Width/2;
+                    textLocationPoint.X = defaultPoint.X - stringSize.Width / 2;
                     break;
                 case TextAlignment.upperLeft:
                     textLocationPoint = defaultPoint;
@@ -84,11 +85,16 @@ namespace ScottPlot
                     break;
                 case TextAlignment.middleCenter:
                     textLocationPoint.Y = defaultPoint.Y - stringSize.Height / 2;
-                    textLocationPoint.X = defaultPoint.X - stringSize.Width /2;
+                    textLocationPoint.X = defaultPoint.X - stringSize.Width / 2;
                     break;
             }
 
-            settings.gfxData.DrawString(text, font, brush, textLocationPoint);
+            //textLocationPoint.Y -= stringSize.Height / 2;
+
+            settings.gfxData.TranslateTransform((int)textLocationPoint.X, (int)textLocationPoint.Y);
+            settings.gfxData.RotateTransform((float)rotation);
+            settings.gfxData.DrawString(text, font, brush, new PointF(0, 0));
+            settings.gfxData.ResetTransform();
         }
 
         public override void SaveCSV(string filePath)

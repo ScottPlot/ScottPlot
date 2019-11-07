@@ -24,7 +24,7 @@ namespace ScottPlotTests
             if (System.IO.Directory.Exists(outputPath))
                 System.IO.Directory.Delete(outputPath, true);
             System.IO.Directory.CreateDirectory(outputPath);
-            System.IO.Directory.CreateDirectory(outputPath+"/images/");
+            System.IO.Directory.CreateDirectory(outputPath + "/images/");
         }
 
         [TearDown]
@@ -331,10 +331,29 @@ namespace ScottPlotTests
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
-            plt.PlotPoint(25, 0.8);
-            plt.PlotPoint(30, 0.3, color: Color.Magenta, markerSize: 15);
-            plt.PlotText("important point", 25, 0.8);
-            plt.PlotText("more important", 30, .3, fontSize: 16, bold: true, alignment: ScottPlot.TextAlignment.upperCenter);
+
+            plt.PlotPoint(25, 0.8, color: Color.Green);
+            plt.PlotText(" important point", 25, 0.8, 
+                color: Color.Green);
+
+            plt.PlotPoint(30, 0.3, color: Color.Black, markerSize: 15);
+            plt.PlotText(" default alignment", 30, 0.3, 
+                fontSize: 16, bold: true, color: Color.Magenta);
+
+            plt.PlotPoint(30, 0, color: Color.Black, markerSize: 15);
+            plt.PlotText("middle center", 30, 0, 
+                fontSize: 16, bold: true, color: Color.Magenta,
+                alignment: ScottPlot.TextAlignment.middleCenter);
+
+            plt.PlotPoint(30, -0.3, color: Color.Black, markerSize: 15);
+            plt.PlotText("upper left", 30, -0.3,
+                fontSize: 16, bold: true, color: Color.Magenta,
+                alignment: ScottPlot.TextAlignment.upperLeft);
+
+            plt.PlotPoint(5, -.5, color: Color.Blue, markerSize: 15);
+            plt.PlotText(" Rotated Text", 5, -.5, 
+                fontSize: 16, color: Color.Blue, bold: true, rotation: -30);
+
             if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
             Console.WriteLine($"Saved: {fileName}");
         }
