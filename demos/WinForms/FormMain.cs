@@ -185,5 +185,11 @@ namespace ScottPlotDemos
             using (var frm = new FormSignal())
                 frm.ShowDialog();
         }
+
+        private void btnOverride_Click(object sender, EventArgs e)
+        {
+            using (var frm = new FormOverride())
+                frm.ShowDialog();
+        }
     }
 }

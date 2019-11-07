@@ -133,6 +133,12 @@
     <Compile Include="Demos\FormLegend.Designer.cs">
       <DependentUpon>FormLegend.cs</DependentUpon>
     </Compile>
+    <Compile Include="Demos\FormOverride.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Demos\FormOverride.Designer.cs">
+      <DependentUpon>FormOverride.cs</DependentUpon>
+    </Compile>
     <Compile Include="Demos\FormQuickstart.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -248,6 +254,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Demos\FormLegend.resx">
       <DependentUpon>FormLegend.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Demos\FormOverride.resx">
+      <DependentUpon>FormOverride.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Demos\FormPadding.resx">
       <DependentUpon>FormPadding.cs</DependentUpon>
