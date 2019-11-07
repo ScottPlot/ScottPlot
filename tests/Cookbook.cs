@@ -1398,5 +1398,34 @@ namespace ScottPlotTests
             if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
             Console.WriteLine($"Saved: {fileName}");
         }
+
+        [Test]
+        public void Figure_73_Multiplot()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
+
+            Random rand = new Random(09241985);
+            var plt = new ScottPlot.MultiPlot(width: 800, height: 600, rows: 2, cols: 2);
+
+            plt.subplots[0].Title("Sine");
+            plt.subplots[0].PlotSignal(ScottPlot.DataGen.Sin(50));
+
+            plt.subplots[1].Title("Cosine");
+            plt.subplots[1].PlotSignal(ScottPlot.DataGen.Cos(50));
+
+            plt.subplots[2].Title("Random Points");
+            plt.subplots[2].PlotSignal(ScottPlot.DataGen.Random(rand, 50));
+
+            plt.subplots[3].Title("Random Walk");
+            plt.subplots[3].PlotSignal(ScottPlot.DataGen.RandomWalk(rand, 50));
+
+            // apply axes and layout from one plot to another one
+            plt.subplots[2].MatchAxis(plt.subplots[3]);
+            plt.subplots[2].MatchLayout(plt.subplots[3]);
+
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
+        }
     }
 }
