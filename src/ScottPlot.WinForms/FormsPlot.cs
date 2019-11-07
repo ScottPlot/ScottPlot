@@ -68,17 +68,20 @@ namespace ScottPlot
         private bool enableZooming = true;
         private bool enableRightClickMenu = true;
         private bool lowQualityWhileDragging = true;
+        private bool doubleClickingTogglesBenchmark = true;
         public void Configure(
             bool? enablePanning = null,
             bool? enableZooming = null,
             bool? enableRightClickMenu = null,
-            bool? lowQualityWhileDragging = null
+            bool? lowQualityWhileDragging = null,
+            bool? enableDoubleClickBenchmark = null
             )
         {
             if (enablePanning != null) this.enablePanning = (bool)enablePanning;
             if (enableZooming != null) this.enableZooming = (bool)enableZooming;
             if (enableRightClickMenu != null) this.enableRightClickMenu = (bool)enableRightClickMenu;
             if (lowQualityWhileDragging != null) this.lowQualityWhileDragging = (bool)lowQualityWhileDragging;
+            if (enableDoubleClickBenchmark != null) this.doubleClickingTogglesBenchmark = (bool)enableDoubleClickBenchmark;
         }
 
         #endregion
@@ -211,8 +214,10 @@ namespace ScottPlot
             {
                 int deltaX = Math.Abs(((Point)mouseRightDownLocation).X - mouseLocation.X);
                 int deltaY = Math.Abs(((Point)mouseRightDownLocation).Y - mouseLocation.Y);
-                if (deltaX < 3 && deltaY < 3 && enableRightClickMenu)
-                    rightClickMenu.Show(pbPlot, PointToClient(Cursor.Position));
+                if (deltaX < 3 && deltaY < 3)
+                {
+                    OnMenuDeployed();
+                }
             }
 
             if (isMouseDragging)
@@ -235,20 +240,7 @@ namespace ScottPlot
             Render();
         }
 
-        #endregion
-
-        #region mouse clicking
-
-        private void PbPlot_MouseClick(object sender, MouseEventArgs e)
-        {
-
-        }
-
-        private void PbPlot_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            plt.Benchmark(toggle: true);
-            Render();
-        }
+        private void PbPlot_MouseDoubleClick(object sender, MouseEventArgs e) { OnMouseDoubleClicked(); }
 
         private void PbPlot_MouseWheel(object sender, MouseEventArgs e)
         {
@@ -307,6 +299,8 @@ namespace ScottPlot
         public event EventHandler MouseDropPlottable;
         public event EventHandler AxesChanged;
         public event MouseEventHandler MouseClicked;
+        public event MouseEventHandler MouseDoubleClicked;
+        public event MouseEventHandler MenuDeployed;
         protected virtual void OnMouseDownOnPlottable(EventArgs e) { MouseDownOnPlottable?.Invoke(this, e); }
         protected virtual void OnMouseDragPlottable(EventArgs e) { MouseDragPlottable?.Invoke(this, e); }
         protected virtual void OnMouseMoved(EventArgs e) { MouseMoved?.Invoke(this, e); }
@@ -314,6 +308,24 @@ namespace ScottPlot
         protected virtual void OnMouseDropPlottable(EventArgs e) { MouseDropPlottable?.Invoke(this, e); }
         protected virtual void OnMouseClicked(MouseEventArgs e) { MouseClicked?.Invoke(this, e); }
         protected virtual void OnAxisChanged() { AxesChanged?.Invoke(this, null); }
+
+        protected virtual void OnMouseDoubleClicked()
+        {
+            MouseDoubleClicked?.Invoke(this, null);
+            if (doubleClickingTogglesBenchmark)
+            {
+                plt.Benchmark(toggle: true);
+                Render();
+            }
+        }
+
+        protected virtual void OnMenuDeployed()
+        {
+            MenuDeployed?.Invoke(this, null);
+
+            if (enableRightClickMenu)
+                rightClickMenu.Show(pbPlot, PointToClient(Cursor.Position));
+        }
 
         #endregion
     }

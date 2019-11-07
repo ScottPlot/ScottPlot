@@ -42,7 +42,6 @@
             this.pbPlot.TabIndex = 0;
             this.pbPlot.TabStop = false;
             this.pbPlot.SizeChanged += new System.EventHandler(this.PbPlot_SizeChanged);
-            this.pbPlot.MouseClick += new System.Windows.Forms.MouseEventHandler(this.PbPlot_MouseClick);
             this.pbPlot.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.PbPlot_MouseDoubleClick);
             this.pbPlot.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PbPlot_MouseDown);
             this.pbPlot.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PbPlot_MouseMove);
