@@ -30,14 +30,18 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label5 = new System.Windows.Forms.Label();
+            this.btnSignal = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.btnQuickstart = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.btnPlotTypes = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.btnWavFileViewer = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.btnOverride = new System.Windows.Forms.Button();
             this.btnUserControlSettings = new System.Windows.Forms.Button();
             this.btnHover = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -72,11 +76,10 @@
             this.lblGitHubUrl = new System.Windows.Forms.Label();
             this.lblVersion = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.btnSignal = new System.Windows.Forms.Button();
-            this.label5 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage3.SuspendLayout();
+            this.groupBox6.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -119,6 +122,25 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Common Plots";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(103, 91);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(124, 13);
+            this.label5.TabIndex = 6;
+            this.label5.Text = "Display high density data";
+            // 
+            // btnSignal
+            // 
+            this.btnSignal.Location = new System.Drawing.Point(9, 86);
+            this.btnSignal.Name = "btnSignal";
+            this.btnSignal.Size = new System.Drawing.Size(88, 23);
+            this.btnSignal.TabIndex = 5;
+            this.btnSignal.Text = "Signal";
+            this.btnSignal.UseVisualStyleBackColor = true;
+            this.btnSignal.Click += new System.EventHandler(this.btnSignal_Click);
             // 
             // label4
             // 
@@ -169,7 +191,7 @@
             // 
             // tabPage3
             // 
-            this.tabPage3.Controls.Add(this.btnWavFileViewer);
+            this.tabPage3.Controls.Add(this.groupBox6);
             this.tabPage3.Controls.Add(this.groupBox3);
             this.tabPage3.Controls.Add(this.groupBox2);
             this.tabPage3.Controls.Add(this.groupBox1);
@@ -181,9 +203,19 @@
             this.tabPage3.Text = "Advanced";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.btnWavFileViewer);
+            this.groupBox6.Location = new System.Drawing.Point(162, 168);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(120, 50);
+            this.groupBox6.TabIndex = 18;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Misc";
+            // 
             // btnWavFileViewer
             // 
-            this.btnWavFileViewer.Location = new System.Drawing.Point(308, 168);
+            this.btnWavFileViewer.Location = new System.Drawing.Point(6, 18);
             this.btnWavFileViewer.Name = "btnWavFileViewer";
             this.btnWavFileViewer.Size = new System.Drawing.Size(106, 23);
             this.btnWavFileViewer.TabIndex = 17;
@@ -193,14 +225,25 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.btnOverride);
             this.groupBox3.Controls.Add(this.btnUserControlSettings);
             this.groupBox3.Controls.Add(this.btnHover);
             this.groupBox3.Location = new System.Drawing.Point(288, 25);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(134, 80);
+            this.groupBox3.Size = new System.Drawing.Size(134, 108);
             this.groupBox3.TabIndex = 16;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Interactivity";
+            // 
+            // btnOverride
+            // 
+            this.btnOverride.Location = new System.Drawing.Point(6, 77);
+            this.btnOverride.Name = "btnOverride";
+            this.btnOverride.Size = new System.Drawing.Size(120, 23);
+            this.btnOverride.TabIndex = 15;
+            this.btnOverride.Text = "Custom Click Events";
+            this.btnOverride.UseVisualStyleBackColor = true;
+            this.btnOverride.Click += new System.EventHandler(this.btnOverride_Click);
             // 
             // btnUserControlSettings
             // 
@@ -569,25 +612,6 @@
             this.label3.Text = "ScottPlot";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // btnSignal
-            // 
-            this.btnSignal.Location = new System.Drawing.Point(9, 86);
-            this.btnSignal.Name = "btnSignal";
-            this.btnSignal.Size = new System.Drawing.Size(88, 23);
-            this.btnSignal.TabIndex = 5;
-            this.btnSignal.Text = "Signal";
-            this.btnSignal.UseVisualStyleBackColor = true;
-            this.btnSignal.Click += new System.EventHandler(this.btnSignal_Click);
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(103, 91);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(124, 13);
-            this.label5.TabIndex = 6;
-            this.label5.Text = "Display high density data";
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -603,6 +627,7 @@
             this.tabPage1.PerformLayout();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
+            this.groupBox6.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
@@ -665,6 +690,8 @@
         private System.Windows.Forms.Button btnLinkedPlots;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button btnSignal;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.Button btnOverride;
     }
 }
 
