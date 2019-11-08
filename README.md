@@ -14,6 +14,8 @@ NuGet Package | Target Framework(s) | Purpose
 [ScottPlot.WinForms](https://www.nuget.org/packages/ScottPlot.WinForms/) | .NET Framework 4.6.1 <br> .NET Core 3.0 | User control for mouse-interactive plots
 [ScottPlot.WPF](https://www.nuget.org/packages/ScottPlot.WPF/) | .NET Core 3.0 | User control for mouse-interactive plots
 
+_[ScottPlot 3.1.6](https://www.nuget.org/packages/ScottPlot/3.1.6) is the last version which supports .NET Framework 4.5_
+
 ## Quickstart
 
 Solution files for quickstart examples are in [/doc/quickstart](/doc/quickstart)
