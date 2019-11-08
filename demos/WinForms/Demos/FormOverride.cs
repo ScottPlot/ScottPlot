@@ -54,7 +54,8 @@ namespace ScottPlotDemos
 
         private void formsPlot1_MouseDoubleClicked(object sender, MouseEventArgs e)
         {
-            MessageBox.Show("you double-clicked the plot", "DOUBLE-CLICK");
+            // make double-clicking toggle window maximization state (rather than toggle benchmark)
+            WindowState = (WindowState == FormWindowState.Maximized) ? FormWindowState.Normal : FormWindowState.Maximized;
         }
     }
 }
