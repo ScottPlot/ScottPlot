@@ -175,6 +175,12 @@
     <Compile Include="Demos\FormTimeAxis.Designer.cs">
       <DependentUpon>FormTimeAxis.cs</DependentUpon>
     </Compile>
+    <Compile Include="Demos\FormToggleVis.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Demos\FormToggleVis.Designer.cs">
+      <DependentUpon>FormToggleVis.cs</DependentUpon>
+    </Compile>
     <Compile Include="Demos\FormUserControlSettings.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -281,6 +287,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Demos\FormTimeAxis.resx">
       <DependentUpon>FormTimeAxis.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Demos\FormToggleVis.resx">
+      <DependentUpon>FormToggleVis.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Demos\FormUserControlSettings.resx">
       <DependentUpon>FormUserControlSettings.cs</DependentUpon>

@@ -191,5 +191,11 @@ namespace ScottPlotDemos
             using (var frm = new FormOverride())
                 frm.ShowDialog();
         }
+
+        private void btnToggleVisibility_Click(object sender, EventArgs e)
+        {
+            using (var frm = new FormToggleVis())
+                frm.ShowDialog();
+        }
     }
 }
