@@ -76,6 +76,7 @@
             this.lblGitHubUrl = new System.Windows.Forms.Label();
             this.lblVersion = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.btnToggleVisibility = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage3.SuspendLayout();
@@ -206,7 +207,7 @@
             // groupBox6
             // 
             this.groupBox6.Controls.Add(this.btnWavFileViewer);
-            this.groupBox6.Location = new System.Drawing.Point(162, 168);
+            this.groupBox6.Location = new System.Drawing.Point(288, 139);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Size = new System.Drawing.Size(120, 50);
             this.groupBox6.TabIndex = 18;
@@ -267,13 +268,14 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.btnToggleVisibility);
             this.groupBox2.Controls.Add(this.btnLinkedPlots);
             this.groupBox2.Controls.Add(this.btnPadding);
             this.groupBox2.Controls.Add(this.btnCustomGrid);
             this.groupBox2.Controls.Add(this.btnLegend);
             this.groupBox2.Location = new System.Drawing.Point(162, 25);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(120, 137);
+            this.groupBox2.Size = new System.Drawing.Size(120, 166);
             this.groupBox2.TabIndex = 15;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Styling";
@@ -612,6 +614,16 @@
             this.label3.Text = "ScottPlot";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // btnToggleVisibility
+            // 
+            this.btnToggleVisibility.Location = new System.Drawing.Point(6, 135);
+            this.btnToggleVisibility.Name = "btnToggleVisibility";
+            this.btnToggleVisibility.Size = new System.Drawing.Size(106, 23);
+            this.btnToggleVisibility.TabIndex = 19;
+            this.btnToggleVisibility.Text = "Toggle Visibility";
+            this.btnToggleVisibility.UseVisualStyleBackColor = true;
+            this.btnToggleVisibility.Click += new System.EventHandler(this.btnToggleVisibility_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -692,6 +704,7 @@
         private System.Windows.Forms.Button btnSignal;
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.Button btnOverride;
+        private System.Windows.Forms.Button btnToggleVisibility;
     }
 }
 
