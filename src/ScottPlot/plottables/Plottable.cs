@@ -15,6 +15,7 @@ namespace ScottPlot
         public MarkerShape markerShape = MarkerShape.none;
         public LineStyle lineStyle = LineStyle.Solid;
         public bool useParallel = false;
+        public bool visible = true;
         public abstract void Render(Settings settings);
         public abstract override string ToString();
         public abstract double[] GetLimits();

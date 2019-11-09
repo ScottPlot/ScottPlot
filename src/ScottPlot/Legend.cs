@@ -37,7 +37,7 @@ namespace ScottPlot
             // note which plottables are to be included in the legend
             List<int> plottableIndexesNeedingLegend = new List<int>();
             for (int i = 0; i < settings.plottables.Count(); i++)
-                if (settings.plottables[i].label != null)
+                if (settings.plottables[i].label != null && settings.plottables[i].visible)
                     plottableIndexesNeedingLegend.Add(i);
             plottableIndexesNeedingLegend.Reverse();
 
@@ -50,10 +50,7 @@ namespace ScottPlot
             Size frameSize = new Size((int)frameWidth, (int)frameHeight);
             Point[] frameAndTextLocations = GetLocations(settings, padding * 2, frameSize, maxLabelSize.Width);
             Point frameLocation = frameAndTextLocations[0];
-            Point textLocation = frameAndTextLocations[1];
             Point shadowLocation = frameAndTextLocations[2];
-            Rectangle frameRect = new Rectangle(frameLocation, frameSize);
-            Rectangle shadowRect = new Rectangle(shadowLocation, frameSize);
             Point fullFrameLocation = new Point(Math.Min(frameLocation.X, shadowLocation.X), Math.Min(frameLocation.Y, shadowLocation.Y));
             return new Rectangle(fullFrameLocation,
                                 new Size(frameSize.Width + Math.Abs(frameLocation.X - shadowLocation.X) + 1,
@@ -65,7 +62,7 @@ namespace ScottPlot
             // note which plottables are to be included in the legend
             List<int> plottableIndexesNeedingLegend = new List<int>();
             for (int i = 0; i < settings.plottables.Count(); i++)
-                if (settings.plottables[i].label != null)
+                if (settings.plottables[i].label != null && settings.plottables[i].visible)
                     plottableIndexesNeedingLegend.Add(i);
             plottableIndexesNeedingLegend.Reverse();
 

@@ -54,13 +54,16 @@ namespace ScottPlot
             for (int i = 0; i < settings.plottables.Count; i++)
             {
                 Plottable pltThing = settings.plottables[i];
-                try
+                if (pltThing.visible)
                 {
-                    pltThing.Render(settings);
-                }
-                catch (OverflowException)
-                {
-                    Debug.WriteLine($"OverflowException plotting: {pltThing}");
+                    try
+                    {
+                        pltThing.Render(settings);
+                    }
+                    catch (OverflowException)
+                    {
+                        Debug.WriteLine($"OverflowException plotting: {pltThing}");
+                    }
                 }
             }
         }
@@ -74,7 +77,13 @@ namespace ScottPlot
         {
             if (settings.gfxFigure == null || settings.gfxLegend == null)
                 return;
-            if (settings.legend.location != ScottPlot.legendLocation.none)
+
+            int plottablesShownInLegend = 0;
+            foreach (var plottable in settings.plottables)
+                if (plottable.visible && plottable.label != null)
+                    plottablesShownInLegend += 1;
+
+            if (plottablesShownInLegend > 0 && settings.legend.location != ScottPlot.legendLocation.none)
             {
                 Point legendLocation = new Point(settings.dataOrigin.X + settings.legend.rect.Location.X,
                 settings.dataOrigin.Y + settings.legend.rect.Location.Y);
