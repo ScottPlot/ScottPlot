@@ -1446,5 +1446,29 @@ namespace ScottPlotTests
             if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
             Console.WriteLine($"Saved: {fileName}");
         }
+
+        [Test]
+        public void Figure_74_Set_Visibility()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
+
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
+
+            var plt = new ScottPlot.Plot(width, height);
+            var plottable1 = plt.PlotScatter(dataXs, dataSin, label: "sin");
+            var plottable2 = plt.PlotScatter(dataXs, dataCos, label: "cos");
+            plt.Legend();
+
+            // after something is plotted you can toggle its visibility
+            plottable1.visible = true;
+            plottable2.visible = false;
+
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
+        }
     }
 }
