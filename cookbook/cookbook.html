@@ -225,10 +225,29 @@ double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 var plt = new ScottPlot.Plot(width, height);
 plt.PlotScatter(dataXs, dataSin);
 plt.PlotScatter(dataXs, dataCos);
-plt.PlotPoint(25, 0.8);
-plt.PlotPoint(30, 0.3, color: Color.Magenta, markerSize: 15);
-plt.PlotText("important point", 25, 0.8);
-plt.PlotText("more important", 30, .3, fontSize: 16, bold: true, alignment: ScottPlot.TextAlignment.upperCenter);
+
+plt.PlotPoint(25, 0.8, color: Color.Green);
+plt.PlotText(" important point", 25, 0.8, 
+    color: Color.Green);
+
+plt.PlotPoint(30, 0.3, color: Color.Black, markerSize: 15);
+plt.PlotText(" default alignment", 30, 0.3, 
+    fontSize: 16, bold: true, color: Color.Magenta);
+
+plt.PlotPoint(30, 0, color: Color.Black, markerSize: 15);
+plt.PlotText("middle center", 30, 0, 
+    fontSize: 16, bold: true, color: Color.Magenta,
+    alignment: ScottPlot.TextAlignment.middleCenter);
+
+plt.PlotPoint(30, -0.3, color: Color.Black, markerSize: 15);
+plt.PlotText("upper left", 30, -0.3,
+    fontSize: 16, bold: true, color: Color.Magenta,
+    alignment: ScottPlot.TextAlignment.upperLeft);
+
+plt.PlotPoint(5, -.5, color: Color.Blue, markerSize: 15);
+plt.PlotText(" Rotated Text", 5, -.5, 
+    fontSize: 16, color: Color.Blue, bold: true, rotation: -30);
+
 plt.Save(600, 400, "08_Plotting_Text.png");
 </pre>
 <h2><br>Clearing Plots</h2>
@@ -1015,6 +1034,49 @@ plt.PlotText("wow.", 10, .6, fontName: "comic sans ms", fontSize: 36, color: Col
 plt.PlotText("NuGet", 32, 0, fontName: "comic sans ms", fontSize: 24, color: Color.Gold, bold: true);
 plt.Legend(fontName: "comic sans ms", fontSize: 16, bold: true, fontColor: Color.DarkBlue);
 plt.Save(600, 400, "72_Custom_Fonts.png");
+</pre>
+<h2><br>Multiplot</h2>
+<img src='images/73_Multiplot.png'>
+<pre style='font-family: monospace; background-color: #DDD; padding: 10px;'>
+Random rand = new Random(09241985);
+var plt = new ScottPlot.MultiPlot(width: 800, height: 600, rows: 2, cols: 2);
+
+plt.subplots[0].Title("Sine");
+plt.subplots[0].PlotSignal(ScottPlot.DataGen.Sin(50));
+
+plt.subplots[1].Title("Cosine");
+plt.subplots[1].PlotSignal(ScottPlot.DataGen.Cos(50));
+
+plt.subplots[2].Title("Random Points");
+plt.subplots[2].PlotSignal(ScottPlot.DataGen.Random(rand, 50));
+
+plt.subplots[3].Title("Random Walk");
+plt.subplots[3].PlotSignal(ScottPlot.DataGen.RandomWalk(rand, 50));
+
+// apply axes and layout from one plot to another one
+plt.subplots[2].MatchAxis(plt.subplots[3]);
+plt.subplots[2].MatchLayout(plt.subplots[3]);
+
+plt.Save(600, 400, "73_Multiplot.png");
+</pre>
+<h2><br>Set Visibility</h2>
+<img src='images/74_Set_Visibility.png'>
+<pre style='font-family: monospace; background-color: #DDD; padding: 10px;'>
+int pointCount = 50;
+double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
+
+var plt = new ScottPlot.Plot(width, height);
+var plottable1 = plt.PlotScatter(dataXs, dataSin, label: "sin");
+var plottable2 = plt.PlotScatter(dataXs, dataCos, label: "cos");
+plt.Legend();
+
+// after something is plotted you can toggle its visibility
+plottable1.visible = true;
+plottable2.visible = false;
+
+plt.Save(600, 400, "74_Set_Visibility.png");
 </pre>
 </body>
 </html>
