@@ -1,5 +1,18 @@
 # ScottPlot Changelog
 
+## ScottPlot 4.0.2
+_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-11-09_
+
+### Major Changes
+* **Multi-plot figures:** Images with several plots can be created using `ScottPlot.MultiPlot()` as seen in the [Multiplot example](https://github.com/swharden/ScottPlot/tree/master/cookbook#multiplot) in the cookbook
+
+### Minor Changes
+* `ScottPlot.DataGen` functions which require a `Random` can accept null (they will create a `Random` if null is given)
+* `plt.MatchAxis()` and `plt.MatchLayout()` have been improved
+* `plt.PlotText()` now supports rotated text using the `rotation` argument (#160). See the [cookbook example](https://github.com/swharden/ScottPlot/tree/master/cookbook#plotting-text). _Thanks @gwilson9_
+* `ScottPlot.WinForms` user control has new events and `formsPlot1.Configure()` arguments to make it easy to replace the default functionality for double-clicking and deploying the right-click menu (#166). _Thanks @FadyDev2_
+* All plottables now have a `visible` property which makes it easy to toggle visibility on/off after they've been plotted. See the [cookbook example](https://github.com/swharden/ScottPlot/tree/master/cookbook#set-visibility). _Thanks Nasser_
+
 ## ScottPlot 4.0.1
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-11-03_
 

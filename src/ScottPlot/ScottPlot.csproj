@@ -8,15 +8,17 @@
     <PackageIcon>icon.png</PackageIcon>
     <StartupObject />
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Description>ScottPlot is a free and open-source plotting library for .NET</Description>
+    <Description>ScottPlot is a free and open-source plotting library for .NET
+
+The ScottPlot package can plot data and save images or return bitmaps.  The ScottPlot.WinForms and ScottPlot.WPF packages provide user controls for mouse-interactive plots in graphical applications.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/swharden/ScottPlot</PackageProjectUrl>
     <PackageIconUrl></PackageIconUrl>
     <PackageTags>plot graph data chart signal line bar C#</PackageTags>
     <PackageReleaseNotes>https://github.com/swharden/ScottPlot/releases</PackageReleaseNotes>
-    <Version>4.0.1</Version>
-    <AssemblyVersion>4.0.1.0</AssemblyVersion>
-    <FileVersion>4.0.1.0</FileVersion>
+    <Version>4.0.2</Version>
+    <AssemblyVersion>4.0.2.0</AssemblyVersion>
+    <FileVersion>4.0.2.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
