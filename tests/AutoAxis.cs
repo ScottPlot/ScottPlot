@@ -43,6 +43,17 @@ namespace ScottPlotTests
         }
 
         [Test]
+        public void Test_AutoAxis_CandlestickSinglePoint()
+        {
+            var plt = new ScottPlot.Plot();
+            plt.PlotCandlestick(ScottPlot.DataGen.RandomStockPrices(rand: null, pointCount: 1));
+            plt.GetBitmap(); // force a render
+
+            Assert.IsTrue(plt.GetSettings().axes.x.span > 0);
+            Assert.IsTrue(plt.GetSettings().axes.y.span > 0);
+        }
+
+        [Test]
         public void Test_AutoAxis_ScatterHorizontalLine()
         {
             var plt = new ScottPlot.Plot();
