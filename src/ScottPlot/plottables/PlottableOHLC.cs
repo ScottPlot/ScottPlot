@@ -70,7 +70,7 @@ namespace ScottPlot
         public void RenderCandles(Settings settings)
         {
             double fractionalTickWidth = .7;
-            double spacingTime = ohlcs[1].epochSeconds - ohlcs[0].epochSeconds;
+            double spacingTime = (ohlcs.Length > 1) ? ohlcs[1].epochSeconds - ohlcs[0].epochSeconds : 1;
             double spacingPx = spacingTime * settings.xAxisScale;
             float boxWidth = (float)(spacingPx / 2 * fractionalTickWidth);
 
