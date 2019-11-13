@@ -17,6 +17,7 @@ namespace ScottPlot
         public float markerSize;
         public double xOffset;
         public double yOffset;
+        public double lineWidth;
         public Pen pen;
         public Brush brush;       
 
@@ -32,6 +33,7 @@ namespace ScottPlot
             this.xOffset = xOffset;
             this.label = label;
             this.color = color;
+            this.lineWidth = lineWidth;
             this.yOffset = yOffset;
             this.useParallel = useParallel;
             pointCount = ys.Length;
@@ -196,6 +198,10 @@ namespace ScottPlot
 
         public override void Render(Settings settings)
         {
+            pen.Color = color;
+            pen.Width = (float)lineWidth;
+            brush = new SolidBrush(color);
+
             double dataSpanUnits = ys.Length * samplePeriod;
             double columnSpanUnits = settings.axes.x.span / settings.dataSize.Width;
             double columnPointCount = (columnSpanUnits / dataSpanUnits) * ys.Length;

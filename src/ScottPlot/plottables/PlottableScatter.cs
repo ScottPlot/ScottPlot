@@ -13,6 +13,7 @@ namespace ScottPlot
         public double[] ys;
         public double[] errorX;
         public double[] errorY;
+        public double lineWidth;
         public float errorLineWidth;
         public float errorCapSize;
         public float markerSize;
@@ -44,6 +45,7 @@ namespace ScottPlot
             this.xs = xs;
             this.ys = ys;
             this.color = color;
+            this.lineWidth = lineWidth;
             this.markerSize = (float)markerSize;
             this.label = label;
             this.errorX = errorX;
@@ -158,6 +160,9 @@ namespace ScottPlot
 
         public override void Render(Settings settings)
         {
+            penLine.Color = color;
+            penLine.Width = (float)lineWidth;
+
             PointF[] points = new PointF[xs.Length];
             for (int i = 0; i < xs.Length; i++)
                 points[i] = settings.GetPixel(xs[i], ys[i]);
