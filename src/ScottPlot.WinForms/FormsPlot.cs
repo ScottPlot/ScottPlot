@@ -138,12 +138,20 @@ namespace ScottPlot
                 {
                     int deltaX = ((Point)mouseLeftDownLocation).X - mouseLocation.X;
                     int deltaY = mouseLocation.Y - ((Point)mouseLeftDownLocation).Y;
+
+                    if (ModifierKeys.HasFlag(Keys.Control)) deltaY = 0;
+                    if (ModifierKeys.HasFlag(Keys.Alt)) deltaX = 0;
+
                     settings.AxesPanPx(deltaX, deltaY);
                 }
                 else if (mouseRightDownLocation != null)
                 {
                     int deltaX = ((Point)mouseRightDownLocation).X - mouseLocation.X;
                     int deltaY = mouseLocation.Y - ((Point)mouseRightDownLocation).Y;
+
+                    if (ModifierKeys.HasFlag(Keys.Control)) deltaY = 0;
+                    if (ModifierKeys.HasFlag(Keys.Alt)) deltaX = 0;
+
                     settings.AxesZoomPx(-deltaX, -deltaY);
                 }
                 else if (mouseMiddleDownLocation != null)
@@ -246,6 +254,10 @@ namespace ScottPlot
         {
             double xFrac = (e.Delta > 0) ? 1.15 : 0.85;
             double yFrac = (e.Delta > 0) ? 1.15 : 0.85;
+
+            if (ModifierKeys.HasFlag(Keys.Control)) yFrac = 1;
+            if (ModifierKeys.HasFlag(Keys.Alt)) xFrac = 1;
+
             plt.AxisZoom(xFrac, yFrac, plt.CoordinateFromPixel(e.Location));
             Render();
             OnAxisChanged();
