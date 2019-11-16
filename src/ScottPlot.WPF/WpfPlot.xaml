@@ -8,9 +8,25 @@
              HorizontalAlignment="Stretch"
              VerticalAlignment="Stretch"
              d:DesignHeight="450" d:DesignWidth="800" MouseDown="UserControl_MouseDown" MouseMove="UserControl_MouseMove" MouseUp="UserControl_MouseUp" MouseWheel="UserControl_MouseWheel">
-    <Grid Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}">
-        <Canvas Name="canvasPlot" SizeChanged="CanvasPlot_SizeChanged">
+
+    <Grid x:Name="mainGrid">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Background="DarkBlue">
+            <StackPanel Orientation="Horizontal">
+                <Label Name="lblTitle" Content="ScottPlot" Foreground="White" FontSize="18" FontWeight="Bold" />
+                <Label Name="lblVersion" Content="x.x.x.x" Foreground="White" FontSize="10" VerticalAlignment="Bottom"/>
+            </StackPanel>
+        </StackPanel>
+
+        <Canvas Name="canvasPlot" Grid.Row="1" SizeChanged="CanvasPlot_SizeChanged" Background="DarkRed">
             <Image Name="imagePlot"/>
         </Canvas>
+        
     </Grid>
+    
 </UserControl>
