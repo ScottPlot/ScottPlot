@@ -896,6 +896,20 @@ namespace ScottPlot
             TightenLayout();
         }
 
+        public void XTicks(double[] positions = null, string[] labels = null)
+        {
+            TightenLayout();
+            settings.ticks.x.manualTickPositions = positions;
+            settings.ticks.x.manualTickLabels = labels;
+        }
+
+        public void YTicks(double[] positions = null, string[] labels = null)
+        {
+            TightenLayout();
+            settings.ticks.y.manualTickPositions = positions;
+            settings.ticks.y.manualTickLabels = labels;
+        }
+
         public void Grid(
             bool? enable = null,
             Color? color = null,
@@ -956,8 +970,8 @@ namespace ScottPlot
             if (!settings.axes.hasBeenSet && settings.plottables.Count > 0)
                 settings.AxisAuto();
 
-            settings.ticks?.x?.Recalculate(settings, false); // this probably never happens
-            settings.ticks?.y?.Recalculate(settings, true); // this probably never happens
+            settings.ticks?.x?.Recalculate(settings); // this probably never happens
+            settings.ticks?.y?.Recalculate(settings); // this probably never happens
 
             int pad = (padding is null) ? 15 : (int)padding;
             settings.TightenLayout(pad, pad, pad, pad);

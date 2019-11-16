@@ -10,8 +10,8 @@ namespace ScottPlot.Config
     public class Ticks
     {
         public Font font = new Font("Segoe UI", 10);
-        public TickCollection x;
-        public TickCollection y;
+        public readonly TickCollection x = new TickCollection(false);
+        public readonly TickCollection y = new TickCollection(true);
         public int size = 5;
         public Color color = Color.Black;
 

@@ -333,15 +333,15 @@ namespace ScottPlotTests
             plt.PlotScatter(dataXs, dataCos);
 
             plt.PlotPoint(25, 0.8, color: Color.Green);
-            plt.PlotText(" important point", 25, 0.8, 
+            plt.PlotText(" important point", 25, 0.8,
                 color: Color.Green);
 
             plt.PlotPoint(30, 0.3, color: Color.Black, markerSize: 15);
-            plt.PlotText(" default alignment", 30, 0.3, 
+            plt.PlotText(" default alignment", 30, 0.3,
                 fontSize: 16, bold: true, color: Color.Magenta);
 
             plt.PlotPoint(30, 0, color: Color.Black, markerSize: 15);
-            plt.PlotText("middle center", 30, 0, 
+            plt.PlotText("middle center", 30, 0,
                 fontSize: 16, bold: true, color: Color.Magenta,
                 alignment: ScottPlot.TextAlignment.middleCenter);
 
@@ -351,7 +351,7 @@ namespace ScottPlotTests
                 alignment: ScottPlot.TextAlignment.upperLeft);
 
             plt.PlotPoint(5, -.5, color: Color.Blue, markerSize: 15);
-            plt.PlotText(" Rotated Text", 5, -.5, 
+            plt.PlotText(" Rotated Text", 5, -.5,
                 fontSize: 16, color: Color.Blue, bold: true, rotation: -30);
 
             if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
@@ -477,6 +477,28 @@ namespace ScottPlotTests
             plt.Frame(right: false, top: false);
             plt.Ticks(rulerModeX: true, rulerModeY: true); // enable ruler mode like this
             plt.AxisAuto(0, 0);
+
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
+        }
+
+        [Test]
+        public void Figure_14_Custom_Tick_Labels()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
+
+            var plt = new ScottPlot.Plot(width, height);
+            plt.Title("Custom Tick Positions and Labels");
+            plt.PlotSignal(ScottPlot.DataGen.Sin(50));
+
+            double[] xPositions = { 7, 21, 37, 46 };
+            string[] xLabels = { "VII", "XXI", "XXXVII", "XLVI" };
+            plt.XTicks(xPositions, xLabels);
+
+            double[] yPositions = { -1, 0, .5, 1 };
+            string[] yPabels = { "bottom", "center", "half", "top" };
+            plt.YTicks(yPositions, yPabels);
 
             if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
             Console.WriteLine($"Saved: {fileName}");

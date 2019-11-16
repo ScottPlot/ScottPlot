@@ -16,35 +16,55 @@ namespace ScottPlot
         public double[] tickPositionsMajor;
         public double[] tickPositionsMinor;
         public string[] tickLabels;
+
+        public double[] manualTickPositions;
+        public string[] manualTickLabels;
+
         public string cornerLabel;
         public SizeF maxLabelSize;
         public bool dateFormat;
+        private bool verticalAxis;
 
-        public TickCollection(Settings settings, bool verticalAxis = false, bool dateFormat = false)
+        public TickCollection(bool verticalAxis)
         {
-            this.dateFormat = dateFormat;
-            Recalculate(settings, verticalAxis);
+            this.verticalAxis = verticalAxis;
         }
 
-        public void UpdateLongestLabel(Settings settings, bool verticalAxis = false)
+        public SizeF LargestLabel(Settings settings, string[] labels)
         {
-            string longestLabel = (dateFormat) ? "2019-08-20\n20:42:17" : "-8888";
-            maxLabelSize = settings.gfxData.MeasureString(longestLabel, settings.ticks.font);
-
-            if (tickLabels != null)
+            SizeF max = new SizeF(0, 0);
+            foreach (string label in labels)
             {
-                foreach (string tickLabel in tickLabels)
-                {
-                    SizeF tickLabelSize = settings.gfxData.MeasureString(tickLabel, settings.ticks.font);
-                    maxLabelSize.Width = Math.Max(maxLabelSize.Width, tickLabelSize.Width);
-                    maxLabelSize.Height = Math.Max(maxLabelSize.Height, tickLabelSize.Height);
-                }
+                SizeF tickLabelSize = settings.gfxData.MeasureString(label, settings.ticks.font);
+                max.Width = Math.Max(max.Width, tickLabelSize.Width);
+                max.Height = Math.Max(max.Height, tickLabelSize.Height);
+            }
+            return max;
+        }
+
+        public void Recalculate(Settings settings)
+        {
+            if (manualTickPositions is null)
+            {
+                RecalculatePositionsAutomatic(settings);
+            }
+            else
+            {
+                tickPositionsMajor = manualTickPositions;
+                tickPositionsMinor = null;
+                tickLabels = manualTickLabels;
+                maxLabelSize = LargestLabel(settings, manualTickLabels);
+                cornerLabel = null;
             }
         }
 
-        public void Recalculate(Settings settings, bool verticalAxis = false)
+        private void RecalculatePositionsAutomatic(Settings settings)
         {
-            UpdateLongestLabel(settings, verticalAxis);
+            // predict maxLabelSize upFront
+            string longestLabel = (dateFormat) ? "2019-08-20\n20:42:17" : "-8888";
+            maxLabelSize = settings.gfxData.MeasureString(longestLabel, settings.ticks.font);
+            if (tickLabels != null)
+                maxLabelSize = LargestLabel(settings, tickLabels);
 
             double low, high, tickSpacing;
             int maxTickCount;
