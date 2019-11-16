@@ -35,12 +35,17 @@ namespace ScottPlot
         public WpfPlot()
         {
             InitializeComponent();
-            isDesignerMode = (LicenseManager.UsageMode == LicenseUsageMode.Designtime);
+            lblVersion.Content = Tools.GetVersionString();
+            isDesignerMode = DesignerProperties.GetIsInDesignMode(this);
 
             plt = new Plot();
             settings = plt.GetSettings(showWarning: false);
-
             CanvasPlot_SizeChanged(null, null);
+
+            if (isDesignerMode)
+                mainGrid.RowDefinitions[1].Height = new GridLength(0);
+            else
+                mainGrid.RowDefinitions[0].Height = new GridLength(0);
         }
 
         private static BitmapImage BmpImageFromBmp(System.Drawing.Bitmap bmp)
@@ -58,19 +63,14 @@ namespace ScottPlot
         private bool currentlyRendering = false;
         public void Render(bool skipIfCurrentlyRendering = false, bool lowQuality = false)
         {
-
-            if (isDesignerMode)
+            if (!isDesignerMode)
             {
-                System.Drawing.Size controlPixelSize = new System.Drawing.Size(scaledWidth, scaledHeight);
-                System.Drawing.Bitmap bmp = Tools.DesignerModeBitmap(controlPixelSize);
-                imagePlot.Source = BmpImageFromBmp(bmp);
-                return;
-            }
-            else if (!(skipIfCurrentlyRendering && currentlyRendering))
-            {
-                currentlyRendering = true;
-                imagePlot.Source = BmpImageFromBmp(plt.GetBitmap(true, lowQuality));
-                currentlyRendering = false;
+                if (!(skipIfCurrentlyRendering && currentlyRendering))
+                {
+                    currentlyRendering = true;
+                    imagePlot.Source = BmpImageFromBmp(plt.GetBitmap(true, lowQuality));
+                    currentlyRendering = false;
+                }
             }
         }
 
