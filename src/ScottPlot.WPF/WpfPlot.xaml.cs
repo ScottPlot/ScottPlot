@@ -29,8 +29,7 @@ namespace ScottPlot
         private readonly Settings settings;
         private readonly bool isDesignerMode;
 
-        private int scaledWidth { get { return (int)(canvasPlot.ActualWidth * settings.gfxFigure.DpiX / 96); } }
-        private int scaledHeight { get { return (int)(canvasPlot.ActualHeight * settings.gfxFigure.DpiY / 96); } }
+        private readonly double dpiScale = 1;
 
         public WpfPlot()
         {
@@ -40,12 +39,19 @@ namespace ScottPlot
 
             plt = new Plot();
             settings = plt.GetSettings(showWarning: false);
-            CanvasPlot_SizeChanged(null, null);
 
             if (isDesignerMode)
+            {
+                // hide the plot
                 mainGrid.RowDefinitions[1].Height = new GridLength(0);
+            }
             else
+            {
+                // hide the version info
                 mainGrid.RowDefinitions[0].Height = new GridLength(0);
+                CanvasPlot_SizeChanged(null, null);
+                dpiScale = settings.gfxFigure.DpiX / 96;
+            }
         }
 
         private static BitmapImage BmpImageFromBmp(System.Drawing.Bitmap bmp)
@@ -76,7 +82,7 @@ namespace ScottPlot
 
         private void CanvasPlot_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            plt.Resize(scaledWidth, scaledHeight);
+            plt.Resize((int)(canvasPlot.ActualWidth * dpiScale), (int)(canvasPlot.ActualHeight * dpiScale));
             Render();
         }
 
@@ -100,19 +106,35 @@ namespace ScottPlot
             }
         }
 
+        private Point GetPixelPosition(MouseButtonEventArgs e)
+        {
+            Point pos = e.GetPosition(this);
+            pos.X *= dpiScale;
+            pos.Y *= dpiScale;
+            return pos;
+        }
+
+        private Point GetPixelPosition(MouseEventArgs e)
+        {
+            Point pos = e.GetPosition(this);
+            pos.X *= dpiScale;
+            pos.Y *= dpiScale;
+            return pos;
+        }
+
         private void UserControl_MouseDown(object sender, MouseButtonEventArgs e)
         {
             CaptureMouse();
 
-            if (e.ChangedButton == MouseButton.Left) mouseLeftDownLocation = e.GetPosition(this);
-            else if (e.ChangedButton == MouseButton.Right) mouseRightDownLocation = e.GetPosition(this);
-            else if (e.ChangedButton == MouseButton.Middle) mouseMiddleDownLocation = e.GetPosition(this);
+            if (e.ChangedButton == MouseButton.Left) mouseLeftDownLocation = GetPixelPosition(e);
+            else if (e.ChangedButton == MouseButton.Right) mouseRightDownLocation = GetPixelPosition(e);
+            else if (e.ChangedButton == MouseButton.Middle) mouseMiddleDownLocation = GetPixelPosition(e);
             axisLimitsOnMouseDown = plt.Axis();
         }
 
         private void UserControl_MouseMove(object sender, MouseEventArgs e)
         {
-            mouseLocation = e.GetPosition(this);
+            mouseLocation = GetPixelPosition(e);
 
             if (isMouseDragging)
             {
