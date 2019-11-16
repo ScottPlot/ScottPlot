@@ -122,12 +122,20 @@ namespace ScottPlot
                 {
                     double deltaX = ((Point)mouseLeftDownLocation).X - mouseLocation.X;
                     double deltaY = mouseLocation.Y - ((Point)mouseLeftDownLocation).Y;
+
+                    if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) deltaY = 0;
+                    if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)) deltaX = 0;
+
                     settings.AxesPanPx((int)deltaX, (int)deltaY);
                 }
                 else if (mouseRightDownLocation != null)
                 {
                     double deltaX = ((Point)mouseRightDownLocation).X - mouseLocation.X;
                     double deltaY = mouseLocation.Y - ((Point)mouseRightDownLocation).Y;
+
+                    if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) deltaY = 0;
+                    if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)) deltaX = 0;
+
                     settings.AxesZoomPx(-(int)deltaX, -(int)deltaY);
                 }
                 else if (mouseMiddleDownLocation != null)
@@ -199,6 +207,9 @@ namespace ScottPlot
 
             double zoomAmountY = 0.15;
             double zoomAmountX = 0.15;
+
+            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) zoomAmountY = 0;
+            if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)) zoomAmountX = 0;
 
             if (e.Delta > 1)
             {
