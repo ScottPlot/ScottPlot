@@ -117,6 +117,7 @@ namespace ScottPlot
             plt.YLabel("Sample Data");
         }
 
+        [Obsolete]
         public static Bitmap DesignerModeBitmap(Size size, bool drawArrows = false)
         {
             Bitmap bmp = new Bitmap(size.Width, size.Height);
