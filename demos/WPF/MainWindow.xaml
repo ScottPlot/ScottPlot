@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WpfApp"
         xmlns:ScottPlot="clr-namespace:ScottPlot;assembly=ScottPlot.WPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="WPF Quickstart" Height="450" Width="800">
     <Grid>
         <ScottPlot:WpfPlot Name="wpfPlot1"/>
     </Grid>
