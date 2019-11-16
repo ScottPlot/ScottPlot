@@ -122,9 +122,17 @@ namespace ScottPlot
             return pos;
         }
 
+        private System.Drawing.Point SDPoint(Point pt)
+        {
+            return new System.Drawing.Point((int)pt.X, (int)pt.Y);
+        }
+
+        PlottableAxLine draggingAxLine = null;
         private void UserControl_MouseDown(object sender, MouseButtonEventArgs e)
         {
             CaptureMouse();
+
+            draggingAxLine = settings.GetDraggableAxisLineUnderCursor(SDPoint(GetPixelPosition(e)));
 
             if (e.ChangedButton == MouseButton.Left) mouseLeftDownLocation = GetPixelPosition(e);
             else if (e.ChangedButton == MouseButton.Right) mouseRightDownLocation = GetPixelPosition(e);
