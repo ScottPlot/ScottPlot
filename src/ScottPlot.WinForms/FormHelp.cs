@@ -29,6 +29,9 @@ namespace ScottPlot.UserControls
             msg.AppendLine("Right-click: show menu");
             msg.AppendLine("Middle-click: auto-axis");
             msg.AppendLine("Double-click: show benchmark");
+            msg.AppendLine("");
+            msg.AppendLine("Hold CTRL to lock vertical axis");
+            msg.AppendLine("Hold ALT to lock horizontal axis");
             richTextBox1.Text = msg.ToString();
         }
 
