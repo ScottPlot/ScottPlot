@@ -144,8 +144,8 @@ namespace ScottPlot
             if (settings.dataSize.Width < 1 || settings.dataSize.Height < 1)
                 return;
 
-            settings.ticks.x = new TickCollection(settings, false, settings.ticks.timeFormatX);
-            settings.ticks.y = new TickCollection(settings, true, settings.ticks.timeFormatY);
+            settings.ticks.x.Recalculate(settings);
+            settings.ticks.y.Recalculate(settings);
 
             RenderTicksOnLeft(settings);
             RenderTicksOnBottom(settings);
