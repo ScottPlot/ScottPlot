@@ -144,7 +144,7 @@ namespace ScottPlot
         {
             mouseLocation = GetPixelPosition(e);
 
-            if (isMouseDragging)
+            if (isMouseDragging && draggingAxLine is null)
             {
                 plt.Axis(axisLimitsOnMouseDown);
 
@@ -182,13 +182,36 @@ namespace ScottPlot
                 }
 
                 Render(true);
+                return; // we panned or zoomed, so exit
+            }
+
+            if (draggingAxLine != null)
+            {
+                // we are actively dragging an axis line
+                var pos = plt.CoordinateFromPixel(SDPoint(GetPixelPosition(e)));
+                draggingAxLine.position = (draggingAxLine.vertical) ? pos.X : pos.Y;
+                imagePlot.Cursor = (draggingAxLine.vertical == true) ? Cursors.SizeWE : Cursors.SizeNS;
+                Render(true);
                 return;
             }
+
+            var axLineUnderCursor = settings.GetDraggableAxisLineUnderCursor(SDPoint(GetPixelPosition(e)));
+            if (axLineUnderCursor != null)
+            {
+                // an axis line is under the cursor
+                imagePlot.Cursor = (axLineUnderCursor.vertical == true) ? Cursors.SizeWE : Cursors.SizeNS;
+                return;
+            }
+
+            // the mouse isn't over anything
+            imagePlot.Cursor = Cursors.Arrow;
         }
 
         private void UserControl_MouseUp(object sender, MouseButtonEventArgs e)
         {
             ReleaseMouseCapture();
+
+            draggingAxLine = null;
 
             if (mouseMiddleDownLocation != null)
             {
