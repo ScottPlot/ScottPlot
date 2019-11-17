@@ -929,11 +929,17 @@ for (int i = 0; i < pointCount; i++)
 var plt = new ScottPlot.Plot(width, height);
 plt.Title("Multiple Bar Plots");
 plt.Grid(false);
+
 // customize barWidth and xOffset to squeeze grouped bars together
 plt.PlotBar(Xs, dataA, errorY: errorA, label: "data A", barWidth: 3.2, xOffset: -2);
 plt.PlotBar(Xs, dataB, errorY: errorB, label: "data B", barWidth: 3.2, xOffset: 2);
+
 plt.Axis(null, null, 0, null);
 plt.Legend();
+
+string[] labels = { "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten" };
+plt.XTicks(Xs, labels);
+
 plt.Save(600, 400, "62_Plot_Bar_Data_Fancy.png");
 </pre>
 <h2><br>Step Plot</h2>

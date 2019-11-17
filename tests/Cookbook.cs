@@ -1256,11 +1256,17 @@ namespace ScottPlotTests
             var plt = new ScottPlot.Plot(width, height);
             plt.Title("Multiple Bar Plots");
             plt.Grid(false);
+
             // customize barWidth and xOffset to squeeze grouped bars together
             plt.PlotBar(Xs, dataA, errorY: errorA, label: "data A", barWidth: 3.2, xOffset: -2);
             plt.PlotBar(Xs, dataB, errorY: errorB, label: "data B", barWidth: 3.2, xOffset: 2);
+
             plt.Axis(null, null, 0, null);
             plt.Legend();
+
+            string[] labels = { "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten" };
+            plt.XTicks(Xs, labels);
+
             if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
             Console.WriteLine($"Saved: {fileName}");
         }
