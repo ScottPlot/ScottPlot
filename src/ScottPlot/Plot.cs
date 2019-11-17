@@ -965,6 +965,9 @@ namespace ScottPlot
 
         public void TightenLayout(int? padding = null, bool render = false)
         {
+            if (settings.gfxData is null)
+                return;
+
             if (render)
                 GetBitmap();
             if (!settings.axes.hasBeenSet && settings.plottables.Count > 0)
