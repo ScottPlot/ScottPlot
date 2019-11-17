@@ -659,7 +659,10 @@ namespace ScottPlotTests
             plt.Style(figBg: figureBgColor, dataBg: dataBgColor);
             plt.Grid(color: ColorTranslator.FromHtml("#273c51"));
             plt.Ticks(displayTicksX: false, displayTicksY: false);
-            plt.Frame(drawFrame: false);
+
+            plt.Frame(drawFrame: false); // dont draw a square around the plot
+            plt.TightenLayout(padding: 0); // dont pad the data area at all
+
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
             if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
