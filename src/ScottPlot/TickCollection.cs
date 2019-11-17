@@ -105,6 +105,9 @@ namespace ScottPlot
                     settings.ticks.useMultiplierNotation, settings.ticks.useOffsetNotation, settings.ticks.useExponentialNotation);
                 tickPositionsMinor = MinorFromMajor(tickPositionsMajor, 5, low, high);
             }
+
+            // now set the maximum label size based on the actual labels created
+            maxLabelSize = LargestLabel(settings, tickLabels);
         }
 
         public override string ToString()
