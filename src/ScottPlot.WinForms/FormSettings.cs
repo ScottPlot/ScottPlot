@@ -34,14 +34,14 @@ namespace ScottPlot.UserControls
             tbY2.Text = Math.Round(plt.Axis()[3], 4).ToString();
             tbY1.Text = Math.Round(plt.Axis()[2], 4).ToString();
             cbYminor.Checked = plt.GetSettings().ticks.displayYminor;
-            cbYdateTime.Checked = plt.GetSettings().ticks.timeFormatY;
+            cbYdateTime.Checked = plt.GetSettings().ticks.y.dateFormat;
 
             // horizontal axis
             tbXlabel.Text = plt.GetSettings().xLabel.text;
             tbX2.Text = Math.Round(plt.Axis()[1], 4).ToString();
             tbX1.Text = Math.Round(plt.Axis()[0], 4).ToString();
             cbXminor.Checked = plt.GetSettings().ticks.displayXminor;
-            cbXdateTime.Checked = plt.GetSettings().ticks.timeFormatX;
+            cbXdateTime.Checked = plt.GetSettings().ticks.x.dateFormat;
 
             // tick display options
             cbTicksOffset.Checked = plt.GetSettings().ticks.useOffsetNotation;
