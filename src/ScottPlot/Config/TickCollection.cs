@@ -46,7 +46,10 @@ namespace ScottPlot.Config
         {
             if (manualTickPositions is null)
             {
-                RecalculatePositionsAutomatic(settings);
+                if (dateFormat)
+                    RecalculatePositionsAutomaticDatetime(settings);
+                else
+                    RecalculatePositionsAutomaticNumeric(settings);
             }
             else
             {
@@ -58,7 +61,40 @@ namespace ScottPlot.Config
             }
         }
 
-        private void RecalculatePositionsAutomatic(Settings settings)
+        private void RecalculatePositionsAutomaticDatetime(Settings settings)
+        {
+            // the goal of this function is to set tickPositionsMajor, tickLabels, tickPositionsMinor, cornerLabel, and maxLabelSize
+            double low, high;
+            int tickCount;
+
+            // predict maxLabelSize up front using predetermined label sizes
+            maxLabelSize = settings.gfxData.MeasureString("2019-08-20\n8:42:17 PM", settings.ticks.font);
+
+            if (verticalAxis)
+            {
+                low = settings.axes.y.min - settings.yAxisUnitsPerPixel; // add an extra pixel to capture the edge tick
+                high = settings.axes.y.max + settings.yAxisUnitsPerPixel; // add an extra pixel to capture the edge tick
+                tickCount = (int)(settings.dataSize.Height / maxLabelSize.Height);
+            }
+            else
+            {
+                low = settings.axes.x.min - settings.xAxisUnitsPerPixel; // add an extra pixel to capture the edge tick
+                high = settings.axes.x.max + settings.xAxisUnitsPerPixel; // add an extra pixel to capture the edge tick
+                tickCount = (int)(settings.dataSize.Width / maxLabelSize.Width);
+            }
+
+            // let another class handle calculation of ideal tick positions and label formatting
+            var dateTicks = DateTimeTicks.GetTicks(DateTime.FromOADate(low), DateTime.FromOADate(high), tickCount);
+            tickPositionsMajor = dateTicks.Item1;
+            tickLabels = dateTicks.Item2;
+
+            // dont forget to set all the things
+            tickPositionsMinor = null;
+            cornerLabel = null;
+            maxLabelSize = LargestLabel(settings, tickLabels);
+        }
+
+        private void RecalculatePositionsAutomaticNumeric(Settings settings)
         {
             // predict maxLabelSize up front using predetermined label sizes
             string longestLabel = (dateFormat) ? "2019-08-20\n20:42:17" : "-8888";
