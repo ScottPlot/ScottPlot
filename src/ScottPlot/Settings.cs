@@ -86,9 +86,6 @@ namespace ScottPlot
             if (ticks?.x?.maxLabelSize.Height > layout.xScaleHeight)
                 layout.xScaleHeight = (int)ticks.x.maxLabelSize.Height;
 
-            Console.WriteLine($"xScaleHeight: {layout.xScaleHeight}");
-            Console.WriteLine($"maxLabelSize: {ticks.x.maxLabelSize.Height}");
-
             // collapse things that are hidden or empty
             if (!ticks.displayXmajor)
                 layout.xScaleHeight = 0;
