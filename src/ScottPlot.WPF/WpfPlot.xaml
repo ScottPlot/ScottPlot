@@ -16,7 +16,7 @@
             <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Background="DarkBlue">
+        <StackPanel Grid.Row="0" Background="#003366">
             <StackPanel Orientation="Horizontal">
                 <Label Name="lblTitle" Content="ScottPlot" Foreground="White" FontSize="18" FontWeight="Bold" />
                 <Label Name="lblVersion" Content="x.x.x.x" Foreground="White" FontSize="10" VerticalAlignment="Bottom"/>
