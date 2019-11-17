@@ -21,9 +21,6 @@ namespace ScottPlot.Config
         public double manualSpacingX = 0;
         public double manualSpacingY = 0;
 
-        public bool timeFormatX = false;
-        public bool timeFormatY = false;
-
         public bool rulerModeX = false;
         public bool rulerModeY = false;
 

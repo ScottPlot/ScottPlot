@@ -878,9 +878,9 @@ namespace ScottPlot
             if (displayTicksYminor != null)
                 settings.ticks.displayYminor = (bool)displayTicksYminor;
             if (dateTimeX != null)
-                settings.ticks.timeFormatX = (bool)dateTimeX;
+                settings.ticks.x.dateFormat = (bool)dateTimeX;
             if (dateTimeY != null)
-                settings.ticks.timeFormatY = (bool)dateTimeY;
+                settings.ticks.y.dateFormat = (bool)dateTimeY;
             if (rulerModeX != null)
                 settings.ticks.rulerModeX = (bool)rulerModeX;
             if (rulerModeY != null)
