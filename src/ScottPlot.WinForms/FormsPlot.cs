@@ -30,6 +30,9 @@ namespace ScottPlot
             lblTitle.Visible = isDesignerMode;
             lblVersion.Visible = isDesignerMode;
             lblVersion.Text = Tools.GetVersionString();
+            pbPlot.BackColor = ColorTranslator.FromHtml("#003366");
+            lblTitle.BackColor = ColorTranslator.FromHtml("#003366");
+            lblVersion.BackColor = ColorTranslator.FromHtml("#003366");
 
             plt = new Plot();
             plt.Style(Style.Control);
