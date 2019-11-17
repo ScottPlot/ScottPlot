@@ -60,11 +60,9 @@ namespace ScottPlot
 
         private void RecalculatePositionsAutomatic(Settings settings)
         {
-            // predict maxLabelSize upFront
+            // predict maxLabelSize up front using predetermined label sizes
             string longestLabel = (dateFormat) ? "2019-08-20\n20:42:17" : "-8888";
             maxLabelSize = settings.gfxData.MeasureString(longestLabel, settings.ticks.font);
-            if (tickLabels != null)
-                maxLabelSize = LargestLabel(settings, tickLabels);
 
             double low, high, tickSpacing;
             int maxTickCount;
