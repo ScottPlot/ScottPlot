@@ -27,6 +27,9 @@ namespace ScottPlot
             pbPlot.MouseWheel += PbPlot_MouseWheel;
 
             isDesignerMode = Process.GetCurrentProcess().ProcessName == "devenv";
+            lblTitle.Visible = isDesignerMode;
+            lblVersion.Visible = isDesignerMode;
+            lblVersion.Text = Tools.GetVersionString();
 
             plt = new Plot();
             plt.Style(Style.Control);
@@ -40,19 +43,15 @@ namespace ScottPlot
         public void Render(bool skipIfCurrentlyRendering = false, bool lowQuality = false)
         {
             if (isDesignerMode)
+                return;
+
+            if (!(skipIfCurrentlyRendering && currentlyRendering))
             {
-                pbPlot.Image = Tools.DesignerModeBitmap(pbPlot.Size);
-            }
-            else
-            {
-                if (!(skipIfCurrentlyRendering && currentlyRendering))
-                {
-                    currentlyRendering = true;
-                    pbPlot.Image = plt.GetBitmap(true, lowQuality);
-                    if (isMouseDragging)
-                        Application.DoEvents();
-                    currentlyRendering = false;
-                }
+                currentlyRendering = true;
+                pbPlot.Image = plt.GetBitmap(true, lowQuality);
+                if (isMouseDragging)
+                    Application.DoEvents();
+                currentlyRendering = false;
             }
         }
 
