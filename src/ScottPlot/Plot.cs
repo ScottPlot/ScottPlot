@@ -858,7 +858,9 @@ namespace ScottPlot
             bool? dateTimeX = null,
             bool? dateTimeY = null,
             bool? rulerModeX = null,
-            bool? rulerModeY = null
+            bool? rulerModeY = null,
+            bool? invertSignX = null,
+            bool? invertSignY = null
             )
         {
             if (displayTicksX != null)
@@ -885,6 +887,10 @@ namespace ScottPlot
                 settings.ticks.rulerModeX = (bool)rulerModeX;
             if (rulerModeY != null)
                 settings.ticks.rulerModeY = (bool)rulerModeY;
+            if (invertSignX != null)
+                settings.ticks.x.invertSign = (bool)invertSignX;
+            if (invertSignY != null)
+                settings.ticks.y.invertSign = (bool)invertSignY;
 
             if (dateTimeX != null || dateTimeY != null)
             {

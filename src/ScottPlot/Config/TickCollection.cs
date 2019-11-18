@@ -24,6 +24,7 @@ namespace ScottPlot.Config
         public SizeF maxLabelSize;
         public bool dateFormat;
         private bool verticalAxis;
+        public bool invertSign;
 
         public TickCollection(bool verticalAxis)
         {
@@ -137,8 +138,10 @@ namespace ScottPlot.Config
             }
             else
             {
+                // TODO: return a tuple
                 GetPrettyTickLabels(tickPositionsMajor, out tickLabels, out cornerLabel,
-                    settings.ticks.useMultiplierNotation, settings.ticks.useOffsetNotation, settings.ticks.useExponentialNotation);
+                    settings.ticks.useMultiplierNotation, settings.ticks.useOffsetNotation, 
+                    settings.ticks.useExponentialNotation, invertSign: invertSign);
                 tickPositionsMinor = MinorFromMajor(tickPositionsMajor, 5, low, high);
             }
 
@@ -174,7 +177,7 @@ namespace ScottPlot.Config
         }
 
         public void GetPrettyTickLabels(double[] positions, out string[] labels, out string cornerLabel,
-            bool useMultiplierNotation, bool useOffsetNotation, bool useExponentialNotation)
+            bool useMultiplierNotation, bool useOffsetNotation, bool useExponentialNotation, bool invertSign)
         {
             // given positions returns nicely-formatted labels (with offset and multiplier)
 
@@ -205,7 +208,11 @@ namespace ScottPlot.Config
             for (int i = 0; i < positions.Length; i++)
             {
                 double adjustedPosition = (positions[i] - offset) / multiplier;
+                if (invertSign)
+                    adjustedPosition *= -1;
                 labels[i] = Math.Round(adjustedPosition, 5).ToString();
+                if (labels[i] == "-0")
+                    labels[i] = "0";
             }
 
             if (useExponentialNotation)
