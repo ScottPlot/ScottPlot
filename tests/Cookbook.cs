@@ -505,6 +505,25 @@ namespace ScottPlotTests
         }
 
         [Test]
+        public void Figure_15_Descending_Ticks()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
+
+            var plt = new ScottPlot.Plot(width, height);
+
+            // to simulate an inverted (descending) horizontal axis, plot in the negative space
+            plt.PlotSignal(ScottPlot.DataGen.Sin(50), xOffset: -50);
+
+            // then invert the sign of the horizontal axis labels
+            plt.Ticks(invertSignX: true);
+            plt.Ticks(invertSignY: true);
+
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
+        }
+
+        [Test]
         public void Figure_20_Small_Plot()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
