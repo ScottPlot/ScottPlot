@@ -17,7 +17,11 @@ namespace ScottPlotDemos
             InitializeComponent();
             formsPlot1.plt.Ticks(dateTimeX: cbHorizontal.Checked);
             Random rand = new Random();
-            formsPlot1.plt.PlotSignal(ScottPlot.DataGen.RandomWalk(rand, 100_000), 1000);
+            formsPlot1.plt.PlotSignal(
+                ys: ScottPlot.DataGen.RandomWalk(rand, 100_000), // 100k points
+                sampleRate: 1000, // 1k points per day
+                xOffset: 43787 // 2019
+                );
             formsPlot1.plt.YLabel("awesomeness");
             formsPlot1.plt.XLabel("experimental date");
             formsPlot1.Render();
