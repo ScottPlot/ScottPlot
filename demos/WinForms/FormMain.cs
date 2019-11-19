@@ -23,6 +23,7 @@ namespace ScottPlotDemos
             //btnPlotTypes_Click(null, null);
             //btnDraggableAxisLines_Click(null, null);
             //btnSignal_Click(null, null);
+            //btnTimeAxis_Click(null, null);
         }
 
         private void lblGitHubUrl_Click(object sender, EventArgs e)
