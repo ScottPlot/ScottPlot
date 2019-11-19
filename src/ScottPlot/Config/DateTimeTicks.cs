@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -9,43 +10,273 @@ namespace ScottPlot.Config
     {
         /* 
          * This class calculates ideal tick positions and labels for a given time range.
+         * This class can be modified to improve how date ticks are calculated and displayed.
          * GetTicks() shall be the only public method of this class.
          * 
          */
 
-        public static Tuple<double[], String[]>  GetTicks(DateTime dtLow, DateTime dtHigh, int tickCount = 5)
+        private static readonly string[] monthShort = { null,
+            "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+
+        private enum TickUnits { years, months, days, hours, minutes, seconds };
+
+        public static Tuple<DateTime[], String[]> GetTicks(DateTime dt1, DateTime dt2, int maxTickCount = 5)
         {
-            // TODO: make this class smarter.
+            if (!(dt1 < dt2))
+                dt2 = dt1.AddSeconds(1);
 
-            double low = dtLow.ToOADate();
-            double high = dtHigh.ToOADate();
-            double span = high - low;
-            double tickSpacing = span / tickCount;
+            // determine the best time units to use for tick marks
+            TickUnits units;
+            double daysApart = dt2.ToOADate() - dt1.ToOADate();
+            double hoursApart = daysApart * 24;
+            double minutesApart = hoursApart * 60;
+            double secondsApart = minutesApart * 60;
+            if (daysApart > 365 * 2)
+                units = TickUnits.years;
+            else if (daysApart > 30 * 2)
+                units = TickUnits.months;
+            else if (hoursApart > 24 * 2)
+                units = TickUnits.days;
+            else if (minutesApart > 60 * 2)
+                units = TickUnits.hours;
+            else if (secondsApart > 60 * 2)
+                units = TickUnits.minutes;
+            else
+                units = TickUnits.seconds;
 
-            DateTime[] ticks = new DateTime[tickCount];
-            for (int i = 0; i < tickCount; i++)
-                ticks[i] = DateTime.FromOADate(low + i * tickSpacing);
-
-            // create string labels
-            string[] tickLabels = new string[ticks.Length];
-            for (int i = 0; i < tickLabels.Length; i++)
+            // create arrays of DateTimes with spacings customized for each tick unit
+            if (units == TickUnits.years)
             {
-                string label = ticks[i].ToString();
-                label = label.Replace(" ", "\n");
-                label = label.Replace("\nAM", " AM");
-                label = label.Replace("\nPM", " PM");
-                tickLabels[i] = label;
+                DateTime[] ticks = GetYearTicks(dt1, dt2, maxTickCount);
+
+                string[] labels = new string[ticks.Length];
+                for (int i = 0; i < labels.Length; i++)
+                    labels[i] = ticks[i].Year.ToString();
+
+                return new Tuple<DateTime[], string[]>(ticks, labels);
+            }
+            else if (units == TickUnits.months)
+            {
+                DateTime[] ticks = GetMonthTicks(dt1, dt2, 1);
+                if (ticks.Length > maxTickCount)
+                    ticks = GetMonthTicks(dt1, dt2, 2);
+                if (ticks.Length > maxTickCount)
+                    ticks = GetMonthTicks(dt1, dt2, 3);
+                if (ticks.Length > maxTickCount)
+                    ticks = GetMonthTicks(dt1, dt2, 6);
+
+                string[] labels = new string[ticks.Length];
+                for (int i = 0; i < labels.Length; i++)
+                    labels[i] = $"{monthShort[ticks[i].Month]} {ticks[i].Year}";
+
+                return new Tuple<DateTime[], string[]>(ticks, labels);
+            }
+            else if (units == TickUnits.days)
+            {
+                DateTime[] ticks = GetDayTicks(dt1, dt2, 1);
+                if (ticks.Length > maxTickCount)
+                    ticks = GetDayTicks(dt1, dt2, 2);
+                if (ticks.Length > maxTickCount)
+                    ticks = GetDayTicks(dt1, dt2, 5);
+                if (ticks.Length > maxTickCount)
+                    ticks = GetDayTicks(dt1, dt2, 10);
+
+                string[] labels = new string[ticks.Length];
+                for (int i = 0; i < labels.Length; i++)
+                    labels[i] = $"{monthShort[ticks[i].Month]} {ticks[i].Day}, {ticks[i].Year}";
+
+                return new Tuple<DateTime[], string[]>(ticks, labels);
+            }
+            else if (units == TickUnits.hours)
+            {
+                DateTime[] ticks = GetHourTicks(dt1, dt2, 1);
+                if (ticks.Length > maxTickCount)
+                    ticks = GetHourTicks(dt1, dt2, 2);
+                if (ticks.Length > maxTickCount)
+                    ticks = GetHourTicks(dt1, dt2, 4);
+                if (ticks.Length > maxTickCount)
+                    ticks = GetHourTicks(dt1, dt2, 8);
+                if (ticks.Length > maxTickCount)
+                    ticks = GetHourTicks(dt1, dt2, 12);
+
+                string[] labels = new string[ticks.Length];
+                for (int i = 0; i < labels.Length; i++)
+                {
+                    string date = string.Format("{0}/{1}/{2}", ticks[i].Month, ticks[i].Day, ticks[i].Year);
+                    string time = string.Format("{0:00}:00", ticks[i].Hour);
+                    labels[i] = $"{date}, {time}";
+                }
+
+                return new Tuple<DateTime[], string[]>(ticks, labels);
+            }
+            else if (units == TickUnits.minutes)
+            {
+                DateTime[] ticks = GetMinuteTicks(dt1, dt2, 1);
+                if (ticks.Length > maxTickCount)
+                    ticks = GetMinuteTicks(dt1, dt2, 2);
+                if (ticks.Length > maxTickCount)
+                    ticks = GetMinuteTicks(dt1, dt2, 5);
+                if (ticks.Length > maxTickCount)
+                    ticks = GetMinuteTicks(dt1, dt2, 10);
+                if (ticks.Length > maxTickCount)
+                    ticks = GetMinuteTicks(dt1, dt2, 15);
+                if (ticks.Length > maxTickCount)
+                    ticks = GetMinuteTicks(dt1, dt2, 30);
+
+                string[] labels = new string[ticks.Length];
+                for (int i = 0; i < labels.Length; i++)
+                {
+                    string date = string.Format("{0}/{1}/{2}", ticks[i].Month, ticks[i].Day, ticks[i].Year);
+                    string time = string.Format("{0:00}:{1:00}", ticks[i].Hour, ticks[i].Minute);
+                    labels[i] = $"{date}, {time}";
+                }
+
+                return new Tuple<DateTime[], string[]>(ticks, labels);
+            }
+            else if (units == TickUnits.seconds)
+            {
+                DateTime[] ticks = GetSecondTicks(dt1, dt2, 1);
+                if (ticks.Length > maxTickCount)
+                    ticks = GetSecondTicks(dt1, dt2, 2);
+                if (ticks.Length > maxTickCount)
+                    ticks = GetSecondTicks(dt1, dt2, 5);
+                if (ticks.Length > maxTickCount)
+                    ticks = GetSecondTicks(dt1, dt2, 10);
+                if (ticks.Length > maxTickCount)
+                    ticks = GetSecondTicks(dt1, dt2, 15);
+                if (ticks.Length > maxTickCount)
+                    ticks = GetSecondTicks(dt1, dt2, 30);
+
+                string[] labels = new string[ticks.Length];
+                for (int i = 0; i < labels.Length; i++)
+                {
+                    string date = string.Format("{0}/{1}/{2}", ticks[i].Month, ticks[i].Day, ticks[i].Year);
+                    string time = string.Format("{0:00}:{1:00}:{2:00}", ticks[i].Hour, ticks[i].Minute, ticks[i].Second);
+                    labels[i] = $"{date}, {time}";
+                }
+
+                return new Tuple<DateTime[], string[]>(ticks, labels);
+            }
+            else
+            {
+                throw new NotImplementedException("unrecognized TickUnit");
+            }
+        }
+
+        private static DateTime[] GetYearTicks(DateTime dt1, DateTime dt2, int maxTickCount)
+        {
+            // determine ideal tick spacing (multiples of 1, 5, and 10)
+            int span = dt2.Year - dt1.Year;
+            int[] interval = { 2, 5 };
+            int tickSpacing = 1000;
+            for (int i = 0; i < 100; i++)
+            {
+                int divisor = interval[i % interval.Length];
+                if (tickSpacing > 1)
+                {
+                    tickSpacing /= divisor;
+                    double tickCountNow = span / tickSpacing;
+                    if (tickCountNow > maxTickCount)
+                    {
+                        tickSpacing *= divisor;
+                        break;
+                    }
+                }
+                else
+                {
+                    tickSpacing = 1;
+                    break;
+                }
             }
 
-            return Tuple.Create(GetOADates(ticks), tickLabels);
+            // offset the first year to make it a multiple of the tick spacing
+            int firstYear = dt1.Year - (dt1.Year % tickSpacing);
+
+            // create a list of dates (only the valid ones)
+            var dates = new List<DateTime>();
+            DateTime dt = new DateTime(firstYear, 1, 1);
+            while (dt <= dt2)
+            {
+                if (dt >= dt1)
+                    dates.Add(dt);
+                try
+                {
+                    dt = dt.AddYears((int)tickSpacing);
+                }
+                catch
+                {
+                    break; // our date is larger than possible
+                }
+            }
+            return dates.ToArray();
+
         }
 
-        private static double[] GetOADates(DateTime[] dateTimeArray)
+        private static DateTime[] GetMonthTicks(DateTime dt1, DateTime dt2, int delta)
         {
-            double[] positions = new double[dateTimeArray.Length];
-            for (int i = 0; i < positions.Length; i++)
-                positions[i] = dateTimeArray[i].ToOADate();
-            return positions;
+            var dates = new List<DateTime>();
+            DateTime dt = new DateTime(dt1.Year, 1, 1);
+            while (dt <= dt2)
+            {
+                if (dt >= dt1)
+                    dates.Add(dt);
+                dt = dt.AddMonths(delta);
+            }
+            return dates.ToArray();
         }
+
+        private static DateTime[] GetDayTicks(DateTime dt1, DateTime dt2, int delta)
+        {
+            var dates = new List<DateTime>();
+            DateTime dt = new DateTime(dt1.Year, dt1.Month, 1);
+            while (dt <= dt2)
+            {
+                if (dt >= dt1)
+                    dates.Add(dt);
+                dt = dt.AddDays(delta);
+            }
+            return dates.ToArray();
+        }
+
+        private static DateTime[] GetHourTicks(DateTime dt1, DateTime dt2, int delta)
+        {
+            var dates = new List<DateTime>();
+            DateTime dt = new DateTime(dt1.Year, dt1.Month, dt1.Day);
+            while (dt <= dt2)
+            {
+                if (dt >= dt1)
+                    dates.Add(dt);
+                dt = dt.AddHours(delta);
+            }
+            return dates.ToArray();
+        }
+
+        private static DateTime[] GetMinuteTicks(DateTime dt1, DateTime dt2, int delta)
+        {
+            var dates = new List<DateTime>();
+            DateTime dt = new DateTime(dt1.Year, dt1.Month, dt1.Day, dt1.Hour, 0, 0);
+            while (dt <= dt2)
+            {
+                if (dt >= dt1)
+                    dates.Add(dt);
+                dt = dt.AddMinutes(delta);
+            }
+            return dates.ToArray();
+        }
+
+        private static DateTime[] GetSecondTicks(DateTime dt1, DateTime dt2, int delta)
+        {
+            var dates = new List<DateTime>();
+            DateTime dt = new DateTime(dt1.Year, dt1.Month, dt1.Day, dt1.Hour, dt1.Minute, 0);
+            while (dt <= dt2)
+            {
+                if (dt >= dt1)
+                    dates.Add(dt);
+                dt = dt.AddSeconds(delta);
+            }
+            return dates.ToArray();
+        }
+
     }
 }

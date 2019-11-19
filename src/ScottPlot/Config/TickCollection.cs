@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -84,10 +85,25 @@ namespace ScottPlot.Config
                 tickCount = (int)(settings.dataSize.Width / maxLabelSize.Width);
             }
 
-            // let another class handle calculation of ideal tick positions and label formatting
-            var dateTicks = DateTimeTicks.GetTicks(DateTime.FromOADate(low), DateTime.FromOADate(high), tickCount);
-            tickPositionsMajor = dateTicks.Item1;
-            tickLabels = dateTicks.Item2;
+            if (low < high)
+            {
+                low = Math.Max(low, DateTime.MinValue.ToOADate());
+                high = Math.Min(high, DateTime.MaxValue.ToOADate());
+                var dateTicks = DateTimeTicks.GetTicks(DateTime.FromOADate(low), DateTime.FromOADate(high), tickCount);
+                tickPositionsMajor = Tools.DateTimesToDoubles(dateTicks.Item1);
+                tickLabels = dateTicks.Item2;
+                for (int i = 0; i < tickLabels.Length; i++)
+                {
+                    if (tickLabels[i].Contains(", "))
+                        tickLabels[i] = tickLabels[i].Replace(", ", "\n");
+                    else
+                        tickLabels[i] += "\n "; // auto-layout works better if dates are always two lines
+                }
+            }
+            else
+            {
+                tickPositionsMajor = new double[] { };
+            }
 
             // dont forget to set all the things
             tickPositionsMinor = null;
@@ -140,7 +156,7 @@ namespace ScottPlot.Config
             {
                 // TODO: return a tuple
                 GetPrettyTickLabels(tickPositionsMajor, out tickLabels, out cornerLabel,
-                    settings.ticks.useMultiplierNotation, settings.ticks.useOffsetNotation, 
+                    settings.ticks.useMultiplierNotation, settings.ticks.useOffsetNotation,
                     settings.ticks.useExponentialNotation, invertSign: invertSign);
                 tickPositionsMinor = MinorFromMajor(tickPositionsMajor, 5, low, high);
             }
