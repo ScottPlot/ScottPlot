@@ -117,6 +117,14 @@ namespace ScottPlot
             plt.YLabel("Sample Data");
         }
 
+        public static double[] DateTimesToDoubles(DateTime[] dateTimeArray)
+        {
+            double[] positions = new double[dateTimeArray.Length];
+            for (int i = 0; i < positions.Length; i++)
+                positions[i] = dateTimeArray[i].ToOADate();
+            return positions;
+        }
+
         [Obsolete]
         public static Bitmap DesignerModeBitmap(Size size, bool drawArrows = false)
         {
