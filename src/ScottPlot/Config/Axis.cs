@@ -71,5 +71,10 @@ namespace ScottPlot.Config
             min = (double)zoomTo - spanLeft / frac;
             max = (double)zoomTo + spanRight / frac;
         }
+
+        public override string ToString()
+        {
+            return $"axis [{min} to {max}]";
+        }
     }
 }
