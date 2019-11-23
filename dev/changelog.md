@@ -1,5 +1,19 @@
 # ScottPlot Changelog
 
+## ScottPlot 4.0.3
+_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-11-23_
+
+### Minor Changes
+* fixed bug when plotting single-point candlestick (#172) _Thanks @Minu476_
+* improved style editing of plotted objects (#173) _Thanks @Minu476_
+* fixed pan/zoom axis lock when holding CTRL or ALT (#90) _Thanks @FadyDev2_
+* simplified the look of the user controls in designer mode
+* improved WPF control mouse tracking when using DPI scaling
+* added support for manual tick positions and labels (#174) _Thanks @Minu476_
+* improved tick system when using DateTime units (#108) _Thanks @Padanian, @FadyDev2, and @Bhandejiya_
+* created `Tools.DateTimesToDoubles(DateTime[] array)` to easily convert an array of dates to doubles which can be plotted with ScottPlot, then displayed as time using `plt.Ticks(dateTimeX: true)`.
+* added an inverted sign flag (#177) to allow display of an axis with descending units _Thanks Bart_
+
 ## ScottPlot 4.0.2
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-11-09_
 
