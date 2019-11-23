@@ -77,20 +77,20 @@
             this.formsPlot2.Name = "formsPlot2";
             this.formsPlot2.Size = new System.Drawing.Size(785, 116);
             this.formsPlot2.TabIndex = 2;
-            this.formsPlot2.MouseDragged += new System.EventHandler(this.ScottPlotUC2_MouseDragged);
+            this.formsPlot2.AxesChanged += new System.EventHandler(this.formsPlot2_AxesChanged);
             // 
             // formsPlot1
             // 
             this.formsPlot1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.formsPlot1.Location = new System.Drawing.Point(12, 12);
+            this.formsPlot1.Location = new System.Drawing.Point(12, 41);
             this.formsPlot1.Name = "formsPlot1";
-            this.formsPlot1.Size = new System.Drawing.Size(785, 311);
+            this.formsPlot1.Size = new System.Drawing.Size(785, 282);
             this.formsPlot1.TabIndex = 0;
-            this.formsPlot1.MouseDragged += new System.EventHandler(this.ScottPlotUC1_MouseDragged);
+            this.formsPlot1.AxesChanged += new System.EventHandler(this.formsPlot1_AxesChanged);
             // 
-            // Form1
+            // FormFinancial
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -100,7 +100,7 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.formsPlot1);
             this.Controls.Add(this.formsPlot2);
-            this.Name = "Form1";
+            this.Name = "FormFinancial";
             this.Text = "ScottPlot Candlestick Demo";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);

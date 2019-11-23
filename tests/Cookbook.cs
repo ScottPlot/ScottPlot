@@ -1376,15 +1376,14 @@ namespace ScottPlotTests
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
-            Random rand = new Random(0);
-            int pointCount = 60;
-            ScottPlot.OHLC[] ohlcs = ScottPlot.DataGen.RandomStockPrices(rand, pointCount);
+            ScottPlot.OHLC[] ohlcs = ScottPlot.DataGen.RandomStockPrices(rand: null, pointCount: 60, deltaMinutes: 10);
 
-            var plt = new ScottPlot.Plot(width, height);
+            var plt = new ScottPlot.Plot(width: 800, height: 400);
             plt.Title("Candlestick Chart");
             plt.YLabel("Stock Price (USD)");
-            plt.XLabel("Day (into Q4)");
             plt.PlotCandlestick(ohlcs);
+            plt.Ticks(dateTimeX: true);
+
             if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
             Console.WriteLine($"Saved: {fileName}");
         }

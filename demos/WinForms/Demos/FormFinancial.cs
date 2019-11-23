@@ -28,24 +28,30 @@ namespace ScottPlotDemos
             Random rand = new Random();
 
             int pointCount = 100;
+
             ScottPlot.OHLC[] ohlcs = ScottPlot.DataGen.RandomStockPrices(rand, pointCount);
-            double[] timestamps = ScottPlot.DataGen.Consecutive(pointCount);
+
             double[] volumes = ScottPlot.DataGen.Random(rand, pointCount, 500, 1000);
+            double[] timestamps = new double[ohlcs.Length];
+            for (int i = 0; i < timestamps.Length; i++)
+                timestamps[i] = ohlcs[i].day;
 
             formsPlot1.plt.Clear();
-            formsPlot1.plt.YLabel("Share Price", fontSize: 10);
+            formsPlot1.plt.YLabel("Share Price");
             formsPlot1.plt.Title("ScottPlot Candlestick Demo");
             if (rbCandle.Checked)
                 formsPlot1.plt.PlotCandlestick(ohlcs);
             else
                 formsPlot1.plt.PlotOHLC(ohlcs);
+            formsPlot1.plt.Ticks(dateTimeX: true);
             formsPlot1.plt.AxisAuto();
 
             formsPlot2.plt.Clear();
-            formsPlot2.plt.YLabel("Volume", fontSize: 10);
+            formsPlot2.plt.YLabel("Volume");
             formsPlot2.plt.PlotBar(timestamps, volumes, barWidth: .5);
             formsPlot2.plt.AxisAuto(.01, .1);
             formsPlot2.plt.Axis(null, null, 0, null);
+            formsPlot2.plt.Ticks(dateTimeX: true);
 
             formsPlot1.plt.MatchLayout(formsPlot2.plt, horizontal: true, vertical: false);
             formsPlot1.Render();
@@ -67,13 +73,13 @@ namespace ScottPlotDemos
             GenerateNewData();
         }
 
-        private void ScottPlotUC1_MouseDragged(object sender, EventArgs e)
+        private void formsPlot1_AxesChanged(object sender, EventArgs e)
         {
             formsPlot2.plt.MatchAxis(formsPlot1.plt, horizontal: true, vertical: false);
             formsPlot2.Render();
         }
 
-        private void ScottPlotUC2_MouseDragged(object sender, EventArgs e)
+        private void formsPlot2_AxesChanged(object sender, EventArgs e)
         {
             formsPlot1.plt.MatchAxis(formsPlot2.plt, horizontal: true, vertical: false);
             formsPlot1.Render();

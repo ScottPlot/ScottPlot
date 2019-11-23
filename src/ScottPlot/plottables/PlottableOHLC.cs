@@ -39,17 +39,17 @@ namespace ScottPlot
         public override double[] GetLimits()
         {
             double[] limits = new double[4];
-            limits[0] = ohlcs[0].epochSeconds;
-            limits[1] = ohlcs[0].epochSeconds;
+            limits[0] = ohlcs[0].day;
+            limits[1] = ohlcs[0].day;
             limits[2] = ohlcs[0].low;
             limits[3] = ohlcs[0].high;
 
             for (int i = 1; i < ohlcs.Length; i++)
             {
-                if (ohlcs[i].epochSeconds < limits[0])
-                    limits[0] = ohlcs[i].epochSeconds;
-                if (ohlcs[i].epochSeconds > limits[1])
-                    limits[1] = ohlcs[i].epochSeconds;
+                if (ohlcs[i].day < limits[0])
+                    limits[0] = ohlcs[i].day;
+                if (ohlcs[i].day > limits[1])
+                    limits[1] = ohlcs[i].day;
                 if (ohlcs[i].low < limits[2])
                     limits[2] = ohlcs[i].low;
                 if (ohlcs[i].high > limits[3])
@@ -70,7 +70,7 @@ namespace ScottPlot
         public void RenderCandles(Settings settings)
         {
             double fractionalTickWidth = .7;
-            double spacingTime = (ohlcs.Length > 1) ? ohlcs[1].epochSeconds - ohlcs[0].epochSeconds : 1;
+            double spacingTime = (ohlcs.Length > 1) ? ohlcs[1].day - ohlcs[0].day : 1;
             double spacingPx = spacingTime * settings.xAxisScale;
             float boxWidth = (float)(spacingPx / 2 * fractionalTickWidth);
 
@@ -81,18 +81,18 @@ namespace ScottPlot
                 pen.Width = 2;
 
                 // the wick below the box
-                PointF wickLowBot = settings.GetPixel(ohlc.epochSeconds, ohlc.low);
-                PointF wickLowTop = settings.GetPixel(ohlc.epochSeconds, ohlc.lowestOpenClose);
+                PointF wickLowBot = settings.GetPixel(ohlc.day, ohlc.low);
+                PointF wickLowTop = settings.GetPixel(ohlc.day, ohlc.lowestOpenClose);
                 settings.gfxData.DrawLine(pen, wickLowBot, wickLowTop);
 
                 // the wick above the box
-                PointF wickHighBot = settings.GetPixel(ohlc.epochSeconds, ohlc.highestOpenClose);
-                PointF wickHighTop = settings.GetPixel(ohlc.epochSeconds, ohlc.high);
+                PointF wickHighBot = settings.GetPixel(ohlc.day, ohlc.highestOpenClose);
+                PointF wickHighTop = settings.GetPixel(ohlc.day, ohlc.high);
                 settings.gfxData.DrawLine(pen, wickHighBot, wickHighTop);
 
                 // the candle
-                PointF boxLowerLeft = settings.GetPixel(ohlc.epochSeconds, ohlc.lowestOpenClose);
-                PointF boxUpperRight = settings.GetPixel(ohlc.epochSeconds, ohlc.highestOpenClose);
+                PointF boxLowerLeft = settings.GetPixel(ohlc.day, ohlc.lowestOpenClose);
+                PointF boxUpperRight = settings.GetPixel(ohlc.day, ohlc.highestOpenClose);
                 settings.gfxData.FillRectangle(brush, boxLowerLeft.X - boxWidth, boxUpperRight.Y, boxWidth * 2, boxLowerLeft.Y - boxUpperRight.Y);
             }
         }
@@ -100,7 +100,7 @@ namespace ScottPlot
         public void RenderOhlc(Settings settings)
         {
             double fractionalTickWidth = 1;
-            double spacingTime = ohlcs[1].epochSeconds - ohlcs[0].epochSeconds;
+            double spacingTime = ohlcs[1].day - ohlcs[0].day;
             double spacingPx = spacingTime * settings.xAxisScale;
             float boxWidth = (float)(spacingPx / 2 * fractionalTickWidth);
 
@@ -110,8 +110,8 @@ namespace ScottPlot
                 pen.Width = 2;
 
                 // the main line
-                PointF wickTop = settings.GetPixel(ohlc.epochSeconds, ohlc.low);
-                PointF wickBot = settings.GetPixel(ohlc.epochSeconds, ohlc.high);
+                PointF wickTop = settings.GetPixel(ohlc.day, ohlc.low);
+                PointF wickBot = settings.GetPixel(ohlc.day, ohlc.high);
                 settings.gfxData.DrawLine(pen, wickBot, wickTop);
 
                 // open and close lines
