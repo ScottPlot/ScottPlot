@@ -892,6 +892,10 @@ namespace ScottPlot
             if (invertSignY != null)
                 settings.ticks.y.invertSign = (bool)invertSignY;
 
+            // dont use offset notation if the sign is inverted
+            if (settings.ticks.x.invertSign || settings.ticks.y.invertSign)
+                settings.ticks.useOffsetNotation = false;
+
             if (dateTimeX != null || dateTimeY != null)
             {
                 // why these in this order? voodoo magic
