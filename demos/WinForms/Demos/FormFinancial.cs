@@ -56,6 +56,8 @@ namespace ScottPlotDemos
             formsPlot1.plt.MatchLayout(formsPlot2.plt, horizontal: true, vertical: false);
             formsPlot1.Render();
             formsPlot2.Render();
+
+            lblHover.Text = "";
         }
 
         private void Button1_Click(object sender, EventArgs e)
@@ -83,6 +85,17 @@ namespace ScottPlotDemos
         {
             formsPlot1.plt.MatchAxis(formsPlot2.plt, horizontal: true, vertical: false);
             formsPlot1.Render();
+        }
+
+        private void formsPlot1_MouseMoved(object sender, EventArgs e)
+        {
+            Point mouseLoc = new Point(Cursor.Position.X, Cursor.Position.Y);
+            mouseLoc.X -= this.PointToScreen(formsPlot1.Location).X;
+            mouseLoc.Y -= this.PointToScreen(formsPlot1.Location).Y;
+
+            PointF mouseCoordinate = formsPlot1.plt.CoordinateFromPixel(mouseLoc);
+            DateTime dt = DateTime.FromOADate(mouseCoordinate.X);
+            lblHover.Text = dt.ToString("dddd, MMM dd, yyyy");
         }
     }
 }
