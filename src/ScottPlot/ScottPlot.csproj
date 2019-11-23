@@ -16,9 +16,9 @@ The ScottPlot package can plot data and save images or return bitmaps.  The Scot
     <PackageIconUrl></PackageIconUrl>
     <PackageTags>plot graph data chart signal line bar C#</PackageTags>
     <PackageReleaseNotes>https://github.com/swharden/ScottPlot/releases</PackageReleaseNotes>
-    <Version>4.0.3</Version>
-    <AssemblyVersion>4.0.3.0</AssemblyVersion>
-    <FileVersion>4.0.3.0</FileVersion>
+    <Version>4.0.4</Version>
+    <AssemblyVersion>4.0.4.0</AssemblyVersion>
+    <FileVersion>4.0.4.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
