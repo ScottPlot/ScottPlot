@@ -496,6 +496,26 @@ plt.Save(600, 400, "14_Custom_Tick_Labels.png");
 
 
 
+## Descending Ticks
+
+```cs
+var plt = new ScottPlot.Plot(width, height);
+
+// to simulate an inverted (descending) horizontal axis, plot in the negative space
+plt.PlotSignal(ScottPlot.DataGen.Sin(50), xOffset: -50);
+
+// then invert the sign of the horizontal axis labels
+plt.Ticks(invertSignX: true);
+plt.Ticks(invertSignY: true);
+
+plt.Save(600, 400, "15_Descending_Ticks.png");
+```
+
+![](images/15_Descending_Ticks.png)
+
+
+
+
 ## Small Plot
 
 ```cs
@@ -1331,15 +1351,14 @@ plt.Save(600, 400, "66_CPH.png");
 ## Candlestick
 
 ```cs
-Random rand = new Random(0);
-int pointCount = 60;
-ScottPlot.OHLC[] ohlcs = ScottPlot.DataGen.RandomStockPrices(rand, pointCount);
+ScottPlot.OHLC[] ohlcs = ScottPlot.DataGen.RandomStockPrices(rand: null, pointCount: 60, deltaMinutes: 10);
 
-var plt = new ScottPlot.Plot(width, height);
+var plt = new ScottPlot.Plot(width: 800, height: 400);
 plt.Title("Candlestick Chart");
 plt.YLabel("Stock Price (USD)");
-plt.XLabel("Day (into Q4)");
 plt.PlotCandlestick(ohlcs);
+plt.Ticks(dateTimeX: true);
+
 plt.Save(600, 400, "67_Candlestick.png");
 ```
 
@@ -1351,15 +1370,14 @@ plt.Save(600, 400, "67_Candlestick.png");
 ## OHLC
 
 ```cs
-Random rand = new Random(0);
-int pointCount = 60;
-ScottPlot.OHLC[] ohlcs = ScottPlot.DataGen.RandomStockPrices(rand, pointCount);
+ScottPlot.OHLC[] ohlcs = ScottPlot.DataGen.RandomStockPrices(rand: null, pointCount: 60, deltaMinutes: 10);
 
 var plt = new ScottPlot.Plot(width, height);
 plt.Title("Open/High/Low/Close (OHLC) Chart");
 plt.YLabel("Stock Price (USD)");
-plt.XLabel("Day (into Q4)");
 plt.PlotOHLC(ohlcs);
+plt.Ticks(dateTimeX: true);
+
 plt.Save(600, 400, "68_OHLC.png");
 ```
 
