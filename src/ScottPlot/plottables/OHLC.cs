@@ -12,19 +12,19 @@ namespace ScottPlot
         public double high;
         public double low;
         public double close;
-        public double epochSeconds;
+        public double day;
 
         public double highestOpenClose;
         public double lowestOpenClose;
         public bool closedHigher;
 
-        public OHLC(double open, double high, double low, double close, double epochSeconds)
+        public OHLC(double open, double high, double low, double close, DateTime dateTime)
         {
             this.open = open;
             this.high = high;
             this.low = low;
             this.close = close;
-            this.epochSeconds = epochSeconds;
+            day = dateTime.ToOADate();
 
             highestOpenClose = Math.Max(open, close);
             lowestOpenClose = Math.Min(open, close);
@@ -33,7 +33,7 @@ namespace ScottPlot
 
         public override string ToString()
         {
-            return $"OHLC: open={open}, high={high}, low={low}, close={close}, timestamp={epochSeconds}";
+            return $"OHLC: open={open}, high={high}, low={low}, close={close}, timestamp={day}";
         }
     }
 }
