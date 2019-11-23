@@ -154,10 +154,13 @@ namespace ScottPlot.Config
             }
             else
             {
-                // TODO: return a tuple
-                GetPrettyTickLabels(tickPositionsMajor, out tickLabels, out cornerLabel,
-                    settings.ticks.useMultiplierNotation, settings.ticks.useOffsetNotation,
-                    settings.ticks.useExponentialNotation, invertSign: invertSign);
+                (tickLabels, cornerLabel) = GetPrettyTickLabels(
+                        tickPositionsMajor,
+                        settings.ticks.useMultiplierNotation,
+                        settings.ticks.useOffsetNotation,
+                        settings.ticks.useExponentialNotation,
+                        invertSign: invertSign
+                    );
                 tickPositionsMinor = MinorFromMajor(tickPositionsMajor, 5, low, high);
             }
 
@@ -192,15 +195,21 @@ namespace ScottPlot.Config
             return tickSpacings[tickSpacings.Count - 3];
         }
 
-        public void GetPrettyTickLabels(double[] positions, out string[] labels, out string cornerLabel,
-            bool useMultiplierNotation, bool useOffsetNotation, bool useExponentialNotation, bool invertSign)
+        public (string[], string) GetPrettyTickLabels(
+                double[] positions,
+                bool useMultiplierNotation,
+                bool useOffsetNotation,
+                bool useExponentialNotation,
+                bool invertSign
+            )
         {
             // given positions returns nicely-formatted labels (with offset and multiplier)
 
-            labels = new string[positions.Length];
-            cornerLabel = "";
+            string[] labels = new string[positions.Length];
+            string cornerLabel = "";
+
             if (positions.Length <= 1)
-                return;
+                return (labels, cornerLabel);
 
             double range = positions.Last() - positions.First();
 
@@ -246,6 +255,8 @@ namespace ScottPlot.Config
                     cornerLabel += " +" + offset.ToString("F99").TrimEnd('0');
                 cornerLabel = cornerLabel.Replace("+-", "-");
             }
+
+            return (labels, cornerLabel);
         }
 
         public double[] MinorFromMajor(double[] majorTicks, double minorTicksPerMajorTick, double lowerLimit, double upperLimit)

@@ -21,7 +21,7 @@ namespace ScottPlot.Config
 
         private enum TickUnits { years, months, days, hours, minutes, seconds };
 
-        public static Tuple<DateTime[], String[]> GetTicks(DateTime dt1, DateTime dt2, int maxTickCount = 5)
+        public static (DateTime[], String[]) GetTicks(DateTime dt1, DateTime dt2, int maxTickCount = 5)
         {
             if (!(dt1 < dt2))
                 dt2 = dt1.AddSeconds(1);
@@ -54,7 +54,7 @@ namespace ScottPlot.Config
                 for (int i = 0; i < labels.Length; i++)
                     labels[i] = ticks[i].Year.ToString();
 
-                return new Tuple<DateTime[], string[]>(ticks, labels);
+                return (ticks, labels);
             }
             else if (units == TickUnits.months)
             {
@@ -70,7 +70,7 @@ namespace ScottPlot.Config
                 for (int i = 0; i < labels.Length; i++)
                     labels[i] = $"{monthShort[ticks[i].Month]} {ticks[i].Year}";
 
-                return new Tuple<DateTime[], string[]>(ticks, labels);
+                return (ticks, labels);
             }
             else if (units == TickUnits.days)
             {
@@ -86,7 +86,7 @@ namespace ScottPlot.Config
                 for (int i = 0; i < labels.Length; i++)
                     labels[i] = $"{monthShort[ticks[i].Month]} {ticks[i].Day}, {ticks[i].Year}";
 
-                return new Tuple<DateTime[], string[]>(ticks, labels);
+                return (ticks, labels);
             }
             else if (units == TickUnits.hours)
             {
@@ -108,7 +108,7 @@ namespace ScottPlot.Config
                     labels[i] = $"{date}, {time}";
                 }
 
-                return new Tuple<DateTime[], string[]>(ticks, labels);
+                return (ticks, labels);
             }
             else if (units == TickUnits.minutes)
             {
@@ -132,7 +132,7 @@ namespace ScottPlot.Config
                     labels[i] = $"{date}, {time}";
                 }
 
-                return new Tuple<DateTime[], string[]>(ticks, labels);
+                return (ticks, labels);
             }
             else if (units == TickUnits.seconds)
             {
@@ -156,7 +156,7 @@ namespace ScottPlot.Config
                     labels[i] = $"{date}, {time}";
                 }
 
-                return new Tuple<DateTime[], string[]>(ticks, labels);
+                return (ticks, labels);
             }
             else
             {
