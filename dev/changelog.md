@@ -1,5 +1,13 @@
 # ScottPlot Changelog
 
+## ScottPlot 4.0.4
+_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-11-24_
+
+### Minor Changes
+* PlotText() now supports a background frame (#181) _Thanks @satyat110_
+* OHLC objects can be created with a double or a DateTime (#182) _Thanks @Minu476_
+* Improved AxisAuto() fixes bug for mixed 2d and axis line plots
+
 ## ScottPlot 4.0.3
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-11-23_
 
