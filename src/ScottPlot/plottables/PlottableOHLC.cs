@@ -9,7 +9,7 @@ namespace ScottPlot
 {
     public class PlottableOHLC : Plottable
     {
-        OHLC[] ohlcs;
+        public OHLC[] ohlcs;
         bool displayCandles;
         Pen penUp;
         Pen penDown;
