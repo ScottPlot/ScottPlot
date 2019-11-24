@@ -250,11 +250,16 @@ namespace ScottPlot
             bool bold = false,
             string label = null,
             TextAlignment alignment = TextAlignment.middleLeft,
-            double rotation = 0
+            double rotation = 0,
+            bool frame = false,
+            Color? frameColor = null
             )
         {
             if (color == null)
                 color = settings.GetNextColor();
+
+            if (frameColor == null)
+                frameColor = Color.White;
 
             fontName = ScottPlot.Tools.VerifyFont(fontName);
 
@@ -268,7 +273,9 @@ namespace ScottPlot
                 bold: bold,
                 label: label,
                 alignment: alignment,
-                rotation: rotation
+                rotation: rotation,
+                frame: frame,
+                frameColor: (Color)frameColor
                 );
 
             settings.plottables.Add(plottableText);
