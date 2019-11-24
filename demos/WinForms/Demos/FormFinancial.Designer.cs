@@ -33,7 +33,6 @@
             this.rbOHLC = new System.Windows.Forms.RadioButton();
             this.formsPlot2 = new ScottPlot.FormsPlot();
             this.formsPlot1 = new ScottPlot.FormsPlot();
-            this.lblHover = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // button1
@@ -92,24 +91,11 @@
             this.formsPlot1.MouseMoved += new System.EventHandler(this.formsPlot1_MouseMoved);
             this.formsPlot1.AxesChanged += new System.EventHandler(this.formsPlot1_AxesChanged);
             // 
-            // lblHover
-            // 
-            this.lblHover.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblHover.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblHover.Location = new System.Drawing.Point(216, 9);
-            this.lblHover.Name = "lblHover";
-            this.lblHover.Size = new System.Drawing.Size(581, 25);
-            this.lblHover.TabIndex = 5;
-            this.lblHover.Text = "lblHover";
-            this.lblHover.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
             // FormFinancial
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(809, 457);
-            this.Controls.Add(this.lblHover);
             this.Controls.Add(this.rbOHLC);
             this.Controls.Add(this.rbCandle);
             this.Controls.Add(this.button1);
@@ -130,7 +116,6 @@
         private ScottPlot.FormsPlot formsPlot2;
         private System.Windows.Forms.RadioButton rbCandle;
         private System.Windows.Forms.RadioButton rbOHLC;
-        private System.Windows.Forms.Label lblHover;
     }
 }
 
