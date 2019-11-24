@@ -131,7 +131,7 @@ namespace ScottPlot
         public static OHLC[] RandomStockPrices(Random rand, int pointCount, double mult = 10, double startingPrice = 123.45, int deltaMinutes = 0, int deltaDays = 1)
         {
             if (rand is null)
-                rand = new Random();
+                rand = new Random(0);
 
             double[] basePrices = ScottPlot.DataGen.RandomWalk(rand, pointCount, mult, startingPrice);
 
