@@ -354,6 +354,9 @@ namespace ScottPlotTests
             plt.PlotText(" Rotated Text", 5, -.5,
                 fontSize: 16, color: Color.Blue, bold: true, rotation: -30);
 
+            plt.PlotText("Framed Text", 15, -.6,
+                fontSize: 16, color: Color.White, bold: true, frame: true, frameColor: Color.DarkRed);
+
             if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
             Console.WriteLine($"Saved: {fileName}");
         }
