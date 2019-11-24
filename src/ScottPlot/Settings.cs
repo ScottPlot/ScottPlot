@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 
 // TODO: move plottables to their own module
 // TODO: move mouse/axes interaction functions into the mouse module somehow
@@ -134,63 +135,44 @@ namespace ScottPlot
 
         public void AxisAuto(double horizontalMargin = .1, double verticalMargin = .1, bool xExpandOnly = false, bool yExpandOnly = false)
         {
-            // separately adjust on plottables vs. axis lines
-            List<Plottable> plottables2d = new List<Plottable>();
-            List<PlottableAxLine> axisLines = new List<PlottableAxLine>();
-            foreach (Plottable plottable in plottables)
-            {
-                if (plottable is PlottableAxLine axLine)
-                    axisLines.Add(axLine);
-                else
-                    plottables2d.Add(plottable);
-            }
+            // separately deal with 2d plots and axis lines
+            var axisLines = plottables.Where(item => item is PlottableAxLine).ToArray();
+            var plottables2d = plottables.Except(axisLines).ToArray();
 
-            // expand on non-axis lines first
-            if (plottables2d.Count == 0)
+            // expand to include 2D plots first
+            if (plottables2d.Length == 0)
             {
                 axes.Set(-10, 10, -10, 10);
             }
             else
             {
-                axes.Set(plottables[0].GetLimits());
-                foreach (Plottable plottable in plottables)
-                {
-                    if (!(plottable is PlottableAxLine axLine))
-                        axes.Expand(plottable.GetLimits());
-                }
+                axes.Set(plottables2d[0].GetLimits());
+                foreach (Plottable plottable in plottables2d)
+                    axes.Expand(plottable.GetLimits());
             }
 
-            // special case for scatter plots with a single point
+            // special case for 2d plots with no width
             if (axes.x.span == 0)
             {
                 axes.x.min -= 1.5;
                 axes.x.max += 1.5;
             }
+
+            // special case for 2d plots with no height
             if (axes.y.span == 0)
             {
                 axes.y.min -= 1.5;
                 axes.y.max += 1.5;
             }
 
-            // expand on axis lines last
-            foreach (Plottable plottable in plottables)
+            // expand to include axis lines
+            foreach (PlottableAxLine axisLine in axisLines)
             {
-                if (plottable is PlottableAxLine axLine)
-                {
-                    var axl = (PlottableAxLine)plottable;
-                    double[] limits = plottable.GetLimits();
-                    if (axl.vertical)
-                    {
-                        limits[2] = axes.y.min;
-                        limits[3] = axes.y.max;
-                    }
-                    else
-                    {
-                        limits[0] = axes.x.min;
-                        limits[1] = axes.x.max;
-                    }
-                    axes.Expand(limits);
-                }
+                double[] axisLimits = axes.limits;
+                if (axisLine.vertical)
+                    axes.Expand(new double[] { axes.limits[0], axes.limits[1], axes.y.min, axes.y.max });
+                else
+                    axes.Expand(new double[] { axes.x.min, axes.x.max, axes.limits[2], axes.limits[3] });
             }
 
             axes.Zoom(1 - horizontalMargin, 1 - verticalMargin);
