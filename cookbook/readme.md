@@ -1,7 +1,7 @@
 # ScottPlot Cookbook
 The ScottPlot cookbook is a collection of small code examples which demonstrate how to create various types of plots using ScottPlot.
 
-_This cookbook was [automatically generated](/tests/Cookbook.cs) using ScottPlot 4.0.2.0_
+_This cookbook was [automatically generated](/tests/Cookbook.cs) using ScottPlot 4.0.4.0_
 
 
 ## Quickstart
@@ -335,6 +335,9 @@ plt.PlotText("upper left", 30, -0.3,
 plt.PlotPoint(5, -.5, color: Color.Blue, markerSize: 15);
 plt.PlotText(" Rotated Text", 5, -.5,
     fontSize: 16, color: Color.Blue, bold: true, rotation: -30);
+
+plt.PlotText("Framed Text", 15, -.6,
+    fontSize: 16, color: Color.White, bold: true, frame: true, frameColor: Color.DarkRed);
 
 plt.Save(600, 400, "08_Plotting_Text.png");
 ```
