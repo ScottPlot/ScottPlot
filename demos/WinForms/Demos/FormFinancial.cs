@@ -34,7 +34,7 @@ namespace ScottPlotDemos
             double[] volumes = ScottPlot.DataGen.Random(rand, pointCount, 500, 1000);
             double[] timestamps = new double[ohlcs.Length];
             for (int i = 0; i < timestamps.Length; i++)
-                timestamps[i] = ohlcs[i].day;
+                timestamps[i] = ohlcs[i].time;
 
             formsPlot1.plt.Clear();
             formsPlot1.plt.YLabel("Share Price");
