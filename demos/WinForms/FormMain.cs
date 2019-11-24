@@ -24,6 +24,7 @@ namespace ScottPlotDemos
             //btnDraggableAxisLines_Click(null, null);
             //btnSignal_Click(null, null);
             //btnTimeAxis_Click(null, null);
+            btnFinancial_Click(null, null);
         }
 
         private void lblGitHubUrl_Click(object sender, EventArgs e)
