@@ -67,11 +67,18 @@ namespace ScottPlot
                 RenderOhlc(settings);
         }
 
+        private double GetSmallestSpacing()
+        {
+            double smallestSpacing = double.PositiveInfinity;
+            for (int i = 1; i < ohlcs.Length; i++)
+                smallestSpacing = Math.Min(ohlcs[i].time - ohlcs[i - 1].time, smallestSpacing);
+            return smallestSpacing;
+        }
+
         public void RenderCandles(Settings settings)
         {
             double fractionalTickWidth = .7;
-            double spacingTime = (ohlcs.Length > 1) ? ohlcs[1].time - ohlcs[0].time : 1;
-            double spacingPx = spacingTime * settings.xAxisScale;
+            double spacingPx = GetSmallestSpacing() * settings.xAxisScale;
             float boxWidth = (float)(spacingPx / 2 * fractionalTickWidth);
 
             foreach (OHLC ohlc in ohlcs)
@@ -100,8 +107,7 @@ namespace ScottPlot
         public void RenderOhlc(Settings settings)
         {
             double fractionalTickWidth = 1;
-            double spacingTime = ohlcs[1].time - ohlcs[0].time;
-            double spacingPx = spacingTime * settings.xAxisScale;
+            double spacingPx = GetSmallestSpacing() * settings.xAxisScale;
             float boxWidth = (float)(spacingPx / 2 * fractionalTickWidth);
 
             foreach (OHLC ohlc in ohlcs)
