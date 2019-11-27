@@ -192,9 +192,11 @@ namespace ScottPlotTests
             double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot(width, height);
-            plt.PlotScatter(dataXs, dataSin, color: Color.Magenta, lineWidth: 0, markerSize: 10);
-            plt.PlotScatter(dataXs, dataCos, color: Color.Green, lineWidth: 5, markerSize: 0);
-            plt.AxisAuto(0); // no horizontal margin (default 10% vertical margin)
+            plt.PlotScatter(dataXs, dataSin, color: Color.Magenta, lineWidth: 0, markerSize: 10, label: "sin");
+            plt.PlotScatter(dataXs, dataCos, color: Color.Green, lineWidth: 5, markerSize: 0, label: "cos");
+
+            plt.Legend(fixedLineWidth: false);
+
             if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
             Console.WriteLine($"Saved: {fileName}");
         }

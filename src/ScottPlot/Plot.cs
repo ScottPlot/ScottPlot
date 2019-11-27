@@ -818,7 +818,7 @@ namespace ScottPlot
             Color? frameColor = null,
             legendLocation location = legendLocation.lowerRight,
             shadowDirection shadowDirection = shadowDirection.lowerRight,
-            LineStyle lineStyle = LineStyle.Solid
+            bool? fixedLineWidth = null
             )
         {
             if (fontColor != null)
@@ -831,6 +831,9 @@ namespace ScottPlot
             fontName = ScottPlot.Tools.VerifyFont(fontName);
             FontStyle fontStyle = (bold) ? FontStyle.Bold : FontStyle.Regular;
             settings.legend.font = new Font(fontName, fontSize, fontStyle);
+
+            if (fixedLineWidth != null)
+                settings.legend.fixedLineWidth = (bool)fixedLineWidth;
 
             if (enableLegend)
             {
