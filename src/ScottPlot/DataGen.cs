@@ -137,6 +137,8 @@ namespace ScottPlot
 
             OHLC[] ohlcs = new OHLC[pointCount];
 
+            DateTime dt = new DateTime(1985, 9, 24, 9, 30, 0);
+
             for (int i = 0; i < ohlcs.Length; i++)
             {
                 double open = rand.NextDouble() * 10 + 50;
@@ -150,11 +152,16 @@ namespace ScottPlot
                 high += basePrices[i];
                 low += basePrices[i];
 
-                DateTime dt = new DateTime(1985, 9, 24, 9, 30, 0);
                 if (deltaMinutes > 0)
-                    dt = dt.AddMinutes(i);
+                {
+                    dt = dt.AddMinutes(deltaMinutes);
+                }
                 else if (deltaDays > 0)
-                    dt = dt.AddDays(i);
+                {
+                    dt = dt.AddDays(deltaDays);
+                    while ((dt.DayOfWeek == DayOfWeek.Saturday) || (dt.DayOfWeek == DayOfWeek.Sunday))
+                        dt = dt.AddDays(1);
+                }
 
                 ohlcs[i] = new ScottPlot.OHLC(open, high, low, close, dt);
             }
