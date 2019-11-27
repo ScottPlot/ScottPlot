@@ -84,7 +84,7 @@ namespace ScottPlot.Config
 
                 string[] labels = new string[ticks.Length];
                 for (int i = 0; i < labels.Length; i++)
-                    labels[i] = $"{monthShort[ticks[i].Month]} {ticks[i].Day}, {ticks[i].Year}";
+                    labels[i] = ticks[i].ToString("d");
 
                 return (ticks, labels);
             }
@@ -103,8 +103,8 @@ namespace ScottPlot.Config
                 string[] labels = new string[ticks.Length];
                 for (int i = 0; i < labels.Length; i++)
                 {
-                    string date = string.Format("{0}/{1}/{2}", ticks[i].Month, ticks[i].Day, ticks[i].Year);
-                    string time = string.Format("{0:00}:00", ticks[i].Hour);
+                    string date = ticks[i].ToString("d");
+                    string time = ticks[i].ToString("t");
                     labels[i] = $"{date}, {time}";
                 }
 
@@ -127,8 +127,8 @@ namespace ScottPlot.Config
                 string[] labels = new string[ticks.Length];
                 for (int i = 0; i < labels.Length; i++)
                 {
-                    string date = string.Format("{0}/{1}/{2}", ticks[i].Month, ticks[i].Day, ticks[i].Year);
-                    string time = string.Format("{0:00}:{1:00}", ticks[i].Hour, ticks[i].Minute);
+                    string date = ticks[i].ToString("d");
+                    string time = ticks[i].ToString("t");
                     labels[i] = $"{date}, {time}";
                 }
 
@@ -151,8 +151,8 @@ namespace ScottPlot.Config
                 string[] labels = new string[ticks.Length];
                 for (int i = 0; i < labels.Length; i++)
                 {
-                    string date = string.Format("{0}/{1}/{2}", ticks[i].Month, ticks[i].Day, ticks[i].Year);
-                    string time = string.Format("{0:00}:{1:00}:{2:00}", ticks[i].Hour, ticks[i].Minute, ticks[i].Second);
+                    string date = ticks[i].ToString("d");
+                    string time = ticks[i].ToString("T");
                     labels[i] = $"{date}, {time}";
                 }
 
