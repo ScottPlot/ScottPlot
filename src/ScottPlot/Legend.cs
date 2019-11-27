@@ -232,6 +232,20 @@ namespace ScottPlot
             if (plottable is PlottableAxSpan)
                 pen.Width = 10;
 
+            if (settings.legend.fixedLineWidth == false)
+            {
+                if (plottable is PlottableScatter)
+                    pen.Width = (float)((PlottableScatter)plottable).lineWidth;
+                if (plottable is PlottableSignal)
+                    pen.Width = (float)((PlottableSignal)plottable).lineWidth;
+            }
+
+            // dont draw line if it's not on the plottable
+            if ((plottable is PlottableScatter) && (((PlottableScatter)plottable).lineWidth) == 0)
+                return;
+            if ((plottable is PlottableSignal) && (((PlottableSignal)plottable).lineWidth) == 0)
+                return;
+
             switch (plottable.lineStyle)
             {
                 case LineStyle.Solid:
@@ -260,6 +274,14 @@ namespace ScottPlot
         {
             Brush brushMarker = new SolidBrush(plottable.color);
             Pen penMarker = new Pen(plottable.color, 1);
+
+            // dont draw marker if it's not on the plottable
+            if (plottable.markerShape == MarkerShape.none)
+                return;
+            if ((plottable is PlottableScatter) && (((PlottableScatter)plottable).markerSize) == 0)
+                return;
+            if ((plottable is PlottableSignal) && (((PlottableSignal)plottable).markerSize) == 0)
+                return;
 
             PointF corner1 = new PointF(textLocation.X - stubWidth + settings.legend.font.Size / 4, textLocation.Y + settings.legend.font.Size / 4 * padding);
             PointF center = new PointF
