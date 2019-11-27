@@ -1,5 +1,14 @@
 # ScottPlot Changelog
 
+## ScottPlot 4.0.5
+_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-11-27_
+
+### Minor Changes
+* improved spacing for non-uniformly distributed OHLC and candlestick plots (#184) _Thanks @satyat110_
+* added `fixedLineWidth` to Legend() to allow the user to control whether legend lines are dynamically sized (#185) _Thanks @ab-tools_
+* legend now hides lines or markers of they're hidden in the plottable
+* DateTime axes now use local display format (#108) _Thanks @FadyDev2_
+
 ## ScottPlot 4.0.4
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-11-24_
 
