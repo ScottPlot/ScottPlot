@@ -1,5 +1,11 @@
 # ScottPlot Changelog
 
+## ScottPlot 4.0.6
+_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-11-29_
+
+### Minor Changes
+* fixed bug that affected the settings dialog window in the WinForms control (#187) _Thanks @gobikulandaisamy_
+
 ## ScottPlot 4.0.5
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-11-27_
 
