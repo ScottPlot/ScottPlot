@@ -100,7 +100,6 @@ namespace ScottPlot.UserControls
                 btnExportCSV.Enabled = true;
                 tbLabel.Enabled = true;
                 tbLabel.Text = plottable.label;
-                tbLabel.Enabled = true;
             }
             else
             {
