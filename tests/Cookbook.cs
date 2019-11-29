@@ -1384,10 +1384,56 @@ namespace ScottPlotTests
             ScottPlot.OHLC[] ohlcs = ScottPlot.DataGen.RandomStockPrices(rand: null, pointCount: 60, deltaMinutes: 10);
 
             var plt = new ScottPlot.Plot(width: 800, height: 400);
-            plt.Title("Candlestick Chart");
+            plt.Title("Ten Minute Candlestick Chart");
             plt.YLabel("Stock Price (USD)");
             plt.PlotCandlestick(ohlcs);
             plt.Ticks(dateTimeX: true);
+
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
+        }
+
+        [Test]
+        public void Figure_67a_Candlestick_Days()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
+
+            ScottPlot.OHLC[] ohlcs = ScottPlot.DataGen.RandomStockPrices(rand: null, pointCount: 30, deltaDays: 1);
+
+            var plt = new ScottPlot.Plot(width: 800, height: 400);
+            plt.Title("Daily Candlestick Chart (weekends skipped)");
+            plt.YLabel("Stock Price (USD)");
+            plt.PlotCandlestick(ohlcs);
+            plt.Ticks(dateTimeX: true);
+
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
+        }
+
+        [Test]
+        public void Figure_67b_Candlestick_Days_Evenly_Spaced()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
+
+            // start with stock prices which have unevenly spaced time points (weekends are skipped)
+            ScottPlot.OHLC[] ohlcs = ScottPlot.DataGen.RandomStockPrices(rand: null, pointCount: 30);
+
+            // replace timestamps with a series of numbers starting at 0
+            for (int i = 0; i < ohlcs.Length; i++)
+                ohlcs[i].time = i;
+
+            // plot the candlesticks (the horizontal axis will start at 0)
+            var plt = new ScottPlot.Plot(width: 800, height: 400);
+            plt.Title("Daily Candlestick Chart (evenly spaced)");
+            plt.YLabel("Stock Price (USD)");
+            plt.PlotCandlestick(ohlcs);
+
+            // create ticks manually
+            double[] tickPositions = { 0, 6, 13, 20, 27 };
+            string[] tickLabels = { "Sep 23", "Sep 30", "Oct 7", "Oct 14", "Oct 21" };
+            plt.XTicks(tickPositions, tickLabels);
 
             if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
             Console.WriteLine($"Saved: {fileName}");
