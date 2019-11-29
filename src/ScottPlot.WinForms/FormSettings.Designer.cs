@@ -38,6 +38,8 @@
             this.rbQualityHigh = new System.Windows.Forms.RadioButton();
             this.rbQualityLow = new System.Windows.Forms.RadioButton();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.tbLabel = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.lbPlotObjects = new System.Windows.Forms.ListBox();
             this.btnExportCSV = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
@@ -66,8 +68,6 @@
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.cbStyle = new System.Windows.Forms.ComboBox();
             this.btnTighten = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.tbLabel = new System.Windows.Forms.TextBox();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -173,7 +173,27 @@
             this.groupBox4.Size = new System.Drawing.Size(251, 170);
             this.groupBox4.TabIndex = 6;
             this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Data Export";
+            this.groupBox4.Text = "Data";
+            // 
+            // tbLabel
+            // 
+            this.tbLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbLabel.Enabled = false;
+            this.tbLabel.Location = new System.Drawing.Point(127, 144);
+            this.tbLabel.Name = "tbLabel";
+            this.tbLabel.Size = new System.Drawing.Size(118, 20);
+            this.tbLabel.TabIndex = 6;
+            this.tbLabel.TextChanged += new System.EventHandler(this.TbLabel_TextChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(88, 146);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(36, 13);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "Label:";
             // 
             // lbPlotObjects
             // 
@@ -467,25 +487,6 @@
             this.btnTighten.Text = "Tighten Layout";
             this.btnTighten.UseVisualStyleBackColor = true;
             this.btnTighten.Click += new System.EventHandler(this.BtnTighten_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(88, 146);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(36, 13);
-            this.label1.TabIndex = 5;
-            this.label1.Text = "Label:";
-            // 
-            // tbLabel
-            // 
-            this.tbLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbLabel.Location = new System.Drawing.Point(127, 144);
-            this.tbLabel.Name = "tbLabel";
-            this.tbLabel.Size = new System.Drawing.Size(118, 20);
-            this.tbLabel.TabIndex = 6;
-            this.tbLabel.TextChanged += new System.EventHandler(this.TbLabel_TextChanged);
             // 
             // FormSettings
             // 
