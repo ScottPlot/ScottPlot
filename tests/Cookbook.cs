@@ -1381,7 +1381,7 @@ namespace ScottPlotTests
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
-            ScottPlot.OHLC[] ohlcs = ScottPlot.DataGen.RandomStockPrices(rand: null, pointCount: 60, deltaMinutes: 10);
+            ScottPlot.OHLC[] ohlcs = ScottPlot.DataGen.RandomStockPrices(rand: null, pointCount: 35, deltaMinutes: 10);
 
             var plt = new ScottPlot.Plot(width: 800, height: 400);
             plt.Title("Ten Minute Candlestick Chart");

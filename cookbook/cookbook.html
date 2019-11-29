@@ -1,5 +1,5 @@
 <html><body style='background-color: #EEE; margin: 30px;'><h1>ScottPlot Cookbook</h1><br><br>The ScottPlot cookbook is a collection of small code examples which demonstrate how to create various types of plots using ScottPlot.
-<br><br><i>This cookbook was automatically generated using ScottPlot 4.0.4.0</i>
+<br><br><i>This cookbook was automatically generated using ScottPlot 4.0.5.0</i>
 <h2><br>Quickstart</h2>
 <img src='images/01a_Quickstart.png'>
 <pre style='font-family: monospace; background-color: #DDD; padding: 10px;'>
@@ -1007,13 +1007,49 @@ plt.Legend();
 plt.Axis(null, null, 0, 1);
 plt.Save(600, 400, "66_CPH.png");
 </pre>
+<h2><br>Candlestick Days</h2>
+<img src='images/67a_Candlestick_Days.png'>
+<pre style='font-family: monospace; background-color: #DDD; padding: 10px;'>
+ScottPlot.OHLC[] ohlcs = ScottPlot.DataGen.RandomStockPrices(rand: null, pointCount: 30, deltaDays: 1);
+
+var plt = new ScottPlot.Plot(width: 800, height: 400);
+plt.Title("Daily Candlestick Chart (weekends skipped)");
+plt.YLabel("Stock Price (USD)");
+plt.PlotCandlestick(ohlcs);
+plt.Ticks(dateTimeX: true);
+
+plt.Save(600, 400, "67a_Candlestick_Days.png");
+</pre>
+<h2><br>Candlestick Days Evenly Spaced</h2>
+<img src='images/67b_Candlestick_Days_Evenly_Spaced.png'>
+<pre style='font-family: monospace; background-color: #DDD; padding: 10px;'>
+// start with stock prices which have unevenly spaced time points (weekends are skipped)
+ScottPlot.OHLC[] ohlcs = ScottPlot.DataGen.RandomStockPrices(rand: null, pointCount: 30);
+
+// replace timestamps with a series of numbers starting at 0
+for (int i = 0; i < ohlcs.Length; i++)
+    ohlcs[i].time = i;
+
+// plot the candlesticks (the horizontal axis will start at 0)
+var plt = new ScottPlot.Plot(width: 800, height: 400);
+plt.Title("Daily Candlestick Chart (evenly spaced)");
+plt.YLabel("Stock Price (USD)");
+plt.PlotCandlestick(ohlcs);
+
+// create ticks manually
+double[] tickPositions = { 0, 6, 13, 20, 27 };
+string[] tickLabels = { "Sep 23", "Sep 30", "Oct 7", "Oct 14", "Oct 21" };
+plt.XTicks(tickPositions, tickLabels);
+
+plt.Save(600, 400, "67b_Candlestick_Days_Evenly_Spaced.png");
+</pre>
 <h2><br>Candlestick</h2>
 <img src='images/67_Candlestick.png'>
 <pre style='font-family: monospace; background-color: #DDD; padding: 10px;'>
-ScottPlot.OHLC[] ohlcs = ScottPlot.DataGen.RandomStockPrices(rand: null, pointCount: 60, deltaMinutes: 10);
+ScottPlot.OHLC[] ohlcs = ScottPlot.DataGen.RandomStockPrices(rand: null, pointCount: 35, deltaMinutes: 10);
 
 var plt = new ScottPlot.Plot(width: 800, height: 400);
-plt.Title("Candlestick Chart");
+plt.Title("Ten Minute Candlestick Chart");
 plt.YLabel("Stock Price (USD)");
 plt.PlotCandlestick(ohlcs);
 plt.Ticks(dateTimeX: true);

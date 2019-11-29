@@ -1,7 +1,7 @@
 # ScottPlot Cookbook
 The ScottPlot cookbook is a collection of small code examples which demonstrate how to create various types of plots using ScottPlot.
 
-_This cookbook was [automatically generated](/tests/Cookbook.cs) using ScottPlot 4.0.4.0_
+_This cookbook was [automatically generated](/tests/Cookbook.cs) using ScottPlot 4.0.5.0_
 
 
 ## Quickstart
@@ -1353,13 +1353,61 @@ plt.Save(600, 400, "66_CPH.png");
 
 
 
+## Candlestick Days
+
+```cs
+ScottPlot.OHLC[] ohlcs = ScottPlot.DataGen.RandomStockPrices(rand: null, pointCount: 30, deltaDays: 1);
+
+var plt = new ScottPlot.Plot(width: 800, height: 400);
+plt.Title("Daily Candlestick Chart (weekends skipped)");
+plt.YLabel("Stock Price (USD)");
+plt.PlotCandlestick(ohlcs);
+plt.Ticks(dateTimeX: true);
+
+plt.Save(600, 400, "67a_Candlestick_Days.png");
+```
+
+![](images/67a_Candlestick_Days.png)
+
+
+
+
+## Candlestick Days Evenly Spaced
+
+```cs
+// start with stock prices which have unevenly spaced time points (weekends are skipped)
+ScottPlot.OHLC[] ohlcs = ScottPlot.DataGen.RandomStockPrices(rand: null, pointCount: 30);
+
+// replace timestamps with a series of numbers starting at 0
+for (int i = 0; i < ohlcs.Length; i++)
+    ohlcs[i].time = i;
+
+// plot the candlesticks (the horizontal axis will start at 0)
+var plt = new ScottPlot.Plot(width: 800, height: 400);
+plt.Title("Daily Candlestick Chart (evenly spaced)");
+plt.YLabel("Stock Price (USD)");
+plt.PlotCandlestick(ohlcs);
+
+// create ticks manually
+double[] tickPositions = { 0, 6, 13, 20, 27 };
+string[] tickLabels = { "Sep 23", "Sep 30", "Oct 7", "Oct 14", "Oct 21" };
+plt.XTicks(tickPositions, tickLabels);
+
+plt.Save(600, 400, "67b_Candlestick_Days_Evenly_Spaced.png");
+```
+
+![](images/67b_Candlestick_Days_Evenly_Spaced.png)
+
+
+
+
 ## Candlestick
 
 ```cs
-ScottPlot.OHLC[] ohlcs = ScottPlot.DataGen.RandomStockPrices(rand: null, pointCount: 60, deltaMinutes: 10);
+ScottPlot.OHLC[] ohlcs = ScottPlot.DataGen.RandomStockPrices(rand: null, pointCount: 35, deltaMinutes: 10);
 
 var plt = new ScottPlot.Plot(width: 800, height: 400);
-plt.Title("Candlestick Chart");
+plt.Title("Ten Minute Candlestick Chart");
 plt.YLabel("Stock Price (USD)");
 plt.PlotCandlestick(ohlcs);
 plt.Ticks(dateTimeX: true);
