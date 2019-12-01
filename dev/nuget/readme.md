@@ -2,7 +2,7 @@
 
 ## NuGet Packages
 * [ScottPlot](https://www.nuget.org/packages/ScottPlot) (.NET Standard)
-* [ScottPlot.WinForms](https://www.nuget.org/packages/ScottPlot.WinForms) (.NET Framework 4.6.1 / .NET Core 3.0)
+* [ScottPlot.WinForms](https://www.nuget.org/packages/ScottPlot.WinForms) (.NET Framework / .NET Core 3.0)
 * [ScottPlot.WPF](https://www.nuget.org/packages/ScottPlot.WPF) (.NET Core 3.0)
 
 ## Quickstart
