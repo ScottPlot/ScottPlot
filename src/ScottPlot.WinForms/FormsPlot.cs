@@ -48,7 +48,8 @@ namespace ScottPlot
             if (isDesignerMode)
                 return;
 
-            if (!(skipIfCurrentlyRendering && currentlyRendering))
+            bool renderNeeded = !(skipIfCurrentlyRendering && currentlyRendering);
+            if ((renderNeeded) && (plt != null))
             {
                 currentlyRendering = true;
                 pbPlot.Image = plt.GetBitmap(true, lowQuality);
@@ -60,7 +61,7 @@ namespace ScottPlot
 
         private void PbPlot_SizeChanged(object sender, EventArgs e)
         {
-            plt.Resize(Width, Height);
+            plt?.Resize(Width, Height);
             Render(skipIfCurrentlyRendering: false);
         }
 
