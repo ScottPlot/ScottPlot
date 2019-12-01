@@ -1,7 +1,7 @@
 # ScottPlot Changelog
 
 ## ScottPlot 4.0.7
-_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-11-29_\
+_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-12-01_\
 This release updated the ScottPlot.WinForms package only.
 
 #### Minor Changes
