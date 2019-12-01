@@ -48,11 +48,10 @@ namespace ScottPlot
             if (isDesignerMode)
                 return;
 
-            bool renderNeeded = !(skipIfCurrentlyRendering && currentlyRendering);
-            if ((renderNeeded) && (plt != null))
+            if (!(skipIfCurrentlyRendering && currentlyRendering))
             {
                 currentlyRendering = true;
-                pbPlot.Image = plt.GetBitmap(true, lowQuality);
+                pbPlot.Image = plt?.GetBitmap(true, lowQuality);
                 if (isMouseDragging)
                     Application.DoEvents();
                 currentlyRendering = false;
