@@ -68,7 +68,7 @@ namespace ScottPlot.Config
 
                 string[] labels = new string[ticks.Length];
                 for (int i = 0; i < labels.Length; i++)
-                    labels[i] = $"{monthShort[ticks[i].Month]} {ticks[i].Year}";
+                    labels[i] = ticks[i].ToString("MMM yyyy");
 
                 return (ticks, labels);
             }
