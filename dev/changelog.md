@@ -1,10 +1,14 @@
 # ScottPlot Changelog
 
+## ScottPlot 4.0.8
+_Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-12-03_
+
+* Use local regional display settings when formatting the month tick of DateTime axes (#108) _Thanks @FadyDev2_
+
 ## ScottPlot 4.0.7
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-12-01_\
 This release updated the ScottPlot.WinForms package only.
 
-#### Minor Changes
 * Added WinForms support for .NET Framework 4.7.2 and 4.8
 * Fixed bug in WinForms control that only affected .NET Core 3.0 applications (#189 and #138) _Thanks @petarpetrovt_
 
@@ -12,7 +16,6 @@ This release updated the ScottPlot.WinForms package only.
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-11-29_\
 This release updated the ScottPlot.WinForms package only.
 
-#### Minor Changes
 * fixed bug that affected the settings dialog window in the WinForms control (#187) _Thanks @gobikulandaisamy_
 
 ## ScottPlot 4.0.5
@@ -27,7 +30,6 @@ _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-11-27_
 ## ScottPlot 4.0.4
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-11-24_
 
-#### Minor Changes
 * PlotText() now supports a background frame (#181) _Thanks @satyat110_
 * OHLC objects can be created with a double or a DateTime (#182) _Thanks @Minu476_
 * Improved AxisAuto() fixes bug for mixed 2d and axis line plots
@@ -35,7 +37,6 @@ _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-11-24_
 ## ScottPlot 4.0.3
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-11-23_
 
-#### Minor Changes
 * fixed bug when plotting single-point candlestick (#172) _Thanks @Minu476_
 * improved style editing of plotted objects (#173) _Thanks @Minu476_
 * fixed pan/zoom axis lock when holding CTRL or ALT (#90) _Thanks @FadyDev2_
@@ -49,10 +50,7 @@ _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-11-23_
 ## ScottPlot 4.0.2
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-11-09_
 
-#### Major Changes
 * **Multi-plot figures:** Images with several plots can be created using `ScottPlot.MultiPlot()` as seen in the [Multiplot example](https://github.com/swharden/ScottPlot/tree/master/cookbook#multiplot) in the cookbook
-
-#### Minor Changes
 * `ScottPlot.DataGen` functions which require a `Random` can accept null (they will create a `Random` if null is given)
 * `plt.MatchAxis()` and `plt.MatchLayout()` have been improved
 * `plt.PlotText()` now supports rotated text using the `rotation` argument (#160). See the [cookbook example](https://github.com/swharden/ScottPlot/tree/master/cookbook#plotting-text). _Thanks @gwilson9_
@@ -66,7 +64,6 @@ _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-11-03_
 * **ScottPlot now targets .NET Standard 2.0** so in addition to .NET Framework projects it can now be used in .NET Core applications, ASP projects, Xamarin apps, etc.
 * **The WinForms control has its own package** ([ScottPlot.WinForms](https://www.nuget.org/packages/ScottPlot.WinForms/)) which targets both .NET Framework 4.6.1 and  .NET Core 3.0. Thanks for your early efforts on this @petarpetrovt
 * **The WPF control has its own package** ([ScottPlot.WPF](https://www.nuget.org/packages/ScottPlot.WPF/)) targeting .NET Core 3.0.
-
 
 #### Minor Changes
 * better layout system and control of padding (Thanks @citizen3942)
