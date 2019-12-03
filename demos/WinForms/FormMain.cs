@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -20,11 +21,15 @@ namespace ScottPlotDemos
         private void FormMain_Load(object sender, EventArgs e)
         {
             lblVersion.Text = ScottPlot.Tools.GetVersionString();
-            //btnPlotTypes_Click(null, null);
-            //btnDraggableAxisLines_Click(null, null);
-            //btnSignal_Click(null, null);
-            //btnTimeAxis_Click(null, null);
-            btnFinancial_Click(null, null);
+
+            if (Debugger.IsAttached)
+            {
+                //btnPlotTypes_Click(null, null);
+                //btnDraggableAxisLines_Click(null, null);
+                //btnSignal_Click(null, null);
+                btnTimeAxis_Click(null, null);
+                //btnFinancial_Click(null, null);
+            }
         }
 
         private void lblGitHubUrl_Click(object sender, EventArgs e)
