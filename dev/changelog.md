@@ -1,9 +1,10 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.0.8
+## ScottPlot 4.0.9
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-12-03_
 
 * Use local regional display settings when formatting the month tick of DateTime axes (#108) _Thanks @FadyDev2_
+* Debug symbols are now deployed NuGet
 
 ## ScottPlot 4.0.7
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-12-01_\

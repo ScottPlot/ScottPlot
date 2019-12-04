@@ -16,9 +16,11 @@ The ScottPlot package can plot data and save images or return bitmaps.  The Scot
     <PackageIconUrl></PackageIconUrl>
     <PackageTags>plot graph data chart signal line bar C#</PackageTags>
     <PackageReleaseNotes>https://github.com/swharden/ScottPlot/releases</PackageReleaseNotes>
-    <Version>4.0.8</Version>
-    <AssemblyVersion>4.0.8.0</AssemblyVersion>
-    <FileVersion>4.0.8.0</FileVersion>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <Version>4.0.9</Version>
+    <AssemblyVersion>4.0.9.0</AssemblyVersion>
+    <FileVersion>4.0.9.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,5 +28,9 @@ The ScottPlot package can plot data and save images or return bitmaps.  The Scot
     <None Include="icon.png" Pack="true" PackagePath="\" />
     <None Include="icon.ico" Pack="true" PackagePath="\" />
   </ItemGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="del $(OutDir)\..\*.nupkg&#xD;&#xA;del $(OutDir)\..\*.snupkg" />
+  </Target>
 
 </Project>
