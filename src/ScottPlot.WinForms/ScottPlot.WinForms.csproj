@@ -12,10 +12,12 @@
     <PackageProjectUrl>https://github.com/swharden/ScottPlot</PackageProjectUrl>
     <PackageTags>plot graph data chart signal line bar C# winforms forms control interactive</PackageTags>
     <PackageReleaseNotes>https://github.com/swharden/ScottPlot/releases</PackageReleaseNotes>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>4.0.7</Version>
-    <AssemblyVersion>4.0.7.0</AssemblyVersion>
-    <FileVersion>4.0.7.0</FileVersion>
+    <Version>4.0.9</Version>
+    <AssemblyVersion>4.0.9.0</AssemblyVersion>
+    <FileVersion>4.0.9.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,5 +25,9 @@
     <None Include="icon.png" Pack="true" PackagePath="\" />
     <None Include="icon.ico" Pack="true" PackagePath="\" />
   </ItemGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="del $(OutDir)\..\*.nupkg&#xD;&#xA;del $(OutDir)\..\*.snupkg" />
+  </Target>
 
 </Project>
