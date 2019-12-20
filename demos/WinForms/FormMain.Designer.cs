@@ -45,6 +45,7 @@
             this.btnUserControlSettings = new System.Windows.Forms.Button();
             this.btnHover = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnToggleVisibility = new System.Windows.Forms.Button();
             this.btnLinkedPlots = new System.Windows.Forms.Button();
             this.btnPadding = new System.Windows.Forms.Button();
             this.btnCustomGrid = new System.Windows.Forms.Button();
@@ -76,7 +77,8 @@
             this.lblGitHubUrl = new System.Windows.Forms.Label();
             this.lblVersion = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.btnToggleVisibility = new System.Windows.Forms.Button();
+            this.SignalDistribution = new System.Windows.Forms.Button();
+            this.label8 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage3.SuspendLayout();
@@ -109,6 +111,8 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.label8);
+            this.tabPage1.Controls.Add(this.SignalDistribution);
             this.tabPage1.Controls.Add(this.label5);
             this.tabPage1.Controls.Add(this.btnSignal);
             this.tabPage1.Controls.Add(this.label4);
@@ -279,6 +283,16 @@
             this.groupBox2.TabIndex = 15;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Styling";
+            // 
+            // btnToggleVisibility
+            // 
+            this.btnToggleVisibility.Location = new System.Drawing.Point(6, 135);
+            this.btnToggleVisibility.Name = "btnToggleVisibility";
+            this.btnToggleVisibility.Size = new System.Drawing.Size(106, 23);
+            this.btnToggleVisibility.TabIndex = 19;
+            this.btnToggleVisibility.Text = "Toggle Visibility";
+            this.btnToggleVisibility.UseVisualStyleBackColor = true;
+            this.btnToggleVisibility.Click += new System.EventHandler(this.btnToggleVisibility_Click);
             // 
             // btnLinkedPlots
             // 
@@ -614,15 +628,24 @@
             this.label3.Text = "ScottPlot";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // btnToggleVisibility
+            // SignalDistribution
             // 
-            this.btnToggleVisibility.Location = new System.Drawing.Point(6, 135);
-            this.btnToggleVisibility.Name = "btnToggleVisibility";
-            this.btnToggleVisibility.Size = new System.Drawing.Size(106, 23);
-            this.btnToggleVisibility.TabIndex = 19;
-            this.btnToggleVisibility.Text = "Toggle Visibility";
-            this.btnToggleVisibility.UseVisualStyleBackColor = true;
-            this.btnToggleVisibility.Click += new System.EventHandler(this.btnToggleVisibility_Click);
+            this.SignalDistribution.Location = new System.Drawing.Point(9, 115);
+            this.SignalDistribution.Name = "SignalDistribution";
+            this.SignalDistribution.Size = new System.Drawing.Size(88, 23);
+            this.SignalDistribution.TabIndex = 7;
+            this.SignalDistribution.Text = "Signal distr.";
+            this.SignalDistribution.UseVisualStyleBackColor = true;
+            this.SignalDistribution.Click += new System.EventHandler(this.SignalDistribution_Click);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(103, 120);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(297, 13);
+            this.label8.TabIndex = 8;
+            this.label8.Text = "Display high density data with color mapped points distribution";
             // 
             // FormMain
             // 
@@ -705,6 +728,8 @@
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.Button btnOverride;
         private System.Windows.Forms.Button btnToggleVisibility;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Button SignalDistribution;
     }
 }
 
