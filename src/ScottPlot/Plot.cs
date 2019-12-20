@@ -399,7 +399,8 @@ namespace ScottPlot
             Color? color = null,
             double lineWidth = 1,
             double markerSize = 5,
-            string label = null
+            string label = null,
+            Color[] colorMap = null
             )
         {
             if (color == null)
@@ -414,7 +415,8 @@ namespace ScottPlot
                 lineWidth: lineWidth,
                 markerSize: markerSize,
                 label: label,
-                useParallel: settings.misc.useParallel
+                useParallel: settings.misc.useParallel,
+                colorMap: colorMap
                 );
 
             settings.plottables.Add(signal);

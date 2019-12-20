@@ -23,7 +23,7 @@ namespace ScottPlot
         private Pen[] colorMapPens;
         private int levelsCount = 0;
 
-        public PlottableSignal(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, bool useParallel, Color[] ColorMap)
+        public PlottableSignal(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, bool useParallel, Color[] colorMap)
         {
             if (ys == null)
                 throw new Exception("Y data cannot be null");
@@ -47,10 +47,10 @@ namespace ScottPlot
                 EndCap = System.Drawing.Drawing2D.LineCap.Round,
                 LineJoin = System.Drawing.Drawing2D.LineJoin.Round
             };
-            if (ColorMap != null)
+            if (colorMap != null)
             {
-                levelsCount = ColorMap.Length;
-                this.colorMapPens = ColorMap.Select(x => new Pen(x)).ToArray();
+                levelsCount = colorMap.Length;
+                this.colorMapPens = colorMap.Select(x => new Pen(x)).ToArray();
             }
         }
 
