@@ -163,6 +163,12 @@
     <Compile Include="Demos\FormSignalConst.Designer.cs">
       <DependentUpon>FormSignalConst.cs</DependentUpon>
     </Compile>
+    <Compile Include="Demos\FormSignalDistribution.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Demos\FormSignalDistribution.Designer.cs">
+      <DependentUpon>FormSignalDistribution.cs</DependentUpon>
+    </Compile>
     <Compile Include="Demos\FormTickTester.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -281,6 +287,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Demos\FormSignalConst.resx">
       <DependentUpon>FormSignalConst.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Demos\FormSignalDistribution.resx">
+      <DependentUpon>FormSignalDistribution.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Demos\FormTickTester.resx">
       <DependentUpon>FormTickTester.cs</DependentUpon>

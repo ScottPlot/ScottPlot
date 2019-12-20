@@ -204,5 +204,11 @@ namespace ScottPlotDemos
             using (var frm = new FormToggleVis())
                 frm.ShowDialog();
         }
+
+        private void SignalDistribution_Click(object sender, EventArgs e)
+        {
+            using (var frm = new FormSignalDistribution())
+                frm.ShowDialog();
+        }
     }
 }
