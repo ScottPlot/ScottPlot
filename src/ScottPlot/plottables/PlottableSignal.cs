@@ -19,13 +19,15 @@ namespace ScottPlot
         public double yOffset;
         public double lineWidth;
         public Pen pen;
-        public Brush brush;       
+        public Brush brush;        
+        private Pen[] colorMapPens;
+        private int levelsCount = 0;
 
-        public PlottableSignal(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, bool useParallel)
-        {            
+        public PlottableSignal(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, bool useParallel, Color[] ColorMap)
+        {
             if (ys == null)
                 throw new Exception("Y data cannot be null");
-            
+
             this.ys = ys;
             this.sampleRate = sampleRate;
             this.samplePeriod = 1.0 / sampleRate;
@@ -45,6 +47,11 @@ namespace ScottPlot
                 EndCap = System.Drawing.Drawing2D.LineCap.Round,
                 LineJoin = System.Drawing.Drawing2D.LineJoin.Round
             };
+            if (ColorMap != null)
+            {
+                levelsCount = ColorMap.Length;
+                this.colorMapPens = ColorMap.Select(x => new Pen(x)).ToArray();
+            }
         }
 
         public override string ToString()
@@ -142,6 +149,57 @@ namespace ScottPlot
             settings.gfxData.DrawLines(pen, linePoints);
         }
 
+        private void RenderHighDensityDistribution(Settings settings, double offsetPoints, double columnPointCount)
+        {
+            int xPxStart = (int)Math.Ceiling((-1 - offsetPoints) / columnPointCount - 1);
+            int xPxEnd = (int)Math.Ceiling((ys.Length - offsetPoints) / columnPointCount);
+            xPxStart = Math.Max(0, xPxStart);
+            xPxEnd = Math.Min(settings.dataSize.Width, xPxEnd);
+            if (xPxStart >= xPxEnd)
+                return;
+            List<PointF> linePoints = new List<PointF>((xPxEnd - xPxStart) * 2 + 1);
+            List<PointF[]> linePointsLevels = new List<PointF[]>((xPxEnd - xPxStart) + 1);
+            for (int xPx = xPxStart; xPx < xPxEnd; xPx++)
+            {
+                // determine data indexes for this pixel column
+                int index1 = (int)(offsetPoints + columnPointCount * xPx);
+                int index2 = (int)(offsetPoints + columnPointCount * (xPx + 1));
+
+                if (index1 < 0)
+                    index1 = 0;
+                if (index1 > ys.Length - 1)
+                    index1 = ys.Length - 1;
+                if (index2 > ys.Length - 1)
+                    index2 = ys.Length - 1;
+
+                var indexes = Enumerable.Range(0, levelsCount + 1).Select(x => x * (index2 - index1 - 1) / (levelsCount));
+
+                var levelsValues = new ArraySegment<double>(ys, index1, index2 - index1)
+                    .OrderBy(x => x)
+                    .Where((y, i) => indexes.Contains(i));
+
+                var Points = levelsValues
+                    .Select(x => settings.GetPixel(0, x).Y)
+                    .Select(y => new PointF(xPx, y))
+                    .ToArray();
+
+                linePointsLevels.Add(Points);
+            }
+            for (int i = 0; i < levelsCount; i++)
+            {
+                linePoints.Clear();
+                for (int j = 0; j < linePointsLevels.Count; j++)
+                {
+                    if (i + 1 < linePointsLevels[j].Length)
+                    {
+                        linePoints.Add(linePointsLevels[j][i]);
+                        linePoints.Add(linePointsLevels[j][i + 1]);
+                    }
+                }
+                settings.gfxData.DrawLines(colorMapPens[i], linePoints.ToArray());
+            }
+        }
+
         private void RenderHighDensity(Settings settings, double offsetPoints, double columnPointCount)
         {
             // this function is for when the graph is zoomed out so each pixel column represents the vertical span of multiple data points
@@ -194,7 +252,7 @@ namespace ScottPlot
 
             if (linePoints.Count > 0)
                 settings.gfxData.DrawLines(pen, linePoints.ToArray());
-        }               
+        }
 
         public override void Render(Settings settings)
         {
@@ -224,10 +282,15 @@ namespace ScottPlot
             }
             else if (pointsPerPixelColumn > 1)
             {
-                if (useParallel)
-                    RenderHighDensityParallel(settings, offsetPoints, columnPointCount);
+                if (levelsCount > 0 && pointsPerPixelColumn > levelsCount)
+                    RenderHighDensityDistribution(settings, offsetPoints, columnPointCount);
                 else
-                    RenderHighDensity(settings, offsetPoints, columnPointCount);
+                {
+                    if (useParallel)
+                        RenderHighDensityParallel(settings, offsetPoints, columnPointCount);
+                    else
+                        RenderHighDensity(settings, offsetPoints, columnPointCount);
+                }
             }
             else
             {
