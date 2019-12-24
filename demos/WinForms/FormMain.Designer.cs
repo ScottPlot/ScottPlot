@@ -45,6 +45,7 @@
             this.btnUserControlSettings = new System.Windows.Forms.Button();
             this.btnHover = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnToggleVisibility = new System.Windows.Forms.Button();
             this.btnLinkedPlots = new System.Windows.Forms.Button();
             this.btnPadding = new System.Windows.Forms.Button();
             this.btnCustomGrid = new System.Windows.Forms.Button();
@@ -76,7 +77,7 @@
             this.lblGitHubUrl = new System.Windows.Forms.Label();
             this.lblVersion = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.btnToggleVisibility = new System.Windows.Forms.Button();
+            this.SignalDistribution = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage3.SuspendLayout();
@@ -280,6 +281,16 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Styling";
             // 
+            // btnToggleVisibility
+            // 
+            this.btnToggleVisibility.Location = new System.Drawing.Point(6, 135);
+            this.btnToggleVisibility.Name = "btnToggleVisibility";
+            this.btnToggleVisibility.Size = new System.Drawing.Size(106, 23);
+            this.btnToggleVisibility.TabIndex = 19;
+            this.btnToggleVisibility.Text = "Toggle Visibility";
+            this.btnToggleVisibility.UseVisualStyleBackColor = true;
+            this.btnToggleVisibility.Click += new System.EventHandler(this.btnToggleVisibility_Click);
+            // 
             // btnLinkedPlots
             // 
             this.btnLinkedPlots.Location = new System.Drawing.Point(6, 106);
@@ -322,6 +333,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.SignalDistribution);
             this.groupBox1.Controls.Add(this.btnBarGraph);
             this.groupBox1.Controls.Add(this.btnDraggableAxisLines);
             this.groupBox1.Controls.Add(this.btnScatterErrorbars);
@@ -329,7 +341,7 @@
             this.groupBox1.Controls.Add(this.btnFinancial);
             this.groupBox1.Location = new System.Drawing.Point(6, 25);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(150, 166);
+            this.groupBox1.Size = new System.Drawing.Size(150, 196);
             this.groupBox1.TabIndex = 14;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "More Plot Types";
@@ -614,15 +626,15 @@
             this.label3.Text = "ScottPlot";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // btnToggleVisibility
+            // SignalDistribution
             // 
-            this.btnToggleVisibility.Location = new System.Drawing.Point(6, 135);
-            this.btnToggleVisibility.Name = "btnToggleVisibility";
-            this.btnToggleVisibility.Size = new System.Drawing.Size(106, 23);
-            this.btnToggleVisibility.TabIndex = 19;
-            this.btnToggleVisibility.Text = "Toggle Visibility";
-            this.btnToggleVisibility.UseVisualStyleBackColor = true;
-            this.btnToggleVisibility.Click += new System.EventHandler(this.btnToggleVisibility_Click);
+            this.SignalDistribution.Location = new System.Drawing.Point(6, 164);
+            this.SignalDistribution.Name = "SignalDistribution";
+            this.SignalDistribution.Size = new System.Drawing.Size(137, 23);
+            this.SignalDistribution.TabIndex = 14;
+            this.SignalDistribution.Text = "Signal Distribution";
+            this.SignalDistribution.UseVisualStyleBackColor = true;
+            this.SignalDistribution.Click += new System.EventHandler(this.SignalDistribution_Click_1);
             // 
             // FormMain
             // 
@@ -705,6 +717,7 @@
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.Button btnOverride;
         private System.Windows.Forms.Button btnToggleVisibility;
+        private System.Windows.Forms.Button SignalDistribution;
     }
 }
 
