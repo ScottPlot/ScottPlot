@@ -14,7 +14,7 @@ namespace ScottPlotDemos
     {
         public FormSignalDistribution()
         {
-            InitializeComponent();            
+            InitializeComponent();
             Random rand = new Random();
 
             int pointsCount = 100_000;
@@ -23,18 +23,17 @@ namespace ScottPlotDemos
                 .Zip(ScottPlot.DataGen.RandomNormal(rand, pointsCount, 0, 5), (s, n) => s + n)
                 .ToArray();
 
-            Color[] colorMap = new Color[]
+            // start with a few samples from the viridis palette
+            Color[] colors = new Color[]
             {
-                Color.LightGreen,
-                Color.Green,
-                Color.Blue,
-                Color.Red,
-                Color.Blue,
-                Color.Green,
-                Color.LightGreen
+                ColorTranslator.FromHtml("#73D055"),
+                ColorTranslator.FromHtml("#1F968B"),
+                ColorTranslator.FromHtml("#39568C"),
+                ColorTranslator.FromHtml("#440154")
             };
 
-            formsPlot1.plt.PlotSignal(SinWithNormalNoise, colorMap: colorMap);
+            // feed a distribution colormap
+            formsPlot1.plt.PlotSignal(SinWithNormalNoise, colorByDensity: colors);
 
             formsPlot1.plt.Title("100,000 Data Points with 7 levels Distribution");
             formsPlot1.plt.YLabel("Sin with heavy gaussian noise");
