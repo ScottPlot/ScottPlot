@@ -20,10 +20,10 @@ namespace ScottPlot
         public double lineWidth;
         public Pen pen;
         public Brush brush;
-        private Pen[] colorMapPens;
-        private int levelsCount = 0;
+        private Pen[] penByDensity;
+        private int densityLevelCount = 0;
 
-        public PlottableSignal(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, bool useParallel, Color[] colorMap)
+        public PlottableSignal(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, bool useParallel, Color[] colorByDensity)
         {
             if (ys == null)
                 throw new Exception("Y data cannot be null");
@@ -47,10 +47,17 @@ namespace ScottPlot
                 EndCap = System.Drawing.Drawing2D.LineCap.Round,
                 LineJoin = System.Drawing.Drawing2D.LineJoin.Round
             };
-            if (colorMap != null)
+
+            if (colorByDensity != null)
             {
-                levelsCount = colorMap.Length;
-                this.colorMapPens = colorMap.Select(x => new Pen(x)).ToArray();
+                // turn the ramp into a pen triangle
+                densityLevelCount = colorByDensity.Length * 2 - 1;
+                penByDensity = new Pen[densityLevelCount];
+                for (int i = 0; i < colorByDensity.Length; i++)
+                {
+                    penByDensity[i] = new Pen(colorByDensity[i]);
+                    penByDensity[densityLevelCount - 1 - i] = new Pen(colorByDensity[i]);
+                }
             }
         }
 
@@ -172,7 +179,7 @@ namespace ScottPlot
                 if (index2 > ys.Length - 1)
                     index2 = ys.Length - 1;
 
-                var indexes = Enumerable.Range(0, levelsCount + 1).Select(x => x * (index2 - index1 - 1) / (levelsCount));
+                var indexes = Enumerable.Range(0, densityLevelCount + 1).Select(x => x * (index2 - index1 - 1) / (densityLevelCount));
 
                 var levelsValues = new ArraySegment<double>(ys, index1, index2 - index1)
                     .OrderBy(x => x)
@@ -185,7 +192,7 @@ namespace ScottPlot
 
                 linePointsLevels.Add(Points);
             }
-            for (int i = 0; i < levelsCount; i++)
+            for (int i = 0; i < densityLevelCount; i++)
             {
                 linePoints.Clear();
                 for (int j = 0; j < linePointsLevels.Count; j++)
@@ -196,7 +203,7 @@ namespace ScottPlot
                         linePoints.Add(linePointsLevels[j][i + 1]);
                     }
                 }
-                settings.gfxData.DrawLines(colorMapPens[i], linePoints.ToArray());
+                settings.gfxData.DrawLines(penByDensity[i], linePoints.ToArray());
             }
         }
 
@@ -226,7 +233,7 @@ namespace ScottPlot
                     if (index2 > ys.Length - 1)
                         index2 = ys.Length - 1;
 
-                    var indexes = Enumerable.Range(0, levelsCount + 1).Select(x => x * (index2 - index1 - 1) / (levelsCount));
+                    var indexes = Enumerable.Range(0, densityLevelCount + 1).Select(x => x * (index2 - index1 - 1) / (densityLevelCount));
 
                     var levelsValues = new ArraySegment<double>(ys, index1, index2 - index1)
                         .OrderBy(x => x)
@@ -241,7 +248,7 @@ namespace ScottPlot
                                 .ToArray())
                 .ToList();
 
-            for (int i = 0; i < levelsCount; i++)
+            for (int i = 0; i < densityLevelCount; i++)
             {
                 linePoints.Clear();
                 for (int j = 0; j < linePointsLevels.Count; j++)
@@ -252,7 +259,7 @@ namespace ScottPlot
                         linePoints.Add(linePointsLevels[j][i + 1]);
                     }
                 }
-                settings.gfxData.DrawLines(colorMapPens[i], linePoints.ToArray());
+                settings.gfxData.DrawLines(penByDensity[i], linePoints.ToArray());
             }
         }
 
@@ -338,7 +345,7 @@ namespace ScottPlot
             }
             else if (pointsPerPixelColumn > 1)
             {
-                if (levelsCount > 0 && pointsPerPixelColumn > levelsCount)
+                if (densityLevelCount > 0 && pointsPerPixelColumn > densityLevelCount)
                 {
                     if (useParallel)
                         RenderHighDensityDistributionParallel(settings, offsetPoints, columnPointCount);

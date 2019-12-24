@@ -400,7 +400,7 @@ namespace ScottPlot
             double lineWidth = 1,
             double markerSize = 5,
             string label = null,
-            Color[] colorMap = null
+            Color[] colorByDensity = null
             )
         {
             if (color == null)
@@ -416,7 +416,7 @@ namespace ScottPlot
                 markerSize: markerSize,
                 label: label,
                 useParallel: settings.misc.useParallel,
-                colorMap: colorMap
+                colorByDensity: colorByDensity
                 );
 
             settings.plottables.Add(signal);
