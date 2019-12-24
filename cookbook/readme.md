@@ -1,7 +1,7 @@
 # ScottPlot Cookbook
 The ScottPlot cookbook is a collection of small code examples which demonstrate how to create various types of plots using ScottPlot.
 
-_This cookbook was [automatically generated](/tests/Cookbook.cs) using ScottPlot 4.0.5.0_
+_This cookbook was [automatically generated](/tests/Cookbook.cs) using ScottPlot 4.0.9.0_
 
 
 ## Quickstart
@@ -1553,5 +1553,39 @@ plt.Save(600, 400, "74_Set_Visibility.png");
 ```
 
 ![](images/74_Set_Visibility.png)
+
+
+
+
+## Color By Density
+
+```cs
+// to PlotSignal(), it will use those colors to display density.
+
+string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
+
+// create a signal with some noisy data
+Random rand = new Random(0);
+int pointCount = 100_000;
+double[] signal1 = ScottPlot.DataGen.Sin(pointCount, 3);
+double[] noise = ScottPlot.DataGen.RandomNormal(rand, pointCount, 20);
+double[] data = new double[pointCount];
+for (int i = 0; i < data.Length; i++)
+    data[i] = signal1[i] + noise[i];
+
+var plt = new ScottPlot.Plot(width, height);
+
+// use a color array for displaying data from low to high density
+Color[] colors = new Color[] { Color.LightGray, Color.DarkGray, Color.Black };
+plt.PlotSignal(data, colorByDensity: colors);
+
+plt.Title("Noisy Sine Wave Colored by Density");
+plt.AxisAuto(0, .1);
+
+plt.Save(600, 400, "75_Color_By_Density.png");
+```
+
+![](images/75_Color_By_Density.png)
 
 

@@ -27,7 +27,7 @@ namespace ScottPlotDemos
                 //btnPlotTypes_Click(null, null);
                 //btnDraggableAxisLines_Click(null, null);
                 //btnSignal_Click(null, null);
-                btnTimeAxis_Click(null, null);
+                //btnTimeAxis_Click(null, null);
                 //btnFinancial_Click(null, null);
             }
         }
@@ -202,6 +202,12 @@ namespace ScottPlotDemos
         private void btnToggleVisibility_Click(object sender, EventArgs e)
         {
             using (var frm = new FormToggleVis())
+                frm.ShowDialog();
+        }
+
+        private void SignalDistribution_Click_1(object sender, EventArgs e)
+        {
+            using (var frm = new FormSignalDistribution())
                 frm.ShowDialog();
         }
     }
