@@ -26,10 +26,10 @@ namespace ScottPlotDemos
             // start with a few samples from the viridis palette
             Color[] colors = new Color[]
             {
-                ColorTranslator.FromHtml("#73D055"),
-                ColorTranslator.FromHtml("#1F968B"),
+                ColorTranslator.FromHtml("#440154"),
                 ColorTranslator.FromHtml("#39568C"),
-                ColorTranslator.FromHtml("#440154")
+                ColorTranslator.FromHtml("#1F968B"),
+                ColorTranslator.FromHtml("#73D055"),
             };
 
             // feed a distribution colormap
