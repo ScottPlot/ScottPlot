@@ -1580,22 +1580,30 @@ namespace ScottPlotTests
             // underneath all those overlapping data points. If you send an array of colors
             // to PlotSignal(), it will use those colors to display density.
 
-            // create a signal with some noisy data
+            // create an extremely noisy signal with a subtle sine wave beneath it
             Random rand = new Random(0);
             int pointCount = 100_000;
             double[] signal1 = ScottPlot.DataGen.Sin(pointCount, 3);
-            double[] noise = ScottPlot.DataGen.RandomNormal(rand, pointCount, 20);
+            double[] noise = ScottPlot.DataGen.RandomNormal(rand, pointCount, 0, 5);
             double[] data = new double[pointCount];
             for (int i = 0; i < data.Length; i++)
                 data[i] = signal1[i] + noise[i];
 
+            // plot the noisy signal using the traditional method
             var plt = new ScottPlot.Plot(width, height);
+            plt.PlotSignal(data, yOffset: -40, color: Color.Red);
 
             // use a color array for displaying data from low to high density
-            Color[] colors = new Color[] { Color.LightGray, Color.DarkGray, Color.Black };
+            Color[] colors = new Color[]
+            {
+                ColorTranslator.FromHtml("#73D055"),
+                ColorTranslator.FromHtml("#1F968B"),
+                ColorTranslator.FromHtml("#39568C"),
+                ColorTranslator.FromHtml("#440154")
+            };
             plt.PlotSignal(data, colorByDensity: colors);
 
-            plt.Title("Noisy Sine Wave Colored by Density");
+            plt.Title("Color by Density vs. Solid Color");
             plt.AxisAuto(0, .1);
 
             if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());

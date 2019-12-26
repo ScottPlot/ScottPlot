@@ -51,6 +51,7 @@
             this.btnCustomGrid = new System.Windows.Forms.Button();
             this.btnLegend = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.SignalDistribution = new System.Windows.Forms.Button();
             this.btnBarGraph = new System.Windows.Forms.Button();
             this.btnDraggableAxisLines = new System.Windows.Forms.Button();
             this.btnScatterErrorbars = new System.Windows.Forms.Button();
@@ -77,7 +78,6 @@
             this.lblGitHubUrl = new System.Windows.Forms.Label();
             this.lblVersion = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.SignalDistribution = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage3.SuspendLayout();
@@ -345,6 +345,16 @@
             this.groupBox1.TabIndex = 14;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "More Plot Types";
+            // 
+            // SignalDistribution
+            // 
+            this.SignalDistribution.Location = new System.Drawing.Point(6, 164);
+            this.SignalDistribution.Name = "SignalDistribution";
+            this.SignalDistribution.Size = new System.Drawing.Size(137, 23);
+            this.SignalDistribution.TabIndex = 14;
+            this.SignalDistribution.Text = "Signal Color by Density";
+            this.SignalDistribution.UseVisualStyleBackColor = true;
+            this.SignalDistribution.Click += new System.EventHandler(this.SignalDistribution_Click_1);
             // 
             // btnBarGraph
             // 
@@ -625,16 +635,6 @@
             this.label3.TabIndex = 8;
             this.label3.Text = "ScottPlot";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // SignalDistribution
-            // 
-            this.SignalDistribution.Location = new System.Drawing.Point(6, 164);
-            this.SignalDistribution.Name = "SignalDistribution";
-            this.SignalDistribution.Size = new System.Drawing.Size(137, 23);
-            this.SignalDistribution.TabIndex = 14;
-            this.SignalDistribution.Text = "Signal Distribution";
-            this.SignalDistribution.UseVisualStyleBackColor = true;
-            this.SignalDistribution.Click += new System.EventHandler(this.SignalDistribution_Click_1);
             // 
             // FormMain
             // 
