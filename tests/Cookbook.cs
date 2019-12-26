@@ -1596,10 +1596,10 @@ namespace ScottPlotTests
             // use a color array for displaying data from low to high density
             Color[] colors = new Color[]
             {
-                ColorTranslator.FromHtml("#73D055"),
-                ColorTranslator.FromHtml("#1F968B"),
+                ColorTranslator.FromHtml("#440154"),
                 ColorTranslator.FromHtml("#39568C"),
-                ColorTranslator.FromHtml("#440154")
+                ColorTranslator.FromHtml("#1F968B"),
+                ColorTranslator.FromHtml("#73D055"),
             };
             plt.PlotSignal(data, colorByDensity: colors);
 
