@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 
 namespace ScottPlot
 {
-    public class PlottableSignal: Plottable
+    public class PlottableSignal : Plottable
     {
         // Any changes must be sync with PlottableSignalConst
         public double[] ys;
@@ -186,7 +186,7 @@ namespace ScottPlot
                     .Where((y, i) => indexes.Contains(i));
 
                 var Points = levelsValues
-                    .Select(x => settings.GetPixel(0, x).Y)
+                    .Select(x => settings.GetPixel(0, x + yOffset).Y)
                     .Select(y => new PointF(xPx, y))
                     .ToArray();
 
@@ -244,7 +244,7 @@ namespace ScottPlot
 
             List<PointF[]> linePointsLevels = levelValues
                 .Select(x => x.levelsValues
-                                .Select(y => new PointF(x.xPx, settings.GetPixel(0, y).Y))
+                                .Select(y => new PointF(x.xPx, settings.GetPixel(0, y + yOffset).Y))
                                 .ToArray())
                 .ToList();
 
