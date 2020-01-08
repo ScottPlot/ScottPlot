@@ -23,8 +23,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WPF", "..\demos\WPF\WPF.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinFormsCore", "..\demos\WinFormsCore\WinFormsCore.csproj", "{EA451E2B-F902-4309-BC0C-58D84BB0B0B6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Linreg", "..\demos\Linreg\Linreg.csproj", "{BBD8A24A-7291-48D5-A2AF-356741EF8984}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
