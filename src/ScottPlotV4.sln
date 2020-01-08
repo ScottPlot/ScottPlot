@@ -23,6 +23,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WPF", "..\demos\WPF\WPF.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinFormsCore", "..\demos\WinFormsCore\WinFormsCore.csproj", "{EA451E2B-F902-4309-BC0C-58D84BB0B0B6}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Linreg", "..\demos\Linreg\Linreg.csproj", "{BBD8A24A-7291-48D5-A2AF-356741EF8984}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{EA451E2B-F902-4309-BC0C-58D84BB0B0B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA451E2B-F902-4309-BC0C-58D84BB0B0B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA451E2B-F902-4309-BC0C-58D84BB0B0B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBD8A24A-7291-48D5-A2AF-356741EF8984}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBD8A24A-7291-48D5-A2AF-356741EF8984}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBD8A24A-7291-48D5-A2AF-356741EF8984}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBD8A24A-7291-48D5-A2AF-356741EF8984}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -69,6 +75,7 @@ Global
 		{131209BD-82D1-4D8E-A253-BD264563B4D5} = {058D58CE-F944-478E-9548-EF801E38FAD9}
 		{38516D20-52AD-4387-8F28-8F67AD7F331F} = {058D58CE-F944-478E-9548-EF801E38FAD9}
 		{EA451E2B-F902-4309-BC0C-58D84BB0B0B6} = {058D58CE-F944-478E-9548-EF801E38FAD9}
+		{BBD8A24A-7291-48D5-A2AF-356741EF8984} = {058D58CE-F944-478E-9548-EF801E38FAD9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FBAE082A-173A-4F13-BE31-E6C070513C9C}
