@@ -79,20 +79,35 @@ namespace ScottPlot
             return ys;
         }
 
+        private static double RandomNormalValue(Random rand, double mean = 0, double stdDev = 1)
+        {
+            double u1 = 1.0 - rand.NextDouble();
+            double u2 = 1.0 - rand.NextDouble();
+            double randStdNormal = Math.Sqrt(-2.0 * Math.Log(u1)) * Math.Sin(2.0 * Math.PI * u2);
+            return mean + stdDev * randStdNormal;
+        }
+
         public static double[] RandomNormal(Random rand, int pointCount, double mean = .5, double stdDev = .5)
         {
             if (rand == null)
                 rand = new Random();
             double[] values = new double[pointCount];
             for (int i = 0; i < values.Length; i++)
-            {
-                double u1 = 1.0 - rand.NextDouble();
-                double u2 = 1.0 - rand.NextDouble();
-                double randStdNormal = Math.Sqrt(-2.0 * Math.Log(u1)) * Math.Sin(2.0 * Math.PI * u2);
-                double randNormal = mean + stdDev * randStdNormal;
-                values[i] = randNormal;
-            }
+                values[i] = RandomNormalValue(rand, mean, stdDev);
+
             return values;
+        }
+
+        public static double[] NoisyLinear(Random rand, int pointCount = 100, double slope = 1, double offset = 0, double noise = 0.1)
+        {
+            if (rand is null)
+                rand = new Random();
+
+            double[] data = new double[pointCount];
+            for (int i = 0; i < data.Length; i++)
+                data[i] = slope * i + offset + RandomNormalValue(rand, 0, noise);
+
+            return data;
         }
 
         public static double[] NoisySin(Random rand, int pointCount, double oscillations = 1, double noiseLevel = .5)
