@@ -36,6 +36,11 @@ namespace ScottPlot.Statistics
             (slope, offset) = GetCoefficients(ys, firstX, xSpacing);
         }
 
+        public override string ToString()
+        {
+            return $"Linear fit for {pointCount} points: Y = {slope}x + {offset}";
+        }
+
         private static (double, double) GetCoefficients(double[] ys, double firstX, double xSpacing)
         {
             int pointCount = ys.Length;
