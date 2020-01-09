@@ -64,7 +64,7 @@ namespace ScottPlotDemos
             Array.Sort(timesMsec);
             double median = timesMsec[(int)(timesMsec.Length / 2)];
 
-            var hist = new ScottPlot.Histogram(timesMsec);
+            var hist = new ScottPlot.Statistics.Histogram(timesMsec);
             formsPlot2.plt.Clear();
             formsPlot2.plt.PlotBar(hist.bins, hist.counts);
             formsPlot2.plt.PlotVLine(mean, lineWidth: 3, label: "mean");

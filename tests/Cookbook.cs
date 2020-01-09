@@ -1339,7 +1339,7 @@ namespace ScottPlotTests
 
             Random rand = new Random(0);
             double[] values1 = ScottPlot.DataGen.RandomNormal(rand, pointCount: 1000, mean: 50, stdDev: 20);
-            var hist1 = new ScottPlot.Histogram(values1, min: 0, max: 100);
+            var hist1 = new ScottPlot.Statistics.Histogram(values1, min: 0, max: 100);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.Title("Histogram");
@@ -1360,8 +1360,8 @@ namespace ScottPlotTests
             Random rand = new Random(0);
             double[] values1 = ScottPlot.DataGen.RandomNormal(rand, pointCount: 1000, mean: 50, stdDev: 20);
             double[] values2 = ScottPlot.DataGen.RandomNormal(rand, pointCount: 1000, mean: 45, stdDev: 25);
-            var hist1 = new ScottPlot.Histogram(values1, min: 0, max: 100);
-            var hist2 = new ScottPlot.Histogram(values2, min: 0, max: 100);
+            var hist1 = new ScottPlot.Statistics.Histogram(values1, min: 0, max: 100);
+            var hist2 = new ScottPlot.Statistics.Histogram(values2, min: 0, max: 100);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.Title("Cumulative Probability Histogram");
