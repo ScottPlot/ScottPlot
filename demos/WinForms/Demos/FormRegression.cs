@@ -53,7 +53,7 @@ namespace ScottPlotDemos
             formsPlot1.plt.AxisAuto();
 
             // perform the linear regression
-            var linreg = new ScottPlot.LinearRegressionLine(xs, ys);
+            var linreg = new ScottPlot.Statistics.LinearRegressionLine(xs, ys);
             double[] coeffecients = linreg.GetCoefficients();
             double fittedOffset = coeffecients[0];
             double pointSpacing = xs[1] - xs[0];
