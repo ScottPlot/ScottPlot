@@ -1,86 +1,95 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace ScottPlot.Statistics
 {
-    public interface IRegressionLine
+    public class LinearRegressionLine
     {
-        double[] GetCoefficients();
-        double[] Residual();
-    }
+        public readonly double slope;
+        public readonly double offset;
 
-    public class LinearRegressionLine : IRegressionLine
-    {
-        private double[] x;
-        private double[] y;
-        private double[] coefficients;
+        private readonly int pointCount;
+        private readonly double firstX;
+        private readonly double xSpacing;
+        private readonly double meanX;
 
-        public LinearRegressionLine(double[] xAxis, double[] yAxis)
+        public LinearRegressionLine(double[] xs, double[] ys)
         {
-            if (xAxis.Length != yAxis.Length)
+            if ((xs.Length != ys.Length) || (xs.Length < 2))
             {
-                throw new ArgumentException("Axes of mismatched length");
+                throw new ArgumentException("xs and ys must be the same length and have at least 2 points");
             }
 
-            x = xAxis;
-            y = yAxis;
-            coefficients = GetCoefficients();
+            // TODO: Should we need to add a check to ensure every X value is evenly spaced? 
+
+            pointCount = ys.Length;
+            firstX = xs[0];
+            xSpacing = xs[1] - xs[0];
+            meanX = xs.Average();
+            (slope, offset) = GetCoefficients(ys, firstX, xSpacing, meanX);
         }
 
-        private double y_hat(double x)
-        {//Value predicted by regression model
-         //double[] coefficients = GetCoefficients();
-
-            return coefficients[0] + coefficients[1] * x;
+        public LinearRegressionLine(double[] ys, double firstX, double xSpacing, double meanX)
+        {
+            // this constructor doesn't require an X array to be passed in at all
+            pointCount = ys.Length;
+            this.firstX = firstX;
+            this.xSpacing = xSpacing;
+            this.meanX = meanX;
+            (slope, offset) = GetCoefficients(ys, firstX, xSpacing, meanX);
         }
 
-        public double[] GetCoefficients()
-        {//y_hat = a+bx
-            double a;
-            double b;
-
-            double xMean = x.Average();
-            double yMean = y.Average();
-
+        private static (double, double) GetCoefficients(double[] ys, double firstX, double xSpacing, double meanX)
+        {
+            int pointCount = ys.Length;
+            double meanY = ys.Average();
             double sumXYResidual = 0;
             double sumXSquareResidual = 0;
 
-            for (int i = 0; i < x.Length; i++)
+            for (int i = 0; i < pointCount; i++)
             {
-                sumXYResidual += (x[i] - xMean) * (y[i] - yMean);
-                sumXSquareResidual += Math.Pow((x[i] - xMean), 2);
+                double thisX = firstX + xSpacing * i;
+                double diffFromMean = thisX - meanX;
+                sumXYResidual += diffFromMean * (ys[i] - meanY);
+                sumXSquareResidual += diffFromMean * diffFromMean;
             }
 
-            b = sumXYResidual / (sumXSquareResidual);
+            // Note: least-squares regression line always passes through (x̅,y̅)
+            double slope = sumXYResidual / (sumXSquareResidual);
+            double offset = meanY - (slope * meanX); 
 
-            a = yMean - (b * xMean);//LSRL always passes through the point (x̅,y̅)
-
-            return new double[] { a, b };
+            return (slope, offset);
         }
 
-        public double[] Residual()
+        public double GetValueAt(double x)
         {
-            //double[] coefficients = GetCoefficients();
+            return offset + slope * x;
+        }
 
-            double[] residuals = new double[y.Length];
-
-            for (int i = 0; i < y.Length; i++)
+        public double[] GetValues()
+        {
+            double[] values = new double[pointCount];
+            for (int i = 0; i < pointCount; i++)
             {
-                residuals[i] = y[i] - y_hat(x[i]);
+                double x = firstX + xSpacing * i;
+                values[i] = GetValueAt(x);
+            }
+            return values;
+        }
+
+        public double[] GetResiduals(double[] ys)
+        {
+            // the residual is the difference between the actual and predicted value
+
+            double[] residuals = new double[ys.Length];
+
+            for (int i = 0; i < ys.Length; i++)
+            {
+                double x = firstX + xSpacing * i;
+                residuals[i] = ys[i] - GetValueAt(x);
             }
 
             return residuals;
-        }
-
-        public Plot DrawResidual(Plot plot)
-        {
-            double[] residuals = Residual();
-
-            plot.PlotScatter(x, residuals, lineWidth: 0);
-
-            return plot;
         }
     }
 }
