@@ -1334,8 +1334,8 @@ plt.Save(600, 400, "64_Manual_Grid_Spacing.png");
 Random rand = new Random(0);
 double[] values1 = ScottPlot.DataGen.RandomNormal(rand, pointCount: 1000, mean: 50, stdDev: 20);
 double[] values2 = ScottPlot.DataGen.RandomNormal(rand, pointCount: 1000, mean: 45, stdDev: 25);
-var hist1 = new ScottPlot.Histogram(values1, min: 0, max: 100);
-var hist2 = new ScottPlot.Histogram(values2, min: 0, max: 100);
+var hist1 = new ScottPlot.Statistics.Histogram(values1, min: 0, max: 100);
+var hist2 = new ScottPlot.Statistics.Histogram(values2, min: 0, max: 100);
 
 var plt = new ScottPlot.Plot(width, height);
 plt.Title("Cumulative Probability Histogram");
@@ -1564,27 +1564,65 @@ plt.Save(600, 400, "74_Set_Visibility.png");
 // underneath all those overlapping data points. If you send an array of colors
 // to PlotSignal(), it will use those colors to display density.
 
-// create a signal with some noisy data
+// create an extremely noisy signal with a subtle sine wave beneath it
 Random rand = new Random(0);
 int pointCount = 100_000;
 double[] signal1 = ScottPlot.DataGen.Sin(pointCount, 3);
-double[] noise = ScottPlot.DataGen.RandomNormal(rand, pointCount, 20);
+double[] noise = ScottPlot.DataGen.RandomNormal(rand, pointCount, 0, 5);
 double[] data = new double[pointCount];
 for (int i = 0; i < data.Length; i++)
     data[i] = signal1[i] + noise[i];
 
+// plot the noisy signal using the traditional method
 var plt = new ScottPlot.Plot(width, height);
+plt.PlotSignal(data, yOffset: -40, color: Color.Red);
 
 // use a color array for displaying data from low to high density
-Color[] colors = new Color[] { Color.LightGray, Color.DarkGray, Color.Black };
+Color[] colors = new Color[]
+{
+    ColorTranslator.FromHtml("#440154"),
+    ColorTranslator.FromHtml("#39568C"),
+    ColorTranslator.FromHtml("#1F968B"),
+    ColorTranslator.FromHtml("#73D055"),
+};
 plt.PlotSignal(data, colorByDensity: colors);
 
-plt.Title("Noisy Sine Wave Colored by Density");
+plt.Title("Color by Density vs. Solid Color");
 plt.AxisAuto(0, .1);
 
 plt.Save(600, 400, "75_Color_By_Density.png");
 ```
 
 ![](images/75_Color_By_Density.png)
+
+
+
+
+## Linear Regression
+
+```cs
+// Create some linear but noisy data
+Random rand = new Random(0);
+double[] ys = ScottPlot.DataGen.NoisyLinear(rand, pointCount: 100, noise: 30);
+double[] xs = ScottPlot.DataGen.Consecutive(ys.Length);
+double x1 = xs[0];
+double x2 = xs[xs.Length - 1];
+
+// use the linear regression fitter to fit these data
+var model = new ScottPlot.Statistics.LinearRegressionLine(xs, ys);
+double y1 = model.GetValueAt(x1);
+double y2 = model.GetValueAt(x2);
+
+// plot the original data and add the regression line
+var plt = new ScottPlot.Plot(width, height);
+plt.PlotScatter(xs, ys, lineWidth: 0, label: "original data");
+plt.PlotLine(x1, y1, x2, y2, lineWidth: 3, label: "linear regression");
+plt.Legend();
+plt.Title(model.ToString());
+
+plt.Save(600, 400, "76_Linear_Regression.png");
+```
+
+![](images/76_Linear_Regression.png)
 
 
