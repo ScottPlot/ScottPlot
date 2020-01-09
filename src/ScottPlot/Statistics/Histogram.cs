@@ -6,6 +6,18 @@ using System.Threading.Tasks;
 
 namespace ScottPlot
 {
+    [Obsolete("ScottPlot.Histogram is now ScottPlot.Statistics.Histogram", true)]
+    public class Histogram
+    {
+        public Histogram(double[] values, double? min = null, double? max = null, double? binSize = null, double? binCount = null, bool ignoreOutOfBounds = true)
+        {
+            throw new NotImplementedException("ScottPlot.Histogram is now ScottPlot.Statistics.Histogram");
+        }
+    };
+}
+
+namespace ScottPlot.Statistics
+{
     public class Histogram
     {
         public double[] values;
@@ -51,7 +63,7 @@ namespace ScottPlot
                 max += binSize;
             }
 
-            bins = BinBySize((double)binSize, (double)min, (double)max);            
+            bins = BinBySize((double)binSize, (double)min, (double)max);
             counts = GetHistogram(values, bins, ignoreOutOfBounds);
             cumulativeCounts = GetCumulative(counts);
             countsFrac = GetNormalized(counts);

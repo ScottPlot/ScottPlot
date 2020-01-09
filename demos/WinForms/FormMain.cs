@@ -29,6 +29,7 @@ namespace ScottPlotDemos
                 //btnSignal_Click(null, null);
                 //btnTimeAxis_Click(null, null);
                 //btnFinancial_Click(null, null);
+                btnRegression_Click(null, null);
             }
         }
 
@@ -208,6 +209,12 @@ namespace ScottPlotDemos
         private void SignalDistribution_Click_1(object sender, EventArgs e)
         {
             using (var frm = new FormSignalDistribution())
+                frm.ShowDialog();
+        }
+
+        private void btnRegression_Click(object sender, EventArgs e)
+        {
+            using (var frm = new FormRegression())
                 frm.ShowDialog();
         }
     }
