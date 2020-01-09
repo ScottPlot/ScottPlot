@@ -78,6 +78,7 @@
             this.lblGitHubUrl = new System.Windows.Forms.Label();
             this.lblVersion = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.btnRegression = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage3.SuspendLayout();
@@ -207,10 +208,11 @@
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.btnRegression);
             this.groupBox6.Controls.Add(this.btnWavFileViewer);
             this.groupBox6.Location = new System.Drawing.Point(288, 139);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(120, 50);
+            this.groupBox6.Size = new System.Drawing.Size(120, 82);
             this.groupBox6.TabIndex = 18;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Misc";
@@ -636,6 +638,16 @@
             this.label3.Text = "ScottPlot";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // btnRegression
+            // 
+            this.btnRegression.Location = new System.Drawing.Point(6, 47);
+            this.btnRegression.Name = "btnRegression";
+            this.btnRegression.Size = new System.Drawing.Size(106, 23);
+            this.btnRegression.TabIndex = 19;
+            this.btnRegression.Text = "Linear Regression";
+            this.btnRegression.UseVisualStyleBackColor = true;
+            this.btnRegression.Click += new System.EventHandler(this.btnRegression_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -718,6 +730,7 @@
         private System.Windows.Forms.Button btnOverride;
         private System.Windows.Forms.Button btnToggleVisibility;
         private System.Windows.Forms.Button SignalDistribution;
+        private System.Windows.Forms.Button btnRegression;
     }
 }
 
