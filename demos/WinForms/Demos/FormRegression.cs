@@ -60,9 +60,11 @@ namespace ScottPlotDemos
             fittedLineLabel.Text = string.Format("Y = {0:0.00}x + {1:0.00}", fittedSlope, linreg.offset);
 
             // plot the linear regression line (as a scatter plot with just two points)
-            double[] fittedXs = new double[] { xs.First(), xs.Last() };
-            double[] fittedYs = new double[] { linreg.GetValueAt(xs.First()), linreg.GetValueAt(xs.Last()) };
-            formsPlot1.plt.PlotScatter(fittedXs, fittedYs, markerSize: 0, lineWidth: 3, color: Color.Black);
+            double x1 = xs.First();
+            double x2 = xs.Last();
+            double y1 = linreg.GetValueAt(xs.First());
+            double y2 = linreg.GetValueAt(xs.Last());
+            formsPlot1.plt.PlotLine(x1, y1, x2, y2, lineWidth: 3, color: Color.Black);
 
             // force a redraw of the user control
             formsPlot1.Render();
