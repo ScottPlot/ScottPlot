@@ -223,6 +223,12 @@
     <Compile Include="Demos\FormSignal.Designer.cs">
       <DependentUpon>FormSignal.cs</DependentUpon>
     </Compile>
+    <Compile Include="Demos\FormRegression.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Demos\FormRegression.Designer.cs">
+      <DependentUpon>FormRegression.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Demos\FormBenchmark.resx">
@@ -281,6 +287,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Demos\FormGrowingRollingBuffer.resx">
       <DependentUpon>FormGrowingRollingBuffer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Demos\FormRegression.resx">
+      <DependentUpon>FormRegression.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Demos\FormSignal.resx">
       <DependentUpon>FormSignal.cs</DependentUpon>
