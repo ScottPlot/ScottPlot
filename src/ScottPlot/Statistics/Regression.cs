@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ScottPlot.Statistics
@@ -25,16 +26,6 @@ namespace ScottPlot.Statistics
 			coefficients = GetCoefficients();
 		}
 
-		private double SetMean(double[] set) {
-			double total = 0;
-
-			foreach (double curr in set) {
-				total += curr;
-			}
-
-			return total / set.Length;
-		}
-
 		private double y_hat(double x) {//Value predicted by regression model
 			//double[] coefficients = GetCoefficients();
 
@@ -45,8 +36,8 @@ namespace ScottPlot.Statistics
 			double a;
 			double b;
 
-			double xMean=SetMean(x);
-			double yMean=SetMean(y);
+			double xMean=x.Average();
+			double yMean=y.Average();
 
 			double sumXYResidual = 0;
 			double sumXSquareResidual = 0;
