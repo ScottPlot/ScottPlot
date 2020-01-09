@@ -360,6 +360,28 @@ namespace ScottPlot
             return scatterPlot;
         }
 
+        public PlottableScatter PlotLine(
+            double x1,
+            double y1,
+            double x2,
+            double y2,
+            Color? color = null,
+            double lineWidth = 1,
+            string label = null,
+            LineStyle lineStyle = LineStyle.Solid
+            )
+        {
+            return PlotScatter(
+                xs: new double[] { x1, x2 },
+                ys: new double[] { y1, y2 },
+                color: color,
+                lineWidth: lineWidth,
+                label: label,
+                lineStyle: lineStyle,
+                markerSize: 0
+                );
+        }
+
         public PlottableScatter PlotStep(
             double[] xs,
             double[] ys,
