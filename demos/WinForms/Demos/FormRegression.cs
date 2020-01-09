@@ -36,7 +36,6 @@ namespace ScottPlotDemos
             double slope = rand.Next(-1000, 1000) / 100.0;
             double offset = rand.Next(-1000, 1000);
             int pointCount = rand.Next(50, 1000);
-            realLineLabel.Text = $"Y = {slope}x + {offset} (n={pointCount})";
             double[] ys = ScottPlot.DataGen.NoisyLinear(
                 rand: rand,
                 pointCount: pointCount,
@@ -46,7 +45,9 @@ namespace ScottPlotDemos
             );
 
             // create matching X-axis ticks
-            double[] xs = ScottPlot.DataGen.Consecutive(ys.Length, spacing: 0.01);
+            double pointSpacing = rand.Next(1, 1000) / 1000.0;
+            double[] xs = ScottPlot.DataGen.Consecutive(ys.Length, spacing: pointSpacing);
+            realLineLabel.Text = string.Format("Y = {0:0.00}x + {1:0.00} (n={2})", slope / pointSpacing, offset, pointCount);
 
             // plot data
             formsPlot1.plt.Clear();
@@ -55,21 +56,12 @@ namespace ScottPlotDemos
 
             // perform the linear regression
             var linreg = new ScottPlot.Statistics.LinearRegressionLine(xs, ys);
-            double[] coeffecients = linreg.GetCoefficients();
-            double fittedOffset = coeffecients[0];
-            double pointSpacing = xs[1] - xs[0];
-            double fittedSlope = coeffecients[1] * pointSpacing;
-            fittedLineLabel.Text = string.Format("Y = {0:0.00}x + {1:0.00}", fittedSlope, fittedOffset);
+            double fittedSlope = linreg.slope;
+            fittedLineLabel.Text = string.Format("Y = {0:0.00}x + {1:0.00}", fittedSlope, linreg.offset);
 
             // plot the linear regression line (as a scatter plot with just two points)
             double[] fittedXs = new double[] { xs.First(), xs.Last() };
-
-            double[] fittedYs = new double[] {
-                fittedSlope * xs.First() / pointSpacing + fittedOffset,
-                fittedSlope * xs.Last() / pointSpacing + fittedOffset
-            };
-
-            // plot the linear regression
+            double[] fittedYs = new double[] { linreg.GetValueAt(xs.First()), linreg.GetValueAt(xs.Last()) };
             formsPlot1.plt.PlotScatter(fittedXs, fittedYs, markerSize: 0, lineWidth: 3, color: Color.Black);
 
             // force a redraw of the user control
