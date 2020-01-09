@@ -11,7 +11,6 @@ namespace ScottPlot.Statistics
         private readonly int pointCount;
         private readonly double firstX;
         private readonly double xSpacing;
-        private readonly double meanX;
 
         public LinearRegressionLine(double[] xs, double[] ys)
         {
@@ -25,26 +24,26 @@ namespace ScottPlot.Statistics
             pointCount = ys.Length;
             firstX = xs[0];
             xSpacing = xs[1] - xs[0];
-            meanX = xs.Average();
-            (slope, offset) = GetCoefficients(ys, firstX, xSpacing, meanX);
+            (slope, offset) = GetCoefficients(ys, firstX, xSpacing);
         }
 
-        public LinearRegressionLine(double[] ys, double firstX, double xSpacing, double meanX)
+        public LinearRegressionLine(double[] ys, double firstX, double xSpacing)
         {
             // this constructor doesn't require an X array to be passed in at all
             pointCount = ys.Length;
             this.firstX = firstX;
             this.xSpacing = xSpacing;
-            this.meanX = meanX;
-            (slope, offset) = GetCoefficients(ys, firstX, xSpacing, meanX);
+            (slope, offset) = GetCoefficients(ys, firstX, xSpacing);
         }
 
-        private static (double, double) GetCoefficients(double[] ys, double firstX, double xSpacing, double meanX)
+        private static (double, double) GetCoefficients(double[] ys, double firstX, double xSpacing)
         {
             int pointCount = ys.Length;
             double meanY = ys.Average();
             double sumXYResidual = 0;
             double sumXSquareResidual = 0;
+            double spanX = firstX + pointCount * xSpacing;
+            double meanX = spanX / 2 + firstX;
 
             for (int i = 0; i < pointCount; i++)
             {
@@ -56,7 +55,7 @@ namespace ScottPlot.Statistics
 
             // Note: least-squares regression line always passes through (x̅,y̅)
             double slope = sumXYResidual / (sumXSquareResidual);
-            double offset = meanY - (slope * meanX); 
+            double offset = meanY - (slope * meanX);
 
             return (slope, offset);
         }
