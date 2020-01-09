@@ -1609,5 +1609,34 @@ namespace ScottPlotTests
             if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
             Console.WriteLine($"Saved: {fileName}");
         }
+
+        [Test]
+        public void Figure_76_Linear_Regression()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
+
+            // Create some linear but noisy data
+            Random rand = new Random(0);
+            double[] ys = ScottPlot.DataGen.NoisyLinear(rand, pointCount: 100, noise: 30);
+            double[] xs = ScottPlot.DataGen.Consecutive(ys.Length);
+            double x1 = xs[0];
+            double x2 = xs[xs.Length - 1];
+
+            // use the linear regression fitter to fit these data
+            var model = new ScottPlot.Statistics.LinearRegressionLine(xs, ys);
+            double y1 = model.GetValueAt(x1);
+            double y2 = model.GetValueAt(x2);
+
+            // plot the original data and add the regression line
+            var plt = new ScottPlot.Plot(width, height);
+            plt.PlotScatter(xs, ys, lineWidth: 0, label: "original data");
+            plt.PlotLine(x1, y1, x2, y2, lineWidth: 3, label: "linear regression");
+            plt.Legend();
+            plt.Title(model.ToString());
+
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
+        }
     }
 }
