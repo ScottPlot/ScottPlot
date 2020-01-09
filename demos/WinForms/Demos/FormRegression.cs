@@ -74,14 +74,6 @@ namespace ScottPlotDemos
 
             // force a redraw of the user control
             formsPlot1.Render();
-
-            // create a standalone plot the way Benny did
-            var plt2 = new ScottPlot.Plot(600, 400);
-            plt2 = linreg.Draw(plt2);
-            plt2 = linreg.DrawResidual(plt2);
-            string filePath = System.IO.Path.GetFullPath("benny.png");
-            plt2.SaveFig(filePath);
-            Debug.WriteLine($"Saved: {filePath}");
         }
     }
 }

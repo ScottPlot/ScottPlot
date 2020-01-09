@@ -8,7 +8,6 @@ namespace ScottPlot.Statistics
 	public interface IRegressionLine {
 		double[] GetCoefficients();
 		double[] Residual();
-		Plot Draw(Plot plot);
 	}
 
 	public class LinearRegressionLine : IRegressionLine {
@@ -65,23 +64,6 @@ namespace ScottPlot.Statistics
 			}
 
 			return residuals;
-		}
-
-		public Plot Draw(Plot plot) {
-			double[] xPoints = new double[2];
-			double[] yPoints = new double[2];
-
-			xPoints[0] = x[0];
-			yPoints[0] = y_hat(xPoints[0]);
-			xPoints[1] = x[x.Length - 1];
-			yPoints[1] = y_hat(xPoints[1]);
-
-			double middleX = (xPoints[0] + xPoints[1]) / 2.0;
-
-			plot.PlotScatter(xPoints, yPoints, markerSize: 0, lineStyle: LineStyle.Dash);
-			plot.PlotText($"ŷ = {coefficients[0]} + {coefficients[1]}x", middleX, yPoints[1], alignment: TextAlignment.middleCenter);
-
-			return plot;
 		}
 
 		public Plot DrawResidual(Plot plot) {
