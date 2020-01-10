@@ -39,6 +39,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.btnRegression = new System.Windows.Forms.Button();
             this.btnWavFileViewer = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.btnOverride = new System.Windows.Forms.Button();
@@ -78,7 +79,7 @@
             this.lblGitHubUrl = new System.Windows.Forms.Label();
             this.lblVersion = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.btnRegression = new System.Windows.Forms.Button();
+            this.btnIncoming = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage3.SuspendLayout();
@@ -216,6 +217,16 @@
             this.groupBox6.TabIndex = 18;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Misc";
+            // 
+            // btnRegression
+            // 
+            this.btnRegression.Location = new System.Drawing.Point(6, 47);
+            this.btnRegression.Name = "btnRegression";
+            this.btnRegression.Size = new System.Drawing.Size(106, 23);
+            this.btnRegression.TabIndex = 19;
+            this.btnRegression.Text = "Linear Regression";
+            this.btnRegression.UseVisualStyleBackColor = true;
+            this.btnRegression.Click += new System.EventHandler(this.btnRegression_Click);
             // 
             // btnWavFileViewer
             // 
@@ -419,6 +430,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.btnIncoming);
             this.tabPage2.Controls.Add(this.btnGrowingRoll);
             this.tabPage2.Controls.Add(this.btnGrowingCircular);
             this.tabPage2.Controls.Add(this.btnGrowingArray);
@@ -638,15 +650,15 @@
             this.label3.Text = "ScottPlot";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // btnRegression
+            // btnIncoming
             // 
-            this.btnRegression.Location = new System.Drawing.Point(6, 47);
-            this.btnRegression.Name = "btnRegression";
-            this.btnRegression.Size = new System.Drawing.Size(106, 23);
-            this.btnRegression.TabIndex = 19;
-            this.btnRegression.Text = "Linear Regression";
-            this.btnRegression.UseVisualStyleBackColor = true;
-            this.btnRegression.Click += new System.EventHandler(this.btnRegression_Click);
+            this.btnIncoming.Location = new System.Drawing.Point(6, 141);
+            this.btnIncoming.Name = "btnIncoming";
+            this.btnIncoming.Size = new System.Drawing.Size(137, 23);
+            this.btnIncoming.TabIndex = 13;
+            this.btnIncoming.Text = "Incoming Data";
+            this.btnIncoming.UseVisualStyleBackColor = true;
+            this.btnIncoming.Click += new System.EventHandler(this.btnIncoming_Click);
             // 
             // FormMain
             // 
@@ -731,6 +743,7 @@
         private System.Windows.Forms.Button btnToggleVisibility;
         private System.Windows.Forms.Button SignalDistribution;
         private System.Windows.Forms.Button btnRegression;
+        private System.Windows.Forms.Button btnIncoming;
     }
 }
 
