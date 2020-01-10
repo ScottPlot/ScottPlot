@@ -127,6 +127,12 @@
     <Compile Include="Demos\FormHoverValue.Designer.cs">
       <DependentUpon>FormHoverValue.cs</DependentUpon>
     </Compile>
+    <Compile Include="Demos\FormIncomingData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Demos\FormIncomingData.Designer.cs">
+      <DependentUpon>FormIncomingData.cs</DependentUpon>
+    </Compile>
     <Compile Include="Demos\FormLegend.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -269,6 +275,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Demos\FormHoverValue.resx">
       <DependentUpon>FormHoverValue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Demos\FormIncomingData.resx">
+      <DependentUpon>FormIncomingData.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Demos\FormLegend.resx">
       <DependentUpon>FormLegend.cs</DependentUpon>
