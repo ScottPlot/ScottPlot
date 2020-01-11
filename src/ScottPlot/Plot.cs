@@ -422,7 +422,8 @@ namespace ScottPlot
             double lineWidth = 1,
             double markerSize = 5,
             string label = null,
-            Color[] colorByDensity = null
+            Color[] colorByDensity = null,
+            int maxRenderIndex = int.MaxValue
             )
         {
             if (color == null)
@@ -438,7 +439,8 @@ namespace ScottPlot
                 markerSize: markerSize,
                 label: label,
                 useParallel: settings.misc.useParallel,
-                colorByDensity: colorByDensity
+                colorByDensity: colorByDensity,
+                maxRenderIndex: maxRenderIndex
                 );
 
             settings.plottables.Add(signal);

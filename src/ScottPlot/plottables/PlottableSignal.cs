@@ -20,10 +20,11 @@ namespace ScottPlot
         public double lineWidth;
         public Pen pen;
         public Brush brush;
+        public int maxRenderIndex;
         private Pen[] penByDensity;
         private int densityLevelCount = 0;
 
-        public PlottableSignal(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, bool useParallel, Color[] colorByDensity)
+        public PlottableSignal(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, bool useParallel, Color[] colorByDensity, int maxRenderIndex)
         {
             if (ys == null)
                 throw new Exception("Y data cannot be null");
@@ -38,6 +39,7 @@ namespace ScottPlot
             this.lineWidth = lineWidth;
             this.yOffset = yOffset;
             this.useParallel = useParallel;
+            this.maxRenderIndex = maxRenderIndex;
             pointCount = ys.Length;
             brush = new SolidBrush(color);
             pen = new Pen(color, (float)lineWidth)
@@ -68,11 +70,16 @@ namespace ScottPlot
 
         public override double[] GetLimits()
         {
+            // TODO: respect maxRenderIndex 
+            // TODO: ignore NaN
+            double yMin = ys.Min();
+            double yMax = ys.Max();
+
             double[] limits = new double[4];
             limits[0] = 0 + xOffset;
             limits[1] = samplePeriod * ys.Length + xOffset;
-            limits[2] = ys.Min() + yOffset;
-            limits[3] = ys.Max() + yOffset;
+            limits[2] = yMin + yOffset;
+            limits[3] = yMax + yOffset;
             return limits;
         }
 
@@ -91,6 +98,8 @@ namespace ScottPlot
             List<PointF> linePoints = new List<PointF>(visibleIndex2 - visibleIndex1 + 2);
             if (visibleIndex2 > ys.Length - 2)
                 visibleIndex2 = ys.Length - 2;
+            if (visibleIndex2 > maxRenderIndex)
+                visibleIndex2 = maxRenderIndex - 1;
             if (visibleIndex1 < 0)
                 visibleIndex1 = 0;
             for (int i = visibleIndex1; i <= visibleIndex2 + 1; i++)
@@ -286,6 +295,12 @@ namespace ScottPlot
                     index1 = ys.Length - 1;
                 if (index2 > ys.Length - 1)
                     index2 = ys.Length - 1;
+
+                // skip data above maxRenderIndex 
+                if (index1 > maxRenderIndex)
+                    continue;
+                if (index2 > maxRenderIndex)
+                    index2 = maxRenderIndex;
 
                 // get the min and max value for this column                
                 double lowestValue = ys[index1];
