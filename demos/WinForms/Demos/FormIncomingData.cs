@@ -13,6 +13,7 @@ namespace ScottPlotDemos
     public partial class FormIncomingData : Form
     {
         private double[] dataValues;
+        private ScottPlot.PlottableSignal signal;
 
         public FormIncomingData()
         {
@@ -20,7 +21,7 @@ namespace ScottPlotDemos
 
             int dataPoints = 100 * 60 * 60; // 1hr of 100Hz data
             dataValues = new double[dataPoints];
-            formsPlot1.plt.PlotSignal(dataValues, 100);
+            signal = formsPlot1.plt.PlotSignal(dataValues, 100);
             formsPlot1.plt.Axis(-2, 35, -100, 300);
         }
 
@@ -51,7 +52,10 @@ namespace ScottPlotDemos
         private void NewDataTimer_Tick(object sender, EventArgs e)
         {
             lastValue += (rand.NextDouble() - .5) * 10;
-            dataValues[nextIndex++] = lastValue;
+            dataValues[nextIndex] = lastValue;
+            signal.maxRenderIndex = nextIndex;
+            nextIndex += 1;
+
             LatestValueLabel.Text = string.Format("{0:0.000}", lastValue);
         }
 
