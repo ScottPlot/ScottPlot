@@ -120,7 +120,8 @@ namespace ScottPlot
             else
             {
                 // mouse is being used for click and zoom
-                if (e.Button == MouseButtons.Left && enablePanning) mouseLeftDownLocation = e.Location;
+                if (e.Button == MouseButtons.Left && ModifierKeys.HasFlag(Keys.Shift)) mouseMiddleDownLocation = e.Location;
+                else if (e.Button == MouseButtons.Left && enablePanning) mouseLeftDownLocation = e.Location;
                 else if (e.Button == MouseButtons.Right && enableZooming) mouseRightDownLocation = e.Location;
                 else if (e.Button == MouseButtons.Middle) mouseMiddleDownLocation = e.Location;
                 axisLimitsOnMouseDown = plt.Axis();
