@@ -196,6 +196,9 @@ namespace ScottPlot
             if (renderFirst)
                 RenderBitmap();
 
+            if (settings.figureSize.Width == 1 || settings.figureSize.Height == 1)
+                throw new Exception("The figure has not yet been sized (it is 1px by 1px). Resize the figure and try to save again.");
+
             filePath = System.IO.Path.GetFullPath(filePath);
             string fileFolder = System.IO.Path.GetDirectoryName(filePath);
             if (!System.IO.Directory.Exists(fileFolder))
