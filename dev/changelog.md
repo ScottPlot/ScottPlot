@@ -1,5 +1,13 @@
 # ScottPlot Changelog
 
+## ScottPlot 4.0.10
+
+* Improved density colormap (#192, #194) _Thanks @StendProg_
+* Added linear regression tools and cookbook example (#198) _Thanks @Benny121221_
+* Added `maxRenderIndex` to Signal to allow partial plotting of large arrays intended to be used with live, incoming data (#202)
+* Made _Shift + Left-click-drag_ zoom into a rectangle light middle-click-drag (in WinForms and WPF controls) to add support for mice with no middle button (#90) _Thanks @JagDTalcyon_
+
+
 ## ScottPlot 4.0.9
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-12-03_
 

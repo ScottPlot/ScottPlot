@@ -134,7 +134,9 @@ namespace ScottPlot
 
             draggingAxLine = settings.GetDraggableAxisLineUnderCursor(SDPoint(GetPixelPosition(e)));
 
-            if (e.ChangedButton == MouseButton.Left) mouseLeftDownLocation = GetPixelPosition(e);
+            bool shiftIsPressed = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
+            if (e.ChangedButton == MouseButton.Left && shiftIsPressed) mouseMiddleDownLocation = GetPixelPosition(e);
+            else if (e.ChangedButton == MouseButton.Left) mouseLeftDownLocation = GetPixelPosition(e);
             else if (e.ChangedButton == MouseButton.Right) mouseRightDownLocation = GetPixelPosition(e);
             else if (e.ChangedButton == MouseButton.Middle) mouseMiddleDownLocation = GetPixelPosition(e);
             axisLimitsOnMouseDown = plt.Axis();
