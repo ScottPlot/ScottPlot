@@ -70,16 +70,21 @@ namespace ScottPlot
 
         public override double[] GetLimits()
         {
-            // TODO: respect maxRenderIndex 
-            // TODO: ignore NaN
-            double yMin = ys.Min();
-            double yMax = ys.Max();
+            double yMin = ys[0];
+            double yMax = ys[0];
+            for (int i=0; i<maxRenderIndex; i++)
+            {
+                // TODO: ignore NaN
+                if (ys[i] < yMin) yMin = ys[i];
+                else if (ys[i] > yMax) yMax = ys[i];
+            }
 
             double[] limits = new double[4];
             limits[0] = 0 + xOffset;
-            limits[1] = samplePeriod * ys.Length + xOffset;
+            limits[1] = samplePeriod * maxRenderIndex + xOffset;
             limits[2] = yMin + yOffset;
             limits[3] = yMax + yOffset;
+
             return limits;
         }
 
