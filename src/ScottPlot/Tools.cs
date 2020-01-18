@@ -217,5 +217,13 @@ namespace ScottPlot
             for (int i = 0; i < data.Length; i++)
                 data[i] -= baselineAverage;
         }
+
+        public static double[] Log10(double[] dataIn)
+        {
+            double[] dataOut = new double[dataIn.Length];
+            for (int i = 0; i < dataOut.Length; i++)
+                dataOut[i] = Math.Log10(dataIn[i]);
+            return dataOut;
+        }
     }
 }
