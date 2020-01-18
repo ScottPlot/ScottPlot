@@ -216,6 +216,23 @@ plt.PlotPoint(25, 0.8);
 plt.PlotPoint(30, 0.3, color: Color.Magenta, markerSize: 15);
 plt.Save(600, 400, "07_Plotting_Points.png");
 </pre>
+<h2><br>Plotting Arrows</h2>
+<img src='images/08b_Plotting_Arrows.png'>
+<pre style='font-family: monospace; background-color: #DDD; padding: 10px;'>
+int pointCount = 50;
+double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+
+var plt = new ScottPlot.Plot(width, height);
+plt.PlotScatter(dataXs, dataSin);
+plt.PlotArrow(25, 0, 27, .2, label: "default");
+plt.PlotArrow(27, -.25, 23, -.5, label: "big", lineWidth: 10);
+plt.PlotArrow(12, 1, 12, 0, label: "skinny", arrowheadLength: 10);
+plt.PlotArrow(20, .6, 20, 1, label: "fat", arrowheadWidth: 10);
+plt.Legend(fixedLineWidth: false);
+
+plt.Save(600, 400, "08b_Plotting_Arrows.png");
+</pre>
 <h2><br>Plotting Text</h2>
 <img src='images/08_Plotting_Text.png'>
 <pre style='font-family: monospace; background-color: #DDD; padding: 10px;'>
