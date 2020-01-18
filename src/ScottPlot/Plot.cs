@@ -969,10 +969,23 @@ namespace ScottPlot
             bool? enable = null,
             Color? color = null,
             double? xSpacing = null,
-            double? ySpacing = null
+            double? ySpacing = null,
+            bool? enableHorizontal = null,
+            bool? enableVertical = null
             )
         {
-            settings.grid.visible = enable ?? settings.grid.visible;
+            if (enable != null)
+            {
+                settings.grid.enableHorizontal = (bool)enable;
+                settings.grid.enableVertical = (bool)enable;
+            }
+
+            if (enableHorizontal != null)
+                settings.grid.enableHorizontal = (bool)enableHorizontal;
+
+            if (enableVertical != null)
+                settings.grid.enableVertical = (bool)enableVertical;
+
             settings.grid.color = color ?? settings.grid.color;
 
             settings.ticks.manualSpacingX = (xSpacing == null) ? 0 : (double)xSpacing;
