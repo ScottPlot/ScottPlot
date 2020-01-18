@@ -1638,5 +1638,35 @@ namespace ScottPlotTests
             if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
             Console.WriteLine($"Saved: {fileName}");
         }
+
+        [Test]
+        public void Figure_77_Signal_Plot_First_N_Points()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
+
+            // Allocate memory for a large number of data points
+            double[] data = new double[1_000_000]; // start with all zeros
+
+            // Only populate the first few points with real data
+            Random rand = new Random(0);
+            int lastValueIndex = 500;
+            for (int i = 1; i <= lastValueIndex; i++)
+                data[i] = data[i - 1] + rand.NextDouble()-.5;
+
+            // A regular Signal plot would display a little data at the start but mostly zeros.
+            // Using the maxRenderIndex argument allows one to just plot the first N data points.
+            var plt = new ScottPlot.Plot(width, height);
+            var sig = plt.PlotSignal(data, maxRenderIndex: lastValueIndex);
+            plt.Title("Partial Display of a 1,000,000 Element Array");
+            plt.YLabel("Value");
+            plt.XLabel("Array Index");
+
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
+
+            // you can change the points to plot later (useful for live plots of incoming data)
+            sig.maxRenderIndex = 1234;
+        }
     }
 }
