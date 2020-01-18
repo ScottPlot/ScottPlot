@@ -1653,7 +1653,7 @@ namespace ScottPlotTests
             Random rand = new Random(0);
             int lastValueIndex = 500;
             for (int i = 1; i <= lastValueIndex; i++)
-                data[i] = data[i - 1] + rand.NextDouble()-.5;
+                data[i] = data[i - 1] + rand.NextDouble() - .5;
 
             // A regular Signal plot would display a little data at the start but mostly zeros.
             // Using the maxRenderIndex argument allows one to just plot the first N data points.
@@ -1668,6 +1668,45 @@ namespace ScottPlotTests
 
             // you can change the points to plot later (useful for live plots of incoming data)
             sig.maxRenderIndex = 1234;
+        }
+
+        [Test]
+        public void Figure_78_Log_Axis()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
+
+            var plt = new ScottPlot.MultiPlot(width: 800, height: 400, rows: 1, cols: 2);
+            var subplot1 = plt.subplots[0];
+            var subplot2 = plt.subplots[1];
+
+            // generate some interesting log-distributed data
+            int pointCount = 200;
+            double[] dataXs = new double[pointCount];
+            double[] dataYs = new double[pointCount];
+            Random rand = new Random(0);
+            for (int i = 0; i < pointCount; i++)
+            {
+                double x = 10.0 * i / pointCount;
+                dataXs[i] = x;
+                dataYs[i] = Math.Pow(2, x) + rand.NextDouble() * i;
+            }
+
+            // plot the data using a linear axis
+            subplot1.PlotScatter(dataXs, dataYs, lineWidth: 0);
+            subplot1.Title("Data (Linear Scale)");
+            subplot1.YLabel("Vertical Units");
+            subplot1.XLabel("Horizontal Units");
+            subplot1.Ticks(useMultiplierNotation: false);
+
+            // plot the same data using a log axis
+            subplot2.PlotScatter(dataXs, ScottPlot.Tools.Log10(dataYs), lineWidth: 0);
+            subplot2.Title("Data (Log Scale)");
+            subplot2.YLabel("Vertical Units (10^)");
+            subplot2.XLabel("Horizontal Units");
+
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
         }
     }
 }
