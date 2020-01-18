@@ -8,6 +8,7 @@
 * Made _Shift + Left-click-drag_ zoom into a rectangle light middle-click-drag (in WinForms and WPF controls) to add support for mice with no middle button (#90) _Thanks @JagDTalcyon_
 * Throw an exception if `SaveFig()` is called before the image is properly sized (#192) _Thanks @karimshams and @StendProg_
 * Ticks() now has arguments for `FontName` and `FontSize` (#204) _Thanks Clay_
+* Fixed a bug that caused poor layout due to incorrect title label size estimation (#205) _Thanks Clay_
 
 ## ScottPlot 4.0.9
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-12-03_
