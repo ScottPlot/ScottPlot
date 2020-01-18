@@ -230,6 +230,9 @@ namespace ScottPlot
             {
                 plottables.RemoveAt(indicesToDelete[i]);
             }
+
+            axes.x.hasBeenSet = false;
+            axes.y.hasBeenSet = false;
         }
 
         public PlottableAxLine GetDraggableAxisLineUnderCursor(Point eLocation)

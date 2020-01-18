@@ -81,5 +81,29 @@ namespace ScottPlotTests
             Assert.IsTrue(plt.GetSettings().axes.x.span > 0);
             Assert.IsTrue(plt.GetSettings().axes.y.span > 0);
         }
+
+        [Test]
+        public void Test_AutoAxis_WorksAfterClear()
+        {
+            var plt = new ScottPlot.Plot();
+
+            plt.PlotPoint(0.1, 0.1);
+            plt.PlotPoint(-0.1, -0.1);
+            plt.AxisAuto();
+            plt.GetBitmap(); // force a render
+            Assert.Greater(plt.Axis()[0], -5);
+
+            plt.PlotPoint(999, 999);
+            plt.PlotPoint(-999, -999);
+            plt.AxisAuto();
+            plt.GetBitmap(); // force a render
+            Assert.Less(plt.Axis()[0], -800);
+
+            plt.Clear();
+            plt.PlotPoint(0.1, 0.1);
+            plt.PlotPoint(-0.1, -0.1);
+            plt.GetBitmap(); // force a render
+            Assert.Greater(plt.Axis()[0], -5);
+        }
     }
 }
