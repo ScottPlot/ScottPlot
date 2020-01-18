@@ -304,6 +304,29 @@ plt.Save(600, 400, "07_Plotting_Points.png");
 
 
 
+## Plotting Arrows
+
+```cs
+int pointCount = 50;
+double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+
+var plt = new ScottPlot.Plot(width, height);
+plt.PlotScatter(dataXs, dataSin);
+plt.PlotArrow(25, 0, 27, .2, label: "default");
+plt.PlotArrow(27, -.25, 23, -.5, label: "big", lineWidth: 10);
+plt.PlotArrow(12, 1, 12, 0, label: "skinny", arrowheadLength: 10);
+plt.PlotArrow(20, .6, 20, 1, label: "fat", arrowheadWidth: 10);
+plt.Legend(fixedLineWidth: false);
+
+plt.Save(600, 400, "08b_Plotting_Arrows.png");
+```
+
+![](images/08b_Plotting_Arrows.png)
+
+
+
+
 ## Plotting Text
 
 ```cs
