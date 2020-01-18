@@ -72,7 +72,7 @@ namespace ScottPlot
         {
             double yMin = ys[0];
             double yMax = ys[0];
-            for (int i=0; i<maxRenderIndex; i++)
+            for (int i=0; i<Math.Min(maxRenderIndex, ys.Length); i++)
             {
                 // TODO: ignore NaN
                 if (ys[i] < yMin) yMin = ys[i];
