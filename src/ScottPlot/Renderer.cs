@@ -24,25 +24,28 @@ namespace ScottPlot
 
         public static void DataGrid(Settings settings)
         {
-            if (!settings.grid.visible)
-                return;
-
             Pen pen = new Pen(settings.grid.color);
 
-            for (int i = 0; i < settings.ticks.x.tickPositionsMajor.Length; i++)
+            if (settings.grid.enableVertical)
             {
-                double value = settings.ticks.x.tickPositionsMajor[i];
-                double unitsFromAxisEdge = value - settings.axes.x.min;
-                int xPx = (int)(unitsFromAxisEdge * settings.xAxisScale);
-                settings.gfxData.DrawLine(pen, xPx, 0, xPx, settings.dataSize.Height);
+                for (int i = 0; i < settings.ticks.x.tickPositionsMajor.Length; i++)
+                {
+                    double value = settings.ticks.x.tickPositionsMajor[i];
+                    double unitsFromAxisEdge = value - settings.axes.x.min;
+                    int xPx = (int)(unitsFromAxisEdge * settings.xAxisScale);
+                    settings.gfxData.DrawLine(pen, xPx, 0, xPx, settings.dataSize.Height);
+                }
             }
 
-            for (int i = 0; i < settings.ticks.y.tickPositionsMajor.Length; i++)
+            if (settings.grid.enableHorizontal)
             {
-                double value = settings.ticks.y.tickPositionsMajor[i];
-                double unitsFromAxisEdge = value - settings.axes.y.min;
-                int yPx = settings.dataSize.Height - (int)(unitsFromAxisEdge * settings.yAxisScale);
-                settings.gfxData.DrawLine(pen, 0, yPx, settings.dataSize.Width, yPx);
+                for (int i = 0; i < settings.ticks.y.tickPositionsMajor.Length; i++)
+                {
+                    double value = settings.ticks.y.tickPositionsMajor[i];
+                    double unitsFromAxisEdge = value - settings.axes.y.min;
+                    int yPx = settings.dataSize.Height - (int)(unitsFromAxisEdge * settings.yAxisScale);
+                    settings.gfxData.DrawLine(pen, 0, yPx, settings.dataSize.Width, yPx);
+                }
             }
         }
 

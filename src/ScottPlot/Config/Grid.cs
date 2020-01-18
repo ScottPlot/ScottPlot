@@ -9,7 +9,8 @@ namespace ScottPlot.Config
 {
     public class Grid
     {
-        public bool visible = true;
+        public bool enableHorizontal = true;
+        public bool enableVertical = true;
         public Color color = Color.LightGray;
     }
 }
