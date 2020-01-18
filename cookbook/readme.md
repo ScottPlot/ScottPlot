@@ -1494,6 +1494,7 @@ plt.PlotText("many documentation", 3, -.6, fontName: "comic sans ms", fontSize: 
 plt.PlotText("wow.", 10, .6, fontName: "comic sans ms", fontSize: 36, color: Color.Green, bold: true);
 plt.PlotText("NuGet", 32, 0, fontName: "comic sans ms", fontSize: 24, color: Color.Gold, bold: true);
 plt.Legend(fontName: "comic sans ms", fontSize: 16, bold: true, fontColor: Color.DarkBlue);
+plt.Ticks(fontName: "comic sans ms", fontSize: 12, color: Color.DarkBlue);
 plt.Save(600, 400, "72_Custom_Fonts.png");
 ```
 
@@ -1624,5 +1625,77 @@ plt.Save(600, 400, "76_Linear_Regression.png");
 ```
 
 ![](images/76_Linear_Regression.png)
+
+
+
+
+## Signal Plot First N Points
+
+```cs
+// Allocate memory for a large number of data points
+double[] data = new double[1_000_000]; // start with all zeros
+
+// Only populate the first few points with real data
+Random rand = new Random(0);
+int lastValueIndex = 500;
+for (int i = 1; i <= lastValueIndex; i++)
+    data[i] = data[i - 1] + rand.NextDouble() - .5;
+
+// A regular Signal plot would display a little data at the start but mostly zeros.
+// Using the maxRenderIndex argument allows one to just plot the first N data points.
+var plt = new ScottPlot.Plot(width, height);
+var sig = plt.PlotSignal(data, maxRenderIndex: lastValueIndex);
+plt.Title("Partial Display of a 1,000,000 Element Array");
+plt.YLabel("Value");
+plt.XLabel("Array Index");
+
+plt.Save(600, 400, "77_Signal_Plot_First_N_Points.png");
+
+
+// you can change the points to plot later (useful for live plots of incoming data)
+sig.maxRenderIndex = 1234;
+```
+
+![](images/77_Signal_Plot_First_N_Points.png)
+
+
+
+
+## Log Axis
+
+```cs
+var plt = new ScottPlot.MultiPlot(width: 800, height: 400, rows: 1, cols: 2);
+var subplot1 = plt.subplots[0];
+var subplot2 = plt.subplots[1];
+
+// generate some interesting log-distributed data
+int pointCount = 200;
+double[] dataXs = new double[pointCount];
+double[] dataYs = new double[pointCount];
+Random rand = new Random(0);
+for (int i = 0; i < pointCount; i++)
+{
+    double x = 10.0 * i / pointCount;
+    dataXs[i] = x;
+    dataYs[i] = Math.Pow(2, x) + rand.NextDouble() * i;
+}
+
+// plot the data using a linear axis
+subplot1.PlotScatter(dataXs, dataYs, lineWidth: 0);
+subplot1.Title("Data (Linear Scale)");
+subplot1.YLabel("Vertical Units");
+subplot1.XLabel("Horizontal Units");
+subplot1.Ticks(useMultiplierNotation: false);
+
+// plot the same data using a log axis
+subplot2.PlotScatter(dataXs, ScottPlot.Tools.Log10(dataYs), lineWidth: 0);
+subplot2.Title("Data (Log Scale)");
+subplot2.YLabel("Vertical Units (10^)");
+subplot2.XLabel("Horizontal Units");
+
+plt.Save(600, 400, "78_Log_Axis.png");
+```
+
+![](images/78_Log_Axis.png)
 
 
