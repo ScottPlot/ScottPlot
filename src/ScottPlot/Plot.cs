@@ -899,7 +899,9 @@ namespace ScottPlot
             bool? rulerModeX = null,
             bool? rulerModeY = null,
             bool? invertSignX = null,
-            bool? invertSignY = null
+            bool? invertSignY = null,
+            string fontName = null,
+            float? fontSize = null
             )
         {
             if (displayTicksX != null)
@@ -930,6 +932,10 @@ namespace ScottPlot
                 settings.ticks.x.invertSign = (bool)invertSignX;
             if (invertSignY != null)
                 settings.ticks.y.invertSign = (bool)invertSignY;
+            if (fontSize == null)
+                fontSize = settings.ticks.font.Size;
+            if (fontName != null)
+                settings.ticks.font = new Font(fontName, (float)fontSize, FontStyle.Regular);
 
             // dont use offset notation if the sign is inverted
             if (settings.ticks.x.invertSign || settings.ticks.y.invertSign)
