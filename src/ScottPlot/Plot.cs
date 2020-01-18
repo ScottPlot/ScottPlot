@@ -426,11 +426,14 @@ namespace ScottPlot
             double markerSize = 5,
             string label = null,
             Color[] colorByDensity = null,
-            int maxRenderIndex = int.MaxValue
+            int? maxRenderIndex = null
             )
         {
             if (color == null)
                 color = settings.GetNextColor();
+
+            if (maxRenderIndex == null)
+                maxRenderIndex = ys.Length - 1;
 
             PlottableSignal signal = new PlottableSignal(
                 ys: ys,
@@ -443,7 +446,7 @@ namespace ScottPlot
                 label: label,
                 useParallel: settings.misc.useParallel,
                 colorByDensity: colorByDensity,
-                maxRenderIndex: maxRenderIndex
+                maxRenderIndex: (int)maxRenderIndex
                 );
 
             settings.plottables.Add(signal);

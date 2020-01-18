@@ -39,6 +39,8 @@ namespace ScottPlot
             this.lineWidth = lineWidth;
             this.yOffset = yOffset;
             this.useParallel = useParallel;
+            if ((maxRenderIndex > ys.Length - 1) || maxRenderIndex < 0)
+                throw new ArgumentException("maxRenderIndex must be a valid index for ys[]");
             this.maxRenderIndex = maxRenderIndex;
             pointCount = ys.Length;
             brush = new SolidBrush(color);
@@ -72,7 +74,7 @@ namespace ScottPlot
         {
             double yMin = ys[0];
             double yMax = ys[0];
-            for (int i=0; i<Math.Min(maxRenderIndex, ys.Length); i++)
+            for (int i = 0; i < maxRenderIndex; i++)
             {
                 // TODO: ignore NaN
                 if (ys[i] < yMin) yMin = ys[i];
