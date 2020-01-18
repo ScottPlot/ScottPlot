@@ -11,6 +11,7 @@
 * Fixed a bug that caused poor layout due to incorrect title label size estimation (#205) _Thanks Clay_
 * Grid() now has arguments to selectively enable/disable horizontal and vertical grid lines (#206) _Thanks Clay_
 * Added tool and cookbook example to make it easier to plot data on a log axis (#207) _Thanks @senged_
+* Arrows can be plotted using `plt.PlotArrow()` (#201) _Thanks Clay_
 
 ## ScottPlot 4.0.9
 _Published on [NuGet](https://www.nuget.org/packages?q=scottplot) on 2019-12-03_
