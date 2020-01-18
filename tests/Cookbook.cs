@@ -364,6 +364,28 @@ namespace ScottPlotTests
         }
 
         [Test]
+        public void Figure_08b_Plotting_Arrows()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
+
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+
+            var plt = new ScottPlot.Plot(width, height);
+            plt.PlotScatter(dataXs, dataSin);
+            plt.PlotArrow(25, 0, 27, .2, label: "default");
+            plt.PlotArrow(27, -.25, 23, -.5, label: "big", lineWidth: 10);
+            plt.PlotArrow(12, 1, 12, 0, label: "skinny", arrowheadLength: 10);
+            plt.PlotArrow(20, .6, 20, 1, label: "fat", arrowheadWidth: 10);
+            plt.Legend(fixedLineWidth: false);
+
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
+        }
+
+        [Test]
         public void Figure_09_Clearing_Plots()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");

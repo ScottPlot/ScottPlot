@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 
 namespace ScottPlot
@@ -361,6 +362,37 @@ namespace ScottPlot
 
             settings.plottables.Add(scatterPlot);
             return scatterPlot;
+        }
+
+        public PlottableScatter PlotArrow(
+            double tipX,
+            double tipY,
+            double baseX,
+            double baseY,
+            double lineWidth = 5,
+            float arrowheadWidth = 3,
+            float arrowheadLength = 3,
+            Color? color = null,
+            string label = null
+            )
+        {
+
+            var arrow = PlotScatter(
+                xs: new double[] { baseX, tipX },
+                ys: new double[] { baseY, tipY },
+                color: color,
+                lineWidth: lineWidth,
+                label: label,
+                markerSize: 0
+                );
+
+
+            AdjustableArrowCap arrowCap = new AdjustableArrowCap(arrowheadWidth, arrowheadLength, isFilled: true);
+
+            arrow.penLine.CustomEndCap = arrowCap;
+            arrow.penLine.StartCap = LineCap.Flat;
+
+            return arrow;
         }
 
         public PlottableScatter PlotLine(
