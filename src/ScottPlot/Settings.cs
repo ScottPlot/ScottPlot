@@ -110,7 +110,7 @@ namespace ScottPlot
             layout.yLabelWidth = Math.Max(layout.yLabelWidth, padLeft);
             layout.y2LabelWidth = Math.Max(layout.y2LabelWidth, padRight);
             layout.xLabelHeight = Math.Max(layout.xLabelHeight, padBottom);
-            layout.titleHeight = Math.Max(layout.xLabelHeight, padTop);
+            layout.titleHeight = Math.Max(layout.titleHeight, padTop);
 
             layout.Update(figureSize.Width, figureSize.Height);
             layout.tighteningOccurred = true;
