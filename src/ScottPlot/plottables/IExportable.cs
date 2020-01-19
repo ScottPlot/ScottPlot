@@ -4,6 +4,9 @@ using System.Text;
 
 namespace ScottPlot
 {
+    /// <summary>
+    /// describes Plottable objects whose data can be exported as a text file
+    /// </summary>
     public interface IExportable
     {
         void SaveCSV(string filePath);
