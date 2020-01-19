@@ -158,17 +158,20 @@ namespace ScottPlotDemos
             formsPlot1.Render();
         }
 
-        private void PlotSignalRandomWalk(int pointCount)
+        private void PlotSignalRandomWalk(int pointCount, bool useSignalConst = true)
         {
             double[] data = ScottPlot.DataGen.RandomWalk(rand, pointCount, 10, rand.NextDouble() * 10 - 5);
-            formsPlot1.plt.PlotSignalConst(data);
+            if (useSignalConst)
+                formsPlot1.plt.PlotSignalConst(data);
+            else
+                formsPlot1.plt.PlotSignal(data);
             formsPlot1.plt.AxisAuto();
             formsPlot1.Render();
         }
 
         private void BtnSignal1k_Click(object sender, EventArgs e)
         {
-            PlotSignalRandomWalk(1_000);
+            PlotSignalRandomWalk(1_000, useSignalConst: false);
         }
 
         private void BtnSignal100k_Click(object sender, EventArgs e)
