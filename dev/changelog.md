@@ -1,5 +1,9 @@
 # ScottPlot Changelog
 
+## ScottPlot 4.0.11
+* User controls now have a `cursor` property which can be set to allow custom cursors. (#187) _Thanks @gobikulandaisamy_
+* User controls now have a `mouseCoordinates` property which make it easy to get the X/Y location of the cursor. (#187) _Thanks @gobikulandaisamy_
+
 ## ScottPlot 4.0.10
 
 * Improved density colormap (#192, #194) _Thanks @StendProg_
