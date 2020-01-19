@@ -59,8 +59,7 @@ namespace ScottPlot.UserControls
             // list of plottables
             lbPlotObjects.Items.Clear();
             foreach (var plotObject in plt.GetPlottables())
-                if (plotObject is IExportable)
-                    lbPlotObjects.Items.Add(plotObject);
+                lbPlotObjects.Items.Add(plotObject);
 
             // list of color styles
             cbStyle.Items.AddRange(Enum.GetNames(typeof(Style)));
@@ -98,7 +97,7 @@ namespace ScottPlot.UserControls
                 int plotObjectIndex = lbPlotObjects.SelectedIndex;
                 var plottable = plt.GetPlottables()[plotObjectIndex];
 
-                btnExportCSV.Enabled = true;
+                btnExportCSV.Enabled = plottable is IExportable;
                 tbLabel.Enabled = true;
                 tbLabel.Text = plottable.label;
             }
