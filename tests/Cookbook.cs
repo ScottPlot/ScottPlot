@@ -1490,8 +1490,8 @@ namespace ScottPlotTests
             double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
 
             var plt = new ScottPlot.Plot(width, height);
-            plt.PlotScatter(dataXs, dataSin);
-            plt.GetPlottables()[0].SaveCSV("scatter.csv");
+            var scatter = plt.PlotScatter(dataXs, dataSin);
+            scatter.SaveCSV("scatter.csv");
             if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
             Console.WriteLine($"Saved: {fileName}");
         }
@@ -1506,8 +1506,8 @@ namespace ScottPlotTests
             double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot(width, height);
-            plt.PlotSignal(dataCos, sampleRate: 20_000);
-            plt.GetPlottables()[0].SaveCSV("signal.csv");
+            var signal = plt.PlotSignal(dataCos, sampleRate: 20_000);
+            signal.SaveCSV("signal.csv");
             if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
             Console.WriteLine($"Saved: {fileName}");
         }
