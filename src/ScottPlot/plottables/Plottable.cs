@@ -19,6 +19,5 @@ namespace ScottPlot
         public abstract void Render(Settings settings);
         public abstract override string ToString();
         public abstract double[] GetLimits();
-        public abstract void SaveCSV(string filePath);
     }
 }

@@ -7,7 +7,7 @@ using System.Drawing;
 
 namespace ScottPlot
 {
-    public class PlottableScatter : Plottable
+    public class PlottableScatter : Plottable, IExportable
     {
         public double[] xs;
         public double[] ys;
@@ -221,7 +221,7 @@ namespace ScottPlot
 
         }
 
-        public override void SaveCSV(string filePath)
+        public void SaveCSV(string filePath)
         {
             StringBuilder csv = new StringBuilder();
             for (int i = 0; i < ys.Length; i++)

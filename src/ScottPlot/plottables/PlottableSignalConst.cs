@@ -505,7 +505,7 @@ namespace ScottPlot
             return $"PlottableSignalConst with {pointCount} points ({typeof(T).Name}), trees {(TreesReady ? "" : "not")} calculated";
         }
 
-        public override void SaveCSV(string filePath)
+        public void SaveCSV(string filePath)
         {
             StringBuilder csv = new StringBuilder();
             for (int i = 0; i < ys.Length; i++)

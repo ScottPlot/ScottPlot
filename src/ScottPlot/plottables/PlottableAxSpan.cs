@@ -66,10 +66,5 @@ namespace ScottPlot
 
             settings.gfxData.FillRectangle(brush, x, y, width, height);
         }
-
-        public override void SaveCSV(string filePath)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
