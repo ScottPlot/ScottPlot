@@ -5,7 +5,6 @@
 * User controls now have a `mouseCoordinates` property which make it easy to get the X/Y location of the cursor. (#187) _Thanks @gobikulandaisamy_
 
 ## ScottPlot 4.0.10
-
 * Improved density colormap (#192, #194) _Thanks @StendProg_
 * Added linear regression tools and cookbook example (#198) _Thanks @Benny121221_
 * Added `maxRenderIndex` to Signal to allow partial plotting of large arrays intended to be used with live, incoming data (#202) _Thanks @StendProg and @plumforest_
