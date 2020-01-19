@@ -28,6 +28,7 @@ namespace ScottPlot
         public readonly Plot plt;
         private readonly Settings settings;
         private readonly bool isDesignerMode;
+        public Cursor cursor = Cursors.Arrow;
 
         private readonly double dpiScale = 1;
 
@@ -206,7 +207,7 @@ namespace ScottPlot
             }
 
             // the mouse isn't over anything
-            imagePlot.Cursor = Cursors.Arrow;
+            imagePlot.Cursor = cursor;
         }
 
         private void UserControl_MouseUp(object sender, MouseButtonEventArgs e)
