@@ -12,6 +12,7 @@ namespace ScottPlot
         public readonly Plot plt;
         private readonly Settings settings;
         private readonly bool isDesignerMode;
+        public Cursor cursor = Cursors.Arrow;
 
         ContextMenuStrip rightClickMenu;
         public FormsPlot()
@@ -187,7 +188,7 @@ namespace ScottPlot
 
             var axLineUnderCursor = settings.GetDraggableAxisLineUnderCursor(e.Location);
             if (axLineUnderCursor is null)
-                pbPlot.Cursor = Cursors.Arrow;
+                pbPlot.Cursor = cursor;
             else
                 pbPlot.Cursor = (axLineUnderCursor.vertical == true) ? Cursors.SizeWE : Cursors.SizeNS;
         }
