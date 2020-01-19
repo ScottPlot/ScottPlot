@@ -93,6 +93,7 @@ namespace ScottPlot
 
         private Point? mouseLeftDownLocation, mouseRightDownLocation, mouseMiddleDownLocation;
         private Point mouseLocation;
+        public PointF mouseCoordinates { get { return plt.CoordinateFromPixel(mouseLocation); } }
         double[] axisLimitsOnMouseDown;
         private bool isMouseDragging
         {
