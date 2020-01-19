@@ -59,7 +59,8 @@ namespace ScottPlot.UserControls
             // list of plottables
             lbPlotObjects.Items.Clear();
             foreach (var plotObject in plt.GetPlottables())
-                lbPlotObjects.Items.Add(plotObject);
+                if (plotObject is IExportable)
+                    lbPlotObjects.Items.Add(plotObject);
 
             // list of color styles
             cbStyle.Items.AddRange(Enum.GetNames(typeof(Style)));
@@ -80,7 +81,7 @@ namespace ScottPlot.UserControls
         private void BtnExportCSV_Click(object sender, EventArgs e)
         {
             int plotObjectIndex = lbPlotObjects.SelectedIndex;
-            var plottable = plt.GetPlottables()[plotObjectIndex];
+            IExportable plottable = (IExportable)plt.GetPlottables()[plotObjectIndex];
 
             SaveFileDialog savefile = new SaveFileDialog();
             savefile.Title = $"Export CSV data for {plottable}";
