@@ -108,10 +108,5 @@ namespace ScottPlot
             settings.gfxData.DrawString(text, font, brush, new PointF(0, 0));
             settings.gfxData.ResetTransform();
         }
-
-        public override void SaveCSV(string filePath)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

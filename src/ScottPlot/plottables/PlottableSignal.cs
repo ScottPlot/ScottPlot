@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 
 namespace ScottPlot
 {
-    public class PlottableSignal : Plottable
+    public class PlottableSignal : Plottable, IExportable
     {
         // Any changes must be sync with PlottableSignalConst
         public double[] ys;
@@ -388,7 +388,7 @@ namespace ScottPlot
             }
         }
 
-        public override void SaveCSV(string filePath)
+        public void SaveCSV(string filePath)
         {
             StringBuilder csv = new StringBuilder();
             for (int i = 0; i < ys.Length; i++)

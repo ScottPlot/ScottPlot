@@ -122,11 +122,6 @@ namespace ScottPlot
             }
         }
 
-        public override void SaveCSV(string filePath)
-        {
-            throw new NotImplementedException();
-        }
-
         public override string ToString()
         {
             return $"PlottableBar with {pointCount} points";
