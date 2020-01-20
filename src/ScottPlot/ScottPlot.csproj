@@ -29,8 +29,4 @@ The ScottPlot package can plot data and save images or return bitmaps.  The Scot
     <None Include="icon.ico" Pack="true" PackagePath="\" />
   </ItemGroup>
 
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="del $(OutDir)\..\*.nupkg&#xD;&#xA;del $(OutDir)\..\*.snupkg" />
-  </Target>
-
 </Project>
