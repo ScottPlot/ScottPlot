@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
 
 namespace ScottPlot
 {
@@ -70,12 +71,14 @@ namespace ScottPlot
 
         public static string VerifyFont(string fontName)
         {
-            foreach (FontFamily font in System.Drawing.FontFamily.Families)
+            foreach (FontFamily font in FontFamily.Families)
             {
                 if (fontName.ToUpper() == font.Name.ToUpper())
                     return font.Name;
             }
-            throw new Exception($"Font not found: {fontName}");
+            string defaultFontName = SystemFonts.DefaultFont.Name;
+            Debug.WriteLine($"Warning: font {fontName} not found, defaulting to {defaultFontName}");
+            return defaultFontName;
         }
 
         public static string ScientificNotation(double value, int decimalPlaces = 2, bool preceedWithPlus = true)
