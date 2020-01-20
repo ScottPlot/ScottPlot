@@ -30,14 +30,9 @@ steps:
   inputs:
     restoreSolution: 'src/ScottPlotNoGUI.sln'
 
+# build and test ScottPlot (not the user controls)
 - task: DotNetCoreCLI@2
-  displayName: 'NuGet install libgdiplus (for macOS)'
-  inputs:
-    command: 'custom'
-    custom: 'add package CoreCompat.libgdiplus'
-
-- task: DotNetCoreCLI@2
-  displayName: 'Build ScottPlot'
+  displayName: 'Build ScottPlot and Tests'
   inputs:
     packageType: 'sdk'
     command: 'build'
