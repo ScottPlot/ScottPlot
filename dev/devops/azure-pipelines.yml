@@ -5,10 +5,13 @@ strategy:
   matrix:
     MacOS:
       imageName: 'macOS-latest'
+      buildType: 'limited'
     Linux:
       imageName: 'ubuntu-latest'
+      buildType: 'limited'
     Windows:
       imageName: 'windows-latest'
+      buildType: 'full'
 
 pool:
   vmImage: $(imageName)
@@ -18,32 +21,34 @@ variables:
 
 steps:
 
+### INSTALL NUGET
 - task: NuGetToolInstaller@0
   displayName: 'Install NuGet'
 
-- script: dotnet restore 'src/ScottPlot.sln'
-  displayName: 'Restore Packages'
+### RESTORE ALL PACKAGES IN SOLUTION
+- task: NuGetCommand@2
+  displayName: 'Restore all packages'
+  inputs:
+    restoreSolution: 'src/ScottPlot.sln'
     
+### LIMITED BUILD ON LINUX/MAC
 - task: DotNetCoreCLI@2
-  displayName: 'Build ScottPlot'
+  displayName: 'Limited build'
+  condition: eq('$(buildType)', 'limited')
   inputs:
     command: 'build'
-    projects: src/ScottPlot/ScottPlot.csproj
+    projects: 'src/ScottPlotNoGUI.sln'
 
-- task: DotNetCoreCLI@2
-  displayName: 'Build Tests'
+### FULL BUILD ON WINDOWS    
+- task: VSBuild@1
+  displayName: 'Full build'
+  condition: eq('$(buildType)', 'full')
   inputs:
-    command: 'build'
-    projects: tests/ScottPlotTests.csproj
-     
+    projects: 'src/ScottPlot.sln'
+    
+### RUN TESTS
 - task: DotNetCoreCLI@2
   displayName: 'Run Tests'
   inputs:
     command: test
     projects: 'tests/ScottPlotTests.csproj'
-
-- task: VSBuild@1
-  displayName: 'Build full solution (Windows only)'
-  condition: contains(variables['agent.os'], 'Windows')
-  inputs:
-    projects: 'src/ScottPlot.sln'
