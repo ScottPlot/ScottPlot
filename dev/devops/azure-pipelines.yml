@@ -21,7 +21,7 @@ steps:
 - task: NuGetToolInstaller@0
   displayName: 'Install NuGet'
 
-- script: dotnet restore
+- script: dotnet restore 'src/ScottPlot.sln'
   displayName: 'Restore Packages'
     
 - task: DotNetCoreCLI@2
