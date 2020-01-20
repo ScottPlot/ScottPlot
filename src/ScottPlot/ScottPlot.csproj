@@ -21,6 +21,7 @@ The ScottPlot package can plot data and save images or return bitmaps.  The Scot
     <Version>4.0.11</Version>
     <AssemblyVersion>4.0.11</AssemblyVersion>
     <FileVersion>4.0.11</FileVersion>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
