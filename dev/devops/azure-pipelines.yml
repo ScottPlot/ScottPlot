@@ -7,10 +7,13 @@ strategy:
   matrix:
     MacOS:
       imageName: 'macOS-latest'
+      solution: 'src/ScottPlotNoGUI.sln'
     Linux:
       imageName: 'ubuntu-latest'
+      solution: 'src/ScottPlotNoGUI.sln'
     Windows:
       imageName: 'windows-latest'
+      solution: 'src/ScottPlot.sln'
 
 pool:
   vmImage: $(imageName)
@@ -20,43 +23,21 @@ variables:
 
 steps:
 
-# install NuGet
 - task: NuGetToolInstaller@0
   displayName: 'Install NuGet'
-
-# automatically install packages noted in the solution
+    
 - task: NuGetCommand@2
-  displayName: 'NuGet Restore Packages'
+  displayName: 'Install NuGet Packages'
   inputs:
-    restoreSolution: 'src/ScottPlotNoGUI.sln'
+    restoreSolution: '$(solution)'
 
-# build ScottPlot (not the user controls)
-- task: DotNetCoreCLI@2
-  displayName: 'Build ScottPlot and Tests'
+- task: VSBuild@1
+  displayName: 'Build $(solution)'
   inputs:
-    packageType: 'sdk'
-    command: 'build'
-    projects: |
-     src/ScottPlot/ScottPlot.csproj 
-     tests/ScottPlotTests.csproj
+    projects: '$(solution)'
 
-# test ScottPlot (not the user controls)
 - task: DotNetCoreCLI@2
-  displayName: 'Run Tests'
+  displayName: 'Test $(solution)'
   inputs:
     command: test
     projects: 'tests/ScottPlotTests.csproj'
-
-# NuGet restore all packages (including GUI stuff) if using Windows
-- task: NuGetCommand@2
-  displayName: 'NuGet Restore Full Solution'
-  condition: contains(variables['agent.os'], 'Windows')
-  inputs:
-    restoreSolution: 'src/ScottPlot.sln'
-
-# Build the entire solution (user controls and demos) if using Windows
-- task: VSBuild@1
-  displayName: 'Build Full Solution'
-  condition: contains(variables['agent.os'], 'Windows')
-  inputs:
-    solution: 'src/ScottPlot.sln'
