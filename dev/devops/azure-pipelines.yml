@@ -5,12 +5,12 @@ trigger:
 
 strategy:
   matrix:
-    linux:
+    MacOS:
+      imageName: 'macOS-latest'
+    Linux:
       imageName: 'ubuntu-latest'
-      solution: 'src/ScottPlotNoGUI.sln'
-    windows:
+    Windows:
       imageName: 'windows-latest'
-      solution: 'src/ScottPlot.sln'
 
 pool:
   vmImage: $(imageName)
@@ -20,19 +20,25 @@ variables:
 
 steps:
 
+# install NuGet
 - task: NuGetToolInstaller@0
   displayName: 'Install NuGet'
 
+# automatically install packages noted in the solution
 - task: NuGetCommand@2
   displayName: 'NuGet Restore Packages'
   inputs:
     restoreSolution: 'src/ScottPlotNoGUI.sln'
-    
-- task: NuGetCommand@2
+
+- task: DotNetCoreCLI@2
   displayName: 'NuGet install libgdiplus (for macOS)'
   inputs:
     command: 'custom'
-    arguments: 'install CoreCompat.libgdiplus'
+    custom: 'add package'
+    arguments: 'CoreCompat.libgdiplus'
+    projects: |
+     src/ScottPlot/ScottPlot.csproj 
+     tests/ScottPlotTests.csproj
 
 - task: DotNetCoreCLI@2
   displayName: 'Build ScottPlot'
