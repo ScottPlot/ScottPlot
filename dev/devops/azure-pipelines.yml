@@ -46,6 +46,10 @@ steps:
      
 ### If on Windows, build the entire solution
 
+- script: dotnet restore
+  displayName: 'Restore (Windows only)'
+  condition: contains(variables['agent.os'], 'Windows')
+
 - task: VSBuild@1
   displayName: 'Build full solution (Windows only)'
   condition: contains(variables['agent.os'], 'Windows')
