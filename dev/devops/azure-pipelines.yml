@@ -10,16 +10,18 @@ strategy:
   matrix:
     linux:
       imageName: 'ubuntu-latest'
+      solution: 'src/ScottPlotNoGUI.sln'
     mac:
       imageName: 'macOS-latest'
+      solution: 'src/ScottPlotNoGUI.sln'
     windows:
       imageName: 'windows-latest'
+      solution: 'src/ScottPlot.sln'
 
 pool:
   vmImage: $(imageName)
 
 variables:
-  solution: 'src/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
