@@ -30,13 +30,13 @@ steps:
 
 - task: NuGetCommand@2
   displayName: 'Limited package restoration'
-  condition: eq('$(buildType)', 'limited')
+  condition: eq($(buildType), 'limited')
   inputs:
     restoreSolution: 'src/ScottPlotNoGUI.sln'
     
 - task: DotNetCoreCLI@2
   displayName: 'Limited build'
-  condition: eq('$(buildType)', 'limited')
+  condition: eq($(buildType), 'limited')
   inputs:
     command: 'build'
     projects: 'src/ScottPlotNoGUI.sln'
@@ -45,13 +45,13 @@ steps:
 
 - task: NuGetCommand@2
   displayName: 'Full package restoration'
-  condition: eq('$(buildType)', 'full')
+  condition: eq($(buildType), 'full')
   inputs:
     restoreSolution: 'src/ScottPlot.sln'
     
 - task: VSBuild@1
   displayName: 'Full build'
-  condition: eq('$(buildType)', 'full')
+  condition: eq($(buildType), 'full')
   inputs:
     projects: 'src/ScottPlot.sln'
     
