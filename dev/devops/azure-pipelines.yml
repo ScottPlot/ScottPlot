@@ -6,8 +6,17 @@
 trigger:
 - master
 
+strategy:
+  matrix:
+    linux:
+      imageName: 'ubuntu-latest'
+    mac:
+      imageName: 'macOS-latest'
+    windows:
+      imageName: 'windows-latest'
+
 pool:
-  vmImage: 'windows-latest'
+  vmImage: $(imageName)
 
 variables:
   solution: 'src/*.sln'
