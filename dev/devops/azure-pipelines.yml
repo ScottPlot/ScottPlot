@@ -21,38 +21,33 @@ steps:
 - task: NuGetToolInstaller@0
   displayName: 'Install NuGet'
     
-### Build and test ScottPlot
-    
 - task: NuGetCommand@2
   displayName: 'Restore NuGet packages'
   inputs:
-    projects: |
-     src/ScottPlot/ScottPlot.csproj 
-     tests/ScottPlotTests.csproj
+    projects: 'src/ScottPlot.sln'
     
 - task: DotNetCoreCLI@2
-  displayName: 'Build ScottPlot and Tests'
+  displayName: 'Build ScottPlot'
   inputs:
     command: 'build'
-    projects: |
-     src/ScottPlot/ScottPlot.csproj 
-     tests/ScottPlotTests.csproj
+    projects: src/ScottPlot/ScottPlot.csproj
 
+- task: DotNetCoreCLI@2
+  displayName: 'Build Tests'
+  inputs:
+    command: 'build'
+    projects: tests/ScottPlotTests.csproj
+     
 - task: DotNetCoreCLI@2
   displayName: 'Run Tests'
   inputs:
     command: test
     projects: 'tests/ScottPlotTests.csproj'
      
-### If on Windows, build the entire solution (including user controls and demos)
-
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: 'src/ScottPlot.sln'
+### If on Windows, build the entire solution
 
 - task: VSBuild@1
-  condition: contains(variables['agent.os'], 'Windows')
   displayName: 'Build full solution (Windows only)'
+  condition: contains(variables['agent.os'], 'Windows')
   inputs:
     projects: 'src/ScottPlot.sln'
-    clean: true
