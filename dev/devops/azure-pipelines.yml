@@ -24,9 +24,15 @@ steps:
   displayName: 'Install NuGet'
 
 - task: NuGetCommand@2
-  displayName: 'Install NuGet Packages'
+  displayName: 'NuGet Restore Packages'
   inputs:
     restoreSolution: 'src/ScottPlotNoGUI.sln'
+    
+- task: NuGetCommand@2
+  displayName: 'NuGet install libgdiplus (for macOS)'
+  inputs:
+    command: 'custom'
+    arguments: 'install CoreCompat.libgdiplus'
 
 - task: DotNetCoreCLI@2
   displayName: 'Build ScottPlot'
