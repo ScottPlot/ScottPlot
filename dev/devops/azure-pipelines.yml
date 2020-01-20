@@ -33,6 +33,7 @@ steps:
   condition: contains(variables['agent.os'], 'Windows')
   displayName: 'Build for Windows'
   inputs:
+    clean: true
     projects: '$(solution)'
     platform: 'Any CPU'
     configuration: 'Release'
