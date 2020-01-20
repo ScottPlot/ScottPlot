@@ -5,10 +5,13 @@ strategy:
   matrix:
     MacOS:
       imageName: 'macOS-latest'
+      buildType: 'limited'
     Linux:
       imageName: 'ubuntu-latest'
+      buildType: 'limited'
     Windows:
       imageName: 'windows-latest'
+      buildType: 'full'
 
 pool:
   vmImage: $(imageName)
