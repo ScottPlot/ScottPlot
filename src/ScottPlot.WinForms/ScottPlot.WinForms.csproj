@@ -26,8 +26,4 @@
     <None Include="icon.ico" Pack="true" PackagePath="\" />
   </ItemGroup>
 
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="del $(OutDir)\..\*.nupkg&#xD;&#xA;del $(OutDir)\..\*.snupkg" />
-  </Target>
-
 </Project>
