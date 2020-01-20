@@ -27,17 +27,25 @@ steps:
   displayName: 'Install NuGet'
     
 - task: NuGetCommand@2
-  displayName: 'Install NuGet Packages'
+  displayName: 'Restore NuGet packages'
   inputs:
     restoreSolution: '$(solution)'
 
 - task: VSBuild@1
-  displayName: 'Build $(solution)'
+  condition: contains(variables['agent.os'], 'Windows')
+  displayName: 'Build for Windows'
   inputs:
     projects: '$(solution)'
-
+    
 - task: DotNetCoreCLI@2
-  displayName: 'Test $(solution)'
+  condition: or(contains(variables['agent.os'], 'Mac'), contains(variables['agent.os'], 'Linux'))
+  displayName: 'Build for Linux/MacOS'
+  inputs:
+    command: 'build'
+    projects: '$(solution)'
+  
+- task: DotNetCoreCLI@2
+  displayName: 'Run tests'
   inputs:
     command: test
-    projects: 'tests/ScottPlotTests.csproj'
+    projects: '$(solution)'
