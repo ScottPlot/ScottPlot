@@ -22,24 +22,33 @@ variables:
 steps:
 
 ### INSTALL NUGET
+
 - task: NuGetToolInstaller@0
   displayName: 'Install NuGet'
 
-### RESTORE ALL PACKAGES IN SOLUTION
+### LIMITED RESTORE AND BUILD (MacOS and Linux)
+
 - task: NuGetCommand@2
-  displayName: 'Restore all packages'
+  displayName: 'Limited package restoration'
+  condition: eq('$(buildType)', 'limited')
   inputs:
-    restoreSolution: 'src/ScottPlot.sln'
+    restoreSolution: 'src/ScottPlotNoGUI.sln'
     
-### LIMITED BUILD ON LINUX/MAC
 - task: DotNetCoreCLI@2
   displayName: 'Limited build'
   condition: eq('$(buildType)', 'limited')
   inputs:
     command: 'build'
     projects: 'src/ScottPlotNoGUI.sln'
+    
+### FULL RESTORE AND BUILD (Windows)
 
-### FULL BUILD ON WINDOWS    
+- task: NuGetCommand@2
+  displayName: 'Full package restoration'
+  condition: eq('$(buildType)', 'full')
+  inputs:
+    restoreSolution: 'src/ScottPlot.sln'
+    
 - task: VSBuild@1
   displayName: 'Full build'
   condition: eq('$(buildType)', 'full')
@@ -47,6 +56,7 @@ steps:
     projects: 'src/ScottPlot.sln'
     
 ### RUN TESTS
+
 - task: DotNetCoreCLI@2
   displayName: 'Run Tests'
   inputs:
