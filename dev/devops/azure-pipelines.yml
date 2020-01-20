@@ -26,24 +26,24 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- task: UseDotNet
+- task: UseDotNet@2
   displayName: 'Use .NET Core sdk'
   inputs:
-    packageType: sdk
+    packageType: 'sdk'
 
-- task: NuGetToolInstaller
+- task: NuGetToolInstaller@1
 
-- task: NuGetCommand
+- task: NuGetCommand@2
   inputs:
     restoreSolution: '$(solution)'
 
-- task: VSBuild
+- task: VSBuild@1
   inputs:
     solution: '$(solution)'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- task: DotNetCoreCLI
+- task: DotNetCoreCLI@2
   inputs:
     command: test
     projects: 'tests/ScottPlotTests.csproj'
