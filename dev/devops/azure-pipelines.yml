@@ -50,13 +50,13 @@ steps:
 # NuGet restore all packages (including GUI stuff) if using Windows
 - task: NuGetCommand@2
   displayName: 'NuGet Restore Full Solution'
-  condition: contains(imageName, 'windows')
+  condition: contains($(imageName), 'windows')
   inputs:
     restoreSolution: 'src/ScottPlot.sln'
 
 # Build the entire solution (user controls and demos) if using Windows
 - task: VSBuild@1
   displayName: 'Build Full Solution'
-  condition: contains(imageName, 'windows')
+  condition: contains($(imageName), 'windows')
   inputs:
     solution: 'src/ScottPlot.sln'
