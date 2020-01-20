@@ -8,7 +8,7 @@ namespace ScottPlotTests
     {
         public static void GenerateHTML(string outputPath)
         {
-            string imageFolder = System.IO.Path.Join(outputPath, "images");
+            string imageFolder = System.IO.Path.Combine(outputPath, "images");
             if (!System.IO.Directory.Exists(imageFolder))
                 throw new ArgumentException("incorrect path to cookbook image folder");
 
@@ -55,8 +55,8 @@ namespace ScottPlotTests
             html.Insert(0, "<html>");
             html.AppendLine("</html>");
 
-            System.IO.File.WriteAllText(System.IO.Path.Join(outputPath, "cookbook.html"), html.ToString());
-            System.IO.File.WriteAllText(System.IO.Path.Join(outputPath, "readme.md"), md.ToString());
+            System.IO.File.WriteAllText(System.IO.Path.Combine(outputPath, "cookbook.html"), html.ToString());
+            System.IO.File.WriteAllText(System.IO.Path.Combine(outputPath, "readme.md"), md.ToString());
         }
 
         static string GetFunctionSource(string functionName, string code)
