@@ -24,6 +24,7 @@ The ScottPlot package can plot data and save images or return bitmaps.  The Scot
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="runtime.osx.10.10-x64.CoreCompat.System.Drawing" Version="5.8.64" />
     <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
     <None Include="icon.png" Pack="true" PackagePath="\" />
     <None Include="icon.ico" Pack="true" PackagePath="\" />
