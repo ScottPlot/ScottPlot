@@ -26,6 +26,8 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
+- task: DotNetCoreInstaller@0
+
 - task: NuGetToolInstaller@1
 
 - task: NuGetCommand@2
