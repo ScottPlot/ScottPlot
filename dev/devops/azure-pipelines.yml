@@ -27,6 +27,8 @@ variables:
 
 steps:
 - task: DotNetCoreInstaller@0
+  inputs:
+    packageType: 'sdk'
 
 - task: NuGetToolInstaller@1
 
