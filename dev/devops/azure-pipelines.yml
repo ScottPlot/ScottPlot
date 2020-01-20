@@ -18,18 +18,17 @@ variables:
 
 steps:
 
-### INSTALL NUGET
+### INSTALL NUGET AND RESTORE PACKAGES
 
 - task: NuGetToolInstaller@1
   displayName: 'Install NuGet'
 
-### LIMITED RESTORE AND BUILD (MacOS and Linux)
-
 - task: NuGetCommand@2
-  displayName: 'Limited package restoration'
-  condition: not(contains(variables['agent.os'], 'Windows'))
+  displayName: 'Full package restoration'
   inputs:
-    restoreSolution: 'src/ScottPlotNoGUI.sln'
+    restoreSolution: 'src/ScottPlot.sln'
+    
+### LIMITED BUILD (MacOS and Linux)
     
 - task: DotNetCoreCLI@2
   displayName: 'Limited build'
@@ -38,13 +37,7 @@ steps:
     command: 'build'
     projects: 'src/ScottPlotNoGUI.sln'
     
-### FULL RESTORE AND BUILD (Windows)
-
-- task: NuGetCommand@2
-  displayName: 'Full package restoration'
-  condition: contains(variables['agent.os'], 'Windows')
-  inputs:
-    restoreSolution: 'src/ScottPlot.sln'
+### FULL BUILD (Windows)
     
 - task: VSBuild@1
   displayName: 'Full build'
