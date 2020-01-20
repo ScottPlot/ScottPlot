@@ -10,18 +10,9 @@ namespace ScottPlot.Config
     public class TextLabel
     {
 
-        public TextLabel()
+        public TextLabel(Graphics gfx = null)
         {
-            try
-            {
-                gfx = Graphics.FromHwnd(IntPtr.Zero);
-            }
-            finally
-            {
-                // fallback to window-less method
-                if (gfx == null)
-                    gfx = Graphics.FromImage(new Bitmap(1, 1));
-            }
+            this.gfx = gfx ?? Graphics.FromImage(new Bitmap(1, 1));
 
             // set things which can't be instantiated at the class level
             color = Color.Black;
