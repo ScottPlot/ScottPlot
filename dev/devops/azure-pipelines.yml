@@ -34,11 +34,7 @@ steps:
   displayName: 'NuGet install libgdiplus (for macOS)'
   inputs:
     command: 'custom'
-    custom: 'add package'
-    arguments: 'CoreCompat.libgdiplus'
-    projects: |
-     src/ScottPlot/ScottPlot.csproj 
-     tests/ScottPlotTests.csproj
+    custom: 'add package CoreCompat.libgdiplus'
 
 - task: DotNetCoreCLI@2
   displayName: 'Build ScottPlot'
