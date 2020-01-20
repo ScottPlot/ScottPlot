@@ -50,7 +50,7 @@ steps:
   displayName: 'Full build'
   condition: contains(variables['agent.os'], 'Windows')
   inputs:
-    projects: 'src/ScottPlot.sln'
+    solution: 'src/ScottPlot.sln'
     
 ### RUN TESTS
 
