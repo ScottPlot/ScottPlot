@@ -5,13 +5,10 @@ strategy:
   matrix:
     MacOS:
       imageName: 'macOS-latest'
-      buildType: 'limited'
     Linux:
       imageName: 'ubuntu-latest'
-      buildType: 'limited'
     Windows:
       imageName: 'windows-latest'
-      buildType: 'full'
 
 pool:
   vmImage: $(imageName)
@@ -30,13 +27,13 @@ steps:
 
 - task: NuGetCommand@2
   displayName: 'Limited package restoration'
-  condition: eq($(buildType), 'limited')
+  condition: eq(variables.buildType, 'limited')
   inputs:
     restoreSolution: 'src/ScottPlotNoGUI.sln'
     
 - task: DotNetCoreCLI@2
   displayName: 'Limited build'
-  condition: eq($(buildType), 'limited')
+  condition: eq(variables.buildType, 'limited')
   inputs:
     command: 'build'
     projects: 'src/ScottPlotNoGUI.sln'
@@ -45,13 +42,13 @@ steps:
 
 - task: NuGetCommand@2
   displayName: 'Full package restoration'
-  condition: eq($(buildType), 'full')
+  condition: eq(variables.buildType, 'full')
   inputs:
     restoreSolution: 'src/ScottPlot.sln'
     
 - task: VSBuild@1
   displayName: 'Full build'
-  condition: eq($(buildType), 'full')
+  condition: eq(variables.buildType, 'full')
   inputs:
     projects: 'src/ScottPlot.sln'
     
