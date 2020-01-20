@@ -26,7 +26,7 @@ steps:
 - task: NuGetCommand@2
   displayName: 'Full package restoration'
   inputs:
-    restoreSolution: 'src/ScottPlot.sln'
+    restoreSolution: 'src/ScottPlotV4.sln'
     
 ### LIMITED BUILD (MacOS and Linux)
     
@@ -43,7 +43,7 @@ steps:
   displayName: 'Full build'
   condition: contains(variables['agent.os'], 'Windows')
   inputs:
-    solution: 'src/ScottPlot.sln'
+    solution: 'src/ScottPlotV4.sln'
     
 ### RUN TESTS
 
