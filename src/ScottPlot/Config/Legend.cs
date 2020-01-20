@@ -9,7 +9,7 @@ namespace ScottPlot.Config
 {
     public class Legend
     {
-        public Font font = new Font("Segoe UI", 12);
+        public Font font = new Font(GlobalFont.GetDefault(), 12);
         public Color colorText = Color.Black;
         public Color colorBackground = Color.White;
         public Color colorShadow = Color.FromArgb(75, 0, 0, 0);

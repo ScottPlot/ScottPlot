@@ -141,7 +141,7 @@ namespace ScottPlot
             float padding = 3;
 
             // logo
-            FontFamily ff = new FontFamily(Tools.VerifyFont("Segoe UI"));
+            FontFamily ff = new FontFamily(GlobalFont.GetDefault());
             gfx.DrawString("ScottPlot", new Font(ff, 24, FontStyle.Bold), brushLogo, 10, 10);
             var titleSize = gfx.MeasureString("ScottPlot", new Font(ff, 24, FontStyle.Bold));
             gfx.DrawString($"version {GetVersionString()}", new Font(ff, 12, FontStyle.Italic), brushLogo, 12, (int)(10 + titleSize.Height * .7));

@@ -249,7 +249,7 @@ namespace ScottPlot
             double x,
             double y,
             Color? color = null,
-            string fontName = "Segoe UI",
+            string fontName = null,
             double fontSize = 12,
             bool bold = false,
             string label = null,
@@ -261,6 +261,9 @@ namespace ScottPlot
         {
             if (color == null)
                 color = settings.GetNextColor();
+
+            if (fontName == null)
+                fontName = GlobalFont.GetDefault();
 
             if (frameColor == null)
                 frameColor = Color.White;
@@ -874,7 +877,7 @@ namespace ScottPlot
 
         public void Legend(
             bool enableLegend = true,
-            string fontName = "Segoe UI",
+            string fontName = null,
             float fontSize = 12,
             bool bold = false,
             Color? fontColor = null,
@@ -885,6 +888,8 @@ namespace ScottPlot
             bool? fixedLineWidth = null
             )
         {
+            if(fontName == null)
+                fontName = GlobalFont.GetDefault();
             if (fontColor != null)
                 settings.legend.colorText = (Color)fontColor;
             if (backColor != null)
