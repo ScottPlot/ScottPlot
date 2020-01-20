@@ -20,7 +20,7 @@ steps:
 
 ### INSTALL NUGET
 
-- task: NuGetToolInstaller@0
+- task: NuGetToolInstaller@1
   displayName: 'Install NuGet'
 
 ### LIMITED RESTORE AND BUILD (MacOS and Linux)
