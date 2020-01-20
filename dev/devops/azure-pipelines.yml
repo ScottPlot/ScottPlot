@@ -50,4 +50,5 @@ steps:
   displayName: 'Build full solution (Windows only)'
   condition: contains(variables['agent.os'], 'Windows')
   inputs:
+    clear: true
     projects: 'src/ScottPlot.sln'
