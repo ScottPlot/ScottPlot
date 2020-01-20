@@ -30,7 +30,7 @@ steps:
   inputs:
     restoreSolution: 'src/ScottPlotNoGUI.sln'
 
-# build and test ScottPlot (not the user controls)
+# build ScottPlot (not the user controls)
 - task: DotNetCoreCLI@2
   displayName: 'Build ScottPlot and Tests'
   inputs:
@@ -40,18 +40,23 @@ steps:
      src/ScottPlot/ScottPlot.csproj 
      tests/ScottPlotTests.csproj
 
+# test ScottPlot (not the user controls)
 - task: DotNetCoreCLI@2
   displayName: 'Run Tests'
   inputs:
     command: test
     projects: 'tests/ScottPlotTests.csproj'
 
-# Build the entire solution (user controls and demos) - WINDOWS ONLY
-#- task: NuGetCommand@2
-#  inputs:
-#    restoreSolution: '$(solution)'
-#
-#- task: VSBuild@1
-#  inputs:
-#    solution: '$(solution)'
-#    configuration: '$(buildConfiguration)'
+# NuGet restore all packages (including GUI stuff) if using Windows
+- task: NuGetCommand@2
+  displayName: 'NuGet Restore Full Solution'
+  condition: contains(imageName, 'windows')
+  inputs:
+    restoreSolution: 'src/ScottPlot.sln'
+
+# Build the entire solution (user controls and demos) if using Windows
+- task: VSBuild@1
+  displayName: 'Build Full Solution'
+  condition: contains(imageName, 'windows')
+  inputs:
+    solution: 'src/ScottPlot.sln'
