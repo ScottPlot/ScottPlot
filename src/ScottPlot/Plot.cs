@@ -263,7 +263,7 @@ namespace ScottPlot
                 color = settings.GetNextColor();
 
             if (fontName == null)
-                fontName = GlobalFont.GetDefault();
+                fontName = Tools.GetDefaultFontName();
 
             if (frameColor == null)
                 frameColor = Color.White;
@@ -889,7 +889,7 @@ namespace ScottPlot
             )
         {
             if(fontName == null)
-                fontName = GlobalFont.GetDefault();
+                fontName = Tools.GetDefaultFontName();
             if (fontColor != null)
                 settings.legend.colorText = (Color)fontColor;
             if (backColor != null)
