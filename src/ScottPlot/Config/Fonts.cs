@@ -28,8 +28,13 @@ namespace ScottPlot.Config
         /// </summary>
         public static string GetDefaultFontName()
         {
+            return GetDefaultFontName(FontFamily.Families.Select(font => font.Name.ToUpper()).ToArray());
+        }
+
+        public static string GetDefaultFontName(string[] installedFonts)
+        {
             string[] preferredFonts = { "Segoe UI", "DejaVu Sans" };
-            string[] installedFonts = FontFamily.Families.Select(font => font.Name.ToUpper()).ToArray();
+            //string[] installedFonts = FontFamily.Families.Select(font => font.Name.ToUpper()).ToArray();
 
             foreach (string preferredFont in preferredFonts)
                 if (installedFonts.Contains(preferredFont.ToUpper()))
@@ -37,5 +42,6 @@ namespace ScottPlot.Config
 
             return SystemFonts.DefaultFont.Name;
         }
+
     }
 }
