@@ -12,8 +12,8 @@ namespace ScottPlot.Config
 
         public TextLabel(Graphics gfx = null)
         {
-            this.gfx = gfx ?? Graphics.FromImage(new Bitmap(1, 1));
-
+            //this.gfx = gfx ?? Graphics.FromImage(new Bitmap(1, 1));
+            this.gfx = Graphics.FromHwnd(IntPtr.Zero);
             // set things which can't be instantiated at the class level
             color = Color.Black;
             colorBackground = Color.Magenta;
