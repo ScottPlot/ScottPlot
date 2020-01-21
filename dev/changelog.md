@@ -1,6 +1,6 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.0.12
+## ScottPlot 4.0.13
 * Improved support for Linux and MacOS _Thanks @Hexxonite_
 * Improved font validation (#211, #212) _Thanks @Hexxonite and @StendProg_
 
