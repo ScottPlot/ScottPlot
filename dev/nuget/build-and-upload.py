@@ -66,7 +66,7 @@ def SetProjectVersion(csprojPath, newVersion):
     with open(csprojPath) as f:
         lines = f.read().split("\n")
     for i, line in enumerate(lines):
-        if "Version" in line and "</" in line:
+        if "Version" in line and "</" in line and not "LangVersion" in line:
             a, b = line.split(">", 1)
             b, c = b.split("<", 1)
             line = a + ">" + newVersion + "<" + c
