@@ -1,34 +1,54 @@
-# .NET Desktop
-# Build and run tests for .NET Desktop or Windows classic desktop solutions.
-# Add steps that publish symbols, save build artifacts, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
-
 trigger:
 - master
 
+strategy:
+  matrix:
+    MacOS:
+      imageName: 'macOS-latest'
+    Linux:
+      imageName: 'ubuntu-latest'
+    Windows:
+      imageName: 'windows-latest'
+
 pool:
-  vmImage: 'windows-latest'
+  vmImage: $(imageName)
 
 variables:
-  solution: 'src/*.sln'
-  buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
 steps:
+
+### INSTALL NUGET AND RESTORE PACKAGES
+
 - task: NuGetToolInstaller@1
+  displayName: 'Install NuGet'
 
 - task: NuGetCommand@2
+  displayName: 'Full package restoration'
   inputs:
-    restoreSolution: '$(solution)'
-
+    restoreSolution: 'src/ScottPlotV4.sln'
+    
+### LIMITED BUILD (MacOS and Linux)
+    
+- task: DotNetCoreCLI@2
+  displayName: 'Limited build'
+  condition: not(contains(variables['agent.os'], 'Windows'))
+  inputs:
+    command: 'build'
+    projects: 'src/ScottPlotNoGUI.sln'
+    
+### FULL BUILD (Windows)
+    
 - task: VSBuild@1
+  displayName: 'Full build'
+  condition: contains(variables['agent.os'], 'Windows')
   inputs:
-    solution: '$(solution)'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    solution: 'src/ScottPlotV4.sln'
+    
+### RUN TESTS
 
 - task: DotNetCoreCLI@2
+  displayName: 'Run Tests'
   inputs:
     command: test
     projects: 'tests/ScottPlotTests.csproj'
-    arguments: '--configuration $(buildConfiguration)'
