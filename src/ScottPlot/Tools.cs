@@ -69,16 +69,34 @@ namespace ScottPlot
             return bytes;
         }
 
-        public static string VerifyFont(string fontName)
+        /// <summary>
+        /// Returns a font name which definitely exists on the system
+        /// </summary>
+        public static string GetValidFontName(string fontName)
         {
-            foreach (FontFamily font in FontFamily.Families)
+            foreach (FontFamily installedFont in FontFamily.Families)
             {
-                if (fontName.ToUpper() == font.Name.ToUpper())
-                    return font.Name;
+                if (string.Equals(fontName, installedFont.Name, StringComparison.OrdinalIgnoreCase))
+                    return installedFont.Name;
             }
-            string defaultFontName = SystemFonts.DefaultFont.Name;
-            Debug.WriteLine($"Warning: font {fontName} not found, defaulting to {defaultFontName}");
+
+            string defaultFontName = GetDefaultFontName();
+            Debug.WriteLine($"Warning: font {fontName} was not found, defaulting to {defaultFontName}");
             return defaultFontName;
+        }
+
+        private static string GetDefaultFontName()
+        {
+            string[] preferredFonts = { "Segoe UI", "DejaVu Sans" };
+            preferredFonts = preferredFonts.Select(fontName => fontName.ToUpper()).ToArray();
+
+            string[] installedFonts = FontFamily.Families.Select(font => font.Name.ToUpper()).ToArray();
+
+            foreach (string preferredFont in preferredFonts)
+                if (installedFonts.Contains(preferredFont))
+                    return preferredFont;
+
+            return SystemFonts.DefaultFont.Name;
         }
 
         public static string ScientificNotation(double value, int decimalPlaces = 2, bool preceedWithPlus = true)

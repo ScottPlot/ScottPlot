@@ -268,7 +268,7 @@ namespace ScottPlot
             if (frameColor == null)
                 frameColor = Color.White;
 
-            fontName = ScottPlot.Tools.VerifyFont(fontName);
+            fontName = ScottPlot.Tools.GetValidFontName(fontName);
 
             PlottableText plottableText = new PlottableText(
                 text: text,
@@ -897,7 +897,7 @@ namespace ScottPlot
             if (frameColor != null)
                 settings.legend.colorFrame = (Color)frameColor;
 
-            fontName = ScottPlot.Tools.VerifyFont(fontName);
+            fontName = ScottPlot.Tools.GetValidFontName(fontName);
             FontStyle fontStyle = (bold) ? FontStyle.Bold : FontStyle.Regular;
             settings.legend.font = new Font(fontName, fontSize, fontStyle);
 
