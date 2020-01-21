@@ -32,7 +32,7 @@ namespace ScottPlot.Config
         public float fontSize = 12;
         public bool bold = false;
 
-        private string _fontName = Tools.GetDefaultFontName();
+        private string _fontName = Fonts.GetDefaultFontName();
         public string fontName
         {
             get
@@ -41,7 +41,7 @@ namespace ScottPlot.Config
             }
             set
             {
-                _fontName = Tools.GetValidFontName(value);
+                _fontName = Fonts.GetValidFontName(value);
             }
         }
 

@@ -263,12 +263,12 @@ namespace ScottPlot
                 color = settings.GetNextColor();
 
             if (fontName == null)
-                fontName = Tools.GetDefaultFontName();
+                fontName = Config.Fonts.GetDefaultFontName();
 
             if (frameColor == null)
                 frameColor = Color.White;
 
-            fontName = ScottPlot.Tools.GetValidFontName(fontName);
+            fontName = Config.Fonts.GetValidFontName(fontName);
 
             PlottableText plottableText = new PlottableText(
                 text: text,
@@ -889,7 +889,7 @@ namespace ScottPlot
             )
         {
             if(fontName == null)
-                fontName = Tools.GetDefaultFontName();
+                fontName = Config.Fonts.GetDefaultFontName();
             if (fontColor != null)
                 settings.legend.colorText = (Color)fontColor;
             if (backColor != null)
@@ -897,7 +897,7 @@ namespace ScottPlot
             if (frameColor != null)
                 settings.legend.colorFrame = (Color)frameColor;
 
-            fontName = ScottPlot.Tools.GetValidFontName(fontName);
+            fontName = Config.Fonts.GetValidFontName(fontName);
             FontStyle fontStyle = (bold) ? FontStyle.Bold : FontStyle.Regular;
             settings.legend.font = new Font(fontName, fontSize, fontStyle);
 
