@@ -9,7 +9,7 @@ namespace ScottPlot.Config
 {
     public class Ticks
     {
-        public Font font = new Font(GlobalFont.GetDefault(), 10);
+        public Font font = new Font(Tools.GetDefaultFontName(), 10);
         public readonly TickCollection x = new TickCollection(false);
         public readonly TickCollection y = new TickCollection(true);
         public int size = 5;

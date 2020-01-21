@@ -32,7 +32,7 @@ namespace ScottPlot.Config
         public float fontSize = 12;
         public bool bold = false;
 
-        private string _fontName = GlobalFont.GetDefault();
+        private string _fontName = Tools.GetDefaultFontName();
         public string fontName
         {
             get
@@ -41,15 +41,7 @@ namespace ScottPlot.Config
             }
             set
             {
-                foreach (FontFamily font in FontFamily.Families)
-                {
-                    if (fontName.ToUpper() == font.Name.ToUpper())
-                    {
-                        _fontName = value;
-                        return;
-                    }
-                }
-                throw new Exception($"Font not found: {fontName}");
+                _fontName = Tools.GetValidFontName(value);
             }
         }
 

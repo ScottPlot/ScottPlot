@@ -85,7 +85,7 @@ namespace ScottPlot
             return defaultFontName;
         }
 
-        private static string GetDefaultFontName()
+        public static string GetDefaultFontName()
         {
             string[] preferredFonts = { "Segoe UI", "DejaVu Sans" };
             preferredFonts = preferredFonts.Select(fontName => fontName.ToUpper()).ToArray();
@@ -162,7 +162,7 @@ namespace ScottPlot
             float padding = 3;
 
             // logo
-            FontFamily ff = new FontFamily(GlobalFont.GetDefault());
+            FontFamily ff = new FontFamily(Tools.GetDefaultFontName());
             gfx.DrawString("ScottPlot", new Font(ff, 24, FontStyle.Bold), brushLogo, 10, 10);
             var titleSize = gfx.MeasureString("ScottPlot", new Font(ff, 24, FontStyle.Bold));
             gfx.DrawString($"version {GetVersionString()}", new Font(ff, 12, FontStyle.Italic), brushLogo, 12, (int)(10 + titleSize.Height * .7));
