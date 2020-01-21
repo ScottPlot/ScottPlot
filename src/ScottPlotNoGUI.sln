@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.452
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot", "ScottPlot\ScottPlot.csproj", "{EE9215C6-01C1-4835-8514-3A708F9291F1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlotTests", "..\tests\ScottPlotTests.csproj", "{DDBB14B8-2B35-4B8B-83A9-4447D1E7B19B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EE9215C6-01C1-4835-8514-3A708F9291F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE9215C6-01C1-4835-8514-3A708F9291F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE9215C6-01C1-4835-8514-3A708F9291F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE9215C6-01C1-4835-8514-3A708F9291F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDBB14B8-2B35-4B8B-83A9-4447D1E7B19B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDBB14B8-2B35-4B8B-83A9-4447D1E7B19B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDBB14B8-2B35-4B8B-83A9-4447D1E7B19B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDBB14B8-2B35-4B8B-83A9-4447D1E7B19B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FBAE082A-173A-4F13-BE31-E6C070513C9C}
+	EndGlobalSection
+EndGlobal

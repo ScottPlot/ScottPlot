@@ -10,19 +10,22 @@ namespace ScottPlot.Config
     public class TextLabel
     {
 
-        public TextLabel()
+        public TextLabel(Graphics gfx = null)
         {
+            this.gfx = gfx ?? Graphics.FromImage(new Bitmap(1, 1));
+
             // set things which can't be instantiated at the class level
             color = Color.Black;
             colorBackground = Color.Magenta;
             colorBorder = Color.Black;
+            _fontName = Fonts.GetDefaultFontName();
         }
+
+        private Graphics gfx;
 
         public Color color;
         public Color colorBackground;
         public Color colorBorder;
-
-        private Graphics gfx = Graphics.FromHwnd(IntPtr.Zero);
 
         public string text = "";
         public bool visible = true;
@@ -30,7 +33,7 @@ namespace ScottPlot.Config
         public float fontSize = 12;
         public bool bold = false;
 
-        private string _fontName = "Segoe UI";
+        private string _fontName;
         public string fontName
         {
             get
@@ -39,17 +42,10 @@ namespace ScottPlot.Config
             }
             set
             {
-                foreach (FontFamily font in FontFamily.Families)
-                {
-                    if (fontName.ToUpper() == font.Name.ToUpper())
-                    {
-                        _fontName = value;
-                        return;
-                    }
-                }
-                throw new Exception($"Font not found: {fontName}");
+                _fontName = Fonts.GetValidFontName(value);
             }
         }
+
 
         public Font font
         {

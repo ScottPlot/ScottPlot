@@ -249,7 +249,7 @@ namespace ScottPlot
             double x,
             double y,
             Color? color = null,
-            string fontName = "Segoe UI",
+            string fontName = null,
             double fontSize = 12,
             bool bold = false,
             string label = null,
@@ -262,10 +262,13 @@ namespace ScottPlot
             if (color == null)
                 color = settings.GetNextColor();
 
+            if (fontName == null)
+                fontName = Config.Fonts.GetDefaultFontName();
+
             if (frameColor == null)
                 frameColor = Color.White;
 
-            fontName = ScottPlot.Tools.VerifyFont(fontName);
+            fontName = Config.Fonts.GetValidFontName(fontName);
 
             PlottableText plottableText = new PlottableText(
                 text: text,
@@ -874,7 +877,7 @@ namespace ScottPlot
 
         public void Legend(
             bool enableLegend = true,
-            string fontName = "Segoe UI",
+            string fontName = null,
             float fontSize = 12,
             bool bold = false,
             Color? fontColor = null,
@@ -885,6 +888,8 @@ namespace ScottPlot
             bool? fixedLineWidth = null
             )
         {
+            if(fontName == null)
+                fontName = Config.Fonts.GetDefaultFontName();
             if (fontColor != null)
                 settings.legend.colorText = (Color)fontColor;
             if (backColor != null)
@@ -892,7 +897,7 @@ namespace ScottPlot
             if (frameColor != null)
                 settings.legend.colorFrame = (Color)frameColor;
 
-            fontName = ScottPlot.Tools.VerifyFont(fontName);
+            fontName = Config.Fonts.GetValidFontName(fontName);
             FontStyle fontStyle = (bold) ? FontStyle.Bold : FontStyle.Regular;
             settings.legend.font = new Font(fontName, fontSize, fontStyle);
 

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
 
 namespace ScottPlot
 {
@@ -68,14 +69,10 @@ namespace ScottPlot
             return bytes;
         }
 
+        [Obsolete("use ScottPlot.Config.Fonts.GetValidFontName()", error: true)]
         public static string VerifyFont(string fontName)
         {
-            foreach (FontFamily font in System.Drawing.FontFamily.Families)
-            {
-                if (fontName.ToUpper() == font.Name.ToUpper())
-                    return font.Name;
-            }
-            throw new Exception($"Font not found: {fontName}");
+            return null;
         }
 
         public static string ScientificNotation(double value, int decimalPlaces = 2, bool preceedWithPlus = true)
@@ -141,7 +138,7 @@ namespace ScottPlot
             float padding = 3;
 
             // logo
-            FontFamily ff = new FontFamily(Tools.VerifyFont("Segoe UI"));
+            FontFamily ff = new FontFamily(Config.Fonts.GetDefaultFontName());
             gfx.DrawString("ScottPlot", new Font(ff, 24, FontStyle.Bold), brushLogo, 10, 10);
             var titleSize = gfx.MeasureString("ScottPlot", new Font(ff, 24, FontStyle.Bold));
             gfx.DrawString($"version {GetVersionString()}", new Font(ff, 12, FontStyle.Italic), brushLogo, 12, (int)(10 + titleSize.Height * .7));
