@@ -15,10 +15,8 @@ namespace ScottPlot.Config
         public static string GetValidFontName(string fontName)
         {
             foreach (FontFamily installedFont in FontFamily.Families)
-            {
-                if (string.Equals(fontName, installedFont.Name, StringComparison.OrdinalIgnoreCase))
+                if (fontName.ToUpper() == installedFont.Name.ToUpper())
                     return installedFont.Name;
-            }
 
             string defaultFontName = GetDefaultFontName();
             Debug.WriteLine($"Warning: font {fontName} was not found, defaulting to {defaultFontName}");
