@@ -69,34 +69,10 @@ namespace ScottPlot
             return bytes;
         }
 
-        /// <summary>
-        /// Returns a font name which definitely exists on the system
-        /// </summary>
-        public static string GetValidFontName(string fontName)
+        [Obsolete("use ScottPlot.Config.Fonts.GetValidFontName()", error: true)]
+        public static string VerifyFont(string fontName)
         {
-            foreach (FontFamily installedFont in FontFamily.Families)
-            {
-                if (string.Equals(fontName, installedFont.Name, StringComparison.OrdinalIgnoreCase))
-                    return installedFont.Name;
-            }
-
-            string defaultFontName = GetDefaultFontName();
-            Debug.WriteLine($"Warning: font {fontName} was not found, defaulting to {defaultFontName}");
-            return defaultFontName;
-        }
-
-        public static string GetDefaultFontName()
-        {
-            string[] preferredFonts = { "Segoe UI", "DejaVu Sans" };
-            preferredFonts = preferredFonts.Select(fontName => fontName.ToUpper()).ToArray();
-
-            string[] installedFonts = FontFamily.Families.Select(font => font.Name.ToUpper()).ToArray();
-
-            foreach (string preferredFont in preferredFonts)
-                if (installedFonts.Contains(preferredFont))
-                    return preferredFont;
-
-            return SystemFonts.DefaultFont.Name;
+            return null;
         }
 
         public static string ScientificNotation(double value, int decimalPlaces = 2, bool preceedWithPlus = true)
@@ -162,7 +138,7 @@ namespace ScottPlot
             float padding = 3;
 
             // logo
-            FontFamily ff = new FontFamily(Tools.GetDefaultFontName());
+            FontFamily ff = new FontFamily(Config.Fonts.GetDefaultFontName());
             gfx.DrawString("ScottPlot", new Font(ff, 24, FontStyle.Bold), brushLogo, 10, 10);
             var titleSize = gfx.MeasureString("ScottPlot", new Font(ff, 24, FontStyle.Bold));
             gfx.DrawString($"version {GetVersionString()}", new Font(ff, 12, FontStyle.Italic), brushLogo, 12, (int)(10 + titleSize.Height * .7));
