@@ -18,6 +18,7 @@ namespace ScottPlot.Config
             color = Color.Black;
             colorBackground = Color.Magenta;
             colorBorder = Color.Black;
+            _fontName = Fonts.GetDefaultFontName();
         }
 
         private Graphics gfx;
@@ -32,7 +33,7 @@ namespace ScottPlot.Config
         public float fontSize = 12;
         public bool bold = false;
 
-        private string _fontName = Fonts.GetDefaultFontName();
+        private string _fontName;
         public string fontName
         {
             get
