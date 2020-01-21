@@ -1,5 +1,9 @@
 # ScottPlot Changelog
 
+## ScottPlot 4.0.12
+* Improved support for Linux and MacOS _Thanks @Hexxonite_
+* Improved font validation (#211, #212) _Thanks @Hexxonite and @StendProg_
+
 ## ScottPlot 4.0.11
 * User controls now have a `cursor` property which can be set to allow custom cursors. (#187) _Thanks @gobikulandaisamy_
 * User controls now have a `mouseCoordinates` property which make it easy to get the X/Y location of the cursor. (#187) _Thanks @gobikulandaisamy_
