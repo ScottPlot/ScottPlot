@@ -17,7 +17,7 @@ namespace ScottPlot.Config
         {
             get
             {
-                return ((x.hasBeenSet) || (y.hasBeenSet));
+                return ((x.hasBeenSet) && (y.hasBeenSet));
             }
         }
 
