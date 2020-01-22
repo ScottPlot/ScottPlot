@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 
 namespace ScottPlot.Config
 {
@@ -28,12 +26,23 @@ namespace ScottPlot.Config
         /// </summary>
         public static string GetDefaultFontName()
         {
-            string[] preferredFonts = { "Segoe UI", "DejaVu Sans" };
-            string[] installedFonts = FontFamily.Families.Select(font => font.Name.ToUpper()).ToArray();
+            return GetDefaultFontName(FontFamily.Families.Select(font => font.Name));
+        }
 
-            foreach (string preferredFont in preferredFonts)
-                if (installedFonts.Contains(preferredFont.ToUpper()))
-                    return preferredFont;
+        /// <summary>
+        /// Returns the default ScottPlot font name (guaranteed to be installed on the system)
+        /// This method for ability to inject test set of fonts, main api method is GetDefaultFontName()
+        /// </summary>
+        /// <param name="installedFonts">strings containing installed fonts</param>
+        public static string GetDefaultFontName(IEnumerable<string> installedFonts)
+        {
+            string[] preferredFonts = { "Segoe UI", "DejaVu", "Sans" };
+            preferredFonts = preferredFonts.Select(f => f.ToUpper()).ToArray();
+
+            foreach (string prefferredFont in preferredFonts)
+                foreach (string installedFont in installedFonts)
+                    if (installedFont.ToUpper().Contains(prefferredFont))
+                        return installedFont;
 
             return SystemFonts.DefaultFont.Name;
         }
