@@ -52,6 +52,12 @@ steps:
   inputs:
     solution: 'src/ScottPlotV4.sln'
     
+- task: NuGetCommand@2
+  displayName: 'Full restore QuickStart'
+  condition: contains(variables['agent.os'], 'Windows')
+  inputs:
+    restoreSolution: 'doc/quickstart/*/*.sln'
+    
 - task: VSBuild@1
   displayName: 'Full build QuickStart'
   condition: contains(variables['agent.os'], 'Windows')
