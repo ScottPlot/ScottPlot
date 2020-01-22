@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ScottPlot" Version="4.0.1" />
-    <PackageReference Include="ScottPlot.WPF" Version="4.0.1" />
+    <PackageReference Include="ScottPlot" Version="4.0.13" />
+    <PackageReference Include="ScottPlot.WPF" Version="4.0.13" />
   </ItemGroup>
 
 </Project>
