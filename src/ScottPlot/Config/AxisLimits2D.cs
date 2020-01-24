@@ -6,6 +6,8 @@ namespace ScottPlot.Config
 {
     public class AxisLimits2D
     {
+        // TODO: add methods to make it easy to compare limits to determine if they are equal (useful for testing)
+
         public double x1 { get; private set; }
         public double x2 { get; private set; }
         public double y1 { get; private set; }
