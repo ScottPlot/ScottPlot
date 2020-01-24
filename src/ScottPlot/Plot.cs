@@ -1115,6 +1115,12 @@ namespace ScottPlot
 
         public void MatchLayout(Plot sourcePlot, bool horizontal = true, bool vertical = true)
         {
+            if (!sourcePlot.GetSettings(showWarning: false).axes.hasBeenSet)
+                sourcePlot.AxisAuto();
+
+            if (!settings.axes.hasBeenSet)
+                AxisAuto();
+
             Resize();
 
             var sourceLayout = sourcePlot.GetSettings(false).layout;
