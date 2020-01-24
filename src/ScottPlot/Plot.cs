@@ -1140,6 +1140,9 @@ namespace ScottPlot
             if (!sourcePlot.GetSettings(showWarning: false).axes.hasBeenSet)
                 sourcePlot.AxisAuto();
 
+            if (!settings.axes.hasBeenSet)
+                AxisAuto();
+
             if (horizontal)
             {
                 settings.axes.x.min = sourcePlot.settings.axes.x.min;
