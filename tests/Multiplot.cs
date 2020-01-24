@@ -54,6 +54,7 @@ namespace ScottPlotTests
 
             // update the lower left (index 2) plot to use the scale of the lower right (index 3)
             multiplot.subplots[2].MatchAxis(multiplot.subplots[3]);
+            multiplot.subplots[2].Title("#2 (matched to #3)");
 
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name;
             string filePath = System.IO.Path.GetFullPath(name + ".png");
