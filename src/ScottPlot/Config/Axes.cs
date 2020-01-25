@@ -53,15 +53,21 @@ namespace ScottPlot.Config
             y.max = limits[3];
         }
 
-        public void Expand(double[] limits)
+        public void Expand(double[] limits, bool xExpandOnly = false, bool yExpandOnly = false)
         {
             if ((limits == null) || (limits.Length != 4))
                 throw new ArgumentException();
 
-            x.min = Math.Min(limits[0], x.min);
-            x.max = Math.Max(limits[1], x.max);
-            y.min = Math.Min(limits[2], y.min);
-            y.max = Math.Max(limits[3], y.max);
+            if (!yExpandOnly)
+            {
+                x.min = Math.Min(limits[0], x.min);
+                x.max = Math.Max(limits[1], x.max);
+            }
+            if (!xExpandOnly)
+            {
+                y.min = Math.Min(limits[2], y.min);
+                y.max = Math.Max(limits[3], y.max);
+            }
         }
 
         public void Zoom(double xFrac = 1, double yFrac = 1, PointF? zoomCenter = null)
