@@ -148,7 +148,7 @@ namespace ScottPlot
             {
                 axes.Set(plottables2d[0].GetLimits());
                 foreach (Plottable plottable in plottables2d)
-                    axes.Expand(plottable.GetLimits());
+                    axes.Expand(plottable.GetLimits(), xExpandOnly, yExpandOnly);
             }
 
             // special case for 2d plots with no width
