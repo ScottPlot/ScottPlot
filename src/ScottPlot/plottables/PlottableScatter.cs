@@ -158,19 +158,23 @@ namespace ScottPlot
             return limits;
         }
 
+        PointF[] points;
+        PointF[] pointsStep;
         public override void Render(Settings settings)
         {
             penLine.Color = color;
             penLine.Width = (float)lineWidth;
 
-            PointF[] points = new PointF[xs.Length];
+            if (points is null)
+                points = new PointF[xs.Length];
+
             for (int i = 0; i < xs.Length; i++)
                 points[i] = settings.GetPixel(xs[i], ys[i]);
-
-            PointF[] pointsStep = null;
+            
             if (stepDisplay)
             {
-                pointsStep = new PointF[xs.Length * 2 - 1];
+                if (pointsStep is null)
+                    pointsStep = new PointF[xs.Length * 2 - 1];
                 for (int i = 0; i < points.Length; i++)
                     pointsStep[i * 2] = points[i];
                 for (int i = 0; i < points.Length - 1; i++)

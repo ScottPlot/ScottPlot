@@ -17,16 +17,58 @@ namespace ScottPlotTests
             double[] ys = ScottPlot.DataGen.RandomWalk(new Random(0), pointCount);
 
             plt.Title($"Scatter Plot ({pointCount.ToString("N0")} points)");
-            plt.PlotScatter(xs, ys, markerShape: ScottPlot.MarkerShape.none);
+            plt.PlotScatter(xs, ys, markerSize: 0);
             plt.Benchmark(true);
+
+            // the first render allocates memory for pointF arrays
+            plt.GetBitmap(true);
+            Console.WriteLine($"Render 1: {plt.GetSettings(false).benchmark}");
+
+            // subsequent renders re-use the same arrays
+            plt.GetBitmap(true);
+            Console.WriteLine($"Render 2: {plt.GetSettings(false).benchmark}");
 
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name;
             string filePath = System.IO.Path.GetFullPath(name + ".png");
             plt.SaveFig(filePath);
             Console.WriteLine($"Saved {filePath}");
-            Console.WriteLine(plt.GetSettings(false).benchmark);
 
-            // 2019-01-26: Full render of 1 object (1,000,000 points) took 1275.760 ms (0.78 Hz)
+
+            // 2019-01-26
+            //   Render 1: Full render of 1 object(1,000,000 points) took 1269.239 ms(0.79 Hz)
+            //   Render 2: Full render of 1 object(1,000,000 points) took 1229.764 ms(0.81 Hz) <-- 3% faster
+        }
+
+        [Test]
+        public void Test_Benchmark_Step()
+        {
+            var plt = new ScottPlot.Plot();
+
+            int pointCount = 1_000_000;
+            double[] xs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] ys = ScottPlot.DataGen.RandomWalk(new Random(0), pointCount);
+
+            plt.Title($"Scatter Plot ({pointCount.ToString("N0")} points)");
+            plt.PlotStep(xs, ys);
+            plt.Benchmark(true);
+
+            // the first render allocates memory for pointF arrays
+            plt.GetBitmap(true);
+            Console.WriteLine($"Render 1: {plt.GetSettings(false).benchmark}");
+
+            // subsequent renders re-use the same arrays
+            plt.GetBitmap(true);
+            Console.WriteLine($"Render 2: {plt.GetSettings(false).benchmark}");
+
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name;
+            string filePath = System.IO.Path.GetFullPath(name + ".png");
+            plt.SaveFig(filePath);
+            Console.WriteLine($"Saved {filePath}");
+
+
+            // 2019-01-26
+            //   Render 1: Full render of 1 object (1,000,000 points) took 6948.729 ms (0.14 Hz)
+            //   Render 2: Full render of 1 object (1,000,000 points) took 6838.035 ms (0.15 Hz) <-- 1.5% faster
         }
     }
 }
