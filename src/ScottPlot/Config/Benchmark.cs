@@ -43,5 +43,10 @@ namespace ScottPlot.Config
             if (plottableCount == 1)
                 text = text.Replace("objects", "object");
         }
+
+        public override string ToString()
+        {
+            return text;
+        }
     }
 }
