@@ -44,7 +44,7 @@ namespace ScottPlotTests
         {
             var plt = new ScottPlot.Plot();
 
-            int pointCount = 1_000_000;
+            int pointCount = 200_000;
             double[] xs = ScottPlot.DataGen.Consecutive(pointCount);
             double[] ys = ScottPlot.DataGen.RandomWalk(new Random(0), pointCount);
 
@@ -67,8 +67,8 @@ namespace ScottPlotTests
 
 
             // 2019-01-26
-            //   Render 1: Full render of 1 object (1,000,000 points) took 6948.729 ms (0.14 Hz)
-            //   Render 2: Full render of 1 object (1,000,000 points) took 6838.035 ms (0.15 Hz) <-- 1.5% faster
+            //   Render 1: Full render of 1 object (200,000 points) took 490.078 ms (2.04 Hz)
+            //   Render 2: Full render of 1 object (200,000 points) took 454.589 ms (2.20 Hz) <-- 7% faster
         }
     }
 }
