@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ScottPlotTests
+namespace ScottPlotTests.Cookbook
 {
     public static class Report
     {
@@ -12,7 +12,7 @@ namespace ScottPlotTests
             if (!System.IO.Directory.Exists(imageFolder))
                 throw new ArgumentException("incorrect path to cookbook image folder");
 
-            string sourcePath = System.IO.Path.GetFullPath(outputPath + "/../../../../Cookbook.cs");
+            string sourcePath = System.IO.Path.GetFullPath(outputPath + "/../../../../Cookbook/Cookbook.cs");
             if (!System.IO.File.Exists(sourcePath))
                 throw new ArgumentException("incorrect path to cookbook source code");
             string source = System.IO.File.ReadAllText(sourcePath);
