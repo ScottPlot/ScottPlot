@@ -1,5 +1,8 @@
 # ScottPlot Changelog
 
+## ScottPlot 4.0.15
+* Fixed a bug affecting the `ySpacing` argument in `Plot.Grid()` (#221) _@Thanks teejay-87_
+
 ## ScottPlot 4.0.14
 * Improved `MatchAxis()` and `MatchLayout()` (#217) _Thanks @ckovamees and @StendProg_
 
