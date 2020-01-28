@@ -3,7 +3,7 @@ using System;
 using System.Drawing;
 using System.Text;
 
-namespace ScottPlotTests
+namespace ScottPlotTests.Cookbook
 {
     [TestFixture]
     public class Cookbook
