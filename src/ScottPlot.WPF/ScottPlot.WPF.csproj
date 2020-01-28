@@ -13,9 +13,9 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <Version>4.0.14</Version>
-    <AssemblyVersion>4.0.14</AssemblyVersion>
-    <FileVersion>4.0.14</FileVersion>
+    <Version>4.0.15</Version>
+    <AssemblyVersion>4.0.15</AssemblyVersion>
+    <FileVersion>4.0.15</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
