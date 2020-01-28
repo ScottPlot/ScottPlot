@@ -125,7 +125,7 @@ namespace ScottPlot.Config
                 low = settings.axes.y.min - settings.yAxisUnitsPerPixel; // add an extra pixel to capture the edge tick
                 high = settings.axes.y.max + settings.yAxisUnitsPerPixel; // add an extra pixel to capture the edge tick
                 maxTickCount = (int)(settings.dataSize.Height / maxLabelSize.Height);
-                tickSpacing = (settings.ticks.manualSpacingX != 0) ? settings.ticks.manualSpacingY : GetIdealTickSpacing(low, high, maxTickCount);
+                tickSpacing = (settings.ticks.manualSpacingY != 0) ? settings.ticks.manualSpacingY : GetIdealTickSpacing(low, high, maxTickCount);
             }
             else
             {
