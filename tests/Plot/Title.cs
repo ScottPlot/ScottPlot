@@ -125,6 +125,11 @@ namespace ScottPlotTests.Plot
         {
             ScottPlot.Plot plt = TestTools.SamplePlotScatter();
 
+            plt.Title("test font");
+            Console.WriteLine($"Default font is: {plt.GetSettings(false).title.fontName}");
+            plt.Title("test font", fontName: System.Drawing.FontFamily.GenericSansSerif.Name);
+            Console.WriteLine($"Changed font to: {plt.GetSettings(false).title.fontName}");
+
             plt.Title(sampleLabel);
             string hashDefault = TestTools.HashedFig(plt, "default");
 
