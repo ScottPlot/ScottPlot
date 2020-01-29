@@ -110,36 +110,42 @@ namespace ScottPlot
             int dataCenterX = settings.dataSize.Width / 2 + settings.dataOrigin.X;
             int dataCenterY = settings.dataSize.Height / 2 + settings.dataOrigin.Y;
 
-            // title
-            settings.gfxFigure.DrawString(
-                    settings.title.text,
-                    settings.title.font,
-                    new SolidBrush(settings.title.color),
-                    settings.layout.title.Center,
-                    settings.misc.sfCenterCenter
-                );
+            if (settings.title.visible)
+            {
+                settings.gfxFigure.DrawString(
+                        settings.title.text,
+                        settings.title.font,
+                        new SolidBrush(settings.title.color),
+                        settings.layout.title.Center,
+                        settings.misc.sfCenterCenter
+                    );
+            }
 
-            // horizontal axis label
-            settings.gfxFigure.DrawString(
-                    settings.xLabel.text,
-                    settings.xLabel.font,
-                    new SolidBrush(settings.xLabel.color),
-                    settings.layout.xLabel.Center,
-                    settings.misc.sfCenterCenter
-                );
+            if (settings.xLabel.visible)
+            {
+                settings.gfxFigure.DrawString(
+                        settings.xLabel.text,
+                        settings.xLabel.font,
+                        new SolidBrush(settings.xLabel.color),
+                        settings.layout.xLabel.Center,
+                        settings.misc.sfCenterCenter
+                    );
+            }
 
-            // vertical axis label
-            Point originalLocation = settings.layout.yLabel.Center;
-            Point rotatedLocation = new Point(-originalLocation.Y, settings.layout.yLabel.Width - originalLocation.X);
-            settings.gfxFigure.RotateTransform(-90);
-            settings.gfxFigure.DrawString(
-                    settings.yLabel.text,
-                    settings.yLabel.font,
-                    new SolidBrush(settings.yLabel.color),
-                    rotatedLocation,
-                    settings.misc.sfCenterCenter
-                );
-            settings.gfxFigure.ResetTransform();
+            if (settings.yLabel.visible)
+            {
+                Point originalLocation = settings.layout.yLabel.Center;
+                Point rotatedLocation = new Point(-originalLocation.Y, settings.layout.yLabel.Width - originalLocation.X);
+                settings.gfxFigure.RotateTransform(-90);
+                settings.gfxFigure.DrawString(
+                        settings.yLabel.text,
+                        settings.yLabel.font,
+                        new SolidBrush(settings.yLabel.color),
+                        rotatedLocation,
+                        settings.misc.sfCenterCenter
+                    );
+                settings.gfxFigure.ResetTransform();
+            }
         }
 
         public static void FigureTicks(Settings settings)
