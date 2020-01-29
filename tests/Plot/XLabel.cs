@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace ScottPlotTests.Plot
@@ -123,12 +124,13 @@ namespace ScottPlotTests.Plot
         [Test]
         public void Test_Bold_IsSettable()
         {
-            ScottPlot.Plot plt = TestTools.SamplePlotScatter();
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                Console.WriteLine("Skipping bold test (bold font rendering with System.Drawing is only supported on Windows)");
+                return;
+            }
 
-            plt.Title("test font");
-            Console.WriteLine($"Default font is: {plt.GetSettings(false).title.fontName}");
-            plt.Title("test font", fontName: "Liberation Mono");
-            Console.WriteLine($"Changed font to: {plt.GetSettings(false).title.fontName}");
+            ScottPlot.Plot plt = TestTools.SamplePlotScatter();
 
             plt.XLabel(sampleLabel);
             string hashDefault = TestTools.HashedFig(plt, "default");
