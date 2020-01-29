@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using ScottPlot.Config;
+using System.Runtime.InteropServices;
 
 namespace ScottPlotTests
 {
@@ -7,48 +8,33 @@ namespace ScottPlotTests
     public class FontsTests
     {
         [Test]
-        public void GetDefaultFontName_SegoeUIFontPresent_ReturnSegoeFont()
+        public void Test_DefaultFont_MatchesOsExpectations()
         {
-            string[] presentFonts = new string[] { "newFont ar", "SOME font", "AnotherOne", "Arial", "Segoe UI", "Comic Sans", "onemorefont" };
-            string expected = "Segoe UI";
-            string result = Fonts.GetDefaultFontName(presentFonts);
-            Assert.AreEqual(expected, result);
-        }
+            string defaultFont = Fonts.GetDefaultFontName();
+            string defaultFontSans = Fonts.GetSansFontName();
+            string defaultFontSerif = Fonts.GetSerifFontName();
+            string defaultFontMonospace = Fonts.GetMonospaceFontName();
 
-        [Test]
-        public void GetDefaultFontName_SegoeUIFontNotPresent_ReturnDifferentFont()
-        {
-            string[] presentFonts = new string[] { "newFont ar", "SOME font", "AnotherOne", "Arial", "Comic Sans", "onemorefont" };
-            string expected = "Segoe UI";
-            string result = Fonts.GetDefaultFontName(presentFonts);
-            Assert.AreNotEqual(expected, result);
-        }
+            Assert.That(defaultFont == defaultFontSans);
 
-        [Test]
-        public void GetDefaultFontName_NoSegoeUIButSegoeUIBlackPresent_ReturnSegoeUIBlack()
-        {
-            string[] presentFonts = new string[] { "newFont ar", "SOME font", "AnotherOne", "Segoe UI Black", "Arial", "Comic Sans", "onemorefont" };
-            string expected = "Segoe UI Black";
-            string result = Fonts.GetDefaultFontName(presentFonts);
-            Assert.AreEqual(expected, result);
-        }
-
-        [Test]
-        public void GetDefaultFontName_NoSegoeUIButSomeSansPresent_ReturnSansFont()
-        {
-            string[] presentFonts = new string[] { "newFont ar", "SOME font", "AnotherOne", "Arial", "Comic Sans", "onemorefont" };
-            string expected = "Comic Sans";
-            string result = Fonts.GetDefaultFontName(presentFonts);
-            Assert.AreEqual(expected, result);
-        }
-
-        [Test]
-        public void GetDefaultFontName_NoSegoeUIButSomeSansandDejavuPresent_ReturnDejavuFont()
-        {
-            string[] presentFonts = new string[] { "newFont ar", "SOME font", "AnotherOne", "Arial", "Comic Sans", "onemorefont", "Fictional Dejavu" };
-            string expected = "Fictional Dejavu";
-            string result = Fonts.GetDefaultFontName(presentFonts);
-            Assert.AreEqual(expected, result);
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                Assert.That(defaultFontSans == "Segoe UI");
+                Assert.That(defaultFontSerif == "Times New Roman");
+                Assert.That(defaultFontMonospace == "Consolas");
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                Assert.That(defaultFontSans == "DejaVu Sans");
+                Assert.That(defaultFontSerif == "DejaVu Serif");
+                Assert.That(defaultFontMonospace == "DejaVu Sans Mono");
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                Assert.That(defaultFontSans == "Helvetica");
+                Assert.That(defaultFontSerif == "Times");
+                Assert.That(defaultFontMonospace == "Courier");
+            }
         }
     }
 }
