@@ -48,3 +48,103 @@ namespace ScottPlot.Config
         }
     }
 }
+
+/*
+ 
+These fonts are on Azure Pipelines on Linux:
+    Nimbus Mono L
+    Liberation Mono
+    Nimbus Sans L
+    Century Schoolbook L
+    Liberation Serif
+    Liberation Sans
+    Standard Symbols L
+    DejaVu Serif
+    URW Chancery L
+    URW Gothic L
+    URW Palladio L
+    Dingbats
+    DejaVu Sans Mono
+    URW Bookman L
+    Liberation Sans Narrow
+    Nimbus Roman No9 L
+    DejaVu Sans
+
+
+These fonts are on Azure Pipelines on MacOS:
+    Apple Braille
+    Apple Color Emoji
+    Apple SD Gothic Neo
+    Apple Symbols
+    Arial Hebrew
+    Arial Hebrew Scholar
+    Avenir
+    Avenir Next
+    Avenir Next Condensed
+    Courier
+    Geeza Pro
+    Geneva
+    Heiti SC
+    Heiti TC
+    Helvetica
+    Helvetica Neue
+    Hiragino Kaku Gothic Pro
+    Hiragino Kaku Gothic ProN
+    Hiragino Kaku Gothic Std
+    Hiragino Kaku Gothic StdN
+    Hiragino Maru Gothic Pro
+    Hiragino Maru Gothic ProN
+    Hiragino Mincho Pro
+    Hiragino Mincho ProN
+    Hiragino Sans
+    Hiragino Sans GB
+    Kohinoor Bangla
+    Kohinoor Devanagari
+    Kohinoor Telugu
+    Lucida Grande
+    Marker Felt
+    Menlo
+    Monaco
+    Noteworthy
+    Noto Nastaliq Urdu
+    Optima
+    Palatino
+    PingFang HK
+    PingFang SC
+    PingFang TC
+    Symbol
+    System Font
+    Thonburi
+    Times
+    Zapf Dingbats
+    System Font
+    .Apple Color Emoji UI
+    .Apple SD Gothic NeoI
+    .Aqua Kana
+    .Aqua Kana
+    .Arabic UI Display
+    .Arabic UI Text
+    .Arial Hebrew Desk Interface
+    .Geeza Pro Interface
+    .Geeza Pro PUA
+    .Helvetica LT MM
+    .Helvetica Neue DeskInterface
+    .Hiragino Kaku Gothic Interface
+    .Hiragino Sans GB Interface
+    .Keyboard
+    .LastResort
+    .Lucida Grande UI
+    .Noto Nastaliq Urdu UI
+    .PingFang HK
+    .PingFang SC
+    .PingFang TC
+    .SF Compact Display
+    .SF Compact Rounded
+    .SF Compact Text
+    .SF NS Display Condensed
+    .SF NS Rounded
+    .SF NS Symbols
+    .SF NS Text Condensed
+    .Times LT MM
+
+*/
