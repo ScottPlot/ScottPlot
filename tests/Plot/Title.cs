@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ScottPlotTests.Plot
@@ -125,13 +126,15 @@ namespace ScottPlotTests.Plot
         {
             ScottPlot.Plot plt = TestTools.SamplePlotScatter();
 
-            foreach (var installedFont in System.Drawing.FontFamily.Families)
-                Console.WriteLine(installedFont);
+            var fontNames = System.Drawing.FontFamily.Families.Select(x => x.Name);
+            Console.WriteLine("FONTS: " + string.Join(", ", fontNames));
 
             plt.Title("test font");
             Console.WriteLine($"Default font is: {plt.GetSettings(false).title.fontName}");
-            plt.Title("test font", fontName: "Arial");
+            plt.Title("test font", fontName: "Liberation Mono");
             Console.WriteLine($"Changed font to: {plt.GetSettings(false).title.fontName}");
+            plt.GetSettings(false).title.fontName = "Liberation Mono";
+            Console.WriteLine($"forced font to: {plt.GetSettings(false).title.fontName}");
 
             plt.Title(sampleLabel);
             string hashDefault = TestTools.HashedFig(plt, "default");
