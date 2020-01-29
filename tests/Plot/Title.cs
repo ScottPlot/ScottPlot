@@ -111,11 +111,11 @@ namespace ScottPlotTests.Plot
         {
             ScottPlot.Plot plt = TestTools.SamplePlotScatter();
 
-            string font1 = System.Drawing.FontFamily.GenericSansSerif.Name;
+            string font1 = System.Drawing.FontFamily.GenericSerif.Name;
             plt.Title(sampleLabel, fontName: font1);
             string hash1 = TestTools.HashedFig(plt, font1);
 
-            string font2 = System.Drawing.FontFamily.GenericMonospace.Name;
+            string font2 = System.Drawing.FontFamily.GenericSansSerif.Name;
             plt.Title(sampleLabel, fontName: font2);
             string hash2 = TestTools.HashedFig(plt, font2);
 
