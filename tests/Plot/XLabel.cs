@@ -7,18 +7,12 @@ namespace ScottPlotTests.Plot
 {
     public class XLabel
     {
-        int width = 600;
-        int height = 400;
-        double[] dataXs = ScottPlot.DataGen.Consecutive(50);
-        double[] dataSin = ScottPlot.DataGen.Sin(50);
-        string sampleLabel = "Frequency (Hz)";
-
+        readonly string sampleLabel = "Frequency (Hz)";
 
         [Test]
         public void Test_Label_DefaultIsEmpty()
         {
-            var plt = new ScottPlot.Plot(width, height);
-            plt.PlotScatter(dataXs, dataSin);
+            ScottPlot.Plot plt = TestTools.SamplePlotScatter();
 
             string hashDefault = TestTools.HashedFig(plt, "default label");
             plt.XLabel("");
@@ -30,8 +24,7 @@ namespace ScottPlotTests.Plot
         [Test]
         public void Test_Label_IsSettable()
         {
-            var plt = new ScottPlot.Plot(width, height);
-            plt.PlotScatter(dataXs, dataSin);
+            ScottPlot.Plot plt = TestTools.SamplePlotScatter();
 
             string hash1 = TestTools.HashedFig(plt, "default label");
 
@@ -45,8 +38,7 @@ namespace ScottPlotTests.Plot
         [Test]
         public void Test_Label_IsReplaceable()
         {
-            var plt = new ScottPlot.Plot(width, height);
-            plt.PlotScatter(dataXs, dataSin);
+            ScottPlot.Plot plt = TestTools.SamplePlotScatter();
 
             string label1 = "first label";
             plt.XLabel(label1);
@@ -62,8 +54,7 @@ namespace ScottPlotTests.Plot
         [Test]
         public void Test_Label_DoesntClearWithRepeatedMethodCalls()
         {
-            var plt = new ScottPlot.Plot(width, height);
-            plt.PlotScatter(dataXs, dataSin);
+            ScottPlot.Plot plt = TestTools.SamplePlotScatter();
 
             string hashDefault = TestTools.HashedFig(plt, "default");
             plt.XLabel(sampleLabel);
@@ -79,8 +70,7 @@ namespace ScottPlotTests.Plot
         [Test]
         public void Test_Visible_IsSettable()
         {
-            var plt = new ScottPlot.Plot(width, height);
-            plt.PlotScatter(dataXs, dataSin);
+            ScottPlot.Plot plt = TestTools.SamplePlotScatter();
 
             plt.XLabel(sampleLabel);
             bool visibleByDefault = plt.GetSettings(false).xLabel.visible;
@@ -105,8 +95,7 @@ namespace ScottPlotTests.Plot
         [Test]
         public void Test_Color_IsSettable()
         {
-            var plt = new ScottPlot.Plot(width, height);
-            plt.PlotScatter(dataXs, dataSin);
+            ScottPlot.Plot plt = TestTools.SamplePlotScatter();
 
             string hashDefault = TestTools.HashedFig(plt, "default");
             plt.XLabel(sampleLabel, color: System.Drawing.Color.Red);
@@ -118,8 +107,7 @@ namespace ScottPlotTests.Plot
         [Test]
         public void Test_FontName_IsSettable()
         {
-            var plt = new ScottPlot.Plot(width, height);
-            plt.PlotScatter(dataXs, dataSin);
+            ScottPlot.Plot plt = TestTools.SamplePlotScatter();
 
             string font1 = System.Drawing.FontFamily.GenericSansSerif.Name;
             plt.XLabel(sampleLabel, fontName: font1);
@@ -135,8 +123,7 @@ namespace ScottPlotTests.Plot
         [Test]
         public void Test_Bold_IsSettable()
         {
-            var plt = new ScottPlot.Plot(width, height);
-            plt.PlotScatter(dataXs, dataSin);
+            ScottPlot.Plot plt = TestTools.SamplePlotScatter();
 
             plt.XLabel(sampleLabel);
             string hashDefault = TestTools.HashedFig(plt, "default");
@@ -154,8 +141,7 @@ namespace ScottPlotTests.Plot
         [Test]
         public void Test_FontSize_IsSettable()
         {
-            var plt = new ScottPlot.Plot(width, height);
-            plt.PlotScatter(dataXs, dataSin);
+            ScottPlot.Plot plt = TestTools.SamplePlotScatter();
 
             plt.XLabel(sampleLabel, fontSize: 12);
             string hashSize12 = TestTools.HashedFig(plt, "size 12");
