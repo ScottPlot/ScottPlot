@@ -125,6 +125,11 @@ namespace ScottPlotTests.Plot
         {
             ScottPlot.Plot plt = TestTools.SamplePlotScatter();
 
+            plt.Title("test font");
+            Console.WriteLine($"Default font is: {plt.GetSettings(false).title.fontName}");
+            plt.Title("test font", fontName: "Liberation Mono");
+            Console.WriteLine($"Changed font to: {plt.GetSettings(false).title.fontName}");
+
             plt.YLabel(sampleLabel);
             string hashDefault = TestTools.HashedFig(plt, "default");
 
