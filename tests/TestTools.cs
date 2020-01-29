@@ -39,5 +39,18 @@ namespace ScottPlotTests
 
             return hash;
         }
+
+        public static ScottPlot.Plot SamplePlotScatter(int width = 600, int height = 400)
+        {
+            double[] dataXs = ScottPlot.DataGen.Consecutive(50);
+            double[] dataSin = ScottPlot.DataGen.Sin(50);
+            double[] dataCos = ScottPlot.DataGen.Cos(50);
+
+            var plt = new ScottPlot.Plot(width, height);
+            plt.PlotScatter(dataXs, dataSin);
+            plt.PlotScatter(dataXs, dataCos);
+
+            return plt;
+        }
     }
 }
