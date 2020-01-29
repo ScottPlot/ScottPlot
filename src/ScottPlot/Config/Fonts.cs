@@ -2,47 +2,50 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace ScottPlot.Config
 {
     public static class Fonts
     {
-        /// <summary>
-        /// Returns a font name guaranteed to be installed on the system
-        /// </summary>
+        public static string GetDefaultFontName()
+        {
+            return GetSansFontName();
+        }
+
+        public static string GetSerifFontName()
+        {
+            string[] serifFonts = new string[] { "Times New Roman", "DejaVu Serif", "Times" };
+            return GetValidFontName(serifFonts);
+        }
+
+        public static string GetSansFontName()
+        {
+            string[] sansFonts = new string[] { "Segoe UI", "DejaVu Sans", "Helvetica" };
+            return GetValidFontName(sansFonts);
+        }
+
+        public static string GetMonospaceFontName()
+        {
+            string[] monospaceFonts = new string[] { "Consolas", "DejaVu Sans Mono", "Courier" };
+            return GetValidFontName(monospaceFonts);
+        }
+
         public static string GetValidFontName(string fontName)
         {
             foreach (FontFamily installedFont in FontFamily.Families)
-                if (fontName.ToUpper() == installedFont.Name.ToUpper())
+                if (string.Equals(installedFont.Name, fontName, System.StringComparison.OrdinalIgnoreCase))
                     return installedFont.Name;
 
-            string defaultFontName = GetDefaultFontName();
-            Debug.WriteLine($"Warning: font {fontName} was not found, defaulting to {defaultFontName}");
-            return defaultFontName;
+            return GetDefaultFontName();
         }
 
-        /// <summary>
-        /// Returns the default ScottPlot font name (guaranteed to be installed on the system)
-        /// </summary>
-        public static string GetDefaultFontName()
+        public static string GetValidFontName(string[] fontNames)
         {
-            return GetDefaultFontName(FontFamily.Families.Select(font => font.Name));
-        }
-
-        /// <summary>
-        /// Returns the default ScottPlot font name (guaranteed to be installed on the system)
-        /// This method for ability to inject test set of fonts, main api method is GetDefaultFontName()
-        /// </summary>
-        /// <param name="installedFonts">strings containing installed fonts</param>
-        public static string GetDefaultFontName(IEnumerable<string> installedFonts)
-        {
-            string[] preferredFonts = { "Segoe UI", "DejaVu", "Sans" };
-            preferredFonts = preferredFonts.Select(f => f.ToUpper()).ToArray();
-
-            foreach (string prefferredFont in preferredFonts)
-                foreach (string installedFont in installedFonts)
-                    if (installedFont.ToUpper().Contains(prefferredFont))
-                        return installedFont;
+            foreach (string preferredFont in fontNames)
+                foreach (FontFamily font in FontFamily.Families)
+                    if (string.Equals(preferredFont, font.Name, System.StringComparison.OrdinalIgnoreCase))
+                        return font.Name;
 
             return SystemFonts.DefaultFont.Name;
         }
@@ -52,23 +55,24 @@ namespace ScottPlot.Config
 /*
  
 These fonts are on Azure Pipelines on Linux:
-    Nimbus Mono L
-    Liberation Mono
-    Nimbus Sans L
     Century Schoolbook L
-    Liberation Serif
-    Liberation Sans
-    Standard Symbols L
+    DejaVu Sans
+    DejaVu Sans Mono
     DejaVu Serif
+    Dingbats
+    Liberation Mono
+    Liberation Sans
+    Liberation Sans Narrow
+    Liberation Serif
+    Nimbus Mono L
+    Nimbus Roman No9 L
+    Nimbus Sans L
+    Standard Symbols L
+    URW Bookman L
     URW Chancery L
     URW Gothic L
     URW Palladio L
-    Dingbats
-    DejaVu Sans Mono
-    URW Bookman L
-    Liberation Sans Narrow
-    Nimbus Roman No9 L
-    DejaVu Sans
+
 
 
 These fonts are on Azure Pipelines on MacOS:
