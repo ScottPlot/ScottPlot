@@ -125,9 +125,12 @@ namespace ScottPlotTests.Plot
         {
             ScottPlot.Plot plt = TestTools.SamplePlotScatter();
 
+            foreach (var installedFont in System.Drawing.FontFamily.Families)
+                Console.WriteLine(installedFont);
+
             plt.Title("test font");
             Console.WriteLine($"Default font is: {plt.GetSettings(false).title.fontName}");
-            plt.Title("test font", fontName: System.Drawing.FontFamily.GenericSansSerif.Name);
+            plt.Title("test font", fontName: "Arial");
             Console.WriteLine($"Changed font to: {plt.GetSettings(false).title.fontName}");
 
             plt.Title(sampleLabel);
