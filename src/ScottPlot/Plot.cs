@@ -231,7 +231,8 @@ namespace ScottPlot
             bool signalPlots = true,
             bool text = true,
             bool bar = true,
-            bool finance = true
+            bool finance = true,
+            bool axisSpans = true
             )
         {
             settings.Clear(
@@ -240,7 +241,8 @@ namespace ScottPlot
                 signals: signalPlots,
                 text: text,
                 bar: bar,
-                finance: finance
+                finance: finance,
+                axSpans: axisSpans
                 );
         }
 
