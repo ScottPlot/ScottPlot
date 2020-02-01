@@ -29,7 +29,9 @@ namespace ScottPlotDemos
             formsPlot1.plt.AxisAuto();
             formsPlot1.Render();
             UpdateMessage();
+
             BtnAddVline_Click(null, null);
+            BtnAddHspan_Click(null, null);
         }
 
         private void BtnAddHline_Click(object sender, EventArgs e)
@@ -50,7 +52,7 @@ namespace ScottPlotDemos
 
         private void BtnClearLines_Click(object sender, EventArgs e)
         {
-            formsPlot1.plt.Clear(scatterPlots: false);
+            formsPlot1.plt.Clear(scatterPlots: false, axisSpans: false);
             formsPlot1.Render();
             UpdateMessage();
         }
@@ -65,7 +67,12 @@ namespace ScottPlotDemos
                 if (plottables[i] is ScottPlot.PlottableAxLine axLine)
                 {
                     string lineType = (axLine.vertical) ? "VLine" : "HLine";
-                    msg += $"{i}: {lineType} at {Math.Round(axLine.position, 4)}\r\n";
+                    msg += $"{i}: {lineType} ({Math.Round(axLine.position, 4)})\r\n";
+                }
+                else if (plottables[i] is ScottPlot.PlottableAxSpan axSpan)
+                {
+                    string lineType = (axSpan.vertical) ? "VSpan" : "HSpan";
+                    msg += $"{i}: {lineType} ({Math.Round(axSpan.position1, 4)} to {Math.Round(axSpan.position2, 4)})\r\n";
                 }
             }
             richTextBox1.Text = msg;
@@ -89,6 +96,31 @@ namespace ScottPlotDemos
             Console.WriteLine("Dropped a plottable object");
             UpdateMessage();
             richTextBox1.Enabled = true;
+        }
+
+        private void BtnAddHspan_Click(object sender, EventArgs e)
+        {
+            (double y1, double y2) = ScottPlot.DataGen.RandomSpan(rand: null, low: -1, high: 1, minimumSpacing: .25);
+
+            formsPlot1.plt.PlotHSpan(y1, y2, draggable: true, dragLimitLower: -1, dragLimitUpper: 1);
+            formsPlot1.Render();
+            UpdateMessage();
+        }
+
+        private void BtnAddVSpan_Click(object sender, EventArgs e)
+        {
+            (double x1, double x2) = ScottPlot.DataGen.RandomSpan(rand: null, low: 0, high: 50, minimumSpacing: 10);
+
+            formsPlot1.plt.PlotVSpan(x1, x2, draggable: true, dragLimitLower: 0, dragLimitUpper: 50);
+            formsPlot1.Render();
+            UpdateMessage();
+        }
+
+        private void BtnClearSpans_Click(object sender, EventArgs e)
+        {
+            formsPlot1.plt.Clear(axisLines: false, scatterPlots: false);
+            formsPlot1.Render();
+            UpdateMessage();
         }
     }
 }
