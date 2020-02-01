@@ -204,8 +204,9 @@ namespace ScottPlot
             return totalPointCount;
         }
 
-        public void Clear(bool axLines = true, bool scatters = true, bool signals = true, bool text = true, bool bar = true, bool finance = true)
+        public void Clear(bool axLines = true, bool scatters = true, bool signals = true, bool text = true, bool bar = true, bool finance = true, bool axSpans = true)
         {
+            // TODO: This is a switch code smell. Use inversion of control here.
             List<int> indicesToDelete = new List<int>();
             for (int i = 0; i < plottables.Count; i++)
             {
@@ -222,6 +223,8 @@ namespace ScottPlot
                 else if (plottables[i] is PlottableBar && bar)
                     indicesToDelete.Add(i);
                 else if (plottables[i] is PlottableOHLC && finance)
+                    indicesToDelete.Add(i);
+                else if (plottables[i] is PlottableAxSpan && axSpans)
                     indicesToDelete.Add(i);
             }
             indicesToDelete.Reverse();
