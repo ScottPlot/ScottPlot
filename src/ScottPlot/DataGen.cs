@@ -183,5 +183,28 @@ namespace ScottPlot
 
             return ohlcs;
         }
+
+        public static (double, double) RandomSpan(Random rand = null, double low = 0, double high = 100, double minimumSpacing = 10)
+        {
+            if (rand is null)
+                rand = new Random();
+
+            double span = Math.Abs(high - low);
+
+            for (int attempts = 0; attempts<10_000; attempts++)
+            {
+                double valA = rand.NextDouble() * span + low;
+                double valB = rand.NextDouble() * span + low;
+                if (Math.Abs(valA - valB) >= minimumSpacing)
+                {
+                    if (valA<valB)
+                        return (valA, valB);
+                    else
+                        return (valB, valA);
+                }
+            }
+
+            throw new ArgumentException();
+        }
     }
 }
