@@ -12,10 +12,10 @@ namespace ScottPlot
     {
         public double position;
         public bool vertical;
-        private string orientation { get { return (vertical) ? "vertical" : "horizontal"; } }
         public Pen pen;
 
         public bool horizontal { get { return !vertical; } }
+        private string orientation { get { return (vertical) ? "vertical" : "horizontal"; } }
 
         public PlottableAxLine(double position, bool vertical, Color color, double lineWidth, string label,
             bool draggable, double dragLimitLower, double dragLimitUpper, LineStyle lineStyle)
@@ -143,6 +143,23 @@ namespace ScottPlot
         public Cursor GetDragCursor()
         {
             return (vertical) ? Cursor.WE : Cursor.NS;
+        }
+
+        private bool isBeingDragged;
+        public void DragStart(double coordinateX, double coordinateY)
+        {
+            isBeingDragged = true;
+        }
+
+        public void DragEnd(double coordinateX, double coordinateY)
+        {
+            isBeingDragged = false;
+        }
+
+        public bool IsBeingDragged()
+        {
+            // TODO: ensure controls are using this method
+            return isBeingDragged;
         }
     }
 }
