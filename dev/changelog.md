@@ -1,7 +1,25 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.0.15
-* Fixed a bug affecting the `ySpacing` argument in `Plot.Grid()` (#221) _@Thanks teejay-87_
+## ScottPlot 4.0.16
+* Improved support for MacOS and Linux (#211, #212, #216) _Thanks @Hexxonite and @StendProg_
+* Fixed a few display bugs
+  * Fixed a bug affecting the `ySpacing` argument in `Plot.Grid()` (#221) _@Thanks teejay-87_
+  * Enabled `visible` argument in `Title()`, `XLabel()`, and `YLabel()` (#222) _Thanks @ckovamees_
+* AxisSpan improvements
+  * Edges are now optionally draggable (#228) _Thanks @StendProg_
+  * Can now be selectively removed with `Clear()` argument
+  * Fixed bug caused by zooming far into an axis span (#226) _Thanks @StendProg_
+* WinForms Control
+  * WinForms control now supports draggable axis lines and axis spans
+  * Right-click menu now has "copy image" option (#220)
+  * Settings screen now has "copy CSV" button to export data (#220)
+* WPF Control
+  * WPF control now supports draggable axis lines and axis spans
+  * new WpfPlot.Configure() to set various WPF control options
+* Misc improvements
+  * Improved axis handling, expansion, and auto-axis (#219, #230) _Thanks @StendProg_
+  * Added more options to `DataGen.Cos()`
+  * Tick labels can be hidden with `Ticks()` argument (#223) _Thanks @ckovamees_
 
 ## ScottPlot 4.0.14
 * Improved `MatchAxis()` and `MatchLayout()` (#217) _Thanks @ckovamees and @StendProg_
