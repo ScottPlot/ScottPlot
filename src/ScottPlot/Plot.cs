@@ -704,9 +704,9 @@ namespace ScottPlot
             return draggables;
         }
 
-        public IDraggable GetDraggableUnderMouse(float pixelX, float pixelY, int snapDistancePixels = 5)
+        public IDraggable GetDraggableUnderMouse(double pixelX, double pixelY, int snapDistancePixels = 5)
         {
-            PointF mouseLocation = new PointF(pixelX, pixelY);
+            PointF mouseLocation = new PointF((float)pixelX, (float)pixelY);
             (double mouseX, double mouseY, double snapX, double snapY) = GetMouseCoordinatesAndSnapDistances(mouseLocation, snapDistancePixels);
 
             foreach (IDraggable draggable in GetDraggables())
