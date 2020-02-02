@@ -83,5 +83,11 @@ namespace ScottPlotDemos
             formsPlot1.plt.Ticks(useExponentialNotation: checkBox4.Checked);
             formsPlot1.Render();
         }
+
+        private void checkBox5_CheckedChanged(object sender, EventArgs e)
+        {
+            formsPlot1.plt.Ticks(displayTickLabelsY: checkBox5.Checked);
+            formsPlot1.Render();
+        }
     }
 }

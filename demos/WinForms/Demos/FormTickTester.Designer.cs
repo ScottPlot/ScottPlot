@@ -38,6 +38,7 @@
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.checkBox4 = new System.Windows.Forms.CheckBox();
+            this.checkBox5 = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // formsPlot1
@@ -47,7 +48,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.formsPlot1.Location = new System.Drawing.Point(12, 41);
             this.formsPlot1.Name = "formsPlot1";
-            this.formsPlot1.Size = new System.Drawing.Size(969, 397);
+            this.formsPlot1.Size = new System.Drawing.Size(1096, 397);
             this.formsPlot1.TabIndex = 0;
             // 
             // button1
@@ -150,11 +151,25 @@
             this.checkBox4.UseVisualStyleBackColor = true;
             this.checkBox4.CheckedChanged += new System.EventHandler(this.CheckBox4_CheckedChanged);
             // 
-            // Form1
+            // checkBox5
+            // 
+            this.checkBox5.AutoSize = true;
+            this.checkBox5.Checked = true;
+            this.checkBox5.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox5.Location = new System.Drawing.Point(914, 18);
+            this.checkBox5.Name = "checkBox5";
+            this.checkBox5.Size = new System.Drawing.Size(82, 17);
+            this.checkBox5.TabIndex = 8;
+            this.checkBox5.Text = "showLabels";
+            this.checkBox5.UseVisualStyleBackColor = true;
+            this.checkBox5.CheckedChanged += new System.EventHandler(this.checkBox5_CheckedChanged);
+            // 
+            // FormTickTester
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(993, 450);
+            this.ClientSize = new System.Drawing.Size(1120, 450);
+            this.Controls.Add(this.checkBox5);
             this.Controls.Add(this.checkBox4);
             this.Controls.Add(this.checkBox3);
             this.Controls.Add(this.checkBox2);
@@ -165,7 +180,7 @@
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.formsPlot1);
-            this.Name = "Form1";
+            this.Name = "FormTickTester";
             this.Text = "Tick Tester 2";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
@@ -185,6 +200,7 @@
         private System.Windows.Forms.CheckBox checkBox2;
         private System.Windows.Forms.CheckBox checkBox3;
         private System.Windows.Forms.CheckBox checkBox4;
+        private System.Windows.Forms.CheckBox checkBox5;
     }
 }
 

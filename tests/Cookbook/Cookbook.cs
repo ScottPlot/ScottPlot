@@ -532,6 +532,22 @@ namespace ScottPlotTests.Cookbook
         }
 
         [Test]
+        public void Figure_14b_Hide_Tick_Labels()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
+
+            var plt = new ScottPlot.Plot(width, height);
+            plt.Title("Hide Tick Labels (but not ticks)");
+
+            plt.PlotSignal(ScottPlot.DataGen.Sin(50));
+            plt.Ticks(displayTickLabelsX: false);
+
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
+        }
+
+        [Test]
         public void Figure_15_Descending_Ticks()
         {
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");

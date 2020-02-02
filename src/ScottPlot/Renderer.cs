@@ -220,12 +220,14 @@ namespace ScottPlot
                 if (settings.ticks.rulerModeY)
                 {
                     settings.gfxFigure.DrawLine(pen, xPx, yPx, xPx - settings.ticks.size - settings.ticks.font.Height, yPx);
-                    settings.gfxFigure.DrawString(text, settings.ticks.font, brush, xPx - settings.ticks.size, yPx, settings.misc.sfSouthEast);
+                    if (settings.ticks.displayYlabels)
+                        settings.gfxFigure.DrawString(text, settings.ticks.font, brush, xPx - settings.ticks.size, yPx, settings.misc.sfSouthEast);
                 }
                 else
                 {
                     settings.gfxFigure.DrawLine(pen, xPx, yPx, xPx - settings.ticks.size, yPx);
-                    settings.gfxFigure.DrawString(text, settings.ticks.font, brush, xPx - settings.ticks.size, yPx, settings.misc.sfEast);
+                    if (settings.ticks.displayYlabels)
+                        settings.gfxFigure.DrawString(text, settings.ticks.font, brush, xPx - settings.ticks.size, yPx, settings.misc.sfEast);
                 }
             }
 
@@ -262,12 +264,14 @@ namespace ScottPlot
                 if (settings.ticks.rulerModeX)
                 {
                     settings.gfxFigure.DrawLine(pen, xPx, yPx, xPx, yPx + settings.ticks.size + settings.ticks.font.Height);
-                    settings.gfxFigure.DrawString(text, settings.ticks.font, brush, xPx, yPx + settings.ticks.size, settings.misc.sfNorthWest);
+                    if (settings.ticks.displayXlabels)
+                        settings.gfxFigure.DrawString(text, settings.ticks.font, brush, xPx, yPx + settings.ticks.size, settings.misc.sfNorthWest);
                 }
                 else
                 {
                     settings.gfxFigure.DrawLine(pen, xPx, yPx, xPx, yPx + settings.ticks.size);
-                    settings.gfxFigure.DrawString(text, settings.ticks.font, brush, xPx, yPx + settings.ticks.size, settings.misc.sfNorth);
+                    if (settings.ticks.displayXlabels)
+                        settings.gfxFigure.DrawString(text, settings.ticks.font, brush, xPx, yPx + settings.ticks.size, settings.misc.sfNorth);
                 }
             }
 
