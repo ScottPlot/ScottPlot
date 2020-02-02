@@ -9,7 +9,13 @@ namespace ScottPlot.Config
 {
     public class Ticks
     {
-        public Font font = new Font(Fonts.GetDefaultFontName(), 10);
+        public string fontName = Fonts.GetDefaultFontName();
+        public float fontSize = 10;
+        public Font font { get { return new Font(fontName, fontSize); } }
+
+        public bool displayYlabels = true;
+        public bool displayXlabels = true;
+
         public readonly TickCollection x = new TickCollection(false);
         public readonly TickCollection y = new TickCollection(true);
         public int size = 5;

@@ -976,6 +976,8 @@ namespace ScottPlot
             bool? displayTicksY = null,
             bool? displayTicksXminor = null,
             bool? displayTicksYminor = null,
+            bool? displayTickLabelsX = null,
+            bool? displayTickLabelsY = null,
             Color? color = null,
             bool? useMultiplierNotation = null,
             bool? useOffsetNotation = null,
@@ -1018,10 +1020,14 @@ namespace ScottPlot
                 settings.ticks.x.invertSign = (bool)invertSignX;
             if (invertSignY != null)
                 settings.ticks.y.invertSign = (bool)invertSignY;
-            if (fontSize == null)
-                fontSize = settings.ticks.font.Size;
+            if (fontSize != null)
+                settings.ticks.fontSize = (float)fontSize;
             if (fontName != null)
-                settings.ticks.font = new Font(fontName, (float)fontSize, FontStyle.Regular);
+                settings.ticks.fontName = fontName;
+            if (displayTickLabelsX != null)
+                settings.ticks.displayXlabels = (bool)displayTickLabelsX;
+            if (displayTickLabelsY != null)
+                settings.ticks.displayYlabels = (bool)displayTickLabelsY;
 
             // dont use offset notation if the sign is inverted
             if (settings.ticks.x.invertSign || settings.ticks.y.invertSign)
