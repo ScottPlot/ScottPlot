@@ -11,10 +11,7 @@ namespace ScottPlot
 
         bool IsUnderMouse(double coordinateX, double coordinateY, double snapX, double snapY);
 
-        void DragStart(double coordinateX, double coordinateY);
         void DragTo(double coordinateX, double coordinateY);
-        void DragEnd(double coordinateX, double coordinateY);
-        bool IsBeingDragged();
 
         Config.Cursor GetDragCursor();
     }
