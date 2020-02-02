@@ -156,21 +156,5 @@ namespace ScottPlot
         {
             return (vertical) ? Cursor.WE : Cursor.NS;
         }
-
-        private bool isBeingDragged;
-        public void DragStart(double coordinateX, double coordinateY)
-        {
-            isBeingDragged = true;
-        }
-
-        public void DragEnd(double coordinateX, double coordinateY)
-        {
-            isBeingDragged = false;
-        }
-
-        public bool IsBeingDragged()
-        {
-            return isBeingDragged;
-        }
     }
 }
