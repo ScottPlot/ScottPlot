@@ -25,8 +25,16 @@ namespace ScottPlot
             this.color = color;
             this.label = label;
             this.lineStyle = lineStyle;
-            pen = new Pen(color, (float)lineWidth);
             pointCount = 1;
+
+            pen = new Pen(color, (float)lineWidth)
+            {
+                StartCap = System.Drawing.Drawing2D.LineCap.Round,
+                EndCap = System.Drawing.Drawing2D.LineCap.Round,
+                LineJoin = System.Drawing.Drawing2D.LineJoin.Round,
+                DashStyle = StyleTools.DashStyle(lineStyle),
+                DashPattern = StyleTools.DashPattern(lineStyle)
+            };
 
             DragEnable(draggable);
 
@@ -34,30 +42,6 @@ namespace ScottPlot
                 DragLimit(x1: dragLimitLower, x2: dragLimitUpper, y1: double.NegativeInfinity, y2: double.PositiveInfinity);
             else
                 DragLimit(x1: double.NegativeInfinity, x2: double.PositiveInfinity, y1: dragLimitLower, y2: dragLimitUpper);
-
-            switch (lineStyle)
-            {
-                case LineStyle.Solid:
-                    pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Solid;
-                    break;
-                case LineStyle.Dash:
-                    pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
-                    pen.DashPattern = new float[] { 8.0F, 4.0F };
-                    break;
-                case LineStyle.DashDot:
-                    pen.DashStyle = System.Drawing.Drawing2D.DashStyle.DashDot;
-                    pen.DashPattern = new float[] { 8.0F, 4.0F, 2.0F, 4.0F };
-                    break;
-                case LineStyle.DashDotDot:
-                    pen.DashStyle = System.Drawing.Drawing2D.DashStyle.DashDotDot;
-                    pen.DashPattern = new float[] { 8.0F, 4.0F, 2.0F, 4.0F, 2.0F, 4.0F };
-                    break;
-                case LineStyle.Dot:
-                    pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
-                    pen.DashPattern = new float[] { 2.0F, 4.0F };
-                    break;
-
-            }
         }
 
         public override string ToString()

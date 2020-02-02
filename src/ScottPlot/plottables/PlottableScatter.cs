@@ -69,40 +69,15 @@ namespace ScottPlot
 
             penLine = new Pen(color, (float)lineWidth)
             {
-                // this prevents sharp corners
                 StartCap = System.Drawing.Drawing2D.LineCap.Round,
                 EndCap = System.Drawing.Drawing2D.LineCap.Round,
-                LineJoin = System.Drawing.Drawing2D.LineJoin.Round
+                LineJoin = System.Drawing.Drawing2D.LineJoin.Round,
+                DashStyle = StyleTools.DashStyle(lineStyle),
+                DashPattern = StyleTools.DashPattern(lineStyle)
             };
-
-            switch (lineStyle)
-            {
-                case LineStyle.Solid:
-                    penLine.DashStyle = System.Drawing.Drawing2D.DashStyle.Solid;
-                    break;
-                case LineStyle.Dash:
-                    penLine.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
-                    penLine.DashPattern = new float[] { 8.0F, 4.0F };
-                    break;
-                case LineStyle.DashDot:
-                    penLine.DashStyle = System.Drawing.Drawing2D.DashStyle.DashDot;
-                    penLine.DashPattern = new float[] { 8.0F, 4.0F, 2.0F, 4.0F };
-                    break;
-                case LineStyle.DashDotDot:
-                    penLine.DashStyle = System.Drawing.Drawing2D.DashStyle.DashDotDot;
-                    penLine.DashPattern = new float[] { 8.0F, 4.0F, 2.0F, 4.0F, 2.0F, 4.0F };
-                    break;
-                case LineStyle.Dot:
-                    penLine.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
-                    penLine.DashPattern = new float[] { 2.0F, 4.0F };
-                    break;
-
-            }
-
 
             penLineError = new Pen(color, (float)errorLineWidth)
             {
-                // this prevents sharp corners
                 StartCap = System.Drawing.Drawing2D.LineCap.Round,
                 EndCap = System.Drawing.Drawing2D.LineCap.Round,
                 LineJoin = System.Drawing.Drawing2D.LineJoin.Round

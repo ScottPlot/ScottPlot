@@ -190,10 +190,13 @@ namespace ScottPlotTests.Cookbook
             double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
             double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
             double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
+            double[] dataCos2 = ScottPlot.DataGen.Cos(pointCount, mult: -1);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(dataXs, dataSin, color: Color.Magenta, lineWidth: 0, markerSize: 10, label: "sin");
             plt.PlotScatter(dataXs, dataCos, color: Color.Green, lineWidth: 5, markerSize: 0, label: "cos");
+            plt.PlotScatter(dataXs, dataCos2, color: Color.Blue, label: "-cos",
+                lineStyle: ScottPlot.LineStyle.DashDot, lineWidth: 3, markerSize: 0);
 
             plt.Legend(fixedLineWidth: false);
 
@@ -955,7 +958,7 @@ namespace ScottPlotTests.Cookbook
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
             plt.PlotVLine(17);
-            plt.PlotHLine(-.25, color: Color.Red, lineWidth: 3);
+            plt.PlotHLine(-.25, color: Color.Red, lineWidth: 3, lineStyle: ScottPlot.LineStyle.Dash);
             if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
             Console.WriteLine($"Saved: {fileName}");
         }
