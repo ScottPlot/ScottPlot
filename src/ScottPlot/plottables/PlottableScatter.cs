@@ -225,12 +225,17 @@ namespace ScottPlot
 
         }
 
-        public void SaveCSV(string filePath)
+        public void SaveCSV(string filePath, string delimiter = ", ", string separator = "\n")
+        {
+            System.IO.File.WriteAllText(filePath, GetCSV(delimiter, separator));
+        }
+
+        public string GetCSV(string delimiter = ", ", string separator = "\n")
         {
             StringBuilder csv = new StringBuilder();
             for (int i = 0; i < ys.Length; i++)
-                csv.AppendFormat("{0}, {1}\n", xs[i], ys[i]);
-            System.IO.File.WriteAllText(filePath, csv.ToString());
+                csv.AppendFormat("{0}{1}{2}{3}", xs[i], delimiter, ys[i], separator);
+            return csv.ToString();
         }
     }
 }

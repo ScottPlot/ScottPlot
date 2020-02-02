@@ -9,6 +9,7 @@ namespace ScottPlot
     /// </summary>
     public interface IExportable
     {
-        void SaveCSV(string filePath);
+        void SaveCSV(string filePath, string delimiter = ", ", string separator = "\n");
+        string GetCSV(string delimiter = ", ", string separator = "\n");
     }
 }
