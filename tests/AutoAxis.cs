@@ -23,8 +23,7 @@ namespace ScottPlotTests
             Assert.IsTrue(plt.GetSettings().axes.x.span > 0);
             Assert.IsTrue(plt.GetSettings().axes.y.span > 0);
 
-            //string name = System.Reflection.MethodBase.GetCurrentMethod().Name;
-            //plt.SaveFig(System.IO.Path.GetFullPath(name + ".png"));
+            TestTools.SaveFig(plt);
         }
 
         [Test]
@@ -104,6 +103,120 @@ namespace ScottPlotTests
             plt.PlotPoint(-0.1, -0.1);
             plt.GetBitmap(); // force a render
             Assert.Greater(plt.Axis()[0], -5);
+        }
+
+        [Test]
+        public void Test_AxisLine_FarAwayExpandXY()
+        {
+            Random rand = new Random(0);
+
+            var plt = new ScottPlot.Plot();
+            var data = ScottPlot.DataGen.RandomWalk(rand, 100);
+            plt.PlotSignal(data, xOffset: 100, yOffset: 100, label: "scatter");
+            plt.PlotVLine(-100, label: "vertical");
+            plt.PlotHLine(-100, label: "horizontal");
+            plt.Legend();
+
+            TestTools.SaveFig(plt);
+        }
+
+        [Test]
+        public void Test_AxisLine_FarAwayOnlyExpandX()
+        {
+            Random rand = new Random(0);
+
+            var plt = new ScottPlot.Plot();
+            var data = ScottPlot.DataGen.RandomWalk(rand, 100);
+            plt.PlotSignal(data, xOffset: 100, yOffset: 100, label: "scatter");
+            plt.PlotVLine(-100, label: "vertical");
+            plt.PlotHLine(-100, label: "horizontal");
+            plt.Legend();
+
+            plt.AxisAuto(xExpandOnly: true);
+
+            TestTools.SaveFig(plt);
+        }
+
+        [Test]
+        public void Test_AxisLine_FarAwayOnlyExpandY()
+        {
+            Random rand = new Random(0);
+
+            var plt = new ScottPlot.Plot();
+            var data = ScottPlot.DataGen.RandomWalk(rand, 100);
+            plt.PlotSignal(data, xOffset: 100, yOffset: 100, label: "scatter");
+            plt.PlotVLine(-100, label: "vertical");
+            plt.PlotHLine(-100, label: "horizontal");
+            plt.Legend();
+
+            plt.AxisAuto(yExpandOnly: true);
+
+            TestTools.SaveFig(plt);
+        }
+
+        [Test]
+        public void Test_AutoAxis_ExpandXY()
+        {
+            Random rand = new Random(0);
+
+            var plt = new ScottPlot.Plot();
+
+            // small area
+            plt.PlotLine(-5, -5, 5, 5);
+            plt.AxisAuto();
+            var limitsA = new ScottPlot.Config.AxisLimits2D(plt.Axis());
+
+            // large area
+            plt.PlotLine(-99, -99, 99, 99);
+            plt.AxisAuto();
+            var limitsB = new ScottPlot.Config.AxisLimits2D(plt.Axis());
+
+            Assert.That(limitsA.xSpan < limitsB.xSpan);
+            Assert.That(limitsA.ySpan < limitsB.ySpan);
+        }
+
+        [Test]
+        public void Test_AutoAxis_ExpandYonly()
+        {
+            Random rand = new Random(0);
+
+            var plt = new ScottPlot.Plot();
+
+            // small area
+            plt.PlotLine(-5, -5, 5, 5);
+            plt.AxisAuto();
+            var limitsA = new ScottPlot.Config.AxisLimits2D(plt.Axis());
+
+            // large area
+            plt.PlotLine(-99, -99, 99, 99);
+            plt.AxisAuto(yExpandOnly: true);
+            var limitsB = new ScottPlot.Config.AxisLimits2D(plt.Axis());
+
+            Assert.That(limitsA.xSpan == limitsB.xSpan);
+            Assert.That(limitsA.ySpan < limitsB.ySpan);
+        }
+
+        [Test]
+        public void Test_AutoAxis_ExpandXonly()
+        {
+            Random rand = new Random(0);
+
+            var plt = new ScottPlot.Plot();
+
+            // small area
+            plt.PlotLine(-5, -5, 5, 5);
+            plt.AxisAuto();
+            var limitsA = new ScottPlot.Config.AxisLimits2D(plt.Axis());
+            Console.WriteLine($"limits A: {limitsA}");
+
+            // large area
+            plt.PlotLine(-99, -99, 99, 99);
+            plt.AxisAuto(xExpandOnly: true);
+            var limitsB = new ScottPlot.Config.AxisLimits2D(plt.Axis());
+            Console.WriteLine($"limits B: {limitsB}");
+
+            Assert.That(limitsA.xSpan < limitsB.xSpan);
+            Assert.That(limitsA.ySpan == limitsB.ySpan);
         }
     }
 }

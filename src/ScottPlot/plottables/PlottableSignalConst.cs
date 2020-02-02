@@ -335,7 +335,7 @@ namespace ScottPlot
             highestValue = Convert.ToDouble(highestValueT);
         }
 
-        public override double[] GetLimits()
+        public override Config.AxisLimits2D GetLimits()
         {
             double[] limits = new double[4];
             limits[0] = 0 + xOffset;
@@ -343,7 +343,9 @@ namespace ScottPlot
             MinMaxRangeQuery(0, ys.Length - 1, out limits[2], out limits[3]);
             limits[2] += yOffset;
             limits[3] += yOffset;
-            return limits;
+
+            // TODO: use features of 2d axis
+            return new Config.AxisLimits2D(limits);
         }
 
         private void RenderSingleLine(Settings settings)

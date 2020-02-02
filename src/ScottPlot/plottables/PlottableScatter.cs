@@ -91,7 +91,7 @@ namespace ScottPlot
             return $"PlottableScatter with {pointCount} points";
         }
 
-        public override double[] GetLimits()
+        public override Config.AxisLimits2D GetLimits()
         {
             double[] limits = new double[4];
 
@@ -130,7 +130,9 @@ namespace ScottPlot
                         limits[3] = ys[i] + errorY[i];
                 }
             }
-            return limits;
+
+            // TODO: use features of 2d axis
+            return new Config.AxisLimits2D(limits);
         }
 
         PointF[] points;

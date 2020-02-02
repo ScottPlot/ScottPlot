@@ -36,7 +36,7 @@ namespace ScottPlot
             return $"PlottableOHLC with {pointCount} points";
         }
 
-        public override double[] GetLimits()
+        public override Config.AxisLimits2D GetLimits()
         {
             double[] limits = new double[4];
             limits[0] = ohlcs[0].time;
@@ -56,7 +56,8 @@ namespace ScottPlot
                     limits[3] = ohlcs[i].high;
             }
 
-            return limits;
+            // TODO: use features of 2d axis
+            return new Config.AxisLimits2D(limits);
         }
 
         public override void Render(Settings settings)

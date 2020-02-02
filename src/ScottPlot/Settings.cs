@@ -133,49 +133,45 @@ namespace ScottPlot
             axes.Zoom(Math.Pow(10, dXFrac), Math.Pow(10, dYFrac));
         }
 
-        public void AxisAuto(double horizontalMargin = .1, double verticalMargin = .1, bool xExpandOnly = false, bool yExpandOnly = false)
+        public void AxisAuto(
+            double horizontalMargin = .1, double verticalMargin = .1, 
+            bool xExpandOnly = false, bool yExpandOnly = false, 
+            bool autoX = true, bool autoY = true
+            )
         {
-            // separately deal with 2d plots and axis lines
-            var axisLines = plottables.Where(item => item is PlottableAxLine).ToArray();
-            var plottables2d = plottables.Except(axisLines).ToArray();
+            var oldLimits = new Config.AxisLimits2D(axes.ToArray());
+            var newLimits = new Config.AxisLimits2D();
 
-            // expand to include 2D plots first
-            if (plottables2d.Length == 0)
+            foreach (var plottable in plottables)
             {
-                axes.Set(-10, 10, -10, 10);
-            }
-            else
-            {
-                axes.Set(plottables2d[0].GetLimits());
-                foreach (Plottable plottable in plottables2d)
-                    axes.Expand(plottable.GetLimits(), xExpandOnly, yExpandOnly);
+                Config.AxisLimits2D plottableLimits = plottable.GetLimits();
+                if (autoX && !yExpandOnly)
+                    newLimits.ExpandX(plottableLimits);
+                if (autoY && !xExpandOnly)
+                    newLimits.ExpandY(plottableLimits);
             }
 
-            // special case for 2d plots with no width
-            if (axes.x.span == 0)
+            newLimits.MakeRational();
+
+            if (xExpandOnly)
             {
-                axes.x.min -= 1.5;
-                axes.x.max += 1.5;
+                oldLimits.ExpandX(newLimits);
+                axes.Set(oldLimits.x1, oldLimits.x2, null, null);
+                axes.Zoom(1 - horizontalMargin, 1);
             }
 
-            // special case for 2d plots with no height
-            if (axes.y.span == 0)
+            if (yExpandOnly)
             {
-                axes.y.min -= 1.5;
-                axes.y.max += 1.5;
+                oldLimits.ExpandY(newLimits);
+                axes.Set(null, null, oldLimits.y1, oldLimits.y2);
+                axes.Zoom(1, 1 - verticalMargin);
             }
 
-            // expand to include axis lines
-            foreach (PlottableAxLine axisLine in axisLines)
+            if ((!xExpandOnly) && (!yExpandOnly))
             {
-                double[] axisLimits = axes.limits;
-                if (axisLine.vertical)
-                    axes.Expand(new double[] { axes.limits[0], axes.limits[1], axes.y.min, axes.y.max });
-                else
-                    axes.Expand(new double[] { axes.x.min, axes.x.max, axes.limits[2], axes.limits[3] });
+                axes.Set(newLimits);
+                axes.Zoom(1 - horizontalMargin, 1 - verticalMargin);
             }
-
-            axes.Zoom(1 - horizontalMargin, 1 - verticalMargin);
         }
 
         public PointF GetPixel(double locationX, double locationY)

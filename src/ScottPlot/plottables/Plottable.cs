@@ -18,6 +18,6 @@ namespace ScottPlot
         public bool visible = true;
         public abstract void Render(Settings settings);
         public abstract override string ToString();
-        public abstract double[] GetLimits();
+        public abstract Config.AxisLimits2D GetLimits();
     }
 }

@@ -42,10 +42,10 @@ namespace ScottPlot
             return $"PlottableAxSpan ({orientation}) from {position1} to {position2}";
         }
 
-        public override double[] GetLimits()
+        public override AxisLimits2D GetLimits()
         {
             // TODO: use real numbers (and double.NaN)
-            return new double[] { 0, 0, 0, 0 };
+            return new AxisLimits2D();
         }
 
         public override void Render(Settings settings)

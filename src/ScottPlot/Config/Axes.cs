@@ -34,6 +34,11 @@ namespace ScottPlot.Config
             return $"Axes: X=({x.min}, {x.max}), Y=({x.min}, {x.max})";
         }
 
+        public double[] ToArray()
+        {
+            return new double[] { x.min, x.max, y.min, y.max };
+        }
+
         public void Set(double? x1 = null, double? x2 = null, double? y1 = null, double? y2 = null)
         {
             x.min = x1 ?? x.min;
@@ -47,27 +52,18 @@ namespace ScottPlot.Config
             if ((limits == null) || (limits.Length != 4))
                 throw new ArgumentException();
 
-            x.min = limits[0];
-            x.max = limits[1];
-            y.min = limits[2];
-            y.max = limits[3];
+            Set(limits[0], limits[1], limits[2], limits[3]);
         }
 
-        public void Expand(double[] limits, bool xExpandOnly = false, bool yExpandOnly = false)
+        public void Set(AxisLimits2D limits)
         {
-            if ((limits == null) || (limits.Length != 4))
-                throw new ArgumentException();
+            limits.MakeRational();
+            Set(limits.x1, limits.x2, limits.y1, limits.y2);
+        }
 
-            if (!yExpandOnly)
-            {
-                x.min = Math.Min(limits[0], x.min);
-                x.max = Math.Max(limits[1], x.max);
-            }
-            if (!xExpandOnly)
-            {
-                y.min = Math.Min(limits[2], y.min);
-                y.max = Math.Max(limits[3], y.max);
-            }
+        public void Set(ValueTuple<double, double, double, double> limits)
+        {
+            Set(limits.Item1, limits.Item2, limits.Item3, limits.Item4);
         }
 
         public void Zoom(double xFrac = 1, double yFrac = 1, PointF? zoomCenter = null)

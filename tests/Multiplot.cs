@@ -29,8 +29,7 @@ namespace ScottPlotTests
             for (int i = 0; i < multiplot.subplots.Length; i += 1)
             {
                 var limits = new ScottPlot.Config.AxisLimits2D(multiplot.subplots[i].Axis());
-                limits.ApplyRounding();
-                Console.WriteLine($"Subplot index {i} xSpan={limits.xSpan}, ySpan={limits.ySpan}");
+                Console.WriteLine($"Subplot index {i} {limits}");
             }
         }
 

@@ -56,7 +56,7 @@ namespace ScottPlot
             brush = new SolidBrush(color);
         }
 
-        public override double[] GetLimits()
+        public override Config.AxisLimits2D GetLimits()
         {
             double[] limits = new double[4];
             limits[0] = xs.Min() - barWidth / 2;
@@ -78,7 +78,8 @@ namespace ScottPlot
                 }
             }
 
-            return limits;
+            // TODO: use features of 2d axis
+            return new Config.AxisLimits2D(limits);
         }
 
         public override void Render(Settings settings)

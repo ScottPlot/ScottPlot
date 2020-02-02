@@ -49,10 +49,12 @@ namespace ScottPlot
             return $"PlottableAxLine ({orientation}) at {position}";
         }
 
-        public override double[] GetLimits()
+        public override AxisLimits2D GetLimits()
         {
-            // TODO: use real numbers (and double.NaN)
-            return new double[] { 0, 0, 0, 0 };
+            if (vertical)
+                return new AxisLimits2D(position, position, double.NaN, double.NaN);
+            else
+                return new AxisLimits2D(double.NaN, double.NaN, position, position);
         }
 
         public override void Render(Settings settings)
