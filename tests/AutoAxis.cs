@@ -218,5 +218,35 @@ namespace ScottPlotTests
             Assert.That(limitsA.xSpan < limitsB.xSpan);
             Assert.That(limitsA.ySpan == limitsB.ySpan);
         }
+
+        [Test]
+        public void Test_AutoAxis_ShrinkWhenNeeded()
+        {
+            Random rand = new Random(0);
+
+            var plt = new ScottPlot.Plot();
+
+            // small area
+            plt.PlotLine(-5, -5, 5, 5);
+            plt.AxisAuto();
+            var limitsA = new ScottPlot.Config.AxisLimits2D(plt.Axis());
+            Console.WriteLine($"limits A: {limitsA}");
+
+            // expand to large area
+            plt.Axis(-123, 123, -123, 123);
+            var limitsB = new ScottPlot.Config.AxisLimits2D(plt.Axis());
+            Console.WriteLine($"limits B: {limitsB}");
+
+            // shrink back to small area
+            plt.AxisAuto();
+            var limitsC = new ScottPlot.Config.AxisLimits2D(plt.Axis());
+            Console.WriteLine($"limits C: {limitsC}");
+
+            Assert.That(limitsB.xSpan > limitsC.xSpan);
+            Assert.That(limitsB.ySpan > limitsC.ySpan);
+
+            Assert.That(limitsA.xSpan == limitsC.xSpan);
+            Assert.That(limitsA.ySpan == limitsC.ySpan);
+        }
     }
 }
