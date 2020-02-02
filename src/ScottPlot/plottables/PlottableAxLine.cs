@@ -12,7 +12,7 @@ namespace ScottPlot
     {
         public double position;
         public bool vertical;
-        public string orientation;
+        private string orientation { get { return (vertical) ? "vertical" : "horizontal"; } }
         public Pen pen;
 
         public bool horizontal { get { return !vertical; } }
@@ -25,7 +25,6 @@ namespace ScottPlot
             this.color = color;
             this.label = label;
             this.lineStyle = lineStyle;
-            orientation = (vertical) ? "vertical" : "horizontal";
             pen = new Pen(color, (float)lineWidth);
             pointCount = 1;
 
@@ -68,6 +67,7 @@ namespace ScottPlot
 
         public override double[] GetLimits()
         {
+            // TODO: use real numbers (and double.NaN)
             return new double[] { 0, 0, 0, 0 };
         }
 
@@ -123,17 +123,20 @@ namespace ScottPlot
 
         public void DragTo(double coordinateX, double coordinateY)
         {
-            if (vertical)
+            if (draggingEnabled)
             {
-                if (coordinateX < dragLimitX1) coordinateX = dragLimitX1;
-                if (coordinateX > dragLimitX2) coordinateX = dragLimitX2;
-                position = coordinateX;
-            }
-            else
-            {
-                if (coordinateY < dragLimitY1) coordinateY = dragLimitY1;
-                if (coordinateY > dragLimitY2) coordinateY = dragLimitY2;
-                position = coordinateY;
+                if (vertical)
+                {
+                    if (coordinateX < dragLimitX1) coordinateX = dragLimitX1;
+                    if (coordinateX > dragLimitX2) coordinateX = dragLimitX2;
+                    position = coordinateX;
+                }
+                else
+                {
+                    if (coordinateY < dragLimitY1) coordinateY = dragLimitY1;
+                    if (coordinateY > dragLimitY2) coordinateY = dragLimitY2;
+                    position = coordinateY;
+                }
             }
         }
 
