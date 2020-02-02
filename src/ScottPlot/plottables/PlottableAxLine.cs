@@ -123,12 +123,18 @@ namespace ScottPlot
 
         public void DragTo(double coordinateX, double coordinateY)
         {
-            if (coordinateX < dragLimitX1) coordinateX = dragLimitX1;
-            if (coordinateX > dragLimitX2) coordinateX = dragLimitX2;
-            if (coordinateY < dragLimitY1) coordinateY = dragLimitY1;
-            if (coordinateY > dragLimitY2) coordinateY = dragLimitY2;
-
-            position = vertical ? coordinateX : coordinateY;
+            if (vertical)
+            {
+                if (coordinateX < dragLimitX1) coordinateX = dragLimitX1;
+                if (coordinateX > dragLimitX2) coordinateX = dragLimitX2;
+                position = coordinateX;
+            }
+            else
+            {
+                if (coordinateY < dragLimitY1) coordinateY = dragLimitY1;
+                if (coordinateY > dragLimitY2) coordinateY = dragLimitY2;
+                position = coordinateY;
+            }
         }
 
         public Cursor GetDragCursor()
