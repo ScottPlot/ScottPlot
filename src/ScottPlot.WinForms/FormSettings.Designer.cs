@@ -39,7 +39,6 @@
             this.rbQualityLow = new System.Windows.Forms.RadioButton();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.tbLabel = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.lbPlotObjects = new System.Windows.Forms.ListBox();
             this.btnExportCSV = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
@@ -68,6 +67,9 @@
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.cbStyle = new System.Windows.Forms.ComboBox();
             this.btnTighten = new System.Windows.Forms.Button();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.btnCopyCSV = new System.Windows.Forms.Button();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -75,16 +77,18 @@
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox7.SuspendLayout();
+            this.groupBox8.SuspendLayout();
+            this.groupBox9.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnSave
             // 
             this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSave.Location = new System.Drawing.Point(390, 441);
+            this.btnSave.Location = new System.Drawing.Point(618, 334);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(59, 23);
             this.btnSave.TabIndex = 10;
-            this.btnSave.Text = "Save";
+            this.btnSave.Text = "Apply";
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.BtnSave_Click);
             // 
@@ -121,7 +125,7 @@
             this.groupBox3.Controls.Add(this.cbQualityLowWhileDragging);
             this.groupBox3.Controls.Add(this.rbQualityHigh);
             this.groupBox3.Controls.Add(this.rbQualityLow);
-            this.groupBox3.Location = new System.Drawing.Point(263, 241);
+            this.groupBox3.Location = new System.Drawing.Point(263, 12);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(245, 47);
             this.groupBox3.TabIndex = 5;
@@ -162,38 +166,29 @@
             // 
             // groupBox4
             // 
-            this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox4.Controls.Add(this.tbLabel);
-            this.groupBox4.Controls.Add(this.label1);
+            this.groupBox4.Controls.Add(this.groupBox9);
+            this.groupBox4.Controls.Add(this.groupBox8);
             this.groupBox4.Controls.Add(this.lbPlotObjects);
-            this.groupBox4.Controls.Add(this.btnExportCSV);
-            this.groupBox4.Location = new System.Drawing.Point(263, 12);
+            this.groupBox4.Location = new System.Drawing.Point(525, 12);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(251, 170);
+            this.groupBox4.Size = new System.Drawing.Size(217, 316);
             this.groupBox4.TabIndex = 6;
             this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Data";
+            this.groupBox4.Text = "Plottable Objects";
             // 
             // tbLabel
             // 
             this.tbLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbLabel.Enabled = false;
-            this.tbLabel.Location = new System.Drawing.Point(127, 144);
+            this.tbLabel.Location = new System.Drawing.Point(6, 19);
             this.tbLabel.Name = "tbLabel";
-            this.tbLabel.Size = new System.Drawing.Size(118, 20);
+            this.tbLabel.Size = new System.Drawing.Size(193, 20);
             this.tbLabel.TabIndex = 6;
             this.tbLabel.TextChanged += new System.EventHandler(this.TbLabel_TextChanged);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(88, 146);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(36, 13);
-            this.label1.TabIndex = 5;
-            this.label1.Text = "Label:";
             // 
             // lbPlotObjects
             // 
@@ -204,19 +199,18 @@
             this.lbPlotObjects.Location = new System.Drawing.Point(6, 19);
             this.lbPlotObjects.Name = "lbPlotObjects";
             this.lbPlotObjects.ScrollAlwaysVisible = true;
-            this.lbPlotObjects.Size = new System.Drawing.Size(239, 108);
+            this.lbPlotObjects.Size = new System.Drawing.Size(205, 173);
             this.lbPlotObjects.TabIndex = 4;
             this.lbPlotObjects.SelectedIndexChanged += new System.EventHandler(this.LbPlotObjects_SelectedIndexChanged);
             // 
             // btnExportCSV
             // 
-            this.btnExportCSV.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnExportCSV.Enabled = false;
-            this.btnExportCSV.Location = new System.Drawing.Point(6, 141);
+            this.btnExportCSV.Location = new System.Drawing.Point(88, 19);
             this.btnExportCSV.Name = "btnExportCSV";
             this.btnExportCSV.Size = new System.Drawing.Size(76, 23);
             this.btnExportCSV.TabIndex = 3;
-            this.btnExportCSV.Text = "export CSV";
+            this.btnExportCSV.Text = "Save CSV";
             this.btnExportCSV.UseVisualStyleBackColor = true;
             this.btnExportCSV.Click += new System.EventHandler(this.BtnExportCSV_Click);
             // 
@@ -387,7 +381,7 @@
             // btnCancel
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel.Location = new System.Drawing.Point(455, 441);
+            this.btnCancel.Location = new System.Drawing.Point(683, 334);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(59, 23);
             this.btnCancel.TabIndex = 14;
@@ -400,7 +394,7 @@
             this.groupBox1.Controls.Add(this.cbGrid);
             this.groupBox1.Controls.Add(this.cbTicksMult);
             this.groupBox1.Controls.Add(this.cbTicksOffset);
-            this.groupBox1.Location = new System.Drawing.Point(12, 364);
+            this.groupBox1.Location = new System.Drawing.Point(263, 171);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(245, 47);
             this.groupBox1.TabIndex = 15;
@@ -440,7 +434,7 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.cbLegend);
-            this.groupBox2.Location = new System.Drawing.Point(263, 188);
+            this.groupBox2.Location = new System.Drawing.Point(263, 118);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(245, 47);
             this.groupBox2.TabIndex = 16;
@@ -460,7 +454,7 @@
             // groupBox7
             // 
             this.groupBox7.Controls.Add(this.cbStyle);
-            this.groupBox7.Location = new System.Drawing.Point(263, 294);
+            this.groupBox7.Location = new System.Drawing.Point(263, 65);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Size = new System.Drawing.Size(245, 47);
             this.groupBox7.TabIndex = 17;
@@ -480,7 +474,7 @@
             // 
             // btnTighten
             // 
-            this.btnTighten.Location = new System.Drawing.Point(12, 417);
+            this.btnTighten.Location = new System.Drawing.Point(263, 224);
             this.btnTighten.Name = "btnTighten";
             this.btnTighten.Size = new System.Drawing.Size(130, 23);
             this.btnTighten.TabIndex = 18;
@@ -488,11 +482,47 @@
             this.btnTighten.UseVisualStyleBackColor = true;
             this.btnTighten.Click += new System.EventHandler(this.BtnTighten_Click);
             // 
+            // groupBox8
+            // 
+            this.groupBox8.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox8.Controls.Add(this.tbLabel);
+            this.groupBox8.Location = new System.Drawing.Point(6, 204);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(205, 50);
+            this.groupBox8.TabIndex = 5;
+            this.groupBox8.TabStop = false;
+            this.groupBox8.Text = "Label";
+            // 
+            // groupBox9
+            // 
+            this.groupBox9.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox9.Controls.Add(this.btnCopyCSV);
+            this.groupBox9.Controls.Add(this.btnExportCSV);
+            this.groupBox9.Location = new System.Drawing.Point(6, 260);
+            this.groupBox9.Name = "groupBox9";
+            this.groupBox9.Size = new System.Drawing.Size(205, 50);
+            this.groupBox9.TabIndex = 6;
+            this.groupBox9.TabStop = false;
+            this.groupBox9.Text = "Data Export";
+            // 
+            // btnCopyCSV
+            // 
+            this.btnCopyCSV.Enabled = false;
+            this.btnCopyCSV.Location = new System.Drawing.Point(6, 19);
+            this.btnCopyCSV.Name = "btnCopyCSV";
+            this.btnCopyCSV.Size = new System.Drawing.Size(76, 23);
+            this.btnCopyCSV.TabIndex = 4;
+            this.btnCopyCSV.Text = "Copy CSV";
+            this.btnCopyCSV.UseVisualStyleBackColor = true;
+            this.btnCopyCSV.Click += new System.EventHandler(this.btnCopyCSV_Click);
+            // 
             // FormSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(526, 476);
+            this.ClientSize = new System.Drawing.Size(754, 369);
             this.Controls.Add(this.btnTighten);
             this.Controls.Add(this.groupBox7);
             this.Controls.Add(this.groupBox2);
@@ -509,7 +539,6 @@
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             this.groupBox6.ResumeLayout(false);
@@ -519,6 +548,9 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox7.ResumeLayout(false);
+            this.groupBox8.ResumeLayout(false);
+            this.groupBox8.PerformLayout();
+            this.groupBox9.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -563,6 +595,8 @@
         private System.Windows.Forms.ComboBox cbStyle;
         private System.Windows.Forms.Button btnTighten;
         private System.Windows.Forms.TextBox tbLabel;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.GroupBox groupBox9;
+        private System.Windows.Forms.Button btnCopyCSV;
+        private System.Windows.Forms.GroupBox groupBox8;
     }
 }

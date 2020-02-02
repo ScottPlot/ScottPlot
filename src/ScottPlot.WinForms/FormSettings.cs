@@ -77,6 +77,13 @@ namespace ScottPlot.UserControls
             PopualteGuiFromPlot();
         }
 
+        private void btnCopyCSV_Click(object sender, EventArgs e)
+        {
+            int plotObjectIndex = lbPlotObjects.SelectedIndex;
+            IExportable plottable = (IExportable)plt.GetPlottables()[plotObjectIndex];
+            Clipboard.SetText(plottable.GetCSV());
+        }
+
         private void BtnExportCSV_Click(object sender, EventArgs e)
         {
             int plotObjectIndex = lbPlotObjects.SelectedIndex;
@@ -98,12 +105,14 @@ namespace ScottPlot.UserControls
                 var plottable = plt.GetPlottables()[plotObjectIndex];
 
                 btnExportCSV.Enabled = plottable is IExportable;
+                btnCopyCSV.Enabled = plottable is IExportable;
                 tbLabel.Enabled = true;
                 tbLabel.Text = plottable.label;
             }
             else
             {
                 btnExportCSV.Enabled = false;
+                btnCopyCSV.Enabled = false;
                 tbLabel.Enabled = false;
             }
         }
@@ -163,6 +172,5 @@ namespace ScottPlot.UserControls
         {
             plt.TightenLayout();
         }
-
     }
 }
