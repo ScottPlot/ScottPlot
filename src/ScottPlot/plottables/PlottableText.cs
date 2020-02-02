@@ -44,9 +44,12 @@ namespace ScottPlot
             return $"PlottableText \"{text}\" at ({x}, {y})";
         }
 
-        public override double[] GetLimits()
+        public override Config.AxisLimits2D GetLimits()
         {
-            return new double[] { x, x, y, y };
+            double[] limits = { x, x, y, y };
+
+            // TODO: use features of 2d axis
+            return new Config.AxisLimits2D(limits);
         }
 
         public override void Render(Settings settings)

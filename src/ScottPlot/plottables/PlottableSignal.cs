@@ -70,7 +70,7 @@ namespace ScottPlot
             return $"PlottableSignal with {pointCount} points";
         }
 
-        public override double[] GetLimits()
+        public override Config.AxisLimits2D GetLimits()
         {
             double yMin = ys[0];
             double yMax = ys[0];
@@ -87,7 +87,8 @@ namespace ScottPlot
             limits[2] = yMin + yOffset;
             limits[3] = yMax + yOffset;
 
-            return limits;
+            // TODO: use features of 2d axis
+            return new Config.AxisLimits2D(limits);
         }
 
         private void RenderSingleLine(Settings settings)
