@@ -88,6 +88,25 @@ namespace ScottPlot
             Render();
         }
 
+        #region user control configuration
+        private bool enablePanning = true;
+        private bool enableZooming = true;
+        private bool lowQualityWhileDragging = true;
+        private bool doubleClickingTogglesBenchmark = true;
+        public void Configure(
+            bool? enablePanning = null,
+            bool? enableZooming = null,
+            bool? lowQualityWhileDragging = null,
+            bool? enableDoubleClickBenchmark = null
+            )
+        {
+            if (enablePanning != null) this.enablePanning = (bool)enablePanning;
+            if (enableZooming != null) this.enableZooming = (bool)enableZooming;
+            if (lowQualityWhileDragging != null) this.lowQualityWhileDragging = (bool)lowQualityWhileDragging;
+            if (enableDoubleClickBenchmark != null) this.doubleClickingTogglesBenchmark = (bool)enableDoubleClickBenchmark;
+        }
+        #endregion
+
         #region mouse tracking
 
         private Point? mouseLeftDownLocation, mouseRightDownLocation, mouseMiddleDownLocation;
@@ -153,8 +172,8 @@ namespace ScottPlot
                 // MouseDown event is to start a pan or zoom
                 bool shiftIsPressed = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
                 if (e.ChangedButton == MouseButton.Left && shiftIsPressed) mouseMiddleDownLocation = GetPixelPosition(e);
-                else if (e.ChangedButton == MouseButton.Left) mouseLeftDownLocation = GetPixelPosition(e);
-                else if (e.ChangedButton == MouseButton.Right) mouseRightDownLocation = GetPixelPosition(e);
+                else if (e.ChangedButton == MouseButton.Left && enablePanning) mouseLeftDownLocation = GetPixelPosition(e);
+                else if (e.ChangedButton == MouseButton.Right && enableZooming) mouseRightDownLocation = GetPixelPosition(e);
                 else if (e.ChangedButton == MouseButton.Middle) mouseMiddleDownLocation = GetPixelPosition(e);
                 axisLimitsOnMouseDown = plt.Axis();
             }
@@ -166,8 +185,6 @@ namespace ScottPlot
 
         private void UserControl_MouseMove(object sender, MouseEventArgs e)
         {
-            Debug.WriteLine($"{isPanningOrZooming} {isMovingDraggable}");
-
             if (isPanningOrZooming)
                 MouseMovedToPanOrZoom(e);
             else if (isMovingDraggable)
@@ -175,8 +192,6 @@ namespace ScottPlot
             else
                 MouseMovedWithoutInteraction(e);
         }
-
-        bool lowQualityWhileDragging = true; // TODO: create method to configure this
 
         private void MouseMovedToPanOrZoom(MouseEventArgs e)
         {
@@ -306,6 +321,15 @@ namespace ScottPlot
             }
 
             Render(skipIfCurrentlyRendering: false);
+        }
+
+        private void UserControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (doubleClickingTogglesBenchmark)
+            {
+                plt.Benchmark(toggle: true);
+                Render();
+            }
         }
 
         #endregion
