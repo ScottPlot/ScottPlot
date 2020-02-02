@@ -21,6 +21,7 @@ namespace ScottPlot
 
             rightClickMenu = new ContextMenuStrip();
             rightClickMenu.Items.Add("Save Image");
+            rightClickMenu.Items.Add("Copy Image");
             rightClickMenu.Items.Add("Settings");
             rightClickMenu.Items.Add("Help");
             rightClickMenu.ItemClicked += new ToolStripItemClickedEventHandler(RightClickMenuItemClicked);
@@ -330,6 +331,10 @@ namespace ScottPlot
                 case "Help":
                     var formHelp = new UserControls.FormHelp();
                     formHelp.ShowDialog();
+                    break;
+
+                case "Copy Image":
+                    Clipboard.SetImage(plt.GetBitmap(true));
                     break;
 
                 default:
