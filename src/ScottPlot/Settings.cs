@@ -238,35 +238,7 @@ namespace ScottPlot
             axes.y.hasBeenSet = false;
         }
 
-        [Obsolete("This method isn't necessary now that plottables have IDraggable", false)]
-        public PlottableAxLine GetDraggableAxisLineUnderCursor(Point eLocation)
-        {
-            // adjust pixel location to correspond to data frame
-            eLocation.X -= dataOrigin.X;
-            eLocation.Y -= dataOrigin.Y;
-
-            for (int i = 0; i < plottables.Count; i++)
-            {
-                if (plottables[i] is PlottableAxLine axLine)
-                {
-                    if (axLine is IDraggable)
-                    {
-                        if (axLine.vertical == true)
-                        {
-                            PointF linePosPx = GetPixel(axLine.position, 0);
-                            if (Math.Abs(linePosPx.X - eLocation.X) < 5)
-                                return axLine;
-                        }
-                        else
-                        {
-                            PointF linePosPx = GetPixel(0, axLine.position);
-                            if (Math.Abs(linePosPx.Y - eLocation.Y) < 5)
-                                return axLine;
-                        }
-                    }
-                }
-            }
-            return null;
-        }
+        [Obsolete("replaced by Plot.GetDraggableUnderMouse()", true)]
+        public PlottableAxLine GetDraggableAxisLineUnderCursor(Point eLocation) { return null; }
     }
 }
