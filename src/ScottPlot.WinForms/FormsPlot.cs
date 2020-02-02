@@ -104,6 +104,8 @@ namespace ScottPlot
                 return false;
             }
         }
+
+        IDraggable plottableBeingDragged = null;
         private bool isMovingDraggable { get { return (plottableBeingDragged != null); } }
 
         private Cursor GetCursor(Config.Cursor scottPlotCursor)
@@ -118,10 +120,10 @@ namespace ScottPlot
             }
         }
 
-        IDraggable plottableBeingDragged = null;
         private void PbPlot_MouseDown(object sender, MouseEventArgs e)
         {
-            plottableBeingDragged = plt.GetDraggableUnderMouse(e.Location.X, e.Location.Y);
+            var mousePixel = e.Location;
+            plottableBeingDragged = plt.GetDraggableUnderMouse(mousePixel.X, mousePixel.Y);
 
             if (plottableBeingDragged is null)
             {

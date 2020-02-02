@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -90,28 +91,32 @@ namespace ScottPlot
         #region mouse tracking
 
         private Point? mouseLeftDownLocation, mouseRightDownLocation, mouseMiddleDownLocation;
-        private Point mouseLocation;
-        public (double, double) mouseCoordinates
-        {
-            get
-            {
-                var loc = plt.CoordinateFromPixel((int)mouseLocation.X, (int)mouseLocation.Y);
-                return (loc.X, loc.Y);
-            }
-        }
-        double[] axisLimitsOnMouseDown;
-        private bool isMouseDragging
-        {
-            get
-            {
-                if (axisLimitsOnMouseDown is null)
-                    return false;
 
+        double[] axisLimitsOnMouseDown;
+        private bool isPanningOrZooming
+        {
+            get
+            {
+                if (axisLimitsOnMouseDown is null) return false;
                 if (mouseLeftDownLocation != null) return true;
                 else if (mouseRightDownLocation != null) return true;
                 else if (mouseMiddleDownLocation != null) return true;
-
                 return false;
+            }
+        }
+
+        IDraggable plottableBeingDragged = null;
+        private bool isMovingDraggable { get { return (plottableBeingDragged != null); } }
+
+        private Cursor GetCursor(Config.Cursor scottPlotCursor)
+        {
+            switch (scottPlotCursor)
+            {
+                case Config.Cursor.Arrow: return Cursors.Arrow;
+                case Config.Cursor.WE: return Cursors.SizeWE;
+                case Config.Cursor.NS: return Cursors.SizeNS;
+                case Config.Cursor.All: return Cursors.SizeAll;
+                default: return Cursors.Help;
             }
         }
 
@@ -136,93 +141,109 @@ namespace ScottPlot
             return new System.Drawing.Point((int)pt.X, (int)pt.Y);
         }
 
-        PlottableAxLine draggingAxLine = null;
         private void UserControl_MouseDown(object sender, MouseButtonEventArgs e)
         {
             CaptureMouse();
 
-            draggingAxLine = settings.GetDraggableAxisLineUnderCursor(SDPoint(GetPixelPosition(e)));
+            var mousePixel = GetPixelPosition(e);
+            plottableBeingDragged = plt.GetDraggableUnderMouse(mousePixel.X, mousePixel.Y);
 
-            bool shiftIsPressed = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
-            if (e.ChangedButton == MouseButton.Left && shiftIsPressed) mouseMiddleDownLocation = GetPixelPosition(e);
-            else if (e.ChangedButton == MouseButton.Left) mouseLeftDownLocation = GetPixelPosition(e);
-            else if (e.ChangedButton == MouseButton.Right) mouseRightDownLocation = GetPixelPosition(e);
-            else if (e.ChangedButton == MouseButton.Middle) mouseMiddleDownLocation = GetPixelPosition(e);
-            axisLimitsOnMouseDown = plt.Axis();
+            if (plottableBeingDragged is null)
+            {
+                // MouseDown event is to start a pan or zoom
+                bool shiftIsPressed = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
+                if (e.ChangedButton == MouseButton.Left && shiftIsPressed) mouseMiddleDownLocation = GetPixelPosition(e);
+                else if (e.ChangedButton == MouseButton.Left) mouseLeftDownLocation = GetPixelPosition(e);
+                else if (e.ChangedButton == MouseButton.Right) mouseRightDownLocation = GetPixelPosition(e);
+                else if (e.ChangedButton == MouseButton.Middle) mouseMiddleDownLocation = GetPixelPosition(e);
+                axisLimitsOnMouseDown = plt.Axis();
+            }
+            else
+            {
+                // mouse is being used to drag a plottable
+            }
         }
 
         private void UserControl_MouseMove(object sender, MouseEventArgs e)
         {
-            mouseLocation = GetPixelPosition(e);
+            Debug.WriteLine($"{isPanningOrZooming} {isMovingDraggable}");
 
-            if (isMouseDragging && draggingAxLine is null)
+            if (isPanningOrZooming)
+                MouseMovedToPanOrZoom(e);
+            else if (isMovingDraggable)
+                MouseMovedToMoveDraggable(e);
+            else
+                MouseMovedWithoutInteraction(e);
+        }
+
+        bool lowQualityWhileDragging = true; // TODO: create method to configure this
+
+        private void MouseMovedToPanOrZoom(MouseEventArgs e)
+        {
+            plt.Axis(axisLimitsOnMouseDown);
+            var mouseLocation = GetPixelPosition(e);
+
+            if (mouseLeftDownLocation != null)
             {
-                plt.Axis(axisLimitsOnMouseDown);
+                // left-click-drag panning
+                double deltaX = ((Point)mouseLeftDownLocation).X - mouseLocation.X;
+                double deltaY = mouseLocation.Y - ((Point)mouseLeftDownLocation).Y;
 
-                if (mouseLeftDownLocation != null)
-                {
-                    double deltaX = ((Point)mouseLeftDownLocation).X - mouseLocation.X;
-                    double deltaY = mouseLocation.Y - ((Point)mouseLeftDownLocation).Y;
+                if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) deltaY = 0;
+                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)) deltaX = 0;
 
-                    if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) deltaY = 0;
-                    if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)) deltaX = 0;
+                settings.AxesPanPx((int)deltaX, (int)deltaY);
+            }
+            else if (mouseRightDownLocation != null)
+            {
+                // right-click-drag panning
+                double deltaX = ((Point)mouseRightDownLocation).X - mouseLocation.X;
+                double deltaY = mouseLocation.Y - ((Point)mouseRightDownLocation).Y;
 
-                    settings.AxesPanPx((int)deltaX, (int)deltaY);
-                }
-                else if (mouseRightDownLocation != null)
-                {
-                    double deltaX = ((Point)mouseRightDownLocation).X - mouseLocation.X;
-                    double deltaY = mouseLocation.Y - ((Point)mouseRightDownLocation).Y;
+                if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) deltaY = 0;
+                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)) deltaX = 0;
 
-                    if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) deltaY = 0;
-                    if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)) deltaX = 0;
+                settings.AxesZoomPx(-(int)deltaX, -(int)deltaY);
+            }
+            else if (mouseMiddleDownLocation != null)
+            {
+                // middle-click-drag zooming to rectangle
+                double x1 = Math.Min(mouseLocation.X, ((Point)mouseMiddleDownLocation).X);
+                double x2 = Math.Max(mouseLocation.X, ((Point)mouseMiddleDownLocation).X);
+                double y1 = Math.Min(mouseLocation.Y, ((Point)mouseMiddleDownLocation).Y);
+                double y2 = Math.Max(mouseLocation.Y, ((Point)mouseMiddleDownLocation).Y);
 
-                    settings.AxesZoomPx(-(int)deltaX, -(int)deltaY);
-                }
-                else if (mouseMiddleDownLocation != null)
-                {
-                    double x1 = Math.Min(mouseLocation.X, ((Point)mouseMiddleDownLocation).X);
-                    double x2 = Math.Max(mouseLocation.X, ((Point)mouseMiddleDownLocation).X);
-                    double y1 = Math.Min(mouseLocation.Y, ((Point)mouseMiddleDownLocation).Y);
-                    double y2 = Math.Max(mouseLocation.Y, ((Point)mouseMiddleDownLocation).Y);
+                var origin = new System.Drawing.Point((int)x1 - settings.dataOrigin.X, (int)y1 - settings.dataOrigin.Y);
+                var size = new System.Drawing.Size((int)(x2 - x1), (int)(y2 - y1));
 
-                    var origin = new System.Drawing.Point((int)x1 - settings.dataOrigin.X, (int)y1 - settings.dataOrigin.Y);
-                    var size = new System.Drawing.Size((int)(x2 - x1), (int)(y2 - y1));
-
-                    settings.mouseMiddleRect = new System.Drawing.Rectangle(origin, size);
-                }
-
-                Render(true);
-                return; // we panned or zoomed, so exit
+                settings.mouseMiddleRect = new System.Drawing.Rectangle(origin, size);
             }
 
-            if (draggingAxLine != null)
-            {
-                // we are actively dragging an axis line
-                var pos = plt.CoordinateFromPixel(SDPoint(GetPixelPosition(e)));
-                draggingAxLine.position = (draggingAxLine.vertical) ? pos.X : pos.Y;
-                imagePlot.Cursor = (draggingAxLine.vertical == true) ? Cursors.SizeWE : Cursors.SizeNS;
-                Render(true);
-                return;
-            }
+            Render(true, lowQuality: lowQualityWhileDragging);
+            return;
+        }
 
-            var axLineUnderCursor = settings.GetDraggableAxisLineUnderCursor(SDPoint(GetPixelPosition(e)));
-            if (axLineUnderCursor != null)
-            {
-                // an axis line is under the cursor
-                imagePlot.Cursor = (axLineUnderCursor.vertical == true) ? Cursors.SizeWE : Cursors.SizeNS;
-                return;
-            }
+        private void MouseMovedToMoveDraggable(MouseEventArgs e)
+        {
+            var coordinate = plt.CoordinateFromPixel(GetPixelPosition(e).X, GetPixelPosition(e).Y);
+            plottableBeingDragged.DragTo(coordinate.X, coordinate.Y);
+            Render(true);
+        }
 
-            // the mouse isn't over anything
-            imagePlot.Cursor = cursor;
+        private void MouseMovedWithoutInteraction(MouseEventArgs e)
+        {
+            // set the cursor based on what's beneath it
+            var draggableUnderCursor = plt.GetDraggableUnderMouse(GetPixelPosition(e).X, GetPixelPosition(e).Y);
+            var spCursor = (draggableUnderCursor is null) ? Config.Cursor.Arrow : draggableUnderCursor.GetDragCursor();
+            imagePlot.Cursor = GetCursor(spCursor);
         }
 
         private void UserControl_MouseUp(object sender, MouseButtonEventArgs e)
         {
             ReleaseMouseCapture();
+            var mouseLocation = GetPixelPosition(e);
 
-            draggingAxLine = null;
+            plottableBeingDragged = null;
 
             if (mouseMiddleDownLocation != null)
             {
