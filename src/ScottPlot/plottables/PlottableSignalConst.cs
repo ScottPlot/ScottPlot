@@ -505,12 +505,17 @@ namespace ScottPlot
             return $"PlottableSignalConst with {pointCount} points ({typeof(T).Name}), trees {(TreesReady ? "" : "not")} calculated";
         }
 
-        public void SaveCSV(string filePath)
+        public void SaveCSV(string filePath, string delimiter = ", ", string separator = "\n")
+        {
+            System.IO.File.WriteAllText(filePath, GetCSV(delimiter, separator));
+        }
+
+        public string GetCSV(string delimiter = ", ", string separator = "\n")
         {
             StringBuilder csv = new StringBuilder();
             for (int i = 0; i < ys.Length; i++)
-                csv.AppendFormat("{0}, {1}\n", xOffset + i * samplePeriod, Convert.ToDouble(ys[i]));
-            System.IO.File.WriteAllText(filePath, csv.ToString());
+                csv.AppendFormat("{0}{1}{2}{3}", xOffset + i * samplePeriod, delimiter, Convert.ToDouble(ys[i]) + yOffset, separator);
+            return csv.ToString();
         }
     }
 }
