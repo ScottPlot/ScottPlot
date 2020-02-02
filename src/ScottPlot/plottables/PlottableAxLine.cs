@@ -107,17 +107,17 @@ namespace ScottPlot
             if (y2 != null) dragLimitY2 = (double)y2;
         }
 
-        public bool IsUnderMouse(double coordinateX, double coordinateY, double snapDistanceX, double snapDistanceY)
+        public bool IsUnderMouse(double coordinateX, double coordinateY, double snapX, double snapY)
         {
             if (vertical)
             {
                 double distanceFromMouseX = Math.Abs(position - coordinateX);
-                return (distanceFromMouseX <= snapDistanceX);
+                return (distanceFromMouseX <= snapX);
             }
             else
             {
                 double distanceFromMouseY = Math.Abs(position - coordinateY);
-                return (distanceFromMouseY <= snapDistanceY);
+                return (distanceFromMouseY <= snapY);
             }
         }
 
