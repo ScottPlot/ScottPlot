@@ -690,9 +690,38 @@ namespace ScottPlot
 
         public List<Plottable> GetPlottables()
         {
-            // This function is useful because the end user really isn't 
-            // intended to interact with the settincs class directly.
             return settings.plottables;
+        }
+
+        public List<IDraggable> GetDraggables()
+        {
+            List<IDraggable> draggables = new List<IDraggable>();
+
+            foreach (Plottable plottable in GetPlottables())
+                if (plottable is IDraggable draggable)
+                    draggables.Add(draggable);
+
+            return draggables;
+        }
+
+        public IDraggable GetDraggableUnderMouse(float pixelX, float pixelY, int snapDistancePixels = 5)
+        {
+            PointF mouseLocation = new PointF(pixelX, pixelY);
+            (double mouseX, double mouseY, double snapX, double snapY) = GetMouseCoordinatesAndSnapDistances(mouseLocation, snapDistancePixels);
+
+            foreach (IDraggable draggable in GetDraggables())
+                if (draggable.IsUnderMouse(mouseX, mouseY, snapX, snapY))
+                    return draggable;
+
+            return null;
+        }
+
+        private (double, double, double, double) GetMouseCoordinatesAndSnapDistances(PointF mouseLocation, int snapDistancePixels)
+        {
+            PointF mouseCoordinate = CoordinateFromPixel(mouseLocation);
+            double snapDistanceX = GetSettings(false).xAxisUnitsPerPixel * snapDistancePixels;
+            double snapDistanceY = GetSettings(false).yAxisUnitsPerPixel * snapDistancePixels;
+            return (mouseCoordinate.X, mouseCoordinate.Y, snapDistanceX, snapDistanceY);
         }
 
         public Settings GetSettings(bool showWarning = true)
@@ -797,7 +826,22 @@ namespace ScottPlot
             return settings.GetLocation(pixelX, pixelY);
         }
 
+        public PointF CoordinateFromPixel(float pixelX, float pixelY)
+        {
+            return settings.GetLocation(pixelX, pixelY);
+        }
+
+        public PointF CoordinateFromPixel(double pixelX, double pixelY)
+        {
+            return settings.GetLocation(pixelX, pixelY);
+        }
+
         public PointF CoordinateFromPixel(Point pixel)
+        {
+            return CoordinateFromPixel(pixel.X, pixel.Y);
+        }
+
+        public PointF CoordinateFromPixel(PointF pixel)
         {
             return CoordinateFromPixel(pixel.X, pixel.Y);
         }
@@ -890,7 +934,7 @@ namespace ScottPlot
             bool? fixedLineWidth = null
             )
         {
-            if(fontName == null)
+            if (fontName == null)
                 fontName = Config.Fonts.GetDefaultFontName();
             if (fontColor != null)
                 settings.legend.colorText = (Color)fontColor;

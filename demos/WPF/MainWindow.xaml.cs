@@ -26,6 +26,7 @@ namespace WpfApp
 
             wpfPlot1.plt.PlotSignal(ScottPlot.DataGen.Sin(50));
             wpfPlot1.plt.PlotSignal(ScottPlot.DataGen.Cos(50));
+            //wpfPlot1.plt.PlotVLine(25, draggable: true);
             wpfPlot1.plt.Title("ScottPlot WPF Quickstart");
             wpfPlot1.Render();
         }

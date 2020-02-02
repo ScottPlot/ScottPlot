@@ -187,7 +187,7 @@ namespace ScottPlot
             return new PointF(xPx, yPx);
         }
 
-        public PointF GetLocation(int pixelX, int pixelY)
+        public PointF GetLocation(double pixelX, double pixelY)
         {
             // Return the X/Y location corresponding to a pixel position on the figure bitmap.
             // This is useful for converting a mouse position to an X/Y coordinate.
@@ -238,6 +238,7 @@ namespace ScottPlot
             axes.y.hasBeenSet = false;
         }
 
+        [Obsolete("This method isn't necessary now that plottables have IDraggable", false)]
         public PlottableAxLine GetDraggableAxisLineUnderCursor(Point eLocation)
         {
             // adjust pixel location to correspond to data frame
@@ -248,20 +249,20 @@ namespace ScottPlot
             {
                 if (plottables[i] is PlottableAxLine axLine)
                 {
-                    if (axLine.draggable == false)
-                        continue;
-
-                    if (axLine.vertical == true)
+                    if (axLine is IDraggable)
                     {
-                        PointF linePosPx = GetPixel(axLine.position, 0);
-                        if (Math.Abs(linePosPx.X - eLocation.X) < 5)
-                            return axLine;
-                    }
-                    else
-                    {
-                        PointF linePosPx = GetPixel(0, axLine.position);
-                        if (Math.Abs(linePosPx.Y - eLocation.Y) < 5)
-                            return axLine;
+                        if (axLine.vertical == true)
+                        {
+                            PointF linePosPx = GetPixel(axLine.position, 0);
+                            if (Math.Abs(linePosPx.X - eLocation.X) < 5)
+                                return axLine;
+                        }
+                        else
+                        {
+                            PointF linePosPx = GetPixel(0, axLine.position);
+                            if (Math.Abs(linePosPx.Y - eLocation.Y) < 5)
+                                return axLine;
+                        }
                     }
                 }
             }
