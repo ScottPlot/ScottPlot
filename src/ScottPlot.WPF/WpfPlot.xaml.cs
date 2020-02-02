@@ -89,22 +89,33 @@ namespace ScottPlot
         }
 
         #region user control configuration
+
         private bool enablePanning = true;
         private bool enableZooming = true;
         private bool lowQualityWhileDragging = true;
         private bool doubleClickingTogglesBenchmark = true;
+        private bool lockVerticalAxis = false;
+        private bool lockHorizontalAxis = false;
         public void Configure(
             bool? enablePanning = null,
             bool? enableZooming = null,
             bool? lowQualityWhileDragging = null,
-            bool? enableDoubleClickBenchmark = null
+            bool? enableDoubleClickBenchmark = null,
+            bool? lockVerticalAxis = null,
+            bool? lockHorizontalAxis = null
             )
         {
             if (enablePanning != null) this.enablePanning = (bool)enablePanning;
             if (enableZooming != null) this.enableZooming = (bool)enableZooming;
             if (lowQualityWhileDragging != null) this.lowQualityWhileDragging = (bool)lowQualityWhileDragging;
             if (enableDoubleClickBenchmark != null) this.doubleClickingTogglesBenchmark = (bool)enableDoubleClickBenchmark;
+            if (lockVerticalAxis != null) this.lockVerticalAxis = (bool)lockVerticalAxis;
+            if (lockHorizontalAxis != null) this.lockHorizontalAxis = (bool)lockHorizontalAxis;
         }
+
+        private bool isHorizontalLocked { get { return (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt) || (lockHorizontalAxis)); } }
+        private bool isVerticalLocked { get { return (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl) || (lockVerticalAxis)); } }
+
         #endregion
 
         #region mouse tracking
@@ -204,8 +215,8 @@ namespace ScottPlot
                 double deltaX = ((Point)mouseLeftDownLocation).X - mouseLocation.X;
                 double deltaY = mouseLocation.Y - ((Point)mouseLeftDownLocation).Y;
 
-                if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) deltaY = 0;
-                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)) deltaX = 0;
+                if (isVerticalLocked) deltaY = 0;
+                if (isHorizontalLocked) deltaX = 0;
 
                 settings.AxesPanPx((int)deltaX, (int)deltaY);
             }
@@ -215,8 +226,8 @@ namespace ScottPlot
                 double deltaX = ((Point)mouseRightDownLocation).X - mouseLocation.X;
                 double deltaY = mouseLocation.Y - ((Point)mouseRightDownLocation).Y;
 
-                if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) deltaY = 0;
-                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)) deltaX = 0;
+                if (isVerticalLocked) deltaY = 0;
+                if (isHorizontalLocked) deltaX = 0;
 
                 settings.AxesZoomPx(-(int)deltaX, -(int)deltaY);
             }
@@ -308,8 +319,8 @@ namespace ScottPlot
             double zoomAmountY = 0.15;
             double zoomAmountX = 0.15;
 
-            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) zoomAmountY = 0;
-            if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt)) zoomAmountX = 0;
+            if (isVerticalLocked) zoomAmountY = 0;
+            if (isHorizontalLocked) zoomAmountX = 0;
 
             if (e.Delta > 1)
             {
