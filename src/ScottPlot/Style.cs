@@ -43,8 +43,34 @@ namespace ScottPlot
         Dot
     }
 
-    public class StyleTools
+    public static class StyleTools
     {
+        public static float[] DashPattern(LineStyle lineStyle)
+        {
+            switch (lineStyle)
+            {
+                case LineStyle.Solid: return new float[] { 1.0F };
+                case LineStyle.Dash: return new float[] { 8.0F, 4.0F };
+                case LineStyle.DashDot: return new float[] { 8.0F, 4.0F, 2.0F, 4.0F };
+                case LineStyle.DashDotDot: return new float[] { 8.0F, 4.0F, 2.0F, 4.0F, 2.0F, 4.0F };
+                case LineStyle.Dot: return new float[] { 2.0F, 4.0F };
+                default: return null;
+            }
+        }
+
+        public static System.Drawing.Drawing2D.DashStyle DashStyle(LineStyle lineStyle)
+        {
+            switch (lineStyle)
+            {
+                case LineStyle.Solid: return System.Drawing.Drawing2D.DashStyle.Solid;
+                case LineStyle.Dash: return System.Drawing.Drawing2D.DashStyle.Solid;
+                case LineStyle.DashDot: return System.Drawing.Drawing2D.DashStyle.Solid;
+                case LineStyle.DashDotDot: return System.Drawing.Drawing2D.DashStyle.Solid;
+                case LineStyle.Dot: return System.Drawing.Drawing2D.DashStyle.Solid;
+                default: return System.Drawing.Drawing2D.DashStyle.Solid;
+            }
+        }
+
         public static void SetStyle(Plot existingPlot, Style style)
         {
             switch (style)
