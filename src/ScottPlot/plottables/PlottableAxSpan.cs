@@ -96,29 +96,45 @@ namespace ScottPlot
             if (y2 != null) dragLimitY2 = (double)y2;
         }
 
-        private int positionUnderMouse;
+        private int positionToDrag;
         public bool IsUnderMouse(double coordinateX, double coordinateY, double snapX, double snapY)
         {
             if (vertical)
             {
-                if (Math.Abs(position1 - coordinateX) <= snapX)
-                    positionUnderMouse = 1;
-                else if (Math.Abs(position2 - coordinateX) <= snapX)
-                    positionUnderMouse = 2;
+                if (Math.Abs(position1 - coordinateX) <= snapX || Math.Abs(position2 - coordinateX) <= snapX)
+                    return true;
                 else
-                    positionUnderMouse = 0;
+                    return false;
+            }
+            else
+            {
+                if (Math.Abs(position1 - coordinateY) <= snapY || Math.Abs(position2 - coordinateY) <= snapY)
+                    return true;
+                else
+                    return false;
+            }
+        }
+
+        public void StartDragFrom(double coordinateX, double coordinateY, double snapX, double snapY)
+        {
+            if (vertical)
+            {
+                if (Math.Abs(position1 - coordinateX) <= snapX)
+                    positionToDrag = 1;
+                else if (Math.Abs(position2 - coordinateX) <= snapX)
+                    positionToDrag = 2;
+                else
+                    positionToDrag = 0;
             }
             else
             {
                 if (Math.Abs(position1 - coordinateY) <= snapY)
-                    positionUnderMouse = 1;
+                    positionToDrag = 1;
                 else if (Math.Abs(position2 - coordinateY) <= snapY)
-                    positionUnderMouse = 2;
+                    positionToDrag = 2;
                 else
-                    positionUnderMouse = 0;
+                    positionToDrag = 0;
             }
-
-            return (positionUnderMouse > 0);
         }
 
         public void DragTo(double coordinateX, double coordinateY)
@@ -130,9 +146,9 @@ namespace ScottPlot
                     if (coordinateX < dragLimitX1) coordinateX = dragLimitX1;
                     if (coordinateX > dragLimitX2) coordinateX = dragLimitX2;
 
-                    if (positionUnderMouse == 1)
+                    if (positionToDrag == 1)
                         position1 = coordinateX;
-                    else if (positionUnderMouse == 2)
+                    else if (positionToDrag == 2)
                         position2 = coordinateX;
                 }
                 else
@@ -140,9 +156,9 @@ namespace ScottPlot
                     if (coordinateY < dragLimitY1) coordinateY = dragLimitY1;
                     if (coordinateY > dragLimitY2) coordinateY = dragLimitY2;
 
-                    if (positionUnderMouse == 1)
+                    if (positionToDrag == 1)
                         position1 = coordinateY;
-                    else if (positionUnderMouse == 2)
+                    else if (positionToDrag == 2)
                         position2 = coordinateY;
                 }
             }
