@@ -27,11 +27,15 @@ namespace ScottPlotDemos
             formsPlot1.plt.Grid(false);
             formsPlot1.plt.PlotScatter(Xs, Ys);
             formsPlot1.plt.AxisAuto();
+
+            formsPlot1.plt.PlotVLine(15, draggable: true, dragLimitLower: 0, dragLimitUpper: 49);
+            formsPlot1.plt.PlotVSpan(20, 25, draggable: true, dragLimitLower: 0, dragLimitUpper: 49);
+
+            formsPlot1.plt.PlotHLine(-.75, draggable: true, dragLimitLower: 0, dragLimitUpper: 49);
+            formsPlot1.plt.PlotHSpan(.25, .5, draggable: true, dragLimitLower: 0, dragLimitUpper: 49);
+
             formsPlot1.Render();
             UpdateMessage();
-
-            BtnAddVline_Click(null, null);
-            BtnAddHspan_Click(null, null);
         }
 
         private void BtnAddHline_Click(object sender, EventArgs e)
@@ -65,21 +69,21 @@ namespace ScottPlotDemos
             for (int i = 0; i < plottables.Count; i++)
             {
 
-                if (plottables[i] is ScottPlot.PlottableVLine VLine)
+                if (plottables[i] is ScottPlot.PlottableVLine vLine)
                 {
-                    msg += $"{i}: VLine ({VLine.position:F4})\r\n";
+                    msg += $"{i}: VLine ({vLine.position:F4})\r\n";
                 }
-                else if (plottables[i] is ScottPlot.PlottableHLine HLine)
+                else if (plottables[i] is ScottPlot.PlottableHLine hLine)
                 {
-                    msg += $"{i}: HLine ({HLine.position:F4})\r\n";
+                    msg += $"{i}: HLine ({hLine.position:F4})\r\n";
                 }
-                else if (plottables[i] is ScottPlot.PlottableVSpan VSpan)
+                else if (plottables[i] is ScottPlot.PlottableVSpan vSpan)
                 {
-                    msg += $"{i}: VSpan ({VSpan.position1:F4} to {VSpan.position2:F4})\r\n";
+                    msg += $"{i}: VSpan ({vSpan.position1:F4} to {vSpan.position2:F4})\r\n";
                 }
-                else if (plottables[i] is ScottPlot.PlottableHSpan HSpan)
+                else if (plottables[i] is ScottPlot.PlottableHSpan hSpan)
                 {
-                    msg += $"{i}: HSpan ({HSpan.position1:F4} to {HSpan.position2:F4})\r\n";
+                    msg += $"{i}: HSpan ({hSpan.position1:F4} to {hSpan.position2:F4})\r\n";
                 }
             }
             richTextBox1.Text = msg;
