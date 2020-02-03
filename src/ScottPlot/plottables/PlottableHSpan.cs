@@ -1,6 +1,7 @@
 ﻿using ScottPlot.Config;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 
@@ -70,23 +71,18 @@ namespace ScottPlot
             if (y2 != null) dragLimitY2 = (double)y2;
         }
 
-        private int positionToDrag;
+        private enum Edge { Edge1, Edge2, Neither };
+        Edge edgeUnderMouse = Edge.Neither;
         public bool IsUnderMouse(double coordinateX, double coordinateY, double snapX, double snapY)
         {
-            if (Math.Abs(position1 - coordinateY) <= snapY || Math.Abs(position2 - coordinateY) <= snapY)
-                return true;
-            else
-                return false;
-        }
-
-        public void StartDragFrom(double coordinateX, double coordinateY, double snapX, double snapY)
-        {
             if (Math.Abs(position1 - coordinateY) <= snapY)
-                positionToDrag = 1;
+                edgeUnderMouse = Edge.Edge1;
             else if (Math.Abs(position2 - coordinateY) <= snapY)
-                positionToDrag = 2;
+                edgeUnderMouse = Edge.Edge2;
             else
-                positionToDrag = 0;
+                edgeUnderMouse = Edge.Neither;
+
+            return (edgeUnderMouse == Edge.Neither) ? false : true;
         }
 
         public void DragTo(double coordinateX, double coordinateY)
@@ -96,10 +92,12 @@ namespace ScottPlot
                 if (coordinateY < dragLimitY1) coordinateY = dragLimitY1;
                 if (coordinateY > dragLimitY2) coordinateY = dragLimitY2;
 
-                if (positionToDrag == 1)
+                if (edgeUnderMouse == Edge.Edge1)
                     position1 = coordinateY;
-                else if (positionToDrag == 2)
+                else if (edgeUnderMouse == Edge.Edge2)
                     position2 = coordinateY;
+                else
+                    Debug.WriteLine("DragTo() called but no side selected. Call IsUnderMouse() to select a side.");
             }
         }
 
