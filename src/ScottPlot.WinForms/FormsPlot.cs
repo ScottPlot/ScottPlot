@@ -213,7 +213,7 @@ namespace ScottPlot
             PointF coordinate = plt.CoordinateFromPixel(e.Location);
             plottableBeingDragged.DragTo(coordinate.X, coordinate.Y);
             OnMouseDragPlottable(EventArgs.Empty);
-            Render(true);
+            Render(true, lowQuality: lowQualityWhileDragging);
         }
 
         private void MouseMovedWithoutInteraction(MouseEventArgs e)
