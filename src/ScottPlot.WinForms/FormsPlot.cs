@@ -146,6 +146,9 @@ namespace ScottPlot
             }
             else
             {
+                var from = plt.GetMouseCoordinatesAndSnapDistances((PointF)mousePixel);
+                plottableBeingDragged.StartDragFrom(from.CoordX, from.CoordY, from.SnapCoordX, from.SnapCoordY);
+
                 // mouse is being used to drag a plottable
                 OnMouseDownOnPlottable(EventArgs.Empty);
             }

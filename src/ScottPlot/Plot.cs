@@ -716,7 +716,7 @@ namespace ScottPlot
             return null;
         }
 
-        private (double, double, double, double) GetMouseCoordinatesAndSnapDistances(PointF mouseLocation, int snapDistancePixels)
+        public (double CoordX, double CoordY, double SnapCoordX, double SnapCoordY) GetMouseCoordinatesAndSnapDistances(PointF mouseLocation, int snapDistancePixels = 5)
         {
             PointF mouseCoordinate = CoordinateFromPixel(mouseLocation);
             double snapDistanceX = GetSettings(false).xAxisUnitsPerPixel * snapDistancePixels;
