@@ -25,7 +25,7 @@ namespace ScottPlotDemos
 
         ScottPlot.PlottableOHLC plottedOHLCs;
         ScottPlot.PlottableText plottedText;
-        ScottPlot.PlottableAxLine plottedLine;
+        ScottPlot.PlottableVLine plottedLine;
 
         private void GenerateNewData()
         {
@@ -51,7 +51,7 @@ namespace ScottPlotDemos
             else
                 plottedOHLCs = formsPlot1.plt.PlotOHLC(ohlcs);
             plottedText = formsPlot1.plt.PlotText("", timestamps[0], ohlcs[0].low,
-                bold: true, fontSize: 10, color: Color.Black, 
+                bold: true, fontSize: 10, color: Color.Black,
                 frame: true, frameColor: Color.DarkGray);
             formsPlot1.plt.Ticks(dateTimeX: true);
             formsPlot1.plt.AxisAuto();

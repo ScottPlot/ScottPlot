@@ -206,7 +206,7 @@ namespace ScottPlot
             List<int> indicesToDelete = new List<int>();
             for (int i = 0; i < plottables.Count; i++)
             {
-                if (plottables[i] is PlottableAxLine && axLines)
+                if ((plottables[i] is PlottableVLine || plottables[i] is PlottableHLine) && axLines)
                     indicesToDelete.Add(i);
                 else if (plottables[i] is PlottableScatter && scatters)
                     indicesToDelete.Add(i);

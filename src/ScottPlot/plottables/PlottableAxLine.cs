@@ -8,6 +8,8 @@ using ScottPlot.Config;
 
 namespace ScottPlot
 {
+    // Can be safety deleted when settings.GetDraggableAxisLineUnderCursor() will be deleted
+    [Obsolete("Replaced by VLine and HLine", true)]
     public class PlottableAxLine : Plottable, IDraggable
     {
         public double position;
