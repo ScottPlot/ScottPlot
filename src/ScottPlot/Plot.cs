@@ -598,7 +598,7 @@ namespace ScottPlot
             return axLine;
         }
 
-        public PlottableAxSpan PlotVSpan(
+        public PlottableVSpan PlotVSpan(
             double y1,
             double y2,
             Color? color = null,
@@ -612,10 +612,9 @@ namespace ScottPlot
             if (color == null)
                 color = settings.GetNextColor();
 
-            var axisSpan = new PlottableAxSpan(
+            var axisSpan = new PlottableVSpan(
                 position1: y1,
                 position2: y2,
-                vertical: true,
                 color: (Color)color,
                 alpha: alpha,
                 label: label,
@@ -658,7 +657,7 @@ namespace ScottPlot
             return axLine;
         }
 
-        public PlottableAxSpan PlotHSpan(
+        public PlottableHSpan PlotHSpan(
             double x1,
             double x2,
             Color? color = null,
@@ -672,10 +671,9 @@ namespace ScottPlot
             if (color == null)
                 color = settings.GetNextColor();
 
-            var axisSpan = new PlottableAxSpan(
+            var axisSpan = new PlottableHSpan(
                     position1: x1,
                     position2: x2,
-                    vertical: false,
                     color: (Color)color,
                     alpha: alpha,
                     label: label,
