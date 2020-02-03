@@ -229,7 +229,7 @@ namespace ScottPlot
         {
             Pen pen = new Pen(plottable.color, 1);
 
-            if (plottable is PlottableAxSpan)
+            if (plottable is PlottableVSpan || plottable is PlottableHSpan)
                 pen.Width = 10;
 
             if (settings.legend.fixedLineWidth == false)

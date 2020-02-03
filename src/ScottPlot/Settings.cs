@@ -134,8 +134,8 @@ namespace ScottPlot
         }
 
         public void AxisAuto(
-            double horizontalMargin = .1, double verticalMargin = .1, 
-            bool xExpandOnly = false, bool yExpandOnly = false, 
+            double horizontalMargin = .1, double verticalMargin = .1,
+            bool xExpandOnly = false, bool yExpandOnly = false,
             bool autoX = true, bool autoY = true
             )
         {
@@ -220,7 +220,7 @@ namespace ScottPlot
                     indicesToDelete.Add(i);
                 else if (plottables[i] is PlottableOHLC && finance)
                     indicesToDelete.Add(i);
-                else if (plottables[i] is PlottableAxSpan && axSpans)
+                else if ((plottables[i] is PlottableVSpan || plottables[i] is PlottableHSpan) && axSpans)
                     indicesToDelete.Add(i);
             }
             indicesToDelete.Reverse();

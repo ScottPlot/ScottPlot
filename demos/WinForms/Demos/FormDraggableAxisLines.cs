@@ -69,10 +69,13 @@ namespace ScottPlotDemos
                     string lineType = (axLine.vertical) ? "VLine" : "HLine";
                     msg += $"{i}: {lineType} ({Math.Round(axLine.position, 4)})\r\n";
                 }
-                else if (plottables[i] is ScottPlot.PlottableAxSpan axSpan)
+                else if (plottables[i] is ScottPlot.PlottableVSpan VSpan)
                 {
-                    string lineType = (axSpan.vertical) ? "VSpan" : "HSpan";
-                    msg += $"{i}: {lineType} ({Math.Round(axSpan.position1, 4)} to {Math.Round(axSpan.position2, 4)})\r\n";
+                    msg += $"{i}: VSpan ({VSpan.position1:F4} to {VSpan.position2:F4})\r\n";
+                }
+                else if (plottables[i] is ScottPlot.PlottableHSpan HSpan)
+                {
+                    msg += $"{i}: HSpan ({HSpan.position1:F4} to {HSpan.position2:F4})\r\n";
                 }
             }
             richTextBox1.Text = msg;
