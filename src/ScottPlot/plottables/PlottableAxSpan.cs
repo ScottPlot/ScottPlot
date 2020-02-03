@@ -29,7 +29,7 @@ namespace ScottPlot
             brush = new SolidBrush(this.color);
             pointCount = 1;
 
-            DragEnable(draggable);
+            DragEnabled = draggable;
 
             if (vertical)
                 DragLimit(x1: dragLimitLower, x2: dragLimitUpper, y1: double.NegativeInfinity, y2: double.PositiveInfinity);
@@ -82,11 +82,7 @@ namespace ScottPlot
             settings.gfxData.FillRectangle(brush, x, y, width, height);
         }
 
-        private bool draggingEnabled;
-        public void DragEnable(bool enable)
-        {
-            draggingEnabled = enable;
-        }
+        public bool DragEnabled { get; set; }
 
         private double dragLimitX1 = double.NegativeInfinity;
         private double dragLimitX2 = double.PositiveInfinity;
@@ -127,7 +123,7 @@ namespace ScottPlot
 
         public void DragTo(double coordinateX, double coordinateY)
         {
-            if (draggingEnabled)
+            if (DragEnabled)
             {
                 if (vertical)
                 {
@@ -152,9 +148,6 @@ namespace ScottPlot
             }
         }
 
-        public Cursor GetDragCursor()
-        {
-            return (vertical) ? Cursor.WE : Cursor.NS;
-        }
+        public Cursor DragCursor => (vertical) ? Cursor.WE : Cursor.NS;
     }
 }
