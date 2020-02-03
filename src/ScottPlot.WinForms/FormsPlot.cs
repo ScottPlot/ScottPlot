@@ -54,7 +54,7 @@ namespace ScottPlot
             {
                 currentlyRendering = true;
                 pbPlot.Image = plt?.GetBitmap(true, lowQuality);
-                if (isPanningOrZooming)
+                if (isPanningOrZooming || isMovingDraggable)
                     Application.DoEvents();
                 currentlyRendering = false;
             }
@@ -213,7 +213,7 @@ namespace ScottPlot
             PointF coordinate = plt.CoordinateFromPixel(e.Location);
             plottableBeingDragged.DragTo(coordinate.X, coordinate.Y);
             OnMouseDragPlottable(EventArgs.Empty);
-            Render(true);
+            Render(true, lowQuality: lowQualityWhileDragging);
         }
 
         private void MouseMovedWithoutInteraction(MouseEventArgs e)
