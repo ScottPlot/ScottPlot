@@ -568,7 +568,7 @@ namespace ScottPlot
             return ohlc;
         }
 
-        public PlottableAxLine PlotVLine(
+        public PlottableVLine PlotVLine(
             double x,
             Color? color = null,
             double lineWidth = 1,
@@ -582,9 +582,8 @@ namespace ScottPlot
             if (color == null)
                 color = settings.GetNextColor();
 
-            PlottableAxLine axLine = new PlottableAxLine(
+            PlottableVLine axLine = new PlottableVLine(
                 position: x,
-                vertical: true,
                 color: (Color)color,
                 lineWidth: lineWidth,
                 label: label,
@@ -627,7 +626,7 @@ namespace ScottPlot
             return axisSpan;
         }
 
-        public PlottableAxLine PlotHLine(
+        public PlottableHLine PlotHLine(
             double x,
             Color? color = null,
             double lineWidth = 1,
@@ -641,9 +640,8 @@ namespace ScottPlot
             if (color == null)
                 color = settings.GetNextColor();
 
-            PlottableAxLine axLine = new PlottableAxLine(
+            PlottableHLine axLine = new PlottableHLine(
                 position: x,
-                vertical: false,
                 color: (Color)color,
                 lineWidth: lineWidth,
                 label: label,
