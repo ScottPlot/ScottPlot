@@ -627,7 +627,7 @@ namespace ScottPlot
         }
 
         public PlottableHLine PlotHLine(
-            double x,
+            double y,
             Color? color = null,
             double lineWidth = 1,
             string label = null,
@@ -641,7 +641,7 @@ namespace ScottPlot
                 color = settings.GetNextColor();
 
             PlottableHLine axLine = new PlottableHLine(
-                position: x,
+                position: y,
                 color: (Color)color,
                 lineWidth: lineWidth,
                 label: label,
