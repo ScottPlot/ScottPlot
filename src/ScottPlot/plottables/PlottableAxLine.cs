@@ -72,6 +72,7 @@ namespace ScottPlot
             {
                 pt1 = settings.GetPixel(settings.axes.x.min, position);
                 pt2 = settings.GetPixel(settings.axes.x.max, position);
+                pt2.X -= (float).01; // fixes a System.Drawing bug
             }
 
             settings.gfxData.DrawLine(pen, pt1, pt2);
