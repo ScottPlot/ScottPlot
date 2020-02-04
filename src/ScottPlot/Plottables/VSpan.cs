@@ -28,7 +28,7 @@ namespace ScottPlot.Plottables
 
         public override string ToString()
         {
-            return String.Format("VSpan (Y1={0:0.000}, Y2={0:0.000})", position1, position2);
+            return String.Format("VSpan (Y1={0:0.000}, Y2={1:0.000})", position1, position2);
         }
 
         public override AxisLimits2D GetLimits()
