@@ -28,7 +28,7 @@ namespace ScottPlot.Plottables
 
         public override string ToString()
         {
-            return $"HSpan (X1={position1}, X2={position2})";
+            return String.Format("HSpan (X1={0:0.000}, X2={0:0.000})", position1, position2);
         }
 
         public override AxisLimits2D GetLimits()
