@@ -66,30 +66,11 @@ namespace ScottPlotDemos
 
         private void UpdateMessage()
         {
-
-            string msg = "";
-            var plottables = formsPlot1.plt.GetPlottables();
-            for (int i = 0; i < plottables.Count; i++)
-            {
-
-                if (plottables[i] is PlottableVLine vLine)
-                {
-                    msg += $"{i}: VLine ({vLine.position:F4})\r\n";
-                }
-                else if (plottables[i] is PlottableHLine hLine)
-                {
-                    msg += $"{i}: HLine ({hLine.position:F4})\r\n";
-                }
-                else if (plottables[i] is PlottableVSpan vSpan)
-                {
-                    msg += $"{i}: VSpan ({vSpan.position1:F4} to {vSpan.position2:F4})\r\n";
-                }
-                else if (plottables[i] is PlottableHSpan hSpan)
-                {
-                    msg += $"{i}: HSpan ({hSpan.position1:F4} to {hSpan.position2:F4})\r\n";
-                }
-            }
-            richTextBox1.Text = msg;
+            StringBuilder msg = new StringBuilder();
+            foreach (var plottable in formsPlot1.plt.GetPlottables())
+                if (plottable is IDraggable)
+                    msg.AppendLine($"{plottable}");
+            richTextBox1.Text = msg.ToString();
         }
 
         private void ScottPlotUC1_MouseDownOnPlottable(object sender, EventArgs e)
