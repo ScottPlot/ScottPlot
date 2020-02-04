@@ -702,32 +702,22 @@ namespace ScottPlot
 
         public IDraggable GetDraggableUnderMouse(double pixelX, double pixelY, int snapDistancePixels = 5)
         {
-            PointF mouseLocation = new PointF((float)pixelX, (float)pixelY);
-            (double mouseX, double mouseY, double snapX, double snapY) = GetMouseCoordinatesAndSnapDistances(mouseLocation, snapDistancePixels);
+            PointF mouseCoordinates = CoordinateFromPixel(pixelX, pixelY);
+            double snapWidth = GetSettings(false).xAxisUnitsPerPixel * snapDistancePixels;
+            double snapHeight = GetSettings(false).yAxisUnitsPerPixel * snapDistancePixels;
 
             foreach (IDraggable draggable in GetDraggables())
-                if (draggable.IsUnderMouse(mouseX, mouseY, snapX, snapY))
+                if (draggable.IsUnderMouse(mouseCoordinates.X, mouseCoordinates.Y, snapWidth, snapHeight))
                     return draggable;
 
             return null;
         }
 
-        public (double CoordX, double CoordY, double SnapCoordX, double SnapCoordY) GetMouseCoordinatesAndSnapDistances(PointF mouseLocation, int snapDistancePixels = 5)
-        {
-            PointF mouseCoordinate = CoordinateFromPixel(mouseLocation);
-            double snapDistanceX = GetSettings(false).xAxisUnitsPerPixel * snapDistancePixels;
-            double snapDistanceY = GetSettings(false).yAxisUnitsPerPixel * snapDistancePixels;
-            return (mouseCoordinate.X, mouseCoordinate.Y, snapDistanceX, snapDistanceY);
-        }
-
         public Settings GetSettings(bool showWarning = true)
         {
             if (showWarning)
-            {
-                // The user really should not interact with the settings class directly.
-                // This is exposed here to aid in testing.
-                Console.WriteLine("WARNING: GetSettings() is only for development and testing");
-            }
+                Debug.WriteLine("WARNING: GetSettings() is only for development and testing as its contents change frequently");
+            
             return settings;
         }
 
