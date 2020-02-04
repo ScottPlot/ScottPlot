@@ -12,8 +12,6 @@ namespace ScottPlot.Plottables
 
         public override Cursor dragCursor => Cursor.WE;
 
-        public double position { get { return position1; } set { position1 = value; } }
-
         public VLine(double position, Color color, double lineWidth, string label,
             bool draggable, double dragLimitLower, double dragLimitUpper, LineStyle lineStyle)
         {
