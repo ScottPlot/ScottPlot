@@ -6,13 +6,10 @@ namespace ScottPlot
 {
     public interface IDraggable
     {
-        void DragEnable(bool enable);
-        void DragLimit(double? x1, double? x2, double? y1, double? y2);
-
+        bool DragEnabled { get; set; }
+        Config.Cursor DragCursor { get; }
+        void SetLimits(double? x1, double? x2, double? y1, double? y2);
         bool IsUnderMouse(double coordinateX, double coordinateY, double snapX, double snapY);
-
         void DragTo(double coordinateX, double coordinateY);
-
-        Config.Cursor GetDragCursor();
     }
 }

@@ -568,7 +568,7 @@ namespace ScottPlot
             return ohlc;
         }
 
-        public PlottableAxLine PlotVLine(
+        public PlottableVLine PlotVLine(
             double x,
             Color? color = null,
             double lineWidth = 1,
@@ -582,9 +582,8 @@ namespace ScottPlot
             if (color == null)
                 color = settings.GetNextColor();
 
-            PlottableAxLine axLine = new PlottableAxLine(
+            PlottableVLine axLine = new PlottableVLine(
                 position: x,
-                vertical: true,
                 color: (Color)color,
                 lineWidth: lineWidth,
                 label: label,
@@ -598,7 +597,7 @@ namespace ScottPlot
             return axLine;
         }
 
-        public PlottableAxSpan PlotVSpan(
+        public PlottableVSpan PlotVSpan(
             double y1,
             double y2,
             Color? color = null,
@@ -612,10 +611,9 @@ namespace ScottPlot
             if (color == null)
                 color = settings.GetNextColor();
 
-            var axisSpan = new PlottableAxSpan(
+            var axisSpan = new PlottableVSpan(
                 position1: y1,
                 position2: y2,
-                vertical: true,
                 color: (Color)color,
                 alpha: alpha,
                 label: label,
@@ -628,8 +626,8 @@ namespace ScottPlot
             return axisSpan;
         }
 
-        public PlottableAxLine PlotHLine(
-            double x,
+        public PlottableHLine PlotHLine(
+            double y,
             Color? color = null,
             double lineWidth = 1,
             string label = null,
@@ -642,9 +640,8 @@ namespace ScottPlot
             if (color == null)
                 color = settings.GetNextColor();
 
-            PlottableAxLine axLine = new PlottableAxLine(
-                position: x,
-                vertical: false,
+            PlottableHLine axLine = new PlottableHLine(
+                position: y,
                 color: (Color)color,
                 lineWidth: lineWidth,
                 label: label,
@@ -658,7 +655,7 @@ namespace ScottPlot
             return axLine;
         }
 
-        public PlottableAxSpan PlotHSpan(
+        public PlottableHSpan PlotHSpan(
             double x1,
             double x2,
             Color? color = null,
@@ -672,10 +669,9 @@ namespace ScottPlot
             if (color == null)
                 color = settings.GetNextColor();
 
-            var axisSpan = new PlottableAxSpan(
+            var axisSpan = new PlottableHSpan(
                     position1: x1,
                     position2: x2,
-                    vertical: false,
                     color: (Color)color,
                     alpha: alpha,
                     label: label,
@@ -706,32 +702,22 @@ namespace ScottPlot
 
         public IDraggable GetDraggableUnderMouse(double pixelX, double pixelY, int snapDistancePixels = 5)
         {
-            PointF mouseLocation = new PointF((float)pixelX, (float)pixelY);
-            (double mouseX, double mouseY, double snapX, double snapY) = GetMouseCoordinatesAndSnapDistances(mouseLocation, snapDistancePixels);
+            PointF mouseCoordinates = CoordinateFromPixel(pixelX, pixelY);
+            double snapWidth = GetSettings(false).xAxisUnitsPerPixel * snapDistancePixels;
+            double snapHeight = GetSettings(false).yAxisUnitsPerPixel * snapDistancePixels;
 
             foreach (IDraggable draggable in GetDraggables())
-                if (draggable.IsUnderMouse(mouseX, mouseY, snapX, snapY))
+                if (draggable.IsUnderMouse(mouseCoordinates.X, mouseCoordinates.Y, snapWidth, snapHeight))
                     return draggable;
 
             return null;
         }
 
-        private (double, double, double, double) GetMouseCoordinatesAndSnapDistances(PointF mouseLocation, int snapDistancePixels)
-        {
-            PointF mouseCoordinate = CoordinateFromPixel(mouseLocation);
-            double snapDistanceX = GetSettings(false).xAxisUnitsPerPixel * snapDistancePixels;
-            double snapDistanceY = GetSettings(false).yAxisUnitsPerPixel * snapDistancePixels;
-            return (mouseCoordinate.X, mouseCoordinate.Y, snapDistanceX, snapDistanceY);
-        }
-
         public Settings GetSettings(bool showWarning = true)
         {
             if (showWarning)
-            {
-                // The user really should not interact with the settings class directly.
-                // This is exposed here to aid in testing.
-                Console.WriteLine("WARNING: GetSettings() is only for development and testing");
-            }
+                Debug.WriteLine("WARNING: GetSettings() is only for development and testing as its contents change frequently");
+            
             return settings;
         }
 
