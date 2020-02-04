@@ -10,7 +10,7 @@ namespace ScottPlot.Plottables
     public class Text : IPlottable
     {
         // interface stuff
-        public bool visible { get; set; }
+        public bool visible { get; set; } = true;
         public int pointCount { get { return 1; } }
         public string label { get; set; }
         public Color color { get; set; }
@@ -30,7 +30,6 @@ namespace ScottPlot.Plottables
 
         public Text(string text, double x, double y, Color color, string fontName, double fontSize, bool bold, string label, TextAlignment alignment, double rotation, bool frame, Color frameColor)
         {
-            visible = true;
             this.text = text ?? throw new Exception("Text cannot be null");
             this.x = x;
             this.y = y;

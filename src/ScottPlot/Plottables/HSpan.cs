@@ -15,8 +15,6 @@ namespace ScottPlot.Plottables
         public HSpan(double position1, double position2, Color color, double alpha, string label,
             bool draggable, double dragLimitLower, double dragLimitUpper)
         {
-            visible = true;
-
             this.position1 = position1;
             this.position2 = position2;
             this.color = Color.FromArgb((int)(alpha * 255), color.R, color.G, color.B);

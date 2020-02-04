@@ -11,7 +11,7 @@ namespace ScottPlot.Plottables
     public class Signal : IPlottable, IExportable
     {
         // interface stuff
-        public bool visible { get; set; }
+        public bool visible { get; set; } = true;
         public int pointCount { get { return ys.Length; } }
         public string label { get; set; }
         public Color color { get; set; }
@@ -37,8 +37,6 @@ namespace ScottPlot.Plottables
 
         public Signal(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, bool useParallel, Color[] colorByDensity, int maxRenderIndex)
         {
-            visible = true;
-
             if (ys == null)
                 throw new Exception("Y data cannot be null");
 

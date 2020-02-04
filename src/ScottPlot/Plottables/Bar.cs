@@ -4,15 +4,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using ScottPlot.Config;
 
 namespace ScottPlot.Plottables
 {
-    public class Bar : Plottable
+    public class Bar : IPlottable
     {
+        // interface stuff
+        public bool visible { get; set; } = true;
+        public int pointCount { get { return ys.Length; } }
+        public string label { get; set; }
+        public Color color { get; set; }
+        public MarkerShape markerShape { get; set; }
+        public LineStyle lineStyle { get; set; }
+
+        // properties
         public double[] xs;
         public double[] ys;
         public double[] yErr;
-        float errorLineWidth;
+        float errorLineWidth; // TODO: use this
         float errorCapSize;
         float barWidth;
         float baseline = 0;
@@ -43,7 +53,6 @@ namespace ScottPlot.Plottables
             this.color = color;
             this.label = label;
             this.xOffset = xOffset;
-            pointCount = ys.Length;
 
             pen = new Pen(color, (float)errorLineWidth)
             {
@@ -56,7 +65,7 @@ namespace ScottPlot.Plottables
             brush = new SolidBrush(color);
         }
 
-        public override Config.AxisLimits2D GetLimits()
+        public Config.AxisLimits2D GetLimits()
         {
             double[] limits = new double[4];
             limits[0] = xs.Min() - barWidth / 2;
@@ -82,7 +91,7 @@ namespace ScottPlot.Plottables
             return new Config.AxisLimits2D(limits);
         }
 
-        public override void Render(Settings settings)
+        public void Render(Settings settings)
         {
             for (int i = 0; i < pointCount; i++)
             {

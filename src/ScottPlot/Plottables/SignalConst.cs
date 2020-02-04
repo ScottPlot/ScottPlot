@@ -15,10 +15,11 @@ namespace ScottPlot.Plottables
     // - in x64 mode limit can be up to maximum array size (2G points) with special solution and 64 GB RAM (not tested)
     // - if source array is changed UpdateTrees() must be called
     // - source array can be change by call updateData(), updating by ranges much faster.
+
     public class SignalConst<T> : IPlottable, IExportable where T : struct, IComparable
     {
         // interface stuff
-        public bool visible { get; set; }
+        public bool visible { get; set; } = true;
         public int pointCount { get { return ys.Length; } }
         public string label { get; set; }
         public Color color { get; set; }
@@ -76,8 +77,6 @@ namespace ScottPlot.Plottables
         }
         public SignalConst(T[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, bool useParallel)
         {
-            visible = true;
-
             if (ys == null)
                 throw new Exception("Y data cannot be null");
             this.ys = ys;

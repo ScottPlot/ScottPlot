@@ -10,7 +10,7 @@ namespace ScottPlot.Plottables
     public class Finance : IPlottable
     {
         // interface stuff
-        public bool visible { get; set; }
+        public bool visible { get; set; } = true;
         public int pointCount { get { return ohlcs.Length; } }
         public string label { get; set; }
         public Color color { get; set; }
@@ -27,8 +27,6 @@ namespace ScottPlot.Plottables
 
         public Finance(OHLC[] ohlcs, bool displayCandles = true)
         {
-            visible = true;
-
             this.ohlcs = ohlcs;
             this.displayCandles = displayCandles;
 

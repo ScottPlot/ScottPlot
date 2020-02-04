@@ -10,7 +10,7 @@ namespace ScottPlot.Plottables
     public class Scatter : IPlottable, IExportable
     {
         // interface stuff
-        public bool visible { get; set; }
+        public bool visible { get; set; } = true;
         public int pointCount { get { return ys.Length; } }
         public string label { get; set; }
         public Color color { get; set; }
@@ -34,8 +34,6 @@ namespace ScottPlot.Plottables
         public Scatter(double[] xs, double[] ys, Color color, double lineWidth, double markerSize, string label,
             double[] errorX, double[] errorY, double errorLineWidth, double errorCapSize, bool stepDisplay, MarkerShape markerShape, LineStyle lineStyle)
         {
-            visible = true;
-
             if ((xs == null) || (ys == null))
                 throw new Exception("X and Y data cannot be null");
 

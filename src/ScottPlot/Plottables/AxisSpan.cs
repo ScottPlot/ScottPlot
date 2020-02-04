@@ -9,7 +9,7 @@ namespace ScottPlot.Plottables
     public abstract class AxisSpan : IPlottable, IDraggable
     {
         // interface stuff
-        public bool visible { get; set; }
+        public bool visible { get; set; } = true;
         public int pointCount { get { return 1; } }
         public string label { get; set; }
         public Color color { get; set; }
