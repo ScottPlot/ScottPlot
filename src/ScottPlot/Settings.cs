@@ -233,8 +233,5 @@ namespace ScottPlot
             axes.x.hasBeenSet = false;
             axes.y.hasBeenSet = false;
         }
-
-        [Obsolete("replaced by Plot.GetDraggableUnderMouse()", true)]
-        public PlottableAxLine GetDraggableAxisLineUnderCursor(Point eLocation) { return null; }
     }
 }
