@@ -31,7 +31,7 @@ namespace ScottPlot
 
             DragEnabled = draggable;
 
-            DragLimit(x1: double.NegativeInfinity, x2: double.PositiveInfinity, y1: dragLimitLower, y2: dragLimitUpper);
+            SetLimits(x1: double.NegativeInfinity, x2: double.PositiveInfinity, y1: dragLimitLower, y2: dragLimitUpper);
         }
 
         public override string ToString()
@@ -59,7 +59,7 @@ namespace ScottPlot
 
         private double dragLimitY1 = double.NegativeInfinity;
         private double dragLimitY2 = double.PositiveInfinity;
-        public void DragLimit(double? x1, double? x2, double? y1, double? y2)
+        public void SetLimits(double? x1, double? x2, double? y1, double? y2)
         {
             if (y1 != null) dragLimitY1 = (double)y1;
             if (y2 != null) dragLimitY2 = (double)y2;
