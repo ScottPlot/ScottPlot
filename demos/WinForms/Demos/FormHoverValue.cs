@@ -33,9 +33,11 @@ namespace ScottPlotDemos
         private void UpdateHover()
         {
             var plottables = scottPlotUC1.plt.GetPlottables();
-            var scatterPlot = (PlottableScatter)plottables[0];
-            var highlightScatter = (PlottableScatter)plottables[1];
-            var highlightText = (PlottableText)plottables[2];
+
+            // TODO: store these when they are initialized
+            var scatterPlot = (Scatter)plottables[0];
+            var highlightScatter = (Scatter)plottables[1];
+            var highlightText = (Text)plottables[2];
 
             // get mouse position on the screen
             Point mouseLoc = new Point(Cursor.Position.X, Cursor.Position.Y);

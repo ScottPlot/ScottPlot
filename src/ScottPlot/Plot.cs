@@ -247,7 +247,7 @@ namespace ScottPlot
                 );
         }
 
-        public PlottableText PlotText(
+        public Text PlotText(
             string text,
             double x,
             double y,
@@ -273,7 +273,7 @@ namespace ScottPlot
 
             fontName = Config.Fonts.GetValidFontName(fontName);
 
-            PlottableText plottableText = new PlottableText(
+            Text plottableText = new Text(
                 text: text,
                 x: x,
                 y: y,
@@ -292,7 +292,7 @@ namespace ScottPlot
             return plottableText;
         }
 
-        public PlottableScatter PlotPoint(
+        public Scatter PlotPoint(
             double x,
             double y,
             Color? color = null,
@@ -312,7 +312,7 @@ namespace ScottPlot
             double[] errorXarray = (errorX != null) ? new double[] { (double)errorX } : null;
             double[] errorYarray = (errorY != null) ? new double[] { (double)errorY } : null;
 
-            PlottableScatter scatterPlot = new PlottableScatter(
+            Scatter scatterPlot = new Scatter(
                 xs: new double[] { x },
                 ys: new double[] { y },
                 color: (Color)color,
@@ -332,7 +332,7 @@ namespace ScottPlot
             return scatterPlot;
         }
 
-        public PlottableScatter PlotScatter(
+        public Scatter PlotScatter(
             double[] xs,
             double[] ys,
             Color? color = null,
@@ -350,7 +350,7 @@ namespace ScottPlot
             if (color == null)
                 color = settings.GetNextColor();
 
-            PlottableScatter scatterPlot = new PlottableScatter(
+            Scatter scatterPlot = new Scatter(
                 xs: xs,
                 ys: ys,
                 color: (Color)color,
@@ -370,7 +370,7 @@ namespace ScottPlot
             return scatterPlot;
         }
 
-        public PlottableScatter PlotArrow(
+        public Scatter PlotArrow(
             double tipX,
             double tipY,
             double baseX,
@@ -401,7 +401,7 @@ namespace ScottPlot
             return arrow;
         }
 
-        public PlottableScatter PlotLine(
+        public Scatter PlotLine(
             double x1,
             double y1,
             double x2,
@@ -423,7 +423,7 @@ namespace ScottPlot
                 );
         }
 
-        public PlottableScatter PlotStep(
+        public Scatter PlotStep(
             double[] xs,
             double[] ys,
             Color? color = null,
@@ -434,7 +434,7 @@ namespace ScottPlot
             if (color == null)
                 color = settings.GetNextColor();
 
-            PlottableScatter stepPlot = new PlottableScatter(
+            Scatter stepPlot = new Scatter(
                 xs: xs,
                 ys: ys,
                 color: (Color)color,
@@ -454,7 +454,7 @@ namespace ScottPlot
             return stepPlot;
         }
 
-        public PlottableSignal PlotSignal(
+        public Signal PlotSignal(
             double[] ys,
             double sampleRate = 1,
             double xOffset = 0,
@@ -473,7 +473,7 @@ namespace ScottPlot
             if (maxRenderIndex == null)
                 maxRenderIndex = ys.Length - 1;
 
-            PlottableSignal signal = new PlottableSignal(
+            Signal signal = new Signal(
                 ys: ys,
                 sampleRate: sampleRate,
                 xOffset: xOffset,
@@ -491,7 +491,7 @@ namespace ScottPlot
             return signal;
         }
 
-        public PlottableSignalConst<T> PlotSignalConst<T>(
+        public SignalConst<T> PlotSignalConst<T>(
             T[] ys,
             double sampleRate = 1,
             double xOffset = 0,
@@ -505,7 +505,7 @@ namespace ScottPlot
             if (color == null)
                 color = settings.GetNextColor();
 
-            PlottableSignalConst<T> signal = new PlottableSignalConst<T>(
+            SignalConst<T> signal = new SignalConst<T>(
                 ys: ys,
                 sampleRate: sampleRate,
                 xOffset: xOffset,
@@ -521,7 +521,7 @@ namespace ScottPlot
             return signal;
         }
 
-        public PlottableBar PlotBar(
+        public Bar PlotBar(
             double[] xs,
             double[] ys,
             double? barWidth = null,
@@ -539,7 +539,7 @@ namespace ScottPlot
             if (barWidth == null)
                 barWidth = (xs[1] - xs[0]) * .8;
 
-            PlottableBar barPlot = new PlottableBar(
+            Bar barPlot = new Bar(
                 xs: xs,
                 ys: ys,
                 barWidth: (double)barWidth,
@@ -555,21 +555,21 @@ namespace ScottPlot
             return barPlot;
         }
 
-        public PlottableOHLC PlotOHLC(OHLC[] ohlcs)
+        public Finance PlotOHLC(OHLC[] ohlcs)
         {
-            PlottableOHLC ohlc = new PlottableOHLC(ohlcs, displayCandles: false);
+            Finance ohlc = new Finance(ohlcs, displayCandles: false);
             settings.plottables.Add(ohlc);
             return ohlc;
         }
 
-        public PlottableOHLC PlotCandlestick(OHLC[] ohlcs)
+        public Finance PlotCandlestick(OHLC[] ohlcs)
         {
-            PlottableOHLC ohlc = new PlottableOHLC(ohlcs, displayCandles: true);
+            Finance ohlc = new Finance(ohlcs, displayCandles: true);
             settings.plottables.Add(ohlc);
             return ohlc;
         }
 
-        public PlottableVLine PlotVLine(
+        public VLine PlotVLine(
             double x,
             Color? color = null,
             double lineWidth = 1,
@@ -583,7 +583,7 @@ namespace ScottPlot
             if (color == null)
                 color = settings.GetNextColor();
 
-            PlottableVLine axLine = new PlottableVLine(
+            VLine axLine = new VLine(
                 position: x,
                 color: (Color)color,
                 lineWidth: lineWidth,
@@ -598,7 +598,7 @@ namespace ScottPlot
             return axLine;
         }
 
-        public PlottableVSpan PlotVSpan(
+        public VSpan PlotVSpan(
             double y1,
             double y2,
             Color? color = null,
@@ -612,7 +612,7 @@ namespace ScottPlot
             if (color == null)
                 color = settings.GetNextColor();
 
-            var axisSpan = new PlottableVSpan(
+            var axisSpan = new VSpan(
                 position1: y1,
                 position2: y2,
                 color: (Color)color,
@@ -627,7 +627,7 @@ namespace ScottPlot
             return axisSpan;
         }
 
-        public PlottableHLine PlotHLine(
+        public HLine PlotHLine(
             double y,
             Color? color = null,
             double lineWidth = 1,
@@ -641,7 +641,7 @@ namespace ScottPlot
             if (color == null)
                 color = settings.GetNextColor();
 
-            PlottableHLine axLine = new PlottableHLine(
+            HLine axLine = new HLine(
                 position: y,
                 color: (Color)color,
                 lineWidth: lineWidth,
@@ -656,7 +656,7 @@ namespace ScottPlot
             return axLine;
         }
 
-        public PlottableHSpan PlotHSpan(
+        public HSpan PlotHSpan(
             double x1,
             double x2,
             Color? color = null,
@@ -670,7 +670,7 @@ namespace ScottPlot
             if (color == null)
                 color = settings.GetNextColor();
 
-            var axisSpan = new PlottableHSpan(
+            var axisSpan = new HSpan(
                     position1: x1,
                     position2: x2,
                     color: (Color)color,

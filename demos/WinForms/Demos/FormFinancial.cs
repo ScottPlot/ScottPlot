@@ -24,9 +24,9 @@ namespace ScottPlotDemos
 
         }
 
-        PlottableOHLC plottedOHLCs;
-        PlottableText plottedText;
-        PlottableVLine plottedLine;
+        Finance plottedOHLCs;
+        Text plottedText;
+        VLine plottedLine;
 
         private void GenerateNewData()
         {

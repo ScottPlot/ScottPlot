@@ -230,21 +230,22 @@ namespace ScottPlot
         {
             Pen pen = new Pen(plottable.color, 1);
 
-            if (plottable is PlottableVSpan || plottable is PlottableHSpan)
+            // TODO: try not to use use "is" with a concrete class if you could use "is" against an interface instead
+            if (plottable is VSpan || plottable is HSpan)
                 pen.Width = 10;
 
             if (settings.legend.fixedLineWidth == false)
             {
-                if (plottable is PlottableScatter)
-                    pen.Width = (float)((PlottableScatter)plottable).lineWidth;
-                if (plottable is PlottableSignal)
-                    pen.Width = (float)((PlottableSignal)plottable).lineWidth;
+                if (plottable is Scatter)
+                    pen.Width = (float)((Scatter)plottable).lineWidth;
+                if (plottable is Signal)
+                    pen.Width = (float)((Signal)plottable).lineWidth;
             }
 
             // dont draw line if it's not on the plottable
-            if ((plottable is PlottableScatter) && (((PlottableScatter)plottable).lineWidth) == 0)
+            if ((plottable is Scatter) && (((Scatter)plottable).lineWidth) == 0)
                 return;
-            if ((plottable is PlottableSignal) && (((PlottableSignal)plottable).lineWidth) == 0)
+            if ((plottable is Signal) && (((Signal)plottable).lineWidth) == 0)
                 return;
 
             switch (plottable.lineStyle)
@@ -279,9 +280,9 @@ namespace ScottPlot
             // dont draw marker if it's not on the plottable
             if (plottable.markerShape == MarkerShape.none)
                 return;
-            if ((plottable is PlottableScatter) && (((PlottableScatter)plottable).markerSize) == 0)
+            if ((plottable is Scatter) && (((Scatter)plottable).markerSize) == 0)
                 return;
-            if ((plottable is PlottableSignal) && (((PlottableSignal)plottable).markerSize) == 0)
+            if ((plottable is Signal) && (((Signal)plottable).markerSize) == 0)
                 return;
 
             PointF corner1 = new PointF(textLocation.X - stubWidth + settings.legend.font.Size / 4, textLocation.Y + settings.legend.font.Size / 4 * padding);

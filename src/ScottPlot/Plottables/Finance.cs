@@ -7,7 +7,7 @@ using System.Drawing;
 
 namespace ScottPlot.Plottables
 {
-    public class PlottableOHLC : Plottable
+    public class Finance : Plottable
     {
         public OHLC[] ohlcs;
         bool displayCandles;
@@ -16,7 +16,7 @@ namespace ScottPlot.Plottables
         Brush brushUp;
         Brush brushDown;
 
-        public PlottableOHLC(OHLC[] ohlcs, bool displayCandles = true)
+        public Finance(OHLC[] ohlcs, bool displayCandles = true)
         {
             this.ohlcs = ohlcs;
             pointCount = ohlcs.Length;

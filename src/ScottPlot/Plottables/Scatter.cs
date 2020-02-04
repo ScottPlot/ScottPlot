@@ -7,7 +7,7 @@ using System.Drawing;
 
 namespace ScottPlot.Plottables
 {
-    public class PlottableScatter : Plottable, IExportable
+    public class Scatter : Plottable, IExportable
     {
         public double[] xs;
         public double[] ys;
@@ -22,7 +22,7 @@ namespace ScottPlot.Plottables
         public Pen penLineError;
         public Brush brush;
 
-        public PlottableScatter(double[] xs, double[] ys, Color color, double lineWidth, double markerSize, string label,
+        public Scatter(double[] xs, double[] ys, Color color, double lineWidth, double markerSize, string label,
             double[] errorX, double[] errorY, double errorLineWidth, double errorCapSize, bool stepDisplay, MarkerShape markerShape, LineStyle lineStyle)
         {
 

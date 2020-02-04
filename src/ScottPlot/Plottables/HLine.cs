@@ -6,12 +6,12 @@ using System.Text;
 
 namespace ScottPlot.Plottables
 {
-    public class PlottableHLine : Plottable, IDraggable
+    public class HLine : Plottable, IDraggable
     {
         public double position;
         public Pen pen;
 
-        public PlottableHLine(double position, Color color, double lineWidth, string label,
+        public HLine(double position, Color color, double lineWidth, string label,
             bool draggable, double dragLimitLower, double dragLimitUpper, LineStyle lineStyle)
         {
             this.position = position;
@@ -36,7 +36,7 @@ namespace ScottPlot.Plottables
 
         public override string ToString()
         {
-            return $"PlottableHLine (Horizontal) at {position}";
+            return $"HLine (X={position})";
         }
 
         public override AxisLimits2D GetLimits()

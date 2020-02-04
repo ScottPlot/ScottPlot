@@ -6,12 +6,12 @@ using System.Text;
 
 namespace ScottPlot.Plottables
 {
-    public class PlottableVLine : Plottable, IDraggable
+    public class VLine : Plottable, IDraggable
     {
         public double position;
         public Pen pen;
 
-        public PlottableVLine(double position, Color color, double lineWidth, string label,
+        public VLine(double position, Color color, double lineWidth, string label,
             bool draggable, double dragLimitLower, double dragLimitUpper, LineStyle lineStyle)
         {
             this.position = position;
@@ -36,7 +36,7 @@ namespace ScottPlot.Plottables
 
         public override string ToString()
         {
-            return $"PlottableVLine (Vertical) at {position}";
+            return $"VLine (Y={position})";
         }
 
         public override AxisLimits2D GetLimits()

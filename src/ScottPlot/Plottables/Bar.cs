@@ -7,7 +7,7 @@ using System.Drawing;
 
 namespace ScottPlot.Plottables
 {
-    public class PlottableBar : Plottable
+    public class Bar : Plottable
     {
         public double[] xs;
         public double[] ys;
@@ -20,7 +20,7 @@ namespace ScottPlot.Plottables
         Pen pen;
         Brush brush;
 
-        public PlottableBar(double[] xs, double[] ys, double barWidth, double xOffset, Color color, string label, double[] yErr, double errorLineWidth = 1, double errorCapSize = 3)
+        public Bar(double[] xs, double[] ys, double barWidth, double xOffset, Color color, string label, double[] yErr, double errorLineWidth = 1, double errorCapSize = 3)
         {
             if ((xs == null) || (ys == null))
                 throw new Exception("X and Y data cannot be null");

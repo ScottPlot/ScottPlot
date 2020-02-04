@@ -15,7 +15,7 @@ namespace ScottPlot.Plottables
     // - in x64 mode limit can be up to maximum array size (2G points) with special solution and 64 GB RAM (not tested)
     // - if source array is changed UpdateTrees() must be called
     // - source array can be change by call updateData(), updating by ranges much faster.
-    public class PlottableSignalConst<T> : Plottable, IExportable where T : struct, IComparable
+    public class SignalConst<T> : Plottable, IExportable where T : struct, IComparable
     {    
         // Any changes must be sync with PlottableSignal
         public T[] ys;
@@ -63,7 +63,7 @@ namespace ScottPlot.Plottables
             LessThanExp = Expression.Lambda<Func<T, T, bool>>(bodyLessThan, paramA, paramB).Compile();
             GreaterThanExp = Expression.Lambda<Func<T, T, bool>>(bodyGreaterThan, paramA, paramB).Compile();
         }
-        public PlottableSignalConst(T[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, bool useParallel)
+        public SignalConst(T[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, bool useParallel)
         {
             if (ys == null)
                 throw new Exception("Y data cannot be null");

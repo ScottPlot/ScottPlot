@@ -203,25 +203,25 @@ namespace ScottPlot
 
         public void Clear(bool axLines = true, bool scatters = true, bool signals = true, bool text = true, bool bar = true, bool finance = true, bool axSpans = true)
         {
-            // TODO: This is a switch code smell. Use inversion of control here.
+            // TODO: we've got to do better than this!!! Maybe pass in a List of Plottable types?
             List<int> indicesToDelete = new List<int>();
             for (int i = 0; i < plottables.Count; i++)
             {
-                if ((plottables[i] is PlottableVLine || plottables[i] is PlottableHLine) && axLines)
+                if ((plottables[i] is VLine || plottables[i] is HLine) && axLines)
                     indicesToDelete.Add(i);
-                else if (plottables[i] is PlottableScatter && scatters)
+                else if (plottables[i] is Scatter && scatters)
                     indicesToDelete.Add(i);
-                else if (plottables[i] is PlottableSignal && signals)
+                else if (plottables[i] is Signal && signals)
                     indicesToDelete.Add(i);
-                else if (plottables[i].GetType().IsGenericType && plottables[i].GetType().GetGenericTypeDefinition() == typeof(PlottableSignalConst<>) && signals)
+                else if (plottables[i].GetType().IsGenericType && plottables[i].GetType().GetGenericTypeDefinition() == typeof(SignalConst<>) && signals)
                     indicesToDelete.Add(i);
-                else if (plottables[i] is PlottableText && text)
+                else if (plottables[i] is Text && text)
                     indicesToDelete.Add(i);
-                else if (plottables[i] is PlottableBar && bar)
+                else if (plottables[i] is Bar && bar)
                     indicesToDelete.Add(i);
-                else if (plottables[i] is PlottableOHLC && finance)
+                else if (plottables[i] is Finance && finance)
                     indicesToDelete.Add(i);
-                else if ((plottables[i] is PlottableVSpan || plottables[i] is PlottableHSpan) && axSpans)
+                else if ((plottables[i] is VSpan || plottables[i] is HSpan) && axSpans)
                     indicesToDelete.Add(i);
             }
             indicesToDelete.Reverse();

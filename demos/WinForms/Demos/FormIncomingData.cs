@@ -14,7 +14,7 @@ namespace ScottPlotDemos
     public partial class FormIncomingData : Form
     {
         private double[] dataValues;
-        private PlottableSignal signal;
+        private Signal signal;
 
         public FormIncomingData()
         {

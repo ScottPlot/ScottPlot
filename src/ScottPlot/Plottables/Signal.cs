@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 
 namespace ScottPlot.Plottables
 {
-    public class PlottableSignal : Plottable, IExportable
+    public class Signal : Plottable, IExportable
     {
         // Any changes must be sync with PlottableSignalConst
         public double[] ys;
@@ -24,7 +24,7 @@ namespace ScottPlot.Plottables
         private Pen[] penByDensity;
         private int densityLevelCount = 0;
 
-        public PlottableSignal(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, bool useParallel, Color[] colorByDensity, int maxRenderIndex)
+        public Signal(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, bool useParallel, Color[] colorByDensity, int maxRenderIndex)
         {
             if (ys == null)
                 throw new Exception("Y data cannot be null");

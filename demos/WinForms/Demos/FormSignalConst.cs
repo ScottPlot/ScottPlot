@@ -64,9 +64,9 @@ namespace ScottPlotDemos
             // run plot data updates at max speed in background thread                
             Task.Run(() =>
             {
-                if (signal is PlottableSignalConst<double>)
+                if (signal is SignalConst<double>)
                 {
-                    var signalConst = signal as PlottableSignalConst<double>;
+                    var signalConst = signal as SignalConst<double>;
                     signalConst.updateData(0, rand.NextDouble() * 10 - 5);
                     if (updateRangeSize < 1)
                     {

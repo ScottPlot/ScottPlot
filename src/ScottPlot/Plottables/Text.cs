@@ -7,7 +7,7 @@ using System.Drawing;
 
 namespace ScottPlot.Plottables
 {
-    public class PlottableText : Plottable
+    public class Text : Plottable
     {
         public double x;
         public double y;
@@ -19,7 +19,7 @@ namespace ScottPlot.Plottables
         public bool frame;
         public Color frameColor;
 
-        public PlottableText(string text, double x, double y, Color color, string fontName, double fontSize, bool bold, string label, TextAlignment alignment, double rotation, bool frame, Color frameColor)
+        public Text(string text, double x, double y, Color color, string fontName, double fontSize, bool bold, string label, TextAlignment alignment, double rotation, bool frame, Color frameColor)
         {
             this.text = text ?? throw new Exception("Text cannot be null");
             this.x = x;

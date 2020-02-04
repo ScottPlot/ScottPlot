@@ -7,13 +7,13 @@ using System.Text;
 
 namespace ScottPlot.Plottables
 {
-    public class PlottableHSpan : Plottable, IDraggable
+    public class HSpan : Plottable, IDraggable
     {
         public double position1;
         public double position2;
         public Brush brush;
 
-        public PlottableHSpan(double position1, double position2, Color color, double alpha, string label,
+        public HSpan(double position1, double position2, Color color, double alpha, string label,
             bool draggable, double dragLimitLower, double dragLimitUpper)
         {
             this.position1 = position1;
@@ -30,7 +30,7 @@ namespace ScottPlot.Plottables
 
         public override string ToString()
         {
-            return $"PlottableVSpan from X={position1} to X={position2}";
+            return $"HSpan (X1={position1}, X2={position2})";
         }
 
         public override AxisLimits2D GetLimits()
