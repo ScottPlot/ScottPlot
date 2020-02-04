@@ -6,15 +6,18 @@ using System.Text;
 
 namespace ScottPlot.Plottables
 {
-    public class HLine : Plottable, IDraggable
+    public class HLine : AxisLine
     {
-        public double position;
         public Pen pen;
+
+        public override Cursor dragCursor => Cursor.NS;
+
+        public double position { get { return position1; } set { position1 = value; } }
 
         public HLine(double position, Color color, double lineWidth, string label,
             bool draggable, double dragLimitLower, double dragLimitUpper, LineStyle lineStyle)
         {
-            this.position = position;
+            position1 = position;
             this.color = color;
             this.label = label;
             this.lineStyle = lineStyle;
@@ -29,58 +32,49 @@ namespace ScottPlot.Plottables
                 DashPattern = StyleTools.DashPattern(lineStyle)
             };
 
-            DragEnabled = draggable;
+            isDragEnabled = draggable;
 
             SetLimits(x1: double.NegativeInfinity, x2: double.PositiveInfinity, y1: dragLimitLower, y2: dragLimitUpper);
         }
 
         public override string ToString()
         {
-            return $"HLine (X={position})";
+            return string.Format("HLine (X={0:0.000})", position1);
         }
 
         public override AxisLimits2D GetLimits()
         {
-            return new AxisLimits2D(double.NaN, double.NaN, position, position);
+            return new AxisLimits2D(x1: null, x2: null, y1: position1, y2: position1);
         }
 
         public override void Render(Settings settings)
         {
             PointF pt1, pt2;
-
-            pt1 = settings.GetPixel(settings.axes.x.min, position);
-            pt2 = settings.GetPixel(settings.axes.x.max, position);
+            pt1 = settings.GetPixel(settings.axes.x.min, position1);
+            pt2 = settings.GetPixel(settings.axes.x.max, position1);
             pt2.X -= (float).01; // fixes a System.Drawing bug
-
             settings.gfxData.DrawLine(pen, pt1, pt2);
         }
 
-        public bool DragEnabled { get; set; }
-
-        private double dragLimitY1 = double.NegativeInfinity;
-        private double dragLimitY2 = double.PositiveInfinity;
-        public void SetLimits(double? x1, double? x2, double? y1, double? y2)
+        public override bool IsUnderMouse(double coordinateX, double coordinateY, double snapX, double snapY)
         {
-            if (y1 != null) dragLimitY1 = (double)y1;
-            if (y2 != null) dragLimitY2 = (double)y2;
-        }
-
-        public bool IsUnderMouse(double coordinateX, double coordinateY, double snapX, double snapY)
-        {
-            double distanceFromMouseY = Math.Abs(position - coordinateY);
+            double distanceFromMouseY = Math.Abs(position1 - coordinateY);
             return (distanceFromMouseY <= snapY);
         }
 
-        public void DragTo(double coordinateX, double coordinateY)
+        public override void DragTo(double coordinateX, double coordinateY)
         {
-            if (DragEnabled)
+            if (isDragEnabled)
             {
-                if (coordinateY < dragLimitY1) coordinateY = dragLimitY1;
-                if (coordinateY > dragLimitY2) coordinateY = dragLimitY2;
-                position = coordinateY;
+                coordinateY = Math.Max(coordinateY, limits.y1);
+                coordinateY = Math.Min(coordinateY, limits.y2);
+                position1 = coordinateY;
             }
         }
 
-        public Cursor DragCursor => Cursor.NS;
+        public override void SetLimits(double? x1, double? x2, double? y1, double? y2)
+        {
+            limits.SetY(y1: y1, y2: y2);
+        }
     }
 }

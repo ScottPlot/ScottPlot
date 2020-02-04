@@ -221,7 +221,7 @@ namespace ScottPlot
         {
             // set the cursor based on what's beneath it
             var draggableUnderCursor = plt.GetDraggableUnderMouse(e.Location.X, e.Location.Y);
-            var spCursor = (draggableUnderCursor is null) ? Config.Cursor.Arrow : draggableUnderCursor.DragCursor;
+            var spCursor = (draggableUnderCursor is null) ? Config.Cursor.Arrow : draggableUnderCursor.dragCursor;
             pbPlot.Cursor = GetCursor(spCursor);
         }
 

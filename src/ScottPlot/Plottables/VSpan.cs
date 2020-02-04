@@ -7,10 +7,9 @@ using System.Text;
 
 namespace ScottPlot.Plottables
 {
-    public class VSpan : Plottable, IDraggable
+    public class VSpan : AxisSpan
     {
-        public double position1;
-        public double position2;
+        public override Cursor dragCursor => Cursor.NS;
         public Brush brush;
 
         public VSpan(double position1, double position2, Color color, double alpha, string label,
@@ -23,7 +22,7 @@ namespace ScottPlot.Plottables
             brush = new SolidBrush(this.color);
             pointCount = 1;
 
-            DragEnabled = draggable;
+            isDragEnabled = draggable;
 
             SetLimits(x1: double.NegativeInfinity, x2: double.PositiveInfinity, y1: dragLimitLower, y2: dragLimitUpper);
         }
@@ -61,19 +60,9 @@ namespace ScottPlot.Plottables
             settings.gfxData.FillRectangle(brush, x, y, width, height);
         }
 
-        public bool DragEnabled { get; set; }
-
-        private double dragLimitY1 = double.NegativeInfinity;
-        private double dragLimitY2 = double.PositiveInfinity;
-        public void SetLimits(double? x1, double? x2, double? y1, double? y2)
-        {
-            if (y1 != null) dragLimitY1 = (double)y1;
-            if (y2 != null) dragLimitY2 = (double)y2;
-        }
-
         private enum Edge { Edge1, Edge2, Neither };
         Edge edgeUnderMouse = Edge.Neither;
-        public bool IsUnderMouse(double coordinateX, double coordinateY, double snapX, double snapY)
+        public override bool IsUnderMouse(double coordinateX, double coordinateY, double snapX, double snapY)
         {
             if (Math.Abs(position1 - coordinateY) <= snapY)
                 edgeUnderMouse = Edge.Edge1;
@@ -85,12 +74,12 @@ namespace ScottPlot.Plottables
             return (edgeUnderMouse == Edge.Neither) ? false : true;
         }
 
-        public void DragTo(double coordinateX, double coordinateY)
+        public override void DragTo(double coordinateX, double coordinateY)
         {
-            if (DragEnabled)
+            if (isDragEnabled)
             {
-                if (coordinateY < dragLimitY1) coordinateY = dragLimitY1;
-                if (coordinateY > dragLimitY2) coordinateY = dragLimitY2;
+                coordinateY = Math.Max(coordinateY, limits.y1);
+                coordinateY = Math.Min(coordinateY, limits.y2);
 
                 if (edgeUnderMouse == Edge.Edge1)
                     position1 = coordinateY;
@@ -101,6 +90,9 @@ namespace ScottPlot.Plottables
             }
         }
 
-        public Cursor DragCursor => Cursor.NS;
+        public override void SetLimits(double? x1, double? x2, double? y1, double? y2)
+        {
+            limits.SetY(y1, y2);
+        }
     }
 }

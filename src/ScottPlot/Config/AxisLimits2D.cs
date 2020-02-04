@@ -11,9 +11,6 @@ namespace ScottPlot.Config
         public double y1 { get; private set; }
         public double y2 { get; private set; }
 
-        //public double[] Limits { get { return new double[] { x1, x2, y1, y2 }; } }
-        //public (double, double, double, double) Limits { get { return (x1, x2, y1, y2); } }
-
         public double xSpan { get { return x2 - x1; } }
         public double ySpan { get { return y2 - y1; } }
 
@@ -57,10 +54,12 @@ namespace ScottPlot.Config
             return string.Format("x1={0:0.000}, x2={0:0.000}, y1={0:0.000}, y2={0:0.000}", x1, x2, y1, y2);
         }
 
-        public void SetX(double x1, double x2)
+        public void SetX(double? x1, double? x2)
         {
-            this.x1 = x1;
-            this.x2 = x2;
+            if (x1 != null)
+                this.x1 = (double)x1;
+            if (x2 != null)
+                this.x2 = (double)x2;
         }
 
         public void SetX(AxisLimits2D source)
@@ -68,10 +67,12 @@ namespace ScottPlot.Config
             SetX(source.x1, source.x2);
         }
 
-        public void SetY(double y1, double y2)
+        public void SetY(double? y1, double? y2)
         {
-            this.y1 = y1;
-            this.y2 = y2;
+            if (y1 != null)
+                this.y1 = (double)y1;
+            if (y2 != null)
+                this.y2 = (double)y2;
         }
 
         public void SetY(AxisLimits2D source)
@@ -79,7 +80,7 @@ namespace ScottPlot.Config
             SetY(source.y1, source.y2);
         }
 
-        public void SetXY(double x1, double x2, double y1, double y2)
+        public void SetXY(double? x1, double? x2, double? y1, double? y2)
         {
             SetX(x1, x2);
             SetY(y1, y2);
@@ -87,6 +88,7 @@ namespace ScottPlot.Config
 
         public void ExpandX(double x1, double x2)
         {
+            // TODO: use nullable instead of NaN?
             if (!double.IsNaN(x1))
             {
                 if (double.IsNaN(this.x1))
