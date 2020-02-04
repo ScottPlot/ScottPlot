@@ -7,8 +7,17 @@ using System.Drawing;
 
 namespace ScottPlot.Plottables
 {
-    public class Text : Plottable
+    public class Text : IPlottable
     {
+        // interface stuff
+        public bool visible { get; set; }
+        public int pointCount { get { return 1; } }
+        public string label { get; set; }
+        public Color color { get; set; }
+        public MarkerShape markerShape { get; set; }
+        public LineStyle lineStyle { get; set; }
+
+        // properties
         public double x;
         public double y;
         public double rotation;
@@ -21,6 +30,7 @@ namespace ScottPlot.Plottables
 
         public Text(string text, double x, double y, Color color, string fontName, double fontSize, bool bold, string label, TextAlignment alignment, double rotation, bool frame, Color frameColor)
         {
+            visible = true;
             this.text = text ?? throw new Exception("Text cannot be null");
             this.x = x;
             this.y = y;
@@ -35,8 +45,6 @@ namespace ScottPlot.Plottables
 
             FontStyle fontStyle = (bold == true) ? FontStyle.Bold : FontStyle.Regular;
             font = new Font(fontName, (float)fontSize, fontStyle);
-
-            pointCount = 1;
         }
 
         public override string ToString()
@@ -44,7 +52,7 @@ namespace ScottPlot.Plottables
             return $"PlottableText \"{text}\" at ({x}, {y})";
         }
 
-        public override Config.AxisLimits2D GetLimits()
+        public Config.AxisLimits2D GetLimits()
         {
             double[] limits = { x, x, y, y };
 
@@ -52,7 +60,7 @@ namespace ScottPlot.Plottables
             return new Config.AxisLimits2D(limits);
         }
 
-        public override void Render(Settings settings)
+        public void Render(Settings settings)
         {
 
             PointF defaultPoint = settings.GetPixel(x, y);

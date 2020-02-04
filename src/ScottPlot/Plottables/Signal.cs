@@ -8,8 +8,19 @@ using System.Linq.Expressions;
 
 namespace ScottPlot.Plottables
 {
-    public class Signal : Plottable, IExportable
+    public class Signal : IPlottable, IExportable
     {
+        // interface stuff
+        public bool visible { get; set; }
+        public int pointCount { get { return ys.Length; } }
+        public string label { get; set; }
+        public Color color { get; set; }
+        public MarkerShape markerShape { get; set; }
+        public LineStyle lineStyle { get; set; }
+
+        // properties
+        bool useParallel;
+
         // Any changes must be sync with PlottableSignalConst
         public double[] ys;
         public double sampleRate;
@@ -26,6 +37,8 @@ namespace ScottPlot.Plottables
 
         public Signal(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, bool useParallel, Color[] colorByDensity, int maxRenderIndex)
         {
+            visible = true;
+
             if (ys == null)
                 throw new Exception("Y data cannot be null");
 
@@ -42,7 +55,6 @@ namespace ScottPlot.Plottables
             if ((maxRenderIndex > ys.Length - 1) || maxRenderIndex < 0)
                 throw new ArgumentException("maxRenderIndex must be a valid index for ys[]");
             this.maxRenderIndex = maxRenderIndex;
-            pointCount = ys.Length;
             brush = new SolidBrush(color);
             pen = new Pen(color, (float)lineWidth)
             {
@@ -70,7 +82,7 @@ namespace ScottPlot.Plottables
             return $"PlottableSignal with {pointCount} points";
         }
 
-        public override Config.AxisLimits2D GetLimits()
+        public Config.AxisLimits2D GetLimits()
         {
             double yMin = ys[0];
             double yMax = ys[0];
@@ -340,7 +352,7 @@ namespace ScottPlot.Plottables
                 settings.gfxData.DrawLines(pen, linePoints.ToArray());
         }
 
-        public override void Render(Settings settings)
+        public void Render(Settings settings)
         {
             pen.Color = color;
             pen.Width = (float)lineWidth;

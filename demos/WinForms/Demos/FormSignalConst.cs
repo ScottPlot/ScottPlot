@@ -14,7 +14,7 @@ namespace ScottPlotDemos
 {
     public partial class FormSignalConst : Form
     {
-        Plottable signal;
+        IPlottable signal;
         Random rand = new Random();
         double[] data;
         bool busy = false;

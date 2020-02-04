@@ -111,7 +111,7 @@ namespace ScottPlot
         {
             SizeF maxLabelSize = new SizeF();
 
-            foreach (Plottable plottable in settings.plottables)
+            foreach (IPlottable plottable in settings.plottables)
             {
                 if (plottable.label != null)
                 {
@@ -220,13 +220,13 @@ namespace ScottPlot
             return new Point[] { frameLocation, textLocation, shadowLocation };
         }
 
-        private static void DrawLegendItemString(Plottable plottable, Settings settings, Point textLocation, int padding, int stubWidth, float legendFontLineHeight)
+        private static void DrawLegendItemString(IPlottable plottable, Settings settings, Point textLocation, int padding, int stubWidth, float legendFontLineHeight)
         {
             Brush brushText = new SolidBrush(settings.legend.colorText);
             settings.gfxLegend.DrawString(plottable.label, settings.legend.font, brushText, textLocation);
         }
 
-        private static void DrawLegendItemLine(Plottable plottable, Settings settings, Point textLocation, int padding, int stubWidth, float legendFontLineHeight)
+        private static void DrawLegendItemLine(IPlottable plottable, Settings settings, Point textLocation, int padding, int stubWidth, float legendFontLineHeight)
         {
             Pen pen = new Pen(plottable.color, 1);
 
@@ -272,7 +272,7 @@ namespace ScottPlot
                 textLocation.X - padding - stubWidth, textLocation.Y + legendFontLineHeight / 2);
         }
 
-        private static void DrawLegendItemMarker(Plottable plottable, Settings settings, Point textLocation, int padding, int stubWidth, float legendFontLineHeight)
+        private static void DrawLegendItemMarker(IPlottable plottable, Settings settings, Point textLocation, int padding, int stubWidth, float legendFontLineHeight)
         {
             Brush brushMarker = new SolidBrush(plottable.color);
             Pen penMarker = new Pen(plottable.color, 1);

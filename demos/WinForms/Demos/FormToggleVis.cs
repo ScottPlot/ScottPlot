@@ -13,7 +13,7 @@ namespace ScottPlotDemos
 {
     public partial class FormToggleVis : Form
     {
-        Plottable plottedSin, plottedCos, plottedRandom;
+        IPlottable plottedSin, plottedCos, plottedRandom;
 
         public FormToggleVis()
         {

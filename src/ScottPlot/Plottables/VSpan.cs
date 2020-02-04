@@ -15,12 +15,12 @@ namespace ScottPlot.Plottables
         public VSpan(double position1, double position2, Color color, double alpha, string label,
             bool draggable, double dragLimitLower, double dragLimitUpper)
         {
+            visible = true;
             this.position1 = position1;
             this.position2 = position2;
             this.color = Color.FromArgb((int)(alpha * 255), color.R, color.G, color.B);
             this.label = label;
             brush = new SolidBrush(this.color);
-            pointCount = 1;
 
             isDragEnabled = draggable;
 

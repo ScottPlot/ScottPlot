@@ -1,12 +1,23 @@
 ﻿using ScottPlot.Config;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 
 namespace ScottPlot.Plottables
 {
-    public abstract class AxisSpan : Plottable, IDraggable
+    public abstract class AxisSpan : IPlottable, IDraggable
     {
+        // interface stuff
+        public bool visible { get; set; }
+        public int pointCount { get { return 1; } }
+        public string label { get; set; }
+        public Color color { get; set; }
+        public MarkerShape markerShape { get; set; }
+        public LineStyle lineStyle { get; set; }
+        public abstract void Render(Settings settings);
+        public abstract AxisLimits2D GetLimits();
+
         public bool isDragEnabled { get; set; }
         public double position1 { get; protected set; }
         public double position2 { get; protected set; }

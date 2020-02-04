@@ -35,7 +35,7 @@ namespace ScottPlot
         public Bitmap bmpLegend;
 
         // plottables
-        public readonly List<Plottable> plottables = new List<Plottable>();
+        public readonly List<IPlottable> plottables = new List<IPlottable>();
 
         // new config objects (https://github.com/swharden/ScottPlot/issues/120)
         public Config.TextLabel title = new Config.TextLabel() { fontSize = 16, bold = true };
@@ -196,7 +196,7 @@ namespace ScottPlot
         public int GetTotalPointCount()
         {
             int totalPointCount = 0;
-            foreach (Plottable plottable in plottables)
+            foreach (IPlottable plottable in plottables)
                 totalPointCount += plottable.pointCount;
             return totalPointCount;
         }

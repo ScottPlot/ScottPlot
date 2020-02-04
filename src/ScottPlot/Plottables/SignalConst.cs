@@ -15,8 +15,19 @@ namespace ScottPlot.Plottables
     // - in x64 mode limit can be up to maximum array size (2G points) with special solution and 64 GB RAM (not tested)
     // - if source array is changed UpdateTrees() must be called
     // - source array can be change by call updateData(), updating by ranges much faster.
-    public class SignalConst<T> : Plottable, IExportable where T : struct, IComparable
-    {    
+    public class SignalConst<T> : IPlottable, IExportable where T : struct, IComparable
+    {
+        // interface stuff
+        public bool visible { get; set; }
+        public int pointCount { get { return ys.Length; } }
+        public string label { get; set; }
+        public Color color { get; set; }
+        public MarkerShape markerShape { get; set; }
+        public LineStyle lineStyle { get; set; }
+
+        // properties
+        bool useParallel;
+
         // Any changes must be sync with PlottableSignal
         public T[] ys;
         public double sampleRate;
@@ -65,6 +76,8 @@ namespace ScottPlot.Plottables
         }
         public SignalConst(T[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, bool useParallel)
         {
+            visible = true;
+
             if (ys == null)
                 throw new Exception("Y data cannot be null");
             this.ys = ys;
@@ -75,8 +88,9 @@ namespace ScottPlot.Plottables
             this.label = label;
             this.color = color;
             this.yOffset = yOffset;
+
             this.useParallel = useParallel;
-            pointCount = ys.Length;
+
             brush = new SolidBrush(color);
             pen = new Pen(color, (float)lineWidth)
             {
@@ -335,7 +349,7 @@ namespace ScottPlot.Plottables
             highestValue = Convert.ToDouble(highestValueT);
         }
 
-        public override Config.AxisLimits2D GetLimits()
+        public Config.AxisLimits2D GetLimits()
         {
             double[] limits = new double[4];
             limits[0] = 0 + xOffset;
@@ -467,7 +481,7 @@ namespace ScottPlot.Plottables
                 settings.gfxData.DrawLines(pen, linePoints.ToArray());
         }
 
-        public override void Render(Settings settings)
+        public void Render(Settings settings)
         {
             double dataSpanUnits = ys.Length * samplePeriod;
             double columnSpanUnits = settings.axes.x.span / settings.dataSize.Width;

@@ -55,18 +55,17 @@ namespace ScottPlot
             if (settings.gfxData == null)
                 return;
 
-            for (int i = 0; i < settings.plottables.Count; i++)
+            foreach(var plottable in settings.plottables)
             {
-                Plottable pltThing = settings.plottables[i];
-                if (pltThing.visible)
+                if (plottable.visible)
                 {
                     try
                     {
-                        pltThing.Render(settings);
+                        plottable.Render(settings);
                     }
                     catch (OverflowException)
                     {
-                        Debug.WriteLine($"OverflowException plotting: {pltThing}");
+                        Debug.WriteLine($"OverflowException plotting: {plottable}");
                     }
                 }
             }

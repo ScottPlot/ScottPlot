@@ -15,11 +15,11 @@ namespace ScottPlot.Plottables
         public VLine(double position, Color color, double lineWidth, string label,
             bool draggable, double dragLimitLower, double dragLimitUpper, LineStyle lineStyle)
         {
+            visible = true;
             position1 = position;
             this.color = color;
             this.label = label;
             this.lineStyle = lineStyle;
-            pointCount = 1;
 
             pen = new Pen(color, (float)lineWidth)
             {

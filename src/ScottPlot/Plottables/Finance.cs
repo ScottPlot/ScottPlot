@@ -7,8 +7,17 @@ using System.Drawing;
 
 namespace ScottPlot.Plottables
 {
-    public class Finance : Plottable
+    public class Finance : IPlottable
     {
+        // interface stuff
+        public bool visible { get; set; }
+        public int pointCount { get { return ohlcs.Length; } }
+        public string label { get; set; }
+        public Color color { get; set; }
+        public MarkerShape markerShape { get; set; }
+        public LineStyle lineStyle { get; set; }
+
+        // properties
         public OHLC[] ohlcs;
         bool displayCandles;
         Pen penUp;
@@ -18,8 +27,9 @@ namespace ScottPlot.Plottables
 
         public Finance(OHLC[] ohlcs, bool displayCandles = true)
         {
+            visible = true;
+
             this.ohlcs = ohlcs;
-            pointCount = ohlcs.Length;
             this.displayCandles = displayCandles;
 
             Color colorUp = Color.DarkGreen;
@@ -36,7 +46,7 @@ namespace ScottPlot.Plottables
             return $"PlottableOHLC with {pointCount} points";
         }
 
-        public override Config.AxisLimits2D GetLimits()
+        public Config.AxisLimits2D GetLimits()
         {
             double[] limits = new double[4];
             limits[0] = ohlcs[0].time;
@@ -60,7 +70,7 @@ namespace ScottPlot.Plottables
             return new Config.AxisLimits2D(limits);
         }
 
-        public override void Render(Settings settings)
+        public void Render(Settings settings)
         {
             if (displayCandles)
                 RenderCandles(settings);

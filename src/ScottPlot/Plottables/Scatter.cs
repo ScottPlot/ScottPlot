@@ -7,8 +7,17 @@ using System.Drawing;
 
 namespace ScottPlot.Plottables
 {
-    public class Scatter : Plottable, IExportable
+    public class Scatter : IPlottable, IExportable
     {
+        // interface stuff
+        public bool visible { get; set; }
+        public int pointCount { get { return ys.Length; } }
+        public string label { get; set; }
+        public Color color { get; set; }
+        public MarkerShape markerShape { get; set; }
+        public LineStyle lineStyle { get; set; }
+
+        // properties
         public double[] xs;
         public double[] ys;
         public double[] errorX;
@@ -25,6 +34,7 @@ namespace ScottPlot.Plottables
         public Scatter(double[] xs, double[] ys, Color color, double lineWidth, double markerSize, string label,
             double[] errorX, double[] errorY, double errorLineWidth, double errorCapSize, bool stepDisplay, MarkerShape markerShape, LineStyle lineStyle)
         {
+            visible = true;
 
             if ((xs == null) || (ys == null))
                 throw new Exception("X and Y data cannot be null");
@@ -55,8 +65,6 @@ namespace ScottPlot.Plottables
             this.stepDisplay = stepDisplay;
             this.markerShape = markerShape;
             this.lineStyle = lineStyle;
-
-            pointCount = xs.Length;
 
             if (xs.Length != ys.Length)
                 throw new ArgumentException("X and Y arrays must have the same length");
@@ -91,7 +99,7 @@ namespace ScottPlot.Plottables
             return $"PlottableScatter with {pointCount} points";
         }
 
-        public override Config.AxisLimits2D GetLimits()
+        public Config.AxisLimits2D GetLimits()
         {
             double[] limits = new double[4];
 
@@ -137,7 +145,7 @@ namespace ScottPlot.Plottables
 
         PointF[] points;
         PointF[] pointsStep;
-        public override void Render(Settings settings)
+        public void Render(Settings settings)
         {
             penLine.Color = color;
             penLine.Width = (float)lineWidth;

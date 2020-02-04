@@ -685,7 +685,7 @@ namespace ScottPlot
             return axisSpan;
         }
 
-        public List<Plottable> GetPlottables()
+        public List<IPlottable> GetPlottables()
         {
             return settings.plottables;
         }
@@ -694,7 +694,7 @@ namespace ScottPlot
         {
             List<IDraggable> draggables = new List<IDraggable>();
 
-            foreach (Plottable plottable in GetPlottables())
+            foreach (IPlottable plottable in GetPlottables())
                 if (plottable is IDraggable draggable)
                     draggables.Add(draggable);
 
@@ -725,7 +725,7 @@ namespace ScottPlot
         public int GetTotalPoints()
         {
             int totalPoints = 0;
-            foreach (Plottable plottable in settings.plottables)
+            foreach (IPlottable plottable in settings.plottables)
                 totalPoints += plottable.pointCount;
             return totalPoints;
         }
