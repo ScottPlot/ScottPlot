@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 
-namespace ScottPlot
+namespace ScottPlot.Plottables
 {
     public class PlottableHSpan : Plottable, IDraggable
     {

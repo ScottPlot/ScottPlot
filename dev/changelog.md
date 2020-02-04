@@ -1,5 +1,21 @@
 # ScottPlot Changelog
 
+## ScottPlot 4.1.0
+
+**DO NOT FORGET TO DO THESE THINGS BEFORE RELEASE**
+* Remove junk `using ScottPlot.Plottables;` - these were added to simplify the namespace conversion process. In cases where it's best to leave this line, ensure `using ScottPlot` is also present.
+* Stop checking in the cookbook to git - It's making this repo huge. Instead use SWHarden.com to host it. Alternatively, keep checking it in and use GitHub pages to serve it.
+
+**Breaking changes:**
+* plottable objects have all been renamed to remove the word _Plottable_
+* plottable objects have all been moved to the `ScottPlot.Plottables` namespace
+* this affects the return object type of `ScottPlot.Plot` methods which return the plottable objects they create
+
+**Minor changes:**
+* fixed rendering bug affecting horizontal axis lines (#232) _Thanks @StendProg_
+* anti-aliasing is now disabled while dragging to improve performance (#228) _Thanks @StendProg_
+* While the public `Plot` methods remain unchanged, the internal plottables handling axis lines and axis spans have been separated. (#231, #233, #234) _Thanks @StendProg_
+
 ## ScottPlot 4.0.16
 * Improved support for MacOS and Linux (#211, #212, #216) _Thanks @Hexxonite and @StendProg_
 * Fixed a few display bugs

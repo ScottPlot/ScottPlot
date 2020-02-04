@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot.Plottables;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -178,7 +179,7 @@ namespace ScottPlot
                         dt = dt.AddDays(1);
                 }
 
-                ohlcs[i] = new ScottPlot.OHLC(open, high, low, close, dt);
+                ohlcs[i] = new OHLC(open, high, low, close, dt);
             }
 
             return ohlcs;

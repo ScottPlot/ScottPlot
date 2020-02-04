@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using ScottPlot.Plottables;
 using System;
 using System.Drawing;
 using System.Text;
@@ -1422,7 +1423,7 @@ namespace ScottPlotTests.Cookbook
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
-            ScottPlot.OHLC[] ohlcs = ScottPlot.DataGen.RandomStockPrices(rand: null, pointCount: 35, deltaMinutes: 10);
+            OHLC[] ohlcs = ScottPlot.DataGen.RandomStockPrices(rand: null, pointCount: 35, deltaMinutes: 10);
 
             var plt = new ScottPlot.Plot(width: 800, height: 400);
             plt.Title("Ten Minute Candlestick Chart");
@@ -1440,7 +1441,7 @@ namespace ScottPlotTests.Cookbook
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
-            ScottPlot.OHLC[] ohlcs = ScottPlot.DataGen.RandomStockPrices(rand: null, pointCount: 30, deltaDays: 1);
+            OHLC[] ohlcs = ScottPlot.DataGen.RandomStockPrices(rand: null, pointCount: 30, deltaDays: 1);
 
             var plt = new ScottPlot.Plot(width: 800, height: 400);
             plt.Title("Daily Candlestick Chart (weekends skipped)");
@@ -1459,7 +1460,7 @@ namespace ScottPlotTests.Cookbook
             string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             // start with stock prices which have unevenly spaced time points (weekends are skipped)
-            ScottPlot.OHLC[] ohlcs = ScottPlot.DataGen.RandomStockPrices(rand: null, pointCount: 30);
+            OHLC[] ohlcs = ScottPlot.DataGen.RandomStockPrices(rand: null, pointCount: 30);
 
             // replace timestamps with a series of numbers starting at 0
             for (int i = 0; i < ohlcs.Length; i++)
@@ -1486,7 +1487,7 @@ namespace ScottPlotTests.Cookbook
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
             string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
-            ScottPlot.OHLC[] ohlcs = ScottPlot.DataGen.RandomStockPrices(rand: null, pointCount: 60, deltaMinutes: 10);
+            OHLC[] ohlcs = ScottPlot.DataGen.RandomStockPrices(rand: null, pointCount: 60, deltaMinutes: 10);
 
             var plt = new ScottPlot.Plot(width, height);
             plt.Title("Open/High/Low/Close (OHLC) Chart");

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot.Plottables;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -32,9 +33,9 @@ namespace ScottPlotDemos
         private void UpdateHover()
         {
             var plottables = scottPlotUC1.plt.GetPlottables();
-            var scatterPlot = (ScottPlot.PlottableScatter)plottables[0];
-            var highlightScatter = (ScottPlot.PlottableScatter)plottables[1];
-            var highlightText = (ScottPlot.PlottableText)plottables[2];
+            var scatterPlot = (PlottableScatter)plottables[0];
+            var highlightScatter = (PlottableScatter)plottables[1];
+            var highlightText = (PlottableText)plottables[2];
 
             // get mouse position on the screen
             Point mouseLoc = new Point(Cursor.Position.X, Cursor.Position.Y);

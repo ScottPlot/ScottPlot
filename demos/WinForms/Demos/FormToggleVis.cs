@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot.Plottables;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,7 +13,7 @@ namespace ScottPlotDemos
 {
     public partial class FormToggleVis : Form
     {
-        ScottPlot.Plottable plottedSin, plottedCos, plottedRandom;
+        Plottable plottedSin, plottedCos, plottedRandom;
 
         public FormToggleVis()
         {

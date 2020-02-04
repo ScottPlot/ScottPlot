@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot.Plottables;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -23,9 +24,9 @@ namespace ScottPlotDemos
 
         }
 
-        ScottPlot.PlottableOHLC plottedOHLCs;
-        ScottPlot.PlottableText plottedText;
-        ScottPlot.PlottableVLine plottedLine;
+        PlottableOHLC plottedOHLCs;
+        PlottableText plottedText;
+        PlottableVLine plottedLine;
 
         private void GenerateNewData()
         {
@@ -33,7 +34,7 @@ namespace ScottPlotDemos
 
             int pointCount = 100;
 
-            ScottPlot.OHLC[] ohlcs = ScottPlot.DataGen.RandomStockPrices(rand, pointCount);
+            OHLC[] ohlcs = ScottPlot.DataGen.RandomStockPrices(rand, pointCount);
 
             double[] volumes = ScottPlot.DataGen.Random(rand, pointCount, 500, 1000);
             double[] timestamps = new double[ohlcs.Length];

@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ScottPlot
+namespace ScottPlot.Plottables
 {
     // Variation of PlottableSignal that uses a segmented tree for faster min/max range queries
     // - frequent min/max lookups are a bottleneck displaying large signals

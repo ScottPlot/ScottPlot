@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
 
-namespace ScottPlot
+namespace ScottPlot.Plottables
 {
     public class PlottableVLine : Plottable, IDraggable
     {

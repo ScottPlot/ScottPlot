@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot.Plottables;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,7 +14,7 @@ namespace ScottPlotDemos
 {
     public partial class FormSignalConst : Form
     {
-        ScottPlot.Plottable signal;
+        Plottable signal;
         Random rand = new Random();
         double[] data;
         bool busy = false;
@@ -63,9 +64,9 @@ namespace ScottPlotDemos
             // run plot data updates at max speed in background thread                
             Task.Run(() =>
             {
-                if (signal is ScottPlot.PlottableSignalConst<double>)
+                if (signal is PlottableSignalConst<double>)
                 {
-                    var signalConst = signal as ScottPlot.PlottableSignalConst<double>;
+                    var signalConst = signal as PlottableSignalConst<double>;
                     signalConst.updateData(0, rand.NextDouble() * 10 - 5);
                     if (updateRangeSize < 1)
                     {

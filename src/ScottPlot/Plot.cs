@@ -5,6 +5,7 @@
  * - Very little processing occurs here. This interface mostly calls private methods.
  */
 
+using ScottPlot.Plottables;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot.Plottables;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,7 +14,7 @@ namespace ScottPlotDemos
     public partial class FormIncomingData : Form
     {
         private double[] dataValues;
-        private ScottPlot.PlottableSignal signal;
+        private PlottableSignal signal;
 
         public FormIncomingData()
         {

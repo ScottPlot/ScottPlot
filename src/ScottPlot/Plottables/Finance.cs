@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 
-namespace ScottPlot
+namespace ScottPlot.Plottables
 {
     public class PlottableOHLC : Plottable
     {

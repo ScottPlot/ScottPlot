@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ScottPlot
+namespace ScottPlot.Plottables
 {
     public class OHLC
     {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Linq.Expressions;
 
-namespace ScottPlot
+namespace ScottPlot.Plottables
 {
     public class PlottableSignal : Plottable, IExportable
     {

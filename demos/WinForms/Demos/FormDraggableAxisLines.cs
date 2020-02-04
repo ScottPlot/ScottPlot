@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot.Plottables;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -71,19 +72,19 @@ namespace ScottPlotDemos
             for (int i = 0; i < plottables.Count; i++)
             {
 
-                if (plottables[i] is ScottPlot.PlottableVLine vLine)
+                if (plottables[i] is PlottableVLine vLine)
                 {
                     msg += $"{i}: VLine ({vLine.position:F4})\r\n";
                 }
-                else if (plottables[i] is ScottPlot.PlottableHLine hLine)
+                else if (plottables[i] is PlottableHLine hLine)
                 {
                     msg += $"{i}: HLine ({hLine.position:F4})\r\n";
                 }
-                else if (plottables[i] is ScottPlot.PlottableVSpan vSpan)
+                else if (plottables[i] is PlottableVSpan vSpan)
                 {
                     msg += $"{i}: VSpan ({vSpan.position1:F4} to {vSpan.position2:F4})\r\n";
                 }
-                else if (plottables[i] is ScottPlot.PlottableHSpan hSpan)
+                else if (plottables[i] is PlottableHSpan hSpan)
                 {
                     msg += $"{i}: HSpan ({hSpan.position1:F4} to {hSpan.position2:F4})\r\n";
                 }
