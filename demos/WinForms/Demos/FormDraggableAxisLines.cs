@@ -28,11 +28,13 @@ namespace ScottPlotDemos
             formsPlot1.plt.PlotScatter(Xs, Ys);
             formsPlot1.plt.AxisAuto();
 
-            formsPlot1.plt.PlotVLine(15, draggable: true, dragLimitLower: 0, dragLimitUpper: 49);
-            formsPlot1.plt.PlotVSpan(20, 25, draggable: true, dragLimitLower: 0, dragLimitUpper: 49);
+            // plot markers specific X positions
+            formsPlot1.plt.PlotVLine(x: 15, draggable: true, dragLimitLower: 0, dragLimitUpper: 49);
+            formsPlot1.plt.PlotHSpan(x1: 20, x2: 25, draggable: true, dragLimitLower: 0, dragLimitUpper: 49);
 
-            formsPlot1.plt.PlotHLine(-.75, draggable: true, dragLimitLower: 0, dragLimitUpper: 49);
-            formsPlot1.plt.PlotHSpan(.25, .5, draggable: true, dragLimitLower: 0, dragLimitUpper: 49);
+            // plot markers at specific Y positions
+            formsPlot1.plt.PlotHLine(y: -.75, draggable: true, dragLimitLower: -1, dragLimitUpper: 1);
+            formsPlot1.plt.PlotVSpan(y1: .25, y2: .5, draggable: true, dragLimitLower: -1, dragLimitUpper: 1);
 
             formsPlot1.Render();
             UpdateMessage();

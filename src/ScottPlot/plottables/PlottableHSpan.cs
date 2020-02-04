@@ -25,12 +25,12 @@ namespace ScottPlot
 
             DragEnabled = draggable;
 
-            DragLimit(x1: double.NegativeInfinity, x2: double.PositiveInfinity, y1: dragLimitLower, y2: dragLimitUpper);
+            DragLimit(x1: dragLimitLower, x2: dragLimitUpper, y1: double.NegativeInfinity, y2: double.PositiveInfinity);
         }
 
         public override string ToString()
         {
-            return $"PlottableHSpan (Horizontal) from {position1} to {position2}";
+            return $"PlottableVSpan from X={position1} to X={position2}";
         }
 
         public override AxisLimits2D GetLimits()
@@ -46,12 +46,12 @@ namespace ScottPlot
             double positionMin = Math.Min(position1, position2);
             double positionMax = Math.Max(position1, position2);
 
-            topLeft = settings.GetPixel(settings.axes.x.min, positionMin);
-            lowerRight = settings.GetPixel(settings.axes.x.max, positionMax);
-            if (topLeft.Y > settings.bmpData.Height)
-                topLeft.Y = settings.bmpData.Height;
-            if (lowerRight.Y < 0)
-                lowerRight.Y = 0;
+            topLeft = settings.GetPixel(positionMin, settings.axes.y.min);
+            lowerRight = settings.GetPixel(positionMax, settings.axes.y.max);
+            if (topLeft.X < 0)
+                topLeft.X = 0;
+            if (lowerRight.X > settings.bmpData.Width)
+                lowerRight.X = settings.bmpData.Width;
 
             float width = lowerRight.X - topLeft.X + 1;
             float height = topLeft.Y - lowerRight.Y + 1;
@@ -63,21 +63,21 @@ namespace ScottPlot
 
         public bool DragEnabled { get; set; }
 
-        private double dragLimitY1 = double.NegativeInfinity;
-        private double dragLimitY2 = double.PositiveInfinity;
+        private double dragLimitX1 = double.NegativeInfinity;
+        private double dragLimitX2 = double.PositiveInfinity;
         public void DragLimit(double? x1, double? x2, double? y1, double? y2)
         {
-            if (y1 != null) dragLimitY1 = (double)y1;
-            if (y2 != null) dragLimitY2 = (double)y2;
+            if (x1 != null) dragLimitX1 = (double)x1;
+            if (x2 != null) dragLimitX2 = (double)x2;
         }
 
         private enum Edge { Edge1, Edge2, Neither };
         Edge edgeUnderMouse = Edge.Neither;
         public bool IsUnderMouse(double coordinateX, double coordinateY, double snapX, double snapY)
         {
-            if (Math.Abs(position1 - coordinateY) <= snapY)
+            if (Math.Abs(position1 - coordinateX) <= snapX)
                 edgeUnderMouse = Edge.Edge1;
-            else if (Math.Abs(position2 - coordinateY) <= snapY)
+            else if (Math.Abs(position2 - coordinateX) <= snapX)
                 edgeUnderMouse = Edge.Edge2;
             else
                 edgeUnderMouse = Edge.Neither;
@@ -89,18 +89,18 @@ namespace ScottPlot
         {
             if (DragEnabled)
             {
-                if (coordinateY < dragLimitY1) coordinateY = dragLimitY1;
-                if (coordinateY > dragLimitY2) coordinateY = dragLimitY2;
+                if (coordinateX < dragLimitX1) coordinateX = dragLimitX1;
+                if (coordinateX > dragLimitX2) coordinateX = dragLimitX2;
 
                 if (edgeUnderMouse == Edge.Edge1)
-                    position1 = coordinateY;
+                    position1 = coordinateX;
                 else if (edgeUnderMouse == Edge.Edge2)
-                    position2 = coordinateY;
+                    position2 = coordinateX;
                 else
                     Debug.WriteLine("DragTo() called but no side selected. Call IsUnderMouse() to select a side.");
             }
         }
 
-        public Cursor DragCursor => Cursor.NS;
+        public Cursor DragCursor => Cursor.WE;
     }
 }
