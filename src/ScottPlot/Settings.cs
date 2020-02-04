@@ -5,9 +5,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 
-// TODO: move plottables to their own module
-// TODO: move mouse/axes interaction functions into the mouse module somehow
-
 namespace ScottPlot
 {
     /// <summary>

@@ -68,8 +68,10 @@ namespace ScottPlot.Plottables
             return new Config.AxisLimits2D(limits);
         }
 
-        public void Render(Settings settings)
+        public void Render(Context renderContext)
         {
+            var settings = renderContext.settings;
+
             if (displayCandles)
                 RenderCandles(settings);
             else

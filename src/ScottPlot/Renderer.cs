@@ -55,13 +55,24 @@ namespace ScottPlot
             if (settings.gfxData == null)
                 return;
 
+            var renderContext = new Plottables.Context()
+            {
+                settings = settings,
+                gfxData = settings.gfxData,
+                axisLimits = new Config.AxisLimits2D(settings.axes.limits),
+                xAxisScale = settings.xAxisScale,
+                yAxisScale = settings.yAxisScale,
+                dataSizeHeight = settings.dataSize.Height,
+                dataSizeWidth = settings.dataSize.Width
+            };
+
             foreach(var plottable in settings.plottables)
             {
                 if (plottable.visible)
                 {
                     try
                     {
-                        plottable.Render(settings);
+                        plottable.Render(renderContext);
                     }
                     catch (OverflowException)
                     {

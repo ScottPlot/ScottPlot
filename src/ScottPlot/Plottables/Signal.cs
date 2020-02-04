@@ -350,8 +350,10 @@ namespace ScottPlot.Plottables
                 settings.gfxData.DrawLines(pen, linePoints.ToArray());
         }
 
-        public void Render(Settings settings)
+        public void Render(Context renderContext)
         {
+            var settings = renderContext.settings;
+
             pen.Color = color;
             pen.Width = (float)lineWidth;
             brush = new SolidBrush(color);

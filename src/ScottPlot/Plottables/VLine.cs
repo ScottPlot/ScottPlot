@@ -44,8 +44,10 @@ namespace ScottPlot.Plottables
             return new AxisLimits2D(x1: position1, x2: position1, y1: null, y2: null);
         }
 
-        public override void Render(Settings settings)
+        public override void Render(Context renderContext)
         {
+            var settings = renderContext.settings;
+
             PointF pt1, pt2;
             pt1 = settings.GetPixel(position1, settings.axes.y.min);
             pt2 = settings.GetPixel(position1, settings.axes.y.max);

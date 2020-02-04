@@ -37,8 +37,10 @@ namespace ScottPlot.Plottables
             return new AxisLimits2D();
         }
 
-        public override void Render(Settings settings)
+        public override void Render(Context renderContext)
         {
+            var settings = renderContext.settings;
+
             PointF topLeft, lowerRight;
 
             double positionMin = Math.Min(position1, position2);

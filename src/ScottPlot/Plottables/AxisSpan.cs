@@ -15,7 +15,7 @@ namespace ScottPlot.Plottables
         public Color color { get; set; }
         public MarkerShape markerShape { get; set; }
         public LineStyle lineStyle { get; set; }
-        public abstract void Render(Settings settings);
+        public abstract void Render(Context renderContext);
         public abstract AxisLimits2D GetLimits();
 
         public bool isDragEnabled { get; set; }

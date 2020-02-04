@@ -480,8 +480,10 @@ namespace ScottPlot.Plottables
                 settings.gfxData.DrawLines(pen, linePoints.ToArray());
         }
 
-        public void Render(Settings settings)
+        public void Render(Context renderContext)
         {
+            var settings = renderContext.settings;
+
             double dataSpanUnits = ys.Length * samplePeriod;
             double columnSpanUnits = settings.axes.x.span / settings.dataSize.Width;
             double columnPointCount = (columnSpanUnits / dataSpanUnits) * ys.Length;

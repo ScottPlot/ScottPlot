@@ -143,7 +143,7 @@ namespace ScottPlot.Plottables
 
         PointF[] points;
         PointF[] pointsStep;
-        public void Render(Settings settings)
+        public void Render(Context renderContext)
         {
             penLine.Color = color;
             penLine.Width = (float)lineWidth;
@@ -152,7 +152,7 @@ namespace ScottPlot.Plottables
                 points = new PointF[xs.Length];
 
             for (int i = 0; i < xs.Length; i++)
-                points[i] = settings.GetPixel(xs[i], ys[i]);
+                points[i] = renderContext.GetPixel(xs[i], ys[i]);
             
             if (stepDisplay)
             {
@@ -168,14 +168,14 @@ namespace ScottPlot.Plottables
             {
                 for (int i = 0; i < points.Length; i++)
                 {
-                    PointF errorBelow = settings.GetPixel(xs[i], ys[i] - errorY[i]);
-                    PointF errorAbove = settings.GetPixel(xs[i], ys[i] + errorY[i]);
+                    PointF errorBelow = renderContext.GetPixel(xs[i], ys[i] - errorY[i]);
+                    PointF errorAbove = renderContext.GetPixel(xs[i], ys[i] + errorY[i]);
                     float xCenter = errorBelow.X;
                     float yTop = errorAbove.Y;
                     float yBot = errorBelow.Y;
-                    settings.gfxData.DrawLine(penLineError, xCenter, yBot, xCenter, yTop);
-                    settings.gfxData.DrawLine(penLineError, xCenter - errorCapSize, yBot, xCenter + errorCapSize, yBot);
-                    settings.gfxData.DrawLine(penLineError, xCenter - errorCapSize, yTop, xCenter + errorCapSize, yTop);
+                    renderContext.gfxData.DrawLine(penLineError, xCenter, yBot, xCenter, yTop);
+                    renderContext.gfxData.DrawLine(penLineError, xCenter - errorCapSize, yBot, xCenter + errorCapSize, yBot);
+                    renderContext.gfxData.DrawLine(penLineError, xCenter - errorCapSize, yTop, xCenter + errorCapSize, yTop);
                 }
             }
 
@@ -183,28 +183,28 @@ namespace ScottPlot.Plottables
             {
                 for (int i = 0; i < points.Length; i++)
                 {
-                    PointF errorLeft = settings.GetPixel(xs[i] - errorX[i], ys[i]);
-                    PointF errorRight = settings.GetPixel(xs[i] + errorX[i], ys[i]);
+                    PointF errorLeft = renderContext.GetPixel(xs[i] - errorX[i], ys[i]);
+                    PointF errorRight = renderContext.GetPixel(xs[i] + errorX[i], ys[i]);
                     float yCenter = errorLeft.Y;
                     float xLeft = errorLeft.X;
                     float xRight = errorRight.X;
-                    settings.gfxData.DrawLine(penLineError, xLeft, yCenter, xRight, yCenter);
-                    settings.gfxData.DrawLine(penLineError, xLeft, yCenter - errorCapSize, xLeft, yCenter + errorCapSize);
-                    settings.gfxData.DrawLine(penLineError, xRight, yCenter - errorCapSize, xRight, yCenter + errorCapSize);
+                    renderContext.gfxData.DrawLine(penLineError, xLeft, yCenter, xRight, yCenter);
+                    renderContext.gfxData.DrawLine(penLineError, xLeft, yCenter - errorCapSize, xLeft, yCenter + errorCapSize);
+                    renderContext.gfxData.DrawLine(penLineError, xRight, yCenter - errorCapSize, xRight, yCenter + errorCapSize);
                 }
             }
 
             if (penLine.Width > 0 && points.Length > 1)
             {
                 if (stepDisplay)
-                    settings.gfxData.DrawLines(penLine, pointsStep);
+                    renderContext.gfxData.DrawLines(penLine, pointsStep);
                 else
-                    settings.gfxData.DrawLines(penLine, points);
+                    renderContext.gfxData.DrawLines(penLine, points);
             }
 
             if ((markerSize > 0) && (markerShape != MarkerShape.none))
                 for (int i = 0; i < points.Length; i++)
-                    MarkerTools.DrawMarker(settings.gfxData, points[i], markerShape, markerSize, color);
+                    MarkerTools.DrawMarker(renderContext.gfxData, points[i], markerShape, markerSize, color);
 
         }
 
