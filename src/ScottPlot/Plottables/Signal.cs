@@ -101,15 +101,15 @@ namespace ScottPlot.Plottables
             return new Config.AxisLimits2D(limits);
         }
 
-        private void RenderSingleLine(Settings settings)
+        private void RenderSingleLine(Context renderContext)
         {
             // this function is for when the graph is zoomed so far out its entire display is a single vertical pixel column                     
-            PointF point1 = settings.GetPixel(xOffset, ys.Min() + yOffset);
-            PointF point2 = settings.GetPixel(xOffset, ys.Max() + yOffset);
-            settings.gfxData.DrawLine(pen, point1, point2);
+            PointF point1 = renderContext.GetPixel(xOffset, ys.Min() + yOffset);
+            PointF point2 = renderContext.GetPixel(xOffset, ys.Max() + yOffset);
+            renderContext.gfxData.DrawLine(pen, point1, point2);
         }
 
-        private void RenderLowDensity(Settings settings, int visibleIndex1, int visibleIndex2)
+        private void RenderLowDensity(Context renderContext, int visibleIndex1, int visibleIndex2)
         {
             // this function is for when the graph is zoomed in so individual data points can be seen
 
@@ -121,22 +121,22 @@ namespace ScottPlot.Plottables
             if (visibleIndex1 < 0)
                 visibleIndex1 = 0;
             for (int i = visibleIndex1; i <= visibleIndex2 + 1; i++)
-                linePoints.Add(settings.GetPixel(samplePeriod * i + xOffset, ys[i] + yOffset));
+                linePoints.Add(renderContext.GetPixel(samplePeriod * i + xOffset, ys[i] + yOffset));
 
             if (linePoints.Count > 1)
             {
-                settings.gfxData.DrawLines(pen, linePoints.ToArray());
+                renderContext.gfxData.DrawLines(pen, linePoints.ToArray());
                 foreach (PointF point in linePoints)
-                    settings.gfxData.FillEllipse(brush, point.X - markerSize / 2, point.Y - markerSize / 2, markerSize, markerSize);
+                    renderContext.gfxData.FillEllipse(brush, point.X - markerSize / 2, point.Y - markerSize / 2, markerSize, markerSize);
             }
         }
 
-        private void RenderHighDensityParallel(Settings settings, double offsetPoints, double columnPointCount)
+        private void RenderHighDensityParallel(Context renderContext, double offsetPoints, double columnPointCount)
         {
             int xPxStart = (int)Math.Ceiling((-1 - offsetPoints) / columnPointCount - 1);
             int xPxEnd = (int)Math.Ceiling((ys.Length - offsetPoints) / columnPointCount);
             xPxStart = Math.Max(0, xPxStart);
-            xPxEnd = Math.Min(settings.dataSize.Width, xPxEnd);
+            xPxEnd = (int)Math.Min(renderContext.dataSizeWidth, xPxEnd);
             if (xPxStart >= xPxEnd)
                 return;
             PointF[] linePoints = new PointF[(xPxEnd - xPxStart) * 2];
@@ -161,8 +161,8 @@ namespace ScottPlot.Plottables
                     if (ys[i] > highestValue)
                         highestValue = ys[i];
                 }
-                float yPxHigh = settings.GetPixel(0, lowestValue + yOffset).Y;
-                float yPxLow = settings.GetPixel(0, highestValue + yOffset).Y;
+                float yPxHigh = renderContext.GetPixel(0, lowestValue + yOffset).Y;
+                float yPxLow = renderContext.GetPixel(0, highestValue + yOffset).Y;
 
                 linePoints[(xPx - xPxStart) * 2] = new PointF(xPx, yPxLow);
                 linePoints[(xPx - xPxStart) * 2 + 1] = new PointF(xPx, yPxHigh);
@@ -180,15 +180,15 @@ namespace ScottPlot.Plottables
                 }
             }
 
-            settings.gfxData.DrawLines(pen, linePoints);
+            renderContext.gfxData.DrawLines(pen, linePoints);
         }
 
-        private void RenderHighDensityDistribution(Settings settings, double offsetPoints, double columnPointCount)
+        private void RenderHighDensityDistribution(Context renderContext, double offsetPoints, double columnPointCount)
         {
             int xPxStart = (int)Math.Ceiling((-1 - offsetPoints) / columnPointCount - 1);
             int xPxEnd = (int)Math.Ceiling((ys.Length - offsetPoints) / columnPointCount);
             xPxStart = Math.Max(0, xPxStart);
-            xPxEnd = Math.Min(settings.dataSize.Width, xPxEnd);
+            xPxEnd = (int)Math.Min(renderContext.dataSizeWidth, xPxEnd);
             if (xPxStart >= xPxEnd)
                 return;
             List<PointF> linePoints = new List<PointF>((xPxEnd - xPxStart) * 2 + 1);
@@ -213,7 +213,7 @@ namespace ScottPlot.Plottables
                     .Where((y, i) => indexes.Contains(i));
 
                 var Points = levelsValues
-                    .Select(x => settings.GetPixel(0, x + yOffset).Y)
+                    .Select(x => renderContext.GetPixel(0, x + yOffset).Y)
                     .Select(y => new PointF(xPx, y))
                     .ToArray();
 
@@ -230,16 +230,16 @@ namespace ScottPlot.Plottables
                         linePoints.Add(linePointsLevels[j][i + 1]);
                     }
                 }
-                settings.gfxData.DrawLines(penByDensity[i], linePoints.ToArray());
+                renderContext.gfxData.DrawLines(penByDensity[i], linePoints.ToArray());
             }
         }
 
-        private void RenderHighDensityDistributionParallel(Settings settings, double offsetPoints, double columnPointCount)
+        private void RenderHighDensityDistributionParallel(Context renderContext, double offsetPoints, double columnPointCount)
         {
             int xPxStart = (int)Math.Ceiling((-1 - offsetPoints) / columnPointCount - 1);
             int xPxEnd = (int)Math.Ceiling((ys.Length - offsetPoints) / columnPointCount);
             xPxStart = Math.Max(0, xPxStart);
-            xPxEnd = Math.Min(settings.dataSize.Width, xPxEnd);
+            xPxEnd = (int)Math.Min(renderContext.dataSizeWidth, xPxEnd);
             if (xPxStart >= xPxEnd)
                 return;
             List<PointF> linePoints = new List<PointF>((xPxEnd - xPxStart) * 2 + 1);
@@ -271,7 +271,7 @@ namespace ScottPlot.Plottables
 
             List<PointF[]> linePointsLevels = levelValues
                 .Select(x => x.levelsValues
-                                .Select(y => new PointF(x.xPx, settings.GetPixel(0, y + yOffset).Y))
+                                .Select(y => new PointF(x.xPx, renderContext.GetPixel(0, y + yOffset).Y))
                                 .ToArray())
                 .ToList();
 
@@ -286,18 +286,18 @@ namespace ScottPlot.Plottables
                         linePoints.Add(linePointsLevels[j][i + 1]);
                     }
                 }
-                settings.gfxData.DrawLines(penByDensity[i], linePoints.ToArray());
+                renderContext.gfxData.DrawLines(penByDensity[i], linePoints.ToArray());
             }
         }
 
-        private void RenderHighDensity(Settings settings, double offsetPoints, double columnPointCount)
+        private void RenderHighDensity(Context renderContext, double offsetPoints, double columnPointCount)
         {
             // this function is for when the graph is zoomed out so each pixel column represents the vertical span of multiple data points
 
             int xPxStart = (int)Math.Ceiling((-1 - offsetPoints) / columnPointCount - 1);
             int xPxEnd = (int)Math.Ceiling((ys.Length - offsetPoints) / columnPointCount);
             xPxStart = Math.Max(0, xPxStart);
-            xPxEnd = Math.Min(settings.dataSize.Width, xPxEnd);
+            xPxEnd = (int)Math.Min(renderContext.dataSizeWidth, xPxEnd);
             if (xPxStart >= xPxEnd)
                 return;
             List<PointF> linePoints = new List<PointF>((xPxEnd - xPxStart) * 2 + 1);
@@ -330,8 +330,8 @@ namespace ScottPlot.Plottables
                     if (ys[i] > highestValue)
                         highestValue = ys[i];
                 }
-                float yPxHigh = settings.GetPixel(0, lowestValue + yOffset).Y;
-                float yPxLow = settings.GetPixel(0, highestValue + yOffset).Y;
+                float yPxHigh = renderContext.GetPixel(0, lowestValue + yOffset).Y;
+                float yPxLow = renderContext.GetPixel(0, highestValue + yOffset).Y;
 
                 // adjust order of points to enhance anti-aliasing
                 if ((linePoints.Count < 2) || (yPxLow < linePoints[linePoints.Count - 1].Y))
@@ -347,57 +347,57 @@ namespace ScottPlot.Plottables
             }
 
             if (linePoints.Count > 0)
-                settings.gfxData.DrawLines(pen, linePoints.ToArray());
+                renderContext.gfxData.DrawLines(pen, linePoints.ToArray());
         }
 
         public void Render(Context renderContext)
         {
-            var settings = renderContext.settings;
+            //var settings = renderContext.settings;
 
             pen.Color = color;
             pen.Width = (float)lineWidth;
             brush = new SolidBrush(color);
 
             double dataSpanUnits = ys.Length * samplePeriod;
-            double columnSpanUnits = settings.axes.x.span / settings.dataSize.Width;
+            double columnSpanUnits = renderContext.axisLimits.xSpan / renderContext.dataSizeWidth;
             double columnPointCount = (columnSpanUnits / dataSpanUnits) * ys.Length;
-            double offsetUnits = settings.axes.x.min - xOffset;
+            double offsetUnits = renderContext.axisLimits.x1 - xOffset;
             double offsetPoints = offsetUnits / samplePeriod;
             int visibleIndex1 = (int)(offsetPoints);
-            int visibleIndex2 = (int)(offsetPoints + columnPointCount * (settings.dataSize.Width + 1));
+            int visibleIndex2 = (int)(offsetPoints + columnPointCount * (renderContext.dataSizeWidth + 1));
             int visiblePointCount = visibleIndex2 - visibleIndex1;
-            double pointsPerPixelColumn = visiblePointCount / settings.dataSize.Width;
+            double pointsPerPixelColumn = visiblePointCount / renderContext.dataSizeWidth;
             double dataWidthPx2 = visibleIndex2 - visibleIndex1 + 2;
 
-            PointF firstPoint = settings.GetPixel(xOffset, ys[0] + yOffset);
-            PointF lastPoint = settings.GetPixel(samplePeriod * (ys.Length - 1) + xOffset, ys[ys.Length - 1] + yOffset);
+            PointF firstPoint = renderContext.GetPixel(xOffset, ys[0] + yOffset);
+            PointF lastPoint = renderContext.GetPixel(samplePeriod * (ys.Length - 1) + xOffset, ys[ys.Length - 1] + yOffset);
             double dataWidthPx = lastPoint.X - firstPoint.X;
 
             // use different rendering methods based on how dense the data is on screen
             if ((dataWidthPx <= 1) || (dataWidthPx2 <= 1))
             {
-                RenderSingleLine(settings);
+                RenderSingleLine(renderContext);
             }
             else if (pointsPerPixelColumn > 1)
             {
                 if (densityLevelCount > 0 && pointsPerPixelColumn > densityLevelCount)
                 {
                     if (useParallel)
-                        RenderHighDensityDistributionParallel(settings, offsetPoints, columnPointCount);
+                        RenderHighDensityDistributionParallel(renderContext, offsetPoints, columnPointCount);
                     else
-                        RenderHighDensityDistribution(settings, offsetPoints, columnPointCount);
+                        RenderHighDensityDistribution(renderContext, offsetPoints, columnPointCount);
                 }
                 else
                 {
                     if (useParallel)
-                        RenderHighDensityParallel(settings, offsetPoints, columnPointCount);
+                        RenderHighDensityParallel(renderContext, offsetPoints, columnPointCount);
                     else
-                        RenderHighDensity(settings, offsetPoints, columnPointCount);
+                        RenderHighDensity(renderContext, offsetPoints, columnPointCount);
                 }
             }
             else
             {
-                RenderLowDensity(settings, visibleIndex1, visibleIndex2);
+                RenderLowDensity(renderContext, visibleIndex1, visibleIndex2);
             }
         }
 

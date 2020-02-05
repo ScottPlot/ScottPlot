@@ -70,12 +70,10 @@ namespace ScottPlot.Plottables
 
         public void Render(Context renderContext)
         {
-            var settings = renderContext.settings;
-
-            if (displayCandles)
-                RenderCandles(settings);
+            if (displayCandles) // TODO: make enum
+                RenderCandles(renderContext);
             else
-                RenderOhlc(settings);
+                RenderOhlc(renderContext);
         }
 
         private double GetSmallestSpacing()
@@ -86,10 +84,10 @@ namespace ScottPlot.Plottables
             return smallestSpacing;
         }
 
-        public void RenderCandles(Settings settings)
+        public void RenderCandles(Context renderContext)
         {
             double fractionalTickWidth = .7;
-            double spacingPx = GetSmallestSpacing() * settings.xAxisScale;
+            double spacingPx = GetSmallestSpacing() * renderContext.xAxisScale;
             float boxWidth = (float)(spacingPx / 2 * fractionalTickWidth);
 
             foreach (OHLC ohlc in ohlcs)
@@ -99,23 +97,23 @@ namespace ScottPlot.Plottables
                 pen.Width = 2;
 
                 // the wick below the box
-                PointF wickLowBot = settings.GetPixel(ohlc.time, ohlc.low);
-                PointF wickLowTop = settings.GetPixel(ohlc.time, ohlc.lowestOpenClose);
-                settings.gfxData.DrawLine(pen, wickLowBot, wickLowTop);
+                PointF wickLowBot = renderContext.GetPixel(ohlc.time, ohlc.low);
+                PointF wickLowTop = renderContext.GetPixel(ohlc.time, ohlc.lowestOpenClose);
+                renderContext.gfxData.DrawLine(pen, wickLowBot, wickLowTop);
 
                 // the wick above the box
-                PointF wickHighBot = settings.GetPixel(ohlc.time, ohlc.highestOpenClose);
-                PointF wickHighTop = settings.GetPixel(ohlc.time, ohlc.high);
-                settings.gfxData.DrawLine(pen, wickHighBot, wickHighTop);
+                PointF wickHighBot = renderContext.GetPixel(ohlc.time, ohlc.highestOpenClose);
+                PointF wickHighTop = renderContext.GetPixel(ohlc.time, ohlc.high);
+                renderContext.gfxData.DrawLine(pen, wickHighBot, wickHighTop);
 
                 // the candle
-                PointF boxLowerLeft = settings.GetPixel(ohlc.time, ohlc.lowestOpenClose);
-                PointF boxUpperRight = settings.GetPixel(ohlc.time, ohlc.highestOpenClose);
-                settings.gfxData.FillRectangle(brush, boxLowerLeft.X - boxWidth, boxUpperRight.Y, boxWidth * 2, boxLowerLeft.Y - boxUpperRight.Y);
+                PointF boxLowerLeft = renderContext.GetPixel(ohlc.time, ohlc.lowestOpenClose);
+                PointF boxUpperRight = renderContext.GetPixel(ohlc.time, ohlc.highestOpenClose);
+                renderContext.gfxData.FillRectangle(brush, boxLowerLeft.X - boxWidth, boxUpperRight.Y, boxWidth * 2, boxLowerLeft.Y - boxUpperRight.Y);
             }
         }
 
-        public void RenderOhlc(Settings settings)
+        public void RenderOhlc(Context settings)
         {
             double fractionalTickWidth = 1;
             double spacingPx = GetSmallestSpacing() * settings.xAxisScale;

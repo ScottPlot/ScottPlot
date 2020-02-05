@@ -45,13 +45,11 @@ namespace ScottPlot.Plottables
 
         public override void Render(Context renderContext)
         {
-            var settings = renderContext.settings;
-
             PointF pt1, pt2;
-            pt1 = settings.GetPixel(settings.axes.x.min, position1);
-            pt2 = settings.GetPixel(settings.axes.x.max, position1);
+            pt1 = renderContext.GetPixel(renderContext.axisLimits.x1, position1);
+            pt2 = renderContext.GetPixel(renderContext.axisLimits.x2, position1);
             pt2.X -= (float).01; // fixes a System.Drawing bug
-            settings.gfxData.DrawLine(pen, pt1, pt2);
+            renderContext.gfxData.DrawLine(pen, pt1, pt2);
         }
 
         public override bool IsUnderMouse(double coordinateX, double coordinateY, double snapX, double snapY)

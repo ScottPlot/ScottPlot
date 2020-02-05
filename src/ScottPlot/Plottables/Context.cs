@@ -15,18 +15,7 @@ namespace ScottPlot.Plottables
 
     public class Context
     {
-        // bandaid
-        private Settings _settings;
-        public Settings settings
-        {
-            get
-            {
-                StackFrame frame = new StackFrame(1);
-                Debug.WriteLine($"WARNING: {frame.GetMethod().DeclaringType} is still using renderContext.settings");
-                return _settings;
-            }
-            set { _settings = value; }
-        }
+        //[Obsolete("dont access graphics objects directly", true)]
         public System.Drawing.Graphics gfxData;
 
         // local storage

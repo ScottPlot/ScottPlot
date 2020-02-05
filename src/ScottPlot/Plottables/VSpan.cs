@@ -28,7 +28,7 @@ namespace ScottPlot.Plottables
 
         public override string ToString()
         {
-            return String.Format("VSpan (Y1={0:0.000}, Y2={0:0.000})", position1, position2);
+            return String.Format("VSpan (Y1={0:0.000}, Y2={1:0.000})", position1, position2);
         }
 
         public override AxisLimits2D GetLimits()
@@ -39,17 +39,15 @@ namespace ScottPlot.Plottables
 
         public override void Render(Context renderContext)
         {
-            var settings = renderContext.settings;
-
             PointF topLeft, lowerRight;
 
             double positionMin = Math.Min(position1, position2);
             double positionMax = Math.Max(position1, position2);
 
-            topLeft = settings.GetPixel(settings.axes.x.min, positionMin);
-            lowerRight = settings.GetPixel(settings.axes.x.max, positionMax);
-            if (topLeft.Y > settings.bmpData.Height)
-                topLeft.Y = settings.bmpData.Height;
+            topLeft = renderContext.GetPixel(renderContext.axisLimits.x1, positionMin);
+            lowerRight = renderContext.GetPixel(renderContext.axisLimits.x2, positionMax);
+            if (topLeft.Y > renderContext.dataSizeHeight)
+                topLeft.Y = renderContext.dataSizeHeight;
             if (lowerRight.Y < 0)
                 lowerRight.Y = 0;
 
@@ -58,7 +56,7 @@ namespace ScottPlot.Plottables
             float x = topLeft.X - 1;
             float y = lowerRight.Y - 1;
 
-            settings.gfxData.FillRectangle(brush, x, y, width, height);
+            renderContext.gfxData.FillRectangle(brush, x, y, width, height);
         }
 
         private enum Edge { Edge1, Edge2, Neither };

@@ -57,7 +57,6 @@ namespace ScottPlot
 
             var renderContext = new Plottables.Context()
             {
-                settings = settings,
                 gfxData = settings.gfxData,
                 axisLimits = new Config.AxisLimits2D(settings.axes.limits),
                 xAxisScale = settings.xAxisScale,

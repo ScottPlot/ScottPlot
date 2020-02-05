@@ -28,7 +28,7 @@ namespace ScottPlot.Plottables
 
         public override string ToString()
         {
-            return String.Format("HSpan (X1={0:0.000}, X2={0:0.000})", position1, position2);
+            return String.Format("HSpan (X1={0:0.000}, X2={1:0.000})", position1, position2);
         }
 
         public override AxisLimits2D GetLimits()
@@ -39,26 +39,24 @@ namespace ScottPlot.Plottables
 
         public override void Render(Context renderContext)
         {
-            var settings = renderContext.settings;
-
             PointF topLeft, lowerRight;
 
             double positionMin = Math.Min(position1, position2);
             double positionMax = Math.Max(position1, position2);
 
-            topLeft = settings.GetPixel(positionMin, settings.axes.y.min);
-            lowerRight = settings.GetPixel(positionMax, settings.axes.y.max);
+            topLeft = renderContext.GetPixel(positionMin, renderContext.axisLimits.y1);
+            lowerRight = renderContext.GetPixel(positionMax, renderContext.axisLimits.y2);
             if (topLeft.X < 0)
                 topLeft.X = 0;
-            if (lowerRight.X > settings.bmpData.Width)
-                lowerRight.X = settings.bmpData.Width;
+            if (lowerRight.X > renderContext.dataSizeWidth)
+                lowerRight.X = renderContext.dataSizeWidth;
 
             float width = lowerRight.X - topLeft.X + 1;
             float height = topLeft.Y - lowerRight.Y + 1;
             float x = topLeft.X - 1;
             float y = lowerRight.Y - 1;
 
-            settings.gfxData.FillRectangle(brush, x, y, width, height);
+            renderContext.gfxData.FillRectangle(brush, x, y, width, height);
         }
 
         public override void SetLimits(double? x1, double? x2, double? y1, double? y2)

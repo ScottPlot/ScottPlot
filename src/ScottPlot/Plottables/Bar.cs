@@ -88,13 +88,11 @@ namespace ScottPlot.Plottables
             }
 
             // TODO: use features of 2d axis
-            return new Config.AxisLimits2D(limits);
+            return new AxisLimits2D(limits);
         }
 
         public void Render(Context renderContext)
         {
-            var settings = renderContext.settings;
-
             for (int i = 0; i < pointCount; i++)
             {
                 PointF barTop;
@@ -102,34 +100,34 @@ namespace ScottPlot.Plottables
 
                 if (ys[i] > baseline)
                 {
-                    barTop = settings.GetPixel(xs[i], ys[i]);
-                    barBot = settings.GetPixel(xs[i], baseline);
+                    barTop = renderContext.GetPixel(xs[i], ys[i]);
+                    barBot = renderContext.GetPixel(xs[i], baseline);
                 }
                 else
                 {
-                    barBot = settings.GetPixel(xs[i], ys[i]);
-                    barTop = settings.GetPixel(xs[i], baseline);
+                    barBot = renderContext.GetPixel(xs[i], ys[i]);
+                    barTop = renderContext.GetPixel(xs[i], baseline);
                 }
 
                 float barTopPx = barTop.Y;
                 float barHeightPx = barTop.Y - barBot.Y;
-                float barWidthPx = (float)(barWidth * settings.xAxisScale);
+                float barWidthPx = (float)(barWidth * renderContext.xAxisScale);
                 float barLeftPx = barTop.X - barWidthPx / 2;
-                float xOffsetPx = (float)(xOffset * settings.xAxisScale);
+                float xOffsetPx = (float)(xOffset * renderContext.xAxisScale);
                 barLeftPx += xOffsetPx;
 
-                settings.gfxData.FillRectangle(brush, barLeftPx - (float).5, barTopPx, barWidthPx + (float).5, -barHeightPx);
-                settings.gfxData.DrawRectangle(pen, barLeftPx - (float).5, barTopPx, barWidthPx + (float).5, -barHeightPx);
+                renderContext.gfxData.FillRectangle(brush, barLeftPx - (float).5, barTopPx, barWidthPx + (float).5, -barHeightPx);
+                renderContext.gfxData.DrawRectangle(pen, barLeftPx - (float).5, barTopPx, barWidthPx + (float).5, -barHeightPx);
 
                 if (yErr != null)
                 {
-                    PointF peakCenter = settings.GetPixel(xs[i], ys[i]);
+                    PointF peakCenter = renderContext.GetPixel(xs[i], ys[i]);
                     float x = peakCenter.X + xOffsetPx;
                     float y = peakCenter.Y;
-                    float errorPx = (float)(yErr[i] * settings.yAxisScale);
-                    settings.gfxData.DrawLine(pen, x, y - errorPx, x, y + errorPx);
-                    settings.gfxData.DrawLine(pen, x - errorCapSize, y - errorPx, x + errorCapSize, y - errorPx);
-                    settings.gfxData.DrawLine(pen, x - errorCapSize, y + errorPx, x + errorCapSize, y + errorPx);
+                    float errorPx = (float)(yErr[i] * renderContext.yAxisScale);
+                    renderContext.gfxData.DrawLine(pen, x, y - errorPx, x, y + errorPx);
+                    renderContext.gfxData.DrawLine(pen, x - errorCapSize, y - errorPx, x + errorCapSize, y - errorPx);
+                    renderContext.gfxData.DrawLine(pen, x - errorCapSize, y + errorPx, x + errorCapSize, y + errorPx);
                 }
             }
         }
