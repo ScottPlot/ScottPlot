@@ -37,26 +37,26 @@ namespace ScottPlot.Plottables
             return new AxisLimits2D();
         }
 
-        public override void Render(Context renderContext)
+        public override void Render(DataArea dataArea)
         {
             PointF topLeft, lowerRight;
 
             double positionMin = Math.Min(position1, position2);
             double positionMax = Math.Max(position1, position2);
 
-            topLeft = renderContext.GetPixel(positionMin, renderContext.axisLimits.y1);
-            lowerRight = renderContext.GetPixel(positionMax, renderContext.axisLimits.y2);
+            topLeft = dataArea.GetPixel(positionMin, dataArea.axisLimits.y1);
+            lowerRight = dataArea.GetPixel(positionMax, dataArea.axisLimits.y2);
             if (topLeft.X < 0)
                 topLeft.X = 0;
-            if (lowerRight.X > renderContext.dataSizeWidth)
-                lowerRight.X = renderContext.dataSizeWidth;
+            if (lowerRight.X > dataArea.widthPx)
+                lowerRight.X = dataArea.widthPx;
 
             float width = lowerRight.X - topLeft.X + 1;
             float height = topLeft.Y - lowerRight.Y + 1;
             float x = topLeft.X - 1;
             float y = lowerRight.Y - 1;
 
-            renderContext.gfxData.FillRectangle(brush, x, y, width, height);
+            dataArea.gfxData.FillRectangle(brush, x, y, width, height);
         }
 
         public override void SetLimits(double? x1, double? x2, double? y1, double? y2)

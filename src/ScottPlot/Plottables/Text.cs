@@ -59,12 +59,12 @@ namespace ScottPlot.Plottables
             return new Config.AxisLimits2D(limits);
         }
 
-        public void Render(Context renderContext)
+        public void Render(DataArea dataArea)
         {
-            PointF defaultPoint = renderContext.GetPixel(x, y);
+            PointF defaultPoint = dataArea.GetPixel(x, y);
             PointF textLocationPoint = new PointF();
 
-            SizeF stringSize = renderContext.gfxData.MeasureString(text, font);
+            SizeF stringSize = dataArea.gfxData.MeasureString(text, font);
 
             switch (alignment)
             {
@@ -105,15 +105,15 @@ namespace ScottPlot.Plottables
                     break;
             }
 
-            renderContext.gfxData.TranslateTransform((int)textLocationPoint.X, (int)textLocationPoint.Y);
-            renderContext.gfxData.RotateTransform((float)rotation);
+            dataArea.gfxData.TranslateTransform((int)textLocationPoint.X, (int)textLocationPoint.Y);
+            dataArea.gfxData.RotateTransform((float)rotation);
             if (frame)
             {
                 Rectangle stringRect = new Rectangle(0, 0, (int)stringSize.Width, (int)stringSize.Height);
-                renderContext.gfxData.FillRectangle(frameBrush, stringRect);
+                dataArea.gfxData.FillRectangle(frameBrush, stringRect);
             }
-            renderContext.gfxData.DrawString(text, font, brush, new PointF(0, 0));
-            renderContext.gfxData.ResetTransform();
+            dataArea.gfxData.DrawString(text, font, brush, new PointF(0, 0));
+            dataArea.gfxData.ResetTransform();
         }
     }
 }

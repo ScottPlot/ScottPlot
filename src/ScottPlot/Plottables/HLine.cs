@@ -43,13 +43,13 @@ namespace ScottPlot.Plottables
             return new AxisLimits2D(x1: null, x2: null, y1: position1, y2: position1);
         }
 
-        public override void Render(Context renderContext)
+        public override void Render(DataArea dataArea)
         {
             PointF pt1, pt2;
-            pt1 = renderContext.GetPixel(renderContext.axisLimits.x1, position1);
-            pt2 = renderContext.GetPixel(renderContext.axisLimits.x2, position1);
+            pt1 = dataArea.GetPixel(dataArea.axisLimits.x1, position1);
+            pt2 = dataArea.GetPixel(dataArea.axisLimits.x2, position1);
             pt2.X -= (float).01; // fixes a System.Drawing bug
-            renderContext.gfxData.DrawLine(pen, pt1, pt2);
+            dataArea.gfxData.DrawLine(pen, pt1, pt2);
         }
 
         public override bool IsUnderMouse(double coordinateX, double coordinateY, double snapX, double snapY)

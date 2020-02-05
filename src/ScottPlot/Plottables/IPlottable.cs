@@ -17,7 +17,7 @@ namespace ScottPlot.Plottables
         MarkerShape markerShape { get; set; }
         LineStyle lineStyle { get; set; }
 
-        void Render(Plottables.Context renderContext);
+        void Render(DataArea dataArea);
         Config.AxisLimits2D GetLimits();
         string ToString();
     }

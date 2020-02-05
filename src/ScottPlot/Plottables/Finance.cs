@@ -68,12 +68,12 @@ namespace ScottPlot.Plottables
             return new Config.AxisLimits2D(limits);
         }
 
-        public void Render(Context renderContext)
+        public void Render(DataArea dataArea)
         {
             if (displayCandles) // TODO: make enum
-                RenderCandles(renderContext);
+                RenderCandles(dataArea);
             else
-                RenderOhlc(renderContext);
+                RenderOhlc(dataArea);
         }
 
         private double GetSmallestSpacing()
@@ -84,10 +84,10 @@ namespace ScottPlot.Plottables
             return smallestSpacing;
         }
 
-        public void RenderCandles(Context renderContext)
+        public void RenderCandles(DataArea dataArea)
         {
             double fractionalTickWidth = .7;
-            double spacingPx = GetSmallestSpacing() * renderContext.xAxisScale;
+            double spacingPx = GetSmallestSpacing() * dataArea.pxPerUnitX;
             float boxWidth = (float)(spacingPx / 2 * fractionalTickWidth);
 
             foreach (OHLC ohlc in ohlcs)
@@ -97,26 +97,26 @@ namespace ScottPlot.Plottables
                 pen.Width = 2;
 
                 // the wick below the box
-                PointF wickLowBot = renderContext.GetPixel(ohlc.time, ohlc.low);
-                PointF wickLowTop = renderContext.GetPixel(ohlc.time, ohlc.lowestOpenClose);
-                renderContext.gfxData.DrawLine(pen, wickLowBot, wickLowTop);
+                PointF wickLowBot = dataArea.GetPixel(ohlc.time, ohlc.low);
+                PointF wickLowTop = dataArea.GetPixel(ohlc.time, ohlc.lowestOpenClose);
+                dataArea.gfxData.DrawLine(pen, wickLowBot, wickLowTop);
 
                 // the wick above the box
-                PointF wickHighBot = renderContext.GetPixel(ohlc.time, ohlc.highestOpenClose);
-                PointF wickHighTop = renderContext.GetPixel(ohlc.time, ohlc.high);
-                renderContext.gfxData.DrawLine(pen, wickHighBot, wickHighTop);
+                PointF wickHighBot = dataArea.GetPixel(ohlc.time, ohlc.highestOpenClose);
+                PointF wickHighTop = dataArea.GetPixel(ohlc.time, ohlc.high);
+                dataArea.gfxData.DrawLine(pen, wickHighBot, wickHighTop);
 
                 // the candle
-                PointF boxLowerLeft = renderContext.GetPixel(ohlc.time, ohlc.lowestOpenClose);
-                PointF boxUpperRight = renderContext.GetPixel(ohlc.time, ohlc.highestOpenClose);
-                renderContext.gfxData.FillRectangle(brush, boxLowerLeft.X - boxWidth, boxUpperRight.Y, boxWidth * 2, boxLowerLeft.Y - boxUpperRight.Y);
+                PointF boxLowerLeft = dataArea.GetPixel(ohlc.time, ohlc.lowestOpenClose);
+                PointF boxUpperRight = dataArea.GetPixel(ohlc.time, ohlc.highestOpenClose);
+                dataArea.gfxData.FillRectangle(brush, boxLowerLeft.X - boxWidth, boxUpperRight.Y, boxWidth * 2, boxLowerLeft.Y - boxUpperRight.Y);
             }
         }
 
-        public void RenderOhlc(Context settings)
+        public void RenderOhlc(DataArea dataArea)
         {
             double fractionalTickWidth = 1;
-            double spacingPx = GetSmallestSpacing() * settings.xAxisScale;
+            double spacingPx = GetSmallestSpacing() * dataArea.pxPerUnitX;
             float boxWidth = (float)(spacingPx / 2 * fractionalTickWidth);
 
             foreach (OHLC ohlc in ohlcs)
@@ -125,16 +125,16 @@ namespace ScottPlot.Plottables
                 pen.Width = 2;
 
                 // the main line
-                PointF wickTop = settings.GetPixel(ohlc.time, ohlc.low);
-                PointF wickBot = settings.GetPixel(ohlc.time, ohlc.high);
-                settings.gfxData.DrawLine(pen, wickBot, wickTop);
+                PointF wickTop = dataArea.GetPixel(ohlc.time, ohlc.low);
+                PointF wickBot = dataArea.GetPixel(ohlc.time, ohlc.high);
+                dataArea.gfxData.DrawLine(pen, wickBot, wickTop);
 
                 // open and close lines
                 float xPx = wickTop.X;
-                float yPxOpen = (float)settings.GetPixel(0, ohlc.open).Y;
-                float yPxClose = (float)settings.GetPixel(0, ohlc.close).Y;
-                settings.gfxData.DrawLine(pen, xPx - boxWidth, yPxOpen, xPx, yPxOpen);
-                settings.gfxData.DrawLine(pen, xPx + boxWidth, yPxClose, xPx, yPxClose);
+                float yPxOpen = (float)dataArea.GetPixel(0, ohlc.open).Y;
+                float yPxClose = (float)dataArea.GetPixel(0, ohlc.close).Y;
+                dataArea.gfxData.DrawLine(pen, xPx - boxWidth, yPxOpen, xPx, yPxOpen);
+                dataArea.gfxData.DrawLine(pen, xPx + boxWidth, yPxClose, xPx, yPxClose);
             }
         }
     }

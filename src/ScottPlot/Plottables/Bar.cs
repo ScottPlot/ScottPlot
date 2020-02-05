@@ -91,7 +91,7 @@ namespace ScottPlot.Plottables
             return new AxisLimits2D(limits);
         }
 
-        public void Render(Context renderContext)
+        public void Render(DataArea dataArea)
         {
             for (int i = 0; i < pointCount; i++)
             {
@@ -100,34 +100,34 @@ namespace ScottPlot.Plottables
 
                 if (ys[i] > baseline)
                 {
-                    barTop = renderContext.GetPixel(xs[i], ys[i]);
-                    barBot = renderContext.GetPixel(xs[i], baseline);
+                    barTop = dataArea.GetPixel(xs[i], ys[i]);
+                    barBot = dataArea.GetPixel(xs[i], baseline);
                 }
                 else
                 {
-                    barBot = renderContext.GetPixel(xs[i], ys[i]);
-                    barTop = renderContext.GetPixel(xs[i], baseline);
+                    barBot = dataArea.GetPixel(xs[i], ys[i]);
+                    barTop = dataArea.GetPixel(xs[i], baseline);
                 }
 
                 float barTopPx = barTop.Y;
                 float barHeightPx = barTop.Y - barBot.Y;
-                float barWidthPx = (float)(barWidth * renderContext.xAxisScale);
+                float barWidthPx = (float)(barWidth * dataArea.pxPerUnitX);
                 float barLeftPx = barTop.X - barWidthPx / 2;
-                float xOffsetPx = (float)(xOffset * renderContext.xAxisScale);
+                float xOffsetPx = (float)(xOffset * dataArea.pxPerUnitX);
                 barLeftPx += xOffsetPx;
 
-                renderContext.gfxData.FillRectangle(brush, barLeftPx - (float).5, barTopPx, barWidthPx + (float).5, -barHeightPx);
-                renderContext.gfxData.DrawRectangle(pen, barLeftPx - (float).5, barTopPx, barWidthPx + (float).5, -barHeightPx);
+                dataArea.gfxData.FillRectangle(brush, barLeftPx - (float).5, barTopPx, barWidthPx + (float).5, -barHeightPx);
+                dataArea.gfxData.DrawRectangle(pen, barLeftPx - (float).5, barTopPx, barWidthPx + (float).5, -barHeightPx);
 
                 if (yErr != null)
                 {
-                    PointF peakCenter = renderContext.GetPixel(xs[i], ys[i]);
+                    PointF peakCenter = dataArea.GetPixel(xs[i], ys[i]);
                     float x = peakCenter.X + xOffsetPx;
                     float y = peakCenter.Y;
-                    float errorPx = (float)(yErr[i] * renderContext.yAxisScale);
-                    renderContext.gfxData.DrawLine(pen, x, y - errorPx, x, y + errorPx);
-                    renderContext.gfxData.DrawLine(pen, x - errorCapSize, y - errorPx, x + errorCapSize, y - errorPx);
-                    renderContext.gfxData.DrawLine(pen, x - errorCapSize, y + errorPx, x + errorCapSize, y + errorPx);
+                    float errorPx = (float)(yErr[i] * dataArea.pxPerUnitY);
+                    dataArea.gfxData.DrawLine(pen, x, y - errorPx, x, y + errorPx);
+                    dataArea.gfxData.DrawLine(pen, x - errorCapSize, y - errorPx, x + errorCapSize, y - errorPx);
+                    dataArea.gfxData.DrawLine(pen, x - errorCapSize, y + errorPx, x + errorCapSize, y + errorPx);
                 }
             }
         }

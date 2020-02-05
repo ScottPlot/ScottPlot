@@ -37,17 +37,17 @@ namespace ScottPlot.Plottables
             return new AxisLimits2D();
         }
 
-        public override void Render(Context renderContext)
+        public override void Render(DataArea dataArea)
         {
             PointF topLeft, lowerRight;
 
             double positionMin = Math.Min(position1, position2);
             double positionMax = Math.Max(position1, position2);
 
-            topLeft = renderContext.GetPixel(renderContext.axisLimits.x1, positionMin);
-            lowerRight = renderContext.GetPixel(renderContext.axisLimits.x2, positionMax);
-            if (topLeft.Y > renderContext.dataSizeHeight)
-                topLeft.Y = renderContext.dataSizeHeight;
+            topLeft = dataArea.GetPixel(dataArea.axisLimits.x1, positionMin);
+            lowerRight = dataArea.GetPixel(dataArea.axisLimits.x2, positionMax);
+            if (topLeft.Y > dataArea.heightPx)
+                topLeft.Y = dataArea.heightPx;
             if (lowerRight.Y < 0)
                 lowerRight.Y = 0;
 
@@ -56,7 +56,7 @@ namespace ScottPlot.Plottables
             float x = topLeft.X - 1;
             float y = lowerRight.Y - 1;
 
-            renderContext.gfxData.FillRectangle(brush, x, y, width, height);
+            dataArea.gfxData.FillRectangle(brush, x, y, width, height);
         }
 
         private enum Edge { Edge1, Edge2, Neither };

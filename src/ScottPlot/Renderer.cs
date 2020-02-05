@@ -55,14 +55,14 @@ namespace ScottPlot
             if (settings.gfxData == null)
                 return;
 
-            var renderContext = new Plottables.Context()
+            var dataArea = new DataArea()
             {
                 gfxData = settings.gfxData,
                 axisLimits = new Config.AxisLimits2D(settings.axes.limits),
-                xAxisScale = settings.xAxisScale,
-                yAxisScale = settings.yAxisScale,
-                dataSizeHeight = settings.dataSize.Height,
-                dataSizeWidth = settings.dataSize.Width
+                pxPerUnitX = settings.xAxisScale,
+                pxPerUnitY = settings.yAxisScale,
+                heightPx = settings.dataSize.Height,
+                widthPx = settings.dataSize.Width
             };
 
             foreach(var plottable in settings.plottables)
@@ -71,7 +71,7 @@ namespace ScottPlot
                 {
                     try
                     {
-                        plottable.Render(renderContext);
+                        plottable.Render(dataArea);
                     }
                     catch (OverflowException)
                     {
