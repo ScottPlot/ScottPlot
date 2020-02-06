@@ -5,23 +5,24 @@ using System.Text;
 
 namespace ScottPlot.Plottables
 {
-    // This class holds plot context (e.g., plot size and data area axis limits) allowing plottables to know where to draw their data.
+    // This class holds plot context (e.g., plot size and data area axis limits) designed to be
+    // passed into the Render() function of plottables. Data contained here lets plottables know
+    // where to render their data.
+
     public class DataArea
     {
-        // TODO: mark this obsolete once a fully abstracted rendering system is added
+        // TODO: mark this obsolete once an abstracted renderer is created.
         public System.Drawing.Graphics gfxData;
 
-        public double pxPerUnitX, pxPerUnitY;
-        public float heightPx, widthPx;
-
+        public Drawing.Size sizePx;
+        public Drawing.Scale pxPerUnit;
         public Config.AxisLimits2D axisLimits;
 
-        public System.Drawing.PointF GetPixel(double xCoordinate, double yCoordinate)
+        public System.Drawing.PointF GetPixel(double x, double y)
         {
-            // note that this is pixel location on the DATA graphic (not the FIGURE graphic)
-            float xPx = (float)((xCoordinate - axisLimits.x1) * pxPerUnitX);
-            float yPx = heightPx - (float)((yCoordinate - axisLimits.y1) * pxPerUnitY);
-            return new System.Drawing.PointF(xPx, yPx);
+            double xPx = ((x - axisLimits.x1) * pxPerUnit.x);
+            double yPx = sizePx.height - ((y - axisLimits.y1) * pxPerUnit.y);
+            return new System.Drawing.PointF((float)xPx, (float)yPx);
         }
     }
 }

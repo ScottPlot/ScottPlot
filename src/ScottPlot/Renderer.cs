@@ -59,10 +59,8 @@ namespace ScottPlot
             {
                 gfxData = settings.gfxData,
                 axisLimits = new Config.AxisLimits2D(settings.axes.limits),
-                pxPerUnitX = settings.xAxisScale,
-                pxPerUnitY = settings.yAxisScale,
-                heightPx = settings.dataSize.Height,
-                widthPx = settings.dataSize.Width
+                sizePx = new Drawing.Size(settings.dataSize.Width, settings.dataSize.Height),
+                pxPerUnit = new Drawing.Scale(settings.xAxisScale, settings.yAxisScale)
             };
 
             foreach(var plottable in settings.plottables)

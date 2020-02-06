@@ -48,8 +48,8 @@ namespace ScottPlot.Plottables
             lowerRight = dataArea.GetPixel(positionMax, dataArea.axisLimits.y2);
             if (topLeft.X < 0)
                 topLeft.X = 0;
-            if (lowerRight.X > dataArea.widthPx)
-                lowerRight.X = dataArea.widthPx;
+            if (lowerRight.X > dataArea.sizePx.width)
+                lowerRight.X = (float)dataArea.sizePx.width;
 
             float width = lowerRight.X - topLeft.X + 1;
             float height = topLeft.Y - lowerRight.Y + 1;

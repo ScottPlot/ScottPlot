@@ -136,7 +136,7 @@ namespace ScottPlot.Plottables
             int xPxStart = (int)Math.Ceiling((-1 - offsetPoints) / columnPointCount - 1);
             int xPxEnd = (int)Math.Ceiling((ys.Length - offsetPoints) / columnPointCount);
             xPxStart = Math.Max(0, xPxStart);
-            xPxEnd = (int)Math.Min(dataArea.widthPx, xPxEnd);
+            xPxEnd = (int)Math.Min(dataArea.sizePx.width, xPxEnd);
             if (xPxStart >= xPxEnd)
                 return;
             PointF[] linePoints = new PointF[(xPxEnd - xPxStart) * 2];
@@ -188,7 +188,7 @@ namespace ScottPlot.Plottables
             int xPxStart = (int)Math.Ceiling((-1 - offsetPoints) / columnPointCount - 1);
             int xPxEnd = (int)Math.Ceiling((ys.Length - offsetPoints) / columnPointCount);
             xPxStart = Math.Max(0, xPxStart);
-            xPxEnd = (int)Math.Min(dataArea.widthPx, xPxEnd);
+            xPxEnd = (int)Math.Min(dataArea.sizePx.width, xPxEnd);
             if (xPxStart >= xPxEnd)
                 return;
             List<PointF> linePoints = new List<PointF>((xPxEnd - xPxStart) * 2 + 1);
@@ -239,7 +239,7 @@ namespace ScottPlot.Plottables
             int xPxStart = (int)Math.Ceiling((-1 - offsetPoints) / columnPointCount - 1);
             int xPxEnd = (int)Math.Ceiling((ys.Length - offsetPoints) / columnPointCount);
             xPxStart = Math.Max(0, xPxStart);
-            xPxEnd = (int)Math.Min(dataArea.widthPx, xPxEnd);
+            xPxEnd = (int)Math.Min(dataArea.sizePx.width, xPxEnd);
             if (xPxStart >= xPxEnd)
                 return;
             List<PointF> linePoints = new List<PointF>((xPxEnd - xPxStart) * 2 + 1);
@@ -297,7 +297,7 @@ namespace ScottPlot.Plottables
             int xPxStart = (int)Math.Ceiling((-1 - offsetPoints) / columnPointCount - 1);
             int xPxEnd = (int)Math.Ceiling((ys.Length - offsetPoints) / columnPointCount);
             xPxStart = Math.Max(0, xPxStart);
-            xPxEnd = (int)Math.Min(dataArea.widthPx, xPxEnd);
+            xPxEnd = (int)Math.Min(dataArea.sizePx.width, xPxEnd);
             if (xPxStart >= xPxEnd)
                 return;
             List<PointF> linePoints = new List<PointF>((xPxEnd - xPxStart) * 2 + 1);
@@ -359,14 +359,14 @@ namespace ScottPlot.Plottables
             brush = new SolidBrush(color);
 
             double dataSpanUnits = ys.Length * samplePeriod;
-            double columnSpanUnits = dataArea.axisLimits.xSpan / dataArea.widthPx;
+            double columnSpanUnits = dataArea.axisLimits.xSpan / dataArea.sizePx.width;
             double columnPointCount = (columnSpanUnits / dataSpanUnits) * ys.Length;
             double offsetUnits = dataArea.axisLimits.x1 - xOffset;
             double offsetPoints = offsetUnits / samplePeriod;
             int visibleIndex1 = (int)(offsetPoints);
-            int visibleIndex2 = (int)(offsetPoints + columnPointCount * (dataArea.widthPx + 1));
+            int visibleIndex2 = (int)(offsetPoints + columnPointCount * (dataArea.sizePx.width + 1));
             int visiblePointCount = visibleIndex2 - visibleIndex1;
-            double pointsPerPixelColumn = visiblePointCount / dataArea.widthPx;
+            double pointsPerPixelColumn = visiblePointCount / dataArea.sizePx.width;
             double dataWidthPx2 = visibleIndex2 - visibleIndex1 + 2;
 
             PointF firstPoint = dataArea.GetPixel(xOffset, ys[0] + yOffset);

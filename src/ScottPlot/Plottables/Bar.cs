@@ -111,9 +111,9 @@ namespace ScottPlot.Plottables
 
                 float barTopPx = barTop.Y;
                 float barHeightPx = barTop.Y - barBot.Y;
-                float barWidthPx = (float)(barWidth * dataArea.pxPerUnitX);
+                float barWidthPx = (float)(barWidth * dataArea.pxPerUnit.x);
                 float barLeftPx = barTop.X - barWidthPx / 2;
-                float xOffsetPx = (float)(xOffset * dataArea.pxPerUnitX);
+                float xOffsetPx = (float)(xOffset * dataArea.pxPerUnit.x);
                 barLeftPx += xOffsetPx;
 
                 dataArea.gfxData.FillRectangle(brush, barLeftPx - (float).5, barTopPx, barWidthPx + (float).5, -barHeightPx);
@@ -124,7 +124,7 @@ namespace ScottPlot.Plottables
                     PointF peakCenter = dataArea.GetPixel(xs[i], ys[i]);
                     float x = peakCenter.X + xOffsetPx;
                     float y = peakCenter.Y;
-                    float errorPx = (float)(yErr[i] * dataArea.pxPerUnitY);
+                    float errorPx = (float)(yErr[i] * dataArea.pxPerUnit.y);
                     dataArea.gfxData.DrawLine(pen, x, y - errorPx, x, y + errorPx);
                     dataArea.gfxData.DrawLine(pen, x - errorCapSize, y - errorPx, x + errorCapSize, y - errorPx);
                     dataArea.gfxData.DrawLine(pen, x - errorCapSize, y + errorPx, x + errorCapSize, y + errorPx);

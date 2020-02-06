@@ -87,7 +87,7 @@ namespace ScottPlot.Plottables
         public void RenderCandles(DataArea dataArea)
         {
             double fractionalTickWidth = .7;
-            double spacingPx = GetSmallestSpacing() * dataArea.pxPerUnitX;
+            double spacingPx = GetSmallestSpacing() * dataArea.pxPerUnit.x;
             float boxWidth = (float)(spacingPx / 2 * fractionalTickWidth);
 
             foreach (OHLC ohlc in ohlcs)
@@ -116,7 +116,7 @@ namespace ScottPlot.Plottables
         public void RenderOhlc(DataArea dataArea)
         {
             double fractionalTickWidth = 1;
-            double spacingPx = GetSmallestSpacing() * dataArea.pxPerUnitX;
+            double spacingPx = GetSmallestSpacing() * dataArea.pxPerUnit.x;
             float boxWidth = (float)(spacingPx / 2 * fractionalTickWidth);
 
             foreach (OHLC ohlc in ohlcs)
