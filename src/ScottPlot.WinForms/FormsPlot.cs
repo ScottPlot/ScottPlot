@@ -54,7 +54,7 @@ namespace ScottPlot
             {
                 currentlyRendering = true;
                 pbPlot.Image = plt?.GetBitmap(true, lowQuality);
-                if (isPanningOrZooming)
+                if (isPanningOrZooming || isMovingDraggable)
                     Application.DoEvents();
                 currentlyRendering = false;
             }
