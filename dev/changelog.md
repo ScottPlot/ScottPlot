@@ -1,5 +1,13 @@
 # ScottPlot Changelog
 
+## ScottPlot 4.1 Features
+### Large features
+* support rendering with System.Drawing or SkiaSharp
+* support second Y axis
+### Tests
+* add tests for every plot method
+* add tests for ever user control public property and method
+
 ## ScottPlot 4.0.16
 * Improved support for MacOS and Linux (#211, #212, #216) _Thanks @Hexxonite and @StendProg_
 * Fixed a few display bugs
