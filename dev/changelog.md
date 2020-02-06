@@ -6,8 +6,8 @@
 
 ### FEATURES TO ADD
 * support rendering with System.Drawing or SkiaSharp
-* support second Y axis
-* add tests for every plot method
+* support second Y axis (#213)
+* add tests for every plot method (re-open #224)
 * add tests for ever user control public property and method
 
 ### TODO
