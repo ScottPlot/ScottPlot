@@ -3,6 +3,14 @@
 ## ScottPlot 4.1.0
 
 **DO NOT FORGET TO DO THESE THINGS BEFORE RELEASE**
+
+### FEATURES TO ADD
+* support rendering with System.Drawing or SkiaSharp
+* support second Y axis
+* add tests for every plot method
+* add tests for ever user control public property and method
+
+### TODO
 * Remove junk `using ScottPlot.Plottables;` - these were added to simplify the namespace conversion process. In cases where it's best to leave this line, ensure `using ScottPlot` is also present.
 * Stop checking in the cookbook to git - It's making this repo huge. Instead use SWHarden.com to host it. Alternatively, keep checking it in and use GitHub pages to serve it.
 
