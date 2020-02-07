@@ -21,7 +21,7 @@ namespace ScottPlot.Config
 
         private enum TickUnits { years, months, days, hours, minutes, seconds };
 
-        public static (DateTime[], String[]) GetTicks(DateTime dt1, DateTime dt2, int maxTickCount = 5)
+        public static (DateTime[], String[]) GetTicks(DateTime dt1, DateTime dt2, int maxTickCount, CultureInfo culture)
         {
             if (!(dt1 < dt2))
                 dt2 = dt1.AddSeconds(1);
@@ -52,7 +52,11 @@ namespace ScottPlot.Config
 
                 string[] labels = new string[ticks.Length];
                 for (int i = 0; i < labels.Length; i++)
-                    labels[i] = ticks[i].Year.ToString();
+                {
+                    var dt = new DateTime(ticks[i].Year, 1, 1);
+                    string localizedLabel = dt.ToString("yyyy", culture); // year only
+                    labels[i] = localizedLabel;
+                }
 
                 return (ticks, labels);
             }
@@ -68,7 +72,11 @@ namespace ScottPlot.Config
 
                 string[] labels = new string[ticks.Length];
                 for (int i = 0; i < labels.Length; i++)
-                    labels[i] = ticks[i].ToString("MMM yyyy");
+                {
+                    var dt = new DateTime(ticks[i].Year, ticks[i].Month, 1);
+                    string localizedLabel = dt.ToString("Y", culture); // year and month pattern
+                    labels[i] = localizedLabel.Replace(" ", "\n");
+                }
 
                 return (ticks, labels);
             }
@@ -84,7 +92,11 @@ namespace ScottPlot.Config
 
                 string[] labels = new string[ticks.Length];
                 for (int i = 0; i < labels.Length; i++)
-                    labels[i] = ticks[i].ToString("d");
+                {
+                    var dt = new DateTime(ticks[i].Year, ticks[i].Month, ticks[i].Day);
+                    string localizedLabel = dt.ToString("d", culture); // short date pattern
+                    labels[i] = localizedLabel.Replace("T", "\n");
+                }
 
                 return (ticks, labels);
             }
@@ -103,9 +115,9 @@ namespace ScottPlot.Config
                 string[] labels = new string[ticks.Length];
                 for (int i = 0; i < labels.Length; i++)
                 {
-                    string date = ticks[i].ToString("d");
-                    string time = ticks[i].ToString("t");
-                    labels[i] = $"{date}, {time}";
+                    string date = ticks[i].ToString("d", culture); // short date
+                    string time = ticks[i].ToString("t", culture); // short time
+                    labels[i] = $"{date}\n{time}";
                 }
 
                 return (ticks, labels);
@@ -127,8 +139,8 @@ namespace ScottPlot.Config
                 string[] labels = new string[ticks.Length];
                 for (int i = 0; i < labels.Length; i++)
                 {
-                    string date = ticks[i].ToString("d");
-                    string time = ticks[i].ToString("t");
+                    string date = ticks[i].ToString("d", culture); // short date
+                    string time = ticks[i].ToString("t", culture); // short time
                     labels[i] = $"{date}, {time}";
                 }
 
@@ -151,8 +163,8 @@ namespace ScottPlot.Config
                 string[] labels = new string[ticks.Length];
                 for (int i = 0; i < labels.Length; i++)
                 {
-                    string date = ticks[i].ToString("d");
-                    string time = ticks[i].ToString("T");
+                    string date = ticks[i].ToString("d", culture); // short date
+                    string time = ticks[i].ToString("T", culture); // long time
                     labels[i] = $"{date}, {time}";
                 }
 
