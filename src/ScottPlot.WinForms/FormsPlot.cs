@@ -272,7 +272,7 @@ namespace ScottPlot
                 OnAxisChanged();
             }
 
-            if (plottableBeingDragged != null)
+            if (isMovingDraggable)
             {
                 OnMouseDropPlottable(EventArgs.Empty);
             }
