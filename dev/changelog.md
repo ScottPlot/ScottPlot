@@ -5,6 +5,8 @@
 **DO NOT FORGET TO DO THESE THINGS BEFORE RELEASE**
 
 ### FEATURES TO ADD
+* make it easy to launch a plot as a pop-up window containing an interactive plot (#239)
+* take event handling out of controls and move it into plottables and mousetracker (#238)
 * support rendering with System.Drawing or SkiaSharp
 * support second Y axis (#213)
 * add tests for every plot method (re-open #224)
