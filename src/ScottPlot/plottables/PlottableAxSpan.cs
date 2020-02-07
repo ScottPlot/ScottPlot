@@ -18,8 +18,8 @@ namespace ScottPlot
         public bool horizontal { get { return !vertical; } }
         private string orientation { get { return (vertical) ? "vertical" : "horizontal"; } }
 
-        public event EventHandler<double> Position1Dragged = delegate { };
-        public event EventHandler<double> Position2Dragged = delegate { };
+        public event EventHandler DraggedPosition1 = delegate { };
+        public event EventHandler DraggedPosition2 = delegate { };
 
         public PlottableAxSpan(double position1, double position2, bool vertical, Color color, double alpha, string label,
             bool draggable, double dragLimitLower, double dragLimitUpper)
@@ -140,12 +140,12 @@ namespace ScottPlot
                     if (positionUnderMouse == 1)
                     {
                         position1 = coordinateX;
-                        Position1Dragged(this, position1);
+                        DraggedPosition1(this, EventArgs.Empty);
                     }
                     else if (positionUnderMouse == 2)
-                    { 
+                    {
                         position2 = coordinateX;
-                        Position2Dragged(this, position2);
+                        DraggedPosition2(this, EventArgs.Empty);
                     }
                 }
                 else
@@ -156,12 +156,12 @@ namespace ScottPlot
                     if (positionUnderMouse == 1)
                     {
                         position1 = coordinateY;
-                        Position1Dragged(this, position1);
+                        DraggedPosition1(this, EventArgs.Empty);
                     }
                     else if (positionUnderMouse == 2)
                     {
                         position2 = coordinateY;
-                        Position2Dragged(this, position2);
+                        DraggedPosition2(this, EventArgs.Empty);
                     }
                 }
             }

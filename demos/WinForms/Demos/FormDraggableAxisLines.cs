@@ -38,7 +38,7 @@ namespace ScottPlotDemos
         {
             double position = rand.NextDouble() * 2 - 1;
             var hline = formsPlot1.plt.PlotHLine(position, draggable: true, dragLimitLower: -1, dragLimitUpper: 1);
-            hline.PositionDragged += new EventHandler<double>(OnDrag);
+            hline.Dragged += new EventHandler(OnDrag);
             formsPlot1.Render();
             UpdateMessage();
         }
@@ -47,22 +47,42 @@ namespace ScottPlotDemos
         {
             double position = rand.NextDouble() * 50;
             var vline = formsPlot1.plt.PlotVLine(position, draggable: true, dragLimitLower: 0, dragLimitUpper: 49);
-            vline.PositionDragged += new EventHandler<double>(OnDrag);
+            vline.Dragged += new EventHandler(OnDrag);
             formsPlot1.Render();
             UpdateMessage();
         }
 
-        private void OnDrag(object sender, double newPosition)
+        private void BtnAddHspan_Click(object sender, EventArgs e)
+        {
+            (double y1, double y2) = ScottPlot.DataGen.RandomSpan(rand: null, low: -1, high: 1, minimumSpacing: .25);
+
+            var hspan = formsPlot1.plt.PlotHSpan(y1, y2, draggable: true, dragLimitLower: -1, dragLimitUpper: 1);
+            hspan.DraggedPosition1 += OnDrag; // if you want different behavior for different positions, create different functions
+            hspan.DraggedPosition2 += OnDrag;
+            formsPlot1.Render();
+            UpdateMessage();
+        }
+
+        private void BtnAddVSpan_Click(object sender, EventArgs e)
+        {
+            (double x1, double x2) = ScottPlot.DataGen.RandomSpan(rand: null, low: 0, high: 50, minimumSpacing: 10);
+
+            var vspan = formsPlot1.plt.PlotVSpan(x1, x2, draggable: true, dragLimitLower: 0, dragLimitUpper: 50);
+            vspan.DraggedPosition1 += OnDrag; // if you want different behavior for different positions, create different functions
+            vspan.DraggedPosition2 += OnDrag;
+            formsPlot1.Render();
+            UpdateMessage();
+        }
+
+        private void OnDrag(object sender, EventArgs e)
         {
             if (sender is ScottPlot.PlottableAxLine axLine)
             {
-                string orientation = (axLine.vertical) ? "vertical" : "horizontal";
-                Text = $"Moved {orientation} axis line to new position: {newPosition}";
+                Text = $"Adjusted axis line: {axLine.position}";
             }
             else if (sender is ScottPlot.PlottableAxSpan axSpan)
             {
-                string orientation = (axSpan.vertical) ? "horizontal" : "vertical";
-                Text = $"Moved {orientation} axis span edge to new position: {newPosition}";
+                Text = $"Adjusted axis span: {axSpan.position1} to {axSpan.position2}";
             }
         }
 
@@ -112,28 +132,6 @@ namespace ScottPlotDemos
             Console.WriteLine("Dropped a plottable object");
             UpdateMessage();
             richTextBox1.Enabled = true;
-        }
-
-        private void BtnAddHspan_Click(object sender, EventArgs e)
-        {
-            (double y1, double y2) = ScottPlot.DataGen.RandomSpan(rand: null, low: -1, high: 1, minimumSpacing: .25);
-
-            var hspan = formsPlot1.plt.PlotHSpan(y1, y2, draggable: true, dragLimitLower: -1, dragLimitUpper: 1);
-            hspan.Position1Dragged += OnDrag;
-            hspan.Position2Dragged += OnDrag;
-            formsPlot1.Render();
-            UpdateMessage();
-        }
-
-        private void BtnAddVSpan_Click(object sender, EventArgs e)
-        {
-            (double x1, double x2) = ScottPlot.DataGen.RandomSpan(rand: null, low: 0, high: 50, minimumSpacing: 10);
-
-            var vspan = formsPlot1.plt.PlotVSpan(x1, x2, draggable: true, dragLimitLower: 0, dragLimitUpper: 50);
-            vspan.Position1Dragged += OnDrag;
-            vspan.Position2Dragged += OnDrag;
-            formsPlot1.Render();
-            UpdateMessage();
         }
 
         private void BtnClearSpans_Click(object sender, EventArgs e)

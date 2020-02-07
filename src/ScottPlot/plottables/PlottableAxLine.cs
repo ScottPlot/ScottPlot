@@ -17,7 +17,7 @@ namespace ScottPlot
         public bool horizontal { get { return !vertical; } }
         private string orientation { get { return (vertical) ? "vertical" : "horizontal"; } }
 
-        public event EventHandler<double> PositionDragged = delegate { };
+        public event EventHandler Dragged = delegate { };
 
         public PlottableAxLine(double position, bool vertical, Color color, double lineWidth, string label,
             bool draggable, double dragLimitLower, double dragLimitUpper, LineStyle lineStyle)
@@ -119,14 +119,14 @@ namespace ScottPlot
                     if (coordinateX < dragLimitX1) coordinateX = dragLimitX1;
                     if (coordinateX > dragLimitX2) coordinateX = dragLimitX2;
                     position = coordinateX;
-                    PositionDragged(this, position);
+                    Dragged(this, EventArgs.Empty);
                 }
                 else
                 {
                     if (coordinateY < dragLimitY1) coordinateY = dragLimitY1;
                     if (coordinateY > dragLimitY2) coordinateY = dragLimitY2;
                     position = coordinateY;
-                    PositionDragged(this, position);
+                    Dragged(this, EventArgs.Empty);
                 }
             }
         }
