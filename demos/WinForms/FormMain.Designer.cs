@@ -60,6 +60,7 @@
             this.btnFinancial = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.btnIncoming = new System.Windows.Forms.Button();
             this.btnGrowingRoll = new System.Windows.Forms.Button();
             this.btnGrowingCircular = new System.Windows.Forms.Button();
             this.btnGrowingArray = new System.Windows.Forms.Button();
@@ -79,7 +80,7 @@
             this.lblGitHubUrl = new System.Windows.Forms.Label();
             this.lblVersion = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.btnIncoming = new System.Windows.Forms.Button();
+            this.btnDataViewer = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage3.SuspendLayout();
@@ -443,6 +444,16 @@
             this.tabPage2.Text = "Live Data";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // btnIncoming
+            // 
+            this.btnIncoming.Location = new System.Drawing.Point(6, 141);
+            this.btnIncoming.Name = "btnIncoming";
+            this.btnIncoming.Size = new System.Drawing.Size(137, 23);
+            this.btnIncoming.TabIndex = 13;
+            this.btnIncoming.Text = "Incoming Data";
+            this.btnIncoming.UseVisualStyleBackColor = true;
+            this.btnIncoming.Click += new System.EventHandler(this.btnIncoming_Click);
+            // 
             // btnGrowingRoll
             // 
             this.btnGrowingRoll.Location = new System.Drawing.Point(6, 112);
@@ -494,6 +505,7 @@
             // 
             // tabPage4
             // 
+            this.tabPage4.Controls.Add(this.btnDataViewer);
             this.tabPage4.Controls.Add(this.groupBox5);
             this.tabPage4.Controls.Add(this.groupBox4);
             this.tabPage4.Controls.Add(this.label7);
@@ -650,15 +662,15 @@
             this.label3.Text = "ScottPlot";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // btnIncoming
+            // btnDataViewer
             // 
-            this.btnIncoming.Location = new System.Drawing.Point(6, 141);
-            this.btnIncoming.Name = "btnIncoming";
-            this.btnIncoming.Size = new System.Drawing.Size(137, 23);
-            this.btnIncoming.TabIndex = 13;
-            this.btnIncoming.Text = "Incoming Data";
-            this.btnIncoming.UseVisualStyleBackColor = true;
-            this.btnIncoming.Click += new System.EventHandler(this.btnIncoming_Click);
+            this.btnDataViewer.Location = new System.Drawing.Point(259, 44);
+            this.btnDataViewer.Name = "btnDataViewer";
+            this.btnDataViewer.Size = new System.Drawing.Size(88, 23);
+            this.btnDataViewer.TabIndex = 20;
+            this.btnDataViewer.Text = "Data Viewer";
+            this.btnDataViewer.UseVisualStyleBackColor = true;
+            this.btnDataViewer.Click += new System.EventHandler(this.btnDataViewer_Click);
             // 
             // FormMain
             // 
@@ -744,6 +756,7 @@
         private System.Windows.Forms.Button SignalDistribution;
         private System.Windows.Forms.Button btnRegression;
         private System.Windows.Forms.Button btnIncoming;
+        private System.Windows.Forms.Button btnDataViewer;
     }
 }
 

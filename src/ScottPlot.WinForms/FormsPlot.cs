@@ -10,7 +10,7 @@ namespace ScottPlot
 
     public partial class FormsPlot : UserControl
     {
-        public readonly Plot plt;
+        public Plot plt { get; private set; }
         private readonly Settings settings;
         private readonly bool isDesignerMode;
         public Cursor cursor = Cursors.Arrow;
@@ -43,6 +43,13 @@ namespace ScottPlot
 
             PbPlot_MouseUp(null, null);
             PbPlot_SizeChanged(null, null);
+        }
+
+        public void ReplacePlot(Plot newPlot)
+        {
+            plt = newPlot;
+            plt.Resize(pbPlot.Width, pbPlot.Height);
+            Render();
         }
 
         private bool currentlyRendering;

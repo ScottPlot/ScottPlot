@@ -24,7 +24,7 @@ namespace ScottPlotDemos
 
             if (Debugger.IsAttached)
             {
-                btnPlotTypes_Click(null, null);
+                //btnPlotTypes_Click(null, null);
                 //btnDraggableAxisLines_Click(null, null);
                 //btnSignal_Click(null, null);
                 //btnTimeAxis_Click(null, null);
@@ -224,6 +224,25 @@ namespace ScottPlotDemos
         {
             using (var frm = new FormIncomingData())
                 frm.ShowDialog();
+        }
+
+        private void btnDataViewer_Click(object sender, EventArgs e)
+        {
+            int pointCount = 50;
+            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
+
+            var plt = new ScottPlot.Plot();
+            plt.PlotScatter(dataXs, dataSin);
+            plt.PlotScatter(dataXs, dataCos);
+            plt.Title("ScottPlot Quickstart");
+            plt.XLabel("Time (seconds)");
+            plt.YLabel("Potential (V)");
+            plt.Style(ScottPlot.Style.Control);
+
+            using (var viewer = new ScottPlot.FormsPlotViewer(plt))
+                viewer.ShowDialog();
         }
     }
 }
