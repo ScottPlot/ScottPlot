@@ -37,7 +37,8 @@ namespace ScottPlotDemos
         private void BtnAddHline_Click(object sender, EventArgs e)
         {
             double position = rand.NextDouble() * 2 - 1;
-            formsPlot1.plt.PlotHLine(position, draggable: true, dragLimitLower: -1, dragLimitUpper: 1);
+            var hline = formsPlot1.plt.PlotHLine(position, draggable: true, dragLimitLower: -1, dragLimitUpper: 1);
+            hline.PositionDragged += new EventHandler<double>(OnDrag);
             formsPlot1.Render();
             UpdateMessage();
         }
@@ -45,9 +46,24 @@ namespace ScottPlotDemos
         private void BtnAddVline_Click(object sender, EventArgs e)
         {
             double position = rand.NextDouble() * 50;
-            formsPlot1.plt.PlotVLine(position, draggable: true, dragLimitLower: 0, dragLimitUpper: 49);
+            var vline = formsPlot1.plt.PlotVLine(position, draggable: true, dragLimitLower: 0, dragLimitUpper: 49);
+            vline.PositionDragged += new EventHandler<double>(OnDrag);
             formsPlot1.Render();
             UpdateMessage();
+        }
+
+        private void OnDrag(object sender, double newPosition)
+        {
+            if (sender is ScottPlot.PlottableAxLine axLine)
+            {
+                string orientation = (axLine.vertical) ? "vertical" : "horizontal";
+                Text = $"Moved {orientation} axis line to new position: {newPosition}";
+            }
+            else if (sender is ScottPlot.PlottableAxSpan axSpan)
+            {
+                string orientation = (axSpan.vertical) ? "horizontal" : "vertical";
+                Text = $"Moved {orientation} axis span edge to new position: {newPosition}";
+            }
         }
 
         private void BtnClearLines_Click(object sender, EventArgs e)
@@ -102,7 +118,9 @@ namespace ScottPlotDemos
         {
             (double y1, double y2) = ScottPlot.DataGen.RandomSpan(rand: null, low: -1, high: 1, minimumSpacing: .25);
 
-            formsPlot1.plt.PlotHSpan(y1, y2, draggable: true, dragLimitLower: -1, dragLimitUpper: 1);
+            var hspan = formsPlot1.plt.PlotHSpan(y1, y2, draggable: true, dragLimitLower: -1, dragLimitUpper: 1);
+            hspan.Position1Dragged += OnDrag;
+            hspan.Position2Dragged += OnDrag;
             formsPlot1.Render();
             UpdateMessage();
         }
@@ -111,7 +129,9 @@ namespace ScottPlotDemos
         {
             (double x1, double x2) = ScottPlot.DataGen.RandomSpan(rand: null, low: 0, high: 50, minimumSpacing: 10);
 
-            formsPlot1.plt.PlotVSpan(x1, x2, draggable: true, dragLimitLower: 0, dragLimitUpper: 50);
+            var vspan = formsPlot1.plt.PlotVSpan(x1, x2, draggable: true, dragLimitLower: 0, dragLimitUpper: 50);
+            vspan.Position1Dragged += OnDrag;
+            vspan.Position2Dragged += OnDrag;
             formsPlot1.Render();
             UpdateMessage();
         }
