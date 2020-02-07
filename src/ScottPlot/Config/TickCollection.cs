@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -89,7 +90,7 @@ namespace ScottPlot.Config
             {
                 low = Math.Max(low, DateTime.MinValue.ToOADate());
                 high = Math.Min(high, DateTime.MaxValue.ToOADate());
-                var dateTicks = DateTimeTicks.GetTicks(DateTime.FromOADate(low), DateTime.FromOADate(high), tickCount);
+                var dateTicks = DateTimeTicks.GetTicks(DateTime.FromOADate(low), DateTime.FromOADate(high), tickCount, settings.culture);
                 tickPositionsMajor = Tools.DateTimesToDoubles(dateTicks.Item1);
                 tickLabels = dateTicks.Item2;
                 for (int i = 0; i < tickLabels.Length; i++)
@@ -149,7 +150,7 @@ namespace ScottPlot.Config
 
             if (dateFormat)
             {
-                tickLabels = GetDateLabels(tickPositionsMajor);
+                tickLabels = GetDateLabels(tickPositionsMajor, settings.culture);
                 tickPositionsMinor = null;
             }
             else
@@ -159,7 +160,8 @@ namespace ScottPlot.Config
                         settings.ticks.useMultiplierNotation,
                         settings.ticks.useOffsetNotation,
                         settings.ticks.useExponentialNotation,
-                        invertSign: invertSign
+                        invertSign: invertSign,
+                        culture: settings.culture
                     );
                 tickPositionsMinor = MinorFromMajor(tickPositionsMajor, 5, low, high);
             }
@@ -170,7 +172,8 @@ namespace ScottPlot.Config
 
         public override string ToString()
         {
-            return $"Tick Collection: [{string.Join(", ", tickLabels)}] {cornerLabel}";
+            string allTickLabels = string.Join(", ", tickLabels);
+            return $"Tick Collection: [{allTickLabels}] {cornerLabel}";
         }
 
         private static double GetIdealTickSpacing(double low, double high, int maxTickCount)
@@ -195,12 +198,23 @@ namespace ScottPlot.Config
             return tickSpacings[tickSpacings.Count - 3];
         }
 
+        private string FormatLocal(double value, CultureInfo culture, int maximumDecimalPlaces = 5)
+        {
+            value = Math.Round(value, maximumDecimalPlaces);
+            bool isRoundNumber = ((int)value == value);
+            bool isLargeNumber = (value > 1000);
+            string stringFormat = (isRoundNumber || isLargeNumber) ? "N0" : "G";
+            string label = value.ToString(stringFormat, culture);
+            return label;
+        }
+
         public (string[], string) GetPrettyTickLabels(
                 double[] positions,
                 bool useMultiplierNotation,
                 bool useOffsetNotation,
                 bool useExponentialNotation,
-                bool invertSign
+                bool invertSign,
+                CultureInfo culture
             )
         {
             // given positions returns nicely-formatted labels (with offset and multiplier)
@@ -235,7 +249,7 @@ namespace ScottPlot.Config
                 double adjustedPosition = (positions[i] - offset) / multiplier;
                 if (invertSign)
                     adjustedPosition *= -1;
-                labels[i] = Math.Round(adjustedPosition, 5).ToString();
+                labels[i] = FormatLocal(adjustedPosition, culture);
                 if (labels[i] == "-0")
                     labels[i] = "0";
             }
@@ -250,9 +264,9 @@ namespace ScottPlot.Config
             else
             {
                 if (multiplier != 1)
-                    cornerLabel += multiplier.ToString("F99").TrimEnd('0');
+                    cornerLabel += FormatLocal(multiplier, culture);
                 if (offset != 0)
-                    cornerLabel += " +" + offset.ToString("F99").TrimEnd('0');
+                    cornerLabel += " +" + FormatLocal(offset, culture);
                 cornerLabel = cornerLabel.Replace("+-", "-");
             }
 
@@ -277,7 +291,7 @@ namespace ScottPlot.Config
             return minorTicks.ToArray();
         }
 
-        public static string[] GetDateLabels(double[] ticksOADate)
+        public static string[] GetDateLabels(double[] ticksOADate, CultureInfo culture)
         {
 
             TimeSpan dtTickSep;
@@ -285,6 +299,7 @@ namespace ScottPlot.Config
 
             try
             {
+                // TODO: replace this with culture-aware format
                 dtTickSep = DateTime.FromOADate(ticksOADate[1]) - DateTime.FromOADate(ticksOADate[0]);
                 if (dtTickSep.TotalDays > 365 * 5)
                     dtFmt = "{0:yyyy}";
@@ -304,11 +319,10 @@ namespace ScottPlot.Config
             string[] labels = new string[ticksOADate.Length];
             for (int i = 0; i < ticksOADate.Length; i++)
             {
-                DateTime dt;
                 try
                 {
-                    dt = DateTime.FromOADate(ticksOADate[i]);
-                    string lbl = string.Format(dtFmt, dt);
+                    DateTime dt = DateTime.FromOADate(ticksOADate[i]);
+                    string lbl = string.Format(culture, dtFmt, dt);
                     labels[i] = lbl;
                 }
                 catch

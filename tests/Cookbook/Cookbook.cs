@@ -1750,5 +1750,60 @@ namespace ScottPlotTests.Cookbook
             if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
             Console.WriteLine($"Saved: {fileName}");
         }
+
+        [Test]
+        public void Figure_79_Localized_Culture_Number_Formatting()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
+
+            var plt = new ScottPlot.Plot(width, height);
+
+            // plot data with a big X range and small Y range
+            double bigNumber = 1234567;
+            double smallNumber = 0.012345;
+            plt.PlotPoint(0, 0, markerSize: 20);
+            plt.PlotPoint(bigNumber, smallNumber, markerSize: 20);
+            plt.YLabel("Small Numbers");
+            plt.XLabel("Large Numbers");
+            plt.Title("German Formatted Numerical Tick Labels");
+            plt.Ticks(useMultiplierNotation: false);
+
+            // set the localization
+            var culture = System.Globalization.CultureInfo.CreateSpecificCulture("de"); // German
+            plt.SetCulture(culture);
+
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
+        }
+
+        [Test]
+        public void Figure_79b_Localized_Culture_Date_Formatting()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
+
+            // generate some data
+            Random rand = new Random(0);
+            double[] price = ScottPlot.DataGen.RandomWalk(rand, 60 * 8, 10000);
+            DateTime start = new DateTime(2019, 08, 25, 8, 30, 00);
+            double pointsPerDay = 24 * 60;
+
+            // create the plot
+            var plt = new ScottPlot.Plot(width, height);
+            plt.PlotSignal(price, sampleRate: pointsPerDay, xOffset: start.ToOADate());
+            plt.Ticks(dateTimeX: true);
+            plt.YLabel("Price");
+            plt.XLabel("Date and Time");
+            plt.Title("Hungarian Formatted DateTime Tick Labels");
+            plt.Ticks(useMultiplierNotation: false);
+
+            // set the localization
+            var culture = System.Globalization.CultureInfo.CreateSpecificCulture("hu"); // Hungarian
+            plt.SetCulture(culture);
+
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
+        }
     }
 }

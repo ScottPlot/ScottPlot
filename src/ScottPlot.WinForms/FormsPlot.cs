@@ -152,8 +152,11 @@ namespace ScottPlot
             }
         }
 
+        public PointF mouseCoordinates { get { return plt.CoordinateFromPixel(mouseLocation); } }
+        Point mouseLocation;
         private void PbPlot_MouseMove(object sender, MouseEventArgs e)
         {
+            mouseLocation = e.Location;
             OnMouseMoved(EventArgs.Empty);
 
             if (isPanningOrZooming)

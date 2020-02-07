@@ -1,5 +1,5 @@
 <html><body style='background-color: #EEE; margin: 30px;'><h1>ScottPlot Cookbook</h1><br><br>The ScottPlot cookbook is a collection of small code examples which demonstrate how to create various types of plots using ScottPlot.
-<br><br><i>This cookbook was automatically generated using ScottPlot 4.0.9.0</i>
+<br><br><i>This cookbook was automatically generated using ScottPlot 4.0.17.0</i>
 <h2><br>Quickstart</h2>
 <img src='images/01a_Quickstart.png'>
 <pre style='font-family: monospace; background-color: #DDD; padding: 10px;'>
@@ -119,10 +119,13 @@ int pointCount = 50;
 double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
 double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
 double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
+double[] dataCos2 = ScottPlot.DataGen.Cos(pointCount, mult: -1);
 
 var plt = new ScottPlot.Plot(width, height);
 plt.PlotScatter(dataXs, dataSin, color: Color.Magenta, lineWidth: 0, markerSize: 10, label: "sin");
 plt.PlotScatter(dataXs, dataCos, color: Color.Green, lineWidth: 5, markerSize: 0, label: "cos");
+plt.PlotScatter(dataXs, dataCos2, color: Color.Blue, label: "-cos",
+    lineStyle: ScottPlot.LineStyle.DashDot, lineWidth: 3, markerSize: 0);
 
 plt.Legend(fixedLineWidth: false);
 
@@ -370,6 +373,17 @@ plt.Ticks(rulerModeX: true, rulerModeY: true); // enable ruler mode like this
 plt.AxisAuto(0, 0);
 
 plt.Save(600, 400, "13_Ruler_Mode.png");
+</pre>
+<h2><br>Hide Tick Labels</h2>
+<img src='images/14b_Hide_Tick_Labels.png'>
+<pre style='font-family: monospace; background-color: #DDD; padding: 10px;'>
+var plt = new ScottPlot.Plot(width, height);
+plt.Title("Hide Tick Labels (but not ticks)");
+
+plt.PlotSignal(ScottPlot.DataGen.Sin(50));
+plt.Ticks(displayTickLabelsX: false);
+
+plt.Save(600, 400, "14b_Hide_Tick_Labels.png");
 </pre>
 <h2><br>Custom Tick Labels</h2>
 <img src='images/14_Custom_Tick_Labels.png'>
@@ -672,7 +686,7 @@ var plt = new ScottPlot.Plot(width, height);
 plt.PlotScatter(dataXs, dataSin);
 plt.PlotScatter(dataXs, dataCos);
 plt.PlotVLine(17);
-plt.PlotHLine(-.25, color: Color.Red, lineWidth: 3);
+plt.PlotHLine(-.25, color: Color.Red, lineWidth: 3, lineStyle: ScottPlot.LineStyle.Dash);
 plt.Save(600, 400, "40_Vertical_and_Horizontal_Lines.png");
 </pre>
 <h2><br>Axis Spans</h2>
@@ -1094,8 +1108,8 @@ double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
 double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
 
 var plt = new ScottPlot.Plot(width, height);
-plt.PlotScatter(dataXs, dataSin);
-plt.GetPlottables()[0].SaveCSV("scatter.csv");
+var scatter = plt.PlotScatter(dataXs, dataSin);
+scatter.SaveCSV("scatter.csv");
 plt.Save(600, 400, "70_Save_Scatter_Data.png");
 </pre>
 <h2><br>Save Signal Data</h2>
@@ -1105,8 +1119,8 @@ int pointCount = 50;
 double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
 var plt = new ScottPlot.Plot(width, height);
-plt.PlotSignal(dataCos, sampleRate: 20_000);
-plt.GetPlottables()[0].SaveCSV("signal.csv");
+var signal = plt.PlotSignal(dataCos, sampleRate: 20_000);
+signal.SaveCSV("signal.csv");
 plt.Save(600, 400, "71_Save_Signal_Data.png");
 </pre>
 <h2><br>Custom Fonts</h2>
@@ -1293,6 +1307,51 @@ subplot2.YLabel("Vertical Units (10^)");
 subplot2.XLabel("Horizontal Units");
 
 plt.Save(600, 400, "78_Log_Axis.png");
+</pre>
+<h2><br>Localized Culture Date Formatting</h2>
+<img src='images/79b_Localized_Culture_Date_Formatting.png'>
+<pre style='font-family: monospace; background-color: #DDD; padding: 10px;'>
+// generate some data
+Random rand = new Random(0);
+double[] price = ScottPlot.DataGen.RandomWalk(rand, 60 * 8, 10000);
+DateTime start = new DateTime(2019, 08, 25, 8, 30, 00);
+double pointsPerDay = 24 * 60;
+
+// create the plot
+var plt = new ScottPlot.Plot(width, height);
+plt.PlotSignal(price, sampleRate: pointsPerDay, xOffset: start.ToOADate());
+plt.Ticks(dateTimeX: true);
+plt.YLabel("Price");
+plt.XLabel("Date and Time");
+plt.Title("Hungarian Formatted DateTime Tick Labels");
+plt.Ticks(useMultiplierNotation: false);
+
+// set the localization
+var culture = System.Globalization.CultureInfo.CreateSpecificCulture("hu"); // Hungarian
+plt.SetCulture(culture);
+
+plt.Save(600, 400, "79b_Localized_Culture_Date_Formatting.png");
+</pre>
+<h2><br>Localized Culture Number Formatting</h2>
+<img src='images/79_Localized_Culture_Number_Formatting.png'>
+<pre style='font-family: monospace; background-color: #DDD; padding: 10px;'>
+var plt = new ScottPlot.Plot(width, height);
+
+// plot data with a big X range and small Y range
+double bigNumber = 1234567;
+double smallNumber = 0.012345;
+plt.PlotPoint(0, 0, markerSize: 20);
+plt.PlotPoint(bigNumber, smallNumber, markerSize: 20);
+plt.YLabel("Small Numbers");
+plt.XLabel("Large Numbers");
+plt.Title("German Formatted Numerical Tick Labels");
+plt.Ticks(useMultiplierNotation: false);
+
+// set the localization
+var culture = System.Globalization.CultureInfo.CreateSpecificCulture("de"); // German
+plt.SetCulture(culture);
+
+plt.Save(600, 400, "79_Localized_Culture_Number_Formatting.png");
 </pre>
 </body>
 </html>

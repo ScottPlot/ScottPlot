@@ -1246,6 +1246,11 @@ namespace ScottPlot
             //plottable.useParallel = useParallel;
         }
 
+        public void SetCulture(System.Globalization.CultureInfo culture)
+        {
+            settings.culture = culture;
+        }
+
         #endregion
 
     }

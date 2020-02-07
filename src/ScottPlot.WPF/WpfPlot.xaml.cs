@@ -195,8 +195,18 @@ namespace ScottPlot
             }
         }
 
+        public Point mouseCoordinates
+        {
+            get
+            {
+                var coord = plt.CoordinateFromPixel(mouseLocation.X, mouseLocation.Y);
+                return new Point(coord.X, coord.Y);
+            }
+        }
+        Point mouseLocation;
         private void UserControl_MouseMove(object sender, MouseEventArgs e)
         {
+            mouseLocation = GetPixelPosition(e);
             if (isPanningOrZooming)
                 MouseMovedToPanOrZoom(e);
             else if (isMovingDraggable)

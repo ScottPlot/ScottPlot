@@ -1,6 +1,6 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.1.0
+## ScottPlot 4.1.0 (PLANNED)
 
 **DO NOT FORGET TO DO THESE THINGS BEFORE RELEASE**
 
@@ -26,6 +26,16 @@
 * fixed rendering bug affecting horizontal axis lines (#232) _Thanks @StendProg_
 * anti-aliasing is now disabled while dragging to improve performance (#228) _Thanks @StendProg_
 * While the public `Plot` methods remain unchanged, the internal plottables handling axis lines and axis spans have been separated. (#231, #233, #234) _Thanks @StendProg_
+
+---
+
+## ScottPlot 4.0.18
+* Improved local culture formatting of numerical and DateTime axis tick labels (#236) _Thanks @teejay-87_
+
+## ScottPlot 4.0.17
+* Added `mouseCoordinates` property to WinForms and WPF controls (#235) _Thanks @bukkideme_
+* Fixed rendering bug that affected horizontal lines when anti-aliasing was turned off (#232) _Thanks @StendProg_
+* Improved responsiveness while dragging axis lines and axis spans (#228) _Thanks @StendProg_
 
 ## ScottPlot 4.0.16
 * Improved support for MacOS and Linux (#211, #212, #216) _Thanks @Hexxonite and @StendProg_
