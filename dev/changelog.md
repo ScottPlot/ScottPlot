@@ -5,7 +5,7 @@
 **DO NOT FORGET TO DO THESE THINGS BEFORE RELEASE**
 
 ### FEATURES TO ADD
-* refactor the cookbook and allow its examples to be run in a demo program interactively (#239)
+* refactor the cookbook and allow its examples to be run in a demo program interactively (see how @StendProg did this in [#239](https://github.com/swharden/ScottPlot/issues/239))
 * make it easy to launch a plot as a pop-up window containing an interactive plot (#237)
 * take event handling out of controls and move it into plottables and mousetracker (#238)
 * support rendering with System.Drawing or SkiaSharp
