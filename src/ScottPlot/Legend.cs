@@ -34,19 +34,14 @@ namespace ScottPlot
 
         public static Rectangle GetLegendFrame(Settings settings, Graphics gfxLegend)
         {
-            // note which plottables are to be included in the legend
-            List<int> plottableIndexesNeedingLegend = new List<int>();
-            for (int i = 0; i < settings.plottables.Count(); i++)
-                if (settings.plottables[i].label != null && settings.plottables[i].visible)
-                    plottableIndexesNeedingLegend.Add(i);
-            plottableIndexesNeedingLegend.Reverse();
+            int plottableInLegendCount = settings.plottables.Where(p => p.label != null && p.visible).Count();
 
             // figure out where on the graph things should be
             int padding = 3;
             int stubWidth = 40 * (int)settings.legend.font.Size / 12;
             SizeF maxLabelSize = MaxLegendLabelSize(settings);
             float frameWidth = padding * 2 + maxLabelSize.Width + padding + stubWidth;
-            float frameHeight = padding * 2 + maxLabelSize.Height * plottableIndexesNeedingLegend.Count();
+            float frameHeight = padding * 2 + maxLabelSize.Height * plottableInLegendCount;
             Size frameSize = new Size((int)frameWidth, (int)frameHeight);
             Point[] frameAndTextLocations = GetLocations(settings, padding * 2, frameSize, maxLabelSize.Width);
             Point frameLocation = frameAndTextLocations[0];
