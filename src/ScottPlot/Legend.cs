@@ -31,66 +31,49 @@ namespace ScottPlot
 
     public class LegendTools
     {
+        private const int padding = 3;
+        private const int ShadowWidth = 2;
+        private const int ShadowHeight = 2;
 
-        public static Rectangle GetLegendFrame(Settings settings, Graphics gfxLegend)
+        private static IEnumerable<Plottable> GetPlottableInLegend(Settings settings)
         {
-            int plottableInLegendCount = settings.plottables.Where(p => p.label != null && p.visible).Count();
+            return settings.plottables.Where(p => p.visible && p.label != null);
+        }
 
-            // figure out where on the graph things should be
-            int padding = 3;
-            int stubWidth = 40 * (int)settings.legend.font.Size / 12;
-            SizeF maxLabelSize = MaxLegendLabelSize(settings);
-            float frameWidth = padding * 2 + maxLabelSize.Width + padding + stubWidth;
-            float frameHeight = padding * 2 + maxLabelSize.Height * plottableInLegendCount;
-            Size frameSize = new Size((int)frameWidth, (int)frameHeight);
-            Point[] frameAndTextLocations = GetLocations(settings, padding * 2, frameSize, maxLabelSize.Width);
-            Point frameLocation = frameAndTextLocations[0];
-            Point shadowLocation = frameAndTextLocations[2];
-            Point fullFrameLocation = new Point(Math.Min(frameLocation.X, shadowLocation.X), Math.Min(frameLocation.Y, shadowLocation.Y));
-            return new Rectangle(fullFrameLocation,
-                                new Size(frameSize.Width + Math.Abs(frameLocation.X - shadowLocation.X) + 1,
-                                frameSize.Height + Math.Abs(frameLocation.Y - shadowLocation.Y) + 1));
+        public static Rectangle GetLegendFrame(Settings settings)
+        {
+            Size FrameSize = GetFrameSize(settings);
+
+            Point FullFrameLocation = GetFullFrameLocation(settings, FrameSize);
+            Size FullFrameSize = GetFullFrameSize(FrameSize, settings.legend.shadow);
+            return new Rectangle(FullFrameLocation, Size.Add(FullFrameSize, new Size(1, 1)));
         }
 
         public static void DrawLegend(Settings settings)
         {
-            var plottableInLegend = settings.plottables.Where(p => p.visible && p.label != null);
-
-            // figure out where on the graph things should be
-            int padding = 3;
-            int stubWidth = 40 * (int)settings.legend.font.Size / 12;
             SizeF maxLabelSize = MaxLegendLabelSize(settings);
-            float frameWidth = padding * 2 + maxLabelSize.Width + padding + stubWidth;
-            float frameHeight = padding * 2 + maxLabelSize.Height * plottableInLegend.Count();
-            Size frameSize = new Size((int)frameWidth, (int)frameHeight);
-            Point[] frameAndTextLocations = GetLocations(settings, padding * 2, frameSize, maxLabelSize.Width);
-            Point frameLocation = frameAndTextLocations[0];
-            Point textLocation = frameAndTextLocations[1];
-            Point shadowLocation = frameAndTextLocations[2];
+            int stubWidth = 40 * (int)settings.legend.font.Size / 12;
 
-            // move legend to 0, 0 position
-            Point frameZeroOffset = new Point(frameLocation.X > shadowLocation.X ? frameLocation.X - shadowLocation.X : 0,
-                                              frameLocation.Y > shadowLocation.Y ? frameLocation.Y - shadowLocation.Y : 0);
+            Size FrameSize = GetFrameSize(settings);
+            Point FrameOffset = GetFrameOffset(settings.legend.shadow);
+            Rectangle FrameRect = new Rectangle(FrameOffset, FrameSize);
 
-            Point shadowZeroOffset = new Point(shadowLocation.X > frameLocation.X ? shadowLocation.X - frameLocation.X : 0,
-                                               shadowLocation.Y > frameLocation.Y ? shadowLocation.Y - frameLocation.Y : 0);
-            textLocation.X -= frameLocation.X - frameZeroOffset.X;
-            textLocation.Y -= frameLocation.Y - frameZeroOffset.Y;
-            Rectangle frameRect = new Rectangle(frameZeroOffset, frameSize);
-            Rectangle shadowRect = new Rectangle(shadowZeroOffset, frameSize);
+            Point shadowOffset = GetShadowOffset(settings.legend.shadow);
+            Rectangle shadowRect = new Rectangle(shadowOffset, FrameSize);
 
             settings.gfxLegend.Clear(settings.legend.colorBackground);
-            // draw the legend background and shadow
+
             if (settings.legend.shadow != shadowDirection.none)
                 settings.gfxLegend.FillRectangle(new SolidBrush(settings.legend.colorShadow), shadowRect);
-            settings.gfxLegend.FillRectangle(new SolidBrush(settings.legend.colorBackground), frameRect);
-            settings.gfxLegend.DrawRectangle(new Pen(settings.legend.colorFrame), frameRect);
 
-            // draw the lines, markers, and text for each legend item
-            foreach (var p in plottableInLegend.Reverse())
+            settings.gfxLegend.FillRectangle(new SolidBrush(settings.legend.colorBackground), FrameRect);
+            settings.gfxLegend.DrawRectangle(new Pen(settings.legend.colorFrame), FrameRect);
+
+            foreach (var (p, index) in GetPlottableInLegend(settings).Select((x, i) => (x, i)))
             {
-                textLocation.Y -= (int)(maxLabelSize.Height);
-                DrawLegendItemString(p, settings, textLocation, padding, stubWidth, maxLabelSize.Height);
+                Point textLocation = new Point(padding * 2 + stubWidth + FrameOffset.X,
+                    padding + index * (int)(maxLabelSize.Height) + FrameOffset.Y);
+                DrawLegendItemString(p, settings, textLocation, 2, 2, 2.0f);
                 DrawLegendItemLine(p, settings, textLocation, padding, stubWidth, maxLabelSize.Height);
                 DrawLegendItemMarker(p, settings, textLocation, padding, stubWidth, maxLabelSize.Height);
             }
@@ -100,119 +83,16 @@ namespace ScottPlot
         {
             SizeF maxLabelSize = new SizeF();
 
-            foreach (Plottable plottable in settings.plottables)
+            foreach (Plottable plottable in GetPlottableInLegend(settings))
             {
-                if (plottable.label != null && plottable.visible)
-                {
-                    SizeF labelSize = settings.gfxLegend.MeasureString(plottable.label, settings.legend.font);
-                    if (labelSize.Width > maxLabelSize.Width)
-                        maxLabelSize.Width = labelSize.Width;
-                    if (labelSize.Height > maxLabelSize.Height)
-                        maxLabelSize.Height = labelSize.Height;
-                }
+                SizeF labelSize = settings.gfxLegend.MeasureString(plottable.label, settings.legend.font);
+                if (labelSize.Width > maxLabelSize.Width)
+                    maxLabelSize.Width = labelSize.Width;
+                if (labelSize.Height > maxLabelSize.Height)
+                    maxLabelSize.Height = labelSize.Height;
             }
 
             return maxLabelSize;
-        }
-
-        private static Point[] GetLocations(ScottPlot.Settings settings, int padding, Size frameSize, float legendFontMaxWidth)
-        {
-            Point frameLocation = new Point();
-            Point textLocation = new Point();
-            Point shadowLocation = new Point();
-
-            // calculate locations even if it's not going to be displayed
-            legendLocation loc = settings.legend.location;
-            if (loc == legendLocation.none)
-                loc = legendLocation.lowerRight;
-
-            int frameWidth = frameSize.Width;
-            int frameHeight = frameSize.Height;
-            switch (loc)
-            {
-                case (legendLocation.lowerRight):
-                    frameLocation.X = (int)(settings.dataSize.Width - frameWidth - padding);
-                    frameLocation.Y = (int)(settings.dataSize.Height - frameHeight - padding);
-                    textLocation.X = (int)(settings.dataSize.Width - (legendFontMaxWidth + padding));
-                    textLocation.Y = settings.dataSize.Height - padding * 2;
-                    break;
-                case (legendLocation.upperLeft):
-                    frameLocation.X = (int)(padding);
-                    frameLocation.Y = (int)(padding);
-                    textLocation.X = (int)(frameWidth - legendFontMaxWidth + padding);
-                    textLocation.Y = (int)(frameHeight);
-                    break;
-                case (legendLocation.lowerLeft):
-                    frameLocation.X = (int)(padding);
-                    frameLocation.Y = (int)(settings.dataSize.Height - frameHeight - padding);
-                    textLocation.X = (int)(frameWidth - legendFontMaxWidth + padding);
-                    textLocation.Y = settings.dataSize.Height - padding * 2;
-                    break;
-                case (legendLocation.upperRight):
-                    frameLocation.X = (int)(settings.dataSize.Width - frameWidth - padding);
-                    frameLocation.Y = (int)(padding);
-                    textLocation.X = (int)(settings.dataSize.Width - (legendFontMaxWidth + padding));
-                    textLocation.Y = (int)(frameHeight);
-                    break;
-                case (legendLocation.upperCenter):
-                    frameLocation.X = (int)((settings.dataSize.Width) / 2 - frameWidth / 2);
-                    frameLocation.Y = (int)(padding);
-                    textLocation.X = (int)(frameLocation.X + frameWidth - legendFontMaxWidth);
-                    textLocation.Y = (int)(frameHeight);
-                    break;
-                case (legendLocation.lowerCenter):
-                    frameLocation.X = (int)((settings.dataSize.Width) / 2 - frameWidth / 2);
-                    frameLocation.Y = (int)(settings.dataSize.Height - frameHeight - padding);
-                    textLocation.X = (int)(frameLocation.X + frameWidth - legendFontMaxWidth);
-                    textLocation.Y = settings.dataSize.Height - padding * 2;
-                    break;
-                case (legendLocation.middleLeft):
-                    frameLocation.X = (int)(padding);
-                    frameLocation.Y = (int)(settings.dataSize.Height / 2 - frameHeight / 2);
-                    textLocation.X = (int)(frameWidth - legendFontMaxWidth + padding);
-                    textLocation.Y = (int)(frameLocation.Y + frameHeight - padding);
-                    break;
-                case (legendLocation.middleRight):
-                    frameLocation.X = (int)(settings.dataSize.Width - frameWidth - padding);
-                    frameLocation.Y = (int)(settings.dataSize.Height / 2 - frameHeight / 2);
-                    textLocation.X = (int)(settings.dataSize.Width - (legendFontMaxWidth + padding));
-                    textLocation.Y = (int)(frameLocation.Y + frameHeight - padding);
-                    break;
-                default:
-                    throw new NotImplementedException($"legend location {settings.legend.location} is not supported");
-            }
-
-            switch (settings.legend.shadow)
-            {
-                case (shadowDirection.lowerRight):
-                    shadowLocation.X = frameLocation.X + 2;
-                    shadowLocation.Y = frameLocation.Y + 2;
-                    break;
-                case (shadowDirection.lowerLeft):
-                    shadowLocation.X = frameLocation.X - 2;
-                    shadowLocation.Y = frameLocation.Y + 2;
-                    break;
-                case (shadowDirection.upperRight):
-                    shadowLocation.X = frameLocation.X + 2;
-                    shadowLocation.Y = frameLocation.Y - 2;
-                    break;
-                case (shadowDirection.upperLeft):
-                    shadowLocation.X = frameLocation.X - 2;
-                    shadowLocation.Y = frameLocation.Y - 2;
-                    break;
-                case (shadowDirection.none):
-                    shadowLocation.X = frameLocation.X;
-                    shadowLocation.Y = frameLocation.Y;
-                    break;
-                default:
-                    settings.legend.shadow = shadowDirection.none;
-                    shadowLocation.X = frameLocation.X;
-                    shadowLocation.Y = frameLocation.Y;
-                    break;
-            }
-
-            textLocation.Y += padding;
-            return new Point[] { frameLocation, textLocation, shadowLocation };
         }
 
         private static void DrawLegendItemString(Plottable plottable, Settings settings, Point textLocation, int padding, int stubWidth, float legendFontLineHeight)
@@ -386,5 +266,99 @@ namespace ScottPlot
             }
         }
 
+        private static Point GetFrameOffset(shadowDirection shadowDir)
+        {
+            switch (shadowDir)
+            {
+                case shadowDirection.lowerLeft:
+                    return new Point(ShadowWidth, 0);
+                case shadowDirection.lowerRight:
+                    return new Point(0, 0);
+                case shadowDirection.upperLeft:
+                    return new Point(ShadowWidth, ShadowHeight);
+                case shadowDirection.upperRight:
+                    return new Point(0, ShadowHeight);
+                case shadowDirection.none:
+                    return new Point(0, 0);
+                default:
+                    return new Point(0, 0);
+            }
+        }
+
+        private static Size GetFrameSize(Settings settings)
+        {
+            int stubWidth = 40 * (int)settings.legend.font.Size / 12;
+            SizeF maxLabelSize = MaxLegendLabelSize(settings);
+            int Width = padding * 2 + (int)maxLabelSize.Width + padding + stubWidth;
+            int Height = padding * 2 + (int)maxLabelSize.Height * GetPlottableInLegend(settings).Count();
+            return new Size(Width, Height);
+        }
+
+        private static Point GetFullFrameLocation(Settings settings, Size FrameSize)
+        {
+            int LeftX = padding;
+            int CenterX = (settings.dataSize.Width - FrameSize.Width) / 2;
+            int RightX = settings.dataSize.Width - FrameSize.Width - padding;
+
+            int UpperY = padding;
+            int CenterY = (settings.dataSize.Height - FrameSize.Height) / 2;
+            int LowerY = settings.dataSize.Height - FrameSize.Height - padding;
+
+            switch (settings.legend.location)
+            {
+                case legendLocation.upperLeft:
+                    return new Point(LeftX, UpperY);
+                case legendLocation.upperCenter:
+                    return new Point(CenterX, UpperY);
+                case legendLocation.upperRight:
+                    return new Point(RightX, UpperY);
+
+                case legendLocation.middleLeft:
+                    return new Point(LeftX, CenterY);
+                case legendLocation.middleRight:
+                    return new Point(RightX, CenterY);
+
+                case legendLocation.lowerLeft:
+                    return new Point(LeftX, LowerY);
+                case legendLocation.lowerCenter:
+                    return new Point(CenterX, LowerY);
+                case legendLocation.lowerRight:
+                    return new Point(RightX, LowerY);
+
+                case legendLocation.none:
+                    return new Point(LeftX, UpperY);
+
+                default:
+                    throw new NotImplementedException($"legend location {settings.legend.location} is not supported");
+            }
+        }
+
+        private static Size GetFullFrameSize(Size FrameSize, shadowDirection shadowDir)
+        {
+            if (shadowDir == shadowDirection.none)
+                return FrameSize;
+            else
+                return new Size(FrameSize.Width + ShadowWidth, FrameSize.Height + ShadowHeight);
+        }
+
+        // Shadow offset in final FullFrame
+        private static Point GetShadowOffset(shadowDirection shadowDir)
+        {
+            switch (shadowDir)
+            {
+                case shadowDirection.lowerLeft:
+                    return new Point(0, ShadowHeight);
+                case shadowDirection.lowerRight:
+                    return new Point(ShadowWidth, ShadowHeight);
+                case shadowDirection.upperLeft:
+                    return new Point(0, 0);
+                case shadowDirection.upperRight:
+                    return new Point(ShadowWidth, 0);
+                case shadowDirection.none:
+                    return new Point(0, 0);
+                default:
+                    return new Point(0, 0);
+            }
+        }
     }
 }
