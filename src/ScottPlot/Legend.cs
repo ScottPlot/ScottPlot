@@ -102,7 +102,7 @@ namespace ScottPlot
 
             foreach (Plottable plottable in settings.plottables)
             {
-                if (plottable.label != null)
+                if (plottable.label != null && plottable.visible)
                 {
                     SizeF labelSize = settings.gfxLegend.MeasureString(plottable.label, settings.legend.font);
                     if (labelSize.Width > maxLabelSize.Width)
