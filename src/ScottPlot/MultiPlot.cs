@@ -90,8 +90,8 @@ namespace ScottPlot
             if (row > rows)
                 throw new ArgumentException("row must be less than or equal to number of rows");
 
-            if (row > cols)
-                throw new ArgumentException("row must be less than or equal to number of rows");
+            if (column > cols)
+                throw new ArgumentException("column must be less than or equal to number of columns");
 
             int rowIndex = row - 1;
             int colIndex = column - 1;
