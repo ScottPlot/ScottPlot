@@ -54,19 +54,14 @@ namespace ScottPlot
 
         public static void DrawLegend(Settings settings)
         {
-            // note which plottables are to be included in the legend
-            List<int> plottableIndexesNeedingLegend = new List<int>();
-            for (int i = 0; i < settings.plottables.Count(); i++)
-                if (settings.plottables[i].label != null && settings.plottables[i].visible)
-                    plottableIndexesNeedingLegend.Add(i);
-            plottableIndexesNeedingLegend.Reverse();
+            var plottableInLegend = settings.plottables.Where(p => p.visible && p.label != null);
 
             // figure out where on the graph things should be
             int padding = 3;
             int stubWidth = 40 * (int)settings.legend.font.Size / 12;
             SizeF maxLabelSize = MaxLegendLabelSize(settings);
             float frameWidth = padding * 2 + maxLabelSize.Width + padding + stubWidth;
-            float frameHeight = padding * 2 + maxLabelSize.Height * plottableIndexesNeedingLegend.Count();
+            float frameHeight = padding * 2 + maxLabelSize.Height * plottableInLegend.Count();
             Size frameSize = new Size((int)frameWidth, (int)frameHeight);
             Point[] frameAndTextLocations = GetLocations(settings, padding * 2, frameSize, maxLabelSize.Width);
             Point frameLocation = frameAndTextLocations[0];
@@ -92,12 +87,12 @@ namespace ScottPlot
             settings.gfxLegend.DrawRectangle(new Pen(settings.legend.colorFrame), frameRect);
 
             // draw the lines, markers, and text for each legend item
-            foreach (int i in plottableIndexesNeedingLegend)
+            foreach (var p in plottableInLegend.Reverse())
             {
                 textLocation.Y -= (int)(maxLabelSize.Height);
-                DrawLegendItemString(settings.plottables[i], settings, textLocation, padding, stubWidth, maxLabelSize.Height);
-                DrawLegendItemLine(settings.plottables[i], settings, textLocation, padding, stubWidth, maxLabelSize.Height);
-                DrawLegendItemMarker(settings.plottables[i], settings, textLocation, padding, stubWidth, maxLabelSize.Height);
+                DrawLegendItemString(p, settings, textLocation, padding, stubWidth, maxLabelSize.Height);
+                DrawLegendItemLine(p, settings, textLocation, padding, stubWidth, maxLabelSize.Height);
+                DrawLegendItemMarker(p, settings, textLocation, padding, stubWidth, maxLabelSize.Height);
             }
         }
 
