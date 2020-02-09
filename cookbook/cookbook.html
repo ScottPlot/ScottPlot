@@ -1150,23 +1150,25 @@ plt.SaveFig(600, 400, "72_Custom_Fonts.png");
 <img src='images/73_Multiplot.png'>
 <pre style='font-family: monospace; background-color: #DDD; padding: 10px;'>
 Random rand = new Random(09241985);
-var plt = new ScottPlot.MultiPlot(width: 800, height: 600, rows: 2, cols: 2);
+var mp = new ScottPlot.MultiPlot(width: 800, height: 600, rows: 2, cols: 2);
 
-plt.subplots[0].Title("Sine");
-plt.subplots[0].PlotSignal(ScottPlot.DataGen.Sin(50));
+mp.GetSubplot(1, 1).Title("Sine");
+mp.GetSubplot(1, 1).PlotSignal(ScottPlot.DataGen.Sin(50));
 
-plt.subplots[1].Title("Cosine");
-plt.subplots[1].PlotSignal(ScottPlot.DataGen.Cos(50));
+mp.GetSubplot(1, 2).Title("Cosine");
+mp.GetSubplot(1, 2).PlotSignal(ScottPlot.DataGen.Cos(50));
 
-plt.subplots[2].Title("Random Points");
-plt.subplots[2].PlotSignal(ScottPlot.DataGen.Random(rand, 50));
+mp.GetSubplot(2, 1).Title("Random Points");
+mp.GetSubplot(2, 1).PlotSignal(ScottPlot.DataGen.Random(rand, 50));
 
-plt.subplots[3].Title("Random Walk");
-plt.subplots[3].PlotSignal(ScottPlot.DataGen.RandomWalk(rand, 50));
+mp.GetSubplot(2, 2).Title("Random Walk");
+mp.GetSubplot(2, 2).PlotSignal(ScottPlot.DataGen.RandomWalk(rand, 50));
 
-// apply axes and layout from one plot to another one
-plt.subplots[2].MatchAxis(plt.subplots[3]);
-plt.subplots[2].MatchLayout(plt.subplots[3]);
+// apply axes and layout from one subplot to another
+var plotToAdjust = mp.GetSubplot(2, 1);
+var plotReference = mp.GetSubplot(2, 2);
+plotToAdjust.MatchAxis(plotReference);
+plotToAdjust.MatchLayout(plotReference);
 
 plt.SaveFig(600, 400, "73_Multiplot.png");
 </pre>
