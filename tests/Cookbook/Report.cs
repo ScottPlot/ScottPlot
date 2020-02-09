@@ -81,7 +81,7 @@ namespace ScottPlotTests.Cookbook
                 if (lines[i].Length > 12)
                     lines[i] = lines[i].Substring(12);
                 if (lines[i].Contains("SaveFig"))
-                    lines[i] = $"plt.Save(600, 400, \"{functionName}.png\");";
+                    lines[i] = $"plt.SaveFig(600, 400, \"{functionName}.png\");";
             }
             code = string.Join("\n", lines).Trim();
             return code;
