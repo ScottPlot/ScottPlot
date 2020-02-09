@@ -210,8 +210,14 @@ namespace ScottPlot
                     shadowLocation.X = frameLocation.X - 2;
                     shadowLocation.Y = frameLocation.Y - 2;
                     break;
+                case (shadowDirection.none):
+                    shadowLocation.X = frameLocation.X;
+                    shadowLocation.Y = frameLocation.Y;
+                    break;
                 default:
                     settings.legend.shadow = shadowDirection.none;
+                    shadowLocation.X = frameLocation.X;
+                    shadowLocation.Y = frameLocation.Y;
                     break;
             }
 
