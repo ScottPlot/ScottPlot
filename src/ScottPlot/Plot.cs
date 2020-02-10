@@ -332,7 +332,7 @@ namespace ScottPlot
         }
 
         public PlottableFunction PlotFunction(
-            Func<double, double> function,
+            Func<double, double?> function,
             double minX,
             double maxX,
             double minY,
