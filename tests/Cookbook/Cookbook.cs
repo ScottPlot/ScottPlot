@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 
 namespace ScottPlotTests.Cookbook
@@ -1802,6 +1803,22 @@ namespace ScottPlotTests.Cookbook
             // set the localization
             var culture = System.Globalization.CultureInfo.CreateSpecificCulture("hu"); // Hungarian
             plt.SetCulture(culture);
+
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
+        }
+
+        [Test]
+        public void Figure_80_Plotting_Functions()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
+
+            var plt = new ScottPlot.Plot(width, height);
+            double[] xs = ScottPlot.DataGen.Consecutive(200, 0.1, -10);
+            plt.PlotScatter(xs, xs.Select(x => 10 * Math.Sin(x)).ToArray());
+            plt.PlotScatter(xs, xs.Select(x => Math.Pow(x, 3)).ToArray());
+            plt.Axis(-10, 10, -10, 50);
 
             if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
             Console.WriteLine($"Saved: {fileName}");
