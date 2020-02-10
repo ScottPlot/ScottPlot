@@ -1569,21 +1569,21 @@ namespace ScottPlotTests.Cookbook
             Random rand = new Random(09241985);
             var mp = new ScottPlot.MultiPlot(width: 800, height: 600, rows: 2, cols: 2);
 
-            mp.GetSubplot(1, 1).Title("Sine");
-            mp.GetSubplot(1, 1).PlotSignal(ScottPlot.DataGen.Sin(50));
+            mp.GetSubplot(0, 0).Title("Sine");
+            mp.GetSubplot(0, 0).PlotSignal(ScottPlot.DataGen.Sin(50));
 
-            mp.GetSubplot(1, 2).Title("Cosine");
-            mp.GetSubplot(1, 2).PlotSignal(ScottPlot.DataGen.Cos(50));
+            mp.GetSubplot(0, 1).Title("Cosine");
+            mp.GetSubplot(0, 1).PlotSignal(ScottPlot.DataGen.Cos(50));
 
-            mp.GetSubplot(2, 1).Title("Random Points");
-            mp.GetSubplot(2, 1).PlotSignal(ScottPlot.DataGen.Random(rand, 50));
+            mp.GetSubplot(1, 0).Title("Random Points");
+            mp.GetSubplot(1, 0).PlotSignal(ScottPlot.DataGen.Random(rand, 50));
 
-            mp.GetSubplot(2, 2).Title("Random Walk");
-            mp.GetSubplot(2, 2).PlotSignal(ScottPlot.DataGen.RandomWalk(rand, 50));
+            mp.GetSubplot(1, 1).Title("Random Walk");
+            mp.GetSubplot(1, 1).PlotSignal(ScottPlot.DataGen.RandomWalk(rand, 50));
 
             // apply axes and layout from one subplot to another
-            var plotToAdjust = mp.GetSubplot(2, 1);
-            var plotReference = mp.GetSubplot(2, 2);
+            var plotToAdjust = mp.GetSubplot(1, 0);
+            var plotReference = mp.GetSubplot(1, 1);
             plotToAdjust.MatchAxis(plotReference);
             plotToAdjust.MatchLayout(plotReference);
 
