@@ -8,7 +8,7 @@ namespace ScottPlot
 {
     public class PlottableFunction : Plottable
     {
-        private readonly Func<double, double> function;
+        private readonly Func<double, double?> function;
         private readonly double minX;
         private readonly double maxX;
         private readonly double minY;
@@ -21,7 +21,7 @@ namespace ScottPlot
         private readonly LineStyle lineStyle;
 
 
-        public PlottableFunction(Func<double, double> function, double minX, double maxX, double minY, double maxY, Color color, double lineWidth, double markerSize, string label, MarkerShape markerShape, LineStyle lineStyle)
+        public PlottableFunction(Func<double, double?> function, double minX, double maxX, double minY, double maxY, Color color, double lineWidth, double markerSize, string label, MarkerShape markerShape, LineStyle lineStyle)
         {
             this.function = function;
             this.minX = minX;
@@ -47,21 +47,36 @@ namespace ScottPlot
         public override void Render(Settings settings)
         {
             double step = 1 / (settings.xAxisUnitsPerPixel * 250); // 250 may not be ideal, bigger number is more smooth, but less performant
-            int seriesLength = (int)Math.Ceiling((maxX - minX) / step);
+            int maxSeriesLength = (int)Math.Ceiling((maxX - minX) / step);
 
-            double[] xs = new double[seriesLength];
-            double[] ys = new double[seriesLength];
+            List<double> xList = new List<double>();
+            List<double> yList = new List<double>();
 
-            for (int i = 0; i < seriesLength; i++)
+            for (int i = 0; i < maxSeriesLength; i++)
             {
-                xs[i] = i * step + minX;
-                ys[i] = function(xs[i]);
+                double x = i * step + minX;
+                double? y;
+                try
+                {
+                    y = function(x);
+                }
+                catch (Exception e) //Domain error, such log(-1) or 1/0
+                {
+                    continue;
+                }
+
+                if (y.HasValue)
+                {
+                    xList.Add(x);
+                    yList.Add(y.Value);
+                }
+
 
                 //Console.WriteLine($"({xs[i]},{ys[i]})");
             }
 
 
-            PlottableScatter scatter = new PlottableScatter(xs, ys, color, lineWidth, markerSize, label, null, null, 0, 0, false, markerShape, lineStyle);
+            PlottableScatter scatter = new PlottableScatter(xList.ToArray(), yList.ToArray(), color, lineWidth, markerSize, label, null, null, 0, 0, false, markerShape, lineStyle);
             scatter.Render(settings);
         }
 
