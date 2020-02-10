@@ -1,6 +1,7 @@
 # ScottPlot Changelog
 
 ## ScottPlot 4.0.19
+* Improved thread safety of interactive graphs (#245) _Thanks @StendProg_
 * MultiPlot now has a GetSubplot() method which returns the Plot from a row and column index (#242). See cookbook for details. _Thanks @Resonanz and @StendProg_
 
 ## ScottPlot 4.0.18
