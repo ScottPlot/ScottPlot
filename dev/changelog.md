@@ -1,5 +1,8 @@
 # ScottPlot Changelog
 
+## ScottPlot 4.0.19
+* MultiPlot now has a GetSubplot() method which returns the Plot from a row and column index (#242). See cookbook for details. _Thanks @Resonanz and @StendProg_
+
 ## ScottPlot 4.0.18
 * Improved local culture formatting of numerican and DateTime axis tick labels (#236) _Thanks @teejay-87_
 
