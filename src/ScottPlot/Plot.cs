@@ -369,6 +369,17 @@ namespace ScottPlot
             return scatterPlot;
         }
 
+        public PlottableBoxWhisker PlotBoxWhisker(double[] xs, double[][] ys, double lineWidth, Color? color=null, string label =null, double boxWidth=5) {
+            if (!color.HasValue) {
+                color = settings.GetNextColor();
+            }
+
+            PlottableBoxWhisker boxWhisker = new PlottableBoxWhisker(xs, ys, color.Value, label, lineWidth, boxWidth);
+
+            settings.plottables.Add(boxWhisker);
+            return boxWhisker;
+        }
+
         public PlottableScatter PlotArrow(
             double tipX,
             double tipY,
