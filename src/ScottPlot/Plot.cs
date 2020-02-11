@@ -554,6 +554,13 @@ namespace ScottPlot
             return barPlot;
         }
 
+        public PlottableBoxAndWhisker PlotBox(Statistics.BoxAndWhisker[] boxes)
+        {
+            var bawPlot = new PlottableBoxAndWhisker(boxes);
+            settings.plottables.Add(bawPlot);
+            return bawPlot;
+        }
+
         public PlottableOHLC PlotOHLC(OHLC[] ohlcs)
         {
             PlottableOHLC ohlc = new PlottableOHLC(ohlcs, displayCandles: false);
