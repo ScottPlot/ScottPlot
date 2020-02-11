@@ -12,9 +12,33 @@ namespace ScottPlotDemos
 {
     public partial class FormBoxWhisker : Form
     {
+
         public FormBoxWhisker()
         {
             InitializeComponent();
+        }
+
+        private void FormBoxWhisker_Load(object sender, EventArgs e)
+        {
+            Plot_ScottVersion();
+            Plot_BennyVersion();
+        }
+
+        private void Plot_BennyVersion()
+        {
+            double[] xPositions = { 1, 2, 3 };
+            double[][] dataArrays = new double[][] { LineLengths.plot, LineLengths.formsPlot, LineLengths.wpfPlot };
+            formsPlot2.plt.PlotBoxAndWhiskerV2(xPositions, dataArrays);
+
+            formsPlot2.plt.Title("Source Code Line Length (Benny's Version)");
+            formsPlot2.plt.YLabel("Number of Characters");
+
+            // set X axis tick labels manually
+            string[] labels = { "Plot.cs", "FormsPlot.cs", "WpfPlot.cs" };
+            formsPlot2.plt.XTicks(xPositions, labels);
+
+            formsPlot2.plt.AxisAuto(.3, .2);
+            formsPlot2.Render();
         }
 
         ScottPlot.Statistics.BoxAndWhisker GetBoxAndWhisker(double[] data, double xPosition)
@@ -31,12 +55,32 @@ namespace ScottPlotDemos
             return baw;
         }
 
-        private void FormBoxWhisker_Load(object sender, EventArgs e)
+        private void Plot_ScottVersion()
         {
+            var boxAndWiskers = new ScottPlot.Statistics.BoxAndWhisker[3];
+            boxAndWiskers[0] = GetBoxAndWhisker(LineLengths.plot, 1);
+            boxAndWiskers[1] = GetBoxAndWhisker(LineLengths.formsPlot, 2);
+            boxAndWiskers[2] = GetBoxAndWhisker(LineLengths.wpfPlot, 3);
 
-            // source code line lengths were analyzed by a python script in /dev/scripts
+            formsPlot1.plt.Title("Source Code Line Length (Scott's Version)");
+            formsPlot1.plt.PlotBoxAndWhisker(boxAndWiskers);
+            formsPlot1.plt.YLabel("Number of Characters");
 
-            var lengthsPlot = new double[] { 66, 58, 75, 80, 84, 13, 33, 25, 21, 31, 29, 19, 17, 62, 35, 46, 30, 76, 26, 22, 16, 33, 88, 54, 41, 47, 57, 18, 34,
+            // set X axis tick labels manually
+            double[] xPositions = { 1, 2, 3 };
+            string[] labels = { "Plot.cs", "FormsPlot.cs", "WpfPlot.cs" };
+            formsPlot1.plt.XTicks(xPositions, labels);
+
+            formsPlot1.plt.AxisAuto(.3, .2);
+            formsPlot1.Render();
+        }
+    }
+
+    public static class LineLengths
+    {
+        // source code line lengths were analyzed by a python script in /dev/scripts
+
+        public static double[] plot = new double[] { 66, 58, 75, 80, 84, 13, 33, 25, 21, 31, 29, 19, 17, 62, 35, 46, 30, 76, 26, 22, 16, 33, 88, 54, 41, 47, 57, 18, 34,
                 19, 36, 14, 10, 15, 11, 41, 20, 40, 70, 60, 32, 26, 26, 24, 24, 26, 26, 68, 100, 60, 64, 94, 56, 33, 41, 31, 34, 84, 94, 4, 79, 102, 29, 32, 82,
                 92, 4, 77, 100, 31, 30, 84, 94, 4, 79, 102, 27, 63, 20, 40, 61, 31, 16, 71, 80, 88, 57, 44, 29, 27, 31, 104, 31, 32, 31, 32, 29, 34, 28, 34, 38,
                 38, 39, 41, 26, 91, 29, 73, 15, 84, 61, 16, 15, 72, 4, 16, 15, 26, 61, 16, 15, 70, 118, 48, 62, 44, 67, 24, 67, 48, 87, 29, 30, 53, 31, 29, 30,
@@ -62,7 +106,7 @@ namespace ScottPlotDemos
                 56, 15, 55, 57, 55, 57, 13, 55, 57, 57, 84, 64, 22, 30, 11, 15, 53, 53, 13, 53, 53, 9, 18, 20, 21, 19, 19, 20, 19, 18, 51, 19, 50, 17, 34, 17,
                 35, 18, 37, 18, 37, 18, 36, 19, 48, 17, 41, 18, 41, 30, 33, 10, 38, 94, 44, 38, 64, 27, 10 };
 
-            var lengthsFormsPlot = new double[] { 16, 21, 27, 25, 28, 19, 44, 25, 35, 37, 37, 32, 18, 22, 40, 39, 39, 37, 33, 94, 39, 69, 34, 36, 43, 55, 57, 59,
+        public static double[] formsPlot = new double[] { 16, 21, 27, 25, 28, 19, 44, 25, 35, 37, 37, 32, 18, 22, 40, 39, 39, 37, 33, 94, 39, 69, 34, 36, 43, 55, 57, 59,
                 17, 25, 47, 27, 31, 32, 82, 19, 7, 54, 26, 48, 23, 23, 27, 59, 27, 40, 34, 34, 34, 41, 44, 51, 38, 40, 22, 27, 27, 34, 37, 40, 30, 31, 68, 68,
                 89, 98, 111, 77, 83, 108, 108, 10, 22, 86, 31, 31, 3, 48, 47, 53, 54, 13, 40, 82, 55, 24, 47, 45, 45, 47, 29, 62, 28, 79, 34, 44, 108, 92, 94,
                 79, 35, 4, 42, 40, 89, 20, 62, 27, 30, 23, 25, 27, 29, 4, 32, 52, 32, 34, 26, 61, 61, 33, 35, 35, 40, 27, 62, 62, 33, 35, 38, 41, 41, 68, 68,
@@ -71,7 +115,7 @@ namespace ScottPlotDemos
                 52, 61, 42, 45, 31, 6, 16, 54, 26, 9, 6, 12, 43, 22, 6, 18, 40, 6, 8, 36, 10, 21, 47, 45, 37, 39, 45, 38, 44, 50, 44, 101, 97, 81, 85, 97, 90,
                 75, 45, 39, 35, 28, 9, 39, 33, 25, 81, 10 };
 
-            var lengthsWpfPlot = new double[] { 16, 33, 28, 25, 18, 18, 29, 21, 30, 26, 31, 27, 27, 35, 32, 28, 31, 19, 13, 43, 14, 41, 47, 42, 25, 35, 37, 37,
+        public static double[] wpfPlot = new double[] { 16, 33, 28, 25, 18, 18, 29, 21, 30, 26, 31, 27, 27, 35, 32, 28, 31, 19, 13, 43, 14, 41, 47, 42, 25, 35, 37, 37,
                 37, 16, 22, 46, 60, 17, 47, 19, 16, 54, 4, 24, 54, 35, 40, 69, 61, 57, 41, 21, 43, 31, 19, 16, 40, 82, 20, 54, 26, 68, 27, 74, 96, 9, 34, 34,
                 34, 44, 51, 38, 40, 22, 27, 27, 37, 40, 30, 31, 68, 68, 98, 111, 77, 83, 145, 143, 10, 22, 86, 31, 31, 3, 48, 47, 53, 54, 13, 40, 82, 55, 24,
                 47, 45, 45, 47, 29, 54, 32, 18, 18, 11, 48, 32, 18, 18, 11, 46, 54, 73, 15, 37, 79, 34, 44, 94, 105, 107, 109, 94, 35, 4, 42, 29, 3, 70, 35, 20,
@@ -79,22 +123,5 @@ namespace ScottPlotDemos
                 56, 87, 57, 13, 59, 44, 100, 107, 39, 71, 22, 40, 29, 36, 74, 74, 74, 74, 34, 39, 76, 42, 58, 9, 62, 64, 64, 61, 4, 15, 29, 30, 31, 29, 32, 9,
                 10, 22, 73, 103, 94, 85, 26, 26, 38, 40, 16, 47, 4, 47, 40, 80, 35, 28, 9, 10 };
 
-            var boxAndWiskers = new ScottPlot.Statistics.BoxAndWhisker[3];
-            boxAndWiskers[0] = GetBoxAndWhisker(lengthsPlot, 1);
-            boxAndWiskers[1] = GetBoxAndWhisker(lengthsFormsPlot, 2);
-            boxAndWiskers[2] = GetBoxAndWhisker(lengthsWpfPlot, 3);
-
-            formsPlot1.plt.Title("Source Code Line Length");
-            formsPlot1.plt.PlotBox(boxAndWiskers);
-            formsPlot1.plt.YLabel("Number of Characters");
-
-            // set X axis tick labels manually
-            double[] xPositions = { 1, 2, 3 };
-            string[] labels = { "Plot.cs", "FormsPlot.cs", "WpfPlot.cs" };
-            formsPlot1.plt.XTicks(xPositions, labels);
-
-            formsPlot1.plt.AxisAuto(.3, .2);
-            formsPlot1.Render();
-        }
     }
 }

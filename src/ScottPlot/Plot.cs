@@ -369,19 +369,6 @@ namespace ScottPlot
             return scatterPlot;
         }
 
-        public PlottableBoxWhisker PlotBoxWhisker(double[] xs, double[][] ys, MarkerShape markerShape = MarkerShape.asterisk, double lineWidth = 2, Color? color = null, string label = null, double boxWidth = 50)
-        {
-            if (!color.HasValue)
-            {
-                color = settings.GetNextColor();
-            }
-
-            PlottableBoxWhisker boxWhisker = new PlottableBoxWhisker(xs, ys, color.Value, label, markerShape, lineWidth, boxWidth);
-
-            settings.plottables.Add(boxWhisker);
-            return boxWhisker;
-        }
-
         public PlottableScatter PlotArrow(
             double tipX,
             double tipY,
@@ -567,11 +554,21 @@ namespace ScottPlot
             return barPlot;
         }
 
-        public PlottableBoxAndWhisker PlotBox(Statistics.BoxAndWhisker[] boxes)
+        public PlottableBoxAndWhisker PlotBoxAndWhisker(Statistics.BoxAndWhisker[] boxes)
         {
             var bawPlot = new PlottableBoxAndWhisker(boxes);
             settings.plottables.Add(bawPlot);
             return bawPlot;
+        }
+
+        public PlottableBoxAndWhiskerV2 PlotBoxAndWhiskerV2(double[] xs, double[][] ys, MarkerShape markerShape = MarkerShape.asterisk, double lineWidth = 2, Color? color = null, string label = null, double boxWidth = 50)
+        {
+            if (!color.HasValue)
+                color = settings.GetNextColor();
+
+            PlottableBoxAndWhiskerV2 boxWhisker = new PlottableBoxAndWhiskerV2(xs, ys, color.Value, label, markerShape, lineWidth, boxWidth);
+            settings.plottables.Add(boxWhisker);
+            return boxWhisker;
         }
 
         public PlottableOHLC PlotOHLC(OHLC[] ohlcs)
