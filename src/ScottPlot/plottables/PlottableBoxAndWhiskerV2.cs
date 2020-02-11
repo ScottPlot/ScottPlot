@@ -7,7 +7,7 @@ using System.Drawing;
 
 namespace ScottPlot
 {
-    public class PlottableBoxWhisker : Plottable
+    public class PlottableBoxAndWhiskerV2 : Plottable
     {
         public double[] xs;
         public double[][] ys;
@@ -19,7 +19,7 @@ namespace ScottPlot
         Pen pen;
         Brush brush;
 
-        public PlottableBoxWhisker(double[] xs, double[][] ys, Color color, string label, MarkerShape markerShape, double lineWidth, double boxWidth)
+        public PlottableBoxAndWhiskerV2(double[] xs, double[][] ys, Color color, string label, MarkerShape markerShape, double lineWidth, double boxWidth)
         {
             if (xs == null || ys == null)
                 throw new Exception("Y data cannot be null");
@@ -120,9 +120,6 @@ namespace ScottPlot
 
                 int whiskerSpread = (int)Math.Floor(boxWidth / 5);
 
-
-
-
                 settings.gfxData.DrawLine(pen, topWhisker.X, topWhisker.Y, middleX, topLeft.Y);//Whisker Centre
                 settings.gfxData.DrawLine(pen, bottomWhisker.X, bottomWhisker.Y, middleX, bottomLeft.Y);//Whisker Centre
                 settings.gfxData.DrawLine(pen, bottomWhisker.X - whiskerSpread, bottomWhisker.Y, bottomWhisker.X + whiskerSpread, bottomWhisker.Y);//Whisker Cap
@@ -142,10 +139,8 @@ namespace ScottPlot
                     MarkerTools.DrawMarker(settings.gfxData, point, markerShape, (float)lineWidth * 3, color);//Outliers
                 }
 
-
             }
 
-            //	throw new NotImplementedException();
         }
 
         public override string ToString()
