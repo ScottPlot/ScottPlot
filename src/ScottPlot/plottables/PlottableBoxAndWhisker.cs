@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 
 namespace ScottPlot
@@ -26,6 +27,7 @@ namespace ScottPlot
                 limits.ExpandY(box.box.min, box.box.max);
                 limits.ExpandY(box.whisker.min, box.whisker.max);
                 limits.ExpandY(box.midline.position, box.midline.position);
+                limits.ExpandY(box.points.Min(), box.points.Max());
             }
             return limits;
         }

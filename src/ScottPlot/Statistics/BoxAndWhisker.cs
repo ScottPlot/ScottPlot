@@ -49,6 +49,7 @@ namespace ScottPlot.Statistics
         public BoxAndWhisker(double xPosition)
         {
             this.xPosition = xPosition;
+            points = new double[] { };
             ResetStyle();
         }
 
