@@ -50,11 +50,57 @@ namespace ScottPlot.Statistics
                 double lowerBoundary = Q1 - 1.5 * IQR;
                 double upperBoundary = Q3 + 1.5 * IQR;
 
-                //These could be made faster knowing that we have already sorted the list above 
-                lowOutliers = sortedValues.Where(y => y < lowerBoundary).ToArray();
-                highOutliers = sortedValues.Where(y => y > upperBoundary).ToArray();
-                minNonOutlier = sortedValues.Where(y => y > lowerBoundary).FirstOrDefault();
-                maxNonOutlier = sortedValues.Where(y => y < upperBoundary).LastOrDefault();
+                List<double> lowOutliersList = new List<double>();
+                List<double> highOutliersList = new List<double>();
+                int minNonOutlierIndex = 0;
+                int maxNonOutlierIndex = 0;
+
+                for (int i = 0; i < sortedValues.Length; i++)
+                {
+                    if (sortedValues[i] < lowerBoundary)
+                    {
+                        lowOutliersList.Add(sortedValues[i]);
+                    }
+                    else
+                    {
+                        minNonOutlierIndex = i;
+                        break;
+                    }
+                }
+
+                for (int i = sortedValues.Length - 1; i >= 0; i--)
+                {
+                    if (sortedValues[i] > upperBoundary)
+                    {
+                        highOutliersList.Add(sortedValues[i]);
+                    }
+                    else
+                    {
+                        maxNonOutlierIndex = i;
+                        break;
+                    }
+                }
+
+                if (lowOutliersList.Count() > 0)
+                {
+                    lowOutliers = lowOutliersList.ToArray();
+                }
+                else
+                {
+                    lowOutliers = new double[] { };
+                }
+
+                if (highOutliersList.Count() > 0)
+                {
+                    highOutliers = highOutliersList.ToArray();
+                }
+                else
+                {
+                    highOutliers = new double[] { };
+                }
+
+                minNonOutlier = sortedValues[minNonOutlierIndex];
+                maxNonOutlier = sortedValues[maxNonOutlierIndex];
             }
             else
             {
