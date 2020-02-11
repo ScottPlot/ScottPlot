@@ -50,8 +50,6 @@ namespace ScottPlot.Statistics
                 double lowerBoundary = Q1 - 1.5 * IQR;
                 double upperBoundary = Q3 + 1.5 * IQR;
 
-                List<double> lowOutliersList = new List<double>();
-                List<double> highOutliersList = new List<double>();
                 int minNonOutlierIndex = 0;
                 int maxNonOutlierIndex = 0;
 
@@ -59,7 +57,7 @@ namespace ScottPlot.Statistics
                 {
                     if (sortedValues[i] < lowerBoundary)
                     {
-                        lowOutliersList.Add(sortedValues[i]);
+
                     }
                     else
                     {
@@ -72,7 +70,7 @@ namespace ScottPlot.Statistics
                 {
                     if (sortedValues[i] > upperBoundary)
                     {
-                        highOutliersList.Add(sortedValues[i]);
+
                     }
                     else
                     {
@@ -81,24 +79,10 @@ namespace ScottPlot.Statistics
                     }
                 }
 
-                if (lowOutliersList.Count() > 0)
-                {
-                    lowOutliers = lowOutliersList.ToArray();
-                }
-                else
-                {
-                    lowOutliers = new double[] { };
-                }
-
-                if (highOutliersList.Count() > 0)
-                {
-                    highOutliers = highOutliersList.ToArray();
-                }
-                else
-                {
-                    highOutliers = new double[] { };
-                }
-
+                lowOutliers = new double[minNonOutlierIndex];
+                highOutliers = new double[sortedValues.Length - maxNonOutlierIndex - 1];
+                Array.Copy(sortedValues, 0, lowOutliers, 0, lowOutliers.Length);
+                Array.Copy(sortedValues, maxNonOutlierIndex + 1, highOutliers, 0, highOutliers.Length);
                 minNonOutlier = sortedValues[minNonOutlierIndex];
                 maxNonOutlier = sortedValues[maxNonOutlierIndex];
             }
