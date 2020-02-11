@@ -87,6 +87,11 @@ namespace ScottPlot
                     var mindlinePen = new Pen(baw.midline.lineColor, baw.midline.lineWidth);
                     settings.gfxData.DrawLine(mindlinePen, boxLeft, midlineY, boxRight, midlineY);
                 }
+
+                foreach (double curr in baw.points) {
+                    PointF point = new PointF(center, (float) settings.GetPixelY(curr));
+                    MarkerTools.DrawMarker(settings.gfxData, point, MarkerShape.asterisk, 6, color);
+                }
             }
         }
 

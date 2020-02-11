@@ -16,6 +16,13 @@ namespace ScottPlot.Statistics
         public readonly double mean;
         public readonly double stDev;
         public readonly double stdErr;
+        public readonly double Q1;
+        public readonly double Q3;
+        public readonly double IQR;
+        public readonly double[] lowOutliers;
+        public readonly double[] highOutliers;
+        public readonly double maxNonOutlier;
+        public readonly double minNonOutlier;
 
         public PopulationStats(double[] values, bool fullAnalysis = true)
         {
@@ -26,6 +33,8 @@ namespace ScottPlot.Statistics
 
             if (fullAnalysis)
             {
+                int QSize = (int)Math.Floor(count / 4.0);
+
                 sortedValues = new double[count];
                 Array.Copy(values, 0, sortedValues, 0, count);
                 Array.Sort(sortedValues);
@@ -33,6 +42,19 @@ namespace ScottPlot.Statistics
                 min = sortedValues.First();
                 max = sortedValues.Last();
                 median = sortedValues[count / 2];
+
+                Q1 = sortedValues[QSize];
+                Q3 = sortedValues[sortedValues.Length - QSize - 1];
+                IQR = Q3 - Q1;
+
+                double lowerBoundary = Q1 - 1.5 * IQR;
+                double upperBoundary = Q3 + 1.5 * IQR;
+
+                //These could be made faster knowing that we have already sorted the list above 
+                lowOutliers = sortedValues.Where(y => y < lowerBoundary).ToArray();
+                highOutliers = sortedValues.Where(y => y > upperBoundary).ToArray();
+                minNonOutlier = sortedValues.Where(y => y > lowerBoundary).FirstOrDefault();
+                maxNonOutlier = sortedValues.Where(y => y < upperBoundary).LastOrDefault();
             }
             else
             {
