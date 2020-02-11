@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
-using System.Linq.Expressions;
 
 namespace ScottPlot
 {
@@ -151,8 +150,8 @@ namespace ScottPlot
                     if (ys[i] > highestValue)
                         highestValue = ys[i];
                 }
-                float yPxHigh = settings.GetPixel(0, lowestValue + yOffset).Y;
-                float yPxLow = settings.GetPixel(0, highestValue + yOffset).Y;
+                float yPxHigh = (float)settings.GetPixelY(lowestValue + yOffset);
+                float yPxLow = (float)settings.GetPixelY(highestValue + yOffset);
 
                 linePoints[(xPx - xPxStart) * 2] = new PointF(xPx, yPxLow);
                 linePoints[(xPx - xPxStart) * 2 + 1] = new PointF(xPx, yPxHigh);
@@ -203,8 +202,8 @@ namespace ScottPlot
                     .Where((y, i) => indexes.Contains(i));
 
                 var Points = levelsValues
-                    .Select(x => settings.GetPixel(0, x + yOffset).Y)
-                    .Select(y => new PointF(xPx, y))
+                    .Select(x => settings.GetPixelY(x + yOffset))
+                    .Select(y => new PointF(xPx, (float)y))
                     .ToArray();
 
                 linePointsLevels.Add(Points);
@@ -261,7 +260,7 @@ namespace ScottPlot
 
             List<PointF[]> linePointsLevels = levelValues
                 .Select(x => x.levelsValues
-                                .Select(y => new PointF(x.xPx, settings.GetPixel(0, y + yOffset).Y))
+                                .Select(y => new PointF(x.xPx, (float)settings.GetPixelY(y + yOffset)))
                                 .ToArray())
                 .ToList();
 
@@ -320,8 +319,8 @@ namespace ScottPlot
                     if (ys[i] > highestValue)
                         highestValue = ys[i];
                 }
-                float yPxHigh = settings.GetPixel(0, lowestValue + yOffset).Y;
-                float yPxLow = settings.GetPixel(0, highestValue + yOffset).Y;
+                float yPxHigh = (float)settings.GetPixelY(lowestValue + yOffset);
+                float yPxLow = (float)settings.GetPixelY(highestValue + yOffset);
 
                 // adjust order of points to enhance anti-aliasing
                 if ((linePoints.Count < 2) || (yPxLow < linePoints[linePoints.Count - 1].Y))
