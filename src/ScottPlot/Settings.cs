@@ -54,8 +54,8 @@ namespace ScottPlot
         public Rectangle? mouseMiddleRect = null;
 
         // scales calculations must occur at this level because the axes are unaware of pixel dimensions
-        public double xAxisScale { get { return bmpData.Width / axes.x.span; } } // pixels per unit
-        public double yAxisScale { get { return bmpData.Height / axes.y.span; } } // pixels per unit
+        public double xAxisScale { get { return dataSize.Width / axes.x.span; } } // pixels per unit
+        public double yAxisScale { get { return dataSize.Height / axes.y.span; } } // pixels per unit
         public double xAxisUnitsPerPixel { get { return 1.0 / xAxisScale; } }
         public double yAxisUnitsPerPixel { get { return 1.0 / yAxisScale; } }
 
