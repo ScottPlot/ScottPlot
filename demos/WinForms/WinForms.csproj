@@ -211,6 +211,12 @@
     <Compile Include="Demos\FormLinkedPlots.Designer.cs">
       <DependentUpon>FormLinkedPlots.cs</DependentUpon>
     </Compile>
+    <Compile Include="Demos\FormBoxWhisker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Demos\FormBoxWhisker.Designer.cs">
+      <DependentUpon>FormBoxWhisker.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -326,6 +332,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Demos\FormLinkedPlots.resx">
       <DependentUpon>FormLinkedPlots.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Demos\FormBoxWhisker.resx">
+      <DependentUpon>FormBoxWhisker.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
