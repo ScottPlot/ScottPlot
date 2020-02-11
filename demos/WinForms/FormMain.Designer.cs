@@ -60,6 +60,7 @@
             this.btnFinancial = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.btnIncoming = new System.Windows.Forms.Button();
             this.btnGrowingRoll = new System.Windows.Forms.Button();
             this.btnGrowingCircular = new System.Windows.Forms.Button();
             this.btnGrowingArray = new System.Windows.Forms.Button();
@@ -79,7 +80,7 @@
             this.lblGitHubUrl = new System.Windows.Forms.Label();
             this.lblVersion = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.btnIncoming = new System.Windows.Forms.Button();
+            this.btnBoxAndWhisker = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage3.SuspendLayout();
@@ -107,7 +108,7 @@
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(513, 272);
+            this.tabControl1.Size = new System.Drawing.Size(513, 343);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -202,7 +203,7 @@
             this.tabPage3.Controls.Add(this.label6);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(505, 246);
+            this.tabPage3.Size = new System.Drawing.Size(505, 317);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Advanced";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -346,6 +347,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnBoxAndWhisker);
             this.groupBox1.Controls.Add(this.SignalDistribution);
             this.groupBox1.Controls.Add(this.btnBarGraph);
             this.groupBox1.Controls.Add(this.btnDraggableAxisLines);
@@ -354,7 +356,7 @@
             this.groupBox1.Controls.Add(this.btnFinancial);
             this.groupBox1.Location = new System.Drawing.Point(6, 25);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(150, 196);
+            this.groupBox1.Size = new System.Drawing.Size(150, 224);
             this.groupBox1.TabIndex = 14;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "More Plot Types";
@@ -442,6 +444,16 @@
             this.tabPage2.TabIndex = 5;
             this.tabPage2.Text = "Live Data";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // btnIncoming
+            // 
+            this.btnIncoming.Location = new System.Drawing.Point(6, 141);
+            this.btnIncoming.Name = "btnIncoming";
+            this.btnIncoming.Size = new System.Drawing.Size(137, 23);
+            this.btnIncoming.TabIndex = 13;
+            this.btnIncoming.Text = "Incoming Data";
+            this.btnIncoming.UseVisualStyleBackColor = true;
+            this.btnIncoming.Click += new System.EventHandler(this.btnIncoming_Click);
             // 
             // btnGrowingRoll
             // 
@@ -650,22 +662,22 @@
             this.label3.Text = "ScottPlot";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // btnIncoming
+            // btnBoxAndWhisker
             // 
-            this.btnIncoming.Location = new System.Drawing.Point(6, 141);
-            this.btnIncoming.Name = "btnIncoming";
-            this.btnIncoming.Size = new System.Drawing.Size(137, 23);
-            this.btnIncoming.TabIndex = 13;
-            this.btnIncoming.Text = "Incoming Data";
-            this.btnIncoming.UseVisualStyleBackColor = true;
-            this.btnIncoming.Click += new System.EventHandler(this.btnIncoming_Click);
+            this.btnBoxAndWhisker.Location = new System.Drawing.Point(6, 193);
+            this.btnBoxAndWhisker.Name = "btnBoxAndWhisker";
+            this.btnBoxAndWhisker.Size = new System.Drawing.Size(137, 23);
+            this.btnBoxAndWhisker.TabIndex = 15;
+            this.btnBoxAndWhisker.Text = "Box and Whisker";
+            this.btnBoxAndWhisker.UseVisualStyleBackColor = true;
+            this.btnBoxAndWhisker.Click += new System.EventHandler(this.btnBoxAndWhisker_Click);
             // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(537, 296);
+            this.ClientSize = new System.Drawing.Size(537, 367);
             this.Controls.Add(this.tabControl1);
             this.Name = "FormMain";
             this.Text = "ScottPlot Demos";
@@ -744,6 +756,7 @@
         private System.Windows.Forms.Button SignalDistribution;
         private System.Windows.Forms.Button btnRegression;
         private System.Windows.Forms.Button btnIncoming;
+        private System.Windows.Forms.Button btnBoxAndWhisker;
     }
 }
 
