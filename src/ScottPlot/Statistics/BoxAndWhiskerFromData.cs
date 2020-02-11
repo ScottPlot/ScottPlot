@@ -17,8 +17,6 @@ namespace ScottPlot.Statistics
             baw.box.max = stats.mean + stats.stDev;
             baw.box.min = stats.mean - stats.stDev;
 
-            baw.points = new double[]{ };
-
             return baw;
         }
 
