@@ -27,7 +27,11 @@ namespace ScottPlot
                 limits.ExpandY(box.box.min, box.box.max);
                 limits.ExpandY(box.whisker.min, box.whisker.max);
                 limits.ExpandY(box.midline.position, box.midline.position);
-                limits.ExpandY(box.points.Min(), box.points.Max());
+
+                if (box.points.Count() > 0) //Cannot call Min() or Max() on empty list
+                {
+                    limits.ExpandY(box.points.Min(), box.points.Max());
+                }
             }
             return limits;
         }
