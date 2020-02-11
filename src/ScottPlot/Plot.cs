@@ -369,12 +369,14 @@ namespace ScottPlot
             return scatterPlot;
         }
 
-        public PlottableBoxWhisker PlotBoxWhisker(double[] xs, double[][] ys, double lineWidth, Color? color=null, string label =null, double boxWidth=5) {
-            if (!color.HasValue) {
+        public PlottableBoxWhisker PlotBoxWhisker(double[] xs, double[][] ys, MarkerShape markerShape = MarkerShape.asterisk, double lineWidth = 2, Color? color = null, string label = null, double boxWidth = 50)
+        {
+            if (!color.HasValue)
+            {
                 color = settings.GetNextColor();
             }
 
-            PlottableBoxWhisker boxWhisker = new PlottableBoxWhisker(xs, ys, color.Value, label, lineWidth, boxWidth);
+            PlottableBoxWhisker boxWhisker = new PlottableBoxWhisker(xs, ys, color.Value, label, markerShape, lineWidth, boxWidth);
 
             settings.plottables.Add(boxWhisker);
             return boxWhisker;
