@@ -32,8 +32,8 @@ namespace ScottPlot
     public class LegendTools
     {
         private const int padding = 3;
-        private const int ShadowWidth = 2;
-        private const int ShadowHeight = 2;
+        private const int shadowWidth = 2;
+        private const int shadowHeight = 2;
 
         private static IEnumerable<Plottable> GetPlottableInLegend(Settings settings)
         {
@@ -42,11 +42,11 @@ namespace ScottPlot
 
         public static Rectangle GetLegendFrame(Settings settings)
         {
-            Size FrameSize = GetFrameSize(settings);
+            Size frameSize = GetFrameSize(settings);
 
-            Point FullFrameLocation = GetFullFrameLocation(settings, FrameSize);
-            Size FullFrameSize = GetFullFrameSize(FrameSize, settings.legend.shadow);
-            return new Rectangle(FullFrameLocation, Size.Add(FullFrameSize, new Size(1, 1)));
+            Point fullFrameLocation = GetFullFrameLocation(settings, frameSize);
+            Size fullFrameSize = GetFullFrameSize(frameSize, settings.legend.shadow);
+            return new Rectangle(fullFrameLocation, Size.Add(fullFrameSize, new Size(1, 1)));
         }
 
         public static void DrawLegend(Settings settings)
@@ -54,26 +54,26 @@ namespace ScottPlot
             SizeF maxLabelSize = MaxLegendLabelSize(settings);
             int stubWidth = 40 * (int)settings.legend.font.Size / 12;
 
-            Size FrameSize = GetFrameSize(settings);
-            Point FrameOffset = GetFrameOffset(settings.legend.shadow);
-            Rectangle FrameRect = new Rectangle(FrameOffset, FrameSize);
+            Size frameSize = GetFrameSize(settings);
+            Point frameOffset = GetFrameOffset(settings.legend.shadow);
+            Rectangle frameRect = new Rectangle(frameOffset, frameSize);
 
             settings.gfxLegend.Clear(settings.legend.colorBackground);
 
             if (settings.legend.shadow != shadowDirection.none)
             {
                 Point shadowOffset = GetShadowOffset(settings.legend.shadow);
-                Rectangle shadowRect = new Rectangle(shadowOffset, FrameSize);
+                Rectangle shadowRect = new Rectangle(shadowOffset, frameSize);
                 settings.gfxLegend.FillRectangle(new SolidBrush(settings.legend.colorShadow), shadowRect);
             }
 
-            settings.gfxLegend.FillRectangle(new SolidBrush(settings.legend.colorBackground), FrameRect);
-            settings.gfxLegend.DrawRectangle(new Pen(settings.legend.colorFrame), FrameRect);
+            settings.gfxLegend.FillRectangle(new SolidBrush(settings.legend.colorBackground), frameRect);
+            settings.gfxLegend.DrawRectangle(new Pen(settings.legend.colorFrame), frameRect);
 
             foreach (var (p, index) in GetPlottableInLegend(settings).Select((x, i) => (x, i)))
             {
-                Point legendItemLocation = new Point(FrameOffset.X,
-                    padding + index * (int)(maxLabelSize.Height) + FrameOffset.Y);
+                Point legendItemLocation = new Point(frameOffset.X,
+                    padding + index * (int)(maxLabelSize.Height) + frameOffset.Y);
                 DrawLegendItemString(p, settings, legendItemLocation, padding, stubWidth, maxLabelSize.Height);
                 DrawLegendItemLine(p, settings, legendItemLocation, padding, stubWidth, maxLabelSize.Height);
                 DrawLegendItemMarker(p, settings, legendItemLocation, padding, stubWidth, maxLabelSize.Height);
@@ -269,13 +269,13 @@ namespace ScottPlot
             switch (shadowDir)
             {
                 case shadowDirection.lowerLeft:
-                    return new Point(ShadowWidth, 0);
+                    return new Point(shadowWidth, 0);
                 case shadowDirection.lowerRight:
                     return new Point(0, 0);
                 case shadowDirection.upperLeft:
-                    return new Point(ShadowWidth, ShadowHeight);
+                    return new Point(shadowWidth, shadowHeight);
                 case shadowDirection.upperRight:
-                    return new Point(0, ShadowHeight);
+                    return new Point(0, shadowHeight);
                 case shadowDirection.none:
                     return new Point(0, 0);
                 default:
@@ -287,56 +287,56 @@ namespace ScottPlot
         {
             int stubWidth = 40 * (int)settings.legend.font.Size / 12;
             SizeF maxLabelSize = MaxLegendLabelSize(settings);
-            int Width = padding * 2 + (int)maxLabelSize.Width + padding + stubWidth;
-            int Height = padding * 2 + (int)maxLabelSize.Height * GetPlottableInLegend(settings).Count();
-            return new Size(Width, Height);
+            int width = padding * 2 + (int)maxLabelSize.Width + padding + stubWidth;
+            int height = padding * 2 + (int)maxLabelSize.Height * GetPlottableInLegend(settings).Count();
+            return new Size(width, height);
         }
 
-        private static Point GetFullFrameLocation(Settings settings, Size FrameSize)
+        private static Point GetFullFrameLocation(Settings settings, Size frameSize)
         {
-            int LeftX = padding;
-            int CenterX = (settings.dataSize.Width - FrameSize.Width) / 2;
-            int RightX = settings.dataSize.Width - FrameSize.Width - padding;
+            int leftX = padding;
+            int centerX = (settings.dataSize.Width - frameSize.Width) / 2;
+            int rightX = settings.dataSize.Width - frameSize.Width - padding;
 
-            int UpperY = padding;
-            int CenterY = (settings.dataSize.Height - FrameSize.Height) / 2;
-            int LowerY = settings.dataSize.Height - FrameSize.Height - padding;
+            int upperY = padding;
+            int centerY = (settings.dataSize.Height - frameSize.Height) / 2;
+            int lowerY = settings.dataSize.Height - frameSize.Height - padding;
 
             switch (settings.legend.location)
             {
                 case legendLocation.upperLeft:
-                    return new Point(LeftX, UpperY);
+                    return new Point(leftX, upperY);
                 case legendLocation.upperCenter:
-                    return new Point(CenterX, UpperY);
+                    return new Point(centerX, upperY);
                 case legendLocation.upperRight:
-                    return new Point(RightX, UpperY);
+                    return new Point(rightX, upperY);
 
                 case legendLocation.middleLeft:
-                    return new Point(LeftX, CenterY);
+                    return new Point(leftX, centerY);
                 case legendLocation.middleRight:
-                    return new Point(RightX, CenterY);
+                    return new Point(rightX, centerY);
 
                 case legendLocation.lowerLeft:
-                    return new Point(LeftX, LowerY);
+                    return new Point(leftX, lowerY);
                 case legendLocation.lowerCenter:
-                    return new Point(CenterX, LowerY);
+                    return new Point(centerX, lowerY);
                 case legendLocation.lowerRight:
-                    return new Point(RightX, LowerY);
+                    return new Point(rightX, lowerY);
 
                 case legendLocation.none:
-                    return new Point(LeftX, UpperY);
+                    return new Point(leftX, upperY);
 
                 default:
                     throw new NotImplementedException($"legend location {settings.legend.location} is not supported");
             }
         }
 
-        private static Size GetFullFrameSize(Size FrameSize, shadowDirection shadowDir)
+        private static Size GetFullFrameSize(Size frameSize, shadowDirection shadowDir)
         {
             if (shadowDir == shadowDirection.none)
-                return FrameSize;
+                return frameSize;
             else
-                return new Size(FrameSize.Width + ShadowWidth, FrameSize.Height + ShadowHeight);
+                return new Size(frameSize.Width + shadowWidth, frameSize.Height + shadowHeight);
         }
 
         // Shadow offset in final FullFrame
@@ -345,13 +345,13 @@ namespace ScottPlot
             switch (shadowDir)
             {
                 case shadowDirection.lowerLeft:
-                    return new Point(0, ShadowHeight);
+                    return new Point(0, shadowHeight);
                 case shadowDirection.lowerRight:
-                    return new Point(ShadowWidth, ShadowHeight);
+                    return new Point(shadowWidth, shadowHeight);
                 case shadowDirection.upperLeft:
                     return new Point(0, 0);
                 case shadowDirection.upperRight:
-                    return new Point(ShadowWidth, 0);
+                    return new Point(shadowWidth, 0);
                 case shadowDirection.none:
                     return new Point(0, 0);
                 default:
