@@ -72,11 +72,11 @@ namespace ScottPlot
 
             foreach (var (p, index) in GetPlottableInLegend(settings).Select((x, i) => (x, i)))
             {
-                Point textLocation = new Point(padding * 2 + stubWidth + FrameOffset.X,
+                Point legendItemLocation = new Point(FrameOffset.X,
                     padding + index * (int)(maxLabelSize.Height) + FrameOffset.Y);
-                DrawLegendItemString(p, settings, textLocation, 2, 2, 2.0f);
-                DrawLegendItemLine(p, settings, textLocation, padding, stubWidth, maxLabelSize.Height);
-                DrawLegendItemMarker(p, settings, textLocation, padding, stubWidth, maxLabelSize.Height);
+                DrawLegendItemString(p, settings, legendItemLocation, padding, stubWidth, maxLabelSize.Height);
+                DrawLegendItemLine(p, settings, legendItemLocation, padding, stubWidth, maxLabelSize.Height);
+                DrawLegendItemMarker(p, settings, legendItemLocation, padding, stubWidth, maxLabelSize.Height);
             }
         }
 
@@ -96,13 +96,14 @@ namespace ScottPlot
             return maxLabelSize;
         }
 
-        private static void DrawLegendItemString(Plottable plottable, Settings settings, Point textLocation, int padding, int stubWidth, float legendFontLineHeight)
+        private static void DrawLegendItemString(Plottable plottable, Settings settings, Point itemLocation, int padding, int stubWidth, float legendFontLineHeight)
         {
             Brush brushText = new SolidBrush(settings.legend.colorText);
+            var textLocation = Point.Add(itemLocation, new Size(padding + stubWidth + padding, 0));
             settings.gfxLegend.DrawString(plottable.label, settings.legend.font, brushText, textLocation);
         }
 
-        private static void DrawLegendItemLine(Plottable plottable, Settings settings, Point textLocation, int padding, int stubWidth, float legendFontLineHeight)
+        private static void DrawLegendItemLine(Plottable plottable, Settings settings, Point itemLocation, int padding, int stubWidth, float legendFontLineHeight)
         {
             Pen pen = new Pen(plottable.color, 1);
 
@@ -143,11 +144,11 @@ namespace ScottPlot
             }
 
             settings.gfxLegend.DrawLine(pen,
-                textLocation.X - padding, textLocation.Y + legendFontLineHeight / 2,
-                textLocation.X - padding - stubWidth, textLocation.Y + legendFontLineHeight / 2);
+                itemLocation.X + padding, itemLocation.Y + legendFontLineHeight / 2,
+                itemLocation.X + padding + stubWidth, itemLocation.Y + legendFontLineHeight / 2);
         }
 
-        private static void DrawLegendItemMarker(Plottable plottable, Settings settings, Point textLocation, int padding, int stubWidth, float legendFontLineHeight)
+        private static void DrawLegendItemMarker(Plottable plottable, Settings settings, Point itemLocation, int padding, int stubWidth, float legendFontLineHeight)
         {
             Brush brushMarker = new SolidBrush(plottable.color);
             Pen penMarker = new Pen(plottable.color, 1);
@@ -160,7 +161,7 @@ namespace ScottPlot
             if ((plottable is PlottableSignal) && (((PlottableSignal)plottable).markerSize) == 0)
                 return;
 
-            PointF corner1 = new PointF(textLocation.X - stubWidth + settings.legend.font.Size / 4, textLocation.Y + settings.legend.font.Size / 4 * padding);
+            PointF corner1 = new PointF(itemLocation.X + 2 * padding + settings.legend.font.Size / 4, itemLocation.Y + settings.legend.font.Size / 4 * padding);
             PointF center = new PointF
             {
                 X = corner1.X + settings.legend.font.Size / 4,
@@ -177,17 +178,17 @@ namespace ScottPlot
                     break;
                 case MarkerShape.asterisk:
                     Font drawFontAsterisk = new Font("CourierNew", settings.legend.font.Size);
-                    Point markerPositionAsterisk = new Point(textLocation.X - stubWidth, (int)(textLocation.Y + legendFontLineHeight / 4));
+                    Point markerPositionAsterisk = new Point(itemLocation.X + padding * 2, (int)(itemLocation.Y + legendFontLineHeight / 4));
                     settings.gfxLegend.DrawString("*", drawFontAsterisk, brushMarker, markerPositionAsterisk);
                     break;
                 case MarkerShape.cross:
                     Font drawFontCross = new Font("CourierNew", settings.legend.font.Size);
-                    Point markerPositionCross = new Point(textLocation.X - stubWidth, (int)(textLocation.Y + legendFontLineHeight / 8));
+                    Point markerPositionCross = new Point(itemLocation.X + padding * 2, (int)(itemLocation.Y + legendFontLineHeight / 8));
                     settings.gfxLegend.DrawString("+", drawFontCross, brushMarker, markerPositionCross);
                     break;
                 case MarkerShape.eks:
                     Font drawFontEks = new Font("CourierNew", settings.legend.font.Size);
-                    Point markerPositionEks = new Point(textLocation.X - stubWidth, (int)(textLocation.Y));
+                    Point markerPositionEks = new Point(itemLocation.X + padding * 2, (int)(itemLocation.Y));
                     settings.gfxLegend.DrawString("x", drawFontEks, brushMarker, markerPositionEks);
                     break;
                 case MarkerShape.filledCircle:
@@ -210,7 +211,7 @@ namespace ScottPlot
                     break;
                 case MarkerShape.hashTag:
                     Font drawFontHashtag = new Font("CourierNew", settings.legend.font.Size);
-                    Point markerPositionHashTag = new Point(textLocation.X - stubWidth, (int)(textLocation.Y + legendFontLineHeight / 8));
+                    Point markerPositionHashTag = new Point(itemLocation.X + padding * 2, (int)(itemLocation.Y + legendFontLineHeight / 8));
                     settings.gfxLegend.DrawString("#", drawFontHashtag, brushMarker, markerPositionHashTag);
                     break;
                 case MarkerShape.openCircle:
@@ -261,7 +262,7 @@ namespace ScottPlot
 
                 case MarkerShape.verticalBar:
                     Font drawFontVertical = new Font("CourierNew", settings.legend.font.Size);
-                    Point markerPositionVertical = new Point(textLocation.X - stubWidth, (int)(textLocation.Y));
+                    Point markerPositionVertical = new Point(itemLocation.X + padding * 2, (int)(itemLocation.Y));
                     settings.gfxLegend.DrawString("|", drawFontVertical, brushMarker, markerPositionVertical);
                     break;
             }
