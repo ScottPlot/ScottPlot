@@ -194,13 +194,13 @@ namespace ScottPlot
                     break;
                 case MarkerShape.filledDiamond:
                     // Create points that define polygon.
-                    PointF point1 = new PointF(center.X, center.Y + settings.legend.font.Size / 4);
-                    PointF point2 = new PointF(center.X - settings.legend.font.Size / 4, center.Y);
-                    PointF point3 = new PointF(center.X, center.Y - settings.legend.font.Size / 4);
-                    PointF point4 = new PointF(center.X + settings.legend.font.Size / 4, center.Y);
-
-                    PointF[] curvePoints = { point1, point2, point3, point4 };
-
+                    PointF[] curvePoints =
+                    {
+                        new PointF(center.X, center.Y + settings.legend.font.Size / 4),
+                        new PointF(center.X - settings.legend.font.Size / 4, center.Y),
+                        new PointF(center.X, center.Y - settings.legend.font.Size / 4),
+                        new PointF(center.X + settings.legend.font.Size / 4, center.Y),
+                    };
                     //Draw polygon to screen
                     settings.gfxLegend.FillPolygon(brushMarker, curvePoints);
                     break;
@@ -216,13 +216,13 @@ namespace ScottPlot
                     break;
                 case MarkerShape.openDiamond:
                     // Create points that define polygon.
-                    PointF point5 = new PointF(center.X, center.Y + settings.legend.font.Size / 4);
-                    PointF point6 = new PointF(center.X - settings.legend.font.Size / 4, center.Y);
-                    PointF point7 = new PointF(center.X, center.Y - settings.legend.font.Size / 4);
-                    PointF point8 = new PointF(center.X + settings.legend.font.Size / 4, center.Y);
-
-                    PointF[] curvePoints2 = { point5, point6, point7, point8 };
-
+                    PointF[] curvePoints2 =
+                    {
+                        new PointF(center.X, center.Y + settings.legend.font.Size / 4),
+                        new PointF(center.X - settings.legend.font.Size / 4, center.Y),
+                        new PointF(center.X, center.Y - settings.legend.font.Size / 4),
+                        new PointF(center.X + settings.legend.font.Size / 4, center.Y),
+                    };
                     //Draw polygon to screen
                     settings.gfxLegend.DrawPolygon(penMarker, curvePoints2);
                     break;
@@ -231,32 +231,32 @@ namespace ScottPlot
                     break;
                 case MarkerShape.triDown:
                     // Create points that define polygon.
-                    PointF point14 = new PointF(center.X, center.Y + settings.legend.font.Size / 2);
-                    PointF point15 = new PointF(center.X, center.Y);
-                    PointF point16 = new PointF(center.X - settings.legend.font.Size / 2 * (float)0.866, center.Y - settings.legend.font.Size / 2 * (float)0.5);
-                    PointF point17 = new PointF(center.X, center.Y);
-                    PointF point18 = new PointF(center.X + settings.legend.font.Size / 2 * (float)0.866, center.Y - settings.legend.font.Size / 2 * (float)0.5);
-
-                    PointF[] curvePoints4 = { point17, point14, point15, point16, point17, point18 };
-
+                    PointF[] curvePoints4 =
+                    {
+                        new PointF(center.X, center.Y),
+                        new PointF(center.X, center.Y + settings.legend.font.Size / 2),
+                        new PointF(center.X, center.Y),
+                        new PointF(center.X - settings.legend.font.Size / 2 * (float)0.866, center.Y - settings.legend.font.Size / 2 * (float)0.5),
+                        new PointF(center.X, center.Y),
+                        new PointF(center.X + settings.legend.font.Size / 2 * (float)0.866, center.Y - settings.legend.font.Size / 2 * (float)0.5),
+                    };
                     //Draw polygon to screen
                     settings.gfxLegend.DrawPolygon(penMarker, curvePoints4);
-
                     break;
-
                 case MarkerShape.triUp:
                     // Create points that define polygon.
-                    PointF point9 = new PointF(center.X, center.Y - settings.legend.font.Size / 2);
-                    PointF point10 = new PointF(center.X, center.Y);
-                    PointF point11 = new PointF(center.X - settings.legend.font.Size / 2 * (float)0.866, center.Y + settings.legend.font.Size / 2 * (float)0.5);
-                    PointF point12 = new PointF(center.X, center.Y);
-                    PointF point13 = new PointF(center.X + settings.legend.font.Size / 2 * (float)0.866, center.Y + settings.legend.font.Size / 2 * (float)0.5);
-
-                    PointF[] curvePoints3 = { point12, point9, point10, point11, point12, point13 };
+                    PointF[] curvePoints3 =
+                    {
+                        new PointF(center.X, center.Y),
+                        new PointF(center.X, center.Y - settings.legend.font.Size / 2),
+                        new PointF(center.X, center.Y),
+                        new PointF(center.X - settings.legend.font.Size / 2 * (float)0.866, center.Y + settings.legend.font.Size / 2 * (float)0.5),
+                        new PointF(center.X, center.Y),
+                        new PointF(center.X + settings.legend.font.Size / 2 * (float)0.866, center.Y + settings.legend.font.Size / 2 * (float)0.5),
+                    };
                     //Draw polygon to screen
                     settings.gfxLegend.DrawPolygon(penMarker, curvePoints3);
                     break;
-
                 case MarkerShape.verticalBar:
                     Point markerPositionVertical = itemLocation + new Size(padding * 2, 0);
                     settings.gfxLegend.DrawString("|", textFont, brushMarker, markerPositionVertical);
