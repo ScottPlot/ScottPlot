@@ -331,6 +331,31 @@ namespace ScottPlot
             return scatterPlot;
         }
 
+        public PlottableFunction PlotFunction(
+            Func<double, double?> function,
+            double minX,
+            double maxX,
+            double minY,
+            double maxY,
+            Color? color = null,
+            double lineWidth = 1,
+            double markerSize = 0,
+            string label = "f(x)",
+            MarkerShape markerShape = MarkerShape.filledCircle,
+            LineStyle lineStyle = LineStyle.Solid
+        )
+        {
+            if (color == null)
+            {
+                color = settings.GetNextColor();
+            }
+
+            PlottableFunction functionPlot = new PlottableFunction(function, minX, maxX, minY, maxY, color.Value, lineWidth, markerSize, label, markerShape, lineStyle);
+
+            settings.plottables.Add(functionPlot);
+            return functionPlot;
+        }
+
         public PlottableScatter PlotScatter(
             double[] xs,
             double[] ys,
