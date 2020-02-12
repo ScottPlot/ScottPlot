@@ -141,7 +141,7 @@ namespace ScottPlot
                 // only after the layout is tightened can the ticks be properly decided
             }
 
-            settings.legend.rect = LegendTools.GetLegendFrame(settings, settings.gfxLegend);
+            settings.legend.rect = LegendTools.GetLegendFrame(settings);
 
             // TODO: this only re-renders the legend if the size changes. What if the colors change?
             if (settings.legend.rect.Size != settings.bmpLegend.Size)

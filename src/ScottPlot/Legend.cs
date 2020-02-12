@@ -58,13 +58,14 @@ namespace ScottPlot
             Point FrameOffset = GetFrameOffset(settings.legend.shadow);
             Rectangle FrameRect = new Rectangle(FrameOffset, FrameSize);
 
-            Point shadowOffset = GetShadowOffset(settings.legend.shadow);
-            Rectangle shadowRect = new Rectangle(shadowOffset, FrameSize);
-
             settings.gfxLegend.Clear(settings.legend.colorBackground);
 
             if (settings.legend.shadow != shadowDirection.none)
+            {
+                Point shadowOffset = GetShadowOffset(settings.legend.shadow);
+                Rectangle shadowRect = new Rectangle(shadowOffset, FrameSize);
                 settings.gfxLegend.FillRectangle(new SolidBrush(settings.legend.colorShadow), shadowRect);
+            }
 
             settings.gfxLegend.FillRectangle(new SolidBrush(settings.legend.colorBackground), FrameRect);
             settings.gfxLegend.DrawRectangle(new Pen(settings.legend.colorFrame), FrameRect);
