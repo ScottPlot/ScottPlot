@@ -282,7 +282,6 @@ namespace ScottPlot
         private void RenderHighDensity(Settings settings, double offsetPoints, double columnPointCount)
         {
             // this function is for when the graph is zoomed out so each pixel column represents the vertical span of multiple data points
-
             int xPxStart = (int)Math.Ceiling((-1 - offsetPoints) / columnPointCount - 1);
             int xPxEnd = (int)Math.Ceiling((ys.Length - offsetPoints) / columnPointCount);
             xPxStart = Math.Max(0, xPxStart);
