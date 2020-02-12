@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 
 namespace ScottPlot
@@ -26,6 +27,11 @@ namespace ScottPlot
                 limits.ExpandY(box.box.min, box.box.max);
                 limits.ExpandY(box.whisker.min, box.whisker.max);
                 limits.ExpandY(box.midline.position, box.midline.position);
+
+                if (box.points.Count() > 0) //Cannot call Min() or Max() on empty list
+                {
+                    limits.ExpandY(box.points.Min(), box.points.Max());
+                }
             }
             return limits;
         }
@@ -86,6 +92,11 @@ namespace ScottPlot
 
                     var mindlinePen = new Pen(baw.midline.lineColor, baw.midline.lineWidth);
                     settings.gfxData.DrawLine(mindlinePen, boxLeft, midlineY, boxRight, midlineY);
+                }
+
+                foreach (double curr in baw.points) {
+                    PointF point = new PointF(center, (float) settings.GetPixelY(curr));
+                    MarkerTools.DrawMarker(settings.gfxData, point, MarkerShape.asterisk, 6, color);
                 }
             }
         }

@@ -44,10 +44,12 @@ namespace ScottPlot.Statistics
         public Midline midline = new Midline();
         public double xPosition;
         public string label;
+        public double[] points;
 
         public BoxAndWhisker(double xPosition)
         {
             this.xPosition = xPosition;
+            points = new double[] { };
             ResetStyle();
         }
 
