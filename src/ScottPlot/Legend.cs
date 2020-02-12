@@ -171,25 +171,23 @@ namespace ScottPlot
             SizeF bounds = new SizeF(settings.legend.font.Size / 2, settings.legend.font.Size / 2);
             RectangleF rect = new RectangleF(corner1, bounds);
 
+            Font textFont = new Font("CourierNew", settings.legend.font.Size);
             switch (plottable.markerShape)
             {
                 case MarkerShape.none:
                     //Nothing to do because the Drawline needs to be there for all cases, and it's already there
                     break;
                 case MarkerShape.asterisk:
-                    Font drawFontAsterisk = new Font("CourierNew", settings.legend.font.Size);
                     Point markerPositionAsterisk = itemLocation + new Size(padding * 2, (int)(legendFontLineHeight / 4));
-                    settings.gfxLegend.DrawString("*", drawFontAsterisk, brushMarker, markerPositionAsterisk);
+                    settings.gfxLegend.DrawString("*", textFont, brushMarker, markerPositionAsterisk);
                     break;
                 case MarkerShape.cross:
-                    Font drawFontCross = new Font("CourierNew", settings.legend.font.Size);
                     Point markerPositionCross = itemLocation + new Size(padding * 2, (int)(legendFontLineHeight / 8));
-                    settings.gfxLegend.DrawString("+", drawFontCross, brushMarker, markerPositionCross);
+                    settings.gfxLegend.DrawString("+", textFont, brushMarker, markerPositionCross);
                     break;
                 case MarkerShape.eks:
-                    Font drawFontEks = new Font("CourierNew", settings.legend.font.Size);
                     Point markerPositionEks = itemLocation + new Size(padding * 2, 0);
-                    settings.gfxLegend.DrawString("x", drawFontEks, brushMarker, markerPositionEks);
+                    settings.gfxLegend.DrawString("x", textFont, brushMarker, markerPositionEks);
                     break;
                 case MarkerShape.filledCircle:
                     settings.gfxLegend.FillEllipse(brushMarker, rect);
@@ -210,9 +208,8 @@ namespace ScottPlot
                     settings.gfxLegend.FillRectangle(brushMarker, rect);
                     break;
                 case MarkerShape.hashTag:
-                    Font drawFontHashtag = new Font("CourierNew", settings.legend.font.Size);
                     Point markerPositionHashTag = itemLocation + new Size(padding * 2, (int)(legendFontLineHeight / 8));
-                    settings.gfxLegend.DrawString("#", drawFontHashtag, brushMarker, markerPositionHashTag);
+                    settings.gfxLegend.DrawString("#", textFont, brushMarker, markerPositionHashTag);
                     break;
                 case MarkerShape.openCircle:
                     settings.gfxLegend.DrawEllipse(penMarker, rect);
@@ -261,9 +258,8 @@ namespace ScottPlot
                     break;
 
                 case MarkerShape.verticalBar:
-                    Font drawFontVertical = new Font("CourierNew", settings.legend.font.Size);
                     Point markerPositionVertical = itemLocation + new Size(padding * 2, 0);
-                    settings.gfxLegend.DrawString("|", drawFontVertical, brushMarker, markerPositionVertical);
+                    settings.gfxLegend.DrawString("|", textFont, brushMarker, markerPositionVertical);
                     break;
             }
         }
