@@ -27,7 +27,6 @@ namespace ScottPlotDemos
         {
             data = ScottPlot.DataGen.RandomWalk(rand, 10_000_000);
             signal = formsPlot1.plt.PlotSignalConst(data);
-            formsPlot1.plt.PlotSignalConst(data.Select(x=>(int)x).ToArray());
             formsPlot1.plt.Benchmark();
             formsPlot1.Render();
         }
@@ -97,6 +96,7 @@ namespace ScottPlotDemos
                 {
                     while (busy)
                         Thread.Sleep(100);
+                    formsPlot1.plt.AxisAuto();
                     formsPlot1.Render();
                     btnUpdateData.Enabled = true;
                 }));                
