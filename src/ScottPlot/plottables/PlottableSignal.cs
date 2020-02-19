@@ -114,9 +114,14 @@ namespace ScottPlot
 
             if (linePoints.Count > 1)
             {
-                settings.gfxData.DrawLines(pen, linePoints.ToArray());
-                foreach (PointF point in linePoints)
-                    settings.gfxData.FillEllipse(brush, point.X - markerSize / 2, point.Y - markerSize / 2, markerSize, markerSize);
+                if (pen.Width > 0)
+                    settings.gfxData.DrawLines(pen, linePoints.ToArray());
+
+                if (markerSize > 0)
+                {
+                    foreach (PointF point in linePoints)
+                        settings.gfxData.FillEllipse(brush, point.X - markerSize / 2, point.Y - markerSize / 2, markerSize, markerSize);
+                }
             }
         }
 
