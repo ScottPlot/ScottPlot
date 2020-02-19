@@ -53,7 +53,7 @@ formsPlot1.Render();
 * Install the `ScottPlot.WPF` NuGet package
 * Add `xmlns:ScottPlot="clr-namespace:ScottPlot;assembly=ScottPlot.WPF"` to your Window
 * Add `<ScottPlot:WpfPlot Name="wpfPlot1" />` somewhere in your layout
-* Add the following to the application start-up sequence:
+* Add the following immediately after `InitializeComponent();` in the cs file:
 ```cs
 double[] dataX = new double[] {1, 2, 3, 4, 5};
 double[] dataY = new double[] {1, 4, 9, 16, 25};
