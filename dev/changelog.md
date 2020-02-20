@@ -1,5 +1,9 @@
 # ScottPlot Changelog
 
+## Changes not yet on NuGet
+* Improved event handling (#266, #238) _Thanks @StendProg_
+* Improved legend positioning (#253) _Thanks @StendProg_
+
 ## ScottPlot 4.0.19
 * Improved thread safety of interactive graphs (#245) _Thanks @StendProg_
 * MultiPlot now has a GetSubplot() method which returns the Plot from a row and column index (#242). See cookbook for details. _Thanks @Resonanz and @StendProg_
