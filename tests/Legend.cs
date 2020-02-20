@@ -19,8 +19,8 @@ namespace ScottPlotTests
             for (int i = 0; i < locs.Length; i++)
             {
                 var plt = mplt.subplots[i];
-                plt.PlotSignal(DataGen.Sin(100), label: "sin");
-                plt.PlotSignal(DataGen.Cos(100), label: "sin");
+                plt.PlotScatter(DataGen.Consecutive(20), DataGen.Sin(20), markerShape: MarkerShape.filledSquare, label: "sin");
+                plt.PlotScatter(DataGen.Consecutive(20), DataGen.Cos(20), markerShape: MarkerShape.openDiamond, label: "cos");
                 plt.Legend(location: locs[i]);
                 plt.Title(locs[i].ToString());
             }
