@@ -294,13 +294,15 @@ namespace ScottPlot
 
         private static Point GetFullFrameLocation(Settings settings, Size frameSize)
         {
-            int leftX = padding;
-            int centerX = (settings.dataSize.Width - frameSize.Width) / 2;
-            int rightX = settings.dataSize.Width - frameSize.Width - padding;
+            int framePadding = padding * 2;
 
-            int upperY = padding;
+            int leftX = framePadding;
+            int centerX = (settings.dataSize.Width - frameSize.Width) / 2;
+            int rightX = settings.dataSize.Width - frameSize.Width - framePadding;
+
+            int upperY = framePadding;
             int centerY = (settings.dataSize.Height - frameSize.Height) / 2;
-            int lowerY = settings.dataSize.Height - frameSize.Height - padding;
+            int lowerY = settings.dataSize.Height - frameSize.Height - framePadding;
 
             switch (settings.legend.location)
             {
