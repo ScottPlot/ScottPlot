@@ -81,5 +81,17 @@ namespace ScottPlot
             Render();
             bmp.Save(filePath, imageFormat);
         }
+
+        public Plot GetSubplot(int rowIndex, int columnIndex)
+        {
+            if (rowIndex < 0 || rowIndex >= rows)
+                throw new ArgumentException("invalid row index");
+
+            if (columnIndex < 0 || columnIndex >= cols)
+                throw new ArgumentException("invalid column index");
+
+            int subplotIndex = rowIndex * cols + columnIndex;
+            return subplots[subplotIndex];
+        }
     }
 }

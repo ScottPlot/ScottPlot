@@ -16,7 +16,7 @@ namespace ScottPlot
     // - if source array is changed UpdateTrees() must be called
     // - source array can be change by call updateData(), updating by ranges much faster.
     public class PlottableSignalConst<T> : Plottable, IExportable where T : struct, IComparable
-    {    
+    {
         // Any changes must be sync with PlottableSignal
         public T[] ys;
         public double sampleRate;
@@ -86,14 +86,14 @@ namespace ScottPlot
                 LineJoin = System.Drawing.Drawing2D.LineJoin.Round
             };
             try // runtime check
-            {               
+            {
                 Convert.ToDouble(new T());
             }
-            catch 
+            catch
             {
                 throw new ArgumentOutOfRangeException("Unsupported data type, provide convertable to double data types");
             }
-            InitExp();         
+            InitExp();
             if (useParallel)
                 UpdateTreesInBackground();
             else
@@ -352,7 +352,7 @@ namespace ScottPlot
         {
             // this function is for when the graph is zoomed so far out its entire display is a single vertical pixel column
             double yMin, yMax;
-            MinMaxRangeQuery(0, ys.Length - 1, out yMin, out yMax);            
+            MinMaxRangeQuery(0, ys.Length - 1, out yMin, out yMax);
             PointF point1 = settings.GetPixel(xOffset, yMin + yOffset);
             PointF point2 = settings.GetPixel(xOffset, yMax + yOffset);
             settings.gfxData.DrawLine(pen, point1, point2);
@@ -401,8 +401,9 @@ namespace ScottPlot
                 // get the min and max value for this column                
                 double lowestValue, highestValue;
                 MinMaxRangeQuery(index1, index2, out lowestValue, out highestValue);
-                float yPxHigh = settings.GetPixel(0, lowestValue + yOffset).Y;
-                float yPxLow = settings.GetPixel(0, highestValue + yOffset).Y;
+                float yPxHigh = (float)settings.GetPixelY(lowestValue + yOffset);
+                float yPxLow = (float)settings.GetPixelY(highestValue + yOffset);
+
 
                 linePoints[(xPx - xPxStart) * 2] = new PointF(xPx, yPxLow);
                 linePoints[(xPx - xPxStart) * 2 + 1] = new PointF(xPx, yPxHigh);
@@ -445,10 +446,10 @@ namespace ScottPlot
                     index2 = ys.Length - 1;
 
                 // get the min and max value for this column                
-                double lowestValue, highestValue;                
+                double lowestValue, highestValue;
                 MinMaxRangeQuery(index1, index2, out lowestValue, out highestValue);
-                float yPxHigh = settings.GetPixel(0, lowestValue + yOffset).Y;
-                float yPxLow = settings.GetPixel(0, highestValue + yOffset).Y;
+                float yPxHigh = (float)settings.GetPixelY(lowestValue + yOffset);
+                float yPxLow = (float)settings.GetPixelY(highestValue + yOffset);
 
                 // adjust order of points to enhance anti-aliasing
                 if ((linePoints.Count < 2) || (yPxLow < linePoints[linePoints.Count - 1].Y))

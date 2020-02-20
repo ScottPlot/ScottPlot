@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 
 namespace ScottPlotTests.Cookbook
@@ -1566,25 +1567,27 @@ namespace ScottPlotTests.Cookbook
             string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
 
             Random rand = new Random(09241985);
-            var plt = new ScottPlot.MultiPlot(width: 800, height: 600, rows: 2, cols: 2);
+            var mp = new ScottPlot.MultiPlot(width: 800, height: 600, rows: 2, cols: 2);
 
-            plt.subplots[0].Title("Sine");
-            plt.subplots[0].PlotSignal(ScottPlot.DataGen.Sin(50));
+            mp.GetSubplot(0, 0).Title("Sine");
+            mp.GetSubplot(0, 0).PlotSignal(ScottPlot.DataGen.Sin(50));
 
-            plt.subplots[1].Title("Cosine");
-            plt.subplots[1].PlotSignal(ScottPlot.DataGen.Cos(50));
+            mp.GetSubplot(0, 1).Title("Cosine");
+            mp.GetSubplot(0, 1).PlotSignal(ScottPlot.DataGen.Cos(50));
 
-            plt.subplots[2].Title("Random Points");
-            plt.subplots[2].PlotSignal(ScottPlot.DataGen.Random(rand, 50));
+            mp.GetSubplot(1, 0).Title("Random Points");
+            mp.GetSubplot(1, 0).PlotSignal(ScottPlot.DataGen.Random(rand, 50));
 
-            plt.subplots[3].Title("Random Walk");
-            plt.subplots[3].PlotSignal(ScottPlot.DataGen.RandomWalk(rand, 50));
+            mp.GetSubplot(1, 1).Title("Random Walk");
+            mp.GetSubplot(1, 1).PlotSignal(ScottPlot.DataGen.RandomWalk(rand, 50));
 
-            // apply axes and layout from one plot to another one
-            plt.subplots[2].MatchAxis(plt.subplots[3]);
-            plt.subplots[2].MatchLayout(plt.subplots[3]);
+            // apply axes and layout from one subplot to another
+            var plotToAdjust = mp.GetSubplot(1, 0);
+            var plotReference = mp.GetSubplot(1, 1);
+            plotToAdjust.MatchAxis(plotReference);
+            plotToAdjust.MatchLayout(plotReference);
 
-            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            if (outputPath != null) mp.SaveFig(fileName); else Console.WriteLine(mp.GetHashCode());
             Console.WriteLine($"Saved: {fileName}");
         }
 
@@ -1745,6 +1748,77 @@ namespace ScottPlotTests.Cookbook
             subplot2.Title("Data (Log Scale)");
             subplot2.YLabel("Vertical Units (10^)");
             subplot2.XLabel("Horizontal Units");
+
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
+        }
+
+        [Test]
+        public void Figure_79_Localized_Culture_Number_Formatting()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
+
+            var plt = new ScottPlot.Plot(width, height);
+
+            // plot data with a big X range and small Y range
+            double bigNumber = 1234567;
+            double smallNumber = 0.012345;
+            plt.PlotPoint(0, 0, markerSize: 20);
+            plt.PlotPoint(bigNumber, smallNumber, markerSize: 20);
+            plt.YLabel("Small Numbers");
+            plt.XLabel("Large Numbers");
+            plt.Title("German Formatted Numerical Tick Labels");
+            plt.Ticks(useMultiplierNotation: false);
+
+            // set the localization
+            var culture = System.Globalization.CultureInfo.CreateSpecificCulture("de"); // German
+            plt.SetCulture(culture);
+
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
+        }
+
+        [Test]
+        public void Figure_79b_Localized_Culture_Date_Formatting()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
+
+            // generate some data
+            Random rand = new Random(0);
+            double[] price = ScottPlot.DataGen.RandomWalk(rand, 60 * 8, 10000);
+            DateTime start = new DateTime(2019, 08, 25, 8, 30, 00);
+            double pointsPerDay = 24 * 60;
+
+            // create the plot
+            var plt = new ScottPlot.Plot(width, height);
+            plt.PlotSignal(price, sampleRate: pointsPerDay, xOffset: start.ToOADate());
+            plt.Ticks(dateTimeX: true);
+            plt.YLabel("Price");
+            plt.XLabel("Date and Time");
+            plt.Title("Hungarian Formatted DateTime Tick Labels");
+            plt.Ticks(useMultiplierNotation: false);
+
+            // set the localization
+            var culture = System.Globalization.CultureInfo.CreateSpecificCulture("hu"); // Hungarian
+            plt.SetCulture(culture);
+
+            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
+            Console.WriteLine($"Saved: {fileName}");
+        }
+
+        [Test]
+        public void Figure_80_Plotting_Functions()
+        {
+            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
+            string fileName = System.IO.Path.GetFullPath($"{outputPath}/images/{name}.png");
+
+            var plt = new ScottPlot.Plot(width, height);
+            double[] xs = ScottPlot.DataGen.Consecutive(200, 0.1, -10);
+            plt.PlotScatter(xs, xs.Select(x => 10 * Math.Sin(x)).ToArray());
+            plt.PlotScatter(xs, xs.Select(x => Math.Pow(x, 3)).ToArray());
+            plt.Axis(-10, 10, -10, 50);
 
             if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
             Console.WriteLine($"Saved: {fileName}");
