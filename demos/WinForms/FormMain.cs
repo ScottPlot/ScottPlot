@@ -24,8 +24,8 @@ namespace ScottPlotDemos
 
             if (Debugger.IsAttached)
             {
-                //btnPlotTypes_Click(null, null);
-                btnDraggableAxisLines_Click(null, null);
+                btnPlotTypes_Click(null, null);
+                //btnDraggableAxisLines_Click(null, null);
                 //btnSignal_Click(null, null);
                 //btnTimeAxis_Click(null, null);
                 //btnFinancial_Click(null, null);
