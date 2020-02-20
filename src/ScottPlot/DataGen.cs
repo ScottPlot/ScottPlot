@@ -17,7 +17,7 @@ namespace ScottPlot
             return ys;
         }
 
-        public static double[] Sin(int pointCount, double oscillations = 1, double offset = 0,  double mult = 1, double phase = 0)
+        public static double[] Sin(int pointCount, double oscillations = 1, double offset = 0, double mult = 1, double phase = 0)
         {
             double sinScale = 2 * Math.PI * oscillations / (pointCount - 1);
             double[] ys = new double[pointCount];
@@ -191,13 +191,13 @@ namespace ScottPlot
 
             double span = Math.Abs(high - low);
 
-            for (int attempts = 0; attempts<10_000; attempts++)
+            for (int attempts = 0; attempts < 10_000; attempts++)
             {
                 double valA = rand.NextDouble() * span + low;
                 double valB = rand.NextDouble() * span + low;
                 if (Math.Abs(valA - valB) >= minimumSpacing)
                 {
-                    if (valA<valB)
+                    if (valA < valB)
                         return (valA, valB);
                     else
                         return (valB, valA);
@@ -205,6 +205,32 @@ namespace ScottPlot
             }
 
             throw new ArgumentException();
+        }
+
+        public static double[] Range(int stop)
+        {
+            return Range(0, stop, 1);
+        }
+
+        public static double[] Range(int start, int stop)
+        {
+            return Range(start, stop, 1);
+        }
+
+        public static double[] Range(double start, double stop, double step)
+        {
+            if (step <= 0)
+                throw new ArgumentException("step must be >0. To make a descending series make stop < start.");
+
+            double valueSpan = Math.Abs(start - stop);
+            int valueCount = (int)(valueSpan / step);
+            double stepSize = (stop > start) ? step : -step;
+            double[] values = new double[valueCount];
+
+            for (int i = 0; i < valueCount; i++)
+                values[i] = start + i * stepSize;
+
+            return values;
         }
     }
 }
