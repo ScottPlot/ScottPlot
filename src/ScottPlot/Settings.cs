@@ -239,7 +239,7 @@ namespace ScottPlot
             List<int> indicesToDelete = new List<int>();
             for (int i = 0; i < plottables.Count; i++)
             {
-                if (plottables[i] is PlottableAxLine && axLines)
+                if ((plottables[i] is PlottableVLine || plottables[i] is PlottableHLine) && axLines)
                     indicesToDelete.Add(i);
                 else if (plottables[i] is PlottableScatter && scatters)
                     indicesToDelete.Add(i);
@@ -253,7 +253,7 @@ namespace ScottPlot
                     indicesToDelete.Add(i);
                 else if (plottables[i] is PlottableOHLC && finance)
                     indicesToDelete.Add(i);
-                else if (plottables[i] is PlottableAxSpan && axSpans)
+                else if ((plottables[i] is PlottableVSpan || plottables[i] is PlottableHSpan) && axSpans)
                     indicesToDelete.Add(i);
             }
             indicesToDelete.Reverse();
@@ -266,8 +266,5 @@ namespace ScottPlot
             axes.x.hasBeenSet = false;
             axes.y.hasBeenSet = false;
         }
-
-        [Obsolete("replaced by Plot.GetDraggableUnderMouse()", true)]
-        public PlottableAxLine GetDraggableAxisLineUnderCursor(Point eLocation) { return null; }
     }
 }
