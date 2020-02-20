@@ -1,7 +1,7 @@
 # ScottPlot Cookbook
 The ScottPlot cookbook is a collection of small code examples which demonstrate how to create various types of plots using ScottPlot.
 
-_This cookbook was [automatically generated](/tests/Cookbook.cs) using ScottPlot 4.0.9.0_
+_This cookbook was [automatically generated](/tests/Cookbook.cs) using ScottPlot 4.0.18.0_
 
 
 ## Quickstart
@@ -18,7 +18,7 @@ plt.PlotScatter(dataXs, dataCos);
 plt.Title("ScottPlot Quickstart");
 plt.XLabel("Time (seconds)");
 plt.YLabel("Potential (V)");
-plt.Save(600, 400, "01a_Quickstart.png");
+plt.SaveFig(600, 400, "01a_Quickstart.png");
 ```
 
 ![](images/01a_Quickstart.png)
@@ -38,7 +38,7 @@ var plt = new ScottPlot.Plot(width, height);
 plt.PlotScatter(dataXs, dataSin);
 plt.PlotScatter(dataXs, dataCos);
 plt.AxisAuto(0, .5); // no horizontal padding, 50% vertical padding
-plt.Save(600, 400, "01b_Automatic_Margins.png");
+plt.SaveFig(600, 400, "01b_Automatic_Margins.png");
 ```
 
 ![](images/01b_Automatic_Margins.png)
@@ -58,7 +58,7 @@ var plt = new ScottPlot.Plot(width, height);
 plt.PlotScatter(dataXs, dataSin);
 plt.PlotScatter(dataXs, dataCos);
 plt.Axis(2, 8, .2, 1.1); // x1, x2, y1, y2
-plt.Save(600, 400, "01c_Defined_Axis_Limits.png");
+plt.SaveFig(600, 400, "01c_Defined_Axis_Limits.png");
 ```
 
 ![](images/01c_Defined_Axis_Limits.png)
@@ -79,7 +79,7 @@ plt.PlotScatter(dataXs, dataSin);
 plt.PlotScatter(dataXs, dataCos);
 plt.AxisZoom(2, 2);
 plt.AxisPan(-10, .5);
-plt.Save(600, 400, "01d_Zoom_and_Pan.png");
+plt.SaveFig(600, 400, "01d_Zoom_and_Pan.png");
 ```
 
 ![](images/01d_Zoom_and_Pan.png)
@@ -99,7 +99,7 @@ var plt = new ScottPlot.Plot(width, height);
 plt.PlotScatter(dataXs, dataSin, label: "first");
 plt.PlotScatter(dataXs, dataCos, label: "second");
 plt.Legend(location: ScottPlot.legendLocation.lowerLeft);
-plt.Save(600, 400, "01e_Legend.png");
+plt.SaveFig(600, 400, "01e_Legend.png");
 ```
 
 ![](images/01e_Legend.png)
@@ -119,7 +119,7 @@ var plt = new ScottPlot.Plot(width, height);
 plt.PlotScatter(dataXs, dataSin, label: "sin", markerShape: ScottPlot.MarkerShape.openCircle);
 plt.PlotScatter(dataXs, dataCos, label: "cos", markerShape: ScottPlot.MarkerShape.filledSquare);
 plt.Legend();
-plt.Save(600, 400, "01f_Custom_Marker_Shapes.png");
+plt.SaveFig(600, 400, "01f_Custom_Marker_Shapes.png");
 ```
 
 ![](images/01f_Custom_Marker_Shapes.png)
@@ -150,7 +150,7 @@ for (int i = 0; i < markerShapeNames.Length; i++)
 }
 
 plt.Legend(fontSize: 10);
-plt.Save(600, 400, "01g_All_Marker_Shapes.png");
+plt.SaveFig(600, 400, "01g_All_Marker_Shapes.png");
 ```
 
 ![](images/01g_All_Marker_Shapes.png)
@@ -165,14 +165,17 @@ int pointCount = 50;
 double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
 double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
 double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
+double[] dataCos2 = ScottPlot.DataGen.Cos(pointCount, mult: -1);
 
 var plt = new ScottPlot.Plot(width, height);
 plt.PlotScatter(dataXs, dataSin, color: Color.Magenta, lineWidth: 0, markerSize: 10, label: "sin");
 plt.PlotScatter(dataXs, dataCos, color: Color.Green, lineWidth: 5, markerSize: 0, label: "cos");
+plt.PlotScatter(dataXs, dataCos2, color: Color.Blue, label: "-cos",
+    lineStyle: ScottPlot.LineStyle.DashDot, lineWidth: 3, markerSize: 0);
 
 plt.Legend(fixedLineWidth: false);
 
-plt.Save(600, 400, "02_Styling_Scatter_Plots.png");
+plt.SaveFig(600, 400, "02_Styling_Scatter_Plots.png");
 ```
 
 ![](images/02_Styling_Scatter_Plots.png)
@@ -190,7 +193,7 @@ double[] dataRandom2 = ScottPlot.DataGen.RandomNormal(rand, pointCount);
 
 var plt = new ScottPlot.Plot(width, height);
 plt.PlotScatter(dataRandom1, dataRandom2);
-plt.Save(600, 400, "03_Plot_XY_Data.png");
+plt.SaveFig(600, 400, "03_Plot_XY_Data.png");
 ```
 
 ![](images/03_Plot_XY_Data.png)
@@ -211,7 +214,7 @@ double[] dataRandom4 = ScottPlot.DataGen.RandomNormal(rand, pointCount, 4);
 var plt = new ScottPlot.Plot(width, height);
 plt.PlotScatter(dataRandom1, dataRandom2, markerSize: 0);
 plt.PlotScatter(dataRandom3, dataRandom4, markerSize: 0);
-plt.Save(600, 400, "04_Plot_Lines_Only.png");
+plt.SaveFig(600, 400, "04_Plot_Lines_Only.png");
 ```
 
 ![](images/04_Plot_Lines_Only.png)
@@ -232,7 +235,7 @@ double[] dataRandom4 = ScottPlot.DataGen.RandomNormal(rand, pointCount, 4);
 var plt = new ScottPlot.Plot(width, height);
 plt.PlotScatter(dataRandom1, dataRandom2, lineWidth: 0);
 plt.PlotScatter(dataRandom3, dataRandom4, lineWidth: 0);
-plt.Save(600, 400, "05_Plot_Points_Only.png");
+plt.SaveFig(600, 400, "05_Plot_Points_Only.png");
 ```
 
 ![](images/05_Plot_Points_Only.png)
@@ -254,7 +257,7 @@ var plt = new ScottPlot.Plot(width, height);
 plt.PlotScatter(dataRandom1, dataRandom2, label: "dash", lineStyle: ScottPlot.LineStyle.Dash);
 plt.PlotScatter(dataRandom3, dataRandom4, label: "dash dot dot", lineStyle: ScottPlot.LineStyle.DashDotDot);
 plt.Legend();
-plt.Save(600, 400, "06b_Custom_LineStyles.png");
+plt.SaveFig(600, 400, "06b_Custom_LineStyles.png");
 ```
 
 ![](images/06b_Custom_LineStyles.png)
@@ -275,7 +278,7 @@ double[] dataRandom4 = ScottPlot.DataGen.RandomNormal(rand, pointCount, 4);
 var plt = new ScottPlot.Plot(width, height);
 plt.PlotScatter(dataRandom1, dataRandom2, color: Color.Magenta, lineWidth: 3, markerSize: 15);
 plt.PlotScatter(dataRandom3, dataRandom4, color: Color.Green, lineWidth: 3, markerSize: 15);
-plt.Save(600, 400, "06_Styling_XY_Plots.png");
+plt.SaveFig(600, 400, "06_Styling_XY_Plots.png");
 ```
 
 ![](images/06_Styling_XY_Plots.png)
@@ -296,7 +299,7 @@ plt.PlotScatter(dataXs, dataSin);
 plt.PlotScatter(dataXs, dataCos);
 plt.PlotPoint(25, 0.8);
 plt.PlotPoint(30, 0.3, color: Color.Magenta, markerSize: 15);
-plt.Save(600, 400, "07_Plotting_Points.png");
+plt.SaveFig(600, 400, "07_Plotting_Points.png");
 ```
 
 ![](images/07_Plotting_Points.png)
@@ -319,7 +322,7 @@ plt.PlotArrow(12, 1, 12, 0, label: "skinny", arrowheadLength: 10);
 plt.PlotArrow(20, .6, 20, 1, label: "fat", arrowheadWidth: 10);
 plt.Legend(fixedLineWidth: false);
 
-plt.Save(600, 400, "08b_Plotting_Arrows.png");
+plt.SaveFig(600, 400, "08b_Plotting_Arrows.png");
 ```
 
 ![](images/08b_Plotting_Arrows.png)
@@ -364,7 +367,7 @@ plt.PlotText(" Rotated Text", 5, -.5,
 plt.PlotText("Framed Text", 15, -.6,
     fontSize: 16, color: Color.White, bold: true, frame: true, frameColor: Color.DarkRed);
 
-plt.Save(600, 400, "08_Plotting_Text.png");
+plt.SaveFig(600, 400, "08_Plotting_Text.png");
 ```
 
 ![](images/08_Plotting_Text.png)
@@ -389,7 +392,7 @@ plt.PlotScatter(dataXs, dataSin);
 plt.PlotScatter(dataXs, dataCos);
 plt.Clear();
 plt.PlotScatter(dataRandom1, dataRandom2);
-plt.Save(600, 400, "09_Clearing_Plots.png");
+plt.SaveFig(600, 400, "09_Clearing_Plots.png");
 ```
 
 ![](images/09_Clearing_Plots.png)
@@ -419,7 +422,7 @@ for (int i = 10; i < 20; i++)
     dataCos[i] = 2 * i / 10.0;
 }
 
-plt.Save(600, 400, "10_Modifying_Plotted_Data.png");
+plt.SaveFig(600, 400, "10_Modifying_Plotted_Data.png");
 ```
 
 ![](images/10_Modifying_Plotted_Data.png)
@@ -447,7 +450,7 @@ scatter1.color = Color.Pink;
 scatter2.markerShape = ScottPlot.MarkerShape.openCircle;
 horizontalLine.position = 0.7654;
 
-plt.Save(600, 400, "11_Modify_Styles_After_Plotting.png");
+plt.SaveFig(600, 400, "11_Modify_Styles_After_Plotting.png");
 ```
 
 ![](images/11_Modify_Styles_After_Plotting.png)
@@ -469,7 +472,7 @@ plt.Ticks(dateTimeX: true);
 plt.YLabel("Price");
 plt.XLabel("Date and Time");
 
-plt.Save(600, 400, "12_Date_Axis.png");
+plt.SaveFig(600, 400, "12_Date_Axis.png");
 ```
 
 ![](images/12_Date_Axis.png)
@@ -493,10 +496,27 @@ plt.Frame(right: false, top: false);
 plt.Ticks(rulerModeX: true, rulerModeY: true); // enable ruler mode like this
 plt.AxisAuto(0, 0);
 
-plt.Save(600, 400, "13_Ruler_Mode.png");
+plt.SaveFig(600, 400, "13_Ruler_Mode.png");
 ```
 
 ![](images/13_Ruler_Mode.png)
+
+
+
+
+## Hide Tick Labels
+
+```cs
+var plt = new ScottPlot.Plot(width, height);
+plt.Title("Hide Tick Labels (but not ticks)");
+
+plt.PlotSignal(ScottPlot.DataGen.Sin(50));
+plt.Ticks(displayTickLabelsX: false);
+
+plt.SaveFig(600, 400, "14b_Hide_Tick_Labels.png");
+```
+
+![](images/14b_Hide_Tick_Labels.png)
 
 
 
@@ -516,7 +536,7 @@ double[] yPositions = { -1, 0, .5, 1 };
 string[] yPabels = { "bottom", "center", "half", "top" };
 plt.YTicks(yPositions, yPabels);
 
-plt.Save(600, 400, "14_Custom_Tick_Labels.png");
+plt.SaveFig(600, 400, "14_Custom_Tick_Labels.png");
 ```
 
 ![](images/14_Custom_Tick_Labels.png)
@@ -536,7 +556,7 @@ plt.PlotSignal(ScottPlot.DataGen.Sin(50), xOffset: -50);
 plt.Ticks(invertSignX: true);
 plt.Ticks(invertSignY: true);
 
-plt.Save(600, 400, "15_Descending_Ticks.png");
+plt.SaveFig(600, 400, "15_Descending_Ticks.png");
 ```
 
 ![](images/15_Descending_Ticks.png)
@@ -555,7 +575,7 @@ double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 var plt = new ScottPlot.Plot(200, 150);
 plt.PlotScatter(dataXs, dataSin);
 plt.PlotScatter(dataXs, dataCos);
-plt.Save(600, 400, "20_Small_Plot.png");
+plt.SaveFig(600, 400, "20_Small_Plot.png");
 ```
 
 ![](images/20_Small_Plot.png)
@@ -579,7 +599,7 @@ plt.Title("Very Complicated Data");
 plt.XLabel("Experiment Duration");
 plt.YLabel("Productivity");
 
-plt.Save(600, 400, "21a_Title_and_Axis_Labels.png");
+plt.SaveFig(600, 400, "21a_Title_and_Axis_Labels.png");
 ```
 
 ![](images/21a_Title_and_Axis_Labels.png)
@@ -605,7 +625,7 @@ plt.Style(figBg: Color.LightBlue);
 // You can call Layout() to manually define the sizes of plot components
 plt.Layout(yScaleWidth: 80, titleHeight: 50, xLabelHeight: 20, y2LabelWidth: 20);
 
-plt.Save(600, 400, "21b_Custom_Padding.png");
+plt.SaveFig(600, 400, "21b_Custom_Padding.png");
 ```
 
 ![](images/21b_Custom_Padding.png)
@@ -630,7 +650,7 @@ plt.Ticks(useOffsetNotation: false, useMultiplierNotation: false);
 // tightening with a render is the best way to get the axes right
 plt.TightenLayout(render: true);
 
-plt.Save(600, 400, "21c_Automatic_Left_Padding.png");
+plt.SaveFig(600, 400, "21c_Automatic_Left_Padding.png");
 ```
 
 ![](images/21c_Automatic_Left_Padding.png)
@@ -653,7 +673,7 @@ plt.Ticks(rulerModeX: true, displayTicksY: false);
 plt.Frame(left: false, right: false, top: false);
 plt.TightenLayout(padding: 0, render: true);
 
-plt.Save(600, 400, "21d_Single_Axis_With_No_Padding.png");
+plt.SaveFig(600, 400, "21d_Single_Axis_With_No_Padding.png");
 ```
 
 ![](images/21d_Single_Axis_With_No_Padding.png)
@@ -680,7 +700,7 @@ plt.PlotScatter(dataXs, dataCos);
 plt.Title("Very Complicated Data", color: Color.White);
 plt.XLabel("Experiment Duration", color: Color.LightGray);
 plt.YLabel("Productivity", color: Color.LightGray);
-plt.Save(600, 400, "22_Custom_Colors.png");
+plt.SaveFig(600, 400, "22_Custom_Colors.png");
 ```
 
 ![](images/22_Custom_Colors.png)
@@ -708,7 +728,7 @@ plt.TightenLayout(padding: 0); // dont pad the data area at all
 
 plt.PlotScatter(dataXs, dataSin);
 plt.PlotScatter(dataXs, dataCos);
-plt.Save(600, 400, "23_Frameless_Plot.png");
+plt.SaveFig(600, 400, "23_Frameless_Plot.png");
 ```
 
 ![](images/23_Frameless_Plot.png)
@@ -728,7 +748,7 @@ var plt = new ScottPlot.Plot(width, height);
 plt.PlotScatter(dataXs, dataSin);
 plt.PlotScatter(dataXs, dataCos);
 plt.Grid(false);
-plt.Save(600, 400, "24_Disable_the_Grid.png");
+plt.SaveFig(600, 400, "24_Disable_the_Grid.png");
 ```
 
 ![](images/24_Disable_the_Grid.png)
@@ -749,7 +769,7 @@ plt.PlotScatter(dataXs, dataSin);
 plt.PlotScatter(dataXs, dataCos);
 plt.Grid(false);
 plt.Frame(right: false, top: false);
-plt.Save(600, 400, "25_Corner_Axis_Frame.png");
+plt.SaveFig(600, 400, "25_Corner_Axis_Frame.png");
 ```
 
 ![](images/25_Corner_Axis_Frame.png)
@@ -771,7 +791,7 @@ plt.PlotScatter(dataXs, dataCos);
 plt.Grid(false);
 plt.Ticks(displayTicksY: false);
 plt.Frame(left: false, right: false, top: false);
-plt.Save(600, 400, "26_Horizontal_Ticks_Only.png");
+plt.SaveFig(600, 400, "26_Horizontal_Ticks_Only.png");
 ```
 
 ![](images/26_Horizontal_Ticks_Only.png)
@@ -789,7 +809,7 @@ double[] largeYs = ScottPlot.DataGen.Random(rand, pointCount, 1e21);
 
 var plt = new ScottPlot.Plot(width, height);
 plt.PlotScatter(largeXs, largeYs);
-plt.Save(600, 400, "27_Very_Large_Numbers.png");
+plt.SaveFig(600, 400, "27_Very_Large_Numbers.png");
 ```
 
 ![](images/27_Very_Large_Numbers.png)
@@ -804,7 +824,7 @@ double[] tenMillionPoints = ScottPlot.DataGen.SinSweep(10_000_000, 8);
 
 var plt = new ScottPlot.Plot(width, height);
 plt.PlotSignal(tenMillionPoints);
-plt.Save(600, 400, "28b_Multiplier_Notation_Default.png");
+plt.SaveFig(600, 400, "28b_Multiplier_Notation_Default.png");
 ```
 
 ![](images/28b_Multiplier_Notation_Default.png)
@@ -820,7 +840,7 @@ double bigNumber = 9876;
 var plt = new ScottPlot.Plot(width, height);
 plt.Title("panned far and really zoomed in");
 plt.Axis(bigNumber, bigNumber + .00001, bigNumber, bigNumber + .00001);
-plt.Save(600, 400, "28_Axis_Exponent_And_Offset.png");
+plt.SaveFig(600, 400, "28_Axis_Exponent_And_Offset.png");
 ```
 
 ![](images/28_Axis_Exponent_And_Offset.png)
@@ -839,7 +859,7 @@ double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 var plt = new ScottPlot.Plot(2000, 1000);
 plt.PlotScatter(dataXs, dataSin);
 plt.PlotScatter(dataXs, dataCos);
-plt.Save(600, 400, "29_Very_Large_Images.png");
+plt.SaveFig(600, 400, "29_Very_Large_Images.png");
 ```
 
 ![](images/29_Very_Large_Images.png)
@@ -859,7 +879,7 @@ var plt = new ScottPlot.Plot(width, height);
 plt.Title("Displaying 10 million points with PlotSignal()");
 plt.Benchmark();
 plt.PlotSignal(tenMillionPoints, sampleRate: 20_000);
-plt.Save(600, 400, "30a_Signal.png");
+plt.SaveFig(600, 400, "30a_Signal.png");
 ```
 
 ![](images/30a_Signal.png)
@@ -881,7 +901,7 @@ var plt = new ScottPlot.Plot(width, height);
 plt.Title("Displaying 10 million points with PlotSignalConst()");
 plt.Benchmark();
 plt.PlotSignalConst(tenMillionPoints, sampleRate: 20_000);
-plt.Save(600, 400, "30c_SignalConst.png");
+plt.SaveFig(600, 400, "30c_SignalConst.png");
 ```
 
 ![](images/30c_SignalConst.png)
@@ -896,7 +916,7 @@ double[] tenMillionPoints = ScottPlot.DataGen.SinSweep(10_000_000, 8);
 
 var plt = new ScottPlot.Plot(width, height);
 plt.PlotSignal(tenMillionPoints, 20000, lineWidth: 3, color: Color.Red);
-plt.Save(600, 400, "32_Signal_Styling.png");
+plt.SaveFig(600, 400, "32_Signal_Styling.png");
 ```
 
 ![](images/32_Signal_Styling.png)
@@ -916,8 +936,8 @@ var plt = new ScottPlot.Plot(width, height);
 plt.PlotScatter(dataXs, dataSin);
 plt.PlotScatter(dataXs, dataCos);
 plt.PlotVLine(17);
-plt.PlotHLine(-.25, color: Color.Red, lineWidth: 3);
-plt.Save(600, 400, "40_Vertical_and_Horizontal_Lines.png");
+plt.PlotHLine(-.25, color: Color.Red, lineWidth: 3, lineStyle: ScottPlot.LineStyle.Dash);
+plt.SaveFig(600, 400, "40_Vertical_and_Horizontal_Lines.png");
 ```
 
 ![](images/40_Vertical_and_Horizontal_Lines.png)
@@ -953,7 +973,7 @@ plt.PlotScatter(dataXs, dataCos, label: "above",
 
 plt.Legend();
 
-plt.Save(600, 400, "41_Axis_Spans.png");
+plt.SaveFig(600, 400, "41_Axis_Spans.png");
 ```
 
 ![](images/41_Axis_Spans.png)
@@ -977,7 +997,7 @@ plt.XLabel("Experiment Duration");
 plt.YLabel("Productivity");
 plt.Legend();
 plt.Style(ScottPlot.Style.Blue1);
-plt.Save(600, 400, "50_StyleBlue1.png");
+plt.SaveFig(600, 400, "50_StyleBlue1.png");
 ```
 
 ![](images/50_StyleBlue1.png)
@@ -1001,7 +1021,7 @@ plt.XLabel("Experiment Duration");
 plt.YLabel("Productivity");
 plt.Legend();
 plt.Style(ScottPlot.Style.Blue2);
-plt.Save(600, 400, "51_StyleBlue2.png");
+plt.SaveFig(600, 400, "51_StyleBlue2.png");
 ```
 
 ![](images/51_StyleBlue2.png)
@@ -1025,7 +1045,7 @@ plt.XLabel("Experiment Duration");
 plt.YLabel("Productivity");
 plt.Legend();
 plt.Style(ScottPlot.Style.Blue3);
-plt.Save(600, 400, "52_StyleBlue3.png");
+plt.SaveFig(600, 400, "52_StyleBlue3.png");
 ```
 
 ![](images/52_StyleBlue3.png)
@@ -1049,7 +1069,7 @@ plt.XLabel("Experiment Duration");
 plt.YLabel("Productivity");
 plt.Legend();
 plt.Style(ScottPlot.Style.Light1);
-plt.Save(600, 400, "53_StyleLight1.png");
+plt.SaveFig(600, 400, "53_StyleLight1.png");
 ```
 
 ![](images/53_StyleLight1.png)
@@ -1073,7 +1093,7 @@ plt.XLabel("Experiment Duration");
 plt.YLabel("Productivity");
 plt.Legend();
 plt.Style(ScottPlot.Style.Light2);
-plt.Save(600, 400, "54_StyleLight2.png");
+plt.SaveFig(600, 400, "54_StyleLight2.png");
 ```
 
 ![](images/54_StyleLight2.png)
@@ -1097,7 +1117,7 @@ plt.XLabel("Experiment Duration");
 plt.YLabel("Productivity");
 plt.Legend();
 plt.Style(ScottPlot.Style.Gray1);
-plt.Save(600, 400, "55_StyleGray1.png");
+plt.SaveFig(600, 400, "55_StyleGray1.png");
 ```
 
 ![](images/55_StyleGray1.png)
@@ -1121,7 +1141,7 @@ plt.XLabel("Experiment Duration");
 plt.YLabel("Productivity");
 plt.Legend();
 plt.Style(ScottPlot.Style.Gray2);
-plt.Save(600, 400, "56_StyleGray2.png");
+plt.SaveFig(600, 400, "56_StyleGray2.png");
 ```
 
 ![](images/56_StyleGray2.png)
@@ -1145,7 +1165,7 @@ plt.XLabel("Experiment Duration");
 plt.YLabel("Productivity");
 plt.Legend();
 plt.Style(ScottPlot.Style.Black);
-plt.Save(600, 400, "57_StyleBlack.png");
+plt.SaveFig(600, 400, "57_StyleBlack.png");
 ```
 
 ![](images/57_StyleBlack.png)
@@ -1169,7 +1189,7 @@ plt.XLabel("Experiment Duration");
 plt.YLabel("Productivity");
 plt.Legend();
 plt.Style(ScottPlot.Style.Default);
-plt.Save(600, 400, "58_StyleDefault.png");
+plt.SaveFig(600, 400, "58_StyleDefault.png");
 ```
 
 ![](images/58_StyleDefault.png)
@@ -1193,7 +1213,7 @@ plt.XLabel("Experiment Duration");
 plt.YLabel("Productivity");
 plt.Legend();
 plt.Style(ScottPlot.Style.Control);
-plt.Save(600, 400, "59_StyleControl.png");
+plt.SaveFig(600, 400, "59_StyleControl.png");
 ```
 
 ![](images/59_StyleControl.png)
@@ -1238,7 +1258,7 @@ for (int plotNumber = 0; plotNumber < 3; plotNumber++)
 
 plt.Title("Scatter Plot with Errorbars");
 plt.Legend();
-plt.Save(600, 400, "60_Plotting_With_Errorbars.png");
+plt.SaveFig(600, 400, "60_Plotting_With_Errorbars.png");
 ```
 
 ![](images/60_Plotting_With_Errorbars.png)
@@ -1262,7 +1282,7 @@ for (int i = 0; i < yErr.Length; i++)
 var plt = new ScottPlot.Plot(width, height);
 plt.Title("Bar Plot With Error Bars");
 plt.PlotBar(dataXs, dataSin, barWidth: .5, errorY: yErr, errorCapSize: 2);
-plt.Save(600, 400, "61_Plot_Bar_Data.png");
+plt.SaveFig(600, 400, "61_Plot_Bar_Data.png");
 ```
 
 ![](images/61_Plot_Bar_Data.png)
@@ -1304,7 +1324,7 @@ plt.Legend();
 string[] labels = { "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten" };
 plt.XTicks(Xs, labels);
 
-plt.Save(600, 400, "62_Plot_Bar_Data_Fancy.png");
+plt.SaveFig(600, 400, "62_Plot_Bar_Data_Fancy.png");
 ```
 
 ![](images/62_Plot_Bar_Data_Fancy.png)
@@ -1323,7 +1343,7 @@ double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 var plt = new ScottPlot.Plot(width, height);
 plt.PlotStep(dataXs, dataSin);
 plt.PlotStep(dataXs, dataCos);
-plt.Save(600, 400, "63_Step_Plot.png");
+plt.SaveFig(600, 400, "63_Step_Plot.png");
 ```
 
 ![](images/63_Step_Plot.png)
@@ -1343,7 +1363,7 @@ var plt = new ScottPlot.Plot(width, height);
 plt.PlotScatter(dataXs, dataSin);
 plt.PlotScatter(dataXs, dataCos);
 plt.Grid(xSpacing: 2, ySpacing: .1);
-plt.Save(600, 400, "64_Manual_Grid_Spacing.png");
+plt.SaveFig(600, 400, "64_Manual_Grid_Spacing.png");
 ```
 
 ![](images/64_Manual_Grid_Spacing.png)
@@ -1368,7 +1388,7 @@ plt.PlotStep(hist1.bins, hist1.cumulativeFrac, lineWidth: 1.5, label: "sample A"
 plt.PlotStep(hist2.bins, hist2.cumulativeFrac, lineWidth: 1.5, label: "sample B");
 plt.Legend();
 plt.Axis(null, null, 0, 1);
-plt.Save(600, 400, "66_CPH.png");
+plt.SaveFig(600, 400, "66_CPH.png");
 ```
 
 ![](images/66_CPH.png)
@@ -1387,7 +1407,7 @@ plt.YLabel("Stock Price (USD)");
 plt.PlotCandlestick(ohlcs);
 plt.Ticks(dateTimeX: true);
 
-plt.Save(600, 400, "67a_Candlestick_Days.png");
+plt.SaveFig(600, 400, "67a_Candlestick_Days.png");
 ```
 
 ![](images/67a_Candlestick_Days.png)
@@ -1416,7 +1436,7 @@ double[] tickPositions = { 0, 6, 13, 20, 27 };
 string[] tickLabels = { "Sep 23", "Sep 30", "Oct 7", "Oct 14", "Oct 21" };
 plt.XTicks(tickPositions, tickLabels);
 
-plt.Save(600, 400, "67b_Candlestick_Days_Evenly_Spaced.png");
+plt.SaveFig(600, 400, "67b_Candlestick_Days_Evenly_Spaced.png");
 ```
 
 ![](images/67b_Candlestick_Days_Evenly_Spaced.png)
@@ -1435,7 +1455,7 @@ plt.YLabel("Stock Price (USD)");
 plt.PlotCandlestick(ohlcs);
 plt.Ticks(dateTimeX: true);
 
-plt.Save(600, 400, "67_Candlestick.png");
+plt.SaveFig(600, 400, "67_Candlestick.png");
 ```
 
 ![](images/67_Candlestick.png)
@@ -1454,7 +1474,7 @@ plt.YLabel("Stock Price (USD)");
 plt.PlotOHLC(ohlcs);
 plt.Ticks(dateTimeX: true);
 
-plt.Save(600, 400, "68_OHLC.png");
+plt.SaveFig(600, 400, "68_OHLC.png");
 ```
 
 ![](images/68_OHLC.png)
@@ -1470,9 +1490,9 @@ double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
 double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
 
 var plt = new ScottPlot.Plot(width, height);
-plt.PlotScatter(dataXs, dataSin);
-plt.GetPlottables()[0].SaveCSV("scatter.csv");
-plt.Save(600, 400, "70_Save_Scatter_Data.png");
+var scatter = plt.PlotScatter(dataXs, dataSin);
+scatter.SaveCSV("scatter.csv");
+plt.SaveFig(600, 400, "70_Save_Scatter_Data.png");
 ```
 
 ![](images/70_Save_Scatter_Data.png)
@@ -1487,9 +1507,9 @@ int pointCount = 50;
 double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
 var plt = new ScottPlot.Plot(width, height);
-plt.PlotSignal(dataCos, sampleRate: 20_000);
-plt.GetPlottables()[0].SaveCSV("signal.csv");
-plt.Save(600, 400, "71_Save_Signal_Data.png");
+var signal = plt.PlotSignal(dataCos, sampleRate: 20_000);
+signal.SaveCSV("signal.csv");
+plt.SaveFig(600, 400, "71_Save_Signal_Data.png");
 ```
 
 ![](images/71_Save_Signal_Data.png)
@@ -1518,7 +1538,7 @@ plt.PlotText("wow.", 10, .6, fontName: "comic sans ms", fontSize: 36, color: Col
 plt.PlotText("NuGet", 32, 0, fontName: "comic sans ms", fontSize: 24, color: Color.Gold, bold: true);
 plt.Legend(fontName: "comic sans ms", fontSize: 16, bold: true, fontColor: Color.DarkBlue);
 plt.Ticks(fontName: "comic sans ms", fontSize: 12, color: Color.DarkBlue);
-plt.Save(600, 400, "72_Custom_Fonts.png");
+plt.SaveFig(600, 400, "72_Custom_Fonts.png");
 ```
 
 ![](images/72_Custom_Fonts.png)
@@ -1530,25 +1550,27 @@ plt.Save(600, 400, "72_Custom_Fonts.png");
 
 ```cs
 Random rand = new Random(09241985);
-var plt = new ScottPlot.MultiPlot(width: 800, height: 600, rows: 2, cols: 2);
+var mp = new ScottPlot.MultiPlot(width: 800, height: 600, rows: 2, cols: 2);
 
-plt.subplots[0].Title("Sine");
-plt.subplots[0].PlotSignal(ScottPlot.DataGen.Sin(50));
+mp.GetSubplot(0, 0).Title("Sine");
+mp.GetSubplot(0, 0).PlotSignal(ScottPlot.DataGen.Sin(50));
 
-plt.subplots[1].Title("Cosine");
-plt.subplots[1].PlotSignal(ScottPlot.DataGen.Cos(50));
+mp.GetSubplot(0, 1).Title("Cosine");
+mp.GetSubplot(0, 1).PlotSignal(ScottPlot.DataGen.Cos(50));
 
-plt.subplots[2].Title("Random Points");
-plt.subplots[2].PlotSignal(ScottPlot.DataGen.Random(rand, 50));
+mp.GetSubplot(1, 0).Title("Random Points");
+mp.GetSubplot(1, 0).PlotSignal(ScottPlot.DataGen.Random(rand, 50));
 
-plt.subplots[3].Title("Random Walk");
-plt.subplots[3].PlotSignal(ScottPlot.DataGen.RandomWalk(rand, 50));
+mp.GetSubplot(1, 1).Title("Random Walk");
+mp.GetSubplot(1, 1).PlotSignal(ScottPlot.DataGen.RandomWalk(rand, 50));
 
-// apply axes and layout from one plot to another one
-plt.subplots[2].MatchAxis(plt.subplots[3]);
-plt.subplots[2].MatchLayout(plt.subplots[3]);
+// apply axes and layout from one subplot to another
+var plotToAdjust = mp.GetSubplot(1, 0);
+var plotReference = mp.GetSubplot(1, 1);
+plotToAdjust.MatchAxis(plotReference);
+plotToAdjust.MatchLayout(plotReference);
 
-plt.Save(600, 400, "73_Multiplot.png");
+plt.SaveFig(600, 400, "73_Multiplot.png");
 ```
 
 ![](images/73_Multiplot.png)
@@ -1573,7 +1595,7 @@ plt.Legend();
 plottable1.visible = true;
 plottable2.visible = false;
 
-plt.Save(600, 400, "74_Set_Visibility.png");
+plt.SaveFig(600, 400, "74_Set_Visibility.png");
 ```
 
 ![](images/74_Set_Visibility.png)
@@ -1614,7 +1636,7 @@ plt.PlotSignal(data, colorByDensity: colors);
 plt.Title("Color by Density vs. Solid Color");
 plt.AxisAuto(0, .1);
 
-plt.Save(600, 400, "75_Color_By_Density.png");
+plt.SaveFig(600, 400, "75_Color_By_Density.png");
 ```
 
 ![](images/75_Color_By_Density.png)
@@ -1644,7 +1666,7 @@ plt.PlotLine(x1, y1, x2, y2, lineWidth: 3, label: "linear regression");
 plt.Legend();
 plt.Title(model.ToString());
 
-plt.Save(600, 400, "76_Linear_Regression.png");
+plt.SaveFig(600, 400, "76_Linear_Regression.png");
 ```
 
 ![](images/76_Linear_Regression.png)
@@ -1672,7 +1694,7 @@ plt.Title("Partial Display of a 1,000,000 Element Array");
 plt.YLabel("Value");
 plt.XLabel("Array Index");
 
-plt.Save(600, 400, "77_Signal_Plot_First_N_Points.png");
+plt.SaveFig(600, 400, "77_Signal_Plot_First_N_Points.png");
 
 
 // you can change the points to plot later (useful for live plots of incoming data)
@@ -1716,9 +1738,83 @@ subplot2.Title("Data (Log Scale)");
 subplot2.YLabel("Vertical Units (10^)");
 subplot2.XLabel("Horizontal Units");
 
-plt.Save(600, 400, "78_Log_Axis.png");
+plt.SaveFig(600, 400, "78_Log_Axis.png");
 ```
 
 ![](images/78_Log_Axis.png)
+
+
+
+
+## Localized Culture Date Formatting
+
+```cs
+// generate some data
+Random rand = new Random(0);
+double[] price = ScottPlot.DataGen.RandomWalk(rand, 60 * 8, 10000);
+DateTime start = new DateTime(2019, 08, 25, 8, 30, 00);
+double pointsPerDay = 24 * 60;
+
+// create the plot
+var plt = new ScottPlot.Plot(width, height);
+plt.PlotSignal(price, sampleRate: pointsPerDay, xOffset: start.ToOADate());
+plt.Ticks(dateTimeX: true);
+plt.YLabel("Price");
+plt.XLabel("Date and Time");
+plt.Title("Hungarian Formatted DateTime Tick Labels");
+plt.Ticks(useMultiplierNotation: false);
+
+// set the localization
+var culture = System.Globalization.CultureInfo.CreateSpecificCulture("hu"); // Hungarian
+plt.SetCulture(culture);
+
+plt.SaveFig(600, 400, "79b_Localized_Culture_Date_Formatting.png");
+```
+
+![](images/79b_Localized_Culture_Date_Formatting.png)
+
+
+
+
+## Localized Culture Number Formatting
+
+```cs
+var plt = new ScottPlot.Plot(width, height);
+
+// plot data with a big X range and small Y range
+double bigNumber = 1234567;
+double smallNumber = 0.012345;
+plt.PlotPoint(0, 0, markerSize: 20);
+plt.PlotPoint(bigNumber, smallNumber, markerSize: 20);
+plt.YLabel("Small Numbers");
+plt.XLabel("Large Numbers");
+plt.Title("German Formatted Numerical Tick Labels");
+plt.Ticks(useMultiplierNotation: false);
+
+// set the localization
+var culture = System.Globalization.CultureInfo.CreateSpecificCulture("de"); // German
+plt.SetCulture(culture);
+
+plt.SaveFig(600, 400, "79_Localized_Culture_Number_Formatting.png");
+```
+
+![](images/79_Localized_Culture_Number_Formatting.png)
+
+
+
+
+## Plotting Functions
+
+```cs
+var plt = new ScottPlot.Plot(width, height);
+double[] xs = ScottPlot.DataGen.Consecutive(200, 0.1, -10);
+plt.PlotScatter(xs, xs.Select(x => 10 * Math.Sin(x)).ToArray());
+plt.PlotScatter(xs, xs.Select(x => Math.Pow(x, 3)).ToArray());
+plt.Axis(-10, 10, -10, 50);
+
+plt.SaveFig(600, 400, "80_Plotting_Functions.png");
+```
+
+![](images/80_Plotting_Functions.png)
 
 

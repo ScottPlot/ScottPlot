@@ -48,13 +48,14 @@ namespace ScottPlot
         public readonly Config.Layout layout = new Config.Layout();
         public Config.Ticks ticks = new Config.Ticks();
         public Config.Legend legend = new Config.Legend();
+        public System.Globalization.CultureInfo culture = System.Globalization.CultureInfo.DefaultThreadCurrentCulture;
 
         // mouse interaction
         public Rectangle? mouseMiddleRect = null;
 
         // scales calculations must occur at this level because the axes are unaware of pixel dimensions
-        public double xAxisScale { get { return bmpData.Width / axes.x.span; } } // pixels per unit
-        public double yAxisScale { get { return bmpData.Height / axes.y.span; } } // pixels per unit
+        public double xAxisScale { get { return dataSize.Width / axes.x.span; } } // pixels per unit
+        public double yAxisScale { get { return dataSize.Height / axes.y.span; } } // pixels per unit
         public double xAxisUnitsPerPixel { get { return 1.0 / xAxisScale; } }
         public double yAxisUnitsPerPixel { get { return 1.0 / yAxisScale; } }
 
@@ -174,22 +175,54 @@ namespace ScottPlot
             }
         }
 
-        public PointF GetPixel(double locationX, double locationY)
+        /// <summary>
+        /// Returns the X pixel corresponding to an X axis coordinate
+        /// </summary>
+        public double GetPixelX(double locationX)
         {
-            // Return the pixel location on the data bitmap corresponding to an X/Y location.
-            // This is useful when drawing graphics on the data bitmap.
-            float xPx = (float)((locationX - axes.x.min) * xAxisScale);
-            float yPx = dataSize.Height - (float)((locationY - axes.y.min) * yAxisScale);
-            return new PointF(xPx, yPx);
+            return (locationX - axes.x.min) * xAxisScale;
         }
 
+        /// <summary>
+        /// Returns the Y pixel corresponding to a Y axis coordinate
+        /// </summary>
+        public double GetPixelY(double locationY)
+        {
+            return dataSize.Height - (float)((locationY - axes.y.min) * yAxisScale);
+        }
+
+        /// <summary>
+        /// Returns the pixel corresponding to axis coordinates
+        /// </summary>
+        public PointF GetPixel(double locationX, double locationY)
+        {
+            return new PointF((float)GetPixelX(locationX), (float)GetPixelY(locationY));
+        }
+
+        /// <summary>
+        /// Returns the X axis coordinate corresponding to a X pixel on the plot
+        /// </summary>
+        public double GetLocationX(double pixelX)
+        {
+            return (pixelX - dataOrigin.X) / xAxisScale + axes.x.min;
+        }
+
+        /// <summary>
+        /// Returns the Y axis coordinate corresponding to a Y pixel on the plot
+        /// </summary>
+        public double GetLocationY(double pixelY)
+        {
+            return axes.y.max - (pixelY - dataOrigin.Y) / yAxisScale;
+        }
+
+        /// <summary>
+        /// Returns axis coordinates corresponding to a pixel on the plot
+        /// </summary>
         public PointF GetLocation(double pixelX, double pixelY)
         {
             // Return the X/Y location corresponding to a pixel position on the figure bitmap.
             // This is useful for converting a mouse position to an X/Y coordinate.
-            double locationX = (pixelX - dataOrigin.X) / xAxisScale + axes.x.min;
-            double locationY = axes.y.max - (pixelY - dataOrigin.Y) / yAxisScale;
-            return new PointF((float)locationX, (float)locationY);
+            return new PointF((float)GetLocationX(pixelX), (float)GetLocationY(pixelY));
         }
 
         public int GetTotalPointCount()

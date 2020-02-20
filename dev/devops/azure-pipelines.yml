@@ -13,9 +13,6 @@ strategy:
 pool:
   vmImage: $(imageName)
 
-variables:
-  buildConfiguration: 'Release'
-
 steps:
 
 ### INSTALL NUGET AND RESTORE PACKAGES

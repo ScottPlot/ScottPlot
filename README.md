@@ -51,8 +51,10 @@ formsPlot1.Render();
 
 ### Interactive Plot (WPF)
 * Install the `ScottPlot.WPF` NuGet package
-* Add `<ScottPlot:WpfPlot Name="wpfPlot1"/>` to your XAML file
-* Add the following to the start-up sequence:
+* Add the WpfPlot control by modifying your XAML file:
+  * Add `xmlns:ScottPlot="clr-namespace:ScottPlot;assembly=ScottPlot.WPF"` to the top section
+  * Add `<ScottPlot:WpfPlot Name="wpfPlot1" />` to the layout area
+* Add code to the startup sequence of your CS file:
 ```cs
 double[] dataX = new double[] {1, 2, 3, 4, 5};
 double[] dataY = new double[] {1, 4, 9, 16, 25};

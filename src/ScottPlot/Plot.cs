@@ -331,6 +331,31 @@ namespace ScottPlot
             return scatterPlot;
         }
 
+        public PlottableFunction PlotFunction(
+            Func<double, double?> function,
+            double minX,
+            double maxX,
+            double minY,
+            double maxY,
+            Color? color = null,
+            double lineWidth = 1,
+            double markerSize = 0,
+            string label = "f(x)",
+            MarkerShape markerShape = MarkerShape.filledCircle,
+            LineStyle lineStyle = LineStyle.Solid
+        )
+        {
+            if (color == null)
+            {
+                color = settings.GetNextColor();
+            }
+
+            PlottableFunction functionPlot = new PlottableFunction(function, minX, maxX, minY, maxY, color.Value, lineWidth, markerSize, label, markerShape, lineStyle);
+
+            settings.plottables.Add(functionPlot);
+            return functionPlot;
+        }
+
         public PlottableScatter PlotScatter(
             double[] xs,
             double[] ys,
@@ -552,6 +577,23 @@ namespace ScottPlot
 
             settings.plottables.Add(barPlot);
             return barPlot;
+        }
+
+        public PlottableBoxAndWhisker PlotBoxAndWhisker(Statistics.BoxAndWhisker[] boxes)
+        {
+            var bawPlot = new PlottableBoxAndWhisker(boxes);
+            settings.plottables.Add(bawPlot);
+            return bawPlot;
+        }
+
+        public PlottableBoxAndWhiskerV2 PlotBoxAndWhiskerV2(double[] xs, double[][] ys, MarkerShape markerShape = MarkerShape.asterisk, double lineWidth = 2, Color? color = null, string label = null, double boxWidth = 50)
+        {
+            if (!color.HasValue)
+                color = settings.GetNextColor();
+
+            PlottableBoxAndWhiskerV2 boxWhisker = new PlottableBoxAndWhiskerV2(xs, ys, color.Value, label, markerShape, lineWidth, boxWidth);
+            settings.plottables.Add(boxWhisker);
+            return boxWhisker;
         }
 
         public PlottableOHLC PlotOHLC(OHLC[] ohlcs)
@@ -1243,6 +1285,11 @@ namespace ScottPlot
 
             //foreach (var plottable in GetPlottables())
             //plottable.useParallel = useParallel;
+        }
+
+        public void SetCulture(System.Globalization.CultureInfo culture)
+        {
+            settings.culture = culture;
         }
 
         #endregion
