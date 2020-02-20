@@ -24,10 +24,14 @@ namespace ScottPlotDemos
             label1.Text = "";
             if (!Environment.Is64BitProcess)
             {
-                var result = MessageBox.Show("This demo require 3 GB memory allocation\nRebuild demo project in x64 mode for correct work", 
-                    "x64 mode not detected",
-                    MessageBoxButtons.AbortRetryIgnore);
-                if (result == DialogResult.Abort)
+                var result = MessageBox.Show(
+                    "This demo is was built for 32-bit but requires 64-bit to function properly. " +
+                    "Plots may render but will be EXTREMELY slow.\n\nDo you wish to continue?",
+                    "x64 mode required",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning
+                    );
+                if (result == DialogResult.No)
                     Load += (s, e) => Close();
             }
         }
@@ -73,10 +77,13 @@ namespace ScottPlotDemos
             if (plot.TreesReady == false)
             {
                 label1.Text = "calculating trees - failed";
-                var result = MessageBox.Show("This demo require 3GB free memory and x64 mode\nDemo will fallback to extreemly slow render\nDo you want to quit?",
-                    "Trees not calculated",
-                    MessageBoxButtons.YesNo);
-                if (result == DialogResult.Yes)
+                var result = MessageBox.Show(
+                    "Trees were not calculated because your system is not x64 or does not have 3GB of free memory.\n\n" +
+                    "It may still be possible to render a plot but it will be be EXTREMELY slow.\n\nDo you want to continue?",
+                    "Calculation Error",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning);
+                if (result == DialogResult.No)
                 {
                     Close();
                     return;
