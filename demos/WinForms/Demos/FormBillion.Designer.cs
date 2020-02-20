@@ -50,7 +50,7 @@
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(286, 35);
             this.button1.TabIndex = 2;
-            this.button1.Text = "generate ONE BILLION random data points";
+            this.button1.Text = "generate ONE BILLION data points";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.Button1_Click);
             // 
@@ -64,7 +64,7 @@
             this.label1.TabIndex = 3;
             this.label1.Text = "label1";
             // 
-            // Form1
+            // FormBillion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -72,7 +72,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.formsPlot1);
-            this.Name = "Form1";
+            this.Name = "FormBillion";
             this.Text = "One Billion Points";
             this.ResumeLayout(false);
             this.PerformLayout();
