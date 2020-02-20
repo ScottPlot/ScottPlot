@@ -20,6 +20,19 @@ namespace ScottPlotTests
             Console.WriteLine();
         }
 
+        public static void SaveFig(ScottPlot.MultiPlot mplt, string subName = "")
+        {
+            var stackTrace = new System.Diagnostics.StackTrace();
+            string callingMethod = stackTrace.GetFrame(1).GetMethod().Name;
+
+            string fileName = callingMethod + ".png";
+            string filePath = System.IO.Path.GetFullPath(fileName);
+            mplt.SaveFig(filePath);
+
+            Console.WriteLine($"Saved: {filePath}");
+            Console.WriteLine();
+        }
+
         private static void DisplayRenderInfo(string callingMethod, string subName, int totalPoints, double renderTimeMs)
         {
             Console.WriteLine($"{callingMethod}() {subName}");
