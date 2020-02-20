@@ -9,7 +9,7 @@ namespace ScottPlotTests.Misc
     public class SignalHiddenLines
     {
         [Test]
-        public void Test_HiddenLines_1()
+        public void Test_HiddenLines_RenderAsThickAsMarkers()
         {
             var mplt = new MultiPlot(800, 300, 1, 2);
 
