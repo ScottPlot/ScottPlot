@@ -849,6 +849,16 @@ namespace ScottPlot
             settings.axes.y.Pan(dy);
         }
 
+        public double CoordinateFromPixelX(double pixelX)
+        {
+            return settings.GetLocationX(pixelX);
+        }
+
+        public double CoordinateFromPixelY(double pixelY)
+        {
+            return settings.GetLocationX(pixelY);
+        }
+
         public PointF CoordinateFromPixel(int pixelX, int pixelY)
         {
             return settings.GetLocation(pixelX, pixelY);
