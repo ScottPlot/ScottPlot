@@ -55,8 +55,9 @@ namespace ScottPlotDemos
 
         private void formsPlot1_MouseMoved(object sender, EventArgs e)
         {
-            double xCoordiante = formsPlot1.mouseCoordinates.X;
-            double yCoordinate = formsPlot1.mouseCoordinates.Y;
+            Point mousePixel = formsPlot1.PointToClient(Cursor.Position);
+            double xCoordiante = formsPlot1.plt.CoordinateFromPixelX(mousePixel.X);
+            double yCoordinate = formsPlot1.plt.CoordinateFromPixelY(mousePixel.Y);
             DateTime dt = DateTime.FromOADate(xCoordiante);
             mouseTextbox.Text = $"Time (X) = {dt}\r\nValue (Y) = {yCoordinate}";
         }
