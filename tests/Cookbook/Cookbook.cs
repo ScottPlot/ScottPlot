@@ -977,7 +977,7 @@ namespace ScottPlotTests.Cookbook
 
             var plt = new ScottPlot.Plot(width, height);
 
-            // things plotted after before spans are covered by them
+            // things plotted before spans get covered by them
             plt.PlotScatter(dataXs, dataSin, label: "below",
                 color: Color.Red, markerShape: ScottPlot.MarkerShape.filledCircle);
 
