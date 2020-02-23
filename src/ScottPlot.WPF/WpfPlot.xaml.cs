@@ -53,6 +53,8 @@ namespace ScottPlot
                 mainGrid.RowDefinitions[0].Height = new GridLength(0);
                 CanvasPlot_SizeChanged(null, null);
                 dpiScale = settings.gfxFigure.DpiX / 96;
+                canvasDesigner.Background = Brushes.Transparent;
+                canvasPlot.Background = Brushes.Transparent;
             }
         }
 
