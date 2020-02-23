@@ -1,6 +1,6 @@
 ﻿namespace ScottPlotDemos
 {
-    partial class FormTimeAxis
+    partial class FormDateTimeAxis
     {
         /// <summary>
         /// Required designer variable.
@@ -42,8 +42,11 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.formsPlot1 = new ScottPlot.FormsPlot();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.mouseTextbox = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // cbHorizontal
@@ -94,14 +97,14 @@
             this.groupBox2.Controls.Add(this.button1);
             this.groupBox2.Location = new System.Drawing.Point(163, 12);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(736, 48);
+            this.groupBox2.Size = new System.Drawing.Size(251, 108);
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Time Range";
             // 
             // button9
             // 
-            this.button9.Location = new System.Drawing.Point(654, 19);
+            this.button9.Location = new System.Drawing.Point(168, 77);
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(75, 23);
             this.button9.TabIndex = 2;
@@ -111,7 +114,7 @@
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(573, 19);
+            this.button8.Location = new System.Drawing.Point(87, 77);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(75, 23);
             this.button8.TabIndex = 2;
@@ -121,7 +124,7 @@
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(492, 19);
+            this.button7.Location = new System.Drawing.Point(6, 77);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(75, 23);
             this.button7.TabIndex = 2;
@@ -131,7 +134,7 @@
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(411, 19);
+            this.button6.Location = new System.Drawing.Point(168, 48);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(75, 23);
             this.button6.TabIndex = 2;
@@ -141,7 +144,7 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(330, 19);
+            this.button5.Location = new System.Drawing.Point(87, 48);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(75, 23);
             this.button5.TabIndex = 2;
@@ -151,7 +154,7 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(249, 19);
+            this.button4.Location = new System.Drawing.Point(6, 48);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(75, 23);
             this.button4.TabIndex = 1;
@@ -194,25 +197,51 @@
             this.formsPlot1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.formsPlot1.Location = new System.Drawing.Point(12, 66);
+            this.formsPlot1.Location = new System.Drawing.Point(12, 126);
             this.formsPlot1.Name = "formsPlot1";
-            this.formsPlot1.Size = new System.Drawing.Size(887, 455);
+            this.formsPlot1.Size = new System.Drawing.Size(887, 395);
             this.formsPlot1.TabIndex = 4;
+            this.formsPlot1.MouseMoved += new System.EventHandler(this.formsPlot1_MouseMoved);
             // 
-            // Form1
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.mouseTextbox);
+            this.groupBox3.Location = new System.Drawing.Point(420, 12);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(213, 108);
+            this.groupBox3.TabIndex = 5;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Mouse Position";
+            // 
+            // mouseTextbox
+            // 
+            this.mouseTextbox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.mouseTextbox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mouseTextbox.Location = new System.Drawing.Point(3, 16);
+            this.mouseTextbox.Multiline = true;
+            this.mouseTextbox.Name = "mouseTextbox";
+            this.mouseTextbox.ReadOnly = true;
+            this.mouseTextbox.Size = new System.Drawing.Size(207, 89);
+            this.mouseTextbox.TabIndex = 0;
+            this.mouseTextbox.Text = "mouse position";
+            // 
+            // FormDateTimeAxis
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(911, 533);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.formsPlot1);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.Name = "Form1";
-            this.Text = "Time Axis Demo";
+            this.Name = "FormDateTimeAxis";
+            this.Text = "DateTime Axis Demo";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -233,6 +262,8 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
         private ScottPlot.FormsPlot formsPlot1;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.TextBox mouseTextbox;
     }
 }
 

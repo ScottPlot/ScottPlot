@@ -52,6 +52,7 @@
             this.btnCustomGrid = new System.Windows.Forms.Button();
             this.btnLegend = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnBoxAndWhisker = new System.Windows.Forms.Button();
             this.SignalDistribution = new System.Windows.Forms.Button();
             this.btnBarGraph = new System.Windows.Forms.Button();
             this.btnDraggableAxisLines = new System.Windows.Forms.Button();
@@ -80,7 +81,6 @@
             this.lblGitHubUrl = new System.Windows.Forms.Label();
             this.lblVersion = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.btnBoxAndWhisker = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage3.SuspendLayout();
@@ -123,7 +123,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(505, 246);
+            this.tabPage1.Size = new System.Drawing.Size(505, 317);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Common Plots";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -361,6 +361,16 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "More Plot Types";
             // 
+            // btnBoxAndWhisker
+            // 
+            this.btnBoxAndWhisker.Location = new System.Drawing.Point(6, 193);
+            this.btnBoxAndWhisker.Name = "btnBoxAndWhisker";
+            this.btnBoxAndWhisker.Size = new System.Drawing.Size(137, 23);
+            this.btnBoxAndWhisker.TabIndex = 15;
+            this.btnBoxAndWhisker.Text = "Box and Whisker";
+            this.btnBoxAndWhisker.UseVisualStyleBackColor = true;
+            this.btnBoxAndWhisker.Click += new System.EventHandler(this.btnBoxAndWhisker_Click);
+            // 
             // SignalDistribution
             // 
             this.SignalDistribution.Location = new System.Drawing.Point(6, 164);
@@ -440,7 +450,7 @@
             this.tabPage2.Controls.Add(this.label10);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Size = new System.Drawing.Size(505, 246);
+            this.tabPage2.Size = new System.Drawing.Size(505, 317);
             this.tabPage2.TabIndex = 5;
             this.tabPage2.Text = "Live Data";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -511,7 +521,7 @@
             this.tabPage4.Controls.Add(this.label7);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(505, 246);
+            this.tabPage4.Size = new System.Drawing.Size(505, 317);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Testing";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -576,9 +586,9 @@
             this.btnTimeAxis.Name = "btnTimeAxis";
             this.btnTimeAxis.Size = new System.Drawing.Size(107, 23);
             this.btnTimeAxis.TabIndex = 18;
-            this.btnTimeAxis.Text = "Time Axis";
+            this.btnTimeAxis.Text = "DateTime Axis";
             this.btnTimeAxis.UseVisualStyleBackColor = true;
-            this.btnTimeAxis.Click += new System.EventHandler(this.btnTimeAxis_Click);
+            this.btnTimeAxis.Click += new System.EventHandler(this.btnDateTimeAxis_Click);
             // 
             // btnTickTester
             // 
@@ -617,7 +627,7 @@
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(505, 246);
+            this.tabPage5.Size = new System.Drawing.Size(505, 317);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "About";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -661,16 +671,6 @@
             this.label3.TabIndex = 8;
             this.label3.Text = "ScottPlot";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // btnBoxAndWhisker
-            // 
-            this.btnBoxAndWhisker.Location = new System.Drawing.Point(6, 193);
-            this.btnBoxAndWhisker.Name = "btnBoxAndWhisker";
-            this.btnBoxAndWhisker.Size = new System.Drawing.Size(137, 23);
-            this.btnBoxAndWhisker.TabIndex = 15;
-            this.btnBoxAndWhisker.Text = "Box and Whisker";
-            this.btnBoxAndWhisker.UseVisualStyleBackColor = true;
-            this.btnBoxAndWhisker.Click += new System.EventHandler(this.btnBoxAndWhisker_Click);
             // 
             // FormMain
             // 

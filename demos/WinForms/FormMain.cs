@@ -32,7 +32,8 @@ namespace ScottPlotDemos
                 //btnRegression_Click(null, null);
                 //btnIncoming_Click(null, null);
                 //btnTickTester_Click(null, null);
-                btnBoxAndWhisker_Click(null, null);
+                //btnBoxAndWhisker_Click(null, null);
+                btnDateTimeAxis_Click(null, null);
             }
         }
 
@@ -155,9 +156,9 @@ namespace ScottPlotDemos
                 frm.ShowDialog();
         }
 
-        private void btnTimeAxis_Click(object sender, EventArgs e)
+        private void btnDateTimeAxis_Click(object sender, EventArgs e)
         {
-            using (var frm = new FormTimeAxis())
+            using (var frm = new FormDateTimeAxis())
                 frm.ShowDialog();
         }
 
