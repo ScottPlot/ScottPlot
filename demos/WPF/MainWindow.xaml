@@ -6,8 +6,45 @@
         xmlns:local="clr-namespace:WpfApp"
         xmlns:ScottPlot="clr-namespace:ScottPlot;assembly=ScottPlot.WPF"
         mc:Ignorable="d"
-        Title="WPF Quickstart" Height="450" Width="800">
-    <Grid>
-        <ScottPlot:WpfPlot Name="wpfPlot1"/>
-    </Grid>
+        Title="ScottPlot for WPF" Height="300" Width="400">
+
+
+    <StackPanel Orientation="Vertical">
+
+        <StackPanel.Resources>
+            <Style x:Key="LaunchButton" TargetType="Button">
+                <Setter Property="Padding" Value="5" />
+                <Setter Property="Margin" Value="10" />
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style>
+            <Style x:Key="DescriptionTextBlock" TargetType="TextBlock">
+                <Setter Property="Margin" Value="0,5,5,5" />
+                <Setter Property="TextWrapping" Value="Wrap"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style>
+        </StackPanel.Resources>
+
+        <Grid>
+            <Label Content="ScottPlot Examples in WPF" FontSize="24"/>
+            <Label Name="VersionLabel" Content="version 4.5.67"
+                   FontStyle="Italic"
+                   Foreground="Gray"  Margin="24, 25, 0, 0" />
+        </Grid>
+
+        <DockPanel>
+            <Button Content="Quickstart" Click="LaunchQuickstart" Style="{StaticResource LaunchButton}"/>
+            <TextBlock Style="{StaticResource DescriptionTextBlock}">
+            Minimal-case interacive plot in a WPF application
+            </TextBlock>
+        </DockPanel>
+        
+        <DockPanel>
+            <Button Content="Interactive Multiplot" Click="LaunchProceduralPlots" Style="{StaticResource LaunchButton}"/>
+            <TextBlock Style="{StaticResource DescriptionTextBlock}">
+            Create many interactive plots programmatically
+            </TextBlock>
+        </DockPanel>
+
+    </StackPanel>
+
 </Window>
