@@ -10,11 +10,15 @@ using System.Windows.Forms;
 
 namespace ScottPlotDemos
 {
-    public partial class FormTimeAxis : Form
+    public partial class FormDateTimeAxis : Form
     {
-        public FormTimeAxis()
+        public FormDateTimeAxis()
         {
             InitializeComponent();
+        }
+
+        private void SamplePlotWithDateAxis()
+        {
             formsPlot1.plt.Ticks(dateTimeX: cbHorizontal.Checked);
             Random rand = new Random();
             formsPlot1.plt.PlotSignal(
@@ -29,7 +33,32 @@ namespace ScottPlotDemos
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            //SamplePlotWithDateAxis();
+            SamplePlotChris();
+        }
 
+        private void SamplePlotChris()
+        {
+            // https://github.com/swharden/ScottPlot/issues/269
+
+            int pointCount = 10;
+            double[] ys = ScottPlot.DataGen.RandomWalk(null, pointCount, 100);
+            double[] xs = new double[pointCount];
+            for (int i = 0; i < pointCount; i++)
+                xs[i] = DateTime.Now.AddSeconds(i).ToOADate();
+
+            formsPlot1.plt.PlotScatter(xs, ys);
+            formsPlot1.plt.Ticks(dateTimeX: true);
+            formsPlot1.plt.AxisAuto();
+            formsPlot1.Render();
+        }
+
+        private void formsPlot1_MouseMoved(object sender, EventArgs e)
+        {
+            double xCoordiante = formsPlot1.mouseCoordinates.X;
+            double yCoordinate = formsPlot1.mouseCoordinates.Y;
+            DateTime dt = DateTime.FromOADate(xCoordiante);
+            mouseTextbox.Text = $"Time (X) = {dt}\r\nValue (Y) = {yCoordinate}";
         }
 
         private void CbHorizontal_CheckedChanged(object sender, EventArgs e)

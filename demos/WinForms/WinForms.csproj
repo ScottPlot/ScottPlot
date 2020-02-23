@@ -181,11 +181,11 @@
     <Compile Include="Demos\FormTickTester.Designer.cs">
       <DependentUpon>FormTickTester.cs</DependentUpon>
     </Compile>
-    <Compile Include="Demos\FormTimeAxis.cs">
+    <Compile Include="Demos\FormDateTimeAxis.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Demos\FormTimeAxis.Designer.cs">
-      <DependentUpon>FormTimeAxis.cs</DependentUpon>
+    <Compile Include="Demos\FormDateTimeAxis.Designer.cs">
+      <DependentUpon>FormDateTimeAxis.cs</DependentUpon>
     </Compile>
     <Compile Include="Demos\FormToggleVis.cs">
       <SubType>Form</SubType>
@@ -318,8 +318,8 @@
     <EmbeddedResource Include="Demos\FormTickTester.resx">
       <DependentUpon>FormTickTester.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Demos\FormTimeAxis.resx">
-      <DependentUpon>FormTimeAxis.cs</DependentUpon>
+    <EmbeddedResource Include="Demos\FormDateTimeAxis.resx">
+      <DependentUpon>FormDateTimeAxis.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Demos\FormToggleVis.resx">
       <DependentUpon>FormToggleVis.cs</DependentUpon>
