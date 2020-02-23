@@ -27,19 +27,30 @@ namespace ScottPlot
     public partial class WpfPlot : UserControl
     {
         public readonly Plot plt;
-        private readonly Settings settings;
-        private readonly bool isDesignerMode;
+        private Settings settings;
+        private bool isDesignerMode;
         public Cursor cursor = Cursors.Arrow;
+        private double dpiScale = 1;
 
-        private readonly double dpiScale = 1;
+        public WpfPlot(Plot plt)
+        {
+            InitializeComponent();
+            this.plt = plt;
+            InitializeScottPlot();
+        }
 
         public WpfPlot()
         {
             InitializeComponent();
+            plt = new Plot();
+            InitializeScottPlot();
+        }
+
+        private void InitializeScottPlot()
+        {
             lblVersion.Content = Tools.GetVersionString();
             isDesignerMode = DesignerProperties.GetIsInDesignMode(this);
 
-            plt = new Plot();
             settings = plt.GetSettings(showWarning: false);
 
             if (isDesignerMode)
