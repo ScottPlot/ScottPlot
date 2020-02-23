@@ -6,45 +6,55 @@
         xmlns:local="clr-namespace:WpfApp"
         xmlns:ScottPlot="clr-namespace:ScottPlot;assembly=ScottPlot.WPF"
         mc:Ignorable="d"
-        Title="ScottPlot for WPF" Height="300" Width="400">
+        Title="ScottPlot for WPF" Height="600" Width="400">
 
+    <ScrollViewer>
+        <StackPanel Orientation="Vertical">
 
-    <StackPanel Orientation="Vertical">
+            <StackPanel.Resources>
+                <Style x:Key="LaunchButton" TargetType="Button">
+                    <Setter Property="Padding" Value="5" />
+                    <Setter Property="Margin" Value="10" />
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                </Style>
+                <Style x:Key="DescriptionTextBlock" TargetType="TextBlock">
+                    <Setter Property="Margin" Value="0,5,5,5" />
+                    <Setter Property="TextWrapping" Value="Wrap"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                </Style>
+                <Style x:Key="DescriptionGroupBox" TargetType="GroupBox">
+                    <Setter Property="Margin" Value="5" />
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                </Style>
+            </StackPanel.Resources>
 
-        <StackPanel.Resources>
-            <Style x:Key="LaunchButton" TargetType="Button">
-                <Setter Property="Padding" Value="5" />
-                <Setter Property="Margin" Value="10" />
-                <Setter Property="VerticalAlignment" Value="Center"/>
-            </Style>
-            <Style x:Key="DescriptionTextBlock" TargetType="TextBlock">
-                <Setter Property="Margin" Value="0,5,5,5" />
-                <Setter Property="TextWrapping" Value="Wrap"/>
-                <Setter Property="VerticalAlignment" Value="Center"/>
-            </Style>
-        </StackPanel.Resources>
+            <Grid>
+                <Label Content="ScottPlot Examples in WPF" FontSize="24"/>
+                <Label Name="VersionLabel" Content="version 4.5.67" FontStyle="Italic" Foreground="Gray"  Margin="24, 25, 0, 0" />
+            </Grid>
 
-        <Grid>
-            <Label Content="ScottPlot Examples in WPF" FontSize="24"/>
-            <Label Name="VersionLabel" Content="version 4.5.67"
-                   FontStyle="Italic"
-                   Foreground="Gray"  Margin="24, 25, 0, 0" />
-        </Grid>
+            <DockPanel>
+                <Button Content="Quickstart" Click="LaunchQuickstart" Style="{StaticResource LaunchButton}"/>
+                <TextBlock Style="{StaticResource DescriptionTextBlock}" Text="Minimal-case interactive plot in a WPF application" />
+            </DockPanel>
 
-        <DockPanel>
-            <Button Content="Quickstart" Click="LaunchQuickstart" Style="{StaticResource LaunchButton}"/>
-            <TextBlock Style="{StaticResource DescriptionTextBlock}">
-            Minimal-case interacive plot in a WPF application
-            </TextBlock>
-        </DockPanel>
-        
-        <DockPanel>
-            <Button Content="Interactive Multiplot" Click="LaunchProceduralPlots" Style="{StaticResource LaunchButton}"/>
-            <TextBlock Style="{StaticResource DescriptionTextBlock}">
-            Create many interactive plots programmatically
-            </TextBlock>
-        </DockPanel>
+            <GroupBox Header="Experimental Plot Types" Style="{StaticResource DescriptionGroupBox}">
+                <WrapPanel>
+                    <Button Content="Box and Whisker (Scott)" Click="LaunchBoxAndWhisker" Style="{StaticResource LaunchButton}"/>
+                    <Button Content="Box and Whisker (Benny)" Click="LaunchBoxAndWhisker2" Style="{StaticResource LaunchButton}"/>
+                    <Button Content="Function" Style="{StaticResource LaunchButton}"/>
+                    <Button Content="Shaded Area" Style="{StaticResource LaunchButton}"/>
+                    <Button Content="Stacked Bar Chart" Style="{StaticResource LaunchButton}"/>
+                </WrapPanel>
+            </GroupBox>
 
-    </StackPanel>
+            <GroupBox Header="Miscellaneous Functional Examples" Style="{StaticResource DescriptionGroupBox}">
+                <DockPanel>
+                    <Button Content="Interactive Multiplot" Click="LaunchProceduralPlots" Style="{StaticResource LaunchButton}"/>
+                    <TextBlock Style="{StaticResource DescriptionTextBlock}" Text="Create many interactive plots programmatically"/>
+                </DockPanel>
+            </GroupBox>
 
+        </StackPanel>
+    </ScrollViewer>
 </Window>
