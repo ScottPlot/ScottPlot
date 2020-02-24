@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 
 namespace ScottPlot.Statistics
@@ -37,6 +38,18 @@ namespace ScottPlot.Statistics
         public float markerSize;
     }
 
+    public enum DataPointAlignment { center, left, right }
+
+    public struct DataPoints
+    {
+        public double[] values;
+        public double spreadFraction;
+        public double offsetFraction;
+        public MarkerShape markerShape;
+        public float markerSize;
+        public DataPointAlignment align;
+    }
+
     public class BoxAndWhisker
     {
         public Box box = new Box();
@@ -44,12 +57,17 @@ namespace ScottPlot.Statistics
         public Midline midline = new Midline();
         public double xPosition;
         public string label;
-        public double[] points;
+        public DataPoints dataPoints = new DataPoints();
 
-        public BoxAndWhisker(double xPosition)
+        public BoxAndWhisker(double xPosition, double[] dataValues)
         {
             this.xPosition = xPosition;
-            points = new double[] { };
+            dataPoints.values = dataValues;
+            dataPoints.spreadFraction = 0.75;
+            dataPoints.offsetFraction = 1.75;
+            dataPoints.markerSize = 5;
+            dataPoints.markerShape = MarkerShape.openCircle;
+            dataPoints.align = DataPointAlignment.center;
             ResetStyle();
         }
 

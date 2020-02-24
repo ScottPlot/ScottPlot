@@ -21,6 +21,8 @@ namespace ScottPlot
             var limits = new AxisLimits2D();
             foreach (var box in boxAndWhiskers)
             {
+                double pointSpread = (Math.Abs(box.dataPoints.offsetFraction) + box.dataPoints.spreadFraction) * box.box.width / 2;
+                limits.ExpandX(box.xPosition - pointSpread, box.xPosition + pointSpread);
                 limits.ExpandX(box.xPosition - box.box.width / 2, box.xPosition + box.box.width / 2);
                 limits.ExpandX(box.xPosition - box.whisker.width / 2, box.xPosition + box.whisker.width / 2);
                 limits.ExpandX(box.xPosition - box.midline.width / 2, box.xPosition + box.midline.width / 2);
@@ -28,9 +30,9 @@ namespace ScottPlot
                 limits.ExpandY(box.whisker.min, box.whisker.max);
                 limits.ExpandY(box.midline.position, box.midline.position);
 
-                if (box.points.Count() > 0) //Cannot call Min() or Max() on empty list
+                if (box.dataPoints.values.Count() > 0) //Cannot call Min() or Max() on empty list
                 {
-                    limits.ExpandY(box.points.Min(), box.points.Max());
+                    limits.ExpandY(box.dataPoints.values.Min(), box.dataPoints.values.Max());
                 }
             }
             return limits;
@@ -38,6 +40,8 @@ namespace ScottPlot
 
         public override void Render(Settings settings)
         {
+            Random rand = new Random(0);
+
             foreach (Statistics.BoxAndWhisker baw in boxAndWhiskers)
             {
                 float center = (float)settings.GetPixelX(baw.xPosition);
@@ -70,7 +74,6 @@ namespace ScottPlot
                     SizeF boxSize = new SizeF(boxWidth, boxHeight);
                     RectangleF boxRect = new RectangleF(boxOrigin, boxSize);
 
-
                     if (baw.box.fill)
                     {
                         var boxBrush = new SolidBrush(baw.box.fillColor);
@@ -94,9 +97,17 @@ namespace ScottPlot
                     settings.gfxData.DrawLine(mindlinePen, boxLeft, midlineY, boxRight, midlineY);
                 }
 
-                foreach (double curr in baw.points) {
-                    PointF point = new PointF(center, (float) settings.GetPixelY(curr));
-                    MarkerTools.DrawMarker(settings.gfxData, point, MarkerShape.asterisk, 6, color);
+                double boxWidthPixels = baw.box.width * settings.xAxisScale;
+                double boxOffsetPixels = (baw.box.width / 2 * baw.dataPoints.offsetFraction) * settings.xAxisScale;
+                double spreadPixels = (baw.box.width / 2 * baw.dataPoints.spreadFraction) * settings.xAxisScale;
+
+                // TODO: make the scatter placement smarter to avoid overlapping points
+                foreach (double curr in baw.dataPoints.values)
+                {
+                    PointF point = new PointF(center, (float)settings.GetPixelY(curr));
+                    point.X += (float)boxOffsetPixels;
+                    point.X += (float)((rand.NextDouble() - .5) * spreadPixels);
+                    MarkerTools.DrawMarker(settings.gfxData, point, baw.dataPoints.markerShape, baw.dataPoints.markerSize, color);
                 }
             }
         }
