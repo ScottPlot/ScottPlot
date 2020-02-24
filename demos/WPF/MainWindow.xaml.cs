@@ -25,13 +25,23 @@ namespace WpfApp
             VersionLabel.Content = $"version {version.Major}.{version.Minor}.{version.Build}";
         }
 
+        private void LaunchViewer(ScottPlot.Plot plt)
+        {
+            var viewer = new WPF.PlotViewer(plt);
+            viewer.ShowDialog();
+        }
+
         private void LaunchQuickstart(object sender, RoutedEventArgs e) { new WPF.Examples.Quickstart().ShowDialog(); }
         private void LaunchProceduralPlots(object sender, RoutedEventArgs e) { new WPF.Examples.ProceduralPlots().ShowDialog(); }
 
         private void LaunchBoxAndWhisker(object sender, RoutedEventArgs e)
         {
-            var viewer = new WPF.PlotViewer(ScottPlot.Demo.PlotTypes.BoxAndWhisker.Quickstart());
-            viewer.ShowDialog();
+            LaunchViewer(ScottPlot.Demo.PlotTypes.BoxAndWhisker.Quickstart());
+        }
+
+        private void LaunchFunction(object sender, RoutedEventArgs e)
+        {
+            LaunchViewer(ScottPlot.Demo.PlotTypes.Function.Quickstart());
         }
     }
 }
