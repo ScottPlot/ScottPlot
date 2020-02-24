@@ -48,10 +48,20 @@
             </GroupBox>
 
             <GroupBox Header="Miscellaneous Functional Examples" Style="{StaticResource DescriptionGroupBox}">
-                <DockPanel>
-                    <Button Content="Interactive Multiplot" Click="LaunchProceduralPlots" Style="{StaticResource LaunchButton}"/>
-                    <TextBlock Style="{StaticResource DescriptionTextBlock}" Text="Create many interactive plots programmatically"/>
-                </DockPanel>
+
+                <StackPanel>
+
+                    <DockPanel>
+                        <Button Content="Interactive Multiplot" Click="LaunchProceduralPlots" Style="{StaticResource LaunchButton}"/>
+                        <TextBlock Style="{StaticResource DescriptionTextBlock}" Text="Create many interactive plots programmatically"/>
+                    </DockPanel>
+
+                    <DockPanel LastChildFill="False">
+                        <Button Content="Signal with markers" Click="LaunchSignalWithMarkers" Style="{StaticResource LaunchButton}"/>
+                    </DockPanel>
+
+                </StackPanel>
+
             </GroupBox>
 
         </StackPanel>
