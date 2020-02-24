@@ -40,8 +40,7 @@
 
             <GroupBox Header="Experimental Plot Types" Style="{StaticResource DescriptionGroupBox}">
                 <WrapPanel>
-                    <Button Content="Box and Whisker (Scott)" Click="LaunchBoxAndWhisker" Style="{StaticResource LaunchButton}"/>
-                    <Button Content="Box and Whisker (Benny)" Click="LaunchBoxAndWhisker2" Style="{StaticResource LaunchButton}"/>
+                    <Button Content="Box and Whisker" Click="LaunchBoxAndWhisker" Style="{StaticResource LaunchButton}"/>
                     <Button Content="Function" Style="{StaticResource LaunchButton}"/>
                     <Button Content="Shaded Area" Style="{StaticResource LaunchButton}"/>
                     <Button Content="Stacked Bar Chart" Style="{StaticResource LaunchButton}"/>

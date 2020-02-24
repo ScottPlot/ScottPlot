@@ -33,11 +33,5 @@ namespace WpfApp
             var viewer = new WPF.PlotViewer(ScottPlot.Demo.PlotTypes.BoxAndWhisker.Quickstart());
             viewer.ShowDialog();
         }
-
-        private void LaunchBoxAndWhisker2(object sender, RoutedEventArgs e)
-        {
-            var viewer = new WPF.PlotViewer(ScottPlot.Demo.PlotTypes.BoxAndWhisker.Quickstart2());
-            viewer.ShowDialog();
-        }
     }
 }
