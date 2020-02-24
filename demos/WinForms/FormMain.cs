@@ -44,194 +44,162 @@ namespace ScottPlotDemos
 
         private void btnPlotTypes_Click(object sender, EventArgs e)
         {
-            using (var frm = new FormPlotTypes())
-                frm.ShowDialog();
+            new FormPlotTypes().ShowDialog();
         }
 
         private void btnQuickstart_Click(object sender, EventArgs e)
         {
-            using (var frm = new FormQuickstart())
-                frm.ShowDialog();
+            new FormQuickstart().ShowDialog();
         }
 
         private void btnBenchmark_Click(object sender, EventArgs e)
         {
-            using (var frm = new FormBenchmark())
-                frm.ShowDialog();
+            new FormBenchmark().ShowDialog();
         }
 
         private void btnCustomGrid_Click(object sender, EventArgs e)
         {
-            using (var frm = new FormCustomGrid())
-                frm.ShowDialog();
+            new FormCustomGrid().ShowDialog();
         }
 
         private void btnDraggableAxisLines_Click(object sender, EventArgs e)
         {
-            using (var frm = new FormDraggableAxisLines())
-                frm.ShowDialog();
+            new FormDraggableAxisLines().ShowDialog();
         }
 
         private void btnScatterErrorbars_Click(object sender, EventArgs e)
         {
-            using (var frm = new FormErrorbars())
-                frm.ShowDialog();
+            new FormErrorbars().ShowDialog();
         }
 
         private void btnExtremeAxes_Click(object sender, EventArgs e)
         {
-            using (var frm = new FormExtremeAxes())
-                frm.ShowDialog();
+            new FormExtremeAxes().ShowDialog();
         }
 
         private void btnFinancial_Click(object sender, EventArgs e)
         {
-            using (var frm = new FormFinancial())
-                frm.ShowDialog();
+            new FormFinancial().ShowDialog();
         }
 
         private void btnHistogram_Click(object sender, EventArgs e)
         {
-            using (var frm = new FormHistogram())
-                frm.ShowDialog();
+            new FormHistogram().ShowDialog();
         }
 
         private void btnAnimated_Click(object sender, EventArgs e)
         {
-            using (var frm = new FormAnimatedSine())
-                frm.ShowDialog();
+            new FormAnimatedSine().ShowDialog();
         }
 
         private void btnGrowingArray_Click(object sender, EventArgs e)
         {
-            using (var frm = new FormGrowingArray())
-                frm.ShowDialog();
+            new FormGrowingArray().ShowDialog();
         }
 
         private void btnGrowingCircular_Click(object sender, EventArgs e)
         {
-            using (var frm = new FormGrowingCircular())
-                frm.ShowDialog();
+            new FormGrowingCircular().ShowDialog();
         }
 
         private void btnGrowingRoll_Click(object sender, EventArgs e)
         {
-            using (var frm = new FormGrowingRoll())
-                frm.ShowDialog();
+            new FormGrowingRoll().ShowDialog();
         }
 
         private void btnBillion_Click(object sender, EventArgs e)
         {
-            using (var frm = new FormBillion())
-                frm.ShowDialog();
+            new FormBillion().ShowDialog();
         }
 
         private void btnHover_Click(object sender, EventArgs e)
         {
-            using (var frm = new FormHoverValue())
-                frm.ShowDialog();
+            new FormHoverValue().ShowDialog();
         }
 
         private void btnSignalConst_Click(object sender, EventArgs e)
         {
-            using (var frm = new FormSignalConst())
-                frm.ShowDialog();
+            new FormSignalConst().ShowDialog();
         }
 
         private void btnBarGraph_Click_1(object sender, EventArgs e)
         {
-            using (var frm = new FormBarGraph())
-                frm.ShowDialog();
+            new FormBarGraph().ShowDialog();
         }
 
         private void btnLegend_Click(object sender, EventArgs e)
         {
-            using (var frm = new FormLegend())
-                frm.ShowDialog();
+            new FormLegend().ShowDialog();
         }
 
         private void btnTickTester_Click(object sender, EventArgs e)
         {
-            using (var frm = new FormTickTester())
-                frm.ShowDialog();
+            new FormTickTester().ShowDialog();
         }
 
         private void btnDateTimeAxis_Click(object sender, EventArgs e)
         {
-            using (var frm = new FormDateTimeAxis())
-                frm.ShowDialog();
+            new FormDateTimeAxis().ShowDialog();
         }
 
         private void btnUserControlSettings_Click(object sender, EventArgs e)
         {
-            using (var frm = new FormUserControlSettings())
-                frm.ShowDialog();
+            new FormUserControlSettings().ShowDialog();
         }
 
         private void btnWavFileViewer_Click(object sender, EventArgs e)
         {
-            using (var frm = new FormWavViewer())
-                frm.ShowDialog();
+            new FormWavViewer().ShowDialog();
         }
 
         private void btnPadding_Click(object sender, EventArgs e)
         {
-            using (var frm = new FormPadding())
-                frm.ShowDialog();
+            new FormPadding().ShowDialog();
         }
 
         private void btnLinkedPlots_Click(object sender, EventArgs e)
         {
-            using (var frm = new FormLinkedPlots())
-                frm.ShowDialog();
+            new FormLinkedPlots().ShowDialog();
         }
 
         private void btnCustomGrid_Click_1(object sender, EventArgs e)
         {
-            using (var frm = new FormCustomGrid())
-                frm.ShowDialog();
+            new FormCustomGrid().ShowDialog();
         }
 
         private void btnSignal_Click(object sender, EventArgs e)
         {
-            using (var frm = new FormSignal())
-                frm.ShowDialog();
+            new FormSignal().ShowDialog();
         }
 
         private void btnOverride_Click(object sender, EventArgs e)
         {
-            using (var frm = new FormOverride())
-                frm.ShowDialog();
+            new FormOverride().ShowDialog();
         }
 
         private void btnToggleVisibility_Click(object sender, EventArgs e)
         {
-            using (var frm = new FormToggleVis())
-                frm.ShowDialog();
+            new FormToggleVis().ShowDialog();
         }
 
         private void SignalDistribution_Click_1(object sender, EventArgs e)
         {
-            using (var frm = new FormSignalDistribution())
-                frm.ShowDialog();
+            new FormSignalDistribution().ShowDialog();
         }
 
         private void btnRegression_Click(object sender, EventArgs e)
         {
-            using (var frm = new FormRegression())
-                frm.ShowDialog();
+            new FormRegression().ShowDialog();
         }
 
         private void btnIncoming_Click(object sender, EventArgs e)
         {
-            using (var frm = new FormIncomingData())
-                frm.ShowDialog();
+            new FormIncomingData().ShowDialog();
         }
 
-        private void btnBoxAndWhisker_Click(object sender, EventArgs e)
+        private void btnBoxAndWhisker_Click_1(object sender, EventArgs e)
         {
-            using (var frm = new FormBoxWhisker())
-                frm.ShowDialog();
+            new PlotViewer(ScottPlot.Demo.PlotTypes.BoxAndWhisker.Quickstart()).ShowDialog();
         }
     }
 }

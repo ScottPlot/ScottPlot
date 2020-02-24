@@ -80,6 +80,7 @@
             this.lblGitHubUrl = new System.Windows.Forms.Label();
             this.lblVersion = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.btnBoxAndWhisker = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage3.SuspendLayout();
@@ -346,6 +347,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnBoxAndWhisker);
             this.groupBox1.Controls.Add(this.SignalDistribution);
             this.groupBox1.Controls.Add(this.btnBarGraph);
             this.groupBox1.Controls.Add(this.btnDraggableAxisLines);
@@ -354,7 +356,7 @@
             this.groupBox1.Controls.Add(this.btnFinancial);
             this.groupBox1.Location = new System.Drawing.Point(6, 25);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(150, 196);
+            this.groupBox1.Size = new System.Drawing.Size(150, 225);
             this.groupBox1.TabIndex = 14;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "More Plot Types";
@@ -660,6 +662,16 @@
             this.label3.Text = "ScottPlot";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // btnBoxAndWhisker
+            // 
+            this.btnBoxAndWhisker.Location = new System.Drawing.Point(6, 193);
+            this.btnBoxAndWhisker.Name = "btnBoxAndWhisker";
+            this.btnBoxAndWhisker.Size = new System.Drawing.Size(137, 23);
+            this.btnBoxAndWhisker.TabIndex = 15;
+            this.btnBoxAndWhisker.Text = "Box and Whisker";
+            this.btnBoxAndWhisker.UseVisualStyleBackColor = true;
+            this.btnBoxAndWhisker.Click += new System.EventHandler(this.btnBoxAndWhisker_Click_1);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -744,6 +756,7 @@
         private System.Windows.Forms.Button SignalDistribution;
         private System.Windows.Forms.Button btnRegression;
         private System.Windows.Forms.Button btnIncoming;
+        private System.Windows.Forms.Button btnBoxAndWhisker;
     }
 }
 

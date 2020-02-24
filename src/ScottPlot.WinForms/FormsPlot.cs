@@ -10,15 +10,27 @@ namespace ScottPlot
     public partial class FormsPlot : UserControl
     {
         public readonly Plot plt;
-        private readonly Settings settings;
-        private readonly bool isDesignerMode;
+        private Settings settings;
+        private bool isDesignerMode;
         public Cursor cursor = Cursors.Arrow;
-
         ContextMenuStrip rightClickMenu;
+
+        public FormsPlot(Plot plt)
+        {
+            InitializeComponent();
+            this.plt = plt;
+            InitializeScottPlot();
+        }
+
         public FormsPlot()
         {
             InitializeComponent();
+            plt = new Plot();
+            InitializeScottPlot();
+        }
 
+        private void InitializeScottPlot()
+        {
             rightClickMenu = new ContextMenuStrip();
             rightClickMenu.Items.Add("Save Image");
             rightClickMenu.Items.Add("Copy Image");
@@ -36,7 +48,6 @@ namespace ScottPlot
             lblTitle.BackColor = ColorTranslator.FromHtml("#003366");
             lblVersion.BackColor = ColorTranslator.FromHtml("#003366");
 
-            plt = new Plot();
             plt.Style(Style.Control);
             settings = plt.GetSettings(showWarning: false);
 
