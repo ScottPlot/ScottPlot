@@ -27,7 +27,7 @@ namespace ScottPlot
             this.minX = minX;
             this.maxX = maxX;
             this.minY = minY;
-            this.maxY = maxX;
+            this.maxY = maxY;
             this.color = color;
             this.lineWidth = lineWidth;
             this.markerSize = markerSize;
