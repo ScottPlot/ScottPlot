@@ -37,6 +37,7 @@ namespace ScottPlot
             InitializeComponent();
             this.plt = plt;
             InitializeScottPlot();
+            Render();
         }
 
         public WpfPlot()
@@ -44,6 +45,8 @@ namespace ScottPlot
             InitializeComponent();
             plt = new Plot();
             InitializeScottPlot();
+            plt.AxisAuto();
+            Render();
         }
 
         private void InitializeScottPlot()
