@@ -94,6 +94,7 @@ namespace ScottPlot
                     currentlyRendering = true;
                     imagePlot.Source = BmpImageFromBmp(plt.GetBitmap(true, lowQuality));
                     currentlyRendering = false;
+                    Rendered?.Invoke(null, null);
                 }
             }
         }
@@ -368,6 +369,12 @@ namespace ScottPlot
                 Render();
             }
         }
+
+        #endregion
+
+        #region event handling
+
+        public event EventHandler Rendered;
 
         #endregion
     }
