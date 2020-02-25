@@ -1,0 +1,83 @@
+﻿<Window x:Class="WPF.DemoViewer"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPF"
+        xmlns:ScottPlot="clr-namespace:ScottPlot;assembly=ScottPlot.WPF"
+        mc:Ignorable="d"
+        Title="ScottPlot Demo Viewer" Height="600" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <DockPanel Grid.Column="0" Background="WhiteSmoke">
+
+            <DockPanel.Resources>
+                <Style x:Key="LaunchButton" TargetType="Button">
+                    <Setter Property="Margin" Value="5, 5, 5, 0" />
+                    <Setter Property="BorderBrush" Value="LightGray" />
+                    <Setter Property="BorderThickness" Value="0" />
+                </Style>
+            </DockPanel.Resources>
+
+            <ComboBox Margin="5" DockPanel.Dock="Top">
+                <ComboBoxItem Content="Plot Types" IsSelected="True"/>
+            </ComboBox>
+
+            <ScrollViewer>
+                <StackPanel>
+                    <Button Content="asdf" Style="{StaticResource LaunchButton}"/>
+                    <Button Content="asdf" Style="{StaticResource LaunchButton}"/>
+                    <Button Content="asdf" Style="{StaticResource LaunchButton}"/>
+                    <Button Content="asdf" Style="{StaticResource LaunchButton}"/>
+                    <Button Content="asdf" Style="{StaticResource LaunchButton}"/>
+                    <Button Content="asdf" Style="{StaticResource LaunchButton}"/>
+                    <Button Content="asdf" Style="{StaticResource LaunchButton}"/>
+                    <Button Content="asdf" Style="{StaticResource LaunchButton}"/>
+                    <Button Content="asdf" Style="{StaticResource LaunchButton}"/>
+                    <Button Content="asdf" Style="{StaticResource LaunchButton}"/>
+                    <Button Content="asdf" Style="{StaticResource LaunchButton}"/>
+                    <Button Content="asdf" Style="{StaticResource LaunchButton}"/>
+                    <Button Content="asdf" Style="{StaticResource LaunchButton}"/>
+                    <Button Content="asdf" Style="{StaticResource LaunchButton}"/>
+                    <Button Content="asdf" Style="{StaticResource LaunchButton}"/>
+                    <Button Content="asdf" Style="{StaticResource LaunchButton}"/>
+                    <Button Content="asdf" Style="{StaticResource LaunchButton}"/>
+                    <Button Content="asdf" Style="{StaticResource LaunchButton}"/>
+                    <Button Content="asdf" Style="{StaticResource LaunchButton}"/>
+                    <Button Content="asdf" Style="{StaticResource LaunchButton}"/>
+                    <Button Content="asdf" Style="{StaticResource LaunchButton}"/>
+                    <Button Content="asdf" Style="{StaticResource LaunchButton}"/>
+                    <Button Content="asdf" Style="{StaticResource LaunchButton}"/>
+                    <Button Content="asdf" Style="{StaticResource LaunchButton}"/>
+                    <Button Content="asdf" Style="{StaticResource LaunchButton}"/>
+                    <Button Content="asdf" Style="{StaticResource LaunchButton}"/>
+                    <Button Content="asdf" Style="{StaticResource LaunchButton}"/>
+                    <Button Content="asdf" Style="{StaticResource LaunchButton}"/>
+                    <Button Content="asdf" Style="{StaticResource LaunchButton}"/>
+                    <Button Content="asdf" Style="{StaticResource LaunchButton}"/>
+                    <Button Content="asdf" Style="{StaticResource LaunchButton}"/>
+                    <Button Content="asdf" Style="{StaticResource LaunchButton}"/>
+                    <Button Content="asdf" Style="{StaticResource LaunchButton}"/>
+                </StackPanel>
+            </ScrollViewer>
+
+        </DockPanel>
+
+        <DockPanel Grid.Column="1" Margin="5, 0, 5, 0">
+            <Label Content="Signal Plot Quickstart" FontSize="26" DockPanel.Dock="Top"/>
+            <Border DockPanel.Dock="Top" Margin="10" Padding="10" CornerRadius="10" Background="WhiteSmoke" BorderBrush="Gray" BorderThickness="1">
+                <TextBlock x:Name="DescriptionTextBlock" Text="description here" DockPanel.Dock="Top" TextWrapping="Wrap"/>
+            </Border>
+            <Label Name="BenchmarkLabel" Content="benchmark message" FontSize="10" FontFamily="consolas" Foreground="Gray" DockPanel.Dock="Bottom"/>
+            <ScottPlot:WpfPlot Name="wpfPlot1" DockPanel.Dock="Bottom" Rendered="OnRender"/>
+        </DockPanel>
+
+    </Grid>
+</Window>
