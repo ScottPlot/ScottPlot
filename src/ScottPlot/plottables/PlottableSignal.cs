@@ -125,7 +125,9 @@ namespace ScottPlot
                     float markerPxDiameter = markerSize * zoomTransitionScale;
                     float markerPxRadius = markerPxDiameter / 2;
                     foreach (PointF point in linePoints)
-                        settings.gfxData.FillEllipse(brush, point.X - markerPxRadius, point.Y - markerPxRadius, markerPxDiameter, markerPxDiameter);
+                        settings.gfxData.FillEllipse(brush: brush, 
+                            x: point.X - markerPxRadius, y: point.Y - markerPxRadius, 
+                            width: markerPxDiameter, height: markerPxDiameter);
                 }
             }
         }
