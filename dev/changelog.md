@@ -4,6 +4,7 @@
 * Improved event handling (#266, #238) _Thanks @StendProg_
 * Improved legend positioning (#253) _Thanks @StendProg_
 * Created `DataGen.Range()` to make it easy to create double arrays with evenly spaced data (#259)
+* Improved how signal markers are drawn at the transition area between zoomed out and zoomed in (#263) _Thanks @bukkideme and @StendProg_
 
 ## ScottPlot 4.0.19
 * Improved thread safety of interactive graphs (#245) _Thanks @StendProg_
