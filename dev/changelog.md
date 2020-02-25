@@ -1,10 +1,21 @@
 # ScottPlot Changelog
 
-## Next Release
+_ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. Patches are typically non-breaking, but switching between major and minor versions may require modification of existing code._
+
+* **ScottPlot 4.2** (future) Rendering capabilities will be removed from ScottPlot.Plot so the dependency on System.Drawing can be eliminated. Rendering with System.Drawing will be confined to a separate module which, using interfaces, could be replaced by a module using another rendering framework like SkiaSharp.
+* **ScottPlot 4.1** (future) Plottable names and namespaces will change slightly
+* **ScottPlot 4.0** (Nov, 2019) ScottPlot.Plot module became platform-agnostic using .NET Standard and System.Drawing.Common. Total recode, but same API. User controls became separate, platform-specific modules.
+* **ScottPlot 3.0** (May, 2019) Total recode with new API. First version released on NuGet.
+* **ScottPlot 2.0** (Jan, 2019) Total recode with new API. First version to get its own GitHub project. 
+* **ScottPlot 1.0** (June, 2017) ScottPlot began as [swhPlot.cs](https://github.com/swharden/Csharp-Data-Visualization/blob/master/projects/17-06-24_stretchy_line_plot/pixelDrawDrag2/swhPlot.cs), a 150 line class used to create a [stretchy line plot](https://github.com/swharden/Csharp-Data-Visualization/tree/master/projects/17-06-24_stretchy_line_plot) demonstrating how to draw lines interactively with C#.
+
+## ScottPlot 4.0.20 (IN DEVELOPMENT)
 * Improved event handling (#266, #238) _Thanks @StendProg_
 * Improved legend positioning (#253) _Thanks @StendProg_
 * Created `DataGen.Range()` to make it easy to create double arrays with evenly spaced data (#259)
 * Improved how signal markers are drawn at the transition area between zoomed out and zoomed in (#263) _Thanks @bukkideme and @StendProg_
+
+> **TODO:** Totally revamp the demo system. Use a core library for demos, and source it for the cookbook, WinForms demo application, and WPF demo application.
 
 ## ScottPlot 4.0.19
 * Improved thread safety of interactive graphs (#245) _Thanks @StendProg_
