@@ -46,7 +46,7 @@ namespace WpfApp
 
         private void LaunchSignalWithMarkers(object sender, RoutedEventArgs e)
         {
-            LaunchViewer(ScottPlot.Demo.PlotTypes.Signal.BigMarkers());
+            LaunchViewer(ScottPlot.Demo.PlotTypes.Signal.CustomLineAndMarkers());
         }
     }
 }

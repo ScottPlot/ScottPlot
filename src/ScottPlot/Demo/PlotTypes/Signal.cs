@@ -17,17 +17,18 @@ namespace ScottPlot.Demo.PlotTypes
             return plt;
         }
 
-        public static Plot BigMarkers()
+        public static Plot CustomLineAndMarkers()
         {
             Random rand = new Random(0);
-            double[] ys1 = DataGen.RandomWalk(rand, 500);
-            double[] ys2 = DataGen.RandomWalk(rand, 500, offset: 20);
+            double[] ys = DataGen.RandomWalk(rand, 500);
 
             var plt = new Plot();
             plt.Title($"Signal Plot with Markers");
-            plt.PlotSignal(ys1, label: "default markers");
-            plt.PlotSignal(ys2, markerSize: 20, label: "big markers");
+            plt.PlotSignal(ys, label: "default");
+            plt.PlotSignal(ys, yOffset: 20, lineWidth: 0, markerSize: 20, label: "large markers");
+            plt.PlotSignal(ys, yOffset: 40, lineWidth: 5, markerSize: 0, label: "large line");
             plt.Legend();
+
             return plt;
         }
     }
