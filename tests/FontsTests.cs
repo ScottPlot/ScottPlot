@@ -41,7 +41,7 @@ namespace ScottPlotTests
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
                 Assert.That(defaultFontSans == "Helvetica");
-                Assert.That(defaultFontSerif == "Times New Roman");
+                Assert.That(defaultFontSerif.StartsWith("Times"));
                 Assert.That(defaultFontMonospace == "Courier");
             }
         }
