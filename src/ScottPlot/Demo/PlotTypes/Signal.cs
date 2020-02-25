@@ -25,8 +25,8 @@ namespace ScottPlot.Demo.PlotTypes
             var plt = new Plot();
             plt.Title($"Signal Plot with Markers");
             plt.PlotSignal(ys, label: "default");
-            plt.PlotSignal(ys, yOffset: 20, lineWidth: 0, markerSize: 20, label: "large markers");
-            plt.PlotSignal(ys, yOffset: 40, lineWidth: 5, markerSize: 0, label: "large line");
+            plt.PlotSignal(ys, yOffset: 20, markerSize: 10, label: "large markers");
+            plt.PlotSignal(ys, yOffset: 40, lineWidth: 10, markerSize: 0, label: "large line");
             plt.Legend();
 
             return plt;

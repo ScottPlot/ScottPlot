@@ -112,6 +112,10 @@ namespace ScottPlot
             for (int i = visibleIndex1; i <= visibleIndex2 + 1; i++)
                 linePoints.Add(settings.GetPixel(samplePeriod * i + xOffset, ys[i] + yOffset));
 
+            // make markers transition away smoothly by making them smaller as the user zooms out
+            float pixelsBetweenPoints = (float)(samplePeriod * settings.xAxisScale);
+            float zoomTransitionScale = Math.Min(1, pixelsBetweenPoints / 10);
+
             if (linePoints.Count > 1)
             {
                 if (pen.Width > 0)
@@ -119,8 +123,10 @@ namespace ScottPlot
 
                 if (markerSize > 0)
                 {
+                    float parkerPxDiameter = markerSize * zoomTransitionScale;
+                    float parkerPxRadius = parkerPxDiameter / 2;
                     foreach (PointF point in linePoints)
-                        settings.gfxData.FillEllipse(brush, point.X - markerSize / 2, point.Y - markerSize / 2, markerSize, markerSize);
+                        settings.gfxData.FillEllipse(brush, point.X - parkerPxRadius, point.Y - parkerPxRadius, parkerPxDiameter, parkerPxDiameter);
                 }
             }
         }
