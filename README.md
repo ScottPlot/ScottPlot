@@ -79,4 +79,8 @@ Review the **[ScottPlot Cookbook](/cookbook)** to see what ScottPlot can do and 
 
 ## About ScottPlot
 
-ScottPlot was created by [Scott Harden](http://www.SWHarden.com/) ([Harden Technologies, LLC](http://tech.swharden.com)) with many contributions from the user community. To inquire about the development special features or customized versions of this software for consumer applications, contact the author at [SWHarden@gmail.com](mailto:swharden@gmail.com).
+**Author:** ScottPlot was created by [Scott Harden](http://www.SWHarden.com/) ([Harden Technologies, LLC](http://tech.swharden.com)) with many contributions from the user community. 
+
+**Commission:** To inquire about the development special features or customized versions of this software for consumer applications, contact the author at [SWHarden@gmail.com](mailto:swharden@gmail.com).
+
+**Version history:** the [ScottPlot changelog](/dev/changelog.md) has an excellent summary of the differences between major versions of ScottPlot.
