@@ -36,17 +36,17 @@ namespace WpfApp
 
         private void LaunchBoxAndWhisker(object sender, RoutedEventArgs e)
         {
-            LaunchViewer(ScottPlot.Demo.PlotTypes.BoxAndWhisker.Quickstart());
+            //LaunchViewer(ScottPlot.Demo.PlotTypes.BoxAndWhisker.Quickstart());
         }
 
         private void LaunchFunction(object sender, RoutedEventArgs e)
         {
-            LaunchViewer(ScottPlot.Demo.PlotTypes.Function.Quickstart());
+            //LaunchViewer(ScottPlot.Demo.PlotTypes.Function.Quickstart());
         }
 
         private void LaunchSignalWithMarkers(object sender, RoutedEventArgs e)
         {
-            LaunchViewer(ScottPlot.Demo.PlotTypes.Signal.CustomLineAndMarkers());
+            //LaunchViewer(ScottPlot.Demo.PlotTypes.Signal.CustomLineAndMarkers());
         }
     }
 }
