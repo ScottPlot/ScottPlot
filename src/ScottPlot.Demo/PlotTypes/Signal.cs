@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ScottPlot.Demo.PlotTypes
 {
-    class Signal
+    public static class Signal
     {
         public static Plot Quickstart()
         {
