@@ -749,7 +749,7 @@ namespace ScottPlot
         {
             if (showWarning)
                 Debug.WriteLine("WARNING: GetSettings() is only for development and testing as its contents change frequently");
-            
+
             return settings;
         }
 
@@ -785,6 +785,21 @@ namespace ScottPlot
             if ((axisLimits == null) || (axisLimits.Length != 4))
                 throw new ArgumentException("axis limits must contain 4 elements");
             Axis(axisLimits[0], axisLimits[1], axisLimits[2], axisLimits[3]);
+        }
+
+        public void AxisScale(double? unitsPerPixelX, double? unitsPerPixelY)
+        {
+            if (unitsPerPixelX != null)
+            {
+                double spanX = unitsPerPixelX.Value * settings.dataSize.Width;
+                Axis(x1: settings.axes.x.center - spanX / 2, x2: settings.axes.x.center + spanX / 2);
+            }
+
+            if (unitsPerPixelY != null)
+            {
+                double spanY = unitsPerPixelY.Value * settings.dataSize.Height;
+                Axis(y1: settings.axes.y.center - spanY / 2, y2: settings.axes.y.center + spanY / 2);
+            }
         }
 
         public void AxisAuto(
