@@ -18,22 +18,16 @@ namespace WindowsFormsAppCore
 
             // generate some data
             int pointCount = 50;
-            double[] dataXs = new double[pointCount];
-            double[] dataSin = new double[pointCount];
-            double[] dataCos = new double[pointCount];
-            for (int i = 0; i < pointCount; i++)
-            {
-                dataXs[i] = i;
-                dataSin[i] = Math.Sin(i * 2 * Math.PI / pointCount);
-                dataCos[i] = Math.Cos(i * 2 * Math.PI / pointCount);
-            }
+            double[] dataXs = ScottPlot.DataGen.Range(0, 1, 1.0 / pointCount);
+            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
+            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
             // plot the data
             formsPlot1.plt.PlotScatter(dataXs, dataSin);
             formsPlot1.plt.PlotScatter(dataXs, dataCos);
-            formsPlot1.plt.XLabel("experiment time (ms)");
-            formsPlot1.plt.YLabel("signal (mV)");
-            formsPlot1.plt.Title("ScottPlot Quickstart");
+            formsPlot1.plt.XLabel("Experiment Time (ms)");
+            formsPlot1.plt.YLabel("Measurement (mV)");
+            formsPlot1.plt.Title("ScottPlot .NET Core 3 Winforms Quickstart");
             formsPlot1.plt.AxisAuto();
             formsPlot1.Render();
         }
