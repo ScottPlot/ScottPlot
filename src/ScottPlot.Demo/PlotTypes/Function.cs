@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ScottPlot.Demo.PlotTypes
 {
-    class Function
+    public static class Function
     {
         public static Plot Quickstart()
         {

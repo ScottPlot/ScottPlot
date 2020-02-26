@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ScottPlot.Demo.PlotTypes
 {
-    class BoxAndWhisker
+    public static class BoxAndWhisker
     {
         public static Plot Quickstart()
         {
