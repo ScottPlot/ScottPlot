@@ -195,7 +195,7 @@ namespace ScottPlot
             }
             else if (mouseRightDownLocation != null)
             {
-                // right-click-drag panning
+                // right-click-drag zooming
                 int deltaX = ((Point)mouseRightDownLocation).X - e.Location.X;
                 int deltaY = e.Location.Y - ((Point)mouseRightDownLocation).Y;
 
