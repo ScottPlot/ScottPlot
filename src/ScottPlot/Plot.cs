@@ -787,7 +787,7 @@ namespace ScottPlot
             Axis(axisLimits[0], axisLimits[1], axisLimits[2], axisLimits[3]);
         }
 
-        public void AxisScale(double? unitsPerPixelX, double? unitsPerPixelY)
+        public void AxisScale(double? unitsPerPixelX = null, double? unitsPerPixelY = null)
         {
             if (unitsPerPixelX != null)
             {
@@ -800,6 +800,14 @@ namespace ScottPlot
                 double spanY = unitsPerPixelY.Value * settings.dataSize.Height;
                 Axis(y1: settings.axes.y.center - spanY / 2, y2: settings.axes.y.center + spanY / 2);
             }
+        }
+
+        public void AxisEqual(bool preserveY = true)
+        {
+            if (preserveY)
+                AxisScale(unitsPerPixelX: settings.yAxisUnitsPerPixel);
+            else
+                AxisScale(unitsPerPixelY: settings.xAxisUnitsPerPixel);
         }
 
         public void AxisAuto(
