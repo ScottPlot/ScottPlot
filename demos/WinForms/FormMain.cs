@@ -196,10 +196,5 @@ namespace ScottPlotDemos
         {
             new FormIncomingData().ShowDialog();
         }
-
-        private void btnBoxAndWhisker_Click_1(object sender, EventArgs e)
-        {
-            new PlotViewer(ScottPlot.Demo.PlotTypes.BoxAndWhisker.Quickstart()).ShowDialog();
-        }
     }
 }
