@@ -7,7 +7,8 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <PackageIcon>icon.png</PackageIcon>
-    <Description>This package provides a Windows Forms user control (FormsPlot) to interactively display ScottPlot graphs.</Description>
+    <Description>ScottPlot.FormsPlot provides a Windows Forms user control to interactively display ScottPlot graphs.
+      This package supports both .NET Framework and .NET Core (see project page for details).</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/swharden/ScottPlot</PackageProjectUrl>
     <PackageTags>plot graph data chart signal line bar C# winforms forms control interactive</PackageTags>
