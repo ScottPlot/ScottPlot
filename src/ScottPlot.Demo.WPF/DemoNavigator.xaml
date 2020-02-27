@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ScottPlot.Demo.WPF"
+        xmlns:ScottPlot="clr-namespace:ScottPlot;assembly=ScottPlot.WPF"
         mc:Ignorable="d"
         Title="ScottPlot Demos (WPF)" Height="450" Width="800">
     <Grid>
@@ -16,7 +17,19 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TreeView x:Name="TreeView1" Grid.Column="0" Grid.Row="0" Background="WhiteSmoke" Margin="10"/>
+        <TreeView x:Name="DemoTreeview" Grid.Column="0" Grid.Row="0" 
+                  Background="WhiteSmoke" Margin="10"
+                  SelectedItemChanged="DemoSelected"
+                  />
+
+        <DockPanel Grid.Column="1" Margin="5">
+            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                <Label Name="SelectedDemoLabel" Content="ScottPlot.Demo.PlotTypes.BoxAndWhisker.Quickstart()"/>
+                <Label Name="SelectedDemoUrlLabel" Content="view source" Foreground="Blue"/>
+            </StackPanel>
+            <TextBox x:Name="DescriptionTextbox" Text="description" DockPanel.Dock="Bottom"/>
+            <ScottPlot:WpfPlot Name="wpfPlot1" />
+        </DockPanel>
 
     </Grid>
 </Window>

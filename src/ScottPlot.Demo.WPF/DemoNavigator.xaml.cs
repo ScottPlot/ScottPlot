@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Windows;
@@ -24,38 +26,27 @@ namespace ScottPlot.Demo.WPF
             LoadTreeWithDemos();
         }
 
+        private void DemoSelected(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            var selectedDemoItem = (TreeViewItem)DemoTreeview.SelectedItem;
+            SelectedDemoLabel.Content = selectedDemoItem.Tag;
+            //Debug.WriteLine($"Selected: {selectedDemoItem.Tag}");
+            //https://github.com/swharden/ScottPlot/blob/master/src/ScottPlot.Demo/PlotTypes/BoxAndWhisker.cs
+
+            var demoPlot = Reflection.GetPlot(selectedDemoItem.Tag.ToString());
+            wpfPlot1.plt.GetPlottables().Clear();
+            wpfPlot1.plt.Clear();
+            demoPlot.Render(wpfPlot1.plt);
+            wpfPlot1.Render();
+        }
+
         private void LoadTreeWithDemos()
         {
-            var quickstart = new TreeViewItem { Header = "Quickstart Plots" };
-            TreeView1.Items.Add(quickstart);
-
-            var plotTypesItem = new TreeViewItem { Header = "Plot Types" };
-            TreeView1.Items.Add(plotTypesItem);
-
-            Assembly asm = Assembly.LoadFrom("ScottPlot.Demo.dll");
-
-            foreach (Type plotType in asm.GetTypes())
+            foreach (var demoPlot in Demo.Reflection.GetDemoPlots())
             {
-                if (plotType.ToString().Contains("PlotTypes"))
-                {
-                    string plotTypeName = plotType.ToString();
-                    plotTypeName = plotType.ToString().Replace("ScottPlot.Demo.PlotTypes.", "");
-                    plotTypeName = plotTypeName.Split("+")[0];
-
-                    var plotTypeItem = new TreeViewItem { Header = plotTypeName };
-                    plotTypesItem.Items.Add(plotTypeItem);
-
-                    foreach (MethodInfo plotTypeMethod in plotType.GetMethods())
-                    {
-                        if (plotTypeMethod.ReturnType.ToString() == "ScottPlot.Plot")
-                        {
-                            var plotTypeMethodItem = new TreeViewItem { Header = plotTypeMethod.Name };
-                            plotTypeItem.Items.Add(plotTypeMethodItem);
-                        }
-                    }
-                }
+                string shortName = demoPlot.Replace("ScottPlot.Demo.PlotTypes.", "");
+                DemoTreeview.Items.Add(new TreeViewItem() { Header = shortName, Tag = demoPlot.ToString() });
             }
-
         }
     }
 }
