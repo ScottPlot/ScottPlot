@@ -7,10 +7,10 @@
 
 ![](dev/nuget/ScottPlot.gif)
 
-# Supported Frameworks
-ScottPlot is written in .NET Standard 2.0 so it supports all modern .NET Frameworks ([see .NET Standard chart for details](https://docs.microsoft.com/en-us/dotnet/standard/net-standard#net-implementation-support)). The WPF control (WpfPlot) supports .NET Core and the Windows Forms control (FormsPlot) supports both .NET Framework and .NET Core.
+# Supported Platforms
+ScottPlot is written in .NET Standard 2.0 so it [supports all modern .NET platforms](https://docs.microsoft.com/en-us/dotnet/standard/net-standard#net-implementation-support). The WPF control (WpfPlot) supports .NET Core and the Windows Forms control (FormsPlot) supports both .NET Framework and .NET Core.
 
-NuGet Package | Supported Frameworks | Purpose
+Package | Supported Platforms | Purpose
 ---|---|---
 [ScottPlot](https://www.nuget.org/packages/ScottPlot/) | .NET Standard 2.0 | Plot data and save or return a bitmap <br> _Supports Windows, Linux, and MacOS_
 [ScottPlot.WinForms](https://www.nuget.org/packages/ScottPlot.WinForms/) | .NET Framework 4.6.1 <br> .NET Framework 4.7.2 <br> .NET Framework 4.8.0 <br>  .NET Core 3.0 | User control for mouse-interactive plots
