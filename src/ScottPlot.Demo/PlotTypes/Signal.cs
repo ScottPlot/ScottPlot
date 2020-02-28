@@ -8,7 +8,7 @@ namespace ScottPlot.Demo.PlotTypes
     {
         public class Quickstart : IPlotDemo
         {
-            public string name { get; } = "Signal plot quickstart";
+            public string name { get; } = "Signal Plot Quickstart";
             public string description { get; }
 
             public void Render(Plot plt)
@@ -38,6 +38,22 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.PlotSignal(ys, yOffset: 20, markerSize: 10, label: "large markers");
                 plt.PlotSignal(ys, yOffset: 40, lineWidth: 10, markerSize: 0, label: "large line");
                 plt.Legend();
+            }
+        }
+
+        public class RandomWalk_5millionPoints_Signal : IPlotDemo
+        {
+            public string name { get; } = "5M points (Signal)";
+            public string description { get; } = "Signal plots with millions of points can be interacted with in real time.";
+
+            public void Render(Plot plt)
+            {
+                Random rand = new Random(0);
+                int pointCount = 1_000_000;
+                int lineCount = 5;
+
+                for (int i = 0; i < lineCount; i++)
+                    plt.PlotSignal(DataGen.RandomWalk(rand, pointCount));
             }
         }
     }
