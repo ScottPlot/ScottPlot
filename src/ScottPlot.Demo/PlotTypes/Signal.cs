@@ -8,12 +8,12 @@ namespace ScottPlot.Demo.PlotTypes
     {
         public class Quickstart : IPlotDemo
         {
-            public string name { get; }
+            public string name { get; } = "Signal plot quickstart";
             public string description { get; }
 
             public void Render(Plot plt)
             {
-                double[] signalData = DataGen.RandomWalk(null, 100000);
+                double[] signalData = DataGen.RandomWalk(null, 100_000);
                 double sampleRateHz = 20000;
 
                 plt = new Plot();
@@ -24,8 +24,8 @@ namespace ScottPlot.Demo.PlotTypes
 
         public class CustomLineAndMarkers : IPlotDemo
         {
-            public string name { get; }
-            public string description { get; }
+            public string name { get; } = "Styled Signal Plot";
+            public string description { get; } = "Signal plot with styled lines and markers";
 
             public void Render(Plot plt)
             {

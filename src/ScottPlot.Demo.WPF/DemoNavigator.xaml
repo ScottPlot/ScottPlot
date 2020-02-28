@@ -9,7 +9,7 @@
         Title="ScottPlot Demos (WPF)" Height="450" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="350"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
@@ -23,11 +23,11 @@
                   />
 
         <DockPanel Grid.Column="1" Margin="5">
-            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-                <Label Name="SelectedDemoLabel" Content="ScottPlot.Demo.PlotTypes.BoxAndWhisker.Quickstart()"/>
+            <TextBox x:Name="DescriptionTextbox" Text="description" DockPanel.Dock="Bottom" TextWrapping="Wrap" BorderThickness="0"/>
+            <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
+                <Label Name="SelectedDemoLabel" FontWeight="Bold" Content="ScottPlot.Demo.PlotTypes.BoxAndWhisker.Quickstart"/>
                 <Label Name="SelectedDemoUrlLabel" Content="view source" Foreground="Blue"/>
             </StackPanel>
-            <TextBox x:Name="DescriptionTextbox" Text="description" DockPanel.Dock="Bottom"/>
             <ScottPlot:WpfPlot Name="wpfPlot1" />
         </DockPanel>
 

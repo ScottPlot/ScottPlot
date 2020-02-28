@@ -15,7 +15,7 @@ namespace ScottPlot.Demo
                 .SelectMany(s => s.GetTypes())
                 .Where(p => typeof(IPlotDemo).IsAssignableFrom(p))
                 .Where(p => p.IsInterface == false)
-                .Where(p => p.Namespace.StartsWith(namespaceStartsWith))
+                .Where(p => p.ToString().StartsWith(namespaceStartsWith))
                 .Select(x => x.ToString())
                 .ToArray();
 
