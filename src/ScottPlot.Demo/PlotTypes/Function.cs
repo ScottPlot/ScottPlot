@@ -8,8 +8,8 @@ namespace ScottPlot.Demo.PlotTypes
     {
         public class Quickstart : IPlotDemo
         {
-            public string name { get; }
-            public string description { get; }
+            public string name { get; } = "Function Plot";
+            public string description { get; } = "A function (not data points) is provided to create this plot. Axes can be zoomed infinitely.";
 
             public void Render(Plot plt)
             {
