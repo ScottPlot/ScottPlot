@@ -6,7 +6,7 @@ namespace ScottPlot.Statistics
 {
     public static class BoxAndWhiskerFromData
     {
-        public static BoxAndWhisker LimitsStdevStderrMean(double[] data, double xPosition)
+        public static BoxAndWhisker StdevStderrMean(double[] data, double xPosition)
         {
             var baw = new BoxAndWhisker(xPosition, data);
             var stats = new PopulationStats(data);
