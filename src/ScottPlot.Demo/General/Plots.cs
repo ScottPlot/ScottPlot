@@ -7,9 +7,11 @@ namespace ScottPlot.Demo.General
 {
     public class Plots
     {
+        // TODO: pull these from their source pages rather than duplicating them here
+
         public class SinAndCos : IPlotDemo
         {
-            public string name { get; } = "Sin and Cos";
+            public string name { get; } = "Sin and Cos (Scatter)";
             public string description { get; } = "Simple scatter plot with a legend.";
 
             public void Render(Plot plt)

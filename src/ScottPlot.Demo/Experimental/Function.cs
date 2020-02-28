@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ScottPlot.Demo.PlotTypes
+namespace ScottPlot.Demo.Experimental
 {
     public static class Function
     {
