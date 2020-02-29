@@ -182,6 +182,7 @@ namespace ScottPlot
             }
         }
 
+        [Obsolete("use Plot.CoordinateFromPixelX() and Plot.CoordinateFromPixelY()")]
         public PointF mouseCoordinates { get { return plt.CoordinateFromPixel(mouseLocation); } }
         Point mouseLocation;
         private void PbPlot_MouseMove(object sender, MouseEventArgs e)
