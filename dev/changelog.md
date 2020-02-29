@@ -22,19 +22,37 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
   * Create a SkiaSharp rendering module and user control (supporting OpenGL hardware acceleration)
 
 ## ScottPlot 4.0.20 (IN DEVELOPMENT)
+* `Plot.Function()` (#243) _Thanks @Benny121221_
+* `Plot.BoxAndWhisker()`
+* improved bar charts (#244, #260, #277) _Thanks @Benny121221 and @bonzaiferroni and @SoManyUsernamesTaken_
+  * support for stacked box plots
+  * support for horizontal box plots
+* support for "shade below the curve" (#255) _Thanks @ckovamees_
+* new demo/cookbook system and demo applications (#271)
+
+## ScottPlot 4.0.19 (IN DEVELOPMENT)
+
+#### Plottable and Rendering Changes
+* Improved how markers are drawn in Signal and SignalConst plots at the transition area between zoomed out and zoomed in (#263) _Thanks @bukkideme and @StendProg_
+* Improved support for zero lineSize and markerSize in Signal and SignalConst plots (#263, #264) _Thanks @bukkideme and @StendProg_
+* Improved thread safety of interactive graphs (#245) _Thanks @StendProg_
+
+#### Changes to `ScottPlot.Plot` Module
+* added `CoordinateFromPixelX()` and `CoordinateFromPixelY()` to get _double precision_ coordinates from a pixel location. Previously only SizeF (float) precision was available. This improvement is especially useful when using DateTime axes. (#269) _Thanks Chris_
+* added `AxisScale()` to adjust axis limits to set a defined scale (units per pixel) for each axis.
+* added `AxisEqual()` to adjust axis limits to set the scale of both axes to be the same regardless of the size of each axis. (#272) _Thanks @gberrante_
+* `PlotHSpan()` and `PlotVSpan()` now return `PlottableHSpan` and `PlottableVSpan` objects (instead of a `PlottableAxSpan` with a `vertical` property)
+* `PlotHLine()` and `PlotVLine()` now return `PlottableHLine` and `PlottableVLine` objects (instead of a `PlottableAxLine` with a `vertical` property)
+
+#### Miscellaneous
+* MultiPlot now has a `GetSubplot()` method which returns the Plot from a row and column index (#242). See cookbook for details. _Thanks @Resonanz and @StendProg_
+* Created `DataGen.Range()` to make it easy to create double arrays with evenly spaced data (#259)
 * Improved support for display scaling (#273) _Thanks @zrolfs_
 * Improved event handling (#266, #238) _Thanks @StendProg_
 * Improved legend positioning (#253) _Thanks @StendProg_
-* Created `DataGen.Range()` to make it easy to create double arrays with evenly spaced data (#259)
-* Improved how signal markers are drawn at the transition area between zoomed out and zoomed in (#263) _Thanks @bukkideme and @StendProg_
-
-## ScottPlot 4.0.19
-* Improved thread safety of interactive graphs (#245) _Thanks @StendProg_
-* MultiPlot now has a GetSubplot() method which returns the Plot from a row and column index (#242). See cookbook for details. _Thanks @Resonanz and @StendProg_
-* Improved support for zero lineSize and markerSize in Signal and SignalConst plots (#263, #264) _Thanks @bukkideme and @StendProg_
 
 ## ScottPlot 4.0.18
-* Improved local culture formatting of numerican and DateTime axis tick labels (#236) _Thanks @teejay-87_
+* Added `Plot.SetCulture()` for improved local culture formatting of numerical and DateTime axis tick labels (#236) _Thanks @teejay-87_
 
 ## ScottPlot 4.0.17
 * Added `mouseCoordinates` property to WinForms and WPF controls (#235) _Thanks @bukkideme_
