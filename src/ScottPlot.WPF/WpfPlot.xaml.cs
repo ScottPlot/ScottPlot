@@ -218,6 +218,7 @@ namespace ScottPlot
             }
         }
 
+        [Obsolete("use Plot.CoordinateFromPixelX() and Plot.CoordinateFromPixelY()")]
         public Point mouseCoordinates
         {
             get

@@ -15,7 +15,6 @@ namespace ScottPlot.Demo.WinForms
         public FormStartup()
         {
             InitializeComponent();
-            winFormsDemosButtom.Enabled = false;
         }
 
         private void FormStartup_Load(object sender, EventArgs e)
@@ -30,7 +29,7 @@ namespace ScottPlot.Demo.WinForms
 
         private void winFormsDemosButtom_Click(object sender, EventArgs e)
         {
-
+            new FormDemos().ShowDialog();
         }
     }
 }
