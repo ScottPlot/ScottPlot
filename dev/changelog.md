@@ -30,7 +30,7 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
 * support for "shade below the curve" (#255) _Thanks @ckovamees_
 * new demo/cookbook system and demo applications (#271)
 
-## ScottPlot 4.0.19 (IN DEVELOPMENT)
+## ScottPlot 4.0.19
 
 #### Plottable and Rendering Changes
 * Improved how markers are drawn in Signal and SignalConst plots at the transition area between zoomed out and zoomed in (#263) _Thanks @bukkideme and @StendProg_
