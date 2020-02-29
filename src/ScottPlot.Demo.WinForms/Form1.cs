@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Linq;
+using System.Diagnostics;
 
 namespace ScottPlot.Demo.WinForms
 {
@@ -15,14 +17,97 @@ namespace ScottPlot.Demo.WinForms
         public Form1()
         {
             InitializeComponent();
+            LoadTreeWithDemos();
+            treeView1.SelectedNode = treeView1.Nodes[0].Nodes[0];
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            var demo = new Demo.General.Plots.SinAndCos();
-            var plt = new Plot();
-            demo.Render(plt);
-            Controls.Add(new FormsPlot(plt) { Dock = DockStyle.Fill, Name = "formsPlot1" });
+
+        }
+
+        private void LoadTreeWithDemos()
+        {
+            // TODO: make this tree in our own class and use binding to display it
+
+            // GENERAL
+            var generalTreeItem = new TreeNode("General Plots");
+            treeView1.Nodes.Add(generalTreeItem);
+            generalTreeItem.Expand();
+            foreach (string demoName in Demo.Reflection.GetDemoPlots("ScottPlot.Demo.General."))
+            {
+                IPlotDemo plotDemo = Reflection.GetPlot(demoName);
+                generalTreeItem.Nodes.Add(new TreeNode { Text = plotDemo.name, ToolTipText = plotDemo.description, Tag = demoName.ToString() });
+            }
+
+            // PLOT TYPES
+            var plotTypesTreeItem = new TreeNode("Plot Types");
+            treeView1.Nodes.Add(plotTypesTreeItem);
+            foreach (string demoName in Demo.Reflection.GetDemoPlots("ScottPlot.Demo.PlotTypes."))
+            {
+                IPlotDemo plotDemo = Reflection.GetPlot(demoName);
+                plotTypesTreeItem.Nodes.Add(new TreeNode { Text = plotDemo.name, ToolTipText = plotDemo.description, Tag = demoName.ToString() });
+            }
+
+            // STYLE
+            var styleTreeItem = new TreeNode("Custom Plot Styles");
+            treeView1.Nodes.Add(styleTreeItem);
+            foreach (string demoName in Demo.Reflection.GetDemoPlots("ScottPlot.Demo.Style."))
+            {
+                IPlotDemo plotDemo = Reflection.GetPlot(demoName);
+                styleTreeItem.Nodes.Add(new TreeNode { Text = plotDemo.name, ToolTipText = plotDemo.description, Tag = demoName.ToString() });
+            }
+
+            // EXPERIMENTAL
+            var experimentalTreeItem = new TreeNode("Experimental Plots");
+            treeView1.Nodes.Add(experimentalTreeItem);
+            if (Debugger.IsAttached)
+                experimentalTreeItem.Expand();
+            foreach (string demoName in Demo.Reflection.GetDemoPlots("ScottPlot.Demo.Experimental."))
+            {
+                IPlotDemo plotDemo = Reflection.GetPlot(demoName);
+                experimentalTreeItem.Nodes.Add(new TreeNode { Text = plotDemo.name, ToolTipText = plotDemo.description, Tag = demoName.ToString() });
+            }
+        }
+
+        private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            if (treeView1.SelectedNode?.Tag is null)
+                return;
+
+            string tag = treeView1.SelectedNode.Tag.ToString();
+            if (tag != null)
+                LoadDemo(tag);
+        }
+
+        private void LoadDemo(string objectPath)
+        {
+
+            Debug.WriteLine($"Loading demo: {objectPath}");
+            string fileName = "/src/" + objectPath.Split('+')[0].Replace(".", "/") + ".cs";
+            fileName = fileName.Replace("ScottPlot/Demo", "ScottPlot.Demo");
+            string url = "https://github.com/swharden/ScottPlot/blob/master" + fileName;
+            string methodName = objectPath.Split('+')[1];
+            var demoPlot = Reflection.GetPlot(objectPath);
+
+            DemoNameLabel.Text = demoPlot.name;
+            DemoFileLabel.Text = $"{fileName} ({methodName})";
+            DescriptionTextbox.Text = (demoPlot.description is null) ? "no descriton provided..." : demoPlot.description;
+            DemoFileUrl.Text = url;
+            
+            formsPlot1.Reset();
+            demoPlot.Render(formsPlot1.plt);
+            formsPlot1.Render();
+        }
+
+        private void formsPlot1_Rendered(object sender, EventArgs e)
+        {
+            PerformanceLabel.Text = formsPlot1.plt.GetSettings(false).benchmark.ToString();
+        }
+
+        private void DemoFileUrl_Click(object sender, EventArgs e)
+        {
+            Tools.LaunchBrowser(DemoFileUrl.Text);
         }
     }
 }
