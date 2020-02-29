@@ -871,7 +871,7 @@ namespace ScottPlot
 
         public double CoordinateFromPixelY(double pixelY)
         {
-            return settings.GetLocationX(pixelY);
+            return settings.GetLocationY(pixelY);
         }
 
         public PointF CoordinateFromPixel(int pixelX, int pixelY)

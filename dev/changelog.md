@@ -22,6 +22,8 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
   * Create a SkiaSharp rendering module and user control (supporting OpenGL hardware acceleration)
 
 ## ScottPlot 4.0.20 (IN DEVELOPMENT)
+
+#### Work to do...
 * `Plot.Function()` (#243) _Thanks @Benny121221_
 * `Plot.BoxAndWhisker()`
 * improved bar charts (#244, #260, #277) _Thanks @Benny121221 and @bonzaiferroni and @SoManyUsernamesTaken_
@@ -29,6 +31,9 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
   * support for horizontal box plots
 * support for "shade below the curve" (#255) _Thanks @ckovamees_
 * new demo/cookbook system and demo applications (#271)
+
+### Misc
+* Fixed bug that caused `Plot.CoordinateFromPixelY()` to return incorrect value
 
 ## ScottPlot 4.0.19
 
