@@ -331,6 +331,7 @@ namespace ScottPlot
             return scatterPlot;
         }
 
+        [Obsolete("WARNING: This method is still experimental", error: false)]
         public PlottableFunction PlotFunction(
             Func<double, double?> function,
             double minX,
@@ -579,6 +580,7 @@ namespace ScottPlot
             return barPlot;
         }
 
+        [Obsolete("WARNING: This method is still experimental", error: false)]
         public PlottableBoxAndWhisker PlotBoxAndWhisker(Statistics.BoxAndWhisker[] boxes)
         {
             var bawPlot = new PlottableBoxAndWhisker(boxes);
