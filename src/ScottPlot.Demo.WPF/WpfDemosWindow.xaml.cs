@@ -8,20 +8,23 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace ScottPlot.Demo.WPF
 {
     /// <summary>
-    /// Interaction logic for AboutControl.xaml
+    /// Interaction logic for WpfDemos.xaml
     /// </summary>
-    public partial class AboutControl : UserControl
+    public partial class WpfDemosWindow : Window
     {
-        public AboutControl()
+        public WpfDemosWindow()
         {
             InitializeComponent();
-            VersionLabel.Content = $"version {Tools.GetVersionString()}";
+        }
+
+        private void LaunchMouseTracker(object sender, RoutedEventArgs e)
+        {
+            new WpfDemos.MouseTracker().ShowDialog();
         }
     }
 }

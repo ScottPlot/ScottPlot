@@ -8,7 +8,7 @@
              d:DesignHeight="300" d:DesignWidth="500">
     <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto">
         <StackPanel Background="White">
-            <Label Content="ScottPlot Interactive Demos" FontSize="24" FontWeight="SemiBold" />
+            <Label Content="ScottPlot Interactive Cookbook" FontSize="24" FontWeight="SemiBold" />
             <Label Name="VersionLabel" Content="version 8.8.88" FontSize="12" Margin="0,-18,0,0" Foreground="Gray" Width="109" HorizontalContentAlignment="Right" HorizontalAlignment="Left" />
 
             <TextBlock Padding="5,10,5,5" TextWrapping="Wrap" FontSize="14">
