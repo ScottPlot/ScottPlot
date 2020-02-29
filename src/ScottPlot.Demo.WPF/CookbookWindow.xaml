@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:ScottPlot.Demo.WPF"
         xmlns:ScottPlot="clr-namespace:ScottPlot;assembly=ScottPlot.WPF"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
         Title="ScottPlot Demos (WPF)" Height="500" Width="950">
     <Grid Margin="5">
         <Grid.ColumnDefinitions>
@@ -21,7 +22,7 @@
             <TreeView x:Name="DemoTreeview" SelectedItemChanged="DemoSelected" BorderThickness="0"/>
         </GroupBox>
 
-        <local:DemoPlotControl x:Name="DemoPlotControl1" Grid.Column="1" Grid.Row="0" Visibility="Hidden" />
+        <local:CookbookControl x:Name="DemoPlotControl1" Grid.Column="1" Grid.Row="0" Visibility="Hidden" />
         <local:AboutControl x:Name="AboutControl" Grid.Column="1" Grid.Row="0" Visibility="Visible" />
 
     </Grid>

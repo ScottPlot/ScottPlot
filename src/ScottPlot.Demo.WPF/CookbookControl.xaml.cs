@@ -17,9 +17,9 @@ namespace ScottPlot.Demo.WPF
     /// <summary>
     /// Interaction logic for DemoPlotControl.xaml
     /// </summary>
-    public partial class DemoPlotControl : UserControl
+    public partial class CookbookControl : UserControl
     {
-        public DemoPlotControl()
+        public CookbookControl()
         {
             InitializeComponent();
             wpfPlot1.Rendered += WpfPlot1_Rendered;

@@ -1,0 +1,38 @@
+﻿<Window x:Class="ScottPlot.Demo.WPF.WpfDemos.MouseTracker"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ScottPlot.Demo.WPF.WpfDemos"
+        xmlns:ScottPlot="clr-namespace:ScottPlot;assembly=ScottPlot.WPF"
+        mc:Ignorable="d"
+        Title="MouseTracker" Height="400" Width="500">
+    <DockPanel Margin="5">
+        <Grid DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <Label Content="X" Grid.Row="1" Grid.Column="0" FontWeight="Bold"/>
+            <Label Content="Y" Grid.Row="2" Grid.Column="0" FontWeight="Bold"/>
+            
+            <Label Content="Pixel" Grid.Row="0" Grid.Column="1" FontWeight="Bold"/>
+            <Label Content="Coordinate" Grid.Row="0" Grid.Column="2" FontWeight="Bold"/>
+
+            <Label Name="XPixelLabel" Content="123.456" Grid.Row="1" Grid.Column="1" FontFamily="consolas" />
+            <Label Name="YPixelLabel" Content="123.456" Grid.Row="2" Grid.Column="1" FontFamily="consolas" />
+
+            <Label Name="XCoordinateLabel" Content="123.456" Grid.Row="1" Grid.Column="2" FontFamily="consolas" />
+            <Label Name="YCoordinateLabel" Content="123.456" Grid.Row="2" Grid.Column="2" FontFamily="consolas" />
+
+        </Grid>
+        <ScottPlot:WpfPlot Name="wpfPlot1" MouseMove="OnMouseMove"/>
+    </DockPanel>
+</Window>

@@ -1,6 +1,6 @@
 ﻿namespace ScottPlot.Demo.WinForms
 {
-    partial class Form1
+    partial class FormCookbook
     {
         /// <summary>
         /// Required designer variable.
