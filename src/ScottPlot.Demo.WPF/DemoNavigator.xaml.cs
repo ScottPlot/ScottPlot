@@ -23,14 +23,7 @@ namespace ScottPlot.Demo.WPF
         public DemoNavigator()
         {
             InitializeComponent();
-            wpfPlot1.Rendered += WpfPlot1_Rendered;
             LoadTreeWithDemos();
-            LoadDemo("ScottPlot.Demo.General.Plots+SinAndCos");
-        }
-
-        private void WpfPlot1_Rendered(object sender, EventArgs e)
-        {
-            BenchmarkLabel.Content = wpfPlot1.plt.GetSettings(false).benchmark.ToString();
         }
 
         private void DemoSelected(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -38,31 +31,16 @@ namespace ScottPlot.Demo.WPF
             var selectedDemoItem = (TreeViewItem)DemoTreeview.SelectedItem;
             if (selectedDemoItem.Tag != null)
             {
-                wpfPlot1.Visibility = Visibility.Visible;
-                LoadDemo(selectedDemoItem.Tag.ToString());
+                DemoPlotControl1.Visibility = Visibility.Visible;
+                AboutControl.Visibility = Visibility.Hidden;
+                DemoPlotControl1.LoadDemo(selectedDemoItem.Tag.ToString());
             }
             else
             {
-                wpfPlot1.Visibility = Visibility.Hidden;
+                DemoPlotControl1.Visibility = Visibility.Hidden;
+                AboutControl.Visibility = Visibility.Visible;
             }
         }
-
-        private void LoadDemo(string objectPath)
-        {
-            Debug.WriteLine($"Loading demo: {objectPath}");
-            string fileName = "/src/" + objectPath.Split('+')[0].Replace(".", "/") + ".cs";
-            string methodName = objectPath.Split('+')[1];
-            var demoPlot = Reflection.GetPlot(objectPath);
-
-            DemoNameLabel.Content = demoPlot.name;
-            DemoFileLabel.Content = $"{fileName} ({methodName})";
-            DescriptionTextbox.Text = (demoPlot.description is null) ? "no descriton provided..." : demoPlot.description;
-
-            wpfPlot1.Reset();
-            demoPlot.Render(wpfPlot1.plt);
-            wpfPlot1.Render();
-        }
-
 
         private void LoadTreeWithDemos()
         {
@@ -78,7 +56,7 @@ namespace ScottPlot.Demo.WPF
             }
 
             // PLOT TYPES
-            var plotTypesTreeItem = new TreeViewItem() { Header = "Plot Types", IsExpanded = true };
+            var plotTypesTreeItem = new TreeViewItem() { Header = "Plot Types", IsExpanded = false };
             DemoTreeview.Items.Add(plotTypesTreeItem);
             foreach (string demoName in Demo.Reflection.GetDemoPlots("ScottPlot.Demo.PlotTypes."))
             {
@@ -96,7 +74,7 @@ namespace ScottPlot.Demo.WPF
             }
 
             // EXPERIMENTAL
-            var experimentalTreeItem = new TreeViewItem() { Header = "Experimental Plots", IsExpanded = true };
+            var experimentalTreeItem = new TreeViewItem() { Header = "Experimental Plots", IsExpanded = Debugger.IsAttached };
             DemoTreeview.Items.Add(experimentalTreeItem);
             foreach (string demoName in Demo.Reflection.GetDemoPlots("ScottPlot.Demo.Experimental."))
             {

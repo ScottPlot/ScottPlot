@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="ScottPlot.Demo.WPF.DemoPlotControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ScottPlot.Demo.WPF"
+             xmlns:ScottPlot="clr-namespace:ScottPlot;assembly=ScottPlot.WPF"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="500">
+    <DockPanel Background="White">
+        <Label Name="DemoNameLabel" Content="Box and Whisker Quickstart" FontSize="18" FontWeight="SemiBold" DockPanel.Dock="Top"/>
+        <StackPanel DockPanel.Dock="Top" Margin="0,-10,0,0" Orientation="Horizontal">
+
+            <Label Name="DemoFileLabel" Content="ScottPlot.Demo.PlotTypes.BoxAndWhisker.cs (Quickstart)" Foreground="Gray"/>
+            <Label Name="ViewCodeLabel" Content="view code" Cursor="Hand"
+                   MouseEnter="ViewCode_MouseEnter" MouseLeave="ViewCode_MouseLeave" MouseUp="ViewCode_MouseUp"/>
+            
+        </StackPanel>
+
+        <GroupBox DockPanel.Dock="Top" Header="Description">
+            <TextBox x:Name="DescriptionTextbox" Text="description" TextWrapping="Wrap" BorderThickness="0" Margin="2"/>
+        </GroupBox>
+
+        <GroupBox Header="Performance" DockPanel.Dock="Bottom">
+            <Label Name="BenchmarkLabel" Content="rendered..." Foreground="Gray"/>
+        </GroupBox>
+
+        <GroupBox Header="Interactive Plot" DockPanel.Dock="Bottom">
+            <ScottPlot:WpfPlot Name="wpfPlot1"/>
+        </GroupBox>
+
+    </DockPanel>
+</UserControl>

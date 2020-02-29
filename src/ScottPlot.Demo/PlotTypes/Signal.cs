@@ -16,7 +16,6 @@ namespace ScottPlot.Demo.PlotTypes
                 double[] signalData = DataGen.RandomWalk(null, 100_000);
                 double sampleRateHz = 20000;
 
-                plt = new Plot();
                 plt.Title($"Signal Plot ({signalData.Length.ToString("N0")} points)");
                 plt.PlotSignal(signalData, sampleRateHz);
             }
@@ -32,7 +31,6 @@ namespace ScottPlot.Demo.PlotTypes
                 Random rand = new Random(0);
                 double[] ys = DataGen.RandomWalk(rand, 500);
 
-                plt = new Plot();
                 plt.Title($"Signal Plot with Markers");
                 plt.PlotSignal(ys, label: "default");
                 plt.PlotSignal(ys, yOffset: 20, markerSize: 10, label: "large markers");

@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="ScottPlot.Demo.WPF.AboutControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ScottPlot.Demo.WPF"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="500">
+    <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto">
+        <StackPanel Background="White">
+            <Label Content="ScottPlot Interactive Demos" FontSize="24" FontWeight="SemiBold" />
+            <Label Name="VersionLabel" Content="version 8.8.88" FontSize="12" Margin="0,-18,0,0" Foreground="Gray" Width="109" HorizontalContentAlignment="Right" HorizontalAlignment="Left" />
+
+            <TextBlock Padding="5,10,5,5" TextWrapping="Wrap" FontSize="14">
+            This program demonstrates how ScottPlot can be used to plot data.
+            <LineBreak /><LineBreak />
+            All plots are ScottPlot.Plot objects which could be created from 
+            console applications and saved as image files. However, displaying them in a control (WpfPlot or FormsPlot) makes them mouse-interactive.
+            </TextBlock>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
