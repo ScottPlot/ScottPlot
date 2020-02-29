@@ -25,10 +25,13 @@ namespace ScottPlot
             return new SolidBrush(GetRandomColor());
         }
 
-        public static string GetVersionString()
+        public static string GetVersionString(bool justThreeDigits = true)
         {
-            Version scottPlotVersion = typeof(ScottPlot.Plot).Assembly.GetName().Version;
-            return scottPlotVersion.ToString();
+            Version ver = typeof(Plot).Assembly.GetName().Version;
+            if (justThreeDigits)
+                return $"{ver.Major}.{ver.Minor}.{ver.Build}";
+            else
+                return ver.ToString();
         }
 
         public static string GetFrameworkVersionString()
