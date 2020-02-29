@@ -21,24 +21,8 @@
             <TreeView x:Name="DemoTreeview" SelectedItemChanged="DemoSelected" BorderThickness="0"/>
         </GroupBox>
 
-        <DockPanel Grid.Column="1">
-            <Label Name="DemoNameLabel" Content="Box and Whisker Quickstart" FontSize="18" FontWeight="SemiBold" DockPanel.Dock="Top"/>
-            <Label Name="DemoFileLabel" Content="ScottPlot.Demo.PlotTypes.BoxAndWhisker.cs (Quickstart)" 
-                   Foreground="Gray" Margin="0,-10,0,0" DockPanel.Dock="Top"/>
-
-            <GroupBox DockPanel.Dock="Top" Header="Description">
-                <TextBox x:Name="DescriptionTextbox" Text="description" TextWrapping="Wrap" BorderThickness="0" Margin="2"/>
-            </GroupBox>
-
-            <GroupBox Header="Performance" DockPanel.Dock="Bottom">
-                <Label Name="BenchmarkLabel" Content="rendered..." Foreground="Gray"/>
-            </GroupBox>
-
-            <GroupBox Header="Interactive Plot" DockPanel.Dock="Bottom">
-                <ScottPlot:WpfPlot Name="wpfPlot1"/>
-            </GroupBox>
-
-        </DockPanel>
+        <local:DemoPlotControl x:Name="DemoPlotControl1" Grid.Column="1" Grid.Row="0" Visibility="Hidden" />
+        <local:AboutControl x:Name="AboutControl" Grid.Column="1" Grid.Row="0" Visibility="Visible" />
 
     </Grid>
 </Window>

@@ -19,8 +19,10 @@ namespace ScottPlot.Demo.WinForms
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            var plt = ScottPlot.Demo.Plots.SinAndCos();
-            Controls.Add(new ScottPlot.FormsPlot(plt) { Dock = DockStyle.Fill, Name = "formsPlot1" });
+            var demo = new Demo.General.Plots.SinAndCos();
+            var plt = new Plot();
+            demo.Render(plt);
+            Controls.Add(new FormsPlot(plt) { Dock = DockStyle.Fill, Name = "formsPlot1" });
         }
     }
 }

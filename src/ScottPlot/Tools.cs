@@ -222,5 +222,26 @@ namespace ScottPlot
                 dataOut[i] = Math.Log10(dataIn[i]);
             return dataOut;
         }
+
+        public static void LaunchBrowser(string url)
+        {
+            // A cross-platform .NET-Core-safe function to launch a URL in the browser
+            Debug.WriteLine($"Launching URL: {url}");
+            try
+            {
+                Process.Start(url);
+            }
+            catch
+            {
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                    Process.Start(new ProcessStartInfo("cmd", $"/c start {url}") { CreateNoWindow = true });
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                    Process.Start("xdg-open", url);
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                    Process.Start("open", url);
+                else
+                    throw;
+            }
+        }
     }
 }
