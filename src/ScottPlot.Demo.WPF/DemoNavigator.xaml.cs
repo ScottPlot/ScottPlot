@@ -58,9 +58,7 @@ namespace ScottPlot.Demo.WPF
             DemoFileLabel.Content = $"{fileName} ({methodName})";
             DescriptionTextbox.Text = (demoPlot.description is null) ? "no descriton provided..." : demoPlot.description;
 
-            wpfPlot1.plt.GetPlottables().Clear();
-            wpfPlot1.plt.Clear();
-            wpfPlot1.plt.XTicks();
+            wpfPlot1.Reset();
             demoPlot.Render(wpfPlot1.plt);
             wpfPlot1.Render();
         }
