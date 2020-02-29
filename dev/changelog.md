@@ -28,8 +28,6 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
 * Created `DataGen.Range()` to make it easy to create double arrays with evenly spaced data (#259)
 * Improved how signal markers are drawn at the transition area between zoomed out and zoomed in (#263) _Thanks @bukkideme and @StendProg_
 
-> **TODO:** Totally revamp the demo system. Use a core library for demos, and source it for the cookbook, WinForms demo application, and WPF demo application.
-
 ## ScottPlot 4.0.19
 * Improved thread safety of interactive graphs (#245) _Thanks @StendProg_
 * MultiPlot now has a GetSubplot() method which returns the Plot from a row and column index (#242). See cookbook for details. _Thanks @Resonanz and @StendProg_
