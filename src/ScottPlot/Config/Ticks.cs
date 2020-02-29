@@ -11,7 +11,7 @@ namespace ScottPlot.Config
     {
         public string fontName = Fonts.GetDefaultFontName();
         public float fontSize = 10;
-        public Font font { get { return new Font(fontName, fontSize); } }
+        public Font font { get { return new Font(fontName, fontSize, GraphicsUnit.Pixel); } }
 
         public bool displayYlabels = true;
         public bool displayXlabels = true;
