@@ -1,15 +1,28 @@
 # ScottPlot Changelog
 
+## Primary Version History
+
 _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. Patches are typically non-breaking, but switching between major and minor versions may require modification of existing code._
 
-* **ScottPlot 4.2** (future) Rendering capabilities will be removed from ScottPlot.Plot so the dependency on System.Drawing can be eliminated. Rendering with System.Drawing will be confined to a separate module which, using interfaces, could be replaced by a module using another rendering framework like SkiaSharp.
-* **ScottPlot 4.1** (future) Plottable names and namespaces will change slightly
 * **ScottPlot 4.0** (Nov, 2019) ScottPlot.Plot module became platform-agnostic using .NET Standard and System.Drawing.Common. Total recode, but same API. User controls became separate, platform-specific modules.
 * **ScottPlot 3.0** (May, 2019) Total recode with new API. First version released on NuGet.
 * **ScottPlot 2.0** (Jan, 2019) Total recode with new API. First version to get its own GitHub project. 
 * **ScottPlot 1.0** (June, 2017) ScottPlot began as [swhPlot.cs](https://github.com/swharden/Csharp-Data-Visualization/blob/master/projects/17-06-24_stretchy_line_plot/pixelDrawDrag2/swhPlot.cs), a 150 line class used to create a [stretchy line plot](https://github.com/swharden/Csharp-Data-Visualization/tree/master/projects/17-06-24_stretchy_line_plot) demonstrating how to draw lines interactively with C#.
 
+## Coming Soon
+
+* **This version (4.0.x)** - this list is a reminder of things to complete before proceeding to the next major version.
+  * Improve support for display scaling (#273)
+  * Create standalone user control launchers
+* **ScottPlot 4.1**
+  * Refactor plottable module (namespaces will change slightly)
+* **ScottPlot 4.2** 
+  * Remove rendering capabilities from ScottPlot.Plot so the dependency on System.Drawing can be eliminated
+  * Create a GDI rendering module which uses System.Drawing 
+  * Create a SkiaSharp rendering module and user control (supporting OpenGL hardware acceleration)
+
 ## ScottPlot 4.0.20 (IN DEVELOPMENT)
+* Improved support for display scaling (#273) _Thanks @zrolfs_
 * Improved event handling (#266, #238) _Thanks @StendProg_
 * Improved legend positioning (#253) _Thanks @StendProg_
 * Created `DataGen.Range()` to make it easy to create double arrays with evenly spaced data (#259)
