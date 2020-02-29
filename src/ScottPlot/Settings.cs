@@ -62,13 +62,29 @@ namespace ScottPlot
         // this has to be here because color module is unaware of plottables list
         public Color GetNextColor() { return colors.GetColor(plottables.Count); }
 
-        public void Resize(int width, int height)
+        public void Resize(int width, int height, bool useMeasuredStrings = true)
         {
+            if (useMeasuredStrings && gfxData != null)
+            {
+                string sampleString = "IPjg8.8";
+                layout.yLabelWidth = (int)gfxData.MeasureString(sampleString, yLabel.font).Height;
+                layout.y2LabelWidth = (int)gfxData.MeasureString(sampleString, yLabel.font).Height; // currently y2 isn't supported
+                layout.titleHeight = (int)gfxData.MeasureString(sampleString, title.font).Height;
+                layout.xLabelHeight = (int)gfxData.MeasureString(sampleString, xLabel.font).Height;
+
+                var tickSize = gfxData.MeasureString("0.001", ticks.font);
+                layout.yScaleWidth = (int)tickSize.Width;
+                layout.y2ScaleWidth = (int)tickSize.Height; // currently y2 isn't supported
+                layout.xScaleHeight = (int)tickSize.Height;
+            }
+
             layout.Update(width, height);
         }
 
         public void TightenLayout(int padLeft = 15, int padRight = 15, int padBottom = 15, int padTop = 15)
         {
+            Resize(figureSize.Width, figureSize.Height);
+
             // update the layout with sizes based on configuration in settings
 
             layout.titleHeight = (int)title.size.Height + 3;
