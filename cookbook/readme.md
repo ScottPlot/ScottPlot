@@ -1,7 +1,7 @@
 # ScottPlot Cookbook
 The ScottPlot cookbook is a collection of small code examples which demonstrate how to create various types of plots using ScottPlot.
 
-_This cookbook was [automatically generated](/tests/Cookbook.cs) using ScottPlot 4.0.18.0_
+_This cookbook was [automatically generated](/tests/Cookbook.cs) using ScottPlot 4.0.19.0_
 
 
 ## Quickstart
