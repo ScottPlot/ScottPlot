@@ -9,7 +9,7 @@ namespace ScottPlot
 
     public partial class FormsPlot : UserControl
     {
-        public readonly Plot plt;
+        public Plot plt { get; private set; }
         private Settings settings;
         private bool isDesignerMode;
         public Cursor cursor = Cursors.Arrow;
@@ -18,15 +18,25 @@ namespace ScottPlot
         public FormsPlot(Plot plt)
         {
             InitializeComponent();
-            this.plt = plt;
-            InitializeScottPlot();
+            Reset(plt);
         }
 
         public FormsPlot()
         {
             InitializeComponent();
-            plt = new Plot();
+            Reset(null);
+        }
+
+        public void Reset()
+        {
+            Reset(null);
+        }
+
+        public void Reset(Plot plt)
+        {
+            this.plt = (plt is null) ? new Plot() : plt;
             InitializeScottPlot();
+            Render();
         }
 
         private void InitializeScottPlot()
