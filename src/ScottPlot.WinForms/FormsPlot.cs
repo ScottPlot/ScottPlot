@@ -81,6 +81,7 @@ namespace ScottPlot
                 if (isPanningOrZooming || isMovingDraggable)
                     Application.DoEvents();
                 currentlyRendering = false;
+                Rendered?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -379,6 +380,7 @@ namespace ScottPlot
 
         #region custom events
 
+        public event EventHandler Rendered;
         public event EventHandler MouseDownOnPlottable;
         public event EventHandler MouseDragPlottable;
         public event EventHandler MouseMoved;
