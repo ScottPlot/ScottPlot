@@ -62,10 +62,13 @@ namespace ScottPlot
         // this has to be here because color module is unaware of plottables list
         public Color GetNextColor() { return colors.GetColor(plottables.Count); }
 
-        public void Resize(int width, int height, bool useMeasuredStrings = true)
+        public void Resize(int width, int height, bool useMeasuredStrings = false)
         {
             if (useMeasuredStrings && gfxData != null)
             {
+                // this section was added before display scaling issues (pixel-referenced font sizes) were figured out.
+                // it is probably not needed...
+
                 string sampleString = "IPjg8.8";
                 layout.yLabelWidth = (int)gfxData.MeasureString(sampleString, yLabel.font).Height;
                 layout.y2LabelWidth = (int)gfxData.MeasureString(sampleString, yLabel.font).Height; // currently y2 isn't supported
