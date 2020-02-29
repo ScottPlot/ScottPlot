@@ -26,7 +26,7 @@ namespace ScottPlot
     [System.ComponentModel.DesignTimeVisible(true)]
     public partial class WpfPlot : UserControl
     {
-        public readonly Plot plt;
+        public Plot plt { get; private set; }
         private Settings settings;
         private bool isDesignerMode;
         public Cursor cursor = Cursors.Arrow;
@@ -35,17 +35,24 @@ namespace ScottPlot
         public WpfPlot(Plot plt)
         {
             InitializeComponent();
-            this.plt = plt;
-            InitializeScottPlot();
-            Render();
+            Reset(plt);
         }
 
         public WpfPlot()
         {
             InitializeComponent();
-            plt = new Plot();
+            Reset(null);
+        }
+
+        public void Reset()
+        {
+            Reset(null);
+        }
+
+        public void Reset(Plot plt)
+        {
+            this.plt = (plt is null) ? new Plot() : plt;
             InitializeScottPlot();
-            plt.AxisAuto();
             Render();
         }
 
