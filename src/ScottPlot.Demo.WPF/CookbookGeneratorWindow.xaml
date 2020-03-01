@@ -14,7 +14,7 @@
             <ProgressBar x:Name="ProgressBar1" Margin="5,0,5,0" Value="23"/>
         </DockPanel>
         <Label Name="ProgressLabel" Content="generating 5 of 23: Quickstart..." DockPanel.Dock="Top"/>
-        <Slider x:Name="ImageSlider" DockPanel.Dock="Bottom" ValueChanged="ImageSliderChanged" IsSnapToTickEnabled="True" TickFrequency="1" Maximum="10" TickPlacement="Both"/>
+        <Slider x:Name="ImageSlider" Visibility="Hidden" DockPanel.Dock="Bottom" ValueChanged="ImageSliderChanged" IsSnapToTickEnabled="True" TickFrequency="1" Maximum="10" TickPlacement="Both"/>
         <Image x:Name="PlotImage" />
     </DockPanel>
 </Window>

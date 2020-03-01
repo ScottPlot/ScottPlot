@@ -34,28 +34,25 @@ namespace ScottPlot.Demo.WinForms
             var generalTreeItem = new TreeNode("General Plots");
             treeView1.Nodes.Add(generalTreeItem);
             generalTreeItem.Expand();
-            foreach (string demoName in Demo.Reflection.GetDemoPlots("ScottPlot.Demo.General."))
+            foreach (IPlotDemo plotDemo in Demo.Reflection.GetPlots("ScottPlot.Demo.General."))
             {
-                IPlotDemo plotDemo = Reflection.GetPlot(demoName);
-                generalTreeItem.Nodes.Add(new TreeNode { Text = plotDemo.name, ToolTipText = plotDemo.description, Tag = demoName.ToString() });
+                generalTreeItem.Nodes.Add(new TreeNode { Text = plotDemo.name, ToolTipText = plotDemo.description, Tag = plotDemo.GetType().ToString() });
             }
 
             // PLOT TYPES
             var plotTypesTreeItem = new TreeNode("Plot Types");
             treeView1.Nodes.Add(plotTypesTreeItem);
-            foreach (string demoName in Demo.Reflection.GetDemoPlots("ScottPlot.Demo.PlotTypes."))
+            foreach (IPlotDemo plotDemo in Demo.Reflection.GetPlots("ScottPlot.Demo.PlotTypes."))
             {
-                IPlotDemo plotDemo = Reflection.GetPlot(demoName);
-                plotTypesTreeItem.Nodes.Add(new TreeNode { Text = plotDemo.name, ToolTipText = plotDemo.description, Tag = demoName.ToString() });
+                plotTypesTreeItem.Nodes.Add(new TreeNode { Text = plotDemo.name, ToolTipText = plotDemo.description, Tag = plotDemo.GetType().ToString() });
             }
 
             // STYLE
             var styleTreeItem = new TreeNode("Custom Plot Styles");
             treeView1.Nodes.Add(styleTreeItem);
-            foreach (string demoName in Demo.Reflection.GetDemoPlots("ScottPlot.Demo.Style."))
+            foreach (IPlotDemo plotDemo in Demo.Reflection.GetPlots("ScottPlot.Demo.Style."))
             {
-                IPlotDemo plotDemo = Reflection.GetPlot(demoName);
-                styleTreeItem.Nodes.Add(new TreeNode { Text = plotDemo.name, ToolTipText = plotDemo.description, Tag = demoName.ToString() });
+                styleTreeItem.Nodes.Add(new TreeNode { Text = plotDemo.name, ToolTipText = plotDemo.description, Tag = plotDemo.GetType().ToString() });
             }
 
             // EXPERIMENTAL
@@ -63,10 +60,9 @@ namespace ScottPlot.Demo.WinForms
             treeView1.Nodes.Add(experimentalTreeItem);
             if (Debugger.IsAttached)
                 experimentalTreeItem.Expand();
-            foreach (string demoName in Demo.Reflection.GetDemoPlots("ScottPlot.Demo.Experimental."))
+            foreach (IPlotDemo plotDemo in Demo.Reflection.GetPlots("ScottPlot.Demo.Experimental."))
             {
-                IPlotDemo plotDemo = Reflection.GetPlot(demoName);
-                experimentalTreeItem.Nodes.Add(new TreeNode { Text = plotDemo.name, ToolTipText = plotDemo.description, Tag = demoName.ToString() });
+                experimentalTreeItem.Nodes.Add(new TreeNode { Text = plotDemo.name, ToolTipText = plotDemo.description, Tag = plotDemo.GetType().ToString() });
             }
         }
 
