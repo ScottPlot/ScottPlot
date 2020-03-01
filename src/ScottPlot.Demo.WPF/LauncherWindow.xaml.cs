@@ -21,6 +21,10 @@ namespace ScottPlot.Demo.WPF
         {
             InitializeComponent();
             VersionLabel.Content = Tools.GetVersionString();
+
+            bool sourceIsAvailable = System.IO.File.Exists("../../../ScottPlot.Demo.WPF.csproj");
+            GenerateButton.IsEnabled = sourceIsAvailable;
+            GenerateDescription.Foreground = (sourceIsAvailable) ? Brushes.Black : Brushes.Gray;
         }
 
         private void LaunchCookbook(object sender, RoutedEventArgs e)
@@ -35,7 +39,7 @@ namespace ScottPlot.Demo.WPF
 
         private void LaunchCookbookGenerator(object sender, RoutedEventArgs e)
         {
-
+            new CookbookGeneratorWindow().ShowDialog();
         }
     }
 }
