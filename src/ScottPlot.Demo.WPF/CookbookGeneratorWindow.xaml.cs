@@ -22,7 +22,7 @@ namespace ScottPlot.Demo.WPF
     /// </summary>
     public partial class CookbookGeneratorWindow : Window
     {
-        string[] demoPlotNames = Reflection.GetDemoPlots();
+        IPlotDemo[] demoPlots = Reflection.GetPlots();
         string outputFolder = System.IO.Path.GetFullPath("./output");
         string imageFolder = System.IO.Path.GetFullPath("./output/images");
 
@@ -30,7 +30,7 @@ namespace ScottPlot.Demo.WPF
         {
             InitializeComponent();
             ProgressBar1.Value = 0;
-            ProgressLabel.Content = $"ready to generate {demoPlotNames.Length} cookbook plots...";
+            ProgressLabel.Content = $"ready to generate {demoPlots.Length} cookbook plots...";
             ResetOutputFolder();
         }
 
@@ -49,6 +49,7 @@ namespace ScottPlot.Demo.WPF
             System.IO.Directory.CreateDirectory(imageFolder);
         }
 
+        Stopwatch stopwatch = Stopwatch.StartNew();
         private void GenerateClicked(object sender, RoutedEventArgs e)
         {
             BackgroundWorker worker = new BackgroundWorker();
@@ -58,21 +59,17 @@ namespace ScottPlot.Demo.WPF
             worker.RunWorkerCompleted += Worker_RunWorkerCompleted;
 
             GenerateButton.IsEnabled = false;
+            stopwatch.Restart();
             worker.RunWorkerAsync();
-            GenerateButton.IsEnabled = true;
-        }
-
-        private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            LoadImages();
         }
 
         BitmapImage[] images;
-        private void LoadImages()
+        string[] imagePaths;
+        private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            string[] imagePaths = System.IO.Directory.GetFiles(imageFolder, "*.png");
-            
+            imagePaths = System.IO.Directory.GetFiles(imageFolder, "*.png");
             images = new BitmapImage[imagePaths.Length];
+
             for (int i = 0; i < imagePaths.Length; i++)
             {
                 BitmapImage b = new BitmapImage();
@@ -89,24 +86,41 @@ namespace ScottPlot.Demo.WPF
 
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            for (int i = 0; i < demoPlotNames.Length; i++)
+            for (int i = 0; i < demoPlots.Length; i++)
             {
-                IPlotDemo plotDemo = Reflection.GetPlot(demoPlotNames[i]);
-                (sender as BackgroundWorker).ReportProgress(i * 100 / demoPlotNames.Length, plotDemo.name);
-                string imageFilePath = $"{imageFolder}/{plotDemo.name}.png";
+                IPlotDemo demoPlot = demoPlots[i];
+                string imageFilePath = $"{imageFolder}/{demoPlot.name}.png";
 
                 var plt = new Plot(600, 400);
-                plotDemo.Render(plt);
+                demoPlot.Render(plt);
                 plt.SaveFig(imageFilePath);
+                Debug.WriteLine($"Saved: {imageFilePath}");
+
+                (sender as BackgroundWorker).ReportProgress(i * 100 / demoPlots.Length, i);
             }
 
-            (sender as BackgroundWorker).ReportProgress(100, $"Completed generating {demoPlotNames.Length} plots");
+            (sender as BackgroundWorker).ReportProgress(100, -1);
         }
 
         private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
+            Debug.WriteLine($"Progress: {e.ProgressPercentage}");
+
+            int demoPlotIndex = (int)e.UserState;
             ProgressBar1.Value = e.ProgressPercentage;
-            ProgressLabel.Content = e.UserState;
+
+            if (demoPlotIndex >= 0)
+            {
+                IPlotDemo demoPlot = demoPlots[demoPlotIndex];
+                ProgressLabel.Content = demoPlot.name;
+            }
+            else
+            {
+                stopwatch.Stop();
+                double elapsedSec = (double)stopwatch.ElapsedTicks / Stopwatch.Frequency;
+                ProgressLabel.Content = $"Generated {demoPlots.Length} cookbook plots in {elapsedSec:0.000} seconds";
+                ImageSlider.Visibility = Visibility.Visible;
+            }
         }
 
         private void OpenClicked(object sender, RoutedEventArgs e)
@@ -117,7 +131,12 @@ namespace ScottPlot.Demo.WPF
         private void ImageSliderChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (images != null)
-                PlotImage.Source = images[(int)ImageSlider.Value];
+            {
+                int imageIndex = (int)ImageSlider.Value;
+                PlotImage.Source = images[imageIndex];
+                ProgressLabel.Content = System.IO.Path.GetFileName(imagePaths[imageIndex]);
+            }
         }
+
     }
 }

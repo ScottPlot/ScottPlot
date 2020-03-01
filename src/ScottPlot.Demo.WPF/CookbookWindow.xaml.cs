@@ -49,37 +49,33 @@ namespace ScottPlot.Demo.WPF
             // GENERAL
             var generalTreeItem = new TreeViewItem() { Header = "General Plots", IsExpanded = true };
             DemoTreeview.Items.Add(generalTreeItem);
-            foreach (string demoName in Demo.Reflection.GetDemoPlots("ScottPlot.Demo.General."))
+            foreach (IPlotDemo plotDemo in Demo.Reflection.GetPlots("ScottPlot.Demo.General."))
             {
-                IPlotDemo plotDemo = Reflection.GetPlot(demoName);
-                generalTreeItem.Items.Add(new TreeViewItem() { Header = plotDemo.name, ToolTip = plotDemo.description, Tag = demoName.ToString() });
+                generalTreeItem.Items.Add(new TreeViewItem() { Header = plotDemo.name, ToolTip = plotDemo.description, Tag = plotDemo.GetType().ToString() });
             }
 
             // PLOT TYPES
             var plotTypesTreeItem = new TreeViewItem() { Header = "Plot Types", IsExpanded = false };
             DemoTreeview.Items.Add(plotTypesTreeItem);
-            foreach (string demoName in Demo.Reflection.GetDemoPlots("ScottPlot.Demo.PlotTypes."))
+            foreach (IPlotDemo plotDemo in Demo.Reflection.GetPlots("ScottPlot.Demo.PlotTypes."))
             {
-                IPlotDemo plotDemo = Reflection.GetPlot(demoName);
-                plotTypesTreeItem.Items.Add(new TreeViewItem() { Header = plotDemo.name, ToolTip = plotDemo.description, Tag = demoName.ToString() });
+                plotTypesTreeItem.Items.Add(new TreeViewItem() { Header = plotDemo.name, ToolTip = plotDemo.description, Tag = plotDemo.GetType().ToString() });
             }
 
             // STYLE
             var styleTreeItem = new TreeViewItem() { Header = "Custom Plot Styles", IsExpanded = false };
             DemoTreeview.Items.Add(styleTreeItem);
-            foreach (string demoName in Demo.Reflection.GetDemoPlots("ScottPlot.Demo.Style."))
+            foreach (IPlotDemo plotDemo in Demo.Reflection.GetPlots("ScottPlot.Demo.Style."))
             {
-                IPlotDemo plotDemo = Reflection.GetPlot(demoName);
-                styleTreeItem.Items.Add(new TreeViewItem() { Header = plotDemo.name, ToolTip = plotDemo.description, Tag = demoName.ToString() });
+                styleTreeItem.Items.Add(new TreeViewItem() { Header = plotDemo.name, ToolTip = plotDemo.description, Tag = plotDemo.GetType().ToString() });
             }
 
             // EXPERIMENTAL
             var experimentalTreeItem = new TreeViewItem() { Header = "Experimental Plots", IsExpanded = Debugger.IsAttached };
             DemoTreeview.Items.Add(experimentalTreeItem);
-            foreach (string demoName in Demo.Reflection.GetDemoPlots("ScottPlot.Demo.Experimental."))
+            foreach (IPlotDemo plotDemo in Demo.Reflection.GetPlots("ScottPlot.Demo.Experimental."))
             {
-                IPlotDemo plotDemo = Reflection.GetPlot(demoName);
-                experimentalTreeItem.Items.Add(new TreeViewItem() { Header = plotDemo.name, ToolTip = plotDemo.description, Tag = demoName.ToString() });
+                experimentalTreeItem.Items.Add(new TreeViewItem() { Header = plotDemo.name, ToolTip = plotDemo.description, Tag = plotDemo.GetType().ToString() });
             }
         }
     }
