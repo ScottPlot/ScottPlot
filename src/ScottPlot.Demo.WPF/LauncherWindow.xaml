@@ -40,13 +40,13 @@
                     WPF-specific tasks (like event binding and mouse tracking).
             </TextBlock>
 
-            <Button Grid.Column="0" Grid.Row="2" Padding="10, 5, 10, 5" VerticalAlignment="Center" Margin="5" Click="LaunchCookbookGenerator">
+            <Button x:Name="GenerateButton" Grid.Column="0" Grid.Row="2" Padding="10, 5, 10, 5" VerticalAlignment="Center" Margin="5" Click="LaunchCookbookGenerator">
                 <TextBlock TextAlignment="Center">Generate<LineBreak/>Cookbook</TextBlock>
             </Button>
-            <TextBlock Grid.Column="1" Grid.Row="2" Margin="5" TextWrapping="Wrap" VerticalAlignment="Center">
+            <TextBlock x:Name="GenerateDescription" Grid.Column="1" Grid.Row="2" Margin="5" TextWrapping="Wrap" VerticalAlignment="Center">
                     Generate every cookbook graph, save the ouptut as image files,
                     and generate HTML and Markdown index pages. This tool requires
-                    ScottPlot source code to be present.
+                    ScottPlot source code to be present 3 folders up.
             </TextBlock>
 
         </Grid>
