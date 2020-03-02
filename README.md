@@ -48,7 +48,7 @@ pictureBox1.Image = plt.GetBitmap();
 ```cs
 double[] dataX = new double[] {1, 2, 3, 4, 5};
 double[] dataY = new double[] {1, 4, 9, 16, 25};
-wpfPlot1.plt.PlotScatter(dataX, dataY);
+formsPlot1.plt.PlotScatter(dataX, dataY);
 formsPlot1.Render();
 ```
 
