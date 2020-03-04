@@ -7,7 +7,7 @@ namespace ScottPlot.Demo.Style
 {
     class Fonts
     {
-        public class StyledLabels : IPlotDemo
+        public class StyledLabels : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Styled Labels";
             public string description { get; }

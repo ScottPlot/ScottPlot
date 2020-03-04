@@ -9,7 +9,7 @@ namespace ScottPlot.Demo.General
     {
         // TODO: pull these from their source pages rather than duplicating them here
 
-        public class SinAndCos : IPlotDemo
+        public class SinAndCos : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Sin and Cos (Scatter)";
             public string description { get; } = "Simple scatter plot with a legend.";
@@ -23,7 +23,7 @@ namespace ScottPlot.Demo.General
             }
         }
 
-        public class RandomWalk_fiveThousandPoints_Signal : IPlotDemo
+        public class RandomWalk_fiveThousandPoints_Signal : PlotDemo, IPlotDemo
         {
             public string name { get; } = "5k points (Signal)";
             public string description { get; } = "Signal plots are intended for evenly-spaced data and much faster than Scatter plots.";
@@ -39,7 +39,7 @@ namespace ScottPlot.Demo.General
             }
         }
 
-        public class RandomWalk_5millionPoints_Signal : IPlotDemo
+        public class RandomWalk_5millionPoints_Signal : PlotDemo, IPlotDemo
         {
             public string name { get; } = "5M points (Signal)";
             public string description { get; } = "Signal plots with millions of points can be interacted with in real time.";
@@ -55,7 +55,7 @@ namespace ScottPlot.Demo.General
             }
         }
 
-        public class RandomWalk_5millionPoints_SignalConst : IPlotDemo
+        public class RandomWalk_5millionPoints_SignalConst : PlotDemo, IPlotDemo
         {
             public string name { get; } = "5M points (SignalConst)";
             public string description { get; } = "SignalConst plots pre-processes data to render much faster than Signal plots. Pre-processing takes a little time up-front and requires 4x the memory of Signal.";

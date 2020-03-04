@@ -6,7 +6,7 @@ namespace ScottPlot.Demo.PlotTypes
 {
     public static class Signal
     {
-        public class Quickstart : IPlotDemo
+        public class Quickstart : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Signal Plot Quickstart";
             public string description { get; }
@@ -21,7 +21,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class CustomLineAndMarkers : IPlotDemo
+        public class CustomLineAndMarkers : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Styled Signal Plot";
             public string description { get; } = "Signal plot with styled lines and markers";
@@ -39,7 +39,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class RandomWalk_5millionPoints_Signal : IPlotDemo
+        public class RandomWalk_5millionPoints_Signal : PlotDemo, IPlotDemo
         {
             public string name { get; } = "5M points (Signal)";
             public string description { get; } = "Signal plots with millions of points can be interacted with in real time.";

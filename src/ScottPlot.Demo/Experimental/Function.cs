@@ -6,7 +6,7 @@ namespace ScottPlot.Demo.Experimental
 {
     public static class Function
     {
-        public class Quickstart : IPlotDemo
+        public class Quickstart : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Function Plot";
             public string description { get; } = "A function (not data points) is provided to create this plot. Axes can be zoomed infinitely.";
