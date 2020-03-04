@@ -6,7 +6,7 @@ namespace ScottPlot.Demo.PlotTypes
 {
     class Finance
     {
-        public class OHLC : IPlotDemo
+        public class OHLC : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Financial OHLC Chart";
             public string description { get; } = "Display OHLC (open, high, low, close) data by plotting an array of OHLC objects.";
@@ -21,7 +21,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class Candle : IPlotDemo
+        public class Candle : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Financial Candlestick Chart";
             public string description { get; } = "Display OHLC (open, high, low, close) data by plotting an array of OHLC objects.";

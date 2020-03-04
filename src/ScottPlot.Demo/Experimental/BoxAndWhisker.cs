@@ -6,7 +6,7 @@ namespace ScottPlot.Demo.Experimental
 {
     class BoxAndWhisker
     {
-        public class Quickstart : IPlotDemo
+        public class Quickstart : PlotDemo, IPlotDemo
         {
 
             public string name { get; } = "Box and Whisker (Stdev, Stderr, and Mean)";
@@ -31,7 +31,7 @@ namespace ScottPlot.Demo.Experimental
             }
         }
 
-        public class Advanced : IPlotDemo
+        public class Advanced : PlotDemo, IPlotDemo
         {
 
             public string name { get; } = "Box and Whisker (Outlier, Quartile, and Median)";

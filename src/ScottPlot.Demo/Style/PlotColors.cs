@@ -6,7 +6,7 @@ namespace ScottPlot.Demo.Style
 {
     public class PlotColors
     {
-        public class Default : IPlotDemo
+        public class Default : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Plot Style (Default)";
             public string description { get; }
@@ -18,7 +18,7 @@ namespace ScottPlot.Demo.Style
             }
         }
 
-        public class Control : IPlotDemo
+        public class Control : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Plot Style (Control)";
             public string description { get; }
@@ -30,7 +30,7 @@ namespace ScottPlot.Demo.Style
             }
         }
 
-        public class Blue1 : IPlotDemo
+        public class Blue1 : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Plot Style (Blue1)";
             public string description { get; }
@@ -42,7 +42,7 @@ namespace ScottPlot.Demo.Style
             }
         }
 
-        public class Blue2 : IPlotDemo
+        public class Blue2 : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Plot Style (Blue2)";
             public string description { get; }
@@ -54,7 +54,7 @@ namespace ScottPlot.Demo.Style
             }
         }
 
-        public class Blue3 : IPlotDemo
+        public class Blue3 : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Plot Style (Blue3)";
             public string description { get; }
@@ -66,7 +66,7 @@ namespace ScottPlot.Demo.Style
             }
         }
 
-        public class Light1 : IPlotDemo
+        public class Light1 : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Plot Style (Light1)";
             public string description { get; }
@@ -78,7 +78,7 @@ namespace ScottPlot.Demo.Style
             }
         }
 
-        public class Light2 : IPlotDemo
+        public class Light2 : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Plot Style (Light2)";
             public string description { get; }
@@ -90,7 +90,7 @@ namespace ScottPlot.Demo.Style
             }
         }
 
-        public class Gray1 : IPlotDemo
+        public class Gray1 : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Plot Style (Gray1)";
             public string description { get; }
@@ -102,7 +102,7 @@ namespace ScottPlot.Demo.Style
             }
         }
 
-        public class Gray2 : IPlotDemo
+        public class Gray2 : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Plot Style (Gray2)";
             public string description { get; }
@@ -114,7 +114,7 @@ namespace ScottPlot.Demo.Style
             }
         }
 
-        public class Black : IPlotDemo
+        public class Black : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Plot Style (Black)";
             public string description { get; }

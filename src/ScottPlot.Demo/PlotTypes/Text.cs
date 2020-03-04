@@ -7,7 +7,7 @@ namespace ScottPlot.Demo.PlotTypes
 {
     class Text
     {
-        public class Quickstart : IPlotDemo
+        public class Quickstart : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Text Quickstart";
             public string description { get; } = "Text can be placed at any X/Y location and styled using arguments.";

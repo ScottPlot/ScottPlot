@@ -6,7 +6,7 @@ namespace ScottPlot.Demo.PlotTypes
 {
     class Bar
     {
-        public class Quickstart : IPlotDemo
+        public class Quickstart : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Bar Graph Quickstart";
             public string description { get; } = "Bar graph series can be created by supply Xs and Ys. Optionally apply errorbars as a third array using an argument.";
@@ -39,7 +39,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class MultipleBars : IPlotDemo
+        public class MultipleBars : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Multiple Bar Graphs";
             public string description { get; } = "Multiple bar graphs can be displayed together by tweaking the widths and offsets of two separate bar graphs.";

@@ -6,7 +6,7 @@ namespace ScottPlot.Demo.PlotTypes
 {
     class Scatter
     {
-        public class Quickstart : IPlotDemo
+        public class Quickstart : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Scatter Plot Quickstart";
             public string description { get; } = "Scatter plots are best for small numbers of paired X/Y data points. For evenly-spaced data points Signal is much faster.";

@@ -89,7 +89,7 @@ namespace ScottPlot.Demo.WPF
             for (int i = 0; i < demoPlots.Length; i++)
             {
                 IPlotDemo demoPlot = demoPlots[i];
-                string imageFilePath = $"{imageFolder}/{demoPlot.name}.png";
+                string imageFilePath = $"{imageFolder}/{demoPlot.id}.png";
 
                 var plt = new Plot(600, 400);
                 demoPlot.Render(plt);
