@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Background="WhiteSmoke"
-        Title="ScottPlot Demos (WPF)" Height="500" Width="950">
+        Title="ScottPlot Demos (WPF)" Height="750" Width="950">
     <Grid Margin="5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="350"/>
