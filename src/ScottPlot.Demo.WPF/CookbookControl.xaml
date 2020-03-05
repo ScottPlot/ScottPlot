@@ -6,28 +6,33 @@
              xmlns:local="clr-namespace:ScottPlot.Demo.WPF"
              xmlns:ScottPlot="clr-namespace:ScottPlot;assembly=ScottPlot.WPF"
              mc:Ignorable="d" 
+             Background="WhiteSmoke"
              d:DesignHeight="450" d:DesignWidth="500">
-    <DockPanel Background="White">
-        <Label Name="DemoNameLabel" Content="Box and Whisker Quickstart" FontSize="18" FontWeight="SemiBold" DockPanel.Dock="Top"/>
-        <StackPanel DockPanel.Dock="Top" Margin="0,-10,0,0" Orientation="Horizontal">
 
-            <Label Name="DemoFileLabel" Content="ScottPlot.Demo.PlotTypes.BoxAndWhisker.cs (Quickstart)" Foreground="Gray"/>
-            <Label Name="ViewCodeLabel" Content="view code" Cursor="Hand"
-                   MouseEnter="ViewCode_MouseEnter" MouseLeave="ViewCode_MouseLeave" MouseUp="ViewCode_MouseUp"/>
-            
+    <Grid>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Column="0" Grid.Row="0">
+            <Label Name="DemoNameLabel" Content="Box and Whisker Quickstart" FontSize="18" FontWeight="SemiBold"/>
+            <TextBox Background="Transparent" x:Name="DescriptionTextbox" Text="description" TextWrapping="Wrap" BorderThickness="0" Margin="2, -5, 2, 5"/>
         </StackPanel>
 
-        <GroupBox DockPanel.Dock="Top" Header="Description">
-            <TextBox x:Name="DescriptionTextbox" Text="description" TextWrapping="Wrap" BorderThickness="0" Margin="2"/>
+        <ScottPlot:WpfPlot Name="wpfPlot1" Grid.Column="0" Grid.Row="1"/>
+
+        <GroupBox x:Name="SourceGroupBox" Header="Source Code"  Grid.Column="0" Grid.Row="2">
+            <TextBox x:Name="SourceTextBox" IsReadOnly="True" VerticalScrollBarVisibility="Auto" FontFamily="consolas" />
         </GroupBox>
 
-        <GroupBox Header="Performance" DockPanel.Dock="Bottom">
-            <Label Name="BenchmarkLabel" Content="rendered..." Foreground="Gray"/>
-        </GroupBox>
+    </Grid>
 
-        <GroupBox Header="Interactive Plot" DockPanel.Dock="Bottom">
-            <ScottPlot:WpfPlot Name="wpfPlot1"/>
-        </GroupBox>
 
-    </DockPanel>
+
 </UserControl>

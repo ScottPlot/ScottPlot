@@ -6,19 +6,99 @@ namespace ScottPlot.Demo
 {
     public abstract class PlotDemo
     {
-        public string classPath { get { return GetType().ToString(); } }
-        public string sourceCode { get; private set; } = null;
-        public string id { get { return MakeID(classPath); } }
-
-        private string MakeID(string name)
+        public string classPath
         {
-            foreach (string charToStrip in new string[] { "(", ")", "!", "," })
-                name = name.Replace(charToStrip, "");
+            get
+            {
+                return GetType().ToString();
+            }
+        }
 
-            foreach (string charToReplace in new string[] { " ", ".", "+" })
-                name = name.Replace(charToReplace, "_");
+        public string id
+        {
+            get
+            {
+                return $"{categoryMajor}_{categoryMinor}_{categoryClass}";
+            }
+        }
 
-            return name;
+        public string categoryMajor
+        {
+            get
+            {
+                string category = classPath.Substring(15);
+                string[] pathAndName = category.Split('+');
+                string[] folderAndFile = pathAndName[0].Split('.');
+                return folderAndFile[0];
+            }
+        }
+
+        public string categoryMinor
+        {
+            get
+            {
+                string category = classPath.Substring(15);
+                string[] pathAndName = category.Split('+');
+                string[] folderAndFile = pathAndName[0].Split('.');
+                return folderAndFile[1];
+            }
+        }
+
+        public string categoryClass
+        {
+            get
+            {
+                string category = classPath.Substring(15);
+                string[] pathAndName = category.Split('+');
+                return pathAndName[1];
+            }
+        }
+
+        public string GetSourceCode(string pathDemoFolder)
+        {
+            string sourceFilePath = $"{pathDemoFolder}/{categoryMajor}/{categoryMinor}.cs";
+            sourceFilePath = System.IO.Path.GetFullPath(sourceFilePath);
+
+            if (!System.IO.File.Exists(sourceFilePath))
+                return $"source code not found in: {sourceFilePath}";
+
+            string code = System.IO.File.ReadAllText(sourceFilePath);
+            code = code.Replace("\r\n", "\n");
+
+            StringBuilder sb = new StringBuilder();
+
+            var lines = code.Split('\n');
+            bool inRenderFunction = false;
+            bool inCorrectClass = false;
+            for (int i = 0; i < lines.Length; i++)
+            {
+                string line = lines[i];
+
+                if (line.StartsWith("        public class"))
+                {
+                    inCorrectClass = (line.StartsWith($"        public class {categoryClass}"));
+                }
+
+                if (line.StartsWith("            public void Render(Plot plt)"))
+                {
+                    inRenderFunction = true;
+                    i += 1;
+                    continue;
+                }
+
+                if (line.StartsWith("            }"))
+                {
+                    inRenderFunction = false;
+                    continue;
+                }
+
+                if (line.StartsWith("                "))
+                    line = line.Substring(16);
+                if (inRenderFunction && inCorrectClass)
+                    sb.AppendLine(line);
+            }
+
+            return sb.ToString().Trim();
         }
     }
 }

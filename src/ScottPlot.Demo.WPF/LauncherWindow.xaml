@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         Title="ScottPlot Demos (WPF)" 
         WindowStartupLocation="CenterScreen"
+        Background="WhiteSmoke"
         Height="300" Width="550" MinHeight="300" MinWidth="550">
     <DockPanel>
         <Label DockPanel.Dock="Top" Content="ScottPlot Demos" FontSize="24" FontWeight="SemiBold" />
