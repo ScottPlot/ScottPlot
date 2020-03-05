@@ -7,10 +7,16 @@ namespace ScottPlot.Demo
     public interface IPlotDemo
     {
         string name { get; }
-        string id { get; }
-        string classPath { get; }
-        string sourceCode { get; }
         string description { get; }
+
+        string classPath { get; }
+        string categoryMajor { get; }
+        string categoryMinor { get; }
+        string categoryClass { get; }
+
+        string id { get; }
+
         void Render(Plot plt);
+        string GetSourceCode(string pathDemoFolder);
     }
 }

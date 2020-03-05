@@ -10,7 +10,16 @@ namespace ScottPlotTests.Cookbook
         [Test]
         public void Test_Cookbook_MakeCookbook()
         {
-            ScottPlot.Demo.Cookbook.Chef.MakeCookbook();
+            ScottPlot.Demo.Cookbook.Chef.MakeCookbook("../../../../src/ScottPlot.Demo/");
+        }
+
+        [Test]
+        public void Test_Cookbook_ReadRecipes()
+        {
+            ScottPlot.Demo.IPlotDemo[] recipes = ScottPlot.Demo.Reflection.GetPlots();
+
+            foreach(var recipe in recipes)
+                Console.WriteLine(recipe.id);
         }
     }
 }

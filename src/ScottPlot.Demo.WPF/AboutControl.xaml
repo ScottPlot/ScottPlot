@@ -7,15 +7,15 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="500">
     <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto">
-        <StackPanel Background="White">
+        <StackPanel Background="WhiteSmoke">
             <Label Content="ScottPlot Interactive Cookbook" FontSize="24" FontWeight="SemiBold" />
             <Label Name="VersionLabel" Content="version 8.8.88" FontSize="12" Margin="0,-18,0,0" Foreground="Gray" Width="109" HorizontalContentAlignment="Right" HorizontalAlignment="Left" />
 
             <TextBlock Padding="5,10,5,5" TextWrapping="Wrap" FontSize="14">
-            This program demonstrates how ScottPlot can be used to plot data.
+            This program displays ScottPlot cookbook recipes interactively.
             <LineBreak /><LineBreak />
-            All plots are ScottPlot.Plot objects which could be created from 
-            console applications and saved as image files. However, displaying them in a control (WpfPlot or FormsPlot) makes them mouse-interactive.
+            Although this program uses the WpfPlot to display plots interactively, the source code for each plot could
+                be used in console applications and plots saved as images.
             </TextBlock>
 
         </StackPanel>
