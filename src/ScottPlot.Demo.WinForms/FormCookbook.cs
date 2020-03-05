@@ -78,19 +78,13 @@ namespace ScottPlot.Demo.WinForms
 
         private void LoadDemo(string objectPath)
         {
-
-            Debug.WriteLine($"Loading demo: {objectPath}");
-            string fileName = "/src/" + objectPath.Split('+')[0].Replace(".", "/") + ".cs";
-            fileName = fileName.Replace("ScottPlot/Demo", "ScottPlot.Demo");
-            string url = "https://github.com/swharden/ScottPlot/blob/master" + fileName;
-            string methodName = objectPath.Split('+')[1];
             var demoPlot = Reflection.GetPlot(objectPath);
 
             DemoNameLabel.Text = demoPlot.name;
-            DemoFileLabel.Text = $"{fileName} ({methodName})";
+            sourceCodeGroupbox.Text = $"SourceCode: {demoPlot.classPath.Replace("+",".")}";
             DescriptionTextbox.Text = (demoPlot.description is null) ? "no descriton provided..." : demoPlot.description;
-            DemoFileUrl.Text = url;
-            
+            sourceCodeTextbox.Text = demoPlot.GetSourceCode("../../../../src/ScottPlot.Demo/");
+
             formsPlot1.Reset();
             demoPlot.Render(formsPlot1.plt);
             formsPlot1.Render();
@@ -98,12 +92,7 @@ namespace ScottPlot.Demo.WinForms
 
         private void formsPlot1_Rendered(object sender, EventArgs e)
         {
-            PerformanceLabel.Text = formsPlot1.plt.GetSettings(false).benchmark.ToString();
-        }
-
-        private void DemoFileUrl_Click(object sender, EventArgs e)
-        {
-            Tools.LaunchBrowser(DemoFileUrl.Text);
+            //PerformanceLabel.Text = formsPlot1.plt.GetSettings(false).benchmark.ToString();
         }
     }
 }
