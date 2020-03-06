@@ -11,7 +11,7 @@
         Title="ScottPlot Demos (WPF)" Height="750" Width="950">
     <Grid Margin="5">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="350"/>
+            <ColumnDefinition Width="275"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 

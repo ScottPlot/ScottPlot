@@ -25,11 +25,29 @@
             <TextBox Background="Transparent" x:Name="DescriptionTextbox" Text="description" TextWrapping="Wrap" BorderThickness="0" Margin="2, -5, 2, 5"/>
         </StackPanel>
 
-        <ScottPlot:WpfPlot Name="wpfPlot1" Grid.Column="0" Grid.Row="1"/>
+        <Border Grid.Column="0" Grid.Row="1" Margin="5" BorderThickness="2" BorderBrush="#444444" Background="#444444" >
+            <DockPanel>
+                <Label x:Name="BenchmarkLabel" Content="benchmark info" DockPanel.Dock="Top" 
+                       Foreground="White" />
+                <ScottPlot:WpfPlot Name="wpfPlot1"/>
+            </DockPanel>
+        </Border>
 
-        <GroupBox x:Name="SourceGroupBox" Header="Source Code"  Grid.Column="0" Grid.Row="2">
-            <TextBox x:Name="SourceTextBox" IsReadOnly="True" VerticalScrollBarVisibility="Auto" FontFamily="consolas" />
-        </GroupBox>
+        <Border Grid.Column="0" Grid.Row="2" Margin="5" BorderThickness="2" BorderBrush="#2a3a56" Background="#2a3a56" >
+            <DockPanel>
+                <Label x:Name="SourceCodeLabel" Content="file path" DockPanel.Dock="Top" 
+                       Foreground="White" />
+                <TextBox x:Name="SourceTextBox" 
+                     IsReadOnly="True" 
+                     VerticalScrollBarVisibility="Auto" 
+                     HorizontalScrollBarVisibility="Auto" 
+                     FontFamily="consolas" 
+                     BorderThickness="0"
+                     Text="source code"
+                     Padding="3"
+                     />
+            </DockPanel>
+        </Border>
 
     </Grid>
 

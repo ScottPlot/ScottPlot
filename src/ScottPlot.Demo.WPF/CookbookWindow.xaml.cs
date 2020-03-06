@@ -44,39 +44,33 @@ namespace ScottPlot.Demo.WPF
 
         private void LoadTreeWithDemos()
         {
-            // TODO: make this tree in our own class and use binding to display it
-
-            // GENERAL
-            var generalTreeItem = new TreeViewItem() { Header = "General Plots", IsExpanded = true };
-            DemoTreeview.Items.Add(generalTreeItem);
-            foreach (IPlotDemo plotDemo in Demo.Reflection.GetPlots("ScottPlot.Demo.General."))
+            IPlotDemo[] plots = Reflection.GetPlots();
+            IEnumerable<string> majorCategories = plots.Select(x => x.categoryMajor).Distinct();
+            foreach (string majorCategory in majorCategories)
             {
-                generalTreeItem.Items.Add(new TreeViewItem() { Header = plotDemo.name, ToolTip = plotDemo.description, Tag = plotDemo.GetType().ToString() });
+                var majorTreeItem = new TreeViewItem() { Header = majorCategory, IsExpanded = true };
+                DemoTreeview.Items.Add(majorTreeItem);
+
+                IEnumerable<string> minorCategories = plots.Where(x => x.categoryMajor == majorCategory).Select(x => x.categoryMinor).Distinct();
+                foreach (string minorCategory in minorCategories)
+                {
+                    var minorTreeItem = new TreeViewItem() { Header = minorCategory };
+                    if (majorCategory == "PlotTypes" && minorCategory == "Scatter")
+                        minorTreeItem.IsExpanded = true;
+                    majorTreeItem.Items.Add(minorTreeItem);
+
+                    IEnumerable<IPlotDemo> categoryPlots = plots.Where(x => x.categoryMajor == majorCategory && x.categoryMinor == minorCategory);
+                    foreach (IPlotDemo demoPlot in categoryPlots)
+                    {
+                        var classNameTreeItem = new TreeViewItem() { Header = demoPlot.name, Tag = demoPlot.classPath };
+                        if (demoPlot.classPath == "ScottPlot.Demo.PlotTypes.Scatter+Quickstart")
+                            classNameTreeItem.IsSelected = true;
+                        minorTreeItem.Items.Add(classNameTreeItem);
+                    }
+                }
             }
 
-            // PLOT TYPES
-            var plotTypesTreeItem = new TreeViewItem() { Header = "Plot Types", IsExpanded = false };
-            DemoTreeview.Items.Add(plotTypesTreeItem);
-            foreach (IPlotDemo plotDemo in Demo.Reflection.GetPlots("ScottPlot.Demo.PlotTypes."))
-            {
-                plotTypesTreeItem.Items.Add(new TreeViewItem() { Header = plotDemo.name, ToolTip = plotDemo.description, Tag = plotDemo.GetType().ToString() });
-            }
-
-            // STYLE
-            var styleTreeItem = new TreeViewItem() { Header = "Custom Plot Styles", IsExpanded = false };
-            DemoTreeview.Items.Add(styleTreeItem);
-            foreach (IPlotDemo plotDemo in Demo.Reflection.GetPlots("ScottPlot.Demo.Style."))
-            {
-                styleTreeItem.Items.Add(new TreeViewItem() { Header = plotDemo.name, ToolTip = plotDemo.description, Tag = plotDemo.GetType().ToString() });
-            }
-
-            // EXPERIMENTAL
-            var experimentalTreeItem = new TreeViewItem() { Header = "Experimental Plots", IsExpanded = Debugger.IsAttached };
-            DemoTreeview.Items.Add(experimentalTreeItem);
-            foreach (IPlotDemo plotDemo in Demo.Reflection.GetPlots("ScottPlot.Demo.Experimental."))
-            {
-                experimentalTreeItem.Items.Add(new TreeViewItem() { Header = plotDemo.name, ToolTip = plotDemo.description, Tag = plotDemo.GetType().ToString() });
-            }
+            DemoTreeview.Focus();
         }
     }
 }

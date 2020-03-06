@@ -27,7 +27,7 @@ namespace ScottPlot.Demo.WPF
 
         private void WpfPlot1_Rendered(object sender, EventArgs e)
         {
-            //BenchmarkLabel.Content = wpfPlot1.plt.GetSettings(false).benchmark.ToString();
+            BenchmarkLabel.Content = wpfPlot1.plt.GetSettings(false).benchmark.ToString();
         }
 
         public void LoadDemo(string objectPath)
@@ -35,15 +35,15 @@ namespace ScottPlot.Demo.WPF
             var demoPlot = Reflection.GetPlot(objectPath);
 
             DemoNameLabel.Content = demoPlot.name;
-            SourceGroupBox.Header = $"Source Code: {objectPath.Replace("+",".")}";
+            SourceCodeLabel.Content = $"{demoPlot.sourceFile} ({demoPlot.categoryClass})";
             DescriptionTextbox.Text = (demoPlot.description is null) ? "no descriton provided..." : demoPlot.description;
 
             wpfPlot1.Reset();
-            wpfPlot1.plt.Style(figBg: System.Drawing.Color.FromArgb(255, 245, 245, 245));
             demoPlot.Render(wpfPlot1.plt);
             wpfPlot1.Render();
 
-            SourceTextBox.Text = demoPlot.GetSourceCode("../../../../../src/ScottPlot.Demo/");
+            string sourceCode = demoPlot.GetSourceCode("../../../../../src/ScottPlot.Demo/");
+            SourceTextBox.Text = sourceCode;
         }
     }
 }

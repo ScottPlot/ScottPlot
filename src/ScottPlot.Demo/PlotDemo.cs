@@ -22,6 +22,14 @@ namespace ScottPlot.Demo
             }
         }
 
+        public string sourceFile
+        {
+            get
+            {
+                return $"/src/ScottPlot.Demo/{categoryMajor}/{categoryMinor}.cs";
+            }
+        }
+
         public string categoryMajor
         {
             get
