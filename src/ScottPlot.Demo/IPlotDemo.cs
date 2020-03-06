@@ -10,6 +10,7 @@ namespace ScottPlot.Demo
         string description { get; }
 
         string classPath { get; }
+        string sourceFile { get; }
         string categoryMajor { get; }
         string categoryMinor { get; }
         string categoryClass { get; }
