@@ -1,0 +1,75 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace ScottPlot.Demo.WinForms.WinFormsDemos
+{
+    public partial class TransparentBackground : Form
+    {
+        public TransparentBackground()
+        {
+            InitializeComponent();
+
+            GenericPlots.SinAndCos(formsPlot1.plt);
+            formsPlot1.plt.Style(figBg: Color.Transparent);
+            button1_Click(null, null);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            SetBackground(Color.Red);
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            SetBackground(Color.Green);
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            SetBackground(Color.Blue);
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            SetBackground(Color.White);
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            SetBackground(SystemColors.Control);
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            Random rand = new Random();
+            Bitmap bmp = new Bitmap(200, 200);
+            Graphics gfx = Graphics.FromImage(bmp);
+            gfx.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            gfx.Clear(Color.DarkBlue);
+            Brush brsh = new SolidBrush(Color.LightBlue);
+            Size circleSize = new Size(10, 10);
+            for (int i=0; i<100; i++)
+            {
+                Point randomPoint = new Point(rand.Next(bmp.Width - circleSize.Width), rand.Next(bmp.Height - circleSize.Height));
+                Rectangle rect = new Rectangle(randomPoint, circleSize);
+                gfx.FillEllipse(brsh, rect);
+            }
+            BackgroundImage = bmp;
+        }
+
+        private void SetBackground(Color bgcolor)
+        {
+            BackgroundImage = null;
+            BackColor = bgcolor;
+            formsPlot1.BackColor = bgcolor;
+            formsPlot1.Render();
+        }
+    }
+}
