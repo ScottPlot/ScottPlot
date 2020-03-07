@@ -72,8 +72,8 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(249, 47);
             this.label2.TabIndex = 3;
-            this.label2.Text = "Demonstrate that setting formsPlot1.BackColor also sets the plot figure backgroun" +
-    "d";
+            this.label2.Text = "Demonstrate a transparent ScottPlot control that lets you see through to the back" +
+    "ground of the form";
             // 
             // FormDemos
             // 

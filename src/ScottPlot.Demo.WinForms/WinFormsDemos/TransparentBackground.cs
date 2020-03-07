@@ -18,7 +18,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             GenericPlots.SinAndCos(formsPlot1.plt);
             formsPlot1.plt.Style(figBg: Color.Transparent, dataBg: Color.Transparent);
             formsPlot1.BackColor = Color.Transparent;
-            button1_Click(null, null);
+            button6_Click(null, null);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -64,6 +64,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             }
 
             BackgroundImage = bmp;
+            formsPlot1.Render();
         }
 
         private void SetBackground(Color bgcolor)
