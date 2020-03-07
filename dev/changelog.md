@@ -34,7 +34,7 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
 
 ### Misc
 * Fixed bug that caused `Plot.CoordinateFromPixelY()` to return incorrect value
-* Improved support for WinForms control transparency (#286) _Thanks @StendProg and @envine_
+* Improved support for WinForms and WpfPlot transparency (#286) _Thanks @StendProg and @envine_
 
 ## ScottPlot 4.0.19
 
