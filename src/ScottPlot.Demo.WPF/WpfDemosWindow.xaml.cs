@@ -26,5 +26,10 @@ namespace ScottPlot.Demo.WPF
         {
             new WpfDemos.MouseTracker().ShowDialog();
         }
+
+        private void LaunchTransparentPlot(object sender, RoutedEventArgs e)
+        {
+            new WpfDemos.TransparentBackground().ShowDialog();
+        }
     }
 }
