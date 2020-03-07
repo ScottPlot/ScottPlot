@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ScottPlot.Demo.Cookbook
@@ -12,7 +13,33 @@ namespace ScottPlot.Demo.Cookbook
             Console.WriteLine($"Generating cookbook in: {outputFolder}");
             ClearFolders(outputFolder);
             RenderAndSaveImages(outputFolder);
-            CreateReport(sourceCodeFolder, outputFolder);
+
+            IPlotDemo[] recipes = GetRecipesInOrder();
+
+            CreateReport(recipes, sourceCodeFolder, outputFolder);
+        }
+
+        private static IPlotDemo[] GetRecipesInOrder()
+        {
+            List<IPlotDemo> recipes = new List<IPlotDemo>();
+
+            // define the order of cookbook examples here
+            recipes.AddRange(Reflection.GetPlots("ScottPlot.Demo.General"));
+            recipes.AddRange(Reflection.GetPlots("ScottPlot.Demo.PlotTypes"));
+            recipes.AddRange(Reflection.GetPlots());
+
+            List<string> ids = new List<string>();
+            List<IPlotDemo> recipes2 = new List<IPlotDemo>();
+            foreach (IPlotDemo recipe in recipes)
+            {
+                if (!ids.Contains(recipe.id))
+                {
+                    recipes2.Add(recipe);
+                    ids.Add(recipe.id);
+                }
+            }
+
+            return recipes2.ToArray();
         }
 
         private static void ClearFolders(string outputFolder)
@@ -39,14 +66,14 @@ namespace ScottPlot.Demo.Cookbook
             }
         }
 
-        private static void CreateReport(string sourceCodeFolder, string outputFolder)
+        private static void CreateReport(IPlotDemo[] recipes, string sourceCodeFolder, string outputFolder)
         {
             StringBuilder md = new StringBuilder();
             StringBuilder html = new StringBuilder();
             StringBuilder mdTOC = new StringBuilder();
             StringBuilder htmlTOC = new StringBuilder();
-            
-            foreach (IPlotDemo recipe in Reflection.GetPlots())
+
+            foreach (IPlotDemo recipe in recipes)
             {
                 string title = $"{recipe.categoryMajor}/{recipe.categoryMinor} - {recipe.name}";
                 string sourceCode = $"// Source code is from {recipe.sourceFile} ({recipe.categoryClass})\n\n{recipe.GetSourceCode(sourceCodeFolder)}";
