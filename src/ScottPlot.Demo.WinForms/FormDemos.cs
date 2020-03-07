@@ -21,5 +21,10 @@ namespace ScottPlot.Demo.WinForms
         {
             new WinFormsDemos.MouseTracker().ShowDialog();
         }
+
+        private void TransparentBackgroundButton_Click(object sender, EventArgs e)
+        {
+            new WinFormsDemos.TransparentBackground().ShowDialog();
+        }
     }
 }

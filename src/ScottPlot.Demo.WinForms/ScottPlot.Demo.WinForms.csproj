@@ -81,6 +81,12 @@
     <Compile Include="WinFormsDemos\MouseTracker.Designer.cs">
       <DependentUpon>MouseTracker.cs</DependentUpon>
     </Compile>
+    <Compile Include="WinFormsDemos\TransparentBackground.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinFormsDemos\TransparentBackground.Designer.cs">
+      <DependentUpon>TransparentBackground.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="FormCookbook.resx">
       <DependentUpon>FormCookbook.cs</DependentUpon>
     </EmbeddedResource>
@@ -101,6 +107,9 @@
     </Compile>
     <EmbeddedResource Include="WinFormsDemos\MouseTracker.resx">
       <DependentUpon>MouseTracker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinFormsDemos\TransparentBackground.resx">
+      <DependentUpon>TransparentBackground.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
