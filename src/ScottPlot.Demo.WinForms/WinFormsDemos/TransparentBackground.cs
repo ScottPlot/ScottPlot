@@ -15,9 +15,9 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
         public TransparentBackground()
         {
             InitializeComponent();
-
             GenericPlots.SinAndCos(formsPlot1.plt);
-            formsPlot1.plt.Style(figBg: Color.Transparent);
+            formsPlot1.plt.Style(figBg: Color.Transparent, dataBg: Color.Transparent);
+            formsPlot1.BackColor = Color.Transparent;
             button1_Click(null, null);
         }
 
@@ -48,19 +48,21 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
 
         private void button6_Click(object sender, EventArgs e)
         {
+            // apply a Bitmap to the background of this form
             Random rand = new Random();
             Bitmap bmp = new Bitmap(200, 200);
             Graphics gfx = Graphics.FromImage(bmp);
             gfx.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-            gfx.Clear(Color.DarkBlue);
-            Brush brsh = new SolidBrush(Color.LightBlue);
-            Size circleSize = new Size(10, 10);
+            gfx.Clear(SystemColors.Control);
+            Pen pen = Pens.LightGray;
+            Size circleSize = new Size(20, 20);
             for (int i=0; i<100; i++)
             {
                 Point randomPoint = new Point(rand.Next(bmp.Width - circleSize.Width), rand.Next(bmp.Height - circleSize.Height));
                 Rectangle rect = new Rectangle(randomPoint, circleSize);
-                gfx.FillEllipse(brsh, rect);
+                gfx.DrawEllipse(pen, rect);
             }
+
             BackgroundImage = bmp;
         }
 
@@ -68,7 +70,6 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
         {
             BackgroundImage = null;
             BackColor = bgcolor;
-            formsPlot1.BackColor = bgcolor;
             formsPlot1.Render();
         }
     }
