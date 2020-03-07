@@ -10,13 +10,12 @@ namespace ScottPlot.Demo
         public static void SinAndCos(Plot plt)
         {
             int pointCount = 51;
-            plt.PlotScatter(DataGen.Consecutive(pointCount), DataGen.Sin(pointCount));
-            plt.PlotScatter(DataGen.Consecutive(pointCount), DataGen.Cos(pointCount));
-            plt.Legend();
+            double[] x = DataGen.Consecutive(pointCount);
+            double[] sin = DataGen.Sin(pointCount);
+            double[] cos = DataGen.Cos(pointCount);
 
-            plt.Title("Example title");
-            plt.YLabel("Vertical Axis");
-            plt.XLabel("Horizontal Axis");
+            plt.PlotScatter(x, sin);
+            plt.PlotScatter(x, cos);
         }
     }
 }

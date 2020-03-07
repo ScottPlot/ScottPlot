@@ -25,6 +25,7 @@ namespace ScottPlot.Demo.Cookbook
 
             // define the order of cookbook examples here
             recipes.AddRange(Reflection.GetPlots("ScottPlot.Demo.General"));
+            recipes.AddRange(Reflection.GetPlots("ScottPlot.Demo.Axis"));
             recipes.AddRange(Reflection.GetPlots("ScottPlot.Demo.PlotTypes"));
             recipes.AddRange(Reflection.GetPlots());
 
@@ -76,7 +77,7 @@ namespace ScottPlot.Demo.Cookbook
             foreach (IPlotDemo recipe in recipes)
             {
                 string title = $"{recipe.categoryMajor}/{recipe.categoryMinor} - {recipe.name}";
-                string sourceCode = $"// Source code is from {recipe.sourceFile} ({recipe.categoryClass})\n\n{recipe.GetSourceCode(sourceCodeFolder)}";
+                string sourceCode = recipe.GetSourceCode(sourceCodeFolder);
                 string description = (recipe.description is null) ? "no description provided..." : recipe.description;
 
                 md.AppendLine($"## {title}\n\n");
@@ -86,8 +87,9 @@ namespace ScottPlot.Demo.Cookbook
                 mdTOC.AppendLine($"* [{title}](#{recipe.id})");
 
                 html.AppendLine($"<div class='title'><a style='color: black;' id='{recipe.id}' href='#{recipe.id}'>{title}</a></div>\n\n");
-                html.AppendLine($"<div style='padding: 10px;'>{description}</div>");
-                html.AppendLine($"<pre class='prettyprint lang - cs' style='padding: 10px; background: #f6f8fa; border: 0px solid white;'>{sourceCode}</pre>");
+                html.AppendLine($"<div class='description'>{description}</div>");
+                html.AppendLine($"<div class='description2'>{recipe.sourceFile} ({recipe.categoryClass}):</div>");
+                html.AppendLine($"<pre class='prettyprint lang - cs' style='padding: 10px; margin: 0px; background: #f6f8fa; border: 0px solid white;'>{sourceCode}</pre>");
                 html.AppendLine($"<div align='center'><img src='images/{recipe.id}.png'></div>");
                 html.AppendLine("<div style='margin: 20px;'>&nbsp;</div>");
                 htmlTOC.AppendLine($"<li><a href='#{recipe.id}'>{title}</a></li>");
@@ -104,6 +106,8 @@ namespace ScottPlot.Demo.Cookbook
                 article { width: 900px; margin: auto; }
                 .title {border-bottom: 1px solid #eaecef; font-size: 150%; font-weight: 600;}
 				.subtitle {margin-bottom: 10px; font-style: italic;}
+                .description{margin-top: 10px; margin-bottom: 10px;}
+                .description2{margin-top: 5px; font-size: 70%; color: lightgray; font-family: consolas, monospace, sans-serif;}
                 hr { margin: 30px; border: 0px solid #eaecef;}
             ";
 
