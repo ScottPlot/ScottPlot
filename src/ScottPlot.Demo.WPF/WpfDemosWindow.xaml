@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:ScottPlot.Demo.WPF"
         mc:Ignorable="d"
         Background="WhiteSmoke"
+        WindowStartupLocation="CenterScreen"
         Title="ScottPlot WPF Demos" Height="300" Width="400">
 
     <Window.Resources>
