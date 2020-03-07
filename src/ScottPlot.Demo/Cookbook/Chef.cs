@@ -46,15 +46,33 @@ namespace ScottPlot.Demo.Cookbook
 
             foreach (IPlotDemo recipe in Reflection.GetPlots())
             {
-                md.AppendLine($"## {recipe.name}\n\n");
-                md.AppendLine($"**Description:** {recipe.description}\n\n");
-                md.AppendLine($"**Source code:** {recipe.categoryMajor}.{recipe.categoryMinor} ({recipe.categoryClass})\n\n");
-                md.AppendLine($"```cs\n{recipe.GetSourceCode(sourceCodeFolder)}\n```\n\n");
+                string title = $"{recipe.categoryMajor}/{recipe.categoryMinor} - {recipe.name}";
+                string sourceCode = $"// Source code is from {recipe.sourceFile} ({recipe.categoryClass})\n\n{recipe.GetSourceCode(sourceCodeFolder)}";
+
+                md.AppendLine($"## {title}\n\n");
+                md.AppendLine($"{recipe.description}\n\n");
+                md.AppendLine($"```cs\n{sourceCode}\n```\n\n");
                 md.AppendLine($"![](images/{recipe.id}.png)\n\n");
+
+                html.AppendLine($"<div style='font-size: 150%; font-weight: bold;'><a style='color: black;' id='{recipe.id}' href='#{recipe.id}'>{title}</a></div>\n\n");
+                html.AppendLine($"<div style='padding: 10px;'>{recipe.description}</div>");
+                html.AppendLine($"<pre style='background-color: #f6f8fa; padding: 10px;'>{sourceCode}</pre>");
+                html.AppendLine($"<img src='images/{recipe.id}.png'>");
+                html.AppendLine("<div style='margin: 20px;'>&nbsp;</div>");
             }
 
-            System.IO.File.WriteAllText(outputFolder + "/index.html", html.ToString());
             System.IO.File.WriteAllText(outputFolder + "/readme.md", md.ToString());
+
+            string style = @"
+                body { font-family: sans-serif; }
+                a { text-decoration: none; }
+                a:hover { text-decoration: underline; }
+            ";
+
+            html.Insert(0, $"<html><head><style>{style}</style></head><body>");
+            html.AppendLine("</body><html>");
+
+            System.IO.File.WriteAllText(outputFolder + "/index.html", html.ToString());
         }
     }
 }
