@@ -7,11 +7,31 @@
         mc:Ignorable="d"
         Background="WhiteSmoke"
         Title="ScottPlot WPF Demos" Height="300" Width="400">
-    <DockPanel>
-        <WrapPanel>
-            <Button Padding="5" Margin="5" Content="Mouse Tracker" Click="LaunchMouseTracker"/>
-            <Button Padding="5" Margin="5" Content="Linked Axes" IsEnabled="False"/>
-            <Button Padding="5" Margin="5" Content="Procedural Plot Generation" IsEnabled="False"/>
-        </WrapPanel>
-    </DockPanel>
+
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Padding" Value="5" />
+            <Setter Property="Margin" Value="5" />
+        </Style>
+    </Window.Resources>
+    
+    <StackPanel>
+
+        <Label Content="WPF-Specific Demos" FontSize="24" FontWeight="SemiBold" />
+
+        <DockPanel>
+            <Button Content="Mouse Tracker" Click="LaunchMouseTracker"/>
+            <TextBlock Text="Dispay mouse position in pixel and plot coordinates"/>
+        </DockPanel>
+
+        <DockPanel>
+            <Button Content="Transparent Plot" Click="LaunchTransparentPlot"/>
+            <TextBlock Text="Show a plot with a transparent background"/>
+        </DockPanel>
+
+    </StackPanel>
 </Window>
