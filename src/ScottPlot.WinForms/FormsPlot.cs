@@ -15,6 +15,16 @@ namespace ScottPlot
         public Cursor cursor = Cursors.Arrow;
         ContextMenuStrip rightClickMenu;
 
+        public override Color BackColor
+        {
+            get => base.BackColor;
+            set
+            {
+                base.BackColor = value;
+                pbPlot.BackColor = value;
+            }
+        }
+
         public FormsPlot(Plot plt)
         {
             InitializeComponent();
