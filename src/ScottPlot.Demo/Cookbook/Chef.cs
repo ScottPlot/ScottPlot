@@ -43,34 +43,48 @@ namespace ScottPlot.Demo.Cookbook
         {
             StringBuilder md = new StringBuilder();
             StringBuilder html = new StringBuilder();
-
+            StringBuilder mdTOC = new StringBuilder();
+            StringBuilder htmlTOC = new StringBuilder();
+            
             foreach (IPlotDemo recipe in Reflection.GetPlots())
             {
                 string title = $"{recipe.categoryMajor}/{recipe.categoryMinor} - {recipe.name}";
                 string sourceCode = $"// Source code is from {recipe.sourceFile} ({recipe.categoryClass})\n\n{recipe.GetSourceCode(sourceCodeFolder)}";
+                string description = (recipe.description is null) ? "no description provided..." : recipe.description;
 
                 md.AppendLine($"## {title}\n\n");
-                md.AppendLine($"{recipe.description}\n\n");
+                md.AppendLine($"{description}\n\n");
                 md.AppendLine($"```cs\n{sourceCode}\n```\n\n");
                 md.AppendLine($"![](images/{recipe.id}.png)\n\n");
+                mdTOC.AppendLine($"* [{title}](#{recipe.id})");
 
-                html.AppendLine($"<div style='font-size: 150%; font-weight: bold;'><a style='color: black;' id='{recipe.id}' href='#{recipe.id}'>{title}</a></div>\n\n");
-                html.AppendLine($"<div style='padding: 10px;'>{recipe.description}</div>");
-                html.AppendLine($"<pre style='background-color: #f6f8fa; padding: 10px;'>{sourceCode}</pre>");
-                html.AppendLine($"<img src='images/{recipe.id}.png'>");
+                html.AppendLine($"<div class='title'><a style='color: black;' id='{recipe.id}' href='#{recipe.id}'>{title}</a></div>\n\n");
+                html.AppendLine($"<div style='padding: 10px;'>{description}</div>");
+                html.AppendLine($"<pre class='prettyprint lang - cs' style='padding: 10px; background: #f6f8fa; border: 0px solid white;'>{sourceCode}</pre>");
+                html.AppendLine($"<div align='center'><img src='images/{recipe.id}.png'></div>");
                 html.AppendLine("<div style='margin: 20px;'>&nbsp;</div>");
+                htmlTOC.AppendLine($"<li><a href='#{recipe.id}'>{title}</a></li>");
             }
 
+            md.Insert(0, $"# ScottPlot {Tools.GetVersionString()} Cookbook\n\n" + $"_Generated on {DateTime.Now.ToString("D")} at {DateTime.Now.ToString("t")}_\n\n" + mdTOC.ToString() + "\n\n---\n\n");
             System.IO.File.WriteAllText(outputFolder + "/readme.md", md.ToString());
 
             string style = @"
-                body { font-family: sans-serif; }
-                a { text-decoration: none; }
+                body { font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji; }
+                a { text-decoration: none; color: blue; }
                 a:hover { text-decoration: underline; }
+                li { margin-left: 15px; }
+                article { width: 900px; margin: auto; }
+                .title {border-bottom: 1px solid #eaecef; font-size: 150%; font-weight: 600;}
+				.subtitle {margin-bottom: 10px; font-style: italic;}
+                hr { margin: 30px; border: 0px solid #eaecef;}
             ";
 
-            html.Insert(0, $"<html><head><style>{style}</style></head><body>");
-            html.AppendLine("</body><html>");
+            htmlTOC.Append("<hr>");
+            html.Insert(0, $"<div style='margin: 5px;'>{htmlTOC.ToString()}</div>");
+            html.Insert(0, $"<div class='title'>ScottPlot {Tools.GetVersionString()} Cookbook</div><div class='subtitle'>Generated on {DateTime.Now.ToString("D")} at {DateTime.Now.ToString("t")}</div>");
+            html.Insert(0, $"<html><head><script src='https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js'></script><style>{style}</style></head><body><article>");
+            html.AppendLine("</article></body><html>");
 
             System.IO.File.WriteAllText(outputFolder + "/index.html", html.ToString());
         }
