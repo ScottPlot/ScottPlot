@@ -75,6 +75,12 @@
     <Compile Include="WinFormsDemos\FormsPlotConfig.Designer.cs">
       <DependentUpon>FormsPlotConfig.cs</DependentUpon>
     </Compile>
+    <Compile Include="WinFormsDemos\LinkedPlots.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinFormsDemos\LinkedPlots.Designer.cs">
+      <DependentUpon>LinkedPlots.cs</DependentUpon>
+    </Compile>
     <Compile Include="WinFormsDemos\MouseTracker.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -110,6 +116,9 @@
     </Compile>
     <EmbeddedResource Include="WinFormsDemos\FormsPlotConfig.resx">
       <DependentUpon>FormsPlotConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinFormsDemos\LinkedPlots.resx">
+      <DependentUpon>LinkedPlots.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WinFormsDemos\MouseTracker.resx">
       <DependentUpon>MouseTracker.cs</DependentUpon>
