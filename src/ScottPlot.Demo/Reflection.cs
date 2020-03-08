@@ -34,6 +34,7 @@ namespace ScottPlot.Demo
             recipes.AddRange(GetPlots("ScottPlot.Demo.Quickstart"));
             recipes.AddRange(GetPlots("ScottPlot.Demo.PlotTypes"));
             recipes.AddRange(GetPlots("ScottPlot.Demo.Customize"));
+            recipes.AddRange(GetPlots("ScottPlot.Demo.Advanced"));
             recipes.AddRange(GetPlots("ScottPlot.Demo.Examples"));
             recipes.AddRange(GetPlots());
 
