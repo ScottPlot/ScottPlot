@@ -75,20 +75,16 @@ Review the **[ScottPlot Cookbook](/cookbook)** to see what ScottPlot can do and 
 ## Demos
 
 **Download for Windows (x64): [ScottPlotDemos.zip](/dev/demos/)**\
-This click-to-run demo application was designed to make it easy to assess the capabilities of ScottPlot including direct comparison of Windows Forms and WPF controls.
+This click-to-run demo application was designed to make it easy to assess the capabilities of ScottPlot. Source code for the demo is in [/src](/src)
 
-Windows Forms Demo | WPF Demo
----|---
-![](src/ScottPlot.Demo.WinForms/screenshot.png)|![](src/ScottPlot.Demo.WPF/screenshot.png)
-The ScottPlot.WinForms package has a FormsPlot user control which fully supports WinForms applications. | The ScottPlot.WPF package has a WpfPlot  control which fully supports WPF applications. The WPF demo has slightly more features than the WinForms demo.
+![](src/ScottPlot.Demo.WPF/screenshot.png)
 
 In addition to interactively displaying all cookbook examples (which demonstrate how to use every plot type) the demo application also provides example code for advanced topics such as:
   * Mouse tracking
   * Plotting changing (or growing) data
   * Draggable axis lines
-  * Show value under cursor
+  * Display value under cursor
 
-Source code for the demo is in /src/ScottPlot.Demo. 
 
 ## About ScottPlot
 
