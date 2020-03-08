@@ -132,7 +132,7 @@ namespace ScottPlot
             if (enableDoubleClickBenchmark != null) this.doubleClickingTogglesBenchmark = (bool)enableDoubleClickBenchmark;
             if (lockVerticalAxis != null) this.lockVerticalAxis = (bool)lockVerticalAxis;
             if (lockHorizontalAxis != null) this.lockHorizontalAxis = (bool)lockHorizontalAxis;
-            if (lockHorizontalAxis != null) this.equalAxes = (bool)equalAxes;
+            if (equalAxes != null) this.equalAxes = (bool)equalAxes;
         }
 
         private bool isHorizontalLocked { get { return (ModifierKeys.HasFlag(Keys.Alt) || (lockHorizontalAxis)); } }
