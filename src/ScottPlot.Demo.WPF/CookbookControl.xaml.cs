@@ -27,7 +27,22 @@ namespace ScottPlot.Demo.WPF
 
         private void WpfPlot1_Rendered(object sender, EventArgs e)
         {
-            BenchmarkLabel.Content = wpfPlot1.plt.GetSettings(false).benchmark.ToString();
+            if (wpfPlot1.Visibility == Visibility.Visible)
+                BenchmarkLabel.Content = wpfPlot1.plt.GetSettings(false).benchmark.ToString();
+            else
+                BenchmarkLabel.Content = "This plot is a non-interactive Bitmap";
+        }
+
+        private BitmapImage BmpImageFromBmp(System.Drawing.Bitmap bmp)
+        {
+            System.IO.MemoryStream stream = new System.IO.MemoryStream();
+            bmp.Save(stream, System.Drawing.Imaging.ImageFormat.Png); // use PNG to support transparency
+            BitmapImage bmpImage = new BitmapImage();
+            bmpImage.BeginInit();
+            stream.Seek(0, System.IO.SeekOrigin.Begin);
+            bmpImage.StreamSource = stream;
+            bmpImage.EndInit();
+            return bmpImage;
         }
 
         public void LoadDemo(string objectPath)
@@ -39,8 +54,21 @@ namespace ScottPlot.Demo.WPF
             DescriptionTextbox.Text = (demoPlot.description is null) ? "no descriton provided..." : demoPlot.description;
 
             wpfPlot1.Reset();
-            demoPlot.Render(wpfPlot1.plt);
-            wpfPlot1.Render();
+
+            if (demoPlot is IBitmapDemo bmpPlot)
+            {
+                imagePlot.Visibility = Visibility.Visible;
+                wpfPlot1.Visibility = Visibility.Hidden;
+                imagePlot.Source = BmpImageFromBmp(bmpPlot.Render(600, 400));
+                WpfPlot1_Rendered(null, null);
+            }
+            else
+            {
+                imagePlot.Visibility = Visibility.Hidden;
+                wpfPlot1.Visibility = Visibility.Visible;
+                demoPlot.Render(wpfPlot1.plt);
+                wpfPlot1.Render();
+            }
 
             string sourceCode = demoPlot.GetSourceCode("../../../../../src/ScottPlot.Demo/");
             SourceTextBox.Text = sourceCode;

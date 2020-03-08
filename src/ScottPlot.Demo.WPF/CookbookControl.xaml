@@ -28,7 +28,10 @@
         <Border Grid.Column="0" Grid.Row="1" Margin="5" BorderThickness="2" BorderBrush="LightGray" Background="LightGray" >
             <DockPanel>
                 <Label x:Name="BenchmarkLabel" Content="benchmark info" DockPanel.Dock="Top" Foreground="Gray" />
-                <ScottPlot:WpfPlot Name="wpfPlot1"/>
+                <Grid>
+                    <ScottPlot:WpfPlot Name="wpfPlot1"/>
+                    <Image Name="imagePlot"/>
+                </Grid>
             </DockPanel>
         </Border>
 
