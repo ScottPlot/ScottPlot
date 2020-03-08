@@ -16,7 +16,7 @@ namespace ScottPlot.Demo.WinForms
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormStartup());
+            Application.Run(new FormMain());
         }
     }
 }
