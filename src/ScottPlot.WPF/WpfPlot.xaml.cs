@@ -260,6 +260,7 @@ namespace ScottPlot
                 if (isHorizontalLocked) deltaX = 0;
 
                 settings.AxesPanPx((int)deltaX, (int)deltaY);
+                AxisChanged?.Invoke(null, null);
             }
             else if (mouseRightDownLocation != null)
             {
@@ -271,6 +272,7 @@ namespace ScottPlot
                 if (isHorizontalLocked) deltaX = 0;
 
                 settings.AxesZoomPx(-(int)deltaX, -(int)deltaY);
+                AxisChanged?.Invoke(null, null);
             }
             else if (mouseMiddleDownLocation != null)
             {
@@ -332,10 +334,12 @@ namespace ScottPlot
                             y1: plt.CoordinateFromPixel((int)botRight.X, (int)botRight.Y).Y,
                             y2: plt.CoordinateFromPixel((int)topLeft.X, (int)topLeft.Y).Y
                         );
+                    AxisChanged?.Invoke(null, null);
                 }
                 else
                 {
                     plt.AxisAuto();
+                    AxisChanged?.Invoke(null, null);
                 }
             }
 
@@ -366,10 +370,12 @@ namespace ScottPlot
             if (e.Delta > 1)
             {
                 plt.AxisZoom(1 + zoomAmountX, 1 + zoomAmountY);
+                AxisChanged?.Invoke(null, null);
             }
             else
             {
                 plt.AxisZoom(1 - zoomAmountX, 1 - zoomAmountY);
+                AxisChanged?.Invoke(null, null);
             }
 
             Render(skipIfCurrentlyRendering: false);
@@ -389,6 +395,7 @@ namespace ScottPlot
         #region event handling
 
         public event EventHandler Rendered;
+        public event EventHandler AxisChanged;
 
         #endregion
     }
