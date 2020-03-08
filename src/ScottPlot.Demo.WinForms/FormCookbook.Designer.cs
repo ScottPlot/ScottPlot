@@ -35,8 +35,10 @@
             this.sourceCodeGroupbox = new System.Windows.Forms.GroupBox();
             this.sourceCodeTextbox = new System.Windows.Forms.TextBox();
             this.formsPlot1 = new ScottPlot.FormsPlot();
+            this.gbPlot = new System.Windows.Forms.GroupBox();
             this.groupBox1.SuspendLayout();
             this.sourceCodeGroupbox.SuspendLayout();
+            this.gbPlot.SuspendLayout();
             this.SuspendLayout();
             // 
             // treeView1
@@ -105,26 +107,38 @@
             this.sourceCodeTextbox.Location = new System.Drawing.Point(3, 16);
             this.sourceCodeTextbox.Multiline = true;
             this.sourceCodeTextbox.Name = "sourceCodeTextbox";
+            this.sourceCodeTextbox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.sourceCodeTextbox.Size = new System.Drawing.Size(598, 202);
             this.sourceCodeTextbox.TabIndex = 0;
             // 
             // formsPlot1
             // 
-            this.formsPlot1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.formsPlot1.Location = new System.Drawing.Point(318, 99);
+            this.formsPlot1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.formsPlot1.Location = new System.Drawing.Point(3, 16);
             this.formsPlot1.Name = "formsPlot1";
-            this.formsPlot1.Size = new System.Drawing.Size(604, 373);
+            this.formsPlot1.Size = new System.Drawing.Size(595, 354);
             this.formsPlot1.TabIndex = 0;
             this.formsPlot1.Rendered += new System.EventHandler(this.formsPlot1_Rendered);
+            // 
+            // gbPlot
+            // 
+            this.gbPlot.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbPlot.Controls.Add(this.formsPlot1);
+            this.gbPlot.Location = new System.Drawing.Point(321, 99);
+            this.gbPlot.Name = "gbPlot";
+            this.gbPlot.Size = new System.Drawing.Size(601, 373);
+            this.gbPlot.TabIndex = 7;
+            this.gbPlot.TabStop = false;
+            this.gbPlot.Text = "groupBox2";
             // 
             // FormCookbook
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(934, 711);
-            this.Controls.Add(this.formsPlot1);
+            this.Controls.Add(this.gbPlot);
             this.Controls.Add(this.DescriptionTextbox);
             this.Controls.Add(this.sourceCodeGroupbox);
             this.Controls.Add(this.DemoNameLabel);
@@ -135,6 +149,7 @@
             this.groupBox1.ResumeLayout(false);
             this.sourceCodeGroupbox.ResumeLayout(false);
             this.sourceCodeGroupbox.PerformLayout();
+            this.gbPlot.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -149,6 +164,7 @@
         private FormsPlot formsPlot1;
         private System.Windows.Forms.TextBox DescriptionTextbox;
         private System.Windows.Forms.TextBox sourceCodeTextbox;
+        private System.Windows.Forms.GroupBox gbPlot;
     }
 }
 

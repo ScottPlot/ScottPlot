@@ -18,6 +18,7 @@ namespace ScottPlot.Demo.WinForms
         {
             InitializeComponent();
             LoadTreeWithDemos();
+            SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -69,7 +70,7 @@ namespace ScottPlot.Demo.WinForms
             var demoPlot = Reflection.GetPlot(objectPath);
 
             DemoNameLabel.Text = demoPlot.name;
-            sourceCodeGroupbox.Text = $"SourceCode: {demoPlot.classPath.Replace("+",".")}";
+            sourceCodeGroupbox.Text = demoPlot.classPath.Replace("+",".");
             DescriptionTextbox.Text = (demoPlot.description is null) ? "no descriton provided..." : demoPlot.description;
             sourceCodeTextbox.Text = demoPlot.GetSourceCode("../../../../src/ScottPlot.Demo/");
 
@@ -81,6 +82,7 @@ namespace ScottPlot.Demo.WinForms
         private void formsPlot1_Rendered(object sender, EventArgs e)
         {
             //PerformanceLabel.Text = formsPlot1.plt.GetSettings(false).benchmark.ToString();
+            gbPlot.Text = formsPlot1.plt.GetSettings(false).benchmark.ToString();
         }
     }
 }
