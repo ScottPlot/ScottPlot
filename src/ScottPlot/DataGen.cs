@@ -256,5 +256,19 @@ namespace ScottPlot
 
             return values;
         }
+
+        public static double[] Zeros(int pointCount)
+        {
+            double[] values = new double[pointCount];
+            return values;
+        }
+
+        public static double[] Ones(int pointCount)
+        {
+            double[] values = new double[pointCount];
+            for (int i = 0; i < pointCount; i++)
+                values[i] = 1;
+            return values;
+        }
     }
 }
