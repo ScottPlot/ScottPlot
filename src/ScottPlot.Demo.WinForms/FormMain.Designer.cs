@@ -34,6 +34,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.btnShowOnHover = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.GrowingData = new System.Windows.Forms.Button();
@@ -87,7 +89,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.Location = new System.Drawing.Point(92, 19);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(175, 72);
+            this.label3.Size = new System.Drawing.Size(295, 72);
             this.label3.TabIndex = 5;
             this.label3.Text = "A collection of simple examples which demonstrate most features of ScottPlot";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -100,7 +102,7 @@
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Location = new System.Drawing.Point(12, 62);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(273, 98);
+            this.groupBox1.Size = new System.Drawing.Size(393, 98);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "ScottPlot Cookbook";
@@ -109,6 +111,8 @@
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.label10);
+            this.groupBox2.Controls.Add(this.btnShowOnHover);
             this.groupBox2.Controls.Add(this.label9);
             this.groupBox2.Controls.Add(this.label8);
             this.groupBox2.Controls.Add(this.GrowingData);
@@ -125,10 +129,31 @@
             this.groupBox2.Controls.Add(this.TransparentBackgroundButton);
             this.groupBox2.Location = new System.Drawing.Point(12, 166);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(273, 394);
+            this.groupBox2.Size = new System.Drawing.Size(393, 447);
             this.groupBox2.TabIndex = 7;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "WinForms-Specific Examples";
+            // 
+            // label10
+            // 
+            this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label10.Location = new System.Drawing.Point(87, 337);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(300, 47);
+            this.label10.TabIndex = 19;
+            this.label10.Text = "Demonstrates how to show the value of the point under the cursor";
+            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // btnShowOnHover
+            // 
+            this.btnShowOnHover.Location = new System.Drawing.Point(6, 337);
+            this.btnShowOnHover.Name = "btnShowOnHover";
+            this.btnShowOnHover.Size = new System.Drawing.Size(75, 47);
+            this.btnShowOnHover.TabIndex = 18;
+            this.btnShowOnHover.Text = "Show Value on Hover";
+            this.btnShowOnHover.UseVisualStyleBackColor = true;
+            this.btnShowOnHover.Click += new System.EventHandler(this.btnShowOnHover_Click);
             // 
             // label9
             // 
@@ -136,7 +161,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label9.Location = new System.Drawing.Point(87, 284);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(180, 47);
+            this.label9.Size = new System.Drawing.Size(300, 47);
             this.label9.TabIndex = 17;
             this.label9.Text = "Shows how to plot data which grows with time";
             this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -147,7 +172,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label8.Location = new System.Drawing.Point(87, 231);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(180, 47);
+            this.label8.Size = new System.Drawing.Size(300, 47);
             this.label8.TabIndex = 16;
             this.label8.Text = "Shows how to plot live data from a fixed array";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -178,7 +203,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label7.Location = new System.Drawing.Point(87, 178);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(180, 47);
+            this.label7.Size = new System.Drawing.Size(300, 47);
             this.label7.TabIndex = 13;
             this.label7.Text = "Link axes from two FormsPlot controls together";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -199,7 +224,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label6.Location = new System.Drawing.Point(87, 125);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(180, 47);
+            this.label6.Size = new System.Drawing.Size(300, 47);
             this.label6.TabIndex = 11;
             this.label6.Text = "Demonstrates how to customize the configuration of the FormsPlot user control";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -220,7 +245,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.Location = new System.Drawing.Point(87, 72);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(180, 47);
+            this.label5.Size = new System.Drawing.Size(300, 47);
             this.label5.TabIndex = 9;
             this.label5.Text = "Checkboxes control visibility of individual plot objects";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -249,9 +274,9 @@
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.Location = new System.Drawing.Point(87, 337);
+            this.label2.Location = new System.Drawing.Point(87, 390);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(180, 47);
+            this.label2.Size = new System.Drawing.Size(300, 47);
             this.label2.TabIndex = 7;
             this.label2.Text = "Shows how to creat a transparent FormsPlot that lets you see through to the backg" +
     "round of the form";
@@ -263,14 +288,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.Location = new System.Drawing.Point(87, 19);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(180, 47);
+            this.label4.Size = new System.Drawing.Size(300, 47);
             this.label4.TabIndex = 5;
             this.label4.Text = "Display mouse position in pixel coordinates and graph coordinates.";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // TransparentBackgroundButton
             // 
-            this.TransparentBackgroundButton.Location = new System.Drawing.Point(6, 337);
+            this.TransparentBackgroundButton.Location = new System.Drawing.Point(6, 390);
             this.TransparentBackgroundButton.Name = "TransparentBackgroundButton";
             this.TransparentBackgroundButton.Size = new System.Drawing.Size(75, 47);
             this.TransparentBackgroundButton.TabIndex = 6;
@@ -283,7 +308,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(382, 425);
+            this.ClientSize = new System.Drawing.Size(417, 623);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.versionLabel);
@@ -321,5 +346,7 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button GrowingData;
         private System.Windows.Forms.Button LiveData;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Button btnShowOnHover;
     }
 }

@@ -128,7 +128,7 @@
             this.formsPlot1.Name = "formsPlot1";
             this.formsPlot1.Size = new System.Drawing.Size(607, 251);
             this.formsPlot1.TabIndex = 8;
-            this.formsPlot1.MouseMoved += new System.EventHandler(this.formsPlot1_MouseMoved);
+            this.formsPlot1.MouseMoved += new System.Windows.Forms.MouseEventHandler(this.formsPlot1_MouseMoved_1);
             // 
             // MouseTracker
             // 

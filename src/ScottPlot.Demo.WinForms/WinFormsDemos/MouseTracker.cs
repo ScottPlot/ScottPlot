@@ -12,23 +12,38 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
 {
     public partial class MouseTracker : Form
     {
+        PlottableVLine vLine;
+        PlottableHLine hLine;
+
         public MouseTracker()
         {
             InitializeComponent();
             formsPlot1.plt.PlotSignal(DataGen.RandomWalk(null, 100));
+
+            vLine = formsPlot1.plt.PlotVLine(0, color: Color.Red, lineStyle: LineStyle.Dash);
+            hLine = formsPlot1.plt.PlotHLine(0, color: Color.Red, lineStyle: LineStyle.Dash);
+
             formsPlot1.Render();
         }
 
-        private void formsPlot1_MouseMoved(object sender, EventArgs e)
+        private void formsPlot1_MouseMoved_1(object sender, MouseEventArgs e)
         {
-            double pixelX = formsPlot1.PointToClient(Cursor.Position).X;
-            double pixelY = formsPlot1.PointToClient(Cursor.Position).Y;
+            int pixelX = e.X;
+            int pixelY = e.Y;
 
-            XPixelLabel.Text = $"{pixelX:0.000}";
-            YPixelLabel.Text = $"{pixelY:0.000}";
+            double coordinateX = formsPlot1.plt.CoordinateFromPixelX(pixelX);
+            double coordinateY = formsPlot1.plt.CoordinateFromPixelY(pixelY);
 
-            XCoordinateLabel.Text = $"{formsPlot1.plt.CoordinateFromPixelX(pixelX):0.00000000}";
-            YCoordinateLabel.Text = $"{formsPlot1.plt.CoordinateFromPixelY(pixelY):0.00000000}";
+            XPixelLabel.Text = $"{e.X:0.000}";
+            YPixelLabel.Text = $"{e.X:0.000}";
+
+            XCoordinateLabel.Text = $"{coordinateX:0.00000000}";
+            YCoordinateLabel.Text = $"{coordinateY:0.00000000}";
+
+            vLine.position = coordinateX;
+            hLine.position = coordinateY;
+
+            formsPlot1.Render();
         }
     }
 }
