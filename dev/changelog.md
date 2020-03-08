@@ -30,11 +30,14 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
   * support for stacked box plots
   * support for horizontal box plots
 * support for "shade below the curve" (#255) _Thanks @ckovamees_
-* new demo/cookbook system and demo applications (#271)
 
 ### Misc
+* Created new cookbook and demo applications for WinForms and WPF (#271)
 * Fixed bug that caused `Plot.CoordinateFromPixelY()` to return incorrect value
 * Improved support for WinForms and WpfPlot transparency (#286) _Thanks @StendProg and @envine_
+* Added `DataGen.Zeros()` and `DataGen.Ones()` to generate arrays filled with values using methods familiar to numpy users.
+* Fixed a bug affecting the `equalAxes` argument in `FormsPlot.Configure()` (#272)
+* Made all `Plot.Axis` methods return axis limits as `double[]` (previously many of them returned `void`)
 
 ## ScottPlot 4.0.19
 
