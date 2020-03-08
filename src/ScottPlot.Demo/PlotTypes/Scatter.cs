@@ -9,7 +9,7 @@ namespace ScottPlot.Demo.PlotTypes
     {
         public class Quickstart : PlotDemo, IPlotDemo
         {
-            public string name { get; } = "Quickstart";
+            public string name { get; } = "Scatter Plot Quickstart";
             public string description { get; } = "Scatter plots are best for small numbers of paired X/Y data points. For evenly-spaced data points Signal is much faster.";
 
             public void Render(Plot plt)
@@ -103,6 +103,58 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.PlotScatter(xs1, ys1, markerSize: 0, label: "lines only");
                 plt.PlotScatter(xs2, ys2, lineWidth: 0, label: "markers only");
                 plt.Legend();
+            }
+        }
+
+        public class ErrorBars : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Scatter Plot with Errorbars";
+            public string description { get; } = "X and Y error ranges can be supplied as optional double arrays";
+
+            public void Render(Plot plt)
+            {
+                Random rand = new Random(0);
+                int pointCount = 20;
+
+                for (int plotNumber = 0; plotNumber < 3; plotNumber++)
+                {
+                    // create random data to plot
+                    double[] dataX = new double[pointCount];
+                    double[] dataY = new double[pointCount];
+                    double[] errorY = new double[pointCount];
+                    double[] errorX = new double[pointCount];
+                    for (int i = 0; i < pointCount; i++)
+                    {
+                        dataX[i] = i + rand.NextDouble();
+                        dataY[i] = rand.NextDouble() * 100 + 100 * plotNumber;
+                        errorX[i] = rand.NextDouble();
+                        errorY[i] = rand.NextDouble() * 10;
+                    }
+
+                    // demonstrate different ways to plot errorbars
+                    if (plotNumber == 0)
+                        plt.PlotScatter(dataX, dataY, lineWidth: 0, errorY: errorY, errorX: errorX, label: $"X and Y errors");
+                    else if (plotNumber == 1)
+                        plt.PlotScatter(dataX, dataY, lineWidth: 0, errorY: errorY, label: $"Y errors only");
+                    else
+                        plt.PlotScatter(dataX, dataY, errorY: errorY, errorX: errorX, label: $"Connected Errors");
+                }
+            }
+        }
+
+        public class SaveData : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Save scatter plot data";
+            public string description { get; } = "Many plot types have a .SaveCSV() method";
+
+            public void Render(Plot plt)
+            {
+                int pointCount = 51;
+                double[] dataXs = DataGen.Consecutive(pointCount);
+                double[] dataSin = DataGen.Sin(pointCount);
+
+                var scatter = plt.PlotScatter(dataXs, dataSin);
+                scatter.SaveCSV("scatter.csv");
             }
         }
     }

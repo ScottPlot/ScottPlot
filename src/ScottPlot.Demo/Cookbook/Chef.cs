@@ -13,34 +13,8 @@ namespace ScottPlot.Demo.Cookbook
             Console.WriteLine($"Generating cookbook in: {outputFolder}");
             ClearFolders(outputFolder);
             RenderAndSaveImages(outputFolder);
-
-            IPlotDemo[] recipes = GetRecipesInOrder();
-
+            IPlotDemo[] recipes = Reflection.GetPlotsInOrder();
             CreateReport(recipes, sourceCodeFolder, outputFolder);
-        }
-
-        private static IPlotDemo[] GetRecipesInOrder()
-        {
-            List<IPlotDemo> recipes = new List<IPlotDemo>();
-
-            // define the order of cookbook examples here
-            recipes.AddRange(Reflection.GetPlots("ScottPlot.Demo.General"));
-            recipes.AddRange(Reflection.GetPlots("ScottPlot.Demo.Axis"));
-            recipes.AddRange(Reflection.GetPlots("ScottPlot.Demo.PlotTypes"));
-            recipes.AddRange(Reflection.GetPlots());
-
-            List<string> ids = new List<string>();
-            List<IPlotDemo> recipes2 = new List<IPlotDemo>();
-            foreach (IPlotDemo recipe in recipes)
-            {
-                if (!ids.Contains(recipe.id))
-                {
-                    recipes2.Add(recipe);
-                    ids.Add(recipe.id);
-                }
-            }
-
-            return recipes2.ToArray();
         }
 
         private static void ClearFolders(string outputFolder)

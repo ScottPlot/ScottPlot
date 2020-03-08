@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ScottPlot.Demo.Style
+namespace ScottPlot.Demo.Customize
 {
-    public class PlotColors
+    public class PlotStyles
     {
         public class Default : PlotDemo, IPlotDemo
         {
