@@ -20,7 +20,7 @@ _ScottPlot 3.1.6 is the last version to support .NET Framework 4.5_
 
 ## Quickstart
 
-Solution files for quickstart examples are in [/doc/quickstart](/doc/quickstart)
+Solution files for quickstart examples are in [/dev/quickstart](/doc/quickstart)
 
 ### Static Plot
 
@@ -71,14 +71,15 @@ Review the **[ScottPlot Cookbook](/cookbook)** to see what ScottPlot can do and 
 <a href="https://github.com/swharden/ScottPlot/tree/master/cookbook"><img src="https://raw.githubusercontent.com/swharden/ScottPlot/master/cookbook/images/02_Styling_Scatter_Plots.png" width="200"><img src="https://raw.githubusercontent.com/swharden/ScottPlot/master/cookbook/images/06b_Custom_LineStyles.png" width="200"><img src="https://raw.githubusercontent.com/swharden/ScottPlot/master/cookbook/images/22_Custom_Colors.png" width="200"><img src="https://raw.githubusercontent.com/swharden/ScottPlot/master/cookbook/images/25_Corner_Axis_Frame.png" width="200"><img src="https://raw.githubusercontent.com/swharden/ScottPlot/master/cookbook/images/30a_Signal.png" width="200"><img src="https://raw.githubusercontent.com/swharden/ScottPlot/master/cookbook/images/41_Axis_Spans.png" width="200"><img src="https://raw.githubusercontent.com/swharden/ScottPlot/master/cookbook/images/62_Plot_Bar_Data_Fancy.png" width="200"><img src="https://raw.githubusercontent.com/swharden/ScottPlot/master/cookbook/images/65_Histogram.png" width="200"><img src="https://raw.githubusercontent.com/swharden/ScottPlot/master/cookbook/images/66_CPH.png" width="200"><img src="https://raw.githubusercontent.com/swharden/ScottPlot/master/cookbook/images/67_Candlestick.png" width="200"></a>
 
 ## Demos
-* Download the demos as a click-to-run EXE: **[ScottPlotDemos.zip](https://github.com/swharden/ScottPlot/raw/master/demos/ScottPlotDemos.zip)**
-* Source code demos is in: [/demos](/demos)
-* The demo project demonstrates advanced topics such as:
-  * Animated plots
+
+**Download for Windows (x64): [ScottPlotDemos.zip](/dev/demos/)**
+
+This click-to-run demo application was designed to make it easy to assess the capabilities of ScottPlot. Source code for the demo application is available in `/src/ScottPlot.Demo` packages. In addition to interactively displaying all cookbook examples, the demo application also demonstrates advanced topics such as:
+  * Examples of every plot type
+  * Mouse tracking
   * Plotting changing (or growing) data
   * Draggable axis lines
-  * Show value on hover
-  * Realtime display of audio data (PCM and FFT)
+  * Show value under cursor
 
 ## About ScottPlot
 
