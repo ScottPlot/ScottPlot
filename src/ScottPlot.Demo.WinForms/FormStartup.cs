@@ -27,9 +27,24 @@ namespace ScottPlot.Demo.WinForms
             new FormCookbook().ShowDialog();
         }
 
-        private void winFormsDemosButtom_Click(object sender, EventArgs e)
+        private void MouseTrackerButton_Click(object sender, EventArgs e)
         {
-            new FormDemos().ShowDialog();
+            new WinFormsDemos.MouseTracker().ShowDialog();
+        }
+
+        private void ToggleVisibilityButton_Click(object sender, EventArgs e)
+        {
+            new WinFormsDemos.ToggleVisibility().ShowDialog();
+        }
+
+        private void ConfigButton_Click(object sender, EventArgs e)
+        {
+            new WinFormsDemos.FormsPlotConfig().ShowDialog();
+        }
+
+        private void TransparentBackgroundButton_Click(object sender, EventArgs e)
+        {
+            new WinFormsDemos.TransparentBackground().ShowDialog();
         }
     }
 }
