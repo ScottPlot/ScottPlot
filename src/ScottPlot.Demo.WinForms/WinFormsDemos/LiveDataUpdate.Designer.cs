@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
-            this.formsPlot1 = new ScottPlot.FormsPlot();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.formsPlot1 = new ScottPlot.FormsPlot();
             this.SuspendLayout();
             // 
             // label1
@@ -43,6 +43,12 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "This example uses a fixed-size array and updates its values with time";
             // 
+            // timer1
+            // 
+            this.timer1.Enabled = true;
+            this.timer1.Interval = 10;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // formsPlot1
             // 
             this.formsPlot1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -52,12 +58,6 @@
             this.formsPlot1.Name = "formsPlot1";
             this.formsPlot1.Size = new System.Drawing.Size(776, 413);
             this.formsPlot1.TabIndex = 1;
-            // 
-            // timer1
-            // 
-            this.timer1.Enabled = true;
-            this.timer1.Interval = 10;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // LiveDataUpdate
             // 

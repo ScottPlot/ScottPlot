@@ -1,0 +1,24 @@
+﻿<Window x:Class="ScottPlot.Demo.WPF.WpfDemos.LinkedPlots"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ScottPlot.Demo.WPF.WpfDemos"
+        xmlns:ScottPlot="clr-namespace:ScottPlot;assembly=ScottPlot.WPF"
+        mc:Ignorable="d"
+        Title="Linked Axes" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Label Content="This example demonstrates how to link axes of two separate plots." Grid.Column="0" Grid.Row="0"/>
+        <ScottPlot:WpfPlot Grid.Column="0" Grid.Row="1" Name="wpfPlot1" AxisChanged="axisChanged1"/>
+        <ScottPlot:WpfPlot Grid.Column="0" Grid.Row="2" Name="wpfPlot2" AxisChanged="axisChanged2"/>
+    </Grid>
+</Window>

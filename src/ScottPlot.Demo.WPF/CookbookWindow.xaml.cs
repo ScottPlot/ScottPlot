@@ -18,9 +18,9 @@ namespace ScottPlot.Demo.WPF
     /// <summary>
     /// Interaction logic for DemoNavigator.xaml
     /// </summary>
-    public partial class DemoNavigator : Window
+    public partial class CookbookWindow : Window
     {
-        public DemoNavigator()
+        public CookbookWindow()
         {
             InitializeComponent();
             LoadTreeWithDemos();
