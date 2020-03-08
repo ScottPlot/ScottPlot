@@ -14,6 +14,7 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
 * **This version (4.0.x)** - this list is a reminder of things to complete before proceeding to the next major version.
   * Improve support for display scaling (#273)
   * Create standalone user control launchers
+  * Add right-click menu to WpfPlot
 * **ScottPlot 4.1**
   * Refactor plottable module (namespaces will change slightly)
 * **ScottPlot 4.2** 
@@ -33,7 +34,7 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
 
 ### Misc
 * Created new cookbook and demo applications for WinForms and WPF (#271)
-* The `FormsPlot.OnMouseMoved` event now has `MouseEventArgs` (instead of `EventArgs`). The purpose of this was to make it easy to access mouse pixel coordinates via `e.X` and `e.Y`, but this change may require modifications to applications which use the old event signature.
+* The `FormsPlot.MouseMoved` event now has `MouseEventArgs` (instead of `EventArgs`). The purpose of this was to make it easy to access mouse pixel coordinates via `e.X` and `e.Y`, but this change may require modifications to applications which use the old event signature.
 * Fixed bug that caused `Plot.CoordinateFromPixelY()` to return incorrect value
 * Fixed bug causing cursor to show arrows when hovered over some non-draggable objects
 * Improved support for WinForms and WpfPlot transparency (#286) _Thanks @StendProg and @envine_
