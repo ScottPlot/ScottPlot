@@ -18,7 +18,6 @@ namespace ScottPlot.Demo.WinForms
         {
             InitializeComponent();
             LoadTreeWithDemos();
-            treeView1.SelectedNode = treeView1.Nodes[0].Nodes[0];
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -28,42 +27,31 @@ namespace ScottPlot.Demo.WinForms
 
         private void LoadTreeWithDemos()
         {
-            // TODO: make this tree in our own class and use binding to display it
+            IPlotDemo[] plots = Reflection.GetPlotsInOrder();
+            IEnumerable<string> majorCategories = plots.Select(x => x.categoryMajor).Distinct();
 
-            // GENERAL
-            var generalTreeItem = new TreeNode("General Plots");
-            treeView1.Nodes.Add(generalTreeItem);
-            generalTreeItem.Expand();
-            foreach (IPlotDemo plotDemo in Demo.Reflection.GetPlots("ScottPlot.Demo.General."))
+            foreach (string majorCategory in majorCategories)
             {
-                generalTreeItem.Nodes.Add(new TreeNode { Text = plotDemo.name, ToolTipText = plotDemo.description, Tag = plotDemo.GetType().ToString() });
+                var majorNode = new TreeNode(majorCategory);
+                treeView1.Nodes.Add(majorNode);
+
+                IEnumerable<string> minorCategories = plots.Where(x => x.categoryMajor == majorCategory).Select(x => x.categoryMinor).Distinct();
+                foreach (string minorCategory in minorCategories)
+                {
+                    var minorNode = new TreeNode(minorCategory);
+                    majorNode.Nodes.Add(minorNode);
+
+                    IEnumerable<IPlotDemo> categoryPlots = plots.Where(x => x.categoryMajor == majorCategory && x.categoryMinor == minorCategory);
+                    foreach (IPlotDemo demoPlot in categoryPlots)
+                    {
+                        var classNode = new TreeNode(demoPlot.name);
+                        classNode.Tag = demoPlot.classPath.ToString();
+                        minorNode.Nodes.Add(classNode);
+                    }
+                }
             }
 
-            // PLOT TYPES
-            var plotTypesTreeItem = new TreeNode("Plot Types");
-            treeView1.Nodes.Add(plotTypesTreeItem);
-            foreach (IPlotDemo plotDemo in Demo.Reflection.GetPlots("ScottPlot.Demo.PlotTypes."))
-            {
-                plotTypesTreeItem.Nodes.Add(new TreeNode { Text = plotDemo.name, ToolTipText = plotDemo.description, Tag = plotDemo.GetType().ToString() });
-            }
-
-            // STYLE
-            var styleTreeItem = new TreeNode("Custom Plot Styles");
-            treeView1.Nodes.Add(styleTreeItem);
-            foreach (IPlotDemo plotDemo in Demo.Reflection.GetPlots("ScottPlot.Demo.Style."))
-            {
-                styleTreeItem.Nodes.Add(new TreeNode { Text = plotDemo.name, ToolTipText = plotDemo.description, Tag = plotDemo.GetType().ToString() });
-            }
-
-            // EXPERIMENTAL
-            var experimentalTreeItem = new TreeNode("Experimental Plots");
-            treeView1.Nodes.Add(experimentalTreeItem);
-            if (Debugger.IsAttached)
-                experimentalTreeItem.Expand();
-            foreach (IPlotDemo plotDemo in Demo.Reflection.GetPlots("ScottPlot.Demo.Experimental."))
-            {
-                experimentalTreeItem.Nodes.Add(new TreeNode { Text = plotDemo.name, ToolTipText = plotDemo.description, Tag = plotDemo.GetType().ToString() });
-            }
+            treeView1.SelectedNode = treeView1.Nodes[0].Nodes[0].Nodes[0];
         }
 
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
