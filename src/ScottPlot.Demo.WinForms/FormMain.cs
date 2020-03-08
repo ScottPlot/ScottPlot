@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace ScottPlot.Demo.WinForms
 {
-    public partial class FormStartup : Form
+    public partial class FormMain : Form
     {
-        public FormStartup()
+        public FormMain()
         {
             InitializeComponent();
         }
@@ -50,6 +50,16 @@ namespace ScottPlot.Demo.WinForms
         private void LinkedAxesButton_Click(object sender, EventArgs e)
         {
             new WinFormsDemos.LinkedPlots().ShowDialog();
+        }
+
+        private void LiveData_Click(object sender, EventArgs e)
+        {
+            new WinFormsDemos.LiveDataUpdate().ShowDialog();
+        }
+
+        private void GrowingData_Click(object sender, EventArgs e)
+        {
+            new WinFormsDemos.LiveDataIncoming().ShowDialog();
         }
     }
 }

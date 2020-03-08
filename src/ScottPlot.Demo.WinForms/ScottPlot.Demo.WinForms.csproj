@@ -61,11 +61,11 @@
     <Compile Include="FormCookbook.Designer.cs">
       <DependentUpon>FormCookbook.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormStartup.cs">
+    <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormStartup.Designer.cs">
-      <DependentUpon>FormStartup.cs</DependentUpon>
+    <Compile Include="FormMain.Designer.cs">
+      <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -80,6 +80,18 @@
     </Compile>
     <Compile Include="WinFormsDemos\LinkedPlots.Designer.cs">
       <DependentUpon>LinkedPlots.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinFormsDemos\LiveDataIncoming.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinFormsDemos\LiveDataIncoming.Designer.cs">
+      <DependentUpon>LiveDataIncoming.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinFormsDemos\LiveDataUpdate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinFormsDemos\LiveDataUpdate.Designer.cs">
+      <DependentUpon>LiveDataUpdate.cs</DependentUpon>
     </Compile>
     <Compile Include="WinFormsDemos\MouseTracker.cs">
       <SubType>Form</SubType>
@@ -102,8 +114,8 @@
     <EmbeddedResource Include="FormCookbook.resx">
       <DependentUpon>FormCookbook.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormStartup.resx">
-      <DependentUpon>FormStartup.cs</DependentUpon>
+    <EmbeddedResource Include="FormMain.resx">
+      <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -119,6 +131,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="WinFormsDemos\LinkedPlots.resx">
       <DependentUpon>LinkedPlots.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinFormsDemos\LiveDataIncoming.resx">
+      <DependentUpon>LiveDataIncoming.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinFormsDemos\LiveDataUpdate.resx">
+      <DependentUpon>LiveDataUpdate.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WinFormsDemos\MouseTracker.resx">
       <DependentUpon>MouseTracker.cs</DependentUpon>
