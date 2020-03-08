@@ -31,13 +31,23 @@ namespace ScottPlot.Demo.Cookbook
                 System.IO.File.Delete(filePathToDelete);
         }
 
-        private static void RenderAndSaveImages(string outputFolder)
+        private static void RenderAndSaveImages(string outputFolder, int width = 600, int height = 400)
         {
             foreach (IPlotDemo recipe in Reflection.GetPlots())
             {
-                var plt = new Plot(600, 400);
-                recipe.Render(plt);
-                plt.SaveFig($"{outputFolder}/images/{recipe.id}.png");
+                string imageFilePath = $"{outputFolder}/images/{recipe.id}.png";
+
+                if (recipe is IBitmapDemo bmpDemo)
+                {
+                    System.Drawing.Bitmap bmp = bmpDemo.Render(width, height);
+                    bmp.Save(imageFilePath, System.Drawing.Imaging.ImageFormat.Png);
+                }
+                else
+                {
+                    var plt = new Plot(width, height);
+                    recipe.Render(plt);
+                    plt.SaveFig(imageFilePath);
+                }
             }
         }
 
