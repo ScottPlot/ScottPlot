@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Linq;
 using System.Diagnostics;
 
 namespace ScottPlot.Demo.WinForms
@@ -17,6 +16,7 @@ namespace ScottPlot.Demo.WinForms
         public FormCookbook()
         {
             InitializeComponent();
+            pictureBox1.Dock = DockStyle.Fill;
             LoadTreeWithDemos();
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
         }
@@ -70,19 +70,35 @@ namespace ScottPlot.Demo.WinForms
             var demoPlot = Reflection.GetPlot(objectPath);
 
             DemoNameLabel.Text = demoPlot.name;
-            sourceCodeGroupbox.Text = demoPlot.classPath.Replace("+",".");
+            sourceCodeGroupbox.Text = demoPlot.classPath.Replace("+", ".");
             DescriptionTextbox.Text = (demoPlot.description is null) ? "no descriton provided..." : demoPlot.description;
             sourceCodeTextbox.Text = demoPlot.GetSourceCode("../../../../src/ScottPlot.Demo/");
 
             formsPlot1.Reset();
-            demoPlot.Render(formsPlot1.plt);
-            formsPlot1.Render();
+
+            if (demoPlot is IBitmapDemo bmpPlot)
+            {
+                formsPlot1.Visible = false;
+                pictureBox1.Visible = true;
+                pictureBox1.Image = bmpPlot.Render(800, 600);
+                formsPlot1_Rendered(null, null);
+            }
+            else
+            {
+                formsPlot1.Visible = true;
+                pictureBox1.Visible = false;
+                demoPlot.Render(formsPlot1.plt);
+                formsPlot1.Render();
+            }
+
         }
 
         private void formsPlot1_Rendered(object sender, EventArgs e)
         {
-            //PerformanceLabel.Text = formsPlot1.plt.GetSettings(false).benchmark.ToString();
-            gbPlot.Text = formsPlot1.plt.GetSettings(false).benchmark.ToString();
+            if (formsPlot1.Visible)
+                gbPlot.Text = formsPlot1.plt.GetSettings(false).benchmark.ToString();
+            else
+                gbPlot.Text = "This plot is a non-interactive Bitmap";
         }
     }
 }
