@@ -106,7 +106,7 @@ namespace ScottPlot.Demo
                     sb.AppendLine(line);
             }
 
-            sb.Insert(0, "var plt = new ScottPlot.Plot(600, 400);\n");
+            sb.Insert(0, "var plt = new ScottPlot.Plot(600, 400);\r\n");
             sb.AppendLine($"plt.SaveFig(\"{id}.png\");");
 
             return sb.ToString().Trim();
