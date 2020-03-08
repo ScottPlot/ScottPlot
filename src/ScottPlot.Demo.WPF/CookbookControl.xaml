@@ -25,18 +25,16 @@
             <TextBox Background="Transparent" x:Name="DescriptionTextbox" Text="description" TextWrapping="Wrap" BorderThickness="0" Margin="2, -5, 2, 5"/>
         </StackPanel>
 
-        <Border Grid.Column="0" Grid.Row="1" Margin="5" BorderThickness="2" BorderBrush="#444444" Background="#444444" >
+        <Border Grid.Column="0" Grid.Row="1" Margin="5" BorderThickness="2" BorderBrush="LightGray" Background="LightGray" >
             <DockPanel>
-                <Label x:Name="BenchmarkLabel" Content="benchmark info" DockPanel.Dock="Top" 
-                       Foreground="White" />
+                <Label x:Name="BenchmarkLabel" Content="benchmark info" DockPanel.Dock="Top" Foreground="Gray" />
                 <ScottPlot:WpfPlot Name="wpfPlot1"/>
             </DockPanel>
         </Border>
 
         <Border Grid.Column="0" Grid.Row="2" Margin="5" BorderThickness="2" BorderBrush="#2a3a56" Background="#2a3a56" >
             <DockPanel>
-                <Label x:Name="SourceCodeLabel" Content="file path" DockPanel.Dock="Top" 
-                       Foreground="White" />
+                <Label x:Name="SourceCodeLabel" Content="file path" DockPanel.Dock="Top" Foreground="White" />
                 <TextBox x:Name="SourceTextBox" 
                      IsReadOnly="True" 
                      VerticalScrollBarVisibility="Auto" 
