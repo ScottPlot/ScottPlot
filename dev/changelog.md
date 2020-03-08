@@ -38,6 +38,7 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
 * Fixed bug causing cursor to show arrows when hovered over some non-draggable objects
 * Improved support for WinForms and WpfPlot transparency (#286) _Thanks @StendProg and @envine_
 * Added `DataGen.Zeros()` and `DataGen.Ones()` to generate arrays filled with values using methods familiar to numpy users.
+* Added `equalAxes` argument to `WpfPlot.Configure()` (#272)
 * Fixed a bug affecting the `equalAxes` argument in `FormsPlot.Configure()` (#272)
 * Made all `Plot.Axis` methods return axis limits as `double[]` (previously many of them returned `void`)
 

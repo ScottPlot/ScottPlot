@@ -96,6 +96,9 @@ namespace ScottPlot
         {
             if (!isDesignerMode)
             {
+                if (equalAxes)
+                    plt.AxisEqual();
+
                 if (!(skipIfCurrentlyRendering && currentlyRendering))
                 {
                     currentlyRendering = true;
@@ -120,13 +123,15 @@ namespace ScottPlot
         private bool doubleClickingTogglesBenchmark = true;
         private bool lockVerticalAxis = false;
         private bool lockHorizontalAxis = false;
+        private bool equalAxes = false;
         public void Configure(
             bool? enablePanning = null,
             bool? enableZooming = null,
             bool? lowQualityWhileDragging = null,
             bool? enableDoubleClickBenchmark = null,
             bool? lockVerticalAxis = null,
-            bool? lockHorizontalAxis = null
+            bool? lockHorizontalAxis = null,
+            bool? equalAxes = null
             )
         {
             if (enablePanning != null) this.enablePanning = (bool)enablePanning;
@@ -135,6 +140,7 @@ namespace ScottPlot
             if (enableDoubleClickBenchmark != null) this.doubleClickingTogglesBenchmark = (bool)enableDoubleClickBenchmark;
             if (lockVerticalAxis != null) this.lockVerticalAxis = (bool)lockVerticalAxis;
             if (lockHorizontalAxis != null) this.lockHorizontalAxis = (bool)lockHorizontalAxis;
+            if (equalAxes != null) this.equalAxes = (bool)equalAxes;
         }
 
         private bool isHorizontalLocked { get { return (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt) || (lockHorizontalAxis)); } }
