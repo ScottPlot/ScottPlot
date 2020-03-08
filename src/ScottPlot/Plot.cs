@@ -782,14 +782,15 @@ namespace ScottPlot
             return settings.axes.limits;
         }
 
-        public void Axis(double[] axisLimits)
+        public double[] Axis(double[] axisLimits)
         {
             if ((axisLimits == null) || (axisLimits.Length != 4))
                 throw new ArgumentException("axis limits must contain 4 elements");
             Axis(axisLimits[0], axisLimits[1], axisLimits[2], axisLimits[3]);
+            return settings.axes.limits;
         }
 
-        public void AxisScale(double? unitsPerPixelX = null, double? unitsPerPixelY = null)
+        public double[] AxisScale(double? unitsPerPixelX = null, double? unitsPerPixelY = null)
         {
             if (unitsPerPixelX != null)
             {
@@ -802,17 +803,20 @@ namespace ScottPlot
                 double spanY = unitsPerPixelY.Value * settings.dataSize.Height;
                 Axis(y1: settings.axes.y.center - spanY / 2, y2: settings.axes.y.center + spanY / 2);
             }
+
+            return settings.axes.limits;
         }
 
-        public void AxisEqual(bool preserveY = true)
+        public double[] AxisEqual(bool preserveY = true)
         {
             if (preserveY)
                 AxisScale(unitsPerPixelX: settings.yAxisUnitsPerPixel);
             else
                 AxisScale(unitsPerPixelY: settings.xAxisUnitsPerPixel);
+            return settings.axes.limits;
         }
 
-        public void AxisAuto(
+        public double[] AxisAuto(
             double horizontalMargin = .05,
             double verticalMargin = .1,
             bool xExpandOnly = false,
@@ -821,9 +825,10 @@ namespace ScottPlot
         {
             settings.AxisAuto(horizontalMargin, verticalMargin, xExpandOnly, yExpandOnly);
             TightenLayout();
+            return settings.axes.limits;
         }
 
-        public void AxisAutoX(
+        public double[] AxisAutoX(
             double margin = .05,
             bool expandOnly = false
             )
@@ -832,9 +837,10 @@ namespace ScottPlot
             double oldY2 = settings.axes.y.max;
             AxisAuto(horizontalMargin: margin, xExpandOnly: expandOnly);
             Axis(y1: oldY1, y2: oldY2);
+            return settings.axes.limits;
         }
 
-        public void AxisAutoY(
+        public double[] AxisAutoY(
             double margin = .1,
             bool expandOnly = false
             )
@@ -843,9 +849,10 @@ namespace ScottPlot
             double oldX2 = settings.axes.x.max;
             AxisAuto(verticalMargin: margin, yExpandOnly: expandOnly);
             Axis(x1: oldX1, x2: oldX2);
+            return settings.axes.limits;
         }
 
-        public void AxisZoom(
+        public double[] AxisZoom(
             double xFrac = 1,
             double yFrac = 1,
             PointF? zoomCenter = null
@@ -854,14 +861,16 @@ namespace ScottPlot
             if (!settings.axes.hasBeenSet)
                 settings.AxisAuto();
             settings.axes.Zoom(xFrac, yFrac, zoomCenter);
+            return settings.axes.limits;
         }
 
-        public void AxisPan(double dx = 0, double dy = 0)
+        public double[] AxisPan(double dx = 0, double dy = 0)
         {
             if (!settings.axes.hasBeenSet)
                 settings.AxisAuto();
             settings.axes.x.Pan(dx);
             settings.axes.y.Pan(dy);
+            return settings.axes.limits;
         }
 
         public double CoordinateFromPixelX(double pixelX)
