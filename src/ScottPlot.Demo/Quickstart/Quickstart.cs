@@ -1,19 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Text;
-using ScottPlot;
 
-namespace ScottPlot.Demo.General
+namespace ScottPlot.Demo.Quickstart
 {
-    public class Plots
+    class Quickstart
     {
-        // TODO: pull these from their source pages rather than duplicating them here
-
-        public class SinAndCos : PlotDemo, IPlotDemo
+        public class Scatter : PlotDemo, IPlotDemo
         {
-            public string name { get; } = "Sin and Cos";
-            public string description { get; } = "The scatter plot is a simple way to display paired X/Y data.";
+            public string name { get; } = "Scatter Plot Quickstart";
+            public string description { get; } = "Scatter plots are best for small numbers of paired X/Y data points. For evenly-spaced data points Signal is much faster.";
 
             public void Render(Plot plt)
             {
@@ -26,7 +22,7 @@ namespace ScottPlot.Demo.General
                 plt.PlotScatter(xs, cos, label: "cos");
                 plt.Legend();
 
-                plt.Title("ScottPlot Quickstart");
+                plt.Title("Scatter Plot Quickstart");
                 plt.YLabel("Vertical Units");
                 plt.XLabel("Horizontal Units");
             }
@@ -40,29 +36,15 @@ namespace ScottPlot.Demo.General
             public void Render(Plot plt)
             {
                 Random rand = new Random(0);
-                int pointCount = 1_000_000;
+                int pointCount = (int)1e6;
                 int lineCount = 5;
 
                 for (int i = 0; i < lineCount; i++)
                     plt.PlotSignal(DataGen.RandomWalk(rand, pointCount));
-            }
-        }
 
-        public class Clear : PlotDemo, IPlotDemo
-        {
-            public string name { get; } = "Clearing data";
-            public string description { get; } = "Plots can be cleared using the Clear() method. Arguments let the user customize which types of plot objects to clear.";
-
-            public void Render(Plot plt)
-            {
-                double[] xs = DataGen.Range(-5, 5, 0.1);
-                double[] sin = DataGen.Sin(xs);
-                double[] cos = DataGen.Cos(xs);
-
-                plt.PlotScatter(xs, sin);
-                plt.PlotScatter(xs, cos);
-                plt.Clear();
-                plt.PlotScatter(sin, xs, color: Color.Magenta, lineStyle: LineStyle.Dot, markerSize: 0);
+                plt.Title("Signal Plot Quickstart (5 million points)");
+                plt.YLabel("Vertical Units");
+                plt.XLabel("Horizontal Units");
             }
         }
     }

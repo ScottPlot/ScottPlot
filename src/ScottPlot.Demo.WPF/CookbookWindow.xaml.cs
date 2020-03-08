@@ -44,8 +44,9 @@ namespace ScottPlot.Demo.WPF
 
         private void LoadTreeWithDemos()
         {
-            IPlotDemo[] plots = Reflection.GetPlots();
+            IPlotDemo[] plots = Reflection.GetPlotsInOrder();
             IEnumerable<string> majorCategories = plots.Select(x => x.categoryMajor).Distinct();
+
             foreach (string majorCategory in majorCategories)
             {
                 var majorTreeItem = new TreeViewItem() { Header = majorCategory, IsExpanded = true };
@@ -55,7 +56,7 @@ namespace ScottPlot.Demo.WPF
                 foreach (string minorCategory in minorCategories)
                 {
                     var minorTreeItem = new TreeViewItem() { Header = minorCategory };
-                    if (majorCategory == "PlotTypes" && minorCategory == "Scatter")
+                    if (majorCategory == plots[0].categoryMajor && minorCategory == plots[0].categoryMinor)
                         minorTreeItem.IsExpanded = true;
                     majorTreeItem.Items.Add(minorTreeItem);
 
@@ -63,7 +64,7 @@ namespace ScottPlot.Demo.WPF
                     foreach (IPlotDemo demoPlot in categoryPlots)
                     {
                         var classNameTreeItem = new TreeViewItem() { Header = demoPlot.name, Tag = demoPlot.classPath };
-                        if (demoPlot.classPath == "ScottPlot.Demo.PlotTypes.Scatter+Quickstart")
+                        if (demoPlot.classPath == plots[0].classPath)
                             classNameTreeItem.IsSelected = true;
                         minorTreeItem.Items.Add(classNameTreeItem);
                     }

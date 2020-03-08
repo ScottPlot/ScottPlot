@@ -26,6 +26,31 @@ namespace ScottPlot.Demo
             return plots;
         }
 
+        public static IPlotDemo[] GetPlotsInOrder()
+        {
+            List<IPlotDemo> recipes = new List<IPlotDemo>();
+
+            // define the order of cookbook examples here
+            recipes.AddRange(GetPlots("ScottPlot.Demo.Quickstart"));
+            recipes.AddRange(GetPlots("ScottPlot.Demo.PlotTypes"));
+            recipes.AddRange(GetPlots("ScottPlot.Demo.Customize"));
+            recipes.AddRange(GetPlots("ScottPlot.Demo.Examples"));
+            recipes.AddRange(GetPlots());
+
+            List<string> ids = new List<string>();
+            List<IPlotDemo> recipes2 = new List<IPlotDemo>();
+            foreach (IPlotDemo recipe in recipes)
+            {
+                if (!ids.Contains(recipe.id))
+                {
+                    recipes2.Add(recipe);
+                    ids.Add(recipe.id);
+                }
+            }
+
+            return recipes2.ToArray();
+        }
+
         public static IPlotDemo GetPlot(string plotObjectPath)
         {
             if (!plotObjectPath.StartsWith("ScottPlot.Demo."))

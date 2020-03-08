@@ -25,6 +25,7 @@ namespace ScottPlot.Statistics
         public double[] counts;
         public double[] cumulativeCounts;
         public double[] countsFrac;
+        public double[] countsFracCurve;
         public double[] cumulativeFrac;
 
         public readonly double mean;
@@ -68,6 +69,7 @@ namespace ScottPlot.Statistics
             cumulativeCounts = GetCumulative(counts);
             countsFrac = GetNormalized(counts);
             cumulativeFrac = GetCumulative(countsFrac);
+            countsFracCurve = GetCountsFracCurve(bins, stdev);
         }
 
         public static double GetMean(double[] values)
@@ -137,6 +139,20 @@ namespace ScottPlot.Statistics
                 }
             }
             return counts;
+        }
+
+        private static double[] GetCountsFracCurve(double[] xs, double stdev)
+        {
+            double meanX = (xs.Last() + xs.First()) / 2.0;
+
+            double[] ys = new double[xs.Length];
+
+            for (int i = 0; i < xs.Length; i++)
+            {
+                double x = xs[i];
+                ys[i] = (1.0 / (stdev * Math.Sqrt(2 * Math.PI))) * Math.Exp(-.5 * Math.Pow((x - meanX) / stdev, 2));
+            }
+            return ys;
         }
     }
 }

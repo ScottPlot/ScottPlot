@@ -8,7 +8,7 @@ namespace ScottPlot.Demo.PlotTypes
     {
         public class Quickstart : PlotDemo, IPlotDemo
         {
-            public string name { get; } = "Bar Graph Quickstart";
+            public string name { get; } = "Bar Plot Quickstart";
             public string description { get; } = "Bar graph series can be created by supply Xs and Ys. Optionally apply errorbars as a third array using an argument.";
 
             public void Render(Plot plt)
@@ -36,6 +36,31 @@ namespace ScottPlot.Demo.PlotTypes
                 // apply custom axis tick labels
                 string[] labels = { "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten" };
                 plt.XTicks(Xs, labels);
+            }
+        }
+        public class BarWithError : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Bar Plot with Errorbars";
+            public string description { get; } = "Error can be supplied as a command line argument.";
+
+            public void Render(Plot plt)
+            {
+                int pointCount = 20;
+                double[] xs = new double[pointCount];
+                double[] ys = new double[pointCount];
+                double[] yErr = new double[pointCount];
+                Random rand = new Random(0);
+                for (int i = 0; i < pointCount; i++)
+                {
+                    xs[i] = i;
+                    ys[i] = .5 + rand.NextDouble();
+                    yErr[i] = rand.NextDouble() * .3 + .05;
+                }
+
+                plt.Title("Bar Plot With Error Bars");
+                plt.PlotBar(xs, ys, barWidth: .5, errorY: yErr, errorCapSize: 2);
+                plt.Grid(enableVertical: false);
+                plt.Axis(null, null, 0, null);
             }
         }
 
