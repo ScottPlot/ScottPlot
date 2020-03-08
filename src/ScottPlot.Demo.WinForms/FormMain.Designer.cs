@@ -174,7 +174,7 @@
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(300, 47);
             this.label8.TabIndex = 16;
-            this.label8.Text = "Shows how to plot live data from a fixed array";
+            this.label8.Text = "Shows how to plot live data from a fixed-size array";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // GrowingData

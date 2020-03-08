@@ -1,0 +1,155 @@
+﻿<Window x:Class="ScottPlot.Demo.WPF.LauncherWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ScottPlot.Demo.WPF"
+        mc:Ignorable="d"
+        Title="ScottPlot Demos (WPF)" 
+        WindowStartupLocation="CenterScreen"
+        Background="WhiteSmoke"
+        Height="575" Width="350">
+    <ScrollViewer>
+        <StackPanel>
+
+            <StackPanel.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                    <Setter Property="TextWrapping" Value="Wrap" />
+                </Style>
+                <Style TargetType="Button">
+                    <Setter Property="Padding" Value="5" />
+                    <Setter Property="Margin" Value="5" />
+                    <Setter Property="Width" Value="100"/>
+                </Style>
+            </StackPanel.Resources>
+
+            <Label DockPanel.Dock="Top" Content="ScottPlot Demos" FontSize="24" FontWeight="SemiBold" />
+            <Label DockPanel.Dock="Top" Name="VersionLabel" Content="version 8.8.88" FontSize="12" Margin="0,-18,0,0" Foreground="Gray" Width="109" HorizontalContentAlignment="Right" HorizontalAlignment="Left" />
+
+            <GroupBox Header="ScottPlot Cookbook" Margin="5">
+                <StackPanel>
+
+                    <DockPanel>
+                        <Button DockPanel.Dock="Left" Click="LaunchCookbook">
+                            <TextBlock TextAlignment="Center">
+                        Launch Cookbook
+                            </TextBlock>
+                        </Button>
+                        <TextBlock >
+                    A collection of simple examples which demonstrate most features of ScottPlot
+                        </TextBlock>
+                    </DockPanel>
+
+                    <DockPanel>
+                        <Button DockPanel.Dock="Left" Click="LaunchCookbookGenerator">
+                            <TextBlock TextAlignment="Center">
+                        Generate Cookbook
+                            </TextBlock>
+                        </Button>
+                        <TextBlock >
+                    Create a HTML and Markdown version of the cookbook (requires source code)
+                        </TextBlock>
+                    </DockPanel>
+
+                </StackPanel>
+            </GroupBox>
+
+
+            <GroupBox Header="WPF-Specific Demos" Margin="5">
+                <StackPanel>
+
+                    <DockPanel>
+                        <Button DockPanel.Dock="Left" Click="LaunchMouseTracker">
+                            <TextBlock TextAlignment="Center">
+                        Mouse Tracker
+                            </TextBlock>
+                        </Button>
+                        <TextBlock >
+                    Display mouse position in both pixel and plot coordinates
+                        </TextBlock>
+                    </DockPanel>
+
+                    <DockPanel>
+                        <Button DockPanel.Dock="Left" Click="LaunchToggleVisibility">
+                            <TextBlock TextAlignment="Center">
+                        Toggle Visibility
+                            </TextBlock>
+                        </Button>
+                        <TextBlock >
+                    Checkboxes control visibility of individual plot objects
+                        </TextBlock>
+                    </DockPanel>
+
+                    <DockPanel>
+                        <Button DockPanel.Dock="Left" Click="LaunchWpfConfig">
+                            <TextBlock TextAlignment="Center">
+                        WpfPlot Config
+                            </TextBlock>
+                        </Button>
+                        <TextBlock >
+                    Demonstrates how to customize the configuration of the WpfPlot control
+                        </TextBlock>
+                    </DockPanel>
+
+                    <DockPanel>
+                        <Button DockPanel.Dock="Left" Click="LaunchLinkedAxes">
+                            <TextBlock TextAlignment="Center">
+                        Linked Axes
+                            </TextBlock>
+                        </Button>
+                        <TextBlock >
+                    Link axes from two WpfPlot controls together
+                        </TextBlock>
+                    </DockPanel>
+
+                    <DockPanel>
+                        <Button DockPanel.Dock="Left" Click="LaunchLiveDataFixed">
+                            <TextBlock TextAlignment="Center">
+                        Live Data
+                            </TextBlock>
+                        </Button>
+                        <TextBlock >
+                    Shows how to plot live data from a fixed-size array
+                        </TextBlock>
+                    </DockPanel>
+
+                    <DockPanel>
+                        <Button DockPanel.Dock="Left" Click="LaunchLiveDataIncoming">
+                            <TextBlock TextAlignment="Center">
+                        Growing Data
+                            </TextBlock>
+                        </Button>
+                        <TextBlock >
+                    Shows how to plot data which grows with time
+                        </TextBlock>
+                    </DockPanel>
+
+                    <DockPanel>
+                        <Button DockPanel.Dock="Left" Click="LaunchShowValueUnderMouse">
+                            <TextBlock TextAlignment="Center">
+                        Show Value<LineBreak />Under Mouse
+                            </TextBlock>
+                        </Button>
+                        <TextBlock >
+                    Demonstrates how to show the value of the point under the cursor
+                        </TextBlock>
+                    </DockPanel>
+
+                    <DockPanel>
+                        <Button DockPanel.Dock="Left" Click="LaunchTransparentBackground">
+                            <TextBlock TextAlignment="Center">
+                        Transparent Background
+                            </TextBlock>
+                        </Button>
+                        <TextBlock >
+                    Shows how to create a transparent WpfPlot that lets you see through to the background behind the control
+                        </TextBlock>
+                    </DockPanel>
+                    
+                </StackPanel>
+            </GroupBox>
+
+        </StackPanel>
+    </ScrollViewer>
+</Window>

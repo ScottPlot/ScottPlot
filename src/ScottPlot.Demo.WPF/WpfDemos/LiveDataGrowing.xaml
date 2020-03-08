@@ -1,0 +1,21 @@
+﻿<Window x:Class="ScottPlot.Demo.WPF.WpfDemos.LiveDataGrowing"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ScottPlot.Demo.WPF.WpfDemos"
+        xmlns:ScottPlot="clr-namespace:ScottPlot;assembly=ScottPlot.WPF"
+        mc:Ignorable="d"
+        Title="Live Data (Growing)" Height="450" Width="800">
+    <DockPanel>
+        <Label Content="This example simuulates live display of a growing dataset" DockPanel.Dock="Top"/>
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+            <Label Content="Readings:"/>
+            <TextBox x:Name="ReadingsTextbox" IsEnabled="False" VerticalAlignment="Center" Width="60"/>
+            <Label Content="Latest value:" Margin="20, 0, 0, 0"/>
+            <TextBox x:Name="LatestValueTextbox" IsEnabled="False" VerticalAlignment="Center" Width="60"/>
+            <CheckBox x:Name="AutoAxisCheckbox" Content="Auto-axis on each update" IsChecked="True" VerticalAlignment="Center" Unchecked="DisableAutoAxis"/>
+        </StackPanel>
+        <ScottPlot:WpfPlot Name="wpfPlot1"/>
+    </DockPanel>
+</Window>

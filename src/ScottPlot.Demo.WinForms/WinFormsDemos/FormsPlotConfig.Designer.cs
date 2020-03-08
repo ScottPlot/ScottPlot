@@ -108,7 +108,7 @@
             this.cbDoubleClickBenchmark.AutoSize = true;
             this.cbDoubleClickBenchmark.Checked = true;
             this.cbDoubleClickBenchmark.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbDoubleClickBenchmark.Location = new System.Drawing.Point(373, 35);
+            this.cbDoubleClickBenchmark.Location = new System.Drawing.Point(373, 58);
             this.cbDoubleClickBenchmark.Name = "cbDoubleClickBenchmark";
             this.cbDoubleClickBenchmark.Size = new System.Drawing.Size(141, 17);
             this.cbDoubleClickBenchmark.TabIndex = 5;
@@ -152,7 +152,7 @@
             // cbCustomRightClick
             // 
             this.cbCustomRightClick.AutoSize = true;
-            this.cbCustomRightClick.Location = new System.Drawing.Point(538, 12);
+            this.cbCustomRightClick.Location = new System.Drawing.Point(373, 35);
             this.cbCustomRightClick.Name = "cbCustomRightClick";
             this.cbCustomRightClick.Size = new System.Drawing.Size(141, 17);
             this.cbCustomRightClick.TabIndex = 9;

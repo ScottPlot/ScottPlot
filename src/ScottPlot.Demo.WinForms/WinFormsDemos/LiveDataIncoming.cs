@@ -48,12 +48,14 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             data[nextDataIndex] = latestValue;
             tbLastValue.Text = (latestValue > 0) ? "+" + latestValue.ToString() : latestValue.ToString();
             tbLatestValue.Text = nextDataIndex.ToString();
+
+            signalPlot.maxRenderIndex = nextDataIndex;
+
             nextDataIndex += 1;
         }
 
         private void renderTimer_Tick(object sender, EventArgs e)
         {
-            signalPlot.maxRenderIndex = nextDataIndex - 1;
             if (cbAutoAxis.Checked)
                 formsPlot1.plt.AxisAuto();
             formsPlot1.Render();
