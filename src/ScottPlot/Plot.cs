@@ -742,7 +742,8 @@ namespace ScottPlot
 
             foreach (IDraggable draggable in GetDraggables())
                 if (draggable.IsUnderMouse(mouseCoordinates.X, mouseCoordinates.Y, snapWidth, snapHeight))
-                    return draggable;
+                    if (draggable.DragEnabled)
+                        return draggable;
 
             return null;
         }
