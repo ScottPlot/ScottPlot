@@ -39,7 +39,7 @@ steps:
   condition: not(contains(variables['agent.os'], 'Windows'))
   inputs:
     command: 'build'
-    projects: 'doc/quickstart/ConsoleAppCore/ConsoleAppCore.csproj'
+    projects: 'dev/quickstart/ConsoleAppCore/ConsoleAppCore.csproj'
 
 ### FULL BUILD (Windows)
     
@@ -53,13 +53,13 @@ steps:
   displayName: 'Full restore QuickStart'
   condition: contains(variables['agent.os'], 'Windows')
   inputs:
-    restoreSolution: 'doc/quickstart/*/*.sln'
+    restoreSolution: 'dev/quickstart/*/*.sln'
     
 - task: VSBuild@1
   displayName: 'Full build QuickStart'
   condition: contains(variables['agent.os'], 'Windows')
   inputs:
-    solution: 'doc/quickstart/*/*.sln'
+    solution: 'dev/quickstart/*/*.sln'
     
 ### RUN TESTS
 
