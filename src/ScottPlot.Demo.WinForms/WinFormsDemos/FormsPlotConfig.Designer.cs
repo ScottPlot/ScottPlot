@@ -37,6 +37,7 @@
             this.cbLockVertical = new System.Windows.Forms.CheckBox();
             this.cbLockHorizontal = new System.Windows.Forms.CheckBox();
             this.cbEqualAxes = new System.Windows.Forms.CheckBox();
+            this.cbCustomRightClick = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // formsPlot1
@@ -48,6 +49,7 @@
             this.formsPlot1.Name = "formsPlot1";
             this.formsPlot1.Size = new System.Drawing.Size(776, 357);
             this.formsPlot1.TabIndex = 0;
+            this.formsPlot1.MouseClicked += new System.Windows.Forms.MouseEventHandler(this.formsPlot1_MouseClicked);
             // 
             // cbPannable
             // 
@@ -147,11 +149,23 @@
             this.cbEqualAxes.UseVisualStyleBackColor = true;
             this.cbEqualAxes.CheckedChanged += new System.EventHandler(this.cbEqualAxes_CheckedChanged);
             // 
+            // cbCustomRightClick
+            // 
+            this.cbCustomRightClick.AutoSize = true;
+            this.cbCustomRightClick.Location = new System.Drawing.Point(538, 12);
+            this.cbCustomRightClick.Name = "cbCustomRightClick";
+            this.cbCustomRightClick.Size = new System.Drawing.Size(141, 17);
+            this.cbCustomRightClick.TabIndex = 9;
+            this.cbCustomRightClick.Text = "Custom right-click action";
+            this.cbCustomRightClick.UseVisualStyleBackColor = true;
+            this.cbCustomRightClick.CheckedChanged += new System.EventHandler(this.cbCustomRightClick_CheckedChanged);
+            // 
             // FormsPlotConfig
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.cbCustomRightClick);
             this.Controls.Add(this.cbEqualAxes);
             this.Controls.Add(this.cbLockHorizontal);
             this.Controls.Add(this.cbLockVertical);
@@ -181,5 +195,6 @@
         private System.Windows.Forms.CheckBox cbLockVertical;
         private System.Windows.Forms.CheckBox cbLockHorizontal;
         private System.Windows.Forms.CheckBox cbEqualAxes;
+        private System.Windows.Forms.CheckBox cbCustomRightClick;
     }
 }

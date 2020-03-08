@@ -76,5 +76,22 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
 
             formsPlot1.Configure(enableDoubleClickBenchmark: cbDoubleClickBenchmark.Checked);
         }
+
+        private void cbCustomRightClick_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbCustomRightClick.Checked)
+            {
+                cbRightClickMenu.Checked = false;
+                formsPlot1.Configure(enableRightClickMenu: false);
+            }
+        }
+
+        private void formsPlot1_MouseClicked(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right && cbCustomRightClick.Checked)
+            {
+                MessageBox.Show("This is a custom right-click action");
+            }
+        }
     }
 }
