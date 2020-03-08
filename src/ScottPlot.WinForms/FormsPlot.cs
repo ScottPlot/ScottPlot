@@ -198,7 +198,7 @@ namespace ScottPlot
         private void PbPlot_MouseMove(object sender, MouseEventArgs e)
         {
             mouseLocation = e.Location;
-            OnMouseMoved(EventArgs.Empty);
+            OnMouseMoved(e);
 
             if (isPanningOrZooming)
                 MouseMovedToPanOrZoom(e);
@@ -394,7 +394,7 @@ namespace ScottPlot
         public event EventHandler Rendered;
         public event EventHandler MouseDownOnPlottable;
         public event EventHandler MouseDragPlottable;
-        public event EventHandler MouseMoved;
+        public event MouseEventHandler MouseMoved;
         public event EventHandler MouseDragged;
         public event EventHandler MouseDropPlottable;
         public event EventHandler AxesChanged;
@@ -403,7 +403,7 @@ namespace ScottPlot
         public event MouseEventHandler MenuDeployed;
         protected virtual void OnMouseDownOnPlottable(EventArgs e) { MouseDownOnPlottable?.Invoke(this, e); }
         protected virtual void OnMouseDragPlottable(EventArgs e) { MouseDragPlottable?.Invoke(this, e); }
-        protected virtual void OnMouseMoved(EventArgs e) { MouseMoved?.Invoke(this, e); }
+        protected virtual void OnMouseMoved(MouseEventArgs e) { MouseMoved?.Invoke(this, e); }
         protected virtual void OnMouseDragged(EventArgs e) { MouseDragged?.Invoke(this, e); }
         protected virtual void OnMouseDropPlottable(EventArgs e) { MouseDropPlottable?.Invoke(this, e); }
         protected virtual void OnMouseClicked(MouseEventArgs e) { MouseClicked?.Invoke(this, e); }
