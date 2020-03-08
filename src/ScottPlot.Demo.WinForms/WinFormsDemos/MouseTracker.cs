@@ -43,7 +43,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             vLine.position = coordinateX;
             hLine.position = coordinateY;
 
-            formsPlot1.Render();
+            formsPlot1.Render(skipIfCurrentlyRendering: true);
         }
     }
 }
