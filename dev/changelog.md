@@ -35,6 +35,7 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
 * Created new cookbook and demo applications for WinForms and WPF (#271)
 * The `FormsPlot.OnMouseMoved` event now has `MouseEventArgs` (instead of `EventArgs`). The purpose of this was to make it easy to access mouse pixel coordinates via `e.X` and `e.Y`, but this change may require modifications to applications which use the old event signature.
 * Fixed bug that caused `Plot.CoordinateFromPixelY()` to return incorrect value
+* Fixed bug causing cursor to show arrows when hovered over some non-draggable objects
 * Improved support for WinForms and WpfPlot transparency (#286) _Thanks @StendProg and @envine_
 * Added `DataGen.Zeros()` and `DataGen.Ones()` to generate arrays filled with values using methods familiar to numpy users.
 * Fixed a bug affecting the `equalAxes` argument in `FormsPlot.Configure()` (#272)
