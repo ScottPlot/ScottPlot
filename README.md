@@ -3,9 +3,11 @@
 [![](https://img.shields.io/azure-devops/build/swharden/swharden/2?label=Build&logo=azure%20pipelines)](https://dev.azure.com/swharden/swharden/_build/latest?definitionId=2&branchName=master)
 [![](https://img.shields.io/nuget/dt/ScottPlot?color=004880&label=NuGet%20Installs&logo=nuget)](https://www.nuget.org/packages/ScottPlot/)
 
-**ScottPlot is a free and open-source graphing library for .NET** which makes it easy to display data in a variety of formats (line plots, bar charts, scatter plots, etc.) with just a few lines of code (see the **[ScottPlot Cookbook](/cookbook)** for examples). User controls are available for WinForms and WPF to allow interactive display of data.
+**ScottPlot is a free and open-source graphing library for .NET** which makes it easy to display data in a variety of formats (line plots, bar charts, scatter plots, etc.) with just a few lines of code (see the **[ScottPlot Cookbook](/cookbook)** for examples). User controls are available for WinForms and WPF to allow interactive display of data. 
 
 ![](dev/nuget/ScottPlot.gif)
+
+Jump to the [demos](#Demos) section to see what ScottPlot can do on your system!
 
 # Supported Platforms
 ScottPlot is written in .NET Standard 2.0 so it [supports all modern .NET platforms](https://docs.microsoft.com/en-us/dotnet/standard/net-standard#net-implementation-support). The WPF control (WpfPlot) supports .NET Core and the Windows Forms control (FormsPlot) supports both .NET Framework and .NET Core.
