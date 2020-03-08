@@ -223,6 +223,7 @@ namespace ScottPlot
                 if (isHorizontalLocked) deltaX = 0;
 
                 settings.AxesPanPx(deltaX, deltaY);
+                OnAxisChanged();
             }
             else if (mouseRightDownLocation != null)
             {
@@ -234,6 +235,7 @@ namespace ScottPlot
                 if (isHorizontalLocked) deltaX = 0;
 
                 settings.AxesZoomPx(-deltaX, -deltaY);
+                OnAxisChanged();
             }
             else if (mouseMiddleDownLocation != null)
             {
@@ -291,10 +293,12 @@ namespace ScottPlot
                             y1: plt.CoordinateFromPixel(botRight).Y,
                             y2: plt.CoordinateFromPixel(topLeft).Y
                         );
+                    OnAxisChanged();
                 }
                 else
                 {
                     plt.AxisAuto();
+                    OnAxisChanged();
                 }
             }
 
@@ -311,7 +315,6 @@ namespace ScottPlot
             if (isPanningOrZooming)
             {
                 OnMouseDragged(EventArgs.Empty);
-                OnAxisChanged();
             }
 
             if (plottableBeingDragged != null)
