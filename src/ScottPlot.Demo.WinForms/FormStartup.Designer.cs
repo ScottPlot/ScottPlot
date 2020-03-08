@@ -42,6 +42,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.TransparentBackgroundButton = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
+            this.LinkedAxesButton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -103,6 +105,8 @@
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.label7);
+            this.groupBox2.Controls.Add(this.LinkedAxesButton);
             this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.ConfigButton);
             this.groupBox2.Controls.Add(this.label5);
@@ -113,7 +117,7 @@
             this.groupBox2.Controls.Add(this.TransparentBackgroundButton);
             this.groupBox2.Location = new System.Drawing.Point(12, 166);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(324, 233);
+            this.groupBox2.Size = new System.Drawing.Size(324, 284);
             this.groupBox2.TabIndex = 7;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "WinForms-Specific Examples";
@@ -174,7 +178,7 @@
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.Location = new System.Drawing.Point(87, 178);
+            this.label2.Location = new System.Drawing.Point(87, 231);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(231, 47);
             this.label2.TabIndex = 7;
@@ -195,7 +199,7 @@
             // 
             // TransparentBackgroundButton
             // 
-            this.TransparentBackgroundButton.Location = new System.Drawing.Point(6, 178);
+            this.TransparentBackgroundButton.Location = new System.Drawing.Point(6, 231);
             this.TransparentBackgroundButton.Name = "TransparentBackgroundButton";
             this.TransparentBackgroundButton.Size = new System.Drawing.Size(75, 47);
             this.TransparentBackgroundButton.TabIndex = 6;
@@ -203,12 +207,33 @@
             this.TransparentBackgroundButton.UseVisualStyleBackColor = true;
             this.TransparentBackgroundButton.Click += new System.EventHandler(this.TransparentBackgroundButton_Click);
             // 
+            // label7
+            // 
+            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label7.Location = new System.Drawing.Point(87, 178);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(231, 47);
+            this.label7.TabIndex = 13;
+            this.label7.Text = "Link axes from two FormsPlot controls together";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // LinkedAxesButton
+            // 
+            this.LinkedAxesButton.Location = new System.Drawing.Point(6, 178);
+            this.LinkedAxesButton.Name = "LinkedAxesButton";
+            this.LinkedAxesButton.Size = new System.Drawing.Size(75, 47);
+            this.LinkedAxesButton.TabIndex = 12;
+            this.LinkedAxesButton.Text = "Linked Axes";
+            this.LinkedAxesButton.UseVisualStyleBackColor = true;
+            this.LinkedAxesButton.Click += new System.EventHandler(this.LinkedAxesButton_Click);
+            // 
             // FormStartup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(365, 411);
+            this.ClientSize = new System.Drawing.Size(365, 460);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.versionLabel);
@@ -240,5 +265,7 @@
         private System.Windows.Forms.Button ConfigButton;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button ToggleVisibilityButton;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button LinkedAxesButton;
     }
 }

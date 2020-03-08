@@ -46,5 +46,10 @@ namespace ScottPlot.Demo.WinForms
         {
             new WinFormsDemos.TransparentBackground().ShowDialog();
         }
+
+        private void LinkedAxesButton_Click(object sender, EventArgs e)
+        {
+            new WinFormsDemos.LinkedPlots().ShowDialog();
+        }
     }
 }
