@@ -3,7 +3,7 @@
 [![](https://img.shields.io/azure-devops/build/swharden/swharden/2?label=Build&logo=azure%20pipelines)](https://dev.azure.com/swharden/swharden/_build/latest?definitionId=2&branchName=master)
 [![](https://img.shields.io/nuget/dt/ScottPlot?color=004880&label=NuGet%20Installs&logo=nuget)](https://www.nuget.org/packages/ScottPlot/)
 
-**ScottPlot is a free and open-source graphing library for .NET** which makes it easy to display data in a variety of formats (line plots, bar charts, scatter plots, etc.) with just a few lines of code (see the **[ScottPlot Cookbook](/cookbook)** for examples). User controls are available for WinForms and WPF to allow interactive display of data. 
+**ScottPlot is a free and open-source graphing library for .NET** which makes it easy to display data in a variety of formats (line plots, bar charts, scatter plots, etc.) with just a few lines of code (see the **[ScottPlot Cookbook](http://swharden.com/scottplot/#cookbook)** for examples). User controls are available for WinForms and WPF to allow interactive display of data. 
 
 ![](dev/nuget/ScottPlot.gif)
 
@@ -68,9 +68,21 @@ wpfPlot1.Render();
 ```
 
 ## Cookbook
-Review the **[ScottPlot Cookbook](/cookbook)** to see what ScottPlot can do and learn how to use most of the ScottPlot features. Every in figure in the cookbook is displayed next to the code that was used to create it. 
+Review the **[ScottPlot Cookbook](http://swharden.com/scottplot/#cookbook)** to see what ScottPlot can do and learn how to use most of the ScottPlot features. Every in figure in the cookbook is displayed next to the code that was used to create it. 
 
-<a href="https://github.com/swharden/ScottPlot/tree/master/cookbook"><img src="https://raw.githubusercontent.com/swharden/ScottPlot/master/cookbook/images/02_Styling_Scatter_Plots.png" width="200"><img src="https://raw.githubusercontent.com/swharden/ScottPlot/master/cookbook/images/06b_Custom_LineStyles.png" width="200"><img src="https://raw.githubusercontent.com/swharden/ScottPlot/master/cookbook/images/22_Custom_Colors.png" width="200"><img src="https://raw.githubusercontent.com/swharden/ScottPlot/master/cookbook/images/25_Corner_Axis_Frame.png" width="200"><img src="https://raw.githubusercontent.com/swharden/ScottPlot/master/cookbook/images/30a_Signal.png" width="200"><img src="https://raw.githubusercontent.com/swharden/ScottPlot/master/cookbook/images/41_Axis_Spans.png" width="200"><img src="https://raw.githubusercontent.com/swharden/ScottPlot/master/cookbook/images/62_Plot_Bar_Data_Fancy.png" width="200"><img src="https://raw.githubusercontent.com/swharden/ScottPlot/master/cookbook/images/65_Histogram.png" width="200"><img src="https://raw.githubusercontent.com/swharden/ScottPlot/master/cookbook/images/66_CPH.png" width="200"><img src="https://raw.githubusercontent.com/swharden/ScottPlot/master/cookbook/images/67_Candlestick.png" width="200"></a>
+<a href='http://swharden.com/scottplot/#cookbook'><img src='http://swharden.com/scottplot/cookbook/4.0.19/images/Quickstart_Quickstart_Scatter.png' width='200'></a>
+<a href='http://swharden.com/scottplot/#cookbook'><img src='http://swharden.com/scottplot/cookbook/4.0.19/images/PlotTypes_Bar_Quickstart.png' width='200'></a>
+<a href='http://swharden.com/scottplot/#cookbook'><img src='http://swharden.com/scottplot/cookbook/4.0.19/images/PlotTypes_Bar_MultipleBars.png' width='200'></a>
+<a href='http://swharden.com/scottplot/#cookbook'><img src='http://swharden.com/scottplot/cookbook/4.0.19/images/PlotTypes_Finance_CandleNoSkippedDays.png' width='200'></a>
+<a href='http://swharden.com/scottplot/#cookbook'><img src='http://swharden.com/scottplot/cookbook/4.0.19/images/PlotTypes_Scatter_CustomizeLines.png' width='200'></a>
+<a href='http://swharden.com/scottplot/#cookbook'><img src='http://swharden.com/scottplot/cookbook/4.0.19/images/PlotTypes_Scatter_RandomXY.png' width='200'></a>
+<a href='http://swharden.com/scottplot/#cookbook'><img src='http://swharden.com/scottplot/cookbook/4.0.19/images/PlotTypes_Signal_Density.png' width='200'></a>
+<a href='http://swharden.com/scottplot/#cookbook'><img src='http://swharden.com/scottplot/cookbook/4.0.19/images/Customize_Axis_LogAxis.png' width='200'></a>
+<a href='http://swharden.com/scottplot/#cookbook'><img src='http://swharden.com/scottplot/cookbook/4.0.19/images/Customize_PlotStyle_StyledLabels.png' width='200'></a>
+<a href='http://swharden.com/scottplot/#cookbook'><img src='http://swharden.com/scottplot/cookbook/4.0.19/images/Customize_Ticks_LocalizedGerman.png' width='200'></a>
+<a href='http://swharden.com/scottplot/#cookbook'><img src='http://swharden.com/scottplot/cookbook/4.0.19/images/Advanced_Multiplot_Quickstart.png' width='200'></a>
+<a href='http://swharden.com/scottplot/#cookbook'><img src='http://swharden.com/scottplot/cookbook/4.0.19/images/Examples_Stats_Histogram.png' width='200'></a>
+<a href='http://swharden.com/scottplot/#cookbook'><img src='http://swharden.com/scottplot/cookbook/4.0.19/images/Examples_Stats_LinReg.png' width='200'></a>
 
 ## Demos
 
