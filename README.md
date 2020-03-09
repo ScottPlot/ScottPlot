@@ -70,7 +70,6 @@ wpfPlot1.Render();
 ## Cookbook
 Review the **[ScottPlot Cookbook](http://swharden.com/scottplot/#cookbook)** to see what ScottPlot can do and learn how to use most of the ScottPlot features. Every in figure in the cookbook is displayed next to the code that was used to create it. 
 
-<a href='http://swharden.com/scottplot/#cookbook'><img src='http://swharden.com/scottplot/cookbook/4.0.19/images/Quickstart_Quickstart_Scatter.png' width='200'></a>
 <a href='http://swharden.com/scottplot/#cookbook'><img src='http://swharden.com/scottplot/cookbook/4.0.19/images/PlotTypes_Bar_Quickstart.png' width='200'></a>
 <a href='http://swharden.com/scottplot/#cookbook'><img src='http://swharden.com/scottplot/cookbook/4.0.19/images/PlotTypes_Bar_MultipleBars.png' width='200'></a>
 <a href='http://swharden.com/scottplot/#cookbook'><img src='http://swharden.com/scottplot/cookbook/4.0.19/images/PlotTypes_Finance_CandleNoSkippedDays.png' width='200'></a>
