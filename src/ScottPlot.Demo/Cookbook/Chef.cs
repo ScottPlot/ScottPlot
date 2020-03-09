@@ -109,6 +109,7 @@ namespace ScottPlot.Demo.Cookbook
             System.IO.File.WriteAllText(outputFolder + "/readme.md", md.ToString());
 
             string style = @"
+            <style>
                 body { font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji; }
                 a { text-decoration: none; color: blue; }
                 a:hover { text-decoration: underline; }
@@ -119,12 +120,23 @@ namespace ScottPlot.Demo.Cookbook
                 .description{margin-top: 10px; margin-bottom: 10px;}
                 .description2{margin-top: 5px; font-size: 70%; color: lightgray; font-family: consolas, monospace, sans-serif;}
                 hr { margin: 30px; border: 0px solid #eaecef;}
-            ";
+            </style>";
+
+            string htmlSyntaxHighlighter = "<script src='https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js'></script>";
+            string analytics = @"
+                <!-- Global site tag (gtag.js) - Google Analytics -->
+                <script async src='https://www.googletagmanager.com/gtag/js?id=UA-560719-1'></script>
+                <script>
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+                  gtag('config', 'UA-560719-1');
+                </script>";
 
             htmlTOC.Append("<hr>");
             html.Insert(0, $"<div style='margin: 5px;'>{htmlTOC.ToString()}</div>");
             html.Insert(0, $"<div class='title'>ScottPlot {Tools.GetVersionString()} Cookbook</div><div class='subtitle'>Generated on {DateTime.Now.ToString("D")} at {DateTime.Now.ToString("t")}</div>");
-            html.Insert(0, $"<html><head><script src='https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js'></script><style>{style}</style></head><body><article>");
+            html.Insert(0, $"<html><head>{htmlSyntaxHighlighter}{style}{analytics}</head><body><article>");
             html.AppendLine("</article></body><html>");
 
             System.IO.File.WriteAllText(outputFolder + "/index.html", html.ToString());
