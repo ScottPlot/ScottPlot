@@ -6,15 +6,14 @@
         xmlns:local="clr-namespace:ScottPlot.Demo.WPF"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
+        Background="WhiteSmoke"
         Title="ScottPlot Cookbook Generator" Height="400" Width="500">
     <DockPanel Margin="5">
         <DockPanel DockPanel.Dock="Top">
             <Button x:Name="GenerateButton" Content="Generate" Padding="5,3,5,3" DockPanel.Dock="Left" Click="GenerateClicked"/>
-            <Button Content="Open Folder" Padding="5,3,5,3" DockPanel.Dock="Right" Click="OpenClicked"/>
+            <Button x:Name="OpenFolderButton" Content="Open Folder" Padding="5,3,5,3" DockPanel.Dock="Right" Click="OpenClicked" IsEnabled="False"/>
             <ProgressBar x:Name="ProgressBar1" Margin="5,0,5,0" Value="23"/>
         </DockPanel>
-        <Label Name="ProgressLabel" Content="generating 5 of 23: Quickstart..." DockPanel.Dock="Top"/>
-        <Slider x:Name="ImageSlider" Visibility="Hidden" DockPanel.Dock="Bottom" ValueChanged="ImageSliderChanged" IsSnapToTickEnabled="True" TickFrequency="1" Maximum="10" TickPlacement="Both"/>
-        <Image x:Name="PlotImage" />
+        <TextBox x:Name="messageTextBox" Margin="5" Text="waiting to generate..." FontFamily="consolas" BorderThickness="0" Background="Transparent" IsReadOnly="True"/>
     </DockPanel>
 </Window>

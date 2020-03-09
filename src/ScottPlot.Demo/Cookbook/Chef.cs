@@ -5,19 +5,42 @@ using System.Text;
 
 namespace ScottPlot.Demo.Cookbook
 {
-    public static class Chef
+    public class Chef
     {
-        public static void MakeCookbook(string sourceCodeFolder, string outputFolder = "./output")
+        public readonly string outputFolder;
+        public readonly string sourceCodeFolder;
+        int width;
+        int height;
+        readonly IPlotDemo[] recipes = Reflection.GetPlotsInOrder();
+
+        public Chef(string sourceCodeFolder, string outputFolder = "./output", int width = 600, int height = 400)
         {
-            outputFolder = System.IO.Path.GetFullPath(outputFolder);
-            Console.WriteLine($"Generating cookbook in: {outputFolder}");
-            ClearFolders(outputFolder);
-            RenderAndSaveImages(outputFolder);
-            IPlotDemo[] recipes = Reflection.GetPlotsInOrder();
-            CreateReport(recipes, sourceCodeFolder, outputFolder);
+            this.outputFolder = System.IO.Path.GetFullPath(outputFolder);
+            this.sourceCodeFolder = System.IO.Path.GetFullPath(sourceCodeFolder);
+            this.width = width;
+            this.height = height;
+
+            if (!System.IO.Directory.Exists(sourceCodeFolder))
+                throw new ArgumentException("cookbook source folder does not exist: " + this.sourceCodeFolder);
+            if (!System.IO.File.Exists(sourceCodeFolder+ "/IPlotDemo.cs"))
+                throw new ArgumentException("IPlotDemo.cs cannot be found in: " + this.sourceCodeFolder);
         }
 
-        private static void ClearFolders(string outputFolder)
+        /// <summary>
+        /// Perform all steps in sequence to clear, create, and index the cookbook.
+        /// </summary>
+        public void MakeCookbookAllAtOnce()
+        {
+            ClearFolders();
+            foreach (IPlotDemo recipe in Reflection.GetPlots())
+                CreateImage(recipe);
+            MakeReports();
+        }
+
+        /// <summary>
+        /// Erase previous cookbook and create empty folder structure
+        /// </summary>
+        public void ClearFolders()
         {
             if (!System.IO.Directory.Exists(outputFolder))
                 System.IO.Directory.CreateDirectory(outputFolder);
@@ -30,28 +53,31 @@ namespace ScottPlot.Demo.Cookbook
             foreach (string filePathToDelete in System.IO.Directory.GetFiles(imageFolder, "*.*"))
                 System.IO.File.Delete(filePathToDelete);
         }
-
-        private static void RenderAndSaveImages(string outputFolder, int width = 600, int height = 400)
+        
+        /// <summary>
+        /// Render the given demo plot and save it as a PNG file
+        /// </summary>
+        public void CreateImage(IPlotDemo recipe)
         {
-            foreach (IPlotDemo recipe in Reflection.GetPlots())
-            {
-                string imageFilePath = $"{outputFolder}/images/{recipe.id}.png";
+            string imageFilePath = $"{outputFolder}/images/{recipe.id}.png";
 
-                if (recipe is IBitmapDemo bmpDemo)
-                {
-                    System.Drawing.Bitmap bmp = bmpDemo.Render(width, height);
-                    bmp.Save(imageFilePath, System.Drawing.Imaging.ImageFormat.Png);
-                }
-                else
-                {
-                    var plt = new Plot(width, height);
-                    recipe.Render(plt);
-                    plt.SaveFig(imageFilePath);
-                }
+            if (recipe is IBitmapDemo bmpDemo)
+            {
+                System.Drawing.Bitmap bmp = bmpDemo.Render(width, height);
+                bmp.Save(imageFilePath, System.Drawing.Imaging.ImageFormat.Png);
+            }
+            else
+            {
+                var plt = new Plot(width, height);
+                recipe.Render(plt);
+                plt.SaveFig(imageFilePath);
             }
         }
 
-        private static void CreateReport(IPlotDemo[] recipes, string sourceCodeFolder, string outputFolder)
+        /// <summary>
+        /// Create HTML and Markdown cookbook pages
+        /// </summary>
+        public void MakeReports()
         {
             StringBuilder md = new StringBuilder();
             StringBuilder html = new StringBuilder();
@@ -74,7 +100,7 @@ namespace ScottPlot.Demo.Cookbook
                 html.AppendLine($"<div class='description'>{description}</div>");
                 html.AppendLine($"<div class='description2'>{recipe.sourceFile} ({recipe.categoryClass}):</div>");
                 html.AppendLine($"<pre class='prettyprint lang - cs' style='padding: 10px; margin: 0px; background: #f6f8fa; border: 0px solid white;'>{sourceCode}</pre>");
-                html.AppendLine($"<div align='center'><img src='images/{recipe.id}.png'></div>");
+                html.AppendLine($"<div align='center' style='margin: 10px;'><img src='images/{recipe.id}.png'></div>");
                 html.AppendLine("<div style='margin: 20px;'>&nbsp;</div>");
                 htmlTOC.AppendLine($"<li><a href='#{recipe.id}'>{title}</a></li>");
             }
