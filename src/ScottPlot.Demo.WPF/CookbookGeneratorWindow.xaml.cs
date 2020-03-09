@@ -22,34 +22,16 @@ namespace ScottPlot.Demo.WPF
     /// </summary>
     public partial class CookbookGeneratorWindow : Window
     {
-        IPlotDemo[] demoPlots = Reflection.GetPlots();
-        string outputFolder = System.IO.Path.GetFullPath("./output");
-        string imageFolder = System.IO.Path.GetFullPath("./output/images");
+        Stopwatch stopwatch = Stopwatch.StartNew();
+        Cookbook.Chef chef = new Cookbook.Chef("../../../../../src/ScottPlot.Demo/");
+        IPlotDemo[] recipes = Reflection.GetPlots();
 
         public CookbookGeneratorWindow()
         {
             InitializeComponent();
             ProgressBar1.Value = 0;
-            ProgressLabel.Content = $"ready to generate {demoPlots.Length} cookbook plots...";
-            ResetOutputFolder();
         }
 
-        private void ResetOutputFolder()
-        {
-            if (System.IO.Directory.Exists(outputFolder))
-            {
-                Debug.WriteLine($"Deleting folder: {outputFolder}");
-                System.IO.Directory.Delete(outputFolder, recursive: true);
-            }
-
-            Debug.WriteLine($"Creating folder: {outputFolder}");
-            System.IO.Directory.CreateDirectory(outputFolder);
-
-            Debug.WriteLine($"Creating folder: {imageFolder}");
-            System.IO.Directory.CreateDirectory(imageFolder);
-        }
-
-        Stopwatch stopwatch = Stopwatch.StartNew();
         private void GenerateClicked(object sender, RoutedEventArgs e)
         {
             BackgroundWorker worker = new BackgroundWorker();
@@ -59,84 +41,49 @@ namespace ScottPlot.Demo.WPF
             worker.RunWorkerCompleted += Worker_RunWorkerCompleted;
 
             GenerateButton.IsEnabled = false;
+            OpenFolderButton.IsEnabled = false;
+            messageTextBox.Clear();
             stopwatch.Restart();
             worker.RunWorkerAsync();
         }
 
-        BitmapImage[] images;
-        string[] imagePaths;
-        private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            imagePaths = System.IO.Directory.GetFiles(imageFolder, "*.png");
-            images = new BitmapImage[imagePaths.Length];
-
-            for (int i = 0; i < imagePaths.Length; i++)
-            {
-                BitmapImage b = new BitmapImage();
-                b.BeginInit();
-                b.UriSource = new Uri(imagePaths[i]);
-                b.EndInit();
-                images[i] = b;
-            }
-
-            ImageSlider.Maximum = images.Length - 1;
-            ImageSlider.Value = 0;
-            ImageSliderChanged(null, null);
-        }
-
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            for (int i = 0; i < demoPlots.Length; i++)
+            (sender as BackgroundWorker).ReportProgress(0, "preparing output folders...");
+            chef.ClearFolders();
+
+            for (int i = 0; i < recipes.Length; i++)
             {
-                IPlotDemo demoPlot = demoPlots[i];
-                string imageFilePath = $"{imageFolder}/{demoPlot.id}.png";
-
-                var plt = new Plot(600, 400);
-                demoPlot.Render(plt);
-                plt.SaveFig(imageFilePath);
-                Debug.WriteLine($"Saved: {imageFilePath}");
-
-                (sender as BackgroundWorker).ReportProgress(i * 100 / demoPlots.Length, i);
+                var recipe = recipes[i];
+                int progressPercent = (int)(i * 100.0 / recipes.Length);
+                string message = $"creating {recipe.categoryMajor}.{recipe.categoryMinor}.{recipe.categoryClass}...";
+                (sender as BackgroundWorker).ReportProgress(progressPercent, message);
+                chef.CreateImage(recipe);
             }
 
-            (sender as BackgroundWorker).ReportProgress(100, -1);
+            (sender as BackgroundWorker).ReportProgress(100, "generating reports...");
+            chef.MakeReports();
         }
 
         private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            Debug.WriteLine($"Progress: {e.ProgressPercentage}");
-
-            int demoPlotIndex = (int)e.UserState;
             ProgressBar1.Value = e.ProgressPercentage;
+            messageTextBox.AppendText(e.UserState + "\r\n");
+            messageTextBox.ScrollToEnd();
+        }
 
-            if (demoPlotIndex >= 0)
-            {
-                IPlotDemo demoPlot = demoPlots[demoPlotIndex];
-                ProgressLabel.Content = demoPlot.name;
-            }
-            else
-            {
-                stopwatch.Stop();
-                double elapsedSec = (double)stopwatch.ElapsedTicks / Stopwatch.Frequency;
-                ProgressLabel.Content = $"Generated {demoPlots.Length} cookbook plots in {elapsedSec:0.000} seconds";
-                ImageSlider.Visibility = Visibility.Visible;
-            }
+        private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            stopwatch.Stop();
+            double elapsedSec = (double)stopwatch.ElapsedTicks / Stopwatch.Frequency;
+            messageTextBox.AppendText($"Genereated {recipes.Length} cookbook images in {elapsedSec:0.00} sec");
+            GenerateButton.IsEnabled = true;
+            OpenFolderButton.IsEnabled = true;
         }
 
         private void OpenClicked(object sender, RoutedEventArgs e)
         {
-            Process.Start("explorer.exe", outputFolder);
+            Process.Start("explorer.exe", chef.outputFolder);
         }
-
-        private void ImageSliderChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            if (images != null)
-            {
-                int imageIndex = (int)ImageSlider.Value;
-                PlotImage.Source = images[imageIndex];
-                ProgressLabel.Content = System.IO.Path.GetFileName(imagePaths[imageIndex]);
-            }
-        }
-
     }
 }
