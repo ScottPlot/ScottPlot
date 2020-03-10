@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ScottPlot.Demo.WPF"
         mc:Ignorable="d"
-        Title="ScottPlot Demos (WPF)" 
+        Title="ScottPlot Demo (WPF)" 
         WindowStartupLocation="CenterScreen"
         Background="WhiteSmoke"
-        Height="575" Width="350">
+        Height="500" Width="350">
     <ScrollViewer>
         <StackPanel>
 
@@ -24,8 +24,9 @@
                 </Style>
             </StackPanel.Resources>
 
-            <Label DockPanel.Dock="Top" Content="ScottPlot Demos" FontSize="24" FontWeight="SemiBold" />
+            <Label DockPanel.Dock="Top" Content="ScottPlot Demo" FontSize="24" FontWeight="SemiBold" />
             <Label DockPanel.Dock="Top" Name="VersionLabel" Content="version 8.8.88" FontSize="12" Margin="0,-18,0,0" Foreground="Gray" Width="109" HorizontalContentAlignment="Right" HorizontalAlignment="Left" />
+            <Label Name="WebsiteLabel" ToolTip="Launch ScottPlot Website" Foreground="Gray" DockPanel.Dock="Top" Margin="0,-50,0,0" HorizontalAlignment="Right" Content="🚀" FontSize="24" MouseEnter="WebsiteLabelMouseEnter" MouseLeave="WebsiteLabelMouseLeave" MouseDown="WebsiteLabelMouseDown" MouseUp="WebsiteLabelMouseUp"/>
 
             <GroupBox Header="ScottPlot Cookbook" Margin="5">
                 <StackPanel>
@@ -42,19 +43,15 @@
                     </DockPanel>
 
                     <DockPanel>
-                        <Button DockPanel.Dock="Left" Click="LaunchCookbookGenerator">
-                            <TextBlock TextAlignment="Center">
-                        Generate Cookbook
-                            </TextBlock>
+                        <Button x:Name="GenerateButton" DockPanel.Dock="Left" Click="LaunchCookbookGenerator">
+                            <TextBlock TextAlignment="Center">Generate Cookbook</TextBlock>
                         </Button>
-                        <TextBlock >
-                    Create a HTML and Markdown version of the cookbook (requires source code)
+                        <TextBlock Name="GenerateDescription">
+                    Create HTML and Markdown versions of the cookbook (requires source code)
                         </TextBlock>
                     </DockPanel>
-
                 </StackPanel>
             </GroupBox>
-
 
             <GroupBox Header="WPF-Specific Demos" Margin="5">
                 <StackPanel>
@@ -146,7 +143,7 @@
                     Shows how to create a transparent WpfPlot that lets you see through to the background behind the control
                         </TextBlock>
                     </DockPanel>
-                    
+
                 </StackPanel>
             </GroupBox>
 

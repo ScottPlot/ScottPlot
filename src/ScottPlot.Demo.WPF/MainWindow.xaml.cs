@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,14 +18,34 @@ namespace ScottPlot.Demo.WPF
     /// </summary>
     public partial class LauncherWindow : Window
     {
+        string sourceCodePath;
+
         public LauncherWindow()
         {
             InitializeComponent();
             VersionLabel.Content = Tools.GetVersionString();
 
-            //bool sourceIsAvailable = System.IO.File.Exists("../../../ScottPlot.Demo.WPF.csproj");
-            //GenerateButton.IsEnabled = sourceIsAvailable;
-            //GenerateDescription.Foreground = (sourceIsAvailable) ? Brushes.Black : Brushes.Gray;
+            string developerSourcePath = "../../../../ScottPlot.Demo/IPlotDemo.cs";
+            developerSourcePath = System.IO.Path.GetFullPath(developerSourcePath);
+            Debug.WriteLine($"Looking for source code: {developerSourcePath}");
+
+            string distributedSourcePath = "./.source/IPlotDemo.cs";
+            distributedSourcePath = System.IO.Path.GetFullPath(distributedSourcePath);
+            Debug.WriteLine($"Looking for source code: {distributedSourcePath}");
+
+            if (System.IO.File.Exists(developerSourcePath))
+                sourceCodePath = System.IO.Path.GetFullPath(developerSourcePath);
+            else if (System.IO.File.Exists(distributedSourcePath))
+                sourceCodePath = System.IO.Path.GetFullPath(distributedSourcePath);
+            else
+                sourceCodePath = null;
+            Debug.WriteLine($"Source code path: {sourceCodePath}");
+
+            if (sourceCodePath is null)
+            {
+                GenerateButton.IsEnabled = false;
+                GenerateDescription.Foreground = Brushes.Gray;
+            }
         }
 
         private void LaunchCookbook(object sender, RoutedEventArgs e)
@@ -75,6 +96,27 @@ namespace ScottPlot.Demo.WPF
         private void LaunchTransparentBackground(object sender, RoutedEventArgs e)
         {
             new WpfDemos.TransparentBackground().ShowDialog();
+        }
+
+        private void WebsiteLabelMouseEnter(object sender, MouseEventArgs e)
+        {
+            WebsiteLabel.Foreground = Brushes.Blue;
+        }
+
+        private void WebsiteLabelMouseLeave(object sender, MouseEventArgs e)
+        {
+            WebsiteLabel.Foreground = Brushes.Gray;
+        }
+
+        private void WebsiteLabelMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            WebsiteLabel.Foreground = Brushes.Orange;
+        }
+
+        private void WebsiteLabelMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            WebsiteLabel.Foreground = Brushes.Blue;
+            Tools.LaunchBrowser();
         }
     }
 }
