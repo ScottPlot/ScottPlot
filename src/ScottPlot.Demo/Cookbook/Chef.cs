@@ -22,7 +22,7 @@ namespace ScottPlot.Demo.Cookbook
 
             if (!System.IO.Directory.Exists(sourceCodeFolder))
                 throw new ArgumentException("cookbook source folder does not exist: " + this.sourceCodeFolder);
-            if (!System.IO.File.Exists(sourceCodeFolder+ "/IPlotDemo.cs"))
+            if (!System.IO.File.Exists(sourceCodeFolder + "/IPlotDemo.cs"))
                 throw new ArgumentException("IPlotDemo.cs cannot be found in: " + this.sourceCodeFolder);
         }
 
@@ -53,7 +53,7 @@ namespace ScottPlot.Demo.Cookbook
             foreach (string filePathToDelete in System.IO.Directory.GetFiles(imageFolder, "*.*"))
                 System.IO.File.Delete(filePathToDelete);
         }
-        
+
         /// <summary>
         /// Render the given demo plot and save it as a PNG file
         /// </summary>
@@ -84,62 +84,42 @@ namespace ScottPlot.Demo.Cookbook
             StringBuilder mdTOC = new StringBuilder();
             StringBuilder htmlTOC = new StringBuilder();
 
+            string recipeTemplate = System.IO.File.ReadAllText(sourceCodeFolder + "/Template/recipe.html");
+
             foreach (IPlotDemo recipe in recipes)
             {
                 string title = $"{recipe.categoryMajor}/{recipe.categoryMinor} - {recipe.name}";
                 string sourceCode = recipe.GetSourceCode(sourceCodeFolder);
                 string description = (recipe.description is null) ? "no description provided..." : recipe.description;
 
+                mdTOC.AppendLine($"* [{title}](#{recipe.id})");
+                htmlTOC.AppendLine($"<li><a href='#{recipe.id}'>{title}</a></li>");
+
                 md.AppendLine($"## {title}\n\n");
                 md.AppendLine($"{description}\n\n");
                 md.AppendLine($"```cs\n{sourceCode}\n```\n\n");
                 md.AppendLine($"![](images/{recipe.id}.png)\n\n");
-                mdTOC.AppendLine($"* [{title}](#{recipe.id})");
 
-                html.AppendLine($"<div class='title'><a style='color: black;' id='{recipe.id}' href='#{recipe.id}'>{title}</a></div>\n\n");
-                html.AppendLine($"<div class='description'>{description}</div>");
-                html.AppendLine($"<div class='description2'>{recipe.sourceFile} ({recipe.categoryClass}):</div>");
-                html.AppendLine($"<pre class='prettyprint lang - cs' style='padding: 10px; margin: 0px; background: #f6f8fa; border: 0px solid white;'>{sourceCode}</pre>");
-                html.AppendLine($"<div align='center' style='margin: 10px;'><img src='images/{recipe.id}.png'></div>");
-                html.AppendLine("<div style='margin: 20px;'>&nbsp;</div>");
-                htmlTOC.AppendLine($"<li><a href='#{recipe.id}'>{title}</a></li>");
+                string htmlRecipe = recipeTemplate.ToString();
+                htmlRecipe = htmlRecipe.Replace("~ID~", recipe.id);
+                htmlRecipe = htmlRecipe.Replace("~TITLE~", recipe.name);
+                htmlRecipe = htmlRecipe.Replace("~DESCRIPTION~", recipe.description);
+                htmlRecipe = htmlRecipe.Replace("~SOURCE~", $"{recipe.sourceFile} ({recipe.categoryClass})");
+                htmlRecipe = htmlRecipe.Replace("~CODE~", sourceCode);
+                html.AppendLine(htmlRecipe);
             }
 
             md.Insert(0, $"# ScottPlot {Tools.GetVersionString()} Cookbook\n\n" + $"_Generated on {DateTime.Now.ToString("D")} at {DateTime.Now.ToString("t")}_\n\n" + mdTOC.ToString() + "\n\n---\n\n");
             System.IO.File.WriteAllText(outputFolder + "/readme.md", md.ToString());
 
-            string style = @"
-            <style>
-                body { font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji; }
-                a { text-decoration: none; color: blue; }
-                a:hover { text-decoration: underline; }
-                li { margin-left: 15px; }
-                article { width: 900px; margin: auto; }
-                .title {border-bottom: 1px solid #eaecef; font-size: 150%; font-weight: 600;}
-				.subtitle {margin-bottom: 10px; font-style: italic;}
-                .description{margin-top: 10px; margin-bottom: 10px;}
-                .description2{margin-top: 5px; font-size: 70%; color: lightgray; font-family: consolas, monospace, sans-serif;}
-                hr { margin: 30px; border: 0px solid #eaecef;}
-            </style>";
+            string htmlString = System.IO.File.ReadAllText(sourceCodeFolder + "/Template/page.html");
+            htmlString = htmlString.Replace("~TOC~", htmlTOC.ToString());
+            htmlString = htmlString.Replace("~CONTENT~", html.ToString());
+            htmlString = htmlString.Replace("~VERSION~", Tools.GetVersionString());
+            htmlString = htmlString.Replace("~DATE~", DateTime.Now.ToString("D"));
+            htmlString = htmlString.Replace("~TIME~", DateTime.Now.ToString("t"));
 
-            string htmlSyntaxHighlighter = "<script src='https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js'></script>";
-            string analytics = @"
-                <!-- Global site tag (gtag.js) - Google Analytics -->
-                <script async src='https://www.googletagmanager.com/gtag/js?id=UA-560719-1'></script>
-                <script>
-                  window.dataLayer = window.dataLayer || [];
-                  function gtag(){dataLayer.push(arguments);}
-                  gtag('js', new Date());
-                  gtag('config', 'UA-560719-1');
-                </script>";
-
-            htmlTOC.Append("<hr>");
-            html.Insert(0, $"<div style='margin: 5px;'>{htmlTOC.ToString()}</div>");
-            html.Insert(0, $"<div class='title'>ScottPlot {Tools.GetVersionString()} Cookbook</div><div class='subtitle'>Generated on {DateTime.Now.ToString("D")} at {DateTime.Now.ToString("t")}</div>");
-            html.Insert(0, $"<html><head>{htmlSyntaxHighlighter}{style}{analytics}</head><body><article>");
-            html.AppendLine("</article></body><html>");
-
-            System.IO.File.WriteAllText(outputFolder + "/index.html", html.ToString());
+            System.IO.File.WriteAllText(outputFolder + "/index.html", htmlString);
         }
     }
 }
