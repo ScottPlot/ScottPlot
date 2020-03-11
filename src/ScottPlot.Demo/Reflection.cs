@@ -61,5 +61,24 @@ namespace ScottPlot.Demo
             IPlotDemo demoPlot = (IPlotDemo)Activator.CreateInstance(type);
             return demoPlot;
         }
+
+        /// <summary>
+        /// return the path to the folder containing IPlotDemo.cs
+        /// </summary>
+        /// <returns></returns>
+        public static string FindDemoSourceFolder()
+        {
+            string exePath = Assembly.GetEntryAssembly().Location;
+            string folderPath = System.IO.Path.GetDirectoryName(exePath);
+            for (int i=0; i<10; i++)
+            {
+                string testPath = folderPath + "/src/ScottPlot.Demo/";
+                if (System.IO.File.Exists(testPath + "IPlotDemo.cs"))
+                    return System.IO.Path.GetFullPath(testPath);
+                else
+                    folderPath = System.IO.Path.GetDirectoryName(folderPath);
+            }
+            return null;
+        }
     }
 }

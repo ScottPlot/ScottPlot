@@ -15,7 +15,7 @@ namespace ScottPlotTests.Cookbook
             if (System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.OSX))
                 return; // TODO: figure out how to get this working in MacOS
 
-            var chef = new ScottPlot.Demo.Cookbook.Chef("../../../../src/ScottPlot.Demo/");
+            var chef = new ScottPlot.Demo.Cookbook.Chef(sourceFolder: "../../../../src/ScottPlot.Demo/");
             chef.ClearFolders();
             foreach (IPlotDemo recipe in Reflection.GetPlots())
             {

@@ -19,10 +19,15 @@ namespace ScottPlot.Demo.WPF
     /// </summary>
     public partial class CookbookControl : UserControl
     {
+        string sourceCodeFolder = Reflection.FindDemoSourceFolder();
+
         public CookbookControl()
         {
             InitializeComponent();
             wpfPlot1.Rendered += WpfPlot1_Rendered;
+
+            if (sourceCodeFolder is null)
+                throw new ArgumentException("cannot locate source code");
         }
 
         private void WpfPlot1_Rendered(object sender, EventArgs e)
@@ -70,7 +75,7 @@ namespace ScottPlot.Demo.WPF
                 wpfPlot1.Render();
             }
 
-            string sourceCode = demoPlot.GetSourceCode("../../../../../src/ScottPlot.Demo/");
+            string sourceCode = demoPlot.GetSourceCode(sourceCodeFolder);
             SourceTextBox.Text = sourceCode;
         }
     }

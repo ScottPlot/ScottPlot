@@ -18,30 +18,12 @@ namespace ScottPlot.Demo.WPF
     /// </summary>
     public partial class LauncherWindow : Window
     {
-        string sourceCodePath;
-
         public LauncherWindow()
         {
             InitializeComponent();
             VersionLabel.Content = Tools.GetVersionString();
 
-            string developerSourcePath = "../../../../ScottPlot.Demo/IPlotDemo.cs";
-            developerSourcePath = System.IO.Path.GetFullPath(developerSourcePath);
-            Debug.WriteLine($"Looking for source code: {developerSourcePath}");
-
-            string distributedSourcePath = "./.source/IPlotDemo.cs";
-            distributedSourcePath = System.IO.Path.GetFullPath(distributedSourcePath);
-            Debug.WriteLine($"Looking for source code: {distributedSourcePath}");
-
-            if (System.IO.File.Exists(developerSourcePath))
-                sourceCodePath = System.IO.Path.GetFullPath(developerSourcePath);
-            else if (System.IO.File.Exists(distributedSourcePath))
-                sourceCodePath = System.IO.Path.GetFullPath(distributedSourcePath);
-            else
-                sourceCodePath = null;
-            Debug.WriteLine($"Source code path: {sourceCodePath}");
-
-            if (sourceCodePath is null)
+            if (Reflection.FindDemoSourceFolder() is null)
             {
                 GenerateButton.IsEnabled = false;
                 GenerateDescription.Foreground = Brushes.Gray;

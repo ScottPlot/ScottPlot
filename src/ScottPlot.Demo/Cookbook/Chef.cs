@@ -13,10 +13,17 @@ namespace ScottPlot.Demo.Cookbook
         int height;
         readonly IPlotDemo[] recipes = Reflection.GetPlotsInOrder();
 
-        public Chef(string sourceCodeFolder, string outputFolder = "./output", int width = 600, int height = 400)
+        public Chef(int width = 600, int height = 400, string sourceFolder = null)
         {
+            string outputFolder = "./output";
+
+            if (sourceFolder is null)
+                sourceCodeFolder = Reflection.FindDemoSourceFolder();
+
+            if (sourceCodeFolder is null)
+                throw new ArgumentException("can't locate source code");
+
             this.outputFolder = System.IO.Path.GetFullPath(outputFolder);
-            this.sourceCodeFolder = System.IO.Path.GetFullPath(sourceCodeFolder);
             this.width = width;
             this.height = height;
 
