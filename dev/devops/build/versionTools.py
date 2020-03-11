@@ -1,4 +1,5 @@
 import urllib
+import urllib.request
 import json
 import os
 
@@ -64,3 +65,4 @@ def increasePackageVersions(PROJECT_FILES):
     newVersion = str(version)
     for projectFile in PROJECT_FILES:
         SetProjectVersion(projectFile, newVersion)
+    return version
