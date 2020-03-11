@@ -19,6 +19,8 @@ namespace ScottPlot.Demo.Cookbook
 
             if (sourceFolder is null)
                 sourceCodeFolder = Reflection.FindDemoSourceFolder();
+            else
+                sourceCodeFolder = sourceFolder;
 
             if (sourceCodeFolder is null)
                 throw new ArgumentException("can't locate source code");
