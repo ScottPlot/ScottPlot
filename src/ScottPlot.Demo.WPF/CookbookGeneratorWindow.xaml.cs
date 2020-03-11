@@ -23,7 +23,8 @@ namespace ScottPlot.Demo.WPF
     public partial class CookbookGeneratorWindow : Window
     {
         Stopwatch stopwatch = Stopwatch.StartNew();
-        Cookbook.Chef chef = new Cookbook.Chef("../../../../../src/ScottPlot.Demo/");
+
+        Cookbook.Chef chef = new Cookbook.Chef();
         IPlotDemo[] recipes = Reflection.GetPlots();
 
         public CookbookGeneratorWindow()
