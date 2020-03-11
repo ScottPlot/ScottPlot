@@ -33,7 +33,7 @@ Review the **[ScottPlot Cookbook](http://swharden.com/scottplot/cookbook)** to s
 
 ## ScottPlot Demo
 
-**The ScottPlot Demo is a click-to-run EXE for Windows designed to make it easy to assess the capabilities of ScottPlot.** Identical demos are provided using Windows Forms and WPF to interactively display all ScottPlot Cookbook figures and also demonstrate advanced uses such as mouse tracking, displaying live data, draggable plot components.
+**The [ScottPlot Demo](http://swharden.com/scottplot/demo) is a click-to-run EXE for Windows designed to make it easy to assess the capabilities of ScottPlot.** Identical demos are provided using Windows Forms and WPF to interactively display all ScottPlot Cookbook figures and also demonstrate advanced uses such as mouse tracking, displaying live data, draggable plot components.
 
 ![](src/ScottPlot.Demo.WPF/screenshot.png)
 
