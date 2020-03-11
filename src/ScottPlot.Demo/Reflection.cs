@@ -68,8 +68,11 @@ namespace ScottPlot.Demo
         /// <returns></returns>
         public static string FindDemoSourceFolder()
         {
+            
             string exePath = Assembly.GetEntryAssembly().Location;
             string folderPath = System.IO.Path.GetDirectoryName(exePath);
+
+            // first try in every folder up from here
             for (int i=0; i<10; i++)
             {
                 string testPath = folderPath + "/src/ScottPlot.Demo/";
@@ -78,6 +81,13 @@ namespace ScottPlot.Demo
                 else
                     folderPath = System.IO.Path.GetDirectoryName(folderPath);
             }
+
+            // finally try the source folder down from here
+            folderPath = System.IO.Path.GetDirectoryName(exePath);
+            string sourcePathDown = folderPath + "/source/";
+            if (System.IO.File.Exists(sourcePathDown + "IPlotDemo.cs"))
+                return System.IO.Path.GetFullPath(sourcePathDown);
+
             return null;
         }
     }
