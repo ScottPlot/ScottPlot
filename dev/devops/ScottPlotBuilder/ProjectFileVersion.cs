@@ -56,5 +56,23 @@ namespace ScottPlotBuilder
         {
             version = new Version(version.Major, version.Minor, version.Build + 1);
         }
+
+        public void Save()
+        {
+            Version fileVersion = Read();
+            string fileVersionString = $"{fileVersion.Major}.{fileVersion.Minor}.{fileVersion.Build}";
+            string newVersionString = ToString();
+
+            string[] lines = System.IO.File.ReadAllText(path).Split("\n");
+            for (int i=0; i<lines.Length; i++)
+            {
+                string line = lines[i];
+                if (line.Contains($">{fileVersionString}<"))
+                {
+                    lines[i] = line.Replace(fileVersionString, newVersionString);
+                }
+            }
+            System.IO.File.WriteAllText(path, string.Join("\n", lines));
+        }
     }
 }
