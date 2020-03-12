@@ -29,28 +29,16 @@
             <Label Name="WebsiteLabel" ToolTip="Launch ScottPlot Website" Foreground="Gray" DockPanel.Dock="Top" Margin="0,-50,0,0" HorizontalAlignment="Right" Content="🚀" FontSize="24" MouseEnter="WebsiteLabelMouseEnter" MouseLeave="WebsiteLabelMouseLeave" MouseDown="WebsiteLabelMouseDown" MouseUp="WebsiteLabelMouseUp"/>
 
             <GroupBox Header="ScottPlot Cookbook" Margin="5">
-                <StackPanel>
-
-                    <DockPanel>
-                        <Button DockPanel.Dock="Left" Click="LaunchCookbook">
-                            <TextBlock TextAlignment="Center">
+                <DockPanel>
+                    <Button DockPanel.Dock="Left" Click="LaunchCookbook">
+                        <TextBlock TextAlignment="Center">
                         Launch Cookbook
-                            </TextBlock>
-                        </Button>
-                        <TextBlock >
-                    A collection of simple examples which demonstrate most features of ScottPlot
                         </TextBlock>
-                    </DockPanel>
-
-                    <DockPanel>
-                        <Button x:Name="GenerateButton" DockPanel.Dock="Left" Click="LaunchCookbookGenerator">
-                            <TextBlock TextAlignment="Center">Generate Cookbook</TextBlock>
-                        </Button>
-                        <TextBlock Name="GenerateDescription">
-                    Create HTML and Markdown versions of the cookbook (requires source code)
-                        </TextBlock>
-                    </DockPanel>
-                </StackPanel>
+                    </Button>
+                    <TextBlock >
+                    Simple examples that demonstrate many features of ScottPlot
+                    </TextBlock>
+                </DockPanel>
             </GroupBox>
 
             <GroupBox Header="WPF-Specific Demos" Margin="5">
