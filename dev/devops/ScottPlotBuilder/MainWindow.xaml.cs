@@ -24,31 +24,39 @@ namespace ScottPlotBuilder
     /// </summary>
     public partial class MainWindow : Window
     {
-        ProjectFileVersion maybeProjVersion;
+        ProjectFileVersion projVersion;
         string projectFilePath = @"../../../../../../src/ScottPlot/ScottPlot.csproj";
+        Version versionAtStart;
 
         public MainWindow()
         {
             InitializeComponent();
         }
 
-        private void OnLoaded(object sender, RoutedEventArgs e)
+        private void VersionReset(object sender, RoutedEventArgs e)
         {
-            maybeProjVersion = new ProjectFileVersion(projectFilePath);
-            VersionStartedText.Text = $"initial: {maybeProjVersion}";
-            VersionCurrentText.Text = $"current: {maybeProjVersion}";
+            if (versionAtStart is null)
+            {
+                // this gets called when the program actually loads
+                projVersion = new ProjectFileVersion(projectFilePath);
+                versionAtStart = new Version(projVersion.version.ToString());
 
-            // return early if this function got called manually
-            if (sender is null)
-                return;
+                VersionNugetText.Text = $"nuget.org: searching...";
+                BackgroundWorker worker = new BackgroundWorker();
+                worker.WorkerReportsProgress = true;
+                worker.DoWork += Worker_DoWork;
+                worker.RunWorkerCompleted += Worker_RunWorkerCompleted;
+                worker.RunWorkerAsync();
+            }
+            else
+            {
+                projVersion.version = versionAtStart;
+            }
 
-            VersionNugetText.Text = $"nuget.org: searching...";
+            VersionStartedText.Text = $"initial: {projVersion}";
+            VersionCurrentText.Text = $"current: {projVersion}";
 
-            BackgroundWorker worker = new BackgroundWorker();
-            worker.WorkerReportsProgress = true;
-            worker.DoWork += Worker_DoWork;
-            worker.RunWorkerCompleted += Worker_RunWorkerCompleted;
-            worker.RunWorkerAsync();
+
         }
 
         private string DownloadTextFile(string url)
@@ -85,15 +93,10 @@ namespace ScottPlotBuilder
             VersionNugetText.Text = (nugetVersion.Major > 0) ? $"nuget.org: {nugetVersion}" : "nuget.org: HTML parse error";
         }
 
-        private void VersionReset(object sender, RoutedEventArgs e)
-        {
-            OnLoaded(null, null);
-        }
-
         private void VersionIncriment(object sender, RoutedEventArgs e)
         {
-            maybeProjVersion.Incriment();
-            VersionCurrentText.Text = $"current: {maybeProjVersion}";
+            projVersion.Incriment();
+            VersionCurrentText.Text = $"current: {projVersion}";
         }
 
         private void VersionApply(object sender, RoutedEventArgs e)
@@ -108,7 +111,7 @@ namespace ScottPlotBuilder
             foreach (string projectPath in projectPaths)
             {
                 var thisProjVersion = new ProjectFileVersion(projectPath);
-                thisProjVersion.version = maybeProjVersion.version;
+                thisProjVersion.version = projVersion.version;
                 thisProjVersion.Save();
             }
         }
