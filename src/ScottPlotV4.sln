@@ -24,6 +24,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot.Demo.WPF", "Scott
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScottPlot.Demo.WinForms", "ScottPlot.Demo.WinForms\ScottPlot.Demo.WinForms.csproj", "{163492F4-4E03-4155-B5F2-3620C211B2E7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dev", "dev", "{74C03FF7-B190-40E3-8B0D-330F2AD4A332}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScottPlot.Demo.CookbookGenerator", "ScottPlot.Demo.CookbookGenerator\ScottPlot.Demo.CookbookGenerator.csproj", "{1B8C01FD-93E5-4EFE-A1CD-DE198E23E6D3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,6 +62,10 @@ Global
 		{163492F4-4E03-4155-B5F2-3620C211B2E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{163492F4-4E03-4155-B5F2-3620C211B2E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{163492F4-4E03-4155-B5F2-3620C211B2E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B8C01FD-93E5-4EFE-A1CD-DE198E23E6D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B8C01FD-93E5-4EFE-A1CD-DE198E23E6D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B8C01FD-93E5-4EFE-A1CD-DE198E23E6D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B8C01FD-93E5-4EFE-A1CD-DE198E23E6D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -70,6 +78,7 @@ Global
 		{79472430-FD93-4235-B0EE-DA4BADF3A3E0} = {E6E0010E-1E4C-4C31-849D-BCB35CCA1B7B}
 		{76C7D33E-964D-4738-8A01-F7D70B628F10} = {E6E0010E-1E4C-4C31-849D-BCB35CCA1B7B}
 		{163492F4-4E03-4155-B5F2-3620C211B2E7} = {E6E0010E-1E4C-4C31-849D-BCB35CCA1B7B}
+		{1B8C01FD-93E5-4EFE-A1CD-DE198E23E6D3} = {E6E0010E-1E4C-4C31-849D-BCB35CCA1B7B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FBAE082A-173A-4F13-BE31-E6C070513C9C}
