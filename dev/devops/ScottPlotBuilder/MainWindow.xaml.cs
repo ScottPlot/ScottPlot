@@ -51,12 +51,11 @@ namespace ScottPlotBuilder
             else
             {
                 projVersion.version = versionAtStart;
+                ApplyButton.IsEnabled = true;
             }
 
             VersionStartedText.Text = $"initial: {projVersion}";
             VersionCurrentText.Text = $"current: {projVersion}";
-
-
         }
 
         private string DownloadTextFile(string url)
@@ -97,6 +96,7 @@ namespace ScottPlotBuilder
         {
             projVersion.Incriment();
             VersionCurrentText.Text = $"current: {projVersion}";
+            ApplyButton.IsEnabled = true;
         }
 
         private void VersionApply(object sender, RoutedEventArgs e)
@@ -114,6 +114,8 @@ namespace ScottPlotBuilder
                 thisProjVersion.version = projVersion.version;
                 thisProjVersion.Save();
             }
+
+            ApplyButton.IsEnabled = false;
         }
     }
 }

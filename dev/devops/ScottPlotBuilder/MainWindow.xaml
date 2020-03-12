@@ -37,7 +37,7 @@
                     <WrapPanel Margin="0, 5, 0, 0">
                         <Button Content="Reset" Click="VersionReset"/>
                         <Button Content="Incriment" Click="VersionIncriment"/>
-                        <Button Content="Apply" Click="VersionApply"/>
+                        <Button x:Name="ApplyButton" IsEnabled="False" Content="Apply" Click="VersionApply"/>
                     </WrapPanel>
                 </StackPanel>
             </GroupBox>
