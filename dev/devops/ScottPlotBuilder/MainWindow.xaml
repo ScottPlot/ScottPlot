@@ -7,15 +7,16 @@
         mc:Ignorable="d"
         Background="WhiteSmoke"
         Loaded="VersionReset"
-        Title="ScottPlot Builder" Height="500" Width="400">
+        Title="ScottPlot Builder" Height="600" Width="400">
     <Window.Resources>
         <Style TargetType="Button">
             <Setter Property="Padding" Value="5,3" />
             <Setter Property="Margin" Value="3" />
         </Style>
     </Window.Resources>
-    <ScrollViewer>
-        <StackPanel>
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top">
+
             <StackPanel.Resources>
                 <Style TargetType="GroupBox">
                     <Setter Property="Padding" Value="3" />
@@ -42,18 +43,34 @@
                 </StackPanel>
             </GroupBox>
 
-            <GroupBox Header="Build">
+            <GroupBox Header="NuGet Package">
+                <WrapPanel>
+                    <Button Content="Build"/>
+                    <Button Content="Upload"/>
+                </WrapPanel>
             </GroupBox>
 
             <GroupBox Header="Cookbook">
+                <WrapPanel>
+                    <Button Content="Generate"/>
+                    <Button Content="Upload"/>
+                </WrapPanel>
             </GroupBox>
 
-            <GroupBox Header="Demo Application">
-            </GroupBox>
-
-            <GroupBox Header="NuGet Package">
+            <GroupBox Header="Demo">
+                <WrapPanel>
+                    <Button Content="Build"/>
+                    <Button Content="Upload"/>
+                </WrapPanel>
             </GroupBox>
 
         </StackPanel>
-    </ScrollViewer>
+        
+        <TextBox x:Name="MessageTextbox" Margin="7" Text="C:\>"
+                 Foreground="LightGray" Background="Black" FontFamily="consolas"
+                 BorderThickness="0" Padding="3">
+
+        </TextBox>
+
+    </DockPanel>
 </Window>

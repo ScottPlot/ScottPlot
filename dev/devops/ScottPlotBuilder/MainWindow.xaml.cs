@@ -117,5 +117,10 @@ namespace ScottPlotBuilder
 
             ApplyButton.IsEnabled = false;
         }
+
+        private void BuildRelease(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
