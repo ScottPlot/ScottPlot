@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ScottPlotBuilder"
         mc:Ignorable="d"
         Background="WhiteSmoke"
-        Loaded="OnLoaded"
+        Loaded="VersionReset"
         Title="ScottPlot Builder" Height="500" Width="400">
     <Window.Resources>
         <Style TargetType="Button">
