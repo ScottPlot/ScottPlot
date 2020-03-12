@@ -22,22 +22,11 @@ namespace ScottPlot.Demo.WPF
         {
             InitializeComponent();
             VersionLabel.Content = Tools.GetVersionString();
-
-            if (Reflection.FindDemoSourceFolder() is null)
-            {
-                GenerateButton.IsEnabled = false;
-                GenerateDescription.Foreground = Brushes.Gray;
-            }
         }
 
         private void LaunchCookbook(object sender, RoutedEventArgs e)
         {
             new CookbookWindow().ShowDialog();
-        }
-
-        private void LaunchCookbookGenerator(object sender, RoutedEventArgs e)
-        {
-            new CookbookGeneratorWindow().ShowDialog();
         }
 
         private void LaunchMouseTracker(object sender, RoutedEventArgs e)
