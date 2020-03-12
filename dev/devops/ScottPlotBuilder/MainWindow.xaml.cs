@@ -24,7 +24,8 @@ namespace ScottPlotBuilder
     /// </summary>
     public partial class MainWindow : Window
     {
-        ProjectFileVersion projVersion;
+        ProjectFileVersion maybeProjVersion;
+        string projectFilePath = @"../../../../../../src/ScottPlot/ScottPlot.csproj";
 
         public MainWindow()
         {
@@ -33,11 +34,15 @@ namespace ScottPlotBuilder
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            string projectFilePath = @"../../../../../../src/ScottPlot/ScottPlot.csproj";
-            projVersion = new ProjectFileVersion(projectFilePath);
-            VersionStartedText.Text = $"initial: {projVersion}";
+            maybeProjVersion = new ProjectFileVersion(projectFilePath);
+            VersionStartedText.Text = $"initial: {maybeProjVersion}";
+            VersionCurrentText.Text = $"current: {maybeProjVersion}";
+
+            // return early if this function got called manually
+            if (sender is null)
+                return;
+
             VersionNugetText.Text = $"nuget.org: searching...";
-            VersionCurrentText.Text = $"current: {projVersion}";
 
             BackgroundWorker worker = new BackgroundWorker();
             worker.WorkerReportsProgress = true;
@@ -82,19 +87,30 @@ namespace ScottPlotBuilder
 
         private void VersionReset(object sender, RoutedEventArgs e)
         {
-            projVersion.Reset();
-            VersionCurrentText.Text = $"current: {projVersion}";
+            OnLoaded(null, null);
         }
 
         private void VersionIncriment(object sender, RoutedEventArgs e)
         {
-            projVersion.Incriment();
-            VersionCurrentText.Text = $"current: {projVersion}";
+            maybeProjVersion.Incriment();
+            VersionCurrentText.Text = $"current: {maybeProjVersion}";
         }
 
         private void VersionApply(object sender, RoutedEventArgs e)
         {
+            string[] projectPaths = new string[]
+            {
+                @"../../../../../../src/ScottPlot/ScottPlot.csproj",
+                @"../../../../../../src/ScottPlot.WinForms/ScottPlot.WinForms.csproj",
+                @"../../../../../../src/ScottPlot.WPF/ScottPlot.WPF.csproj",
+            };
 
+            foreach (string projectPath in projectPaths)
+            {
+                var thisProjVersion = new ProjectFileVersion(projectPath);
+                thisProjVersion.version = maybeProjVersion.version;
+                thisProjVersion.Save();
+            }
         }
     }
 }

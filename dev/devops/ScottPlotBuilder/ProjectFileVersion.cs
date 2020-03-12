@@ -8,8 +8,7 @@ namespace ScottPlotBuilder
     public class ProjectFileVersion
     {
         public readonly string path;
-        public Version version { get; private set; }
-        public Version initial { get; private set; }
+        public Version version;
 
         public ProjectFileVersion(string projectFilePath)
         {
@@ -21,18 +20,12 @@ namespace ScottPlotBuilder
                 throw new ArgumentException("Project file does not exist: " + projectFilePath);
 
             path = projectFilePath;
-            initial = Read();
-            Reset();
+            version = Read();
         }
 
         public override string ToString()
         {
             return $"{version.Major}.{version.Minor}.{version.Build}";
-        }
-
-        public void Reset()
-        {
-            version = new Version(initial.ToString());
         }
 
         private Version Read()

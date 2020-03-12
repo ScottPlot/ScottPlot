@@ -6,4 +6,8 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\ScottPlot.Demo\ScottPlot.Demo.csproj" />
+  </ItemGroup>
+
 </Project>
