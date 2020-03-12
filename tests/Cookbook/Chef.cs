@@ -12,8 +12,8 @@ namespace ScottPlotTests.Cookbook
         public void Test_Cookbook_Hashes()
         {
             // don't run test on MacOS
-            if (System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.OSX))
-                return; // TODO: figure out how to get this working in MacOS
+            //if (System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.OSX))
+                //return; // TODO: figure out how to get this working in MacOS
 
             foreach (IPlotDemo recipe in Reflection.GetPlots())
             {
