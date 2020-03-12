@@ -33,6 +33,8 @@ namespace ScottPlot.Statistics
             for (int i = 0; i < pointCount; i++) {
                 xs[i] = firstX + xSpacing * i;
             }
+            this.xs = xs;
+            this.ys = ys;
             (slope, offset) = GetCoefficients(xs, ys);
         }
 
