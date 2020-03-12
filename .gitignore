@@ -300,3 +300,4 @@ doc/cookbook/images/31_Signal_With_Antialiasing_Off.png
 dev/nuget/nuget.exe
 .vscode/launch.json
 .vscode/tasks.json
+tests/data/sample.csproj
