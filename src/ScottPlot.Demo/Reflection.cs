@@ -11,19 +11,15 @@ namespace ScottPlot.Demo
     {
         public static IPlotDemo[] GetPlots(string namespaceStartsWith = "ScottPlot.Demo.")
         {
-            var plotObjectPaths = AppDomain.CurrentDomain.GetAssemblies()
+            var plotObjects = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(s => s.GetTypes())
                 .Where(p => typeof(IPlotDemo).IsAssignableFrom(p))
                 .Where(p => p.IsInterface == false)
                 .Where(p => p.ToString().StartsWith(namespaceStartsWith))
                 .Select(x => x.ToString())
-                .ToArray();
+                .Select(path => GetPlot(path));
 
-            IPlotDemo[] plots = new IPlotDemo[plotObjectPaths.Length];
-            for (int i = 0; i < plotObjectPaths.Length; i++)
-                plots[i] = GetPlot(plotObjectPaths[i]);
-
-            return plots;
+            return plotObjects.ToArray();
         }
 
         public static IPlotDemo[] GetPlotsInOrder()
