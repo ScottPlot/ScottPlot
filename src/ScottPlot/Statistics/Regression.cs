@@ -47,7 +47,7 @@ namespace ScottPlot.Statistics
             double meanY = ys.Average();
             double sumXYResidual = 0;
             double sumXSquareResidual = 0;
-            double spanX = firstX + pointCount * xSpacing;
+            double spanX = (pointCount - 1) * xSpacing;
             double meanX = spanX / 2 + firstX;
 
             for (int i = 0; i < pointCount; i++)
