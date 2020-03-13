@@ -29,21 +29,19 @@ namespace ScottPlot.Demo.WinForms
         private void LoadTreeWithDemos()
         {
             IPlotDemo[] plots = Reflection.GetPlotsInOrder();
-            IEnumerable<string> majorCategories = plots.Select(x => x.categoryMajor).Distinct();
 
-            foreach (string majorCategory in majorCategories)
+            var Grouped = plots.GroupBy(x => x.categoryMajor)
+                .Select( major => new {major.Key, minorCategories = major.GroupBy(item => item.categoryMinor)});
+
+            foreach (var majorCategory in Grouped)
             {
-                var majorNode = new TreeNode(majorCategory);
+                var majorNode = new TreeNode(majorCategory.Key);
                 treeView1.Nodes.Add(majorNode);
-
-                IEnumerable<string> minorCategories = plots.Where(x => x.categoryMajor == majorCategory).Select(x => x.categoryMinor).Distinct();
-                foreach (string minorCategory in minorCategories)
+                foreach(var minorCategory in majorCategory.minorCategories)
                 {
-                    var minorNode = new TreeNode(minorCategory);
+                    var minorNode = new TreeNode(minorCategory.Key);
                     majorNode.Nodes.Add(minorNode);
-
-                    IEnumerable<IPlotDemo> categoryPlots = plots.Where(x => x.categoryMajor == majorCategory && x.categoryMinor == minorCategory);
-                    foreach (IPlotDemo demoPlot in categoryPlots)
+                    foreach(var demoPlot in minorCategory)
                     {
                         var classNode = new TreeNode(demoPlot.name);
                         classNode.Tag = demoPlot.classPath.ToString();
@@ -51,7 +49,6 @@ namespace ScottPlot.Demo.WinForms
                     }
                 }
             }
-
             treeView1.SelectedNode = treeView1.Nodes[0].Nodes[0].Nodes[0];
         }
 
