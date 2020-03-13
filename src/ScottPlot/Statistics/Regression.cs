@@ -47,14 +47,17 @@ namespace ScottPlot.Statistics
             double sumXYResidual = 0;
             double sumXSquareResidual = 0;
 
+            double meanX = xs.Average();
+            double meanY = ys.Average();
+
             for (int i = 0; i < xs.Length; i++) {
-                sumXYResidual += (xs[i] - xs.Average()) * (ys[i] - ys.Average());
-                sumXSquareResidual += (xs[i] - xs.Average()) * (xs[i] - xs.Average());
+                sumXYResidual += (xs[i] - meanX) * (ys[i] - meanY);
+                sumXSquareResidual += (xs[i] - meanX) * (xs[i] - meanX);
             }
 
             // Note: least-squares regression line always passes through (x̅,y̅)
             double slope = sumXYResidual / sumXSquareResidual;
-            double offset = ys.Average() - (slope * xs.Average());
+            double offset = meanY - (slope * meanX);
 
             return (slope, offset);
         }
