@@ -38,18 +38,9 @@ namespace ScottPlot.Demo
             recipes.AddRange(GetPlots("ScottPlot.Demo.Examples"));
             recipes.AddRange(GetPlots());
 
-            List<string> ids = new List<string>();
-            List<IPlotDemo> recipes2 = new List<IPlotDemo>();
-            foreach (IPlotDemo recipe in recipes)
-            {
-                if (!ids.Contains(recipe.id))
-                {
-                    recipes2.Add(recipe);
-                    ids.Add(recipe.id);
-                }
-            }
-
-            return recipes2.ToArray();
+            return recipes.GroupBy(recipe => recipe.id)
+                          .Select(g => g.First())
+                          .ToArray();
         }
 
         public static IPlotDemo GetPlot(string plotObjectPath)
