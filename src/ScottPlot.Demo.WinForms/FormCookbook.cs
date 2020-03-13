@@ -54,10 +54,7 @@ namespace ScottPlot.Demo.WinForms
 
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            if (treeView1.SelectedNode?.Tag is null)
-                return;
-
-            string tag = treeView1.SelectedNode.Tag.ToString();
+            string tag = treeView1.SelectedNode?.Tag?.ToString();
             if (tag != null)
                 LoadDemo(tag);
         }
