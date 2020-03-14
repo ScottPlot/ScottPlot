@@ -42,15 +42,18 @@ namespace ScottPlot
 
         public override void Render(Settings settings)
         {
-            double step = 1 / (settings.xAxisUnitsPerPixel * 250); // 250 may not be ideal, bigger number is more smooth, but less performant
-            int maxSeriesLength = (int)Math.Ceiling((maxX - minX) / step);
+            double step = settings.xAxisUnitsPerPixel;
+            double minRenderedX = minX > settings.axes.limits[0] ? minX : settings.axes.limits[0];
+            double maxRenderedX = maxX < settings.axes.limits[1] ? maxX : settings.axes.limits[1];
+
+            int maxSeriesLength = (int)Math.Ceiling((maxRenderedX - minRenderedX) / step);
 
             List<double> xList = new List<double>();
             List<double> yList = new List<double>();
 
             for (int i = 0; i < maxSeriesLength; i++)
             {
-                double x = i * step + minX;
+                double x = i * step + minRenderedX;
                 double? y;
                 try
                 {
