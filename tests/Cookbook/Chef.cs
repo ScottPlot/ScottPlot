@@ -3,30 +3,27 @@ using ScottPlot.Demo;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
-namespace ScottPlotTests.Cookbook
+namespace ScottPlot.Tests.Cookbook
 {
     class Chef
     {
         [Test]
-        public void Test_Cookbook_Hashes()
+        public void Test_Cookbook_Generator()
         {
             // don't run test on MacOS
             //if (System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.OSX))
-                //return; // TODO: figure out how to get this working in MacOS
+            //return; // TODO: figure out how to get this working in MacOS
 
-            foreach (IPlotDemo recipe in Reflection.GetPlots())
-            {
-                if (recipe is IBitmapDemo)
-                    continue;
+            string sourceFolder = System.IO.Path.GetFullPath("../../../../src/ScottPlot.Demo");
+            var reportGen = new ReportGenerator(useDLL: true, sourceFolder: sourceFolder);
+            Console.WriteLine("Generating cookbook in: " + reportGen.outputFolder);
 
-                var plt = new ScottPlot.Plot();
-                recipe.Render(plt);
-                System.Drawing.Bitmap bmp = plt.GetBitmap();
-                string hash = ScottPlot.Tools.BitmapHash(bmp);
-                Console.WriteLine($"{hash} {recipe.categoryMajor}.{recipe.categoryMinor}.{recipe.categoryClass}");
-
-            }
+            reportGen.ClearFolders();
+            foreach (IPlotDemo recipe in reportGen.recipes)
+                reportGen.CreateImage(recipe);
+            reportGen.MakeReports();
         }
     }
 }

@@ -9,30 +9,46 @@ namespace ScottPlot.Demo
 {
     public static class Reflection
     {
-        public static IPlotDemo[] GetPlots(string namespaceStartsWith = "ScottPlot.Demo.")
+        public static IPlotDemo[] GetPlots(string namespaceStartsWith = "ScottPlot.Demo.", bool useDLL = false)
         {
-            var plotObjects = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(s => s.GetTypes())
-                .Where(p => typeof(IPlotDemo).IsAssignableFrom(p))
-                .Where(p => p.IsInterface == false)
-                .Where(p => p.ToString().StartsWith(namespaceStartsWith))
-                .Select(x => x.ToString())
-                .Select(path => GetPlot(path));
+            if (useDLL)
+            {
+                var plotObjects = Assembly.LoadFrom("ScottPlot.Demo.dll").GetTypes();
+                return plotObjects
+                    .Where(p => typeof(IPlotDemo).IsAssignableFrom(p))
+                    .Where(p => p.IsInterface == false)
+                    .Where(p => p.ToString().StartsWith(namespaceStartsWith))
+                    .Select(x => x.ToString())
+                    .Select(path => GetPlot(path))
+                    .ToArray();
+            }
+            else
+            {
+                var plotObjects = AppDomain.CurrentDomain.GetAssemblies();
+                return plotObjects
+                        .SelectMany(s => s.GetTypes())
+                        .Where(p => typeof(IPlotDemo).IsAssignableFrom(p))
+                        .Where(p => p.IsInterface == false)
+                        .Where(p => p.ToString().StartsWith(namespaceStartsWith))
+                        .Select(x => x.ToString())
+                        .Select(path => GetPlot(path))
+                        .ToArray();
+            }
 
-            return plotObjects.ToArray();
+
         }
 
-        public static IPlotDemo[] GetPlotsInOrder()
+        public static IPlotDemo[] GetPlotsInOrder(bool useDLL = false)
         {
             List<IPlotDemo> recipes = new List<IPlotDemo>();
 
             // define the order of cookbook examples here
-            recipes.AddRange(GetPlots("ScottPlot.Demo.Quickstart"));
-            recipes.AddRange(GetPlots("ScottPlot.Demo.PlotTypes"));
-            recipes.AddRange(GetPlots("ScottPlot.Demo.Customize"));
-            recipes.AddRange(GetPlots("ScottPlot.Demo.Advanced"));
-            recipes.AddRange(GetPlots("ScottPlot.Demo.Examples"));
-            recipes.AddRange(GetPlots());
+            recipes.AddRange(GetPlots("ScottPlot.Demo.Quickstart", useDLL));
+            recipes.AddRange(GetPlots("ScottPlot.Demo.PlotTypes", useDLL));
+            recipes.AddRange(GetPlots("ScottPlot.Demo.Customize", useDLL));
+            recipes.AddRange(GetPlots("ScottPlot.Demo.Advanced", useDLL));
+            recipes.AddRange(GetPlots("ScottPlot.Demo.Examples", useDLL));
+            recipes.AddRange(GetPlots("ScottPlot.Demo.", useDLL));
 
             return recipes.GroupBy(recipe => recipe.id)
                           .Select(g => g.First())
