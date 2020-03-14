@@ -226,6 +226,22 @@ namespace ScottPlot
             return dataOut;
         }
 
+        public static (double[] xs, double[] ys) ConvertPolarCoordinates(double[] rs, double[] thetas) {
+            double[] xs = new double[rs.Length];
+            double[] ys = new double[rs.Length];
+
+            for (int i = 0; i < rs.Length; i++)
+            {
+                double x = rs[i];
+                double y = thetas[i];
+
+                xs[i] = x * Math.Cos(y);
+                ys[i] = x * Math.Sin(y);
+            }
+
+            return (xs, ys);
+        }
+
         public static void LaunchBrowser(string url = "http://swharden.com/scottplot/")
         {
             // A cross-platform .NET-Core-safe function to launch a URL in the browser
