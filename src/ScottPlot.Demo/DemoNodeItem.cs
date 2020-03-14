@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ScottPlot.Demo.WPF
+namespace ScottPlot.Demo
 {
     public class DemoNodeItem
     {

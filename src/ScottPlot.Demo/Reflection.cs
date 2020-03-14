@@ -39,6 +39,46 @@ namespace ScottPlot.Demo
                           .ToArray();
         }
 
+        public static List<DemoNodeItem> GetPlotNodeItems(bool expandAndSelectDefaultNode = true)
+        {
+            IPlotDemo[] plots = GetPlotsInOrder();
+
+            var nodeItems = plots
+                .GroupBy(x => x.categoryMajor)
+                .Select(majorCategory =>
+                    new DemoNodeItem
+                    {
+                        Header = majorCategory.Key,
+                        IsExpanded = true,
+                        Items = majorCategory
+                            .GroupBy(x => x.categoryMinor)
+                            .Select(minorCategory =>
+                                new DemoNodeItem
+                                {
+                                    Header = minorCategory.Key,
+                                    IsExpanded = false,
+                                    Items = minorCategory
+                                        .Select(demoPlot =>
+                                                    new DemoNodeItem
+                                                    {
+                                                        Header = demoPlot.name,
+                                                        Tag = demoPlot.classPath.ToString()
+                                                    })
+                                        .ToList()
+                                })
+                            .ToList()
+                    })
+                .ToList();
+
+            if (expandAndSelectDefaultNode)
+            {
+                nodeItems[0].Items[0].IsExpanded = true;
+                nodeItems[0].Items[0].Items[0].IsSelected = true;
+            }
+
+            return nodeItems;
+        }
+
         public static IPlotDemo GetPlot(string plotObjectPath)
         {
             if (!plotObjectPath.StartsWith("ScottPlot.Demo."))
