@@ -17,8 +17,7 @@ namespace ScottPlot.Demo.WinForms
         {
             InitializeComponent();
             pictureBox1.Dock = DockStyle.Fill;
-            //LoadTreeWithDemos();
-            LoadTreeWithDemoNotes();
+            LoadTreeWithDemos();
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
         }
 
@@ -27,7 +26,7 @@ namespace ScottPlot.Demo.WinForms
 
         }
 
-        private void LoadTreeWithDemoNotes()
+        private void LoadTreeWithDemos()
         {
             foreach (DemoNodeItem majorItem in Reflection.GetPlotNodeItems())
             {
