@@ -8,9 +8,7 @@
              mc:Ignorable="d" 
              Background="WhiteSmoke"
              d:DesignHeight="450" d:DesignWidth="500">
-
     <Grid>
-
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
@@ -49,9 +47,5 @@
                      />
             </DockPanel>
         </Border>
-
     </Grid>
-
-
-
 </UserControl>
