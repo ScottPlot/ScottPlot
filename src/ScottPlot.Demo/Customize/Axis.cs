@@ -71,5 +71,33 @@ namespace ScottPlot.Demo.Customize
                 plt.XLabel("Horizontal Units");
             }
         }
+
+        public class PolarAxis : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Polar Axis";
+            public string description { get; } = "";
+
+            public void Render(Plot plt)
+            {
+                int count = 400;
+                double step = 0.01;
+
+                double[] dataR = new double[count];
+                double[] dataTheta = new double[count];
+                double[] dataX = new double[count];
+                double[] dataY = new double[count];
+
+                for (int i = 0; i < dataR.Length; i++)
+                {
+                    dataR[i] = 1 + (double)i * step;
+                    dataTheta[i] = i * 2 * Math.PI * step;
+                }
+
+                (dataX, dataY) = ScottPlot.Tools.ConvertPolarCoordinates(dataR, dataTheta);
+
+                plt.PlotScatter(dataX, dataY);
+                plt.Title("Data (Polar Scale)");
+            }
+        }
     }
 }
