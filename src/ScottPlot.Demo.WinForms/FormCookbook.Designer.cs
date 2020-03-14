@@ -37,6 +37,7 @@
             this.formsPlot1 = new ScottPlot.FormsPlot();
             this.gbPlot = new System.Windows.Forms.GroupBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.tbBenchmark = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.sourceCodeGroupbox.SuspendLayout();
             this.gbPlot.SuspendLayout();
@@ -118,7 +119,7 @@
             this.formsPlot1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.formsPlot1.Location = new System.Drawing.Point(3, 16);
             this.formsPlot1.Name = "formsPlot1";
-            this.formsPlot1.Size = new System.Drawing.Size(595, 354);
+            this.formsPlot1.Size = new System.Drawing.Size(595, 328);
             this.formsPlot1.TabIndex = 0;
             this.formsPlot1.Rendered += new System.EventHandler(this.formsPlot1_Rendered);
             // 
@@ -131,10 +132,10 @@
             this.gbPlot.Controls.Add(this.formsPlot1);
             this.gbPlot.Location = new System.Drawing.Point(321, 99);
             this.gbPlot.Name = "gbPlot";
-            this.gbPlot.Size = new System.Drawing.Size(601, 373);
+            this.gbPlot.Size = new System.Drawing.Size(601, 347);
             this.gbPlot.TabIndex = 7;
             this.gbPlot.TabStop = false;
-            this.gbPlot.Text = "groupBox2";
+            this.gbPlot.Text = "Interactive Plot";
             // 
             // pictureBox1
             // 
@@ -145,11 +146,25 @@
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
             // 
+            // tbBenchmark
+            // 
+            this.tbBenchmark.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbBenchmark.BackColor = System.Drawing.SystemColors.Control;
+            this.tbBenchmark.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.tbBenchmark.Enabled = false;
+            this.tbBenchmark.Location = new System.Drawing.Point(318, 452);
+            this.tbBenchmark.Name = "tbBenchmark";
+            this.tbBenchmark.Size = new System.Drawing.Size(604, 13);
+            this.tbBenchmark.TabIndex = 8;
+            this.tbBenchmark.Text = "Rendered in...";
+            // 
             // FormCookbook
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(934, 711);
+            this.Controls.Add(this.tbBenchmark);
             this.Controls.Add(this.gbPlot);
             this.Controls.Add(this.DescriptionTextbox);
             this.Controls.Add(this.sourceCodeGroupbox);
@@ -180,6 +195,7 @@
         private System.Windows.Forms.TextBox sourceCodeTextbox;
         private System.Windows.Forms.GroupBox gbPlot;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.TextBox tbBenchmark;
     }
 }
 
