@@ -79,24 +79,25 @@ namespace ScottPlot.Demo.Customize
 
             public void Render(Plot plt)
             {
+                // create some data with polar coordinates
                 int count = 400;
                 double step = 0.01;
 
-                double[] dataR = new double[count];
-                double[] dataTheta = new double[count];
-                double[] dataX = new double[count];
-                double[] dataY = new double[count];
+                double[] rs = new double[count];
+                double[] thetas = new double[count];
 
-                for (int i = 0; i < dataR.Length; i++)
+                for (int i = 0; i < rs.Length; i++)
                 {
-                    dataR[i] = 1 + (double)i * step;
-                    dataTheta[i] = i * 2 * Math.PI * step;
+                    rs[i] = 1 + i * step;
+                    thetas[i] = i * 2 * Math.PI * step;
                 }
 
-                (dataX, dataY) = ScottPlot.Tools.ConvertPolarCoordinates(dataR, dataTheta);
+                // convert polar data to Cartesian data
+                (double[] xs, double[] ys) = ScottPlot.Tools.ConvertPolarCoordinates(rs, thetas);
 
-                plt.PlotScatter(dataX, dataY);
-                plt.Title("Data (Polar Scale)");
+                // plot the Cartesian data
+                plt.PlotScatter(xs, ys);
+                plt.Title("Scatter Plot of Polar Data");
             }
         }
     }
