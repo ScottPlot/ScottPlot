@@ -75,7 +75,6 @@ namespace ScottPlot.Demo.WPF
             Grouped[0].Items[0].Items[0].IsSelected = true;
             DemoTreeview.ItemsSource = Grouped;
             DemoTreeview.Focus();
-            return;
         }
     }
 }
