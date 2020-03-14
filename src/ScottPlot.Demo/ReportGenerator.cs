@@ -11,10 +11,13 @@ namespace ScottPlot.Demo
         public readonly int width;
         public readonly int height;
 
-        readonly IPlotDemo[] recipes = Reflection.GetPlotsInOrder();
+        public readonly IPlotDemo[] recipes;
 
-        public ReportGenerator(int width = 600, int height = 400, string sourceFolder = null, string outputFolder = "./output")
+        public ReportGenerator(int width = 600, int height = 400, string sourceFolder = null, string outputFolder = "./output", bool useDLL = false)
         {
+
+            recipes = Reflection.GetPlotsInOrder(useDLL);
+
             if (sourceFolder is null)
                 sourceCodeFolder = Reflection.FindDemoSourceFolder();
             else
