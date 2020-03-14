@@ -24,47 +24,33 @@ steps:
   displayName: 'Full package restoration'
   inputs:
     restoreSolution: 'src/ScottPlotV4.sln'
-    
-### LIMITED BUILD (MacOS and Linux)
-    
-- task: DotNetCoreCLI@2
-  displayName: 'Limited build ScottPlot'
-  condition: not(contains(variables['agent.os'], 'Windows'))
-  inputs:
-    command: 'build'
-    projects: 'src/ScottPlotNoGUI.sln'
+
+### SCOTTPLOT BUILD (WINDOWS, LINUX, MACOS)
 
 - task: DotNetCoreCLI@2
-  displayName: 'Limited build QuickStart'
-  condition: not(contains(variables['agent.os'], 'Windows'))
+  displayName: 'Build ScottPlot'
   inputs:
     command: 'build'
-    projects: 'dev/quickstart/ConsoleAppCore/ConsoleAppCore.csproj'
+    projects: 'src/ScottPlot/ScottPlot.csproj'
 
-### FULL BUILD (Windows)
-    
-- task: VSBuild@1
-  displayName: 'Full build ScottPlot'
-  condition: contains(variables['agent.os'], 'Windows')
+- task: DotNetCoreCLI@2
+  displayName: 'Build ScottPlot.Demo'
   inputs:
-    solution: 'src/ScottPlotV4.sln'
-    
-- task: NuGetCommand@2
-  displayName: 'Full restore QuickStart'
-  condition: contains(variables['agent.os'], 'Windows')
-  inputs:
-    restoreSolution: 'dev/quickstart/*/*.sln'
-    
-- task: VSBuild@1
-  displayName: 'Full build QuickStart'
-  condition: contains(variables['agent.os'], 'Windows')
-  inputs:
-    solution: 'dev/quickstart/*/*.sln'
-    
-### RUN TESTS
+    command: 'build'
+    projects: 'src/ScottPlot.Demo/ScottPlot.Demo.csproj'
+
+### SCOTTPLOT TESTS
 
 - task: DotNetCoreCLI@2
   displayName: 'Run Tests'
   inputs:
     command: test
     projects: 'tests/ScottPlotTests.csproj'
+
+### BUILD FULL SOLUTION (Windows only)
+    
+- task: VSBuild@1
+  displayName: 'REBUILD Full Solution (Windows)'
+  condition: contains(variables['agent.os'], 'Windows')
+  inputs:
+    solution: 'src/ScottPlotV4.sln'
