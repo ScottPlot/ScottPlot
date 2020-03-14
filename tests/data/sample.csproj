@@ -23,9 +23,9 @@
     <PackageReleaseNotes>https://github.com/swharden/ScottPlot/releases</PackageReleaseNotes>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <Version>4.0.25</Version>
-    <AssemblyVersion>4.0.25</AssemblyVersion>
-    <FileVersion>4.0.25</FileVersion>
+    <Version>4.0.26</Version>
+    <AssemblyVersion>4.0.26</AssemblyVersion>
+    <FileVersion>4.0.26</FileVersion>
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
 

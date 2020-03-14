@@ -45,15 +45,16 @@
 
             <GroupBox Header="NuGet Package">
                 <WrapPanel>
-                    <Button Content="Build"/>
-                    <Button Content="Upload"/>
+                    <Button Content="Build" Click="NuGetBuild"/>
+                    <Button Content="Upload" Click="NuGetUpload"/>
                 </WrapPanel>
             </GroupBox>
 
             <GroupBox Header="Cookbook">
                 <WrapPanel>
-                    <Button Content="Generate"/>
-                    <Button Content="Upload"/>
+                    <Button Content="Generate" Click="GenerateCookbook"/>
+                    <Button Content="Launch" Click="LaunchCookbook"/>
+                    <Button Content="Upload" Click="UploadCookbook"/>
                 </WrapPanel>
             </GroupBox>
 
