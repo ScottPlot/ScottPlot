@@ -17,7 +17,8 @@ namespace ScottPlot.Demo.WinForms
         {
             InitializeComponent();
             pictureBox1.Dock = DockStyle.Fill;
-            LoadTreeWithDemos();
+            //LoadTreeWithDemos();
+            LoadTreeWithDemoNotes();
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
         }
 
@@ -26,41 +27,30 @@ namespace ScottPlot.Demo.WinForms
 
         }
 
-        private void LoadTreeWithDemos()
+        private void LoadTreeWithDemoNotes()
         {
-            IPlotDemo[] plots = Reflection.GetPlotsInOrder();
-            IEnumerable<string> majorCategories = plots.Select(x => x.categoryMajor).Distinct();
-
-            foreach (string majorCategory in majorCategories)
+            foreach (DemoNodeItem majorItem in Reflection.GetPlotNodeItems())
             {
-                var majorNode = new TreeNode(majorCategory);
+                var majorNode = new TreeNode(majorItem.Header);
                 treeView1.Nodes.Add(majorNode);
-
-                IEnumerable<string> minorCategories = plots.Where(x => x.categoryMajor == majorCategory).Select(x => x.categoryMinor).Distinct();
-                foreach (string minorCategory in minorCategories)
+                foreach (DemoNodeItem minorItem in majorItem.Items)
                 {
-                    var minorNode = new TreeNode(minorCategory);
+                    var minorNode = new TreeNode(minorItem.Header);
                     majorNode.Nodes.Add(minorNode);
-
-                    IEnumerable<IPlotDemo> categoryPlots = plots.Where(x => x.categoryMajor == majorCategory && x.categoryMinor == minorCategory);
-                    foreach (IPlotDemo demoPlot in categoryPlots)
+                    foreach (DemoNodeItem plotItem in minorItem.Items)
                     {
-                        var classNode = new TreeNode(demoPlot.name);
-                        classNode.Tag = demoPlot.classPath.ToString();
-                        minorNode.Nodes.Add(classNode);
+                        var plotNode = new TreeNode(plotItem.Header);
+                        plotNode.Tag = plotItem.Tag;
+                        minorNode.Nodes.Add(plotNode);
                     }
                 }
             }
-
             treeView1.SelectedNode = treeView1.Nodes[0].Nodes[0].Nodes[0];
         }
 
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            if (treeView1.SelectedNode?.Tag is null)
-                return;
-
-            string tag = treeView1.SelectedNode.Tag.ToString();
+            string tag = treeView1.SelectedNode?.Tag?.ToString();
             if (tag != null)
                 LoadDemo(tag);
         }
