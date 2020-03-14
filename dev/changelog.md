@@ -43,6 +43,7 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
 * Added `equalAxes` argument to `WpfPlot.Configure()` (#272)
 * Fixed a bug affecting the `equalAxes` argument in `FormsPlot.Configure()` (#272)
 * Made all `Plot.Axis` methods return axis limits as `double[]` (previously many of them returned `void`)
+* Added overload for `Plot.PlotLine()` which accepts a slope, offset, and start and end X points to make it easy to plot a linear line with known formula. Using PlotFormula() will produce the same output, but this may be simpler.
 
 ## ScottPlot 4.0.19
 
