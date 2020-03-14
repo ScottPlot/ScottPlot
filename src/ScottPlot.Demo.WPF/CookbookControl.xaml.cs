@@ -24,7 +24,6 @@ namespace ScottPlot.Demo.WPF
         public CookbookControl()
         {
             InitializeComponent();
-            wpfPlot1.Rendered += WpfPlot1_Rendered;
 
             if (sourceCodeFolder is null)
                 throw new ArgumentException("cannot locate source code");
