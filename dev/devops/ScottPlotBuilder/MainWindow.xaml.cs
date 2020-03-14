@@ -33,6 +33,8 @@ namespace ScottPlotBuilder
             InitializeComponent();
         }
 
+        #region version
+
         private void VersionReset(object sender, RoutedEventArgs e)
         {
             if (versionAtStart is null)
@@ -44,8 +46,8 @@ namespace ScottPlotBuilder
                 VersionNugetText.Text = $"nuget.org: searching...";
                 BackgroundWorker worker = new BackgroundWorker();
                 worker.WorkerReportsProgress = true;
-                worker.DoWork += Worker_DoWork;
-                worker.RunWorkerCompleted += Worker_RunWorkerCompleted;
+                worker.DoWork += NuGetWorker_DoWork;
+                worker.RunWorkerCompleted += NuGetWorker_Completed;
                 worker.RunWorkerAsync();
             }
             else
@@ -70,7 +72,7 @@ namespace ScottPlotBuilder
         }
 
         Version nugetVersion = new Version();
-        private void Worker_DoWork(object sender, DoWorkEventArgs e)
+        private void NuGetWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             // do NOT access GUI components from this thread
             string html = DownloadTextFile("https://www.nuget.org/packages/ScottPlot/");
@@ -86,7 +88,7 @@ namespace ScottPlotBuilder
             }
         }
 
-        private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        private void NuGetWorker_Completed(object sender, RunWorkerCompletedEventArgs e)
         {
             // you may access GUI components from this thread
             VersionNugetText.Text = (nugetVersion.Major > 0) ? $"nuget.org: {nugetVersion}" : "nuget.org: HTML parse error";
@@ -118,9 +120,98 @@ namespace ScottPlotBuilder
             ApplyButton.IsEnabled = false;
         }
 
-        private void BuildRelease(object sender, RoutedEventArgs e)
-        {
+        #endregion
 
+        private void RunScript(string fileName)
+        {
+            string buildScriptPath = System.IO.Path.GetFullPath($"../../../scripts/{fileName}");
+
+            if (!File.Exists(buildScriptPath))
+                throw new InvalidOperationException("Cannot find build script: " + buildScriptPath);
+
+            ProcessStartInfo processInfo = new ProcessStartInfo(buildScriptPath)
+            {
+                CreateNoWindow = false,
+                UseShellExecute = false,
+                WorkingDirectory = System.IO.Path.GetDirectoryName(buildScriptPath)
+            };
+
+            Process process = Process.Start(processInfo);
+            process.WaitForExit();
+            process.Close();
+        }
+
+        private void NuGetBuild(object sender, RoutedEventArgs e)
+        {
+            RunScript("clean-build.bat");
+        }
+
+        private void NuGetUpload(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("select OK to upload NuGet packages", "NuGet Upload", MessageBoxButton.OKCancel, MessageBoxImage.Exclamation);
+            if (result == MessageBoxResult.OK)
+                RunScript("nuget-upload.bat");
+        }
+
+        private void GenerateCookbook(object sender, RoutedEventArgs e)
+        {
+            MessageTextbox.Clear();
+            MessageTextbox.AppendText($"Generating cookbook version {ScottPlot.Tools.GetVersionString()}" + Environment.NewLine);
+
+            BackgroundWorker worker = new BackgroundWorker();
+            worker.WorkerReportsProgress = true;
+            worker.DoWork += CookbookWorker_DoWork;
+            worker.ProgressChanged += CookbookWorker_ProgressChanged;
+            worker.RunWorkerCompleted += CookbookWorker_RunWorkerCompleted; ;
+            worker.RunWorkerAsync();
+        }
+
+        private void CookbookWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            string outputFolder = System.IO.Path.GetFullPath($"./{ScottPlot.Tools.GetVersionString()}");
+
+            var reportGeneratpr = new ScottPlot.Demo.ReportGenerator(outputFolder: outputFolder);
+
+            (sender as BackgroundWorker).ReportProgress(0, $"preparing folders");
+            reportGeneratpr.ClearFolders();
+            foreach (var recipe in ScottPlot.Demo.Reflection.GetPlots())
+            {
+
+                (sender as BackgroundWorker).ReportProgress(0, recipe.id);
+                reportGeneratpr.CreateImage(recipe);
+            }
+
+            (sender as BackgroundWorker).ReportProgress(0, $"creating reports");
+            reportGeneratpr.MakeReports();
+        }
+
+        private void CookbookWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            Debug.WriteLine(e.UserState);
+            MessageTextbox.AppendText(e.UserState.ToString() + Environment.NewLine);
+            MessageTextbox.ScrollToEnd();
+        }
+
+        private void CookbookWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            // you may access GUI components from this thread
+            MessageTextbox.AppendText($"Cookbook generation complete!");
+        }
+
+        private void LaunchCookbook(object sender, RoutedEventArgs e)
+        {
+            string outputFolder = System.IO.Path.GetFullPath($"./{ScottPlot.Tools.GetVersionString()}");
+            if (System.IO.Directory.Exists(outputFolder))
+                System.Diagnostics.Process.Start("explorer.exe", outputFolder);
+            else
+                MessageBox.Show($"folder does not exist: {outputFolder}");
+        }
+
+        private void UploadCookbook(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("select OK to upload cookbook", "Cookbook Upload", MessageBoxButton.OKCancel, MessageBoxImage.Exclamation);
+            if (result == MessageBoxResult.OK)
+                RunScript("cookbook-upload.bat");
         }
     }
 }
