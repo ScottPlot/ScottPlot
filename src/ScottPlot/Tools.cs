@@ -226,7 +226,7 @@ namespace ScottPlot
             return dataOut;
         }
 
-        public static (double[], double[]) ConvertPolarCoordinates(double[] rs, double[] thetas) {
+        public static (double[] xs, double[] ys) ConvertPolarCoordinates(double[] rs, double[] thetas) {
             double[] xs = new double[rs.Length];
             double[] ys = new double[rs.Length];
 
