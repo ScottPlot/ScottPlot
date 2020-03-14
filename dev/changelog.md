@@ -45,6 +45,7 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
 * Made all `Plot.Axis` methods return axis limits as `double[]` (previously many of them returned `void`)
 * Added overload for `Plot.PlotLine()` which accepts a slope, offset, and start and end X points to make it easy to plot a linear line with known formula. Using PlotFormula() will produce the same output, but this may be simpler to use for straight lines.
 * Added `rSquared` property to linear regression fits (#290) _Thanks @Benny121221 and @StendProg_
+* Added `Tools.ConvertPolarCoordinates()` to make it easier to display polar data on ScottPlot's Cartesian axes (#298) _Thanks @Benny121221_
 
 ## ScottPlot 4.0.19
 
