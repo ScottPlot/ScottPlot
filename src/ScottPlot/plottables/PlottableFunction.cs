@@ -1,6 +1,7 @@
 ﻿using ScottPlot.Config;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 
@@ -13,13 +14,8 @@ namespace ScottPlot
         private readonly double maxX;
         private readonly double minY;
         private readonly double maxY;
-        private readonly Color color;
         private readonly double lineWidth;
         private readonly double markerSize;
-        private readonly string label;
-        private readonly MarkerShape markerShape;
-        private readonly LineStyle lineStyle;
-
 
         public PlottableFunction(Func<double, double?> function, double minX, double maxX, double minY, double maxY, Color color, double lineWidth, double markerSize, string label, MarkerShape markerShape, LineStyle lineStyle)
         {
@@ -62,6 +58,7 @@ namespace ScottPlot
                 }
                 catch (Exception e) //Domain error, such log(-1) or 1/0
                 {
+                    Debug.WriteLine(e);
                     continue;
                 }
 
