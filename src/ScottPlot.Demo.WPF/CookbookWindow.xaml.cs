@@ -44,40 +44,7 @@ namespace ScottPlot.Demo.WPF
 
         private void LoadTreeWithDemos()
         {
-            IPlotDemo[] plots = Reflection.GetPlotsInOrder();
-
-            var demoNodeItems = plots
-                .GroupBy(x => x.categoryMajor)
-                .Select(majorCategory =>
-                    new DemoNodeItem
-                    {
-                        Header = majorCategory.Key,
-                        IsExpanded = true,
-                        Items = majorCategory
-                            .GroupBy(x => x.categoryMinor)
-                            .Select(minorCategory =>
-                                new DemoNodeItem
-                                {
-                                    Header = minorCategory.Key,
-                                    IsExpanded = false,
-                                    Items = minorCategory
-                                        .Select(demoPlot =>
-                                                    new DemoNodeItem
-                                                    {
-                                                        Header = demoPlot.name,
-                                                        Tag = demoPlot.classPath.ToString()
-                                                    })
-                                        .ToList()
-                                })
-                            .ToList()
-                    })
-                .ToList();
-
-            // expand and select a default node/demo
-            demoNodeItems[0].Items[0].IsExpanded = true;
-            demoNodeItems[0].Items[0].Items[0].IsSelected = true;
-
-            DemoTreeview.ItemsSource = demoNodeItems;
+            DemoTreeview.ItemsSource = Reflection.GetPlotNodeItems();
             DemoTreeview.Focus();
         }
     }
