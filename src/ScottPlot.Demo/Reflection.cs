@@ -11,19 +11,15 @@ namespace ScottPlot.Demo
     {
         public static IPlotDemo[] GetPlots(string namespaceStartsWith = "ScottPlot.Demo.")
         {
-            var plotObjectPaths = AppDomain.CurrentDomain.GetAssemblies()
+            var plotObjects = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(s => s.GetTypes())
                 .Where(p => typeof(IPlotDemo).IsAssignableFrom(p))
                 .Where(p => p.IsInterface == false)
                 .Where(p => p.ToString().StartsWith(namespaceStartsWith))
                 .Select(x => x.ToString())
-                .ToArray();
+                .Select(path => GetPlot(path));
 
-            IPlotDemo[] plots = new IPlotDemo[plotObjectPaths.Length];
-            for (int i = 0; i < plotObjectPaths.Length; i++)
-                plots[i] = GetPlot(plotObjectPaths[i]);
-
-            return plots;
+            return plotObjects.ToArray();
         }
 
         public static IPlotDemo[] GetPlotsInOrder()
@@ -38,18 +34,49 @@ namespace ScottPlot.Demo
             recipes.AddRange(GetPlots("ScottPlot.Demo.Examples"));
             recipes.AddRange(GetPlots());
 
-            List<string> ids = new List<string>();
-            List<IPlotDemo> recipes2 = new List<IPlotDemo>();
-            foreach (IPlotDemo recipe in recipes)
+            return recipes.GroupBy(recipe => recipe.id)
+                          .Select(g => g.First())
+                          .ToArray();
+        }
+
+        public static List<DemoNodeItem> GetPlotNodeItems(bool expandAndSelectDefaultNode = true)
+        {
+            IPlotDemo[] plots = GetPlotsInOrder();
+
+            var nodeItems = plots
+                .GroupBy(x => x.categoryMajor)
+                .Select(majorCategory =>
+                    new DemoNodeItem
+                    {
+                        Header = majorCategory.Key,
+                        IsExpanded = true,
+                        Items = majorCategory
+                            .GroupBy(x => x.categoryMinor)
+                            .Select(minorCategory =>
+                                new DemoNodeItem
+                                {
+                                    Header = minorCategory.Key,
+                                    IsExpanded = false,
+                                    Items = minorCategory
+                                        .Select(demoPlot =>
+                                                    new DemoNodeItem
+                                                    {
+                                                        Header = demoPlot.name,
+                                                        Tag = demoPlot.classPath.ToString()
+                                                    })
+                                        .ToList()
+                                })
+                            .ToList()
+                    })
+                .ToList();
+
+            if (expandAndSelectDefaultNode)
             {
-                if (!ids.Contains(recipe.id))
-                {
-                    recipes2.Add(recipe);
-                    ids.Add(recipe.id);
-                }
+                nodeItems[0].Items[0].IsExpanded = true;
+                nodeItems[0].Items[0].Items[0].IsSelected = true;
             }
 
-            return recipes2.ToArray();
+            return nodeItems;
         }
 
         public static IPlotDemo GetPlot(string plotObjectPath)
@@ -68,12 +95,13 @@ namespace ScottPlot.Demo
         /// <returns></returns>
         public static string FindDemoSourceFolder()
         {
-            
+            const int searchDepth = 10;
+
             string exePath = Assembly.GetEntryAssembly().Location;
             string folderPath = System.IO.Path.GetDirectoryName(exePath);
 
             // first try in every folder up from here
-            for (int i=0; i<10; i++)
+            for (int i = 0; i < searchDepth; i++)
             {
                 string testPath = folderPath + "/src/ScottPlot.Demo/";
                 if (System.IO.File.Exists(testPath + "IPlotDemo.cs"))
