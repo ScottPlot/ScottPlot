@@ -68,14 +68,11 @@ namespace ScottPlot.Demo.Examples
 
                 // use the linear regression fitter to fit these data
                 var model = new ScottPlot.Statistics.LinearRegressionLine(xs, ys);
-                double y1 = model.GetValueAt(x1);
-                double y2 = model.GetValueAt(x2);
 
                 // plot the original data and add the regression line
-                plt.PlotScatter(xs, ys, lineWidth: 0, label: "original data");
-                plt.PlotLine(x1, y1, x2, y2, lineWidth: 3, label: "linear regression");
-                plt.Legend();
-                plt.Title(model.ToString());
+                plt.Title($"Y = {model.slope:0.0000}x + {model.offset:0.0}\nR² = {model.rSquared:0.0000}");
+                plt.PlotScatter(xs, ys, lineWidth: 0);
+                plt.PlotLine(model.slope, model.offset, (x1, x2), lineWidth: 2);
             }
         }
     }
