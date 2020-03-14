@@ -72,7 +72,7 @@ namespace ScottPlotTests.Statistics
             (double[] xs, double[] ys) = GetNoisyLinearData_RandomlySpaced(pointCount, actualSlope, actualOffset);
 
             // fit the random data with the linear regression model
-            var model = new ScottPlot.Statistics.LinearRegressionLine(ys, firstX: 0, xSpacing: 1);
+            var model = new ScottPlot.Statistics.LinearRegressionLine(xs, ys);
 
             // plot to visually assess goodness of fit
             var plt = new ScottPlot.Plot(450, 300);
@@ -84,7 +84,7 @@ namespace ScottPlotTests.Statistics
             TestTools.SaveFig(plt);
 
             // ensure the fit is good
-            Assert.AreEqual(actualSlope, model.slope, .1);
+            Assert.AreEqual(actualSlope, model.slope, .5);
             Assert.AreEqual(actualOffset, model.offset, 10);
         }
 
