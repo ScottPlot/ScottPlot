@@ -10,8 +10,26 @@ namespace ScottPlotTests.Statistics
     {
         private (double[] xs, double[] ys) GetNoisyLinearData_EvenlySpaced(int pointCount, double actualSlope, double actualOffset, bool display = true)
         {
-            double[] ys = ScottPlot.DataGen.NoisyLinear(new Random(0), pointCount, actualSlope, actualOffset, noise: 50);
+            Random rand = new Random(0);
+            double[] ys = ScottPlot.DataGen.NoisyLinear(rand, pointCount, actualSlope, actualOffset, noise: 50);
             double[] xs = ScottPlot.DataGen.Consecutive(pointCount);
+
+            if (display)
+                for (int i = 0; i < ys.Length; i++)
+                    Console.WriteLine($"{xs[i]}, {ys[i]}");
+
+            return (xs, ys);
+        }
+
+        private (double[] xs, double[] ys) GetNoisyLinearData_RandomlySpaced(int pointCount, double actualSlope, double actualOffset, bool display = true)
+        {
+            Random rand = new Random(0);
+            double[] xs = ScottPlot.DataGen.RandomNormal(rand, pointCount, mean: pointCount / 2, stdDev: Math.Sqrt(pointCount));
+
+            double noiseLevel = 50;
+            double[] ys = new double[pointCount];
+            for (int i = 0; i < pointCount; i++)
+                ys[i] = actualSlope * xs[i] + actualOffset + (rand.NextDouble() - .5) * noiseLevel;
 
             if (display)
                 for (int i = 0; i < ys.Length; i++)
@@ -35,7 +53,34 @@ namespace ScottPlotTests.Statistics
             var plt = new ScottPlot.Plot(450, 300);
             plt.Title($"Y = {model.slope:0.0000}x + {model.offset:0.0}\nR² = {model.rSquared:0.0000}");
             plt.PlotScatter(xs, ys, lineWidth: 0);
-            plt.PlotLine(model.slope, model.offset, (xs.First(), xs.Last()), lineWidth: 2);
+            plt.PlotLine(model.slope, model.offset, (xs.Min(), xs.Max()), lineWidth: 2, label: "model", lineStyle: ScottPlot.LineStyle.Dash);
+            plt.PlotLine(actualSlope, actualOffset, (xs.Min(), xs.Max()), lineWidth: 2, label: "actual");
+            plt.Legend();
+            TestTools.SaveFig(plt);
+
+            // ensure the fit is good
+            Assert.AreEqual(actualSlope, model.slope, .1);
+            Assert.AreEqual(actualOffset, model.offset, 10);
+        }
+
+        [Test]
+        public void Test_LinearRegression_RandomXs()
+        {
+            int pointCount = 50;
+            double actualSlope = 3;
+            double actualOffset = 200;
+            (double[] xs, double[] ys) = GetNoisyLinearData_RandomlySpaced(pointCount, actualSlope, actualOffset);
+
+            // fit the random data with the linear regression model
+            var model = new ScottPlot.Statistics.LinearRegressionLine(ys, firstX: 0, xSpacing: 1);
+
+            // plot to visually assess goodness of fit
+            var plt = new ScottPlot.Plot(450, 300);
+            plt.Title($"Y = {model.slope:0.0000}x + {model.offset:0.0}\nR² = {model.rSquared:0.0000}");
+            plt.PlotScatter(xs, ys, lineWidth: 0);
+            plt.PlotLine(model.slope, model.offset, (xs.Min(), xs.Max()), lineWidth: 2, label: "model", lineStyle: ScottPlot.LineStyle.Dash);
+            plt.PlotLine(actualSlope, actualOffset, (xs.Min(), xs.Max()), lineWidth: 2, label: "actual");
+            plt.Legend();
             TestTools.SaveFig(plt);
 
             // ensure the fit is good
