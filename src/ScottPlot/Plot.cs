@@ -369,11 +369,27 @@ namespace ScottPlot
             double errorLineWidth = 1,
             double errorCapSize = 3,
             MarkerShape markerShape = MarkerShape.filledCircle,
-            LineStyle lineStyle = LineStyle.Solid
+            LineStyle lineStyle = LineStyle.Solid,
+            bool polarPlot = false
             )
         {
             if (color == null)
                 color = settings.GetNextColor();
+
+            if (polarPlot)
+            {
+                //x is r
+                //y is theta
+
+                for (int i = 0; i < xs.Length; i++)
+                {
+                    double x = xs[i];
+                    double y = ys[i];
+
+                    xs[i] = x * Math.Cos(y);
+                    ys[i] = x * Math.Sin(y);
+                }
+            }
 
             PlottableScatter scatterPlot = new PlottableScatter(
                 xs: xs,
@@ -1330,4 +1346,3 @@ namespace ScottPlot
         #endregion
 
     }
-}
