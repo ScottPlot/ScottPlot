@@ -7,6 +7,7 @@ namespace ScottPlot.Statistics
     {
         public readonly double slope;
         public readonly double offset;
+        public readonly double rSquared;
 
         private readonly int pointCount;
         private readonly double[] xs;
@@ -22,7 +23,7 @@ namespace ScottPlot.Statistics
             pointCount = ys.Length;
             this.xs = xs;
             this.ys = ys;
-            (slope, offset) = GetCoefficients(xs, ys);
+            (slope, offset, rSquared) = GetCoefficients(xs, ys);
         }
 
         public LinearRegressionLine(double[] ys, double firstX, double xSpacing)
@@ -35,7 +36,7 @@ namespace ScottPlot.Statistics
             }
             this.xs = xs;
             this.ys = ys;
-            (slope, offset) = GetCoefficients(xs, ys);
+            (slope, offset, rSquared) = GetCoefficients(xs, ys);
         }
 
         public override string ToString()
@@ -43,7 +44,7 @@ namespace ScottPlot.Statistics
             return $"Linear fit for {pointCount} points: Y = {slope}x + {offset}";
         }
 
-        private static (double, double) GetCoefficients(double[] xs, double[] ys) {
+        private static (double, double, double) GetCoefficients(double[] xs, double[] ys) {
             double sumXYResidual = 0;
             double sumXSquareResidual = 0;
 
@@ -59,7 +60,23 @@ namespace ScottPlot.Statistics
             double slope = sumXYResidual / sumXSquareResidual;
             double offset = meanY - (slope * meanX);
 
-            return (slope, offset);
+            // calcualte R squared (https://en.wikipedia.org/wiki/Coefficient_of_determination)
+            double ssTot = 0;
+            double ssRes = 0;
+            for (int i=0; i<ys.Length; i++)
+            {
+                double thisY = ys[i];
+
+                double distanceFromMeanSquared = Math.Pow(thisY - meanY, 2);
+                ssTot += distanceFromMeanSquared;
+
+                double modelY = slope * xs[i] + offset;
+                double distanceFromModelSquared = Math.Pow(thisY - modelY, 2);
+                ssRes += distanceFromModelSquared;
+            }
+            double rSquared = 1 - ssRes / ssTot;
+
+            return (slope, offset, rSquared);
         }
 
         public double GetValueAt(double x)
