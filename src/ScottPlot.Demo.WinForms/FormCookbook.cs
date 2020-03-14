@@ -17,7 +17,8 @@ namespace ScottPlot.Demo.WinForms
         {
             InitializeComponent();
             pictureBox1.Dock = DockStyle.Fill;
-            LoadTreeWithDemos();
+            //LoadTreeWithDemos();
+            LoadTreeWithDemoNotes();
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
         }
 
@@ -26,26 +27,21 @@ namespace ScottPlot.Demo.WinForms
 
         }
 
-        private void LoadTreeWithDemos()
+        private void LoadTreeWithDemoNotes()
         {
-            IPlotDemo[] plots = Reflection.GetPlotsInOrder();
-
-            var Grouped = plots.GroupBy(x => x.categoryMajor)
-                .Select( major => new {major.Key, minorCategories = major.GroupBy(item => item.categoryMinor)});
-
-            foreach (var majorCategory in Grouped)
+            foreach (DemoNodeItem majorItem in Reflection.GetPlotNodeItems())
             {
-                var majorNode = new TreeNode(majorCategory.Key);
+                var majorNode = new TreeNode(majorItem.Header);
                 treeView1.Nodes.Add(majorNode);
-                foreach(var minorCategory in majorCategory.minorCategories)
+                foreach (DemoNodeItem minorItem in majorItem.Items)
                 {
-                    var minorNode = new TreeNode(minorCategory.Key);
+                    var minorNode = new TreeNode(minorItem.Header);
                     majorNode.Nodes.Add(minorNode);
-                    foreach(var demoPlot in minorCategory)
+                    foreach (DemoNodeItem plotItem in minorItem.Items)
                     {
-                        var classNode = new TreeNode(demoPlot.name);
-                        classNode.Tag = demoPlot.classPath.ToString();
-                        minorNode.Nodes.Add(classNode);
+                        var plotNode = new TreeNode(plotItem.Header);
+                        plotNode.Tag = plotItem.Tag;
+                        minorNode.Nodes.Add(plotNode);
                     }
                 }
             }
