@@ -41,7 +41,7 @@ namespace ScottPlot.Statistics
 
         public override string ToString()
         {
-            return $"Linear fit for {pointCount} points: Y = {slope}x + {offset}";
+            return $"Linear fit for {pointCount} points: Y = {slope}x + {offset} (R² = {rSquared})";
         }
 
         private static (double, double, double) GetCoefficients(double[] xs, double[] ys) {
