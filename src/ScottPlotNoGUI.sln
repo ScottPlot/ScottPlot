@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot", "ScottPlot\Scot
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlotTests", "..\tests\ScottPlotTests.csproj", "{DDBB14B8-2B35-4B8B-83A9-4447D1E7B19B}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot.Demo", "ScottPlot.Demo\ScottPlot.Demo.csproj", "{C754B520-29F0-47D6-B3E6-D0D0ED4A9556}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{DDBB14B8-2B35-4B8B-83A9-4447D1E7B19B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DDBB14B8-2B35-4B8B-83A9-4447D1E7B19B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DDBB14B8-2B35-4B8B-83A9-4447D1E7B19B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C754B520-29F0-47D6-B3E6-D0D0ED4A9556}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C754B520-29F0-47D6-B3E6-D0D0ED4A9556}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C754B520-29F0-47D6-B3E6-D0D0ED4A9556}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C754B520-29F0-47D6-B3E6-D0D0ED4A9556}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
