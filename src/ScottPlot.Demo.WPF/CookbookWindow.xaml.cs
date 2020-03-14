@@ -45,35 +45,39 @@ namespace ScottPlot.Demo.WPF
         private void LoadTreeWithDemos()
         {
             IPlotDemo[] plots = Reflection.GetPlotsInOrder();
-            var Grouped = plots
+
+            var demoNodeItems = plots
                 .GroupBy(x => x.categoryMajor)
-                .Select(major =>
+                .Select(majorCategory =>
                     new DemoNodeItem
                     {
-                        Header = major.Key,
+                        Header = majorCategory.Key,
                         IsExpanded = true,
-                        Items = major
-                            .GroupBy(item => item.categoryMinor)
-                            .Select(minor =>
+                        Items = majorCategory
+                            .GroupBy(x => x.categoryMinor)
+                            .Select(minorCategory =>
                                 new DemoNodeItem
                                 {
-                                    Header = minor.Key,
+                                    Header = minorCategory.Key,
                                     IsExpanded = false,
-                                    Items = minor
-                                        .Select(elem =>
+                                    Items = minorCategory
+                                        .Select(demoPlot =>
                                                     new DemoNodeItem
                                                     {
-                                                        Header = elem.name,
-                                                        Tag = elem.classPath.ToString()
+                                                        Header = demoPlot.name,
+                                                        Tag = demoPlot.classPath.ToString()
                                                     })
                                         .ToList()
                                 })
                             .ToList()
                     })
                 .ToList();
-            Grouped[0].Items[0].IsExpanded = true;
-            Grouped[0].Items[0].Items[0].IsSelected = true;
-            DemoTreeview.ItemsSource = Grouped;
+
+            // expand and select a default node/demo
+            demoNodeItems[0].Items[0].IsExpanded = true;
+            demoNodeItems[0].Items[0].Items[0].IsSelected = true;
+
+            DemoTreeview.ItemsSource = demoNodeItems;
             DemoTreeview.Focus();
         }
     }
