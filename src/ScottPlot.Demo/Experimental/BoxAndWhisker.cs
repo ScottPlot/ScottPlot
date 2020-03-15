@@ -19,8 +19,12 @@ namespace ScottPlot.Demo.Experimental
                 boxAndWiskers[1] = Statistics.BoxAndWhiskerFromData.StdevStderrMean(Data.LineLengths.formsPlot, 2);
                 boxAndWiskers[2] = Statistics.BoxAndWhiskerFromData.StdevStderrMean(Data.LineLengths.wpfPlot, 3);
 
+                // note: this is how to add experimental plottables (which don't have methods in the Plot module)
+                PlottableBoxAndWhisker boxAndWhiskerPlot = new PlottableBoxAndWhisker(boxAndWiskers);
+                List<Plottable> plottablesList = plt.GetPlottables();
+                plottablesList.Add(boxAndWhiskerPlot);
+
                 plt.Title("Source Code Line Length");
-                plt.PlotBoxAndWhisker(boxAndWiskers);
                 plt.YLabel("Number of Characters");
 
                 double[] xPositions = { 1, 2, 3 };
@@ -44,8 +48,12 @@ namespace ScottPlot.Demo.Experimental
                 boxAndWiskers[1] = Statistics.BoxAndWhiskerFromData.OutlierQuartileMedian(Data.LineLengths.formsPlot, 2);
                 boxAndWiskers[2] = Statistics.BoxAndWhiskerFromData.OutlierQuartileMedian(Data.LineLengths.wpfPlot, 3);
 
+                // note: this is how to add experimental plottables (which don't have methods in the Plot module)
+                PlottableBoxAndWhisker boxAndWhiskerPlot = new PlottableBoxAndWhisker(boxAndWiskers);
+                List<Plottable> plottablesList = plt.GetPlottables();
+                plottablesList.Add(boxAndWhiskerPlot);
+
                 plt.Title("Source Code Line Length");
-                plt.PlotBoxAndWhisker(boxAndWiskers);
                 plt.YLabel("Number of Characters");
 
                 double[] xPositions = { 1, 2, 3 };
