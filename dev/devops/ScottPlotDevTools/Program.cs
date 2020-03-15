@@ -63,7 +63,7 @@ namespace ScottPlotDevTools
                 projVersion.Incriment();
                 string newVersion = projVersion.version.ToString();
                 Console.WriteLine($"{oldVersion} -> {newVersion} ({projVersion.name})");
-                //thisProjVersion.Save();
+                thisProjVersion.Save();
             }
         }
 
@@ -92,6 +92,9 @@ namespace ScottPlotDevTools
             double elapsedSec = (double)stopwatch.ElapsedTicks / Stopwatch.Frequency;
             Console.WriteLine($"Cookbook finished ({recipes.Length} figures generated in {elapsedSec:0.00} seconds)");
             Console.WriteLine(outputFolder);
+
+            // launch the folder
+            System.Diagnostics.Process.Start("explorer.exe", outputFolder);
         }
 
         static void CleanProject(string projectName)
@@ -139,8 +142,9 @@ namespace ScottPlotDevTools
                 System.IO.Directory.Delete(wpfOutputPath, true);
             if (System.IO.Directory.Exists(versionOutputPath))
                 System.IO.Directory.Delete(versionOutputPath, true);
-            foreach (string zipFilePathToDelete in System.IO.Directory.GetFiles(System.IO.Path.GetDirectoryName(wpfOutputPath), "*.zip"))
-                System.IO.File.Delete(zipFilePathToDelete);
+            if (System.IO.Directory.Exists(System.IO.Path.GetDirectoryName(wpfOutputPath)))
+                foreach (string zipFilePathToDelete in System.IO.Directory.GetFiles(System.IO.Path.GetDirectoryName(wpfOutputPath), "*.zip"))
+                    System.IO.File.Delete(zipFilePathToDelete);
 
             CleanProject("ScottPlot.Demo.WPF");
             BuildProject("ScottPlot.Demo.WPF");
