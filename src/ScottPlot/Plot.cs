@@ -598,14 +598,6 @@ namespace ScottPlot
             return barPlot;
         }
 
-        [Obsolete("WARNING: This method is still experimental", error: false)]
-        public PlottableBoxAndWhisker PlotBoxAndWhisker(Statistics.BoxAndWhisker[] boxes)
-        {
-            var bawPlot = new PlottableBoxAndWhisker(boxes);
-            settings.plottables.Add(bawPlot);
-            return bawPlot;
-        }
-
         public PlottableOHLC PlotOHLC(OHLC[] ohlcs)
         {
             PlottableOHLC ohlc = new PlottableOHLC(ohlcs, displayCandles: false);
@@ -1345,15 +1337,6 @@ namespace ScottPlot
         public void Style(Style style)
         {
             StyleTools.SetStyle(this, style);
-        }
-
-        [Obsolete]
-        public void Parallel(bool useParallel)
-        {
-            throw new NotImplementedException("parallel processing should not used enabled at this time");
-
-            //foreach (var plottable in GetPlottables())
-            //plottable.useParallel = useParallel;
         }
 
         public void SetCulture(System.Globalization.CultureInfo culture)
