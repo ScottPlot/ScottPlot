@@ -63,7 +63,7 @@ namespace ScottPlotDevTools
                 projVersion.Incriment();
                 string newVersion = projVersion.version.ToString();
                 Console.WriteLine($"{oldVersion} -> {newVersion} ({projVersion.name})");
-                thisProjVersion.Save();
+                projVersion.Save();
             }
         }
 
