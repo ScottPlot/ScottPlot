@@ -56,7 +56,7 @@ steps:
 ### BUILD FULL SOLUTION (Windows only)
     
 - task: VSBuild@1
-  displayName: 'REBUILD Full Solution (Windows)'
+  displayName: 'Rebuild Solution (Windows)'
   condition: contains(variables['agent.os'], 'Windows')
   inputs:
     solution: 'src/ScottPlotV4.sln'
