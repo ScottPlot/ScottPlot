@@ -11,7 +11,7 @@ namespace ScottPlotDevTools
 
             //args = new string[] { "-incrimentVersion" };
             //args = new string[] { "-makeCookbook" };
-            args = new string[] { "-makeDemo" };
+            //args = new string[] { "-makeDemo" };
             ProcessArguments(args);
         }
 
