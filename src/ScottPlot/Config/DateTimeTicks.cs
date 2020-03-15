@@ -15,34 +15,47 @@ namespace ScottPlot.Config
          * 
          */
 
-        public static (DateTime[], String[]) GetTicks(DateTime dt1, DateTime dt2, int maxTickCount, CultureInfo culture)
+        public static (DateTime[], String[]) GetTicks(DateTime dt1, DateTime dt2, int maxTickCount, CultureInfo culture, DateTimeUnit? dtManualUnits, int dtManualSpacing)
         {
+            // prevent crashes if equal or inverted date ranges
             if (!(dt1 < dt2))
                 dt2 = dt1.AddSeconds(1);
 
-            // determine the best time units to use for tick marks
+            bool fixedSpacing = (dtManualUnits != null);
             DateTimeUnit units;
-            double daysApart = dt2.ToOADate() - dt1.ToOADate();
-            double hoursApart = daysApart * 24;
-            double minutesApart = hoursApart * 60;
-            double secondsApart = minutesApart * 60;
-            if (daysApart > 365 * 2)
-                units = DateTimeUnit.Year;
-            else if (daysApart > 30 * 2)
-                units = DateTimeUnit.Month;
-            else if (hoursApart > 24 * 2)
-                units = DateTimeUnit.Day;
-            else if (minutesApart > 60 * 2)
-                units = DateTimeUnit.Hour;
-            else if (secondsApart > 60 * 2)
-                units = DateTimeUnit.Minute;
+            if (fixedSpacing)
+            {
+                units = dtManualUnits.Value;
+            }
             else
-                units = DateTimeUnit.Second;
+            {
+                // determine the best DateTime unit to use for the given DateTime range
+                double daysApart = dt2.ToOADate() - dt1.ToOADate();
+                double hoursApart = daysApart * 24;
+                double minutesApart = hoursApart * 60;
+                double secondsApart = minutesApart * 60;
+                if (daysApart > 365 * 2)
+                    units = DateTimeUnit.Year;
+                else if (daysApart > 30 * 2)
+                    units = DateTimeUnit.Month;
+                else if (hoursApart > 24 * 2)
+                    units = DateTimeUnit.Day;
+                else if (minutesApart > 60 * 2)
+                    units = DateTimeUnit.Hour;
+                else if (secondsApart > 60 * 2)
+                    units = DateTimeUnit.Minute;
+                else
+                    units = DateTimeUnit.Second;
+            }
 
             // create arrays of DateTimes with spacings customized for each tick unit
             if (units == DateTimeUnit.Year)
             {
-                DateTime[] ticks = GetYearTicks(dt1, dt2, maxTickCount);
+                DateTime[] ticks;
+                if (fixedSpacing)
+                    throw new NotImplementedException("can't display years with fixed spacing (use numeric axis instead)");
+                else
+                    ticks = GetYearTicks(dt1, dt2, maxTickCount);
 
                 string[] labels = new string[ticks.Length];
                 for (int i = 0; i < labels.Length; i++)
@@ -56,13 +69,22 @@ namespace ScottPlot.Config
             }
             else if (units == DateTimeUnit.Month)
             {
-                DateTime[] ticks = GetMonthTicks(dt1, dt2, 1);
-                if (ticks.Length > maxTickCount)
-                    ticks = GetMonthTicks(dt1, dt2, 2);
-                if (ticks.Length > maxTickCount)
-                    ticks = GetMonthTicks(dt1, dt2, 3);
-                if (ticks.Length > maxTickCount)
-                    ticks = GetMonthTicks(dt1, dt2, 6);
+                DateTime[] ticks;
+                if (fixedSpacing)
+                {
+                    ticks = GetMonthTicks(dt1, dt2, dtManualSpacing);
+                }
+                else
+                {
+                    ticks = GetMonthTicks(dt1, dt2, 1);
+                    if (ticks.Length > maxTickCount)
+                        ticks = GetMonthTicks(dt1, dt2, 2);
+                    if (ticks.Length > maxTickCount)
+                        ticks = GetMonthTicks(dt1, dt2, 3);
+                    if (ticks.Length > maxTickCount)
+                        ticks = GetMonthTicks(dt1, dt2, 6);
+                }
+
 
                 string[] labels = new string[ticks.Length];
                 for (int i = 0; i < labels.Length; i++)
@@ -76,13 +98,21 @@ namespace ScottPlot.Config
             }
             else if (units == DateTimeUnit.Day)
             {
-                DateTime[] ticks = GetDayTicks(dt1, dt2, 1);
-                if (ticks.Length > maxTickCount)
-                    ticks = GetDayTicks(dt1, dt2, 2);
-                if (ticks.Length > maxTickCount)
-                    ticks = GetDayTicks(dt1, dt2, 5);
-                if (ticks.Length > maxTickCount)
-                    ticks = GetDayTicks(dt1, dt2, 10);
+                DateTime[] ticks;
+                if (fixedSpacing)
+                {
+                    ticks = GetDayTicks(dt1, dt2, dtManualSpacing);
+                }
+                else
+                {
+                    ticks = GetDayTicks(dt1, dt2, 1);
+                    if (ticks.Length > maxTickCount)
+                        ticks = GetDayTicks(dt1, dt2, 2);
+                    if (ticks.Length > maxTickCount)
+                        ticks = GetDayTicks(dt1, dt2, 5);
+                    if (ticks.Length > maxTickCount)
+                        ticks = GetDayTicks(dt1, dt2, 10);
+                }
 
                 string[] labels = new string[ticks.Length];
                 for (int i = 0; i < labels.Length; i++)
@@ -96,15 +126,24 @@ namespace ScottPlot.Config
             }
             else if (units == DateTimeUnit.Hour)
             {
-                DateTime[] ticks = GetHourTicks(dt1, dt2, 1);
-                if (ticks.Length > maxTickCount)
-                    ticks = GetHourTicks(dt1, dt2, 2);
-                if (ticks.Length > maxTickCount)
-                    ticks = GetHourTicks(dt1, dt2, 4);
-                if (ticks.Length > maxTickCount)
-                    ticks = GetHourTicks(dt1, dt2, 8);
-                if (ticks.Length > maxTickCount)
-                    ticks = GetHourTicks(dt1, dt2, 12);
+                DateTime[] ticks;
+                if (fixedSpacing)
+                {
+                    ticks = GetHourTicks(dt1, dt2, dtManualSpacing);
+                }
+                else
+                {
+                    ticks = GetHourTicks(dt1, dt2, 1);
+                    if (ticks.Length > maxTickCount)
+                        ticks = GetHourTicks(dt1, dt2, 2);
+                    if (ticks.Length > maxTickCount)
+                        ticks = GetHourTicks(dt1, dt2, 4);
+                    if (ticks.Length > maxTickCount)
+                        ticks = GetHourTicks(dt1, dt2, 8);
+                    if (ticks.Length > maxTickCount)
+                        ticks = GetHourTicks(dt1, dt2, 12);
+                }
+
 
                 string[] labels = new string[ticks.Length];
                 for (int i = 0; i < labels.Length; i++)
@@ -118,17 +157,25 @@ namespace ScottPlot.Config
             }
             else if (units == DateTimeUnit.Minute)
             {
-                DateTime[] ticks = GetMinuteTicks(dt1, dt2, 1);
-                if (ticks.Length > maxTickCount)
-                    ticks = GetMinuteTicks(dt1, dt2, 2);
-                if (ticks.Length > maxTickCount)
-                    ticks = GetMinuteTicks(dt1, dt2, 5);
-                if (ticks.Length > maxTickCount)
-                    ticks = GetMinuteTicks(dt1, dt2, 10);
-                if (ticks.Length > maxTickCount)
-                    ticks = GetMinuteTicks(dt1, dt2, 15);
-                if (ticks.Length > maxTickCount)
-                    ticks = GetMinuteTicks(dt1, dt2, 30);
+                DateTime[] ticks;
+                if (fixedSpacing)
+                {
+                    ticks = GetMinuteTicks(dt1, dt2, dtManualSpacing);
+                }
+                else
+                {
+                    ticks = GetMinuteTicks(dt1, dt2, 1);
+                    if (ticks.Length > maxTickCount)
+                        ticks = GetMinuteTicks(dt1, dt2, 2);
+                    if (ticks.Length > maxTickCount)
+                        ticks = GetMinuteTicks(dt1, dt2, 5);
+                    if (ticks.Length > maxTickCount)
+                        ticks = GetMinuteTicks(dt1, dt2, 10);
+                    if (ticks.Length > maxTickCount)
+                        ticks = GetMinuteTicks(dt1, dt2, 15);
+                    if (ticks.Length > maxTickCount)
+                        ticks = GetMinuteTicks(dt1, dt2, 30);
+                }
 
                 string[] labels = new string[ticks.Length];
                 for (int i = 0; i < labels.Length; i++)
@@ -142,17 +189,25 @@ namespace ScottPlot.Config
             }
             else if (units == DateTimeUnit.Second)
             {
-                DateTime[] ticks = GetSecondTicks(dt1, dt2, 1);
-                if (ticks.Length > maxTickCount)
-                    ticks = GetSecondTicks(dt1, dt2, 2);
-                if (ticks.Length > maxTickCount)
-                    ticks = GetSecondTicks(dt1, dt2, 5);
-                if (ticks.Length > maxTickCount)
-                    ticks = GetSecondTicks(dt1, dt2, 10);
-                if (ticks.Length > maxTickCount)
-                    ticks = GetSecondTicks(dt1, dt2, 15);
-                if (ticks.Length > maxTickCount)
-                    ticks = GetSecondTicks(dt1, dt2, 30);
+                DateTime[] ticks;
+                if (fixedSpacing)
+                {
+                    ticks = GetSecondTicks(dt1, dt2, dtManualSpacing);
+                }
+                else
+                {
+                    ticks = GetSecondTicks(dt1, dt2, 1);
+                    if (ticks.Length > maxTickCount)
+                        ticks = GetSecondTicks(dt1, dt2, 2);
+                    if (ticks.Length > maxTickCount)
+                        ticks = GetSecondTicks(dt1, dt2, 5);
+                    if (ticks.Length > maxTickCount)
+                        ticks = GetSecondTicks(dt1, dt2, 10);
+                    if (ticks.Length > maxTickCount)
+                        ticks = GetSecondTicks(dt1, dt2, 15);
+                    if (ticks.Length > maxTickCount)
+                        ticks = GetSecondTicks(dt1, dt2, 30);
+                }
 
                 string[] labels = new string[ticks.Length];
                 for (int i = 0; i < labels.Length; i++)

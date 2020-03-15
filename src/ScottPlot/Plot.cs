@@ -1144,7 +1144,11 @@ namespace ScottPlot
             double? xSpacing = null,
             double? ySpacing = null,
             bool? enableHorizontal = null,
-            bool? enableVertical = null
+            bool? enableVertical = null,
+            Config.DateTimeUnit? xSpacingDateTimeUnit = null,
+            int? xSpacingDateTime = null,
+            Config.DateTimeUnit? ySpacingDateTimeUnit = null,
+            int? ySpacingDateTime = null
             )
         {
             if (enable != null)
@@ -1159,10 +1163,27 @@ namespace ScottPlot
             if (enableVertical != null)
                 settings.grid.enableVertical = (bool)enableVertical;
 
-            settings.grid.color = color ?? settings.grid.color;
+            if (color != null)
+                settings.grid.color = color.Value;
 
-            settings.ticks.manualSpacingX = (xSpacing == null) ? 0 : (double)xSpacing;
-            settings.ticks.manualSpacingY = (ySpacing == null) ? 0 : (double)ySpacing;
+            if (xSpacing != null)
+                settings.ticks.manualSpacingX = xSpacing.Value;
+
+            if (ySpacing != null)
+                settings.ticks.manualSpacingY = xSpacing.Value;
+
+            if (xSpacingDateTimeUnit != null)
+                settings.ticks.manualDateTimeSpacingUnitX = xSpacingDateTimeUnit.Value;
+
+            if (ySpacingDateTimeUnit != null)
+                settings.ticks.manualDateTimeSpacingUnitY = ySpacingDateTimeUnit.Value;
+
+            if (xSpacingDateTime != null)
+                settings.ticks.manualDateTimeSpacingX = xSpacingDateTime.Value;
+
+            if (ySpacingDateTime != null)
+                settings.ticks.manualDateTimeSpacingY = ySpacingDateTime.Value;
+
         }
 
         public void Frame(

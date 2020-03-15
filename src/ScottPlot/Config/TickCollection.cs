@@ -90,7 +90,12 @@ namespace ScottPlot.Config
             {
                 low = Math.Max(low, DateTime.MinValue.ToOADate());
                 high = Math.Min(high, DateTime.MaxValue.ToOADate());
-                var dateTicks = DateTimeTicks.GetTicks(DateTime.FromOADate(low), DateTime.FromOADate(high), tickCount, settings.culture);
+
+                var dtManualUnits = (verticalAxis) ? settings.ticks.manualDateTimeSpacingUnitY : settings.ticks.manualDateTimeSpacingUnitX;
+                var dtManualSpacing = (verticalAxis) ? settings.ticks.manualDateTimeSpacingY : settings.ticks.manualDateTimeSpacingX;
+
+                var dateTicks = DateTimeTicks.GetTicks(DateTime.FromOADate(low), DateTime.FromOADate(high), tickCount, settings.culture, dtManualUnits, dtManualSpacing);
+
                 tickPositionsMajor = Tools.DateTimesToDoubles(dateTicks.Item1);
                 tickLabels = dateTicks.Item2;
                 for (int i = 0; i < tickLabels.Length; i++)
