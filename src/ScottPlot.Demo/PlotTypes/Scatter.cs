@@ -158,9 +158,9 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class DateAxis : PlotDemo, IPlotDemo
+        public class DateAxisFixedSpace : PlotDemo, IPlotDemo
         {
-            public string name { get; } = "Date Axis";
+            public string name { get; } = "Date Axis with Defined Tick Spacing";
             public string description { get; } = "This example shows how to use a fixed inter-tick distance.";
 
             public void Render(Plot plt)
@@ -181,6 +181,8 @@ namespace ScottPlot.Demo.PlotTypes
 
                 plt.PlotScatter(dates, values);
                 plt.Ticks(dateTimeX: true);
+
+                // define tick spacing as 1 day (every day will be shown)
                 plt.Grid(xSpacing: 1);
             }
         }
