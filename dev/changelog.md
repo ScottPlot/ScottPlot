@@ -15,6 +15,11 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
   * Improve support for display scaling (#273)
   * Create standalone user control launchers
   * Add right-click menu to WpfPlot
+  * `Plot.BoxAndWhisker()`
+  * improved bar charts (#244, #260, #277) _Thanks @Benny121221 and @bonzaiferroni and @SoManyUsernamesTaken_
+    * support for stacked box plots
+    * support for horizontal box plots
+  * support for "shade below the curve" (#255) _Thanks @ckovamees_
 * **ScottPlot 4.1**
   * Refactor plottable module (namespaces will change slightly)
 * **ScottPlot 4.2** 
@@ -22,15 +27,7 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
   * Create a GDI rendering module which uses System.Drawing 
   * Create a SkiaSharp rendering module and user control (supporting OpenGL hardware acceleration)
 
-## ScottPlot 4.0.20 (IN DEVELOPMENT)
-
-#### Work to do...
-* `Plot.Function()` (#243) _Thanks @Benny121221_
-* `Plot.BoxAndWhisker()`
-* improved bar charts (#244, #260, #277) _Thanks @Benny121221 and @bonzaiferroni and @SoManyUsernamesTaken_
-  * support for stacked box plots
-  * support for horizontal box plots
-* support for "shade below the curve" (#255) _Thanks @ckovamees_
+## ScottPlot 4.0.21
 
 ### Misc
 * Created new cookbook and demo applications for WinForms and WPF (#271)
@@ -46,6 +43,8 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
 * Added overload for `Plot.PlotLine()` which accepts a slope, offset, and start and end X points to make it easy to plot a linear line with known formula. Using PlotFormula() will produce the same output, but this may be simpler to use for straight lines.
 * Added `rSquared` property to linear regression fits (#290) _Thanks @Benny121221 and @StendProg_
 * Added `Tools.ConvertPolarCoordinates()` to make it easier to display polar data on ScottPlot's Cartesian axes (#298) _Thanks @Benny121221_
+* Improved `Plot.Function()` (#243) _Thanks @Benny121221_
+* Added overload for `Plot.SetCulture()` to let the user define number and date formatting rather than relying on pre-made cultures (#301, #236) _Thanks @SeidChr_
 
 ## ScottPlot 4.0.19
 
