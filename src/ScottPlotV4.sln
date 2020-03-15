@@ -27,11 +27,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dev", "dev", "{35F8F55D-8E1E-44BC-9DE2-C60DCD42BDCB}"
 	ProjectSection(SolutionItems) = preProject
 		..\dev\devops\azure-pipelines.yml = ..\dev\devops\azure-pipelines.yml
+		..\dev\changelog.md = ..\dev\changelog.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlotBuilder", "..\dev\devops\ScottPlotBuilder\ScottPlotBuilder.csproj", "{9EB0839B-706B-4416-A81D-A80A8B8B0D1B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScottPlotDevTools", "..\dev\devops\ScottPlotDevTools\ScottPlotDevTools.csproj", "{27D1A59C-6CF8-4961-BD98-6AA56F397A8A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlotDevTools", "..\dev\devops\ScottPlotDevTools\ScottPlotDevTools.csproj", "{27D1A59C-6CF8-4961-BD98-6AA56F397A8A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

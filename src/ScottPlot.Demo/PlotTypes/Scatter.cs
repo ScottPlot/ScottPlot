@@ -157,34 +157,5 @@ namespace ScottPlot.Demo.PlotTypes
                 scatter.SaveCSV("scatter.csv");
             }
         }
-
-        public class DateAxisFixedSpace : PlotDemo, IPlotDemo
-        {
-            public string name { get; } = "Date Axis with Defined Tick Spacing";
-            public string description { get; } = "This example shows how to use a fixed inter-tick distance.";
-
-            public void Render(Plot plt)
-            {
-                int pointCount = 20;
-
-                // create a series of dates
-                double[] dates = new double[pointCount];
-                var firstDay = new DateTime(2020, 1, 22);
-                for (int i = 0; i < pointCount; i++)
-                    dates[i] = firstDay.AddDays(i).ToOADate();
-
-                // simulate data for each date
-                double[] values = new double[pointCount];
-                Random rand = new Random(0);
-                for (int i = 1; i < pointCount; i++)
-                    values[i] = values[i - 1] + rand.NextDouble();
-
-                plt.PlotScatter(dates, values);
-                plt.Ticks(dateTimeX: true);
-
-                // define tick spacing as 1 day (every day will be shown)
-                plt.Grid(xSpacing: 1);
-            }
-        }
     }
 }

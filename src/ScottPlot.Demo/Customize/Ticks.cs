@@ -248,5 +248,55 @@ namespace ScottPlot.Demo.Customize
                 plt.Ticks(useOffsetNotation: false);
             }
         }
+
+        public class RotatedTicks : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Rotated Ticks";
+            public string description { get; } = "Horizontal ticks can be rotated an arbitrary amount.";
+
+            public void Render(Plot plt)
+            {
+                int pointCount = 51;
+                double[] x = DataGen.Consecutive(pointCount);
+                double[] sin = DataGen.Sin(pointCount);
+                double[] cos = DataGen.Cos(pointCount);
+
+                plt.PlotScatter(x, sin);
+                plt.PlotScatter(x, cos);
+
+                plt.Ticks(xTickRotation: 90);
+            }
+        }
+
+        public class DateAxisFixedSpace : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Defined DateTime Tick Spacing";
+            public string description { get; } = "This example shows how to use a fixed inter-tick distance.";
+
+            public void Render(Plot plt)
+            {
+                int pointCount = 20;
+
+                // create a series of dates
+                double[] dates = new double[pointCount];
+                var firstDay = new DateTime(2020, 1, 22);
+                for (int i = 0; i < pointCount; i++)
+                    dates[i] = firstDay.AddDays(i).ToOADate();
+
+                // simulate data for each date
+                double[] values = new double[pointCount];
+                Random rand = new Random(0);
+                for (int i = 1; i < pointCount; i++)
+                    values[i] = values[i - 1] + rand.NextDouble();
+
+                plt.PlotScatter(dates, values);
+                plt.Ticks(dateTimeX: true);
+
+                // define tick spacing as 1 day (every day will be shown)
+                plt.Grid(xSpacingDateTimeUnit: Config.DateTimeUnit.Day, xSpacingDateTime: 1);
+                plt.Ticks(dateTimeX: true, xTickRotation: 45);
+                plt.Layout(xScaleHeight: 60);
+            }
+        }
     }
 }
