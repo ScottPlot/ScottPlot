@@ -66,18 +66,10 @@ namespace ScottPlot.Config
             Set(limits.Item1, limits.Item2, limits.Item3, limits.Item4);
         }
 
-        public void Zoom(double xFrac = 1, double yFrac = 1, PointF? zoomCenter = null)
+        public void Zoom(double xFrac = 1, double yFrac = 1, double? centerX = null, double? centerY = null)
         {
-            if (zoomCenter == null)
-            {
-                x.Zoom(xFrac);
-                y.Zoom(yFrac);
-            }
-            else
-            {
-                x.Zoom(xFrac, (double)((PointF)zoomCenter).X);
-                y.Zoom(yFrac, (double)((PointF)zoomCenter).Y);
-            }
+            x.Zoom(xFrac, centerX);
+            y.Zoom(yFrac, centerY);
         }
     }
 }

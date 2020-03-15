@@ -361,23 +361,16 @@ namespace ScottPlot
             // However, this requires some work and testing to ensure it works if DPI scaling is used too.
             // Currently, scroll-wheel zooming simply zooms in and out of the center of the plot.
 
-            double zoomAmountY = 0.15;
-            double zoomAmountX = 0.15;
+            double xFrac = (e.Delta > 0) ? 1.15 : 0.85;
+            double yFrac = (e.Delta > 0) ? 1.15 : 0.85;
 
-            if (isVerticalLocked) zoomAmountY = 0;
-            if (isHorizontalLocked) zoomAmountX = 0;
+            if (isVerticalLocked) yFrac = 1;
+            if (isHorizontalLocked) xFrac = 1;
 
-            if (e.Delta > 1)
-            {
-                plt.AxisZoom(1 + zoomAmountX, 1 + zoomAmountY);
-                AxisChanged?.Invoke(null, null);
-            }
-            else
-            {
-                plt.AxisZoom(1 - zoomAmountX, 1 - zoomAmountY);
-                AxisChanged?.Invoke(null, null);
-            }
+            var coord = plt.CoordinateFromPixel(mouseLocation.X, mouseLocation.Y);
+            plt.AxisZoom(xFrac, yFrac, coord.X, coord.Y);
 
+            AxisChanged?.Invoke(null, null);
             Render(skipIfCurrentlyRendering: false);
         }
 

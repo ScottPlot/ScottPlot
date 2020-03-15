@@ -344,7 +344,8 @@ namespace ScottPlot
             if (isVerticalLocked) yFrac = 1;
             if (isHorizontalLocked) xFrac = 1;
 
-            plt.AxisZoom(xFrac, yFrac, plt.CoordinateFromPixel(e.Location));
+            var mouseCoordinate = plt.CoordinateFromPixel(e.Location);
+            plt.AxisZoom(xFrac, yFrac, mouseCoordinate.X, mouseCoordinate.Y);
             Render();
             OnAxisChanged();
         }
