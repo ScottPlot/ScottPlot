@@ -32,6 +32,7 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
 * Added support for fixed grid spacing when using DateTime axes (#299) _Thanks @SeidChr_
 * Updated ScottPlot icon (removed small text, styled icon after emoji)
 * Improved legend font size when using display scaling (#289)
+* Scroll wheel zooming now zooms to cursor (instead of center) in WPF control. This feature works now even if display scaling is used. (#281)
 
 ## ScottPlot 4.0.21
 
