@@ -26,7 +26,20 @@ namespace ScottPlot
 
         public override AxisLimits2D GetLimits()
         {
-            double[] limits = {-10, 10, -10, 10};
+            double max = double.NegativeInfinity;
+            double min = double.PositiveInfinity;
+
+            foreach (double x in DataGen.Range(-10, 10, .1))
+            {
+                double? y = function(x);
+                if (y != null)
+                {
+                    max = Math.Max(max, y.Value);
+                    min = Math.Min(min, y.Value);
+                }
+            }
+
+            double[] limits = { -10, 10, min, max };
 
             return new Config.AxisLimits2D(limits);
         }
@@ -35,8 +48,6 @@ namespace ScottPlot
         public override void Render(Settings settings)
         {
             double step = settings.xAxisUnitsPerPixel;
-            //double minRenderedX = minX > settings.axes.limits[0] ? minX : settings.axes.limits[0];
-            //double maxRenderedX = maxX < settings.axes.limits[1] ? maxX : settings.axes.limits[1];
 
             double minRenderedX = settings.axes.limits[0];
             double maxRenderedX = settings.axes.limits[1];
@@ -65,9 +76,6 @@ namespace ScottPlot
                     xList.Add(x);
                     yList.Add(y.Value);
                 }
-
-
-                //Console.WriteLine($"({xs[i]},{ys[i]})");
             }
 
 
