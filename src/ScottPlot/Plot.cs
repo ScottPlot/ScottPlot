@@ -1348,8 +1348,8 @@ namespace ScottPlot
         /// <summary>
         /// Updates the used culture to match your requirements.
         /// </summary>
-        /// <param name="datePattern">
-        /// https://docs.microsoft.com/de-de/dotnet/standard/base-types/custom-date-and-time-format-strings
+        /// <param name="shortDatePattern">
+        /// https://docs.microsoft.com/dotnet/standard/base-types/custom-date-and-time-format-strings
         /// </param>
         /// <param name="decimalSeparator">
         /// Separates the decimal digits.
@@ -1361,53 +1361,43 @@ namespace ScottPlot
         /// Number of digits after the numberDecimalSeparator.
         /// </param>
         /// <param name="numberNegativePattern">
-        /// https://docs.microsoft.com/de-de/dotnet/api/system.globalization.numberformatinfo.numbernegativepattern
+        /// https://docs.microsoft.com/dotnet/api/system.globalization.numberformatinfo.numbernegativepattern
         /// </param>
         /// <param name="numberGroupSizes">
         /// Sizes of decimal groups which are separated by the numberGroupSeparator.
-        /// https://docs.microsoft.com/de-de/dotnet/api/system.globalization.numberformatinfo.numbergroupsizes
+        /// https://docs.microsoft.com/dotnet/api/system.globalization.numberformatinfo.numbergroupsizes
         /// </param>
         public void SetCulture(
-            string datePattern = null,
+            string shortDatePattern = null,
             string decimalSeparator = null,
             string numberGroupSeparator = null,
             int? decimalDigits = null,
             int? numberNegativePattern = null,
             int[] numberGroupSizes = null)
         {
-            var cultureClone = (System.Globalization.CultureInfo)settings.culture.Clone();
 
-            if (datePattern != null)
-            {
-                cultureClone.DateTimeFormat.ShortDatePattern = datePattern;
-            }
+            // settings.culture may be null if the thread culture is the same is the system culture.
+            // If it is null, assigning it to a clone of the current culture solves this and also makes it mutable.
+            if (settings.culture is null)
+                settings.culture = (System.Globalization.CultureInfo)System.Globalization.CultureInfo.CurrentCulture.Clone();
+
+            if (shortDatePattern != null)
+                settings.culture.DateTimeFormat.ShortDatePattern = shortDatePattern;
 
             if (decimalDigits != null)
-            {
-                cultureClone.NumberFormat.NumberDecimalDigits = decimalDigits.Value;
-            }
+                settings.culture.NumberFormat.NumberDecimalDigits = decimalDigits.Value;
 
             if (decimalSeparator != null)
-            {
-                cultureClone.NumberFormat.NumberDecimalSeparator = decimalSeparator;
-            }
+                settings.culture.NumberFormat.NumberDecimalSeparator = decimalSeparator;
 
             if (numberGroupSeparator != null)
-            {
-                cultureClone.NumberFormat.NumberGroupSeparator = numberGroupSeparator;
-            }
+                settings.culture.NumberFormat.NumberGroupSeparator = numberGroupSeparator;
 
             if (numberGroupSizes != null)
-            {
-                cultureClone.NumberFormat.NumberGroupSizes = numberGroupSizes;
-            }
+                settings.culture.NumberFormat.NumberGroupSizes = numberGroupSizes;
 
             if (numberNegativePattern != null)
-            {
-                cultureClone.NumberFormat.NumberNegativePattern = numberNegativePattern.Value;
-            }
-
-            settings.culture = cultureClone;
+                settings.culture.NumberFormat.NumberNegativePattern = numberNegativePattern.Value;
         }
 
         #endregion
