@@ -14,7 +14,14 @@ namespace ScottPlot.Demo.PlotTypes
 
             public void Render(Plot plt)
             {
-                GenericPlots.SinAndCos(plt);
+                int pointCount = 51;
+                double[] x = DataGen.Consecutive(pointCount);
+                double[] sin = DataGen.Sin(pointCount);
+                double[] cos = DataGen.Cos(pointCount);
+
+                plt.PlotScatter(x, sin);
+                plt.PlotScatter(x, cos);
+
                 plt.PlotText("demo text", 10, .5, fontName: "comic sans ms", fontSize: 42, color: Color.Magenta, bold: true);
             }
         }
@@ -26,7 +33,13 @@ namespace ScottPlot.Demo.PlotTypes
 
             public void Render(Plot plt)
             {
-                GenericPlots.SinAndCos(plt);
+                int pointCount = 51;
+                double[] x = DataGen.Consecutive(pointCount);
+                double[] sin = DataGen.Sin(pointCount);
+                double[] cos = DataGen.Cos(pointCount);
+
+                plt.PlotScatter(x, sin);
+                plt.PlotScatter(x, cos);
 
                 plt.PlotPoint(25, 0.8, color: Color.Green);
                 plt.PlotText(" important point", 25, 0.8, color: Color.Green);
