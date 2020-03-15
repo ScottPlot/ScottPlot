@@ -82,6 +82,19 @@ namespace ScottPlot
             }
 
             layout.Update(width, height);
+
+            if (axes.equalAxes)
+            {
+                var limits = new Config.AxisLimits2D(axes.ToArray());
+
+                double xUnitsPerPixel = limits.xSpan / dataSize.Width;
+                double yUnitsPerPixel = limits.ySpan / dataSize.Height;
+
+                if (yUnitsPerPixel > xUnitsPerPixel)
+                    axes.Zoom(xUnitsPerPixel / yUnitsPerPixel, 1);
+                else
+                    axes.Zoom(1, yUnitsPerPixel / xUnitsPerPixel);
+            }
         }
 
         public void TightenLayout(int padLeft = 15, int padRight = 15, int padBottom = 15, int padTop = 15)
@@ -150,6 +163,13 @@ namespace ScottPlot
             double dY = (double)yPx / yAxisScale;
             double dXFrac = dX / (Math.Abs(dX) + axes.x.span);
             double dYFrac = dY / (Math.Abs(dY) + axes.y.span);
+            if (axes.equalAxes)
+            {
+                double zoomValue = dX + dY; // NE - max zoomIn, SW - max ZoomOut, NW and SE - 0 zoomValue
+                double zoomFrac = zoomValue / (Math.Abs(zoomValue) + axes.x.span);
+                dXFrac = zoomFrac;
+                dYFrac = zoomFrac;
+            }
             axes.Zoom(Math.Pow(10, dXFrac), Math.Pow(10, dYFrac));
         }
 
@@ -172,6 +192,18 @@ namespace ScottPlot
             }
 
             newLimits.MakeRational();
+
+            if (axes.equalAxes)
+            {
+                var xUnitsPerPixel = newLimits.xSpan / (dataSize.Width * (1 - horizontalMargin));
+                var yUnitsPerPixel = newLimits.ySpan / (dataSize.Height * (1 - verticalMargin));
+                axes.Set(newLimits);
+                if (yUnitsPerPixel > xUnitsPerPixel)
+                    axes.Zoom((1 - horizontalMargin) * xUnitsPerPixel / yUnitsPerPixel, 1 - verticalMargin);
+                else
+                    axes.Zoom(1 - horizontalMargin, (1 - verticalMargin) * yUnitsPerPixel / xUnitsPerPixel);
+                return;
+            }
 
             if (xExpandOnly)
             {

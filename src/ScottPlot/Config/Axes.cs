@@ -10,6 +10,7 @@ namespace ScottPlot.Config
     // Axes (the plural of Axis) represents an X and Y axis
     public class Axes
     {
+        public bool equalAxes = false;
         public Axis x = new Axis();
         public Axis y = new Axis();
 

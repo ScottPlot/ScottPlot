@@ -827,6 +827,17 @@ namespace ScottPlot
             return settings.axes.limits;
         }
 
+        public bool EqualAxis
+        {
+            get => settings.axes.equalAxes;
+            set
+            {
+                settings.axes.equalAxes = value;
+                if (value)
+                    settings.AxisAuto();
+            }
+        }
+
         public double[] AxisAuto(
             double horizontalMargin = .05,
             double verticalMargin = .1,

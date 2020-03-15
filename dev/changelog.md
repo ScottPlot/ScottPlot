@@ -33,6 +33,7 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
 * Updated ScottPlot icon (removed small text, styled icon after emoji)
 * Improved legend font size when using display scaling (#289)
 * Scroll wheel zooming now zooms to cursor (instead of center) in WPF control. This feature works now even if display scaling is used. (#281)
+* Added `Plot.EqualAxis` property to make it easy to lock axis scales together (#306) _Thanks @StendProg_
 
 ## ScottPlot 4.0.21
 
