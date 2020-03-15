@@ -31,6 +31,7 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
 * Added support for custom horizontal axis tick rotation (#300) _Thanks @SeidChr_
 * Added support for fixed grid spacing when using DateTime axes (#299) _Thanks @SeidChr_
 * Updated ScottPlot icon (removed small text, styled icon after emoji)
+* Improved legend font size when using display scaling (#289)
 
 ## ScottPlot 4.0.21
 
