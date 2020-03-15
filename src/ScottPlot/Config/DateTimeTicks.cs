@@ -15,38 +15,32 @@ namespace ScottPlot.Config
          * 
          */
 
-        private static readonly string[] monthShort = { null,
-            "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-
-        private enum TickUnits { years, months, days, hours, minutes, seconds };
-
         public static (DateTime[], String[]) GetTicks(DateTime dt1, DateTime dt2, int maxTickCount, CultureInfo culture)
         {
             if (!(dt1 < dt2))
                 dt2 = dt1.AddSeconds(1);
 
             // determine the best time units to use for tick marks
-            TickUnits units;
+            DateTimeUnit units;
             double daysApart = dt2.ToOADate() - dt1.ToOADate();
             double hoursApart = daysApart * 24;
             double minutesApart = hoursApart * 60;
             double secondsApart = minutesApart * 60;
             if (daysApart > 365 * 2)
-                units = TickUnits.years;
+                units = DateTimeUnit.Year;
             else if (daysApart > 30 * 2)
-                units = TickUnits.months;
+                units = DateTimeUnit.Month;
             else if (hoursApart > 24 * 2)
-                units = TickUnits.days;
+                units = DateTimeUnit.Day;
             else if (minutesApart > 60 * 2)
-                units = TickUnits.hours;
+                units = DateTimeUnit.Hour;
             else if (secondsApart > 60 * 2)
-                units = TickUnits.minutes;
+                units = DateTimeUnit.Minute;
             else
-                units = TickUnits.seconds;
+                units = DateTimeUnit.Second;
 
             // create arrays of DateTimes with spacings customized for each tick unit
-            if (units == TickUnits.years)
+            if (units == DateTimeUnit.Year)
             {
                 DateTime[] ticks = GetYearTicks(dt1, dt2, maxTickCount);
 
@@ -60,7 +54,7 @@ namespace ScottPlot.Config
 
                 return (ticks, labels);
             }
-            else if (units == TickUnits.months)
+            else if (units == DateTimeUnit.Month)
             {
                 DateTime[] ticks = GetMonthTicks(dt1, dt2, 1);
                 if (ticks.Length > maxTickCount)
@@ -80,7 +74,7 @@ namespace ScottPlot.Config
 
                 return (ticks, labels);
             }
-            else if (units == TickUnits.days)
+            else if (units == DateTimeUnit.Day)
             {
                 DateTime[] ticks = GetDayTicks(dt1, dt2, 1);
                 if (ticks.Length > maxTickCount)
@@ -100,7 +94,7 @@ namespace ScottPlot.Config
 
                 return (ticks, labels);
             }
-            else if (units == TickUnits.hours)
+            else if (units == DateTimeUnit.Hour)
             {
                 DateTime[] ticks = GetHourTicks(dt1, dt2, 1);
                 if (ticks.Length > maxTickCount)
@@ -122,7 +116,7 @@ namespace ScottPlot.Config
 
                 return (ticks, labels);
             }
-            else if (units == TickUnits.minutes)
+            else if (units == DateTimeUnit.Minute)
             {
                 DateTime[] ticks = GetMinuteTicks(dt1, dt2, 1);
                 if (ticks.Length > maxTickCount)
@@ -146,7 +140,7 @@ namespace ScottPlot.Config
 
                 return (ticks, labels);
             }
-            else if (units == TickUnits.seconds)
+            else if (units == DateTimeUnit.Second)
             {
                 DateTime[] ticks = GetSecondTicks(dt1, dt2, 1);
                 if (ticks.Length > maxTickCount)
