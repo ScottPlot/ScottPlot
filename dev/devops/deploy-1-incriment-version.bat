@@ -5,8 +5,8 @@ cd ScottPlotDevTools\bin\Debug\netcoreapp3.1
 echo press ENTER to incriment version and rebuild...
 pause
 
-::ScottPlotDevTools.exe -incrimentVersion
-ScottPlotDevTools.exe -rebuild
+ScottPlotDevTools.exe -incrimentVersion
+::ScottPlotDevTools.exe -rebuild
 ::ScottPlotDevTools.exe -makeCookbook
 ::ScottPlotDevTools.exe -makeDemo
 pause
