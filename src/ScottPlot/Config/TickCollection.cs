@@ -92,9 +92,9 @@ namespace ScottPlot.Config
                 high = Math.Min(high, DateTime.MaxValue.ToOADate());
 
                 var dtManualUnits = (verticalAxis) ? settings.ticks.manualDateTimeSpacingUnitY : settings.ticks.manualDateTimeSpacingUnitX;
-                var dtManualSpacing = (verticalAxis) ? settings.ticks.manualDateTimeSpacingY : settings.ticks.manualDateTimeSpacingX;
+                var dtManualSpacing = (verticalAxis) ? settings.ticks.manualSpacingY : settings.ticks.manualSpacingX;
 
-                var dateTicks = DateTimeTicks.GetTicks(DateTime.FromOADate(low), DateTime.FromOADate(high), tickCount, settings.culture, dtManualUnits, dtManualSpacing);
+                var dateTicks = DateTimeTicks.GetTicks(DateTime.FromOADate(low), DateTime.FromOADate(high), tickCount, settings.culture, dtManualUnits, (int)dtManualSpacing);
 
                 tickPositionsMajor = Tools.DateTimesToDoubles(dateTicks.Item1);
                 tickLabels = dateTicks.Item2;
