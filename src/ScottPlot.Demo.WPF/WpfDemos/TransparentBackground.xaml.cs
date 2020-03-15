@@ -21,7 +21,15 @@ namespace ScottPlot.Demo.WPF.WpfDemos
         public TransparentBackground()
         {
             InitializeComponent();
-            GenericPlots.SinAndCos(wpfPlot1.plt);
+
+            int pointCount = 51;
+            double[] x = DataGen.Consecutive(pointCount);
+            double[] sin = DataGen.Sin(pointCount);
+            double[] cos = DataGen.Cos(pointCount);
+
+            wpfPlot1.plt.PlotScatter(x, sin);
+            wpfPlot1.plt.PlotScatter(x, cos);
+
             wpfPlot1.plt.Style(figBg: System.Drawing.Color.Transparent);
             wpfPlot1.plt.Style(dataBg: System.Drawing.Color.Transparent);
             wpfPlot1.Render();

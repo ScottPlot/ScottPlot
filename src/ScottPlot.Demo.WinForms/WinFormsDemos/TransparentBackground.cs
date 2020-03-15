@@ -15,7 +15,15 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
         public TransparentBackground()
         {
             InitializeComponent();
-            GenericPlots.SinAndCos(formsPlot1.plt);
+
+            int pointCount = 51;
+            double[] x = DataGen.Consecutive(pointCount);
+            double[] sin = DataGen.Sin(pointCount);
+            double[] cos = DataGen.Cos(pointCount);
+
+            formsPlot1.plt.PlotScatter(x, sin);
+            formsPlot1.plt.PlotScatter(x, cos);
+
             formsPlot1.plt.Style(figBg: Color.Transparent, dataBg: Color.Transparent);
             formsPlot1.BackColor = Color.Transparent;
             button6_Click(null, null);
