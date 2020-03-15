@@ -143,7 +143,30 @@ namespace ScottPlotBuilder
 
         private void NuGetBuild(object sender, RoutedEventArgs e)
         {
+            NuGetUploadButton.IsEnabled = false;
+
             RunScript("clean-build.bat");
+
+            string[] packageNames = new string[] { "ScottPlot", "ScottPlot.WinForms", "ScottPlot.WPF" };
+
+            string version = null;
+            foreach (string packageName in packageNames)
+            {
+                string releasePath = System.IO.Path.GetFullPath($"../../../../../../src/{packageName}/bin/Release");
+                string[] packagePaths = Directory.GetFiles(releasePath, "*.nupkg");
+                if (packagePaths.Length != 1)
+                    return;
+                string packageFileName = System.IO.Path.GetFileName(packagePaths[0]);
+                string packageVersion = packageFileName.Replace(packageName + ".", "").Replace(".nupkg", "");
+                if (version is null)
+                    version = packageVersion;
+                else if (version != packageVersion)
+                    return;
+                    //throw new InvalidOperationException("all nuget package versions must match");
+            }
+
+            NuGetUploadButton.Content = $"Upload {version}";
+            NuGetUploadButton.IsEnabled = true;
         }
 
         private void NuGetUpload(object sender, RoutedEventArgs e)
@@ -196,6 +219,9 @@ namespace ScottPlotBuilder
         {
             // you may access GUI components from this thread
             MessageTextbox.AppendText($"Cookbook generation complete!");
+
+            CookbookLaunchButton.IsEnabled = true;
+            CookbookUploadButton.IsEnabled = true;
         }
 
         private void LaunchCookbook(object sender, RoutedEventArgs e)
@@ -212,6 +238,22 @@ namespace ScottPlotBuilder
             MessageBoxResult result = MessageBox.Show("select OK to upload cookbook", "Cookbook Upload", MessageBoxButton.OKCancel, MessageBoxImage.Exclamation);
             if (result == MessageBoxResult.OK)
                 RunScript("cookbook-upload.bat");
+        }
+
+        private void BuildDemo(object sender, RoutedEventArgs e)
+        {
+            RunScript("build-demo.bat");
+            DemoPackageButton.IsEnabled = true;
+        }
+
+        private void PackDemo(object sender, RoutedEventArgs e)
+        {
+            DemoUploadButton.IsEnabled = true;
+        }
+
+        private void UploadDemo(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

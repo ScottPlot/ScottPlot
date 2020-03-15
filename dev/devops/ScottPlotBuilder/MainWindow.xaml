@@ -46,28 +46,29 @@
             <GroupBox Header="NuGet Package">
                 <WrapPanel>
                     <Button Content="Build" Click="NuGetBuild"/>
-                    <Button Content="Upload" Click="NuGetUpload"/>
+                    <Button x:Name="NuGetUploadButton" Content="Upload" Click="NuGetUpload" IsEnabled="False"/>
                 </WrapPanel>
             </GroupBox>
 
             <GroupBox Header="Cookbook">
                 <WrapPanel>
                     <Button Content="Generate" Click="GenerateCookbook"/>
-                    <Button Content="Launch" Click="LaunchCookbook"/>
-                    <Button Content="Upload" Click="UploadCookbook"/>
+                    <Button x:Name="CookbookLaunchButton" Content="Launch" Click="LaunchCookbook" IsEnabled="False"/>
+                    <Button x:Name="CookbookUploadButton" Content="Upload" Click="UploadCookbook" IsEnabled="False"/>
                 </WrapPanel>
             </GroupBox>
 
             <GroupBox Header="Demo">
                 <WrapPanel>
-                    <Button Content="Build"/>
-                    <Button Content="Upload"/>
+                    <Button Content="Build" Click="BuildDemo"/>
+                    <Button x:Name="DemoPackageButton" Content="Package" Click="PackDemo" IsEnabled="False"/>
+                    <Button x:Name="DemoUploadButton" Content="Upload" Click="UploadDemo" IsEnabled="False"/>
                 </WrapPanel>
             </GroupBox>
 
         </StackPanel>
         
-        <TextBox x:Name="MessageTextbox" Margin="7" Text="C:\>"
+        <TextBox x:Name="MessageTextbox" Margin="7" Text="messages:"
                  Foreground="LightGray" Background="Black" FontFamily="consolas"
                  BorderThickness="0" Padding="3">
 
