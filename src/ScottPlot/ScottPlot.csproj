@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
@@ -15,9 +15,9 @@
     <PackageReleaseNotes>https://github.com/swharden/ScottPlot/releases</PackageReleaseNotes>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <Version>4.0.20</Version>
-    <AssemblyVersion>4.0.20</AssemblyVersion>
-    <FileVersion>4.0.20</FileVersion>
+    <Version>4.0.21</Version>
+    <AssemblyVersion>4.0.21</AssemblyVersion>
+    <FileVersion>4.0.21</FileVersion>
     <LangVersion>7.3</LangVersion>
     <SignAssembly>true</SignAssembly>
     <DelaySign>false</DelaySign>
