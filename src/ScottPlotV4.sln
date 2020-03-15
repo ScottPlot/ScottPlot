@@ -25,6 +25,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScottPlot.Demo.WinForms", "ScottPlot.Demo.WinForms\ScottPlot.Demo.WinForms.csproj", "{163492F4-4E03-4155-B5F2-3620C211B2E7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dev", "dev", "{35F8F55D-8E1E-44BC-9DE2-C60DCD42BDCB}"
+	ProjectSection(SolutionItems) = preProject
+		..\dev\devops\azure-pipelines.yml = ..\dev\devops\azure-pipelines.yml
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlotBuilder", "..\dev\devops\ScottPlotBuilder\ScottPlotBuilder.csproj", "{9EB0839B-706B-4416-A81D-A80A8B8B0D1B}"
 EndProject
