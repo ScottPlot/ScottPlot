@@ -18,6 +18,9 @@
     <Version>4.0.20</Version>
     <AssemblyVersion>4.0.20</AssemblyVersion>
     <FileVersion>4.0.20</FileVersion>
+    <SignAssembly>true</SignAssembly>
+    <DelaySign>false</DelaySign>
+    <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>
