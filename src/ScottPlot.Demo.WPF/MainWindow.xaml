@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ScottPlot.Demo.WPF"
         mc:Ignorable="d"
-        Title="ScottPlot Demo (WPF)" 
+        Title="ScottPlot Demo" 
         WindowStartupLocation="CenterScreen"
         Background="WhiteSmoke"
         Height="500" Width="350">
