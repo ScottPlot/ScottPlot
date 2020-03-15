@@ -271,7 +271,20 @@ namespace ScottPlot
                 {
                     settings.gfxFigure.DrawLine(pen, xPx, yPx, xPx, yPx + settings.ticks.size);
                     if (settings.ticks.displayXlabels)
-                        settings.gfxFigure.DrawString(text, settings.ticks.font, brush, xPx, yPx + settings.ticks.size, settings.misc.sfNorth);
+                    {
+                        if (settings.ticks.rotationX == 0)
+                        {
+                            settings.gfxFigure.DrawString(text, settings.ticks.font, brush, xPx, yPx + settings.ticks.size, settings.misc.sfNorth);
+                        }
+                        else
+                        {
+                            int horizontalOffset = (int)(settings.ticks.fontSize * .65);
+                            settings.gfxFigure.TranslateTransform(xPx - horizontalOffset, yPx + settings.ticks.size);
+                            settings.gfxFigure.RotateTransform(-(float)(Math.Abs(settings.ticks.rotationX)));
+                            settings.gfxFigure.DrawString(text, settings.ticks.font, brush, new PointF(0, 0), settings.misc.sfNorthEast);
+                            settings.gfxFigure.ResetTransform();
+                        }
+                    }
                 }
             }
 

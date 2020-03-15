@@ -34,6 +34,8 @@ namespace ScottPlot.Config
         public bool rulerModeX = false;
         public bool rulerModeY = false;
 
+        public double rotationX = 0;
+
         public bool displayYmajor = true;
         public bool displayYminor = true;
 
