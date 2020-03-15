@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.cookbookButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.versionLabel = new System.Windows.Forms.Label();
@@ -313,6 +314,7 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.versionLabel);
             this.Controls.Add(this.label1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ScottPlot Demos (WinForms)";
