@@ -1,4 +1,4 @@
-﻿/* The Plot class is the primary public interface to ScottPlot.
+/* The Plot class is the primary public interface to ScottPlot.
  * - This should be the only class the user interacts with.
  * - Internal refactoring can occur as long as these functions remain fixed.
  * - This file is intentionally spaced out to make code changes easier to review.
@@ -1343,6 +1343,71 @@ namespace ScottPlot
         public void SetCulture(System.Globalization.CultureInfo culture)
         {
             settings.culture = culture;
+        }
+
+        /// <summary>
+        /// Updates the used culture to match your requirements.
+        /// </summary>
+        /// <param name="datePattern">
+        /// https://docs.microsoft.com/de-de/dotnet/standard/base-types/custom-date-and-time-format-strings
+        /// </param>
+        /// <param name="decimalSeparator">
+        /// Separates the decimal digits.
+        /// </param>
+        /// <param name="numberGroupSeparator">
+        /// Separates large numbers ito groups of digits for readability.
+        /// </param>
+        /// <param name="decimalDigits">
+        /// Number of digits after the numberDecimalSeparator.
+        /// </param>
+        /// <param name="numberNegativePattern">
+        /// https://docs.microsoft.com/de-de/dotnet/api/system.globalization.numberformatinfo.numbernegativepattern
+        /// </param>
+        /// <param name="numberGroupSizes">
+        /// Sizes of decimal groups which are separated by the numberGroupSeparator.
+        /// https://docs.microsoft.com/de-de/dotnet/api/system.globalization.numberformatinfo.numbergroupsizes
+        /// </param>
+        public void SetCulture(
+            string datePattern = null,
+            string decimalSeparator = null,
+            string numberGroupSeparator = null,
+            int? decimalDigits = null,
+            int? numberNegativePattern = null,
+            int[] numberGroupSizes = null)
+        {
+            var cultureClone = (System.Globalization.CultureInfo)settings.culture.Clone();
+
+            if (datePattern != null)
+            {
+                cultureClone.DateTimeFormat.ShortDatePattern = datePattern;
+            }
+
+            if (decimalDigits != null)
+            {
+                cultureClone.NumberFormat.NumberDecimalDigits = decimalDigits.Value;
+            }
+
+            if (decimalSeparator != null)
+            {
+                cultureClone.NumberFormat.NumberDecimalSeparator = decimalSeparator;
+            }
+
+            if (numberGroupSeparator != null)
+            {
+                cultureClone.NumberFormat.NumberGroupSeparator = numberGroupSeparator;
+            }
+
+            if (numberGroupSizes != null)
+            {
+                cultureClone.NumberFormat.NumberGroupSizes = numberGroupSizes;
+            }
+
+            if (numberNegativePattern != null)
+            {
+                cultureClone.NumberFormat.NumberNegativePattern = numberNegativePattern.Value;
+            }
+
+            settings.culture = cultureClone;
         }
 
         #endregion
