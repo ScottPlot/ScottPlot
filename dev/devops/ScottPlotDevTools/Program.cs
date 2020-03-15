@@ -10,6 +10,7 @@ namespace ScottPlotDevTools
             Console.WriteLine($"ScottPlot {ScottPlot.Tools.GetVersionString()}");
 
             //args = new string[] { "-incrimentVersion" };
+            //args = new string[] { "-rebuild" };
             //args = new string[] { "-makeCookbook" };
             //args = new string[] { "-makeDemo" };
             ProcessArguments(args);
@@ -29,6 +30,7 @@ namespace ScottPlotDevTools
             {
                 case "help": ShowHelp(); break;
                 case "incrimentVersion": IncrimentVersion(); break;
+                case "rebuild": Rebuild(); break;
                 case "makeCookbook": MakeCookbook(); break;
                 case "makeDemo": MakeDemo(); break;
                 default: Console.WriteLine("ERROR: unknown command."); ShowHelp(); break;
@@ -105,6 +107,16 @@ namespace ScottPlotDevTools
                 throw new ArgumentException($"file not found: {projectPath}");
             Console.WriteLine($"\nCleaning: {projectName}...");
             RunCommand($"dotnet clean {projectPath} --verbosity quiet --configuration Release");
+
+            string binPath = System.IO.Path.GetDirectoryName(projectPath) + "/bin";
+            if (System.IO.Directory.Exists(binPath))
+            {
+                foreach (string binFolder in System.IO.Directory.GetDirectories(binPath))
+                    System.IO.Directory.Delete(binFolder, true);
+
+                foreach (string binFile in System.IO.Directory.GetFiles(binPath))
+                    System.IO.File.Delete(binFile);
+            }
         }
 
         static void BuildProject(string projectName)
@@ -212,6 +224,16 @@ namespace ScottPlotDevTools
                     System.IO.File.Copy(sourceFile, outputFileName, overwrite: true);
                     //Console.WriteLine($"    {fileName}");
                 }
+            }
+        }
+
+        static void Rebuild()
+        {
+            string[] projectNames = new string[] { "ScottPlot", "ScottPlot.WinForms", "ScottPlot.WPF" };
+            foreach (string projectName in projectNames)
+            {
+                CleanProject(projectName);
+                BuildProject(projectName);
             }
         }
     }
