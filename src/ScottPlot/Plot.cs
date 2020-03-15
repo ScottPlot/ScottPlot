@@ -331,13 +331,8 @@ namespace ScottPlot
             return scatterPlot;
         }
 
-        [Obsolete("WARNING: This method is still experimental", error: false)]
         public PlottableFunction PlotFunction(
             Func<double, double?> function,
-            double minX,
-            double maxX,
-            double minY,
-            double maxY,
             Color? color = null,
             double lineWidth = 1,
             double markerSize = 0,
@@ -351,7 +346,7 @@ namespace ScottPlot
                 color = settings.GetNextColor();
             }
 
-            PlottableFunction functionPlot = new PlottableFunction(function, minX, maxX, minY, maxY, color.Value, lineWidth, markerSize, label, markerShape, lineStyle);
+            PlottableFunction functionPlot = new PlottableFunction(function, color.Value, lineWidth, markerSize, label, markerShape, lineStyle);
 
             settings.plottables.Add(functionPlot);
             return functionPlot;
