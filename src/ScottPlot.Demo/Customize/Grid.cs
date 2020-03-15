@@ -13,7 +13,14 @@ namespace ScottPlot.Demo.Customize
 
             public void Render(Plot plt)
             {
-                GenericPlots.SinAndCos(plt);
+                int pointCount = 51;
+                double[] x = DataGen.Consecutive(pointCount);
+                double[] sin = DataGen.Sin(pointCount);
+                double[] cos = DataGen.Cos(pointCount);
+
+                plt.PlotScatter(x, sin);
+                plt.PlotScatter(x, cos);
+
                 plt.Grid(enable: false);
             }
         }
@@ -25,7 +32,14 @@ namespace ScottPlot.Demo.Customize
 
             public void Render(Plot plt)
             {
-                GenericPlots.SinAndCos(plt);
+                int pointCount = 51;
+                double[] x = DataGen.Consecutive(pointCount);
+                double[] sin = DataGen.Sin(pointCount);
+                double[] cos = DataGen.Cos(pointCount);
+
+                plt.PlotScatter(x, sin);
+                plt.PlotScatter(x, cos);
+
                 plt.Grid(xSpacing: 2, ySpacing: .1);
             }
         }

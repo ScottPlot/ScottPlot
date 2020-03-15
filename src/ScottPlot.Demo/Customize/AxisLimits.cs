@@ -13,7 +13,14 @@ namespace ScottPlot.Demo.Customize
 
             public void Render(Plot plt)
             {
-                GenericPlots.SinAndCos(plt);
+                int pointCount = 51;
+                double[] x = DataGen.Consecutive(pointCount);
+                double[] sin = DataGen.Sin(pointCount);
+                double[] cos = DataGen.Cos(pointCount);
+
+                plt.PlotScatter(x, sin);
+                plt.PlotScatter(x, cos);
+
                 plt.AxisAuto();
             }
         }
@@ -25,7 +32,14 @@ namespace ScottPlot.Demo.Customize
 
             public void Render(Plot plt)
             {
-                GenericPlots.SinAndCos(plt);
+                int pointCount = 51;
+                double[] x = DataGen.Consecutive(pointCount);
+                double[] sin = DataGen.Sin(pointCount);
+                double[] cos = DataGen.Cos(pointCount);
+
+                plt.PlotScatter(x, sin);
+                plt.PlotScatter(x, cos);
+
                 plt.AxisAuto(horizontalMargin: 0, verticalMargin: 0.5);
             }
         }
@@ -37,7 +51,14 @@ namespace ScottPlot.Demo.Customize
 
             public void Render(Plot plt)
             {
-                GenericPlots.SinAndCos(plt);
+                int pointCount = 51;
+                double[] x = DataGen.Consecutive(pointCount);
+                double[] sin = DataGen.Sin(pointCount);
+                double[] cos = DataGen.Cos(pointCount);
+
+                plt.PlotScatter(x, sin);
+                plt.PlotScatter(x, cos);
+
                 plt.Axis(-10, 60, -3, 3);
             }
         }
@@ -49,7 +70,14 @@ namespace ScottPlot.Demo.Customize
 
             public void Render(Plot plt)
             {
-                GenericPlots.SinAndCos(plt);
+                int pointCount = 51;
+                double[] x = DataGen.Consecutive(pointCount);
+                double[] sin = DataGen.Sin(pointCount);
+                double[] cos = DataGen.Cos(pointCount);
+
+                plt.PlotScatter(x, sin);
+                plt.PlotScatter(x, cos);
+
                 plt.AxisZoom(2, 2);
             }
         }
@@ -61,7 +89,14 @@ namespace ScottPlot.Demo.Customize
 
             public void Render(Plot plt)
             {
-                GenericPlots.SinAndCos(plt);
+                int pointCount = 51;
+                double[] x = DataGen.Consecutive(pointCount);
+                double[] sin = DataGen.Sin(pointCount);
+                double[] cos = DataGen.Cos(pointCount);
+
+                plt.PlotScatter(x, sin);
+                plt.PlotScatter(x, cos);
+
                 plt.AxisPan(-10, .5);
             }
         }
