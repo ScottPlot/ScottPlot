@@ -35,15 +35,6 @@ steps:
     projects: 'src/ScottPlot/ScottPlot.csproj'
 
 - task: NuGetCommand@2
-  displayName: 'Pack ScottPlot.nupkg'
-  inputs:
-    command: 'pack'
-    arguments: '--configuration Release'
-    packagesToPack: 'src/ScottPlot/ScottPlot.csproj'
-    nobuild: true
-    versioningScheme: 'off'
-
-- task: NuGetCommand@2
   displayName: 'Push ScottPlot.nupkg'
   inputs:
     command: 'push'
