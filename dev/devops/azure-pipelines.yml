@@ -31,19 +31,7 @@ steps:
   displayName: 'Build ScottPlot'
   inputs:
     command: 'build'
-    arguments: '--configuration Release'
     projects: 'src/ScottPlot/ScottPlot.csproj'
-
-- task: NuGetCommand@2
-  displayName: 'Push ScottPlot.nupkg'
-  inputs:
-    command: 'push'
-    feedsToUse: 'select'
-    packagesToPush: 'src/ScottPlot/bin/Release/*.nupkg'
-    nuGetFeedType: 'internal'
-    publishVstsFeed: 'TestFeed'
-    versioningScheme: 'off'
-    allowPackageConflicts: true
 
 - task: DotNetCoreCLI@2
   displayName: 'Build ScottPlot.Demo'
