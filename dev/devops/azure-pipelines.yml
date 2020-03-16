@@ -31,13 +31,17 @@ steps:
   displayName: 'Build ScottPlot'
   inputs:
     command: 'build'
+    arguments: '--configuration Release'
     projects: 'src/ScottPlot/ScottPlot.csproj'
 
 - task: NuGetCommand@2
   displayName: 'Pack ScottPlot.nupkg'
   inputs:
-    command: pack
+    command: 'pack'
+    arguments: '--configuration Release'
     packagesToPack: 'src/ScottPlot/ScottPlot.csproj'
+    nobuild: true
+    versioningScheme: 'off'
 
 - task: NuGetCommand@2
   displayName: 'Push ScottPlot.nupkg'
