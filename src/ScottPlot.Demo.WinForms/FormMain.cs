@@ -66,5 +66,10 @@ namespace ScottPlot.Demo.WinForms
         {
             new WinFormsDemos.ShowValueOnHover().ShowDialog();
         }
+
+        private void PlotViewerButton_Click(object sender, EventArgs e)
+        {
+            new WinFormsDemos.PlotViewerDemo().ShowDialog();
+        }
     }
 }

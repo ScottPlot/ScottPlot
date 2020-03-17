@@ -13,7 +13,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
-	<GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
+    <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x64</PlatformTarget>
@@ -124,6 +124,12 @@
     <Compile Include="WinFormsDemos\MouseTracker.Designer.cs">
       <DependentUpon>MouseTracker.cs</DependentUpon>
     </Compile>
+    <Compile Include="WinFormsDemos\PlotViewerDemo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinFormsDemos\PlotViewerDemo.Designer.cs">
+      <DependentUpon>PlotViewerDemo.cs</DependentUpon>
+    </Compile>
     <Compile Include="WinFormsDemos\ShowValueOnHover.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -172,6 +178,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="WinFormsDemos\MouseTracker.resx">
       <DependentUpon>MouseTracker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinFormsDemos\PlotViewerDemo.resx">
+      <DependentUpon>PlotViewerDemo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WinFormsDemos\ShowValueOnHover.resx">
       <DependentUpon>ShowValueOnHover.cs</DependentUpon>
