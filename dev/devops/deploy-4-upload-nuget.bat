@@ -16,8 +16,16 @@ pause
 pause
 
 echo.
-echo ### UPLOADING PACKAGES TO NUGET ###
+echo ### UPLOADING [ScottPlot] TO NUGET ###
 nuget push ..\..\src\ScottPlot\bin\Release\*.nupkg -Source https://api.nuget.org/v3/index.json
+
+echo.
+echo ### UPLOADING [ScottPlot.WinForms] TO NUGET ###
 nuget push ..\..\src\ScottPlot.WinForms\bin\Release\*.nupkg -Source https://api.nuget.org/v3/index.json
+
+echo.
+echo ### UPLOADING [ScottPlot.WPF] TO NUGET ###
 nuget push ..\..\src\ScottPlot.WPF\bin\Release\*.nupkg -Source https://api.nuget.org/v3/index.json
+
+echo.
 pause
