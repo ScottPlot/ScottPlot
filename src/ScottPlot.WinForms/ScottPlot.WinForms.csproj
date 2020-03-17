@@ -11,7 +11,9 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>http://swharden.com/scottplot/</PackageProjectUrl>
     <PackageTags>plot graph data chart signal line bar C# winforms forms control interactive</PackageTags>
-    <PackageReleaseNotes>https://github.com/swharden/ScottPlot/releases</PackageReleaseNotes>
+    <PackageReleaseNotes>Release notes: https://github.com/swharden/ScottPlot/releases
+Release cookbook: http://swharden.com/scottplot/cookbook
+Release demo: http://swharden.com/scottplot/demo</PackageReleaseNotes>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

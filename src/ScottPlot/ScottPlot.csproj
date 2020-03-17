@@ -12,7 +12,9 @@
     <PackageProjectUrl>http://swharden.com/scottplot/</PackageProjectUrl>
     <PackageIconUrl></PackageIconUrl>
     <PackageTags>plot graph data chart signal line bar C#</PackageTags>
-    <PackageReleaseNotes>https://github.com/swharden/ScottPlot/releases</PackageReleaseNotes>
+    <PackageReleaseNotes>Release notes: https://github.com/swharden/ScottPlot/releases
+Release cookbook: http://swharden.com/scottplot/cookbook
+Release demo: http://swharden.com/scottplot/demo</PackageReleaseNotes>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <Version>4.0.22</Version>
