@@ -10,7 +10,7 @@ nuget update -self
 echo.
 echo WARNING! This script will UPLOAD packages to nuget.org
 echo.
-press ENTER 3 times to proceed...
+echo press ENTER 3 times to proceed...
 pause
 pause
 pause

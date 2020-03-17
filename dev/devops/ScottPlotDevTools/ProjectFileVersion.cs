@@ -56,7 +56,7 @@ namespace ScottPlotDevTools
         {
             Version fileVersion = Read();
             string fileVersionString = $"{fileVersion.Major}.{fileVersion.Minor}.{fileVersion.Build}";
-            string newVersionString = ToString();
+            string newVersionString = $"{version.Major}.{version.Minor}.{version.Build}";
 
             string[] lines = System.IO.File.ReadAllText(path).Split("\n");
             for (int i=0; i<lines.Length; i++)
