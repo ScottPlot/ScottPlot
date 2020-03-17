@@ -45,6 +45,17 @@
                 <StackPanel>
 
                     <DockPanel>
+                        <Button DockPanel.Dock="Left" Click="LaunchPlotViewer">
+                            <TextBlock TextAlignment="Center">
+                                Plot Viewer
+                            </TextBlock>
+                        </Button>
+                        <TextBlock >
+                            Launch a plot in a pop-up interactive window
+                        </TextBlock>
+                    </DockPanel>
+
+                    <DockPanel>
                         <Button DockPanel.Dock="Left" Click="LaunchMouseTracker">
                             <TextBlock TextAlignment="Center">
                         Mouse Tracker

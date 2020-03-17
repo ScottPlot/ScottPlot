@@ -89,5 +89,10 @@ namespace ScottPlot.Demo.WPF
             WebsiteLabel.Foreground = Brushes.Blue;
             Tools.LaunchBrowser();
         }
+
+        private void LaunchPlotViewer(object sender, RoutedEventArgs e)
+        {
+            new WpfDemos.PlotViewer().ShowDialog();
+        }
     }
 }
