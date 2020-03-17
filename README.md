@@ -38,9 +38,16 @@ Review the **[ScottPlot Cookbook](http://swharden.com/scottplot/cookbook)** to s
 ![](src/ScottPlot.Demo.WPF/screenshot.png)
 
 ## Build from Source
-Every ScottPlot [release](https://github.com/swharden/ScottPlot/releases) is available on NuGet. To experiment with the latest ScottPlot features that have not yet been released, download this repository and manually add references in your project to `ScottPlot.csproj` (and `ScottPlot.WinForms.csproj` or `ScottPlot.WPF.csproj` if necessary).
+Every ScottPlot [release](https://github.com/swharden/ScottPlot/releases) is available on NuGet. To experiment with the latest ScottPlot features that have not yet been released, download this repository and manually add references in your project to:
 
-> ⚠️ The latest source code may contain partially-implemented or experimental functionality. Installation of ScottPlot releases via NuGet is recommended for most applications.
+* `/src/ScottPlot/ScottPlot.csproj`
+
+If you are creating a graphical application, also reference one of:
+
+* `/src/ScottPlot.WinForms/ScottPlot.WinForms.csproj`
+* `/src/ScottPlot.WPF/ScottPlot.WPF.csproj`
+
+> ⚠️ The latest source code may contain partially-implemented or experimental functionality. Installation of ScottPlot releases via NuGet or source code obtained from the [releases](https://github.com/swharden/ScottPlot/releases) page is recommended for most applications.
 
 ## About ScottPlot
 
