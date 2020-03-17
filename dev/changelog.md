@@ -12,8 +12,6 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
 ## Coming Soon
 
 * **This version (4.0.x)** - this list is a reminder of things to complete before proceeding to the next major version.
-  * Improve support for display scaling (#273)
-  * Create standalone user control launchers
   * Add right-click menu to WpfPlot
   * `Plot.BoxAndWhisker()`
   * improved bar charts (#244, #260, #277) _Thanks @Benny121221 and @bonzaiferroni and @SoManyUsernamesTaken_
@@ -26,6 +24,12 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
   * Remove rendering capabilities from ScottPlot.Plot so the dependency on System.Drawing can be eliminated
   * Create a GDI rendering module which uses System.Drawing 
   * Create a SkiaSharp rendering module and user control (supporting OpenGL hardware acceleration)
+
+## ScottPlot 4.0.23 (in development)
+* Interactive plot viewers were created to make it easy to interactively display data in a pop-up window without having to write any GUI code. Examples have been added to the ScottPlot Demo application.
+  * `ScottPlot.WpfPlotViewer(plt)` for WPF
+  * `ScottPlot.FormsPlotViewer(plt)` for Windows Forms
+  * These can even be called from console applications
 
 ## ScottPlot 4.0.22
 * Added support for custom horizontal axis tick rotation (#300) _Thanks @SeidChr_
