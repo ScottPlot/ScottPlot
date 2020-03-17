@@ -10,7 +10,6 @@ namespace ScottPlotDevTools
             Console.WriteLine($"ScottPlot {ScottPlot.Tools.GetVersionString()}");
 
             //args = new string[] { "-incrimentVersion" };
-            //args = new string[] { "-rebuild" };
             //args = new string[] { "-makeCookbook" };
             //args = new string[] { "-makeDemo" };
             ProcessArguments(args);
@@ -19,18 +18,14 @@ namespace ScottPlotDevTools
         static void ProcessArguments(string[] args)
         {
             string command = "help";
-            string argument = "";
 
             if (args.Length >= 1)
                 command = args[0].Trim('-');
-            if (args.Length >= 2)
-                argument = args[1];
 
             switch (command)
             {
                 case "help": ShowHelp(); break;
                 case "incrimentVersion": IncrimentVersion(); break;
-                case "rebuild": Rebuild(); break;
                 case "makeCookbook": MakeCookbook(); break;
                 case "makeDemo": MakeDemo(); break;
                 default: Console.WriteLine("ERROR: unknown command."); ShowHelp(); break;
@@ -224,16 +219,6 @@ namespace ScottPlotDevTools
                     System.IO.File.Copy(sourceFile, outputFileName, overwrite: true);
                     //Console.WriteLine($"    {fileName}");
                 }
-            }
-        }
-
-        static void Rebuild()
-        {
-            string[] projectNames = new string[] { "ScottPlot", "ScottPlot.WinForms", "ScottPlot.WPF" };
-            foreach (string projectName in projectNames)
-            {
-                CleanProject(projectName);
-                BuildProject(projectName);
             }
         }
     }

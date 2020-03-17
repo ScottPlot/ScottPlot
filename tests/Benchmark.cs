@@ -7,7 +7,7 @@ namespace ScottPlotTests
 {
     class Benchmark
     {
-        [Test]
+        //[Test] // this test takes 30s to complete, so don't run it routinely
         public void Test_Benchmark_Scatter()
         {
             var plt = new ScottPlot.Plot();
@@ -39,7 +39,7 @@ namespace ScottPlotTests
             //   Render 2: Full render of 1 object(1,000,000 points) took 1229.764 ms(0.81 Hz) <-- 3% faster
         }
 
-        [Test]
+        //[Test] // this test takes 30s to complete, so don't run it routinely
         public void Test_Benchmark_Step()
         {
             var plt = new ScottPlot.Plot();
@@ -64,7 +64,6 @@ namespace ScottPlotTests
             string filePath = System.IO.Path.GetFullPath(name + ".png");
             plt.SaveFig(filePath);
             Console.WriteLine($"Saved {filePath}");
-
 
             // 2019-01-26
             //   Render 1: Full render of 1 object (200,000 points) took 490.078 ms (2.04 Hz)
