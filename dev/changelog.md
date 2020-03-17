@@ -27,7 +27,7 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
   * Create a GDI rendering module which uses System.Drawing 
   * Create a SkiaSharp rendering module and user control (supporting OpenGL hardware acceleration)
 
-## ScottPlot 4.0.22 (in development)
+## ScottPlot 4.0.22
 * Added support for custom horizontal axis tick rotation (#300) _Thanks @SeidChr_
 * Added support for fixed grid spacing when using DateTime axes (#299) _Thanks @SeidChr_
 * Updated ScottPlot icon (removed small text, styled icon after emoji)

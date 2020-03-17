@@ -13,9 +13,9 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <Version>4.0.21</Version>
-    <AssemblyVersion>4.0.21</AssemblyVersion>
-    <FileVersion>4.0.21</FileVersion>
+    <Version>4.0.22</Version>
+    <AssemblyVersion>4.0.22</AssemblyVersion>
+    <FileVersion>4.0.22</FileVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
