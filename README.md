@@ -54,4 +54,4 @@ If you are creating a graphical application, also reference one of:
 
 ## About ScottPlot
 
-ScottPlot was created by [Scott Harden](http://www.SWHarden.com/) ([Harden Technologies, LLC](http://tech.swharden.com)) with many contributions from the user community. Additional resources (such as version-specific cookbooks) can be found at the ScottPlot website http://swharden.com/scottplot/
+ScottPlot was created by [Scott Harden](http://www.SWHarden.com/) ([Harden Technologies, LLC](http://tech.swharden.com)) with many contributions from the user community. Additional resources (such as version-specific documentation, demos, and cookbooks) can be found at the ScottPlot website http://swharden.com/scottplot/
