@@ -30,6 +30,7 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
   * `ScottPlot.WpfPlotViewer(plt)` for WPF
   * `ScottPlot.FormsPlotViewer(plt)` for Windows Forms
   * These can even be called from console applications
+* Fixed bug that affected the `ySpacing` argument of `Plot.Grid()`
 
 ## ScottPlot 4.0.22
 * Added support for custom horizontal axis tick rotation (#300) _Thanks @SeidChr_

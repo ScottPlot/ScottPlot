@@ -1185,7 +1185,7 @@ namespace ScottPlot
                 settings.ticks.manualSpacingX = xSpacing.Value;
 
             if (ySpacing != null)
-                settings.ticks.manualSpacingY = xSpacing.Value;
+                settings.ticks.manualSpacingY = ySpacing.Value;
 
             if (xSpacingDateTimeUnit != null)
                 settings.ticks.manualDateTimeSpacingUnitX = xSpacingDateTimeUnit.Value;
