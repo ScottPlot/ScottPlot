@@ -143,6 +143,17 @@
                         </TextBlock>
                     </DockPanel>
 
+                    <DockPanel>
+                        <Button DockPanel.Dock="Left" Click="LaunchManyPlot">
+                            <TextBlock TextAlignment="Center">
+                        Many Plots
+                            </TextBlock>
+                        </Button>
+                        <TextBlock >
+                    Shows how to create a window with many ScottPlot controls
+                        </TextBlock>
+                    </DockPanel>
+
                 </StackPanel>
             </GroupBox>
 

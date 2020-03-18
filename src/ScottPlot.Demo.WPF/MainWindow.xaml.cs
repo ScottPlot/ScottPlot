@@ -94,5 +94,10 @@ namespace ScottPlot.Demo.WPF
         {
             new WpfDemos.PlotViewer().ShowDialog();
         }
+
+        private void LaunchManyPlot(object sender, RoutedEventArgs e)
+        {
+            new WpfDemos.ManyPlots().ShowDialog();
+        }
     }
 }
