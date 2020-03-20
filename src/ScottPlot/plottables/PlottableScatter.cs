@@ -11,8 +11,10 @@ namespace ScottPlot
     {
         public double[] xs;
         public double[] ys;
-        public double[] errorX;
-        public double[] errorY;
+        public double[] errorXPositive;
+        public double[] errorXNegative;
+        public double[] errorYPositive;
+        public double[] errorYNegative;
         public double lineWidth;
         public float errorLineWidth;
         public float errorCapSize;
@@ -23,7 +25,7 @@ namespace ScottPlot
         public Brush brush;
 
         public PlottableScatter(double[] xs, double[] ys, Color color, double lineWidth, double markerSize, string label,
-            double[] errorX, double[] errorY, double errorLineWidth, double errorCapSize, bool stepDisplay, MarkerShape markerShape, LineStyle lineStyle)
+            double[] errorXPositive, double[] errorXNegative, double[] errorYPositive, double[] errorYNegative, double errorLineWidth, double errorCapSize, bool stepDisplay, MarkerShape markerShape, LineStyle lineStyle)
         {
 
             if ((xs == null) || (ys == null))
@@ -32,15 +34,23 @@ namespace ScottPlot
             if (xs.Length != ys.Length)
                 throw new Exception("Xs and Ys must have same length");
 
-            if (errorY != null)
-                for (int i = 0; i < errorY.Length; i++)
-                    if (errorY[i] < 0)
-                        errorY[i] = -errorY[i];
+            if (errorYPositive != null)
+                for (int i = 0; i < errorYPositive.Length; i++)
+                    if (errorYPositive[i] < 0)
+                        errorYPositive[i] = -errorYPositive[i];
+            if (errorYNegative != null)
+                for (int i = 0; i < errorYNegative.Length; i++)
+                    if (errorYNegative[i] < 0)
+                        errorYNegative[i] = -errorYNegative[i];
 
-            if (errorX != null)
-                for (int i = 0; i < errorX.Length; i++)
-                    if (errorX[i] < 0)
-                        errorX[i] = -errorX[i];
+            if (errorXPositive != null)
+                for (int i = 0; i < errorXPositive.Length; i++)
+                    if (errorXPositive[i] < 0)
+                        errorXPositive[i] = -errorXPositive[i];
+            if (errorXNegative != null)
+                for (int i = 0; i < errorXNegative.Length; i++)
+                    if (errorXNegative[i] < 0)
+                        errorXNegative[i] = -errorXNegative[i];
 
             this.xs = xs;
             this.ys = ys;
@@ -48,8 +58,10 @@ namespace ScottPlot
             this.lineWidth = lineWidth;
             this.markerSize = (float)markerSize;
             this.label = label;
-            this.errorX = errorX;
-            this.errorY = errorY;
+            this.errorXPositive = errorXPositive;
+            this.errorXNegative = errorXNegative;
+            this.errorYPositive = errorYPositive;
+            this.errorYNegative = errorYNegative;
             this.errorLineWidth = (float)errorLineWidth;
             this.errorCapSize = (float)errorCapSize;
             this.stepDisplay = stepDisplay;
@@ -61,10 +73,12 @@ namespace ScottPlot
             if (xs.Length != ys.Length)
                 throw new ArgumentException("X and Y arrays must have the same length");
 
-            if ((errorX != null) && (xs.Length != errorX.Length))
+            if ((errorXPositive != null) && (xs.Length != errorXPositive.Length) ||
+                (errorXNegative != null) && (xs.Length != errorXNegative.Length))
                 throw new ArgumentException("errorX must be the same length as the original data");
 
-            if ((errorY != null) && (xs.Length != errorY.Length))
+            if ((errorYPositive != null) && (xs.Length != errorYPositive.Length) ||
+                (errorYNegative != null) && (xs.Length != errorYNegative.Length))
                 throw new ArgumentException("errorY must be the same length as the original data");
 
             penLine = new Pen(color, (float)lineWidth)
@@ -95,39 +109,57 @@ namespace ScottPlot
         {
             double[] limits = new double[4];
 
-            if (errorX == null)
+            if (errorXPositive == null)
             {
-                limits[0] = xs.Min();
                 limits[1] = xs.Max();
             }
             else
             {
-                limits[0] = xs[0] - errorX[0];
-                limits[1] = xs[0] + errorX[0];
+                limits[1] = xs[0] + errorXPositive[0];
                 for (int i = 1; i < xs.Length; i++)
                 {
-                    if (xs[i] - errorX[i] < limits[0])
-                        limits[0] = xs[i] - errorX[i];
-                    if (xs[i] + errorX[i] > limits[0])
-                        limits[1] = xs[i] + errorX[i];
+                    if (xs[i] + errorXPositive[i] > limits[0])
+                        limits[1] = xs[i] + errorXPositive[i];
+                }
+            }
+            if (errorXNegative == null)
+            {
+                limits[0] = xs.Min();
+            }
+            else
+            {
+                limits[0] = xs[0] - errorXNegative[0];
+                for (int i = 1; i < xs.Length; i++)
+                {
+                    if (xs[i] - errorXNegative[i] < limits[0])
+                        limits[0] = xs[i] - errorXNegative[i];
                 }
             }
 
-            if (errorY == null)
+            if (errorYPositive == null)
             {
-                limits[2] = ys.Min();
                 limits[3] = ys.Max();
             }
             else
             {
-                limits[2] = ys[0] - errorY[0];
-                limits[3] = ys[0] + errorY[0];
+                limits[3] = ys[0] + errorYPositive[0];
                 for (int i = 1; i < ys.Length; i++)
                 {
-                    if (ys[i] - errorY[i] < limits[2])
-                        limits[2] = ys[i] - errorY[i];
-                    if (ys[i] + errorY[i] > limits[3])
-                        limits[3] = ys[i] + errorY[i];
+                    if (ys[i] + errorYPositive[i] > limits[3])
+                        limits[3] = ys[i] + errorYPositive[i];
+                }
+            }
+            if (errorYNegative == null)
+            {
+                limits[2] = ys.Min();
+            }
+            else
+            {
+                limits[2] = ys[0] - errorYNegative[0];
+                for (int i = 1; i < ys.Length; i++)
+                {
+                    if (ys[i] - errorYNegative[i] < limits[2])
+                        limits[2] = ys[i] - errorYNegative[i];
                 }
             }
 
@@ -147,7 +179,7 @@ namespace ScottPlot
 
             for (int i = 0; i < xs.Length; i++)
                 points[i] = settings.GetPixel(xs[i], ys[i]);
-            
+
             if (stepDisplay)
             {
                 if (pointsStep is null)
@@ -155,36 +187,52 @@ namespace ScottPlot
                 for (int i = 0; i < points.Length; i++)
                     pointsStep[i * 2] = points[i];
                 for (int i = 0; i < points.Length - 1; i++)
-                    pointsStep[i * 2 + 1] = new PointF(points[i+1].X, points[i].Y);
+                    pointsStep[i * 2 + 1] = new PointF(points[i + 1].X, points[i].Y);
             }
 
-            if (errorY != null)
+            if (errorYPositive != null)
             {
                 for (int i = 0; i < points.Length; i++)
                 {
-                    PointF errorBelow = settings.GetPixel(xs[i], ys[i] - errorY[i]);
-                    PointF errorAbove = settings.GetPixel(xs[i], ys[i] + errorY[i]);
-                    float xCenter = errorBelow.X;
+                    PointF errorAbove = settings.GetPixel(xs[i], ys[i] + errorYPositive[i]);
+                    float xCenter = errorAbove.X;
                     float yTop = errorAbove.Y;
-                    float yBot = errorBelow.Y;
-                    settings.gfxData.DrawLine(penLineError, xCenter, yBot, xCenter, yTop);
-                    settings.gfxData.DrawLine(penLineError, xCenter - errorCapSize, yBot, xCenter + errorCapSize, yBot);
+                    settings.gfxData.DrawLine(penLineError, xCenter, (float)ys[i], xCenter, yTop);
                     settings.gfxData.DrawLine(penLineError, xCenter - errorCapSize, yTop, xCenter + errorCapSize, yTop);
                 }
             }
-
-            if (errorX != null)
+            if (errorYNegative != null)
             {
                 for (int i = 0; i < points.Length; i++)
                 {
-                    PointF errorLeft = settings.GetPixel(xs[i] - errorX[i], ys[i]);
-                    PointF errorRight = settings.GetPixel(xs[i] + errorX[i], ys[i]);
+                    PointF errorBelow = settings.GetPixel(xs[i], ys[i] - errorYNegative[i]);
+                    float xCenter = errorBelow.X;
+                    float yBot = errorBelow.Y;
+                    settings.gfxData.DrawLine(penLineError, xCenter, yBot, xCenter, (float)ys[i]);
+                    settings.gfxData.DrawLine(penLineError, xCenter - errorCapSize, yBot, xCenter + errorCapSize, yBot);
+                }
+            }
+
+            if (errorXPositive != null)
+            {
+                for (int i = 0; i < points.Length; i++)
+                {
+                    PointF errorRight = settings.GetPixel(xs[i] + errorXPositive[i], ys[i]);
+                    float yCenter = errorRight.Y;
+                    float xRight = errorRight.X;
+                    settings.gfxData.DrawLine(penLineError, (float)xs[i], yCenter, xRight, yCenter);
+                    settings.gfxData.DrawLine(penLineError, xRight, yCenter - errorCapSize, xRight, yCenter + errorCapSize);
+                }
+            }
+            if (errorXNegative != null)
+            {
+                for (int i = 0; i < points.Length; i++)
+                {
+                    PointF errorLeft = settings.GetPixel(xs[i] - errorXNegative[i], ys[i]);
                     float yCenter = errorLeft.Y;
                     float xLeft = errorLeft.X;
-                    float xRight = errorRight.X;
-                    settings.gfxData.DrawLine(penLineError, xLeft, yCenter, xRight, yCenter);
+                    settings.gfxData.DrawLine(penLineError, xLeft, yCenter, (float)xs[i], yCenter);
                     settings.gfxData.DrawLine(penLineError, xLeft, yCenter - errorCapSize, xLeft, yCenter + errorCapSize);
-                    settings.gfxData.DrawLine(penLineError, xRight, yCenter - errorCapSize, xRight, yCenter + errorCapSize);
                 }
             }
 
