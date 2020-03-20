@@ -31,6 +31,8 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
   * `ScottPlot.FormsPlotViewer(plt)` for Windows Forms
   * These can even be called from console applications
 * Fixed bug that affected the `ySpacing` argument of `Plot.Grid()`
+* `Plot.Add()` makes it easy to add a custom `Plottable` to the plot
+* `Plot.XLabels()` and `Plot.YLabels()` can now accept just a string array (x values are auto-populated as a consecutive series of numbers).
 
 ## ScottPlot 4.0.22
 * Added support for custom horizontal axis tick rotation (#300) _Thanks @SeidChr_

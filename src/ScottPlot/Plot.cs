@@ -225,6 +225,11 @@ namespace ScottPlot
 
         #region Managing Plot Objects
 
+        public void Add(Plottable plottable)
+        {
+            settings.plottables.Add(plottable);
+        }
+
         public void Clear(
             bool axisLines = true,
             bool scatterPlots = true,
@@ -1141,11 +1146,27 @@ namespace ScottPlot
             TightenLayout();
         }
 
+        public void XTicks(string[] labels)
+        {
+            if (labels is null)
+                throw new ArgumentException("labels cannot be null");
+
+            XTicks(DataGen.Consecutive(labels.Length), labels);
+        }
+
         public void XTicks(double[] positions = null, string[] labels = null)
         {
             TightenLayout();
             settings.ticks.x.manualTickPositions = positions;
             settings.ticks.x.manualTickLabels = labels;
+        }
+
+        public void YTicks(string[] labels)
+        {
+            if (labels is null)
+                throw new ArgumentException("labels cannot be null");
+
+            YTicks(DataGen.Consecutive(labels.Length), labels);
         }
 
         public void YTicks(double[] positions = null, string[] labels = null)
