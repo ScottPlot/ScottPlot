@@ -843,6 +843,18 @@ namespace ScottPlot
             }
         }
 
+        [Obsolete("use AxisAuto() instead")]
+        public double[] AutoAxis()
+        {
+            return AxisAuto();
+        }
+
+        [Obsolete("use AxisAuto() instead")]
+        public double[] AutoScale()
+        {
+            return AxisAuto();
+        }
+
         public double[] AxisAuto(
             double horizontalMargin = .05,
             double verticalMargin = .1,
