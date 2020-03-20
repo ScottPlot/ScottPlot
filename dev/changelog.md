@@ -34,6 +34,7 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
 * `Plot.Add()` makes it easy to add a custom `Plottable` to the plot
 * `Plot.XLabels()` and `Plot.YLabels()` can now accept just a string array (x values are auto-populated as a consecutive series of numbers).
 * Aliased `Plot.AxisAuto()` to `Plot.AutoAxis()` and `Plot.AutoScale()` to make this function easier to locate for users who may have experience with other plot libraries. (#309) _Thanks @Resonanz_
+* Empty plots now render grid lines, ticks, and tick labels (#313)
 
 ## ScottPlot 4.0.22
 * Added support for custom horizontal axis tick rotation (#300) _Thanks @SeidChr_

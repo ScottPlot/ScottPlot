@@ -130,7 +130,7 @@ namespace ScottPlot
 
         private void RenderBitmap()
         {
-            if (!settings.axes.hasBeenSet && settings.plottables.Count > 0)
+            if (!settings.axes.hasBeenSet)
                 settings.AxisAuto();
 
             if (!settings.layout.tighteningOccurred)
