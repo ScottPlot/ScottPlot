@@ -376,6 +376,39 @@ namespace ScottPlot
             return scatterPlot;
         }
 
+        public PlottableErrorBars PlotErrorBars(
+            double[] xs,
+            double[] ys,
+            double[] xPositiveError = null,
+            double[] xNegativeError = null,
+            double[] yPositiveError = null,
+            double[] yNegativeError = null,
+            Color? color = null,
+            double lineWidth = 1,
+            double capWidth = 3
+            )
+        {
+            if (color == null)
+            {
+                color = Color.Black; //neutral, better than a random color which likely won't match the series
+            }
+
+            PlottableErrorBars errorBars = new PlottableErrorBars(
+                xs,
+                ys,
+                xPositiveError,
+                xNegativeError,
+                yPositiveError,
+                yNegativeError,
+                color,
+                lineWidth,
+                capWidth
+                );
+
+            settings.plottables.Add(errorBars);
+            return errorBars;
+        }
+
         public PlottableScatter PlotArrow(
             double tipX,
             double tipY,
@@ -388,7 +421,6 @@ namespace ScottPlot
             string label = null
             )
         {
-
             var arrow = PlotScatter(
                 xs: new double[] { baseX, tipX },
                 ys: new double[] { baseY, tipY },
@@ -397,7 +429,6 @@ namespace ScottPlot
                 label: label,
                 markerSize: 0
                 );
-
 
             AdjustableArrowCap arrowCap = new AdjustableArrowCap(arrowheadWidth, arrowheadLength, isFilled: true);
 
