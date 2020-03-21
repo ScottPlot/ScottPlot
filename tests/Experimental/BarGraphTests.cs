@@ -108,6 +108,31 @@ namespace ScottPlotTests.Experimental
         }
 
         [Test]
+        public void Test_PlottableBar3_SingleSeries()
+        {
+            // define values, labels, and style of each bar series
+            var barSet = new BarSet(new double[] { 7, 12, 40, 40, 100, 125, 172, 550, 560, 600, 2496, 2789 });
+            var groupLabels = new string[] { "ant", "bird", "mouse", "human", "cat", "dog", "frog", "lion", "elephant", "horse", "shark", "hippo" };
+
+            // create the experimental plottable
+            var barSets = new BarSet[] { barSet };
+            var plottableThing = new PlottableBar3(barSets, groupLabels);
+            Console.WriteLine(plottableThing);
+
+            // plot the experimental plottable
+            var plt = new ScottPlot.Plot(400, 300);
+            plt.Add(plottableThing);
+            plt.Title("Body-to-Brain Mass Ratio");
+            plt.XTicks(groupLabels);
+            plt.Ticks(useMultiplierNotation: false);
+            plt.Ticks(xTickRotation: 45);
+            plt.Layout(xLabelHeight: 40);
+            plt.Axis(y1: 0);
+            plt.Grid(enableVertical: false);
+            TestTools.SaveFig(plt);
+        }
+
+        [Test]
         public void Test_PlottableBar3_MultiSeries()
         {
             // define values, labels, and style of each bar series
@@ -127,7 +152,6 @@ namespace ScottPlotTests.Experimental
             plt.Add(plottableThing);
             plt.Title("How often do you read reviews?");
             plt.XTicks(groupLabels);
-            plt.Ticks(useMultiplierNotation: false);
             plt.Grid(enableVertical: false);
             TestTools.SaveFig(plt);
         }

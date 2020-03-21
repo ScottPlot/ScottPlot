@@ -17,8 +17,9 @@ namespace ScottPlotTests.Experimental
         {
             this.barSets = barSets;
             this.groupLabels = groupLabels;
-            barSetCount = barSets.Length;
 
+            // MUST populate barSetCount and groupCount in constructor
+            barSetCount = barSets.Length;
             foreach (BarSet barSet in barSets)
                 groupCount = Math.Max(groupCount, barSet.values.Length);
 
