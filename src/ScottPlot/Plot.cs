@@ -302,10 +302,8 @@ namespace ScottPlot
             Color? color = null,
             double markerSize = 5,
             string label = null,
-            double? errorXPositive = null,
-            double? errorXNegative = null,
-            double? errorYPositive = null,
-            double? errorYNegative = null,
+            double? errorX = null,
+            double? errorY = null,
             double errorLineWidth = 1,
             double errorCapSize = 3,
             MarkerShape markerShape = MarkerShape.filledCircle,
@@ -315,11 +313,8 @@ namespace ScottPlot
             if (color == null)
                 color = settings.GetNextColor();
 
-
-            double[] errorXarrayPositive = (errorXPositive != null) ? new double[] { (double)errorXPositive } : null;
-            double[] errorXarrayNegative = (errorXNegative != null) ? new double[] { (double)errorXNegative } : null;
-            double[] errorYarrayPositive = (errorYPositive != null) ? new double[] { (double)errorYPositive } : null;
-            double[] errorYarrayNegative = (errorYNegative != null) ? new double[] { (double)errorYNegative } : null;
+            double[] errorXarray = (errorX != null) ? new double[] { (double)errorX } : null;
+            double[] errorYarray = (errorY != null) ? new double[] { (double)errorY } : null;
 
             PlottableScatter scatterPlot = new PlottableScatter(
                 xs: new double[] { x },
@@ -328,10 +323,8 @@ namespace ScottPlot
                 lineWidth: 0,
                 markerSize: markerSize,
                 label: label,
-                errorXPositive: errorXarrayPositive,
-                errorXNegative: errorXarrayNegative,
-                errorYPositive: errorYarrayPositive,
-                errorYNegative: errorYarrayNegative,
+                errorX: errorXarray,
+                errorY: errorYarray,
                 errorLineWidth: errorLineWidth,
                 errorCapSize: errorCapSize,
                 stepDisplay: false,
@@ -367,14 +360,12 @@ namespace ScottPlot
         public PlottableScatter PlotScatter(
             double[] xs,
             double[] ys,
-            double[] errorXPositive,
-            double[] errorXNegative,
-            double[] errorYPositive,
-            double[] errorYNegative,
             Color? color = null,
             double lineWidth = 1,
             double markerSize = 5,
             string label = null,
+            double[] errorX = null,
+            double[] errorY = null,
             double errorLineWidth = 1,
             double errorCapSize = 3,
             MarkerShape markerShape = MarkerShape.filledCircle,
@@ -391,10 +382,8 @@ namespace ScottPlot
                 lineWidth: lineWidth,
                 markerSize: markerSize,
                 label: label,
-                errorXPositive: errorXPositive,
-                errorXNegative: errorXNegative,
-                errorYPositive: errorYPositive,
-                errorYNegative: errorYNegative,
+                errorX: errorX,
+                errorY: errorY,
                 errorLineWidth: errorLineWidth,
                 errorCapSize: errorCapSize,
                 stepDisplay: false,
@@ -404,39 +393,6 @@ namespace ScottPlot
 
             settings.plottables.Add(scatterPlot);
             return scatterPlot;
-        }
-
-        public PlottableScatter PlotScatter(
-            double[] xs,
-            double[] ys,
-            Color? color = null,
-            double lineWidth = 1,
-            double markerSize = 5,
-            string label = null,
-            double[] errorX = null,
-            double[] errorY = null,
-            double errorLineWidth = 1,
-            double errorCapSize = 3,
-            MarkerShape markerShape = MarkerShape.filledCircle,
-            LineStyle lineStyle = LineStyle.Solid
-            )
-        {
-            return PlotScatter(
-                xs: xs,
-                ys: ys,
-                color: color,
-                lineWidth: lineWidth,
-                markerSize: markerSize,
-                label: label,
-                errorXPositive: errorX,
-                errorXNegative: errorX,
-                errorYPositive: errorY,
-                errorYNegative: errorY,
-                errorLineWidth: errorLineWidth,
-                errorCapSize: errorCapSize,
-                markerShape: markerShape,
-                lineStyle: lineStyle
-                );
         }
 
         public PlottableScatter PlotArrow(
@@ -533,10 +489,8 @@ namespace ScottPlot
                 lineWidth: lineWidth,
                 markerSize: 0,
                 label: label,
-                errorXPositive: null,
-                errorXNegative: null,
-                errorYPositive: null,
-                errorYNegative: null,
+                errorX: null,
+                errorY: null,
                 errorLineWidth: 0,
                 errorCapSize: 0,
                 stepDisplay: true,
