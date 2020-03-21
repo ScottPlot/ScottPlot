@@ -142,46 +142,6 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class ErrorBarsAsymmetric : PlotDemo, IPlotDemo
-        {
-            public string name { get; } = "Scatter Plot with Asymmetric Errorbars";
-            public string description { get; } = "Asymmetric X and Y error ranges can be supplied as optional double arrays for positive and/or negative error bars";
-
-            public void Render(Plot plt)
-            {
-                Random rand = new Random(0);
-                int pointCount = 20;
-
-                for (int plotNumber = 0; plotNumber < 3; plotNumber++)
-                {
-                    // create random data to plot
-                    double[] dataX = new double[pointCount];
-                    double[] dataY = new double[pointCount];
-                    double[] errorYPositive = new double[pointCount];
-                    double[] errorXPositive = new double[pointCount];
-                    double[] errorYNegative = new double[pointCount];
-                    double[] errorXNegative = new double[pointCount];
-                    for (int i = 0; i < pointCount; i++)
-                    {
-                        dataX[i] = i + rand.NextDouble();
-                        dataY[i] = rand.NextDouble() * 100 + 100 * plotNumber;
-                        errorYPositive[i] = rand.NextDouble();
-                        errorXPositive[i] = rand.NextDouble() * 10;
-                        errorYNegative[i] = rand.NextDouble();
-                        errorXNegative[i] = rand.NextDouble() * 10;
-                    }
-
-                    // demonstrate different ways to plot errorbars
-                    if (plotNumber == 0)
-                        plt.PlotScatter(dataX, dataY, errorXPositive, errorXNegative, errorYPositive, errorYNegative, lineWidth: 0, label: $"Asymmetric X and Y errors");
-                    else if (plotNumber == 1)
-                        plt.PlotScatter(dataX, dataY, errorXPositive, null, errorYPositive, null, lineWidth: 0, label: $"Positive errors only");
-                    else
-                        plt.PlotScatter(dataX, dataY, null, errorXNegative, null, errorYNegative, lineWidth: 0, label: $"Negative errors only");
-                }
-            }
-        }
-
         public class SaveData : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Save scatter plot data";
