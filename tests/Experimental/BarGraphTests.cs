@@ -106,5 +106,30 @@ namespace ScottPlotTests.Experimental
 
             TestTools.SaveFig(plt);
         }
+
+        [Test]
+        public void Test_PlottableBar3_MultiSeries()
+        {
+            // define values, labels, and style of each bar series
+            var barSetMen = new BarSet(new double[] { 15, 22, 45, 17 }, "Men");
+            var barSetWomen = new BarSet(new double[] { 37, 21, 29, 13 }, "Women");
+
+            // collect BarSets into groups
+            var barSets = new BarSet[] { barSetMen, barSetWomen };
+            var groupLabels = new string[] { "always", "regularly", "sometimes", "never" };
+
+            // create the experimental plottable
+            var plottableThing = new PlottableBar3(barSets, groupLabels);
+            Console.WriteLine(plottableThing);
+
+            // plot the experimental plottable
+            var plt = new ScottPlot.Plot(400, 300);
+            plt.Add(plottableThing);
+            plt.Title("How often do you read reviews?");
+            plt.XTicks(groupLabels);
+            plt.Ticks(useMultiplierNotation: false);
+            plt.Grid(enableVertical: false);
+            TestTools.SaveFig(plt);
+        }
     }
 }
