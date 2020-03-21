@@ -100,11 +100,6 @@ namespace ScottPlot
             brush = new SolidBrush(color);
         }
 
-        public PlottableScatter(double[] xs, double[] ys, Color color, double lineWidth, double markerSize, string label,
-    double[] errorX, double[] errorY, double errorLineWidth, double errorCapSize, bool stepDisplay, MarkerShape markerShape, LineStyle lineStyle)
-            : this(xs, ys, color, lineWidth, markerSize, label, errorX, errorX, errorY, errorY, errorLineWidth, errorCapSize, stepDisplay, markerShape, lineStyle)
-        { }
-
         public override string ToString()
         {
             return $"PlottableScatter with {pointCount} points";
