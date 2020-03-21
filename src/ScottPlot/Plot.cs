@@ -302,19 +302,12 @@ namespace ScottPlot
             Color? color = null,
             double markerSize = 5,
             string label = null,
-            double? errorX = null,
-            double? errorY = null,
-            double errorLineWidth = 1,
-            double errorCapSize = 3,
             MarkerShape markerShape = MarkerShape.filledCircle,
             LineStyle lineStyle = LineStyle.Solid
             )
         {
             if (color == null)
                 color = settings.GetNextColor();
-
-            double[] errorXarray = (errorX != null) ? new double[] { (double)errorX } : null;
-            double[] errorYarray = (errorY != null) ? new double[] { (double)errorY } : null;
 
             PlottableScatter scatterPlot = new PlottableScatter(
                 xs: new double[] { x },
@@ -323,10 +316,6 @@ namespace ScottPlot
                 lineWidth: 0,
                 markerSize: markerSize,
                 label: label,
-                errorX: errorXarray,
-                errorY: errorYarray,
-                errorLineWidth: errorLineWidth,
-                errorCapSize: errorCapSize,
                 stepDisplay: false,
                 markerShape: markerShape,
                 lineStyle: lineStyle
@@ -364,10 +353,6 @@ namespace ScottPlot
             double lineWidth = 1,
             double markerSize = 5,
             string label = null,
-            double[] errorX = null,
-            double[] errorY = null,
-            double errorLineWidth = 1,
-            double errorCapSize = 3,
             MarkerShape markerShape = MarkerShape.filledCircle,
             LineStyle lineStyle = LineStyle.Solid
             )
@@ -382,10 +367,6 @@ namespace ScottPlot
                 lineWidth: lineWidth,
                 markerSize: markerSize,
                 label: label,
-                errorX: errorX,
-                errorY: errorY,
-                errorLineWidth: errorLineWidth,
-                errorCapSize: errorCapSize,
                 stepDisplay: false,
                 markerShape: markerShape,
                 lineStyle: lineStyle
@@ -489,10 +470,6 @@ namespace ScottPlot
                 lineWidth: lineWidth,
                 markerSize: 0,
                 label: label,
-                errorX: null,
-                errorY: null,
-                errorLineWidth: 0,
-                errorCapSize: 0,
                 stepDisplay: true,
                 markerShape: MarkerShape.none,
                 lineStyle: LineStyle.Solid
@@ -576,9 +553,7 @@ namespace ScottPlot
             double xOffset = 0,
             Color? color = null,
             string label = null,
-            double[] errorY = null,
-            double errorLineWidth = 1,
-            double errorCapSize = 3
+            double barBorderWidth = 1
             )
         {
             if (color == null)
@@ -594,9 +569,7 @@ namespace ScottPlot
                 xOffset: xOffset,
                 color: (Color)color,
                 label: label,
-                yErr: errorY,
-                errorLineWidth: errorLineWidth,
-                errorCapSize: errorCapSize
+                barBorderWeight: barBorderWidth
                 );
 
             settings.plottables.Add(barPlot);
