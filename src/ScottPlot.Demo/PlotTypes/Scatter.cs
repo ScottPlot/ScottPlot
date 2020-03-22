@@ -115,7 +115,7 @@ namespace ScottPlot.Demo.PlotTypes
             {
                 Random rand = new Random(0);
                 int pointCount = 20;
-                plt.Axis(0, 25, 0, 350);
+
                 for (int plotNumber = 0; plotNumber < 3; plotNumber++)
                 {
                     // create random data to plot
@@ -133,20 +133,11 @@ namespace ScottPlot.Demo.PlotTypes
 
                     // demonstrate different ways to plot errorbars
                     if (plotNumber == 0)
-                    {
-                        plt.PlotScatter(dataX, dataY, lineWidth: 0, label: $"X and Y errors");
-                        plt.PlotErrorBars(dataX, dataY, errorX, errorX, errorY, errorY);
-                    }
+                        plt.PlotScatter(dataX, dataY, lineWidth: 0, errorY: errorY, errorX: errorX, label: $"X and Y errors");
                     else if (plotNumber == 1)
-                    {
-                        plt.PlotScatter(dataX, dataY, lineWidth: 0, label: $"Y errors only");
-                        plt.PlotErrorBars(dataX, dataY, null, null, errorY, errorY);
-                    }
+                        plt.PlotScatter(dataX, dataY, lineWidth: 0, errorY: errorY, label: $"Y errors only");
                     else
-                    {
-                        plt.PlotScatter(dataX, dataY, label: $"Connected Errors");
-                        plt.PlotErrorBars(dataX, dataY, errorX, errorX, errorY, errorY);
-                    }
+                        plt.PlotScatter(dataX, dataY, errorY: errorY, errorX: errorX, label: $"Connected Errors");
                 }
             }
         }
