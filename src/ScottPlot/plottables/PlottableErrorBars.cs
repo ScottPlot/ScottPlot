@@ -130,6 +130,8 @@ namespace ScottPlot
             if (errorArray is null)
                 return;
 
+            float slightPixelOffset = 0.01f; // to fix GDI bug that happens when small straight lines are drawn with anti-aliasing on
+
             for (int i = 0; i < xs.Length; i++)
             {
                 PointF centerPixel = settings.GetPixel(xs[i], ys[i]);
@@ -138,13 +140,13 @@ namespace ScottPlot
                 {
                     float xWithError = (float)settings.GetPixelX(xs[i] + errorSize);
                     settings.gfxData.DrawLine(penLine, centerPixel.X, centerPixel.Y, xWithError, centerPixel.Y);
-                    settings.gfxData.DrawLine(penLine, xWithError, centerPixel.Y - capSize, xWithError, centerPixel.Y + capSize);
+                    settings.gfxData.DrawLine(penLine, xWithError, centerPixel.Y - capSize, xWithError + slightPixelOffset, centerPixel.Y + capSize);
                 }
                 else
                 {
                     float yWithError = (float)settings.GetPixelY(ys[i] + errorSize);
                     settings.gfxData.DrawLine(penLine, centerPixel.X, centerPixel.Y, centerPixel.X, yWithError);
-                    settings.gfxData.DrawLine(penLine, centerPixel.X - capSize, yWithError, centerPixel.X + capSize, yWithError);
+                    settings.gfxData.DrawLine(penLine, centerPixel.X - capSize, yWithError, centerPixel.X + capSize, yWithError + slightPixelOffset);
                 }
             }
         }
