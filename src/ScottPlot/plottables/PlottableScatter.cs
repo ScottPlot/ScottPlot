@@ -147,8 +147,7 @@ namespace ScottPlot
 
             for (int i = 0; i < xs.Length; i++)
                 points[i] = settings.GetPixel(xs[i], ys[i]);
-
-
+            
             if (stepDisplay)
             {
                 if (pointsStep is null)
