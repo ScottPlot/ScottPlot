@@ -15,10 +15,11 @@ namespace ScottPlot
         private readonly double[] yPositiveError;
         private readonly double[] yNegativeError;
         private readonly float capLength;
+        private readonly double xOffSet; //used for multi-bar plot error bars
         private readonly Pen penLine;
 
         public PlottableErrorBars(double[] xs, double[] ys, double[] xPositiveError, double[] xNegativeError,
-            double[] yPositiveError, double[] yNegativeError, Color color, double lineWidth = 1, double capLength = 3)
+            double[] yPositiveError, double[] yNegativeError, Color color, double lineWidth = 1, double capLength = 3, double xOffSet=0)
         {
             //check input
             if (xs.Length != ys.Length)
@@ -36,6 +37,7 @@ namespace ScottPlot
             this.yPositiveError = yPositiveError;
             this.yNegativeError = yNegativeError;
             this.capLength = (float)capLength;
+            this.xOffSet = xOffSet;
             this.color = color;
             pointCount = xs.Length;
 
@@ -109,7 +111,7 @@ namespace ScottPlot
                 {
 
                     PointF mainPoint = settings.GetPixel(xs[i], ys[i]);
-                    float x = mainPoint.X;
+                    float x = mainPoint.X + (float)(xOffSet * settings.xAxisScale);
                     float y = mainPoint.Y;
                     float error = positiveError ? (float)errorArray[i] : (float)errorArray[i] * -1;
                     if (xError)

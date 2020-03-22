@@ -28,10 +28,10 @@ namespace ScottPlot.Demo.PlotTypes
 
                 // make the bar plot
                 plt.PlotBar(Xs, dataA);
-                //plt.PlotErrorBars(Xs, dataA, null, null, errorA, null);
+                plt.PlotErrorBars(Xs, dataA, null, null, errorA, null);
 
                 // customize the plot to make it look nicer
-                plt.Axis(null, null, 0, null);
+                plt.Axis(-10, 110, 0, 110);
                 plt.Grid(false);
 
                 // apply custom axis tick labels
@@ -62,7 +62,7 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.PlotBar(xs, ys, barWidth: .5);
                 plt.PlotErrorBars(xs, ys, null, null, yErr, capWidth:2);
                 plt.Grid(enableVertical: false);
-                plt.Axis(null, null, 0, null);
+                plt.Axis(-2, 20, 0, 1.75);
             }
         }
 
@@ -92,13 +92,13 @@ namespace ScottPlot.Demo.PlotTypes
 
                 // add both bar plots with a careful widths and offsets
                 plt.PlotBar(Xs, dataA, label: "data A", barWidth: 3.2, xOffset: -2);
-                plt.PlotErrorBars(Xs, dataA, null, null, errorA);
+                plt.PlotErrorBars(Xs, dataA, null, null, errorA, xOffSet: -2);
                 plt.PlotBar(Xs, dataB, label: "data B", barWidth: 3.2, xOffset: 2);
-                plt.PlotErrorBars(Xs, dataB, null, null, errorB);
+                plt.PlotErrorBars(Xs, dataB, null, null, errorB, xOffSet: 2);
 
                 // customize the plot to make it look nicer
                 plt.Grid(false);
-                plt.Axis(null, null, 0, null);
+                plt.Axis(-10, 110, 0, 110);
                 plt.Legend();
 
                 // apply custom axis tick labels
