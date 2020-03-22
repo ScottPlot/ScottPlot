@@ -408,11 +408,9 @@ namespace ScottPlot
             double xOffSet = 0
             )
         {
-            settings.IncrementNumErrorBarPlottables(); //this call should precede the color assignment
-            //Tries to use the same color as the plottable that preceeded it. 
-            //If there is no preceeding plottable (ErrorBars don't count!), it defaults to black
-            if (color == null)
-                color = settings.plottables.Count >= settings.NumErrorBarPlottables ? settings.GetNextColor() : Color.Black;
+            // TODO: get last used color
+            //color = settings.plottables.Count >= settings.NumErrorBarPlottables ? settings.GetNextColor() : Color.Black;
+            color = Color.Magenta; // to remind me not to forget
 
             PlottableErrorBars errorBars = new PlottableErrorBars(
                 xs,
@@ -423,8 +421,7 @@ namespace ScottPlot
                 yNegativeError,
                 color.Value,
                 lineWidth,
-                capWidth,
-                xOffSet
+                capWidth
                 );
 
             settings.plottables.Add(errorBars);
