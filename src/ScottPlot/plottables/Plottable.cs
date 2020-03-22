@@ -16,5 +16,6 @@ namespace ScottPlot
         public abstract override string ToString();
         public abstract Config.AxisLimits2D GetLimits();
         public abstract int GetPointCount();
+        public abstract Config.LegendItem[] GetLegendItems();
     }
 }

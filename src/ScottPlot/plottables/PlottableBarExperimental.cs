@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ScottPlot
 {
-    public class PlottableBarExperimental : Plottable, IAppearsInLegend
+    public class PlottableBarExperimental : Plottable
     {
         public readonly DataSet[] datasets;
         public readonly string[] groupLabels;
@@ -44,16 +44,6 @@ namespace ScottPlot
             this.setBrushes = new System.Drawing.Brush[barSetCount];
             for (int i = 0; i < barSetCount; i++)
                 setBrushes[i] = new System.Drawing.SolidBrush(this.setColors[i]);
-        }
-
-        public LegendItem[] GetLegendItems()
-        {
-            var items = new List<LegendItem>();
-
-            for (int i = 0; i < barSetCount; i++)
-                items.Add(new LegendItem(datasets[i].label, setColors[i]));
-
-            return items.ToArray();
         }
 
         public override AxisLimits2D GetLimits()
@@ -136,6 +126,16 @@ namespace ScottPlot
         public override int GetPointCount()
         {
             return groupCount * barSetCount;
+        }
+
+        public override LegendItem[] GetLegendItems()
+        {
+            var items = new List<LegendItem>();
+
+            for (int i = 0; i < barSetCount; i++)
+                items.Add(new LegendItem(datasets[i].label, setColors[i]));
+
+            return items.ToArray();
         }
     }
 }

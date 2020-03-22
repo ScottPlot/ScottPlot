@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using ScottPlot.Config;
 
 namespace ScottPlot
 {
@@ -135,6 +136,12 @@ namespace ScottPlot
         public override int GetPointCount()
         {
             return ys.Length;
+        }
+
+        public override LegendItem[] GetLegendItems()
+        {
+            // don't bother, PlottableBar is about to get replaced by PlottableBarExperimental
+            return null;
         }
     }
 }

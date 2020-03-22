@@ -122,5 +122,11 @@ namespace ScottPlot
         {
             return boxAndWhiskers.Length;
         }
+
+        public override LegendItem[] GetLegendItems()
+        {
+            var singleLegendItem = new Config.LegendItem("B&W", color);
+            return new LegendItem[] { singleLegendItem };
+        }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using ScottPlot.Config;
 
 namespace ScottPlot
 {
@@ -219,6 +220,13 @@ namespace ScottPlot
         public override int GetPointCount()
         {
             return ys.Length;
+        }
+
+        public override LegendItem[] GetLegendItems()
+        {
+            // TODO: determine how to respect line width in legend
+            var singleLegendItem = new Config.LegendItem(label, color, LegendItem.KeyStyle.Line, lineStyle, 3, markerShape, 3);
+            return new LegendItem[] { singleLegendItem };
         }
     }
 }

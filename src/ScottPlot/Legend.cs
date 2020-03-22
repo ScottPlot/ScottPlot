@@ -41,8 +41,7 @@ namespace ScottPlot
             // todo: linq
             var items = new List<Config.LegendItem>();
             foreach (Plottable plottable in settings.plottables)
-                if (plottable is IAppearsInLegend plottableWithLegendItems)
-                    items.AddRange(plottableWithLegendItems.GetLegendItems());
+                items.AddRange(plottable.GetLegendItems());
 
             return items.ToArray();
         }

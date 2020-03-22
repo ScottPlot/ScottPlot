@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using ScottPlot.Config;
 
 namespace ScottPlot
 {
@@ -132,6 +133,11 @@ namespace ScottPlot
         public override int GetPointCount()
         {
             return ohlcs.Length;
+        }
+
+        public override LegendItem[] GetLegendItems()
+        {
+            return null; // don't show this in the legend
         }
     }
 }

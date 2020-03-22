@@ -108,5 +108,11 @@ namespace ScottPlot
         }
 
         public Cursor DragCursor => Cursor.NS;
+
+        public override LegendItem[] GetLegendItems()
+        {
+            var singleLegendItem = new Config.LegendItem(label, color, LegendItem.KeyStyle.Rectangle);
+            return new LegendItem[] { singleLegendItem };
+        }
     }
 }

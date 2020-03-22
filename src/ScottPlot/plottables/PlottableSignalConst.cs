@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot.Config;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -537,6 +538,12 @@ namespace ScottPlot
         public override int GetPointCount()
         {
             return ys.Length;
+        }
+
+        public override LegendItem[] GetLegendItems()
+        {
+            var singleLegendItem = new Config.LegendItem(label, color, LegendItem.KeyStyle.Line);
+            return new LegendItem[] { singleLegendItem };
         }
     }
 }
