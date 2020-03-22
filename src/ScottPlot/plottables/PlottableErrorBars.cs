@@ -68,7 +68,52 @@ namespace ScottPlot
 
         public override Config.AxisLimits2D GetLimits()
         {
-            return new Config.AxisLimits2D(new double[] { xs.Min(), xs.Max(), ys.Min(), ys.Max() });
+            double xMin = double.PositiveInfinity;
+            double yMin = double.PositiveInfinity;
+            double xMax = double.NegativeInfinity;
+            double yMax = double.NegativeInfinity;
+
+            if (xNegativeError is null)
+            {
+                xMin = xs.Min();
+            }
+            else
+            {
+                for (int i = 0; i < xs.Length; i++)
+                    xMin = Math.Min(xMin, xs[i] - xNegativeError[i]);
+            }
+
+            if (xPositiveError is null)
+            {
+                xMax = xs.Max();
+            }
+            else
+            {
+                for (int i = 0; i < xs.Length; i++)
+                    xMax = Math.Max(xMax, xs[i] + xPositiveError[i]);
+            }
+
+            if (yNegativeError is null)
+            {
+                yMin = ys.Min();
+            }
+            else
+            {
+                for (int i = 0; i < xs.Length; i++)
+                    yMin = Math.Min(yMin, ys[i] - yNegativeError[i]);
+            }
+
+            if (yPositiveError is null)
+            {
+                yMax = ys.Max();
+            }
+            else
+            {
+                for (int i = 0; i < xs.Length; i++)
+                    yMax = Math.Max(yMax, ys[i] + yPositiveError[i]);
+            }
+
+            return new Config.AxisLimits2D(new double[] { xMin, xMax, yMin, yMax });
         }
 
 
