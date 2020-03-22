@@ -385,8 +385,7 @@ namespace ScottPlot
             double[] yNegativeError = null,
             Color? color = null,
             double lineWidth = 1,
-            double capWidth = 3,
-            double xOffSet = 0
+            double capWidth = 3
             )
         {
             settings.IncrementNumErrorBarPlottables(); //this call should precede the color assignment
@@ -404,8 +403,7 @@ namespace ScottPlot
                 yNegativeError,
                 color.Value,
                 lineWidth,
-                capWidth,
-                xOffSet
+                capWidth
                 );
 
             settings.plottables.Add(errorBars);

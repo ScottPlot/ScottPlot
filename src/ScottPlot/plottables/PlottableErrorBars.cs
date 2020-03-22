@@ -14,30 +14,24 @@ namespace ScottPlot
         private readonly double[] xNegativeError;
         private readonly double[] yPositiveError;
         private readonly double[] yNegativeError;
-        private readonly float capLength;
-        private readonly double xOffSet; //used for multi-bar plot error bars
+        private readonly float capSize;
         private readonly Pen penLine;
 
         public PlottableErrorBars(double[] xs, double[] ys, double[] xPositiveError, double[] xNegativeError,
-            double[] yPositiveError, double[] yNegativeError, Color color, double lineWidth = 1, double capLength = 3, double xOffSet = 0)
+            double[] yPositiveError, double[] yNegativeError, Color color, double lineWidth = 1, double capSize = 3)
         {
             //check input
             if (xs.Length != ys.Length)
                 throw new ArgumentException("X and Y arrays must have the same length");
-            SanitizeErrors(xPositiveError, xs.Length);
-            SanitizeErrors(xNegativeError, xs.Length);
-            SanitizeErrors(yPositiveError, xs.Length);
-            SanitizeErrors(yNegativeError, xs.Length);
 
             //save properties
             this.xs = xs;
             this.ys = ys;
-            this.xPositiveError = xPositiveError;
-            this.xNegativeError = xNegativeError;
-            this.yPositiveError = yPositiveError;
-            this.yNegativeError = yNegativeError;
-            this.capLength = (float)capLength;
-            this.xOffSet = xOffSet;
+            this.xPositiveError = SanitizeErrors(xPositiveError, xs.Length);
+            this.xNegativeError = SanitizeErrors(xNegativeError, xs.Length);
+            this.yPositiveError = SanitizeErrors(yPositiveError, xs.Length);
+            this.yNegativeError = SanitizeErrors(yNegativeError, xs.Length);
+            this.capSize = (float)capSize;
             this.color = color;
             pointCount = xs.Length;
 
@@ -51,27 +45,19 @@ namespace ScottPlot
             };
         }
 
-        /// <summary>
-        /// Make all error values positive and 
-        /// check the number of errors is equal
-        /// to the number of points
-        /// </summary>
-        /// <param name="errorArray"></param>
-        private void SanitizeErrors(double[] errorArray, int expectedLength)
+        private double[] SanitizeErrors(double[] errorArray, int expectedLength)
         {
-            if (errorArray != null)
-            {
-                if (errorArray.Length != expectedLength)
-                {
-                    throw new ArgumentException("Point arrays and error arrays must have the same length");
-                }
-                else
-                {
-                    for (int i = 0; i < errorArray.Length; i++)
-                        if (errorArray[i] < 0)
-                            errorArray[i] = -errorArray[i];
-                }
-            }
+            if (errorArray is null)
+                return null;
+
+            if (errorArray.Length != expectedLength)
+                throw new ArgumentException("Point arrays and error arrays must have the same length");
+
+            for (int i = 0; i < errorArray.Length; i++)
+                if (errorArray[i] < 0)
+                    errorArray[i] = -errorArray[i];
+
+            return errorArray;
         }
 
         public override string ToString()
@@ -81,7 +67,6 @@ namespace ScottPlot
 
         public override Config.AxisLimits2D GetLimits()
         {
-            // TODO: use features of 2d axis
             return new Config.AxisLimits2D(new double[] { xs.Min(), xs.Max(), ys.Min(), ys.Max() });
         }
 
@@ -94,40 +79,28 @@ namespace ScottPlot
             DrawErrorBar(settings, yNegativeError, false, false);
         }
 
-        /// <summary>
-        /// Draws the error bar for a given error type
-        /// (e.g. x or y, positive or negative)
-        /// Makes a happy little "T"
-        /// </summary>
-        /// <param name="settings"></param>
-        /// <param name="errorArray"></param>
-        /// <param name="xError"></param>
-        /// <param name="positiveError"></param>
         public void DrawErrorBar(Settings settings, double[] errorArray, bool xError, bool positiveError)
         {
-            if (errorArray != null)
-            {
-                for (int i = 0; i < xs.Length; i++)
-                {
+            if (errorArray is null)
+                return;
 
-                    PointF mainPoint = settings.GetPixel(xs[i], ys[i]);
-                    float x = mainPoint.X + (float)(xOffSet * settings.xAxisScale);
-                    float y = mainPoint.Y;
-                    float error = positiveError ? (float)errorArray[i] : (float)errorArray[i] * -1;
-                    if (xError)
-                    {
-                        PointF errorPoint = settings.GetPixel(xs[i] + error, ys[i]);
-                        float xWithError = errorPoint.X;
-                        settings.gfxData.DrawLine(penLine, x, y, xWithError, y); //draw the error
-                        settings.gfxData.DrawLine(penLine, xWithError, y - capLength, xWithError, y + capLength); //draw the cap
-                    }
-                    else
-                    {
-                        PointF errorPoint = settings.GetPixel(xs[i], ys[i] + error);
-                        float yWithError = errorPoint.Y;
-                        settings.gfxData.DrawLine(penLine, x, y, x, yWithError); //draw the error
-                        settings.gfxData.DrawLine(penLine, x - capLength, yWithError, x + capLength, yWithError); //draw the cap
-                    }
+            for (int i = 0; i < xs.Length; i++)
+            {
+                PointF centerPixel = settings.GetPixel(xs[i], ys[i]);
+                float errorSize = positiveError ? (float)errorArray[i] : -(float)errorArray[i];
+                if (xError)
+                {
+                    PointF errorPoint = settings.GetPixel(xs[i] + errorSize, ys[i]);
+                    float xWithError = errorPoint.X;
+                    settings.gfxData.DrawLine(penLine, centerPixel.X, centerPixel.Y, xWithError, centerPixel.Y);
+                    settings.gfxData.DrawLine(penLine, xWithError, centerPixel.Y - capSize, xWithError, centerPixel.Y + capSize);
+                }
+                else
+                {
+                    PointF errorPoint = settings.GetPixel(xs[i], ys[i] + errorSize);
+                    float yWithError = errorPoint.Y;
+                    settings.gfxData.DrawLine(penLine, centerPixel.X, centerPixel.Y, centerPixel.X, yWithError);
+                    settings.gfxData.DrawLine(penLine, centerPixel.X - capSize, yWithError, centerPixel.X + capSize, yWithError);
                 }
             }
         }
