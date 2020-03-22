@@ -33,7 +33,7 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.PlotErrorBars(dataX, dataY2, errorXPositive, null, errorYPositive, null, label: "Positive errors only");
                 plt.PlotErrorBars(dataX, dataY3, null, errorXNegative, null, errorYNegative, label: $"Negative errors only");
 
-                plt.Title("Error Bars with Assymetric X and Y Values");
+                plt.Title("Error Bars with Asymmetric X and Y Values");
                 plt.Grid(false);
                 plt.Legend();
             }
