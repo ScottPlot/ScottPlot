@@ -60,9 +60,7 @@ namespace ScottPlot
         public double yAxisUnitsPerPixel { get { return 1.0 / yAxisScale; } }
 
         // this has to be here because color module is unaware of plottables list
-        public Color GetNextColor() { return colors.GetColor(plottables.Count-NumErrorBarPlottables); }
-        public int NumErrorBarPlottables { get; private set; } //used so that the error bars are the same color as the points preceeding them (default)
-        public void IncrementNumErrorBarPlottables(){ NumErrorBarPlottables++; }
+        public Color GetNextColor() { return colors.GetColor(plottables.Count); }
 
         public void Resize(int width, int height, bool useMeasuredStrings = false)
         {
@@ -315,7 +313,6 @@ namespace ScottPlot
             {
                 plottables.RemoveAt(indicesToDelete[i]);
             }
-            NumErrorBarPlottables = 0;
 
             axes.x.hasBeenSet = false;
             axes.y.hasBeenSet = false;
