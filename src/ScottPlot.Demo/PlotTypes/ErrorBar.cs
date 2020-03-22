@@ -29,17 +29,18 @@ namespace ScottPlot.Demo.PlotTypes
                 double[] errorXNegative = DataGen.RandomNormal(rand, pointCount);
 
                 // plot errors in all 4 directions
-                plt.PlotErrorBars(dataX, dataY1, errorXPositive, errorXNegative, errorYPositive, errorYNegative);
-                plt.PlotScatter(dataX, dataY1, lineWidth: 0, label: $"Asymmetric X and Y errors");
+                var err1 = plt.PlotErrorBars(dataX, dataY1, errorXPositive, errorXNegative, errorYPositive, errorYNegative);
+                plt.PlotScatter(dataX, dataY1, lineWidth: 0, label: $"Asymmetric X and Y errors", color: err1.color);
 
                 // plot upper and right errors only
-                plt.PlotErrorBars(dataX, dataY2, errorXPositive, null, errorYPositive, null);
-                plt.PlotScatter(dataX, dataY2, lineWidth: 0, label: $"Positive errors only");
+                var err2 = plt.PlotErrorBars(dataX, dataY2, errorXPositive, null, errorYPositive, null);
+                plt.PlotScatter(dataX, dataY2, lineWidth: 0, label: $"Positive errors only", color: err2.color);
 
                 // plot lower and left errors only
-                plt.PlotErrorBars(dataX, dataY3, null, errorXNegative, null, errorYNegative);
-                plt.PlotScatter(dataX, dataY3, lineWidth: 0, label: $"Negative errors only");
+                var err3 = plt.PlotErrorBars(dataX, dataY3, null, errorXNegative, null, errorYNegative);
+                plt.PlotScatter(dataX, dataY3, lineWidth: 0, label: $"Negative errors only", color: err3.color);
 
+                plt.Grid(false);
                 plt.Legend();
             }
         }
