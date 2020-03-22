@@ -404,13 +404,11 @@ namespace ScottPlot
             double[] yNegativeError = null,
             Color? color = null,
             double lineWidth = 1,
-            double capWidth = 3,
-            double xOffSet = 0
+            double capWidth = 3
             )
         {
-            // TODO: get last used color
-            //color = settings.plottables.Count >= settings.NumErrorBarPlottables ? settings.GetNextColor() : Color.Black;
-            color = Color.Magenta; // to remind me not to forget
+            if (color is null)
+                color = settings.GetNextColor();
 
             PlottableErrorBars errorBars = new PlottableErrorBars(
                 xs,
