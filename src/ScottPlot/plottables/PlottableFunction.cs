@@ -79,7 +79,7 @@ namespace ScottPlot
             }
 
 
-            PlottableScatter scatter = new PlottableScatter(xList.ToArray(), yList.ToArray(), color, lineWidth, markerSize, label, false, markerShape, lineStyle);
+            PlottableScatter scatter = new PlottableScatter(xList.ToArray(), yList.ToArray(), color, lineWidth, markerSize, label, null, null, 0, 0, false, markerShape, lineStyle);
             scatter.Render(settings);
         }
 
