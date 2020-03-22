@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -35,15 +36,29 @@ namespace ScottPlot
         private const int shadowWidth = 2;
         private const int shadowHeight = 2;
 
-        private static IEnumerable<Plottable> GetPlottableInLegend(Settings settings)
+        public static Config.LegendItem[] GetLegendItems(Settings settings)
         {
-            return settings.plottables.Where(p => p.visible && p.label != null);
+            var items = new List<Config.LegendItem>();
+            foreach (Plottable plottable in settings.plottables)
+            {
+                if (plottable is IAppearsInLegend plottableWithLegendItems)
+                {
+                    items.AddRange(plottableWithLegendItems.GetLegendItems());
+                }
+                else
+                {
+                    // TODO: upgrade these outdated plottables
+                    Debug.WriteLine($"WARNING: plottable is using old legend method: {plottable}");
+                    if (plottable.visible && plottable.label != null)
+                        items.Add(new Config.LegendItem(plottable.label, plottable.color, Config.LegendItem.KeyStyle.Line));
+                }
+            }
+            return items.ToArray();
         }
 
         public static Rectangle GetLegendFrame(Settings settings)
         {
             Size frameSize = GetFrameSize(settings);
-
             Point fullFrameLocation = GetFullFrameLocation(settings, frameSize);
             Size fullFrameSize = GetFullFrameSize(frameSize, settings.legend.shadow);
             return new Rectangle(fullFrameLocation, Size.Add(fullFrameSize, new Size(1, 1)));
@@ -70,23 +85,25 @@ namespace ScottPlot
             settings.gfxLegend.FillRectangle(new SolidBrush(settings.legend.colorBackground), frameRect);
             settings.gfxLegend.DrawRectangle(new Pen(settings.legend.colorFrame), frameRect);
 
-            foreach (var (p, index) in GetPlottableInLegend(settings).Select((x, i) => (x, i)))
+            foreach (var (p, index) in GetLegendItems(settings).Select((x, i) => (x, i)))
             {
-                Point legendItemLocation = new Point(frameOffset.X,
-                    padding + index * (int)(maxLabelSize.Height) + frameOffset.Y);
-                DrawLegendItemString(p, settings, legendItemLocation, padding, stubWidth, maxLabelSize.Height);
-                DrawLegendItemLine(p, settings, legendItemLocation, padding, stubWidth, maxLabelSize.Height);
-                DrawLegendItemMarker(p, settings, legendItemLocation, padding, stubWidth, maxLabelSize.Height);
+                Config.LegendItem legendItem = p;
+                Debug.WriteLine($"DRAWING LEGEND ITEM: {legendItem}");
+
+                Point legendItemLocation = new Point(frameOffset.X, padding + index * (int)(maxLabelSize.Height) + frameOffset.Y);
+                DrawLegendItemString(legendItem, settings, legendItemLocation, padding, stubWidth, maxLabelSize.Height);
+                DrawLegendItemLine(legendItem, settings, legendItemLocation, padding, stubWidth, maxLabelSize.Height);
+                DrawLegendItemMarker(legendItem, settings, legendItemLocation, padding, stubWidth, maxLabelSize.Height);
             }
         }
 
-        public static SizeF MaxLegendLabelSize(Settings settings)
+        private static SizeF MaxLegendLabelSize(Settings settings)
         {
             SizeF maxLabelSize = new SizeF();
 
-            foreach (Plottable plottable in GetPlottableInLegend(settings))
+            foreach (var legendItem in GetLegendItems(settings))
             {
-                SizeF labelSize = settings.gfxLegend.MeasureString(plottable.label, settings.legend.font);
+                SizeF labelSize = settings.gfxLegend.MeasureString(legendItem.label, settings.legend.font);
                 if (labelSize.Width > maxLabelSize.Width)
                     maxLabelSize.Width = labelSize.Width;
                 if (labelSize.Height > maxLabelSize.Height)
@@ -96,35 +113,27 @@ namespace ScottPlot
             return maxLabelSize;
         }
 
-        private static void DrawLegendItemString(Plottable plottable, Settings settings, Point itemLocation, int padding, int stubWidth, float legendFontLineHeight)
+        private static void DrawLegendItemString(Config.LegendItem legendItem, Settings settings, Point itemLocation, int padding, int stubWidth, float legendFontLineHeight)
         {
             Brush brushText = new SolidBrush(settings.legend.colorText);
             var textLocation = itemLocation + new Size(padding + stubWidth + padding, 0);
-            settings.gfxLegend.DrawString(plottable.label, settings.legend.font, brushText, textLocation);
+            settings.gfxLegend.DrawString(legendItem.label, settings.legend.font, brushText, textLocation);
         }
 
-        private static void DrawLegendItemLine(Plottable plottable, Settings settings, Point itemLocation, int padding, int stubWidth, float legendFontLineHeight)
+        private static void DrawLegendItemLine(Config.LegendItem legendItem, Settings settings, Point itemLocation, int padding, int stubWidth, float legendFontLineHeight)
         {
-            Pen pen = new Pen(plottable.color, 1);
+            Pen pen = new Pen(legendItem.color, 1);
 
-            if (plottable is PlottableVSpan || plottable is PlottableHSpan)
+            // a rectangle is really just a fat line
+            if (legendItem.keyStyle == Config.LegendItem.KeyStyle.Rectangle)
                 pen.Width = 10;
 
-            if (settings.legend.fixedLineWidth == false)
-            {
-                if (plottable is PlottableScatter)
-                    pen.Width = (float)((PlottableScatter)plottable).lineWidth;
-                if (plottable is PlottableSignal)
-                    pen.Width = (float)((PlottableSignal)plottable).lineWidth;
-            }
+            else if (legendItem.keyStyle == Config.LegendItem.KeyStyle.Marker)
+                pen.Width = 0;
 
-            // dont draw line if it's not on the plottable
-            if ((plottable is PlottableScatter) && (((PlottableScatter)plottable).lineWidth) == 0)
-                return;
-            if ((plottable is PlottableSignal) && (((PlottableSignal)plottable).lineWidth) == 0)
-                return;
-
-            switch (plottable.lineStyle)
+            // TODO: move this switch to tools or something. 
+            // Sureley the legend isn't the only place this switch lives.
+            switch (legendItem.lineStyle)
             {
                 case LineStyle.Solid:
                     pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Solid;
@@ -148,18 +157,10 @@ namespace ScottPlot
                 itemLocation.X + padding + stubWidth, itemLocation.Y + legendFontLineHeight / 2);
         }
 
-        private static void DrawLegendItemMarker(Plottable plottable, Settings settings, Point itemLocation, int padding, int stubWidth, float legendFontLineHeight)
+        private static void DrawLegendItemMarker(Config.LegendItem legendItem, Settings settings, Point itemLocation, int padding, int stubWidth, float legendFontLineHeight)
         {
-            Brush brushMarker = new SolidBrush(plottable.color);
-            Pen penMarker = new Pen(plottable.color, 1);
-
-            // dont draw marker if it's not on the plottable
-            if (plottable.markerShape == MarkerShape.none)
-                return;
-            if ((plottable is PlottableScatter) && (((PlottableScatter)plottable).markerSize) == 0)
-                return;
-            if ((plottable is PlottableSignal) && (((PlottableSignal)plottable).markerSize) == 0)
-                return;
+            Brush brushMarker = new SolidBrush(legendItem.color);
+            Pen penMarker = new Pen(legendItem.color, 1);
 
             PointF corner1 = new PointF(itemLocation.X + 2 * padding + settings.legend.font.Size / 4, itemLocation.Y + settings.legend.font.Size / 4 * padding);
             PointF center = new PointF
@@ -172,7 +173,10 @@ namespace ScottPlot
             RectangleF rect = new RectangleF(corner1, bounds);
 
             Font textFont = new Font("CourierNew", settings.legend.font.Size);
-            switch (plottable.markerShape)
+
+            // TODO: move this switch to tools or something. 
+            // Sureley the legend isn't the only place this switch lives.
+            switch (legendItem.markerShape)
             {
                 case MarkerShape.none:
                     //Nothing to do because the Drawline needs to be there for all cases, and it's already there
@@ -288,7 +292,7 @@ namespace ScottPlot
             int stubWidth = 40 * (int)settings.legend.font.Size / 12;
             SizeF maxLabelSize = MaxLegendLabelSize(settings);
             int width = padding * 2 + (int)maxLabelSize.Width + padding + stubWidth;
-            int height = padding * 2 + (int)maxLabelSize.Height * GetPlottableInLegend(settings).Count();
+            int height = padding * 2 + (int)maxLabelSize.Height * GetLegendItems(settings).Count();
             return new Size(width, height);
         }
 

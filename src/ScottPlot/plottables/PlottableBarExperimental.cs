@@ -1,38 +1,67 @@
-﻿using ScottPlot;
-using ScottPlot.Config;
+﻿using ScottPlot.Config;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ScottPlotTests.Experimental
+namespace ScottPlot
 {
-    class PlottableBar3 : ScottPlot.Plottable
+    public class PlottableBarExperimental : Plottable, IAppearsInLegend
     {
-        public readonly BarSet[] barSets;
+        public readonly DataSet[] datasets;
         public readonly string[] groupLabels;
-        public readonly int groupCount = 0;
+        public readonly int groupCount;
         public readonly int barSetCount;
 
-        public PlottableBar3(BarSet[] barSets, string[] groupLabels)
+        public readonly System.Drawing.Color[] setColors;
+        public readonly System.Drawing.Brush[] setBrushes;
+
+        public PlottableBarExperimental(DataSet[] datasets, string[] groupLabels, System.Drawing.Color[] setColors = null)
         {
-            this.barSets = barSets;
+            this.datasets = datasets;
             this.groupLabels = groupLabels;
 
             // MUST populate barSetCount and groupCount in constructor
-            barSetCount = barSets.Length;
-            foreach (BarSet barSet in barSets)
+            barSetCount = datasets.Length;
+            foreach (DataSet barSet in datasets)
                 groupCount = Math.Max(groupCount, barSet.values.Length);
 
             if (groupLabels.Length != groupCount)
                 throw new ArgumentException("groupLabels must be same number of elements as the largest barSet values");
+
+            if (setColors is null)
+            {
+                this.setColors = new System.Drawing.Color[barSetCount];
+                for (int i = 0; i < barSetCount; i++)
+                    this.setColors[i] = new ScottPlot.Config.Colors().GetColor(i);
+            }
+            else
+            {
+                if (setColors.Length != barSetCount)
+                    throw new ArgumentException("groupColors must be same number of elements as the largest barSet values");
+                this.setColors = setColors;
+            }
+
+            this.setBrushes = new System.Drawing.Brush[barSetCount];
+            for (int i = 0; i < barSetCount; i++)
+                setBrushes[i] = new System.Drawing.SolidBrush(this.setColors[i]);
+        }
+
+        public LegendItem[] GetLegendItems()
+        {
+            var items = new List<LegendItem>();
+
+            for (int i = 0; i < barSetCount; i++)
+                items.Add(new LegendItem(datasets[i].label, setColors[i]));
+
+            return items.ToArray();
         }
 
         public override AxisLimits2D GetLimits()
         {
-            double minValue = barSets[0].values[0];
-            double maxValue = barSets[0].values[0];
+            double minValue = datasets[0].values[0];
+            double maxValue = datasets[0].values[0];
 
-            foreach (var barSet in barSets)
+            foreach (var barSet in datasets)
             {
                 foreach (var value in barSet.values)
                 {
@@ -60,10 +89,6 @@ namespace ScottPlotTests.Experimental
             {
                 // set bar style for this whole series
 
-                // TODO: set this a better way
-                var barColor = new ScottPlot.Config.Colors().GetColor(setIndex);
-                var barBrush = new System.Drawing.SolidBrush(barColor);
-
                 double barOffset = setIndex * barWidthFrac;
 
                 for (int groupIndex = 0; groupIndex < groupCount; groupIndex++)
@@ -77,7 +102,7 @@ namespace ScottPlotTests.Experimental
                     double barRight = barLeft + barWidthFrac;
 
                     // determine the height of this bar
-                    double value = barSets[setIndex].values[groupIndex];
+                    double value = datasets[setIndex].values[groupIndex];
                     double valueMax, valueMin;
                     if (value > 0)
                     {
@@ -98,7 +123,7 @@ namespace ScottPlotTests.Experimental
                     double barWidthPx = barRightPixel - barLeftPixel;
                     double barHeightPx = barBotPixel - barTopPixel;
 
-                    settings.gfxData.FillRectangle(barBrush, (float)barLeftPixel, (float)barTopPixel, (float)barWidthPx, (float)barHeightPx);
+                    settings.gfxData.FillRectangle(setBrushes[setIndex], (float)barLeftPixel, (float)barTopPixel, (float)barWidthPx, (float)barHeightPx);
                 }
             }
         }

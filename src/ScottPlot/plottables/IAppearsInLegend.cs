@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ScottPlot.plottables
+namespace ScottPlot
 {
-    public interface ILegend
+    public interface IAppearsInLegend
     {
         Config.LegendItem[] GetLegendItems();
     }
