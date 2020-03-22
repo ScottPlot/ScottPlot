@@ -8,17 +8,17 @@ namespace ScottPlot
 {
     public class PlottableErrorBars : Plottable
     {
-        private double[] xs;
-        private double[] ys;
-        private double[] xPositiveError;
-        private double[] xNegativeError;
-        private double[] yPositiveError;
-        private double[] yNegativeError;
-        private float capLength;
-        private Pen penLine;
+        private readonly double[] xs;
+        private readonly double[] ys;
+        private readonly double[] xPositiveError;
+        private readonly double[] xNegativeError;
+        private readonly double[] yPositiveError;
+        private readonly double[] yNegativeError;
+        private readonly float capLength;
+        private readonly Pen penLine;
 
-        public PlottableErrorBars(double[] xs, double[] ys, double[] xPositiveError = null, double[] xNegativeError = null,
-            double[] yPositiveError = null, double[] yNegativeError = null, Color? color = null, double lineWidth = 1, double capLength = 3)
+        public PlottableErrorBars(double[] xs, double[] ys, double[] xPositiveError, double[] xNegativeError,
+            double[] yPositiveError, double[] yNegativeError, Color color, double lineWidth = 1, double capLength = 3)
         {
             //check input
             if (xs.Length != ys.Length)
@@ -36,7 +36,7 @@ namespace ScottPlot
             this.yPositiveError = yPositiveError;
             this.yNegativeError = yNegativeError;
             this.capLength = (float)capLength;
-            this.color = color ?? Color.Black; //default is black, no null allowed
+            this.color = color;
             pointCount = xs.Length;
 
             penLine = new Pen(this.color, (float)lineWidth)
@@ -83,6 +83,7 @@ namespace ScottPlot
             return new Config.AxisLimits2D(new double[] { xs.Min(), xs.Max(), ys.Min(), ys.Max() });
         }
 
+
         public override void Render(Settings settings)
         {
             DrawErrorBar(settings, xPositiveError, true, true);
@@ -91,24 +92,37 @@ namespace ScottPlot
             DrawErrorBar(settings, yNegativeError, false, false);
         }
 
+        /// <summary>
+        /// Draws the error bar for a given error type
+        /// (e.g. x or y, positive or negative)
+        /// Makes a happy little "T"
+        /// </summary>
+        /// <param name="settings"></param>
+        /// <param name="errorArray"></param>
+        /// <param name="xError"></param>
+        /// <param name="positiveError"></param>
         public void DrawErrorBar(Settings settings, double[] errorArray, bool xError, bool positiveError)
         {
             if (errorArray != null)
             {
                 for (int i = 0; i < xs.Length; i++)
                 {
-                    float x = (float)xs[i];
-                    float y = (float)xs[i];
+
+                    PointF mainPoint = settings.GetPixel(xs[i], ys[i]);
+                    float x = mainPoint.X;
+                    float y = mainPoint.Y;
                     float error = positiveError ? (float)errorArray[i] : (float)errorArray[i] * -1;
                     if (xError)
                     {
-                        float xWithError = x + error;
+                        PointF errorPoint = settings.GetPixel(xs[i]+error, ys[i]);
+                        float xWithError = errorPoint.X;
                         settings.gfxData.DrawLine(penLine, x, y, xWithError, y); //draw the error
                         settings.gfxData.DrawLine(penLine, xWithError, y - capLength, xWithError, y + capLength); //draw the cap
                     }
                     else
                     {
-                        float yWithError = y + error;
+                        PointF errorPoint = settings.GetPixel(xs[i], ys[i] + error);
+                        float yWithError = errorPoint.Y;
                         settings.gfxData.DrawLine(penLine, x, y, x, yWithError); //draw the error
                         settings.gfxData.DrawLine(penLine, x - capLength, yWithError, x + capLength, yWithError); //draw the cap
                     }

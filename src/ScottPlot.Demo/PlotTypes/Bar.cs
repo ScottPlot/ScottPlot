@@ -28,6 +28,7 @@ namespace ScottPlot.Demo.PlotTypes
 
                 // make the bar plot
                 plt.PlotBar(Xs, dataA);
+                //plt.PlotErrorBars(Xs, dataA, null, null, errorA, null);
 
                 // customize the plot to make it look nicer
                 plt.Axis(null, null, 0, null);
@@ -59,6 +60,7 @@ namespace ScottPlot.Demo.PlotTypes
 
                 plt.Title("Bar Plot With Error Bars");
                 plt.PlotBar(xs, ys, barWidth: .5);
+                plt.PlotErrorBars(xs, ys, null, null, yErr, capWidth:2);
                 plt.Grid(enableVertical: false);
                 plt.Axis(null, null, 0, null);
             }
@@ -90,7 +92,9 @@ namespace ScottPlot.Demo.PlotTypes
 
                 // add both bar plots with a careful widths and offsets
                 plt.PlotBar(Xs, dataA, label: "data A", barWidth: 3.2, xOffset: -2);
+                plt.PlotErrorBars(Xs, dataA, null, null, errorA);
                 plt.PlotBar(Xs, dataB, label: "data B", barWidth: 3.2, xOffset: 2);
+                plt.PlotErrorBars(Xs, dataB, null, null, errorB);
 
                 // customize the plot to make it look nicer
                 plt.Grid(false);
