@@ -100,6 +100,7 @@ namespace ScottPlot.Demo
             {
                 string title = $"{recipe.categoryMajor}/{recipe.categoryMinor} - {recipe.name}";
                 string sourceCode = recipe.GetSourceCode(sourceCodeFolder);
+                string htmlSafeSource = sourceCode.Replace("<", "&lt;").Replace(">", "&gt;");
                 string description = (recipe.description is null) ? "no description provided..." : recipe.description;
 
                 mdTOC.AppendLine($"* [{title}](#{recipe.id})");
@@ -115,7 +116,7 @@ namespace ScottPlot.Demo
                 htmlRecipe = htmlRecipe.Replace("~TITLE~", recipe.name);
                 htmlRecipe = htmlRecipe.Replace("~DESCRIPTION~", recipe.description);
                 htmlRecipe = htmlRecipe.Replace("~SOURCE~", $"{recipe.sourceFile} ({recipe.categoryClass})");
-                htmlRecipe = htmlRecipe.Replace("~CODE~", sourceCode);
+                htmlRecipe = htmlRecipe.Replace("~CODE~", htmlSafeSource);
                 html.AppendLine(htmlRecipe);
             }
 
