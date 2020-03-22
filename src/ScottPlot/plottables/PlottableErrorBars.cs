@@ -136,15 +136,13 @@ namespace ScottPlot
                 float errorSize = positiveError ? (float)errorArray[i] : -(float)errorArray[i];
                 if (xError)
                 {
-                    PointF errorPoint = settings.GetPixel(xs[i] + errorSize, ys[i]);
-                    float xWithError = errorPoint.X;
+                    float xWithError = (float)settings.GetPixelX(xs[i] + errorSize);
                     settings.gfxData.DrawLine(penLine, centerPixel.X, centerPixel.Y, xWithError, centerPixel.Y);
                     settings.gfxData.DrawLine(penLine, xWithError, centerPixel.Y - capSize, xWithError, centerPixel.Y + capSize);
                 }
                 else
                 {
-                    PointF errorPoint = settings.GetPixel(xs[i], ys[i] + errorSize);
-                    float yWithError = errorPoint.Y;
+                    float yWithError = (float)settings.GetPixelY(ys[i] + errorSize);
                     settings.gfxData.DrawLine(penLine, centerPixel.X, centerPixel.Y, centerPixel.X, yWithError);
                     settings.gfxData.DrawLine(penLine, centerPixel.X - capSize, yWithError, centerPixel.X + capSize, yWithError);
                 }
