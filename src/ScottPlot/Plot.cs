@@ -404,7 +404,8 @@ namespace ScottPlot
             double[] yNegativeError = null,
             Color? color = null,
             double lineWidth = 1,
-            double capWidth = 3
+            double capWidth = 3,
+            string label = null
             )
         {
             if (color is null)
@@ -419,7 +420,8 @@ namespace ScottPlot
                 yNegativeError,
                 color.Value,
                 lineWidth,
-                capWidth
+                capWidth,
+                label
                 );
 
             settings.plottables.Add(errorBars);

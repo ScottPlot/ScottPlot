@@ -18,7 +18,7 @@ namespace ScottPlot
         private readonly Pen penLine;
 
         public PlottableErrorBars(double[] xs, double[] ys, double[] xPositiveError, double[] xNegativeError,
-            double[] yPositiveError, double[] yNegativeError, Color color, double lineWidth = 1, double capSize = 3)
+            double[] yPositiveError, double[] yNegativeError, Color color, double lineWidth, double capSize, string label)
         {
             //check input
             if (xs.Length != ys.Length)
@@ -33,6 +33,7 @@ namespace ScottPlot
             this.yNegativeError = SanitizeErrors(yNegativeError, xs.Length);
             this.capSize = (float)capSize;
             this.color = color;
+            this.label = label;
             pointCount = xs.Length;
 
             penLine = new Pen(this.color, (float)lineWidth)
