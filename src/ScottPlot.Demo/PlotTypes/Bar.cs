@@ -92,9 +92,11 @@ namespace ScottPlot.Demo.PlotTypes
 
                 // add both bar plots with a careful widths and offsets
                 plt.PlotBar(Xs, dataA, label: "data A", barWidth: 3.2, xOffset: -2);
-                plt.PlotErrorBars(Xs, dataA, null, null, errorA, xOffSet: -2);
+                // TODO: refactor this module (with errorbars)
+                //plt.PlotErrorBars(Xs, dataA, null, null, errorA);
                 plt.PlotBar(Xs, dataB, label: "data B", barWidth: 3.2, xOffset: 2);
-                plt.PlotErrorBars(Xs, dataB, null, null, errorB, xOffSet: 2);
+                // TODO: refactor this module (with errorbars)
+                //plt.PlotErrorBars(Xs, dataB, null, null, errorB);
 
                 // customize the plot to make it look nicer
                 plt.Grid(false);
