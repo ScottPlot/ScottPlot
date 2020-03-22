@@ -17,6 +17,10 @@ namespace ScottPlot
         private readonly float capSize;
         private readonly Pen penLine;
 
+        public string label;
+        public Color color;
+        public LineStyle lineStyle = LineStyle.Solid;
+
         public PlottableErrorBars(double[] xs, double[] ys, double[] xPositiveError, double[] xNegativeError,
             double[] yPositiveError, double[] yNegativeError, Color color, double lineWidth, double capSize, string label)
         {

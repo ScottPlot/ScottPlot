@@ -13,6 +13,11 @@ namespace ScottPlot
         private readonly double lineWidth;
         private readonly double markerSize;
 
+        public LineStyle lineStyle;
+        public MarkerShape markerShape;
+        public string label;
+        public Color color;
+
         public PlottableFunction(Func<double, double?> function, Color color, double lineWidth, double markerSize, string label, MarkerShape markerShape, LineStyle lineStyle)
         {
             this.function = function;

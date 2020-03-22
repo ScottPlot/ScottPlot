@@ -18,9 +18,14 @@ namespace ScottPlot
         public float errorCapSize;
         public float markerSize;
         public bool stepDisplay;
+
+        public MarkerShape markerShape;
+        public Color color;
+        public LineStyle lineStyle;
+        public string label;
+
         public Pen penLine;
-        public Pen penLineError;
-        public Brush brush;
+        private Pen penLineError;
 
         public PlottableScatter(double[] xs, double[] ys, Color color, double lineWidth, double markerSize, string label,
             double[] errorX, double[] errorY, double errorLineWidth, double errorCapSize, bool stepDisplay, MarkerShape markerShape, LineStyle lineStyle)
@@ -82,8 +87,6 @@ namespace ScottPlot
                 EndCap = System.Drawing.Drawing2D.LineCap.Round,
                 LineJoin = System.Drawing.Drawing2D.LineJoin.Round
             };
-
-            brush = new SolidBrush(color);
         }
 
         public override string ToString()

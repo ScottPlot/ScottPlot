@@ -10,6 +10,9 @@ namespace ScottPlot
     {
         public double position;
         public Pen pen;
+        private LineStyle lineStyle;
+        public Color color;
+        public string label;
 
         public PlottableVLine(double position, Color color, double lineWidth, string label,
             bool draggable, double dragLimitLower, double dragLimitUpper, LineStyle lineStyle)

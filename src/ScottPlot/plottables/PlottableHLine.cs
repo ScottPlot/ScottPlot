@@ -9,7 +9,11 @@ namespace ScottPlot
     public class PlottableHLine : Plottable, IDraggable
     {
         public double position;
-        public Pen pen;
+        public LineStyle lineStyle;
+        public Color color;
+        public string label;
+
+        private Pen pen;
 
         public PlottableHLine(double position, Color color, double lineWidth, string label,
             bool draggable, double dragLimitLower, double dragLimitUpper, LineStyle lineStyle)

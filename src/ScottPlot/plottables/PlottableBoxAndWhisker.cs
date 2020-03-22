@@ -10,6 +10,7 @@ namespace ScottPlot
     public class PlottableBoxAndWhisker : Plottable
     {
         public Statistics.BoxAndWhisker[] boxAndWhiskers;
+        public Color color;
 
         public PlottableBoxAndWhisker(Statistics.BoxAndWhisker[] boxAndWhiskers)
         {

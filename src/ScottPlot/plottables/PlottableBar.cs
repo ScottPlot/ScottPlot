@@ -12,13 +12,18 @@ namespace ScottPlot
         public double[] xs;
         public double[] ys;
         public double[] yErr;
-        float errorLineWidth;
-        float errorCapSize;
-        float barWidth;
-        float baseline = 0;
-        double xOffset;
-        Pen pen;
-        Brush brush;
+
+        public LineStyle lineStyle;
+        public Color color;
+        public string label;
+
+        private float errorLineWidth;
+        private float errorCapSize;
+        private float barWidth;
+        private float baseline = 0;
+        private double xOffset;
+        private Pen pen;
+        private Brush brush;
 
         public PlottableBar(double[] xs, double[] ys, double barWidth, double xOffset, Color color, string label, double[] yErr, double errorLineWidth = 1, double errorCapSize = 3)
         {

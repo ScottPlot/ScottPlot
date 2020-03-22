@@ -11,6 +11,10 @@ namespace ScottPlot
     {
         public double position1;
         public double position2;
+
+        public Color color;
+        public string label;
+
         public Brush brush;
 
         public PlottableHSpan(double position1, double position2, Color color, double alpha, string label,

@@ -18,6 +18,7 @@ namespace ScottPlot
         public TextAlignment alignment;
         public bool frame;
         public Color frameColor;
+        public string label;
 
         public PlottableText(string text, double x, double y, Color color, string fontName, double fontSize, bool bold, string label, TextAlignment alignment, double rotation, bool frame, Color frameColor)
         {

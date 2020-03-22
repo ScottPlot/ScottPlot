@@ -106,8 +106,11 @@ namespace ScottPlot.UserControls
 
                 btnExportCSV.Enabled = plottable is IExportable;
                 btnCopyCSV.Enabled = plottable is IExportable;
-                tbLabel.Enabled = true;
-                tbLabel.Text = plottable.label;
+
+                // don't allow labels to be changed (after new legend system)
+                //tbLabel.Enabled = true;
+                //tbLabel.Text = plottable.ToString();
+                tbLabel.Text = "editing disabled";
             }
             else
             {
@@ -119,9 +122,10 @@ namespace ScottPlot.UserControls
 
         private void TbLabel_TextChanged(object sender, EventArgs e)
         {
-            int plotObjectIndex = lbPlotObjects.SelectedIndex;
-            var plottable = plt.GetPlottables()[plotObjectIndex];
-            plottable.label = tbLabel.Text;
+            // don't allow labels to be changed (after new legend system)
+            //int plotObjectIndex = lbPlotObjects.SelectedIndex;
+            //var plottable = plt.GetPlottables()[plotObjectIndex];
+            //plottable.label = tbLabel.ToString;
         }
 
         private void BtnSave_Click(object sender, EventArgs e)

@@ -33,7 +33,6 @@ namespace ScottPlotTests
             signal.lineWidth = 10;
             signal.color = System.Drawing.Color.Orange;
             signal.markerSize = 20;
-            signal.markerShape = ScottPlot.MarkerShape.filledCircle;
 
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name;
             plt.SaveFig(System.IO.Path.GetFullPath(name + ".png"));

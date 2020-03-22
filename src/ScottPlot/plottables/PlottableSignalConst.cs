@@ -26,6 +26,8 @@ namespace ScottPlot
         public double yOffset;
         public Pen pen;
         public Brush brush;
+        public string label;
+        public Color color;
 
         // using 2 x signal memory in best case: ys.Length is Pow2 
         // using 4 x signal memory in worst case: ys.Length is (Pow2 +1);

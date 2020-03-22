@@ -38,21 +38,12 @@ namespace ScottPlot
 
         public static Config.LegendItem[] GetLegendItems(Settings settings)
         {
+            // todo: linq
             var items = new List<Config.LegendItem>();
             foreach (Plottable plottable in settings.plottables)
-            {
                 if (plottable is IAppearsInLegend plottableWithLegendItems)
-                {
                     items.AddRange(plottableWithLegendItems.GetLegendItems());
-                }
-                else
-                {
-                    // TODO: upgrade these outdated plottables
-                    Debug.WriteLine($"WARNING: plottable is using old legend method: {plottable}");
-                    if (plottable.visible && plottable.label != null)
-                        items.Add(new Config.LegendItem(plottable.label, plottable.color, Config.LegendItem.KeyStyle.Line));
-                }
-            }
+
             return items.ToArray();
         }
 

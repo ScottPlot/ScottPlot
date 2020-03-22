@@ -22,6 +22,8 @@ namespace ScottPlot
         public int maxRenderIndex;
         private Pen[] penByDensity;
         private int densityLevelCount = 0;
+        public Color color;
+        public string label;
 
         public PlottableSignal(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, bool useParallel, Color[] colorByDensity, int maxRenderIndex)
         {

@@ -12,6 +12,8 @@ namespace ScottPlot
         public double position1;
         public double position2;
         public Brush brush;
+        public Color color;
+        public string label;
 
         public PlottableVSpan(double position1, double position2, Color color, double alpha, string label,
             bool draggable, double dragLimitLower, double dragLimitUpper)

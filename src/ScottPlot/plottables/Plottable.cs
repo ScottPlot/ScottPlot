@@ -10,10 +10,10 @@ namespace ScottPlot
     public abstract class Plottable
     {
         public int pointCount = 0;
-        public string label = null;
-        public Color color = Color.Black;
-        public MarkerShape markerShape = MarkerShape.none;
-        public LineStyle lineStyle = LineStyle.Solid;
+        //public string label = null;
+        //public Color color = Color.Black;
+        //public MarkerShape markerShape = MarkerShape.none;
+        //public LineStyle lineStyle = LineStyle.Solid;
         public bool useParallel = false;
         public bool visible = true;
         public abstract void Render(Settings settings);
