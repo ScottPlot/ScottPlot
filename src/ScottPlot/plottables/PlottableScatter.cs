@@ -148,6 +148,7 @@ namespace ScottPlot
             for (int i = 0; i < xs.Length; i++)
                 points[i] = settings.GetPixel(xs[i], ys[i]);
 
+
             if (stepDisplay)
             {
                 if (pointsStep is null)
@@ -155,7 +156,7 @@ namespace ScottPlot
                 for (int i = 0; i < points.Length; i++)
                     pointsStep[i * 2] = points[i];
                 for (int i = 0; i < points.Length - 1; i++)
-                    pointsStep[i * 2 + 1] = new PointF(points[i + 1].X, points[i].Y);
+                    pointsStep[i * 2 + 1] = new PointF(points[i+1].X, points[i].Y);
             }
 
             if (errorY != null)
