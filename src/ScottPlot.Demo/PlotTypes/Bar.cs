@@ -27,11 +27,10 @@ namespace ScottPlot.Demo.PlotTypes
                 }
 
                 // make the bar plot
-                plt.PlotBar(Xs, dataA);
-                plt.PlotErrorBars(Xs, dataA, null, null, errorA, null);
+                plt.PlotBar(Xs, dataA, errorY: errorA);
 
                 // customize the plot to make it look nicer
-                plt.Axis(-10, 110, 0, 110);
+                plt.Axis(null, null, 0, null);
                 plt.Grid(false);
 
                 // apply custom axis tick labels
@@ -59,10 +58,9 @@ namespace ScottPlot.Demo.PlotTypes
                 }
 
                 plt.Title("Bar Plot With Error Bars");
-                plt.PlotBar(xs, ys, barWidth: .5);
-                plt.PlotErrorBars(xs, ys, null, null, yErr, capWidth: 2);
+                plt.PlotBar(xs, ys, barWidth: .5, errorY: yErr, errorCapSize: 2);
                 plt.Grid(enableVertical: false);
-                plt.Axis(-2, 20, 0, 1.75);
+                plt.Axis(null, null, 0, null);
             }
         }
 
@@ -91,16 +89,12 @@ namespace ScottPlot.Demo.PlotTypes
                 }
 
                 // add both bar plots with a careful widths and offsets
-                plt.PlotBar(Xs, dataA, label: "data A", barWidth: 3.2, xOffset: -2);
-                // TODO: refactor this module (with errorbars)
-                //plt.PlotErrorBars(Xs, dataA, null, null, errorA);
-                plt.PlotBar(Xs, dataB, label: "data B", barWidth: 3.2, xOffset: 2);
-                // TODO: refactor this module (with errorbars)
-                //plt.PlotErrorBars(Xs, dataB, null, null, errorB);
+                plt.PlotBar(Xs, dataA, errorY: errorA, label: "data A", barWidth: 3.2, xOffset: -2);
+                plt.PlotBar(Xs, dataB, errorY: errorB, label: "data B", barWidth: 3.2, xOffset: 2);
 
                 // customize the plot to make it look nicer
                 plt.Grid(false);
-                plt.Axis(-10, 110, 0, 110);
+                plt.Axis(null, null, 0, null);
                 plt.Legend();
 
                 // apply custom axis tick labels
