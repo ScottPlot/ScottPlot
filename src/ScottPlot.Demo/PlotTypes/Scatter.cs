@@ -193,10 +193,12 @@ namespace ScottPlot.Demo.PlotTypes
                     }
                     else
                     {
-                        PlottableScatter ps = plt.PlotScatter(dataX, dataY, label: $"Negative errors only");
+                        PlottableScatter ps = plt.PlotScatter(dataX, dataY, lineWidth: 0, label: $"Negative errors only");
                         plt.PlotErrorBars(dataX, dataY, null, errorXNegative, null, errorYNegative, ps.color);
                     }
                 }
+
+                plt.Legend();
             }
         }
 
