@@ -16,45 +16,31 @@ namespace ScottPlot.Demo.PlotTypes
                 Random rand = new Random(0);
                 int pointCount = 20;
 
-                for (int plotNumber = 0; plotNumber < 3; plotNumber++)
-                {
-                    // create random data to plot
-                    double[] dataX = new double[pointCount];
-                    double[] dataY = new double[pointCount];
-                    double[] errorYPositive = new double[pointCount];
-                    double[] errorXPositive = new double[pointCount];
-                    double[] errorYNegative = new double[pointCount];
-                    double[] errorXNegative = new double[pointCount];
-                    for (int i = 0; i < pointCount; i++)
-                    {
-                        dataX[i] = i + rand.NextDouble();
-                        dataY[i] = rand.NextDouble() * 100 + 100 * plotNumber;
-                        errorYPositive[i] = rand.NextDouble() * 10;
-                        errorXPositive[i] = rand.NextDouble();
-                        errorYNegative[i] = rand.NextDouble() * 10;
-                        errorXNegative[i] = rand.NextDouble();
-                    }
+                // random data points
+                double[] dataX = DataGen.Consecutive(pointCount);
+                double[] dataY1 = DataGen.Sin(pointCount, offset: 0);
+                double[] dataY2 = DataGen.Sin(pointCount, offset: 3);
+                double[] dataY3 = DataGen.Sin(pointCount, offset: 6);
 
-                    // demonstrate different ways to plot errorbars
-                    if (plotNumber == 0)
-                    {
-                        PlottableScatter ps = plt.PlotScatter(dataX, dataY, lineWidth: 0, label: $"Asymmetric X and Y errors");
-                        plt.PlotErrorBars(dataX, dataY, errorXPositive, errorXNegative, errorYPositive, errorYNegative, ps.color);
-                    }
-                    else if (plotNumber == 1)
-                    {
-                        PlottableScatter ps = plt.PlotScatter(dataX, dataY, lineWidth: 0, label: $"Positive errors only");
-                        plt.PlotErrorBars(dataX, dataY, errorXPositive, null, errorYPositive, null, ps.color);
-                    }
-                    else
-                    {
-                        PlottableScatter ps = plt.PlotScatter(dataX, dataY, lineWidth: 0, label: $"Negative errors only");
-                        plt.PlotErrorBars(dataX, dataY, null, errorXNegative, null, errorYNegative, ps.color);
-                    }
-                }
+                // random errorbar sizes
+                double[] errorYPositive = DataGen.RandomNormal(rand, pointCount);
+                double[] errorXPositive = DataGen.RandomNormal(rand, pointCount);
+                double[] errorYNegative = DataGen.RandomNormal(rand, pointCount);
+                double[] errorXNegative = DataGen.RandomNormal(rand, pointCount);
+
+                // plot errors in all 4 directions
+                plt.PlotScatter(dataX, dataY1, lineWidth: 0, label: $"Asymmetric X and Y errors");
+                plt.PlotErrorBars(dataX, dataY1, errorXPositive, errorXNegative, errorYPositive, errorYNegative);
+
+                // plot upper and right errors only
+                plt.PlotScatter(dataX, dataY2, lineWidth: 0, label: $"Positive errors only");
+                plt.PlotErrorBars(dataX, dataY2, errorXPositive, null, errorYPositive, null);
+
+                // plot lower and left errors only
+                plt.PlotScatter(dataX, dataY3, lineWidth: 0, label: $"Negative errors only");
+                plt.PlotErrorBars(dataX, dataY3, null, errorXNegative, null, errorYNegative);
 
                 plt.Legend();
-                plt.AxisAuto();
             }
         }
     }
