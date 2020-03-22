@@ -19,7 +19,6 @@ namespace ScottPlot
         public PlottableOHLC(OHLC[] ohlcs, bool displayCandles = true)
         {
             this.ohlcs = ohlcs;
-            pointCount = ohlcs.Length;
             this.displayCandles = displayCandles;
 
             Color colorUp = Color.DarkGreen;
@@ -33,7 +32,7 @@ namespace ScottPlot
 
         public override string ToString()
         {
-            return $"PlottableOHLC with {pointCount} points";
+            return $"PlottableOHLC with {GetPointCount()} points";
         }
 
         public override Config.AxisLimits2D GetLimits()
@@ -128,6 +127,11 @@ namespace ScottPlot
                 settings.gfxData.DrawLine(pen, xPx - boxWidth, yPxOpen, xPx, yPxOpen);
                 settings.gfxData.DrawLine(pen, xPx + boxWidth, yPxClose, xPx, yPxClose);
             }
+        }
+
+        public override int GetPointCount()
+        {
+            return ohlcs.Length;
         }
     }
 }

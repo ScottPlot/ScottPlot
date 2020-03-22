@@ -38,7 +38,6 @@ namespace ScottPlot
             this.capSize = (float)capSize;
             this.color = color;
             this.label = label;
-            pointCount = xs.Length;
 
             penLine = new Pen(this.color, (float)lineWidth)
             {
@@ -67,7 +66,7 @@ namespace ScottPlot
 
         public override string ToString()
         {
-            return $"PlottableErrorBars with {pointCount} points";
+            return $"PlottableErrorBars with {GetPointCount()} points";
         }
 
         public override Config.AxisLimits2D GetLimits()
@@ -153,6 +152,11 @@ namespace ScottPlot
                     settings.gfxData.DrawLine(penLine, centerPixel.X - capSize, yWithError, centerPixel.X + capSize, yWithError + slightPixelOffset);
                 }
             }
+        }
+
+        public override int GetPointCount()
+        {
+            return ys.Length;
         }
     }
 }

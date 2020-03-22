@@ -49,15 +49,14 @@ namespace ScottPlot
             return new Config.AxisLimits2D(limits);
         }
 
-
+        int lastNumberOfPointsDisplayed = 0;
         public override void Render(Settings settings)
         {
             double step = settings.xAxisUnitsPerPixel;
-
             double minRenderedX = settings.axes.limits[0];
             double maxRenderedX = settings.axes.limits[1];
-
             int maxSeriesLength = (int)Math.Ceiling((maxRenderedX - minRenderedX) / step);
+            lastNumberOfPointsDisplayed = maxSeriesLength;
 
             List<double> xList = new List<double>();
             List<double> yList = new List<double>();
@@ -83,14 +82,18 @@ namespace ScottPlot
                 }
             }
 
-
             PlottableScatter scatter = new PlottableScatter(xList.ToArray(), yList.ToArray(), color, lineWidth, markerSize, label, null, null, 0, 0, false, markerShape, lineStyle);
             scatter.Render(settings);
         }
 
         public override string ToString()
         {
-            return $"PlottableFunction";
+            return $"PlottableFunction displaying {GetPointCount()} points";
+        }
+
+        public override int GetPointCount()
+        {
+            return lastNumberOfPointsDisplayed;
         }
     }
 }

@@ -48,7 +48,6 @@ namespace ScottPlot
             this.color = color;
             this.label = label;
             this.xOffset = xOffset;
-            pointCount = ys.Length;
 
             pen = new Pen(color, (float)errorLineWidth)
             {
@@ -89,7 +88,7 @@ namespace ScottPlot
 
         public override void Render(Settings settings)
         {
-            for (int i = 0; i < pointCount; i++)
+            for (int i = 0; i < ys.Length; i++)
             {
                 PointF barTop;
                 PointF barBot;
@@ -130,7 +129,12 @@ namespace ScottPlot
 
         public override string ToString()
         {
-            return $"PlottableBar with {pointCount} points";
+            return $"PlottableBar with {GetPointCount()} points";
+        }
+
+        public override int GetPointCount()
+        {
+            return ys.Length;
         }
     }
 }

@@ -21,7 +21,6 @@ namespace ScottPlot
             this.color = color;
             this.label = label;
             this.lineStyle = lineStyle;
-            pointCount = 1;
 
             pen = new Pen(color, (float)lineWidth)
             {
@@ -81,6 +80,11 @@ namespace ScottPlot
                 if (coordinateX > dragLimitX2) coordinateX = dragLimitX2;
                 position = coordinateX;
             }
+        }
+
+        public override int GetPointCount()
+        {
+            return 1;
         }
 
         public Cursor DragCursor => Cursor.WE;

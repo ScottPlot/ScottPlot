@@ -78,7 +78,6 @@ namespace ScottPlot
             this.color = color;
             this.yOffset = yOffset;
             this.useParallel = useParallel;
-            pointCount = ys.Length;
             brush = new SolidBrush(color);
             pen = new Pen(color, (float)lineWidth)
             {
@@ -519,7 +518,7 @@ namespace ScottPlot
 
         public override string ToString()
         {
-            return $"PlottableSignalConst with {pointCount} points ({typeof(T).Name}), trees {(TreesReady ? "" : "not")} calculated";
+            return $"PlottableSignalConst with {GetPointCount()} points ({typeof(T).Name}), trees {(TreesReady ? "" : "not")} calculated";
         }
 
         public void SaveCSV(string filePath, string delimiter = ", ", string separator = "\n")
@@ -533,6 +532,11 @@ namespace ScottPlot
             for (int i = 0; i < ys.Length; i++)
                 csv.AppendFormat("{0}{1}{2}{3}", xOffset + i * samplePeriod, delimiter, Convert.ToDouble(ys[i]) + yOffset, separator);
             return csv.ToString();
+        }
+
+        public override int GetPointCount()
+        {
+            return ys.Length;
         }
     }
 }

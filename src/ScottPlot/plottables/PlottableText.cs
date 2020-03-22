@@ -36,8 +36,6 @@ namespace ScottPlot
 
             FontStyle fontStyle = (bold == true) ? FontStyle.Bold : FontStyle.Regular;
             font = new Font(fontName, (float)fontSize, fontStyle);
-
-            pointCount = 1;
         }
 
         public override string ToString()
@@ -111,6 +109,11 @@ namespace ScottPlot
             }
             settings.gfxData.DrawString(text, font, brush, new PointF(0, 0));
             settings.gfxData.ResetTransform();
+        }
+
+        public override int GetPointCount()
+        {
+            return 1;
         }
     }
 }

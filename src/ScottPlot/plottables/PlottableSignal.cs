@@ -43,7 +43,6 @@ namespace ScottPlot
             if ((maxRenderIndex > ys.Length - 1) || maxRenderIndex < 0)
                 throw new ArgumentException("maxRenderIndex must be a valid index for ys[]");
             this.maxRenderIndex = maxRenderIndex;
-            pointCount = ys.Length;
             brush = new SolidBrush(color);
             pen = new Pen(color, (float)lineWidth)
             {
@@ -68,7 +67,7 @@ namespace ScottPlot
 
         public override string ToString()
         {
-            return $"PlottableSignal with {pointCount} points";
+            return $"PlottableSignal with {GetPointCount()} points";
         }
 
         public override Config.AxisLimits2D GetLimits()
@@ -412,6 +411,11 @@ namespace ScottPlot
             for (int i = 0; i < ys.Length; i++)
                 csv.AppendFormat("{0}{1}{2}{3}", xOffset + i * samplePeriod, delimiter, ys[i] + yOffset, separator);
             return csv.ToString();
+        }
+
+        public override int GetPointCount()
+        {
+            return ys.Length;
         }
     }
 }

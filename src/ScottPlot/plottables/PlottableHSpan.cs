@@ -25,7 +25,6 @@ namespace ScottPlot
             this.color = Color.FromArgb((int)(alpha * 255), color.R, color.G, color.B);
             this.label = label;
             brush = new SolidBrush(this.color);
-            pointCount = 1;
 
             DragEnabled = draggable;
 
@@ -103,6 +102,11 @@ namespace ScottPlot
                 else
                     Debug.WriteLine("DragTo() called but no side selected. Call IsUnderMouse() to select a side.");
             }
+        }
+
+        public override int GetPointCount()
+        {
+            return 1;
         }
 
         public Cursor DragCursor => Cursor.WE;

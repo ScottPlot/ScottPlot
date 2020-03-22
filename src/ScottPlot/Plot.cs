@@ -808,7 +808,7 @@ namespace ScottPlot
         {
             int totalPoints = 0;
             foreach (Plottable plottable in settings.plottables)
-                totalPoints += plottable.pointCount;
+                totalPoints += plottable.GetPointCount();
             return totalPoints;
         }
 

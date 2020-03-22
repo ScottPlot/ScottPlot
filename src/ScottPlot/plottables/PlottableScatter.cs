@@ -61,8 +61,6 @@ namespace ScottPlot
             this.markerShape = markerShape;
             this.lineStyle = lineStyle;
 
-            pointCount = xs.Length;
-
             if (xs.Length != ys.Length)
                 throw new ArgumentException("X and Y arrays must have the same length");
 
@@ -91,7 +89,7 @@ namespace ScottPlot
 
         public override string ToString()
         {
-            return $"PlottableScatter with {pointCount} points";
+            return $"PlottableScatter with {GetPointCount()} points";
         }
 
         public override Config.AxisLimits2D GetLimits()
@@ -216,6 +214,11 @@ namespace ScottPlot
             for (int i = 0; i < ys.Length; i++)
                 csv.AppendFormat("{0}{1}{2}{3}", xs[i], delimiter, ys[i], separator);
             return csv.ToString();
+        }
+
+        public override int GetPointCount()
+        {
+            return ys.Length;
         }
     }
 }

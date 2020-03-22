@@ -115,7 +115,12 @@ namespace ScottPlot
 
         public override string ToString()
         {
-            return $"PlottableBox with {boxAndWhiskers.Length} boxes";
+            return $"PlottableBoxAndWhisker with {GetPointCount()} boxes";
+        }
+
+        public override int GetPointCount()
+        {
+            return boxAndWhiskers.Length;
         }
     }
 }

@@ -132,5 +132,10 @@ namespace ScottPlot
         {
             return $"PlottableBar with {groupCount} groups and {barSetCount} bars per group";
         }
+
+        public override int GetPointCount()
+        {
+            return groupCount * barSetCount;
+        }
     }
 }
