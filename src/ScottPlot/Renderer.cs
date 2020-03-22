@@ -81,12 +81,10 @@ namespace ScottPlot
             if (settings.gfxFigure == null || settings.gfxLegend == null)
                 return;
 
-            int plottablesShownInLegend = 0;
-            foreach (var plottable in settings.plottables)
-                if (plottable.visible && plottable.label != null)
-                    plottablesShownInLegend += 1;
+            bool legendHasItems = LegendTools.GetLegendItems(settings).Length > 0;
+            bool legendHasLocation = settings.legend.location != legendLocation.none;
 
-            if (plottablesShownInLegend > 0 && settings.legend.location != ScottPlot.legendLocation.none)
+            if (legendHasItems && legendHasLocation)
             {
                 Point legendLocation = new Point(settings.dataOrigin.X + settings.legend.rect.Location.X,
                 settings.dataOrigin.Y + settings.legend.rect.Location.Y);

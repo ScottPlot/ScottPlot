@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ScottPlotTests.Experimental
+namespace ScottPlot
 {
     /// <summary>
-    /// Represents a single series of bar graphs. Values from a BarSeries can be grouped (by value index) and displayed with other BarSeries.
+    /// Represents a series of data values with a common name. Values from several DataSets can be grouped (by value index).
     /// </summary>
-    public class BarSet
+    public class DataSet
     {
         public double[] values;
         public string label;
 
-        public BarSet(double[] values, string label = null)
+        public DataSet(double[] values, string label = null)
         {
             this.values = values;
             this.label = label;

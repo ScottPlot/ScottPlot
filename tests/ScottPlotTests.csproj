@@ -17,4 +17,8 @@
     <ProjectReference Include="..\src\ScottPlot\ScottPlot.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Experimental\" />
+  </ItemGroup>
+
 </Project>
