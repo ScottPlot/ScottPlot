@@ -224,6 +224,12 @@ namespace ScottPlot
                 axes.Set(newLimits);
                 axes.Zoom(1 - horizontalMargin, 1 - verticalMargin);
             }
+
+            if (plottables.Count == 0)
+            {
+                axes.x.hasBeenSet = false;
+                axes.y.hasBeenSet = false;
+            }
         }
 
         /// <summary>

@@ -395,6 +395,39 @@ namespace ScottPlot
             return scatterPlot;
         }
 
+        public PlottableErrorBars PlotErrorBars(
+            double[] xs,
+            double[] ys,
+            double[] xPositiveError = null,
+            double[] xNegativeError = null,
+            double[] yPositiveError = null,
+            double[] yNegativeError = null,
+            Color? color = null,
+            double lineWidth = 1,
+            double capWidth = 3,
+            string label = null
+            )
+        {
+            if (color is null)
+                color = settings.GetNextColor();
+
+            PlottableErrorBars errorBars = new PlottableErrorBars(
+                xs,
+                ys,
+                xPositiveError,
+                xNegativeError,
+                yPositiveError,
+                yNegativeError,
+                color.Value,
+                lineWidth,
+                capWidth,
+                label
+                );
+
+            settings.plottables.Add(errorBars);
+            return errorBars;
+        }
+
         public PlottableScatter PlotArrow(
             double tipX,
             double tipY,
