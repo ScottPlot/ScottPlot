@@ -393,7 +393,7 @@ namespace ScottPlot
             //Tries to use the same color as the plottable that preceeded it. 
             //If there is no preceeding plottable (ErrorBars don't count!), it defaults to black
             if (color == null)
-                color = settings.plottables.Count>=settings.NumErrorBarPlottables ? settings.GetNextColor() : Color.Black; 
+                color = settings.plottables.Count >= settings.NumErrorBarPlottables ? settings.GetNextColor() : Color.Black;
 
             PlottableErrorBars errorBars = new PlottableErrorBars(
                 xs,

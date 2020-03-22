@@ -19,7 +19,7 @@ namespace ScottPlot
         private readonly Pen penLine;
 
         public PlottableErrorBars(double[] xs, double[] ys, double[] xPositiveError, double[] xNegativeError,
-            double[] yPositiveError, double[] yNegativeError, Color color, double lineWidth = 1, double capLength = 3, double xOffSet=0)
+            double[] yPositiveError, double[] yNegativeError, Color color, double lineWidth = 1, double capLength = 3, double xOffSet = 0)
         {
             //check input
             if (xs.Length != ys.Length)
@@ -116,7 +116,7 @@ namespace ScottPlot
                     float error = positiveError ? (float)errorArray[i] : (float)errorArray[i] * -1;
                     if (xError)
                     {
-                        PointF errorPoint = settings.GetPixel(xs[i]+error, ys[i]);
+                        PointF errorPoint = settings.GetPixel(xs[i] + error, ys[i]);
                         float xWithError = errorPoint.X;
                         settings.gfxData.DrawLine(penLine, x, y, xWithError, y); //draw the error
                         settings.gfxData.DrawLine(penLine, xWithError, y - capLength, xWithError, y + capLength); //draw the cap
