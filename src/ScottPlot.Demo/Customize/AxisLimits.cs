@@ -78,7 +78,7 @@ namespace ScottPlot.Demo.Customize
                 plt.PlotScatter(x, sin);
                 plt.PlotScatter(x, cos);
 
-                plt.AxisZoom(2, 2);
+                plt.AxisZoom(1.5, 1.5);
             }
         }
 

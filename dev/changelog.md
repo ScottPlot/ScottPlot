@@ -38,6 +38,7 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
 * New plot type: Error bars. They allow the user to define error bar size in all 4 directions by calling `plt.PlotErrorBars()`. (#316) _Thanks @zrolfs_
 * Improve how dashed lines appear in the legend
 * Improved minor tick positions when using log scales with `logScaleX` and `logScaleY` arguments of `plt.Ticks()` method
+* Fixed bug that caused the center of the coordinate field to shift when calling `Plot.AxisZoom()`
 
 ## ScottPlot 4.0.22
 * Added support for custom horizontal axis tick rotation (#300) _Thanks @SeidChr_

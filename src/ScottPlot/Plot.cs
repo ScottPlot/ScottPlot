@@ -927,23 +927,20 @@ namespace ScottPlot
         public double[] AxisZoom(
             double xFrac = 1,
             double yFrac = 1,
-            double? toPixelX = null,
-            double? toPixelY = null
+            double? zoomToX = null,
+            double? zoomToY = null
             )
         {
             if (!settings.axes.hasBeenSet)
                 settings.AxisAuto();
 
-            double centerPixelX = settings.figureSize.Width / 2.0;
-            double centerPixelY = settings.figureSize.Height / 2.0;
+            if (zoomToX is null)
+                zoomToX = settings.axes.x.center;
 
-            if (toPixelX is null)
-                toPixelX = centerPixelX;
+            if (zoomToY is null)
+                zoomToY = settings.axes.y.center;
 
-            if (toPixelY is null)
-                toPixelY = centerPixelY;
-
-            settings.axes.Zoom(xFrac, yFrac, toPixelX, toPixelY);
+            settings.axes.Zoom(xFrac, yFrac, zoomToX, zoomToY);
             return settings.axes.limits;
         }
 
