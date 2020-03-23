@@ -1232,7 +1232,9 @@ namespace ScottPlot
             bool? enableHorizontal = null,
             bool? enableVertical = null,
             Config.DateTimeUnit? xSpacingDateTimeUnit = null,
-            Config.DateTimeUnit? ySpacingDateTimeUnit = null
+            Config.DateTimeUnit? ySpacingDateTimeUnit = null,
+            double? lineWidth = null,
+            LineStyle? lineStyle = null
             )
         {
             if (enable != null)
@@ -1261,6 +1263,12 @@ namespace ScottPlot
 
             if (ySpacingDateTimeUnit != null)
                 settings.ticks.manualDateTimeSpacingUnitY = ySpacingDateTimeUnit.Value;
+
+            if (lineWidth != null)
+                settings.grid.lineWidth = lineWidth.Value;
+
+            if (lineStyle != null)
+                settings.grid.lineStyle = lineStyle.Value;
 
         }
 

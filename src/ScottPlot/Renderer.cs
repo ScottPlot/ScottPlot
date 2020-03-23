@@ -24,7 +24,7 @@ namespace ScottPlot
 
         public static void DataGrid(Settings settings)
         {
-            Pen pen = new Pen(settings.grid.color);
+            Pen pen = new Pen(settings.grid.color, (float)settings.grid.lineWidth) { DashPattern = StyleTools.DashPattern(settings.grid.lineStyle) };
 
             if (settings.grid.enableVertical)
             {

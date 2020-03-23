@@ -39,6 +39,7 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
 * Improve how dashed lines appear in the legend
 * Improved minor tick positions when using log scales with `logScaleX` and `logScaleY` arguments of `plt.Ticks()` method
 * Fixed bug that caused the center of the coordinate field to shift when calling `Plot.AxisZoom()`
+* Grid line thickness and style (dashed, dotted, etc) can be customized with new arguments in the `Plot.Grid()` method
 
 ## ScottPlot 4.0.22
 * Added support for custom horizontal axis tick rotation (#300) _Thanks @SeidChr_

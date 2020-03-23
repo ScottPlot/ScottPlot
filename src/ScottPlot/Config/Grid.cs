@@ -12,5 +12,7 @@ namespace ScottPlot.Config
         public bool enableHorizontal = true;
         public bool enableVertical = true;
         public Color color = Color.LightGray;
+        public LineStyle lineStyle = LineStyle.Solid;
+        public double lineWidth = 1;
     }
 }
