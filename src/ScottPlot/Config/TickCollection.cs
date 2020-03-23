@@ -27,6 +27,7 @@ namespace ScottPlot.Config
         public bool dateFormat;
         private bool verticalAxis;
         public bool invertSign;
+        public bool logScale;
 
         public TickCollection(bool verticalAxis)
         {
@@ -168,7 +169,12 @@ namespace ScottPlot.Config
                         invertSign: invertSign,
                         culture: settings.culture
                     );
-                tickPositionsMinor = MinorFromMajor(tickPositionsMajor, 5, low, high);
+
+                if (logScale)
+                    tickPositionsMinor = MinorFromMajorLog(tickPositionsMajor, low, high);
+                else
+                    tickPositionsMinor = MinorFromMajor(tickPositionsMajor, 5, low, high);
+
             }
 
             // now set the maximum label size based on the actual labels created
@@ -294,6 +300,27 @@ namespace ScottPlot.Config
                     minorTicks.Add(pos);
 
             return minorTicks.ToArray();
+        }
+
+        public double[] MinorFromMajorLog(double[] majorTicks, double lowerLimit, double upperLimit)
+        {
+            if ((majorTicks == null) || (majorTicks.Length < 2))
+                return null;
+
+            double majorTickSpacing = majorTicks[1] - majorTicks[0];
+            double lowerBound = majorTicks.First() - majorTickSpacing;
+            double upperBound = majorTicks.Last() + majorTickSpacing;
+
+            List<double> minorTicks = new List<double>();
+            for (double majorTick = lowerBound; majorTick <= upperBound; majorTick += majorTickSpacing)
+            {
+                minorTicks.Add(majorTick + majorTickSpacing * (.5));
+                minorTicks.Add(majorTick + majorTickSpacing * (.5 + .25));
+                minorTicks.Add(majorTick + majorTickSpacing * (.5 + .25 + .125));
+                minorTicks.Add(majorTick + majorTickSpacing * (.5 + .25 + .125 + .0625));
+            }
+
+            return minorTicks.Where(x => x >= lowerLimit && x <= upperLimit).ToArray();
         }
 
         public static string[] GetDateLabels(double[] ticksOADate, CultureInfo culture)

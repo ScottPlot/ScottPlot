@@ -37,6 +37,7 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
 * Empty plots now render grid lines, ticks, and tick labels (#313)
 * New plot type: Error bars. They allow the user to define error bar size in all 4 directions by calling `plt.PlotErrorBars()`. (#316) _Thanks @zrolfs_
 * Improve how dashed lines appear in the legend
+* Improved minor tick positions when using log scales with `logScaleX` and `logScaleY` arguments of `plt.Ticks()` method
 
 ## ScottPlot 4.0.22
 * Added support for custom horizontal axis tick rotation (#300) _Thanks @SeidChr_

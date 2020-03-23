@@ -1135,7 +1135,9 @@ namespace ScottPlot
             bool? invertSignY = null,
             string fontName = null,
             float? fontSize = null,
-            double? xTickRotation = null
+            double? xTickRotation = null,
+            bool? logScaleX = null,
+            bool? logScaleY = null
             )
         {
             if (displayTicksX != null)
@@ -1176,6 +1178,10 @@ namespace ScottPlot
                 settings.ticks.displayYlabels = (bool)displayTickLabelsY;
             if (xTickRotation != null)
                 settings.ticks.rotationX = xTickRotation.Value;
+            if (logScaleX != null)
+                settings.ticks.x.logScale = logScaleX.Value;
+            if (logScaleY != null)
+                settings.ticks.y.logScale = logScaleY.Value;
 
             // dont use offset notation if the sign is inverted
             if (settings.ticks.x.invertSign || settings.ticks.y.invertSign)

@@ -86,7 +86,13 @@ namespace ScottPlot.Demo.Customize
                     dataYs[i] = Math.Pow(2, x) + rand.NextDouble() * i;
                 }
 
-                plt.PlotScatter(dataXs, ScottPlot.Tools.Log10(dataYs), lineWidth: 0);
+                // this tool can convert linear data to log data
+                double[] dataYsLog = ScottPlot.Tools.Log10(dataYs);
+                plt.PlotScatter(dataXs, dataYsLog, lineWidth: 0);
+
+                // call this to move minor ticks to simulate a log scale
+                plt.Ticks(logScaleY: true);
+
                 plt.Title("Data (Log Scale)");
                 plt.YLabel("Vertical Units (10^x)");
                 plt.XLabel("Horizontal Units");
