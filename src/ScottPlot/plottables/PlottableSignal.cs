@@ -126,10 +126,14 @@ namespace ScottPlot
                     float zoomTransitionScale = Math.Min(1, pixelsBetweenPoints / 10);
                     float markerPxDiameter = markerSize * zoomTransitionScale;
                     float markerPxRadius = markerPxDiameter / 2;
-                    foreach (PointF point in linePoints)
-                        settings.gfxData.FillEllipse(brush: brush, 
-                            x: point.X - markerPxRadius, y: point.Y - markerPxRadius, 
-                            width: markerPxDiameter, height: markerPxDiameter);
+                    if (markerPxRadius > .25)
+                    {
+                        markersAreVisible = true;
+                        foreach (PointF point in linePoints)
+                            settings.gfxData.FillEllipse(brush: brush,
+                                x: point.X - markerPxRadius, y: point.Y - markerPxRadius,
+                                width: markerPxDiameter, height: markerPxDiameter);
+                    }
                 }
             }
         }
@@ -352,6 +356,7 @@ namespace ScottPlot
                 settings.gfxData.DrawLines(pen, linePoints.ToArray());
         }
 
+        private bool markersAreVisible = false;
         public override void Render(Settings settings)
         {
             pen.Color = color;
@@ -372,6 +377,9 @@ namespace ScottPlot
             PointF firstPoint = settings.GetPixel(xOffset, ys[0] + yOffset);
             PointF lastPoint = settings.GetPixel(samplePeriod * (ys.Length - 1) + xOffset, ys[ys.Length - 1] + yOffset);
             double dataWidthPx = lastPoint.X - firstPoint.X;
+
+            // set this now, and let the render function change it if it happens
+            markersAreVisible = false;
 
             // use different rendering methods based on how dense the data is on screen
             if ((dataWidthPx <= 1) || (dataWidthPx2 <= 1))
@@ -421,7 +429,13 @@ namespace ScottPlot
 
         public override LegendItem[] GetLegendItems()
         {
-            var singleLegendItem = new Config.LegendItem(label, color);
+            var singleLegendItem = new Config.LegendItem(label, color)
+            {
+                lineStyle = LineStyle.Solid,
+                lineWidth = lineWidth,
+                markerShape = (markersAreVisible) ? MarkerShape.filledCircle : MarkerShape.none,
+                markerSize = (markersAreVisible) ? markerSize : 0
+            };
             return new LegendItem[] { singleLegendItem };
         }
     }
