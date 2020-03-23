@@ -16,6 +16,7 @@ namespace ScottPlot.Demo.WinForms
         public FormCookbook()
         {
             InitializeComponent();
+            Icon = new Icon("icon.ico");
             pictureBox1.Dock = DockStyle.Fill;
             LoadTreeWithDemos();
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);

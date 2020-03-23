@@ -15,6 +15,7 @@ namespace ScottPlot.Demo.WinForms
         public FormMain()
         {
             InitializeComponent();
+            Icon = new Icon("icon.ico");
         }
 
         private void FormStartup_Load(object sender, EventArgs e)
