@@ -85,15 +85,13 @@ namespace ScottPlot
             settings.gfxLegend.FillRectangle(new SolidBrush(settings.legend.colorBackground), frameRect);
             settings.gfxLegend.DrawRectangle(new Pen(settings.legend.colorFrame), frameRect);
 
-            foreach (var (p, index) in GetLegendItems(settings).Select((x, i) => (x, i)))
+            var legendItems = GetLegendItems(settings);
+            for (int i = 0; i < legendItems.Length; i++)
             {
-                Config.LegendItem legendItem = p;
-                Debug.WriteLine($"DRAWING LEGEND ITEM: {legendItem}");
-
-                Point legendItemLocation = new Point(frameOffset.X, padding + index * (int)(maxLabelSize.Height) + frameOffset.Y);
-                DrawLegendItemString(legendItem, settings, legendItemLocation, padding, stubWidth, maxLabelSize.Height);
-                DrawLegendItemLine(legendItem, settings, legendItemLocation, padding, stubWidth, maxLabelSize.Height);
-                DrawLegendItemMarker(legendItem, settings, legendItemLocation, padding, stubWidth, maxLabelSize.Height);
+                Point legendItemLocation = new Point(frameOffset.X, padding + i * (int)(maxLabelSize.Height) + frameOffset.Y);
+                DrawLegendItemString(legendItems[i], settings, legendItemLocation, padding, stubWidth, maxLabelSize.Height);
+                DrawLegendItemLine(legendItems[i], settings, legendItemLocation, padding, stubWidth, maxLabelSize.Height);
+                DrawLegendItemMarker(legendItems[i], settings, legendItemLocation, padding, stubWidth, maxLabelSize.Height);
             }
         }
 

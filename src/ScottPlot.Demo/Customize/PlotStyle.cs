@@ -19,14 +19,16 @@ namespace ScottPlot.Demo.Customize
                 double[] sin = DataGen.Sin(pointCount);
                 double[] cos = DataGen.Cos(pointCount);
 
-                var plot1 = plt.PlotScatter(x, sin);
-                var plot2 = plt.PlotScatter(x, cos);
+                var thing1 = plt.PlotScatter(x, sin, label: "thing 1");
+                var thing2 = plt.PlotScatter(x, cos, label: "thing 2");
 
-                plot1.lineWidth = 5;
-                plot1.markerShape = MarkerShape.openCircle;
-                plot1.markerSize = 20;
+                thing1.lineWidth = 5;
+                thing1.markerShape = MarkerShape.openCircle;
+                thing1.markerSize = 20;
 
-                plot2.color = Color.Magenta;
+                thing2.color = Color.Magenta;
+
+                plt.Legend();
             }
         }
 

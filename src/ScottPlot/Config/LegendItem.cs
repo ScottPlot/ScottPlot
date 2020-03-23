@@ -6,8 +6,6 @@ namespace ScottPlot.Config
 {
     public class LegendItem
     {
-        public enum KeyStyle { Rectangle, Line, LineAndMarker, Marker };
-
         public string label;
         public System.Drawing.Color color;
 

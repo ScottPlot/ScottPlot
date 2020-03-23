@@ -10,7 +10,7 @@ namespace ScottPlot.Demo.PlotTypes
         public class Quickstart : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Signal Plot Quickstart";
-            public string description { get; }
+            public string description { get; } = "Signal plots are ideal for evenly-spaced data with thousands or millions of points.";
 
             public void Render(Plot plt)
             {
@@ -32,10 +32,10 @@ namespace ScottPlot.Demo.PlotTypes
                 Random rand = new Random(0);
                 double[] ys = DataGen.RandomWalk(rand, 500);
 
-                plt.Title($"Signal Plot with Markers");
-                plt.PlotSignal(ys, label: "default");
-                plt.PlotSignal(ys, yOffset: 20, markerSize: 10, label: "large markers");
-                plt.PlotSignal(ys, yOffset: 40, lineWidth: 10, markerSize: 0, label: "large line");
+                plt.Title($"Styled Signal Plot");
+                plt.PlotSignal(ys, yOffset: 40, label: "default");
+                plt.PlotSignal(ys, yOffset: 20, color: Color.Magenta, label: "pink");
+                plt.PlotSignal(ys, yOffset: 00, lineWidth: 3, label: "thick");
                 plt.Legend();
             }
         }
@@ -118,19 +118,20 @@ namespace ScottPlot.Demo.PlotTypes
 
                 // Only populate the first few points with real data
                 Random rand = new Random(0);
-                int lastValueIndex = 500;
+                int lastValueIndex = 1234;
                 for (int i = 1; i <= lastValueIndex; i++)
                     data[i] = data[i - 1] + rand.NextDouble() - .5;
 
                 // A regular Signal plot would display a little data at the start but mostly zeros.
                 // Using the maxRenderIndex argument allows one to just plot the first N data points.
-                var sig = plt.PlotSignal(data, maxRenderIndex: lastValueIndex);
+                var sig = plt.PlotSignal(data, maxRenderIndex: 500);
                 plt.Title("Partial Display of a 1,000,000 Element Array");
                 plt.YLabel("Value");
                 plt.XLabel("Array Index");
 
                 // you can change the points to plot later (useful for live plots of incoming data)
                 sig.maxRenderIndex = 1234;
+                plt.AxisAuto();
             }
         }
     }

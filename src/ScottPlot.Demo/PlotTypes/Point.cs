@@ -19,9 +19,11 @@ namespace ScottPlot.Demo.PlotTypes
                 double[] sin = DataGen.Sin(pointCount);
                 double[] cos = DataGen.Cos(pointCount);
 
+                // draw something to make the plot interesting
                 plt.PlotScatter(x, sin);
                 plt.PlotScatter(x, cos);
 
+                // add a few points
                 plt.PlotPoint(25, 0.8);
                 plt.PlotPoint(30, 0.3, color: Color.Magenta, markerSize: 15);
             }
