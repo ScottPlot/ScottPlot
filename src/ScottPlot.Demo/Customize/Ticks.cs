@@ -106,7 +106,7 @@ namespace ScottPlot.Demo.Customize
         public class LocalizedHungarian : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Localized Formatting (Hungarian)";
-            public string description { get; } = "Large numbers and dates are formatted differently for different cultures. This example demonstrates how to use a specific culture for formatting.";
+            public string description { get; } = "Large numbers and dates are formatted differently for different cultures. Hungarian is a good example of this: they use spaces to separate large numbers, and periods to separate fields in dates.";
 
             public void Render(Plot plt)
             {
@@ -133,7 +133,7 @@ namespace ScottPlot.Demo.Customize
         public class LocalizedGerman : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Localized Formatting (German)";
-            public string description { get; } = "Large numbers and dates are formatted differently for different cultures. This example demonstrates how to use a specific culture for formatting.";
+            public string description { get; } = "Large numbers and dates are formatted differently for different cultures. German is a good example of this: they use periods to separate large numbers, and periods to separate fields in dates.";
 
             public void Render(Plot plt)
             {
@@ -148,7 +148,7 @@ namespace ScottPlot.Demo.Customize
                 plt.Ticks(dateTimeX: true);
                 plt.YLabel("Price");
                 plt.XLabel("Date and Time");
-                plt.Title("Hungarian Formatted DateTime Tick Labels");
+                plt.Title("German Formatted DateTime Tick Labels");
                 plt.Ticks(useMultiplierNotation: false);
 
                 // set the localization
