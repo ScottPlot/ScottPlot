@@ -28,7 +28,6 @@ namespace ScottPlot
                 StartCap = System.Drawing.Drawing2D.LineCap.Round,
                 EndCap = System.Drawing.Drawing2D.LineCap.Round,
                 LineJoin = System.Drawing.Drawing2D.LineJoin.Round,
-                DashStyle = StyleTools.DashStyle(lineStyle),
                 DashPattern = StyleTools.DashPattern(lineStyle)
             };
 
@@ -93,7 +92,7 @@ namespace ScottPlot
 
         public override LegendItem[] GetLegendItems()
         {
-            var singleLegendItem = new Config.LegendItem(label, color, LegendItem.KeyStyle.Line);
+            var singleLegendItem = new Config.LegendItem(label, color, lineStyle, pen.Width, MarkerShape.none);
             return new LegendItem[] { singleLegendItem };
         }
     }

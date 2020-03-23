@@ -8,8 +8,6 @@ namespace ScottPlot.Config
     {
         public enum KeyStyle { Rectangle, Line, LineAndMarker, Marker };
 
-        public KeyStyle keyStyle;
-
         public string label;
         public System.Drawing.Color color;
 
@@ -19,14 +17,13 @@ namespace ScottPlot.Config
         public double markerSize;
 
         public LegendItem(
-            string label, System.Drawing.Color color, KeyStyle keyStyle = KeyStyle.Rectangle, 
+            string label, System.Drawing.Color color,
             LineStyle lineStyle = LineStyle.Solid, double lineWidth = 1, 
             MarkerShape markerShape = MarkerShape.filledCircle, double markerSize = 3
             )
         {
             this.label = label;
             this.color = color;
-            this.keyStyle = keyStyle;
 
             this.lineStyle = lineStyle;
             this.lineWidth = lineWidth;
