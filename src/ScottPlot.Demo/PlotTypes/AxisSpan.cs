@@ -24,6 +24,8 @@ namespace ScottPlot.Demo.PlotTypes
 
                 plt.PlotVSpan(y1: .15, y2: .85, label: "VSpan");
                 plt.PlotHSpan(x1: 10, x2: 25, label: "HSpan");
+
+                plt.Grid(lineStyle: LineStyle.Dot);
                 plt.Legend();
             }
         }
@@ -45,6 +47,8 @@ namespace ScottPlot.Demo.PlotTypes
 
                 plt.PlotVSpan(y1: .15, y2: .85, label: "VSpan", draggable: true, dragLimitLower: -1, dragLimitUpper: 1);
                 plt.PlotHSpan(x1: 10, x2: 25, label: "HSpan", draggable: true, dragLimitLower: 0, dragLimitUpper: 50);
+
+                plt.Grid(lineStyle: LineStyle.Dot);
                 plt.Legend();
             }
         }

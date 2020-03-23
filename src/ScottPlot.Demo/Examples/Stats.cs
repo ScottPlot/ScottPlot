@@ -24,6 +24,7 @@ namespace ScottPlot.Demo.Examples
                 plt.YLabel("Frequency (fraction)");
                 plt.XLabel("Value (units)");
                 plt.Axis(null, null, 0, null);
+                plt.Grid(lineStyle: LineStyle.Dot);
             }
         }
 
@@ -49,6 +50,7 @@ namespace ScottPlot.Demo.Examples
                 plt.PlotStep(hist2.bins, hist2.cumulativeFrac, lineWidth: 1.5, label: "sample B");
                 plt.Legend();
                 plt.Axis(null, null, 0, 1);
+                plt.Grid(lineStyle: LineStyle.Dot);
             }
         }
 

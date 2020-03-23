@@ -60,6 +60,7 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.Title("Bar Plot With Error Bars");
                 plt.PlotBar(xs, ys, barWidth: .5, errorY: yErr, errorCapSize: 2);
                 plt.Grid(enableVertical: false);
+                plt.Grid(lineStyle: LineStyle.Dot);
                 plt.Axis(null, null, 0, null);
             }
         }
@@ -94,6 +95,7 @@ namespace ScottPlot.Demo.PlotTypes
 
                 // customize the plot to make it look nicer
                 plt.Grid(false);
+                plt.Grid(lineStyle: LineStyle.Dot);
                 plt.Axis(null, null, 0, null);
                 plt.Legend();
 

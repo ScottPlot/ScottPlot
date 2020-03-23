@@ -25,6 +25,8 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.PlotHLine(y: .85, label: "HLine");
                 plt.PlotVLine(x: 23, label: "VLine");
                 plt.PlotVLine(x: 33, label: "VLine too", color: Color.Magenta, lineWidth: 3, lineStyle: LineStyle.Dot);
+
+                plt.Grid(lineStyle: LineStyle.Dot);
                 plt.Legend();
             }
         }
@@ -46,6 +48,8 @@ namespace ScottPlot.Demo.PlotTypes
 
                 plt.PlotHLine(y: .85, draggable: true, dragLimitLower: -1, dragLimitUpper: +1);
                 plt.PlotVLine(x: 23, draggable: true, dragLimitLower: 0, dragLimitUpper: 50);
+
+                plt.Grid(lineStyle: LineStyle.Dot);
             }
         }
     }
