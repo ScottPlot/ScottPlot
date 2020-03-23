@@ -25,7 +25,7 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
   * Create a GDI rendering module which uses System.Drawing 
   * Create a SkiaSharp rendering module and user control (supporting OpenGL hardware acceleration)
 
-## ScottPlot 4.0.23 (in development)
+## ScottPlot 4.0.23
 * Interactive plot viewers were created to make it easy to interactively display data in a pop-up window without having to write any GUI code. Examples have been added to the ScottPlot Demo application.
   * `ScottPlot.WpfPlotViewer(plt)` for WPF
   * `ScottPlot.FormsPlotViewer(plt)` for Windows Forms
