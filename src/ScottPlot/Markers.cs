@@ -9,6 +9,7 @@ namespace ScottPlot
 {
     public enum MarkerShape
     {
+        // TODO: capitalize these in ScottPlot 4.1
         none,
         filledCircle,
         filledSquare,
