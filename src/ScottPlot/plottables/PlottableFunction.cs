@@ -98,7 +98,7 @@ namespace ScottPlot
 
         public override LegendItem[] GetLegendItems()
         {
-            var singleLegendItem = new Config.LegendItem(label, color, markerSize: 0);
+            var singleLegendItem = new Config.LegendItem(label, color, lineStyle, lineWidth, MarkerShape.none);
             return new LegendItem[] { singleLegendItem };
         }
     }
