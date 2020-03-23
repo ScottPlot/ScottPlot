@@ -23,6 +23,7 @@ namespace ScottPlot
 
     public enum TextAlignment
     {
+        // TODO: capitolize these in ScottPlot 4.1
         upperLeft,
         upperRight,
         upperCenter,
@@ -36,6 +37,7 @@ namespace ScottPlot
 
     public enum LineStyle
     {
+        None,
         Solid,
         Dash,
         DashDot,
@@ -58,17 +60,10 @@ namespace ScottPlot
             }
         }
 
+        [Obsolete("dash style should always be solid. It's the dash PATTERN that actually changes.", true)]
         public static System.Drawing.Drawing2D.DashStyle DashStyle(LineStyle lineStyle)
         {
-            switch (lineStyle)
-            {
-                case LineStyle.Solid: return System.Drawing.Drawing2D.DashStyle.Solid;
-                case LineStyle.Dash: return System.Drawing.Drawing2D.DashStyle.Solid;
-                case LineStyle.DashDot: return System.Drawing.Drawing2D.DashStyle.Solid;
-                case LineStyle.DashDotDot: return System.Drawing.Drawing2D.DashStyle.Solid;
-                case LineStyle.Dot: return System.Drawing.Drawing2D.DashStyle.Solid;
-                default: return System.Drawing.Drawing2D.DashStyle.Solid;
-            }
+            return System.Drawing.Drawing2D.DashStyle.Solid;
         }
 
         public static void SetStyle(Plot existingPlot, Style style)

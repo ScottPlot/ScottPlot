@@ -122,35 +122,13 @@ namespace ScottPlot
 
         private static void DrawLegendItemLine(Config.LegendItem legendItem, Settings settings, Point itemLocation, int padding, int stubWidth, float legendFontLineHeight)
         {
-            Pen pen = new Pen(legendItem.color, 1);
+            if (legendItem.lineWidth == 0 || legendItem.lineStyle == LineStyle.None)
+                return;
 
-            // a rectangle is really just a fat line
-            if (legendItem.keyStyle == Config.LegendItem.KeyStyle.Rectangle)
-                pen.Width = 10;
-
-            else if (legendItem.keyStyle == Config.LegendItem.KeyStyle.Marker)
-                pen.Width = 0;
-
-            // TODO: move this switch to tools or something. 
-            // Sureley the legend isn't the only place this switch lives.
-            switch (legendItem.lineStyle)
+            Pen pen = new Pen(legendItem.color, (float)legendItem.lineWidth)
             {
-                case LineStyle.Solid:
-                    pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Solid;
-                    break;
-                case LineStyle.Dash:
-                    pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
-                    break;
-                case LineStyle.DashDot:
-                    pen.DashStyle = System.Drawing.Drawing2D.DashStyle.DashDot;
-                    break;
-                case LineStyle.DashDotDot:
-                    pen.DashStyle = System.Drawing.Drawing2D.DashStyle.DashDotDot;
-                    break;
-                case LineStyle.Dot:
-                    pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
-                    break;
-            }
+                DashPattern = StyleTools.DashPattern(legendItem.lineStyle)
+            };
 
             settings.gfxLegend.DrawLine(pen,
                 itemLocation.X + padding, itemLocation.Y + legendFontLineHeight / 2,
@@ -159,6 +137,9 @@ namespace ScottPlot
 
         private static void DrawLegendItemMarker(Config.LegendItem legendItem, Settings settings, Point itemLocation, int padding, int stubWidth, float legendFontLineHeight)
         {
+            if (legendItem.markerSize == 0 || legendItem.markerShape == MarkerShape.none)
+                return;
+
             Brush brushMarker = new SolidBrush(legendItem.color);
             Pen penMarker = new Pen(legendItem.color, 1);
 
