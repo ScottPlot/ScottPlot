@@ -18,9 +18,9 @@ namespace ScottPlot.Demo.PlotTypes
 
                 // random data points
                 double[] dataX = DataGen.Consecutive(pointCount);
-                double[] dataY1 = DataGen.Sin(pointCount, offset: 6);
-                double[] dataY2 = DataGen.Sin(pointCount, offset: 3);
-                double[] dataY3 = DataGen.Sin(pointCount, offset: 0);
+                double[] dataY1 = DataGen.RandomNormal(rand, pointCount, mean: 20, stdDev: 2);
+                double[] dataY2 = DataGen.RandomNormal(rand, pointCount, mean: 10, stdDev: 2);
+                double[] dataY3 = DataGen.RandomNormal(rand, pointCount, mean: 0, stdDev: 2);
 
                 // random errorbar sizes
                 double[] errorYPositive = DataGen.RandomNormal(rand, pointCount);
@@ -29,9 +29,14 @@ namespace ScottPlot.Demo.PlotTypes
                 double[] errorXNegative = DataGen.RandomNormal(rand, pointCount);
 
                 // plot different combinations of errorbars
-                plt.PlotErrorBars(dataX, dataY1, errorXPositive, errorXNegative, errorYPositive, errorYNegative, label: "Asymmetric X and Y errors");
-                plt.PlotErrorBars(dataX, dataY2, errorXPositive, null, errorYPositive, null, label: "Positive errors only");
-                plt.PlotErrorBars(dataX, dataY3, null, errorXNegative, null, errorYNegative, label: $"Negative errors only");
+                var err1 = plt.PlotErrorBars(dataX, dataY1, errorXPositive, errorXNegative, errorYPositive, errorYNegative);
+                var err2 = plt.PlotErrorBars(dataX, dataY2, errorXPositive, null, errorYPositive, null);
+                var err3 = plt.PlotErrorBars(dataX, dataY3, null, errorXNegative, null, errorYNegative);
+
+                // draw scatter plots on top of the errorbars
+                plt.PlotScatter(dataX, dataY1, color: err1.color, label: "Both");
+                plt.PlotScatter(dataX, dataY2, color: err2.color, label: "Positive");
+                plt.PlotScatter(dataX, dataY3, color: err3.color, label: $"Negative");
 
                 plt.Title("Error Bars with Asymmetric X and Y Values");
                 plt.Grid(false);
