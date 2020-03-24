@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.Linq;
 
 namespace ScottPlot
 {
@@ -238,6 +239,14 @@ namespace ScottPlot
             settings.plottables.Clear();
             settings.axes.x.hasBeenSet = false;
             settings.axes.y.hasBeenSet = false;
+        }
+
+        public void Clear(Predicate<Plottable> selector = null)
+        {
+            settings.plottables.RemoveAll(selector);
+
+            if (settings.plottables.Count == 0)
+                Clear(); // to reset axes
         }
 
         [Obsolete("This overload is deprecated. Clear plots using a different overload of the Clear() method.")]
