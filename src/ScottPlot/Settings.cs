@@ -289,39 +289,5 @@ namespace ScottPlot
                 totalPointCount += plottable.GetPointCount();
             return totalPointCount;
         }
-
-        public void Clear(bool axLines = true, bool scatters = true, bool signals = true, bool text = true, bool bar = true, bool finance = true, bool axSpans = true)
-        {
-            // TODO: This is a switch code smell. Use inversion of control here.
-            List<int> indicesToDelete = new List<int>();
-            for (int i = 0; i < plottables.Count; i++)
-            {
-                if ((plottables[i] is PlottableVLine || plottables[i] is PlottableHLine) && axLines)
-                    indicesToDelete.Add(i);
-                else if (plottables[i] is PlottableScatter && scatters)
-                    indicesToDelete.Add(i);
-                else if (plottables[i] is PlottableSignal && signals)
-                    indicesToDelete.Add(i);
-                else if (plottables[i].GetType().IsGenericType && plottables[i].GetType().GetGenericTypeDefinition() == typeof(PlottableSignalConst<>) && signals)
-                    indicesToDelete.Add(i);
-                else if (plottables[i] is PlottableText && text)
-                    indicesToDelete.Add(i);
-                else if (plottables[i] is PlottableBar && bar)
-                    indicesToDelete.Add(i);
-                else if (plottables[i] is PlottableOHLC && finance)
-                    indicesToDelete.Add(i);
-                else if ((plottables[i] is PlottableVSpan || plottables[i] is PlottableHSpan) && axSpans)
-                    indicesToDelete.Add(i);
-            }
-            indicesToDelete.Reverse();
-
-            for (int i = 0; i < indicesToDelete.Count; i++)
-            {
-                plottables.RemoveAt(indicesToDelete[i]);
-            }
-
-            axes.x.hasBeenSet = false;
-            axes.y.hasBeenSet = false;
-        }
     }
 }

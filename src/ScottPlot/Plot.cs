@@ -230,6 +230,17 @@ namespace ScottPlot
             settings.plottables.Add(plottable);
         }
 
+        /// <summary>
+        /// Clear all plottables
+        /// </summary>
+        public void Clear()
+        {
+            settings.plottables.Clear();
+            settings.axes.x.hasBeenSet = false;
+            settings.axes.y.hasBeenSet = false;
+        }
+
+        [Obsolete("This overload is deprecated. Clear plots using a different overload of the Clear() method.")]
         public void Clear(
             bool axisLines = true,
             bool scatterPlots = true,
@@ -240,15 +251,33 @@ namespace ScottPlot
             bool axisSpans = true
             )
         {
-            settings.Clear(
-                axLines: axisLines,
-                scatters: scatterPlots,
-                signals: signalPlots,
-                text: text,
-                bar: bar,
-                finance: finance,
-                axSpans: axisSpans
-                );
+            List<int> indicesToDelete = new List<int>();
+            for (int i = 0; i < settings.plottables.Count; i++)
+            {
+                if ((settings.plottables[i] is PlottableVLine || settings.plottables[i] is PlottableHLine) && axisLines)
+                    indicesToDelete.Add(i);
+                else if (settings.plottables[i] is PlottableScatter && scatterPlots)
+                    indicesToDelete.Add(i);
+                else if (settings.plottables[i] is PlottableSignal && signalPlots)
+                    indicesToDelete.Add(i);
+                else if (settings.plottables[i].GetType().IsGenericType && settings.plottables[i].GetType().GetGenericTypeDefinition() == typeof(PlottableSignalConst<>) && signalPlots)
+                    indicesToDelete.Add(i);
+                else if (settings.plottables[i] is PlottableText && text)
+                    indicesToDelete.Add(i);
+                else if (settings.plottables[i] is PlottableBar && bar)
+                    indicesToDelete.Add(i);
+                else if (settings.plottables[i] is PlottableOHLC && finance)
+                    indicesToDelete.Add(i);
+                else if ((settings.plottables[i] is PlottableVSpan || settings.plottables[i] is PlottableHSpan) && axisSpans)
+                    indicesToDelete.Add(i);
+            }
+
+            indicesToDelete.Reverse();
+            for (int i = 0; i < indicesToDelete.Count; i++)
+                settings.plottables.RemoveAt(indicesToDelete[i]);
+
+            settings.axes.x.hasBeenSet = false;
+            settings.axes.y.hasBeenSet = false;
         }
 
         public PlottableText PlotText(
