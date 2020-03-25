@@ -243,6 +243,17 @@ namespace ScottPlot
         /// <summary>
         /// Clear all plottables matching the given type
         /// </summary>
+        public void Clear<T>()
+        {
+            settings.plottables.RemoveAll(x => x is T);
+
+            if (settings.plottables.Count == 0)
+                settings.axes.Reset();
+        }
+
+        /// <summary>
+        /// Clear all plottables matching the given type
+        /// </summary>
         public void Clear(Type typeToClear)
         {
             settings.plottables.RemoveAll(x => x.GetType() == typeToClear);
@@ -250,7 +261,6 @@ namespace ScottPlot
             if (settings.plottables.Count == 0)
                 settings.axes.Reset();
         }
-
 
         /// <summary>
         /// Clear all plottables matching the given types
