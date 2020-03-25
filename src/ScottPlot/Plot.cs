@@ -674,7 +674,8 @@ namespace ScottPlot
             return signal;
         }
 
-        public PlottableBar PlotBar(
+        [Obsolete("This type of Bar plot is deprecated. Refer to the ScottPlot cookbook for modern Bar graph examples.")]
+        public PlottableBarObsolete PlotBar(
             double[] xs,
             double[] ys,
             double? barWidth = null,
@@ -692,7 +693,7 @@ namespace ScottPlot
             if (barWidth == null)
                 barWidth = (xs[1] - xs[0]) * .8;
 
-            PlottableBar barPlot = new PlottableBar(
+            PlottableBarObsolete barPlot = new PlottableBarObsolete(
                 xs: xs,
                 ys: ys,
                 barWidth: (double)barWidth,

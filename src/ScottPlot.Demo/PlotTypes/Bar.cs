@@ -8,100 +8,141 @@ namespace ScottPlot.Demo.PlotTypes
     {
         public class Quickstart : PlotDemo, IPlotDemo
         {
-            public string name { get; } = "Bar Plot Quickstart";
-            public string description { get; } = "Bar graph series can be created by supply Xs and Ys. Optionally apply errorbars as a third array using an argument.";
+            public string name { get; } = "Simple Bar Graph";
+            public string description { get; }
 
             public void Render(Plot plt)
             {
-                // generate random data to plot
-                Random rand = new Random(0);
-                int pointCount = 10;
-                double[] Xs = new double[pointCount];
-                double[] dataA = new double[pointCount];
-                double[] errorA = new double[pointCount];
-                for (int i = 0; i < pointCount; i++)
-                {
-                    Xs[i] = i * 10;
-                    dataA[i] = rand.NextDouble() * 100;
-                    errorA[i] = rand.NextDouble() * 10;
-                }
+                double[] votesPerGroup = new double[] { 315, 3859, 2318, 1521 };
+                string[] groupLabels = new string[] { "flying cars", "self-driving cars", "FAANG broken up", "humans on mars" };
+                plt.Add(new PlottableBar(new DataSet[] { new DataSet("votes", votesPerGroup) }, groupLabels));
 
-                // make the bar plot
-                plt.PlotBar(Xs, dataA, errorY: errorA);
-
-                // customize the plot to make it look nicer
+                plt.Title("What do you want by 2030?");
+                plt.YLabel("number of votes");
+                plt.XTicks(groupLabels);
                 plt.Axis(null, null, 0, null);
-                plt.Grid(false);
-
-                // apply custom axis tick labels
-                string[] labels = { "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten" };
-                plt.XTicks(Xs, labels);
-            }
-        }
-        public class BarWithError : PlotDemo, IPlotDemo
-        {
-            public string name { get; } = "Bar Plot with Errorbars";
-            public string description { get; } = "Error can be supplied as a command line argument.";
-
-            public void Render(Plot plt)
-            {
-                int pointCount = 20;
-                double[] xs = new double[pointCount];
-                double[] ys = new double[pointCount];
-                double[] yErr = new double[pointCount];
-                Random rand = new Random(0);
-                for (int i = 0; i < pointCount; i++)
-                {
-                    xs[i] = i;
-                    ys[i] = .5 + rand.NextDouble();
-                    yErr[i] = rand.NextDouble() * .3 + .05;
-                }
-
-                plt.Title("Bar Plot With Error Bars");
-                plt.PlotBar(xs, ys, barWidth: .5, errorY: yErr, errorCapSize: 2);
+                plt.Ticks(useMultiplierNotation: false);
                 plt.Grid(enableVertical: false);
-                plt.Grid(lineStyle: LineStyle.Dot);
-                plt.Axis(null, null, 0, null);
             }
         }
 
-        public class MultipleBars : PlotDemo, IPlotDemo
+        public class Bar3Single : PlotDemo, IPlotDemo
         {
-            public string name { get; } = "Multiple Bar Graphs";
-            public string description { get; } = "Multiple bar graphs can be displayed together by tweaking the widths and offsets of two separate bar graphs.";
+            public string name { get; } = "Bar 3 experimental";
+            public string description { get; }
 
             public void Render(Plot plt)
             {
-                // generate random data to plot
-                Random rand = new Random(0);
-                int pointCount = 10;
-                double[] Xs = new double[pointCount];
-                double[] dataA = new double[pointCount];
-                double[] errorA = new double[pointCount];
-                double[] dataB = new double[pointCount];
-                double[] errorB = new double[pointCount];
-                for (int i = 0; i < pointCount; i++)
-                {
-                    Xs[i] = i * 10;
-                    dataA[i] = rand.NextDouble() * 100;
-                    dataB[i] = rand.NextDouble() * 100;
-                    errorA[i] = rand.NextDouble() * 10;
-                    errorB[i] = rand.NextDouble() * 10;
-                }
+                // define values, labels, and style of each bar series
+                var barSetBBR = new DataSet("brainBodyRatio",
+                    values: new double[] { 7, 12, 40, 40, 100, 125, 172, 550, 560, 600, 2496, 2789 },
+                    errors: new double[] { 1, 2, 4, 9, 15, 37, 45, 67, 123, 234, 321, 567 });
 
-                // add both bar plots with a careful widths and offsets
-                plt.PlotBar(Xs, dataA, errorY: errorA, label: "data A", barWidth: 3.2, xOffset: -2);
-                plt.PlotBar(Xs, dataB, errorY: errorB, label: "data B", barWidth: 3.2, xOffset: 2);
+                // collect BarSets into groups
+                var datasets = new DataSet[] { barSetBBR };
+                var groupLabels = new string[] { "ant", "bird", "mouse", "human", "cat", "dog", "frog", "lion", "elephant", "horse", "shark", "hippo" };
 
-                // customize the plot to make it look nicer
-                plt.Grid(false);
-                plt.Grid(lineStyle: LineStyle.Dot);
+                // create the experimental plottable
+                var plottableThing = new PlottableBar(datasets, groupLabels);
+
+                // plot the experimental plottable
+                plt.Add(plottableThing);
+                plt.Title("Body-to-Brain Mass Ratio");
+                plt.XTicks(groupLabels);
                 plt.Axis(null, null, 0, null);
-                plt.Legend();
+                plt.Ticks(useMultiplierNotation: false);
+                plt.Grid(enableVertical: false);
+            }
+        }
 
-                // apply custom axis tick labels
-                string[] labels = { "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten" };
-                plt.XTicks(Xs, labels);
+        public class Bar3MultiStandard : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Bar 3 experimental";
+            public string description { get; }
+
+            public void Render(Plot plt)
+            {
+                // define values, labels, and style of each bar series
+                var barSetMen = new DataSet("Men", new double[] { 15, 22, 45, 17 }, new double[] { 6, 3, 8, 4 });
+                var barSetWomen = new DataSet("Women", new double[] { 37, 21, 29, 13 }, new double[] { 7, 5, 6, 3 });
+
+                // collect BarSets into groups
+                var datasets = new DataSet[] { barSetMen, barSetWomen };
+                var groupLabels = new string[] { "always", "regularly", "sometimes", "never" };
+
+                // create the experimental plottable
+                var plottableThing = new PlottableBar(datasets, groupLabels);
+
+                // plot the experimental plottable
+                plt.Add(plottableThing);
+                plt.Legend(location: legendLocation.upperRight);
+                plt.Title("How often do you read reviews?");
+                plt.YLabel("Respondents (%)");
+                plt.XTicks(groupLabels);
+                plt.Axis(null, null, 0, null);
+                plt.Grid(enableVertical: false);
+            }
+        }
+
+        public class Bar3MultiAlt : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Bar 3 experimental";
+            public string description { get; }
+
+            public void Render(Plot plt)
+            {
+                // define values, labels, and style of each bar series
+                var dataSets = new List<DataSet>
+                {
+                    new DataSet("always", new double[] { 15, 37 }),
+                    new DataSet("regularly", new double[] { 22, 21 }),
+                    new DataSet("sometimes", new double[] { 45, 29 }),
+                    new DataSet("never", new double[] { 17, 13 })
+                };
+
+                // collect BarSets into groups
+                var groupLabels = new string[] { "Men", "Women" };
+
+                // create the experimental plottable
+                var plottableThing = new PlottableBar(dataSets.ToArray(), groupLabels);
+
+                // plot the experimental plottable
+                plt.Add(plottableThing);
+                plt.Legend(location: legendLocation.upperRight);
+                plt.Title("How often do you read reviews?");
+                plt.YLabel("Respondents (%)");
+                plt.XTicks(groupLabels);
+                plt.Axis(null, null, 0, null);
+                plt.Grid(enableVertical: false);
+            }
+        }
+
+        public class Bar3Stacked : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Bar 3 experimental";
+            public string description { get; }
+
+            public void Render(Plot plt)
+            {
+                // define values, labels, and style of each bar series
+                var barSetMen = new DataSet("Men", new double[] { 15, 22, 45, 17 });
+                var barSetWomen = new DataSet("Women", new double[] { 37, 21, 29, 13 });
+
+                // collect BarSets into groups
+                var datasets = new DataSet[] { barSetMen, barSetWomen };
+                var groupLabels = new string[] { "always", "regularly", "sometimes", "never" };
+
+                // create the experimental plottable
+                var plottableThing = new PlottableBar(datasets, groupLabels, stacked: true);
+
+                // plot the experimental plottable
+                plt.Add(plottableThing);
+                plt.Legend(location: legendLocation.upperRight);
+                plt.Title("How often do you read reviews?");
+                plt.YLabel("Respondents (%)");
+                plt.XTicks(groupLabels);
+                plt.Axis(null, null, 0, null);
+                plt.Grid(enableVertical: false);
             }
         }
     }
