@@ -14,7 +14,9 @@ namespace ScottPlot.Demo.Experimental
             public void Render(Plot plt)
             {
                 // define values, labels, and style of each bar series
-                var barSetBBR = new DataSet("brainBodyRatio", new double[] { 7, 12, 40, 40, 100, 125, 172, 550, 560, 600, 2496, 2789 });
+                var barSetBBR = new DataSet("brainBodyRatio",
+                    values: new double[] { 7, 12, 40, 40, 100, 125, 172, 550, 560, 600, 2496, 2789 },
+                    errors: new double[] { 1, 2, 4, 9, 15, 37, 45, 67, 123, 234, 321, 567 });
 
                 // collect BarSets into groups
                 var datasets = new DataSet[] { barSetBBR };
