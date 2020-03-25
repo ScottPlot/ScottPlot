@@ -72,5 +72,16 @@ namespace ScottPlot.Config
             x.Zoom(xFrac, centerX);
             y.Zoom(yFrac, centerY);
         }
+
+        public void Reset()
+        {
+            x.min = 0;
+            x.max = 0;
+            x.hasBeenSet = false;
+
+            y.min = 0;
+            y.max = 0;
+            y.hasBeenSet = false;
+        }
     }
 }
