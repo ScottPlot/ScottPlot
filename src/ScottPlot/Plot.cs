@@ -674,6 +674,43 @@ namespace ScottPlot
             return signal;
         }
 
+        /// <summary>
+        /// Create a simple one-series bar plot.
+        /// </summary>
+        /// <returns></returns>
+        public PlottableBar PlotBar(
+            double[] ys,
+            string[] groupLabels = null,
+            double[] yErrors = null,
+            string label = null
+            )
+        {
+            DataSet singleDataSet = new DataSet(label, ys, yErrors);
+            DataSet[] dataSets = new DataSet[] { singleDataSet };
+
+            PlottableBar bar = new PlottableBar(dataSets, groupLabels);
+            Add(bar); // TODO: modify all functions in this class to add plottables like this
+
+            return bar;
+        }
+
+        /// <summary>
+        /// Create a bar plot from multiple data series and groups.
+        /// </summary>
+        /// <returns></returns>
+        public PlottableBar PlotBar(
+            DataSet[] dataSets,
+            string[] groupLabels = null,
+            bool stacked = false,
+            bool horizontal = false
+            )
+        {
+            PlottableBar bar = new PlottableBar(dataSets, groupLabels, stacked: stacked, horizontal: horizontal);
+            Add(bar); // TODO: modify all functions in this class to add plottables like this
+
+            return bar;
+        }
+
         [Obsolete("This type of Bar plot is deprecated. Refer to the ScottPlot cookbook for modern Bar graph examples.")]
         public PlottableBarObsolete PlotBar(
             double[] xs,
@@ -903,6 +940,8 @@ namespace ScottPlot
             settings.axes.Set(x1, x2, y1, y2);
             return settings.axes.limits;
         }
+
+        // TODO: alias Axis() for LRTB labels
 
         public double[] Axis(double[] axisLimits)
         {
