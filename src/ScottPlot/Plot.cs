@@ -237,16 +237,31 @@ namespace ScottPlot
         public void Clear()
         {
             settings.plottables.Clear();
-            settings.axes.x.hasBeenSet = false;
-            settings.axes.y.hasBeenSet = false;
+            settings.axes.Reset();
         }
 
-        public void Clear(Predicate<Plottable> selector = null)
+        public void Clear(Type typeToClear)
         {
-            settings.plottables.RemoveAll(selector);
+            settings.plottables.RemoveAll(x => x.GetType() == typeToClear);
 
             if (settings.plottables.Count == 0)
-                Clear(); // to reset axes
+                settings.axes.Reset();
+        }
+
+        public void Clear(Type[] typesToClear)
+        {
+            if (typesToClear != null)
+                foreach (var typeToClear in typesToClear)
+                    Clear(typeToClear);
+        }
+
+        public void Clear(Predicate<Plottable> plottablesToClear)
+        {
+            if (plottablesToClear != null)
+                settings.plottables.RemoveAll(plottablesToClear);
+
+            if (settings.plottables.Count == 0)
+                settings.axes.Reset();
         }
 
         [Obsolete("This overload is deprecated. Clear plots using a different overload of the Clear() method.")]
@@ -285,8 +300,7 @@ namespace ScottPlot
             for (int i = 0; i < indicesToDelete.Count; i++)
                 settings.plottables.RemoveAt(indicesToDelete[i]);
 
-            settings.axes.x.hasBeenSet = false;
-            settings.axes.y.hasBeenSet = false;
+            settings.axes.Reset();
         }
 
         public PlottableText PlotText(
