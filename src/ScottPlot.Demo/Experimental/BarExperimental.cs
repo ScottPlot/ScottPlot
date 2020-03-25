@@ -33,7 +33,7 @@ namespace ScottPlot.Demo.Experimental
             }
         }
 
-        public class Bar3 : PlotDemo, IPlotDemo
+        public class Bar3MultiStandard : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Bar 3 experimental";
             public string description { get; }
@@ -50,6 +50,39 @@ namespace ScottPlot.Demo.Experimental
 
                 // create the experimental plottable
                 var plottableThing = new PlottableBarExperimental(datasets, groupLabels);
+
+                // plot the experimental plottable
+                plt.Add(plottableThing);
+                plt.Legend(location: legendLocation.upperRight);
+                plt.Title("How often do you read reviews?");
+                plt.YLabel("Respondents (%)");
+                plt.XTicks(groupLabels);
+                plt.Axis(null, null, 0, null);
+                plt.Grid(enableVertical: false);
+            }
+        }
+
+        public class Bar3MultiAlt : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Bar 3 experimental";
+            public string description { get; }
+
+            public void Render(Plot plt)
+            {
+                // define values, labels, and style of each bar series
+                var dataSets = new List<DataSet>
+                {
+                    new DataSet("always", new double[] { 15, 37 }),
+                    new DataSet("regularly", new double[] { 22, 21 }),
+                    new DataSet("sometimes", new double[] { 45, 29 }),
+                    new DataSet("never", new double[] { 17, 13 })
+                };
+
+                // collect BarSets into groups
+                var groupLabels = new string[] { "Men", "Women" };
+
+                // create the experimental plottable
+                var plottableThing = new PlottableBarExperimental(dataSets.ToArray(), groupLabels);
 
                 // plot the experimental plottable
                 plt.Add(plottableThing);
