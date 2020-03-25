@@ -17,15 +17,17 @@ namespace ScottPlot
         public readonly System.Drawing.Pen[] setPens;
         public double errorCapSize;
 
-        private bool stacked;
+        public bool stacked;
+        public bool horizontal;
 
         public PlottableBar(DataSet[] datasets, string[] groupLabels, System.Drawing.Color[] setColors = null, 
-            bool stacked = false, 
+            bool stacked = false, bool horizontal = false,
             double errorLineWidth = 2, double errorCapSize = 4)
         {
             this.datasets = datasets;
             this.groupLabels = groupLabels;
             this.stacked = stacked;
+            this.horizontal = horizontal;
             this.errorCapSize = errorCapSize;
 
             // MUST populate barSetCount and groupCount in constructor
