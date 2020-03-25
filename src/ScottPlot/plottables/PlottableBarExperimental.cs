@@ -15,10 +15,13 @@ namespace ScottPlot
         public readonly System.Drawing.Color[] setColors;
         public readonly System.Drawing.Brush[] setBrushes;
 
-        public PlottableBarExperimental(DataSet[] datasets, string[] groupLabels, System.Drawing.Color[] setColors = null)
+        private bool stacked;
+
+        public PlottableBarExperimental(DataSet[] datasets, string[] groupLabels, System.Drawing.Color[] setColors = null, bool stacked = false)
         {
             this.datasets = datasets;
             this.groupLabels = groupLabels;
+            this.stacked = stacked;
 
             // MUST populate barSetCount and groupCount in constructor
             barSetCount = datasets.Length;
@@ -46,7 +49,7 @@ namespace ScottPlot
                 setBrushes[i] = new System.Drawing.SolidBrush(this.setColors[i]);
         }
 
-        public override AxisLimits2D GetLimits()
+        private (double min, double max) GetLimitsStandard()
         {
             double minValue = datasets[0].values[0];
             double maxValue = datasets[0].values[0];
@@ -60,6 +63,28 @@ namespace ScottPlot
                 }
             }
 
+            return (Math.Min(0, minValue), maxValue);
+        }
+
+        private (double min, double max) GetLimitsStacked()
+        {
+            double maxValue = double.NegativeInfinity;
+
+            for (int groupIndex = 0; groupIndex < groupCount; groupIndex++)
+            {
+                double groupSum = 0;
+                foreach (var barSet in datasets)
+                    groupSum += barSet.values[groupIndex];
+                maxValue = Math.Max(maxValue, groupSum);
+            }
+
+            return (0, maxValue);
+        }
+
+        public override AxisLimits2D GetLimits()
+        {
+            (double minValue, double maxValue) = stacked ? GetLimitsStacked() : GetLimitsStandard();
+
             // define how wide the bar graphs and spaces should be
             double interGroupSpaceFrac = 0.25;
             double barFillGroupFrac = 1 - interGroupSpaceFrac;
@@ -70,8 +95,17 @@ namespace ScottPlot
 
         public override void Render(Settings settings)
         {
+            if (stacked)
+                RenderStacked(settings);
+            else
+                RenderSideBySide(settings);
+        }
+
+        double interGroupSpaceFrac = 0.25;
+
+        public void RenderSideBySide(Settings settings)
+        {
             // define how wide the bar graphs and spaces should be
-            double interGroupSpaceFrac = 0.25;
             double barFillGroupFrac = 1 - interGroupSpaceFrac;
             double barWidthFrac = barFillGroupFrac / barSetCount;
 
@@ -118,6 +152,37 @@ namespace ScottPlot
             }
         }
 
+        public void RenderStacked(Settings settings)
+        {
+            // define how wide the bar graphs and spaces should be
+            double barWidthFrac = 1 - interGroupSpaceFrac;
+
+            for (int groupIndex = 0; groupIndex < groupCount; groupIndex++)
+            {
+                // determine the width of the bar
+                double xOffset = barWidthFrac / 2;
+                double barLeft = groupIndex - xOffset;
+                double barRight = barLeft + barWidthFrac;
+                double barLeftPixel = settings.GetPixelX(barLeft);
+                double barRightPixel = settings.GetPixelX(barRight);
+
+                double yOffset = 0;
+                for (int setIndex = 0; setIndex < barSetCount; setIndex++)
+                {
+                    // determine the height of the bar
+                    double valueY = datasets[setIndex].values[groupIndex];
+                    double barTopPixel = settings.GetPixelY(valueY + yOffset);
+                    double barBotPixel = settings.GetPixelY(yOffset);
+                    yOffset += valueY;
+
+                    // draw the bar rectangle
+                    double barWidthPx = barRightPixel - barLeftPixel;
+                    double barHeightPx = barBotPixel - barTopPixel;
+                    settings.gfxData.FillRectangle(setBrushes[setIndex], (float)barLeftPixel, (float)barTopPixel, (float)barWidthPx, (float)barHeightPx);
+                }
+            }
+        }
+
         public override string ToString()
         {
             return $"PlottableBar with {groupCount} groups and {barSetCount} bars per group";
@@ -133,7 +198,7 @@ namespace ScottPlot
             var items = new List<LegendItem>();
 
             for (int i = 0; i < barSetCount; i++)
-                items.Add(new LegendItem(datasets[i].label, setColors[i]));
+                items.Add(new LegendItem(datasets[i].label, setColors[i], lineWidth: 10, markerShape: MarkerShape.none));
 
             return items.ToArray();
         }
