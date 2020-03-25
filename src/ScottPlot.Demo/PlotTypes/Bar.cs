@@ -9,140 +9,156 @@ namespace ScottPlot.Demo.PlotTypes
         public class Quickstart : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Simple Bar Graph";
-            public string description { get; }
+            public string description { get; } = "To plot a single series of data as a bar graph, send the data directly to the PlotBar() function.";
 
             public void Render(Plot plt)
             {
-                double[] votesPerGroup = new double[] { 315, 3859, 2318, 1521 };
-                string[] groupLabels = new string[] { "flying cars", "self-driving cars", "FAANG broken up", "humans on mars" };
-                plt.Add(new PlottableBar(new DataSet[] { new DataSet("votes", votesPerGroup) }, groupLabels));
+                var votes = new double[] { 33706, 36813, 12496 };
+                var groups = new string[] { "Debian", "SuSE", "Red Hat" };
 
-                plt.Title("What do you want by 2030?");
-                plt.YLabel("number of votes");
-                plt.XTicks(groupLabels);
-                plt.Axis(null, null, 0, null);
+                // create the bar graph
+                plt.PlotBar(votes, groups);
+                plt.XTicks(labels: groups);
+
+                // further improve the style of the plot
+                plt.Title("Favorite Linux Distribution");
+                plt.YLabel("Respondants");
+                plt.Grid(enableVertical: false, lineStyle: LineStyle.Dot);
+                plt.Axis(y1: 0);
                 plt.Ticks(useMultiplierNotation: false);
-                plt.Grid(enableVertical: false);
             }
         }
 
-        public class Bar3Single : PlotDemo, IPlotDemo
+        public class BarAngled : PlotDemo, IPlotDemo
         {
-            public string name { get; } = "Bar 3 experimental";
-            public string description { get; }
+            public string name { get; } = "Bar Graph with Angled Labels";
+            public string description { get; } = "When using a large number of groups, labels can be rotated improve space utilization.";
 
             public void Render(Plot plt)
             {
-                // define values, labels, and style of each bar series
-                var barSetBBR = new DataSet("brainBodyRatio",
-                    values: new double[] { 7, 12, 40, 40, 100, 125, 172, 550, 560, 600, 2496, 2789 },
-                    errors: new double[] { 1, 2, 4, 9, 15, 37, 45, 67, 123, 234, 321, 567 });
+                var values = new double[] { 7, 12, 40, 40,
+                    100, 125, 172, 550, 560, 600, 2496, 2789 };
 
-                // collect BarSets into groups
-                var datasets = new DataSet[] { barSetBBR };
-                var groupLabels = new string[] { "ant", "bird", "mouse", "human", "cat", "dog", "frog", "lion", "elephant", "horse", "shark", "hippo" };
+                var errors = new double[] { 4, 5, 15, 17,
+                    43, 62, 86, 258, 297, 312, 345, 543 };
 
-                // create the experimental plottable
-                var plottableThing = new PlottableBar(datasets, groupLabels);
+                var groups = new string[] { "ant", "bird", "mouse",
+                    "human", "cat", "dog", "frog", "lion", "elephant",
+                    "horse", "shark", "hippo" };
 
-                // plot the experimental plottable
-                plt.Add(plottableThing);
-                plt.Title("Body-to-Brain Mass Ratio");
-                plt.XTicks(groupLabels);
-                plt.Axis(null, null, 0, null);
+                // create the bar graph
+                plt.PlotBar(values, groups, errors);
+                plt.XTicks(labels: groups);
+                plt.Ticks(xTickRotation: 45);
+                plt.Layout(xScaleHeight: 50); // extra padding below the graph
+
+                // further improve the style of the plot
+                plt.Title("Body/Brain Mass Ratio");
+                plt.Grid(enableVertical: false, lineStyle: LineStyle.Dot);
+                plt.Axis(y1: 0);
                 plt.Ticks(useMultiplierNotation: false);
-                plt.Grid(enableVertical: false);
             }
         }
 
-        public class Bar3MultiStandard : PlotDemo, IPlotDemo
+        public class BarMulti : PlotDemo, IPlotDemo
         {
-            public string name { get; } = "Bar 3 experimental";
-            public string description { get; }
+            public string name { get; } = "Multi-Series Bar Graphs";
+            public string description { get; } = "Bar graphs with multiple bar series can be displayed, organized into groups. Building a DataSet array and send it to the PlotBar() method.";
 
             public void Render(Plot plt)
             {
-                // define values, labels, and style of each bar series
-                var barSetMen = new DataSet("Men", new double[] { 15, 22, 45, 17 }, new double[] { 6, 3, 8, 4 });
-                var barSetWomen = new DataSet("Women", new double[] { 37, 21, 29, 13 }, new double[] { 7, 5, 6, 3 });
+                // define series-level data
+                var barSetMen = new DataSet(label: "Men",
+                    values: new double[] { 15, 22, 45, 17 },
+                    errors: new double[] { 6, 3, 8, 4 });
 
-                // collect BarSets into groups
-                var datasets = new DataSet[] { barSetMen, barSetWomen };
-                var groupLabels = new string[] { "always", "regularly", "sometimes", "never" };
+                var barSetWomen = new DataSet(label: "Women",
+                    values: new double[] { 37, 21, 29, 13 },
+                    errors: new double[] { 7, 5, 6, 3 });
 
-                // create the experimental plottable
-                var plottableThing = new PlottableBar(datasets, groupLabels);
+                // define group-level data
+                var dataSets = new DataSet[] { barSetMen, barSetWomen };
+                var groupLabels = new string[] {
+                    "Always", "Regularly", "Sometimes", "Never" };
+
+                // create the bar graph
+                plt.PlotBar(dataSets, groupLabels);
+                plt.XTicks(groupLabels);
 
                 // plot the experimental plottable
-                plt.Add(plottableThing);
-                plt.Legend(location: legendLocation.upperRight);
                 plt.Title("How often do you read reviews?");
-                plt.YLabel("Respondents (%)");
-                plt.XTicks(groupLabels);
-                plt.Axis(null, null, 0, null);
-                plt.Grid(enableVertical: false);
+                plt.YLabel("Respondents");
+                plt.Axis(y1: 0);
+                plt.Grid(enableVertical: false, lineStyle: LineStyle.Dot);
+                plt.Legend(location: legendLocation.upperRight);
             }
         }
 
-        public class Bar3MultiAlt : PlotDemo, IPlotDemo
+        public class BarStacked : PlotDemo, IPlotDemo
         {
-            public string name { get; } = "Bar 3 experimental";
-            public string description { get; }
+            public string name { get; } = "Stacked Bar Graphs";
+            public string description { get; } = "Use the 'stacked' argument to display stacked bar graphs.";
 
             public void Render(Plot plt)
             {
-                // define values, labels, and style of each bar series
-                var dataSets = new List<DataSet>
-                {
-                    new DataSet("always", new double[] { 15, 37 }),
-                    new DataSet("regularly", new double[] { 22, 21 }),
-                    new DataSet("sometimes", new double[] { 45, 29 }),
-                    new DataSet("never", new double[] { 17, 13 })
-                };
+                // define series-level data
+                var barSetMen = new DataSet(label: "Men",
+                    values: new double[] { 15, 22, 45, 17 },
+                    errors: new double[] { 6, 3, 8, 4 });
 
-                // collect BarSets into groups
-                var groupLabels = new string[] { "Men", "Women" };
+                var barSetWomen = new DataSet(label: "Women",
+                    values: new double[] { 37, 21, 29, 13 },
+                    errors: new double[] { 7, 5, 6, 3 });
 
-                // create the experimental plottable
-                var plottableThing = new PlottableBar(dataSets.ToArray(), groupLabels);
+                // define group-level data
+                var dataSets = new DataSet[] { barSetMen, barSetWomen };
+                var groupLabels = new string[] {
+                    "Always", "Regularly", "Sometimes", "Never" };
+
+                // create the bar graph
+                plt.PlotBar(dataSets, groupLabels, stacked: true);
+                plt.XTicks(groupLabels);
 
                 // plot the experimental plottable
-                plt.Add(plottableThing);
-                plt.Legend(location: legendLocation.upperRight);
                 plt.Title("How often do you read reviews?");
-                plt.YLabel("Respondents (%)");
-                plt.XTicks(groupLabels);
-                plt.Axis(null, null, 0, null);
-                plt.Grid(enableVertical: false);
+                plt.YLabel("Respondents");
+                plt.Axis(y1: 0);
+                plt.Grid(enableVertical: false, lineStyle: LineStyle.Dot);
+                plt.Legend(location: legendLocation.upperRight);
             }
         }
 
-        public class Bar3Stacked : PlotDemo, IPlotDemo
+        public class BarHorizontal : PlotDemo, IPlotDemo
         {
-            public string name { get; } = "Bar 3 experimental";
-            public string description { get; }
+            public string name { get; } = "Horizontal Bar Graph";
+            public string description { get; } = "Use the 'horizontal' argumen to display bar graphs horizontally.";
 
             public void Render(Plot plt)
             {
-                // define values, labels, and style of each bar series
-                var barSetMen = new DataSet("Men", new double[] { 15, 22, 45, 17 });
-                var barSetWomen = new DataSet("Women", new double[] { 37, 21, 29, 13 });
+                // define series-level data
+                var barSetMen = new DataSet(label: "Men",
+                    values: new double[] { 15, 22, 45, 17 },
+                    errors: new double[] { 6, 3, 8, 4 });
 
-                // collect BarSets into groups
-                var datasets = new DataSet[] { barSetMen, barSetWomen };
-                var groupLabels = new string[] { "always", "regularly", "sometimes", "never" };
+                var barSetWomen = new DataSet(label: "Women",
+                    values: new double[] { 37, 21, 29, 13 },
+                    errors: new double[] { 7, 5, 6, 3 });
 
-                // create the experimental plottable
-                var plottableThing = new PlottableBar(datasets, groupLabels, stacked: true);
+                // define group-level data
+                var dataSets = new DataSet[] { barSetMen, barSetWomen };
+                var groupLabels = new string[] {
+                    "Always", "Regularly", "Sometimes", "Never" };
+
+                // create the bar graph
+                plt.PlotBar(dataSets, groupLabels, horizontal: true);
+                plt.XTicks(groupLabels);
 
                 // plot the experimental plottable
-                plt.Add(plottableThing);
-                plt.Legend(location: legendLocation.upperRight);
                 plt.Title("How often do you read reviews?");
-                plt.YLabel("Respondents (%)");
-                plt.XTicks(groupLabels);
-                plt.Axis(null, null, 0, null);
-                plt.Grid(enableVertical: false);
+                plt.YLabel("Respondents");
+                plt.Axis(y1: 0);
+                plt.Grid(enableHorizontal: false, lineStyle: LineStyle.Dot);
+                plt.Legend(location: legendLocation.upperRight);
             }
         }
     }
