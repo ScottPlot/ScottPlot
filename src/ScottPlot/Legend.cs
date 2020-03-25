@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace ScottPlot
 {
+    // TODO: capitalize these in 4.1
     public enum legendLocation
     {
         none,
@@ -21,6 +22,7 @@ namespace ScottPlot
         lowerCenter,
     }
 
+    // TODO: capitalize these in 4.1
     public enum shadowDirection
     {
         none,
