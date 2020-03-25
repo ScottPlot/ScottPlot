@@ -9,13 +9,18 @@ namespace ScottPlot
     /// </summary>
     public class DataSet
     {
-        public double[] values;
         public string label;
+        public double[] values;
+        public double[] errors;
 
-        public DataSet(double[] values, string label = null)
+        public DataSet(string label, double[] values, double[] errors = null)
         {
             this.values = values;
             this.label = label;
+            this.errors = errors;
+
+            if (errors != null && errors.Length != values.Length)
+                throw new ArgumentException("values and errors must have identical length");
         }
     }
 }
