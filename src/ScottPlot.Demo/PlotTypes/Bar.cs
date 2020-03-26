@@ -116,7 +116,7 @@ namespace ScottPlot.Demo.PlotTypes
                     "Always", "Regularly", "Sometimes", "Never" };
 
                 // create the bar graph
-                plt.PlotBar(dataSets, groupLabels, stacked: true);
+                plt.PlotBar(dataSets, groupLabels, stacked: true, outlineWidth: 1);
                 plt.XTicks(groupLabels);
 
                 // plot the experimental plottable
