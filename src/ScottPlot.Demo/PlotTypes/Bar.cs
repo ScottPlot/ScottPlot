@@ -155,8 +155,8 @@ namespace ScottPlot.Demo.PlotTypes
 
                 // plot the experimental plottable
                 plt.Title("How often do you read reviews?");
-                plt.YLabel("Respondents");
-                plt.Axis(y1: 0);
+                plt.XLabel("Respondents");
+                plt.Axis(x1: 0);
                 plt.Grid(enableHorizontal: false, lineStyle: LineStyle.Dot);
                 plt.Legend(location: legendLocation.upperRight);
             }
