@@ -100,6 +100,31 @@ namespace ScottPlotTests.PlotTypes
         }
 
         [Test]
+        public void Test_barMultipleSets_Horizontal_Grouped()
+        {
+            // series-level variables
+            var votesWork = new ScottPlot.DataSet("Work", new double[] { 33706, 36813, 12496 }, new double[] { 3000, 2000, 1000 });
+            var votesHobby = new ScottPlot.DataSet("Hobby", new double[] { 34930, 33400, 12843 }, new double[] { 3000, 2000, 1000 });
+
+            // group-level variables
+            var groups = new string[] { "Debian", "SuSE", "Red Hat" };
+            ScottPlot.DataSet[] dataSets = new ScottPlot.DataSet[] { votesWork, votesHobby };
+
+            // make the plot
+            var plt = new ScottPlot.Plot(400, 300);
+            plt.PlotBar(dataSets, groups, horizontal: true, outlineWidth: 1);
+
+            plt.Title("Favorite Linux Distribution");
+            plt.XLabel("Respondants");
+            plt.Grid(enableHorizontal: false);
+            plt.Ticks(useMultiplierNotation: false);
+            plt.YTicks(labels: groups);
+            plt.Legend(location: ScottPlot.legendLocation.upperRight);
+
+            TestTools.SaveFig(plt);
+        }
+
+        [Test]
         public void Test_barMultipleSets_valuesWithError()
         {
             // series-level variables

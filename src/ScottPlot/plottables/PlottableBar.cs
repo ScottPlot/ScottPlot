@@ -129,7 +129,7 @@ namespace ScottPlot
                 if (stacked)
                     RenderHorizontalStacked(settings);
                 else
-                    //RenderVerticalGrouped(settings);
+                    RenderHorizontalGrouped(settings);
                     return;
             }
             else
@@ -206,6 +206,76 @@ namespace ScottPlot
                         {
                             settings.gfxData.DrawLine(setErrorPens[setIndex], (float)(barCenterPixel - errorCapSize), (float)errorPixelTop, (float)(barCenterPixel + errorCapSize), (float)errorPixelTop);
                             settings.gfxData.DrawLine(setErrorPens[setIndex], (float)(barCenterPixel - errorCapSize), (float)errorPixelBot, (float)(barCenterPixel + errorCapSize), (float)errorPixelBot);
+                        }
+                    }
+                }
+            }
+        }
+
+        public void RenderHorizontalGrouped(Settings settings)
+        {
+            // define how wide the bar graphs and spaces should be
+            double barGroupThickness = 1 - interGroupSpaceFrac;
+            double barThickness = barGroupThickness / barSetCount;
+
+            for (int setIndex = 0; setIndex < barSetCount; setIndex++)
+            {
+                // set bar style for this whole series
+                double thisSetOffset = setIndex * barThickness;
+
+                for (int groupIndex = 0; groupIndex < groupCount; groupIndex++)
+                {
+                    // draw the bar for every group
+
+                    // determine the width and horizontal offset of this bar
+                    double fixedOffset = (barThickness / 2) * barSetCount;
+                    double thisGroupOffset = groupIndex;
+                    double barEdge1 = thisGroupOffset + thisSetOffset - fixedOffset;
+                    double barEdge2 = barEdge1 + barThickness;
+                    double barEdgePx1 = settings.GetPixelY(barEdge1);
+                    double barEdgePx2 = settings.GetPixelY(barEdge2);
+                    double barThicknessPx = barEdgePx1 - barEdgePx2;
+                    double barCenterPx = (barEdgePx1 + barEdgePx2) / 2;
+
+                    // determine the height of this bar
+                    double value = datasets[setIndex].values[groupIndex];
+                    double valueMax, valueMin;
+                    if (value > 0)
+                    {
+                        valueMax = value;
+                        valueMin = 0;
+                    }
+                    else
+                    {
+                        valueMax = 0;
+                        valueMin = value;
+                    }
+
+                    // convert coordinates to pixels and draw the bar
+                    double barValuePixel = settings.GetPixelX(valueMax);
+                    double barBasePixel = settings.GetPixelX(valueMin);
+                    double barValuePx = barValuePixel - barBasePixel;
+
+                    // draw the rectangle
+                    var rect = new System.Drawing.RectangleF((float)barBasePixel, (float)barEdgePx2, (float)barValuePx, (float)barThicknessPx);
+                    settings.gfxData.FillRectangle(setBrushes[setIndex], rect);
+                    if (outlineWidth > 0)
+                        settings.gfxData.DrawRectangle(setOutlinePens[setIndex], rect.X, rect.Y, rect.Width, rect.Height);
+
+                    // draw the errorbar
+                    if (datasets[setIndex].errors != null)
+                    {
+
+                        double valueErrorMax = value + datasets[setIndex].errors[groupIndex];
+                        double valueErrorMin = value - datasets[setIndex].errors[groupIndex];
+                        double valueErrorMaxPx = settings.GetPixelX(valueErrorMax);
+                        double valueErrorMinPx = settings.GetPixelX(valueErrorMin);
+                        settings.gfxData.DrawLine(setErrorPens[setIndex], (float)valueErrorMinPx, (float)barCenterPx, (float)valueErrorMaxPx, (float)barCenterPx);
+                        if (errorCapSize > 0)
+                        {
+                            //settings.gfxData.DrawLine(setErrorPens[setIndex], (float)(barCenterPixel - errorCapSize), (float)errorPixelBot, (float)(barCenterPixel + errorCapSize), (float)errorPixelBot);
+                            settings.gfxData.DrawLine(setErrorPens[setIndex], (float)valueErrorMinPx, (float)(barCenterPx - errorCapSize), (float)valueErrorMinPx, (float)(barCenterPx + errorCapSize));
+                            settings.gfxData.DrawLine(setErrorPens[setIndex], (float)valueErrorMaxPx, (float)(barCenterPx - errorCapSize), (float)valueErrorMaxPx, (float)(barCenterPx + errorCapSize));
                         }
                     }
                 }
