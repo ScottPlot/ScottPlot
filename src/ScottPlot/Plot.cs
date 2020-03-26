@@ -677,18 +677,22 @@ namespace ScottPlot
         /// <summary>
         /// Create a simple one-series bar plot.
         /// </summary>
-        /// <returns></returns>
         public PlottableBar PlotBar(
             double[] ys,
             string[] groupLabels = null,
             double[] yErrors = null,
-            string label = null
+            string label = null,
+            bool stacked = false,
+            bool horizontal = false,
+            double outlineWidth = 0,
+            double errorLineWidth = 1,
+            double errorCapSize = 4
             )
         {
             DataSet singleDataSet = new DataSet(label, ys, yErrors);
             DataSet[] dataSets = new DataSet[] { singleDataSet };
 
-            PlottableBar bar = new PlottableBar(dataSets, groupLabels);
+            PlottableBar bar = new PlottableBar(dataSets, groupLabels, stacked, horizontal, outlineWidth, errorLineWidth, errorCapSize);
             Add(bar); // TODO: modify all functions in this class to add plottables like this
 
             return bar;
@@ -697,15 +701,17 @@ namespace ScottPlot
         /// <summary>
         /// Create a bar plot from multiple data series and groups.
         /// </summary>
-        /// <returns></returns>
         public PlottableBar PlotBar(
             DataSet[] dataSets,
             string[] groupLabels = null,
             bool stacked = false,
-            bool horizontal = false
+            bool horizontal = false,
+            double outlineWidth = 0,
+            double errorLineWidth = 1,
+            double errorCapSize = 4
             )
         {
-            PlottableBar bar = new PlottableBar(dataSets, groupLabels, stacked: stacked, horizontal: horizontal);
+            PlottableBar bar = new PlottableBar(dataSets, groupLabels, stacked, horizontal, outlineWidth, errorLineWidth, errorCapSize);
             Add(bar); // TODO: modify all functions in this class to add plottables like this
 
             return bar;

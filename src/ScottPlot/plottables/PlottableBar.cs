@@ -14,20 +14,26 @@ namespace ScottPlot
 
         public readonly System.Drawing.Color[] setColors;
         public readonly System.Drawing.Brush[] setBrushes;
-        public readonly System.Drawing.Pen[] setPens;
-        public double errorCapSize;
+        public readonly System.Drawing.Pen[] setErrorPens;
+        public readonly System.Drawing.Pen[] setOutlinePens;
 
         public bool stacked;
         public bool horizontal;
+        public double outlineWidth;
+        public double errorLineWidth;
+        public double errorCapSize;
 
-        public PlottableBar(DataSet[] datasets, string[] groupLabels, System.Drawing.Color[] setColors = null, 
-            bool stacked = false, bool horizontal = false,
-            double errorLineWidth = 2, double errorCapSize = 4)
+        public PlottableBar(DataSet[] datasets, string[] groupLabels, bool stacked, bool horizontal, 
+            double outlineWidth, double errorLineWidth, double errorCapSize,
+            System.Drawing.Color[] setColors = null)
         {
             this.datasets = datasets;
             this.groupLabels = groupLabels;
             this.stacked = stacked;
             this.horizontal = horizontal;
+
+            this.errorLineWidth = errorLineWidth;
+            this.outlineWidth = outlineWidth;
             this.errorCapSize = errorCapSize;
 
             // MUST populate barSetCount and groupCount in constructor
@@ -52,11 +58,13 @@ namespace ScottPlot
             }
 
             setBrushes = new System.Drawing.Brush[barSetCount];
-            setPens = new System.Drawing.Pen[barSetCount];
+            setErrorPens = new System.Drawing.Pen[barSetCount];
+            setOutlinePens = new System.Drawing.Pen[barSetCount];
             for (int i = 0; i < barSetCount; i++)
             {
                 setBrushes[i] = new System.Drawing.SolidBrush(this.setColors[i]);
-                setPens[i] = new System.Drawing.Pen(this.setColors[i], (float)errorLineWidth);
+                setErrorPens[i] = new System.Drawing.Pen(System.Drawing.Color.Black, (float)errorLineWidth);
+                setOutlinePens[i] = new System.Drawing.Pen(System.Drawing.Color.Black, (float)outlineWidth);
             }
         }
 
@@ -167,7 +175,11 @@ namespace ScottPlot
                     double barWidthPx = barRightPixel - barLeftPixel;
                     double barHeightPx = barBotPixel - barTopPixel;
 
-                    settings.gfxData.FillRectangle(setBrushes[setIndex], (float)barLeftPixel, (float)barTopPixel, (float)barWidthPx, (float)barHeightPx);
+
+                    var rect = new System.Drawing.RectangleF((float)barLeftPixel, (float)barTopPixel, (float)barWidthPx, (float)barHeightPx);
+                    settings.gfxData.FillRectangle(setBrushes[setIndex], rect);
+                    if (outlineWidth > 0)
+                        settings.gfxData.DrawRectangle(setOutlinePens[setIndex], rect.X, rect.Y, rect.Width, rect.Height);
 
                     // draw the errorbar
                     if (datasets[setIndex].errors != null)
@@ -176,11 +188,11 @@ namespace ScottPlot
                         double valueErrorBot = value - datasets[setIndex].errors[groupIndex];
                         double errorPixelTop = settings.GetPixelY(valueErrorTop);
                         double errorPixelBot = settings.GetPixelY(valueErrorBot);
-                        settings.gfxData.DrawLine(setPens[setIndex], (float)barCenterPixel, (float)errorPixelTop, (float)barCenterPixel, (float)errorPixelBot);
+                        settings.gfxData.DrawLine(setErrorPens[setIndex], (float)barCenterPixel, (float)errorPixelTop, (float)barCenterPixel, (float)errorPixelBot);
                         if (errorCapSize > 0)
                         {
-                            settings.gfxData.DrawLine(setPens[setIndex], (float)(barCenterPixel - errorCapSize), (float)errorPixelTop, (float)(barCenterPixel + errorCapSize), (float)errorPixelTop);
-                            settings.gfxData.DrawLine(setPens[setIndex], (float)(barCenterPixel - errorCapSize), (float)errorPixelBot, (float)(barCenterPixel + errorCapSize), (float)errorPixelBot);
+                            settings.gfxData.DrawLine(setErrorPens[setIndex], (float)(barCenterPixel - errorCapSize), (float)errorPixelTop, (float)(barCenterPixel + errorCapSize), (float)errorPixelTop);
+                            settings.gfxData.DrawLine(setErrorPens[setIndex], (float)(barCenterPixel - errorCapSize), (float)errorPixelBot, (float)(barCenterPixel + errorCapSize), (float)errorPixelBot);
                         }
                     }
                 }
@@ -213,7 +225,11 @@ namespace ScottPlot
                     // draw the bar rectangle
                     double barWidthPx = barRightPixel - barLeftPixel;
                     double barHeightPx = barBotPixel - barTopPixel;
-                    settings.gfxData.FillRectangle(setBrushes[setIndex], (float)barLeftPixel, (float)barTopPixel, (float)barWidthPx, (float)barHeightPx);
+
+                    var rect = new System.Drawing.RectangleF((float)barLeftPixel, (float)barTopPixel, (float)barWidthPx, (float)barHeightPx);
+                    settings.gfxData.FillRectangle(setBrushes[setIndex], rect);
+                    if (outlineWidth > 0)
+                        settings.gfxData.DrawRectangle(setOutlinePens[setIndex], rect.X, rect.Y, rect.Width, rect.Height);
                 }
             }
         }

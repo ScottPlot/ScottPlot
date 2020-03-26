@@ -47,7 +47,7 @@ namespace ScottPlot.Demo.PlotTypes
                     "horse", "shark", "hippo" };
 
                 // create the bar graph
-                plt.PlotBar(values, groups, errors);
+                plt.PlotBar(values, groups, errors, outlineWidth: 1);
                 plt.XTicks(labels: groups);
                 plt.Ticks(xTickRotation: 45);
                 plt.Layout(xScaleHeight: 50); // extra padding below the graph
@@ -82,7 +82,7 @@ namespace ScottPlot.Demo.PlotTypes
                     "Always", "Regularly", "Sometimes", "Never" };
 
                 // create the bar graph
-                plt.PlotBar(dataSets, groupLabels);
+                plt.PlotBar(dataSets, groupLabels, outlineWidth: 1);
                 plt.XTicks(groupLabels);
 
                 // plot the experimental plottable
@@ -150,7 +150,7 @@ namespace ScottPlot.Demo.PlotTypes
                     "Always", "Regularly", "Sometimes", "Never" };
 
                 // create the bar graph
-                plt.PlotBar(dataSets, groupLabels, horizontal: true);
+                plt.PlotBar(dataSets, groupLabels, horizontal: true, outlineWidth: 1);
                 plt.XTicks(groupLabels);
 
                 // plot the experimental plottable

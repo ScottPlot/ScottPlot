@@ -10,12 +10,12 @@ using System.Diagnostics;
 
 namespace ScottPlot
 {
-    public class Tools
+    public static class Tools
     {
-        static Random rand = new Random();
-
-        public static Color GetRandomColor()
+        public static Color GetRandomColor(Random rand = null)
         {
+            if (rand is null)
+                rand = new Random();
             Color randomColor = Color.FromArgb(rand.Next(256), rand.Next(256), rand.Next(256));
             return randomColor;
         }
@@ -23,6 +23,16 @@ namespace ScottPlot
         public static Brush GetRandomBrush()
         {
             return new SolidBrush(GetRandomColor());
+        }
+
+        public static Color Blend(this Color colorA, Color colorB, double fractionA)
+        {
+            fractionA = Math.Max(fractionA, 0);
+            fractionA = Math.Min(fractionA, 1);
+            byte r = (byte)((colorA.R * fractionA) + colorB.R * (1 - fractionA));
+            byte g = (byte)((colorA.G * fractionA) + colorB.G * (1 - fractionA));
+            byte b = (byte)((colorA.B * fractionA) + colorB.B * (1 - fractionA));
+            return Color.FromArgb(r, g, b);
         }
 
         public static string GetVersionString(bool justThreeDigits = true)
