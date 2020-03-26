@@ -23,7 +23,7 @@ namespace ScottPlot
         public double errorLineWidth;
         public double errorCapSize;
 
-        public PlottableBar(DataSet[] datasets, string[] groupLabels, bool stacked, bool horizontal, 
+        public PlottableBar(DataSet[] datasets, string[] groupLabels, bool stacked, bool horizontal,
             double outlineWidth, double errorLineWidth, double errorCapSize,
             System.Drawing.Color[] setColors = null)
         {
@@ -112,25 +112,38 @@ namespace ScottPlot
         {
             (double minValue, double maxValue) = stacked ? GetLimitsStacked() : GetLimitsStandard();
 
-            // define how wide the bar graphs and spaces should be
             double interGroupSpaceFrac = 0.25;
             double barFillGroupFrac = 1 - interGroupSpaceFrac;
             double sidePadding = barFillGroupFrac / 2;
 
-            return new AxisLimits2D(-sidePadding, groupCount - 1 + sidePadding, minValue, maxValue);
+            if (horizontal)
+                return new AxisLimits2D(minValue, maxValue, -sidePadding, groupCount - 1 + sidePadding);
+            else
+                return new AxisLimits2D(-sidePadding, groupCount - 1 + sidePadding, minValue, maxValue);
         }
 
         public override void Render(Settings settings)
         {
-            if (stacked)
-                RenderStacked(settings);
+            if (horizontal)
+            {
+                if (stacked)
+                    RenderHorizontalStacked(settings);
+                else
+                    //RenderVerticalGrouped(settings);
+                    return;
+            }
             else
-                RenderSideBySide(settings);
+            {
+                if (stacked)
+                    RenderVerticalStacked(settings);
+                else
+                    RenderVerticalGrouped(settings);
+            }
         }
 
         double interGroupSpaceFrac = 0.25;
 
-        public void RenderSideBySide(Settings settings)
+        public void RenderVerticalGrouped(Settings settings)
         {
             // define how wide the bar graphs and spaces should be
             double barFillGroupFrac = 1 - interGroupSpaceFrac;
@@ -199,7 +212,7 @@ namespace ScottPlot
             }
         }
 
-        public void RenderStacked(Settings settings)
+        public void RenderVerticalStacked(Settings settings)
         {
             // define how wide the bar graphs and spaces should be
             double barWidthFrac = 1 - interGroupSpaceFrac;
@@ -217,16 +230,49 @@ namespace ScottPlot
                 for (int setIndex = 0; setIndex < barSetCount; setIndex++)
                 {
                     // determine the height of the bar
-                    double valueY = datasets[setIndex].values[groupIndex];
-                    double barTopPixel = settings.GetPixelY(valueY + yOffset);
+                    double value = datasets[setIndex].values[groupIndex];
+                    double barTopPixel = settings.GetPixelY(value + yOffset);
                     double barBotPixel = settings.GetPixelY(yOffset);
-                    yOffset += valueY;
+                    yOffset += value;
 
                     // draw the bar rectangle
                     double barWidthPx = barRightPixel - barLeftPixel;
                     double barHeightPx = barBotPixel - barTopPixel;
 
                     var rect = new System.Drawing.RectangleF((float)barLeftPixel, (float)barTopPixel, (float)barWidthPx, (float)barHeightPx);
+                    settings.gfxData.FillRectangle(setBrushes[setIndex], rect);
+                    if (outlineWidth > 0)
+                        settings.gfxData.DrawRectangle(setOutlinePens[setIndex], rect.X, rect.Y, rect.Width, rect.Height);
+                }
+            }
+        }
+
+        public void RenderHorizontalStacked(Settings settings)
+        {
+            // define how wide the bar graphs and spaces should be
+            double groupThicknessFrac = 1 - interGroupSpaceFrac;
+            double groupOffset = groupThicknessFrac / 2;
+
+            for (int groupIndex = 0; groupIndex < groupCount; groupIndex++)
+            {
+                // determine the width of the bar
+                double thisGroupEdge1 = groupIndex - groupOffset;
+                double thisGroupEdge2 = thisGroupEdge1 + groupThicknessFrac;
+                double thisGroupPx1 = settings.GetPixelY(thisGroupEdge1);
+                double thisGroupPx2 = settings.GetPixelY(thisGroupEdge2);
+                double thisBarThickness = thisGroupPx1 - thisGroupPx2;
+
+                double startingValue = 0;
+                for (int setIndex = 0; setIndex < barSetCount; setIndex++)
+                {
+                    // determine the height of the bar
+                    double value = datasets[setIndex].values[groupIndex];
+                    double thisSetPx2 = settings.GetPixelX(value + startingValue);
+                    double thisSetPx1 = settings.GetPixelX(startingValue);
+                    double thisBarValuePx = thisSetPx2 - thisSetPx1;
+                    startingValue += value;
+
+                    var rect = new System.Drawing.RectangleF((float)thisSetPx1, (float)thisGroupPx2, (float)thisBarValuePx, (float)thisBarThickness);
                     settings.gfxData.FillRectangle(setBrushes[setIndex], rect);
                     if (outlineWidth > 0)
                         settings.gfxData.DrawRectangle(setOutlinePens[setIndex], rect.X, rect.Y, rect.Width, rect.Height);

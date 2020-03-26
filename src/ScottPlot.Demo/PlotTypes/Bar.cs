@@ -151,7 +151,7 @@ namespace ScottPlot.Demo.PlotTypes
 
                 // create the bar graph
                 plt.PlotBar(dataSets, groupLabels, horizontal: true, outlineWidth: 1);
-                plt.XTicks(groupLabels);
+                plt.YTicks(groupLabels);
 
                 // plot the experimental plottable
                 plt.Title("How often do you read reviews?");
