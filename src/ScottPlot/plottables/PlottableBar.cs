@@ -1,373 +1,147 @@
-﻿using ScottPlot.Config;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using System.Drawing;
+using ScottPlot.Config;
 
 namespace ScottPlot
 {
     public class PlottableBar : Plottable
     {
-        public readonly DataSet[] datasets;
-        public readonly string[] groupLabels;
-        public readonly int groupCount;
-        public readonly int barSetCount;
+        public double[] xs;
+        public double[] ys;
+        public double[] yErr;
 
-        public readonly System.Drawing.Color[] setColors;
-        public readonly System.Drawing.Brush[] setBrushes;
-        public readonly System.Drawing.Pen[] setErrorPens;
-        public readonly System.Drawing.Pen[] setOutlinePens;
+        public LineStyle lineStyle;
+        public Color color;
+        public string label;
 
-        public bool stacked;
-        public bool horizontal;
-        public double outlineWidth;
-        public double errorLineWidth;
-        public double errorCapSize;
+        private float errorLineWidth;
+        private float errorCapSize;
+        private float barWidth;
+        private float baseline = 0;
+        private double xOffset;
+        private Pen pen;
+        private Brush brush;
 
-        public PlottableBar(DataSet[] datasets, string[] groupLabels, bool stacked, bool horizontal,
-            double outlineWidth, double errorLineWidth, double errorCapSize,
-            System.Drawing.Color[] setColors = null)
+        public PlottableBar(double[] xs, double[] ys, double barWidth, double xOffset, Color color, string label, 
+            double[] yErr, double errorLineWidth = 1, double errorCapSize = 3)
         {
-            this.datasets = datasets;
-            this.groupLabels = groupLabels;
-            this.stacked = stacked;
-            this.horizontal = horizontal;
+            if ((xs == null) || (ys == null))
+                throw new Exception("X and Y data cannot be null");
+            if (xs.Length != ys.Length)
+                throw new ArgumentException("X positions must be the same length as Y values");
+            if (yErr != null && yErr.Length != xs.Length)
+                throw new ArgumentException("Errorbar values must be the same length as Y values");
 
-            this.errorLineWidth = errorLineWidth;
-            this.outlineWidth = outlineWidth;
-            this.errorCapSize = errorCapSize;
+            if (yErr != null)
+                for (int i = 0; i < yErr.Length; i++)
+                    if (yErr[i] < 0)
+                        yErr[i] = -yErr[i];
 
-            // MUST populate barSetCount and groupCount in constructor
-            barSetCount = datasets.Length;
-            foreach (DataSet barSet in datasets)
-                groupCount = Math.Max(groupCount, barSet.values.Length);
+            this.xs = xs;
+            this.ys = ys;
+            this.yErr = yErr;
+            this.barWidth = (float)barWidth;
+            this.errorLineWidth = (float)errorLineWidth;
+            this.errorCapSize = (float)errorCapSize;
+            this.color = color;
+            this.label = label;
+            this.xOffset = xOffset;
 
-            if (groupLabels.Length != groupCount)
-                throw new ArgumentException("groupLabels must be same number of elements as the largest barSet values");
-
-            if (setColors is null)
+            pen = new Pen(color, (float)errorLineWidth)
             {
-                this.setColors = new System.Drawing.Color[barSetCount];
-                for (int i = 0; i < barSetCount; i++)
-                    this.setColors[i] = new ScottPlot.Config.Colors().GetColor(i);
-            }
-            else
-            {
-                if (setColors.Length != barSetCount)
-                    throw new ArgumentException("groupColors must be same number of elements as the largest barSet values");
-                this.setColors = setColors;
-            }
+                // this prevents sharp corners
+                StartCap = System.Drawing.Drawing2D.LineCap.Round,
+                EndCap = System.Drawing.Drawing2D.LineCap.Round,
+                LineJoin = System.Drawing.Drawing2D.LineJoin.Round
+            };
 
-            setBrushes = new System.Drawing.Brush[barSetCount];
-            setErrorPens = new System.Drawing.Pen[barSetCount];
-            setOutlinePens = new System.Drawing.Pen[barSetCount];
-            for (int i = 0; i < barSetCount; i++)
-            {
-                setBrushes[i] = new System.Drawing.SolidBrush(this.setColors[i]);
-                setErrorPens[i] = new System.Drawing.Pen(System.Drawing.Color.Black, (float)errorLineWidth);
-                setOutlinePens[i] = new System.Drawing.Pen(System.Drawing.Color.Black, (float)outlineWidth);
-            }
-        }
-
-        private (double min, double max) GetLimitsStandard()
-        {
-            double minValue = datasets[0].values[0];
-            double maxValue = datasets[0].values[0];
-
-            foreach (var barSet in datasets)
-            {
-                for (int valueIndex = 0; valueIndex < barSet.values.Length; valueIndex++)
-                {
-                    if (barSet.errors is null)
-                    {
-                        minValue = Math.Min(minValue, barSet.values[valueIndex]);
-                        maxValue = Math.Max(maxValue, barSet.values[valueIndex]);
-                    }
-                    else
-                    {
-                        minValue = Math.Min(minValue, barSet.values[valueIndex] - barSet.errors[valueIndex]);
-                        maxValue = Math.Max(maxValue, barSet.values[valueIndex] + barSet.errors[valueIndex]);
-                    }
-                }
-            }
-
-            return (Math.Min(0, minValue), maxValue);
-        }
-
-        private (double min, double max) GetLimitsStacked()
-        {
-            double maxValue = double.NegativeInfinity;
-
-            for (int groupIndex = 0; groupIndex < groupCount; groupIndex++)
-            {
-                double groupSum = 0;
-                foreach (var barSet in datasets)
-                    groupSum += barSet.values[groupIndex];
-                maxValue = Math.Max(maxValue, groupSum);
-            }
-
-            return (0, maxValue);
+            brush = new SolidBrush(color);
         }
 
         public override AxisLimits2D GetLimits()
         {
-            (double minValue, double maxValue) = stacked ? GetLimitsStacked() : GetLimitsStandard();
+            double[] limits = new double[4];
+            limits[0] = xs.Min() - barWidth / 2;
+            limits[1] = xs.Max() + barWidth / 2;
+            limits[2] = ys.Min();
+            limits[3] = ys.Max();
 
-            double interGroupSpaceFrac = 0.25;
-            double barFillGroupFrac = 1 - interGroupSpaceFrac;
-            double sidePadding = barFillGroupFrac / 2;
+            if (baseline < limits[2])
+                limits[2] = baseline;
 
-            if (horizontal)
-                return new AxisLimits2D(minValue, maxValue, -sidePadding, groupCount - 1 + sidePadding);
-            else
-                return new AxisLimits2D(-sidePadding, groupCount - 1 + sidePadding, minValue, maxValue);
+            if (yErr != null)
+            {
+                for (int i = 0; i < yErr.Length; i++)
+                {
+                    if (ys[i] - yErr[i] < limits[2])
+                        limits[2] = ys[i] - yErr[i];
+                    if (ys[i] + yErr[1] > limits[3])
+                        limits[3] = ys[i] + yErr[i];
+                }
+            }
+
+            return new Config.AxisLimits2D(limits);
         }
 
         public override void Render(Settings settings)
         {
-            if (horizontal)
+            for (int i = 0; i < ys.Length; i++)
             {
-                if (stacked)
-                    RenderHorizontalStacked(settings);
+                PointF barTop;
+                PointF barBot;
+
+                if (ys[i] > baseline)
+                {
+                    barTop = settings.GetPixel(xs[i], ys[i]);
+                    barBot = settings.GetPixel(xs[i], baseline);
+                }
                 else
-                    RenderHorizontalGrouped(settings);
-                    return;
-            }
-            else
-            {
-                if (stacked)
-                    RenderVerticalStacked(settings);
-                else
-                    RenderVerticalGrouped(settings);
-            }
-        }
-
-        double interGroupSpaceFrac = 0.25;
-
-        public void RenderVerticalGrouped(Settings settings)
-        {
-            // define how wide the bar graphs and spaces should be
-            double barFillGroupFrac = 1 - interGroupSpaceFrac;
-            double barWidthFrac = barFillGroupFrac / barSetCount;
-
-            for (int setIndex = 0; setIndex < barSetCount; setIndex++)
-            {
-                // set bar style for this whole series
-
-                double barOffset = setIndex * barWidthFrac;
-
-                for (int groupIndex = 0; groupIndex < groupCount; groupIndex++)
                 {
-                    // draw the bar for every group
-
-                    // determine the width and horizontal offset of this bar
-                    double xOffset = barWidthFrac / 2;
-                    double groupOffset = groupIndex;
-                    double barLeft = groupOffset + barOffset - xOffset * barSetCount;
-                    double barRight = barLeft + barWidthFrac;
-
-                    // determine the height of this bar
-                    double value = datasets[setIndex].values[groupIndex];
-                    double valueMax, valueMin;
-                    if (value > 0)
-                    {
-                        valueMax = value;
-                        valueMin = 0;
-                    }
-                    else
-                    {
-                        valueMax = 0;
-                        valueMin = value;
-                    }
-
-                    // convert coordinates to pixels and draw the bar
-                    double barTopPixel = settings.GetPixelY(valueMax);
-                    double barBotPixel = settings.GetPixelY(valueMin);
-                    double barLeftPixel = settings.GetPixelX(barLeft);
-                    double barRightPixel = settings.GetPixelX(barRight);
-                    double barCenterPixel = (barLeftPixel + barRightPixel) / 2;
-                    double barWidthPx = barRightPixel - barLeftPixel;
-                    double barHeightPx = barBotPixel - barTopPixel;
-
-
-                    var rect = new System.Drawing.RectangleF((float)barLeftPixel, (float)barTopPixel, (float)barWidthPx, (float)barHeightPx);
-                    settings.gfxData.FillRectangle(setBrushes[setIndex], rect);
-                    if (outlineWidth > 0)
-                        settings.gfxData.DrawRectangle(setOutlinePens[setIndex], rect.X, rect.Y, rect.Width, rect.Height);
-
-                    // draw the errorbar
-                    if (datasets[setIndex].errors != null)
-                    {
-                        double valueErrorTop = value + datasets[setIndex].errors[groupIndex];
-                        double valueErrorBot = value - datasets[setIndex].errors[groupIndex];
-                        double errorPixelTop = settings.GetPixelY(valueErrorTop);
-                        double errorPixelBot = settings.GetPixelY(valueErrorBot);
-                        settings.gfxData.DrawLine(setErrorPens[setIndex], (float)barCenterPixel, (float)errorPixelTop, (float)barCenterPixel, (float)errorPixelBot);
-                        if (errorCapSize > 0)
-                        {
-                            settings.gfxData.DrawLine(setErrorPens[setIndex], (float)(barCenterPixel - errorCapSize), (float)errorPixelTop, (float)(barCenterPixel + errorCapSize), (float)errorPixelTop);
-                            settings.gfxData.DrawLine(setErrorPens[setIndex], (float)(barCenterPixel - errorCapSize), (float)errorPixelBot, (float)(barCenterPixel + errorCapSize), (float)errorPixelBot);
-                        }
-                    }
+                    barBot = settings.GetPixel(xs[i], ys[i]);
+                    barTop = settings.GetPixel(xs[i], baseline);
                 }
-            }
-        }
 
-        public void RenderHorizontalGrouped(Settings settings)
-        {
-            // define how wide the bar graphs and spaces should be
-            double barGroupThickness = 1 - interGroupSpaceFrac;
-            double barThickness = barGroupThickness / barSetCount;
+                float barTopPx = barTop.Y;
+                float barHeightPx = barTop.Y - barBot.Y;
+                float barWidthPx = (float)(barWidth * settings.xAxisScale);
+                float barLeftPx = barTop.X - barWidthPx / 2;
+                float xOffsetPx = (float)(xOffset * settings.xAxisScale);
+                barLeftPx += xOffsetPx;
 
-            for (int setIndex = 0; setIndex < barSetCount; setIndex++)
-            {
-                // set bar style for this whole series
-                double thisSetOffset = setIndex * barThickness;
+                settings.gfxData.FillRectangle(brush, barLeftPx - (float).5, barTopPx, barWidthPx + (float).5, -barHeightPx);
+                settings.gfxData.DrawRectangle(pen, barLeftPx - (float).5, barTopPx, barWidthPx + (float).5, -barHeightPx);
 
-                for (int groupIndex = 0; groupIndex < groupCount; groupIndex++)
+                if (yErr != null)
                 {
-                    // draw the bar for every group
-
-                    // determine the width and horizontal offset of this bar
-                    double fixedOffset = (barThickness / 2) * barSetCount;
-                    double thisGroupOffset = groupIndex;
-                    double barEdge1 = thisGroupOffset + thisSetOffset - fixedOffset;
-                    double barEdge2 = barEdge1 + barThickness;
-                    double barEdgePx1 = settings.GetPixelY(barEdge1);
-                    double barEdgePx2 = settings.GetPixelY(barEdge2);
-                    double barThicknessPx = barEdgePx1 - barEdgePx2;
-                    double barCenterPx = (barEdgePx1 + barEdgePx2) / 2;
-
-                    // determine the height of this bar
-                    double value = datasets[setIndex].values[groupIndex];
-                    double valueMax, valueMin;
-                    if (value > 0)
-                    {
-                        valueMax = value;
-                        valueMin = 0;
-                    }
-                    else
-                    {
-                        valueMax = 0;
-                        valueMin = value;
-                    }
-
-                    // convert coordinates to pixels and draw the bar
-                    double barValuePixel = settings.GetPixelX(valueMax);
-                    double barBasePixel = settings.GetPixelX(valueMin);
-                    double barValuePx = barValuePixel - barBasePixel;
-
-                    // draw the rectangle
-                    var rect = new System.Drawing.RectangleF((float)barBasePixel, (float)barEdgePx2, (float)barValuePx, (float)barThicknessPx);
-                    settings.gfxData.FillRectangle(setBrushes[setIndex], rect);
-                    if (outlineWidth > 0)
-                        settings.gfxData.DrawRectangle(setOutlinePens[setIndex], rect.X, rect.Y, rect.Width, rect.Height);
-
-                    // draw the errorbar
-                    if (datasets[setIndex].errors != null)
-                    {
-
-                        double valueErrorMax = value + datasets[setIndex].errors[groupIndex];
-                        double valueErrorMin = value - datasets[setIndex].errors[groupIndex];
-                        double valueErrorMaxPx = settings.GetPixelX(valueErrorMax);
-                        double valueErrorMinPx = settings.GetPixelX(valueErrorMin);
-                        settings.gfxData.DrawLine(setErrorPens[setIndex], (float)valueErrorMinPx, (float)barCenterPx, (float)valueErrorMaxPx, (float)barCenterPx);
-                        if (errorCapSize > 0)
-                        {
-                            //settings.gfxData.DrawLine(setErrorPens[setIndex], (float)(barCenterPixel - errorCapSize), (float)errorPixelBot, (float)(barCenterPixel + errorCapSize), (float)errorPixelBot);
-                            settings.gfxData.DrawLine(setErrorPens[setIndex], (float)valueErrorMinPx, (float)(barCenterPx - errorCapSize), (float)valueErrorMinPx, (float)(barCenterPx + errorCapSize));
-                            settings.gfxData.DrawLine(setErrorPens[setIndex], (float)valueErrorMaxPx, (float)(barCenterPx - errorCapSize), (float)valueErrorMaxPx, (float)(barCenterPx + errorCapSize));
-                        }
-                    }
-                }
-            }
-        }
-
-        public void RenderVerticalStacked(Settings settings)
-        {
-            // define how wide the bar graphs and spaces should be
-            double barWidthFrac = 1 - interGroupSpaceFrac;
-
-            for (int groupIndex = 0; groupIndex < groupCount; groupIndex++)
-            {
-                // determine the width of the bar
-                double xOffset = barWidthFrac / 2;
-                double barLeft = groupIndex - xOffset;
-                double barRight = barLeft + barWidthFrac;
-                double barLeftPixel = settings.GetPixelX(barLeft);
-                double barRightPixel = settings.GetPixelX(barRight);
-
-                double yOffset = 0;
-                for (int setIndex = 0; setIndex < barSetCount; setIndex++)
-                {
-                    // determine the height of the bar
-                    double value = datasets[setIndex].values[groupIndex];
-                    double barTopPixel = settings.GetPixelY(value + yOffset);
-                    double barBotPixel = settings.GetPixelY(yOffset);
-                    yOffset += value;
-
-                    // draw the bar rectangle
-                    double barWidthPx = barRightPixel - barLeftPixel;
-                    double barHeightPx = barBotPixel - barTopPixel;
-
-                    var rect = new System.Drawing.RectangleF((float)barLeftPixel, (float)barTopPixel, (float)barWidthPx, (float)barHeightPx);
-                    settings.gfxData.FillRectangle(setBrushes[setIndex], rect);
-                    if (outlineWidth > 0)
-                        settings.gfxData.DrawRectangle(setOutlinePens[setIndex], rect.X, rect.Y, rect.Width, rect.Height);
-                }
-            }
-        }
-
-        public void RenderHorizontalStacked(Settings settings)
-        {
-            // define how wide the bar graphs and spaces should be
-            double groupThicknessFrac = 1 - interGroupSpaceFrac;
-            double groupOffset = groupThicknessFrac / 2;
-
-            for (int groupIndex = 0; groupIndex < groupCount; groupIndex++)
-            {
-                // determine the width of the bar
-                double thisGroupEdge1 = groupIndex - groupOffset;
-                double thisGroupEdge2 = thisGroupEdge1 + groupThicknessFrac;
-                double thisGroupPx1 = settings.GetPixelY(thisGroupEdge1);
-                double thisGroupPx2 = settings.GetPixelY(thisGroupEdge2);
-                double thisBarThickness = thisGroupPx1 - thisGroupPx2;
-
-                double startingValue = 0;
-                for (int setIndex = 0; setIndex < barSetCount; setIndex++)
-                {
-                    // determine the height of the bar
-                    double value = datasets[setIndex].values[groupIndex];
-                    double thisSetPx2 = settings.GetPixelX(value + startingValue);
-                    double thisSetPx1 = settings.GetPixelX(startingValue);
-                    double thisBarValuePx = thisSetPx2 - thisSetPx1;
-                    startingValue += value;
-
-                    var rect = new System.Drawing.RectangleF((float)thisSetPx1, (float)thisGroupPx2, (float)thisBarValuePx, (float)thisBarThickness);
-                    settings.gfxData.FillRectangle(setBrushes[setIndex], rect);
-                    if (outlineWidth > 0)
-                        settings.gfxData.DrawRectangle(setOutlinePens[setIndex], rect.X, rect.Y, rect.Width, rect.Height);
+                    PointF peakCenter = settings.GetPixel(xs[i], ys[i]);
+                    float x = peakCenter.X + xOffsetPx;
+                    float y = peakCenter.Y;
+                    float errorPx = (float)(yErr[i] * settings.yAxisScale);
+                    settings.gfxData.DrawLine(pen, x, y - errorPx, x, y + errorPx);
+                    settings.gfxData.DrawLine(pen, x - errorCapSize, y - errorPx, x + errorCapSize, y - errorPx);
+                    settings.gfxData.DrawLine(pen, x - errorCapSize, y + errorPx, x + errorCapSize, y + errorPx);
                 }
             }
         }
 
         public override string ToString()
         {
-            return $"PlottableBar with {groupCount} groups and {barSetCount} bars per group";
+            return $"PlottableBar with {GetPointCount()} points";
         }
 
         public override int GetPointCount()
         {
-            return groupCount * barSetCount;
+            return ys.Length;
         }
 
         public override LegendItem[] GetLegendItems()
         {
-            var items = new List<LegendItem>();
-
-            for (int i = 0; i < barSetCount; i++)
-                items.Add(new LegendItem(datasets[i].label, setColors[i], lineWidth: 10, markerShape: MarkerShape.none));
-
-            return items.ToArray();
+            var singleLegendItem = new LegendItem(label, color, lineWidth: 10, markerShape: MarkerShape.none);
+            return new LegendItem[] { singleLegendItem };
         }
     }
 }
