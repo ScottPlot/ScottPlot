@@ -33,33 +33,6 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class BarWithError : PlotDemo, IPlotDemo
-        {
-            public string name { get; } = "Bar Plot with Errorbars";
-            public string description { get; } = "Error can be supplied as a command line argument.";
-
-            public void Render(Plot plt)
-            {
-                int pointCount = 20;
-                double[] xs = new double[pointCount];
-                double[] ys = new double[pointCount];
-                double[] yErr = new double[pointCount];
-                Random rand = new Random(0);
-                for (int i = 0; i < pointCount; i++)
-                {
-                    xs[i] = i;
-                    ys[i] = .5 + rand.NextDouble();
-                    yErr[i] = rand.NextDouble() * .3 + .05;
-                }
-
-                plt.Title("Bar Plot With Error Bars");
-                plt.PlotBar(xs, ys, barWidth: .5, errorY: yErr, errorCapSize: 2);
-                plt.Grid(enableVertical: false);
-                plt.Grid(lineStyle: LineStyle.Dot);
-                plt.Axis(null, null, 0, null);
-            }
-        }
-
         public class MultipleBars : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Multiple Bar Graphs";
