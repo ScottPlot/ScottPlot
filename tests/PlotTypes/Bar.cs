@@ -26,7 +26,7 @@ namespace ScottPlotTests.PlotTypes
             double[] yErr = { 4, 1, 7, 3, 6, 2, 3 };
 
             var plt = new ScottPlot.Plot(400, 300);
-            plt.PlotBar(xs, ys, errorY: yErr);
+            plt.PlotBar(xs, ys, yErr);
             plt.Grid(lineStyle: ScottPlot.LineStyle.Dot);
             TestTools.SaveFig(plt);
         }
@@ -45,6 +45,19 @@ namespace ScottPlotTests.PlotTypes
 
             plt.Grid(lineStyle: ScottPlot.LineStyle.Dot, enableVertical: false);
             plt.Legend(location: ScottPlot.legendLocation.upperRight);
+            TestTools.SaveFig(plt);
+        }
+
+        [Test]
+        public void Test_Bar_SeriesWithErrorHorizontal()
+        {
+            double[] xs = { 1, 2, 3, 4, 5, 6, 7 };
+            double[] ys = { 10, 15, 12, 6, 8, 4, 12 };
+            double[] yErr = { 4, 1, 7, 3, 6, 2, 3 };
+
+            var plt = new ScottPlot.Plot(400, 300);
+            plt.PlotBar(xs, ys, yErr, horizontal: true);
+            plt.Grid(lineStyle: ScottPlot.LineStyle.Dot);
             TestTools.SaveFig(plt);
         }
     }

@@ -25,13 +25,14 @@ namespace ScottPlot.Demo.PlotTypes
 
                 // customize the plot to make it look nicer
                 plt.Axis(y1: 0);
-                plt.Grid(false);
+                plt.Grid(enableVertical: false, lineStyle: LineStyle.Dot);
 
                 // apply custom axis tick labels
                 string[] labels = { "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten" };
                 plt.XTicks(xs, labels);
             }
         }
+
         public class BarWithError : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Bar Plot with Errorbars";
@@ -96,6 +97,33 @@ namespace ScottPlot.Demo.PlotTypes
                 // apply custom axis tick labels
                 string[] labels = { "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten" };
                 plt.XTicks(Xs, labels);
+            }
+        }
+
+        public class Horizontal : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Horizontal Bar Graph";
+            public string description { get; } = "Bar graphs can be displayed horizontally.";
+
+            public void Render(Plot plt)
+            {
+                // generate random data to plot
+                Random rand = new Random(0);
+                int pointCount = 5;
+                double[] xs = DataGen.Consecutive(pointCount);
+                double[] ys = DataGen.RandomNormal(rand, pointCount, 20, 5);
+                double[] yError = DataGen.RandomNormal(rand, pointCount, 3, 2);
+
+                // make the bar plot
+                plt.PlotBar(xs, ys, yError, horizontal: true);
+
+                // customize the plot to make it look nicer
+                plt.Axis(x1: 0);
+                plt.Grid(enableHorizontal: false, lineStyle: LineStyle.Dot);
+
+                // apply custom axis tick labels
+                string[] labels = { "one", "two", "three", "four", "five"};
+                plt.YTicks(xs, labels);
             }
         }
     }

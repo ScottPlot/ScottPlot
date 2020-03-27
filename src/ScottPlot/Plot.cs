@@ -687,7 +687,8 @@ namespace ScottPlot
             Color? outlineColor = null,
             double errorLineWidth = 1,
             double errorCapSize = .38,
-            Color? errorColor = null
+            Color? errorColor = null,
+            bool horizontal = false
             )
         {
             if (fillColor == null)
@@ -712,7 +713,8 @@ namespace ScottPlot
                 errorCapSize: errorCapSize,
                 errorColor: errorColor.Value,
                 outlineWidth: outlineWidth,
-                outlineColor: outlineColor.Value
+                outlineColor: outlineColor.Value,
+                horizontal: horizontal
                 );
 
             settings.plottables.Add(barPlot);

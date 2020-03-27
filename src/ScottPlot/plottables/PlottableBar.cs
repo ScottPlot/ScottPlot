@@ -31,11 +31,12 @@ namespace ScottPlot
 
         private bool verticalBars = true;
 
-        public PlottableBar(double[] xs, double[] ys, string label, 
+        public PlottableBar(double[] xs, double[] ys, string label,
             double barWidth, double xOffset,
             bool fill, Color fillColor,
             double outlineWidth, Color outlineColor,
-            double[] yErr, double errorLineWidth, double errorCapSize, Color errorColor
+            double[] yErr, double errorLineWidth, double errorCapSize, Color errorColor,
+            bool horizontal
             )
         {
             if (ys is null || ys.Length == 0)
@@ -57,13 +58,14 @@ namespace ScottPlot
             this.ys = ys;
             this.yErr = yErr;
             this.xOffset = xOffset;
+            this.label = label;
+            this.verticalBars = !horizontal;
 
             this.barWidth = barWidth;
             this.errorCapSize = errorCapSize;
 
             this.fill = fill;
             this.fillColor = fillColor;
-            this.label = label;
 
             fillBrush = new SolidBrush(fillColor);
             outlinePen = new Pen(outlineColor, (float)outlineWidth);
@@ -104,38 +106,80 @@ namespace ScottPlot
         {
             for (int i = 0; i < ys.Length; i++)
             {
-                double position = xs[i] + xOffset;
-                double edge1 = position - barWidth / 2;
-                double value1 = Math.Min(valueBase, ys[i]);
-                double value2 = Math.Max(valueBase, ys[i]);
-                double valueSpan = value2 - value1;
+                if (verticalBars)
+                    RenderBarVertical(settings, xs[i] + xOffset, ys[i], yErr[i]);
+                else
+                    RenderBarHorizontal(settings, xs[i] + xOffset, ys[i], yErr[i]);
+            }
+        }
 
-                var rect = new RectangleF(
-                    x: (float)settings.GetPixelX(edge1),
-                    y: (float)settings.GetPixelY(value2),
-                    width: (float)(barWidth * settings.xAxisScale),
-                    height: (float)(valueSpan * settings.yAxisScale));
+        private void RenderBarVertical(Settings settings, double position, double value, double valueError)
+        {
+            double edge1 = position - barWidth / 2;
+            double value1 = Math.Min(valueBase, value);
+            double value2 = Math.Max(valueBase, value);
+            double valueSpan = value2 - value1;
 
-                settings.gfxData.FillRectangle(fillBrush, rect.X, rect.Y, rect.Width, rect.Height);
+            var rect = new RectangleF(
+                x: (float)settings.GetPixelX(edge1),
+                y: (float)settings.GetPixelY(value2),
+                width: (float)(barWidth * settings.xAxisScale),
+                height: (float)(valueSpan * settings.yAxisScale));
 
-                if (outlinePen.Width > 0)
-                    settings.gfxData.DrawRectangle(outlinePen, rect.X, rect.Y, rect.Width, rect.Height);
+            settings.gfxData.FillRectangle(fillBrush, rect.X, rect.Y, rect.Width, rect.Height);
 
-                if (errorPen.Width > 0 && yErr[i] > 0)
-                {
-                    double error1 = value2 - Math.Abs(yErr[i]);
-                    double error2 = value2 + Math.Abs(yErr[i]);
+            if (outlinePen.Width > 0)
+                settings.gfxData.DrawRectangle(outlinePen, rect.X, rect.Y, rect.Width, rect.Height);
 
-                    float centerPx = (float)settings.GetPixelX(position);
-                    float capPx1 = (float)settings.GetPixelX(position - errorCapSize * barWidth / 2);
-                    float capPx2 = (float)settings.GetPixelX(position + errorCapSize * barWidth / 2);
-                    float errorPx2 = (float)settings.GetPixelY(error2);
-                    float errorPx1 = (float)settings.GetPixelY(error1);
+            if (errorPen.Width > 0 && valueError > 0)
+            {
+                double error1 = value2 - Math.Abs(valueError);
+                double error2 = value2 + Math.Abs(valueError);
 
-                    settings.gfxData.DrawLine(errorPen, centerPx, errorPx1, centerPx, errorPx2);
-                    settings.gfxData.DrawLine(errorPen, capPx1, errorPx1, capPx2, errorPx1);
-                    settings.gfxData.DrawLine(errorPen, capPx1, errorPx2, capPx2, errorPx2);
-                }
+                float centerPx = (float)settings.GetPixelX(position);
+                float capPx1 = (float)settings.GetPixelX(position - errorCapSize * barWidth / 2);
+                float capPx2 = (float)settings.GetPixelX(position + errorCapSize * barWidth / 2);
+                float errorPx2 = (float)settings.GetPixelY(error2);
+                float errorPx1 = (float)settings.GetPixelY(error1);
+
+                settings.gfxData.DrawLine(errorPen, centerPx, errorPx1, centerPx, errorPx2);
+                settings.gfxData.DrawLine(errorPen, capPx1, errorPx1, capPx2, errorPx1);
+                settings.gfxData.DrawLine(errorPen, capPx1, errorPx2, capPx2, errorPx2);
+            }
+        }
+
+        private void RenderBarHorizontal(Settings settings, double position, double value, double valueError)
+        {
+            double edge2 = position + barWidth / 2;
+            double value1 = Math.Min(valueBase, value);
+            double value2 = Math.Max(valueBase, value);
+            double valueSpan = value2 - value1;
+
+            var rect = new RectangleF(
+                x: (float)settings.GetPixelX(valueBase),
+                y: (float)settings.GetPixelY(edge2),
+                height: (float)(barWidth * settings.yAxisScale),
+                width: (float)(valueSpan * settings.xAxisScale));
+
+            settings.gfxData.FillRectangle(fillBrush, rect.X, rect.Y, rect.Width, rect.Height);
+
+            if (outlinePen.Width > 0)
+                settings.gfxData.DrawRectangle(outlinePen, rect.X, rect.Y, rect.Width, rect.Height);
+
+            if (errorPen.Width > 0 && valueError > 0)
+            {
+                double error1 = value2 - Math.Abs(valueError);
+                double error2 = value2 + Math.Abs(valueError);
+
+                float centerPx = (float)settings.GetPixelY(position);
+                float capPx1 = (float)settings.GetPixelY(position - errorCapSize * barWidth / 2);
+                float capPx2 = (float)settings.GetPixelY(position + errorCapSize * barWidth / 2);
+                float errorPx2 = (float)settings.GetPixelX(error2);
+                float errorPx1 = (float)settings.GetPixelX(error1);
+
+                settings.gfxData.DrawLine(errorPen, errorPx1, centerPx, errorPx2, centerPx);
+                settings.gfxData.DrawLine(errorPen, errorPx1, capPx2, errorPx1, capPx1);
+                settings.gfxData.DrawLine(errorPen, errorPx2, capPx2, errorPx2, capPx1);
             }
         }
 
