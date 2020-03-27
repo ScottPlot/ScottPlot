@@ -16,26 +16,20 @@ namespace ScottPlot.Demo.PlotTypes
                 // generate random data to plot
                 Random rand = new Random(0);
                 int pointCount = 10;
-                double[] Xs = new double[pointCount];
-                double[] dataA = new double[pointCount];
-                double[] errorA = new double[pointCount];
-                for (int i = 0; i < pointCount; i++)
-                {
-                    Xs[i] = i * 10;
-                    dataA[i] = rand.NextDouble() * 100;
-                    errorA[i] = rand.NextDouble() * 10;
-                }
+                double[] xs = DataGen.Consecutive(pointCount);
+                double[] ys = DataGen.RandomNormal(rand, pointCount, 20, 5);
+                double[] yError = DataGen.RandomNormal(rand, pointCount, 5, 2);
 
                 // make the bar plot
-                plt.PlotBar(Xs, dataA, errorY: errorA);
+                plt.PlotBar(xs, ys, yError);
 
                 // customize the plot to make it look nicer
-                plt.Axis(null, null, 0, null);
+                plt.Axis(y1: 0);
                 plt.Grid(false);
 
                 // apply custom axis tick labels
                 string[] labels = { "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten" };
-                plt.XTicks(Xs, labels);
+                plt.XTicks(xs, labels);
             }
         }
         public class BarWithError : PlotDemo, IPlotDemo

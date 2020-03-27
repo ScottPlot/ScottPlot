@@ -13,117 +13,128 @@ namespace ScottPlot
         public double[] xs;
         public double[] ys;
         public double[] yErr;
+        public double xOffset;
 
         public LineStyle lineStyle;
-        public Color color;
+        public Color fillColor;
         public string label;
 
-        private float errorLineWidth;
-        private float errorCapSize;
-        private float barWidth;
-        private float baseline = 0;
-        private double xOffset;
-        private Pen pen;
-        private Brush brush;
+        private double errorCapSize;
 
-        public PlottableBar(double[] xs, double[] ys, double barWidth, double xOffset, Color color, string label, 
-            double[] yErr, double errorLineWidth = 1, double errorCapSize = 3)
+        private double barWidth;
+        private double valueBase = 0;
+
+        public bool fill;
+        private Brush fillBrush;
+        private Pen errorPen;
+        private Pen outlinePen;
+
+        private bool verticalBars = true;
+
+        public PlottableBar(double[] xs, double[] ys, string label, 
+            double barWidth, double xOffset,
+            bool fill, Color fillColor,
+            double outlineWidth, Color outlineColor,
+            double[] yErr, double errorLineWidth, double errorCapSize, Color errorColor
+            )
         {
-            if ((xs == null) || (ys == null))
-                throw new Exception("X and Y data cannot be null");
-            if (xs.Length != ys.Length)
-                throw new ArgumentException("X positions must be the same length as Y values");
-            if (yErr != null && yErr.Length != xs.Length)
-                throw new ArgumentException("Errorbar values must be the same length as Y values");
+            if (ys is null || ys.Length == 0)
+                throw new ArgumentException("ys must contain data values");
 
-            if (yErr != null)
-                for (int i = 0; i < yErr.Length; i++)
-                    if (yErr[i] < 0)
-                        yErr[i] = -yErr[i];
+            if (xs is null)
+                xs = DataGen.Consecutive(ys.Length);
+
+            if (xs.Length != ys.Length)
+                throw new ArgumentException("xs and ys must have same number of elements");
+
+            if (yErr is null)
+                yErr = DataGen.Zeros(ys.Length);
+
+            if (yErr.Length != ys.Length)
+                throw new ArgumentException("yErr and ys must have same number of elements");
 
             this.xs = xs;
             this.ys = ys;
             this.yErr = yErr;
-            this.barWidth = (float)barWidth;
-            this.errorLineWidth = (float)errorLineWidth;
-            this.errorCapSize = (float)errorCapSize;
-            this.color = color;
-            this.label = label;
             this.xOffset = xOffset;
 
-            pen = new Pen(color, (float)errorLineWidth)
-            {
-                // this prevents sharp corners
-                StartCap = System.Drawing.Drawing2D.LineCap.Round,
-                EndCap = System.Drawing.Drawing2D.LineCap.Round,
-                LineJoin = System.Drawing.Drawing2D.LineJoin.Round
-            };
+            this.barWidth = barWidth;
+            this.errorCapSize = errorCapSize;
 
-            brush = new SolidBrush(color);
+            this.fill = fill;
+            this.fillColor = fillColor;
+            this.label = label;
+
+            fillBrush = new SolidBrush(fillColor);
+            outlinePen = new Pen(outlineColor, (float)outlineWidth);
+            errorPen = new Pen(errorColor, (float)errorLineWidth);
         }
 
         public override AxisLimits2D GetLimits()
         {
-            double[] limits = new double[4];
-            limits[0] = xs.Min() - barWidth / 2;
-            limits[1] = xs.Max() + barWidth / 2;
-            limits[2] = ys.Min();
-            limits[3] = ys.Max();
+            double valueMin = double.PositiveInfinity;
+            double valueMax = double.NegativeInfinity;
+            double positionMin = double.PositiveInfinity;
+            double positionMax = double.NegativeInfinity;
 
-            if (baseline < limits[2])
-                limits[2] = baseline;
-
-            if (yErr != null)
+            for (int i = 0; i < xs.Length; i++)
             {
-                for (int i = 0; i < yErr.Length; i++)
-                {
-                    if (ys[i] - yErr[i] < limits[2])
-                        limits[2] = ys[i] - yErr[i];
-                    if (ys[i] + yErr[1] > limits[3])
-                        limits[3] = ys[i] + yErr[i];
-                }
+                valueMin = Math.Min(valueMin, ys[i] - yErr[i]);
+                valueMax = Math.Max(valueMax, ys[i] + yErr[i]);
+                positionMin = Math.Min(positionMin, xs[i]);
+                positionMax = Math.Max(positionMax, xs[i]);
             }
 
-            return new Config.AxisLimits2D(limits);
+            valueMin = Math.Min(valueMin, valueBase);
+            valueMax = Math.Max(valueMax, valueBase);
+
+            positionMin -= barWidth / 2;
+            positionMax += barWidth / 2;
+
+            positionMin += xOffset;
+            positionMax += xOffset;
+
+            if (verticalBars)
+                return new AxisLimits2D(positionMin, positionMax, valueMin, valueMax);
+            else
+                return new AxisLimits2D(valueMin, valueMax, positionMin, positionMax);
         }
 
         public override void Render(Settings settings)
         {
             for (int i = 0; i < ys.Length; i++)
             {
-                PointF barTop;
-                PointF barBot;
+                double position = xs[i] + xOffset;
+                double edge1 = position - barWidth / 2;
+                double value1 = Math.Min(valueBase, ys[i]);
+                double value2 = Math.Max(valueBase, ys[i]);
+                double valueSpan = value2 - value1;
 
-                if (ys[i] > baseline)
+                var rect = new RectangleF(
+                    x: (float)settings.GetPixelX(edge1),
+                    y: (float)settings.GetPixelY(value2),
+                    width: (float)(barWidth * settings.xAxisScale),
+                    height: (float)(valueSpan * settings.yAxisScale));
+
+                settings.gfxData.FillRectangle(fillBrush, rect.X, rect.Y, rect.Width, rect.Height);
+
+                if (outlinePen.Width > 0)
+                    settings.gfxData.DrawRectangle(outlinePen, rect.X, rect.Y, rect.Width, rect.Height);
+
+                if (errorPen.Width > 0 && yErr[i] > 0)
                 {
-                    barTop = settings.GetPixel(xs[i], ys[i]);
-                    barBot = settings.GetPixel(xs[i], baseline);
-                }
-                else
-                {
-                    barBot = settings.GetPixel(xs[i], ys[i]);
-                    barTop = settings.GetPixel(xs[i], baseline);
-                }
+                    double error1 = value2 - Math.Abs(yErr[i]);
+                    double error2 = value2 + Math.Abs(yErr[i]);
 
-                float barTopPx = barTop.Y;
-                float barHeightPx = barTop.Y - barBot.Y;
-                float barWidthPx = (float)(barWidth * settings.xAxisScale);
-                float barLeftPx = barTop.X - barWidthPx / 2;
-                float xOffsetPx = (float)(xOffset * settings.xAxisScale);
-                barLeftPx += xOffsetPx;
+                    float centerPx = (float)settings.GetPixelX(position);
+                    float capPx1 = (float)settings.GetPixelX(position - errorCapSize * barWidth / 2);
+                    float capPx2 = (float)settings.GetPixelX(position + errorCapSize * barWidth / 2);
+                    float errorPx2 = (float)settings.GetPixelY(error2);
+                    float errorPx1 = (float)settings.GetPixelY(error1);
 
-                settings.gfxData.FillRectangle(brush, barLeftPx - (float).5, barTopPx, barWidthPx + (float).5, -barHeightPx);
-                settings.gfxData.DrawRectangle(pen, barLeftPx - (float).5, barTopPx, barWidthPx + (float).5, -barHeightPx);
-
-                if (yErr != null)
-                {
-                    PointF peakCenter = settings.GetPixel(xs[i], ys[i]);
-                    float x = peakCenter.X + xOffsetPx;
-                    float y = peakCenter.Y;
-                    float errorPx = (float)(yErr[i] * settings.yAxisScale);
-                    settings.gfxData.DrawLine(pen, x, y - errorPx, x, y + errorPx);
-                    settings.gfxData.DrawLine(pen, x - errorCapSize, y - errorPx, x + errorCapSize, y - errorPx);
-                    settings.gfxData.DrawLine(pen, x - errorCapSize, y + errorPx, x + errorCapSize, y + errorPx);
+                    settings.gfxData.DrawLine(errorPen, centerPx, errorPx1, centerPx, errorPx2);
+                    settings.gfxData.DrawLine(errorPen, capPx1, errorPx1, capPx2, errorPx1);
+                    settings.gfxData.DrawLine(errorPen, capPx1, errorPx2, capPx2, errorPx2);
                 }
             }
         }
@@ -140,7 +151,7 @@ namespace ScottPlot
 
         public override LegendItem[] GetLegendItems()
         {
-            var singleLegendItem = new LegendItem(label, color, lineWidth: 10, markerShape: MarkerShape.none);
+            var singleLegendItem = new LegendItem(label, fillColor, lineWidth: 10, markerShape: MarkerShape.none);
             return new LegendItem[] { singleLegendItem };
         }
     }

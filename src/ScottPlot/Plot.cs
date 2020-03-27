@@ -677,31 +677,42 @@ namespace ScottPlot
         public PlottableBar PlotBar(
             double[] xs,
             double[] ys,
-            double? barWidth = null,
-            double xOffset = 0,
-            Color? color = null,
-            string label = null,
             double[] errorY = null,
+            string label = null,
+            double barWidth = .8,
+            double xOffset = 0,
+            bool fill = true,
+            Color? fillColor = null,
+            double outlineWidth = 1,
+            Color? outlineColor = null,
             double errorLineWidth = 1,
-            double errorCapSize = 3
+            double errorCapSize = .38,
+            Color? errorColor = null
             )
         {
-            if (color == null)
-                color = settings.GetNextColor();
+            if (fillColor == null)
+                fillColor = settings.GetNextColor();
 
-            if (barWidth == null)
-                barWidth = (xs[1] - xs[0]) * .8;
+            if (outlineColor == null)
+                outlineColor = Color.Black;
+
+            if (errorColor == null)
+                errorColor = Color.Black;
 
             PlottableBar barPlot = new PlottableBar(
                 xs: xs,
                 ys: ys,
-                barWidth: (double)barWidth,
+                barWidth: barWidth,
                 xOffset: xOffset,
-                color: (Color)color,
+                fill: fill,
+                fillColor: fillColor.Value,
                 label: label,
                 yErr: errorY,
                 errorLineWidth: errorLineWidth,
-                errorCapSize: errorCapSize
+                errorCapSize: errorCapSize,
+                errorColor: errorColor.Value,
+                outlineWidth: outlineWidth,
+                outlineColor: outlineColor.Value
                 );
 
             settings.plottables.Add(barPlot);
