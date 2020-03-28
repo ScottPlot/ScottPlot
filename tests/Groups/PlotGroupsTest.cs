@@ -25,7 +25,7 @@ namespace ScottPlotTests.Groups
             plt.Legend(location: legendLocation.lowerRight);
             plt.Grid(lineStyle: LineStyle.Dot, enableVertical: false);
 
-            TestTools.LaunchFig(plt);
+            TestTools.SaveFig(plt);
         }
     }
 }
