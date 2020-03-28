@@ -6,7 +6,14 @@ namespace ScottPlotTests
 {
     public static class TestTools
     {
-        public static void SaveFig(ScottPlot.Plot plt, string subName = "", bool launch = false)
+        [Obsolete("WARNING: LaunchFig() is just for testing by developers")]
+        public static void LaunchFig(ScottPlot.Plot plt)
+        {
+            string filePath = SaveFig(plt);
+            ScottPlot.Tools.LaunchBrowser(filePath);
+        }
+
+        public static string SaveFig(ScottPlot.Plot plt, string subName = "")
         {
             var stackTrace = new System.Diagnostics.StackTrace();
             string callingMethod = stackTrace.GetFrame(1).GetMethod().Name;
@@ -19,11 +26,10 @@ namespace ScottPlotTests
             Console.WriteLine($"Saved: {filePath}");
             Console.WriteLine();
 
-            if (launch)
-                ScottPlot.Tools.LaunchBrowser(filePath);
+            return filePath;
         }
 
-        public static void SaveFig(ScottPlot.MultiPlot mplt, string subName = "")
+        public static string SaveFig(ScottPlot.MultiPlot mplt, string subName = "")
         {
             var stackTrace = new System.Diagnostics.StackTrace();
             string callingMethod = stackTrace.GetFrame(1).GetMethod().Name;
@@ -34,6 +40,8 @@ namespace ScottPlotTests
 
             Console.WriteLine($"Saved: {filePath}");
             Console.WriteLine();
+
+            return filePath;
         }
 
         private static void DisplayRenderInfo(string callingMethod, string subName, int totalPoints, double renderTimeMs)
