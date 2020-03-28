@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ScottPlotTests.PlotTypes
@@ -59,6 +60,27 @@ namespace ScottPlotTests.PlotTypes
             plt.PlotBar(xs, ys, yErr, horizontal: true);
             plt.Grid(lineStyle: ScottPlot.LineStyle.Dot);
             TestTools.SaveFig(plt);
+        }
+
+        [Test]
+        public void Test_Bar_Stacked()
+        {
+            double[] xs = { 1, 2, 3, 4, 5 };
+            double[] valuesA = { 1, 2, 3, 2, 1, };
+            double[] valuesB = { 3, 3, 2, 1, 3 };
+
+            // to simulate stacking, shift B up by A
+            double[] valuesB2 = new double[valuesB.Length];
+            for (int i = 0; i < valuesB.Length; i++)
+                valuesB2[i] = valuesA[i] + valuesB[i];
+
+            var plt = new ScottPlot.Plot(400, 300);
+            plt.PlotBar(xs, valuesB2, label: "Series B"); // plot the uppermost bar first
+            plt.PlotBar(xs, valuesA, label: "Series A"); // plot lower bars last (in front)
+            plt.Legend(location: ScottPlot.legendLocation.upperRight);
+            plt.Axis(y2: 7);
+            plt.Title("Stacked Bar Charts");
+            TestTools.SaveFig(plt, "", true);
         }
     }
 }

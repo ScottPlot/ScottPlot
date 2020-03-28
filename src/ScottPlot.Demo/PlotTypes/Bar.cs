@@ -99,5 +99,33 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.YTicks(xs, labels);
             }
         }
+
+        public class Stacked : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Stacked Bar Graphs";
+            public string description { get; } = "Stacked bar charts can be created like this.";
+
+            public void Render(Plot plt)
+            {
+                // create some sample data
+                double[] xs = { 1, 2, 3, 4, 5, 6, 7 };
+                double[] valuesA = { 1, 2, 3, 2, 1, 2, 1 };
+                double[] valuesB = { 3, 3, 2, 1, 3, 2, 1 };
+
+                // to simulate stacking B on A, shift B up by A
+                double[] valuesB2 = new double[valuesB.Length];
+                for (int i = 0; i < valuesB.Length; i++)
+                    valuesB2[i] = valuesA[i] + valuesB[i];
+
+                // plot the bar charts in reverse order (highest first)
+                plt.PlotBar(xs, valuesB2, label: "Series B");
+                plt.PlotBar(xs, valuesA, label: "Series A");
+
+                // improve the styling
+                plt.Legend(location: legendLocation.upperRight);
+                plt.Axis(y1: 0, y2: 7);
+                plt.Title("Stacked Bar Charts");
+            }
+        }
     }
 }
