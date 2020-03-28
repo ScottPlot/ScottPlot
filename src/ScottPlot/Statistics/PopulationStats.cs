@@ -5,93 +5,117 @@ using System.Text;
 
 namespace ScottPlot.Statistics
 {
+    /// <summary>
+    /// This module holds an array of values and provides popultation statistics (mean, median, standard deviation, etc)
+    /// </summary>
     public class PopulationStats
     {
-        public readonly double[] sortedValues;
-        public readonly double min;
-        public readonly double max;
-        public readonly double median;
-        public readonly double sum;
-        public readonly int count;
-        public readonly double mean;
-        public readonly double stDev;
-        public readonly double stdErr;
-        public readonly double Q1;
-        public readonly double Q3;
-        public readonly double IQR;
-        public readonly double[] lowOutliers;
-        public readonly double[] highOutliers;
-        public readonly double maxNonOutlier;
-        public readonly double minNonOutlier;
+        public double[] values { get; private set; }
+        public double[] sortedValues { get; private set; }
+        public double min { get; private set; }
+        public double max { get; private set; }
+        public double median { get; private set; }
+        public double sum { get; private set; }
+        public int count { get; private set; }
+        public double mean { get; private set; }
+        public double stDev { get; private set; }
+        public double stdErr { get; private set; }
+        public double Q1 { get; private set; }
+        public double Q3 { get; private set; }
+        public double IQR { get; private set; }
+        public double[] lowOutliers { get; private set; }
+        public double[] highOutliers { get; private set; }
+        public double maxNonOutlier { get; private set; }
+        public double minNonOutlier { get; private set; }
 
+        /// <summary>
+        /// Generate random values with a normal distribution
+        /// </summary>
+        public PopulationStats(Random rand, int pointCount, double mean = .5, double stdDev = .5)
+        {
+            values = DataGen.RandomNormal(rand, pointCount, mean, stdDev);
+            Recalculate();
+        }
+
+        /// <summary>
+        /// Calculate population stats from the given array of values
+        /// </summary>
+        public PopulationStats(double[] values)
+        {
+            if (values is null)
+                throw new ArgumentException("values cannot be null");
+            
+            this.values = values;
+            Recalculate();
+        }
+
+        [Obsolete("This constructor overload is deprecated. Please remove the fullAnalysis argument.")]
         public PopulationStats(double[] values, bool fullAnalysis = true)
         {
             if (values is null)
                 throw new ArgumentException("values cannot be null");
 
+            this.values = values;
+            if (fullAnalysis)
+                Recalculate();
+        }
+
+        public void Recalculate()
+        {
             count = values.Length;
 
-            if (fullAnalysis)
+            int QSize = (int)Math.Floor(count / 4.0);
+
+            sortedValues = new double[count];
+            Array.Copy(values, 0, sortedValues, 0, count);
+            Array.Sort(sortedValues);
+
+            min = sortedValues.First();
+            max = sortedValues.Last();
+            median = sortedValues[count / 2];
+
+            Q1 = sortedValues[QSize];
+            Q3 = sortedValues[sortedValues.Length - QSize - 1];
+            IQR = Q3 - Q1;
+
+            double lowerBoundary = Q1 - 1.5 * IQR;
+            double upperBoundary = Q3 + 1.5 * IQR;
+
+            int minNonOutlierIndex = 0;
+            int maxNonOutlierIndex = 0;
+
+            for (int i = 0; i < sortedValues.Length; i++)
             {
-                int QSize = (int)Math.Floor(count / 4.0);
-
-                sortedValues = new double[count];
-                Array.Copy(values, 0, sortedValues, 0, count);
-                Array.Sort(sortedValues);
-
-                min = sortedValues.First();
-                max = sortedValues.Last();
-                median = sortedValues[count / 2];
-
-                Q1 = sortedValues[QSize];
-                Q3 = sortedValues[sortedValues.Length - QSize - 1];
-                IQR = Q3 - Q1;
-
-                double lowerBoundary = Q1 - 1.5 * IQR;
-                double upperBoundary = Q3 + 1.5 * IQR;
-
-                int minNonOutlierIndex = 0;
-                int maxNonOutlierIndex = 0;
-
-                for (int i = 0; i < sortedValues.Length; i++)
+                if (sortedValues[i] < lowerBoundary)
                 {
-                    if (sortedValues[i] < lowerBoundary)
-                    {
 
-                    }
-                    else
-                    {
-                        minNonOutlierIndex = i;
-                        break;
-                    }
                 }
-
-                for (int i = sortedValues.Length - 1; i >= 0; i--)
+                else
                 {
-                    if (sortedValues[i] > upperBoundary)
-                    {
-
-                    }
-                    else
-                    {
-                        maxNonOutlierIndex = i;
-                        break;
-                    }
+                    minNonOutlierIndex = i;
+                    break;
                 }
-
-                lowOutliers = new double[minNonOutlierIndex];
-                highOutliers = new double[sortedValues.Length - maxNonOutlierIndex - 1];
-                Array.Copy(sortedValues, 0, lowOutliers, 0, lowOutliers.Length);
-                Array.Copy(sortedValues, maxNonOutlierIndex + 1, highOutliers, 0, highOutliers.Length);
-                minNonOutlier = sortedValues[minNonOutlierIndex];
-                maxNonOutlier = sortedValues[maxNonOutlierIndex];
             }
-            else
+
+            for (int i = sortedValues.Length - 1; i >= 0; i--)
             {
-                min = values.Max();
-                max = values.Min();
-                median = double.NaN;
+                if (sortedValues[i] > upperBoundary)
+                {
+
+                }
+                else
+                {
+                    maxNonOutlierIndex = i;
+                    break;
+                }
             }
+
+            lowOutliers = new double[minNonOutlierIndex];
+            highOutliers = new double[sortedValues.Length - maxNonOutlierIndex - 1];
+            Array.Copy(sortedValues, 0, lowOutliers, 0, lowOutliers.Length);
+            Array.Copy(sortedValues, maxNonOutlierIndex + 1, highOutliers, 0, highOutliers.Length);
+            minNonOutlier = sortedValues[minNonOutlierIndex];
+            maxNonOutlier = sortedValues[maxNonOutlierIndex];
 
             sum = values.Sum();
             mean = sum / count;
