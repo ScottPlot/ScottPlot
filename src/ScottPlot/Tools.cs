@@ -272,5 +272,13 @@ namespace ScottPlot
                     throw;
             }
         }
+
+        public static double[] Round(double[] data, int decimals = 2)
+        {
+            double[] rounded = new double[data.Length];
+            for (int i = 0; i < data.Length; i++)
+                rounded[i] = Math.Round(data[i], decimals);
+            return rounded;
+        }
     }
 }
