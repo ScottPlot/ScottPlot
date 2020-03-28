@@ -29,7 +29,6 @@ namespace ScottPlot
             {
                 double yPx = settings.GetPixelY(value);
                 double xPx = settings.GetPixelX(popLeft + rand.NextDouble() * popWidth);
-                Console.WriteLine($"{xPx} {yPx}");
                 settings.gfxData.DrawEllipse(pen, (float)(xPx - radius), (float)(yPx - radius), radius * 2, radius * 2);
             }
         }
