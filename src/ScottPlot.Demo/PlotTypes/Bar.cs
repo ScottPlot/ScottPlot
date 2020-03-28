@@ -43,33 +43,25 @@ namespace ScottPlot.Demo.PlotTypes
                 // generate random data to plot
                 Random rand = new Random(0);
                 int pointCount = 10;
-                double[] Xs = new double[pointCount];
-                double[] dataA = new double[pointCount];
-                double[] errorA = new double[pointCount];
-                double[] dataB = new double[pointCount];
-                double[] errorB = new double[pointCount];
-                for (int i = 0; i < pointCount; i++)
-                {
-                    Xs[i] = i * 10;
-                    dataA[i] = rand.NextDouble() * 100;
-                    dataB[i] = rand.NextDouble() * 100;
-                    errorA[i] = rand.NextDouble() * 10;
-                    errorB[i] = rand.NextDouble() * 10;
-                }
+                double[] xs = DataGen.Consecutive(pointCount);
+                double[] ys1 = DataGen.RandomNormal(rand, pointCount, 20, 5);
+                double[] ys2 = DataGen.RandomNormal(rand, pointCount, 20, 5);
+                double[] err1 = DataGen.RandomNormal(rand, pointCount, 5, 2);
+                double[] err2 = DataGen.RandomNormal(rand, pointCount, 5, 2);
 
                 // add both bar plots with a careful widths and offsets
-                plt.PlotBar(Xs, dataA, errorY: errorA, label: "data A", barWidth: 3.2, xOffset: -2);
-                plt.PlotBar(Xs, dataB, errorY: errorB, label: "data B", barWidth: 3.2, xOffset: 2);
+                plt.PlotBar(xs, ys1, err1, "data A", barWidth: .3, xOffset: -.2);
+                plt.PlotBar(xs, ys2, err2, "data B", barWidth: .3, xOffset: .2);
 
                 // customize the plot to make it look nicer
-                plt.Grid(false);
-                plt.Grid(lineStyle: LineStyle.Dot);
-                plt.Axis(null, null, 0, null);
-                plt.Legend();
+                plt.Axis(y1: 0);
+                plt.Grid(enableVertical: false, lineStyle: LineStyle.Dot);
+                plt.Axis(y1: 0);
+                plt.Legend(location: legendLocation.upperRight);
 
                 // apply custom axis tick labels
                 string[] labels = { "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten" };
-                plt.XTicks(Xs, labels);
+                plt.XTicks(xs, labels);
             }
         }
 
@@ -127,5 +119,33 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.Title("Stacked Bar Charts");
             }
         }
+
+        public class Labels : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Show values above bars";
+            public string description { get; } = "Values for each bar can be shown on the graph by setting the 'showValues' argument.";
+
+            public void Render(Plot plt)
+            {
+                // generate random data to plot
+                Random rand = new Random(0);
+                int pointCount = 10;
+                double[] xs = DataGen.Consecutive(pointCount);
+                double[] ys = DataGen.RandomNormal(rand, pointCount, 20, 5);
+
+                // let's round the values to simplify display
+                ys = Tools.Round(ys, 1);
+
+                // add both bar plot
+                plt.PlotBar(xs, ys, showValues: true);
+
+                // customize the plot to make it look nicer
+                plt.Axis(y1: 0);
+                plt.Grid(enableVertical: false, lineStyle: LineStyle.Dot);
+                plt.Axis(y1: 0);
+                plt.Legend();
+            }
+        }
+
     }
 }

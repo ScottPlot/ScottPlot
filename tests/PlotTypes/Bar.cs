@@ -80,7 +80,43 @@ namespace ScottPlotTests.PlotTypes
             plt.Legend(location: ScottPlot.legendLocation.upperRight);
             plt.Axis(y2: 7);
             plt.Title("Stacked Bar Charts");
-            TestTools.SaveFig(plt, "", true);
+            TestTools.SaveFig(plt);
+        }
+
+        [Test]
+        public void Test_Bar_ShowValues()
+        {
+            double[] xs = { 1, 2, 3, 4, 5 };
+            double[] ys1 = { 10, 15, 12, 6, 8, };
+            double[] ys2 = { 6, 8, 8, 9, 5 };
+
+            var plt = new ScottPlot.Plot(400, 300);
+
+            plt.PlotBar(xs, ys1, xOffset: -.20, barWidth: 0.3, showValues: true, label: "Series A");
+            plt.PlotBar(xs, ys2, xOffset: +.20, barWidth: 0.3, showValues: true, label: "Series B");
+
+            plt.Grid(lineStyle: ScottPlot.LineStyle.Dot, enableVertical: false);
+            plt.Legend(location: ScottPlot.legendLocation.upperRight);
+            plt.Axis(y1: 0);
+            TestTools.SaveFig(plt);
+        }
+
+        [Test]
+        public void Test_Bar_ShowValuesHorizontal()
+        {
+            double[] xs = { 1, 2, 3, 4, 5 };
+            double[] ys1 = { 10, 15, 12, 6, 8, };
+            double[] ys2 = { 6, 8, 8, 9, 5 };
+
+            var plt = new ScottPlot.Plot(400, 300);
+
+            plt.PlotBar(xs, ys1, xOffset: -.20, barWidth: 0.3, showValues: true, label: "Series A", horizontal: true);
+            plt.PlotBar(xs, ys2, xOffset: +.20, barWidth: 0.3, showValues: true, label: "Series B", horizontal: true);
+
+            plt.Grid(lineStyle: ScottPlot.LineStyle.Dot, enableVertical: false);
+            plt.Legend(location: ScottPlot.legendLocation.upperRight);
+            plt.Axis(x1: 0);
+            TestTools.SaveFig(plt);
         }
     }
 }

@@ -25,6 +25,9 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
   * Create a GDI rendering module which uses System.Drawing 
   * Create a SkiaSharp rendering module and user control (supporting OpenGL hardware acceleration)
 
+## ScottPlot 4.0.25 (IN DEVELOPMENT)
+* `PlotBar()` now supports displaying values above each bar graph by setting the `showValues` argument.
+
 ## ScottPlot 4.0.24
 * `Plot.Clear()` has been improved to more effectively clear plottable objects. Various overloads are provided to selectively clear or preserve certain plot types. (#275) _Thanks @StendProg_
 * `PlotBar()` has been lightly refactored. Argument order has been adjusted, and additional options have been added. Error cap width is now in fractional units instead of pixel units. Horizontal bar charts are now supported. (#277, #315) _Thanks @bonzaiferroni_

@@ -29,14 +29,18 @@ namespace ScottPlot
         private Pen errorPen;
         private Pen outlinePen;
 
-        private bool verticalBars = true;
+        public bool verticalBars;
+        public bool showValues;
+
+        Font valueTextFont;
+        Brush valueTextBrush;
 
         public PlottableBar(double[] xs, double[] ys, string label,
             double barWidth, double xOffset,
             bool fill, Color fillColor,
             double outlineWidth, Color outlineColor,
             double[] yErr, double errorLineWidth, double errorCapSize, Color errorColor,
-            bool horizontal
+            bool horizontal, bool showValues
             )
         {
             if (ys is null || ys.Length == 0)
@@ -60,6 +64,7 @@ namespace ScottPlot
             this.xOffset = xOffset;
             this.label = label;
             this.verticalBars = !horizontal;
+            this.showValues = showValues;
 
             this.barWidth = barWidth;
             this.errorCapSize = errorCapSize;
@@ -70,6 +75,9 @@ namespace ScottPlot
             fillBrush = new SolidBrush(fillColor);
             outlinePen = new Pen(outlineColor, (float)outlineWidth);
             errorPen = new Pen(errorColor, (float)errorLineWidth);
+
+            valueTextFont = new Font(Fonts.GetDefaultFontName(), 12);
+            valueTextBrush = new SolidBrush(Color.Black);
         }
 
         public override AxisLimits2D GetLimits()
@@ -89,6 +97,9 @@ namespace ScottPlot
 
             valueMin = Math.Min(valueMin, valueBase);
             valueMax = Math.Max(valueMax, valueBase);
+
+            if (showValues)
+                valueMax += (valueMax - valueMin) * .1; // increase by 10% to accomodate label
 
             positionMin -= barWidth / 2;
             positionMax += barWidth / 2;
@@ -115,6 +126,7 @@ namespace ScottPlot
 
         private void RenderBarVertical(Settings settings, double position, double value, double valueError)
         {
+            float centerPx = (float)settings.GetPixelX(position);
             double edge1 = position - barWidth / 2;
             double value1 = Math.Min(valueBase, value);
             double value2 = Math.Max(valueBase, value);
@@ -136,7 +148,6 @@ namespace ScottPlot
                 double error1 = value2 - Math.Abs(valueError);
                 double error2 = value2 + Math.Abs(valueError);
 
-                float centerPx = (float)settings.GetPixelX(position);
                 float capPx1 = (float)settings.GetPixelX(position - errorCapSize * barWidth / 2);
                 float capPx2 = (float)settings.GetPixelX(position + errorCapSize * barWidth / 2);
                 float errorPx2 = (float)settings.GetPixelY(error2);
@@ -146,10 +157,14 @@ namespace ScottPlot
                 settings.gfxData.DrawLine(errorPen, capPx1, errorPx1, capPx2, errorPx1);
                 settings.gfxData.DrawLine(errorPen, capPx1, errorPx2, capPx2, errorPx2);
             }
+
+            if (showValues)
+                settings.gfxData.DrawString(value.ToString(), valueTextFont, valueTextBrush, centerPx, rect.Y, settings.misc.sfSouth);
         }
 
         private void RenderBarHorizontal(Settings settings, double position, double value, double valueError)
         {
+            float centerPx = (float)settings.GetPixelY(position);
             double edge2 = position + barWidth / 2;
             double value1 = Math.Min(valueBase, value);
             double value2 = Math.Max(valueBase, value);
@@ -171,7 +186,6 @@ namespace ScottPlot
                 double error1 = value2 - Math.Abs(valueError);
                 double error2 = value2 + Math.Abs(valueError);
 
-                float centerPx = (float)settings.GetPixelY(position);
                 float capPx1 = (float)settings.GetPixelY(position - errorCapSize * barWidth / 2);
                 float capPx2 = (float)settings.GetPixelY(position + errorCapSize * barWidth / 2);
                 float errorPx2 = (float)settings.GetPixelX(error2);
@@ -181,6 +195,9 @@ namespace ScottPlot
                 settings.gfxData.DrawLine(errorPen, errorPx1, capPx2, errorPx1, capPx1);
                 settings.gfxData.DrawLine(errorPen, errorPx2, capPx2, errorPx2, capPx1);
             }
+
+            if (showValues)
+                settings.gfxData.DrawString(value.ToString(), valueTextFont, valueTextBrush, rect.X + rect.Width, centerPx, settings.misc.sfWest);
         }
 
         public override string ToString()
