@@ -6,7 +6,7 @@ namespace ScottPlotTests
 {
     public static class TestTools
     {
-        public static void SaveFig(ScottPlot.Plot plt, string subName = "")
+        public static void SaveFig(ScottPlot.Plot plt, string subName = "", bool launch = false)
         {
             var stackTrace = new System.Diagnostics.StackTrace();
             string callingMethod = stackTrace.GetFrame(1).GetMethod().Name;
@@ -18,6 +18,9 @@ namespace ScottPlotTests
             DisplayRenderInfo(callingMethod, subName, plt.GetTotalPoints(), plt.GetSettings(false).benchmark.msec);
             Console.WriteLine($"Saved: {filePath}");
             Console.WriteLine();
+
+            if (launch)
+                ScottPlot.Tools.LaunchBrowser(filePath);
         }
 
         public static void SaveFig(ScottPlot.MultiPlot mplt, string subName = "")
