@@ -12,17 +12,18 @@ namespace ScottPlotTests.Groups
     class PlotGroupsTest
     {
         [Test]
-        public void Test_PopulationSeries_Render()
+        public void Test_PopulationGroupedSeries_Render()
         {
-            PopulationSeries series = DataGen.GetGlobalLifeExpectancyByYear();
+            PopulationGroupedSeries groupedSeries = DataGen.GetLifeExpectancyByLocationByYear();
 
-            var plt = new ScottPlot.Plot(400, 300);
-            plt.Add(new ScottPlot.PlottableSeries(series));
-            plt.XTicks(labels: series.groupLabels);
+            var plt = new ScottPlot.Plot();
+            plt.Add(new ScottPlot.PlottableGroupedSeries(groupedSeries));
+            plt.XTicks(labels: groupedSeries.groupLabels);
             plt.Title("Life Expectancy");
             plt.YLabel("Age (years)");
             plt.XLabel("Year");
-            plt.Grid(lineStyle: LineStyle.Dot);
+            plt.Legend(location: legendLocation.lowerRight);
+            plt.Grid(lineStyle: LineStyle.Dot, enableVertical: false);
 
             TestTools.LaunchFig(plt);
         }

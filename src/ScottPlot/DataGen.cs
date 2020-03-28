@@ -278,16 +278,17 @@ namespace ScottPlot
         {
             Random rand = new Random(seed);
 
-            var agesByYear = new ScottPlot.Statistics.PopulationStats[] {
-                new Statistics.PopulationStats(rand, 35, 52, 15), // 1957
-                new Statistics.PopulationStats(rand, 35, 67, 8), // 1987
-                new Statistics.PopulationStats(rand, 35, 71, 7) // 2007
+            var agesByYear = new ScottPlot.Statistics.Population[] {
+                new Statistics.Population(rand, 35, 52, 15), // 1957
+                new Statistics.Population(rand, 35, 67, 8), // 1987
+                new Statistics.Population(rand, 35, 71, 7) // 2007
             };
 
             var popSeries = new ScottPlot.Statistics.PopulationSeries(
-                    populations: agesByYear, 
+                    populations: agesByYear,
                     seriesLabel: "ages by year",
-                    groupLabels: new string[] { "1957", "1987", "2007" }
+                    groupLabels: new string[] { "1957", "1987", "2007" },
+                    color: Color.LightGray
                 );
 
             return popSeries;
@@ -296,42 +297,42 @@ namespace ScottPlot
         /// <summary>
         /// Return life expectancy from every country, by location (series), by year (group).
         /// </summary>
-        public static Statistics.PopulationGroupedSeries GetDemoGroupedSeries(int seed = 0)
+        public static Statistics.PopulationGroupedSeries GetLifeExpectancyByLocationByYear(int seed = 0)
         {
             Random rand = new Random(seed);
 
             // define group labels
             string[] groupLabels = new string[] { "1957", "1987", "2007" };
+            var colorset = new Config.Colors();
 
             // create a PopulationSeries for each series (with the number of elements equal to the number of groups)
-
-            var popStatsAmericas = new Statistics.PopulationStats[] {
-                new Statistics.PopulationStats(rand, 35, 56, 15), // 1957
-                new Statistics.PopulationStats(rand, 35, 69, 8), // 1987
-                new Statistics.PopulationStats(rand, 35, 74, 7) // 2007
+            var popStatsAmericas = new Statistics.Population[] {
+                new Statistics.Population(rand, 35, 56, 15), // 1957
+                new Statistics.Population(rand, 35, 69, 8), // 1987
+                new Statistics.Population(rand, 35, 74, 7) // 2007
             };
-            var seriesAmericas = new Statistics.PopulationSeries(popStatsAmericas, "Americas", groupLabels);
+            var seriesAmericas = new Statistics.PopulationSeries(popStatsAmericas, "Americas", groupLabels, colorset.GetColor(0));
 
-            var popStatsAfrica = new Statistics.PopulationStats[] {
-                new Statistics.PopulationStats(rand, 54, 42, 10), // 1957
-                new Statistics.PopulationStats(rand, 54, 52, 12), // 1987
-                new Statistics.PopulationStats(rand, 54, 53, 13) // 2007
+            var popStatsAfrica = new Statistics.Population[] {
+                new Statistics.Population(rand, 54, 42, 10), // 1957
+                new Statistics.Population(rand, 54, 52, 12), // 1987
+                new Statistics.Population(rand, 54, 53, 13) // 2007
             };
-            var seriesAfrica = new Statistics.PopulationSeries(popStatsAfrica, "Africa", groupLabels);
+            var seriesAfrica = new Statistics.PopulationSeries(popStatsAfrica, "Africa", groupLabels, colorset.GetColor(1));
 
-            var popStatsAsia = new Statistics.PopulationStats[] {
-                new Statistics.PopulationStats(rand, 48, 47, 15), // 1957
-                new Statistics.PopulationStats(rand, 48, 67, 10), // 1987
-                new Statistics.PopulationStats(rand, 48, 74, 9) // 2007
+            var popStatsAsia = new Statistics.Population[] {
+                new Statistics.Population(rand, 48, 47, 15), // 1957
+                new Statistics.Population(rand, 48, 67, 10), // 1987
+                new Statistics.Population(rand, 48, 74, 9) // 2007
             };
-            var seriesAsia = new Statistics.PopulationSeries(popStatsAsia, "Asia", groupLabels);
+            var seriesAsia = new Statistics.PopulationSeries(popStatsAsia, "Asia", groupLabels, colorset.GetColor(2));
 
-            var popStatsEurope = new Statistics.PopulationStats[] {
-                new Statistics.PopulationStats(rand, 44, 67, 7), // 1957
-                new Statistics.PopulationStats(rand, 44, 75, 6), // 1987
-                new Statistics.PopulationStats(rand, 44, 58, 6) // 2007
+            var popStatsEurope = new Statistics.Population[] {
+                new Statistics.Population(rand, 44, 67, 7), // 1957
+                new Statistics.Population(rand, 44, 75, 6), // 1987
+                new Statistics.Population(rand, 44, 58, 6) // 2007
             };
-            var seriesEurope = new Statistics.PopulationSeries(popStatsEurope, "Europe", groupLabels);
+            var seriesEurope = new Statistics.PopulationSeries(popStatsEurope, "Europe", groupLabels, colorset.GetColor(3));
 
             // organize the PopulationSeries into grups
 

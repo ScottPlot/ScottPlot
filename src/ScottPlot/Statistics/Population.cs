@@ -8,7 +8,7 @@ namespace ScottPlot.Statistics
     /// <summary>
     /// This module holds an array of values and provides popultation statistics (mean, median, standard deviation, etc)
     /// </summary>
-    public class PopulationStats
+    public class Population
     {
         public double[] values { get; private set; }
         public double[] sortedValues { get; private set; }
@@ -31,7 +31,7 @@ namespace ScottPlot.Statistics
         /// <summary>
         /// Generate random values with a normal distribution
         /// </summary>
-        public PopulationStats(Random rand, int pointCount, double mean = .5, double stdDev = .5)
+        public Population(Random rand, int pointCount, double mean = .5, double stdDev = .5)
         {
             values = DataGen.RandomNormal(rand, pointCount, mean, stdDev);
             Recalculate();
@@ -40,7 +40,7 @@ namespace ScottPlot.Statistics
         /// <summary>
         /// Calculate population stats from the given array of values
         /// </summary>
-        public PopulationStats(double[] values)
+        public Population(double[] values)
         {
             if (values is null)
                 throw new ArgumentException("values cannot be null");
@@ -50,7 +50,7 @@ namespace ScottPlot.Statistics
         }
 
         [Obsolete("This constructor overload is deprecated. Please remove the fullAnalysis argument.")]
-        public PopulationStats(double[] values, bool fullAnalysis = true)
+        public Population(double[] values, bool fullAnalysis = true)
         {
             if (values is null)
                 throw new ArgumentException("values cannot be null");

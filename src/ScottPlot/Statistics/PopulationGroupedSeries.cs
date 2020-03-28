@@ -26,16 +26,35 @@ namespace ScottPlot.Statistics
         public string[] seriesLabels { get { return groupedSeries.Select(x => x.seriesLabel).ToArray(); } }
         public int seriesCount { get { return groupedSeries.Length; } }
 
-        public PopulationGroupedSeries(PopulationSeries[] groupedSeries, string[] groupLabels)
+        public PopulationGroupedSeries(PopulationSeries[] groupedSeries, string[] groupLabels, System.Drawing.Color[] colors = null)
         {
-            this.groupedSeries = groupedSeries;
+            if (groupedSeries is null)
+                throw new ArgumentException("groupedSeries cannot be null");
+            else
+                this.groupedSeries = groupedSeries;
+
+            if (groupLabels is null)
+                throw new ArgumentException("group labels must have same number of elements as groupedSeries");
+            else
+                foreach (var series in groupedSeries)
+                    if (series.groupLabels.Length != groupLabels.Length)
+                        throw new ArgumentException("GroupLabels must be identical in length to all groupedSeries GroupLabels");
+
             this.groupLabels = groupLabels;
 
-            var defaultColors = new ScottPlot.Config.Colors();
-            for (int i = 0; i < groupedSeries.Length; i++)
+            if (colors is null)
             {
-                if (groupedSeries[i].color is null)
-                    groupedSeries[i].color = defaultColors.GetColor(i);
+                var colorset = new ScottPlot.Config.Colors();
+                for (int i = 0; i < groupedSeries.Length; i++)
+                    groupedSeries[i].color = colorset.GetColor(i);
+            }
+            else
+            {
+                if (colors.Length != groupedSeries.Length)
+                    throw new ArgumentException("colors must have same number of elements as groupedSeries");
+                else
+                    for (int i = 0; i < groupedSeries.Length; i++)
+                        groupedSeries[i].color = colors[i];
             }
         }
 
