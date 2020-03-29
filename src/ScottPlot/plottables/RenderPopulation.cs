@@ -8,7 +8,7 @@ namespace ScottPlot
 {
     public static class RenderPopulation
     {
-        public enum Position { Hide, Overlap, Left, Right }
+        public enum Position { Hide, Center, Left, Right }
 
         public static void Scatter(Settings settings, Population pop, Random rand, double popLeft, double popWidth, Color fillColor, Color edgeColor, byte alpha, Position position)
         {
@@ -38,7 +38,7 @@ namespace ScottPlot
             }
         }
 
-        public static void Distribution(Settings settings, Population pop, Random rand, double popLeft, double popWidth, Color color, Position position)
+        public static void Distribution(Settings settings, Population pop, Random rand, double popLeft, double popWidth, Color color, Position position, LineStyle lineStyle)
         {
             // adjust edges to accomodate special positions
             if (position == Position.Hide) return;
@@ -50,7 +50,8 @@ namespace ScottPlot
             popLeft += popWidth * edgePaddingFrac;
             popWidth -= (popWidth * edgePaddingFrac) * 2;
 
-            Pen pen = new Pen(color);
+            Pen pen = new Pen(color) { DashPattern = StyleTools.DashPattern(lineStyle) };
+
             double[] ys = DataGen.Range(pop.minus3stDev, pop.plus3stDev, settings.yAxisUnitsPerPixel);
             double[] ysFrac = pop.GetDistribution(ys);
 
@@ -64,7 +65,7 @@ namespace ScottPlot
             settings.gfxData.DrawLines(pen, points);
         }
 
-        public static void MeanAndError(Settings settings, Population pop, Random rand, double popLeft, double popWidth, Color color, Position position)
+        public static void MeanAndError(Settings settings, Population pop, Random rand, double popLeft, double popWidth, Color color, Position position, bool useStdErr = false)
         {
             // adjust edges to accomodate special positions
             if (position == Position.Hide) return;
@@ -75,8 +76,18 @@ namespace ScottPlot
             double centerX = popLeft + popWidth / 2;
             double xPx = settings.GetPixelX(centerX);
             double yPx = settings.GetPixelY(pop.mean);
-            double errorMaxPx = settings.GetPixelY(pop.mean + pop.stDev);
-            double errorMinPx = settings.GetPixelY(pop.mean - pop.stDev);
+
+            double errorMaxPx, errorMinPx;
+            if (useStdErr)
+            {
+                errorMaxPx = settings.GetPixelY(pop.mean + pop.stdErr);
+                errorMinPx = settings.GetPixelY(pop.mean - pop.stdErr);
+            }
+            else
+            {
+                errorMaxPx = settings.GetPixelY(pop.mean + pop.stDev);
+                errorMinPx = settings.GetPixelY(pop.mean - pop.stDev);
+            }
 
             // make cap width a fraction of available space
             double capWidthFrac = .38;
@@ -94,7 +105,7 @@ namespace ScottPlot
             settings.gfxData.DrawLine(pen, (float)capPx1, (float)errorMaxPx, (float)capPx2, (float)errorMaxPx);
         }
 
-        public static void Bar(Settings settings, Population pop, Random rand, double popLeft, double popWidth, Color color, Position position)
+        public static void Bar(Settings settings, Population pop, Random rand, double popLeft, double popWidth, Color color, Position position, bool useStdErr = false)
         {
             // adjust edges to accomodate special positions
             if (position == Position.Hide) return;
@@ -106,8 +117,18 @@ namespace ScottPlot
             double xPx = settings.GetPixelX(centerX);
             double yPxTop = settings.GetPixelY(pop.mean);
             double yPxBase = settings.GetPixelY(0);
-            double errorMaxPx = settings.GetPixelY(pop.mean + pop.stDev);
-            double errorMinPx = settings.GetPixelY(pop.mean - pop.stDev);
+
+            double errorMaxPx, errorMinPx;
+            if (useStdErr)
+            {
+                errorMaxPx = settings.GetPixelY(pop.mean + pop.stdErr);
+                errorMinPx = settings.GetPixelY(pop.mean - pop.stdErr);
+            }
+            else
+            {
+                errorMaxPx = settings.GetPixelY(pop.mean + pop.stDev);
+                errorMinPx = settings.GetPixelY(pop.mean - pop.stDev);
+            }
 
             // make cap width a fraction of available space
             double capWidthFrac = .38;

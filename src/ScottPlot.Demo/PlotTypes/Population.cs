@@ -195,5 +195,48 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.Grid(lineStyle: LineStyle.Dot, enableVertical: false);
             }
         }
+
+        public class AdvancedStyling : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Advanced Styling";
+            public string description { get; } = "Store the object returned by Plot.Populations() and modify its properties to further customize how group plots are displayed.";
+
+            public void Render(Plot plt)
+            {
+                // create some sample data to represent test scores
+                Random rand = new Random(0);
+                double[] scoresA = DataGen.RandomNormal(rand, 35, 72, 7);
+                double[] scoresB = DataGen.RandomNormal(rand, 42, 57, 10);
+                double[] scoresC = DataGen.RandomNormal(rand, 23, 79, 5);
+
+                // create a unique PopulationSeries for each set of scores
+                var seriesA = new Statistics.PopulationSeries(new Statistics.Population[] { new Statistics.Population(scoresA) }, "Class A");
+                var seriesB = new Statistics.PopulationSeries(new Statistics.Population[] { new Statistics.Population(scoresB) }, "Class B");
+                var seriesC = new Statistics.PopulationSeries(new Statistics.Population[] { new Statistics.Population(scoresC) }, "Class C");
+
+                // create a MultiSeries from all the individual series
+                var multiSeries = new Statistics.PopulationMultiSeries(new Statistics.PopulationSeries[] { seriesA, seriesB, seriesC });
+
+                // save the plottable and modify its properties to customize display style
+                var popPlot = plt.PlotPopulations(multiSeries);
+                popPlot.displayDistributionCurve = true;
+                popPlot.distributionCurveLineStyle = LineStyle.Dash;
+                popPlot.scatterOutlineColor = System.Drawing.Color.Transparent;
+                popPlot.displayItems = PlottablePopulations.DisplayItems.ScatterAndBox;
+                popPlot.boxStyle = PlottablePopulations.BoxStyle.BarMeanStDev;
+                plt.Axis(y1: 0);
+
+                // colors are managed at the population series level:
+                foreach (var popSeries in popPlot.popMultiSeries.multiSeries)
+                    popSeries.color = Tools.GetRandomColor(rand);
+
+                // improve the style of the plot
+                plt.Title($"Test Scores by Class");
+                plt.YLabel("Score");
+                plt.Legend(location: legendLocation.lowerLeft);
+                plt.Ticks(displayTicksX: false);
+                plt.Grid(lineStyle: LineStyle.Dot, enableVertical: false);
+            }
+        }
     }
 }
