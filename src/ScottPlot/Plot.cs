@@ -855,7 +855,7 @@ namespace ScottPlot
 
         public PlottablePopulations PlotPopulations(Statistics.Population population, string label = null)
         {
-            var plottable = new PlottablePopulations(population, label);
+            var plottable = new PlottablePopulations(population, label, settings.GetNextColor());
             Add(plottable);
             return plottable;
         }
@@ -869,6 +869,9 @@ namespace ScottPlot
 
         public PlottablePopulations PlotPopulations(Statistics.PopulationSeries series, string label = null)
         {
+            series.color = settings.GetNextColor();
+            if (label != null)
+                series.seriesLabel = label;
             var plottable = new PlottablePopulations(series, label);
             Add(plottable);
             return plottable;
@@ -876,6 +879,9 @@ namespace ScottPlot
 
         public PlottablePopulations PlotPopulations(Statistics.PopulationMultiSeries multiSeries)
         {
+            for (int i = 0; i < multiSeries.multiSeries.Length; i++)
+                multiSeries.multiSeries[i].color = settings.colors.GetColor(i);
+
             var plottable = new PlottablePopulations(multiSeries);
             Add(plottable);
             return plottable;
