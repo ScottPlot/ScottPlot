@@ -157,32 +157,31 @@ namespace ScottPlot.Demo.PlotTypes
                 // Collect multiple populations into a PopulationSeries.
                 // All populations in a series will be styled the same and appear once in the legend.
 
-                var dataA = new Statistics.Population[] {
+                var popsA = new Statistics.Population[] {
                     new Statistics.Population(scoresAfall),
                     new Statistics.Population(scoresAspring),
                     new Statistics.Population(scoresAsumA),
                     new Statistics.Population(scoresAsumB)
                 };
 
-                var dataB = new Statistics.Population[] {
+                var popsB = new Statistics.Population[] {
                     new Statistics.Population(scoresBfall),
                     new Statistics.Population(scoresBspring),
                     new Statistics.Population(scoresBsumA),
                     new Statistics.Population(scoresBsumB)
                 };
 
-                var dataC = new Statistics.Population[] {
+                var popsC = new Statistics.Population[] {
                     new Statistics.Population(scoresCfall),
                     new Statistics.Population(scoresCspring),
                     new Statistics.Population(scoresCsumA),
                     new Statistics.Population(scoresCsumB)
                 };
 
-                var popSeriesA = new Statistics.PopulationSeries(dataA, "Class A");
-                var popSeriesB = new Statistics.PopulationSeries(dataB, "Class B");
-                var popSeriesC = new Statistics.PopulationSeries(dataC, "Class C");
-                var allSeries = new Statistics.PopulationSeries[] { popSeriesA, popSeriesB, popSeriesC };
-                var seriesLabels = new string[] { "Fall", "Spring", "Summer A", "Summer B" };
+                var seriesA = new Statistics.PopulationSeries(popsA, "Class A");
+                var seriesB = new Statistics.PopulationSeries(popsB, "Class B");
+                var seriesC = new Statistics.PopulationSeries(popsC, "Class C");
+                var allSeries = new Statistics.PopulationSeries[] { seriesA, seriesB, seriesC };
 
                 // create a MultiSeries from multiple population series and plot it
                 var multiSeries = new Statistics.PopulationMultiSeries(allSeries);
@@ -191,7 +190,7 @@ namespace ScottPlot.Demo.PlotTypes
                 // improve the style of the plot
                 plt.Title($"Test Scores by Class");
                 plt.YLabel("Score");
-                plt.XTicks(seriesLabels);
+                plt.XTicks(new string[] { "Fall", "Spring", "Summer A", "Summer B" });
                 plt.Legend();
                 plt.Grid(lineStyle: LineStyle.Dot, enableVertical: false);
             }
