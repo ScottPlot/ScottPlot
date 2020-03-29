@@ -25,8 +25,12 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
   * Create a GDI rendering module which uses System.Drawing 
   * Create a SkiaSharp rendering module and user control (supporting OpenGL hardware acceleration)
 
-## ScottPlot 4.0.25 (IN DEVELOPMENT)
+## ScottPlot 4.0.25
 * `PlotBar()` now supports displaying values above each bar graph by setting the `showValues` argument.
+* `PlotPopulations()` has extensive capabilities for plotting grouped population data using box plots, bar plots, box and whisper plots, scatter data with distribution curves, and more! See the cookbook for details. (#315)
+* `Histogram` objects now have a `population` property.
+* `PopulationStats` has been renamed to `Population` and has additional properties and methods useful for reporting population statistics.
+* Improved grid rendering rare artifacts which appear as unwanted diagnal lines when anti-aliasing is disabled. (#327)
 
 ## ScottPlot 4.0.24
 * `Plot.Clear()` has been improved to more effectively clear plottable objects. Various overloads are provided to selectively clear or preserve certain plot types. (#275) _Thanks @StendProg_
