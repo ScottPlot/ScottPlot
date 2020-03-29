@@ -32,6 +32,7 @@ namespace ScottPlot.Statistics
         public double maxNonOutlier { get; private set; }
         public double minNonOutlier { get; private set; }
         public int n { get { return values.Length; } }
+        public double span {get { return sortedValues.Last() - sortedValues.First(); } }
 
         /// <summary>
         /// Generate random values with a normal distribution
