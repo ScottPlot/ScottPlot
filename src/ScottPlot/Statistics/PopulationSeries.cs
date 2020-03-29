@@ -13,7 +13,7 @@ namespace ScottPlot.Statistics
         public string seriesLabel;
         public System.Drawing.Color color;
 
-        public PopulationSeries(Population[] populations, string seriesLabel, System.Drawing.Color? color = null)
+        public PopulationSeries(Population[] populations, string seriesLabel = null, System.Drawing.Color? color = null)
         {
             this.populations = populations;
             this.seriesLabel = seriesLabel;

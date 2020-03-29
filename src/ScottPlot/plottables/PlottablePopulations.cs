@@ -30,6 +30,18 @@ namespace ScottPlot
                 );
         }
 
+        public PlottablePopulations(PopulationSeries populationSeries, string label = null, System.Drawing.Color? color = null)
+        {
+            if (color is null)
+                color = System.Drawing.Color.LightGray;
+
+            groupedSeries = new PopulationMultiSeries(
+                multiSeries: new PopulationSeries[] { populationSeries },
+                groupLabels: new string[populationSeries.populations.Length],
+                colors: new System.Drawing.Color[] { color.Value }
+                );
+        }
+
         public PlottablePopulations(Population population, string label = null, System.Drawing.Color? color = null)
         {
             if (color is null)

@@ -853,6 +853,34 @@ namespace ScottPlot
             return axisSpan;
         }
 
+        public PlottablePopulations PlotPopulations(Statistics.Population population, string label = null)
+        {
+            var plottable = new PlottablePopulations(population, label);
+            Add(plottable);
+            return plottable;
+        }
+
+        public PlottablePopulations PlotPopulations(Statistics.Population[] populations, string label = null)
+        {
+            var plottable = new PlottablePopulations(populations, label);
+            Add(plottable);
+            return plottable;
+        }
+
+        public PlottablePopulations PlotPopulations(Statistics.PopulationSeries series, string label = null)
+        {
+            var plottable = new PlottablePopulations(series, label);
+            Add(plottable);
+            return plottable;
+        }
+
+        public PlottablePopulations PlotPopulations(Statistics.PopulationMultiSeries multiSeries)
+        {
+            var plottable = new PlottablePopulations(multiSeries);
+            Add(plottable);
+            return plottable;
+        }
+
         public List<Plottable> GetPlottables()
         {
             return settings.plottables;

@@ -58,14 +58,12 @@ namespace ScottPlotTests.Groups
                 new Population(rand, 44, 78, 2), // europe
                 new Population(rand, 14, 81, 1), // oceania
             };
-
-            string[] groupLabels = { "Africas", "Americas", "Asia", "Europe", "Oceania" };
             var customPlottable = new PlottablePopulations(ages, color: System.Drawing.Color.CornflowerBlue);
 
             // plot the multi-series
             var plt = new ScottPlot.Plot();
             plt.Add(customPlottable);
-            plt.XTicks(labels: groupLabels);
+            plt.XTicks(labels: new string[] { "Africas", "Americas", "Asia", "Europe", "Oceania" });
             plt.Ticks(fontSize: 18);
 
             // additional plot styling

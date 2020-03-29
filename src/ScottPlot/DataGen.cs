@@ -103,7 +103,7 @@ namespace ScottPlot
             return ys;
         }
 
-        private static double RandomNormalValue(Random rand, double mean, double stdDev, double maxSdMultiple = 10)
+        public static double RandomNormalValue(Random rand, double mean, double stdDev, double maxSdMultiple = 10)
         {
             while (true)
             {
