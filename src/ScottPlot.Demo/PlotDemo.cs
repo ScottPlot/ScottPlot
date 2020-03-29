@@ -84,7 +84,7 @@ namespace ScottPlot.Demo
 
                 if (line.StartsWith("        public class"))
                 {
-                    inCorrectClass = (line.StartsWith($"        public class {categoryClass}"));
+                    inCorrectClass = (line.StartsWith($"        public class {categoryClass} :"));
                 }
 
                 if (line.StartsWith("            public void Render(Plot plt)"))
