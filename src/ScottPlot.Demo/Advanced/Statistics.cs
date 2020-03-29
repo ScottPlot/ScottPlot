@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
 
-namespace ScottPlot.Demo.Examples
+namespace ScottPlot.Demo.Advanced
 {
-    class Stats
+    class Statistics
     {
         public class Histogram : PlotDemo, IPlotDemo
         {
@@ -16,7 +16,7 @@ namespace ScottPlot.Demo.Examples
             {
                 Random rand = new Random(0);
                 double[] values = DataGen.RandomNormal(rand, pointCount: 1000, mean: 50, stdDev: 20);
-                var hist = new Statistics.Histogram(values, min: 0, max: 100);
+                var hist = new ScottPlot.Statistics.Histogram(values, min: 0, max: 100);
 
                 plt.PlotBar(hist.bins, hist.countsFrac, barWidth: 1.2, outlineWidth: 0);
                 plt.PlotScatter(hist.bins, hist.countsFracCurve, markerSize: 0, lineWidth: 2, color: Color.Black);
@@ -75,6 +75,37 @@ namespace ScottPlot.Demo.Examples
                 plt.Title($"Y = {model.slope:0.0000}x + {model.offset:0.0}\nR² = {model.rSquared:0.0000}");
                 plt.PlotScatter(xs, ys, lineWidth: 0);
                 plt.PlotLine(model.slope, model.offset, (x1, x2), lineWidth: 2);
+            }
+        }
+
+        public class Population : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Population Statistics";
+            public string description { get; } = "The Population class makes it easy to work with population statistics. Instantiate the Population class with a double array of values, then access its properties and methods as desired.";
+
+            public void Render(Plot plt)
+            {
+                // create some sample data to represent test scores
+                Random rand = new Random(0);
+                double[] scores = DataGen.RandomNormal(rand, 250, 85, 5);
+
+                // create a Population object from the data
+                var pop = new ScottPlot.Statistics.Population(scores);
+
+                // display the original values scattered vertically
+                double[] ys = DataGen.RandomNormal(rand, pop.values.Length, stdDev: .15);
+                plt.PlotScatter(pop.values, ys, markerSize: 10,
+                    markerShape: MarkerShape.openCircle, lineWidth: 0);
+
+                // display the bell curve for this distribution
+                double[] curveXs = DataGen.Range(pop.minus3stDev, pop.plus3stDev, .1);
+                double[] curveYs = pop.GetDistribution(curveXs);
+                plt.PlotScatter(curveXs, curveYs, markerSize: 0, lineWidth: 2);
+
+                // improve the style of the plot
+                plt.Title($"Test Scores (mean: {pop.mean:0.00} +/- {pop.stDev:0.00}, n={pop.n})");
+                plt.XLabel("Score");
+                plt.Grid(lineStyle: LineStyle.Dot);
             }
         }
     }

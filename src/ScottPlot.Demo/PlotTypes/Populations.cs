@@ -4,43 +4,12 @@ using System.Text;
 
 namespace ScottPlot.Demo.PlotTypes
 {
-    class Population
+    class Populations
     {
-        public class PopulationModule : PlotDemo, IPlotDemo
-        {
-            public string name { get; } = "The Population Class";
-            public string description { get; } = "The Population class makes it easy to work with population statistics. Instantiate the Population class with a double array of values, then access its properties and methods as desired.";
-
-            public void Render(Plot plt)
-            {
-                // create some sample data to represent test scores
-                Random rand = new Random(0);
-                double[] scores = DataGen.RandomNormal(rand, 250, 85, 5);
-
-                // create a Population object from the data
-                var pop = new ScottPlot.Statistics.Population(scores);
-
-                // display the original values scattered vertically
-                double[] ys = DataGen.RandomNormal(rand, pop.values.Length, stdDev: .15);
-                plt.PlotScatter(pop.values, ys, markerSize: 10,
-                    markerShape: MarkerShape.openCircle, lineWidth: 0);
-
-                // display the bell curve for this distribution
-                double[] curveXs = DataGen.Range(pop.minus3stDev, pop.plus3stDev, .1);
-                double[] curveYs = pop.GetDistribution(curveXs);
-                plt.PlotScatter(curveXs, curveYs, markerSize: 0, lineWidth: 2);
-
-                // improve the style of the plot
-                plt.Title($"Test Scores (mean: {pop.mean:0.00} +/- {pop.stDev:0.00}, n={pop.n})");
-                plt.XLabel("Score");
-                plt.Grid(lineStyle: LineStyle.Dot);
-            }
-        }
-
         public class PlotPopulation : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Plot a Population";
-            public string description { get; } = "Population objects can be plotted with Plot.Populations()";
+            public string description { get; } = "Population objects can be plotted with Plot.Populations(). The default display format is to show a box-and-whisker plot (showing outliers, quartiles, and median) next to a scatter plot of the original data values and the distribution curve.";
 
             public void Render(Plot plt)
             {
