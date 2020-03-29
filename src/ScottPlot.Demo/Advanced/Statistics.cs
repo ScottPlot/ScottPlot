@@ -18,7 +18,9 @@ namespace ScottPlot.Demo.Advanced
                 double[] values = DataGen.RandomNormal(rand, pointCount: 1000, mean: 50, stdDev: 20);
                 var hist = new ScottPlot.Statistics.Histogram(values, min: 0, max: 100);
 
-                plt.PlotBar(hist.bins, hist.countsFrac, barWidth: 1.2, outlineWidth: 0);
+                double barWidth = hist.binSize * 1.2; // slightly over-side to reduce anti-alias rendering artifacts
+
+                plt.PlotBar(hist.bins, hist.countsFrac, barWidth: barWidth, outlineWidth: 0);
                 plt.PlotScatter(hist.bins, hist.countsFracCurve, markerSize: 0, lineWidth: 2, color: Color.Black);
                 plt.Title("Normal Random Data");
                 plt.YLabel("Frequency (fraction)");
