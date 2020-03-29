@@ -6,15 +6,28 @@ using System.Text;
 
 namespace ScottPlot
 {
-    public class PlottableGroupedSeries : Plottable
+    public class PlottablePopulations : Plottable
     {
-        PopulationGroupedSeries groupedSeries;
+        PopulationMultiSeries groupedSeries;
         public int groupCount { get { return groupedSeries.groupCount; } }
         public int seriesCount { get { return groupedSeries.seriesCount; } }
 
-        public PlottableGroupedSeries(PopulationGroupedSeries groupedSeries)
+        public PlottablePopulations(PopulationMultiSeries groupedSeries)
         {
             this.groupedSeries = groupedSeries;
+        }
+
+        public PlottablePopulations(Population[] populations, string label = null, System.Drawing.Color? color = null)
+        {
+            if (color is null)
+                color = System.Drawing.Color.LightGray;
+
+            var ps = new PopulationSeries(populations, label, color.Value);
+            this.groupedSeries = new PopulationMultiSeries(
+                multiSeries: new PopulationSeries[] { ps },
+                groupLabels: new string[populations.Length],
+                colors: new System.Drawing.Color[] { color.Value }
+                );
         }
 
         public override string ToString()
@@ -25,7 +38,7 @@ namespace ScottPlot
         public override int GetPointCount()
         {
             int pointCount = 0;
-            foreach (var group in groupedSeries.groupedSeries)
+            foreach (var group in groupedSeries.multiSeries)
                 foreach (var population in group.populations)
                     pointCount += population.count;
             return pointCount;
@@ -34,7 +47,7 @@ namespace ScottPlot
         public override LegendItem[] GetLegendItems()
         {
             var items = new List<LegendItem>();
-            foreach (var series in groupedSeries.groupedSeries)
+            foreach (var series in groupedSeries.multiSeries)
                 items.Add(new LegendItem(series.seriesLabel, series.color, lineWidth: 10));
             return items.ToArray();
         }
@@ -44,7 +57,7 @@ namespace ScottPlot
             double minValue = double.PositiveInfinity;
             double maxValue = double.NegativeInfinity;
 
-            foreach (var series in groupedSeries.groupedSeries)
+            foreach (var series in groupedSeries.multiSeries)
             {
                 foreach (var population in series.populations)
                 {
@@ -65,7 +78,7 @@ namespace ScottPlot
 
         public override void Render(Settings settings)
         {
-            Random rand = new Random();
+            Random rand = new Random(0);
             double groupWidth = .8;
             var popWidth = groupWidth / seriesCount;
 
@@ -73,7 +86,7 @@ namespace ScottPlot
             {
                 for (int groupIndex = 0; groupIndex < groupCount; groupIndex++)
                 {
-                    var series = groupedSeries.groupedSeries[seriesIndex];
+                    var series = groupedSeries.multiSeries[seriesIndex];
                     var population = series.populations[groupIndex];
                     var groupLeft = groupIndex - groupWidth / 2;
                     var popLeft = groupLeft + popWidth * seriesIndex;

@@ -11,15 +11,13 @@ namespace ScottPlot.Statistics
     {
         public Population[] populations;
         public string seriesLabel;
-        public string[] groupLabels;
         public System.Drawing.Color color;
 
-        public PopulationSeries(Population[] populations, string seriesLabel, string[] groupLabels, System.Drawing.Color color)
+        public PopulationSeries(Population[] populations, string seriesLabel, System.Drawing.Color? color = null)
         {
             this.populations = populations;
             this.seriesLabel = seriesLabel;
-            this.groupLabels = groupLabels;
-            this.color = color;
+            this.color = (color is null) ? System.Drawing.Color.LightGray : color.Value;
         }
     }
 }
