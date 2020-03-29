@@ -114,13 +114,13 @@ namespace ScottPlotTests.Groups
 
             // now create a PopulationSeries object for each series
             string[] groupLabels = new string[] { "Africa", "Americas", "Asia", "Europe", "Oceania" };
-            var series1957 = new PopulationSeries(ages1957, "1957");
-            var series1987 = new PopulationSeries(ages1987, "1987");
-            var series2007 = new PopulationSeries(ages2007, "2007");
+            var series1957 = new PopulationSeries(ages1957, "1957", color: System.Drawing.Color.Red);
+            var series1987 = new PopulationSeries(ages1987, "1987", color: System.Drawing.Color.Green);
+            var series2007 = new PopulationSeries(ages2007, "2007", color: System.Drawing.Color.Blue);
 
             // now collect all the series into a MultiSeries
             var multiSeries = new PopulationSeries[] { series1957, series1987, series2007 };
-            var plottableMultiSeries = new PopulationMultiSeries(multiSeries, groupLabels);
+            var plottableMultiSeries = new PopulationMultiSeries(multiSeries);
             var customPlottable = new PlottablePopulations(plottableMultiSeries);
 
             // plot the multi-series

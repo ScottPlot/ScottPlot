@@ -22,7 +22,7 @@ namespace ScottPlot.Demo.PlotTypes
 
                 // display the original values scattered vertically
                 double[] ys = DataGen.RandomNormal(rand, pop.values.Length, stdDev: .15);
-                plt.PlotScatter(pop.values, ys, markerSize: 10, 
+                plt.PlotScatter(pop.values, ys, markerSize: 10,
                     markerShape: MarkerShape.openCircle, lineWidth: 0);
 
                 // display the bell curve for this distribution
@@ -50,16 +50,18 @@ namespace ScottPlot.Demo.PlotTypes
 
                 // create a Population object and plot it
                 var pop = new ScottPlot.Statistics.Population(scores);
-                plt.PlotPopulations(pop);
+                plt.PlotPopulations(pop, "scores");
 
                 // improve the style of the plot
                 plt.Title($"Test Scores (mean: {pop.mean:0.00} +/- {pop.stDev:0.00}, n={pop.n})");
                 plt.YLabel("Score");
-                plt.Grid(lineStyle: LineStyle.Dot);
+                plt.Ticks(displayTicksX: false);
+                plt.Legend();
+                plt.Grid(lineStyle: LineStyle.Dot, enableVertical: false);
             }
         }
 
-        public class PlotPopulationSeriesUNiform : PlotDemo, IPlotDemo
+        public class PlotPopulationSeriesUniform : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Uniform Population Series";
             public string description { get; } = "A series of populations can be plotted as a single object. Every population in a series has the same style, and a series will appear only once in the legend.";
@@ -69,8 +71,8 @@ namespace ScottPlot.Demo.PlotTypes
                 // create some sample data to represent test scores
                 Random rand = new Random(0);
                 double[] scoresA = DataGen.RandomNormal(rand, 35, 85, 5);
-                double[] scoresB = DataGen.RandomNormal(rand, 42, 87, 5);
-                double[] scoresC = DataGen.RandomNormal(rand, 23, 82, 5);
+                double[] scoresB = DataGen.RandomNormal(rand, 42, 87, 3);
+                double[] scoresC = DataGen.RandomNormal(rand, 23, 92, 3);
 
                 // collect multiple populations into a PopulationSeries
                 var poulations = new Statistics.Population[] {
@@ -81,12 +83,14 @@ namespace ScottPlot.Demo.PlotTypes
 
                 // Plot these as a single series (all styled the same, appearing once in legend)
                 var popSeries = new Statistics.PopulationSeries(poulations);
-                plt.PlotPopulations(popSeries);
+                plt.PlotPopulations(popSeries, "scores");
 
                 // improve the style of the plot
                 plt.Title($"Test Scores by Class");
                 plt.YLabel("Score");
-                plt.Grid(lineStyle: LineStyle.Dot);
+                plt.XTicks(new string[] { "Class A", "Class B", "Class C" });
+                plt.Legend();
+                plt.Grid(lineStyle: LineStyle.Dot, enableVertical: false);
             }
         }
 
@@ -100,24 +104,24 @@ namespace ScottPlot.Demo.PlotTypes
                 // create some sample data to represent test scores
                 Random rand = new Random(0);
                 double[] scoresA = DataGen.RandomNormal(rand, 35, 85, 5);
-                double[] scoresB = DataGen.RandomNormal(rand, 42, 87, 5);
-                double[] scoresC = DataGen.RandomNormal(rand, 23, 82, 5);
+                double[] scoresB = DataGen.RandomNormal(rand, 42, 87, 3);
+                double[] scoresC = DataGen.RandomNormal(rand, 23, 92, 3);
 
-                // collect multiple populations into a PopulationSeries
-                var poulations = new Statistics.Population[] {
-                    new Statistics.Population(scoresA),
-                    new Statistics.Population(scoresB),
-                    new Statistics.Population(scoresC)
-                };
+                // create a unique PopulationSeries for each set of scores
+                var seriesA = new Statistics.PopulationSeries(new Statistics.Population[] { new Statistics.Population(scoresA) }, "Class A");
+                var seriesB = new Statistics.PopulationSeries(new Statistics.Population[] { new Statistics.Population(scoresB) }, "Class B");
+                var seriesC = new Statistics.PopulationSeries(new Statistics.Population[] { new Statistics.Population(scoresC) }, "Class C");
 
-                // Plot these as a multi-series (all styled different, each appearing in legend)
-                var popSeries = new Statistics.PopulationSeries(poulations);
-                plt.PlotPopulations(popSeries);
+                // create a MultiSeries from all the individual series
+                var multiSeries = new Statistics.PopulationMultiSeries(new Statistics.PopulationSeries[] { seriesA, seriesB, seriesC });
+                plt.PlotPopulations(multiSeries);
 
                 // improve the style of the plot
                 plt.Title($"Test Scores by Class");
                 plt.YLabel("Score");
-                plt.Grid(lineStyle: LineStyle.Dot);
+                plt.Ticks(displayTicksX: false);
+                plt.Legend();
+                plt.Grid(lineStyle: LineStyle.Dot, enableVertical: false);
             }
         }
 
@@ -181,7 +185,7 @@ namespace ScottPlot.Demo.PlotTypes
                 var seriesLabels = new string[] { "Fall", "Spring", "Summer A", "Summer B" };
 
                 // create a MultiSeries from multiple population series and plot it
-                var multiSeries = new Statistics.PopulationMultiSeries(allSeries, seriesLabels);
+                var multiSeries = new Statistics.PopulationMultiSeries(allSeries);
                 plt.PlotPopulations(multiSeries);
 
                 // improve the style of the plot
@@ -189,7 +193,7 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.YLabel("Score");
                 plt.XTicks(seriesLabels);
                 plt.Legend();
-                plt.Grid(lineStyle: LineStyle.Dot);
+                plt.Grid(lineStyle: LineStyle.Dot, enableVertical: false);
             }
         }
     }

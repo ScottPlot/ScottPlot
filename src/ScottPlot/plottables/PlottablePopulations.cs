@@ -23,11 +23,7 @@ namespace ScottPlot
                 color = System.Drawing.Color.LightGray;
 
             var ps = new PopulationSeries(populations, label, color.Value);
-            groupedSeries = new PopulationMultiSeries(
-                multiSeries: new PopulationSeries[] { ps },
-                groupLabels: new string[populations.Length],
-                colors: new System.Drawing.Color[] { color.Value }
-                );
+            groupedSeries = new PopulationMultiSeries(new PopulationSeries[] { ps });
         }
 
         public PlottablePopulations(PopulationSeries populationSeries, string label = null, System.Drawing.Color? color = null)
@@ -35,11 +31,7 @@ namespace ScottPlot
             if (color is null)
                 color = System.Drawing.Color.LightGray;
 
-            groupedSeries = new PopulationMultiSeries(
-                multiSeries: new PopulationSeries[] { populationSeries },
-                groupLabels: new string[populationSeries.populations.Length],
-                colors: new System.Drawing.Color[] { color.Value }
-                );
+            groupedSeries = new PopulationMultiSeries(new PopulationSeries[] { populationSeries });
         }
 
         public PlottablePopulations(Population population, string label = null, System.Drawing.Color? color = null)
@@ -49,11 +41,7 @@ namespace ScottPlot
 
             var populations = new Population[] { population };
             var ps = new PopulationSeries(populations, label, color.Value);
-            groupedSeries = new PopulationMultiSeries(
-                multiSeries: new PopulationSeries[] { ps },
-                groupLabels: new string[populations.Length],
-                colors: new System.Drawing.Color[] { color.Value }
-                );
+            groupedSeries = new PopulationMultiSeries(new PopulationSeries[] { ps });
         }
 
         public override string ToString()
