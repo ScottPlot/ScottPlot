@@ -23,7 +23,21 @@ namespace ScottPlot
                 color = System.Drawing.Color.LightGray;
 
             var ps = new PopulationSeries(populations, label, color.Value);
-            this.groupedSeries = new PopulationMultiSeries(
+            groupedSeries = new PopulationMultiSeries(
+                multiSeries: new PopulationSeries[] { ps },
+                groupLabels: new string[populations.Length],
+                colors: new System.Drawing.Color[] { color.Value }
+                );
+        }
+
+        public PlottablePopulations(Population population, string label = null, System.Drawing.Color? color = null)
+        {
+            if (color is null)
+                color = System.Drawing.Color.LightGray;
+
+            var populations = new Population[] { population };
+            var ps = new PopulationSeries(populations, label, color.Value);
+            groupedSeries = new PopulationMultiSeries(
                 multiSeries: new PopulationSeries[] { ps },
                 groupLabels: new string[populations.Length],
                 colors: new System.Drawing.Color[] { color.Value }

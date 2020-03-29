@@ -11,11 +11,37 @@ namespace ScottPlotTests.Groups
 {
     class PlotGroupsTest
     {
-        // data inspired by https://cmdlinetips.com/2019/02/how-to-make-grouped-boxplots-with-ggplot2/
+        // sampe data inspired by https://cmdlinetips.com/2019/02/how-to-make-grouped-boxplots-with-ggplot2/
         // actual data is at http://gapminder.org/data/
 
         [Test]
-        public void Test_PlottablePopulations_SingleSeries()
+        public void Test_PlottablePopulations_Population()
+        {
+            // This example will display a single population: mean age of every country in europe in 2007
+            // This example has 1 series that contains 1 population.
+
+            // for this example we will simulate countries by creating random data
+            Random rand = new Random(0);
+            var ages = new Population(rand, 44, 78, 2);
+
+            var customPlottable = new PlottablePopulations(ages);
+
+            // plot the multi-series
+            var plt = new ScottPlot.Plot(400, 300);
+            plt.Add(customPlottable);
+            plt.Ticks(displayTicksX: false);
+
+            // additional plot styling
+            plt.Title("Life Expectancy in European Countries in 2007");
+            plt.YLabel("Age (years)");
+            plt.Legend(location: legendLocation.lowerRight);
+            plt.Grid(lineStyle: LineStyle.Dot, enableVertical: false);
+
+            TestTools.SaveFig(plt);
+        }
+
+        [Test]
+        public void Test_PlottablePopulations_Series()
         {
             // This example will display age, grouped by location.
             // This example has 1 series that contains 5 population objects.
@@ -51,7 +77,7 @@ namespace ScottPlotTests.Groups
         }
 
         [Test]
-        public void Test_Grouped_MultiSeries()
+        public void Test_PlottablePopulations_MultiSeries()
         {
             // This example will display age, grouped by location, and by year.
             // This example has 3 series (years), each of which has 5 population objects (locations).
