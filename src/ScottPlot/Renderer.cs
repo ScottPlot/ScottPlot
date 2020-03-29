@@ -26,6 +26,10 @@ namespace ScottPlot
         {
             Pen pen = new Pen(settings.grid.color, (float)settings.grid.lineWidth) { DashPattern = StyleTools.DashPattern(settings.grid.lineStyle) };
 
+            // Fix rendering artifacts (diagnal lines) that appear when drawing lines that touch the edge of the Bitmap if anti-aliasing is off.
+            // An alternative to tilting the line is to not let the grid line touch the edge of the bitmap (withdraw it by 1px).
+            float tiltPx = (settings.misc.antiAliasData) ? 0 : .5f;
+
             if (settings.grid.enableVertical)
             {
                 for (int i = 0; i < settings.ticks.x.tickPositionsMajor.Length; i++)
@@ -33,7 +37,7 @@ namespace ScottPlot
                     double value = settings.ticks.x.tickPositionsMajor[i];
                     double unitsFromAxisEdge = value - settings.axes.x.min;
                     int xPx = (int)(unitsFromAxisEdge * settings.xAxisScale);
-                    settings.gfxData.DrawLine(pen, xPx, 0, xPx, settings.dataSize.Height);
+                    settings.gfxData.DrawLine(pen, xPx, 0, xPx + tiltPx, settings.dataSize.Height);
                 }
             }
 
@@ -44,7 +48,7 @@ namespace ScottPlot
                     double value = settings.ticks.y.tickPositionsMajor[i];
                     double unitsFromAxisEdge = value - settings.axes.y.min;
                     int yPx = settings.dataSize.Height - (int)(unitsFromAxisEdge * settings.yAxisScale);
-                    settings.gfxData.DrawLine(pen, 0, yPx, settings.dataSize.Width, yPx);
+                    settings.gfxData.DrawLine(pen, 0, yPx, settings.dataSize.Width, yPx + tiltPx);
                 }
             }
         }
