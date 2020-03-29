@@ -14,6 +14,16 @@ namespace ScottPlot
         public int seriesCount { get { return popMultiSeries.seriesCount; } }
         public string[] labels { get { return popMultiSeries.seriesLabels; } }
 
+        public enum DisplayItems { BoxOnly, BoxAndScatter, ScatterAndBox, ScatterOnly };
+        public enum BoxStyle { BarMeanStDev, BarMeanStdErr, BoxMeanStdevStderr, BoxMedianQuartileOutlier, MeanAndStdev, MeanAndStderr };
+
+        public bool displayDistributionCurve = true;
+        public LineStyle distributionCurveLineStyle = LineStyle.Solid;
+        public System.Drawing.Color distributionCurveColor = System.Drawing.Color.Black;
+        public System.Drawing.Color scatterOutlineColor = System.Drawing.Color.Black;
+        public DisplayItems displayItems = DisplayItems.BoxAndScatter;
+        public BoxStyle boxStyle = BoxStyle.BoxMedianQuartileOutlier;
+
         public PlottablePopulations(PopulationMultiSeries groupedSeries)
         {
             this.popMultiSeries = groupedSeries;
@@ -93,16 +103,6 @@ namespace ScottPlot
 
             return new AxisLimits2D(positionMin, positionMax, minValue, maxValue);
         }
-
-        public enum DisplayItems { BoxOnly, BoxAndScatter, ScatterAndBox, ScatterOnly };
-        public enum BoxStyle { BarMeanStDev, BarMeanStdErr, BoxMeanStdevStderr, BoxMedianQuartileOutlier, MeanAndStdev, MeanAndStderr };
-
-        public bool displayDistributionCurve = true;
-        public LineStyle distributionCurveLineStyle = LineStyle.Solid;
-        public System.Drawing.Color distributionCurveColor = System.Drawing.Color.Black;
-        public System.Drawing.Color scatterOutlineColor = System.Drawing.Color.Black;
-        public DisplayItems displayItems = DisplayItems.ScatterAndBox;
-        public BoxStyle boxStyle = BoxStyle.BoxMedianQuartileOutlier;
 
         public override void Render(Settings settings)
         {
