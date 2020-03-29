@@ -27,6 +27,7 @@ namespace ScottPlot.Statistics
         public double[] countsFrac;
         public double[] countsFracCurve;
         public double[] cumulativeFrac;
+        public double binSize { get { return bins[1] - bins[0]; } }
 
         public readonly double mean;
         public readonly double stdev;
