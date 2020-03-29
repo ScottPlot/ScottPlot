@@ -14,6 +14,7 @@ namespace ScottPlotTests.Groups
         // sampe data inspired by https://cmdlinetips.com/2019/02/how-to-make-grouped-boxplots-with-ggplot2/
         // actual data is at http://gapminder.org/data/
 
+
         [Test]
         public void Test_PlottablePopulations_Population()
         {

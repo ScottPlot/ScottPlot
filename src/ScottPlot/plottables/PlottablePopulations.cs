@@ -76,7 +76,9 @@ namespace ScottPlot
                 foreach (var population in series.populations)
                 {
                     minValue = Math.Min(minValue, population.min);
+                    minValue = Math.Min(minValue, population.minus3stDev);
                     maxValue = Math.Max(maxValue, population.max);
+                    maxValue = Math.Max(maxValue, population.plus3stDev);
                 }
             }
 
@@ -105,7 +107,8 @@ namespace ScottPlot
                     var groupLeft = groupIndex - groupWidth / 2;
                     var popLeft = groupLeft + popWidth * seriesIndex;
 
-                    RenderPopulation.Scatter(settings, population, rand, popLeft, popWidth, series.color, RenderPopulation.Position.Right);
+                    RenderPopulation.Scatter(settings, population, rand, popLeft, popWidth, series.color, System.Drawing.Color.Black, 128, RenderPopulation.Position.Right);
+                    RenderPopulation.Distribution(settings, population, rand, popLeft, popWidth, System.Drawing.Color.Black, RenderPopulation.Position.Right);
                     //RenderPopulation.MeanAndError(settings, population, rand, popLeft, popWidth, series.color, RenderPopulation.Position.Left);
                     //RenderPopulation.Bar(settings, population, rand, popLeft, popWidth, series.color, RenderPopulation.Position.Left);
                     RenderPopulation.Box(settings, population, rand, popLeft, popWidth, series.color, RenderPopulation.Position.Left, RenderPopulation.BoxFormat.OutlierQuartileMedian);

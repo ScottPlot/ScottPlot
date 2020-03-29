@@ -19,6 +19,10 @@ namespace ScottPlot.Statistics
         public int count { get; private set; }
         public double mean { get; private set; }
         public double stDev { get; private set; }
+        public double plus3stDev { get; private set; }
+        public double minus3stDev { get; private set; }
+        public double plus2stDev { get; private set; }
+        public double minus2stDev { get; private set; }
         public double stdErr { get; private set; }
         public double Q1 { get; private set; }
         public double Q3 { get; private set; }
@@ -129,7 +133,20 @@ namespace ScottPlot.Statistics
             }
             double meanVarianceSquared = sumVariancesSquared / values.Length;
             stDev = Math.Sqrt(meanVarianceSquared);
+            plus2stDev = mean + stDev * 2;
+            minus2stDev = mean - stDev * 2;
+            plus3stDev = mean + stDev * 3;
+            minus3stDev = mean - stDev * 3;
             stdErr = stDev / Math.Sqrt(count);
+        }
+
+        public double[] GetDistribution(double[] xs, bool normalize = true)
+        {
+            double[] ys = new double[xs.Length];
+            double multiplier = (normalize) ? 1 : 1 / (stDev * Math.Sqrt(2 * Math.PI));
+            for (int i = 0; i < xs.Length; i++)
+                ys[i] = multiplier * Math.Exp(-.5 * Math.Pow((xs[i] - mean) / stDev, 2));
+            return ys;
         }
     }
 }

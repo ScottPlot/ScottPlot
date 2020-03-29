@@ -10,7 +10,35 @@ namespace ScottPlot
     {
         public enum Position { Hide, Overlap, Left, Right }
 
-        public static void Scatter(Settings settings, Population pop, Random rand, double popLeft, double popWidth, Color color, Position position)
+        public static void Scatter(Settings settings, Population pop, Random rand, double popLeft, double popWidth, Color fillColor, Color edgeColor, byte alpha, Position position)
+        {
+            // adjust edges to accomodate special positions
+            if (position == Position.Hide) return;
+            if (position == Position.Left || position == Position.Right) popWidth /= 2;
+            if (position == Position.Right) popLeft += popWidth;
+
+            // contract edges slightly to encourage padding between elements
+            double edgePaddingFrac = 0.2;
+            popLeft += popWidth * edgePaddingFrac;
+            popWidth -= (popWidth * edgePaddingFrac) * 2;
+
+            edgeColor = Color.FromArgb(alpha, edgeColor.R, edgeColor.G, edgeColor.B);
+            fillColor = Color.FromArgb(alpha, fillColor.R, fillColor.G, fillColor.B);
+
+            Pen penEdge = new Pen(edgeColor);
+            Brush brushFill = new SolidBrush(fillColor);
+            float radius = 5;
+
+            foreach (double value in pop.values)
+            {
+                double yPx = settings.GetPixelY(value);
+                double xPx = settings.GetPixelX(popLeft + rand.NextDouble() * popWidth);
+                settings.gfxData.FillEllipse(brushFill, (float)(xPx - radius), (float)(yPx - radius), radius * 2, radius * 2);
+                settings.gfxData.DrawEllipse(penEdge, (float)(xPx - radius), (float)(yPx - radius), radius * 2, radius * 2);
+            }
+        }
+
+        public static void Distribution(Settings settings, Population pop, Random rand, double popLeft, double popWidth, Color color, Position position)
         {
             // adjust edges to accomodate special positions
             if (position == Position.Hide) return;
@@ -23,14 +51,17 @@ namespace ScottPlot
             popWidth -= (popWidth * edgePaddingFrac) * 2;
 
             Pen pen = new Pen(color);
-            float radius = 5;
+            double[] ys = DataGen.Range(pop.minus3stDev, pop.plus3stDev, settings.yAxisUnitsPerPixel);
+            double[] ysFrac = pop.GetDistribution(ys);
 
-            foreach (double value in pop.values)
+            PointF[] points = new PointF[ys.Length];
+            for (int i = 0; i < ys.Length; i++)
             {
-                double yPx = settings.GetPixelY(value);
-                double xPx = settings.GetPixelX(popLeft + rand.NextDouble() * popWidth);
-                settings.gfxData.DrawEllipse(pen, (float)(xPx - radius), (float)(yPx - radius), radius * 2, radius * 2);
+                float x = (float)settings.GetPixelX(popLeft + popWidth * ysFrac[i]);
+                float y = (float)settings.GetPixelY(ys[i]);
+                points[i] = new PointF(x, y);
             }
+            settings.gfxData.DrawLines(pen, points);
         }
 
         public static void MeanAndError(Settings settings, Population pop, Random rand, double popLeft, double popWidth, Color color, Position position)
@@ -103,8 +134,9 @@ namespace ScottPlot
         }
 
         public enum BoxFormat { StdevStderrMean, OutlierQuartileMedian }
+        public enum HorizontalAlignment { Left, Center, Right }
 
-        public static void Box(Settings settings, Population pop, Random rand, double popLeft, double popWidth, Color color, Position position, BoxFormat boxFormat)
+        public static void Box(Settings settings, Population pop, Random rand, double popLeft, double popWidth, Color color, Position position, BoxFormat boxFormat, HorizontalAlignment errorAlignment = HorizontalAlignment.Right)
         {
             // adjust edges to accomodate special positions
             if (position == Position.Hide) return;
@@ -135,15 +167,9 @@ namespace ScottPlot
                 throw new NotImplementedException();
             }
 
-            // determine the center point and calculate bounds
-            double centerX = popLeft + popWidth / 2;
-            double xPx = settings.GetPixelX(centerX);
-
             // make cap width a fraction of available space
             double capWidthFrac = .38;
             double capWidth = popWidth * capWidthFrac;
-            double capPx1 = settings.GetPixelX(centerX - capWidth / 2);
-            double capPx2 = settings.GetPixelX(centerX + capWidth / 2);
 
             // contract edges slightly to encourage padding between elements
             double edgePaddingFrac = 0.2;
@@ -155,20 +181,43 @@ namespace ScottPlot
             Pen pen = new Pen(Color.Black, 1);
             Brush brush = new SolidBrush(color);
 
+            // draw the box
             RectangleF rect = new RectangleF((float)leftPx, (float)yPxTop, (float)(rightPx - leftPx), (float)(yPxBase - yPxTop));
             settings.gfxData.FillRectangle(brush, rect.X, rect.Y, rect.Width, rect.Height);
             settings.gfxData.DrawRectangle(pen, rect.X, rect.Y, rect.Width, rect.Height);
 
-            // vertical errorbars
-            settings.gfxData.DrawLine(pen, (float)xPx, (float)errorMinPx, (float)xPx, rect.Y + rect.Height);
-            settings.gfxData.DrawLine(pen, (float)xPx, (float)errorMaxPx, (float)xPx, rect.Y);
+            // draw the line in the center
+            settings.gfxData.DrawLine(pen, rect.X, (float)yPx, rect.X + rect.Width, (float)yPx);
 
-            // errorbar caps
+            // determine location of errorbars and caps
+            double capPx1, capPx2, errorPxX;
+            switch (errorAlignment)
+            {
+                case HorizontalAlignment.Center:
+                    double centerX = popLeft + popWidth / 2;
+                    errorPxX = settings.GetPixelX(centerX);
+                    capPx1 = settings.GetPixelX(centerX - capWidth / 2);
+                    capPx2 = settings.GetPixelX(centerX + capWidth / 2);
+                    break;
+                case HorizontalAlignment.Right:
+                    errorPxX = settings.GetPixelX(popLeft + popWidth);
+                    capPx1 = settings.GetPixelX(popLeft + popWidth - capWidth / 2);
+                    capPx2 = settings.GetPixelX(popLeft + popWidth);
+                    break;
+                case HorizontalAlignment.Left:
+                    errorPxX = settings.GetPixelX(popLeft);
+                    capPx1 = settings.GetPixelX(popLeft);
+                    capPx2 = settings.GetPixelX(popLeft + capWidth / 2);
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
+
+            // draw errorbars and caps
+            settings.gfxData.DrawLine(pen, (float)errorPxX, (float)errorMinPx, (float)errorPxX, rect.Y + rect.Height);
+            settings.gfxData.DrawLine(pen, (float)errorPxX, (float)errorMaxPx, (float)errorPxX, rect.Y);
             settings.gfxData.DrawLine(pen, (float)capPx1, (float)errorMinPx, (float)capPx2, (float)errorMinPx);
             settings.gfxData.DrawLine(pen, (float)capPx1, (float)errorMaxPx, (float)capPx2, (float)errorMaxPx);
-
-            // horizontal line in center
-            settings.gfxData.DrawLine(pen, rect.X, (float)yPx, rect.X + rect.Width, (float)yPx);
         }
     }
 }
