@@ -21,6 +21,7 @@ namespace ScottPlot.Statistics
     public class Histogram
     {
         public double[] values;
+        public Population population;
         public double[] bins;
         public double[] counts;
         public double[] cumulativeCounts;
@@ -29,27 +30,25 @@ namespace ScottPlot.Statistics
         public double[] cumulativeFrac;
         public double binSize { get { return bins[1] - bins[0]; } }
 
-        public readonly double mean;
-        public readonly double stdev;
+        public double mean { get { return population.mean; } }
+        public double stdev { get { return population.stDev; } }
 
         public Histogram(double[] values, double? min = null, double? max = null, double? binSize = null, double? binCount = null, bool ignoreOutOfBounds = true)
         {
             this.values = values;
-            mean = GetMean(values);
-            stdev = GetStdev(values);
+            population = new Population(values);
 
-            if (min == null)
-                min = mean - stdev * 3;
-            if (max == null)
-                max = mean + stdev * 3;
+            min = (min is null) ? population.minus3stDev : min.Value;
+            max = (max is null) ? population.plus3stDev : max.Value;
+
             if (min >= max)
                 throw new ArgumentException($"max ({max}) cannot be greater than min ({min})");
-            double span = (double)max - (double)min;
 
             if ((binCount != null) && (binSize != null))
                 throw new ArgumentException("binCount and binSize cannot both be given");
 
             double defaultBinCount = 100;
+            double span = max.Value - min.Value;
             if (binSize == null)
             {
                 if (binCount == null)
@@ -70,25 +69,7 @@ namespace ScottPlot.Statistics
             cumulativeCounts = GetCumulative(counts);
             countsFrac = GetNormalized(counts);
             cumulativeFrac = GetCumulative(countsFrac);
-            countsFracCurve = GetCountsFracCurve(bins, stdev);
-        }
-
-        public static double GetMean(double[] values)
-        {
-            return values.Sum() / values.Length;
-        }
-
-        public static double GetStdev(double[] values)
-        {
-            double mean = GetMean(values);
-            double sumVarianceSquared = 0;
-            for (int i = 0; i < values.Length; i++)
-            {
-                double variance = Math.Abs(mean - values[i]);
-                sumVarianceSquared += variance * variance;
-            }
-            double meanVarianceSquared = sumVarianceSquared / values.Length;
-            return Math.Sqrt(meanVarianceSquared);
+            countsFracCurve = population.GetDistribution(bins, false);
         }
 
         private static double[] GetNormalized(double[] values)
@@ -140,20 +121,6 @@ namespace ScottPlot.Statistics
                 }
             }
             return counts;
-        }
-
-        private static double[] GetCountsFracCurve(double[] xs, double stdev)
-        {
-            double meanX = (xs.Last() + xs.First()) / 2.0;
-
-            double[] ys = new double[xs.Length];
-
-            for (int i = 0; i < xs.Length; i++)
-            {
-                double x = xs[i];
-                ys[i] = (1.0 / (stdev * Math.Sqrt(2 * Math.PI))) * Math.Exp(-.5 * Math.Pow((x - meanX) / stdev, 2));
-            }
-            return ys;
         }
     }
 }
