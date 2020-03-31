@@ -9,7 +9,7 @@
 <img src='http://swharden.com/scottplot/graphics/scottplot.gif'>
 </div>
 
-### Supported Platforms
+## Supported Platforms
 ScottPlot targets .NET Standard and the user controls target .NET Framework and .NET Core. For details see the supported platforms page: http://swharden.com/scottplot/#platforms
 
 ## Quickstart Examples
