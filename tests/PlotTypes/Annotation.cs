@@ -56,5 +56,32 @@ namespace ScottPlotTests.PlotTypes
 
             TestTools.SaveFig(plt);
         }
+
+        [Test]
+        public void Test_Annotation_BesideLegend()
+        {
+            Random rand = new Random();
+            double[] dataA = ScottPlot.DataGen.RandomNormal(rand, 50);
+            double[] dataB = ScottPlot.DataGen.RandomNormal(rand, 50);
+
+            var plt = new ScottPlot.Plot(400, 300);
+            plt.PlotSignal(dataA, label: "data A");
+            plt.PlotSignal(dataB, label: "data B");
+            plt.Legend();
+
+            plt.GetBitmap(true); // force a render to force drawing/placing the legend
+
+            double legendLocationX = plt.GetSettings(false).legend.rect.Location.X;
+            double legendDistanceFromRightEdge = plt.GetSettings(false).dataSize.Width - legendLocationX;
+            plt.PlotAnnotation("text beside\nthe legend", 
+                    xPixel: -legendDistanceFromRightEdge - 5, 
+                    yPixel: -10,
+                    fillColor: Color.White,
+                    fillAlpha: 1,
+                    shadow: true
+                );
+
+            TestTools.SaveFig(plt);
+        }
     }
 }
