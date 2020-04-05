@@ -159,7 +159,8 @@ namespace ScottPlotDevTools
             // move things into an output folder named by version
             CopySource(demoSourceFolder, wpfOutputSourcePath);
             System.IO.Directory.CreateDirectory(versionOutputPath);
-            System.IO.Directory.Move(wpfOutputPath, versionOutputPath + "/ScottPlot Demo");
+            string exeFolder = System.IO.Path.Combine(versionOutputPath, "ScottPlot Demo");
+            System.IO.Directory.Move(wpfOutputPath, exeFolder);
 
             // copy in other useful files
             Console.WriteLine("Copying bundle files...");
@@ -168,6 +169,15 @@ namespace ScottPlotDevTools
             {
                 string fileName = System.IO.Path.GetFileName(filePath);
                 System.IO.File.Copy(filePath, System.IO.Path.Combine(versionOutputPath, fileName));
+            }
+
+            // delete extra files we dont need
+            foreach (string filePath in System.IO.Directory.GetFiles(exeFolder))
+            {
+                string fileName = System.IO.Path.GetFileName(filePath);
+                // if the user wants to debug, let them build their own demo from source
+                if (fileName.EndsWith(".pdb") || fileName.Contains(".osx.") || fileName.EndsWith(".exe.config"))
+                    System.IO.File.Delete(filePath);
             }
 
             // zip the output folder

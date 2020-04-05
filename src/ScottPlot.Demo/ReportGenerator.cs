@@ -90,47 +90,24 @@ namespace ScottPlot.Demo
         public void MakeReports()
         {
             StringBuilder md = new StringBuilder();
-            StringBuilder html = new StringBuilder();
             StringBuilder mdTOC = new StringBuilder();
-            StringBuilder htmlTOC = new StringBuilder();
-
-            string recipeTemplate = System.IO.File.ReadAllText(sourceCodeFolder + "/Template/recipe.html");
 
             foreach (IPlotDemo recipe in recipes)
             {
                 string title = $"{recipe.categoryMajor}/{recipe.categoryMinor} - {recipe.name}";
                 string sourceCode = recipe.GetSourceCode(sourceCodeFolder);
-                string htmlSafeSource = sourceCode.Replace("<", "&lt;").Replace(">", "&gt;");
                 string description = (recipe.description is null) ? "no description provided..." : recipe.description;
 
                 mdTOC.AppendLine($"* [{title}](#{recipe.id})");
-                htmlTOC.AppendLine($"<li><a href='#{recipe.id}'>{title}</a></li>");
 
                 md.AppendLine($"## {title}\n\n");
                 md.AppendLine($"{description}\n\n");
                 md.AppendLine($"```cs\n{sourceCode}\n```\n\n");
                 md.AppendLine($"![](images/{recipe.id}.png)\n\n");
-
-                string htmlRecipe = recipeTemplate.ToString();
-                htmlRecipe = htmlRecipe.Replace("~ID~", recipe.id);
-                htmlRecipe = htmlRecipe.Replace("~TITLE~", recipe.name);
-                htmlRecipe = htmlRecipe.Replace("~DESCRIPTION~", recipe.description);
-                htmlRecipe = htmlRecipe.Replace("~SOURCE~", $"{recipe.sourceFile} ({recipe.categoryClass})");
-                htmlRecipe = htmlRecipe.Replace("~CODE~", htmlSafeSource);
-                html.AppendLine(htmlRecipe);
             }
 
             md.Insert(0, $"# ScottPlot {Tools.GetVersionString()} Cookbook\n\n" + $"_Generated on {DateTime.Now.ToString("D")} at {DateTime.Now.ToString("t")}_\n\n" + mdTOC.ToString() + "\n\n---\n\n");
             System.IO.File.WriteAllText(outputFolder + "/readme.md", md.ToString());
-
-            string htmlString = System.IO.File.ReadAllText(sourceCodeFolder + "/Template/page.html");
-            htmlString = htmlString.Replace("~TOC~", htmlTOC.ToString());
-            htmlString = htmlString.Replace("~CONTENT~", html.ToString());
-            htmlString = htmlString.Replace("~VERSION~", Tools.GetVersionString());
-            htmlString = htmlString.Replace("~DATE~", DateTime.Now.ToString("D"));
-            htmlString = htmlString.Replace("~TIME~", DateTime.Now.ToString("t"));
-
-            System.IO.File.WriteAllText(outputFolder + "/index.html", htmlString);
         }
     }
 }
