@@ -27,6 +27,7 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
 
 ## ScottPlot 4.0.26
 * The `ScottPlot.WPF` package (which provides the `WpfPlot` user control) now targets .NET Framework 4.7.2 (in addition to .NET Core 3.0), allowing it to be used in applications which target either platform. The ScottPlot demo application now targets .NET Framework 4.7.2 which should be easier to run on most Windows systems. (#333)
+* The `ScottPlot.WinForms` package (which produves the `FormsPlot` control) now only targets .NET Framework 4.6.1 and .NET Core 3.0 platforms (previously it also had build targets for .NET Framework 4.7.2 and .NET Framework 4.8). It is important to note that no functionality was lost here. (#330, #333)
 
 ## ScottPlot 4.0.25
 * `PlotBar()` now supports displaying values above each bar graph by setting the `showValues` argument.
