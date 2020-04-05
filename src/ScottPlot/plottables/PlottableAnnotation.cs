@@ -8,9 +8,9 @@ namespace ScottPlot
 {
     public class PlottableAnnotation : Plottable
     {
-        double xPixel;
-        double yPixel;
-        string label;
+        public double xPixel;
+        public double yPixel;
+        public string label;
 
         Font font;
         Brush fontBrush;
@@ -64,6 +64,9 @@ namespace ScottPlot
 
         public override void Render(Settings settings)
         {
+            if (label is null)
+                return;
+
             SizeF size = settings.gfxData.MeasureString(label, font);
 
             double x = (xPixel >= 0) ? xPixel : settings.bmpData.Width + xPixel - size.Width;
