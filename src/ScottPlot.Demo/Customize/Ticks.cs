@@ -122,7 +122,6 @@ namespace ScottPlot.Demo.Customize
                 plt.YLabel("Price");
                 plt.XLabel("Date and Time");
                 plt.Title("Hungarian Formatted DateTime Tick Labels");
-                plt.Ticks(useMultiplierNotation: false);
 
                 // set the localization
                 var culture = System.Globalization.CultureInfo.CreateSpecificCulture("hu"); // Hungarian
@@ -149,7 +148,6 @@ namespace ScottPlot.Demo.Customize
                 plt.YLabel("Price");
                 plt.XLabel("Date and Time");
                 plt.Title("German Formatted DateTime Tick Labels");
-                plt.Ticks(useMultiplierNotation: false);
 
                 // set the localization
                 var culture = System.Globalization.CultureInfo.CreateSpecificCulture("de"); // German
@@ -182,7 +180,7 @@ namespace ScottPlot.Demo.Customize
         public class Large : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Accomodating Large Ticks";
-            public string description { get; } = "Large tick labels come with special layout considerations.";
+            public string description { get; } = "The plot layout adjusts automatically to accomodate large tick labels.";
 
             public void Render(Plot plt)
             {
@@ -193,20 +191,13 @@ namespace ScottPlot.Demo.Customize
                 plt.PlotScatter(xs, ys);
                 plt.YLabel("vertical units");
                 plt.XLabel("horizontal units");
-
-                // turn off features which typically shorten tick label size
-                plt.Ticks(useOffsetNotation: false, useMultiplierNotation: false);
-
-                // tightening with a render is the best way to get the axes right
-                plt.TightenLayout(render: true);
-
             }
         }
 
         public class MultiplierNotation : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Multiplier Notation";
-            public string description { get; } = "To keep tick labels small 'multiplier' notation is used when their values are large.";
+            public string description { get; } = "To keep tick labels small 'multiplier' notation can be used when their values are large.";
 
             public void Render(Plot plt)
             {
@@ -216,30 +207,14 @@ namespace ScottPlot.Demo.Customize
                 double[] largeYs = DataGen.Random(rand, pointCount, multiplier: 1e6);
 
                 plt.PlotScatter(largeXs, largeYs);
-            }
-        }
-
-        public class DisableMultiplierNotation : PlotDemo, IPlotDemo
-        {
-            public string name { get; } = "Disable Multiplier Notation";
-            public string description { get; } = "Multiplier notation can be disabled so tick labels are never abbreviated in this way.";
-
-            public void Render(Plot plt)
-            {
-                Random rand = new Random(0);
-                int pointCount = 100;
-                double[] largeXs = DataGen.Consecutive(pointCount, spacing: 1e6);
-                double[] largeYs = DataGen.Random(rand, pointCount, multiplier: 1e6);
-
-                plt.PlotScatter(largeXs, largeYs);
-                plt.Ticks(useMultiplierNotation: false);
+                plt.Ticks(useMultiplierNotation: true);
             }
         }
 
         public class OffsetNotation : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Offset Notation";
-            public string description { get; } = "To keep tick labels small 'offset' notation is used when their values are very far from zero.";
+            public string description { get; } = "To keep tick labels small 'offset' notation can be used when their values are very far from zero.";
 
             public void Render(Plot plt)
             {
@@ -249,23 +224,7 @@ namespace ScottPlot.Demo.Customize
                 double[] largeYs = DataGen.Random(rand, pointCount, offset: 1e6);
 
                 plt.PlotScatter(largeXs, largeYs);
-            }
-        }
-
-        public class DisableOffsetNotation : PlotDemo, IPlotDemo
-        {
-            public string name { get; } = "Disable Offset Notation";
-            public string description { get; } = "Offset notation can be disabled so tick labels are never abbreviated in this way.";
-
-            public void Render(Plot plt)
-            {
-                Random rand = new Random(0);
-                int pointCount = 100;
-                double[] largeXs = DataGen.Consecutive(pointCount, offset: 1e6);
-                double[] largeYs = DataGen.Random(rand, pointCount, offset: 1e6);
-
-                plt.PlotScatter(largeXs, largeYs);
-                plt.Ticks(useOffsetNotation: false);
+                plt.Ticks(useOffsetNotation: true);
             }
         }
 
