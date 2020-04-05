@@ -37,8 +37,8 @@ namespace ScottPlot.Config
         public bool displayYmajor = true;
         public bool displayYminor = true;
 
-        public bool useMultiplierNotation = true;
-        public bool useOffsetNotation = true;
+        public bool useMultiplierNotation = false;
+        public bool useOffsetNotation = false;
         public bool useExponentialNotation = true;
     }
 }
