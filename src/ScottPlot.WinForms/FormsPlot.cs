@@ -77,10 +77,13 @@ namespace ScottPlot
         }
 
         private bool currentlyRendering;
-        public void Render(bool skipIfCurrentlyRendering = false, bool lowQuality = false)
+        public void Render(bool skipIfCurrentlyRendering = false, bool lowQuality = false, bool recalculateLayout = false)
         {
             if (isDesignerMode)
                 return;
+
+            if (recalculateLayout)
+                plt.TightenLayout();
 
             if (equalAxes)
                 plt.AxisEqual();
@@ -332,7 +335,7 @@ namespace ScottPlot
             settings.mouseMiddleRect = null;
             plottableBeingDragged = null;
 
-            Render();
+            Render(recalculateLayout: true);
         }
 
         private void PbPlot_MouseDoubleClick(object sender, MouseEventArgs e) { OnMouseDoubleClicked(); }
@@ -347,7 +350,7 @@ namespace ScottPlot
 
             var mouseCoordinate = plt.CoordinateFromPixel(e.Location);
             plt.AxisZoom(xFrac, yFrac, mouseCoordinate.X, mouseCoordinate.Y);
-            Render();
+            Render(recalculateLayout: true);
             OnAxisChanged();
         }
 

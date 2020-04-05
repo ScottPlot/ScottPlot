@@ -92,10 +92,13 @@ namespace ScottPlot
         }
 
         private bool currentlyRendering = false;
-        public void Render(bool skipIfCurrentlyRendering = false, bool lowQuality = false)
+        public void Render(bool skipIfCurrentlyRendering = false, bool lowQuality = false, bool recalculateLayout = false)
         {
             if (!isDesignerMode)
             {
+                if (recalculateLayout)
+                    plt.TightenLayout();
+
                 if (equalAxes)
                     plt.AxisEqual();
 
@@ -348,7 +351,7 @@ namespace ScottPlot
             mouseMiddleDownLocation = null;
             axisLimitsOnMouseDown = null;
             settings.mouseMiddleRect = null;
-            Render();
+            Render(recalculateLayout: true);
         }
 
         #endregion
@@ -368,8 +371,7 @@ namespace ScottPlot
 
             plt.AxisZoom(xFrac, yFrac, mouseCoordinate.X, mouseCoordinate.Y);
             AxisChanged?.Invoke(null, null);
-
-            Render();
+            Render(recalculateLayout: true);
         }
 
         private void UserControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
