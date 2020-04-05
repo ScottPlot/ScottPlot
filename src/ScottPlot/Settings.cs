@@ -230,6 +230,8 @@ namespace ScottPlot
                 axes.x.hasBeenSet = false;
                 axes.y.hasBeenSet = false;
             }
+
+            layout.tighteningOccurred = false;
         }
 
         /// <summary>
