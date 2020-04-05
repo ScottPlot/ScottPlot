@@ -37,7 +37,7 @@ namespace ScottPlot.UserControls
 
         private void BtnScottPlotGithub_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("https://github.com/swharden/ScottPlot");
+            System.Diagnostics.Process.Start("http://swharden.com/scottplot/");
         }
 
         private void BtnClose_Click(object sender, EventArgs e)

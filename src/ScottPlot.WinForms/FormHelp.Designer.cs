@@ -81,9 +81,9 @@
             this.btnScottPlotGithub.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnScottPlotGithub.Location = new System.Drawing.Point(12, 339);
             this.btnScottPlotGithub.Name = "btnScottPlotGithub";
-            this.btnScottPlotGithub.Size = new System.Drawing.Size(149, 29);
+            this.btnScottPlotGithub.Size = new System.Drawing.Size(135, 29);
             this.btnScottPlotGithub.TabIndex = 9;
-            this.btnScottPlotGithub.Text = "ScottPlot on GitHub";
+            this.btnScottPlotGithub.Text = "ScottPlot Website";
             this.btnScottPlotGithub.UseVisualStyleBackColor = true;
             this.btnScottPlotGithub.Click += new System.EventHandler(this.BtnScottPlotGithub_Click);
             // 

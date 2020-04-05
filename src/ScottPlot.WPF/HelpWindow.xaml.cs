@@ -35,5 +35,15 @@ namespace ScottPlot.WPF
             msg.AppendLine("Hold ALT to lock horizontal axis");
             InfoTextBlock.Text = msg.ToString();
         }
+
+        private void LaunchScottPlotWebsite(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://swharden.com/scottplot/");
+        }
+
+        private void CloseButtonClicked(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }

@@ -10,8 +10,8 @@
         <Label DockPanel.Dock="Top" Content="ScottPlot" FontSize="36" HorizontalAlignment="Center"/>
         <Label DockPanel.Dock="Top" Content="X.X.X" FontSize="18" Margin="0 -20 0 0" HorizontalAlignment="Center" Name="VersionLabel"/>
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="ScottPlot on GitHub" Padding="5 3 5 3" Margin="0 5 5 5"/>
-            <Button Content="Close" Padding="5 3 5 3" Margin="0 5 5 5"/>
+            <Button Content="ScottPlot Website" Padding="5 3 5 3" Margin="0 5 5 5" Click="LaunchScottPlotWebsite" />
+            <Button Content="Close" Padding="5 3 5 3" Margin="0 5 5 5" Click="CloseButtonClicked"/>
         </StackPanel>
         <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto">
             <TextBlock Text="information" Name="InfoTextBlock" Padding="5" FontSize="16"/>
