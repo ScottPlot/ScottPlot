@@ -90,23 +90,31 @@ namespace ScottPlot.Demo
         public void MakeReports()
         {
             StringBuilder md = new StringBuilder();
-            StringBuilder mdTOC = new StringBuilder();
 
+            string lastMajorCategory = "";
             foreach (IPlotDemo recipe in recipes)
             {
                 string title = $"{recipe.categoryMajor}/{recipe.categoryMinor} - {recipe.name}";
                 string sourceCode = recipe.GetSourceCode(sourceCodeFolder);
                 string description = (recipe.description is null) ? "no description provided..." : recipe.description;
 
-                mdTOC.AppendLine($"* [{title}](#{recipe.id})");
+                if (recipe.categoryMajor != lastMajorCategory)
+                {
+                    lastMajorCategory = recipe.categoryMajor;
+                    md.AppendLine($"## {recipe.categoryMajor}\n\n");
+                }
 
-                md.AppendLine($"## {title}\n\n");
+                md.AppendLine($"### {title}\n\n");
                 md.AppendLine($"{description}\n\n");
                 md.AppendLine($"```cs\n{sourceCode}\n```\n\n");
                 md.AppendLine($"![](images/{recipe.id}.png)\n\n");
             }
 
-            md.Insert(0, $"# ScottPlot {Tools.GetVersionString()} Cookbook\n\n" + $"_Generated on {DateTime.Now.ToString("D")} at {DateTime.Now.ToString("t")}_\n\n" + mdTOC.ToString() + "\n\n---\n\n");
+            md.Insert(0, $"![](TOC)\n\n");
+            md.Insert(0, $"![](cookbookNote.md)\n\n");
+            md.Insert(0, $"_Generated on {DateTime.Now.ToString("D")} at {DateTime.Now.ToString("t")}_\n\n");
+            md.Insert(0, $"# ScottPlot {Tools.GetVersionString()} Cookbook\n\n");
+
             System.IO.File.WriteAllText(outputFolder + "/readme.md", md.ToString());
         }
     }
