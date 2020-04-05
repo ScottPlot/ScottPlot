@@ -20,7 +20,7 @@ namespace ScottPlotTests.Plot
             plt.Title("");
             string hashEmpty = TestTools.HashedFig(plt, "empty label");
 
-            Assert.That(hashDefault == hashEmpty);
+            Assert.AreEqual(hashDefault, hashEmpty);
         }
 
         [Test]
