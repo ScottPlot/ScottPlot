@@ -500,6 +500,50 @@ namespace ScottPlot
             return errorBars;
         }
 
+        public PlottableAnnotation PlotAnnotation(
+            string label,
+            double xPixel = 10,
+            double yPixel = 10,
+            double fontSize = 12,
+            string fontName = "Segoe UI",
+            Color? fontColor = null,
+            double fontAlpha = 1,
+            bool fill = true,
+            Color? fillColor = null,
+            double fillAlpha = .2,
+            double lineWidth = 1,
+            Color? lineColor = null,
+            double lineAlpha = 1,
+            bool shadow = false
+            )
+        {
+
+            fontColor = (fontColor is null) ? Color.Black : fontColor.Value;
+            fillColor = (fillColor is null) ? Color.Yellow : fillColor.Value;
+            lineColor = (lineColor is null) ? Color.Black : lineColor.Value;
+
+            fontColor = Color.FromArgb((int)(255 * fontAlpha), fontColor.Value.R, fontColor.Value.G, fontColor.Value.B);
+            fillColor = Color.FromArgb((int)(255 * fillAlpha), fillColor.Value.R, fillColor.Value.G, fillColor.Value.B);
+            lineColor = Color.FromArgb((int)(255 * lineAlpha), lineColor.Value.R, lineColor.Value.G, lineColor.Value.B);
+
+            var plottable = new PlottableAnnotation(
+                    xPixel: xPixel,
+                    yPixel: yPixel,
+                    label: label,
+                    fontSize: fontSize,
+                    fontName: fontName,
+                    fontColor: fontColor.Value,
+                    fill: fill,
+                    fillColor: fillColor.Value,
+                    lineWidth: lineWidth,
+                    lineColor: lineColor.Value,
+                    shadow: shadow
+                );
+
+            Add(plottable);
+            return plottable;
+        }
+
         public PlottableScatter PlotArrow(
             double tipX,
             double tipY,

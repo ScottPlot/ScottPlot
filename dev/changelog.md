@@ -27,6 +27,9 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
 
 ## ScottPlot 4.0.27
 * `Plot.Polygon()` can now be used to plot polygons from X/Y points (#255) _Thanks @ckovamees_
+* User controls now have an "open in new window" item in their right-click menu (#280)
+* Plots now have offset notation and multiplier notation disabled by default. Layouts are automatically calculated before the first render, or manually after MouseUp events in the user controls. (#310)
+* `Plot.Annotation()` allows for the placement of text on the figure using pixel coordinates (not unit coordinates on the data grid). This is useful for creating custom static labels or information messages. (#321) _Thanks @SeidChr_
 
 ## ScottPlot 4.0.26
 * The `ScottPlot.WPF` package (which provides the `WpfPlot` user control) now targets .NET Framework 4.7.2 (in addition to .NET Core 3.0), allowing it to be used in applications which target either platform. The ScottPlot demo application now targets .NET Framework 4.7.2 which should be easier to run on most Windows systems. (#333)
