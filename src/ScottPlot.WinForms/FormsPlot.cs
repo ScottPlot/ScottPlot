@@ -54,6 +54,7 @@ namespace ScottPlot
             rightClickMenu = new ContextMenuStrip();
             rightClickMenu.Items.Add("Save Image");
             rightClickMenu.Items.Add("Copy Image");
+            rightClickMenu.Items.Add("Open in New Window");
             rightClickMenu.Items.Add("Settings");
             rightClickMenu.Items.Add("Help");
             rightClickMenu.ItemClicked += new ToolStripItemClickedEventHandler(RightClickMenuItemClicked);
@@ -384,6 +385,10 @@ namespace ScottPlot
 
                 case "Copy Image":
                     Clipboard.SetImage(plt.GetBitmap(true));
+                    break;
+
+                case "Open in New Window":
+                    new FormsPlotViewer(plt).Show();
                     break;
 
                 default:
