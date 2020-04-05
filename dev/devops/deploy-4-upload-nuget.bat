@@ -16,6 +16,10 @@ pause
 pause
 
 echo.
+echo ### REBUILDING SOLUTION ###
+dotnet build ..\..\src\ScottPlotV4.sln --verbosity quiet --configuration Release
+
+echo.
 echo ### UPLOADING [ScottPlot] TO NUGET ###
 nuget push ..\..\src\ScottPlot\bin\Release\*.nupkg -Source https://api.nuget.org/v3/index.json
 
