@@ -37,7 +37,7 @@ namespace ScottPlotTests.Axis
             var limits = new ScottPlot.Config.AxisLimits2D(11, 22, 33, 44);
             Console.WriteLine(limits);
 
-            Assert.AreEqual("x1=11.000, x2=22.000, y1=33.000, y2=33.000", limits.ToString());
+            Assert.AreEqual("x1=11.000, x2=22.000, y1=33.000, y2=44.000", limits.ToString());
         }
 
         [Test]
