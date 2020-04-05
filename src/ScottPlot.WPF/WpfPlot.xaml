@@ -32,6 +32,14 @@
         </StackPanel>
 
         <Canvas Name="canvasPlot" Grid.Row="1" SizeChanged="CanvasPlot_SizeChanged" Background="DarkRed">
+            <Canvas.ContextMenu>
+                <ContextMenu Name="cm" StaysOpen="True">
+                    <MenuItem Header="Save Image" Click="SaveImage"/>
+                    <MenuItem Header="Copy Image" Click="CopyImage"/>
+                    <MenuItem Header="Open in New Window" Click="OpenInNewWindow"/>
+                    <MenuItem Header="Help" Click="OpenHelp"/>
+                </ContextMenu>
+            </Canvas.ContextMenu>
             <Image Name="imagePlot" />
         </Canvas>
         

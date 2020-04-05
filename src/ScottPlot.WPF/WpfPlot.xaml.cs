@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -381,6 +382,34 @@ namespace ScottPlot
                 plt.Benchmark(toggle: true);
                 Render();
             }
+        }
+
+        private void SaveImage(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog savefile = new SaveFileDialog();
+            savefile.FileName = "ScottPlot.png";
+            savefile.Filter = "PNG Files (*.png)|*.png;*.png";
+            savefile.Filter += "|JPG Files (*.jpg, *.jpeg)|*.jpg;*.jpeg";
+            savefile.Filter += "|BMP Files (*.bmp)|*.bmp;*.bmp";
+            savefile.Filter += "|TIF files (*.tif, *.tiff)|*.tif;*.tiff";
+            savefile.Filter += "|All files (*.*)|*.*";
+            if (savefile.ShowDialog() == true)
+                plt.SaveFig(savefile.FileName);
+        }
+
+        private void CopyImage(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetImage((BitmapSource)imagePlot.Source);
+        }
+
+        private void OpenInNewWindow(object sender, RoutedEventArgs e)
+        {
+            new WpfPlotViewer(plt).Show();
+        }
+
+        private void OpenHelp(object sender, RoutedEventArgs e)
+        {
+            new WPF.HelpWindow().Show();
         }
 
         #endregion
