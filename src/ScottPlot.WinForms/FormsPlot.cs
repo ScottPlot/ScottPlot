@@ -338,7 +338,7 @@ namespace ScottPlot
             Render(recalculateLayout: true);
         }
 
-        private void PbPlot_MouseDoubleClick(object sender, MouseEventArgs e) { OnMouseDoubleClicked(); }
+        private void PbPlot_MouseDoubleClick(object sender, MouseEventArgs e) { OnMouseDoubleClicked(e); }
 
         private void PbPlot_MouseWheel(object sender, MouseEventArgs e)
         {
@@ -421,9 +421,9 @@ namespace ScottPlot
         protected virtual void OnMouseClicked(MouseEventArgs e) { MouseClicked?.Invoke(this, e); }
         protected virtual void OnAxisChanged() { AxesChanged?.Invoke(this, null); }
 
-        protected virtual void OnMouseDoubleClicked()
+        protected virtual void OnMouseDoubleClicked(MouseEventArgs e)
         {
-            MouseDoubleClicked?.Invoke(this, null);
+            MouseDoubleClicked?.Invoke(this, e);
             if (doubleClickingTogglesBenchmark)
             {
                 plt.Benchmark(toggle: true);
