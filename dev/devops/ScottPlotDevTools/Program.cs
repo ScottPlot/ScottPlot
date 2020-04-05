@@ -137,7 +137,7 @@ namespace ScottPlotDevTools
 
         static void MakeDemo()
         {
-            string wpfOutputPath = "../../../../../../src/ScottPlot.Demo.WPF/bin/Release/netcoreapp3.0";
+            string wpfOutputPath = "../../../../../../src/ScottPlot.Demo.WPF/bin/Release/net472";
             string demoSourceFolder = "../../../../../../src/ScottPlot.Demo";
             string wpfOutputSourcePath = System.IO.Path.Combine(wpfOutputPath, "source");
             string versionOutputPath = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(wpfOutputPath), ScottPlot.Tools.GetVersionString());
