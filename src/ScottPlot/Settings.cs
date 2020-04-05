@@ -112,13 +112,13 @@ namespace ScottPlot
             layout.yLabelWidth = (int)yLabel.size.Height + 3;
             layout.xLabelHeight = (int)xLabel.size.Height + 3;
 
-            // automatically increase yScale size to accomodate wide ticks
-            if (ticks?.y?.maxLabelSize.Width > layout.yScaleWidth)
-                layout.yScaleWidth = (int)ticks.y.maxLabelSize.Width;
+            // automatically set yScale size to tick labels
+            int minYtickWidth = 40;
+            layout.yScaleWidth = Math.Max(minYtickWidth, (int)ticks.y.maxLabelSize.Width);
 
-            // automatically increase xScale size to accomodate high ticks
-            if (ticks?.x?.maxLabelSize.Height > layout.xScaleHeight)
-                layout.xScaleHeight = (int)ticks.x.maxLabelSize.Height;
+            // automatically set xScale size to high labels
+            int minXtickHeight = 10;
+            layout.xScaleHeight = Math.Max(minXtickHeight, (int)ticks.x.maxLabelSize.Height);
 
             // collapse things that are hidden or empty
             if (!ticks.displayXmajor)
