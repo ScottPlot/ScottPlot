@@ -54,7 +54,7 @@ namespace ScottPlot.Config
 
         public override string ToString()
         {
-            return string.Format("x1={0:0.000}, x2={0:0.000}, y1={0:0.000}, y2={0:0.000}", x1, x2, y1, y2);
+            return $"x1={x1:0.000}, x2={x2:0.000}, y1={y1:0.000}, y2={y1:0.000}";
         }
 
         public void SetX(double x1, double x2)

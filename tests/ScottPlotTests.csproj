@@ -23,4 +23,8 @@
     <ProjectReference Include="..\src\ScottPlot\ScottPlot.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Axis\" />
+  </ItemGroup>
+
 </Project>

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ScottPlotTests.Unit
+namespace ScottPlotTests.Axis
 {
     class AxisLimits
     {
@@ -17,6 +17,27 @@ namespace ScottPlotTests.Unit
             Assert.IsNaN(limits.x2);
             Assert.IsNaN(limits.y1);
             Assert.IsNaN(limits.y2);
+        }
+
+        [Test]
+        public void Test_Constructor_StoresValues()
+        {
+            var limits = new ScottPlot.Config.AxisLimits2D(11, 22, 33, 44);
+            Console.WriteLine(limits);
+
+            Assert.AreEqual(11, limits.x1);
+            Assert.AreEqual(22, limits.x2);
+            Assert.AreEqual(33, limits.y1);
+            Assert.AreEqual(44, limits.y2);
+        }
+
+        [Test]
+        public void Test_ToString_ExpectedOutput()
+        {
+            var limits = new ScottPlot.Config.AxisLimits2D(11, 22, 33, 44);
+            Console.WriteLine(limits);
+
+            Assert.AreEqual("x1=11.000, x2=22.000, y1=33.000, y2=33.000", limits.ToString());
         }
 
         [Test]
