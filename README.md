@@ -40,6 +40,17 @@ To use the latest ScottPlot source code in your application, download this repos
 
 > ⚠️ The latest source code may contain partially-implemented or experimental functionality. Users desiring stable source code are encouraged to download ScottPlot from the [releases](https://github.com/swharden/ScottPlot/releases) page.
 
+### Contribute to ScottPlot
+
+#### If you like ScottPlot, give it a star!
+If you want to support this project but don't have a feature request or code modification to bring forward yet, you can still support us by following this project and giving it a star!
+
+#### Suggest a Feature
+Review the latest [ScottPlot Cookbook]() to see if the feature you want already exists. If not, open a [feature request issue](https://github.com/swharden/ScottPlot/issues).
+
+#### Create a Pull Request
+Developers will find useful resources in [contributing.md](CONTRIBUTING.md)
+
 ### About ScottPlot
 
 ScottPlot was created by [Scott Harden](http://www.SWHarden.com/) ([Harden Technologies, LLC](http://tech.swharden.com)) with many contributions from the open source user community.

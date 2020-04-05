@@ -1,6 +1,5 @@
-**New contributors** should review links on the [contributing](https://github.com/swharden/ScottPlot/blob/master/CONTRIBUTING.md) page:
-* [fix a bug or add a small feature](https://github.com/swharden/ScottPlot/blob/master/CONTRIBUTING.md#fix-a-bug-or-add-a-small-feature)
-* [create a new plottable object](https://github.com/swharden/ScottPlot/blob/master/CONTRIBUTING.md#create-a-new-plottable-object)
+New contributors should review CONTRIBUTING.md:
+https://github.com/swharden/ScottPlot/blob/master/CONTRIBUTING.md
 
 **Purpose:**
 Describe what is accomplished with this code modification. 
