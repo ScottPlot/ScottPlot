@@ -110,7 +110,7 @@ namespace ScottPlot.Demo
                 md.AppendLine($"![](images/{recipe.id}.png)\n\n");
             }
 
-            md.Insert(0, $"![](TOC)\n\n");
+            md.Insert(0, $"## Table of Contents\n\n![](TOC)\n\n");
             md.Insert(0, $"![](cookbookNote.md)\n\n");
             md.Insert(0, $"_Generated on {DateTime.Now.ToString("D")} at {DateTime.Now.ToString("t")}_\n\n");
             md.Insert(0, $"# ScottPlot {Tools.GetVersionString()} Cookbook\n\n");
