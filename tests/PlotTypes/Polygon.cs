@@ -82,7 +82,7 @@ namespace ScottPlotTests.PlotTypes
             plt.PlotPolygon(arrX, arrY, lineWidth: 1, lineColor: Color.Black, fillAlpha: .5);
 
             plt.Title("Shaded Line Plot");
-            TestTools.LaunchFig(plt);
+            TestTools.SaveFig(plt);
         }
 
         [Test]
@@ -123,7 +123,7 @@ namespace ScottPlotTests.PlotTypes
                 lineColor: Color.Black, fillColor: Color.Green, fillAlpha: .5);
             plt.Title("Shaded Line Plot (negative vs. positive)");
             plt.AxisAuto(0);
-            TestTools.LaunchFig(plt);
+            TestTools.SaveFig(plt);
         }
     }
 }
