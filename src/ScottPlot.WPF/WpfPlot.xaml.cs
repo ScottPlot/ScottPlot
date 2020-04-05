@@ -347,6 +347,16 @@ namespace ScottPlot
                 }
             }
 
+            if (mouseRightDownLocation != null)
+            {
+                double deltaX = Math.Abs(mouseLocation.X - mouseRightDownLocation.Value.X);
+                double deltaY = Math.Abs(mouseLocation.Y - mouseRightDownLocation.Value.Y);
+                bool mouseDraggedFar = (deltaX > 3 || deltaY > 3);
+
+                if (!mouseDraggedFar)
+                    canvasPlot.ContextMenu.IsOpen = true;
+            }
+
             mouseLeftDownLocation = null;
             mouseRightDownLocation = null;
             mouseMiddleDownLocation = null;

@@ -31,7 +31,7 @@
             </StackPanel>
         </StackPanel>
 
-        <Canvas Name="canvasPlot" Grid.Row="1" SizeChanged="CanvasPlot_SizeChanged" Background="DarkRed">
+        <Canvas Name="canvasPlot" Grid.Row="1" SizeChanged="CanvasPlot_SizeChanged" Background="DarkRed" ContextMenuService.IsEnabled="false">
             <Canvas.ContextMenu>
                 <ContextMenu Name="cm" StaysOpen="True">
                     <MenuItem Header="Save Image" Click="SaveImage"/>
