@@ -94,7 +94,7 @@ namespace ScottPlot.Demo
             string lastMajorCategory = "";
             foreach (IPlotDemo recipe in recipes)
             {
-                string title = $"{recipe.categoryMajor}/{recipe.categoryMinor} - {recipe.name}";
+                string title = $"{recipe.categoryMajor}: {recipe.categoryMinor} - {recipe.name}";
                 string sourceCode = recipe.GetSourceCode(sourceCodeFolder);
                 string description = (recipe.description is null) ? "no description provided..." : recipe.description;
 
