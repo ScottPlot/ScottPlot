@@ -64,6 +64,9 @@ namespace ScottPlot.Demo
 
         public string GetSourceCode(string pathDemoFolder)
         {
+            // show Render(int, int) of certain files
+            bool showRenderIntInt = (categoryMinor.ToLower() == "multiplot");
+
             string sourceFilePath = $"{pathDemoFolder}/{categoryMajor}/{categoryMinor}.cs";
             sourceFilePath = System.IO.Path.GetFullPath(sourceFilePath);
 
@@ -87,7 +90,8 @@ namespace ScottPlot.Demo
                     inCorrectClass = (line.StartsWith($"        public class {categoryClass} :"));
                 }
 
-                if (line.StartsWith("            public void Render(Plot plt)"))
+                if (line.StartsWith("            public void Render(Plot plt)") ||
+                    line.StartsWith("            public System.Drawing.Bitmap Render(int width, int height)"))
                 {
                     inRenderFunction = true;
                     i += 1;
@@ -102,14 +106,38 @@ namespace ScottPlot.Demo
 
                 if (line.StartsWith("                "))
                     line = line.Substring(16);
+
                 if (inRenderFunction && inCorrectClass)
+                {
+                    // skip the typical Render() method in MultiPlot examples
+                    if (showRenderIntInt)
+                    {
+                        if (line.Contains("var plt = new ScottPlot.Plot(") ||
+                            line.Contains("throw new InvalidOperationException") ||
+                            line.Contains("return mp.GetBitmap()"))
+                            continue;
+                    }
                     sb.AppendLine(line);
+                }
             }
 
-            sb.Insert(0, "var plt = new ScottPlot.Plot(600, 400);\r\n");
-            sb.AppendLine($"plt.SaveFig(\"{id}.png\");");
+            if (showRenderIntInt)
+            {
+                sb.AppendLine($"\r\nmp.SaveFig(\"{id}.png\");");
+            }
+            else
+            {
+                sb.Insert(0, "var plt = new ScottPlot.Plot(600, 400);\r\n\r\n");
+                sb.AppendLine($"\r\nplt.SaveFig(\"{id}.png\");");
+            }
 
-            return sb.ToString().Trim();
+            string codeText = sb.ToString().Trim();
+            string threeBreaks = "\r\n\r\n\r\n";
+            string twoBreaks = "\r\n\r\n";
+            while (codeText.Contains(threeBreaks))
+                codeText = codeText.Replace(threeBreaks, twoBreaks);
+
+            return codeText;
         }
     }
 }
