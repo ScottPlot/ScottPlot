@@ -404,7 +404,7 @@ namespace ScottPlot
 
         private void OpenInNewWindow(object sender, RoutedEventArgs e)
         {
-            new WpfPlotViewer(plt).Show();
+            new WpfPlotViewer(plt.Copy()).Show();
         }
 
         private void OpenHelp(object sender, RoutedEventArgs e)

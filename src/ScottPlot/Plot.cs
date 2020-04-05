@@ -12,6 +12,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Linq;
+using System.Reflection;
 
 namespace ScottPlot
 {
@@ -34,6 +35,27 @@ namespace ScottPlot
             return string.Format($"ScottPlot ({0:n0} x {1:n0}) with {2:n0} objects ({3:n0} points)",
                 settings.figureSize.Width, settings.figureSize.Height,
                 GetPlottables().Count, GetTotalPoints());
+        }
+
+        /// <summary>
+        /// Return a new Plot with all the same Plottables (and some of the styles) of this one
+        /// </summary>
+        public Plot Copy()
+        {
+            Plot plt2 = new ScottPlot.Plot(settings.figureSize.Width, settings.figureSize.Height);
+            var settings2 = plt2.GetSettings(false);
+            settings2.plottables.AddRange(settings.plottables);
+
+            // TODO: add a Copy() method to the settings module, or perhaps Update(existingSettings).
+
+            // copy over only the most relevant styles
+            plt2.Title(settings.title.text);
+            plt2.XLabel(settings.xLabel.text);
+            plt2.YLabel(settings.yLabel.text);
+
+            plt2.TightenLayout();
+            plt2.AxisAuto();
+            return plt2;
         }
 
         #region Bitmaps, Graphics, and Drawing Settings

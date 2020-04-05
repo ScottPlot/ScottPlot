@@ -391,7 +391,7 @@ namespace ScottPlot
                     break;
 
                 case "Open in New Window":
-                    new FormsPlotViewer(plt).Show();
+                    new FormsPlotViewer(plt.Copy()).Show();
                     break;
 
                 default:
