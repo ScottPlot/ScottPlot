@@ -2,7 +2,7 @@
 name: Patch / Pull Request
 about: Discuss an existing or proposed code modification
 title: ''
-labels: ''
+labels: 'new feature'
 assignees: ''
 
 ---
