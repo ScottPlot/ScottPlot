@@ -2,7 +2,7 @@
 name: Question about ScottPlot
 about: How do I use ScottPlot to...
 title: ''
-labels: ''
+labels: 'Question'
 assignees: ''
 
 ---
