@@ -28,6 +28,7 @@ namespace ScottPlot.Config
         private bool verticalAxis;
         public bool invertSign;
         public bool logScale;
+        public string numericFormatString;
 
         public TickCollection(bool verticalAxis)
         {
@@ -214,9 +215,17 @@ namespace ScottPlot.Config
             value = Math.Round(value, maximumDecimalPlaces);
             bool isRoundNumber = ((int)value == value);
             bool isLargeNumber = (value > 1000);
-            string stringFormat = (isRoundNumber || isLargeNumber) ? "N0" : "G";
-            string label = value.ToString(stringFormat, culture);
-            return label;
+
+            // https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings
+            if (numericFormatString is null)
+            {
+                string defaultFormat = (isRoundNumber || isLargeNumber) ? "N0" : "G";
+                return value.ToString(defaultFormat, culture);
+            }
+            else
+            {
+                return value.ToString(numericFormatString, culture);
+            }
         }
 
         public (string[], string) GetPrettyTickLabels(
