@@ -96,6 +96,7 @@ namespace ScottPlot.Demo
             {
                 string title = $"{recipe.categoryMajor}: {recipe.categoryMinor} - {recipe.name}";
                 string sourceCode = recipe.GetSourceCode(sourceCodeFolder);
+                sourceCode = $"// Code from {recipe.sourceFile}\n{sourceCode}";
                 string description = (recipe.description is null) ? "no description provided..." : recipe.description;
 
                 if (recipe.categoryMajor != lastMajorCategory)
