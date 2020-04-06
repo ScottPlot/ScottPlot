@@ -25,6 +25,26 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
+        public class Formatting : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Numeric Tick Formatting";
+            public string description { get; } = "Display format of numeric ticks can be customized using numeric format strings.";
+
+            public void Render(Plot plt)
+            {
+                int pointCount = 51;
+                double[] x = DataGen.Consecutive(pointCount);
+                double[] sin = DataGen.Sin(pointCount);
+                double[] cos = DataGen.Cos(pointCount);
+
+                plt.PlotScatter(x, sin);
+                plt.PlotScatter(x, cos);
+
+                // See https://tinyurl.com/y86clj9k to learn about numeric format strings
+                plt.Ticks(numericFormatStringX: "E2", numericFormatStringY: "P1");
+            }
+        }
+
         public class DateAxis : PlotDemo, IPlotDemo
         {
             public string name { get; } = "DateTime Axis";
