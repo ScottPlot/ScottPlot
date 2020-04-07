@@ -13,7 +13,7 @@ namespace ScottPlot
         private Settings settings;
         private bool isDesignerMode;
         public Cursor cursor = Cursors.Arrow;
-        ContextMenuStrip rightClickMenu;
+        public ContextMenuStrip rightClickMenu;
 
         public override Color BackColor
         {
