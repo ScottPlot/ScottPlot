@@ -32,7 +32,6 @@ namespace ScottPlot
         private bool isDesignerMode;
         public Cursor cursor = Cursors.Arrow;
         private double dpiScale = 1;
-        public ContextMenu rightClickMenu;
 
         public WpfPlot(Plot plt)
         {
@@ -59,13 +58,11 @@ namespace ScottPlot
             MenuItem HelpMenuItem = new MenuItem() { Header = "Help" };
             HelpMenuItem.Click += OpenHelp;
 
-            rightClickMenu = new ContextMenu();
-            rightClickMenu.Items.Clear();
-            rightClickMenu.Items.Add(SaveImageMenuItem);
-            rightClickMenu.Items.Add(CopyImageMenuItem);
-            rightClickMenu.Items.Add(NewWindowMenuItem);
-            rightClickMenu.Items.Add(HelpMenuItem);
-            Debug.WriteLine(">>>>>>>" + rightClickMenu.Items.Count);
+            ContextMenu = new ContextMenu();
+            ContextMenu.Items.Add(SaveImageMenuItem);
+            ContextMenu.Items.Add(CopyImageMenuItem);
+            ContextMenu.Items.Add(NewWindowMenuItem);
+            ContextMenu.Items.Add(HelpMenuItem);
         }
 
         public void Reset()
@@ -377,7 +374,7 @@ namespace ScottPlot
                 bool mouseDraggedFar = (deltaX > 3 || deltaY > 3);
 
                 if (!mouseDraggedFar)
-                    rightClickMenu.IsOpen = true;
+                    ContextMenu.IsOpen = true;
             }
 
             mouseLeftDownLocation = null;

@@ -19,8 +19,6 @@ namespace ScottPlot.Demo.WPF.WpfDemos
     /// </summary>
     public partial class RightClickMenu : Window
     {
-        Random rand = new Random();
-
         public RightClickMenu()
         {
             InitializeComponent();
@@ -38,11 +36,12 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             rightClickMenu.Items.Add(addSinMenuItem);
             rightClickMenu.Items.Add(clearPlotMenuItem);
 
-            wpfPlot1.rightClickMenu = rightClickMenu;
+            wpfPlot1.ContextMenu = rightClickMenu;
         }
 
         private void AddSine(object sender, RoutedEventArgs e)
         {
+            Random rand = new Random();
             wpfPlot1.plt.PlotSignal(DataGen.Sin(51, phase: rand.NextDouble() * 1000));
             wpfPlot1.plt.AxisAuto();
             wpfPlot1.Render();
