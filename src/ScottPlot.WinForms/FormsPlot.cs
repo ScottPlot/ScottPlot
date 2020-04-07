@@ -13,7 +13,6 @@ namespace ScottPlot
         private Settings settings;
         private bool isDesignerMode;
         public Cursor cursor = Cursors.Arrow;
-        public ContextMenuStrip rightClickMenu;
 
         public override Color BackColor
         {
@@ -51,13 +50,12 @@ namespace ScottPlot
 
         private void InitializeScottPlot()
         {
-            rightClickMenu = new ContextMenuStrip();
-            rightClickMenu.Items.Add("Save Image");
-            rightClickMenu.Items.Add("Copy Image");
-            rightClickMenu.Items.Add("Open in New Window");
-            rightClickMenu.Items.Add("Settings");
-            rightClickMenu.Items.Add("Help");
-            rightClickMenu.ItemClicked += new ToolStripItemClickedEventHandler(RightClickMenuItemClicked);
+            ContextMenuStrip = new ContextMenuStrip();
+            ContextMenuStrip.Items.Add(new ToolStripMenuItem("Save Image", null, new EventHandler(SaveImage)));
+            ContextMenuStrip.Items.Add(new ToolStripMenuItem("Copy Image", null, new EventHandler(CopyImage)));
+            ContextMenuStrip.Items.Add(new ToolStripMenuItem("Open in New Window", null, new EventHandler(OpenNewWindow)));
+            ContextMenuStrip.Items.Add(new ToolStripMenuItem("Settings", null, new EventHandler(OpenSettingsWindow)));
+            ContextMenuStrip.Items.Add(new ToolStripMenuItem("Help", null, new EventHandler(OpenHelpWindow)));
 
             pbPlot.MouseWheel += PbPlot_MouseWheel;
 
@@ -310,10 +308,12 @@ namespace ScottPlot
             {
                 int deltaX = Math.Abs(((Point)mouseRightDownLocation).X - e.Location.X);
                 int deltaY = Math.Abs(((Point)mouseRightDownLocation).Y - e.Location.Y);
-                if (deltaX < 3 && deltaY < 3)
-                {
+                bool mouseDraggedFar = (deltaX > 3 || deltaY > 3);
+
+                if (mouseDraggedFar)
+                    ContextMenuStrip.Hide();
+                else
                     OnMenuDeployed();
-                }
             }
 
             if (isPanningOrZooming)
@@ -358,45 +358,38 @@ namespace ScottPlot
 
         #region menus and forms
 
-        private void RightClickMenuItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        private void SaveImage(object sender, EventArgs e)
         {
-            rightClickMenu.Hide();
-            switch (e.ClickedItem.Text)
-            {
-                case "Save Image":
-                    SaveFileDialog savefile = new SaveFileDialog();
-                    savefile.FileName = "ScottPlot.png";
-                    savefile.Filter = "PNG Files (*.png)|*.png;*.png";
-                    savefile.Filter += "|JPG Files (*.jpg, *.jpeg)|*.jpg;*.jpeg";
-                    savefile.Filter += "|BMP Files (*.bmp)|*.bmp;*.bmp";
-                    savefile.Filter += "|TIF files (*.tif, *.tiff)|*.tif;*.tiff";
-                    savefile.Filter += "|All files (*.*)|*.*";
-                    if (savefile.ShowDialog() == DialogResult.OK)
-                        plt.SaveFig(savefile.FileName);
-                    break;
+            SaveFileDialog savefile = new SaveFileDialog();
+            savefile.FileName = "ScottPlot.png";
+            savefile.Filter = "PNG Files (*.png)|*.png;*.png";
+            savefile.Filter += "|JPG Files (*.jpg, *.jpeg)|*.jpg;*.jpeg";
+            savefile.Filter += "|BMP Files (*.bmp)|*.bmp;*.bmp";
+            savefile.Filter += "|TIF files (*.tif, *.tiff)|*.tif;*.tiff";
+            savefile.Filter += "|All files (*.*)|*.*";
+            if (savefile.ShowDialog() == DialogResult.OK)
+                plt.SaveFig(savefile.FileName);
+        }
 
-                case "Settings":
-                    var formSettings = new UserControls.FormSettings(plt);
-                    formSettings.ShowDialog();
-                    Render();
-                    break;
+        private void CopyImage(object sender, EventArgs e)
+        {
+            Clipboard.SetImage(plt.GetBitmap(true));
+        }
 
-                case "Help":
-                    var formHelp = new UserControls.FormHelp();
-                    formHelp.ShowDialog();
-                    break;
+        private void OpenSettingsWindow(object sender, EventArgs e)
+        {
+            new UserControls.FormSettings(plt).ShowDialog();
+            Render();
+        }
 
-                case "Copy Image":
-                    Clipboard.SetImage(plt.GetBitmap(true));
-                    break;
+        private void OpenHelpWindow(object sender, EventArgs e)
+        {
+            new UserControls.FormHelp().ShowDialog();
+        }
 
-                case "Open in New Window":
-                    new FormsPlotViewer(plt.Copy()).Show();
-                    break;
-
-                default:
-                    throw new NotImplementedException();
-            }
+        private void OpenNewWindow(object sender, EventArgs e)
+        {
+            new FormsPlotViewer(plt.Copy()).Show();
         }
 
         #endregion
@@ -436,7 +429,7 @@ namespace ScottPlot
             MenuDeployed?.Invoke(this, null);
 
             if (enableRightClickMenu)
-                rightClickMenu.Show(pbPlot, PointToClient(System.Windows.Forms.Cursor.Position));
+                ContextMenuStrip.Show(pbPlot, PointToClient(Cursor.Position));
         }
 
         #endregion
