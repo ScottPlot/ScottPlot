@@ -8,10 +8,5 @@
         Title="Custom Right-Click Menu" Height="450" Width="800"
         WindowStartupLocation="CenterOwner"
         >
-    <ScottPlot:WpfPlot Name="wpfPlot2">
-        <ScottPlot:WpfPlot.ContextMenu Name="cm" StaysOpen="True">
-            <MenuItem Header="Add a Sine Wave" Click="AddSine"/>
-            <MenuItem Header="Clear the Plot" Click="ClearPlot"/>
-        </ScottPlot:WpfPlot.ContextMenu>
-    </ScottPlot:WpfPlot>
+    <ScottPlot:WpfPlot Name="wpfPlot1" />
 </Window>

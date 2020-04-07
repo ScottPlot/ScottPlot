@@ -32,17 +32,40 @@ namespace ScottPlot
         private bool isDesignerMode;
         public Cursor cursor = Cursors.Arrow;
         private double dpiScale = 1;
+        public ContextMenu rightClickMenu;
 
         public WpfPlot(Plot plt)
         {
             InitializeComponent();
+            CreateDefaultRightClickMenu();
             Reset(plt);
         }
 
         public WpfPlot()
         {
             InitializeComponent();
+            CreateDefaultRightClickMenu();
             Reset(null);
+        }
+
+        private void CreateDefaultRightClickMenu()
+        {
+            MenuItem SaveImageMenuItem = new MenuItem() { Header = "Save Image" };
+            SaveImageMenuItem.Click += SaveImage;
+            MenuItem CopyImageMenuItem = new MenuItem() { Header = "Copy Image" };
+            CopyImageMenuItem.Click += CopyImage;
+            MenuItem NewWindowMenuItem = new MenuItem() { Header = "Open in New Window" };
+            NewWindowMenuItem.Click += OpenInNewWindow;
+            MenuItem HelpMenuItem = new MenuItem() { Header = "Help" };
+            HelpMenuItem.Click += OpenHelp;
+
+            rightClickMenu = new ContextMenu();
+            rightClickMenu.Items.Clear();
+            rightClickMenu.Items.Add(SaveImageMenuItem);
+            rightClickMenu.Items.Add(CopyImageMenuItem);
+            rightClickMenu.Items.Add(NewWindowMenuItem);
+            rightClickMenu.Items.Add(HelpMenuItem);
+            Debug.WriteLine(">>>>>>>" + rightClickMenu.Items.Count);
         }
 
         public void Reset()
@@ -354,7 +377,7 @@ namespace ScottPlot
                 bool mouseDraggedFar = (deltaX > 3 || deltaY > 3);
 
                 if (!mouseDraggedFar)
-                    canvasPlot.ContextMenu.IsOpen = true;
+                    rightClickMenu.IsOpen = true;
             }
 
             mouseLeftDownLocation = null;

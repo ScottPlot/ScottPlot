@@ -19,11 +19,40 @@ namespace ScottPlot.Demo.WPF.WpfDemos
     /// </summary>
     public partial class RightClickMenu : Window
     {
+        Random rand = new Random();
+
         public RightClickMenu()
         {
             InitializeComponent();
-            wpfPlot2.plt.PlotSignal(DataGen.Sin(51));
-            wpfPlot2.plt.PlotSignal(DataGen.Cos(51));
+
+            wpfPlot1.plt.PlotSignal(DataGen.Sin(51));
+            wpfPlot1.plt.PlotSignal(DataGen.Cos(51));
+            wpfPlot1.Render();
+
+            MenuItem addSinMenuItem = new MenuItem() { Header = "Add Sine Wave" };
+            addSinMenuItem.Click += AddSine;
+            MenuItem clearPlotMenuItem = new MenuItem() { Header = "Clear Plot" };
+            clearPlotMenuItem.Click += ClearPlot;
+
+            ContextMenu rightClickMenu = new ContextMenu();
+            rightClickMenu.Items.Add(addSinMenuItem);
+            rightClickMenu.Items.Add(clearPlotMenuItem);
+
+            wpfPlot1.rightClickMenu = rightClickMenu;
+        }
+
+        private void AddSine(object sender, RoutedEventArgs e)
+        {
+            wpfPlot1.plt.PlotSignal(DataGen.Sin(51, phase: rand.NextDouble() * 1000));
+            wpfPlot1.plt.AxisAuto();
+            wpfPlot1.Render();
+        }
+
+        private void ClearPlot(object sender, RoutedEventArgs e)
+        {
+            wpfPlot1.plt.Clear();
+            wpfPlot1.plt.AxisAuto();
+            wpfPlot1.Render();
         }
     }
 }
