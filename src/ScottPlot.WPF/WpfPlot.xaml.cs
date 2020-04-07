@@ -372,9 +372,12 @@ namespace ScottPlot
                 double deltaX = Math.Abs(mouseLocation.X - mouseRightDownLocation.Value.X);
                 double deltaY = Math.Abs(mouseLocation.Y - mouseRightDownLocation.Value.Y);
                 bool mouseDraggedFar = (deltaX > 3 || deltaY > 3);
-
-                if (!mouseDraggedFar)
-                    ContextMenu.IsOpen = true;
+                ContextMenu.Visibility = (mouseDraggedFar) ? Visibility.Hidden : Visibility.Visible;
+                ContextMenu.IsOpen = (!mouseDraggedFar);
+            }
+            else
+            {
+                ContextMenu.IsOpen = false;
             }
 
             mouseLeftDownLocation = null;
