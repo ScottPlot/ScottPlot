@@ -129,6 +129,12 @@
     <Compile Include="WinFormsDemos\PlotViewerDemo.Designer.cs">
       <DependentUpon>PlotViewerDemo.cs</DependentUpon>
     </Compile>
+    <Compile Include="WinFormsDemos\RightClickMenu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinFormsDemos\RightClickMenu.Designer.cs">
+      <DependentUpon>RightClickMenu.cs</DependentUpon>
+    </Compile>
     <Compile Include="WinFormsDemos\ShowValueOnHover.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -180,6 +186,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="WinFormsDemos\PlotViewerDemo.resx">
       <DependentUpon>PlotViewerDemo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinFormsDemos\RightClickMenu.resx">
+      <DependentUpon>RightClickMenu.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WinFormsDemos\ShowValueOnHover.resx">
       <DependentUpon>ShowValueOnHover.cs</DependentUpon>
