@@ -99,5 +99,10 @@ namespace ScottPlot.Demo.WPF
         {
             new WpfDemos.ManyPlots().ShowDialog();
         }
+
+        private void LaunchCustomRightClick(object sender, RoutedEventArgs e)
+        {
+            new WpfDemos.RightClickMenu().ShowDialog();
+        }
     }
 }

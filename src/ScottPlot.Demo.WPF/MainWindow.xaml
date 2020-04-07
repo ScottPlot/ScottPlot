@@ -154,6 +154,17 @@
                         </TextBlock>
                     </DockPanel>
 
+                    <DockPanel>
+                        <Button DockPanel.Dock="Left" Click="LaunchCustomRightClick">
+                            <TextBlock TextAlignment="Center">
+                        Custom Right-Click Menu
+                            </TextBlock>
+                        </Button>
+                        <TextBlock >
+                    Shows how to create a custom right-click context menu
+                        </TextBlock>
+                    </DockPanel>
+
                 </StackPanel>
             </GroupBox>
 
