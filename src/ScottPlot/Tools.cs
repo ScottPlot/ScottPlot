@@ -280,5 +280,29 @@ namespace ScottPlot
                 rounded[i] = Math.Round(data[i], decimals);
             return rounded;
         }
+
+        /// <summary>
+        /// return a copy of the given array padded with the given value at both sidees
+        /// </summary>
+        public static double[] Pad(double[] values, int padCount = 1, double padWithLeft = 0, double padWithRight = 0, bool cloneEdges = false)
+        {
+            double[] padded = new double[values.Length + padCount * 2];
+
+            Array.Copy(values, 0, padded, padCount, values.Length);
+
+            if (cloneEdges)
+            {
+                padWithLeft = values[0];
+                padWithRight = values[values.Length - 1];
+            }
+
+            for (int i = 0; i < padCount; i++)
+            {
+                padded[i] = padWithLeft;
+                padded[padded.Length - 1 - i] = padWithRight;
+            }
+
+            return padded;
+        }
     }
 }

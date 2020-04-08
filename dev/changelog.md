@@ -25,6 +25,10 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
   * Create a GDI rendering module which uses System.Drawing 
   * Create a SkiaSharp rendering module and user control (supporting OpenGL hardware acceleration)
 
+## ScottPlot 4.0.29 (in development)
+* `DataGen.Range()` now has `includeStop` argument to include the last value in the returned array.
+* `Tools.Pad()` has been created to return a copy of a given array padded with data values on each side. (#255) _Thanks @ckovamees_
+
 ## ScottPlot 4.0.28
 * `Ticks()` now has arguments for numericStringFormat (X and Y) to make it easy to customize formatting of tick labels (percentage, currency, scientific notation, etc.) using standard [numeric format strings](https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings). Example use is demonstrated in the cookbook. (#336) _Thanks @deiruch_
 * The right-click menu can now be more easily customized by writing a custom menu to `FormsPlot.ContextMenuStrip` or `WpfPlot.ContextMenu`. Demonstrations of both are in the demo application. (#337) _Thanks @Antracik_
