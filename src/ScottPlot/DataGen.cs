@@ -245,14 +245,16 @@ namespace ScottPlot
             return Range(start, stop, 1);
         }
 
-        public static double[] Range(double start, double stop, double step)
+        public static double[] Range(double start, double stop, double step, bool includeStop = false)
         {
             if (step <= 0)
                 throw new ArgumentException("step must be >0. To make a descending series make stop < start.");
-
+            
             double valueSpan = Math.Abs(start - stop);
             int valueCount = (int)(valueSpan / step);
             double stepSize = (stop > start) ? step : -step;
+            if (includeStop)
+                valueCount += 1;
             double[] values = new double[valueCount];
 
             for (int i = 0; i < valueCount; i++)
