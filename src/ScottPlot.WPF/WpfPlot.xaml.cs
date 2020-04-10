@@ -143,6 +143,7 @@ namespace ScottPlot
 
         private bool enablePanning = true;
         private bool enableZooming = true;
+        private bool enableScrollWheelZoom = true;
         private bool lowQualityWhileDragging = true;
         private bool doubleClickingTogglesBenchmark = true;
         private bool lockVerticalAxis = false;
@@ -150,7 +151,8 @@ namespace ScottPlot
         private bool equalAxes = false;
         public void Configure(
             bool? enablePanning = null,
-            bool? enableZooming = null,
+            bool? enableRightClickZoom = null,
+            bool? enableScrollWheelZoom = null,
             bool? lowQualityWhileDragging = null,
             bool? enableDoubleClickBenchmark = null,
             bool? lockVerticalAxis = null,
@@ -159,7 +161,8 @@ namespace ScottPlot
             )
         {
             if (enablePanning != null) this.enablePanning = (bool)enablePanning;
-            if (enableZooming != null) this.enableZooming = (bool)enableZooming;
+            if (enableRightClickZoom != null) this.enableZooming = (bool)enableRightClickZoom;
+            if (enableScrollWheelZoom != null) this.enableScrollWheelZoom = (bool)enableScrollWheelZoom;
             if (lowQualityWhileDragging != null) this.lowQualityWhileDragging = (bool)lowQualityWhileDragging;
             if (enableDoubleClickBenchmark != null) this.doubleClickingTogglesBenchmark = (bool)enableDoubleClickBenchmark;
             if (lockVerticalAxis != null) this.lockVerticalAxis = (bool)lockVerticalAxis;
@@ -394,6 +397,9 @@ namespace ScottPlot
 
         private void UserControl_MouseWheel(object sender, MouseWheelEventArgs e)
         {
+            if (enableScrollWheelZoom == false)
+                return;
+
             var mousePixel = GetPixelPosition(e); // DPI-scaling aware
             var mouseCoordinate = plt.CoordinateFromPixel(mousePixel.X, mousePixel.Y);
 

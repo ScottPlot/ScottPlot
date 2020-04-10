@@ -109,8 +109,9 @@ namespace ScottPlot
         #region user control configuration
 
         private bool enablePanning = true;
-        private bool enableZooming = true;
+        private bool enableRightClickZoom = true;
         private bool enableRightClickMenu = true;
+        private bool enableScrollWheelZoom = true;
         private bool lowQualityWhileDragging = true;
         private bool doubleClickingTogglesBenchmark = true;
         private bool lockVerticalAxis = false;
@@ -120,6 +121,7 @@ namespace ScottPlot
             bool? enablePanning = null,
             bool? enableZooming = null,
             bool? enableRightClickMenu = null,
+            bool? enableScrollWheelZoom = null,
             bool? lowQualityWhileDragging = null,
             bool? enableDoubleClickBenchmark = null,
             bool? lockVerticalAxis = null,
@@ -128,8 +130,9 @@ namespace ScottPlot
             )
         {
             if (enablePanning != null) this.enablePanning = (bool)enablePanning;
-            if (enableZooming != null) this.enableZooming = (bool)enableZooming;
+            if (enableZooming != null) this.enableRightClickZoom = (bool)enableZooming;
             if (enableRightClickMenu != null) this.enableRightClickMenu = (bool)enableRightClickMenu;
+            if (enableScrollWheelZoom != null) this.enableScrollWheelZoom = (bool)enableScrollWheelZoom;
             if (lowQualityWhileDragging != null) this.lowQualityWhileDragging = (bool)lowQualityWhileDragging;
             if (enableDoubleClickBenchmark != null) this.doubleClickingTogglesBenchmark = (bool)enableDoubleClickBenchmark;
             if (lockVerticalAxis != null) this.lockVerticalAxis = (bool)lockVerticalAxis;
@@ -183,7 +186,7 @@ namespace ScottPlot
                 // MouseDown event is to start a pan or zoom
                 if (e.Button == MouseButtons.Left && ModifierKeys.HasFlag(Keys.Shift)) mouseMiddleDownLocation = e.Location;
                 else if (e.Button == MouseButtons.Left && enablePanning) mouseLeftDownLocation = e.Location;
-                else if (e.Button == MouseButtons.Right && enableZooming) mouseRightDownLocation = e.Location;
+                else if (e.Button == MouseButtons.Right && enableRightClickZoom) mouseRightDownLocation = e.Location;
                 else if (e.Button == MouseButtons.Middle) mouseMiddleDownLocation = e.Location;
                 axisLimitsOnMouseDown = plt.Axis();
             }
@@ -342,6 +345,9 @@ namespace ScottPlot
 
         private void PbPlot_MouseWheel(object sender, MouseEventArgs e)
         {
+            if (enableScrollWheelZoom == false)
+                return;
+
             double xFrac = (e.Delta > 0) ? 1.15 : 0.85;
             double yFrac = (e.Delta > 0) ? 1.15 : 0.85;
 
