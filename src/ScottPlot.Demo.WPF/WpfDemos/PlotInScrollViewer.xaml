@@ -1,0 +1,16 @@
+﻿<Window x:Class="ScottPlot.Demo.WPF.WpfDemos.PlotInScrollViewer"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ScottPlot.Demo.WPF.WpfDemos" xmlns:ScottPlot="clr-namespace:ScottPlot;assembly=ScottPlot.WPF"
+        mc:Ignorable="d"
+        Title="ScottPlot in a ScrollViewer" Height="450" Width="800">
+    <ScrollViewer>
+        <StackPanel>
+            <ScottPlot:WpfPlot Height="300" Name="wpfPlot1"/>
+            <ScottPlot:WpfPlot Height="300" Name="wpfPlot2"/>
+            <ScottPlot:WpfPlot Height="300" Name="wpfPlot3"/>
+        </StackPanel>
+    </ScrollViewer>
+</Window>

@@ -123,6 +123,12 @@
     <Compile Include="WinFormsDemos\MouseTracker.Designer.cs">
       <DependentUpon>MouseTracker.cs</DependentUpon>
     </Compile>
+    <Compile Include="WinFormsDemos\PlotsInScrollViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinFormsDemos\PlotsInScrollViewer.Designer.cs">
+      <DependentUpon>PlotsInScrollViewer.cs</DependentUpon>
+    </Compile>
     <Compile Include="WinFormsDemos\PlotViewerDemo.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -183,6 +189,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="WinFormsDemos\MouseTracker.resx">
       <DependentUpon>MouseTracker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinFormsDemos\PlotsInScrollViewer.resx">
+      <DependentUpon>PlotsInScrollViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WinFormsDemos\PlotViewerDemo.resx">
       <DependentUpon>PlotViewerDemo.cs</DependentUpon>

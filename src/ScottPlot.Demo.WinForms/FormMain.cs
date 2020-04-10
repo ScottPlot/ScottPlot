@@ -77,5 +77,10 @@ namespace ScottPlot.Demo.WinForms
         {
             new WinFormsDemos.RightClickMenu().ShowDialog();
         }
+
+        private void ScrollViewerButton_Click(object sender, EventArgs e)
+        {
+            new WinFormsDemos.PlotsInScrollViewer().ShowDialog();
+        }
     }
 }

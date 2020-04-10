@@ -104,5 +104,10 @@ namespace ScottPlot.Demo.WPF
         {
             new WpfDemos.RightClickMenu().ShowDialog();
         }
+
+        private void LaunchPlotInAScrollViewer(object sender, RoutedEventArgs e)
+        {
+            new WpfDemos.PlotInScrollViewer().ShowDialog();
+        }
     }
 }

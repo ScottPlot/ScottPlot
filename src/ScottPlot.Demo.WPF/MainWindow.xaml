@@ -165,6 +165,17 @@
                         </TextBlock>
                     </DockPanel>
 
+                    <DockPanel>
+                        <Button DockPanel.Dock="Left" Click="LaunchPlotInAScrollViewer">
+                            <TextBlock TextAlignment="Center">
+                        Plot in a ScrollViewer
+                            </TextBlock>
+                        </Button>
+                        <TextBlock >
+                    Shows how to show a ScottPlot inside a ScrollViewer
+                        </TextBlock>
+                    </DockPanel>
+
                 </StackPanel>
             </GroupBox>
 
