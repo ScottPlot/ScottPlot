@@ -55,6 +55,9 @@ namespace ScottPlot
                         items.Add(plottableItem);
             }
 
+            if (settings.legend.reverseOrder)
+                items.Reverse();
+
             return items.ToArray();
         }
 

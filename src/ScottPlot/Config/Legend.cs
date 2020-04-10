@@ -19,5 +19,6 @@ namespace ScottPlot.Config
         public Rectangle rect = new Rectangle(0, 0, 1, 1);
         public bool antiAlias = true;
         public bool fixedLineWidth = true;
+        public bool reverseOrder = false;
     }
 }

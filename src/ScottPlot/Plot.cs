@@ -1351,7 +1351,8 @@ namespace ScottPlot
             Color? frameColor = null,
             legendLocation location = legendLocation.lowerRight,
             shadowDirection shadowDirection = shadowDirection.lowerRight,
-            bool? fixedLineWidth = null
+            bool? fixedLineWidth = null,
+            bool? reverseOrder = null
             )
         {
             if (fontName == null)
@@ -1362,6 +1363,8 @@ namespace ScottPlot
                 settings.legend.colorBackground = (Color)backColor;
             if (frameColor != null)
                 settings.legend.colorFrame = (Color)frameColor;
+            if (reverseOrder != null)
+                settings.legend.reverseOrder = reverseOrder.Value;
 
             fontName = Config.Fonts.GetValidFontName(fontName);
             FontStyle fontStyle = (bold) ? FontStyle.Bold : FontStyle.Regular;

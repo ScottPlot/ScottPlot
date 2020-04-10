@@ -27,5 +27,26 @@ namespace ScottPlotTests.Legend
 
             TestTools.SaveFig(mplt);
         }
+
+        [Test]
+        public void Test_Legend_ReverseOrder()
+        {
+            var plt1 = new ScottPlot.Plot();
+            plt1.PlotSignal(DataGen.Sin(100), label: "sin");
+            plt1.PlotSignal(DataGen.Cos(100), label: "cos");
+            plt1.Legend();
+            string hash1 = ScottPlot.Tools.BitmapHash(plt1.GetBitmap());
+
+            var plt2 = new ScottPlot.Plot();
+            plt2.PlotSignal(DataGen.Sin(100), label: "sin");
+            plt2.PlotSignal(DataGen.Cos(100), label: "cos");
+            plt2.Legend(reverseOrder: true);
+            string hash2 = ScottPlot.Tools.BitmapHash(plt2.GetBitmap());
+
+            TestTools.SaveFig(plt1, "standard");
+            TestTools.SaveFig(plt2, "reversed");
+
+            Assert.AreNotEqual(hash1, hash2);
+        }
     }
 }
