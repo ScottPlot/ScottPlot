@@ -25,6 +25,25 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
+        public class Seaborn : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Plot Style (Seaborn)";
+            public string description { get; }
+
+            public void Render(Plot plt)
+            {
+                int pointCount = 51;
+                double[] x = DataGen.Consecutive(pointCount);
+                double[] sin = DataGen.Sin(pointCount);
+                double[] cos = DataGen.Cos(pointCount);
+
+                plt.PlotScatter(x, sin);
+                plt.PlotScatter(x, cos);
+
+                plt.Style(ScottPlot.Style.Seaborn);
+            }
+        }
+
         public class Control : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Plot Style (Control)";

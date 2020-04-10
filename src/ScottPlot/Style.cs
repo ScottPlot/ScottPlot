@@ -18,7 +18,8 @@ namespace ScottPlot
         Light2,
         Gray1,
         Gray2,
-        Black
+        Black,
+        Seaborn
     }
 
     public enum TextAlignment
@@ -167,6 +168,19 @@ namespace ScottPlot
                         label: Color.Black,
                         title: Color.Black
                         );
+                    break;
+
+                case (Style.Seaborn):
+                    existingPlot.Style(
+                        figBg: Color.White,
+                        dataBg: ColorTranslator.FromHtml("#eaeaf2"),
+                        grid: Color.White,
+                        tick: ColorTranslator.FromHtml("#AAAAAA"),
+                        label: Color.Black,
+                        title: Color.Black
+                        );
+                    existingPlot.Frame(false);
+                    existingPlot.Ticks(displayTicksXminor: false, displayTicksYminor: false);
                     break;
 
                 default:
