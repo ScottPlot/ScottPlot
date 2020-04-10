@@ -30,6 +30,7 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
 * `DataGen.Range()` now has `includeStop` argument to include the last value in the returned array.
 * `Tools.Pad()` has been created to return a copy of a given array padded with data values on each side. (#255) _Thanks @ckovamees_
 * [Seaborn](https://seaborn.pydata.org/) style can be activated using `Plot.Style(Style.Seaborn)` (#339)
+* The `enableZooming` argument in `WpfPlot.Configure()` and `FormsPlot.Configure()` has been replaced by two arguments `enableRightClickZoom` and `enableScrollWheelZoom` (#338) _Thanks Zach_
 
 ## ScottPlot 4.0.28
 * `Ticks()` now has arguments for numericStringFormat (X and Y) to make it easy to customize formatting of tick labels (percentage, currency, scientific notation, etc.) using standard [numeric format strings](https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings). Example use is demonstrated in the cookbook. (#336) _Thanks @deiruch_
