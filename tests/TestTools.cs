@@ -18,7 +18,10 @@ namespace ScottPlotTests
             var stackTrace = new System.Diagnostics.StackTrace();
             string callingMethod = stackTrace.GetFrame(1).GetMethod().Name;
 
-            string fileName = callingMethod + ".png";
+            if (subName != "")
+                subName = "_" + subName;
+
+            string fileName = callingMethod + subName + ".png";
             string filePath = System.IO.Path.GetFullPath(fileName);
             plt.SaveFig(filePath);
 
