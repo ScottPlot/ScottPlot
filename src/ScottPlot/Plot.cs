@@ -1686,6 +1686,17 @@ namespace ScottPlot
             Resize();
         }
 
+        // TODO: create a new Style()
+        /*
+        It should only have arguments to configure styles of things which
+        can't be set any other way. Be mindful not to duplicate arguments from
+        Ticks(), Grid(), Title, XLabel(), YLabel(), Frame(), etc.
+
+        Probably the only two arguments should be:
+            figureBackground
+            dataBackground
+        */
+
         public void Style(
             Color? figBg = null,
             Color? dataBg = null,
