@@ -32,6 +32,25 @@ namespace ScottPlotTests
             return filePath;
         }
 
+        public static string SaveFig(System.Drawing.Bitmap bmp, string subName = "")
+        {
+            var stackTrace = new System.Diagnostics.StackTrace();
+            string callingMethod = stackTrace.GetFrame(1).GetMethod().Name;
+
+            if (subName != "")
+                subName = "_" + subName;
+
+            string fileName = callingMethod + subName + ".png";
+            string filePath = System.IO.Path.GetFullPath(fileName);
+            bmp.Save(filePath, System.Drawing.Imaging.ImageFormat.Png);
+
+            DisplayRenderInfo(callingMethod, subName, 0, 0);
+            Console.WriteLine($"Saved: {filePath}");
+            Console.WriteLine();
+
+            return filePath;
+        }
+
         public static string SaveFig(ScottPlot.MultiPlot mplt, string subName = "")
         {
             var stackTrace = new System.Diagnostics.StackTrace();
