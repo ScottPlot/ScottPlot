@@ -93,7 +93,9 @@ namespace ScottPlot
             var legendItems = GetLegendItems(settings);
             for (int i = 0; i < legendItems.Length; i++)
             {
-                Point legendItemLocation = new Point(frameOffset.X, padding + i * (int)(maxLabelSize.Height) + frameOffset.Y);
+                float itemY = padding + i * maxLabelSize.Height + frameOffset.Y;
+                float itemX = frameOffset.X;
+                PointF legendItemLocation = new PointF(itemX, itemY);
                 DrawLegendItemString(legendItems[i], settings, legendItemLocation, padding, stubWidth, maxLabelSize.Height);
                 DrawLegendItemLine(legendItems[i], settings, legendItemLocation, padding, stubWidth, maxLabelSize.Height);
                 DrawLegendItemMarker(legendItems[i], settings, legendItemLocation, padding, stubWidth, maxLabelSize.Height);
@@ -116,21 +118,21 @@ namespace ScottPlot
             return maxLabelSize;
         }
 
-        private static void DrawLegendItemString(Config.LegendItem legendItem, Settings settings, Point itemLocation, int padding, int stubWidth, float legendFontLineHeight)
+        private static void DrawLegendItemString(Config.LegendItem legendItem, Settings settings, PointF itemLocation, int padding, int stubWidth, float legendFontLineHeight)
         {
             Brush brushText = new SolidBrush(settings.legend.colorText);
             var textLocation = itemLocation + new Size(padding + stubWidth + padding, 0);
             settings.gfxLegend.DrawString(legendItem.label, settings.legend.font, brushText, textLocation);
         }
 
-        private static void DrawLegendItemLine(Config.LegendItem legendItem, Settings settings, Point itemLocation, int padding, int stubWidth, float legendFontLineHeight)
+        private static void DrawLegendItemLine(Config.LegendItem legendItem, Settings settings, PointF itemLocation, int padding, int stubWidth, float ySpaceBetweenItems)
         {
             if (legendItem.lineWidth == 0 || legendItem.lineStyle == LineStyle.None)
                 return;
 
-            PointF leftCenter = new PointF(itemLocation.X + padding, itemLocation.Y + legendFontLineHeight / 2);
-            PointF rightCenter = new PointF(itemLocation.X + padding + stubWidth, itemLocation.Y + legendFontLineHeight / 2);
-            float symbolWidth = rightCenter.X - leftCenter.X;
+            float yCenter = itemLocation.Y + ySpaceBetweenItems / 2;
+            PointF xMin = new PointF(itemLocation.X + padding, yCenter);
+            PointF xMax = new PointF(itemLocation.X + padding + stubWidth, yCenter);
 
             if (legendItem.lineWidth < 10)
             {
@@ -138,18 +140,19 @@ namespace ScottPlot
                 {
                     DashPattern = StyleTools.DashPattern(legendItem.lineStyle)
                 };
-                settings.gfxLegend.DrawLine(pen,leftCenter, rightCenter);
+                settings.gfxLegend.DrawLine(pen,xMin, xMax);
             }
             else
             {
                 Brush brush = new SolidBrush(legendItem.color);
                 float halfHeight = (float)(legendItem.lineWidth / 2);
-                PointF topLeft = new PointF(leftCenter.X, leftCenter.Y - halfHeight);
+                PointF topLeft = new PointF(xMin.X, xMin.Y - halfHeight);
+                float symbolWidth = xMax.X - xMin.X;
                 settings.gfxLegend.FillRectangle(brush, topLeft.X, topLeft.Y, symbolWidth, (float)legendItem.lineWidth);
             }
         }
 
-        private static void DrawLegendItemMarker(Config.LegendItem legendItem, Settings settings, Point itemLocation, int padding, int stubWidth, float legendFontLineHeight)
+        private static void DrawLegendItemMarker(Config.LegendItem legendItem, Settings settings, PointF itemLocation, int padding, int stubWidth, float legendFontLineHeight)
         {
             if (legendItem.markerSize == 0 || legendItem.markerShape == MarkerShape.none)
                 return;
@@ -164,8 +167,12 @@ namespace ScottPlot
                 Y = corner1.Y + settings.legend.font.Size / 4
             };
 
-            SizeF bounds = new SizeF(settings.legend.font.Size / 2, settings.legend.font.Size / 2);
-            RectangleF rect = new RectangleF(corner1, bounds);
+            RectangleF rect = new RectangleF(
+                    x: itemLocation.X + 2 * padding + settings.legend.font.Size / 4,
+                    y: itemLocation.Y + settings.legend.font.Size / 4 + padding,
+                    width: settings.legend.font.Size / 2,
+                    height: settings.legend.font.Size / 2
+                    );
 
             Font textFont = new Font("CourierNew", settings.legend.font.Size);
 
@@ -177,15 +184,15 @@ namespace ScottPlot
                     //Nothing to do because the Drawline needs to be there for all cases, and it's already there
                     break;
                 case MarkerShape.asterisk:
-                    Point markerPositionAsterisk = itemLocation + new Size(padding * 2, (int)(legendFontLineHeight / 4));
+                    PointF markerPositionAsterisk = itemLocation + new Size(padding * 2, (int)(legendFontLineHeight / 4));
                     settings.gfxLegend.DrawString("*", textFont, brushMarker, markerPositionAsterisk);
                     break;
                 case MarkerShape.cross:
-                    Point markerPositionCross = itemLocation + new Size(padding * 2, (int)(legendFontLineHeight / 8));
+                    PointF markerPositionCross = itemLocation + new Size(padding * 2, (int)(legendFontLineHeight / 8));
                     settings.gfxLegend.DrawString("+", textFont, brushMarker, markerPositionCross);
                     break;
                 case MarkerShape.eks:
-                    Point markerPositionEks = itemLocation + new Size(padding * 2, 0);
+                    PointF markerPositionEks = itemLocation + new Size(padding * 2, 0);
                     settings.gfxLegend.DrawString("x", textFont, brushMarker, markerPositionEks);
                     break;
                 case MarkerShape.filledCircle:
@@ -207,7 +214,7 @@ namespace ScottPlot
                     settings.gfxLegend.FillRectangle(brushMarker, rect);
                     break;
                 case MarkerShape.hashTag:
-                    Point markerPositionHashTag = itemLocation + new Size(padding * 2, (int)(legendFontLineHeight / 8));
+                    PointF markerPositionHashTag = itemLocation + new Size(padding * 2, (int)(legendFontLineHeight / 8));
                     settings.gfxLegend.DrawString("#", textFont, brushMarker, markerPositionHashTag);
                     break;
                 case MarkerShape.openCircle:
@@ -257,7 +264,7 @@ namespace ScottPlot
                     settings.gfxLegend.DrawPolygon(penMarker, curvePoints3);
                     break;
                 case MarkerShape.verticalBar:
-                    Point markerPositionVertical = itemLocation + new Size(padding * 2, 0);
+                    PointF markerPositionVertical = itemLocation + new Size(padding * 2, 0);
                     settings.gfxLegend.DrawString("|", textFont, brushMarker, markerPositionVertical);
                     break;
             }
