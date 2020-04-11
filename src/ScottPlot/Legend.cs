@@ -128,14 +128,25 @@ namespace ScottPlot
             if (legendItem.lineWidth == 0 || legendItem.lineStyle == LineStyle.None)
                 return;
 
-            Pen pen = new Pen(legendItem.color, (float)legendItem.lineWidth)
-            {
-                DashPattern = StyleTools.DashPattern(legendItem.lineStyle)
-            };
+            PointF leftCenter = new PointF(itemLocation.X + padding, itemLocation.Y + legendFontLineHeight / 2);
+            PointF rightCenter = new PointF(itemLocation.X + padding + stubWidth, itemLocation.Y + legendFontLineHeight / 2);
+            float symbolWidth = rightCenter.X - leftCenter.X;
 
-            settings.gfxLegend.DrawLine(pen,
-                itemLocation.X + padding, itemLocation.Y + legendFontLineHeight / 2,
-                itemLocation.X + padding + stubWidth, itemLocation.Y + legendFontLineHeight / 2);
+            if (legendItem.lineWidth < 10)
+            {
+                Pen pen = new Pen(legendItem.color, (float)legendItem.lineWidth)
+                {
+                    DashPattern = StyleTools.DashPattern(legendItem.lineStyle)
+                };
+                settings.gfxLegend.DrawLine(pen,leftCenter, rightCenter);
+            }
+            else
+            {
+                Brush brush = new SolidBrush(legendItem.color);
+                float halfHeight = (float)(legendItem.lineWidth / 2);
+                PointF topLeft = new PointF(leftCenter.X, leftCenter.Y - halfHeight);
+                settings.gfxLegend.FillRectangle(brush, topLeft.X, topLeft.Y, symbolWidth, (float)legendItem.lineWidth);
+            }
         }
 
         private static void DrawLegendItemMarker(Config.LegendItem legendItem, Settings settings, Point itemLocation, int padding, int stubWidth, float legendFontLineHeight)
