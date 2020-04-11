@@ -21,12 +21,13 @@ namespace ScottPlotTests.Drawing
             using (var font = new System.Drawing.Font(fontName, fontSize))
             {
                 var stringSize = gfx.MeasureString(testString, font);
+
                 var sb = new StringBuilder();
                 sb.AppendLine(System.Environment.OSVersion.ToString());
                 sb.AppendLine($"The string '{testString}' with font '{fontName}' (size {fontSize}) " +
                     $"measures: {stringSize.Width}px x {stringSize.Height}px");
 
-                Console.WriteLine($"##vso[task.logissue]{sb}");
+                Console.WriteLine(sb);
             }
         }
     }
