@@ -84,5 +84,20 @@ namespace ScottPlotTests.PlotTypes
 
             TestTools.SaveFig(plt);
         }
+
+        [Test]
+        public void Test_Fill_AboveBelow()
+        {
+            Random rand = new Random(0);
+            var ys = ScottPlot.DataGen.RandomWalk(rand, 1000, offset: -10);
+            var xs = ScottPlot.DataGen.Consecutive(ys.Length, spacing: 0.025);
+
+            var plt = new ScottPlot.Plot(400, 300);
+            plt.PlotFillAboveBelow(xs, ys, fillAlpha: .5, labelAbove: "above", labelBelow: "below");
+            plt.Legend(location: ScottPlot.legendLocation.lowerLeft);
+            plt.AxisAuto(0);
+
+            TestTools.SaveFig(plt);
+        }
     }
 }

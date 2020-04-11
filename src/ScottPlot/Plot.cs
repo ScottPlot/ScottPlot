@@ -486,6 +486,49 @@ namespace ScottPlot
             return PlotPolygon(bothX, bothY, label, lineWidth, lineColor, fill, fillColor, fillAlpha);
         }
 
+        public (PlottablePolygon, PlottablePolygon) PlotFillAboveBelow(
+            double[] xs,
+            double[] ys,
+            string labelAbove = null,
+            string labelBelow = null,
+            double lineWidth = 1,
+            Color? lineColor = null,
+            bool fill = true,
+            Color? fillColorAbove = null,
+            Color? fillColorBelow = null,
+            double fillAlpha = 1,
+            double baseline = 0
+            )
+        {
+            if (xs.Length != ys.Length)
+                throw new ArgumentException("xs and ys must all have the same length");
+
+            double[] xs2 = Tools.Pad(xs, cloneEdges: true);
+            double[] ys2 = Tools.Pad(ys, padWithLeft: baseline, padWithRight: baseline);
+
+            double[] ys2below = new double[ys2.Length];
+            double[] ys2above = new double[ys2.Length];
+            for (int i = 0; i < ys2.Length; i++)
+            {
+                if (ys2[i] < 0)
+                    ys2below[i] = ys2[i];
+                else
+                    ys2above[i] = ys2[i];
+            }
+
+            if (fillColorAbove is null)
+                fillColorAbove = Color.Green;
+            if (fillColorBelow is null)
+                fillColorBelow = Color.Red;
+            if (lineColor is null)
+                lineColor = Color.Black;
+
+            var polyBelow = PlotPolygon(xs2, ys2below, labelAbove, lineWidth, lineColor, fill, fillColorBelow, fillAlpha);
+            var polyAbove = PlotPolygon(xs2, ys2above, labelBelow, lineWidth, lineColor, fill, fillColorAbove, fillAlpha);
+
+            return (polyBelow, polyAbove);
+        }
+
         public PlottableFunction PlotFunction(
             Func<double, double?> function,
             Color? color = null,
