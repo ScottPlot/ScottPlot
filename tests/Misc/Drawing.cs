@@ -73,5 +73,28 @@ namespace ScottPlotTests.Misc
 
             TestTools.SaveFig(plt);
         }
+
+        [Test]
+        public void Test_PolygonVsSignal_AlignmentWithLargeValues()
+        {
+            double[] xs = { 1e6 + 75, 1e6 + 250, 1e6 + 280, 1e6 + 100 };
+            double[] ys = { 1e6 - 100, 1e6 - 75, 1e6 - 200, 1e6 - 220 };
+
+            var plt = new ScottPlot.Plot(320, 240);
+            plt.PlotPolygon(xs, ys, fillColor: Color.LightGreen);
+            plt.PlotSignal(
+                ys: new double[] { ys[0], ys[1] },
+                sampleRate: 1.0 / (xs[1] - xs[0]),
+                xOffset: xs[0],
+                color: Color.Blue,
+                markerSize: 0
+                );
+            plt.Grid(false);
+            plt.Frame(false);
+            plt.Ticks(false, false);
+            plt.Title("Large Value Signal");
+
+            TestTools.SaveFig(plt);
+        }
     }
 }
