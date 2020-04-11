@@ -67,7 +67,7 @@ namespace ScottPlot
             if (label is null)
                 return;
 
-            SizeF size = settings.gfxData.MeasureString(label, font);
+            SizeF size = Drawing.GDI.MeasureString(settings.gfxData, label, font);
 
             double x = (xPixel >= 0) ? xPixel : settings.bmpData.Width + xPixel - size.Width;
             double y = (yPixel >= 0) ? yPixel : settings.bmpData.Height + yPixel - size.Height;

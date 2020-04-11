@@ -308,7 +308,7 @@ namespace ScottPlot
 
             if ((settings.ticks.x.cornerLabel != "") && settings.ticks.displayXmajor)
             {
-                SizeF multiplierLabelXsize = settings.gfxFigure.MeasureString(settings.ticks.x.cornerLabel, settings.ticks.font);
+                SizeF multiplierLabelXsize = Drawing.GDI.MeasureString(settings.gfxFigure, settings.ticks.x.cornerLabel, settings.ticks.font);
                 settings.gfxFigure.DrawString(settings.ticks.x.cornerLabel, settings.ticks.font, brush,
                     settings.dataOrigin.X + settings.dataSize.Width,
                     settings.dataOrigin.Y + settings.dataSize.Height + multiplierLabelXsize.Height,

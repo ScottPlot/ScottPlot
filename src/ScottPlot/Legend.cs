@@ -106,7 +106,7 @@ namespace ScottPlot
 
             foreach (var legendItem in GetLegendItems(settings))
             {
-                SizeF labelSize = settings.gfxLegend.MeasureString(legendItem.label, settings.legend.font);
+                SizeF labelSize = Drawing.GDI.MeasureString(settings.gfxLegend, legendItem.label, settings.legend.font);
                 if (labelSize.Width > maxLabelSize.Width)
                     maxLabelSize.Width = labelSize.Width;
                 if (labelSize.Height > maxLabelSize.Height)

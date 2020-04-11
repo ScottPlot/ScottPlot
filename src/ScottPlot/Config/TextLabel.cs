@@ -63,7 +63,7 @@ namespace ScottPlot.Config
         {
             get
             {
-                return gfx.MeasureString(text, font);
+                return Drawing.GDI.MeasureString(gfx, text, font);
             }
         }
 

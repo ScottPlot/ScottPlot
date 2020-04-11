@@ -58,7 +58,7 @@ namespace ScottPlot
             PointF defaultPoint = settings.GetPixel(x, y);
             PointF textLocationPoint = new PointF();
 
-            SizeF stringSize = settings.gfxData.MeasureString(text, font);
+            SizeF stringSize = Drawing.GDI.MeasureString(settings.gfxData, text, font);
 
             switch (alignment)
             {

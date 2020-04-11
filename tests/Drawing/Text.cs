@@ -20,7 +20,7 @@ namespace ScottPlotTests.Drawing
             using (var gfx = System.Drawing.Graphics.FromImage(bmp))
             using (var font = new System.Drawing.Font(fontName, fontSize))
             {
-                var stringSize = gfx.MeasureString(testString, font);
+                var stringSize = ScottPlot.Drawing.GDI.MeasureString(gfx, testString, font);
 
                 var sb = new StringBuilder();
                 sb.AppendLine(System.Environment.OSVersion.ToString());

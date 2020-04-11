@@ -40,7 +40,7 @@ namespace ScottPlot.Config
             SizeF max = new SizeF(0, 0);
             foreach (string label in labels)
             {
-                SizeF tickLabelSize = settings.gfxData.MeasureString(label, settings.ticks.font);
+                SizeF tickLabelSize = Drawing.GDI.MeasureString(settings.gfxData, label, settings.ticks.font);
                 max.Width = Math.Max(max.Width, tickLabelSize.Width);
                 max.Height = Math.Max(max.Height, tickLabelSize.Height);
             }
@@ -73,7 +73,7 @@ namespace ScottPlot.Config
             int tickCount;
 
             // predict maxLabelSize up front using predetermined label sizes
-            maxLabelSize = settings.gfxData.MeasureString("2019-08-20\n8:42:17 PM", settings.ticks.font);
+            maxLabelSize = Drawing.GDI.MeasureString(settings.gfxData, "2019-08-20\n8:42:17 PM", settings.ticks.font);
 
             if (verticalAxis)
             {
@@ -123,7 +123,7 @@ namespace ScottPlot.Config
         {
             // predict maxLabelSize up front using predetermined label sizes
             string longestLabel = (dateFormat) ? "2019-08-20\n20:42:17" : "-8888";
-            maxLabelSize = settings.gfxData.MeasureString(longestLabel, settings.ticks.font);
+            maxLabelSize = Drawing.GDI.MeasureString(settings.gfxData, longestLabel, settings.ticks.font);
 
             double low, high, tickSpacing;
             int maxTickCount;
