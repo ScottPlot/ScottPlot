@@ -57,24 +57,21 @@ steps:
   displayName: 'Publish Tests (Windows)'
   condition: contains(variables['agent.os'], 'Windows')
   inputs:
-    targetPath: tests/bin
-    patterns: '**/*.png'
+    targetPath: tests/bin/Debug/netcoreapp2.0
     artifactName: testOutput-Windows
     
 - task: PublishPipelineArtifact@1
   displayName: 'Publish Tests (MacOS)'
   condition: contains(variables['agent.os'], 'Darwin')
   inputs:
-    targetPath: tests/bin
-    patterns: '**/*.png'
+    targetPath: tests/bin/Debug/netcoreapp2.0
     artifactName: testOutput-MacOS
     
 - task: PublishPipelineArtifact@1
   displayName: 'Publish Tests (Linux)'
   condition: contains(variables['agent.os'], 'Linux')
   inputs:
-    targetPath: tests/bin
-    patterns: '**/*.png'
+    targetPath: tests/bin/Debug/netcoreapp2.0
     artifactName: testOutput-Linux
 
 ### BUILD FULL SOLUTION (Windows only)
