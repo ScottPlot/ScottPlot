@@ -74,23 +74,22 @@ steps:
     targetPath: tests/bin/Debug/netcoreapp2.0
     artifactName: testOutput-Linux
 
-### BUILD FULL SOLUTION (Windows only)
+### BUILD AND PACKAGE RELEASE (Windows only)
     
 - task: VSBuild@1
-  displayName: 'Rebuild Solution (Windows)'
+  displayName: 'Build Release (Windows)'
   condition: contains(variables['agent.os'], 'Windows')
   inputs:
     solution: 'src/ScottPlotV4.sln'
-
-### REVEAL NUGET PACKAGES AS ARTIFACTS
+    configuration: 'release'
 
 - task: CopyFiles@2
   displayName: 'Copy Packages (Windows)'
   inputs:
     Contents: |
-      src/ScottPlot/bin/Debug/*.nupkg
-      src/ScottPlot.WinForms/bin/Debug/*.nupkg
-      src/ScottPlot.WPF/bin/Debug/*.nupkg
+      src/ScottPlot/bin/Release/*.nupkg
+      src/ScottPlot.WinForms/bin/Release/*.nupkg
+      src/ScottPlot.WPF/bin/Release/*.nupkg
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
 - task: PublishPipelineArtifact@1
