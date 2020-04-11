@@ -1387,8 +1387,8 @@ namespace ScottPlot
         public void Legend(
             bool enableLegend = true,
             string fontName = null,
-            float fontSize = 12,
-            bool bold = false,
+            float? fontSize = null,
+            bool? bold = null,
             Color? fontColor = null,
             Color? backColor = null,
             Color? frameColor = null,
@@ -1409,9 +1409,17 @@ namespace ScottPlot
             if (reverseOrder != null)
                 settings.legend.reverseOrder = reverseOrder.Value;
 
-            fontName = Config.Fonts.GetValidFontName(fontName);
-            FontStyle fontStyle = (bold) ? FontStyle.Bold : FontStyle.Regular;
-            settings.legend.font = new Font(fontName, fontSize, fontStyle);
+            // create a new font based on the current one
+            fontName = (fontName is null) ? settings.legend.font.Name : Config.Fonts.GetValidFontName(fontName);
+
+            if (fontSize is null)
+                fontSize = settings.legend.font.Size;
+
+            var fontStyle = settings.legend.font.Style;
+            if ((bold != null) && (bold.Value == true))
+                fontStyle = FontStyle.Bold;
+
+            settings.legend.font = new Font(fontName, fontSize.Value, fontStyle, GraphicsUnit.Pixel);
 
             if (fixedLineWidth != null)
                 settings.legend.fixedLineWidth = (bool)fixedLineWidth;

@@ -9,7 +9,7 @@ namespace ScottPlot.Config
 {
     public class Legend
     {
-        public Font font = new Font(Fonts.GetDefaultFontName(), 12, GraphicsUnit.Pixel);
+        public Font font = new Font(Fonts.GetDefaultFontName(), 14, GraphicsUnit.Pixel);
         public Color colorText = Color.Black;
         public Color colorBackground = Color.White;
         public Color colorShadow = Color.FromArgb(75, 0, 0, 0);
