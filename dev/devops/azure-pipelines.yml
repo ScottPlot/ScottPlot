@@ -87,5 +87,5 @@ steps:
   displayName: 'Publish Packages (Windows)'
   condition: contains(variables['agent.os'], 'Windows')
   inputs:
-    targetPath: src/*/bin/Debug/*.nupkg
+    targetPath: src/ScottPlot/bin/Debug/*.nupkg
     artifactName: windowsBuild
