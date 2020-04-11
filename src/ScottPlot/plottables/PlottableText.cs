@@ -36,7 +36,7 @@ namespace ScottPlot
             frameBrush = new SolidBrush(frameColor);
 
             FontStyle fontStyle = (bold == true) ? FontStyle.Bold : FontStyle.Regular;
-            font = new Font(fontName, (float)fontSize, fontStyle);
+            font = new Font(fontName, (float)fontSize, fontStyle, GraphicsUnit.Pixel);
         }
 
         public override string ToString()

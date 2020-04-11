@@ -8,6 +8,8 @@ namespace ScottPlot.Config
 {
     public static class Fonts
     {
+        // TODO: use a new font function and only use it to enforce use of "GraphicsUnit.Pixel" everywhere
+
         public static string GetDefaultFontName()
         {
             return GetSansFontName();

@@ -32,7 +32,7 @@ namespace ScottPlot
             this.label = label;
             this.shadow = shadow;
 
-            font = new Font(Fonts.GetValidFontName(fontName), (float)fontSize);
+            font = new Font(Fonts.GetValidFontName(fontName), (float)fontSize, FontStyle.Regular, GraphicsUnit.Pixel);
             fontBrush = new SolidBrush(fontColor);
 
             this.fill = fill;
