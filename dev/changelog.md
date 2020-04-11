@@ -32,6 +32,7 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
 * [Seaborn](https://seaborn.pydata.org/) style can be activated using `Plot.Style(Style.Seaborn)` (#339)
 * The `enableZooming` argument in `WpfPlot.Configure()` and `FormsPlot.Configure()` has been replaced by two arguments `enableRightClickZoom` and `enableScrollWheelZoom` (#338) _Thanks Zach_
 * Improved rendering of legend items for polygons and filled plots (#341) _Thanks @SeidChr_
+* Improved Linux rendering of legend items which use thick lines: axis spans, fills, polygons, etc. (#340) _Thanks @SeidChr_
 
 ## ScottPlot 4.0.28
 * `Ticks()` now has arguments for numericStringFormat (X and Y) to make it easy to customize formatting of tick labels (percentage, currency, scientific notation, etc.) using standard [numeric format strings](https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings). Example use is demonstrated in the cookbook. (#336) _Thanks @deiruch_
