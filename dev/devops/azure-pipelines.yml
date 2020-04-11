@@ -81,3 +81,11 @@ steps:
   condition: contains(variables['agent.os'], 'Windows')
   inputs:
     solution: 'src/ScottPlotV4.sln'
+
+### EXPOSE WINDOWS BUILD
+- task: PublishPipelineArtifact@1
+  displayName: 'Publish Packages (Windows)'
+  condition: contains(variables['agent.os'], 'Windows')
+  inputs:
+    targetPath: src
+    artifactName: windowsBuild
