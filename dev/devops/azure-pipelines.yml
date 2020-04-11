@@ -52,6 +52,13 @@ steps:
     command: test
     projects: 'tests/ScottPlotTests.csproj'
 
+### PUBLISH TEST OUTPUT AS AN ARTIFACT
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: tests/bin
+    patterns: '**/*.png'
+    artifactName: cookbookImages
+
 ### BUILD AND RUN EXPERIMENTAL TESTS
 - task: DotNetCoreCLI@2
   displayName: 'Build Experimental Tests'
