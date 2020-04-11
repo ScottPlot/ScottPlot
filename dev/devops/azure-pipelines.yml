@@ -82,10 +82,20 @@ steps:
   inputs:
     solution: 'src/ScottPlotV4.sln'
 
-### EXPOSE WINDOWS BUILD
+### REVEAL NUGET PACKAGES AS ARTIFACTS
+
+- task: CopyFiles@2
+  displayName: 'Copy Packages (Windows)'
+  inputs:
+    Contents: |
+      src/ScottPlot/bin/Debug/*.nupkg
+      src/ScottPlot.WinForms/bin/Debug/*.nupkg
+      src/ScottPlot.WPF/bin/Debug/*.nupkg
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
 - task: PublishPipelineArtifact@1
   displayName: 'Publish Packages (Windows)'
   condition: contains(variables['agent.os'], 'Windows')
   inputs:
-    targetPath: src/ScottPlot/bin/Debug/*.nupkg
-    artifactName: windowsBuild
+    targetPath: '$(Build.ArtifactStagingDirectory)'
+    artifactName: NuGetPackages
