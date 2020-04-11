@@ -82,35 +82,35 @@ namespace ScottPlot
                     break;
                 case MarkerShape.asterisk:
                     Font drawFont = new Font("CourierNew", size*3);
-                    SizeF textSize = gfx.MeasureString("*", drawFont);
+                    SizeF textSize = Drawing.GDI.MeasureString(gfx, "*", drawFont);
                     PointF asteriskPoint = new PointF(pixelLocation.X - textSize.Width/2, pixelLocation.Y-textSize.Height/4 );
                     gfx.DrawString("*", drawFont, brush, asteriskPoint);
 
                     break;
                 case MarkerShape.hashTag:
                     Font drawFont2 = new Font("CourierNew", size*2);
-                    SizeF textSize2 = gfx.MeasureString("#", drawFont2);
+                    SizeF textSize2 = Drawing.GDI.MeasureString(gfx, "#", drawFont2);
                     PointF asteriskPoint2 = new PointF(pixelLocation.X - textSize2.Width / 2, pixelLocation.Y - textSize2.Height / 3);
                     gfx.DrawString("#", drawFont2, brush, asteriskPoint2);
 
                     break;
                 case MarkerShape.cross:
                     Font drawFont3 = new Font("CourierNew", size*2);
-                    SizeF textSize3 = gfx.MeasureString("+", drawFont3);
+                    SizeF textSize3 = Drawing.GDI.MeasureString(gfx, "+", drawFont3);
                     PointF asteriskPoint3 = new PointF(pixelLocation.X -  textSize3.Width / (5/2), pixelLocation.Y - textSize3.Height / 2);
                     gfx.DrawString("+", drawFont3, brush, asteriskPoint3);
 
                     break;
                 case MarkerShape.eks:
                     Font drawFont4 = new Font("CourierNew", size*2);
-                    SizeF textSize4 = gfx.MeasureString("x", drawFont4);
+                    SizeF textSize4 = Drawing.GDI.MeasureString(gfx, "x", drawFont4);
                     PointF asteriskPoint4 = new PointF(pixelLocation.X - textSize4.Width / (5 / 2), pixelLocation.Y - textSize4.Height / 2);
                     gfx.DrawString("x", drawFont4, brush, asteriskPoint4);
 
                     break;
                 case MarkerShape.verticalBar:
                     Font drawFont5 = new Font("CourierNew", size*2);
-                    SizeF textSize5 = gfx.MeasureString("|", drawFont5);
+                    SizeF textSize5 = Drawing.GDI.MeasureString(gfx, "|", drawFont5);
                     PointF asteriskPoint5 = new PointF(pixelLocation.X - textSize5.Width / (5 / 2), pixelLocation.Y - textSize5.Height / 2);
                     gfx.DrawString("|", drawFont5, brush, asteriskPoint5);
 
