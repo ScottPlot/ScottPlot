@@ -63,7 +63,7 @@ steps:
     
 - task: PublishPipelineArtifact@1
   displayName: 'Publish Tests (MacOS)'
-  condition: contains(variables['agent.os'], 'Mac')
+  condition: contains(variables['agent.os'], 'Darwin')
   inputs:
     targetPath: tests/bin
     patterns: '**/*.png'
