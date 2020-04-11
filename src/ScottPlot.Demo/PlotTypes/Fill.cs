@@ -44,5 +44,22 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.AxisAuto(0);
             }
         }
+
+        public class FillAboveBelow : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Fill Above and Below";
+            public string description { get; } = "A special method lets you create a filled line plot with different colors above/below the baseline.";
+
+            public void Render(Plot plt)
+            {
+                Random rand = new Random(0);
+                var ys = ScottPlot.DataGen.RandomWalk(rand, 1000, offset: -10);
+                var xs = ScottPlot.DataGen.Consecutive(ys.Length, spacing: 0.025);
+
+                plt.PlotFillAboveBelow(xs, ys, fillAlpha: .5, labelAbove: "above", labelBelow: "below");
+                plt.Legend(location: ScottPlot.legendLocation.lowerLeft);
+                plt.AxisAuto(0);
+            }
+        }
     }
 }
