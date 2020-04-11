@@ -28,6 +28,9 @@ namespace ScottPlotTests.Drawing
                     $"measures: {stringSize.Width}px x {stringSize.Height}px");
 
                 Console.WriteLine(sb);
+
+                // create an intentionally-failing test to visualuze Azure Pipelines output
+                Assert.AreEqual(1, 2);
             }
         }
     }
