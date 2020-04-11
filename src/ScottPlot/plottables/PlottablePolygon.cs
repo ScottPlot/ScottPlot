@@ -37,14 +37,13 @@ namespace ScottPlot
             this.lineWidth = lineWidth;
             this.lineColor = lineColor;
             this.fill = fill;
-            this.fillColor = fillColor;
 
             pen = new System.Drawing.Pen(lineColor, (float)lineWidth)
             {
                 LineJoin = System.Drawing.Drawing2D.LineJoin.Round, // prevent sharp corners
             };
-            fillColor = System.Drawing.Color.FromArgb((int)(255 * fillAlpha), fillColor.R, fillColor.G, fillColor.B);
-            brush = new System.Drawing.SolidBrush(fillColor);
+            this.fillColor = System.Drawing.Color.FromArgb((int)(255 * fillAlpha), fillColor.R, fillColor.G, fillColor.B);
+            brush = new System.Drawing.SolidBrush(this.fillColor);
         }
 
         public override string ToString()
@@ -78,7 +77,7 @@ namespace ScottPlot
         public override LegendItem[] GetLegendItems()
         {
             if (fill)
-                return new LegendItem[] { new LegendItem(label, fillColor, lineWidth: 10) };
+                return new LegendItem[] { new LegendItem(label, fillColor, lineWidth: 10, markerShape: MarkerShape.none) };
             else
                 return new LegendItem[] { new LegendItem(label, lineColor, lineWidth: lineWidth, markerShape: MarkerShape.none) };
         }
