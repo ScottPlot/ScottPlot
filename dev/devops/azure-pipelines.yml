@@ -54,7 +54,7 @@ steps:
 
 ### PUBLISH TEST OUTPUT AS AN ARTIFACT
 - task: PublishPipelineArtifact@1
-  displayName: 'Publish Artifact (Windows)'
+  displayName: 'Publish Tests (Windows)'
   condition: contains(variables['agent.os'], 'Windows')
   inputs:
     targetPath: tests/bin
@@ -62,7 +62,7 @@ steps:
     artifactName: testOutput-Windows
     
 - task: PublishPipelineArtifact@1
-  displayName: 'Publish Artifact (MacOS)'
+  displayName: 'Publish Tests (MacOS)'
   condition: contains(variables['agent.os'], 'Mac')
   inputs:
     targetPath: tests/bin
@@ -70,25 +70,12 @@ steps:
     artifactName: testOutput-MacOS
     
 - task: PublishPipelineArtifact@1
-  displayName: 'Publish Artifact (Linux)'
+  displayName: 'Publish Tests (Linux)'
   condition: contains(variables['agent.os'], 'Linux')
   inputs:
     targetPath: tests/bin
     patterns: '**/*.png'
     artifactName: testOutput-Linux
-
-### BUILD AND RUN EXPERIMENTAL TESTS
-- task: DotNetCoreCLI@2
-  displayName: 'Build Experimental Tests'
-  inputs:
-    command: 'build'
-    projects: 'dev/tests2/ScottPlotTests2/ScottPlotTests2.csproj'
-
-- task: DotNetCoreCLI@2
-  displayName: 'Run Experimental Tests'
-  inputs:
-    command: test
-    projects: 'dev/tests2/ScottPlotTests2/ScottPlotTests2.csproj'
 
 ### BUILD FULL SOLUTION (Windows only)
     
