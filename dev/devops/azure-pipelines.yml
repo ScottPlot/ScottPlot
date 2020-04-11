@@ -88,9 +88,13 @@ steps:
   inputs:
     Contents: |
       src/ScottPlot/bin/Release/*.nupkg
+      src/ScottPlot/bin/Release/*.snupkg
       src/ScottPlot.WinForms/bin/Release/*.nupkg
+      src/ScottPlot.WinForms/bin/Release/*.snupkg
       src/ScottPlot.WPF/bin/Release/*.nupkg
+      src/ScottPlot.WPF/bin/Release/*.snupkg
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    flattenFolders: true
 
 - task: PublishPipelineArtifact@1
   displayName: 'Publish Packages (Windows)'
