@@ -70,12 +70,12 @@ namespace ScottPlot
                 // it is probably not needed...
 
                 string sampleString = "IPjg8.8";
-                layout.yLabelWidth = (int)gfxData.MeasureString(sampleString, yLabel.font).Height;
-                layout.y2LabelWidth = (int)gfxData.MeasureString(sampleString, yLabel.font).Height; // currently y2 isn't supported
-                layout.titleHeight = (int)gfxData.MeasureString(sampleString, title.font).Height;
-                layout.xLabelHeight = (int)gfxData.MeasureString(sampleString, xLabel.font).Height;
+                layout.yLabelWidth = (int)Drawing.GDI.MeasureString(gfxData, sampleString, yLabel.font).Height;
+                layout.y2LabelWidth = (int)Drawing.GDI.MeasureString(gfxData, sampleString, yLabel.font).Height; // currently y2 isn't supported
+                layout.titleHeight = (int)Drawing.GDI.MeasureString(gfxData, sampleString, title.font).Height;
+                layout.xLabelHeight = (int)Drawing.GDI.MeasureString(gfxData, sampleString, xLabel.font).Height;
 
-                var tickSize = gfxData.MeasureString("0.001", ticks.font);
+                var tickSize = Drawing.GDI.MeasureString(gfxData, "0.001", ticks.font);
                 layout.yScaleWidth = (int)tickSize.Width;
                 layout.y2ScaleWidth = (int)tickSize.Height; // currently y2 isn't supported
                 layout.xScaleHeight = (int)tickSize.Height;
