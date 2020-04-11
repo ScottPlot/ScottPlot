@@ -58,21 +58,21 @@ steps:
   condition: contains(variables['agent.os'], 'Windows')
   inputs:
     targetPath: tests/bin/Debug/netcoreapp2.0
-    artifactName: testOutput-Windows
+    artifactName: Test Output (Windows)
     
 - task: PublishPipelineArtifact@1
   displayName: 'Publish Tests (MacOS)'
   condition: contains(variables['agent.os'], 'Darwin')
   inputs:
     targetPath: tests/bin/Debug/netcoreapp2.0
-    artifactName: testOutput-MacOS
+    artifactName: Test Output (MacOS)
     
 - task: PublishPipelineArtifact@1
   displayName: 'Publish Tests (Linux)'
   condition: contains(variables['agent.os'], 'Linux')
   inputs:
     targetPath: tests/bin/Debug/netcoreapp2.0
-    artifactName: testOutput-Linux
+    artifactName: Test Output (Linux)
 
 ### BUILD AND PACKAGE RELEASE (Windows only)
     
@@ -97,4 +97,4 @@ steps:
   condition: contains(variables['agent.os'], 'Windows')
   inputs:
     targetPath: '$(Build.ArtifactStagingDirectory)'
-    artifactName: NuGetPackages
+    artifactName: NuGet Packages
