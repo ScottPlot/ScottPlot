@@ -1,4 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Runtime.InteropServices;
 
 namespace ScottPlotTests2
 {
@@ -20,10 +21,23 @@ namespace ScottPlotTests2
         }
 
         [TestMethod]
-        public void TestMethod1()
+        public void Test_SimplePlot_OnEveryOS()
         {
-            var plt = new ScottPlot.Plot();
-            plt.PlotSignal(ScottPlot.DataGen.Sin(100));
+            string osName = "unknown OS";
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                osName = $"Linux ({System.Environment.OSVersion})";
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                osName = $"MacOS ({System.Environment.OSVersion})";
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                osName = $"Windows ({System.Environment.OSVersion})";
+
+            var plt = new ScottPlot.Plot(600, 400);
+            plt.PlotSignal(ScottPlot.DataGen.Sin(100), label: "sin");
+            plt.PlotSignal(ScottPlot.DataGen.Cos(100), label: "cos");
+            plt.YLabel("vertical units");
+            plt.XLabel("horizontal units");
+            plt.Title(osName);
+            plt.Legend();
 
             string textFilePath = System.IO.Path.GetFullPath("outputTest.txt");
             System.Console.WriteLine(textFilePath);
