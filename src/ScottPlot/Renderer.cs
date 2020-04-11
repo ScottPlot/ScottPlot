@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace ScottPlot
 {
@@ -210,6 +211,12 @@ namespace ScottPlot
             Pen pen = new Pen(settings.ticks.color);
             Brush brush = new SolidBrush(settings.ticks.color);
 
+            // increase padding between ticks and labels for OSs with tighter fonts
+            float tickLabelPadding = 0;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) ||
+                RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                tickLabelPadding = 2;
+
             for (int i = 0; i < settings.ticks.y.tickPositionsMajor.Length; i++)
             {
                 double value = settings.ticks.y.tickPositionsMajor[i];
@@ -223,13 +230,13 @@ namespace ScottPlot
                 {
                     settings.gfxFigure.DrawLine(pen, xPx, yPx, xPx - settings.ticks.size - settings.ticks.font.Height, yPx);
                     if (settings.ticks.displayYlabels)
-                        settings.gfxFigure.DrawString(text, settings.ticks.font, brush, xPx - settings.ticks.size, yPx, settings.misc.sfSouthEast);
+                        settings.gfxFigure.DrawString(text, settings.ticks.font, brush, xPx - settings.ticks.size - tickLabelPadding, yPx, settings.misc.sfSouthEast);
                 }
                 else
                 {
                     settings.gfxFigure.DrawLine(pen, xPx, yPx, xPx - settings.ticks.size, yPx);
                     if (settings.ticks.displayYlabels)
-                        settings.gfxFigure.DrawString(text, settings.ticks.font, brush, xPx - settings.ticks.size, yPx, settings.misc.sfEast);
+                        settings.gfxFigure.DrawString(text, settings.ticks.font, brush, xPx - settings.ticks.size - tickLabelPadding, yPx, settings.misc.sfEast);
                 }
             }
 
