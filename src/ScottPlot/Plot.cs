@@ -523,8 +523,8 @@ namespace ScottPlot
             if (lineColor is null)
                 lineColor = Color.Black;
 
-            var polyBelow = PlotPolygon(xs2, ys2below, labelAbove, lineWidth, lineColor, fill, fillColorBelow, fillAlpha);
-            var polyAbove = PlotPolygon(xs2, ys2above, labelBelow, lineWidth, lineColor, fill, fillColorAbove, fillAlpha);
+            var polyAbove = PlotPolygon(xs2, ys2above, labelAbove, lineWidth, lineColor, fill, fillColorAbove, fillAlpha);
+            var polyBelow = PlotPolygon(xs2, ys2below, labelBelow, lineWidth, lineColor, fill, fillColorBelow, fillAlpha);
 
             return (polyBelow, polyAbove);
         }
