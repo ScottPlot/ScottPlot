@@ -11,21 +11,18 @@ namespace ScottPlot
     public class PlottableOHLC : Plottable
     {
         public OHLC[] ohlcs;
-        bool displayCandles;
+        bool candleFormat;
         bool autoWidth;
         Pen penUp;
         Pen penDown;
         Brush brushUp;
         Brush brushDown;
 
-        public PlottableOHLC(OHLC[] ohlcs, bool displayCandles = true, bool autoWidth = true)
+        public PlottableOHLC(OHLC[] ohlcs, bool candleFormat, bool autoWidth, Color colorUp, Color colorDown)
         {
             this.ohlcs = ohlcs;
-            this.displayCandles = displayCandles;
+            this.candleFormat = candleFormat;
             this.autoWidth = autoWidth;
-
-            Color colorUp = Color.DarkGreen;
-            Color colorDown = Color.Red;
 
             penUp = new Pen(colorUp);
             penDown = new Pen(colorDown);
@@ -64,7 +61,7 @@ namespace ScottPlot
 
         public override void Render(Settings settings)
         {
-            if (displayCandles)
+            if (candleFormat)
                 RenderCandles(settings);
             else
                 RenderOhlc(settings);

@@ -42,5 +42,25 @@ namespace ScottPlotTests.PlotTypes
             plt.Axis(-1, 5);
             TestTools.SaveFig(plt);
         }
+
+        [Test]
+        public void Test_Candle_CustomColors()
+        {
+            var ohlcs = new ScottPlot.OHLC[]
+            {
+                // open, high, low, close, time, timeSpan
+                new ScottPlot.OHLC(273, 275, 264, 265, 1, 1),
+                new ScottPlot.OHLC(267, 276, 265, 274, 2.5, 2),
+                new ScottPlot.OHLC(277, 280, 275, 278, 4, 1),
+            };
+
+            var colorUp = System.Drawing.ColorTranslator.FromHtml("#9926a69a");
+            var colorDown = System.Drawing.ColorTranslator.FromHtml("#99ef5350");
+
+            var plt = new ScottPlot.Plot(400, 300);
+            plt.PlotCandlestick(ohlcs, colorUp, colorDown, autoWidth: false);
+            plt.Axis(-1, 5);
+            TestTools.SaveFig(plt);
+        }
     }
 }
