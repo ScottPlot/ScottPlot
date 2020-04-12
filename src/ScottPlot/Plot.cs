@@ -888,16 +888,16 @@ namespace ScottPlot
             return barPlot;
         }
 
-        public PlottableOHLC PlotOHLC(OHLC[] ohlcs)
+        public PlottableOHLC PlotOHLC(OHLC[] ohlcs, bool autoWidth = true)
         {
-            PlottableOHLC ohlc = new PlottableOHLC(ohlcs, displayCandles: false);
+            PlottableOHLC ohlc = new PlottableOHLC(ohlcs, displayCandles: false, autoWidth: autoWidth);
             settings.plottables.Add(ohlc);
             return ohlc;
         }
 
-        public PlottableOHLC PlotCandlestick(OHLC[] ohlcs)
+        public PlottableOHLC PlotCandlestick(OHLC[] ohlcs, bool autoWidth = true)
         {
-            PlottableOHLC ohlc = new PlottableOHLC(ohlcs, displayCandles: true);
+            PlottableOHLC ohlc = new PlottableOHLC(ohlcs, displayCandles: true, autoWidth: autoWidth);
             settings.plottables.Add(ohlc);
             return ohlc;
         }

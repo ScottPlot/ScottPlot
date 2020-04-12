@@ -13,6 +13,7 @@ namespace ScottPlot
         public double low;
         public double close;
         public double time;
+        public double timeSpan = 1;
 
         public double highestOpenClose;
         public double lowestOpenClose;
@@ -38,6 +39,20 @@ namespace ScottPlot
             this.low = low;
             this.close = close;
             this.time = time;
+
+            highestOpenClose = Math.Max(open, close);
+            lowestOpenClose = Math.Min(open, close);
+            closedHigher = (close > open) ? true : false;
+        }
+
+        public OHLC(double open, double high, double low, double close, double time, double timeSpan)
+        {
+            this.open = open;
+            this.high = high;
+            this.low = low;
+            this.close = close;
+            this.time = time;
+            this.timeSpan = timeSpan;
 
             highestOpenClose = Math.Max(open, close);
             lowestOpenClose = Math.Min(open, close);

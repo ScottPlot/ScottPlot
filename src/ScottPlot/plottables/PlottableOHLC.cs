@@ -12,15 +12,17 @@ namespace ScottPlot
     {
         public OHLC[] ohlcs;
         bool displayCandles;
+        bool autoWidth;
         Pen penUp;
         Pen penDown;
         Brush brushUp;
         Brush brushDown;
 
-        public PlottableOHLC(OHLC[] ohlcs, bool displayCandles = true)
+        public PlottableOHLC(OHLC[] ohlcs, bool displayCandles = true, bool autoWidth = true)
         {
             this.ohlcs = ohlcs;
             this.displayCandles = displayCandles;
+            this.autoWidth = autoWidth;
 
             Color colorUp = Color.DarkGreen;
             Color colorDown = Color.Red;
@@ -79,11 +81,19 @@ namespace ScottPlot
         public void RenderCandles(Settings settings)
         {
             double fractionalTickWidth = .7;
-            double spacingPx = GetSmallestSpacing() * settings.xAxisScale;
-            float boxWidth = (float)(spacingPx / 2 * fractionalTickWidth);
+            float boxWidth = 10;
+
+            if (autoWidth)
+            {
+                double spacingPx = GetSmallestSpacing() * settings.xAxisScale;
+                boxWidth = (float)(spacingPx / 2 * fractionalTickWidth);
+            }
 
             foreach (OHLC ohlc in ohlcs)
             {
+                if (autoWidth == false)
+                    boxWidth = (float)(ohlc.timeSpan * settings.xAxisScale / 2 * fractionalTickWidth);
+
                 Pen pen = (ohlc.closedHigher) ? penUp : penDown;
                 Brush brush = (ohlc.closedHigher) ? brushUp : brushDown;
                 pen.Width = 2;
@@ -107,12 +117,20 @@ namespace ScottPlot
 
         public void RenderOhlc(Settings settings)
         {
-            double fractionalTickWidth = 1;
-            double spacingPx = GetSmallestSpacing() * settings.xAxisScale;
-            float boxWidth = (float)(spacingPx / 2 * fractionalTickWidth);
+            double fractionalTickWidth = .7;
+            float boxWidth = 10;
+
+            if (autoWidth)
+            {
+                double spacingPx = GetSmallestSpacing() * settings.xAxisScale;
+                boxWidth = (float)(spacingPx / 2 * fractionalTickWidth);
+            }
 
             foreach (OHLC ohlc in ohlcs)
             {
+                if (autoWidth == false)
+                    boxWidth = (float)(ohlc.timeSpan * settings.xAxisScale / 2 * fractionalTickWidth);
+
                 Pen pen = (ohlc.closedHigher) ? penUp : penDown;
                 pen.Width = 2;
 
