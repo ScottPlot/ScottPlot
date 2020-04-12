@@ -62,5 +62,31 @@ namespace ScottPlotTests.PlotTypes
             plt.Axis(-1, 5);
             TestTools.SaveFig(plt);
         }
+
+        [Test]
+        public void Test_Candle_WithoutSequential()
+        {
+            Random rand = new Random(0);
+            var ohlcs = ScottPlot.DataGen.RandomStockPrices(rand, 20);
+
+            var plt = new ScottPlot.Plot(600, 400);
+            plt.PlotCandlestick(ohlcs);
+            plt.Title("Default Behavior");
+            plt.XLabel("OHLC DateTime Code");
+            TestTools.SaveFig(plt);
+        }
+
+        [Test]
+        public void Test_Candle_WithSequential()
+        {
+            Random rand = new Random(0);
+            var ohlcs = ScottPlot.DataGen.RandomStockPrices(rand, 20);
+
+            var plt = new ScottPlot.Plot(600, 400);
+            plt.PlotCandlestick(ohlcs, sequential: true);
+            plt.Title("sequential: true");
+            plt.XLabel("OHLC Index");
+            TestTools.SaveFig(plt);
+        }
     }
 }

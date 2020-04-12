@@ -892,7 +892,8 @@ namespace ScottPlot
             OHLC[] ohlcs,
             Color? colorUp = null,
             Color? colorDown = null,
-            bool autoWidth = true
+            bool autoWidth = true,
+            bool sequential = false
             )
         {
             if (colorUp is null)
@@ -900,7 +901,7 @@ namespace ScottPlot
             if (colorDown is null)
                 colorDown = ColorTranslator.FromHtml("#ef5350");
 
-            PlottableOHLC ohlc = new PlottableOHLC(ohlcs, false, autoWidth, colorUp.Value, colorDown.Value);
+            PlottableOHLC ohlc = new PlottableOHLC(ohlcs, false, autoWidth, colorUp.Value, colorDown.Value, sequential);
             settings.plottables.Add(ohlc);
             return ohlc;
         }
@@ -909,7 +910,8 @@ namespace ScottPlot
             OHLC[] ohlcs,
             Color? colorUp = null,
             Color? colorDown = null,
-            bool autoWidth = true
+            bool autoWidth = true,
+            bool sequential = false
             )
         {
             if (colorUp is null)
@@ -917,7 +919,7 @@ namespace ScottPlot
             if (colorDown is null)
                 colorDown = ColorTranslator.FromHtml("#ef5350");
 
-            PlottableOHLC ohlc = new PlottableOHLC(ohlcs, true, autoWidth, colorUp.Value, colorDown.Value);
+            PlottableOHLC ohlc = new PlottableOHLC(ohlcs, true, autoWidth, colorUp.Value, colorDown.Value, sequential);
             settings.plottables.Add(ohlc);
             return ohlc;
         }

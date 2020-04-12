@@ -13,16 +13,18 @@ namespace ScottPlot
         public OHLC[] ohlcs;
         bool candleFormat;
         bool autoWidth;
+        bool sequential;
         Pen penUp;
         Pen penDown;
         Brush brushUp;
         Brush brushDown;
 
-        public PlottableOHLC(OHLC[] ohlcs, bool candleFormat, bool autoWidth, Color colorUp, Color colorDown)
+        public PlottableOHLC(OHLC[] ohlcs, bool candleFormat, bool autoWidth, Color colorUp, Color colorDown, bool sequential)
         {
             this.ohlcs = ohlcs;
             this.candleFormat = candleFormat;
             this.autoWidth = autoWidth;
+            this.sequential = sequential;
 
             penUp = new Pen(colorUp);
             penDown = new Pen(colorDown);
@@ -55,7 +57,12 @@ namespace ScottPlot
                     limits[3] = ohlcs[i].high;
             }
 
-            // TODO: use features of 2d axis
+            if (sequential)
+            {
+                limits[0] = 0;
+                limits[1] = ohlcs.Length - 1;
+            }
+
             return new Config.AxisLimits2D(limits);
         }
 
@@ -86,8 +93,11 @@ namespace ScottPlot
                 boxWidth = (float)(spacingPx / 2 * fractionalTickWidth);
             }
 
-            foreach (OHLC ohlc in ohlcs)
+            for (int i=0; i<ohlcs.Length; i++)
             {
+                var ohlc = ohlcs[i];
+                var ohlcTime = (sequential) ? i : ohlc.time;
+
                 if (autoWidth == false)
                     boxWidth = (float)(ohlc.timeSpan * settings.xAxisScale / 2 * fractionalTickWidth);
 
@@ -96,18 +106,18 @@ namespace ScottPlot
                 pen.Width = 2;
 
                 // the wick below the box
-                PointF wickLowBot = settings.GetPixel(ohlc.time, ohlc.low);
-                PointF wickLowTop = settings.GetPixel(ohlc.time, ohlc.lowestOpenClose);
+                PointF wickLowBot = settings.GetPixel(ohlcTime, ohlc.low);
+                PointF wickLowTop = settings.GetPixel(ohlcTime, ohlc.lowestOpenClose);
                 settings.gfxData.DrawLine(pen, wickLowBot, wickLowTop);
 
                 // the wick above the box
-                PointF wickHighBot = settings.GetPixel(ohlc.time, ohlc.highestOpenClose);
-                PointF wickHighTop = settings.GetPixel(ohlc.time, ohlc.high);
+                PointF wickHighBot = settings.GetPixel(ohlcTime, ohlc.highestOpenClose);
+                PointF wickHighTop = settings.GetPixel(ohlcTime, ohlc.high);
                 settings.gfxData.DrawLine(pen, wickHighBot, wickHighTop);
 
                 // the candle
-                PointF boxLowerLeft = settings.GetPixel(ohlc.time, ohlc.lowestOpenClose);
-                PointF boxUpperRight = settings.GetPixel(ohlc.time, ohlc.highestOpenClose);
+                PointF boxLowerLeft = settings.GetPixel(ohlcTime, ohlc.lowestOpenClose);
+                PointF boxUpperRight = settings.GetPixel(ohlcTime, ohlc.highestOpenClose);
                 settings.gfxData.FillRectangle(brush, boxLowerLeft.X - boxWidth, boxUpperRight.Y, boxWidth * 2, boxLowerLeft.Y - boxUpperRight.Y);
             }
         }
@@ -123,8 +133,11 @@ namespace ScottPlot
                 boxWidth = (float)(spacingPx / 2 * fractionalTickWidth);
             }
 
-            foreach (OHLC ohlc in ohlcs)
+            for (int i = 0; i < ohlcs.Length; i++)
             {
+                var ohlc = ohlcs[i];
+                var ohlcTime = (sequential) ? i : ohlc.time;
+
                 if (autoWidth == false)
                     boxWidth = (float)(ohlc.timeSpan * settings.xAxisScale / 2 * fractionalTickWidth);
 
@@ -132,8 +145,8 @@ namespace ScottPlot
                 pen.Width = 2;
 
                 // the main line
-                PointF wickTop = settings.GetPixel(ohlc.time, ohlc.low);
-                PointF wickBot = settings.GetPixel(ohlc.time, ohlc.high);
+                PointF wickTop = settings.GetPixel(ohlcTime, ohlc.low);
+                PointF wickBot = settings.GetPixel(ohlcTime, ohlc.high);
                 settings.gfxData.DrawLine(pen, wickBot, wickTop);
 
                 // open and close lines
