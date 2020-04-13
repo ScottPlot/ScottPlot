@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using ScottPlot.Config;
+using System.Runtime.InteropServices;
 
 namespace ScottPlot
 {
@@ -129,9 +130,13 @@ namespace ScottPlot
                     if (markerPxRadius > .25)
                     {
                         markersAreVisible = true;
+
+                        // adjust marker offset to improve rendering on Linux and MacOS
+                        float markerOffsetX = (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) ? 0 : 1;
+
                         foreach (PointF point in linePoints)
                             settings.gfxData.FillEllipse(brush: brush,
-                                x: point.X - markerPxRadius, y: point.Y - markerPxRadius,
+                                x: point.X - markerPxRadius + markerOffsetX, y: point.Y - markerPxRadius,
                                 width: markerPxDiameter, height: markerPxDiameter);
                     }
                 }
