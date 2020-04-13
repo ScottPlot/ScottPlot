@@ -46,7 +46,7 @@ namespace ScottPlotTests.Misc
             plt.Title(ScottPlot.Tools.GetOsName());
             plt.Legend();
 
-            TestTools.SaveFig(plt, artifact: true);
+            TestTools.SaveFig(plt);
         }
     }
 }
