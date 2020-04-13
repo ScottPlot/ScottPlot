@@ -29,14 +29,17 @@ namespace ScottPlotTests.Misc
 
             plt.PlotScatter(
                 new double[] { 1, 2, 3, 4 },
-                new double[] { 1, 2, 1, 2 },
+                new double[] { -1, 1, -1, 1 },
                 markerSize: 10
                 );
 
             plt.PlotScatter(
                 new double[] { 1, 2, 3, 4 },
-                new double[] { 2, 1, 2, 1 }
+                new double[] { 1, -1, 1, -1 }
                 );
+
+            double[] xs = ScottPlot.DataGen.Range(1, 4, .02, true);
+            plt.PlotScatter(xs, ScottPlot.DataGen.Sin(xs.Length, 2));
 
             plt.YLabel("vertical units");
             plt.XLabel("horizontal units");
