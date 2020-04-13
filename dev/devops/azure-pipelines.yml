@@ -57,22 +57,22 @@ steps:
   displayName: 'Publish Tests (Windows)'
   condition: contains(variables['agent.os'], 'Windows')
   inputs:
-    targetPath: tests/bin/Debug/netcoreapp2.0
-    artifactName: Test Output (Windows)
+    targetPath: tests/bin/Debug/netcoreapp2.0/artifacts
+    artifactName: Sample Plot (Windows)
     
 - task: PublishPipelineArtifact@1
   displayName: 'Publish Tests (MacOS)'
   condition: contains(variables['agent.os'], 'Darwin')
   inputs:
-    targetPath: tests/bin/Debug/netcoreapp2.0
-    artifactName: Test Output (MacOS)
+    targetPath: tests/bin/Debug/netcoreapp2.0/artifacts
+    artifactName: Sample Plot (MacOS)
     
 - task: PublishPipelineArtifact@1
   displayName: 'Publish Tests (Linux)'
   condition: contains(variables['agent.os'], 'Linux')
   inputs:
-    targetPath: tests/bin/Debug/netcoreapp2.0
-    artifactName: Test Output (Linux)
+    targetPath: tests/bin/Debug/netcoreapp2.0/artifacts
+    artifactName: Sample Plot (Linux)
 
 ### BUILD AND PACKAGE RELEASE (Windows only)
     
