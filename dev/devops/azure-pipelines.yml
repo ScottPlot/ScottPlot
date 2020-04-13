@@ -85,6 +85,7 @@ steps:
 
 - task: CopyFiles@2
   displayName: 'Copy Packages (Windows)'
+  condition: contains(variables['agent.os'], 'Windows')
   inputs:
     Contents: |
       src/ScottPlot/bin/Release/*.nupkg
