@@ -26,9 +26,11 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
   * Create a SkiaSharp rendering module and user control (supporting OpenGL hardware acceleration)
 
 ## ScottPlot 4.0.30
-* `Plot.PlotCandlestick()` and `Plot.PlotOHLC()` now support `OHLC` objects with variable widths defined with a new `timeSpan` argument in the OHLC constructor. (#346) _Thanks @Minu476_
-* `Plot.PlotCandlestick()` and `Plot.PlotOHLC()` now support custom up/down colors including those with transparency (#346) _Thanks @Minu476_
-* `Plot.PlotCandlestick()` and `Plot.PlotOHLC()` have a new `sequential` argument to plot data based on array index rather than `OHLC.time`. This is a new, simpler way to display unevenly-spaced data (e.g., gaps over weekends) in a way that makes the gaps invisible. (#346) _Thanks @Minu476_
+* `Plot.PlotCandlestick()` and `Plot.PlotOHLC()`
+  * now support `OHLC` objects with variable widths defined with a new `timeSpan` argument in the OHLC constructor. (#346) _Thanks @Minu476_
+  * now support custom up/down colors including those with transparency (#346) _Thanks @Minu476_
+  * have a new `sequential` argument to plot data based on array index rather than `OHLC.time`. This is a new, simpler way to display unevenly-spaced data (e.g., gaps over weekends) in a way that makes the gaps invisible. (#346) _Thanks @Minu476_
+* Fixed a marker/line alignment issue that only affeced low-density Signal plots on Linux and MacOS (#340) _Thanks @SeisChr_
 
 ## ScottPlot 4.0.29
 * `Plot.PlotFill()` can be used to make scatter plots with shaded regions. Giving it a single pair of X/Y values (`xs, ys`) lets you shade beneath the curve to the `baseline` value (which defaults to 0). You can also give it a pair of X/Y values (`xs1, ys1, xs2, ys2`) and the area between the two curves will be shaded (the two curves do not need to be the same length). See cookbook for examples. (#255) _Thanks @ckovamees_ 
