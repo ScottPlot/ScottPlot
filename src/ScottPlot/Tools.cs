@@ -304,5 +304,22 @@ namespace ScottPlot
 
             return padded;
         }
+
+        public static string GetOsName(bool details = true)
+        {
+            string name = "Unknown";
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                name = "Linux";
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                name = "MacOS";
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                name = "Windows";
+
+            if (details)
+                name += $" ({System.Environment.OSVersion})";
+
+            return name;
+        }
     }
 }
