@@ -9,33 +9,41 @@ namespace ScottPlotTests.Misc
     public class OS
     {
         [Test]
-        public void Test_Plot_WithOsInfo()
+        public void Test_Plot_Basic()
         {
-            string osName = "unknown OS";
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                osName = $"Linux ({System.Environment.OSVersion})";
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-                osName = $"MacOS ({System.Environment.OSVersion})";
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                osName = $"Windows ({System.Environment.OSVersion})";
-
-            var plt = new ScottPlot.Plot(600, 400);
+            var plt = new ScottPlot.Plot();
             plt.PlotSignal(ScottPlot.DataGen.Sin(100), label: "sin");
             plt.PlotSignal(ScottPlot.DataGen.Cos(100), label: "cos");
             plt.YLabel("vertical units");
             plt.XLabel("horizontal units");
-            plt.Title(osName);
+            plt.Title(ScottPlot.Tools.GetOsName());
             plt.Legend();
 
-            string osNameShort = osName.Split(" ")[0];
-            TestTools.SaveFig(plt, osNameShort);
+            TestTools.SaveFig(plt, artifact: true);
+        }
 
-            string artifactFolder = System.IO.Path.GetFullPath("./artifacts/");
-            if (!System.IO.Directory.Exists(artifactFolder))
-                System.IO.Directory.CreateDirectory(artifactFolder);
-            string artifactFilePath = System.IO.Path.Combine(artifactFolder, $"SamplePlot_{osNameShort}.png");
-            plt.SaveFig(artifactFilePath);
-            Console.WriteLine($"Saved artifact: {artifactFilePath}");
+        [Test]
+        public void Test_Marker_Precision()
+        {
+            var plt = new ScottPlot.Plot();
+
+            plt.PlotScatter(
+                new double[] { 1, 2, 3, 4 },
+                new double[] { 1, 2, 1, 2 },
+                markerSize: 10
+                );
+
+            plt.PlotScatter(
+                new double[] { 1, 2, 3, 4 },
+                new double[] { 2, 1, 2, 1 }
+                );
+
+            plt.YLabel("vertical units");
+            plt.XLabel("horizontal units");
+            plt.Title(ScottPlot.Tools.GetOsName());
+            plt.Legend();
+
+            TestTools.SaveFig(plt, artifact: true);
         }
     }
 }
