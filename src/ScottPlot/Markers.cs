@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -33,6 +34,10 @@ namespace ScottPlot
 
             Pen pen = new Pen(color);
             Brush brush = new SolidBrush(color);
+
+            // 1px adjustment to improve marker alignment with lines on Linux and MacOS
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                pixelLocation.Y += 1;
 
             PointF corner1 = new PointF(pixelLocation.X - size / 2, pixelLocation.Y - size / 2);
             PointF corner2 = new PointF(pixelLocation.X + size / 2, pixelLocation.Y + size / 2);
