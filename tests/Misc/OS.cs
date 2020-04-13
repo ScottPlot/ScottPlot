@@ -27,7 +27,15 @@ namespace ScottPlotTests.Misc
             plt.Title(osName);
             plt.Legend();
 
-            TestTools.SaveFig(plt);
+            string osNameShort = osName.Split(" ")[0];
+            TestTools.SaveFig(plt, osNameShort);
+
+            string artifactFolder = System.IO.Path.GetFullPath("./artifacts/");
+            if (!System.IO.Directory.Exists(artifactFolder))
+                System.IO.Directory.CreateDirectory(artifactFolder);
+            string artifactFilePath = System.IO.Path.Combine(artifactFolder, $"SamplePlot_{osNameShort}.png");
+            plt.SaveFig(artifactFilePath);
+            Console.WriteLine($"Saved artifact: {artifactFilePath}");
         }
     }
 }
