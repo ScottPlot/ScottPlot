@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace ScottPlotTests
@@ -13,7 +14,7 @@ namespace ScottPlotTests
             ScottPlot.Tools.LaunchBrowser(filePath);
         }
 
-        public static string SaveFig(ScottPlot.Plot plt, string subName = "")
+        public static string SaveFig(ScottPlot.Plot plt, string subName = "", bool artifact = false)
         {
             var stackTrace = new System.Diagnostics.StackTrace();
             string callingMethod = stackTrace.GetFrame(1).GetMethod().Name;
@@ -29,7 +30,24 @@ namespace ScottPlotTests
             Console.WriteLine($"Saved: {filePath}");
             Console.WriteLine();
 
+            if (artifact)
+                SaveArtifact(plt, callingMethod + subName);
+
             return filePath;
+        }
+
+        private static void SaveArtifact(ScottPlot.Plot plt, string name)
+        {
+            string osNameShort = ScottPlot.Tools.GetOsName(details: false);
+            string artifactFolder = System.IO.Path.GetFullPath("./artifacts/");
+            if (!System.IO.Directory.Exists(artifactFolder))
+                System.IO.Directory.CreateDirectory(artifactFolder);
+            string artifactFilePath = System.IO.Path.Combine(artifactFolder, $"{name}_{osNameShort}.png");
+
+            plt.SaveFig(artifactFilePath);
+
+            Console.WriteLine($"Saved artifact: {artifactFilePath}");
+            Console.WriteLine();
         }
 
         public static string SaveFig(System.Drawing.Bitmap bmp, string subName = "")
