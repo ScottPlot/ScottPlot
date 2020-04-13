@@ -11,11 +11,18 @@ namespace ScottPlotTests.Misc
         [Test]
         public void Test_Plot_Basic()
         {
-            var plt = new ScottPlot.Plot();
-            plt.PlotSignal(ScottPlot.DataGen.Sin(100), label: "sin");
-            plt.PlotSignal(ScottPlot.DataGen.Cos(100), label: "cos");
+            int pointCount = 51;
+            double[] x = ScottPlot.DataGen.Consecutive(pointCount);
+            double[] sin = ScottPlot.DataGen.Sin(pointCount);
+            double[] cos = ScottPlot.DataGen.Cos(pointCount);
+
+            var plt = new ScottPlot.Plot(600, 400);
+            plt.PlotScatter(x, sin, label: "sin");
+            plt.PlotScatter(x, cos, label: "cos");
+
             plt.YLabel("vertical units");
             plt.XLabel("horizontal units");
+
             plt.Title(ScottPlot.Tools.GetOsName());
             plt.Legend();
 
