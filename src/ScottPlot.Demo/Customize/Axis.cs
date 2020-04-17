@@ -128,5 +128,29 @@ namespace ScottPlot.Demo.Customize
                 plt.EqualAxis = true;
             }
         }
+
+        public class DateTimeAxis : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "DateTime Axis";
+            public string description { get; } = "Axis tick labels can show DateTime format if DateTime.ToOADate() was used to plot the data";
+
+            public void Render(Plot plt)
+            {
+                Random rand = new Random(0);
+                double[] ys = DataGen.RandomWalk(rand, 100);
+                double[] xs = new double[ys.Length];
+
+                DateTime dtStart = new DateTime(1985, 9, 24);
+                for (int i=0; i<ys.Length; i++)
+                {
+                    DateTime dtNow = dtStart.AddDays(i);
+                    xs[i] = dtNow.ToOADate();
+                }
+
+                plt.PlotScatter(xs, ys);
+                plt.Ticks(dateTimeX: true);
+                plt.Title("DateTime Axis Labels");
+            }
+        }
     }
 }
