@@ -75,7 +75,7 @@ namespace ScottPlot
                     continue;
                 }
 
-                if (y.HasValue)
+                if (y.HasValue && !double.IsNaN(y.Value))
                 {
                     xList.Add(x);
                     yList.Add(y.Value);
