@@ -316,6 +316,17 @@ namespace ScottPlot
                 var origin = new System.Drawing.Point((int)x1 - settings.dataOrigin.X, (int)y1 - settings.dataOrigin.Y);
                 var size = new System.Drawing.Size((int)(x2 - x1), (int)(y2 - y1));
 
+                if (lockVerticalAxis)
+                {
+                    origin.Y = 0;
+                    size.Height = settings.dataSize.Height - 1;
+                }
+                if (lockHorizontalAxis)
+                {
+                    origin.X = 0;
+                    size.Width = settings.dataSize.Width - 1;
+                }
+
                 settings.mouseMiddleRect = new System.Drawing.Rectangle(origin, size);
             }
 

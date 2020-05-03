@@ -258,6 +258,17 @@ namespace ScottPlot
                 Point origin = new Point(x1 - settings.dataOrigin.X, y1 - settings.dataOrigin.Y);
                 Size size = new Size(x2 - x1, y2 - y1);
 
+                if (lockVerticalAxis)
+                {
+                    origin.Y = 0;
+                    size.Height = settings.dataSize.Height - 1;
+                }
+                if (lockHorizontalAxis)
+                {
+                    origin.X = 0;
+                    size.Width = settings.dataSize.Width - 1;
+                }
+
                 settings.mouseMiddleRect = new Rectangle(origin, size);
             }
 
