@@ -75,8 +75,11 @@ namespace ScottPlot
                     continue;
                 }
 
-                if (y.HasValue && !double.IsNaN(y.Value))
+                if (y.HasValue)
                 {
+                    if (double.IsNaN(y.Value) || double.IsInfinity(y.Value)) {// double.IsInfinity checks for positive or negative infinity
+                        continue;
+                    }
                     xList.Add(x);
                     yList.Add(y.Value);
                 }
