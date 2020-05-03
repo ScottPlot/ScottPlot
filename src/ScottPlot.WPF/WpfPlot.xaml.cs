@@ -246,7 +246,7 @@ namespace ScottPlot
                 if (e.ChangedButton == MouseButton.Left && shiftIsPressed) mouseMiddleDownLocation = GetPixelPosition(e);
                 else if (e.ChangedButton == MouseButton.Left && enablePanning) mouseLeftDownLocation = GetPixelPosition(e);
                 else if (e.ChangedButton == MouseButton.Right && enableZooming) mouseRightDownLocation = GetPixelPosition(e);
-                else if (e.ChangedButton == MouseButton.Middle) mouseMiddleDownLocation = GetPixelPosition(e);
+                else if (e.ChangedButton == MouseButton.Middle && enableScrollWheelZoom) mouseMiddleDownLocation = GetPixelPosition(e);
                 axisLimitsOnMouseDown = plt.Axis();
             }
             else
