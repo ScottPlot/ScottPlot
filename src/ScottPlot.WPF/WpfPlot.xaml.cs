@@ -359,12 +359,14 @@ namespace ScottPlot
                 if ((size.Width > 2) && (size.Height > 2))
                 {
                     // only change axes if suffeciently large square was drawn
-                    plt.Axis(
+                    if (!lockHorizontalAxis)
+                        plt.Axis(
                             x1: plt.CoordinateFromPixel((int)topLeft.X, (int)topLeft.Y).X,
-                            x2: plt.CoordinateFromPixel((int)botRight.X, (int)botRight.Y).X,
+                            x2: plt.CoordinateFromPixel((int)botRight.X, (int)botRight.Y).X);
+                    if (!lockVerticalAxis)
+                        plt.Axis(
                             y1: plt.CoordinateFromPixel((int)botRight.X, (int)botRight.Y).Y,
-                            y2: plt.CoordinateFromPixel((int)topLeft.X, (int)topLeft.Y).Y
-                        );
+                            y2: plt.CoordinateFromPixel((int)topLeft.X, (int)topLeft.Y).Y);
                     AxisChanged?.Invoke(null, null);
                 }
                 else
