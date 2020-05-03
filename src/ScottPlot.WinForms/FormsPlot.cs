@@ -50,12 +50,7 @@ namespace ScottPlot
 
         private void InitializeScottPlot()
         {
-            ContextMenuStrip = new ContextMenuStrip();
-            ContextMenuStrip.Items.Add(new ToolStripMenuItem("Save Image", null, new EventHandler(SaveImage)));
-            ContextMenuStrip.Items.Add(new ToolStripMenuItem("Copy Image", null, new EventHandler(CopyImage)));
-            ContextMenuStrip.Items.Add(new ToolStripMenuItem("Open in New Window", null, new EventHandler(OpenNewWindow)));
-            ContextMenuStrip.Items.Add(new ToolStripMenuItem("Settings", null, new EventHandler(OpenSettingsWindow)));
-            ContextMenuStrip.Items.Add(new ToolStripMenuItem("Help", null, new EventHandler(OpenHelpWindow)));
+            ContextMenuStrip = DefaultRightClickMenu();
 
             pbPlot.MouseWheel += PbPlot_MouseWheel;
 
@@ -72,6 +67,17 @@ namespace ScottPlot
 
             PbPlot_MouseUp(null, null);
             PbPlot_SizeChanged(null, null);
+        }
+
+        private ContextMenuStrip DefaultRightClickMenu()
+        {
+            var cms = new ContextMenuStrip();
+            cms.Items.Add(new ToolStripMenuItem("Save Image", null, new EventHandler(SaveImage)));
+            cms.Items.Add(new ToolStripMenuItem("Copy Image", null, new EventHandler(CopyImage)));
+            cms.Items.Add(new ToolStripMenuItem("Open in New Window", null, new EventHandler(OpenNewWindow)));
+            cms.Items.Add(new ToolStripMenuItem("Settings", null, new EventHandler(OpenSettingsWindow)));
+            cms.Items.Add(new ToolStripMenuItem("Help", null, new EventHandler(OpenHelpWindow)));
+            return cms;
         }
 
         private bool currentlyRendering;
@@ -110,7 +116,6 @@ namespace ScottPlot
 
         private bool enablePanning = true;
         private bool enableRightClickZoom = true;
-        private bool enableRightClickMenu = true;
         private bool enableScrollWheelZoom = true;
         private bool lowQualityWhileDragging = true;
         private bool doubleClickingTogglesBenchmark = true;
@@ -131,7 +136,7 @@ namespace ScottPlot
         {
             if (enablePanning != null) this.enablePanning = (bool)enablePanning;
             if (enableZooming != null) this.enableRightClickZoom = (bool)enableZooming;
-            if (enableRightClickMenu != null) this.enableRightClickMenu = (bool)enableRightClickMenu;
+            if (enableRightClickMenu != null) ContextMenuStrip = (enableRightClickMenu.Value) ? DefaultRightClickMenu() : null;
             if (enableScrollWheelZoom != null) this.enableScrollWheelZoom = (bool)enableScrollWheelZoom;
             if (lowQualityWhileDragging != null) this.lowQualityWhileDragging = (bool)lowQualityWhileDragging;
             if (enableDoubleClickBenchmark != null) this.doubleClickingTogglesBenchmark = (bool)enableDoubleClickBenchmark;
@@ -314,7 +319,7 @@ namespace ScottPlot
                 bool mouseDraggedFar = (deltaX > 3 || deltaY > 3);
 
                 if (mouseDraggedFar)
-                    ContextMenuStrip.Hide();
+                    ContextMenuStrip?.Hide();
                 else
                     OnMenuDeployed();
             }
@@ -433,9 +438,6 @@ namespace ScottPlot
         protected virtual void OnMenuDeployed()
         {
             MenuDeployed?.Invoke(this, null);
-
-            if (enableRightClickMenu)
-                ContextMenuStrip.Show(pbPlot, PointToClient(Cursor.Position));
         }
 
         #endregion

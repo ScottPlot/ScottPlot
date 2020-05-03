@@ -36,18 +36,18 @@ namespace ScottPlot
         public WpfPlot(Plot plt)
         {
             InitializeComponent();
-            CreateDefaultRightClickMenu();
+            ContextMenu = DefaultRightClickMenu();
             Reset(plt);
         }
 
         public WpfPlot()
         {
             InitializeComponent();
-            CreateDefaultRightClickMenu();
+            ContextMenu = DefaultRightClickMenu();
             Reset(null);
         }
 
-        private void CreateDefaultRightClickMenu()
+        private ContextMenu DefaultRightClickMenu()
         {
             MenuItem SaveImageMenuItem = new MenuItem() { Header = "Save Image" };
             SaveImageMenuItem.Click += SaveImage;
@@ -58,11 +58,13 @@ namespace ScottPlot
             MenuItem HelpMenuItem = new MenuItem() { Header = "Help" };
             HelpMenuItem.Click += OpenHelp;
 
-            ContextMenu = new ContextMenu();
-            ContextMenu.Items.Add(SaveImageMenuItem);
-            ContextMenu.Items.Add(CopyImageMenuItem);
-            ContextMenu.Items.Add(NewWindowMenuItem);
-            ContextMenu.Items.Add(HelpMenuItem);
+            var cm = new ContextMenu();
+            cm.Items.Add(SaveImageMenuItem);
+            cm.Items.Add(CopyImageMenuItem);
+            cm.Items.Add(NewWindowMenuItem);
+            cm.Items.Add(HelpMenuItem);
+
+            return cm;
         }
 
         public void Reset()
@@ -152,6 +154,7 @@ namespace ScottPlot
         public void Configure(
             bool? enablePanning = null,
             bool? enableRightClickZoom = null,
+            bool? enableRightClickMenu = null,
             bool? enableScrollWheelZoom = null,
             bool? lowQualityWhileDragging = null,
             bool? enableDoubleClickBenchmark = null,
@@ -162,6 +165,7 @@ namespace ScottPlot
         {
             if (enablePanning != null) this.enablePanning = (bool)enablePanning;
             if (enableRightClickZoom != null) this.enableZooming = (bool)enableRightClickZoom;
+            if (enableRightClickMenu != null) ContextMenu = (enableRightClickMenu.Value) ? DefaultRightClickMenu() : null;
             if (enableScrollWheelZoom != null) this.enableScrollWheelZoom = (bool)enableScrollWheelZoom;
             if (lowQualityWhileDragging != null) this.lowQualityWhileDragging = (bool)lowQualityWhileDragging;
             if (enableDoubleClickBenchmark != null) this.doubleClickingTogglesBenchmark = (bool)enableDoubleClickBenchmark;
@@ -375,12 +379,16 @@ namespace ScottPlot
                 double deltaX = Math.Abs(mouseLocation.X - mouseRightDownLocation.Value.X);
                 double deltaY = Math.Abs(mouseLocation.Y - mouseRightDownLocation.Value.Y);
                 bool mouseDraggedFar = (deltaX > 3 || deltaY > 3);
-                ContextMenu.Visibility = (mouseDraggedFar) ? Visibility.Hidden : Visibility.Visible;
-                ContextMenu.IsOpen = (!mouseDraggedFar);
+                if (ContextMenu != null)
+                {
+                    ContextMenu.Visibility = (mouseDraggedFar) ? Visibility.Hidden : Visibility.Visible;
+                    ContextMenu.IsOpen = (!mouseDraggedFar);
+                }
             }
             else
             {
-                ContextMenu.IsOpen = false;
+                if (ContextMenu != null)
+                    ContextMenu.IsOpen = false;
             }
 
             mouseLeftDownLocation = null;
