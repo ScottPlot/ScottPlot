@@ -29,6 +29,7 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
 * Plot titles are now center-aligned with the data area, not the figure. This improves the look of small plots with titles. (#365) _Thanks @Resonanz_
 * Fixed bug that ignored `Configure(enableRightClickMenu: false)` in WPF and WinForms user controls. (#365) _Thanks @thunderstatic_
 * Updated `Configure(enableScrollWheelZoom: false)` to disable middle-click-drag zooming. (#365) _Thanks @eduhza_
+* Added color mixing methods to ScottPlot.Drawing.GDI (#361)
 
 ## ScottPlot 4.0.30
 * `Plot.PlotCandlestick()` and `Plot.PlotOHLC()`
