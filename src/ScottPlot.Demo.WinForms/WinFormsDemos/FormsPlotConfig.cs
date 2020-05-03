@@ -37,7 +37,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
 
         private void cbZoomable_CheckedChanged(object sender, EventArgs e)
         {
-            formsPlot1.Configure(enableZooming: cbZoomable.Checked);
+            formsPlot1.Configure(enableZooming: cbZoomable.Checked, enableScrollWheelZoom: cbZoomable.Checked);
         }
 
         private void cbLowQualWhileDragging_CheckedChanged(object sender, EventArgs e)

@@ -33,8 +33,8 @@ namespace ScottPlot.Demo.WPF.WpfDemos
 
         private void PanEnable(object sender, RoutedEventArgs e) { wpfPlot1?.Configure(enablePanning: true); }
         private void PanDisable(object sender, RoutedEventArgs e) { wpfPlot1?.Configure(enablePanning: false); }
-        private void ZoomEnable(object sender, RoutedEventArgs e) { wpfPlot1?.Configure(enableRightClickZoom: true); }
-        private void ZoomDisable(object sender, RoutedEventArgs e) { wpfPlot1?.Configure(enableRightClickZoom: false); }
+        private void ZoomEnable(object sender, RoutedEventArgs e) { wpfPlot1?.Configure(enableRightClickZoom: true, enableScrollWheelZoom: true); }
+        private void ZoomDisable(object sender, RoutedEventArgs e) { wpfPlot1?.Configure(enableRightClickZoom: false, enableScrollWheelZoom: false); }
         private void DragLowQualityEnable(object sender, RoutedEventArgs e) { wpfPlot1?.Configure(lowQualityWhileDragging: true); }
         private void DragLowQualityDisable(object sender, RoutedEventArgs e) { wpfPlot1?.Configure(lowQualityWhileDragging: false); }
         private void VerticalLock(object sender, RoutedEventArgs e) { wpfPlot1?.Configure(lockVerticalAxis: true); }
