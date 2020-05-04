@@ -156,6 +156,8 @@ namespace ScottPlot
             if (!settings.axes.hasBeenSet)
                 settings.AxisAuto();
 
+            settings.axes.ApplyBounds();
+
             if (!settings.layout.tighteningOccurred)
             {
                 // ticks must be populated before the layout can be tightened
@@ -1179,6 +1181,18 @@ namespace ScottPlot
                 throw new ArgumentException("axis limits must contain 4 elements");
             Axis(axisLimits[0], axisLimits[1], axisLimits[2], axisLimits[3]);
             return settings.axes.limits;
+        }
+
+        public void AxisBounds(
+            double minX = double.NegativeInfinity,
+            double maxX = double.PositiveInfinity,
+            double minY = double.NegativeInfinity,
+            double maxY = double.PositiveInfinity)
+        {
+            settings.axes.x.boundMin = minX;
+            settings.axes.x.boundMax = maxX;
+            settings.axes.y.boundMin = minY;
+            settings.axes.y.boundMax = maxY;
         }
 
         public double[] AxisScale(double? unitsPerPixelX = null, double? unitsPerPixelY = null)
