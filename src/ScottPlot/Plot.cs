@@ -888,68 +888,43 @@ namespace ScottPlot
             return barPlot;
         }
 
-        public PlottableMultiBar PlotMultiBar(
-                double[][] xs,
-                double[][] ys,
-                double[][] yErr = null,
-                string label = null,
-                double barWidth = .6,
-                bool fill = true,
-                Color[] fillColors = null,
-                double outlineWidth = 1,
-                Color? outlineColor = null,
-                double errorLineWidth = 1,
-                double errorCapSize = 0.38,
-                Color? errorColor = null,
-                bool horizontal = false,
-                bool showValues = false
-            )
-        {
-            if (fillColors == null)
-            {
-                fillColors = new Color[xs.Length];
-                for (int i = 0; i < fillColors.Length; i++)
-                {
-                    int index = GetPlottables().Count();
-                    fillColors[i] = settings.colors.GetColor(index + i);//GetNextColor only works for a new colour in a new plottable, not in the same one
-                }
-            }
-
-            if (outlineColor == null)
-                outlineColor = Color.Black;
-
-            if (errorColor == null)
-                errorColor = Color.Black;
-
-            PlottableMultiBar multiBarPlot = new PlottableMultiBar(xs, ys, label, barWidth, fill, fillColors, outlineWidth, outlineColor.Value, yErr, errorLineWidth, errorCapSize, errorColor.Value, horizontal, showValues);
-
-            settings.plottables.Add(multiBarPlot);
-            return multiBarPlot;
-        }
-
-        public void PlotMultiBar(
+        // builds a series of bar plots given 2D input data
+        public PlottableBar[] PlotMultiBar(
                 string[] groupLabels,
                 string[] seriesLabels,
                 double[][] ys,
-                double[][] yErr = null
+                double[][] yErr = null,
+                double groupWidthFraction = 0.8,
+                double barWidthFraction = 0.8,
+                double errorCapSize = 0.38,
+                bool showValues = false
             )
         {
-            // TODO: asserts to verify lengths of all arrays match 
+            if (groupLabels is null || seriesLabels is null || ys is null)
+                throw new ArgumentException("labels and ys cannot be null");
+
+            if (seriesLabels.Length != ys.Length)
+                throw new ArgumentException("groupLabels and ys must be the same length");
+
+            foreach (var ySeriesValues in ys)
+                if (ySeriesValues.Length != groupLabels.Length)
+                    throw new ArgumentException("all arrays inside ys must be the same length as groupLabels");
 
             int seriesCount = ys.Length;
-            double groupWidth = 0.8;
-            double barWidth = groupWidth / seriesCount;
-
+            double barWidth = groupWidthFraction / seriesCount;
+            PlottableBar[] bars = new PlottableBar[seriesCount];
             for (int i = 0; i < seriesCount; i++)
             {
                 double offset = i * barWidth;
                 double[] barYs = ys[i];
-                double[] barYerr = (yErr is null) ? null : yErr[i];
+                double[] barYerr = yErr?[i];
                 double[] barXs = DataGen.Consecutive(barYs.Length);
-                PlotBar(barXs, barYs, barYerr, seriesLabels[i], barWidth, offset);
+                bars[i] = PlotBar(barXs, barYs, barYerr, seriesLabels[i], barWidth * barWidthFraction, offset, 
+                    errorCapSize: errorCapSize, showValues: showValues);
             }
+            XTicks(DataGen.Consecutive(groupLabels.Length, offset: (groupWidthFraction - barWidth) / 2), groupLabels);
 
-            XTicks(DataGen.Consecutive(groupLabels.Length, offset: (groupWidth - barWidth) / 2), groupLabels);
+            return bars;
         }
 
         public PlottableOHLC PlotOHLC(
