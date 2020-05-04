@@ -1125,12 +1125,11 @@ namespace ScottPlot
 
         public IDraggable GetDraggableUnderMouse(double pixelX, double pixelY, int snapDistancePixels = 5)
         {
-            PointF mouseCoordinates = CoordinateFromPixel(pixelX, pixelY);
             double snapWidth = GetSettings(false).xAxisUnitsPerPixel * snapDistancePixels;
             double snapHeight = GetSettings(false).yAxisUnitsPerPixel * snapDistancePixels;
 
             foreach (IDraggable draggable in GetDraggables())
-                if (draggable.IsUnderMouse(mouseCoordinates.X, mouseCoordinates.Y, snapWidth, snapHeight))
+                if (draggable.IsUnderMouse(CoordinateFromPixelX(pixelX), CoordinateFromPixelY(pixelY), snapWidth, snapHeight))
                     if (draggable.DragEnabled)
                         return draggable;
 
@@ -1306,26 +1305,31 @@ namespace ScottPlot
             return settings.GetLocationY(pixelY);
         }
 
+        [Obsolete("use CoordinateFromPixelX and CoordinateFromPixelY for improved precision")]
         public PointF CoordinateFromPixel(int pixelX, int pixelY)
         {
             return settings.GetLocation(pixelX, pixelY);
         }
 
+        [Obsolete("use CoordinateFromPixelX and CoordinateFromPixelY for improved precision")]
         public PointF CoordinateFromPixel(float pixelX, float pixelY)
         {
             return settings.GetLocation(pixelX, pixelY);
         }
 
+        [Obsolete("use CoordinateFromPixelX and CoordinateFromPixelY for improved precision")]
         public PointF CoordinateFromPixel(double pixelX, double pixelY)
         {
             return settings.GetLocation(pixelX, pixelY);
         }
 
+        [Obsolete("use CoordinateFromPixelX and CoordinateFromPixelY for improved precision")]
         public PointF CoordinateFromPixel(Point pixel)
         {
             return CoordinateFromPixel(pixel.X, pixel.Y);
         }
 
+        [Obsolete("use CoordinateFromPixelX and CoordinateFromPixelY for improved precision")]
         public PointF CoordinateFromPixel(PointF pixel)
         {
             return CoordinateFromPixel(pixel.X, pixel.Y);
