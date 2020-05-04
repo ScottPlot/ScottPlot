@@ -25,20 +25,20 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
   * Create a GDI rendering module which uses System.Drawing 
   * Create a SkiaSharp rendering module and user control (supporting OpenGL hardware acceleration)
 
-## ScottPlot 4.0.31 (in development)
-* Plot titles are now center-aligned with the data area, not the figure. This improves the look of small plots with titles. (#365) _Thanks @Resonanz_
-* Fixed bug that ignored `Configure(enableRightClickMenu: false)` in WPF and WinForms user controls. (#365) _Thanks @thunderstatic_
-* Updated `Configure(enableScrollWheelZoom: false)` to disable middle-click-drag zooming. (#365) _Thanks @eduhza_
-* Added color mixing methods to ScottPlot.Drawing.GDI (#361)
-* Middle-click-drag zooming now respects locked axes (#353) _Thanks @LogDogg_
-* Improved user control zooming of high-precision DateTime axis data (#351) _Thanks @bukkideme_
-
 ## ScottPlot 4.0.30
 * `Plot.PlotCandlestick()` and `Plot.PlotOHLC()`
   * now support `OHLC` objects with variable widths defined with a new `timeSpan` argument in the OHLC constructor. (#346) _Thanks @Minu476_
   * now support custom up/down colors including those with transparency (#346) _Thanks @Minu476_
   * have a new `sequential` argument to plot data based on array index rather than `OHLC.time`. This is a new, simpler way to display unevenly-spaced data (e.g., gaps over weekends) in a way that makes the gaps invisible. (#346) _Thanks @Minu476_
 * Fixed a marker/line alignment issue that only affeced low-density Signal plots on Linux and MacOS (#340) _Thanks @SeisChr_
+* WPF control now appears in Toolbox (#151) _Thanks @RalphLAtGitHub_
+* Plot titles are now center-aligned with the data area, not the figure. This improves the look of small plots with titles. (#365) _Thanks @Resonanz_
+* Fixed bug that ignored `Configure(enableRightClickMenu: false)` in WPF and WinForms user controls. (#365) _Thanks @thunderstatic_
+* Updated `Configure(enableScrollWheelZoom: false)` to disable middle-click-drag zooming. (#365) _Thanks @eduhza_
+* Added color mixing methods to ScottPlot.Drawing.GDI (#361)
+* Middle-click-drag zooming now respects locked axes (#353) _Thanks @LogDogg_
+* Improved user control zooming of high-precision DateTime axis data (#351) _Thanks @bukkideme_
+* Plot.AxisBounds() now lets user set absolute bounds for drag and pan operations (#349) _Thanks @LogDogg_
 
 ## ScottPlot 4.0.29
 * `Plot.PlotFill()` can be used to make scatter plots with shaded regions. Giving it a single pair of X/Y values (`xs, ys`) lets you shade beneath the curve to the `baseline` value (which defaults to 0). You can also give it a pair of X/Y values (`xs1, ys1, xs2, ys2`) and the area between the two curves will be shaded (the two curves do not need to be the same length). See cookbook for examples. (#255) _Thanks @ckovamees_ 
