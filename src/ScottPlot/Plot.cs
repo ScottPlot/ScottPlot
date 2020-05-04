@@ -927,6 +927,31 @@ namespace ScottPlot
             return multiBarPlot;
         }
 
+        public void PlotMultiBar(
+                string[] groupLabels,
+                string[] seriesLabels,
+                double[][] ys,
+                double[][] yErr = null
+            )
+        {
+            // TODO: asserts to verify lengths of all arrays match 
+
+            int seriesCount = ys.Length;
+            double groupWidth = 0.8;
+            double barWidth = groupWidth / seriesCount;
+
+            for (int i = 0; i < seriesCount; i++)
+            {
+                double offset = i * barWidth;
+                double[] barYs = ys[i];
+                double[] barYerr = (yErr is null) ? null : yErr[i];
+                double[] barXs = DataGen.Consecutive(barYs.Length);
+                PlotBar(barXs, barYs, barYerr, seriesLabels[i], barWidth, offset);
+            }
+
+            XTicks(DataGen.Consecutive(groupLabels.Length, offset: (groupWidth - barWidth) / 2), groupLabels);
+        }
+
         public PlottableOHLC PlotOHLC(
             OHLC[] ohlcs,
             Color? colorUp = null,

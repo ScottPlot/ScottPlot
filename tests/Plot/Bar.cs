@@ -14,6 +14,8 @@ namespace ScottPlotTests.Plot
             Random rand = new Random(0);
 
             string[] groupNames = { "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten" };
+            string[] seriesNames = { "alpha", "beta", "gamma" };
+
             int groupCount = groupNames.Length;
 
             double[] xs = DataGen.Consecutive(groupCount);
@@ -26,11 +28,11 @@ namespace ScottPlotTests.Plot
 
             var plt = new ScottPlot.Plot(600, 400);
             plt.PlotMultiBar(
-                xs: new double[][] { xs, xs, xs }, 
-                ys: new double[][] { ys1, ys2, ys3 }, 
+                groupLabels: groupNames,
+                seriesLabels: seriesNames,
+                ys: new double[][] { ys1, ys2, ys3 },
                 yErr: new double[][] { err1, err2, err3 });
 
-            plt.XTicks(xs, groupNames);
             plt.Axis(y1: 0);
             plt.Grid(enableVertical: false, lineStyle: LineStyle.Dot);
             plt.Legend(location: legendLocation.upperRight);
