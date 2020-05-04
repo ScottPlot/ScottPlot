@@ -24,6 +24,9 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
   * Remove rendering capabilities from ScottPlot.Plot so the dependency on System.Drawing can be eliminated
   * Create a GDI rendering module which uses System.Drawing 
   * Create a SkiaSharp rendering module and user control (supporting OpenGL hardware acceleration)
+  
+## ScottPlot 4.0.31
+* Improved error reporting for scatter plots (#369) _Thanks @JagDTalcyon_
 
 ## ScottPlot 4.0.30
 * `Plot.PlotCandlestick()` and `Plot.PlotOHLC()`

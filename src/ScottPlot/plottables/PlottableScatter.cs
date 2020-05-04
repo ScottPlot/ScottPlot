@@ -33,10 +33,13 @@ namespace ScottPlot
         {
 
             if ((xs == null) || (ys == null))
-                throw new Exception("X and Y data cannot be null");
+                throw new ArgumentException("X and Y data cannot be null");
+
+            if ((xs.Length == 0) || (ys.Length == 0))
+                throw new ArgumentException("xs and ys must have at least one element");
 
             if (xs.Length != ys.Length)
-                throw new Exception("Xs and Ys must have same length");
+                throw new ArgumentException("Xs and Ys must have same length");
 
             if (errorY != null)
                 for (int i = 0; i < errorY.Length; i++)
