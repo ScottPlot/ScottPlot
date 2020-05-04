@@ -33,67 +33,35 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class MultipleBars : PlotDemo, IPlotDemo
-        {
-            public string name { get; } = "Multiple Bar Graphs";
-            public string description { get; } = "Multiple bar graphs can be displayed together by tweaking the widths and offsets of two separate bar graphs.";
-
-            public void Render(Plot plt)
-            {
-                // generate random data to plot
-                Random rand = new Random(0);
-                int pointCount = 10;
-                double[] xs = DataGen.Consecutive(pointCount);
-                double[] ys1 = DataGen.RandomNormal(rand, pointCount, 20, 5);
-                double[] ys2 = DataGen.RandomNormal(rand, pointCount, 20, 5);
-                double[] err1 = DataGen.RandomNormal(rand, pointCount, 5, 2);
-                double[] err2 = DataGen.RandomNormal(rand, pointCount, 5, 2);
-
-                // add both bar plots with a careful widths and offsets
-                plt.PlotBar(xs, ys1, err1, "data A", barWidth: .3, xOffset: -.2);
-                plt.PlotBar(xs, ys2, err2, "data B", barWidth: .3, xOffset: .2);
-
-                // customize the plot to make it look nicer
-                plt.Axis(y1: 0);
-                plt.Grid(enableVertical: false, lineStyle: LineStyle.Dot);
-                plt.Axis(y1: 0);
-                plt.Legend(location: legendLocation.upperRight);
-
-                // apply custom axis tick labels
-                string[] labels = { "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten" };
-                plt.XTicks(xs, labels);
-            }
-        }
-
         public class NewMultipleBars : PlotDemo, IPlotDemo
         {
-            public string name { get; } = "Multiple Bar Graphs (New)";
-            public string description { get; } = "Multiple bar graphs can be displayed together, without adjusting offsets by hand.";
+            public string name { get; } = "Grouped Bar Graphs";
+            public string description { get; } = "This example demonstrates how to display grouped bar plots. Data group labels are displayed as labels on the horizontal axis, while series labels are displayed in the legend.";
 
             public void Render(Plot plt)
             {
                 // generate random data to plot
+                string[] groupNames = { "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten" };
+                string[] seriesNames = { "alpha", "bravo", "charley" };
+                int groupCount = groupNames.Length;
                 Random rand = new Random(0);
-                int pointCount = 10;
-                double[] xs = DataGen.Consecutive(pointCount);
-                double[] ys1 = DataGen.RandomNormal(rand, pointCount, 20, 5);
-                double[] ys2 = DataGen.RandomNormal(rand, pointCount, 20, 5);
-                double[] ys3 = DataGen.RandomNormal(rand, pointCount, 20, 5);
-                double[] err1 = DataGen.RandomNormal(rand, pointCount, 5, 2);
-                double[] err2 = DataGen.RandomNormal(rand, pointCount, 5, 2);
-                double[] err3 = DataGen.RandomNormal(rand, pointCount, 5, 2);
+                double[] ys1 = DataGen.RandomNormal(rand, groupCount, 20, 5);
+                double[] ys2 = DataGen.RandomNormal(rand, groupCount, 20, 5);
+                double[] ys3 = DataGen.RandomNormal(rand, groupCount, 20, 5);
+                double[] err1 = DataGen.RandomNormal(rand, groupCount, 5, 2);
+                double[] err2 = DataGen.RandomNormal(rand, groupCount, 5, 2);
+                double[] err3 = DataGen.RandomNormal(rand, groupCount, 5, 2);
 
-                plt.PlotMultiBar(new double[][] { xs, xs, xs }, new double[][] { ys1, ys2, ys3 }, new double[][] { err1, err2, err3 });
+                plt.PlotMultiBar(
+                    groupLabels: groupNames,
+                    seriesLabels: seriesNames,
+                    ys: new double[][] { ys1, ys2, ys3 }, 
+                    yErr: new double[][] { err1, err2, err3 });
 
                 // customize the plot to make it look nicer
-                plt.Axis(y1: 0);
+                plt.Axis(y1: 0, y2: 50);
                 plt.Grid(enableVertical: false, lineStyle: LineStyle.Dot);
-                plt.Axis(y1: 0);
                 plt.Legend(location: legendLocation.upperRight);
-
-                // apply custom axis tick labels
-                string[] labels = { "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten" };
-                plt.XTicks(xs, labels);
             }
         }
 
