@@ -278,8 +278,7 @@ namespace ScottPlot
 
         private void MouseMovedToMoveDraggable(MouseEventArgs e)
         {
-            PointF coordinate = plt.CoordinateFromPixel(e.Location);
-            plottableBeingDragged.DragTo(coordinate.X, coordinate.Y);
+            plottableBeingDragged.DragTo(plt.CoordinateFromPixelX(e.Location.X), plt.CoordinateFromPixelY(e.Location.Y));
             OnMouseDragPlottable(EventArgs.Empty);
             Render(true, lowQuality: lowQualityWhileDragging);
         }
@@ -310,12 +309,12 @@ namespace ScottPlot
                     // only change axes if suffeciently large square was drawn
                     if (!lockHorizontalAxis)
                         plt.Axis(
-                            x1: plt.CoordinateFromPixel(topLeft).X,
-                            x2: plt.CoordinateFromPixel(botRight).X);
+                            x1: plt.CoordinateFromPixelX(topLeft.X),
+                            x2: plt.CoordinateFromPixelX(botRight.X));
                     if (!lockVerticalAxis)
                         plt.Axis(
-                            y1: plt.CoordinateFromPixel(botRight).Y,
-                            y2: plt.CoordinateFromPixel(topLeft).Y);
+                            y1: plt.CoordinateFromPixelY(botRight.Y),
+                            y2: plt.CoordinateFromPixelY(topLeft.Y));
                     OnAxisChanged();
                 }
                 else
@@ -372,8 +371,7 @@ namespace ScottPlot
             if (isVerticalLocked) yFrac = 1;
             if (isHorizontalLocked) xFrac = 1;
 
-            var mouseCoordinate = plt.CoordinateFromPixel(e.Location);
-            plt.AxisZoom(xFrac, yFrac, mouseCoordinate.X, mouseCoordinate.Y);
+            plt.AxisZoom(xFrac, yFrac, plt.CoordinateFromPixelX(e.Location.X), plt.CoordinateFromPixelY(e.Location.Y));
             Render(recalculateLayout: true);
             OnAxisChanged();
         }

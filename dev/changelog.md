@@ -31,6 +31,7 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
 * Updated `Configure(enableScrollWheelZoom: false)` to disable middle-click-drag zooming. (#365) _Thanks @eduhza_
 * Added color mixing methods to ScottPlot.Drawing.GDI (#361)
 * Middle-click-drag zooming now respects locked axes (#353) _Thanks @LogDogg_
+* Improved user control zooming of high-precision DateTime axis data (#351) _Thanks @bukkideme_
 
 ## ScottPlot 4.0.30
 * `Plot.PlotCandlestick()` and `Plot.PlotOHLC()`
