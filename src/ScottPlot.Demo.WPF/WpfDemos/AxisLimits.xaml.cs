@@ -24,8 +24,8 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             InitializeComponent();
             wpfPlot1.plt.PlotSignal(DataGen.Sin(51));
             wpfPlot1.plt.PlotSignal(DataGen.Cos(51));
-            wpfPlot1.plt.Axis(0, 50, -1, 1);
-            wpfPlot1.Configure();
+            wpfPlot1.plt.AxisAuto();
+            wpfPlot1.plt.AxisBounds(0, 50, -1, 1);
             wpfPlot1.Render();
         }
     }
