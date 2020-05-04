@@ -104,14 +104,20 @@ namespace ScottPlot
 
         private static BitmapImage BmpImageFromBmp(System.Drawing.Bitmap bmp)
         {
-            System.IO.MemoryStream stream = new System.IO.MemoryStream();
-            bmp.Save(stream, System.Drawing.Imaging.ImageFormat.Png); // use PNG to support transparency
-            BitmapImage bmpImage = new BitmapImage();
-            bmpImage.BeginInit();
-            stream.Seek(0, System.IO.SeekOrigin.Begin);
-            bmpImage.StreamSource = stream;
-            bmpImage.EndInit();
-            return bmpImage;
+            using (var memory = new System.IO.MemoryStream())
+            {
+                bmp.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
+                memory.Position = 0;
+
+                var bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.StreamSource = memory;
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.EndInit();
+                bitmapImage.Freeze();
+
+                return bitmapImage;
+            }
         }
 
         private bool currentlyRendering = false;

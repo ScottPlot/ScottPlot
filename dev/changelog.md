@@ -39,6 +39,7 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
 * Middle-click-drag zooming now respects locked axes (#353) _Thanks @LogDogg_
 * Improved user control zooming of high-precision DateTime axis data (#351) _Thanks @bukkideme_
 * Plot.AxisBounds() now lets user set absolute bounds for drag and pan operations (#349) _Thanks @LogDogg_
+* WPF control uses improved Bitmap conversion method (#350)
 
 ## ScottPlot 4.0.29
 * `Plot.PlotFill()` can be used to make scatter plots with shaded regions. Giving it a single pair of X/Y values (`xs, ys`) lets you shade beneath the curve to the `baseline` value (which defaults to 0). You can also give it a pair of X/Y values (`xs1, ys1, xs2, ys2`) and the area between the two curves will be shaded (the two curves do not need to be the same length). See cookbook for examples. (#255) _Thanks @ckovamees_ 
