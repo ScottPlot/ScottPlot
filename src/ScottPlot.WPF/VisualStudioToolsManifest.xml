@@ -1,0 +1,7 @@
+<FileList>
+  <File Reference="ScottPlot.WPF.dll">
+    <ToolboxItems VSCategory="ScottPlot" BlendCategory="ScottPlot">
+      <Item Type="ScottPlot.WpfPlot" />
+    </ToolboxItems>
+  </File>
+</FileList>
