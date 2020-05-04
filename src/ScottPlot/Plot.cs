@@ -155,8 +155,8 @@ namespace ScottPlot
         {
             if (!settings.axes.hasBeenSet)
                 settings.AxisAuto();
-
-            settings.axes.ApplyBounds();
+            else 
+                settings.axes.ApplyBounds();
 
             if (!settings.layout.tighteningOccurred)
             {
