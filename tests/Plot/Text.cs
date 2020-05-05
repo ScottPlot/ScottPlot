@@ -75,7 +75,7 @@ namespace ScottPlotTests.Plot
                     frameColor: Color.LightGray);
                 plt.PlotPoint(x, y, Color.Red, markerSize: 5);
             }
-            plt.Title("TextAlignment.upperCenter");
+            plt.Title("TextAlignment.lowerRight");
             plt.AxisAuto(.5, .5);
             TestTools.SaveFig(plt);
         }
