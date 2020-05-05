@@ -112,5 +112,14 @@ namespace ScottPlotTests.Misc
 
             TestTools.SaveFig(plt);
         }
+
+        [Test]
+        public void Test_TickMinor_OnePixelOffFromMajor()
+        {
+            // this makes the horizontal axis tick near 2.0 look bad
+            var plt = new ScottPlot.Plot(400, 300);
+            plt.Axis(0, 3, 0, 3);
+            TestTools.SaveFig(plt);
+        }
     }
 }
