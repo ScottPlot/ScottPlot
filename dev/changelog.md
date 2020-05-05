@@ -27,6 +27,7 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
   
 ## ScottPlot 4.0.31
 * Improved error reporting for scatter plots (#369) _Thanks @JagDTalcyon_
+* Improve pixel alignment by hiding grid lines and snapping tick marks that are 1px away from the lower left edge (#359)
 
 ## ScottPlot 4.0.30
 * `Plot.PlotCandlestick()` and `Plot.PlotOHLC()`
