@@ -13,7 +13,7 @@ namespace ScottPlotTests.Plot
         {
             var plt = new ScottPlot.Plot(400, 300);
 
-            int[] rotations = { 0, 70, -70, 180 };
+            int[] rotations = { 0, 90, -90, 180 };
             for (int i = 0; i < rotations.Length; i++)
             {
                 string label = $"Rot{rotations[i]}";
@@ -37,7 +37,7 @@ namespace ScottPlotTests.Plot
         {
             var plt = new ScottPlot.Plot(400, 300);
 
-            int[] rotations = { 0, 70, -70, 180 };
+            int[] rotations = { 0, 90, -90, 180 };
             for (int i = 0; i < rotations.Length; i++)
             {
                 string label = $"Rot{rotations[i]}";
@@ -46,6 +46,30 @@ namespace ScottPlotTests.Plot
                 plt.PlotText(label, x, y, Color.Black,
                     rotation: rotations[i],
                     alignment: ScottPlot.TextAlignment.upperCenter,
+                    fontSize: 24,
+                    frame: true,
+                    frameColor: Color.LightGray);
+                plt.PlotPoint(x, y, Color.Red, markerSize: 5);
+            }
+            plt.Title("TextAlignment.upperCenter");
+            plt.AxisAuto(.5, .5);
+            TestTools.SaveFig(plt);
+        }
+
+        [Test]
+        public void Test_TextRotationAlignment_LowerRight()
+        {
+            var plt = new ScottPlot.Plot(400, 300);
+
+            int[] rotations = { 0, 90, -90, 180 };
+            for (int i = 0; i < rotations.Length; i++)
+            {
+                string label = $"Rot{rotations[i]}";
+                double x = i / 2;
+                double y = i % 2;
+                plt.PlotText(label, x, y, Color.Black,
+                    rotation: rotations[i],
+                    alignment: ScottPlot.TextAlignment.lowerRight,
                     fontSize: 24,
                     frame: true,
                     frameColor: Color.LightGray);
