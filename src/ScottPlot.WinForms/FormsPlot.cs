@@ -50,12 +50,7 @@ namespace ScottPlot
 
         private void InitializeScottPlot()
         {
-            ContextMenuStrip = new ContextMenuStrip();
-            ContextMenuStrip.Items.Add(new ToolStripMenuItem("Save Image", null, new EventHandler(SaveImage)));
-            ContextMenuStrip.Items.Add(new ToolStripMenuItem("Copy Image", null, new EventHandler(CopyImage)));
-            ContextMenuStrip.Items.Add(new ToolStripMenuItem("Open in New Window", null, new EventHandler(OpenNewWindow)));
-            ContextMenuStrip.Items.Add(new ToolStripMenuItem("Settings", null, new EventHandler(OpenSettingsWindow)));
-            ContextMenuStrip.Items.Add(new ToolStripMenuItem("Help", null, new EventHandler(OpenHelpWindow)));
+            ContextMenuStrip = DefaultRightClickMenu();
 
             pbPlot.MouseWheel += PbPlot_MouseWheel;
 
@@ -72,6 +67,17 @@ namespace ScottPlot
 
             PbPlot_MouseUp(null, null);
             PbPlot_SizeChanged(null, null);
+        }
+
+        private ContextMenuStrip DefaultRightClickMenu()
+        {
+            var cms = new ContextMenuStrip();
+            cms.Items.Add(new ToolStripMenuItem("Save Image", null, new EventHandler(SaveImage)));
+            cms.Items.Add(new ToolStripMenuItem("Copy Image", null, new EventHandler(CopyImage)));
+            cms.Items.Add(new ToolStripMenuItem("Open in New Window", null, new EventHandler(OpenNewWindow)));
+            cms.Items.Add(new ToolStripMenuItem("Settings", null, new EventHandler(OpenSettingsWindow)));
+            cms.Items.Add(new ToolStripMenuItem("Help", null, new EventHandler(OpenHelpWindow)));
+            return cms;
         }
 
         private bool currentlyRendering;
@@ -110,7 +116,6 @@ namespace ScottPlot
 
         private bool enablePanning = true;
         private bool enableRightClickZoom = true;
-        private bool enableRightClickMenu = true;
         private bool enableScrollWheelZoom = true;
         private bool lowQualityWhileDragging = true;
         private bool doubleClickingTogglesBenchmark = true;
@@ -131,7 +136,7 @@ namespace ScottPlot
         {
             if (enablePanning != null) this.enablePanning = (bool)enablePanning;
             if (enableZooming != null) this.enableRightClickZoom = (bool)enableZooming;
-            if (enableRightClickMenu != null) this.enableRightClickMenu = (bool)enableRightClickMenu;
+            if (enableRightClickMenu != null) ContextMenuStrip = (enableRightClickMenu.Value) ? DefaultRightClickMenu() : null;
             if (enableScrollWheelZoom != null) this.enableScrollWheelZoom = (bool)enableScrollWheelZoom;
             if (lowQualityWhileDragging != null) this.lowQualityWhileDragging = (bool)lowQualityWhileDragging;
             if (enableDoubleClickBenchmark != null) this.doubleClickingTogglesBenchmark = (bool)enableDoubleClickBenchmark;
@@ -187,7 +192,7 @@ namespace ScottPlot
                 if (e.Button == MouseButtons.Left && ModifierKeys.HasFlag(Keys.Shift)) mouseMiddleDownLocation = e.Location;
                 else if (e.Button == MouseButtons.Left && enablePanning) mouseLeftDownLocation = e.Location;
                 else if (e.Button == MouseButtons.Right && enableRightClickZoom) mouseRightDownLocation = e.Location;
-                else if (e.Button == MouseButtons.Middle) mouseMiddleDownLocation = e.Location;
+                else if (e.Button == MouseButtons.Middle && enableScrollWheelZoom) mouseMiddleDownLocation = e.Location;
                 axisLimitsOnMouseDown = plt.Axis();
             }
             else
@@ -253,6 +258,17 @@ namespace ScottPlot
                 Point origin = new Point(x1 - settings.dataOrigin.X, y1 - settings.dataOrigin.Y);
                 Size size = new Size(x2 - x1, y2 - y1);
 
+                if (lockVerticalAxis)
+                {
+                    origin.Y = 0;
+                    size.Height = settings.dataSize.Height - 1;
+                }
+                if (lockHorizontalAxis)
+                {
+                    origin.X = 0;
+                    size.Width = settings.dataSize.Width - 1;
+                }
+
                 settings.mouseMiddleRect = new Rectangle(origin, size);
             }
 
@@ -262,8 +278,7 @@ namespace ScottPlot
 
         private void MouseMovedToMoveDraggable(MouseEventArgs e)
         {
-            PointF coordinate = plt.CoordinateFromPixel(e.Location);
-            plottableBeingDragged.DragTo(coordinate.X, coordinate.Y);
+            plottableBeingDragged.DragTo(plt.CoordinateFromPixelX(e.Location.X), plt.CoordinateFromPixelY(e.Location.Y));
             OnMouseDragPlottable(EventArgs.Empty);
             Render(true, lowQuality: lowQualityWhileDragging);
         }
@@ -292,12 +307,14 @@ namespace ScottPlot
                 if ((size.Width > 2) && (size.Height > 2))
                 {
                     // only change axes if suffeciently large square was drawn
-                    plt.Axis(
-                            x1: plt.CoordinateFromPixel(topLeft).X,
-                            x2: plt.CoordinateFromPixel(botRight).X,
-                            y1: plt.CoordinateFromPixel(botRight).Y,
-                            y2: plt.CoordinateFromPixel(topLeft).Y
-                        );
+                    if (!lockHorizontalAxis)
+                        plt.Axis(
+                            x1: plt.CoordinateFromPixelX(topLeft.X),
+                            x2: plt.CoordinateFromPixelX(botRight.X));
+                    if (!lockVerticalAxis)
+                        plt.Axis(
+                            y1: plt.CoordinateFromPixelY(botRight.Y),
+                            y2: plt.CoordinateFromPixelY(topLeft.Y));
                     OnAxisChanged();
                 }
                 else
@@ -314,7 +331,7 @@ namespace ScottPlot
                 bool mouseDraggedFar = (deltaX > 3 || deltaY > 3);
 
                 if (mouseDraggedFar)
-                    ContextMenuStrip.Hide();
+                    ContextMenuStrip?.Hide();
                 else
                     OnMenuDeployed();
             }
@@ -354,8 +371,7 @@ namespace ScottPlot
             if (isVerticalLocked) yFrac = 1;
             if (isHorizontalLocked) xFrac = 1;
 
-            var mouseCoordinate = plt.CoordinateFromPixel(e.Location);
-            plt.AxisZoom(xFrac, yFrac, mouseCoordinate.X, mouseCoordinate.Y);
+            plt.AxisZoom(xFrac, yFrac, plt.CoordinateFromPixelX(e.Location.X), plt.CoordinateFromPixelY(e.Location.Y));
             Render(recalculateLayout: true);
             OnAxisChanged();
         }
@@ -433,9 +449,6 @@ namespace ScottPlot
         protected virtual void OnMenuDeployed()
         {
             MenuDeployed?.Invoke(this, null);
-
-            if (enableRightClickMenu)
-                ContextMenuStrip.Show(pbPlot, PointToClient(Cursor.Position));
         }
 
         #endregion

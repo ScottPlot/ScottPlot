@@ -44,5 +44,20 @@ namespace ScottPlot.Drawing
         {
             return MeasureString(gfx, text, font.Name, font.Size, font.Style == System.Drawing.FontStyle.Bold);
         }
+
+        public static System.Drawing.Color Mix(System.Drawing.Color colorA, System.Drawing.Color colorB, double fracA)
+        {
+            byte r = (byte)((colorA.R * (1 - fracA)) + colorB.R * fracA);
+            byte g = (byte)((colorA.G * (1 - fracA)) + colorB.G * fracA);
+            byte b = (byte)((colorA.B * (1 - fracA)) + colorB.B * fracA);
+            return System.Drawing.Color.FromArgb(r, g, b);
+        }
+
+        public static System.Drawing.Color Mix(string hexA, string hexB, double fracA)
+        {
+            var colorA = System.Drawing.ColorTranslator.FromHtml(hexA);
+            var colorB = System.Drawing.ColorTranslator.FromHtml(hexB);
+            return Mix(colorA, colorB, fracA);
+        }
     }
 }

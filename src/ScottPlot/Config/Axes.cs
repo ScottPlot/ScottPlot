@@ -83,5 +83,11 @@ namespace ScottPlot.Config
             y.max = 0;
             y.hasBeenSet = false;
         }
+
+        public void ApplyBounds()
+        {
+            x.ApplyBounds();
+            y.ApplyBounds();
+        }
     }
 }

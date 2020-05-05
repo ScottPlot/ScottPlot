@@ -176,6 +176,17 @@
                         </TextBlock>
                     </DockPanel>
 
+                    <DockPanel>
+                        <Button DockPanel.Dock="Left" Click="LaunchAxisLimits">
+                            <TextBlock TextAlignment="Center">
+                        Axis Limits
+                            </TextBlock>
+                        </Button>
+                        <TextBlock >
+                    Demonstrate how to apply axis limits to interactive plots
+                        </TextBlock>
+                    </DockPanel>
+
                 </StackPanel>
             </GroupBox>
 

@@ -143,7 +143,7 @@ namespace ScottPlot.Demo.Customize
                 DateTime dtStart = new DateTime(1985, 9, 24);
                 for (int i=0; i<ys.Length; i++)
                 {
-                    DateTime dtNow = dtStart.AddDays(i);
+                    DateTime dtNow = dtStart.AddSeconds(i);
                     xs[i] = dtNow.ToOADate();
                 }
 

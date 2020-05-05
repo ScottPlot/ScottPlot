@@ -82,5 +82,10 @@ namespace ScottPlot.Demo.WinForms
         {
             new WinFormsDemos.PlotsInScrollViewer().ShowDialog();
         }
+
+        private void AxisLimitsButton_Click(object sender, EventArgs e)
+        {
+            new WinFormsDemos.AxisLimits().ShowDialog();
+        }
     }
 }

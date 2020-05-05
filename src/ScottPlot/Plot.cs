@@ -155,6 +155,8 @@ namespace ScottPlot
         {
             if (!settings.axes.hasBeenSet)
                 settings.AxisAuto();
+            else 
+                settings.axes.ApplyBounds();
 
             if (!settings.layout.tighteningOccurred)
             {
@@ -1170,12 +1172,11 @@ namespace ScottPlot
 
         public IDraggable GetDraggableUnderMouse(double pixelX, double pixelY, int snapDistancePixels = 5)
         {
-            PointF mouseCoordinates = CoordinateFromPixel(pixelX, pixelY);
             double snapWidth = GetSettings(false).xAxisUnitsPerPixel * snapDistancePixels;
             double snapHeight = GetSettings(false).yAxisUnitsPerPixel * snapDistancePixels;
 
             foreach (IDraggable draggable in GetDraggables())
-                if (draggable.IsUnderMouse(mouseCoordinates.X, mouseCoordinates.Y, snapWidth, snapHeight))
+                if (draggable.IsUnderMouse(CoordinateFromPixelX(pixelX), CoordinateFromPixelY(pixelY), snapWidth, snapHeight))
                     if (draggable.DragEnabled)
                         return draggable;
 
@@ -1225,6 +1226,18 @@ namespace ScottPlot
                 throw new ArgumentException("axis limits must contain 4 elements");
             Axis(axisLimits[0], axisLimits[1], axisLimits[2], axisLimits[3]);
             return settings.axes.limits;
+        }
+
+        public void AxisBounds(
+            double minX = double.NegativeInfinity,
+            double maxX = double.PositiveInfinity,
+            double minY = double.NegativeInfinity,
+            double maxY = double.PositiveInfinity)
+        {
+            settings.axes.x.boundMin = minX;
+            settings.axes.x.boundMax = maxX;
+            settings.axes.y.boundMin = minY;
+            settings.axes.y.boundMax = maxY;
         }
 
         public double[] AxisScale(double? unitsPerPixelX = null, double? unitsPerPixelY = null)
@@ -1351,26 +1364,31 @@ namespace ScottPlot
             return settings.GetLocationY(pixelY);
         }
 
+        [Obsolete("use CoordinateFromPixelX and CoordinateFromPixelY for improved precision")]
         public PointF CoordinateFromPixel(int pixelX, int pixelY)
         {
             return settings.GetLocation(pixelX, pixelY);
         }
 
+        [Obsolete("use CoordinateFromPixelX and CoordinateFromPixelY for improved precision")]
         public PointF CoordinateFromPixel(float pixelX, float pixelY)
         {
             return settings.GetLocation(pixelX, pixelY);
         }
 
+        [Obsolete("use CoordinateFromPixelX and CoordinateFromPixelY for improved precision")]
         public PointF CoordinateFromPixel(double pixelX, double pixelY)
         {
             return settings.GetLocation(pixelX, pixelY);
         }
 
+        [Obsolete("use CoordinateFromPixelX and CoordinateFromPixelY for improved precision")]
         public PointF CoordinateFromPixel(Point pixel)
         {
             return CoordinateFromPixel(pixel.X, pixel.Y);
         }
 
+        [Obsolete("use CoordinateFromPixelX and CoordinateFromPixelY for improved precision")]
         public PointF CoordinateFromPixel(PointF pixel)
         {
             return CoordinateFromPixel(pixel.X, pixel.Y);
