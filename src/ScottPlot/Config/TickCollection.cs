@@ -308,6 +308,11 @@ namespace ScottPlot.Config
                 if ((pos > lowerLimit) && (pos < upperLimit))
                     minorTicks.Add(pos);
 
+            // reduce precision of minor ticks to aid in alignment with major ticks
+            if (minorTickSpacing > float.Epsilon * 100)
+                for (int i = 0; i < minorTicks.Count(); i++)
+                    minorTicks[i] = (float)minorTicks[i];
+
             return minorTicks.ToArray();
         }
 

@@ -30,6 +30,7 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
 * Improve pixel alignment by hiding grid lines and snapping tick marks that are 1px away from the lower left edge (#359)
 * Default grid color lightened from #D3D3D3 (Color.LightGray) to #EFEFEF (#372)
 * PlotText() ignores defaults to upperLeft alignment when rotation is used (#362)
+* Improved minor tick positioning to prevent cases where minor ticks are 1px away from major ticks (#373)
 
 ## ScottPlot 4.0.30
 * `Plot.PlotCandlestick()` and `Plot.PlotOHLC()`
