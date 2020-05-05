@@ -553,6 +553,21 @@ namespace ScottPlot
             return functionPlot;
         }
 
+        public PlottableScaleBar PlotScaleBar(
+            double sizeX, 
+            double sizeY, 
+            double thickness = 2, 
+            double fontSize = 12, 
+            Color? color = null, 
+            double padPx = 10
+            )
+        {
+            color = (color is null) ? Color.Black : color.Value;
+            var scalebar = new PlottableScaleBar(sizeX, sizeY, thickness, fontSize, color.Value, padPx);
+            Add(scalebar);
+            return scalebar;
+        }
+
         public PlottableScatter PlotScatter(
             double[] xs,
             double[] ys,

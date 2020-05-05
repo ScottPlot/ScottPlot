@@ -31,6 +31,7 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
 * Default grid color lightened from #D3D3D3 (Color.LightGray) to #EFEFEF (#372)
 * PlotText() ignores defaults to upperLeft alignment when rotation is used (#362)
 * Improved minor tick positioning to prevent cases where minor ticks are 1px away from major ticks (#373)
+* Plot.PlotScaleBar() adds an L-shaped scalebar to the corner of the plot (#363)
 
 ## ScottPlot 4.0.30
 * `Plot.PlotCandlestick()` and `Plot.PlotOHLC()`
