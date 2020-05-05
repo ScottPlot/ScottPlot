@@ -27,7 +27,7 @@ namespace ScottPlotTests.Plot
             double[] err3 = DataGen.RandomNormal(rand, groupCount, 5, 2);
 
             var plt = new ScottPlot.Plot(600, 400);
-            plt.PlotMultiBar(
+            plt.PlotBarGroups(
                 groupLabels: groupNames,
                 seriesLabels: seriesNames,
                 ys: new double[][] { ys1, ys2, ys3 },

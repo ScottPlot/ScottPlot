@@ -52,7 +52,7 @@ namespace ScottPlot.Demo.PlotTypes
                 double[] err2 = DataGen.RandomNormal(rand, groupCount, 5, 2);
                 double[] err3 = DataGen.RandomNormal(rand, groupCount, 5, 2);
 
-                plt.PlotMultiBar(
+                plt.PlotBarGroups(
                     groupLabels: groupNames,
                     seriesLabels: seriesNames,
                     ys: new double[][] { ys1, ys2, ys3 }, 
