@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using ScottPlot;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -93,6 +94,21 @@ namespace ScottPlotTests.Misc
             plt.Frame(false);
             plt.Ticks(false, false);
             plt.Title("Large Value Signal");
+
+            TestTools.SaveFig(plt);
+        }
+
+        [Test]
+        public void Test_TickAlignment_SnapEdgePixel()
+        {
+            Random rand = new Random(0);
+            double[] xs = DataGen.Range(0, 10, .1, true);
+            double[] ys = DataGen.RandomWalk(rand, xs.Length, .5);
+
+            var plt = new ScottPlot.Plot(320, 240);
+            plt.PlotScatter(xs, ys, markerSize: 0);
+            plt.PlotScatter(ys, xs, markerSize: 0);
+            plt.AxisAuto(0, 0);
 
             TestTools.SaveFig(plt);
         }
