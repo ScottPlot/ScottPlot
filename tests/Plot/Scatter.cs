@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using ScottPlot;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,6 +8,17 @@ namespace ScottPlotTests.Plot
 {
     class Scatter
     {
+        [Test]
+        public void Test_Scatter_Simple()
+        {
+            var plt = new ScottPlot.Plot(500, 300);
+            plt.PlotSignal(DataGen.Sin(51), label: "sin");
+            plt.PlotSignal(DataGen.Cos(51), label: "cos");
+            plt.Legend();
+
+            TestTools.SaveFig(plt);
+        }
+
         [Test]
         public void Test_Scatter_AllZeros()
         {
