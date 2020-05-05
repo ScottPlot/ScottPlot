@@ -27,6 +27,7 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
   
 ## ScottPlot 4.0.31
 * Improved error reporting for scatter plots (#369) _Thanks @JagDTalcyon_
+* Created `Plot.PlotBarGroups()` for easier construction of grouped bar plots from 2D data (#367) _Thanks @Benny121221_
 
 ## ScottPlot 4.0.30
 * `Plot.PlotCandlestick()` and `Plot.PlotOHLC()`
