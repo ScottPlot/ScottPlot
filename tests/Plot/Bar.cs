@@ -13,7 +13,7 @@ namespace ScottPlotTests.Plot
         {
             Random rand = new Random(0);
 
-            string[] groupNames = { "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten" };
+            string[] groupNames = { "one", "two", "three", "four", "five" };
             string[] seriesNames = { "alpha", "beta", "gamma" };
 
             int groupCount = groupNames.Length;

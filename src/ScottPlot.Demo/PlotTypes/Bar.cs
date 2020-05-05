@@ -14,11 +14,12 @@ namespace ScottPlot.Demo.PlotTypes
             public void Render(Plot plt)
             {
                 // generate random data to plot
+                string[] labels = { "one", "two", "three", "four", "five" };
+                int barCount = labels.Length;
                 Random rand = new Random(0);
-                int pointCount = 10;
-                double[] xs = DataGen.Consecutive(pointCount);
-                double[] ys = DataGen.RandomNormal(rand, pointCount, 20, 5);
-                double[] yError = DataGen.RandomNormal(rand, pointCount, 5, 2);
+                double[] xs = DataGen.Consecutive(barCount);
+                double[] ys = DataGen.RandomNormal(rand, barCount, 20, 5);
+                double[] yError = DataGen.RandomNormal(rand, barCount, 5, 2);
 
                 // make the bar plot
                 plt.PlotBar(xs, ys, yError);
@@ -28,7 +29,6 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.Grid(enableVertical: false, lineStyle: LineStyle.Dot);
 
                 // apply custom axis tick labels
-                string[] labels = { "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten" };
                 plt.XTicks(xs, labels);
             }
         }
@@ -41,7 +41,7 @@ namespace ScottPlot.Demo.PlotTypes
             public void Render(Plot plt)
             {
                 // generate random data to plot
-                string[] groupNames = { "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten" };
+                string[] groupNames = { "one", "two", "three", "four", "five" };
                 string[] seriesNames = { "alpha", "bravo", "charley" };
                 int groupCount = groupNames.Length;
                 Random rand = new Random(0);
