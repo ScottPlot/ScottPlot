@@ -38,6 +38,8 @@ namespace ScottPlot
                     double value = settings.ticks.x.tickPositionsMajor[i];
                     double unitsFromAxisEdge = value - settings.axes.x.min;
                     int xPx = (int)(unitsFromAxisEdge * settings.xAxisScale);
+                    if ((xPx == 0) && settings.layout.displayFrameByAxis[0])
+                        continue; // don't draw a grid line 1px away from frame
                     settings.gfxData.DrawLine(pen, xPx, 0, xPx + tiltPx, settings.dataSize.Height);
                 }
             }
@@ -49,6 +51,8 @@ namespace ScottPlot
                     double value = settings.ticks.y.tickPositionsMajor[i];
                     double unitsFromAxisEdge = value - settings.axes.y.min;
                     int yPx = settings.dataSize.Height - (int)(unitsFromAxisEdge * settings.yAxisScale);
+                    if ((yPx == 0) && settings.layout.displayFrameByAxis[2])
+                        continue; // don't draw a grid line 1px away from frame
                     settings.gfxData.DrawLine(pen, 0, yPx, settings.dataSize.Width, yPx + tiltPx);
                 }
             }
@@ -225,6 +229,8 @@ namespace ScottPlot
                 double unitsFromAxisEdge = value - settings.axes.y.min;
                 int xPx = settings.dataOrigin.X - 1;
                 int yPx = settings.layout.data.bottom - (int)(unitsFromAxisEdge * settings.yAxisScale);
+                if ((yPx == settings.layout.data.top) && settings.layout.displayFrameByAxis[0])
+                    yPx -= 1; // snap ticks to the frame edge if they are 1px away
 
                 if (settings.ticks.rulerModeY)
                 {
@@ -247,6 +253,8 @@ namespace ScottPlot
                     double unitsFromAxisEdge = value - settings.axes.y.min;
                     int xPx = settings.dataOrigin.X - 1;
                     int yPx = settings.layout.data.bottom - (int)(unitsFromAxisEdge * settings.yAxisScale);
+                    if ((yPx == settings.layout.data.top) && settings.layout.displayFrameByAxis[0])
+                        yPx -= 1; // snap ticks to the frame edge if they are 1px away
                     settings.gfxFigure.DrawLine(pen, xPx, yPx, xPx - settings.ticks.size / 2, yPx);
                 }
             }
@@ -269,6 +277,8 @@ namespace ScottPlot
                 double unitsFromAxisEdge = value - settings.axes.x.min;
                 int xPx = (int)(unitsFromAxisEdge * settings.xAxisScale) + settings.layout.data.left;
                 int yPx = settings.layout.data.bottom;
+                if ((xPx == settings.layout.data.left) && settings.layout.displayFrameByAxis[2])
+                    xPx -= 1; // snap ticks to the frame edge if they are 1px away
 
                 if (settings.ticks.rulerModeX)
                 {
@@ -304,6 +314,8 @@ namespace ScottPlot
                     double unitsFromAxisEdge = value - settings.axes.x.min;
                     int xPx = (int)(unitsFromAxisEdge * settings.xAxisScale) + settings.layout.data.left;
                     int yPx = settings.layout.data.bottom;
+                    if ((xPx == settings.layout.data.left) && settings.layout.displayFrameByAxis[2])
+                        xPx -= 1; // snap ticks to the frame edge if they are 1px away
                     settings.gfxFigure.DrawLine(pen, xPx, yPx, xPx, yPx + settings.ticks.size / 2);
                 }
             }

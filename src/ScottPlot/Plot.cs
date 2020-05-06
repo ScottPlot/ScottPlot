@@ -26,6 +26,7 @@ namespace ScottPlot
             if (width <= 0 || height <= 0)
                 throw new ArgumentException("width and height must each be greater than 0");
             settings = new Settings();
+            StyleTools.SetStyle(this, ScottPlot.Style.Default);
             Resize(width, height);
             TightenLayout();
         }
@@ -550,6 +551,23 @@ namespace ScottPlot
 
             settings.plottables.Add(functionPlot);
             return functionPlot;
+        }
+
+        public PlottableScaleBar PlotScaleBar(
+            double sizeX, 
+            double sizeY, 
+            string labelX = null,
+            string labelY = null,
+            double thickness = 2, 
+            double fontSize = 12, 
+            Color? color = null, 
+            double padPx = 10
+            )
+        {
+            color = (color is null) ? Color.Black : color.Value;
+            var scalebar = new PlottableScaleBar(sizeX, sizeY, labelX, labelY, thickness, fontSize, color.Value, padPx);
+            Add(scalebar);
+            return scalebar;
         }
 
         public PlottableScatter PlotScatter(
