@@ -8,3 +8,7 @@ using System.Windows;
                                               //(used if a resource is not found in the page,
                                               // app, or any theme specific resource dictionaries)
 )]
+
+[assembly: System.Runtime.InteropServices.ComVisible(true)]
+[assembly: System.Windows.Markup.XmlnsDefinition("http://schemas.microsoft.com/winfx/2006/xaml/presentation", "ScottPlot")]
+[assembly: System.Windows.Markup.XmlnsPrefix("http://schemas.microsoft.com/winfx/2006/xaml/presentation", "")]
