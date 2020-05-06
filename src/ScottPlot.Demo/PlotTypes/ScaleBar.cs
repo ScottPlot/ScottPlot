@@ -18,7 +18,7 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.PlotSignal(DataGen.Cos(51, mult: 1.5));
 
                 // add the scalebar
-                plt.PlotScaleBar(5, .25);
+                plt.PlotScaleBar(5, .25, "5 ms", "250 pA");
 
                 // remove axis and grid lines
                 plt.Grid(false);

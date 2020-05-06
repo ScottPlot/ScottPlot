@@ -15,7 +15,7 @@ namespace ScottPlotTests.Plot
             plt.PlotSignal(DataGen.Sin(51));
             plt.PlotSignal(DataGen.Cos(51, mult: 1.5));
 
-            plt.PlotScaleBar(5, .25);
+            plt.PlotScaleBar(5, .25, "5 ms", "250 pA");
 
             plt.Grid(false);
             plt.Frame(false);

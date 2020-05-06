@@ -556,6 +556,8 @@ namespace ScottPlot
         public PlottableScaleBar PlotScaleBar(
             double sizeX, 
             double sizeY, 
+            string labelX = null,
+            string labelY = null,
             double thickness = 2, 
             double fontSize = 12, 
             Color? color = null, 
@@ -563,7 +565,7 @@ namespace ScottPlot
             )
         {
             color = (color is null) ? Color.Black : color.Value;
-            var scalebar = new PlottableScaleBar(sizeX, sizeY, thickness, fontSize, color.Value, padPx);
+            var scalebar = new PlottableScaleBar(sizeX, sizeY, labelX, labelY, thickness, fontSize, color.Value, padPx);
             Add(scalebar);
             return scalebar;
         }

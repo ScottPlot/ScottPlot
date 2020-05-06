@@ -10,6 +10,8 @@ namespace ScottPlot
     {
         readonly double sizeX;
         readonly double sizeY;
+        readonly string labelX;
+        readonly string labelY;
         readonly double padPx;
         readonly double thickness;
         readonly Color color;
@@ -17,10 +19,13 @@ namespace ScottPlot
         readonly double fontSize;
         readonly FontStyle fontStyle = FontStyle.Regular;
 
-        public PlottableScaleBar(double sizeX, double sizeY, double thickness, double fontSize, Color color, double padPx)
+        public PlottableScaleBar(double sizeX, double sizeY, string labelX, string labelY,
+            double thickness, double fontSize, Color color, double padPx)
         {
             this.sizeX = sizeX;
             this.sizeY = sizeY;
+            this.labelX = (labelX is null) ? sizeX.ToString() : labelX;
+            this.labelY = (labelY is null) ? sizeY.ToString() : labelY;
             this.thickness = thickness;
             this.fontSize = fontSize;
             this.color = color;
@@ -30,7 +35,7 @@ namespace ScottPlot
 
         public override string ToString()
         {
-            return $"PlottableScaleBar ({sizeX}, {sizeY})";
+            return $"PlottableScaleBar ({labelX}, {labelY})";
         }
 
         public override LegendItem[] GetLegendItems()
@@ -61,11 +66,9 @@ namespace ScottPlot
                 cornerPoint.X -= (float)padPx;
                 cornerPoint.Y -= (float)padPx;
 
-                string xLabel = sizeX.ToString();
-                string yLabel = sizeY.ToString();
-                var xLabelSize = Drawing.GDI.MeasureString(settings.gfxData, xLabel, font);
-                var yLabelSize = Drawing.GDI.MeasureString(settings.gfxData, yLabel, font);
-                cornerPoint.X -= yLabelSize.Width;
+                var xLabelSize = Drawing.GDI.MeasureString(settings.gfxData, labelX, font);
+                var yLabelSize = Drawing.GDI.MeasureString(settings.gfxData, labelY, font);
+                cornerPoint.X -= yLabelSize.Width * 1.2f;
                 cornerPoint.Y -= yLabelSize.Height;
 
                 PointF horizPoint = new PointF(cornerPoint.X - widthPx, cornerPoint.Y);
@@ -74,8 +77,8 @@ namespace ScottPlot
                 PointF vertMidPoint = new PointF(cornerPoint.X, (cornerPoint.Y + vertPoint.Y) / 2);
 
                 settings.gfxData.DrawLines(pen, new PointF[] { horizPoint, cornerPoint, vertPoint });
-                settings.gfxData.DrawString(xLabel, font, brush, horizMidPoint.X - xLabelSize.Width, cornerPoint.Y);
-                settings.gfxData.DrawString(yLabel, font, brush, cornerPoint.X, vertMidPoint.Y - xLabelSize.Height / 2);
+                settings.gfxData.DrawString(labelX, font, brush, horizMidPoint.X, cornerPoint.Y, settings.misc.sfNorth);
+                settings.gfxData.DrawString(labelY, font, brush, cornerPoint.X, vertMidPoint.Y, settings.misc.sfWest);
             }
         }
     }
