@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFrameworks>netcoreapp3.0;net461</TargetFrameworks>
+    <OutputType>Library</OutputType>
+    <RootNamespace>ScottPlot</RootNamespace>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <PackageIcon>icon.png</PackageIcon>
