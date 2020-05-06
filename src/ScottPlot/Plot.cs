@@ -908,6 +908,51 @@ namespace ScottPlot
             return barPlot;
         }
 
+        /// <summary>
+        /// Create a series of bar plots given a 2D dataset
+        /// </summary>
+        /// <param name="groupLabels">displayed as horizontal axis tick labels</param>
+        /// <param name="seriesLabels">displayed in the legend</param>
+        /// <param name="ys">Array of arrays (one per series) that contan one point per group</param>
+        /// <returns></returns>
+        public PlottableBar[] PlotBarGroups(
+                string[] groupLabels,
+                string[] seriesLabels,
+                double[][] ys,
+                double[][] yErr = null,
+                double groupWidthFraction = 0.8,
+                double barWidthFraction = 0.8,
+                double errorCapSize = 0.38,
+                bool showValues = false
+            )
+        {
+            if (groupLabels is null || seriesLabels is null || ys is null)
+                throw new ArgumentException("labels and ys cannot be null");
+
+            if (seriesLabels.Length != ys.Length)
+                throw new ArgumentException("groupLabels and ys must be the same length");
+
+            foreach (double[] subArray in ys)
+                if (subArray.Length != groupLabels.Length)
+                    throw new ArgumentException("all arrays inside ys must be the same length as groupLabels");
+
+            int seriesCount = ys.Length;
+            double barWidth = groupWidthFraction / seriesCount;
+            PlottableBar[] bars = new PlottableBar[seriesCount];
+            for (int i = 0; i < seriesCount; i++)
+            {
+                double offset = i * barWidth;
+                double[] barYs = ys[i];
+                double[] barYerr = yErr?[i];
+                double[] barXs = DataGen.Consecutive(barYs.Length);
+                bars[i] = PlotBar(barXs, barYs, barYerr, seriesLabels[i], barWidth * barWidthFraction, offset, 
+                    errorCapSize: errorCapSize, showValues: showValues);
+            }
+            XTicks(DataGen.Consecutive(groupLabels.Length, offset: (groupWidthFraction - barWidth) / 2), groupLabels);
+
+            return bars;
+        }
+
         public PlottableOHLC PlotOHLC(
             OHLC[] ohlcs,
             Color? colorUp = null,

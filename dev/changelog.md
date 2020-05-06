@@ -26,12 +26,13 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
   * Create a SkiaSharp rendering module and user control (supporting OpenGL hardware acceleration)
   
 ## ScottPlot 4.0.31
+* Created `Plot.PlotBarGroups()` for easier construction of grouped bar plots from 2D data (#367) _Thanks @Benny121221_
+* Plot.PlotScaleBar() adds an L-shaped scalebar to the corner of the plot (#363)
+* Default grid color lightened from #D3D3D3 (Color.LightGray) to #EFEFEF (#372)
 * Improved error reporting for scatter plots (#369) _Thanks @JagDTalcyon_
 * Improve pixel alignment by hiding grid lines and snapping tick marks that are 1px away from the lower left edge (#359)
-* Default grid color lightened from #D3D3D3 (Color.LightGray) to #EFEFEF (#372)
 * PlotText() ignores defaults to upperLeft alignment when rotation is used (#362)
 * Improved minor tick positioning to prevent cases where minor ticks are 1px away from major ticks (#373)
-* Plot.PlotScaleBar() adds an L-shaped scalebar to the corner of the plot (#363)
 
 ## ScottPlot 4.0.30
 * `Plot.PlotCandlestick()` and `Plot.PlotOHLC()`
