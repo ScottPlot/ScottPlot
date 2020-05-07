@@ -194,7 +194,7 @@ namespace ScottPlot
                 lastPoint = currentPoint;
             }
 
-            if (PointAfterDisplayedIndex < xs.Length)
+            if (PointAfterDisplayedIndex < xs.Length && lastPoint != null)
             {
                 PointsToDraw.Add(new PointF(lastPoint.pixelIndex, (float)settings.GetPixelY(lastPoint.yEnd)));
                 PointsToDraw.Add(settings.GetPixel(xs[PointAfterDisplayedIndex.Value], ys[PointAfterDisplayedIndex.Value]));
