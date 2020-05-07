@@ -791,6 +791,36 @@ namespace ScottPlot
             settings.plottables.Add(stepPlot);
             return stepPlot;
         }
+        public PlottableSignalGappedExperimental PlotSignal(
+            double[] xs,
+            double[] ys,
+            Color? color = null,
+            double lineWidth = 1,
+            double markerSize = 5,
+            string label = null,
+            int? maxRenderIndex = null
+            )
+        {
+            if (color == null)
+                color = settings.GetNextColor();
+
+            if (maxRenderIndex == null)
+                maxRenderIndex = ys.Length - 1;
+
+            PlottableSignalGappedExperimental signal = new PlottableSignalGappedExperimental(
+                xs: xs,
+                ys: ys,
+                color: (Color)color,
+                lineWidth: lineWidth,
+                markerSize: markerSize,
+                label: label,
+                useParallel: settings.misc.useParallel,
+                maxRenderIndex: (int)maxRenderIndex
+                );
+
+            settings.plottables.Add(signal);
+            return signal;
+        }
 
         public PlottableSignal PlotSignal(
             double[] ys,
