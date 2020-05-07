@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace ScottPlot
 {
@@ -87,13 +88,22 @@ namespace ScottPlot
                 {
                     // draw marker only then has free space to left and right
                     // TODO smooth animation can be implemented like in Signal
-                    if (Math.Min(pixelInterval.distanceToLeftNeighbor, pixelInterval.distanceToRightNeighbor) > 2)
+                    if (markerSize > 0)
                     {
-                        settings.gfxData.FillEllipse(brush: brush,
-                            x: pixelInterval.pixelIndex - markerSize / 2,
-                            y: (int)settings.GetPixelY(pixelInterval.yStart) - markerSize / 2,
-                            width: markerSize,
-                            height: markerSize);
+                        float pixelsBetweenPoints = Math.Min(pixelInterval.distanceToLeftNeighbor, pixelInterval.distanceToRightNeighbor);
+                        float zoomTransitionScale = Math.Min(1, pixelsBetweenPoints / 10);
+                        float markerPxDiameter = markerSize * zoomTransitionScale;
+                        float markerPxRadius = markerPxDiameter / 2;
+                        if (markerPxRadius > .25)
+                        {
+                            // adjust marker offset to improve rendering on Linux and MacOS
+                            float markerOffsetX = (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) ? 0 : 1;
+
+                            settings.gfxData.FillEllipse(brush: brush,
+                                  x: pixelInterval.pixelIndex - markerPxRadius + markerOffsetX, 
+                                  y: (int)settings.GetPixelY(pixelInterval.yStart) - markerPxRadius,
+                                    width: markerPxDiameter, height: markerPxDiameter);
+                        };
                     }
                 }
             }
