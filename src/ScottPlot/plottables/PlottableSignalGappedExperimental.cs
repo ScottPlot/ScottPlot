@@ -12,6 +12,15 @@ namespace ScottPlot
         public PlottableSignalGappedExperimental(double[] xs, double[] ys, Color color, double lineWidth, double markerSize, string label, bool useParallel, int maxRenderIndex)
             : base(ys, 1, 0, 0, color, lineWidth, markerSize, label, useParallel, null, maxRenderIndex)
         {
+            if ((xs == null) || (ys == null))
+                throw new ArgumentException("X and Y data cannot be null");
+
+            if ((xs.Length == 0) || (ys.Length == 0))
+                throw new ArgumentException("xs and ys must have at least one element");
+
+            if (xs.Length != ys.Length)
+                throw new ArgumentException("Xs and Ys must have same length");
+
             this.xs = xs;
         }
 
