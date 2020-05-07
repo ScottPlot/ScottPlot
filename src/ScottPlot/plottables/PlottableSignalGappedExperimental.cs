@@ -78,6 +78,10 @@ namespace ScottPlot
             // Draw lines
             if (PointsToDraw.Count > 1)
                 settings.gfxData.DrawLines(pen, PointsToDraw.ToArray());
+            else if (xs[0] > xBorders[0] && xs[xs.Length - 1] < xBorders[xBorders.Length - 1])
+                settings.gfxData.DrawLine(pen,
+                    settings.GetPixel(xs[0], ys.Min()),
+                    settings.GetPixel(xs[0], ys.Max()));
 
             FindNeigborDistances(yParams);
 
