@@ -205,6 +205,9 @@ namespace ScottPlot
         [Obsolete("use Plot.CoordinateFromPixelX() and Plot.CoordinateFromPixelY()")]
         public PointF mouseCoordinates { get { return plt.CoordinateFromPixel(mouseLocation); } }
         Point mouseLocation;
+
+        private int dpiScale = 1; //Heres hoping that WinForms becomes DPI aware
+
         private void PbPlot_MouseMove(object sender, MouseEventArgs e)
         {
             mouseLocation = e.Location;
@@ -274,6 +277,13 @@ namespace ScottPlot
 
             Render(true, lowQuality: lowQualityWhileDragging);
             return;
+        }
+
+        public (double x, double y) GetMouseCoordinates()
+        {
+            double x = plt.CoordinateFromPixelX(mouseLocation.X / dpiScale);
+            double y = plt.CoordinateFromPixelY(mouseLocation.Y / dpiScale);
+            return (x, y);
         }
 
         private void MouseMovedToMoveDraggable(MouseEventArgs e)

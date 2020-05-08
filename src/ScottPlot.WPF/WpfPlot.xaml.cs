@@ -340,6 +340,13 @@ namespace ScottPlot
             return;
         }
 
+        public (double x, double y) GetMouseCoordinates()
+        {
+            double x = plt.CoordinateFromPixelX(mouseLocation.X / dpiScale);
+            double y = plt.CoordinateFromPixelY(mouseLocation.Y / dpiScale);
+            return (x, y);
+        }
+
         private void MouseMovedToMoveDraggable(MouseEventArgs e)
         {
             plottableBeingDragged.DragTo(plt.CoordinateFromPixelX(GetPixelPosition(e).X), plt.CoordinateFromPixelY(GetPixelPosition(e).Y));

@@ -50,8 +50,7 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             // determine where the mouse is in coordinate space
             int pixelX = (int)e.MouseDevice.GetPosition(wpfPlot1).X;
             int pixelY = (int)e.MouseDevice.GetPosition(wpfPlot1).Y;
-            double mouseX = wpfPlot1.plt.CoordinateFromPixelX(pixelX);
-            double mouseY = wpfPlot1.plt.CoordinateFromPixelY(pixelY);
+            (double mouseX, double mouseY) = wpfPlot1.GetMouseCoordinates();
 
             // determine which point is closest to the mouse
             int closestIndex = 0;
