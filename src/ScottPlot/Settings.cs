@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Windows;
 
 // TODO: move plottables to their own module
 // TODO: move mouse/axes interaction functions into the mouse module somehow
@@ -60,34 +59,8 @@ namespace ScottPlot
         public double xAxisUnitsPerPixel { get { return 1.0 / xAxisScale; } }
         public double yAxisUnitsPerPixel { get { return 1.0 / yAxisScale; } }
 
-        private static int defaultDPI = 96;
-
-        private static double? _xDPIScale;
-        private double xDPIScale
-        {
-            get
-            {
-                if (!_xDPIScale.HasValue)
-                {
-                    lock(gfxFigure)
-                        _xDPIScale =  gfxData.DpiX / defaultDPI;
-                }
-                return _xDPIScale.Value;
-            }
-        }
-        private static double? _yDPIScale;
-        private double yDPIScale
-        {
-            get
-            {
-                if (!_yDPIScale.HasValue)
-                {
-                    lock(gfxFigure)
-                        _yDPIScale = gfxFigure.DpiY / defaultDPI;
-                }
-                return _yDPIScale.Value;
-            }
-        }
+        public static int defaultDPI = 96;
+        public static double DPIScale;
 
         // this has to be here because color module is unaware of plottables list
         public Color GetNextColor() { return colors.GetColor(plottables.Count); }
@@ -293,7 +266,7 @@ namespace ScottPlot
         /// </summary>
         public double GetLocationX(double pixelX)
         {
-            return (pixelX * xDPIScale - dataOrigin.X) / xAxisScale + axes.x.min;
+            return (pixelX * DPIScale - dataOrigin.X) / xAxisScale + axes.x.min;
         }
 
         /// <summary>
@@ -301,7 +274,7 @@ namespace ScottPlot
         /// </summary>
         public double GetLocationY(double pixelY)
         {
-            return axes.y.max - (pixelY * yDPIScale - dataOrigin.Y) / yAxisScale;
+            return axes.y.max - (pixelY * DPIScale - dataOrigin.Y) / yAxisScale;
         }
 
         /// <summary>
