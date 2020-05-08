@@ -59,6 +59,8 @@ namespace ScottPlot
         public double xAxisUnitsPerPixel { get { return 1.0 / xAxisScale; } }
         public double yAxisUnitsPerPixel { get { return 1.0 / yAxisScale; } }
 
+        private const int defaultDPI = 96;
+
         // this has to be here because color module is unaware of plottables list
         public Color GetNextColor() { return colors.GetColor(plottables.Count); }
 
@@ -263,7 +265,7 @@ namespace ScottPlot
         /// </summary>
         public double GetLocationX(double pixelX)
         {
-            return (pixelX * gfxFigure.DpiX / 96 - dataOrigin.X) / xAxisScale + axes.x.min;
+            return (pixelX * gfxFigure.DpiX / defaultDPI - dataOrigin.X) / xAxisScale + axes.x.min;
         }
 
         /// <summary>
@@ -271,7 +273,7 @@ namespace ScottPlot
         /// </summary>
         public double GetLocationY(double pixelY)
         {
-            return axes.y.max - (pixelY * gfxFigure.DpiY / 96 - dataOrigin.Y) / yAxisScale;
+            return axes.y.max - (pixelY * gfxFigure.DpiY / defaultDPI - dataOrigin.Y) / yAxisScale;
         }
 
         /// <summary>
