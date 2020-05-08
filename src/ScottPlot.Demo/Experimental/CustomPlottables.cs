@@ -53,5 +53,33 @@ namespace ScottPlot.Demo.Experimental
                 plt.PlotSignal(xs, ys);
             }
         }
+        public class SignalWithDifferentDensity : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "DifferentDensity";
+            public string description { get; } = "Signal with low and high density data rendered together";
+
+            public void Render(Plot plt)
+            {
+                Random rand = new Random(0);
+                int pointCount = 1_000_000;
+
+                double[] sine = ScottPlot.DataGen.Sin(pointCount, 3);
+                double[] noise = ScottPlot.DataGen.RandomNormal(rand, pointCount, 0, 0.5);
+
+                double[] ys = sine.Zip(noise, (s, n) => s + n).ToArray();
+
+                double[] xs = new double[pointCount];
+                double currentX = 0;
+                for (int i = 0; i < pointCount; i++)
+                {
+                    if ((i % 100000) < 10)
+                        currentX += 10;
+                    else
+                        currentX += 0.0001;
+                    xs[i] = currentX;
+                }
+                plt.PlotSignal(xs, ys);
+            }
+        }
     }
 }
