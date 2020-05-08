@@ -171,7 +171,7 @@ namespace ScottPlot
                 }
             }
 
-            if (PointAfterDisplayedIndex < xs.Length && PointsToDraw.Count > 1)
+            if (PointAfterDisplayedIndex < xs.Length && PointsToDraw.Count >= 1)
             {
                 PointF lastPoint = PointsToDraw[PointsToDraw.Count - 1];
                 PointF afterPoint = settings.GetPixel(xs[PointAfterDisplayedIndex.Value], ys[PointAfterDisplayedIndex.Value]);
@@ -181,7 +181,7 @@ namespace ScottPlot
                 PointsToDraw.Add(new PointF(x1, y1));
             }
 
-            if (PointBeforeDisplayedIndex >= 0 && PointsToDraw.Count > 2)
+            if (PointBeforeDisplayedIndex >= 0 && PointsToDraw.Count >= 2)
             {
                 float x0 = -1;
                 float y0 = PointsToDraw[1].Y + (PointsToDraw[0].Y - PointsToDraw[1].Y) * (x0 - PointsToDraw[1].X) / (PointsToDraw[0].X - PointsToDraw[1].X);
