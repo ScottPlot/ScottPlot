@@ -171,9 +171,21 @@ namespace ScottPlot
                 }
             }
 
-            if (PointAfterDisplayedIndex < xs.Length)
+            if (PointAfterDisplayedIndex < xs.Length && PointsToDraw.Count > 1)
             {
-                PointsToDraw.Add(settings.GetPixel(xs[PointAfterDisplayedIndex.Value], ys[PointAfterDisplayedIndex.Value]));
+                PointF lastPoint = PointsToDraw[PointsToDraw.Count - 1];
+                PointF afterPoint = settings.GetPixel(xs[PointAfterDisplayedIndex.Value], ys[PointAfterDisplayedIndex.Value]);
+
+                float x1 = settings.dataSize.Width;
+                float y1 = lastPoint.Y + (afterPoint.Y - lastPoint.Y) * (x1 - lastPoint.X) / (afterPoint.X - lastPoint.X);
+                PointsToDraw.Add(new PointF(x1, y1));
+            }
+
+            if (PointBeforeDisplayedIndex >= 0 && PointsToDraw.Count > 2)
+            {
+                float x0 = -1;
+                float y0 = PointsToDraw[1].Y + (PointsToDraw[0].Y - PointsToDraw[1].Y) * (x0 - PointsToDraw[1].X) / (PointsToDraw[0].X - PointsToDraw[1].X);
+                PointsToDraw[0] = new PointF(x0, y0);
             }
 
             return PointsToDraw;
