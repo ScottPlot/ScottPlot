@@ -104,7 +104,7 @@ namespace ScottPlot
                             float markerOffsetX = (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) ? 0 : 1;
 
                             settings.gfxData.FillEllipse(brush: brush,
-                                  x: pixelInterval.pixelIndex - markerPxRadius + markerOffsetX, 
+                                  x: pixelInterval.pixelIndex - markerPxRadius + markerOffsetX,
                                   y: (int)settings.GetPixelY(pixelInterval.yStart) - markerPxRadius,
                                     width: markerPxDiameter, height: markerPxDiameter);
                         };
@@ -150,57 +150,29 @@ namespace ScottPlot
 
         private List<PointF> GetPointsToDraw(IntervalValues[] yParams, int? PointBeforeDisplayedIndex, int? PointAfterDisplayedIndex, Settings settings)
         {
-            IntervalValues lastPoint = null;
-            IntervalValues currentPoint = null;
-            bool wasEmptyPoints = false;
             List<PointF> PointsToDraw = new List<PointF>();
 
             if (PointBeforeDisplayedIndex >= 0)
             {
-                lastPoint = new IntervalValues()
-                {
-                    yStart = ys[PointBeforeDisplayedIndex.Value],
-                    yEnd = ys[PointBeforeDisplayedIndex.Value],
-                    yMin = ys[PointBeforeDisplayedIndex.Value],
-                    yMax = ys[PointBeforeDisplayedIndex.Value],
-                    pointsCount = 1,
-                    pixelIndex = (int)settings.GetPixelX(xs[PointBeforeDisplayedIndex.Value]),
-                };
-                wasEmptyPoints = true;
+                PointsToDraw.Add(settings.GetPixel(xs[PointBeforeDisplayedIndex.Value], ys[PointBeforeDisplayedIndex.Value]));
             }
 
             for (int i = 0; i < settings.dataSize.Width; i++)
             {
-                currentPoint = yParams[i];
-                if (currentPoint == null)
-                {
-                    wasEmptyPoints = true;
+                if (yParams[i] == null)
                     continue;
-                }
 
-                if (lastPoint == null)
+                PointsToDraw.Add(new PointF(yParams[i].pixelIndex, (float)settings.GetPixelY(yParams[i].yStart)));
+                if (yParams[i].pointsCount > 1)
                 {
-                    lastPoint = currentPoint;
-                    continue;
+                    PointsToDraw.Add(new PointF(yParams[i].pixelIndex, (float)settings.GetPixelY(yParams[i].yMin)));
+                    PointsToDraw.Add(new PointF(yParams[i].pixelIndex, (float)settings.GetPixelY(yParams[i].yMax)));
+                    PointsToDraw.Add(new PointF(yParams[i].pixelIndex, (float)settings.GetPixelY(yParams[i].yEnd)));
                 }
-
-                if (wasEmptyPoints)
-                {
-                    PointsToDraw.Add(new PointF(lastPoint.pixelIndex, (float)settings.GetPixelY(lastPoint.yEnd)));
-                    PointsToDraw.Add(new PointF(currentPoint.pixelIndex, (float)settings.GetPixelY(currentPoint.yStart)));
-                    wasEmptyPoints = false;
-                }
-                else
-                {
-                    PointsToDraw.Add(new PointF(lastPoint.pixelIndex, (float)settings.GetPixelY(lastPoint.yMin)));
-                    PointsToDraw.Add(new PointF(currentPoint.pixelIndex, (float)settings.GetPixelY(currentPoint.yMax)));
-                }
-                lastPoint = currentPoint;
             }
 
-            if (PointAfterDisplayedIndex < xs.Length && lastPoint != null)
+            if (PointAfterDisplayedIndex < xs.Length)
             {
-                PointsToDraw.Add(new PointF(lastPoint.pixelIndex, (float)settings.GetPixelY(lastPoint.yEnd)));
                 PointsToDraw.Add(settings.GetPixel(xs[PointAfterDisplayedIndex.Value], ys[PointAfterDisplayedIndex.Value]));
             }
 
