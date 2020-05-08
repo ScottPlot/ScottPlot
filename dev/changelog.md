@@ -25,6 +25,9 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
   * Create a GDI rendering module which uses System.Drawing 
   * Create a SkiaSharp rendering module and user control (supporting OpenGL hardware acceleration)
   
+## ScottPlot 4.0.32
+* Improved support for DPI scaling in the WpfPlot control (#379, #380) _Thanks @Benny121221_
+
 ## ScottPlot 4.0.31
 * Created `Plot.PlotBarGroups()` for easier construction of grouped bar plots from 2D data (#367) _Thanks @Benny121221_
 * Plot.PlotScaleBar() adds an L-shaped scalebar to the corner of the plot (#363)
