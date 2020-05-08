@@ -263,7 +263,7 @@ namespace ScottPlot
         /// </summary>
         public double GetLocationX(double pixelX)
         {
-            return (pixelX - dataOrigin.X) / xAxisScale + axes.x.min;
+            return (pixelX * gfxFigure.DpiX / 96 - dataOrigin.X) / xAxisScale + axes.x.min;
         }
 
         /// <summary>
@@ -271,7 +271,7 @@ namespace ScottPlot
         /// </summary>
         public double GetLocationY(double pixelY)
         {
-            return axes.y.max - (pixelY - dataOrigin.Y) / yAxisScale;
+            return axes.y.max - (pixelY * gfxFigure.DpiY / 96 - dataOrigin.Y) / yAxisScale;
         }
 
         /// <summary>
