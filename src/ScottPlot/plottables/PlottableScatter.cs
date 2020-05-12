@@ -197,10 +197,23 @@ namespace ScottPlot
                     settings.gfxData.DrawLines(penLine, points);
             }
 
-            if ((markerSize > 0) && (markerShape != MarkerShape.none))
-                for (int i = 0; i < points.Length; i++)
-                    MarkerTools.DrawMarker(settings.gfxData, points[i], markerShape, markerSize, color);
+            if ((markerSize > 0) && (markerShape != MarkerShape.none || settings.markerDrawer != null))
+            {
+                Action<Graphics, PointF, MarkerShape, float, Color> drawMarker;
 
+                 if (settings.markerDrawer == null)
+                {
+                    drawMarker = MarkerTools.DrawMarker;
+                }
+                else
+                {
+                    drawMarker = settings.markerDrawer.DrawMarker;
+                }
+                for (int i = 0; i < points.Length; i++)
+                {
+                    drawMarker(settings.gfxData, points[i], markerShape, markerSize, color);
+                }
+            }
         }
 
         public void SaveCSV(string filePath, string delimiter = ", ", string separator = "\n")
