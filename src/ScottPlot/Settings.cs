@@ -49,6 +49,7 @@ namespace ScottPlot
         public Config.Ticks ticks = new Config.Ticks();
         public Config.Legend legend = new Config.Legend();
         public System.Globalization.CultureInfo culture = System.Globalization.CultureInfo.DefaultThreadCurrentCulture;
+        public IMarkerDrawer markerDrawer;
 
         // mouse interaction
         public Rectangle? mouseMiddleRect = null;
