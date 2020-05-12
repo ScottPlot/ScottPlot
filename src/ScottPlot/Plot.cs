@@ -1871,5 +1871,10 @@ namespace ScottPlot
 
         #endregion
 
+        public void MarkerDrawer(IMarkerDrawer markerDrawer)
+        {
+            settings.markerDrawer = markerDrawer;
+        }
+
     }
 }
