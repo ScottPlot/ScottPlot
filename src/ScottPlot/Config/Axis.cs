@@ -9,6 +9,8 @@ namespace ScottPlot.Config
     public class Axis
     {
         public bool hasBeenSet = false;
+        public double boundMin = double.NegativeInfinity;
+        public double boundMax = double.PositiveInfinity;
 
         private double _min;
         public double min
@@ -59,6 +61,22 @@ namespace ScottPlot.Config
             if (delta == 0)
                 return;
 
+            if ((delta < 0) && (min + delta < boundMin))
+            {
+                var originalSpan = span;
+                min = boundMin;
+                max = min + originalSpan;
+                return;
+            }
+
+            if ((delta > 0) && (max + delta > boundMax))
+            {
+                var originalSpan = span;
+                max = boundMax;
+                min = max - originalSpan;
+                return;
+            }
+
             min += delta;
             max += delta;
         }
@@ -70,11 +88,18 @@ namespace ScottPlot.Config
             double spanRight = max - (double)zoomTo;
             min = (double)zoomTo - spanLeft / frac;
             max = (double)zoomTo + spanRight / frac;
+            ApplyBounds();
         }
 
         public override string ToString()
         {
             return $"axis [{min} to {max}]";
+        }
+
+        public void ApplyBounds()
+        {
+            min = Math.Max(min, boundMin);
+            max = Math.Min(max, boundMax);
         }
     }
 }

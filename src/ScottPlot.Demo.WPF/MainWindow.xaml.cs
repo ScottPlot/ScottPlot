@@ -109,5 +109,10 @@ namespace ScottPlot.Demo.WPF
         {
             new WpfDemos.PlotInScrollViewer().ShowDialog();
         }
+
+        private void LaunchAxisLimits(object sender, RoutedEventArgs e)
+        {
+            new WpfDemos.AxisLimits().ShowDialog();
+        }
     }
 }

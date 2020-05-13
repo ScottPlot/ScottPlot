@@ -24,6 +24,15 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
   * Remove rendering capabilities from ScottPlot.Plot so the dependency on System.Drawing can be eliminated
   * Create a GDI rendering module which uses System.Drawing 
   * Create a SkiaSharp rendering module and user control (supporting OpenGL hardware acceleration)
+  
+## ScottPlot 4.0.31
+* Created `Plot.PlotBarGroups()` for easier construction of grouped bar plots from 2D data (#367) _Thanks @Benny121221_
+* Plot.PlotScaleBar() adds an L-shaped scalebar to the corner of the plot (#363)
+* Default grid color lightened from #D3D3D3 (Color.LightGray) to #EFEFEF (#372)
+* Improved error reporting for scatter plots (#369) _Thanks @JagDTalcyon_
+* Improve pixel alignment by hiding grid lines and snapping tick marks that are 1px away from the lower left edge (#359)
+* PlotText() ignores defaults to upperLeft alignment when rotation is used (#362)
+* Improved minor tick positioning to prevent cases where minor ticks are 1px away from major ticks (#373)
 
 ## ScottPlot 4.0.30
 * `Plot.PlotCandlestick()` and `Plot.PlotOHLC()`
@@ -31,6 +40,16 @@ _ScottPlot uses [semantic](https://semver.org/) (major.minor.patch) versioning. 
   * now support custom up/down colors including those with transparency (#346) _Thanks @Minu476_
   * have a new `sequential` argument to plot data based on array index rather than `OHLC.time`. This is a new, simpler way to display unevenly-spaced data (e.g., gaps over weekends) in a way that makes the gaps invisible. (#346) _Thanks @Minu476_
 * Fixed a marker/line alignment issue that only affeced low-density Signal plots on Linux and MacOS (#340) _Thanks @SeisChr_
+* WPF control now appears in Toolbox (#151) _Thanks @RalphLAtGitHub_
+* Plot titles are now center-aligned with the data area, not the figure. This improves the look of small plots with titles. (#365) _Thanks @Resonanz_
+* Fixed bug that ignored `Configure(enableRightClickMenu: false)` in WPF and WinForms user controls. (#365) _Thanks @thunderstatic_
+* Updated `Configure(enableScrollWheelZoom: false)` to disable middle-click-drag zooming. (#365) _Thanks @eduhza_
+* Added color mixing methods to ScottPlot.Drawing.GDI (#361)
+* Middle-click-drag zooming now respects locked axes (#353) _Thanks @LogDogg_
+* Improved user control zooming of high-precision DateTime axis data (#351) _Thanks @bukkideme_
+* Plot.AxisBounds() now lets user set absolute bounds for drag and pan operations (#349) _Thanks @LogDogg_
+* WPF control uses improved Bitmap conversion method (#350)
+* Function plots have improved handling of functions with infinite values (#370) _Thanks @Benny121221_
 
 ## ScottPlot 4.0.29
 * `Plot.PlotFill()` can be used to make scatter plots with shaded regions. Giving it a single pair of X/Y values (`xs, ys`) lets you shade beneath the curve to the `baseline` value (which defaults to 0). You can also give it a pair of X/Y values (`xs1, ys1, xs2, ys2`) and the area between the two curves will be shaded (the two curves do not need to be the same length). See cookbook for examples. (#255) _Thanks @ckovamees_ 

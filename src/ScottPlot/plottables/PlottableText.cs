@@ -57,49 +57,54 @@ namespace ScottPlot
 
             PointF defaultPoint = settings.GetPixel(x, y);
             PointF textLocationPoint = new PointF();
-
             SizeF stringSize = Drawing.GDI.MeasureString(settings.gfxData, text, font);
 
-            switch (alignment)
+            if (rotation == 0)
             {
-                case TextAlignment.lowerCenter:
-                    textLocationPoint.Y = defaultPoint.Y - stringSize.Height;
-                    textLocationPoint.X = defaultPoint.X - stringSize.Width / 2;
-                    break;
-                case TextAlignment.lowerLeft:
-                    textLocationPoint.Y = defaultPoint.Y - stringSize.Height;
-                    textLocationPoint.X = defaultPoint.X;
-                    break;
-                case TextAlignment.lowerRight:
-                    textLocationPoint.Y = defaultPoint.Y - stringSize.Height;
-                    textLocationPoint.X = defaultPoint.X - stringSize.Width;
-                    break;
-                case TextAlignment.middleLeft:
-                    textLocationPoint.Y = defaultPoint.Y - stringSize.Height / 2;
-                    textLocationPoint.X = defaultPoint.X;
-                    break;
-                case TextAlignment.middleRight:
-                    textLocationPoint.Y = defaultPoint.Y - stringSize.Height / 2;
-                    textLocationPoint.X = defaultPoint.X - stringSize.Width;
-                    break;
-                case TextAlignment.upperCenter:
-                    textLocationPoint.Y = defaultPoint.Y;
-                    textLocationPoint.X = defaultPoint.X - stringSize.Width / 2;
-                    break;
-                case TextAlignment.upperLeft:
-                    textLocationPoint = defaultPoint;
-                    break;
-                case TextAlignment.upperRight:
-                    textLocationPoint.Y = defaultPoint.Y;
-                    textLocationPoint.X = defaultPoint.X - stringSize.Width;
-                    break;
-                case TextAlignment.middleCenter:
-                    textLocationPoint.Y = defaultPoint.Y - stringSize.Height / 2;
-                    textLocationPoint.X = defaultPoint.X - stringSize.Width / 2;
-                    break;
+                switch (alignment)
+                {
+                    case TextAlignment.lowerCenter:
+                        textLocationPoint.Y = defaultPoint.Y - stringSize.Height;
+                        textLocationPoint.X = defaultPoint.X - stringSize.Width / 2;
+                        break;
+                    case TextAlignment.lowerLeft:
+                        textLocationPoint.Y = defaultPoint.Y - stringSize.Height;
+                        textLocationPoint.X = defaultPoint.X;
+                        break;
+                    case TextAlignment.lowerRight:
+                        textLocationPoint.Y = defaultPoint.Y - stringSize.Height;
+                        textLocationPoint.X = defaultPoint.X - stringSize.Width;
+                        break;
+                    case TextAlignment.middleLeft:
+                        textLocationPoint.Y = defaultPoint.Y - stringSize.Height / 2;
+                        textLocationPoint.X = defaultPoint.X;
+                        break;
+                    case TextAlignment.middleRight:
+                        textLocationPoint.Y = defaultPoint.Y - stringSize.Height / 2;
+                        textLocationPoint.X = defaultPoint.X - stringSize.Width;
+                        break;
+                    case TextAlignment.upperCenter:
+                        textLocationPoint.Y = defaultPoint.Y;
+                        textLocationPoint.X = defaultPoint.X - stringSize.Width / 2;
+                        break;
+                    case TextAlignment.upperLeft:
+                        textLocationPoint = defaultPoint;
+                        break;
+                    case TextAlignment.upperRight:
+                        textLocationPoint.Y = defaultPoint.Y;
+                        textLocationPoint.X = defaultPoint.X - stringSize.Width;
+                        break;
+                    case TextAlignment.middleCenter:
+                        textLocationPoint.Y = defaultPoint.Y - stringSize.Height / 2;
+                        textLocationPoint.X = defaultPoint.X - stringSize.Width / 2;
+                        break;
+                }
             }
-
-            //textLocationPoint.Y -= stringSize.Height / 2;
+            else
+            {
+                // ignore alignment if rotation is used
+                textLocationPoint = new PointF(defaultPoint.X, defaultPoint.Y);
+            }
 
             settings.gfxData.TranslateTransform((int)textLocationPoint.X, (int)textLocationPoint.Y);
             settings.gfxData.RotateTransform((float)rotation);

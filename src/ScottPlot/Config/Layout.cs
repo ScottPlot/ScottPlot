@@ -88,6 +88,9 @@ namespace ScottPlot.Config
             y2Scale.MatchVert(data);
             xLabel.MatchHoriz(data);
             xScale.MatchHoriz(data);
+
+            // shrink the title to align it with the data area
+            title.MatchHoriz(data);
         }
     }
 }

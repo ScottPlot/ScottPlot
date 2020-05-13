@@ -26,6 +26,7 @@ namespace ScottPlot
             if (width <= 0 || height <= 0)
                 throw new ArgumentException("width and height must each be greater than 0");
             settings = new Settings();
+            StyleTools.SetStyle(this, ScottPlot.Style.Default);
             Resize(width, height);
             TightenLayout();
         }
@@ -155,6 +156,8 @@ namespace ScottPlot
         {
             if (!settings.axes.hasBeenSet)
                 settings.AxisAuto();
+            else 
+                settings.axes.ApplyBounds();
 
             if (!settings.layout.tighteningOccurred)
             {
@@ -550,6 +553,23 @@ namespace ScottPlot
             return functionPlot;
         }
 
+        public PlottableScaleBar PlotScaleBar(
+            double sizeX, 
+            double sizeY, 
+            string labelX = null,
+            string labelY = null,
+            double thickness = 2, 
+            double fontSize = 12, 
+            Color? color = null, 
+            double padPx = 10
+            )
+        {
+            color = (color is null) ? Color.Black : color.Value;
+            var scalebar = new PlottableScaleBar(sizeX, sizeY, labelX, labelY, thickness, fontSize, color.Value, padPx);
+            Add(scalebar);
+            return scalebar;
+        }
+
         public PlottableScatter PlotScatter(
             double[] xs,
             double[] ys,
@@ -888,6 +908,51 @@ namespace ScottPlot
             return barPlot;
         }
 
+        /// <summary>
+        /// Create a series of bar plots given a 2D dataset
+        /// </summary>
+        /// <param name="groupLabels">displayed as horizontal axis tick labels</param>
+        /// <param name="seriesLabels">displayed in the legend</param>
+        /// <param name="ys">Array of arrays (one per series) that contan one point per group</param>
+        /// <returns></returns>
+        public PlottableBar[] PlotBarGroups(
+                string[] groupLabels,
+                string[] seriesLabels,
+                double[][] ys,
+                double[][] yErr = null,
+                double groupWidthFraction = 0.8,
+                double barWidthFraction = 0.8,
+                double errorCapSize = 0.38,
+                bool showValues = false
+            )
+        {
+            if (groupLabels is null || seriesLabels is null || ys is null)
+                throw new ArgumentException("labels and ys cannot be null");
+
+            if (seriesLabels.Length != ys.Length)
+                throw new ArgumentException("groupLabels and ys must be the same length");
+
+            foreach (double[] subArray in ys)
+                if (subArray.Length != groupLabels.Length)
+                    throw new ArgumentException("all arrays inside ys must be the same length as groupLabels");
+
+            int seriesCount = ys.Length;
+            double barWidth = groupWidthFraction / seriesCount;
+            PlottableBar[] bars = new PlottableBar[seriesCount];
+            for (int i = 0; i < seriesCount; i++)
+            {
+                double offset = i * barWidth;
+                double[] barYs = ys[i];
+                double[] barYerr = yErr?[i];
+                double[] barXs = DataGen.Consecutive(barYs.Length);
+                bars[i] = PlotBar(barXs, barYs, barYerr, seriesLabels[i], barWidth * barWidthFraction, offset, 
+                    errorCapSize: errorCapSize, showValues: showValues);
+            }
+            XTicks(DataGen.Consecutive(groupLabels.Length, offset: (groupWidthFraction - barWidth) / 2), groupLabels);
+
+            return bars;
+        }
+
         public PlottableOHLC PlotOHLC(
             OHLC[] ohlcs,
             Color? colorUp = null,
@@ -1125,12 +1190,11 @@ namespace ScottPlot
 
         public IDraggable GetDraggableUnderMouse(double pixelX, double pixelY, int snapDistancePixels = 5)
         {
-            PointF mouseCoordinates = CoordinateFromPixel(pixelX, pixelY);
             double snapWidth = GetSettings(false).xAxisUnitsPerPixel * snapDistancePixels;
             double snapHeight = GetSettings(false).yAxisUnitsPerPixel * snapDistancePixels;
 
             foreach (IDraggable draggable in GetDraggables())
-                if (draggable.IsUnderMouse(mouseCoordinates.X, mouseCoordinates.Y, snapWidth, snapHeight))
+                if (draggable.IsUnderMouse(CoordinateFromPixelX(pixelX), CoordinateFromPixelY(pixelY), snapWidth, snapHeight))
                     if (draggable.DragEnabled)
                         return draggable;
 
@@ -1180,6 +1244,18 @@ namespace ScottPlot
                 throw new ArgumentException("axis limits must contain 4 elements");
             Axis(axisLimits[0], axisLimits[1], axisLimits[2], axisLimits[3]);
             return settings.axes.limits;
+        }
+
+        public void AxisBounds(
+            double minX = double.NegativeInfinity,
+            double maxX = double.PositiveInfinity,
+            double minY = double.NegativeInfinity,
+            double maxY = double.PositiveInfinity)
+        {
+            settings.axes.x.boundMin = minX;
+            settings.axes.x.boundMax = maxX;
+            settings.axes.y.boundMin = minY;
+            settings.axes.y.boundMax = maxY;
         }
 
         public double[] AxisScale(double? unitsPerPixelX = null, double? unitsPerPixelY = null)
@@ -1306,26 +1382,31 @@ namespace ScottPlot
             return settings.GetLocationY(pixelY);
         }
 
+        [Obsolete("use CoordinateFromPixelX and CoordinateFromPixelY for improved precision")]
         public PointF CoordinateFromPixel(int pixelX, int pixelY)
         {
             return settings.GetLocation(pixelX, pixelY);
         }
 
+        [Obsolete("use CoordinateFromPixelX and CoordinateFromPixelY for improved precision")]
         public PointF CoordinateFromPixel(float pixelX, float pixelY)
         {
             return settings.GetLocation(pixelX, pixelY);
         }
 
+        [Obsolete("use CoordinateFromPixelX and CoordinateFromPixelY for improved precision")]
         public PointF CoordinateFromPixel(double pixelX, double pixelY)
         {
             return settings.GetLocation(pixelX, pixelY);
         }
 
+        [Obsolete("use CoordinateFromPixelX and CoordinateFromPixelY for improved precision")]
         public PointF CoordinateFromPixel(Point pixel)
         {
             return CoordinateFromPixel(pixel.X, pixel.Y);
         }
 
+        [Obsolete("use CoordinateFromPixelX and CoordinateFromPixelY for improved precision")]
         public PointF CoordinateFromPixel(PointF pixel)
         {
             return CoordinateFromPixel(pixel.X, pixel.Y);

@@ -36,18 +36,18 @@ namespace ScottPlot
         public WpfPlot(Plot plt)
         {
             InitializeComponent();
-            CreateDefaultRightClickMenu();
+            ContextMenu = DefaultRightClickMenu();
             Reset(plt);
         }
 
         public WpfPlot()
         {
             InitializeComponent();
-            CreateDefaultRightClickMenu();
+            ContextMenu = DefaultRightClickMenu();
             Reset(null);
         }
 
-        private void CreateDefaultRightClickMenu()
+        private ContextMenu DefaultRightClickMenu()
         {
             MenuItem SaveImageMenuItem = new MenuItem() { Header = "Save Image" };
             SaveImageMenuItem.Click += SaveImage;
@@ -58,11 +58,13 @@ namespace ScottPlot
             MenuItem HelpMenuItem = new MenuItem() { Header = "Help" };
             HelpMenuItem.Click += OpenHelp;
 
-            ContextMenu = new ContextMenu();
-            ContextMenu.Items.Add(SaveImageMenuItem);
-            ContextMenu.Items.Add(CopyImageMenuItem);
-            ContextMenu.Items.Add(NewWindowMenuItem);
-            ContextMenu.Items.Add(HelpMenuItem);
+            var cm = new ContextMenu();
+            cm.Items.Add(SaveImageMenuItem);
+            cm.Items.Add(CopyImageMenuItem);
+            cm.Items.Add(NewWindowMenuItem);
+            cm.Items.Add(HelpMenuItem);
+
+            return cm;
         }
 
         public void Reset()
@@ -102,14 +104,20 @@ namespace ScottPlot
 
         private static BitmapImage BmpImageFromBmp(System.Drawing.Bitmap bmp)
         {
-            System.IO.MemoryStream stream = new System.IO.MemoryStream();
-            bmp.Save(stream, System.Drawing.Imaging.ImageFormat.Png); // use PNG to support transparency
-            BitmapImage bmpImage = new BitmapImage();
-            bmpImage.BeginInit();
-            stream.Seek(0, System.IO.SeekOrigin.Begin);
-            bmpImage.StreamSource = stream;
-            bmpImage.EndInit();
-            return bmpImage;
+            using (var memory = new System.IO.MemoryStream())
+            {
+                bmp.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
+                memory.Position = 0;
+
+                var bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.StreamSource = memory;
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.EndInit();
+                bitmapImage.Freeze();
+
+                return bitmapImage;
+            }
         }
 
         private bool currentlyRendering = false;
@@ -152,6 +160,7 @@ namespace ScottPlot
         public void Configure(
             bool? enablePanning = null,
             bool? enableRightClickZoom = null,
+            bool? enableRightClickMenu = null,
             bool? enableScrollWheelZoom = null,
             bool? lowQualityWhileDragging = null,
             bool? enableDoubleClickBenchmark = null,
@@ -162,6 +171,7 @@ namespace ScottPlot
         {
             if (enablePanning != null) this.enablePanning = (bool)enablePanning;
             if (enableRightClickZoom != null) this.enableZooming = (bool)enableRightClickZoom;
+            if (enableRightClickMenu != null) ContextMenu = (enableRightClickMenu.Value) ? DefaultRightClickMenu() : null;
             if (enableScrollWheelZoom != null) this.enableScrollWheelZoom = (bool)enableScrollWheelZoom;
             if (lowQualityWhileDragging != null) this.lowQualityWhileDragging = (bool)lowQualityWhileDragging;
             if (enableDoubleClickBenchmark != null) this.doubleClickingTogglesBenchmark = (bool)enableDoubleClickBenchmark;
@@ -242,7 +252,7 @@ namespace ScottPlot
                 if (e.ChangedButton == MouseButton.Left && shiftIsPressed) mouseMiddleDownLocation = GetPixelPosition(e);
                 else if (e.ChangedButton == MouseButton.Left && enablePanning) mouseLeftDownLocation = GetPixelPosition(e);
                 else if (e.ChangedButton == MouseButton.Right && enableZooming) mouseRightDownLocation = GetPixelPosition(e);
-                else if (e.ChangedButton == MouseButton.Middle) mouseMiddleDownLocation = GetPixelPosition(e);
+                else if (e.ChangedButton == MouseButton.Middle && enableScrollWheelZoom) mouseMiddleDownLocation = GetPixelPosition(e);
                 axisLimitsOnMouseDown = plt.Axis();
             }
             else
@@ -312,6 +322,17 @@ namespace ScottPlot
                 var origin = new System.Drawing.Point((int)x1 - settings.dataOrigin.X, (int)y1 - settings.dataOrigin.Y);
                 var size = new System.Drawing.Size((int)(x2 - x1), (int)(y2 - y1));
 
+                if (lockVerticalAxis)
+                {
+                    origin.Y = 0;
+                    size.Height = settings.dataSize.Height - 1;
+                }
+                if (lockHorizontalAxis)
+                {
+                    origin.X = 0;
+                    size.Width = settings.dataSize.Width - 1;
+                }
+
                 settings.mouseMiddleRect = new System.Drawing.Rectangle(origin, size);
             }
 
@@ -321,8 +342,7 @@ namespace ScottPlot
 
         private void MouseMovedToMoveDraggable(MouseEventArgs e)
         {
-            var coordinate = plt.CoordinateFromPixel(GetPixelPosition(e).X, GetPixelPosition(e).Y);
-            plottableBeingDragged.DragTo(coordinate.X, coordinate.Y);
+            plottableBeingDragged.DragTo(plt.CoordinateFromPixelX(GetPixelPosition(e).X), plt.CoordinateFromPixelY(GetPixelPosition(e).Y));
             Render(true);
         }
 
@@ -355,12 +375,14 @@ namespace ScottPlot
                 if ((size.Width > 2) && (size.Height > 2))
                 {
                     // only change axes if suffeciently large square was drawn
-                    plt.Axis(
-                            x1: plt.CoordinateFromPixel((int)topLeft.X, (int)topLeft.Y).X,
-                            x2: plt.CoordinateFromPixel((int)botRight.X, (int)botRight.Y).X,
-                            y1: plt.CoordinateFromPixel((int)botRight.X, (int)botRight.Y).Y,
-                            y2: plt.CoordinateFromPixel((int)topLeft.X, (int)topLeft.Y).Y
-                        );
+                    if (!lockHorizontalAxis)
+                        plt.Axis(
+                            x1: plt.CoordinateFromPixelX(topLeft.X),
+                            x2: plt.CoordinateFromPixelX(botRight.X));
+                    if (!lockVerticalAxis)
+                        plt.Axis(
+                            y1: plt.CoordinateFromPixelY(botRight.Y),
+                            y2: plt.CoordinateFromPixelY(topLeft.Y));
                     AxisChanged?.Invoke(null, null);
                 }
                 else
@@ -375,12 +397,16 @@ namespace ScottPlot
                 double deltaX = Math.Abs(mouseLocation.X - mouseRightDownLocation.Value.X);
                 double deltaY = Math.Abs(mouseLocation.Y - mouseRightDownLocation.Value.Y);
                 bool mouseDraggedFar = (deltaX > 3 || deltaY > 3);
-                ContextMenu.Visibility = (mouseDraggedFar) ? Visibility.Hidden : Visibility.Visible;
-                ContextMenu.IsOpen = (!mouseDraggedFar);
+                if (ContextMenu != null)
+                {
+                    ContextMenu.Visibility = (mouseDraggedFar) ? Visibility.Hidden : Visibility.Visible;
+                    ContextMenu.IsOpen = (!mouseDraggedFar);
+                }
             }
             else
             {
-                ContextMenu.IsOpen = false;
+                if (ContextMenu != null)
+                    ContextMenu.IsOpen = false;
             }
 
             mouseLeftDownLocation = null;
@@ -401,7 +427,6 @@ namespace ScottPlot
                 return;
 
             var mousePixel = GetPixelPosition(e); // DPI-scaling aware
-            var mouseCoordinate = plt.CoordinateFromPixel(mousePixel.X, mousePixel.Y);
 
             double xFrac = (e.Delta > 0) ? 1.15 : 0.85;
             double yFrac = (e.Delta > 0) ? 1.15 : 0.85;
@@ -409,7 +434,7 @@ namespace ScottPlot
             if (isVerticalLocked) yFrac = 1;
             if (isHorizontalLocked) xFrac = 1;
 
-            plt.AxisZoom(xFrac, yFrac, mouseCoordinate.X, mouseCoordinate.Y);
+            plt.AxisZoom(xFrac, yFrac, plt.CoordinateFromPixelX(mousePixel.X), plt.CoordinateFromPixelY(mousePixel.Y));
             AxisChanged?.Invoke(null, null);
             Render(recalculateLayout: true);
         }

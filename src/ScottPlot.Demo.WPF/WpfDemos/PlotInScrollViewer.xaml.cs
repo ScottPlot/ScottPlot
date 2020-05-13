@@ -32,7 +32,7 @@ namespace ScottPlot.Demo.WPF.WpfDemos
                 for (int i = 0; i < 3; i++)
                     wpfPlot.plt.PlotSignal(DataGen.RandomWalk(rand, 100));
 
-                wpfPlot.Configure(enableScrollWheelZoom: false);
+                wpfPlot.Configure(enableScrollWheelZoom: false, enableRightClickMenu: false);
 
                 wpfPlot.Render();
             }

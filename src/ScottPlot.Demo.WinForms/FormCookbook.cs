@@ -45,6 +45,8 @@ namespace ScottPlot.Demo.WinForms
                     }
                 }
             }
+            treeView1.Nodes[1].Expand();
+            treeView1.Nodes[2].Expand();
             treeView1.SelectedNode = treeView1.Nodes[0].Nodes[0].Nodes[0];
         }
 

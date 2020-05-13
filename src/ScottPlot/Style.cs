@@ -187,7 +187,8 @@ namespace ScottPlot
                     existingPlot.Style(
                         figBg: Color.White,
                         dataBg: Color.White,
-                        grid: Color.LightGray,
+                        grid: ColorTranslator.FromHtml("#efefef"),
+                        //grid: Color.LightGray,
                         tick: Color.Black,
                         label: Color.Black,
                         title: Color.Black
