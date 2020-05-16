@@ -232,7 +232,7 @@ namespace ScottPlot
         {
             double[] dataOut = new double[dataIn.Length];
             for (int i = 0; i < dataOut.Length; i++)
-                dataOut[i] = Math.Log10(dataIn[i]);
+                dataOut[i] = dataIn[i] != 0 ? Math.Log10(dataIn[i]) : double.NaN;
             return dataOut;
         }
 
