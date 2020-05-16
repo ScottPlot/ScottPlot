@@ -791,7 +791,7 @@ namespace ScottPlot
             settings.plottables.Add(stepPlot);
             return stepPlot;
         }
-        public PlottableSignalGappedExperimental PlotSignal(
+        public PlottableSignalXY PlotSignal(
             double[] xs,
             double[] ys,
             Color? color = null,
@@ -807,7 +807,7 @@ namespace ScottPlot
             if (maxRenderIndex == null)
                 maxRenderIndex = ys.Length - 1;
 
-            PlottableSignalGappedExperimental signal = new PlottableSignalGappedExperimental(
+            PlottableSignalXY signal = new PlottableSignalXY(
                 xs: xs,
                 ys: ys,
                 color: (Color)color,

@@ -7,10 +7,10 @@ using System.Runtime.InteropServices;
 
 namespace ScottPlot
 {
-    public class PlottableSignalGappedExperimental : PlottableSignal
+    public class PlottableSignalXY : PlottableSignal
     {
         public double[] xs;
-        public PlottableSignalGappedExperimental(double[] xs, double[] ys, Color color, double lineWidth, double markerSize, string label, bool useParallel, int maxRenderIndex)
+        public PlottableSignalXY(double[] xs, double[] ys, Color color, double lineWidth, double markerSize, string label, bool useParallel, int maxRenderIndex)
             : base(ys, 1, 0, 0, color, lineWidth, markerSize, label, useParallel, null, maxRenderIndex)
         {
             if ((xs == null) || (ys == null))
@@ -21,6 +21,8 @@ namespace ScottPlot
 
             if (xs.Length != ys.Length)
                 throw new ArgumentException("Xs and Ys must have same length");
+
+            // TODO: should XS be scanned here to ensure they are all in ascending order?
 
             this.xs = xs;
         }
