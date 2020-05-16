@@ -8,6 +8,7 @@
 * WpfPlotViewer and FormsPlotViewer launch in center of parent window (#378)
 * Improve reliability of `Plot.AxisAutoX()` and `Plot.AxisAutoY()` (#382)
 * The `Configure()` method of FormsPlot and WpfPlot controls now have `middleClickMarginX` and `middleClickMarginY` arguments which define horizontal and vertical auto-axis margin used for middle-clicking. Setting horizontal margin to 0 is typical when plotting signals. (#383)
+* `Plot.Grid()` and `Plot.Ticks()` now have a `snapToNearestPixel` argument which controls whether these lines appear anti-aliased or not. For static images non-anti-aliased grid lines and tick marks look best, but for continuously-panning plots anti-aliased lines look better. The default behavior is to enable snapping to the nearest pixel, consistent with previous releases. (#384)
 
 ## ScottPlot 4.0.31
 * Created `Plot.PlotBarGroups()` for easier construction of grouped bar plots from 2D data (#367) _Thanks @Benny121221_

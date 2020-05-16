@@ -1604,7 +1604,8 @@ namespace ScottPlot
             bool? logScaleX = null,
             bool? logScaleY = null,
             string numericFormatStringX = null,
-            string numericFormatStringY = null
+            string numericFormatStringY = null,
+            bool? snapToNearestPixel = null
             )
         {
             if (displayTicksX != null)
@@ -1653,6 +1654,8 @@ namespace ScottPlot
                 settings.ticks.x.numericFormatString = numericFormatStringX;
             if (numericFormatStringY != null)
                 settings.ticks.y.numericFormatString = numericFormatStringY;
+            if (snapToNearestPixel != null)
+                settings.ticks.snapToNearestPixel = snapToNearestPixel.Value;
 
             // dont use offset notation if the sign is inverted
             if (settings.ticks.x.invertSign || settings.ticks.y.invertSign)
@@ -1708,7 +1711,8 @@ namespace ScottPlot
             Config.DateTimeUnit? xSpacingDateTimeUnit = null,
             Config.DateTimeUnit? ySpacingDateTimeUnit = null,
             double? lineWidth = null,
-            LineStyle? lineStyle = null
+            LineStyle? lineStyle = null,
+            bool? snapToNearestPixel = null
             )
         {
             if (enable != null)
@@ -1744,6 +1748,8 @@ namespace ScottPlot
             if (lineStyle != null)
                 settings.grid.lineStyle = lineStyle.Value;
 
+            if (snapToNearestPixel != null)
+                settings.grid.snapToNearestPixel = snapToNearestPixel.Value;
         }
 
         public void Frame(

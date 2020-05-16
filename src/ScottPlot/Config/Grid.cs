@@ -14,5 +14,6 @@ namespace ScottPlot.Config
         public Color color = Color.LightGray;
         public LineStyle lineStyle = LineStyle.Solid;
         public double lineWidth = 1;
+        public bool snapToNearestPixel = true;
     }
 }

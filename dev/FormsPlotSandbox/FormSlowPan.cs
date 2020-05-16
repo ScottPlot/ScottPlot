@@ -15,6 +15,9 @@ namespace FormsPlotSandbox
         public FormSlowPan()
         {
             InitializeComponent();
+            formsPlot1.plt.Grid(color: Color.Gray);
+            checkBox2.Checked = formsPlot1.plt.GetSettings(false).grid.snapToNearestPixel;
+            checkBox3.Checked = formsPlot1.plt.GetSettings(false).ticks.snapToNearestPixel;
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
@@ -26,6 +29,22 @@ namespace FormsPlotSandbox
         {
             formsPlot1.plt.AxisPan(.001, .001);
             formsPlot1.Render();
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            formsPlot1.plt.Grid(snapToNearestPixel: checkBox2.Checked);
+        }
+
+        private void checkBox3_CheckedChanged(object sender, EventArgs e)
+        {
+            formsPlot1.plt.Ticks(snapToNearestPixel: checkBox3.Checked);
+        }
+
+        private void checkBox4_CheckedChanged(object sender, EventArgs e)
+        {
+            formsPlot1.plt.Ticks(rulerModeX: checkBox4.Checked);
+            formsPlot1.plt.Ticks(rulerModeY: checkBox4.Checked);
         }
     }
 }

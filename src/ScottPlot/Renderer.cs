@@ -29,7 +29,7 @@ namespace ScottPlot
 
             // Fix rendering artifacts (diagnal lines) that appear when drawing lines that touch the edge of the Bitmap if anti-aliasing is off.
             // An alternative to tilting the line is to not let the grid line touch the edge of the bitmap (withdraw it by 1px).
-            float tiltPx = (settings.misc.antiAliasData) ? 0 : .5f;
+            float tiltPx = (settings.misc.antiAliasData || settings.grid.snapToNearestPixel == false) ? 0 : .5f;
 
             if (settings.grid.enableVertical)
             {
@@ -37,10 +37,12 @@ namespace ScottPlot
                 {
                     double value = settings.ticks.x.tickPositionsMajor[i];
                     double unitsFromAxisEdge = value - settings.axes.x.min;
-                    int xPx = (int)(unitsFromAxisEdge * settings.xAxisScale);
+                    double xPx = unitsFromAxisEdge * settings.xAxisScale;
                     if ((xPx == 0) && settings.layout.displayFrameByAxis[0])
                         continue; // don't draw a grid line 1px away from frame
-                    settings.gfxData.DrawLine(pen, xPx, 0, xPx + tiltPx, settings.dataSize.Height);
+                    if (settings.grid.snapToNearestPixel)
+                        xPx = (int)xPx;
+                    settings.gfxData.DrawLine(pen, (float)xPx, 0, (float)xPx + tiltPx, settings.dataSize.Height);
                 }
             }
 
@@ -50,10 +52,12 @@ namespace ScottPlot
                 {
                     double value = settings.ticks.y.tickPositionsMajor[i];
                     double unitsFromAxisEdge = value - settings.axes.y.min;
-                    int yPx = settings.dataSize.Height - (int)(unitsFromAxisEdge * settings.yAxisScale);
+                    double yPx = settings.dataSize.Height - unitsFromAxisEdge * settings.yAxisScale;
                     if ((yPx == 0) && settings.layout.displayFrameByAxis[2])
                         continue; // don't draw a grid line 1px away from frame
-                    settings.gfxData.DrawLine(pen, 0, yPx, settings.dataSize.Width, yPx + tiltPx);
+                    if (settings.grid.snapToNearestPixel)
+                        yPx = (int)yPx;
+                    settings.gfxData.DrawLine(pen, 0, (float)yPx, settings.dataSize.Width, (float)yPx + tiltPx);
                 }
             }
         }
@@ -227,22 +231,24 @@ namespace ScottPlot
                 string text = settings.ticks.y.tickLabels[i];
 
                 double unitsFromAxisEdge = value - settings.axes.y.min;
-                int xPx = settings.dataOrigin.X - 1;
-                int yPx = settings.layout.data.bottom - (int)(unitsFromAxisEdge * settings.yAxisScale);
+                double xPx = settings.dataOrigin.X - 1;
+                double yPx = settings.layout.data.bottom - unitsFromAxisEdge * settings.yAxisScale;
                 if ((yPx == settings.layout.data.top) && settings.layout.displayFrameByAxis[0])
                     yPx -= 1; // snap ticks to the frame edge if they are 1px away
+                if (settings.ticks.snapToNearestPixel)
+                    yPx = (int)yPx;
 
                 if (settings.ticks.rulerModeY)
                 {
-                    settings.gfxFigure.DrawLine(pen, xPx, yPx, xPx - settings.ticks.size - settings.ticks.font.Height, yPx);
+                    settings.gfxFigure.DrawLine(pen, (float)xPx, (float)yPx, (float)xPx - settings.ticks.size - settings.ticks.font.Height, (float)yPx);
                     if (settings.ticks.displayYlabels)
-                        settings.gfxFigure.DrawString(text, settings.ticks.font, brush, xPx - settings.ticks.size - tickLabelPadding, yPx, settings.misc.sfSouthEast);
+                        settings.gfxFigure.DrawString(text, settings.ticks.font, brush, (float)xPx - settings.ticks.size - tickLabelPadding, (float)yPx, settings.misc.sfSouthEast);
                 }
                 else
                 {
-                    settings.gfxFigure.DrawLine(pen, xPx, yPx, xPx - settings.ticks.size, yPx);
+                    settings.gfxFigure.DrawLine(pen, (float)xPx, (float)yPx, (float)xPx - settings.ticks.size, (float)yPx);
                     if (settings.ticks.displayYlabels)
-                        settings.gfxFigure.DrawString(text, settings.ticks.font, brush, xPx - settings.ticks.size - tickLabelPadding, yPx, settings.misc.sfEast);
+                        settings.gfxFigure.DrawString(text, settings.ticks.font, brush, (float)xPx - settings.ticks.size - tickLabelPadding, (float)yPx, settings.misc.sfEast);
                 }
             }
 
@@ -251,11 +257,13 @@ namespace ScottPlot
                 foreach (var value in settings.ticks.y.tickPositionsMinor)
                 {
                     double unitsFromAxisEdge = value - settings.axes.y.min;
-                    int xPx = settings.dataOrigin.X - 1;
-                    int yPx = settings.layout.data.bottom - (int)(unitsFromAxisEdge * settings.yAxisScale);
+                    double xPx = settings.dataOrigin.X - 1;
+                    double yPx = settings.layout.data.bottom - unitsFromAxisEdge * settings.yAxisScale;
                     if ((yPx == settings.layout.data.top) && settings.layout.displayFrameByAxis[0])
                         yPx -= 1; // snap ticks to the frame edge if they are 1px away
-                    settings.gfxFigure.DrawLine(pen, xPx, yPx, xPx - settings.ticks.size / 2, yPx);
+                    if (settings.ticks.snapToNearestPixel)
+                        yPx = (int)yPx;
+                    settings.gfxFigure.DrawLine(pen, (float)xPx, (float)yPx, (float)xPx - settings.ticks.size / 2, (float)yPx);
                 }
             }
 
@@ -275,30 +283,32 @@ namespace ScottPlot
                 string text = settings.ticks.x.tickLabels[i];
 
                 double unitsFromAxisEdge = value - settings.axes.x.min;
-                int xPx = (int)(unitsFromAxisEdge * settings.xAxisScale) + settings.layout.data.left;
-                int yPx = settings.layout.data.bottom;
+                double xPx = unitsFromAxisEdge * settings.xAxisScale + settings.layout.data.left;
+                double yPx = settings.layout.data.bottom;
                 if ((xPx == settings.layout.data.left) && settings.layout.displayFrameByAxis[2])
                     xPx -= 1; // snap ticks to the frame edge if they are 1px away
+                if (settings.ticks.snapToNearestPixel)
+                    xPx = (int)xPx;
 
                 if (settings.ticks.rulerModeX)
                 {
-                    settings.gfxFigure.DrawLine(pen, xPx, yPx, xPx, yPx + settings.ticks.size + settings.ticks.font.Height);
+                    settings.gfxFigure.DrawLine(pen, (float)xPx, (float)yPx, (float)xPx, (float)yPx + settings.ticks.size + settings.ticks.font.Height);
                     if (settings.ticks.displayXlabels)
-                        settings.gfxFigure.DrawString(text, settings.ticks.font, brush, xPx, yPx + settings.ticks.size, settings.misc.sfNorthWest);
+                        settings.gfxFigure.DrawString(text, settings.ticks.font, brush, (float)xPx, (float)yPx + settings.ticks.size, settings.misc.sfNorthWest);
                 }
                 else
                 {
-                    settings.gfxFigure.DrawLine(pen, xPx, yPx, xPx, yPx + settings.ticks.size);
+                    settings.gfxFigure.DrawLine(pen, (float)xPx, (float)yPx, (float)xPx, (float)yPx + settings.ticks.size);
                     if (settings.ticks.displayXlabels)
                     {
                         if (settings.ticks.rotationX == 0)
                         {
-                            settings.gfxFigure.DrawString(text, settings.ticks.font, brush, xPx, yPx + settings.ticks.size, settings.misc.sfNorth);
+                            settings.gfxFigure.DrawString(text, settings.ticks.font, brush, (float)xPx, (float)yPx + settings.ticks.size, settings.misc.sfNorth);
                         }
                         else
                         {
-                            int horizontalOffset = (int)(settings.ticks.fontSize * .65);
-                            settings.gfxFigure.TranslateTransform(xPx - horizontalOffset, yPx + settings.ticks.size);
+                            double horizontalOffset = settings.ticks.fontSize * .65;
+                            settings.gfxFigure.TranslateTransform((float)xPx - (float)horizontalOffset, (float)yPx + settings.ticks.size);
                             settings.gfxFigure.RotateTransform(-(float)(Math.Abs(settings.ticks.rotationX)));
                             settings.gfxFigure.DrawString(text, settings.ticks.font, brush, new PointF(0, 0), settings.misc.sfNorthEast);
                             settings.gfxFigure.ResetTransform();
@@ -312,11 +322,13 @@ namespace ScottPlot
                 foreach (var value in settings.ticks.x.tickPositionsMinor)
                 {
                     double unitsFromAxisEdge = value - settings.axes.x.min;
-                    int xPx = (int)(unitsFromAxisEdge * settings.xAxisScale) + settings.layout.data.left;
-                    int yPx = settings.layout.data.bottom;
+                    double xPx = unitsFromAxisEdge * settings.xAxisScale + settings.layout.data.left;
+                    double yPx = settings.layout.data.bottom;
                     if ((xPx == settings.layout.data.left) && settings.layout.displayFrameByAxis[2])
                         xPx -= 1; // snap ticks to the frame edge if they are 1px away
-                    settings.gfxFigure.DrawLine(pen, xPx, yPx, xPx, yPx + settings.ticks.size / 2);
+                    if (settings.ticks.snapToNearestPixel)
+                        xPx = (int)xPx;
+                    settings.gfxFigure.DrawLine(pen, (float)xPx, (float)yPx, (float)xPx, (float)yPx + settings.ticks.size / 2);
                 }
             }
         }
