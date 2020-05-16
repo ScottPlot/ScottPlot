@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ScottPlot" xmlns:ScottPlot="clr-namespace:ScottPlot"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterOwner"
         Title="ScottPlot Viewer" Height="300" Width="400">
     <Grid>
         <ScottPlot:WpfPlot x:Name="wpfPlot1" x:FieldModifier="public" />
