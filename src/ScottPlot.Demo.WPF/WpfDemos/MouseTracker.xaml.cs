@@ -36,8 +36,7 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             int pixelX = (int)e.MouseDevice.GetPosition(wpfPlot1).X;
             int pixelY = (int)e.MouseDevice.GetPosition(wpfPlot1).Y;
 
-            double coordinateX = wpfPlot1.plt.CoordinateFromPixelX(pixelX);
-            double coordinateY = wpfPlot1.plt.CoordinateFromPixelY(pixelY);
+            (double coordinateX, double coordinateY) = wpfPlot1.GetMouseCoordinates();
 
             XPixelLabel.Content = $"{pixelX:0.000}";
             YPixelLabel.Content = $"{pixelY:0.000}";

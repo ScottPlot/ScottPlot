@@ -16,6 +16,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ScottPlot.Demo\ScottPlot.Demo.csproj" />
     <ProjectReference Include="..\ScottPlot.WPF\ScottPlot.WPF.csproj" />
     <ProjectReference Include="..\ScottPlot\ScottPlot.csproj" />

@@ -43,8 +43,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
                 return;
 
             // determine where the mouse is in coordinate space
-            double mouseX = formsPlot1.plt.CoordinateFromPixelX(e.X);
-            double mouseY = formsPlot1.plt.CoordinateFromPixelY(e.Y);
+            (double mouseX, double mouseY) = formsPlot1.GetMouseCoordinates();
 
             // determine which point is closest to the mouse
             int closestIndex = 0;
