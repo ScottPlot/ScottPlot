@@ -206,6 +206,8 @@ namespace ScottPlot
                 // mouse is being used to drag a plottable
                 OnMouseDownOnPlottable(EventArgs.Empty);
             }
+
+            base.OnMouseDown(e);
         }
 
         [Obsolete("use Plot.CoordinateFromPixelX() and Plot.CoordinateFromPixelY()")]
@@ -225,6 +227,8 @@ namespace ScottPlot
                 MouseMovedToMoveDraggable(e);
             else
                 MouseMovedWithoutInteraction(e);
+
+            base.OnMouseMove(e);
         }
 
 
@@ -363,6 +367,7 @@ namespace ScottPlot
             }
 
             OnMouseClicked(e);
+            base.OnMouseUp(e);
 
             mouseLeftDownLocation = null;
             mouseRightDownLocation = null;
@@ -374,7 +379,10 @@ namespace ScottPlot
             Render(recalculateLayout: true);
         }
 
-        private void PbPlot_MouseDoubleClick(object sender, MouseEventArgs e) { OnMouseDoubleClicked(e); }
+        private void PbPlot_MouseDoubleClick(object sender, MouseEventArgs e) { 
+            OnMouseDoubleClicked(e);
+            base.OnMouseDoubleClick(e);
+        }
 
         private void PbPlot_MouseWheel(object sender, MouseEventArgs e)
         {
@@ -390,6 +398,8 @@ namespace ScottPlot
             plt.AxisZoom(xFrac, yFrac, plt.CoordinateFromPixelX(e.Location.X), plt.CoordinateFromPixelY(e.Location.Y));
             Render(recalculateLayout: true);
             OnAxisChanged();
+
+            base.OnMouseWheel(e);
         }
 
         #endregion
