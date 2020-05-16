@@ -8,9 +8,11 @@ This page is a collection of ideas and plans for future releases of ScottPlot.
 
 These modifications can be made without breaking existing code, so they are suitable for inclusion in the next minor version.
 
-  * Add right-click menu to WpfPlot (like FormsPlot's)
+* **Refactor markers** ([#386](https://github.com/swharden/ScottPlot/pull/386)) to be classes instead of defined in an enum. Markers will implement `IMarker`, live in `ScottPlot.Markers`, markers have the ability to draw themselves. This makes it easy to switch between markers and even create custom markers that work for all plot types without modifying any ScottPlot code.
 
-  * **Chart control ([#358](https://github.com/swharden/ScottPlot/issues/358))** - `FormsChart` would be an alternative to `FormsPlot` which presents a chart-style interface more suitable for data logging applications.
+* **Add a right-click menu to WpfPlot** (like FormsPlot's)
+
+* **Chart control** ([#358](https://github.com/swharden/ScottPlot/issues/358)) - `FormsChart` would be an alternative to `FormsPlot` which presents a chart-style interface more suitable for data logging applications.
 
 ### Major 
 
