@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace FormsPlotSandbox
 {
-    public partial class Form1 : Form
+    public partial class FormSandbox : Form
     {
-        public Form1()
+        public FormSandbox()
         {
             InitializeComponent();
 

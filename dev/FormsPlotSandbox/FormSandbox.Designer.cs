@@ -1,6 +1,6 @@
 ﻿namespace FormsPlotSandbox
 {
-    partial class Form1
+    partial class FormSandbox
     {
         /// <summary>
         /// Required designer variable.
