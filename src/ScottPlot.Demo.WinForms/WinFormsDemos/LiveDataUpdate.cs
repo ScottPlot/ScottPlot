@@ -18,6 +18,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
         public LiveDataUpdate()
         {
             InitializeComponent();
+            formsPlot1.Configure(middleClickMarginX: 0);
 
             // plot the data array only once
             formsPlot1.plt.PlotSignal(liveData);

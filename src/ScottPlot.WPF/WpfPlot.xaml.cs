@@ -157,6 +157,8 @@ namespace ScottPlot
         private bool lockVerticalAxis = false;
         private bool lockHorizontalAxis = false;
         private bool equalAxes = false;
+        private double middleClickMarginX = .1;
+        private double middleClickMarginY = .1;
         public void Configure(
             bool? enablePanning = null,
             bool? enableRightClickZoom = null,
@@ -166,7 +168,9 @@ namespace ScottPlot
             bool? enableDoubleClickBenchmark = null,
             bool? lockVerticalAxis = null,
             bool? lockHorizontalAxis = null,
-            bool? equalAxes = null
+            bool? equalAxes = null,
+            double? middleClickMarginX = null,
+            double? middleClickMarginY = null
             )
         {
             if (enablePanning != null) this.enablePanning = (bool)enablePanning;
@@ -178,6 +182,8 @@ namespace ScottPlot
             if (lockVerticalAxis != null) this.lockVerticalAxis = (bool)lockVerticalAxis;
             if (lockHorizontalAxis != null) this.lockHorizontalAxis = (bool)lockHorizontalAxis;
             if (equalAxes != null) this.equalAxes = (bool)equalAxes;
+            this.middleClickMarginX = middleClickMarginX ?? this.middleClickMarginX;
+            this.middleClickMarginY = middleClickMarginY ?? this.middleClickMarginY;
         }
 
         private bool isHorizontalLocked { get { return (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt) || (lockHorizontalAxis)); } }
@@ -394,7 +400,7 @@ namespace ScottPlot
                 }
                 else
                 {
-                    plt.AxisAuto();
+                    plt.AxisAuto(middleClickMarginX, middleClickMarginY);
                     AxisChanged?.Invoke(null, null);
                 }
             }

@@ -7,6 +7,7 @@
 * Modify `Tools.Log10()` to return `0` instead of `NaN`, improving automatic axis limit detection (#376, #377) _Thanks @Benny121221_
 * WpfPlotViewer and FormsPlotViewer launch in center of parent window (#378)
 * Improve reliability of `Plot.AxisAutoX()` and `Plot.AxisAutoY()` (#382)
+* The `Configure()` method of FormsPlot and WpfPlot controls now have `middleClickMarginX` and `middleClickMarginY` arguments which define horizontal and vertical auto-axis margin used for middle-clicking. Setting horizontal margin to 0 is typical when plotting signals. (#383)
 
 ## ScottPlot 4.0.31
 * Created `Plot.PlotBarGroups()` for easier construction of grouped bar plots from 2D data (#367) _Thanks @Benny121221_
