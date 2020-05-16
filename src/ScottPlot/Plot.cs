@@ -791,7 +791,7 @@ namespace ScottPlot
             settings.plottables.Add(stepPlot);
             return stepPlot;
         }
-        public PlottableSignalXY PlotSignal(
+        public PlottableSignalXY PlotSignalXY(
             double[] xs,
             double[] ys,
             Color? color = null,

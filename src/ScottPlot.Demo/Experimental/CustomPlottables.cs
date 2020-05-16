@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace ScottPlot.Demo.Experimental
@@ -27,58 +26,6 @@ namespace ScottPlot.Demo.Experimental
                 // add the custom plottable to the list of plottables like this
                 List<Plottable> plottables = plt.GetPlottables();
                 plottables.Add(customPlottable);
-            }
-        }
-        public class GappedSignal : PlotDemo, IPlotDemo
-        {
-            public string name { get; } = "SignalWithGaps";
-            public string description { get; } = "Signal with not evently spaced data";
-
-            public void Render(Plot plt)
-            {
-                Random rand = new Random(0);
-                int pointCount = 1_000_000;
-
-                double[] sine = ScottPlot.DataGen.Sin(pointCount, 3);
-                double[] noise = ScottPlot.DataGen.RandomNormal(rand, pointCount, 0, 0.5);
-
-                double[] ys = sine.Zip(noise, (s, n) => s + n).ToArray();
-
-                double[] xs = Enumerable.Range(0, pointCount)
-                    .Select(x => (double)x)
-                    .Select(x => x > 500_000 ? x + 1_000_000 : x)
-                    .Select(x => x > 200_000 ? x + 100_000 : x)
-                    .ToArray();
-
-                plt.PlotSignal(xs, ys);
-            }
-        }
-        public class SignalWithDifferentDensity : PlotDemo, IPlotDemo
-        {
-            public string name { get; } = "DifferentDensity";
-            public string description { get; } = "Signal with low and high density data rendered together";
-
-            public void Render(Plot plt)
-            {
-                Random rand = new Random(0);
-                int pointCount = 1_000_000;
-
-                double[] sine = ScottPlot.DataGen.Sin(pointCount, 3);
-                double[] noise = ScottPlot.DataGen.RandomNormal(rand, pointCount, 0, 0.5);
-
-                double[] ys = sine.Zip(noise, (s, n) => s + n).ToArray();
-
-                double[] xs = new double[pointCount];
-                double currentX = 0;
-                for (int i = 0; i < pointCount; i++)
-                {
-                    if ((i % 100000) < 10)
-                        currentX += 10;
-                    else
-                        currentX += 0.0001;
-                    xs[i] = currentX;
-                }
-                plt.PlotSignal(xs, ys);
             }
         }
     }
