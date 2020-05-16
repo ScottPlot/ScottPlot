@@ -2,6 +2,7 @@
 
 ## ScottPlot 4.0.32
 * User controls now have a `GetMouseCoordinates()` method which returns the DPI-aware position of the mouse in graph coordinates (#379, #380) _Thanks @Benny121221_
+* Default grid color was lightened in the user controls to match the default style (#372)
 
 ## ScottPlot 4.0.31
 * Created `Plot.PlotBarGroups()` for easier construction of grouped bar plots from 2D data (#367) _Thanks @Benny121221_

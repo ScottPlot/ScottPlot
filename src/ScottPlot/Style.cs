@@ -163,7 +163,7 @@ namespace ScottPlot
                     existingPlot.Style(
                         figBg: SystemColors.Control,
                         dataBg: Color.White,
-                        grid: Color.LightGray,
+                        grid: ColorTranslator.FromHtml("#efefef"),
                         tick: Color.Black,
                         label: Color.Black,
                         title: Color.Black
@@ -188,7 +188,6 @@ namespace ScottPlot
                         figBg: Color.White,
                         dataBg: Color.White,
                         grid: ColorTranslator.FromHtml("#efefef"),
-                        //grid: Color.LightGray,
                         tick: Color.Black,
                         label: Color.Black,
                         title: Color.Black
