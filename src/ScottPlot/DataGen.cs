@@ -17,11 +17,11 @@ namespace ScottPlot
             return ys;
         }
 
-        public static double[] Sin(double[] xs)
+        public static double[] Sin(double[] xs, double mult = 1)
         {
             double[] ys = new double[xs.Length];
             for (int i = 0; i < xs.Length; i++)
-                ys[i] = Math.Sin(xs[i]);
+                ys[i] = Math.Sin(xs[i]) * mult;
             return ys;
         }
 
