@@ -17,6 +17,11 @@ namespace FormsPlotSandbox
             InitializeComponent();
         }
 
+        private void FormMenu_Load(object sender, EventArgs e)
+        {
+            //button1_Click(null, null);
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
             new FormSandbox().ShowDialog();
@@ -25,6 +30,11 @@ namespace FormsPlotSandbox
         private void button2_Click(object sender, EventArgs e)
         {
             new FormSlowPan().ShowDialog();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            new FormMouse().ShowDialog();
         }
     }
 }
