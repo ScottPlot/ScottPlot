@@ -22,7 +22,9 @@ namespace ScottPlot
             if (xs.Length != ys.Length)
                 throw new ArgumentException("Xs and Ys must have same length");
 
-            // TODO: should XS be scanned here to ensure they are all in ascending order?
+            for (int i = 1; i < xs.Length; i++)
+                if (xs[i] < xs[i - 1])
+                    throw new ArgumentException("Xs must only contain ascending values");
 
             this.xs = xs;
         }
