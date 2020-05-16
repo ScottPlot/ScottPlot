@@ -1355,11 +1355,12 @@ namespace ScottPlot
             bool expandOnly = false
             )
         {
-            double oldY1 = settings.axes.y.min;
-            double oldY2 = settings.axes.y.max;
-            AxisAuto(horizontalMargin: margin, xExpandOnly: expandOnly);
-            Axis(y1: oldY1, y2: oldY2);
-            return settings.axes.limits;
+            if (settings.axes.hasBeenSet == false)
+                AxisAuto();
+
+            double[] originalLimits = Axis();
+            double[] newLimits = AxisAuto(horizontalMargin: margin, xExpandOnly: expandOnly);
+            return Axis(newLimits[0], newLimits[1], originalLimits[2], originalLimits[3]);
         }
 
         public double[] AxisAutoY(
@@ -1367,11 +1368,12 @@ namespace ScottPlot
             bool expandOnly = false
             )
         {
-            double oldX1 = settings.axes.x.min;
-            double oldX2 = settings.axes.x.max;
-            AxisAuto(verticalMargin: margin, yExpandOnly: expandOnly);
-            Axis(x1: oldX1, x2: oldX2);
-            return settings.axes.limits;
+            if (settings.axes.hasBeenSet == false)
+                AxisAuto();
+
+            double[] originalLimits = Axis();
+            double[] newLimits = AxisAuto(verticalMargin: margin, yExpandOnly: expandOnly);
+            return Axis(originalLimits[0], originalLimits[1], newLimits[2], newLimits[3]);
         }
 
         public double[] AxisZoom(
