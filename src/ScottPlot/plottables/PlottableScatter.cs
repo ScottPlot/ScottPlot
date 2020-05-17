@@ -189,10 +189,12 @@ namespace ScottPlot
                 if (stepDisplay)
                 {
                     List<PointF> pointsStep = new List<PointF>(points.Count * 2);
-                    for (int i = 0; i < points.Count; i++)
-                        pointsStep[i * 2] = points[i];
                     for (int i = 0; i < points.Count - 1; i++)
-                        pointsStep[i * 2 + 1] = new PointF(points[i + 1].X, points[i].Y);
+                    {
+                        pointsStep.Add(points[i]);
+                        pointsStep.Add(new PointF(points[i + 1].X, points[i].Y));
+                    }
+                    pointsStep.Add(points[points.Count - 1]);
                     settings.gfxData.DrawLines(penLine, pointsStep.ToArray());
                 }
                 else
