@@ -26,8 +26,9 @@ namespace ScottPlot
         private int densityLevelCount = 0;
         public Color color;
         public string label;
+        public LineStyle lineStyle;
 
-        public PlottableSignal(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, bool useParallel, Color[] colorByDensity, int maxRenderIndex)
+        public PlottableSignal(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, bool useParallel, Color[] colorByDensity, int maxRenderIndex, LineStyle lineStyle)
         {
             if (ys == null)
                 throw new Exception("Y data cannot be null");
@@ -45,6 +46,7 @@ namespace ScottPlot
             if ((maxRenderIndex > ys.Length - 1) || maxRenderIndex < 0)
                 throw new ArgumentException("maxRenderIndex must be a valid index for ys[]");
             this.maxRenderIndex = maxRenderIndex;
+            this.lineStyle = lineStyle;
             brush = new SolidBrush(color);
             pen = new Pen(color, (float)lineWidth)
             {
@@ -390,10 +392,12 @@ namespace ScottPlot
             // use different rendering methods based on how dense the data is on screen
             if ((dataWidthPx <= 1) || (dataWidthPx2 <= 1))
             {
+                pen.DashPattern = StyleTools.DashPattern(lineStyle);
                 RenderSingleLine(settings);
             }
             else if (pointsPerPixelColumn > 1)
             {
+                pen.DashPattern = StyleTools.DashPattern(LineStyle.Solid);
                 if (densityLevelCount > 0 && pointsPerPixelColumn > densityLevelCount)
                 {
                     if (useParallel)
@@ -411,6 +415,7 @@ namespace ScottPlot
             }
             else
             {
+                pen.DashPattern = StyleTools.DashPattern(lineStyle);
                 RenderLowDensity(settings, visibleIndex1, visibleIndex2);
             }
         }

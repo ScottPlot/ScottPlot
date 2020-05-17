@@ -34,8 +34,9 @@ namespace ScottPlot.Demo.PlotTypes
 
                 plt.Title($"Styled Signal Plot");
                 plt.PlotSignal(ys, yOffset: 40, label: "default");
-                plt.PlotSignal(ys, yOffset: 20, color: Color.Magenta, label: "pink");
-                plt.PlotSignal(ys, yOffset: 00, lineWidth: 3, label: "thick");
+                plt.PlotSignal(ys, yOffset: 20, label: "pink dashed",
+                    color: Color.Magenta, lineStyle: LineStyle.Dash);
+                plt.PlotSignal(ys, yOffset: 00, lineWidth: 3, label: "thick solid");
                 plt.Legend();
             }
         }

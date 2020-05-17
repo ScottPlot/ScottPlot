@@ -10,8 +10,8 @@ namespace ScottPlot
     public class PlottableSignalXY : PlottableSignal
     {
         public double[] xs;
-        public PlottableSignalXY(double[] xs, double[] ys, Color color, double lineWidth, double markerSize, string label, bool useParallel, int maxRenderIndex)
-            : base(ys, 1, 0, 0, color, lineWidth, markerSize, label, useParallel, null, maxRenderIndex)
+        public PlottableSignalXY(double[] xs, double[] ys, Color color, double lineWidth, double markerSize, string label, bool useParallel, int maxRenderIndex, LineStyle lineStyle)
+            : base(ys, 1, 0, 0, color, lineWidth, markerSize, label, useParallel, null, maxRenderIndex, lineStyle)
         {
             if ((xs == null) || (ys == null))
                 throw new ArgumentException("X and Y data cannot be null");
