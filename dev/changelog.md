@@ -13,6 +13,7 @@
 * Improved rendering of very small candlesticks and OHLCs in financial plots
 * Labeled plottables now display their label in the ToString() output. This is useful when viewing plottables listed in the FormsPlot settings window #391 _Thanks @Minu476_
 * Added a Statistics.Finance module with methods for creating Simple Moving Average (SMA) and Bollinger band technical indicators to Candlestick and OHLC charts. Examples are in the cookbook and demo program. (#397) _Thanks @Minu476_
+* Scatter plots, filled plots, and polygon plots now support Xs and Ys which contain `double.NaN` #396
 
 ## ScottPlot 4.0.31
 * Created `Plot.PlotBarGroups()` for easier construction of grouped bar plots from 2D data (#367) _Thanks @Benny121221_
