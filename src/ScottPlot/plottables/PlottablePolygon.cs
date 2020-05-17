@@ -1,6 +1,7 @@
 ﻿using ScottPlot.Config;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 
 namespace ScottPlot
@@ -85,9 +86,19 @@ namespace ScottPlot
 
         public override void Render(Settings settings)
         {
-            var points = new System.Drawing.PointF[xs.Length];
+            var pointList = new List<PointF>(xs.Length);
             for (int i = 0; i < xs.Length; i++)
-                points[i] = new System.Drawing.PointF((float)settings.GetPixelX(xs[i]), (float)settings.GetPixelY(ys[i]));
+            {
+                if (double.IsNaN(xs[i]) || double.IsNaN(ys[i]))
+                    continue;
+
+                var thisPoint = new PointF(
+                    x: (float)settings.GetPixelX(xs[i]),
+                    y: (float)settings.GetPixelY(ys[i]));
+
+                pointList.Add(thisPoint);
+            }
+            PointF[] points = pointList.ToArray();
 
             if (fill)
                 settings.gfxData.FillPolygon(brush, points);
