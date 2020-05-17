@@ -1,4 +1,4 @@
-# ScottPlot :chart_with_upwards_trend:
+# ScottPlot
 
 [![](https://img.shields.io/azure-devops/build/swharden/swharden/2?label=Build&logo=azure%20pipelines)](https://dev.azure.com/swharden/swharden/_build/latest?definitionId=2&branchName=master)
 [![](https://img.shields.io/nuget/dt/ScottPlot?color=004880&label=Installs&logo=nuget)](https://www.nuget.org/packages/ScottPlot/)
@@ -42,15 +42,12 @@ To use the latest ScottPlot source code in your application, download this repos
 
 ### Contribute to ScottPlot
 
-#### If you like ScottPlot, give it a star!
-If you want to support this project but don't have a feature request or code modification to bring forward yet, you can still support us by following this project and giving it a star!
+* **If you like ScottPlot, give it a star!** If you want to support this project but don't have a feature request or code modification to bring forward yet, you can still support us by following this project and giving it a star!
 
-#### Suggest a Feature
-Review the latest [ScottPlot Cookbook]() to see if the feature you want already exists. If not, open a [feature request issue](https://github.com/swharden/ScottPlot/issues).
+* **To Suggest a Feature:** Review the latest [ScottPlot Cookbook]() to ensure the feature doesn't already already exist, then [open an issue](https://github.com/swharden/ScottPlot/issues) and describe your idea.
 
-#### Create a Pull Request
-Developers will find useful resources in [contributing.md](CONTRIBUTING.md)
+* **Create a Pull Request:** Developers wishing to contribute directly to this project are encouraged to review [contributing.md](CONTRIBUTING.md)
 
 ### About ScottPlot
 
-ScottPlot was created by [Scott Harden](http://www.SWHarden.com/) ([Harden Technologies, LLC](http://tech.swharden.com)) with many contributions from the open source user community.
+ScottPlot was created by [Scott Harden](http://www.SWHarden.com/) ([Harden Technologies, LLC](http://tech.swharden.com)) with many contributions from the open source user community. It is provided under the permissive [MIT license](LICENSE).
