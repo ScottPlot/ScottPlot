@@ -76,7 +76,7 @@ namespace ScottPlot
 
             PointAfterDisplayedIndex = CurrentIndex;
 
-            IntervalValues[] yParams = CalcIntervalParams(xBordersIndexes, settings);
+            IntervalValues[] yParams = CalcIntervalParams(xBordersIndexes, settings, calculateNeighborDistances: false);
             List<PointF> PointsToDraw = GetPointsToDraw(yParams, PointBeforeDisplayedIndex, PointAfterDisplayedIndex, settings);
 
             // Draw lines
@@ -87,37 +87,28 @@ namespace ScottPlot
                     settings.GetPixel(xs[0], ys.Min()),
                     settings.GetPixel(xs[0], ys.Max()));
 
-            FindNeigborDistances(yParams);
-
             // draw markers
-            foreach (var pixelInterval in yParams)
+            double viewWidthPx = settings.axes.x.span * settings.xAxisScale;
+            float markerPxRadius = (float)(.3 * viewWidthPx / PointsToDraw.Count);
+            markerPxRadius = Math.Min(markerPxRadius, markerSize / 2);
+            if (markerPxRadius > .3)
             {
-                if (pixelInterval?.pointsCount == 1) // single point in pixel
+                foreach (PointF pt in PointsToDraw)
                 {
-                    // draw marker only then has free space to left and right
-                    // TODO smooth animation can be implemented like in Signal
-                    if (markerSize > 0)
-                    {
-                        float pixelsBetweenPoints = Math.Min(pixelInterval.distanceToLeftNeighbor, pixelInterval.distanceToRightNeighbor);
-                        float zoomTransitionScale = Math.Min(1, pixelsBetweenPoints / 10);
-                        float markerPxDiameter = markerSize * zoomTransitionScale;
-                        float markerPxRadius = markerPxDiameter / 2;
-                        if (markerPxRadius > .25)
-                        {
-                            // adjust marker offset to improve rendering on Linux and MacOS
-                            float markerOffsetX = (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) ? 0 : 1;
+                    // adjust marker offset to improve rendering on Linux and MacOS
+                    float markerOffsetX = (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) ? 0 : 1;
 
-                            settings.gfxData.FillEllipse(brush: brush,
-                                  x: pixelInterval.pixelIndex - markerPxRadius + markerOffsetX,
-                                  y: (int)settings.GetPixelY(pixelInterval.yStart) - markerPxRadius,
-                                    width: markerPxDiameter, height: markerPxDiameter);
-                        };
-                    }
+                    settings.gfxData.FillEllipse(brush,
+                          x: pt.X - markerPxRadius + markerOffsetX,
+                          y: pt.Y - markerPxRadius,
+                          width: markerPxRadius * 2,
+                          height: markerPxRadius * 2);
                 }
             }
         }
 
-        private IntervalValues[] CalcIntervalParams(int[] xBordersIndexes, Settings settings)
+        // return inverval values (each representing one displayed pixel column)
+        private IntervalValues[] CalcIntervalParams(int[] xBordersIndexes, Settings settings, bool calculateNeighborDistances)
         {
             IntervalValues[] yParams = new IntervalValues[settings.dataSize.Width];
             for (int i = 0; i < settings.dataSize.Width; i++)
@@ -147,6 +138,34 @@ namespace ScottPlot
                     pointsCount = xBordersIndexes[i + 1] - xBordersIndexes[i],
                     pixelIndex = i,
                 };
+            }
+
+            if (calculateNeighborDistances)
+            {
+                const int distanceOnEdges = 100; // using Int.Max can produce overflow
+
+                int Counter = distanceOnEdges;
+                for (int i = 0; i < yParams.Length; i++)
+                {
+                    if (yParams[i] == null)
+                        Counter++;
+                    else
+                    {
+                        yParams[i].distanceToLeftNeighbor = Counter;
+                        Counter = 1;
+                    }
+                }
+                Counter = distanceOnEdges;
+                for (int i = yParams.Length - 1; i > 0; i--)
+                {
+                    if (yParams[i] == null)
+                        Counter++;
+                    else
+                    {
+                        yParams[i].distanceToRightNeighbor = Counter;
+                        Counter = 1;
+                    }
+                }
             }
 
             return yParams;
@@ -193,34 +212,6 @@ namespace ScottPlot
             }
 
             return PointsToDraw;
-        }
-
-        private static void FindNeigborDistances(IntervalValues[] yParams)
-        {
-            const int distanceOnEdges = 100; // using Int.Max can produce overflow
-
-            int Counter = distanceOnEdges;
-            for (int i = 0; i < yParams.Length; i++)
-            {
-                if (yParams[i] == null)
-                    Counter++;
-                else
-                {
-                    yParams[i].distanceToLeftNeighbor = Counter;
-                    Counter = 1;
-                }
-            }
-            Counter = distanceOnEdges;
-            for (int i = yParams.Length - 1; i > 0; i--)
-            {
-                if (yParams[i] == null)
-                    Counter++;
-                else
-                {
-                    yParams[i].distanceToRightNeighbor = Counter;
-                    Counter = 1;
-                }
-            }
         }
     }
 }
