@@ -66,7 +66,8 @@ namespace ScottPlot
 
         public override string ToString()
         {
-            return $"PlottableErrorBars with {GetPointCount()} points";
+            string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
+            return $"PlottableErrorBars{label} with {GetPointCount()} points";
         }
 
         public override Config.AxisLimits2D GetLimits()

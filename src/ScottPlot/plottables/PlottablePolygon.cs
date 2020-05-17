@@ -48,7 +48,8 @@ namespace ScottPlot
 
         public override string ToString()
         {
-            return $"PlottablePolygon with {GetPointCount()} points";
+            string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
+            return $"PlottablePolygon{label} with {GetPointCount()} points";
         }
 
         public override int GetPointCount()
