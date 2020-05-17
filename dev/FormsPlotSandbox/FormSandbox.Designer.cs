@@ -39,15 +39,17 @@
             this.formsPlot1.Name = "formsPlot1";
             this.formsPlot1.Size = new System.Drawing.Size(453, 262);
             this.formsPlot1.TabIndex = 0;
+            this.formsPlot1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.formsPlot1_MouseUp);
             // 
-            // Form1
+            // FormSandbox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(453, 262);
             this.Controls.Add(this.formsPlot1);
-            this.Name = "Form1";
+            this.Name = "FormSandbox";
             this.Text = "ScottPlot Sandbox - Windows Forms";
+            this.Load += new System.EventHandler(this.FormSandbox_Load);
             this.ResumeLayout(false);
 
         }
