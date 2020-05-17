@@ -9,6 +9,7 @@ namespace ScottPlot.Statistics
         /// <summary>
         /// Simple moving average
         /// </summary>
+        /// <param name="period">number of values to use for each calculation</param>
         public static double[] SMA(double[] values, int period)
         {
             if (period < 2)
@@ -39,6 +40,7 @@ namespace ScottPlot.Statistics
         /// <summary>
         /// Simple moving standard deviation
         /// </summary>
+        /// <param name="period">number of values to use for each calculation</param>
         public static double[] SMStDev(double[] values, int period)
         {
             if (period < 2)
@@ -68,6 +70,7 @@ namespace ScottPlot.Statistics
         /// <summary>
         /// Simple moving average
         /// </summary>
+        /// <param name="period">number of OHLCs to use for each calculation</param>
         public static double[] SMA(OHLC[] ohlcs, int period)
         {
             double[] closingPrices = new double[ohlcs.Length];
@@ -79,7 +82,9 @@ namespace ScottPlot.Statistics
         /// <summary>
         /// Bollinger Bands
         /// </summary>
-        public static (double[] sma, double[] lower, double[] upper) Bollinger(double[] values, int period = 20)
+        /// <param name="period">number of OHLCs to use for each calculation</param>
+        /// <param name="multiplier">number of standard deviations from the mean</param>
+        public static (double[] sma, double[] lower, double[] upper) Bollinger(double[] values, int period = 20, double multiplier = 2)
         {
             double[] sma = SMA(values, period);
             double[] smstd = SMStDev(values, period);
@@ -88,8 +93,8 @@ namespace ScottPlot.Statistics
             double[] bolL = new double[values.Length];
             for (int i = 0; i < values.Length; i++)
             {
-                bolL[i] = sma[i] - 2 * smstd[i];
-                bolU[i] = sma[i] + 2 * smstd[i];
+                bolL[i] = sma[i] - multiplier * smstd[i];
+                bolU[i] = sma[i] + multiplier * smstd[i];
             }
 
             return (sma, bolL, bolU);
@@ -98,12 +103,14 @@ namespace ScottPlot.Statistics
         /// <summary>
         /// Bollinger Bands
         /// </summary>
-        public static (double[] sma, double[] lower, double[] upper) Bollinger(OHLC[] ohlcs, int period = 20)
+        /// <param name="period">number of OHLCs to use for each calculation</param>
+        /// <param name="multiplier">number of standard deviations from the mean</param>
+        public static (double[] sma, double[] lower, double[] upper) Bollinger(OHLC[] ohlcs, int period = 20, double multiplier = 2)
         {
             double[] closingPrices = new double[ohlcs.Length];
             for (int i = 0; i < ohlcs.Length; i++)
                 closingPrices[i] = ohlcs[i].close;
-            return Bollinger(closingPrices, period);
+            return Bollinger(closingPrices, period, multiplier);
         }
     }
 }
