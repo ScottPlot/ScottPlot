@@ -171,7 +171,7 @@ namespace ScottPlot
             return data;
         }
 
-        public static OHLC[] RandomStockPrices(Random rand, int pointCount, double mult = 10, double startingPrice = 123.45, int deltaMinutes = 0, int deltaDays = 1)
+        public static OHLC[] RandomStockPrices(Random rand, int pointCount, double mult = 10, double startingPrice = 123.45, int deltaMinutes = 0, int deltaDays = 1, bool sequential = false)
         {
             if (rand is null)
                 rand = new Random(0);
@@ -206,7 +206,10 @@ namespace ScottPlot
                         dt = dt.AddDays(1);
                 }
 
-                ohlcs[i] = new ScottPlot.OHLC(open, high, low, close, dt);
+                if (sequential)
+                    ohlcs[i] = new OHLC(open, high, low, close, i);
+                else
+                    ohlcs[i] = new OHLC(open, high, low, close, dt);
             }
 
             return ohlcs;
