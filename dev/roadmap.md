@@ -12,6 +12,8 @@ These modifications can be made without breaking existing code, so they are suit
 
 * **Refactor markers** ([#386](https://github.com/swharden/ScottPlot/pull/386)) to be classes instead of defined in an enum. Markers will implement `IMarker`, live in `ScottPlot.Markers`, markers have the ability to draw themselves. This makes it easy to switch between markers and even create custom markers that work for all plot types without modifying any ScottPlot code.
 
+* **Refactor axis and ticks** to be their own plottables. This will do a better job to encapsulate tick code, and offer a means to create experimental tick systems ([#394](https://github.com/swharden/ScottPlot/issues/394)). It will also pave the way for multiple axis support such as dual-Y-axes ([#180](https://github.com/swharden/ScottPlot/issues/180)).
+
 * **Add a right-click menu to WpfPlot** (like FormsPlot's)
 
 * **Create a Finance Demo** (not a cookbook example, but a full demo program) to consolidate common finance-related tasks in one program. This demo should describe how to add live incoming data #395
