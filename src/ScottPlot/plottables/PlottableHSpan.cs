@@ -33,7 +33,8 @@ namespace ScottPlot
 
         public override string ToString()
         {
-            return $"PlottableVSpan from X={position1} to X={position2}";
+            string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
+            return $"PlottableVSpan{label} from X={position1} to X={position2}";
         }
 
         public override AxisLimits2D GetLimits()

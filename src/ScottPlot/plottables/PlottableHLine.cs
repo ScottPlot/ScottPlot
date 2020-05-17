@@ -38,7 +38,8 @@ namespace ScottPlot
 
         public override string ToString()
         {
-            return $"PlottableHLine (Horizontal) at {position}";
+            string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
+            return $"PlottableHLine{label} at Y={position}";
         }
 
         public override AxisLimits2D GetLimits()

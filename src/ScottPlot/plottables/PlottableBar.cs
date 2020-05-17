@@ -202,7 +202,8 @@ namespace ScottPlot
 
         public override string ToString()
         {
-            return $"PlottableBar with {GetPointCount()} points";
+            string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
+            return $"PlottableBar{label} with {GetPointCount()} points";
         }
 
         public override int GetPointCount()

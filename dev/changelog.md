@@ -11,6 +11,7 @@
 * `Plot.Grid()` and `Plot.Ticks()` now have a `snapToNearestPixel` argument which controls whether these lines appear anti-aliased or not. For static images non-anti-aliased grid lines and tick marks look best, but for continuously-panning plots anti-aliased lines look better. The default behavior is to enable snapping to the nearest pixel, consistent with previous releases. (#384)
 * Mouse events (MouseDown, MouseMove, etc.) are now properly forwarded to the FormsPlot control (#390) _Thanks @Minu476_
 * Improved rendering of very small candlesticks and OHLCs in financial plots
+* Labeled plottables now display their label in the ToString() output. This is useful when viewing plottables listed in the FormsPlot settings window #391 _Thanks @Minu476_
 
 ## ScottPlot 4.0.31
 * Created `Plot.PlotBarGroups()` for easier construction of grouped bar plots from 2D data (#367) _Thanks @Benny121221_

@@ -92,7 +92,8 @@ namespace ScottPlot
 
         public override string ToString()
         {
-            return $"PlottableScatter with {GetPointCount()} points";
+            string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
+            return $"PlottableScatter{label} with {GetPointCount()} points";
         }
 
         public override Config.AxisLimits2D GetLimits()

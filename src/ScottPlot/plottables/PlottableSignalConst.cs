@@ -519,7 +519,8 @@ namespace ScottPlot
 
         public override string ToString()
         {
-            return $"PlottableSignalConst with {GetPointCount()} points ({typeof(T).Name}), trees {(TreesReady ? "" : "not")} calculated";
+            string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
+            return $"PlottableSignalConst{label} with {GetPointCount()} points ({typeof(T).Name}), trees {(TreesReady ? "" : "not")} calculated";
         }
 
         public void SaveCSV(string filePath, string delimiter = ", ", string separator = "\n")

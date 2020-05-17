@@ -37,7 +37,8 @@ namespace ScottPlot
 
         public override string ToString()
         {
-            return $"PlottableVLine (Vertical) at {position}";
+            string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
+            return $"PlottableVLine{label} at X={position}";
         }
 
         public override AxisLimits2D GetLimits()
