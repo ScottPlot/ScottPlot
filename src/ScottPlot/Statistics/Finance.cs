@@ -6,6 +6,9 @@ namespace ScottPlot.Statistics
 {
     public static class Finance
     {
+        /// <summary>
+        /// Simple moving average
+        /// </summary>
         public static double[] SMA(double[] values, int period)
         {
             if (period < 2)
@@ -20,26 +23,87 @@ namespace ScottPlot.Statistics
                 if (i < period)
                 {
                     sma[i] = double.NaN;
-                    continue;
                 }
                 else
                 {
-                    double sum = 0;
-                    for (int j = 0; j < period; j++)
-                        sum += values[i - j];
-                    sma[i] = sum / period;
-                    Console.WriteLine(sma[i]);
+                    // TODO: could optimize this for perforance by not copying
+                    // to do this create a Common.Mean overload
+                    var periodValues = new double[period];
+                    Array.Copy(values, i - period, periodValues, 0, period);
+                    sma[i] = Common.Mean(periodValues);
                 }
             }
             return sma;
         }
 
+        /// <summary>
+        /// Simple moving standard deviation
+        /// </summary>
+        public static double[] SMStDev(double[] values, int period)
+        {
+            if (period < 2)
+                throw new ArgumentException("period must be 2 or greater");
+
+            if (period > values.Length)
+                throw new ArgumentException("period cannot be longer than number of values");
+
+            double[] stDev = new double[values.Length];
+            for (int i = 0; i < values.Length; i++)
+            {
+                if (i < period)
+                {
+                    stDev[i] = double.NaN;
+                    continue;
+                }
+                else
+                {
+                    var periodValues = new double[period];
+                    Array.Copy(values, i - period, periodValues, 0, period);
+                    stDev[i] = Common.StDev(periodValues);
+                }
+            }
+            return stDev;
+        }
+
+        /// <summary>
+        /// Simple moving average
+        /// </summary>
         public static double[] SMA(OHLC[] ohlcs, int period)
         {
             double[] closingPrices = new double[ohlcs.Length];
             for (int i = 0; i < ohlcs.Length; i++)
                 closingPrices[i] = ohlcs[i].close;
             return SMA(closingPrices, period);
+        }
+
+        /// <summary>
+        /// Bollinger Bands
+        /// </summary>
+        public static (double[] sma, double[] lower, double[] upper) Bollinger(double[] values, int period = 20)
+        {
+            double[] sma = SMA(values, period);
+            double[] smstd = SMStDev(values, period);
+
+            double[] bolU = new double[values.Length];
+            double[] bolL = new double[values.Length];
+            for (int i = 0; i < values.Length; i++)
+            {
+                bolL[i] = sma[i] - 2 * smstd[i];
+                bolU[i] = sma[i] + 2 * smstd[i];
+            }
+
+            return (sma, bolL, bolU);
+        }
+
+        /// <summary>
+        /// Bollinger Bands
+        /// </summary>
+        public static (double[] sma, double[] lower, double[] upper) Bollinger(OHLC[] ohlcs, int period = 20)
+        {
+            double[] closingPrices = new double[ohlcs.Length];
+            for (int i = 0; i < ohlcs.Length; i++)
+                closingPrices[i] = ohlcs[i].close;
+            return Bollinger(closingPrices, period);
         }
     }
 }
