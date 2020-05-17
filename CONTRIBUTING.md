@@ -46,3 +46,7 @@ _You can model your demonstration code after [Polygon.cs](https://github.com/swh
 * **Step 3:** Make a pull request. The open source community will evaluate your new plottable and provide feedback. The pull request page will be used to evaluate and discuss the new plottable.\
 \
 After development and modification of the new plottable has finished, a ScottPlot administrator will merge the pull request, move the plottable from `/tests` to `/ScottPlot/plottables`, add a public method in the `ScottPlot.Plot` module, and create cookbook examples based on the test code.
+
+## ScottPlot Roadmap
+
+Large-scale future goals for this project are outlined on [dev/roadmap.md](dev/roadmap.md)
