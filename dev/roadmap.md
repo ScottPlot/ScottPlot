@@ -14,9 +14,11 @@ These modifications can be made without breaking existing code, so they are suit
 
 * **Add a right-click menu to WpfPlot** (like FormsPlot's)
 
+* **Create a Finance Demo** (not a cookbook example, but a full demo program) to consolidate common finance-related tasks in one program.
+
 * **Chart control** ([#358](https://github.com/swharden/ScottPlot/issues/358)) - `FormsChart` would be an alternative to `FormsPlot` which presents a chart-style interface more suitable for data logging applications.
 
-* **Create a Finance Demo** (not a cookbook example, but a full demo program) to consolidate common finance-related tasks in one program.
+* **Finance Control** - the general purpose chart control (`FormsPlot` and `WpfPlot`) have many features not suitable for finance charts, and vice-versa. A dedicated control for Candlestick / OHLC data could be really useful. Mouse interaction could be simplified for zooming around and reporting financial data under the mouse.
 
 ### Major 
 
