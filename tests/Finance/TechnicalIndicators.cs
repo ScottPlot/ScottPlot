@@ -60,7 +60,7 @@ namespace ScottPlotTests.Finance
         }
 
         [Test]
-        public void Test_Bollinger_Bollinger()
+        public void Test_Bollinger_Bands()
         {
             Random rand = new Random(0);
             double[] xs = DataGen.Consecutive(150);
@@ -73,9 +73,10 @@ namespace ScottPlotTests.Finance
 
             var plt = new ScottPlot.Plot(600, 400);
             plt.PlotCandlestick(ohlcs);
-            plt.PlotScatter(xs, bolL, color: Color.Blue, markerSize: 0);
-            plt.PlotScatter(xs, bolU, color: Color.Blue, markerSize: 0);
-            plt.PlotScatter(xs, sma, color: Color.Blue, markerSize: 0, lineStyle: LineStyle.Dash);
+            plt.PlotFill(xs, bolL, xs, bolU, fillColor: Color.Blue, fillAlpha: .1);
+            plt.PlotScatter(xs, bolL, color: Color.Navy, markerSize: 0);
+            plt.PlotScatter(xs, bolU, color: Color.Navy, markerSize: 0);
+            plt.PlotScatter(xs, sma, color: Color.Navy, markerSize: 0, lineStyle: LineStyle.Dash);
 
             plt.Title("Bollinger Bands");
             plt.YLabel("Price");
