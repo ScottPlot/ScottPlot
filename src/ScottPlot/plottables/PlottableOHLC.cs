@@ -103,7 +103,7 @@ namespace ScottPlot
 
                 Pen pen = (ohlc.closedHigher) ? penUp : penDown;
                 Brush brush = (ohlc.closedHigher) ? brushUp : brushDown;
-                pen.Width = 2;
+                pen.Width = (boxWidth >= 2) ? 2 : 1;
 
                 // the wick below the box
                 PointF wickLowBot = settings.GetPixel(ohlcTime, ohlc.low);
@@ -142,7 +142,7 @@ namespace ScottPlot
                     boxWidth = (float)(ohlc.timeSpan * settings.xAxisScale / 2 * fractionalTickWidth);
 
                 Pen pen = (ohlc.closedHigher) ? penUp : penDown;
-                pen.Width = 2;
+                pen.Width = (boxWidth >= 2) ? 2 : 1;
 
                 // the main line
                 PointF wickTop = settings.GetPixel(ohlcTime, ohlc.low);
