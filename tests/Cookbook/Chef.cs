@@ -22,7 +22,10 @@ namespace ScottPlot.Tests.Cookbook
 
             reportGen.ClearFolders();
             foreach (IPlotDemo recipe in reportGen.recipes)
+            {
+                Console.WriteLine($"Generating {recipe}...");
                 reportGen.CreateImage(recipe);
+            }
             reportGen.MakeReports();
         }
     }
