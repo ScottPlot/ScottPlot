@@ -16,7 +16,7 @@ These modifications can be made without breaking existing code, so they are suit
 
 * **Add a right-click menu to WpfPlot** (like FormsPlot's)
 
-* **Create a Finance Demo** (not a cookbook example, but a full demo program) to consolidate common finance-related tasks in one program. This demo should describe how to add live incoming data #395
+* **Create a Finance Demo** (not a cookbook example, but a full demo program) to consolidate common finance-related tasks in one program. This demo should describe how to add live incoming data [#395](https://github.com/swharden/ScottPlot/issues/395), [#403](https://github.com/swharden/ScottPlot/issues/403)
 
 * **Chart control** ([#358](https://github.com/swharden/ScottPlot/issues/358)) - `FormsChart` would be an alternative to `FormsPlot` which presents a chart-style interface more suitable for data logging applications.
 
