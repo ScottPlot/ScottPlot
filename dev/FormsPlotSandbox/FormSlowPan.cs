@@ -53,10 +53,5 @@ namespace FormsPlotSandbox
                 figure: checkBox5.Checked,
                 data: checkBox5.Checked);
         }
-
-        private void checkBox6_CheckedChanged(object sender, EventArgs e)
-        {
-            formsPlot1.plt.GetSettings(false).misc.correctGridRenderingBug = checkBox6.Checked;
-        }
     }
 }

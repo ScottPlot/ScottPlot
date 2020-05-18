@@ -30,6 +30,5 @@ namespace ScottPlot.Config
 
         // experimental settings
         public bool useParallel = false;
-        public bool correctGridRenderingBug = true;
     }
 }
