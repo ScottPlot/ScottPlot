@@ -1,5 +1,8 @@
 # ScottPlot Changelog
 
+## ScottPlot 4.0.34
+* Improve display of `PlotSignalXY()` by not rendering markers when zoomed very far out (#402) _Thanks @gobikulandaisamy_
+
 ## ScottPlot 4.0.33
 * Force grid lines to always draw using anti-aliasing. This compensates for a bug in `System.Drawing` that may cause diagonal line artifacts to appear when the user controls were panned or zoomed. (#401, #327) _Thanks @bukkideme and @citizen3942_
 

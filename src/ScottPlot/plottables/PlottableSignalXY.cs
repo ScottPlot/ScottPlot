@@ -88,21 +88,24 @@ namespace ScottPlot
                     settings.GetPixel(xs[0], ys.Max()));
 
             // draw markers
-            double viewWidthPx = settings.axes.x.span * settings.xAxisScale;
-            float markerPxRadius = (float)(.3 * viewWidthPx / PointsToDraw.Count);
-            markerPxRadius = Math.Min(markerPxRadius, markerSize / 2);
-            if (markerPxRadius > .3)
+            if (PointsToDraw.Count > 1)
             {
-                foreach (PointF pt in PointsToDraw)
+                float dataSpanXPx = PointsToDraw[PointsToDraw.Count - 1].X - PointsToDraw[0].X;
+                float markerPxRadius = .3f * dataSpanXPx / PointsToDraw.Count;
+                markerPxRadius = Math.Min(markerPxRadius, markerSize / 2);
+                if (markerPxRadius > .3)
                 {
-                    // adjust marker offset to improve rendering on Linux and MacOS
-                    float markerOffsetX = (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) ? 0 : 1;
+                    foreach (PointF pt in PointsToDraw)
+                    {
+                        // adjust marker offset to improve rendering on Linux and MacOS
+                        float markerOffsetX = (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) ? 0 : 1;
 
-                    settings.gfxData.FillEllipse(brush,
-                          x: pt.X - markerPxRadius + markerOffsetX,
-                          y: pt.Y - markerPxRadius,
-                          width: markerPxRadius * 2,
-                          height: markerPxRadius * 2);
+                        settings.gfxData.FillEllipse(brush,
+                              x: pt.X - markerPxRadius + markerOffsetX,
+                              y: pt.Y - markerPxRadius,
+                              width: markerPxRadius * 2,
+                              height: markerPxRadius * 2);
+                    }
                 }
             }
         }
