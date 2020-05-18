@@ -52,6 +52,12 @@ namespace ScottPlot
         {
             switch (lineStyle)
             {
+                // WARNING: Don't use a solid DashPattern!
+                // A DashPattern is only used when a custom DashStyle is used.
+                // If you want to plot a solid line, use the solid DashStyle.
+                // https://github.com/swharden/ScottPlot/issues/327
+                // https://github.com/swharden/ScottPlot/issues/401
+                // TODO: create a tool to return a Pen, not pen styles.
                 case LineStyle.Solid: return new float[] { 1.0F };
                 case LineStyle.Dash: return new float[] { 8.0F, 4.0F };
                 case LineStyle.DashDot: return new float[] { 8.0F, 4.0F, 2.0F, 4.0F };
