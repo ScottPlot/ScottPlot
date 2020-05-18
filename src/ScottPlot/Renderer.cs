@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Xml;
+using System.Dynamic;
 
 namespace ScottPlot
 {
@@ -27,9 +29,19 @@ namespace ScottPlot
         {
             Pen pen = new Pen(settings.grid.color, (float)settings.grid.lineWidth) { DashPattern = StyleTools.DashPattern(settings.grid.lineStyle) };
 
-            // Fix rendering artifacts (diagnal lines) that appear when drawing lines that touch the edge of the Bitmap if anti-aliasing is off.
-            // An alternative to tilting the line is to not let the grid line touch the edge of the bitmap (withdraw it by 1px).
-            float tiltPx = (settings.misc.antiAliasData || settings.grid.snapToNearestPixel == false) ? 0 : .5f;
+            float xLeft = 0;
+            float xRight = settings.dataSize.Width;
+            float yTop = 0;
+            float yBottom = settings.dataSize.Height;
+
+            // Due to a bug in System.Drawing the drawing of perfectly straight lines is
+            // prone to rendering artifacts (diagonal lines) when anti-aliasing is off.
+            // https://github.com/swharden/ScottPlot/issues/327
+            // https://github.com/swharden/ScottPlot/issues/401
+            // The soltion is to draw grid lines with anti-aliasing on, then revert to original state.
+            var originalSmoothingMode = settings.gfxData.SmoothingMode;
+            if (settings.misc.correctGridRenderingBug)
+                settings.gfxData.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
             if (settings.grid.enableVertical)
             {
@@ -38,11 +50,14 @@ namespace ScottPlot
                     double value = settings.ticks.x.tickPositionsMajor[i];
                     double unitsFromAxisEdge = value - settings.axes.x.min;
                     double xPx = unitsFromAxisEdge * settings.xAxisScale;
+
                     if ((xPx == 0) && settings.layout.displayFrameByAxis[0])
                         continue; // don't draw a grid line 1px away from frame
+
                     if (settings.grid.snapToNearestPixel)
                         xPx = (int)xPx;
-                    settings.gfxData.DrawLine(pen, (float)xPx, 0, (float)xPx + tiltPx, settings.dataSize.Height);
+
+                    settings.gfxData.DrawLine(pen, (float)xPx, yTop, (float)xPx, yBottom);
                 }
             }
 
@@ -53,13 +68,18 @@ namespace ScottPlot
                     double value = settings.ticks.y.tickPositionsMajor[i];
                     double unitsFromAxisEdge = value - settings.axes.y.min;
                     double yPx = settings.dataSize.Height - unitsFromAxisEdge * settings.yAxisScale;
+
                     if ((yPx == 0) && settings.layout.displayFrameByAxis[2])
                         continue; // don't draw a grid line 1px away from frame
+
                     if (settings.grid.snapToNearestPixel)
                         yPx = (int)yPx;
-                    settings.gfxData.DrawLine(pen, 0, (float)yPx, settings.dataSize.Width, (float)yPx + tiltPx);
+
+                    settings.gfxData.DrawLine(pen, xLeft, (float)yPx, xRight, (float)yPx);
                 }
             }
+
+            settings.gfxData.SmoothingMode = originalSmoothingMode;
         }
 
         public static void DataPlottables(Settings settings)
