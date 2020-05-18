@@ -29,11 +29,6 @@ namespace ScottPlot
         {
             Pen pen = new Pen(settings.grid.color, (float)settings.grid.lineWidth) { DashPattern = StyleTools.DashPattern(settings.grid.lineStyle) };
 
-            float xLeft = 0;
-            float xRight = settings.dataSize.Width;
-            float yTop = 0;
-            float yBottom = settings.dataSize.Height;
-
             // Due to a bug in System.Drawing the drawing of perfectly straight lines is
             // prone to rendering artifacts (diagonal lines) when anti-aliasing is off.
             // https://github.com/swharden/ScottPlot/issues/327
@@ -51,13 +46,15 @@ namespace ScottPlot
                     double unitsFromAxisEdge = value - settings.axes.x.min;
                     double xPx = unitsFromAxisEdge * settings.xAxisScale;
 
-                    if ((xPx == 0) && settings.layout.displayFrameByAxis[0])
-                        continue; // don't draw a grid line 1px away from frame
-
                     if (settings.grid.snapToNearestPixel)
                         xPx = (int)xPx;
 
-                    settings.gfxData.DrawLine(pen, (float)xPx, yTop, (float)xPx, yBottom);
+                    if ((xPx == 0) && settings.layout.displayFrameByAxis[0])
+                        continue; // don't draw a grid line 1px away from frame
+
+                    PointF ptTop = new PointF((float)xPx, 0);
+                    PointF ptBot = new PointF((float)xPx, settings.dataSize.Height);
+                    settings.gfxData.DrawLine(pen, ptTop, ptBot);
                 }
             }
 
@@ -69,13 +66,15 @@ namespace ScottPlot
                     double unitsFromAxisEdge = value - settings.axes.y.min;
                     double yPx = settings.dataSize.Height - unitsFromAxisEdge * settings.yAxisScale;
 
-                    if ((yPx == 0) && settings.layout.displayFrameByAxis[2])
-                        continue; // don't draw a grid line 1px away from frame
-
                     if (settings.grid.snapToNearestPixel)
                         yPx = (int)yPx;
 
-                    settings.gfxData.DrawLine(pen, xLeft, (float)yPx, xRight, (float)yPx);
+                    if ((yPx == 0) && settings.layout.displayFrameByAxis[2])
+                        continue; // don't draw a grid line 1px away from frame
+
+                    PointF ptLeft = new PointF(0, (float)yPx);
+                    PointF ptRight = new PointF(settings.dataSize.Width, (float)yPx);
+                    settings.gfxData.DrawLine(pen, ptLeft, ptRight);
                 }
             }
 
