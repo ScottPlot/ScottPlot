@@ -59,5 +59,41 @@ namespace ScottPlot.Drawing
             var colorB = System.Drawing.ColorTranslator.FromHtml(hexB);
             return Mix(colorA, colorB, fracA);
         }
+
+        public static System.Drawing.Pen Pen(System.Drawing.Color color, double width = 1, LineStyle lineStyle = LineStyle.Solid, bool rounded = false)
+        {
+            var pen = new System.Drawing.Pen(color, (float)width);
+
+            if (lineStyle == LineStyle.Solid)
+            {
+                /* WARNING: Do NOT apply a solid DashPattern!
+                 * Setting DashPattern automatically sets a pen's DashStyle to custom.
+                 * Custom DashStyles are slower and can cause diagonal rendering artifacts.
+                 * Instead use the solid DashStyle.
+                 * https://github.com/swharden/ScottPlot/issues/327
+                 * https://github.com/swharden/ScottPlot/issues/401
+                 */
+                pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Solid;
+            }
+            else if (lineStyle == LineStyle.Dash)
+                pen.DashPattern = new float[] { 8.0F, 4.0F };
+            else if (lineStyle == LineStyle.DashDot)
+                pen.DashPattern = new float[] { 8.0F, 4.0F, 2.0F, 4.0F };
+            else if (lineStyle == LineStyle.DashDotDot)
+                pen.DashPattern = new float[] { 8.0F, 4.0F, 2.0F, 4.0F, 2.0F, 4.0F };
+            else if (lineStyle == LineStyle.Dot)
+                pen.DashPattern = new float[] { 2.0F, 4.0F };
+            else
+                throw new NotImplementedException("line style not supported");
+
+            if (rounded)
+            {
+                pen.StartCap = System.Drawing.Drawing2D.LineCap.Round;
+                pen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
+                pen.LineJoin = System.Drawing.Drawing2D.LineJoin.Round;
+            }
+
+            return pen;
+        }
     }
 }
