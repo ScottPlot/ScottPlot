@@ -3,6 +3,7 @@ using ScottPlot;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Text;
 
 namespace ScottPlotTests.Misc
@@ -153,12 +154,22 @@ namespace ScottPlotTests.Misc
             // prone to rendering artifacts (diagonal lines) when anti-aliasing is off.
             // https://github.com/swharden/ScottPlot/issues/327
             // https://github.com/swharden/ScottPlot/issues/401
+
             var plt = new ScottPlot.Plot(400, 300);
             plt.Grid(xSpacing: 2, ySpacing: 2, color: Color.Red);
             plt.Axis(-13, 13, -10, 10);
-            plt.GetSettings(false).misc.antiAliasData = false;
-            plt.GetSettings(false).misc.correctGridRenderingBug = false;
+
+            // create conditions to reveal rendering artifact
+            plt.AntiAlias(false, false, false);
+            plt.Grid(enableVertical: false);
+            
+            // save the figure (bmpData + bmpFigure)
             TestTools.SaveFig(plt);
+
+            // save the data bitmap too
+            string gfxFilePath = System.IO.Path.GetFullPath("diag.png");
+            plt.GetSettings(false).bmpData.Save(gfxFilePath, ImageFormat.Png);
+            Console.WriteLine($"SAVED: {gfxFilePath}");
         }
     }
 }
