@@ -46,5 +46,12 @@ namespace FormsPlotSandbox
             formsPlot1.plt.Ticks(rulerModeX: checkBox4.Checked);
             formsPlot1.plt.Ticks(rulerModeY: checkBox4.Checked);
         }
+
+        private void checkBox5_CheckedChanged(object sender, EventArgs e)
+        {
+            formsPlot1.plt.AntiAlias(
+                figure: checkBox5.Checked,
+                data: checkBox5.Checked);
+        }
     }
 }
