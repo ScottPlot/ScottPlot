@@ -1,4 +1,5 @@
-﻿using ScottPlot.Statistics;
+﻿using ScottPlot.Drawing;
+using ScottPlot.Statistics;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -50,7 +51,7 @@ namespace ScottPlot
             popLeft += popWidth * edgePaddingFrac;
             popWidth -= (popWidth * edgePaddingFrac) * 2;
 
-            Pen pen = new Pen(color) { DashPattern = StyleTools.DashPattern(lineStyle) };
+            Pen pen = GDI.Pen(color, 1, lineStyle, true);
 
             double[] ys = DataGen.Range(pop.minus3stDev, pop.plus3stDev, settings.yAxisUnitsPerPixel);
             double[] ysFrac = pop.GetDistribution(ys);

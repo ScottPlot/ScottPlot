@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Xml;
 using System.Dynamic;
+using ScottPlot.Drawing;
 
 namespace ScottPlot
 {
@@ -27,16 +28,7 @@ namespace ScottPlot
 
         public static void DataGrid(Settings settings)
         {
-            Pen pen = new Pen(settings.grid.color, (float)settings.grid.lineWidth) { DashPattern = StyleTools.DashPattern(settings.grid.lineStyle) };
-
-            // Due to a bug in System.Drawing the drawing of perfectly straight lines is
-            // prone to rendering artifacts (diagonal lines) when anti-aliasing is off.
-            // https://github.com/swharden/ScottPlot/issues/327
-            // https://github.com/swharden/ScottPlot/issues/401
-            // The soltion is to draw grid lines with anti-aliasing on, then revert to original state.
-            var originalSmoothingMode = settings.gfxData.SmoothingMode;
-            if (settings.misc.correctGridRenderingBug)
-                settings.gfxData.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            Pen pen = GDI.Pen(settings.grid.color, settings.grid.lineWidth, settings.grid.lineStyle);
 
             if (settings.grid.enableVertical)
             {
@@ -77,8 +69,6 @@ namespace ScottPlot
                     settings.gfxData.DrawLine(pen, ptLeft, ptRight);
                 }
             }
-
-            settings.gfxData.SmoothingMode = originalSmoothingMode;
         }
 
         public static void DataPlottables(Settings settings)

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Drawing;
 using ScottPlot.Config;
 using System.Runtime.InteropServices;
+using ScottPlot.Drawing;
 
 namespace ScottPlot
 {
@@ -19,7 +20,8 @@ namespace ScottPlot
         public double xOffset;
         public double yOffset;
         public double lineWidth;
-        public Pen pen;
+        public Pen penHD;
+        public Pen penLD;
         public Brush brush;
         public int maxRenderIndex;
         private Pen[] penByDensity;
@@ -48,13 +50,8 @@ namespace ScottPlot
             this.maxRenderIndex = maxRenderIndex;
             this.lineStyle = lineStyle;
             brush = new SolidBrush(color);
-            pen = new Pen(color, (float)lineWidth)
-            {
-                // this prevents sharp corners
-                StartCap = System.Drawing.Drawing2D.LineCap.Round,
-                EndCap = System.Drawing.Drawing2D.LineCap.Round,
-                LineJoin = System.Drawing.Drawing2D.LineJoin.Round
-            };
+            penLD = GDI.Pen(color, (float)lineWidth, lineStyle, true);
+            penHD = GDI.Pen(color, (float)lineWidth, LineStyle.Solid, true);
 
             if (colorByDensity != null)
             {
@@ -101,7 +98,7 @@ namespace ScottPlot
             // this function is for when the graph is zoomed so far out its entire display is a single vertical pixel column                     
             PointF point1 = settings.GetPixel(xOffset, ys.Min() + yOffset);
             PointF point2 = settings.GetPixel(xOffset, ys.Max() + yOffset);
-            settings.gfxData.DrawLine(pen, point1, point2);
+            settings.gfxData.DrawLine(penHD, point1, point2);
         }
 
         private void RenderLowDensity(Settings settings, int visibleIndex1, int visibleIndex2)
@@ -120,8 +117,8 @@ namespace ScottPlot
 
             if (linePoints.Count > 1)
             {
-                if (pen.Width > 0)
-                    settings.gfxData.DrawLines(pen, linePoints.ToArray());
+                if (penLD.Width > 0)
+                    settings.gfxData.DrawLines(penLD, linePoints.ToArray());
 
                 if (markerSize > 0)
                 {
@@ -195,7 +192,7 @@ namespace ScottPlot
                 }
             }
 
-            settings.gfxData.DrawLines(pen, linePoints);
+            settings.gfxData.DrawLines(penHD, linePoints);
         }
 
         private void RenderHighDensityDistribution(Settings settings, double offsetPoints, double columnPointCount)
@@ -361,14 +358,12 @@ namespace ScottPlot
             }
 
             if (linePoints.Count > 0)
-                settings.gfxData.DrawLines(pen, linePoints.ToArray());
+                settings.gfxData.DrawLines(penHD, linePoints.ToArray());
         }
 
         private bool markersAreVisible = false;
         public override void Render(Settings settings)
         {
-            pen.Color = color;
-            pen.Width = (float)lineWidth;
             brush = new SolidBrush(color);
 
             double dataSpanUnits = ys.Length * samplePeriod;
@@ -392,12 +387,10 @@ namespace ScottPlot
             // use different rendering methods based on how dense the data is on screen
             if ((dataWidthPx <= 1) || (dataWidthPx2 <= 1))
             {
-                pen.DashPattern = StyleTools.DashPattern(lineStyle);
                 RenderSingleLine(settings);
             }
             else if (pointsPerPixelColumn > 1)
             {
-                pen.DashPattern = StyleTools.DashPattern(LineStyle.Solid);
                 if (densityLevelCount > 0 && pointsPerPixelColumn > densityLevelCount)
                 {
                     if (useParallel)
@@ -415,7 +408,6 @@ namespace ScottPlot
             }
             else
             {
-                pen.DashPattern = StyleTools.DashPattern(lineStyle);
                 RenderLowDensity(settings, visibleIndex1, visibleIndex2);
             }
         }

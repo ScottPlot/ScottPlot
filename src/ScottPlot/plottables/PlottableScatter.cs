@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using ScottPlot.Config;
+using ScottPlot.Drawing;
 
 namespace ScottPlot
 {
@@ -74,20 +75,8 @@ namespace ScottPlot
             if ((errorY != null) && (xs.Length != errorY.Length))
                 throw new ArgumentException("errorY must be the same length as the original data");
 
-            penLine = new Pen(color, (float)lineWidth)
-            {
-                StartCap = System.Drawing.Drawing2D.LineCap.Round,
-                EndCap = System.Drawing.Drawing2D.LineCap.Round,
-                LineJoin = System.Drawing.Drawing2D.LineJoin.Round,
-                DashPattern = StyleTools.DashPattern(lineStyle)
-            };
-
-            penLineError = new Pen(color, (float)errorLineWidth)
-            {
-                StartCap = System.Drawing.Drawing2D.LineCap.Round,
-                EndCap = System.Drawing.Drawing2D.LineCap.Round,
-                LineJoin = System.Drawing.Drawing2D.LineJoin.Round
-            };
+            penLine = GDI.Pen(color, lineWidth, lineStyle, true);
+            penLineError = GDI.Pen(color, errorLineWidth, LineStyle.Solid, true);
         }
 
         public override string ToString()

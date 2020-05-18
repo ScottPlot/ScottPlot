@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot.Drawing;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -136,10 +137,7 @@ namespace ScottPlot
 
             if (legendItem.lineWidth < 10)
             {
-                Pen pen = new Pen(legendItem.color, (float)legendItem.lineWidth)
-                {
-                    DashPattern = StyleTools.DashPattern(legendItem.lineStyle)
-                };
+                Pen pen = GDI.Pen(legendItem.color, (float)legendItem.lineWidth, legendItem.lineStyle);
                 settings.gfxLegend.DrawLine(pen,xMin, xMax);
             }
             else

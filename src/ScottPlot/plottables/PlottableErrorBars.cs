@@ -1,4 +1,5 @@
 ﻿using ScottPlot.Config;
+using ScottPlot.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -40,13 +41,7 @@ namespace ScottPlot
             this.color = color;
             this.label = label;
 
-            penLine = new Pen(this.color, (float)lineWidth)
-            {
-                StartCap = System.Drawing.Drawing2D.LineCap.Round,
-                EndCap = System.Drawing.Drawing2D.LineCap.Round,
-                LineJoin = System.Drawing.Drawing2D.LineJoin.Round,
-                DashPattern = StyleTools.DashPattern(lineStyle)
-            };
+            penLine = GDI.Pen(this.color, (float)lineWidth, lineStyle, true);
         }
 
         private double[] SanitizeErrors(double[] errorArray, int expectedLength)

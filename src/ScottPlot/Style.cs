@@ -48,31 +48,6 @@ namespace ScottPlot
 
     public static class StyleTools
     {
-        public static float[] DashPattern(LineStyle lineStyle)
-        {
-            switch (lineStyle)
-            {
-                // WARNING: Don't use a solid DashPattern!
-                // A DashPattern is only used when a custom DashStyle is used.
-                // If you want to plot a solid line, use the solid DashStyle.
-                // https://github.com/swharden/ScottPlot/issues/327
-                // https://github.com/swharden/ScottPlot/issues/401
-                // TODO: create a tool to return a Pen, not pen styles.
-                case LineStyle.Solid: return new float[] { 1.0F };
-                case LineStyle.Dash: return new float[] { 8.0F, 4.0F };
-                case LineStyle.DashDot: return new float[] { 8.0F, 4.0F, 2.0F, 4.0F };
-                case LineStyle.DashDotDot: return new float[] { 8.0F, 4.0F, 2.0F, 4.0F, 2.0F, 4.0F };
-                case LineStyle.Dot: return new float[] { 2.0F, 4.0F };
-                default: return null;
-            }
-        }
-
-        [Obsolete("dash style should always be solid. It's the dash PATTERN that actually changes.", true)]
-        public static System.Drawing.Drawing2D.DashStyle DashStyle(LineStyle lineStyle)
-        {
-            return System.Drawing.Drawing2D.DashStyle.Solid;
-        }
-
         public static void SetStyle(Plot existingPlot, Style style)
         {
             switch (style)

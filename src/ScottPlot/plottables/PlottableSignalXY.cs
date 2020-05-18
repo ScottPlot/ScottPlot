@@ -50,8 +50,6 @@ namespace ScottPlot
 
         public override void Render(Settings settings)
         {
-            pen.Color = color;
-            pen.Width = (float)lineWidth;
             brush = new SolidBrush(color);
 
             // x locations of pixels borders
@@ -81,9 +79,9 @@ namespace ScottPlot
 
             // Draw lines
             if (PointsToDraw.Count > 1)
-                settings.gfxData.DrawLines(pen, PointsToDraw.ToArray());
+                settings.gfxData.DrawLines(penHD, PointsToDraw.ToArray());
             else if (xs[0] > xBorders[0] && xs[xs.Length - 1] < xBorders[xBorders.Length - 1])
-                settings.gfxData.DrawLine(pen,
+                settings.gfxData.DrawLine(penHD,
                     settings.GetPixel(xs[0], ys.Min()),
                     settings.GetPixel(xs[0], ys.Max()));
 
