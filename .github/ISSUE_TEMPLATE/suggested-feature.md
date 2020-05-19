@@ -15,3 +15,6 @@ Does your proposed feature allow users to do new things in source code? If so, s
 ```cs
 var usefulThing = new GreatFeature();
 ```
+
+Check the ScottPlot Roadmap to see if your feature is already planned for an upcoming release:
+https://github.com/swharden/ScottPlot/blob/master/dev/roadmap.md
