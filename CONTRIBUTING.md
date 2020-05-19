@@ -10,6 +10,7 @@ ScottPlot is made better by contributions from the open-source community!
   * Include a screenshot if it would help communicate the problem
 
 ## Suggest a Feature
+* Check the [ScottPlot roadmap](https://github.com/swharden/ScottPlot/blob/master/dev/roadmap.md) to see if the feature is already planned for a future release
 * Open an [issue](https://github.com/swharden/ScottPlot/issues) and describe the feature as clearly as possible
 * Include example source code demonstrating how a user might use this new feature
 * Include pictures if it would help communicate the new feature
