@@ -9,9 +9,9 @@ namespace ScottPlot
 	public class DedicatedGPU
 	{
 		[DllImport("nvapi64.dll", EntryPoint = "fake")] // We do not need to enter, only load the dll
-		public static extern int LoadNvApi64();
+		private static extern int LoadNvApi64();
 		[System.Runtime.InteropServices.DllImport("nvapi.dll", EntryPoint = "fake")] // Ditto
-		static extern int LoadNvApi32();
+		private static extern int LoadNvApi32();
 
 		/// <summary>
 		///		Attempts to force the high-performance graphics profile on nvidia systems
