@@ -18,6 +18,7 @@ namespace ScottPlot
 		/// </summary>
 		/// <remarks>
 		///		This code is uniquely sketchy
+		///		Borrowed from: https://stackoverflow.com/a/46749111
 		/// </remarks>
 		public static void RunWithDedicatedGraphics() {
 			try
