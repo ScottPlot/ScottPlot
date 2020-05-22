@@ -29,33 +29,40 @@ namespace ScottPlot
             this.highlightedIndexes = new List<int>();
         }
 
-		protected override void DrawPoint(Settings settings, List<PointF> points, int i)
-		{
+        protected override void DrawPoint(Settings settings, List<PointF> points, int i)
+        {
             if (highlightedIndexes.BinarySearch(i) >= 0) //Always returns negative number for item not found: https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1.binarysearch?view=netcore-3.1#System_Collections_Generic_List_1_BinarySearch__0_
             {
-			    MarkerTools.DrawMarker(settings.gfxData, points[i], highlightedShape, highlightedMarkerSize, highlightedColor);
+                MarkerTools.DrawMarker(settings.gfxData, points[i], highlightedShape, highlightedMarkerSize, highlightedColor);
             }
             else
             {
                 base.DrawPoint(settings, points, i);
             }
-		}
+        }
 
-		public void HighlightClear()
+        public void HighlightClear()
         {
             highlightedIndexes.Clear();
         }
 
         public void HighlightPoint(int index)
         {
-            highlightedIndexes.Add(index);
-            highlightedIndexes.Sort();
+            int insertPosition = highlightedIndexes.BinarySearch(index);
+            if (insertPosition < 0) {
+                insertPosition = ~insertPosition;   //This might look like witchcraft
+                                                    //However, List<T>.BinarySearch returns the ones-compliment (bitwise inverse) of the index of the next-higher value in the list
+                                                    //if the value is not part of the list.
+                                                    //If there is no higher value it returns the ones-compliment of this.Count()
+                                                    //Source: https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1.binarysearch?view=netcore-3.1#System_Collections_Generic_List_1_BinarySearch__0_
+            }
+            highlightedIndexes.Insert(insertPosition, index);
         }
 
         private int GetPointNearestIndex(double x) {
             double minDistance = Math.Abs(xs[0] - x);
             int minIndex = 0;
-            for (int i = 0; i < xs.Length; i++)
+            for (int i = 1; i < xs.Length; i++)
             {
                 double currDistance = Math.Abs(xs[i] - x);
                 if (currDistance < minDistance)
@@ -73,9 +80,9 @@ namespace ScottPlot
 
             double pointDistanceSquared(double x1, double y1) => (x1 - x) * (x1 - x) + (y1 - y) * (y1 - y);
 
-            double minDistance = double.PositiveInfinity;
+            double minDistance = pointDistanceSquared(points[0].x, points[0].y);
             int minIndex = 0;
-            for (int i = 0; i < points.Count; i++)
+            for (int i = 1; i < points.Count; i++)
             {
                 double currDistance = pointDistanceSquared(points[i].x, points[i].y);
                 if (currDistance < minDistance)
