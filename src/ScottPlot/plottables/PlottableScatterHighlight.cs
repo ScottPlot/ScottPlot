@@ -258,6 +258,21 @@ namespace ScottPlot
             HighlightPoint(index);
         }
 
+        public (double, double) GetPointNearest(double x) { 
+            int index = xs.Select((p, i) => (p, i)).OrderBy(p => Math.Abs(p.p - x)).First().i;
+            return (xs[index], ys[index]);
+        }
+
+        public (double, double) GetPointNearest(double x, double y)
+        {
+            List<(double x, double y)> points = xs.Zip(ys, (first, second) => (first, second)).ToList();
+
+            double pointDistance(double x1, double y1) => Math.Sqrt((x1 - x) * (x1 - x) + (y1 - y) * (y1 - y));
+
+            int index = points.Select((p, i) => (p.x, p.y, i)).OrderBy(p => pointDistance(p.x, p.y)).First().i; // I feel like I might have gone too Haskel-ey
+            return (xs[index], ys[index]);
+        }
+
         public override int GetPointCount()
         {
             return ys.Length;
