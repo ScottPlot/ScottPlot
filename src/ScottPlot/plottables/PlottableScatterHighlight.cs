@@ -29,11 +29,15 @@ namespace ScottPlot
         public LineStyle lineStyle;
         public string label;
 
+        public MarkerShape highlightedShape;
+        public float highlightedMarkerSize;
+        public Color highlightedColor;
+
         public Pen penLine;
         private Pen penLineError;
 
         public PlottableScatterHighlight(double[] xs, double[] ys, Color color, double lineWidth, double markerSize, string label,
-            double[] errorX, double[] errorY, double errorLineWidth, double errorCapSize, bool stepDisplay, MarkerShape markerShape, LineStyle lineStyle)
+            double[] errorX, double[] errorY, double errorLineWidth, double errorCapSize, bool stepDisplay, MarkerShape markerShape, LineStyle lineStyle, MarkerShape highlightedShape, Color highlightedColor, double highlightedMarkerSize)
         {
 
             if ((xs == null) || (ys == null))
@@ -68,6 +72,10 @@ namespace ScottPlot
             this.stepDisplay = stepDisplay;
             this.markerShape = markerShape;
             this.lineStyle = lineStyle;
+
+            this.highlightedColor = highlightedColor;
+            this.highlightedMarkerSize = (float)highlightedMarkerSize;
+            this.highlightedShape = highlightedShape;
 
             this.highlightedIndexes = new List<int>();
 
@@ -202,7 +210,7 @@ namespace ScottPlot
                 for (int i = 0; i < points.Count; i++)
                     if (highlightedIndexes.Contains(i))
                     {
-                        MarkerTools.DrawMarker(settings.gfxData, points[i], markerShape, markerSize * 2, color);
+                        MarkerTools.DrawMarker(settings.gfxData, points[i], highlightedShape, highlightedMarkerSize, highlightedColor);
                     }
                     else
                     {
@@ -224,22 +232,25 @@ namespace ScottPlot
             return csv.ToString();
         }
 
-        public void HighlightClear() {
+        public void HighlightClear()
+        {
             highlightedIndexes.Clear();
         }
 
-        public void HighlightPoint(int index) {
+        public void HighlightPoint(int index)
+        {
             highlightedIndexes.Add(index);
         }
 
         public void HighlightPointNearest(double x)
-		{
+        {
             int index = xs.Select((p, i) => (p, i)).OrderBy(p => Math.Abs(p.p - x)).First().i;
             HighlightPoint(index);
-		}
+        }
 
-        public void HighlightPointNearest(double x, double y) {
-			List<(double x, double y)> points = xs.Zip(ys, (first, second) => (first, second)).ToList();
+        public void HighlightPointNearest(double x, double y)
+        {
+            List<(double x, double y)> points = xs.Zip(ys, (first, second) => (first, second)).ToList();
 
             double pointDistance(double x1, double y1) => Math.Sqrt((x1 - x) * (x1 - x) + (y1 - y) * (y1 - y));
 

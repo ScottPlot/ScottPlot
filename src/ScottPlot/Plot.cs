@@ -621,11 +621,26 @@ namespace ScottPlot
            double errorLineWidth = 1,
            double errorCapSize = 3,
            MarkerShape markerShape = MarkerShape.filledCircle,
-           LineStyle lineStyle = LineStyle.Solid
+           LineStyle lineStyle = LineStyle.Solid,
+           MarkerShape? highlightedShape = null,
+           Color? highlightedColor = null,
+           double? highlightedMarkerSize = null
            )
         {
             if (color == null)
                 color = settings.GetNextColor();
+
+            if (highlightedColor == null) {
+                highlightedColor = color;
+            }
+
+            if (highlightedShape == null) {
+                highlightedShape = markerShape;
+            }
+
+            if (highlightedMarkerSize == null) {
+                highlightedMarkerSize = 2 * markerSize;
+            }
 
             PlottableScatterHighlight scatterPlot = new PlottableScatterHighlight(
                 xs: xs,
@@ -640,7 +655,10 @@ namespace ScottPlot
                 errorCapSize: errorCapSize,
                 stepDisplay: false,
                 markerShape: markerShape,
-                lineStyle: lineStyle
+                lineStyle: lineStyle,
+                highlightedShape: highlightedShape.Value,
+                highlightedColor: highlightedColor.Value,
+                highlightedMarkerSize: highlightedMarkerSize.Value
                 );
 
             settings.plottables.Add(scatterPlot);

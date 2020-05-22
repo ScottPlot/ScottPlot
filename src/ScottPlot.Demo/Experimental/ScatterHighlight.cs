@@ -18,7 +18,9 @@ namespace ScottPlot.Demo.Experimental
                 double[] x = DataGen.Consecutive(pointCount, 0.1);
                 double[] rand = DataGen.Random(new Random(), pointCount);
 
-                PlottableScatterHighlight highlightPlot = plt.PlotScatterHighlight(x, rand);
+                //Unless otherwise specified, shape and colour are the same as unhighlighted points
+                //Default marker size is double the size of unhighlighted points
+                PlottableScatterHighlight highlightPlot = plt.PlotScatterHighlight(x, rand, highlightedShape: MarkerShape.filledSquare, highlightedColor: Color.Red, highlightedMarkerSize: 8);
 
                 highlightPlot.HighlightPoint(4);
                 highlightPlot.HighlightPointNearest(8);
