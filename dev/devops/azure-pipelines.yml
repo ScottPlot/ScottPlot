@@ -14,7 +14,13 @@ pool:
   vmImage: $(imageName)
 
 steps:
-    
+
+### INSTALL LATEST .NET CORE 3
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '3.x'
+
 ### INSTALL DOTNET FORMAT
 - task: DotNetCoreCLI@2
   displayName: 'Install dotnet-format'
