@@ -4,16 +4,16 @@ trigger:
 strategy:
   matrix:
     FormatChecker:
-      poolName: Autoformat Checker
+      poolName: 'Autoformat Checker'
       imageName: 'ubuntu-latest'
     MacOS:
-      poolName: MacOS Build and Test
+      poolName: 'MacOS Build and Test'
       imageName: 'macOS-latest'
     Linux:
-      poolName: Linux Build and Test
+      poolName: 'Linux Build and Test'
       imageName: 'ubuntu-latest'
     Windows:
-      poolName: Linux Build and Test
+      poolName: 'Linux Build and Test'
       imageName: 'windows-latest'
 
 pool:
