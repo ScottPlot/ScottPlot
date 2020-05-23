@@ -1,0 +1,4 @@
+# Code files
+indent_size = 4
+insert_final_newline = true
+csharp_new_line_before_open_brace = all
