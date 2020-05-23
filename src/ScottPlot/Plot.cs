@@ -575,12 +575,14 @@ namespace ScottPlot
             double[,] intensities,
             PlottableHeatmap.ColorMap colorMap = PlottableHeatmap.ColorMap.grayscale,
             string label = null
-            ) {
-
+            )
+        {
 
             PlottableHeatmap heatmap = new PlottableHeatmap(intensities, colorMap, label);
             settings.plottables.Add(heatmap);
-            EqualAxis = true;
+            MatchAxis(this);
+            Ticks(false, false); //I think we need to sort out our own labelling with System.Drawing
+
             return heatmap;
         }
 
