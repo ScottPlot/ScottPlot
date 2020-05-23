@@ -4,28 +4,27 @@ trigger:
 strategy:
   matrix:
     FormatChecker:
-      jobName: 'Code Format Check'
+      displayName: 'Code Format Check'
       purpose: 'autoformat' # break build it autoformatter is not run
       imageName: 'ubuntu-latest'
     MacOS:
-      jobName: 'Build and Test on MacOS'
+      displayName: 'Build and Test on MacOS'
       purpose: 'library' # build and test ScottPlot and ScottPlot.Demo
       imageName: 'macOS-latest'
     Linux:
-      jobName: 'Build and Test on Linux'
+      displayName: 'Build and Test on Linux'
       purpose: 'library' # build and test ScottPlot and ScottPlot.Demo
       imageName: 'ubuntu-latest'
     Windows:
-      jobName: 'Build and Test on Windows'
+      displayName: 'Build and Test on Windows'
       purpose: 'library' # build and test ScottPlot and ScottPlot.Demo
       imageName: 'windows-latest'
     Windows2:
-      jobName: 'Rebuild Solution on Windows'
+      displayName: 'Rebuild Solution on Windows'
       purpose: 'solution' # ensure the full solution builds on Windows
       imageName: 'windows-latest'
 
 pool:
-  displayName: $(jobName)
   vmImage: $(imageName)
 
 steps:
