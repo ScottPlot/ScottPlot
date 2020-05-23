@@ -4,24 +4,24 @@ trigger:
 strategy:
   matrix:
 
-    'Code Format Check':
-      purpose: 'autoformat' # break build it autoformatter is not run
+    'Autoformat Check':
+      purpose: 'autoformat'
       imageName: 'ubuntu-latest'
 
-    'Build and Test on MacOS':
-      purpose: 'library' # build and test ScottPlot and ScottPlot.Demo
+    'Test on MacOS':
+      purpose: 'library'
       imageName: 'macOS-latest'
 
-    'Build and Test on Linux':
-      purpose: 'library' # build and test ScottPlot and ScottPlot.Demo
+    'Test on Linux':
+      purpose: 'library'
       imageName: 'ubuntu-latest'
 
-    'Build and Test on Windows':
-      purpose: 'library' # build and test ScottPlot and ScottPlot.Demo
+    'Test on Windows':
+      purpose: 'library'
       imageName: 'windows-latest'
 
-    'Rebuild Solution on Windows':
-      purpose: 'solution' # ensure the full solution builds on Windows
+    'Rebuild Solution':
+      purpose: 'solution'
       imageName: 'windows-latest'
 
 pool:
