@@ -59,12 +59,6 @@ steps:
 - task: NuGetToolInstaller@1
   displayName: 'Install NuGet'
   condition: eq(variables['purpose'], 'library')
-    
-- task: NuGetCommand@2
-  displayName: 'Restore packages'
-  condition: eq(variables['purpose'], 'solution')
-  inputs:
-    restoreSolution: 'src/ScottPlotV4.sln'
 
 ### BUILD THE CORE SCOTTPLOT LIBRARY AND DEMO AND RUN TESTS
 
