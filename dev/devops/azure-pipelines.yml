@@ -4,20 +4,19 @@ trigger:
 strategy:
   matrix:
     FormatChecker:
-      poolName: 'Autoformat Checker'
+      strategyName: 'Autoformat Checker'
       imageName: 'ubuntu-latest'
     MacOS:
-      poolName: 'MacOS Build and Test'
+      strategyName: 'MacOS Build and Test'
       imageName: 'macOS-latest'
     Linux:
-      poolName: 'Linux Build and Test'
+      strategyName: 'Linux Build and Test'
       imageName: 'ubuntu-latest'
     Windows:
-      poolName: 'Linux Build and Test'
+      strategyName: 'Linux Build and Test'
       imageName: 'windows-latest'
 
 pool:
-  name: $(poolName)
   vmImage: $(imageName)
 
 steps:
@@ -47,7 +46,7 @@ steps:
 ### FAIL IF AUTOFORMATTING IS REQUIRED
 - task: DotNetCoreCLI@2
   displayName: 'Check Formatting'
-  condition: eq(variables['poolName'], 'Autoformat Checker')
+  condition: eq(variables['strategyName'], 'Autoformat Checker')
   inputs:
     command: 'custom'
     custom: 'format'
