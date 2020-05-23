@@ -51,10 +51,10 @@ steps:
 - task: NuGetToolInstaller@1
   displayName: 'Install NuGet'
   condition: contains(variables['taskList'], 'build')
-
+    
 - task: NuGetCommand@2
   displayName: 'Restore packages'
-  condition: contains(variables['taskList'], 'build')
+  condition: contains(variables['taskList'], 'solution')
   inputs:
     restoreSolution: 'src/ScottPlotV4.sln'
 
