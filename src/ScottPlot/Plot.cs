@@ -576,8 +576,11 @@ namespace ScottPlot
             PlottableHeatmap.ColorMap colorMap = PlottableHeatmap.ColorMap.grayscale,
             string label = null
             ) {
+
+
             PlottableHeatmap heatmap = new PlottableHeatmap(intensities, colorMap, label);
             settings.plottables.Add(heatmap);
+            EqualAxis = true;
             return heatmap;
         }
 
