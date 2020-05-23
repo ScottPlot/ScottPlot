@@ -18,13 +18,13 @@ namespace ScottPlot.Demo.Experimental
                 int[] xs = Enumerable.Range(0, 100).ToArray();
                 int[] ys = Enumerable.Range(0, 100).ToArray();
 
-                double[,] intensities = new double[xs.Length, ys.Length];
+                double[,] intensities = new double[ys.Length, xs.Length];
 
-                for (int i = 0; i < xs.Length; i++)
+                for (int i = 0; i < ys.Length; i++)
                 {
-                    for (int j = 0; j < ys.Length; j++)
+                    for (int j = 0; j < xs.Length; j++)
                     {
-                        intensities[i,j] = Math.Sqrt(Math.Pow(ys[j] - 50, 2) + Math.Pow(xs[i] - 50, 2));
+                        intensities[i,j] = Math.Sqrt(Math.Pow(ys[i] - 50, 2) + Math.Pow(xs[j] - 50, 2));
                     }
                 }
 
