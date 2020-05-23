@@ -29,7 +29,7 @@ steps:
   inputs:
     command: 'custom'
     custom: 'format'
-    arguments: '-w src/ScottPlotV4.sln --dry-run --check --verbosity diagnostic'
+    arguments: '-f src --dry-run --check --verbosity diagnostic'
 
 ### INSTALL NUGET AND RESTORE PACKAGES
 
