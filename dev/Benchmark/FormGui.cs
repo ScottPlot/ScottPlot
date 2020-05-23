@@ -25,16 +25,16 @@ namespace Benchmark
 
             sig = formsPlot1.plt.PlotSignal(
                 ys: ScottPlot.DataGen.RandomWalk(rand, 10_000_000),
-                label: "Signal");
+                label: "Signal (10M)");
 
             sigConst = formsPlot1.plt.PlotSignalConst(
                 ys: ScottPlot.DataGen.RandomWalk(rand, 10_000_000),
-                label: "SignalConst");
+                label: "SignalConst (10M)");
 
             scat = formsPlot1.plt.PlotScatter(
                 xs: ScottPlot.DataGen.Consecutive(1_000, spacing: 10_000),
                 ys: ScottPlot.DataGen.RandomWalk(rand, 1_000, 20),
-                label: "Scatter"); ;
+                label: "Scatter (1k)"); ;
 
             formsPlot1.plt.Legend();
             formsPlot1.plt.Axis();
