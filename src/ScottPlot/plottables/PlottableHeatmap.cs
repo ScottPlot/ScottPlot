@@ -29,10 +29,10 @@ namespace ScottPlot
 
         private Bitmap bmp;
 
-        public PlottableHeatmap(double[][] intensities, ColorMap colorMap, string label)
+        public PlottableHeatmap(double[,] intensities, ColorMap colorMap, string label)
         {
-            this.width = intensities[0].Length;
-            this.height = intensities.Length;
+            this.width = intensities.GetUpperBound(1) + 1;
+            this.height = intensities.GetUpperBound(0) + 1;
             double[] intensitiesFlattened = Flatten(intensities);
             this.intensitiesNormalized = intensitiesFlattened.Select(i => (i - intensitiesFlattened.Min()) / (intensitiesFlattened.Max() - intensitiesFlattened.Min())).ToArray();
             this.colorMap = colorMap;
@@ -40,7 +40,7 @@ namespace ScottPlot
             double max = intensitiesNormalized.Max();
             double min = intensitiesNormalized.Min();
 
-            byte[][] rgb = IntensityToColor(this.intensitiesNormalized, colorMap);
+            byte[,] rgb = IntensityToColor(this.intensitiesNormalized, colorMap);
 
             int[] flatRGBA = ToRGB(rgb);
             bmp = new Bitmap(width, height, PixelFormat.Format32bppArgb);
@@ -50,23 +50,24 @@ namespace ScottPlot
             bmp.UnlockBits(bmpData);
         }
 
-        private int[] ToRGB(byte[][] byteArr)
+        private int[] ToRGB(byte[,] byteArr)
         {
-            int[] rgb = new int[byteArr.Length];
-            for (int i = 0; i < byteArr.Length; i++)
+            int[] rgb = new int[byteArr.GetUpperBound(0) + 1];
+            for (int i = 0; i < rgb.Length; i++)
             {
-                rgb[i] = Color.FromArgb(byteArr[i][0], byteArr[i][1], byteArr[i][2]).ToArgb();
+                rgb[i] = Color.FromArgb(byteArr[i, 0], byteArr[i, 1], byteArr[i, 2]).ToArgb();
             }
             return rgb;
         }
-        private T[] Flatten<T>(T[][] toFlatten)
+        private T[] Flatten<T>(T[,] toFlatten)
         {
-            T[] flattened = new T[toFlatten.Length * toFlatten[0].Length];
-            for (int i = 0; i < toFlatten.Length; i++)
+            return toFlatten.Cast<T>().ToArray();
+            T[] flattened = new T[(toFlatten.GetUpperBound(0) + 1) * (toFlatten.GetUpperBound(1) + 1)];
+            for (int i = 0; i < toFlatten.GetUpperBound(0) + 1; i++)
             {
-                for (int j = 0; j < toFlatten[i].Length; j++)
+                for (int j = 0; j < toFlatten.GetUpperBound(1) + 1; j++)
                 {
-                    flattened[i * toFlatten[i].Length + j] = toFlatten[i][j];
+                    flattened[i * (toFlatten.GetUpperBound(1) + 1) + j] = toFlatten[i, j];
                 }
             }
             return flattened;
@@ -89,12 +90,20 @@ namespace ScottPlot
             return intensitiesNormalized.Length;
         }
 
-        private byte[][] IntensityToColor(double[] intensities, ColorMap colorMap)
+        private byte[,] IntensityToColor(double[] intensities, ColorMap colorMap)
         {
             switch (colorMap)
             {
                 case ColorMap.grayscale:
-                    return intensities.Select(i => new byte[] { (byte)(i * 255), (byte)(i * 255), (byte)(i * 255) }).ToArray();
+                    byte[,] output = new byte[intensities.Length, 3];
+                    for (int i = 0; i < intensities.Length; i++)
+                    {
+                        for (int j = 0; j < 3; j++)
+                        {
+                            output[i, j] = (byte)(intensities[i] * 255);
+                        }
+                    }
+                    return output;
                     break;
                 default:
                     throw new ArgumentException("Colormap not supported");

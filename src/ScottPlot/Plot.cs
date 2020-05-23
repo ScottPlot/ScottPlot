@@ -572,7 +572,7 @@ namespace ScottPlot
         }
 
         public PlottableHeatmap PlotHeatmap(
-            double[][] intensities,
+            double[,] intensities,
             PlottableHeatmap.ColorMap colorMap = PlottableHeatmap.ColorMap.grayscale,
             string label = null
             ) {
