@@ -33,9 +33,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ScottPlot.WinForms">
-      <HintPath>..\..\..\ScottPlot\src\ScottPlot.WinForms\obj\Debug\net461\ScottPlot.WinForms.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing.Common, Version=4.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -106,11 +103,11 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\ScottPlot\src\ScottPlot.Demo.WinForms\ScottPlot.Demo.WinForms.csproj">
-      <Project>{163492f4-4e03-4155-b5f2-3620c211b2e7}</Project>
-      <Name>ScottPlot.Demo.WinForms</Name>
+    <ProjectReference Include="..\..\src\ScottPlot.WinForms\ScottPlot.WinForms.csproj">
+      <Project>{1561fb75-f36a-44dc-bba7-da15dff997ed}</Project>
+      <Name>ScottPlot.WinForms</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\ScottPlot\src\ScottPlot\ScottPlot.csproj">
+    <ProjectReference Include="..\..\src\ScottPlot\ScottPlot.csproj">
       <Project>{ee9215c6-01c1-4835-8514-3a708f9291f1}</Project>
       <Name>ScottPlot</Name>
     </ProjectReference>
