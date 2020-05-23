@@ -11,11 +11,11 @@ using System.Windows.Forms;
 
 namespace Benchmark
 {
-    public partial class Form1 : Form
+    public partial class FormBmp : Form
     {
         private readonly ScottPlot.Plot plt = new ScottPlot.Plot();
 
-        public Form1()
+        public FormBmp()
         {
             InitializeComponent();
             formsPlot1.Reset();

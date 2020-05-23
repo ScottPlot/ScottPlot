@@ -1,6 +1,6 @@
 ﻿namespace Benchmark
 {
-    partial class Form1
+    partial class FormBmp
     {
         /// <summary>
         /// Required designer variable.
