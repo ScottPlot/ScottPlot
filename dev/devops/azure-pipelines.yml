@@ -28,7 +28,6 @@ pool:
   vmImage: $(imageName)
 
 steps:
-  displayName: $(displayName)
 
 ### FAIL THE BUILD IF THE AUTOFORMATTER WAS NOT RUN
 
