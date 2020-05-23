@@ -19,7 +19,8 @@ namespace ScottPlot
         public enum ColorMap
         {
             grayscale,
-			grayscaleInverted
+            grayscaleInverted,
+			viridis
 		}
 
         private int width;
@@ -112,18 +113,11 @@ namespace ScottPlot
             switch (colorMap)
             {
                 case ColorMap.grayscale:
-                    byte[,] outputGrayscale = new byte[intensities.Length, 3];
-                    for (int i = 0; i < intensities.Length; i++)
-                    {
-                        for (int j = 0; j < 3; j++)
-                        {
-                            outputGrayscale[i, j] = (byte)(intensities[i] * 255);
-                        }
-                    }
-                    return outputGrayscale;
+                    return new Config.ColorMaps.Grayscale().IntensityToRGB(intensities);
                 case ColorMap.grayscaleInverted:
-                    byte[,] outputGrayscaleInverted = IntensityToColor(Invert(intensities), ColorMap.grayscale);
-                    return outputGrayscaleInverted;
+                    return new Config.ColorMaps.GrayscaleInverted().IntensityToRGB(intensities);
+                case ColorMap.viridis:
+                    return new Config.ColorMaps.Viridis().IntensityToRGB(intensities);
                 default:
                     throw new ArgumentException("Colormap not supported");
             }
@@ -132,7 +126,7 @@ namespace ScottPlot
         public override void Render(Settings settings)
         {
             var interpMode = settings.gfxData.InterpolationMode;
-            settings.gfxData.InterpolationMode = InterpolationMode.NearestNeighbor; //This is really important for heatmaps
+            settings.gfxData.InterpolationMode = InterpolationMode.Bilinear;
             double minScale = settings.xAxisScale < settings.yAxisScale ? settings.xAxisScale : settings.yAxisScale;
             settings.gfxData.DrawImage(bmp, (int)settings.GetPixelX(0), (int)(settings.GetPixelY(0) - (height * minScale)), (int)(width * minScale), (int)(height * minScale));
             RenderScale(settings);
@@ -144,6 +138,7 @@ namespace ScottPlot
             Rectangle scaleRect = new Rectangle((int)(settings.figureSize.Width * 0.8), 50, 30, 200);
             Rectangle scaleRectOutline = scaleRect;
             scaleRectOutline.Width /= 2;
+            settings.gfxData.InterpolationMode = InterpolationMode.NearestNeighbor; //This is necessary for the scale (as its a 1 pixel wide image)
             settings.gfxData.DrawImage(scale, scaleRect);
             settings.gfxData.DrawRectangle(pen, scaleRectOutline);
             settings.gfxData.DrawString($"{max:f3}", new Font(FontFamily.GenericSansSerif, 12), brush, new Point(scaleRect.X + 40, 50));
