@@ -4,105 +4,104 @@ trigger:
 strategy:
   matrix:
     FormatChecker:
-      jobName: 'Code Format Check'
+      displayName: 'Code Format Check'
       purpose: 'autoformat' # break build it autoformatter is not run
       imageName: 'ubuntu-latest'
     MacOS:
-      jobName: 'Build and Test on MacOS'
+      displayName: 'Build and Test on MacOS'
       purpose: 'library' # build and test ScottPlot and ScottPlot.Demo
       imageName: 'macOS-latest'
     Linux:
-      jobName: 'Build and Test on Linux'
+      displayName: 'Build and Test on Linux'
       purpose: 'library' # build and test ScottPlot and ScottPlot.Demo
       imageName: 'ubuntu-latest'
     Windows:
-      jobName: 'Build and Test on Windows'
+      displayName: 'Build and Test on Windows'
       purpose: 'library' # build and test ScottPlot and ScottPlot.Demo
       imageName: 'windows-latest'
     Windows2:
-      jobName: 'Rebuild Solution on Windows'
+      displayName: 'Rebuild Solution on Windows'
       purpose: 'solution' # ensure the full solution builds on Windows
       imageName: 'windows-latest'
 
 pool:
   vmImage: $(imageName)
 
-jobs:
-- job: $(jobName)
-  steps:
+steps:
+  displayName: $(displayName)
 
-  ### FAIL THE BUILD IF THE AUTOFORMATTER WAS NOT RUN
+### FAIL THE BUILD IF THE AUTOFORMATTER WAS NOT RUN
 
-  - task: UseDotNet@2
-    displayName: 'Acquire .NET Core 3'
-    condition: eq(variables['purpose'], 'autoformat')
-    inputs:
-      packageType: 'sdk'
-      version: '3.x'
+- task: UseDotNet@2
+  displayName: 'Acquire .NET Core 3'
+  condition: eq(variables['purpose'], 'autoformat')
+  inputs:
+    packageType: 'sdk'
+    version: '3.x'
 
-  - task: DotNetCoreCLI@2
-    displayName: 'Install dotnet-format'
-    condition: eq(variables['purpose'], 'autoformat')
-    inputs:
-      command: 'custom'
-      custom: 'tool'
-      arguments: 'update -g dotnet-format'
+- task: DotNetCoreCLI@2
+  displayName: 'Install dotnet-format'
+  condition: eq(variables['purpose'], 'autoformat')
+  inputs:
+    command: 'custom'
+    custom: 'tool'
+    arguments: 'update -g dotnet-format'
 
-  - task: DotNetCoreCLI@2
-    displayName: 'Check Formatting'
-    condition: eq(variables['purpose'], 'autoformat')
-    inputs:
-      command: 'custom'
-      custom: 'format'
-      arguments: '-w src/ScottPlotV4.sln --dry-run --check --verbosity diagnostic'
+- task: DotNetCoreCLI@2
+  displayName: 'Check Formatting'
+  condition: eq(variables['purpose'], 'autoformat')
+  inputs:
+    command: 'custom'
+    custom: 'format'
+    arguments: '-w src/ScottPlotV4.sln --dry-run --check --verbosity diagnostic'
 
-  ### INSTALL NUGET AND RESTORE PACKAGES
+### INSTALL NUGET AND RESTORE PACKAGES
 
-  - task: NuGetToolInstaller@1
-    displayName: 'Install NuGet'
-    condition: eq(variables['purpose'], 'library')
-      
-  - task: NuGetCommand@2
-    displayName: 'Restore packages'
-    condition: eq(variables['purpose'], 'solution')
-    inputs:
-      restoreSolution: 'src/ScottPlotV4.sln'
+- task: NuGetToolInstaller@1
+  displayName: 'Install NuGet'
+  condition: eq(variables['purpose'], 'library')
+    
+- task: NuGetCommand@2
+  displayName: 'Restore packages'
+  condition: eq(variables['purpose'], 'solution')
+  inputs:
+    restoreSolution: 'src/ScottPlotV4.sln'
 
-  ### BUILD THE CORE SCOTTPLOT LIBRARY AND DEMO AND RUN TESTS
+### BUILD THE CORE SCOTTPLOT LIBRARY AND DEMO AND RUN TESTS
 
-  - task: DotNetCoreCLI@2
-    displayName: 'Build ScottPlot'
-    condition: eq(variables['purpose'], 'library')
-    inputs:
-      command: 'build'
-      projects: 'src/ScottPlot/ScottPlot.csproj'
+- task: DotNetCoreCLI@2
+  displayName: 'Build ScottPlot'
+  condition: eq(variables['purpose'], 'library')
+  inputs:
+    command: 'build'
+    projects: 'src/ScottPlot/ScottPlot.csproj'
 
-  - task: DotNetCoreCLI@2
-    displayName: 'Build ScottPlot.Demo'
-    condition: eq(variables['purpose'], 'library')
-    inputs:
-      command: 'build'
-      projects: 'src/ScottPlot.Demo/ScottPlot.Demo.csproj'
+- task: DotNetCoreCLI@2
+  displayName: 'Build ScottPlot.Demo'
+  condition: eq(variables['purpose'], 'library')
+  inputs:
+    command: 'build'
+    projects: 'src/ScottPlot.Demo/ScottPlot.Demo.csproj'
 
-  - task: DotNetCoreCLI@2
-    displayName: 'Build Tests'
-    condition: eq(variables['purpose'], 'library')
-    inputs:
-      command: 'build'
-      projects: 'tests/ScottPlotTests.csproj'
+- task: DotNetCoreCLI@2
+  displayName: 'Build Tests'
+  condition: eq(variables['purpose'], 'library')
+  inputs:
+    command: 'build'
+    projects: 'tests/ScottPlotTests.csproj'
 
-  - task: DotNetCoreCLI@2
-    displayName: 'Run Tests'
-    condition: eq(variables['purpose'], 'library')
-    inputs:
-      command: test
-      projects: 'tests/ScottPlotTests.csproj'
+- task: DotNetCoreCLI@2
+  displayName: 'Run Tests'
+  condition: eq(variables['purpose'], 'library')
+  inputs:
+    command: test
+    projects: 'tests/ScottPlotTests.csproj'
 
-  ### REBUILD FULL SOLUTION
-      
-  - task: VSBuild@1
-    displayName: 'Build Release (Windows)'
-    condition: eq(variables['purpose'], 'solution')
-    inputs:
-      solution: 'src/ScottPlotV4.sln'
-      configuration: 'release'
+### REBUILD FULL SOLUTION
+    
+- task: VSBuild@1
+  displayName: 'Build Release (Windows)'
+  condition: eq(variables['purpose'], 'solution')
+  inputs:
+    solution: 'src/ScottPlotV4.sln'
+    configuration: 'release'
