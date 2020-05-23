@@ -4,16 +4,16 @@ trigger:
 strategy:
   matrix:
     FormatChecker:
-      strategyName: 'Autoformat Checker'
+      taskList: 'fail if autoformat was not run'
       imageName: 'ubuntu-latest'
     MacOS:
-      strategyName: 'MacOS Build and Test'
+      taskList: 'build library, run tests'
       imageName: 'macOS-latest'
     Linux:
-      strategyName: 'Linux Build and Test'
+      taskList: 'build library, run tests'
       imageName: 'ubuntu-latest'
     Windows:
-      strategyName: 'Linux Build and Test'
+      taskList: 'build library, run tests, build solution'
       imageName: 'windows-latest'
 
 pool:
@@ -21,32 +21,26 @@ pool:
 
 steps:
 
-### GET OLDEST .NET CORE 2 (FOR TESTS)
-- task: UseDotNet@2
-  displayName: 'Acquire .NET Core 2.0.0'
-  inputs:
-    packageType: 'sdk'
-    version: '2.0.0'
+### FAIL THE BUILD IF THE AUTOFORMATTER WAS NOT RUN
 
-### GET LATEST .NET CORE 3 (FOR TOOLS)
 - task: UseDotNet@2
   displayName: 'Acquire .NET Core 3'
+  condition: contains(variables['taskList'], 'autoformat')
   inputs:
     packageType: 'sdk'
     version: '3.x'
 
-### INSTALL DOTNET FORMAT
 - task: DotNetCoreCLI@2
   displayName: 'Install dotnet-format'
+  condition: contains(variables['taskList'], 'autoformat')
   inputs:
     command: 'custom'
     custom: 'tool'
     arguments: 'update -g dotnet-format'
 
-### FAIL IF AUTOFORMATTING IS REQUIRED
 - task: DotNetCoreCLI@2
   displayName: 'Check Formatting'
-  condition: eq(variables['strategyName'], 'Autoformat Checker')
+  condition: contains(variables['taskList'], 'autoformat')
   inputs:
     command: 'custom'
     custom: 'format'
@@ -56,35 +50,42 @@ steps:
 
 - task: NuGetToolInstaller@1
   displayName: 'Install NuGet'
+  condition: contains(variables['taskList'], 'build')
 
 - task: NuGetCommand@2
-  displayName: 'Full package restoration'
+  displayName: 'Restore packages'
+  condition: contains(variables['taskList'], 'build')
   inputs:
     restoreSolution: 'src/ScottPlotV4.sln'
 
-### BUILD SCOTTPLOT AND DEMO
+### BUILD THE CORE SCOTTPLOT AND AND DEMO PROJECTS
 
 - task: DotNetCoreCLI@2
   displayName: 'Build ScottPlot'
+  condition: contains(variables['taskList'], 'build')
   inputs:
     command: 'build'
     projects: 'src/ScottPlot/ScottPlot.csproj'
 
 - task: DotNetCoreCLI@2
   displayName: 'Build ScottPlot.Demo'
+  condition: contains(variables['taskList'], 'build')
   inputs:
     command: 'build'
     projects: 'src/ScottPlot.Demo/ScottPlot.Demo.csproj'
 
 ### BUILD AND RUN TESTS
+
 - task: DotNetCoreCLI@2
   displayName: 'Build Tests'
+  condition: contains(variables['taskList'], 'test')
   inputs:
     command: 'build'
     projects: 'tests/ScottPlotTests.csproj'
 
 - task: DotNetCoreCLI@2
   displayName: 'Run Tests'
+  condition: contains(variables['taskList'], 'test')
   inputs:
     command: test
     projects: 'tests/ScottPlotTests.csproj'
@@ -93,7 +94,7 @@ steps:
     
 - task: VSBuild@1
   displayName: 'Build Release (Windows)'
-  condition: contains(variables['agent.os'], 'Windows')
+  condition: contains(variables['taskList'], 'solution')
   inputs:
     solution: 'src/ScottPlotV4.sln'
     configuration: 'release'
