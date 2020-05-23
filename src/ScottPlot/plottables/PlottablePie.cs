@@ -6,71 +6,106 @@ using System.Text;
 
 namespace ScottPlot
 {
-    public class PlottablePie : Plottable
-    {
-        public double[] proportions;
-        public string label;
-        public string[] groupNames;
-        public Color[] colors;
+	public class PlottablePie : Plottable
+	{
+		public double[] proportions;
+		public string label;
+		public string[] groupNames;
+		public Color[] colors;
+		bool explodedChart;
+		bool showValues;
 
-        private SolidBrush brush = new SolidBrush(Color.Black);
+		private SolidBrush brush = new SolidBrush(Color.Black);
+		private Pen pen = new Pen(Color.Black);
 
-        public PlottablePie(double[] proportions, string label, string[] groupNames, Color[] colors)
-        {
-            this.proportions = proportions;
-            this.label = label;
-            this.groupNames = groupNames;
-            this.colors = colors;
-        }
+		public PlottablePie(double[] proportions, string label, string[] groupNames, Color[] colors, bool explodedChart, bool showValues)
+		{
+			this.proportions = proportions;
+			this.label = label;
+			this.groupNames = groupNames;
+			this.colors = colors;
+			this.explodedChart = explodedChart;
+			this.showValues = showValues;
+		}
 
-        public override LegendItem[] GetLegendItems()
-        {
-            var items = new LegendItem[proportions.Length];
-            for (int i = 0; i < proportions.Length; i++)
-            {
-                items[i] = new LegendItem(groupNames[i], colors[i], lineWidth: 10);
-            }
-            return items;
-        }
+		public override LegendItem[] GetLegendItems()
+		{
+			var items = new LegendItem[proportions.Length];
+			for (int i = 0; i < proportions.Length; i++)
+			{
+				items[i] = new LegendItem(groupNames[i], colors[i], lineWidth: 10);
+			}
+			return items;
+		}
 
-        public override AxisLimits2D GetLimits()
-        {
-            return new AxisLimits2D(-0.5, 0.5, -1, 1);
-        }
+		public override AxisLimits2D GetLimits()
+		{
+			return new AxisLimits2D(-0.5, 0.5, -1, 1);
+		}
 
-        public override int GetPointCount()
-        {
-            return proportions.Length;
-        }
+		public override int GetPointCount()
+		{
+			return proportions.Length;
+		}
 
-        public override void Render(Settings settings)
-        {
-            double minAxisScale = Math.Min(settings.xAxisScale, settings.yAxisScale);
-            AxisLimits2D limits = GetLimits();
-            double centreX = (limits.x1 + limits.x2) / 2;
-            double centreY = (limits.y1 + limits.y2) / 2;
-            double diameter = 2; // Unit circle
-            float diameterPixels = (float)(minAxisScale * diameter);
+		public override void Render(Settings settings)
+		{
+			int outlineWidth = 1;
+			int sliceOutlineWidth = 0;
+			if (explodedChart)
+			{
+				pen.Color = Color.White;
+				outlineWidth = 20;
+				sliceOutlineWidth = 1;
+			}
 
-            RectangleF boundingRectangle = new RectangleF((float)settings.GetPixelX(centreX) - diameterPixels / 2, (float)settings.GetPixelY(centreY) - diameterPixels / 2, diameterPixels, diameterPixels);
-            brush.Color = Color.Black;
-            int outlineWidth = 2;
-            settings.gfxData.FillEllipse(brush, boundingRectangle.X - outlineWidth / 2, boundingRectangle.Y - outlineWidth / 2, boundingRectangle.Width + outlineWidth, boundingRectangle.Height + outlineWidth);
+			double minAxisScale = Math.Min(settings.xAxisScale, settings.yAxisScale);
+			AxisLimits2D limits = GetLimits();
+			double centreX = (limits.x1 + limits.x2) / 2;
+			double centreY = (limits.y1 + limits.y2) / 2;
+			double diameter = 2; // Unit circle
+			float diameterPixels = (float)(minAxisScale * diameter);
 
-            double start = -90;
-            for (int i = 0; i < proportions.Length; i++)
-            {
-                double sweep = proportions[i] * 360;
-                brush.Color = colors[i];
-                settings.gfxData.FillPie(brush, boundingRectangle.X, boundingRectangle.Y, boundingRectangle.Width, boundingRectangle.Height, (float)start, (float)sweep);
-                start += sweep;
-            }
-        }
+			RectangleF boundingRectangle = new RectangleF((float)settings.GetPixelX(centreX) - diameterPixels / 2, (float)settings.GetPixelY(centreY) - diameterPixels / 2, diameterPixels, diameterPixels);
+			double start = -90;
+			for (int i = 0; i < proportions.Length; i++)
+			{
+				double sweep = proportions[i] * 360;
+				double sweepOffset = explodedChart ? -1 : 0;
+				double angle = (Math.PI / 180) * ((sweep + 2 * start) / 2);
+				double xOffset = explodedChart ? 3 * Math.Cos(angle) : 0;
+				double yOffset = explodedChart ? 3 * Math.Sin(angle) : 0;
 
-        public override string ToString()
-        {
-            string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
-            return $"PlottablePie{label} with {GetPointCount()} points";
-        }
-    }
+				brush.Color = colors[i];
+				settings.gfxData.FillPie(brush, (int)(boundingRectangle.X + xOffset), (int)(boundingRectangle.Y + yOffset), boundingRectangle.Width, boundingRectangle.Height, (float)start, (float)(sweep + sweepOffset));
+
+				if (explodedChart)
+				{
+					pen.Width = sliceOutlineWidth;
+					settings.gfxData.DrawPie(pen, (int)(boundingRectangle.X + xOffset), (int)(boundingRectangle.Y + yOffset), boundingRectangle.Width, boundingRectangle.Height, (float)start, (float)(sweep + sweepOffset));
+				}
+				start += sweep;
+
+				if (showValues) {
+					brush.Color = Color.White;
+					double radius =	0.5 * minAxisScale;
+					settings.gfxData.DrawString($"{proportions[i] * 100:f1}%", new Font("Sans Serif", 12), brush,
+						(float)(boundingRectangle.X + diameterPixels / 2 + xOffset + Math.Cos(angle) * radius),
+						(float)(boundingRectangle.Y + diameterPixels / 2 + yOffset + Math.Sin(angle) * radius),
+						new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center }) ;
+				}
+			}
+
+
+
+			pen.Width = outlineWidth;
+			settings.gfxData.DrawEllipse(pen, boundingRectangle.X, boundingRectangle.Y, boundingRectangle.Width, boundingRectangle.Height);
+		}
+
+		public override string ToString()
+		{
+			string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
+			return $"PlottablePie{label} with {GetPointCount()} points";
+		}
+	}
 }

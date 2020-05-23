@@ -898,7 +898,9 @@ namespace ScottPlot
             double[] proportions,
             string label = null,
             string[] groupNames = null,
-            Color[] colors = null
+            Color[] colors = null,
+            bool explodedChart = false,
+            bool showValues = false
             )
         {
             if (groupNames == null) {
@@ -909,7 +911,7 @@ namespace ScottPlot
                 colors = Enumerable.Range(0, proportions.Length).Select(i => settings.colors.GetColor(i % 10)).ToArray();
             }
 
-            PlottablePie pie = new PlottablePie(proportions, label, groupNames, colors);
+            PlottablePie pie = new PlottablePie(proportions, label, groupNames, colors, explodedChart, showValues);
 
             settings.plottables.Add(pie);
             return pie;
