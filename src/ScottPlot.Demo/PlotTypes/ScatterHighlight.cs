@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
 
-namespace ScottPlot.Demo.Experimental
+namespace ScottPlot.Demo.PlotTypes
 {
     class ScatterHighlight
     {
