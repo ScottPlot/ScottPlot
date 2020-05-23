@@ -31,7 +31,8 @@ namespace ScottPlot.Statistics
             // this constructor doesn't require an X array to be passed in at all
             pointCount = ys.Length;
             double[] xs = new double[pointCount];
-            for (int i = 0; i < pointCount; i++) {
+            for (int i = 0; i < pointCount; i++)
+            {
                 xs[i] = firstX + xSpacing * i;
             }
             this.xs = xs;
@@ -44,14 +45,16 @@ namespace ScottPlot.Statistics
             return $"Linear fit for {pointCount} points: Y = {slope}x + {offset} (R² = {rSquared})";
         }
 
-        private static (double, double, double) GetCoefficients(double[] xs, double[] ys) {
+        private static (double, double, double) GetCoefficients(double[] xs, double[] ys)
+        {
             double sumXYResidual = 0;
             double sumXSquareResidual = 0;
 
             double meanX = xs.Average();
             double meanY = ys.Average();
 
-            for (int i = 0; i < xs.Length; i++) {
+            for (int i = 0; i < xs.Length; i++)
+            {
                 sumXYResidual += (xs[i] - meanX) * (ys[i] - meanY);
                 sumXSquareResidual += (xs[i] - meanX) * (xs[i] - meanX);
             }
@@ -63,7 +66,7 @@ namespace ScottPlot.Statistics
             // calcualte R squared (https://en.wikipedia.org/wiki/Coefficient_of_determination)
             double ssTot = 0;
             double ssRes = 0;
-            for (int i=0; i<ys.Length; i++)
+            for (int i = 0; i < ys.Length; i++)
             {
                 double thisY = ys[i];
 

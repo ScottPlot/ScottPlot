@@ -25,7 +25,7 @@ namespace ScottPlot.Demo.PlotTypes
                     ys: new double[] { 4.5, 1.5, 2.5 },
                     label: "polygon B", lineWidth: 2, fillAlpha: .8,
                     lineColor: System.Drawing.Color.Black);
-                
+
                 plt.Title($"Polygon Demonstration");
                 plt.Legend();
             }

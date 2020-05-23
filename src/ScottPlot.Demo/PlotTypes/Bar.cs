@@ -55,7 +55,7 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.PlotBarGroups(
                     groupLabels: groupNames,
                     seriesLabels: seriesNames,
-                    ys: new double[][] { ys1, ys2, ys3 }, 
+                    ys: new double[][] { ys1, ys2, ys3 },
                     yErr: new double[][] { err1, err2, err3 });
 
                 // customize the plot to make it look nicer

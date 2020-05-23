@@ -252,7 +252,7 @@ namespace ScottPlot
         {
             if (step <= 0)
                 throw new ArgumentException("step must be >0. To make a descending series make stop < start.");
-            
+
             double valueSpan = Math.Abs(start - stop);
             int valueCount = (int)(valueSpan / step);
             double stepSize = (stop > start) ? step : -step;
