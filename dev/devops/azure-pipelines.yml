@@ -24,9 +24,11 @@ steps:
     arguments: 'update -g dotnet-format'
 
 ### FAIL IF AUTOFORMATTING IS REQUIRED
-- task: CmdLine@2
+- task: DotNetCoreCLI@2
+  displayName: 'Check Code Formatting'
   inputs:
-    script: 'dotnet-format' 
+    command: 'custom'
+    custom: 'format'
 
 ### INSTALL NUGET AND RESTORE PACKAGES
 
