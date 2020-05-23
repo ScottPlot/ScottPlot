@@ -5,8 +5,8 @@ using System.Text;
 
 namespace ScottPlot.Config.ColorMaps
 {
-    //All credit to Eric Firing
-    //This colourmap is released under the CC0 license/public domain dedication
+    //All credit to Nathaniel J. Smith, Stefan van der Walt, and Eric Firing
+    //This colourmap is released under the CC0 license/public domain dedication by the relevant parties
     //UC Berekeley provides the colourmap at https://github.com/BIDS/colormap/blob/master/colormaps.py#L788
     class Viridis : Colormap
     {

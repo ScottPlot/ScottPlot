@@ -20,8 +20,11 @@ namespace ScottPlot
         {
             grayscale,
             grayscaleInverted,
-			viridis
-		}
+            viridis,
+            magma,
+            inferno,
+            plasma
+        }
 
         private int width;
         private int height;
@@ -118,6 +121,12 @@ namespace ScottPlot
                     return new Config.ColorMaps.GrayscaleInverted().IntensityToRGB(intensities);
                 case ColorMap.viridis:
                     return new Config.ColorMaps.Viridis().IntensityToRGB(intensities);
+                case ColorMap.magma:
+                    return new Config.ColorMaps.Magma().IntensityToRGB(intensities);
+                case ColorMap.inferno:
+                    return new Config.ColorMaps.Inferno().IntensityToRGB(intensities);
+                case ColorMap.plasma:
+                    return new Config.ColorMaps.Plasma().IntensityToRGB(intensities);
                 default:
                     throw new ArgumentException("Colormap not supported");
             }
