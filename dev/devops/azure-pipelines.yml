@@ -15,6 +15,12 @@ pool:
 
 steps:
 
+### INSTALL LATEST .NET CORE SDK
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '3.1.101'
+    
 ### INSTALL DOTNET FORMAT
 - task: DotNetCoreCLI@2
   displayName: 'Install dotnet-format'
@@ -29,7 +35,7 @@ steps:
   inputs:
     command: 'custom'
     custom: 'format'
-    arguments: '-f src --dry-run --check --verbosity diagnostic'
+    arguments: '-w src/ScottPlotV4.sln --dry-run --check --verbosity diagnostic'
 
 ### INSTALL NUGET AND RESTORE PACKAGES
 
