@@ -18,8 +18,9 @@ namespace ScottPlot
     {
         public enum ColorMap
         {
-            grayscale
-        }
+            grayscale,
+			grayscaleInverted
+		}
 
         private int width;
         private int height;
@@ -28,26 +29,51 @@ namespace ScottPlot
         public string label;
 
         private Bitmap bmp;
+        private Bitmap scale;
+        private double min;
+        private double max;
+        private SolidBrush brush;
+        private Pen pen;
 
         public PlottableHeatmap(double[,] intensities, ColorMap colorMap, string label)
         {
             this.width = intensities.GetUpperBound(1) + 1;
             this.height = intensities.GetUpperBound(0) + 1;
             double[] intensitiesFlattened = Flatten(intensities);
-            this.intensitiesNormalized = intensitiesFlattened.Select(i => (i - intensitiesFlattened.Min()) / (intensitiesFlattened.Max() - intensitiesFlattened.Min())).ToArray();
+            this.min = intensitiesFlattened.Min();
+            this.max = intensitiesFlattened.Max();
+            this.brush = new SolidBrush(Color.Black);
+            this.pen = new Pen(brush);
+
+            this.intensitiesNormalized = Normalize(intensitiesFlattened);
             this.colorMap = colorMap;
             this.label = label;
-            double max = intensitiesNormalized.Max();
-            double min = intensitiesNormalized.Min();
 
             byte[,] rgb = IntensityToColor(this.intensitiesNormalized, colorMap);
 
             int[] flatRGBA = ToRGB(rgb);
             bmp = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+            scale = new Bitmap(1, 200, PixelFormat.Format32bppArgb);
+            int[] scaleRGBA = ToRGB(IntensityToColor(Normalize(Invert(Enumerable.Range(0, scale.Height).Select(i => (double)i).ToArray())), colorMap));
+
             Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
+            Rectangle rectScale = new Rectangle(0, 0, scale.Width, scale.Height);
             BitmapData bmpData = bmp.LockBits(rect, ImageLockMode.ReadWrite, bmp.PixelFormat);
+            BitmapData scaleBmpData = scale.LockBits(rectScale, ImageLockMode.ReadWrite, scale.PixelFormat);
+
             Marshal.Copy(flatRGBA, 0, bmpData.Scan0, flatRGBA.Length);
+            Marshal.Copy(scaleRGBA, 0, scaleBmpData.Scan0, scaleRGBA.Length);
             bmp.UnlockBits(bmpData);
+            scale.UnlockBits(scaleBmpData);
+        }
+
+        private double[] Normalize(double[] input)
+        {
+            return input.Select(i => (i - input.Min()) / (input.Max() - input.Min())).ToArray();
+        }
+
+        private double[] Invert(double[] input) {
+            return input.Select(i => 1 - i).ToArray();
         }
 
         private int[] ToRGB(byte[,] byteArr)
@@ -86,16 +112,18 @@ namespace ScottPlot
             switch (colorMap)
             {
                 case ColorMap.grayscale:
-                    byte[,] output = new byte[intensities.Length, 3];
+                    byte[,] outputGrayscale = new byte[intensities.Length, 3];
                     for (int i = 0; i < intensities.Length; i++)
                     {
                         for (int j = 0; j < 3; j++)
                         {
-                            output[i, j] = (byte)(intensities[i] * 255);
+                            outputGrayscale[i, j] = (byte)(intensities[i] * 255);
                         }
                     }
-                    return output;
-                    break;
+                    return outputGrayscale;
+                case ColorMap.grayscaleInverted:
+                    byte[,] outputGrayscaleInverted = IntensityToColor(Invert(intensities), ColorMap.grayscale);
+                    return outputGrayscaleInverted;
                 default:
                     throw new ArgumentException("Colormap not supported");
             }
@@ -107,7 +135,19 @@ namespace ScottPlot
             settings.gfxData.InterpolationMode = InterpolationMode.NearestNeighbor; //This is really important for heatmaps
             double minScale = settings.xAxisScale < settings.yAxisScale ? settings.xAxisScale : settings.yAxisScale;
             settings.gfxData.DrawImage(bmp, (int)settings.GetPixelX(0), (int)(settings.GetPixelY(0) - (height * minScale)), (int)(width * minScale), (int)(height * minScale));
+            RenderScale(settings);
             settings.gfxData.InterpolationMode = interpMode;
+        }
+
+        private void RenderScale(Settings settings)
+        {
+            Rectangle scaleRect = new Rectangle((int)(settings.figureSize.Width * 0.8), 50, 30, 200);
+            Rectangle scaleRectOutline = scaleRect;
+            scaleRectOutline.Width /= 2;
+            settings.gfxData.DrawImage(scale, scaleRect);
+            settings.gfxData.DrawRectangle(pen, scaleRectOutline);
+            settings.gfxData.DrawString($"{max:f3}", new Font(FontFamily.GenericSansSerif, 12), brush, new Point(scaleRect.X + 40, 50));
+            settings.gfxData.DrawString($"{min:f3}", new Font(FontFamily.GenericSansSerif, 12), brush, new Point(scaleRect.X + 40, 250), new StringFormat() { LineAlignment = StringAlignment.Far});
         }
 
         public override string ToString()
