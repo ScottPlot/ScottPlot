@@ -15,14 +15,14 @@ namespace ScottPlot.Demo.Experimental
 
             public void Render(Plot plt)
             {
-                int[] xs = Enumerable.Range(0, 200).ToArray();
-                int[] ys = Enumerable.Range(0, 70).ToArray();
+                int[] xs = Enumerable.Range(0, 100).ToArray();
+                int[] ys = Enumerable.Range(0, 100).ToArray();
                 double[][] intensities = new double[ys.Length][];
 
                 for (int i = 0; i < ys.Length; i++) {
                     intensities[i] = new double[xs.Length];
                     for (int j = 0; j < xs.Length; j++) {
-                        intensities[i][j] = Math.Sqrt(Math.Pow(xs[j] - 100, 2) + Math.Pow(ys[i] - 35, 2));
+                        intensities[i][j] = Math.Sqrt(Math.Pow(xs[j] - 50, 2) + Math.Pow(ys[i] - 50, 2));
                     }
                 }
 
