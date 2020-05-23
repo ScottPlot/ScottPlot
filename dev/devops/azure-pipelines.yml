@@ -42,7 +42,7 @@ steps:
 ### FAIL IF AUTOFORMATTING IS REQUIRED
 - task: DotNetCoreCLI@2
   displayName: 'Check Formatting'
-  condition: eq(variables['agent.os'], 'ubuntu-16.04')
+  condition: eq(variables['imageName'], 'ubuntu-16.04')
   inputs:
     command: 'custom'
     custom: 'format'
