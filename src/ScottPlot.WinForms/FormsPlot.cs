@@ -43,12 +43,20 @@ namespace ScottPlot
 
         public void Reset(Plot plt)
         {
-            this.plt = (plt is null) ? new Plot() : plt;
-            InitializeScottPlot();
+            if (plt is null)
+            {
+                this.plt = new Plot();
+                InitializeScottPlot();
+            }
+            else
+            {
+                this.plt = plt;
+                InitializeScottPlot(applyDefaultStyle: false);
+            }
             Render();
         }
 
-        private void InitializeScottPlot()
+        private void InitializeScottPlot(bool applyDefaultStyle = true)
         {
             ContextMenuStrip = DefaultRightClickMenu();
 
@@ -62,7 +70,9 @@ namespace ScottPlot
             lblTitle.BackColor = ColorTranslator.FromHtml("#003366");
             lblVersion.BackColor = ColorTranslator.FromHtml("#003366");
 
-            plt.Style(Style.Control);
+            if (applyDefaultStyle)
+                plt.Style(Style.Control);
+
             settings = plt.GetSettings(showWarning: false);
 
             PbPlot_MouseUp(null, null);
@@ -379,7 +389,8 @@ namespace ScottPlot
             Render(recalculateLayout: true);
         }
 
-        private void PbPlot_MouseDoubleClick(object sender, MouseEventArgs e) { 
+        private void PbPlot_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
             OnMouseDoubleClicked(e);
             base.OnMouseDoubleClick(e);
         }
