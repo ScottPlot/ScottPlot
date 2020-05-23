@@ -58,7 +58,7 @@ steps:
   inputs:
     restoreSolution: 'src/ScottPlotV4.sln'
 
-### BUILD AND PACK PACKAGES THAT WORK ON EVERY OS
+### BUILD SCOTTPLOT AND DEMO
 
 - task: DotNetCoreCLI@2
   displayName: 'Build ScottPlot'
@@ -72,7 +72,7 @@ steps:
     command: 'build'
     projects: 'src/ScottPlot.Demo/ScottPlot.Demo.csproj'
 
-### BUILD AND RUN PRIMARY TESTS
+### BUILD AND RUN TESTS
 - task: DotNetCoreCLI@2
   displayName: 'Build Tests'
   inputs:
@@ -85,29 +85,7 @@ steps:
     command: test
     projects: 'tests/ScottPlotTests.csproj'
 
-### PUBLISH TEST OUTPUT AS AN ARTIFACT
-# - task: PublishPipelineArtifact@1
-#   displayName: 'Publish Tests (Windows)'
-#   condition: contains(variables['agent.os'], 'Windows')
-#   inputs:
-#     targetPath: tests/bin/Debug/netcoreapp2.0/artifacts
-#     artifactName: Sample Plot (Windows)
-    
-# - task: PublishPipelineArtifact@1
-#   displayName: 'Publish Tests (MacOS)'
-#   condition: contains(variables['agent.os'], 'Darwin')
-#   inputs:
-#     targetPath: tests/bin/Debug/netcoreapp2.0/artifacts
-#     artifactName: Sample Plot (MacOS)
-    
-# - task: PublishPipelineArtifact@1
-#   displayName: 'Publish Tests (Linux)'
-#   condition: contains(variables['agent.os'], 'Linux')
-#   inputs:
-#     targetPath: tests/bin/Debug/netcoreapp2.0/artifacts
-#     artifactName: Sample Plot (Linux)
-
-### BUILD RELEASE (Windows only)
+### BUILD RELEASE OF FULL SOLUTION (Windows only)
     
 - task: VSBuild@1
   displayName: 'Build Release (Windows)'
@@ -115,26 +93,3 @@ steps:
   inputs:
     solution: 'src/ScottPlotV4.sln'
     configuration: 'release'
-
-### PUBLISH NUGET PACKAGES (Windows only)
-
-# - task: CopyFiles@2
-#   displayName: 'Copy Packages (Windows)'
-#   condition: contains(variables['agent.os'], 'Windows')
-#   inputs:
-#     Contents: |
-#       src/ScottPlot/bin/Release/*.nupkg
-#       src/ScottPlot/bin/Release/*.snupkg
-#       src/ScottPlot.WinForms/bin/Release/*.nupkg
-#       src/ScottPlot.WinForms/bin/Release/*.snupkg
-#       src/ScottPlot.WPF/bin/Release/*.nupkg
-#       src/ScottPlot.WPF/bin/Release/*.snupkg
-#     TargetFolder: '$(Build.ArtifactStagingDirectory)'
-#     flattenFolders: true
-
-# - task: PublishPipelineArtifact@1
-#   displayName: 'Publish Packages (Windows)'
-#   condition: contains(variables['agent.os'], 'Windows')
-#   inputs:
-#     targetPath: '$(Build.ArtifactStagingDirectory)'
-#     artifactName: NuGet Packages
