@@ -3,6 +3,8 @@ trigger:
 
 strategy:
   matrix:
+    CodeFormatChecker:
+      imageName: 'ubuntu-16.04' # intentionally old
     MacOS:
       imageName: 'macOS-latest'
     Linux:
@@ -39,7 +41,8 @@ steps:
 
 ### FAIL IF AUTOFORMATTING IS REQUIRED
 - task: DotNetCoreCLI@2
-  displayName: 'Check Code Formatting'
+  displayName: 'Check Formatting'
+  condition: eq(variables['agent.os'], 'ubuntu-16.04')
   inputs:
     command: 'custom'
     custom: 'format'
