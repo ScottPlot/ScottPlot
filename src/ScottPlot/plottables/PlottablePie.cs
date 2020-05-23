@@ -13,7 +13,6 @@ namespace ScottPlot
         public string[] groupNames;
         public Color[] colors;
 
-        private Pen pen = new Pen(Color.Black, 2);
         private SolidBrush brush = new SolidBrush(Color.Black);
 
         public PlottablePie(double[] proportions, string label, string[] groupNames, Color[] colors)
@@ -50,18 +49,18 @@ namespace ScottPlot
             AxisLimits2D limits = GetLimits();
             double centreX = (limits.x1 + limits.x2) / 2;
             double centreY = (limits.y1 + limits.y2) / 2;
-            double diameter = 2;
+            double diameter = 2; // Unit circle
             float diameterPixels = (float)(minAxisScale * diameter);
+
             RectangleF boundingRectangle = new RectangleF((float)settings.GetPixelX(centreX) - diameterPixels / 2, (float)settings.GetPixelY(centreY) - diameterPixels / 2, diameterPixels, diameterPixels);
-            pen.Color = Color.Black;
             brush.Color = Color.Black;
-            settings.gfxData.FillEllipse(brush, boundingRectangle);
+            int outlineWidth = 2;
+            settings.gfxData.FillEllipse(brush, boundingRectangle.X - outlineWidth / 2, boundingRectangle.Y - outlineWidth / 2, boundingRectangle.Width + outlineWidth, boundingRectangle.Height + outlineWidth);
 
             double start = -90;
             for (int i = 0; i < proportions.Length; i++)
             {
                 double sweep = proportions[i] * 360;
-                pen.Color = colors[i];
                 brush.Color = colors[i];
                 settings.gfxData.FillPie(brush, boundingRectangle.X, boundingRectangle.Y, boundingRectangle.Width, boundingRectangle.Height, (float)start, (float)sweep);
                 start += sweep;

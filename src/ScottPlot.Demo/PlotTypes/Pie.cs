@@ -21,9 +21,13 @@ namespace ScottPlot.Demo.PlotTypes
                     if (total >= 1) {
                         break;
                     }
-                    proportions[i] = rand.NextDouble() * (1 - total);
+                    proportions[i] = rand.NextDouble() * (1 - total);   //Make sure we don't add up to more than 1
                     total += proportions[i];
                 }
+                if (total < 1) {
+                    proportions[proportions.Length - 1] += 1 - total; //If we are less than 1, add the remnant to the last slice
+                }
+
                 plt.PlotPie(proportions);
                 plt.Legend();
             }
