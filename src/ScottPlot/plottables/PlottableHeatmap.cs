@@ -28,6 +28,7 @@ namespace ScottPlot
         public string label;
 
         private Bitmap bmp;
+        private double minAxisScale;
 
         public PlottableHeatmap(double[,] intensities, ColorMap colorMap, string label)
         {
@@ -62,15 +63,6 @@ namespace ScottPlot
         private T[] Flatten<T>(T[,] toFlatten)
         {
             return toFlatten.Cast<T>().ToArray();
-            T[] flattened = new T[(toFlatten.GetUpperBound(0) + 1) * (toFlatten.GetUpperBound(1) + 1)];
-            for (int i = 0; i < toFlatten.GetUpperBound(0) + 1; i++)
-            {
-                for (int j = 0; j < toFlatten.GetUpperBound(1) + 1; j++)
-                {
-                    flattened[i * (toFlatten.GetUpperBound(1) + 1) + j] = toFlatten[i, j];
-                }
-            }
-            return flattened;
         }
 
 
@@ -114,8 +106,8 @@ namespace ScottPlot
         {
             var interpMode = settings.gfxData.InterpolationMode;
             settings.gfxData.InterpolationMode = InterpolationMode.NearestNeighbor; //This is really important for heatmaps
-            double scaleFactor = new double[] { settings.axes.x.span * settings.xAxisScale / width, settings.axes.y.span * settings.yAxisScale / height }.Min();
-            settings.gfxData.DrawImage(bmp, 0, 0, (int)(width * scaleFactor), (int)(height * scaleFactor));
+            double scaleFactor = new double[] { settings.xAxisScale, settings.yAxisScale }.Min();
+            settings.gfxData.DrawImage(bmp, (int)settings.GetPixelX(0), (int)(settings.GetPixelY(0) - (height * scaleFactor)), (int)(width * scaleFactor), (int)(height * scaleFactor));
             settings.gfxData.InterpolationMode = interpMode;
         }
 
