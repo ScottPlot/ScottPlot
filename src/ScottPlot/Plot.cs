@@ -571,6 +571,16 @@ namespace ScottPlot
             return scalebar;
         }
 
+        public PlottableHeatmap PlotHeatmap(
+            double[][] intensities,
+            PlottableHeatmap.ColorMap colorMap = PlottableHeatmap.ColorMap.grayscale,
+            string label = null
+            ) {
+            PlottableHeatmap heatmap = new PlottableHeatmap(intensities, colorMap, label);
+            settings.plottables.Add(heatmap);
+            return heatmap;
+        }
+
         public PlottableScatter PlotScatter(
             double[] xs,
             double[] ys,
