@@ -28,7 +28,6 @@ namespace ScottPlot
         public string label;
 
         private Bitmap bmp;
-        private double minAxisScale;
 
         public PlottableHeatmap(double[,] intensities, ColorMap colorMap, string label)
         {
@@ -106,8 +105,8 @@ namespace ScottPlot
         {
             var interpMode = settings.gfxData.InterpolationMode;
             settings.gfxData.InterpolationMode = InterpolationMode.NearestNeighbor; //This is really important for heatmaps
-            double scaleFactor = new double[] { settings.xAxisScale, settings.yAxisScale }.Min();
-            settings.gfxData.DrawImage(bmp, (int)settings.GetPixelX(0), (int)(settings.GetPixelY(0) - (height * scaleFactor)), (int)(width * scaleFactor), (int)(height * scaleFactor));
+            double minScale = settings.xAxisScale < settings.yAxisScale ? settings.xAxisScale : settings.yAxisScale;
+            settings.gfxData.DrawImage(bmp, (int)settings.GetPixelX(0), (int)(settings.GetPixelY(0) - (height * minScale)), (int)(width * minScale), (int)(height * minScale));
             settings.gfxData.InterpolationMode = interpMode;
         }
 
