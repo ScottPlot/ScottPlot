@@ -56,12 +56,12 @@ namespace ScottPlot
                 case MarkerShape.filledDiamond:
 
                     // Create points that define polygon.
-                    PointF point1 = new PointF(pixelLocation.X, pixelLocation.Y + size/2);
-                    PointF point2 = new PointF(pixelLocation.X - size/2, pixelLocation.Y);
-                    PointF point3 = new PointF(pixelLocation.X, pixelLocation.Y - size/2);
-                    PointF point4 = new PointF(pixelLocation.X + size/2, pixelLocation.Y);
+                    PointF point1 = new PointF(pixelLocation.X, pixelLocation.Y + size / 2);
+                    PointF point2 = new PointF(pixelLocation.X - size / 2, pixelLocation.Y);
+                    PointF point3 = new PointF(pixelLocation.X, pixelLocation.Y - size / 2);
+                    PointF point4 = new PointF(pixelLocation.X + size / 2, pixelLocation.Y);
 
-                    PointF[] curvePoints = { point1, point2, point3, point4};
+                    PointF[] curvePoints = { point1, point2, point3, point4 };
 
                     //Draw polygon to screen
                     gfx.FillPolygon(brush, curvePoints);
@@ -74,42 +74,42 @@ namespace ScottPlot
                     PointF point7 = new PointF(pixelLocation.X, pixelLocation.Y - size / 2);
                     PointF point8 = new PointF(pixelLocation.X + size / 2, pixelLocation.Y);
 
-                    PointF[] curvePoints2 = { point5, point6, point7, point8};
+                    PointF[] curvePoints2 = { point5, point6, point7, point8 };
 
                     //Draw polygon to screen
                     gfx.DrawPolygon(pen, curvePoints2);
 
                     break;
                 case MarkerShape.asterisk:
-                    Font drawFont = new Font("CourierNew", size*3);
+                    Font drawFont = new Font("CourierNew", size * 3);
                     SizeF textSize = Drawing.GDI.MeasureString(gfx, "*", drawFont);
-                    PointF asteriskPoint = new PointF(pixelLocation.X - textSize.Width/2, pixelLocation.Y-textSize.Height/4 );
+                    PointF asteriskPoint = new PointF(pixelLocation.X - textSize.Width / 2, pixelLocation.Y - textSize.Height / 4);
                     gfx.DrawString("*", drawFont, brush, asteriskPoint);
 
                     break;
                 case MarkerShape.hashTag:
-                    Font drawFont2 = new Font("CourierNew", size*2);
+                    Font drawFont2 = new Font("CourierNew", size * 2);
                     SizeF textSize2 = Drawing.GDI.MeasureString(gfx, "#", drawFont2);
                     PointF asteriskPoint2 = new PointF(pixelLocation.X - textSize2.Width / 2, pixelLocation.Y - textSize2.Height / 3);
                     gfx.DrawString("#", drawFont2, brush, asteriskPoint2);
 
                     break;
                 case MarkerShape.cross:
-                    Font drawFont3 = new Font("CourierNew", size*2);
+                    Font drawFont3 = new Font("CourierNew", size * 2);
                     SizeF textSize3 = Drawing.GDI.MeasureString(gfx, "+", drawFont3);
-                    PointF asteriskPoint3 = new PointF(pixelLocation.X -  textSize3.Width / (5/2), pixelLocation.Y - textSize3.Height / 2);
+                    PointF asteriskPoint3 = new PointF(pixelLocation.X - textSize3.Width / (5 / 2), pixelLocation.Y - textSize3.Height / 2);
                     gfx.DrawString("+", drawFont3, brush, asteriskPoint3);
 
                     break;
                 case MarkerShape.eks:
-                    Font drawFont4 = new Font("CourierNew", size*2);
+                    Font drawFont4 = new Font("CourierNew", size * 2);
                     SizeF textSize4 = Drawing.GDI.MeasureString(gfx, "x", drawFont4);
                     PointF asteriskPoint4 = new PointF(pixelLocation.X - textSize4.Width / (5 / 2), pixelLocation.Y - textSize4.Height / 2);
                     gfx.DrawString("x", drawFont4, brush, asteriskPoint4);
 
                     break;
                 case MarkerShape.verticalBar:
-                    Font drawFont5 = new Font("CourierNew", size*2);
+                    Font drawFont5 = new Font("CourierNew", size * 2);
                     SizeF textSize5 = Drawing.GDI.MeasureString(gfx, "|", drawFont5);
                     PointF asteriskPoint5 = new PointF(pixelLocation.X - textSize5.Width / (5 / 2), pixelLocation.Y - textSize5.Height / 2);
                     gfx.DrawString("|", drawFont5, brush, asteriskPoint5);
@@ -117,9 +117,9 @@ namespace ScottPlot
                     break;
                 case MarkerShape.triUp:
                     // Create points that define polygon.
-                    PointF point9 = new PointF(pixelLocation.X , pixelLocation.Y-size);
-                    PointF point10 = new PointF(pixelLocation.X , pixelLocation.Y);
-                    PointF point11 = new PointF(pixelLocation.X - size * (float)0.866 , pixelLocation.Y + size * (float)0.5);
+                    PointF point9 = new PointF(pixelLocation.X, pixelLocation.Y - size);
+                    PointF point10 = new PointF(pixelLocation.X, pixelLocation.Y);
+                    PointF point11 = new PointF(pixelLocation.X - size * (float)0.866, pixelLocation.Y + size * (float)0.5);
                     PointF point12 = new PointF(pixelLocation.X, pixelLocation.Y);
                     PointF point13 = new PointF(pixelLocation.X + size * (float)0.866, (pixelLocation.Y + size * (float)0.5));
 

@@ -118,7 +118,7 @@ namespace ScottPlotTests.PlotTypes
 
             // now plot the arrays as polygons
             var plt = new ScottPlot.Plot();
-            plt.PlotPolygon(xs, neg, "negative", lineWidth: 1, 
+            plt.PlotPolygon(xs, neg, "negative", lineWidth: 1,
                 lineColor: Color.Black, fillColor: Color.Red, fillAlpha: .5);
             plt.PlotPolygon(xs, pos, "positive", lineWidth: 1,
                 lineColor: Color.Black, fillColor: Color.Green, fillAlpha: .5);

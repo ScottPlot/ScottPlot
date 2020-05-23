@@ -16,7 +16,7 @@ namespace ScottPlot.Config
 
         public LegendItem(
             string label, System.Drawing.Color color,
-            LineStyle lineStyle = LineStyle.Solid, double lineWidth = 1, 
+            LineStyle lineStyle = LineStyle.Solid, double lineWidth = 1,
             MarkerShape markerShape = MarkerShape.filledCircle, double markerSize = 3
             )
         {

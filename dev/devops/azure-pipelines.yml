@@ -15,6 +15,36 @@ pool:
 
 steps:
 
+### GET OLDEST .NET CORE 2 (FOR TESTS)
+- task: UseDotNet@2
+  displayName: 'Acquire .NET Core 2.0.0'
+  inputs:
+    packageType: 'sdk'
+    version: '2.0.0'
+
+### GET LATEST .NET CORE 3 (FOR TOOLS)
+- task: UseDotNet@2
+  displayName: 'Acquire .NET Core 3'
+  inputs:
+    packageType: 'sdk'
+    version: '3.x'
+
+### INSTALL DOTNET FORMAT
+- task: DotNetCoreCLI@2
+  displayName: 'Install dotnet-format'
+  inputs:
+    command: 'custom'
+    custom: 'tool'
+    arguments: 'update -g dotnet-format'
+
+### FAIL IF AUTOFORMATTING IS REQUIRED
+- task: DotNetCoreCLI@2
+  displayName: 'Check Code Formatting'
+  inputs:
+    command: 'custom'
+    custom: 'format'
+    arguments: '-w src/ScottPlotV4.sln --dry-run --check --verbosity diagnostic'
+
 ### INSTALL NUGET AND RESTORE PACKAGES
 
 - task: NuGetToolInstaller@1
