@@ -107,7 +107,7 @@ steps:
     targetPath: tests/bin/Debug/netcoreapp2.0/artifacts
     artifactName: Sample Plot (Linux)
 
-### BUILD AND PACKAGE RELEASE (Windows only)
+### BUILD RELEASE (Windows only)
     
 - task: VSBuild@1
   displayName: 'Build Release (Windows)'
@@ -116,23 +116,25 @@ steps:
     solution: 'src/ScottPlotV4.sln'
     configuration: 'release'
 
-- task: CopyFiles@2
-  displayName: 'Copy Packages (Windows)'
-  condition: contains(variables['agent.os'], 'Windows')
-  inputs:
-    Contents: |
-      src/ScottPlot/bin/Release/*.nupkg
-      src/ScottPlot/bin/Release/*.snupkg
-      src/ScottPlot.WinForms/bin/Release/*.nupkg
-      src/ScottPlot.WinForms/bin/Release/*.snupkg
-      src/ScottPlot.WPF/bin/Release/*.nupkg
-      src/ScottPlot.WPF/bin/Release/*.snupkg
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
-    flattenFolders: true
+### PUBLISH NUGET PACKAGES (Windows only)
 
-- task: PublishPipelineArtifact@1
-  displayName: 'Publish Packages (Windows)'
-  condition: contains(variables['agent.os'], 'Windows')
-  inputs:
-    targetPath: '$(Build.ArtifactStagingDirectory)'
-    artifactName: NuGet Packages
+# - task: CopyFiles@2
+#   displayName: 'Copy Packages (Windows)'
+#   condition: contains(variables['agent.os'], 'Windows')
+#   inputs:
+#     Contents: |
+#       src/ScottPlot/bin/Release/*.nupkg
+#       src/ScottPlot/bin/Release/*.snupkg
+#       src/ScottPlot.WinForms/bin/Release/*.nupkg
+#       src/ScottPlot.WinForms/bin/Release/*.snupkg
+#       src/ScottPlot.WPF/bin/Release/*.nupkg
+#       src/ScottPlot.WPF/bin/Release/*.snupkg
+#     TargetFolder: '$(Build.ArtifactStagingDirectory)'
+#     flattenFolders: true
+
+# - task: PublishPipelineArtifact@1
+#   displayName: 'Publish Packages (Windows)'
+#   condition: contains(variables['agent.os'], 'Windows')
+#   inputs:
+#     targetPath: '$(Build.ArtifactStagingDirectory)'
+#     artifactName: NuGet Packages
