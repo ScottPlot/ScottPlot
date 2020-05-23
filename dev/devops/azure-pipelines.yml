@@ -15,8 +15,16 @@ pool:
 
 steps:
 
-### INSTALL LATEST .NET CORE 3
+### GET OLDEST .NET CORE 2 (FOR TESTS)
 - task: UseDotNet@2
+  displayName: 'Acquire .NET Core 2.0.0'
+  inputs:
+    packageType: 'sdk'
+    version: '2.0.0'
+
+### GET LATEST .NET CORE 3 (FOR TOOLS)
+- task: UseDotNet@2
+  displayName: 'Acquire .NET Core 3'
   inputs:
     packageType: 'sdk'
     version: '3.x'
