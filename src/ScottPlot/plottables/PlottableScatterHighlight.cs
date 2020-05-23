@@ -13,7 +13,7 @@ namespace ScottPlot
 {
     public class PlottableScatterHighlight : PlottableScatter, IExportable, IHighlightable
     {
-        private List<int> highlightedIndexes;
+        protected List<int> highlightedIndexes;
         public MarkerShape highlightedShape;
         public float highlightedMarkerSize;
         public Color highlightedColor;
