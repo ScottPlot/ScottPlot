@@ -41,6 +41,7 @@ namespace ScottPlotTests.Plot
             plottable.HighlightClear();
             Assert.IsEmpty(plottable.HighlightedIndexes);
         }
+
         [TestCase(0)]
         [TestCase(1)]
         [TestCase(2)]
@@ -118,7 +119,6 @@ namespace ScottPlotTests.Plot
             Assert.AreEqual(1, plottable.HighlightedIndexes.Count);
             Assert.AreEqual(expectedIndex, plottable.HighlightedIndexes[0]);
         }
-
 
         [TestCase(0.1, 0, 0)]
         [TestCase(0.0, 0.1, 1)]
