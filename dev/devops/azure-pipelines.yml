@@ -14,12 +14,6 @@ pool:
   vmImage: $(imageName)
 
 steps:
-
-### INSTALL LATEST .NET CORE SDK
-- task: UseDotNet@2
-  inputs:
-    packageType: 'sdk'
-    version: '3.1.101'
     
 ### INSTALL DOTNET FORMAT
 - task: DotNetCoreCLI@2
@@ -30,12 +24,9 @@ steps:
     arguments: 'update -g dotnet-format'
 
 ### FAIL IF AUTOFORMATTING IS REQUIRED
-- task: DotNetCoreCLI@2
-  displayName: 'Check auto-formatting'
+- task: CmdLine@2
   inputs:
-    command: 'custom'
-    custom: 'format'
-    arguments: '-w src/ScottPlotV4.sln --dry-run --check --verbosity diagnostic'
+    script: 'dotnet-format -w src/ScottPlotV4.sln --dry-run --check --verbosity diagnostic' 
 
 ### INSTALL NUGET AND RESTORE PACKAGES
 
