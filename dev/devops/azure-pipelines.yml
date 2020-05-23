@@ -15,6 +15,22 @@ pool:
 
 steps:
 
+### INSTALL DOTNET FORMAT
+- task: DotNetCoreCLI@2
+  displayName: 'Install dotnet-format'
+  inputs:
+    command: 'custom'
+    custom: 'tool'
+    arguments: 'update -g dotnet-format'
+
+### FAIL IF AUTOFORMATTING IS REQUIRED
+- task: DotNetCoreCLI@2
+  displayName: 'Check auto-formatting'
+  inputs:
+    command: 'custom'
+    custom: 'format'
+    arguments: '--dry-run --check --verbosity diagnostic'
+
 ### INSTALL NUGET AND RESTORE PACKAGES
 
 - task: NuGetToolInstaller@1
@@ -24,14 +40,6 @@ steps:
   displayName: 'Full package restoration'
   inputs:
     restoreSolution: 'src/ScottPlotV4.sln'
-
-### INSTALL DOTNET FORMAT
-- task: DotNetCoreCLI@2
-  displayName: 'Install dotnet-format'
-  inputs:
-    command: 'custom'
-    custom: 'tool'
-    arguments: 'update -g dotnet-format'
 
 ### BUILD AND PACK PACKAGES THAT WORK ON EVERY OS
 
