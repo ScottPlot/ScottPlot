@@ -25,6 +25,14 @@ steps:
   inputs:
     restoreSolution: 'src/ScottPlotV4.sln'
 
+### INSTALL DOTNET FORMAT
+- task: DotNetCoreCLI@2
+  displayName: 'Install dotnet-format'
+  inputs:
+    command: 'custom'
+    custom: 'tool'
+    arguments: 'update -g dotnet-format'
+
 ### BUILD AND PACK PACKAGES THAT WORK ON EVERY OS
 
 - task: DotNetCoreCLI@2
