@@ -26,7 +26,7 @@ steps:
 ### FAIL IF AUTOFORMATTING IS REQUIRED
 - task: CmdLine@2
   inputs:
-    script: 'dotnet-format -w src/ScottPlotV4.sln --dry-run --check --verbosity diagnostic' 
+    script: 'dotnet format -w src/ScottPlotV4.sln --dry-run --check --verbosity diagnostic' 
 
 ### INSTALL NUGET AND RESTORE PACKAGES
 
