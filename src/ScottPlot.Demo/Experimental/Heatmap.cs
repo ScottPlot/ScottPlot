@@ -27,7 +27,6 @@ namespace ScottPlot.Demo.Experimental
                 }
 
                 plt.PlotHeatmap(intensities);
-                plt.Legend();
             }
         }
     }
