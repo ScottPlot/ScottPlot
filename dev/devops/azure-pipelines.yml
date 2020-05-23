@@ -25,7 +25,7 @@ strategy:
       imageName: 'windows-latest'
 
 pool:
-  name: $(jobName)
+  displayName: $(jobName)
   vmImage: $(imageName)
 
 steps:
