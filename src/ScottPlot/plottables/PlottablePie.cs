@@ -54,7 +54,7 @@ namespace ScottPlot
 			int sliceOutlineWidth = 0;
 			if (explodedChart)
 			{
-				pen.Color = Color.White;
+				pen.Color = settings.misc.dataBackgroundColor;
 				outlineWidth = 20;
 				sliceOutlineWidth = 1;
 			}
