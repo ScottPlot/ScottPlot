@@ -96,7 +96,7 @@ namespace ScottPlot
             {
                 settings.bmpFigure = new Bitmap(settings.figureSize.Width, settings.figureSize.Height, pixelFormat);
                 settings.gfxFigure = Graphics.FromImage(settings.bmpFigure);
-				Settings.DPIScale = settings.gfxFigure.DpiX / Settings.defaultDPI;
+                Settings.DPIScale = settings.gfxFigure.DpiX / Settings.defaultDPI;
             }
 
             if (settings.dataSize.Width > 0 && settings.dataSize.Height > 0)
@@ -157,7 +157,7 @@ namespace ScottPlot
         {
             if (!settings.axes.hasBeenSet)
                 settings.AxisAuto();
-            else 
+            else
                 settings.axes.ApplyBounds();
 
             if (!settings.layout.tighteningOccurred)
@@ -555,13 +555,13 @@ namespace ScottPlot
         }
 
         public PlottableScaleBar PlotScaleBar(
-            double sizeX, 
-            double sizeY, 
+            double sizeX,
+            double sizeY,
             string labelX = null,
             string labelY = null,
-            double thickness = 2, 
-            double fontSize = 12, 
-            Color? color = null, 
+            double thickness = 2,
+            double fontSize = 12,
+            Color? color = null,
             double padPx = 10
             )
         {
@@ -894,6 +894,27 @@ namespace ScottPlot
             return signal;
         }
 
+        public PlottablePie PlotPie(
+            double[] proportions,
+            string label = null,
+            string[] groupNames = null,
+            Color[] colors = null
+            )
+        {
+            if (groupNames == null) {
+                groupNames = Enumerable.Range(0, proportions.Length).Select(i => char.ConvertFromUtf32(i + 65)).ToArray(); 
+            }
+
+            if (colors == null) {
+                colors = Enumerable.Range(0, proportions.Length).Select(i => settings.colors.GetColor(i % 10)).ToArray();
+            }
+
+            PlottablePie pie = new PlottablePie(proportions, label, groupNames, colors);
+
+            settings.plottables.Add(pie);
+            return pie;
+        }
+
         public PlottableBar PlotBar(
             double[] xs,
             double[] ys,
@@ -980,7 +1001,7 @@ namespace ScottPlot
                 double[] barYs = ys[i];
                 double[] barYerr = yErr?[i];
                 double[] barXs = DataGen.Consecutive(barYs.Length);
-                bars[i] = PlotBar(barXs, barYs, barYerr, seriesLabels[i], barWidth * barWidthFraction, offset, 
+                bars[i] = PlotBar(barXs, barYs, barYerr, seriesLabels[i], barWidth * barWidthFraction, offset,
                     errorCapSize: errorCapSize, showValues: showValues);
             }
             XTicks(DataGen.Consecutive(groupLabels.Length, offset: (groupWidthFraction - barWidth) / 2), groupLabels);
