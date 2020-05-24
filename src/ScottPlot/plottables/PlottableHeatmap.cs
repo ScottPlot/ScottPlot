@@ -153,7 +153,8 @@ namespace ScottPlot
 
         private void RenderScale(Settings settings)
         {
-            Rectangle scaleRect = new Rectangle(settings.figureSize.Width - 150, 50, 30, 200);
+            Rectangle scaleRect = new Rectangle(settings.figureSize.Width - 150, settings.layout.xLabelHeight, 30, settings.layout.plot.Height - settings.layout.xLabelHeight - settings.layout.xScaleHeight - settings.layout.titleHeight);
+            
             Rectangle scaleRectOutline = scaleRect;
             scaleRectOutline.Width /= 2;
             var interpMode = settings.gfxFigure.InterpolationMode;
@@ -161,8 +162,8 @@ namespace ScottPlot
             settings.gfxFigure.InterpolationMode = InterpolationMode.NearestNeighbor; //This is necessary for the scale (as its a 1 pixel wide image)
             settings.gfxFigure.DrawImage(scale, scaleRect);
             settings.gfxFigure.DrawRectangle(pen, scaleRectOutline);
-            settings.gfxFigure.DrawString($"{max:f3}", new Font(FontFamily.GenericSansSerif, 12), brush, new Point(scaleRect.X + 30, 50));
-            settings.gfxFigure.DrawString($"{min:f3}", new Font(FontFamily.GenericSansSerif, 12), brush, new Point(scaleRect.X + 30, 250), new StringFormat() { LineAlignment = StringAlignment.Far });
+            settings.gfxFigure.DrawString($"{max:f3}", new Font(FontFamily.GenericSansSerif, 12), brush, new Point(scaleRect.X + 30, scaleRect.Top));
+            settings.gfxFigure.DrawString($"{min:f3}", new Font(FontFamily.GenericSansSerif, 12), brush, new Point(scaleRect.X + 30, scaleRect.Bottom), new StringFormat() { LineAlignment = StringAlignment.Far });
 
             settings.gfxFigure.InterpolationMode = interpMode;
         }
