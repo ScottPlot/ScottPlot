@@ -36,7 +36,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
 
             sph.HighlightClear();
             var (x, y, index) = sph.HighlightPointNearest(mouseX, mouseY);
-            formsPlot1.Render(skipIfCurrentlyRendering: true);
+            formsPlot1.Render();
 
             label1.Text = $"Closest point to ({mouseX:N2}, {mouseY:N2}) " +
                 $"is index {index} ({x:N2}, {y:N2})";
