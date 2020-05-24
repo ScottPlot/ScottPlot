@@ -1,6 +1,8 @@
 ﻿using NUnit.Framework;
 using ScottPlot;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 
@@ -13,10 +15,19 @@ namespace ScottPlotTests.Plot
             : base(xs, ys, color, lineWidth, markerSize, label, errorX, errorY, errorLineWidth, errorCapSize, stepDisplay, markerShape, lineStyle, highlightedShape, highlightedColor, highlightedMarkerSize)
         {
         }
+
         public List<int> HighlightedIndexes
         {
-            get => highlightedIndexes;
-            set => highlightedIndexes = value;
+            get
+            {
+                return Enumerable.Range(0, xs.Length).Where(x => isHighlighted[x]).ToList();
+            }
+            set
+            {
+                HighlightClear();
+                foreach (var index in value)
+                    isHighlighted[index] = true;
+            }
         }
     }
 
@@ -35,7 +46,7 @@ namespace ScottPlotTests.Plot
         public void HighlightClear_CallOnNotEmpty_ClearHighlightedIndexes()
         {
             var plottable = InitWithTestValues();
-            plottable.HighlightedIndexes = new List<int>() { 1, 2, 3, 4, 5 };
+            plottable.HighlightedIndexes = new List<int>() { 1, 2, 3 };
 
             Assert.IsNotEmpty(plottable.HighlightedIndexes);
             plottable.HighlightClear();
@@ -51,6 +62,7 @@ namespace ScottPlotTests.Plot
             var plottable = InitWithTestValues();
             plottable.xs = new double[] { 1, 2, 3, 4, 5 };
             plottable.ys = new double[] { 1, 2, 3, 4, 5 };
+            plottable.HighlightClear(); // required to resize the isHighlighted array
 
             plottable.HighlightPoint(index);
             Assert.AreEqual(plottable.HighlightedIndexes.Count, 1);
@@ -61,43 +73,13 @@ namespace ScottPlotTests.Plot
         [TestCase(-1)]
         [TestCase(15)]
         [TestCase(42)]
-        public void HighlightPoint_NonExistedIndexProvided_IndexAdded(int index)
+        public void HighlightPoint_NonExistedIndexProvided_Throws(int index)
         {
             var plottable = InitWithTestValues();
             plottable.xs = new double[] { 1, 2, 3, 4, 5 };
             plottable.ys = new double[] { 1, 2, 3, 4, 5 };
 
-            plottable.HighlightPoint(index);
-
-            Assert.AreEqual(plottable.HighlightedIndexes.Count, 1);
-            Assert.AreEqual(index, plottable.HighlightedIndexes[0]);
-        }
-
-        [TestCase(12)]
-        [TestCase(19)]
-        [TestCase(2)]
-        [TestCase(3)]
-        [TestCase(4)]
-        [TestCase(1)]
-        [TestCase(0)]
-        [TestCase(15)]
-        [TestCase(79)]
-        public void HighlightPoint_AddIndexToExistedList_KeepItSorted(int index)
-        {
-            var plottable = InitWithTestValues();
-            plottable.xs = Enumerable.Range(0, 100).Select(x => (double)x).ToArray();
-            plottable.ys = Enumerable.Range(0, 100).Select(x => (double)x).ToArray();
-
-            plottable.HighlightedIndexes = new List<int>() { 1, 3, 15, 42 };
-
-            List<int> expectedList = new List<int>();
-            expectedList.AddRange(plottable.HighlightedIndexes);
-            expectedList.Add(index);
-            expectedList.Sort();
-
-            plottable.HighlightPoint(index);
-
-            Assert.AreEqual(expectedList, plottable.HighlightedIndexes);
+            Assert.Throws<ArgumentException>(() => { plottable.HighlightPoint(index); });
         }
 
         [TestCase(0, 3)]
@@ -113,7 +95,10 @@ namespace ScottPlotTests.Plot
             var plottable = InitWithTestValues();
             plottable.xs = new double[] { -3, -2, -1, 0, 1, 3, 5 };
             plottable.ys = new double[] { 12, 3, -5, 0, 10, 0, 7 };
+            plottable.HighlightClear(); // required to resize the isHighlighted array
 
+            Console.WriteLine(x);
+            plottable.GetPointNearestX(x);
             plottable.HighlightPointNearestX(x);
 
             Assert.AreEqual(1, plottable.HighlightedIndexes.Count);
@@ -133,6 +118,7 @@ namespace ScottPlotTests.Plot
             var plottable = InitWithTestValues();
             plottable.xs = new double[] { 12, 3, -5, 0, 10, 0, 7 };
             plottable.ys = new double[] { -3, -2, -1, 0, 1, 3, 5 };
+            plottable.HighlightClear(); // required to resize the isHighlighted array
 
             plottable.HighlightPointNearestY(y);
 
@@ -151,6 +137,7 @@ namespace ScottPlotTests.Plot
             var plottable = InitWithTestValues();
             plottable.xs = new double[] { 1, 0, -1, 0 };
             plottable.ys = new double[] { 0, 1, 0, -1 };
+            plottable.HighlightClear(); // required to resize the isHighlighted array
 
             plottable.HighlightPointNearest(x, y);
 
@@ -171,6 +158,7 @@ namespace ScottPlotTests.Plot
             var plottable = InitWithTestValues();
             plottable.xs = new double[] { -3, -2, -1, 0, 1, 3, 5 };
             plottable.ys = new double[] { 12, 3, -5, 0, 10, 0, 7 };
+            plottable.HighlightClear(); // required to resize the isHighlighted array
 
             var result = plottable.GetPointNearestX(x);
 
@@ -191,6 +179,7 @@ namespace ScottPlotTests.Plot
             var plottable = InitWithTestValues();
             plottable.xs = new double[] { -3, -2, -1, 0, 1, 3, 5 };
             plottable.ys = new double[] { 12, 3, -5, 0, 10, 0, 7 };
+            plottable.HighlightClear(); // required to resize the isHighlighted array
 
             var result = plottable.GetPointNearestY(y);
 
@@ -209,6 +198,7 @@ namespace ScottPlotTests.Plot
             var plottable = InitWithTestValues();
             plottable.xs = new double[] { 1, 0, -1, 0 };
             plottable.ys = new double[] { 0, 1, 0, -1 };
+            plottable.HighlightClear(); // required to resize the isHighlighted array
 
             var result = plottable.GetPointNearest(x, y);
 

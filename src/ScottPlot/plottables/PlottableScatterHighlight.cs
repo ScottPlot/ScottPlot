@@ -16,16 +16,18 @@ namespace ScottPlot
         public MarkerShape highlightedShape;
         public float highlightedMarkerSize;
         public Color highlightedColor;
-        private readonly bool[] isHighlighted;
+        protected bool[] isHighlighted;
 
         public PlottableScatterHighlight(double[] xs, double[] ys, Color color, double lineWidth, double markerSize, string label,
             double[] errorX, double[] errorY, double errorLineWidth, double errorCapSize, bool stepDisplay, MarkerShape markerShape, LineStyle lineStyle, MarkerShape highlightedShape, Color highlightedColor, double highlightedMarkerSize)
             : base(xs, ys, color, lineWidth, markerSize, label, errorX, errorY, errorLineWidth, errorCapSize, stepDisplay, markerShape, lineStyle)
         {
+            if (xs.Length != ys.Length)
+                throw new ArgumentException("xs and ys must have same length");
             this.highlightedColor = highlightedColor;
             this.highlightedMarkerSize = (float)highlightedMarkerSize;
             this.highlightedShape = highlightedShape;
-            isHighlighted = new bool[xs.Length];
+            HighlightClear();
         }
 
         protected override void DrawPoint(Settings settings, List<PointF> points, int i)
@@ -40,12 +42,13 @@ namespace ScottPlot
 
         public void HighlightClear()
         {
-            for (int i = 0; i < isHighlighted.Length; i++)
-                isHighlighted[i] = false;
+            isHighlighted = new bool[xs.Length];
         }
 
         public (double x, double y, int index) HighlightPoint(int index)
         {
+            if (index < 0 || index >= isHighlighted.Length)
+                throw new ArgumentException("Invalid index");
             isHighlighted[index] = true;
             return (xs[index], ys[index], index);
         }
