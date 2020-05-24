@@ -70,5 +70,17 @@ namespace ScottPlot.Demo.Experimental
                 plt.PlotHeatmap(intensities, PlottableHeatmap.ColorMap.turbo, axisOffsets: new double[] { -5, -5 }, axisMultipliers: new double[] { 10, 10 });
             }
         }
+
+        public class HeatmapImage : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Heatmap Image";
+            public string description { get; } = "A sample image displayed using a heatmap";
+
+            public void Render(Plot plt)
+            {
+                double[,] imageData = DataGen.SampleImageData();
+                plt.PlotHeatmap(imageData);
+            }
+        }
     }
 }
