@@ -574,11 +574,20 @@ namespace ScottPlot
         public PlottableHeatmap PlotHeatmap(
             double[,] intensities,
             PlottableHeatmap.ColorMap colorMap = PlottableHeatmap.ColorMap.viridis,
-            string label = null
+            string label = null,
+            double[] axisOffsets =null,
+            double[] axisMultipliers =null
             )
         {
+            if (axisOffsets == null) {
+                axisOffsets = new double[] { 0, 0 };
+            }
 
-            PlottableHeatmap heatmap = new PlottableHeatmap(intensities, colorMap, label);
+            if (axisMultipliers == null) {
+                axisMultipliers = new double[] { 1, 1 };
+            }
+
+            PlottableHeatmap heatmap = new PlottableHeatmap(intensities, colorMap, label, axisOffsets, axisMultipliers);
             settings.plottables.Add(heatmap);
             MatchAxis(this);
             Ticks(false, false); //I think we need to sort out our own labelling with System.Drawing
