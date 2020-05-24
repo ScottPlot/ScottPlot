@@ -77,7 +77,7 @@ namespace ScottPlot.Demo.Experimental
                 }
 
                 //Change the color map, and renumber the axes
-                plt.PlotHeatmap(intensities, PlottableHeatmap.ColorMap.plasma, axisOffsets: new double[] { -5, -5}, axisMultipliers: new double[] { 10, 10});
+                plt.PlotHeatmap(intensities, PlottableHeatmap.ColorMap.turbo, axisOffsets: new double[] { -5, -5}, axisMultipliers: new double[] { 10, 10});
             }
         }
     }

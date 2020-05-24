@@ -23,8 +23,9 @@ namespace ScottPlot
             viridis,
             magma,
             inferno,
-            plasma
-        }
+            plasma,
+			turbo
+		}
 
         private int width;
         private int height;
@@ -132,6 +133,8 @@ namespace ScottPlot
                     return new Config.ColorMaps.Inferno().IntensityToRGB(intensities);
                 case ColorMap.plasma:
                     return new Config.ColorMaps.Plasma().IntensityToRGB(intensities);
+                case ColorMap.turbo:
+                    return new Config.ColorMaps.Turbo().IntensityToRGB(intensities);
                 default:
                     throw new ArgumentException("Colormap not supported");
             }
