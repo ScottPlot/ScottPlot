@@ -15,11 +15,13 @@ namespace ScottPlot
         public Color[] colors;
         bool explodedChart;
         bool showValues;
+        bool showPercentages;
+        bool showLabels;
 
         private SolidBrush brush = new SolidBrush(Color.Black);
         private Pen pen = new Pen(Color.Black);
 
-        public PlottablePie(double[] values, string label, string[] groupNames, Color[] colors, bool explodedChart, bool showValues)
+        public PlottablePie(double[] values, string[] groupNames, Color[] colors, bool explodedChart, bool showValues, bool showPercentages, bool showLabels, string label)
         {
             this.values = values;
             this.label = label;
@@ -27,10 +29,15 @@ namespace ScottPlot
             this.colors = colors;
             this.explodedChart = explodedChart;
             this.showValues = showValues;
+            this.showPercentages = showPercentages;
+            this.showLabels = (groupNames is null) ? false : showLabels;
         }
 
         public override LegendItem[] GetLegendItems()
         {
+            if (groupNames is null)
+                return null;
+
             var items = new LegendItem[values.Length];
             for (int i = 0; i < values.Length; i++)
             {
@@ -68,16 +75,34 @@ namespace ScottPlot
             double centreY = (limits.y1 + limits.y2) / 2;
             double diameter = 2; // Unit circle
             float diameterPixels = (float)(minAxisScale * diameter);
+            string fontName = Config.Fonts.GetSansFontName();
+            float fontSize = 12;
+
+            // record label details and draw them after slices to prevent cover-ups
+            double[] labelXs = new double[values.Length];
+            double[] labelYs = new double[values.Length];
+            string[] labelStrings = new string[values.Length];
 
             RectangleF boundingRectangle = new RectangleF((float)settings.GetPixelX(centreX) - diameterPixels / 2, (float)settings.GetPixelY(centreY) - diameterPixels / 2, diameterPixels, diameterPixels);
+
             double start = -90;
-            for (int i = 0; i < proportions.Length; i++)
+            for (int i = 0; i < values.Length; i++)
             {
+                // determine where the slice is to be drawn
                 double sweep = proportions[i] * 360;
                 double sweepOffset = explodedChart ? -1 : 0;
                 double angle = (Math.PI / 180) * ((sweep + 2 * start) / 2);
                 double xOffset = explodedChart ? 3 * Math.Cos(angle) : 0;
                 double yOffset = explodedChart ? 3 * Math.Sin(angle) : 0;
+
+                // record where and what to label the slice
+                double sliceLabelR = 0.5 * minAxisScale;
+                labelXs[i] = (boundingRectangle.X + diameterPixels / 2 + xOffset + Math.Cos(angle) * sliceLabelR);
+                labelYs[i] = (boundingRectangle.Y + diameterPixels / 2 + yOffset + Math.Sin(angle) * sliceLabelR);
+                string sliceLabelValue = (showValues) ? $"{values[i]}" : "";
+                string sliceLabelPercentage = (showPercentages) ? $"{proportions[i] * 100:f1}%" : "";
+                string sliceLabelName = (showLabels) ? groupNames[i] : "";
+                labelStrings[i] = $"{sliceLabelValue}\n{sliceLabelPercentage}\n{sliceLabelName}".Trim();
 
                 brush.Color = colors[i];
                 settings.gfxData.FillPie(brush, (int)(boundingRectangle.X + xOffset), (int)(boundingRectangle.Y + yOffset), boundingRectangle.Width, boundingRectangle.Height, (float)start, (float)(sweep + sweepOffset));
@@ -89,14 +114,16 @@ namespace ScottPlot
                 }
                 start += sweep;
 
-                if (showValues)
+            }
+
+            brush.Color = Color.White;
+            var font = new Font(fontName, fontSize);
+            for (int i = 0; i < values.Length; i++)
+            {
+                if (!string.IsNullOrWhiteSpace(labelStrings[i]))
                 {
-                    brush.Color = Color.White;
-                    double radius = 0.5 * minAxisScale;
-                    settings.gfxData.DrawString($"{proportions[i] * 100:f1}%", new Font("Sans Serif", 12), brush,
-                        (float)(boundingRectangle.X + diameterPixels / 2 + xOffset + Math.Cos(angle) * radius),
-                        (float)(boundingRectangle.Y + diameterPixels / 2 + yOffset + Math.Sin(angle) * radius),
-                        new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
+                    settings.gfxData.DrawString(labelStrings[i], font, brush,
+                        (float)labelXs[i], (float)labelYs[i], settings.misc.sfCenterCenter);
                 }
             }
 
