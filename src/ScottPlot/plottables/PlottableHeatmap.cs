@@ -154,7 +154,7 @@ namespace ScottPlot
         private void RenderScale(Settings settings)
         {
             Rectangle scaleRect = new Rectangle(settings.figureSize.Width - 150, settings.layout.xLabelHeight, 30, settings.layout.plot.Height - settings.layout.xLabelHeight - settings.layout.xScaleHeight - settings.layout.titleHeight);
-            
+
             Rectangle scaleRectOutline = scaleRect;
             scaleRectOutline.Width /= 2;
             var interpMode = settings.gfxFigure.InterpolationMode;
