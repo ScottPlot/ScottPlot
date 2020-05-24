@@ -9,30 +9,16 @@ namespace ScottPlot.Demo.PlotTypes
     {
         public class PieQuickstart : PlotDemo, IPlotDemo
         {
-            public string name { get; } = "Pie Quickstart";
-            public string description { get; } = "Pie charts show proportions with corresponding proportions on a circle.";
-            Random rand = new Random();
+            public string name { get; } = "Quickstart";
+            public string description { get; } = "A pie chart (or a circle chart) illustrates numerical proportions as slices of a circle.";
 
             public void Render(Plot plt)
             {
-                double[] proportions = new double[5];
-                double total = 0;
-                for (int i = 0; i < proportions.Length; i++)
-                {
-                    if (total >= 1)
-                    {
-                        break;
-                    }
-                    proportions[i] = rand.NextDouble() * (1 - total); //Make sure we don't add up to more than 1
-                    total += proportions[i];
-                }
-                if (total < 1)
-                {
-                    proportions[proportions.Length - 1] += 1 - total; //If we are less than 1, add the remnant to the last slice
-                }
+                double[] values = { 778, 283, 184, 76, 43 };
 
-                plt.PlotPie(proportions);
+                plt.PlotPie(values);
                 plt.Legend();
+
                 plt.Grid(false);
                 plt.Frame(false);
                 plt.Ticks(false, false);
@@ -43,28 +29,14 @@ namespace ScottPlot.Demo.PlotTypes
         {
             public string name { get; } = "Exploding Pie";
             public string description { get; } = "There is an option to have an \"exploding\" pie chart.";
-            Random rand = new Random();
 
             public void Render(Plot plt)
             {
-                double[] proportions = new double[5];
-                double total = 0;
-                for (int i = 0; i < proportions.Length; i++)
-                {
-                    if (total >= 1)
-                    {
-                        break;
-                    }
-                    proportions[i] = rand.NextDouble() * (1 - total); //Make sure we don't add up to more than 1
-                    total += proportions[i];
-                }
-                if (total < 1)
-                {
-                    proportions[proportions.Length - 1] += 1 - total; //If we are less than 1, add the remnant to the last slice
-                }
+                double[] values = { 778, 283, 184, 76, 43 };
 
-                plt.PlotPie(proportions, explodedChart: true);
+                plt.PlotPie(values, explodedChart: true);
                 plt.Legend();
+
                 plt.Grid(false);
                 plt.Frame(false);
                 plt.Ticks(false, false);
@@ -73,33 +45,16 @@ namespace ScottPlot.Demo.PlotTypes
 
         public class PieShownValues : PlotDemo, IPlotDemo
         {
-            public string name { get; } = "Pie With Shown Proportions";
+            public string name { get; } = "Labeled Slices";
             public string description { get; } = "There is an option to show the proportions on the chart.";
-            Random rand = new Random();
 
             public void Render(Plot plt)
             {
-                double[] proportions = new double[5];
-                double total = 0;
-                for (int i = 0; i < proportions.Length; i++) //Create 5 sectors with 20% each
-                {
-                    if (total >= 1)
-                    {
-                        break;
-                    }
-                    proportions[i] = (1.0 / proportions.Length + 0.01 * rand.NextDouble());
-                    total += proportions[i];
-                }
-                if (total < 1)
-                {
-                    proportions[proportions.Length - 1] += 1 - total; //If we are less than 1, add the remnant to the last slice
-                }
-                else if (total > 1)
-                {
-                    proportions[proportions.Length - 1] -= total - 1; //Don't go over 100%
-                }
-                plt.PlotPie(proportions, showValues: true);
+                double[] values = { 778, 43, 283, 76, 184 };
+
+                plt.PlotPie(values, showValues: true);
                 plt.Legend();
+
                 plt.Grid(false);
                 plt.Frame(false);
                 plt.Ticks(false, false);
