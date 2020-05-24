@@ -24,8 +24,8 @@ namespace ScottPlot
             magma,
             inferno,
             plasma,
-			turbo
-		}
+            turbo
+        }
 
         private int width;
         private int height;
@@ -153,14 +153,18 @@ namespace ScottPlot
 
         private void RenderScale(Settings settings)
         {
-            Rectangle scaleRect = new Rectangle((int)(settings.figureSize.Width * 0.8), 50, 30, 200);
+            Rectangle scaleRect = new Rectangle(settings.figureSize.Width - 150, 50, 30, 200);
             Rectangle scaleRectOutline = scaleRect;
             scaleRectOutline.Width /= 2;
-            settings.gfxData.InterpolationMode = InterpolationMode.NearestNeighbor; //This is necessary for the scale (as its a 1 pixel wide image)
-            settings.gfxData.DrawImage(scale, scaleRect);
-            settings.gfxData.DrawRectangle(pen, scaleRectOutline);
-            settings.gfxData.DrawString($"{max:f3}", new Font(FontFamily.GenericSansSerif, 12), brush, new Point(scaleRect.X + 40, 50));
-            settings.gfxData.DrawString($"{min:f3}", new Font(FontFamily.GenericSansSerif, 12), brush, new Point(scaleRect.X + 40, 250), new StringFormat() { LineAlignment = StringAlignment.Far });
+            var interpMode = settings.gfxFigure.InterpolationMode;
+
+            settings.gfxFigure.InterpolationMode = InterpolationMode.NearestNeighbor; //This is necessary for the scale (as its a 1 pixel wide image)
+            settings.gfxFigure.DrawImage(scale, scaleRect);
+            settings.gfxFigure.DrawRectangle(pen, scaleRectOutline);
+            settings.gfxFigure.DrawString($"{max:f3}", new Font(FontFamily.GenericSansSerif, 12), brush, new Point(scaleRect.X + 30, 50));
+            settings.gfxFigure.DrawString($"{min:f3}", new Font(FontFamily.GenericSansSerif, 12), brush, new Point(scaleRect.X + 30, 250), new StringFormat() { LineAlignment = StringAlignment.Far });
+
+            settings.gfxFigure.InterpolationMode = interpMode;
         }
 
         private void RenderAxis(Settings settings, double minScale)
