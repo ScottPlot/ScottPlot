@@ -26,6 +26,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             double[] ys = DataGen.NoisySin(rand, pointCount);
 
             sph = formsPlot1.plt.PlotScatterHighlight(xs, ys);
+            formsPlot1.Render();
         }
 
         private void formsPlot1_MouseMove(object sender, MouseEventArgs e)
