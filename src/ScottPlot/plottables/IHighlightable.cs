@@ -7,7 +7,7 @@ namespace ScottPlot.plottables
     interface IHighlightable
     {
         void HighlightPoint(int index);
-        void HighlightPointNearestX(double x);
+        void HighlightPointNearest(double x);
         void HighlightPointNearest(double x, double y);
         void HighlightClear();
     }
