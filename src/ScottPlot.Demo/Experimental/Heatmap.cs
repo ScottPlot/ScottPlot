@@ -15,20 +15,14 @@ namespace ScottPlot.Demo.Experimental
 
             public void Render(Plot plt)
             {
-                int[] xs = Enumerable.Range(0, 100).ToArray();
-                int[] ys = Enumerable.Range(0, 100).ToArray();
+                double[,] imageData = { { 1, 2, 3 },
+                                        { 4, 5, 6 } };
 
-                double[,] intensities = new double[ys.Length, xs.Length];
+                plt.PlotHeatmap(imageData);
 
-                for (int i = 0; i < ys.Length; i++)
-                {
-                    for (int j = 0; j < xs.Length; j++)
-                    {
-                        intensities[i, j] = Math.Sqrt(Math.Pow(ys[i] - 50, 2) + Math.Pow(xs[j] - 50, 2));
-                    }
-                }
-
-                plt.PlotHeatmap(intensities);
+                plt.Axis(
+                    x1: -1, x2: imageData.GetLength(0),
+                    y1: -1, y2: imageData.GetLength(1));
             }
         }
 
