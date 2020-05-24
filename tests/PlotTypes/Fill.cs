@@ -47,7 +47,7 @@ namespace ScottPlotTests.PlotTypes
             // the sine wave will have ~20 points
             double[] xs2 = ScottPlot.DataGen.Range(1, 10, .5, true);
             double[] ys2 = ScottPlot.DataGen.Cos(xs2);
-            
+
             var plt = new ScottPlot.Plot(400, 300);
             plt.PlotFill(xs1, ys1, xs2, ys2, fillAlpha: .3);
             plt.PlotScatter(xs1, ys1, Color.Black, 2);

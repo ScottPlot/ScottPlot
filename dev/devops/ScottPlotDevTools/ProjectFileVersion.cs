@@ -59,7 +59,7 @@ namespace ScottPlotDevTools
             string newVersionString = $"{version.Major}.{version.Minor}.{version.Build}";
 
             string[] lines = System.IO.File.ReadAllText(path).Split("\n");
-            for (int i=0; i<lines.Length; i++)
+            for (int i = 0; i < lines.Length; i++)
             {
                 string line = lines[i];
                 if (line.Contains($">{fileVersionString}<"))

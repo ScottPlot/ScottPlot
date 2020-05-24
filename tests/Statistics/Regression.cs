@@ -44,7 +44,7 @@ namespace ScottPlotTests.Statistics
             int pointCount = 50;
             double actualSlope = 3;
             double actualOffset = 200;
-            (double[] xs, double[] ys)  = GetNoisyLinearData_EvenlySpaced(pointCount, actualSlope, actualOffset);
+            (double[] xs, double[] ys) = GetNoisyLinearData_EvenlySpaced(pointCount, actualSlope, actualOffset);
 
             // fit the random data with the linear regression model
             var model = new ScottPlot.Statistics.LinearRegressionLine(ys, firstX: 0, xSpacing: 1);

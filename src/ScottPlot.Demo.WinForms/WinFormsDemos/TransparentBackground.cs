@@ -64,7 +64,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             gfx.Clear(SystemColors.Control);
             Pen pen = Pens.LightGray;
             Size circleSize = new Size(20, 20);
-            for (int i=0; i<100; i++)
+            for (int i = 0; i < 100; i++)
             {
                 Point randomPoint = new Point(rand.Next(bmp.Width - circleSize.Width), rand.Next(bmp.Height - circleSize.Height));
                 Rectangle rect = new Rectangle(randomPoint, circleSize);

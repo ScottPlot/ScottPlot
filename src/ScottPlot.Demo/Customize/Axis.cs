@@ -141,7 +141,7 @@ namespace ScottPlot.Demo.Customize
                 double[] xs = new double[ys.Length];
 
                 DateTime dtStart = new DateTime(1985, 9, 24);
-                for (int i=0; i<ys.Length; i++)
+                for (int i = 0; i < ys.Length; i++)
                 {
                     DateTime dtNow = dtStart.AddSeconds(i);
                     xs[i] = dtNow.ToOADate();

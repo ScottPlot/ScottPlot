@@ -162,7 +162,7 @@ namespace ScottPlotTests.Misc
             // create conditions to reveal rendering artifact
             plt.AntiAlias(false, false, false);
             plt.Grid(enableVertical: false);
-            
+
             // save the figure (bmpData + bmpFigure)
             TestTools.SaveFig(plt);
 

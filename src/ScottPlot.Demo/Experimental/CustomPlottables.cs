@@ -15,8 +15,8 @@ namespace ScottPlot.Demo.Experimental
             public void Render(Plot plt)
             {
                 // rather than call Plot.Text(), create the Plottable object manually
-                var customPlottable = new PlottableText(text: "test", x: 2, y: 3, 
-                    color: System.Drawing.Color.Magenta, fontName: "arial", fontSize: 26, 
+                var customPlottable = new PlottableText(text: "test", x: 2, y: 3,
+                    color: System.Drawing.Color.Magenta, fontName: "arial", fontSize: 26,
                     bold: true, label: "", alignment: TextAlignment.middleCenter,
                     rotation: 0, frame: false, frameColor: System.Drawing.Color.Green);
 

@@ -27,7 +27,7 @@ namespace ScottPlot.Demo.WPF.WpfDemos
 
             WpfPlot[] wpfPlots = { wpfPlot1, wpfPlot2, wpfPlot3 };
 
-            foreach(WpfPlot wpfPlot in wpfPlots)
+            foreach (WpfPlot wpfPlot in wpfPlots)
             {
                 for (int i = 0; i < 3; i++)
                     wpfPlot.plt.PlotSignal(DataGen.RandomWalk(rand, 100));

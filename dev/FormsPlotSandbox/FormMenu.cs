@@ -19,7 +19,20 @@ namespace FormsPlotSandbox
 
         private void FormMenu_Load(object sender, EventArgs e)
         {
-            //button1_Click(null, null);
+            //Test_Viewer();
+        }
+
+        private void Test_Viewer()
+        {
+            // create a styled plot
+            var plt = new ScottPlot.Plot();
+            plt.Style(ScottPlot.Style.Blue1);
+            plt.PlotSignal(ScottPlot.DataGen.Sin(51));
+            plt.PlotSignal(ScottPlot.DataGen.Cos(51));
+            plt.SaveFig("test.png");
+
+            // launch it in a new window
+            new ScottPlot.FormsPlotViewer(plt).ShowDialog();
         }
 
         private void button1_Click(object sender, EventArgs e)

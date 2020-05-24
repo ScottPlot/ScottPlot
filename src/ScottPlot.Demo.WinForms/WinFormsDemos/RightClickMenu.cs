@@ -28,7 +28,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
         }
 
         private void AddSine(object sender, EventArgs e)
-        {   
+        {
             formsPlot1.plt.PlotSignal(DataGen.Sin(51, phase: rand.NextDouble() * 1000));
             formsPlot1.plt.AxisAuto();
             formsPlot1.Render();

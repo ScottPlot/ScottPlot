@@ -138,7 +138,7 @@ namespace ScottPlot
             if (legendItem.lineWidth < 10)
             {
                 Pen pen = GDI.Pen(legendItem.color, (float)legendItem.lineWidth, legendItem.lineStyle);
-                settings.gfxLegend.DrawLine(pen,xMin, xMax);
+                settings.gfxLegend.DrawLine(pen, xMin, xMax);
             }
             else
             {

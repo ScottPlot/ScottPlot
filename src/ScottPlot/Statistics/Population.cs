@@ -32,7 +32,7 @@ namespace ScottPlot.Statistics
         public double maxNonOutlier { get; private set; }
         public double minNonOutlier { get; private set; }
         public int n { get { return values.Length; } }
-        public double span {get { return sortedValues.Last() - sortedValues.First(); } }
+        public double span { get { return sortedValues.Last() - sortedValues.First(); } }
 
         /// <summary>
         /// Generate random values with a normal distribution
@@ -50,7 +50,7 @@ namespace ScottPlot.Statistics
         {
             if (values is null)
                 throw new ArgumentException("values cannot be null");
-            
+
             this.values = values;
             Recalculate();
         }

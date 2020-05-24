@@ -93,7 +93,7 @@ namespace ScottPlot
                 boxWidth = (float)(spacingPx / 2 * fractionalTickWidth);
             }
 
-            for (int i=0; i<ohlcs.Length; i++)
+            for (int i = 0; i < ohlcs.Length; i++)
             {
                 var ohlc = ohlcs[i];
                 var ohlcTime = (sequential) ? i : ohlc.time;

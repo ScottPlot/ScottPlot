@@ -73,8 +73,8 @@ namespace ScottPlotTests.PlotTypes
 
             double legendLocationX = plt.GetSettings(false).legend.rect.Location.X;
             double legendDistanceFromRightEdge = plt.GetSettings(false).dataSize.Width - legendLocationX;
-            plt.PlotAnnotation("text beside\nthe legend", 
-                    xPixel: -legendDistanceFromRightEdge - 5, 
+            plt.PlotAnnotation("text beside\nthe legend",
+                    xPixel: -legendDistanceFromRightEdge - 5,
                     yPixel: -10,
                     fillColor: Color.White,
                     fillAlpha: 1,

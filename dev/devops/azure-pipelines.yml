@@ -3,11 +3,25 @@ trigger:
 
 strategy:
   matrix:
-    MacOS:
-      imageName: 'macOS-latest'
-    Linux:
+
+    'Code Format Check':
+      purpose: 'autoformat' # break build it autoformatter is not run
       imageName: 'ubuntu-latest'
-    Windows:
+
+    'Build and Test on MacOS':
+      purpose: 'library' # build and test ScottPlot and ScottPlot.Demo
+      imageName: 'macOS-latest'
+
+    'Build and Test on Linux':
+      purpose: 'library' # build and test ScottPlot and ScottPlot.Demo
+      imageName: 'ubuntu-latest'
+
+    'Build and Test on Windows':
+      purpose: 'library' # build and test ScottPlot and ScottPlot.Demo
+      imageName: 'windows-latest'
+
+    'Rebuild Solution on Windows':
+      purpose: 'solution' # ensure the full solution builds on Windows
       imageName: 'windows-latest'
 
 pool:
@@ -15,91 +29,78 @@ pool:
 
 steps:
 
+### FAIL THE BUILD IF THE AUTOFORMATTER WAS NOT RUN
+
+- task: UseDotNet@2
+  displayName: 'Acquire .NET Core 3'
+  condition: eq(variables['purpose'], 'autoformat')
+  inputs:
+    packageType: 'sdk'
+    version: '3.x'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Install dotnet-format'
+  condition: eq(variables['purpose'], 'autoformat')
+  inputs:
+    command: 'custom'
+    custom: 'tool'
+    arguments: 'update -g dotnet-format'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Check Formatting'
+  condition: eq(variables['purpose'], 'autoformat')
+  inputs:
+    command: 'custom'
+    custom: 'format'
+    arguments: '-w src/ScottPlotV4.sln --dry-run --check --verbosity diagnostic'
+
 ### INSTALL NUGET AND RESTORE PACKAGES
 
 - task: NuGetToolInstaller@1
   displayName: 'Install NuGet'
-
+  condition: eq(variables['purpose'], 'library')
+    
 - task: NuGetCommand@2
-  displayName: 'Full package restoration'
+  displayName: 'Restore packages'
+  condition: eq(variables['purpose'], 'solution')
   inputs:
     restoreSolution: 'src/ScottPlotV4.sln'
 
-### BUILD AND PACK PACKAGES THAT WORK ON EVERY OS
+### BUILD THE CORE SCOTTPLOT LIBRARY AND DEMO AND RUN TESTS
 
 - task: DotNetCoreCLI@2
   displayName: 'Build ScottPlot'
+  condition: eq(variables['purpose'], 'library')
   inputs:
     command: 'build'
     projects: 'src/ScottPlot/ScottPlot.csproj'
 
 - task: DotNetCoreCLI@2
   displayName: 'Build ScottPlot.Demo'
+  condition: eq(variables['purpose'], 'library')
   inputs:
     command: 'build'
     projects: 'src/ScottPlot.Demo/ScottPlot.Demo.csproj'
 
-### BUILD AND RUN PRIMARY TESTS
 - task: DotNetCoreCLI@2
   displayName: 'Build Tests'
+  condition: eq(variables['purpose'], 'library')
   inputs:
     command: 'build'
     projects: 'tests/ScottPlotTests.csproj'
 
 - task: DotNetCoreCLI@2
   displayName: 'Run Tests'
+  condition: eq(variables['purpose'], 'library')
   inputs:
     command: test
     projects: 'tests/ScottPlotTests.csproj'
 
-### PUBLISH TEST OUTPUT AS AN ARTIFACT
-- task: PublishPipelineArtifact@1
-  displayName: 'Publish Tests (Windows)'
-  condition: contains(variables['agent.os'], 'Windows')
-  inputs:
-    targetPath: tests/bin/Debug/netcoreapp2.0/artifacts
-    artifactName: Sample Plot (Windows)
-    
-- task: PublishPipelineArtifact@1
-  displayName: 'Publish Tests (MacOS)'
-  condition: contains(variables['agent.os'], 'Darwin')
-  inputs:
-    targetPath: tests/bin/Debug/netcoreapp2.0/artifacts
-    artifactName: Sample Plot (MacOS)
-    
-- task: PublishPipelineArtifact@1
-  displayName: 'Publish Tests (Linux)'
-  condition: contains(variables['agent.os'], 'Linux')
-  inputs:
-    targetPath: tests/bin/Debug/netcoreapp2.0/artifacts
-    artifactName: Sample Plot (Linux)
-
-### BUILD AND PACKAGE RELEASE (Windows only)
+### REBUILD FULL SOLUTION
     
 - task: VSBuild@1
   displayName: 'Build Release (Windows)'
-  condition: contains(variables['agent.os'], 'Windows')
+  condition: eq(variables['purpose'], 'solution')
   inputs:
     solution: 'src/ScottPlotV4.sln'
     configuration: 'release'
-
-- task: CopyFiles@2
-  displayName: 'Copy Packages (Windows)'
-  condition: contains(variables['agent.os'], 'Windows')
-  inputs:
-    Contents: |
-      src/ScottPlot/bin/Release/*.nupkg
-      src/ScottPlot/bin/Release/*.snupkg
-      src/ScottPlot.WinForms/bin/Release/*.nupkg
-      src/ScottPlot.WinForms/bin/Release/*.snupkg
-      src/ScottPlot.WPF/bin/Release/*.nupkg
-      src/ScottPlot.WPF/bin/Release/*.snupkg
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
-    flattenFolders: true
-
-- task: PublishPipelineArtifact@1
-  displayName: 'Publish Packages (Windows)'
-  condition: contains(variables['agent.os'], 'Windows')
-  inputs:
-    targetPath: '$(Build.ArtifactStagingDirectory)'
-    artifactName: NuGet Packages

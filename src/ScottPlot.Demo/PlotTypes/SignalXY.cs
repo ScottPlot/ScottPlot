@@ -19,7 +19,7 @@ namespace ScottPlot.Demo.PlotTypes
                 int pointCount = 100_000;
                 double[] ys = new double[pointCount];
                 double[] xs = new double[pointCount];
-                for (int i=1; i<ys.Length; i++)
+                for (int i = 1; i < ys.Length; i++)
                 {
                     ys[i] = ys[i - 1] + rand.NextDouble() - .5;
                     xs[i] = xs[i - 1] + rand.NextDouble();
