@@ -21,7 +21,7 @@ namespace ScottPlot
 
         public PlottableScatterHighlight(double[] xs, double[] ys, Color color, double lineWidth, double markerSize, string label,
             double[] errorX, double[] errorY, double errorLineWidth, double errorCapSize, bool stepDisplay, MarkerShape markerShape, LineStyle lineStyle, MarkerShape highlightedShape, Color highlightedColor, double highlightedMarkerSize)
-            : base(xs, ys, color, lineWidth, markerSize, label, errorX,  errorY, errorLineWidth, errorCapSize, stepDisplay, markerShape, lineStyle)
+            : base(xs, ys, color, lineWidth, markerSize, label, errorX, errorY, errorLineWidth, errorCapSize, stepDisplay, markerShape, lineStyle)
         {
             this.highlightedColor = highlightedColor;
             this.highlightedMarkerSize = (float)highlightedMarkerSize;
@@ -49,7 +49,8 @@ namespace ScottPlot
         public void HighlightPoint(int index)
         {
             int insertPosition = highlightedIndexes.BinarySearch(index);
-            if (insertPosition < 0) {
+            if (insertPosition < 0)
+            {
                 insertPosition = ~insertPosition;   //This might look like witchcraft
                                                     //However, List<T>.BinarySearch returns the ones-compliment (bitwise inverse) of the index of the next-higher value in the list
                                                     //if the value is not part of the list.
@@ -59,7 +60,8 @@ namespace ScottPlot
             highlightedIndexes.Insert(insertPosition, index);
         }
 
-        private int GetIndexNearestX(double x) {
+        private int GetIndexNearestX(double x)
+        {
             double minDistance = Math.Abs(xs[0] - x);
             int minIndex = 0;
             for (int i = 1; i < xs.Length; i++)
@@ -125,7 +127,8 @@ namespace ScottPlot
             HighlightPoint(GetIndexNearest(x, y));
         }
 
-        public (double x, double y) GetPointNearestX(double x) { 
+        public (double x, double y) GetPointNearestX(double x)
+        {
             int index = GetIndexNearestX(x);
             return (xs[index], ys[index]);
         }

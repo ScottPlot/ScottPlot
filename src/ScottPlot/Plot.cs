@@ -630,15 +630,18 @@ namespace ScottPlot
             if (color == null)
                 color = settings.GetNextColor();
 
-            if (highlightedColor == null) {
+            if (highlightedColor == null)
+            {
                 highlightedColor = color;
             }
 
-            if (highlightedShape == null) {
+            if (highlightedShape == null)
+            {
                 highlightedShape = markerShape;
             }
 
-            if (highlightedMarkerSize == null) {
+            if (highlightedMarkerSize == null)
+            {
                 highlightedMarkerSize = 2 * markerSize;
             }
 
