@@ -134,6 +134,7 @@ namespace ScottPlot
         private bool equalAxes = false;
         private double middleClickMarginX = .1;
         private double middleClickMarginY = .1;
+        private bool recalculateLayoutOnMouseUp = true;
         public void Configure(
             bool? enablePanning = null,
             bool? enableZooming = null,
@@ -145,7 +146,8 @@ namespace ScottPlot
             bool? lockHorizontalAxis = null,
             bool? equalAxes = null,
             double? middleClickMarginX = null,
-            double? middleClickMarginY = null
+            double? middleClickMarginY = null,
+            bool? recalculateLayoutOnMouseUp = null
             )
         {
             if (enablePanning != null) this.enablePanning = (bool)enablePanning;
@@ -159,6 +161,7 @@ namespace ScottPlot
             if (equalAxes != null) this.equalAxes = (bool)equalAxes;
             this.middleClickMarginX = middleClickMarginX ?? this.middleClickMarginX;
             this.middleClickMarginY = middleClickMarginY ?? this.middleClickMarginY;
+            this.recalculateLayoutOnMouseUp = recalculateLayoutOnMouseUp ?? this.recalculateLayoutOnMouseUp;
         }
 
         private bool isHorizontalLocked { get { return (ModifierKeys.HasFlag(Keys.Alt) || (lockHorizontalAxis)); } }
@@ -386,7 +389,7 @@ namespace ScottPlot
             settings.mouseMiddleRect = null;
             plottableBeingDragged = null;
 
-            Render(recalculateLayout: true);
+            Render(recalculateLayout: recalculateLayoutOnMouseUp);
         }
 
         private void PbPlot_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -407,7 +410,7 @@ namespace ScottPlot
             if (isHorizontalLocked) xFrac = 1;
 
             plt.AxisZoom(xFrac, yFrac, plt.CoordinateFromPixelX(e.Location.X), plt.CoordinateFromPixelY(e.Location.Y));
-            Render(recalculateLayout: true);
+            Render(recalculateLayout: recalculateLayoutOnMouseUp);
             OnAxisChanged();
 
             base.OnMouseWheel(e);
