@@ -120,6 +120,26 @@ namespace ScottPlotTests.Plot
             Assert.AreEqual(expectedIndex, plottable.HighlightedIndexes[0]);
         }
 
+        [TestCase(0, 3)]
+        [TestCase(-500, 0)]
+        [TestCase(1000, 6)]
+        [TestCase(0, 3)]
+        [TestCase(-0.4, 3)]
+        [TestCase(-0.6, 2)]
+        [TestCase(2, 4)]
+        [TestCase(2.0000001, 5)]
+        public void HighlightPointNearest_SomeYValues_NearestPointIndexAdded(double y, int expectedIndex)
+        {
+            var plottable = InitWithTestValues();
+            plottable.xs = new double[] { 12, 3, -5, 0, 10, 0, 7 };
+            plottable.ys = new double[] { -3, -2, -1, 0, 1, 3, 5 };
+
+            plottable.HighlightPointNearestY(y);
+
+            Assert.AreEqual(1, plottable.HighlightedIndexes.Count);
+            Assert.AreEqual(expectedIndex, plottable.HighlightedIndexes[0]);
+        }
+
         [TestCase(0.1, 0, 0)]
         [TestCase(0.0, 0.1, 1)]
         [TestCase(-0.1, 0.0, 2)]
@@ -153,6 +173,26 @@ namespace ScottPlotTests.Plot
             plottable.ys = new double[] { 12, 3, -5, 0, 10, 0, 7 };
 
             var result = plottable.GetPointNearestX(x);
+
+            Assert.AreEqual(expectedX, result.x, 0.01);
+            Assert.AreEqual(expectedY, result.y, 0.01);
+        }
+
+        [TestCase(-3, -1, -5)]
+        [TestCase(-500, -1, -5)]
+        [TestCase(1000, -3, 12)]
+        [TestCase(0, 0, 0)]
+        [TestCase(-0.4, 0, 0)]
+        [TestCase(-0.6, 0, 0)]
+        [TestCase(2, -2, 3)]
+        [TestCase(2.0000001, -2, 3)]
+        public void GetPointNearest_SomeYValues_ReturnNearestPoint(double y, double expectedX, double expectedY)
+        {
+            var plottable = InitWithTestValues();
+            plottable.xs = new double[] { -3, -2, -1, 0, 1, 3, 5 };
+            plottable.ys = new double[] { 12, 3, -5, 0, 10, 0, 7 };
+
+            var result = plottable.GetPointNearestY(y);
 
             Assert.AreEqual(expectedX, result.x, 0.01);
             Assert.AreEqual(expectedY, result.y, 0.01);
