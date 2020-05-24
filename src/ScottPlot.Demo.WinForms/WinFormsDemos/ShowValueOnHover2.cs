@@ -33,14 +33,12 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             double mouseX = formsPlot1.plt.CoordinateFromPixelX(e.Location.X);
             double mouseY = formsPlot1.plt.CoordinateFromPixelY(e.Location.Y);
 
-            var (closestX, closestY) = sph.GetPointNearest(mouseX, mouseY);
+            sph.HighlightClear();
+            var (x, y, index) = sph.HighlightPointNearest(mouseX, mouseY);
+            formsPlot1.Render(skipIfCurrentlyRendering: true);
 
             label1.Text = $"Closest point to ({mouseX:N2}, {mouseY:N2}) " +
-                $"is index {-1} ({closestX:N2}, {closestY:N2})";
-
-            sph.HighlightClear();
-            sph.HighlightPointNearest(mouseX, mouseY);
-            formsPlot1.Render(skipIfCurrentlyRendering: true);
+                $"is index {index} ({x:N2}, {y:N2})";
         }
     }
 }
