@@ -8,6 +8,7 @@ namespace ScottPlot.plottables
     {
         void HighlightPoint(int index);
         void HighlightPointNearestX(double x);
+        void HighlightPointNearestY(double x);
         void HighlightPointNearest(double x, double y);
         void HighlightClear();
     }
