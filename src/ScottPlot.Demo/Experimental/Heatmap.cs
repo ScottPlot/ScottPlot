@@ -55,7 +55,7 @@ namespace ScottPlot.Demo.Experimental
             }
         }
 
-        public class HeatmapCustomizability: PlotDemo, IPlotDemo
+        public class HeatmapCustomizability : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Customizing Heatmaps";
             public string description { get; } = "Heatmaps have a lot of customization options";
@@ -77,7 +77,7 @@ namespace ScottPlot.Demo.Experimental
                 }
 
                 //Change the color map, and renumber the axes
-                plt.PlotHeatmap(intensities, PlottableHeatmap.ColorMap.turbo, axisOffsets: new double[] { -5, -5}, axisMultipliers: new double[] { 10, 10});
+                plt.PlotHeatmap(intensities, PlottableHeatmap.ColorMap.turbo, axisOffsets: new double[] { -5, -5 }, axisMultipliers: new double[] { 10, 10 });
             }
         }
     }
