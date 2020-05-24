@@ -54,5 +54,31 @@ namespace ScottPlot.Demo.Experimental
                 plt.PlotHeatmap(intensities);
             }
         }
+
+        public class HeatmapCustomizability: PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Customizing Heatmaps";
+            public string description { get; } = "Heatmaps have a lot of customization options";
+
+            public void Render(Plot plt)
+            {
+                Random rand = new Random();
+                int[] xs = Enumerable.Range(0, 100).ToArray();
+                int[] ys = Enumerable.Range(0, 100).ToArray();
+
+                double[,] intensities = new double[ys.Length, xs.Length];
+
+                for (int i = 0; i < ys.Length; i++)
+                {
+                    for (int j = 0; j < xs.Length; j++)
+                    {
+                        intensities[i, j] = (Math.Sin(i * .2) + Math.Cos(j * .2)) * 100;
+                    }
+                }
+
+                //Change the color map, and renumber the axes
+                plt.PlotHeatmap(intensities, PlottableHeatmap.ColorMap.plasma, axisOffsets: new double[] { -5, -5}, axisMultipliers: new double[] { 10, 10});
+            }
+        }
     }
 }
