@@ -894,6 +894,26 @@ namespace ScottPlot
             return signal;
         }
 
+        public PlottablePie PlotPie(
+            double[] values,
+            string[] sliceLabels = null,
+            Color[] colors = null,
+            bool explodedChart = false,
+            bool showValues = false,
+            bool showPercentages = false,
+            bool showLabels = true,
+            string label = null
+            )
+        {
+            if (colors is null)
+                colors = Enumerable.Range(0, values.Length).Select(i => settings.colors.GetColor(i % 10)).ToArray();
+
+            PlottablePie pie = new PlottablePie(values, sliceLabels, colors, explodedChart, showValues, showPercentages, showLabels, label);
+
+            settings.plottables.Add(pie);
+            return pie;
+        }
+
         public PlottableBar PlotBar(
             double[] xs,
             double[] ys,
