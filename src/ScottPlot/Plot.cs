@@ -1366,11 +1366,13 @@ namespace ScottPlot
             double horizontalMargin = .05,
             double verticalMargin = .1,
             bool xExpandOnly = false,
-            bool yExpandOnly = false
+            bool yExpandOnly = false,
+            bool tightenLayout = true
             )
         {
             settings.AxisAuto(horizontalMargin, verticalMargin, xExpandOnly, yExpandOnly);
-            TightenLayout();
+            if (tightenLayout)
+                TightenLayout();
             return settings.axes.limits;
         }
 
