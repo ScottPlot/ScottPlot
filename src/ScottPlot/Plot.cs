@@ -622,28 +622,19 @@ namespace ScottPlot
            double errorCapSize = 3,
            MarkerShape markerShape = MarkerShape.filledCircle,
            LineStyle lineStyle = LineStyle.Solid,
-           MarkerShape? highlightedShape = null,
+           MarkerShape highlightedShape = MarkerShape.openCircle,
            Color? highlightedColor = null,
            double? highlightedMarkerSize = null
            )
         {
-            if (color == null)
+            if (color is null)
                 color = settings.GetNextColor();
 
-            if (highlightedColor == null)
-            {
-                highlightedColor = color;
-            }
+            if (highlightedColor is null)
+                highlightedColor = Color.Red;
 
-            if (highlightedShape == null)
-            {
-                highlightedShape = markerShape;
-            }
-
-            if (highlightedMarkerSize == null)
-            {
+            if (highlightedMarkerSize is null)
                 highlightedMarkerSize = 2 * markerSize;
-            }
 
             PlottableScatterHighlight scatterPlot = new PlottableScatterHighlight(
                 xs: xs,
@@ -659,7 +650,7 @@ namespace ScottPlot
                 stepDisplay: false,
                 markerShape: markerShape,
                 lineStyle: lineStyle,
-                highlightedShape: highlightedShape.Value,
+                highlightedShape: highlightedShape,
                 highlightedColor: highlightedColor.Value,
                 highlightedMarkerSize: highlightedMarkerSize.Value
                 );

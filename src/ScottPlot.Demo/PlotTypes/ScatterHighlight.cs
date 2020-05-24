@@ -15,17 +15,24 @@ namespace ScottPlot.Demo.PlotTypes
             public void Render(Plot plt)
             {
                 int pointCount = 100;
-                double[] x = DataGen.Consecutive(pointCount, 0.1);
-                double[] rand = DataGen.Random(new Random(), pointCount);
+                Random rand = new Random(0);
+                double[] xs = DataGen.Consecutive(pointCount, 0.1);
+                double[] ys = DataGen.NoisySin(rand, pointCount);
 
-                //Unless otherwise specified, shape and colour are the same as unhighlighted points
-                //Default marker size is double the size of unhighlighted points
-                PlottableScatterHighlight highlightPlot = plt.PlotScatterHighlight(x, rand, highlightedShape: MarkerShape.filledSquare, highlightedColor: Color.Red, highlightedMarkerSize: 8);
+                // optional arguments customize highlighted point color, shape, and size
+                var sph = plt.PlotScatterHighlight(xs, ys);
 
-                highlightPlot.HighlightPoint(4);
-                highlightPlot.HighlightPointNearestX(8);
-                highlightPlot.HighlightPointNearest(5, 1);
-                //highlightPlot.HighlightClear();
+                // you can clear previously-highlighted points
+                sph.HighlightPoint(4);
+                sph.HighlightClear();
+
+                // highlight the point nearest an X (or Y) position
+                plt.PlotVLine(8.123, lineStyle: LineStyle.Dash);
+                sph.HighlightPointNearestX(8.123);
+
+                // or highlight the point nearest another point in 2D space
+                plt.PlotPoint(4.43, 1.48);
+                sph.HighlightPointNearest(4.43, 1.48);
             }
         }
     }
