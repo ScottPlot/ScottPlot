@@ -895,7 +895,7 @@ namespace ScottPlot
         }
 
         public PlottablePie PlotPie(
-            double[] proportions,
+            double[] values,
             string label = null,
             string[] groupNames = null,
             Color[] colors = null,
@@ -905,15 +905,15 @@ namespace ScottPlot
         {
             if (groupNames == null)
             {
-                groupNames = Enumerable.Range(0, proportions.Length).Select(i => char.ConvertFromUtf32(i + 65)).ToArray();
+                groupNames = Enumerable.Range(0, values.Length).Select(i => char.ConvertFromUtf32(i + 65)).ToArray();
             }
 
             if (colors == null)
             {
-                colors = Enumerable.Range(0, proportions.Length).Select(i => settings.colors.GetColor(i % 10)).ToArray();
+                colors = Enumerable.Range(0, values.Length).Select(i => settings.colors.GetColor(i % 10)).ToArray();
             }
 
-            PlottablePie pie = new PlottablePie(proportions, label, groupNames, colors, explodedChart, showValues);
+            PlottablePie pie = new PlottablePie(values, label, groupNames, colors, explodedChart, showValues);
 
             settings.plottables.Add(pie);
             return pie;

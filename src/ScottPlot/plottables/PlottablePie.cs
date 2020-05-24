@@ -2,13 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 
 namespace ScottPlot
 {
     public class PlottablePie : Plottable
     {
-        public double[] proportions;
+        public double[] values;
         public string label;
         public string[] groupNames;
         public Color[] colors;
@@ -18,9 +19,9 @@ namespace ScottPlot
         private SolidBrush brush = new SolidBrush(Color.Black);
         private Pen pen = new Pen(Color.Black);
 
-        public PlottablePie(double[] proportions, string label, string[] groupNames, Color[] colors, bool explodedChart, bool showValues)
+        public PlottablePie(double[] values, string label, string[] groupNames, Color[] colors, bool explodedChart, bool showValues)
         {
-            this.proportions = proportions;
+            this.values = values;
             this.label = label;
             this.groupNames = groupNames;
             this.colors = colors;
@@ -30,8 +31,8 @@ namespace ScottPlot
 
         public override LegendItem[] GetLegendItems()
         {
-            var items = new LegendItem[proportions.Length];
-            for (int i = 0; i < proportions.Length; i++)
+            var items = new LegendItem[values.Length];
+            for (int i = 0; i < values.Length; i++)
             {
                 items[i] = new LegendItem(groupNames[i], colors[i], lineWidth: 10);
             }
@@ -45,11 +46,13 @@ namespace ScottPlot
 
         public override int GetPointCount()
         {
-            return proportions.Length;
+            return values.Length;
         }
 
         public override void Render(Settings settings)
         {
+            double[] proportions = values.Select(x => x / values.Sum()).ToArray();
+
             int outlineWidth = 1;
             int sliceOutlineWidth = 0;
             if (explodedChart)
@@ -96,8 +99,6 @@ namespace ScottPlot
                         new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
                 }
             }
-
-
 
             pen.Width = outlineWidth;
             settings.gfxData.DrawEllipse(pen, boundingRectangle.X, boundingRectangle.Y, boundingRectangle.Width, boundingRectangle.Height);
