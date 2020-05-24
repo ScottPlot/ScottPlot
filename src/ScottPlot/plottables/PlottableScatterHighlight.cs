@@ -13,11 +13,10 @@ namespace ScottPlot
 {
     public class PlottableScatterHighlight : PlottableScatter, IExportable, IHighlightable
     {
-        protected List<int> highlightedIndexes;
         public MarkerShape highlightedShape;
         public float highlightedMarkerSize;
         public Color highlightedColor;
-        private Pen penLineError;
+        private readonly bool[] isHighlighted;
 
         public PlottableScatterHighlight(double[] xs, double[] ys, Color color, double lineWidth, double markerSize, string label,
             double[] errorX, double[] errorY, double errorLineWidth, double errorCapSize, bool stepDisplay, MarkerShape markerShape, LineStyle lineStyle, MarkerShape highlightedShape, Color highlightedColor, double highlightedMarkerSize)
@@ -26,38 +25,28 @@ namespace ScottPlot
             this.highlightedColor = highlightedColor;
             this.highlightedMarkerSize = (float)highlightedMarkerSize;
             this.highlightedShape = highlightedShape;
-            this.highlightedIndexes = new List<int>();
+            isHighlighted = new bool[xs.Length];
         }
 
         protected override void DrawPoint(Settings settings, List<PointF> points, int i)
         {
-            if (highlightedIndexes.BinarySearch(i) >= 0) //Always returns negative number for item not found: https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1.binarysearch?view=netcore-3.1#System_Collections_Generic_List_1_BinarySearch__0_
-            {
+            // always draw the underlying point
+            base.DrawPoint(settings, points, i);
+
+            // if highlighted, draw the highlight marker on top of it
+            if (isHighlighted[i])
                 MarkerTools.DrawMarker(settings.gfxData, points[i], highlightedShape, highlightedMarkerSize, highlightedColor);
-            }
-            else
-            {
-                base.DrawPoint(settings, points, i);
-            }
         }
 
         public void HighlightClear()
         {
-            highlightedIndexes.Clear();
+            for (int i = 0; i < isHighlighted.Length; i++)
+                isHighlighted[i] = false;
         }
 
         public void HighlightPoint(int index)
         {
-            int insertPosition = highlightedIndexes.BinarySearch(index);
-            if (insertPosition < 0)
-            {
-                insertPosition = ~insertPosition;   //This might look like witchcraft
-                                                    //However, List<T>.BinarySearch returns the ones-compliment (bitwise inverse) of the index of the next-higher value in the list
-                                                    //if the value is not part of the list.
-                                                    //If there is no higher value it returns the ones-compliment of this.Count()
-                                                    //Source: https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1.binarysearch?view=netcore-3.1#System_Collections_Generic_List_1_BinarySearch__0_
-            }
-            highlightedIndexes.Insert(insertPosition, index);
+            isHighlighted[index] = true;
         }
 
         private int GetIndexNearestX(double x)
