@@ -13,25 +13,25 @@ namespace ScottPlot
 {
     public class PlottableScatterHighlight : PlottableScatter, IExportable, IHighlightable
     {
-        protected List<int> highlightedIndexes;
         public MarkerShape highlightedShape;
         public float highlightedMarkerSize;
         public Color highlightedColor;
         private Pen penLineError;
+        private bool[] isHighlighted;
 
         public PlottableScatterHighlight(double[] xs, double[] ys, Color color, double lineWidth, double markerSize, string label,
             double[] errorX, double[] errorY, double errorLineWidth, double errorCapSize, bool stepDisplay, MarkerShape markerShape, LineStyle lineStyle, MarkerShape highlightedShape, Color highlightedColor, double highlightedMarkerSize)
-            : base(xs, ys, color, lineWidth, markerSize, label, errorX,  errorY, errorLineWidth, errorCapSize, stepDisplay, markerShape, lineStyle)
+            : base(xs, ys, color, lineWidth, markerSize, label, errorX, errorY, errorLineWidth, errorCapSize, stepDisplay, markerShape, lineStyle)
         {
             this.highlightedColor = highlightedColor;
             this.highlightedMarkerSize = (float)highlightedMarkerSize;
             this.highlightedShape = highlightedShape;
-            this.highlightedIndexes = new List<int>();
+            this.isHighlighted = new bool[xs.Length];
         }
 
         protected override void DrawPoint(Settings settings, List<PointF> points, int i)
         {
-            if (highlightedIndexes.BinarySearch(i) >= 0) //Always returns negative number for item not found: https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1.binarysearch?view=netcore-3.1#System_Collections_Generic_List_1_BinarySearch__0_
+            if (isHighlighted[i])
             {
                 MarkerTools.DrawMarker(settings.gfxData, points[i], highlightedShape, highlightedMarkerSize, highlightedColor);
             }
@@ -43,23 +43,16 @@ namespace ScottPlot
 
         public void HighlightClear()
         {
-            highlightedIndexes.Clear();
+            isHighlighted = new bool[xs.Length];
         }
 
         public void HighlightPoint(int index)
         {
-            int insertPosition = highlightedIndexes.BinarySearch(index);
-            if (insertPosition < 0) {
-                insertPosition = ~insertPosition;   //This might look like witchcraft
-                                                    //However, List<T>.BinarySearch returns the ones-compliment (bitwise inverse) of the index of the next-higher value in the list
-                                                    //if the value is not part of the list.
-                                                    //If there is no higher value it returns the ones-compliment of this.Count()
-                                                    //Source: https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1.binarysearch?view=netcore-3.1#System_Collections_Generic_List_1_BinarySearch__0_
-            }
-            highlightedIndexes.Insert(insertPosition, index);
+            isHighlighted[index] = true;
         }
 
-        private int GetPointNearestIndex(double x) {
+        private int GetIndexNearestX(double x)
+        {
             double minDistance = Math.Abs(xs[0] - x);
             int minIndex = 0;
             for (int i = 1; i < xs.Length; i++)
@@ -74,7 +67,23 @@ namespace ScottPlot
             return minIndex;
         }
 
-        private int GetPointNearestIndex(double x, double y)
+        private int GetIndexNearestY(double y)
+        {
+            double minDistance = Math.Abs(ys[0] - y);
+            int minIndex = 0;
+            for (int i = 1; i < ys.Length; i++)
+            {
+                double currDistance = Math.Abs(ys[i] - y);
+                if (currDistance < minDistance)
+                {
+                    minIndex = i;
+                    minDistance = currDistance;
+                }
+            }
+            return minIndex;
+        }
+
+        private int GetIndexNearestPoint(double x, double y)
         {
             List<(double x, double y)> points = xs.Zip(ys, (first, second) => (first, second)).ToList();
 
@@ -94,24 +103,36 @@ namespace ScottPlot
             return minIndex;
         }
 
-        public void HighlightPointNearest(double x)
+        public void HighlightPointNearestX(double x)
         {
-            HighlightPoint(GetPointNearestIndex(x));
+            HighlightPoint(GetIndexNearestX(x));
+        }
+
+        public void HighlightPointNearestY(double y)
+        {
+            HighlightPoint(GetIndexNearestY(y));
         }
 
         public void HighlightPointNearest(double x, double y)
         {
-            HighlightPoint(GetPointNearestIndex(x, y));
+            HighlightPoint(GetIndexNearestPoint(x, y));
         }
 
-        public (double x, double y) GetPointNearest(double x) { 
-            int index = GetPointNearestIndex(x);
+        public (double x, double y) GetPointNearestX(double x)
+        {
+            int index = GetIndexNearestX(x);
+            return (xs[index], ys[index]);
+        }
+
+        public (double x, double y) GetPointNearestY(double y)
+        {
+            int index = GetIndexNearestY(y);
             return (xs[index], ys[index]);
         }
 
         public (double x, double y) GetPointNearest(double x, double y)
         {
-            int index = GetPointNearestIndex(x, y);
+            int index = GetIndexNearestPoint(x, y);
             return (xs[index], ys[index]);
         }
     }
