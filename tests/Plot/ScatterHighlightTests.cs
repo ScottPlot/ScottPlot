@@ -20,7 +20,7 @@ namespace ScottPlotTests.Plot
         {
             get
             {
-                return Enumerable.Range(0, xs.Length).Where(x => isHighlighted[x]).ToList();
+                return Enumerable.Range(0, isHighlighted.Length).Where(x => isHighlighted[x]).ToList();
             }
             set
             {
@@ -62,7 +62,6 @@ namespace ScottPlotTests.Plot
             var plottable = InitWithTestValues();
             plottable.xs = new double[] { 1, 2, 3, 4, 5 };
             plottable.ys = new double[] { 1, 2, 3, 4, 5 };
-            plottable.HighlightClear(); // required to resize the isHighlighted array
 
             plottable.HighlightPoint(index);
             Assert.AreEqual(plottable.HighlightedIndexes.Count, 1);
@@ -95,7 +94,6 @@ namespace ScottPlotTests.Plot
             var plottable = InitWithTestValues();
             plottable.xs = new double[] { -3, -2, -1, 0, 1, 3, 5 };
             plottable.ys = new double[] { 12, 3, -5, 0, 10, 0, 7 };
-            plottable.HighlightClear(); // required to resize the isHighlighted array
 
             Console.WriteLine(x);
             plottable.GetPointNearestX(x);
@@ -118,7 +116,6 @@ namespace ScottPlotTests.Plot
             var plottable = InitWithTestValues();
             plottable.xs = new double[] { 12, 3, -5, 0, 10, 0, 7 };
             plottable.ys = new double[] { -3, -2, -1, 0, 1, 3, 5 };
-            plottable.HighlightClear(); // required to resize the isHighlighted array
 
             plottable.HighlightPointNearestY(y);
 
@@ -137,7 +134,6 @@ namespace ScottPlotTests.Plot
             var plottable = InitWithTestValues();
             plottable.xs = new double[] { 1, 0, -1, 0 };
             plottable.ys = new double[] { 0, 1, 0, -1 };
-            plottable.HighlightClear(); // required to resize the isHighlighted array
 
             plottable.HighlightPointNearest(x, y);
 
@@ -158,7 +154,6 @@ namespace ScottPlotTests.Plot
             var plottable = InitWithTestValues();
             plottable.xs = new double[] { -3, -2, -1, 0, 1, 3, 5 };
             plottable.ys = new double[] { 12, 3, -5, 0, 10, 0, 7 };
-            plottable.HighlightClear(); // required to resize the isHighlighted array
 
             var result = plottable.GetPointNearestX(x);
 
@@ -179,7 +174,6 @@ namespace ScottPlotTests.Plot
             var plottable = InitWithTestValues();
             plottable.xs = new double[] { -3, -2, -1, 0, 1, 3, 5 };
             plottable.ys = new double[] { 12, 3, -5, 0, 10, 0, 7 };
-            plottable.HighlightClear(); // required to resize the isHighlighted array
 
             var result = plottable.GetPointNearestY(y);
 
@@ -198,7 +192,6 @@ namespace ScottPlotTests.Plot
             var plottable = InitWithTestValues();
             plottable.xs = new double[] { 1, 0, -1, 0 };
             plottable.ys = new double[] { 0, 1, 0, -1 };
-            plottable.HighlightClear(); // required to resize the isHighlighted array
 
             var result = plottable.GetPointNearest(x, y);
 

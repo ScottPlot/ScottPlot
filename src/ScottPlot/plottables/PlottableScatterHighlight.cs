@@ -47,6 +47,10 @@ namespace ScottPlot
 
         public (double x, double y, int index) HighlightPoint(int index)
         {
+            // if the size of xs changed, reset isHighlighted to match its new size
+            if (isHighlighted.Length != xs.Length)
+                HighlightClear();
+
             if (index < 0 || index >= isHighlighted.Length)
                 throw new ArgumentException("Invalid index");
             isHighlighted[index] = true;
@@ -111,6 +115,11 @@ namespace ScottPlot
         public (double x, double y, int index) HighlightPointNearestX(double x)
         {
             var point = GetPointNearestX(x);
+
+            // if the size of xs changed, reset isHighlighted to match its new size
+            if (isHighlighted.Length != xs.Length)
+                HighlightClear();
+
             isHighlighted[point.index] = true;
             return point;
         }
@@ -118,6 +127,11 @@ namespace ScottPlot
         public (double x, double y, int index) HighlightPointNearestY(double y)
         {
             var point = GetPointNearestY(y);
+
+            // if the size of xs changed, reset isHighlighted to match its new size
+            if (isHighlighted.Length != xs.Length)
+                HighlightClear();
+
             isHighlighted[point.index] = true;
             return point;
         }
@@ -125,6 +139,11 @@ namespace ScottPlot
         public (double x, double y, int index) HighlightPointNearest(double x, double y)
         {
             var point = GetPointNearest(x, y);
+
+            // if the size of xs changed, reset isHighlighted to match its new size
+            if (isHighlighted.Length != xs.Length)
+                HighlightClear();
+
             isHighlighted[point.index] = true;
             return point;
         }
