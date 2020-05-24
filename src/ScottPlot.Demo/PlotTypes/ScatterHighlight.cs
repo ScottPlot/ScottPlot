@@ -23,7 +23,7 @@ namespace ScottPlot.Demo.PlotTypes
                 PlottableScatterHighlight highlightPlot = plt.PlotScatterHighlight(x, rand, highlightedShape: MarkerShape.filledSquare, highlightedColor: Color.Red, highlightedMarkerSize: 8);
 
                 highlightPlot.HighlightPoint(4);
-                highlightPlot.HighlightPointNearest(8);
+                highlightPlot.HighlightPointNearestX(8);
                 highlightPlot.HighlightPointNearest(5, 1);
                 //highlightPlot.HighlightClear();
             }

@@ -114,7 +114,7 @@ namespace ScottPlotTests.Plot
             plottable.xs = new double[] { -3, -2, -1, 0, 1, 3, 5 };
             plottable.ys = new double[] { 12, 3, -5, 0, 10, 0, 7 };
 
-            plottable.HighlightPointNearest(x);
+            plottable.HighlightPointNearestX(x);
 
             Assert.AreEqual(1, plottable.HighlightedIndexes.Count);
             Assert.AreEqual(expectedIndex, plottable.HighlightedIndexes[0]);
@@ -152,7 +152,7 @@ namespace ScottPlotTests.Plot
             plottable.xs = new double[] { -3, -2, -1, 0, 1, 3, 5 };
             plottable.ys = new double[] { 12, 3, -5, 0, 10, 0, 7 };
 
-            var result = plottable.GetPointNearest(x);
+            var result = plottable.GetPointNearestX(x);
 
             Assert.AreEqual(expectedX, result.x, 0.01);
             Assert.AreEqual(expectedY, result.y, 0.01);

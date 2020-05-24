@@ -59,7 +59,7 @@ namespace ScottPlot
             highlightedIndexes.Insert(insertPosition, index);
         }
 
-        private int GetPointNearestIndex(double x) {
+        private int GetIndexNearestX(double x) {
             double minDistance = Math.Abs(xs[0] - x);
             int minIndex = 0;
             for (int i = 1; i < xs.Length; i++)
@@ -74,7 +74,23 @@ namespace ScottPlot
             return minIndex;
         }
 
-        private int GetPointNearestIndex(double x, double y)
+        private int GetIndexNearestY(double y)
+        {
+            double minDistance = Math.Abs(ys[0] - y);
+            int minIndex = 0;
+            for (int i = 1; i < ys.Length; i++)
+            {
+                double currDistance = Math.Abs(ys[i] - y);
+                if (currDistance < minDistance)
+                {
+                    minIndex = i;
+                    minDistance = currDistance;
+                }
+            }
+            return minIndex;
+        }
+
+        private int GetIndexNearest(double x, double y)
         {
             List<(double x, double y)> points = xs.Zip(ys, (first, second) => (first, second)).ToList();
 
@@ -94,24 +110,35 @@ namespace ScottPlot
             return minIndex;
         }
 
-        public void HighlightPointNearest(double x)
+        public void HighlightPointNearestX(double x)
         {
-            HighlightPoint(GetPointNearestIndex(x));
+            HighlightPoint(GetIndexNearestX(x));
+        }
+
+        public void HighlightPointNearestY(double y)
+        {
+            HighlightPoint(GetIndexNearestY(y));
         }
 
         public void HighlightPointNearest(double x, double y)
         {
-            HighlightPoint(GetPointNearestIndex(x, y));
+            HighlightPoint(GetIndexNearest(x, y));
         }
 
-        public (double x, double y) GetPointNearest(double x) { 
-            int index = GetPointNearestIndex(x);
+        public (double x, double y) GetPointNearestX(double x) { 
+            int index = GetIndexNearestX(x);
+            return (xs[index], ys[index]);
+        }
+
+        public (double x, double y) GetPointNearestY(double y)
+        {
+            int index = GetIndexNearestY(y);
             return (xs[index], ys[index]);
         }
 
         public (double x, double y) GetPointNearest(double x, double y)
         {
-            int index = GetPointNearestIndex(x, y);
+            int index = GetIndexNearest(x, y);
             return (xs[index], ys[index]);
         }
     }
