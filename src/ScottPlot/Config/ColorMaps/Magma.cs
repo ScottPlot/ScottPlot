@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+//All credit to Nathaniel J. Smith and Stefan van der Walt
+//This colourmap is released under the CC0 license/public domain dedication by the relevant partes
+//UC Berekeley provides the colourmap at https://github.com/BIDS/colormap/blob/master/colormaps.py#L17
 
 namespace ScottPlot.Config.ColorMaps
 {
-    //All credit to Nathaniel J. Smith and Stefan van der Walt
-    //This colourmap is released under the CC0 license/public domain dedication by the relevant partes
-    //UC Berekeley provides the colourmap at https://github.com/BIDS/colormap/blob/master/colormaps.py#L17
     class Magma : Colormap
     {
-
         public override byte[,] IntensityToRGB(double[] intensities)
         {
             byte[,] output = new byte[intensities.Length, 3];
