@@ -19,10 +19,6 @@ namespace ScottPlot.Demo.Experimental
                                         { 4, 5, 6 } };
 
                 plt.PlotHeatmap(imageData);
-
-                plt.Axis(
-                    x1: -1, x2: imageData.GetLength(0),
-                    y1: -1, y2: imageData.GetLength(1));
             }
         }
 
