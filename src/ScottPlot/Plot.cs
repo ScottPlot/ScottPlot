@@ -903,11 +903,13 @@ namespace ScottPlot
             bool showValues = false
             )
         {
-            if (groupNames == null) {
-                groupNames = Enumerable.Range(0, proportions.Length).Select(i => char.ConvertFromUtf32(i + 65)).ToArray(); 
+            if (groupNames == null)
+            {
+                groupNames = Enumerable.Range(0, proportions.Length).Select(i => char.ConvertFromUtf32(i + 65)).ToArray();
             }
 
-            if (colors == null) {
+            if (colors == null)
+            {
                 colors = Enumerable.Range(0, proportions.Length).Select(i => settings.colors.GetColor(i % 10)).ToArray();
             }
 
