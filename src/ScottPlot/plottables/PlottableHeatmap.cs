@@ -31,6 +31,8 @@ namespace ScottPlot
         private double[] intensitiesNormalized;
         private ColorMap colorMap;
         public string label;
+        private double[] axisOffsets;
+        private double[] axisMultipliers;
 
         private Bitmap bmp;
         private Bitmap scale;
@@ -39,7 +41,7 @@ namespace ScottPlot
         private SolidBrush brush;
         private Pen pen;
 
-        public PlottableHeatmap(double[,] intensities, ColorMap colorMap, string label)
+        public PlottableHeatmap(double[,] intensities, ColorMap colorMap, string label, double[] axisOffsets, double[] axisMultipliers)
         {
             this.width = intensities.GetUpperBound(1) + 1;
             this.height = intensities.GetUpperBound(0) + 1;
@@ -48,6 +50,8 @@ namespace ScottPlot
             this.max = intensitiesFlattened.Max();
             this.brush = new SolidBrush(Color.Black);
             this.pen = new Pen(brush);
+            this.axisOffsets = axisOffsets;
+            this.axisMultipliers = axisMultipliers;
 
             this.intensitiesNormalized = Normalize(intensitiesFlattened);
             this.colorMap = colorMap;
@@ -76,7 +80,8 @@ namespace ScottPlot
             return input.Select(i => (i - input.Min()) / (input.Max() - input.Min())).ToArray();
         }
 
-        private double[] Invert(double[] input) {
+        private double[] Invert(double[] input)
+        {
             return input.Select(i => 1 - i).ToArray();
         }
 
@@ -103,7 +108,7 @@ namespace ScottPlot
 
         public override AxisLimits2D GetLimits()
         {
-            return new AxisLimits2D(0, bmp.Width, 0, bmp.Height);
+            return new AxisLimits2D(-10, bmp.Width, -5, bmp.Height);
         }
 
         public override int GetPointCount()
@@ -139,6 +144,7 @@ namespace ScottPlot
             double minScale = settings.xAxisScale < settings.yAxisScale ? settings.xAxisScale : settings.yAxisScale;
             settings.gfxData.DrawImage(bmp, (int)settings.GetPixelX(0), (int)(settings.GetPixelY(0) - (height * minScale)), (int)(width * minScale), (int)(height * minScale));
             RenderScale(settings);
+            RenderAxis(settings, minScale);
             settings.gfxData.InterpolationMode = interpMode;
         }
 
@@ -151,9 +157,22 @@ namespace ScottPlot
             settings.gfxData.DrawImage(scale, scaleRect);
             settings.gfxData.DrawRectangle(pen, scaleRectOutline);
             settings.gfxData.DrawString($"{max:f3}", new Font(FontFamily.GenericSansSerif, 12), brush, new Point(scaleRect.X + 40, 50));
-            settings.gfxData.DrawString($"{min:f3}", new Font(FontFamily.GenericSansSerif, 12), brush, new Point(scaleRect.X + 40, 250), new StringFormat() { LineAlignment = StringAlignment.Far});
+            settings.gfxData.DrawString($"{min:f3}", new Font(FontFamily.GenericSansSerif, 12), brush, new Point(scaleRect.X + 40, 250), new StringFormat() { LineAlignment = StringAlignment.Far });
         }
 
+        private void RenderAxis(Settings settings, double minScale)
+        {
+            StringFormat right_centre = new StringFormat() { Alignment = StringAlignment.Far, LineAlignment = StringAlignment.Center };
+            StringFormat centre_top = new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Near };
+            Font axisFont = new Font(FontFamily.GenericSansSerif, 12);
+            double offset = -2;
+
+            settings.gfxData.DrawString($"{axisOffsets[0]:f3}", axisFont, brush, settings.GetPixel(0, offset), centre_top);
+            settings.gfxData.DrawString($"{axisOffsets[0] + axisMultipliers[0]:f3}", axisFont, brush, new PointF((float)((width * minScale) + settings.GetPixelX(0)), (float)settings.GetPixelY(offset)), centre_top);
+
+            settings.gfxData.DrawString($"{axisOffsets[1]:f3}", axisFont, brush, settings.GetPixel(offset, 0), right_centre);
+            settings.gfxData.DrawString($"{axisOffsets[1] + axisMultipliers[1]:f3}", axisFont, brush, new PointF((float)settings.GetPixelX(offset), (float)(settings.GetPixelY(0) - (height * minScale))), right_centre);
+        }
         public override string ToString()
         {
             string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
