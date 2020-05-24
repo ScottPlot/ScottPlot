@@ -403,7 +403,7 @@ namespace ScottPlot
                 }
                 else
                 {
-                    plt.AxisAuto(middleClickMarginX, middleClickMarginY);
+                    plt.AxisAuto(middleClickMarginX, middleClickMarginY, tightenLayout: recalculateLayoutOnMouseUp);
                     AxisChanged?.Invoke(null, null);
                 }
             }
