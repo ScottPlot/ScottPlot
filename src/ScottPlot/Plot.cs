@@ -20,6 +20,13 @@ namespace ScottPlot
     {
         public PixelFormat pixelFormat = PixelFormat.Format32bppPArgb;
         private readonly Settings settings;
+        public bool containsHeatmap
+        {
+            get
+            {
+                return settings.plottables.Where(p => p is PlottableHeatmap).Count() > 0;
+            }
+        }
 
         public Plot(int width = 800, int height = 600)
         {

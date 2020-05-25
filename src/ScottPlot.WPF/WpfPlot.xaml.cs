@@ -159,7 +159,7 @@ namespace ScottPlot
         private bool equalAxes = false;
         private double middleClickMarginX = .1;
         private double middleClickMarginY = .1;
-        private bool recalculateLayoutOnMouseUp = true;
+        private bool? recalculateLayoutOnMouseUp = null;
         public void Configure(
             bool? enablePanning = null,
             bool? enableRightClickZoom = null,
@@ -186,7 +186,7 @@ namespace ScottPlot
             if (equalAxes != null) this.equalAxes = (bool)equalAxes;
             this.middleClickMarginX = middleClickMarginX ?? this.middleClickMarginX;
             this.middleClickMarginY = middleClickMarginY ?? this.middleClickMarginY;
-            this.recalculateLayoutOnMouseUp = recalculateLayoutOnMouseUp ?? this.recalculateLayoutOnMouseUp;
+            this.recalculateLayoutOnMouseUp = recalculateLayoutOnMouseUp;
         }
 
         private bool isHorizontalLocked { get { return (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt) || (lockHorizontalAxis)); } }
@@ -403,7 +403,8 @@ namespace ScottPlot
                 }
                 else
                 {
-                    plt.AxisAuto(middleClickMarginX, middleClickMarginY, tightenLayout: recalculateLayoutOnMouseUp);
+                    bool shouldTighten = recalculateLayoutOnMouseUp ?? !plt.containsHeatmap;
+                    plt.AxisAuto(middleClickMarginX, middleClickMarginY, tightenLayout: shouldTighten);
                     AxisChanged?.Invoke(null, null);
                 }
             }
@@ -430,7 +431,9 @@ namespace ScottPlot
             mouseMiddleDownLocation = null;
             axisLimitsOnMouseDown = null;
             settings.mouseMiddleRect = null;
-            Render(recalculateLayout: recalculateLayoutOnMouseUp);
+
+            bool shouldRecalculate = recalculateLayoutOnMouseUp ?? !plt.containsHeatmap;
+            Render(recalculateLayout: shouldRecalculate);
         }
 
         #endregion
@@ -452,7 +455,8 @@ namespace ScottPlot
 
             plt.AxisZoom(xFrac, yFrac, plt.CoordinateFromPixelX(mousePixel.X), plt.CoordinateFromPixelY(mousePixel.Y));
             AxisChanged?.Invoke(null, null);
-            Render(recalculateLayout: recalculateLayoutOnMouseUp);
+            bool shouldRecalculate = recalculateLayoutOnMouseUp ?? !plt.containsHeatmap;
+            Render(recalculateLayout: shouldRecalculate);
         }
 
         private void UserControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
