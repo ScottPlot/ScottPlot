@@ -29,8 +29,8 @@ namespace ScottPlot.Demo.Experimental
 
             public void Render(Plot plt)
             {
-                int[] xs = Enumerable.Range(0, 100).ToArray();
-                int[] ys = Enumerable.Range(0, 100).ToArray();
+                int[] xs = Enumerable.Range(0, 1000).ToArray();
+                int[] ys = Enumerable.Range(0, 1000).ToArray();
 
                 double[,] intensities = new double[ys.Length, xs.Length];
                 for (int i = 0; i < ys.Length; i++)

@@ -58,24 +58,21 @@ namespace ScottPlot
             this.label = label;
 
 
-            var intensityTask = NormalizeAsync(intensitiesFlattened);
-            intensityTask.Wait();
-            this.intensitiesNormalized = intensityTask.Result;
+            this.intensitiesNormalized = Normalize(intensitiesFlattened);
 
-            byte[,] rgb = IntensityToColor(this.intensitiesNormalized, colorMap);
+            int[] flatARGB = IntensityToColor(this.intensitiesNormalized, colorMap);
 
-            int[] flatRGBA = ToRGB(rgb);
             bmp = new Bitmap(width, height, PixelFormat.Format32bppArgb);
             scale = new Bitmap(1, 256, PixelFormat.Format32bppArgb);
 
-            int[] scaleRGBA = ToRGB(IntensityToColor(Normalize(Enumerable.Range(0, scale.Height).Select(i => (double)i).Reverse().ToArray()), colorMap));
+            int[] scaleRGBA = IntensityToColor(Normalize(Enumerable.Range(0, scale.Height).Select(i => (double)i).Reverse().ToArray()), colorMap);
 
             Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
             Rectangle rectScale = new Rectangle(0, 0, scale.Width, scale.Height);
             BitmapData bmpData = bmp.LockBits(rect, ImageLockMode.ReadWrite, bmp.PixelFormat);
             BitmapData scaleBmpData = scale.LockBits(rectScale, ImageLockMode.ReadWrite, scale.PixelFormat);
 
-            Marshal.Copy(flatRGBA, 0, bmpData.Scan0, flatRGBA.Length);
+            Marshal.Copy(flatARGB, 0, bmpData.Scan0, flatARGB.Length);
             Marshal.Copy(scaleRGBA, 0, scaleBmpData.Scan0, scaleRGBA.Length);
             bmp.UnlockBits(bmpData);
             scale.UnlockBits(scaleBmpData);
@@ -85,37 +82,7 @@ namespace ScottPlot
         {
             double min = input.Min(); //You would think that C# is capable of this optimization itself, but this is about 5x faster for a 100x100 image
             double max = input.Max();
-            return input.Select(i => (i - min) / (max - min)).ToArray();
-        }
-
-        private async Task<double[]> NormalizeAsync(double[] input)
-        {
-            double min = input.Min();
-            double max = input.Max();
-            int threads = 12;
-            int stride = (input.Length - 1) / threads;
-            int remainder = (input.Length - 1) % threads + 1;
-            List<Task<List<double>>> tasks = new List<Task<List<double>>>(threads);
-
-            for (int i = 0; i < threads; i++)
-            {
-                int extra = i == threads - 1 ? remainder : 0;
-                tasks.Add(NormalizeSegment(input, min, max, i * stride, stride + extra));
-            }
-
-            await Task.WhenAll(tasks);
-            double[] results = tasks.Select(t => t.Result).SelectMany(d => d).ToArray();
-            return results;
-        }
-
-        private async Task<List<double>> NormalizeSegment(double[] input, double min, double max, int index, int stride)
-        {
-            List<double> output = new List<double>();
-            for (int i = 0; i < stride; i++)
-            {
-                output.Add((input[i + index] - min) / (max - min));
-            }
-            return output;
+            return input.AsParallel().AsOrdered().Select(i => (i - min) / (max - min)).ToArray();
         }
 
         private double[] Invert(double[] input)
@@ -123,15 +90,6 @@ namespace ScottPlot
             return input.Select(i => 1 - i).ToArray();
         }
 
-        private int[] ToRGB(byte[,] byteArr)
-        {
-            int[] rgb = new int[byteArr.GetUpperBound(0) + 1];
-            for (int i = 0; i < rgb.Length; i++)
-            {
-                rgb[i] = Color.FromArgb(byteArr[i, 0], byteArr[i, 1], byteArr[i, 2]).ToArgb();
-            }
-            return rgb;
-        }
         private T[] Flatten<T>(T[,] toFlatten)
         {
             return toFlatten.Cast<T>().ToArray();
@@ -154,24 +112,24 @@ namespace ScottPlot
             return intensitiesNormalized.Length;
         }
 
-        private byte[,] IntensityToColor(double[] intensities, ColorMap colorMap)
+        private int[] IntensityToColor(double[] intensities, ColorMap colorMap)
         {
             switch (colorMap)
             {
                 case ColorMap.grayscale:
-                    return new Config.ColorMaps.Grayscale().IntensityToRGB(intensities);
+                    return new Config.ColorMaps.Grayscale().IntensitiesToARGB(intensities);
                 case ColorMap.grayscaleInverted:
-                    return new Config.ColorMaps.GrayscaleInverted().IntensityToRGB(intensities);
+                    return new Config.ColorMaps.GrayscaleInverted().IntensitiesToARGB(intensities);
                 case ColorMap.viridis:
-                    return new Config.ColorMaps.Viridis().IntensityToRGB(intensities);
+                    return new Config.ColorMaps.Viridis().IntensitiesToARGB(intensities);
                 case ColorMap.magma:
-                    return new Config.ColorMaps.Magma().IntensityToRGB(intensities);
+                    return new Config.ColorMaps.Magma().IntensitiesToARGB(intensities);
                 case ColorMap.inferno:
-                    return new Config.ColorMaps.Inferno().IntensityToRGB(intensities);
+                    return new Config.ColorMaps.Inferno().IntensitiesToARGB(intensities);
                 case ColorMap.plasma:
-                    return new Config.ColorMaps.Plasma().IntensityToRGB(intensities);
+                    return new Config.ColorMaps.Plasma().IntensitiesToARGB(intensities);
                 case ColorMap.turbo:
-                    return new Config.ColorMaps.Turbo().IntensityToRGB(intensities);
+                    return new Config.ColorMaps.Turbo().IntensitiesToARGB(intensities);
                 default:
                     throw new ArgumentException("Colormap not supported");
             }
