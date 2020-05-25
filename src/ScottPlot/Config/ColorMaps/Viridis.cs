@@ -4,22 +4,11 @@
 
 namespace ScottPlot.Config.ColorMaps
 {
-    class Viridis : Colormap
+    class Viridis : ColormapFromByteArray
     {
-        public override byte[,] IntensityToRGB(double[] intensities)
-        {
-            byte[,] output = new byte[intensities.Length, 3];
-            for (int i = 0; i < intensities.Length; i++)
-            {
-                for (int j = 0; j < 3; j++)
-                {
-                    output[i, j] = cmap[(int)(intensities[i] * 255), j];
-                }
-            }
-            return output;
-        }
+        protected override byte[,] cmap { get { return cmaplocal; } }
 
-        private static byte[,] cmap = {
+        private static byte[,] cmaplocal = {
             {68, 1, 84},
             {68, 2, 86},
             {69, 4, 87},

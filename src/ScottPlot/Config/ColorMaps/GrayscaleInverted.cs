@@ -7,10 +7,16 @@ namespace ScottPlot.Config.ColorMaps
 {
     public class GrayscaleInverted : Colormap
     {
-        public override byte[,] IntensityToRGB(double[] intensities)
+        public override int[] IntensitiesToARGB(double[] intensities)
+        {
+            Grayscale grayscale = new Grayscale();
+            return grayscale.IntensitiesToARGB(intensities.AsParallel().AsOrdered().Select(i => 1 - i).ToArray());
+        }
+
+        public override byte[,] IntenstitiesToRGB(double[] intensities)
         {
             intensities = intensities.Select(i => 1 - i).ToArray();
-            return new Grayscale().IntensityToRGB(intensities);
+            return new Grayscale().IntenstitiesToRGB(intensities);
         }
     }
 }

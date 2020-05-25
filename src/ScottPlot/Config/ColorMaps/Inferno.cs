@@ -2,24 +2,15 @@
 //This colourmap is released under the CC0 license/public domain dedication by the relevant partes
 //UC Berekeley provides the colourmap at https://github.com/BIDS/colormap/blob/master/colormaps.py#L274
 
+using System.Linq;
+
 namespace ScottPlot.Config.ColorMaps
 {
-    class Inferno : Colormap
+    class Inferno : ColormapFromByteArray
     {
-        public override byte[,] IntensityToRGB(double[] intensities)
-        {
-            byte[,] output = new byte[intensities.Length, 3];
-            for (int i = 0; i < intensities.Length; i++)
-            {
-                for (int j = 0; j < 3; j++)
-                {
-                    output[i, j] = cmap[(int)(intensities[i] * 255), j];
-                }
-            }
-            return output;
-        }
+        protected override byte[,] cmap { get { return cmaplocal; } }
 
-        private static byte[,] cmap =       {
+        private static byte[,] cmaplocal = {
             {0, 0, 4},
             {1, 0, 5},
             {1, 1, 6},
