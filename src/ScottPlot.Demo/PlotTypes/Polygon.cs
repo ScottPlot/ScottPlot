@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 
 namespace ScottPlot.Demo.PlotTypes
 {
@@ -21,7 +20,7 @@ namespace ScottPlot.Demo.PlotTypes
                 double SpiralMaxR = 100;
                 double SpiralRevolutions = 10;
 
-                for ( int i = 0; i < polysCount; i++)
+                for (int i = 0; i < polysCount; i++)
                 {
                     double polyCenterX = SpiralMaxR * i / polysCount * Math.Cos(2.0 * Math.PI * SpiralRevolutions * i / polysCount);
                     double polyCenterY = SpiralMaxR * i / polysCount * Math.Sin(2.0 * Math.PI * SpiralRevolutions * i / polysCount);
@@ -48,7 +47,7 @@ namespace ScottPlot.Demo.PlotTypes
                 double SpiralRevolutions = 10;
                 List<List<(double x, double y)>> polys = new List<List<(double x, double y)>>();
 
-                for ( int i = 0; i < polysCount; i++)
+                for (int i = 0; i < polysCount; i++)
                 {
                     double polyCenterX = SpiralMaxR * i / polysCount * Math.Cos(2.0 * Math.PI * SpiralRevolutions * i / polysCount);
                     double polyCenterY = SpiralMaxR * i / polysCount * Math.Sin(2.0 * Math.PI * SpiralRevolutions * i / polysCount);
