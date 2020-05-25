@@ -93,7 +93,7 @@ namespace ScottPlot
                 return new LegendItem[] { new LegendItem(label, lineColor, lineWidth: lineWidth, markerShape: MarkerShape.none) };
         }
 
-        private bool BiggerThenPixel(List<(double x, double y)> poly, double UnitsPerPixelX, double UnitsPerPixelY)
+        private bool IsBiggerThenPixel(List<(double x, double y)> poly, double UnitsPerPixelX, double UnitsPerPixelY)
         {
             double minX = poly[0].x;
             double maxX = poly[0].x;
@@ -152,7 +152,7 @@ namespace ScottPlot
 
             var plotPoints = polysToRender.Select(poly =>
             {
-                if (!smallPolySinglePixel || BiggerThenPixel(poly, settings.xAxisUnitsPerPixel, settings.yAxisUnitsPerPixel))
+                if (!smallPolySinglePixel || IsBiggerThenPixel(poly, settings.xAxisUnitsPerPixel, settings.yAxisUnitsPerPixel))
                 {
                     return poly.Select(point => settings.GetPixel(point.x, point.y));
                 }
