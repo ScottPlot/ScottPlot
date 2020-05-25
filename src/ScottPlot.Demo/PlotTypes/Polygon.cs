@@ -1,12 +1,67 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 
 namespace ScottPlot.Demo.PlotTypes
 {
     public static class Polygon
     {
+        public class BenchmarkPolygon : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Lots of Polygons";
+            public string description { get; } = "PlottablePolygon for each Polygon";
+
+            public void Render(Plot plt)
+            {
+                int polysCount = 5_000;
+                int pointsInPoly = 100;
+                double polyRadius = 1;
+                double SpiralMaxR = 100;
+                double SpiralRevolutions = 10;
+
+                for ( int i = 0; i < polysCount; i++)
+                {
+                    double polyCenterX = SpiralMaxR * i / polysCount * Math.Cos(2.0 * Math.PI * SpiralRevolutions * i / polysCount);
+                    double polyCenterY = SpiralMaxR * i / polysCount * Math.Sin(2.0 * Math.PI * SpiralRevolutions * i / polysCount);
+                    double[] xs = Enumerable.Range(0, pointsInPoly).Select(x => polyRadius * i / polysCount * Math.Cos(2.0 * Math.PI * x / pointsInPoly) + polyCenterX).ToArray();
+                    double[] ys = Enumerable.Range(0, pointsInPoly).Select(x => polyRadius * i / polysCount * Math.Sin(2.0 * Math.PI * x / pointsInPoly) + polyCenterY).ToArray();
+                    plt.PlotPolygon(xs, ys, fillColor: Color.Green);
+                }
+                plt.EqualAxis = true;
+                plt.Title($"Lots of polygons");
+            }
+        }
+
+        public class BenchmarkPolygons : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "PlottablePolygons demo";
+            public string description { get; } = "Lots of polygons using single PlottablePolygons";
+
+            public void Render(Plot plt)
+            {
+                int polysCount = 5_000;
+                int pointsInPoly = 100;
+                double polyRadius = 1;
+                double SpiralMaxR = 100;
+                double SpiralRevolutions = 10;
+                List<List<(double x, double y)>> polys = new List<List<(double x, double y)>>();
+
+                for ( int i = 0; i < polysCount; i++)
+                {
+                    double polyCenterX = SpiralMaxR * i / polysCount * Math.Cos(2.0 * Math.PI * SpiralRevolutions * i / polysCount);
+                    double polyCenterY = SpiralMaxR * i / polysCount * Math.Sin(2.0 * Math.PI * SpiralRevolutions * i / polysCount);
+                    double[] xs = Enumerable.Range(0, pointsInPoly).Select(x => polyRadius * i / polysCount * Math.Cos(2.0 * Math.PI * x / pointsInPoly) + polyCenterX).ToArray();
+                    double[] ys = Enumerable.Range(0, pointsInPoly).Select(x => polyRadius * i / polysCount * Math.Sin(2.0 * Math.PI * x / pointsInPoly) + polyCenterY).ToArray();
+                    polys.Add(xs.Zip(ys, (xp, yp) => (xp, yp)).ToList());
+                }
+                plt.PlotPolygons(polys, fillColor: Color.Green);
+                plt.EqualAxis = true;
+                plt.Title($"Lots of polygons");
+            }
+        }
+
         public class Quickstart : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Polygon Quickstart";
