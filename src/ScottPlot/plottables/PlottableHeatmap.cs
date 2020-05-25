@@ -55,13 +55,13 @@ namespace ScottPlot
             this.pen = new Pen(brush);
             this.axisOffsets = axisOffsets;
             this.axisMultipliers = axisMultipliers;
+            this.colorMap = colorMap;
+            this.label = label;
+
 
             var intensityTask = NormalizeAsync(intensitiesFlattened);
             intensityTask.Wait();
             this.intensitiesNormalized = intensityTask.Result;
-
-            this.colorMap = colorMap;
-            this.label = label;
 
             byte[,] rgb = IntensityToColor(this.intensitiesNormalized, colorMap);
 
@@ -110,7 +110,7 @@ namespace ScottPlot
             return results;
         }
 
-        private Task<List<double>> NormalizeSegment(double[] input, double min, double max, int index, int stride)
+        private async Task<List<double>> NormalizeSegment(double[] input, double min, double max, int index, int stride)
         {
             List<double> output = new List<double>();
             for (int i = 0; i < stride; i++)
