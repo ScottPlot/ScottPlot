@@ -4,9 +4,9 @@
 
 namespace ScottPlot.Config.ColorMaps
 {
-    class Plasma : Colormap
+    class Plasma : ColormapFromByteArray
     {
-        public override byte[,] IntensityToRGB(double[] intensities)
+        public override byte[,] IntenstitiesToRGB(double[] intensities)
         {
             byte[,] output = new byte[intensities.Length, 3];
             for (int i = 0; i < intensities.Length; i++)
@@ -18,8 +18,9 @@ namespace ScottPlot.Config.ColorMaps
             }
             return output;
         }
+        protected override byte[,] cmap { get { return cmaplocal; } }
 
-        private static byte[,] cmap =       {
+        private static byte[,] cmaplocal = {
             {13, 8, 135},
             {16, 7, 136},
             {19, 7, 137},

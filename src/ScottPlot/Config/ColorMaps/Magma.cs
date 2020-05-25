@@ -5,9 +5,9 @@
 
 namespace ScottPlot.Config.ColorMaps
 {
-    class Magma : Colormap
+    class Magma : ColormapFromByteArray
     {
-        public override byte[,] IntensityToRGB(double[] intensities)
+        public override byte[,] IntenstitiesToRGB(double[] intensities)
         {
             byte[,] output = new byte[intensities.Length, 3];
             for (int i = 0; i < intensities.Length; i++)
@@ -20,7 +20,9 @@ namespace ScottPlot.Config.ColorMaps
             return output;
         }
 
-        private static byte[,] cmap ={
+        protected override byte[,] cmap { get { return cmaplocal; } }
+
+        private static byte[,] cmaplocal = {
             {0, 0, 4},
             {1, 0, 5},
             {1, 1, 6},

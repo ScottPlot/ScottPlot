@@ -11,9 +11,9 @@
 
 namespace ScottPlot.Config.ColorMaps
 {
-    class Turbo : Colormap
+    class Turbo : ColormapFromByteArray
     {
-        public override byte[,] IntensityToRGB(double[] intensities)
+        public override byte[,] IntenstitiesToRGB(double[] intensities)
         {
             byte[,] output = new byte[intensities.Length, 3];
             for (int i = 0; i < intensities.Length; i++)
@@ -26,7 +26,9 @@ namespace ScottPlot.Config.ColorMaps
             return output;
         }
 
-        private static byte[,] cmap = {
+        protected override byte[,] cmap { get { return cmaplocal; } }
+
+        private static byte[,] cmaplocal = {
             {48, 18, 59},
             {50, 21, 67},
             {51, 24, 74},
