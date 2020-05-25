@@ -80,10 +80,6 @@ namespace ScottPlot.Demo.WinForms
                 formsPlot1.Visible = true;
                 pictureBox1.Visible = false;
 
-                // customize the control based on what type of plot this is
-                bool isHeatmap = sourceCodeTextbox.Text.Contains("PlotHeatmap(");
-                formsPlot1.Configure(recalculateLayoutOnMouseUp: !isHeatmap);
-
                 demoPlot.Render(formsPlot1.plt);
                 formsPlot1.Render();
             }
