@@ -45,7 +45,6 @@ namespace ScottPlot
 
         public PlottableHeatmap(double[,] intensities, ColorMap colorMap, string label, double[] axisOffsets, double[] axisMultipliers)
         {
-            long start = DateTime.Now.Ticks;
             this.width = intensities.GetUpperBound(1) + 1;
             this.height = intensities.GetUpperBound(0) + 1;
             double[] intensitiesFlattened = Flatten(intensities);
@@ -67,9 +66,9 @@ namespace ScottPlot
 
             int[] flatRGBA = ToRGB(rgb);
             bmp = new Bitmap(width, height, PixelFormat.Format32bppArgb);
-            scale = new Bitmap(1, 200, PixelFormat.Format32bppArgb);
+            scale = new Bitmap(1, 256, PixelFormat.Format32bppArgb);
 
-            int[] scaleRGBA = ToRGB(IntensityToColor(Normalize(Invert(Enumerable.Range(0, scale.Height).Select(i => (double)i).ToArray())), colorMap));
+            int[] scaleRGBA = ToRGB(IntensityToColor(Normalize(Enumerable.Range(0, scale.Height).Select(i => (double)i).Reverse().ToArray()), colorMap));
 
             Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
             Rectangle rectScale = new Rectangle(0, 0, scale.Width, scale.Height);
@@ -80,7 +79,6 @@ namespace ScottPlot
             Marshal.Copy(scaleRGBA, 0, scaleBmpData.Scan0, scaleRGBA.Length);
             bmp.UnlockBits(bmpData);
             scale.UnlockBits(scaleBmpData);
-            Debug.WriteLine(DateTime.Now.Ticks - start);
         }
 
         private double[] Normalize(double[] input)
@@ -96,7 +94,7 @@ namespace ScottPlot
             double max = input.Max();
             int threads = 12;
             int stride = (input.Length - 1) / threads;
-            int remainder = (input.Length - 1) % threads;
+            int remainder = (input.Length - 1) % threads + 1;
             List<Task<List<double>>> tasks = new List<Task<List<double>>>(threads);
 
             for (int i = 0; i < threads; i++)
@@ -184,7 +182,7 @@ namespace ScottPlot
             var interpMode = settings.gfxData.InterpolationMode;
             settings.gfxData.InterpolationMode = InterpolationMode.NearestNeighbor;
             double minScale = settings.xAxisScale < settings.yAxisScale ? settings.xAxisScale : settings.yAxisScale;
-            settings.gfxData.DrawImage(bmp, (int)settings.GetPixelX(0), (int)(settings.GetPixelY(0) - (height * minScale)), (int)(width * minScale), (int)(height * minScale));
+            settings.gfxData.DrawImage(bmp, (float)settings.GetPixelX(0), (float)(settings.GetPixelY(0) - (height * minScale)), (float)(width * minScale), (float)(height * minScale));
             RenderScale(settings);
             RenderAxis(settings, minScale);
             settings.gfxData.InterpolationMode = interpMode;
