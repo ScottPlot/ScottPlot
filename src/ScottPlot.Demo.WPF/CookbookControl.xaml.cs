@@ -72,10 +72,6 @@ namespace ScottPlot.Demo.WPF
                 imagePlot.Visibility = Visibility.Hidden;
                 wpfPlot1.Visibility = Visibility.Visible;
 
-                // customize the control based on what type of plot this is
-                bool isHeatmap = sourceCode.Contains("PlotHeatmap(");
-                wpfPlot1.Configure(recalculateLayoutOnMouseUp: !isHeatmap);
-
                 demoPlot.Render(wpfPlot1.plt);
                 wpfPlot1.Render();
             }
