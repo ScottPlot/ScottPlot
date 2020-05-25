@@ -8,7 +8,7 @@ namespace ScottPlot.Config.ColorMaps
     {
         protected override byte[,] cmap { get { return cmaplocal; } }
 
-        private static byte[,] cmaplocal = {
+        private static readonly byte[,] cmaplocal = {
             {13, 8, 135},
             {16, 7, 136},
             {19, 7, 137},
