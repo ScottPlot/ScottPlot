@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ScottPlot
 {
@@ -44,6 +45,7 @@ namespace ScottPlot
 
         public PlottableHeatmap(double[,] intensities, ColorMap colorMap, string label, double[] axisOffsets, double[] axisMultipliers)
         {
+            long start = DateTime.Now.Ticks;
             this.width = intensities.GetUpperBound(1) + 1;
             this.height = intensities.GetUpperBound(0) + 1;
             double[] intensitiesFlattened = Flatten(intensities);
@@ -54,7 +56,10 @@ namespace ScottPlot
             this.axisOffsets = axisOffsets;
             this.axisMultipliers = axisMultipliers;
 
-            this.intensitiesNormalized = Normalize(intensitiesFlattened);
+            var intensityTask = NormalizeAsync(intensitiesFlattened);
+            intensityTask.Wait();
+            this.intensitiesNormalized = intensityTask.Result;
+
             this.colorMap = colorMap;
             this.label = label;
 
@@ -63,6 +68,7 @@ namespace ScottPlot
             int[] flatRGBA = ToRGB(rgb);
             bmp = new Bitmap(width, height, PixelFormat.Format32bppArgb);
             scale = new Bitmap(1, 200, PixelFormat.Format32bppArgb);
+
             int[] scaleRGBA = ToRGB(IntensityToColor(Normalize(Invert(Enumerable.Range(0, scale.Height).Select(i => (double)i).ToArray())), colorMap));
 
             Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
@@ -74,11 +80,44 @@ namespace ScottPlot
             Marshal.Copy(scaleRGBA, 0, scaleBmpData.Scan0, scaleRGBA.Length);
             bmp.UnlockBits(bmpData);
             scale.UnlockBits(scaleBmpData);
+            Debug.WriteLine(DateTime.Now.Ticks - start);
         }
 
         private double[] Normalize(double[] input)
         {
-            return input.Select(i => (i - input.Min()) / (input.Max() - input.Min())).ToArray();
+            double min = input.Min(); //You would think that C# is capable of this optimization itself, but this is about 5x faster for a 100x100 image
+            double max = input.Max();
+            return input.Select(i => (i - min) / (max - min)).ToArray();
+        }
+
+        private async Task<double[]> NormalizeAsync(double[] input)
+        {
+            double min = input.Min();
+            double max = input.Max();
+            int threads = 12;
+            int stride = (input.Length - 1) / threads;
+            int remainder = (input.Length - 1) % threads;
+            List<Task<List<double>>> tasks = new List<Task<List<double>>>(threads);
+
+            for (int i = 0; i < threads; i++)
+            {
+                int extra = i == threads - 1 ? remainder : 0;
+                tasks.Add(NormalizeSegment(input, min, max, i * stride, stride + extra));
+            }
+
+            await Task.WhenAll(tasks);
+            double[] results = tasks.Select(t => t.Result).SelectMany(d => d).ToArray();
+            return results;
+        }
+
+        private Task<List<double>> NormalizeSegment(double[] input, double min, double max, int index, int stride)
+        {
+            List<double> output = new List<double>();
+            for (int i = 0; i < stride; i++)
+            {
+                output.Add((input[i + index] - min) / (max - min));
+            }
+            return output;
         }
 
         private double[] Invert(double[] input)
@@ -143,7 +182,7 @@ namespace ScottPlot
         public override void Render(Settings settings)
         {
             var interpMode = settings.gfxData.InterpolationMode;
-            settings.gfxData.InterpolationMode = InterpolationMode.Bilinear;
+            settings.gfxData.InterpolationMode = InterpolationMode.NearestNeighbor;
             double minScale = settings.xAxisScale < settings.yAxisScale ? settings.xAxisScale : settings.yAxisScale;
             settings.gfxData.DrawImage(bmp, (int)settings.GetPixelX(0), (int)(settings.GetPixelY(0) - (height * minScale)), (int)(width * minScale), (int)(height * minScale));
             RenderScale(settings);
