@@ -32,15 +32,14 @@ namespace ScottPlot.Demo.PlotTypes
             public void Render(Plot plt)
             {
                 //In case you're interested, this is about the 2010 F1 Season
-                //Note, Alonso did not finish the Malaysian GP, but was classified because he completed 90% race distance
-                //Same for Hamilton in the Spanish GP
-                //Both are counted as DNFs
+                //Note, Alonso did not finish the Malaysian GP, but was classified because he completed 90% race distance. This is counted here as a DNF
+
                 double[,] values = {
                     { 5, 3, 10, 15, 3, 2},
                     { 5, 2, 10, 10, 1, 4},
                 };
                 string[] categories = { "Wins", "Poles", "Podiums", "Points Finishes", "DNFs", "Fastest Laps" };
-                string[] groups = { "Vettel", "Alonso" };
+                string[] groups = { "Sebastian Vettel", "Fernando Alonso" };
 
                 plt.PlotRadar(values, categories, groups);
                 plt.Legend();
@@ -49,6 +48,7 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.Grid(false);
                 plt.Frame(false);
                 plt.Ticks(false, false);
+                plt.Title("2010 FIA F1 World Drivers Championship");
             }
         }
     }
