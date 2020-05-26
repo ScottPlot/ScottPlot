@@ -642,6 +642,25 @@ namespace ScottPlot
             return errorBars;
         }
 
+        public PlottableRadar PlotRadar(
+            double[,] values,
+            string[] categoryNames = null,
+            string[] groupNames = null,
+            Color[] colors = null
+            )
+        {
+            if (colors == null)
+            {
+                colors = Enumerable.Range(0, values.Length).Select(i => settings.colors.GetColor(i % 10)).ToArray();
+            }
+
+            var plottable = new PlottableRadar(values, categoryNames, groupNames, colors);
+            settings.plottables.Add(plottable);
+            MatchAxis(this);
+
+            return plottable;
+        }
+
         public PlottableAnnotation PlotAnnotation(
             string label,
             double xPixel = 10,
