@@ -1,13 +1,12 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Diagnostics;
-using System.ComponentModel;
 
 namespace ScottPlot
 {
 
-    public partial class FormsPlot : UserControl
+    public partial class FormsPlot : UserControl, IMessageFilter
     {
         public Plot plt { get; private set; }
         private Settings settings;
@@ -24,15 +23,32 @@ namespace ScottPlot
             }
         }
 
+        protected override void OnHandleDestroyed(EventArgs e)
+        {
+            Application.RemoveMessageFilter(this);
+            base.OnHandleDestroyed(e);
+        }
+        public bool PreFilterMessage(ref Message m)
+        {
+            // Trap WM_SYSKEYUPDOWN message for the ALT key
+            if ((Keys)m.WParam.ToInt64() == Keys.Menu)
+            {
+                if (m.Msg == 0x104) { return true; }
+                if (m.Msg == 0x105) { return true; }
+            }
+            return false;
+        }
+
         public FormsPlot(Plot plt)
         {
             InitializeComponent();
+            Application.AddMessageFilter(this);
             Reset(plt);
         }
-
         public FormsPlot()
         {
             InitializeComponent();
+            Application.AddMessageFilter(this);
             Reset(null);
         }
 
