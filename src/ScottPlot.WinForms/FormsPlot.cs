@@ -45,11 +45,8 @@ namespace ScottPlot
             Application.AddMessageFilter(this);
             Reset(plt);
         }
-        public FormsPlot()
+        public FormsPlot() : this(null)
         {
-            InitializeComponent();
-            Application.AddMessageFilter(this);
-            Reset(null);
         }
 
         public void Reset()
