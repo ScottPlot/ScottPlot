@@ -17,21 +17,10 @@ namespace ScottPlot
 
     public class PlottableHeatmap : Plottable
     {
-        public enum ColorMap
-        {
-            grayscale,
-            grayscaleInverted,
-            viridis,
-            magma,
-            inferno,
-            plasma,
-            turbo
-        }
-
         private int width;
         private int height;
         private double[] intensitiesNormalized;
-        private ColorMap colorMap;
+        private Config.ColorMaps.Colormaps colorMap;
         public string label;
         private double[] axisOffsets;
         private double[] axisMultipliers;
@@ -43,7 +32,7 @@ namespace ScottPlot
         private SolidBrush brush;
         private Pen pen;
 
-        public PlottableHeatmap(double[,] intensities, ColorMap colorMap, string label, double[] axisOffsets, double[] axisMultipliers)
+        public PlottableHeatmap(double[,] intensities, Config.ColorMaps.Colormaps colorMap, string label, double[] axisOffsets, double[] axisMultipliers)
         {
             this.width = intensities.GetUpperBound(1) + 1;
             this.height = intensities.GetUpperBound(0) + 1;
@@ -112,23 +101,23 @@ namespace ScottPlot
             return intensitiesNormalized.Length;
         }
 
-        private int[] IntensityToColor(double[] intensities, ColorMap colorMap)
+        private int[] IntensityToColor(double[] intensities, Config.ColorMaps.Colormaps colorMap)
         {
             switch (colorMap)
             {
-                case ColorMap.grayscale:
+                case Config.ColorMaps.Colormaps.grayscale:
                     return new Config.ColorMaps.Grayscale().IntensitiesToARGB(intensities);
-                case ColorMap.grayscaleInverted:
+                case Config.ColorMaps.Colormaps.grayscaleInverted:
                     return new Config.ColorMaps.GrayscaleInverted().IntensitiesToARGB(intensities);
-                case ColorMap.viridis:
+                case Config.ColorMaps.Colormaps.viridis:
                     return new Config.ColorMaps.Viridis().IntensitiesToARGB(intensities);
-                case ColorMap.magma:
+                case Config.ColorMaps.Colormaps.magma:
                     return new Config.ColorMaps.Magma().IntensitiesToARGB(intensities);
-                case ColorMap.inferno:
+                case Config.ColorMaps.Colormaps.inferno:
                     return new Config.ColorMaps.Inferno().IntensitiesToARGB(intensities);
-                case ColorMap.plasma:
+                case Config.ColorMaps.Colormaps.plasma:
                     return new Config.ColorMaps.Plasma().IntensitiesToARGB(intensities);
-                case ColorMap.turbo:
+                case Config.ColorMaps.Colormaps.turbo:
                     return new Config.ColorMaps.Turbo().IntensitiesToARGB(intensities);
                 default:
                     throw new ArgumentException("Colormap not supported");
