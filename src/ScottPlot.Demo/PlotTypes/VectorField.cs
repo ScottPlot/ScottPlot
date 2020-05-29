@@ -6,9 +6,9 @@ using System.Text;
 
 namespace ScottPlot.Demo.PlotTypes
 {
-    class VectorField
+    public static class VectorField
     {
-        class Quickstart : PlotDemo, IPlotDemo
+        public class Quickstart : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Quickstart";
             public string description { get; } = "A vector field can be useful to show data explained by differential equations";
@@ -36,7 +36,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        class WithChangeingMagnitude : PlotDemo, IPlotDemo
+        public class WithChangeingMagnitude : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Changing Magnitude";
             public string description { get; } = "A vector field can be useful to show data explained by differential equations";
@@ -63,7 +63,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        class Pendulum : PlotDemo, IPlotDemo
+        public class Pendulum : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Pendulum Example";
             public string description { get; } = "A vector field can be useful to show data explained by differential equations";
