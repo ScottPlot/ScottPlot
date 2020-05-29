@@ -78,8 +78,8 @@ namespace ScottPlot
 
         private void PlotVector(Vector2 v, double tailX, double tailY, Settings settings)
         {
-            PointF tail = settings.GetPixel(tailX, tailY - v.Y / 2);
-            PointF end = settings.GetPixel(tailX + v.X, v.Y + tailY - v.Y / 2);
+            PointF tail = settings.GetPixel(tailX - v.X / 2, tailY - v.Y / 2);
+            PointF end = settings.GetPixel(tailX + v.X / 2, v.Y + tailY - v.Y / 2);
 
             settings.gfxData.DrawLine(pen, tail, end);
         }
