@@ -580,7 +580,7 @@ namespace ScottPlot
 
         public PlottableHeatmap PlotHeatmap(
             double[,] intensities,
-            PlottableHeatmap.ColorMap colorMap = PlottableHeatmap.ColorMap.viridis,
+            Config.ColorMaps.Colormaps colorMap = Config.ColorMaps.Colormaps.viridis,
             string label = null,
             double[] axisOffsets = null,
             double[] axisMultipliers = null
