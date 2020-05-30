@@ -717,6 +717,49 @@ namespace ScottPlot
             return arrow;
         }
 
+        public PlottableScatter PlotQuiver(
+	        double baseX,
+	        double baseY,
+	        double tipX,
+	        double tipY,
+	        double lineWidth = 1,
+	        double arrowheadWidth = 0.15,
+	        double arrowheadLength = 0.5,
+	        Color? color = null,
+	        string label = null
+        )
+        {
+	        var dx = tipX - baseX;
+	        var dy = tipY - baseY;
+	        var arrowAngle = Math.Atan2(dy, dx);
+	        var headAngle = Math.Atan2(arrowheadWidth, arrowheadLength);
+	        var sinA1 = Math.Sin(headAngle - arrowAngle);
+	        var cosA1 = Math.Cos(headAngle - arrowAngle);
+	        var sinA2 = Math.Sin(headAngle + arrowAngle);
+	        var cosA2 = Math.Cos(headAngle + arrowAngle);
+	        var len = Math.Sqrt(dx * dx + dy * dy);
+	        var hypLen = len * Math.Sqrt(arrowheadLength * arrowheadLength + arrowheadWidth * arrowheadWidth);
+
+	        var corner1X = tipX - hypLen * cosA1;
+	        var corner1Y = tipY + hypLen * sinA1;
+	        var corner2X = tipX - hypLen * cosA2;
+	        var corner2Y = tipY - hypLen * sinA2;
+
+	        var arrow = PlotScatter(
+		        xs: new double[] { baseX, tipX, corner1X, tipX, corner2X },
+		        ys: new double[] { baseY, tipY, corner1Y, tipY, corner2Y },
+		        color: color,
+		        lineWidth: lineWidth,
+		        markerSize: 0,
+              label: label
+	        );
+
+	        arrow.penLine.EndCap = LineCap.Flat;
+	        arrow.penLine.StartCap = LineCap.Flat;
+
+	        return arrow;
+        }
+
         public PlottableScatter PlotLine(
             double x1,
             double y1,
