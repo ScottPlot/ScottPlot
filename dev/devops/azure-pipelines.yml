@@ -4,7 +4,7 @@ trigger:
 strategy:
   matrix:
 
-    'Code Format Check':
+    'Check Code Format':
       purpose: 'autoformat' # break build it autoformatter is not run
       imageName: 'ubuntu-latest'
 
