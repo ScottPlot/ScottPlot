@@ -31,7 +31,6 @@
             this.components = new System.ComponentModel.Container();
             this.RunCheckbox = new System.Windows.Forms.CheckBox();
             this.AntiAliasCheckbox = new System.Windows.Forms.CheckBox();
-            this.ParallelCheckbox = new System.Windows.Forms.CheckBox();
             this.formsPlot1 = new ScottPlot.FormsPlot();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.label1 = new System.Windows.Forms.Label();
@@ -62,17 +61,6 @@
             this.AntiAliasCheckbox.Text = "Anti-Alias";
             this.AntiAliasCheckbox.UseVisualStyleBackColor = true;
             this.AntiAliasCheckbox.CheckedChanged += new System.EventHandler(this.AntiAliasCheckbox_CheckedChanged);
-            // 
-            // ParallelCheckbox
-            // 
-            this.ParallelCheckbox.AutoSize = true;
-            this.ParallelCheckbox.Location = new System.Drawing.Point(139, 12);
-            this.ParallelCheckbox.Name = "ParallelCheckbox";
-            this.ParallelCheckbox.Size = new System.Drawing.Size(60, 17);
-            this.ParallelCheckbox.TabIndex = 2;
-            this.ParallelCheckbox.Text = "Parallel";
-            this.ParallelCheckbox.UseVisualStyleBackColor = true;
-            this.ParallelCheckbox.CheckedChanged += new System.EventHandler(this.ParallelCheckbox_CheckedChanged);
             // 
             // formsPlot1
             // 
@@ -110,9 +98,9 @@
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(205, 6);
+            this.progressBar1.Location = new System.Drawing.Point(139, 6);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(214, 23);
+            this.progressBar1.Size = new System.Drawing.Size(280, 23);
             this.progressBar1.TabIndex = 6;
             // 
             // FormGui
@@ -124,7 +112,6 @@
             this.Controls.Add(this.TimeLabel);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.formsPlot1);
-            this.Controls.Add(this.ParallelCheckbox);
             this.Controls.Add(this.AntiAliasCheckbox);
             this.Controls.Add(this.RunCheckbox);
             this.Name = "FormGui";
@@ -138,7 +125,6 @@
 
         private System.Windows.Forms.CheckBox RunCheckbox;
         private System.Windows.Forms.CheckBox AntiAliasCheckbox;
-        private System.Windows.Forms.CheckBox ParallelCheckbox;
         private ScottPlot.FormsPlot formsPlot1;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Label label1;

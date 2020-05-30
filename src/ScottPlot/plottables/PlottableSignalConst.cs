@@ -66,7 +66,7 @@ namespace ScottPlot
             LessThanExp = Expression.Lambda<Func<T, T, bool>>(bodyLessThan, paramA, paramB).Compile();
             GreaterThanExp = Expression.Lambda<Func<T, T, bool>>(bodyGreaterThan, paramA, paramB).Compile();
         }
-        public PlottableSignalConst(T[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, bool useParallel)
+        public PlottableSignalConst(T[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label)
         {
             if (ys == null)
                 throw new Exception("Y data cannot be null");
@@ -78,7 +78,6 @@ namespace ScottPlot
             this.label = label;
             this.color = color;
             this.yOffset = yOffset;
-            this.useParallel = useParallel;
             brush = new SolidBrush(color);
             pen = new Pen(color, (float)lineWidth)
             {
@@ -96,10 +95,8 @@ namespace ScottPlot
                 throw new ArgumentOutOfRangeException("Unsupported data type, provide convertable to double data types");
             }
             InitExp();
-            if (useParallel)
-                UpdateTreesInBackground();
-            else
-                UpdateTrees();
+
+            UpdateTreesInBackground();
         }
 
         public void updateData(int index, T newValue)
@@ -413,11 +410,9 @@ namespace ScottPlot
                     index2 = ys.Length - 1;
 
                 // get the min and max value for this column                
-                double lowestValue, highestValue;
-                MinMaxRangeQuery(index1, index2, out lowestValue, out highestValue);
+                MinMaxRangeQuery(index1, index2, out double lowestValue, out double highestValue);
                 float yPxHigh = (float)settings.GetPixelY(lowestValue + yOffset);
                 float yPxLow = (float)settings.GetPixelY(highestValue + yOffset);
-
 
                 linePoints[(xPx - xPxStart) * 2] = new PointF(xPx, yPxLow);
                 linePoints[(xPx - xPxStart) * 2 + 1] = new PointF(xPx, yPxHigh);
@@ -436,50 +431,6 @@ namespace ScottPlot
             }
 
             settings.gfxData.DrawLines(pen, linePoints);
-        }
-
-        private void RenderHighDensity(Settings settings, double offsetPoints, double columnPointCount)
-        {
-            // this function is for when the graph is zoomed out so each pixel column represents the vertical span of multiple data points
-            int xPxStart = (int)Math.Ceiling((-1 - offsetPoints) / columnPointCount - 1);
-            int xPxEnd = (int)Math.Ceiling((ys.Length - offsetPoints) / columnPointCount);
-            xPxStart = Math.Max(0, xPxStart);
-            xPxEnd = Math.Min(settings.dataSize.Width, xPxEnd);
-            if (xPxStart >= xPxEnd)
-                return;
-            List<PointF> linePoints = new List<PointF>((xPxEnd - xPxStart) * 2 + 1);
-            for (int xPx = xPxStart; xPx < xPxEnd; xPx++)
-            {
-                // determine data indexes for this pixel column
-                int index1 = (int)(offsetPoints + columnPointCount * xPx);
-                int index2 = (int)(offsetPoints + columnPointCount * (xPx + 1));
-
-                if (index1 < 0)
-                    index1 = 0;
-                if (index2 > ys.Length - 1)
-                    index2 = ys.Length - 1;
-
-                // get the min and max value for this column                
-                double lowestValue, highestValue;
-                MinMaxRangeQuery(index1, index2, out lowestValue, out highestValue);
-                float yPxHigh = (float)settings.GetPixelY(lowestValue + yOffset);
-                float yPxLow = (float)settings.GetPixelY(highestValue + yOffset);
-
-                // adjust order of points to enhance anti-aliasing
-                if ((linePoints.Count < 2) || (yPxLow < linePoints[linePoints.Count - 1].Y))
-                {
-                    linePoints.Add(new PointF(xPx, yPxLow));
-                    linePoints.Add(new PointF(xPx, yPxHigh));
-                }
-                else
-                {
-                    linePoints.Add(new PointF(xPx, yPxHigh));
-                    linePoints.Add(new PointF(xPx, yPxLow));
-                }
-            }
-
-            if (linePoints.Count > 0)
-                settings.gfxData.DrawLines(pen, linePoints.ToArray());
         }
 
         public override void Render(Settings settings)
@@ -501,20 +452,11 @@ namespace ScottPlot
 
             // use different rendering methods based on how dense the data is on screen
             if ((dataWidthPx <= 1) || (dataWidthPx2 <= 1))
-            {
                 RenderSingleLine(settings);
-            }
             else if (pointsPerPixelColumn > 1)
-            {
-                if (useParallel)
-                    RenderHighDensityParallel(settings, offsetPoints, columnPointCount);
-                else
-                    RenderHighDensity(settings, offsetPoints, columnPointCount);
-            }
+                RenderHighDensityParallel(settings, offsetPoints, columnPointCount);
             else
-            {
                 RenderLowDensity(settings, visibleIndex1, visibleIndex2);
-            }
         }
 
         public override string ToString()

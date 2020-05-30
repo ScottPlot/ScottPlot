@@ -14,7 +14,6 @@ namespace ScottPlotTests
             double[] TestArray = Enumerable.Range(0, 5000).Select(x => Math.Sin(x / 10)).ToArray();
 
             var plt = new ScottPlot.Plot(800, 400);
-            plt.GetSettings().misc.useParallel = true;
             plt.PlotSignal(TestArray);
 
             Assert.DoesNotThrow(() => plt.GetBitmap());
@@ -27,7 +26,6 @@ namespace ScottPlotTests
             Color[] Levels = new Color[] { Color.Red, Color.Green, Color.Red };
 
             var plt = new ScottPlot.Plot(800, 400);
-            plt.GetSettings().misc.useParallel = true;
             plt.PlotSignal(TestArray, colorByDensity: Levels);
 
             Assert.DoesNotThrow(() => plt.GetBitmap());
@@ -39,7 +37,6 @@ namespace ScottPlotTests
             double[] TestArray = Enumerable.Range(0, 5000).Select(x => Math.Sin(x / 10)).ToArray();
 
             var plt = new ScottPlot.Plot(800, 400);
-            plt.GetSettings().misc.useParallel = true;
             plt.PlotSignalConst(TestArray);
 
             Assert.DoesNotThrow(() => plt.GetBitmap());

@@ -816,7 +816,6 @@ namespace ScottPlot
                 lineWidth: lineWidth,
                 markerSize: markerSize,
                 label: label,
-                useParallel: settings.misc.useParallel,
                 maxRenderIndex: (int)maxRenderIndex,
                 lineStyle: lineStyle
                 );
@@ -854,7 +853,6 @@ namespace ScottPlot
                 lineWidth: lineWidth,
                 markerSize: markerSize,
                 label: label,
-                useParallel: settings.misc.useParallel,
                 colorByDensity: colorByDensity,
                 maxRenderIndex: (int)maxRenderIndex,
                 lineStyle: lineStyle
@@ -886,8 +884,7 @@ namespace ScottPlot
                 color: (Color)color,
                 lineWidth: lineWidth,
                 markerSize: markerSize,
-                label: label,
-                useParallel: settings.misc.useParallel
+                label: label
                 );
 
             settings.plottables.Add(signal);
