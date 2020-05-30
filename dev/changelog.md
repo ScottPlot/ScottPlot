@@ -1,6 +1,7 @@
 # ScottPlot Changelog
 
 ## ScottPlot 4.0.36
+* Parallel processing is now enabled by default. Speed improvements will be most noticeable on Signal plots. (#419, #245, #72)
 * `Plot.PlotBar()` now has an `autoAxis` argument (which defaults `true`) that automatically adjusts the axis limits so the base of the bar graphs touch the edge of the plot area. (#406)
 
 ## ScottPlot 4.0.35
