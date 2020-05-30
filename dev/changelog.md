@@ -1,5 +1,8 @@
 # ScottPlot Changelog
 
+## ScottPlot 4.0.36
+* `Plot.PlotBar()` now has an `autoAxis` argument (which defaults `true`) that automatically adjusts the axis limits so the base of the bar graphs touch the edge of the plot area. (#406)
+
 ## ScottPlot 4.0.35
 * Pie charts can now be made with `plt.PlotPie()`. See cookbook and demo application for examples. (#421, #423) _Thanks @Benny121221_
 * `ScottPlot.FormsPlotViewer(Plot)` no longer resets the new window's plot to the default style (#416)  _Thanks @StendProg_

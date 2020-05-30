@@ -929,7 +929,8 @@ namespace ScottPlot
             double errorCapSize = .38,
             Color? errorColor = null,
             bool horizontal = false,
-            bool showValues = false
+            bool showValues = false,
+            bool autoAxis = true
             )
         {
             if (fillColor == null)
@@ -960,6 +961,16 @@ namespace ScottPlot
                 );
 
             settings.plottables.Add(barPlot);
+
+            if (autoAxis)
+            {
+                AxisAuto();
+                if (horizontal)
+                    Axis(x1: 0);
+                else
+                    Axis(y1: 0);
+            }
+
             return barPlot;
         }
 
