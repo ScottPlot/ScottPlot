@@ -39,7 +39,6 @@
             this.formsPlot1.Name = "formsPlot1";
             this.formsPlot1.Size = new System.Drawing.Size(453, 262);
             this.formsPlot1.TabIndex = 0;
-            this.formsPlot1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.formsPlot1_MouseUp);
             // 
             // FormSandbox
             // 
