@@ -866,7 +866,6 @@ namespace ScottPlot
                 lineWidth: lineWidth,
                 markerSize: markerSize,
                 label: label,
-                useParallel: settings.misc.useParallel,
                 maxRenderIndex: (int)maxRenderIndex,
                 lineStyle: lineStyle
                 );
@@ -904,7 +903,6 @@ namespace ScottPlot
                 lineWidth: lineWidth,
                 markerSize: markerSize,
                 label: label,
-                useParallel: settings.misc.useParallel,
                 colorByDensity: colorByDensity,
                 maxRenderIndex: (int)maxRenderIndex,
                 lineStyle: lineStyle
@@ -936,8 +934,7 @@ namespace ScottPlot
                 color: (Color)color,
                 lineWidth: lineWidth,
                 markerSize: markerSize,
-                label: label,
-                useParallel: settings.misc.useParallel
+                label: label
                 );
 
             settings.plottables.Add(signal);
@@ -979,7 +976,8 @@ namespace ScottPlot
             double errorCapSize = .38,
             Color? errorColor = null,
             bool horizontal = false,
-            bool showValues = false
+            bool showValues = false,
+            bool autoAxis = true
             )
         {
             if (fillColor == null)
@@ -1010,6 +1008,16 @@ namespace ScottPlot
                 );
 
             settings.plottables.Add(barPlot);
+
+            if (autoAxis)
+            {
+                AxisAuto();
+                if (horizontal)
+                    Axis(x1: 0);
+                else
+                    Axis(y1: 0);
+            }
+
             return barPlot;
         }
 
@@ -1416,11 +1424,13 @@ namespace ScottPlot
             double horizontalMargin = .05,
             double verticalMargin = .1,
             bool xExpandOnly = false,
-            bool yExpandOnly = false
+            bool yExpandOnly = false,
+            bool tightenLayout = true
             )
         {
             settings.AxisAuto(horizontalMargin, verticalMargin, xExpandOnly, yExpandOnly);
-            TightenLayout();
+            if (tightenLayout)
+                TightenLayout();
             return settings.axes.limits;
         }
 

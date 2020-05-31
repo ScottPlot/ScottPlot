@@ -1,8 +1,14 @@
 # ScottPlot Changelog
 
+## ScottPlot 4.0.36
+* Parallel processing is now enabled by default. Speed improvements will be most noticeable on Signal plots. (#419, #245, #72)
+* `Plot.PlotBar()` now has an `autoAxis` argument (which defaults `true`) that automatically adjusts the axis limits so the base of the bar graphs touch the edge of the plot area. (#406)
+* OSX-specific DLLs are now only retrieved by NuGet on OSX (#433, #211, #212)
+
 ## ScottPlot 4.0.35
 * Pie charts can now be made with `plt.PlotPie()`. See cookbook and demo application for examples. (#421, #423) _Thanks @Benny121221_
 * `ScottPlot.FormsPlotViewer(Plot)` no longer resets the new window's plot to the default style (#416)  _Thanks @StendProg_
+* Controls now have a `recalculateLayoutOnMouseUp` option to prevent resetting of manually-defined data area padding
 
 ## ScottPlot 4.0.34
 * Improve display of `PlotSignalXY()` by not rendering markers when zoomed very far out (#402) _Thanks @gobikulandaisamy_

@@ -38,7 +38,6 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.formsPlot1 = new ScottPlot.FormsPlot();
             this.TestSignalConst = new System.Windows.Forms.Button();
-            this.TestParallel = new System.Windows.Forms.Button();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -137,30 +136,18 @@
             this.TestSignalConst.UseVisualStyleBackColor = true;
             this.TestSignalConst.Click += new System.EventHandler(this.TestSignalConst_Click);
             // 
-            // TestParallel
-            // 
-            this.TestParallel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TestParallel.Location = new System.Drawing.Point(12, 194);
-            this.TestParallel.Name = "TestParallel";
-            this.TestParallel.Size = new System.Drawing.Size(105, 37);
-            this.TestParallel.TabIndex = 9;
-            this.TestParallel.Text = "Parallel";
-            this.TestParallel.UseVisualStyleBackColor = true;
-            this.TestParallel.Click += new System.EventHandler(this.TestParallel_Click);
-            // 
-            // Form1
+            // FormBmp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1021, 469);
-            this.Controls.Add(this.TestParallel);
             this.Controls.Add(this.TestEmpty);
             this.Controls.Add(this.TestScatter);
             this.Controls.Add(this.TestSignal);
             this.Controls.Add(this.TestSignalConst);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox2);
-            this.Name = "Form1";
+            this.Name = "FormBmp";
             this.Text = "ScottPlot Benchmark";
             this.groupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -179,7 +166,6 @@
         private ScottPlot.FormsPlot formsPlot1;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Button TestSignalConst;
-        private System.Windows.Forms.Button TestParallel;
     }
 }
 

@@ -39,8 +39,6 @@ namespace Benchmark
             formsPlot1.plt.Legend();
             formsPlot1.plt.Axis();
             formsPlot1.Render();
-
-            ParallelCheckbox.Checked = formsPlot1.plt.GetSettings(false).misc.useParallel;
         }
 
         private double[] AxisMidWay(double frac)
@@ -106,13 +104,6 @@ namespace Benchmark
                 figure: AntiAliasCheckbox.Checked,
                 data: AntiAliasCheckbox.Checked,
                 legend: AntiAliasCheckbox.Checked);
-        }
-
-        private void ParallelCheckbox_CheckedChanged(object sender, EventArgs e)
-        {
-            sig.useParallel = ParallelCheckbox.Checked;
-            sigConst.useParallel = ParallelCheckbox.Checked;
-            scat.useParallel = ParallelCheckbox.Checked;
         }
     }
 }

@@ -130,27 +130,5 @@ namespace Benchmark
             plt.AxisAuto();
             RunBenchmark("SignalConst (1M pts)");
         }
-
-        private void TestParallel_Click(object sender, EventArgs e)
-        {
-            Random rand = new Random(0);
-
-            formsPlot1.plt.Clear();
-
-            plt.Clear();
-            RunBenchmark("Baseline");
-
-            plt.Clear();
-            plt.GetSettings(false).misc.useParallel = false;
-            plt.PlotSignal(ScottPlot.DataGen.RandomWalk(rand, 1_000_000));
-            plt.AxisAuto();
-            RunBenchmark("Signal Normal (1M pts)");
-
-            plt.Clear();
-            plt.GetSettings(false).misc.useParallel = true;
-            plt.PlotSignal(ScottPlot.DataGen.RandomWalk(rand, 1_000_000));
-            plt.AxisAuto();
-            RunBenchmark("Signal Parallel (1M pts)");
-        }
     }
 }

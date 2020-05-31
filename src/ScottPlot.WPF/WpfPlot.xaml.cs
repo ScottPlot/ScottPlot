@@ -159,6 +159,7 @@ namespace ScottPlot
         private bool equalAxes = false;
         private double middleClickMarginX = .1;
         private double middleClickMarginY = .1;
+        private bool recalculateLayoutOnMouseUp = true;
         public void Configure(
             bool? enablePanning = null,
             bool? enableRightClickZoom = null,
@@ -170,7 +171,8 @@ namespace ScottPlot
             bool? lockHorizontalAxis = null,
             bool? equalAxes = null,
             double? middleClickMarginX = null,
-            double? middleClickMarginY = null
+            double? middleClickMarginY = null,
+            bool? recalculateLayoutOnMouseUp = null
             )
         {
             if (enablePanning != null) this.enablePanning = (bool)enablePanning;
@@ -184,6 +186,7 @@ namespace ScottPlot
             if (equalAxes != null) this.equalAxes = (bool)equalAxes;
             this.middleClickMarginX = middleClickMarginX ?? this.middleClickMarginX;
             this.middleClickMarginY = middleClickMarginY ?? this.middleClickMarginY;
+            this.recalculateLayoutOnMouseUp = recalculateLayoutOnMouseUp ?? this.recalculateLayoutOnMouseUp;
         }
 
         private bool isHorizontalLocked { get { return (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt) || (lockHorizontalAxis)); } }
@@ -400,7 +403,7 @@ namespace ScottPlot
                 }
                 else
                 {
-                    plt.AxisAuto(middleClickMarginX, middleClickMarginY);
+                    plt.AxisAuto(middleClickMarginX, middleClickMarginY, tightenLayout: recalculateLayoutOnMouseUp);
                     AxisChanged?.Invoke(null, null);
                 }
             }
@@ -427,7 +430,7 @@ namespace ScottPlot
             mouseMiddleDownLocation = null;
             axisLimitsOnMouseDown = null;
             settings.mouseMiddleRect = null;
-            Render(recalculateLayout: true);
+            Render(recalculateLayout: recalculateLayoutOnMouseUp);
         }
 
         #endregion
@@ -449,7 +452,7 @@ namespace ScottPlot
 
             plt.AxisZoom(xFrac, yFrac, plt.CoordinateFromPixelX(mousePixel.X), plt.CoordinateFromPixelY(mousePixel.Y));
             AxisChanged?.Invoke(null, null);
-            Render(recalculateLayout: true);
+            Render(recalculateLayout: recalculateLayoutOnMouseUp);
         }
 
         private void UserControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
