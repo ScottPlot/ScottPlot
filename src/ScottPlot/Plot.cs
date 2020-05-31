@@ -12,6 +12,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Linq;
+using System.Numerics;
 using System.Reflection;
 
 namespace ScottPlot
@@ -788,6 +789,25 @@ namespace ScottPlot
 
             Add(plottable);
             return plottable;
+        }
+
+        public PlottableVectorField PlotVectorField(
+            Vector2[,] vectors,
+            double[] xs,
+            double[] ys,
+            string label = null,
+            Color? color = null
+            )
+        {
+            if (!color.HasValue)
+            {
+                color = settings.GetNextColor();
+            }
+
+            var vectorField = new PlottableVectorField(vectors, xs, ys, label, color.Value);
+
+            settings.plottables.Add(vectorField);
+            return vectorField;
         }
 
         public PlottableScatter PlotArrow(
