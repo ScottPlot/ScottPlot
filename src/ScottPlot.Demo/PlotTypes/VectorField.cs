@@ -23,7 +23,7 @@ namespace ScottPlot.Demo.PlotTypes
                 {
                     for (int j = 0; j < ys.Length; j++)
                     {
-                        double slope = 0.5 * xs[i];
+                        double slope = 2 * xs[i];
                         double magnitude = 1;
                         double angle = Math.Atan(slope);
 
@@ -32,7 +32,7 @@ namespace ScottPlot.Demo.PlotTypes
                 }
 
                 plt.PlotVectorField(vectors, xs, ys);
-                plt.Title("Slope Field for y' = x^2");
+                plt.Title("Slope Field for y = x^2");
             }
         }
 
