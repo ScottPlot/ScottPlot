@@ -1251,6 +1251,37 @@ namespace ScottPlot
             return plottable;
         }
 
+        public PlottablePolygons PlotPolygons(
+            List<List<(double x, double y)>> polys,
+            string label = null,
+            double lineWidth = 0,
+            Color? lineColor = null,
+            bool fill = true,
+            Color? fillColor = null,
+            double fillAlpha = 1
+            )
+        {
+            if (lineColor is null)
+                lineColor = settings.GetNextColor();
+
+            if (fillColor is null)
+                fillColor = settings.GetNextColor();
+
+            var plottable = new ScottPlot.PlottablePolygons(
+                    polys: polys,
+                    label: label,
+                    lineWidth: lineWidth,
+                    lineColor: lineColor.Value,
+                    fill: fill,
+                    fillColor: fillColor.Value,
+                    fillAlpha: fillAlpha
+                );
+
+            Add(plottable);
+
+            return plottable;
+        }
+
         public PlottablePopulations PlotPopulations(Statistics.Population population, string label = null)
         {
             var plottable = new PlottablePopulations(population, label, settings.GetNextColor());
