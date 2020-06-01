@@ -692,6 +692,25 @@ namespace ScottPlot
             return errorBars;
         }
 
+        public PlottableRadar PlotRadar(
+            double[,] values,
+            string[] categoryNames = null,
+            string[] groupNames = null,
+            Color[] fillColors = null,
+            double fillAlpha = .25,
+            Color? webColor = null
+            )
+        {
+            fillColors = fillColors ?? Enumerable.Range(0, values.Length).Select(i => settings.colors.GetColor(i)).ToArray();
+            webColor = webColor ?? Color.Gray;
+
+            var plottable = new PlottableRadar(values, categoryNames, groupNames, fillColors, (byte)(fillAlpha * 256), webColor.Value);
+            settings.plottables.Add(plottable);
+            MatchAxis(this);
+
+            return plottable;
+        }
+
         public PlottableAnnotation PlotAnnotation(
             string label,
             double xPixel = 10,
