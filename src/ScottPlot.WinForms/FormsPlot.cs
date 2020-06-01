@@ -164,7 +164,7 @@ namespace ScottPlot
             this.recalculateLayoutOnMouseUp = recalculateLayoutOnMouseUp ?? this.recalculateLayoutOnMouseUp;
         }
 
-        private bool isHorizontalLocked { get { return (ModifierKeys.HasFlag(Keys.Alt) || (lockHorizontalAxis)); } }
+        private bool isHorizontalLocked { get { return (ModifierKeys.HasFlag(Keys.Shift) || (lockHorizontalAxis)); } }
         private bool isVerticalLocked { get { return (ModifierKeys.HasFlag(Keys.Control) || (lockVerticalAxis)); } }
 
         #endregion
@@ -208,7 +208,7 @@ namespace ScottPlot
             if (plottableBeingDragged is null)
             {
                 // MouseDown event is to start a pan or zoom
-                if (e.Button == MouseButtons.Left && ModifierKeys.HasFlag(Keys.Shift)) mouseMiddleDownLocation = e.Location;
+                if (e.Button == MouseButtons.Left && ModifierKeys.HasFlag(Keys.Alt)) mouseMiddleDownLocation = e.Location;
                 else if (e.Button == MouseButtons.Left && enablePanning) mouseLeftDownLocation = e.Location;
                 else if (e.Button == MouseButtons.Right && enableRightClickZoom) mouseRightDownLocation = e.Location;
                 else if (e.Button == MouseButtons.Middle && enableScrollWheelZoom) mouseMiddleDownLocation = e.Location;

@@ -25,6 +25,7 @@ namespace ScottPlot.UserControls
             msg.AppendLine("Left-click-drag: pan");
             msg.AppendLine("Right-click-drag: zoom");
             msg.AppendLine("Middle-click-drag: zoom region");
+            msg.AppendLine("ALT+Left-click-drag: zoom region");
             msg.AppendLine("Scroll wheel: zoom to cursor");
             msg.AppendLine("");
             msg.AppendLine("Right-click: show menu");
@@ -32,7 +33,7 @@ namespace ScottPlot.UserControls
             msg.AppendLine("Double-click: show benchmark");
             msg.AppendLine("");
             msg.AppendLine("Hold CTRL to lock vertical axis");
-            msg.AppendLine("Hold ALT to lock horizontal axis");
+            msg.AppendLine("Hold SHIFT to lock horizontal axis");
             richTextBox1.Text = msg.ToString();
         }
 
