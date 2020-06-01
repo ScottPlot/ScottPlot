@@ -646,15 +646,15 @@ namespace ScottPlot
             double[,] values,
             string[] categoryNames = null,
             string[] groupNames = null,
-            Color[] colors = null
+            Color[] fillColors = null,
+            double fillAlpha = .25,
+            Color? webColor = null
             )
         {
-            if (colors == null)
-            {
-                colors = Enumerable.Range(0, values.Length).Select(i => settings.colors.GetColor(i % 10)).ToArray();
-            }
+            fillColors = fillColors ?? Enumerable.Range(0, values.Length).Select(i => settings.colors.GetColor(i)).ToArray();
+            webColor = webColor ?? Color.Gray;
 
-            var plottable = new PlottableRadar(values, categoryNames, groupNames, colors);
+            var plottable = new PlottableRadar(values, categoryNames, groupNames, fillColors, (byte)(fillAlpha * 256), webColor.Value);
             settings.plottables.Add(plottable);
             MatchAxis(this);
 

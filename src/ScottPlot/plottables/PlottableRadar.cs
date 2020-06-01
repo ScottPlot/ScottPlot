@@ -16,19 +16,21 @@ namespace ScottPlot
         public readonly string[] groupNames;
         public readonly Color[] fillColors;
         public readonly Color[] lineColors;
+        public readonly Color webColor;
         private readonly SolidBrush brush = new SolidBrush(Color.Black);
         private readonly Pen pen = new Pen(Color.Black);
         private readonly double max;
 
-        public PlottableRadar(double[,] values, string[] categoryNames, string[] groupNames, Color[] colors, byte alpha = 50)
+        public PlottableRadar(double[,] values, string[] categoryNames, string[] groupNames, Color[] colors, byte fillAlpha, Color webColor)
         {
             this.values = values;
             this.categoryNames = categoryNames;
             this.groupNames = groupNames;
+            this.webColor = webColor;
             lineColors = colors;
             fillColors = new Color[colors.Length];
             for (int i = 0; i < colors.Length; i++)
-                fillColors[i] = Color.FromArgb(alpha, colors[i]);
+                fillColors[i] = Color.FromArgb(fillAlpha, colors[i]);
 
             normalized = new double[values.GetLength(0), values.GetLength(1)];
             Array.Copy(values, 0, normalized, 0, values.Length);
@@ -87,7 +89,7 @@ namespace ScottPlot
             PointF origin = settings.GetPixel(0, 0);
 
             double[] radii = new double[] { 0.25 * minScale, 0.5 * minScale, 1 * minScale };
-            pen.Color = Color.Gray;
+            pen.Color = webColor;
             for (int i = 0; i < radii.Length; i++)
             {
                 settings.gfxData.DrawEllipse(pen, (int)(origin.X - radii[i]), (int)(origin.Y - radii[i]), (int)(radii[i] * 2), (int)(radii[i] * 2));
