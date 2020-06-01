@@ -129,6 +129,11 @@ namespace ScottPlot
             return new Config.AxisLimits2D(limits);
         }
 
+        protected virtual void DrawPoint(Settings settings, List<PointF> points, int i)
+        {
+            MarkerTools.DrawMarker(settings.gfxData, points[i], markerShape, markerSize, color);
+        }
+
         public override void Render(Settings settings)
         {
             penLine.Color = color;
@@ -195,7 +200,7 @@ namespace ScottPlot
             // draw a marker at each point
             if ((markerSize > 0) && (markerShape != MarkerShape.none))
                 for (int i = 0; i < points.Count; i++)
-                    MarkerTools.DrawMarker(settings.gfxData, points[i], markerShape, markerSize, color);
+                    DrawPoint(settings, points, i);
 
         }
 

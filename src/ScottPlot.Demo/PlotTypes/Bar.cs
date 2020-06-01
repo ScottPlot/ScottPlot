@@ -25,7 +25,6 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.PlotBar(xs, ys, yError);
 
                 // customize the plot to make it look nicer
-                plt.Axis(y1: 0);
                 plt.Grid(enableVertical: false, lineStyle: LineStyle.Dot);
 
                 // apply custom axis tick labels
@@ -59,7 +58,6 @@ namespace ScottPlot.Demo.PlotTypes
                     yErr: new double[][] { err1, err2, err3 });
 
                 // customize the plot to make it look nicer
-                plt.Axis(y1: 0, y2: 50);
                 plt.Grid(enableVertical: false, lineStyle: LineStyle.Dot);
                 plt.Legend(location: legendLocation.upperRight);
             }
@@ -83,7 +81,6 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.PlotBar(xs, ys, yError, horizontal: true);
 
                 // customize the plot to make it look nicer
-                plt.Axis(x1: 0);
                 plt.Grid(enableHorizontal: false, lineStyle: LineStyle.Dot);
 
                 // apply custom axis tick labels
@@ -115,7 +112,6 @@ namespace ScottPlot.Demo.PlotTypes
 
                 // improve the styling
                 plt.Legend(location: legendLocation.upperRight);
-                plt.Axis(y1: 0, y2: 7);
                 plt.Title("Stacked Bar Charts");
             }
         }
@@ -140,9 +136,7 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.PlotBar(xs, ys, showValues: true);
 
                 // customize the plot to make it look nicer
-                plt.Axis(y1: 0);
                 plt.Grid(enableVertical: false, lineStyle: LineStyle.Dot);
-                plt.Axis(y1: 0);
                 plt.Legend();
             }
         }

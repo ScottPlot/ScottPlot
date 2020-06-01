@@ -147,11 +147,11 @@
     <Compile Include="WinFormsDemos\RightClickMenu.Designer.cs">
       <DependentUpon>RightClickMenu.cs</DependentUpon>
     </Compile>
-    <Compile Include="WinFormsDemos\ShowValueOnHover.cs">
+    <Compile Include="WinFormsDemos\ShowValueOnHover2.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="WinFormsDemos\ShowValueOnHover.Designer.cs">
-      <DependentUpon>ShowValueOnHover.cs</DependentUpon>
+    <Compile Include="WinFormsDemos\ShowValueOnHover2.Designer.cs">
+      <DependentUpon>ShowValueOnHover2.cs</DependentUpon>
     </Compile>
     <Compile Include="WinFormsDemos\ToggleVisibility.cs">
       <SubType>Form</SubType>
@@ -208,8 +208,8 @@
     <EmbeddedResource Include="WinFormsDemos\RightClickMenu.resx">
       <DependentUpon>RightClickMenu.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="WinFormsDemos\ShowValueOnHover.resx">
-      <DependentUpon>ShowValueOnHover.cs</DependentUpon>
+    <EmbeddedResource Include="WinFormsDemos\ShowValueOnHover2.resx">
+      <DependentUpon>ShowValueOnHover2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WinFormsDemos\ToggleVisibility.resx">
       <DependentUpon>ToggleVisibility.cs</DependentUpon>

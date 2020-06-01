@@ -4,7 +4,7 @@ trigger:
 strategy:
   matrix:
 
-    'Code Format Check':
+    'Check Code Format':
       purpose: 'autoformat' # break build it autoformatter is not run
       imageName: 'ubuntu-latest'
 
@@ -58,11 +58,9 @@ steps:
 
 - task: NuGetToolInstaller@1
   displayName: 'Install NuGet'
-  condition: eq(variables['purpose'], 'library')
     
 - task: NuGetCommand@2
   displayName: 'Restore packages'
-  condition: eq(variables['purpose'], 'solution')
   inputs:
     restoreSolution: 'src/ScottPlotV4.sln'
 

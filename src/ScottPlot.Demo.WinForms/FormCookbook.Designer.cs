@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.DemoNameLabel = new System.Windows.Forms.Label();
@@ -113,6 +114,7 @@
             this.sourceCodeTextbox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.sourceCodeTextbox.Size = new System.Drawing.Size(598, 202);
             this.sourceCodeTextbox.TabIndex = 0;
+            this.sourceCodeTextbox.WordWrap = false;
             // 
             // formsPlot1
             // 

@@ -27,8 +27,5 @@ namespace ScottPlot.Config
         public StringFormat sfSouthEast = new StringFormat() { LineAlignment = StringAlignment.Far, Alignment = StringAlignment.Far };
         public StringFormat sfWest = new StringFormat() { LineAlignment = StringAlignment.Center, Alignment = StringAlignment.Near };
         public StringFormat sfCenterCenter = new StringFormat() { LineAlignment = StringAlignment.Center, Alignment = StringAlignment.Center };
-
-        // experimental settings
-        public bool useParallel = false;
     }
 }

@@ -609,6 +609,56 @@ namespace ScottPlot
             return scatterPlot;
         }
 
+        public PlottableScatterHighlight PlotScatterHighlight(
+           double[] xs,
+           double[] ys,
+           Color? color = null,
+           double lineWidth = 1,
+           double markerSize = 5,
+           string label = null,
+           double[] errorX = null,
+           double[] errorY = null,
+           double errorLineWidth = 1,
+           double errorCapSize = 3,
+           MarkerShape markerShape = MarkerShape.filledCircle,
+           LineStyle lineStyle = LineStyle.Solid,
+           MarkerShape highlightedShape = MarkerShape.openCircle,
+           Color? highlightedColor = null,
+           double? highlightedMarkerSize = null
+           )
+        {
+            if (color is null)
+                color = settings.GetNextColor();
+
+            if (highlightedColor is null)
+                highlightedColor = Color.Red;
+
+            if (highlightedMarkerSize is null)
+                highlightedMarkerSize = 2 * markerSize;
+
+            PlottableScatterHighlight scatterPlot = new PlottableScatterHighlight(
+                xs: xs,
+                ys: ys,
+                color: (Color)color,
+                lineWidth: lineWidth,
+                markerSize: markerSize,
+                label: label,
+                errorX: errorX,
+                errorY: errorY,
+                errorLineWidth: errorLineWidth,
+                errorCapSize: errorCapSize,
+                stepDisplay: false,
+                markerShape: markerShape,
+                lineStyle: lineStyle,
+                highlightedShape: highlightedShape,
+                highlightedColor: highlightedColor.Value,
+                highlightedMarkerSize: highlightedMarkerSize.Value
+                );
+
+            settings.plottables.Add(scatterPlot);
+            return scatterPlot;
+        }
+
         public PlottableErrorBars PlotErrorBars(
             double[] xs,
             double[] ys,
@@ -835,7 +885,6 @@ namespace ScottPlot
                 lineWidth: lineWidth,
                 markerSize: markerSize,
                 label: label,
-                useParallel: settings.misc.useParallel,
                 maxRenderIndex: (int)maxRenderIndex,
                 lineStyle: lineStyle
                 );
@@ -873,7 +922,6 @@ namespace ScottPlot
                 lineWidth: lineWidth,
                 markerSize: markerSize,
                 label: label,
-                useParallel: settings.misc.useParallel,
                 colorByDensity: colorByDensity,
                 maxRenderIndex: (int)maxRenderIndex,
                 lineStyle: lineStyle
@@ -905,8 +953,7 @@ namespace ScottPlot
                 color: (Color)color,
                 lineWidth: lineWidth,
                 markerSize: markerSize,
-                label: label,
-                useParallel: settings.misc.useParallel
+                label: label
                 );
 
             settings.plottables.Add(signal);
@@ -948,7 +995,8 @@ namespace ScottPlot
             double errorCapSize = .38,
             Color? errorColor = null,
             bool horizontal = false,
-            bool showValues = false
+            bool showValues = false,
+            bool autoAxis = true
             )
         {
             if (fillColor == null)
@@ -979,6 +1027,16 @@ namespace ScottPlot
                 );
 
             settings.plottables.Add(barPlot);
+
+            if (autoAxis)
+            {
+                AxisAuto();
+                if (horizontal)
+                    Axis(x1: 0);
+                else
+                    Axis(y1: 0);
+            }
+
             return barPlot;
         }
 
@@ -1199,6 +1257,37 @@ namespace ScottPlot
             var plottable = new ScottPlot.PlottablePolygon(
                     xs: xs,
                     ys: ys,
+                    label: label,
+                    lineWidth: lineWidth,
+                    lineColor: lineColor.Value,
+                    fill: fill,
+                    fillColor: fillColor.Value,
+                    fillAlpha: fillAlpha
+                );
+
+            Add(plottable);
+
+            return plottable;
+        }
+
+        public PlottablePolygons PlotPolygons(
+            List<List<(double x, double y)>> polys,
+            string label = null,
+            double lineWidth = 0,
+            Color? lineColor = null,
+            bool fill = true,
+            Color? fillColor = null,
+            double fillAlpha = 1
+            )
+        {
+            if (lineColor is null)
+                lineColor = settings.GetNextColor();
+
+            if (fillColor is null)
+                fillColor = settings.GetNextColor();
+
+            var plottable = new ScottPlot.PlottablePolygons(
+                    polys: polys,
                     label: label,
                     lineWidth: lineWidth,
                     lineColor: lineColor.Value,

@@ -189,8 +189,9 @@ namespace ScottPlot
             this.recalculateLayoutOnMouseUp = recalculateLayoutOnMouseUp ?? this.recalculateLayoutOnMouseUp;
         }
 
-        private bool isHorizontalLocked { get { return (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt) || (lockHorizontalAxis)); } }
-        private bool isVerticalLocked { get { return (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl) || (lockVerticalAxis)); } }
+        private bool isAltPressed { get { return Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt); } }
+        private bool isShiftPressed { get { return (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift) || (lockHorizontalAxis)); } }
+        private bool isCtrlPressed { get { return (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl) || (lockVerticalAxis)); } }
 
         #endregion
 
@@ -257,8 +258,7 @@ namespace ScottPlot
             if (plottableBeingDragged is null)
             {
                 // MouseDown event is to start a pan or zoom
-                bool shiftIsPressed = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
-                if (e.ChangedButton == MouseButton.Left && shiftIsPressed) mouseMiddleDownLocation = GetPixelPosition(e);
+                if (e.ChangedButton == MouseButton.Left && isAltPressed) mouseMiddleDownLocation = GetPixelPosition(e);
                 else if (e.ChangedButton == MouseButton.Left && enablePanning) mouseLeftDownLocation = GetPixelPosition(e);
                 else if (e.ChangedButton == MouseButton.Right && enableZooming) mouseRightDownLocation = GetPixelPosition(e);
                 else if (e.ChangedButton == MouseButton.Middle && enableScrollWheelZoom) mouseMiddleDownLocation = GetPixelPosition(e);
@@ -302,22 +302,22 @@ namespace ScottPlot
                 double deltaX = ((Point)mouseLeftDownLocation).X - mouseLocation.X;
                 double deltaY = mouseLocation.Y - ((Point)mouseLeftDownLocation).Y;
 
-                if (isVerticalLocked) deltaY = 0;
-                if (isHorizontalLocked) deltaX = 0;
+                if (isCtrlPressed) deltaY = 0;
+                if (isShiftPressed) deltaX = 0;
 
                 settings.AxesPanPx((int)deltaX, (int)deltaY);
                 AxisChanged?.Invoke(null, null);
             }
             else if (mouseRightDownLocation != null)
             {
-                // right-click-drag panning
+                // right-click-drag zooming
                 double deltaX = ((Point)mouseRightDownLocation).X - mouseLocation.X;
                 double deltaY = mouseLocation.Y - ((Point)mouseRightDownLocation).Y;
 
-                if (isVerticalLocked) deltaY = 0;
-                if (isHorizontalLocked) deltaX = 0;
-
-                settings.AxesZoomPx(-(int)deltaX, -(int)deltaY);
+                if (isCtrlPressed == true && isShiftPressed == false) deltaY = 0;
+                if (isShiftPressed == true && isCtrlPressed == false) deltaX = 0;
+                
+                settings.AxesZoomPx(-(int)deltaX, -(int)deltaY, lockRatio: isCtrlPressed && isShiftPressed);
                 AxisChanged?.Invoke(null, null);
             }
             else if (mouseMiddleDownLocation != null)
@@ -447,8 +447,8 @@ namespace ScottPlot
             double xFrac = (e.Delta > 0) ? 1.15 : 0.85;
             double yFrac = (e.Delta > 0) ? 1.15 : 0.85;
 
-            if (isVerticalLocked) yFrac = 1;
-            if (isHorizontalLocked) xFrac = 1;
+            if (isCtrlPressed) yFrac = 1;
+            if (isShiftPressed) xFrac = 1;
 
             plt.AxisZoom(xFrac, yFrac, plt.CoordinateFromPixelX(mousePixel.X), plt.CoordinateFromPixelY(mousePixel.Y));
             AxisChanged?.Invoke(null, null);
