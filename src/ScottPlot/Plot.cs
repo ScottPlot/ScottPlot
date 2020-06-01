@@ -20,6 +20,13 @@ namespace ScottPlot
     {
         public PixelFormat pixelFormat = PixelFormat.Format32bppPArgb;
         private readonly Settings settings;
+        public bool containsHeatmap
+        {
+            get
+            {
+                return settings.plottables.Where(p => p is PlottableHeatmap).Count() > 0;
+            }
+        }
 
         public Plot(int width = 800, int height = 600)
         {
@@ -569,6 +576,34 @@ namespace ScottPlot
             var scalebar = new PlottableScaleBar(sizeX, sizeY, labelX, labelY, thickness, fontSize, color.Value, padPx);
             Add(scalebar);
             return scalebar;
+        }
+
+        [Obsolete("This method is experimental and may change in subsequent versions")]
+        public PlottableHeatmap PlotHeatmap(
+            double[,] intensities,
+            Config.ColorMaps.Colormaps colorMap = Config.ColorMaps.Colormaps.viridis,
+            string label = null,
+            double[] axisOffsets = null,
+            double[] axisMultipliers = null
+            )
+        {
+            if (axisOffsets == null)
+            {
+                axisOffsets = new double[] { 0, 0 };
+            }
+
+            if (axisMultipliers == null)
+            {
+                axisMultipliers = new double[] { 1, 1 };
+            }
+
+            PlottableHeatmap heatmap = new PlottableHeatmap(intensities, colorMap, label, axisOffsets, axisMultipliers);
+            settings.plottables.Add(heatmap);
+            MatchAxis(this);
+            Ticks(false, false); //I think we need to sort out our own labelling with System.Drawing
+            Layout(y2LabelWidth: 180);
+
+            return heatmap;
         }
 
         public PlottableScatter PlotScatter(
@@ -1481,6 +1516,8 @@ namespace ScottPlot
             settings.AxisAuto(horizontalMargin, verticalMargin, xExpandOnly, yExpandOnly);
             if (tightenLayout)
                 TightenLayout();
+            else
+                settings.layout.tighteningOccurred = true;
             return settings.axes.limits;
         }
 
