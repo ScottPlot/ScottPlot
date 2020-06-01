@@ -578,6 +578,7 @@ namespace ScottPlot
             return scalebar;
         }
 
+        [Obsolete("This method is experimental and may change in subsequent versions")]
         public PlottableHeatmap PlotHeatmap(
             double[,] intensities,
             Config.ColorMaps.Colormaps colorMap = Config.ColorMaps.Colormaps.viridis,
