@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace ScottPlot.Config.ColorMaps
 {
-    class Inferno : ColormapFromByteArray
+    public class Inferno : ColormapFromByteArray
     {
         protected override byte[,] cmap { get { return cmaplocal; } }
 

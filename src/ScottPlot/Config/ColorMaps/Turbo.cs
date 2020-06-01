@@ -11,7 +11,7 @@
 
 namespace ScottPlot.Config.ColorMaps
 {
-    class Turbo : ColormapFromByteArray
+    public class Turbo : ColormapFromByteArray
     {
         protected override byte[,] cmap { get { return cmaplocal; } }
 

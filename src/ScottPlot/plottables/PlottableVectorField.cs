@@ -6,6 +6,7 @@ using System.Numerics;
 using System.Drawing;
 using System.Linq;
 using System.Drawing.Drawing2D;
+using ScottPlot.Config.ColorMaps;
 
 namespace ScottPlot
 {
@@ -16,12 +17,15 @@ namespace ScottPlot
         public double[] ys;
         public string label;
         public Color color;
+        private Config.ColorMaps.Colormap colormap;
 
         private Pen pen;
+        private Color[] arrowColors;
 
-        public PlottableVectorField(Vector2[,] vectors, double[] xs, double[] ys, string label, Color color)
+        public PlottableVectorField(Vector2[,] vectors, double[] xs, double[] ys, string label, Color color, Config.ColorMaps.Colormap colormap)
         {
             //the magnitude squared is faster to compute than the magnitude
+            float minMagnitudeSquared = vectors[0, 0].Length();
             float maxMagnitudeSquared = vectors[0, 0].Length();
             for (int i = 0; i < xs.Length; i++)
             {
@@ -31,20 +35,40 @@ namespace ScottPlot
                     {
                         maxMagnitudeSquared = vectors[i, j].LengthSquared();
                     }
+                    else if (vectors[i, j].LengthSquared() < minMagnitudeSquared)
+                    {
+                        minMagnitudeSquared = vectors[i, j].LengthSquared();
+                    }
                 }
             }
+            double minMagnitude = Math.Sqrt(minMagnitudeSquared);
+            double maxMagnitude = Math.Sqrt(maxMagnitudeSquared);
+            double[,] intensities = new double[xs.Length, ys.Length];
+
             for (int i = 0; i < xs.Length; i++)
             {
                 for (int j = 0; j < ys.Length; j++)
                 {
-                    vectors[i, j] = Vector2.Multiply(vectors[i, j], (float)(1 / (Math.Sqrt(maxMagnitudeSquared) * 1.2))); //This is not a true normalize
+                    if (colormap != null)
+                    {
+                        intensities[i, j] = (vectors[i, j].Length() - minMagnitude) / (maxMagnitude - minMagnitude);
+                    }
+                    vectors[i, j] = Vector2.Multiply(vectors[i, j], (float)(1 / (maxMagnitude * 1.2))); //This is not a true normalize
                 }
             }
+
+            if (colormap != null)
+            {
+                double[] flattenedIntensities = intensities.Cast<double>().ToArray();
+                arrowColors = colormap.IntensitiesToARGB(flattenedIntensities).Select(c => Color.FromArgb(c)).ToArray();
+            }
+
             this.vectors = vectors;
             this.xs = xs;
             this.ys = ys;
             this.label = label;
             this.color = color;
+            this.colormap = colormap;
 
             pen = new Pen(color);
             pen.CustomEndCap = new AdjustableArrowCap(2, 2);
@@ -71,6 +95,10 @@ namespace ScottPlot
             {
                 for (int j = 0; j < ys.Length; j++)
                 {
+                    if (this.colormap != null)
+                    {
+                        pen.Color = arrowColors[i * ys.Length + j];
+                    }
                     PlotVector(vectors[i, j], xs[i], ys[j], settings);
                 }
             }

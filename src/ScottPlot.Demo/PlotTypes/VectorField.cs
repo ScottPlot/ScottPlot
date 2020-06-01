@@ -87,7 +87,7 @@ namespace ScottPlot.Demo.PlotTypes
                     }
                 }
 
-                plt.PlotVectorField(vectors, xs, ys);
+                plt.PlotVectorField(vectors, xs, ys, colormap: new Config.ColorMaps.Turbo());
                 plt.XLabel("θ");
                 plt.YLabel("dθ/dt");
             }
