@@ -32,8 +32,11 @@ namespace ScottPlot.UserControls
             msg.AppendLine("Middle-click: auto-axis");
             msg.AppendLine("Double-click: show benchmark");
             msg.AppendLine("");
-            msg.AppendLine("Hold CTRL to lock vertical axis");
-            msg.AppendLine("Hold SHIFT to lock horizontal axis");
+            msg.AppendLine("CTRL+Left-click-drag to pan horizontally");
+            msg.AppendLine("SHIFT+Left-click-drag to pan vertically");
+            msg.AppendLine("CTRL+Right-click-drag to zoom horizontally");
+            msg.AppendLine("SHIFT+Right-click-drag to zoom vertically");
+            msg.AppendLine("CTRL+SHIFT+Right-click-drag to zoom evenly");
             richTextBox1.Text = msg.ToString();
         }
 

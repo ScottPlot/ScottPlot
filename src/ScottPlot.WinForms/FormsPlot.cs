@@ -164,8 +164,8 @@ namespace ScottPlot
             this.recalculateLayoutOnMouseUp = recalculateLayoutOnMouseUp ?? this.recalculateLayoutOnMouseUp;
         }
 
-        private bool isHorizontalLocked { get { return (ModifierKeys.HasFlag(Keys.Shift) || (lockHorizontalAxis)); } }
-        private bool isVerticalLocked { get { return (ModifierKeys.HasFlag(Keys.Control) || (lockVerticalAxis)); } }
+        private bool isShiftPressed { get { return (ModifierKeys.HasFlag(Keys.Shift) || (lockHorizontalAxis)); } }
+        private bool isCtrlPressed { get { return (ModifierKeys.HasFlag(Keys.Control) || (lockVerticalAxis)); } }
 
         #endregion
 
@@ -255,8 +255,8 @@ namespace ScottPlot
                 int deltaX = ((Point)mouseLeftDownLocation).X - e.Location.X;
                 int deltaY = e.Location.Y - ((Point)mouseLeftDownLocation).Y;
 
-                if (isVerticalLocked) deltaY = 0;
-                if (isHorizontalLocked) deltaX = 0;
+                if (isCtrlPressed) deltaY = 0;
+                if (isShiftPressed) deltaX = 0;
 
                 settings.AxesPanPx(deltaX, deltaY);
                 OnAxisChanged();
@@ -267,10 +267,10 @@ namespace ScottPlot
                 int deltaX = ((Point)mouseRightDownLocation).X - e.Location.X;
                 int deltaY = e.Location.Y - ((Point)mouseRightDownLocation).Y;
 
-                if (isVerticalLocked) deltaY = 0;
-                if (isHorizontalLocked) deltaX = 0;
+                if (isCtrlPressed == true && isShiftPressed == false) deltaY = 0;
+                if (isShiftPressed == true && isCtrlPressed == false) deltaX = 0;
 
-                settings.AxesZoomPx(-deltaX, -deltaY);
+                settings.AxesZoomPx(-deltaX, -deltaY, lockRatio: isCtrlPressed && isShiftPressed);
                 OnAxisChanged();
             }
             else if (mouseMiddleDownLocation != null)
@@ -406,8 +406,8 @@ namespace ScottPlot
             double xFrac = (e.Delta > 0) ? 1.15 : 0.85;
             double yFrac = (e.Delta > 0) ? 1.15 : 0.85;
 
-            if (isVerticalLocked) yFrac = 1;
-            if (isHorizontalLocked) xFrac = 1;
+            if (isCtrlPressed) yFrac = 1;
+            if (isShiftPressed) xFrac = 1;
 
             plt.AxisZoom(xFrac, yFrac, plt.CoordinateFromPixelX(e.Location.X), plt.CoordinateFromPixelY(e.Location.Y));
             Render(recalculateLayout: recalculateLayoutOnMouseUp);

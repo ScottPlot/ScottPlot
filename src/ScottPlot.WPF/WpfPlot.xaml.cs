@@ -310,14 +310,14 @@ namespace ScottPlot
             }
             else if (mouseRightDownLocation != null)
             {
-                // right-click-drag panning
+                // right-click-drag zooming
                 double deltaX = ((Point)mouseRightDownLocation).X - mouseLocation.X;
                 double deltaY = mouseLocation.Y - ((Point)mouseRightDownLocation).Y;
 
-                if (isCtrlPressed) deltaY = 0;
-                if (isShiftPressed) deltaX = 0;
-
-                settings.AxesZoomPx(-(int)deltaX, -(int)deltaY);
+                if (isCtrlPressed == true && isShiftPressed == false) deltaY = 0;
+                if (isShiftPressed == true && isCtrlPressed == false) deltaX = 0;
+                
+                settings.AxesZoomPx(-(int)deltaX, -(int)deltaY, lockRatio: isCtrlPressed && isShiftPressed);
                 AxisChanged?.Invoke(null, null);
             }
             else if (mouseMiddleDownLocation != null)
