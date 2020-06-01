@@ -9,8 +9,6 @@ namespace ScottPlot
 {
     public abstract class Plottable
     {
-        // in ScottPlot 3.1 this class will move to ScottPlot.Plottable.IPlottable
-        public bool useParallel = false;
         public bool visible = true;
         public abstract void Render(Settings settings);
         public abstract override string ToString();

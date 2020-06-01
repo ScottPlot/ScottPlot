@@ -34,6 +34,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.AxisLimitsButton = new System.Windows.Forms.Button();
             this.label13 = new System.Windows.Forms.Label();
             this.ScrollViewerButton = new System.Windows.Forms.Button();
             this.label12 = new System.Windows.Forms.Label();
@@ -56,8 +58,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.TransparentBackgroundButton = new System.Windows.Forms.Button();
-            this.AxisLimitsButton = new System.Windows.Forms.Button();
-            this.label14 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -97,7 +97,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.Location = new System.Drawing.Point(92, 19);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(249, 72);
+            this.label3.Size = new System.Drawing.Size(232, 72);
             this.label3.TabIndex = 5;
             this.label3.Text = "A collection of simple examples which demonstrate most features of ScottPlot";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -110,7 +110,7 @@
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Location = new System.Drawing.Point(12, 62);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(347, 98);
+            this.groupBox1.Size = new System.Drawing.Size(330, 98);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "ScottPlot Cookbook";
@@ -145,10 +145,31 @@
             this.groupBox2.Controls.Add(this.TransparentBackgroundButton);
             this.groupBox2.Location = new System.Drawing.Point(12, 166);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(347, 657);
+            this.groupBox2.Size = new System.Drawing.Size(330, 657);
             this.groupBox2.TabIndex = 7;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "WinForms-Specific Examples";
+            // 
+            // label14
+            // 
+            this.label14.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label14.Location = new System.Drawing.Point(87, 602);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(237, 47);
+            this.label14.TabIndex = 27;
+            this.label14.Text = "Demonstrate how to apply axis limits to interactive plots";
+            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // AxisLimitsButton
+            // 
+            this.AxisLimitsButton.Location = new System.Drawing.Point(6, 602);
+            this.AxisLimitsButton.Name = "AxisLimitsButton";
+            this.AxisLimitsButton.Size = new System.Drawing.Size(75, 47);
+            this.AxisLimitsButton.TabIndex = 26;
+            this.AxisLimitsButton.Text = "Axis Limits";
+            this.AxisLimitsButton.UseVisualStyleBackColor = true;
+            this.AxisLimitsButton.Click += new System.EventHandler(this.AxisLimitsButton_Click);
             // 
             // label13
             // 
@@ -156,7 +177,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label13.Location = new System.Drawing.Point(87, 549);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(254, 47);
+            this.label13.Size = new System.Drawing.Size(237, 47);
             this.label13.TabIndex = 25;
             this.label13.Text = "Show a plot inside a scrolling window";
             this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -177,7 +198,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label12.Location = new System.Drawing.Point(87, 496);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(254, 47);
+            this.label12.Size = new System.Drawing.Size(237, 47);
             this.label12.TabIndex = 23;
             this.label12.Text = "Shows how to create a custom right-click context menu";
             this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -208,7 +229,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label11.Location = new System.Drawing.Point(87, 19);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(254, 47);
+            this.label11.Size = new System.Drawing.Size(237, 47);
             this.label11.TabIndex = 21;
             this.label11.Text = "Launch a plot in a pop-up interactive window";
             this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -219,7 +240,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label10.Location = new System.Drawing.Point(87, 390);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(254, 47);
+            this.label10.Size = new System.Drawing.Size(237, 47);
             this.label10.TabIndex = 19;
             this.label10.Text = "Demonstrates how to show the value of the point under the cursor";
             this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -240,7 +261,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label9.Location = new System.Drawing.Point(87, 337);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(254, 47);
+            this.label9.Size = new System.Drawing.Size(237, 47);
             this.label9.TabIndex = 17;
             this.label9.Text = "Shows how to plot data which grows with time";
             this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -251,7 +272,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label8.Location = new System.Drawing.Point(87, 284);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(254, 47);
+            this.label8.Size = new System.Drawing.Size(237, 47);
             this.label8.TabIndex = 16;
             this.label8.Text = "Shows how to plot live data from a fixed-size array";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -282,7 +303,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label7.Location = new System.Drawing.Point(87, 231);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(254, 47);
+            this.label7.Size = new System.Drawing.Size(237, 47);
             this.label7.TabIndex = 13;
             this.label7.Text = "Link axes from two FormsPlot controls together";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -303,7 +324,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label6.Location = new System.Drawing.Point(87, 178);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(254, 47);
+            this.label6.Size = new System.Drawing.Size(237, 47);
             this.label6.TabIndex = 11;
             this.label6.Text = "Demonstrates how to customize the configuration of the FormsPlot user control";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -324,7 +345,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.Location = new System.Drawing.Point(87, 125);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(254, 47);
+            this.label5.Size = new System.Drawing.Size(237, 47);
             this.label5.TabIndex = 9;
             this.label5.Text = "Checkboxes control visibility of individual plot objects";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -355,7 +376,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.Location = new System.Drawing.Point(87, 443);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(254, 47);
+            this.label2.Size = new System.Drawing.Size(237, 47);
             this.label2.TabIndex = 7;
             this.label2.Text = "Shows how to creat a transparent FormsPlot that lets you see through to the backg" +
     "round of the form";
@@ -367,7 +388,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.Location = new System.Drawing.Point(87, 72);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(254, 47);
+            this.label4.Size = new System.Drawing.Size(237, 47);
             this.label4.TabIndex = 5;
             this.label4.Text = "Display mouse position in pixel coordinates and graph coordinates";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -381,27 +402,6 @@
             this.TransparentBackgroundButton.Text = "Transparent Background";
             this.TransparentBackgroundButton.UseVisualStyleBackColor = true;
             this.TransparentBackgroundButton.Click += new System.EventHandler(this.TransparentBackgroundButton_Click);
-            // 
-            // AxisLimitsButton
-            // 
-            this.AxisLimitsButton.Location = new System.Drawing.Point(6, 602);
-            this.AxisLimitsButton.Name = "AxisLimitsButton";
-            this.AxisLimitsButton.Size = new System.Drawing.Size(75, 47);
-            this.AxisLimitsButton.TabIndex = 26;
-            this.AxisLimitsButton.Text = "Axis Limits";
-            this.AxisLimitsButton.UseVisualStyleBackColor = true;
-            this.AxisLimitsButton.Click += new System.EventHandler(this.AxisLimitsButton_Click);
-            // 
-            // label14
-            // 
-            this.label14.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label14.Location = new System.Drawing.Point(87, 602);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(254, 47);
-            this.label14.TabIndex = 27;
-            this.label14.Text = "Demonstrate how to apply axis limits to interactive plots";
-            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // FormMain
             // 

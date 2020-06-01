@@ -30,7 +30,7 @@ namespace ScottPlot
         public string label;
         public LineStyle lineStyle;
 
-        public PlottableSignal(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, bool useParallel, Color[] colorByDensity, int maxRenderIndex, LineStyle lineStyle)
+        public PlottableSignal(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, Color[] colorByDensity, int maxRenderIndex, LineStyle lineStyle)
         {
             if (ys == null)
                 throw new Exception("Y data cannot be null");
@@ -44,7 +44,6 @@ namespace ScottPlot
             this.color = color;
             this.lineWidth = lineWidth;
             this.yOffset = yOffset;
-            this.useParallel = useParallel;
             if ((maxRenderIndex > ys.Length - 1) || maxRenderIndex < 0)
                 throw new ArgumentException("maxRenderIndex must be a valid index for ys[]");
             this.maxRenderIndex = maxRenderIndex;
@@ -195,57 +194,6 @@ namespace ScottPlot
             settings.gfxData.DrawLines(penHD, linePoints);
         }
 
-        private void RenderHighDensityDistribution(Settings settings, double offsetPoints, double columnPointCount)
-        {
-            int xPxStart = (int)Math.Ceiling((-1 - offsetPoints) / columnPointCount - 1);
-            int xPxEnd = (int)Math.Ceiling((ys.Length - offsetPoints) / columnPointCount);
-            xPxStart = Math.Max(0, xPxStart);
-            xPxEnd = Math.Min(settings.dataSize.Width, xPxEnd);
-            if (xPxStart >= xPxEnd)
-                return;
-            List<PointF> linePoints = new List<PointF>((xPxEnd - xPxStart) * 2 + 1);
-            List<PointF[]> linePointsLevels = new List<PointF[]>((xPxEnd - xPxStart) + 1);
-            for (int xPx = xPxStart; xPx < xPxEnd; xPx++)
-            {
-                // determine data indexes for this pixel column
-                int index1 = (int)(offsetPoints + columnPointCount * xPx);
-                int index2 = (int)(offsetPoints + columnPointCount * (xPx + 1));
-
-                if (index1 < 0)
-                    index1 = 0;
-                if (index1 > ys.Length - 1)
-                    index1 = ys.Length - 1;
-                if (index2 > ys.Length - 1)
-                    index2 = ys.Length - 1;
-
-                var indexes = Enumerable.Range(0, densityLevelCount + 1).Select(x => x * (index2 - index1 - 1) / (densityLevelCount));
-
-                var levelsValues = new ArraySegment<double>(ys, index1, index2 - index1)
-                    .OrderBy(x => x)
-                    .Where((y, i) => indexes.Contains(i));
-
-                var Points = levelsValues
-                    .Select(x => settings.GetPixelY(x + yOffset))
-                    .Select(y => new PointF(xPx, (float)y))
-                    .ToArray();
-
-                linePointsLevels.Add(Points);
-            }
-            for (int i = 0; i < densityLevelCount; i++)
-            {
-                linePoints.Clear();
-                for (int j = 0; j < linePointsLevels.Count; j++)
-                {
-                    if (i + 1 < linePointsLevels[j].Length)
-                    {
-                        linePoints.Add(linePointsLevels[j][i]);
-                        linePoints.Add(linePointsLevels[j][i + 1]);
-                    }
-                }
-                settings.gfxData.DrawLines(penByDensity[i], linePoints.ToArray());
-            }
-        }
-
         private void RenderHighDensityDistributionParallel(Settings settings, double offsetPoints, double columnPointCount)
         {
             int xPxStart = (int)Math.Ceiling((-1 - offsetPoints) / columnPointCount - 1);
@@ -302,65 +250,6 @@ namespace ScottPlot
             }
         }
 
-        private void RenderHighDensity(Settings settings, double offsetPoints, double columnPointCount)
-        {
-            // this function is for when the graph is zoomed out so each pixel column represents the vertical span of multiple data points
-            int xPxStart = (int)Math.Ceiling((-1 - offsetPoints) / columnPointCount - 1);
-            int xPxEnd = (int)Math.Ceiling((ys.Length - offsetPoints) / columnPointCount);
-            xPxStart = Math.Max(0, xPxStart);
-            xPxEnd = Math.Min(settings.dataSize.Width, xPxEnd);
-            if (xPxStart >= xPxEnd)
-                return;
-            List<PointF> linePoints = new List<PointF>((xPxEnd - xPxStart) * 2 + 1);
-            for (int xPx = xPxStart; xPx < xPxEnd; xPx++)
-            {
-                // determine data indexes for this pixel column
-                int index1 = (int)(offsetPoints + columnPointCount * xPx);
-                int index2 = (int)(offsetPoints + columnPointCount * (xPx + 1));
-
-                if (index1 < 0)
-                    index1 = 0;
-                if (index1 > ys.Length - 1)
-                    index1 = ys.Length - 1;
-                if (index2 > ys.Length - 1)
-                    index2 = ys.Length - 1;
-
-                // skip data above maxRenderIndex 
-                if (index1 > maxRenderIndex)
-                    continue;
-                if (index2 > maxRenderIndex)
-                    index2 = maxRenderIndex;
-
-                // get the min and max value for this column                
-                double lowestValue = ys[index1];
-                double highestValue = ys[index1];
-                for (int i = index1; i < index2; i++)
-                {
-                    if (ys[i] < lowestValue)
-                        lowestValue = ys[i];
-                    if (ys[i] > highestValue)
-                        highestValue = ys[i];
-                }
-                float yPxHigh = (float)settings.GetPixelY(lowestValue + yOffset);
-                float yPxLow = (float)settings.GetPixelY(highestValue + yOffset);
-
-                // adjust order of points to enhance anti-aliasing
-                if ((linePoints.Count < 2) || (yPxLow < linePoints[linePoints.Count - 1].Y))
-                {
-                    linePoints.Add(new PointF(xPx, yPxLow));
-                    linePoints.Add(new PointF(xPx, yPxHigh));
-                }
-                else
-                {
-                    linePoints.Add(new PointF(xPx, yPxHigh));
-                    linePoints.Add(new PointF(xPx, yPxLow));
-                }
-            }
-
-            if (linePoints.Count > 0)
-                settings.gfxData.DrawLines(penHD, linePoints.ToArray());
-        }
-
         private bool markersAreVisible = false;
         public override void Render(Settings settings)
         {
@@ -392,19 +281,9 @@ namespace ScottPlot
             else if (pointsPerPixelColumn > 1)
             {
                 if (densityLevelCount > 0 && pointsPerPixelColumn > densityLevelCount)
-                {
-                    if (useParallel)
-                        RenderHighDensityDistributionParallel(settings, offsetPoints, columnPointCount);
-                    else
-                        RenderHighDensityDistribution(settings, offsetPoints, columnPointCount);
-                }
+                    RenderHighDensityDistributionParallel(settings, offsetPoints, columnPointCount);
                 else
-                {
-                    if (useParallel)
-                        RenderHighDensityParallel(settings, offsetPoints, columnPointCount);
-                    else
-                        RenderHighDensity(settings, offsetPoints, columnPointCount);
-                }
+                    RenderHighDensityParallel(settings, offsetPoints, columnPointCount);
             }
             else
             {

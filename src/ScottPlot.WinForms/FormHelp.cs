@@ -25,6 +25,7 @@ namespace ScottPlot.UserControls
             msg.AppendLine("Left-click-drag: pan");
             msg.AppendLine("Right-click-drag: zoom");
             msg.AppendLine("Middle-click-drag: zoom region");
+            msg.AppendLine("Scroll wheel: zoom to cursor");
             msg.AppendLine("");
             msg.AppendLine("Right-click: show menu");
             msg.AppendLine("Middle-click: auto-axis");
