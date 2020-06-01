@@ -135,6 +135,7 @@ namespace ScottPlot
         private double middleClickMarginX = .1;
         private double middleClickMarginY = .1;
         private bool? recalculateLayoutOnMouseUp = null;
+        private bool showCoordinatesTooltip = false;
         public void Configure(
             bool? enablePanning = null,
             bool? enableZooming = null,
@@ -147,7 +148,8 @@ namespace ScottPlot
             bool? equalAxes = null,
             double? middleClickMarginX = null,
             double? middleClickMarginY = null,
-            bool? recalculateLayoutOnMouseUp = null
+            bool? recalculateLayoutOnMouseUp = null,
+            bool? showCoordinatesTooltip = null
             )
         {
             if (enablePanning != null) this.enablePanning = (bool)enablePanning;
@@ -162,6 +164,7 @@ namespace ScottPlot
             this.middleClickMarginX = middleClickMarginX ?? this.middleClickMarginX;
             this.middleClickMarginY = middleClickMarginY ?? this.middleClickMarginY;
             this.recalculateLayoutOnMouseUp = recalculateLayoutOnMouseUp;
+            this.showCoordinatesTooltip = showCoordinatesTooltip ?? this.showCoordinatesTooltip;
         }
 
         private bool isShiftPressed { get { return (ModifierKeys.HasFlag(Keys.Shift) || (lockHorizontalAxis)); } }
@@ -171,6 +174,7 @@ namespace ScottPlot
 
         #region mouse tracking
 
+        ToolTip tooltip = new ToolTip();
         private Point? mouseLeftDownLocation, mouseRightDownLocation, mouseMiddleDownLocation;
         double[] axisLimitsOnMouseDown;
         private bool isPanningOrZooming
@@ -234,6 +238,7 @@ namespace ScottPlot
             mouseLocation = e.Location;
             OnMouseMoved(e);
 
+            tooltip.Hide(this);
             if (isPanningOrZooming)
                 MouseMovedToPanOrZoom(e);
             else if (isMovingDraggable)
@@ -318,6 +323,13 @@ namespace ScottPlot
 
         private void MouseMovedWithoutInteraction(MouseEventArgs e)
         {
+            if (showCoordinatesTooltip)
+            {
+                double coordX = plt.CoordinateFromPixelX(e.Location.X);
+                double coordY = plt.CoordinateFromPixelY(e.Location.Y);
+                tooltip.Show($"{coordX:N2}, {coordY:N2}", this, e.Location.X + 15, e.Location.Y);
+            }
+
             // set the cursor based on what's beneath it
             var draggableUnderCursor = plt.GetDraggableUnderMouse(e.Location.X, e.Location.Y);
             var spCursor = (draggableUnderCursor is null) ? Config.Cursor.Arrow : draggableUnderCursor.DragCursor;

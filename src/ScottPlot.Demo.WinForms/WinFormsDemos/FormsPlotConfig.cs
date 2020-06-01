@@ -93,5 +93,10 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
                 MessageBox.Show("This is a custom right-click action");
             }
         }
+
+        private void cbTooltip_CheckedChanged(object sender, EventArgs e)
+        {
+            formsPlot1.Configure(showCoordinatesTooltip: cbTooltip.Checked);
+        }
     }
 }
