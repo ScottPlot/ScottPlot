@@ -14,21 +14,26 @@ namespace ScottPlot
         private readonly double[,] normalized;
         public readonly string[] categoryNames;
         public readonly string[] groupNames;
-        public readonly Color[] colors;
+        public readonly Color[] fillColors;
+        public readonly Color[] lineColors;
         private readonly SolidBrush brush = new SolidBrush(Color.Black);
         private readonly Pen pen = new Pen(Color.Black);
         private readonly double max;
 
-        public PlottableRadar(double[,] values, string[] categoryNames, string[] groupNames, Color[] colors)
+        public PlottableRadar(double[,] values, string[] categoryNames, string[] groupNames, Color[] colors, byte alpha = 50)
         {
             this.values = values;
             this.categoryNames = categoryNames;
             this.groupNames = groupNames;
-            this.colors = colors;
+            lineColors = colors;
+            fillColors = new Color[colors.Length];
+            for (int i = 0; i < colors.Length; i++)
+                fillColors[i] = Color.FromArgb(alpha, colors[i]);
 
             normalized = new double[values.GetLength(0), values.GetLength(1)];
             Array.Copy(values, 0, normalized, 0, values.Length);
             max = NormalizeInPlace(normalized);
+
         }
 
         /// <summary>
@@ -58,7 +63,7 @@ namespace ScottPlot
             var items = new LegendItem[groupNames.Length];
             for (int i = 0; i < groupNames.Length; i++)
             {
-                items[i] = new LegendItem(groupNames[i], colors[i], lineWidth: 10);
+                items[i] = new LegendItem(groupNames[i], fillColors[i], lineWidth: 10, markerShape: MarkerShape.none);
             }
             return items;
         }
@@ -121,8 +126,8 @@ namespace ScottPlot
                     points[j] = new PointF((float)(normalized[i, j] * Math.Cos(sweepAngle * j - Math.PI / 2) * minScale + origin.X), (float)(normalized[i, j] * Math.Sin(sweepAngle * j - Math.PI / 2) * minScale + origin.Y));
                 }
 
-                brush.Color = Color.FromArgb(colors[i].ToArgb() - (0xD0 << 24)); //Drop the opacity
-                pen.Color = colors[i];
+                brush.Color = fillColors[i];
+                pen.Color = lineColors[i];
                 settings.gfxData.FillPolygon(brush, points);
                 settings.gfxData.DrawPolygon(pen, points);
             }
