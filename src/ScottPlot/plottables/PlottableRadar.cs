@@ -10,48 +10,44 @@ namespace ScottPlot
 {
     public class PlottableRadar : Plottable
     {
-        private double[,] values;
-        public string[] categoryNames;
-        public string[] groupNames;
-        public Color[] colors;
-        private SolidBrush brush = new SolidBrush(Color.Black);
-        private Pen pen = new Pen(Color.Black);
-        private double max;
-
-        private double[,] Normalize(double[,] input)
-        {
-            double[,] output = new double[input.GetLength(0), input.GetLength(1)];
-            double max = input[0, 0];
-
-            for (int i = 0; i < input.GetLength(0); i++)
-            {
-                for (int j = 0; j < input.GetLength(1); j++)
-                {
-                    if (input[i, j] > max)
-                    {
-                        max = input[i, j];
-                    }
-                }
-            }
-
-            for (int i = 0; i < input.GetLength(0); i++)
-            {
-                for (int j = 0; j < input.GetLength(1); j++)
-                {
-                    output[i, j] = input[i, j] / max; //This is not a true normalize, this creates a number on the interval [min/max, 1], not [0,1]. It looks better for this plot
-                }
-            }
-
-            this.max = max;
-            return output;
-        }
+        private readonly double[,] values;
+        private readonly double[,] normalized;
+        public readonly string[] categoryNames;
+        public readonly string[] groupNames;
+        public readonly Color[] colors;
+        private readonly SolidBrush brush = new SolidBrush(Color.Black);
+        private readonly Pen pen = new Pen(Color.Black);
+        private readonly double max;
 
         public PlottableRadar(double[,] values, string[] categoryNames, string[] groupNames, Color[] colors)
         {
-            this.values = Normalize(values);
+            this.values = values;
             this.categoryNames = categoryNames;
             this.groupNames = groupNames;
             this.colors = colors;
+
+            normalized = new double[values.GetLength(0), values.GetLength(1)];
+            Array.Copy(values, 0, normalized, 0, values.Length);
+            max = NormalizeInPlace(normalized);
+        }
+
+        /// <summary>
+        /// Normalize a 2D array by dividing all values by the maximum value.
+        /// </summary>
+        /// <returns>maximum value in the array before normalization</returns>
+        private double NormalizeInPlace(double[,] input)
+        {
+            double max = input[0, 0];
+
+            for (int i = 0; i < input.GetLength(0); i++)
+                for (int j = 0; j < input.GetLength(1); j++)
+                    max = Math.Max(max, input[i, j]);
+
+            for (int i = 0; i < input.GetLength(0); i++)
+                for (int j = 0; j < input.GetLength(1); j++)
+                    input[i, j] /= max;
+
+            return max;
         }
 
         public override LegendItem[] GetLegendItems()
@@ -74,13 +70,13 @@ namespace ScottPlot
 
         public override int GetPointCount()
         {
-            return values.Length;
+            return normalized.Length;
         }
 
         public override void Render(Settings settings)
         {
-            int numGroups = values.GetUpperBound(0) + 1;
-            int numCategories = values.GetUpperBound(1) + 1;
+            int numGroups = normalized.GetUpperBound(0) + 1;
+            int numCategories = normalized.GetUpperBound(1) + 1;
             double sweepAngle = 2 * Math.PI / numCategories;
             double minScale = new double[] { settings.xAxisScale, settings.yAxisScale }.Min();
             PointF origin = settings.GetPixel(0, 0);
@@ -122,7 +118,7 @@ namespace ScottPlot
                 PointF[] points = new PointF[numCategories];
                 for (int j = 0; j < numCategories; j++)
                 {
-                    points[j] = new PointF((float)(values[i, j] * Math.Cos(sweepAngle * j - Math.PI / 2) * minScale + origin.X), (float)(values[i, j] * Math.Sin(sweepAngle * j - Math.PI / 2) * minScale + origin.Y));
+                    points[j] = new PointF((float)(normalized[i, j] * Math.Cos(sweepAngle * j - Math.PI / 2) * minScale + origin.X), (float)(normalized[i, j] * Math.Sin(sweepAngle * j - Math.PI / 2) * minScale + origin.Y));
                 }
 
                 brush.Color = Color.FromArgb(colors[i].ToArgb() - (0xD0 << 24)); //Drop the opacity
@@ -134,7 +130,7 @@ namespace ScottPlot
 
         public override string ToString()
         {
-            return $"PlottableRadar with {GetPointCount()} points and {values.GetUpperBound(1) + 1} categories.";
+            return $"PlottableRadar with {GetPointCount()} points and {normalized.GetUpperBound(1) + 1} categories.";
         }
     }
 }
