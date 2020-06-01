@@ -12,5 +12,14 @@ namespace ScottPlot.Config.ColorMaps
         {
             return (0xFF << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2];
         }
+        public (byte r, byte g, byte b) Lookup(double intensity)
+        {
+            byte[,] rgb = IntenstitiesToRGB(new double[] { intensity });
+            return (rgb[0, 0], rgb[0, 1], rgb[0, 2]);
+        }
+        public (byte r, byte g, byte b) Lookup(byte value)
+        {
+            return Lookup(value / 255d);
+        }
     }
 }

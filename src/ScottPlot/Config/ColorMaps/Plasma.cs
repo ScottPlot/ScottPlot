@@ -4,7 +4,7 @@
 
 namespace ScottPlot.Config.ColorMaps
 {
-    class Plasma : ColormapFromByteArray
+    public class Plasma : ColormapFromByteArray
     {
         protected override byte[,] cmap { get { return cmaplocal; } }
 

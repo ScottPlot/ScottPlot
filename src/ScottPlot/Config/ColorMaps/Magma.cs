@@ -5,7 +5,7 @@
 
 namespace ScottPlot.Config.ColorMaps
 {
-    class Magma : ColormapFromByteArray
+    public class Magma : ColormapFromByteArray
     {
         protected override byte[,] cmap { get { return cmaplocal; } }
 
