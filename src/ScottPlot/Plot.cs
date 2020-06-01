@@ -697,7 +697,7 @@ namespace ScottPlot
             string[] categoryNames = null,
             string[] groupNames = null,
             Color[] fillColors = null,
-            double fillAlpha = .25,
+            double fillAlpha = .4,
             Color? webColor = null
             )
         {
