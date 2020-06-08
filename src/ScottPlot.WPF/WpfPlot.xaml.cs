@@ -1,5 +1,4 @@
-﻿using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -16,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using Microsoft.Win32;
 
 namespace ScottPlot
 {
@@ -316,7 +316,7 @@ namespace ScottPlot
 
                 if (isCtrlPressed == true && isShiftPressed == false) deltaY = 0;
                 if (isShiftPressed == true && isCtrlPressed == false) deltaX = 0;
-                
+
                 settings.AxesZoomPx(-(int)deltaX, -(int)deltaY, lockRatio: isCtrlPressed && isShiftPressed);
                 AxisChanged?.Invoke(null, null);
             }

@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
+using System.Dynamic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
 using System.Xml;
-using System.Dynamic;
 using ScottPlot.Drawing;
 
 namespace ScottPlot
