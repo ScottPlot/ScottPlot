@@ -34,13 +34,15 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
         private void formsPlot1_AxesChanged(object sender, EventArgs e)
         {
             formsPlot2.plt.MatchAxis(formsPlot1.plt);
-            formsPlot2.Render();
+            formsPlot2.Render(true, processEvents: true);
         }
 
         private void formsPlot2_AxesChanged(object sender, EventArgs e)
         {
             formsPlot1.plt.MatchAxis(formsPlot2.plt);
+            // TODO this not optimal Render for demonstration only, swap with commented at final!
             formsPlot1.Render();
+            //formsPlot1.Render(true, processEvents: true);
         }
     }
 }
