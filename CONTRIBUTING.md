@@ -21,6 +21,14 @@ ScottPlot is made better by contributions from the open-source community!
 * If you are considering make a large change, create an issue first so the authors may suggest ideal implementation
 * You don't have to create an issue if the bug is sufficiently described in the pull request
 
+## Automatic Code Formatting
+The build will fail if code in pull requests has not been auto-formatted. Auto-format your code in Visual Studio, or from the console using these commands:
+```
+cd ScottPlot/src/
+dotnet tool install --global dotnet-format
+dotnet format
+```
+
 ## Modify an Existing Plottable Object
 
 **For extensive changes,** duplicate existing plottable source code (adding `Experimental` to the end of its name) and follow the steps below to create a new Plottable.
