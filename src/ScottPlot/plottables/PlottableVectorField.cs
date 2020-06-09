@@ -2,11 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Numerics;
 using System.Drawing;
 using System.Linq;
 using System.Drawing.Drawing2D;
 using ScottPlot.Config.ColorMaps;
+using ScottPlot.Statistics;
 
 namespace ScottPlot
 {
@@ -26,8 +26,8 @@ namespace ScottPlot
         public PlottableVectorField(Vector2[,] vectors, double[] xs, double[] ys, string label, Color color, Config.ColorMaps.Colormap colormap, double scaleFactor)
         {
             //the magnitude squared is faster to compute than the magnitude
-            float minMagnitudeSquared = vectors[0, 0].Length();
-            float maxMagnitudeSquared = vectors[0, 0].Length();
+            double minMagnitudeSquared = vectors[0, 0].Length();
+            double maxMagnitudeSquared = vectors[0, 0].Length();
             for (int i = 0; i < xs.Length; i++)
             {
                 for (int j = 0; j < ys.Length; j++)

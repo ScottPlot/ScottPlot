@@ -1,9 +1,11 @@
-﻿using System;
+﻿using ScottPlot.Statistics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Text;
 
+#pragma warning disable CS0618 // Type or member is obsolete
 namespace ScottPlot.Demo.PlotTypes
 {
     public static class VectorField
@@ -22,8 +24,8 @@ namespace ScottPlot.Demo.PlotTypes
                 for (int x = 0; x < xPositions.Length; x++)
                     for (int y = 0; y < yPositions.Length; y++)
                         vectors[x, y] = new Vector2(
-                            x: (float)Math.Sin(xPositions[x]),
-                            y: (float)Math.Sin(yPositions[y]));
+                            x: Math.Sin(xPositions[x]),
+                            y: Math.Sin(yPositions[y]));
 
                 plt.PlotVectorField(vectors, xPositions, yPositions);
             }
@@ -48,7 +50,7 @@ namespace ScottPlot.Demo.PlotTypes
                         double magnitude = Math.Abs(xs[i]);
                         double angle = Math.Atan(slope);
 
-                        vectors[i, j] = new Vector2((float)(Math.Cos(angle) * magnitude), (float)(Math.Sin(angle) * magnitude));
+                        vectors[i, j] = new Vector2(Math.Cos(angle) * magnitude, Math.Sin(angle) * magnitude);
                     }
                 }
 
@@ -76,7 +78,7 @@ namespace ScottPlot.Demo.PlotTypes
                         double x = ys[j];
                         double y = -9.81 / r * Math.Sin(xs[i]);
 
-                        vectors[i, j] = new Vector2((float)x, (float)y);
+                        vectors[i, j] = new Vector2(x, y);
                     }
                 }
 
@@ -107,7 +109,7 @@ namespace ScottPlot.Demo.PlotTypes
                         var dx = (1 - 2 * x * x) * e;
                         var dy = -2 * x * y * e;
 
-                        vectors[i, j] = new Vector2((float)dx, (float)dy);
+                        vectors[i, j] = new Vector2(dx, dy);
                     }
                 }
 
