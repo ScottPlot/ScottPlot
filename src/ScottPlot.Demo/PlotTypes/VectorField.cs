@@ -96,7 +96,7 @@ namespace ScottPlot.Demo.PlotTypes
         public class ScaledPendulum : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Scale Factor Example";
-            public string description { get; } = "Sometimes it can be useful to shrink or enlarge the arrows.";
+            public string description { get; } = "Sometimes it can be useful to shrink or enlarge the arrows";
 
             public void Render(Plot plt)
             {
