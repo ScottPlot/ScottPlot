@@ -150,7 +150,7 @@ namespace ScottPlot
             xPxEnd = Math.Min(settings.dataSize.Width, xPxEnd);
             if (xPxStart >= xPxEnd)
                 return;
-            PointF[] linePoints = new PointF[(xPxEnd - xPxStart) * 2];
+            PointF?[] linePoints = new PointF?[(xPxEnd - xPxStart) * 2];
             Parallel.For(xPxStart, xPxEnd, xPx =>
             {
                 // determine data indexes for this pixel column
@@ -161,6 +161,15 @@ namespace ScottPlot
                     index1 = 0;
                 if (index2 > ys.Length - 1)
                     index2 = ys.Length - 1;
+
+                if (index1 > maxRenderIndex)
+                {
+                    linePoints[(xPx - xPxStart) * 2] = null;
+                    linePoints[(xPx - xPxStart) * 2 + 1] = null;
+                    return;
+                }
+                if (index2 > maxRenderIndex)
+                    index2 = maxRenderIndex;
 
                 // get the min and max value for this column                
                 double lowestValue = ys[index1];
@@ -179,19 +188,21 @@ namespace ScottPlot
                 linePoints[(xPx - xPxStart) * 2 + 1] = new PointF(xPx, yPxHigh);
             });
 
+            var linePointsResult = linePoints.Where(p => p.HasValue).Select(p1 => p1.Value).ToArray();
+
             // adjust order of points to enhance anti-aliasing
             PointF buf;
-            for (int i = 1; i < linePoints.Length / 2; i++)
+            for (int i = 1; i < linePointsResult.Length / 2; i++)
             {
-                if (linePoints[i * 2].Y >= linePoints[i * 2 - 1].Y)
+                if (linePointsResult[i * 2].Y >= linePointsResult[i * 2 - 1].Y)
                 {
-                    buf = linePoints[i * 2];
-                    linePoints[i * 2] = linePoints[i * 2 + 1];
-                    linePoints[i * 2 + 1] = buf;
+                    buf = linePointsResult[i * 2];
+                    linePointsResult[i * 2] = linePointsResult[i * 2 + 1];
+                    linePointsResult[i * 2 + 1] = buf;
                 }
             }
-
-            settings.gfxData.DrawLines(penHD, linePoints);
+            if (linePointsResult.Length > 0)
+                settings.gfxData.DrawLines(penHD, linePointsResult);
         }
 
         private void RenderHighDensityDistributionParallel(Settings settings, double offsetPoints, double columnPointCount)
