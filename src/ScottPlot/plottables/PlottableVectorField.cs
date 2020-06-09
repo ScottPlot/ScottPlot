@@ -21,8 +21,9 @@ namespace ScottPlot
 
         private Pen pen;
         private Color[] arrowColors;
+        private double scaleFactor;
 
-        public PlottableVectorField(Vector2[,] vectors, double[] xs, double[] ys, string label, Color color, Config.ColorMaps.Colormap colormap)
+        public PlottableVectorField(Vector2[,] vectors, double[] xs, double[] ys, string label, Color color, Config.ColorMaps.Colormap colormap, double scaleFactor)
         {
             //the magnitude squared is faster to compute than the magnitude
             float minMagnitudeSquared = vectors[0, 0].Length();
@@ -53,7 +54,7 @@ namespace ScottPlot
                     {
                         intensities[i, j] = (vectors[i, j].Length() - minMagnitude) / (maxMagnitude - minMagnitude);
                     }
-                    vectors[i, j] = Vector2.Multiply(vectors[i, j], (float)(1 / (maxMagnitude * 1.2))); //This is not a true normalize
+                    vectors[i, j] = Vector2.Multiply(vectors[i, j], (float)(scaleFactor / (maxMagnitude * 1.2))); //This is not a true normalize
                 }
             }
 
@@ -69,6 +70,7 @@ namespace ScottPlot
             this.label = label;
             this.color = color;
             this.colormap = colormap;
+            this.scaleFactor = scaleFactor;
 
             pen = new Pen(color);
             pen.CustomEndCap = new AdjustableArrowCap(2, 2);

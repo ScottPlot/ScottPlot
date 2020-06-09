@@ -797,7 +797,8 @@ namespace ScottPlot
             double[] ys,
             string label = null,
             Color? color = null,
-            Config.ColorMaps.Colormap colormap = null
+            Config.ColorMaps.Colormap colormap = null,
+            double scaleFactor = 1
             )
         {
             if (!color.HasValue)
@@ -805,7 +806,7 @@ namespace ScottPlot
                 color = settings.GetNextColor();
             }
 
-            var vectorField = new PlottableVectorField(vectors, xs, ys, label, color.Value, colormap);
+            var vectorField = new PlottableVectorField(vectors, xs, ys, label, color.Value, colormap, scaleFactor);
 
             settings.plottables.Add(vectorField);
             return vectorField;

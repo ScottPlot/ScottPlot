@@ -92,5 +92,35 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.YLabel("dθ/dt");
             }
         }
+
+        public class ScaledPendulum : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Scale Factor Example";
+            public string description { get; } = "Sometimes it can be useful to shrink or enlarge the arrows.";
+
+            public void Render(Plot plt)
+            {
+                double[] xs = Enumerable.Range(-10, 20).Select(i => (double)i / 2).ToArray();
+                double[] ys = Enumerable.Range(-10, 20).Select(i => (double)i / 2).ToArray();
+                Vector2[,] vectors = new Vector2[xs.Length, ys.Length];
+                double r = 0.5;
+
+
+                for (int i = 0; i < xs.Length; i++)
+                {
+                    for (int j = 0; j < ys.Length; j++)
+                    {
+                        double x = ys[j];
+                        double y = -9.81 / r * Math.Sin(xs[i]);
+
+                        vectors[i, j] = new Vector2((float)x, (float)y);
+                    }
+                }
+
+                plt.PlotVectorField(vectors, xs, ys, colormap: new Config.ColorMaps.Turbo(), scaleFactor: 1.3);
+                plt.XLabel("θ");
+                plt.YLabel("dθ/dt");
+            }
+        }
     }
 }
