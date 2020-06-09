@@ -170,10 +170,6 @@ namespace ScottPlot
             if (index2 > ys.Length - 1)
                 index2 = ys.Length - 1;
 
-            if (index1 > maxRenderIndex)
-            {
-                return null;
-            }
             if (index2 > maxRenderIndex)
                 index2 = maxRenderIndex;
 
@@ -191,10 +187,11 @@ namespace ScottPlot
             float yPxLow = (float)settings.GetPixelY(highestValue + yOffset);
             return new IntervalMinMax(xPx, yPxLow, yPxHigh);
         }
+
         private void RenderHighDensity(Settings settings, double offsetPoints, double columnPointCount)
         {
             int xPxStart = (int)Math.Ceiling((-1 - offsetPoints) / columnPointCount - 1);
-            int xPxEnd = (int)Math.Ceiling((ys.Length - offsetPoints) / columnPointCount);
+            int xPxEnd = (int)Math.Ceiling((maxRenderIndex - offsetPoints) / columnPointCount);
             xPxStart = Math.Max(0, xPxStart);
             xPxEnd = Math.Min(settings.dataSize.Width, xPxEnd);
             if (xPxStart >= xPxEnd)
@@ -209,14 +206,12 @@ namespace ScottPlot
                     .AsParallel()
                     .AsOrdered()
                     .Select(xPx => CalcInterval(xPx, offsetPoints, columnPointCount, settings))
-                    .Where(x => x != null)
                     .AsSequential();
             }
             else
             {
                 intervals = columns
-                    .Select(xPx => CalcInterval(xPx, offsetPoints, columnPointCount, settings))
-                    .Where(x => x != null);
+                    .Select(xPx => CalcInterval(xPx, offsetPoints, columnPointCount, settings));
             }
 
             PointF[] linePoints = intervals
