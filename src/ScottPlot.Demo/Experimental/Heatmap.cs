@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot.Config.ColorMaps;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;

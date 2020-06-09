@@ -3,6 +3,7 @@
 ## ScottPlot 4.0.37
 * Added `processEvents` argument to `formsPlot2.Render()` to provide a performance enhancement when linking axes of two `FormsPlot` controls together (by calling `Plot.MatchAxis()` from the control's `AxesChanged` event, as seen in the _Linked Axes_ demo application) (#451, #452) _Thanks @StendProg and @robokamran_
 * New `Plot.PlotVectorField()` method for displaying vector fields (sometimes called quiver plots) (#438, #439, #440) _Thanks @Benny121221 and @hhubschle_
+* Included an experimental colormap module which is likely to evolve over subsequent releases (#420, #424, #442) _Thanks @Benny121221_
 
 ## ScottPlot 4.0.36
 * `PlotScatterHighlight()` was created as a type of scatter plot designed specifically for applications where "show value on hover" functionality is desired. Examples are both in the cookbook and WinForms and WPF demo applications. (#415, #414) _Thanks @Benny121221 and @StendProg_
