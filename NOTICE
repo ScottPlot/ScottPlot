@@ -1,10 +1,9 @@
 ScottPlot
 Copyright 2020 Scott Harden / Harden Technologies, LLC
 
-This product includes the colormap Turbo developed at Google (https://www.google.com/)
-Minor modifications to suit ScottPlot's image handling have been made. The modified file is at /src/ScottPlot/Config/ColorMaps/Turbo.cs
-More detail about modifications is included in the file.
-Turbo is under the Apache 2.0 License:
+ScottPlot includes the Turbo colormap originally developed by Google (https://www.google.com/).
+The Turbo source code has been modified as described in /src/ScottPlot/Config/ColorMaps/Turbo.cs
+Google's Turbo colormap is distributed under the Apache 2.0 License:
 
 Copyright 2019 Google LLC.
 

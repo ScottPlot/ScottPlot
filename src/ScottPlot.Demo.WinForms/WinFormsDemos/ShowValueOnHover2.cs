@@ -29,6 +29,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             formsPlot1.Render();
         }
 
+        ToolTip tooltip = new ToolTip();
         private void formsPlot1_MouseMove(object sender, MouseEventArgs e)
         {
             double mouseX = formsPlot1.plt.CoordinateFromPixelX(e.Location.X);
@@ -40,6 +41,20 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
 
             label1.Text = $"Closest point to ({mouseX:N2}, {mouseY:N2}) " +
                 $"is index {index} ({x:N2}, {y:N2})";
+
+            if (cbTooltip.Checked)
+            {
+                PointF highlightedPoint = formsPlot1.plt.CoordinateToPixel(x, y);
+                double dX = e.Location.X - highlightedPoint.X;
+                double dY = e.Location.Y - highlightedPoint.Y;
+                double distanceToPoint = Math.Sqrt(dX * dX + dY * dY);
+                if (distanceToPoint < 15)
+                    tooltip.Show($"{x}, {y}", this,
+                        (int)highlightedPoint.X + formsPlot1.Location.X,
+                        (int)highlightedPoint.Y + formsPlot1.Location.Y);
+                else
+                    tooltip.Hide(this);
+            }
         }
     }
 }

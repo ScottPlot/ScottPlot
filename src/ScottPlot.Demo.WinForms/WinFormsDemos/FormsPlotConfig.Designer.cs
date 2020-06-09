@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.formsPlot1 = new ScottPlot.FormsPlot();
             this.cbPannable = new System.Windows.Forms.CheckBox();
             this.cbZoomable = new System.Windows.Forms.CheckBox();
@@ -38,6 +39,7 @@
             this.cbLockHorizontal = new System.Windows.Forms.CheckBox();
             this.cbEqualAxes = new System.Windows.Forms.CheckBox();
             this.cbCustomRightClick = new System.Windows.Forms.CheckBox();
+            this.cbTooltip = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // formsPlot1
@@ -160,11 +162,23 @@
             this.cbCustomRightClick.UseVisualStyleBackColor = true;
             this.cbCustomRightClick.CheckedChanged += new System.EventHandler(this.cbCustomRightClick_CheckedChanged);
             // 
+            // cbTooltip
+            // 
+            this.cbTooltip.AutoSize = true;
+            this.cbTooltip.Location = new System.Drawing.Point(543, 12);
+            this.cbTooltip.Name = "cbTooltip";
+            this.cbTooltip.Size = new System.Drawing.Size(117, 17);
+            this.cbTooltip.TabIndex = 10;
+            this.cbTooltip.Text = "Coordinates Tooltip";
+            this.cbTooltip.UseVisualStyleBackColor = true;
+            this.cbTooltip.CheckedChanged += new System.EventHandler(this.cbTooltip_CheckedChanged);
+            // 
             // FormsPlotConfig
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.cbTooltip);
             this.Controls.Add(this.cbCustomRightClick);
             this.Controls.Add(this.cbEqualAxes);
             this.Controls.Add(this.cbLockHorizontal);
@@ -196,5 +210,6 @@
         private System.Windows.Forms.CheckBox cbLockHorizontal;
         private System.Windows.Forms.CheckBox cbEqualAxes;
         private System.Windows.Forms.CheckBox cbCustomRightClick;
+        private System.Windows.Forms.CheckBox cbTooltip;
     }
 }
