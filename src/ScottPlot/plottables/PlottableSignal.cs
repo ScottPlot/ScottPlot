@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 using ScottPlot.Config;
 using ScottPlot.Drawing;
 
@@ -29,8 +28,9 @@ namespace ScottPlot
         public Color color;
         public string label;
         public LineStyle lineStyle;
+        public bool useParallel = true;
 
-        public PlottableSignal(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, Color[] colorByDensity, int maxRenderIndex, LineStyle lineStyle)
+        public PlottableSignal(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, Color[] colorByDensity, int maxRenderIndex, LineStyle lineStyle, bool useParallel)
         {
             if (ys == null)
                 throw new Exception("Y data cannot be null");
@@ -48,6 +48,7 @@ namespace ScottPlot
                 throw new ArgumentException("maxRenderIndex must be a valid index for ys[]");
             this.maxRenderIndex = maxRenderIndex;
             this.lineStyle = lineStyle;
+            this.useParallel = useParallel;
             brush = new SolidBrush(color);
             penLD = GDI.Pen(color, (float)lineWidth, lineStyle, true);
             penHD = GDI.Pen(color, (float)lineWidth, LineStyle.Solid, true);
@@ -142,42 +143,81 @@ namespace ScottPlot
             }
         }
 
-        private void RenderHighDensityParallel(Settings settings, double offsetPoints, double columnPointCount)
+        private class IntervalMinMax
+        {
+            public float x;
+            public float Min;
+            public float Max;
+            public IntervalMinMax(float x, float Min, float Max)
+            {
+                this.x = x;
+                this.Min = Min;
+                this.Max = Max;
+            }
+            public IEnumerable<PointF> GetPoints()
+            {
+                yield return new PointF(x, Min);
+                yield return new PointF(x, Max);
+            }
+        }
+
+        private IntervalMinMax CalcInterval(int xPx, double offsetPoints, double columnPointCount, Settings settings)
+        {
+            int index1 = (int)(offsetPoints + columnPointCount * xPx);
+            int index2 = (int)(offsetPoints + columnPointCount * (xPx + 1));
+
+            if (index1 < 0)
+                index1 = 0;
+            if (index2 > ys.Length - 1)
+                index2 = ys.Length - 1;
+
+            if (index2 > maxRenderIndex)
+                index2 = maxRenderIndex;
+
+            // get the min and max value for this column                
+            double lowestValue = ys[index1];
+            double highestValue = ys[index1];
+            for (int i = index1; i < index2; i++)
+            {
+                if (ys[i] < lowestValue)
+                    lowestValue = ys[i];
+                if (ys[i] > highestValue)
+                    highestValue = ys[i];
+            }
+            float yPxHigh = (float)settings.GetPixelY(lowestValue + yOffset);
+            float yPxLow = (float)settings.GetPixelY(highestValue + yOffset);
+            return new IntervalMinMax(xPx, yPxLow, yPxHigh);
+        }
+
+        private void RenderHighDensity(Settings settings, double offsetPoints, double columnPointCount)
         {
             int xPxStart = (int)Math.Ceiling((-1 - offsetPoints) / columnPointCount - 1);
-            int xPxEnd = (int)Math.Ceiling((ys.Length - offsetPoints) / columnPointCount);
+            int xPxEnd = (int)Math.Ceiling((maxRenderIndex - offsetPoints) / columnPointCount);
             xPxStart = Math.Max(0, xPxStart);
             xPxEnd = Math.Min(settings.dataSize.Width, xPxEnd);
             if (xPxStart >= xPxEnd)
                 return;
-            PointF[] linePoints = new PointF[(xPxEnd - xPxStart) * 2];
-            Parallel.For(xPxStart, xPxEnd, xPx =>
+
+            var columns = Enumerable.Range(xPxStart, xPxEnd - xPxStart);
+
+            IEnumerable<IntervalMinMax> intervals;
+            if (useParallel)
             {
-                // determine data indexes for this pixel column
-                int index1 = (int)(offsetPoints + columnPointCount * xPx);
-                int index2 = (int)(offsetPoints + columnPointCount * (xPx + 1));
+                intervals = columns
+                    .AsParallel()
+                    .AsOrdered()
+                    .Select(xPx => CalcInterval(xPx, offsetPoints, columnPointCount, settings))
+                    .AsSequential();
+            }
+            else
+            {
+                intervals = columns
+                    .Select(xPx => CalcInterval(xPx, offsetPoints, columnPointCount, settings));
+            }
 
-                if (index1 < 0)
-                    index1 = 0;
-                if (index2 > ys.Length - 1)
-                    index2 = ys.Length - 1;
-
-                // get the min and max value for this column                
-                double lowestValue = ys[index1];
-                double highestValue = ys[index1];
-                for (int i = index1; i < index2; i++)
-                {
-                    if (ys[i] < lowestValue)
-                        lowestValue = ys[i];
-                    if (ys[i] > highestValue)
-                        highestValue = ys[i];
-                }
-                float yPxHigh = (float)settings.GetPixelY(lowestValue + yOffset);
-                float yPxLow = (float)settings.GetPixelY(highestValue + yOffset);
-
-                linePoints[(xPx - xPxStart) * 2] = new PointF(xPx, yPxLow);
-                linePoints[(xPx - xPxStart) * 2 + 1] = new PointF(xPx, yPxHigh);
-            });
+            PointF[] linePoints = intervals
+                .SelectMany(c => c.GetPoints())
+                .ToArray();
 
             // adjust order of points to enhance anti-aliasing
             PointF buf;
@@ -191,7 +231,8 @@ namespace ScottPlot
                 }
             }
 
-            settings.gfxData.DrawLines(penHD, linePoints);
+            if (linePoints.Length > 0)
+                settings.gfxData.DrawLines(penHD, linePoints);
         }
 
         private void RenderHighDensityDistributionParallel(Settings settings, double offsetPoints, double columnPointCount)
@@ -283,7 +324,7 @@ namespace ScottPlot
                 if (densityLevelCount > 0 && pointsPerPixelColumn > densityLevelCount)
                     RenderHighDensityDistributionParallel(settings, offsetPoints, columnPointCount);
                 else
-                    RenderHighDensityParallel(settings, offsetPoints, columnPointCount);
+                    RenderHighDensity(settings, offsetPoints, columnPointCount);
             }
             else
             {
