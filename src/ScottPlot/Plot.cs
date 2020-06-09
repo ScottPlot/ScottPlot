@@ -791,6 +791,7 @@ namespace ScottPlot
             return plottable;
         }
 
+        [Obsolete("This method is experimental and may change in subsequent versions")]
         public PlottableVectorField PlotVectorField(
             Vector2[,] vectors,
             double[] xs,
