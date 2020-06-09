@@ -2050,7 +2050,7 @@ namespace ScottPlot
                 settings.axes.y.min = sourcePlot.settings.axes.y.min;
                 settings.axes.y.max = sourcePlot.settings.axes.y.max;
             }
-            //Resize();
+            TightenLayout();
         }
 
         // TODO: create a new Style()
