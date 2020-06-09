@@ -30,9 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.cbProcessEvents = new System.Windows.Forms.CheckBox();
             this.formsPlot1 = new ScottPlot.FormsPlot();
             this.formsPlot2 = new ScottPlot.FormsPlot();
-            this.cbProcessEvents = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -53,6 +53,18 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(635, 359);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
+            // cbProcessEvents
+            // 
+            this.cbProcessEvents.AutoSize = true;
+            this.cbProcessEvents.Checked = true;
+            this.cbProcessEvents.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbProcessEvents.Location = new System.Drawing.Point(15, 12);
+            this.cbProcessEvents.Name = "cbProcessEvents";
+            this.cbProcessEvents.Size = new System.Drawing.Size(98, 17);
+            this.cbProcessEvents.TabIndex = 1;
+            this.cbProcessEvents.Text = "process events";
+            this.cbProcessEvents.UseVisualStyleBackColor = true;
+            // 
             // formsPlot1
             // 
             this.formsPlot1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -70,16 +82,6 @@
             this.formsPlot2.Size = new System.Drawing.Size(629, 174);
             this.formsPlot2.TabIndex = 1;
             this.formsPlot2.AxesChanged += new System.EventHandler(this.formsPlot2_AxesChanged);
-            // 
-            // cbProcessEvents
-            // 
-            this.cbProcessEvents.AutoSize = true;
-            this.cbProcessEvents.Location = new System.Drawing.Point(15, 12);
-            this.cbProcessEvents.Name = "cbProcessEvents";
-            this.cbProcessEvents.Size = new System.Drawing.Size(98, 17);
-            this.cbProcessEvents.TabIndex = 1;
-            this.cbProcessEvents.Text = "process events";
-            this.cbProcessEvents.UseVisualStyleBackColor = true;
             // 
             // LinkedPlots
             // 
