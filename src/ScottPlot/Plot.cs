@@ -1,4 +1,4 @@
-/* The Plot class is the primary public interface to ScottPlot.
+﻿/* The Plot class is the primary public interface to ScottPlot.
  * - This should be the only class the user interacts with.
  * - Internal refactoring can occur as long as these functions remain fixed.
  * - This file is intentionally spaced out to make code changes easier to review.
