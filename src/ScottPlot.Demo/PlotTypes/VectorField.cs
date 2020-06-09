@@ -122,5 +122,36 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.YLabel("dθ/dt");
             }
         }
+
+        public class AnotherExample : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Another Example";
+            public string description { get; } = "A vector field can be useful to show data explained by differential equations";
+
+            public void Render(Plot plt)
+            {
+                //Thank you to https://github.com/hhubschle
+
+                double[] xs = Enumerable.Range(-6, 12).Select(i => (double)i / 4).ToArray();
+                double[] ys = Enumerable.Range(-6, 12).Select(i => (double)i / 4).ToArray();
+                Vector2[,] vectors = new Vector2[xs.Length, ys.Length];
+
+                for (int i = 0; i < xs.Length; i++)
+                {
+                    for (int j = 0; j < ys.Length; j++)
+                    {
+                        double x = xs[i];
+                        double y = ys[j];
+                        var e = Math.Exp(-x * x - y * y);
+                        var dx = (1 - 2 * x * x) * e;
+                        var dy = -2 * x * y * e;
+
+                        vectors[i, j] = new Vector2((float)dx, (float)dy);
+                    }
+                }
+
+                plt.PlotVectorField(vectors, xs, ys, scaleFactor: 0.3);
+            }
+        }
     }
 }
