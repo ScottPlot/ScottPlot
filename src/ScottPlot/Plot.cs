@@ -926,7 +926,8 @@ namespace ScottPlot
             double markerSize = 5,
             string label = null,
             int? maxRenderIndex = null,
-            LineStyle lineStyle = LineStyle.Solid
+            LineStyle lineStyle = LineStyle.Solid,
+            bool useParallel = true
             )
         {
             if (color == null)
@@ -943,7 +944,8 @@ namespace ScottPlot
                 markerSize: markerSize,
                 label: label,
                 maxRenderIndex: (int)maxRenderIndex,
-                lineStyle: lineStyle
+                lineStyle: lineStyle,
+                useParallel: useParallel
                 );
 
             settings.plottables.Add(signal);
@@ -983,7 +985,7 @@ namespace ScottPlot
                 colorByDensity: colorByDensity,
                 maxRenderIndex: (int)maxRenderIndex,
                 lineStyle: lineStyle,
-                useParallel: true
+                useParallel: useParallel
                 );
 
             settings.plottables.Add(signal);
