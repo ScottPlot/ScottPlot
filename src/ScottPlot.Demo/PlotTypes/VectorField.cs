@@ -1,9 +1,9 @@
-﻿using ScottPlot.Statistics;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Text;
+using ScottPlot.Statistics;
 
 #pragma warning disable CS0618 // Type or member is obsolete
 namespace ScottPlot.Demo.PlotTypes
