@@ -1,5 +1,8 @@
 # ScottPlot Changelog
 
+## ScottPlot 4.0.36 ⚠️ _in active development_
+* Signal plots now have an optional `useParallel` argument (and property) to allow the user to decide whether parallel or sequential calculations will be performed. (#454, #419, #245, #72) _Thanks @StendProg_
+
 ## ScottPlot 4.0.35
 * Added `processEvents` argument to `formsPlot2.Render()` to provide a performance enhancement when linking axes of two `FormsPlot` controls together (by calling `Plot.MatchAxis()` from the control's `AxesChanged` event, as seen in the _Linked Axes_ demo application) (#451, #452) _Thanks @StendProg and @robokamran_
 * New `Plot.PlotVectorField()` method for displaying vector fields (sometimes called quiver plots) (#438, #439, #440) _Thanks @Benny121221 and @hhubschle_
