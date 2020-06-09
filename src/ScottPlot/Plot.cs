@@ -12,7 +12,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Linq;
-using System.Reflection;
+using ScottPlot.Statistics;
 
 namespace ScottPlot
 {
@@ -788,6 +788,28 @@ namespace ScottPlot
 
             Add(plottable);
             return plottable;
+        }
+
+        [Obsolete("This method is experimental and may change in subsequent versions")]
+        public PlottableVectorField PlotVectorField(
+            Vector2[,] vectors,
+            double[] xs,
+            double[] ys,
+            string label = null,
+            Color? color = null,
+            Config.ColorMaps.Colormap colormap = null,
+            double scaleFactor = 1
+            )
+        {
+            if (!color.HasValue)
+            {
+                color = settings.GetNextColor();
+            }
+
+            var vectorField = new PlottableVectorField(vectors, xs, ys, label, color.Value, colormap, scaleFactor);
+
+            settings.plottables.Add(vectorField);
+            return vectorField;
         }
 
         public PlottableScatter PlotArrow(
@@ -2050,7 +2072,7 @@ namespace ScottPlot
                 settings.axes.y.min = sourcePlot.settings.axes.y.min;
                 settings.axes.y.max = sourcePlot.settings.axes.y.max;
             }
-            Resize();
+            TightenLayout();
         }
 
         // TODO: create a new Style()

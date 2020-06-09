@@ -19,10 +19,11 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
 
         private void LinkedPlots_Load(object sender, EventArgs e)
         {
-            int pointCount = 51;
+            Random rand = new Random(0);
+            int pointCount = 5000;
             double[] dataXs = DataGen.Consecutive(pointCount);
-            double[] dataSin = DataGen.Sin(pointCount);
-            double[] dataCos = DataGen.Cos(pointCount);
+            double[] dataSin = DataGen.NoisySin(rand, pointCount);
+            double[] dataCos = DataGen.NoisySin(rand, pointCount);
 
             formsPlot1.plt.PlotScatter(dataXs, dataSin);
             formsPlot1.Render();
@@ -34,13 +35,13 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
         private void formsPlot1_AxesChanged(object sender, EventArgs e)
         {
             formsPlot2.plt.MatchAxis(formsPlot1.plt);
-            formsPlot2.Render();
+            formsPlot2.Render(skipIfCurrentlyRendering: true, processEvents: cbProcessEvents.Checked);
         }
 
         private void formsPlot2_AxesChanged(object sender, EventArgs e)
         {
             formsPlot1.plt.MatchAxis(formsPlot2.plt);
-            formsPlot1.Render();
+            formsPlot1.Render(skipIfCurrentlyRendering: true, processEvents: cbProcessEvents.Checked);
         }
     }
 }

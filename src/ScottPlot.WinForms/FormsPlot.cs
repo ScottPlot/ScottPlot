@@ -1,8 +1,8 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Diagnostics;
-using System.ComponentModel;
 
 namespace ScottPlot
 {
@@ -91,7 +91,7 @@ namespace ScottPlot
         }
 
         private bool currentlyRendering;
-        public void Render(bool skipIfCurrentlyRendering = false, bool lowQuality = false, bool recalculateLayout = false)
+        public void Render(bool skipIfCurrentlyRendering = false, bool lowQuality = false, bool recalculateLayout = false, bool processEvents = false)
         {
             if (isDesignerMode)
                 return;
@@ -106,7 +106,7 @@ namespace ScottPlot
             {
                 currentlyRendering = true;
                 pbPlot.Image = plt?.GetBitmap(true, lowQuality);
-                if (isPanningOrZooming || isMovingDraggable)
+                if (isPanningOrZooming || isMovingDraggable || processEvents)
                     Application.DoEvents();
                 currentlyRendering = false;
                 Rendered?.Invoke(this, EventArgs.Empty);
