@@ -15,24 +15,17 @@ namespace ScottPlot.Demo.PlotTypes
 
             public void Render(Plot plt)
             {
-                double[] xs = Enumerable.Range(-5, 11).Select(i => (double)i).ToArray();
-                double[] ys = Enumerable.Range(-5, 11).Select(i => (double)i).ToArray();
-                Vector2[,] vectors = new Vector2[xs.Length, ys.Length];
+                double[] xPositions = DataGen.Range(0, 10, .5);
+                double[] yPositions = DataGen.Range(0, 10, .5);
+                Vector2[,] vectors = new Vector2[xPositions.Length, yPositions.Length];
 
-                for (int i = 0; i < xs.Length; i++)
-                {
-                    for (int j = 0; j < ys.Length; j++)
-                    {
-                        double slope = 2 * xs[i];
-                        double magnitude = 1;
-                        double angle = Math.Atan(slope);
+                for (int x = 0; x < xPositions.Length; x++)
+                    for (int y = 0; y < yPositions.Length; y++)
+                        vectors[x, y] = new Vector2(
+                            x: (float)Math.Sin(xPositions[x]),
+                            y: (float)Math.Sin(yPositions[y]));
 
-                        vectors[i, j] = new Vector2((float)(Math.Cos(angle) * magnitude), (float)(Math.Sin(angle) * magnitude));
-                    }
-                }
-
-                plt.PlotVectorField(vectors, xs, ys);
-                plt.Title("Slope Field for y = x^2");
+                plt.PlotVectorField(vectors, xPositions, yPositions);
             }
         }
 
