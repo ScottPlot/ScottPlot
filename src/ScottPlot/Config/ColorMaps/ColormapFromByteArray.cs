@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ScottPlot.Config.ColorMaps
 {
-    abstract class ColormapFromByteArray : Colormap
+    public abstract class ColormapFromByteArray : Colormap
     {
         public override byte[,] IntenstitiesToRGB(double[] intensities)
         {

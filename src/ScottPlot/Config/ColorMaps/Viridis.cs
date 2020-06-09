@@ -4,7 +4,7 @@
 
 namespace ScottPlot.Config.ColorMaps
 {
-    class Viridis : ColormapFromByteArray
+    public class Viridis : ColormapFromByteArray
     {
         protected override byte[,] cmap { get { return cmaplocal; } }
 

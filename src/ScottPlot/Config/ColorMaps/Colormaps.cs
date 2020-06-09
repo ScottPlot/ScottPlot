@@ -6,6 +6,7 @@ namespace ScottPlot.Config.ColorMaps
 {
     public enum Colormaps
     {
+        none,
         grayscale,
         grayscaleInverted,
         viridis,

@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 
+#pragma warning disable CS0618 // Type or member is obsolete
 namespace ScottPlot.Demo.Experimental
 {
     public static class Heatmap
