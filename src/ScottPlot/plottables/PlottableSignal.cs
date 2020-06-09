@@ -30,7 +30,7 @@ namespace ScottPlot
         public LineStyle lineStyle;
         public bool useParallel = true;
 
-        public PlottableSignal(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, Color[] colorByDensity, int maxRenderIndex, LineStyle lineStyle)
+        public PlottableSignal(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, Color[] colorByDensity, int maxRenderIndex, LineStyle lineStyle, bool useParallel)
         {
             if (ys == null)
                 throw new Exception("Y data cannot be null");
@@ -48,6 +48,7 @@ namespace ScottPlot
                 throw new ArgumentException("maxRenderIndex must be a valid index for ys[]");
             this.maxRenderIndex = maxRenderIndex;
             this.lineStyle = lineStyle;
+            this.useParallel = useParallel;
             brush = new SolidBrush(color);
             penLD = GDI.Pen(color, (float)lineWidth, lineStyle, true);
             penHD = GDI.Pen(color, (float)lineWidth, LineStyle.Solid, true);
