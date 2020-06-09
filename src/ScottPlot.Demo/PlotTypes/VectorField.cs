@@ -15,8 +15,8 @@ namespace ScottPlot.Demo.PlotTypes
 
             public void Render(Plot plt)
             {
-                double[] xPositions = DataGen.Range(0, 10, .5);
-                double[] yPositions = DataGen.Range(0, 10, .5);
+                double[] xPositions = DataGen.Range(0, 10);
+                double[] yPositions = DataGen.Range(0, 10);
                 Vector2[,] vectors = new Vector2[xPositions.Length, yPositions.Length];
 
                 for (int x = 0; x < xPositions.Length; x++)
@@ -31,13 +31,13 @@ namespace ScottPlot.Demo.PlotTypes
 
         public class WithChangeingMagnitude : PlotDemo, IPlotDemo
         {
-            public string name { get; } = "Changing Magnitude";
-            public string description { get; } = "A vector field can be useful to show data explained by differential equations";
+            public string name { get; } = "Angle and Magnitude";
+            public string description { get; } = "This example demonstrates how to define vectors according to a given angle and magnitude.";
 
             public void Render(Plot plt)
             {
-                double[] xs = Enumerable.Range(-5, 11).Select(i => (double)i).ToArray();
-                double[] ys = Enumerable.Range(-5, 11).Select(i => (double)i).ToArray();
+                double[] xs = DataGen.Range(-5, 6);
+                double[] ys = DataGen.Range(-5, 6);
                 Vector2[,] vectors = new Vector2[xs.Length, ys.Length];
 
                 for (int i = 0; i < xs.Length; i++)
@@ -58,13 +58,13 @@ namespace ScottPlot.Demo.PlotTypes
 
         public class Pendulum : PlotDemo, IPlotDemo
         {
-            public string name { get; } = "Pendulum Example";
-            public string description { get; } = "A vector field can be useful to show data explained by differential equations";
+            public string name { get; } = "Custom Colormap";
+            public string description { get; } = "A colormap can be supplied to color arrows according to their magnitude";
 
             public void Render(Plot plt)
             {
-                double[] xs = Enumerable.Range(-10, 20).Select(i => (double)i / 2).ToArray();
-                double[] ys = Enumerable.Range(-10, 20).Select(i => (double)i / 2).ToArray();
+                double[] xs = DataGen.Range(-5, 5, .5);
+                double[] ys = DataGen.Range(-5, 5, .5);
                 Vector2[,] vectors = new Vector2[xs.Length, ys.Length];
                 double r = 0.5;
 
@@ -86,47 +86,15 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class ScaledPendulum : PlotDemo, IPlotDemo
+        public class CustomScaleFactor : PlotDemo, IPlotDemo
         {
-            public string name { get; } = "Scale Factor Example";
-            public string description { get; } = "Sometimes it can be useful to shrink or enlarge the arrows";
+            public string name { get; } = "Custom Scale Factor";
+            public string description { get; } = "A custom scale factor can adjust the length of the arrows.";
 
             public void Render(Plot plt)
             {
-                double[] xs = Enumerable.Range(-10, 20).Select(i => (double)i / 2).ToArray();
-                double[] ys = Enumerable.Range(-10, 20).Select(i => (double)i / 2).ToArray();
-                Vector2[,] vectors = new Vector2[xs.Length, ys.Length];
-                double r = 0.5;
-
-
-                for (int i = 0; i < xs.Length; i++)
-                {
-                    for (int j = 0; j < ys.Length; j++)
-                    {
-                        double x = ys[j];
-                        double y = -9.81 / r * Math.Sin(xs[i]);
-
-                        vectors[i, j] = new Vector2((float)x, (float)y);
-                    }
-                }
-
-                plt.PlotVectorField(vectors, xs, ys, colormap: new Config.ColorMaps.Turbo(), scaleFactor: 1.3);
-                plt.XLabel("θ");
-                plt.YLabel("dθ/dt");
-            }
-        }
-
-        public class AnotherExample : PlotDemo, IPlotDemo
-        {
-            public string name { get; } = "Another Example";
-            public string description { get; } = "A vector field can be useful to show data explained by differential equations";
-
-            public void Render(Plot plt)
-            {
-                //Thank you to https://github.com/hhubschle
-
-                double[] xs = Enumerable.Range(-6, 12).Select(i => (double)i / 4).ToArray();
-                double[] ys = Enumerable.Range(-6, 12).Select(i => (double)i / 4).ToArray();
+                double[] xs = DataGen.Range(-1.5, 1.5, .25);
+                double[] ys = DataGen.Range(-1.5, 1.5, .25);
                 Vector2[,] vectors = new Vector2[xs.Length, ys.Length];
 
                 for (int i = 0; i < xs.Length; i++)
