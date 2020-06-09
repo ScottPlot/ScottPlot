@@ -10,6 +10,7 @@ using ScottPlot.Statistics;
 
 namespace ScottPlot
 {
+#pragma warning disable CS0618 // Type or member is obsolete
     public class PlottableVectorField : Plottable
     {
         public Vector2[,] vectors;
