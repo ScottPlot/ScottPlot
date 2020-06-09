@@ -4,6 +4,7 @@ using System.Text;
 
 namespace ScottPlot.Config.ColorMaps
 {
+    [Obsolete("This class is experimental and may change in subsequent versions")]
     public abstract class Colormap
     {
         public abstract byte[,] IntenstitiesToRGB(double[] intensities);

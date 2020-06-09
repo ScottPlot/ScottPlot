@@ -5,6 +5,7 @@ using System.Text;
 
 namespace ScottPlot.Config.ColorMaps
 {
+    #pragma warning disable CS0618 // Type or member is obsolete
     public class Grayscale : Colormap
     {
         public override int[] IntensitiesToARGB(double[] intensities)
