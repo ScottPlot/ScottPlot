@@ -113,6 +113,7 @@ namespace ScottPlot.Demo.Experimental
 
                 //Standard Deviation of 12
                 double[,] intensities = Tools.XYToIntensities(Tools.IntensityMode.gaussian, xs, ys, 50, 50, 12);
+                //This function also supports densities (amount in a square of size n)
                 plt.PlotHeatmap(intensities);
             }
         }

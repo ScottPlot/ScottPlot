@@ -329,7 +329,7 @@ namespace ScottPlot
             density
         }
 
-        public static double[,] XYToIntensities(IntensityMode mode, int[] xs, int[] ys, int width, int height, int radius)
+        public static double[,] XYToIntensities(IntensityMode mode, int[] xs, int[] ys, int width, int height, int sampleSize)
         {
             double NormPDF(double x, double mu, double sigma)
             {
@@ -348,7 +348,43 @@ namespace ScottPlot
                         {
                             if (xs[i] + j > 0 && xs[i] + j < width && ys[i] + k > 0 && ys[i] + k < height)
                             {
-                                output[ys[i] + k, xs[i] + j] += NormPDF(Math.Sqrt(j * j + k * k), 0, radius);
+                                output[ys[i] + k, xs[i] + j] += NormPDF(Math.Sqrt(j * j + k * k), 0, sampleSize);
+                            }
+                        }
+                    }
+                }
+            }
+            else if (mode == IntensityMode.density)
+            {
+                (int x, int y)[] points = xs.Zip(ys, (x, y) => (x, y)).ToArray();
+                points = points.OrderBy(p => p.x).ToArray();
+                int[] xs_sorted = points.Select(p => p.x).ToArray();
+
+                for (int i = 0; i < height - height % sampleSize; i += sampleSize)
+                {
+                    for (int j = 0; j < width - width % sampleSize; j += sampleSize)
+                    {
+                        int count = 0;
+                        for (int k = 0; k < sampleSize; k++)
+                        {
+                            for (int l = 0; l < sampleSize; l++)
+                            {
+                                int index = Array.BinarySearch(xs_sorted, j + l);
+                                if (index > 0)
+                                {
+                                    if (points[index].y == i + k)
+                                    {
+                                        count++;
+                                    }
+                                }
+                            }
+                        }
+
+                        for (int k = 0; k < sampleSize; k++)
+                        {
+                            for (int l = 0; l < sampleSize; l++)
+                            {
+                                output[i + k, j + l] = count;
                             }
                         }
                     }
