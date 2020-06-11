@@ -27,6 +27,7 @@ namespace ScottPlot
         private double[] axisMultipliers;
         private double? scaleMin;
         private double? scaleMax;
+        private double? transparencyThreshold;
 
         private Bitmap bmp;
         private Bitmap scale;
@@ -35,7 +36,7 @@ namespace ScottPlot
         private SolidBrush brush;
         private Pen pen;
 
-        public PlottableHeatmap(double[,] intensities, Config.ColorMaps.Colormaps colorMap, string label, double[] axisOffsets, double[] axisMultipliers, double? scaleMin, double? scaleMax)
+        public PlottableHeatmap(double[,] intensities, Config.ColorMaps.Colormaps colorMap, string label, double[] axisOffsets, double[] axisMultipliers, double? scaleMin, double? scaleMax, double? transparencyThreshold)
         {
             this.width = intensities.GetLength(1);
             this.height = intensities.GetLength(0);
@@ -51,15 +52,33 @@ namespace ScottPlot
             this.scaleMin = scaleMin;
             this.scaleMax = scaleMax;
 
+            double normalizeMin = min;
+            double normalizeMax = max;
 
-            this.intensitiesNormalized = Normalize(intensitiesFlattened, scaleMin, scaleMax);
+            if (scaleMin.HasValue && scaleMin.Value < min)
+            {
+                normalizeMin = scaleMin.Value;
+            }
+
+            if (scaleMax.HasValue && scaleMax.Value > max)
+            {
+                normalizeMin = scaleMax.Value;
+            }
+
+            if (transparencyThreshold.HasValue)
+            {
+                this.transparencyThreshold = Normalize(new double[] { transparencyThreshold.Value }, min, max, scaleMin, scaleMax)[0];
+            }
+
+
+            this.intensitiesNormalized = Normalize(intensitiesFlattened, null, null, scaleMin, scaleMax);
 
             int[] flatARGB = IntensityToColor(this.intensitiesNormalized, colorMap);
 
             bmp = new Bitmap(width, height, PixelFormat.Format32bppArgb);
             scale = new Bitmap(1, 256, PixelFormat.Format32bppArgb);
 
-            int[] scaleRGBA = IntensityToColor(Normalize(Enumerable.Range(0, scale.Height).Select(i => (double)i).Reverse().ToArray(), scaleMin, scaleMax), colorMap);
+            int[] scaleRGBA = IntensityToColor(Normalize(Enumerable.Range(0, scale.Height).Select(i => (double)i).Reverse().ToArray(), null, null, scaleMin, scaleMax), colorMap);
 
             Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
             Rectangle rectScale = new Rectangle(0, 0, scale.Width, scale.Height);
@@ -72,10 +91,10 @@ namespace ScottPlot
             scale.UnlockBits(scaleBmpData);
         }
 
-        private double[] Normalize(double[] input, double? scaleMin = null, double? scaleMax = null)
+        private double[] Normalize(double[] input, double? min = null, double? max = null, double? scaleMin = null, double? scaleMax = null)
         {
-            double min = input.Min();
-            double max = input.Max();
+            min = min ?? input.Min();
+            max = max ?? input.Max();
 
             if (scaleMin.HasValue && scaleMin.Value < min)
             {
@@ -87,16 +106,16 @@ namespace ScottPlot
                 max = scaleMax.Value;
             }
 
-            double[] normalized = input.AsParallel().AsOrdered().Select(i => (i - min) / (max - min)).ToArray();
+            double[] normalized = input.AsParallel().AsOrdered().Select(i => (i - min.Value) / (max.Value - min.Value)).ToArray();
             if (scaleMin.HasValue)
             {
-                double threshold = (scaleMin.Value - min) / (max - min);
+                double threshold = (scaleMin.Value - min.Value) / (max.Value - min.Value);
                 normalized = normalized.AsParallel().AsOrdered().Select(i => i < threshold ? threshold : i).ToArray();
             }
 
             if (scaleMax.HasValue)
             {
-                double threshold = (scaleMax.Value - min) / (max - min);
+                double threshold = (scaleMax.Value - min.Value) / (max.Value - min.Value);
                 normalized = normalized.AsParallel().AsOrdered().Select(i => i > threshold ? threshold : i).ToArray();
             }
 
@@ -135,19 +154,19 @@ namespace ScottPlot
             switch (colorMap)
             {
                 case Config.ColorMaps.Colormaps.grayscale:
-                    return new Config.ColorMaps.Grayscale().IntensitiesToARGB(intensities);
+                    return new Config.ColorMaps.Grayscale().IntensitiesToARGB(intensities, transparencyThreshold);
                 case Config.ColorMaps.Colormaps.grayscaleInverted:
-                    return new Config.ColorMaps.GrayscaleInverted().IntensitiesToARGB(intensities);
+                    return new Config.ColorMaps.GrayscaleInverted().IntensitiesToARGB(intensities, transparencyThreshold);
                 case Config.ColorMaps.Colormaps.viridis:
-                    return new Config.ColorMaps.Viridis().IntensitiesToARGB(intensities);
+                    return new Config.ColorMaps.Viridis().IntensitiesToARGB(intensities, transparencyThreshold);
                 case Config.ColorMaps.Colormaps.magma:
-                    return new Config.ColorMaps.Magma().IntensitiesToARGB(intensities);
+                    return new Config.ColorMaps.Magma().IntensitiesToARGB(intensities, transparencyThreshold);
                 case Config.ColorMaps.Colormaps.inferno:
-                    return new Config.ColorMaps.Inferno().IntensitiesToARGB(intensities);
+                    return new Config.ColorMaps.Inferno().IntensitiesToARGB(intensities, transparencyThreshold);
                 case Config.ColorMaps.Colormaps.plasma:
-                    return new Config.ColorMaps.Plasma().IntensitiesToARGB(intensities);
+                    return new Config.ColorMaps.Plasma().IntensitiesToARGB(intensities, transparencyThreshold);
                 case Config.ColorMaps.Colormaps.turbo:
-                    return new Config.ColorMaps.Turbo().IntensitiesToARGB(intensities);
+                    return new Config.ColorMaps.Turbo().IntensitiesToARGB(intensities, transparencyThreshold);
                 default:
                     throw new ArgumentException("Colormap not supported");
             }

@@ -8,10 +8,10 @@ namespace ScottPlot.Config.ColorMaps
 #pragma warning disable CS0618 // Type or member is obsolete
     public class GrayscaleInverted : Colormap
     {
-        public override int[] IntensitiesToARGB(double[] intensities)
+        public override int[] IntensitiesToARGB(double[] intensities, double? transparencyThreshold = null)
         {
             Grayscale grayscale = new Grayscale();
-            return grayscale.IntensitiesToARGB(intensities.AsParallel().AsOrdered().Select(i => 1 - i).ToArray());
+            return grayscale.IntensitiesToARGB(intensities.AsParallel().AsOrdered().Select(i => 1 - i).ToArray(), transparencyThreshold);
         }
 
         public override byte[,] IntenstitiesToRGB(double[] intensities)

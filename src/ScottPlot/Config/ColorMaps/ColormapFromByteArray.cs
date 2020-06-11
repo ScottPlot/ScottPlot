@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 
 namespace ScottPlot.Config.ColorMaps
@@ -21,9 +22,9 @@ namespace ScottPlot.Config.ColorMaps
             return output;
         }
 
-        public override int[] IntensitiesToARGB(double[] intensities)
+        public override int[] IntensitiesToARGB(double[] intensities, double? transparencyThreshold = null)
         {
-            return intensities.AsParallel().AsOrdered().Select(i => RGBToARGB(new byte[] { cmap[(int)(i * 255), 0], cmap[(int)(i * 255), 1], cmap[(int)(i * 255), 2] })).ToArray();
+            return intensities.AsParallel().AsOrdered().Select(i => i < (transparencyThreshold ?? double.NegativeInfinity) ? unchecked((int)0x00000000) : RGBToARGB(new byte[] { cmap[(int)(i * 255), 0], cmap[(int)(i * 255), 1], cmap[(int)(i * 255), 2] })).ToArray();
         }
 
         protected abstract byte[,] cmap { get; }

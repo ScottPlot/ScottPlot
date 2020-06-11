@@ -8,9 +8,9 @@ namespace ScottPlot.Config.ColorMaps
 #pragma warning disable CS0618 // Type or member is obsolete
     public class Grayscale : Colormap
     {
-        public override int[] IntensitiesToARGB(double[] intensities)
+        public override int[] IntensitiesToARGB(double[] intensities, double? transparencyThreshold = null)
         {
-            return intensities.AsParallel().AsOrdered().Select(i => RGBToARGB(new byte[] { (byte)(255 * i), (byte)(255 * i), (byte)(255 * i) })).ToArray();
+            return intensities.AsParallel().AsOrdered().Select(i => i < (transparencyThreshold ?? double.NegativeInfinity) ? unchecked((int)0x00000000) : RGBToARGB(new byte[] { (byte)(255 * i), (byte)(255 * i), (byte)(255 * i) })).ToArray();
         }
 
         public override byte[,] IntenstitiesToRGB(double[] intensities)

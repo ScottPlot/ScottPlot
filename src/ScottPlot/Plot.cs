@@ -586,7 +586,8 @@ namespace ScottPlot
             double[] axisOffsets = null,
             double[] axisMultipliers = null,
             double? scaleMin = null,
-            double? scaleMax = null
+            double? scaleMax = null,
+            double? transparencyThreshold = null
             )
         {
             if (axisOffsets == null)
@@ -599,7 +600,7 @@ namespace ScottPlot
                 axisMultipliers = new double[] { 1, 1 };
             }
 
-            PlottableHeatmap heatmap = new PlottableHeatmap(intensities, colorMap, label, axisOffsets, axisMultipliers, scaleMin, scaleMax);
+            PlottableHeatmap heatmap = new PlottableHeatmap(intensities, colorMap, label, axisOffsets, axisMultipliers, scaleMin, scaleMax, transparencyThreshold);
             settings.plottables.Add(heatmap);
             MatchAxis(this);
             Ticks(false, false); //I think we need to sort out our own labelling with System.Drawing
