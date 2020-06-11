@@ -73,6 +73,33 @@ namespace ScottPlot.Demo.Experimental
             }
         }
 
+        public class HeatmapCustomScale : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Custom Scale";
+            public string description { get; } = "Heatmaps have a lot of customization options";
+
+            public void Render(Plot plt)
+            {
+                Random rand = new Random();
+                int[] xs = Enumerable.Range(0, 100).ToArray();
+                int[] ys = Enumerable.Range(0, 100).ToArray();
+
+                double[,] intensities = new double[ys.Length, xs.Length];
+
+                for (int i = 0; i < ys.Length; i++)
+                {
+                    for (int j = 0; j < xs.Length; j++)
+                    {
+                        intensities[i, j] = (Math.Sin(i * .2) + Math.Cos(j * .2)) * 100;
+                    }
+                }
+
+                //You'll notice these are the same settings as the previous demo, except the axis scale is noticably different
+                plt.PlotHeatmap(intensities, Config.ColorMaps.Colormaps.turbo, axisOffsets: new double[] { -5, -5 }, axisMultipliers: new double[] { 10, 10 }, scaleMin: -150, scaleMax: 300);
+            }
+
+        }
+
         public class HeatmapImage : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Heatmap Image";
