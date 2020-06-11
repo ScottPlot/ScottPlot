@@ -329,7 +329,7 @@ namespace ScottPlot
             density
         }
 
-        public static double[,] XYToIntensities(IntensityMode mode, int[] xs, int[] ys, int width, int height, int sampleSize)
+        public static double[,] XYToIntensities(IntensityMode mode, int[] xs, int[] ys, int width, int height, int sampleWidth)
         {
             double NormPDF(double x, double mu, double sigma)
             {
@@ -348,7 +348,7 @@ namespace ScottPlot
                         {
                             if (xs[i] + j > 0 && xs[i] + j < width && ys[i] + k > 0 && ys[i] + k < height)
                             {
-                                output[ys[i] + k, xs[i] + j] += NormPDF(Math.Sqrt(j * j + k * k), 0, sampleSize);
+                                output[ys[i] + k, xs[i] + j] += NormPDF(Math.Sqrt(j * j + k * k), 0, sampleWidth);
                             }
                         }
                     }
@@ -360,14 +360,14 @@ namespace ScottPlot
                 points = points.OrderBy(p => p.x).ToArray();
                 int[] xs_sorted = points.Select(p => p.x).ToArray();
 
-                for (int i = 0; i < height - height % sampleSize; i += sampleSize)
+                for (int i = 0; i < height - height % sampleWidth; i += sampleWidth)
                 {
-                    for (int j = 0; j < width - width % sampleSize; j += sampleSize)
+                    for (int j = 0; j < width - width % sampleWidth; j += sampleWidth)
                     {
                         int count = 0;
-                        for (int k = 0; k < sampleSize; k++)
+                        for (int k = 0; k < sampleWidth; k++)
                         {
-                            for (int l = 0; l < sampleSize; l++)
+                            for (int l = 0; l < sampleWidth; l++)
                             {
                                 int index = Array.BinarySearch(xs_sorted, j + l);
                                 if (index > 0)
@@ -380,9 +380,9 @@ namespace ScottPlot
                             }
                         }
 
-                        for (int k = 0; k < sampleSize; k++)
+                        for (int k = 0; k < sampleWidth; k++)
                         {
-                            for (int l = 0; l < sampleSize; l++)
+                            for (int l = 0; l < sampleWidth; l++)
                             {
                                 output[i + k, j + l] = count;
                             }
