@@ -30,6 +30,7 @@ namespace ScottPlot
         private double? transparencyThreshold;
         private Bitmap backgroundImage;
         private bool displayImageAbove;
+        private bool drawAxisLabels;
 
         private Bitmap bmp;
         private Bitmap scale;
@@ -38,7 +39,7 @@ namespace ScottPlot
         private SolidBrush brush;
         private Pen pen;
 
-        public PlottableHeatmap(double[,] intensities, Config.ColorMaps.Colormaps colorMap, string label, double[] axisOffsets, double[] axisMultipliers, double? scaleMin, double? scaleMax, double? transparencyThreshold, Bitmap backgroundImage, bool displayImageAbove)
+        public PlottableHeatmap(double[,] intensities, Config.ColorMaps.Colormaps colorMap, string label, double[] axisOffsets, double[] axisMultipliers, double? scaleMin, double? scaleMax, double? transparencyThreshold, Bitmap backgroundImage, bool displayImageAbove, bool drawAxisLabels)
         {
             this.width = intensities.GetLength(1);
             this.height = intensities.GetLength(0);
@@ -55,6 +56,7 @@ namespace ScottPlot
             this.scaleMax = scaleMax;
             this.backgroundImage = backgroundImage;
             this.displayImageAbove = displayImageAbove;
+            this.drawAxisLabels = drawAxisLabels;
 
             double normalizeMin = min;
             double normalizeMax = max;
@@ -145,7 +147,14 @@ namespace ScottPlot
 
         public override AxisLimits2D GetLimits()
         {
-            return new AxisLimits2D(-10, bmp.Width, -5, bmp.Height);
+            if (drawAxisLabels)
+            {
+                return new AxisLimits2D(-10, bmp.Width, -5, bmp.Height);
+            }
+            else
+            {
+                return new AxisLimits2D(-3, bmp.Width, -3, bmp.Height);
+            }
         }
 
         public override int GetPointCount()
@@ -191,7 +200,10 @@ namespace ScottPlot
                 settings.gfxData.DrawImage(backgroundImage, (float)settings.GetPixelX(0), (float)(settings.GetPixelY(0) - (height * minScale)), (float)(width * minScale), (float)(height * minScale));
             }
             RenderScale(settings);
-            RenderAxis(settings, minScale);
+            if (drawAxisLabels)
+            {
+                RenderAxis(settings, minScale);
+            }
             settings.gfxData.InterpolationMode = interpMode;
         }
 
