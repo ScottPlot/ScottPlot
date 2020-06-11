@@ -37,8 +37,8 @@ namespace ScottPlot
 
         public PlottableHeatmap(double[,] intensities, Config.ColorMaps.Colormaps colorMap, string label, double[] axisOffsets, double[] axisMultipliers, double? scaleMin, double? scaleMax)
         {
-            this.width = intensities.GetUpperBound(1) + 1;
-            this.height = intensities.GetUpperBound(0) + 1;
+            this.width = intensities.GetLength(1);
+            this.height = intensities.GetLength(0);
             double[] intensitiesFlattened = Flatten(intensities);
             this.min = intensitiesFlattened.Min();
             this.max = intensitiesFlattened.Max();
