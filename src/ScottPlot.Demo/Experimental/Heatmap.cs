@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -97,8 +98,25 @@ namespace ScottPlot.Demo.Experimental
                 //You'll notice these are the same settings as the previous demo, except the axis scale is noticably different
                 plt.PlotHeatmap(intensities, Config.ColorMaps.Colormaps.turbo, axisOffsets: new double[] { -5, -5 }, axisMultipliers: new double[] { 10, 10 }, scaleMin: -150, scaleMax: 300);
             }
-
         }
+        public class HeatmapFromXY : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Heatmap From XY Data";
+            public string description { get; } = "Useful for showing clusters of points";
+
+            public void Render(Plot plt)
+            {
+                Random rand = new Random();
+                // 1000 points on the interval [0, 49]
+                int[] xs = DataGen.RandomInts(rand, 1000, 50);
+                int[] ys = DataGen.RandomInts(rand, 1000, 50);
+
+                //Standard Deviation of 12
+                double[,] intensities = Tools.XYToIntensities(Tools.IntensityMode.gaussian, xs, ys, 50, 50, 12);
+                plt.PlotHeatmap(intensities);
+            }
+        }
+
 
         public class HeatmapImage : PlotDemo, IPlotDemo
         {

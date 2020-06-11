@@ -322,5 +322,40 @@ namespace ScottPlot
 
             return name;
         }
+
+        public enum IntensityMode
+        {
+            gaussian,
+            density
+        }
+
+        public static double[,] XYToIntensities(IntensityMode mode, int[] xs, int[] ys, int width, int height, int radius)
+        {
+            double NormPDF(double x, double mu, double sigma)
+            {
+                return (1 / (sigma * Math.Sqrt(2 * Math.PI))) * Math.Exp(-0.5 * (x - mu / sigma) * (x - mu / sigma));
+            }
+
+            double[,] output = new double[height, width];
+            if (mode == IntensityMode.gaussian)
+            {
+                for (int i = 0; i < xs.Length; i++)
+                {
+
+                    for (int j = -10; j < 10; j++)
+                    {
+                        for (int k = -10; k < 10; k++)
+                        {
+                            if (xs[i] + j > 0 && xs[i] + j < width && ys[i] + k > 0 && ys[i] + k < height)
+                            {
+                                output[ys[i] + k, xs[i] + j] += NormPDF(Math.Sqrt(j * j + k * k), 0, radius);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return output;
+        }
     }
 }
