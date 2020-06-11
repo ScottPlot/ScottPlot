@@ -342,9 +342,9 @@ namespace ScottPlot
                 for (int i = 0; i < xs.Length; i++)
                 {
 
-                    for (int j = -10; j < 10; j++)
+                    for (int j = -2 * sampleWidth; j < 2 * sampleWidth; j++) // 2 Standard deviations is ~0.95, i.e. close enough
                     {
-                        for (int k = -10; k < 10; k++)
+                        for (int k = -2 * sampleWidth; k < 2 * sampleWidth; k++)
                         {
                             if (xs[i] + j > 0 && xs[i] + j < width && ys[i] + k > 0 && ys[i] + k < height)
                             {
