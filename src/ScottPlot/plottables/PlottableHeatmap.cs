@@ -28,6 +28,8 @@ namespace ScottPlot
         private double? scaleMin;
         private double? scaleMax;
         private double? transparencyThreshold;
+        private Bitmap backgroundImage;
+        private bool displayImageAbove;
 
         private Bitmap bmp;
         private Bitmap scale;
@@ -36,7 +38,7 @@ namespace ScottPlot
         private SolidBrush brush;
         private Pen pen;
 
-        public PlottableHeatmap(double[,] intensities, Config.ColorMaps.Colormaps colorMap, string label, double[] axisOffsets, double[] axisMultipliers, double? scaleMin, double? scaleMax, double? transparencyThreshold)
+        public PlottableHeatmap(double[,] intensities, Config.ColorMaps.Colormaps colorMap, string label, double[] axisOffsets, double[] axisMultipliers, double? scaleMin, double? scaleMax, double? transparencyThreshold, Bitmap backgroundImage, bool displayImageAbove)
         {
             this.width = intensities.GetLength(1);
             this.height = intensities.GetLength(0);
@@ -51,6 +53,8 @@ namespace ScottPlot
             this.label = label;
             this.scaleMin = scaleMin;
             this.scaleMax = scaleMax;
+            this.backgroundImage = backgroundImage;
+            this.displayImageAbove = displayImageAbove;
 
             double normalizeMin = min;
             double normalizeMax = max;
@@ -177,7 +181,15 @@ namespace ScottPlot
             var interpMode = settings.gfxData.InterpolationMode;
             settings.gfxData.InterpolationMode = InterpolationMode.NearestNeighbor;
             double minScale = settings.xAxisScale < settings.yAxisScale ? settings.xAxisScale : settings.yAxisScale;
+            if (backgroundImage != null && !displayImageAbove)
+            {
+                settings.gfxData.DrawImage(backgroundImage, (float)settings.GetPixelX(0), (float)(settings.GetPixelY(0) - (height * minScale)), (float)(width * minScale), (float)(height * minScale));
+            }
             settings.gfxData.DrawImage(bmp, (float)settings.GetPixelX(0), (float)(settings.GetPixelY(0) - (height * minScale)), (float)(width * minScale), (float)(height * minScale));
+            if (backgroundImage != null && displayImageAbove)
+            {
+                settings.gfxData.DrawImage(backgroundImage, (float)settings.GetPixelX(0), (float)(settings.GetPixelY(0) - (height * minScale)), (float)(width * minScale), (float)(height * minScale));
+            }
             RenderScale(settings);
             RenderAxis(settings, minScale);
             settings.gfxData.InterpolationMode = interpMode;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using ScottPlot.Config.ColorMaps;
@@ -128,6 +129,23 @@ namespace ScottPlot.Demo.Experimental
             {
                 double[,] imageData = DataGen.SampleImageData();
                 plt.PlotHeatmap(imageData);
+            }
+        }
+
+        public class BackGroundImage : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Heatmap Background Image";
+            public string description { get; } = "You can add a background image if you feel like it.";
+
+            public void Render(Plot plt)
+            {
+                double[,] imageData = DataGen.SampleImageData();
+
+                //This could be applied more usefully to an image pertinent to the data
+                //For example a map of the world, if your data is about geographic phenomenon
+                Bitmap background = new Bitmap("Images/niceBackground.bmp");
+
+                plt.PlotHeatmap(imageData, transparencyThreshold: 20, backgroundImage: background);
             }
         }
     }
