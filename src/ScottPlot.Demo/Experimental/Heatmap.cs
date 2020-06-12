@@ -100,21 +100,38 @@ namespace ScottPlot.Demo.Experimental
                 plt.PlotHeatmap(intensities, Config.ColorMaps.Colormaps.turbo, axisOffsets: new double[] { -5, -5 }, axisMultipliers: new double[] { 10, 10 }, scaleMin: -150, scaleMax: 300);
             }
         }
-        public class HeatmapFromXY : PlotDemo, IPlotDemo
+        public class HeatmapFromXYGaussian : PlotDemo, IPlotDemo
         {
-            public string name { get; } = "Heatmap From XY Data";
+            public string name { get; } = "Heatmap From XY Data (Gaussian)";
             public string description { get; } = "Useful for showing clusters of points";
 
             public void Render(Plot plt)
             {
-                Random rand = new Random();
-                // 1000 points on the interval [0, 49]
-                int[] xs = DataGen.RandomInts(rand, 1000, 50);
-                int[] ys = DataGen.RandomInts(rand, 1000, 50);
+                Random rand = new Random(0);
+                //Some noisy data centred around the middle
+                int[] xs = DataGen.RandomNormal(rand, 10000, 25, 10).Select(x => (int)x).ToArray();
+                int[] ys = DataGen.RandomNormal(rand, 10000, 25, 10).Select(y => (int)y).ToArray();
 
-                //Standard Deviation of 12
-                double[,] intensities = Tools.XYToIntensities(Tools.IntensityMode.gaussian, xs, ys, 50, 50, 12);
-                //This function also supports densities (amount in a square of size n)
+                //Standard Deviation of 4
+                double[,] intensities = Tools.XYToIntensities(Tools.IntensityMode.gaussian, xs, ys, 50, 50, 4);
+                plt.PlotHeatmap(intensities);
+            }
+        }
+
+        public class HeatmapFromXYDensity : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Heatmap From XY Data (Density)";
+            public string description { get; } = "Useful for showing clusters of points";
+
+            public void Render(Plot plt)
+            {
+                Random rand = new Random(0);
+                //Some noisy data centred around the middle
+                int[] xs = DataGen.RandomNormal(rand, 10000, 25, 10).Select(x => (int)x).ToArray();
+                int[] ys = DataGen.RandomNormal(rand, 10000, 25, 10).Select(y => (int)y).ToArray();
+
+                //Each cell is a square with side-length of 4
+                double[,] intensities = Tools.XYToIntensities(Tools.IntensityMode.density, xs, ys, 50, 50, 4);
                 plt.PlotHeatmap(intensities);
             }
         }

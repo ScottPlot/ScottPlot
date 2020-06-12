@@ -372,9 +372,12 @@ namespace ScottPlot
                                 int index = Array.BinarySearch(xs_sorted, j + l);
                                 if (index > 0)
                                 {
-                                    if (points[index].y == i + k)
-                                    {
-                                        count++;
+                                    for (int m = index; m < xs.Length; m++)
+                                    { //Multiple points w/ same x value
+                                        if (points[m].x == j+ l && points[m].y == i + k)
+                                        {
+                                            count++;
+                                        }
                                     }
                                 }
                             }
