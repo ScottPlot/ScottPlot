@@ -15,13 +15,13 @@ using ScottPlot.Config;
 namespace ScottPlot
 {
 
-
+#pragma warning disable CS0618 // Type or member is obsolete
     public class PlottableHeatmap : Plottable
     {
         private int width;
         private int height;
         private double[] intensitiesNormalized;
-        private Config.ColorMaps.Colormaps colorMap;
+        private Config.ColorMaps.Colormap colorMap;
         public string label;
         private double[] axisOffsets;
         private double[] axisMultipliers;
@@ -39,7 +39,7 @@ namespace ScottPlot
         private SolidBrush brush;
         private Pen pen;
 
-        public PlottableHeatmap(double[,] intensities, Config.ColorMaps.Colormaps colorMap, string label, double[] axisOffsets, double[] axisMultipliers, double? scaleMin, double? scaleMax, double? transparencyThreshold, Bitmap backgroundImage, bool displayImageAbove, bool drawAxisLabels)
+        public PlottableHeatmap(double[,] intensities, Config.ColorMaps.Colormap colorMap, string label, double[] axisOffsets, double[] axisMultipliers, double? scaleMin, double? scaleMax, double? transparencyThreshold, Bitmap backgroundImage, bool displayImageAbove, bool drawAxisLabels)
         {
             this.width = intensities.GetLength(1);
             this.height = intensities.GetLength(0);
@@ -162,27 +162,9 @@ namespace ScottPlot
             return intensitiesNormalized.Length;
         }
 
-        private int[] IntensityToColor(double[] intensities, Config.ColorMaps.Colormaps colorMap)
+        private int[] IntensityToColor(double[] intensities, Config.ColorMaps.Colormap colorMap)
         {
-            switch (colorMap)
-            {
-                case Config.ColorMaps.Colormaps.grayscale:
-                    return new Config.ColorMaps.Grayscale().IntensitiesToARGB(intensities, transparencyThreshold);
-                case Config.ColorMaps.Colormaps.grayscaleInverted:
-                    return new Config.ColorMaps.GrayscaleInverted().IntensitiesToARGB(intensities, transparencyThreshold);
-                case Config.ColorMaps.Colormaps.viridis:
-                    return new Config.ColorMaps.Viridis().IntensitiesToARGB(intensities, transparencyThreshold);
-                case Config.ColorMaps.Colormaps.magma:
-                    return new Config.ColorMaps.Magma().IntensitiesToARGB(intensities, transparencyThreshold);
-                case Config.ColorMaps.Colormaps.inferno:
-                    return new Config.ColorMaps.Inferno().IntensitiesToARGB(intensities, transparencyThreshold);
-                case Config.ColorMaps.Colormaps.plasma:
-                    return new Config.ColorMaps.Plasma().IntensitiesToARGB(intensities, transparencyThreshold);
-                case Config.ColorMaps.Colormaps.turbo:
-                    return new Config.ColorMaps.Turbo().IntensitiesToARGB(intensities, transparencyThreshold);
-                default:
-                    throw new ArgumentException("Colormap not supported");
-            }
+            return colorMap.IntensitiesToARGB(intensities, transparencyThreshold);
         }
 
         public override void Render(Settings settings)
@@ -246,4 +228,5 @@ namespace ScottPlot
             return $"PlottableHeatmap{label} with {GetPointCount()} points";
         }
     }
+#pragma warning restore CS0618 // Type or member is obsolete
 }

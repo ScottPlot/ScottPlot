@@ -581,7 +581,7 @@ namespace ScottPlot
         [Obsolete("This method is experimental and may change in subsequent versions")]
         public PlottableHeatmap PlotHeatmap(
             double[,] intensities,
-            Config.ColorMaps.Colormaps colorMap = Config.ColorMaps.Colormaps.viridis,
+            Config.ColorMaps.Colormap colorMap = null,
             string label = null,
             double[] axisOffsets = null,
             double[] axisMultipliers = null,
@@ -593,6 +593,11 @@ namespace ScottPlot
             bool drawAxisLabels = true
             )
         {
+            if (colorMap == null)
+            {
+                colorMap = new Config.ColorMaps.Viridis();
+            }
+
             if (axisOffsets == null)
             {
                 axisOffsets = new double[] { 0, 0 };
