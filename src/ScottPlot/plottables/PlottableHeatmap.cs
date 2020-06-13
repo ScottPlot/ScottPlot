@@ -228,5 +228,4 @@ namespace ScottPlot
             return $"PlottableHeatmap{label} with {GetPointCount()} points";
         }
     }
-#pragma warning restore CS0618 // Type or member is obsolete
 }
