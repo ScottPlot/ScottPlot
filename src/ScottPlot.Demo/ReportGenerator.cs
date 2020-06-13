@@ -78,7 +78,15 @@ namespace ScottPlot.Demo
             }
             else
             {
-                var plt = new Plot(width, height);
+                Plot plt;
+                if (recipe.categoryMinor == "AllColormaps")
+                {
+                    plt = new Plot(width, 100);
+                }
+                else
+                {
+                    plt = new Plot(width, height);
+                }
                 recipe.Render(plt);
                 plt.SaveFig(imageFilePath);
             }
