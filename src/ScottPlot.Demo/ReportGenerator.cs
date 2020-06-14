@@ -79,7 +79,7 @@ namespace ScottPlot.Demo
             else
             {
                 Plot plt;
-                if (recipe.categoryMinor == "AllColormaps")
+                if (recipe.categoryMinor == "AllColormaps" || recipe.categoryMinor == "CustomColormap")
                 {
                     plt = new Plot(width, 100);
                 }
