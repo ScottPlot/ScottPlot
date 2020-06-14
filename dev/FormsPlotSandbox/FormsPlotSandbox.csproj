@@ -50,6 +50,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FormExperimentalTick.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormExperimentalTick.Designer.cs">
+      <DependentUpon>FormExperimentalTick.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormMouse.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -76,6 +82,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="FormExperimentalTick.resx">
+      <DependentUpon>FormExperimentalTick.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormMouse.resx">
       <DependentUpon>FormMouse.cs</DependentUpon>
     </EmbeddedResource>

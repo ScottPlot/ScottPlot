@@ -49,5 +49,10 @@ namespace FormsPlotSandbox
         {
             new FormMouse().ShowDialog();
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            new FormExperimentalTick().ShowDialog();
+        }
     }
 }
