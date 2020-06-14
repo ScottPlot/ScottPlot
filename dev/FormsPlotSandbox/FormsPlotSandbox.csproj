@@ -50,6 +50,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FormColormapGenerator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormColormapGenerator.Designer.cs">
+      <DependentUpon>FormColormapGenerator.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormExperimentalTick.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -82,6 +88,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="FormColormapGenerator.resx">
+      <DependentUpon>FormColormapGenerator.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormExperimentalTick.resx">
       <DependentUpon>FormExperimentalTick.cs</DependentUpon>
     </EmbeddedResource>
