@@ -304,7 +304,7 @@ namespace ScottPlot.Config
             List<double> majorTicksWithPadding = new List<double>();
             majorTicksWithPadding.Add(majorTicks[0] - majorTickSpacing);
             majorTicksWithPadding.AddRange(majorTicks);
-            
+
             List<double> minorTicks = new List<double>();
             foreach (var majorTickPosition in majorTicksWithPadding)
             {

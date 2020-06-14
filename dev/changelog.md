@@ -1,6 +1,6 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.0.36 ⚠️ _in active development_
+## ScottPlot 4.0.36 ⚠️&nbsp; _in active development_
 * `PlotSignal()` and `PlotSignalXY()` plots now have an optional `useParallel` argument (and public property on the objects they return) to allow the user to decide whether parallel or sequential calculations will be performed. (#454, #419, #245, #72) _Thanks @StendProg_
 * Improved minor tick alignment to prevent rare single-pixel artifacts (#417)
 * Improved horizontal axis tick label positions in ruler mode (#453)
