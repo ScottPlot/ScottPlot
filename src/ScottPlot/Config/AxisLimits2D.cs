@@ -106,7 +106,8 @@ namespace ScottPlot.Config
 
         public void ExpandX(AxisLimits2D source)
         {
-            ExpandX(source.x1, source.x2);
+            if (source != null)
+                ExpandX(source.x1, source.x2);
         }
 
         public void ExpandY(double y1, double y2)
@@ -130,7 +131,8 @@ namespace ScottPlot.Config
 
         public void ExpandY(AxisLimits2D source)
         {
-            ExpandY(source.y1, source.y2);
+            if (source != null)
+                ExpandY(source.y1, source.y2);
         }
 
         public void ExpandXY(double x1, double x2, double y1, double y2)
