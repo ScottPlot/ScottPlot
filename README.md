@@ -14,7 +14,7 @@
 
 The [ScottPlot website](http://swharden.com/scottplot/) contains documentation, tutorials, demos, and more...
 
-* **[ScottPlot Cookbook](http://swharden.com/scottplot/cookbook.md.html) 👈 START HERE**
+* **[ScottPlot Cookbook](http://swharden.com/scottplot/cookbook.md.html)&nbsp; 👈 START HERE**
 * [WPF Quickstart](http://swharden.com/scottplot/quickstart.md.html#wpf-quickstart)
 * [Windows Forms Quickstart](http://swharden.com/scottplot/quickstart.md.html#windows-forms-quickstart)
 * [Console Application Quickstart](http://swharden.com/scottplot/quickstart.md.html#console-quickstart)
@@ -38,7 +38,7 @@ ScottPlot is developed with the latest non-preview version of [Visual Studio Com
 
 To use the latest ScottPlot source code in your application, download this repository and add references in your project to `ScottPlot.csproj`, and one of `ScottPlot.WPF.csproj` or `ScottPlot.WinForms.csproj` (in the src folder). After adding the reference you may need to rebuild the solution before user controls appear in the toolbox.
 
-> ⚠️ The latest source code may contain partially-implemented or experimental functionality. Users desiring stable source code are encouraged to download ScottPlot from the [releases](https://github.com/swharden/ScottPlot/releases) page.
+> ⚠️&nbsp; The latest source code may contain partially-implemented or experimental functionality. Users desiring stable source code are encouraged to download ScottPlot from the [releases](https://github.com/swharden/ScottPlot/releases) page.
 
 ### Contribute to ScottPlot
 
