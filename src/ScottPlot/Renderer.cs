@@ -303,7 +303,7 @@ namespace ScottPlot
                 {
                     settings.gfxFigure.DrawLine(pen, (float)xPx, (float)yPx, (float)xPx, (float)yPx + settings.ticks.size + settings.ticks.font.Height);
                     if (settings.ticks.displayXlabels)
-                        settings.gfxFigure.DrawString(text, settings.ticks.font, brush, (float)xPx, (float)yPx + settings.ticks.size, settings.misc.sfNorthWest);
+                        settings.gfxFigure.DrawString(text, settings.ticks.font, brush, (float)xPx, (float)yPx + settings.ticks.size / 2, settings.misc.sfNorthWest);
                 }
                 else
                 {
