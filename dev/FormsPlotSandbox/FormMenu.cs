@@ -54,10 +54,5 @@ namespace FormsPlotSandbox
         {
             new FormExperimentalTick().ShowDialog();
         }
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            new FormColormapGenerator().ShowDialog();
-        }
     }
 }
