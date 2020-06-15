@@ -1089,7 +1089,7 @@ namespace ScottPlot
 
             settings.plottables.Add(barPlot);
 
-            if (autoAxis)
+            if (autoAxis && !ys.Where(y => y < 0).Any())
             {
                 AxisAuto();
                 if (horizontal)
@@ -1132,14 +1132,21 @@ namespace ScottPlot
             int seriesCount = ys.Length;
             double barWidth = groupWidthFraction / seriesCount;
             PlottableBar[] bars = new PlottableBar[seriesCount];
+            bool containsNegativeY = false;
             for (int i = 0; i < seriesCount; i++)
             {
                 double offset = i * barWidth;
                 double[] barYs = ys[i];
                 double[] barYerr = yErr?[i];
                 double[] barXs = DataGen.Consecutive(barYs.Length);
+                containsNegativeY = containsNegativeY ? containsNegativeY : barYs.Where(y => y < 0).Any();
                 bars[i] = PlotBar(barXs, barYs, barYerr, seriesLabels[i], barWidth * barWidthFraction, offset,
                     errorCapSize: errorCapSize, showValues: showValues);
+            }
+
+            if (containsNegativeY)
+            {
+                AxisAuto();
             }
             XTicks(DataGen.Consecutive(groupLabels.Length, offset: (groupWidthFraction - barWidth) / 2), groupLabels);
 

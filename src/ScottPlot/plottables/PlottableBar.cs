@@ -145,8 +145,8 @@ namespace ScottPlot
 
             if (errorPen.Width > 0 && valueError > 0)
             {
-                double error1 = value2 - Math.Abs(valueError);
-                double error2 = value2 + Math.Abs(valueError);
+                double error1 = value > 0 ? value2 - Math.Abs(valueError) : value1 - Math.Abs(valueError);
+                double error2 = value > 0 ? value2 + Math.Abs(valueError) : value1 + Math.Abs(valueError);
 
                 float capPx1 = (float)settings.GetPixelX(position - errorCapSize * barWidth / 2);
                 float capPx2 = (float)settings.GetPixelX(position + errorCapSize * barWidth / 2);
