@@ -17,7 +17,7 @@ ScottPlot is made better by contributions from the open-source community!
 
 ## Fix a Bug or Add a Small Feature
 * Open a new GitHub pull request with the patch
-* ⚠️&nbsp; To make your change easy to review, only modify the minimum number of lines/files necessary to implement the change
+* ⚠️ To make your change easy to review, only modify the minimum number of lines/files necessary to implement the change
 * If you are considering make a large change, create an issue first so the authors may suggest ideal implementation
 * You don't have to create an issue if the bug is sufficiently described in the pull request
 
@@ -35,14 +35,14 @@ dotnet format
 
 **For minimal changes** (e.g., additional styling options) modify the Plottable object source code directly, but consider these points:
   * Add public properties which control the new behavior
-  * ⚠️&nbsp; Do not change constructor arguments of existing plottables\
+  * ⚠️ Do not change constructor arguments of existing plottables\
   _the goal is to avoid changing code in the Plot module_
   * Create a new test (similar to step 2 below) demonstrating this new behavior by instantiating the Plottable, assigning to the new public properties you created, and displaying the output.
   * Make a pull request
 
 ## Create a New Plottable Object
 
-💡&nbsp; **You can create a new Plottable _without modifying any code in the ScottPlot module!_** By writing code only inside 2 new files in the tests folder, new plottables become easier to write, easier to review, and have no risk of breaking anything in ScottPlot.
+💡 **You can create a new Plottable _without modifying any code in the ScottPlot module!_** By writing code only inside 2 new files in the tests folder, new plottables become easier to write, easier to review, and have no risk of breaking anything in ScottPlot.
 
 * **Step 1:** Create a new `PlottableSomething` in `/tests/PlotTypes/PlottableSomething.cs`\
 _Your plottable will inherit from `ScottPlot.Plottable`.\
