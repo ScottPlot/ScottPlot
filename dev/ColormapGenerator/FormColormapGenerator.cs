@@ -47,42 +47,27 @@ namespace ColormapGenerator
         private void tbBlue5_Scroll(object sender, EventArgs e) => Replot();
         private void tbBlue6_Scroll(object sender, EventArgs e) => Replot();
 
-        private void InterpolateCos(double[] fullCurve, int x1, int x2, double y1, double y2)
-        {
-            int distance = x2 - x1;
-            for (int i = 0; i < distance; i++)
-            {
-                double muLinear = (double)i / distance;
-                double muCos = (1 - Math.Cos(muLinear * Math.PI)) / 2;
-                fullCurve[x1 + i] = (y1 * (1 - muCos) + y2 * muCos);
-            }
-        }
-
         int[] colormap = new int[255];
         private void Replot()
         {
             formsPlot1.plt.Clear();
 
-            int[] xs = { 0, 51, 102, 153, 204, 255 };
-            int[] redYs = { tbRed1.Value, tbRed2.Value, tbRed3.Value, tbRed4.Value, tbRed5.Value, tbRed6.Value };
-            int[] greenYs = { tbGreen1.Value, tbGreen2.Value, tbGreen3.Value, tbGreen4.Value, tbGreen5.Value, tbGreen6.Value };
-            int[] blueYs = { tbBlue1.Value, tbBlue2.Value, tbBlue3.Value, tbBlue4.Value, tbBlue5.Value, tbBlue6.Value };
+            double[] xs = { 0, 51, 102, 153, 204, 255 };
+            double[] redYs = { tbRed1.Value, tbRed2.Value, tbRed3.Value, tbRed4.Value, tbRed5.Value, tbRed6.Value };
+            double[] greenYs = { tbGreen1.Value, tbGreen2.Value, tbGreen3.Value, tbGreen4.Value, tbGreen5.Value, tbGreen6.Value };
+            double[] blueYs = { tbBlue1.Value, tbBlue2.Value, tbBlue3.Value, tbBlue4.Value, tbBlue5.Value, tbBlue6.Value };
 
-            double[] xsCurve = ScottPlot.DataGen.Consecutive(255);
-            double[] redCurve = new double[255];
-            double[] greenCurve = new double[255];
-            double[] blueCurve = new double[255];
+            int resolution = 51;
+            var redInterp = new ScottPlot.Statistics.Interpolation.NaturalSpline(xs, redYs, resolution);
+            var greenInterp = new ScottPlot.Statistics.Interpolation.NaturalSpline(xs, greenYs, resolution);
+            var blueInterp = new ScottPlot.Statistics.Interpolation.NaturalSpline(xs, blueYs, resolution);
 
-            for (int splineIndex = 0; splineIndex < xs.Length - 1; splineIndex++)
-            {
-                int x1 = xs[splineIndex];
-                int x2 = xs[splineIndex + 1];
-                InterpolateCos(redCurve, x1, x2, redYs[splineIndex], redYs[splineIndex + 1]);
-                InterpolateCos(greenCurve, x1, x2, greenYs[splineIndex], greenYs[splineIndex + 1]);
-                InterpolateCos(blueCurve, x1, x2, blueYs[splineIndex], blueYs[splineIndex + 1]);
-            }
+            double[] xsCurve = redInterp.interpolatedXs;
+            double[] redCurve = redInterp.interpolatedYs;
+            double[] greenCurve = greenInterp.interpolatedYs;
+            double[] blueCurve = blueInterp.interpolatedYs;
 
-            double[] meanCurve = new double[255];
+            double[] meanCurve = new double[redCurve.Length];
             for (int i = 0; i < meanCurve.Length; i++)
                 meanCurve[i] = (redCurve[i] + greenCurve[i] + blueCurve[i]) / 3;
 
@@ -95,25 +80,15 @@ namespace ColormapGenerator
                 colormap[i] = BitConverter.ToInt32(bytes, 0);
             }
 
-            formsPlot1.plt.PlotScatter(
-                ScottPlot.Tools.DoubleArray(xs),
-                ScottPlot.Tools.DoubleArray(redYs),
-                Color.Red, 0);
-            formsPlot1.plt.PlotScatter(
-                ScottPlot.Tools.DoubleArray(xs),
-                ScottPlot.Tools.DoubleArray(greenYs),
-                Color.Green, 0);
-            formsPlot1.plt.PlotScatter(
-                ScottPlot.Tools.DoubleArray(xs),
-                ScottPlot.Tools.DoubleArray(blueYs),
-                Color.Blue, 0);
+            formsPlot1.plt.PlotScatter(xs, redYs, Color.Red, 0);
+            formsPlot1.plt.PlotScatter(xs, greenYs, Color.Green, 0);
+            formsPlot1.plt.PlotScatter(xs, blueYs, Color.Blue, 0);
 
             formsPlot1.plt.PlotScatter(xsCurve, redCurve, color: Color.Red, markerSize: 0);
             formsPlot1.plt.PlotScatter(xsCurve, greenCurve, color: Color.Green, markerSize: 0);
             formsPlot1.plt.PlotScatter(xsCurve, blueCurve, color: Color.Blue, markerSize: 0);
             formsPlot1.plt.PlotScatter(xsCurve, meanCurve, color: Color.Black, markerSize: 0, lineStyle: ScottPlot.LineStyle.Dash);
 
-            //formsPlot1.plt.Layout(0, 0, 0, 0, 0, 0, 0);
             formsPlot1.plt.Frame(false);
             formsPlot1.plt.Ticks(false, false);
             formsPlot1.plt.Axis(0, 255, 0, 255);
@@ -128,9 +103,9 @@ namespace ColormapGenerator
                 {
                     double intensityFrac = (double)x / cmapSize.Width;
                     int intensityValue = (int)(255.0 * intensityFrac);
-                    int r = (int)redCurve[intensityValue];
-                    int g = (int)greenCurve[intensityValue];
-                    int b = (int)blueCurve[intensityValue];
+                    int r = Math.Max(Math.Min((int)redCurve[intensityValue], 255), 0);
+                    int g = Math.Max(Math.Min((int)greenCurve[intensityValue], 255), 0);
+                    int b = Math.Max(Math.Min((int)blueCurve[intensityValue], 255), 0);
                     pen.Color = Color.FromArgb(255, r, g, b);
                     gfx.DrawLine(pen, x, 0, x, cmapSize.Height);
                 }
