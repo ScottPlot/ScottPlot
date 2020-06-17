@@ -21,10 +21,7 @@ namespace ColormapGenerator
             richTextBox1.BackColor = ColorTranslator.FromHtml("#1e1e1e");
         }
 
-        private void FormColormapGenerator_Load(object sender, EventArgs e)
-        {
-
-        }
+        private void FormColormapGenerator_Load(object sender, EventArgs e) => Replot();
 
         private void tb1_Scroll(object sender, EventArgs e) => Replot();
         private void tb2_Scroll(object sender, EventArgs e) => Replot();
@@ -47,7 +44,7 @@ namespace ColormapGenerator
         private void tbBlue5_Scroll(object sender, EventArgs e) => Replot();
         private void tbBlue6_Scroll(object sender, EventArgs e) => Replot();
 
-        int[] colormap = new int[255];
+        int[] colormap = new int[256];
         private void Replot()
         {
             formsPlot1.plt.Clear();
@@ -68,16 +65,15 @@ namespace ColormapGenerator
             double[] blueCurve = blueInterp.interpolatedYs;
 
             double[] meanCurve = new double[redCurve.Length];
-            for (int i = 0; i < meanCurve.Length; i++)
-                meanCurve[i] = (redCurve[i] + greenCurve[i] + blueCurve[i]) / 3;
-
-            for (int i = 0; i < 255; i++)
+            for (int i = 0; i < 256; i++)
             {
-                byte redByte = (byte)redCurve[i];
-                byte greenByte = (byte)greenCurve[i];
-                byte blueByte = (byte)blueCurve[i];
-                byte[] bytes = { blueByte, greenByte, redByte, 0 };
+                byte redByte = (byte)Math.Max(Math.Min(redCurve[i], 255), 0);
+                byte greenByte = (byte)Math.Max(Math.Min(greenCurve[i], 255), 0);
+                byte blueByte = (byte)Math.Max(Math.Min(blueCurve[i], 255), 0);
+                byte alphaByte = 255;
+                byte[] bytes = { blueByte, greenByte, redByte, alphaByte };
                 colormap[i] = BitConverter.ToInt32(bytes, 0);
+                meanCurve[i] = (redByte + greenByte + blueByte) / 3.0;
             }
 
             formsPlot1.plt.PlotScatter(xs, redYs, Color.Red, 0);
@@ -89,9 +85,13 @@ namespace ColormapGenerator
             formsPlot1.plt.PlotScatter(xsCurve, blueCurve, color: Color.Blue, markerSize: 0);
             formsPlot1.plt.PlotScatter(xsCurve, meanCurve, color: Color.Black, markerSize: 0, lineStyle: ScottPlot.LineStyle.Dash);
 
-            formsPlot1.plt.Frame(false);
-            formsPlot1.plt.Ticks(false, false);
-            formsPlot1.plt.Axis(0, 255, 0, 255);
+            //formsPlot1.plt.Frame(false);
+            //formsPlot1.plt.Ticks(false, false);
+            //formsPlot1.plt.Axis(0, 255, 0, 255);
+            formsPlot1.plt.PlotVLine(0, Color.Black, lineStyle: ScottPlot.LineStyle.Dot);
+            formsPlot1.plt.PlotVLine(255, Color.Black, lineStyle: ScottPlot.LineStyle.Dot);
+            formsPlot1.plt.PlotHLine(0, Color.Black, lineStyle: ScottPlot.LineStyle.Dot);
+            formsPlot1.plt.PlotHLine(255, Color.Black, lineStyle: ScottPlot.LineStyle.Dot);
             formsPlot1.Render();
 
             Size cmapSize = pbColorbar.Size;
@@ -103,16 +103,14 @@ namespace ColormapGenerator
                 {
                     double intensityFrac = (double)x / cmapSize.Width;
                     int intensityValue = (int)(255.0 * intensityFrac);
-                    int r = Math.Max(Math.Min((int)redCurve[intensityValue], 255), 0);
-                    int g = Math.Max(Math.Min((int)greenCurve[intensityValue], 255), 0);
-                    int b = Math.Max(Math.Min((int)blueCurve[intensityValue], 255), 0);
-                    pen.Color = Color.FromArgb(255, r, g, b);
+                    pen.Color = Color.FromArgb(colormap[intensityValue]);
                     gfx.DrawLine(pen, x, 0, x, cmapSize.Height);
                 }
             }
 
             pbColorbar.Image?.Dispose();
             pbColorbar.Image = bmp;
+            newValues = true;
         }
 
         private void btnRandomize_Click(object sender, EventArgs e)
@@ -132,20 +130,25 @@ namespace ColormapGenerator
             Replot();
         }
 
+        private bool newValues = true;
         private void timer1_Tick(object sender, EventArgs e)
         {
+            if (newValues == false)
+                return;
+
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("private readonly int[] rgb =");
+            sb.AppendLine("private readonly int[] argb =");
             sb.AppendLine("{");
             sb.Append("    ");
-            for (int i = 0; i < 255; i++)
+            for (int i = 0; i < colormap.Length; i++)
             {
                 sb.Append($"{colormap[i]:D8}, ");
                 if (i % 8 == 7)
                     sb.Append(Environment.NewLine + "    ");
             }
-            sb.Append(Environment.NewLine + "}");
-            richTextBox1.Text = sb.ToString();
+            richTextBox1.Text = sb.ToString().Trim() + "\n};";
+            newValues = false;
         }
+
     }
 }

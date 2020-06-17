@@ -112,16 +112,19 @@
             // 
             // formsPlot1
             // 
+            this.formsPlot1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.formsPlot1.Location = new System.Drawing.Point(12, 41);
             this.formsPlot1.Name = "formsPlot1";
-            this.formsPlot1.Size = new System.Drawing.Size(783, 290);
+            this.formsPlot1.Size = new System.Drawing.Size(783, 509);
             this.formsPlot1.TabIndex = 0;
             // 
             // tbRed1
             // 
+            this.tbRed1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.tbRed1.AutoSize = false;
             this.tbRed1.LargeChange = 10;
-            this.tbRed1.Location = new System.Drawing.Point(12, 377);
+            this.tbRed1.Location = new System.Drawing.Point(12, 596);
             this.tbRed1.Maximum = 255;
             this.tbRed1.Name = "tbRed1";
             this.tbRed1.Orientation = System.Windows.Forms.Orientation.Vertical;
@@ -132,9 +135,10 @@
             // 
             // tbRed5
             // 
+            this.tbRed5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.tbRed5.AutoSize = false;
             this.tbRed5.LargeChange = 10;
-            this.tbRed5.Location = new System.Drawing.Point(557, 377);
+            this.tbRed5.Location = new System.Drawing.Point(557, 596);
             this.tbRed5.Maximum = 255;
             this.tbRed5.Name = "tbRed5";
             this.tbRed5.Orientation = System.Windows.Forms.Orientation.Vertical;
@@ -145,9 +149,10 @@
             // 
             // tbRed4
             // 
+            this.tbRed4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.tbRed4.AutoSize = false;
             this.tbRed4.LargeChange = 10;
-            this.tbRed4.Location = new System.Drawing.Point(407, 377);
+            this.tbRed4.Location = new System.Drawing.Point(407, 596);
             this.tbRed4.Maximum = 255;
             this.tbRed4.Name = "tbRed4";
             this.tbRed4.Orientation = System.Windows.Forms.Orientation.Vertical;
@@ -158,9 +163,10 @@
             // 
             // tbRed3
             // 
+            this.tbRed3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.tbRed3.AutoSize = false;
             this.tbRed3.LargeChange = 10;
-            this.tbRed3.Location = new System.Drawing.Point(264, 377);
+            this.tbRed3.Location = new System.Drawing.Point(264, 596);
             this.tbRed3.Maximum = 255;
             this.tbRed3.Name = "tbRed3";
             this.tbRed3.Orientation = System.Windows.Forms.Orientation.Vertical;
@@ -171,9 +177,10 @@
             // 
             // tbRed2
             // 
+            this.tbRed2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.tbRed2.AutoSize = false;
             this.tbRed2.LargeChange = 10;
-            this.tbRed2.Location = new System.Drawing.Point(131, 377);
+            this.tbRed2.Location = new System.Drawing.Point(131, 596);
             this.tbRed2.Maximum = 255;
             this.tbRed2.Name = "tbRed2";
             this.tbRed2.Orientation = System.Windows.Forms.Orientation.Vertical;
@@ -184,9 +191,10 @@
             // 
             // tbRed6
             // 
+            this.tbRed6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.tbRed6.AutoSize = false;
             this.tbRed6.LargeChange = 10;
-            this.tbRed6.Location = new System.Drawing.Point(705, 377);
+            this.tbRed6.Location = new System.Drawing.Point(705, 596);
             this.tbRed6.Maximum = 255;
             this.tbRed6.Name = "tbRed6";
             this.tbRed6.Orientation = System.Windows.Forms.Orientation.Vertical;
@@ -197,9 +205,10 @@
             // 
             // tbGreen6
             // 
+            this.tbGreen6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.tbGreen6.AutoSize = false;
             this.tbGreen6.LargeChange = 10;
-            this.tbGreen6.Location = new System.Drawing.Point(737, 377);
+            this.tbGreen6.Location = new System.Drawing.Point(737, 596);
             this.tbGreen6.Maximum = 255;
             this.tbGreen6.Name = "tbGreen6";
             this.tbGreen6.Orientation = System.Windows.Forms.Orientation.Vertical;
@@ -210,9 +219,10 @@
             // 
             // tbGreen5
             // 
+            this.tbGreen5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.tbGreen5.AutoSize = false;
             this.tbGreen5.LargeChange = 10;
-            this.tbGreen5.Location = new System.Drawing.Point(589, 377);
+            this.tbGreen5.Location = new System.Drawing.Point(589, 596);
             this.tbGreen5.Maximum = 255;
             this.tbGreen5.Name = "tbGreen5";
             this.tbGreen5.Orientation = System.Windows.Forms.Orientation.Vertical;
@@ -223,9 +233,10 @@
             // 
             // tbGreen4
             // 
+            this.tbGreen4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.tbGreen4.AutoSize = false;
             this.tbGreen4.LargeChange = 10;
-            this.tbGreen4.Location = new System.Drawing.Point(439, 377);
+            this.tbGreen4.Location = new System.Drawing.Point(439, 596);
             this.tbGreen4.Maximum = 255;
             this.tbGreen4.Name = "tbGreen4";
             this.tbGreen4.Orientation = System.Windows.Forms.Orientation.Vertical;
@@ -236,9 +247,10 @@
             // 
             // tbGreen3
             // 
+            this.tbGreen3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.tbGreen3.AutoSize = false;
             this.tbGreen3.LargeChange = 10;
-            this.tbGreen3.Location = new System.Drawing.Point(296, 377);
+            this.tbGreen3.Location = new System.Drawing.Point(296, 596);
             this.tbGreen3.Maximum = 255;
             this.tbGreen3.Name = "tbGreen3";
             this.tbGreen3.Orientation = System.Windows.Forms.Orientation.Vertical;
@@ -249,9 +261,10 @@
             // 
             // tbGreen2
             // 
+            this.tbGreen2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.tbGreen2.AutoSize = false;
             this.tbGreen2.LargeChange = 10;
-            this.tbGreen2.Location = new System.Drawing.Point(163, 377);
+            this.tbGreen2.Location = new System.Drawing.Point(163, 596);
             this.tbGreen2.Maximum = 255;
             this.tbGreen2.Name = "tbGreen2";
             this.tbGreen2.Orientation = System.Windows.Forms.Orientation.Vertical;
@@ -262,9 +275,10 @@
             // 
             // tbGreen1
             // 
+            this.tbGreen1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.tbGreen1.AutoSize = false;
             this.tbGreen1.LargeChange = 10;
-            this.tbGreen1.Location = new System.Drawing.Point(44, 377);
+            this.tbGreen1.Location = new System.Drawing.Point(44, 596);
             this.tbGreen1.Maximum = 255;
             this.tbGreen1.Name = "tbGreen1";
             this.tbGreen1.Orientation = System.Windows.Forms.Orientation.Vertical;
@@ -275,9 +289,10 @@
             // 
             // tbBlue6
             // 
+            this.tbBlue6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.tbBlue6.AutoSize = false;
             this.tbBlue6.LargeChange = 10;
-            this.tbBlue6.Location = new System.Drawing.Point(769, 377);
+            this.tbBlue6.Location = new System.Drawing.Point(769, 596);
             this.tbBlue6.Maximum = 255;
             this.tbBlue6.Name = "tbBlue6";
             this.tbBlue6.Orientation = System.Windows.Forms.Orientation.Vertical;
@@ -288,9 +303,10 @@
             // 
             // tbBlue5
             // 
+            this.tbBlue5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.tbBlue5.AutoSize = false;
             this.tbBlue5.LargeChange = 10;
-            this.tbBlue5.Location = new System.Drawing.Point(621, 377);
+            this.tbBlue5.Location = new System.Drawing.Point(621, 596);
             this.tbBlue5.Maximum = 255;
             this.tbBlue5.Name = "tbBlue5";
             this.tbBlue5.Orientation = System.Windows.Forms.Orientation.Vertical;
@@ -301,9 +317,10 @@
             // 
             // tbBlue4
             // 
+            this.tbBlue4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.tbBlue4.AutoSize = false;
             this.tbBlue4.LargeChange = 10;
-            this.tbBlue4.Location = new System.Drawing.Point(471, 377);
+            this.tbBlue4.Location = new System.Drawing.Point(471, 596);
             this.tbBlue4.Maximum = 255;
             this.tbBlue4.Name = "tbBlue4";
             this.tbBlue4.Orientation = System.Windows.Forms.Orientation.Vertical;
@@ -314,9 +331,10 @@
             // 
             // tbBlue3
             // 
+            this.tbBlue3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.tbBlue3.AutoSize = false;
             this.tbBlue3.LargeChange = 10;
-            this.tbBlue3.Location = new System.Drawing.Point(328, 377);
+            this.tbBlue3.Location = new System.Drawing.Point(328, 596);
             this.tbBlue3.Maximum = 255;
             this.tbBlue3.Name = "tbBlue3";
             this.tbBlue3.Orientation = System.Windows.Forms.Orientation.Vertical;
@@ -327,9 +345,10 @@
             // 
             // tbBlue2
             // 
+            this.tbBlue2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.tbBlue2.AutoSize = false;
             this.tbBlue2.LargeChange = 10;
-            this.tbBlue2.Location = new System.Drawing.Point(195, 377);
+            this.tbBlue2.Location = new System.Drawing.Point(195, 596);
             this.tbBlue2.Maximum = 255;
             this.tbBlue2.Name = "tbBlue2";
             this.tbBlue2.Orientation = System.Windows.Forms.Orientation.Vertical;
@@ -340,9 +359,10 @@
             // 
             // tbBlue1
             // 
+            this.tbBlue1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.tbBlue1.AutoSize = false;
             this.tbBlue1.LargeChange = 10;
-            this.tbBlue1.Location = new System.Drawing.Point(76, 377);
+            this.tbBlue1.Location = new System.Drawing.Point(76, 596);
             this.tbBlue1.Maximum = 255;
             this.tbBlue1.Name = "tbBlue1";
             this.tbBlue1.Orientation = System.Windows.Forms.Orientation.Vertical;
@@ -353,8 +373,9 @@
             // 
             // pictureBox1
             // 
+            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.pictureBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.pictureBox1.Location = new System.Drawing.Point(264, 608);
+            this.pictureBox1.Location = new System.Drawing.Point(264, 827);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(26, 22);
             this.pictureBox1.TabIndex = 19;
@@ -362,8 +383,9 @@
             // 
             // pictureBox2
             // 
+            this.pictureBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.pictureBox2.BackColor = System.Drawing.Color.Green;
-            this.pictureBox2.Location = new System.Drawing.Point(296, 608);
+            this.pictureBox2.Location = new System.Drawing.Point(296, 827);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(26, 22);
             this.pictureBox2.TabIndex = 20;
@@ -371,8 +393,9 @@
             // 
             // pictureBox3
             // 
+            this.pictureBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.pictureBox3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
-            this.pictureBox3.Location = new System.Drawing.Point(328, 608);
+            this.pictureBox3.Location = new System.Drawing.Point(328, 827);
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.Size = new System.Drawing.Size(26, 22);
             this.pictureBox3.TabIndex = 21;
@@ -380,8 +403,9 @@
             // 
             // pictureBox4
             // 
+            this.pictureBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.pictureBox4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
-            this.pictureBox4.Location = new System.Drawing.Point(471, 608);
+            this.pictureBox4.Location = new System.Drawing.Point(471, 827);
             this.pictureBox4.Name = "pictureBox4";
             this.pictureBox4.Size = new System.Drawing.Size(26, 22);
             this.pictureBox4.TabIndex = 24;
@@ -389,8 +413,9 @@
             // 
             // pictureBox5
             // 
+            this.pictureBox5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.pictureBox5.BackColor = System.Drawing.Color.Green;
-            this.pictureBox5.Location = new System.Drawing.Point(439, 608);
+            this.pictureBox5.Location = new System.Drawing.Point(439, 827);
             this.pictureBox5.Name = "pictureBox5";
             this.pictureBox5.Size = new System.Drawing.Size(26, 22);
             this.pictureBox5.TabIndex = 23;
@@ -398,8 +423,9 @@
             // 
             // pictureBox6
             // 
+            this.pictureBox6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.pictureBox6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.pictureBox6.Location = new System.Drawing.Point(407, 608);
+            this.pictureBox6.Location = new System.Drawing.Point(407, 827);
             this.pictureBox6.Name = "pictureBox6";
             this.pictureBox6.Size = new System.Drawing.Size(26, 22);
             this.pictureBox6.TabIndex = 22;
@@ -407,8 +433,9 @@
             // 
             // pictureBox7
             // 
+            this.pictureBox7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.pictureBox7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
-            this.pictureBox7.Location = new System.Drawing.Point(621, 608);
+            this.pictureBox7.Location = new System.Drawing.Point(621, 827);
             this.pictureBox7.Name = "pictureBox7";
             this.pictureBox7.Size = new System.Drawing.Size(26, 22);
             this.pictureBox7.TabIndex = 27;
@@ -416,8 +443,9 @@
             // 
             // pictureBox8
             // 
+            this.pictureBox8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.pictureBox8.BackColor = System.Drawing.Color.Green;
-            this.pictureBox8.Location = new System.Drawing.Point(589, 608);
+            this.pictureBox8.Location = new System.Drawing.Point(589, 827);
             this.pictureBox8.Name = "pictureBox8";
             this.pictureBox8.Size = new System.Drawing.Size(26, 22);
             this.pictureBox8.TabIndex = 26;
@@ -425,8 +453,9 @@
             // 
             // pictureBox9
             // 
+            this.pictureBox9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.pictureBox9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.pictureBox9.Location = new System.Drawing.Point(557, 608);
+            this.pictureBox9.Location = new System.Drawing.Point(557, 827);
             this.pictureBox9.Name = "pictureBox9";
             this.pictureBox9.Size = new System.Drawing.Size(26, 22);
             this.pictureBox9.TabIndex = 25;
@@ -434,8 +463,9 @@
             // 
             // pictureBox10
             // 
+            this.pictureBox10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.pictureBox10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
-            this.pictureBox10.Location = new System.Drawing.Point(769, 608);
+            this.pictureBox10.Location = new System.Drawing.Point(769, 827);
             this.pictureBox10.Name = "pictureBox10";
             this.pictureBox10.Size = new System.Drawing.Size(26, 22);
             this.pictureBox10.TabIndex = 30;
@@ -443,8 +473,9 @@
             // 
             // pictureBox11
             // 
+            this.pictureBox11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.pictureBox11.BackColor = System.Drawing.Color.Green;
-            this.pictureBox11.Location = new System.Drawing.Point(737, 608);
+            this.pictureBox11.Location = new System.Drawing.Point(737, 827);
             this.pictureBox11.Name = "pictureBox11";
             this.pictureBox11.Size = new System.Drawing.Size(26, 22);
             this.pictureBox11.TabIndex = 29;
@@ -452,8 +483,9 @@
             // 
             // pictureBox12
             // 
+            this.pictureBox12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.pictureBox12.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.pictureBox12.Location = new System.Drawing.Point(705, 608);
+            this.pictureBox12.Location = new System.Drawing.Point(705, 827);
             this.pictureBox12.Name = "pictureBox12";
             this.pictureBox12.Size = new System.Drawing.Size(26, 22);
             this.pictureBox12.TabIndex = 28;
@@ -461,8 +493,9 @@
             // 
             // pictureBox13
             // 
+            this.pictureBox13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.pictureBox13.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
-            this.pictureBox13.Location = new System.Drawing.Point(195, 608);
+            this.pictureBox13.Location = new System.Drawing.Point(195, 827);
             this.pictureBox13.Name = "pictureBox13";
             this.pictureBox13.Size = new System.Drawing.Size(26, 22);
             this.pictureBox13.TabIndex = 33;
@@ -470,8 +503,9 @@
             // 
             // pictureBox14
             // 
+            this.pictureBox14.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.pictureBox14.BackColor = System.Drawing.Color.Green;
-            this.pictureBox14.Location = new System.Drawing.Point(163, 608);
+            this.pictureBox14.Location = new System.Drawing.Point(163, 827);
             this.pictureBox14.Name = "pictureBox14";
             this.pictureBox14.Size = new System.Drawing.Size(26, 22);
             this.pictureBox14.TabIndex = 32;
@@ -479,8 +513,9 @@
             // 
             // pictureBox15
             // 
+            this.pictureBox15.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.pictureBox15.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.pictureBox15.Location = new System.Drawing.Point(131, 608);
+            this.pictureBox15.Location = new System.Drawing.Point(131, 827);
             this.pictureBox15.Name = "pictureBox15";
             this.pictureBox15.Size = new System.Drawing.Size(26, 22);
             this.pictureBox15.TabIndex = 31;
@@ -488,8 +523,9 @@
             // 
             // pictureBox16
             // 
+            this.pictureBox16.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.pictureBox16.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
-            this.pictureBox16.Location = new System.Drawing.Point(76, 608);
+            this.pictureBox16.Location = new System.Drawing.Point(76, 827);
             this.pictureBox16.Name = "pictureBox16";
             this.pictureBox16.Size = new System.Drawing.Size(26, 22);
             this.pictureBox16.TabIndex = 36;
@@ -497,8 +533,9 @@
             // 
             // pictureBox17
             // 
+            this.pictureBox17.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.pictureBox17.BackColor = System.Drawing.Color.Green;
-            this.pictureBox17.Location = new System.Drawing.Point(44, 608);
+            this.pictureBox17.Location = new System.Drawing.Point(44, 827);
             this.pictureBox17.Name = "pictureBox17";
             this.pictureBox17.Size = new System.Drawing.Size(26, 22);
             this.pictureBox17.TabIndex = 35;
@@ -506,8 +543,9 @@
             // 
             // pictureBox18
             // 
+            this.pictureBox18.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.pictureBox18.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.pictureBox18.Location = new System.Drawing.Point(12, 608);
+            this.pictureBox18.Location = new System.Drawing.Point(12, 827);
             this.pictureBox18.Name = "pictureBox18";
             this.pictureBox18.Size = new System.Drawing.Size(26, 22);
             this.pictureBox18.TabIndex = 34;
@@ -515,8 +553,9 @@
             // 
             // pbColorbar
             // 
+            this.pbColorbar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.pbColorbar.BackColor = System.Drawing.Color.Purple;
-            this.pbColorbar.Location = new System.Drawing.Point(12, 337);
+            this.pbColorbar.Location = new System.Drawing.Point(12, 556);
             this.pbColorbar.Name = "pbColorbar";
             this.pbColorbar.Size = new System.Drawing.Size(783, 34);
             this.pbColorbar.TabIndex = 37;
@@ -540,7 +579,7 @@
             this.richTextBox1.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.richTextBox1.Location = new System.Drawing.Point(801, 12);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(673, 618);
+            this.richTextBox1.Size = new System.Drawing.Size(671, 837);
             this.richTextBox1.TabIndex = 39;
             this.richTextBox1.Text = "values";
             // 
@@ -563,7 +602,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1486, 642);
+            this.ClientSize = new System.Drawing.Size(1484, 861);
             this.Controls.Add(this.btnZero);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.btnRandomize);
