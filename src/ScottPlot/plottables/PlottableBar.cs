@@ -145,8 +145,8 @@ namespace ScottPlot
 
             if (errorPen.Width > 0 && valueError > 0)
             {
-                double error1 = value2 - Math.Abs(valueError);
-                double error2 = value2 + Math.Abs(valueError);
+                double error1 = value > 0 ? value2 - Math.Abs(valueError) : value1 - Math.Abs(valueError);
+                double error2 = value > 0 ? value2 + Math.Abs(valueError) : value1 + Math.Abs(valueError);
 
                 float capPx1 = (float)settings.GetPixelX(position - errorCapSize * barWidth / 2);
                 float capPx2 = (float)settings.GetPixelX(position + errorCapSize * barWidth / 2);
@@ -171,7 +171,7 @@ namespace ScottPlot
             double valueSpan = value2 - value1;
 
             var rect = new RectangleF(
-                x: (float)settings.GetPixelX(valueBase),
+                x: (float)settings.GetPixelX(value1),
                 y: (float)settings.GetPixelY(edge2),
                 height: (float)(barWidth * settings.yAxisScale),
                 width: (float)(valueSpan * settings.xAxisScale));
@@ -183,8 +183,8 @@ namespace ScottPlot
 
             if (errorPen.Width > 0 && valueError > 0)
             {
-                double error1 = value2 - Math.Abs(valueError);
-                double error2 = value2 + Math.Abs(valueError);
+                double error1 = value > 0 ? value2 - Math.Abs(valueError) : value1 - Math.Abs(valueError);
+                double error2 = value > 0 ? value2 + Math.Abs(valueError) : value1 + Math.Abs(valueError);
 
                 float capPx1 = (float)settings.GetPixelY(position - errorCapSize * barWidth / 2);
                 float capPx2 = (float)settings.GetPixelY(position + errorCapSize * barWidth / 2);
