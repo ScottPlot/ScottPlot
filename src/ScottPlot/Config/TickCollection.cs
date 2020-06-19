@@ -300,18 +300,21 @@ namespace ScottPlot.Config
 
             double majorTickSpacing = majorTicks[1] - majorTicks[0];
             double minorTickSpacing = majorTickSpacing / minorTicksPerMajorTick;
-            double lowerBound = majorTicks.First() - majorTickSpacing;
-            double upperBound = majorTicks.Last() + majorTickSpacing;
+
+            List<double> majorTicksWithPadding = new List<double>();
+            majorTicksWithPadding.Add(majorTicks[0] - majorTickSpacing);
+            majorTicksWithPadding.AddRange(majorTicks);
 
             List<double> minorTicks = new List<double>();
-            for (double pos = lowerBound; pos < upperBound; pos += minorTickSpacing)
-                if ((pos > lowerLimit) && (pos < upperLimit))
-                    minorTicks.Add(pos);
-
-            // reduce precision of minor ticks to aid in alignment with major ticks
-            if (minorTickSpacing > float.Epsilon * 100)
-                for (int i = 0; i < minorTicks.Count(); i++)
-                    minorTicks[i] = (float)minorTicks[i];
+            foreach (var majorTickPosition in majorTicksWithPadding)
+            {
+                for (int i = 1; i < minorTicksPerMajorTick; i++)
+                {
+                    double minorTickPosition = majorTickPosition + minorTickSpacing * i;
+                    if ((minorTickPosition > lowerLimit) && (minorTickPosition < upperLimit))
+                        minorTicks.Add(minorTickPosition);
+                }
+            }
 
             return minorTicks.ToArray();
         }

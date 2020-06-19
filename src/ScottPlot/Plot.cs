@@ -12,6 +12,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Linq;
+using ScottPlot.Config;
 using ScottPlot.Statistics;
 
 namespace ScottPlot
@@ -1102,11 +1103,27 @@ namespace ScottPlot
 
             if (autoAxis)
             {
+                // perform a tight axis adjustment
+                AxisAuto(0, 0);
+                double[] tightAxisLimits = Axis();
+
+                // now loosen it up a bit
                 AxisAuto();
+
                 if (horizontal)
-                    Axis(x1: 0);
+                {
+                    if (tightAxisLimits[0] == 0)
+                        Axis(x1: 0);
+                    else if (tightAxisLimits[1] == 0)
+                        Axis(x2: 0);
+                }
                 else
-                    Axis(y1: 0);
+                {
+                    if (tightAxisLimits[2] == 0)
+                        Axis(y1: 0);
+                    else if (tightAxisLimits[3] == 0)
+                        Axis(y2: 0);
+                }
             }
 
             return barPlot;
@@ -1143,14 +1160,21 @@ namespace ScottPlot
             int seriesCount = ys.Length;
             double barWidth = groupWidthFraction / seriesCount;
             PlottableBar[] bars = new PlottableBar[seriesCount];
+            bool containsNegativeY = false;
             for (int i = 0; i < seriesCount; i++)
             {
                 double offset = i * barWidth;
                 double[] barYs = ys[i];
                 double[] barYerr = yErr?[i];
                 double[] barXs = DataGen.Consecutive(barYs.Length);
+                containsNegativeY |= barYs.Where(y => y < 0).Any();
                 bars[i] = PlotBar(barXs, barYs, barYerr, seriesLabels[i], barWidth * barWidthFraction, offset,
                     errorCapSize: errorCapSize, showValues: showValues);
+            }
+
+            if (containsNegativeY)
+            {
+                AxisAuto();
             }
             XTicks(DataGen.Consecutive(groupLabels.Length, offset: (groupWidthFraction - barWidth) / 2), groupLabels);
 

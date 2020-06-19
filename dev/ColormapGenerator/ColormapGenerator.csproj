@@ -4,17 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{78CC0DA0-F9FD-4377-9122-0A33EE87469E}</ProjectGuid>
+    <ProjectGuid>{7C110586-1835-4273-ADE5-E9EF29B750EC}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>FormsPlotSandbox</RootNamespace>
-    <AssemblyName>FormsPlotSandbox</AssemblyName>
+    <RootNamespace>ColormapGenerator</RootNamespace>
+    <AssemblyName>ColormapGenerator</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -38,7 +38,6 @@
     <Reference Include="System.Drawing.Common, Version=4.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\src\packages\System.Drawing.Common.4.7.0\lib\net461\System.Drawing.Common.dll</HintPath>
     </Reference>
-    <Reference Include="System.ValueTuple" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -56,55 +55,10 @@
     <Compile Include="FormColormapGenerator.Designer.cs">
       <DependentUpon>FormColormapGenerator.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormExperimentalTick.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormExperimentalTick.Designer.cs">
-      <DependentUpon>FormExperimentalTick.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FormMouse.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormMouse.Designer.cs">
-      <DependentUpon>FormMouse.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FormSandbox.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormSandbox.Designer.cs">
-      <DependentUpon>FormSandbox.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FormMenu.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormMenu.Designer.cs">
-      <DependentUpon>FormMenu.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FormSlowPan.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormSlowPan.Designer.cs">
-      <DependentUpon>FormSlowPan.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FormColormapGenerator.resx">
       <DependentUpon>FormColormapGenerator.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormExperimentalTick.resx">
-      <DependentUpon>FormExperimentalTick.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormMouse.resx">
-      <DependentUpon>FormMouse.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormSandbox.resx">
-      <DependentUpon>FormSandbox.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormMenu.resx">
-      <DependentUpon>FormMenu.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormSlowPan.resx">
-      <DependentUpon>FormSlowPan.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

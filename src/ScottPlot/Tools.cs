@@ -322,6 +322,15 @@ namespace ScottPlot
 
             return name;
         }
+      
+        public static int SimpleHash(double[] input)
+        {
+            byte[] bytes = input.SelectMany(n => { return BitConverter.GetBytes(n); }).ToArray();
+            int hash = 0;
+            foreach (byte b in bytes)
+                hash = (hash * 31) ^ b;
+            return hash;
+        }
 
         public enum IntensityMode
         {

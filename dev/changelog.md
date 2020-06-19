@@ -2,6 +2,10 @@
 
 ## ScottPlot 4.0.36 ⚠️ _in active development_
 * `PlotSignal()` and `PlotSignalXY()` plots now have an optional `useParallel` argument (and public property on the objects they return) to allow the user to decide whether parallel or sequential calculations will be performed. (#454, #419, #245, #72) _Thanks @StendProg_
+* Improved minor tick alignment to prevent rare single-pixel artifacts (#417)
+* Improved horizontal axis tick label positions in ruler mode (#453)
+* Added a `Statistics.Interpolation` module to generate smooth interpolated splines from a small number of input data points. See advanced statistics cookbook example for usage information. (#459) _Thanks Hans-Peter Moser_
+* Improved automatic axis adjustment when adding bar plots with negative values (#461, #462) _Thanks @Benny121221_
 
 ## ScottPlot 4.0.35
 * Added `processEvents` argument to `formsPlot2.Render()` to provide a performance enhancement when linking axes of two `FormsPlot` controls together (by calling `Plot.MatchAxis()` from the control's `AxesChanged` event, as seen in the _Linked Axes_ demo application) (#451, #452) _Thanks @StendProg and @robokamran_
