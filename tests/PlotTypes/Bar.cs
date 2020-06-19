@@ -20,6 +20,60 @@ namespace ScottPlotTests.PlotTypes
         }
 
         [Test]
+        public void Test_Bar_PositiveAndNegative()
+        {
+            var plt = new ScottPlot.Plot(600, 400);
+
+            string[] labels = { "one", "two", "three", "four", "five" };
+            int barCount = labels.Length;
+            Random rand = new Random(0);
+            double[] xs = ScottPlot.DataGen.Consecutive(barCount);
+            double[] ys = ScottPlot.DataGen.RandomNormal(rand, barCount, 0, 10);
+            double[] yError = ScottPlot.DataGen.RandomNormal(rand, barCount, 5, 2);
+
+            plt.PlotBar(xs, ys, yError);
+
+            plt.XTicks(xs, labels);
+            TestTools.SaveFig(plt);
+        }
+
+        [Test]
+        public void Test_Bar_PositiveOnly()
+        {
+            var plt = new ScottPlot.Plot(600, 400);
+
+            string[] labels = { "one", "two", "three", "four", "five" };
+            int barCount = labels.Length;
+            Random rand = new Random(0);
+            double[] xs = ScottPlot.DataGen.Consecutive(barCount);
+            double[] ys = ScottPlot.DataGen.RandomNormal(rand, barCount, 50, 10);
+            double[] yError = ScottPlot.DataGen.RandomNormal(rand, barCount, 5, 2);
+
+            plt.PlotBar(xs, ys, yError);
+
+            plt.XTicks(xs, labels);
+            TestTools.SaveFig(plt);
+        }
+
+        [Test]
+        public void Test_Bar_NegativeOnly()
+        {
+            var plt = new ScottPlot.Plot(600, 400);
+
+            string[] labels = { "one", "two", "three", "four", "five" };
+            int barCount = labels.Length;
+            Random rand = new Random(0);
+            double[] xs = ScottPlot.DataGen.Consecutive(barCount);
+            double[] ys = ScottPlot.DataGen.RandomNormal(rand, barCount, -50, 10);
+            double[] yError = ScottPlot.DataGen.RandomNormal(rand, barCount, 5, 2);
+
+            plt.PlotBar(xs, ys, yError);
+
+            plt.XTicks(xs, labels);
+            TestTools.SaveFig(plt);
+        }
+
+        [Test]
         public void Test_Bar_SeriesWithError()
         {
             double[] xs = { 1, 2, 3, 4, 5, 6, 7 };
