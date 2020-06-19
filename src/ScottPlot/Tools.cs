@@ -322,7 +322,7 @@ namespace ScottPlot
 
             return name;
         }
-      
+
         public static int SimpleHash(double[] input)
         {
             byte[] bytes = input.SelectMany(n => { return BitConverter.GetBytes(n); }).ToArray();
