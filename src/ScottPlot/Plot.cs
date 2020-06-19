@@ -1156,7 +1156,7 @@ namespace ScottPlot
                 double[] barYs = ys[i];
                 double[] barYerr = yErr?[i];
                 double[] barXs = DataGen.Consecutive(barYs.Length);
-                containsNegativeY = containsNegativeY ? containsNegativeY : barYs.Where(y => y < 0).Any();
+                containsNegativeY |= barYs.Where(y => y < 0).Any();
                 bars[i] = PlotBar(barXs, barYs, barYerr, seriesLabels[i], barWidth * barWidthFraction, offset,
                     errorCapSize: errorCapSize, showValues: showValues);
             }
