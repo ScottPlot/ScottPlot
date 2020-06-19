@@ -12,6 +12,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Linq;
+using ScottPlot.Config;
 using ScottPlot.Statistics;
 
 namespace ScottPlot
@@ -1089,13 +1090,29 @@ namespace ScottPlot
 
             settings.plottables.Add(barPlot);
 
-            if (autoAxis && !ys.Where(y => y < 0).Any())
+            if (autoAxis)
             {
+                // perform a tight axis adjustment
+                AxisAuto(0, 0);
+                double[] tightAxisLimits = Axis();
+
+                // now loosen it up a bit
                 AxisAuto();
+
                 if (horizontal)
-                    Axis(x1: 0);
+                {
+                    if (tightAxisLimits[0] == 0)
+                        Axis(x1: 0);
+                    else if (tightAxisLimits[1] == 0)
+                        Axis(x2: 0);
+                }
                 else
-                    Axis(y1: 0);
+                {
+                    if (tightAxisLimits[2] == 0)
+                        Axis(y1: 0);
+                    else if (tightAxisLimits[3] == 0)
+                        Axis(y2: 0);
+                }
             }
 
             return barPlot;
