@@ -9,13 +9,35 @@ namespace ScottPlot.Drawing
 {
     public class Colormap
     {
+        public static Colormap Algae => new Colormap(new Colormaps.Algae());
+        public static Colormap Amp => new Colormap(new Colormaps.Amp());
+        public static Colormap Balance => new Colormap(new Colormaps.Balance());
         public static Colormap Blues => new Colormap(new Colormaps.Blues());
+        public static Colormap Curl => new Colormap(new Colormaps.Curl());
+        public static Colormap Deep => new Colormap(new Colormaps.Deep());
+        public static Colormap Delta => new Colormap(new Colormaps.Delta());
+        public static Colormap Dense => new Colormap(new Colormaps.Dense());
+        public static Colormap Diff => new Colormap(new Colormaps.Diff());
         public static Colormap Grayscale => new Colormap(new Colormaps.Grayscale());
-        public static Colormap GrayscaleReversed => new Colormap(new Colormaps.Grayscale());
+        public static Colormap GrayscaleR => new Colormap(new Colormaps.GrayscaleR());
         public static Colormap Greens => new Colormap(new Colormaps.Greens());
+        public static Colormap Haline => new Colormap(new Colormaps.Haline());
+        public static Colormap Ice => new Colormap(new Colormaps.Ice());
         public static Colormap Inferno => new Colormap(new Colormaps.Inferno());
+        public static Colormap Jet => new Colormap(new Colormaps.Jet());
         public static Colormap Magma => new Colormap(new Colormaps.Magma());
+        public static Colormap Matter => new Colormap(new Colormaps.Matter());
+        public static Colormap Oxy => new Colormap(new Colormaps.Oxy());
+        public static Colormap Phase => new Colormap(new Colormaps.Phase());
         public static Colormap Plasma => new Colormap(new Colormaps.Plasma());
+        public static Colormap Rain => new Colormap(new Colormaps.Rain());
+        public static Colormap Solar => new Colormap(new Colormaps.Solar());
+        public static Colormap Speed => new Colormap(new Colormaps.Speed());
+        public static Colormap Tarn => new Colormap(new Colormaps.Tarn());
+        public static Colormap Tempo => new Colormap(new Colormaps.Tempo());
+        public static Colormap Thermal => new Colormap(new Colormaps.Thermal());
+        public static Colormap Topo => new Colormap(new Colormaps.Topo());
+        public static Colormap Turbid => new Colormap(new Colormaps.Turbid());
         public static Colormap Turbo => new Colormap(new Colormaps.Turbo());
         public static Colormap Viridis => new Colormap(new Colormaps.Viridis());
 
