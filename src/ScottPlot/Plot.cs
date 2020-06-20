@@ -13,6 +13,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Linq;
 using ScottPlot.Config;
+using ScottPlot.Drawing;
 using ScottPlot.Statistics;
 
 namespace ScottPlot
@@ -582,7 +583,7 @@ namespace ScottPlot
         [Obsolete("This method is experimental and may change in subsequent versions")]
         public PlottableHeatmap PlotHeatmap(
             double[,] intensities,
-            Config.ColorMaps.Colormap colorMap = null,
+            Colormap colorMap = null,
             string label = null,
             double[] axisOffsets = null,
             double[] axisMultipliers = null,
@@ -595,19 +596,13 @@ namespace ScottPlot
             )
         {
             if (colorMap == null)
-            {
-                colorMap = new Config.ColorMaps.Viridis();
-            }
+                colorMap = Colormap.Viridis;
 
             if (axisOffsets == null)
-            {
                 axisOffsets = new double[] { 0, 0 };
-            }
 
             if (axisMultipliers == null)
-            {
                 axisMultipliers = new double[] { 1, 1 };
-            }
 
             PlottableHeatmap heatmap = new PlottableHeatmap(intensities, colorMap, label, axisOffsets, axisMultipliers, scaleMin, scaleMax, transparencyThreshold, backgroundImage, displayImageAbove, drawAxisLabels);
             settings.plottables.Add(heatmap);
@@ -809,7 +804,7 @@ namespace ScottPlot
             double[] ys,
             string label = null,
             Color? color = null,
-            Config.ColorMaps.Colormap colormap = null,
+            Colormap colormap = null,
             double scaleFactor = 1
             )
         {

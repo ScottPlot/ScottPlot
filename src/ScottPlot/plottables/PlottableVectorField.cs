@@ -5,7 +5,7 @@ using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using ScottPlot.Config;
-using ScottPlot.Config.ColorMaps;
+using ScottPlot.Drawing;
 using ScottPlot.Statistics;
 
 namespace ScottPlot
@@ -18,13 +18,13 @@ namespace ScottPlot
         public double[] ys;
         public string label;
         public Color color;
-        private Config.ColorMaps.Colormap colormap;
+        private Colormap colormap;
 
         private Pen pen;
         private Color[] arrowColors;
         private double scaleFactor;
 
-        public PlottableVectorField(Vector2[,] vectors, double[] xs, double[] ys, string label, Color color, Config.ColorMaps.Colormap colormap, double scaleFactor)
+        public PlottableVectorField(Vector2[,] vectors, double[] xs, double[] ys, string label, Color color, Colormap colormap, double scaleFactor)
         {
             //the magnitude squared is faster to compute than the magnitude
             double minMagnitudeSquared = vectors[0, 0].Length();
@@ -62,7 +62,7 @@ namespace ScottPlot
             if (colormap != null)
             {
                 double[] flattenedIntensities = intensities.Cast<double>().ToArray();
-                arrowColors = colormap.IntensitiesToARGB(flattenedIntensities).Select(c => Color.FromArgb(c)).ToArray();
+                arrowColors = Colormap.GetColors(flattenedIntensities, colormap);
             }
 
             this.vectors = vectors;

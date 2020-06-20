@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
 using ScottPlot.Config;
+using ScottPlot.Drawing;
 
 namespace ScottPlot
 {
@@ -21,7 +22,7 @@ namespace ScottPlot
         private int width;
         private int height;
         private double[] intensitiesNormalized;
-        private Config.ColorMaps.Colormap colorMap;
+        private Colormap colorMap;
         public string label;
         private double[] axisOffsets;
         private double[] axisMultipliers;
@@ -39,7 +40,7 @@ namespace ScottPlot
         private SolidBrush brush;
         private Pen pen;
 
-        public PlottableHeatmap(double[,] intensities, Config.ColorMaps.Colormap colorMap, string label, double[] axisOffsets, double[] axisMultipliers, double? scaleMin, double? scaleMax, double? transparencyThreshold, Bitmap backgroundImage, bool displayImageAbove, bool drawAxisLabels)
+        public PlottableHeatmap(double[,] intensities, Colormap colorMap, string label, double[] axisOffsets, double[] axisMultipliers, double? scaleMin, double? scaleMax, double? transparencyThreshold, Bitmap backgroundImage, bool displayImageAbove, bool drawAxisLabels)
         {
             this.width = intensities.GetLength(1);
             this.height = intensities.GetLength(0);
@@ -62,29 +63,22 @@ namespace ScottPlot
             double normalizeMax = max;
 
             if (scaleMin.HasValue && scaleMin.Value < min)
-            {
                 normalizeMin = scaleMin.Value;
-            }
 
             if (scaleMax.HasValue && scaleMax.Value > max)
-            {
                 normalizeMin = scaleMax.Value;
-            }
 
             if (transparencyThreshold.HasValue)
-            {
                 this.transparencyThreshold = Normalize(new double[] { transparencyThreshold.Value }, min, max, scaleMin, scaleMax)[0];
-            }
 
+            intensitiesNormalized = Normalize(intensitiesFlattened, null, null, scaleMin, scaleMax);
 
-            this.intensitiesNormalized = Normalize(intensitiesFlattened, null, null, scaleMin, scaleMax);
-
-            int[] flatARGB = IntensityToColor(this.intensitiesNormalized, colorMap);
+            int[] flatARGB = Colormap.GetRGBAs(intensitiesNormalized, colorMap);
 
             bmp = new Bitmap(width, height, PixelFormat.Format32bppArgb);
             scale = new Bitmap(1, 256, PixelFormat.Format32bppArgb);
 
-            int[] scaleRGBA = IntensityToColor(Normalize(Enumerable.Range(0, scale.Height).Select(i => (double)i).Reverse().ToArray(), null, null, scaleMin, scaleMax), colorMap);
+            int[] scaleRGBA = Colormap.GetRGBAs(Normalize(Enumerable.Range(0, scale.Height).Select(i => (double)i).Reverse().ToArray(), null, null, scaleMin, scaleMax), colorMap);
 
             Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
             Rectangle rectScale = new Rectangle(0, 0, scale.Width, scale.Height);
@@ -160,11 +154,6 @@ namespace ScottPlot
         public override int GetPointCount()
         {
             return intensitiesNormalized.Length;
-        }
-
-        private int[] IntensityToColor(double[] intensities, Config.ColorMaps.Colormap colorMap)
-        {
-            return colorMap.IntensitiesToARGB(intensities, transparencyThreshold);
         }
 
         public override void Render(Settings settings)

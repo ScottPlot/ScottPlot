@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using ScottPlot.Config;
 
 namespace ScottPlot.Drawing
 {
-    class Colormap
+    public class Colormap
     {
         public static Colormap Blues => new Colormap(new Colormaps.Blues());
         public static Colormap Grayscale => new Colormap(new Colormaps.Grayscale());
@@ -101,9 +102,29 @@ namespace ScottPlot.Drawing
             return output;
         }
 
-        public static int[] IntensitiesToARGB(double[] intensities, double? transparencyThreshold = null)
+        public static int[] GetRGBAs(double[] intensities, Colormap colorMap)
         {
-            return intensities.AsParallel().AsOrdered().Select(i => i < (transparencyThreshold ?? double.NegativeInfinity) ? unchecked((int)0x00000000) : RGBToARGB(new byte[] { cmap[(int)(i * 255), 0], cmap[(int)(i * 255), 1], cmap[(int)(i * 255), 2] })).ToArray();
+            int[] rgbas = new int[intensities.Length];
+            for (int i = 0; i < intensities.Length; i++)
+            {
+                byte pixelIntensity = (byte)Math.Max(Math.Min(intensities[i] * 255, 255), 0);
+                var (r, g, b) = colorMap.GetRGB(pixelIntensity);
+                byte[] argb = { b, g, r, 255 };
+                rgbas[i] = BitConverter.ToInt32(argb, 0);
+            }
+            return rgbas;
+        }
+
+        public static Color[] GetColors(double[] intensities, Colormap colorMap)
+        {
+            Color[] colors = new Color[intensities.Length];
+            for (int i = 0; i < intensities.Length; i++)
+            {
+                byte pixelIntensity = (byte)Math.Max(Math.Min(intensities[i] * 255, 255), 0);
+                var (r, g, b) = colorMap.GetRGB(pixelIntensity);
+                colors[i] = Color.FromArgb(255, r, g, b);
+            }
+            return colors;
         }
     }
 }

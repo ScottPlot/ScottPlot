@@ -5,7 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
-using ScottPlot.Config.ColorMaps;
+using ScottPlot.Drawing;
 
 #pragma warning disable CS0618 // Type or member is obsolete
 namespace ScottPlot.Demo.Experimental
@@ -71,7 +71,7 @@ namespace ScottPlot.Demo.Experimental
                 }
 
                 //Change the color map to turbo, and renumber the axes
-                plt.PlotHeatmap(intensities, new Config.ColorMaps.Turbo(), axisOffsets: new double[] { -5, -5 }, axisMultipliers: new double[] { 10, 10 });
+                plt.PlotHeatmap(intensities, Colormap.Turbo, axisOffsets: new double[] { -5, -5 }, axisMultipliers: new double[] { 10, 10 });
             }
         }
 
@@ -97,7 +97,7 @@ namespace ScottPlot.Demo.Experimental
                 }
 
                 //You'll notice these are the same settings as the previous demo, except the axis scale is noticably different
-                plt.PlotHeatmap(intensities, new Config.ColorMaps.Turbo(), axisOffsets: new double[] { -5, -5 }, axisMultipliers: new double[] { 10, 10 }, scaleMin: -150, scaleMax: 300);
+                plt.PlotHeatmap(intensities, Colormap.Turbo, axisOffsets: new double[] { -5, -5 }, axisMultipliers: new double[] { 10, 10 }, scaleMin: -150, scaleMax: 300);
             }
         }
         public class HeatmapFromXYGaussian : PlotDemo, IPlotDemo
