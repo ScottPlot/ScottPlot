@@ -85,5 +85,25 @@ namespace ScottPlot.Drawing
                 pal.Entries[i] = GetColor((byte)i);
             bmp.Palette = pal;
         }
+
+        public static byte[,] IntenstitiesToRGB(double[] intensities, IColormap cmap)
+        {
+            byte[,] output = new byte[intensities.Length, 3];
+            for (int i = 0; i < intensities.Length; i++)
+            {
+                double intensity = intensities[i] * 255;
+                byte pixelIntensity = (byte)Math.Max(Math.Min(intensity, 255), 0);
+                var (r, g, b) = cmap.GetRGB(pixelIntensity);
+                output[i, 0] = r;
+                output[i, 1] = g;
+                output[i, 2] = b;
+            }
+            return output;
+        }
+
+        public static int[] IntensitiesToARGB(double[] intensities, double? transparencyThreshold = null)
+        {
+            return intensities.AsParallel().AsOrdered().Select(i => i < (transparencyThreshold ?? double.NegativeInfinity) ? unchecked((int)0x00000000) : RGBToARGB(new byte[] { cmap[(int)(i * 255), 0], cmap[(int)(i * 255), 1], cmap[(int)(i * 255), 2] })).ToArray();
+        }
     }
 }
