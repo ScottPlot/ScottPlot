@@ -6,6 +6,7 @@
 * Improved horizontal axis tick label positions in ruler mode (#453)
 * Added a `Statistics.Interpolation` module to generate smooth interpolated splines from a small number of input data points. See advanced statistics cookbook example for usage information. (#459) _Thanks Hans-Peter Moser_
 * Improved automatic axis adjustment when adding bar plots with negative values (#461, #462) _Thanks @Benny121221_
+* Created `Drawing.Colormaps` module which has over a dozen colormaps for easily converting a fractional value to a color for use in plotting or heatmap displays (#457, #458) _Thanks @Benny121221_
 
 ## ScottPlot 4.0.35
 * Added `processEvents` argument to `formsPlot2.Render()` to provide a performance enhancement when linking axes of two `FormsPlot` controls together (by calling `Plot.MatchAxis()` from the control's `AxesChanged` event, as seen in the _Linked Axes_ demo application) (#451, #452) _Thanks @StendProg and @robokamran_
