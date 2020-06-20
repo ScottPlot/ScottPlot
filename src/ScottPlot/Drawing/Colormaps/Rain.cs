@@ -3,11 +3,12 @@
 //This colormap is under the MIT License
 //All cmocean colormaps are available at https://github.com/matplotlib/cmocean/tree/master/cmocean/rgb
 
-namespace ScottPlot.Config.ColorMaps
+namespace ScottPlot.Drawing.Colormaps
 {
-    public class Rain : ColormapFromByteArray
+    public class Rain : IColormap
     {
-        protected override byte[,] cmap { get { return cmaplocal; } }
+        public (byte r, byte g, byte b) GetRGB(byte value) =>
+            (cmaplocal[value, 0], cmaplocal[value, 1], cmaplocal[value, 2]);
 
         private static readonly byte[,] cmaplocal = {
             { 238, 237, 243 },

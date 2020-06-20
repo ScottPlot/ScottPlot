@@ -3,7 +3,7 @@ using System;
 
 namespace ScottPlot.Drawing.Colormaps
 {
-    class Blues : ScottPlot.Drawing.IColormap
+    public class Blues : IColormap
     {
         public (byte r, byte g, byte b) GetRGB(byte value)
         {

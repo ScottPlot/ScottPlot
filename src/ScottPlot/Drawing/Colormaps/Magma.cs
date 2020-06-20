@@ -10,7 +10,7 @@ using System;
 
 namespace ScottPlot.Drawing.Colormaps
 {
-    class Magma : ScottPlot.Drawing.IColormap
+    public class Magma : IColormap
     {
         public (byte r, byte g, byte b) GetRGB(byte value)
         {

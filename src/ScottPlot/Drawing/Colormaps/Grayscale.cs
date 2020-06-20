@@ -2,7 +2,7 @@
 
 namespace ScottPlot.Drawing.Colormaps
 {
-    class Grayscale : ScottPlot.Drawing.IColormap
+    public class Grayscale : IColormap
     {
         public (byte r, byte g, byte b) GetRGB(byte value)
         {

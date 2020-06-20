@@ -10,7 +10,7 @@ using System;
 
 namespace ScottPlot.Drawing.Colormaps
 {
-    class Inferno : ScottPlot.Drawing.IColormap
+    public class Inferno : IColormap
     {
         public (byte r, byte g, byte b) GetRGB(byte value)
         {

@@ -10,7 +10,7 @@ using System;
 
 namespace ScottPlot.Drawing.Colormaps
 {
-    class Viridis : ScottPlot.Drawing.IColormap
+    public class Viridis : IColormap
     {
         public (byte r, byte g, byte b) GetRGB(byte value)
         {

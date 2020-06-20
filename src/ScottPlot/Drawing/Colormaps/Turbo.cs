@@ -6,7 +6,7 @@ using System;
 
 namespace ScottPlot.Drawing.Colormaps
 {
-    class Turbo : ScottPlot.Drawing.IColormap
+    public class Turbo : IColormap
     {
         public (byte r, byte g, byte b) GetRGB(byte value)
         {
