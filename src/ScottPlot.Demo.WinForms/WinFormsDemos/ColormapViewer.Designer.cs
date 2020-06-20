@@ -37,6 +37,7 @@
             this.formsPlot2 = new ScottPlot.FormsPlot();
             this.rbData = new System.Windows.Forms.RadioButton();
             this.rbImage = new System.Windows.Forms.RadioButton();
+            this.formsPlot3 = new ScottPlot.FormsPlot();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbColormap)).BeginInit();
             this.SuspendLayout();
@@ -48,7 +49,7 @@
             this.panel1.Controls.Add(this.lbColormapNames);
             this.panel1.Location = new System.Drawing.Point(12, 12);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(148, 533);
+            this.panel1.Size = new System.Drawing.Size(148, 633);
             this.panel1.TabIndex = 0;
             // 
             // lbColormapNames
@@ -59,7 +60,7 @@
             this.lbColormapNames.ItemHeight = 21;
             this.lbColormapNames.Location = new System.Drawing.Point(0, 0);
             this.lbColormapNames.Name = "lbColormapNames";
-            this.lbColormapNames.Size = new System.Drawing.Size(148, 533);
+            this.lbColormapNames.Size = new System.Drawing.Size(148, 633);
             this.lbColormapNames.TabIndex = 0;
             this.lbColormapNames.SelectedIndexChanged += new System.EventHandler(this.lbColormapNames_SelectedIndexChanged);
             // 
@@ -81,7 +82,7 @@
             this.pbColormap.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pbColormap.Location = new System.Drawing.Point(171, 45);
             this.pbColormap.Name = "pbColormap";
-            this.pbColormap.Size = new System.Drawing.Size(1109, 37);
+            this.pbColormap.Size = new System.Drawing.Size(432, 37);
             this.pbColormap.TabIndex = 2;
             this.pbColormap.TabStop = false;
             // 
@@ -91,7 +92,7 @@
             | System.Windows.Forms.AnchorStyles.Left)));
             this.formsPlot1.Location = new System.Drawing.Point(171, 88);
             this.formsPlot1.Name = "formsPlot1";
-            this.formsPlot1.Size = new System.Drawing.Size(432, 457);
+            this.formsPlot1.Size = new System.Drawing.Size(432, 336);
             this.formsPlot1.TabIndex = 3;
             // 
             // formsPlot2
@@ -101,7 +102,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.formsPlot2.Location = new System.Drawing.Point(609, 88);
             this.formsPlot2.Name = "formsPlot2";
-            this.formsPlot2.Size = new System.Drawing.Size(671, 457);
+            this.formsPlot2.Size = new System.Drawing.Size(671, 336);
             this.formsPlot2.TabIndex = 4;
             // 
             // rbData
@@ -132,11 +133,21 @@
             this.rbImage.UseVisualStyleBackColor = true;
             this.rbImage.CheckedChanged += new System.EventHandler(this.rbImage_CheckedChanged);
             // 
+            // formsPlot3
+            // 
+            this.formsPlot3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.formsPlot3.Location = new System.Drawing.Point(171, 430);
+            this.formsPlot3.Name = "formsPlot3";
+            this.formsPlot3.Size = new System.Drawing.Size(1109, 215);
+            this.formsPlot3.TabIndex = 7;
+            // 
             // ColormapViewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1292, 557);
+            this.ClientSize = new System.Drawing.Size(1292, 657);
+            this.Controls.Add(this.formsPlot3);
             this.Controls.Add(this.rbImage);
             this.Controls.Add(this.rbData);
             this.Controls.Add(this.formsPlot2);
@@ -166,5 +177,6 @@
         private FormsPlot formsPlot2;
         private System.Windows.Forms.RadioButton rbData;
         private System.Windows.Forms.RadioButton rbImage;
+        private FormsPlot formsPlot3;
     }
 }

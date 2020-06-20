@@ -58,6 +58,9 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             else
                 PlotHeatmapGaussianNoise(formsPlot2.plt, cmap);
             formsPlot2.Render();
+
+            PlotLineSeries(formsPlot3.plt, cmap);
+            formsPlot3.Render();
         }
 
         public static void PlotColormapCurves(Plot plt, Colormap cmap)
@@ -76,6 +79,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             plt.PlotScatter(xs, gs, Color.Green, markerSize: 0);
             plt.PlotScatter(xs, bs, Color.Blue, markerSize: 0);
             plt.PlotScatter(xs, ms, Color.Black, markerSize: 0, lineStyle: LineStyle.Dash);
+            plt.AxisAuto();
             plt.YLabel("Pixel Intensity");
             plt.XLabel("Fractional Data Value");
         }
@@ -88,8 +92,10 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             int[] ys = DataGen.RandomNormal(rand, 10000, 25, 10).Select(y => (int)y).ToArray();
 
             double[,] intensities = Tools.XYToIntensities(Tools.IntensityMode.gaussian, xs, ys, 50, 50, 4);
+
             plt.Clear();
             plt.PlotHeatmap(intensities, cmap);
+            plt.AxisAuto();
         }
 
         public static void PlotHeatmapImage(Plot plt, Colormap cmap)
@@ -98,5 +104,19 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             plt.PlotHeatmap(intensities, cmap);
         }
 
+        public static void PlotLineSeries(Plot plt, Colormap cmap)
+        {
+            int lineCount = 7;
+
+            plt.Clear();
+            for (int i = 0; i < lineCount; i++)
+            {
+                double fraction = (double)i / lineCount;
+                double[] ys = DataGen.Sin(100, 2, mult: 1 + fraction * 2);
+                Color c = cmap.GetColor(fraction);
+                plt.PlotSignal(ys, color: c);
+            }
+            plt.AxisAuto();
+        }
     }
 }
