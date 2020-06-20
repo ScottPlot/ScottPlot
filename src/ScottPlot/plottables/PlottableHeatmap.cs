@@ -73,12 +73,13 @@ namespace ScottPlot
 
             intensitiesNormalized = Normalize(intensitiesFlattened, null, null, scaleMin, scaleMax);
 
-            int[] flatARGB = Colormap.GetRGBAs(intensitiesNormalized, colorMap);
+            int[] flatARGB = Colormap.GetRGBAs(intensitiesNormalized, colorMap, minimumIntensity: transparencyThreshold ?? 0);
 
             bmp = new Bitmap(width, height, PixelFormat.Format32bppArgb);
             scale = new Bitmap(1, 256, PixelFormat.Format32bppArgb);
 
-            int[] scaleRGBA = Colormap.GetRGBAs(Normalize(Enumerable.Range(0, scale.Height).Select(i => (double)i).Reverse().ToArray(), null, null, scaleMin, scaleMax), colorMap);
+            double[] normalizedValues = Normalize(Enumerable.Range(0, scale.Height).Select(i => (double)i).Reverse().ToArray(), null, null, scaleMin, scaleMax);
+            int[] scaleRGBA = Colormap.GetRGBAs(normalizedValues, colorMap);
 
             Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
             Rectangle rectScale = new Rectangle(0, 0, scale.Width, scale.Height);
