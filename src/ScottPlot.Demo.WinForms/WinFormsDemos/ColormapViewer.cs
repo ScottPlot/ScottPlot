@@ -1,0 +1,102 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using ScottPlot.Drawing;
+#pragma warning disable CS0618 // Type or member is obsolete
+
+namespace ScottPlot.Demo.WinForms.WinFormsDemos
+{
+    public partial class ColormapViewer : Form
+    {
+        Drawing.Colormap[] colormaps = Colormap.GetColormaps();
+        public ColormapViewer()
+        {
+            InitializeComponent();
+            foreach (Drawing.Colormap cmap in colormaps)
+                lbColormapNames.Items.Add(cmap.Name);
+            lbColormapNames.SelectedIndex = lbColormapNames.Items.IndexOf("Turbo");
+        }
+
+        private void ColormapViewer_Load(object sender, EventArgs e) => Redraw();
+        private void lbColormapNames_SelectedIndexChanged(object sender, EventArgs e) => Redraw();
+        private void ColormapViewer_SizeChanged(object sender, EventArgs e) => Redraw();
+        private void rbData_CheckedChanged(object sender, EventArgs e) => Redraw();
+        private void rbImage_CheckedChanged(object sender, EventArgs e) => Redraw();
+
+        private void Redraw()
+        {
+            Drawing.Colormap cmap = colormaps[lbColormapNames.SelectedIndex];
+            lblColormap.Text = cmap.Name;
+
+            int width = pbColormap.Width;
+            int height = pbColormap.Height;
+            Bitmap bmp = new Bitmap(width, height);
+            using (Graphics gfx = Graphics.FromImage(bmp))
+            using (Pen pen = new Pen(Color.Magenta))
+            {
+                for (int i = 0; i < width; i++)
+                {
+                    double fraction = (double)i / width;
+                    pen.Color = cmap.GetColor(fraction);
+                    gfx.DrawLine(pen, i, 0, i, height - 1);
+                }
+            }
+            pbColormap.Image?.Dispose();
+            pbColormap.Image = bmp;
+
+            PlotColormapCurves(formsPlot1.plt, cmap);
+            formsPlot1.Render();
+
+            if (rbImage.Checked)
+                PlotHeatmapImage(formsPlot2.plt, cmap);
+            else
+                PlotHeatmapGaussianNoise(formsPlot2.plt, cmap);
+            formsPlot2.Render();
+        }
+
+        public static void PlotColormapCurves(Plot plt, Colormap cmap)
+        {
+            byte[] pixelValueRange = Enumerable.Range(0, 256).Select(x => (byte)x).ToArray();
+            double[] xs = pixelValueRange.Select(x => (double)x / 255).ToArray();
+            double[] rs = pixelValueRange.Select(x => (double)cmap.GetRGB(x).r).ToArray();
+            double[] gs = pixelValueRange.Select(x => (double)cmap.GetRGB(x).g).ToArray();
+            double[] bs = pixelValueRange.Select(x => (double)cmap.GetRGB(x).b).ToArray();
+            double[] ms = new double[pixelValueRange.Length];
+            for (int i = 0; i < ms.Length; i++)
+                ms[i] = (rs[i] + gs[i] + bs[i]) / 3.0;
+
+            plt.Clear();
+            plt.PlotScatter(xs, rs, Color.Red, markerSize: 0);
+            plt.PlotScatter(xs, gs, Color.Green, markerSize: 0);
+            plt.PlotScatter(xs, bs, Color.Blue, markerSize: 0);
+            plt.PlotScatter(xs, ms, Color.Black, markerSize: 0, lineStyle: LineStyle.Dash);
+            plt.YLabel("Pixel Intensity");
+            plt.XLabel("Fractional Data Value");
+        }
+
+        public static void PlotHeatmapGaussianNoise(Plot plt, Colormap cmap)
+        {
+            Random rand = new Random(0);
+
+            int[] xs = DataGen.RandomNormal(rand, 10000, 25, 10).Select(x => (int)x).ToArray();
+            int[] ys = DataGen.RandomNormal(rand, 10000, 25, 10).Select(y => (int)y).ToArray();
+
+            double[,] intensities = Tools.XYToIntensities(Tools.IntensityMode.gaussian, xs, ys, 50, 50, 4);
+            plt.Clear();
+            plt.PlotHeatmap(intensities, cmap);
+        }
+
+        public static void PlotHeatmapImage(Plot plt, Colormap cmap)
+        {
+            double[,] intensities = DataGen.SampleImageData();
+            plt.PlotHeatmap(intensities, cmap);
+        }
+
+    }
+}
