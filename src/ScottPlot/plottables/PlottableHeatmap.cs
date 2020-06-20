@@ -40,7 +40,7 @@ namespace ScottPlot
         private SolidBrush brush;
         private Pen pen;
 
-        public PlottableHeatmap(double[,] intensities, Colormap colorMap, string label, double[] axisOffsets, double[] axisMultipliers, double? scaleMin, double? scaleMax, double? transparencyThreshold, Bitmap backgroundImage, bool displayImageAbove, bool drawAxisLabels)
+        public PlottableHeatmap(double[,] intensities, Colormap colormap, string label, double[] axisOffsets, double[] axisMultipliers, double? scaleMin, double? scaleMax, double? transparencyThreshold, Bitmap backgroundImage, bool displayImageAbove, bool drawAxisLabels)
         {
             this.width = intensities.GetLength(1);
             this.height = intensities.GetLength(0);
@@ -51,7 +51,7 @@ namespace ScottPlot
             this.pen = new Pen(brush);
             this.axisOffsets = axisOffsets;
             this.axisMultipliers = axisMultipliers;
-            this.colorMap = colorMap;
+            this.colorMap = colormap;
             this.label = label;
             this.scaleMin = scaleMin;
             this.scaleMax = scaleMax;
@@ -73,13 +73,13 @@ namespace ScottPlot
 
             intensitiesNormalized = Normalize(intensitiesFlattened, null, null, scaleMin, scaleMax);
 
-            int[] flatARGB = Colormap.GetRGBAs(intensitiesNormalized, colorMap, minimumIntensity: transparencyThreshold ?? 0);
+            int[] flatARGB = Colormap.GetRGBAs(intensitiesNormalized, colormap, minimumIntensity: transparencyThreshold ?? 0);
 
             bmp = new Bitmap(width, height, PixelFormat.Format32bppArgb);
             scale = new Bitmap(1, 256, PixelFormat.Format32bppArgb);
 
             double[] normalizedValues = Normalize(Enumerable.Range(0, scale.Height).Select(i => (double)i).Reverse().ToArray(), null, null, scaleMin, scaleMax);
-            int[] scaleRGBA = Colormap.GetRGBAs(normalizedValues, colorMap);
+            int[] scaleRGBA = Colormap.GetRGBAs(normalizedValues, colormap);
 
             Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
             Rectangle rectScale = new Rectangle(0, 0, scale.Width, scale.Height);
