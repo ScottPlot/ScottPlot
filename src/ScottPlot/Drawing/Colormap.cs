@@ -37,7 +37,7 @@ namespace ScottPlot.Drawing
             IColormap[] ics = AppDomain.CurrentDomain.GetAssemblies()
                                 .SelectMany(s => s.GetTypes())
                                 .Where(p => p.IsInterface == false)
-                                .Where(p => p.ToString().StartsWith("Spectrogram.Colormaps."))
+                                .Where(p => p.ToString().StartsWith("ScottPlot.Drawing.Colormaps."))
                                 .Select(x => x.ToString())
                                 .Select(path => (IColormap)Activator.CreateInstance(Type.GetType(path)))
                                 .ToArray();
