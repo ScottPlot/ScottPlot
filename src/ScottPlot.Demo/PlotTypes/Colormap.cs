@@ -19,7 +19,7 @@ namespace ScottPlot.Demo.PlotTypes
                 {
                     double[] ys = DataGen.Sin(51, phase: i * .03);
                     double fraction = (double)i / lineCount;
-                    Color c = Drawing.Colormap.Turbo.GetColor(fraction);
+                    Color c = Drawing.Colormap.Jet.GetColor(fraction);
                     plt.PlotSignal(ys, color: c, lineWidth: 2, markerSize: 0);
                 }
 
