@@ -6,6 +6,7 @@
 * Improved horizontal axis tick label positions in ruler mode (#453)
 * Added a `Statistics.Interpolation` module to generate smooth interpolated splines from a small number of input data points. See advanced statistics cookbook example for usage information. (#459) _Thanks Hans-Peter Moser_
 * Improved automatic axis adjustment when adding bar plots with negative values (#461, #462) _Thanks @Benny121221_
+* Fixed a long-running issue that caused the WPF control to fail to render in the Visual Studio designer in .NET Framework (but not .NET Core) projects (#473, #466, #356) _Thanks @bhairav-thakkar, @riquich, @Helitune-RobMcKay, and @iu2kxv_
 
 ## ScottPlot 4.0.35
 * Added `processEvents` argument to `formsPlot2.Render()` to provide a performance enhancement when linking axes of two `FormsPlot` controls together (by calling `Plot.MatchAxis()` from the control's `AxesChanged` event, as seen in the _Linked Axes_ demo application) (#451, #452) _Thanks @StendProg and @robokamran_
