@@ -36,6 +36,11 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
 
             int width = pbColormap.Width;
             int height = pbColormap.Height;
+
+            if (width <= 0 || height <= 0) { //This happens when the window is minimized
+                return;
+            }
+
             Bitmap bmp = new Bitmap(width, height);
             using (Graphics gfx = Graphics.FromImage(bmp))
             using (Pen pen = new Pen(Color.Magenta))
@@ -101,6 +106,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
         public static void PlotHeatmapImage(Plot plt, Colormap cmap)
         {
             double[,] intensities = DataGen.SampleImageData();
+            plt.Clear();
             plt.PlotHeatmap(intensities, cmap);
         }
 
