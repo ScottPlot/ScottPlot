@@ -37,7 +37,8 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             int width = pbColormap.Width;
             int height = pbColormap.Height;
 
-            if (width <= 0 || height <= 0) { //This happens when the window is minimized
+            if (width <= 0 || height <= 0)
+            { //This happens when the window is minimized
                 return;
             }
 
