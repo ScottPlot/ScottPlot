@@ -9,21 +9,29 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 using ScottPlot.Config;
+using ScottPlot.Drawing;
 
 namespace ScottPlot
 {
 
-
+#pragma warning disable CS0618 // Type or member is obsolete
     public class PlottableHeatmap : Plottable
     {
         private int width;
         private int height;
         private double[] intensitiesNormalized;
-        private Config.ColorMaps.Colormaps colorMap;
+        private Colormap colorMap;
         public string label;
         private double[] axisOffsets;
         private double[] axisMultipliers;
+        private double? scaleMin;
+        private double? scaleMax;
+        private double? transparencyThreshold;
+        private Bitmap backgroundImage;
+        private bool displayImageAbove;
+        private bool drawAxisLabels;
 
         private Bitmap bmp;
         private Bitmap scale;
@@ -32,10 +40,10 @@ namespace ScottPlot
         private SolidBrush brush;
         private Pen pen;
 
-        public PlottableHeatmap(double[,] intensities, Config.ColorMaps.Colormaps colorMap, string label, double[] axisOffsets, double[] axisMultipliers)
+        public PlottableHeatmap(double[,] intensities, Colormap colormap, string label, double[] axisOffsets, double[] axisMultipliers, double? scaleMin, double? scaleMax, double? transparencyThreshold, Bitmap backgroundImage, bool displayImageAbove, bool drawAxisLabels)
         {
-            this.width = intensities.GetUpperBound(1) + 1;
-            this.height = intensities.GetUpperBound(0) + 1;
+            this.width = intensities.GetLength(1);
+            this.height = intensities.GetLength(0);
             double[] intensitiesFlattened = Flatten(intensities);
             this.min = intensitiesFlattened.Min();
             this.max = intensitiesFlattened.Max();
@@ -43,18 +51,35 @@ namespace ScottPlot
             this.pen = new Pen(brush);
             this.axisOffsets = axisOffsets;
             this.axisMultipliers = axisMultipliers;
-            this.colorMap = colorMap;
+            this.colorMap = colormap;
             this.label = label;
+            this.scaleMin = scaleMin;
+            this.scaleMax = scaleMax;
+            this.backgroundImage = backgroundImage;
+            this.displayImageAbove = displayImageAbove;
+            this.drawAxisLabels = drawAxisLabels;
 
+            double normalizeMin = min;
+            double normalizeMax = max;
 
-            this.intensitiesNormalized = Normalize(intensitiesFlattened);
+            if (scaleMin.HasValue && scaleMin.Value < min)
+                normalizeMin = scaleMin.Value;
 
-            int[] flatARGB = IntensityToColor(this.intensitiesNormalized, colorMap);
+            if (scaleMax.HasValue && scaleMax.Value > max)
+                normalizeMin = scaleMax.Value;
+
+            if (transparencyThreshold.HasValue)
+                this.transparencyThreshold = Normalize(new double[] { transparencyThreshold.Value }, min, max, scaleMin, scaleMax)[0];
+
+            intensitiesNormalized = Normalize(intensitiesFlattened, null, null, scaleMin, scaleMax);
+
+            int[] flatARGB = Colormap.GetRGBAs(intensitiesNormalized, colormap, minimumIntensity: transparencyThreshold ?? 0);
 
             bmp = new Bitmap(width, height, PixelFormat.Format32bppArgb);
             scale = new Bitmap(1, 256, PixelFormat.Format32bppArgb);
 
-            int[] scaleRGBA = IntensityToColor(Normalize(Enumerable.Range(0, scale.Height).Select(i => (double)i).Reverse().ToArray()), colorMap);
+            double[] normalizedValues = Normalize(Enumerable.Range(0, scale.Height).Select(i => (double)i).Reverse().ToArray(), null, null, scaleMin, scaleMax);
+            int[] scaleRGBA = Colormap.GetRGBAs(normalizedValues, colormap);
 
             Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
             Rectangle rectScale = new Rectangle(0, 0, scale.Width, scale.Height);
@@ -67,11 +92,35 @@ namespace ScottPlot
             scale.UnlockBits(scaleBmpData);
         }
 
-        private double[] Normalize(double[] input)
+        private double[] Normalize(double[] input, double? min = null, double? max = null, double? scaleMin = null, double? scaleMax = null)
         {
-            double min = input.Min(); //You would think that C# is capable of this optimization itself, but this is about 5x faster for a 100x100 image
-            double max = input.Max();
-            return input.AsParallel().AsOrdered().Select(i => (i - min) / (max - min)).ToArray();
+            min = min ?? input.Min();
+            max = max ?? input.Max();
+
+            if (scaleMin.HasValue && scaleMin.Value < min)
+            {
+                min = scaleMin.Value;
+            }
+
+            if (scaleMax.HasValue && scaleMax.Value > max)
+            {
+                max = scaleMax.Value;
+            }
+
+            double[] normalized = input.AsParallel().AsOrdered().Select(i => (i - min.Value) / (max.Value - min.Value)).ToArray();
+            if (scaleMin.HasValue)
+            {
+                double threshold = (scaleMin.Value - min.Value) / (max.Value - min.Value);
+                normalized = normalized.AsParallel().AsOrdered().Select(i => i < threshold ? threshold : i).ToArray();
+            }
+
+            if (scaleMax.HasValue)
+            {
+                double threshold = (scaleMax.Value - min.Value) / (max.Value - min.Value);
+                normalized = normalized.AsParallel().AsOrdered().Select(i => i > threshold ? threshold : i).ToArray();
+            }
+
+            return normalized;
         }
 
         private double[] Invert(double[] input)
@@ -93,7 +142,14 @@ namespace ScottPlot
 
         public override AxisLimits2D GetLimits()
         {
-            return new AxisLimits2D(-10, bmp.Width, -5, bmp.Height);
+            if (drawAxisLabels)
+            {
+                return new AxisLimits2D(-10, bmp.Width, -5, bmp.Height);
+            }
+            else
+            {
+                return new AxisLimits2D(-3, bmp.Width, -3, bmp.Height);
+            }
         }
 
         public override int GetPointCount()
@@ -101,37 +157,25 @@ namespace ScottPlot
             return intensitiesNormalized.Length;
         }
 
-        private int[] IntensityToColor(double[] intensities, Config.ColorMaps.Colormaps colorMap)
-        {
-            switch (colorMap)
-            {
-                case Config.ColorMaps.Colormaps.grayscale:
-                    return new Config.ColorMaps.Grayscale().IntensitiesToARGB(intensities);
-                case Config.ColorMaps.Colormaps.grayscaleInverted:
-                    return new Config.ColorMaps.GrayscaleInverted().IntensitiesToARGB(intensities);
-                case Config.ColorMaps.Colormaps.viridis:
-                    return new Config.ColorMaps.Viridis().IntensitiesToARGB(intensities);
-                case Config.ColorMaps.Colormaps.magma:
-                    return new Config.ColorMaps.Magma().IntensitiesToARGB(intensities);
-                case Config.ColorMaps.Colormaps.inferno:
-                    return new Config.ColorMaps.Inferno().IntensitiesToARGB(intensities);
-                case Config.ColorMaps.Colormaps.plasma:
-                    return new Config.ColorMaps.Plasma().IntensitiesToARGB(intensities);
-                case Config.ColorMaps.Colormaps.turbo:
-                    return new Config.ColorMaps.Turbo().IntensitiesToARGB(intensities);
-                default:
-                    throw new ArgumentException("Colormap not supported");
-            }
-        }
-
         public override void Render(Settings settings)
         {
             var interpMode = settings.gfxData.InterpolationMode;
             settings.gfxData.InterpolationMode = InterpolationMode.NearestNeighbor;
             double minScale = settings.xAxisScale < settings.yAxisScale ? settings.xAxisScale : settings.yAxisScale;
+            if (backgroundImage != null && !displayImageAbove)
+            {
+                settings.gfxData.DrawImage(backgroundImage, (float)settings.GetPixelX(0), (float)(settings.GetPixelY(0) - (height * minScale)), (float)(width * minScale), (float)(height * minScale));
+            }
             settings.gfxData.DrawImage(bmp, (float)settings.GetPixelX(0), (float)(settings.GetPixelY(0) - (height * minScale)), (float)(width * minScale), (float)(height * minScale));
+            if (backgroundImage != null && displayImageAbove)
+            {
+                settings.gfxData.DrawImage(backgroundImage, (float)settings.GetPixelX(0), (float)(settings.GetPixelY(0) - (height * minScale)), (float)(width * minScale), (float)(height * minScale));
+            }
             RenderScale(settings);
-            RenderAxis(settings, minScale);
+            if (drawAxisLabels)
+            {
+                RenderAxis(settings, minScale);
+            }
             settings.gfxData.InterpolationMode = interpMode;
         }
 
@@ -146,8 +190,11 @@ namespace ScottPlot
             settings.gfxFigure.InterpolationMode = InterpolationMode.NearestNeighbor; //This is necessary for the scale (as its a 1 pixel wide image)
             settings.gfxFigure.DrawImage(scale, scaleRect);
             settings.gfxFigure.DrawRectangle(pen, scaleRectOutline);
-            settings.gfxFigure.DrawString($"{max:f3}", new Font(FontFamily.GenericSansSerif, 12), brush, new Point(scaleRect.X + 30, scaleRect.Top));
-            settings.gfxFigure.DrawString($"{min:f3}", new Font(FontFamily.GenericSansSerif, 12), brush, new Point(scaleRect.X + 30, scaleRect.Bottom), new StringFormat() { LineAlignment = StringAlignment.Far });
+            string maxString = scaleMax.HasValue ? $"{(scaleMax.Value < max ? "≥ " : "")}{ scaleMax.Value:f3}" : $"{max:f3}";
+            string minString = scaleMin.HasValue ? $"{(scaleMin.Value > min ? "≤ " : "")}{scaleMin.Value:f3}" : $"{min:f3}";
+
+            settings.gfxFigure.DrawString(maxString, new Font(FontFamily.GenericSansSerif, 12), brush, new Point(scaleRect.X + 30, scaleRect.Top));
+            settings.gfxFigure.DrawString(minString, new Font(FontFamily.GenericSansSerif, 12), brush, new Point(scaleRect.X + 30, scaleRect.Bottom), new StringFormat() { LineAlignment = StringAlignment.Far });
 
             settings.gfxFigure.InterpolationMode = interpMode;
         }

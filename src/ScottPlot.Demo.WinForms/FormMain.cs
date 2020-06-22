@@ -87,5 +87,10 @@ namespace ScottPlot.Demo.WinForms
         {
             new WinFormsDemos.AxisLimits().ShowDialog();
         }
+
+        private void btnColormapViewer_Click(object sender, EventArgs e)
+        {
+            new WinFormsDemos.ColormapViewer().ShowDialog();
+        }
     }
 }

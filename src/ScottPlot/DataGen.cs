@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -138,13 +139,13 @@ namespace ScottPlot
             return data;
         }
 
-        public static double[] NoisySin(Random rand, int pointCount, double oscillations = 1, double noiseLevel = .5)
+        public static double[] NoisySin(Random rand, int pointCount, double oscillations = 1, double noiseLevel = .5, double mult = 1)
         {
             if (rand is null)
                 rand = new Random();
             double[] values = Sin(pointCount, oscillations);
             for (int i = 0; i < values.Length; i++)
-                values[i] += rand.NextDouble() * noiseLevel;
+                values[i] += (rand.NextDouble() - .5) * noiseLevel * mult;
             return values;
         }
 

@@ -13,6 +13,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Linq;
 using ScottPlot.Config;
+using ScottPlot.Drawing;
 using ScottPlot.Statistics;
 
 namespace ScottPlot
@@ -582,23 +583,28 @@ namespace ScottPlot
         [Obsolete("This method is experimental and may change in subsequent versions")]
         public PlottableHeatmap PlotHeatmap(
             double[,] intensities,
-            Config.ColorMaps.Colormaps colorMap = Config.ColorMaps.Colormaps.viridis,
+            Colormap colormap = null,
             string label = null,
             double[] axisOffsets = null,
-            double[] axisMultipliers = null
+            double[] axisMultipliers = null,
+            double? scaleMin = null,
+            double? scaleMax = null,
+            double? transparencyThreshold = null,
+            Bitmap backgroundImage = null,
+            bool displayImageAbove = false,
+            bool drawAxisLabels = true
             )
         {
+            if (colormap == null)
+                colormap = Colormap.Viridis;
+
             if (axisOffsets == null)
-            {
                 axisOffsets = new double[] { 0, 0 };
-            }
 
             if (axisMultipliers == null)
-            {
                 axisMultipliers = new double[] { 1, 1 };
-            }
 
-            PlottableHeatmap heatmap = new PlottableHeatmap(intensities, colorMap, label, axisOffsets, axisMultipliers);
+            PlottableHeatmap heatmap = new PlottableHeatmap(intensities, colormap, label, axisOffsets, axisMultipliers, scaleMin, scaleMax, transparencyThreshold, backgroundImage, displayImageAbove, drawAxisLabels);
             settings.plottables.Add(heatmap);
             MatchAxis(this);
             Ticks(false, false); //I think we need to sort out our own labelling with System.Drawing
@@ -798,7 +804,7 @@ namespace ScottPlot
             double[] ys,
             string label = null,
             Color? color = null,
-            Config.ColorMaps.Colormap colormap = null,
+            Colormap colormap = null,
             double scaleFactor = 1
             )
         {

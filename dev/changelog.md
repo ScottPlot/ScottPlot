@@ -6,6 +6,7 @@
 * Improved horizontal axis tick label positions in ruler mode (#453)
 * Added a `Statistics.Interpolation` module to generate smooth interpolated splines from a small number of input data points. See advanced statistics cookbook example for usage information. (#459) _Thanks Hans-Peter Moser_
 * Improved automatic axis adjustment when adding bar plots with negative values (#461, #462) _Thanks @Benny121221_
+* Created `Drawing.Colormaps` module which has over a dozen colormaps for easily converting a fractional value to a color for use in plotting or heatmap displays (#457, #458) _Thanks @Benny121221_
 * Fixed a long-running issue that caused the WPF control to fail to render in the Visual Studio designer in .NET Framework (but not .NET Core) projects (#473, #466, #356) _Thanks @bhairav-thakkar, @riquich, @Helitune-RobMcKay, and @iu2kxv_
 
 ## ScottPlot 4.0.35

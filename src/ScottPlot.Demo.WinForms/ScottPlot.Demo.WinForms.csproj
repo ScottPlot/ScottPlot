@@ -99,6 +99,12 @@
     <Compile Include="WinFormsDemos\AxisLimits.Designer.cs">
       <DependentUpon>AxisLimits.cs</DependentUpon>
     </Compile>
+    <Compile Include="WinFormsDemos\ColormapViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinFormsDemos\ColormapViewer.Designer.cs">
+      <DependentUpon>ColormapViewer.cs</DependentUpon>
+    </Compile>
     <Compile Include="WinFormsDemos\FormsPlotConfig.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -183,6 +189,9 @@
     </Compile>
     <EmbeddedResource Include="WinFormsDemos\AxisLimits.resx">
       <DependentUpon>AxisLimits.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinFormsDemos\ColormapViewer.resx">
+      <DependentUpon>ColormapViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WinFormsDemos\FormsPlotConfig.resx">
       <DependentUpon>FormsPlotConfig.cs</DependentUpon>

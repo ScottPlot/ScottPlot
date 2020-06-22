@@ -331,5 +331,79 @@ namespace ScottPlot
                 hash = (hash * 31) ^ b;
             return hash;
         }
+
+        public enum IntensityMode
+        {
+            gaussian,
+            density
+        }
+
+        public static double[,] XYToIntensities(IntensityMode mode, int[] xs, int[] ys, int width, int height, int sampleWidth)
+        {
+            double NormPDF(double x, double mu, double sigma)
+            {
+                return (1 / (sigma * Math.Sqrt(2 * Math.PI))) * Math.Exp(-0.5 * (x - mu / sigma) * (x - mu / sigma));
+            }
+
+            double[,] output = new double[height, width];
+            if (mode == IntensityMode.gaussian)
+            {
+                for (int i = 0; i < xs.Length; i++)
+                {
+
+                    for (int j = -2 * sampleWidth; j < 2 * sampleWidth; j++) // 2 Standard deviations is ~0.95, i.e. close enough
+                    {
+                        for (int k = -2 * sampleWidth; k < 2 * sampleWidth; k++)
+                        {
+                            if (xs[i] + j > 0 && xs[i] + j < width && ys[i] + k > 0 && ys[i] + k < height)
+                            {
+                                output[ys[i] + k, xs[i] + j] += NormPDF(Math.Sqrt(j * j + k * k), 0, sampleWidth);
+                            }
+                        }
+                    }
+                }
+            }
+            else if (mode == IntensityMode.density)
+            {
+                (int x, int y)[] points = xs.Zip(ys, (x, y) => (x, y)).ToArray();
+                points = points.OrderBy(p => p.x).ToArray();
+                int[] xs_sorted = points.Select(p => p.x).ToArray();
+
+                for (int i = 0; i < height - height % sampleWidth; i += sampleWidth)
+                {
+                    for (int j = 0; j < width - width % sampleWidth; j += sampleWidth)
+                    {
+                        int count = 0;
+                        for (int k = 0; k < sampleWidth; k++)
+                        {
+                            for (int l = 0; l < sampleWidth; l++)
+                            {
+                                int index = Array.BinarySearch(xs_sorted, j + l);
+                                if (index > 0)
+                                {
+                                    for (int m = index; m < xs.Length; m++)
+                                    { //Multiple points w/ same x value
+                                        if (points[m].x == j + l && points[m].y == i + k)
+                                        {
+                                            count++;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        for (int k = 0; k < sampleWidth; k++)
+                        {
+                            for (int l = 0; l < sampleWidth; l++)
+                            {
+                                output[i + k, j + l] = count;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return output;
+        }
     }
 }
