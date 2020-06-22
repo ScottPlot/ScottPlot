@@ -33,7 +33,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
         {
             Drawing.Colormap cmap = colormaps[lbColormapNames.SelectedIndex];
             lblColormap.Text = cmap.Name;
-            
+
             pbColormap.Image?.Dispose();
             pbColormap.Image = Colormap.Colorbar(cmap, pbColormap.Width, pbColormap.Height);
 
