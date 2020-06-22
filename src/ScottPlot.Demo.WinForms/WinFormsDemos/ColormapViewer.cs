@@ -33,28 +33,9 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
         {
             Drawing.Colormap cmap = colormaps[lbColormapNames.SelectedIndex];
             lblColormap.Text = cmap.Name;
-
-            int width = pbColormap.Width;
-            int height = pbColormap.Height;
-
-            if (width <= 0 || height <= 0)
-            { //This happens when the window is minimized
-                return;
-            }
-
-            Bitmap bmp = new Bitmap(width, height);
-            using (Graphics gfx = Graphics.FromImage(bmp))
-            using (Pen pen = new Pen(Color.Magenta))
-            {
-                for (int i = 0; i < width; i++)
-                {
-                    double fraction = (double)i / width;
-                    pen.Color = cmap.GetColor(fraction);
-                    gfx.DrawLine(pen, i, 0, i, height - 1);
-                }
-            }
+            
             pbColormap.Image?.Dispose();
-            pbColormap.Image = bmp;
+            pbColormap.Image = Colormap.Colorbar(cmap, pbColormap.Width, pbColormap.Height);
 
             PlotColormapCurves(formsPlot1.plt, cmap);
             formsPlot1.Render();

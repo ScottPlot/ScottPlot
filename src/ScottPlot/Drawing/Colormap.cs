@@ -149,5 +149,36 @@ namespace ScottPlot.Drawing
             }
             return colors;
         }
+
+        public static Bitmap Colorbar(Colormap cmap, int width, int height, bool vertical = false)
+        {
+            if (width < 1 || height < 1)
+                return null;
+
+            Bitmap bmp = new Bitmap(width, height);
+            using (Graphics gfx = Graphics.FromImage(bmp))
+            using (Pen pen = new Pen(Color.Magenta))
+            {
+                if (vertical)
+                {
+                    for (int y = 0; y < height; y++)
+                    {
+                        double fraction = (double)y / (height);
+                        pen.Color = cmap.GetColor(fraction);
+                        gfx.DrawLine(pen, 0, height - y - 1, width - 1, height - y - 1);
+                    }
+                }
+                else
+                {
+                    for (int x = 0; x < width; x++)
+                    {
+                        double fraction = (double)x / width;
+                        pen.Color = cmap.GetColor(fraction);
+                        gfx.DrawLine(pen, x, 0, x, height - 1);
+                    }
+                }
+            }
+            return bmp;
+        }
     }
 }
