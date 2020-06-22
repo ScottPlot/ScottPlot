@@ -1,7 +1,11 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.0.37 ⚠️ _in active development_
+## ScottPlot 4.0.38 ⚠️ _in active development_
 * nothing yet...
+
+## ScottPlot 4.0.37
+* Fixed a long-running issue related to strong assembly versioning that caused the WPF control to fail to render in the Visual Studio designer in .NET Framework (but not .NET Core) projects (#473, #466, #356) _Thanks @bhairav-thakkar, @riquich, @Helitune-RobMcKay, and @iu2kxv_
+* User controls now also target `net472` (while still supporting `net461` and `netcoreapp3.0`) to produce a build folder with just 3 DLLs (compared to over 100 when building with .NET Framework 4.6.1)
 
 ## ScottPlot 4.0.36
 * `PlotSignal()` and `PlotSignalXY()` plots now have an optional `useParallel` argument (and public property on the objects they return) to allow the user to decide whether parallel or sequential calculations will be performed. (#454, #419, #245, #72) _Thanks @StendProg_
@@ -10,7 +14,6 @@
 * Added a `Statistics.Interpolation` module to generate smooth interpolated splines from a small number of input data points. See advanced statistics cookbook example for usage information. (#459) _Thanks Hans-Peter Moser_
 * Improved automatic axis adjustment when adding bar plots with negative values (#461, #462) _Thanks @Benny121221_
 * Created `Drawing.Colormaps` module which has over a dozen colormaps for easily converting a fractional value to a color for use in plotting or heatmap displays (#457, #458) _Thanks @Benny121221_
-* Fixed a long-running issue that caused the WPF control to fail to render in the Visual Studio designer in .NET Framework (but not .NET Core) projects (#473, #466, #356) _Thanks @bhairav-thakkar, @riquich, @Helitune-RobMcKay, and @iu2kxv_
 * Updated `Plot.Clear()` to accept any `Plottable` as an argument, and all `Plottable` objects of the same type will be cleared (#464) _Thanks @imka-code_
 
 ## ScottPlot 4.0.35

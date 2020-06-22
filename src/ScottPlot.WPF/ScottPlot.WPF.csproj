@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.0;net461</TargetFrameworks>
+    <TargetFrameworks>net461;net472;netcoreapp3.0</TargetFrameworks>
     <OutputType>Library</OutputType>
     <RootNamespace>ScottPlot</RootNamespace>
     <UseWPF>true</UseWPF>

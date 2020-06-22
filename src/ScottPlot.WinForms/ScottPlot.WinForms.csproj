@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
-    <TargetFrameworks>net461;netcoreapp3.0</TargetFrameworks>
+    <TargetFrameworks>net461;net472;netcoreapp3.0</TargetFrameworks>
     <AssemblyName>ScottPlot.WinForms</AssemblyName>
     <RootNamespace>ScottPlot</RootNamespace>
     <UseWindowsForms>true</UseWindowsForms>
