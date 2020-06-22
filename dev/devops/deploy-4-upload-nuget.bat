@@ -2,6 +2,8 @@
 
 :: this script requires nuget.exe to be in this folder
 :: https://www.nuget.org/downloads
+:: and have your API key stored on your systeminfo
+:: nuget SetApiKey 123456789
 
 echo.
 echo ### UPDATING NUGET ###
