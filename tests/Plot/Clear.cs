@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using ScottPlot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -86,13 +87,34 @@ namespace ScottPlotTests.Plot
         }
 
         [Test]
-        public void Test_ClearUsingGeneric_ClearOnlySignals()
+        public void Test_ClearUsingGeneric_ClearSignalsUsingGenerics()
         {
             var plt = GetDemoPlot();
 
             int numberOfPlottablesBefore = plt.GetPlottables().Count;
             int numberOfSignalsBefore = plt.GetPlottables().Where(x => x is ScottPlot.PlottableSignal).Count();
             plt.Clear<ScottPlot.PlottableSignal>();
+            TestTools.SaveFig(plt);
+            int numberOfPlottablesAfter = plt.GetPlottables().Count;
+            int numberOfPlottablesRemoved = numberOfPlottablesBefore - numberOfPlottablesAfter;
+            int numberOfSignalsAfter = plt.GetPlottables().Where(x => x is ScottPlot.PlottableSignal).Count();
+
+            Assert.AreEqual(2, numberOfSignalsBefore);
+            Assert.AreEqual(0, numberOfSignalsAfter);
+            Assert.AreEqual(numberOfSignalsBefore, numberOfPlottablesRemoved);
+        }
+
+        [Test]
+        public void Test_ClearUsingGeneric_ClearSignalsByExampple()
+        {
+            var plt = GetDemoPlot();
+
+            int numberOfPlottablesBefore = plt.GetPlottables().Count;
+            int numberOfSignalsBefore = plt.GetPlottables().Where(x => x is ScottPlot.PlottableSignal).Count();
+
+            var exampleSignal = plt.PlotSignal(DataGen.Sin(51));
+            plt.Clear(exampleSignal);
+
             TestTools.SaveFig(plt);
             int numberOfPlottablesAfter = plt.GetPlottables().Count;
             int numberOfPlottablesRemoved = numberOfPlottablesBefore - numberOfPlottablesAfter;

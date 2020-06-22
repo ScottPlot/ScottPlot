@@ -298,6 +298,17 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Clear all plottables of the same type as the one that is given
+        /// </summary>
+        public void Clear(Plottable examplePlottable)
+        {
+            settings.plottables.RemoveAll(x => x.GetType() == examplePlottable.GetType());
+
+            if (settings.plottables.Count == 0)
+                settings.axes.Reset();
+        }
+
+        /// <summary>
         /// Clear all plottables matching the given types
         /// </summary>
         public void Clear(Type[] typesToClear)
