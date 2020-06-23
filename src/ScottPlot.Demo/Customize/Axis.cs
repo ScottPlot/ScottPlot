@@ -168,8 +168,8 @@ namespace ScottPlot.Demo.Customize
                 plt.PlotScatter(x, y);
 
                 //Base 10 on x axis, base 16 on y axis
-                int[] radices = { 16, 16 };
-                string[] prefices = { "0x", "0x" };
+                int[] radices = { 10, 16 };
+                string[] prefices = { "", "0x" };
 
                 plt.Ticks(radices: radices, prefices: prefices);
             }
