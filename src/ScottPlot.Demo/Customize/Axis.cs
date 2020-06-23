@@ -152,5 +152,27 @@ namespace ScottPlot.Demo.Customize
                 plt.Title("DateTime Axis Labels");
             }
         }
+
+        public class HexadecimalAxis : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Hexadecimal Axis";
+            public string description { get; } = "Axis tick labels can be in any base, not just base 10";
+
+            public void Render(Plot plt)
+            {
+                Random rand = new Random(0);
+                int pointCount = 5;
+                double[] x = DataGen.Consecutive(pointCount);
+                double[] y = DataGen.NoisyLinear(rand, pointCount);
+
+                plt.PlotScatter(x, y);
+
+                //Base 10 on x axis, base 16 on y axis
+                int[] radices = { 16, 16 };
+                string[] prefices = { "0x", "0x" };
+
+                plt.Ticks(radices: radices, prefices: prefices);
+            }
+        }
     }
 }

@@ -43,7 +43,5 @@ namespace ScottPlot.Config
 
         public bool snapToNearestPixel = true;
 
-        public double radix = 10;
-        public string prefix = null;
     }
 }

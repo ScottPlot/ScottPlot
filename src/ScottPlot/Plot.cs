@@ -1844,8 +1844,8 @@ namespace ScottPlot
             string numericFormatStringX = null,
             string numericFormatStringY = null,
             bool? snapToNearestPixel = null,
-            double? radix = 10,
-            string prefix = null
+            int[] radices = null,
+            string[] prefices = null
             )
         {
             if (displayTicksX != null)
@@ -1896,10 +1896,16 @@ namespace ScottPlot
                 settings.ticks.y.numericFormatString = numericFormatStringY;
             if (snapToNearestPixel != null)
                 settings.ticks.snapToNearestPixel = snapToNearestPixel.Value;
-            if (radix != null)
-                settings.ticks.radix = radix.Value;
-            if (prefix != null)
-                settings.ticks.prefix = prefix;
+            if (radices != null)
+            {
+                settings.ticks.x.radix = radices[0];
+                settings.ticks.y.radix = radices[1];
+            }
+            if (prefices != null)
+            {
+                settings.ticks.x.prefix = prefices[0];
+                settings.ticks.y.prefix = prefices[1];
+            }
 
             // dont use offset notation if the sign is inverted
             if (settings.ticks.x.invertSign || settings.ticks.y.invertSign)

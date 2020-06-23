@@ -30,6 +30,10 @@ namespace ScottPlot.Config
         public bool logScale;
         public string numericFormatString;
 
+        public int radix = 10;
+        public string prefix = null;
+
+
         public TickCollection(bool verticalAxis)
         {
             this.verticalAxis = verticalAxis;
