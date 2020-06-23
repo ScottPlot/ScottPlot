@@ -406,7 +406,7 @@ namespace ScottPlot
             return output;
         }
 
-        public static string ToDifferentBase(double number, int radix = 16, int decimalPlaces = 3, int padInteger = 0)
+        public static string ToDifferentBase(double number, int radix = 16, int decimalPlaces = 3, int padInteger = 0, bool dropTrailingZeroes = true)
         {
             char[] symbols = "0123456789ABCDEF".ToCharArray();
             double epsilon = Math.Pow(radix, -decimalPlaces);
@@ -436,6 +436,18 @@ namespace ScottPlot
             {
                 output += ".";
                 output += ToDifferentBase(Math.Round(decimalPart * Math.Pow(radix, decimalPlaces)), radix, decimalPlaces, decimalPlaces);
+                if (dropTrailingZeroes)
+                {
+                    while (output.Last() == '0')
+                    {
+                        output = output.Substring(0, output.Length - 1);
+                    }
+
+                    if (output.Last() == '.')
+                    {
+                        output = output.Substring(0, output.Length - 1);
+                    }
+                }
             }
 
             return output;
