@@ -161,9 +161,9 @@ namespace ScottPlot.Demo.Customize
             public void Render(Plot plt)
             {
                 Random rand = new Random(0);
-                int pointCount = 5;
+                int pointCount = 15;
                 double[] x = DataGen.Consecutive(pointCount);
-                double[] y = DataGen.NoisyLinear(rand, pointCount);
+                double[] y = DataGen.Consecutive(pointCount);
 
                 plt.PlotScatter(x, y);
 
