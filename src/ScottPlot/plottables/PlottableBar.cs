@@ -17,6 +17,7 @@ namespace ScottPlot
 
         public LineStyle lineStyle;
         public Color fillColor;
+        public double[] yOffsets;
         public string label;
 
         private double errorCapSize;
@@ -40,7 +41,7 @@ namespace ScottPlot
             bool fill, Color fillColor,
             double outlineWidth, Color outlineColor,
             double[] yErr, double errorLineWidth, double errorCapSize, Color errorColor,
-            bool horizontal, bool showValues
+            bool horizontal, bool showValues, double[] yOffsets
             )
         {
             if (ys is null || ys.Length == 0)
@@ -58,6 +59,9 @@ namespace ScottPlot
             if (yErr.Length != ys.Length)
                 throw new ArgumentException("yErr and ys must have same number of elements");
 
+            if (yOffsets is null)
+                yOffsets = DataGen.Zeros(ys.Length);
+
             this.xs = xs;
             this.ys = ys;
             this.yErr = yErr;
@@ -71,6 +75,8 @@ namespace ScottPlot
 
             this.fill = fill;
             this.fillColor = fillColor;
+
+            this.yOffsets = yOffsets;
 
             fillBrush = new SolidBrush(fillColor);
             outlinePen = new Pen(outlineColor, (float)outlineWidth);
@@ -89,8 +95,8 @@ namespace ScottPlot
 
             for (int i = 0; i < xs.Length; i++)
             {
-                valueMin = Math.Min(valueMin, ys[i] - yErr[i]);
-                valueMax = Math.Max(valueMax, ys[i] + yErr[i]);
+                valueMin = Math.Min(valueMin, ys[i] - yErr[i] + yOffsets[i]);
+                valueMax = Math.Max(valueMax, ys[i] + yErr[i] + yOffsets[i]);
                 positionMin = Math.Min(positionMin, xs[i]);
                 positionMax = Math.Max(positionMax, xs[i]);
             }
@@ -118,18 +124,18 @@ namespace ScottPlot
             for (int i = 0; i < ys.Length; i++)
             {
                 if (verticalBars)
-                    RenderBarVertical(settings, xs[i] + xOffset, ys[i], yErr[i]);
+                    RenderBarVertical(settings, xs[i] + xOffset, ys[i], yErr[i], yOffsets[i]);
                 else
-                    RenderBarHorizontal(settings, xs[i] + xOffset, ys[i], yErr[i]);
+                    RenderBarHorizontal(settings, xs[i] + xOffset, ys[i], yErr[i], yOffsets[i]);
             }
         }
 
-        private void RenderBarVertical(Settings settings, double position, double value, double valueError)
+        private void RenderBarVertical(Settings settings, double position, double value, double valueError, double yOffset)
         {
             float centerPx = (float)settings.GetPixelX(position);
             double edge1 = position - barWidth / 2;
-            double value1 = Math.Min(valueBase, value);
-            double value2 = Math.Max(valueBase, value);
+            double value1 = Math.Min(valueBase, value) + yOffset;
+            double value2 = Math.Max(valueBase, value) + yOffset;
             double valueSpan = value2 - value1;
 
             var rect = new RectangleF(
@@ -162,12 +168,12 @@ namespace ScottPlot
                 settings.gfxData.DrawString(value.ToString(), valueTextFont, valueTextBrush, centerPx, rect.Y, settings.misc.sfSouth);
         }
 
-        private void RenderBarHorizontal(Settings settings, double position, double value, double valueError)
+        private void RenderBarHorizontal(Settings settings, double position, double value, double valueError, double yOffset)
         {
             float centerPx = (float)settings.GetPixelY(position);
             double edge2 = position + barWidth / 2;
-            double value1 = Math.Min(valueBase, value);
-            double value2 = Math.Max(valueBase, value);
+            double value1 = Math.Min(valueBase, value) + yOffset;
+            double value2 = Math.Max(valueBase, value) + yOffset;
             double valueSpan = value2 - value1;
 
             var rect = new RectangleF(

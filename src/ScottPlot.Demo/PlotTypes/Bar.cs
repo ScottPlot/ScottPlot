@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ScottPlot.Demo.PlotTypes
@@ -138,6 +139,24 @@ namespace ScottPlot.Demo.PlotTypes
                 // customize the plot to make it look nicer
                 plt.Grid(enableVertical: false, lineStyle: LineStyle.Dot);
                 plt.Legend();
+            }
+        }
+
+        public class Waterfall : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Waterfall Plot";
+            public string description { get; } = "You can use the yOffsets parameter to create a waterfall plot";
+
+            public void Render(Plot plt)
+            {
+                // generate random data to plot
+                Random rand = new Random(0);
+                int pointCount = 10;
+                double[] xs = DataGen.Consecutive(pointCount);
+                double[] ys = DataGen.RandomNormal(rand, pointCount, 5, 10);
+                double[] yOffsets = Enumerable.Range(0, pointCount).Select(count => ys.Take(count).Sum()).ToArray();
+
+                plt.PlotBar(xs, ys, yOffsets: yOffsets);
             }
         }
 

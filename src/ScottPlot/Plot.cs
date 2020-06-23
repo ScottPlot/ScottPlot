@@ -1075,7 +1075,8 @@ namespace ScottPlot
             Color? errorColor = null,
             bool horizontal = false,
             bool showValues = false,
-            bool autoAxis = true
+            bool autoAxis = true,
+            double[] yOffsets = null
             )
         {
             if (fillColor == null)
@@ -1102,7 +1103,8 @@ namespace ScottPlot
                 outlineWidth: outlineWidth,
                 outlineColor: outlineColor.Value,
                 horizontal: horizontal,
-                showValues: showValues
+                showValues: showValues,
+                yOffsets: yOffsets
                 );
 
             settings.plottables.Add(barPlot);
