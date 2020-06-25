@@ -61,5 +61,21 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.AxisAuto(0);
             }
         }
+
+        public class FillAboveBelowWithBaseline : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Fill Above and Below with Baseline";
+            public string description { get; } = "A custom baseline can be provided.";
+
+            public void Render(Plot plt)
+            {
+                Random rand = new Random(0);
+                var ys = ScottPlot.DataGen.RandomWalk(rand, 1000, offset: -10);
+                var xs = ScottPlot.DataGen.Consecutive(ys.Length, spacing: 0.025);
+
+                plt.PlotFillAboveBelow(xs, ys, fillAlpha: .5, baseline: 3.21);
+                plt.AxisAuto(0);
+            }
+        }
     }
 }

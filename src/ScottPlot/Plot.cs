@@ -534,10 +534,16 @@ namespace ScottPlot
             double[] ys2above = new double[ys2.Length];
             for (int i = 0; i < ys2.Length; i++)
             {
-                if (ys2[i] < 0)
+                if (ys2[i] < baseline)
+                {
                     ys2below[i] = ys2[i];
+                    ys2above[i] = baseline;
+                }
                 else
+                {
                     ys2above[i] = ys2[i];
+                    ys2below[i] = baseline;
+                }
             }
 
             if (fillColorAbove is null)
