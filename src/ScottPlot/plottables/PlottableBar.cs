@@ -17,6 +17,7 @@ namespace ScottPlot
 
         public LineStyle lineStyle;
         public Color fillColor;
+        public Color negativeColor;
         public double[] yOffsets;
         public string label;
 
@@ -41,7 +42,7 @@ namespace ScottPlot
             bool fill, Color fillColor,
             double outlineWidth, Color outlineColor,
             double[] yErr, double errorLineWidth, double errorCapSize, Color errorColor,
-            bool horizontal, bool showValues, double[] yOffsets
+            bool horizontal, bool showValues, double[] yOffsets, Color negativeColor
             )
         {
             if (ys is null || ys.Length == 0)
@@ -62,6 +63,7 @@ namespace ScottPlot
             if (yOffsets is null)
                 yOffsets = DataGen.Zeros(ys.Length);
 
+
             this.xs = xs;
             this.ys = ys;
             this.yErr = yErr;
@@ -75,6 +77,7 @@ namespace ScottPlot
 
             this.fill = fill;
             this.fillColor = fillColor;
+            this.negativeColor = negativeColor;
 
             this.yOffsets = yOffsets;
 
@@ -138,6 +141,15 @@ namespace ScottPlot
             double value2 = Math.Max(valueBase, value) + yOffset;
             double valueSpan = value2 - value1;
 
+            if (value < 0)
+            {
+                ((SolidBrush)fillBrush).Color = negativeColor;
+            }
+            else
+            {
+                ((SolidBrush)fillBrush).Color = fillColor;
+            }
+
             var rect = new RectangleF(
                 x: (float)settings.GetPixelX(edge1),
                 y: (float)settings.GetPixelY(value2),
@@ -175,6 +187,15 @@ namespace ScottPlot
             double value1 = Math.Min(valueBase, value) + yOffset;
             double value2 = Math.Max(valueBase, value) + yOffset;
             double valueSpan = value2 - value1;
+
+            if (value < 0)
+            {
+                ((SolidBrush)fillBrush).Color = negativeColor;
+            }
+            else
+            {
+                ((SolidBrush)fillBrush).Color = fillColor;
+            }
 
             var rect = new RectangleF(
                 x: (float)settings.GetPixelX(value1),

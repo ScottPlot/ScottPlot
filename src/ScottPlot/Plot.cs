@@ -1059,6 +1059,49 @@ namespace ScottPlot
             return pie;
         }
 
+        public PlottableBar PlotWaterfall(
+            double[] xs,
+            double[] ys,
+            double[] errorY = null,
+            string label = null,
+            double barWidth = .8,
+            double xOffset = 0,
+            bool fill = true,
+            Color? fillColor = null,
+            double outlineWidth = 1,
+            Color? outlineColor = null,
+            double errorLineWidth = 1,
+            double errorCapSize = .38,
+            Color? errorColor = null,
+            bool horizontal = false,
+            bool showValues = false,
+            bool autoAxis = true,
+            Color? negativeColor = null
+            )
+        {
+            double[] yOffsets = Enumerable.Range(0, ys.Length).Select(count => ys.Take(count).Sum()).ToArray();
+            return PlotBar(
+                xs,
+                ys,
+                errorY,
+                label,
+                barWidth,
+                xOffset,
+                fill,
+                fillColor,
+                outlineWidth,
+                outlineColor,
+                errorLineWidth,
+                errorCapSize,
+                errorColor,
+                horizontal,
+                showValues,
+                autoAxis,
+                yOffsets,
+                negativeColor
+            );
+        }
+
         public PlottableBar PlotBar(
             double[] xs,
             double[] ys,
@@ -1076,7 +1119,8 @@ namespace ScottPlot
             bool horizontal = false,
             bool showValues = false,
             bool autoAxis = true,
-            double[] yOffsets = null
+            double[] yOffsets = null,
+            Color? negativeColor = null
             )
         {
             if (fillColor == null)
@@ -1087,6 +1131,11 @@ namespace ScottPlot
 
             if (errorColor == null)
                 errorColor = Color.Black;
+
+            if (!negativeColor.HasValue)
+            {
+                negativeColor = fillColor;
+            }
 
             PlottableBar barPlot = new PlottableBar(
                 xs: xs,
@@ -1104,7 +1153,8 @@ namespace ScottPlot
                 outlineColor: outlineColor.Value,
                 horizontal: horizontal,
                 showValues: showValues,
-                yOffsets: yOffsets
+                yOffsets: yOffsets,
+                negativeColor: negativeColor.Value
                 );
 
             settings.plottables.Add(barPlot);

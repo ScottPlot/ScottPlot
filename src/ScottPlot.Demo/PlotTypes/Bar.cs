@@ -151,12 +151,19 @@ namespace ScottPlot.Demo.PlotTypes
             {
                 // generate random data to plot
                 Random rand = new Random(0);
-                int pointCount = 10;
+                int pointCount = 12;
                 double[] xs = DataGen.Consecutive(pointCount);
                 double[] ys = DataGen.RandomNormal(rand, pointCount, 5, 10);
-                double[] yOffsets = Enumerable.Range(0, pointCount).Select(count => ys.Take(count).Sum()).ToArray();
 
-                plt.PlotBar(xs, ys, yOffsets: yOffsets);
+                System.Drawing.Color profitColor = System.Drawing.Color.Green;
+                System.Drawing.Color lossColor = System.Drawing.Color.Red;
+                string[] monthNames = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+
+                plt.PlotWaterfall(xs, ys, fillColor: profitColor, negativeColor: lossColor);
+                plt.Title("Y1 Profits");
+                plt.XLabel("Month");
+                plt.XTicks(monthNames);
+                plt.YLabel("Million USD");
             }
         }
 
