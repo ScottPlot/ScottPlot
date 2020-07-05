@@ -42,6 +42,5 @@ namespace ScottPlot.Config
         public bool useExponentialNotation = true;
 
         public bool snapToNearestPixel = true;
-
     }
 }
