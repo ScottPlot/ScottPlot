@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 
@@ -145,25 +146,23 @@ namespace ScottPlot.Demo.PlotTypes
         public class Waterfall : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Waterfall Plot";
-            public string description { get; } = "You can use the yOffsets parameter to create a waterfall plot";
+            public string description { get; } = "Waterfall plots are a type of box plot where each box starts where the previous box ended.";
 
             public void Render(Plot plt)
             {
-                // generate random data to plot
+                // generate random monthly data
                 Random rand = new Random(0);
-                int pointCount = 12;
-                double[] xs = DataGen.Consecutive(pointCount);
-                double[] ys = DataGen.RandomNormal(rand, pointCount, 5, 10);
+                double[] monthProfits = DataGen.RandomNormal(rand, 12, 5, 10);
+                double[] monthNumbers = DataGen.Consecutive(12);
+                string[] monthNames = { "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                                        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 
-                System.Drawing.Color profitColor = System.Drawing.Color.Green;
-                System.Drawing.Color lossColor = System.Drawing.Color.Red;
-                string[] monthNames = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+                plt.PlotWaterfall(monthNumbers, monthProfits, 
+                    fillColor: Color.Green, negativeColor: Color.Red);
 
-                plt.PlotWaterfall(xs, ys, fillColor: profitColor, negativeColor: lossColor);
-                plt.Title("Y1 Profits");
-                plt.XLabel("Month");
                 plt.XTicks(monthNames);
-                plt.YLabel("Million USD");
+                plt.YLabel("Valuation (million USD)");
+                plt.Title("Company Value in 2020");
             }
         }
 
