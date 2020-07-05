@@ -238,15 +238,9 @@ namespace ScottPlot
             for (int i = 0; i < settings.ticks.y.tickPositionsMajor.Length; i++)
             {
                 double value = settings.ticks.y.tickPositionsMajor[i];
-                string text;
-                if (settings.ticks.y.radix == 10)
-                {
-                    text = settings.ticks.y.tickLabels[i];
-                }
-                else
-                {
-                    text = (settings.ticks.y.prefix ?? "") + Tools.ToDifferentBase(value, settings.ticks.y.radix);
-                }
+                string text = (settings.ticks.y.radix == 10) ?
+                    settings.ticks.y.tickLabels[i] :
+                    settings.ticks.y.prefix + Tools.ToDifferentBase(value, settings.ticks.y.radix);
 
                 double unitsFromAxisEdge = value - settings.axes.y.min;
                 double xPx = settings.dataOrigin.X - 1;
@@ -298,15 +292,9 @@ namespace ScottPlot
             for (int i = 0; i < settings.ticks.x.tickPositionsMajor.Length; i++)
             {
                 double value = settings.ticks.x.tickPositionsMajor[i];
-                string text;
-                if (settings.ticks.x.radix == 10)
-                {
-                    text = settings.ticks.x.tickLabels[i];
-                }
-                else
-                {
-                    text = (settings.ticks.x.prefix ?? "") + Tools.ToDifferentBase(value, settings.ticks.x.radix);
-                }
+                string text = (settings.ticks.x.radix == 10) ?
+                    settings.ticks.x.tickLabels[i] :
+                    settings.ticks.x.prefix + Tools.ToDifferentBase(value, settings.ticks.x.radix);
 
                 double unitsFromAxisEdge = value - settings.axes.x.min;
                 double xPx = unitsFromAxisEdge * settings.xAxisScale + settings.layout.data.left;
