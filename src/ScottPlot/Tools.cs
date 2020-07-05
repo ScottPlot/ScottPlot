@@ -408,7 +408,21 @@ namespace ScottPlot
 
         public static string ToDifferentBase(double number, int radix = 16, int decimalPlaces = 3, int padInteger = 0, bool dropTrailingZeroes = true)
         {
+            if (number < 0)
+            {
+                return "-" + ToDifferentBase(Math.Abs(number), radix, decimalPlaces, padInteger, dropTrailingZeroes);
+            }
+            else if (number == 0)
+            {
+                return "0";
+            }
+
             char[] symbols = "0123456789ABCDEF".ToCharArray();
+            if (radix > symbols.Length)
+            {
+                throw new ArgumentOutOfRangeException(nameof(radix));
+            }
+
             double epsilon = Math.Pow(radix, -decimalPlaces);
 
             if (radix > symbols.Length)
