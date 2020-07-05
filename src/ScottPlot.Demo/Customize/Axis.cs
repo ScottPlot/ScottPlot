@@ -152,5 +152,44 @@ namespace ScottPlot.Demo.Customize
                 plt.Title("DateTime Axis Labels");
             }
         }
+
+        public class HexadecimalAxis : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Hexadecimal Axis";
+            public string description { get; } = "Axis tick labels can be in any base, not just base 10";
+
+            public void Render(Plot plt)
+            {
+                // create some sample data
+                double[] xs = { 0 };
+                double[] valuesA = { 0x40000000 };
+                double[] valuesB = { 0x40100000 };
+                double[] valuesC = { 0xA0000000 };
+
+                // to simulate stacking B on A, shift B up by A
+                double[] valuesB2 = new double[valuesB.Length];
+                double[] valuesC2 = new double[valuesC.Length];
+                for (int i = 0; i < valuesB.Length; i++)
+                {
+                    valuesB2[i] = valuesA[i] + valuesB[i];
+                    valuesC2[i] = valuesC[i] + valuesB2[i];
+                }
+
+                // plot the bar charts in reverse order (highest first)
+                plt.PlotBar(xs, valuesC2, label: "Process C");
+                plt.PlotBar(xs, valuesB2, label: "Process B");
+                plt.PlotBar(xs, valuesA, label: "Process A");
+
+                // configure ticks for base 16 Y-axis
+                plt.Ticks(baseY: 16, prefixY: "0x");
+                plt.Axis(-1, 1, 0, 0x1A0000000);
+
+                // further customize the plot
+                plt.Ticks(displayTicksX: false, displayTicksY: true);
+                plt.Title("Memory Consumption");
+                plt.YLabel("Memory (Bytes)");
+                plt.Legend();
+            }
+        }
     }
 }

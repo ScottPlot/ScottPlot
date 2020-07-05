@@ -405,5 +405,66 @@ namespace ScottPlot
 
             return output;
         }
+
+        public static string ToDifferentBase(double number, int radix = 16, int decimalPlaces = 3, int padInteger = 0, bool dropTrailingZeroes = true)
+        {
+            if (number < 0)
+            {
+                return "-" + ToDifferentBase(Math.Abs(number), radix, decimalPlaces, padInteger, dropTrailingZeroes);
+            }
+            else if (number == 0)
+            {
+                return "0";
+            }
+
+            char[] symbols = "0123456789ABCDEF".ToCharArray();
+            if (radix > symbols.Length)
+            {
+                throw new ArgumentOutOfRangeException(nameof(radix));
+            }
+
+            double epsilon = Math.Pow(radix, -decimalPlaces);
+
+            if (radix > symbols.Length)
+            {
+                throw new ArgumentOutOfRangeException(nameof(radix));
+            }
+
+            int integerLength = (int)Math.Ceiling(Math.Log(number, radix));
+            int decimalLength = number % 1 > epsilon ? decimalPlaces : 0;
+            double decimalPart = number % 1;
+            string output = "";
+
+            for (int i = 0; i < integerLength; i++)
+            {
+                output = symbols[(int)(number % radix)] + output;
+                number /= radix;
+            }
+
+            while (output.Length < padInteger)
+            {
+                output = "0" + output;
+            }
+
+            if (decimalLength != 0)
+            {
+                output += ".";
+                output += ToDifferentBase(Math.Round(decimalPart * Math.Pow(radix, decimalPlaces)), radix, decimalPlaces, decimalPlaces);
+                if (dropTrailingZeroes)
+                {
+                    while (output.Last() == '0')
+                    {
+                        output = output.Substring(0, output.Length - 1);
+                    }
+
+                    if (output.Last() == '.')
+                    {
+                        output = output.Substring(0, output.Length - 1);
+                    }
+                }
+            }
+
+            return output;
+        }
     }
 }
