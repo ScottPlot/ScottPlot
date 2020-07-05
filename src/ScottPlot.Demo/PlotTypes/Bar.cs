@@ -157,7 +157,7 @@ namespace ScottPlot.Demo.PlotTypes
                 string[] monthNames = { "Jan", "Feb", "Mar", "Apr", "May", "Jun",
                                         "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 
-                plt.PlotWaterfall(monthNumbers, monthProfits, 
+                plt.PlotWaterfall(monthNumbers, monthProfits,
                     fillColor: Color.Green, negativeColor: Color.Red);
 
                 plt.XTicks(monthNames);
