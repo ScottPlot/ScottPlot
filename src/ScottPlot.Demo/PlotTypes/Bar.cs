@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using System.Text;
 
 namespace ScottPlot.Demo.PlotTypes
@@ -138,6 +140,29 @@ namespace ScottPlot.Demo.PlotTypes
                 // customize the plot to make it look nicer
                 plt.Grid(enableVertical: false, lineStyle: LineStyle.Dot);
                 plt.Legend();
+            }
+        }
+
+        public class Waterfall : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Waterfall Plot";
+            public string description { get; } = "Waterfall plots are a type of box plot where each box starts where the previous box ended.";
+
+            public void Render(Plot plt)
+            {
+                // generate random monthly data
+                Random rand = new Random(0);
+                double[] monthProfits = DataGen.RandomNormal(rand, 12, 5, 10);
+                double[] monthNumbers = DataGen.Consecutive(12);
+                string[] monthNames = { "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                                        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+
+                plt.PlotWaterfall(monthNumbers, monthProfits, 
+                    fillColor: Color.Green, negativeColor: Color.Red);
+
+                plt.XTicks(monthNames);
+                plt.YLabel("Valuation (million USD)");
+                plt.Title("Company Value in 2020");
             }
         }
 
