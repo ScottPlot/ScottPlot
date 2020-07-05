@@ -141,14 +141,7 @@ namespace ScottPlot
             double value2 = Math.Max(valueBase, value) + yOffset;
             double valueSpan = value2 - value1;
 
-            if (value < 0)
-            {
-                ((SolidBrush)fillBrush).Color = negativeColor;
-            }
-            else
-            {
-                ((SolidBrush)fillBrush).Color = fillColor;
-            }
+            ((SolidBrush)fillBrush).Color = (value < 0) ? negativeColor : fillColor;
 
             var rect = new RectangleF(
                 x: (float)settings.GetPixelX(edge1),
@@ -188,14 +181,7 @@ namespace ScottPlot
             double value2 = Math.Max(valueBase, value) + yOffset;
             double valueSpan = value2 - value1;
 
-            if (value < 0)
-            {
-                ((SolidBrush)fillBrush).Color = negativeColor;
-            }
-            else
-            {
-                ((SolidBrush)fillBrush).Color = fillColor;
-            }
+            ((SolidBrush)fillBrush).Color = (value < 0) ? negativeColor : fillColor;
 
             var rect = new RectangleF(
                 x: (float)settings.GetPixelX(value1),
