@@ -1081,6 +1081,7 @@ namespace ScottPlot
             Color? errorColor = null,
             bool horizontal = false,
             bool showValues = false,
+            Color? valueColor = null,
             bool autoAxis = true,
             Color? negativeColor = null
             )
@@ -1102,6 +1103,7 @@ namespace ScottPlot
                 errorColor,
                 horizontal,
                 showValues,
+                valueColor.Value,
                 autoAxis,
                 yOffsets,
                 negativeColor
@@ -1124,6 +1126,7 @@ namespace ScottPlot
             Color? errorColor = null,
             bool horizontal = false,
             bool showValues = false,
+            Color? valueColor = null,
             bool autoAxis = true,
             double[] yOffsets = null,
             Color? negativeColor = null
@@ -1137,6 +1140,9 @@ namespace ScottPlot
 
             if (errorColor == null)
                 errorColor = Color.Black;
+
+            if (valueColor == null)
+                valueColor = Color.Black;
 
             if (!negativeColor.HasValue)
             {
@@ -1159,6 +1165,7 @@ namespace ScottPlot
                 outlineColor: outlineColor.Value,
                 horizontal: horizontal,
                 showValues: showValues,
+                valueColor: valueColor.Value,
                 yOffsets: yOffsets,
                 negativeColor: negativeColor.Value
                 );

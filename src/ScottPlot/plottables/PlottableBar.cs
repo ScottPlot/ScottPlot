@@ -34,15 +34,15 @@ namespace ScottPlot
         public bool verticalBars;
         public bool showValues;
 
-        Font valueTextFont;
-        Brush valueTextBrush;
+        public Font valueTextFont;
+        public Brush valueTextBrush;
 
         public PlottableBar(double[] xs, double[] ys, string label,
             double barWidth, double xOffset,
             bool fill, Color fillColor,
             double outlineWidth, Color outlineColor,
             double[] yErr, double errorLineWidth, double errorCapSize, Color errorColor,
-            bool horizontal, bool showValues, double[] yOffsets, Color negativeColor
+            bool horizontal, bool showValues, Color valueColor, double[] yOffsets, Color negativeColor
             )
         {
             if (ys is null || ys.Length == 0)
@@ -86,7 +86,7 @@ namespace ScottPlot
             errorPen = new Pen(errorColor, (float)errorLineWidth);
 
             valueTextFont = new Font(Fonts.GetDefaultFontName(), 12);
-            valueTextBrush = new SolidBrush(Color.Black);
+            valueTextBrush = new SolidBrush(valueColor);
         }
 
         public override AxisLimits2D GetLimits()

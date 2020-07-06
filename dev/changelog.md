@@ -4,6 +4,7 @@
 * Improved `Plot.PlotFillAboveBelow()` rendering of data with a non-zero baseline (#477) _Thanks @el-aasi_
 * Added `Plot.PlotWaterfall()` for easy creation of waterfall-style bar plots (#463, #476) _Thanks @Benny121221_
 * Axis tick labels can be displayed using notations other than base 10 by supplying `Plot.Ticks()` with `base` and `prefix` arguments, allowing axes that display binary (e.g., `0b100110`) or hexadecimal (eg., `0x4B0D10`) tick labels (#469, #457) _Thanks @Benny121221_
+* Added options to `PlotBar()` to facilitate customization of text displayed above bars when `showValue` is enabled (#483) _Thanks @WillemWever_
 
 ## ScottPlot 4.0.37
 * Fixed a long-running issue related to strong assembly versioning that caused the WPF control to fail to render in the Visual Studio designer in .NET Framework (but not .NET Core) projects (#473, #466, #356) _Thanks @bhairav-thakkar, @riquich, @Helitune-RobMcKay, and @iu2kxv_
