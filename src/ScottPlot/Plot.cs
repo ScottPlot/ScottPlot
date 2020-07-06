@@ -1103,7 +1103,7 @@ namespace ScottPlot
                 errorColor,
                 horizontal,
                 showValues,
-                valueColor.Value,
+                valueColor,
                 autoAxis,
                 yOffsets,
                 negativeColor
