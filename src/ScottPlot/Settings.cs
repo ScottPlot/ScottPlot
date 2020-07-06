@@ -43,12 +43,14 @@ namespace ScottPlot
         public Config.Misc misc = new Config.Misc();
         public Config.Benchmark benchmark = new Config.Benchmark();
         public Config.Grid grid = new Config.Grid();
-        public Config.Colors colors = new Config.Colors();
         public Config.Axes axes = new Config.Axes();
         public readonly Config.Layout layout = new Config.Layout();
         public Config.Ticks ticks = new Config.Ticks();
         public Config.Legend legend = new Config.Legend();
         public System.Globalization.CultureInfo culture = System.Globalization.CultureInfo.DefaultThreadCurrentCulture;
+
+        // default colorset
+        public Drawing.Colorset colorset = Drawing.Colorset.Category10;
 
         // mouse interaction
         public Rectangle? mouseMiddleRect = null;
@@ -63,7 +65,7 @@ namespace ScottPlot
         public static double DPIScale;
 
         // this has to be here because color module is unaware of plottables list
-        public Color GetNextColor() { return colors.GetColor(plottables.Count); }
+        public Color GetNextColor() { return colorset.GetColor(plottables.Count); }
 
         public void Resize(int width, int height, bool useMeasuredStrings = false)
         {

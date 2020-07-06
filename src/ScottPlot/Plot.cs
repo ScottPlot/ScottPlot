@@ -369,6 +369,14 @@ namespace ScottPlot
             settings.axes.Reset();
         }
 
+        public Colorset Colorset(Colorset colorset = null)
+        {
+            if (colorset != null)
+                settings.colorset = colorset;
+
+            return settings.colorset;
+        }
+
         public PlottableText PlotText(
             string text,
             double x,
@@ -760,7 +768,7 @@ namespace ScottPlot
             Color? webColor = null
             )
         {
-            fillColors = fillColors ?? Enumerable.Range(0, values.Length).Select(i => settings.colors.GetColor(i)).ToArray();
+            fillColors = fillColors ?? Enumerable.Range(0, values.Length).Select(i => settings.colorset.GetColor(i)).ToArray();
             webColor = webColor ?? Color.Gray;
 
             var plottable = new PlottableRadar(values, categoryNames, groupNames, fillColors, (byte)(fillAlpha * 256), webColor.Value);
@@ -1057,7 +1065,7 @@ namespace ScottPlot
             )
         {
             if (colors is null)
-                colors = Enumerable.Range(0, values.Length).Select(i => settings.colors.GetColor(i % 10)).ToArray();
+                colors = Enumerable.Range(0, values.Length).Select(i => settings.colorset.GetColor(i)).ToArray();
 
             PlottablePie pie = new PlottablePie(values, sliceLabels, colors, explodedChart, showValues, showPercentages, showLabels, label);
 
@@ -1495,7 +1503,7 @@ namespace ScottPlot
         public PlottablePopulations PlotPopulations(Statistics.PopulationMultiSeries multiSeries)
         {
             for (int i = 0; i < multiSeries.multiSeries.Length; i++)
-                multiSeries.multiSeries[i].color = settings.colors.GetColor(i);
+                multiSeries.multiSeries[i].color = settings.colorset.GetColor(i);
 
             var plottable = new PlottablePopulations(multiSeries);
             Add(plottable);
