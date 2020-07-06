@@ -63,7 +63,9 @@ namespace ScottPlot
                 float y = (float)settings.GetPixelY(ys[i]);
                 points[i] = new PointF(x, y);
             }
-            settings.gfxData.DrawLines(pen, points);
+
+            if (points.Length > 1)
+                settings.gfxData.DrawLines(pen, points);
         }
 
         public static void MeanAndError(Settings settings, Population pop, Random rand, double popLeft, double popWidth, Color color, Position position, bool useStdErr = false)
