@@ -22,6 +22,7 @@ namespace ScottPlot
         public Pen penHD;
         public Pen penLD;
         public Brush brush;
+        public int minRenderIndex;
         public int maxRenderIndex;
         private Pen[] penByDensity;
         private int densityLevelCount = 0;
@@ -30,7 +31,9 @@ namespace ScottPlot
         public LineStyle lineStyle;
         public bool useParallel = true;
 
-        public PlottableSignal(double[] ys, double sampleRate, double xOffset, double yOffset, Color color, double lineWidth, double markerSize, string label, Color[] colorByDensity, int maxRenderIndex, LineStyle lineStyle, bool useParallel)
+        public PlottableSignal(double[] ys, double sampleRate, double xOffset, double yOffset, Color color,
+            double lineWidth, double markerSize, string label, Color[] colorByDensity,
+            int minRenderIndex, int maxRenderIndex, LineStyle lineStyle, bool useParallel)
         {
             if (ys == null)
                 throw new Exception("Y data cannot be null");
@@ -44,6 +47,9 @@ namespace ScottPlot
             this.color = color;
             this.lineWidth = lineWidth;
             this.yOffset = yOffset;
+            if (minRenderIndex < 0 || minRenderIndex > maxRenderIndex)
+                throw new ArgumentException("minRenderIndex must be between 0 and maxRenderIndex");
+            this.minRenderIndex = minRenderIndex;
             if ((maxRenderIndex > ys.Length - 1) || maxRenderIndex < 0)
                 throw new ArgumentException("maxRenderIndex must be a valid index for ys[]");
             this.maxRenderIndex = maxRenderIndex;
@@ -76,7 +82,7 @@ namespace ScottPlot
         {
             double yMin = ys[0];
             double yMax = ys[0];
-            for (int i = 0; i < maxRenderIndex; i++)
+            for (int i = minRenderIndex; i < maxRenderIndex; i++)
             {
                 // TODO: ignore NaN
                 if (ys[i] < yMin) yMin = ys[i];
@@ -84,7 +90,7 @@ namespace ScottPlot
             }
 
             double[] limits = new double[4];
-            limits[0] = 0 + xOffset;
+            limits[0] = minRenderIndex + xOffset;
             limits[1] = samplePeriod * maxRenderIndex + xOffset;
             limits[2] = yMin + yOffset;
             limits[3] = yMax + yOffset;
@@ -112,6 +118,9 @@ namespace ScottPlot
                 visibleIndex2 = maxRenderIndex - 1;
             if (visibleIndex1 < 0)
                 visibleIndex1 = 0;
+            if (visibleIndex1 < minRenderIndex)
+                visibleIndex1 = minRenderIndex;
+
             for (int i = visibleIndex1; i <= visibleIndex2 + 1; i++)
                 linePoints.Add(settings.GetPixel(samplePeriod * i + xOffset, ys[i] + yOffset));
 
@@ -168,9 +177,11 @@ namespace ScottPlot
 
             if (index1 < 0)
                 index1 = 0;
+            if (index1 < minRenderIndex)
+                index1 = minRenderIndex;
+
             if (index2 > ys.Length - 1)
                 index2 = ys.Length - 1;
-
             if (index2 > maxRenderIndex)
                 index2 = maxRenderIndex;
 
@@ -191,7 +202,7 @@ namespace ScottPlot
 
         private void RenderHighDensity(Settings settings, double offsetPoints, double columnPointCount)
         {
-            int xPxStart = (int)Math.Ceiling((-1 - offsetPoints) / columnPointCount - 1);
+            int xPxStart = (int)Math.Ceiling((-1 - offsetPoints + minRenderIndex) / columnPointCount - 1);
             int xPxEnd = (int)Math.Ceiling((maxRenderIndex - offsetPoints) / columnPointCount);
             xPxStart = Math.Max(0, xPxStart);
             xPxEnd = Math.Min(settings.dataSize.Width, xPxEnd);

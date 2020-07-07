@@ -8,6 +8,7 @@
 * Plot objects are colored based on a pre-defined set of colors. The default colorset (category10) is the same palette of colors used by matplotlib. A new `Colorset` module has been created to better define this behavior, and `Plot.Colorset()` makes it easy to plot data using alternative colorsets. (#481)
 * Fixed a bug that caused instability when a population plot is zoomed-out so much that its fractional distribution curve is smaller than a single pixel (#480) _Thanks @HowardWhile_
 * Added `Plot.Remove()` method to make it easier to specifically remove an individual plottable after it has been plotted. `Plot.Clear()` is similar, but designed to remove classes of plot types rather than a specific plot object. (#479) _Thanks @cstyx and @Resonanz_
+* Signal plots can now be created with a defined `minRenderIndex` (in addition to the already-supported `maxRenderIndex`) to facilitate partial display of large arrays (#474) _Thanks @Benny121221_
 
 ## ScottPlot 4.0.37
 * Fixed a long-running issue related to strong assembly versioning that caused the WPF control to fail to render in the Visual Studio designer in .NET Framework (but not .NET Core) projects (#473, #466, #356) _Thanks @bhairav-thakkar, @riquich, @Helitune-RobMcKay, and @iu2kxv_

@@ -965,6 +965,7 @@ namespace ScottPlot
             double lineWidth = 1,
             double markerSize = 5,
             string label = null,
+            int? minRenderIndex = null,
             int? maxRenderIndex = null,
             LineStyle lineStyle = LineStyle.Solid,
             bool useParallel = true
@@ -973,6 +974,8 @@ namespace ScottPlot
             if (color == null)
                 color = settings.GetNextColor();
 
+            if (minRenderIndex == null)
+                minRenderIndex = 0;
             if (maxRenderIndex == null)
                 maxRenderIndex = ys.Length - 1;
 
@@ -983,7 +986,8 @@ namespace ScottPlot
                 lineWidth: lineWidth,
                 markerSize: markerSize,
                 label: label,
-                maxRenderIndex: (int)maxRenderIndex,
+                minRenderIndex: minRenderIndex.Value,
+                maxRenderIndex: maxRenderIndex.Value,
                 lineStyle: lineStyle,
                 useParallel: useParallel
                 );
@@ -1002,6 +1006,7 @@ namespace ScottPlot
             double markerSize = 5,
             string label = null,
             Color[] colorByDensity = null,
+            int? minRenderIndex = null,
             int? maxRenderIndex = null,
             LineStyle lineStyle = LineStyle.Solid,
             bool useParallel = true
@@ -1009,6 +1014,9 @@ namespace ScottPlot
         {
             if (color == null)
                 color = settings.GetNextColor();
+
+            if (minRenderIndex == null)
+                minRenderIndex = 0;
 
             if (maxRenderIndex == null)
                 maxRenderIndex = ys.Length - 1;
@@ -1023,7 +1031,8 @@ namespace ScottPlot
                 markerSize: markerSize,
                 label: label,
                 colorByDensity: colorByDensity,
-                maxRenderIndex: (int)maxRenderIndex,
+                minRenderIndex: minRenderIndex.Value,
+                maxRenderIndex: maxRenderIndex.Value,
                 lineStyle: lineStyle,
                 useParallel: useParallel
                 );
