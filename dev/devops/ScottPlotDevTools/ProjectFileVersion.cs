@@ -57,19 +57,13 @@ namespace ScottPlotDevTools
             Version fileVersion = Read();
             string fileVersionString = $"{fileVersion.Major}.{fileVersion.Minor}.{fileVersion.Build}";
             string newVersionShort = $"{version.Major}.{version.Minor}.{version.Build}";
-            string newVersionLong = $"{newVersionShort}.0";
 
             string[] lines = System.IO.File.ReadAllText(path).Split("\n");
             for (int i = 0; i < lines.Length; i++)
             {
                 string line = lines[i];
-                if (line.Contains($">{fileVersionString}<"))
-                {
-                    if (line.Contains("<Version>"))
-                        lines[i] = line.Replace(fileVersionString, newVersionShort);
-                    else
-                        lines[i] = line.Replace(fileVersionString, newVersionLong);
-                }
+                if (line.Contains($">{fileVersionString}"))
+                    lines[i] = line.Replace(fileVersionString, newVersionShort);
             }
             System.IO.File.WriteAllText(path, string.Join("\n", lines));
         }
