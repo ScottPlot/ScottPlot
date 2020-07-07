@@ -146,7 +146,7 @@ namespace ScottPlot.Demo.PlotTypes
                 Random rand = new Random(0);
                 double[] data = DataGen.RandomWalk(rand, 100_000);
 
-                plt.PlotSignal(data, minRenderIndex:4000, maxRenderIndex: 5000);
+                plt.PlotSignal(data, minRenderIndex: 4000, maxRenderIndex: 5000);
 
                 plt.Title($"Partial Display of a {data.Length} values");
                 plt.YLabel("Value");
