@@ -20,7 +20,7 @@ Release cookbook: http://swharden.com/scottplot/cookbook
 Release demo: http://swharden.com/scottplot/demo</PackageReleaseNotes>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <Version>4.0.37</Version>
+    <Version>4.0.38</Version>
     <AssemblyVersion>4.0.37.0</AssemblyVersion>
     <FileVersion>4.0.37.0</FileVersion>
     <LangVersion>7.3</LangVersion>
