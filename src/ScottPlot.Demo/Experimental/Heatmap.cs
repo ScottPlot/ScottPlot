@@ -152,7 +152,7 @@ namespace ScottPlot.Demo.Experimental
         public class BackGroundImage : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Heatmap Background Image";
-            public string description { get; } = "You can add a background image if you feel like it.";
+            public string description { get; } = "Heatmap values below a threshold can be replaced by a Bitmap image.";
 
             public void Render(Plot plt)
             {

@@ -49,7 +49,7 @@ namespace ScottPlot.Demo.Customize
         public class RulerModeXOnly : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Ruler Mode (X only)";
-            public string description { get; } = "Ruler mode only on one axis";
+            public string description { get; } = "Display a ruler on just one axis";
 
             public void Render(Plot plt)
             {
@@ -70,7 +70,9 @@ namespace ScottPlot.Demo.Customize
         public class LogAxis : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Log Axis";
-            public string description { get; } = "";
+            public string description { get; } = "ScottPlot can only display data on a linear 2D plane, " +
+                "however you can log-transform your data before plotting it to give the appearance of log scales. " +
+                "Customizing tick options for log-spaced minor ticks further improves appearance of these graphs.";
 
             public void Render(Plot plt)
             {
@@ -102,7 +104,8 @@ namespace ScottPlot.Demo.Customize
         public class PolarAxis : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Polar Axis";
-            public string description { get; } = "";
+            public string description { get; } = "A helper function converts radius and theta arrays " +
+                "into Cartesian coordinates suitable for plotting with traditioanl plot types.";
 
             public void Render(Plot plt)
             {

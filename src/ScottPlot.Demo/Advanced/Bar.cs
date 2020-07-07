@@ -9,7 +9,8 @@ namespace ScottPlot.Demo.Advanced
         public class MultipleBars : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Multiple Bar Graphs";
-            public string description { get; } = "Multiple bar graphs can be displayed together by tweaking the widths and offsets of two separate bar graphs.";
+            public string description { get; } = "Multiple bar graphs can be displayed together by tweaking the widths and offsets of two separate bar graphs. " +
+                "However in most cases this is not necessary because the PlotBar() and PlotPopulation() tools are so robust (see those examples).";
 
             public void Render(Plot plt)
             {
