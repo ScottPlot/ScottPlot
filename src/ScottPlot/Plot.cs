@@ -369,6 +369,14 @@ namespace ScottPlot
             settings.axes.Reset();
         }
 
+        /// <summary>
+        /// Remove the given plottable from the plot
+        /// </summary>
+        public void Remove(Plottable plottable)
+        {
+            settings.plottables.Remove(plottable);
+        }
+
         public Colorset Colorset(Colorset colorset = null)
         {
             if (colorset != null)

@@ -124,5 +124,24 @@ namespace ScottPlotTests.Plot
             Assert.AreEqual(0, numberOfSignalsAfter);
             Assert.AreEqual(numberOfSignalsBefore, numberOfPlottablesRemoved);
         }
+
+        [Test]
+        public void Test_Remove_RemovesSinglePlot()
+        {
+            var plt = new ScottPlot.Plot();
+
+            Random rand = new Random(0);
+            var barX = plt.PlotPoint(111, 222, label: "X");
+            var sigA = plt.PlotSignal(DataGen.RandomWalk(rand, 100), label: "A");
+            var sigB = plt.PlotSignal(DataGen.RandomWalk(rand, 100), label: "B");
+            var sigC = plt.PlotSignal(DataGen.RandomWalk(rand, 100), label: "C");
+            var sigD = plt.PlotSignal(DataGen.RandomWalk(rand, 100), label: "D");
+            var sigE = plt.PlotSignal(DataGen.RandomWalk(rand, 100), label: "E");
+            var barY = plt.PlotPoint(111, 222, label: "Y");
+
+            Assert.AreEqual("X,A,B,C,D,E,Y", string.Join(",", plt.GetPlottables().Select(x => x.GetLegendItems()[0].label)));
+            plt.Remove(sigC);
+            Assert.AreEqual("X,A,B,D,E,Y", string.Join(",", plt.GetPlottables().Select(x => x.GetLegendItems()[0].label)));
+        }
     }
 }
