@@ -11,8 +11,8 @@ namespace ScottPlot.Config
         public double y1 { get; private set; }
         public double y2 { get; private set; }
 
-        //public double[] Limits { get { return new double[] { x1, x2, y1, y2 }; } }
-        //public (double, double, double, double) Limits { get { return (x1, x2, y1, y2); } }
+        public double xCenter { get { return (x1 + x2) / 2; } }
+        public double yCenter { get { return (y1 + y2) / 2; } }
 
         public double xSpan { get { return x2 - x1; } }
         public double ySpan { get { return y2 - y1; } }

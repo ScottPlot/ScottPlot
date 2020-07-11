@@ -70,8 +70,8 @@ namespace ScottPlot
             }
 
             AxisLimits2D limits = GetLimits();
-            double centreX = (limits.x1 + limits.x2) / 2;
-            double centreY = (limits.y1 + limits.y2) / 2;
+            double centreX = limits.xCenter;
+            double centreY = limits.yCenter;
             float diameterPixels = .9f * Math.Min(settings.dataSize.Width, settings.dataSize.Height);
             string fontName = Config.Fonts.GetSansFontName();
             float fontSize = 12;
