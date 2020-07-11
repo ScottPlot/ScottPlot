@@ -69,12 +69,10 @@ namespace ScottPlot
                 sliceOutlineWidth = 1;
             }
 
-            double minAxisScale = Math.Min(settings.xAxisScale, settings.yAxisScale);
             AxisLimits2D limits = GetLimits();
             double centreX = (limits.x1 + limits.x2) / 2;
             double centreY = (limits.y1 + limits.y2) / 2;
-            double diameter = 2; // Unit circle
-            float diameterPixels = (float)(minAxisScale * diameter);
+            float diameterPixels = .9f * Math.Min(settings.dataSize.Width, settings.dataSize.Height);
             string fontName = Config.Fonts.GetSansFontName();
             float fontSize = 12;
 
@@ -96,7 +94,7 @@ namespace ScottPlot
                 double yOffset = explodedChart ? 3 * Math.Sin(angle) : 0;
 
                 // record where and what to label the slice
-                double sliceLabelR = 0.5 * minAxisScale;
+                double sliceLabelR = 0.35 * diameterPixels;
                 labelXs[i] = (boundingRectangle.X + diameterPixels / 2 + xOffset + Math.Cos(angle) * sliceLabelR);
                 labelYs[i] = (boundingRectangle.Y + diameterPixels / 2 + yOffset + Math.Sin(angle) * sliceLabelR);
                 string sliceLabelValue = (showValues) ? $"{values[i]}" : "";
