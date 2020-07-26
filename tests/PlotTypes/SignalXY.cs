@@ -44,5 +44,17 @@ namespace ScottPlotTests.PlotTypes
             var plt = new ScottPlot.Plot(500, 350);
             Assert.Throws<ArgumentException>(() => { plt.PlotSignalXY(xs, ys); });
         }
+
+        [Test]
+        public void Test_SignalXY_RenderLimits()
+        {
+            Random rand = new Random(0);
+            double[] xs = ScottPlot.DataGen.Consecutive(100_000);
+            double[] ys = ScottPlot.DataGen.RandomWalk(rand, 100_000);
+            var plt = new ScottPlot.Plot(500, 350);
+            plt.PlotSignalXY(xs, ys, minRenderIndex: 4000, maxRenderIndex: 5000);
+            plt.Axis(y1: -200, y2: 200);
+            TestTools.SaveFig(plt);
+        }
     }
 }
