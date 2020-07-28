@@ -80,9 +80,9 @@ namespace ScottPlot
 
         public override Config.AxisLimits2D GetLimits()
         {
-            double yMin = ys[0];
-            double yMax = ys[0];
-            for (int i = minRenderIndex; i < maxRenderIndex; i++)
+            double yMin = ys[minRenderIndex];
+            double yMax = ys[minRenderIndex];
+            for (int i = minRenderIndex; i <= maxRenderIndex; i++)
             {
                 // TODO: ignore NaN
                 if (ys[i] < yMin) yMin = ys[i];
