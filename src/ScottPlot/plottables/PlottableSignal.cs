@@ -82,7 +82,7 @@ namespace ScottPlot
         {
             double yMin = ys[minRenderIndex];
             double yMax = ys[minRenderIndex];
-            for (int i = minRenderIndex; i <= maxRenderIndex; i++)
+            for (int i = minRenderIndex + 1; i <= maxRenderIndex; i++)
             {
                 // TODO: ignore NaN
                 if (ys[i] < yMin) yMin = ys[i];
