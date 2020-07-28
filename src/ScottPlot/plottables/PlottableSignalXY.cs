@@ -32,7 +32,7 @@ namespace ScottPlot
         public override AxisLimits2D GetLimits()
         {
             var limits = base.GetLimits();
-            limits.SetX(xs[0], xs[xs.Length - 1]);
+            limits.SetX(xs[minRenderIndex], xs[maxRenderIndex]);
             return limits;
         }
 
