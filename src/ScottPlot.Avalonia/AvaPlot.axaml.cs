@@ -16,6 +16,7 @@ using Avalonia.Media;
 using Avalonia.VisualTree;
 using ScottPlot.Avalonia;
 using ScottPlot.Config;
+using Avalonia.Platform;
 
 using Ava = Avalonia;
 
@@ -52,14 +53,20 @@ namespace ScottPlot.Avalonia
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
+            this.Focusable = true;
+
+            PointerPressed += UserControl_MouseDown;
+            PointerMoved += UserControl_MouseMove;
+            PointerReleased += UserControl_MouseUp;
+            KeyDown += OnKeyDown;
+            KeyUp += OnKeyUp;
+            PointerWheelChanged += UserControl_MouseWheel;
         }
 
         private ContextMenu DefaultRightClickMenu()
         {
             MenuItem SaveImageMenuItem = new MenuItem() { Header = "Save Image" };
             SaveImageMenuItem.Click += SaveImage;
-            MenuItem CopyImageMenuItem = new MenuItem() { Header = "Copy Image" };
-            //CopyImageMenuItem.Click += CopyImage;
             MenuItem NewWindowMenuItem = new MenuItem() { Header = "Open in New Window" };
             //NewWindowMenuItem.Click += OpenInNewWindow;
             MenuItem HelpMenuItem = new MenuItem() { Header = "Help" };
@@ -68,7 +75,6 @@ namespace ScottPlot.Avalonia
             var cm = new ContextMenu();
             var backingList = new List<MenuItem>();
             backingList.Add(SaveImageMenuItem);
-            backingList.Add(CopyImageMenuItem);
             backingList.Add(NewWindowMenuItem);
             backingList.Add(HelpMenuItem);
 
@@ -109,7 +115,7 @@ namespace ScottPlot.Avalonia
                 // hide the version info
                 mainGrid.RowDefinitions[0].Height = new GridLength(0);
                 //CanvasPlot_SizeChanged(null, null);
-                dpiScale = settings.gfxFigure.DpiX / 96;
+                //dpiScale = settings.gfxFigure.DpiX / 96; THIS IS ONLY NECESSARY ON WPF
                 this.Find<StackPanel>("canvasDesigner").Background = transparentBrush;
                 this.Find<Canvas>("canvasPlot").Background = transparentBrush;
             }
@@ -197,10 +203,47 @@ namespace ScottPlot.Avalonia
             this.recalculateLayoutOnMouseUp = recalculateLayoutOnMouseUp;
         }
 
-        //private bool isAltPressed { get { return Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt); } }
-        //private bool isShiftPressed { get { return (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift) || (lockHorizontalAxis)); } }
-        //private bool isCtrlPressed { get { return (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl) || (lockVerticalAxis)); } }
+        private bool isAltPressed = false;
+        private bool isShiftPressed = false;
+        private bool isCtrlPressed = false;
 
+        private void OnKeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.LeftAlt:
+                case Key.RightAlt:
+                    isAltPressed = true;
+                    break;
+                case Key.LeftShift:
+                case Key.RightShift:
+                    isShiftPressed = true;
+                    break;
+                case Key.LeftCtrl:
+                case Key.RightCtrl:
+                    isCtrlPressed = true;
+                    break;
+            }
+        }
+
+        private void OnKeyUp(object sender, KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.LeftAlt:
+                case Key.RightAlt:
+                    isAltPressed = false;
+                    break;
+                case Key.LeftShift:
+                case Key.RightShift:
+                    isShiftPressed = false;
+                    break;
+                case Key.LeftCtrl:
+                case Key.RightCtrl:
+                    isCtrlPressed = false;
+                    break;
+            }
+        }
         #endregion
 
         #region mouse tracking
@@ -223,46 +266,39 @@ namespace ScottPlot.Avalonia
         IDraggable plottableBeingDragged = null;
         private bool isMovingDraggable { get { return (plottableBeingDragged != null); } }
 
-        //private Ava.Point GetPixelPosition(MouseButtonEventArgs e)
-        //{
-        //    Ava.Point pos = e.GetPosition(this);
-        //    Ava.Point dpiCorrectedPos = new Ava.Point(pos.X * dpiScale, pos.Y * dpiScale);
-        //    return dpiCorrectedPos;
-        //}
-
-        //private Ava.Point GetPixelPosition(MouseEventArgs e)
-        //{
-        //    Ava.Point pos = e.GetPosition(this);
-        //    Ava.Point dpiCorrectedPos = new Ava.Point(pos.X * dpiScale, pos.Y * dpiScale);
-        //    return dpiCorrectedPos;
-        //}
+        private Ava.Point GetPixelPosition(PointerEventArgs e)
+        {
+            Ava.Point pos = e.GetPosition(this);
+            Ava.Point dpiCorrectedPos = new Ava.Point(pos.X * dpiScale, pos.Y * dpiScale);
+            return dpiCorrectedPos;
+        }
 
         private System.Drawing.Point SDPoint(Ava.Point pt)
         {
             return new System.Drawing.Point((int)pt.X, (int)pt.Y);
         }
 
-        //private void UserControl_MouseDown(object sender, MouseButtonEventArgs e)
-        //{
-        //    CaptureMouse();
+        void UserControl_MouseDown(object sender, PointerPressedEventArgs e)
+        {
+            e.Pointer.Capture(this);
 
-        //    var mousePixel = GetPixelPosition(e);
-        //    plottableBeingDragged = plt.GetDraggableUnderMouse(mousePixel.X, mousePixel.Y);
+            var mousePixel = GetPixelPosition(e);
+            plottableBeingDragged = plt.GetDraggableUnderMouse(mousePixel.X, mousePixel.Y);
 
-        //    if (plottableBeingDragged is null)
-        //    {
-        //        // MouseDown event is to start a pan or zoom
-        //        if (e.ChangedButton == MouseButton.Left && isAltPressed) mouseMiddleDownLocation = GetPixelPosition(e);
-        //        else if (e.ChangedButton == MouseButton.Left && enablePanning) mouseLeftDownLocation = GetPixelPosition(e);
-        //        else if (e.ChangedButton == MouseButton.Right && enableZooming) mouseRightDownLocation = GetPixelPosition(e);
-        //        else if (e.ChangedButton == MouseButton.Middle && enableScrollWheelZoom) mouseMiddleDownLocation = GetPixelPosition(e);
-        //        axisLimitsOnMouseDown = plt.Axis();
-        //    }
-        //    else
-        //    {
-        //        // mouse is being used to drag a plottable
-        //    }
-        //}
+            if (plottableBeingDragged is null)
+            {
+                // MouseDown event is to start a pan or zoom
+                if (e.MouseButton == MouseButton.Left && isAltPressed) mouseMiddleDownLocation = GetPixelPosition(e);
+                else if (e.MouseButton == MouseButton.Left && enablePanning) mouseLeftDownLocation = GetPixelPosition(e);
+                else if (e.MouseButton == MouseButton.Right && enableZooming) mouseRightDownLocation = GetPixelPosition(e);
+                else if (e.MouseButton == MouseButton.Middle && enableScrollWheelZoom) mouseMiddleDownLocation = GetPixelPosition(e);
+                axisLimitsOnMouseDown = plt.Axis();
+            }
+            else
+            {
+                // mouse is being used to drag a plottable
+            }
+        }
 
         [Obsolete("use Plot.CoordinateFromPixelX() and Plot.CoordinateFromPixelY()")]
         public Ava.Point mouseCoordinates
@@ -274,74 +310,74 @@ namespace ScottPlot.Avalonia
             }
         }
         Ava.Point mouseLocation;
-        //private void UserControl_MouseMove(object sender, MouseEventArgs e)
-        //{
-        //    mouseLocation = GetPixelPosition(e);
-        //    if (isPanningOrZooming)
-        //        MouseMovedToPanOrZoom(e);
-        //    else if (isMovingDraggable)
-        //        MouseMovedToMoveDraggable(e);
-        //    else
-        //        MouseMovedWithoutInteraction(e);
-        //}
+        private void UserControl_MouseMove(object sender, PointerEventArgs e)
+        {
+            mouseLocation = GetPixelPosition(e);
+            if (isPanningOrZooming)
+                MouseMovedToPanOrZoom(e);
+            else if (isMovingDraggable)
+                MouseMovedToMoveDraggable(e);
+            else
+                MouseMovedWithoutInteraction(e);
+        }
 
-        //private void MouseMovedToPanOrZoom(MouseEventArgs e)
-        //{
-        //    plt.Axis(axisLimitsOnMouseDown);
-        //    var mouseLocation = GetPixelPosition(e);
+        private void MouseMovedToPanOrZoom(PointerEventArgs e)
+        {
+            plt.Axis(axisLimitsOnMouseDown);
+            var mouseLocation = GetPixelPosition(e);
 
-        //    if (mouseLeftDownLocation != null)
-        //    {
-        //        // left-click-drag panning
-        //        double deltaX = ((Point)mouseLeftDownLocation).X - mouseLocation.X;
-        //        double deltaY = mouseLocation.Y - ((Point)mouseLeftDownLocation).Y;
+            if (mouseLeftDownLocation != null)
+            {
+                // left-click-drag panning
+                double deltaX = ((Ava.Point)mouseLeftDownLocation).X - mouseLocation.X;
+                double deltaY = mouseLocation.Y - ((Ava.Point)mouseLeftDownLocation).Y;
 
-        //        if (isCtrlPressed) deltaY = 0;
-        //        if (isShiftPressed) deltaX = 0;
+                if (isCtrlPressed) deltaY = 0;
+                if (isShiftPressed) deltaX = 0;
 
-        //        settings.AxesPanPx((int)deltaX, (int)deltaY);
-        //        AxisChanged?.Invoke(null, null);
-        //    }
-        //    else if (mouseRightDownLocation != null)
-        //    {
-        //        // right-click-drag zooming
-        //        double deltaX = ((Point)mouseRightDownLocation).X - mouseLocation.X;
-        //        double deltaY = mouseLocation.Y - ((Point)mouseRightDownLocation).Y;
+                settings.AxesPanPx((int)deltaX, (int)deltaY);
+                AxisChanged?.Invoke(null, null);
+            }
+            else if (mouseRightDownLocation != null)
+            {
+                // right-click-drag zooming
+                double deltaX = ((Ava.Point)mouseRightDownLocation).X - mouseLocation.X;
+                double deltaY = mouseLocation.Y - ((Ava.Point)mouseRightDownLocation).Y;
 
-        //        if (isCtrlPressed == true && isShiftPressed == false) deltaY = 0;
-        //        if (isShiftPressed == true && isCtrlPressed == false) deltaX = 0;
+                if (isCtrlPressed == true && isShiftPressed == false) deltaY = 0;
+                if (isShiftPressed == true && isCtrlPressed == false) deltaX = 0;
 
-        //        settings.AxesZoomPx(-(int)deltaX, -(int)deltaY, lockRatio: isCtrlPressed && isShiftPressed);
-        //        AxisChanged?.Invoke(null, null);
-        //    }
-        //    else if (mouseMiddleDownLocation != null)
-        //    {
-        //        // middle-click-drag zooming to rectangle
-        //        double x1 = Math.Min(mouseLocation.X, ((Point)mouseMiddleDownLocation).X);
-        //        double x2 = Math.Max(mouseLocation.X, ((Point)mouseMiddleDownLocation).X);
-        //        double y1 = Math.Min(mouseLocation.Y, ((Point)mouseMiddleDownLocation).Y);
-        //        double y2 = Math.Max(mouseLocation.Y, ((Point)mouseMiddleDownLocation).Y);
+                settings.AxesZoomPx(-(int)deltaX, -(int)deltaY, lockRatio: isCtrlPressed && isShiftPressed);
+                AxisChanged?.Invoke(null, null);
+            }
+            else if (mouseMiddleDownLocation != null)
+            {
+                // middle-click-drag zooming to rectangle
+                double x1 = Math.Min(mouseLocation.X, ((Ava.Point)mouseMiddleDownLocation).X);
+                double x2 = Math.Max(mouseLocation.X, ((Ava.Point)mouseMiddleDownLocation).X);
+                double y1 = Math.Min(mouseLocation.Y, ((Ava.Point)mouseMiddleDownLocation).Y);
+                double y2 = Math.Max(mouseLocation.Y, ((Ava.Point)mouseMiddleDownLocation).Y);
 
-        //        var origin = new System.Drawing.Point((int)x1 - settings.dataOrigin.X, (int)y1 - settings.dataOrigin.Y);
-        //        var size = new System.Drawing.Size((int)(x2 - x1), (int)(y2 - y1));
+                var origin = new System.Drawing.Point((int)x1 - settings.dataOrigin.X, (int)y1 - settings.dataOrigin.Y);
+                var size = new System.Drawing.Size((int)(x2 - x1), (int)(y2 - y1));
 
-        //        if (lockVerticalAxis)
-        //        {
-        //            origin.Y = 0;
-        //            size.Height = settings.dataSize.Height - 1;
-        //        }
-        //        if (lockHorizontalAxis)
-        //        {
-        //            origin.X = 0;
-        //            size.Width = settings.dataSize.Width - 1;
-        //        }
+                if (lockVerticalAxis)
+                {
+                    origin.Y = 0;
+                    size.Height = settings.dataSize.Height - 1;
+                }
+                if (lockHorizontalAxis)
+                {
+                    origin.X = 0;
+                    size.Width = settings.dataSize.Width - 1;
+                }
 
-        //        settings.mouseMiddleRect = new System.Drawing.Rectangle(origin, size);
-        //    }
+                settings.mouseMiddleRect = new System.Drawing.Rectangle(origin, size);
+            }
 
-        //    Render(true, lowQuality: lowQualityWhileDragging);
-        //    return;
-        //}
+            Render(true, lowQuality: lowQualityWhileDragging);
+            return;
+        }
 
         public (double x, double y) GetMouseCoordinates()
         {
@@ -350,108 +386,109 @@ namespace ScottPlot.Avalonia
             return (x, y);
         }
 
-        //private void MouseMovedToMoveDraggable(MouseEventArgs e)
-        //{
-        //    plottableBeingDragged.DragTo(plt.CoordinateFromPixelX(GetPixelPosition(e).X), plt.CoordinateFromPixelY(GetPixelPosition(e).Y));
-        //    Render(true);
-        //}
+        private void MouseMovedToMoveDraggable(PointerEventArgs e)
+        {
+            plottableBeingDragged.DragTo(plt.CoordinateFromPixelX(GetPixelPosition(e).X), plt.CoordinateFromPixelY(GetPixelPosition(e).Y));
+            Render(true);
+        }
 
-        //private void MouseMovedWithoutInteraction(MouseEventArgs e)
-        //{
-        //    // set the cursor based on what's beneath it
-        //    var draggableUnderCursor = plt.GetDraggableUnderMouse(GetPixelPosition(e).X, GetPixelPosition(e).Y);
-        //    var spCursor = (draggableUnderCursor is null) ? Config.Cursor.Arrow : draggableUnderCursor.DragCursor;
-        //    imagePlot.Cursor = GetCursor(spCursor);
-        //}
+        private void MouseMovedWithoutInteraction(PointerEventArgs e)
+        {
+            // set the cursor based on what's beneath it
+            //var draggableUnderCursor = plt.GetDraggableUnderMouse(GetPixelPosition(e).X, GetPixelPosition(e).Y);
+            //var spCursor = (draggableUnderCursor is null) ? Config.Cursor.Arrow : draggableUnderCursor.DragCursor;
+            //imagePlot.Cursor = GetCursor(spCursor);
+        }
 
-        //private void UserControl_MouseUp(object sender, MouseButtonEventArgs e)
-        //{
-        //    ReleaseMouseCapture();
-        //    var mouseLocation = GetPixelPosition(e);
+        private void UserControl_MouseUp(object sender, PointerEventArgs e)
+        {
+            e.Pointer.Capture(null);
+            var mouseLocation = GetPixelPosition(e);
 
-        //    plottableBeingDragged = null;
+            plottableBeingDragged = null;
 
-        //    if (mouseMiddleDownLocation != null)
-        //    {
-        //        double x1 = Math.Min(mouseLocation.X, ((Point)mouseMiddleDownLocation).X);
-        //        double x2 = Math.Max(mouseLocation.X, ((Point)mouseMiddleDownLocation).X);
-        //        double y1 = Math.Min(mouseLocation.Y, ((Point)mouseMiddleDownLocation).Y);
-        //        double y2 = Math.Max(mouseLocation.Y, ((Point)mouseMiddleDownLocation).Y);
+            if (mouseMiddleDownLocation != null)
+            {
+                double x1 = Math.Min(mouseLocation.X, ((Ava.Point)mouseMiddleDownLocation).X);
+                double x2 = Math.Max(mouseLocation.X, ((Ava.Point)mouseMiddleDownLocation).X);
+                double y1 = Math.Min(mouseLocation.Y, ((Ava.Point)mouseMiddleDownLocation).Y);
+                double y2 = Math.Max(mouseLocation.Y, ((Ava.Point)mouseMiddleDownLocation).Y);
 
-        //        Point topLeft = new Point(x1, y1);
-        //        Size size = new Size(x2 - x1, y2 - y1);
-        //        Point botRight = new Point(topLeft.X + size.Width, topLeft.Y + size.Height);
+                Ava.Point topLeft = new Ava.Point(x1, y1);
+                Ava.Size size = new Ava.Size(x2 - x1, y2 - y1);
+                Ava.Point botRight = new Ava.Point(topLeft.X + size.Width, topLeft.Y + size.Height);
 
-        //        if ((size.Width > 2) && (size.Height > 2))
-        //        {
-        //            // only change axes if suffeciently large square was drawn
-        //            if (!lockHorizontalAxis)
-        //                plt.Axis(
-        //                    x1: plt.CoordinateFromPixelX(topLeft.X),
-        //                    x2: plt.CoordinateFromPixelX(botRight.X));
-        //            if (!lockVerticalAxis)
-        //                plt.Axis(
-        //                    y1: plt.CoordinateFromPixelY(botRight.Y),
-        //                    y2: plt.CoordinateFromPixelY(topLeft.Y));
-        //            AxisChanged?.Invoke(null, null);
-        //        }
-        //        else
-        //        {
-        //            bool shouldTighten = recalculateLayoutOnMouseUp ?? !plt.containsHeatmap;
-        //            plt.AxisAuto(middleClickMarginX, middleClickMarginY, tightenLayout: shouldTighten);
-        //            AxisChanged?.Invoke(null, null);
-        //        }
-        //    }
+                if ((size.Width > 2) && (size.Height > 2))
+                {
+                    // only change axes if suffeciently large square was drawn
+                    if (!lockHorizontalAxis)
+                        plt.Axis(
+                            x1: plt.CoordinateFromPixelX(topLeft.X),
+                            x2: plt.CoordinateFromPixelX(botRight.X));
+                    if (!lockVerticalAxis)
+                        plt.Axis(
+                            y1: plt.CoordinateFromPixelY(botRight.Y),
+                            y2: plt.CoordinateFromPixelY(topLeft.Y));
+                    AxisChanged?.Invoke(null, null);
+                }
+                else
+                {
+                    bool shouldTighten = recalculateLayoutOnMouseUp ?? !plt.containsHeatmap;
+                    plt.AxisAuto(middleClickMarginX, middleClickMarginY, tightenLayout: shouldTighten);
+                    AxisChanged?.Invoke(null, null);
+                }
+            }
 
-        //    if (mouseRightDownLocation != null)
-        //    {
-        //        double deltaX = Math.Abs(mouseLocation.X - mouseRightDownLocation.Value.X);
-        //        double deltaY = Math.Abs(mouseLocation.Y - mouseRightDownLocation.Value.Y);
-        //        bool mouseDraggedFar = (deltaX > 3 || deltaY > 3);
-        //        if (ContextMenu != null)
-        //        {
-        //            ContextMenu.Visibility = (mouseDraggedFar) ? Visibility.Hidden : Visibility.Visible;
-        //            ContextMenu.IsOpen = (!mouseDraggedFar);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        if (ContextMenu != null)
-        //            ContextMenu.IsOpen = false;
-        //    }
+            if (mouseRightDownLocation != null)
+            {
+                double deltaX = Math.Abs(mouseLocation.X - mouseRightDownLocation.Value.X);
+                double deltaY = Math.Abs(mouseLocation.Y - mouseRightDownLocation.Value.Y);
+                bool mouseDraggedFar = (deltaX > 3 || deltaY > 3);
+                if (mouseDraggedFar)
+                {
+                    e.Handled = true; //I wish I was bullshitting you but this is the only way to prevent opening the context menu that works in Avalonia right now
+                }
+            }
+            else
+            {
+                if (ContextMenu != null)
+                {
+                    ContextMenu.Close();
+                }
+            }
 
-        //    mouseLeftDownLocation = null;
-        //    mouseRightDownLocation = null;
-        //    mouseMiddleDownLocation = null;
-        //    axisLimitsOnMouseDown = null;
-        //    settings.mouseMiddleRect = null;
+            mouseLeftDownLocation = null;
+            mouseRightDownLocation = null;
+            mouseMiddleDownLocation = null;
+            axisLimitsOnMouseDown = null;
+            settings.mouseMiddleRect = null;
 
-        //    bool shouldRecalculate = recalculateLayoutOnMouseUp ?? !plt.containsHeatmap;
-        //    Render(recalculateLayout: shouldRecalculate);
-        //}
+            bool shouldRecalculate = recalculateLayoutOnMouseUp ?? !plt.containsHeatmap;
+            Render(recalculateLayout: shouldRecalculate);
+        }
 
-        //#endregion
+        #endregion
 
-        //#region mouse clicking
+        #region mouse clicking
 
-        //private void UserControl_MouseWheel(object sender, MouseWheelEventArgs e)
-        //{
-        //    if (enableScrollWheelZoom == false)
-        //        return;
+        private void UserControl_MouseWheel(object sender, PointerWheelEventArgs e)
+        {
+            if (enableScrollWheelZoom == false)
+                return;
 
-        //    var mousePixel = GetPixelPosition(e); // DPI-scaling aware
+            var mousePixel = GetPixelPosition(e); // DPI-scaling aware
 
-        //    double xFrac = (e.Delta > 0) ? 1.15 : 0.85;
-        //    double yFrac = (e.Delta > 0) ? 1.15 : 0.85;
+            double xFrac = (e.Delta.Y > 0) ? 1.15 : 0.85;
+            double yFrac = (e.Delta.Y > 0) ? 1.15 : 0.85;
 
-        //    if (isCtrlPressed) yFrac = 1;
-        //    if (isShiftPressed) xFrac = 1;
+            if (isCtrlPressed) yFrac = 1;
+            if (isShiftPressed) xFrac = 1;
 
-        //    plt.AxisZoom(xFrac, yFrac, plt.CoordinateFromPixelX(mousePixel.X), plt.CoordinateFromPixelY(mousePixel.Y));
-        //    AxisChanged?.Invoke(null, null);
-        //    bool shouldRecalculate = recalculateLayoutOnMouseUp ?? !plt.containsHeatmap;
-        //    Render(recalculateLayout: shouldRecalculate);
-        //}
+            plt.AxisZoom(xFrac, yFrac, plt.CoordinateFromPixelX(mousePixel.X), plt.CoordinateFromPixelY(mousePixel.Y));
+            AxisChanged?.Invoke(null, null);
+            bool shouldRecalculate = recalculateLayoutOnMouseUp ?? !plt.containsHeatmap;
+            Render(recalculateLayout: shouldRecalculate);
+        }
 
         //private void UserControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         //{
