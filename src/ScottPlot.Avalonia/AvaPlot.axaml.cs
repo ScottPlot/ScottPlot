@@ -33,7 +33,8 @@ namespace ScottPlot.Avalonia
         public Plot plt { get; private set; }
         private Settings settings;
         private bool isDesignerMode;
-        private double dpiScale = 1;
+        private double dpiScaleInput = 1;
+        private double dpiScaleOutput = 1;
         private readonly SolidColorBrush transparentBrush = new SolidColorBrush(Ava.Media.Color.FromUInt32(0), 0);
 
         public AvaPlot(Plot plt)
@@ -115,7 +116,8 @@ namespace ScottPlot.Avalonia
                 // hide the version info
                 mainGrid.RowDefinitions[0].Height = new GridLength(0);
                 //CanvasPlot_SizeChanged(null, null);
-                //dpiScale = settings.gfxFigure.DpiX / 96; THIS IS ONLY NECESSARY ON WPF
+                //dpiScaleInput = settings.gfxFigure.DpiX / 96; THIS IS ONLY NECESSARY ON WPF
+                dpiScaleOutput = settings.gfxFigure.DpiX / 96;
                 this.Find<StackPanel>("canvasDesigner").Background = transparentBrush;
                 this.Find<Canvas>("canvasPlot").Background = transparentBrush;
             }
@@ -269,7 +271,7 @@ namespace ScottPlot.Avalonia
         private Ava.Point GetPixelPosition(PointerEventArgs e)
         {
             Ava.Point pos = e.GetPosition(this);
-            Ava.Point dpiCorrectedPos = new Ava.Point(pos.X * dpiScale, pos.Y * dpiScale);
+            Ava.Point dpiCorrectedPos = new Ava.Point(pos.X * dpiScaleInput, pos.Y * dpiScaleInput);
             return dpiCorrectedPos;
         }
 
@@ -381,8 +383,8 @@ namespace ScottPlot.Avalonia
 
         public (double x, double y) GetMouseCoordinates()
         {
-            double x = plt.CoordinateFromPixelX(mouseLocation.X / dpiScale);
-            double y = plt.CoordinateFromPixelY(mouseLocation.Y / dpiScale);
+            double x = plt.CoordinateFromPixelX(mouseLocation.X / dpiScaleInput);
+            double y = plt.CoordinateFromPixelY(mouseLocation.Y / dpiScaleInput);
             return (x, y);
         }
 
@@ -409,10 +411,10 @@ namespace ScottPlot.Avalonia
 
             if (mouseMiddleDownLocation != null)
             {
-                double x1 = Math.Min(mouseLocation.X, ((Ava.Point)mouseMiddleDownLocation).X);
-                double x2 = Math.Max(mouseLocation.X, ((Ava.Point)mouseMiddleDownLocation).X);
-                double y1 = Math.Min(mouseLocation.Y, ((Ava.Point)mouseMiddleDownLocation).Y);
-                double y2 = Math.Max(mouseLocation.Y, ((Ava.Point)mouseMiddleDownLocation).Y);
+                double x1 = Math.Min(mouseLocation.X, ((Ava.Point)mouseMiddleDownLocation).X) / dpiScaleOutput;
+                double x2 = Math.Max(mouseLocation.X, ((Ava.Point)mouseMiddleDownLocation).X) / dpiScaleOutput;
+                double y1 = Math.Min(mouseLocation.Y, ((Ava.Point)mouseMiddleDownLocation).Y) / dpiScaleOutput;
+                double y2 = Math.Max(mouseLocation.Y, ((Ava.Point)mouseMiddleDownLocation).Y) / dpiScaleOutput;
 
                 Ava.Point topLeft = new Ava.Point(x1, y1);
                 Ava.Size size = new Ava.Size(x2 - x1, y2 - y1);
