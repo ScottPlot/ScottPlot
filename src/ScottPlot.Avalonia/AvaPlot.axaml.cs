@@ -68,7 +68,7 @@ namespace ScottPlot.Avalonia
             MenuItem SaveImageMenuItem = new MenuItem() { Header = "Save Image" };
             SaveImageMenuItem.Click += SaveImage;
             MenuItem NewWindowMenuItem = new MenuItem() { Header = "Open in New Window" };
-            //NewWindowMenuItem.Click += OpenInNewWindow;
+            NewWindowMenuItem.Click += OpenInNewWindow;
             MenuItem HelpMenuItem = new MenuItem() { Header = "Help" };
             HelpMenuItem.Click += OpenHelp;
 
@@ -550,10 +550,10 @@ namespace ScottPlot.Avalonia
         //    Clipboard.SetImage((BitmapSource)imagePlot.Source);
         //}
 
-        //private void OpenInNewWindow(object sender, RoutedEventArgs e)
-        //{
-        //    new WpfPlotViewer(plt.Copy()).Show();
-        //}
+        private void OpenInNewWindow(object sender, RoutedEventArgs e)
+        {
+            new AvaPlotViewer(plt.Copy()).Show();
+        }
 
         private void OpenHelp(object sender, RoutedEventArgs e)
         {
