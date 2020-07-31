@@ -8,4 +8,7 @@
     <PackageReference Include="Avalonia.Desktop" Version="0.9.11" />
     <PackageReference Include="ScottPlot" Version="4.0.38" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ScottPlot.Control\ScottPlot.Control.csproj" />
+  </ItemGroup>
 </Project>

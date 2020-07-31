@@ -26,7 +26,7 @@ namespace ScottPlot.Avalonia
             Height = windowHeight;
             Title = windowTitle;
 
-            this.Find<AvaPlot>("avaPlot1").Reset(plot);
+            this.Find<AvaPlot>("avaPlot1").backend.Reset(plot);
         }
 
         private void InitializeComponent()
