@@ -23,8 +23,8 @@ namespace ScottPlot.Control
         public Plot plt { get; protected set; }
         protected Settings settings;
         protected bool isDesignerMode;
-        protected double dpiScaleInput = 1;
-        protected double dpiScaleOutput = 1;
+        public double dpiScaleInput { get; protected set; } = 1;
+        public double dpiScaleOutput { get; protected set; } = 1;
 
 
         public List<ContextMenuItem> contextMenuItems;

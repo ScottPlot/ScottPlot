@@ -32,10 +32,6 @@ namespace ScottPlot.Avalonia
     public partial class AvaPlot : UserControl
     {
         public Plot plt { get { return backend.plt; } }
-        private Settings settings;
-        private bool isDesignerMode;
-        private double dpiScaleInput = 1;
-        private double dpiScaleOutput = 1;
         internal readonly SolidColorBrush transparentBrush = new SolidColorBrush(Ava.Media.Color.FromUInt32(0), 0);
         internal AvaPlotBackend backend;
 
@@ -155,7 +151,7 @@ namespace ScottPlot.Avalonia
         private Ava.Point GetPixelPosition(PointerEventArgs e)
         {
             Ava.Point pos = e.GetPosition(this);
-            Ava.Point dpiCorrectedPos = new Ava.Point(pos.X * dpiScaleInput, pos.Y * dpiScaleInput);
+            Ava.Point dpiCorrectedPos = new Ava.Point(pos.X * backend.dpiScaleInput, pos.Y * backend.dpiScaleInput);
             return dpiCorrectedPos;
         }
 
@@ -229,11 +225,5 @@ namespace ScottPlot.Avalonia
 
         #endregion
 
-        #region event handling
-
-        public event EventHandler Rendered;
-        public event EventHandler AxisChanged;
-
-        #endregion
     }
 }
