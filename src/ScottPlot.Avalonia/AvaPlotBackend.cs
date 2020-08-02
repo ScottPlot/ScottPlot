@@ -5,12 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.VisualTree;
-using ScottPlot.Control;
+using ScottPlot.Interactive;
+
 using Ava = global::Avalonia;
 
 namespace ScottPlot.Avalonia
 {
-    internal class AvaPlotBackend : ScottPlot.Control.ControlBackend
+    internal class AvaPlotBackend : ScottPlot.Interactive.ControlBackend
     {
         private AvaPlot view;
         public AvaPlotBackend(AvaPlot view)

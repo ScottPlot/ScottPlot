@@ -19,7 +19,7 @@ using ScottPlot.Config;
 using Avalonia.Platform;
 
 using Ava = Avalonia;
-using ScottPlot.Control;
+using ScottPlot.Interactive;
 
 namespace ScottPlot.Avalonia
 {

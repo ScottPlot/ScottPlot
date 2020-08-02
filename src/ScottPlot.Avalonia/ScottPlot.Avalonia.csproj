@@ -9,6 +9,6 @@
     <PackageReference Include="ScottPlot" Version="4.0.38" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ScottPlot.Control\ScottPlot.Control.csproj" />
+    <ProjectReference Include="..\ScottPlot\ScottPlot.csproj" />
   </ItemGroup>
 </Project>
