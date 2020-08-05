@@ -32,68 +32,154 @@ namespace ScottPlot
         public override AxisLimits2D GetLimits()
         {
             var limits = base.GetLimits();
-            limits.SetX(xs[0], xs[xs.Length - 1]);
+            limits.SetX(xs[minRenderIndex], xs[maxRenderIndex]);
             return limits;
         }
 
-        public class IntervalValues
+        public IEnumerable<PointF> ProcessInterval(int x, int from, int length, Settings settings)
         {
-            public double yStart;
-            public double yEnd;
-            public double yMin;
-            public double yMax;
-            public int pointsCount;
-            public int pixelIndex;
-            public int distanceToLeftNeighbor;
-            public int distanceToRightNeighbor;
+            double start = settings.axes.x.min + settings.axes.x.span / settings.dataSize.Width * x;
+            double end = settings.axes.x.min + settings.axes.x.span / settings.dataSize.Width * (x + 1);
+
+            int startIndex = Array.BinarySearch(xs, from, length, start);
+            if (startIndex < 0)
+            {
+                startIndex = ~startIndex;
+            }
+
+            int endIndex = Array.BinarySearch(xs, from, length, end);
+            if (endIndex < 0)
+            {
+                endIndex = ~endIndex;
+            }
+
+            if (startIndex == endIndex)
+            {
+                yield break;
+            }
+
+            double min = ys[startIndex];
+            double max = ys[startIndex];
+            for (int j = startIndex; j < endIndex; j++)
+            {
+                if (ys[j] < min)
+                    min = ys[j];
+                if (ys[j] > max)
+                    max = ys[j];
+            }
+
+            var pointsCount = endIndex - startIndex;
+
+            yield return new PointF(x, (float)settings.GetPixelY(ys[startIndex]));
+            if (pointsCount > 1)
+            {
+                yield return new PointF(x, (float)settings.GetPixelY(min));
+                yield return new PointF(x, (float)settings.GetPixelY(max));
+                yield return new PointF(x, (float)settings.GetPixelY(ys[endIndex - 1]));
+            }
         }
 
         public override void Render(Settings settings)
         {
             brush = new SolidBrush(color);
 
-            // x locations of pixels borders
-            var xBorders = Enumerable.Range(0, settings.dataSize.Width + 1)
-                .Select(x => settings.axes.x.min + settings.axes.x.span / settings.dataSize.Width * x)
-                .ToArray();
+            PointF[] PointBefore;
+            PointF[] PointAfter;
+            int searchFrom;
+            int searchTo;
 
-            int? PointBeforeDisplayedIndex = null;
-            int? PointAfterDisplayedIndex = null;
-
-            int CurrentIndex = 0;
-            int[] xBordersIndexes = new int[settings.dataSize.Width + 1]; // indexes of points close to pixels borders
-            for (int i = 0; i < settings.dataSize.Width + 1; i++)
+            // Calculate point before displayed points
+            int pointBeforeIndex = Array.BinarySearch(xs, minRenderIndex, maxRenderIndex - minRenderIndex + 1, settings.axes.x.min); ;
+            if (pointBeforeIndex < 0)
             {
-                for (; CurrentIndex < xs.Length && xs[CurrentIndex] < xBorders[i]; CurrentIndex++)
-                    ;
-
-                if (PointBeforeDisplayedIndex == null) // point index before first pixel column
-                    PointBeforeDisplayedIndex = CurrentIndex - 1;
-                xBordersIndexes[i] = CurrentIndex;
+                pointBeforeIndex = ~pointBeforeIndex;
             }
 
-            PointAfterDisplayedIndex = CurrentIndex;
+            if (pointBeforeIndex > minRenderIndex)
+            {
+                PointBefore = new PointF[] { settings.GetPixel(xs[pointBeforeIndex - 1], ys[pointBeforeIndex - 1]) };
+                searchFrom = pointBeforeIndex;
+            }
+            else
+            {
+                PointBefore = new PointF[] { };
+                searchFrom = minRenderIndex;
+            }
 
-            IntervalValues[] yParams = CalcIntervalParams(xBordersIndexes, settings, calculateNeighborDistances: false);
-            List<PointF> PointsToDraw = GetPointsToDraw(yParams, PointBeforeDisplayedIndex, PointAfterDisplayedIndex, settings);
+            // Calculate point after displayed points
+            int pointAfterIndex = Array.BinarySearch(xs, minRenderIndex, maxRenderIndex - minRenderIndex + 1, settings.axes.x.max);
+            if (pointAfterIndex < 0)
+            {
+                pointAfterIndex = ~pointAfterIndex;
+            }
+
+            if (pointAfterIndex <= maxRenderIndex)
+            {
+                PointAfter = new PointF[] { settings.GetPixel(xs[pointAfterIndex], ys[pointAfterIndex]) };
+                searchTo = pointAfterIndex;
+            }
+            else
+            {
+                PointAfter = new PointF[] { };
+                searchTo = maxRenderIndex;
+            }
+
+            IEnumerable<PointF> VisiblePoints;
+            if (useParallel)
+            {
+                VisiblePoints = Enumerable.Range(0, settings.dataSize.Width)
+                                          .AsParallel()
+                                          .AsOrdered()
+                                          .Select(x => ProcessInterval(x, searchFrom, searchTo - searchFrom + 1, settings))
+                                          .SelectMany(x => x);
+
+            }
+            else
+            {
+                VisiblePoints = Enumerable.Range(0, settings.dataSize.Width)
+                                          .Select(x => ProcessInterval(x, searchFrom, searchTo - searchFrom + 1, settings))
+                                          .SelectMany(x => x);
+            }
+
+            PointF[] PointsToDraw = PointBefore.Concat(VisiblePoints).Concat(PointAfter).ToArray();
+
+            // Interpolate before displayed point to make it x = -1 (close to visible area)
+            // this fix extreme zoom in bug
+            if (PointBefore.Length > 0 && PointsToDraw.Length >= 2)
+            {
+                float x0 = -1;
+                float y0 = PointsToDraw[1].Y + (PointsToDraw[0].Y - PointsToDraw[1].Y) * (x0 - PointsToDraw[1].X) / (PointsToDraw[0].X - PointsToDraw[1].X);
+                PointsToDraw[0] = new PointF(x0, y0);
+            }
+            // Interpolate after displayed point to make it x = datasize.Width(close to visible area)
+            // this fix extreme zoom in bug
+            if (PointAfter.Length > 0 && PointsToDraw.Length >= 2)
+            {
+                PointF lastPoint = PointsToDraw[PointsToDraw.Length - 2];
+                PointF afterPoint = PointsToDraw[PointsToDraw.Length - 1];
+
+                float x1 = settings.dataSize.Width;
+                float y1 = lastPoint.Y + (afterPoint.Y - lastPoint.Y) * (x1 - lastPoint.X) / (afterPoint.X - lastPoint.X);
+                PointsToDraw[PointsToDraw.Length - 1] = new PointF(x1, y1);
+            }
 
             // Draw lines
-            if (PointsToDraw.Count > 1)
+            if (PointsToDraw.Length > 1)
                 settings.gfxData.DrawLines(penHD, PointsToDraw.ToArray());
-            else if (xs[0] > xBorders[0] && xs[xs.Length - 1] < xBorders[xBorders.Length - 1])
-                settings.gfxData.DrawLine(penHD,
-                    settings.GetPixel(xs[0], ys.Min()),
-                    settings.GetPixel(xs[0], ys.Max()));
 
             // draw markers
-            if (PointsToDraw.Count > 1)
+            if (PointsToDraw.Length > 1)
             {
-                float dataSpanXPx = PointsToDraw[PointsToDraw.Count - 1].X - PointsToDraw[0].X;
-                float markerPxRadius = .3f * dataSpanXPx / PointsToDraw.Count;
+                float dataSpanXPx = PointsToDraw[PointsToDraw.Length - 1].X - PointsToDraw[0].X;
+                float markerPxRadius = .3f * dataSpanXPx / PointsToDraw.Length;
                 markerPxRadius = Math.Min(markerPxRadius, markerSize / 2);
                 if (markerPxRadius > .3)
                 {
-                    foreach (PointF pt in PointsToDraw)
+                    // skip not visible before and after points
+                    var PointsWithMarkers = PointsToDraw
+                                            .Skip(PointBefore.Length)
+                                            .Take(PointsToDraw.Length - PointBefore.Length - PointAfter.Length);
+                    foreach (PointF pt in PointsWithMarkers)
                     {
                         // adjust marker offset to improve rendering on Linux and MacOS
                         float markerOffsetX = (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) ? 0 : 1;
@@ -106,113 +192,6 @@ namespace ScottPlot
                     }
                 }
             }
-        }
-
-        // return inverval values (each representing one displayed pixel column)
-        private IntervalValues[] CalcIntervalParams(int[] xBordersIndexes, Settings settings, bool calculateNeighborDistances)
-        {
-            IntervalValues[] yParams = new IntervalValues[settings.dataSize.Width];
-            for (int i = 0; i < settings.dataSize.Width; i++)
-            {
-                if (xBordersIndexes[i] == xBordersIndexes[i + 1])
-                {
-                    yParams[i] = null;
-                    continue;
-                }
-
-                double min = ys[xBordersIndexes[i]];
-                double max = ys[xBordersIndexes[i]];
-                for (int j = xBordersIndexes[i]; j < xBordersIndexes[i + 1]; j++)
-                {
-                    if (ys[j] < min)
-                        min = ys[j];
-                    if (ys[j] > max)
-                        max = ys[j];
-                }
-
-                yParams[i] = new IntervalValues()
-                {
-                    yStart = ys[xBordersIndexes[i]],
-                    yEnd = ys[xBordersIndexes[i + 1] - 1],
-                    yMin = min,
-                    yMax = max,
-                    pointsCount = xBordersIndexes[i + 1] - xBordersIndexes[i],
-                    pixelIndex = i,
-                };
-            }
-
-            if (calculateNeighborDistances)
-            {
-                const int distanceOnEdges = 100; // using Int.Max can produce overflow
-
-                int Counter = distanceOnEdges;
-                for (int i = 0; i < yParams.Length; i++)
-                {
-                    if (yParams[i] == null)
-                        Counter++;
-                    else
-                    {
-                        yParams[i].distanceToLeftNeighbor = Counter;
-                        Counter = 1;
-                    }
-                }
-                Counter = distanceOnEdges;
-                for (int i = yParams.Length - 1; i > 0; i--)
-                {
-                    if (yParams[i] == null)
-                        Counter++;
-                    else
-                    {
-                        yParams[i].distanceToRightNeighbor = Counter;
-                        Counter = 1;
-                    }
-                }
-            }
-
-            return yParams;
-        }
-
-        private List<PointF> GetPointsToDraw(IntervalValues[] yParams, int? PointBeforeDisplayedIndex, int? PointAfterDisplayedIndex, Settings settings)
-        {
-            List<PointF> PointsToDraw = new List<PointF>();
-
-            if (PointBeforeDisplayedIndex >= 0)
-            {
-                PointsToDraw.Add(settings.GetPixel(xs[PointBeforeDisplayedIndex.Value], ys[PointBeforeDisplayedIndex.Value]));
-            }
-
-            for (int i = 0; i < settings.dataSize.Width; i++)
-            {
-                if (yParams[i] == null)
-                    continue;
-
-                PointsToDraw.Add(new PointF(yParams[i].pixelIndex, (float)settings.GetPixelY(yParams[i].yStart)));
-                if (yParams[i].pointsCount > 1)
-                {
-                    PointsToDraw.Add(new PointF(yParams[i].pixelIndex, (float)settings.GetPixelY(yParams[i].yMin)));
-                    PointsToDraw.Add(new PointF(yParams[i].pixelIndex, (float)settings.GetPixelY(yParams[i].yMax)));
-                    PointsToDraw.Add(new PointF(yParams[i].pixelIndex, (float)settings.GetPixelY(yParams[i].yEnd)));
-                }
-            }
-
-            if (PointAfterDisplayedIndex < xs.Length && PointsToDraw.Count >= 1)
-            {
-                PointF lastPoint = PointsToDraw[PointsToDraw.Count - 1];
-                PointF afterPoint = settings.GetPixel(xs[PointAfterDisplayedIndex.Value], ys[PointAfterDisplayedIndex.Value]);
-
-                float x1 = settings.dataSize.Width;
-                float y1 = lastPoint.Y + (afterPoint.Y - lastPoint.Y) * (x1 - lastPoint.X) / (afterPoint.X - lastPoint.X);
-                PointsToDraw.Add(new PointF(x1, y1));
-            }
-
-            if (PointBeforeDisplayedIndex >= 0 && PointsToDraw.Count >= 2)
-            {
-                float x0 = -1;
-                float y0 = PointsToDraw[1].Y + (PointsToDraw[0].Y - PointsToDraw[1].Y) * (x0 - PointsToDraw[1].X) / (PointsToDraw[0].X - PointsToDraw[1].X);
-                PointsToDraw[0] = new PointF(x0, y0);
-            }
-
-            return PointsToDraw;
         }
     }
 }
