@@ -54,8 +54,22 @@ namespace ScottPlotTests.Legend
         public void Test_Signal_ColorAndStyle()
         {
             var plt = new ScottPlot.Plot(600, 400);
-            plt.PlotSignal(DataGen.Sin(10), label: "sin", color: Color.Red, lineStyle: LineStyle.Dash, lineWidth: 1);
-            plt.PlotSignal(DataGen.Cos(10), label: "cos", color: Color.Blue, lineStyle: LineStyle.Dot, lineWidth: 3, markerSize: 10);
+            plt.PlotSignal(DataGen.Sin(10), label: "sin", 
+                color: Color.Red, lineStyle: LineStyle.Dash, lineWidth: 1);
+            plt.PlotSignal(DataGen.Cos(10), label: "cos", 
+                color: Color.Blue, lineStyle: LineStyle.Dot, lineWidth: 3, markerSize: 10);
+            plt.Legend();
+            TestTools.SaveFig(plt);
+        }
+
+        [Test]
+        public void Test_Scatter_ColorAndStyle()
+        {
+            var plt = new ScottPlot.Plot(600, 400);
+            plt.PlotScatter(DataGen.Consecutive(10), DataGen.Sin(10), label: "sin", 
+                color: Color.Red, lineStyle: LineStyle.Dash, lineWidth: 1);
+            plt.PlotScatter(DataGen.Consecutive(10), DataGen.Cos(10), label: "cos", 
+                color: Color.Blue, lineStyle: LineStyle.Dot, lineWidth: 3, markerSize: 10);
             plt.Legend();
             TestTools.SaveFig(plt);
         }
