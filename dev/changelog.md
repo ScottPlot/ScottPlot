@@ -1,7 +1,7 @@
 # ScottPlot Changelog
 
 ## ScottPlot 4.0.39 ⚠️ _in active development_
-* no changes yet...
+* Legend now reflects LineStyle of Signal and SignalXY plots (#488) _Thanks @Benny121221_
 
 ## ScottPlot 4.0.38
 * Improved `Plot.PlotFillAboveBelow()` rendering of data with a non-zero baseline (#477) _Thanks @el-aasi_
