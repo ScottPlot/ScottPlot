@@ -237,11 +237,14 @@ namespace ScottPlot
             return pos;
         }
 
-        private Point GetPixelPosition(MouseEventArgs e)
+        private Point GetPixelPosition(MouseEventArgs e, bool applyDpiScaling = true)
         {
             Point pos = e.GetPosition(this);
-            pos.X *= dpiScale;
-            pos.Y *= dpiScale;
+            if (applyDpiScaling)
+            {
+                pos.X *= dpiScale;
+                pos.Y *= dpiScale;
+            }
             return pos;
         }
 
@@ -447,7 +450,7 @@ namespace ScottPlot
             if (enableScrollWheelZoom == false)
                 return;
 
-            var mousePixel = GetPixelPosition(e); // DPI-scaling aware
+            var mousePixel = GetPixelPosition(e, applyDpiScaling: false); // DPI-scaling aware
 
             double xFrac = (e.Delta > 0) ? 1.15 : 0.85;
             double yFrac = (e.Delta > 0) ? 1.15 : 0.85;
