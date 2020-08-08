@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace ScottPlot
@@ -123,6 +124,8 @@ namespace ScottPlot
         }
 
         #region user control configuration
+
+        private bool plotContainsHeatmap => settings?.plottables.Where(p => p is PlottableHeatmap).Count() > 0;
 
         private bool enablePanning = true;
         private bool enableRightClickZoom = true;
@@ -364,7 +367,7 @@ namespace ScottPlot
                 }
                 else
                 {
-                    bool shouldTighten = recalculateLayoutOnMouseUp ?? !plt.containsHeatmap;
+                    bool shouldTighten = recalculateLayoutOnMouseUp ?? plotContainsHeatmap == false;
                     plt.AxisAuto(middleClickMarginX, middleClickMarginY, tightenLayout: shouldTighten);
                     OnAxisChanged();
                 }
@@ -402,7 +405,7 @@ namespace ScottPlot
             settings.mouseMiddleRect = null;
             plottableBeingDragged = null;
 
-            bool shouldRecalculate = recalculateLayoutOnMouseUp ?? !plt.containsHeatmap;
+            bool shouldRecalculate = recalculateLayoutOnMouseUp ?? plotContainsHeatmap == false;
             Render(recalculateLayout: shouldRecalculate);
         }
 
@@ -425,7 +428,7 @@ namespace ScottPlot
 
             plt.AxisZoom(xFrac, yFrac, plt.CoordinateFromPixelX(e.Location.X), plt.CoordinateFromPixelY(e.Location.Y));
 
-            bool shouldRecalculate = recalculateLayoutOnMouseUp ?? !plt.containsHeatmap;
+            bool shouldRecalculate = recalculateLayoutOnMouseUp ?? plotContainsHeatmap == false;
             Render(recalculateLayout: shouldRecalculate);
             OnAxisChanged();
 
