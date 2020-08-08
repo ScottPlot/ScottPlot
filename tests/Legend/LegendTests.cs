@@ -2,6 +2,7 @@
 using ScottPlot;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 
@@ -47,6 +48,16 @@ namespace ScottPlotTests.Legend
             TestTools.SaveFig(plt2, "reversed");
 
             Assert.AreNotEqual(hash1, hash2);
+        }
+
+        [Test]
+        public void Test_Signal_ColorAndStyle()
+        {
+            var plt = new ScottPlot.Plot(600, 400);
+            plt.PlotSignal(DataGen.Sin(10), label: "sin", color: Color.Red, lineStyle: LineStyle.Dash, lineWidth: 1);
+            plt.PlotSignal(DataGen.Cos(10), label: "cos", color: Color.Blue, lineStyle: LineStyle.Dot, lineWidth: 3, markerSize: 10);
+            plt.Legend();
+            TestTools.SaveFig(plt);
         }
     }
 }
