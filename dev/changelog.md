@@ -2,6 +2,7 @@
 
 ## ScottPlot 4.0.39 ⚠️ _in active development_
 * Legend now reflects LineStyle of Signal and SignalXY plots (#488) _Thanks @Benny121221_
+* Improved mouse wheel zoom-to-cursor and middle-click-drag rectangle zoom in the WPF control for systems that use display scaling (#490) _Thanks @nashilnik_
 
 ## ScottPlot 4.0.38
 * Improved `Plot.PlotFillAboveBelow()` rendering of data with a non-zero baseline (#477) _Thanks @el-aasi_
