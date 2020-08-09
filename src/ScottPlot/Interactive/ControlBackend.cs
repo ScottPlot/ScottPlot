@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 
 namespace ScottPlot.Interactive
@@ -25,6 +26,7 @@ namespace ScottPlot.Interactive
         protected bool isDesignerMode;
         public double dpiScaleInput { get; protected set; } = 1;
         public double dpiScaleOutput { get; protected set; } = 1;
+        private bool plotContainsHeatmap => settings?.plottables.Where(p => p is PlottableHeatmap).Count() > 0;
 
 
         public List<ContextMenuItem> contextMenuItems;
@@ -280,7 +282,7 @@ namespace ScottPlot.Interactive
                 }
                 else
                 {
-                    bool shouldTighten = recalculateLayoutOnMouseUp ?? !plt.containsHeatmap;
+                    bool shouldTighten = recalculateLayoutOnMouseUp ?? !plotContainsHeatmap;
                     plt.AxisAuto(middleClickMarginX, middleClickMarginY, tightenLayout: shouldTighten);
                     AxisChanged?.Invoke(null, null);
                 }
@@ -292,7 +294,7 @@ namespace ScottPlot.Interactive
             axisLimitsOnMouseDown = null;
             settings.mouseMiddleRect = null;
 
-            bool shouldRecalculate = recalculateLayoutOnMouseUp ?? !plt.containsHeatmap;
+            bool shouldRecalculate = recalculateLayoutOnMouseUp ?? !plotContainsHeatmap;
             Render(recalculateLayout: shouldRecalculate);
         }
 
@@ -313,7 +315,7 @@ namespace ScottPlot.Interactive
 
             plt.AxisZoom(xFrac, yFrac, plt.CoordinateFromPixelX(mouseLocation.X), plt.CoordinateFromPixelY(mouseLocation.Y));
             AxisChanged?.Invoke(null, null);
-            bool shouldRecalculate = recalculateLayoutOnMouseUp ?? !plt.containsHeatmap;
+            bool shouldRecalculate = recalculateLayoutOnMouseUp ?? !plotContainsHeatmap;
             Render(recalculateLayout: shouldRecalculate);
         }
 
