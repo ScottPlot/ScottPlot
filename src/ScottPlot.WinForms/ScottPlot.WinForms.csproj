@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>net461;net472;netcoreapp3.0</TargetFrameworks>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <AssemblyName>ScottPlot.WinForms</AssemblyName>
     <RootNamespace>ScottPlot</RootNamespace>
     <UseWindowsForms>true</UseWindowsForms>
