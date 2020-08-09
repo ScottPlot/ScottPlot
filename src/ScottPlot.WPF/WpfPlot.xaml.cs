@@ -134,7 +134,7 @@ namespace ScottPlot
                 if (!(skipIfCurrentlyRendering && currentlyRendering))
                 {
                     currentlyRendering = true;
-                    imagePlot.Source = BmpImageFromBmp(plt.GetBitmap(true, lowQuality));
+                    imagePlot.Source = BmpImageFromBmp(plt.GetBitmap(true, lowQuality || lowQualityAlways));
                     currentlyRendering = false;
                     Rendered?.Invoke(null, null);
                 }
@@ -155,6 +155,7 @@ namespace ScottPlot
         private bool enableZooming = true;
         private bool enableScrollWheelZoom = true;
         private bool lowQualityWhileDragging = true;
+        private bool lowQualityAlways = false;
         private bool doubleClickingTogglesBenchmark = true;
         private bool lockVerticalAxis = false;
         private bool lockHorizontalAxis = false;
@@ -168,6 +169,7 @@ namespace ScottPlot
             bool? enableRightClickMenu = null,
             bool? enableScrollWheelZoom = null,
             bool? lowQualityWhileDragging = null,
+            bool? lowQualityAlways = null,
             bool? enableDoubleClickBenchmark = null,
             bool? lockVerticalAxis = null,
             bool? lockHorizontalAxis = null,
@@ -182,6 +184,7 @@ namespace ScottPlot
             if (enableRightClickMenu != null) ContextMenu = (enableRightClickMenu.Value) ? DefaultRightClickMenu() : null;
             if (enableScrollWheelZoom != null) this.enableScrollWheelZoom = (bool)enableScrollWheelZoom;
             if (lowQualityWhileDragging != null) this.lowQualityWhileDragging = (bool)lowQualityWhileDragging;
+            if (lowQualityAlways != null) this.lowQualityAlways = (bool)lowQualityAlways;
             if (enableDoubleClickBenchmark != null) this.doubleClickingTogglesBenchmark = (bool)enableDoubleClickBenchmark;
             if (lockVerticalAxis != null) this.lockVerticalAxis = (bool)lockVerticalAxis;
             if (lockHorizontalAxis != null) this.lockHorizontalAxis = (bool)lockHorizontalAxis;

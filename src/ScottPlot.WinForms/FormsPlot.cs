@@ -106,7 +106,7 @@ namespace ScottPlot
             if (!(skipIfCurrentlyRendering && currentlyRendering))
             {
                 currentlyRendering = true;
-                pbPlot.Image = plt?.GetBitmap(true, lowQuality);
+                pbPlot.Image = plt?.GetBitmap(true, lowQuality || lowQualityAlways);
                 if (isPanningOrZooming || isMovingDraggable || processEvents)
                     Application.DoEvents();
                 currentlyRendering = false;
@@ -131,6 +131,7 @@ namespace ScottPlot
         private bool enableRightClickZoom = true;
         private bool enableScrollWheelZoom = true;
         private bool lowQualityWhileDragging = true;
+        private bool lowQualityAlways = false;
         private bool doubleClickingTogglesBenchmark = true;
         private bool lockVerticalAxis = false;
         private bool lockHorizontalAxis = false;
@@ -145,6 +146,7 @@ namespace ScottPlot
             bool? enableRightClickMenu = null,
             bool? enableScrollWheelZoom = null,
             bool? lowQualityWhileDragging = null,
+            bool? lowQualityAlways = null,
             bool? enableDoubleClickBenchmark = null,
             bool? lockVerticalAxis = null,
             bool? lockHorizontalAxis = null,
@@ -160,6 +162,7 @@ namespace ScottPlot
             if (enableRightClickMenu != null) ContextMenuStrip = (enableRightClickMenu.Value) ? DefaultRightClickMenu() : null;
             if (enableScrollWheelZoom != null) this.enableScrollWheelZoom = (bool)enableScrollWheelZoom;
             if (lowQualityWhileDragging != null) this.lowQualityWhileDragging = (bool)lowQualityWhileDragging;
+            if (lowQualityAlways != null) this.lowQualityAlways = (bool)lowQualityAlways;
             if (enableDoubleClickBenchmark != null) this.doubleClickingTogglesBenchmark = (bool)enableDoubleClickBenchmark;
             if (lockVerticalAxis != null) this.lockVerticalAxis = (bool)lockVerticalAxis;
             if (lockHorizontalAxis != null) this.lockHorizontalAxis = (bool)lockHorizontalAxis;
