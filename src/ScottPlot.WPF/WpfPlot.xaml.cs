@@ -384,10 +384,10 @@ namespace ScottPlot
 
             if (mouseMiddleDownLocation != null)
             {
-                double x1 = Math.Min(mouseLocation.X / dpiScale, ((Point)mouseMiddleDownLocation).X / dpiScale) ;
-                double x2 = Math.Max(mouseLocation.X / dpiScale, ((Point)mouseMiddleDownLocation).X / dpiScale) ;
-                double y1 = Math.Min(mouseLocation.Y / dpiScale, ((Point)mouseMiddleDownLocation).Y / dpiScale) ;
-                double y2 = Math.Max(mouseLocation.Y / dpiScale, ((Point)mouseMiddleDownLocation).Y / dpiScale) ;
+                double x1 = Math.Min(mouseLocation.X / dpiScale, ((Point)mouseMiddleDownLocation).X / dpiScale);
+                double x2 = Math.Max(mouseLocation.X / dpiScale, ((Point)mouseMiddleDownLocation).X / dpiScale);
+                double y1 = Math.Min(mouseLocation.Y / dpiScale, ((Point)mouseMiddleDownLocation).Y / dpiScale);
+                double y2 = Math.Max(mouseLocation.Y / dpiScale, ((Point)mouseMiddleDownLocation).Y / dpiScale);
 
                 Point topLeft = new Point(x1, y1);
                 Size size = new Size(x2 - x1, y2 - y1);
