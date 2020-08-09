@@ -1,42 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
-    <TargetFrameworks>net461;net472;netcoreapp3.0</TargetFrameworks>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <OutputType>Library</OutputType>
-    <RootNamespace>ScottPlot</RootNamespace>
+    <TargetFrameworks>net472</TargetFrameworks>
     <UseWPF>true</UseWPF>
-    <ApplicationIcon>icon.ico</ApplicationIcon>
-    <PackageIcon>icon.png</PackageIcon>
-    <Description>This package provides a WPF control to interactively display ScottPlot graphs in WPF applications. This package targets both .NET Framework and .NET Core.</Description>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>http://swharden.com/scottplot/</PackageProjectUrl>
-    <PackageTags>plot graph data chart signal line bar C# WPF control interactive</PackageTags>
-    <PackageReleaseNotes>Release notes: https://github.com/swharden/ScottPlot/releases
-Release cookbook: http://swharden.com/scottplot/cookbook
-Release demo: http://swharden.com/scottplot/demo</PackageReleaseNotes>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <Version>4.0.38</Version>
-    <AssemblyVersion>4.0.38.0</AssemblyVersion>
-    <FileVersion>4.0.38.0</FileVersion>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
-    <DelaySign>false</DelaySign>
-    <Authors>Scott Harden</Authors>
-    <Company>Harden Technologies, LLC</Company>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ScottPlot\ScottPlot.csproj" />
-    <None Include="icon.png" Pack="true" PackagePath="\" />
-    <None Include="icon.ico" Pack="true" PackagePath="\" />
-    <None Include="VisualStudioToolsManifest.xml" Pack="true" PackagePath="tools" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
+    <None Include="VisualStudioToolsManifest.xml" Pack="true" PackagePath="tools" />
   </ItemGroup>
 
 </Project>
