@@ -114,5 +114,10 @@ namespace ScottPlot.Demo.WPF
         {
             new WpfDemos.AxisLimits().ShowDialog();
         }
+
+        private void LaunchLayout(object sender, RoutedEventArgs e)
+        {
+            new WpfDemos.Layout().ShowDialog();
+        }
     }
 }

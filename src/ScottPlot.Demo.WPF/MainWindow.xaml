@@ -187,6 +187,17 @@
                         </TextBlock>
                     </DockPanel>
 
+                    <DockPanel>
+                        <Button DockPanel.Dock="Left" Click="LaunchLayout">
+                            <TextBlock TextAlignment="Center">
+                                Custom Layout
+                            </TextBlock>
+                        </Button>
+                        <TextBlock >
+                            Demonstrate how to customize the plot frame padding
+                        </TextBlock>
+                    </DockPanel>
+
                 </StackPanel>
             </GroupBox>
 

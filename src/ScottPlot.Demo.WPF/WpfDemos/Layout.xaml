@@ -1,0 +1,15 @@
+﻿<Window x:Class="ScottPlot.Demo.WPF.WpfDemos.Layout"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ScottPlot.Demo.WPF.WpfDemos" 
+        xmlns:ScottPlot="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        mc:Ignorable="d"
+        Title="Layout" Height="400" Width="600"
+        >
+    <DockPanel>
+        <Button DockPanel.Dock="Bottom" Content="Clear And Plot" Click="PlotRandomData"/>
+        <ScottPlot:WpfPlot Name="wpfPlot1"/>
+    </DockPanel>
+</Window>
