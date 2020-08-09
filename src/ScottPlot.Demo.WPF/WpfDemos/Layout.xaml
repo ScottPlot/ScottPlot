@@ -7,6 +7,7 @@
         xmlns:ScottPlot="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         mc:Ignorable="d"
         Title="Layout" Height="400" Width="600"
+        Loaded="PlotRandomData"
         >
     <DockPanel>
         <Button DockPanel.Dock="Bottom" Content="Clear And Plot" Click="PlotRandomData"/>

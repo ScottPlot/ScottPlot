@@ -22,7 +22,6 @@ namespace ScottPlot.Demo.WPF.WpfDemos
         public Layout()
         {
             InitializeComponent();
-            PlotRandomData(null, null);
         }
 
         private void PlotRandomData(object sender, RoutedEventArgs e)
