@@ -46,12 +46,15 @@ namespace ScottPlotDevTools
         {
             Console.WriteLine("incrimenting version...");
 
-            string[] projectNames = new string[] { "ScottPlot", "ScottPlot.WinForms", "ScottPlot.WPF" };
+            string[] projectPaths = {
+                    "../../../../../../src/ScottPlot/ScottPlot.csproj",
+                    "../../../../../../src/ScottPlot.WinForms/ScottPlot.WinForms.NUGET.csproj",
+                    "../../../../../../src/ScottPlot.WPF/ScottPlot.WPF.NUGET.csproj"
+                 };
 
-            foreach (string projectName in projectNames)
+            foreach (string projectPathRel in projectPaths)
             {
-                string projectPath = $"../../../../../../src/{projectName}/{projectName}.csproj";
-                projectPath = System.IO.Path.GetFullPath(projectPath);
+                string projectPath = System.IO.Path.GetFullPath(projectPathRel);
                 if (!System.IO.File.Exists(projectPath))
                     throw new ArgumentException($"file not found: {projectPath}");
 

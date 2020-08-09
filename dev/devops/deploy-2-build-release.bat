@@ -12,6 +12,8 @@ dotnet clean ..\..\src\ScottPlotV4.sln --verbosity quiet --configuration Release
 
 echo.
 echo ### REBUILDING SOLUTION ###
-dotnet build ..\..\src\ScottPlotV4.sln --verbosity quiet --configuration Release
+dotnet build ..\..\src\ScottPlot\ScottPlot.csproj --verbosity quiet --configuration Release
+dotnet build ..\..\src\ScottPlot.WinForms\ScottPlot.WinForms.NUGET.csproj --verbosity quiet --configuration Release
+dotnet build ..\..\src\ScottPlot.WPF\ScottPlot.WPF.NUGET.csproj --verbosity quiet --configuration Release
 
 pause
