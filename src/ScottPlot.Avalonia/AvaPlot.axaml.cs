@@ -13,13 +13,12 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
+using Avalonia.Platform;
 using Avalonia.VisualTree;
 using ScottPlot.Avalonia;
 using ScottPlot.Config;
-using Avalonia.Platform;
-
-using Ava = Avalonia;
 using ScottPlot.Interactive;
+using Ava = Avalonia;
 
 namespace ScottPlot.Avalonia
 {
