@@ -43,6 +43,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColormapGenerator", "..\dev
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot.Avalonia", "ScottPlot.Avalonia\ScottPlot.Avalonia.csproj", "{74A9E843-D673-4171-8A52-43D10FE42380}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScottPlot.Demo.Avalonia", "ScottPlot.Demo.Avalonia\ScottPlot.Demo.Avalonia.csproj", "{8B76BD3E-AC5B-40DD-83E8-2507A6D30168}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -97,6 +99,10 @@ Global
 		{74A9E843-D673-4171-8A52-43D10FE42380}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{74A9E843-D673-4171-8A52-43D10FE42380}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{74A9E843-D673-4171-8A52-43D10FE42380}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B76BD3E-AC5B-40DD-83E8-2507A6D30168}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B76BD3E-AC5B-40DD-83E8-2507A6D30168}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B76BD3E-AC5B-40DD-83E8-2507A6D30168}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B76BD3E-AC5B-40DD-83E8-2507A6D30168}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -114,6 +120,7 @@ Global
 		{6728B44A-30EB-4A34-B9C7-A0E3AEB11C9C} = {35F8F55D-8E1E-44BC-9DE2-C60DCD42BDCB}
 		{7C110586-1835-4273-ADE5-E9EF29B750EC} = {35F8F55D-8E1E-44BC-9DE2-C60DCD42BDCB}
 		{74A9E843-D673-4171-8A52-43D10FE42380} = {E6E0010E-1E4C-4C31-849D-BCB35CCA1B7B}
+		{8B76BD3E-AC5B-40DD-83E8-2507A6D30168} = {D0040AB2-4D89-4BBE-B1CB-FAB64E741336}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FBAE082A-173A-4F13-BE31-E6C070513C9C}
