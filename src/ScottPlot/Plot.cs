@@ -12,7 +12,6 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Linq;
-using ScottPlot.Config;
 using ScottPlot.Drawing;
 using ScottPlot.Statistics;
 
@@ -989,6 +988,50 @@ namespace ScottPlot
             return signal;
         }
 
+        public PlottableSignalOld PlotSignalOld(
+            double[] ys,
+            double sampleRate = 1,
+            double xOffset = 0,
+            double yOffset = 0,
+            Color? color = null,
+            double lineWidth = 1,
+            double markerSize = 5,
+            string label = null,
+            Color[] colorByDensity = null,
+            int? minRenderIndex = null,
+            int? maxRenderIndex = null,
+            LineStyle lineStyle = LineStyle.Solid,
+            bool useParallel = true
+            )
+        {
+            if (color == null)
+                color = settings.GetNextColor();
+
+            if (minRenderIndex == null)
+                minRenderIndex = 0;
+
+            if (maxRenderIndex == null)
+                maxRenderIndex = ys.Length - 1;
+
+            PlottableSignalOld signal = new PlottableSignalOld(
+                ys: ys,
+                sampleRate: sampleRate,
+                xOffset: xOffset,
+                yOffset: yOffset,
+                color: (Color)color,
+                lineWidth: lineWidth,
+                markerSize: markerSize,
+                label: label,
+                colorByDensity: colorByDensity,
+                minRenderIndex: minRenderIndex.Value,
+                maxRenderIndex: maxRenderIndex.Value,
+                lineStyle: lineStyle,
+                useParallel: useParallel
+                );
+
+            settings.plottables.Add(signal);
+            return signal;
+        }
         public PlottableSignal PlotSignal(
             double[] ys,
             double sampleRate = 1,
@@ -1042,11 +1085,22 @@ namespace ScottPlot
             Color? color = null,
             double lineWidth = 1,
             double markerSize = 5,
-            string label = null
+            string label = null,
+            Color[] colorByDensity = null,
+            int? minRenderIndex = null,
+            int? maxRenderIndex = null,
+            LineStyle lineStyle = LineStyle.Solid,
+            bool useParallel = true
             ) where T : struct, IComparable
         {
             if (color == null)
                 color = settings.GetNextColor();
+
+            if (minRenderIndex == null)
+                minRenderIndex = 0;
+
+            if (maxRenderIndex == null)
+                maxRenderIndex = ys.Length - 1;
 
             PlottableSignalConst<T> signal = new PlottableSignalConst<T>(
                 ys: ys,
@@ -1056,7 +1110,12 @@ namespace ScottPlot
                 color: (Color)color,
                 lineWidth: lineWidth,
                 markerSize: markerSize,
-                label: label
+                label: label,
+                colorByDensity: colorByDensity,
+                minRenderIndex: minRenderIndex.Value,
+                maxRenderIndex: maxRenderIndex.Value,
+                lineStyle: lineStyle,
+                useParallel: useParallel
                 );
 
             settings.plottables.Add(signal);

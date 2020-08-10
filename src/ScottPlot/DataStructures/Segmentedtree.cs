@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ScottPlot.DataStructures
@@ -83,7 +81,7 @@ namespace ScottPlot.DataStructures
             GreaterThanExp = Expression.Lambda<Func<T, T, bool>>(bodyGreaterThan, paramA, paramB).Compile();
         }
 
-        public void updateData(int index, T newValue)
+        public void updateElement(int index, T newValue)
         {
             sourceArray[index] = newValue;
             // Update Tree, can be optimized            
@@ -120,7 +118,7 @@ namespace ScottPlot.DataStructures
             }
         }
 
-        public void updateData(int from, int to, T[] newData, int fromData = 0) // RangeUpdate
+        public void updateRange(int from, int to, T[] newData, int fromData = 0) // RangeUpdate
         {
             //update source signal
             for (int i = from; i < to; i++)
@@ -187,12 +185,12 @@ namespace ScottPlot.DataStructures
 
         public void updateData(int from, T[] newData)
         {
-            updateData(from, newData.Length, newData);
+            updateRange(from, newData.Length, newData);
         }
 
         public void updateData(T[] newData)
         {
-            updateData(0, newData.Length, newData);
+            updateRange(0, newData.Length, newData);
         }
 
         public void UpdateTreesInBackground()
@@ -254,7 +252,7 @@ namespace ScottPlot.DataStructures
         }
 
         //  O(log(n)) for each range min/max query
-        protected void MinMaxRangeQuery(int l, int r, out double lowestValue, out double highestValue)
+        public void MinMaxRangeQuery(int l, int r, out double lowestValue, out double highestValue)
         {
             T lowestValueT;
             T highestValueT;

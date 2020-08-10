@@ -7,7 +7,7 @@ using ScottPlot.Config;
 
 namespace ScottPlot
 {
-    public class PlottableSignalXY : PlottableSignal
+    public class PlottableSignalXY : PlottableSignalOld
     {
         public double[] xs;
         public PlottableSignalXY(double[] xs, double[] ys, Color color, double lineWidth, double markerSize, string label, int minRenderIndex, int maxRenderIndex, LineStyle lineStyle, bool useParallel)
