@@ -380,7 +380,7 @@ namespace ScottPlot
         {
             var singleLegendItem = new Config.LegendItem(label, color)
             {
-                lineStyle = LineStyle.Solid,
+                lineStyle = lineStyle,
                 lineWidth = lineWidth,
                 markerShape = (markersAreVisible) ? MarkerShape.filledCircle : MarkerShape.none,
                 markerSize = (markersAreVisible) ? markerSize : 0
