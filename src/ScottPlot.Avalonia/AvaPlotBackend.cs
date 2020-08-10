@@ -44,6 +44,7 @@ namespace ScottPlot.Avalonia
                 view.Find<StackPanel>("canvasDesigner").Background = view.transparentBrush;
                 view.Find<Canvas>("canvasPlot").Background = view.transparentBrush;
             }
+
         }
         public void SetAltPressed(bool value)
         {

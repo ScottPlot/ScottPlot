@@ -78,6 +78,19 @@ namespace ScottPlot.Avalonia
             KeyDown += OnKeyDown;
             KeyUp += OnKeyUp;
             PointerWheelChanged += UserControl_MouseWheel;
+
+            PropertyChanged += AvaPlot_PropertyChanged;
+        }
+
+        private void AvaPlot_PropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
+        {
+            //Debug.WriteLine(e.Property.Name);
+            if (e.Property.Name == "Bounds")
+            {
+                plt.Resize((int)((Ava.Rect)e.NewValue).Width, (int)((Ava.Rect)e.NewValue).Height);
+                Render();
+            }
+
         }
 
         public void Render()
