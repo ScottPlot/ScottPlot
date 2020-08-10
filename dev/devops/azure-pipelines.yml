@@ -58,9 +58,11 @@ steps:
 
 - task: NuGetToolInstaller@1
   displayName: 'Install NuGet'
+  condition: or(eq(variables['purpose'], 'library'), eq(variables['purpose'], 'solution'))
     
 - task: NuGetCommand@2
   displayName: 'Restore packages'
+  condition: or(eq(variables['purpose'], 'library'), eq(variables['purpose'], 'solution'))
   inputs:
     restoreSolution: 'src/ScottPlotV4.sln'
 
