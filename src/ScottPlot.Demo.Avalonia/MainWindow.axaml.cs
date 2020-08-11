@@ -12,7 +12,6 @@ namespace ScottPlot.Demo.Avalonia
             InitializeComponent();
 
             var avaplot1 = this.Find<AvaPlot>("avaPlot1");
-            avaplot1.plt.Resize(400, 300);
 
             double[] dataX = new double[] { 1, 2, 3, 4, 5 };
             double[] dataY = new double[] { 1, 4, 9, 16, 25 };
