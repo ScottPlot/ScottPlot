@@ -1,0 +1,32 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="ScottPlot.Avalonia.AvaPlot">
+    <Grid x:Name="mainGrid">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="1*"/>
+		</Grid.ColumnDefinitions>
+
+        <StackPanel Name="canvasDesigner" Grid.Row="0" Grid.Column="0" Background="#003366">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Name="lblTitle" Text="ScottPlot" Foreground="White" FontSize="18" FontWeight="Bold" />
+                <TextBlock Name="lblVersion" Text="x.x.x.x" Foreground="White" FontSize="10" VerticalAlignment="Bottom"/>
+            </StackPanel>
+        </StackPanel>
+
+        
+        <!--SizeChanged="CanvasPlot_SizeChanged"-->
+        <Canvas Name="canvasPlot" Grid.Row="1" Grid.Column="0" Background="DarkRed">
+            <Image Name="imagePlot"/>
+        </Canvas>
+
+    </Grid>
+</UserControl>
