@@ -4,7 +4,7 @@
 [![](https://img.shields.io/nuget/dt/ScottPlot?color=004880&label=Installs&logo=nuget)](https://www.nuget.org/packages/ScottPlot/)
 [![Nuget](https://img.shields.io/nuget/v/scottplot?label=NuGet&logo=nuget)](https://www.nuget.org/packages/ScottPlot/)
 
-**ScottPlot is a free and open-source graphing library for .NET** which makes it easy to display data in a variety of formats (line plots, bar charts, scatter plots, etc.) with just a few lines of code (see the **[ScottPlot Cookbook](http://swharden.com/scottplot/cookbook)** for examples). User controls are available for WinForms and WPF to allow interactive display of data. ScottPlot can be installed using NuGet.
+**ScottPlot is a free and open-source graphing library for .NET** which makes it easy to display data in a variety of formats (line plots, bar charts, scatter plots, etc.) with just a few lines of code (see the **[ScottPlot Cookbook](http://swharden.com/scottplot/cookbook)** for examples). User controls are available for WinForms, WPF, and Avalonia to allow interactive display of data. ScottPlot can be installed using NuGet.
 
 <div align='center'>
 <img src='dev/nuget/ScottPlot.gif'>
@@ -18,7 +18,7 @@ The [ScottPlot website](http://swharden.com/scottplot/) contains documentation, 
 * [WPF Quickstart](http://swharden.com/scottplot/quickstart.md.html#wpf-quickstart)
 * [Windows Forms Quickstart](http://swharden.com/scottplot/quickstart.md.html#windows-forms-quickstart)
 * [Console Application Quickstart](http://swharden.com/scottplot/quickstart.md.html#console-quickstart)
-
+* [Avalonia Quickstart](https://github.com/swharden/ScottPlot/tree/master/src/ScottPlot.Demo.Avalonia)
 
 ## Developer Resources
 
@@ -26,11 +26,11 @@ This repository is focused on software development tasks: source code tracking, 
 
 ### Supported Platforms
 
-* The `ScottPlot` package supports:
+* The [`ScottPlot`](https://www.nuget.org/packages/ScottPlot/) package supports:
   * .NET Core 2.0 and newer
   * .NET Framework 4.6.1 and newer
   * UWP 10.0.16299 and newer
-* User control packages `ScottPlot.WinForms`, `ScottPlot.WinForms`, and `ScottPlot.Avalonia`:
+* User control packages [`ScottPlot.WinForms`](https://www.nuget.org/packages/ScottPlot.WinForms), [`ScottPlot.WPF`](https://www.nuget.org/packages/ScottPlot.WPF), and [`ScottPlot.Avalonia`](https://www.nuget.org/packages/ScottPlot.Avalonia/):
   * .NET Core 3.0 and newer
   * .NET Framework 4.6.1 and newer
 
