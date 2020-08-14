@@ -20,6 +20,8 @@ using ScottPlot.Config;
 using ScottPlot.Interactive;
 using Ava = Avalonia;
 
+#pragma warning disable IDE1006 // lowercase top-level property
+
 namespace ScottPlot.Avalonia
 {
     /// <summary>
@@ -167,11 +169,6 @@ namespace ScottPlot.Avalonia
             return dpiCorrectedPos;
         }
 
-        private System.Drawing.Point SDPoint(Ava.Point pt)
-        {
-            return new System.Drawing.Point((int)pt.X, (int)pt.Y);
-        }
-
         private System.Drawing.PointF SDPointF(Ava.Point pt)
         {
             return new System.Drawing.PointF((float)pt.X, (float)pt.Y);
@@ -183,9 +180,9 @@ namespace ScottPlot.Avalonia
 
             var mousePixel = GetPixelPosition(e);
             MouseButtons button = MouseButtons.Left;
-            if (e.MouseButton == MouseButton.Left) button = MouseButtons.Left;
-            else if (e.MouseButton == MouseButton.Right) button = MouseButtons.Right;
-            else if (e.MouseButton == MouseButton.Middle) button = MouseButtons.Middle;
+            if (e.GetCurrentPoint(null).Properties.PointerUpdateKind == PointerUpdateKind.LeftButtonPressed) button = MouseButtons.Left;
+            else if (e.GetCurrentPoint(null).Properties.PointerUpdateKind == PointerUpdateKind.RightButtonPressed) button = MouseButtons.Right;
+            else if (e.GetCurrentPoint(null).Properties.PointerUpdateKind == PointerUpdateKind.MiddleButtonPressed) button = MouseButtons.Middle;
 
 
             backend.MouseDrag(SDPointF(mousePixel), button);
