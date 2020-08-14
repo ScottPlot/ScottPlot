@@ -11,11 +11,6 @@ namespace ScottPlot.Avalonia
         public AvaPlotViewer()
         {
             throw new NotSupportedException("The zero parameter constructor is not to be called");
-
-            this.InitializeComponent();
-#if DEBUG
-            this.AttachDevTools();
-#endif
         }
 
         public AvaPlotViewer(ScottPlot.Plot plot, int windowWidth = 600, int windowHeight = 400, string windowTitle = "ScottPlot Viewer")
