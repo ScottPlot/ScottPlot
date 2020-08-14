@@ -18,10 +18,6 @@ pause
 pause
 
 echo.
-echo ### REBUILDING SOLUTION ###
-dotnet build ..\..\src\ScottPlotV4.sln --verbosity quiet --configuration Release
-
-echo.
 echo ### UPLOADING [ScottPlot] TO NUGET ###
 nuget push ..\..\src\ScottPlot\bin\Release\*.nupkg -Source https://api.nuget.org/v3/index.json
 
@@ -32,6 +28,10 @@ nuget push ..\..\src\ScottPlot.WinForms\bin\Release\*.nupkg -Source https://api.
 echo.
 echo ### UPLOADING [ScottPlot.WPF] TO NUGET ###
 nuget push ..\..\src\ScottPlot.WPF\bin\Release\*.nupkg -Source https://api.nuget.org/v3/index.json
+
+echo.
+echo ### UPLOADING [ScottPlot.Avalonia] TO NUGET ###
+nuget push ..\..\src\ScottPlot.Avalonia\bin\Release\*.nupkg -Source https://api.nuget.org/v3/index.json
 
 echo.
 pause
