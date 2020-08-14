@@ -1,6 +1,9 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.0.39 ⚠️ _in active development_
+## ScottPlot 4.0.40 ⚠️ _in active development_
+* Added user control for Avalonia (#496, #503) _Thanks @Benny121221_
+
+## ScottPlot 4.0.39
 * Legend now reflects LineStyle of Signal and SignalXY plots (#488) _Thanks @Benny121221_
 * Improved mouse wheel zoom-to-cursor and middle-click-drag rectangle zoom in the WPF control for systems that use display scaling (#490) _Thanks @nashilnik_
 * The `Configure()` method of user controls now has a `lowQualityAlways` argument to let the user easily enable/disable anti-aliasing at the control level. Previously this was only configurable by reaching into the control's plot object and calling its `AntiAlias()` method. (#499) _Thanks @RachamimYaakobov_
