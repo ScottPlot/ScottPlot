@@ -26,11 +26,13 @@ This repository is focused on software development tasks: source code tracking, 
 
 ### Supported Platforms
 
-* **ScottPlot** targets **.NET Standard 2.0**\
-_which supports .NET Framework 4.6.1, Xamarinin.iOS 10.14, Xamarinin.Mac 3.8
-Xamarinin.Android 8.0, and Universal Windows Platform (UWP) 10.0.16299._
-* **ScottPlot.WinForms** targets **.NET Framework 4.6.1** and **.NET Core 3.0**
-* **ScottPlot.WPF** targets **.NET Core 3.0**
+* The `ScottPlot` package supports:
+  * .NET Core 2.0 and newer
+  * .NET Framework 4.6.1 and newer
+  * UWP 10.0.16299 and newer
+* User control packages `ScottPlot.WinForms`, `ScottPlot.WinForms`, and `ScottPlot.Avalonia`:
+  * .NET Core 3.0 and newer
+  * .NET Framework 4.6.1 and newer
 
 ### Build ScottPlot from Source Code
 ScottPlot is developed with the latest non-preview version of [Visual Studio Community](https://visualstudio.microsoft.com/vs/community/).
