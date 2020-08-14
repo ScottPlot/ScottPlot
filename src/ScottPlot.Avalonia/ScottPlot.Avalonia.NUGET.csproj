@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFrameworks>net461;net472;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>net461;net472;netcoreapp3.0</TargetFrameworks>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <AssemblyName>ScottPlot.Avalonia</AssemblyName>
     <RootNamespace>ScottPlot</RootNamespace>
