@@ -15,6 +15,7 @@
     <PackageTags>plot graph data chart signal line bar C#</PackageTags>
     <PackageReleaseNotes>Interactive WinForms control: https://www.nuget.org/packages/ScottPlot.WinForms
 Interactive WPF control: https://www.nuget.org/packages/ScottPlot.WPF
+Interactive Avalonia control: https://www.nuget.org/packages/ScottPlot.Avalonia
 
 Release notes: https://github.com/swharden/ScottPlot/releases
 Release cookbook: http://swharden.com/scottplot/cookbook
