@@ -49,7 +49,8 @@ namespace ScottPlotDevTools
             string[] projectPaths = {
                     "../../../../../../src/ScottPlot/ScottPlot.csproj",
                     "../../../../../../src/ScottPlot.WinForms/ScottPlot.WinForms.NUGET.csproj",
-                    "../../../../../../src/ScottPlot.WPF/ScottPlot.WPF.NUGET.csproj"
+                    "../../../../../../src/ScottPlot.WPF/ScottPlot.WPF.NUGET.csproj",
+                    "../../../../../../src/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj"
                  };
 
             foreach (string projectPathRel in projectPaths)
