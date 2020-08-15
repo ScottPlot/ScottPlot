@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -34,6 +35,17 @@ namespace ScottPlotTests
                 SaveArtifact(plt, callingMethod + subName);
 
             return filePath;
+        }
+
+        public static void SaveBitmap(System.Drawing.Bitmap bmp, string subName = "")
+        {
+            var stackTrace = new System.Diagnostics.StackTrace();
+            string callingMethod = stackTrace.GetFrame(1).GetMethod().Name;
+            string fileName = callingMethod + subName + ".png";
+            string filePath = System.IO.Path.GetFullPath(fileName);
+            bmp.Save(filePath, ImageFormat.Png);
+            Console.WriteLine($"Saved: {filePath}");
+            Console.WriteLine();
         }
 
         private static void SaveArtifact(ScottPlot.Plot plt, string name)
