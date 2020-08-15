@@ -988,6 +988,45 @@ namespace ScottPlot
             return signal;
         }
 
+        public PlottableSignalXYConst<TX, TY> PlotSignalXYConst<TX, TY>(
+            TX[] xs,
+            TY[] ys,
+            Color? color = null,
+            double lineWidth = 1,
+            double markerSize = 5,
+            string label = null,
+            int? minRenderIndex = null,
+            int? maxRenderIndex = null,
+            LineStyle lineStyle = LineStyle.Solid,
+            bool useParallel = true
+            ) where TX : struct, IComparable where TY : struct, IComparable
+
+        {
+            if (color == null)
+                color = settings.GetNextColor();
+
+            if (minRenderIndex == null)
+                minRenderIndex = 0;
+            if (maxRenderIndex == null)
+                maxRenderIndex = ys.Length - 1;
+
+            PlottableSignalXYConst<TX, TY> signal = new PlottableSignalXYConst<TX, TY>(
+                xs: xs,
+                ys: ys,
+                color: (Color)color,
+                lineWidth: lineWidth,
+                markerSize: markerSize,
+                label: label,
+                minRenderIndex: minRenderIndex.Value,
+                maxRenderIndex: maxRenderIndex.Value,
+                lineStyle: lineStyle,
+                useParallel: useParallel
+                );
+
+            settings.plottables.Add(signal);
+            return signal;
+        }
+
         public PlottableSignalOld PlotSignalOld(
             double[] ys,
             double sampleRate = 1,
