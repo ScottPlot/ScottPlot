@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Text;
 
 namespace ScottPlotTests.Performance
@@ -79,6 +80,21 @@ namespace ScottPlotTests.Performance
             sw.Stop();
             double usElapsed = 1e6 * sw.ElapsedTicks / Stopwatch.Frequency;
             Console.WriteLine($"Mean create and destroy time: {usElapsed / repetitions} µs"); // 0.232935 µs
+        }
+
+        [Test]
+        public void Test_CreateAndDestroyBenchmark_Graphics()
+        {
+            Stopwatch sw = Stopwatch.StartNew();
+            var bmp = new System.Drawing.Bitmap(600, 400, PixelFormat.Format32bppPArgb);
+            for (int i = 0; i < repetitions; i++)
+            {
+                var gfx = Graphics.FromImage(bmp);
+                gfx.Dispose();
+            }
+            sw.Stop();
+            double usElapsed = 1e6 * sw.ElapsedTicks / Stopwatch.Frequency;
+            Console.WriteLine($"Mean create and destroy time: {usElapsed / repetitions} µs"); // 0.750771 µs
         }
     }
 }
