@@ -19,7 +19,6 @@ namespace ScottPlot
 {
     public class Plot
     {
-        // the settings module is used heavily in ScottPlot 4.0
         private readonly Settings settings;
 
         public Plot(int width = 800, int height = 600)
@@ -234,20 +233,21 @@ namespace ScottPlot
             if (!settings.axes.hasBeenSet)
             {
                 AxisAuto();
+                TightenLayout();
+                AxisAuto();
             }
 
-            settings.ticks.x.Recalculate(settings);
-            settings.ticks.y.Recalculate(settings);
+            //settings.ticks.x.Recalculate(settings);
+            //settings.ticks.y.Recalculate(settings);
 
             // load the bitmap into the settings object just to make it easy to pass around
             settings.Bitmap = bmp;
 
             // update new object based on old config options
             // TODO: have styling methods edit these properties instead of config properties
-            settings.TitleLabel.Text = "ScottPlot 4.1 Test";
-            settings.AxisLabelX.Text = "Horizontal Axis";
-            settings.AxisLabelY.Text = "Vertical Axis";
-            Console.WriteLine(settings.title.text);
+            settings.TitleLabel.Text = settings.title.text;
+            settings.AxisLabelX.Text = settings.xLabel.text;
+            settings.AxisLabelY.Text = settings.yLabel.text;
 
             settings.TicksX.MajorTickLabels = settings.ticks.x.tickLabels;
             settings.TicksX.MajorTickPositions = settings.ticks.x.tickPositionsMajor;

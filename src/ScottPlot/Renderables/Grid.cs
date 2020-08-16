@@ -8,7 +8,7 @@ namespace ScottPlot.Renderables
     public class Grid : IRenderable
     {
         public bool HorizontalLines;
-        public Color Color = Color.LightGray;
+        public Color Color = ColorTranslator.FromHtml("#efefef");
 
         public void Render(Settings settings)
         {

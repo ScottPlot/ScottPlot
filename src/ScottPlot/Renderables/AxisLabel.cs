@@ -12,16 +12,19 @@ namespace ScottPlot.Renderables
         public string Text;
         public FontStyle FontStyle = FontStyle.Regular;
         public bool CenterToDataArea = true;
+        public float FontSize = 12;
 
         public void Render(Settings settings)
         {
             using (Graphics gfx = Graphics.FromImage(settings.Bitmap))
-            using (Font font = new Font(Config.Fonts.GetDefaultFontName(), 12, FontStyle))
+            using (Font font = new Font(Config.Fonts.GetDefaultFontName(), FontSize, FontStyle))
             using (Brush brush = new SolidBrush(Color.Black))
             using (StringFormat sf = new StringFormat())
             {
                 float centerX = CenterToDataArea ? settings.DataWidth / 2 + settings.DataL : settings.Width / 2;
                 float centerY = CenterToDataArea ? settings.DataHeight / 2 + settings.DataT : settings.Height / 2;
+
+                gfx.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
 
                 switch (Edge)
                 {

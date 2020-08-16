@@ -25,12 +25,7 @@ namespace ScottPlot
         public readonly Renderables.FigureBackground FigureBackground = new Renderables.FigureBackground();
         public readonly Renderables.Ticks TicksX = new Renderables.Ticks() { Edge = Edge.Bottom };
         public readonly Renderables.Ticks TicksY = new Renderables.Ticks() { Edge = Edge.Left };
-        public readonly Renderables.AxisLabel TitleLabel = new Renderables.AxisLabel()
-        {
-            Edge = Edge.Top,
-            FontStyle = FontStyle.Bold,
-            CenterToDataArea = false
-        };
+        public readonly Renderables.AxisLabel TitleLabel = new Renderables.AxisLabel() { Edge = Edge.Top, FontStyle = FontStyle.Bold };
         public readonly Renderables.AxisLabel AxisLabelX = new Renderables.AxisLabel() { Edge = Edge.Bottom };
         public readonly Renderables.AxisLabel AxisLabelY = new Renderables.AxisLabel() { Edge = Edge.Left };
         public readonly Renderables.Grid GridX = new Renderables.Grid() { HorizontalLines = true };
@@ -49,10 +44,10 @@ namespace ScottPlot
         public float Height { get { return figureSize.Height; } }
 
         // these are relative to the BITMAP (not the data area)
-        public double xPxPerUnit { get { return Width / axes.x.span; } }
-        public double xUnitsPerPx { get { return axes.x.span / Width; } }
-        public double yPxPerUnit { get { return Height / axes.y.span; } }
-        public double yUnitsPerPx { get { return axes.y.span / Height; } }
+        public double xPxPerUnit { get { return DataWidth / axes.x.span; } }
+        public double xUnitsPerPx { get { return axes.x.span / DataWidth; } }
+        public double yPxPerUnit { get { return DataHeight / axes.y.span; } }
+        public double yUnitsPerPx { get { return axes.y.span / DataHeight; } }
         public double PixelX(double unitX) => DataL + (unitX - axes.x.min) * xPxPerUnit;
         public double PixelY(double unitY) => DataB - ((unitY - axes.y.min) * yPxPerUnit);
 

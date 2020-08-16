@@ -20,7 +20,7 @@ namespace ScottPlot.Renderables
         public double[] MinorTickPositions;
 
         public Color FontColor = Color.Black;
-        public float FontSize = 10;
+        public float FontSize = 9;
         public string FontName = Fonts.GetDefaultFontName();
 
         public void Render(Settings settings)
@@ -36,6 +36,8 @@ namespace ScottPlot.Renderables
 
                 if (MajorTickPositions?.Length != MajorTickLabels?.Length)
                     throw new InvalidOperationException("major tick length must equal tick label length");
+
+                gfx.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
 
                 for (int i = 0; i < MajorTickPositions?.Length; i++)
                 {

@@ -26,7 +26,7 @@ namespace ScottPlotTests.V41
             Assert.AreEqual(width, bmpOld.Width);
             Assert.AreEqual(height, bmpOld.Height);
 
-            System.Drawing.Bitmap bmpNew = plt.GetBitmapV41(600, 400);
+            System.Drawing.Bitmap bmpNew = plt.GetBitmapV41(width, height);
             TestTools.SaveBitmap(bmpNew, "new");
             Assert.AreEqual(width, bmpNew.Width);
             Assert.AreEqual(height, bmpNew.Height);
