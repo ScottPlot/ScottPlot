@@ -9,12 +9,12 @@ namespace ScottPlot.Renderables
     {
         public Color color = Color.White;
 
-        public void Render(Bitmap bmp, Experimental.FigureInfo fig)
+        public void Render(Settings settings)
         {
-            using (var gfx = Graphics.FromImage(bmp))
+            using (var gfx = Graphics.FromImage(settings.Bitmap))
             using (var brush = new SolidBrush(color))
             {
-                gfx.FillRectangle(brush, fig.DataL, fig.DataT, fig.DataWidth, fig.DataHeight);
+                gfx.FillRectangle(brush, settings.DataL, settings.DataT, settings.DataWidth, settings.DataHeight);
             }
         }
     }

@@ -13,7 +13,6 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Linq;
 using ScottPlot.Drawing;
-using ScottPlot.Experimental;
 using ScottPlot.Statistics;
 
 namespace ScottPlot
@@ -22,25 +21,6 @@ namespace ScottPlot
     {
         // the settings module is used heavily in ScottPlot 4.0
         private readonly Settings settings;
-
-        // ScottPlot 4.1 will rely on readonly objects stored at the class level.
-        // These will probably be made private and accessed only through setter methods in this module.
-        public readonly Renderables.FigureBackground FigureBackground = new Renderables.FigureBackground();
-        public readonly Renderables.Ticks TicksX = new Renderables.Ticks() { Edge = Edge.Bottom };
-        public readonly Renderables.Ticks TicksY = new Renderables.Ticks() { Edge = Edge.Left };
-        public readonly Renderables.AxisLabel TitleLabel = new Renderables.AxisLabel()
-        {
-            Edge = Edge.Top,
-            FontStyle = FontStyle.Bold,
-            CenterToDataArea = false
-        };
-        public readonly Renderables.AxisLabel AxisLabelX = new Renderables.AxisLabel() { Edge = Edge.Bottom };
-        public readonly Renderables.AxisLabel AxisLabelY = new Renderables.AxisLabel() { Edge = Edge.Left };
-        public readonly Renderables.Grid GridX = new Renderables.Grid() { Horizontal = true };
-        public readonly Renderables.Grid GridY = new Renderables.Grid() { Horizontal = false };
-        public readonly Renderables.DataBackground DataBackground = new Renderables.DataBackground();
-        public readonly Renderables.DataFrame DataFrame = new Renderables.DataFrame();
-        public readonly Renderables.Benchmark BenchmarkMessage = new Renderables.Benchmark();
 
         public Plot(int width = 800, int height = 600)
         {
@@ -249,56 +229,63 @@ namespace ScottPlot
         public Bitmap GetBitmapV41(Bitmap bmp)
         {
             // call a classical render to configure layout and axes
-            Resize(bmp.Width, bmp.Height);
-            RenderBitmap();
+            settings.Resize(bmp.Width, bmp.Height);
 
-            // The figure info object has all information needed to create a plot (minus plottables).
-            // For now we just create it manually from settings, but one day settings can be eliminated.
-            FigureInfo fig = new FigureInfo(settings);
+            if (!settings.axes.hasBeenSet)
+            {
+                AxisAuto();
+            }
 
-            // put it in the settings module so plottables can pass it around easily
-            settings.FigureInfo = fig;
+            settings.ticks.x.Recalculate(settings);
+            settings.ticks.y.Recalculate(settings);
 
-            TitleLabel.Text = settings.title.text;
-            AxisLabelX.Text = settings.xLabel.text;
-            AxisLabelY.Text = settings.yLabel.text;
+            // load the bitmap into the settings object just to make it easy to pass around
+            settings.Bitmap = bmp;
 
-            TicksX.MajorTickLabels = settings.ticks.x.tickLabels;
-            TicksX.MajorTickPositions = settings.ticks.x.tickPositionsMajor;
-            TicksX.MinorTickPositions = settings.ticks.x.tickPositionsMinor;
+            // update new object based on old config options
+            // TODO: have styling methods edit these properties instead of config properties
+            settings.TitleLabel.Text = "ScottPlot 4.1 Test";
+            settings.AxisLabelX.Text = "Horizontal Axis";
+            settings.AxisLabelY.Text = "Vertical Axis";
+            Console.WriteLine(settings.title.text);
 
-            TicksY.MajorTickLabels = settings.ticks.y.tickLabels;
-            TicksY.MajorTickPositions = settings.ticks.y.tickPositionsMajor;
-            TicksY.MinorTickPositions = settings.ticks.y.tickPositionsMinor;
+            settings.TicksX.MajorTickLabels = settings.ticks.x.tickLabels;
+            settings.TicksX.MajorTickPositions = settings.ticks.x.tickPositionsMajor;
+            settings.TicksX.MinorTickPositions = settings.ticks.x.tickPositionsMinor;
+
+            settings.TicksY.MajorTickLabels = settings.ticks.y.tickLabels;
+            settings.TicksY.MajorTickPositions = settings.ticks.y.tickPositionsMajor;
+            settings.TicksY.MinorTickPositions = settings.ticks.y.tickPositionsMinor;
 
             // RENDER SEQUENCE:
-            BenchmarkMessage.Restart();
-            FigureBackground.Render(bmp, fig);
-            TitleLabel.Render(bmp, fig);
-            AxisLabelX.Render(bmp, fig);
-            AxisLabelY.Render(bmp, fig);
-            TicksX.Render(bmp, fig);
-            TicksY.Render(bmp, fig);
-            DataBackground.Render(bmp, fig);
-            GridX.Render(bmp, fig);
-            GridY.Render(bmp, fig);
+            settings.BenchmarkMessage.Restart();
+            settings.FigureBackground.Render(settings);
+            settings.TitleLabel.Render(settings);
+            settings.AxisLabelX.Render(settings);
+            settings.AxisLabelY.Render(settings);
+            settings.TicksX.Render(settings);
+            settings.TicksY.Render(settings);
+            if (settings.FigureBackground.color != settings.DataBackground.color)
+                settings.DataBackground.Render(settings);
+            settings.GridX.Render(settings);
+            settings.GridY.Render(settings);
             foreach (var plottable in settings.plottables)
             {
                 settings.bmpData = bmp;
                 settings.gfxData = Graphics.FromImage(settings.bmpData);
                 settings.gfxData.TranslateTransform(settings.dataOrigin.X, settings.dataOrigin.Y);
-                if (fig.AntiAlias == FigureInfo.AntiAliasMode.Always || fig.AntiAlias == FigureInfo.AntiAliasMode.Custom)
-                {
-                    settings.gfxData.SmoothingMode = SmoothingMode.AntiAlias;
-                    settings.gfxData.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-                }
+
+                // TODO: respect anti-aliasing settings
+                settings.gfxData.SmoothingMode = SmoothingMode.AntiAlias;
+                settings.gfxData.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+
                 plottable.Render(settings);
             }
-            DataFrame.Render(bmp, fig);
+            settings.DataFrame.Render(settings);
             // TODO: annotations
             // TODO: legend
-            BenchmarkMessage.Stop();
-            BenchmarkMessage.Render(bmp, fig);
+            settings.BenchmarkMessage.Stop();
+            settings.BenchmarkMessage.Render(settings);
 
             return bmp;
         }

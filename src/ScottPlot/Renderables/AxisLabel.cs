@@ -1,5 +1,4 @@
-﻿using ScottPlot.Experimental;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
@@ -14,15 +13,15 @@ namespace ScottPlot.Renderables
         public FontStyle FontStyle = FontStyle.Regular;
         public bool CenterToDataArea = true;
 
-        public void Render(Bitmap bmp, FigureInfo fig)
+        public void Render(Settings settings)
         {
-            using (Graphics gfx = Graphics.FromImage(bmp))
+            using (Graphics gfx = Graphics.FromImage(settings.Bitmap))
             using (Font font = new Font(Config.Fonts.GetDefaultFontName(), 12, FontStyle))
             using (Brush brush = new SolidBrush(Color.Black))
             using (StringFormat sf = new StringFormat())
             {
-                float centerX = CenterToDataArea ? fig.DataWidth / 2 + fig.DataL : fig.Width / 2;
-                float centerY = CenterToDataArea ? fig.DataHeight / 2 + fig.DataT : fig.Height / 2;
+                float centerX = CenterToDataArea ? settings.DataWidth / 2 + settings.DataL : settings.Width / 2;
+                float centerY = CenterToDataArea ? settings.DataHeight / 2 + settings.DataT : settings.Height / 2;
 
                 switch (Edge)
                 {
@@ -34,7 +33,7 @@ namespace ScottPlot.Renderables
                         gfx.DrawString(Text, font, brush, 0, 0, sf);
                         return;
                     case Edge.Right:
-                        gfx.TranslateTransform(fig.Width - Padding, centerY);
+                        gfx.TranslateTransform(settings.Width - Padding, centerY);
                         gfx.RotateTransform(90);
                         sf.Alignment = StringAlignment.Center;
                         sf.LineAlignment = StringAlignment.Far;
@@ -48,7 +47,7 @@ namespace ScottPlot.Renderables
                     case Edge.Bottom:
                         sf.Alignment = StringAlignment.Center;
                         sf.LineAlignment = StringAlignment.Far;
-                        gfx.DrawString(Text, font, brush, centerX, fig.Height - Padding, sf);
+                        gfx.DrawString(Text, font, brush, centerX, settings.Height - Padding, sf);
                         return;
                 }
             }

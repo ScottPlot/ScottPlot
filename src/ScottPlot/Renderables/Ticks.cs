@@ -1,5 +1,4 @@
 ﻿using ScottPlot.Config;
-using ScottPlot.Experimental;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -24,9 +23,9 @@ namespace ScottPlot.Renderables
         public float FontSize = 10;
         public string FontName = Fonts.GetDefaultFontName();
 
-        public void Render(Bitmap bmp, FigureInfo fig)
+        public void Render(Settings settings)
         {
-            using (Graphics gfx = Graphics.FromImage(bmp))
+            using (Graphics gfx = Graphics.FromImage(settings.Bitmap))
             using (Font font = new Font(FontName, FontSize))
             using (StringFormat sf = new StringFormat())
             using (Brush fontBrush = new SolidBrush(FontColor))
@@ -35,26 +34,26 @@ namespace ScottPlot.Renderables
             {
                 // RENDER MAJOR TICKS AND TICK LABELS
 
-                if (MajorTickPositions.Length != MajorTickLabels.Length)
+                if (MajorTickPositions?.Length != MajorTickLabels?.Length)
                     throw new InvalidOperationException("major tick length must equal tick label length");
 
-                for (int i = 0; i < MajorTickPositions.Length; i++)
+                for (int i = 0; i < MajorTickPositions?.Length; i++)
                 {
                     PointF pt1, pt2;
                     if (Edge == Edge.Bottom)
                     {
-                        float xPx = (float)fig.PixelX(MajorTickPositions[i]);
-                        pt1 = new PointF(xPx, fig.DataB);
-                        pt2 = new PointF(xPx, fig.DataB + MajorTickLength);
+                        float xPx = (float)settings.PixelX(MajorTickPositions[i]);
+                        pt1 = new PointF(xPx, settings.DataB);
+                        pt2 = new PointF(xPx, settings.DataB + MajorTickLength);
                         sf.Alignment = StringAlignment.Center;
                         sf.LineAlignment = StringAlignment.Near;
                         gfx.DrawString(MajorTickLabels[i], font, fontBrush, pt2, sf);
                     }
                     else if (Edge == Edge.Left)
                     {
-                        float yPx = (float)fig.PixelY(MajorTickPositions[i]);
-                        pt1 = new PointF(fig.DataL, yPx);
-                        pt2 = new PointF(fig.DataL - MajorTickLength, yPx);
+                        float yPx = (float)settings.PixelY(MajorTickPositions[i]);
+                        pt1 = new PointF(settings.DataL, yPx);
+                        pt2 = new PointF(settings.DataL - MajorTickLength, yPx);
                         sf.Alignment = StringAlignment.Far;
                         sf.LineAlignment = StringAlignment.Center;
                         gfx.DrawString(MajorTickLabels[i], font, fontBrush, pt2, sf);
@@ -68,20 +67,20 @@ namespace ScottPlot.Renderables
                 }
 
                 // RENDER MINOR TICKS
-                for (int i = 0; i < MinorTickPositions.Length; i++)
+                for (int i = 0; i < MinorTickPositions?.Length; i++)
                 {
                     PointF pt1, pt2;
                     if (Edge == Edge.Bottom)
                     {
-                        float xPx = (float)fig.PixelX(MinorTickPositions[i]);
-                        pt1 = new PointF(xPx, fig.DataB);
-                        pt2 = new PointF(xPx, fig.DataB + MinorTickLength);
+                        float xPx = (float)settings.PixelX(MinorTickPositions[i]);
+                        pt1 = new PointF(xPx, settings.DataB);
+                        pt2 = new PointF(xPx, settings.DataB + MinorTickLength);
                     }
                     else if (Edge == Edge.Left)
                     {
-                        float yPx = (float)fig.PixelY(MinorTickPositions[i]);
-                        pt1 = new PointF(fig.DataL, yPx);
-                        pt2 = new PointF(fig.DataL - MinorTickLength, yPx);
+                        float yPx = (float)settings.PixelY(MinorTickPositions[i]);
+                        pt1 = new PointF(settings.DataL, yPx);
+                        pt2 = new PointF(settings.DataL - MinorTickLength, yPx);
                     }
                     else
                     {

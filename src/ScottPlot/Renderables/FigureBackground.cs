@@ -1,5 +1,4 @@
-﻿using ScottPlot.Experimental;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
@@ -10,9 +9,9 @@ namespace ScottPlot.Renderables
     {
         public Color color = Color.White;
 
-        public void Render(Bitmap bmp, FigureInfo fig)
+        public void Render(Settings settings)
         {
-            using (var gfx = Graphics.FromImage(bmp))
+            using (var gfx = Graphics.FromImage(settings.Bitmap))
             {
                 gfx.Clear(color);
             }

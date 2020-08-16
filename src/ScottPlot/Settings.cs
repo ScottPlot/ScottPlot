@@ -1,5 +1,4 @@
-﻿using ScottPlot.Experimental;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -21,8 +20,45 @@ namespace ScottPlot
     /// </summary>
     public class Settings
     {
-        // experimental settings or ScottPlot 4.1
-        public FigureInfo FigureInfo;
+        // ScottPlot 4.1 objects //////////////////////////////////////////////////////////////////////
+
+        public readonly Renderables.FigureBackground FigureBackground = new Renderables.FigureBackground();
+        public readonly Renderables.Ticks TicksX = new Renderables.Ticks() { Edge = Edge.Bottom };
+        public readonly Renderables.Ticks TicksY = new Renderables.Ticks() { Edge = Edge.Left };
+        public readonly Renderables.AxisLabel TitleLabel = new Renderables.AxisLabel()
+        {
+            Edge = Edge.Top,
+            FontStyle = FontStyle.Bold,
+            CenterToDataArea = false
+        };
+        public readonly Renderables.AxisLabel AxisLabelX = new Renderables.AxisLabel() { Edge = Edge.Bottom };
+        public readonly Renderables.AxisLabel AxisLabelY = new Renderables.AxisLabel() { Edge = Edge.Left };
+        public readonly Renderables.Grid GridX = new Renderables.Grid() { HorizontalLines = true };
+        public readonly Renderables.Grid GridY = new Renderables.Grid() { HorizontalLines = false };
+        public readonly Renderables.DataBackground DataBackground = new Renderables.DataBackground();
+        public readonly Renderables.DataFrame DataFrame = new Renderables.DataFrame();
+        public readonly Renderables.Benchmark BenchmarkMessage = new Renderables.Benchmark();
+
+        public float DataWidth { get { return dataSize.Width; } }
+        public float DataHeight { get { return dataSize.Height; } }
+        public float DataL { get { return dataOrigin.X; } }
+        public float DataR { get { return dataOrigin.X + dataSize.Width; } }
+        public float DataT { get { return dataOrigin.Y; } }
+        public float DataB { get { return dataOrigin.Y + dataSize.Height; } }
+        public float Width { get { return figureSize.Width; } }
+        public float Height { get { return figureSize.Height; } }
+
+        // these are relative to the BITMAP (not the data area)
+        public double xPxPerUnit { get { return Width / axes.x.span; } }
+        public double xUnitsPerPx { get { return axes.x.span / Width; } }
+        public double yPxPerUnit { get { return Height / axes.y.span; } }
+        public double yUnitsPerPx { get { return axes.y.span / Height; } }
+        public double PixelX(double unitX) => DataL + (unitX - axes.x.min) * xPxPerUnit;
+        public double PixelY(double unitY) => DataB - ((unitY - axes.y.min) * yPxPerUnit);
+
+        public Bitmap Bitmap; // TODO: remove this from settings so it is NEVER stored
+
+        // ScottPlot 4.0 objects //////////////////////////////////////////////////////////////////////
 
         // these properties get set at instantiation or after size or axis adjustments
         public Size figureSize { get { return layout.plot.Size; } }

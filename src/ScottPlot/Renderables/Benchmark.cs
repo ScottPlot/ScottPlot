@@ -20,12 +20,12 @@ namespace ScottPlot.Renderables
         public float fontSize = 8;
         Color fillColor = Color.FromArgb(150, Color.LightYellow);
 
-        public void Render(Bitmap bmp, Experimental.FigureInfo fig)
+        public void Render(Settings settings)
         {
             double elapsedSec = (double)sw.ElapsedTicks / Stopwatch.Frequency;
             string message = $"{elapsedSec * 1000:0.00} ms ({1 / elapsedSec:0.00} Hz)";
 
-            using (Graphics gfx = Graphics.FromImage(bmp))
+            using (Graphics gfx = Graphics.FromImage(settings.Bitmap))
             using (Font font = new Font(fontName, fontSize))
             using (Brush fillBrush = new SolidBrush(fillColor))
             using (Brush fontBrush = new SolidBrush(fontColor))
@@ -33,8 +33,8 @@ namespace ScottPlot.Renderables
             {
                 var size = gfx.MeasureString(message, font);
                 var loc = new PointF(
-                    x: fig.DataR - debugPadding - size.Width,
-                    y: fig.DataB - debugPadding - size.Height);
+                    x: settings.DataR - debugPadding - size.Width,
+                    y: settings.DataB - debugPadding - size.Height);
 
                 RectangleF textRect = new RectangleF(loc, size);
                 gfx.FillRectangle(fillBrush, textRect);

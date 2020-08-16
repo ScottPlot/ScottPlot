@@ -1,5 +1,4 @@
-﻿using ScottPlot.Experimental;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
@@ -8,39 +7,41 @@ namespace ScottPlot.Renderables
 {
     public class Grid : IRenderable
     {
-        public bool Horizontal;
-        public Color color = Color.LightGray;
+        public bool HorizontalLines;
+        public Color Color = Color.LightGray;
 
-        public void Render(Bitmap bmp, FigureInfo fig)
+        public void Render(Settings settings)
         {
-            if (Horizontal)
-                RenderHorizontal(bmp, fig);
+            if (HorizontalLines)
+                RenderHorizontalLines(settings);
             else
-                RenderVertical(bmp, fig);
+                RenderVerticalLines(settings);
         }
 
-        private void RenderHorizontal(Bitmap bmp, FigureInfo fig)
+        private void RenderVerticalLines(Settings settings)
         {
-            using (var gfx = Graphics.FromImage(bmp))
-            using (var pen = new Pen(color, 1))
+            using (var gfx = Graphics.FromImage(settings.Bitmap))
+            using (var pen = new Pen(Color, 1))
             {
-                for (int i = 0; i < fig.xMajorTicks.Length; i++)
+                for (int i = 0; i < settings.ticks.x.tickPositionsMajor.Length; i++)
                 {
-                    float pxX = (float)fig.PixelX(fig.xMajorTicks[i]);
-                    gfx.DrawLine(pen, pxX, fig.DataT, pxX, fig.DataB);
+                    double tickPosition = settings.ticks.x.tickPositionsMajor[i];
+                    float pxX = (float)settings.PixelX(tickPosition);
+                    gfx.DrawLine(pen, pxX, settings.DataT, pxX, settings.DataB);
                 }
             }
         }
 
-        private void RenderVertical(Bitmap bmp, FigureInfo fig)
+        private void RenderHorizontalLines(Settings settings)
         {
-            using (var gfx = Graphics.FromImage(bmp))
-            using (var pen = new Pen(color, 1))
+            using (var gfx = Graphics.FromImage(settings.Bitmap))
+            using (var pen = new Pen(Color, 1))
             {
-                for (int i = 0; i < fig.yMajorTicks.Length; i++)
+                for (int i = 0; i < settings.ticks.y.tickPositionsMajor.Length; i++)
                 {
-                    float pxY = (float)fig.PixelY(fig.yMajorTicks[i]);
-                    gfx.DrawLine(pen, fig.DataL, pxY, fig.DataR, pxY);
+                    double tickPosition = settings.ticks.y.tickPositionsMajor[i];
+                    float pxY = (float)settings.PixelY(tickPosition);
+                    gfx.DrawLine(pen, settings.DataL, pxY, settings.DataR, pxY);
                 }
             }
         }

@@ -26,9 +26,6 @@ namespace ScottPlotTests.V41
             Assert.AreEqual(width, bmpOld.Width);
             Assert.AreEqual(height, bmpOld.Height);
 
-            // practice customizing layers
-            plt.FigureBackground.color = System.Drawing.Color.WhiteSmoke;
-
             System.Drawing.Bitmap bmpNew = plt.GetBitmapV41(600, 400);
             TestTools.SaveBitmap(bmpNew, "new");
             Assert.AreEqual(width, bmpNew.Width);
