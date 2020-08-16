@@ -23,10 +23,11 @@ namespace ScottPlot
         // the settings module is used heavily in ScottPlot 4.0
         private readonly Settings settings;
 
-        // ScottPlot 4.1 will rely on public readonly objects stored at the class level.
+        // ScottPlot 4.1 will rely on readonly objects stored at the class level.
+        // These will probably be made private and accessed only through setter methods in this module.
         public readonly Renderables.FigureBackground FigureBackground = new Renderables.FigureBackground();
-        public readonly Renderables.Ticks TicksX = new Renderables.Ticks();
-        public readonly Renderables.Ticks TicksY = new Renderables.Ticks();
+        public readonly Renderables.Ticks TicksX = new Renderables.Ticks() { Edge = Edge.Bottom };
+        public readonly Renderables.Ticks TicksY = new Renderables.Ticks() { Edge = Edge.Left };
         public readonly Renderables.AxisLabel TitleLabel = new Renderables.AxisLabel() { Edge = Edge.Top };
         public readonly Renderables.AxisLabel AxisLabelX = new Renderables.AxisLabel() { Edge = Edge.Bottom };
         public readonly Renderables.AxisLabel AxisLabelY = new Renderables.AxisLabel() { Edge = Edge.Left };
@@ -249,9 +250,18 @@ namespace ScottPlot
             // For now we just create it manually from settings, but one day settings can be eliminated.
             FigureInfo fig = new FigureInfo(settings);
             settings.FigureInfo = fig;
+
             TitleLabel.Text = settings.title.text;
             AxisLabelX.Text = settings.xLabel.text;
             AxisLabelY.Text = settings.yLabel.text;
+
+            TicksX.MajorTickLabels = settings.ticks.x.tickLabels;
+            TicksX.MajorTickPositions = settings.ticks.x.tickPositionsMajor;
+            TicksX.MinorTickPositions = settings.ticks.x.tickPositionsMinor;
+
+            TicksY.MajorTickLabels = settings.ticks.y.tickLabels;
+            TicksY.MajorTickPositions = settings.ticks.y.tickPositionsMajor;
+            TicksY.MinorTickPositions = settings.ticks.y.tickPositionsMinor;
 
             // RENDER SEQUENCE:
             BenchmarkMessage.Restart();
@@ -269,6 +279,11 @@ namespace ScottPlot
                 settings.bmpData = bmp;
                 settings.gfxData = Graphics.FromImage(settings.bmpData);
                 settings.gfxData.TranslateTransform(settings.dataOrigin.X, settings.dataOrigin.Y);
+                if (fig.AntiAlias == FigureInfo.AntiAliasMode.Always || fig.AntiAlias == FigureInfo.AntiAliasMode.Custom)
+                {
+                    settings.gfxData.SmoothingMode = SmoothingMode.AntiAlias;
+                    settings.gfxData.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+                }
                 plottable.Render(settings);
             }
             DataFrame.Render(bmp, fig);
@@ -553,8 +568,7 @@ namespace ScottPlot
             Color? lineColor = null,
             bool fill = true,
             Color? fillColor = null,
-            double fillAlpha = 1,
-            double baseline = 0
+            double fillAlpha = 1
             )
         {
             if ((xs1.Length != ys1.Length) || (xs2.Length != ys2.Length))

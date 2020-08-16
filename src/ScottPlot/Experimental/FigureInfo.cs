@@ -15,6 +15,9 @@ namespace ScottPlot.Experimental
         public readonly string[] xTickLabels, yTickLabels;
         public readonly string AxisLabelLeft, AxisLabelRight, AxisLabelBottom, AxisLabelTop;
 
+        public enum AntiAliasMode { Always, Never, Custom };
+        public readonly AntiAliasMode AntiAlias = AntiAliasMode.Custom;
+
         public double PixelX(double unitX)
         {
             double unitsFromDataLeft = unitX - xMin;

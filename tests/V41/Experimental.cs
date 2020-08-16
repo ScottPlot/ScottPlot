@@ -15,7 +15,6 @@ namespace ScottPlotTests.V41
 
             var plt = new ScottPlot.Plot(width, height);
             plt.Benchmark(true);
-            plt.AntiAlias(false, false, false);
             plt.PlotSignal(ScottPlot.DataGen.Sin(51), label: "sin");
             plt.PlotSignal(ScottPlot.DataGen.Cos(52), label: "cos");
             plt.Title("ScottPlot 4.1 Render System");

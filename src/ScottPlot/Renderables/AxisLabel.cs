@@ -17,22 +17,34 @@ namespace ScottPlot.Renderables
             using (Graphics gfx = Graphics.FromImage(bmp))
             using (Font font = new Font(FontFamily.GenericSansSerif, 12))
             using (Brush brush = new SolidBrush(Color.Black))
+            using (StringFormat sf = new StringFormat())
             {
                 switch (Edge)
                 {
-                    // TODO: measure string and adjust properly
                     case Edge.Left:
-                        gfx.DrawString(Text, font, brush, Padding, fig.Height / 2);
-                        break;
+                        gfx.TranslateTransform(Padding, fig.Height / 2);
+                        gfx.RotateTransform(-90);
+                        sf.Alignment = StringAlignment.Center;
+                        sf.LineAlignment = StringAlignment.Near;
+                        gfx.DrawString(Text, font, brush, 0, 0, sf);
+                        return;
                     case Edge.Right:
-                        gfx.DrawString(Text, font, brush, fig.Width - Padding, fig.Height / 2);
-                        break;
+                        gfx.TranslateTransform(fig.Width - Padding, fig.Height / 2);
+                        gfx.RotateTransform(90);
+                        sf.Alignment = StringAlignment.Center;
+                        sf.LineAlignment = StringAlignment.Far;
+                        gfx.DrawString(Text, font, brush, 0, 0, sf);
+                        return;
                     case Edge.Top:
-                        gfx.DrawString(Text, font, brush, fig.Width / 2, Padding);
-                        break;
+                        sf.Alignment = StringAlignment.Center;
+                        sf.LineAlignment = StringAlignment.Near;
+                        gfx.DrawString(Text, font, brush, fig.Width / 2, Padding, sf);
+                        return;
                     case Edge.Bottom:
-                        gfx.DrawString(Text, font, brush, fig.Width / 2, fig.Height - Padding - 20);
-                        break;
+                        sf.Alignment = StringAlignment.Center;
+                        sf.LineAlignment = StringAlignment.Far;
+                        gfx.DrawString(Text, font, brush, fig.Width / 2, fig.Height - Padding, sf);
+                        return;
                 }
             }
         }
