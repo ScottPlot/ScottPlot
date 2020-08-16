@@ -28,7 +28,12 @@ namespace ScottPlot
         public readonly Renderables.FigureBackground FigureBackground = new Renderables.FigureBackground();
         public readonly Renderables.Ticks TicksX = new Renderables.Ticks() { Edge = Edge.Bottom };
         public readonly Renderables.Ticks TicksY = new Renderables.Ticks() { Edge = Edge.Left };
-        public readonly Renderables.AxisLabel TitleLabel = new Renderables.AxisLabel() { Edge = Edge.Top };
+        public readonly Renderables.AxisLabel TitleLabel = new Renderables.AxisLabel()
+        {
+            Edge = Edge.Top,
+            FontStyle = FontStyle.Bold,
+            CenterToDataArea = false
+        };
         public readonly Renderables.AxisLabel AxisLabelX = new Renderables.AxisLabel() { Edge = Edge.Bottom };
         public readonly Renderables.AxisLabel AxisLabelY = new Renderables.AxisLabel() { Edge = Edge.Left };
         public readonly Renderables.Grid GridX = new Renderables.Grid() { Horizontal = true };
@@ -244,11 +249,14 @@ namespace ScottPlot
         public Bitmap GetBitmapV41(Bitmap bmp)
         {
             // call a classical render to configure layout and axes
+            Resize(bmp.Width, bmp.Height);
             RenderBitmap();
 
             // The figure info object has all information needed to create a plot (minus plottables).
             // For now we just create it manually from settings, but one day settings can be eliminated.
             FigureInfo fig = new FigureInfo(settings);
+
+            // put it in the settings module so plottables can pass it around easily
             settings.FigureInfo = fig;
 
             TitleLabel.Text = settings.title.text;

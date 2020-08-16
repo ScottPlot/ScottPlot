@@ -35,7 +35,7 @@ namespace ScottPlot.Experimental
 
         public FigureInfo()
         {
-
+            throw new NotImplementedException();
         }
 
         public FigureInfo(Settings settings)

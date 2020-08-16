@@ -80,6 +80,12 @@
     <Compile Include="FormMenu.Designer.cs">
       <DependentUpon>FormMenu.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormScottPlot41.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormScottPlot41.Designer.cs">
+      <DependentUpon>FormScottPlot41.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormSlowPan.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -102,6 +108,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormMenu.resx">
       <DependentUpon>FormMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormScottPlot41.resx">
+      <DependentUpon>FormScottPlot41.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormSlowPan.resx">
       <DependentUpon>FormSlowPan.cs</DependentUpon>
