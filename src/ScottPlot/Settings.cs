@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot.Experimental;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -20,6 +21,9 @@ namespace ScottPlot
     /// </summary>
     public class Settings
     {
+        // experimental settings or ScottPlot 4.1
+        public FigureInfo FigureInfo;
+
         // these properties get set at instantiation or after size or axis adjustments
         public Size figureSize { get { return layout.plot.Size; } }
         public Point dataOrigin { get { return layout.data.Location; } }

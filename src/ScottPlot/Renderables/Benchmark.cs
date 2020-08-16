@@ -14,7 +14,7 @@ namespace ScottPlot.Renderables
         public void Restart() => sw.Restart();
         public void Stop() => sw.Stop();
 
-        public void Render(Bitmap bmp, Settings settings)
+        public void Render(Bitmap bmp, Experimental.FigureInfo fig)
         {
             double elapsedSec = (double)sw.ElapsedTicks / Stopwatch.Frequency;
             string message = $"{elapsedSec * 1000:0.00} ms ({1 / elapsedSec:0.00} Hz)";

@@ -18,6 +18,9 @@ namespace ScottPlotTests.V41
             plt.AntiAlias(false, false, false);
             plt.PlotSignal(ScottPlot.DataGen.Sin(51), label: "sin");
             plt.PlotSignal(ScottPlot.DataGen.Cos(52), label: "cos");
+            plt.Title("ScottPlot 4.1 Render System");
+            plt.XLabel("horizontal axis");
+            plt.YLabel("vertical axis");
 
             System.Drawing.Bitmap bmpOld = plt.GetBitmap();
             TestTools.SaveBitmap(bmpOld, "old");

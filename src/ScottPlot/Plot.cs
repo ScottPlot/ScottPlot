@@ -13,6 +13,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Linq;
 using ScottPlot.Drawing;
+using ScottPlot.Experimental;
 using ScottPlot.Statistics;
 
 namespace ScottPlot
@@ -24,7 +25,15 @@ namespace ScottPlot
 
         // ScottPlot 4.1 will rely on public readonly objects stored at the class level.
         public readonly Renderables.FigureBackground FigureBackground = new Renderables.FigureBackground();
+        public readonly Renderables.Ticks TicksX = new Renderables.Ticks();
+        public readonly Renderables.Ticks TicksY = new Renderables.Ticks();
+        public readonly Renderables.AxisLabel TitleLabel = new Renderables.AxisLabel() { Edge = Edge.Top };
+        public readonly Renderables.AxisLabel AxisLabelX = new Renderables.AxisLabel() { Edge = Edge.Bottom };
+        public readonly Renderables.AxisLabel AxisLabelY = new Renderables.AxisLabel() { Edge = Edge.Left };
+        public readonly Renderables.Grid GridX = new Renderables.Grid() { Horizontal = true };
+        public readonly Renderables.Grid GridY = new Renderables.Grid() { Horizontal = false };
         public readonly Renderables.DataBackground DataBackground = new Renderables.DataBackground();
+        public readonly Renderables.DataFrame DataFrame = new Renderables.DataFrame();
         public readonly Renderables.Benchmark BenchmarkMessage = new Renderables.Benchmark();
 
         public Plot(int width = 800, int height = 600)
@@ -236,36 +245,37 @@ namespace ScottPlot
             // call a classical render to configure layout and axes
             RenderBitmap();
 
+            // The figure info object has all information needed to create a plot (minus plottables).
+            // For now we just create it manually from settings, but one day settings can be eliminated.
+            FigureInfo fig = new FigureInfo(settings);
+            settings.FigureInfo = fig;
+            TitleLabel.Text = settings.title.text;
+            AxisLabelX.Text = settings.xLabel.text;
+            AxisLabelY.Text = settings.yLabel.text;
+
+            // RENDER SEQUENCE:
             BenchmarkMessage.Restart();
-
-            FigureBackground.Render(bmp, settings);
-
-            // axis labels
-
-            // axis ticks
-
-            DataBackground.Render(bmp, settings);
-
-            // grid
-
-            // plottables
+            FigureBackground.Render(bmp, fig);
+            TitleLabel.Render(bmp, fig);
+            AxisLabelX.Render(bmp, fig);
+            AxisLabelY.Render(bmp, fig);
+            TicksX.Render(bmp, fig);
+            TicksY.Render(bmp, fig);
+            DataBackground.Render(bmp, fig);
+            GridX.Render(bmp, fig);
+            GridY.Render(bmp, fig);
             foreach (var plottable in settings.plottables)
             {
-                Console.WriteLine(plottable);
                 settings.bmpData = bmp;
                 settings.gfxData = Graphics.FromImage(settings.bmpData);
                 settings.gfxData.TranslateTransform(settings.dataOrigin.X, settings.dataOrigin.Y);
                 plottable.Render(settings);
             }
-
-            // frame
-
-            // annotations
-
-            // legend
-
+            DataFrame.Render(bmp, fig);
+            // TODO: annotations
+            // TODO: legend
             BenchmarkMessage.Stop();
-            BenchmarkMessage.Render(bmp, settings);
+            BenchmarkMessage.Render(bmp, fig);
 
             return bmp;
         }
