@@ -36,7 +36,7 @@ namespace ScottPlot.MinMaxSearchStrategies
         {
             T lowestValueT = sourceArray[l];
             T highestValueT = sourceArray[l];
-            for (int i = l; i < r; i++)
+            for (int i = l; i <= r; i++)
             {
                 if (LessThanExp(sourceArray[i], lowestValueT))
                     lowestValueT = sourceArray[i];

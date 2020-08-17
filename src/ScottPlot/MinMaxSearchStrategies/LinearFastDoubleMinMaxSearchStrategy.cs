@@ -22,7 +22,7 @@ namespace ScottPlot.MinMaxSearchStrategies
             {
                 lowestValue = sourceArrayDouble[l];
                 highestValue = sourceArrayDouble[l];
-                for (int i = l; i < r; i++)
+                for (int i = l; i <= r; i++)
                 {
                     if (sourceArrayDouble[i] < lowestValue)
                         lowestValue = sourceArrayDouble[i];

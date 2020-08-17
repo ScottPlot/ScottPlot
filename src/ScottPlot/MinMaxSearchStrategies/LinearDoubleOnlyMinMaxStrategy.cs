@@ -13,7 +13,7 @@
         {
             lowestValue = sourceArray[l];
             highestValue = sourceArray[l];
-            for (int i = l; i < r; i++)
+            for (int i = l; i <= r; i++)
             {
                 if (sourceArray[i] < lowestValue)
                     lowestValue = sourceArray[i];

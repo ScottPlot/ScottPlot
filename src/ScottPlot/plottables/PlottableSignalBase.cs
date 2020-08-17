@@ -1,12 +1,12 @@
-﻿using System;
+﻿using ScottPlot.Config;
+using ScottPlot.Drawing;
+using ScottPlot.MinMaxSearchStrategies;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using ScottPlot.Config;
-using ScottPlot.Drawing;
-using ScottPlot.MinMaxSearchStrategies;
 
 namespace ScottPlot
 {
@@ -118,7 +118,7 @@ namespace ScottPlot
         {
             // this function is for when the graph is zoomed so far out its entire display is a single vertical pixel column
             double yMin, yMax;
-            minmaxSearchStrategy.MinMaxRangeQuery(0, ys.Length - 1, out yMin, out yMax);
+            minmaxSearchStrategy.MinMaxRangeQuery(minRenderIndex, maxRenderIndex, out yMin, out yMax);
             PointF point1 = settings.GetPixel(xOffset, yMin + yOffset);
             PointF point2 = settings.GetPixel(xOffset, yMax + yOffset);
             settings.gfxData.DrawLine(penHD, point1, point2);
