@@ -45,13 +45,13 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.PlotScatter(x, sin);
                 plt.PlotScatter(x, cos);
 
-                plt.PlotVSpan(y1: .15, y2: .85, label: "Adjustable VSpan", 
+                plt.PlotVSpan(y1: .15, y2: .85, label: "Adjustable VSpan",
                     draggable: true, dragLimitLower: -1, dragLimitUpper: 1);
 
-                plt.PlotHSpan(x1: 10, x2: 25, label: "Adjustable HSpan", 
+                plt.PlotHSpan(x1: 10, x2: 25, label: "Adjustable HSpan",
                     draggable: true, dragLimitLower: 0, dragLimitUpper: 50);
 
-                plt.PlotVSpan(y1: -.25, y2: -.05, label: "Fixed Size VSpan", 
+                plt.PlotVSpan(y1: -.25, y2: -.05, label: "Fixed Size VSpan",
                     draggable: true, dragFixedSize: true);
 
                 plt.PlotHSpan(x1: 5, x2: 7, label: "Fixed Size HSpan",
