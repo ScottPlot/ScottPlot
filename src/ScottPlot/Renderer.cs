@@ -16,12 +16,6 @@ namespace ScottPlot
     [Obsolete("Renderables should implement IRenderable")]
     public class Renderer
     {
-        public static void FigureClear(Settings settings)
-        {
-            if (settings.gfxFigure != null)
-                settings.gfxFigure.Clear(settings.misc.figureBackgroundColor);
-        }
-
         public static void DataBackground(Settings settings)
         {
             if (settings.gfxData != null)

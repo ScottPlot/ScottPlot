@@ -128,5 +128,27 @@ namespace ScottPlotTests
 
             return plt;
         }
+
+        public static (double A, double R, double G, double B) MeanPixel(System.Drawing.Bitmap bmp)
+        {
+            byte[] bytes = ScottPlot.Tools.BitmapToBytes(bmp);
+            int bytesPerPixel = 4;
+            int pixelCount = bytes.Length / bytesPerPixel;
+
+            double R = 0;
+            double G = 0;
+            double B = 0;
+            double A = 0;
+
+            for (int i = 0; i < pixelCount; i++)
+            {
+                B += bytes[i * bytesPerPixel + 0];
+                G += bytes[i * bytesPerPixel + 1];
+                R += bytes[i * bytesPerPixel + 2];
+                A += bytes[i * bytesPerPixel + 3];
+            }
+
+            return (A / pixelCount, R / pixelCount, G / pixelCount, B / pixelCount);
+        }
     }
 }

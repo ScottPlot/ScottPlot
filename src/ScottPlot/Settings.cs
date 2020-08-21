@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot.Renderable;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -32,6 +33,9 @@ namespace ScottPlot
         public Bitmap bmpFigure;
         public Bitmap bmpData;
         public Bitmap bmpLegend;
+
+        // Renderables (eventually store these in a List)
+        public readonly FigureBackground FigureBackground = new FigureBackground();
 
         // plottables
         public readonly List<Plottable> plottables = new List<Plottable>();

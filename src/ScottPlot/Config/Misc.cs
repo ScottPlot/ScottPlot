@@ -14,7 +14,6 @@ namespace ScottPlot.Config
         public bool antiAliasFigure = true;
 
         // background colors
-        public Color figureBackgroundColor = Color.White;
         public Color dataBackgroundColor = Color.White;
 
         // string formats (position indicates where their origin is)

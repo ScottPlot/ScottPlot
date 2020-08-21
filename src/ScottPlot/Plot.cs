@@ -180,8 +180,7 @@ namespace ScottPlot
             settings.benchmark.Start();
             if (settings.gfxFigure != null)
             {
-                // TODO: I removed "settings.bmpFigureRenderRequired" so the frame is currently being redrawn every time
-                Renderer.FigureClear(settings);
+                settings.FigureBackground.Render(settings);
                 Renderer.FigureLabels(settings);
                 Renderer.FigureTicks(settings);
                 Renderer.FigureFrames(settings);
@@ -2340,7 +2339,7 @@ namespace ScottPlot
             )
         {
             if (figBg != null)
-                settings.misc.figureBackgroundColor = (Color)figBg;
+                settings.FigureBackground.Color = figBg.Value;
             if (dataBg != null)
                 settings.misc.dataBackgroundColor = (Color)dataBg;
             if (grid != null)
