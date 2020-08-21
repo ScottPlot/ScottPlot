@@ -13,6 +13,7 @@ using ScottPlot.Drawing;
 
 namespace ScottPlot
 {
+    [Obsolete("Renderables should implement IRenderable")]
     public class Renderer
     {
         public static void FigureClear(Settings settings)
