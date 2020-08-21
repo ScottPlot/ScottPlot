@@ -1440,6 +1440,7 @@ namespace ScottPlot
             double alpha = .5,
             string label = null,
             bool draggable = false,
+            bool dragFixedSize = false,
             double dragLimitLower = double.NegativeInfinity,
             double dragLimitUpper = double.PositiveInfinity
             )
@@ -1454,6 +1455,7 @@ namespace ScottPlot
                 alpha: alpha,
                 label: label,
                 draggable: draggable,
+                dragFixedSize: dragFixedSize,
                 dragLimitLower: dragLimitLower,
                 dragLimitUpper: dragLimitUpper
                 );
@@ -1498,6 +1500,7 @@ namespace ScottPlot
             double alpha = .5,
             string label = null,
             bool draggable = false,
+            bool dragFixedSize = false,
             double dragLimitLower = double.NegativeInfinity,
             double dragLimitUpper = double.PositiveInfinity
             )
@@ -1512,6 +1515,7 @@ namespace ScottPlot
                     alpha: alpha,
                     label: label,
                     draggable: draggable,
+                    dragFixedSize: dragFixedSize,
                     dragLimitLower: dragLimitLower,
                     dragLimitUpper: dragLimitUpper
                     );

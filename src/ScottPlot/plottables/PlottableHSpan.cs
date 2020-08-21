@@ -18,7 +18,7 @@ namespace ScottPlot
         public Brush brush;
 
         public PlottableHSpan(double position1, double position2, Color color, double alpha, string label,
-            bool draggable, double dragLimitLower, double dragLimitUpper)
+            bool draggable, bool dragFixedSize, double dragLimitLower, double dragLimitUpper)
         {
             this.position1 = position1;
             this.position2 = position2;
@@ -27,6 +27,7 @@ namespace ScottPlot
             brush = new SolidBrush(this.color);
 
             DragEnabled = draggable;
+            DragFixedSize = dragFixedSize;
 
             SetLimits(x1: dragLimitLower, x2: dragLimitUpper, y1: double.NegativeInfinity, y2: double.PositiveInfinity);
         }
@@ -66,6 +67,7 @@ namespace ScottPlot
         }
 
         public bool DragEnabled { get; set; }
+        public bool DragFixedSize { get; set; }
 
         private double dragLimitX1 = double.NegativeInfinity;
         private double dragLimitX2 = double.PositiveInfinity;
@@ -96,12 +98,23 @@ namespace ScottPlot
                 if (coordinateX < dragLimitX1) coordinateX = dragLimitX1;
                 if (coordinateX > dragLimitX2) coordinateX = dragLimitX2;
 
+                double sizeBeforeDrag = position2 - position1;
                 if (edgeUnderMouse == Edge.Edge1)
+                {
                     position1 = coordinateX;
+                    if (DragFixedSize)
+                        position2 = position1 + sizeBeforeDrag;
+                }
                 else if (edgeUnderMouse == Edge.Edge2)
+                {
                     position2 = coordinateX;
+                    if (DragFixedSize)
+                        position1 = position2 - sizeBeforeDrag;
+                }
                 else
+                {
                     Debug.WriteLine("DragTo() called but no side selected. Call IsUnderMouse() to select a side.");
+                }
             }
         }
 
