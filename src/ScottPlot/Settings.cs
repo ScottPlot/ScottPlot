@@ -40,6 +40,7 @@ namespace ScottPlot
         public readonly DataBackground DataBackground = new DataBackground();
         public readonly GridLines HorizontalGridLines = new GridLines() { Orientation = Orientation.Horizontal };
         public readonly GridLines VerticalGridLines = new GridLines() { Orientation = Orientation.Vertical };
+        public readonly Benchmark Benchmark = new Benchmark();
 
         // plottables
         public readonly List<Plottable> plottables = new List<Plottable>();
@@ -49,7 +50,7 @@ namespace ScottPlot
         public Config.TextLabel xLabel = new Config.TextLabel() { fontSize = 16 };
         public Config.TextLabel yLabel = new Config.TextLabel() { fontSize = 16 };
         public Config.Misc misc = new Config.Misc();
-        public Config.Benchmark benchmark = new Config.Benchmark();
+        //public Config.Benchmark benchmark = new Config.Benchmark();
         //public Config.Grid grid = new Config.Grid();
         public Config.Axes axes = new Config.Axes();
         public readonly Config.Layout layout = new Config.Layout();

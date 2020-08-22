@@ -177,7 +177,7 @@ namespace ScottPlot
 
             UpdateAntiAliasingSettings();
 
-            settings.benchmark.Start();
+            settings.Benchmark.Start();
             if (settings.gfxFigure != null)
             {
                 settings.FigureBackground.Render(settings);
@@ -197,9 +197,9 @@ namespace ScottPlot
                 Renderer.PlaceDataOntoFigure(settings);
                 Renderer.PlaceLegendOntoFigure(settings);
             }
-            settings.benchmark.Stop();
-            settings.benchmark.UpdateMessage(settings.plottables.Count, settings.GetTotalPointCount());
-            Renderer.Benchmark(settings);
+            settings.Benchmark.Stop();
+            settings.Benchmark.UpdateMessage(settings.plottables.Count, settings.GetTotalPointCount());
+            settings.Benchmark.Render(settings);
         }
 
         public Bitmap GetBitmap(bool renderFirst = true, bool lowQuality = false)
@@ -2228,9 +2228,9 @@ namespace ScottPlot
         public void Benchmark(bool show = true, bool toggle = false)
         {
             if (toggle)
-                settings.benchmark.visible = !settings.benchmark.visible;
+                settings.Benchmark.Visible = !settings.Benchmark.Visible;
             else
-                settings.benchmark.visible = show;
+                settings.Benchmark.Visible = show;
         }
 
         public void AntiAlias(bool figure = true, bool data = false, bool legend = false)

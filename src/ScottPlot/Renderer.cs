@@ -150,21 +150,6 @@ namespace ScottPlot
             }
         }
 
-        public static void Benchmark(Settings settings)
-        {
-            if (settings.benchmark.visible)
-            {
-                int debugPadding = 3;
-                PointF textLocation = new PointF(settings.dataSize.Width + settings.dataOrigin.X, settings.dataSize.Height + settings.dataOrigin.Y);
-                textLocation.X -= settings.benchmark.width + debugPadding;
-                textLocation.Y -= settings.benchmark.height + debugPadding;
-                RectangleF textRect = new RectangleF(textLocation, settings.benchmark.size);
-                settings.gfxFigure.FillRectangle(new SolidBrush(settings.benchmark.colorBackground), textRect);
-                settings.gfxFigure.DrawRectangle(new Pen(settings.benchmark.colorBorder), Rectangle.Round(textRect));
-                settings.gfxFigure.DrawString(settings.benchmark.text, settings.benchmark.font, new SolidBrush(settings.benchmark.color), textLocation);
-            }
-        }
-
         public static void RenderTicksOnLeft(Settings settings)
         {
             if (!settings.ticks.displayYmajor)
