@@ -177,11 +177,10 @@ namespace ScottPlot
 
             UpdateAntiAliasingSettings();
 
-            settings.benchmark.Start();
+            settings.Benchmark.Start();
             if (settings.gfxFigure != null)
             {
-                // TODO: I removed "settings.bmpFigureRenderRequired" so the frame is currently being redrawn every time
-                Renderer.FigureClear(settings);
+                settings.FigureBackground.Render(settings);
                 Renderer.FigureLabels(settings);
                 Renderer.FigureTicks(settings);
                 Renderer.FigureFrames(settings);
@@ -189,17 +188,18 @@ namespace ScottPlot
 
             if (settings.gfxData != null)
             {
-                Renderer.DataBackground(settings);
-                Renderer.DataGrid(settings);
+                settings.DataBackground.Render(settings);
+                settings.HorizontalGridLines.Render(settings);
+                settings.VerticalGridLines.Render(settings);
                 Renderer.DataPlottables(settings);
                 Renderer.MouseZoomRectangle(settings);
                 Renderer.CreateLegendBitmap(settings);
                 Renderer.PlaceDataOntoFigure(settings);
                 Renderer.PlaceLegendOntoFigure(settings);
             }
-            settings.benchmark.Stop();
-            settings.benchmark.UpdateMessage(settings.plottables.Count, settings.GetTotalPointCount());
-            Renderer.Benchmark(settings);
+            settings.Benchmark.Stop();
+            settings.Benchmark.UpdateMessage(settings.plottables.Count, settings.GetTotalPointCount());
+            settings.Benchmark.Render(settings);
         }
 
         public Bitmap GetBitmap(bool renderFirst = true, bool lowQuality = false)
@@ -2154,18 +2154,21 @@ namespace ScottPlot
         {
             if (enable != null)
             {
-                settings.grid.enableHorizontal = (bool)enable;
-                settings.grid.enableVertical = (bool)enable;
+                settings.HorizontalGridLines.Visible = enable.Value;
+                settings.VerticalGridLines.Visible = enable.Value;
             }
 
             if (enableHorizontal != null)
-                settings.grid.enableHorizontal = (bool)enableHorizontal;
+                settings.HorizontalGridLines.Visible = enableHorizontal.Value;
 
             if (enableVertical != null)
-                settings.grid.enableVertical = (bool)enableVertical;
+                settings.VerticalGridLines.Visible = enableVertical.Value;
 
             if (color != null)
-                settings.grid.color = color.Value;
+            {
+                settings.HorizontalGridLines.Color = color.Value;
+                settings.VerticalGridLines.Color = color.Value;
+            }
 
             if (xSpacing != null)
                 settings.ticks.manualSpacingX = xSpacing.Value;
@@ -2180,13 +2183,22 @@ namespace ScottPlot
                 settings.ticks.manualDateTimeSpacingUnitY = ySpacingDateTimeUnit.Value;
 
             if (lineWidth != null)
-                settings.grid.lineWidth = lineWidth.Value;
+            {
+                settings.HorizontalGridLines.LineWidth = (float)lineWidth.Value;
+                settings.VerticalGridLines.LineWidth = (float)lineWidth.Value;
+            }
 
             if (lineStyle != null)
-                settings.grid.lineStyle = lineStyle.Value;
+            {
+                settings.HorizontalGridLines.LineStyle = lineStyle.Value;
+                settings.VerticalGridLines.LineStyle = lineStyle.Value;
+            }
 
             if (snapToNearestPixel != null)
-                settings.grid.snapToNearestPixel = snapToNearestPixel.Value;
+            {
+                settings.HorizontalGridLines.SnapToNearestPixel = snapToNearestPixel.Value;
+                settings.VerticalGridLines.SnapToNearestPixel = snapToNearestPixel.Value;
+            }
         }
 
         public void Frame(
@@ -2216,9 +2228,9 @@ namespace ScottPlot
         public void Benchmark(bool show = true, bool toggle = false)
         {
             if (toggle)
-                settings.benchmark.visible = !settings.benchmark.visible;
+                settings.Benchmark.Visible = !settings.Benchmark.Visible;
             else
-                settings.benchmark.visible = show;
+                settings.Benchmark.Visible = show;
         }
 
         public void AntiAlias(bool figure = true, bool data = false, bool legend = false)
@@ -2340,11 +2352,14 @@ namespace ScottPlot
             )
         {
             if (figBg != null)
-                settings.misc.figureBackgroundColor = (Color)figBg;
+                settings.FigureBackground.Color = figBg.Value;
             if (dataBg != null)
-                settings.misc.dataBackgroundColor = (Color)dataBg;
+                settings.DataBackground.Color = dataBg.Value;
             if (grid != null)
-                settings.grid.color = (Color)grid;
+            {
+                settings.HorizontalGridLines.Color = grid.Value;
+                settings.VerticalGridLines.Color = grid.Value;
+            }
             if (tick != null)
                 settings.ticks.color = (Color)tick;
             if (label != null)

@@ -13,10 +13,6 @@ namespace ScottPlot.Config
         public bool antiAliasData = true;
         public bool antiAliasFigure = true;
 
-        // background colors
-        public Color figureBackgroundColor = Color.White;
-        public Color dataBackgroundColor = Color.White;
-
         // string formats (position indicates where their origin is)
         public StringFormat sfEast = new StringFormat() { LineAlignment = StringAlignment.Center, Alignment = StringAlignment.Far };
         public StringFormat sfNorth = new StringFormat() { LineAlignment = StringAlignment.Near, Alignment = StringAlignment.Center };

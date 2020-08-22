@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ScottPlot.Config;
+using ScottPlot.Renderable;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -33,16 +35,23 @@ namespace ScottPlot
         public Bitmap bmpData;
         public Bitmap bmpLegend;
 
+        // Renderables (eventually store these in a List)
+        public readonly FigureBackground FigureBackground = new FigureBackground();
+        public readonly DataBackground DataBackground = new DataBackground();
+        public readonly GridLines HorizontalGridLines = new GridLines() { Orientation = Orientation.Horizontal };
+        public readonly GridLines VerticalGridLines = new GridLines() { Orientation = Orientation.Vertical };
+        public readonly Benchmark Benchmark = new Benchmark();
+
         // plottables
         public readonly List<Plottable> plottables = new List<Plottable>();
 
-        // new config objects (https://github.com/swharden/ScottPlot/issues/120)
+        // TODO: STRANGLE CONFIG OBJECTS AS PART OF https://github.com/swharden/ScottPlot/pull/511
         public Config.TextLabel title = new Config.TextLabel() { fontSize = 16, bold = true };
         public Config.TextLabel xLabel = new Config.TextLabel() { fontSize = 16 };
         public Config.TextLabel yLabel = new Config.TextLabel() { fontSize = 16 };
         public Config.Misc misc = new Config.Misc();
-        public Config.Benchmark benchmark = new Config.Benchmark();
-        public Config.Grid grid = new Config.Grid();
+        //public Config.Benchmark benchmark = new Config.Benchmark();
+        //public Config.Grid grid = new Config.Grid();
         public Config.Axes axes = new Config.Axes();
         public readonly Config.Layout layout = new Config.Layout();
         public Config.Ticks ticks = new Config.Ticks();

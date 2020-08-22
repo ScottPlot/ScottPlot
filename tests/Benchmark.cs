@@ -22,11 +22,11 @@ namespace ScottPlotTests
 
             // the first render allocates memory for pointF arrays
             plt.GetBitmap(true);
-            Console.WriteLine($"Render 1: {plt.GetSettings(false).benchmark}");
+            Console.WriteLine($"Render 1: {plt.GetSettings(false).Benchmark}");
 
             // subsequent renders re-use the same arrays
             plt.GetBitmap(true);
-            Console.WriteLine($"Render 2: {plt.GetSettings(false).benchmark}");
+            Console.WriteLine($"Render 2: {plt.GetSettings(false).Benchmark}");
 
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name;
             string filePath = System.IO.Path.GetFullPath(name + ".png");
@@ -54,11 +54,11 @@ namespace ScottPlotTests
 
             // the first render allocates memory for pointF arrays
             plt.GetBitmap(true);
-            Console.WriteLine($"Render 1: {plt.GetSettings(false).benchmark}");
+            Console.WriteLine($"Render 1: {plt.GetSettings(false).Benchmark}");
 
             // subsequent renders re-use the same arrays
             plt.GetBitmap(true);
-            Console.WriteLine($"Render 2: {plt.GetSettings(false).benchmark}");
+            Console.WriteLine($"Render 2: {plt.GetSettings(false).Benchmark}");
 
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name;
             string filePath = System.IO.Path.GetFullPath(name + ".png");

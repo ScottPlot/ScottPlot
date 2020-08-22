@@ -13,65 +13,9 @@ using ScottPlot.Drawing;
 
 namespace ScottPlot
 {
+    [Obsolete("Renderables should implement IRenderable")]
     public class Renderer
     {
-        public static void FigureClear(Settings settings)
-        {
-            if (settings.gfxFigure != null)
-                settings.gfxFigure.Clear(settings.misc.figureBackgroundColor);
-        }
-
-        public static void DataBackground(Settings settings)
-        {
-            if (settings.gfxData != null)
-                settings.gfxData.Clear(settings.misc.dataBackgroundColor);
-        }
-
-        public static void DataGrid(Settings settings)
-        {
-            Pen pen = GDI.Pen(settings.grid.color, settings.grid.lineWidth, settings.grid.lineStyle);
-
-            if (settings.grid.enableVertical)
-            {
-                for (int i = 0; i < settings.ticks.x.tickPositionsMajor.Length; i++)
-                {
-                    double value = settings.ticks.x.tickPositionsMajor[i];
-                    double unitsFromAxisEdge = value - settings.axes.x.min;
-                    double xPx = unitsFromAxisEdge * settings.xAxisScale;
-
-                    if (settings.grid.snapToNearestPixel)
-                        xPx = (int)xPx;
-
-                    if ((xPx == 0) && settings.layout.displayFrameByAxis[0])
-                        continue; // don't draw a grid line 1px away from frame
-
-                    PointF ptTop = new PointF((float)xPx, 0);
-                    PointF ptBot = new PointF((float)xPx, settings.dataSize.Height);
-                    settings.gfxData.DrawLine(pen, ptTop, ptBot);
-                }
-            }
-
-            if (settings.grid.enableHorizontal)
-            {
-                for (int i = 0; i < settings.ticks.y.tickPositionsMajor.Length; i++)
-                {
-                    double value = settings.ticks.y.tickPositionsMajor[i];
-                    double unitsFromAxisEdge = value - settings.axes.y.min;
-                    double yPx = settings.dataSize.Height - unitsFromAxisEdge * settings.yAxisScale;
-
-                    if (settings.grid.snapToNearestPixel)
-                        yPx = (int)yPx;
-
-                    if ((yPx == 0) && settings.layout.displayFrameByAxis[2])
-                        continue; // don't draw a grid line 1px away from frame
-
-                    PointF ptLeft = new PointF(0, (float)yPx);
-                    PointF ptRight = new PointF(settings.dataSize.Width, (float)yPx);
-                    settings.gfxData.DrawLine(pen, ptLeft, ptRight);
-                }
-            }
-        }
-
         public static void DataPlottables(Settings settings)
         {
             if (settings.gfxData == null)
@@ -203,21 +147,6 @@ namespace ScottPlot
                     settings.gfxFigure.DrawLine(axisFramePen, bl, br);
                 if (settings.layout.displayFrameByAxis[3])
                     settings.gfxFigure.DrawLine(axisFramePen, tl, tr);
-            }
-        }
-
-        public static void Benchmark(Settings settings)
-        {
-            if (settings.benchmark.visible)
-            {
-                int debugPadding = 3;
-                PointF textLocation = new PointF(settings.dataSize.Width + settings.dataOrigin.X, settings.dataSize.Height + settings.dataOrigin.Y);
-                textLocation.X -= settings.benchmark.width + debugPadding;
-                textLocation.Y -= settings.benchmark.height + debugPadding;
-                RectangleF textRect = new RectangleF(textLocation, settings.benchmark.size);
-                settings.gfxFigure.FillRectangle(new SolidBrush(settings.benchmark.colorBackground), textRect);
-                settings.gfxFigure.DrawRectangle(new Pen(settings.benchmark.colorBorder), Rectangle.Round(textRect));
-                settings.gfxFigure.DrawString(settings.benchmark.text, settings.benchmark.font, new SolidBrush(settings.benchmark.color), textLocation);
             }
         }
 
