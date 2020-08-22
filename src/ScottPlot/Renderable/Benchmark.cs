@@ -23,13 +23,9 @@ namespace ScottPlot.Renderable
 
         public bool Visible = false;
 
-        public void Stop()
-        {
-            stopwatch.Stop();
-            msec = stopwatch.ElapsedTicks * 1000.0 / Stopwatch.Frequency;
-            hz = 1000.0 / msec;
-            text = string.Format("Benchmark took {0:0.000} ms ({1:0.00 Hz})", msec, hz);
-        }
+        public void Start() => stopwatch.Restart();
+        public void Stop() => stopwatch.Stop();
+        public override string ToString() => text;
 
         public void UpdateMessage(int plottableCount, int pointCount)
         {
