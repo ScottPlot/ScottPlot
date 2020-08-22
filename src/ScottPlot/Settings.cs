@@ -36,6 +36,7 @@ namespace ScottPlot
 
         // Renderables (eventually store these in a List)
         public readonly FigureBackground FigureBackground = new FigureBackground();
+        public readonly DataBackground DataBackground = new DataBackground();
 
         // plottables
         public readonly List<Plottable> plottables = new List<Plottable>();

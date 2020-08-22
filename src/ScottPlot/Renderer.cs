@@ -16,12 +16,6 @@ namespace ScottPlot
     [Obsolete("Renderables should implement IRenderable")]
     public class Renderer
     {
-        public static void DataBackground(Settings settings)
-        {
-            if (settings.gfxData != null)
-                settings.gfxData.Clear(settings.misc.dataBackgroundColor);
-        }
-
         public static void DataGrid(Settings settings)
         {
             Pen pen = GDI.Pen(settings.grid.color, settings.grid.lineWidth, settings.grid.lineStyle);

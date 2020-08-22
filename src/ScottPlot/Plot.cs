@@ -188,7 +188,7 @@ namespace ScottPlot
 
             if (settings.gfxData != null)
             {
-                Renderer.DataBackground(settings);
+                settings.DataBackground.Render(settings);
                 Renderer.DataGrid(settings);
                 Renderer.DataPlottables(settings);
                 Renderer.MouseZoomRectangle(settings);
@@ -2341,7 +2341,7 @@ namespace ScottPlot
             if (figBg != null)
                 settings.FigureBackground.Color = figBg.Value;
             if (dataBg != null)
-                settings.misc.dataBackgroundColor = (Color)dataBg;
+                settings.DataBackground.Color = dataBg.Value;
             if (grid != null)
                 settings.grid.color = (Color)grid;
             if (tick != null)
