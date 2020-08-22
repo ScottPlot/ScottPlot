@@ -2,6 +2,7 @@
 
 ## ScottPlot 4.0.40 ⚠️ _in active development_
 * Added user control for Avalonia (#496, #503) _Thanks @Benny121221_
+* Holding shift while left-click-dragging the edge of a span moves it instead of resizing it (#509) _Thanks @Torgano_
 
 ## ScottPlot 4.0.39
 * Legend now reflects LineStyle of Signal and SignalXY plots (#488) _Thanks @Benny121221_
