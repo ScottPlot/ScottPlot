@@ -16,51 +16,6 @@ namespace ScottPlot
     [Obsolete("Renderables should implement IRenderable")]
     public class Renderer
     {
-        public static void DataGrid(Settings settings)
-        {
-            Pen pen = GDI.Pen(settings.grid.color, settings.grid.lineWidth, settings.grid.lineStyle);
-
-            if (settings.grid.enableVertical)
-            {
-                for (int i = 0; i < settings.ticks.x.tickPositionsMajor.Length; i++)
-                {
-                    double value = settings.ticks.x.tickPositionsMajor[i];
-                    double unitsFromAxisEdge = value - settings.axes.x.min;
-                    double xPx = unitsFromAxisEdge * settings.xAxisScale;
-
-                    if (settings.grid.snapToNearestPixel)
-                        xPx = (int)xPx;
-
-                    if ((xPx == 0) && settings.layout.displayFrameByAxis[0])
-                        continue; // don't draw a grid line 1px away from frame
-
-                    PointF ptTop = new PointF((float)xPx, 0);
-                    PointF ptBot = new PointF((float)xPx, settings.dataSize.Height);
-                    settings.gfxData.DrawLine(pen, ptTop, ptBot);
-                }
-            }
-
-            if (settings.grid.enableHorizontal)
-            {
-                for (int i = 0; i < settings.ticks.y.tickPositionsMajor.Length; i++)
-                {
-                    double value = settings.ticks.y.tickPositionsMajor[i];
-                    double unitsFromAxisEdge = value - settings.axes.y.min;
-                    double yPx = settings.dataSize.Height - unitsFromAxisEdge * settings.yAxisScale;
-
-                    if (settings.grid.snapToNearestPixel)
-                        yPx = (int)yPx;
-
-                    if ((yPx == 0) && settings.layout.displayFrameByAxis[2])
-                        continue; // don't draw a grid line 1px away from frame
-
-                    PointF ptLeft = new PointF(0, (float)yPx);
-                    PointF ptRight = new PointF(settings.dataSize.Width, (float)yPx);
-                    settings.gfxData.DrawLine(pen, ptLeft, ptRight);
-                }
-            }
-        }
-
         public static void DataPlottables(Settings settings)
         {
             if (settings.gfxData == null)

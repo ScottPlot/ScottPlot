@@ -189,7 +189,8 @@ namespace ScottPlot
             if (settings.gfxData != null)
             {
                 settings.DataBackground.Render(settings);
-                Renderer.DataGrid(settings);
+                settings.HorizontalGridLines.Render(settings);
+                settings.VerticalGridLines.Render(settings);
                 Renderer.DataPlottables(settings);
                 Renderer.MouseZoomRectangle(settings);
                 Renderer.CreateLegendBitmap(settings);
@@ -2153,18 +2154,21 @@ namespace ScottPlot
         {
             if (enable != null)
             {
-                settings.grid.enableHorizontal = (bool)enable;
-                settings.grid.enableVertical = (bool)enable;
+                settings.HorizontalGridLines.Visible = enable.Value;
+                settings.VerticalGridLines.Visible = enable.Value;
             }
 
             if (enableHorizontal != null)
-                settings.grid.enableHorizontal = (bool)enableHorizontal;
+                settings.HorizontalGridLines.Visible = enableHorizontal.Value;
 
             if (enableVertical != null)
-                settings.grid.enableVertical = (bool)enableVertical;
+                settings.VerticalGridLines.Visible = enableVertical.Value;
 
             if (color != null)
-                settings.grid.color = color.Value;
+            {
+                settings.HorizontalGridLines.Color = color.Value;
+                settings.VerticalGridLines.Color = color.Value;
+            }
 
             if (xSpacing != null)
                 settings.ticks.manualSpacingX = xSpacing.Value;
@@ -2179,13 +2183,22 @@ namespace ScottPlot
                 settings.ticks.manualDateTimeSpacingUnitY = ySpacingDateTimeUnit.Value;
 
             if (lineWidth != null)
-                settings.grid.lineWidth = lineWidth.Value;
+            {
+                settings.HorizontalGridLines.LineWidth = (float)lineWidth.Value;
+                settings.VerticalGridLines.LineWidth = (float)lineWidth.Value;
+            }
 
             if (lineStyle != null)
-                settings.grid.lineStyle = lineStyle.Value;
+            {
+                settings.HorizontalGridLines.LineStyle = lineStyle.Value;
+                settings.VerticalGridLines.LineStyle = lineStyle.Value;
+            }
 
             if (snapToNearestPixel != null)
-                settings.grid.snapToNearestPixel = snapToNearestPixel.Value;
+            {
+                settings.HorizontalGridLines.SnapToNearestPixel = snapToNearestPixel.Value;
+                settings.VerticalGridLines.SnapToNearestPixel = snapToNearestPixel.Value;
+            }
         }
 
         public void Frame(
@@ -2343,7 +2356,10 @@ namespace ScottPlot
             if (dataBg != null)
                 settings.DataBackground.Color = dataBg.Value;
             if (grid != null)
-                settings.grid.color = (Color)grid;
+            {
+                settings.HorizontalGridLines.Color = grid.Value;
+                settings.VerticalGridLines.Color = grid.Value;
+            }
             if (tick != null)
                 settings.ticks.color = (Color)tick;
             if (label != null)
