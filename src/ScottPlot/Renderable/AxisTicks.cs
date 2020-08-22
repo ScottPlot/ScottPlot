@@ -7,8 +7,6 @@ namespace ScottPlot.Renderable
 {
     public class AxisTicks : IRenderable
     {
-        public bool IsVisible { get; set; } = true;
-
         public Edge Edge { get; set; } = Edge.Bottom;
 
         public bool ShowLabels { get; set; } = true;
