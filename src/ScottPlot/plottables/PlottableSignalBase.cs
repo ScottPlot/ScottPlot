@@ -4,6 +4,7 @@ using ScottPlot.MinMaxSearchStrategies;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -367,7 +368,7 @@ namespace ScottPlot
         {
             StringBuilder csv = new StringBuilder();
             for (int i = 0; i < ys.Length; i++)
-                csv.AppendFormat("{0}{1}{2}{3}", xOffset + i * samplePeriod, delimiter, minmaxSearchStrategy.SourceElement(i) + yOffset, separator);
+                csv.AppendFormat(CultureInfo.InvariantCulture, "{0}{1}{2}{3}", xOffset + i * samplePeriod, delimiter, minmaxSearchStrategy.SourceElement(i) + yOffset, separator);
             return csv.ToString();
         }
 

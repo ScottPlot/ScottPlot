@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -213,7 +214,7 @@ namespace ScottPlot
         {
             StringBuilder csv = new StringBuilder();
             for (int i = 0; i < ys.Length; i++)
-                csv.AppendFormat("{0}{1}{2}{3}", xs[i], delimiter, ys[i], separator);
+                csv.AppendFormat(CultureInfo.InvariantCulture, "{0}{1}{2}{3}", xs[i], delimiter, ys[i], separator);
             return csv.ToString();
         }
 
