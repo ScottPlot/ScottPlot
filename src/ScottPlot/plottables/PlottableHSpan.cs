@@ -91,7 +91,7 @@ namespace ScottPlot
             return (edgeUnderMouse == Edge.Neither) ? false : true;
         }
 
-        public void DragTo(double coordinateX, double coordinateY)
+        public void DragTo(double coordinateX, double coordinateY, bool isShiftDown = false, bool isAltDown = false, bool isCtrlDown = false)
         {
             if (DragEnabled)
             {
@@ -102,13 +102,13 @@ namespace ScottPlot
                 if (edgeUnderMouse == Edge.Edge1)
                 {
                     position1 = coordinateX;
-                    if (DragFixedSize)
+                    if (DragFixedSize || isShiftDown)
                         position2 = position1 + sizeBeforeDrag;
                 }
                 else if (edgeUnderMouse == Edge.Edge2)
                 {
                     position2 = coordinateX;
-                    if (DragFixedSize)
+                    if (DragFixedSize || isShiftDown)
                         position1 = position2 - sizeBeforeDrag;
                 }
                 else

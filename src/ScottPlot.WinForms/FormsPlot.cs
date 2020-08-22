@@ -175,6 +175,7 @@ namespace ScottPlot
 
         private bool isShiftPressed { get { return (ModifierKeys.HasFlag(Keys.Shift) || (lockHorizontalAxis)); } }
         private bool isCtrlPressed { get { return (ModifierKeys.HasFlag(Keys.Control) || (lockVerticalAxis)); } }
+        private bool isAltPressed { get { return ModifierKeys.HasFlag(Keys.Alt); } }
 
         #endregion
 
@@ -322,7 +323,10 @@ namespace ScottPlot
 
         private void MouseMovedToMoveDraggable(MouseEventArgs e)
         {
-            plottableBeingDragged.DragTo(plt.CoordinateFromPixelX(e.Location.X), plt.CoordinateFromPixelY(e.Location.Y));
+            plottableBeingDragged.DragTo(
+                plt.CoordinateFromPixelX(e.Location.X),
+                plt.CoordinateFromPixelY(e.Location.Y),
+                isShiftPressed, isAltPressed, isCtrlPressed);
             OnMouseDragPlottable(EventArgs.Empty);
             Render(true, lowQuality: lowQualityWhileDragging);
         }

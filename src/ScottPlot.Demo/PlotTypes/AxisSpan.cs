@@ -33,7 +33,9 @@ namespace ScottPlot.Demo.PlotTypes
         public class Draggable : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Draggable Axis Spans";
-            public string description { get; } = "Horizontal and vertical spans can be made draggable (with optional limits) using arguments.";
+            public string description { get; } = "Horizontal and vertical spans can be made draggable " +
+                "(with optional limits) using arguments. Hold SHIFT while dragging an adjustable span's edge " +
+                "to shift it rather than resizing it.";
 
             public void Render(Plot plt)
             {

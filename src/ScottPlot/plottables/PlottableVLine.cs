@@ -67,7 +67,7 @@ namespace ScottPlot
             return (distanceFromMouseX <= snapX);
         }
 
-        public void DragTo(double coordinateX, double coordinateY)
+        public void DragTo(double coordinateX, double coordinateY, bool isShiftDown = false, bool isAltDown = false, bool isCtrlDown = false)
         {
             if (DragEnabled)
             {

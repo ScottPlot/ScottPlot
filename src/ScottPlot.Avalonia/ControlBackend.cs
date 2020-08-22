@@ -246,7 +246,9 @@ namespace ScottPlot.Interactive
 
         private void MouseMovedToMoveDraggable()
         {
-            plottableBeingDragged.DragTo(plt.CoordinateFromPixelX(mouseLocation.X), plt.CoordinateFromPixelY(mouseLocation.Y));
+            plottableBeingDragged.DragTo(
+                plt.CoordinateFromPixelX(mouseLocation.X), plt.CoordinateFromPixelY(mouseLocation.Y),
+                isShiftPressed, isAltPressed, isCtrlPressed);
             Render(true);
         }
 
