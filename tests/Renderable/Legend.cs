@@ -17,8 +17,10 @@ namespace ScottPlotTests.Renderable
             plt.PlotScatter(DataGen.Consecutive(51), DataGen.Sin(51), label: "sin");
             plt.PlotScatter(DataGen.Consecutive(51), DataGen.Cos(51), label: "cos");
 
+            TestTools.SaveFig(plt, "1");
             var mean1 = TestTools.MeanPixel(plt.GetBitmap());
             plt.Legend();
+            TestTools.SaveFig(plt, "2");
             var mean2 = TestTools.MeanPixel(plt.GetBitmap());
 
             // the legend should darken the mean pixel intensity
