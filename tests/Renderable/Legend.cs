@@ -11,14 +11,33 @@ namespace ScottPlotTests.Renderable
         [Test]
         public void Test_Legend_Render()
         {
-            var plt1 = new ScottPlot.Plot();
-            plt1.PlotSignal(DataGen.Sin(100), label: "sin");
-            plt1.PlotSignal(DataGen.Cos(100), label: "cos");
-            //plt1.Legend();
-            TestTools.SaveFig(plt1, "old");
+            var plt = new ScottPlot.Plot(600, 400);
+            plt.PlotScatter(DataGen.Consecutive(51), DataGen.Sin(51), label: "sin");
+            plt.PlotScatter(DataGen.Consecutive(51), DataGen.Cos(51), label: "cos");
+            plt.Legend();
+            TestTools.SaveFig(plt);
+        }
 
-            //var settings = plt1.GetSettings(false);
-            //var bmpLegend = settings.Legend.GetBitmap(settings);
+        [Test]
+        public void Test_Legend_Bitmap()
+        {
+            var plt = new ScottPlot.Plot(600, 400);
+            plt.PlotScatter(DataGen.Consecutive(51), DataGen.Sin(51), label: "sin");
+            plt.PlotScatter(DataGen.Consecutive(51), DataGen.Cos(51), label: "cos");
+
+            // the legend Bitmap should have size
+            var bmpLegend1 = plt.GetLegendBitmap();
+            Assert.IsNotNull(bmpLegend1);
+            Assert.Greater(bmpLegend1.Width, 0);
+            Assert.Greater(bmpLegend1.Height, 0);
+
+            // add a new line to the plot
+            plt.PlotScatter(DataGen.Consecutive(51), DataGen.Consecutive(51), label: "test123");
+
+            // the legend Bitmap should be bigger now
+            var bmpLegend2 = plt.GetLegendBitmap();
+            Assert.Greater(bmpLegend2.Height, bmpLegend1.Height);
+            Assert.Greater(bmpLegend2.Width, bmpLegend1.Width);
         }
     }
 }

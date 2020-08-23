@@ -1965,10 +1965,9 @@ namespace ScottPlot
             }
         }
 
-        [Obsolete("WARNING: LEGEND BITMAPS ARE DISABLED")]
         public Bitmap GetLegendBitmap()
         {
-            return null;
+            return settings.Legend.GetBitmap(settings);
         }
 
         #endregion

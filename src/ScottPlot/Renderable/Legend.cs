@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Text;
 
 namespace ScottPlot.Renderable
@@ -21,51 +22,81 @@ namespace ScottPlot.Renderable
         public float FontSize = 14;
         public Color FontColor = Color.Black;
 
-        public Bitmap GetBitmap(Settings settings)
-        {
-            return null;
-        }
+        private float symbolWidth { get { return 40 * FontSize / 12; } }
+        private float symbolPad { get { return FontSize / 3; } }
+        private float markerWidth { get { return FontSize / 2; } }
 
         public void Render(Settings settings)
         {
-            var items = GetLegendItems(settings);
+            using (var gfx = Graphics.FromImage(settings.bmpFigure))
+            using (var font = new Font(FontName, FontSize, GraphicsUnit.Pixel))
+            {
+                var items = GetLegendItems(settings);
+                var (maxLabelWidth, maxLabelHeight, width, height) = GetDimensions(gfx, items, font);
+                var (x, y) = GetLocationPx(settings, width, height);
+                RenderOnBitmap(gfx, items, font, x, y, width, height, maxLabelHeight);
+            }
+        }
 
-            // symbol size based on font size
-            float symbolWidth = 40 * FontSize / 12;
-            float symbolPad = FontSize / 3;
+        public Bitmap GetBitmap(Settings settings)
+        {
+            using (var bmpTemp = new Bitmap(1, 1))
+            using (var gfxTemp = Graphics.FromImage(bmpTemp))
+            using (var font = new Font(FontName, FontSize, GraphicsUnit.Pixel))
+            {
+                var items = GetLegendItems(settings);
+                var (maxLabelWidth, maxLabelHeight, width, height) = GetDimensions(gfxTemp, items, font);
+                Bitmap bmp = new Bitmap((int)width, (int)height, PixelFormat.Format32bppPArgb);
 
+                using (var gfx = Graphics.FromImage(bmp))
+                    RenderOnBitmap(gfx, items, font, 0, 0, width, height, maxLabelHeight);
+
+                return bmp;
+            }
+        }
+
+        private (float maxLabelWidth, float maxLabelHeight, float width, float height)
+            GetDimensions(Graphics gfx, LegendItem[] items, Font font)
+        {
+            // determine maximum label size and use it to define legend size
+            float maxLabelWidth = 0;
+            float maxLabelHeight = 0;
+            for (int i = 0; i < items.Length; i++)
+            {
+                var labelSize = gfx.MeasureString(items[i].label, font);
+                maxLabelWidth = Math.Max(maxLabelWidth, labelSize.Width);
+                maxLabelHeight = Math.Max(maxLabelHeight, labelSize.Height);
+            }
+
+            float width = symbolWidth + maxLabelWidth + symbolPad;
+            float height = maxLabelHeight * items.Length;
+
+            return (maxLabelWidth, maxLabelHeight, width, height);
+        }
+
+        private void RenderOnBitmap(Graphics gfx, LegendItem[] items, Font font,
+            float locationX, float locationY, float width, float height, float maxLabelHeight,
+            bool shadow = true, bool fill = true, bool outline = true)
+        {
             using (var fillBrush = new SolidBrush(FillColor))
             using (var shadowBrush = new SolidBrush(ShadowColor))
             using (var textBrush = new SolidBrush(FontColor))
             using (var outlinePen = new Pen(OutlineColor))
-            using (var gfx = Graphics.FromImage(settings.bmpFigure))
-            using (var font = new Font(FontName, FontSize, GraphicsUnit.Pixel))
             {
                 // TODO: respect global anti-aliasing settings
                 gfx.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                 gfx.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
 
-                // determine maximum label size and use it to define legend size
-                float maxLabelWidth = 0;
-                float maxLabelHeight = 0;
-                for (int i = 0; i < items.Length; i++)
-                {
-                    var labelSize = gfx.MeasureString(items[i].label, font);
-                    maxLabelWidth = Math.Max(maxLabelWidth, labelSize.Width);
-                    maxLabelHeight = Math.Max(maxLabelHeight, labelSize.Height);
-                }
-                float width = symbolWidth + maxLabelWidth + symbolPad;
-                float height = maxLabelHeight * items.Length;
-
-                // determine where to place the legend
-                (float locationX, float locationY) = GetLocationPx(settings, width, height);
-
                 RectangleF rectShadow = new RectangleF(locationX + ShadowOffsetX, locationY + ShadowOffsetY, width, height);
-                gfx.FillRectangle(shadowBrush, rectShadow);
-
                 RectangleF rectFill = new RectangleF(locationX, locationY, width, height);
+
+                if (shadow)
+                    gfx.FillRectangle(shadowBrush, rectShadow);
+
                 gfx.FillRectangle(fillBrush, rectFill);
-                gfx.DrawRectangle(outlinePen, Rectangle.Round(rectFill));
+
+                if (outline)
+                    gfx.DrawRectangle(outlinePen, Rectangle.Round(rectFill));
 
                 for (int i = 0; i < items.Length; i++)
                 {
@@ -85,7 +116,6 @@ namespace ScottPlot.Renderable
 
                     // draw marker
                     float lineXcenter = (lineX1 + lineX2) / 2;
-                    float markerWidth = settings.legend.font.Size / 2;
                     PointF markerPoint = new PointF(lineXcenter, lineY);
                     MarkerTools.DrawMarker(gfx, markerPoint, item.markerShape, markerWidth, item.color);
                 }
