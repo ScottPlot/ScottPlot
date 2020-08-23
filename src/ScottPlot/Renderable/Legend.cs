@@ -38,7 +38,7 @@ namespace ScottPlot.Renderable
                 return;
 
             using (var gfx = Graphics.FromImage(settings.bmpFigure))
-            using (var font = new Font(FontName, FontSize, GraphicsUnit.Pixel))
+            using (var font = new Font(Fonts.GetValidFontName(FontName), FontSize, GraphicsUnit.Pixel))
             {
                 var items = GetLegendItems(settings);
                 if (items.Length == 0)
@@ -54,7 +54,7 @@ namespace ScottPlot.Renderable
         {
             using (var bmpTemp = new Bitmap(1, 1))
             using (var gfxTemp = Graphics.FromImage(bmpTemp))
-            using (var font = new Font(FontName, FontSize, GraphicsUnit.Pixel))
+            using (var font = new Font(Fonts.GetValidFontName(FontName), FontSize, GraphicsUnit.Pixel))
             {
                 var items = GetLegendItems(settings);
                 if (items.Length == 0)
