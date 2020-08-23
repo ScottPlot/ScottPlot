@@ -26,7 +26,8 @@ namespace ScottPlot.Renderable
         public string FontName { get { return _fontName; } set { _fontName = Fonts.GetValidFontName(FontName); } }
         public float FontSize = 14;
         public Color FontColor = Color.Black;
-        public bool FontBold = false; // TODO: support bold fonts
+        public bool FontBold = false;
+        private FontStyle FontStyle { get { return FontBold ? FontStyle.Bold : FontStyle.Regular; } }
 
         public float Padding = 5;
         private float symbolWidth { get { return 40 * FontSize / 12; } }
@@ -39,7 +40,7 @@ namespace ScottPlot.Renderable
                 return;
 
             using (var gfx = Graphics.FromImage(settings.bmpFigure))
-            using (var font = new Font(FontName, FontSize, GraphicsUnit.Pixel))
+            using (var font = new Font(FontName, FontSize, FontStyle, GraphicsUnit.Pixel))
             {
                 var items = GetLegendItems(settings);
                 if (items.Length == 0)
@@ -55,7 +56,7 @@ namespace ScottPlot.Renderable
         {
             using (var bmpTemp = new Bitmap(1, 1))
             using (var gfxTemp = Graphics.FromImage(bmpTemp))
-            using (var font = new Font(FontName, FontSize, GraphicsUnit.Pixel))
+            using (var font = new Font(FontName, FontSize, FontStyle, GraphicsUnit.Pixel))
             {
                 var items = GetLegendItems(settings);
                 if (items.Length == 0)

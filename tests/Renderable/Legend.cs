@@ -17,10 +17,8 @@ namespace ScottPlotTests.Renderable
             plt.PlotScatter(DataGen.Consecutive(51), DataGen.Sin(51), label: "sin");
             plt.PlotScatter(DataGen.Consecutive(51), DataGen.Cos(51), label: "cos");
 
-            TestTools.SaveFig(plt, "1");
             var mean1 = TestTools.MeanPixel(plt.GetBitmap());
             plt.Legend();
-            TestTools.SaveFig(plt, "2");
             var mean2 = TestTools.MeanPixel(plt.GetBitmap());
 
             // the legend should darken the mean pixel intensity
@@ -86,9 +84,6 @@ namespace ScottPlotTests.Renderable
             plt2.Legend(reverseOrder: true);
             string hash2 = ScottPlot.Tools.BitmapHash(plt2.GetBitmap());
 
-            TestTools.SaveFig(plt1, "standard");
-            TestTools.SaveFig(plt2, "reversed");
-
             Assert.AreNotEqual(hash1, hash2);
         }
 
@@ -96,28 +91,42 @@ namespace ScottPlotTests.Renderable
         public void Test_Legend_Style()
         {
             var plt1 = new ScottPlot.Plot(600, 400);
-            plt1.PlotScatter(DataGen.Sin(10), DataGen.Sin(10), label: "sin",
-                color: Color.Red, lineStyle: LineStyle.Solid, lineWidth: 1);
+            plt1.PlotScatter(DataGen.Sin(10), DataGen.Sin(10), label: "sin", color: Color.Black, lineWidth: 1);
             plt1.Legend();
             var mean1 = TestTools.MeanPixel(plt1.GetBitmap());
 
             var plt2 = new ScottPlot.Plot(600, 400);
-            plt2.PlotScatter(DataGen.Sin(10), DataGen.Sin(10), label: "sin",
-                color: Color.Red, lineStyle: LineStyle.Dash, lineWidth: 1);
+            plt2.PlotScatter(DataGen.Sin(10), DataGen.Sin(10), label: "sin", color: Color.Black, lineWidth: 2);
             plt2.Legend();
             var mean2 = TestTools.MeanPixel(plt2.GetBitmap());
 
+            // thicker line means darker pixel intensity
+            Assert.Less(mean2.R, mean1.R);
+
             var plt3 = new ScottPlot.Plot(600, 400);
-            plt3.PlotScatter(DataGen.Sin(10), DataGen.Sin(10), label: "sin",
-                color: Color.Blue, lineStyle: LineStyle.Dash, lineWidth: 1);
+            plt3.PlotScatter(DataGen.Sin(10), DataGen.Sin(10), label: "sin", color: Color.Gray, lineWidth: 2);
             plt3.Legend();
             var mean3 = TestTools.MeanPixel(plt3.GetBitmap());
 
-            // dash should be brighter than solid dark red
-            Assert.Greater(mean2.R, mean1.R);
+            // lighter color means greater pixel intensity
+            Assert.Greater(mean3.R, mean2.R);
+        }
 
-            // blue should be darker B than red
-            Assert.Less(mean3.R, mean2.R);
+        [Test]
+        public void Test_Legend_Bold()
+        {
+            var plt = new ScottPlot.Plot(600, 400);
+            plt.PlotScatter(DataGen.Consecutive(51), DataGen.Sin(51), label: "sin");
+            plt.PlotScatter(DataGen.Consecutive(51), DataGen.Cos(51), label: "cos");
+            plt.Legend();
+
+            var meanRegular = TestTools.MeanPixel(plt.GetBitmap());
+
+            plt.Legend(bold: true);
+            var meanBold = TestTools.MeanPixel(plt.GetBitmap());
+
+            // bold text will darken the mean pixel intensity
+            Assert.Less(meanBold.R, meanRegular.R);
         }
     }
 }

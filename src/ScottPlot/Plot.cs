@@ -1942,12 +1942,10 @@ namespace ScottPlot
                 settings.Legend.ReverseOrder = reverseOrder.Value;
             if (bold != null)
                 settings.Legend.FontBold = bold.Value;
-
-            settings.Legend.FontName = fontName;
-
             if (fixedLineWidth != null)
                 settings.Legend.FixedLineWidth = fixedLineWidth.Value;
 
+            // TODO: In ScottPlot 4.1 change these arguments
             if (location == legendLocation.upperLeft)
                 settings.Legend.Location = Direction.NW;
             else if (location == legendLocation.upperCenter)
