@@ -112,7 +112,8 @@ namespace ScottPlotTests.Renderable
             Assert.Greater(mean3.R, mean2.R);
         }
 
-        [Test]
+        // Disabled because this test fails on Linux and MacOS due to a System.Drawing limitation
+        //[Test]
         public void Test_Legend_Bold()
         {
             var plt = new ScottPlot.Plot(600, 400);
