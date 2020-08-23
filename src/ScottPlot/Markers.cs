@@ -145,6 +145,8 @@ namespace ScottPlot
                     gfx.DrawPolygon(pen, curvePoints4);
 
                     break;
+                case MarkerShape.none:
+                    break;
                 default:
                     throw new NotImplementedException($"unsupported marker type: {shape}");
             }

@@ -38,27 +38,6 @@ namespace ScottPlot
             }
         }
 
-        public static void CreateLegendBitmap(Settings settings)
-        {
-            LegendTools.DrawLegend(settings);
-        }
-
-        public static void PlaceLegendOntoFigure(Settings settings)
-        {
-            if (settings.gfxFigure == null || settings.gfxLegend == null)
-                return;
-
-            bool legendHasItems = LegendTools.GetLegendItems(settings).Length > 0;
-            bool legendHasLocation = settings.legend.location != legendLocation.none;
-
-            if (legendHasItems && legendHasLocation)
-            {
-                Point legendLocation = new Point(settings.dataOrigin.X + settings.legend.rect.Location.X,
-                settings.dataOrigin.Y + settings.legend.rect.Location.Y);
-                settings.gfxFigure.DrawImage(settings.bmpLegend, legendLocation);
-            }
-        }
-
         public static void PlaceDataOntoFigure(Settings settings)
         {
             if (settings.gfxFigure == null || settings.bmpData == null)

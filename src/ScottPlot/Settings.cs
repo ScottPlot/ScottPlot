@@ -30,10 +30,8 @@ namespace ScottPlot
         // Eventually move graphics objects to their own module.
         public Graphics gfxFigure;
         public Graphics gfxData;
-        public Graphics gfxLegend;
         public Bitmap bmpFigure;
         public Bitmap bmpData;
-        public Bitmap bmpLegend;
 
         // Renderables (eventually store these in a List)
         public readonly FigureBackground FigureBackground = new FigureBackground();
@@ -41,6 +39,7 @@ namespace ScottPlot
         public readonly GridLines HorizontalGridLines = new GridLines() { Orientation = Orientation.Horizontal };
         public readonly GridLines VerticalGridLines = new GridLines() { Orientation = Orientation.Vertical };
         public readonly Benchmark Benchmark = new Benchmark();
+        public readonly Renderable.Legend Legend = new Renderable.Legend();
 
         // plottables
         public readonly List<Plottable> plottables = new List<Plottable>();
