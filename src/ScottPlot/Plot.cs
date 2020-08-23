@@ -78,20 +78,12 @@ namespace ScottPlot
             InitializeBitmaps();
         }
 
-        private void InitializeLegend(Size size)
-        {
-            settings.bmpLegend = new Bitmap(size.Width, size.Height, pixelFormat);
-            settings.gfxLegend = Graphics.FromImage(settings.bmpLegend);
-        }
-
         private void InitializeBitmaps()
         {
             settings.bmpFigure = null;
             settings.gfxFigure = null;
             settings.bmpData = null;
             settings.gfxData = null;
-            settings.gfxLegend = null;
-            settings.bmpLegend = null;
 
             if (settings.figureSize.Width > 0 && settings.figureSize.Height > 0)
             {
@@ -105,8 +97,6 @@ namespace ScottPlot
                 settings.bmpData = new Bitmap(settings.dataSize.Width, settings.dataSize.Height, pixelFormat);
                 settings.gfxData = Graphics.FromImage(settings.bmpData);
             }
-
-            InitializeLegend(new Size(1, 1));
         }
 
         private void UpdateAntiAliasingSettings()
@@ -139,19 +129,6 @@ namespace ScottPlot
                     settings.gfxData.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
                 }
             }
-            if (settings.gfxLegend != null)
-            {
-                if (settings.legend.antiAlias)
-                {
-                    settings.gfxLegend.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                    settings.gfxLegend.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
-                }
-                else
-                {
-                    settings.gfxLegend.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
-                    settings.gfxLegend.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
-                }
-            }
         }
 
         private void RenderBitmap()
@@ -168,12 +145,6 @@ namespace ScottPlot
                 TightenLayout();
                 // only after the layout is tightened can the ticks be properly decided
             }
-
-            settings.legend.rect = LegendTools.GetLegendFrame(settings);
-
-            // TODO: this only re-renders the legend if the size changes. What if the colors change?
-            if (settings.legend.rect.Size != settings.bmpLegend.Size)
-                InitializeLegend(settings.legend.rect.Size);
 
             UpdateAntiAliasingSettings();
 
@@ -193,9 +164,8 @@ namespace ScottPlot
                 settings.VerticalGridLines.Render(settings);
                 Renderer.DataPlottables(settings);
                 Renderer.MouseZoomRectangle(settings);
-                Renderer.CreateLegendBitmap(settings);
                 Renderer.PlaceDataOntoFigure(settings);
-                Renderer.PlaceLegendOntoFigure(settings);
+                settings.Legend.Render(settings);
             }
             settings.Benchmark.Stop();
             settings.Benchmark.UpdateMessage(settings.plottables.Count, settings.GetTotalPointCount());
@@ -1957,47 +1927,46 @@ namespace ScottPlot
             bool? reverseOrder = null
             )
         {
-            if (fontName == null)
-                fontName = Config.Fonts.GetDefaultFontName();
+            settings.Legend.Visible = enableLegend;
+            if (fontName != null)
+                settings.Legend.FontName = fontName;
+            if (fontSize != null)
+                settings.Legend.FontSize = fontSize.Value;
             if (fontColor != null)
-                settings.legend.colorText = (Color)fontColor;
+                settings.Legend.FontColor = fontColor.Value;
             if (backColor != null)
-                settings.legend.colorBackground = (Color)backColor;
+                settings.Legend.FillColor = backColor.Value;
             if (frameColor != null)
-                settings.legend.colorFrame = (Color)frameColor;
+                settings.Legend.OutlineColor = frameColor.Value;
             if (reverseOrder != null)
-                settings.legend.reverseOrder = reverseOrder.Value;
-
-            // create a new font based on the current one
-            fontName = (fontName is null) ? settings.legend.font.Name : Config.Fonts.GetValidFontName(fontName);
-
-            if (fontSize is null)
-                fontSize = settings.legend.font.Size;
-
-            var fontStyle = settings.legend.font.Style;
-            if ((bold != null) && (bold.Value == true))
-                fontStyle = FontStyle.Bold;
-
-            settings.legend.font = new Font(fontName, fontSize.Value, fontStyle, GraphicsUnit.Pixel);
-
+                settings.Legend.ReverseOrder = reverseOrder.Value;
+            if (bold != null)
+                settings.Legend.FontBold = bold.Value;
             if (fixedLineWidth != null)
-                settings.legend.fixedLineWidth = (bool)fixedLineWidth;
+                settings.Legend.FixedLineWidth = fixedLineWidth.Value;
 
-            if (enableLegend)
-            {
-                settings.legend.location = location;
-                settings.legend.shadow = shadowDirection;
-            }
-            else
-            {
-                settings.legend.location = legendLocation.none;
-                settings.legend.shadow = shadowDirection.none;
-            }
+            // TODO: In ScottPlot 4.1 change these arguments
+            if (location == legendLocation.upperLeft)
+                settings.Legend.Location = Direction.NW;
+            else if (location == legendLocation.upperCenter)
+                settings.Legend.Location = Direction.N;
+            else if (location == legendLocation.upperRight)
+                settings.Legend.Location = Direction.NE;
+            else if (location == legendLocation.middleRight)
+                settings.Legend.Location = Direction.E;
+            else if (location == legendLocation.lowerRight)
+                settings.Legend.Location = Direction.SE;
+            else if (location == legendLocation.lowerCenter)
+                settings.Legend.Location = Direction.S;
+            else if (location == legendLocation.lowerLeft)
+                settings.Legend.Location = Direction.SW;
+            else if (location == legendLocation.middleLeft)
+                settings.Legend.Location = Direction.W;
         }
 
         public Bitmap GetLegendBitmap()
         {
-            return settings.bmpLegend;
+            return settings.Legend.GetBitmap(settings);
         }
 
         #endregion
@@ -2237,7 +2206,7 @@ namespace ScottPlot
         {
             settings.misc.antiAliasFigure = figure;
             settings.misc.antiAliasData = data;
-            settings.legend.antiAlias = legend;
+            settings.Legend.AntiAlias = legend;
         }
 
         public void TightenLayout(int? padding = null, bool render = false)
@@ -2369,11 +2338,11 @@ namespace ScottPlot
             if (title != null)
                 settings.title.color = (Color)title;
             if (dataBg != null)
-                settings.legend.colorBackground = (Color)dataBg;
+                settings.Legend.FillColor = (Color)dataBg;
             if (tick != null)
-                settings.legend.colorFrame = (Color)tick;
+                settings.Legend.OutlineColor = (Color)tick;
             if (label != null)
-                settings.legend.colorText = (Color)label;
+                settings.Legend.FontColor = (Color)label;
         }
 
         public void Style(Style style)
