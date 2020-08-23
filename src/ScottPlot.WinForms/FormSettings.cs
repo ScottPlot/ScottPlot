@@ -49,7 +49,7 @@ namespace ScottPlot.UserControls
             cbGrid.Checked = plt.GetSettings().HorizontalGridLines.Visible;
 
             // legend
-            cbLegend.Checked = (plt.GetSettings().legend.location == legendLocation.none) ? false : true;
+            cbLegend.Checked = plt.GetSettings().Legend.Visible;
 
             // image quality
             rbQualityLow.Checked = !plt.GetSettings().misc.antiAliasData;
