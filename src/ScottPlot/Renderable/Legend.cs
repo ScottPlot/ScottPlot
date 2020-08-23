@@ -14,7 +14,7 @@ namespace ScottPlot.Renderable
         public bool FixedLineWidth = false;
         public bool ReverseOrder = false;
         public bool AntiAlias = true;
-        public bool Visible = true;
+        public bool Visible = false;
 
         public Color FillColor = Color.White;
         public Color OutlineColor = Color.Black;
