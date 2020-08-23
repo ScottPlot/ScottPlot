@@ -39,7 +39,7 @@ namespace ScottPlot
         public readonly GridLines HorizontalGridLines = new GridLines() { Orientation = Orientation.Horizontal };
         public readonly GridLines VerticalGridLines = new GridLines() { Orientation = Orientation.Vertical };
         public readonly Benchmark Benchmark = new Benchmark();
-        public readonly Renderable.Legend Legend = new Renderable.Legend();
+        public readonly Legend Legend = new Legend();
 
         // plottables
         public readonly List<Plottable> plottables = new List<Plottable>();
@@ -54,7 +54,6 @@ namespace ScottPlot
         public Config.Axes axes = new Config.Axes();
         public readonly Config.Layout layout = new Config.Layout();
         public Config.Ticks ticks = new Config.Ticks();
-        public Config.Legend legend = new Config.Legend();
         public System.Globalization.CultureInfo culture = System.Globalization.CultureInfo.DefaultThreadCurrentCulture;
 
         // default colorset

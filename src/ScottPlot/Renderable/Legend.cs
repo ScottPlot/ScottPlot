@@ -1,4 +1,5 @@
 ﻿using ScottPlot.Config;
+using ScottPlot.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -10,7 +11,10 @@ namespace ScottPlot.Renderable
     public class Legend : IRenderable
     {
         public Direction Location = Direction.SE;
-        public float Padding = 5;
+        public bool FixedLineWidth = false;
+        public bool ReverseOrder = false;
+        public bool AntiAlias = true;
+        public bool Visible = true;
 
         public Color FillColor = Color.White;
         public Color OutlineColor = Color.Black;
@@ -21,17 +25,25 @@ namespace ScottPlot.Renderable
         public string FontName = Fonts.GetDefaultFontName();
         public float FontSize = 14;
         public Color FontColor = Color.Black;
+        public bool FontBold = false; // TODO: support bold fonts
 
+        public float Padding = 5;
         private float symbolWidth { get { return 40 * FontSize / 12; } }
         private float symbolPad { get { return FontSize / 3; } }
         private float markerWidth { get { return FontSize / 2; } }
 
         public void Render(Settings settings)
         {
+            if (Visible is false)
+                return;
+
             using (var gfx = Graphics.FromImage(settings.bmpFigure))
             using (var font = new Font(FontName, FontSize, GraphicsUnit.Pixel))
             {
                 var items = GetLegendItems(settings);
+                if (items.Length == 0)
+                    return;
+
                 var (maxLabelWidth, maxLabelHeight, width, height) = GetDimensions(gfx, items, font);
                 var (x, y) = GetLocationPx(settings, width, height);
                 RenderOnBitmap(gfx, items, font, x, y, width, height, maxLabelHeight);
@@ -45,6 +57,9 @@ namespace ScottPlot.Renderable
             using (var font = new Font(FontName, FontSize, GraphicsUnit.Pixel))
             {
                 var items = GetLegendItems(settings);
+                if (items.Length == 0)
+                    return null;
+
                 var (maxLabelWidth, maxLabelHeight, width, height) = GetDimensions(gfxTemp, items, font);
                 Bitmap bmp = new Bitmap((int)width, (int)height, PixelFormat.Format32bppPArgb);
 
@@ -83,9 +98,11 @@ namespace ScottPlot.Renderable
             using (var textBrush = new SolidBrush(FontColor))
             using (var outlinePen = new Pen(OutlineColor))
             {
-                // TODO: respect global anti-aliasing settings
-                gfx.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                gfx.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+                if (AntiAlias)
+                {
+                    gfx.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                    gfx.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+                }
 
                 RectangleF rectShadow = new RectangleF(locationX + ShadowOffsetX, locationY + ShadowOffsetY, width, height);
                 RectangleF rectFill = new RectangleF(locationX, locationY, width, height);
@@ -112,7 +129,8 @@ namespace ScottPlot.Renderable
                     float lineY = locationY + verticalOffset + maxLabelHeight / 2;
                     float lineX1 = locationX + symbolPad;
                     float lineX2 = lineX1 + symbolWidth - symbolPad * 2;
-                    gfx.DrawLine(outlinePen, lineX1, lineY, lineX2, lineY);
+                    using (var linePen = GDI.Pen(item.color, item.lineWidth, item.lineStyle, false))
+                        gfx.DrawLine(linePen, lineX1, lineY, lineX2, lineY);
 
                     // draw marker
                     float lineXcenter = (lineX1 + lineX2) / 2;
@@ -122,7 +140,7 @@ namespace ScottPlot.Renderable
             }
         }
 
-        public static LegendItem[] GetLegendItems(Settings settings)
+        public LegendItem[] GetLegendItems(Settings settings)
         {
             var items = new List<LegendItem>();
 
@@ -138,7 +156,7 @@ namespace ScottPlot.Renderable
                         items.Add(plottableItem);
             }
 
-            if (settings.legend.reverseOrder)
+            if (ReverseOrder)
                 items.Reverse();
 
             return items.ToArray();
