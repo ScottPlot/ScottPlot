@@ -45,8 +45,8 @@ namespace ScottPlot.Space
             Span = Max - Min;
             if (FigureSizePx > 0 && Span > 0)
             {
-                UnitsPerPx = Span / DataSizePx;
-                PxPerUnit = DataSizePx / Span;
+                UnitsPerPx = Span / (DataSizePx - 1);
+                PxPerUnit = (DataSizePx - 1) / Span;
             }
             else
             {
@@ -64,17 +64,36 @@ namespace ScottPlot.Space
 
         public float GetPixel(double position)
         {
-            double unitsFromMin = position - Min;
-            double pxFromMin = unitsFromMin * PxPerUnit;
-            double pixel = Inverted ? DataOffsetPx + DataSizePx - pxFromMin : DataOffsetPx + pxFromMin;
-            return (float)pixel;
+            if (Inverted)
+            {
+                double unitsFromMax = Max - position;
+                double pxFromMax = unitsFromMax * PxPerUnit;
+                double pixel = DataOffsetPx + pxFromMax;
+                return (float)pixel;
+            }
+            else
+            {
+                double unitsFromMin = position - Min;
+                double pxFromMin = unitsFromMin * PxPerUnit;
+                double pixel = DataOffsetPx + pxFromMin;
+                return (float)pixel;
+            }
         }
 
         public double GetPosition(float pixel)
         {
-            float pxFromMin = Inverted ? DataSizePx + DataOffsetPx - pixel : pixel - DataOffsetPx;
-            double unitsFromMin = pxFromMin * UnitsPerPx;
-            return Min + unitsFromMin;
+            if (Inverted)
+            {
+                float pxFromMax = pixel - DataOffsetPx;
+                double unitsFromMax = pxFromMax * UnitsPerPx;
+                return Max - unitsFromMax;
+            }
+            else
+            {
+                float pxFromMin = pixel - DataOffsetPx;
+                double unitsFromMin = pxFromMin * UnitsPerPx;
+                return Min + unitsFromMin;
+            }
         }
     }
 }
