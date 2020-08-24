@@ -19,6 +19,10 @@ namespace ScottPlotTests.Space
 
             // test a point 10% (31 pixels) from top edge of data area
             Assert.AreEqual(50 + 31, info.GetPixelY(8));
+
+            // test the same two points in reverse
+            Assert.AreEqual(-.8, info.GetPositionX(150 + 38));
+            Assert.AreEqual(8, info.GetPositionY(50 + 31));
         }
 
         [Test]
@@ -27,17 +31,19 @@ namespace ScottPlotTests.Space
             var info = new ScottPlot.Space.FigureInfo();
             info.Resize(600, 400, 380, 310, 150, 50);
 
-            // set a different scale for the primary Y
+            // set limits for primary X and primary Y
             info.SetLimits(-123, 123, -123, 123);
 
-            // set the standard scale for the secondary Y
+            // set limits for primary X and secondary Y
             info.SetLimits(-1, 1, -10, 10, planeIndex: 1);
 
-            // ensure the old Y1 values no longer match
-            Assert.AreNotEqual(150 + 38, info.GetPixelX(-.8));
+            // test expected values of the primary X
+            Assert.AreEqual(150 + 38, info.GetPixelX(-.8));
+
+            // test expected values of the primary Y
             Assert.AreNotEqual(50 + 31, info.GetPixelY(8));
 
-            // ensure the old Y1 values match the new Y2 values
+            // test expected values of the secondary Y
             Assert.AreEqual(150 + 38, info.GetPixelX(-.8, planeIndex: 1));
             Assert.AreEqual(50 + 31, info.GetPixelY(8, planeIndex: 1));
         }

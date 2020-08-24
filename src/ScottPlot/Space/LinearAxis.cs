@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Drawing2D;
 using System.Text;
 
 namespace ScottPlot.Space
@@ -7,13 +8,19 @@ namespace ScottPlot.Space
     /// <summary>
     /// This class handles state (pixel dimensions and axis limits) of a single dimension
     /// </summary>
-    public class LinearAxis
+    public class LinearAxis : IAxis
     {
         public float FigureSizePx { get; private set; }
         public float DataSizePx { get; private set; }
         public float DataOffsetPx { get; private set; }
         public double Min { get; private set; }
         public double Max { get; private set; }
+
+        private readonly bool Inverted;
+        public LinearAxis(bool inverted = false)
+        {
+            Inverted = inverted;
+        }
 
         public void Resize(float figureSize, float dataSize, float dataOffset)
         {
@@ -55,12 +62,19 @@ namespace ScottPlot.Space
             Max += panUnits;
         }
 
-        public float GetPixel(double unit, bool inverted = false)
+        public float GetPixel(double position)
         {
-            double unitsFromMin = unit - Min;
+            double unitsFromMin = position - Min;
             double pxFromMin = unitsFromMin * PxPerUnit;
-            double pixel = inverted ? DataOffsetPx + DataSizePx - pxFromMin : DataOffsetPx + pxFromMin;
+            double pixel = Inverted ? DataOffsetPx + DataSizePx - pxFromMin : DataOffsetPx + pxFromMin;
             return (float)pixel;
+        }
+
+        public double GetPosition(float pixel)
+        {
+            float pxFromMin = Inverted ? DataSizePx + DataOffsetPx - pixel : pixel - DataOffsetPx;
+            double unitsFromMin = pxFromMin * UnitsPerPx;
+            return Min + unitsFromMin;
         }
     }
 }

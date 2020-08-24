@@ -9,7 +9,13 @@ namespace ScottPlot.Space
     /// </summary>
     public class Plane
     {
-        public LinearAxis X { get; set; } = new LinearAxis();
-        public LinearAxis Y { get; set; } = new LinearAxis();
+        public IAxis X { get; private set; }
+        public IAxis Y { get; private set; }
+
+        public Plane(IAxis x, IAxis y)
+        {
+            X = x;
+            Y = y;
+        }
     }
 }

@@ -6,14 +6,16 @@ using System.Text;
 namespace ScottPlot.Space
 {
     /// <summary>
-    /// This class handles dimensions, axis limits, and pixel/unit conversion and manipulation.
+    /// This class handles dimensions, axis limits, and pixel/position conversion and manipulation.
     /// </summary>
     public class FigureInfo
     {
         public readonly List<Plane> Planes = new List<Plane>();
 
-        public float GetPixelX(double unitX, int planeIndex = 0) => Planes[planeIndex].X.GetPixel(unitX, inverted: false);
-        public float GetPixelY(double unitY, int planeIndex = 0) => Planes[planeIndex].Y.GetPixel(unitY, inverted: true);
+        public float GetPixelX(double xPosition, int planeIndex = 0) => Planes[planeIndex].X.GetPixel(xPosition);
+        public float GetPixelY(double yPosition, int planeIndex = 0) => Planes[planeIndex].Y.GetPixel(yPosition);
+        public double GetPositionX(float xPixel, int planeIndex = 0) => Planes[planeIndex].X.GetPosition(xPixel);
+        public double GetPositionY(float yPixel, int planeIndex = 0) => Planes[planeIndex].Y.GetPosition(yPixel);
 
         public float Width { get; private set; }
         public float Height { get; private set; }
@@ -24,8 +26,12 @@ namespace ScottPlot.Space
 
         public FigureInfo()
         {
-            Planes.Add(new Plane()); // primary Y
-            Planes.Add(new Plane()); // secondary Y
+            var xPrimary = new LinearAxis(inverted: false);
+            var yPrimary = new LinearAxis(inverted: true);
+            var ySecondary = new LinearAxis(inverted: true);
+
+            Planes.Add(new Plane(xPrimary, yPrimary));
+            Planes.Add(new Plane(xPrimary, ySecondary));
         }
 
         public void Resize(float width, float height, float dataWidth, float dataHeight, float dataOffsetX, float dataOffsetY)
