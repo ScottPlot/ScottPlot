@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using ScottPlot.Mouse;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -99,8 +98,6 @@ namespace ScottPlotTests.Space
         [Test]
         public void Test_Space_MousePan()
         {
-            var panLowerRight = new MousePan() { X = 100, Y = 100, X2 = 105, Y2 = 150 };
-
             var fig = new ScottPlot.Space.FigureInfo();
             fig.Resize(600, 400, 380, 310, 150, 50);
             fig.SetLimits(-1, 1, -10, 10);
@@ -108,7 +105,7 @@ namespace ScottPlotTests.Space
             //TestTools.SaveBitmap(CrudePlot(fig), "1");
             PointF cornerOriginal = new PointF(fig.GetPixelX(-.8), fig.GetPixelY(8));
 
-            fig.ApplyMouseAction(panLowerRight);
+            fig.MousePan(10, 20);
             PointF cornerAfterPan = new PointF(fig.GetPixelX(-.8), fig.GetPixelY(8));
             //TestTools.SaveBitmap(CrudePlot(fig), "2");
 
@@ -119,8 +116,6 @@ namespace ScottPlotTests.Space
         [Test]
         public void Test_Space_MouseZoom()
         {
-            var zoomInXAndOutY = new MouseZoom() { X = 100, Y = 100, X2 = 110, Y2 = 150 };
-
             var fig = new ScottPlot.Space.FigureInfo();
             fig.Resize(600, 400, 380, 310, 150, 50);
             fig.SetLimits(-1, 1, -10, 10);
@@ -128,7 +123,7 @@ namespace ScottPlotTests.Space
             PointF cornerOriginal = new PointF(fig.GetPixelX(-.8), fig.GetPixelY(8));
             //TestTools.SaveBitmap(CrudePlot(fig), "1");
 
-            fig.ApplyMouseAction(zoomInXAndOutY);
+            fig.MouseZoom(5, 10);
             PointF cornerAfterZoom = new PointF(fig.GetPixelX(-.8), fig.GetPixelY(8));
             //TestTools.SaveBitmap(CrudePlot(fig), "2");
 
@@ -139,8 +134,6 @@ namespace ScottPlotTests.Space
         [Test]
         public void Test_Space_MousePanMultipleRemember()
         {
-            var moveLowerRight = new MousePan() { X = 100, Y = 100, X2 = 110, Y2 = 120 };
-
             var fig = new ScottPlot.Space.FigureInfo();
             fig.Resize(600, 400, 380, 310, 150, 50);
             fig.SetLimits(-1, 1, -10, 10);
@@ -148,11 +141,11 @@ namespace ScottPlotTests.Space
             PointF corner1 = new PointF(fig.GetPixelX(-.8), fig.GetPixelY(8));
             //TestTools.SaveBitmap(CrudePlot(fig), "1");
 
-            fig.ApplyMouseAction(moveLowerRight);
+            fig.MousePan(10, 20);
             PointF corner2 = new PointF(fig.GetPixelX(-.8), fig.GetPixelY(8));
             //TestTools.SaveBitmap(CrudePlot(fig), "2");
 
-            fig.ApplyMouseAction(moveLowerRight);
+            fig.MousePan(10, 20);
             PointF corner3 = new PointF(fig.GetPixelX(-.8), fig.GetPixelY(8));
             //TestTools.SaveBitmap(CrudePlot(fig), "3");
 
@@ -164,8 +157,6 @@ namespace ScottPlotTests.Space
         [Test]
         public void Test_Space_MousePanMultipleForget()
         {
-            var moveLowerRight = new MousePan() { X = 100, Y = 100, X2 = 110, Y2 = 120 };
-
             var fig = new ScottPlot.Space.FigureInfo();
             fig.Resize(600, 400, 380, 310, 150, 50);
             fig.SetLimits(-1, 1, -10, 10);
@@ -173,11 +164,11 @@ namespace ScottPlotTests.Space
             PointF corner1 = new PointF(fig.GetPixelX(-.8), fig.GetPixelY(8));
             //TestTools.SaveBitmap(CrudePlot(fig), "1");
 
-            fig.ApplyMouseAction(moveLowerRight, remember: false);
+            fig.MousePan(10, 20, remember: false);
             PointF corner2 = new PointF(fig.GetPixelX(-.8), fig.GetPixelY(8));
             //TestTools.SaveBitmap(CrudePlot(fig), "2");
 
-            fig.ApplyMouseAction(moveLowerRight, remember: false);
+            fig.MousePan(10, 20, remember: false);
             PointF corner3 = new PointF(fig.GetPixelX(-.8), fig.GetPixelY(8));
             //TestTools.SaveBitmap(CrudePlot(fig), "3");
 

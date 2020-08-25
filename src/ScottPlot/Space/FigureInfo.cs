@@ -75,20 +75,20 @@ namespace ScottPlot.Space
             }
         }
 
-        public void ApplyMouseAction(Mouse.MousePan mousePan, bool remember = true, int planeIndex = 0)
+        public void MousePan(float dX, float dY, bool remember = true, int planeIndex = 0)
         {
             RecallAxes();
-            Planes[planeIndex].X.PanPx(mousePan.DeltaX);
-            Planes[planeIndex].Y.PanPx(mousePan.DeltaY);
+            Planes[planeIndex].X.PanPx(dX);
+            Planes[planeIndex].Y.PanPx(dY);
             if (remember)
                 RememberAxes();
         }
 
-        public void ApplyMouseAction(Mouse.MouseZoom mouseZoom, bool remember = true, int planeIndex = 0)
+        public void MouseZoom(float dX, float dY, bool remember = true, int planeIndex = 0)
         {
             RecallAxes();
-            Planes[planeIndex].X.ZoomPx(mouseZoom.DeltaX);
-            Planes[planeIndex].Y.ZoomPx(mouseZoom.DeltaY);
+            Planes[planeIndex].X.ZoomPx(dX);
+            Planes[planeIndex].Y.ZoomPx(dY);
             if (remember)
                 RememberAxes();
         }

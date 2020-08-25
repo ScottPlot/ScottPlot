@@ -1,5 +1,5 @@
-﻿using ScottPlot.Mouse;
-using System;
+﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace FormsPlotSandbox
@@ -40,54 +40,55 @@ namespace FormsPlotSandbox
             Render();
         }
 
-        MousePan mousePan = null;
-        MouseZoom mouseZoom = null;
+        PointF mouseLeftDown = new PointF(-1, -1);
+        PointF mouseRightDown = new PointF(-1, -1);
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
-                mousePan = new MousePan() { X = e.X, Y = e.Y };
+                mouseLeftDown = e.Location;
             else if (e.Button == MouseButtons.Right)
-                mouseZoom = new MouseZoom() { X = e.X, Y = e.Y };
+                mouseRightDown = e.Location;
         }
 
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
-            if (mousePan != null)
+            if (mouseLeftDown.X > -1)
             {
-                mousePan.X2 = e.X;
-                mousePan.Y2 = e.Y;
-                fig.ApplyMouseAction(mousePan, remember: false);
+                float dX = e.X - mouseLeftDown.X;
+                float dY = e.Y - mouseLeftDown.Y;
+                fig.MousePan(dX, dY, remember: false);
                 Render();
             }
 
-            if (mouseZoom != null)
+            if (mouseRightDown.X > -1)
             {
-                mouseZoom.X2 = e.X;
-                mouseZoom.Y2 = e.Y;
-                fig.ApplyMouseAction(mouseZoom, remember: false);
+                float dX = e.X - mouseRightDown.X;
+                float dY = e.Y - mouseRightDown.Y;
+                fig.MouseZoom(dX, dY, remember: false);
                 Render();
             }
         }
 
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
-            if (mousePan != null)
+            if (mouseLeftDown.X > -1)
             {
-                mousePan.X2 = e.X;
-                mousePan.Y2 = e.Y;
-                fig.ApplyMouseAction(mousePan);
-                mousePan = null;
+                float dX = e.X - mouseLeftDown.X;
+                float dY = e.Y - mouseLeftDown.Y;
+                fig.MousePan(dX, dY);
                 Render(false);
             }
 
-            if (mouseZoom != null)
+            if (mouseRightDown.X > -1)
             {
-                mouseZoom.X2 = e.X;
-                mouseZoom.Y2 = e.Y;
-                fig.ApplyMouseAction(mouseZoom);
-                mouseZoom = null;
+                float dX = e.X - mouseRightDown.X;
+                float dY = e.Y - mouseRightDown.Y;
+                fig.MouseZoom(dX, dY);
                 Render(false);
             }
+
+            mouseLeftDown = new PointF(-1, -1);
+            mouseRightDown = new PointF(-1, -1);
         }
     }
 }
