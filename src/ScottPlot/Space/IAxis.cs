@@ -20,5 +20,8 @@ namespace ScottPlot.Space
         void Pan(float deltaPx);
         float GetPixel(double position);
         double GetPosition(float pixel);
+
+        void Remember();
+        void Recall();
     }
 }
