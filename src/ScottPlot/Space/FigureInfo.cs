@@ -54,6 +54,43 @@ namespace ScottPlot.Space
         {
             Planes[planeIndex].X.SetLimits(x1, x2);
             Planes[planeIndex].Y.SetLimits(y1, y2);
+            RememberAxes();
+        }
+
+        public void RememberAxes()
+        {
+            foreach (var plane in Planes)
+            {
+                plane.X.Remember();
+                plane.Y.Remember();
+            }
+        }
+
+        public void RecallAxes()
+        {
+            foreach (var plane in Planes)
+            {
+                plane.X.Recall();
+                plane.Y.Recall();
+            }
+        }
+
+        public void ApplyMouseAction(Mouse.MousePan mousePan, bool remember = true, int planeIndex = 0)
+        {
+            RecallAxes();
+            Planes[planeIndex].X.PanPx(mousePan.DeltaX);
+            Planes[planeIndex].Y.PanPx(mousePan.DeltaY);
+            if (remember)
+                RememberAxes();
+        }
+
+        public void ApplyMouseAction(Mouse.MouseZoom mouseZoom, bool remember = true, int planeIndex = 0)
+        {
+            RecallAxes();
+            Planes[planeIndex].X.ZoomPx(mouseZoom.DeltaX);
+            Planes[planeIndex].Y.ZoomPx(mouseZoom.DeltaY);
+            if (remember)
+                RememberAxes();
         }
     }
 }

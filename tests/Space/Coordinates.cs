@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using ScottPlot.Mouse;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -53,7 +54,8 @@ namespace ScottPlotTests.Space
             fig.Resize(600, 400, 380, 310, 150, 50);
             fig.SetLimits(-1, 1, -10, 10);
 
-            using (var bmp = new System.Drawing.Bitmap((int)fig.Width, (int)fig.Height))
+            // create a test image where the corners of the plot are are marked with black pixels
+            var bmp = new System.Drawing.Bitmap((int)fig.Width, (int)fig.Height);
             using (var gfx = Graphics.FromImage(bmp))
             using (var fillBrush = new SolidBrush(Color.FromArgb(50, Color.Black)))
             {
@@ -69,8 +71,120 @@ namespace ScottPlotTests.Space
                 // set the pixel used in previous tests
                 bmp.SetPixel((int)fig.GetPixelX(-.8), (int)fig.GetPixelY(8), Color.Black);
 
-                TestTools.SaveBitmap(bmp);
+                //TestTools.SaveBitmap(bmp);
             }
+        }
+
+        public System.Drawing.Bitmap CrudePlot(ScottPlot.Space.FigureInfo fig)
+        {
+            var bmp = new System.Drawing.Bitmap((int)fig.Width, (int)fig.Height);
+            using (var gfx = Graphics.FromImage(bmp))
+            using (var fillBrush = new SolidBrush(Color.FromArgb(50, Color.Black)))
+            using (var linePen = new Pen(Color.Blue, 3))
+            {
+                gfx.Clear(Color.White);
+                gfx.FillRectangle(fillBrush, fig.DataOffsetX, fig.DataOffsetY, fig.DataWidth, fig.DataHeight);
+
+                // draw a triangle across the whole figure area
+                List<PointF> points = new List<PointF>();
+                points.Add(new PointF(fig.GetPixelX(-.8), fig.GetPixelY(8)));
+                points.Add(new PointF(fig.GetPixelX(-.8), fig.GetPixelY(-8)));
+                points.Add(new PointF(fig.GetPixelX(.8), fig.GetPixelY(8)));
+                points.Add(new PointF(fig.GetPixelX(-.8), fig.GetPixelY(8)));
+                gfx.DrawLines(linePen, points.ToArray());
+            }
+            return bmp;
+        }
+
+        [Test]
+        public void Test_Space_MousePan()
+        {
+            var panLowerRight = new MousePan() { X = 100, Y = 100, X2 = 105, Y2 = 150 };
+
+            var fig = new ScottPlot.Space.FigureInfo();
+            fig.Resize(600, 400, 380, 310, 150, 50);
+            fig.SetLimits(-1, 1, -10, 10);
+
+            //TestTools.SaveBitmap(CrudePlot(fig), "1");
+            PointF cornerOriginal = new PointF(fig.GetPixelX(-.8), fig.GetPixelY(8));
+
+            fig.ApplyMouseAction(panLowerRight);
+            PointF cornerAfterPan = new PointF(fig.GetPixelX(-.8), fig.GetPixelY(8));
+            //TestTools.SaveBitmap(CrudePlot(fig), "2");
+
+            Assert.Greater(cornerAfterPan.X, cornerOriginal.X);
+            Assert.Greater(cornerAfterPan.Y, cornerOriginal.Y);
+        }
+
+        [Test]
+        public void Test_Space_MouseZoom()
+        {
+            var zoomInXAndOutY = new MouseZoom() { X = 100, Y = 100, X2 = 110, Y2 = 150 };
+
+            var fig = new ScottPlot.Space.FigureInfo();
+            fig.Resize(600, 400, 380, 310, 150, 50);
+            fig.SetLimits(-1, 1, -10, 10);
+
+            PointF cornerOriginal = new PointF(fig.GetPixelX(-.8), fig.GetPixelY(8));
+            //TestTools.SaveBitmap(CrudePlot(fig), "1");
+
+            fig.ApplyMouseAction(zoomInXAndOutY);
+            PointF cornerAfterZoom = new PointF(fig.GetPixelX(-.8), fig.GetPixelY(8));
+            //TestTools.SaveBitmap(CrudePlot(fig), "2");
+
+            Assert.Less(cornerAfterZoom.X, cornerOriginal.X);
+            Assert.Greater(cornerAfterZoom.Y, cornerOriginal.Y);
+        }
+
+        [Test]
+        public void Test_Space_MousePanMultipleRemember()
+        {
+            var moveLowerRight = new MousePan() { X = 100, Y = 100, X2 = 110, Y2 = 120 };
+
+            var fig = new ScottPlot.Space.FigureInfo();
+            fig.Resize(600, 400, 380, 310, 150, 50);
+            fig.SetLimits(-1, 1, -10, 10);
+
+            PointF corner1 = new PointF(fig.GetPixelX(-.8), fig.GetPixelY(8));
+            //TestTools.SaveBitmap(CrudePlot(fig), "1");
+
+            fig.ApplyMouseAction(moveLowerRight);
+            PointF corner2 = new PointF(fig.GetPixelX(-.8), fig.GetPixelY(8));
+            //TestTools.SaveBitmap(CrudePlot(fig), "2");
+
+            fig.ApplyMouseAction(moveLowerRight);
+            PointF corner3 = new PointF(fig.GetPixelX(-.8), fig.GetPixelY(8));
+            //TestTools.SaveBitmap(CrudePlot(fig), "3");
+
+            // each mouse action is applied and remembered (do this OnMouseUp)
+            Assert.Greater(corner3.X, corner2.X);
+            Assert.Greater(corner2.X, corner1.X);
+        }
+
+        [Test]
+        public void Test_Space_MousePanMultipleForget()
+        {
+            var moveLowerRight = new MousePan() { X = 100, Y = 100, X2 = 110, Y2 = 120 };
+
+            var fig = new ScottPlot.Space.FigureInfo();
+            fig.Resize(600, 400, 380, 310, 150, 50);
+            fig.SetLimits(-1, 1, -10, 10);
+
+            PointF corner1 = new PointF(fig.GetPixelX(-.8), fig.GetPixelY(8));
+            //TestTools.SaveBitmap(CrudePlot(fig), "1");
+
+            fig.ApplyMouseAction(moveLowerRight, remember: false);
+            PointF corner2 = new PointF(fig.GetPixelX(-.8), fig.GetPixelY(8));
+            //TestTools.SaveBitmap(CrudePlot(fig), "2");
+
+            fig.ApplyMouseAction(moveLowerRight, remember: false);
+            PointF corner3 = new PointF(fig.GetPixelX(-.8), fig.GetPixelY(8));
+            //TestTools.SaveBitmap(CrudePlot(fig), "3");
+
+            // each mouse action is applied but NOT remembered (do this OnMouseMove while panning or zooming)
+            Assert.AreEqual(corner3.X, corner2.X);
+            Assert.Greater(corner3.X, corner1.X);
+            Assert.Greater(corner2.X, corner1.X);
         }
     }
 }

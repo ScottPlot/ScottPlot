@@ -17,7 +17,12 @@ namespace ScottPlot.Space
 
         void Resize(float figureSize, float dataSize, float dataOffset);
         void SetLimits(double min, double max);
-        void Pan(float deltaPx);
+
+        void PanPx(float deltaPx);
+        void Zoom(double frac);
+        void ZoomTo(double frac, double target);
+        void ZoomPx(float deltaPx);
+
         float GetPixel(double position);
         double GetPosition(float pixel);
 

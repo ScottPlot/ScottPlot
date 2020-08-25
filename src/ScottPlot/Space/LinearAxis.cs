@@ -42,11 +42,13 @@ namespace ScottPlot.Space
         }
 
         public double Span { get; private set; } = double.NaN;
+        public double Center { get; private set; } = double.NaN;
         public double UnitsPerPx { get; private set; } = double.NaN;
         public double PxPerUnit { get; private set; } = double.NaN;
         private void Recalculate()
         {
             Span = Max - Min;
+            Center = (Max + Min) / 2;
             if (FigureSizePx > 0 && Span > 0)
             {
                 UnitsPerPx = Span / (DataSizePx - 1);
@@ -57,13 +59,6 @@ namespace ScottPlot.Space
                 UnitsPerPx = double.NaN;
                 PxPerUnit = double.NaN;
             }
-        }
-
-        public void Pan(float deltaPx)
-        {
-            double panUnits = deltaPx * UnitsPerPx;
-            Min += panUnits;
-            Max += panUnits;
         }
 
         public float GetPixel(double position)
@@ -98,6 +93,54 @@ namespace ScottPlot.Space
                 double unitsFromMin = pxFromMin * UnitsPerPx;
                 return Min + unitsFromMin;
             }
+        }
+
+        public void PanPx(float deltaPx)
+        {
+            double panUnits = deltaPx * UnitsPerPx;
+            if (Inverted)
+            {
+                Min += panUnits;
+                Max += panUnits;
+            }
+            else
+            {
+                Min -= panUnits;
+                Max -= panUnits;
+            }
+            Recalculate();
+        }
+
+        public void Zoom(double frac)
+        {
+            double pad = Span / 2;
+            Min = Center - pad / frac;
+            Max = Center + pad / frac;
+            Recalculate();
+        }
+
+        public void ZoomTo(double frac, double target)
+        {
+            double padLeft = target - Min;
+            double padRight = Max - target;
+            Min = target - padLeft / frac;
+            Max = target + padRight / frac;
+            Recalculate();
+        }
+
+        public void ZoomPx(float deltaPx)
+        {
+            if (Inverted)
+                deltaPx *= -1;
+            double deltaUnits = deltaPx * UnitsPerPx;
+            double deltaFrac = deltaUnits / (Math.Abs(deltaUnits) + Span);
+            double zoomFrac = Math.Pow(10, deltaFrac);
+            Zoom(zoomFrac);
+        }
+
+        public void ZoomPx(float deltaPx, float targetPx)
+        {
+            throw new NotImplementedException();
         }
     }
 }
