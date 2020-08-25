@@ -50,47 +50,39 @@ namespace ScottPlot.Space
             }
         }
 
+        public AxisLimits GetLimits(int planeIndex = 0)
+        {
+            return new AxisLimits()
+            {
+                X1 = Planes[planeIndex].X.Min,
+                X2 = Planes[planeIndex].X.Max,
+                Y1 = Planes[planeIndex].Y.Min,
+                Y2 = Planes[planeIndex].Y.Max,
+            };
+        }
+
+        public void SetLimits(AxisLimits limits, int planeIndex = 0)
+        {
+            Planes[planeIndex].X.SetLimits(limits.X1, limits.X2);
+            Planes[planeIndex].Y.SetLimits(limits.Y1, limits.Y2);
+        }
+
         public void SetLimits(double x1, double x2, double y1, double y2, int planeIndex = 0)
         {
             Planes[planeIndex].X.SetLimits(x1, x2);
             Planes[planeIndex].Y.SetLimits(y1, y2);
-            RememberAxes();
         }
 
-        public void RememberAxes()
+        public void MousePan(float dX, float dY, int planeIndex = 0)
         {
-            foreach (var plane in Planes)
-            {
-                plane.X.Remember();
-                plane.Y.Remember();
-            }
-        }
-
-        public void RecallAxes()
-        {
-            foreach (var plane in Planes)
-            {
-                plane.X.Recall();
-                plane.Y.Recall();
-            }
-        }
-
-        public void MousePan(float dX, float dY, bool remember = true, int planeIndex = 0)
-        {
-            RecallAxes();
             Planes[planeIndex].X.PanPx(dX);
             Planes[planeIndex].Y.PanPx(dY);
-            if (remember)
-                RememberAxes();
         }
 
-        public void MouseZoom(float dX, float dY, bool remember = true, int planeIndex = 0)
+        public void MouseZoom(float dX, float dY, int planeIndex = 0)
         {
-            RecallAxes();
             Planes[planeIndex].X.ZoomPx(dX);
             Planes[planeIndex].Y.ZoomPx(dY);
-            if (remember)
-                RememberAxes();
         }
     }
 }
