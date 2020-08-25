@@ -16,10 +16,6 @@ namespace ScottPlot.Space
         public double Min { get; private set; }
         public double Max { get; private set; }
 
-        private double OldMin, OldMax;
-        public void Remember() => (OldMin, OldMax) = (Min, Max);
-        public void Recall() => SetLimits(OldMin, OldMax);
-
         private readonly bool Inverted;
         public LinearAxis(bool inverted = false)
         {
