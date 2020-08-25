@@ -50,6 +50,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FormRenderTest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormRenderTest.Designer.cs">
+      <DependentUpon>FormRenderTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormColormapGenerator.cs">
       <SubType>Form</SubType>
     </Compile>
