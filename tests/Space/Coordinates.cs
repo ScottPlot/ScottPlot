@@ -161,14 +161,17 @@ namespace ScottPlotTests.Space
             fig.Resize(600, 400, 380, 310, 150, 50);
             fig.SetLimits(-1, 1, -10, 10);
 
+            var originalLimits = fig.GetLimits();
+
             PointF corner1 = new PointF(fig.GetPixelX(-.8), fig.GetPixelY(8));
             //TestTools.SaveBitmap(CrudePlot(fig), "1");
 
-            fig.MousePan(10, 20, remember: false);
+            fig.MousePan(10, 20);
             PointF corner2 = new PointF(fig.GetPixelX(-.8), fig.GetPixelY(8));
             //TestTools.SaveBitmap(CrudePlot(fig), "2");
 
-            fig.MousePan(10, 20, remember: false);
+            fig.SetLimits(originalLimits);
+            fig.MousePan(10, 20);
             PointF corner3 = new PointF(fig.GetPixelX(-.8), fig.GetPixelY(8));
             //TestTools.SaveBitmap(CrudePlot(fig), "3");
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot.Space;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -6,7 +7,7 @@ namespace FormsPlotSandbox
 {
     public partial class FormRenderTest : Form
     {
-        readonly ScottPlot.Space.FigureInfo fig = new ScottPlot.Space.FigureInfo();
+        readonly FigureInfo fig = new FigureInfo();
 
         public FormRenderTest()
         {
@@ -23,7 +24,7 @@ namespace FormsPlotSandbox
 
             busyRendering = true;
             pictureBox1.Image?.Dispose();
-            pictureBox1.Image = ScottPlot.Space.FakePlot.Triangle(fig);
+            pictureBox1.Image = FakePlot.Triangle(fig);
             Application.DoEvents();
             busyRendering = false;
         }
@@ -42,8 +43,10 @@ namespace FormsPlotSandbox
 
         PointF mouseLeftDown = new PointF(-1, -1);
         PointF mouseRightDown = new PointF(-1, -1);
+        AxisLimits limitsBeforeDrag;
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
+            limitsBeforeDrag = fig.GetLimits();
             if (e.Button == MouseButtons.Left)
                 mouseLeftDown = e.Location;
             else if (e.Button == MouseButtons.Right)
@@ -56,7 +59,8 @@ namespace FormsPlotSandbox
             {
                 float dX = e.X - mouseLeftDown.X;
                 float dY = e.Y - mouseLeftDown.Y;
-                fig.MousePan(dX, dY, remember: false);
+                fig.SetLimits(limitsBeforeDrag);
+                fig.MousePan(dX, dY);
                 Render();
             }
 
@@ -64,7 +68,8 @@ namespace FormsPlotSandbox
             {
                 float dX = e.X - mouseRightDown.X;
                 float dY = e.Y - mouseRightDown.Y;
-                fig.MouseZoom(dX, dY, remember: false);
+                fig.SetLimits(limitsBeforeDrag);
+                fig.MouseZoom(dX, dY);
                 Render();
             }
         }
@@ -75,6 +80,7 @@ namespace FormsPlotSandbox
             {
                 float dX = e.X - mouseLeftDown.X;
                 float dY = e.Y - mouseLeftDown.Y;
+                fig.SetLimits(limitsBeforeDrag);
                 fig.MousePan(dX, dY);
                 Render(false);
             }
@@ -83,6 +89,7 @@ namespace FormsPlotSandbox
             {
                 float dX = e.X - mouseRightDown.X;
                 float dY = e.Y - mouseRightDown.Y;
+                fig.SetLimits(limitsBeforeDrag);
                 fig.MouseZoom(dX, dY);
                 Render(false);
             }
