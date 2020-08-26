@@ -11,6 +11,12 @@ namespace ScottPlot.Space
         public static Bitmap Triangle(FigureInfo fig)
         {
             var bmp = new Bitmap((int)fig.Width, (int)fig.Height);
+            Triangle(bmp, fig);
+            return bmp;
+        }
+
+        public static Bitmap Triangle(Bitmap bmp, FigureInfo fig)
+        {
             using (var gfx = Graphics.FromImage(bmp))
             using (var fillBrush = new SolidBrush(Color.FromArgb(50, Color.Black)))
             using (var linePen = new Pen(Color.Blue, 3))

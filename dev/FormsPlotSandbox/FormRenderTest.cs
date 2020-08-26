@@ -17,19 +17,22 @@ namespace FormsPlotSandbox
         }
 
         private bool busyRendering = false;
-        private void Render(bool skipIfBusy = true)
+        public void Render(bool skipIfBusy = true)
         {
             if (busyRendering && skipIfBusy)
                 return;
 
+            if (pictureBox1.Image is null || pictureBox1.Image.Width != fig.Width || pictureBox1.Image.Height != fig.Height)
+                Resize();
+
             busyRendering = true;
-            pictureBox1.Image?.Dispose();
-            pictureBox1.Image = FakePlot.Triangle(fig);
+            pictureBox1.Image = FakePlot.Triangle((Bitmap)pictureBox1.Image, fig);
             Application.DoEvents();
             busyRendering = false;
         }
 
-        private void pictureBox1_SizeChanged(object sender, EventArgs e)
+        private void pictureBox1_SizeChanged(object sender, EventArgs e) => Resize();
+        private void Resize()
         {
             fig.Resize(
                 width: pictureBox1.Width,
@@ -38,6 +41,9 @@ namespace FormsPlotSandbox
                 dataHeight: pictureBox1.Height - 50,
                 dataOffsetX: 25,
                 dataOffsetY: 25);
+
+            pictureBox1.Image?.Dispose();
+            pictureBox1.Image = new Bitmap(pictureBox1.Width, pictureBox1.Height, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
             Render();
         }
 
