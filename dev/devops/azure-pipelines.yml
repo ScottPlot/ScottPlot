@@ -87,14 +87,14 @@ steps:
   condition: eq(variables['purpose'], 'library')
   inputs:
     command: 'build'
-    projects: 'tests/ScottPlotTests.csproj'
+    projects: 'src/ScottPlotTests/ScottPlotTests.csproj'
 
 - task: DotNetCoreCLI@2
   displayName: 'Run Tests'
   condition: eq(variables['purpose'], 'library')
   inputs:
     command: test
-    projects: 'tests/ScottPlotTests.csproj'
+    projects: 'src/ScottPlotTests/ScottPlotTests.csproj'
 
 ### REBUILD FULL SOLUTION
     
