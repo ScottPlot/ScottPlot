@@ -9,7 +9,8 @@ namespace ScottPlot.Tests.Cookbook
 {
     class Chef
     {
-        [Test]
+        //TODO: enable cookbook after migration to 4.1
+        //[Test]
         public void Test_Cookbook_Generator()
         {
             // don't run test on MacOS
