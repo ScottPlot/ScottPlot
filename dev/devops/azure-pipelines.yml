@@ -52,7 +52,7 @@ steps:
   inputs:
     command: 'custom'
     custom: 'format'
-    arguments: '-w src/ScottPlotV4.sln --dry-run --check --verbosity diagnostic'
+    arguments: '-w src/4.0/ScottPlotV-4.0.sln --dry-run --check --verbosity diagnostic'
 
 ### INSTALL NUGET AND RESTORE PACKAGES
 
@@ -64,7 +64,7 @@ steps:
   displayName: 'Restore packages'
   condition: or(eq(variables['purpose'], 'library'), eq(variables['purpose'], 'solution'))
   inputs:
-    restoreSolution: 'src/ScottPlotV4.sln'
+    restoreSolution: 'src/4.0/ScottPlotV-4.0.sln'
 
 ### BUILD THE CORE SCOTTPLOT LIBRARY AND DEMO AND RUN TESTS
 
@@ -73,14 +73,14 @@ steps:
   condition: eq(variables['purpose'], 'library')
   inputs:
     command: 'build'
-    projects: 'src/ScottPlot/ScottPlot.csproj'
+    projects: 'src/4.0/ScottPlot/ScottPlot.csproj'
 
 - task: DotNetCoreCLI@2
   displayName: 'Build ScottPlot.Demo'
   condition: eq(variables['purpose'], 'library')
   inputs:
     command: 'build'
-    projects: 'src/ScottPlot.Demo/ScottPlot.Demo.csproj'
+    projects: 'src/4.0/ScottPlot.Demo/ScottPlot.Demo.csproj'
 
 - task: DotNetCoreCLI@2
   displayName: 'Build Tests'
@@ -102,5 +102,5 @@ steps:
   displayName: 'Build Release (Windows)'
   condition: eq(variables['purpose'], 'solution')
   inputs:
-    solution: 'src/ScottPlotV4.sln'
+    solution: 'src/4.0/ScottPlotV-4.0.sln'
     configuration: 'release'
