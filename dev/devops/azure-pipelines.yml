@@ -1,106 +1,31 @@
 trigger:
 - master
 
-strategy:
-  matrix:
-
-    'Check Code Format':
-      purpose: 'autoformat' # break build it autoformatter is not run
-      imageName: 'ubuntu-latest'
-
-    'Build and Test on MacOS':
-      purpose: 'library' # build and test ScottPlot and ScottPlot.Demo
-      imageName: 'macOS-latest'
-
-    'Build and Test on Linux':
-      purpose: 'library' # build and test ScottPlot and ScottPlot.Demo
-      imageName: 'ubuntu-latest'
-
-    'Build and Test on Windows':
-      purpose: 'library' # build and test ScottPlot and ScottPlot.Demo
-      imageName: 'windows-latest'
-
-    'Rebuild Solution on Windows':
-      purpose: 'solution' # ensure the full solution builds on Windows
-      imageName: 'windows-latest'
-
 pool:
-  vmImage: $(imageName)
+  vmImage: 'ubuntu-latest'
+
+variables:
+  solution: 'src/4.1/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
 
 steps:
-
-### FAIL THE BUILD IF THE AUTOFORMATTER WAS NOT RUN
-
-- task: UseDotNet@2
-  displayName: 'Acquire .NET Core 3'
-  condition: eq(variables['purpose'], 'autoformat')
-  inputs:
-    packageType: 'sdk'
-    version: '3.x'
-
-- task: DotNetCoreCLI@2
-  displayName: 'Install dotnet-format'
-  condition: eq(variables['purpose'], 'autoformat')
-  inputs:
-    command: 'custom'
-    custom: 'tool'
-    arguments: 'update -g dotnet-format'
-
-- task: DotNetCoreCLI@2
-  displayName: 'Check Formatting'
-  condition: eq(variables['purpose'], 'autoformat')
-  inputs:
-    command: 'custom'
-    custom: 'format'
-    arguments: '-w src/4.0/ScottPlotV-4.0.sln --dry-run --check --verbosity diagnostic'
-
-### INSTALL NUGET AND RESTORE PACKAGES
-
 - task: NuGetToolInstaller@1
   displayName: 'Install NuGet'
-  condition: or(eq(variables['purpose'], 'library'), eq(variables['purpose'], 'solution'))
-    
+
 - task: NuGetCommand@2
-  displayName: 'Restore packages'
-  condition: or(eq(variables['purpose'], 'library'), eq(variables['purpose'], 'solution'))
+  displayName: 'Restore Solution'
   inputs:
-    restoreSolution: 'src/4.0/ScottPlotV-4.0.sln'
-
-### BUILD THE CORE SCOTTPLOT LIBRARY AND DEMO AND RUN TESTS
+    restoreSolution: '$(solution)'
 
 - task: DotNetCoreCLI@2
-  displayName: 'Build ScottPlot'
-  condition: eq(variables['purpose'], 'library')
+  displayName: 'Build Solution'
   inputs:
     command: 'build'
-    projects: 'src/4.0/ScottPlot/ScottPlot.csproj'
-
-- task: DotNetCoreCLI@2
-  displayName: 'Build ScottPlot.Demo'
-  condition: eq(variables['purpose'], 'library')
-  inputs:
-    command: 'build'
-    projects: 'src/4.0/ScottPlot.Demo/ScottPlot.Demo.csproj'
-
-- task: DotNetCoreCLI@2
-  displayName: 'Build Tests'
-  condition: eq(variables['purpose'], 'library')
-  inputs:
-    command: 'build'
-    projects: 'src/ScottPlotTests/ScottPlotTests.csproj'
+    projects: '$(solution)'
 
 - task: DotNetCoreCLI@2
   displayName: 'Run Tests'
-  condition: eq(variables['purpose'], 'library')
   inputs:
     command: test
-    projects: 'src/ScottPlotTests/ScottPlotTests.csproj'
-
-### REBUILD FULL SOLUTION
-    
-- task: VSBuild@1
-  displayName: 'Build Release (Windows)'
-  condition: eq(variables['purpose'], 'solution')
-  inputs:
-    solution: 'src/4.0/ScottPlotV-4.0.sln'
-    configuration: 'release'
+    projects: '$(solution)'
