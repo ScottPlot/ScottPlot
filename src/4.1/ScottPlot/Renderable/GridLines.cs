@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 
@@ -7,9 +8,11 @@ namespace ScottPlot.Renderable
 {
     public class GridLines : IRenderable
     {
-        public void Render(PlotInfo info)
+        public PlotLayer Layer => PlotLayer.BelowData;
+
+        public void Render(Bitmap bmp, PlotInfo info)
         {
-            throw new NotImplementedException();
+            Debug.WriteLine("Rendering grid lines");
         }
 
         /*

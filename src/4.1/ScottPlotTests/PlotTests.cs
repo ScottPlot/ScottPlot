@@ -25,5 +25,17 @@ namespace ScottPlotTests
         {
             Assert.Throws<ArgumentException>(() => { new ScottPlot.Plot(width, height); });
         }
+
+        [Test]
+        public void Test_Plot_Render()
+        {
+            var plt = new ScottPlot.Plot();
+
+            double[] xs = { 1, 2, 3 };
+            double[] ys = { 1, 4, 9 };
+            plt.PlotScatter(xs, ys);
+
+            plt.Render();
+        }
     }
 }

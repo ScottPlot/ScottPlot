@@ -1,12 +1,16 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Drawing;
 
 namespace ScottPlot.Renderable
 {
     public class Legend : IRenderable
     {
-        public void Render(PlotInfo info)
+        public PlotLayer Layer => PlotLayer.AboveData;
+
+        public void Render(Bitmap bmp, PlotInfo info)
         {
-            throw new NotImplementedException();
+            Debug.WriteLine("Rendering Legend");
         }
 
         /*

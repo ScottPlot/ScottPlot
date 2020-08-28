@@ -2,6 +2,7 @@
 {
     public interface IRenderable
     {
-        void Render(PlotInfo info);
+        PlotLayer Layer { get; }
+        void Render(System.Drawing.Bitmap bmp, PlotInfo info);
     }
 }

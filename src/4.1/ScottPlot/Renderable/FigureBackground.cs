@@ -1,13 +1,15 @@
-﻿using System.Drawing;
+﻿using System.Diagnostics;
+using System.Drawing;
 
 namespace ScottPlot.Renderable
 {
     public class FigureBackground : IRenderable
     {
-        public Color Color { get; set; } = Color.White;
+        public PlotLayer Layer => PlotLayer.BelowData;
 
-        public void Render(PlotInfo info)
+        public void Render(Bitmap bmp, PlotInfo info)
         {
+            Debug.WriteLine("Rendering figure background");
         }
     }
 }

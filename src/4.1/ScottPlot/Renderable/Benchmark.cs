@@ -5,9 +5,11 @@ namespace ScottPlot.Renderable
 {
     public class Benchmark : IRenderable
     {
-        public void Render(PlotInfo settings)
-        {
+        public PlotLayer Layer => PlotLayer.AboveData;
 
+        public void Render(Bitmap bmp, PlotInfo info)
+        {
+            Debug.WriteLine("Rendering benchmark");
         }
         /*
         private Stopwatch stopwatch = new Stopwatch();
