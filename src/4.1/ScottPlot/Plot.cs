@@ -1,5 +1,6 @@
 ﻿using ScottPlot.Plottable;
 using ScottPlot.Renderable;
+using ScottPlot.Space;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -33,7 +34,7 @@ namespace ScottPlot
                 throw new ArgumentException("Width and height must be greater than 1");
 
             // TODO: determine these values by measuring axis labels and tick labels
-            float dataPadL = 20;
+            float dataPadL = 50;
             float dataPadR = 10;
             float dataPadB = 20;
             float dataPadT = 30;
@@ -50,15 +51,28 @@ namespace ScottPlot
             return bmp;
         }
 
+        public void AxisAuto()
+        {
+            var autoAxisLimits = new AxisLimits();
+            foreach (IPlottable plottable in renderables.Where(x => x is IPlottable))
+                autoAxisLimits.Expand(plottable.Limits);
+            Console.WriteLine(autoAxisLimits);
+            info.SetLimits(autoAxisLimits);
+        }
+
         public Bitmap Render(Bitmap bmp)
         {
-            ResizeLayout(bmp.Width, bmp.Height);
+            if (info.GetLimits().IsValid == false)
+                AxisAuto();
+
+            if (bmp.Width != info.Width || bmp.Height != info.Height)
+                ResizeLayout(bmp.Width, bmp.Height);
 
             foreach (var renderable in renderables.Where(x => x.Layer == PlotLayer.BelowData))
                 renderable.Render(bmp, info);
 
-            foreach (var renderable in renderables.Where(x => x.Layer == PlotLayer.Data))
-                renderable.Render(bmp, info);
+            foreach (var plottable in renderables.Where(x => x.Layer == PlotLayer.Data))
+                plottable.Render(bmp, info);
 
             foreach (var renderable in renderables.Where(x => x.Layer == PlotLayer.AboveData))
                 renderable.Render(bmp, info);

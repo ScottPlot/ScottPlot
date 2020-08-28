@@ -5,10 +5,15 @@ namespace ScottPlot.Renderable
 {
     public class Benchmark : IRenderable
     {
+        public bool Visible { get; set; } = true;
+        public bool AntiAlias { get; set; } = true;
         public PlotLayer Layer => PlotLayer.AboveData;
 
         public void Render(Bitmap bmp, PlotInfo info)
         {
+            if (Visible == false)
+                return;
+
             Debug.WriteLine("Rendering benchmark");
         }
         /*

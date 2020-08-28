@@ -1,5 +1,7 @@
 using NUnit.Framework;
 using System;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace ScottPlotTests
 {
@@ -31,11 +33,12 @@ namespace ScottPlotTests
         {
             var plt = new ScottPlot.Plot();
 
-            double[] xs = { 1, 2, 3 };
-            double[] ys = { 1, 4, 9 };
+            double[] xs = { 1, 2, 3, 4, 5 };
+            double[] ys = { 1, 4, 9, 16, 25 };
             plt.PlotScatter(xs, ys);
 
-            plt.Render();
+            Bitmap bmp = plt.Render();
+            bmp.Save("render.bmp");
         }
     }
 }
