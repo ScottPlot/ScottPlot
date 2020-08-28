@@ -1,31 +1,34 @@
 trigger:
-- master
+  - master
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: "ubuntu-latest"
+  #TODO: later add a matrix for full build
+  #vmImage: 'windows-latest'
 
 variables:
-  solution: 'src/4.1/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
+  solution: "src/4.1/*.sln"
+  projTest: "src/4.1/ScottPlotTests/ScottPlotTests.csproj"
+  buildPlatform: "Any CPU"
+  buildConfiguration: "Release"
 
 steps:
-- task: NuGetToolInstaller@1
-  displayName: 'Install NuGet'
+  - task: NuGetToolInstaller@1
+    displayName: "Install NuGet"
 
-- task: NuGetCommand@2
-  displayName: 'Restore Solution'
-  inputs:
-    restoreSolution: '$(solution)'
+  - task: NuGetCommand@2
+    displayName: "Restore Test Packages"
+    inputs:
+      restoreSolution: "$(solution)"
 
-- task: DotNetCoreCLI@2
-  displayName: 'Build Solution'
-  inputs:
-    command: 'build'
-    projects: '$(solution)'
+  - task: DotNetCoreCLI@2
+    displayName: "Build Tests"
+    inputs:
+      command: "build"
+      projects: "$(projTest)"
 
-- task: DotNetCoreCLI@2
-  displayName: 'Run Tests'
-  inputs:
-    command: test
-    projects: '$(solution)'
+  - task: DotNetCoreCLI@2
+    displayName: "Run Tests"
+    inputs:
+      command: test
+      projects: "$(projTest)"
