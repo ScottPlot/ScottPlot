@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using ScottPlot.Drawing;
+using System;
+using System.Diagnostics;
 using System.Drawing;
 
 namespace ScottPlot.Renderable
@@ -9,62 +11,50 @@ namespace ScottPlot.Renderable
         public bool AntiAlias { get; set; } = true;
         public PlotLayer Layer => PlotLayer.AboveData;
 
+        public Color FillColor = Color.FromArgb(150, Color.LightYellow);
+        public Color FontColor = Color.Black;
+        public Color OutlineColor = Color.Black;
+
+        private Stopwatch stopwatch = new Stopwatch();
+        public void Start()
+        {
+            Text = "running...";
+            stopwatch.Restart();
+        }
+
+        public void Stop()
+        {
+            stopwatch.Stop();
+            Text = string.Format("Rendered in {0:0.000} ms ({1:0.00 Hz})", MSec, Hz);
+        }
+
+        public double MSec { get { return stopwatch.ElapsedTicks * 1000.0 / Stopwatch.Frequency; } }
+        public double Hz { get { return (MSec > 0) ? 1000.0 / MSec : 0; } }
+        public string Text { get; private set; } = "benchmark not yet run...";
+
         public void Render(Bitmap bmp, PlotInfo info)
         {
             if (Visible == false)
                 return;
 
-            Debug.WriteLine("Rendering benchmark");
-        }
-        /*
-        private Stopwatch stopwatch = new Stopwatch();
-        public double msec { get { return stopwatch.ElapsedTicks * 1000.0 / Stopwatch.Frequency; } }
-        public double hz { get { return (msec > 0) ? 1000.0 / msec : 0; } }
-        public string text { get; private set; }
-
-        public string FontName = Fonts.GetMonospaceFontName();
-        public float FontSize = 10;
-        public Color FillColor = Color.FromArgb(150, Color.LightYellow);
-        public Color FontColor = Color.Black;
-
-        public bool Visible = false;
-
-        public void Start() => stopwatch.Restart();
-        public void Stop() => stopwatch.Stop();
-        public override string ToString() => text;
-
-        public void UpdateMessage(int plottableCount, int pointCount)
-        {
-            text = "";
-            text += string.Format("Full render of {0:n0} objects ({1:n0} points)", plottableCount, pointCount);
-            text += string.Format(" took {0:0.000} ms ({1:0.00 Hz})", msec, hz);
-            if (plottableCount == 1)
-                text = text.Replace("objects", "object");
-        }
-
-        public void Render(PlotInfo settings)
-        {
-            if (Visible == false)
-                return;
-
-            using (var font = new Font(FontName, FontSize, FontStyle.Regular, GraphicsUnit.Pixel))
+            Stop();
+            using (Graphics gfx = Graphics.FromImage(bmp))
+            using (var font = SdFont.Monospace(11))
             using (var fontBrush = new SolidBrush(FontColor))
             using (var fillBrush = new SolidBrush(FillColor))
-            using (var outline = new Pen(FontColor))
+            using (var outline = new Pen(OutlineColor))
             {
                 int debugPadding = 3;
-                SizeF txtSize = settings.gfxData.MeasureString(text, font);
+                SizeF txtSize = gfx.MeasureString(Text, font);
                 PointF txtLoc = new PointF(
-                    x: settings.dataSize.Width + settings.dataOrigin.X - debugPadding - txtSize.Width,
-                    y: settings.dataSize.Height + settings.dataOrigin.Y - debugPadding - txtSize.Height);
+                x: info.DataOffsetX + info.DataWidth - debugPadding - txtSize.Width,
+                y: info.DataOffsetY + info.DataHeight - debugPadding - txtSize.Height);
                 RectangleF textRect = new RectangleF(txtLoc, txtSize);
 
-                settings.gfxFigure.FillRectangle(fillBrush, textRect);
-                settings.gfxFigure.DrawRectangle(outline, Rectangle.Round(textRect));
-                settings.gfxFigure.DrawString(text, font, fontBrush, txtLoc);
-                
+                gfx.FillRectangle(fillBrush, textRect);
+                gfx.DrawRectangle(outline, Rectangle.Round(textRect));
+                gfx.DrawString(Text, font, fontBrush, txtLoc);
             }
         }
-        */
     }
 }

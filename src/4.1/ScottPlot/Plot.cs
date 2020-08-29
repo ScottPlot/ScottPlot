@@ -28,6 +28,13 @@ namespace ScottPlot
             };
         }
 
+        public PlotInfo GetInfo(bool warn = true)
+        {
+            if (warn)
+                Console.WriteLine("Interacting with the Info module is for developers only");
+            return info;
+        }
+
         private void ResizeLayout(float width, float height)
         {
             if ((width < 1) || (height < 1))
@@ -62,12 +69,19 @@ namespace ScottPlot
 
         public Bitmap Render(Bitmap bmp)
         {
-            if (info.GetLimits().IsValid == false)
-                AxisAuto();
+            // reset benchmarks
+            foreach (Benchmark bench in renderables.Where(x => x is Benchmark))
+                bench.Start();
 
+            // update layout size (and units per pixel) if needed
             if (bmp.Width != info.Width || bmp.Height != info.Height)
                 ResizeLayout(bmp.Width, bmp.Height);
 
+            // ensure our axes are valid
+            if (info.GetLimits().IsValid == false)
+                AxisAuto();
+
+            // render each of the layers
             foreach (var renderable in renderables.Where(x => x.Layer == PlotLayer.BelowData))
                 renderable.Render(bmp, info);
 
