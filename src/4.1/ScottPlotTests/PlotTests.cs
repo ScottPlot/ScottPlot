@@ -7,16 +7,6 @@ namespace ScottPlotTests
 {
     public class PlotTests
     {
-        [TestCase(1, 1)]
-        [TestCase(640, 480)]
-        [TestCase(7680, 4320)]
-        public void Test_Plot_InstantiatedDimensionsAreRetained(int width, int height)
-        {
-            var plt = new ScottPlot.Plot(width, height);
-            Assert.AreEqual(width, plt.Width);
-            Assert.AreEqual(height, plt.Height);
-        }
-
         [TestCase(0, 1)]
         [TestCase(1, 0)]
         [TestCase(0, 0)]
@@ -25,7 +15,8 @@ namespace ScottPlotTests
         [TestCase(-1, -1)]
         public void Test_Plot_InvalidDimensionsThrow(int width, int height)
         {
-            Assert.Throws<ArgumentException>(() => { new ScottPlot.Plot(width, height); });
+            var plt = new ScottPlot.Plot();
+            Assert.Throws<ArgumentException>(() => { plt.Render(width, height); });
         }
 
         [Test]
@@ -37,7 +28,7 @@ namespace ScottPlotTests
             double[] ys = { 1, 4, 9, 16, 25 };
             plt.PlotScatter(xs, ys);
 
-            Bitmap bmp = plt.Render();
+            Bitmap bmp = plt.Render(600, 400);
             bmp.Save("render.bmp");
         }
     }

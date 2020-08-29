@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ScottPlot.Renderer;
+using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -35,7 +37,10 @@ namespace ScottPlot.WinForms
                 pictureBox1.Image = new Bitmap(pictureBox1.Width, pictureBox1.Height, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
             }
 
-            plt.Render((Bitmap)pictureBox1.Image);
+            using(var renderer = new SystemDrawingRenderer((Bitmap)pictureBox1.Image))
+            {
+                plt.Render(renderer);
+            }
             pictureBox1.Invalidate(); // May need to "Application.DoEvents()" in .NET Framework
         }
 

@@ -1,5 +1,5 @@
-﻿using System.Diagnostics;
-using System.Drawing;
+﻿using ScottPlot.Renderer;
+using System.Diagnostics;
 
 namespace ScottPlot.Renderable
 {
@@ -9,18 +9,18 @@ namespace ScottPlot.Renderable
         public bool AntiAlias { get; set; } = true;
         public PlotLayer Layer => PlotLayer.BelowData;
 
-        public Color Color = Color.LightBlue;
+        public Color Color = new Color(230, 230, 230);
 
-        public void Render(Bitmap bmp, PlotInfo info)
+        public void Render(IRenderer renderer, PlotInfo info)
         {
             if (Visible == false)
                 return;
 
-            using (Graphics gfx = Graphics.FromImage(bmp))
-            {
-                gfx.SetClip(new RectangleF(info.DataOffsetX, info.DataOffsetY, info.DataWidth, info.DataHeight));
-                gfx.Clear(Color);
-            }
+            Point clipPoint = new Point(info.DataOffsetX, info.DataOffsetY);
+            Size clipSize = new Size(info.DataWidth, info.DataHeight);
+            renderer.Clip(clipPoint, clipSize);
+            renderer.Clear(Color);
+            renderer.ClipReset();
         }
     }
 }

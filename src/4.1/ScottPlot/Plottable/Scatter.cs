@@ -1,9 +1,9 @@
 ﻿using ScottPlot.Renderable;
+using ScottPlot.Renderer;
 using ScottPlot.Space;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.Text;
 
 namespace ScottPlot.Plottable
@@ -20,28 +20,29 @@ namespace ScottPlot.Plottable
         public int PointCount { get { return Xs is null ? 0 : Xs.Length; } }
         public AxisLimits Limits { get; private set; } = new AxisLimits();
 
-        public void Render(Bitmap bmp, PlotInfo info)
+        public Color Color = Colors.Magenta;
+        public float LineWidth = 5;
+
+        public void Render(IRenderer renderer, PlotInfo info)
         {
             if (Visible == false)
                 return;
 
-            using (Graphics gfx = Graphics.FromImage(bmp))
-            using (Pen pen = new Pen(Color.Magenta, 5))
+            Point clipPoint = new Point(info.DataOffsetX, info.DataOffsetY);
+            Size clipSize = new Size(info.DataWidth, info.DataHeight);
+            renderer.Clip(clipPoint, clipSize);
+
+            renderer.AntiAlias(AntiAlias);
+
+            System.Drawing.PointF[] points = new System.Drawing.PointF[Xs.Length];
+            for (int i = 0; i < Xs.Length; i++)
             {
-                gfx.SetClip(new RectangleF(info.DataOffsetX, info.DataOffsetY, info.DataWidth, info.DataHeight));
-
-                if (AntiAlias)
-                {
-                    gfx.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                    gfx.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-                }
-
-                PointF[] points = new PointF[Xs.Length];
-                for (int i = 0; i < Xs.Length; i++)
-                    points[i] = new PointF(info.GetPixelX(Xs[i]), info.GetPixelY(Ys[i]));
-
-                gfx.DrawLines(pen, points);
+                points[i] = new System.Drawing.PointF(info.GetPixelX(Xs[i]), info.GetPixelY(Ys[i]));
             }
+
+            renderer.DrawLines(points, Color, LineWidth);
+
+            renderer.ClipReset();
         }
 
         public void ReplaceXs(double[] xs)

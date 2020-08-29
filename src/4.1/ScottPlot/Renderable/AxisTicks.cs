@@ -1,7 +1,7 @@
-﻿using System;
+﻿using ScottPlot.Renderer;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.Text;
 
 namespace ScottPlot.Renderable
@@ -12,7 +12,7 @@ namespace ScottPlot.Renderable
         public bool AntiAlias { get; set; } = true;
         public PlotLayer Layer => PlotLayer.BelowData;
 
-        public void Render(Bitmap bmp, PlotInfo info)
+        public void Render(IRenderer renderer, PlotInfo info)
         {
             if (Visible == false)
                 return;

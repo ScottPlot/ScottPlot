@@ -1,5 +1,6 @@
 ﻿using ScottPlot.Plottable;
 using ScottPlot.Renderable;
+using ScottPlot.Renderer;
 using ScottPlot.Space;
 using System;
 using System.Collections.Generic;
@@ -10,16 +11,11 @@ namespace ScottPlot
 {
     public class Plot
     {
-        public float Width { get { return info.Width; } }
-        public float Height { get { return info.Height; } }
-
         private readonly PlotInfo info = new PlotInfo();
         private readonly List<IRenderable> renderables;
 
-        public Plot(float width = 600, float height = 400)
+        public Plot()
         {
-            ResizeLayout(width, height);
-
             renderables = new List<IRenderable>
             {
                 new FigureBackground(),
@@ -51,10 +47,13 @@ namespace ScottPlot
             info.Resize(width, height, dataWidth, dataHeight, dataPadL, dataPadT);
         }
 
-        public Bitmap Render()
+        public Bitmap Render(int width, int height)
         {
-            Bitmap bmp = new Bitmap((int)Width, (int)Height, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
-            Render(bmp);
+            Bitmap bmp = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+            using (var renderer = new SystemDrawingRenderer(bmp))
+            {
+                Render(renderer);
+            }
             return bmp;
         }
 
@@ -67,15 +66,14 @@ namespace ScottPlot
             info.SetLimits(autoAxisLimits);
         }
 
-        public Bitmap Render(Bitmap bmp)
+        public void Render(IRenderer renderer)
         {
             // reset benchmarks
             foreach (Benchmark bench in renderables.Where(x => x is Benchmark))
                 bench.Start();
 
-            // update layout size (and units per pixel) if needed
-            if (bmp.Width != info.Width || bmp.Height != info.Height)
-                ResizeLayout(bmp.Width, bmp.Height);
+            if (renderer.Width != info.Width || renderer.Height != info.Height)
+                ResizeLayout(renderer.Width, renderer.Height);
 
             // ensure our axes are valid
             if (info.GetLimits().IsValid == false)
@@ -83,15 +81,13 @@ namespace ScottPlot
 
             // render each of the layers
             foreach (var renderable in renderables.Where(x => x.Layer == PlotLayer.BelowData))
-                renderable.Render(bmp, info);
+                renderable.Render(renderer, info);
 
             foreach (var plottable in renderables.Where(x => x.Layer == PlotLayer.Data))
-                plottable.Render(bmp, info);
+                plottable.Render(renderer, info);
 
             foreach (var renderable in renderables.Where(x => x.Layer == PlotLayer.AboveData))
-                renderable.Render(bmp, info);
-
-            return bmp;
+                renderable.Render(renderer, info);
         }
 
         public void Clear()
