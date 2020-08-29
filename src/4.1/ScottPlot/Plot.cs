@@ -4,7 +4,6 @@ using ScottPlot.Renderer;
 using ScottPlot.Space;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 
 namespace ScottPlot
@@ -64,7 +63,7 @@ namespace ScottPlot
         /// <summary>
         /// Render a Bitmap using System.Drawing
         /// </summary>
-        public Bitmap Render(int width, int height)
+        public System.Drawing.Bitmap Render(int width, int height)
         {
             ResizeLayout(width, height);
             return Render();
@@ -73,9 +72,9 @@ namespace ScottPlot
         /// <summary>
         /// Render a Bitmap using System.Drawing
         /// </summary>
-        public Bitmap Render()
+        public System.Drawing.Bitmap Render()
         {
-            Bitmap bmp = new Bitmap((int)Width, (int)Height, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+            var bmp = new System.Drawing.Bitmap((int)Width, (int)Height, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
             using (var renderer = new SystemDrawingRenderer(bmp))
             {
                 Render(renderer);
@@ -118,9 +117,9 @@ namespace ScottPlot
                 renderables.Remove(plottable);
         }
 
-        public Scatter PlotScatter(double[] xs, double[] ys)
+        public Scatter PlotScatter(double[] xs, double[] ys, Color color)
         {
-            var scatter = new Scatter();
+            var scatter = new Scatter() { Color = color };
             scatter.ReplaceXsAndYs(xs, ys);
             renderables.Add(scatter);
             return scatter;
