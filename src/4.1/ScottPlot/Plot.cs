@@ -11,11 +11,16 @@ namespace ScottPlot
 {
     public class Plot
     {
+        public float Width { get { return info.Width; } }
+        public float Height { get { return info.Height; } }
+
         private readonly PlotInfo info = new PlotInfo();
         private readonly List<IRenderable> renderables;
 
-        public Plot()
+        public Plot(float width = 600, float height = 400)
         {
+            ResizeLayout(width, height);
+
             renderables = new List<IRenderable>
             {
                 new FigureBackground(),
@@ -47,16 +52,6 @@ namespace ScottPlot
             info.Resize(width, height, dataWidth, dataHeight, dataPadL, dataPadT);
         }
 
-        public Bitmap Render(int width, int height)
-        {
-            Bitmap bmp = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
-            using (var renderer = new SystemDrawingRenderer(bmp))
-            {
-                Render(renderer);
-            }
-            return bmp;
-        }
-
         public void AxisAuto()
         {
             var autoAxisLimits = new AxisLimits();
@@ -66,12 +61,38 @@ namespace ScottPlot
             info.SetLimits(autoAxisLimits);
         }
 
+        /// <summary>
+        /// Render a Bitmap using System.Drawing
+        /// </summary>
+        public Bitmap Render(int width, int height)
+        {
+            ResizeLayout(width, height);
+            return Render();
+        }
+
+        /// <summary>
+        /// Render a Bitmap using System.Drawing
+        /// </summary>
+        public Bitmap Render()
+        {
+            Bitmap bmp = new Bitmap((int)Width, (int)Height, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+            using (var renderer = new SystemDrawingRenderer(bmp))
+            {
+                Render(renderer);
+            }
+            return bmp;
+        }
+
+        /// <summary>
+        /// Render a Bitmap using a custom renderer
+        /// </summary>
         public void Render(IRenderer renderer)
         {
             // reset benchmarks
             foreach (Benchmark bench in renderables.Where(x => x is Benchmark))
                 bench.Start();
 
+            // only resize the layout if the dimensions have changed
             if (renderer.Width != info.Width || renderer.Height != info.Height)
                 ResizeLayout(renderer.Width, renderer.Height);
 

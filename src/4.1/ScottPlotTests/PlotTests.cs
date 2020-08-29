@@ -31,5 +31,41 @@ namespace ScottPlotTests
             Bitmap bmp = plt.Render(600, 400);
             bmp.Save("render.bmp");
         }
+
+        [TestCase(1, 1)]
+        [TestCase(640, 480)]
+        [TestCase(7680, 4320)]
+        public void Test_InstantiatedDimensions_AreRemembered(int width, int height)
+        {
+            var plt = new ScottPlot.Plot(width, height);
+            Assert.AreEqual(width, plt.Width);
+            Assert.AreEqual(height, plt.Height);
+        }
+
+        [TestCase(1, 1)]
+        [TestCase(640, 480)]
+        [TestCase(7680, 4320)]
+        public void Test_InstantiatedDimensions_AreDefaultRenderDimensions(int width, int height)
+        {
+            var plt = new ScottPlot.Plot(width, height);
+            Bitmap bmp = plt.Render();
+            Assert.AreEqual(width, bmp.Width);
+            Assert.AreEqual(height, bmp.Height);
+        }
+
+        [TestCase(1, 1)]
+        [TestCase(640, 480)]
+        [TestCase(7680, 4320)]
+        public void Test_InstantiatedDimensions_AreOverriddenByRenderDimensions(int width, int height)
+        {
+            var plt = new ScottPlot.Plot(333, 222);
+
+            Bitmap bmp = plt.Render(width, height);
+            Assert.AreEqual(width, bmp.Width);
+            Assert.AreEqual(height, bmp.Height);
+
+            Assert.AreEqual(width, plt.Width);
+            Assert.AreEqual(height, plt.Height);
+        }
     }
 }
