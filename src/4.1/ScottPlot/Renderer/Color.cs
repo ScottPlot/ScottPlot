@@ -11,5 +11,10 @@
         {
             (A, R, G, B) = (255, r, g, b);
         }
+
+        public Color(byte a, byte r, byte g, byte b)
+        {
+            (A, R, G, B) = (a, r, g, b);
+        }
     }
 }

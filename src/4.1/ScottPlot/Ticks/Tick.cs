@@ -5,6 +5,7 @@
         public readonly double Position;
         public readonly string Label;
         public readonly bool IsMajor;
+        public bool IsMinor { get { return !IsMajor; } }
 
         public Tick(double position)
         {

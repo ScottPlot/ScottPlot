@@ -21,10 +21,10 @@ namespace ScottPlot.WinForms
         private void Form1_Load(object sender, EventArgs e)
         {
             Random rand = new Random();
-            double[] xs = Generate.Consecutive(50);
-            plt.PlotScatter(xs, Generate.RandomWalk(rand, 50), Colors.Red);
-            plt.PlotScatter(xs, Generate.RandomWalk(rand, 50), Colors.Green);
-            plt.PlotScatter(xs, Generate.RandomWalk(rand, 50), Colors.Blue);
+            double[] xs = Generate.Consecutive(51);
+            plt.PlotScatter(xs, Generate.RandomWalk(rand, 51), Colors.Red);
+            plt.PlotScatter(xs, Generate.RandomWalk(rand, 51), Colors.Green);
+            plt.PlotScatter(xs, Generate.RandomWalk(rand, 51), Colors.Blue);
             Render();
         }
 

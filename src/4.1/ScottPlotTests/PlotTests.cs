@@ -28,8 +28,7 @@ namespace ScottPlotTests
             double[] ys = { 1, 4, 9, 16, 25 };
             plt.PlotScatter(xs, ys);
 
-            Bitmap bmp = plt.Render(600, 400);
-            bmp.Save("render.bmp");
+            TestTools.SaveFig(plt);
         }
 
         [TestCase(1, 1)]

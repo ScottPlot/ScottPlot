@@ -9,6 +9,11 @@ using System.Text;
 
 namespace ScottPlot.Renderable
 {
+    public class AxisTicksLeft : AxisTicks { public AxisTicksLeft() { Edge = Edge.Left; } }
+    public class AxisTicksRight : AxisTicks { public AxisTicksRight() { Edge = Edge.Right; } }
+    public class AxisTicksTop : AxisTicks { public AxisTicksTop() { Edge = Edge.Top; } }
+    public class AxisTicksBottom : AxisTicks { public AxisTicksBottom() { Edge = Edge.Bottom; } }
+
     public class AxisTicks : IRenderable
     {
         public bool Visible { get; set; } = true;
@@ -28,6 +33,14 @@ namespace ScottPlot.Renderable
         public Color MinorColor = Colors.Black;
         public float MinorWidth = 1;
         public float MinorLength = 2;
+
+        public bool MajorGrid = true;
+        public Color MajorGridColor = new Color(35, 0, 0, 0);
+        public float MajorGridWidth = 1;
+
+        public bool MinorGrid = true;
+        public Color MinorGridColor = new Color(10, 0, 0, 0);
+        public float MinorGridWidth = 1;
 
         public ITickGenerator TickGenerator = new StupidTickGenerator();
 
@@ -52,7 +65,7 @@ namespace ScottPlot.Renderable
                 float tickLength = tick.IsMajor ? majorTickLength : minorTickLength;
 
                 Font fnt = new Font(FontName, FontSize);
-                Point pt1, pt2;
+                Point pt1, pt2, pt3;
 
                 if (Edge == Edge.Left)
                 {
@@ -60,7 +73,8 @@ namespace ScottPlot.Renderable
                     fnt.VerticalAlignment = VerticalAlignment.Center;
                     float tickY = info.GetPixelY(tick.Position);
                     pt1 = new Point(info.DataOffsetX, tickY);
-                    pt2 = new Point(pt1.X - tickLength, tickY);
+                    pt2 = new Point(info.DataOffsetX - tickLength, tickY);
+                    pt3 = new Point(info.DataOffsetX + info.DataWidth, tickY);
                 }
                 else if (Edge == Edge.Bottom)
                 {
@@ -68,16 +82,27 @@ namespace ScottPlot.Renderable
                     fnt.VerticalAlignment = VerticalAlignment.Top;
                     float tickX = info.GetPixelX(tick.Position);
                     pt1 = new Point(tickX, info.DataOffsetY + info.DataHeight);
-                    pt2 = new Point(tickX, pt1.Y + tickLength);
+                    pt2 = new Point(tickX, info.DataOffsetY + info.DataHeight + tickLength);
+                    pt3 = new Point(tickX, info.DataOffsetY);
                 }
                 else
                 {
                     throw new NotImplementedException();
                 }
 
-                renderer.DrawLine(pt1, pt2, tick.IsMajor ? MajorColor : MinorColor, tick.IsMajor ? MajorWidth : MinorWidth);
                 if (tick.IsMajor)
+                {
                     renderer.DrawText(pt2, tick.Label, FontColor, fnt);
+                    renderer.DrawLine(pt1, pt2, MajorColor, MajorWidth);
+                    if (MajorGrid)
+                        renderer.DrawLine(pt1, pt3, MajorGridColor, MajorGridWidth);
+                }
+                else
+                {
+                    renderer.DrawLine(pt1, pt2, MinorColor, MinorWidth);
+                    if (MinorGrid)
+                        renderer.DrawLine(pt1, pt3, MinorGridColor, MinorGridWidth);
+                }
             }
         }
     }

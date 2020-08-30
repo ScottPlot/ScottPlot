@@ -23,9 +23,10 @@ namespace ScottPlot
             renderables = new List<IRenderable>
             {
                 new FigureBackground(),
-                new AxisTicks() { Edge = Edge.Left},
-                new AxisTicks() { Edge = Edge.Bottom},
                 new DataBackground(),
+                new AxisTicksLeft(),
+                new AxisTicksBottom(),
+                new DataBorder(),
                 new Benchmark()
             };
         }
@@ -65,7 +66,7 @@ namespace ScottPlot
         /// <summary>
         /// Render a Bitmap using System.Drawing
         /// </summary>
-        public System.Drawing.Bitmap Render(int width, int height)
+        public System.Drawing.Bitmap Render(float width, float height)
         {
             ResizeLayout(width, height);
             return Render();
@@ -129,6 +130,27 @@ namespace ScottPlot
             scatter.ReplaceXsAndYs(xs, ys);
             renderables.Add(scatter);
             return scatter;
+        }
+
+        public System.Drawing.Bitmap SaveFig(string path)
+        {
+            return SaveFig(info.Width, info.Height, path);
+        }
+
+        public System.Drawing.Bitmap SaveFig(float width, float height, string path)
+        {
+            System.Drawing.Bitmap bmp = Render(width, height);
+            path = System.IO.Path.GetFullPath(path);
+            string ext = System.IO.Path.GetExtension(path).ToLower();
+            if (ext == ".bmp")
+                bmp.Save(path, System.Drawing.Imaging.ImageFormat.Bmp);
+            else if (ext == ".png")
+                bmp.Save(path, System.Drawing.Imaging.ImageFormat.Png);
+            else if (ext == ".jpg" || ext == ".jpeg")
+                bmp.Save(path, System.Drawing.Imaging.ImageFormat.Jpeg);
+            else
+                throw new ArgumentException("file format not supported");
+            return bmp;
         }
     }
 }
