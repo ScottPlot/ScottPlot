@@ -32,10 +32,6 @@ namespace ScottPlotTests
             double[] ys = ScottPlot.Generate.Sin(51);
             plt.PlotScatter(xs, ys);
 
-            plt.Title.Text = "Title";
-            plt.XLabel.Text = "Horizontal Axis";
-            plt.YLabel.Text = "Primary Vertical Axis";
-            plt.Y2Label.Text = "Secondary Vertical Axis";
             plt.Axis(0, 50, -1, 1);
 
             plt.SaveFig(filePath, 600, 400);

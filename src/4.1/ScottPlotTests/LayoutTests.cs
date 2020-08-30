@@ -52,15 +52,6 @@ namespace ScottPlotTests
             double[] ys = Generate.Sin(51);
             plt.PlotScatter(xs, ys);
 
-            plt.Title.Text = "Very Big Title";
-            plt.Title.FontSize = 36;
-            plt.Padding(above: 100);
-
-            plt.XLabel.Text = "Horizontal Axis";
-            plt.YLabel.Text = "Primary Vertical Axis";
-            plt.Y2Label.Text = "Secondary Vertical Axis";
-
-            //plt.AutoLayout();
             plt.Axis(0, 50, -1, 1);
 
             TestTools.SaveFig(plt);
