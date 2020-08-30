@@ -4,22 +4,18 @@ using ScottPlot.Renderer;
 using ScottPlot.Space;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace ScottPlot
 {
     public class Plot
     {
-        public float Width { get { return info.Width; } }
-        public float Height { get { return info.Height; } }
+        public readonly PlotInfo info = new PlotInfo();
+        public readonly List<IRenderable> renderables;
 
-        private readonly PlotInfo info = new PlotInfo();
-        private readonly List<IRenderable> renderables;
-
-        public Plot(float width = 600, float height = 400)
+        public Plot()
         {
-            ResizeLayout(width, height);
-
             renderables = new List<IRenderable>
             {
                 new FigureBackground(),
@@ -31,18 +27,11 @@ namespace ScottPlot
             };
         }
 
-        public PlotInfo GetInfo(bool warn = true)
+        /// <summary>
+        /// Resize the data area to accomodate axis labels and ticks
+        /// </summary>
+        private void AutoLayout(float width, float height)
         {
-            if (warn)
-                Console.WriteLine("Interacting with the Info module is for developers only");
-            return info;
-        }
-
-        private void ResizeLayout(float width, float height)
-        {
-            if ((width < 1) || (height < 1))
-                throw new ArgumentException("Width and height must be greater than 1");
-
             // TODO: determine these values by measuring axis labels and tick labels
             float dataPadL = 50;
             float dataPadR = 10;
@@ -54,30 +43,40 @@ namespace ScottPlot
             info.Resize(width, height, dataWidth, dataHeight, dataPadL, dataPadT);
         }
 
-        public void AxisAuto()
+        /// <summary>
+        /// Automatically set axes based on the limits of the plotted data
+        /// </summary>
+        public void AutoAxis(bool autoX = true, bool autoY = true, bool tight = false)
         {
-            var autoAxisLimits = new AxisLimits();
+            var oldLimits = info.GetLimits();
+            var newLimits = new AxisLimits();
             foreach (IPlottable plottable in renderables.Where(x => x is IPlottable))
-                autoAxisLimits.Expand(plottable.Limits);
-            Console.WriteLine(autoAxisLimits);
-            info.SetLimits(autoAxisLimits);
+                newLimits.Expand(plottable.Limits);
+
+            // TODO: improve when tight is false so instead of zooming out blindly it zooms out to the next tick mark
+
+            if (autoX == false)
+            {
+                newLimits.X1 = oldLimits.X1;
+                newLimits.X2 = oldLimits.X2;
+            }
+
+            if (autoY == false)
+            {
+                newLimits.Y1 = oldLimits.Y1;
+                newLimits.Y2 = oldLimits.Y2;
+            }
+
+            info.SetLimits(newLimits);
         }
 
         /// <summary>
         /// Render a Bitmap using System.Drawing
         /// </summary>
-        public System.Drawing.Bitmap Render(float width, float height)
+        public System.Drawing.Bitmap GetBitmap(float width, float height)
         {
-            ResizeLayout(width, height);
-            return Render();
-        }
-
-        /// <summary>
-        /// Render a Bitmap using System.Drawing
-        /// </summary>
-        public System.Drawing.Bitmap Render()
-        {
-            var bmp = new System.Drawing.Bitmap((int)Width, (int)Height, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+            AutoLayout(width, height);
+            var bmp = new System.Drawing.Bitmap((int)info.Width, (int)info.Height, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
             using (var renderer = new SystemDrawingRenderer(bmp))
             {
                 Render(renderer);
@@ -86,7 +85,7 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Render a Bitmap using a custom renderer
+        /// Draw the plot with a custom renderer
         /// </summary>
         public void Render(IRenderer renderer)
         {
@@ -96,11 +95,11 @@ namespace ScottPlot
 
             // only resize the layout if the dimensions have changed
             if (renderer.Width != info.Width || renderer.Height != info.Height)
-                ResizeLayout(renderer.Width, renderer.Height);
+                AutoLayout(renderer.Width, renderer.Height);
 
             // ensure our axes are valid
             if (info.GetLimits().IsValid == false)
-                AxisAuto();
+                AutoAxis();
 
             // calculate ticks based on new layout
             foreach (AxisTicks axisTicks in renderables.Where(x => x is AxisTicks))
@@ -117,6 +116,9 @@ namespace ScottPlot
                 renderable.Render(renderer, info);
         }
 
+        /// <summary>
+        /// Remove all plottables
+        /// </summary>
         public void Clear()
         {
             var plottables = renderables.Where(x => x.Layer == PlotLayer.Data);
@@ -124,6 +126,9 @@ namespace ScottPlot
                 renderables.Remove(plottable);
         }
 
+        /// <summary>
+        /// Scatter plots display unordered X/Y data pairs (but they are slower than signal plots)
+        /// </summary>
         public Scatter PlotScatter(double[] xs, double[] ys, Color color = null)
         {
             var scatter = new Scatter() { Color = color ?? Colors.Magenta };
@@ -132,14 +137,12 @@ namespace ScottPlot
             return scatter;
         }
 
-        public System.Drawing.Bitmap SaveFig(string path)
+        /// <summary>
+        /// Render the plot and save it as an image file
+        /// </summary>
+        public System.Drawing.Bitmap SaveFig(string path, float width, float height)
         {
-            return SaveFig(info.Width, info.Height, path);
-        }
-
-        public System.Drawing.Bitmap SaveFig(float width, float height, string path)
-        {
-            System.Drawing.Bitmap bmp = Render(width, height);
+            System.Drawing.Bitmap bmp = GetBitmap(width, height);
             path = System.IO.Path.GetFullPath(path);
             string ext = System.IO.Path.GetExtension(path).ToLower();
             if (ext == ".bmp")

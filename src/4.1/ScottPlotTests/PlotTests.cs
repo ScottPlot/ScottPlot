@@ -2,6 +2,7 @@ using NUnit.Framework;
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Linq;
 
 namespace ScottPlotTests
 {
@@ -16,55 +17,35 @@ namespace ScottPlotTests
         public void Test_Plot_InvalidDimensionsThrow(int width, int height)
         {
             var plt = new ScottPlot.Plot();
-            Assert.Throws<ArgumentException>(() => { plt.Render(width, height); });
+            Assert.Throws<ArgumentException>(() => { plt.GetBitmap(width, height); });
         }
 
         [Test]
-        public void Test_Plot_Render()
+        public void Test_Plot_SaveFig()
+        {
+            string filePath = System.IO.Path.GetFullPath("test_plot_savefig.bmp");
+            if (System.IO.File.Exists(filePath))
+                System.IO.File.Delete(filePath);
+
+            var plt = new ScottPlot.Plot();
+            double[] xs = ScottPlot.Generate.Consecutive(51);
+            double[] ys = ScottPlot.Generate.Sin(51);
+            plt.PlotScatter(xs, ys);
+            plt.SaveFig(filePath, 600, 400);
+            Console.WriteLine($"Wrote: {filePath}");
+
+            Assert.That(System.IO.File.Exists(filePath));
+        }
+
+        [TestCase(1, 1)]
+        [TestCase(640, 480)]
+        [TestCase(7680, 4320)]
+        public void Test_Render_BitmapDimensions(int width, int height)
         {
             var plt = new ScottPlot.Plot();
-
-            double[] xs = { 1, 2, 3, 4, 5 };
-            double[] ys = { 1, 4, 9, 16, 25 };
-            plt.PlotScatter(xs, ys);
-
-            TestTools.SaveFig(plt);
-        }
-
-        [TestCase(1, 1)]
-        [TestCase(640, 480)]
-        [TestCase(7680, 4320)]
-        public void Test_InstantiatedDimensions_AreRemembered(int width, int height)
-        {
-            var plt = new ScottPlot.Plot(width, height);
-            Assert.AreEqual(width, plt.Width);
-            Assert.AreEqual(height, plt.Height);
-        }
-
-        [TestCase(1, 1)]
-        [TestCase(640, 480)]
-        [TestCase(7680, 4320)]
-        public void Test_InstantiatedDimensions_AreDefaultRenderDimensions(int width, int height)
-        {
-            var plt = new ScottPlot.Plot(width, height);
-            Bitmap bmp = plt.Render();
+            Bitmap bmp = plt.GetBitmap(width, height);
             Assert.AreEqual(width, bmp.Width);
             Assert.AreEqual(height, bmp.Height);
-        }
-
-        [TestCase(1, 1)]
-        [TestCase(640, 480)]
-        [TestCase(7680, 4320)]
-        public void Test_InstantiatedDimensions_AreOverriddenByRenderDimensions(int width, int height)
-        {
-            var plt = new ScottPlot.Plot(333, 222);
-
-            Bitmap bmp = plt.Render(width, height);
-            Assert.AreEqual(width, bmp.Width);
-            Assert.AreEqual(height, bmp.Height);
-
-            Assert.AreEqual(width, plt.Width);
-            Assert.AreEqual(height, plt.Height);
         }
     }
 }

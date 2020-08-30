@@ -18,7 +18,7 @@ namespace ScottPlotTests
 
             string fileName = $"{callingMethod}_{suffix}.bmp";
             string filePath = System.IO.Path.Combine(outFolder, fileName);
-            plt.SaveFig(filePath);
+            plt.SaveFig(filePath, width, height);
 
             Console.WriteLine($"Saved: {filePath}");
             Console.WriteLine();

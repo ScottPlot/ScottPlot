@@ -42,7 +42,7 @@ namespace ScottPlot.Renderable
         public Color MinorGridColor = new Color(10, 0, 0, 0);
         public float MinorGridWidth = 1;
 
-        public ITickGenerator TickGenerator = new StupidTickGenerator();
+        public ITickGenerator TickGenerator = new NumericTickGenerator();
 
         public void Recalculate(AxisLimits limits)
         {

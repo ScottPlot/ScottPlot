@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace ScottPlot.Ticks
 {
-    class StupidTickGenerator : ITickGenerator
+    class NumericTickGenerator : ITickGenerator
     {
         public List<Tick> Ticks { get; private set; } = new List<Tick>();
         public double MaxTickCount { get; set; } = 10;

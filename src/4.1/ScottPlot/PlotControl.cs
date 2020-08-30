@@ -28,7 +28,7 @@ namespace ScottPlot
         public PlotControl(Plot plt)
         {
             this.plt = plt;
-            info = plt.GetInfo(false);
+            info = plt.info;
         }
 
         public void MouseDownLeft(float xPixel, float yPixel)
@@ -63,7 +63,7 @@ namespace ScottPlot
         public void MouseUpCenter(float xPixel, float yPixel)
         {
             IsCenterDown = false;
-            plt.AxisAuto();
+            plt.AutoAxis();
         }
 
         public void MouseUpRight(float xPixel, float yPixel)
