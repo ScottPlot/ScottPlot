@@ -1,5 +1,7 @@
 ﻿using ScottPlot.Renderable;
+using ScottPlot.Renderer;
 using ScottPlot.Space;
+using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
 
@@ -24,10 +26,19 @@ namespace ScottPlot
         public float DataOffsetX { get; private set; }
         public float DataOffsetY { get; private set; }
 
-        public float? FixedPadLeft = null;
-        public float? FixedPadRight = null;
-        public float? FixedPadTop = null;
-        public float? FixedPadBottom = null;
+        public float DataW => DataOffsetX;
+        public float DataE => DataOffsetX + DataWidth;
+        public float DataN => DataOffsetY;
+        public float DataS => DataOffsetY + DataHeight;
+        public Point DataNW => new Point(DataOffsetX, DataOffsetY);
+        public Point DataNC => new Point(DataOffsetX + DataWidth / 2, DataOffsetY);
+        public Point DataNE => new Point(DataOffsetX + DataWidth, DataOffsetY);
+        public Point DataWC => new Point(DataOffsetX, DataOffsetY + DataHeight / 2);
+        public Point DataCC => new Point(DataOffsetX + DataWidth / 2, DataOffsetY + DataHeight / 2);
+        public Point DataEC => new Point(DataOffsetX + DataWidth, DataOffsetY + DataHeight / 2);
+        public Point DataSW => new Point(DataOffsetX, DataOffsetY + DataHeight);
+        public Point DataSC => new Point(DataOffsetX + DataWidth / 2, DataOffsetY + DataHeight);
+        public Point DataSE => new Point(DataOffsetX + DataWidth, DataOffsetY + DataHeight);
 
         public bool LimitsHaveBeenSet { get; private set; }
 

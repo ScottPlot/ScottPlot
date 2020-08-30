@@ -19,5 +19,10 @@ namespace ScottPlot.Renderer
             X = x;
             Y = y;
         }
+
+        public Point Shift(float dX, float dY)
+        {
+            return new Point(X + dX, Y + dY);
+        }
     }
 }

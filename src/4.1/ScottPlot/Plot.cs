@@ -21,38 +21,29 @@ namespace ScottPlot
         public FigureBackground FigureBackground { get; private set; } = new FigureBackground();
         public DataBackground DataBackground { get; private set; } = new DataBackground();
 
-        public AxisLabelTop Title { get; private set; } = new AxisLabelTop();
-        public AxisLabelLeft YLabel { get; private set; } = new AxisLabelLeft();
-        public AxisLabelRight Y2Label { get; private set; } = new AxisLabelRight();
-        public AxisLabelBottom XLabel { get; private set; } = new AxisLabelBottom();
+        public AxisTicksLeft YTicks { get; private set; } = new AxisTicksLeft() { Label = "Left Vertical" };
+        public AxisTicksRight Y2Ticks { get; private set; } = new AxisTicksRight() { Label = "Right Vertical" };
+        public AxisTicksLeft Y3Ticks { get; private set; } = new AxisTicksLeft() { Label = "Floating Vertical", Offset = 60 };
+        public AxisTicksBottom XTicks { get; private set; } = new AxisTicksBottom() { Label = "Horizontal Lower" };
+        public AxisTicksTop X2Ticks { get; private set; } = new AxisTicksTop() { Label = "Horizontal Upper" };
 
-        public AxisTicksLeft YTicks { get; private set; } = new AxisTicksLeft();
-        public AxisTicksRight Y2Ticks { get; private set; } = new AxisTicksRight();
-        public AxisTicksBottom XTicks { get; private set; } = new AxisTicksBottom();
-        public AxisTicksTop X2Ticks { get; private set; } = new AxisTicksTop();
-
-        public DataBorder DataBorder { get; private set; } = new DataBorder();
         public Benchmark Benchmark { get; private set; } = new Benchmark();
 
         public Plot(int width = 600, int height = 400)
         {
             Info.UpdateSize(width, height);
-            Info.UpdatePadding(left: 60, right: 60, above: 50, below: 50);
+            Info.UpdatePadding(left: 150, right: 100, above: 100, below: 100);
             Console.WriteLine(Info);
 
             Renderables = new List<IRenderable>
             {
                 FigureBackground,
-                Title,
-                XLabel,
-                YLabel,
-                Y2Label,
                 DataBackground,
                 X2Ticks,
                 XTicks,
                 YTicks,
                 Y2Ticks,
-                DataBorder,
+                Y3Ticks,
                 Benchmark
             };
         }
