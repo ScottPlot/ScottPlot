@@ -123,9 +123,9 @@ namespace ScottPlot
                 renderables.Remove(plottable);
         }
 
-        public Scatter PlotScatter(double[] xs, double[] ys, Color color)
+        public Scatter PlotScatter(double[] xs, double[] ys, Color color = null)
         {
-            var scatter = new Scatter() { Color = color };
+            var scatter = new Scatter() { Color = color ?? Colors.Magenta };
             scatter.ReplaceXsAndYs(xs, ys);
             renderables.Add(scatter);
             return scatter;
