@@ -32,8 +32,15 @@ namespace ScottPlot.WinForms
             Render();
         }
 
-        private void Render()
+        bool currentlyRendering = false;
+        Stopwatch stopwatch = new Stopwatch();
+        private void Render(bool skipIfCurrentlyRendering = false)
         {
+            if (skipIfCurrentlyRendering && currentlyRendering)
+                return;
+
+            stopwatch.Restart();
+
             // ensure the picturebox has a properly-sized Bitmap
             if (pictureBox1.Image is null || pictureBox1.Image.Size != pictureBox1.Size)
             {
@@ -43,11 +50,18 @@ namespace ScottPlot.WinForms
                 pictureBox1.Image = new Bitmap(pictureBox1.Width, pictureBox1.Height, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
             }
 
-            using(var renderer = new SystemDrawingRenderer((Bitmap)pictureBox1.Image))
+            currentlyRendering = true;
+            using (var renderer = new SystemDrawingRenderer((Bitmap)pictureBox1.Image))
             {
                 plt.Render(renderer);
             }
-            pictureBox1.Invalidate(); // May need to "Application.DoEvents()" in .NET Framework
+            stopwatch.Stop();
+            pictureBox1.Invalidate();
+            Application.DoEvents();
+            currentlyRendering = false;
+
+            double elapsedSec = (double)stopwatch.ElapsedTicks / Stopwatch.Frequency;
+            Text = $"Rendered in {elapsedSec * 1000:0.00} ms ({1 / elapsedSec:0.00} Hz)";
         }
 
         private void pictureBox1_SizeChanged(object sender, EventArgs e)
@@ -59,7 +73,9 @@ namespace ScottPlot.WinForms
         {
             pc.MouseMove(e.X, e.Y);
             if (e.Button != MouseButtons.None)
-                Render();
+            {
+                Render(skipIfCurrentlyRendering: true);
+            }
         }
 
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
