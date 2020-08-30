@@ -25,6 +25,10 @@ namespace ScottPlot.WinForms
             plt.PlotScatter(xs, Generate.RandomWalk(rand, 51), Colors.Red);
             plt.PlotScatter(xs, Generate.RandomWalk(rand, 51), Colors.Green);
             plt.PlotScatter(xs, Generate.RandomWalk(rand, 51), Colors.Blue);
+            plt.Title.Text = "ScottPlot 4.1 Demo";
+            plt.YLabel.Text = "Primary Vertical Axis";
+            plt.Y2Label.Text = "Secondary Vertical Axis";
+            plt.XLabel.Text = "Horizontal Axis";
             Render();
         }
 

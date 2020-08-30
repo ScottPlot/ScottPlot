@@ -4,6 +4,7 @@ using ScottPlot.Renderer;
 using ScottPlot.Space;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
 
@@ -11,39 +12,58 @@ namespace ScottPlot
 {
     public class Plot
     {
-        public readonly PlotInfo info = new PlotInfo();
-        public readonly List<IRenderable> renderables;
+        public float Width { get { return Info.Width; } }
+        public float Height { get { return Info.Height; } }
 
-        public Plot()
+        public PlotInfo Info { get; private set; } = new PlotInfo();
+        public List<IRenderable> Renderables { get; private set; } = new List<IRenderable>();
+
+        public FigureBackground FigureBackground { get; private set; } = new FigureBackground();
+        public DataBackground DataBackground { get; private set; } = new DataBackground();
+        public AxisLabelTop Title { get; private set; } = new AxisLabelTop();
+        public AxisLabelLeft YLabel { get; private set; } = new AxisLabelLeft();
+        public AxisTicksLeft YTicks { get; private set; } = new AxisTicksLeft();
+        public AxisTicksRight Y2Ticks { get; private set; } = new AxisTicksRight();
+        public AxisLabelRight Y2Label { get; private set; } = new AxisLabelRight();
+        public AxisLabelBottom XLabel { get; private set; } = new AxisLabelBottom();
+        public AxisTicksBottom XTicks { get; private set; } = new AxisTicksBottom();
+        public DataBorder DataBorder { get; private set; } = new DataBorder();
+        public Benchmark Benchmark { get; private set; } = new Benchmark();
+
+        public Plot(int width = 600, int height = 400)
         {
-            renderables = new List<IRenderable>
+            AutoLayout(width, height);
+
+            Renderables = new List<IRenderable>
             {
-                new FigureBackground(),
-                new DataBackground(),
-                new AxisLabel() { Edge = Edge.Bottom, Label = "Horizontal Axis"},
-                new AxisLabel() { Edge = Edge.Left, Label = "Vertical Axis"},
-                new AxisTicksLeft(),
-                new AxisTicksBottom(),
-                new DataBorder(),
-                new Benchmark()
+                FigureBackground,
+                Title,
+                XLabel,
+                YLabel,
+                Y2Label,
+                DataBackground,
+                XTicks,
+                YTicks,
+                Y2Ticks,
+                DataBorder,
+                Benchmark
             };
         }
 
-        /// <summary>
-        /// Resize the data area to accomodate axis labels and ticks
-        /// </summary>
-        private void AutoLayout(float width, float height)
+        public void AutoLayout() => AutoLayout(Info.Width, Info.Height);
+
+        // TODO: this requires an IRenderer to do properly...
+        public void AutoLayout(float width, float height)
         {
-            // TODO: determine these values by measuring axis labels and tick labels
-            //       ... but this gets complicated because string measurement requires a GDI Graphics object ...
-            float dataPadL = 50;
-            float dataPadR = 10;
-            float dataPadB = 50;
-            float dataPadT = 30;
+            float dataPadL = YTicks.Size.Width + YLabel.Size.Width;
+            float dataPadR = Y2Ticks.Size.Width + Y2Label.Size.Width;
+            float dataPadB = XTicks.Size.Height + XLabel.Size.Height;
+            float dataPadT = Title.Size.Height;
+
             float dataWidth = width - dataPadR - dataPadL;
             float dataHeight = height - dataPadB - dataPadT;
 
-            info.Resize(width, height, dataWidth, dataHeight, dataPadL, dataPadT);
+            Info.Resize(width, height, dataWidth, dataHeight, dataPadL, dataPadT);
         }
 
         /// <summary>
@@ -51,9 +71,9 @@ namespace ScottPlot
         /// </summary>
         public void AutoAxis(bool autoX = true, bool autoY = true, bool tight = false)
         {
-            var oldLimits = info.GetLimits();
+            var oldLimits = Info.GetLimits();
             var newLimits = new AxisLimits();
-            foreach (IPlottable plottable in renderables.Where(x => x is IPlottable))
+            foreach (IPlottable plottable in Renderables.Where(x => x is IPlottable))
                 newLimits.Expand(plottable.Limits);
 
             // TODO: improve when tight is false so instead of zooming out blindly it zooms out to the next tick mark
@@ -70,8 +90,13 @@ namespace ScottPlot
                 newLimits.Y2 = oldLimits.Y2;
             }
 
-            info.SetLimits(newLimits);
+            Info.SetLimits(newLimits);
         }
+
+        /// <summary>
+        /// Render a Bitmap using System.Drawing
+        /// </summary>
+        public System.Drawing.Bitmap GetBitmap() => GetBitmap(Info.Width, Info.Height);
 
         /// <summary>
         /// Render a Bitmap using System.Drawing
@@ -79,7 +104,7 @@ namespace ScottPlot
         public System.Drawing.Bitmap GetBitmap(float width, float height)
         {
             AutoLayout(width, height);
-            var bmp = new System.Drawing.Bitmap((int)info.Width, (int)info.Height, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+            var bmp = new System.Drawing.Bitmap((int)Info.Width, (int)Info.Height, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
             using (var renderer = new SystemDrawingRenderer(bmp))
             {
                 Render(renderer);
@@ -93,30 +118,30 @@ namespace ScottPlot
         public void Render(IRenderer renderer)
         {
             // reset benchmarks
-            foreach (Benchmark bench in renderables.Where(x => x is Benchmark))
+            foreach (Benchmark bench in Renderables.Where(x => x is Benchmark))
                 bench.Start();
 
             // only resize the layout if the dimensions have changed
-            if (renderer.Width != info.Width || renderer.Height != info.Height)
+            if (renderer.Width != Info.Width || renderer.Height != Info.Height)
                 AutoLayout(renderer.Width, renderer.Height);
 
             // ensure our axes are valid
-            if (info.GetLimits().IsValid == false)
+            if (Info.GetLimits().IsValid == false)
                 AutoAxis();
 
             // calculate ticks based on new layout
-            foreach (AxisTicks axisTicks in renderables.Where(x => x is AxisTicks))
-                axisTicks.Recalculate(info.GetLimits());
+            foreach (AxisTicks axisTicks in Renderables.Where(x => x is AxisTicks))
+                axisTicks.Recalculate(Info.GetLimits());
 
             // render each of the layers
-            foreach (var renderable in renderables.Where(x => x.Layer == PlotLayer.BelowData))
-                renderable.Render(renderer, info);
+            foreach (var renderable in Renderables.Where(x => x.Layer == PlotLayer.BelowData))
+                renderable.Render(renderer, Info);
 
-            foreach (var plottable in renderables.Where(x => x.Layer == PlotLayer.Data))
-                plottable.Render(renderer, info);
+            foreach (var plottable in Renderables.Where(x => x.Layer == PlotLayer.Data))
+                plottable.Render(renderer, Info);
 
-            foreach (var renderable in renderables.Where(x => x.Layer == PlotLayer.AboveData))
-                renderable.Render(renderer, info);
+            foreach (var renderable in Renderables.Where(x => x.Layer == PlotLayer.AboveData))
+                renderable.Render(renderer, Info);
         }
 
         /// <summary>
@@ -124,9 +149,9 @@ namespace ScottPlot
         /// </summary>
         public void Clear()
         {
-            var plottables = renderables.Where(x => x.Layer == PlotLayer.Data);
+            var plottables = Renderables.Where(x => x.Layer == PlotLayer.Data);
             foreach (var plottable in plottables)
-                renderables.Remove(plottable);
+                Renderables.Remove(plottable);
         }
 
         /// <summary>
@@ -136,7 +161,7 @@ namespace ScottPlot
         {
             var scatter = new Scatter() { Color = color ?? Colors.Magenta };
             scatter.ReplaceXsAndYs(xs, ys);
-            renderables.Add(scatter);
+            Renderables.Add(scatter);
             return scatter;
         }
 
@@ -157,6 +182,28 @@ namespace ScottPlot
             else
                 throw new ArgumentException("file format not supported");
             return bmp;
+        }
+
+        public AxisLimits Axis(
+            double? xMin = null,
+            double? xMax = null,
+            double? yMin = null,
+            double? yMax = null,
+            int planeIndex = 0
+            )
+        {
+            AxisLimits currentLimits = Info.GetLimits(planeIndex);
+
+            if (xMin is null && xMax is null && yMin is null && yMax is null)
+                return currentLimits;
+
+            double x1 = xMin ?? currentLimits.X1;
+            double x2 = xMax ?? currentLimits.X2;
+            double y1 = yMin ?? currentLimits.Y1;
+            double y2 = yMax ?? currentLimits.Y2;
+            AxisLimits newLimits = new AxisLimits(x1, x2, y1, y2);
+            Info.SetLimits(newLimits, planeIndex);
+            return newLimits;
         }
     }
 }

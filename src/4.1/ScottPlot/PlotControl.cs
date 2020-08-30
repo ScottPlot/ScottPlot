@@ -28,7 +28,7 @@ namespace ScottPlot
         public PlotControl(Plot plt)
         {
             this.plt = plt;
-            info = plt.info;
+            info = plt.Info;
         }
 
         public void MouseDownLeft(float xPixel, float yPixel)

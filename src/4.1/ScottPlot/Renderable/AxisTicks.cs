@@ -9,20 +9,21 @@ using System.Text;
 
 namespace ScottPlot.Renderable
 {
-    public class AxisTicksLeft : AxisTicks { public AxisTicksLeft() { Edge = Edge.Left; } }
-    public class AxisTicksRight : AxisTicks { public AxisTicksRight() { Edge = Edge.Right; } }
-    public class AxisTicksTop : AxisTicks { public AxisTicksTop() { Edge = Edge.Top; } }
-    public class AxisTicksBottom : AxisTicks { public AxisTicksBottom() { Edge = Edge.Bottom; } }
+    public class AxisTicksLeft : AxisTicks { public AxisTicksLeft() { Edge = Edge.Left; Size.Width = 40; } }
+    public class AxisTicksRight : AxisTicks { public AxisTicksRight() { Edge = Edge.Right; Size.Width = 40; } }
+    //public class AxisTicksTop : AxisTicks { public AxisTicksTop() { Edge = Edge.Top; Size.Height = 50; } }
+    public class AxisTicksBottom : AxisTicks { public AxisTicksBottom() { Edge = Edge.Bottom; Size.Height = 25; } }
 
     public class AxisTicks : IRenderable
     {
         public bool Visible { get; set; } = true;
         public bool AntiAlias { get; set; } = true;
         public PlotLayer Layer => PlotLayer.BelowData;
+        public readonly Size Size = new Size();
 
         public Edge Edge;
 
-        public string FontName = "consolas";
+        public string FontName = "segoe ui";
         public float FontSize = 9;
         public Color FontColor = Colors.Black;
 
@@ -75,6 +76,15 @@ namespace ScottPlot.Renderable
                     pt1 = new Point(info.DataOffsetX, tickY);
                     pt2 = new Point(info.DataOffsetX - tickLength, tickY);
                     pt3 = new Point(info.DataOffsetX + info.DataWidth, tickY);
+                }
+                else if (Edge == Edge.Right)
+                {
+                    fnt.HorizontalAlignment = HorizontalAlignment.Left;
+                    fnt.VerticalAlignment = VerticalAlignment.Center;
+                    float tickY = info.GetPixelY(tick.Position);
+                    pt1 = new Point(info.DataOffsetX + info.DataWidth, tickY);
+                    pt2 = new Point(info.DataOffsetX + info.DataWidth + tickLength, tickY);
+                    pt3 = new Point(info.DataOffsetX, tickY);
                 }
                 else if (Edge == Edge.Bottom)
                 {
