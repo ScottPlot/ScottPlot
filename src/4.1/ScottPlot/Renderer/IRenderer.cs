@@ -12,6 +12,8 @@ namespace ScottPlot.Renderer
 
         void Clip(Point point, Size size);
         void ClipReset();
+        void Rotate(float angle, Point center);
+        void RotateReset();
 
         void Clear(Color color);
 

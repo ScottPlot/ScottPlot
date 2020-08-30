@@ -60,6 +60,17 @@ namespace ScottPlot.Renderer
             Gfx.ResetClip();
         }
 
+        public void Rotate(float angle, Point center)
+        {
+            Gfx.TranslateTransform(center.X, center.Y);
+            Gfx.RotateTransform(angle);
+        }
+
+        public void RotateReset()
+        {
+            Gfx.ResetTransform();
+        }
+
         public void Clear(Color color)
         {
             Gfx.Clear(System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B));

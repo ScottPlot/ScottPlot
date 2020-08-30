@@ -20,6 +20,8 @@ namespace ScottPlot
             {
                 new FigureBackground(),
                 new DataBackground(),
+                new AxisLabel() { Edge = Edge.Bottom, Label = "Horizontal Axis"},
+                new AxisLabel() { Edge = Edge.Left, Label = "Vertical Axis"},
                 new AxisTicksLeft(),
                 new AxisTicksBottom(),
                 new DataBorder(),
@@ -33,6 +35,7 @@ namespace ScottPlot
         private void AutoLayout(float width, float height)
         {
             // TODO: determine these values by measuring axis labels and tick labels
+            //       ... but this gets complicated because string measurement requires a GDI Graphics object ...
             float dataPadL = 50;
             float dataPadR = 10;
             float dataPadB = 50;
