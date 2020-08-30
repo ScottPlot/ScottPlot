@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot.Renderable;
+using System;
 
 namespace ScottPlot.Renderer
 {
@@ -14,11 +15,12 @@ namespace ScottPlot.Renderer
 
         void Clear(Color color);
 
-        Size MeasureText(string text, string fontName, float fontSize);
-        void DrawText(Point point, string text, Color color, string fontName, float fontSize);
+        Size MeasureText(string text, Font font);
+        void DrawText(Point point, string text, Color color, Font font);
 
         void FillRectangle(Point point, Size size, Color color);
         void DrawRectangle(Point point, Size size, Color color, float width);
-        void DrawLines(System.Drawing.PointF[] points, Color color, float width);
+        void DrawLines(Point[] points, Color color, float width);
+        void DrawLine(Point pt1, Point pt2, Color color, float width);
     }
 }

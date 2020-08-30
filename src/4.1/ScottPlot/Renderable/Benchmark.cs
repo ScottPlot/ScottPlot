@@ -31,7 +31,8 @@ namespace ScottPlot.Renderable
 
             string message = $"Rendered in {MSec:0.000} ms ({Hz:0.00 Hz})";
 
-            Size txtSize = renderer.MeasureText(message, FontName, FontSize);
+            Font fnt = new Font(FontName, FontSize);
+            Size txtSize = renderer.MeasureText(message, fnt);
 
             Point txtPoint = new Point(
             x: info.DataOffsetX + info.DataWidth - debugPadding - txtSize.Width,
@@ -39,7 +40,7 @@ namespace ScottPlot.Renderable
 
             renderer.FillRectangle(txtPoint, txtSize, FillColor);
             renderer.DrawRectangle(txtPoint, txtSize, OutlineColor, 1);
-            renderer.DrawText(txtPoint, message, FontColor, FontName, FontSize);
+            renderer.DrawText(txtPoint, message, FontColor, fnt);
         }
     }
 }

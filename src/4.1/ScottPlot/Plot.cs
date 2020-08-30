@@ -23,6 +23,8 @@ namespace ScottPlot
             renderables = new List<IRenderable>
             {
                 new FigureBackground(),
+                new AxisTicks() { Edge = Edge.Left},
+                new AxisTicks() { Edge = Edge.Bottom},
                 new DataBackground(),
                 new Benchmark()
             };
@@ -43,7 +45,7 @@ namespace ScottPlot
             // TODO: determine these values by measuring axis labels and tick labels
             float dataPadL = 50;
             float dataPadR = 10;
-            float dataPadB = 20;
+            float dataPadB = 50;
             float dataPadT = 30;
             float dataWidth = width - dataPadR - dataPadL;
             float dataHeight = height - dataPadB - dataPadT;
@@ -98,6 +100,10 @@ namespace ScottPlot
             // ensure our axes are valid
             if (info.GetLimits().IsValid == false)
                 AxisAuto();
+
+            // calculate ticks based on new layout
+            foreach (AxisTicks axisTicks in renderables.Where(x => x is AxisTicks))
+                axisTicks.Recalculate(info.GetLimits());
 
             // render each of the layers
             foreach (var renderable in renderables.Where(x => x.Layer == PlotLayer.BelowData))

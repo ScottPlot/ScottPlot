@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot.Renderable;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -64,21 +65,36 @@ namespace ScottPlot.Renderer
             Gfx.Clear(System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B));
         }
 
-        public Size MeasureText(string text, string fontName, float fontSize)
+        public Size MeasureText(string text, Font font)
         {
-            using (var fnt = new Font(fontName, fontSize))
+            using (var fnt = new System.Drawing.Font(font.Name, font.Size))
             {
                 var sz = Gfx.MeasureString(text, fnt);
                 return new Size(sz.Width, sz.Height);
             }
         }
 
-        public void DrawText(Point point, string text, Color color, string fontName, float fontSize)
+        public void DrawText(Point point, string text, Color color, Font font)
         {
-            using (var fnt = new Font(fontName, fontSize))
+            using (var sf = new StringFormat())
+            using (var fnt = new System.Drawing.Font(font.Name, font.Size))
             using (var brush = new SolidBrush(System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B)))
             {
-                Gfx.DrawString(text, fnt, brush, point.X, point.Y);
+                if (font.HorizontalAlignment == HorizontalAlignment.Left)
+                    sf.Alignment = StringAlignment.Near;
+                else if (font.HorizontalAlignment == HorizontalAlignment.Center)
+                    sf.Alignment = StringAlignment.Center;
+                else if (font.HorizontalAlignment == HorizontalAlignment.Right)
+                    sf.Alignment = StringAlignment.Far;
+
+                if (font.VerticalAlignment == VerticalAlignment.Bottom)
+                    sf.LineAlignment = StringAlignment.Far;
+                else if (font.VerticalAlignment == VerticalAlignment.Center)
+                    sf.LineAlignment = StringAlignment.Center;
+                else if (font.VerticalAlignment == VerticalAlignment.Top)
+                    sf.LineAlignment = StringAlignment.Near;
+
+                Gfx.DrawString(text, fnt, brush, point.X, point.Y, sf);
             }
         }
 
@@ -97,11 +113,22 @@ namespace ScottPlot.Renderer
             Gfx.DrawRectangle(Pen, point.X, point.Y, size.Width, size.Height);
         }
 
-        public void DrawLines(PointF[] points, Color color, float width)
+        public void DrawLines(Point[] points, Color color, float width)
+        {
+            PointF[] sdPoints = new PointF[points.Length];
+            for (int i = 0; i < points.Length; i++)
+                sdPoints[i] = new PointF(points[i].X, points[i].Y);
+
+            Pen.Color = System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B);
+            Pen.Width = width;
+            Gfx.DrawLines(Pen, sdPoints);
+        }
+
+        public void DrawLine(Point pt1, Point pt2, Color color, float width)
         {
             Pen.Color = System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B);
             Pen.Width = width;
-            Gfx.DrawLines(Pen, points);
+            Gfx.DrawLine(Pen, pt1.X, pt1.Y, pt2.X, pt2.Y);
         }
     }
 }

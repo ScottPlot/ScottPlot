@@ -34,10 +34,11 @@ namespace ScottPlot.Plottable
 
             renderer.AntiAlias(AntiAlias);
 
-            System.Drawing.PointF[] points = new System.Drawing.PointF[Xs.Length];
+            // TODO: optimize speed by pre-allocating this memory?
+            Point[] points = new Point[Xs.Length];
             for (int i = 0; i < Xs.Length; i++)
             {
-                points[i] = new System.Drawing.PointF(info.GetPixelX(Xs[i]), info.GetPixelY(Ys[i]));
+                points[i] = new Point(info.GetPixelX(Xs[i]), info.GetPixelY(Ys[i]));
             }
 
             renderer.DrawLines(points, Color, LineWidth);
