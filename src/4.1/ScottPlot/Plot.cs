@@ -20,19 +20,25 @@ namespace ScottPlot
 
         public FigureBackground FigureBackground { get; private set; } = new FigureBackground();
         public DataBackground DataBackground { get; private set; } = new DataBackground();
+
         public AxisLabelTop Title { get; private set; } = new AxisLabelTop();
         public AxisLabelLeft YLabel { get; private set; } = new AxisLabelLeft();
-        public AxisTicksLeft YTicks { get; private set; } = new AxisTicksLeft();
-        public AxisTicksRight Y2Ticks { get; private set; } = new AxisTicksRight();
         public AxisLabelRight Y2Label { get; private set; } = new AxisLabelRight();
         public AxisLabelBottom XLabel { get; private set; } = new AxisLabelBottom();
+
+        public AxisTicksLeft YTicks { get; private set; } = new AxisTicksLeft();
+        public AxisTicksRight Y2Ticks { get; private set; } = new AxisTicksRight();
         public AxisTicksBottom XTicks { get; private set; } = new AxisTicksBottom();
+        public AxisTicksTop X2Ticks { get; private set; } = new AxisTicksTop();
+
         public DataBorder DataBorder { get; private set; } = new DataBorder();
         public Benchmark Benchmark { get; private set; } = new Benchmark();
 
         public Plot(int width = 600, int height = 400)
         {
-            AutoLayout(width, height);
+            Info.UpdateSize(width, height);
+            Info.UpdatePadding(left: 60, right: 60, above: 50, below: 50);
+            Console.WriteLine(Info);
 
             Renderables = new List<IRenderable>
             {
@@ -42,6 +48,7 @@ namespace ScottPlot
                 YLabel,
                 Y2Label,
                 DataBackground,
+                X2Ticks,
                 XTicks,
                 YTicks,
                 Y2Ticks,
@@ -50,21 +57,11 @@ namespace ScottPlot
             };
         }
 
-        public void AutoLayout() => AutoLayout(Info.Width, Info.Height);
-
-        // TODO: this requires an IRenderer to do properly...
-        public void AutoLayout(float width, float height)
-        {
-            float dataPadL = YTicks.Size.Width + YLabel.Size.Width;
-            float dataPadR = Y2Ticks.Size.Width + Y2Label.Size.Width;
-            float dataPadB = XTicks.Size.Height + XLabel.Size.Height;
-            float dataPadT = Title.Size.Height;
-
-            float dataWidth = width - dataPadR - dataPadL;
-            float dataHeight = height - dataPadB - dataPadT;
-
-            Info.Resize(width, height, dataWidth, dataHeight, dataPadL, dataPadT);
-        }
+        /// <summary>
+        /// Adjust the spacing between the figure edge and data area
+        /// </summary>
+        public void Padding(float? left = null, float? right = null, float? above = null, float? below = null) =>
+            Info.UpdatePadding(left, right, above, below);
 
         /// <summary>
         /// Automatically set axes based on the limits of the plotted data
@@ -72,25 +69,17 @@ namespace ScottPlot
         public void AutoAxis(bool autoX = true, bool autoY = true, bool tight = false)
         {
             var oldLimits = Info.GetLimits();
-            var newLimits = new AxisLimits();
+            var limits = new AxisLimits();
             foreach (IPlottable plottable in Renderables.Where(x => x is IPlottable))
-                newLimits.Expand(plottable.Limits);
+                limits.Expand(plottable.Limits);
 
             // TODO: improve when tight is false so instead of zooming out blindly it zooms out to the next tick mark
 
-            if (autoX == false)
-            {
-                newLimits.X1 = oldLimits.X1;
-                newLimits.X2 = oldLimits.X2;
-            }
-
-            if (autoY == false)
-            {
-                newLimits.Y1 = oldLimits.Y1;
-                newLimits.Y2 = oldLimits.Y2;
-            }
-
-            Info.SetLimits(newLimits);
+            limits.X1 = autoX ? limits.X1 : oldLimits.X1;
+            limits.X2 = autoX ? limits.X2 : oldLimits.X2;
+            limits.Y1 = autoY ? limits.Y1 : oldLimits.Y1;
+            limits.Y2 = autoY ? limits.Y2 : oldLimits.Y2;
+            Info.SetLimits(limits);
         }
 
         /// <summary>
@@ -103,8 +92,8 @@ namespace ScottPlot
         /// </summary>
         public System.Drawing.Bitmap GetBitmap(float width, float height)
         {
-            AutoLayout(width, height);
-            var bmp = new System.Drawing.Bitmap((int)Info.Width, (int)Info.Height, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+            var pixelFormat = System.Drawing.Imaging.PixelFormat.Format32bppPArgb;
+            var bmp = new System.Drawing.Bitmap((int)width, (int)height, pixelFormat);
             using (var renderer = new SystemDrawingRenderer(bmp))
             {
                 Render(renderer);
@@ -117,29 +106,22 @@ namespace ScottPlot
         /// </summary>
         public void Render(IRenderer renderer)
         {
-            // reset benchmarks
             foreach (Benchmark bench in Renderables.Where(x => x is Benchmark))
                 bench.Start();
 
-            // only resize the layout if the dimensions have changed
-            if (renderer.Width != Info.Width || renderer.Height != Info.Height)
-                AutoLayout(renderer.Width, renderer.Height);
+            Info.UpdateSize(renderer.Width, renderer.Height);
+            Console.WriteLine(Info);
 
-            // ensure our axes are valid
-            if (Info.GetLimits().IsValid == false)
+            if (Info.LimitsHaveBeenSet == false)
                 AutoAxis();
 
-            // calculate ticks based on new layout
             foreach (AxisTicks axisTicks in Renderables.Where(x => x is AxisTicks))
                 axisTicks.Recalculate(Info.GetLimits());
 
-            // render each of the layers
             foreach (var renderable in Renderables.Where(x => x.Layer == PlotLayer.BelowData))
                 renderable.Render(renderer, Info);
-
             foreach (var plottable in Renderables.Where(x => x.Layer == PlotLayer.Data))
                 plottable.Render(renderer, Info);
-
             foreach (var renderable in Renderables.Where(x => x.Layer == PlotLayer.AboveData))
                 renderable.Render(renderer, Info);
         }

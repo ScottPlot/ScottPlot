@@ -5,17 +5,16 @@ using System.Text;
 
 namespace ScottPlot.Renderable
 {
-    public class AxisLabelLeft : AxisLabel { public AxisLabelLeft() { Edge = Edge.Left; Size.Width = 20; } }
-    public class AxisLabelRight : AxisLabel { public AxisLabelRight() { Edge = Edge.Right; Size.Width = 20; } }
-    public class AxisLabelTop : AxisLabel { public AxisLabelTop() { Edge = Edge.Top; Size.Height = 28; FontSize = 14; } }
-    public class AxisLabelBottom : AxisLabel { public AxisLabelBottom() { Edge = Edge.Bottom; Size.Height = 20; } }
+    public class AxisLabelLeft : AxisLabel { public AxisLabelLeft() { Edge = Edge.Left; } }
+    public class AxisLabelRight : AxisLabel { public AxisLabelRight() { Edge = Edge.Right; } }
+    public class AxisLabelTop : AxisLabel { public AxisLabelTop() { Edge = Edge.Top; } }
+    public class AxisLabelBottom : AxisLabel { public AxisLabelBottom() { Edge = Edge.Bottom; } }
 
     public class AxisLabel : IRenderable
     {
         public bool Visible { get; set; } = true;
         public bool AntiAlias { get; set; } = true;
         public PlotLayer Layer => PlotLayer.BelowData;
-        public readonly Size Size = new Size();
 
         public Edge Edge;
 

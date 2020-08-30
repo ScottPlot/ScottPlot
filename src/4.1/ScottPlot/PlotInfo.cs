@@ -1,5 +1,7 @@
-﻿using ScottPlot.Space;
+﻿using ScottPlot.Renderable;
+using ScottPlot.Space;
 using System.Collections.Generic;
+using System.Xml.Linq;
 
 namespace ScottPlot
 {
@@ -22,6 +24,13 @@ namespace ScottPlot
         public float DataOffsetX { get; private set; }
         public float DataOffsetY { get; private set; }
 
+        public float? FixedPadLeft = null;
+        public float? FixedPadRight = null;
+        public float? FixedPadTop = null;
+        public float? FixedPadBottom = null;
+
+        public bool LimitsHaveBeenSet { get; private set; }
+
         public PlotInfo()
         {
             var xPrimary = new LinearAxis(inverted: false);
@@ -32,14 +41,58 @@ namespace ScottPlot
             Planes.Add(new Plane(xPrimary, ySecondary));
         }
 
-        public void Resize(float width, float height, float dataWidth, float dataHeight, float dataOffsetX, float dataOffsetY)
+        public override string ToString()
         {
+            return $"Figure [{Width}, {Height}]; Data [{DataWidth}, {DataHeight}]; " +
+                   $"Offset ({DataOffsetX}, {DataOffsetY}); Plane: {Planes[0]}";
+        }
+
+        private Padding CurrentPadding()
+        {
+            return new Padding
+            {
+                Left = DataOffsetX,
+                Right = Width - DataOffsetX - DataWidth,
+                Above = DataOffsetY,
+                Below = Height - DataOffsetY - DataHeight
+            };
+        }
+
+        /// <summary>
+        /// Resize while preserving padding
+        /// </summary>
+        public void UpdateSize(float width, float height)
+        {
+            var oldPad = CurrentPadding();
             Width = width;
             Height = height;
-            DataWidth = dataWidth;
-            DataHeight = dataHeight;
-            DataOffsetX = dataOffsetX;
-            DataOffsetY = dataOffsetY;
+            DataWidth = width - oldPad.TotalHorizontal;
+            DataHeight = height - oldPad.TotalVertical;
+            DataOffsetX = oldPad.Left;
+            DataOffsetY = oldPad.Above;
+
+            foreach (var plane in Planes)
+            {
+                plane.X.Resize(Width, DataWidth, DataOffsetX);
+                plane.Y.Resize(Height, DataHeight, DataOffsetY);
+            }
+        }
+
+        /// <summary>
+        /// Change padding while preserving size
+        /// </summary>
+        public void UpdatePadding(float? left, float? right, float? above, float? below)
+        {
+            var pad = CurrentPadding();
+            pad.Left = left ?? pad.Left;
+            pad.Right = right ?? pad.Right;
+            pad.Above = above ?? pad.Above;
+            pad.Below = below ?? pad.Below;
+
+            DataWidth = Width - pad.TotalHorizontal;
+            DataHeight = Height - pad.TotalVertical;
+            DataOffsetX = pad.Left;
+            DataOffsetY = pad.Above;
 
             foreach (var plane in Planes)
             {
@@ -63,12 +116,14 @@ namespace ScottPlot
         {
             Planes[planeIndex].X.SetLimits(limits.X1, limits.X2);
             Planes[planeIndex].Y.SetLimits(limits.Y1, limits.Y2);
+            LimitsHaveBeenSet = true;
         }
 
         public void SetLimits(double x1, double x2, double y1, double y2, int planeIndex = 0)
         {
             Planes[planeIndex].X.SetLimits(x1, x2);
             Planes[planeIndex].Y.SetLimits(y1, y2);
+            LimitsHaveBeenSet = true;
         }
 
         public void MousePan(float dX, float dY, int planeIndex = 0)

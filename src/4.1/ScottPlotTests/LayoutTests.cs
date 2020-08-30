@@ -18,6 +18,7 @@ namespace ScottPlotTests
             using (var dataBrush = new SolidBrush(Color.FromArgb(100, Color.Green)))
             {
                 // the data rectangle is chief
+                /*
                 RectangleF dataRect = new RectangleF(plt.Info.DataOffsetX, plt.Info.DataOffsetY, plt.Info.DataWidth, plt.Info.DataHeight);
                 gfx.FillRectangle(dataBrush, dataRect);
 
@@ -38,6 +39,7 @@ namespace ScottPlotTests
                 RectangleF xTicksRect = new RectangleF(plt.Info.DataOffsetX, xLabelRect.Y - plt.XTicks.Size.Height, plt.Info.DataWidth, plt.XTicks.Size.Height);
                 gfx.FillRectangle(labelBrush, xLabelRect);
                 gfx.FillRectangle(ticksBrush, xTicksRect);
+                */
             }
             return bmp;
         }
@@ -50,13 +52,15 @@ namespace ScottPlotTests
             double[] ys = Generate.Sin(51);
             plt.PlotScatter(xs, ys);
 
-            plt.Title.Text = "Title";
-            //plt.Title.FontSize = 36;
+            plt.Title.Text = "Very Big Title";
+            plt.Title.FontSize = 36;
+            plt.Padding(above: 100);
+
             plt.XLabel.Text = "Horizontal Axis";
             plt.YLabel.Text = "Primary Vertical Axis";
             plt.Y2Label.Text = "Secondary Vertical Axis";
 
-            plt.AutoLayout();
+            //plt.AutoLayout();
             plt.Axis(0, 50, -1, 1);
 
             TestTools.SaveFig(plt);

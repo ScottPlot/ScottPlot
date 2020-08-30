@@ -9,10 +9,10 @@ using System.Text;
 
 namespace ScottPlot.Renderable
 {
-    public class AxisTicksLeft : AxisTicks { public AxisTicksLeft() { Edge = Edge.Left; Size.Width = 40; } }
-    public class AxisTicksRight : AxisTicks { public AxisTicksRight() { Edge = Edge.Right; Size.Width = 40; } }
-    //public class AxisTicksTop : AxisTicks { public AxisTicksTop() { Edge = Edge.Top; Size.Height = 50; } }
-    public class AxisTicksBottom : AxisTicks { public AxisTicksBottom() { Edge = Edge.Bottom; Size.Height = 25; } }
+    public class AxisTicksLeft : AxisTicks { public AxisTicksLeft() { Edge = Edge.Left; } }
+    public class AxisTicksRight : AxisTicks { public AxisTicksRight() { Edge = Edge.Right; } }
+    public class AxisTicksTop : AxisTicks { public AxisTicksTop() { Edge = Edge.Top; } }
+    public class AxisTicksBottom : AxisTicks { public AxisTicksBottom() { Edge = Edge.Bottom; } }
 
     public class AxisTicks : IRenderable
     {
@@ -66,52 +66,61 @@ namespace ScottPlot.Renderable
                 float tickLength = tick.IsMajor ? majorTickLength : minorTickLength;
 
                 Font fnt = new Font(FontName, FontSize);
-                Point pt1, pt2, pt3;
+                Point ptTickDataEdge, ptTickExtended, ptOppositeData;
 
                 if (Edge == Edge.Left)
                 {
                     fnt.HorizontalAlignment = HorizontalAlignment.Right;
                     fnt.VerticalAlignment = VerticalAlignment.Center;
                     float tickY = info.GetPixelY(tick.Position);
-                    pt1 = new Point(info.DataOffsetX, tickY);
-                    pt2 = new Point(info.DataOffsetX - tickLength, tickY);
-                    pt3 = new Point(info.DataOffsetX + info.DataWidth, tickY);
+                    ptTickDataEdge = new Point(info.DataOffsetX, tickY);
+                    ptTickExtended = new Point(info.DataOffsetX - tickLength, tickY);
+                    ptOppositeData = new Point(info.DataOffsetX + info.DataWidth, tickY);
                 }
                 else if (Edge == Edge.Right)
                 {
                     fnt.HorizontalAlignment = HorizontalAlignment.Left;
                     fnt.VerticalAlignment = VerticalAlignment.Center;
                     float tickY = info.GetPixelY(tick.Position);
-                    pt1 = new Point(info.DataOffsetX + info.DataWidth, tickY);
-                    pt2 = new Point(info.DataOffsetX + info.DataWidth + tickLength, tickY);
-                    pt3 = new Point(info.DataOffsetX, tickY);
+                    ptTickDataEdge = new Point(info.DataOffsetX + info.DataWidth, tickY);
+                    ptTickExtended = new Point(info.DataOffsetX + info.DataWidth + tickLength, tickY);
+                    ptOppositeData = new Point(info.DataOffsetX, tickY);
                 }
                 else if (Edge == Edge.Bottom)
                 {
                     fnt.HorizontalAlignment = HorizontalAlignment.Center;
                     fnt.VerticalAlignment = VerticalAlignment.Top;
                     float tickX = info.GetPixelX(tick.Position);
-                    pt1 = new Point(tickX, info.DataOffsetY + info.DataHeight);
-                    pt2 = new Point(tickX, info.DataOffsetY + info.DataHeight + tickLength);
-                    pt3 = new Point(tickX, info.DataOffsetY);
+                    ptTickDataEdge = new Point(tickX, info.DataOffsetY + info.DataHeight);
+                    ptTickExtended = new Point(tickX, info.DataOffsetY + info.DataHeight + tickLength);
+                    ptOppositeData = new Point(tickX, info.DataOffsetY);
+                }
+                else if (Edge == Edge.Top)
+                {
+                    fnt.HorizontalAlignment = HorizontalAlignment.Center;
+                    fnt.VerticalAlignment = VerticalAlignment.Bottom;
+                    float tickX = info.GetPixelX(tick.Position);
+                    ptTickDataEdge = new Point(tickX, info.DataOffsetY);
+                    ptTickExtended = new Point(tickX, info.DataOffsetY - tickLength);
+                    ptOppositeData = new Point(tickX, info.DataOffsetY + info.DataHeight);
                 }
                 else
                 {
-                    throw new NotImplementedException();
+                    throw new NotImplementedException("unsupported edge");
                 }
 
                 if (tick.IsMajor)
                 {
-                    renderer.DrawText(pt2, tick.Label, FontColor, fnt);
-                    renderer.DrawLine(pt1, pt2, MajorColor, MajorWidth);
+                    renderer.DrawText(ptTickExtended, tick.Label, FontColor, fnt);
+                    renderer.DrawLine(ptTickDataEdge, ptTickExtended, MajorColor, MajorWidth);
                     if (MajorGrid)
-                        renderer.DrawLine(pt1, pt3, MajorGridColor, MajorGridWidth);
+                        renderer.DrawLine(ptTickDataEdge, ptOppositeData, MajorGridColor, MajorGridWidth);
                 }
                 else
                 {
-                    renderer.DrawLine(pt1, pt2, MinorColor, MinorWidth);
+                    renderer.DrawLine(ptTickDataEdge, ptTickExtended, MinorColor, MinorWidth);
                     if (MinorGrid)
-                        renderer.DrawLine(pt1, pt3, MinorGridColor, MinorGridWidth);
+                        renderer.DrawLine(ptTickDataEdge, ptOppositeData, MinorGridColor, MinorGridWidth);
                 }
             }
         }

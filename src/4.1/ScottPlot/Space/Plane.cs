@@ -17,5 +17,10 @@ namespace ScottPlot.Space
             X = x;
             Y = y;
         }
+
+        public override string ToString()
+        {
+            return $"X=[{X.Min}, {X.Max}], Y=[{Y.Min}, {Y.Max}]";
+        }
     }
 }
