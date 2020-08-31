@@ -61,13 +61,13 @@ namespace ScottPlot.Renderable
                 TickGenerator.Recalculate(limits.Y1, limits.Y2);
         }
 
-        public void Render(IRenderer renderer, PlotInfo info)
+        public void Render(IRenderer renderer, Dimensions dims)
         {
-            DrawGridLines(renderer, info);
-            DrawTickMarks(renderer, info);
-            DrawTickLabels(renderer, info);
-            DrawAxisLines(renderer, info);
-            DrawAxisLabels(renderer, info);
+            DrawGridLines(renderer, dims);
+            DrawTickMarks(renderer, dims);
+            DrawTickLabels(renderer, dims);
+            DrawAxisLines(renderer, dims);
+            DrawAxisLabels(renderer, dims);
         }
 
         private Font GetTickFont()
@@ -100,7 +100,7 @@ namespace ScottPlot.Renderable
             return fnt;
         }
 
-        public void DrawAxisLabels(IRenderer renderer, PlotInfo info)
+        public void DrawAxisLabels(IRenderer renderer, Dimensions info)
         {
             Font font = new Font(LabelFontName, LabelFontSize);
 
@@ -138,7 +138,7 @@ namespace ScottPlot.Renderable
             }
         }
 
-        private void DrawGridLines(IRenderer renderer, PlotInfo info)
+        private void DrawGridLines(IRenderer renderer, Dimensions dims)
         {
             foreach (Tick tick in TickGenerator.Ticks)
             {
@@ -146,27 +146,27 @@ namespace ScottPlot.Renderable
 
                 if (Edge == Edge.Left)
                 {
-                    float tickY = info.GetPixelY(tick.Position, YAxisIndex);
-                    pt1 = new Point(info.DataOffsetX, tickY);
-                    pt2 = new Point(info.DataOffsetX + info.DataWidth, tickY);
+                    float tickY = dims.GetPixelY(tick.Position, YAxisIndex);
+                    pt1 = new Point(dims.DataOffsetX, tickY);
+                    pt2 = new Point(dims.DataOffsetX + dims.DataWidth, tickY);
                 }
                 else if (Edge == Edge.Right)
                 {
-                    float tickY = info.GetPixelY(tick.Position, YAxisIndex);
-                    pt1 = new Point(info.DataOffsetX, tickY);
-                    pt2 = new Point(info.DataOffsetX + info.DataWidth, tickY);
+                    float tickY = dims.GetPixelY(tick.Position, YAxisIndex);
+                    pt1 = new Point(dims.DataOffsetX, tickY);
+                    pt2 = new Point(dims.DataOffsetX + dims.DataWidth, tickY);
                 }
                 else if (Edge == Edge.Bottom)
                 {
-                    float tickX = info.GetPixelX(tick.Position, XAxisIndex);
-                    pt1 = new Point(tickX, info.DataOffsetY);
-                    pt2 = new Point(tickX, info.DataOffsetY + info.DataHeight);
+                    float tickX = dims.GetPixelX(tick.Position, XAxisIndex);
+                    pt1 = new Point(tickX, dims.DataOffsetY);
+                    pt2 = new Point(tickX, dims.DataOffsetY + dims.DataHeight);
                 }
                 else if (Edge == Edge.Top)
                 {
-                    float tickX = info.GetPixelX(tick.Position, XAxisIndex);
-                    pt1 = new Point(tickX, info.DataOffsetY + info.DataHeight);
-                    pt2 = new Point(tickX, info.DataOffsetY + info.DataHeight);
+                    float tickX = dims.GetPixelX(tick.Position, XAxisIndex);
+                    pt1 = new Point(tickX, dims.DataOffsetY + dims.DataHeight);
+                    pt2 = new Point(tickX, dims.DataOffsetY + dims.DataHeight);
                 }
                 else
                 {
@@ -180,7 +180,7 @@ namespace ScottPlot.Renderable
             }
         }
 
-        private void DrawTickMarks(IRenderer renderer, PlotInfo info)
+        private void DrawTickMarks(IRenderer renderer, Dimensions dims)
         {
             float majorTickLength = 5;
             float minorTickLength = 2;
@@ -194,27 +194,27 @@ namespace ScottPlot.Renderable
 
                 if (Edge == Edge.Left)
                 {
-                    float tickY = info.GetPixelY(tick.Position, YAxisIndex);
-                    tickPt1 = new Point(info.DataOffsetX - Offset, tickY);
-                    tickPt2 = new Point(info.DataOffsetX - Offset - tickLength, tickY);
+                    float tickY = dims.GetPixelY(tick.Position, YAxisIndex);
+                    tickPt1 = new Point(dims.DataOffsetX - Offset, tickY);
+                    tickPt2 = new Point(dims.DataOffsetX - Offset - tickLength, tickY);
                 }
                 else if (Edge == Edge.Right)
                 {
-                    float tickY = info.GetPixelY(tick.Position, YAxisIndex);
-                    tickPt1 = new Point(info.DataOffsetX + Offset + info.DataWidth, tickY);
-                    tickPt2 = new Point(info.DataOffsetX + Offset + info.DataWidth + tickLength, tickY);
+                    float tickY = dims.GetPixelY(tick.Position, YAxisIndex);
+                    tickPt1 = new Point(dims.DataOffsetX + Offset + dims.DataWidth, tickY);
+                    tickPt2 = new Point(dims.DataOffsetX + Offset + dims.DataWidth + tickLength, tickY);
                 }
                 else if (Edge == Edge.Bottom)
                 {
-                    float tickX = info.GetPixelX(tick.Position, XAxisIndex);
-                    tickPt1 = new Point(tickX, info.DataOffsetY + info.DataHeight + Offset);
-                    tickPt2 = new Point(tickX, info.DataOffsetY + info.DataHeight + Offset + tickLength);
+                    float tickX = dims.GetPixelX(tick.Position, XAxisIndex);
+                    tickPt1 = new Point(tickX, dims.DataOffsetY + dims.DataHeight + Offset);
+                    tickPt2 = new Point(tickX, dims.DataOffsetY + dims.DataHeight + Offset + tickLength);
                 }
                 else if (Edge == Edge.Top)
                 {
-                    float tickX = info.GetPixelX(tick.Position, XAxisIndex);
-                    tickPt1 = new Point(tickX, info.DataOffsetY - Offset);
-                    tickPt2 = new Point(tickX, info.DataOffsetY - Offset - tickLength);
+                    float tickX = dims.GetPixelX(tick.Position, XAxisIndex);
+                    tickPt1 = new Point(tickX, dims.DataOffsetY - Offset);
+                    tickPt2 = new Point(tickX, dims.DataOffsetY - Offset - tickLength);
                 }
                 else
                 {
@@ -228,7 +228,7 @@ namespace ScottPlot.Renderable
             }
         }
 
-        private void DrawTickLabels(IRenderer renderer, PlotInfo info)
+        private void DrawTickLabels(IRenderer renderer, Dimensions dims)
         {
             Font fnt = GetTickFont();
 
@@ -239,13 +239,13 @@ namespace ScottPlot.Renderable
 
                 Point pt;
                 if (Edge == Edge.Left)
-                    pt = new Point(info.DataOffsetX - Offset - majorTickLength, info.GetPixelY(tick.Position, YAxisIndex));
+                    pt = new Point(dims.DataOffsetX - Offset - majorTickLength, dims.GetPixelY(tick.Position, YAxisIndex));
                 else if (Edge == Edge.Right)
-                    pt = new Point(info.DataOffsetX + Offset + info.DataWidth + majorTickLength, info.GetPixelY(tick.Position, YAxisIndex));
+                    pt = new Point(dims.DataOffsetX + Offset + dims.DataWidth + majorTickLength, dims.GetPixelY(tick.Position, YAxisIndex));
                 else if (Edge == Edge.Bottom)
-                    pt = new Point(info.GetPixelX(tick.Position, XAxisIndex), info.DataOffsetY + info.DataHeight + Offset + majorTickLength);
+                    pt = new Point(dims.GetPixelX(tick.Position, XAxisIndex), dims.DataOffsetY + dims.DataHeight + Offset + majorTickLength);
                 else if (Edge == Edge.Top)
-                    pt = new Point(info.GetPixelX(tick.Position, XAxisIndex), info.DataOffsetY - Offset - majorTickLength);
+                    pt = new Point(dims.GetPixelX(tick.Position, XAxisIndex), dims.DataOffsetY - Offset - majorTickLength);
                 else
                     throw new NotImplementedException();
 
@@ -253,30 +253,30 @@ namespace ScottPlot.Renderable
             }
         }
 
-        private void DrawAxisLines(IRenderer renderer, PlotInfo info)
+        private void DrawAxisLines(IRenderer renderer, Dimensions dims)
         {
             if (Edge == Edge.Left)
             {
-                Point edgePt1 = new Point(info.DataW - Offset, info.DataN);
-                Point edgePt2 = new Point(info.DataW - Offset, info.DataS);
+                Point edgePt1 = new Point(dims.DataW - Offset, dims.DataN);
+                Point edgePt2 = new Point(dims.DataW - Offset, dims.DataS);
                 renderer.DrawLine(edgePt1, edgePt2, EdgeColor, EdgeWidth);
             }
             else if (Edge == Edge.Right)
             {
-                Point edgePt1 = new Point(info.DataE + Offset, info.DataN);
-                Point edgePt2 = new Point(info.DataE + Offset, info.DataS);
+                Point edgePt1 = new Point(dims.DataE + Offset, dims.DataN);
+                Point edgePt2 = new Point(dims.DataE + Offset, dims.DataS);
                 renderer.DrawLine(edgePt1, edgePt2, EdgeColor, EdgeWidth);
             }
             else if (Edge == Edge.Top)
             {
-                Point edgePt1 = new Point(info.DataW, info.DataN - Offset);
-                Point edgePt2 = new Point(info.DataE, info.DataN - Offset);
+                Point edgePt1 = new Point(dims.DataW, dims.DataN - Offset);
+                Point edgePt2 = new Point(dims.DataE, dims.DataN - Offset);
                 renderer.DrawLine(edgePt1, edgePt2, EdgeColor, EdgeWidth);
             }
             else if (Edge == Edge.Bottom)
             {
-                Point edgePt1 = new Point(info.DataW, info.DataS + Offset);
-                Point edgePt2 = new Point(info.DataE, info.DataS + Offset);
+                Point edgePt1 = new Point(dims.DataW, dims.DataS + Offset);
+                Point edgePt2 = new Point(dims.DataE, dims.DataS + Offset);
                 renderer.DrawLine(edgePt1, edgePt2, EdgeColor, EdgeWidth);
             }
             else

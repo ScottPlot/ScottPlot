@@ -7,6 +7,6 @@ namespace ScottPlot.Renderable
         PlotLayer Layer { get; }
         bool Visible { get; set; }
         bool AntiAlias { get; set; }
-        void Render(IRenderer renderer, PlotInfo info);
+        void Render(IRenderer renderer, Dimensions dims);
     }
 }

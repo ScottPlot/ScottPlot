@@ -11,7 +11,7 @@ namespace ScottPlot
     /// <summary>
     /// This class handles dimensions, axis limits, and pixel/position conversion and manipulation.
     /// </summary>
-    public class PlotInfo
+    public class Dimensions
     {
         public List<IAxis1D> XAxes { get; private set; } = new List<IAxis1D>();
         public List<IAxis1D> YAxes { get; private set; } = new List<IAxis1D>();
@@ -42,7 +42,7 @@ namespace ScottPlot
         public Point DataSC => new Point(DataOffsetX + DataWidth / 2, DataOffsetY + DataHeight);
         public Point DataSE => new Point(DataOffsetX + DataWidth, DataOffsetY + DataHeight);
 
-        public PlotInfo()
+        public Dimensions()
         {
             AddAxes(1, 1);
         }

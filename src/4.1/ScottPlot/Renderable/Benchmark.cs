@@ -22,7 +22,7 @@ namespace ScottPlot.Renderable
         public double MSec { get { return Stopwatch.ElapsedTicks * 1000.0 / Stopwatch.Frequency; } }
         public double Hz { get { return (MSec > 0) ? 1000.0 / MSec : 0; } }
 
-        public void Render(IRenderer renderer, PlotInfo info)
+        public void Render(IRenderer renderer, Dimensions dims)
         {
             if (Visible == false)
                 return;
@@ -35,8 +35,8 @@ namespace ScottPlot.Renderable
             Size txtSize = renderer.MeasureText(message, fnt);
 
             Point txtPoint = new Point(
-            x: info.DataOffsetX + info.DataWidth - debugPadding - txtSize.Width,
-            y: info.DataOffsetY + info.DataHeight - debugPadding - txtSize.Height);
+            x: dims.DataOffsetX + dims.DataWidth - debugPadding - txtSize.Width,
+            y: dims.DataOffsetY + dims.DataHeight - debugPadding - txtSize.Height);
 
             renderer.FillRectangle(txtPoint, txtSize, FillColor);
             renderer.DrawRectangle(txtPoint, txtSize, OutlineColor, 1);

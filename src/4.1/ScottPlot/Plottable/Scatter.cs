@@ -25,7 +25,7 @@ namespace ScottPlot.Plottable
         public Color Color = Colors.Magenta;
         public float LineWidth = 5;
 
-        public void Render(IRenderer renderer, PlotInfo info)
+        public void Render(IRenderer renderer, Dimensions info)
         {
             if (Visible == false)
                 return;

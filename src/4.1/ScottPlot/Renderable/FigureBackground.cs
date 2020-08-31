@@ -11,7 +11,7 @@ namespace ScottPlot.Renderable
 
         public Color Color = Colors.White;
 
-        public void Render(IRenderer renderer, PlotInfo info)
+        public void Render(IRenderer renderer, Dimensions dims)
         {
             if (Visible == false)
                 return;

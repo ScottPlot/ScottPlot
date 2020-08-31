@@ -8,12 +8,15 @@ using System.Text;
 namespace ScottPlot
 {
     /// <summary>
-    /// This class facilitates mouse interaction with Plot objects
+    /// This class facilitates mouse interaction with Plot objects.
+    /// 
+    /// User controls simply pass mouse state to/from this module, 
+    /// keeping mouse interactivity logic out of user control code.
     /// </summary>
-    public class PlotControl
+    public class MouseTracker
     {
         readonly Plot plt;
-        readonly PlotInfo info;
+        readonly Dimensions info;
 
         Point LeftDown;
         Point CenterDown;
@@ -23,7 +26,7 @@ namespace ScottPlot
         bool IsCenterDown { get => CenterDown != null; }
         bool IsRightDown { get => RightDown != null; }
 
-        public PlotControl(Plot plt)
+        public MouseTracker(Plot plt)
         {
             this.plt = plt;
             info = plt.Info;

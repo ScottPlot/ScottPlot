@@ -15,7 +15,7 @@ namespace ScottPlot
         public float Width { get { return Info.Width; } }
         public float Height { get { return Info.Height; } }
 
-        public PlotInfo Info { get; private set; } = new PlotInfo();
+        public Dimensions Info { get; private set; } = new Dimensions();
         public List<IRenderable> Renderables { get; private set; } = new List<IRenderable>();
 
         public Plot(int width = 600, int height = 400)
@@ -32,14 +32,14 @@ namespace ScottPlot
                 new AxisTicksTop() { Label = "Horizontal Upper" },
                 new AxisTicksBottom() { Label = "Horizontal Lower" },
                 new AxisTicksLeft() { Label = "Left Vertical",
-                    EdgeColor = Colors.Red, MajorTickColor = Colors.Red, MinorTickColor = Colors.Red, 
+                    EdgeColor = Colors.Red, MajorTickColor = Colors.Red, MinorTickColor = Colors.Red,
                     LabelFontColor = Colors.Red, TickFontColor = Colors.Red },
                 new AxisTicksRight() {
                     Label = "Right Vertical", YAxisIndex = 1, MajorGrid = false, MinorGrid = false,
-                    EdgeColor = Colors.Green, MajorTickColor = Colors.Green, MinorTickColor = Colors.Green, 
+                    EdgeColor = Colors.Green, MajorTickColor = Colors.Green, MinorTickColor = Colors.Green,
                     LabelFontColor = Colors.Green, TickFontColor = Colors.Green
                 },
-                new AxisTicksLeft() { Label = "Floating Vertical", YAxisIndex = 2, Offset = 80, 
+                new AxisTicksLeft() { Label = "Floating Vertical", YAxisIndex = 2, Offset = 80,
                     MajorGrid = false, MinorGrid = false,
                     EdgeColor = Colors.Blue, MajorTickColor = Colors.Blue, MinorTickColor = Colors.Blue,
                     LabelFontColor = Colors.Blue, TickFontColor = Colors.Blue
@@ -215,18 +215,15 @@ namespace ScottPlot
             int yAxisIndex = 0
             )
         {
-            AxisLimits2D currentLimits = Info.GetLimits(xAxisIndex, yAxisIndex);
+            double x1 = xMin ?? Info.XAxes[xAxisIndex].Min;
+            double x2 = xMax ?? Info.XAxes[xAxisIndex].Max;
+            Info.XAxes[xAxisIndex].SetLimits(x1, x2);
 
-            if (xMin is null && xMax is null && yMin is null && yMax is null)
-                return currentLimits;
+            double y1 = yMin ?? Info.YAxes[yAxisIndex].Min;
+            double y2 = yMax ?? Info.YAxes[yAxisIndex].Max;
+            Info.YAxes[yAxisIndex].SetLimits(y1, y2);
 
-            double x1 = xMin ?? currentLimits.X1;
-            double x2 = xMax ?? currentLimits.X2;
-            double y1 = yMin ?? currentLimits.Y1;
-            double y2 = yMax ?? currentLimits.Y2;
-            AxisLimits2D newLimits = new AxisLimits2D(x1, x2, y1, y2);
-            Info.SetLimits(newLimits, xAxisIndex, yAxisIndex);
-            return newLimits;
+            return Info.GetLimits(xAxisIndex, yAxisIndex);
         }
     }
 }

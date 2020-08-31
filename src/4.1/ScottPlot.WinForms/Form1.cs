@@ -10,13 +10,13 @@ namespace ScottPlot.WinForms
     public partial class Form1 : Form
     {
         public Plot plt;
-        private readonly PlotControl pc;
+        private readonly MouseTracker pc;
 
         public Form1()
         {
             InitializeComponent();
             plt = new Plot();
-            pc = new PlotControl(plt);
+            pc = new MouseTracker(plt);
         }
 
         private void Form1_Load(object sender, EventArgs e)

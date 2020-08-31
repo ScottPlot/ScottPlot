@@ -4,6 +4,9 @@ using System.Text;
 
 namespace ScottPlot
 {
+    /// <summary>
+    /// This class generates data for testing
+    /// </summary>
     public static class Generate
     {
         public static double[] Sin(int pointCount, double oscillations = 1, double offset = 0, double mult = 1, double phase = 0)
