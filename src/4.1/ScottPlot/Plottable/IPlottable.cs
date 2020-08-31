@@ -5,6 +5,8 @@ namespace ScottPlot.Plottable
 {
     public interface IPlottable : IRenderable
     {
+        int XAxisIndex { get; set; }
+        int YAxisIndex { get; set; }
         int PointCount { get; }
         AxisLimits Limits { get; }
     }

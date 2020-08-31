@@ -52,7 +52,7 @@ namespace ScottPlotTests
             double[] ys = Generate.Sin(51);
             plt.PlotScatter(xs, ys);
 
-            plt.Axis(0, 50, -1, 1);
+            //plt.Axis(0, 50, -1, 1);
 
             TestTools.SaveFig(plt);
             TestTools.SaveFig(ShowLayout(plt));

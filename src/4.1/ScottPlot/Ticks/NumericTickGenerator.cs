@@ -11,7 +11,6 @@ namespace ScottPlot.Ticks
 
         public void Recalculate(double min, double max)
         {
-            double span = max - min;
             double fixedSpacingMajor = TickTools.GetIdealTickSpacing(min, max, (int)MaxTickCount);
             double fixedSpacingMinor = fixedSpacingMajor / 5;
             Recalculate(min, max, fixedSpacingMajor, fixedSpacingMinor);
@@ -26,7 +25,7 @@ namespace ScottPlot.Ticks
                 firstMajorTickPosition += fixedSpacingMajor;
 
             for (double i = firstMajorTickPosition; i <= max; i += fixedSpacingMajor)
-                Ticks.Add(new Tick(i, i.ToString(), true));
+                Ticks.Add(new Tick(i, Math.Round(i, 8).ToString(), true));
             double[] majorTickPositions = Ticks.Select(x => x.Position).ToArray();
 
 

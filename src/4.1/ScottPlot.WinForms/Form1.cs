@@ -22,13 +22,15 @@ namespace ScottPlot.WinForms
         {
             Random rand = new Random();
             double[] xs = Generate.Consecutive(51);
-            plt.PlotScatter(xs, Generate.RandomWalk(rand, 51), Colors.Red);
-            plt.PlotScatter(xs, Generate.RandomWalk(rand, 51), Colors.Green);
-            plt.PlotScatter(xs, Generate.RandomWalk(rand, 51), Colors.Blue);
-            //plt.Title.Text = "ScottPlot 4.1 Demo";
-            //plt.YLabel.Text = "Primary Vertical Axis";
-            //plt.Y2Label.Text = "Secondary Vertical Axis";
-            //plt.XLabel.Text = "Horizontal Axis";
+            var s1 = plt.PlotScatter(xs, Generate.RandomWalk(rand, 51, .01), Colors.Red);
+            var s2 = plt.PlotScatter(xs, Generate.RandomWalk(rand, 51), Colors.Green);
+            var s3 = plt.PlotScatter(xs, Generate.RandomWalk(rand, 51, 100), Colors.Blue);
+
+            plt.AddAxes(1, 3);
+            s1.YAxisIndex = 0;
+            s2.YAxisIndex = 1;
+            s3.YAxisIndex = 2;
+
             Render();
         }
 
@@ -98,6 +100,21 @@ namespace ScottPlot.WinForms
                 pc.MouseUpRight(e.X, e.Y);
 
             Render();
+        }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+            pc.SetActiveAxis(0, 0);
+        }
+
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+            pc.SetActiveAxis(0, 1);
+        }
+
+        private void radioButton3_CheckedChanged(object sender, EventArgs e)
+        {
+            pc.SetActiveAxis(0, 2);
         }
     }
 }

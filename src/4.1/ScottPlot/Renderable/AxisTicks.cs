@@ -16,10 +16,12 @@ namespace ScottPlot.Renderable
         public bool Visible { get; set; } = true;
         public bool AntiAlias { get; set; } = true;
         public PlotLayer Layer => PlotLayer.AboveData;
+        public int XAxisIndex { get; set; }
+        public int YAxisIndex { get; set; }
 
         public Edge Edge;
         public float Offset = 0;
-        public float LabelOffset = 20;
+        public float LabelOffset = 40;
 
         public float EdgeWidth = 1;
         public Color EdgeColor = Colors.Black;
@@ -101,8 +103,6 @@ namespace ScottPlot.Renderable
         public void DrawAxisLabels(IRenderer renderer, PlotInfo info)
         {
             Font font = new Font(LabelFontName, LabelFontSize);
-            float centerX = info.DataOffsetX + info.DataWidth / 2;
-            float centerY = info.DataOffsetY + info.DataHeight / 2;
 
             if (Edge == Edge.Bottom)
             {
@@ -146,25 +146,25 @@ namespace ScottPlot.Renderable
 
                 if (Edge == Edge.Left)
                 {
-                    float tickY = info.GetPixelY(tick.Position);
+                    float tickY = info.GetPixelY(tick.Position, YAxisIndex);
                     pt1 = new Point(info.DataOffsetX, tickY);
                     pt2 = new Point(info.DataOffsetX + info.DataWidth, tickY);
                 }
                 else if (Edge == Edge.Right)
                 {
-                    float tickY = info.GetPixelY(tick.Position);
+                    float tickY = info.GetPixelY(tick.Position, YAxisIndex);
                     pt1 = new Point(info.DataOffsetX, tickY);
                     pt2 = new Point(info.DataOffsetX + info.DataWidth, tickY);
                 }
                 else if (Edge == Edge.Bottom)
                 {
-                    float tickX = info.GetPixelX(tick.Position);
+                    float tickX = info.GetPixelX(tick.Position, XAxisIndex);
                     pt1 = new Point(tickX, info.DataOffsetY);
                     pt2 = new Point(tickX, info.DataOffsetY + info.DataHeight);
                 }
                 else if (Edge == Edge.Top)
                 {
-                    float tickX = info.GetPixelX(tick.Position);
+                    float tickX = info.GetPixelX(tick.Position, XAxisIndex);
                     pt1 = new Point(tickX, info.DataOffsetY + info.DataHeight);
                     pt2 = new Point(tickX, info.DataOffsetY + info.DataHeight);
                 }
@@ -194,25 +194,25 @@ namespace ScottPlot.Renderable
 
                 if (Edge == Edge.Left)
                 {
-                    float tickY = info.GetPixelY(tick.Position);
+                    float tickY = info.GetPixelY(tick.Position, YAxisIndex);
                     tickPt1 = new Point(info.DataOffsetX - Offset, tickY);
                     tickPt2 = new Point(info.DataOffsetX - Offset - tickLength, tickY);
                 }
                 else if (Edge == Edge.Right)
                 {
-                    float tickY = info.GetPixelY(tick.Position);
+                    float tickY = info.GetPixelY(tick.Position, YAxisIndex);
                     tickPt1 = new Point(info.DataOffsetX + Offset + info.DataWidth, tickY);
                     tickPt2 = new Point(info.DataOffsetX + Offset + info.DataWidth + tickLength, tickY);
                 }
                 else if (Edge == Edge.Bottom)
                 {
-                    float tickX = info.GetPixelX(tick.Position);
+                    float tickX = info.GetPixelX(tick.Position, XAxisIndex);
                     tickPt1 = new Point(tickX, info.DataOffsetY + info.DataHeight + Offset);
                     tickPt2 = new Point(tickX, info.DataOffsetY + info.DataHeight + Offset + tickLength);
                 }
                 else if (Edge == Edge.Top)
                 {
-                    float tickX = info.GetPixelX(tick.Position);
+                    float tickX = info.GetPixelX(tick.Position, XAxisIndex);
                     tickPt1 = new Point(tickX, info.DataOffsetY - Offset);
                     tickPt2 = new Point(tickX, info.DataOffsetY - Offset - tickLength);
                 }
@@ -239,13 +239,13 @@ namespace ScottPlot.Renderable
 
                 Point pt;
                 if (Edge == Edge.Left)
-                    pt = new Point(info.DataOffsetX - Offset - majorTickLength, info.GetPixelY(tick.Position));
+                    pt = new Point(info.DataOffsetX - Offset - majorTickLength, info.GetPixelY(tick.Position, YAxisIndex));
                 else if (Edge == Edge.Right)
-                    pt = new Point(info.DataOffsetX + Offset + info.DataWidth + majorTickLength, info.GetPixelY(tick.Position));
+                    pt = new Point(info.DataOffsetX + Offset + info.DataWidth + majorTickLength, info.GetPixelY(tick.Position, YAxisIndex));
                 else if (Edge == Edge.Bottom)
-                    pt = new Point(info.GetPixelX(tick.Position), info.DataOffsetY + info.DataHeight + Offset + majorTickLength);
+                    pt = new Point(info.GetPixelX(tick.Position, XAxisIndex), info.DataOffsetY + info.DataHeight + Offset + majorTickLength);
                 else if (Edge == Edge.Top)
-                    pt = new Point(info.GetPixelX(tick.Position), info.DataOffsetY - Offset - majorTickLength);
+                    pt = new Point(info.GetPixelX(tick.Position, XAxisIndex), info.DataOffsetY - Offset - majorTickLength);
                 else
                     throw new NotImplementedException();
 

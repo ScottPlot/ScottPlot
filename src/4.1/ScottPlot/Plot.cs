@@ -18,34 +18,29 @@ namespace ScottPlot
         public PlotInfo Info { get; private set; } = new PlotInfo();
         public List<IRenderable> Renderables { get; private set; } = new List<IRenderable>();
 
-        public FigureBackground FigureBackground { get; private set; } = new FigureBackground();
-        public DataBackground DataBackground { get; private set; } = new DataBackground();
-
-        public AxisTicksLeft YTicks { get; private set; } = new AxisTicksLeft() { Label = "Left Vertical" };
-        public AxisTicksRight Y2Ticks { get; private set; } = new AxisTicksRight() { Label = "Right Vertical" };
-        public AxisTicksLeft Y3Ticks { get; private set; } = new AxisTicksLeft() { Label = "Floating Vertical", Offset = 60 };
-        public AxisTicksBottom XTicks { get; private set; } = new AxisTicksBottom() { Label = "Horizontal Lower" };
-        public AxisTicksTop X2Ticks { get; private set; } = new AxisTicksTop() { Label = "Horizontal Upper" };
-
-        public Benchmark Benchmark { get; private set; } = new Benchmark();
-
         public Plot(int width = 600, int height = 400)
         {
             Info.UpdateSize(width, height);
             Info.UpdatePadding(left: 150, right: 100, above: 100, below: 100);
             Console.WriteLine(Info);
 
+            AddAxes(1, 3);
             Renderables = new List<IRenderable>
             {
-                FigureBackground,
-                DataBackground,
-                X2Ticks,
-                XTicks,
-                YTicks,
-                Y2Ticks,
-                Y3Ticks,
-                Benchmark
+                new FigureBackground(),
+                new DataBackground(),
+                new AxisTicksTop() { Label = "Horizontal Upper" },
+                new AxisTicksBottom() { Label = "Horizontal Lower" },
+                new AxisTicksLeft() { Label = "Left Vertical" },
+                new AxisTicksRight() { Label = "Right Vertical", YAxisIndex = 1, MajorGrid = false, MinorGrid = false },
+                new AxisTicksLeft() { Label = "Floating Vertical", YAxisIndex = 2, Offset = 80, MajorGrid = false, MinorGrid = false },
+                new Benchmark()
             };
+        }
+
+        public void AddAxes(int totalX, int totalY)
+        {
+            Info.AddAxes(totalX, totalY);
         }
 
         /// <summary>
@@ -54,23 +49,58 @@ namespace ScottPlot
         public void Padding(float? left = null, float? right = null, float? above = null, float? below = null) =>
             Info.UpdatePadding(left, right, above, below);
 
-        /// <summary>
-        /// Automatically set axes based on the limits of the plotted data
-        /// </summary>
-        public void AutoAxis(bool autoX = true, bool autoY = true, bool tight = false)
+        public void AutoAxis()
         {
-            var oldLimits = Info.GetLimits();
-            var limits = new AxisLimits();
-            foreach (IPlottable plottable in Renderables.Where(x => x is IPlottable))
-                limits.Expand(plottable.Limits);
+            AutoX();
+            AutoY();
+        }
 
-            // TODO: improve when tight is false so instead of zooming out blindly it zooms out to the next tick mark
+        public void AutoX()
+        {
+            for (int i = 0; i < Info.XAxes.Count; i++)
+                AutoX(i);
+        }
 
-            limits.X1 = autoX ? limits.X1 : oldLimits.X1;
-            limits.X2 = autoX ? limits.X2 : oldLimits.X2;
-            limits.Y1 = autoY ? limits.Y1 : oldLimits.Y1;
-            limits.Y2 = autoY ? limits.Y2 : oldLimits.Y2;
-            Info.SetLimits(limits);
+        public void AutoY()
+        {
+            for (int i = 0; i < Info.YAxes.Count; i++)
+                AutoY(i);
+        }
+
+        public void AutoAxis(int xAxisIndex, int yAxisIndex)
+        {
+            AutoX(xAxisIndex);
+            AutoY(yAxisIndex);
+        }
+
+        public void AutoX(int xAxisIndex = 0)
+        {
+            var ps = Renderables.Where(x => x is IPlottable)
+                                .Select(x => (IPlottable)x)
+                                .Where(x => x.XAxisIndex == xAxisIndex);
+
+            if (ps.Count() == 0)
+                return;
+
+            double min = ps.Select(x => x.Limits.X1).Min();
+            double max = ps.Select(x => x.Limits.X2).Max();
+
+            Info.XAxes[xAxisIndex].SetLimits(min, max);
+        }
+
+        public void AutoY(int yAxisIndex = 0)
+        {
+            var ps = Renderables.Where(x => x is IPlottable)
+                                .Select(x => (IPlottable)x)
+                                .Where(x => x.YAxisIndex == yAxisIndex);
+
+            if (ps.Count() == 0)
+                return;
+
+            double min = ps.Select(x => x.Limits.Y1).Min();
+            double max = ps.Select(x => x.Limits.Y2).Max();
+
+            Info.YAxes[yAxisIndex].SetLimits(min, max);
         }
 
         /// <summary>
@@ -103,11 +133,19 @@ namespace ScottPlot
             Info.UpdateSize(renderer.Width, renderer.Height);
             Console.WriteLine(Info);
 
-            if (Info.LimitsHaveBeenSet == false)
-                AutoAxis();
+            for (int i = 0; i < Info.XAxes.Count; i++)
+                if (Info.XAxes[i].IsValid == false)
+                    AutoX(i);
+
+            for (int i = 0; i < Info.YAxes.Count; i++)
+                if (Info.YAxes[i].IsValid == false)
+                    AutoY(i);
 
             foreach (AxisTicks axisTicks in Renderables.Where(x => x is AxisTicks))
-                axisTicks.Recalculate(Info.GetLimits());
+            {
+                var limits = Info.GetLimits(axisTicks.XAxisIndex, axisTicks.YAxisIndex);
+                axisTicks.Recalculate(limits);
+            }
 
             foreach (var renderable in Renderables.Where(x => x.Layer == PlotLayer.BelowData))
                 renderable.Render(renderer, Info);
@@ -157,15 +195,17 @@ namespace ScottPlot
             return bmp;
         }
 
+        // TODO: replace with separated X and Y methods?
         public AxisLimits Axis(
             double? xMin = null,
             double? xMax = null,
             double? yMin = null,
             double? yMax = null,
-            int planeIndex = 0
+            int xAxisIndex = 0,
+            int yAxisIndex = 0
             )
         {
-            AxisLimits currentLimits = Info.GetLimits(planeIndex);
+            AxisLimits currentLimits = Info.GetLimits(xAxisIndex, yAxisIndex);
 
             if (xMin is null && xMax is null && yMin is null && yMax is null)
                 return currentLimits;
@@ -175,7 +215,7 @@ namespace ScottPlot
             double y1 = yMin ?? currentLimits.Y1;
             double y2 = yMax ?? currentLimits.Y2;
             AxisLimits newLimits = new AxisLimits(x1, x2, y1, y2);
-            Info.SetLimits(newLimits, planeIndex);
+            Info.SetLimits(newLimits, xAxisIndex, yAxisIndex);
             return newLimits;
         }
     }

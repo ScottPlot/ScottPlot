@@ -13,13 +13,13 @@ namespace ScottPlot
     /// </summary>
     public class PlotInfo
     {
-        public List<IAxis1D> XAxes { get; private set; }
-        public List<IAxis1D> YAxes { get; private set; }
+        public List<IAxis1D> XAxes { get; private set; } = new List<IAxis1D>();
+        public List<IAxis1D> YAxes { get; private set; } = new List<IAxis1D>();
 
-        public float GetPixelX(double xPosition, int planeIndex = 0) => XAxes[planeIndex].GetPixel(xPosition);
-        public float GetPixelY(double yPosition, int planeIndex = 0) => YAxes[planeIndex].GetPixel(yPosition);
-        public double GetPositionX(float xPixel, int planeIndex = 0) => XAxes[planeIndex].GetPosition(xPixel);
-        public double GetPositionY(float yPixel, int planeIndex = 0) => YAxes[planeIndex].GetPosition(yPixel);
+        public float GetPixelX(double xPosition, int xAxisIndex) => XAxes[xAxisIndex].GetPixel(xPosition);
+        public float GetPixelY(double yPosition, int yAxisIndex) => YAxes[yAxisIndex].GetPixel(yPosition);
+        public double GetPositionX(float xPixel, int xAxisIndex) => XAxes[xAxisIndex].GetPosition(xPixel);
+        public double GetPositionY(float yPixel, int yAxisIndex) => YAxes[yAxisIndex].GetPosition(yPixel);
 
         public float Width { get; private set; }
         public float Height { get; private set; }
@@ -42,18 +42,23 @@ namespace ScottPlot
         public Point DataSC => new Point(DataOffsetX + DataWidth / 2, DataOffsetY + DataHeight);
         public Point DataSE => new Point(DataOffsetX + DataWidth, DataOffsetY + DataHeight);
 
-        public bool LimitsHaveBeenSet { get; private set; }
-
         public PlotInfo()
         {
-            XAxes = new List<IAxis1D>() { new LinearAxis(inverted: false) };
-            YAxes = new List<IAxis1D>() { new LinearAxis(inverted: true) };
+            AddAxes(1, 1);
         }
 
         public override string ToString()
         {
             return $"Figure [{Width}, {Height}]; Data [{DataWidth}, {DataHeight}]; " +
                    $"Offset ({DataOffsetX}, {DataOffsetY}); X={XAxes[0]}, Y={YAxes[0]}";
+        }
+
+        public void AddAxes(int totalX, int totalY)
+        {
+            while (XAxes.Count < totalX)
+                XAxes.Add(new LinearAxis(inverted: false));
+            while (YAxes.Count < totalY)
+                YAxes.Add(new LinearAxis(inverted: true));
         }
 
         private Padding CurrentPadding()
@@ -110,7 +115,7 @@ namespace ScottPlot
             ResizeAxes();
         }
 
-        public AxisLimits GetLimits(int xAxisIndex = 0, int yAxisIndex = 0)
+        public AxisLimits GetLimits(int xAxisIndex, int yAxisIndex)
         {
             return new AxisLimits()
             {
@@ -121,27 +126,25 @@ namespace ScottPlot
             };
         }
 
-        public void SetLimits(AxisLimits limits, int xAxisIndex = 0, int yAxisIndex = 0)
+        public void SetLimits(AxisLimits limits, int xAxisIndex, int yAxisIndex)
         {
             XAxes[xAxisIndex].SetLimits(limits.X1, limits.X2);
             YAxes[yAxisIndex].SetLimits(limits.Y1, limits.Y2);
-            LimitsHaveBeenSet = true;
         }
 
-        public void SetLimits(double x1, double x2, double y1, double y2, int xAxisIndex = 0, int yAxisIndex = 0)
+        public void SetLimits(double x1, double x2, double y1, double y2, int xAxisIndex, int yAxisIndex)
         {
             XAxes[xAxisIndex].SetLimits(x1, x2);
             YAxes[yAxisIndex].SetLimits(y1, y2);
-            LimitsHaveBeenSet = true;
         }
 
-        public void MousePan(float dX, float dY, int xAxisIndex = 0, int yAxisIndex = 0)
+        public void MousePan(float dX, float dY, int xAxisIndex, int yAxisIndex)
         {
             XAxes[xAxisIndex].PanPx(dX);
             YAxes[yAxisIndex].PanPx(dY);
         }
 
-        public void MouseZoom(float dX, float dY, int xAxisIndex = 0, int yAxisIndex = 0)
+        public void MouseZoom(float dX, float dY, int xAxisIndex, int yAxisIndex)
         {
             XAxes[xAxisIndex].ZoomPx(dX);
             YAxes[yAxisIndex].ZoomPx(dY);

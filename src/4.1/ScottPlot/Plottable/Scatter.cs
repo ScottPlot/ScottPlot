@@ -10,8 +10,10 @@ namespace ScottPlot.Plottable
 {
     public class Scatter : IPlottable
     {
-        public bool Visible { get; set; } = true;
         public bool AntiAlias { get; set; } = true;
+        public int XAxisIndex { get; set; } = 0;
+        public int YAxisIndex { get; set; } = 0;
+        public bool Visible { get; set; } = true;
         public PlotLayer Layer => PlotLayer.Data;
 
         public double[] Xs { get; private set; }
@@ -38,7 +40,7 @@ namespace ScottPlot.Plottable
             Point[] points = new Point[Xs.Length];
             for (int i = 0; i < Xs.Length; i++)
             {
-                points[i] = new Point(info.GetPixelX(Xs[i]), info.GetPixelY(Ys[i]));
+                points[i] = new Point(info.GetPixelX(Xs[i], XAxisIndex), info.GetPixelY(Ys[i], YAxisIndex));
             }
 
             renderer.DrawLines(points, Color, LineWidth);

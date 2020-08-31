@@ -15,6 +15,7 @@ namespace ScottPlot.Space
         public float DataOffsetPx { get; private set; }
         public double Min { get; private set; }
         public double Max { get; private set; }
+        public bool IsValid { get { return (Min != Max) && !double.IsNaN(Min) && !double.IsNaN(Max); } }
 
         private readonly bool Inverted;
         public LinearAxis(bool inverted = false)
