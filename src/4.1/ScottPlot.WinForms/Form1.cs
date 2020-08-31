@@ -106,17 +106,18 @@ namespace ScottPlot.WinForms
         private void checkBox1_CheckedChanged(object sender, EventArgs e) => UpdateActiveAxes();
         private void checkBox2_CheckedChanged(object sender, EventArgs e) => UpdateActiveAxes();
         private void checkBox3_CheckedChanged(object sender, EventArgs e) => UpdateActiveAxes();
+        private void checkBox4_CheckedChanged(object sender, EventArgs e) => UpdateActiveAxes();
         private void UpdateActiveAxes()
         {
-            // customize indexes in active Ys array
             List<int> activeYsList = new List<int>();
             if (checkBox1.Checked) activeYsList.Add(0);
             if (checkBox2.Checked) activeYsList.Add(1);
             if (checkBox3.Checked) activeYsList.Add(2);
             int[] activeYs = activeYsList.ToArray();
 
-            // there is only one X axis and it is active
-            int[] activeXs = { 0 };
+            List<int> activeXsList = new List<int>();
+            if (checkBox4.Checked) activeXsList.Add(0);
+            int[] activeXs = activeXsList.ToArray();
 
             pc.SetActiveAxes(activeXs, activeYs);
         }
