@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ScottPlot.Space
 {
-    public interface IAxis
+    public interface IAxis1D
     {
         float FigureSizePx { get; }
         float DataSizePx { get; }

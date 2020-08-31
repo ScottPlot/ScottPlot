@@ -3,6 +3,7 @@ using ScottPlot.Renderer;
 using ScottPlot.Space;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 
 namespace ScottPlot
@@ -12,12 +13,13 @@ namespace ScottPlot
     /// </summary>
     public class PlotInfo
     {
-        public readonly List<Plane> Planes = new List<Plane>();
+        public List<IAxis1D> XAxes { get; private set; }
+        public List<IAxis1D> YAxes { get; private set; }
 
-        public float GetPixelX(double xPosition, int planeIndex = 0) => Planes[planeIndex].X.GetPixel(xPosition);
-        public float GetPixelY(double yPosition, int planeIndex = 0) => Planes[planeIndex].Y.GetPixel(yPosition);
-        public double GetPositionX(float xPixel, int planeIndex = 0) => Planes[planeIndex].X.GetPosition(xPixel);
-        public double GetPositionY(float yPixel, int planeIndex = 0) => Planes[planeIndex].Y.GetPosition(yPixel);
+        public float GetPixelX(double xPosition, int planeIndex = 0) => XAxes[planeIndex].GetPixel(xPosition);
+        public float GetPixelY(double yPosition, int planeIndex = 0) => YAxes[planeIndex].GetPixel(yPosition);
+        public double GetPositionX(float xPixel, int planeIndex = 0) => XAxes[planeIndex].GetPosition(xPixel);
+        public double GetPositionY(float yPixel, int planeIndex = 0) => YAxes[planeIndex].GetPosition(yPixel);
 
         public float Width { get; private set; }
         public float Height { get; private set; }
@@ -44,18 +46,14 @@ namespace ScottPlot
 
         public PlotInfo()
         {
-            var xPrimary = new LinearAxis(inverted: false);
-            var yPrimary = new LinearAxis(inverted: true);
-            var ySecondary = new LinearAxis(inverted: true);
-
-            Planes.Add(new Plane(xPrimary, yPrimary));
-            Planes.Add(new Plane(xPrimary, ySecondary));
+            XAxes = new List<IAxis1D>() { new LinearAxis(inverted: false) };
+            YAxes = new List<IAxis1D>() { new LinearAxis(inverted: true) };
         }
 
         public override string ToString()
         {
             return $"Figure [{Width}, {Height}]; Data [{DataWidth}, {DataHeight}]; " +
-                   $"Offset ({DataOffsetX}, {DataOffsetY}); Plane: {Planes[0]}";
+                   $"Offset ({DataOffsetX}, {DataOffsetY}); X={XAxes[0]}, Y={YAxes[0]}";
         }
 
         private Padding CurrentPadding()
@@ -67,6 +65,15 @@ namespace ScottPlot
                 Above = DataOffsetY,
                 Below = Height - DataOffsetY - DataHeight
             };
+        }
+
+        // call this after changing plot dimensions or padding
+        private void ResizeAxes()
+        {
+            foreach (IAxis1D xAxis in XAxes)
+                xAxis.Resize(Width, DataWidth, DataOffsetX);
+            foreach (IAxis1D yAxis in YAxes)
+                yAxis.Resize(Height, DataHeight, DataOffsetY);
         }
 
         /// <summary>
@@ -81,12 +88,7 @@ namespace ScottPlot
             DataHeight = height - oldPad.TotalVertical;
             DataOffsetX = oldPad.Left;
             DataOffsetY = oldPad.Above;
-
-            foreach (var plane in Planes)
-            {
-                plane.X.Resize(Width, DataWidth, DataOffsetX);
-                plane.Y.Resize(Height, DataHeight, DataOffsetY);
-            }
+            ResizeAxes();
         }
 
         /// <summary>
@@ -105,48 +107,44 @@ namespace ScottPlot
             DataOffsetX = pad.Left;
             DataOffsetY = pad.Above;
 
-            foreach (var plane in Planes)
-            {
-                plane.X.Resize(Width, DataWidth, DataOffsetX);
-                plane.Y.Resize(Height, DataHeight, DataOffsetY);
-            }
+            ResizeAxes();
         }
 
-        public AxisLimits GetLimits(int planeIndex = 0)
+        public AxisLimits GetLimits(int xAxisIndex = 0, int yAxisIndex = 0)
         {
             return new AxisLimits()
             {
-                X1 = Planes[planeIndex].X.Min,
-                X2 = Planes[planeIndex].X.Max,
-                Y1 = Planes[planeIndex].Y.Min,
-                Y2 = Planes[planeIndex].Y.Max,
+                X1 = XAxes[xAxisIndex].Min,
+                X2 = XAxes[xAxisIndex].Max,
+                Y1 = YAxes[yAxisIndex].Min,
+                Y2 = YAxes[yAxisIndex].Max,
             };
         }
 
-        public void SetLimits(AxisLimits limits, int planeIndex = 0)
+        public void SetLimits(AxisLimits limits, int xAxisIndex = 0, int yAxisIndex = 0)
         {
-            Planes[planeIndex].X.SetLimits(limits.X1, limits.X2);
-            Planes[planeIndex].Y.SetLimits(limits.Y1, limits.Y2);
+            XAxes[xAxisIndex].SetLimits(limits.X1, limits.X2);
+            YAxes[yAxisIndex].SetLimits(limits.Y1, limits.Y2);
             LimitsHaveBeenSet = true;
         }
 
-        public void SetLimits(double x1, double x2, double y1, double y2, int planeIndex = 0)
+        public void SetLimits(double x1, double x2, double y1, double y2, int xAxisIndex = 0, int yAxisIndex = 0)
         {
-            Planes[planeIndex].X.SetLimits(x1, x2);
-            Planes[planeIndex].Y.SetLimits(y1, y2);
+            XAxes[xAxisIndex].SetLimits(x1, x2);
+            YAxes[yAxisIndex].SetLimits(y1, y2);
             LimitsHaveBeenSet = true;
         }
 
-        public void MousePan(float dX, float dY, int planeIndex = 0)
+        public void MousePan(float dX, float dY, int xAxisIndex = 0, int yAxisIndex = 0)
         {
-            Planes[planeIndex].X.PanPx(dX);
-            Planes[planeIndex].Y.PanPx(dY);
+            XAxes[xAxisIndex].PanPx(dX);
+            YAxes[yAxisIndex].PanPx(dY);
         }
 
-        public void MouseZoom(float dX, float dY, int planeIndex = 0)
+        public void MouseZoom(float dX, float dY, int xAxisIndex = 0, int yAxisIndex = 0)
         {
-            Planes[planeIndex].X.ZoomPx(dX);
-            Planes[planeIndex].Y.ZoomPx(dY);
+            XAxes[xAxisIndex].ZoomPx(dX);
+            YAxes[yAxisIndex].ZoomPx(dY);
         }
     }
 }

@@ -8,7 +8,7 @@ namespace ScottPlot.Space
     /// <summary>
     /// This class handles state (pixel dimensions and axis limits) of a single dimension
     /// </summary>
-    public class LinearAxis : IAxis
+    public class LinearAxis : IAxis1D
     {
         public float FigureSizePx { get; private set; }
         public float DataSizePx { get; private set; }
