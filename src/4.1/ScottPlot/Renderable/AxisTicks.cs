@@ -53,7 +53,7 @@ namespace ScottPlot.Renderable
 
         public ITickGenerator TickGenerator = new NumericTickGenerator();
 
-        public void Recalculate(AxisLimits limits)
+        public void Recalculate(AxisLimits2D limits)
         {
             if (Edge == Edge.Bottom || Edge == Edge.Top)
                 TickGenerator.Recalculate(limits.X1, limits.X2);

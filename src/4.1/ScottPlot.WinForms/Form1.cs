@@ -116,5 +116,10 @@ namespace ScottPlot.WinForms
         {
             pc.SetActiveAxis(0, 2);
         }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

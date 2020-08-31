@@ -115,9 +115,9 @@ namespace ScottPlot
             ResizeAxes();
         }
 
-        public AxisLimits GetLimits(int xAxisIndex, int yAxisIndex)
+        public AxisLimits2D GetLimits(int xAxisIndex, int yAxisIndex)
         {
-            return new AxisLimits()
+            return new AxisLimits2D()
             {
                 X1 = XAxes[xAxisIndex].Min,
                 X2 = XAxes[xAxisIndex].Max,
@@ -126,7 +126,7 @@ namespace ScottPlot
             };
         }
 
-        public void SetLimits(AxisLimits limits, int xAxisIndex, int yAxisIndex)
+        public void SetLimits(AxisLimits2D limits, int xAxisIndex, int yAxisIndex)
         {
             XAxes[xAxisIndex].SetLimits(limits.X1, limits.X2);
             YAxes[yAxisIndex].SetLimits(limits.Y1, limits.Y2);

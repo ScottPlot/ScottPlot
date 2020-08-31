@@ -206,7 +206,7 @@ namespace ScottPlot
         }
 
         // TODO: replace with separated X and Y methods?
-        public AxisLimits Axis(
+        public AxisLimits2D Axis(
             double? xMin = null,
             double? xMax = null,
             double? yMin = null,
@@ -215,7 +215,7 @@ namespace ScottPlot
             int yAxisIndex = 0
             )
         {
-            AxisLimits currentLimits = Info.GetLimits(xAxisIndex, yAxisIndex);
+            AxisLimits2D currentLimits = Info.GetLimits(xAxisIndex, yAxisIndex);
 
             if (xMin is null && xMax is null && yMin is null && yMax is null)
                 return currentLimits;
@@ -224,7 +224,7 @@ namespace ScottPlot
             double x2 = xMax ?? currentLimits.X2;
             double y1 = yMin ?? currentLimits.Y1;
             double y2 = yMax ?? currentLimits.Y2;
-            AxisLimits newLimits = new AxisLimits(x1, x2, y1, y2);
+            AxisLimits2D newLimits = new AxisLimits2D(x1, x2, y1, y2);
             Info.SetLimits(newLimits, xAxisIndex, yAxisIndex);
             return newLimits;
         }

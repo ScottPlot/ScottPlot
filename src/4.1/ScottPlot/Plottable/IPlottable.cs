@@ -8,6 +8,6 @@ namespace ScottPlot.Plottable
         int XAxisIndex { get; set; }
         int YAxisIndex { get; set; }
         int PointCount { get; }
-        AxisLimits Limits { get; }
+        AxisLimits2D Limits { get; }
     }
 }

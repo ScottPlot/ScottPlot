@@ -20,7 +20,7 @@ namespace ScottPlot.Plottable
         public double[] Ys { get; private set; }
 
         public int PointCount { get { return Xs is null ? 0 : Xs.Length; } }
-        public AxisLimits Limits { get; private set; } = new AxisLimits();
+        public AxisLimits2D Limits { get; private set; } = new AxisLimits2D();
 
         public Color Color = Colors.Magenta;
         public float LineWidth = 5;

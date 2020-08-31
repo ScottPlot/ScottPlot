@@ -23,7 +23,7 @@ namespace ScottPlot
         float CenterDownY;
         float RightDownX;
         float RightDownY;
-        AxisLimits MouseDownLimits;
+        AxisLimits2D MouseDownLimits;
 
         private int XAxisIndex;
         private int YAxisIndex;
