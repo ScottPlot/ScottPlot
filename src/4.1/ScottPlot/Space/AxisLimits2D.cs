@@ -2,6 +2,7 @@
 
 namespace ScottPlot.Space
 {
+    // TODO: delete this class and only interact with 1D limits
     public class AxisLimits2D
     {
         public AxisLimits1D X;

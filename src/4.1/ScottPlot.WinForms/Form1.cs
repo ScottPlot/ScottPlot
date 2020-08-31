@@ -1,5 +1,6 @@
 ﻿using ScottPlot.Renderer;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
@@ -102,24 +103,22 @@ namespace ScottPlot.WinForms
             Render();
         }
 
-        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        private void checkBox1_CheckedChanged(object sender, EventArgs e) => UpdateActiveAxes();
+        private void checkBox2_CheckedChanged(object sender, EventArgs e) => UpdateActiveAxes();
+        private void checkBox3_CheckedChanged(object sender, EventArgs e) => UpdateActiveAxes();
+        private void UpdateActiveAxes()
         {
-            pc.SetActiveAxis(0, 0);
-        }
+            // customize indexes in active Ys array
+            List<int> activeYsList = new List<int>();
+            if (checkBox1.Checked) activeYsList.Add(0);
+            if (checkBox2.Checked) activeYsList.Add(1);
+            if (checkBox3.Checked) activeYsList.Add(2);
+            int[] activeYs = activeYsList.ToArray();
 
-        private void radioButton2_CheckedChanged(object sender, EventArgs e)
-        {
-            pc.SetActiveAxis(0, 1);
-        }
+            // there is only one X axis and it is active
+            int[] activeXs = { 0 };
 
-        private void radioButton3_CheckedChanged(object sender, EventArgs e)
-        {
-            pc.SetActiveAxis(0, 2);
-        }
-
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
-
+            pc.SetActiveAxes(activeXs, activeYs);
         }
     }
 }

@@ -38,6 +38,15 @@ namespace ScottPlot.Space
             Recalculate();
         }
 
+        public AxisLimits1D GetLimits() => new AxisLimits1D(Min, Max);
+
+        public void SetLimits(AxisLimits1D limits)
+        {
+            Min = limits.Min;
+            Max = limits.Max;
+            Recalculate();
+        }
+
         public double Span { get; private set; } = double.NaN;
         public double Center { get; private set; } = double.NaN;
         public double UnitsPerPx { get; private set; } = double.NaN;

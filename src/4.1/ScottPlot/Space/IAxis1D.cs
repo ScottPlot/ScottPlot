@@ -16,6 +16,8 @@ namespace ScottPlot.Space
         double PxPerUnit { get; }
 
         void Resize(float figureSize, float dataSize, float dataOffset);
+        AxisLimits1D GetLimits();
+        void SetLimits(AxisLimits1D limits);
         void SetLimits(double min, double max);
         bool IsValid { get; }
 

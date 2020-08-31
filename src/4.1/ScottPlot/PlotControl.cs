@@ -1,6 +1,7 @@
 ﻿using ScottPlot.Space;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ScottPlot
@@ -23,21 +24,40 @@ namespace ScottPlot
         float CenterDownY;
         float RightDownX;
         float RightDownY;
-        AxisLimits2D MouseDownLimits;
 
-        private int XAxisIndex;
-        private int YAxisIndex;
+        int[] ActiveIndexesX;
+        int[] ActiveIndexesY;
+        AxisLimits1D[] MouseDownLimitsX;
+        AxisLimits1D[] MouseDownLimitsY;
 
         public PlotControl(Plot plt)
         {
             this.plt = plt;
             info = plt.Info;
+            SetActiveAxis(0, 0);
         }
 
         public void SetActiveAxis(int xIndex, int yIndex)
         {
-            XAxisIndex = xIndex;
-            YAxisIndex = yIndex;
+            ActiveIndexesX = new int[1] { xIndex };
+            ActiveIndexesY = new int[1] { yIndex };
+        }
+
+        public void SetActiveAxes(int[] xIndexes, int[] yIndexes)
+        {
+            ActiveIndexesX = xIndexes.ToArray();
+            ActiveIndexesY = yIndexes.ToArray();
+        }
+
+        private void RememberMouseDownLimits()
+        {
+            MouseDownLimitsX = new AxisLimits1D[ActiveIndexesX.Length];
+            for (int i = 0; i < ActiveIndexesX.Length; i++)
+                MouseDownLimitsX[i] = info.XAxes[ActiveIndexesX[i]].GetLimits();
+
+            MouseDownLimitsY = new AxisLimits1D[ActiveIndexesY.Length];
+            for (int i = 0; i < ActiveIndexesY.Length; i++)
+                MouseDownLimitsY[i] = info.YAxes[ActiveIndexesY[i]].GetLimits();
         }
 
         public void MouseDownLeft(float xPixel, float yPixel)
@@ -45,7 +65,7 @@ namespace ScottPlot
             IsLeftDown = true;
             LeftDownX = xPixel;
             LeftDownY = yPixel;
-            MouseDownLimits = info.GetLimits(XAxisIndex, YAxisIndex);
+            RememberMouseDownLimits();
         }
 
         public void MouseDownCenter(float xPixel, float yPixel)
@@ -53,7 +73,7 @@ namespace ScottPlot
             IsCenterDown = true;
             CenterDownX = xPixel;
             CenterDownY = yPixel;
-            MouseDownLimits = info.GetLimits(XAxisIndex, YAxisIndex);
+            RememberMouseDownLimits();
         }
 
         public void MouseDownRight(float xPixel, float yPixel)
@@ -61,7 +81,7 @@ namespace ScottPlot
             IsRightDown = true;
             RightDownX = xPixel;
             RightDownY = yPixel;
-            MouseDownLimits = info.GetLimits(XAxisIndex, YAxisIndex);
+            RememberMouseDownLimits();
         }
 
         public void MouseUpLeft(float xPixel, float yPixel)
@@ -72,7 +92,10 @@ namespace ScottPlot
         public void MouseUpCenter(float xPixel, float yPixel)
         {
             IsCenterDown = false;
-            plt.AutoAxis(XAxisIndex, YAxisIndex);
+            foreach (int xIndex in ActiveIndexesX)
+                plt.AutoX(xIndex);
+            foreach (int yIndex in ActiveIndexesY)
+                plt.AutoY(yIndex);
         }
 
         public void MouseUpRight(float xPixel, float yPixel)
@@ -82,15 +105,25 @@ namespace ScottPlot
 
         public void MouseMove(float xPixel, float yPixel)
         {
-            if (IsLeftDown)
+            if (IsLeftDown == false && IsRightDown == false)
+                return;
+
+            for (int i = 0; i < ActiveIndexesX.Length; i++)
             {
-                info.SetLimits(MouseDownLimits, XAxisIndex, YAxisIndex);
-                info.MousePan(xPixel - LeftDownX, yPixel - LeftDownY, XAxisIndex, YAxisIndex);
+                info.XAxes[i].SetLimits(MouseDownLimitsX[i]);
+                if (IsLeftDown)
+                    info.XAxes[i].PanPx(xPixel - LeftDownX);
+                else if (IsRightDown)
+                    info.XAxes[i].ZoomPx(xPixel - RightDownX);
             }
-            else if (IsRightDown)
+
+            for (int i = 0; i < ActiveIndexesY.Length; i++)
             {
-                info.SetLimits(MouseDownLimits, XAxisIndex, YAxisIndex);
-                info.MouseZoom(xPixel - RightDownX, yPixel - RightDownY, XAxisIndex, YAxisIndex);
+                info.YAxes[i].SetLimits(MouseDownLimitsY[i]);
+                if (IsLeftDown)
+                    info.YAxes[i].PanPx(yPixel - LeftDownY);
+                else if (IsRightDown)
+                    info.YAxes[i].ZoomPx(yPixel - RightDownY);
             }
         }
     }
