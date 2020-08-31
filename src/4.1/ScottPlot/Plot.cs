@@ -31,9 +31,19 @@ namespace ScottPlot
                 new DataBackground(),
                 new AxisTicksTop() { Label = "Horizontal Upper" },
                 new AxisTicksBottom() { Label = "Horizontal Lower" },
-                new AxisTicksLeft() { Label = "Left Vertical" },
-                new AxisTicksRight() { Label = "Right Vertical", YAxisIndex = 1, MajorGrid = false, MinorGrid = false },
-                new AxisTicksLeft() { Label = "Floating Vertical", YAxisIndex = 2, Offset = 80, MajorGrid = false, MinorGrid = false },
+                new AxisTicksLeft() { Label = "Left Vertical",
+                    EdgeColor = Colors.Red, MajorTickColor = Colors.Red, MinorTickColor = Colors.Red, 
+                    LabelFontColor = Colors.Red, TickFontColor = Colors.Red },
+                new AxisTicksRight() {
+                    Label = "Right Vertical", YAxisIndex = 1, MajorGrid = false, MinorGrid = false,
+                    EdgeColor = Colors.Green, MajorTickColor = Colors.Green, MinorTickColor = Colors.Green, 
+                    LabelFontColor = Colors.Green, TickFontColor = Colors.Green
+                },
+                new AxisTicksLeft() { Label = "Floating Vertical", YAxisIndex = 2, Offset = 80, 
+                    MajorGrid = false, MinorGrid = false,
+                    EdgeColor = Colors.Blue, MajorTickColor = Colors.Blue, MinorTickColor = Colors.Blue,
+                    LabelFontColor = Colors.Blue, TickFontColor = Colors.Blue
+                },
                 new Benchmark()
             };
         }
