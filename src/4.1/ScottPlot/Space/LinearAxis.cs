@@ -15,13 +15,19 @@ namespace ScottPlot.Space
         public float DataOffsetPx { get; private set; }
         public double Min { get; private set; }
         public double Max { get; private set; }
-        public bool IsValid { get { return (Min != Max) && !double.IsNaN(Min) && !double.IsNaN(Max); } }
+        public bool IsValid { get => (Min != Max) && !double.IsNaN(Min) && !double.IsNaN(Max); }
+
+        public bool IsLocked { get; set; } = true;
 
         private readonly bool Inverted;
         public LinearAxis(bool inverted = false)
         {
             Inverted = inverted;
         }
+
+        private AxisLimits1D RememberedLimits;
+        public void RememberLimits() => RememberedLimits = GetLimits();
+        public void RecallLimits() => SetLimits(RememberedLimits);
 
         public void Resize(float figureSize, float dataSize, float dataOffset)
         {
