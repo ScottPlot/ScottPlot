@@ -9,15 +9,16 @@ namespace ScottPlot.Renderer
         public float Width;
         public float Height;
 
-        public Size()
-        {
+        public Size() { }
 
-        }
+        public Size(float width, float height) =>
+            (Width, Height) = (width, height);
 
-        public Size(float width, float height)
-        {
-            Width = width;
-            Height = height;
-        }
+        public Size Expand(float width, float height) =>
+            new Size(Math.Max(Width, width), Math.Max(Height, height));
+
+        public Size Expand(Size size) =>
+            Expand(size.Width, size.Height);
+
     }
 }

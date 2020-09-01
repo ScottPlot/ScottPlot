@@ -24,9 +24,9 @@ namespace ScottPlot.WinForms
         {
             Random rand = new Random();
             double[] xs = Generate.Consecutive(51);
-            var s1 = plt.PlotScatter(xs, Generate.RandomWalk(rand, 51, .01));
+            var s1 = plt.PlotScatter(xs, Generate.RandomWalk(rand, 51, 1e-3));
             var s2 = plt.PlotScatter(xs, Generate.RandomWalk(rand, 51));
-            var s3 = plt.PlotScatter(xs, Generate.RandomWalk(rand, 51, 100));
+            var s3 = plt.PlotScatter(xs, Generate.RandomWalk(rand, 51, 1e3));
 
             // tell different plottables to have different Y indexes and style as desired
             s1.YAxisIndex = 0;
@@ -36,28 +36,24 @@ namespace ScottPlot.WinForms
             s3.YAxisIndex = 2;
             s3.Color = Colors.Blue;
 
+            // customize the left axis
+            plt.AxisLeft.Label = "Primary Y";
+            plt.AxisLeft.Color = Colors.Red;
+
             // customize the right axis to show a second Y scale
             plt.AxisRight.YAxisIndex = 1;
             plt.AxisRight.Size.Width = 65;
             plt.AxisRight.TickLabel = true;
             plt.AxisRight.Label = "Secondary Y";
-            plt.AxisRight.EdgeColor = Colors.Green;
-            plt.AxisRight.MajorTickColor = Colors.Green;
-            plt.AxisRight.MinorTickColor = Colors.Green;
-            plt.AxisRight.LabelFontColor = Colors.Green;
-            plt.AxisRight.TickFontColor = Colors.Green;
+            plt.AxisRight.Color = Colors.Green;
 
             // add a third Y scale to the plot
             var AxisLeft2 = new AxisLeft
             {
-                Label = "Third Vertical Axis",
+                Label = "Third Axis",
                 YAxisIndex = 2,
                 Offset = plt.AxisLeft.Size.Width,
-                EdgeColor = Colors.Blue,
-                MajorTickColor = Colors.Blue,
-                MinorTickColor = Colors.Blue,
-                LabelFontColor = Colors.Blue,
-                TickFontColor = Colors.Blue,
+                Color = Colors.Blue,
             };
             plt.Axes.Add(AxisLeft2);
 

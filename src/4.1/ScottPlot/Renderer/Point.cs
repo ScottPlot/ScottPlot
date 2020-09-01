@@ -9,20 +9,12 @@ namespace ScottPlot.Renderer
         public float X;
         public float Y;
 
-        public Point()
-        {
+        public Point() { }
 
-        }
+        public Point(float x, float y) =>
+            (X, Y) = (x, y);
 
-        public Point(float x, float y)
-        {
-            X = x;
-            Y = y;
-        }
-
-        public Point Shift(float dX, float dY)
-        {
-            return new Point(X + dX, Y + dY);
-        }
+        public Point Shift(float dX, float dY) =>
+           new Point(X + dX, Y + dY);
     }
 }

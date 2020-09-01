@@ -22,6 +22,7 @@ namespace ScottPlot.Renderable
         public Edge Edge;
         public float Offset = 0;
         public Size Size = new Size(65, 45);
+        public float Padding = 5;
 
         public float EdgeWidth = 1;
         public Color EdgeColor = Colors.Black;
@@ -54,6 +55,20 @@ namespace ScottPlot.Renderable
         public Color MinorGridColor = new Color(10, 0, 0, 0);
         public float MinorGridWidth = 1;
 
+        public Color Color
+        {
+            set
+            {
+                LabelFontColor = value;
+                EdgeColor = value;
+                TickFontColor = value;
+                MajorTickColor = value;
+                MinorTickColor = value;
+                EdgeColor = value;
+            }
+            get => LabelFontColor;
+        }
+
         public ITickGenerator TickGenerator = new NumericTickGenerator();
 
         public void CalculateTicks(AxisLimits2D limits)
@@ -62,6 +77,23 @@ namespace ScottPlot.Renderable
                 TickGenerator.Recalculate(limits.X1, limits.X2);
             if (Edge == Edge.Left || Edge == Edge.Right)
                 TickGenerator.Recalculate(limits.Y1, limits.Y2);
+        }
+
+        public void AutoSize(IRenderer renderer)
+        {
+            Font tickFont = GetTickFont();
+            Size largestTickSize = new Size();
+            if (TickLabel)
+                foreach (var tick in TickGenerator.Ticks)
+                    largestTickSize = largestTickSize.Expand(renderer.MeasureText(tick.Label, tickFont));
+
+            Font labelFont = GetLabelFont();
+            Size axisLabelSize = renderer.MeasureText(Label, labelFont);
+
+            if (Edge == Edge.Left || Edge == Edge.Right)
+                Size.Width = largestTickSize.Width + axisLabelSize.Height + Padding;
+            else if (Edge == Edge.Top || Edge == Edge.Bottom)
+                Size.Height = largestTickSize.Height + axisLabelSize.Height + Padding;
         }
 
         public void Render(IRenderer renderer, Dimensions dims)
@@ -96,36 +128,53 @@ namespace ScottPlot.Renderable
                 fnt.HorizontalAlignment = HorizontalAlignment.Center;
                 fnt.VerticalAlignment = VerticalAlignment.Top;
             }
-            else
-            {
-                throw new NotImplementedException("unsupported edge");
-            }
             return fnt;
         }
 
-        public void DrawAxisLabels(IRenderer renderer, Dimensions info)
+        private Font GetLabelFont()
         {
             Font font = new Font(LabelFontName, LabelFontSize);
 
             if (Edge == Edge.Bottom)
             {
-                Point pt = info.DataSC.Shift(0, Offset + Size.Height);
                 font.HorizontalAlignment = HorizontalAlignment.Center;
                 font.VerticalAlignment = VerticalAlignment.Bottom;
+            }
+            else if (Edge == Edge.Top)
+            {
+                font.HorizontalAlignment = HorizontalAlignment.Center;
+                font.VerticalAlignment = VerticalAlignment.Top;
+            }
+            else if (Edge == Edge.Left)
+            {
+                font.HorizontalAlignment = HorizontalAlignment.Center;
+                font.VerticalAlignment = VerticalAlignment.Top;
+            }
+            else if (Edge == Edge.Right)
+            {
+                font.HorizontalAlignment = HorizontalAlignment.Center;
+                font.VerticalAlignment = VerticalAlignment.Top;
+            }
+
+            return font;
+        }
+
+        public void DrawAxisLabels(IRenderer renderer, Dimensions info)
+        {
+            Font font = GetLabelFont();
+            if (Edge == Edge.Bottom)
+            {
+                Point pt = info.DataSC.Shift(0, Offset + Size.Height);
                 renderer.DrawText(pt, Label, LabelFontColor, font);
             }
             else if (Edge == Edge.Top)
             {
                 Point pt = info.DataNC.Shift(0, -(Offset + Size.Height));
-                font.HorizontalAlignment = HorizontalAlignment.Center;
-                font.VerticalAlignment = VerticalAlignment.Top;
                 renderer.DrawText(pt, Label, LabelFontColor, font);
             }
             else if (Edge == Edge.Left)
             {
                 Point pt = info.DataWC.Shift(-(Offset + Size.Width), 0);
-                font.HorizontalAlignment = HorizontalAlignment.Center;
-                font.VerticalAlignment = VerticalAlignment.Top;
                 renderer.Rotate(-90, pt);
                 renderer.DrawText(new Point(0, 0), Label, LabelFontColor, font);
                 renderer.RotateReset();
@@ -133,8 +182,6 @@ namespace ScottPlot.Renderable
             else if (Edge == Edge.Right)
             {
                 Point pt = info.DataEC.Shift(Offset + Size.Width, 0);
-                font.HorizontalAlignment = HorizontalAlignment.Center;
-                font.VerticalAlignment = VerticalAlignment.Top;
                 renderer.Rotate(90, pt);
                 renderer.DrawText(new Point(0, 0), Label, LabelFontColor, font);
                 renderer.RotateReset();

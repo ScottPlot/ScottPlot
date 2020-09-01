@@ -42,6 +42,53 @@ namespace ScottPlot
             float T = padTop ?? Axes.Where(x => x is AxisTop).Select(x => x.Size.Height).Sum();
             float B = padBottom ?? Axes.Where(x => x is AxisBottom).Select(x => x.Size.Height).Sum();
             Dims.UpdatePadding(L, R, T, B);
+            LayoutMultipleAxes();
+        }
+
+        private void LayoutMultipleAxes()
+        {
+            // place the first of each axis right next to the data
+            // offset additional axes outward
+
+            {
+                AxisLeft[] leftAxes = Axes.Where(x => x is AxisLeft).Select(x => (AxisLeft)x).ToArray();
+                float offset = 0;
+                for (int i = 0; i < leftAxes.Count(); i++)
+                {
+                    leftAxes[i].Offset = offset;
+                    offset += leftAxes[i].Size.Width;
+                }
+            }
+
+            {
+                AxisRight[] rightAxes = Axes.Where(x => x is AxisRight).Select(x => (AxisRight)x).ToArray();
+                float offset = 0;
+                for (int i = 0; i < rightAxes.Count(); i++)
+                {
+                    rightAxes[i].Offset = offset;
+                    offset += rightAxes[i].Size.Width;
+                }
+            }
+
+            {
+                AxisTop[] topAxis = Axes.Where(x => x is AxisTop).Select(x => (AxisTop)x).ToArray();
+                float offset = 0;
+                for (int i = 0; i < topAxis.Count(); i++)
+                {
+                    topAxis[i].Offset = offset;
+                    offset += topAxis[i].Size.Height;
+                }
+            }
+
+            {
+                AxisBottom[] bottomAxis = Axes.Where(x => x is AxisBottom).Select(x => (AxisBottom)x).ToArray();
+                float offset = 0;
+                for (int i = 0; i < bottomAxis.Count(); i++)
+                {
+                    bottomAxis[i].Offset = offset;
+                    offset += bottomAxis[i].Size.Height;
+                }
+            }
         }
 
         public void ResetAxisStyles()
@@ -163,13 +210,27 @@ namespace ScottPlot
         /// <summary>
         /// Draw the plot with a custom renderer
         /// </summary>
-        public void Render(IRenderer renderer)
+        public void Render(IRenderer renderer, bool recalculateLayout = true)
         {
             Dims.CreateAxes(Renderables);
             Dims.UpdateSize(renderer.Width, renderer.Height);
             AutoScaleInvalidAxes();
             foreach (Axis axis in Axes)
                 axis.CalculateTicks(Dims.GetLimits(axis.XAxisIndex, axis.YAxisIndex));
+
+            if (recalculateLayout)
+            {
+                // now that preliminary ticks are created measure them to refine their size
+                foreach (Axis axis in Axes)
+                    axis.AutoSize(renderer);
+
+                // update the layout based on the new tick sizes
+                Layout();
+
+                // update the ticks based on the new layout
+                foreach (Axis axis in Axes)
+                    axis.CalculateTicks(Dims.GetLimits(axis.XAxisIndex, axis.YAxisIndex));
+            }
 
             Benchmark.Start();
             FigureBackground.Render(renderer, Dims);
