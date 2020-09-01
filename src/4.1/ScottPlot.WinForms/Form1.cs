@@ -1,4 +1,5 @@
-﻿using ScottPlot.Renderer;
+﻿using ScottPlot.Renderable;
+using ScottPlot.Renderer;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -23,15 +24,44 @@ namespace ScottPlot.WinForms
         {
             Random rand = new Random();
             double[] xs = Generate.Consecutive(51);
-            var s1 = plt.PlotScatter(xs, Generate.RandomWalk(rand, 51, .01), Colors.Red);
-            var s2 = plt.PlotScatter(xs, Generate.RandomWalk(rand, 51), Colors.Green);
-            var s3 = plt.PlotScatter(xs, Generate.RandomWalk(rand, 51, 100), Colors.Blue);
+            var s1 = plt.PlotScatter(xs, Generate.RandomWalk(rand, 51, .01));
+            var s2 = plt.PlotScatter(xs, Generate.RandomWalk(rand, 51));
+            var s3 = plt.PlotScatter(xs, Generate.RandomWalk(rand, 51, 100));
 
-            plt.AddAxes(1, 3);
+            // tell different plottables to have different Y indexes and style as desired
             s1.YAxisIndex = 0;
+            s1.Color = Colors.Red;
             s2.YAxisIndex = 1;
+            s2.Color = Colors.Green;
             s3.YAxisIndex = 2;
+            s3.Color = Colors.Blue;
 
+            // customize the right axis to show a second Y scale
+            plt.AxisRight.YAxisIndex = 1;
+            plt.AxisRight.Size.Width = 65;
+            plt.AxisRight.TickLabel = true;
+            plt.AxisRight.Label = "Secondary Y";
+            plt.AxisRight.EdgeColor = Colors.Green;
+            plt.AxisRight.MajorTickColor = Colors.Green;
+            plt.AxisRight.MinorTickColor = Colors.Green;
+            plt.AxisRight.LabelFontColor = Colors.Green;
+            plt.AxisRight.TickFontColor = Colors.Green;
+
+            // add a third Y scale to the plot
+            var AxisLeft2 = new AxisLeft
+            {
+                Label = "Third Vertical Axis",
+                YAxisIndex = 2,
+                Offset = plt.AxisLeft.Size.Width,
+                EdgeColor = Colors.Blue,
+                MajorTickColor = Colors.Blue,
+                MinorTickColor = Colors.Blue,
+                LabelFontColor = Colors.Blue,
+                TickFontColor = Colors.Blue,
+            };
+            plt.Axes.Add(AxisLeft2);
+
+            plt.Layout();
             Render();
         }
 

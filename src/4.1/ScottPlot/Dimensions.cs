@@ -1,8 +1,10 @@
-﻿using ScottPlot.Renderable;
+﻿using ScottPlot.Plottable;
+using ScottPlot.Renderable;
 using ScottPlot.Renderer;
 using ScottPlot.Space;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Xml.Linq;
 
@@ -44,7 +46,7 @@ namespace ScottPlot
 
         public Dimensions()
         {
-            AddAxes(1, 1);
+            CreateAxes(1, 1);
         }
 
         public override string ToString()
@@ -53,7 +55,14 @@ namespace ScottPlot
                    $"Offset ({DataOffsetX}, {DataOffsetY}); X={XAxes[0]}, Y={YAxes[0]}";
         }
 
-        public void AddAxes(int totalX, int totalY)
+        public void CreateAxes(List<IRenderable> renderables)
+        {
+            CreateAxes(
+                totalX: renderables.Where(x => x is IPlottable).Select(x => ((IPlottable)x).XAxisIndex).Distinct().Count(),
+                totalY: renderables.Where(x => x is IPlottable).Select(x => ((IPlottable)x).YAxisIndex).Distinct().Count());
+        }
+
+        public void CreateAxes(int totalX, int totalY)
         {
             while (XAxes.Count < totalX)
                 XAxes.Add(new LinearAxis(inverted: false));

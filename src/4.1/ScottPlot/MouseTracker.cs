@@ -29,7 +29,7 @@ namespace ScottPlot
         public MouseTracker(Plot plt)
         {
             this.plt = plt;
-            info = plt.Info;
+            info = plt.Dims;
             SetActiveAxis(0, 0);
         }
 
@@ -87,11 +87,11 @@ namespace ScottPlot
 
             for (int i = 0; i < info.XAxes.Count; i++)
                 if (!info.XAxes[i].IsLocked)
-                    plt.AutoX(i);
+                    plt.AutoScaleX(i);
 
             for (int i = 0; i < info.YAxes.Count; i++)
                 if (!info.YAxes[i].IsLocked)
-                    plt.AutoY(i);
+                    plt.AutoScaleY(i);
         }
 
         public void MouseUpRight(float xPixel, float yPixel)

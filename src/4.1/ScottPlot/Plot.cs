@@ -12,78 +12,106 @@ namespace ScottPlot
 {
     public class Plot
     {
-        public float Width { get { return Info.Width; } }
-        public float Height { get { return Info.Height; } }
+        public float Width { get { return Dims.Width; } }
+        public float Height { get { return Dims.Height; } }
 
-        public Dimensions Info { get; private set; } = new Dimensions();
+        public Dimensions Dims { get; private set; } = new Dimensions();
         public List<IRenderable> Renderables { get; private set; } = new List<IRenderable>();
+
+        public readonly FigureBackground FigureBackground = new FigureBackground();
+        public readonly DataBackground DataBackground = new DataBackground();
+        public readonly Benchmark Benchmark = new Benchmark();
+
+        public readonly List<Axis> Axes = new List<Axis>();
+        public readonly AxisLeft AxisLeft = new AxisLeft();
+        public readonly AxisRight AxisRight = new AxisRight();
+        public readonly AxisTop AxisTop = new AxisTop();
+        public readonly AxisBottom AxisBottom = new AxisBottom();
 
         public Plot(int width = 600, int height = 400)
         {
-            Info.UpdateSize(width, height);
-            Info.UpdatePadding(left: 150, right: 100, above: 100, below: 100);
-            Console.WriteLine(Info);
-
-            AddAxes(1, 3);
-            Renderables = new List<IRenderable>
-            {
-                new FigureBackground(),
-                new DataBackground(),
-                new AxisTicksTop() { Label = "Horizontal Upper" },
-                new AxisTicksBottom() { Label = "Horizontal Lower" },
-                new AxisTicksLeft() { Label = "Left Vertical",
-                    EdgeColor = Colors.Red, MajorTickColor = Colors.Red, MinorTickColor = Colors.Red,
-                    LabelFontColor = Colors.Red, TickFontColor = Colors.Red },
-                new AxisTicksRight() {
-                    Label = "Right Vertical", YAxisIndex = 1, MajorGrid = false, MinorGrid = false,
-                    EdgeColor = Colors.Green, MajorTickColor = Colors.Green, MinorTickColor = Colors.Green,
-                    LabelFontColor = Colors.Green, TickFontColor = Colors.Green
-                },
-                new AxisTicksLeft() { Label = "Floating Vertical", YAxisIndex = 2, Offset = 80,
-                    MajorGrid = false, MinorGrid = false,
-                    EdgeColor = Colors.Blue, MajorTickColor = Colors.Blue, MinorTickColor = Colors.Blue,
-                    LabelFontColor = Colors.Blue, TickFontColor = Colors.Blue
-                },
-                new Benchmark()
-            };
+            Dims.UpdateSize(width, height);
+            ResetAxisStyles();
+            Layout();
         }
 
-        public void AddAxes(int totalX, int totalY)
+        public void Layout(float? padLeft = null, float? padRight = null, float? padTop = null, float? padBottom = null)
         {
-            Info.AddAxes(totalX, totalY);
+            float L = padLeft ?? Axes.Where(x => x is AxisLeft).Select(x => x.Size.Width).Sum();
+            float R = padRight ?? Axes.Where(x => x is AxisRight).Select(x => x.Size.Width).Sum();
+            float T = padTop ?? Axes.Where(x => x is AxisTop).Select(x => x.Size.Height).Sum();
+            float B = padBottom ?? Axes.Where(x => x is AxisBottom).Select(x => x.Size.Height).Sum();
+            Dims.UpdatePadding(L, R, T, B);
+        }
+
+        public void ResetAxisStyles()
+        {
+            Axes.Clear();
+            Axes.Add(AxisLeft);
+            Axes.Add(AxisRight);
+            Axes.Add(AxisTop);
+            Axes.Add(AxisBottom);
+
+            AxisLeft.Label = "Vertical Axis Label";
+            AxisLeft.MajorGrid = true;
+            AxisLeft.MinorGrid = true;
+
+            AxisBottom.Label = "Horizontal Axis Label";
+            AxisBottom.MajorGrid = true;
+            AxisBottom.MinorGrid = true;
+
+            AxisTop.Label = "Title";
+            AxisTop.TickLabel = false;
+            AxisTop.Size.Height = 28;
+
+            AxisRight.Label = null;
+            AxisRight.TickLabel = false;
+            AxisRight.Size.Width = 15;
         }
 
         /// <summary>
         /// Adjust the spacing between the figure edge and data area
         /// </summary>
         public void Padding(float? left = null, float? right = null, float? above = null, float? below = null) =>
-            Info.UpdatePadding(left, right, above, below);
+            Dims.UpdatePadding(left, right, above, below);
 
-        public void AutoAxis()
+        public void AutoScale()
         {
-            AutoX();
-            AutoY();
+            AutoScaleX();
+            AutoScaleY();
         }
 
-        public void AutoX()
+        public void AutoScaleX()
         {
-            for (int i = 0; i < Info.XAxes.Count; i++)
-                AutoX(i);
+            for (int i = 0; i < Dims.XAxes.Count; i++)
+                AutoScaleX(i);
         }
 
-        public void AutoY()
+        public void AutoScaleY()
         {
-            for (int i = 0; i < Info.YAxes.Count; i++)
-                AutoY(i);
+            for (int i = 0; i < Dims.YAxes.Count; i++)
+                AutoScaleY(i);
         }
 
-        public void AutoAxis(int xAxisIndex, int yAxisIndex)
+        public void AutoScale(int xAxisIndex, int yAxisIndex)
         {
-            AutoX(xAxisIndex);
-            AutoY(yAxisIndex);
+            AutoScaleX(xAxisIndex);
+            AutoScaleY(yAxisIndex);
         }
 
-        public void AutoX(int xAxisIndex = 0)
+        private void AutoScaleInvalidAxes()
+        {
+            int[] invalidXs = Enumerable.Range(0, Dims.XAxes.Count).Where(x => !Dims.XAxes[x].IsValid).ToArray();
+            int[] invalidYs = Enumerable.Range(0, Dims.YAxes.Count).Where(x => !Dims.YAxes[x].IsValid).ToArray();
+
+            foreach (int x in invalidXs)
+                AutoScaleX(x);
+
+            foreach (int y in invalidYs)
+                AutoScaleY();
+        }
+
+        public void AutoScaleX(int xAxisIndex = 0)
         {
             var ps = Renderables.Where(x => x is IPlottable)
                                 .Select(x => (IPlottable)x)
@@ -95,10 +123,10 @@ namespace ScottPlot
             double min = ps.Select(x => x.Limits.X1).Min();
             double max = ps.Select(x => x.Limits.X2).Max();
 
-            Info.XAxes[xAxisIndex].SetLimits(min, max);
+            Dims.XAxes[xAxisIndex].SetLimits(min, max);
         }
 
-        public void AutoY(int yAxisIndex = 0)
+        public void AutoScaleY(int yAxisIndex = 0)
         {
             var ps = Renderables.Where(x => x is IPlottable)
                                 .Select(x => (IPlottable)x)
@@ -110,13 +138,13 @@ namespace ScottPlot
             double min = ps.Select(x => x.Limits.Y1).Min();
             double max = ps.Select(x => x.Limits.Y2).Max();
 
-            Info.YAxes[yAxisIndex].SetLimits(min, max);
+            Dims.YAxes[yAxisIndex].SetLimits(min, max);
         }
 
         /// <summary>
         /// Render a Bitmap using System.Drawing
         /// </summary>
-        public System.Drawing.Bitmap GetBitmap() => GetBitmap(Info.Width, Info.Height);
+        public System.Drawing.Bitmap GetBitmap() => GetBitmap(Dims.Width, Dims.Height);
 
         /// <summary>
         /// Render a Bitmap using System.Drawing
@@ -137,32 +165,20 @@ namespace ScottPlot
         /// </summary>
         public void Render(IRenderer renderer)
         {
-            foreach (Benchmark bench in Renderables.Where(x => x is Benchmark))
-                bench.Start();
+            Dims.CreateAxes(Renderables);
+            Dims.UpdateSize(renderer.Width, renderer.Height);
+            AutoScaleInvalidAxes();
+            foreach (Axis axis in Axes)
+                axis.CalculateTicks(Dims.GetLimits(axis.XAxisIndex, axis.YAxisIndex));
 
-            Info.UpdateSize(renderer.Width, renderer.Height);
-            Console.WriteLine(Info);
-
-            for (int i = 0; i < Info.XAxes.Count; i++)
-                if (Info.XAxes[i].IsValid == false)
-                    AutoX(i);
-
-            for (int i = 0; i < Info.YAxes.Count; i++)
-                if (Info.YAxes[i].IsValid == false)
-                    AutoY(i);
-
-            foreach (AxisTicks axisTicks in Renderables.Where(x => x is AxisTicks))
-            {
-                var limits = Info.GetLimits(axisTicks.XAxisIndex, axisTicks.YAxisIndex);
-                axisTicks.Recalculate(limits);
-            }
-
-            foreach (var renderable in Renderables.Where(x => x.Layer == PlotLayer.BelowData))
-                renderable.Render(renderer, Info);
-            foreach (var plottable in Renderables.Where(x => x.Layer == PlotLayer.Data))
-                plottable.Render(renderer, Info);
-            foreach (var renderable in Renderables.Where(x => x.Layer == PlotLayer.AboveData))
-                renderable.Render(renderer, Info);
+            Benchmark.Start();
+            FigureBackground.Render(renderer, Dims);
+            DataBackground.Render(renderer, Dims);
+            foreach (var renderable in Renderables)
+                renderable.Render(renderer, Dims);
+            foreach (Axis axis in Axes)
+                axis.Render(renderer, Dims);
+            Benchmark.Render(renderer, Dims);
         }
 
         /// <summary>
@@ -205,25 +221,21 @@ namespace ScottPlot
             return bmp;
         }
 
-        // TODO: replace with separated X and Y methods?
-        public AxisLimits2D Axis(
-            double? xMin = null,
-            double? xMax = null,
-            double? yMin = null,
-            double? yMax = null,
-            int xAxisIndex = 0,
-            int yAxisIndex = 0
-            )
+        public void ScaleX(double? xMin = null, double? xMax = null, int xAxisIndex = 0) =>
+            Dims.XAxes[xAxisIndex].SetLimits(xMin ?? Dims.XAxes[xAxisIndex].Min, xMax ?? Dims.XAxes[xAxisIndex].Max);
+
+        public void ScaleY(double? yMin = null, double? yMax = null, int yAxisIndex = 0) =>
+            Dims.YAxes[yAxisIndex].SetLimits(yMin ?? Dims.YAxes[yAxisIndex].Min, yMax ?? Dims.YAxes[yAxisIndex].Max);
+
+        public void Scale(AxisLimits2D limits, int xAxisIndex = 0, int yAxisIndex = 0) =>
+            Dims.SetLimits(limits, xAxisIndex, yAxisIndex);
+
+        public AxisLimits2D Scale(double? xMin = null, double? xMax = null, double? yMin = null, double? yMax = null,
+                                  int xAxisIndex = 0, int yAxisIndex = 0)
         {
-            double x1 = xMin ?? Info.XAxes[xAxisIndex].Min;
-            double x2 = xMax ?? Info.XAxes[xAxisIndex].Max;
-            Info.XAxes[xAxisIndex].SetLimits(x1, x2);
-
-            double y1 = yMin ?? Info.YAxes[yAxisIndex].Min;
-            double y2 = yMax ?? Info.YAxes[yAxisIndex].Max;
-            Info.YAxes[yAxisIndex].SetLimits(y1, y2);
-
-            return Info.GetLimits(xAxisIndex, yAxisIndex);
+            ScaleX(xMin, xMax, xAxisIndex);
+            ScaleY(yMin, yMax, yAxisIndex);
+            return Dims.GetLimits(xAxisIndex, yAxisIndex);
         }
     }
 }

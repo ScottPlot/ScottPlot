@@ -32,7 +32,7 @@ namespace ScottPlotTests
             double[] ys = ScottPlot.Generate.Sin(51);
             plt.PlotScatter(xs, ys);
 
-            plt.Axis(0, 50, -1, 1);
+            plt.Scale(0, 50, -1, 1);
 
             plt.SaveFig(filePath, 600, 400);
             Console.WriteLine($"Wrote: {filePath}");

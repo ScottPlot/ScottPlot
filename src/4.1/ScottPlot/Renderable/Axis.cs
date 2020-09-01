@@ -6,12 +6,12 @@ using System.Diagnostics;
 
 namespace ScottPlot.Renderable
 {
-    public class AxisTicksLeft : AxisTicks { public AxisTicksLeft() { Edge = Edge.Left; } }
-    public class AxisTicksRight : AxisTicks { public AxisTicksRight() { Edge = Edge.Right; } }
-    public class AxisTicksTop : AxisTicks { public AxisTicksTop() { Edge = Edge.Top; } }
-    public class AxisTicksBottom : AxisTicks { public AxisTicksBottom() { Edge = Edge.Bottom; } }
+    public class AxisLeft : Axis { public AxisLeft() { Edge = Edge.Left; } }
+    public class AxisRight : Axis { public AxisRight() { Edge = Edge.Right; } }
+    public class AxisTop : Axis { public AxisTop() { Edge = Edge.Top; } }
+    public class AxisBottom : Axis { public AxisBottom() { Edge = Edge.Bottom; } }
 
-    public class AxisTicks : IRenderable
+    public class Axis : IRenderable
     {
         public bool Visible { get; set; } = true;
         public bool AntiAlias { get; set; } = true;
@@ -21,7 +21,7 @@ namespace ScottPlot.Renderable
 
         public Edge Edge;
         public float Offset = 0;
-        public float LabelOffset = 40;
+        public Size Size = new Size(65, 45);
 
         public float EdgeWidth = 1;
         public Color EdgeColor = Colors.Black;
@@ -31,29 +31,32 @@ namespace ScottPlot.Renderable
         public float LabelFontSize = 12;
         public Color LabelFontColor = Colors.Black;
 
+        public bool TickLabel = true;
         public string TickFontName = "segoe ui";
         public float TickFontSize = 9;
         public Color TickFontColor = Colors.Black;
 
+        public bool MajorTick = true;
         public Color MajorTickColor = Colors.Black;
         public float majorTickWidth = 1;
         public float majorTickLength = 5;
 
+        public bool MinorTick = true;
         public Color MinorTickColor = Colors.Black;
         public float MinorTickWidth = 1;
         public float MinorTickLength = 2;
 
-        public bool MajorGrid = true;
+        public bool MajorGrid = false;
         public Color MajorGridColor = new Color(35, 0, 0, 0);
         public float MajorGridWidth = 1;
 
-        public bool MinorGrid = true;
+        public bool MinorGrid = false;
         public Color MinorGridColor = new Color(10, 0, 0, 0);
         public float MinorGridWidth = 1;
 
         public ITickGenerator TickGenerator = new NumericTickGenerator();
 
-        public void Recalculate(AxisLimits2D limits)
+        public void CalculateTicks(AxisLimits2D limits)
         {
             if (Edge == Edge.Bottom || Edge == Edge.Top)
                 TickGenerator.Recalculate(limits.X1, limits.X2);
@@ -106,32 +109,32 @@ namespace ScottPlot.Renderable
 
             if (Edge == Edge.Bottom)
             {
-                Point pt = info.DataSC.Shift(0, Offset + LabelOffset);
+                Point pt = info.DataSC.Shift(0, Offset + Size.Height);
                 font.HorizontalAlignment = HorizontalAlignment.Center;
-                font.VerticalAlignment = VerticalAlignment.Top;
+                font.VerticalAlignment = VerticalAlignment.Bottom;
                 renderer.DrawText(pt, Label, LabelFontColor, font);
             }
             else if (Edge == Edge.Top)
             {
-                Point pt = info.DataNC.Shift(0, -(Offset + LabelOffset));
+                Point pt = info.DataNC.Shift(0, -(Offset + Size.Height));
                 font.HorizontalAlignment = HorizontalAlignment.Center;
-                font.VerticalAlignment = VerticalAlignment.Bottom;
+                font.VerticalAlignment = VerticalAlignment.Top;
                 renderer.DrawText(pt, Label, LabelFontColor, font);
             }
             else if (Edge == Edge.Left)
             {
-                Point pt = info.DataWC.Shift(-(Offset + LabelOffset), 0);
+                Point pt = info.DataWC.Shift(-(Offset + Size.Width), 0);
                 font.HorizontalAlignment = HorizontalAlignment.Center;
-                font.VerticalAlignment = VerticalAlignment.Bottom;
+                font.VerticalAlignment = VerticalAlignment.Top;
                 renderer.Rotate(-90, pt);
                 renderer.DrawText(new Point(0, 0), Label, LabelFontColor, font);
                 renderer.RotateReset();
             }
             else if (Edge == Edge.Right)
             {
-                Point pt = info.DataEC.Shift(Offset + LabelOffset, 0);
+                Point pt = info.DataEC.Shift(Offset + Size.Width, 0);
                 font.HorizontalAlignment = HorizontalAlignment.Center;
-                font.VerticalAlignment = VerticalAlignment.Bottom;
+                font.VerticalAlignment = VerticalAlignment.Top;
                 renderer.Rotate(90, pt);
                 renderer.DrawText(new Point(0, 0), Label, LabelFontColor, font);
                 renderer.RotateReset();
@@ -175,7 +178,8 @@ namespace ScottPlot.Renderable
 
                 if (tick.IsMajor && MajorGrid)
                     renderer.DrawLine(pt1, pt2, MajorGridColor, MajorGridWidth);
-                else if (tick.IsMinor && MinorGrid)
+
+                if (tick.IsMinor && MinorGrid)
                     renderer.DrawLine(pt1, pt2, MinorGridColor, MinorGridWidth);
             }
         }
@@ -221,15 +225,19 @@ namespace ScottPlot.Renderable
                     throw new NotImplementedException("unsupported edge");
                 }
 
-                if (tick.IsMajor)
+                if (tick.IsMajor && MajorTick)
                     renderer.DrawLine(tickPt1, tickPt2, MajorTickColor, majorTickWidth);
-                else
+
+                if (tick.IsMinor && MinorTick)
                     renderer.DrawLine(tickPt1, tickPt2, MinorTickColor, MinorTickWidth);
             }
         }
 
         private void DrawTickLabels(IRenderer renderer, Dimensions dims)
         {
+            if (TickLabel == false)
+                return;
+
             Font fnt = GetTickFont();
 
             foreach (Tick tick in TickGenerator.Ticks)
