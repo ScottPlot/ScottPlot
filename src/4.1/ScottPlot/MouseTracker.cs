@@ -26,6 +26,10 @@ namespace ScottPlot
         bool IsCenterDown { get => CenterDown != null; }
         bool IsRightDown { get => RightDown != null; }
 
+        public bool IsCtrlDown;
+        public bool IsAltDown;
+        public bool IsShiftDown;
+
         public MouseTracker(Plot plt)
         {
             this.plt = plt;
@@ -127,6 +131,22 @@ namespace ScottPlot
                         yAxis.ZoomPx(yPixel - RightDown.Y);
                 }
             }
+        }
+
+        public void MouseWheel(bool upward, float xPixel, float yPixel)
+        {
+            double xFrac = upward ? 1.15 : 0.85;
+            double yFrac = upward ? 1.15 : 0.85;
+
+            if (IsShiftDown == false)
+                foreach (var xAxis in info.XAxes)
+                    if (!xAxis.IsLocked)
+                        xAxis.ZoomTo(xFrac, xAxis.GetPosition(xPixel));
+
+            if (IsCtrlDown == false)
+                foreach (var yAxis in info.YAxes)
+                    if (!yAxis.IsLocked)
+                        yAxis.ZoomTo(yFrac, yAxis.GetPosition(yPixel));
         }
     }
 }

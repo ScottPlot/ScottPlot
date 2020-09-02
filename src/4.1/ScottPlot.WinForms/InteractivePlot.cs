@@ -18,6 +18,8 @@ namespace ScottPlot.WinForms
         public InteractivePlot()
         {
             InitializeComponent();
+            pictureBox1.MouseWheel += pictureBox1_MouseWheel;
+
             plt = new Plot { OnRender = () => Render() };
             plt.FigureBackground.Color = Colors.Convert(SystemColors.Control);
             plt.DataBackground.Color = Colors.White;
@@ -26,7 +28,7 @@ namespace ScottPlot.WinForms
         }
 
         bool currentlyRendering = false;
-        private void Render(bool force = false, bool recalculateLayout = true, bool antiAlias = true)
+        private void Render(bool force = true, bool recalculateLayout = true, bool antiAlias = true)
         {
             if (force == false && currentlyRendering)
                 return;
@@ -71,6 +73,12 @@ namespace ScottPlot.WinForms
             if (e.Button == MouseButtons.Left) pc.MouseUpLeft(e.X, e.Y);
             else if (e.Button == MouseButtons.Middle) pc.MouseUpCenter(e.X, e.Y);
             else if (e.Button == MouseButtons.Right) pc.MouseUpRight(e.X, e.Y);
+            Render();
+        }
+
+        private void pictureBox1_MouseWheel(object sender, MouseEventArgs e)
+        {
+            pc.MouseWheel(e.Delta > 0, e.X, e.Y);
             Render();
         }
     }
