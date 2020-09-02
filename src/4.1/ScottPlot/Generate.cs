@@ -21,6 +21,18 @@ namespace ScottPlot
             return ys;
         }
 
+        public static double[] Cos(int pointCount, double oscillations = 1, double offset = 0, double mult = 1, double phase = 0)
+        {
+            if (pointCount < 1)
+                throw new ArgumentException("must have at least 1 point");
+
+            double[] ys = new double[pointCount];
+            double sinScale = 2 * Math.PI * oscillations / (pointCount - 1);
+            for (int i = 0; i < ys.Length; i++)
+                ys[i] = Math.Cos(i * sinScale + phase * Math.PI * 2) * mult + offset;
+            return ys;
+        }
+
         public static double[] Consecutive(int pointCount, double spacing = 1, double offset = 0)
         {
             if (pointCount < 1)

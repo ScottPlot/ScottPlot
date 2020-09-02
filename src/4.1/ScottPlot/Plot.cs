@@ -252,6 +252,15 @@ namespace ScottPlot
                 Renderables.Remove(plottable);
         }
 
+        public delegate void RenderDelegate();
+        public RenderDelegate OnRender;
+
+        public void AddRenderable(IRenderable renderable)
+        {
+            Renderables.Add(renderable);
+            OnRender?.Invoke();
+        }
+
         /// <summary>
         /// Scatter plots display unordered X/Y data pairs (but they are slower than signal plots)
         /// </summary>
@@ -259,7 +268,7 @@ namespace ScottPlot
         {
             var scatter = new Scatter() { Color = color ?? Colors.Magenta };
             scatter.ReplaceXsAndYs(xs, ys);
-            Renderables.Add(scatter);
+            AddRenderable(scatter);
             return scatter;
         }
 
