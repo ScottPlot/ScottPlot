@@ -35,6 +35,16 @@ namespace ScottPlot
             Layout();
         }
 
+        public void Layout(IRenderer renderer)
+        {
+            // use a renderer to measure the size of every axis label and tick
+            foreach (Axis axis in Axes)
+                axis.AutoSize(renderer);
+
+            // then update the layout based on the new sizes
+            Layout();
+        }
+
         public void Layout(float? padLeft = null, float? padRight = null, float? padTop = null, float? padBottom = null)
         {
             float L = padLeft ?? Axes.Where(x => x is AxisLeft).Select(x => x.Size.Width).Sum();
@@ -43,6 +53,7 @@ namespace ScottPlot
             float B = padBottom ?? Axes.Where(x => x is AxisBottom).Select(x => x.Size.Height).Sum();
             Dims.UpdatePadding(L, R, T, B);
             LayoutMultipleAxes();
+            RecalculateTickPositions();
         }
 
         private void LayoutMultipleAxes()
@@ -146,16 +157,33 @@ namespace ScottPlot
             AutoScaleY(yAxisIndex);
         }
 
-        private void AutoScaleInvalidAxes()
+        public void AutoScale(int[] xAxisIndexes, int[] yAxisIndexes)
         {
-            int[] invalidXs = Enumerable.Range(0, Dims.XAxes.Count).Where(x => !Dims.XAxes[x].IsValid).ToArray();
-            int[] invalidYs = Enumerable.Range(0, Dims.YAxes.Count).Where(x => !Dims.YAxes[x].IsValid).ToArray();
-
-            foreach (int x in invalidXs)
+            foreach (int x in xAxisIndexes)
                 AutoScaleX(x);
+            foreach (int y in yAxisIndexes)
+                AutoScaleY(y);
+        }
 
-            foreach (int y in invalidYs)
-                AutoScaleY();
+        private (int[] scaledXs, int[] scaledYs) AutoScaleInvalidAxes()
+        {
+            int[] invalidAxesX = Enumerable.Range(0, Dims.XAxes.Count).Where(x => !Dims.XAxes[x].IsValid).ToArray();
+            int[] invalidAxesY = Enumerable.Range(0, Dims.YAxes.Count).Where(x => !Dims.YAxes[x].IsValid).ToArray();
+
+            foreach (int xAxisIndex in invalidAxesX)
+                AutoScaleX(xAxisIndex);
+            foreach (int yAxisIndex in invalidAxesY)
+                AutoScaleY(yAxisIndex);
+
+            return (invalidAxesX, invalidAxesY);
+        }
+
+        private double RoundTo(double d, int significantDigits)
+        {
+            if (d == 0)
+                return 0;
+            double scale = Math.Pow(10, Math.Floor(Math.Log10(Math.Abs(d))) + 1);
+            return scale * Math.Round(d / scale, significantDigits);
         }
 
         public void AutoScaleX(int xAxisIndex = 0)
@@ -169,6 +197,10 @@ namespace ScottPlot
 
             double min = ps.Select(x => x.Limits.X1).Min();
             double max = ps.Select(x => x.Limits.X2).Max();
+
+            // slightly expand to include the next tick
+            min = Math.Min(min, RoundTo(min, 2));
+            max = Math.Max(max, RoundTo(max, 2));
 
             Dims.XAxes[xAxisIndex].SetLimits(min, max);
         }
@@ -185,7 +217,17 @@ namespace ScottPlot
             double min = ps.Select(x => x.Limits.Y1).Min();
             double max = ps.Select(x => x.Limits.Y2).Max();
 
+            // slightly expand to include the next tick
+            min = Math.Min(min, RoundTo(min, 2));
+            max = Math.Max(max, RoundTo(max, 2));
+
             Dims.YAxes[yAxisIndex].SetLimits(min, max);
+        }
+
+        private void RecalculateTickPositions()
+        {
+            foreach (Axis axis in Axes)
+                axis.CalculateTicks(Dims.GetLimits(axis.XAxisIndex, axis.YAxisIndex));
         }
 
         /// <summary>
@@ -212,26 +254,15 @@ namespace ScottPlot
         /// </summary>
         public void Render(IRenderer renderer, bool recalculateLayout = true, bool lowQuality = false)
         {
+            // update figure details based on the given renderer
             Dims.CreateAxes(Renderables);
             Dims.UpdateSize(renderer.Width, renderer.Height);
             AutoScaleInvalidAxes();
-            foreach (Axis axis in Axes)
-                axis.CalculateTicks(Dims.GetLimits(axis.XAxisIndex, axis.YAxisIndex));
-
+            RecalculateTickPositions();
             if (recalculateLayout)
-            {
-                // now that preliminary ticks are created measure them to refine their size
-                foreach (Axis axis in Axes)
-                    axis.AutoSize(renderer);
+                Layout(renderer);
 
-                // update the layout based on the new tick sizes
-                Layout();
-
-                // update the ticks based on the new layout
-                foreach (Axis axis in Axes)
-                    axis.CalculateTicks(Dims.GetLimits(axis.XAxisIndex, axis.YAxisIndex));
-            }
-
+            // draw everything using the given renderer
             Benchmark.Start();
             FigureBackground.Render(renderer, Dims, lowQuality);
             DataBackground.Render(renderer, Dims, lowQuality);

@@ -13,7 +13,6 @@ namespace ScottPlot.WinForms
         public Form2()
         {
             InitializeComponent();
-
             interactivePlot1.plt.PlotScatter(Generate.Consecutive(51), Generate.Sin(51));
             interactivePlot1.plt.PlotScatter(Generate.Consecutive(51), Generate.Cos(51));
         }
