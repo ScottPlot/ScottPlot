@@ -210,7 +210,7 @@ namespace ScottPlot
         /// <summary>
         /// Draw the plot with a custom renderer
         /// </summary>
-        public void Render(IRenderer renderer, bool recalculateLayout = true)
+        public void Render(IRenderer renderer, bool recalculateLayout = true, bool lowQuality = false)
         {
             Dims.CreateAxes(Renderables);
             Dims.UpdateSize(renderer.Width, renderer.Height);
@@ -233,13 +233,13 @@ namespace ScottPlot
             }
 
             Benchmark.Start();
-            FigureBackground.Render(renderer, Dims);
-            DataBackground.Render(renderer, Dims);
+            FigureBackground.Render(renderer, Dims, lowQuality);
+            DataBackground.Render(renderer, Dims, lowQuality);
             foreach (var renderable in Renderables)
-                renderable.Render(renderer, Dims);
+                renderable.Render(renderer, Dims, lowQuality);
             foreach (Axis axis in Axes)
-                axis.Render(renderer, Dims);
-            Benchmark.Render(renderer, Dims);
+                axis.Render(renderer, Dims, lowQuality);
+            Benchmark.Render(renderer, Dims, lowQuality);
         }
 
         /// <summary>

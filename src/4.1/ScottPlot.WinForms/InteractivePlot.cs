@@ -42,7 +42,7 @@ namespace ScottPlot.WinForms
             }
 
             currentlyRendering = true;
-            using (var renderer = new SystemDrawingRenderer((Bitmap)pictureBox1.Image) { AntiAliasDisabled = !antiAlias })
+            using (var renderer = new SystemDrawingRenderer((Bitmap)pictureBox1.Image))
                 plt.Render(renderer, recalculateLayout);
             pictureBox1.Invalidate();
             Application.DoEvents();

@@ -8,7 +8,6 @@ namespace ScottPlot.Renderer
         float Width { get; }
         float Height { get; }
 
-        bool AntiAliasDisabled { get; set; }
         void AntiAlias(bool antiAlias);
 
         void Clip(Point point, Size size);

@@ -25,7 +25,7 @@ namespace ScottPlot.Plottable
         public Color Color = Colors.Magenta;
         public float LineWidth = 5;
 
-        public void Render(IRenderer renderer, Dimensions info)
+        public void Render(IRenderer renderer, Dimensions info, bool lowQuality)
         {
             if (Visible == false)
                 return;
@@ -34,7 +34,7 @@ namespace ScottPlot.Plottable
             Size clipSize = new Size(info.DataWidth, info.DataHeight);
             renderer.Clip(clipPoint, clipSize);
 
-            renderer.AntiAlias(AntiAlias);
+            renderer.AntiAlias(AntiAlias && (lowQuality == false));
 
             // TODO: optimize speed by pre-allocating this memory?
             Point[] points = new Point[Xs.Length];

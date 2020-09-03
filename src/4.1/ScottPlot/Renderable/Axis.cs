@@ -14,7 +14,6 @@ namespace ScottPlot.Renderable
     public class Axis : IRenderable
     {
         public bool Visible { get; set; } = true;
-        public bool AntiAlias { get; set; } = true;
         public PlotLayer Layer => PlotLayer.AboveData;
         public int XAxisIndex { get; set; }
         public int YAxisIndex { get; set; }
@@ -23,6 +22,10 @@ namespace ScottPlot.Renderable
         public float Offset = 0;
         public Size Size = new Size(65, 45);
         public float Padding = 5;
+
+        public bool AntiAliasText = true;
+        public bool AntiAliasTicks = false;
+        public bool AntiAliasGrid = false;
 
         public float EdgeWidth = 1;
         public Color EdgeColor = Colors.Black;
@@ -81,6 +84,8 @@ namespace ScottPlot.Renderable
 
         public void AutoSize(IRenderer renderer)
         {
+            renderer.AntiAlias(false); // so it can run a little faster
+
             Font tickFont = GetTickFont();
             Size largestTickSize = new Size();
             if (TickLabel)
@@ -96,7 +101,7 @@ namespace ScottPlot.Renderable
                 Size.Height = largestTickSize.Height + axisLabelSize.Height + Padding;
         }
 
-        public void Render(IRenderer renderer, Dimensions dims)
+        public void Render(IRenderer renderer, Dimensions dims, bool lowQuality)
         {
             DrawGridLines(renderer, dims);
             DrawTickMarks(renderer, dims);
@@ -161,10 +166,11 @@ namespace ScottPlot.Renderable
 
         public void DrawAxisLabels(IRenderer renderer, Dimensions info)
         {
+            renderer.AntiAlias(AntiAliasText);
             Font font = GetLabelFont();
             if (Edge == Edge.Bottom)
             {
-                Point pt = info.DataSC.Shift(0, Offset + Size.Height);
+                Point pt = info.DataSC.Shift(0, Offset + Size.Height - 1);
                 renderer.DrawText(pt, Label, LabelFontColor, font);
             }
             else if (Edge == Edge.Top)
@@ -181,7 +187,7 @@ namespace ScottPlot.Renderable
             }
             else if (Edge == Edge.Right)
             {
-                Point pt = info.DataEC.Shift(Offset + Size.Width, 0);
+                Point pt = info.DataEC.Shift(Offset + Size.Width - 1, 0);
                 renderer.Rotate(90, pt);
                 renderer.DrawText(new Point(0, 0), Label, LabelFontColor, font);
                 renderer.RotateReset();
@@ -190,6 +196,7 @@ namespace ScottPlot.Renderable
 
         private void DrawGridLines(IRenderer renderer, Dimensions dims)
         {
+            renderer.AntiAlias(AntiAliasGrid);
             foreach (Tick tick in TickGenerator.Ticks)
             {
                 Point pt1, pt2;
@@ -235,6 +242,7 @@ namespace ScottPlot.Renderable
         {
             float majorTickLength = 5;
             float minorTickLength = 2;
+            renderer.AntiAlias(AntiAliasTicks);
 
             // draw ticks, tick labels, and grid
             foreach (Tick tick in TickGenerator.Ticks)
@@ -252,14 +260,14 @@ namespace ScottPlot.Renderable
                 else if (Edge == Edge.Right)
                 {
                     float tickY = dims.GetPixelY(tick.Position, YAxisIndex);
-                    tickPt1 = new Point(dims.DataOffsetX + Offset + dims.DataWidth, tickY);
-                    tickPt2 = new Point(dims.DataOffsetX + Offset + dims.DataWidth + tickLength, tickY);
+                    tickPt1 = new Point(dims.DataOffsetX + Offset + dims.DataWidth - 1, tickY);
+                    tickPt2 = new Point(dims.DataOffsetX + Offset + dims.DataWidth - 1+ tickLength, tickY);
                 }
                 else if (Edge == Edge.Bottom)
                 {
                     float tickX = dims.GetPixelX(tick.Position, XAxisIndex);
-                    tickPt1 = new Point(tickX, dims.DataOffsetY + dims.DataHeight + Offset);
-                    tickPt2 = new Point(tickX, dims.DataOffsetY + dims.DataHeight + Offset + tickLength);
+                    tickPt1 = new Point(tickX, dims.DataOffsetY + dims.DataHeight - 1 + Offset);
+                    tickPt2 = new Point(tickX, dims.DataOffsetY + dims.DataHeight - 1 + Offset + tickLength);
                 }
                 else if (Edge == Edge.Top)
                 {
@@ -285,6 +293,7 @@ namespace ScottPlot.Renderable
             if (TickLabel == false)
                 return;
 
+            renderer.AntiAlias(AntiAliasText);
             Font fnt = GetTickFont();
 
             foreach (Tick tick in TickGenerator.Ticks)
@@ -296,9 +305,9 @@ namespace ScottPlot.Renderable
                 if (Edge == Edge.Left)
                     pt = new Point(dims.DataOffsetX - Offset - majorTickLength, dims.GetPixelY(tick.Position, YAxisIndex));
                 else if (Edge == Edge.Right)
-                    pt = new Point(dims.DataOffsetX + Offset + dims.DataWidth + majorTickLength, dims.GetPixelY(tick.Position, YAxisIndex));
+                    pt = new Point(dims.DataOffsetX + Offset + dims.DataWidth - 1 + majorTickLength, dims.GetPixelY(tick.Position, YAxisIndex));
                 else if (Edge == Edge.Bottom)
-                    pt = new Point(dims.GetPixelX(tick.Position, XAxisIndex), dims.DataOffsetY + dims.DataHeight + Offset + majorTickLength);
+                    pt = new Point(dims.GetPixelX(tick.Position, XAxisIndex), dims.DataOffsetY + dims.DataHeight - 1 + Offset + majorTickLength);
                 else if (Edge == Edge.Top)
                     pt = new Point(dims.GetPixelX(tick.Position, XAxisIndex), dims.DataOffsetY - Offset - majorTickLength);
                 else
@@ -310,6 +319,8 @@ namespace ScottPlot.Renderable
 
         private void DrawAxisLines(IRenderer renderer, Dimensions dims)
         {
+            renderer.AntiAlias(AntiAliasTicks);
+
             if (Edge == Edge.Left)
             {
                 Point edgePt1 = new Point(dims.DataW - Offset, dims.DataN);

@@ -38,11 +38,8 @@ namespace ScottPlot.Renderer
                 Bmp.Dispose();
         }
 
-        public bool AntiAliasDisabled { get; set; }
         public void AntiAlias(bool antiAlias)
         {
-            antiAlias = !AntiAliasDisabled && antiAlias;
-
             Gfx.SmoothingMode = antiAlias ?
                 System.Drawing.Drawing2D.SmoothingMode.AntiAlias :
                 System.Drawing.Drawing2D.SmoothingMode.HighSpeed;

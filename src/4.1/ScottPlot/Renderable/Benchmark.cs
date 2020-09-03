@@ -21,26 +21,24 @@ namespace ScottPlot.Renderable
         public void Stop() => Stopwatch.Stop();
         public double MSec { get { return Stopwatch.ElapsedTicks * 1000.0 / Stopwatch.Frequency; } }
         public double Hz { get { return (MSec > 0) ? 1000.0 / MSec : 0; } }
+        public string Message { get => $"Rendered in {MSec:00.00} ms ({Hz:00.00} Hz)"; }
+        public int Padding = 3;
 
-        public void Render(IRenderer renderer, Dimensions dims)
+        public void Render(IRenderer renderer, Dimensions dims, bool lowQuality)
         {
             if (Visible == false)
                 return;
-
-            int debugPadding = 3;
-
-            string message = $"Rendered in {MSec:0.000} ms ({Hz:0.00 Hz})";
-
+            
             Font fnt = new Font(FontName, FontSize);
-            Size txtSize = renderer.MeasureText(message, fnt);
+            Size txtSize = renderer.MeasureText(Message, fnt);
 
             Point txtPoint = new Point(
-            x: dims.DataOffsetX + dims.DataWidth - debugPadding - txtSize.Width,
-            y: dims.DataOffsetY + dims.DataHeight - debugPadding - txtSize.Height);
+            x: dims.DataOffsetX + dims.DataWidth - Padding - txtSize.Width,
+            y: dims.DataOffsetY + dims.DataHeight - Padding - txtSize.Height);
 
             renderer.FillRectangle(txtPoint, txtSize, FillColor);
             renderer.DrawRectangle(txtPoint, txtSize, OutlineColor, 1);
-            renderer.DrawText(txtPoint, message, FontColor, fnt);
+            renderer.DrawText(txtPoint, Message, FontColor, fnt);
         }
     }
 }

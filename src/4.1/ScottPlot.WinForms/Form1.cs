@@ -63,7 +63,7 @@ namespace ScottPlot.WinForms
 
         bool currentlyRendering = false;
         readonly Stopwatch stopwatch = new Stopwatch();
-        private void Render(bool force = false, bool recalculateLayout = true, bool antiAlias = true)
+        private void Render(bool force = false, bool recalculateLayout = true, bool lowQuality = true)
         {
             if (force == false && currentlyRendering)
                 return;
@@ -80,9 +80,9 @@ namespace ScottPlot.WinForms
             }
 
             currentlyRendering = true;
-            using (var renderer = new SystemDrawingRenderer((Bitmap)pictureBox1.Image) { AntiAliasDisabled = !antiAlias })
+            using (var renderer = new SystemDrawingRenderer((Bitmap)pictureBox1.Image))
             {
-                plt.Render(renderer, recalculateLayout);
+                plt.Render(renderer, recalculateLayout, lowQuality);
             }
             stopwatch.Stop();
             pictureBox1.Invalidate();
@@ -103,7 +103,7 @@ namespace ScottPlot.WinForms
             pc.MouseMove(e.X, e.Y);
             if (e.Button != MouseButtons.None)
             {
-                Render(force: false, recalculateLayout: false, antiAlias: false);
+                Render(force: false, recalculateLayout: false, lowQuality: true);
             }
         }
 

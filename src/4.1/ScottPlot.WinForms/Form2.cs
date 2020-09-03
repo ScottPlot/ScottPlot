@@ -14,8 +14,8 @@ namespace ScottPlot.WinForms
         {
             InitializeComponent();
 
-            interactivePlot1.plt.PlotScatter(Generate.Consecutive(50), Generate.Sin(50));
-            interactivePlot1.plt.PlotScatter(Generate.Consecutive(50), Generate.Cos(50));
+            interactivePlot1.plt.PlotScatter(Generate.Consecutive(51), Generate.Sin(51));
+            interactivePlot1.plt.PlotScatter(Generate.Consecutive(51), Generate.Cos(51));
         }
     }
 }

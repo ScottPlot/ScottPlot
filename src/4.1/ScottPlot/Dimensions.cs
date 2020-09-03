@@ -31,9 +31,9 @@ namespace ScottPlot
         public float DataOffsetY { get; private set; }
 
         public float DataW => DataOffsetX;
-        public float DataE => DataOffsetX + DataWidth;
+        public float DataE => DataOffsetX + DataWidth - 1;
         public float DataN => DataOffsetY;
-        public float DataS => DataOffsetY + DataHeight;
+        public float DataS => DataOffsetY + DataHeight - 1;
         public Point DataNW => new Point(DataOffsetX, DataOffsetY);
         public Point DataNC => new Point(DataOffsetX + DataWidth / 2, DataOffsetY);
         public Point DataNE => new Point(DataOffsetX + DataWidth, DataOffsetY);
