@@ -292,6 +292,12 @@ namespace ScottPlot
             OnRender?.Invoke();
         }
 
+        public void AddAxis(Axis axis)
+        {
+            Axes.Add(axis);
+            OnRender?.Invoke();
+        }
+
         /// <summary>
         /// Scatter plots display unordered X/Y data pairs (but they are slower than signal plots)
         /// </summary>

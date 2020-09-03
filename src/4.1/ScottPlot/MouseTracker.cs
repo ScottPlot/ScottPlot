@@ -15,8 +15,8 @@ namespace ScottPlot
     /// </summary>
     public class MouseTracker
     {
-        readonly Plot plt;
-        readonly Dimensions info;
+        readonly Plot Plot;
+        readonly Dimensions Dims;
 
         Point LeftDown;
         Point CenterDown;
@@ -32,8 +32,8 @@ namespace ScottPlot
 
         public MouseTracker(Plot plt)
         {
-            this.plt = plt;
-            info = plt.Dims;
+            this.Plot = plt;
+            Dims = plt.Dims;
             SetActiveAxis(0, 0);
         }
 
@@ -44,20 +44,20 @@ namespace ScottPlot
 
         public void SetActiveAxes(int[] xIndexes, int[] yIndexes)
         {
-            for (int i = 0; i < info.XAxes.Count; i++)
-                info.XAxes[i].IsLocked = xIndexes.Contains(i) ? false : true;
+            for (int i = 0; i < Dims.XAxes.Count; i++)
+                Dims.XAxes[i].IsLocked = xIndexes.Contains(i) ? false : true;
 
-            for (int i = 0; i < info.YAxes.Count; i++)
-                info.YAxes[i].IsLocked = yIndexes.Contains(i) ? false : true;
+            for (int i = 0; i < Dims.YAxes.Count; i++)
+                Dims.YAxes[i].IsLocked = yIndexes.Contains(i) ? false : true;
         }
 
         private void RememberMouseDownLimits()
         {
-            foreach (var xAxis in info.XAxes)
+            foreach (var xAxis in Dims.XAxes)
                 if (!xAxis.IsLocked)
                     xAxis.RememberLimits();
 
-            foreach (var yAxis in info.YAxes)
+            foreach (var yAxis in Dims.YAxes)
                 if (!yAxis.IsLocked)
                     yAxis.RememberLimits();
         }
@@ -89,13 +89,13 @@ namespace ScottPlot
         {
             CenterDown = null;
 
-            for (int i = 0; i < info.XAxes.Count; i++)
-                if (!info.XAxes[i].IsLocked)
-                    plt.AutoScaleX(i);
+            for (int i = 0; i < Dims.XAxes.Count; i++)
+                if (!Dims.XAxes[i].IsLocked)
+                    Plot.AutoScaleX(i);
 
-            for (int i = 0; i < info.YAxes.Count; i++)
-                if (!info.YAxes[i].IsLocked)
-                    plt.AutoScaleY(i);
+            for (int i = 0; i < Dims.YAxes.Count; i++)
+                if (!Dims.YAxes[i].IsLocked)
+                    Plot.AutoScaleY(i);
         }
 
         public void MouseUpRight(float xPixel, float yPixel)
@@ -108,7 +108,7 @@ namespace ScottPlot
             if (IsLeftDown == false && IsRightDown == false)
                 return;
 
-            foreach (var xAxis in info.XAxes)
+            foreach (var xAxis in Dims.XAxes)
             {
                 if (!xAxis.IsLocked)
                 {
@@ -120,7 +120,7 @@ namespace ScottPlot
                 }
             }
 
-            foreach (var yAxis in info.YAxes)
+            foreach (var yAxis in Dims.YAxes)
             {
                 if (!yAxis.IsLocked)
                 {
@@ -139,12 +139,12 @@ namespace ScottPlot
             double yFrac = upward ? 1.15 : 0.85;
 
             if (IsShiftDown == false)
-                foreach (var xAxis in info.XAxes)
+                foreach (var xAxis in Dims.XAxes)
                     if (!xAxis.IsLocked)
                         xAxis.ZoomTo(xFrac, xAxis.GetPosition(xPixel));
 
             if (IsCtrlDown == false)
-                foreach (var yAxis in info.YAxes)
+                foreach (var yAxis in Dims.YAxes)
                     if (!yAxis.IsLocked)
                         yAxis.ZoomTo(yFrac, yAxis.GetPosition(yPixel));
         }

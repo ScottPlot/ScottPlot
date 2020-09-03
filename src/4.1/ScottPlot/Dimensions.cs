@@ -128,10 +128,10 @@ namespace ScottPlot
         {
             return new AxisLimits2D()
             {
-                X1 = XAxes[xAxisIndex].Min,
-                X2 = XAxes[xAxisIndex].Max,
-                Y1 = YAxes[yAxisIndex].Min,
-                Y2 = YAxes[yAxisIndex].Max,
+                X1 = XAxes.Count() > xAxisIndex ? XAxes[xAxisIndex].Min : double.NaN,
+                X2 = XAxes.Count() > xAxisIndex ? XAxes[xAxisIndex].Max : double.NaN,
+                Y1 = YAxes.Count() > yAxisIndex ? YAxes[yAxisIndex].Min : double.NaN,
+                Y2 = YAxes.Count() > yAxisIndex ? YAxes[yAxisIndex].Max : double.NaN,
             };
         }
 
