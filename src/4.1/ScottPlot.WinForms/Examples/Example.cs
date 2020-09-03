@@ -1,17 +1,16 @@
 ﻿using System;
-using System.Reflection.Metadata.Ecma335;
 using System.Windows.Forms;
 
-namespace ScottPlot.WinForms
+namespace ScottPlot.WinForms.Examples
 {
-    public class DemoForm
+    public class Example
     {
         public string Title;
         public string Description;
         public Type FormType;
         public override string ToString() => Title;
 
-        public DemoForm(Type formType, string title, string description)
+        public Example(Type formType, string title, string description)
         {
             if (!formType.IsSubclassOf(typeof(Form)))
                 throw new ArgumentException("formType must be a Form");
