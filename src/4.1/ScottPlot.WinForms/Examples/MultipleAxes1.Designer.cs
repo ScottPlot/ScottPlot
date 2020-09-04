@@ -51,6 +51,7 @@
             this.MouseControlY1.AutoSize = true;
             this.MouseControlY1.Checked = true;
             this.MouseControlY1.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.MouseControlY1.ForeColor = System.Drawing.Color.Red;
             this.MouseControlY1.Location = new System.Drawing.Point(6, 22);
             this.MouseControlY1.Name = "MouseControlY1";
             this.MouseControlY1.Size = new System.Drawing.Size(39, 19);
@@ -87,6 +88,7 @@
             // MouseControlY2
             // 
             this.MouseControlY2.AutoSize = true;
+            this.MouseControlY2.ForeColor = System.Drawing.Color.Blue;
             this.MouseControlY2.Location = new System.Drawing.Point(51, 22);
             this.MouseControlY2.Name = "MouseControlY2";
             this.MouseControlY2.Size = new System.Drawing.Size(39, 19);
