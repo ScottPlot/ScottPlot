@@ -392,6 +392,37 @@ namespace ScottPlot
             return plottableText;
         }
 
+        public PlottableImage PlotImage(
+           Image image,
+           double x,
+           double y,
+           string label = null,
+           TextAlignment alignment = TextAlignment.middleLeft,
+           double rotation = 0,
+           bool frame = false,
+           Color? frameColor = null,
+           int frameSize = 0
+           )
+        {
+            if (frameColor == null)
+                frameColor = Color.White;
+
+            PlottableImage plottableImage = new PlottableImage(
+                image: image,
+                x: x,
+                y: y,
+                label: label,
+                alignment: alignment,
+                rotation: rotation,
+                frame: frame,
+                frameColor: (Color)frameColor,
+                frameSize: frameSize
+                );
+
+            settings.plottables.Add(plottableImage);
+            return plottableImage;
+        }
+
         public PlottableScatter PlotPoint(
             double x,
             double y,
