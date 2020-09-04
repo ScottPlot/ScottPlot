@@ -124,7 +124,7 @@ namespace ScottPlot.Renderer
             Gfx.DrawRectangle(Pen, point.X, point.Y, size.Width, size.Height);
         }
 
-        public void DrawLines(Point[] points, Color color, float width)
+        public void DrawLines(Point[] points, Color color, float width, bool rounded)
         {
             PointF[] sdPoints = new PointF[points.Length];
             for (int i = 0; i < points.Length; i++)
@@ -132,13 +132,21 @@ namespace ScottPlot.Renderer
 
             Pen.Color = System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B);
             Pen.Width = width;
+            Pen.StartCap = rounded ? System.Drawing.Drawing2D.LineCap.Round : System.Drawing.Drawing2D.LineCap.Flat;
+            Pen.EndCap = rounded ? System.Drawing.Drawing2D.LineCap.Round : System.Drawing.Drawing2D.LineCap.Flat;
+            Pen.LineJoin = rounded ? System.Drawing.Drawing2D.LineJoin.Round : System.Drawing.Drawing2D.LineJoin.Miter;
+
             Gfx.DrawLines(Pen, sdPoints);
         }
 
-        public void DrawLine(Point pt1, Point pt2, Color color, float width)
+        public void DrawLine(Point pt1, Point pt2, Color color, float width, bool rounded)
         {
             Pen.Color = System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B);
             Pen.Width = width;
+            Pen.StartCap = rounded ? System.Drawing.Drawing2D.LineCap.Round : System.Drawing.Drawing2D.LineCap.Flat;
+            Pen.EndCap = rounded ? System.Drawing.Drawing2D.LineCap.Round : System.Drawing.Drawing2D.LineCap.Flat;
+            Pen.LineJoin = rounded ? System.Drawing.Drawing2D.LineJoin.Round : System.Drawing.Drawing2D.LineJoin.Miter;
+
             Gfx.DrawLine(Pen, pt1.X, pt1.Y, pt2.X, pt2.Y);
         }
     }

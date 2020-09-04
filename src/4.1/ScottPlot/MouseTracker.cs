@@ -174,5 +174,10 @@ namespace ScottPlot
                     if (!yAxis.IsLocked)
                         yAxis.ZoomTo(yFrac, yAxis.GetPosition(yPixel));
         }
+
+        public void DoubleClick()
+        {
+            Plot.Benchmark.Visible = !Plot.Benchmark.Visible;
+        }
     }
 }

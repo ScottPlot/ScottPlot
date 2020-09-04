@@ -22,7 +22,7 @@ namespace ScottPlot.Renderer
 
         void FillRectangle(Point point, Size size, Color color);
         void DrawRectangle(Point point, Size size, Color color, float width);
-        void DrawLines(Point[] points, Color color, float width);
-        void DrawLine(Point pt1, Point pt2, Color color, float width);
+        void DrawLines(Point[] points, Color color, float width, bool rounded = true);
+        void DrawLine(Point pt1, Point pt2, Color color, float width, bool rounded = true);
     }
 }

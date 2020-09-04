@@ -81,5 +81,11 @@ namespace ScottPlot.WinForms
             MouseTracker.MouseWheel(e.Delta > 0, e.X, e.Y);
             Render();
         }
+
+        private void pictureBox1_DoubleClick(object sender, EventArgs e)
+        {
+            MouseTracker.DoubleClick();
+            Render();
+        }
     }
 }
