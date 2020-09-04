@@ -9,7 +9,7 @@ namespace ScottPlotTests.Plot
     class Image
     {
         [Test]
-        public void Test_TextRotationAlignment_UpperLeft()
+        public void Test_ImageRotationAlignment_UpperLeft()
         {
             var plt = new ScottPlot.Plot(400, 300);
             System.Drawing.Bitmap image = new System.Drawing.Bitmap("Images/niceBackground.bmp");
@@ -34,7 +34,7 @@ namespace ScottPlotTests.Plot
         }
 
         [Test]
-        public void Test_TextRotationAlignment_UpperCenter()
+        public void Test_ImageRotationAlignment_UpperCenter()
         {
             var plt = new ScottPlot.Plot(400, 300);
             System.Drawing.Bitmap image = new System.Drawing.Bitmap("Images/niceBackground.bmp");
@@ -59,7 +59,7 @@ namespace ScottPlotTests.Plot
         }
 
         [Test]
-        public void Test_TextRotationAlignment_LowerRight()
+        public void Test_ImageRotationAlignment_LowerRight()
         {
             var plt = new ScottPlot.Plot(400, 300);
             System.Drawing.Bitmap image = new System.Drawing.Bitmap("Images/niceBackground.bmp");
