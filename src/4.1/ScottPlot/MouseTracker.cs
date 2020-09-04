@@ -32,7 +32,7 @@ namespace ScottPlot
 
         public MouseTracker(Plot plt)
         {
-            this.Plot = plt;
+            Plot = plt;
             Dims = plt.Dims;
             SetActiveAxis(0, 0);
         }
@@ -72,6 +72,7 @@ namespace ScottPlot
         {
             CenterDown = new Point(xPixel, yPixel);
             RememberMouseDownLimits();
+            Plot.ZoomRectangle.MouseDown(xPixel, yPixel);
         }
 
         public void MouseDownRight(float xPixel, float yPixel)
@@ -85,10 +86,21 @@ namespace ScottPlot
             LeftDown = null;
         }
 
-        public void MouseUpCenter(float xPixel, float yPixel)
+        private void ZoomToRectangle(float xPixel, float yPixel)
         {
-            CenterDown = null;
+            var (xLeft, xRight, yTop, yBottom) = Plot.ZoomRectangle.GetLimits();
 
+            for (int i = 0; i < Dims.XAxes.Count; i++)
+                if (!Dims.XAxes[i].IsLocked)
+                    Plot.ScaleX(Plot.Dims.GetPositionX(xLeft, i), Plot.Dims.GetPositionX(xRight, i), i);
+
+            for (int i = 0; i < Dims.YAxes.Count; i++)
+                if (!Dims.YAxes[i].IsLocked)
+                    Plot.ScaleY(Plot.Dims.GetPositionY(yBottom, i), Plot.Dims.GetPositionY(yTop, i), i);
+        }
+
+        private void AutoScale()
+        {
             for (int i = 0; i < Dims.XAxes.Count; i++)
                 if (!Dims.XAxes[i].IsLocked)
                     Plot.AutoScaleX(i);
@@ -98,6 +110,17 @@ namespace ScottPlot
                     Plot.AutoScaleY(i);
         }
 
+        public void MouseUpCenter(float xPixel, float yPixel)
+        {
+            if (CenterDown.X == xPixel && CenterDown.Y == yPixel)
+                AutoScale();
+            else
+                ZoomToRectangle(xPixel, yPixel);
+
+            CenterDown = null;
+            Plot.ZoomRectangle.MouseUp();
+        }
+
         public void MouseUpRight(float xPixel, float yPixel)
         {
             RightDown = null;
@@ -105,8 +128,11 @@ namespace ScottPlot
 
         public void MouseMove(float xPixel, float yPixel)
         {
-            if (IsLeftDown == false && IsRightDown == false)
+            if (IsLeftDown == false && IsRightDown == false && IsCenterDown == false)
                 return;
+
+            else if (IsCenterDown)
+                Plot.ZoomRectangle.MouseMove(xPixel, yPixel);
 
             foreach (var xAxis in Dims.XAxes)
             {

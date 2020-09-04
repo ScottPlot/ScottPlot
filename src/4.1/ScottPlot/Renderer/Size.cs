@@ -8,9 +8,9 @@ namespace ScottPlot.Renderer
     {
         public float Width;
         public float Height;
+        public override string ToString() => $"[{Width}, {Height}]";
 
         public Size() { }
-
         public Size(float width, float height) => (Width, Height) = (width, height);
 
         public Size Expand(float width, float height) => new Size(Math.Max(Width, width), Math.Max(Height, height));

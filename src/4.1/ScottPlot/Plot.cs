@@ -27,6 +27,7 @@ namespace ScottPlot
         public readonly AxisRight AxisRight = new AxisRight();
         public readonly AxisTop AxisTop = new AxisTop();
         public readonly AxisBottom AxisBottom = new AxisBottom();
+        public readonly ZoomRectangle ZoomRectangle = new ZoomRectangle();
 
         public Plot(int width = 600, int height = 400)
         {
@@ -271,6 +272,7 @@ namespace ScottPlot
             foreach (Axis axis in Axes)
                 axis.Render(renderer, Dims, lowQuality);
             Benchmark.Render(renderer, Dims, lowQuality);
+            ZoomRectangle.Render(renderer, Dims, lowQuality);
         }
 
         /// <summary>

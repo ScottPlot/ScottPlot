@@ -8,6 +8,7 @@ namespace ScottPlot.Renderer
     {
         public float X;
         public float Y;
+        public override string ToString() => $"({X}, {Y})";
 
         public Point() { }
         public Point(float x, float y) => (X, Y) = (x, y);
