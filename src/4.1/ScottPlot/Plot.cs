@@ -135,60 +135,52 @@ namespace ScottPlot
         public void Padding(float? left = null, float? right = null, float? above = null, float? below = null) =>
             Dims.UpdatePadding(left, right, above, below);
 
-        public void AutoScale()
+        public void AutoScale(double marginX = .05, double marginY = .1)
         {
-            AutoScaleX();
-            AutoScaleY();
+            AutoScaleX(marginX);
+            AutoScaleY(marginY);
         }
 
-        public void AutoScaleX()
+        public void AutoScaleX(double margin = .05)
         {
             for (int i = 0; i < Dims.XAxes.Count; i++)
-                AutoScaleX(i);
+                AutoScaleX(i, margin);
         }
 
-        public void AutoScaleY()
+        public void AutoScaleY(double margin = .1)
         {
             for (int i = 0; i < Dims.YAxes.Count; i++)
-                AutoScaleY(i);
+                AutoScaleY(i, margin);
         }
 
-        public void AutoScale(int xAxisIndex, int yAxisIndex)
+        public void AutoScale(int xAxisIndex, int yAxisIndex, double marginX = .05, double marginY = .1)
         {
-            AutoScaleX(xAxisIndex);
-            AutoScaleY(yAxisIndex);
+            AutoScaleX(xAxisIndex, marginX);
+            AutoScaleY(yAxisIndex, marginY);
         }
 
-        public void AutoScale(int[] xAxisIndexes, int[] yAxisIndexes)
+        public void AutoScale(int[] xAxisIndexes, int[] yAxisIndexes, double marginX = .05, double marginY = .1)
         {
             foreach (int x in xAxisIndexes)
-                AutoScaleX(x);
+                AutoScaleX(x, marginX);
             foreach (int y in yAxisIndexes)
-                AutoScaleY(y);
+                AutoScaleY(y, marginY);
         }
 
-        private (int[] scaledXs, int[] scaledYs) AutoScaleInvalidAxes()
+        private (int[] scaledXs, int[] scaledYs) AutoScaleInvalidAxes(double marginX = .05, double marginY = .1)
         {
             int[] invalidAxesX = Enumerable.Range(0, Dims.XAxes.Count).Where(x => !Dims.XAxes[x].IsValid).ToArray();
             int[] invalidAxesY = Enumerable.Range(0, Dims.YAxes.Count).Where(x => !Dims.YAxes[x].IsValid).ToArray();
 
             foreach (int xAxisIndex in invalidAxesX)
-                AutoScaleX(xAxisIndex);
+                AutoScaleX(xAxisIndex, marginX);
             foreach (int yAxisIndex in invalidAxesY)
-                AutoScaleY(yAxisIndex);
+                AutoScaleY(yAxisIndex, marginY);
 
             return (invalidAxesX, invalidAxesY);
         }
 
-        private double RoundTo(double d, int significantDigits)
-        {
-            if (d == 0)
-                return 0;
-            double scale = Math.Pow(10, Math.Floor(Math.Log10(Math.Abs(d))) + 1);
-            return scale * Math.Round(d / scale, significantDigits);
-        }
-
-        public void AutoScaleX(int xAxisIndex = 0)
+        public void AutoScaleX(int xAxisIndex = 0, double margin = .05)
         {
             var ps = Renderables.Where(x => x is IPlottable)
                                 .Select(x => (IPlottable)x)
@@ -200,14 +192,11 @@ namespace ScottPlot
             double min = ps.Select(x => x.Limits.X1).Min();
             double max = ps.Select(x => x.Limits.X2).Max();
 
-            // slightly expand to include the next tick
-            min = Math.Min(min, RoundTo(min, 2));
-            max = Math.Max(max, RoundTo(max, 2));
-
             Dims.XAxes[xAxisIndex].SetLimits(min, max);
+            Dims.XAxes[xAxisIndex].Zoom(1 - margin);
         }
 
-        public void AutoScaleY(int yAxisIndex = 0)
+        public void AutoScaleY(int yAxisIndex = 0, double margin = .1)
         {
             var ps = Renderables.Where(x => x is IPlottable)
                                 .Select(x => (IPlottable)x)
@@ -219,11 +208,8 @@ namespace ScottPlot
             double min = ps.Select(x => x.Limits.Y1).Min();
             double max = ps.Select(x => x.Limits.Y2).Max();
 
-            // slightly expand to include the next tick
-            min = Math.Min(min, RoundTo(min, 2));
-            max = Math.Max(max, RoundTo(max, 2));
-
             Dims.YAxes[yAxisIndex].SetLimits(min, max);
+            Dims.YAxes[yAxisIndex].Zoom(1 - margin);
         }
 
         private void RecalculateTickPositions()
