@@ -1,4 +1,5 @@
-﻿using ScottPlot.Plottable;
+﻿using ScottPlot.Drawing;
+using ScottPlot.Plottable;
 using ScottPlot.Renderable;
 using ScottPlot.Renderer;
 using ScottPlot.Space;
@@ -21,13 +22,13 @@ namespace ScottPlot
         public readonly FigureBackground FigureBackground = new FigureBackground();
         public readonly DataBackground DataBackground = new DataBackground();
         public readonly Benchmark Benchmark = new Benchmark();
-
         public readonly List<Axis> Axes = new List<Axis>();
         public readonly AxisLeft AxisLeft = new AxisLeft();
         public readonly AxisRight AxisRight = new AxisRight();
         public readonly AxisTop AxisTop = new AxisTop();
         public readonly AxisBottom AxisBottom = new AxisBottom();
         public readonly ZoomRectangle ZoomRectangle = new ZoomRectangle();
+        public ColorPalette Palette = ColorPalette.Category10;
 
         public Plot(int width = 600, int height = 400)
         {
@@ -300,12 +301,18 @@ namespace ScottPlot
             OnRender?.Invoke();
         }
 
+        private Color GetNextColor()
+        {
+            int plottableCount = Renderables.Where(x => x is IPlottable).Count();
+            return Palette.GetColor(plottableCount);
+        }
+
         /// <summary>
         /// Scatter plots display unordered X/Y data pairs (but they are slower than signal plots)
         /// </summary>
-        public Scatter PlotScatter(double[] xs, double[] ys, Color color = null)
+        public Scatter PlotScatter(double[] xs, double[] ys)
         {
-            var scatter = new Scatter() { Color = color ?? Colors.Magenta };
+            var scatter = new Scatter() { Color = GetNextColor() };
             scatter.ReplaceXsAndYs(xs, ys);
             AddRenderable(scatter);
             return scatter;
