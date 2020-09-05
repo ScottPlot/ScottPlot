@@ -15,6 +15,9 @@ namespace ScottPlot.WinForms
         public Plot Plot;
         public readonly MouseTracker MouseTracker;
 
+        public delegate void RenderDelegate();
+        public RenderDelegate OnRender;
+
         public InteractivePlot()
         {
             InitializeComponent();
@@ -28,7 +31,7 @@ namespace ScottPlot.WinForms
         }
 
         bool currentlyRendering = false;
-        public void Render(bool force = true, bool recalculateLayout = true, bool lowQuality = false)
+        public void Render(bool force = true, bool recalculateLayout = true, bool lowQuality = false, bool invokeOnRender = true)
         {
             if (force == false && currentlyRendering)
                 return;
@@ -46,6 +49,8 @@ namespace ScottPlot.WinForms
                 Plot?.Render(renderer, recalculateLayout, lowQuality);
             pictureBox1.Invalidate();
             Application.DoEvents();
+            if (invokeOnRender)
+                OnRender?.Invoke();
             currentlyRendering = false;
         }
 
