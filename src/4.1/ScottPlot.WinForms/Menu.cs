@@ -16,7 +16,8 @@ namespace ScottPlot.WinForms
             Demos.Items.Add(new Example(typeof(QuickStart), "QuickStart", "Simple, interactive scatter plots"));
             Demos.Items.Add(new Example(typeof(MultipleAxes1), "Multiple Axes #1", "Example plot displaying sample data using multiple Y axes"));
             Demos.Items.Add(new Example(typeof(MultipleAxes2), "Multiple Axes #2", "Interact with plots that have an arbitrary numbers of axes"));
-            
+            Demos.Items.Add(new Example(typeof(LinkedPlots), "Linked Plots", "Two controls which share an axis"));
+
             Demos.SelectedIndex = 0;
         }
 
