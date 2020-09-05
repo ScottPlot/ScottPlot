@@ -968,10 +968,7 @@ namespace ScottPlot
             int? minRenderIndex = null,
             int? maxRenderIndex = null,
             LineStyle lineStyle = LineStyle.Solid,
-            bool useParallel = true,
-            bool fill = false,
-            Color? fillColor1 = null,
-            Color? fillColor2 = null
+            bool useParallel = true
             ) where TX : struct, IComparable where TY : struct, IComparable
 
         {
@@ -993,10 +990,7 @@ namespace ScottPlot
                 minRenderIndex: minRenderIndex.Value,
                 maxRenderIndex: maxRenderIndex.Value,
                 lineStyle: lineStyle,
-                useParallel: useParallel,
-                fill: fill,
-                fillColor1: fillColor1,
-                fillColor2: fillColor2
+                useParallel: useParallel
                 );
 
             settings.plottables.Add(signal);
@@ -1130,7 +1124,8 @@ namespace ScottPlot
                 minRenderIndex: minRenderIndex.Value,
                 maxRenderIndex: maxRenderIndex.Value,
                 lineStyle: lineStyle,
-                useParallel: useParallel);
+                useParallel: useParallel
+                );
 
             settings.plottables.Add(signal);
             return signal;
