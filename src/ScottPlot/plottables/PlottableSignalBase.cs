@@ -4,6 +4,7 @@ using ScottPlot.MinMaxSearchStrategies;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -33,15 +34,24 @@ namespace ScottPlot
         public Color color;
         public LineStyle lineStyle;
         public bool useParallel = true;
+        public bool fill;
+        public Color? fillColor1;
+        public Color? fillColor2;
 
         public bool TreesReady => true;
         public PlottableSignalBase(T[] ys, double sampleRate, double xOffset, double yOffset, Color color,
             double lineWidth, double markerSize, string label, Color[] colorByDensity,
             int minRenderIndex, int maxRenderIndex, LineStyle lineStyle, bool useParallel,
-            IMinMaxSearchStrategy<T> minMaxSearchStrategy = null)
+            IMinMaxSearchStrategy<T> minMaxSearchStrategy = null, bool fill = false,
+           Color? fillColor1 = null, Color? fillColor2 = null)
         {
             if (ys == null)
                 throw new Exception("Y data cannot be null");
+
+            if(fill && fillColor1 == null)
+            {
+                throw new Exception("A fill color needs to be specified if fill is used");
+            }
 
             this.ys = ys;
             this.sampleRate = sampleRate;
@@ -52,6 +62,9 @@ namespace ScottPlot
             this.color = color;
             this.lineWidth = lineWidth;
             this.yOffset = yOffset;
+            this.fill = fill;
+            this.fillColor1 = fillColor1;
+            this.fillColor2 = fillColor2;
             if (minRenderIndex < 0 || minRenderIndex > maxRenderIndex)
                 throw new ArgumentException("minRenderIndex must be between 0 and maxRenderIndex");
             this.minRenderIndex = minRenderIndex;
@@ -147,6 +160,11 @@ namespace ScottPlot
             {
                 if (penLD.Width > 0)
                     settings.gfxData.DrawLines(penHD, linePoints.ToArray());
+
+                if (fill)
+                {
+                    FillBelow(settings, linePoints[0].X, linePoints[linePoints.Count - 1].X, linePoints.ToArray());
+                }
 
                 if (markerSize > 0)
                 {
@@ -255,6 +273,39 @@ namespace ScottPlot
 
             if (linePoints.Length > 0)
                 settings.gfxData.DrawLines(penHD, linePoints);
+
+            if (fill)
+            {
+                FillBelow(settings, xPxStart, xPxEnd, linePoints);
+            }
+        }
+
+        private void FillBelow(Settings settings, float xPxStart, float xPxEnd, PointF[] linePoints)
+        {
+            var minVal = linePoints.Select(lp => lp.Y).Min();
+            var maxVal = linePoints.Select(lp => lp.Y).Max();
+
+            PointF first = new PointF(xPxStart, maxVal);
+            PointF last = new PointF(xPxEnd, maxVal);
+
+            PointF[] points = new PointF[] { first }
+                            .Concat(linePoints)
+                            .Concat(new PointF[] { last })
+                            .ToArray();
+
+            LinearGradientBrush linearGradientBrush = new LinearGradientBrush(
+                new Rectangle(
+                    new Point((int)first.X, (int)minVal),
+                    new Size(
+                        (int)(last.X - first.X),
+                        (int)(maxVal - minVal) + 2)),
+                fillColor1.Value,
+                fillColor2 != null
+                    ? fillColor2.Value
+                    : fillColor1.Value,
+                LinearGradientMode.Vertical);
+
+            settings.gfxData.FillPolygon(linearGradientBrush, points);
         }
 
         private void RenderHighDensityDistributionParallel(Settings settings, double offsetPoints, double columnPointCount)
@@ -310,6 +361,12 @@ namespace ScottPlot
                     }
                 }
                 settings.gfxData.DrawLines(penByDensity[i], linePoints.ToArray());
+
+
+                if (fill)
+                {
+                    FillBelow(settings, xPxStart, xPxEnd, linePoints.ToArray());
+                }
             }
         }
 

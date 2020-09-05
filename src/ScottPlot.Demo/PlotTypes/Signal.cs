@@ -153,5 +153,41 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.XLabel("Array Index");
             }
         }
+
+        public class PlotFillRange : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Plot a Range of Points with fill";
+            public string description { get; } = "It is also possible to display values within a range and using the fill attribute.";
+
+            public void Render(Plot plt)
+            {
+                Random rand = new Random(0);
+                double[] data = DataGen.RandomWalk(rand, 100_000);
+
+                plt.PlotSignal(data, minRenderIndex: 4000, maxRenderIndex: 5000, fill: true, fillColor1: Color.Blue);
+
+                plt.Title($"Partial Display of a {data.Length} values using fill");
+                plt.YLabel("Value");
+                plt.XLabel("Array Index");
+            }
+        }
+
+        public class PlotGradientFillRange : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Plot a Range of Points with gradient fill";
+            public string description { get; } = "Plotting a range of values using gradient fill.";
+
+            public void Render(Plot plt)
+            {
+                Random rand = new Random(0);
+                double[] data = DataGen.RandomWalk(rand, 100_000);
+
+                plt.PlotSignal(data, minRenderIndex: 4000, maxRenderIndex: 5000, fill: true, fillColor1: Color.Blue, fillColor2: Color.Transparent);
+
+                plt.Title($"Partial Display of a {data.Length} values using gradient fill");
+                plt.YLabel("Value");
+                plt.XLabel("Array Index");
+            }
+        }
     }
 }
