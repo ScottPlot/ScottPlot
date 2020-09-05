@@ -162,9 +162,13 @@ namespace ScottPlot.Demo.PlotTypes
             public void Render(Plot plt)
             {
                 Random rand = new Random(0);
-                double[] data = DataGen.RandomWalk(rand, 100_000);
+                double[] data = DataGen.RandomWalk(rand, 10_000);
 
-                plt.PlotSignal(data, minRenderIndex: 4000, maxRenderIndex: 5000, fill: true, fillColor1: Color.Blue);
+                var sig = plt.PlotSignal(data);
+                sig.minRenderIndex = 4000;
+                sig.maxRenderIndex = 5000;
+                sig.fill = true;
+                sig.fillColor1 = Color.Blue;
 
                 plt.Title($"Partial Display of a {data.Length} values using fill");
                 plt.YLabel("Value");
@@ -182,7 +186,12 @@ namespace ScottPlot.Demo.PlotTypes
                 Random rand = new Random(0);
                 double[] data = DataGen.RandomWalk(rand, 100_000);
 
-                plt.PlotSignal(data, minRenderIndex: 4000, maxRenderIndex: 5000, fill: true, fillColor1: Color.Blue, fillColor2: Color.Transparent);
+                var sig = plt.PlotSignal(data);
+                sig.minRenderIndex = 4000;
+                sig.maxRenderIndex = 5000;
+                sig.fill = true;
+                sig.fillColor1 = Color.Blue;
+                sig.fillColor2 = Color.Transparent;
 
                 plt.Title($"Partial Display of a {data.Length} values using gradient fill");
                 plt.YLabel("Value");

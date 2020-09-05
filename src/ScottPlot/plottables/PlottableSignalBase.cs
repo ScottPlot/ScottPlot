@@ -282,8 +282,8 @@ namespace ScottPlot
 
         private void FillBelow(Settings settings, float xPxStart, float xPxEnd, PointF[] linePoints)
         {
-            var minVal = linePoints.Select(lp => lp.Y).Min();
-            var maxVal = linePoints.Select(lp => lp.Y).Max();
+            float minVal = 0;
+            float maxVal = settings.dataSize.Height;
 
             PointF first = new PointF(xPxStart, maxVal);
             PointF last = new PointF(xPxEnd, maxVal);

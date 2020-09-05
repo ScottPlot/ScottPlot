@@ -16,11 +16,9 @@ namespace ScottPlot
         public bool TreesReady => true;
         public PlottableSignalConst(T[] ys, double sampleRate, double xOffset, double yOffset, Color color,
             double lineWidth, double markerSize, string label, Color[] colorByDensity,
-            int minRenderIndex, int maxRenderIndex, LineStyle lineStyle, bool useParallel,
-            bool fill, Color? fillColor1, Color? fillColor2)
+            int minRenderIndex, int maxRenderIndex, LineStyle lineStyle, bool useParallel)
             : base(ys, sampleRate, xOffset, yOffset, color, lineWidth, markerSize, label, colorByDensity,
-                 minRenderIndex, maxRenderIndex, lineStyle, useParallel, new SegmentedTreeMinMaxSearchStrategy<T>(),
-                 fill, fillColor1, fillColor2)
+                 minRenderIndex, maxRenderIndex, lineStyle, useParallel, new SegmentedTreeMinMaxSearchStrategy<T>())
         {
         }
 
