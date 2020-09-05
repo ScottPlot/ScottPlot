@@ -43,7 +43,7 @@ namespace ScottPlot.WinForms
 
             currentlyRendering = true;
             using (var renderer = new SystemDrawingRenderer((Bitmap)pictureBox1.Image))
-                Plot.Render(renderer, recalculateLayout, lowQuality);
+                Plot?.Render(renderer, recalculateLayout, lowQuality);
             pictureBox1.Invalidate();
             Application.DoEvents();
             currentlyRendering = false;
