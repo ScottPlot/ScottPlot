@@ -42,16 +42,10 @@ namespace ScottPlot
         public PlottableSignalBase(T[] ys, double sampleRate, double xOffset, double yOffset, Color color,
             double lineWidth, double markerSize, string label, Color[] colorByDensity,
             int minRenderIndex, int maxRenderIndex, LineStyle lineStyle, bool useParallel,
-            IMinMaxSearchStrategy<T> minMaxSearchStrategy = null, bool fill = false,
-           Color? fillColor1 = null, Color? fillColor2 = null)
+            IMinMaxSearchStrategy<T> minMaxSearchStrategy = null)
         {
             if (ys == null)
                 throw new Exception("Y data cannot be null");
-
-            if(fill && fillColor1 == null)
-            {
-                throw new Exception("A fill color needs to be specified if fill is used");
-            }
 
             this.ys = ys;
             this.sampleRate = sampleRate;
@@ -62,9 +56,6 @@ namespace ScottPlot
             this.color = color;
             this.lineWidth = lineWidth;
             this.yOffset = yOffset;
-            this.fill = fill;
-            this.fillColor1 = fillColor1;
-            this.fillColor2 = fillColor2;
             if (minRenderIndex < 0 || minRenderIndex > maxRenderIndex)
                 throw new ArgumentException("minRenderIndex must be between 0 and maxRenderIndex");
             this.minRenderIndex = minRenderIndex;
@@ -282,6 +273,11 @@ namespace ScottPlot
 
         private void FillBelow(Settings settings, float xPxStart, float xPxEnd, PointF[] linePoints)
         {
+            if (fillColor1 == null)
+            {
+                throw new Exception("A fill color needs to be specified if fill is used");
+            }
+
             float minVal = 0;
             float maxVal = settings.dataSize.Height;
 

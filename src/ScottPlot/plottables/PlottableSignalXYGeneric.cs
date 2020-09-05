@@ -12,10 +12,8 @@ namespace ScottPlot
     {
         public TX[] xs;
         public PlottableSignalXYGeneric(TX[] xs, TY[] ys, Color color, double lineWidth, double markerSize, string label,
-            int minRenderIndex, int maxRenderIndex, LineStyle lineStyle, bool useParallel, IMinMaxSearchStrategy<TY> minMaxSearchStrategy = null,
-            bool fill = false, Color? fillColor1 = null, Color? fillColor2 = null)
-            : base(ys, 1, 0, 0, color, lineWidth, markerSize, label, null, minRenderIndex, maxRenderIndex, lineStyle, useParallel, minMaxSearchStrategy,
-                  fill, fillColor1, fillColor2)
+            int minRenderIndex, int maxRenderIndex, LineStyle lineStyle, bool useParallel, IMinMaxSearchStrategy<TY> minMaxSearchStrategy = null)
+            : base(ys, 1, 0, 0, color, lineWidth, markerSize, label, null, minRenderIndex, maxRenderIndex, lineStyle, useParallel, minMaxSearchStrategy)
         {
             if ((xs == null) || (ys == null))
                 throw new ArgumentException("X and Y data cannot be null");
