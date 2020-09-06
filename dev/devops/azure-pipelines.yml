@@ -7,8 +7,8 @@ pool:
   #vmImage: 'windows-latest'
 
 variables:
-  solution: "src/4.1/*.sln"
-  projTest: "src/4.1/ScottPlotTests/ScottPlotTests.csproj"
+  solution: "src/ScottPlot5/*.sln"
+  projTest: "src/ScottPlot5/ScottPlotTests/ScottPlotTests.csproj"
   buildPlatform: "Any CPU"
   buildConfiguration: "Release"
 
