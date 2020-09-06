@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using ScottPlot.Config;
@@ -17,11 +18,12 @@ namespace ScottPlot
         bool showValues;
         bool showPercentages;
         bool showLabels;
+        bool donut;
 
         private SolidBrush brush = new SolidBrush(Color.Black);
         private Pen pen = new Pen(Color.Black);
 
-        public PlottablePie(double[] values, string[] groupNames, Color[] colors, bool explodedChart, bool showValues, bool showPercentages, bool showLabels, string label)
+        public PlottablePie(double[] values, string[] groupNames, Color[] colors, bool explodedChart, bool showValues, bool showPercentages, bool showLabels, string label, bool donut)
         {
             this.values = values;
             this.label = label;
@@ -31,6 +33,7 @@ namespace ScottPlot
             this.showValues = showValues;
             this.showPercentages = showPercentages;
             this.showLabels = (groupNames is null) ? false : showLabels;
+            this.donut = donut;
         }
 
         public override LegendItem[] GetLegendItems()
@@ -82,6 +85,17 @@ namespace ScottPlot
             string[] labelStrings = new string[values.Length];
 
             RectangleF boundingRectangle = new RectangleF((float)settings.GetPixelX(centreX) - diameterPixels / 2, (float)settings.GetPixelY(centreY) - diameterPixels / 2, diameterPixels, diameterPixels);
+
+            if (donut)
+            {
+                GraphicsPath graphicsPath = new GraphicsPath();
+                const float donutFactor = 0.6f; // Proportion of the pie's diameter to be clipped by the donut hole
+                float donutDiameterPixels = donutFactor * diameterPixels;
+                RectangleF donutHoleBoundingRectangle = new RectangleF((float)settings.GetPixelX(centreX) - donutDiameterPixels / 2, (float)settings.GetPixelY(centreY) - donutDiameterPixels / 2, donutDiameterPixels, donutDiameterPixels);
+                graphicsPath.AddEllipse(donutHoleBoundingRectangle);
+                Region excludedRegion = new Region(graphicsPath);
+                settings.gfxData.ExcludeClip(excludedRegion);
+            }
 
             double start = -90;
             for (int i = 0; i < values.Length; i++)

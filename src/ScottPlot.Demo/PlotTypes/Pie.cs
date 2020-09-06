@@ -41,6 +41,23 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
+        public class DonutPie : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Donut Pie";
+            public string description { get; } = "There is an option to have a \"donut\" pie chart.";
+
+            public void Render(Plot plt)
+            {
+                double[] values = { 778, 283, 184, 76, 43 };
+
+                plt.PlotPie(values, explodedChart: true, donut: true);
+
+                plt.Grid(false);
+                plt.Frame(false);
+                plt.Ticks(false, false);
+            }
+        }
+
         public class PieShowValues : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Show Values";

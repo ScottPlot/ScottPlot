@@ -1139,13 +1139,14 @@ namespace ScottPlot
             bool showValues = false,
             bool showPercentages = false,
             bool showLabels = true,
-            string label = null
+            string label = null,
+            bool donut = false
             )
         {
             if (colors is null)
                 colors = Enumerable.Range(0, values.Length).Select(i => settings.colorset.GetColor(i)).ToArray();
 
-            PlottablePie pie = new PlottablePie(values, sliceLabels, colors, explodedChart, showValues, showPercentages, showLabels, label);
+            PlottablePie pie = new PlottablePie(values, sliceLabels, colors, explodedChart, showValues, showPercentages, showLabels, label, donut);
 
             settings.plottables.Add(pie);
             return pie;
