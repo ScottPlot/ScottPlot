@@ -141,6 +141,8 @@ namespace ScottPlot
 
             pen.Width = outlineWidth;
             settings.gfxData.DrawEllipse(pen, boundingRectangle.X, boundingRectangle.Y, boundingRectangle.Width, boundingRectangle.Height);
+
+            settings.gfxData.ResetClip();
         }
 
         public override string ToString()
