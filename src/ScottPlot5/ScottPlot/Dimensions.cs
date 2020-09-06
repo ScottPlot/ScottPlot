@@ -55,11 +55,11 @@ namespace ScottPlot
                    $"Offset ({DataOffsetX}, {DataOffsetY}); X={XAxes[0]}, Y={YAxes[0]}";
         }
 
-        public void CreateAxes(List<IRenderable> renderables)
+        public void CreateAxes(List<IPlottable> plottables)
         {
             CreateAxes(
-                totalX: renderables.Where(x => x is IPlottable).Select(x => ((IPlottable)x).XAxisIndex).Distinct().Count(),
-                totalY: renderables.Where(x => x is IPlottable).Select(x => ((IPlottable)x).YAxisIndex).Distinct().Count());
+                totalX: plottables.Select(x => x.XAxisIndex).Concat(new int[] { 0 }).Max() + 1,
+                totalY: plottables.Select(x => x.YAxisIndex).Concat(new int[] { 0 }).Max() + 1);
         }
 
         public void CreateAxes(int totalX, int totalY)

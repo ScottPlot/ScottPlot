@@ -23,7 +23,7 @@ namespace ScottPlot.WinForms
             InitializeComponent();
             pictureBox1.MouseWheel += pictureBox1_MouseWheel;
 
-            Plot = new Plot { OnRender = () => Render() };
+            Plot = new Plot();
             Plot.FigureBackground.Color = Renderer.Color.Convert(SystemColors.Control);
             Plot.DataBackground.Color = Colors.White;
             MouseTracker = new MouseTracker(Plot);

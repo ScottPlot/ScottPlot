@@ -17,7 +17,10 @@ namespace ScottPlot
         public float Height { get { return Dims.Height; } }
 
         public Dimensions Dims { get; private set; } = new Dimensions();
+        private void EnsureAxesExistForEveryPlottable() => Dims.CreateAxes(Plottables);
+
         public List<IRenderable> Renderables { get; private set; } = new List<IRenderable>();
+        public List<IPlottable> Plottables { get => Renderables.Where(x => x is IPlottable).Select(x => (IPlottable)x).ToList(); }
 
         public readonly FigureBackground FigureBackground = new FigureBackground();
         public readonly DataBackground DataBackground = new DataBackground();
@@ -28,7 +31,9 @@ namespace ScottPlot
         public readonly AxisTop AxisTop = new AxisTop();
         public readonly AxisBottom AxisBottom = new AxisBottom();
         public readonly ZoomRectangle ZoomRectangle = new ZoomRectangle();
+
         public ColorPalette Palette = ColorPalette.Category10;
+        private Color GetNextColor() => Palette.GetColor(Plottables.Count());
 
         public Plot(int width = 600, int height = 400)
         {
@@ -169,6 +174,7 @@ namespace ScottPlot
 
         private (int[] scaledXs, int[] scaledYs) AutoScaleInvalidAxes(double marginX = .05, double marginY = .1)
         {
+            EnsureAxesExistForEveryPlottable();
             int[] invalidAxesX = Enumerable.Range(0, Dims.XAxes.Count).Where(x => !Dims.XAxes[x].IsValid).ToArray();
             int[] invalidAxesY = Enumerable.Range(0, Dims.YAxes.Count).Where(x => !Dims.YAxes[x].IsValid).ToArray();
 
@@ -182,6 +188,7 @@ namespace ScottPlot
 
         public void AutoScaleX(int xAxisIndex = 0, double margin = .05)
         {
+            EnsureAxesExistForEveryPlottable();
             var ps = Renderables.Where(x => x is IPlottable)
                                 .Select(x => (IPlottable)x)
                                 .Where(x => x.XAxisIndex == xAxisIndex);
@@ -198,6 +205,7 @@ namespace ScottPlot
 
         public void AutoScaleY(int yAxisIndex = 0, double margin = .1)
         {
+            EnsureAxesExistForEveryPlottable();
             var ps = Renderables.Where(x => x is IPlottable)
                                 .Select(x => (IPlottable)x)
                                 .Where(x => x.YAxisIndex == yAxisIndex);
@@ -214,6 +222,7 @@ namespace ScottPlot
 
         private void RecalculateTickPositions()
         {
+            EnsureAxesExistForEveryPlottable();
             foreach (Axis axis in Axes)
                 axis.CalculateTicks(Dims.GetLimits(axis.XAxisIndex, axis.YAxisIndex));
         }
@@ -243,7 +252,6 @@ namespace ScottPlot
         public void Render(IRenderer renderer, bool recalculateLayout = true, bool lowQuality = false)
         {
             // update figure details based on the given renderer
-            Dims.CreateAxes(Renderables);
             Dims.UpdateSize(renderer.Width, renderer.Height);
             AutoScaleInvalidAxes();
             RecalculateTickPositions();
@@ -272,25 +280,20 @@ namespace ScottPlot
                 Renderables.Remove(plottable);
         }
 
-        public delegate void RenderDelegate();
-        public RenderDelegate OnRender;
-
         public void AddRenderable(IRenderable renderable)
         {
             Renderables.Add(renderable);
-            OnRender?.Invoke();
+        }
+
+        public void AddPlottable(IPlottable plottable)
+        {
+            Renderables.Add(plottable);
+            EnsureAxesExistForEveryPlottable();
         }
 
         public void AddAxis(Axis axis)
         {
             Axes.Add(axis);
-            OnRender?.Invoke();
-        }
-
-        private Color GetNextColor()
-        {
-            int plottableCount = Renderables.Where(x => x is IPlottable).Count();
-            return Palette.GetColor(plottableCount);
         }
 
         /// <summary>
@@ -300,7 +303,7 @@ namespace ScottPlot
         {
             var scatter = new Scatter() { Color = GetNextColor() };
             scatter.ReplaceXsAndYs(xs, ys);
-            AddRenderable(scatter);
+            AddPlottable(scatter);
             return scatter;
         }
 
