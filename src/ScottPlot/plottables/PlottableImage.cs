@@ -14,13 +14,13 @@ namespace ScottPlot
         public double rotation;
         public Image image;
         public Brush frameBrush;
-        public TextAlignment alignment;
+        public ImageAlignment alignment;
         public bool frame;
         public Color frameColor;
         public int framePadding;
         public string label;
 
-        public PlottableImage(Image image, double x, double y, string label, TextAlignment alignment, double rotation, bool frame, Color frameColor, int frameSize)
+        public PlottableImage(Image image, double x, double y, string label, ImageAlignment alignment, double rotation, bool frame, Color frameColor, int frameSize)
         {
             this.image = image ?? throw new Exception("Image cannot be null");
             this.x = x;
@@ -61,38 +61,38 @@ namespace ScottPlot
             {
                 switch (alignment)
                 {
-                    case TextAlignment.lowerCenter:
+                    case ImageAlignment.lowerCenter:
                         textLocationPoint.Y = defaultPoint.Y - image.Height;
                         textLocationPoint.X = defaultPoint.X - image.Width / 2;
                         break;
-                    case TextAlignment.lowerLeft:
+                    case ImageAlignment.lowerLeft:
                         textLocationPoint.Y = defaultPoint.Y - image.Height;
                         textLocationPoint.X = defaultPoint.X;
                         break;
-                    case TextAlignment.lowerRight:
+                    case ImageAlignment.lowerRight:
                         textLocationPoint.Y = defaultPoint.Y - image.Height;
                         textLocationPoint.X = defaultPoint.X - image.Width;
                         break;
-                    case TextAlignment.middleLeft:
+                    case ImageAlignment.middleLeft:
                         textLocationPoint.Y = defaultPoint.Y - image.Height / 2;
                         textLocationPoint.X = defaultPoint.X;
                         break;
-                    case TextAlignment.middleRight:
+                    case ImageAlignment.middleRight:
                         textLocationPoint.Y = defaultPoint.Y - image.Height / 2;
                         textLocationPoint.X = defaultPoint.X - image.Width;
                         break;
-                    case TextAlignment.upperCenter:
+                    case ImageAlignment.upperCenter:
                         textLocationPoint.Y = defaultPoint.Y;
                         textLocationPoint.X = defaultPoint.X - image.Width / 2;
                         break;
-                    case TextAlignment.upperLeft:
+                    case ImageAlignment.upperLeft:
                         textLocationPoint = defaultPoint;
                         break;
-                    case TextAlignment.upperRight:
+                    case ImageAlignment.upperRight:
                         textLocationPoint.Y = defaultPoint.Y;
                         textLocationPoint.X = defaultPoint.X - image.Width;
                         break;
-                    case TextAlignment.middleCenter:
+                    case ImageAlignment.middleCenter:
                         textLocationPoint.Y = defaultPoint.Y - image.Height / 2;
                         textLocationPoint.X = defaultPoint.X - image.Width / 2;
                         break;

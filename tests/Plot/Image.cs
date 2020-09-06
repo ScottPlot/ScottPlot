@@ -19,10 +19,10 @@ namespace ScottPlotTests.Plot
             {
                 double x = i / 2;
                 double y = i % 2;
-                plt.PlotImage(image: image,
+                plt.PlotBitmap(bitmap: image,
                     x, y,
                     rotation: rotations[i],
-                    alignment: ScottPlot.TextAlignment.upperLeft,
+                    alignment: ScottPlot.ImageAlignment.upperLeft,
                     frame: true,
                     frameColor: Color.LightGray,
                     frameSize: 5);
@@ -44,10 +44,10 @@ namespace ScottPlotTests.Plot
             {
                 double x = i / 2;
                 double y = i % 2;
-                plt.PlotImage(image: image,
+                plt.PlotBitmap(bitmap: image,
                     x, y,
                     rotation: rotations[i],
-                    alignment: ScottPlot.TextAlignment.upperCenter,
+                    alignment: ScottPlot.ImageAlignment.upperCenter,
                     frame: true,
                     frameColor: Color.LightGray,
                     frameSize: 5);
@@ -69,10 +69,10 @@ namespace ScottPlotTests.Plot
             {
                 double x = i / 2;
                 double y = i % 2;
-                plt.PlotImage(image: image,
+                plt.PlotBitmap(bitmap: image,
                     x, y,
                     rotation: rotations[i],
-                    alignment: ScottPlot.TextAlignment.lowerRight,
+                    alignment: ScottPlot.ImageAlignment.lowerRight,
                     frame: true,
                     frameColor: Color.LightGray,
                     frameSize: 5);

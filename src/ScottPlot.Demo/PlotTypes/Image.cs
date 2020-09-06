@@ -22,7 +22,7 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.PlotScatter(x, cos);
 
                 Bitmap image = new Bitmap("Images/niceBackground.bmp");
-                plt.PlotImage(image, 0, 0);
+                plt.PlotBitmap(image, 0, 0);
             }
         }
 
@@ -42,22 +42,22 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.PlotScatter(x, sin);
                 plt.PlotScatter(x, cos);
 
-                plt.PlotImage(image, 5, 0.8);
+                plt.PlotBitmap(image, 5, 0.8);
                 plt.PlotPoint(5, 0.8, color: Color.Green);
 
-                plt.PlotImage(image, 20, 0.3);
+                plt.PlotBitmap(image, 20, 0.3);
                 plt.PlotPoint(20, 0.3, color: Color.Black, markerSize: 15);
 
-                plt.PlotImage(image, 30, 0, alignment: TextAlignment.middleCenter);
+                plt.PlotBitmap(image, 30, 0, alignment: ImageAlignment.middleCenter);
                 plt.PlotPoint(30, 0, color: Color.Black, markerSize: 15);
 
-                plt.PlotImage(image, 30, -0.3, alignment: TextAlignment.upperLeft);
+                plt.PlotBitmap(image, 30, -0.3, alignment: ImageAlignment.upperLeft);
                 plt.PlotPoint(30, -0.3, color: Color.Black, markerSize: 15);
 
-                plt.PlotImage(image, 5, -.5, rotation: -30);
+                plt.PlotBitmap(image, 5, -.5, rotation: -30);
                 plt.PlotPoint(5, -.5, color: Color.Blue, markerSize: 15);
 
-                plt.PlotImage(image, 15, -.6, frame: true, frameColor: Color.DarkRed, frameSize: 25);
+                plt.PlotBitmap(image, 15, -.6, frame: true, frameColor: Color.DarkRed, frameSize: 25);
             }
         }
     }

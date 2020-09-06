@@ -392,12 +392,12 @@ namespace ScottPlot
             return plottableText;
         }
 
-        public PlottableImage PlotImage(
-           Image image,
+        public PlottableImage PlotBitmap(
+           Bitmap bitmap,
            double x,
            double y,
            string label = null,
-           TextAlignment alignment = TextAlignment.middleLeft,
+           ImageAlignment alignment = ImageAlignment.middleLeft,
            double rotation = 0,
            bool frame = false,
            Color? frameColor = null,
@@ -408,7 +408,7 @@ namespace ScottPlot
                 frameColor = Color.White;
 
             PlottableImage plottableImage = new PlottableImage(
-                image: image,
+                image: bitmap,
                 x: x,
                 y: y,
                 label: label,
