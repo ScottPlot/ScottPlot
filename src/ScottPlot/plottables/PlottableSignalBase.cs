@@ -323,6 +323,30 @@ namespace ScottPlot
             }
         }
 
+        private PointF GetIntersection(PointF point1, PointF point2, PointF baselineStart, PointF baselineEnd)
+        {
+            double a1 = point2.Y - point1.Y;
+            double b1 = point1.X - point2.X;
+            double c1 = a1 * (point1.X) + b1 * (point1.Y);
+
+            double a2 = baselineEnd.Y - baselineStart.Y;
+            double b2 = baselineStart.X - baselineEnd.X;
+            double c2 = a2 * (baselineStart.X) + b2 * (baselineStart.Y);
+
+            double d = a1 * b2 - a2 * b1;
+
+            if (d == 0)
+            {
+                throw new Exception("Lines do not intersect!");
+            }
+            else
+            {
+                double x = (b2 * c1 - b1 * c2) / d;
+                double y = (a1 * c2 - a2 * c1) / d;
+                return new PointF((float)x, (float)y);
+            }
+        }
+
         private void FillAboveAndBelow(Settings settings, float xPxStart, float xPxEnd, PointF[] linePoints, int baseline)
         {
             if (fillColor1 == null && fillColor2 != null)
@@ -331,18 +355,32 @@ namespace ScottPlot
             }
             baseline = (int)settings.GetPixelY(baseline);
 
-            float maxVal = baseline;
-
-            PointF first = new PointF(xPxStart, maxVal);
-            PointF last = new PointF(xPxEnd, maxVal);
+            PointF first = new PointF(xPxStart, baseline);
+            PointF last = new PointF(xPxEnd, baseline);
 
             PointF[] points = new PointF[] { first }
                             .Concat(linePoints)
                             .Concat(new PointF[] { last })
                             .ToArray();
 
+            PointF baselinePointStart = new PointF(linePoints[0].X, baseline);
+            PointF baselinePointEnd = new PointF(linePoints[linePoints.Length - 1].X, baseline);
+
+            var pointList = points.ToList();
+            int newlyAddedItems = 0;
+            for (int i = 1; i < points.Length + newlyAddedItems; ++i)
+            {
+                if ((pointList[i - 1].Y > baseline && pointList[i].Y < baseline) ||
+                    (pointList[i - 1].Y < baseline && pointList[i].Y > baseline))
+                {
+                    pointList.Insert(i, GetIntersection(pointList[i], pointList[i - 1], baselinePointStart, baselinePointEnd));
+                    newlyAddedItems++;
+                    i++;
+                }
+            }
+
             // Above graph
-            var aboveRect = GetFillRectangle(settings, xPxStart, xPxEnd, baseline, FillType.FillAbove);
+            var aboveRect = GetFillRectangle(settings, xPxStart, xPxEnd, FillType.FillAbove);
             if (aboveRect.Height != 0 && aboveRect.Width != 0)
             {
                 LinearGradientBrush linearGradientBrushAbove = new LinearGradientBrush(
@@ -352,19 +390,14 @@ namespace ScottPlot
                     LinearGradientMode.Vertical);
 
                 settings.gfxData.FillPolygon(linearGradientBrushAbove,
-                    new PointF[] { first }.
-                    Concat(points
-                    .Select(p => new PointF()
-                    {
-                        X = p.X,
-                        Y = p.Y <= baseline ? p.Y : baseline
-                    })
-                    .ToArray())
+                    new PointF[] { first }
+                    .Concat(pointList.Where(p => p.Y <= baseline).ToArray())
                     .Concat(new PointF[] { last })
                     .ToArray());
             }
+
             // Below graph
-            var belowRect = GetFillRectangle(settings, xPxStart, xPxEnd, baseline, FillType.FillBelow);
+            var belowRect = GetFillRectangle(settings, xPxStart, xPxEnd, FillType.FillBelow);
             if (belowRect.Height != 0 && belowRect.Width != 0)
             {
                 LinearGradientBrush linearGradientBrushBelow = new LinearGradientBrush(
@@ -375,13 +408,7 @@ namespace ScottPlot
 
                 settings.gfxData.FillPolygon(linearGradientBrushBelow,
                     new PointF[] { first }
-                    .Concat(points
-                    .Select(p => new PointF()
-                    {
-                        X = p.X,
-                        Y = p.Y >= baseline ? p.Y : baseline
-                    })
-                    .ToArray())
+                    .Concat(pointList.Where(p => p.Y >= baseline).ToArray())
                     .Concat(new PointF[] { last })
                     .ToArray());
 
@@ -390,16 +417,15 @@ namespace ScottPlot
             // Draw baseline
             settings.gfxData.DrawLine(
                 new Pen(Color.Black, 1),
-                new PointF(linePoints[0].X, baseline),
-                new PointF(linePoints[linePoints.Length - 1].X,
-                baseline));
+                baselinePointStart,
+                baselinePointEnd);
         }
 
-        private Rectangle GetFillRectangle(Settings settings, float startX, float xPxEnd, int baseline, FillType fillType)
+        private Rectangle GetFillRectangle(Settings settings, float startX, float xPxEnd, FillType fillType)
         {
             float maxVal = (settings.dataSize.Height * (fillType == FillType.FillAbove ? -1 : 1));
 
-            Rectangle rectangle = new Rectangle((int)startX, (int)baseline, (int)xPxEnd, (int)maxVal - baseline);
+            Rectangle rectangle = new Rectangle((int)startX, 0, (int)xPxEnd, (int)maxVal);
 
             return rectangle;
         }
