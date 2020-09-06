@@ -45,15 +45,11 @@ namespace ScottPlot.Demo.PlotTypes
                 double[] ys2 = { 3, 7, 3, 1 };
                 double[] ys3 = { 5, 2, 5, 6 };
 
-                // create polygons for each data point
-                double[] filledXs = xs.Take(1).Concat(xs).Concat(new double[] { xs.Last() }).ToArray();
-                double[] filledYs1 = new List<double>() { 0 }.Concat(ys1).Concat(new double[] { 0 }).ToArray();
-                double[] filledYs2 = new List<double>() { 0 }.Concat(ys2).Concat(new double[] { 0 }).ToArray();
-                double[] filledYs3 = new List<double>() { 0 }.Concat(ys3).Concat(new double[] { 0 }).ToArray();
-
-                plt.PlotPolygon(filledXs, filledYs3, lineWidth: 2, lineColor: Color.Black, fillAlpha: .7);
-                plt.PlotPolygon(filledXs, filledYs2, lineWidth: 2, lineColor: Color.Black, fillAlpha: .7);
-                plt.PlotPolygon(filledXs, filledYs1, lineWidth: 2, lineColor: Color.Black, fillAlpha: .7);
+                // plot line data as polygon corners
+                double[] paddedXs = Tools.Pad(xs, cloneEdges: true);
+                plt.PlotPolygon(paddedXs, Tools.Pad(ys3), lineWidth: 2, lineColor: Color.Black, fillAlpha: .7);
+                plt.PlotPolygon(paddedXs, Tools.Pad(ys2), lineWidth: 2, lineColor: Color.Black, fillAlpha: .7);
+                plt.PlotPolygon(paddedXs, Tools.Pad(ys1), lineWidth: 2, lineColor: Color.Black, fillAlpha: .7);
 
                 plt.AxisAuto(0, 0);
                 plt.Title("Filled Line Plots");
@@ -76,15 +72,10 @@ namespace ScottPlot.Demo.PlotTypes
                 ys2 = Enumerable.Range(0, ys2.Length).Select(x => ys2[x] + ys1[x]).ToArray();
                 ys3 = Enumerable.Range(0, ys2.Length).Select(x => ys3[x] + ys2[x]).ToArray();
 
-                // create polygons for each data point
-                double[] filledXs = xs.Take(1).Concat(xs).Concat(new double[] { xs.Last() }).ToArray();
-                double[] filledYs1 = new List<double>() { 0 }.Concat(ys1).Concat(new double[] { 0 }).ToArray();
-                double[] filledYs2 = new List<double>() { 0 }.Concat(ys2).Concat(new double[] { 0 }).ToArray();
-                double[] filledYs3 = new List<double>() { 0 }.Concat(ys3).Concat(new double[] { 0 }).ToArray();
-
-                plt.PlotPolygon(filledXs, filledYs3, lineWidth: 2, lineColor: Color.Black);
-                plt.PlotPolygon(filledXs, filledYs2, lineWidth: 2, lineColor: Color.Black);
-                plt.PlotPolygon(filledXs, filledYs1, lineWidth: 2, lineColor: Color.Black);
+                double[] paddedXs = Tools.Pad(xs, cloneEdges: true);
+                plt.PlotPolygon(paddedXs, Tools.Pad(ys3), lineWidth: 2, lineColor: Color.Black);
+                plt.PlotPolygon(paddedXs, Tools.Pad(ys2), lineWidth: 2, lineColor: Color.Black);
+                plt.PlotPolygon(paddedXs, Tools.Pad(ys1), lineWidth: 2, lineColor: Color.Black);
 
                 plt.AxisAuto(0, 0);
                 plt.Title("Stacked Filled Line Plots");
