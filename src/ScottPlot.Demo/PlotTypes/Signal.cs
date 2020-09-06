@@ -167,7 +167,7 @@ namespace ScottPlot.Demo.PlotTypes
                 var sig = plt.PlotSignal(data);
                 sig.minRenderIndex = 4000;
                 sig.maxRenderIndex = 5000;
-                sig.fill = true;
+                sig.fillType = FillType.FillBelow;
                 sig.fillColor1 = Color.Blue;
 
                 plt.Title($"Partial Display of a {data.Length} values using fill");
@@ -178,8 +178,8 @@ namespace ScottPlot.Demo.PlotTypes
 
         public class PlotGradientFillRange : PlotDemo, IPlotDemo
         {
-            public string name { get; } = "Plot a Range of Points with gradient fill";
-            public string description { get; } = "Plotting a range of values using gradient fill.";
+            public string name { get; } = "Plot a Range of Points with gradient fill below";
+            public string description { get; } = "Plotting a range of values using gradient fill below graph.";
 
             public void Render(Plot plt)
             {
@@ -189,11 +189,60 @@ namespace ScottPlot.Demo.PlotTypes
                 var sig = plt.PlotSignal(data);
                 sig.minRenderIndex = 4000;
                 sig.maxRenderIndex = 5000;
-                sig.fill = true;
+                sig.fillType = FillType.FillBelow;
                 sig.fillColor1 = Color.Blue;
-                sig.fillColor2 = Color.Transparent;
+                sig.gradientFillColor1 = Color.Transparent;
 
-                plt.Title($"Partial Display of a {data.Length} values using gradient fill");
+                plt.Title($"Partial Display of a {data.Length} values using gradient fill below");
+                plt.YLabel("Value");
+                plt.XLabel("Array Index");
+            }
+        }
+
+        public class PlotGradientFillAboveRange : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Plot a Range of Points with gradient fill above";
+            public string description { get; } = "Plotting a range of values using gradient fill above graph.";
+
+            public void Render(Plot plt)
+            {
+                Random rand = new Random(0);
+                double[] data = DataGen.RandomWalk(rand, 100_000);
+
+                var sig = plt.PlotSignal(data);
+                sig.minRenderIndex = 4000;
+                sig.maxRenderIndex = 5000;
+                sig.fillType = FillType.FillAbove;
+                sig.fillColor1 = Color.Blue;
+                sig.gradientFillColor1 = Color.Transparent;
+
+                plt.Title($"Partial Display of a {data.Length} values using gradient fill above");
+                plt.YLabel("Value");
+                plt.XLabel("Array Index");
+            }
+        }
+
+        public class PlotGradientFillAboveAndBelowRange : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Plot a Range of Points with gradient fill both above and below";
+            public string description { get; } = "Plotting a range of values using gradient fill above and below.";
+
+            public void Render(Plot plt)
+            {
+                Random rand = new Random(0);
+                double[] data = DataGen.RandomWalk(rand, 100_000);
+
+                var sig = plt.PlotSignal(data);
+                sig.minRenderIndex = 4000;
+                sig.maxRenderIndex = 5000;
+                sig.fillType = FillType.FillAboveAndBelow;
+                sig.fillColor1 = Color.Green;
+                sig.gradientFillColor1 = Color.Transparent;
+                sig.fillColor2 = Color.Red;
+                sig.gradientFillColor2 = Color.Transparent;
+                sig.baseline = -35;
+
+                plt.Title($"Partial Display of a {data.Length} values using gradient fill above and below");
                 plt.YLabel("Value");
                 plt.XLabel("Array Index");
             }
