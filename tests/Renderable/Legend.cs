@@ -129,5 +129,18 @@ namespace ScottPlotTests.Renderable
             // bold text will darken the mean pixel intensity
             Assert.Less(meanBold.R, meanRegular.R);
         }
+
+        [Test]
+        public void Test_Legend_RequestBeforeRender()
+        {
+            var plt = new ScottPlot.Plot(600, 400);
+            plt.PlotScatter(DataGen.Consecutive(51), DataGen.Sin(51), label: "sin");
+            plt.PlotScatter(DataGen.Consecutive(51), DataGen.Cos(51), label: "cos");
+            plt.Legend();
+
+            System.Drawing.Bitmap bmpLegend = plt.GetLegendBitmap();
+            Assert.Less(bmpLegend.Width, 600);
+            Assert.Less(bmpLegend.Height, 400);
+        }
     }
 }
