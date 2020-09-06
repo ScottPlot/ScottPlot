@@ -63,15 +63,20 @@ namespace ScottPlot.WinFormsSkia
         {
             var paint = new SKPaint
             {
+                Style = SKPaintStyle.Stroke,
                 StrokeWidth = width,
                 Color = Convert(color),
                 StrokeCap = rounded ? SKStrokeCap.Round : SKStrokeCap.Butt,
                 StrokeJoin = rounded ? SKStrokeJoin.Round : SKStrokeJoin.Miter,
-                IsAntialias = IsAntiAlias
+                IsAntialias = IsAntiAlias,
             };
 
+            var path = new SKPath();
+            path.MoveTo(points[0].X, points[0].Y);
             for (int i = 1; i < points.Length; i++)
-                Canvas.DrawLine(Convert(points[i - 1]), Convert(points[i]), paint);
+                path.LineTo(points[i].X, points[i].Y);
+
+            Canvas.DrawPath(path, paint);
         }
 
         public void DrawRectangle(Point point, Size size, Color color, float width)

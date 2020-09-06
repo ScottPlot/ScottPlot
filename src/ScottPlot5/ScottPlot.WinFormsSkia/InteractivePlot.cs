@@ -20,7 +20,7 @@ namespace ScottPlot.WinFormsSkia
             InitializeComponent();
             skglControl1.MouseWheel += skglControl1_MouseWheel;
 
-            Plot = new Plot { OnRender = () => Render() };
+            Plot = new Plot();
             Plot.FigureBackground.Color = Renderer.Color.Convert(SystemColors.Control);
             Plot.DataBackground.Color = Renderer.Colors.White;
             MouseTracker = new MouseTracker(Plot);
