@@ -1966,6 +1966,8 @@ namespace ScottPlot
 
         public Bitmap GetLegendBitmap()
         {
+            if (settings.bmpData is null)
+                RenderBitmap();
             return settings.Legend.GetBitmap(settings);
         }
 
