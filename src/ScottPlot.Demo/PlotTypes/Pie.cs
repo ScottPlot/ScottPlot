@@ -50,7 +50,8 @@ namespace ScottPlot.Demo.PlotTypes
             {
                 double[] values = { 778, 283, 184, 76, 43 };
 
-                plt.PlotPie(values, explodedChart: true, donut: true);
+                //Default donutSize = 0.6
+                plt.PlotPie(values, explodedChart: true, donut: true, donutSize: 0.55);
 
                 plt.Grid(false);
                 plt.Frame(false);

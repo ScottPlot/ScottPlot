@@ -19,11 +19,12 @@ namespace ScottPlot
         bool showPercentages;
         bool showLabels;
         bool donut;
+        double donutSize;
 
         private SolidBrush brush = new SolidBrush(Color.Black);
         private Pen pen = new Pen(Color.Black);
 
-        public PlottablePie(double[] values, string[] groupNames, Color[] colors, bool explodedChart, bool showValues, bool showPercentages, bool showLabels, string label, bool donut)
+        public PlottablePie(double[] values, string[] groupNames, Color[] colors, bool explodedChart, bool showValues, bool showPercentages, bool showLabels, string label, bool donut, double donutSize)
         {
             this.values = values;
             this.label = label;
@@ -34,6 +35,7 @@ namespace ScottPlot
             this.showPercentages = showPercentages;
             this.showLabels = (groupNames is null) ? false : showLabels;
             this.donut = donut;
+            this.donutSize = donutSize;
         }
 
         public override LegendItem[] GetLegendItems()
@@ -89,8 +91,7 @@ namespace ScottPlot
             if (donut)
             {
                 GraphicsPath graphicsPath = new GraphicsPath();
-                const float donutFactor = 0.6f; // Proportion of the pie's diameter to be clipped by the donut hole
-                float donutDiameterPixels = donutFactor * diameterPixels;
+                float donutDiameterPixels = (float)donutSize * diameterPixels;
                 RectangleF donutHoleBoundingRectangle = new RectangleF((float)settings.GetPixelX(centreX) - donutDiameterPixels / 2, (float)settings.GetPixelY(centreY) - donutDiameterPixels / 2, donutDiameterPixels, donutDiameterPixels);
                 graphicsPath.AddEllipse(donutHoleBoundingRectangle);
                 Region excludedRegion = new Region(graphicsPath);
