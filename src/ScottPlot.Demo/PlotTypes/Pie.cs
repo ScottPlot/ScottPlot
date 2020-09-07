@@ -70,7 +70,7 @@ namespace ScottPlot.Demo.PlotTypes
 
                 System.Drawing.Color[] colors = new System.Drawing.Color[] { System.Drawing.Color.FromArgb(255, 0, 150, 200), System.Drawing.Color.FromArgb(100, 0, 150, 200) };
 
-                plt.PlotPie(values, donut: true, showPercentageInDonut: true, colors: colors);
+                plt.PlotPie(values, donut: true, showPercentageInDonut: true, colors: colors, drawOutline: false);
 
                 plt.Grid(false);
                 plt.Frame(false);

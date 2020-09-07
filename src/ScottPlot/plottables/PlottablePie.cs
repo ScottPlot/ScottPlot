@@ -21,11 +21,12 @@ namespace ScottPlot
         bool donut;
         double donutSize;
         bool showPercentageInDonut;
+        bool drawOutline;
 
         private SolidBrush brush = new SolidBrush(Color.Black);
         private Pen pen = new Pen(Color.Black);
 
-        public PlottablePie(double[] values, string[] groupNames, Color[] colors, bool explodedChart, bool showValues, bool showPercentages, bool showLabels, string label, bool donut, double donutSize, bool showPercentageInDonut)
+        public PlottablePie(double[] values, string[] groupNames, Color[] colors, bool explodedChart, bool showValues, bool showPercentages, bool showLabels, string label, bool donut, double donutSize, bool showPercentageInDonut, bool drawOutline)
         {
             this.values = values;
             this.label = label;
@@ -38,6 +39,7 @@ namespace ScottPlot
             this.donut = donut;
             this.donutSize = donutSize;
             this.showPercentageInDonut = showPercentageInDonut;
+            this.drawOutline = drawOutline;
         }
 
         public override LegendItem[] GetLegendItems()
@@ -143,6 +145,12 @@ namespace ScottPlot
             }
 
             pen.Width = outlineWidth;
+
+            if (!drawOutline && !explodedChart)
+            {
+                pen.Color = System.Drawing.Color.Transparent;
+            }
+
             settings.gfxData.DrawEllipse(pen, boundingRectangle.X, boundingRectangle.Y, boundingRectangle.Width, boundingRectangle.Height);
 
             settings.gfxData.ResetClip();
