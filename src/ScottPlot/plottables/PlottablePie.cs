@@ -20,11 +20,12 @@ namespace ScottPlot
         bool showLabels;
         bool donut;
         double donutSize;
+        bool showPercentageInDonut;
 
         private SolidBrush brush = new SolidBrush(Color.Black);
         private Pen pen = new Pen(Color.Black);
 
-        public PlottablePie(double[] values, string[] groupNames, Color[] colors, bool explodedChart, bool showValues, bool showPercentages, bool showLabels, string label, bool donut, double donutSize)
+        public PlottablePie(double[] values, string[] groupNames, Color[] colors, bool explodedChart, bool showValues, bool showPercentages, bool showLabels, string label, bool donut, double donutSize, bool showPercentageInDonut)
         {
             this.values = values;
             this.label = label;
@@ -36,6 +37,7 @@ namespace ScottPlot
             this.showLabels = (groupNames is null) ? false : showLabels;
             this.donut = donut;
             this.donutSize = donutSize;
+            this.showPercentageInDonut = showPercentageInDonut;
         }
 
         public override LegendItem[] GetLegendItems()
@@ -113,7 +115,7 @@ namespace ScottPlot
                 labelXs[i] = (boundingRectangle.X + diameterPixels / 2 + xOffset + Math.Cos(angle) * sliceLabelR);
                 labelYs[i] = (boundingRectangle.Y + diameterPixels / 2 + yOffset + Math.Sin(angle) * sliceLabelR);
                 string sliceLabelValue = (showValues) ? $"{values[i]}" : "";
-                string sliceLabelPercentage = (showPercentages) ? $"{proportions[i] * 100:f1}%" : "";
+                string sliceLabelPercentage = (showPercentages && !showPercentageInDonut) ? $"{proportions[i] * 100:f1}%" : "";
                 string sliceLabelName = (showLabels) ? groupNames[i] : "";
                 labelStrings[i] = $"{sliceLabelValue}\n{sliceLabelPercentage}\n{sliceLabelName}".Trim();
 
@@ -144,6 +146,22 @@ namespace ScottPlot
             settings.gfxData.DrawEllipse(pen, boundingRectangle.X, boundingRectangle.Y, boundingRectangle.Width, boundingRectangle.Height);
 
             settings.gfxData.ResetClip();
+
+            if (showPercentageInDonut)
+            {
+                int maxPercentageIndex = 0;
+                for (int i = 1; i < proportions.Length; i++)
+                {
+                    if (proportions[i] > proportions[maxPercentageIndex])
+                    {
+                        maxPercentageIndex = i;
+                    }
+                }
+                int maxPercentage = (int)Math.Round(proportions[maxPercentageIndex] * 100);
+                brush.Color = colors[maxPercentageIndex];
+                Font donutHoleFont = new Font(fontName, 36);
+                settings.gfxData.DrawString($"{maxPercentage}%", donutHoleFont, brush, settings.GetPixel(0, 0), settings.misc.sfCenterCenter);
+            }
         }
 
         public override string ToString()

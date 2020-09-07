@@ -59,6 +59,25 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
+        public class DonutPieWithPercentageInDonut : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Donut Pie With Percentage in the Middle";
+            public string description { get; } = "There is an option to have a \"donut\" pie chart with the largest proportion in the donut hole.";
+
+            public void Render(Plot plt)
+            {
+                double[] values = { 778, 586 };
+
+                System.Drawing.Color[] colors = new System.Drawing.Color[] { System.Drawing.Color.FromArgb(255, 0, 150, 200), System.Drawing.Color.FromArgb(100, 0, 150, 200) };
+
+                plt.PlotPie(values, donut: true, showPercentageInDonut: true, colors: colors);
+
+                plt.Grid(false);
+                plt.Frame(false);
+                plt.Ticks(false, false);
+            }
+        }
+
         public class PieShowValues : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Show Values";
