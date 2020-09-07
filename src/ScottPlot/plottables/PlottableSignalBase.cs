@@ -304,17 +304,20 @@ namespace ScottPlot
                                 .Concat(new PointF[] { last })
                                 .ToArray();
 
-                LinearGradientBrush linearGradientBrush = new LinearGradientBrush(
-                    new Rectangle(
+                Rectangle gradientRectangle = new Rectangle(
                         new Point((int)first.X, (int)minVal - (fillType == FillType.FillAbove ? 2 : 0)),
                         new Size(
                             (int)(last.X - first.X),
-                            (int)(maxVal - minVal) + 2 * (fillType == FillType.FillAbove ? -1 : 1))),
+                            (int)(maxVal - minVal) + 2 * (fillType == FillType.FillAbove ? -1 : 1)));
+
+                LinearGradientBrush linearGradientBrush = new LinearGradientBrush(
+                    gradientRectangle,
                     fillColor1.Value,
                     gradientFillColor1 != null
                         ? gradientFillColor1.Value
                         : fillColor1.Value,
                     LinearGradientMode.Vertical);
+
                 settings.gfxData.FillPolygon(linearGradientBrush, points);
             }
             else
@@ -323,7 +326,7 @@ namespace ScottPlot
             }
         }
 
-        private PointF GetIntersection(PointF point1, PointF point2, PointF baselineStart, PointF baselineEnd)
+        private PointF? GetIntersection(PointF point1, PointF point2, PointF baselineStart, PointF baselineEnd)
         {
             double a1 = point2.Y - point1.Y;
             double b1 = point1.X - point2.X;
@@ -337,7 +340,8 @@ namespace ScottPlot
 
             if (d == 0)
             {
-                throw new Exception("Lines do not intersect!");
+                // Lines do not intersect. This could also be the case if the plot is zoomed out too much.
+                return null;
             }
             else
             {
@@ -373,9 +377,13 @@ namespace ScottPlot
                 if ((pointList[i - 1].Y > baseline && pointList[i].Y < baseline) ||
                     (pointList[i - 1].Y < baseline && pointList[i].Y > baseline))
                 {
-                    pointList.Insert(i, GetIntersection(pointList[i], pointList[i - 1], baselinePointStart, baselinePointEnd));
-                    newlyAddedItems++;
-                    i++;
+                    var intersection = GetIntersection(pointList[i], pointList[i - 1], baselinePointStart, baselinePointEnd);
+                    if (intersection != null)
+                    {
+                        pointList.Insert(i, intersection.Value);
+                        newlyAddedItems++;
+                        i++;
+                    }
                 }
             }
 
@@ -425,7 +433,7 @@ namespace ScottPlot
         {
             float maxVal = (settings.dataSize.Height * (fillType == FillType.FillAbove ? -1 : 1));
 
-            Rectangle rectangle = new Rectangle((int)startX, 0, (int)xPxEnd, (int)maxVal);
+            Rectangle rectangle = new Rectangle((int)startX, 0, (int)(xPxEnd - startX), (int)maxVal);
 
             return rectangle;
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot.Drawing;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
@@ -208,14 +209,12 @@ namespace ScottPlot.Demo.PlotTypes
             {
                 Random rand = new Random(0);
                 double[] data = DataGen.RandomWalk(rand, 100_000);
-
                 var sig = plt.PlotSignal(data);
                 sig.minRenderIndex = 4000;
                 sig.maxRenderIndex = 5000;
                 sig.fillType = FillType.FillAbove;
                 sig.fillColor1 = Color.Blue;
                 sig.gradientFillColor1 = Color.Transparent;
-
                 plt.Title($"Partial Display of a {data.Length} values using gradient fill above");
                 plt.YLabel("Value");
                 plt.XLabel("Array Index");
@@ -258,13 +257,18 @@ namespace ScottPlot.Demo.PlotTypes
                 Random rand = new Random(0);
                 double[] data = DataGen.RandomWalk(rand, 100_000);
 
+                plt.Style(Style.Gray1);
+                plt.Colorset(Colorset.OneHalfDark);
+
                 var sig = plt.PlotSignal(data);
                 sig.minRenderIndex = 4000;
                 sig.maxRenderIndex = 5000;
+                sig.markerSize = 0;
+                sig.penHD = new Pen(Color.Black);
                 sig.fillType = FillType.FillAboveAndBelow;
-                sig.fillColor1 = Color.Green;
+                sig.fillColor1 = Color.FromArgb(255, 44, 160, 44); // Green
                 sig.gradientFillColor1 = Color.Transparent;
-                sig.fillColor2 = Color.Red;
+                sig.fillColor2 = Color.FromArgb(255, 214, 39, 40); // Red
                 sig.gradientFillColor2 = Color.Transparent;
                 sig.baseline = -35;
 
