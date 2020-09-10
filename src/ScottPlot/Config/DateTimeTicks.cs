@@ -34,6 +34,7 @@ namespace ScottPlot.Config
                 double hoursApart = daysApart * 24;
                 double minutesApart = hoursApart * 60;
                 double secondsApart = minutesApart * 60;
+                double millisecondsApart = secondsApart * 1_000;
                 if (daysApart > 365 * 2)
                     units = DateTimeUnit.Year;
                 else if (daysApart > 30 * 2)
@@ -44,8 +45,10 @@ namespace ScottPlot.Config
                     units = DateTimeUnit.Hour;
                 else if (secondsApart > 60 * 2)
                     units = DateTimeUnit.Minute;
-                else
+                else if (millisecondsApart > 1_000 * 2)
                     units = DateTimeUnit.Second;
+                else
+                    units = DateTimeUnit.Millisecond;
             }
 
             // create arrays of DateTimes with spacings customized for each tick unit
@@ -219,7 +222,45 @@ namespace ScottPlot.Config
 
                 return (ticks, labels);
             }
-            else
+            else if (units == DateTimeUnit.Millisecond)
+            {
+                DateTime[] ticks;
+                if (fixedSpacing)
+                {
+                    ticks = GetMilliSecondTicks(dt1, dt2, dtManualSpacing);
+                }
+                else
+                {
+                    ticks = GetMilliSecondTicks(dt1, dt2, 1);
+                    if (ticks.Length > maxTickCount)
+                        ticks = GetMilliSecondTicks(dt1, dt2, 2);
+                    if (ticks.Length > maxTickCount)
+                        ticks = GetMilliSecondTicks(dt1, dt2, 5);
+                    if (ticks.Length > maxTickCount)
+                        ticks = GetMilliSecondTicks(dt1, dt2, 10);
+                    if (ticks.Length > maxTickCount)
+                        ticks = GetMilliSecondTicks(dt1, dt2, 20);
+                    if (ticks.Length > maxTickCount)
+                        ticks = GetMilliSecondTicks(dt1, dt2, 50);
+                    if (ticks.Length > maxTickCount)
+                        ticks = GetMilliSecondTicks(dt1, dt2, 100);
+                    if (ticks.Length > maxTickCount)
+                        ticks = GetMilliSecondTicks(dt1, dt2, 200);
+                    if (ticks.Length > maxTickCount)
+                        ticks = GetMilliSecondTicks(dt1, dt2, 500);
+                }
+
+                string[] labels = new string[ticks.Length];
+                for (int i = 0; i < labels.Length; i++)
+                {
+                    string date = ticks[i].ToString("d", culture); // short date
+                    string time = ticks[i].ToString("hh:mm:ss.fff", culture); // long time
+                    labels[i] = $"{date}, {time}";
+                }
+
+                return (ticks, labels);
+            }
+            else 
             {
                 throw new NotImplementedException("unrecognized TickUnit");
             }
@@ -335,6 +376,19 @@ namespace ScottPlot.Config
                 if (dt >= dt1)
                     dates.Add(dt);
                 dt = dt.AddSeconds(delta);
+            }
+            return dates.ToArray();
+        }
+
+        private static DateTime[] GetMilliSecondTicks(DateTime dt1, DateTime dt2, int delta)
+        {
+            var dates = new List<DateTime>();
+            DateTime dt = new DateTime(dt1.Year, dt1.Month, dt1.Day, dt1.Hour, dt1.Minute, dt1.Second);
+            while (dt <= dt2)
+            {
+                if (dt >= dt1)
+                    dates.Add(dt);
+                dt = dt.AddMilliseconds(delta);
             }
             return dates.ToArray();
         }
