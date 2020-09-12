@@ -11,10 +11,18 @@ namespace ScottPlot.Config.DateTimeTickUnits
             kind = DateTimeUnitKind.Year;
             if (manualSpacing != null)
                 throw new NotImplementedException("can't display years with fixed spacing (use numeric axis instead)");
-
+            deltas = new int[] { 1, 2, 5 };
         }
 
-        // don't need to override Increment and Floor, because we override whole GetTicks
+        protected override DateTime Floor(DateTime value)
+        {
+            return new DateTime(value.Year, 1, 1);
+        }
+
+        protected override DateTime Increment(DateTime value, int delta)
+        {
+            return value.AddYears(delta);
+        }
 
         protected override string GetTickLabel(DateTime value)
         {
@@ -25,43 +33,15 @@ namespace ScottPlot.Config.DateTimeTickUnits
 
         protected override DateTime[] GetTicks(DateTime from, DateTime to, int delta)
         {
-            // determine ideal tick spacing (multiples of 1, 5, and 10)
-            int span = to.Year - from.Year;
-            int[] interval = { 2, 5 };
-            int tickSpacing = 1000;
-            for (int i = 0; i < 100; i++)
-            {
-                int divisor = interval[i % interval.Length];
-                if (tickSpacing > 1)
-                {
-                    tickSpacing /= divisor;
-                    double tickCountNow = span / tickSpacing;
-                    if (tickCountNow > maxTickCount)
-                    {
-                        tickSpacing *= divisor;
-                        break;
-                    }
-                }
-                else
-                {
-                    tickSpacing = 1;
-                    break;
-                }
-            }
-
-            // offset the first year to make it a multiple of the tick spacing
-            int firstYear = from.Year - (to.Year % tickSpacing);
-
-            // create a list of dates (only the valid ones)
             var dates = new List<DateTime>();
-            DateTime dt = new DateTime(firstYear, 1, 1);
+            DateTime dt = Floor(from);
             while (dt <= to)
             {
                 if (dt >= from)
                     dates.Add(dt);
                 try
                 {
-                    dt = dt.AddYears((int)tickSpacing);
+                    dt = Increment(dt, delta);
                 }
                 catch
                 {

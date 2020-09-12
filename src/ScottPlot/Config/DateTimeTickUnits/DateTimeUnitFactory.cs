@@ -9,6 +9,12 @@ namespace ScottPlot.Config.DateTimeTickUnits
         {
             switch (kind)
             {
+                case DateTimeUnitKind.ThousandYear:
+                    return new DateTimeTickThousandYear(culture, maxTickCount, manualSpacing);
+                case DateTimeUnitKind.HundredYear:
+                    return new DateTimeTickHundredYear(culture, maxTickCount, manualSpacing);
+                case DateTimeUnitKind.TenYear:
+                    return new DateTimeTickTenYear(culture, maxTickCount, manualSpacing);
                 case DateTimeUnitKind.Year:
                     return new DateTimeTickYear(culture, maxTickCount, manualSpacing);
                 case DateTimeUnitKind.Month:
@@ -42,7 +48,13 @@ namespace ScottPlot.Config.DateTimeTickUnits
             double centisecondsApart = decisecondsApart * 10;
             double millisecondsApart = centisecondsApart * 10;
             DateTimeUnitKind units;
-            if (daysApart > 365 * 2)
+            if (daysApart > 365 * 1000 * 2)
+                units = DateTimeUnitKind.ThousandYear;
+            else if (daysApart > 365.0 * 100 * 2)
+                units = DateTimeUnitKind.HundredYear;
+            else if (daysApart > 365.0 * 10 * 2)
+                units = DateTimeUnitKind.TenYear;
+            else if (daysApart > 365 * 2)
                 units = DateTimeUnitKind.Year;
             else if (daysApart > 30 * 2)
                 units = DateTimeUnitKind.Month;
