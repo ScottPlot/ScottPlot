@@ -1,12 +1,9 @@
 ﻿using ScottPlot.Config.DateTimeTickUnits;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ScottPlot.Config
 {
@@ -106,17 +103,10 @@ namespace ScottPlot.Config
 
                 var unitFactory = new DateTimeUnitFactory();
                 IDateTimeUnit tickUnit = unitFactory.CreateUnit(from, to, settings.culture, tickCount, dtManualUnits, (int)dtManualSpacing);
-                var dateTicks =  tickUnit.GetTicksAndLabels(from, to);
+                var dateTicks = tickUnit.GetTicksAndLabels(from, to);
 
-                tickPositionsMajor = Tools.DateTimesToDoubles(dateTicks.Item1);
-                tickLabels = dateTicks.Item2;
-                for (int i = 0; i < tickLabels.Length; i++)
-                {
-                    if (tickLabels[i].Contains(", "))
-                        tickLabels[i] = tickLabels[i].Replace(", ", "\n");
-                    else
-                        tickLabels[i] += "\n "; // auto-layout works better if dates are always two lines
-                }
+                tickPositionsMajor = Tools.DateTimesToDoubles(dateTicks.Ticks);
+                tickLabels = dateTicks.Labels;
             }
             else
             {

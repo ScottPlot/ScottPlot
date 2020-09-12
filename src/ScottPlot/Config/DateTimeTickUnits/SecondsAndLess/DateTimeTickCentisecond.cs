@@ -26,7 +26,7 @@ namespace ScottPlot.Config.DateTimeTickUnits
         {
             string date = value.ToString("d", culture); // short date
             string time = value.ToString("hh:mm:ss.ff", culture); // long time
-            return $"{date}, {time}";
+            return $"{date}\n{time}";
         }
     }
 }

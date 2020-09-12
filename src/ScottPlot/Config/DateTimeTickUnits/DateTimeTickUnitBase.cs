@@ -35,7 +35,7 @@ namespace ScottPlot.Config.DateTimeTickUnits
         {
             string date = value.ToString("d", culture); // short date
             string time = value.ToString("T", culture); // long time
-            return $"{date}, {time}";
+            return $"{date}\n{time}";
         }
 
         public (DateTime[] Ticks, string[] Labels) GetTicksAndLabels(DateTime from, DateTime to)

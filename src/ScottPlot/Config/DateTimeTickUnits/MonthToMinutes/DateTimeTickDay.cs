@@ -26,7 +26,7 @@ namespace ScottPlot.Config.DateTimeTickUnits
         {
             var dt = new DateTime(value.Year, value.Month, value.Day);
             string localizedLabel = dt.ToString("d", culture); // short date pattern
-            return localizedLabel.Replace("T", "\n");
+            return localizedLabel.Replace("T", "\n") + "\n ";
         }
     }
 }

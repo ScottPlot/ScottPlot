@@ -28,7 +28,7 @@ namespace ScottPlot.Config.DateTimeTickUnits
         {
             var dt = new DateTime(value.Year, 1, 1);
             string localizedLabel = dt.ToString("yyyy", culture); // year only
-            return localizedLabel;
+            return localizedLabel + "\n ";
         }
 
         protected override DateTime[] GetTicks(DateTime from, DateTime to, int delta)
