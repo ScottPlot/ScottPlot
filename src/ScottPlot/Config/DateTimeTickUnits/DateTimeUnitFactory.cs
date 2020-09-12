@@ -38,7 +38,7 @@ namespace ScottPlot.Config.DateTimeTickUnits
             }
         }
 
-        public IDateTimeUnit CreateBetterUnit(DateTime from, DateTime to, CultureInfo culture, int maxTickCount)
+        public IDateTimeUnit CreateBestUnit(DateTime from, DateTime to, CultureInfo culture, int maxTickCount)
         {
             double daysApart = to.ToOADate() - from.ToOADate();
             double hoursApart = daysApart * 24;
@@ -73,6 +73,18 @@ namespace ScottPlot.Config.DateTimeTickUnits
             else
                 units = DateTimeUnitKind.Millisecond;
             return Create(units, culture, maxTickCount, null);
+        }
+
+        public IDateTimeUnit CreateUnit(DateTime from, DateTime to, CultureInfo culture, int maxTickCount, DateTimeUnitKind? manualUnits, int? manualSpacing)
+        {
+            if (manualUnits == null)
+            {
+                return CreateBestUnit(from, to, culture, maxTickCount);
+            }
+            else
+            {
+                return Create(manualUnits.Value, culture, maxTickCount, manualSpacing);
+            }
         }
     }
 }

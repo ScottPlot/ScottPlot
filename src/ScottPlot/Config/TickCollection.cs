@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot.Config.DateTimeTickUnits;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -100,7 +101,12 @@ namespace ScottPlot.Config
                 var dtManualUnits = (verticalAxis) ? settings.ticks.manualDateTimeSpacingUnitY : settings.ticks.manualDateTimeSpacingUnitX;
                 var dtManualSpacing = (verticalAxis) ? settings.ticks.manualSpacingY : settings.ticks.manualSpacingX;
 
-                var dateTicks = DateTimeTicks.GetTicks(DateTime.FromOADate(low), DateTime.FromOADate(high), tickCount, settings.culture, dtManualUnits, (int)dtManualSpacing);
+                DateTime from = DateTime.FromOADate(low);
+                DateTime to = DateTime.FromOADate(high);
+
+                var unitFactory = new DateTimeUnitFactory();
+                IDateTimeUnit tickUnit = unitFactory.CreateUnit(from, to, settings.culture, tickCount, dtManualUnits, (int)dtManualSpacing);
+                var dateTicks =  tickUnit.GetTicksAndLabels(from, to);
 
                 tickPositionsMajor = Tools.DateTimesToDoubles(dateTicks.Item1);
                 tickLabels = dateTicks.Item2;
