@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace ScottPlot.Config.DateTimeTickUnits
 {
-    public class DateTimeTickUnitBase
+    public class DateTimeTickUnitBase : IDateTimeUnit
     {
         // base class implements Seconds Unit
         protected DateTimeUnit kind = DateTimeUnit.Second;

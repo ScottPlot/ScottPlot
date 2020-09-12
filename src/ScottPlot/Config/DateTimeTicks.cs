@@ -20,7 +20,7 @@ namespace ScottPlot.Config
                 dt2 = dt1.AddSeconds(1);
 
             var unitFactory = new DateTimeUnitFactory();
-            DateTimeTickUnitBase tickUnit;
+            IDateTimeUnit tickUnit;
             if (dtManualUnits.HasValue)
             {
                 tickUnit = unitFactory.Create(dtManualUnits.Value, culture, maxTickCount, dtManualSpacing);

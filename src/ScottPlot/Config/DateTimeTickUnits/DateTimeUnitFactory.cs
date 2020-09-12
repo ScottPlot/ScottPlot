@@ -5,7 +5,7 @@ namespace ScottPlot.Config.DateTimeTickUnits
 {
     public class DateTimeUnitFactory
     {
-        public DateTimeTickUnitBase Create(DateTimeUnit kind, CultureInfo culture, int maxTickCount, int? manualSpacing)
+        public IDateTimeUnit Create(DateTimeUnit kind, CultureInfo culture, int maxTickCount, int? manualSpacing)
         {
             switch (kind)
             {
@@ -32,7 +32,7 @@ namespace ScottPlot.Config.DateTimeTickUnits
             }
         }
 
-        public DateTimeTickUnitBase CreateBetterUnit(DateTime from, DateTime to, CultureInfo culture, int maxTickCount)
+        public IDateTimeUnit CreateBetterUnit(DateTime from, DateTime to, CultureInfo culture, int maxTickCount)
         {
             double daysApart = to.ToOADate() - from.ToOADate();
             double hoursApart = daysApart * 24;
