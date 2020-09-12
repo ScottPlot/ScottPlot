@@ -5,27 +5,27 @@ namespace ScottPlot.Config.DateTimeTickUnits
 {
     public class DateTimeUnitFactory
     {
-        public IDateTimeUnit Create(DateTimeUnit kind, CultureInfo culture, int maxTickCount, int? manualSpacing)
+        public IDateTimeUnit Create(DateTimeUnitKind kind, CultureInfo culture, int maxTickCount, int? manualSpacing)
         {
             switch (kind)
             {
-                case DateTimeUnit.Year:
+                case DateTimeUnitKind.Year:
                     return new DateTimeTickYear(culture, maxTickCount, manualSpacing);
-                case DateTimeUnit.Month:
+                case DateTimeUnitKind.Month:
                     return new DateTimeTickMonth(culture, maxTickCount, manualSpacing);
-                case DateTimeUnit.Day:
+                case DateTimeUnitKind.Day:
                     return new DateTimeTickDay(culture, maxTickCount, manualSpacing);
-                case DateTimeUnit.Hour:
+                case DateTimeUnitKind.Hour:
                     return new DateTimeTickHour(culture, maxTickCount, manualSpacing);
-                case DateTimeUnit.Minute:
+                case DateTimeUnitKind.Minute:
                     return new DateTimeTickMinute(culture, maxTickCount, manualSpacing);
-                case DateTimeUnit.Second:
+                case DateTimeUnitKind.Second:
                     return new DateTimeTickSecond(culture, maxTickCount, manualSpacing);
-                case DateTimeUnit.Decisecond:
+                case DateTimeUnitKind.Decisecond:
                     return new DateTimeTickDecisecond(culture, maxTickCount, manualSpacing);
-                case DateTimeUnit.Centisecond:
+                case DateTimeUnitKind.Centisecond:
                     return new DateTimeTickCentisecond(culture, maxTickCount, manualSpacing);
-                case DateTimeUnit.Millisecond:
+                case DateTimeUnitKind.Millisecond:
                     return new DateTimeTickMillisecond(culture, maxTickCount, manualSpacing);
                 default:
                     throw new NotImplementedException("unrecognized TickUnit");
@@ -41,25 +41,25 @@ namespace ScottPlot.Config.DateTimeTickUnits
             double decisecondsApart = secondsApart * 10;
             double centisecondsApart = decisecondsApart * 10;
             double millisecondsApart = centisecondsApart * 10;
-            DateTimeUnit units;
+            DateTimeUnitKind units;
             if (daysApart > 365 * 2)
-                units = DateTimeUnit.Year;
+                units = DateTimeUnitKind.Year;
             else if (daysApart > 30 * 2)
-                units = DateTimeUnit.Month;
+                units = DateTimeUnitKind.Month;
             else if (hoursApart > 24 * 2)
-                units = DateTimeUnit.Day;
+                units = DateTimeUnitKind.Day;
             else if (minutesApart > 60 * 2)
-                units = DateTimeUnit.Hour;
+                units = DateTimeUnitKind.Hour;
             else if (secondsApart > 60 * 2)
-                units = DateTimeUnit.Minute;
+                units = DateTimeUnitKind.Minute;
             else if (decisecondsApart > 10 * 2)
-                units = DateTimeUnit.Second;
+                units = DateTimeUnitKind.Second;
             else if (centisecondsApart > 10 * 2)
-                units = DateTimeUnit.Decisecond;
+                units = DateTimeUnitKind.Decisecond;
             else if (millisecondsApart > 10 * 2)
-                units = DateTimeUnit.Centisecond;
+                units = DateTimeUnitKind.Centisecond;
             else
-                units = DateTimeUnit.Millisecond;
+                units = DateTimeUnitKind.Millisecond;
             return Create(units, culture, maxTickCount, null);
         }
     }

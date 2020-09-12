@@ -292,7 +292,7 @@ namespace ScottPlot.Demo.Customize
                 plt.Ticks(dateTimeX: true);
 
                 // define tick spacing as 1 day (every day will be shown)
-                plt.Grid(xSpacing: 1, xSpacingDateTimeUnit: Config.DateTimeUnit.Day);
+                plt.Grid(xSpacing: 1, xSpacingDateTimeUnit: Config.DateTimeUnitKind.Day);
                 plt.Ticks(dateTimeX: true, xTickRotation: 45);
                 plt.Layout(xScaleHeight: 60);
             }

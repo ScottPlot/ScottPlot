@@ -13,7 +13,7 @@ namespace ScottPlot.Config
          * 
          */
 
-        public static (DateTime[], String[]) GetTicks(DateTime dt1, DateTime dt2, int maxTickCount, CultureInfo culture, DateTimeUnit? dtManualUnits, int dtManualSpacing)
+        public static (DateTime[], String[]) GetTicks(DateTime dt1, DateTime dt2, int maxTickCount, CultureInfo culture, DateTimeUnitKind? dtManualUnits, int dtManualSpacing)
         {
             // prevent crashes if equal or inverted date ranges
             if (!(dt1 < dt2))

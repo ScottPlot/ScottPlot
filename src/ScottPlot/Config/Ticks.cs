@@ -26,8 +26,8 @@ namespace ScottPlot.Config
 
         public double manualSpacingX = 0;
         public double manualSpacingY = 0;
-        public Config.DateTimeUnit? manualDateTimeSpacingUnitX = null;
-        public Config.DateTimeUnit? manualDateTimeSpacingUnitY = null;
+        public Config.DateTimeUnitKind? manualDateTimeSpacingUnitX = null;
+        public Config.DateTimeUnitKind? manualDateTimeSpacingUnitY = null;
 
         public bool rulerModeX = false;
         public bool rulerModeY = false;

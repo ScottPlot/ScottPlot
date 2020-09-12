@@ -7,7 +7,7 @@ namespace ScottPlot.Config.DateTimeTickUnits
     {
         public DateTimeTickHour(CultureInfo culture, int maxTickCount, int? manualSpacing) : base(culture, maxTickCount, manualSpacing)
         {
-            kind = DateTimeUnit.Hour;
+            kind = DateTimeUnitKind.Hour;
             if (manualSpacing == null)
                 deltas = new int[] { 1, 2, 4, 8, 12 };
         }

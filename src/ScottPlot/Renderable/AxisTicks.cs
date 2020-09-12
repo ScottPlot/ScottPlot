@@ -24,7 +24,7 @@ namespace ScottPlot.Renderable
         public int MinorTickLength = 2;
 
         public double FixedSpacing = 0;
-        public Config.DateTimeUnit? FixedDateTimeSpacingUnit = null;
+        public Config.DateTimeUnitKind? FixedDateTimeSpacingUnit = null;
 
         public bool RulerMode = false;
         public double Rotation = 0;

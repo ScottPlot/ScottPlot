@@ -2116,8 +2116,8 @@ namespace ScottPlot
             double? ySpacing = null,
             bool? enableHorizontal = null,
             bool? enableVertical = null,
-            Config.DateTimeUnit? xSpacingDateTimeUnit = null,
-            Config.DateTimeUnit? ySpacingDateTimeUnit = null,
+            Config.DateTimeUnitKind? xSpacingDateTimeUnit = null,
+            Config.DateTimeUnitKind? ySpacingDateTimeUnit = null,
             double? lineWidth = null,
             LineStyle? lineStyle = null,
             bool? snapToNearestPixel = null
