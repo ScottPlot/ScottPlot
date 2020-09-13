@@ -53,6 +53,7 @@ namespace ScottPlot.Demo.PlotTypes
 
                 var pie = plt.PlotPie(values);
                 pie.donutSize = .6;
+                pie.explodedChart = true;
 
                 plt.Grid(false);
                 plt.Frame(false);

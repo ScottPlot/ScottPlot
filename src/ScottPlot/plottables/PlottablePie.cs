@@ -120,15 +120,27 @@ namespace ScottPlot
                 labelStrings[i] = $"{sliceLabelValue}\n{sliceLabelPercentage}\n{sliceLabelName}".Trim();
 
                 brush.Color = colors[i];
-                settings.gfxData.FillPie(brush, (int)(boundingRectangle.X + xOffset), (int)(boundingRectangle.Y + yOffset), boundingRectangle.Width, boundingRectangle.Height, (float)start, (float)(sweep + sweepOffset));
+                settings.gfxData.FillPie(brush: brush,
+                    x: (int)(boundingRectangle.X + xOffset),
+                    y: (int)(boundingRectangle.Y + yOffset),
+                    width: boundingRectangle.Width,
+                    height: boundingRectangle.Height,
+                    startAngle: (float)start,
+                    sweepAngle: (float)(sweep + sweepOffset));
 
                 if (explodedChart)
                 {
+                    pen.Color = settings.DataBackground.Color; // TODO: will fail if data background is transparent
                     pen.Width = sliceOutlineWidth;
-                    settings.gfxData.DrawPie(pen, (int)(boundingRectangle.X + xOffset), (int)(boundingRectangle.Y + yOffset), boundingRectangle.Width, boundingRectangle.Height, (float)start, (float)(sweep + sweepOffset));
+                    settings.gfxData.DrawPie(
+                        pen: pen,
+                        x: (int)(boundingRectangle.X + xOffset),
+                        y: (int)(boundingRectangle.Y + yOffset),
+                        width: boundingRectangle.Width, boundingRectangle.Height,
+                        startAngle: (float)start,
+                        sweepAngle: (float)(sweep + sweepOffset));
                 }
                 start += sweep;
-
             }
 
             brush.Color = Color.White;
@@ -157,6 +169,18 @@ namespace ScottPlot
                 Font donutHoleFont = new Font(fontName, centerTextSize);
                 settings.gfxData.DrawString(centerText, donutHoleFont, brush, settings.GetPixel(0, 0), settings.misc.sfCenterCenter);
                 donutHoleFont.Dispose();
+            }
+
+            if (explodedChart)
+            {
+                // draw a background-colored circle around the perimeter to make it look like all pieces are the same size
+                pen.Width = 20;
+                settings.gfxData.DrawEllipse(
+                    pen: pen, 
+                    x: boundingRectangle.X, 
+                    y: boundingRectangle.Y, 
+                    width: boundingRectangle.Width, 
+                    height: boundingRectangle.Height);
             }
         }
 
