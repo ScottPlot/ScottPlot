@@ -42,7 +42,7 @@ namespace ScottPlot.Config.DateTimeTickUnits
         {
             var ticks = GetTicks(from, to, deltas, maxTickCount);
             var labels = ticks.Select(t => GetTickLabel(t)).ToArray();
-            return (ticks.Select( t => t.ToOADate()).ToArray(), labels);
+            return (ticks.Select(t => t.ToOADate()).ToArray(), labels);
         }
 
         protected DateTime[] GetTicks(DateTime from, DateTime to, int[] deltas, int maxTickCount)
