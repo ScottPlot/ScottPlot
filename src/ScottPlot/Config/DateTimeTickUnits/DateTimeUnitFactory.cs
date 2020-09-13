@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 
 namespace ScottPlot.Config.DateTimeTickUnits
 {
@@ -41,38 +43,28 @@ namespace ScottPlot.Config.DateTimeTickUnits
         public IDateTimeUnit CreateBestUnit(DateTime from, DateTime to, CultureInfo culture, int maxTickCount)
         {
             double daysApart = to.ToOADate() - from.ToOADate();
-            double hoursApart = daysApart * 24;
-            double minutesApart = hoursApart * 60;
-            double secondsApart = minutesApart * 60;
-            double decisecondsApart = secondsApart * 10;
-            double centisecondsApart = decisecondsApart * 10;
-            double millisecondsApart = centisecondsApart * 10;
-            DateTimeUnitKind units;
-            if (daysApart > 365 * 1000 * 2)
-                units = DateTimeUnitKind.ThousandYear;
-            else if (daysApart > 365.0 * 100 * 2)
-                units = DateTimeUnitKind.HundredYear;
-            else if (daysApart > 365.0 * 10 * 2)
-                units = DateTimeUnitKind.TenYear;
-            else if (daysApart > 365 * 2)
-                units = DateTimeUnitKind.Year;
-            else if (daysApart > 30 * 2)
-                units = DateTimeUnitKind.Month;
-            else if (hoursApart > 24 * 2)
-                units = DateTimeUnitKind.Day;
-            else if (minutesApart > 60 * 2)
-                units = DateTimeUnitKind.Hour;
-            else if (secondsApart > 60 * 2)
-                units = DateTimeUnitKind.Minute;
-            else if (decisecondsApart > 10 * 2)
-                units = DateTimeUnitKind.Second;
-            else if (centisecondsApart > 10 * 2)
-                units = DateTimeUnitKind.Decisecond;
-            else if (millisecondsApart > 10 * 2)
-                units = DateTimeUnitKind.Centisecond;
-            else
-                units = DateTimeUnitKind.Millisecond;
-            return Create(units, culture, maxTickCount, null);
+
+            // tick unit borders in days
+            var tickUnitBorders = new List<(DateTimeUnitKind kind, double border)?>
+            {
+                (DateTimeUnitKind.ThousandYear, 365 * 1_000 * 2),
+                (DateTimeUnitKind.HundredYear, 365 * 100 * 2),
+                (DateTimeUnitKind.TenYear, 365 * 10 * 2),
+                (DateTimeUnitKind.Year, 365 * 2),
+                (DateTimeUnitKind.Month, 30 * 2),
+                (DateTimeUnitKind.Day, 1 * 2),
+                (DateTimeUnitKind.Hour, 1.0 / 24 * 2),
+                (DateTimeUnitKind.Minute, 1.0 / 24 / 60 * 2),
+                (DateTimeUnitKind.Second, 1.0 / 24 / 3600 * 2),
+                (DateTimeUnitKind.Decisecond, 1.0 / 24 / 3600 / 10 * 2),
+                (DateTimeUnitKind.Centisecond, 1.0 / 24 / 3600 / 100 * 2),
+                (DateTimeUnitKind.Millisecond, 1.0 / 24 / 3600 / 1000 * 2),
+            };
+
+            var bestTickUnitKind = tickUnitBorders.FirstOrDefault(tr => daysApart > tr.Value.border);
+            bestTickUnitKind = bestTickUnitKind ?? tickUnitBorders.Last(); // last tickUnit if not found best
+
+            return Create(bestTickUnitKind.Value.kind, culture, maxTickCount, null);
         }
 
         public IDateTimeUnit CreateUnit(DateTime from, DateTime to, CultureInfo culture, int maxTickCount, DateTimeUnitKind? manualUnits, int? manualSpacing)
