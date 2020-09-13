@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace ScottPlot.Config.DateTimeTickUnits
 {
-    public class DateTimeTickHundredYear : DateTimeTickYear
+    public class DateTimeTickHundredYear : DateTimeTickUnitBase
     {
         public DateTimeTickHundredYear(CultureInfo culture, int maxTickCount, int? manualSpacing) : base(culture, maxTickCount, manualSpacing)
         {

@@ -65,7 +65,14 @@ namespace ScottPlot.Config.DateTimeTickUnits
             {
                 if (dt >= from)
                     dates.Add(dt);
-                dt = Increment(dt, delta);
+                try
+                {
+                    dt = Increment(dt, delta);
+                }
+                catch
+                {
+                    break; // our date is larger than possible
+                }
             }
             return dates.ToArray();
         }

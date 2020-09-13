@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 
 namespace ScottPlot.Config.DateTimeTickUnits
@@ -29,26 +28,6 @@ namespace ScottPlot.Config.DateTimeTickUnits
             var dt = new DateTime(value.Year, 1, 1);
             string localizedLabel = dt.ToString("yyyy", culture); // year only
             return localizedLabel + "\n ";
-        }
-
-        protected override DateTime[] GetTicks(DateTime from, DateTime to, int delta)
-        {
-            var dates = new List<DateTime>();
-            DateTime dt = Floor(from);
-            while (dt <= to)
-            {
-                if (dt >= from)
-                    dates.Add(dt);
-                try
-                {
-                    dt = Increment(dt, delta);
-                }
-                catch
-                {
-                    break; // our date is larger than possible
-                }
-            }
-            return dates.ToArray();
         }
     }
 }
