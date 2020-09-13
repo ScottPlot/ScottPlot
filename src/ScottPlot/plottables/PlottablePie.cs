@@ -176,10 +176,10 @@ namespace ScottPlot
                 // draw a background-colored circle around the perimeter to make it look like all pieces are the same size
                 pen.Width = 20;
                 settings.gfxData.DrawEllipse(
-                    pen: pen, 
-                    x: boundingRectangle.X, 
-                    y: boundingRectangle.Y, 
-                    width: boundingRectangle.Width, 
+                    pen: pen,
+                    x: boundingRectangle.X,
+                    y: boundingRectangle.Y,
+                    width: boundingRectangle.Width,
                     height: boundingRectangle.Height);
             }
         }
