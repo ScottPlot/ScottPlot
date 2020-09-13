@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 
@@ -34,6 +35,50 @@ namespace ScottPlot.Demo.PlotTypes
                 double[] values = { 778, 283, 184, 76, 43 };
 
                 plt.PlotPie(values, explodedChart: true);
+
+                plt.Grid(false);
+                plt.Frame(false);
+                plt.Ticks(false, false);
+            }
+        }
+
+        public class DonutPie : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Donut Plot";
+            public string description { get; } = "Donut plots are circle plots with a hollow center.";
+
+            public void Render(Plot plt)
+            {
+                double[] values = { 778, 283, 184, 76, 43 };
+
+                var pie = plt.PlotPie(values);
+                pie.donutSize = .6;
+
+                plt.Grid(false);
+                plt.Frame(false);
+                plt.Ticks(false, false);
+            }
+        }
+
+        public class DonutPieWithPercentageInDonut : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Donut Plot With Text";
+            public string description { get; } = "Custom text can be displayed inside the donut.";
+
+            public void Render(Plot plt)
+            {
+                double[] values = { 779, 586 };
+                string centerText = $"{values[0] / values.Sum() * 100:00.0}%";
+
+                Color color1 = Color.FromArgb(255, 0, 150, 200);
+                Color color2 = Color.FromArgb(100, 0, 150, 200);
+
+                var pie = plt.PlotPie(values);
+                pie.donutSize = .6;
+                pie.centerText = centerText;
+                pie.centerTextColor = color1;
+                pie.outlineSize = 2;
+                pie.colors = new Color[] { color1, color2 };
 
                 plt.Grid(false);
                 plt.Frame(false);

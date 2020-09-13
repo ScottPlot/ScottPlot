@@ -6,6 +6,7 @@
 * CSV export is now culture invariant for improved support on systems where commas are decimal separators (#512) _Thanks Daniel_
 * Added fill support to scatter plots (#529) _Thanks @AlexFsmn_
 * Fix bug that occurred when calling GetLegendBitmap() before the plot was rendered (#527) _Thanks @el-aasi_
+* Pie charts now have an optional hollow center to produce donut plots (#534) _Thanks @Benny121221 and @AlexFsmn_
 
 ## ScottPlot 4.0.39
 * Legend now reflects LineStyle of Signal and SignalXY plots (#488) _Thanks @Benny121221_
