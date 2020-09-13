@@ -98,15 +98,22 @@ namespace ScottPlot.Config
                 var dtManualUnits = (verticalAxis) ? settings.ticks.manualDateTimeSpacingUnitY : settings.ticks.manualDateTimeSpacingUnitX;
                 var dtManualSpacing = (verticalAxis) ? settings.ticks.manualSpacingY : settings.ticks.manualSpacingX;
 
-                DateTime from = DateTime.FromOADate(low);
-                DateTime to = DateTime.FromOADate(high);
+                try
+                {
+                    DateTime from = DateTime.FromOADate(low);
+                    DateTime to = DateTime.FromOADate(high);
 
-                var unitFactory = new DateTimeUnitFactory();
-                IDateTimeUnit tickUnit = unitFactory.CreateUnit(from, to, settings.culture, tickCount, dtManualUnits, (int)dtManualSpacing);
-                var dateTicks = tickUnit.GetTicksAndLabels(from, to);
+                    var unitFactory = new DateTimeUnitFactory();
+                    IDateTimeUnit tickUnit = unitFactory.CreateUnit(from, to, settings.culture, tickCount, dtManualUnits, (int)dtManualSpacing);
+                    var dateTicks = tickUnit.GetTicksAndLabels(from, to);
 
-                tickPositionsMajor = Tools.DateTimesToDoubles(dateTicks.Ticks);
-                tickLabels = dateTicks.Labels;
+                    tickPositionsMajor = Tools.DateTimesToDoubles(dateTicks.Ticks);
+                    tickLabels = dateTicks.Labels;
+                }
+                catch
+                {
+                    tickPositionsMajor = new double[] { }; // far zoom out can produce FromOADate() exception
+                }
             }
             else
             {
