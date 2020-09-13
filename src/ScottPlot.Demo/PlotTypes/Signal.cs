@@ -44,7 +44,7 @@ namespace ScottPlot.Demo.PlotTypes
 
         public class RandomWalk_5millionPoints_Signal : PlotDemo, IPlotDemo
         {
-            public string name { get; } = "5M points (Signal)";
+            public string name { get; } = "5 Million Points";
             public string description { get; } = "Signal plots with millions of points can be interacted with in real time.";
 
             public void Render(Plot plt)
@@ -152,12 +152,13 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.Title($"Partial Display of a {data.Length} values");
                 plt.YLabel("Value");
                 plt.XLabel("Array Index");
+                plt.AxisAutoX(margin: 0);
             }
         }
 
         public class PlotFillRange : PlotDemo, IPlotDemo
         {
-            public string name { get; } = "Plot a Range of Points with fill";
+            public string name { get; } = "Fill Below";
             public string description { get; } = "It is also possible to display values within a range and using the fill attribute.";
 
             public void Render(Plot plt)
@@ -174,12 +175,13 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.Title($"Partial Display of a {data.Length} values using fill");
                 plt.YLabel("Value");
                 plt.XLabel("Array Index");
+                plt.AxisAutoX(margin: 0);
             }
         }
 
         public class PlotGradientFillRange : PlotDemo, IPlotDemo
         {
-            public string name { get; } = "Plot a Range of Points with gradient fill below";
+            public string name { get; } = "Gradient Fill Below";
             public string description { get; } = "Plotting a range of values using gradient fill below graph.";
 
             public void Render(Plot plt)
@@ -197,12 +199,13 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.Title($"Partial Display of a {data.Length} values using gradient fill below");
                 plt.YLabel("Value");
                 plt.XLabel("Array Index");
+                plt.AxisAutoX(margin: 0);
             }
         }
 
         public class PlotGradientFillAboveRange : PlotDemo, IPlotDemo
         {
-            public string name { get; } = "Plot a Range of Points with gradient fill above";
+            public string name { get; } = "Gradient Fill Above";
             public string description { get; } = "Plotting a range of values using gradient fill above graph.";
 
             public void Render(Plot plt)
@@ -218,12 +221,13 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.Title($"Partial Display of a {data.Length} values using gradient fill above");
                 plt.YLabel("Value");
                 plt.XLabel("Array Index");
+                plt.AxisAutoX(margin: 0);
             }
         }
 
         public class PlotFillAboveAndBelowRange : PlotDemo, IPlotDemo
         {
-            public string name { get; } = "Plot a Range of Points with fill both above and below";
+            public string name { get; } = "Fill Above and Below";
             public string description { get; } = "Plotting a range of values using fill above and below.";
 
             public void Render(Plot plt)
@@ -244,12 +248,13 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.Title($"Partial Display of a {data.Length} values using fill above and below");
                 plt.YLabel("Value");
                 plt.XLabel("Array Index");
+                plt.AxisAutoX(margin: 0);
             }
         }
 
         public class PlotGradientFillAboveAndBelowRange : PlotDemo, IPlotDemo
         {
-            public string name { get; } = "Plot a Range of Points with gradient fill both above and below";
+            public string name { get; } = "Gradient Fill Above and Below";
             public string description { get; } = "Plotting a range of values using gradient fill above and below.";
 
             public void Render(Plot plt)
@@ -275,6 +280,7 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.Title($"Partial Display of a {data.Length} values using gradient fill above and below");
                 plt.YLabel("Value");
                 plt.XLabel("Array Index");
+                plt.AxisAutoX(margin: 0);
             }
         }
     }
