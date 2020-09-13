@@ -107,7 +107,7 @@ namespace ScottPlot.Config
                     IDateTimeUnit tickUnit = unitFactory.CreateUnit(from, to, settings.culture, tickCount, dtManualUnits, (int)dtManualSpacing);
                     var dateTicks = tickUnit.GetTicksAndLabels(from, to);
 
-                    tickPositionsMajor = Tools.DateTimesToDoubles(dateTicks.Ticks);
+                    tickPositionsMajor = dateTicks.Ticks;
                     tickLabels = dateTicks.Labels;
                 }
                 catch

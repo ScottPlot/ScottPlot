@@ -38,11 +38,11 @@ namespace ScottPlot.Config.DateTimeTickUnits
             return $"{date}\n{time}";
         }
 
-        public (DateTime[] Ticks, string[] Labels) GetTicksAndLabels(DateTime from, DateTime to)
+        public (double[] Ticks, string[] Labels) GetTicksAndLabels(DateTime from, DateTime to)
         {
             var ticks = GetTicks(from, to, deltas, maxTickCount);
             var labels = ticks.Select(t => GetTickLabel(t)).ToArray();
-            return (ticks, labels);
+            return (ticks.Select( t => t.ToOADate()).ToArray(), labels);
         }
 
         protected DateTime[] GetTicks(DateTime from, DateTime to, int[] deltas, int maxTickCount)
