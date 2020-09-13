@@ -22,6 +22,7 @@ namespace ScottPlot
         public float outlineSize = 0;
         public Color outlineColor = Color.Black;
         public string centerText;
+        public float centerTextSize = 36;
         public Color centerTextColor = Color.Black;
 
         private SolidBrush brush = new SolidBrush(Color.Black);
@@ -153,8 +154,9 @@ namespace ScottPlot
             if (centerText != null)
             {
                 brush.Color = centerTextColor;
-                Font donutHoleFont = new Font(fontName, 36);
+                Font donutHoleFont = new Font(fontName, centerTextSize);
                 settings.gfxData.DrawString(centerText, donutHoleFont, brush, settings.GetPixel(0, 0), settings.misc.sfCenterCenter);
+                donutHoleFont.Dispose();
             }
         }
 

@@ -77,6 +77,7 @@ namespace ScottPlot.Demo.PlotTypes
                 pie.donutSize = .6;
                 pie.centerText = centerText;
                 pie.centerTextColor = color1;
+                pie.outlineSize = 2;
                 pie.colors = new Color[] { color1, color2 };
 
                 plt.Grid(false);
