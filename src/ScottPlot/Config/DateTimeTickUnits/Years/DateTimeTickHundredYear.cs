@@ -7,7 +7,7 @@ namespace ScottPlot.Config.DateTimeTickUnits
     {
         public DateTimeTickHundredYear(CultureInfo culture, int maxTickCount, int? manualSpacing) : base(culture, maxTickCount, manualSpacing)
         {
-            kind = DateTimeUnitKind.HundredYear;
+            kind = DateTimeUnit.HundredYear;
             if (manualSpacing == null)
                 deltas = new int[] { 1, 2, 5 };
         }

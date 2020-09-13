@@ -8,7 +8,7 @@ namespace ScottPlot.Config.DateTimeTickUnits
     public class DateTimeTickUnitBase : IDateTimeUnit
     {
         // base class implements Seconds Unit
-        protected DateTimeUnitKind kind = DateTimeUnitKind.Second;
+        protected DateTimeUnit kind = DateTimeUnit.Second;
         protected CultureInfo culture;
         protected int[] deltas = new int[] { 1, 2, 5, 10, 15, 30 };
         protected int maxTickCount;

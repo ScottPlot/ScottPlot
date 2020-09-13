@@ -7,7 +7,7 @@ namespace ScottPlot.Config.DateTimeTickUnits
     {
         public DateTimeTickYear(CultureInfo culture, int maxTickCount, int? manualSpacing) : base(culture, maxTickCount, manualSpacing)
         {
-            kind = DateTimeUnitKind.Year;
+            kind = DateTimeUnit.Year;
             if (manualSpacing != null)
                 throw new NotImplementedException("can't display years with fixed spacing (use numeric axis instead)");
             deltas = new int[] { 1, 2, 5 };

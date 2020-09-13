@@ -7,7 +7,7 @@ namespace ScottPlot.Config.DateTimeTickUnits
     {
         public DateTimeTickMonth(CultureInfo culture, int maxTickCount, int? manualSpacing) : base(culture, maxTickCount, manualSpacing)
         {
-            kind = DateTimeUnitKind.Month;
+            kind = DateTimeUnit.Month;
             if (manualSpacing == null)
                 deltas = new int[] { 1, 2, 3, 6 };
         }
