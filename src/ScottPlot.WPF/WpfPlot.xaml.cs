@@ -163,6 +163,8 @@ namespace ScottPlot
         private double middleClickMarginX = .1;
         private double middleClickMarginY = .1;
         private bool? recalculateLayoutOnMouseUp = null;
+        private bool lowQualityOnScrollWheel = true;
+        private int lowQualityScrollWheelDelay = 500;
         public void Configure(
             bool? enablePanning = null,
             bool? enableRightClickZoom = null,
@@ -176,7 +178,9 @@ namespace ScottPlot
             bool? equalAxes = null,
             double? middleClickMarginX = null,
             double? middleClickMarginY = null,
-            bool? recalculateLayoutOnMouseUp = null
+            bool? recalculateLayoutOnMouseUp = null,
+            bool? lowQualityOnScrollWheel = null,
+            int? lowQualityScrollWheelDelay = null
             )
         {
             if (enablePanning != null) this.enablePanning = (bool)enablePanning;
@@ -192,6 +196,8 @@ namespace ScottPlot
             this.middleClickMarginX = middleClickMarginX ?? this.middleClickMarginX;
             this.middleClickMarginY = middleClickMarginY ?? this.middleClickMarginY;
             this.recalculateLayoutOnMouseUp = recalculateLayoutOnMouseUp;
+            this.lowQualityOnScrollWheel = lowQualityOnScrollWheel ?? this.lowQualityOnScrollWheel;
+            this.lowQualityScrollWheelDelay = lowQualityScrollWheelDelay ?? this.lowQualityScrollWheelDelay;
         }
 
         private bool isAltPressed { get { return Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt); } }
@@ -475,16 +481,17 @@ namespace ScottPlot
             AxisChanged?.Invoke(null, null);
 
             bool shouldRecalculate = recalculateLayoutOnMouseUp ?? plotContainsHeatmap == false;
-            Render(lowQuality: true, recalculateLayout: shouldRecalculate);
+            Render(lowQuality: lowQualityOnScrollWheel, recalculateLayout: shouldRecalculate);
 
             // do the setup here so we don't have to in the constructors
-            MouseWheelHQRenderTimer.Interval = new TimeSpan(0, 0, 0, 0, 500);
+            MouseWheelHQRenderTimer.Interval = new TimeSpan(0, 0, 0, 0, lowQualityScrollWheelDelay);
             MouseWheelHQRenderTimer.Tick -= MouseWheelHQRenderTimerTick;
             MouseWheelHQRenderTimer.Tick += MouseWheelHQRenderTimerTick;
 
             // abort previous running timers and restart
             MouseWheelHQRenderTimer.Stop();
-            MouseWheelHQRenderTimer.Start();
+            if (lowQualityOnScrollWheel)
+                MouseWheelHQRenderTimer.Start();
         }
 
 
