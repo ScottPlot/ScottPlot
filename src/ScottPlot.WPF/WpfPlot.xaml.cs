@@ -450,6 +450,14 @@ namespace ScottPlot
 
         #region mouse clicking
 
+        private readonly DispatcherTimer MouseWheelHQRenderTimer = new DispatcherTimer();
+
+        private void MouseWheelHQRenderTimerTick(object sender, object o)
+        {
+            Render(lowQuality: false, recalculateLayout: false);
+            (sender as DispatcherTimer).Stop();
+        }
+
         private void UserControl_MouseWheel(object sender, MouseWheelEventArgs e)
         {
             if (enableScrollWheelZoom == false)
@@ -465,9 +473,20 @@ namespace ScottPlot
 
             plt.AxisZoom(xFrac, yFrac, plt.CoordinateFromPixelX(mousePixel.X), plt.CoordinateFromPixelY(mousePixel.Y));
             AxisChanged?.Invoke(null, null);
+
             bool shouldRecalculate = recalculateLayoutOnMouseUp ?? plotContainsHeatmap == false;
-            Render(recalculateLayout: shouldRecalculate);
+            Render(lowQuality: true, recalculateLayout: shouldRecalculate);
+
+            // do the setup here so we don't have to in the constructors
+            MouseWheelHQRenderTimer.Interval = new TimeSpan(0, 0, 0, 0, 500);
+            MouseWheelHQRenderTimer.Tick -= MouseWheelHQRenderTimerTick;
+            MouseWheelHQRenderTimer.Tick += MouseWheelHQRenderTimerTick;
+
+            // abort previous running timers and restart
+            MouseWheelHQRenderTimer.Stop();
+            MouseWheelHQRenderTimer.Start();
         }
+
 
         private void UserControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
