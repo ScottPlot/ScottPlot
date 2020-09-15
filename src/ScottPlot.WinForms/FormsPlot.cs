@@ -142,6 +142,8 @@ namespace ScottPlot
         private double middleClickMarginY = .1;
         private bool? recalculateLayoutOnMouseUp = null;
         private bool showCoordinatesTooltip = false;
+        private bool lowQualityOnScrollWheel = true;
+        private int lowQualityScrollWheelDelay = 500;
         public void Configure(
             bool? enablePanning = null,
             bool? enableZooming = null,
@@ -156,7 +158,9 @@ namespace ScottPlot
             double? middleClickMarginX = null,
             double? middleClickMarginY = null,
             bool? recalculateLayoutOnMouseUp = null,
-            bool? showCoordinatesTooltip = null
+            bool? showCoordinatesTooltip = null,
+            bool? lowQualityOnScrollWheel = null,
+            int? lowQualityScrollWheelDelay = null
             )
         {
             if (enablePanning != null) this.enablePanning = (bool)enablePanning;
@@ -173,6 +177,8 @@ namespace ScottPlot
             this.middleClickMarginY = middleClickMarginY ?? this.middleClickMarginY;
             this.recalculateLayoutOnMouseUp = recalculateLayoutOnMouseUp;
             this.showCoordinatesTooltip = showCoordinatesTooltip ?? this.showCoordinatesTooltip;
+            this.lowQualityOnScrollWheel = lowQualityOnScrollWheel ?? this.lowQualityOnScrollWheel;
+            this.lowQualityScrollWheelDelay = lowQualityScrollWheelDelay ?? this.lowQualityScrollWheelDelay;
         }
 
         private bool isShiftPressed { get { return (ModifierKeys.HasFlag(Keys.Shift) || (lockHorizontalAxis)); } }
@@ -426,7 +432,7 @@ namespace ScottPlot
 
         private readonly List<MouseEventArgs> MouseWheelEvents = new List<MouseEventArgs>();
         private readonly Stopwatch ScrollWheelTimer = Stopwatch.StartNew();
-        private bool ScrollWheelTimerIsRunning => ScrollWheelTimer.ElapsedMilliseconds < 500;
+        private bool ScrollWheelTimerIsRunning => ScrollWheelTimer.ElapsedMilliseconds < lowQualityScrollWheelDelay;
         public void ScrollWheelProcessor()
         {
             ScrollWheelTimer.Restart();
@@ -457,13 +463,13 @@ namespace ScottPlot
                 MouseWheelEvents.RemoveRange(0, currentRequestCount); // TODO check for thread safety
 
                 bool shouldRecalculate = recalculateLayoutOnMouseUp ?? plotContainsHeatmap == false;
-                Render(lowQuality: true, recalculateLayout: shouldRecalculate, processEvents: true);
+                Render(lowQuality: lowQualityOnScrollWheel, recalculateLayout: shouldRecalculate, processEvents: true);
                 OnAxisChanged();
             }
 
             // after the scrollwheel timer runs out, perform a final delayed HQ render
-            bool shouldRecalculate1 = recalculateLayoutOnMouseUp ?? plotContainsHeatmap == false;
-            Render(recalculateLayout: shouldRecalculate1, processEvents: true);
+            if (lowQualityOnScrollWheel)
+                Render(recalculateLayout: false, processEvents: true);
         }
 
         private void PbPlot_MouseWheel(object sender, MouseEventArgs e)
