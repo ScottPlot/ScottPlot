@@ -424,24 +424,26 @@ namespace ScottPlot
             base.OnMouseDoubleClick(e);
         }
 
-        private List<MouseEventArgs> Requests = new List<MouseEventArgs>();
-        private bool ProcWorking = false;
+        private readonly List<MouseEventArgs> MouseWheelEvents = new List<MouseEventArgs>();
+        private readonly Stopwatch ScrollWheelTimer = Stopwatch.StartNew();
+        private bool ScrollWheelTimerIsRunning => ScrollWheelTimer.ElapsedMilliseconds < 500;
         public void ScrollWheelProcessor()
         {
-            ProcWorking = true;
-            int idleTime = 0;
-            while (idleTime < 500)
+            ScrollWheelTimer.Restart();
+            while (ScrollWheelTimerIsRunning)
             {
-                if (Requests.Count == 0)
+                // if no new mouse events, sleep until the timer is up
+                if (MouseWheelEvents.Count == 0)
                 {
                     Thread.Sleep(30);
                     Application.DoEvents();
-                    idleTime += 30;
                     continue;
                 }
-                idleTime = 0;
-                int currentRequestCount = Requests.Count;
-                foreach (MouseEventArgs e in Requests.Take(currentRequestCount))
+
+                // if new mouse events, apply them and reset the timer
+                ScrollWheelTimer.Restart();
+                int currentRequestCount = MouseWheelEvents.Count;
+                foreach (MouseEventArgs e in MouseWheelEvents.Take(currentRequestCount))
                 {
                     double xFrac = (e.Delta > 0) ? 1.15 : 0.85;
                     double yFrac = (e.Delta > 0) ? 1.15 : 0.85;
@@ -452,18 +454,16 @@ namespace ScottPlot
                     plt.AxisZoom(xFrac, yFrac, plt.CoordinateFromPixelX(e.Location.X), plt.CoordinateFromPixelY(e.Location.Y));
                 }
 
-                Requests.RemoveRange(0, currentRequestCount); // TODO check for thread safety
+                MouseWheelEvents.RemoveRange(0, currentRequestCount); // TODO check for thread safety
 
                 bool shouldRecalculate = recalculateLayoutOnMouseUp ?? plotContainsHeatmap == false;
                 Render(lowQuality: true, recalculateLayout: shouldRecalculate, processEvents: true);
                 OnAxisChanged();
-
-                //base.OnMouseWheel(e);
             }
-            // final delayed HQ render
+
+            // after the scrollwheel timer runs out, perform a final delayed HQ render
             bool shouldRecalculate1 = recalculateLayoutOnMouseUp ?? plotContainsHeatmap == false;
             Render(recalculateLayout: shouldRecalculate1, processEvents: true);
-            ProcWorking = false;
         }
 
         private void PbPlot_MouseWheel(object sender, MouseEventArgs e)
@@ -471,8 +471,10 @@ namespace ScottPlot
             if (enableScrollWheelZoom == false)
                 return;
 
-            Requests.Add(e);
-            if (!ProcWorking) // run new one only if other not exist
+            base.OnMouseWheel(e);
+
+            MouseWheelEvents.Add(e);
+            if (ScrollWheelTimerIsRunning == false)
                 ScrollWheelProcessor();
         }
 
