@@ -1,8 +1,9 @@
 ﻿using System;
-using System.ComponentModel;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace ScottPlot
@@ -61,6 +62,7 @@ namespace ScottPlot
         {
             ContextMenuStrip = DefaultRightClickMenu();
 
+            pbPlot.MouseWheel -= PbPlot_MouseWheel; // unsubscribe previous handler
             pbPlot.MouseWheel += PbPlot_MouseWheel;
 
             isDesignerMode = Process.GetCurrentProcess().ProcessName == "devenv";
@@ -422,24 +424,56 @@ namespace ScottPlot
             base.OnMouseDoubleClick(e);
         }
 
+        private List<MouseEventArgs> Requests = new List<MouseEventArgs>();
+        private bool ProcWorking = false;
+        public void ScrollWheelProcessor()
+        {
+            ProcWorking = true;
+            int idleTime = 0;
+            while (idleTime < 500)
+            {
+                if (Requests.Count == 0)
+                {
+                    Thread.Sleep(30);
+                    Application.DoEvents();
+                    idleTime += 30;
+                    continue;
+                }
+                idleTime = 0;
+                int currentRequestCount = Requests.Count;
+                foreach (MouseEventArgs e in Requests.Take(currentRequestCount))
+                {
+                    double xFrac = (e.Delta > 0) ? 1.15 : 0.85;
+                    double yFrac = (e.Delta > 0) ? 1.15 : 0.85;
+
+                    if (isCtrlPressed) yFrac = 1;
+                    if (isShiftPressed) xFrac = 1;
+
+                    plt.AxisZoom(xFrac, yFrac, plt.CoordinateFromPixelX(e.Location.X), plt.CoordinateFromPixelY(e.Location.Y));
+                }
+
+                Requests.RemoveRange(0, currentRequestCount); // TODO check for thread safety
+
+                bool shouldRecalculate = recalculateLayoutOnMouseUp ?? plotContainsHeatmap == false;
+                Render(lowQuality: true, recalculateLayout: shouldRecalculate, processEvents: true);
+                OnAxisChanged();
+
+                //base.OnMouseWheel(e);
+            }
+            // final delayed HQ render
+            bool shouldRecalculate1 = recalculateLayoutOnMouseUp ?? plotContainsHeatmap == false;
+            Render(recalculateLayout: shouldRecalculate1, processEvents: true);
+            ProcWorking = false;
+        }
+
         private void PbPlot_MouseWheel(object sender, MouseEventArgs e)
         {
             if (enableScrollWheelZoom == false)
                 return;
 
-            double xFrac = (e.Delta > 0) ? 1.15 : 0.85;
-            double yFrac = (e.Delta > 0) ? 1.15 : 0.85;
-
-            if (isCtrlPressed) yFrac = 1;
-            if (isShiftPressed) xFrac = 1;
-
-            plt.AxisZoom(xFrac, yFrac, plt.CoordinateFromPixelX(e.Location.X), plt.CoordinateFromPixelY(e.Location.Y));
-
-            bool shouldRecalculate = recalculateLayoutOnMouseUp ?? plotContainsHeatmap == false;
-            Render(recalculateLayout: shouldRecalculate);
-            OnAxisChanged();
-
-            base.OnMouseWheel(e);
+            Requests.Add(e);
+            if (!ProcWorking) // run new one only if other not exist
+                ScrollWheelProcessor();
         }
 
         #endregion
