@@ -467,14 +467,6 @@ namespace ScottPlot
             return null;
         }
 
-        private readonly DispatcherTimer MouseWheelHQRenderTimer = new DispatcherTimer();
-
-        private void MouseWheelHQRenderTimerTick(object sender, object o)
-        {
-            Render(lowQuality: false, recalculateLayout: false);
-            (sender as DispatcherTimer).Stop();
-        }
-
         private readonly Queue<MouseWheelEventArgs> MouseWheelEvents = new Queue<MouseWheelEventArgs>();
         private readonly Stopwatch ScrollWheelTimer = new Stopwatch();
         public async void ScrollWheelProcessor()
