@@ -116,7 +116,7 @@ namespace ScottPlot
         }
 
         private bool currentlyRendering = false;
-        public void Render(bool skipIfCurrentlyRendering = false, bool lowQuality = false, bool recalculateLayout = false)
+        public void Render(bool skipIfCurrentlyRendering = false, bool lowQuality = false, bool recalculateLayout = false, bool processEvents = false)
         {
             if (!isDesignerMode)
             {
@@ -130,6 +130,8 @@ namespace ScottPlot
                 {
                     currentlyRendering = true;
                     imagePlot.Source = BmpImageFromBmp(plt.GetBitmap(true, lowQuality || lowQualityAlways));
+                    if (isPanningOrZooming || isMovingDraggable || processEvents)
+                        DoEvents();
                     currentlyRendering = false;
                     Rendered?.Invoke(null, null);
                 }
@@ -355,7 +357,6 @@ namespace ScottPlot
             }
 
             Render(true, lowQuality: lowQualityWhileDragging);
-            return;
         }
 
         public (double x, double y) GetMouseCoordinates()
@@ -451,6 +452,21 @@ namespace ScottPlot
 
         #region mouse clicking
 
+        public void DoEvents()
+        {
+            DispatcherFrame frame = new DispatcherFrame();
+            Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Render,
+                new DispatcherOperationCallback(ExitFrame), frame);
+            Dispatcher.PushFrame(frame);
+        }
+
+        public object ExitFrame(object f)
+        {
+            ((DispatcherFrame)f).Continue = false;
+
+            return null;
+        }
+
         private readonly DispatcherTimer MouseWheelHQRenderTimer = new DispatcherTimer();
 
         private void MouseWheelHQRenderTimerTick(object sender, object o)
@@ -489,14 +505,13 @@ namespace ScottPlot
                 }
 
                 bool shouldRecalculate = recalculateLayoutOnMouseUp ?? plotContainsHeatmap == false;
-                Render(lowQuality: lowQualityOnScrollWheel, recalculateLayout: shouldRecalculate);
-
+                Render(lowQuality: lowQualityOnScrollWheel, recalculateLayout: shouldRecalculate, processEvents: true);
                 ScrollWheelTimer.Restart();
             }
 
             // after the scrollwheel timer runs out, perform a final delayed HQ render
             if (lowQualityOnScrollWheel)
-                Render(recalculateLayout: false);
+                Render(recalculateLayout: false, processEvents: true);
             ScrollWheelTimer.Reset();
         }
 
