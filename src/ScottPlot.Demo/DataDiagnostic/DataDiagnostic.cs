@@ -29,12 +29,6 @@ namespace ScottPlot.Demo.DataDiagnostic
 
                 plt.DiagnosticMode = false; // disable to not affect on another demos
 
-                Task.Run(() =>
-                  {
-                      Thread.Sleep(100);
-                      y[3][18] = Double.NaN;
-                  });
-
                 //TODO make good Title
                 plt.Title("Signal Plot Quickstart with NAN value throw");
                 plt.YLabel("Vertical Units");
