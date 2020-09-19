@@ -3,6 +3,7 @@ using ScottPlot.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Text;
 
@@ -131,8 +132,19 @@ namespace ScottPlot.Renderable
                     float lineY = locationY + verticalOffset + maxLabelHeight / 2;
                     float lineX1 = locationX + symbolPad;
                     float lineX2 = lineX1 + symbolWidth - symbolPad * 2;
-                    using (var linePen = GDI.Pen(item.color, item.lineWidth, item.lineStyle, false))
-                        gfx.DrawLine(linePen, lineX1, lineY, lineX2, lineY);
+
+                    if (item.brushPattern.HasValue)
+                    {
+                        using (var lineBrush = new HatchBrush(item.brushPattern.Value, item.color, item.backgroundColor))
+                        {
+                            gfx.FillRectangle(lineBrush, lineX1, (float)(lineY - item.lineWidth / 2), lineX2 - lineX1, (float)item.lineWidth);
+                        }
+                    }
+                    else
+                    {
+                        using (var linePen = GDI.Pen(item.color, item.lineWidth, item.lineStyle, false))
+                            gfx.DrawLine(linePen, lineX1, lineY, lineX2, lineY);
+                    }
 
                     // draw marker
                     float lineXcenter = (lineX1 + lineX2) / 2;

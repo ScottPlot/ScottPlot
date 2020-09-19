@@ -65,6 +65,49 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
+        public class PatternedMultipleBars : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Patterned Bar Graphs";
+            public string description { get; } = "This example demonstrates how to display patterned bar plots.";
+
+            public void Render(Plot plt)
+            {
+                // generate random data to plot
+                string[] groupNames = { "one", "two", "three", "four", "five" };
+                string[] seriesNames = { "alpha", "bravo", "charley" };
+                int groupCount = groupNames.Length;
+                Random rand = new Random(0);
+                double[] ys1 = DataGen.RandomNormal(rand, groupCount, 20, 5);
+                double[] ys2 = DataGen.RandomNormal(rand, groupCount, 20, 5);
+                double[] ys3 = DataGen.RandomNormal(rand, groupCount, 20, 5);
+                double[] err1 = DataGen.RandomNormal(rand, groupCount, 5, 2);
+                double[] err2 = DataGen.RandomNormal(rand, groupCount, 5, 2);
+                double[] err3 = DataGen.RandomNormal(rand, groupCount, 5, 2);
+
+                PlottableBar[] barCharts = plt.PlotBarGroups(
+                    groupLabels: groupNames,
+                    seriesLabels: seriesNames,
+                    ys: new double[][] { ys1, ys2, ys3 },
+                    yErr: new double[][] { err1, err2, err3 });
+
+                barCharts[0].barPattern = System.Drawing.Drawing2D.HatchStyle.WideUpwardDiagonal;
+                barCharts[0].backgroundColor = System.Drawing.Color.DarkBlue;
+                barCharts[0].Render(plt.GetSettings());
+
+                barCharts[1].barPattern = System.Drawing.Drawing2D.HatchStyle.WideDownwardDiagonal;
+                barCharts[1].backgroundColor = System.Drawing.Color.Red;
+                barCharts[1].Render(plt.GetSettings());
+
+                barCharts[2].barPattern = System.Drawing.Drawing2D.HatchStyle.LargeCheckerBoard;
+                barCharts[2].backgroundColor = System.Drawing.Color.Green;
+                barCharts[2].Render(plt.GetSettings());
+
+                // customize the plot to make it look nicer
+                plt.Grid(enableVertical: false, lineStyle: LineStyle.Dot);
+                plt.Legend(location: legendLocation.upperRight);
+            }
+        }
+
         public class Horizontal : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Horizontal Bar Graph";
