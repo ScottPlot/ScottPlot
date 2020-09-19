@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ScottPlot.Config
+﻿namespace ScottPlot.Config
 {
-    public enum DateTimeUnit { Year, Month, Day, Hour, Minute, Second };
+    public enum DateTimeUnit { ThousandYear, HundredYear, TenYear, Year, Month, Day, Hour, Minute, Second, Decisecond, Centisecond, Millisecond };
 }

@@ -1,11 +1,9 @@
-﻿using System;
+﻿using ScottPlot.Config.DateTimeTickUnits;
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ScottPlot.Config
 {
@@ -100,16 +98,21 @@ namespace ScottPlot.Config
                 var dtManualUnits = (verticalAxis) ? settings.ticks.manualDateTimeSpacingUnitY : settings.ticks.manualDateTimeSpacingUnitX;
                 var dtManualSpacing = (verticalAxis) ? settings.ticks.manualSpacingY : settings.ticks.manualSpacingX;
 
-                var dateTicks = DateTimeTicks.GetTicks(DateTime.FromOADate(low), DateTime.FromOADate(high), tickCount, settings.culture, dtManualUnits, (int)dtManualSpacing);
-
-                tickPositionsMajor = Tools.DateTimesToDoubles(dateTicks.Item1);
-                tickLabels = dateTicks.Item2;
-                for (int i = 0; i < tickLabels.Length; i++)
+                try
                 {
-                    if (tickLabels[i].Contains(", "))
-                        tickLabels[i] = tickLabels[i].Replace(", ", "\n");
-                    else
-                        tickLabels[i] += "\n "; // auto-layout works better if dates are always two lines
+                    DateTime from = DateTime.FromOADate(low);
+                    DateTime to = DateTime.FromOADate(high);
+
+                    var unitFactory = new DateTimeUnitFactory();
+                    IDateTimeUnit tickUnit = unitFactory.CreateUnit(from, to, settings.culture, tickCount, dtManualUnits, (int)dtManualSpacing);
+                    var dateTicks = tickUnit.GetTicksAndLabels(from, to);
+
+                    tickPositionsMajor = dateTicks.Ticks;
+                    tickLabels = dateTicks.Labels;
+                }
+                catch
+                {
+                    tickPositionsMajor = new double[] { }; // far zoom out can produce FromOADate() exception
                 }
             }
             else

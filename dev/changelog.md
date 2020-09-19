@@ -6,6 +6,7 @@
 * CSV export is now culture invariant for improved support on systems where commas are decimal separators (#512) _Thanks Daniel_
 * Added fill support to scatter plots (#529) _Thanks @AlexFsmn_
 * Fix bug that occurred when calling GetLegendBitmap() before the plot was rendered (#527) _Thanks @el-aasi_
+* Improved DateTime tick placement and added support for milliseconds (#539) _Thanks @StendProg_
 * Pie charts now have an optional hollow center to produce donut plots (#534) _Thanks @Benny121221 and @AlexFsmn_
 * Added electrocardiogram (ECG) simulator to the DataGen module (#540) _Thanks @AteCoder_
 * Improved mouse scroll wheel responsiveness by delaying high quality render (#545, #543) _@Thanks StendProg_
