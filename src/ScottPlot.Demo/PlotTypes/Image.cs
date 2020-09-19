@@ -58,7 +58,7 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.PlotBitmap(image, 5, -.5, rotation: -30);
                 plt.PlotPoint(5, -.5, color: Color.Blue, markerSize: 15);
 
-                plt.PlotBitmap(image, 15, -.6, frame: true, frameColor: Color.Magenta, frameSize: 3);
+                plt.PlotBitmap(image, 15, -.6, frameSize: 3, frameColor: Color.Magenta);
             }
         }
     }

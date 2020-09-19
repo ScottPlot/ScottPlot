@@ -399,25 +399,21 @@ namespace ScottPlot
            string label = null,
            ImageAlignment alignment = ImageAlignment.middleLeft,
            double rotation = 0,
-           bool frame = false,
            Color? frameColor = null,
            int frameSize = 0
            )
         {
-            if (frameColor == null)
-                frameColor = Color.White;
-
-            PlottableImage plottableImage = new PlottableImage(
-                image: bitmap,
-                x: x,
-                y: y,
-                label: label,
-                alignment: alignment,
-                rotation: rotation,
-                frame: frame,
-                frameColor: (Color)frameColor,
-                frameSize: frameSize
-                );
+            PlottableImage plottableImage = new PlottableImage()
+            {
+                image = bitmap,
+                x = x,
+                y = y,
+                label = label,
+                alignment = alignment,
+                rotation = rotation,
+                frameColor = frameColor ?? Color.White,
+                frameSize = frameSize
+            };
 
             settings.plottables.Add(plottableImage);
             return plottableImage;

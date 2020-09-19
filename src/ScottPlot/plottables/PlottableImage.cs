@@ -14,27 +14,9 @@ namespace ScottPlot
         public double rotation;
         public Image image;
         public ImageAlignment alignment;
-        public bool frame;
         public Color frameColor;
         public int frameSize;
         public string label;
-
-        public PlottableImage(Image image, double x, double y, string label, ImageAlignment alignment, double rotation, bool frame, Color frameColor, int frameSize)
-        {
-            this.image = image ?? throw new Exception("Image cannot be null");
-            this.x = x;
-            this.y = y;
-            this.rotation = rotation;
-            this.label = label;
-            this.alignment = alignment;
-            this.frame = frame;
-            this.frameColor = frameColor;
-            if (frameSize < 0)
-            {
-                throw new Exception("Frame padding cannot be lower than 0");
-            }
-            this.frameSize = frameSize;
-        }
 
         public override string ToString()
         {
@@ -51,6 +33,9 @@ namespace ScottPlot
 
         public override void Render(Settings settings)
         {
+            if (image is null)
+                throw new Exception("Image cannot be null");
+
             PointF defaultPoint = settings.GetPixel(x, y);
             PointF textLocationPoint = new PointF();
 
@@ -104,7 +89,7 @@ namespace ScottPlot
             settings.gfxData.TranslateTransform((int)textLocationPoint.X, (int)textLocationPoint.Y);
             settings.gfxData.RotateTransform((float)rotation);
 
-            if (frame && frameSize > 0)
+            if (frameSize > 0)
             {
                 using (var framePen = new Pen(frameColor, frameSize * 2))
                 {
