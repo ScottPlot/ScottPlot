@@ -430,13 +430,12 @@ namespace ScottPlot
             base.OnMouseDoubleClick(e);
         }
 
-        private readonly List<MouseEventArgs> MouseWheelEvents = new List<MouseEventArgs>();
-        private readonly Stopwatch ScrollWheelTimer = Stopwatch.StartNew();
-        private bool ScrollWheelTimerIsRunning => ScrollWheelTimer.ElapsedMilliseconds < lowQualityScrollWheelDelay;
+        private readonly Queue<MouseEventArgs> MouseWheelEvents = new Queue<MouseEventArgs>();
+        private readonly Stopwatch ScrollWheelTimer = new Stopwatch();
         public void ScrollWheelProcessor()
         {
-            ScrollWheelTimer.Restart();
-            while (ScrollWheelTimerIsRunning)
+            ScrollWheelTimer.Start();
+            while (ScrollWheelTimer.ElapsedMilliseconds < lowQualityScrollWheelDelay)
             {
                 // if no new mouse events, sleep until the timer is up
                 if (MouseWheelEvents.Count == 0)
@@ -445,12 +444,10 @@ namespace ScottPlot
                     Application.DoEvents();
                     continue;
                 }
-
                 // if new mouse events, apply them and reset the timer
-                ScrollWheelTimer.Restart();
-                int currentRequestCount = MouseWheelEvents.Count;
-                foreach (MouseEventArgs e in MouseWheelEvents.Take(currentRequestCount))
+                while (MouseWheelEvents.Count > 0)
                 {
+                    MouseEventArgs e = MouseWheelEvents.Dequeue();
                     double xFrac = (e.Delta > 0) ? 1.15 : 0.85;
                     double yFrac = (e.Delta > 0) ? 1.15 : 0.85;
 
@@ -460,16 +457,17 @@ namespace ScottPlot
                     plt.AxisZoom(xFrac, yFrac, plt.CoordinateFromPixelX(e.Location.X), plt.CoordinateFromPixelY(e.Location.Y));
                 }
 
-                MouseWheelEvents.RemoveRange(0, currentRequestCount); // TODO check for thread safety
-
                 bool shouldRecalculate = recalculateLayoutOnMouseUp ?? plotContainsHeatmap == false;
                 Render(lowQuality: lowQualityOnScrollWheel, recalculateLayout: shouldRecalculate, processEvents: true);
                 OnAxisChanged();
+
+                ScrollWheelTimer.Restart();
             }
 
             // after the scrollwheel timer runs out, perform a final delayed HQ render
             if (lowQualityOnScrollWheel)
                 Render(recalculateLayout: false, processEvents: true);
+            ScrollWheelTimer.Reset();
         }
 
         private void PbPlot_MouseWheel(object sender, MouseEventArgs e)
@@ -479,8 +477,8 @@ namespace ScottPlot
 
             base.OnMouseWheel(e);
 
-            MouseWheelEvents.Add(e);
-            if (ScrollWheelTimerIsRunning == false)
+            MouseWheelEvents.Enqueue(e);
+            if (ScrollWheelTimer.IsRunning == false)
                 ScrollWheelProcessor();
         }
 
