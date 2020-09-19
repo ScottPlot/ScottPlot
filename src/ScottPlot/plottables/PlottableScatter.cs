@@ -1,18 +1,22 @@
-﻿using System;
+﻿using ScottPlot.Config;
+using ScottPlot.Diagnostic.Attributes;
+using ScottPlot.Drawing;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using ScottPlot.Config;
-using ScottPlot.Drawing;
 
 namespace ScottPlot
 {
     public class PlottableScatter : Plottable, IExportable
     {
+        [NotNAN]
+        [NotInfinity]
         public double[] xs;
+        [NotNAN]
+        [NotInfinity]
         public double[] ys;
         public double[] errorX;
         public double[] errorY;

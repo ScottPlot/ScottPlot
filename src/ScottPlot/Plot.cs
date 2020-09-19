@@ -5,6 +5,9 @@
  * - Very little processing occurs here. This interface mostly calls private methods.
  */
 
+using ScottPlot.Diagnostic;
+using ScottPlot.Drawing;
+using ScottPlot.Statistics;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,8 +15,6 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Linq;
-using ScottPlot.Drawing;
-using ScottPlot.Statistics;
 
 namespace ScottPlot
 {
@@ -21,6 +22,7 @@ namespace ScottPlot
     {
         public PixelFormat pixelFormat = PixelFormat.Format32bppPArgb;
         private readonly Settings settings;
+        public bool DiagnosticMode = false;
 
         public Plot(int width = 800, int height = 600)
         {
@@ -225,7 +227,10 @@ namespace ScottPlot
 
         public void Add(Plottable plottable)
         {
-            settings.plottables.Add(plottable);
+            if (DiagnosticMode)
+                settings.plottables.Add(new DecoratorFactory().WrapWithAll(plottable));
+            else
+                settings.plottables.Add(plottable);
         }
 
         /// <summary>
@@ -953,8 +958,7 @@ namespace ScottPlot
                 lineStyle: lineStyle,
                 useParallel: useParallel
                 );
-
-            settings.plottables.Add(signal);
+            Add(signal);
             return signal;
         }
 
@@ -1081,8 +1085,7 @@ namespace ScottPlot
                 lineStyle: lineStyle,
                 useParallel: useParallel
                 );
-
-            settings.plottables.Add(signal);
+            Add(signal);
             return signal;
         }
 

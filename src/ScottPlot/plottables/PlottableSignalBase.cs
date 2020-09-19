@@ -1,4 +1,5 @@
 ﻿using ScottPlot.Config;
+using ScottPlot.Diagnostic.Attributes;
 using ScottPlot.Drawing;
 using ScottPlot.MinMaxSearchStrategies;
 using System;
@@ -16,6 +17,8 @@ namespace ScottPlot
     {
         protected IMinMaxSearchStrategy<T> minmaxSearchStrategy;
         // Any changes must be sync with PlottableSignal
+        [NotNAN]
+        [NotInfinity]
         public T[] ys;
         public double sampleRate;
         public double samplePeriod;
