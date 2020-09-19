@@ -12,7 +12,7 @@ namespace ScottPlotTests.Plot
         public void Test_ImageRotationAlignment_UpperLeft()
         {
             var plt = new ScottPlot.Plot(400, 300);
-            System.Drawing.Bitmap image = new System.Drawing.Bitmap("Images/niceBackground.bmp");
+            System.Drawing.Bitmap image = ScottPlot.DataGen.SampleImage();
 
             int[] rotations = { 0, 90, -90, 180 };
             for (int i = 0; i < rotations.Length; i++)
@@ -37,7 +37,7 @@ namespace ScottPlotTests.Plot
         public void Test_ImageRotationAlignment_UpperCenter()
         {
             var plt = new ScottPlot.Plot(400, 300);
-            System.Drawing.Bitmap image = new System.Drawing.Bitmap("Images/niceBackground.bmp");
+            System.Drawing.Bitmap image = ScottPlot.DataGen.SampleImage();
 
             int[] rotations = { 0, 90, -90, 180 };
             for (int i = 0; i < rotations.Length; i++)
@@ -62,7 +62,7 @@ namespace ScottPlotTests.Plot
         public void Test_ImageRotationAlignment_LowerRight()
         {
             var plt = new ScottPlot.Plot(400, 300);
-            System.Drawing.Bitmap image = new System.Drawing.Bitmap("Images/niceBackground.bmp");
+            System.Drawing.Bitmap image = ScottPlot.DataGen.SampleImage();
 
             int[] rotations = { 0, 90, -90, 180 };
             for (int i = 0; i < rotations.Length; i++)

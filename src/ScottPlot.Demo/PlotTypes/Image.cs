@@ -21,7 +21,7 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.PlotScatter(x, sin);
                 plt.PlotScatter(x, cos);
 
-                Bitmap image = new Bitmap("Images/niceBackground.bmp");
+                Bitmap image = DataGen.SampleImage();
                 plt.PlotBitmap(image, 0, 0);
             }
         }
@@ -31,7 +31,6 @@ namespace ScottPlot.Demo.PlotTypes
             public string name { get; } = "Image Alignment";
             public string description { get; } = "Image alignment and rotation can be customized using arguments.";
 
-            private Bitmap image = new Bitmap("Images/niceBackground.bmp");
             public void Render(Plot plt)
             {
                 int pointCount = 51;
@@ -41,6 +40,8 @@ namespace ScottPlot.Demo.PlotTypes
 
                 plt.PlotScatter(x, sin);
                 plt.PlotScatter(x, cos);
+
+                Bitmap image = DataGen.SampleImage();
 
                 plt.PlotBitmap(image, 5, 0.8);
                 plt.PlotPoint(5, 0.8, color: Color.Green);
@@ -57,7 +58,7 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.PlotBitmap(image, 5, -.5, rotation: -30);
                 plt.PlotPoint(5, -.5, color: Color.Blue, markerSize: 15);
 
-                plt.PlotBitmap(image, 15, -.6, frame: true, frameColor: Color.DarkRed, frameSize: 25);
+                plt.PlotBitmap(image, 15, -.6, frame: true, frameColor: Color.Magenta, frameSize: 3);
             }
         }
     }
