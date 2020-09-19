@@ -13,11 +13,10 @@ namespace ScottPlot
         public double y;
         public double rotation;
         public Image image;
-        public Brush frameBrush;
         public ImageAlignment alignment;
         public bool frame;
         public Color frameColor;
-        public int framePadding;
+        public int frameSize;
         public string label;
 
         public PlottableImage(Image image, double x, double y, string label, ImageAlignment alignment, double rotation, bool frame, Color frameColor, int frameSize)
@@ -34,9 +33,7 @@ namespace ScottPlot
             {
                 throw new Exception("Frame padding cannot be lower than 0");
             }
-            this.framePadding = frameSize;
-
-            frameBrush = new SolidBrush(frameColor);
+            this.frameSize = frameSize;
         }
 
         public override string ToString()
@@ -106,16 +103,16 @@ namespace ScottPlot
 
             settings.gfxData.TranslateTransform((int)textLocationPoint.X, (int)textLocationPoint.Y);
             settings.gfxData.RotateTransform((float)rotation);
-            if (frame && framePadding > 0)
+
+            if (frame && frameSize > 0)
             {
-                Rectangle imageRect = new Rectangle(
-                    -framePadding,
-                    -framePadding,
-                    image.Width + (framePadding * 2),
-                    image.Height + (framePadding * 2)
-                    );
-                settings.gfxData.FillRectangle(frameBrush, imageRect);
+                using (var framePen = new Pen(frameColor, frameSize * 2))
+                {
+                    Rectangle frameRect = new Rectangle(0, 0, image.Width - 1, image.Height - 1);
+                    settings.gfxData.DrawRectangle(framePen, frameRect);
+                }
             }
+
             settings.gfxData.DrawImage(image, new PointF(0, 0));
             settings.gfxData.ResetTransform();
         }
