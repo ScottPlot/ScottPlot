@@ -39,7 +39,7 @@ namespace ScottPlot
         public Font valueTextFont;
         public Brush valueTextBrush;
 
-        public System.Drawing.Drawing2D.HatchStyle? barPattern = null;
+        public Drawing.HatchStyle barPattern = Drawing.HatchStyle.None;
 
         public PlottableBar(double[] xs, double[] ys, string label,
             double barWidth, double xOffset,
@@ -139,20 +139,10 @@ namespace ScottPlot
 
         private void UpdateBrush(double value)
         {
-            if (barPattern.HasValue)
+            if (barPattern != Drawing.HatchStyle.None)
             {
-                if (fillBrush is HatchBrush patternedBrush)
-                {
-                    //HatchBrush is an irritating type, once set the pattern and colours are readonly
-                    if (patternedBrush.HatchStyle != barPattern.Value || patternedBrush.ForegroundColor != fillColor || patternedBrush.BackgroundColor != backgroundColor)
-                    {
-                        fillBrush = new HatchBrush(barPattern.Value, fillColor, backgroundColor);
-                    }
-                }
-                else
-                {
-                    fillBrush = new HatchBrush(barPattern.Value, fillColor);
-                }
+                //HatchBrush is an irritating type, once set the pattern and colours are readonly
+                fillBrush = new HatchBrush(Drawing.GDI.ConvertToSDHatchStyle(barPattern).Value, fillColor, backgroundColor);
             }
             else
             {

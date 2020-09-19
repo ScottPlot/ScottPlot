@@ -95,5 +95,36 @@ namespace ScottPlot.Drawing
 
             return pen;
         }
+        public static System.Drawing.Drawing2D.HatchStyle? ConvertToSDHatchStyle(Drawing.HatchStyle pattern)
+        {
+            switch (pattern)
+            {
+                case HatchStyle.StripedUpwardDiagonal:
+                    return System.Drawing.Drawing2D.HatchStyle.LightUpwardDiagonal;
+                case HatchStyle.StripedDownwardDiagonal:
+                    return System.Drawing.Drawing2D.HatchStyle.LightDownwardDiagonal;
+                case HatchStyle.StripedWideUpwardDiagonal:
+                    return System.Drawing.Drawing2D.HatchStyle.WideUpwardDiagonal;
+                case HatchStyle.StripedWideDownwardDiagonal:
+                    return System.Drawing.Drawing2D.HatchStyle.WideDownwardDiagonal;
+                case HatchStyle.LargeCheckerBoard:
+                    return System.Drawing.Drawing2D.HatchStyle.LargeCheckerBoard;
+                case HatchStyle.SmallCheckerBoard:
+                    return System.Drawing.Drawing2D.HatchStyle.SmallCheckerBoard;
+                case HatchStyle.LargeGrid:
+                    return System.Drawing.Drawing2D.HatchStyle.LargeGrid;
+                case HatchStyle.SmallGrid:
+                    return System.Drawing.Drawing2D.HatchStyle.SmallGrid;
+                case HatchStyle.DottedDiamond:
+                    return System.Drawing.Drawing2D.HatchStyle.DottedDiamond;
+
+                case HatchStyle.None:
+                default:
+                    return null;
+
+            }
+        }
+
     }
+
 }

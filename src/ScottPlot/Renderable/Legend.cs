@@ -133,9 +133,9 @@ namespace ScottPlot.Renderable
                     float lineX1 = locationX + symbolPad;
                     float lineX2 = lineX1 + symbolWidth - symbolPad * 2;
 
-                    if (item.brushPattern.HasValue)
+                    if (item.brushPattern != Drawing.HatchStyle.None)
                     {
-                        using (var lineBrush = new HatchBrush(item.brushPattern.Value, item.color, item.backgroundColor))
+                        using (var lineBrush = new HatchBrush(Drawing.GDI.ConvertToSDHatchStyle(item.brushPattern).Value, item.color, item.backgroundColor))
                         {
                             gfx.FillRectangle(lineBrush, lineX1, (float)(lineY - item.lineWidth / 2), lineX2 - lineX1, (float)item.lineWidth);
                         }
