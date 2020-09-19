@@ -60,6 +60,14 @@ namespace ScottPlot
         Dot
     }
 
+    public enum FillType
+    {
+        NoFill,
+        FillAbove,
+        FillBelow,
+        FillAboveAndBelow
+    }
+
     public static class StyleTools
     {
         public static void SetStyle(Plot existingPlot, Style style)

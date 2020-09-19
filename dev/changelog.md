@@ -4,6 +4,11 @@
 * Added user control for Avalonia (#496, #503) _Thanks @Benny121221_
 * Holding shift while left-click-dragging the edge of a span moves it instead of resizing it (#509) _Thanks @Torgano_
 * CSV export is now culture invariant for improved support on systems where commas are decimal separators (#512) _Thanks Daniel_
+* Added fill support to scatter plots (#529) _Thanks @AlexFsmn_
+* Fix bug that occurred when calling GetLegendBitmap() before the plot was rendered (#527) _Thanks @el-aasi_
+* Pie charts now have an optional hollow center to produce donut plots (#534) _Thanks @Benny121221 and @AlexFsmn_
+* Added electrocardiogram (ECG) simulator to the DataGen module (#540) _Thanks @AteCoder_
+* Improved mouse scroll wheel responsiveness by delaying high quality render (#545, #543) _@Thanks StendProg_
 * Plot.PlotBitmap() allows Bitmaps to be placed at specific coordinates (#528) _Thanks @AlexFsmn_
 * DataGen.SampleImage() returns a sample Bitmap that can be used for testing
 

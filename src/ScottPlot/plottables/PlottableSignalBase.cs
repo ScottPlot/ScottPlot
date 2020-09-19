@@ -4,6 +4,7 @@ using ScottPlot.MinMaxSearchStrategies;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -33,6 +34,12 @@ namespace ScottPlot
         public Color color;
         public LineStyle lineStyle;
         public bool useParallel = true;
+        public FillType fillType;
+        public Color? fillColor1;
+        public Color? gradientFillColor1;
+        public Color? fillColor2;
+        public Color? gradientFillColor2;
+        public int baseline;
 
         public bool TreesReady => true;
         public PlottableSignalBase(T[] ys, double sampleRate, double xOffset, double yOffset, Color color,
@@ -51,7 +58,9 @@ namespace ScottPlot
             this.label = label;
             this.color = color;
             this.lineWidth = lineWidth;
+            this.fillType = FillType.NoFill;
             this.yOffset = yOffset;
+            this.baseline = 0;
             if (minRenderIndex < 0 || minRenderIndex > maxRenderIndex)
                 throw new ArgumentException("minRenderIndex must be between 0 and maxRenderIndex");
             this.minRenderIndex = minRenderIndex;
@@ -147,6 +156,15 @@ namespace ScottPlot
             {
                 if (penLD.Width > 0)
                     settings.gfxData.DrawLines(penHD, linePoints.ToArray());
+
+                if (fillType == FillType.FillAbove || fillType == FillType.FillBelow)
+                {
+                    FillAboveOrBelow(settings, linePoints[0].X, linePoints[linePoints.Count - 1].X, linePoints.ToArray(), fillType);
+                }
+                else if (fillType == FillType.FillAboveAndBelow)
+                {
+                    FillAboveAndBelow(settings, linePoints[0].X, linePoints[linePoints.Count - 1].X, linePoints.ToArray(), this.baseline);
+                }
 
                 if (markerSize > 0)
                 {
@@ -255,6 +273,169 @@ namespace ScottPlot
 
             if (linePoints.Length > 0)
                 settings.gfxData.DrawLines(penHD, linePoints);
+
+            if (fillType == FillType.FillAbove || fillType == FillType.FillBelow)
+            {
+                FillAboveOrBelow(settings, xPxStart, xPxEnd, linePoints, fillType);
+            }
+            else if (fillType == FillType.FillAboveAndBelow)
+            {
+                FillAboveAndBelow(settings, xPxStart, xPxEnd, linePoints, this.baseline);
+            }
+        }
+
+        private void FillAboveOrBelow(Settings settings, float xPxStart, float xPxEnd, PointF[] linePoints, FillType fillType)
+        {
+            if (fillColor1 == null)
+            {
+                throw new Exception("A fill color needs to be specified if fill is used");
+            }
+
+            if (fillType == FillType.FillAbove || fillType == FillType.FillBelow)
+            {
+                float minVal = 0;
+                float maxVal = (settings.dataSize.Height * (fillType == FillType.FillAbove ? -1 : 1));
+
+                PointF first = new PointF(xPxStart, maxVal);
+                PointF last = new PointF(xPxEnd, maxVal);
+
+                PointF[] points = new PointF[] { first }
+                                .Concat(linePoints)
+                                .Concat(new PointF[] { last })
+                                .ToArray();
+
+                Rectangle gradientRectangle = new Rectangle(
+                        new Point((int)first.X, (int)minVal - (fillType == FillType.FillAbove ? 2 : 0)),
+                        new Size(
+                            (int)(last.X - first.X),
+                            (int)(maxVal - minVal) + 2 * (fillType == FillType.FillAbove ? -1 : 1)));
+
+                LinearGradientBrush linearGradientBrush = new LinearGradientBrush(
+                    gradientRectangle,
+                    fillColor1.Value,
+                    gradientFillColor1 != null
+                        ? gradientFillColor1.Value
+                        : fillColor1.Value,
+                    LinearGradientMode.Vertical);
+
+                settings.gfxData.FillPolygon(linearGradientBrush, points);
+            }
+            else
+            {
+                throw new Exception("Invalid fill type");
+            }
+        }
+
+        private PointF? GetIntersection(PointF point1, PointF point2, PointF baselineStart, PointF baselineEnd)
+        {
+            double a1 = point2.Y - point1.Y;
+            double b1 = point1.X - point2.X;
+            double c1 = a1 * (point1.X) + b1 * (point1.Y);
+
+            double a2 = baselineEnd.Y - baselineStart.Y;
+            double b2 = baselineStart.X - baselineEnd.X;
+            double c2 = a2 * (baselineStart.X) + b2 * (baselineStart.Y);
+
+            double d = a1 * b2 - a2 * b1;
+
+            if (d == 0)
+            {
+                // Lines do not intersect. This could also be the case if the plot is zoomed out too much.
+                return null;
+            }
+            else
+            {
+                double x = (b2 * c1 - b1 * c2) / d;
+                double y = (a1 * c2 - a2 * c1) / d;
+                return new PointF((float)x, (float)y);
+            }
+        }
+
+        private void FillAboveAndBelow(Settings settings, float xPxStart, float xPxEnd, PointF[] linePoints, int baseline)
+        {
+            if (fillColor1 == null && fillColor2 != null)
+            {
+                throw new Exception("Two fill colors needs to be specified if fill above and below is used");
+            }
+            baseline = (int)settings.GetPixelY(baseline);
+
+            PointF first = new PointF(xPxStart, baseline);
+            PointF last = new PointF(xPxEnd, baseline);
+
+            PointF[] points = new PointF[] { first }
+                            .Concat(linePoints)
+                            .Concat(new PointF[] { last })
+                            .ToArray();
+
+            PointF baselinePointStart = new PointF(linePoints[0].X, baseline);
+            PointF baselinePointEnd = new PointF(linePoints[linePoints.Length - 1].X, baseline);
+
+            var pointList = points.ToList();
+            int newlyAddedItems = 0;
+            for (int i = 1; i < points.Length + newlyAddedItems; ++i)
+            {
+                if ((pointList[i - 1].Y > baseline && pointList[i].Y < baseline) ||
+                    (pointList[i - 1].Y < baseline && pointList[i].Y > baseline))
+                {
+                    var intersection = GetIntersection(pointList[i], pointList[i - 1], baselinePointStart, baselinePointEnd);
+                    if (intersection != null)
+                    {
+                        pointList.Insert(i, intersection.Value);
+                        newlyAddedItems++;
+                        i++;
+                    }
+                }
+            }
+
+            // Above graph
+            var aboveRect = GetFillRectangle(settings, xPxStart, xPxEnd, FillType.FillAbove);
+            if (aboveRect.Height != 0 && aboveRect.Width != 0)
+            {
+                LinearGradientBrush linearGradientBrushAbove = new LinearGradientBrush(
+                    aboveRect,
+                    fillColor1.Value,
+                    gradientFillColor1 != null ? gradientFillColor1.Value : fillColor1.Value,
+                    LinearGradientMode.Vertical);
+
+                settings.gfxData.FillPolygon(linearGradientBrushAbove,
+                    new PointF[] { first }
+                    .Concat(pointList.Where(p => p.Y <= baseline).ToArray())
+                    .Concat(new PointF[] { last })
+                    .ToArray());
+            }
+
+            // Below graph
+            var belowRect = GetFillRectangle(settings, xPxStart, xPxEnd, FillType.FillBelow);
+            if (belowRect.Height != 0 && belowRect.Width != 0)
+            {
+                LinearGradientBrush linearGradientBrushBelow = new LinearGradientBrush(
+                    belowRect,
+                    fillColor2.Value,
+                    gradientFillColor2 != null ? gradientFillColor2.Value : fillColor2.Value,
+                    LinearGradientMode.Vertical);
+
+                settings.gfxData.FillPolygon(linearGradientBrushBelow,
+                    new PointF[] { first }
+                    .Concat(pointList.Where(p => p.Y >= baseline).ToArray())
+                    .Concat(new PointF[] { last })
+                    .ToArray());
+
+            }
+
+            // Draw baseline
+            settings.gfxData.DrawLine(
+                new Pen(Color.Black, 1),
+                baselinePointStart,
+                baselinePointEnd);
+        }
+
+        private Rectangle GetFillRectangle(Settings settings, float startX, float xPxEnd, FillType fillType)
+        {
+            float maxVal = (settings.dataSize.Height * (fillType == FillType.FillAbove ? -1 : 1));
+
+            Rectangle rectangle = new Rectangle((int)startX, 0, (int)(xPxEnd - startX), (int)maxVal);
+
+            return rectangle;
         }
 
         private void RenderHighDensityDistributionParallel(Settings settings, double offsetPoints, double columnPointCount)
@@ -310,6 +491,16 @@ namespace ScottPlot
                     }
                 }
                 settings.gfxData.DrawLines(penByDensity[i], linePoints.ToArray());
+
+
+                if (fillType == FillType.FillAbove || fillType == FillType.FillBelow)
+                {
+                    FillAboveOrBelow(settings, xPxStart, xPxEnd, linePoints.ToArray(), fillType);
+                }
+                else if (fillType == FillType.FillAboveAndBelow)
+                {
+                    FillAboveAndBelow(settings, xPxStart, xPxEnd, linePoints.ToArray(), this.baseline);
+                }
             }
         }
 
