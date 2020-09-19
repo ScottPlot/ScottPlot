@@ -1,8 +1,11 @@
-﻿using System;
+﻿using ScottPlot.Drawing;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -280,6 +283,36 @@ namespace ScottPlot
                 values[i] = 1;
             return values;
         }
+
+        public static Bitmap BitmapFrom2dArray(double[,] data, Colormap cmap)
+        {
+            int width = data.GetLength(1);
+            int height = data.GetLength(0);
+            Console.WriteLine($"{width} {height}");
+
+            Bitmap bmp = new Bitmap(width, height, PixelFormat.Format8bppIndexed);
+            Rectangle rect = new Rectangle(0, 0, width, height);
+            BitmapData bmpData = bmp.LockBits(rect, ImageLockMode.ReadWrite, bmp.PixelFormat);
+
+            byte[] bytes = new byte[bmpData.Stride * height];
+            for (int y = 0; y < height; y++)
+                for (int x = 0; x < width; x++)
+                    bytes[y * bmpData.Stride + x] = (byte)data[y, x];
+
+            Marshal.Copy(bytes, 0, bmpData.Scan0, bytes.Length);
+            bmp.UnlockBits(bmpData);
+
+            Colormap.Viridis.Apply(bmp);
+            Bitmap bmp2 = new Bitmap(width, height, PixelFormat.Format32bppPArgb);
+
+            using (Graphics gfx = Graphics.FromImage(bmp2))
+            {
+                gfx.DrawImage(bmp, 0, 0);
+            }
+            return bmp2;
+        }
+
+        public static Bitmap SampleImage() => BitmapFrom2dArray(SampleImageData(), Colormap.Viridis);
 
         public static double[,] SampleImageData()
         {
