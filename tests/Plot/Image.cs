@@ -23,7 +23,6 @@ namespace ScottPlotTests.Plot
                     x, y,
                     rotation: rotations[i],
                     alignment: ScottPlot.ImageAlignment.upperLeft,
-                    frame: true,
                     frameColor: Color.LightGray,
                     frameSize: 5);
                 plt.PlotPoint(x, y, Color.Red, markerSize: 5);
@@ -48,7 +47,6 @@ namespace ScottPlotTests.Plot
                     x, y,
                     rotation: rotations[i],
                     alignment: ScottPlot.ImageAlignment.upperCenter,
-                    frame: true,
                     frameColor: Color.LightGray,
                     frameSize: 5);
                 plt.PlotPoint(x, y, Color.Red, markerSize: 5);
@@ -73,7 +71,6 @@ namespace ScottPlotTests.Plot
                     x, y,
                     rotation: rotations[i],
                     alignment: ScottPlot.ImageAlignment.lowerRight,
-                    frame: true,
                     frameColor: Color.LightGray,
                     frameSize: 5);
                 plt.PlotPoint(x, y, Color.Red, markerSize: 5);
