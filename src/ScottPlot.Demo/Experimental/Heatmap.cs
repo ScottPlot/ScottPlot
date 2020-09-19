@@ -160,7 +160,7 @@ namespace ScottPlot.Demo.Experimental
 
                 //This could be applied more usefully to an image pertinent to the data
                 //For example a map of the world, if your data is about geographic phenomenon
-                Bitmap background = new Bitmap("Images/niceBackground.bmp");
+                Bitmap background = DataGen.SampleImage();
 
                 plt.PlotHeatmap(imageData, transparencyThreshold: 20, backgroundImage: background);
             }

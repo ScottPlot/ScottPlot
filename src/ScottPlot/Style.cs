@@ -36,6 +36,20 @@ namespace ScottPlot
         middleCenter
     }
 
+    public enum ImageAlignment
+    {
+        // TODO: capitolize these in ScottPlot 4.1
+        upperLeft,
+        upperRight,
+        upperCenter,
+        middleLeft,
+        middleRight,
+        lowerLeft,
+        lowerRight,
+        lowerCenter,
+        middleCenter
+    }
+
     public enum LineStyle
     {
         None,

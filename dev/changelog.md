@@ -9,6 +9,8 @@
 * Pie charts now have an optional hollow center to produce donut plots (#534) _Thanks @Benny121221 and @AlexFsmn_
 * Added electrocardiogram (ECG) simulator to the DataGen module (#540) _Thanks @AteCoder_
 * Improved mouse scroll wheel responsiveness by delaying high quality render (#545, #543) _@Thanks StendProg_
+* Plot.PlotBitmap() allows Bitmaps to be placed at specific coordinates (#528) _Thanks @AlexFsmn_
+* DataGen.SampleImage() returns a sample Bitmap that can be used for testing
 
 ## ScottPlot 4.0.39
 * Legend now reflects LineStyle of Signal and SignalXY plots (#488) _Thanks @Benny121221_
