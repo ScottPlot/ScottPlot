@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -19,7 +21,11 @@ namespace ScottPlot.Demo.WPF.WpfDemos
     public partial class LiveDataFixed : Window
     {
         Random rand = new Random();
-        double[] liveData = DataGen.Sin(100, oscillations: 2, mult: 20);
+        double[] liveData = new double[400];
+        DataGen.Electrocardiogram ecg = new DataGen.Electrocardiogram();
+        Stopwatch sw = Stopwatch.StartNew();
+
+        private System.Threading.Timer _timer;
 
         public LiveDataFixed()
         {
@@ -28,26 +34,27 @@ namespace ScottPlot.Demo.WPF.WpfDemos
 
             // plot the data array only once
             wpfPlot1.plt.PlotSignal(liveData);
-            wpfPlot1.plt.Axis(y1: -50, y2: 50);
-            wpfPlot1.Render();
+            wpfPlot1.plt.AxisAutoX(margin: 0);
+            wpfPlot1.plt.Axis(y1: -1, y2: 2.5);
 
-            // create a timer to modify the data
-            DispatcherTimer updateDataTimer = new DispatcherTimer();
-            updateDataTimer.Interval = TimeSpan.FromMilliseconds(1);
-            updateDataTimer.Tick += UpdateData;
-            updateDataTimer.Start();
+            // create a traditional timer to update the data
+            _timer = new Timer(_ => UpdateData(), null, 0, 5);
 
-            // create a timer to update the GUI
+            // create a separate timer to update the GUI
             DispatcherTimer renderTimer = new DispatcherTimer();
-            renderTimer.Interval = TimeSpan.FromMilliseconds(20);
+            renderTimer.Interval = TimeSpan.FromMilliseconds(10);
             renderTimer.Tick += Render;
             renderTimer.Start();
         }
 
-        void UpdateData(object sender, EventArgs e)
+        void UpdateData()
         {
-            for (int i = 0; i < liveData.Length; i++)
-                liveData[i] += rand.NextDouble() - .5;
+            // "scroll" the whole chart to the left
+            Array.Copy(liveData, 1, liveData, 0, liveData.Length - 1);
+
+            // place the newest data point at the end
+            double nextValue = ecg.GetVoltage(sw.Elapsed.TotalSeconds);
+            liveData[liveData.Length - 1] = nextValue;
         }
 
         void Render(object sender, EventArgs e)

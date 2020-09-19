@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot.Drawing;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
@@ -43,7 +44,7 @@ namespace ScottPlot.Demo.PlotTypes
 
         public class RandomWalk_5millionPoints_Signal : PlotDemo, IPlotDemo
         {
-            public string name { get; } = "5M points (Signal)";
+            public string name { get; } = "5 Million Points";
             public string description { get; } = "Signal plots with millions of points can be interacted with in real time.";
 
             public void Render(Plot plt)
@@ -151,6 +152,135 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.Title($"Partial Display of a {data.Length} values");
                 plt.YLabel("Value");
                 plt.XLabel("Array Index");
+                plt.AxisAutoX(margin: 0);
+            }
+        }
+
+        public class PlotFillRange : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Fill Below";
+            public string description { get; } = "It is also possible to display values within a range and using the fill attribute.";
+
+            public void Render(Plot plt)
+            {
+                Random rand = new Random(0);
+                double[] data = DataGen.RandomWalk(rand, 10_000);
+
+                var sig = plt.PlotSignal(data);
+                sig.minRenderIndex = 4000;
+                sig.maxRenderIndex = 5000;
+                sig.fillType = FillType.FillBelow;
+                sig.fillColor1 = Color.Blue;
+
+                plt.Title($"Partial Display of a {data.Length} values using fill");
+                plt.YLabel("Value");
+                plt.XLabel("Array Index");
+                plt.AxisAutoX(margin: 0);
+            }
+        }
+
+        public class PlotGradientFillRange : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Gradient Fill Below";
+            public string description { get; } = "Plotting a range of values using gradient fill below graph.";
+
+            public void Render(Plot plt)
+            {
+                Random rand = new Random(0);
+                double[] data = DataGen.RandomWalk(rand, 100_000);
+
+                var sig = plt.PlotSignal(data);
+                sig.minRenderIndex = 4000;
+                sig.maxRenderIndex = 5000;
+                sig.fillType = FillType.FillBelow;
+                sig.fillColor1 = Color.Blue;
+                sig.gradientFillColor1 = Color.Transparent;
+
+                plt.Title($"Partial Display of a {data.Length} values using gradient fill below");
+                plt.YLabel("Value");
+                plt.XLabel("Array Index");
+                plt.AxisAutoX(margin: 0);
+            }
+        }
+
+        public class PlotGradientFillAboveRange : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Gradient Fill Above";
+            public string description { get; } = "Plotting a range of values using gradient fill above graph.";
+
+            public void Render(Plot plt)
+            {
+                Random rand = new Random(0);
+                double[] data = DataGen.RandomWalk(rand, 100_000);
+                var sig = plt.PlotSignal(data);
+                sig.minRenderIndex = 4000;
+                sig.maxRenderIndex = 5000;
+                sig.fillType = FillType.FillAbove;
+                sig.fillColor1 = Color.Blue;
+                sig.gradientFillColor1 = Color.Transparent;
+                plt.Title($"Partial Display of a {data.Length} values using gradient fill above");
+                plt.YLabel("Value");
+                plt.XLabel("Array Index");
+                plt.AxisAutoX(margin: 0);
+            }
+        }
+
+        public class PlotFillAboveAndBelowRange : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Fill Above and Below";
+            public string description { get; } = "Plotting a range of values using fill above and below.";
+
+            public void Render(Plot plt)
+            {
+                Random rand = new Random(0);
+                double[] data = DataGen.RandomWalk(rand, 100_000);
+
+                var sig = plt.PlotSignal(data);
+                sig.minRenderIndex = 4000;
+                sig.maxRenderIndex = 5000;
+                sig.fillType = FillType.FillAboveAndBelow;
+                sig.fillColor1 = Color.Green;
+                sig.gradientFillColor1 = Color.Green;
+                sig.fillColor2 = Color.Red;
+                sig.gradientFillColor2 = Color.Red;
+                sig.baseline = -35;
+
+                plt.Title($"Partial Display of a {data.Length} values using fill above and below");
+                plt.YLabel("Value");
+                plt.XLabel("Array Index");
+                plt.AxisAutoX(margin: 0);
+            }
+        }
+
+        public class PlotGradientFillAboveAndBelowRange : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Gradient Fill Above and Below";
+            public string description { get; } = "Plotting a range of values using gradient fill above and below.";
+
+            public void Render(Plot plt)
+            {
+                Random rand = new Random(0);
+                double[] data = DataGen.RandomWalk(rand, 100_000);
+
+                plt.Style(Style.Gray1);
+                plt.Colorset(Colorset.OneHalfDark);
+
+                var sig = plt.PlotSignal(data);
+                sig.minRenderIndex = 4000;
+                sig.maxRenderIndex = 5000;
+                sig.markerSize = 0;
+                sig.penHD = new Pen(Color.Black);
+                sig.fillType = FillType.FillAboveAndBelow;
+                sig.fillColor1 = Color.FromArgb(255, 44, 160, 44); // Green
+                sig.gradientFillColor1 = Color.Transparent;
+                sig.fillColor2 = Color.FromArgb(255, 214, 39, 40); // Red
+                sig.gradientFillColor2 = Color.Transparent;
+                sig.baseline = -35;
+
+                plt.Title($"Partial Display of a {data.Length} values using gradient fill above and below");
+                plt.YLabel("Value");
+                plt.XLabel("Array Index");
+                plt.AxisAutoX(margin: 0);
             }
         }
     }

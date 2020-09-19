@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using ScottPlot.Config;
@@ -13,10 +14,16 @@ namespace ScottPlot
         public string label;
         public string[] groupNames;
         public Color[] colors;
-        bool explodedChart;
-        bool showValues;
-        bool showPercentages;
-        bool showLabels;
+        public bool explodedChart;
+        public bool showValues;
+        public bool showPercentages;
+        public bool showLabels;
+        public double donutSize;
+        public float outlineSize = 0;
+        public Color outlineColor = Color.Black;
+        public string centerText;
+        public float centerTextSize = 36;
+        public Color centerTextColor = Color.Black;
 
         private SolidBrush brush = new SolidBrush(Color.Black);
         private Pen pen = new Pen(Color.Black);
@@ -83,6 +90,16 @@ namespace ScottPlot
 
             RectangleF boundingRectangle = new RectangleF((float)settings.GetPixelX(centreX) - diameterPixels / 2, (float)settings.GetPixelY(centreY) - diameterPixels / 2, diameterPixels, diameterPixels);
 
+            if (donutSize > 0)
+            {
+                GraphicsPath graphicsPath = new GraphicsPath();
+                float donutDiameterPixels = (float)donutSize * diameterPixels;
+                RectangleF donutHoleBoundingRectangle = new RectangleF((float)settings.GetPixelX(centreX) - donutDiameterPixels / 2, (float)settings.GetPixelY(centreY) - donutDiameterPixels / 2, donutDiameterPixels, donutDiameterPixels);
+                graphicsPath.AddEllipse(donutHoleBoundingRectangle);
+                Region excludedRegion = new Region(graphicsPath);
+                settings.gfxData.ExcludeClip(excludedRegion);
+            }
+
             double start = -90;
             for (int i = 0; i < values.Length; i++)
             {
@@ -98,20 +115,32 @@ namespace ScottPlot
                 labelXs[i] = (boundingRectangle.X + diameterPixels / 2 + xOffset + Math.Cos(angle) * sliceLabelR);
                 labelYs[i] = (boundingRectangle.Y + diameterPixels / 2 + yOffset + Math.Sin(angle) * sliceLabelR);
                 string sliceLabelValue = (showValues) ? $"{values[i]}" : "";
-                string sliceLabelPercentage = (showPercentages) ? $"{proportions[i] * 100:f1}%" : "";
+                string sliceLabelPercentage = showPercentages ? $"{proportions[i] * 100:f1}%" : "";
                 string sliceLabelName = (showLabels) ? groupNames[i] : "";
                 labelStrings[i] = $"{sliceLabelValue}\n{sliceLabelPercentage}\n{sliceLabelName}".Trim();
 
                 brush.Color = colors[i];
-                settings.gfxData.FillPie(brush, (int)(boundingRectangle.X + xOffset), (int)(boundingRectangle.Y + yOffset), boundingRectangle.Width, boundingRectangle.Height, (float)start, (float)(sweep + sweepOffset));
+                settings.gfxData.FillPie(brush: brush,
+                    x: (int)(boundingRectangle.X + xOffset),
+                    y: (int)(boundingRectangle.Y + yOffset),
+                    width: boundingRectangle.Width,
+                    height: boundingRectangle.Height,
+                    startAngle: (float)start,
+                    sweepAngle: (float)(sweep + sweepOffset));
 
                 if (explodedChart)
                 {
+                    pen.Color = settings.DataBackground.Color; // TODO: will fail if data background is transparent
                     pen.Width = sliceOutlineWidth;
-                    settings.gfxData.DrawPie(pen, (int)(boundingRectangle.X + xOffset), (int)(boundingRectangle.Y + yOffset), boundingRectangle.Width, boundingRectangle.Height, (float)start, (float)(sweep + sweepOffset));
+                    settings.gfxData.DrawPie(
+                        pen: pen,
+                        x: (int)(boundingRectangle.X + xOffset),
+                        y: (int)(boundingRectangle.Y + yOffset),
+                        width: boundingRectangle.Width, boundingRectangle.Height,
+                        startAngle: (float)start,
+                        sweepAngle: (float)(sweep + sweepOffset));
                 }
                 start += sweep;
-
             }
 
             brush.Color = Color.White;
@@ -125,8 +154,34 @@ namespace ScottPlot
                 }
             }
 
-            pen.Width = outlineWidth;
-            settings.gfxData.DrawEllipse(pen, boundingRectangle.X, boundingRectangle.Y, boundingRectangle.Width, boundingRectangle.Height);
+            if (outlineSize > 0)
+            {
+                pen.Width = outlineSize;
+                pen.Color = outlineColor;
+                settings.gfxData.DrawEllipse(pen, boundingRectangle.X, boundingRectangle.Y, boundingRectangle.Width, boundingRectangle.Height);
+            }
+
+            settings.gfxData.ResetClip();
+
+            if (centerText != null)
+            {
+                brush.Color = centerTextColor;
+                Font donutHoleFont = new Font(fontName, centerTextSize);
+                settings.gfxData.DrawString(centerText, donutHoleFont, brush, settings.GetPixel(0, 0), settings.misc.sfCenterCenter);
+                donutHoleFont.Dispose();
+            }
+
+            if (explodedChart)
+            {
+                // draw a background-colored circle around the perimeter to make it look like all pieces are the same size
+                pen.Width = 20;
+                settings.gfxData.DrawEllipse(
+                    pen: pen,
+                    x: boundingRectangle.X,
+                    y: boundingRectangle.Y,
+                    width: boundingRectangle.Width,
+                    height: boundingRectangle.Height);
+            }
         }
 
         public override string ToString()

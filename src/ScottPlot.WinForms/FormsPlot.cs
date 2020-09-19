@@ -1,8 +1,9 @@
 ﻿using System;
-using System.ComponentModel;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace ScottPlot
@@ -61,6 +62,7 @@ namespace ScottPlot
         {
             ContextMenuStrip = DefaultRightClickMenu();
 
+            pbPlot.MouseWheel -= PbPlot_MouseWheel; // unsubscribe previous handler
             pbPlot.MouseWheel += PbPlot_MouseWheel;
 
             isDesignerMode = Process.GetCurrentProcess().ProcessName == "devenv";
@@ -140,6 +142,8 @@ namespace ScottPlot
         private double middleClickMarginY = .1;
         private bool? recalculateLayoutOnMouseUp = null;
         private bool showCoordinatesTooltip = false;
+        private bool lowQualityOnScrollWheel = true;
+        private int lowQualityScrollWheelDelay = 500;
         public void Configure(
             bool? enablePanning = null,
             bool? enableZooming = null,
@@ -154,7 +158,9 @@ namespace ScottPlot
             double? middleClickMarginX = null,
             double? middleClickMarginY = null,
             bool? recalculateLayoutOnMouseUp = null,
-            bool? showCoordinatesTooltip = null
+            bool? showCoordinatesTooltip = null,
+            bool? lowQualityOnScrollWheel = null,
+            int? lowQualityScrollWheelDelay = null
             )
         {
             if (enablePanning != null) this.enablePanning = (bool)enablePanning;
@@ -171,6 +177,8 @@ namespace ScottPlot
             this.middleClickMarginY = middleClickMarginY ?? this.middleClickMarginY;
             this.recalculateLayoutOnMouseUp = recalculateLayoutOnMouseUp;
             this.showCoordinatesTooltip = showCoordinatesTooltip ?? this.showCoordinatesTooltip;
+            this.lowQualityOnScrollWheel = lowQualityOnScrollWheel ?? this.lowQualityOnScrollWheel;
+            this.lowQualityScrollWheelDelay = lowQualityScrollWheelDelay ?? this.lowQualityScrollWheelDelay;
         }
 
         private bool isShiftPressed { get { return (ModifierKeys.HasFlag(Keys.Shift) || (lockHorizontalAxis)); } }
@@ -422,24 +430,58 @@ namespace ScottPlot
             base.OnMouseDoubleClick(e);
         }
 
+        private readonly List<MouseEventArgs> MouseWheelEvents = new List<MouseEventArgs>();
+        private readonly Stopwatch ScrollWheelTimer = Stopwatch.StartNew();
+        private bool ScrollWheelTimerIsRunning => ScrollWheelTimer.ElapsedMilliseconds < lowQualityScrollWheelDelay;
+        public void ScrollWheelProcessor()
+        {
+            ScrollWheelTimer.Restart();
+            while (ScrollWheelTimerIsRunning)
+            {
+                // if no new mouse events, sleep until the timer is up
+                if (MouseWheelEvents.Count == 0)
+                {
+                    Thread.Sleep(30);
+                    Application.DoEvents();
+                    continue;
+                }
+
+                // if new mouse events, apply them and reset the timer
+                ScrollWheelTimer.Restart();
+                int currentRequestCount = MouseWheelEvents.Count;
+                foreach (MouseEventArgs e in MouseWheelEvents.Take(currentRequestCount))
+                {
+                    double xFrac = (e.Delta > 0) ? 1.15 : 0.85;
+                    double yFrac = (e.Delta > 0) ? 1.15 : 0.85;
+
+                    if (isCtrlPressed) yFrac = 1;
+                    if (isShiftPressed) xFrac = 1;
+
+                    plt.AxisZoom(xFrac, yFrac, plt.CoordinateFromPixelX(e.Location.X), plt.CoordinateFromPixelY(e.Location.Y));
+                }
+
+                MouseWheelEvents.RemoveRange(0, currentRequestCount); // TODO check for thread safety
+
+                bool shouldRecalculate = recalculateLayoutOnMouseUp ?? plotContainsHeatmap == false;
+                Render(lowQuality: lowQualityOnScrollWheel, recalculateLayout: shouldRecalculate, processEvents: true);
+                OnAxisChanged();
+            }
+
+            // after the scrollwheel timer runs out, perform a final delayed HQ render
+            if (lowQualityOnScrollWheel)
+                Render(recalculateLayout: false, processEvents: true);
+        }
+
         private void PbPlot_MouseWheel(object sender, MouseEventArgs e)
         {
             if (enableScrollWheelZoom == false)
                 return;
 
-            double xFrac = (e.Delta > 0) ? 1.15 : 0.85;
-            double yFrac = (e.Delta > 0) ? 1.15 : 0.85;
-
-            if (isCtrlPressed) yFrac = 1;
-            if (isShiftPressed) xFrac = 1;
-
-            plt.AxisZoom(xFrac, yFrac, plt.CoordinateFromPixelX(e.Location.X), plt.CoordinateFromPixelY(e.Location.Y));
-
-            bool shouldRecalculate = recalculateLayoutOnMouseUp ?? plotContainsHeatmap == false;
-            Render(recalculateLayout: shouldRecalculate);
-            OnAxisChanged();
-
             base.OnMouseWheel(e);
+
+            MouseWheelEvents.Add(e);
+            if (ScrollWheelTimerIsRunning == false)
+                ScrollWheelProcessor();
         }
 
         #endregion
