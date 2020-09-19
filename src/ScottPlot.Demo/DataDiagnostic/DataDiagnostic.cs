@@ -65,7 +65,7 @@ namespace ScottPlot.Demo.DataDiagnostic
                 plt.DiagnosticMode = false; // disable to not affect another demos
 
                 // All plotables created with DiagnosticMode on, will be checked also after diagnostic mode = false
-                
+
                 // Check goes only on Render, so user must interract with plot after 5 seconds
                 Task.Run(() =>
                   {
