@@ -67,12 +67,10 @@ namespace ScottPlot
         {
             double[] proportions = values.Select(x => x / values.Sum()).ToArray();
 
-            int outlineWidth = 1;
             int sliceOutlineWidth = 0;
             if (explodedChart)
             {
                 pen.Color = settings.DataBackground.Color; // TODO: will fail if data background is transparent
-                outlineWidth = 20;
                 sliceOutlineWidth = 1;
             }
 
