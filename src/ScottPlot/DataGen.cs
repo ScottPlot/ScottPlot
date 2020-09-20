@@ -288,7 +288,6 @@ namespace ScottPlot
         {
             int width = data.GetLength(1);
             int height = data.GetLength(0);
-            Console.WriteLine($"{width} {height}");
 
             Bitmap bmp = new Bitmap(width, height, PixelFormat.Format8bppIndexed);
             Rectangle rect = new Rectangle(0, 0, width, height);
