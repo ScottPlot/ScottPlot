@@ -156,6 +156,31 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
+        public class TimeOnly : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Time Only";
+            public string description { get; } = "Typically DateTime tick labels show date and time, " +
+                "but by defining the format yourself you can customize this behavior.";
+
+            public void Render(Plot plt)
+            {
+                Random rand = new Random(0);
+                double[] ys = DataGen.RandomWalk(rand, 50);
+                double[] xs = new double[ys.Length];
+
+                DateTime start = new DateTime(1985, 9, 24);
+                for (int i = 0; i < ys.Length; i++)
+                {
+                    DateTime dtNow = start.AddMinutes(i*15);
+                    xs[i] = dtNow.ToOADate();
+                }
+
+                plt.PlotScatter(xs, ys);
+                plt.Ticks(dateTimeX: true, dateTimeFormatStringX: "HH:mm:ss");
+                plt.Title("Time Axis Labels");
+            }
+        }
+
         public class TimeCodeAxis : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Time Code Axis";
