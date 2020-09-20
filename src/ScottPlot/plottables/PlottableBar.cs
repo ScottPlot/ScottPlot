@@ -18,7 +18,7 @@ namespace ScottPlot
 
         public LineStyle lineStyle;
         public Color fillColor;
-        public Color backgroundColor;
+        public Color hatchColor;
         public Color negativeColor;
         public double[] yOffsets;
         public string label;
@@ -130,6 +130,8 @@ namespace ScottPlot
         {
             for (int i = 0; i < ys.Length; i++)
             {
+                UpdateBrush(ys[i]);
+
                 if (verticalBars)
                     RenderBarVertical(settings, xs[i] + xOffset, ys[i], yErr[i], yOffsets[i]);
                 else
@@ -139,14 +141,14 @@ namespace ScottPlot
 
         private void UpdateBrush(double value)
         {
-            if (barPattern != Drawing.HatchStyle.None)
+            if (barPattern is Drawing.HatchStyle.None)
             {
-                //HatchBrush is an irritating type, once set the pattern and colours are readonly
-                fillBrush = new HatchBrush(Drawing.GDI.ConvertToSDHatchStyle(barPattern).Value, fillColor, backgroundColor);
+                ((SolidBrush)fillBrush).Color = (value < 0) ? negativeColor : fillColor;
             }
             else
             {
-                ((SolidBrush)fillBrush).Color = (value < 0) ? negativeColor : fillColor;
+                var hatchStyle = Drawing.GDI.ConvertToSDHatchStyle(barPattern).Value;
+                fillBrush = new HatchBrush(hatchStyle, hatchColor, fillColor);
             }
         }
 
@@ -157,8 +159,6 @@ namespace ScottPlot
             double value1 = Math.Min(valueBase, value) + yOffset;
             double value2 = Math.Max(valueBase, value) + yOffset;
             double valueSpan = value2 - value1;
-
-            UpdateBrush(value);
 
             var rect = new RectangleF(
                 x: (float)settings.GetPixelX(edge1),
@@ -197,8 +197,6 @@ namespace ScottPlot
             double value1 = Math.Min(valueBase, value) + yOffset;
             double value2 = Math.Max(valueBase, value) + yOffset;
             double valueSpan = value2 - value1;
-
-            UpdateBrush(value);
 
             var rect = new RectangleF(
                 x: (float)settings.GetPixelX(value1),
@@ -243,7 +241,7 @@ namespace ScottPlot
 
         public override LegendItem[] GetLegendItems()
         {
-            var singleLegendItem = new LegendItem(label, fillColor, lineWidth: 10, markerShape: MarkerShape.none, backgroundColor: backgroundColor, brushPattern: barPattern);
+            var singleLegendItem = new LegendItem(label, fillColor, lineWidth: 10, markerShape: MarkerShape.none, backgroundColor: hatchColor, brushPattern: barPattern);
             return new LegendItem[] { singleLegendItem };
         }
     }
