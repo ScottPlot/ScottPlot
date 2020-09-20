@@ -219,7 +219,7 @@ namespace ScottPlot.Config
         {
             value = Math.Round(value, maximumDecimalPlaces);
             bool isRoundNumber = ((int)value == value);
-            bool isLargeNumber = (value > 1000);
+            bool isLargeNumber = (Math.Abs(value) > 1000);
 
             // https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings
             if (numericFormatString is null)
