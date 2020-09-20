@@ -156,6 +156,26 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
+        public class TimeCodeAxis : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Time Code Axis";
+            public string description { get; } = "Axis tick labels show HH:MM:SS.SSS timecodes (useful for audio and video editing)";
+
+            public void Render(Plot plt)
+            {
+                // simulate 10 seconds of audio data
+                int pointsPerSecond = 44100;
+                Random rand = new Random(0);
+                double[] ys = DataGen.RandomWalk(rand, pointsPerSecond * 10);
+
+                // for DateTime compatibility, sample rate must be points/day
+                double pointsPerDay = 24.0 * 60 * 60 * pointsPerSecond;
+                plt.PlotSignal(ys, sampleRate: pointsPerDay);
+
+                plt.Ticks(dateTimeX: true, dateTimeFormatStringX: "HH:mm:ss.fff");
+            }
+        }
+
         public class HexadecimalAxis : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Hexadecimal Axis";
