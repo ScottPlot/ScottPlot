@@ -64,7 +64,7 @@ namespace ScottPlot.Drawing
         {
             var pen = new System.Drawing.Pen(color, (float)width);
 
-            if (lineStyle == LineStyle.Solid)
+            if (lineStyle == LineStyle.Solid || lineStyle == LineStyle.None)
             {
                 /* WARNING: Do NOT apply a solid DashPattern!
                  * Setting DashPattern automatically sets a pen's DashStyle to custom.
