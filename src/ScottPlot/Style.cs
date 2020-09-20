@@ -68,6 +68,28 @@ namespace ScottPlot
         FillAboveAndBelow
     }
 
+    public enum legendLocation
+    {
+        none,
+        upperLeft,
+        upperRight,
+        upperCenter,
+        middleLeft,
+        middleRight,
+        lowerLeft,
+        lowerRight,
+        lowerCenter,
+    }
+
+    public enum shadowDirection
+    {
+        none,
+        upperLeft,
+        upperRight,
+        lowerLeft,
+        lowerRight,
+    }
+
     public static class StyleTools
     {
         public static void SetStyle(Plot existingPlot, Style style)
