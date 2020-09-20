@@ -241,7 +241,15 @@ namespace ScottPlot
 
         public override LegendItem[] GetLegendItems()
         {
-            var singleLegendItem = new LegendItem(label, fillColor, lineWidth: 10, markerShape: MarkerShape.none, backgroundColor: hatchColor, brushPattern: hatchStyle);
+            LegendItem singleLegendItem = new LegendItem()
+            {
+                label = label,
+                color = fillColor,
+                lineWidth = 10,
+                markerShape = MarkerShape.none,
+                hatchColor = hatchColor,
+                hatchStyle = hatchStyle
+            };
             return new LegendItem[] { singleLegendItem };
         }
     }
