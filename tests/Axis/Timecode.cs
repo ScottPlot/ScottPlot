@@ -11,7 +11,7 @@ namespace ScottPlotTests.Axis
         [Test]
         public void Test_tickFormat_timecode()
         {
-            var plt = new ScottPlot.Plot();
+            var plt = new ScottPlot.Plot(800, 300);
 
             // simulate 10 seconds of audio data
             int pointsPerSecond = 44100;

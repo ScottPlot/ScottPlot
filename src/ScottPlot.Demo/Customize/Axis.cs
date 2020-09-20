@@ -168,10 +168,13 @@ namespace ScottPlot.Demo.Customize
                 Random rand = new Random(0);
                 double[] ys = DataGen.RandomWalk(rand, pointsPerSecond * 10);
 
-                // for DateTime compatibility, sample rate must be points/day
-                double pointsPerDay = 24.0 * 60 * 60 * pointsPerSecond;
-                plt.PlotSignal(ys, sampleRate: pointsPerDay);
+                // For DateTime compatibility, sample rate must be points/day.
+                // Also, avoid negative dates by offsetting the plot by today's date.
+                double secondsPerDay = 24 * 60 * 60;
+                double pointsPerDay = secondsPerDay * pointsPerSecond;
+                double today = DateTime.Today.ToOADate();
 
+                plt.PlotSignal(ys, sampleRate: pointsPerDay, xOffset: today);
                 plt.Ticks(dateTimeX: true, dateTimeFormatStringX: "HH:mm:ss.fff");
             }
         }
