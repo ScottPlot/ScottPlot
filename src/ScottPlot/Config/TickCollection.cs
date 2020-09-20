@@ -27,6 +27,7 @@ namespace ScottPlot.Config
         public bool invertSign;
         public bool logScale;
         public string numericFormatString;
+        public string dateTimeFormatString;
 
         public int radix = 10;
         public string prefix = null;
@@ -105,10 +106,7 @@ namespace ScottPlot.Config
 
                     var unitFactory = new DateTimeUnitFactory();
                     IDateTimeUnit tickUnit = unitFactory.CreateUnit(from, to, settings.culture, tickCount, dtManualUnits, (int)dtManualSpacing);
-                    var dateTicks = tickUnit.GetTicksAndLabels(from, to);
-
-                    tickPositionsMajor = dateTicks.Ticks;
-                    tickLabels = dateTicks.Labels;
+                    (tickPositionsMajor, tickLabels) = tickUnit.GetTicksAndLabels(from, to, dateTimeFormatString);
                 }
                 catch
                 {

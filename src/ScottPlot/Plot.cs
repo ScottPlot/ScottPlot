@@ -2030,7 +2030,9 @@ namespace ScottPlot
             int? baseX = null,
             int? baseY = null,
             string prefixX = null,
-            string prefixY = null
+            string prefixY = null,
+            string dateTimeFormatStringX = null,
+            string dateTimeFormatStringY = null
             )
         {
             if (displayTicksX != null)
@@ -2081,6 +2083,11 @@ namespace ScottPlot
                 settings.ticks.y.numericFormatString = numericFormatStringY;
             if (snapToNearestPixel != null)
                 settings.ticks.snapToNearestPixel = snapToNearestPixel.Value;
+            if (dateTimeFormatStringX != null)
+                settings.ticks.x.dateTimeFormatString = dateTimeFormatStringX;
+            if (dateTimeFormatStringY != null)
+                settings.ticks.y.dateTimeFormatString = dateTimeFormatStringY;
+
             if (baseX != null)
             {
                 settings.ticks.x.radix = baseX.Value;
