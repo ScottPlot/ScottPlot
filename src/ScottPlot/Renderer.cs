@@ -207,6 +207,12 @@ namespace ScottPlot
                 double unitsFromAxisEdge = value - settings.axes.x.min;
                 double xPx = unitsFromAxisEdge * settings.xAxisScale + settings.layout.data.left;
                 double yPx = settings.layout.data.bottom;
+
+                // Dont display ticks outside the data area. 
+                // Floating-point precision limit causes this when plotting milliseconds using DateTime ticks
+                if (xPx < settings.layout.data.left - 1 || xPx > settings.layout.data.right + 1)
+                    continue;
+
                 if ((xPx == settings.layout.data.left) && settings.layout.displayFrameByAxis[2])
                     xPx -= 1; // snap ticks to the frame edge if they are 1px away
                 if (settings.ticks.snapToNearestPixel)
