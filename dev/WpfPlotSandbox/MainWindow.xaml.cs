@@ -24,7 +24,10 @@ namespace WpfPlotSandbox
         public MainWindow()
         {
             InitializeComponent();
+        }
 
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
             wpfPlot1.plt.PlotSignal(DataGen.Sin(51));
             wpfPlot1.plt.PlotSignal(DataGen.Cos(51));
 
