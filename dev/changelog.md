@@ -1,6 +1,8 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.0.40 ⚠️ _in active development_
+## ScottPlot 4.1.0 ⚠️ _in active development_
+
+## ScottPlot 4.0.40
 * Added user control for Avalonia (#496, #503) _Thanks @Benny121221_
 * Holding shift while left-click-dragging the edge of a span moves it instead of resizing it (#509) _Thanks @Torgano_
 * CSV export is now culture invariant for improved support on systems where commas are decimal separators (#512) _Thanks Daniel_
@@ -9,7 +11,7 @@
 * Improved DateTime tick placement and added support for milliseconds (#539) _Thanks @StendProg_
 * Pie charts now have an optional hollow center to produce donut plots (#534) _Thanks @Benny121221 and @AlexFsmn_
 * Added electrocardiogram (ECG) simulator to the DataGen module (#540) _Thanks @AteCoder_
-* Improved mouse scroll wheel responsiveness by delaying high quality render (#545, #543, #550) _@Thanks StendProg_
+* Improved mouse scroll wheel responsiveness by delaying high quality render (#545, #543, #550) _Thanks @StendProg_
 * Plot.PlotBitmap() allows Bitmaps to be placed at specific coordinates (#528) _Thanks @AlexFsmn_
 * DataGen.SampleImage() returns a sample Bitmap that can be used for testing
 * Bar graphs now have a hatchStyle property to customize fill pattern (#555) _Thanks @Benny121221_
