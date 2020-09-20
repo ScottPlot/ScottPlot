@@ -248,7 +248,9 @@ namespace ScottPlot
                 lineWidth = 10,
                 markerShape = MarkerShape.none,
                 hatchColor = hatchColor,
-                hatchStyle = hatchStyle
+                hatchStyle = hatchStyle,
+                borderColor = outlinePen.Color,
+                borderWith = outlinePen.Width
             };
             return new LegendItem[] { singleLegendItem };
         }
