@@ -12,6 +12,7 @@
 * Improved mouse scroll wheel responsiveness by delaying high quality render (#545, #543, #550) _@Thanks StendProg_
 * Plot.PlotBitmap() allows Bitmaps to be placed at specific coordinates (#528) _Thanks @AlexFsmn_
 * DataGen.SampleImage() returns a sample Bitmap that can be used for testing
+* Bar graphs now have a hatchStyle property to customize fill pattern (#555) _Thanks @Benny121221_
 
 ## ScottPlot 4.0.39
 * Legend now reflects LineStyle of Signal and SignalXY plots (#488) _Thanks @Benny121221_
