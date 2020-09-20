@@ -3,6 +3,7 @@ using ScottPlot.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Text;
 
@@ -125,14 +126,32 @@ namespace ScottPlot.Renderable
                     // draw text
                     gfx.DrawString(item.label, font, textBrush, locationX + symbolWidth, locationY + verticalOffset);
 
-                    // draw line
+                    // prepare values for drawing a line
                     outlinePen.Color = item.color;
                     outlinePen.Width = 1;
                     float lineY = locationY + verticalOffset + maxLabelHeight / 2;
                     float lineX1 = locationX + symbolPad;
                     float lineX2 = lineX1 + symbolWidth - symbolPad * 2;
-                    using (var linePen = GDI.Pen(item.color, item.lineWidth, item.lineStyle, false))
-                        gfx.DrawLine(linePen, lineX1, lineY, lineX2, lineY);
+
+                    // prepare values for drawing a rectangle
+                    PointF rectOrigin = new PointF(lineX1, (float)(lineY - item.lineWidth / 2));
+                    SizeF rectSize = new SizeF(lineX2 - lineX1, (float)item.lineWidth);
+                    RectangleF rect = new RectangleF(rectOrigin, rectSize);
+
+                    if (item.IsRectangle)
+                    {
+                        using (var legendItemFillBrush = GDI.HatchBrush(item.hatchStyle, item.color, item.hatchColor))
+                        using (var legendItemOutlinePen = new Pen(item.borderColor, item.borderWith))
+                        {
+                            gfx.FillRectangle(legendItemFillBrush, rect);
+                            gfx.DrawRectangle(legendItemOutlinePen, rect.X, rect.Y, rect.Width, rect.Height);
+                        }
+                    }
+                    else
+                    {
+                        using (var linePen = GDI.Pen(item.color, item.lineWidth, item.lineStyle, false))
+                            gfx.DrawLine(linePen, lineX1, lineY, lineX2, lineY);
+                    }
 
                     // draw marker
                     float lineXcenter = (lineX1 + lineX2) / 2;

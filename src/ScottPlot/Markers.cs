@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,6 +33,7 @@ namespace ScottPlot
         {
 
             Pen pen = new Pen(color);
+
             Brush brush = new SolidBrush(color);
 
             PointF corner1 = new PointF(pixelLocation.X - size / 2, pixelLocation.Y - size / 2);

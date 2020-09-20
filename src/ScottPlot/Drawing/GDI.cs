@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -64,7 +66,7 @@ namespace ScottPlot.Drawing
         {
             var pen = new System.Drawing.Pen(color, (float)width);
 
-            if (lineStyle == LineStyle.Solid)
+            if (lineStyle == LineStyle.Solid || lineStyle == LineStyle.None)
             {
                 /* WARNING: Do NOT apply a solid DashPattern!
                  * Setting DashPattern automatically sets a pen's DashStyle to custom.
@@ -95,5 +97,45 @@ namespace ScottPlot.Drawing
 
             return pen;
         }
+
+        public static System.Drawing.Brush HatchBrush(HatchStyle pattern, Color fillColor, Color hatchColor)
+        {
+            if (pattern == HatchStyle.None)
+                return new SolidBrush(fillColor);
+            else
+                return new HatchBrush(ConvertToSDHatchStyle(pattern).Value, hatchColor, fillColor);
+        }
+
+        public static System.Drawing.Drawing2D.HatchStyle? ConvertToSDHatchStyle(Drawing.HatchStyle pattern)
+        {
+            switch (pattern)
+            {
+                case HatchStyle.StripedUpwardDiagonal:
+                    return System.Drawing.Drawing2D.HatchStyle.LightUpwardDiagonal;
+                case HatchStyle.StripedDownwardDiagonal:
+                    return System.Drawing.Drawing2D.HatchStyle.LightDownwardDiagonal;
+                case HatchStyle.StripedWideUpwardDiagonal:
+                    return System.Drawing.Drawing2D.HatchStyle.WideUpwardDiagonal;
+                case HatchStyle.StripedWideDownwardDiagonal:
+                    return System.Drawing.Drawing2D.HatchStyle.WideDownwardDiagonal;
+                case HatchStyle.LargeCheckerBoard:
+                    return System.Drawing.Drawing2D.HatchStyle.LargeCheckerBoard;
+                case HatchStyle.SmallCheckerBoard:
+                    return System.Drawing.Drawing2D.HatchStyle.SmallCheckerBoard;
+                case HatchStyle.LargeGrid:
+                    return System.Drawing.Drawing2D.HatchStyle.LargeGrid;
+                case HatchStyle.SmallGrid:
+                    return System.Drawing.Drawing2D.HatchStyle.SmallGrid;
+                case HatchStyle.DottedDiamond:
+                    return System.Drawing.Drawing2D.HatchStyle.DottedDiamond;
+
+                case HatchStyle.None:
+                default:
+                    return null;
+
+            }
+        }
+
     }
+
 }
