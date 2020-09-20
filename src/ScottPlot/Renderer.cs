@@ -13,7 +13,8 @@ using ScottPlot.Drawing;
 
 namespace ScottPlot
 {
-    [Obsolete("Renderables should implement IRenderable")]
+    // TODO: delete this module in ScottPlot 4.1 
+    //[Obsolete("Renderables should implement IRenderable")]
     public class Renderer
     {
         public static void DataPlottables(Settings settings)
