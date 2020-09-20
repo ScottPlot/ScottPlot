@@ -39,7 +39,7 @@ namespace ScottPlot
         public Font valueTextFont;
         public Brush valueTextBrush;
 
-        public Drawing.HatchStyle barPattern = Drawing.HatchStyle.None;
+        public Drawing.HatchStyle hatchStyle = Drawing.HatchStyle.None;
 
         public PlottableBar(double[] xs, double[] ys, string label,
             double barWidth, double xOffset,
@@ -141,13 +141,13 @@ namespace ScottPlot
 
         private void UpdateBrush(double value)
         {
-            if (barPattern is Drawing.HatchStyle.None)
+            if (hatchStyle is Drawing.HatchStyle.None)
             {
                 ((SolidBrush)fillBrush).Color = (value < 0) ? negativeColor : fillColor;
             }
             else
             {
-                var hatchStyle = Drawing.GDI.ConvertToSDHatchStyle(barPattern).Value;
+                var hatchStyle = Drawing.GDI.ConvertToSDHatchStyle(this.hatchStyle).Value;
                 fillBrush = new HatchBrush(hatchStyle, hatchColor, fillColor);
             }
         }
@@ -241,7 +241,7 @@ namespace ScottPlot
 
         public override LegendItem[] GetLegendItems()
         {
-            var singleLegendItem = new LegendItem(label, fillColor, lineWidth: 10, markerShape: MarkerShape.none, backgroundColor: hatchColor, brushPattern: barPattern);
+            var singleLegendItem = new LegendItem(label, fillColor, lineWidth: 10, markerShape: MarkerShape.none, backgroundColor: hatchColor, brushPattern: hatchStyle);
             return new LegendItem[] { singleLegendItem };
         }
     }

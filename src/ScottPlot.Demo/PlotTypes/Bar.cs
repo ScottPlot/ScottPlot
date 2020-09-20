@@ -90,17 +90,17 @@ namespace ScottPlot.Demo.PlotTypes
                     ys: new double[][] { ys1, ys2, ys3 },
                     yErr: new double[][] { err1, err2, err3 });
 
-                barCharts[0].barPattern = Drawing.HatchStyle.StripedWideUpwardDiagonal;
+                barCharts[0].hatchStyle = Drawing.HatchStyle.StripedWideUpwardDiagonal;
                 barCharts[0].fillColor = System.Drawing.Color.Gray;
                 barCharts[0].hatchColor = System.Drawing.Color.Black;
                 barCharts[0].Render(plt.GetSettings());
 
-                barCharts[1].barPattern = Drawing.HatchStyle.StripedWideDownwardDiagonal;
+                barCharts[1].hatchStyle = Drawing.HatchStyle.StripedWideDownwardDiagonal;
                 barCharts[1].fillColor = System.Drawing.Color.DodgerBlue;
                 barCharts[1].hatchColor = System.Drawing.Color.DeepSkyBlue;
                 barCharts[1].Render(plt.GetSettings());
 
-                barCharts[2].barPattern = Drawing.HatchStyle.LargeCheckerBoard;
+                barCharts[2].hatchStyle = Drawing.HatchStyle.LargeCheckerBoard;
                 barCharts[2].fillColor = System.Drawing.Color.SeaGreen;
                 barCharts[2].hatchColor = System.Drawing.Color.DarkSeaGreen;
                 barCharts[2].Render(plt.GetSettings());
