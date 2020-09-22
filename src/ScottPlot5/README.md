@@ -1,5 +1,7 @@
 # ScottPlot 5 
 
+**⚠️ WARNING:** ScottPlot 5 is early in development and highly experimental at this time.
+
 ### Design Goals
 
 * Figure items (ticks, axis labels, grid, etc.) will implement `IRenderable` and track state (styling) and handle rendering in the same class. This makes experimental renderables (like new tick systems) easy to implement and test.
