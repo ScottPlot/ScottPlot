@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -6,8 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\ScottPlot.Demo\ScottPlot.Demo.csproj" />
-    <ProjectReference Include="..\..\..\src\ScottPlot\ScottPlot.csproj" />
+    <ProjectReference Include="..\..\..\src\ScottPlot4\ScottPlot.Demo\ScottPlot.Demo\ScottPlot.Demo.csproj" />
+    <ProjectReference Include="..\..\..\src\ScottPlot4\ScottPlot\ScottPlot.csproj" />
   </ItemGroup>
 
 </Project>

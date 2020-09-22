@@ -52,7 +52,7 @@
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing.Common, Version=4.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Drawing.Common.4.7.0\lib\net461\System.Drawing.Common.dll</HintPath>
+      <HintPath>..\..\packages\System.Drawing.Common.4.7.0\lib\net461\System.Drawing.Common.dll</HintPath>
     </Reference>
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.3\lib\netstandard2.0\System.Memory.dll</HintPath>
@@ -245,11 +245,11 @@
       <Project>{79472430-fd93-4235-b0ee-da4badf3a3e0}</Project>
       <Name>ScottPlot.Demo</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ScottPlot.WinForms\ScottPlot.WinForms.csproj">
+    <ProjectReference Include="..\..\ScottPlot.WinForms\ScottPlot.WinForms.csproj">
       <Project>{1561fb75-f36a-44dc-bba7-da15dff997ed}</Project>
       <Name>ScottPlot.WinForms</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ScottPlot\ScottPlot.csproj">
+    <ProjectReference Include="..\..\ScottPlot\ScottPlot.csproj">
       <Project>{ee9215c6-01c1-4835-8514-3a708f9291f1}</Project>
       <Name>ScottPlot</Name>
     </ProjectReference>

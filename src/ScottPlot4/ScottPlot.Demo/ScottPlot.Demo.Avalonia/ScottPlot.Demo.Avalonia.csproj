@@ -8,7 +8,8 @@
     <PackageReference Include="Avalonia.Desktop" Version="0.9.11" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ScottPlot.Avalonia\ScottPlot.Avalonia.csproj" />
+    <ProjectReference Include="..\..\ScottPlot.Avalonia\ScottPlot.Avalonia.csproj" />
+    <ProjectReference Include="..\..\ScottPlot\ScottPlot.csproj" />
     <ProjectReference Include="..\ScottPlot.Demo\ScottPlot.Demo.csproj" />
   </ItemGroup>
 </Project>

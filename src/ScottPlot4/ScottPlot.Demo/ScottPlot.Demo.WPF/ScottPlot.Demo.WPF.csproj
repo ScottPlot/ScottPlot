@@ -20,9 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\ScottPlot\ScottPlot.csproj" />
+    <ProjectReference Include="..\..\ScottPlot.WPF\ScottPlot.WPF.csproj" />
     <ProjectReference Include="..\ScottPlot.Demo\ScottPlot.Demo.csproj" />
-    <ProjectReference Include="..\ScottPlot.WPF\ScottPlot.WPF.csproj" />
-    <ProjectReference Include="..\ScottPlot\ScottPlot.csproj" />
   </ItemGroup>
 
   <ItemGroup>
