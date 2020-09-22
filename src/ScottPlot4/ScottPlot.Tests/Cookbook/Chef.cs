@@ -12,11 +12,8 @@ namespace ScottPlot.Tests.Cookbook
         [Test]
         public void Test_Cookbook_Generator()
         {
-            // don't run test on MacOS
-            //if (System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.OSX))
-            //return; // TODO: figure out how to get this working in MacOS
-
-            string sourceFolder = System.IO.Path.GetFullPath("../../../../src/ScottPlot.Demo");
+            string sourceFolder = System.IO.Path.GetFullPath("../../../../ScottPlot.Demo/ScottPlot.Demo");
+            Console.WriteLine(sourceFolder);
             var reportGen = new ReportGenerator(useDLL: true, sourceFolder: sourceFolder);
             Console.WriteLine("Generating cookbook in: " + reportGen.outputFolder);
 
