@@ -1,6 +1,6 @@
-﻿using System;
+﻿using ScottPlot.MinMaxSearchStrategies;
+using System;
 using System.Drawing;
-using ScottPlot.MinMaxSearchStrategies;
 
 namespace ScottPlot
 {
@@ -13,7 +13,7 @@ namespace ScottPlot
     // - source array can be change by call updateData(), updating by ranges much faster.
     public class PlottableSignalConst<T> : PlottableSignalBase<T> where T : struct, IComparable
     {
-        public bool TreesReady => true;
+        public bool TreesReady => (minmaxSearchStrategy as SegmentedTreeMinMaxSearchStrategy<T>)?.TreesReady ?? false;
         public PlottableSignalConst(T[] ys, double sampleRate, double xOffset, double yOffset, Color color,
             double lineWidth, double markerSize, string label, Color[] colorByDensity,
             int minRenderIndex, int maxRenderIndex, LineStyle lineStyle, bool useParallel)

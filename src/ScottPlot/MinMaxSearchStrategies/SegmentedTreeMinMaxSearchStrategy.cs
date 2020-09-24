@@ -1,5 +1,5 @@
-﻿using System;
-using ScottPlot.DataStructures;
+﻿using ScottPlot.DataStructures;
+using System;
 
 namespace ScottPlot.MinMaxSearchStrategies
 {
@@ -7,6 +7,7 @@ namespace ScottPlot.MinMaxSearchStrategies
     {
         private SegmentedTree<T> segmentedTree;
 
+        public bool TreesReady => segmentedTree.TreesReady;
         public SegmentedTreeMinMaxSearchStrategy()
         {
             segmentedTree = new SegmentedTree<T>();
