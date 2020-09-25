@@ -15,6 +15,7 @@
 The [ScottPlot website](http://swharden.com/scottplot/) contains documentation, tutorials, demos, and more...
 
 * **[ScottPlot Cookbook](http://swharden.com/scottplot/cookbook.md.html) 👈 START HERE**
+* **[ScottPlot Demo Application](https://swharden.com/scottplot/demo)**
 * [WPF Quickstart](http://swharden.com/scottplot/quickstart.md.html#wpf-quickstart)
 * [Windows Forms Quickstart](http://swharden.com/scottplot/quickstart.md.html#windows-forms-quickstart)
 * [Console Application Quickstart](http://swharden.com/scottplot/quickstart.md.html#console-quickstart)
