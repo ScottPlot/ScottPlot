@@ -44,21 +44,23 @@ namespace ScottPlot.Config.DateTimeTickUnits
         {
             double daysApart = to.ToOADate() - from.ToOADate();
 
+            int halfDensity = maxTickCount / 2;
+
             // tick unit borders in days
             var tickUnitBorders = new List<(DateTimeUnit kind, double border)?>
             {
-                (DateTimeUnit.ThousandYear, 365 * 1_000 * 2),
-                (DateTimeUnit.HundredYear, 365 * 100 * 2),
-                (DateTimeUnit.TenYear, 365 * 10 * 2),
-                (DateTimeUnit.Year, 365 * 2),
-                (DateTimeUnit.Month, 30 * 2),
-                (DateTimeUnit.Day, 1 * 2),
-                (DateTimeUnit.Hour, 1.0 / 24 * 2),
-                (DateTimeUnit.Minute, 1.0 / 24 / 60 * 2),
-                (DateTimeUnit.Second, 1.0 / 24 / 3600 * 2),
-                (DateTimeUnit.Decisecond, 1.0 / 24 / 3600 / 10 * 2),
-                (DateTimeUnit.Centisecond, 1.0 / 24 / 3600 / 100 * 2),
-                (DateTimeUnit.Millisecond, 1.0 / 24 / 3600 / 1000 * 2),
+                (DateTimeUnit.ThousandYear, 365 * 1_000 * halfDensity),
+                (DateTimeUnit.HundredYear, 365 * 100 * halfDensity),
+                (DateTimeUnit.TenYear, 365 * 10 * halfDensity),
+                (DateTimeUnit.Year, 365 * halfDensity),
+                (DateTimeUnit.Month, 30 * halfDensity),
+                (DateTimeUnit.Day, 1 * halfDensity),
+                (DateTimeUnit.Hour, 1.0 / 24 * halfDensity),
+                (DateTimeUnit.Minute, 1.0 / 24 / 60 * halfDensity),
+                (DateTimeUnit.Second, 1.0 / 24 / 3600 * halfDensity),
+                (DateTimeUnit.Decisecond, 1.0 / 24 / 3600 / 10 * halfDensity),
+                (DateTimeUnit.Centisecond, 1.0 / 24 / 3600 / 100 * halfDensity),
+                (DateTimeUnit.Millisecond, 1.0 / 24 / 3600 / 1000 * halfDensity),
             };
 
             var bestTickUnitKind = tickUnitBorders.FirstOrDefault(tr => daysApart > tr.Value.border);
