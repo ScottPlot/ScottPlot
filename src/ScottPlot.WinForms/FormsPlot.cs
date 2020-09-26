@@ -77,6 +77,7 @@ namespace ScottPlot
                 plt.Style(Style.Control);
 
             settings = plt.GetSettings(showWarning: false);
+            dpiScale = settings.gfxFigure.DpiX / 96;
 
             PbPlot_MouseUp(null, null);
             PbPlot_SizeChanged(null, null);
@@ -246,7 +247,7 @@ namespace ScottPlot
         public PointF mouseCoordinates { get { return plt.CoordinateFromPixel(mouseLocation); } }
         Point mouseLocation;
 
-        private int dpiScale = 1; //Heres hoping that WinForms becomes DPI aware
+        private float dpiScale = 1; //Heres hoping that WinForms becomes DPI aware
 
         private void PbPlot_MouseMove(object sender, MouseEventArgs e)
         {
