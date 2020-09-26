@@ -14,9 +14,11 @@ namespace ScottPlot
     {
         [NotNAN]
         [NotInfinity]
+        [EqualLength]
         public double[] xs;
         [NotNAN]
         [NotInfinity]
+        [EqualLength]
         public double[] ys;
         public double[] errorX;
         public double[] errorY;

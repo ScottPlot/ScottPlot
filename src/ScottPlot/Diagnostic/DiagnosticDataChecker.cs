@@ -12,6 +12,7 @@ namespace ScottPlot.Diagnostic
                 new InfinityChecker(),
                 new NANChecker(),
                 new AccendingChecker(),
+                new EqualLengthChecker(),
             };
         }
 

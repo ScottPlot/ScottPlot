@@ -66,5 +66,38 @@ namespace ScottPlot.Demo.DataDiagnostic
                   });
             }
         }
+
+        public class ScatterEqualLengthCheck : PlotDemo, IPlotDemo
+        {
+            // TODO make good name/description
+            public string name { get; } = "Scatter with 1000 Points";
+            public string description { get; } = "After 5 seconds wrong data writed to xs array, this can be catch on Render with DiagnosticMode";
+
+            public void Render(Plot plt)
+            {
+                plt.DiagnosticMode = true;
+
+                // generate random, unevenly-spaced data
+                Random rand = new Random(0);
+                int pointCount = 1_000;
+                double[] ys = new double[pointCount];
+                double[] xs = new double[pointCount];
+                for (int i = 1; i < ys.Length; i++)
+                {
+                    ys[i] = ys[i - 1] + rand.NextDouble() - .5;
+                    xs[i] = xs[i - 1] + rand.NextDouble();
+                }
+
+                plt.Title($"ScatterPlot ({pointCount:N0} points)");
+                var scatter = plt.PlotScatter(xs, ys);
+
+                // Check goes only on Render, so user must interract with plot after 5 seconds
+                Task.Run(() =>
+                  {
+                      Thread.Sleep(5000);
+                      scatter.ys = ys.Concat(new double[] { 42 }).ToArray();
+                  });
+            }
+        }
     }
 }
