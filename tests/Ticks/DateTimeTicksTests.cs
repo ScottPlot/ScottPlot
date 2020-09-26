@@ -9,7 +9,7 @@ namespace ScottPlotTests.Ticks
     [TestFixture]
     public class DateTimeTicksTests
     {
-        [Test, Explicit]
+        [Test]
         public void GetTicksAndLabels_AllUnitsAndAllCultures_AllLabelsContains2Lines()
         {
             DateTime from = DateTime.Now;
