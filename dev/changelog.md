@@ -2,6 +2,11 @@
 
 ## ScottPlot 4.1.0 ⚠️ _in active development_
 
+## ScottPlot 4.0.41
+* Improved DPI scaling support when using the WinForms control in .NET Core applications (#563) _Thanks @citizen3942_
+* Improved density of DateTime ticks (#564, #561) _Thanks @StendProg and @waynetheron_
+* Improved display of DateTime tick labels containing multiple spaces (#539, #564) _Thanks @StendProg_
+
 ## ScottPlot 4.0.40
 * Added user control for Avalonia (#496, #503) _Thanks @Benny121221_
 * Holding shift while left-click-dragging the edge of a span moves it instead of resizing it (#509) _Thanks @Torgano_
