@@ -45,7 +45,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot.Avalonia", "Scott
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot.Demo.Avalonia", "ScottPlot.Demo.Avalonia\ScottPlot.Demo.Avalonia.csproj", "{8B76BD3E-AC5B-40DD-83E8-2507A6D30168}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfPlotSandbox", "..\dev\WpfPlotSandbox\WpfPlotSandbox.csproj", "{72B25925-5D71-4F6B-B6C7-867EFE61131D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfPlotSandbox", "..\dev\WpfPlotSandbox\WpfPlotSandbox.csproj", "{72B25925-5D71-4F6B-B6C7-867EFE61131D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormsPlotCoreSandbox", "..\dev\FormsPlotCoreSandbox\FormsPlotCoreSandbox.csproj", "{D95C99DE-B6F4-490B-A9BC-1412F10B2FD5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -109,6 +111,10 @@ Global
 		{72B25925-5D71-4F6B-B6C7-867EFE61131D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72B25925-5D71-4F6B-B6C7-867EFE61131D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72B25925-5D71-4F6B-B6C7-867EFE61131D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D95C99DE-B6F4-490B-A9BC-1412F10B2FD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D95C99DE-B6F4-490B-A9BC-1412F10B2FD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D95C99DE-B6F4-490B-A9BC-1412F10B2FD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D95C99DE-B6F4-490B-A9BC-1412F10B2FD5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -128,6 +134,7 @@ Global
 		{74A9E843-D673-4171-8A52-43D10FE42380} = {E6E0010E-1E4C-4C31-849D-BCB35CCA1B7B}
 		{8B76BD3E-AC5B-40DD-83E8-2507A6D30168} = {D0040AB2-4D89-4BBE-B1CB-FAB64E741336}
 		{72B25925-5D71-4F6B-B6C7-867EFE61131D} = {35F8F55D-8E1E-44BC-9DE2-C60DCD42BDCB}
+		{D95C99DE-B6F4-490B-A9BC-1412F10B2FD5} = {35F8F55D-8E1E-44BC-9DE2-C60DCD42BDCB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FBAE082A-173A-4F13-BE31-E6C070513C9C}
