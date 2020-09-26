@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using ScottPlot.Config.DateTimeTickUnits;
 using System;
+using System.Drawing.Printing;
 using System.Globalization;
 using System.Linq;
 
@@ -12,20 +13,28 @@ namespace ScottPlotTests.Ticks
         [Test]
         public void GetTicksAndLabels_AllUnitsAndAllCultures_AllLabelsContains2Lines()
         {
-            DateTime from = DateTime.Now;
+            string[] ignoredCultures = { "ar", "ar-SA" }; // these use a 100 year date
             CultureInfo[] cultures = CultureInfo.GetCultures(CultureTypes.AllCultures)
-                                    // This cultures support only short date range (100 Year) and throws on test
-                                    .Where(culture => culture.ToString() != "ar" && culture.ToString() != "ar-SA")
+                                    .Where(culture => ignoredCultures.Contains(culture.ToString()) == false)
                                     .ToArray();
+
             DateTimeUnitFactory factory = new DateTimeUnitFactory();
-            for (DateTime to = from + TimeSpan.FromDays(1000 * 365); to - from > TimeSpan.FromMilliseconds(1); to -= (to - from) / 2)
+
+            DateTime dateLower = new DateTime(1985, 9, 24);
+            DateTime dateUpper = dateLower + TimeSpan.FromDays(1000 * 365);
+            while ((dateUpper - dateLower).TotalMilliseconds > 1)
             {
+                TimeSpan span = dateUpper - dateLower;
+                Console.WriteLine($"Testing span: {span}");
+
                 foreach (var culture in cultures)
                 {
-                    var unit = factory.CreateBestUnit(from, to, culture, 10);
-                    var labels = unit.GetTicksAndLabels(from, to, null);
+                    var unit = factory.CreateBestUnit(dateLower, dateUpper, culture, 10);
+                    var labels = unit.GetTicksAndLabels(dateLower, dateUpper, null);
                     Assert.False(labels.Labels.Any(l => l.Count(c => c == '\n') != 1));
                 }
+
+                dateUpper -= span / 2;
             }
         }
     }
