@@ -4,6 +4,7 @@ using System;
 using System.Drawing.Printing;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace ScottPlotTests.Ticks
 {
@@ -20,8 +21,11 @@ namespace ScottPlotTests.Ticks
 
             DateTimeUnitFactory factory = new DateTimeUnitFactory();
 
-            DateTime dateLower = new DateTime(1985, 9, 24);
-            DateTime dateUpper = dateLower + TimeSpan.FromDays(1000 * 365);
+            // OSX can only instantiate DateTimes between 04/30/1900 and 11/16/2077
+            DateTime dateLower = new DateTime(1901, 1, 1);
+            DateTime dateUpper = RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ?
+                 new DateTime(2070, 1, 1) : new DateTime(3000, 1, 1);
+
             while ((dateUpper - dateLower).TotalMilliseconds > 1)
             {
                 TimeSpan span = dateUpper - dateLower;
