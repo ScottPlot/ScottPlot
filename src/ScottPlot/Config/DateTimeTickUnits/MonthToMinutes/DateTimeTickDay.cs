@@ -9,7 +9,7 @@ namespace ScottPlot.Config.DateTimeTickUnits
         {
             kind = DateTimeUnit.Day;
             if (manualSpacing == null)
-                deltas = new int[] { 1, 2, 5, 10 };
+                deltas = new int[] { 1, 2, 5, 10, 20 };
         }
 
         protected override DateTime Floor(DateTime value)
