@@ -1,21 +1,18 @@
 ﻿using ScottPlot.Diagnostic.Attributes;
 using System;
-using System.Linq;
-using System.Reflection;
 
 namespace ScottPlot.Diagnostic
 {
-    public class CheckFieldsForNANDecorator : PlottableDecoratorBase
+    public class NANChecker : FieldsCheckerBase
     {
-        private FieldInfo[] fieldsToCheck;
-
-        public CheckFieldsForNANDecorator(Plottable plottable) : base(plottable)
+        public NANChecker()
         {
-            fieldsToCheck = sourcePlottable.GetType().GetFields().Where(f => f.IsDefined(typeof(NotNANAttribute))).ToArray();
+            AttributesToCheck = new Attribute[] { new NotNANAttribute() };
         }
 
-        protected override void BeforeRenderCheck()
+        public override bool Check(Plottable plottable)
         {
+            var fieldsToCheck = GetFieldsToCheck(plottable);
             foreach (var fi in fieldsToCheck)
             {
                 if (fi.FieldType.IsArray)
@@ -23,20 +20,20 @@ namespace ScottPlot.Diagnostic
                     var elementType = fi.FieldType.GetElementType();
                     if (elementType == typeof(double))
                     {
-                        var dArray = (double[])fi.GetValue(sourcePlottable);
+                        var dArray = (double[])fi.GetValue(plottable);
                         for (int i = 0; i < dArray.Length; i++)
                         {
                             if (Double.IsNaN(dArray[i]))
-                                throw new ArithmeticException($"{sourcePlottable}: {fi.Name}[{i}] is NAN");
+                                throw new ArithmeticException($"{plottable}: {fi.Name}[{i}] is NAN");
                         }
                     }
                     if (elementType == typeof(float))
                     {
-                        var dArray = (float[])fi.GetValue(sourcePlottable);
+                        var dArray = (float[])fi.GetValue(plottable);
                         for (int i = 0; i < dArray.Length; i++)
                         {
                             if (float.IsNaN(dArray[i]))
-                                throw new ArithmeticException($"{sourcePlottable}: {fi.Name}[{i}] is NAN");
+                                throw new ArithmeticException($"{plottable}: {fi.Name}[{i}] is NAN");
                         }
                     }
                 }
@@ -44,18 +41,20 @@ namespace ScottPlot.Diagnostic
                 {
                     if (fi.FieldType == typeof(double))
                     {
-                        var value = (double)fi.GetValue(sourcePlottable);
+                        var value = (double)fi.GetValue(plottable);
                         if (Double.IsNaN(value))
-                            throw new ArithmeticException($"{sourcePlottable}: {fi.Name} is NAN");
+                            throw new ArithmeticException($"{plottable}: {fi.Name} is NAN");
                     }
                     if (fi.FieldType == typeof(float))
                     {
-                        var value = (float)fi.GetValue(sourcePlottable);
+                        var value = (float)fi.GetValue(plottable);
                         if (float.IsNaN(value))
-                            throw new ArithmeticException($"{sourcePlottable}: {fi.Name} is NAN");
+                            throw new ArithmeticException($"{plottable}: {fi.Name} is NAN");
                     }
                 }
             }
+
+            return true;
         }
     }
 }

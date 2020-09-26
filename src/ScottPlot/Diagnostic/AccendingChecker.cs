@@ -1,21 +1,18 @@
 ﻿using ScottPlot.Diagnostic.Attributes;
 using System;
-using System.Linq;
-using System.Reflection;
 
 namespace ScottPlot.Diagnostic
 {
-    public class CheckFiledsOrderedAccendingDecorator : PlottableDecoratorBase
+    public class AccendingChecker : FieldsCheckerBase
     {
-        private FieldInfo[] fieldsToCheck;
-
-        public CheckFiledsOrderedAccendingDecorator(Plottable plottable) : base(plottable)
+        public AccendingChecker()
         {
-            fieldsToCheck = sourcePlottable.GetType().GetFields().Where(f => f.IsDefined(typeof(AccendingAttribute))).ToArray();
+            AttributesToCheck = new Attribute[] { new AccendingAttribute() };
         }
 
-        protected override void BeforeRenderCheck()
+        public override bool Check(Plottable plottable)
         {
+            var fieldsToCheck = GetFieldsToCheck(plottable);
             foreach (var fi in fieldsToCheck)
             {
                 if (fi.FieldType.IsArray)
@@ -23,18 +20,20 @@ namespace ScottPlot.Diagnostic
                     var elementType = fi.FieldType.GetElementType();
                     if (typeof(IComparable).IsAssignableFrom(elementType))
                     {
-                        var dArray = (Array)fi.GetValue(sourcePlottable);
+                        var dArray = (Array)fi.GetValue(plottable);
                         for (int i = 1; i < dArray.Length; i++)
                         {
                             if (((IComparable)dArray.GetValue(i)).CompareTo(dArray.GetValue(i - 1)) < 0)
                             {
-                                throw new ArrayTypeMismatchException($"{sourcePlottable}: {fi.Name} contain not accending values,"
+                                throw new ArrayTypeMismatchException($"{plottable}: {fi.Name} contain not accending values,"
                                     + $" {fi.Name}[{i}] = {dArray.GetValue(i)} < {fi.Name}[{i - 1}] = {dArray.GetValue(i - 1)}");
                             }
                         }
                     }
                 }
             }
+
+            return true;
         }
     }
 }

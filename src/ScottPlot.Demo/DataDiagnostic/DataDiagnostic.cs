@@ -27,14 +27,10 @@ namespace ScottPlot.Demo.DataDiagnostic
                 for (int i = 0; i < lineCount; i++)
                     plt.PlotSignal(y[i]);
 
-                plt.DiagnosticMode = false; // disable to not affect on another demos
-
                 //TODO make good Title
                 plt.Title("Signal Plot Quickstart with NAN value throw");
                 plt.YLabel("Vertical Units");
                 plt.XLabel("Horizontal Units");
-                plt.DiagnosticMode = false;
-
             }
         }
 
@@ -61,10 +57,6 @@ namespace ScottPlot.Demo.DataDiagnostic
 
                 plt.Title($"SignalXY Plot ({pointCount:N0} points)");
                 plt.PlotSignalXY(xs, ys);
-
-                plt.DiagnosticMode = false; // disable to not affect another demos
-
-                // All plotables created with DiagnosticMode on, will be checked also after diagnostic mode = false
 
                 // Check goes only on Render, so user must interract with plot after 5 seconds
                 Task.Run(() =>

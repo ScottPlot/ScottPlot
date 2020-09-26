@@ -164,6 +164,10 @@ namespace ScottPlot
                 settings.DataBackground.Render(settings);
                 settings.HorizontalGridLines.Render(settings);
                 settings.VerticalGridLines.Render(settings);
+                if (DiagnosticMode)
+                {
+                    new DiagnosticDataChecker().CheckPlottables(settings.plottables);
+                }
                 Renderer.DataPlottables(settings);
                 Renderer.MouseZoomRectangle(settings);
                 Renderer.PlaceDataOntoFigure(settings);
@@ -227,10 +231,7 @@ namespace ScottPlot
 
         public void Add(Plottable plottable)
         {
-            if (DiagnosticMode)
-                settings.plottables.Add(new DecoratorFactory().WrapWithAll(plottable));
-            else
-                settings.plottables.Add(plottable);
+            settings.plottables.Add(plottable);
         }
 
         /// <summary>

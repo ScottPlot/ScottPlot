@@ -1,21 +1,19 @@
 ﻿using ScottPlot.Diagnostic.Attributes;
 using System;
-using System.Linq;
-using System.Reflection;
 
 namespace ScottPlot.Diagnostic
 {
-    public class CheckFieldsForInfinityDecorator : PlottableDecoratorBase
+    public class InfinityChecker : FieldsCheckerBase
     {
-        private FieldInfo[] fieldsToCheck;
-
-        public CheckFieldsForInfinityDecorator(Plottable plottable) : base(plottable)
+        public InfinityChecker()
         {
-            fieldsToCheck = sourcePlottable.GetType().GetFields().Where(f => f.IsDefined(typeof(NotInfinityAttribute))).ToArray();
+            AttributesToCheck = new Attribute[] { new NotInfinityAttribute() };
         }
 
-        protected override void BeforeRenderCheck()
+        public override bool Check(Plottable plottable)
         {
+            var fieldsToCheck = GetFieldsToCheck(plottable);
+
             foreach (var fi in fieldsToCheck)
             {
                 if (fi.FieldType.IsArray)
@@ -23,20 +21,20 @@ namespace ScottPlot.Diagnostic
                     var elementType = fi.FieldType.GetElementType();
                     if (elementType == typeof(double))
                     {
-                        var dArray = (double[])fi.GetValue(sourcePlottable);
+                        var dArray = (double[])fi.GetValue(plottable);
                         for (int i = 0; i < dArray.Length; i++)
                         {
                             if (double.IsInfinity(dArray[i]))
-                                throw new ArithmeticException($"{sourcePlottable}: {fi.Name}[{i}] = {dArray[i]}");
+                                throw new ArithmeticException($"{plottable}: {fi.Name}[{i}] = {dArray[i]}");
                         }
                     }
                     if (elementType == typeof(float))
                     {
-                        var dArray = (float[])fi.GetValue(sourcePlottable);
+                        var dArray = (float[])fi.GetValue(plottable);
                         for (int i = 0; i < dArray.Length; i++)
                         {
                             if (float.IsInfinity(dArray[i]))
-                                throw new ArithmeticException($"{sourcePlottable}: {fi.Name}[{i}] = {dArray[i]}");
+                                throw new ArithmeticException($"{plottable}: {fi.Name}[{i}] = {dArray[i]}");
                         }
                     }
                 }
@@ -44,18 +42,20 @@ namespace ScottPlot.Diagnostic
                 {
                     if (fi.FieldType == typeof(double))
                     {
-                        var value = (double)fi.GetValue(sourcePlottable);
+                        var value = (double)fi.GetValue(plottable);
                         if (double.IsNaN(value))
-                            throw new ArithmeticException($"{sourcePlottable}: {fi.Name} = {value}");
+                            throw new ArithmeticException($"{plottable}: {fi.Name} = {value}");
                     }
                     if (fi.FieldType == typeof(float))
                     {
-                        var value = (float)fi.GetValue(sourcePlottable);
+                        var value = (float)fi.GetValue(plottable);
                         if (float.IsNaN(value))
-                            throw new ArithmeticException($"{sourcePlottable}: {fi.Name} = {value}");
+                            throw new ArithmeticException($"{plottable}: {fi.Name} = {value}");
                     }
                 }
             }
+
+            return true;
         }
     }
 }
