@@ -20,7 +20,9 @@ namespace ScottPlot
         [NotInfinity]
         [EqualLength]
         public double[] ys;
+        [EqualLength]
         public double[] errorX;
+        [EqualLength]
         public double[] errorY;
         public double lineWidth;
         public float errorLineWidth;

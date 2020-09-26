@@ -15,9 +15,13 @@ namespace ScottPlot.Diagnostic
         public override bool Check(Plottable plottable)
         {
             var fieldsToCheck = GetFieldsToCheck(plottable);
-            (FieldInfo fi, int Length)[] fieldsWithLength = fieldsToCheck.Select(fi =>
+            (FieldInfo fi, int? Length)[] fieldsWithLength = fieldsToCheck.Select(fi =>
             {
-                int Length = 1;
+                if (fi.GetValue(plottable) == null)
+                {
+                    return (fi, null);
+                }
+                int? Length = 1;
                 if (fi.FieldType.IsArray)
                 {
                     var array = (Array)fi.GetValue(plottable);
@@ -27,7 +31,13 @@ namespace ScottPlot.Diagnostic
             }).ToArray();
             var NotEqualFields = fieldsWithLength
                                   .SelectMany(f => fieldsWithLength, (f1, f2) => (f1, f2))
-                                  .Where(fPair => fPair.f1.Length != fPair.f2.Length);
+                                  .Where(fPair =>
+                                  {
+                                      if (fPair.f1.Length == null || fPair.f2.Length == null)
+                                          return false;
+
+                                      return fPair.f1.Length != fPair.f2.Length;
+                                  });
 
             foreach (var fp in NotEqualFields)
             {
