@@ -15,7 +15,6 @@ namespace ScottPlot
     public class PlottableSignalBase<T> : Plottable, IExportable where T : struct, IComparable
     {
         protected IMinMaxSearchStrategy<T> minmaxSearchStrategy;
-        // Any changes must be sync with PlottableSignal
         public T[] ys;
         public double sampleRate;
         public double samplePeriod;
@@ -41,7 +40,6 @@ namespace ScottPlot
         public Color? gradientFillColor2;
         public int baseline;
 
-        public bool TreesReady => true;
         public PlottableSignalBase(T[] ys, double sampleRate, double xOffset, double yOffset, Color color,
             double lineWidth, double markerSize, string label, Color[] colorByDensity,
             int minRenderIndex, int maxRenderIndex, LineStyle lineStyle, bool useParallel,
