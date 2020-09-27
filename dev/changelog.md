@@ -2,6 +2,9 @@
 
 ## ScottPlot 4.1.0 ⚠️ _in active development_
 
+## ScottPlot 4.0.43
+* Improved appearance of semi-transparent legend items (#567)
+
 ## ScottPlot 4.0.42
 * Improved DPI scaling support when using WinForms in .NET Core applications (#563) _Thanks @citizen3942_
 * Improved DPI scaling support for draggable axis lines and spans (#563) _Thanks @citizen3942_

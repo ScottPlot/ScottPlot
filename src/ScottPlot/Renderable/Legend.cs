@@ -140,6 +140,7 @@ namespace ScottPlot.Renderable
 
                     if (item.IsRectangle)
                     {
+                        // draw a rectangle
                         using (var legendItemFillBrush = GDI.HatchBrush(item.hatchStyle, item.color, item.hatchColor))
                         using (var legendItemOutlinePen = new Pen(item.borderColor, item.borderWith))
                         {
@@ -149,14 +150,16 @@ namespace ScottPlot.Renderable
                     }
                     else
                     {
+                        // draw a line
                         using (var linePen = GDI.Pen(item.color, item.lineWidth, item.lineStyle, false))
                             gfx.DrawLine(linePen, lineX1, lineY, lineX2, lineY);
-                    }
 
-                    // draw marker
-                    float lineXcenter = (lineX1 + lineX2) / 2;
-                    PointF markerPoint = new PointF(lineXcenter, lineY);
-                    MarkerTools.DrawMarker(gfx, markerPoint, item.markerShape, markerWidth, item.color);
+                        // and perhaps a marker in the middle of the line
+                        float lineXcenter = (lineX1 + lineX2) / 2;
+                        PointF markerPoint = new PointF(lineXcenter, lineY);
+                        if ((item.markerShape != MarkerShape.none) && (item.markerSize > 0))
+                            MarkerTools.DrawMarker(gfx, markerPoint, item.markerShape, markerWidth, item.color);
+                    }
                 }
             }
         }
