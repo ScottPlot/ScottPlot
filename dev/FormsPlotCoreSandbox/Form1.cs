@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -19,13 +20,19 @@ namespace FormsPlotCoreSandbox
 
         ScottPlot.PlottableVLine vline;
         ScottPlot.PlottableHLine hline;
+        ScottPlot.PlottableScatterHighlight sph;
         private void Form1_Load(object sender, EventArgs e)
         {
             vline = formsPlot1.plt.PlotVLine(1);
             hline = formsPlot1.plt.PlotHLine(1);
 
-            formsPlot1.plt.PlotHSpan(-.5, .5, draggable: true);
-            formsPlot1.plt.PlotVSpan(-.5, .5, draggable: true);
+            formsPlot1.plt.PlotHSpan(10, 20, draggable: true);
+            formsPlot1.plt.PlotVSpan(5, 10, draggable: true);
+
+            Random rand = new Random(0);
+            double[] xs = DataGen.Consecutive(100);
+            double[] ys = DataGen.RandomWalk(rand, 100);
+            sph = formsPlot1.plt.PlotScatterHighlight(xs, ys);
 
             formsPlot1.Render();
         }
@@ -35,6 +42,8 @@ namespace FormsPlotCoreSandbox
             (double x, double y) = formsPlot1.GetMouseCoordinates();
             vline.position = x;
             hline.position = y;
+            sph.HighlightClear();
+            sph.HighlightPointNearest(x, y);
             formsPlot1.Render();
         }
     }
