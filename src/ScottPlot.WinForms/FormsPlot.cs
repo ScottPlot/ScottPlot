@@ -15,6 +15,7 @@ namespace ScottPlot
         private Settings settings;
         private bool isDesignerMode;
         public Cursor cursor = Cursors.Arrow;
+        private float dpiScale;
 
         public override Color BackColor
         {
@@ -246,8 +247,6 @@ namespace ScottPlot
         [Obsolete("use Plot.CoordinateFromPixelX() and Plot.CoordinateFromPixelY()")]
         public PointF mouseCoordinates { get { return plt.CoordinateFromPixel(mouseLocation); } }
         Point mouseLocation;
-
-        private float dpiScale = 1; //Heres hoping that WinForms becomes DPI aware
 
         private void PbPlot_MouseMove(object sender, MouseEventArgs e)
         {
