@@ -89,7 +89,6 @@ namespace ScottPlot
             {
                 settings.bmpFigure = new Bitmap(settings.figureSize.Width, settings.figureSize.Height, pixelFormat);
                 settings.gfxFigure = Graphics.FromImage(settings.bmpFigure);
-                Settings.DPIScale = settings.gfxFigure.DpiX / Settings.defaultDPI;
             }
 
             if (settings.dataSize.Width > 0 && settings.dataSize.Height > 0)
