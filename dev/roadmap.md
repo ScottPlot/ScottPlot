@@ -1,22 +1,37 @@
 # ScottPlot Roadmap
 
-### Latest Plan
+_Updated September 26, 2020_
 
-> **⚠️ Message from Scott (August 2020):** I seek to stabilize ScottPlot 4.0 so I can focus all development effort into releasing ScottPlot 4.1 expediently. Users may post issues, but development of requested new features may be paused until 4.1 is released. **Due to active refactoring associated with the 4.0 → 4.1 transition, opening new PRs is discouraged until version 4.1 is released.** Progress is being tracked on [#505](https://github.com/swharden/ScottPlot/issues/505). Feel free to comment there or email me if you have questions in the interim.
+**My high priority goals are (in order):**
 
-### ScottPlot Versions
+* Roll version from `4.0` to `4.1.x-alpha`. This way NuGet only lists the package if the pre-release box is checked, making breaking changes less offensive.
 
-Changes for each released version can be viewed on the releases page:\
-https://github.com/swharden/ScottPlot/releases
+* Use `IPlottable` instead of `Plottable` (currently an abstract class with all abstract methods).
 
-* **ScottPlot 4.2** will provide support for alternative rendering systems such as ImageSharp and SkiaSharp.
+* Improve plottables by enhancing how data is updated and validated by creating and implementing `IValidatable`.
 
-* **ScottPlot 4.1** (Aug-Sep 2020, see [#505](https://github.com/swharden/ScottPlot/issues/505)) improves stability, modularity, configurability, and improves error checking of plots and user controls. This version has many internal refactors and optimizations, but only small changes to the public API.
+* Refactor all plottables to create and destroy disposable System.Drawing objects inside the render loop rather than store them at the class level.
 
-* **ScottPlot 4.0** (Nov, 2019) ScottPlot.Plot module became platform-agnostic using .NET Standard and System.Drawing.Common. Total recode, but same API. User controls became separate, platform-specific modules.
+* Refactor plottables to use public properties instead of large constructors to customize configuration and styling.
 
-* **ScottPlot 3.0** (May, 2019) Total recode with new API. First version released on NuGet.
+* Stop passing `Settings` into the `Render` method of plottables. Use concepts from `/dev/ScottPlot5` to create and pass a small configuration object with only figure dimensions and axis limits.
 
-* **ScottPlot 2.0** (Jan, 2019) Clean recode with new API. First version to get its own GitHub project. 
+**A large list of features** I want to eventually support are collected in [#412](https://github.com/swharden/ScottPlot/issues/412)
 
-* **ScottPlot 1.0** (June, 2017) ScottPlot began as [swhPlot.cs](https://github.com/swharden/Csharp-Data-Visualization/blob/master/projects/17-06-24_stretchy_line_plot/pixelDrawDrag2/swhPlot.cs), a 150 line class used to create a [stretchy line plot](https://github.com/swharden/Csharp-Data-Visualization/tree/master/projects/17-06-24_stretchy_line_plot) to demonstrate how to draw lines interactively with C#.
+## Versions
+
+_Detailed feature lists are on the [releases](https://github.com/swharden/ScottPlot/releases) page_
+
+* **ScottPlot 4.3** (future) will abstract the renderer to provide support for alternative rendering systems such as ImageSharp and SkiaSharp with OpenGL acceleration.
+
+* **ScottPlot 4.2** (future) will refactor the Plot module to improve modularity, layout configuration, and add add advanced functionality to axes (such as support for multiple Y plots).
+
+* **ScottPlot 4.1** (Started Sep, 2020) seeks to improve stability, modularity, configurability, and improves error checking of plots and user controls. This version has many internal refactors and optimizations, but only small changes to the public API.
+
+* **ScottPlot 4.0** (Started Nov, 2019) ScottPlot.Plot module became platform-agnostic using .NET Standard and System.Drawing.Common. Total recode, but same API. User controls became separate, platform-specific modules.
+
+* **ScottPlot 3.0** (Started May, 2019) Total recode with new API. First version released on NuGet.
+
+* **ScottPlot 2.0** (Started Jan, 2019) Clean recode with new API. First version to get its own GitHub project. 
+
+* **ScottPlot 1.0** (Started June, 2017) ScottPlot began as [swhPlot.cs](https://github.com/swharden/Csharp-Data-Visualization/blob/master/projects/17-06-24_stretchy_line_plot/pixelDrawDrag2/swhPlot.cs), a 150 line class used to create a [stretchy line plot](https://github.com/swharden/Csharp-Data-Visualization/tree/master/projects/17-06-24_stretchy_line_plot) to demonstrate how to draw lines interactively with C#.

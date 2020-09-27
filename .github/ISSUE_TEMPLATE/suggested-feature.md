@@ -1,6 +1,6 @@
 ---
-name: Idea
-about: Suggest an idea for this project
+name: Idea / Feature Request
+about: Let us know how ScottPlot can be improved
 title: ''
 labels: 'Feature'
 assignees: ''
@@ -8,13 +8,6 @@ assignees: ''
 ---
 
 **What can we do to make ScottPlot better?**
-A clear and concise description of what we can improve would be helpful.
+Consider if code examples or images would help communicate your request.
 
-Does your proposed feature allow users to do new things in source code? If so, show us how you'd like to be able to use the new feature:
-
-```cs
-var usefulThing = new GreatFeature();
-```
-
-Check the ScottPlot Roadmap to see if your feature is already planned for an upcoming release:
-https://github.com/swharden/ScottPlot/blob/master/dev/roadmap.md
+The [ScottPlot Roadmap](https://github.com/swharden/ScottPlot/blob/master/dev/roadmap.md) may provide additional context regarding current goals and future directions.
