@@ -216,7 +216,7 @@ namespace ScottPlot.Config
             return tickSpacings[tickSpacings.Count - 3];
         }
 
-        private string FormatLocal(double value, CultureInfo culture, int maximumDecimalPlaces = 5)
+        private string FormatLocal(double value, CultureInfo culture, int maximumDecimalPlaces = 15)
         {
             value = Math.Round(value, maximumDecimalPlaces);
             bool isRoundNumber = ((int)value == value);
