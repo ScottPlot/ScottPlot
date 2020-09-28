@@ -150,16 +150,13 @@ namespace ScottPlot.Config
             }
 
             // now that tick spacing is known, populate the list of ticks and labels
-            double firstTickOffset = low % (double)tickSpacing;
-            List<double> positions = new List<double>();
-            for (double position = low - firstTickOffset; position < high; position += (double)tickSpacing)
-            {
-                if ((low < position) && (high > position))
-                    positions.Add(position);
-                if (positions.Count > 999)
-                    break;
-            }
-            tickPositionsMajor = positions.ToArray();
+            double firstTickOffset = low % tickSpacing;
+            int tickCount = (int)((high - low) / tickSpacing) + 2;
+            tickCount = Math.Max(tickCount, 1);
+            tickPositionsMajor = Enumerable.Range(0, tickCount)
+                                           .Select(x => low - firstTickOffset + tickSpacing * x)
+                                           .Where(x => low <= x && x <= high)
+                                           .ToArray();
 
             if (dateFormat)
             {
@@ -216,9 +213,8 @@ namespace ScottPlot.Config
             return tickSpacings[tickSpacings.Count - 3];
         }
 
-        private string FormatLocal(double value, CultureInfo culture, int maximumDecimalPlaces = 15)
+        private string FormatLocal(double value, CultureInfo culture)
         {
-            value = Math.Round(value, maximumDecimalPlaces);
             bool isRoundNumber = ((int)value == value);
             bool isLargeNumber = (Math.Abs(value) > 1000);
 
