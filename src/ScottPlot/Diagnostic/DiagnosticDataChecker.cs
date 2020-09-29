@@ -18,9 +18,17 @@ namespace ScottPlot.Diagnostic
 
         public void CheckPlottable(Plottable plottable)
         {
-            foreach (var check in Checks)
+            var validatable = plottable as IValidatableData;
+            if (validatable != null)
             {
-                check.Check(plottable);
+                validatable.ValidateData();
+            }
+            else
+            {
+                foreach (var check in Checks)
+                {
+                    check.Check(plottable);
+                }
             }
         }
 
@@ -33,3 +41,4 @@ namespace ScottPlot.Diagnostic
         }
     }
 }
+
