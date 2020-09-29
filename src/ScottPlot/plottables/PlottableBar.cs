@@ -2,6 +2,7 @@ using ScottPlot.Config;
 using ScottPlot.Diagnostic.Attributes;
 using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace ScottPlot
 {
