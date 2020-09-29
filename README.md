@@ -4,11 +4,11 @@
 [![](https://img.shields.io/nuget/dt/ScottPlot?color=004880&label=Installs&logo=nuget)](https://www.nuget.org/packages/ScottPlot/)
 [![Nuget](https://img.shields.io/nuget/v/scottplot?label=NuGet&logo=nuget)](https://www.nuget.org/packages/ScottPlot/)
 
-**ScottPlot is a free and open-source plotting library for .NET** that makes it easy to interactively display large datasets. The [ScottPlot Cookbook](http://swharden.com/scottplot/cookbook) demonstrates how to create line plots, bar charts, pie graphs, scatter plots, and more with just a few lines of code.
+**ScottPlot is a free and open-source plotting library for .NET** that makes it easy to interactively display large datasets. The [ScottPlot Cookbook](https://swharden.com/scottplot/cookbook) demonstrates how to create line plots, bar charts, pie graphs, scatter plots, and more with just a few lines of code.
 
 * **[ScottPlot Demo](https://swharden.com/scottplot/demo)** 👈 _See what ScottPlot can do_
 
-* **[ScottPlot Cookbook](http://swharden.com/scottplot/cookbook.md.html)** 👈 _Learn how to use ScottPlot_
+* **[ScottPlot Cookbook](https://swharden.com/scottplot/cookbook)** 👈 _Learn how to use ScottPlot_
 
 <div align='center'>
 <img src='dev/nuget/ScottPlot.gif'>
