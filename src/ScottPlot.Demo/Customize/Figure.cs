@@ -90,6 +90,9 @@ namespace ScottPlot.Demo.Customize
 
                 plt.Ticks(false, false);
                 plt.Frame(false);
+
+                // Eliminate space between the data area and frame edge by setting padding to 0.
+                // This must be repeated if the layout resets (such as when new items are added to the plot).
                 plt.TightenLayout(padding: 0);
             }
         }

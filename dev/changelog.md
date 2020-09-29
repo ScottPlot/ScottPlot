@@ -1,14 +1,33 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.0.40 ⚠️ _in active development_
+## ScottPlot 4.1.0 ⚠️ _in active development_
+
+## ScottPlot 4.0.43
+* Improved appearance of semi-transparent legend items (#567)
+* Improved tick labels for ticks smaller than 1E-5 (#568) _Thanks @ozgur640_
+
+## ScottPlot 4.0.42
+* Improved DPI scaling support when using WinForms in .NET Core applications (#563) _Thanks @citizen3942_
+* Improved DPI scaling support for draggable axis lines and spans (#563) _Thanks @citizen3942_
+
+## ScottPlot 4.0.41
+* Improved density of DateTime ticks (#564, #561) _Thanks @StendProg and @waynetheron_
+* Improved display of DateTime tick labels containing multiple spaces (#539, #564) _Thanks @StendProg_
+
+## ScottPlot 4.0.40
 * Added user control for Avalonia (#496, #503) _Thanks @Benny121221_
 * Holding shift while left-click-dragging the edge of a span moves it instead of resizing it (#509) _Thanks @Torgano_
 * CSV export is now culture invariant for improved support on systems where commas are decimal separators (#512) _Thanks Daniel_
 * Added fill support to scatter plots (#529) _Thanks @AlexFsmn_
 * Fix bug that occurred when calling GetLegendBitmap() before the plot was rendered (#527) _Thanks @el-aasi_
+* Improved DateTime tick placement and added support for milliseconds (#539) _Thanks @StendProg_
 * Pie charts now have an optional hollow center to produce donut plots (#534) _Thanks @Benny121221 and @AlexFsmn_
 * Added electrocardiogram (ECG) simulator to the DataGen module (#540) _Thanks @AteCoder_
-* Improved mouse scroll wheel responsiveness by delaying high quality render (#545, #543) _@Thanks StendProg_
+* Improved mouse scroll wheel responsiveness by delaying high quality render (#545, #543, #550) _Thanks @StendProg_
+* Plot.PlotBitmap() allows Bitmaps to be placed at specific coordinates (#528) _Thanks @AlexFsmn_
+* DataGen.SampleImage() returns a sample Bitmap that can be used for testing
+* Bar graphs now have a hatchStyle property to customize fill pattern (#555) _Thanks @Benny121221_
+* Support timecode tick labels (#537) _Thanks @vrdriver and @StendProg_
 
 ## ScottPlot 4.0.39
 * Legend now reflects LineStyle of Signal and SignalXY plots (#488) _Thanks @Benny121221_
