@@ -1,23 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using ScottPlot.Config;
+using ScottPlot.Diagnostic.Attributes;
+using System;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ScottPlot.Config;
 
 namespace ScottPlot
 {
     public class PlottableBar : Plottable
     {
+        [EqualLength]
         public double[] xs;
+        [EqualLength]
         public double[] ys;
+        [EqualLength]
         public double[] yErr;
+        [EqualLength]
         public double xOffset;
 
         public LineStyle lineStyle;
         public Color fillColor;
         public Color negativeColor;
+        [EqualLength]
         public double[] yOffsets;
         public string label;
 

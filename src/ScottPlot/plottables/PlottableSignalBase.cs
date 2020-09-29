@@ -16,9 +16,7 @@ namespace ScottPlot
     public class PlottableSignalBase<T> : Plottable, IExportable where T : struct, IComparable
     {
         protected IMinMaxSearchStrategy<T> minmaxSearchStrategy;
-        // Any changes must be sync with PlottableSignal
-        [NotNAN]
-        [NotInfinity]
+        [NotNAN, NotInfinity, EqualLength]
         public T[] ys;
         public double sampleRate;
         public double samplePeriod;

@@ -9,11 +9,10 @@ using System.Runtime.InteropServices;
 
 namespace ScottPlot
 {
+
     public class PlottableSignalXYGeneric<TX, TY> : PlottableSignalBase<TY> where TX : struct, IComparable where TY : struct, IComparable
     {
-        [NotNAN]
-        [NotInfinity]
-        [Accending]
+        [NotNAN, NotInfinity, EqualLength, Accending]
         public TX[] xs;
         public PlottableSignalXYGeneric(TX[] xs, TY[] ys, Color color, double lineWidth, double markerSize, string label, int minRenderIndex, int maxRenderIndex, LineStyle lineStyle, bool useParallel, IMinMaxSearchStrategy<TY> minMaxSearchStrategy = null)
             : base(ys, 1, 0, 0, color, lineWidth, markerSize, label, null, minRenderIndex, maxRenderIndex, lineStyle, useParallel, minMaxSearchStrategy)

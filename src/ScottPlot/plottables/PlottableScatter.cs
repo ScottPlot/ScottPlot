@@ -12,13 +12,9 @@ namespace ScottPlot
 {
     public class PlottableScatter : Plottable, IExportable
     {
-        [NotNAN]
-        [NotInfinity]
-        [EqualLength]
+        [NotNAN, NotInfinity, EqualLength]
         public double[] xs;
-        [NotNAN]
-        [NotInfinity]
-        [EqualLength]
+        [NotNAN, NotInfinity, EqualLength]
         public double[] ys;
         [EqualLength]
         public double[] errorX;

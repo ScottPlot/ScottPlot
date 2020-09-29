@@ -1,14 +1,16 @@
-﻿using System;
+﻿using ScottPlot.Config;
+using ScottPlot.Diagnostic.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Text;
-using ScottPlot.Config;
 
 namespace ScottPlot
 {
     public class PlottablePolygon : Plottable
     {
+        [EqualLength]
         public readonly double[] xs;
+        [EqualLength]
         public readonly double[] ys;
         public string label;
 

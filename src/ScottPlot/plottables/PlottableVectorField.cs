@@ -5,6 +5,7 @@ using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using ScottPlot.Config;
+using ScottPlot.Diagnostic.Attributes;
 using ScottPlot.Drawing;
 using ScottPlot.Statistics;
 
@@ -14,7 +15,9 @@ namespace ScottPlot
     public class PlottableVectorField : Plottable
     {
         public Vector2[,] vectors;
+        [EqualLength]
         public double[] xs;
+        [EqualLength]
         public double[] ys;
         public string label;
         public Color color;
