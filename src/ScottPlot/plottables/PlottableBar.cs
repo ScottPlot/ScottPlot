@@ -13,7 +13,7 @@ namespace ScottPlot
         public double[] ys;
         [FiniteNumbers, EqualLength]
         public double[] yErr;
-        [FiniteNumbers, EqualLength]
+        [FiniteNumbers]
         public double xOffset;
         [FiniteNumbers, EqualLength]
         public double[] yOffsets;
