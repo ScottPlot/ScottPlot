@@ -16,10 +16,10 @@
 
 ### Quickstart
 
-* [Windows Forms](http://swharden.com/scottplot/quickstart.md.html#windows-forms-quickstart)
-* [WPF](http://swharden.com/scottplot/quickstart.md.html#wpf-quickstart)
+* [Windows Forms](http://swharden.com/scottplot/quickstart/#windows-forms-quickstart)
+* [WPF](http://swharden.com/scottplot/quickstart/#wpf-quickstart)
 * [Avalonia](https://github.com/swharden/ScottPlot/tree/master/src/ScottPlot.Demo.Avalonia)
-* [Console Application](http://swharden.com/scottplot/quickstart.md.html#console-quickstart)
+* [Console Application](http://swharden.com/scottplot/quickstart/#console-quickstart)
 
 ### Supported Platforms
 
