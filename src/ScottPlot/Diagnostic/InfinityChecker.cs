@@ -16,6 +16,8 @@ namespace ScottPlot.Diagnostic
 
             foreach (var fi in fieldsToCheck)
             {
+                if (fi.GetValue(plottable) == null)
+                    continue;
                 if (fi.FieldType.IsArray)
                 {
                     var elementType = fi.FieldType.GetElementType();
