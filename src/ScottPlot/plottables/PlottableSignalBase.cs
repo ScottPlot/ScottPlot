@@ -1,4 +1,4 @@
-using ScottPlot.Config;
+﻿using ScottPlot.Config;
 using ScottPlot.Diagnostic.Attributes;
 using ScottPlot.Drawing;
 using ScottPlot.MinMaxSearchStrategies;
