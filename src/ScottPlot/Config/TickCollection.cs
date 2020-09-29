@@ -1,11 +1,9 @@
-﻿using System;
+﻿using ScottPlot.Config.DateTimeTickUnits;
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ScottPlot.Config
 {
@@ -29,6 +27,7 @@ namespace ScottPlot.Config
         public bool invertSign;
         public bool logScale;
         public string numericFormatString;
+        public string dateTimeFormatString;
 
         public int radix = 10;
         public string prefix = null;
@@ -100,16 +99,18 @@ namespace ScottPlot.Config
                 var dtManualUnits = (verticalAxis) ? settings.ticks.manualDateTimeSpacingUnitY : settings.ticks.manualDateTimeSpacingUnitX;
                 var dtManualSpacing = (verticalAxis) ? settings.ticks.manualSpacingY : settings.ticks.manualSpacingX;
 
-                var dateTicks = DateTimeTicks.GetTicks(DateTime.FromOADate(low), DateTime.FromOADate(high), tickCount, settings.culture, dtManualUnits, (int)dtManualSpacing);
-
-                tickPositionsMajor = Tools.DateTimesToDoubles(dateTicks.Item1);
-                tickLabels = dateTicks.Item2;
-                for (int i = 0; i < tickLabels.Length; i++)
+                try
                 {
-                    if (tickLabels[i].Contains(", "))
-                        tickLabels[i] = tickLabels[i].Replace(", ", "\n");
-                    else
-                        tickLabels[i] += "\n "; // auto-layout works better if dates are always two lines
+                    DateTime from = DateTime.FromOADate(low);
+                    DateTime to = DateTime.FromOADate(high);
+
+                    var unitFactory = new DateTimeUnitFactory();
+                    IDateTimeUnit tickUnit = unitFactory.CreateUnit(from, to, settings.culture, tickCount, dtManualUnits, (int)dtManualSpacing);
+                    (tickPositionsMajor, tickLabels) = tickUnit.GetTicksAndLabels(from, to, dateTimeFormatString);
+                }
+                catch
+                {
+                    tickPositionsMajor = new double[] { }; // far zoom out can produce FromOADate() exception
                 }
             }
             else
@@ -126,7 +127,8 @@ namespace ScottPlot.Config
         private void RecalculatePositionsAutomaticNumeric(Settings settings)
         {
             // predict maxLabelSize up front using predetermined label sizes
-            string longestLabel = (dateFormat) ? "2019-08-20\n20:42:17" : "-8888";
+            string sampleDateFormatLabel = (dateTimeFormatString is null) ? "2019-08-20\n20:42:17" : dateTimeFormatString;
+            string longestLabel = (dateFormat) ? sampleDateFormatLabel : "-8888";
             maxLabelSize = Drawing.GDI.MeasureString(settings.gfxData, longestLabel, settings.ticks.font);
 
             double low, high, tickSpacing;
@@ -148,16 +150,13 @@ namespace ScottPlot.Config
             }
 
             // now that tick spacing is known, populate the list of ticks and labels
-            double firstTickOffset = low % (double)tickSpacing;
-            List<double> positions = new List<double>();
-            for (double position = low - firstTickOffset; position < high; position += (double)tickSpacing)
-            {
-                if ((low < position) && (high > position))
-                    positions.Add(position);
-                if (positions.Count > 999)
-                    break;
-            }
-            tickPositionsMajor = positions.ToArray();
+            double firstTickOffset = low % tickSpacing;
+            int tickCount = (int)((high - low) / tickSpacing) + 2;
+            tickCount = Math.Max(tickCount, 1);
+            tickPositionsMajor = Enumerable.Range(0, tickCount)
+                                           .Select(x => low - firstTickOffset + tickSpacing * x)
+                                           .Where(x => low <= x && x <= high)
+                                           .ToArray();
 
             if (dateFormat)
             {
@@ -214,11 +213,10 @@ namespace ScottPlot.Config
             return tickSpacings[tickSpacings.Count - 3];
         }
 
-        private string FormatLocal(double value, CultureInfo culture, int maximumDecimalPlaces = 5)
+        private string FormatLocal(double value, CultureInfo culture)
         {
-            value = Math.Round(value, maximumDecimalPlaces);
             bool isRoundNumber = ((int)value == value);
-            bool isLargeNumber = (value > 1000);
+            bool isLargeNumber = (Math.Abs(value) > 1000);
 
             // https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings
             if (numericFormatString is null)

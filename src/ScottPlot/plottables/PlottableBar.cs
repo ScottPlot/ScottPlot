@@ -1,4 +1,4 @@
-﻿using ScottPlot.Config;
+using ScottPlot.Config;
 using ScottPlot.Diagnostic.Attributes;
 using System;
 using System.Drawing;
@@ -20,6 +20,7 @@ namespace ScottPlot
 
         public LineStyle lineStyle;
         public Color fillColor;
+        public Color hatchColor;
         public Color negativeColor;
         public string label;
 
@@ -38,6 +39,8 @@ namespace ScottPlot
 
         public Font valueTextFont;
         public Brush valueTextBrush;
+
+        public Drawing.HatchStyle hatchStyle = Drawing.HatchStyle.None;
 
         public PlottableBar(double[] xs, double[] ys, string label,
             double barWidth, double xOffset,
@@ -128,10 +131,25 @@ namespace ScottPlot
         {
             for (int i = 0; i < ys.Length; i++)
             {
+                UpdateBrush(ys[i]);
+
                 if (verticalBars)
                     RenderBarVertical(settings, xs[i] + xOffset, ys[i], yErr[i], yOffsets[i]);
                 else
                     RenderBarHorizontal(settings, xs[i] + xOffset, ys[i], yErr[i], yOffsets[i]);
+            }
+        }
+
+        private void UpdateBrush(double value)
+        {
+            if (hatchStyle is Drawing.HatchStyle.None)
+            {
+                ((SolidBrush)fillBrush).Color = (value < 0) ? negativeColor : fillColor;
+            }
+            else
+            {
+                var hatchStyle = Drawing.GDI.ConvertToSDHatchStyle(this.hatchStyle).Value;
+                fillBrush = new HatchBrush(hatchStyle, hatchColor, fillColor);
             }
         }
 
@@ -142,8 +160,6 @@ namespace ScottPlot
             double value1 = Math.Min(valueBase, value) + yOffset;
             double value2 = Math.Max(valueBase, value) + yOffset;
             double valueSpan = value2 - value1;
-
-            ((SolidBrush)fillBrush).Color = (value < 0) ? negativeColor : fillColor;
 
             var rect = new RectangleF(
                 x: (float)settings.GetPixelX(edge1),
@@ -182,8 +198,6 @@ namespace ScottPlot
             double value1 = Math.Min(valueBase, value) + yOffset;
             double value2 = Math.Max(valueBase, value) + yOffset;
             double valueSpan = value2 - value1;
-
-            ((SolidBrush)fillBrush).Color = (value < 0) ? negativeColor : fillColor;
 
             var rect = new RectangleF(
                 x: (float)settings.GetPixelX(value1),
@@ -228,7 +242,17 @@ namespace ScottPlot
 
         public override LegendItem[] GetLegendItems()
         {
-            var singleLegendItem = new LegendItem(label, fillColor, lineWidth: 10, markerShape: MarkerShape.none);
+            LegendItem singleLegendItem = new LegendItem()
+            {
+                label = label,
+                color = fillColor,
+                lineWidth = 10,
+                markerShape = MarkerShape.none,
+                hatchColor = hatchColor,
+                hatchStyle = hatchStyle,
+                borderColor = outlinePen.Color,
+                borderWith = outlinePen.Width
+            };
             return new LegendItem[] { singleLegendItem };
         }
     }

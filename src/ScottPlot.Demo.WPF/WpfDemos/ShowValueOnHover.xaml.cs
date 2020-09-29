@@ -34,9 +34,7 @@ namespace ScottPlot.Demo.WPF.WpfDemos
 
         private void wpfPlot1_MouseMove(object sender, MouseEventArgs e)
         {
-            var mousePos = e.MouseDevice.GetPosition(wpfPlot1);
-            double mouseX = wpfPlot1.plt.CoordinateFromPixelX(mousePos.X);
-            double mouseY = wpfPlot1.plt.CoordinateFromPixelY(mousePos.Y);
+            (double mouseX, double mouseY) = wpfPlot1.GetMouseCoordinates();
 
             sph.HighlightClear();
             var (x, y, index) = sph.HighlightPointNearest(mouseX, mouseY);

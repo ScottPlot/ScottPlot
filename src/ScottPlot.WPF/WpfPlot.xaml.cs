@@ -1,21 +1,16 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
-using Microsoft.Win32;
 
 namespace ScottPlot
 {
@@ -121,7 +116,7 @@ namespace ScottPlot
         }
 
         private bool currentlyRendering = false;
-        public void Render(bool skipIfCurrentlyRendering = false, bool lowQuality = false, bool recalculateLayout = false)
+        public void Render(bool skipIfCurrentlyRendering = false, bool lowQuality = false, bool recalculateLayout = false, bool processEvents = false)
         {
             if (!isDesignerMode)
             {
@@ -135,6 +130,8 @@ namespace ScottPlot
                 {
                     currentlyRendering = true;
                     imagePlot.Source = BmpImageFromBmp(plt.GetBitmap(true, lowQuality || lowQualityAlways));
+                    if (isPanningOrZooming || isMovingDraggable || processEvents)
+                        DoEvents();
                     currentlyRendering = false;
                     Rendered?.Invoke(null, null);
                 }
@@ -360,13 +357,12 @@ namespace ScottPlot
             }
 
             Render(true, lowQuality: lowQualityWhileDragging);
-            return;
         }
 
         public (double x, double y) GetMouseCoordinates()
         {
-            double x = plt.CoordinateFromPixelX(mouseLocation.X / dpiScale);
-            double y = plt.CoordinateFromPixelY(mouseLocation.Y / dpiScale);
+            double x = plt.CoordinateFromPixelX(mouseLocation.X);
+            double y = plt.CoordinateFromPixelY(mouseLocation.Y);
             return (x, y);
         }
 
@@ -456,12 +452,59 @@ namespace ScottPlot
 
         #region mouse clicking
 
-        private readonly DispatcherTimer MouseWheelHQRenderTimer = new DispatcherTimer();
-
-        private void MouseWheelHQRenderTimerTick(object sender, object o)
+        public void DoEvents()
         {
-            Render(lowQuality: false, recalculateLayout: false);
-            (sender as DispatcherTimer).Stop();
+            DispatcherFrame frame = new DispatcherFrame();
+            Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Render,
+                new DispatcherOperationCallback(ExitFrame), frame);
+            Dispatcher.PushFrame(frame);
+        }
+
+        public object ExitFrame(object f)
+        {
+            ((DispatcherFrame)f).Continue = false;
+
+            return null;
+        }
+
+        private readonly Queue<MouseWheelEventArgs> MouseWheelEvents = new Queue<MouseWheelEventArgs>();
+        private readonly Stopwatch ScrollWheelTimer = new Stopwatch();
+        public async void ScrollWheelProcessor()
+        {
+            ScrollWheelTimer.Start();
+            while (ScrollWheelTimer.ElapsedMilliseconds < lowQualityScrollWheelDelay)
+            {
+                // if no new mouse events, sleep until the timer is up
+                if (MouseWheelEvents.Count == 0)
+                {
+                    await Task.Delay(30);
+                    continue;
+                }
+                // if new mouse events, apply them and reset the timer
+                while (MouseWheelEvents.Count > 0)
+                {
+                    MouseWheelEventArgs e = MouseWheelEvents.Dequeue();
+                    var mousePixel = GetPixelPosition(e, applyDpiScaling: false); // DPI-scaling aware
+
+                    double xFrac = (e.Delta > 0) ? 1.15 : 0.85;
+                    double yFrac = (e.Delta > 0) ? 1.15 : 0.85;
+
+                    if (isCtrlPressed) yFrac = 1;
+                    if (isShiftPressed) xFrac = 1;
+
+                    plt.AxisZoom(xFrac, yFrac, plt.CoordinateFromPixelX(mousePixel.X), plt.CoordinateFromPixelY(mousePixel.Y));
+                    AxisChanged?.Invoke(null, null);
+                }
+
+                bool shouldRecalculate = recalculateLayoutOnMouseUp ?? plotContainsHeatmap == false;
+                Render(lowQuality: lowQualityOnScrollWheel, recalculateLayout: shouldRecalculate, processEvents: true);
+                ScrollWheelTimer.Restart();
+            }
+
+            // after the scrollwheel timer runs out, perform a final delayed HQ render
+            if (lowQualityOnScrollWheel)
+                Render(recalculateLayout: false, processEvents: true);
+            ScrollWheelTimer.Reset();
         }
 
         private void UserControl_MouseWheel(object sender, MouseWheelEventArgs e)
@@ -469,31 +512,10 @@ namespace ScottPlot
             if (enableScrollWheelZoom == false)
                 return;
 
-            var mousePixel = GetPixelPosition(e, applyDpiScaling: false); // DPI-scaling aware
-
-            double xFrac = (e.Delta > 0) ? 1.15 : 0.85;
-            double yFrac = (e.Delta > 0) ? 1.15 : 0.85;
-
-            if (isCtrlPressed) yFrac = 1;
-            if (isShiftPressed) xFrac = 1;
-
-            plt.AxisZoom(xFrac, yFrac, plt.CoordinateFromPixelX(mousePixel.X), plt.CoordinateFromPixelY(mousePixel.Y));
-            AxisChanged?.Invoke(null, null);
-
-            bool shouldRecalculate = recalculateLayoutOnMouseUp ?? plotContainsHeatmap == false;
-            Render(lowQuality: lowQualityOnScrollWheel, recalculateLayout: shouldRecalculate);
-
-            // do the setup here so we don't have to in the constructors
-            MouseWheelHQRenderTimer.Interval = new TimeSpan(0, 0, 0, 0, lowQualityScrollWheelDelay);
-            MouseWheelHQRenderTimer.Tick -= MouseWheelHQRenderTimerTick;
-            MouseWheelHQRenderTimer.Tick += MouseWheelHQRenderTimerTick;
-
-            // abort previous running timers and restart
-            MouseWheelHQRenderTimer.Stop();
-            if (lowQualityOnScrollWheel)
-                MouseWheelHQRenderTimer.Start();
+            MouseWheelEvents.Enqueue(e);
+            if (ScrollWheelTimer.IsRunning == false)
+                ScrollWheelProcessor();
         }
-
 
         private void UserControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {

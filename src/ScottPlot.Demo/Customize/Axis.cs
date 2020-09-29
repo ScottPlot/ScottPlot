@@ -156,6 +156,54 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
+        public class TimeOnly : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Time Only";
+            public string description { get; } = "Typically DateTime tick labels show date and time, " +
+                "but by defining the format yourself you can customize this behavior.";
+
+            public void Render(Plot plt)
+            {
+                Random rand = new Random(0);
+                double[] ys = DataGen.RandomWalk(rand, 50);
+                double[] xs = new double[ys.Length];
+
+                DateTime start = new DateTime(1985, 9, 24);
+                for (int i = 0; i < ys.Length; i++)
+                {
+                    DateTime dtNow = start.AddMinutes(i * 15);
+                    xs[i] = dtNow.ToOADate();
+                }
+
+                plt.PlotScatter(xs, ys);
+                plt.Ticks(dateTimeX: true, dateTimeFormatStringX: "HH:mm:ss");
+                plt.Title("Time Axis Labels");
+            }
+        }
+
+        public class TimeCodeAxis : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Time Code Axis";
+            public string description { get; } = "Axis tick labels show HH:MM:SS.SSS timecodes (useful for audio and video editing)";
+
+            public void Render(Plot plt)
+            {
+                // simulate 10 seconds of audio data
+                int pointsPerSecond = 44100;
+                Random rand = new Random(0);
+                double[] ys = DataGen.RandomWalk(rand, pointsPerSecond * 10);
+
+                // For DateTime compatibility, sample rate must be points/day.
+                // Also, avoid negative dates by offsetting the plot by today's date.
+                double secondsPerDay = 24 * 60 * 60;
+                double pointsPerDay = secondsPerDay * pointsPerSecond;
+                double today = DateTime.Today.ToOADate();
+
+                plt.PlotSignal(ys, sampleRate: pointsPerDay, xOffset: today);
+                plt.Ticks(dateTimeX: true, dateTimeFormatStringX: "HH:mm:ss.fff");
+            }
+        }
+
         public class HexadecimalAxis : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Hexadecimal Axis";

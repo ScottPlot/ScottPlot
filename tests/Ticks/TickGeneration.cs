@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using ScottPlot;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -71,6 +72,20 @@ namespace ScottPlotTests.Ticks
             pltTest.Grid(xSpacing: 1, xSpacingDateTimeUnit: ScottPlot.Config.DateTimeUnit.Day);
 
             TestTools.SaveFig(mplt);
+        }
+
+        [Test]
+        public void Test_LargePlot_DateTimeAxis()
+        {
+            Random rand = new Random(0);
+            double[] data = DataGen.RandomWalk(rand, 100_000);
+            DateTime firstDay = new DateTime(2020, 1, 1);
+
+            var plt = new ScottPlot.Plot(4000, 400);
+            plt.PlotSignal(data, sampleRate: 60 * 24, xOffset: firstDay.ToOADate());
+            plt.Ticks(dateTimeX: true);
+
+            TestTools.SaveFig(plt);
         }
     }
 }

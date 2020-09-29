@@ -91,7 +91,6 @@ namespace ScottPlot
             {
                 settings.bmpFigure = new Bitmap(settings.figureSize.Width, settings.figureSize.Height, pixelFormat);
                 settings.gfxFigure = Graphics.FromImage(settings.bmpFigure);
-                Settings.DPIScale = settings.gfxFigure.DpiX / Settings.defaultDPI;
             }
 
             if (settings.dataSize.Width > 0 && settings.dataSize.Height > 0)
@@ -396,6 +395,33 @@ namespace ScottPlot
 
             Add(plottableText);
             return plottableText;
+        }
+
+        public PlottableImage PlotBitmap(
+           Bitmap bitmap,
+           double x,
+           double y,
+           string label = null,
+           ImageAlignment alignment = ImageAlignment.middleLeft,
+           double rotation = 0,
+           Color? frameColor = null,
+           int frameSize = 0
+           )
+        {
+            PlottableImage plottableImage = new PlottableImage()
+            {
+                image = bitmap,
+                x = x,
+                y = y,
+                label = label,
+                alignment = alignment,
+                rotation = rotation,
+                frameColor = frameColor ?? Color.White,
+                frameSize = frameSize
+            };
+
+            settings.plottables.Add(plottableImage);
+            return plottableImage;
         }
 
         public PlottableScatter PlotPoint(
@@ -2008,7 +2034,9 @@ namespace ScottPlot
             int? baseX = null,
             int? baseY = null,
             string prefixX = null,
-            string prefixY = null
+            string prefixY = null,
+            string dateTimeFormatStringX = null,
+            string dateTimeFormatStringY = null
             )
         {
             if (displayTicksX != null)
@@ -2059,6 +2087,11 @@ namespace ScottPlot
                 settings.ticks.y.numericFormatString = numericFormatStringY;
             if (snapToNearestPixel != null)
                 settings.ticks.snapToNearestPixel = snapToNearestPixel.Value;
+            if (dateTimeFormatStringX != null)
+                settings.ticks.x.dateTimeFormatString = dateTimeFormatStringX;
+            if (dateTimeFormatStringY != null)
+                settings.ticks.y.dateTimeFormatString = dateTimeFormatStringY;
+
             if (baseX != null)
             {
                 settings.ticks.x.radix = baseX.Value;
