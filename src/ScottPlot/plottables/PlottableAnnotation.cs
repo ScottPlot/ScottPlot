@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using ScottPlot.Config;
+using ScottPlot.Diagnostic.Attributes;
 using System.Drawing;
-using System.Text;
-using ScottPlot.Config;
 
 namespace ScottPlot
 {
     public class PlottableAnnotation : Plottable
     {
+        [FiniteNumbers]
         public double xPixel;
+        [FiniteNumbers]
         public double yPixel;
         public string label;
 

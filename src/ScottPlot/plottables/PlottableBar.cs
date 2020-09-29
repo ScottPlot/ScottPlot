@@ -7,20 +7,20 @@ namespace ScottPlot
 {
     public class PlottableBar : Plottable
     {
-        [EqualLength]
+        [FiniteNumbers, EqualLength]
         public double[] xs;
-        [EqualLength]
+        [FiniteNumbers, EqualLength]
         public double[] ys;
-        [EqualLength]
+        [FiniteNumbers, EqualLength]
         public double[] yErr;
-        [EqualLength]
+        [FiniteNumbers, EqualLength]
         public double xOffset;
+        [FiniteNumbers, EqualLength]
+        public double[] yOffsets;
 
         public LineStyle lineStyle;
         public Color fillColor;
         public Color negativeColor;
-        [EqualLength]
-        public double[] yOffsets;
         public string label;
 
         private double errorCapSize;

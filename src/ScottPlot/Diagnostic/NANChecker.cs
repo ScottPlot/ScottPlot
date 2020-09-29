@@ -7,7 +7,7 @@ namespace ScottPlot.Diagnostic
     {
         public NANChecker()
         {
-            AttributesToCheck = new Attribute[] { new NotNANAttribute() };
+            AttributesToCheck = new Attribute[] { new NotNANAttribute(), new FiniteNumbersAttribute() };
         }
 
         public override bool Check(Plottable plottable)

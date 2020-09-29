@@ -8,9 +8,9 @@ namespace ScottPlot
 {
     public class PlottablePolygon : Plottable
     {
-        [EqualLength]
+        [FiniteNumbers, EqualLength]
         public readonly double[] xs;
-        [EqualLength]
+        [FiniteNumbers, EqualLength]
         public readonly double[] ys;
         public string label;
 

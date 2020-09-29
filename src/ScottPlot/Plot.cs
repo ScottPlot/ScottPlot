@@ -1002,6 +1002,7 @@ namespace ScottPlot
             return signal;
         }
 
+        [Obsolete]
         public PlottableSignalOld PlotSignalOld(
             double[] ys,
             double sampleRate = 1,

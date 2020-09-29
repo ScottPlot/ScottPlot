@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Text;
-using ScottPlot.Config;
+﻿using ScottPlot.Config;
+using ScottPlot.Diagnostic.Attributes;
 using ScottPlot.Drawing;
+using System;
+using System.Drawing;
 
 namespace ScottPlot
 {
     public class PlottableVLine : Plottable, IDraggable
     {
+        [FiniteNumbers]
         public double position;
         public Pen pen;
         private LineStyle lineStyle;

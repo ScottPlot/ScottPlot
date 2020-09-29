@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using ScottPlot.Config;
+﻿using ScottPlot.Config;
 using ScottPlot.Diagnostic.Attributes;
 using ScottPlot.Drawing;
 using ScottPlot.Statistics;
+using System;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Linq;
 
 namespace ScottPlot
 {
@@ -15,9 +13,9 @@ namespace ScottPlot
     public class PlottableVectorField : Plottable
     {
         public Vector2[,] vectors;
-        [EqualLength]
+        [FiniteNumbers, EqualLength]
         public double[] xs;
-        [EqualLength]
+        [FiniteNumbers, EqualLength]
         public double[] ys;
         public string label;
         public Color color;

@@ -7,7 +7,7 @@ namespace ScottPlot.Diagnostic
     {
         public InfinityChecker()
         {
-            AttributesToCheck = new Attribute[] { new NotInfinityAttribute() };
+            AttributesToCheck = new Attribute[] { new NotInfinityAttribute(), new FiniteNumbersAttribute() };
         }
 
         public override bool Check(Plottable plottable)

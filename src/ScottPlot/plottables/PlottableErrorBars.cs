@@ -9,17 +9,17 @@ namespace ScottPlot
 {
     public class PlottableErrorBars : Plottable
     {
-        [EqualLength]
+        [FiniteNumbers, EqualLength]
         private readonly double[] xs;
-        [EqualLength]
+        [FiniteNumbers, EqualLength]
         private readonly double[] ys;
-        [EqualLength]
+        [FiniteNumbers, EqualLength]
         private readonly double[] xPositiveError;
-        [EqualLength]
+        [FiniteNumbers, EqualLength]
         private readonly double[] xNegativeError;
-        [EqualLength]
+        [FiniteNumbers, EqualLength]
         private readonly double[] yPositiveError;
-        [EqualLength]
+        [FiniteNumbers, EqualLength]
         private readonly double[] yNegativeError;
         private readonly float capSize;
         private readonly Pen penLine;
