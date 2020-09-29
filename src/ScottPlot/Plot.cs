@@ -22,7 +22,19 @@ namespace ScottPlot
     {
         public PixelFormat pixelFormat = PixelFormat.Format32bppPArgb;
         private readonly Settings settings;
-        public bool DiagnosticMode = false;
+        private bool diagnosticMode = false;
+        public bool DiagnosticMode
+        {
+            get => diagnosticMode;
+            set
+            {
+                if (value)
+                    Debug.WriteLine("WARNING: diagnostic mode is enabled, reducing performance");
+                else
+                    Debug.WriteLine("Diagnostic mode is disabled");
+                diagnosticMode = value;
+            }
+        }
 
         public Plot(int width = 800, int height = 600)
         {
