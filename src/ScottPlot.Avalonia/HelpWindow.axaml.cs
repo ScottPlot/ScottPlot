@@ -12,9 +12,6 @@ namespace ScottPlot.Avalonia
         public HelpWindow()
         {
             this.InitializeComponent();
-#if DEBUG
-            this.AttachDevTools();
-#endif
             this.Find<TextBlock>("VersionLabel").Text = Tools.GetVersionString();
 
             StringBuilder msg = new StringBuilder();
