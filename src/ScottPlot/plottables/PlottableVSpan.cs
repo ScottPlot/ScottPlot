@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using ScottPlot.Config;
+using ScottPlot.Diagnostic.Attributes;
+using System;
 using System.Diagnostics;
 using System.Drawing;
-using System.Text;
-using ScottPlot.Config;
 
 namespace ScottPlot
 {
     public class PlottableVSpan : Plottable, IDraggable
     {
+        [FiniteNumbers]
         public double position1;
+        [FiniteNumbers]
         public double position2;
         public Brush brush;
         public Color color;

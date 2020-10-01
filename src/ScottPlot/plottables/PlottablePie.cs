@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using ScottPlot.Config;
+using ScottPlot.Diagnostic.Attributes;
+using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
-using System.Text;
-using ScottPlot.Config;
 
 namespace ScottPlot
 {
     public class PlottablePie : Plottable
     {
+        [FiniteNumbers]
         public double[] values;
         public string label;
         public string[] groupNames;

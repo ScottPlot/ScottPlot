@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using ScottPlot.Config;
+using ScottPlot.Diagnostic.Attributes;
+using System;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ScottPlot.Config;
 
 namespace ScottPlot
 {
     public class PlottableText : Plottable
     {
+        [FiniteNumbers]
         public double x;
+        [FiniteNumbers]
         public double y;
         public double rotation;
         public string text;

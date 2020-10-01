@@ -1,4 +1,5 @@
 ﻿using ScottPlot.Config;
+using ScottPlot.Diagnostic.Attributes;
 using ScottPlot.Drawing;
 using ScottPlot.MinMaxSearchStrategies;
 using System;
@@ -15,11 +16,16 @@ namespace ScottPlot
     public class PlottableSignalBase<T> : Plottable, IExportable where T : struct, IComparable
     {
         protected IMinMaxSearchStrategy<T> minmaxSearchStrategy;
+        [FiniteNumbers, EqualLength]
         public T[] ys;
+        [FiniteNumbers]
         public double sampleRate;
+        [FiniteNumbers]
         public double samplePeriod;
         public float markerSize;
+        [FiniteNumbers]
         public double xOffset;
+        [FiniteNumbers]
         public double yOffset;
         public double lineWidth;
         public Pen penHD;

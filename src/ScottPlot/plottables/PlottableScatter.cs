@@ -1,20 +1,24 @@
-﻿using System;
+﻿using ScottPlot.Config;
+using ScottPlot.Diagnostic.Attributes;
+using ScottPlot.Drawing;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using ScottPlot.Config;
-using ScottPlot.Drawing;
 
 namespace ScottPlot
 {
     public class PlottableScatter : Plottable, IExportable
     {
+        [FiniteNumbers, EqualLength]
         public double[] xs;
+        [FiniteNumbers, EqualLength]
         public double[] ys;
+        [FiniteNumbers, EqualLength]
         public double[] errorX;
+        [FiniteNumbers, EqualLength]
         public double[] errorY;
         public double lineWidth;
         public float errorLineWidth;

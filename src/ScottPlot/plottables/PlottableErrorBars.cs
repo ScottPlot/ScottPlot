@@ -1,20 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using ScottPlot.Config;
+using ScottPlot.Diagnostic.Attributes;
+using ScottPlot.Drawing;
+using System;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using ScottPlot.Config;
-using ScottPlot.Drawing;
 
 namespace ScottPlot
 {
     public class PlottableErrorBars : Plottable
     {
+        [FiniteNumbers, EqualLength]
         private readonly double[] xs;
+        [FiniteNumbers, EqualLength]
         private readonly double[] ys;
+        [FiniteNumbers, EqualLength]
         private readonly double[] xPositiveError;
+        [FiniteNumbers, EqualLength]
         private readonly double[] xNegativeError;
+        [FiniteNumbers, EqualLength]
         private readonly double[] yPositiveError;
+        [FiniteNumbers, EqualLength]
         private readonly double[] yNegativeError;
         private readonly float capSize;
         private readonly Pen penLine;

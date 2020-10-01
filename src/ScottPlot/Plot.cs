@@ -3,6 +3,9 @@
  * which is private so it can be refactored without breaking the API.
  */
 
+using ScottPlot.Diagnostic;
+using ScottPlot.Drawing;
+using ScottPlot.Statistics;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,14 +13,25 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Linq;
-using ScottPlot.Drawing;
-using ScottPlot.Statistics;
 
 namespace ScottPlot
 {
     public partial class Plot
     {
         private readonly Settings settings;
+        private bool diagnosticMode = false;
+        public bool DiagnosticMode
+        {
+            get => diagnosticMode;
+            set
+            {
+                if (value)
+                    Debug.WriteLine("WARNING: diagnostic mode is enabled, reducing performance");
+                else
+                    Debug.WriteLine("Diagnostic mode is disabled");
+                diagnosticMode = value;
+            }
+        }
 
         public Plot(int width = 800, int height = 600)
         {
@@ -158,6 +172,10 @@ namespace ScottPlot
                 settings.DataBackground.Render(settings);
                 settings.HorizontalGridLines.Render(settings);
                 settings.VerticalGridLines.Render(settings);
+                if (DiagnosticMode)
+                {
+                    new DiagnosticDataChecker().CheckPlottables(settings.plottables);
+                }
                 Renderer.DataPlottables(settings);
                 Renderer.MouseZoomRectangle(settings);
                 Renderer.PlaceDataOntoFigure(settings);
@@ -384,7 +402,7 @@ namespace ScottPlot
                 frameColor: (Color)frameColor
                 );
 
-            settings.plottables.Add(plottableText);
+            Add(plottableText);
             return plottableText;
         }
 
@@ -451,7 +469,7 @@ namespace ScottPlot
                 lineStyle: lineStyle
                 );
 
-            settings.plottables.Add(scatterPlot);
+            Add(scatterPlot);
             return scatterPlot;
         }
 
@@ -577,7 +595,7 @@ namespace ScottPlot
 
             PlottableFunction functionPlot = new PlottableFunction(function, color.Value, lineWidth, markerSize, label, markerShape, lineStyle);
 
-            settings.plottables.Add(functionPlot);
+            Add(functionPlot);
             return functionPlot;
         }
 
@@ -623,7 +641,7 @@ namespace ScottPlot
                 axisMultipliers = new double[] { 1, 1 };
 
             PlottableHeatmap heatmap = new PlottableHeatmap(intensities, colormap, label, axisOffsets, axisMultipliers, scaleMin, scaleMax, transparencyThreshold, backgroundImage, displayImageAbove, drawAxisLabels);
-            settings.plottables.Add(heatmap);
+            Add(heatmap);
             MatchAxis(this);
             Ticks(false, false); //I think we need to sort out our own labelling with System.Drawing
             Layout(y2LabelWidth: 180);
@@ -665,7 +683,7 @@ namespace ScottPlot
                 lineStyle: lineStyle
                 );
 
-            settings.plottables.Add(scatterPlot);
+            Add(scatterPlot);
             return scatterPlot;
         }
 
@@ -715,7 +733,7 @@ namespace ScottPlot
                 highlightedMarkerSize: highlightedMarkerSize.Value
                 );
 
-            settings.plottables.Add(scatterPlot);
+            Add(scatterPlot);
             return scatterPlot;
         }
 
@@ -748,7 +766,7 @@ namespace ScottPlot
                 label
                 );
 
-            settings.plottables.Add(errorBars);
+            Add(errorBars);
             return errorBars;
         }
 
@@ -765,7 +783,7 @@ namespace ScottPlot
             webColor = webColor ?? Color.Gray;
 
             var plottable = new PlottableRadar(values, categoryNames, groupNames, fillColors, (byte)(fillAlpha * 256), webColor.Value);
-            settings.plottables.Add(plottable);
+            Add(plottable);
             MatchAxis(this);
 
             return plottable;
@@ -833,7 +851,7 @@ namespace ScottPlot
 
             var vectorField = new PlottableVectorField(vectors, xs, ys, label, color.Value, colormap, scaleFactor);
 
-            settings.plottables.Add(vectorField);
+            Add(vectorField);
             return vectorField;
         }
 
@@ -940,7 +958,7 @@ namespace ScottPlot
                 lineStyle: LineStyle.Solid
                 );
 
-            settings.plottables.Add(stepPlot);
+            Add(stepPlot);
             return stepPlot;
         }
         public PlottableSignalXY PlotSignalXY(
@@ -976,8 +994,7 @@ namespace ScottPlot
                 lineStyle: lineStyle,
                 useParallel: useParallel
                 );
-
-            settings.plottables.Add(signal);
+            Add(signal);
             return signal;
         }
 
@@ -1016,10 +1033,11 @@ namespace ScottPlot
                 useParallel: useParallel
                 );
 
-            settings.plottables.Add(signal);
+            Add(signal);
             return signal;
         }
 
+        [Obsolete]
         public PlottableSignalOld PlotSignalOld(
             double[] ys,
             double sampleRate = 1,
@@ -1061,7 +1079,7 @@ namespace ScottPlot
                 useParallel: useParallel
                 );
 
-            settings.plottables.Add(signal);
+            Add(signal);
             return signal;
         }
         public PlottableSignal PlotSignal(
@@ -1104,8 +1122,7 @@ namespace ScottPlot
                 lineStyle: lineStyle,
                 useParallel: useParallel
                 );
-
-            settings.plottables.Add(signal);
+            Add(signal);
             return signal;
         }
 
@@ -1150,7 +1167,7 @@ namespace ScottPlot
                 useParallel: useParallel
                 );
 
-            settings.plottables.Add(signal);
+            Add(signal);
             return signal;
         }
 
@@ -1170,7 +1187,7 @@ namespace ScottPlot
 
             PlottablePie pie = new PlottablePie(values, sliceLabels, colors, explodedChart, showValues, showPercentages, showLabels, label);
 
-            settings.plottables.Add(pie);
+            Add(pie);
             return pie;
         }
 
@@ -1188,7 +1205,7 @@ namespace ScottPlot
                 colorDown = ColorTranslator.FromHtml("#ef5350");
 
             PlottableOHLC ohlc = new PlottableOHLC(ohlcs, false, autoWidth, colorUp.Value, colorDown.Value, sequential);
-            settings.plottables.Add(ohlc);
+            Add(ohlc);
             return ohlc;
         }
 
@@ -1206,7 +1223,7 @@ namespace ScottPlot
                 colorDown = ColorTranslator.FromHtml("#ef5350");
 
             PlottableOHLC ohlc = new PlottableOHLC(ohlcs, true, autoWidth, colorUp.Value, colorDown.Value, sequential);
-            settings.plottables.Add(ohlc);
+            Add(ohlc);
             return ohlc;
         }
 
@@ -1235,7 +1252,7 @@ namespace ScottPlot
                 lineStyle: lineStyle
                 );
 
-            settings.plottables.Add(axLine);
+            Add(axLine);
             return axLine;
         }
 
@@ -1266,7 +1283,7 @@ namespace ScottPlot
                 dragLimitUpper: dragLimitUpper
                 );
 
-            settings.plottables.Add(axisSpan);
+            Add(axisSpan);
             return axisSpan;
         }
 
@@ -1295,7 +1312,7 @@ namespace ScottPlot
                 lineStyle: lineStyle
                 );
 
-            settings.plottables.Add(axLine);
+            Add(axLine);
             return axLine;
         }
 
@@ -1326,7 +1343,7 @@ namespace ScottPlot
                     dragLimitUpper: dragLimitUpper
                     );
 
-            settings.plottables.Add(axisSpan);
+            Add(axisSpan);
             return axisSpan;
         }
 
