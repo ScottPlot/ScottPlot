@@ -66,7 +66,7 @@ namespace ScottPlot
                 negativeColor: negativeColor.Value
                 );
 
-            settings.plottables.Add(barPlot);
+            Add(barPlot);
 
             if (autoAxis)
             {
