@@ -1,8 +1,6 @@
-﻿/* The Plot class is the primary public interface to ScottPlot.
- * - This should be the only class the user interacts with.
- * - Internal refactoring can occur as long as these functions remain fixed.
- * - This file is intentionally spaced out to make code changes easier to review.
- * - Very little processing occurs here. This interface mostly calls private methods.
+﻿/* The Plot class is the primary public interface for ScottPlot.
+ * State (plottables and configuration) is stored in the settings object 
+ * which is private so it can be refactored without breaking the API.
  */
 
 using System;
@@ -17,9 +15,8 @@ using ScottPlot.Statistics;
 
 namespace ScottPlot
 {
-    public class Plot
+    public partial class Plot
     {
-        public PixelFormat pixelFormat = PixelFormat.Format32bppPArgb;
         private readonly Settings settings;
 
         public Plot(int width = 800, int height = 600)
@@ -87,13 +84,13 @@ namespace ScottPlot
 
             if (settings.figureSize.Width > 0 && settings.figureSize.Height > 0)
             {
-                settings.bmpFigure = new Bitmap(settings.figureSize.Width, settings.figureSize.Height, pixelFormat);
+                settings.bmpFigure = new Bitmap(settings.figureSize.Width, settings.figureSize.Height, PixelFormat.Format32bppPArgb);
                 settings.gfxFigure = Graphics.FromImage(settings.bmpFigure);
             }
 
             if (settings.dataSize.Width > 0 && settings.dataSize.Height > 0)
             {
-                settings.bmpData = new Bitmap(settings.dataSize.Width, settings.dataSize.Height, pixelFormat);
+                settings.bmpData = new Bitmap(settings.dataSize.Width, settings.dataSize.Height, PixelFormat.Format32bppPArgb);
                 settings.gfxData = Graphics.FromImage(settings.bmpData);
             }
         }
@@ -1175,193 +1172,6 @@ namespace ScottPlot
 
             settings.plottables.Add(pie);
             return pie;
-        }
-
-        public PlottableBar PlotWaterfall(
-            double[] xs,
-            double[] ys,
-            double[] errorY = null,
-            string label = null,
-            double barWidth = .8,
-            double xOffset = 0,
-            bool fill = true,
-            Color? fillColor = null,
-            double outlineWidth = 1,
-            Color? outlineColor = null,
-            double errorLineWidth = 1,
-            double errorCapSize = .38,
-            Color? errorColor = null,
-            bool horizontal = false,
-            bool showValues = false,
-            Color? valueColor = null,
-            bool autoAxis = true,
-            Color? negativeColor = null
-            )
-        {
-            double[] yOffsets = Enumerable.Range(0, ys.Length).Select(count => ys.Take(count).Sum()).ToArray();
-            return PlotBar(
-                xs,
-                ys,
-                errorY,
-                label,
-                barWidth,
-                xOffset,
-                fill,
-                fillColor,
-                outlineWidth,
-                outlineColor,
-                errorLineWidth,
-                errorCapSize,
-                errorColor,
-                horizontal,
-                showValues,
-                valueColor,
-                autoAxis,
-                yOffsets,
-                negativeColor
-            );
-        }
-
-        public PlottableBar PlotBar(
-            double[] xs,
-            double[] ys,
-            double[] errorY = null,
-            string label = null,
-            double barWidth = .8,
-            double xOffset = 0,
-            bool fill = true,
-            Color? fillColor = null,
-            double outlineWidth = 1,
-            Color? outlineColor = null,
-            double errorLineWidth = 1,
-            double errorCapSize = .38,
-            Color? errorColor = null,
-            bool horizontal = false,
-            bool showValues = false,
-            Color? valueColor = null,
-            bool autoAxis = true,
-            double[] yOffsets = null,
-            Color? negativeColor = null
-            )
-        {
-            if (fillColor == null)
-                fillColor = settings.GetNextColor();
-
-            if (outlineColor == null)
-                outlineColor = Color.Black;
-
-            if (errorColor == null)
-                errorColor = Color.Black;
-
-            if (valueColor == null)
-                valueColor = Color.Black;
-
-            if (!negativeColor.HasValue)
-            {
-                negativeColor = fillColor;
-            }
-
-            PlottableBar barPlot = new PlottableBar(
-                xs: xs,
-                ys: ys,
-                barWidth: barWidth,
-                xOffset: xOffset,
-                fill: fill,
-                fillColor: fillColor.Value,
-                label: label,
-                yErr: errorY,
-                errorLineWidth: errorLineWidth,
-                errorCapSize: errorCapSize,
-                errorColor: errorColor.Value,
-                outlineWidth: outlineWidth,
-                outlineColor: outlineColor.Value,
-                horizontal: horizontal,
-                showValues: showValues,
-                valueColor: valueColor.Value,
-                yOffsets: yOffsets,
-                negativeColor: negativeColor.Value
-                );
-
-            settings.plottables.Add(barPlot);
-
-            if (autoAxis)
-            {
-                // perform a tight axis adjustment
-                AxisAuto(0, 0);
-                double[] tightAxisLimits = Axis();
-
-                // now loosen it up a bit
-                AxisAuto();
-
-                if (horizontal)
-                {
-                    if (tightAxisLimits[0] == 0)
-                        Axis(x1: 0);
-                    else if (tightAxisLimits[1] == 0)
-                        Axis(x2: 0);
-                }
-                else
-                {
-                    if (tightAxisLimits[2] == 0)
-                        Axis(y1: 0);
-                    else if (tightAxisLimits[3] == 0)
-                        Axis(y2: 0);
-                }
-            }
-
-            return barPlot;
-        }
-
-        /// <summary>
-        /// Create a series of bar plots given a 2D dataset
-        /// </summary>
-        /// <param name="groupLabels">displayed as horizontal axis tick labels</param>
-        /// <param name="seriesLabels">displayed in the legend</param>
-        /// <param name="ys">Array of arrays (one per series) that contan one point per group</param>
-        /// <returns></returns>
-        public PlottableBar[] PlotBarGroups(
-                string[] groupLabels,
-                string[] seriesLabels,
-                double[][] ys,
-                double[][] yErr = null,
-                double groupWidthFraction = 0.8,
-                double barWidthFraction = 0.8,
-                double errorCapSize = 0.38,
-                bool showValues = false
-            )
-        {
-            if (groupLabels is null || seriesLabels is null || ys is null)
-                throw new ArgumentException("labels and ys cannot be null");
-
-            if (seriesLabels.Length != ys.Length)
-                throw new ArgumentException("groupLabels and ys must be the same length");
-
-            foreach (double[] subArray in ys)
-                if (subArray.Length != groupLabels.Length)
-                    throw new ArgumentException("all arrays inside ys must be the same length as groupLabels");
-
-            int seriesCount = ys.Length;
-            double barWidth = groupWidthFraction / seriesCount;
-            PlottableBar[] bars = new PlottableBar[seriesCount];
-            bool containsNegativeY = false;
-            for (int i = 0; i < seriesCount; i++)
-            {
-                double offset = i * barWidth;
-                double[] barYs = ys[i];
-                double[] barYerr = yErr?[i];
-                double[] barXs = DataGen.Consecutive(barYs.Length);
-                containsNegativeY |= barYs.Where(y => y < 0).Any();
-                bars[i] = PlotBar(barXs, barYs, barYerr, seriesLabels[i], barWidth * barWidthFraction, offset,
-                    errorCapSize: errorCapSize, showValues: showValues);
-            }
-
-            if (containsNegativeY)
-            {
-                AxisAuto();
-            }
-            XTicks(DataGen.Consecutive(groupLabels.Length, offset: (groupWidthFraction - barWidth) / 2), groupLabels);
-
-            return bars;
         }
 
         public PlottableOHLC PlotOHLC(
