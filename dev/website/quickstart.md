@@ -55,3 +55,25 @@ wpfPlot1.Render();
 ```
 
 ![](graphics/scottplot-quickstart-wpf.png)
+
+## Avalonia Quickstart
+
+**Step 1:** Install ScottPlot.Avalonia [using NuGet](https://docs.microsoft.com/en-us/nuget/quickstart/install-and-use-a-package-in-visual-studio)
+
+**Step 2:** Add an AvaPlot to your layout area and give it a unique name
+```xaml
+<AvaPlot Name="avaPlot1"/>
+```
+
+**Step 3:** Plot some data in your start-up sequence
+
+```cs
+var avaplot1 = this.Find<AvaPlot>("avaPlot1");
+
+double[] dataX = new double[] { 1, 2, 3, 4, 5 };
+double[] dataY = new double[] { 1, 4, 9, 16, 25 };
+avaplot1.plt.PlotScatter(dataX, dataY);
+avaplot1.Render();
+```
+
+![](graphics/scottplot-quickstart-avalonia.png)
