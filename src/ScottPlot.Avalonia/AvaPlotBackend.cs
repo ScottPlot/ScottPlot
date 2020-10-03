@@ -40,7 +40,7 @@ namespace ScottPlot.Avalonia
                 view.Find<StackPanel>("canvasDesigner").Background = view.transparentBrush;
                 var canvasPlot = view.Find<Canvas>("canvasPlot");
                 canvasPlot.Background = view.transparentBrush;
-                CanvasSizeChanged((int)(canvasPlot.Bounds.Width * dpiScaleOutput), (int)(canvasPlot.Bounds.Height * dpiScaleOutput));
+                CanvasSizeChanged((int)(canvasPlot.Bounds.Width), (int)(canvasPlot.Bounds.Height));
             }
         }
 
