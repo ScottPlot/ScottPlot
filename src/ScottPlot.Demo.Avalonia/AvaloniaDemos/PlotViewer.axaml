@@ -7,12 +7,10 @@
         Title="PlotViewer">
 	<DockPanel Margin="10">
 		<TextBlock TextWrapping="Wrap" DockPanel.Dock="Top">
-			The PlotViewer lets you launch a plot in an
-			interactive pop-up window.
+			The PlotViewer lets you launch a plot in an interactive pop-up window.
 		</TextBlock>
 		<TextBlock TextWrapping="Wrap" DockPanel.Dock="Top">
-			You can focus on generating interesting data,
-			and PlotViewer will handle the GUI!
+			You can focus on generating interesting data, and PlotViewer will handle the GUI!
 		</TextBlock>
 
 		<StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
