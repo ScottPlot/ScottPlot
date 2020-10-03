@@ -16,6 +16,7 @@ namespace ScottPlot.Demo.Avalonia
 
             this.Find<Button>("WebsiteLabel").Click += WebsiteLabelClick;
             this.Find<Button>("LaunchCookbookButton").Click += LaunchCookbook;
+            this.Find<Button>("LaunchPlotViewerButton").Click += LaunchPlotViewer;
         }
 
         public void InitializeComponent()
@@ -75,7 +76,7 @@ namespace ScottPlot.Demo.Avalonia
 
         public void LaunchPlotViewer(object sender, RoutedEventArgs e)
         {
-            //new WpfDemos.PlotViewer().ShowDialog();
+            new AvaloniaDemos.PlotViewer().ShowDialog(this);
         }
 
         public void LaunchManyPlot(object sender, RoutedEventArgs e)
