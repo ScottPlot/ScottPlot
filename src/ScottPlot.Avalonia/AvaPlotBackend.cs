@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Text;
-using System.Threading.Tasks;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.VisualTree;
 using ScottPlot.Interactive;
-
+using System.Collections.Generic;
+using System.Drawing;
+using System.Threading.Tasks;
 using Ava = global::Avalonia;
 
 namespace ScottPlot.Avalonia
@@ -38,7 +35,7 @@ namespace ScottPlot.Avalonia
             {
                 // hide the version info
                 mainGrid.RowDefinitions[0].Height = new GridLength(0);
-                //CanvasPlot_SizeChanged(null, null);
+                CanvasSizeChanged((int)(view.Find<Canvas>("canvasPlot").Bounds.Width * dpiScaleOutput), (int)(view.Find<Canvas>("canvasPlot").Bounds.Height * dpiScaleOutput));
                 //dpiScaleInput = settings.gfxFigure.DpiX / 96; THIS IS ONLY NECESSARY ON WPF
                 dpiScaleOutput = settings.gfxFigure.DpiX / 96;
                 view.Find<StackPanel>("canvasDesigner").Background = view.transparentBrush;
@@ -46,6 +43,7 @@ namespace ScottPlot.Avalonia
             }
 
         }
+
         public void SetAltPressed(bool value)
         {
             isAltPressed = value;
