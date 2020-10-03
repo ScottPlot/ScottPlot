@@ -47,8 +47,14 @@ namespace ScottPlot.Demo.Avalonia
         private void LoadTreeWithDemos()
         {
             TreeView DemoTreeview = this.Find<TreeView>("DemoTreeview");
-            DemoTreeview.Items = Reflection.GetPlotNodeItems();
-            DemoTreeview.Focus();
+            var demos = Reflection.GetPlotNodeItems();
+            DemoTreeview.Items = demos;
+
+            CookbookControl DemoPlotControl1 = this.Find<CookbookControl>("DemoPlotControl1");
+            var AboutControl1 = this.Find<AboutControl>("AboutControl1");
+            DemoPlotControl1.IsVisible = true;
+            AboutControl1.IsVisible = false;
+            DemoPlotControl1.LoadDemo(demos[0].Items[0].Items[0].Tag);
         }
     }
 }
