@@ -35,13 +35,13 @@ namespace ScottPlot.Avalonia
             {
                 // hide the version info
                 mainGrid.RowDefinitions[0].Height = new GridLength(0);
-                CanvasSizeChanged((int)(view.Find<Canvas>("canvasPlot").Bounds.Width * dpiScaleOutput), (int)(view.Find<Canvas>("canvasPlot").Bounds.Height * dpiScaleOutput));
                 //dpiScaleInput = settings.gfxFigure.DpiX / 96; THIS IS ONLY NECESSARY ON WPF
                 dpiScaleOutput = settings.gfxFigure.DpiX / 96;
                 view.Find<StackPanel>("canvasDesigner").Background = view.transparentBrush;
-                view.Find<Canvas>("canvasPlot").Background = view.transparentBrush;
+                var canvasPlot = view.Find<Canvas>("canvasPlot");
+                canvasPlot.Background = view.transparentBrush;
+                CanvasSizeChanged((int)(canvasPlot.Bounds.Width * dpiScaleOutput), (int)(canvasPlot.Bounds.Height * dpiScaleOutput));
             }
-
         }
 
         public void SetAltPressed(bool value)
