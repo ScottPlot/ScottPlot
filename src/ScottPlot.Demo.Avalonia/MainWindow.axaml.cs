@@ -19,6 +19,7 @@ namespace ScottPlot.Demo.Avalonia
             this.Find<Button>("LaunchPlotViewerButton").Click += LaunchPlotViewer;
             this.Find<Button>("LaunchMouseTrackerButton").Click += LaunchMouseTracker;
             this.Find<Button>("LaunchToggleVisibilityButton").Click += LaunchToggleVisibility;
+            this.Find<Button>("LaunchAvaPlotConfigButton").Click += LaunchAvaloniaConfig;
         }
 
         public void InitializeComponent()
@@ -41,9 +42,9 @@ namespace ScottPlot.Demo.Avalonia
             new AvaloniaDemos.ToggleVisibility().ShowDialog(this);
         }
 
-        public void LaunchWpfConfig(object sender, RoutedEventArgs e)
+        public void LaunchAvaloniaConfig(object sender, RoutedEventArgs e)
         {
-            //new WpfDemos.WpfConfig().ShowDialog();
+            new AvaloniaDemos.AvaloniaConfig().ShowDialog(this);
         }
 
         public void LaunchLinkedAxes(object sender, RoutedEventArgs e)

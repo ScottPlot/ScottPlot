@@ -15,7 +15,7 @@
 			<StackPanel.Styles>
 				<Style Selector="TextBlock">
 					<Setter Property="VerticalAlignment" Value="Center" />
-					<Setter Property="TextWrapping" Value="Wrap" />
+					<Setter Property="TextWrapping" Value="Wrap"/>
 				</Style>
 				<Style Selector="Button">
 					<Setter Property="Padding" Value="5" />
@@ -99,13 +99,13 @@
 						</DockPanel>
 
 						<DockPanel>
-							<Button DockPanel.Dock="Left" Name="LaunchWpfConfigButton">
+							<Button DockPanel.Dock="Left" Name="LaunchAvaPlotConfigButton">
 								<TextBlock TextAlignment="Center">
-									WpfPlot Config
+									AvaPlot Config
 								</TextBlock>
 							</Button>
 							<TextBlock >
-								Demonstrates how to customize the configuration of the WpfPlot control
+								Demonstrates how to customize the configuration of the AvaPlot control
 							</TextBlock>
 						</DockPanel>
 

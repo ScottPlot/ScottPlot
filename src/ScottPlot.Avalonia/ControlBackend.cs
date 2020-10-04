@@ -190,8 +190,8 @@ namespace ScottPlot.Interactive
                 double deltaX = mouseLeftDownLocation.Value.X - mouseLocation.X;
                 double deltaY = mouseLocation.Y - mouseLeftDownLocation.Value.Y;
 
-                if (isCtrlPressed) deltaY = 0;
-                if (isShiftPressed) deltaX = 0;
+                if (isCtrlPressed || lockVerticalAxis) deltaY = 0;
+                if (isShiftPressed || lockHorizontalAxis) deltaX = 0;
 
                 settings.AxesPanPx((int)deltaX, (int)deltaY);
                 AxisChanged?.Invoke(null, null);
