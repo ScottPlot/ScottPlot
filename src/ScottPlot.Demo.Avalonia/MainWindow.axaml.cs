@@ -23,6 +23,7 @@ namespace ScottPlot.Demo.Avalonia
             this.Find<Button>("LaunchLinkedAxesButton").Click += LaunchLinkedAxes;
             this.Find<Button>("LaunchLiveDataFixedButton").Click += LaunchLiveDataFixed;
             this.Find<Button>("LaunchLiveDataIncomingButton").Click += LaunchLiveDataIncoming;
+            this.Find<Button>("LaunchShowValueUnderMouseButton").Click += LaunchShowValueUnderMouse;
         }
 
         public void InitializeComponent()
@@ -67,7 +68,7 @@ namespace ScottPlot.Demo.Avalonia
 
         public void LaunchShowValueUnderMouse(object sender, RoutedEventArgs e)
         {
-            //new WpfDemos.ShowValueOnHover().ShowDialog();
+            new AvaloniaDemos.ShowValueOnHover().ShowDialog(this);
         }
 
         public void LaunchTransparentBackground(object sender, RoutedEventArgs e)
