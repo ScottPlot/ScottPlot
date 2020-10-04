@@ -164,6 +164,7 @@
 							</TextBlock>
 						</DockPanel>
 
+						<!-- I think doing this in Avalonia means a rewrite and I barely understand templates
 						<DockPanel>
 							<Button DockPanel.Dock="Left" Name="LaunchManyPlotButton">
 								<TextBlock TextAlignment="Center">
@@ -174,6 +175,7 @@
 								Shows how to create a window with many ScottPlot controls
 							</TextBlock>
 						</DockPanel>
+						-->
 
 						<DockPanel>
 							<Button DockPanel.Dock="Left" Name="LaunchCustomRightClickButton">

@@ -25,6 +25,7 @@ namespace ScottPlot.Demo.Avalonia
             this.Find<Button>("LaunchLiveDataIncomingButton").Click += LaunchLiveDataIncoming;
             this.Find<Button>("LaunchShowValueUnderMouseButton").Click += LaunchShowValueUnderMouse;
             this.Find<Button>("LaunchTransparentBackgroundButton").Click += LaunchTransparentBackground;
+            this.Find<Button>("LaunchCustomRightClickButton").Click += LaunchCustomRightClick;
         }
 
         public void InitializeComponent()
@@ -94,7 +95,7 @@ namespace ScottPlot.Demo.Avalonia
 
         public void LaunchCustomRightClick(object sender, RoutedEventArgs e)
         {
-            //new WpfDemos.RightClickMenu().ShowDialog();
+            new AvaloniaDemos.RightClickMenu().ShowDialog(this);
         }
 
         public void LaunchPlotInAScrollViewer(object sender, RoutedEventArgs e)
