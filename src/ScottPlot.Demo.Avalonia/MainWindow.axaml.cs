@@ -21,6 +21,8 @@ namespace ScottPlot.Demo.Avalonia
             this.Find<Button>("LaunchToggleVisibilityButton").Click += LaunchToggleVisibility;
             this.Find<Button>("LaunchAvaPlotConfigButton").Click += LaunchAvaloniaConfig;
             this.Find<Button>("LaunchLinkedAxesButton").Click += LaunchLinkedAxes;
+            this.Find<Button>("LaunchLiveDataFixedButton").Click += LaunchLiveDataFixed;
+            this.Find<Button>("LaunchLiveDataIncomingButton").Click += LaunchLiveDataIncoming;
         }
 
         public void InitializeComponent()
@@ -55,12 +57,12 @@ namespace ScottPlot.Demo.Avalonia
 
         public void LaunchLiveDataFixed(object sender, RoutedEventArgs e)
         {
-            //new WpfDemos.LiveDataFixed().ShowDialog();
+            new AvaloniaDemos.LiveDataFixed().ShowDialog(this);
         }
 
         public void LaunchLiveDataIncoming(object sender, RoutedEventArgs e)
         {
-            //new WpfDemos.LiveDataGrowing().ShowDialog();
+            new AvaloniaDemos.LiveDataGrowing().ShowDialog(this);
         }
 
         public void LaunchShowValueUnderMouse(object sender, RoutedEventArgs e)
