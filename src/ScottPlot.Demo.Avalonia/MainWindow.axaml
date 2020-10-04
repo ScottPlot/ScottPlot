@@ -116,7 +116,7 @@
 								</TextBlock>
 							</Button>
 							<TextBlock >
-								Link axes from two WpfPlot controls together
+								Link axes from two AvaPlot controls together
 							</TextBlock>
 						</DockPanel>
 
