@@ -18,6 +18,7 @@ namespace ScottPlot.Demo.Avalonia
             this.Find<Button>("LaunchCookbookButton").Click += LaunchCookbook;
             this.Find<Button>("LaunchPlotViewerButton").Click += LaunchPlotViewer;
             this.Find<Button>("LaunchMouseTrackerButton").Click += LaunchMouseTracker;
+            this.Find<Button>("LaunchToggleVisibilityButton").Click += LaunchToggleVisibility;
         }
 
         public void InitializeComponent()
@@ -37,7 +38,7 @@ namespace ScottPlot.Demo.Avalonia
 
         public void LaunchToggleVisibility(object sender, RoutedEventArgs e)
         {
-            //new WpfDemos.ToggleVisibility().ShowDialog();
+            new AvaloniaDemos.ToggleVisibility().ShowDialog(this);
         }
 
         public void LaunchWpfConfig(object sender, RoutedEventArgs e)
