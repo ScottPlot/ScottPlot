@@ -193,5 +193,40 @@ namespace ScottPlot
 
             return bars;
         }
+
+        public PlottablePopulations PlotPopulations(Population population, string label = null)
+        {
+            var plottable = new PlottablePopulations(population, label, settings.GetNextColor());
+            Add(plottable);
+            return plottable;
+        }
+
+        public PlottablePopulations PlotPopulations(Population[] populations, string label = null)
+        {
+            var plottable = new PlottablePopulations(populations, label);
+            Add(plottable);
+            return plottable;
+        }
+
+        public PlottablePopulations PlotPopulations(PopulationSeries series, string label = null)
+        {
+            series.color = settings.GetNextColor();
+            if (label != null)
+                series.seriesLabel = label;
+            var plottable = new PlottablePopulations(series, label);
+            Add(plottable);
+            return plottable;
+        }
+
+        public PlottablePopulations PlotPopulations(PopulationMultiSeries multiSeries)
+        {
+            for (int i = 0; i < multiSeries.multiSeries.Length; i++)
+                multiSeries.multiSeries[i].color = settings.colorset.GetColor(i);
+
+            var plottable = new PlottablePopulations(multiSeries);
+            Add(plottable);
+            return plottable;
+        }
+
     }
 }
