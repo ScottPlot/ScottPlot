@@ -37,7 +37,7 @@
 					<TextBlock DockPanel.Dock="Top" FontSize="24" FontWeight="SemiBold">ScottPlot Demo</TextBlock>
 					<TextBlock DockPanel.Dock="Top" Name="VersionLabel" FontSize="12" Margin="0,0,0,0" Foreground="Gray" Width="109" HorizontalAlignment="Left">version 8.8.88</TextBlock>
 				</StackPanel>
-				
+
 				<Button Name="WebsiteLabel" ToolTip.Tip="Launch ScottPlot Website" Foreground="Gray" FontSize="14" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="0">
 					Website
 				</Button>
@@ -216,7 +216,7 @@
 									Custom Layout
 								</TextBlock>
 							</Button>
-							<TextBlock >
+							<TextBlock>
 								Demonstrate how to customize the plot frame padding
 							</TextBlock>
 						</DockPanel>

@@ -26,6 +26,9 @@ namespace ScottPlot.Demo.Avalonia
             this.Find<Button>("LaunchShowValueUnderMouseButton").Click += LaunchShowValueUnderMouse;
             this.Find<Button>("LaunchTransparentBackgroundButton").Click += LaunchTransparentBackground;
             this.Find<Button>("LaunchCustomRightClickButton").Click += LaunchCustomRightClick;
+            this.Find<Button>("LaunchPlotInAScrollViewerButton").Click += LaunchPlotInAScrollViewer;
+            this.Find<Button>("LaunchAxisLimitsButton").Click += LaunchAxisLimits;
+            this.Find<Button>("LaunchLayoutButton").Click += LaunchLayout;
         }
 
         public void InitializeComponent()
@@ -100,17 +103,17 @@ namespace ScottPlot.Demo.Avalonia
 
         public void LaunchPlotInAScrollViewer(object sender, RoutedEventArgs e)
         {
-            //new WpfDemos.PlotInScrollViewer().ShowDialog();
+            new AvaloniaDemos.PlotInScrollViewer().ShowDialog(this);
         }
 
         public void LaunchAxisLimits(object sender, RoutedEventArgs e)
         {
-            //new WpfDemos.AxisLimits().ShowDialog();
+            new AvaloniaDemos.AxisLimits().ShowDialog(this);
         }
 
         public void LaunchLayout(object sender, RoutedEventArgs e)
         {
-            //new WpfDemos.Layout().ShowDialog();
+            new AvaloniaDemos.Layout().ShowDialog(this);
         }
     }
 }
