@@ -9,17 +9,10 @@
 		SizeToContent="WidthAndHeight"
 	>
 	<DockPanel Margin="5">
-		<Grid DockPanel.Dock="Top" Name="mainGrid">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="auto"/>
-				<ColumnDefinition Width="auto"/>
-				<ColumnDefinition Width="auto"/>
-			</Grid.ColumnDefinitions>
-			<Grid.RowDefinitions>
-				<RowDefinition Height="auto"/>
-				<RowDefinition Height="auto"/>
-				<RowDefinition Height="auto"/>
-			</Grid.RowDefinitions>
+		<Grid DockPanel.Dock="Top" Name="mainGrid"
+			  ColumnDefinitions="auto, auto, auto"
+			  RowDefinitions="auto, auto, auto"
+			  >
 
 			<TextBlock Text="X" Grid.Row="1" Grid.Column="0" FontWeight="Bold"/>
 			<TextBlock Text="Y" Grid.Row="2" Grid.Column="0" FontWeight="Bold"/>

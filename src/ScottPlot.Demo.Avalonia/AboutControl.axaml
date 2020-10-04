@@ -12,13 +12,8 @@
 			
 			
 			<TextBlock Margin="5,10,5,5" TextWrapping="Wrap" FontSize="14">
-				This program displays ScottPlot cookbook recipes interactively.
-			</TextBlock>
-
-			<!-- Really, would it be too much to ask for linebreaks in textblocks? -->
-			
-			<TextBlock Margin="5,10,5,5" TextWrapping="Wrap" FontSize="14" Width="800" HorizontalAlignment="Left">
-				Although this program uses the AvaPlot to display plots interactively, the source code for each plot could be used in console applications and plots saved as images.
+This program displays ScottPlot cookbook recipes interactively.
+Although this program uses the AvaPlot to display plots interactively, the source code for each plot could be used in console applications and plots saved as images.
 			</TextBlock>
 
 		</StackPanel>

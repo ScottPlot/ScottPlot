@@ -42,19 +42,13 @@
 				<TextBlock Text="Sample Code"/>
 				<ScrollViewer HorizontalScrollBarVisibility="Auto">
 					<StackPanel>
-						<!-- I like Avalonia, but not allowing newlines in TextBlocks isn't quirky or cute... -->
-						<TextBlock FontFamily="consolas" Margin="5">
-							// create a ScottPlot
-						</TextBlock>
-						<TextBlock FontFamily="consolas" Margin="5">
-							var plt = new ScottPlot.Plot()
-						</TextBlock>
-						<TextBlock FontFamily="consolas" Margin="5">
-							// launch it in a PlotViewer\n
-						</TextBlock>
-						<TextBlock FontFamily="consolas" Margin="5">
-							new ScottPlot.AvaPlotViewer(plt).Show()"
-						</TextBlock>
+						<TextBlock FontFamily="consolas" Margin="5"
+								   Text="
+// create a ScottPlot&#x0d;&#x0a;
+var plt = new ScottPlot.Plot()&#x0d;&#x0a;
+// launch it in a PlotViewer&#x0d;&#x0a;
+new ScottPlot.AvaPlotViewer(plt).Show()"
+						/>
 					</StackPanel>
 				</ScrollViewer>
 			</StackPanel>
