@@ -20,6 +20,7 @@ namespace ScottPlot.Demo.Avalonia
             this.Find<Button>("LaunchMouseTrackerButton").Click += LaunchMouseTracker;
             this.Find<Button>("LaunchToggleVisibilityButton").Click += LaunchToggleVisibility;
             this.Find<Button>("LaunchAvaPlotConfigButton").Click += LaunchAvaloniaConfig;
+            this.Find<Button>("LaunchLinkedAxesButton").Click += LaunchLinkedAxes;
         }
 
         public void InitializeComponent()
@@ -49,7 +50,7 @@ namespace ScottPlot.Demo.Avalonia
 
         public void LaunchLinkedAxes(object sender, RoutedEventArgs e)
         {
-            //new WpfDemos.LinkedPlots().ShowDialog();
+            new AvaloniaDemos.LinkedPlots().ShowDialog(this);
         }
 
         public void LaunchLiveDataFixed(object sender, RoutedEventArgs e)
