@@ -17,6 +17,7 @@ namespace ScottPlot.Demo.Avalonia
             this.Find<Button>("WebsiteLabel").Click += WebsiteLabelClick;
             this.Find<Button>("LaunchCookbookButton").Click += LaunchCookbook;
             this.Find<Button>("LaunchPlotViewerButton").Click += LaunchPlotViewer;
+            this.Find<Button>("LaunchMouseTrackerButton").Click += LaunchMouseTracker;
         }
 
         public void InitializeComponent()
@@ -31,7 +32,7 @@ namespace ScottPlot.Demo.Avalonia
 
         public void LaunchMouseTracker(object sender, RoutedEventArgs e)
         {
-            //new WpfDemos.MouseTracker().ShowDialog();
+            new AvaloniaDemos.MouseTracker().ShowDialog(this);
         }
 
         public void LaunchToggleVisibility(object sender, RoutedEventArgs e)

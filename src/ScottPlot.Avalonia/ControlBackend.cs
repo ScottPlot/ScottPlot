@@ -260,10 +260,10 @@ namespace ScottPlot.Interactive
 
             if (mouseMiddleDownLocation != null)
             {
-                double x1 = Math.Min(mouseLocation.X, mouseMiddleDownLocation.Value.X) / dpiScaleOutput;
-                double x2 = Math.Max(mouseLocation.X, mouseMiddleDownLocation.Value.X) / dpiScaleOutput;
-                double y1 = Math.Min(mouseLocation.Y, mouseMiddleDownLocation.Value.Y) / dpiScaleOutput;
-                double y2 = Math.Max(mouseLocation.Y, mouseMiddleDownLocation.Value.Y) / dpiScaleOutput;
+                double x1 = Math.Min(mouseLocation.X, mouseMiddleDownLocation.Value.X);
+                double x2 = Math.Max(mouseLocation.X, mouseMiddleDownLocation.Value.X);
+                double y1 = Math.Min(mouseLocation.Y, mouseMiddleDownLocation.Value.Y);
+                double y2 = Math.Max(mouseLocation.Y, mouseMiddleDownLocation.Value.Y);
 
                 PointF topLeft = new PointF((float)x1, (float)y1);
                 SizeF size = new SizeF((float)(x2 - x1), (float)(y2 - y1));
