@@ -24,6 +24,7 @@ namespace ScottPlot.Demo.Avalonia
             this.Find<Button>("LaunchLiveDataFixedButton").Click += LaunchLiveDataFixed;
             this.Find<Button>("LaunchLiveDataIncomingButton").Click += LaunchLiveDataIncoming;
             this.Find<Button>("LaunchShowValueUnderMouseButton").Click += LaunchShowValueUnderMouse;
+            this.Find<Button>("LaunchTransparentBackgroundButton").Click += LaunchTransparentBackground;
         }
 
         public void InitializeComponent()
@@ -73,7 +74,7 @@ namespace ScottPlot.Demo.Avalonia
 
         public void LaunchTransparentBackground(object sender, RoutedEventArgs e)
         {
-            //new WpfDemos.TransparentBackground().ShowDialog();
+            new AvaloniaDemos.TransparentBackground().ShowDialog(this);
         }
 
         public void WebsiteLabelClick(object sender, RoutedEventArgs e)
