@@ -9,17 +9,6 @@ namespace ScottPlotTests.Plot
     class Scatter
     {
         [Test]
-        public void Test_Scatter_Simple()
-        {
-            var plt = new ScottPlot.Plot(500, 300);
-            plt.PlotSignal(DataGen.Sin(51), label: "sin");
-            plt.PlotSignal(DataGen.Cos(51), label: "cos");
-            plt.Legend();
-
-            TestTools.SaveFig(plt);
-        }
-
-        [Test]
         public void Test_Scatter_AllZeros()
         {
             double[] dataX = { 0, 0, 0, 0, 0 };
@@ -87,6 +76,16 @@ namespace ScottPlotTests.Plot
             var plt = new ScottPlot.Plot(400, 300);
             plt.PlotScatter(dataX, dataY);
 
+            TestTools.SaveFig(plt);
+        }
+
+        //[Test]
+        public void Test_Scatter_MinMaxRenderIndex()
+        {
+            var plt = new ScottPlot.Plot(500, 300);
+            var sctr = plt.PlotScatter(DataGen.Consecutive(51), DataGen.Sin(51));
+            sctr.minRenderIndex = 10;
+            sctr.maxRenderIndex = 30;
             TestTools.SaveFig(plt);
         }
     }

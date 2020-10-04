@@ -26,6 +26,9 @@ namespace ScottPlot
         public float markerSize;
         public bool stepDisplay;
 
+        public int? minRenderIndex { set { throw new NotImplementedException(); } }
+        public int? maxRenderIndex { set { throw new NotImplementedException(); } }
+
         public MarkerShape markerShape;
         public Color color;
         public LineStyle lineStyle;
@@ -90,7 +93,7 @@ namespace ScottPlot
             return $"PlottableScatter{label} with {GetPointCount()} points";
         }
 
-        public override Config.AxisLimits2D GetLimits()
+        public override AxisLimits2D GetLimits()
         {
             double[] limits = new double[4];
 
@@ -130,8 +133,7 @@ namespace ScottPlot
                 }
             }
 
-            // TODO: use features of 2d axis
-            return new Config.AxisLimits2D(limits);
+            return new AxisLimits2D(limits);
         }
 
         protected virtual void DrawPoint(Settings settings, List<PointF> points, int i)
