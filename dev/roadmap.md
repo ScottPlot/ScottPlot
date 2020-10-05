@@ -1,12 +1,14 @@
 # ScottPlot Roadmap
 
-_Updated September 26, 2020_
+_Updated October 4, 2020_
 
 **My high priority goals are (in order):**
 
+* Refactor plottables ([#578](https://github.com/swharden/ScottPlot/issues/578)) to (1) use public properties (each with tests and XML docs) to customize styling and behavior instead of constructor arguments and (2) add shallow and deep data validation methods (related to diagnostic mode, [#553](https://github.com/swharden/ScottPlot/issues/553)).
+
 * Roll version from `4.0` to `4.1.x-alpha`. This way NuGet only lists the package if the pre-release box is checked, making breaking changes less offensive.
 
-* Use `IPlottable` instead of `Plottable` (currently an abstract class with all abstract methods).
+* Transition plottables to fully implement `IPlottable` (interface) instead of `Plottable` (abstract class with all abstract methods).
 
 * Improve plottables by enhancing how data is updated and validated by creating and implementing `IValidatable`.
 
