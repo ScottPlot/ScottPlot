@@ -1,11 +1,14 @@
 ﻿using ScottPlot.Config;
 using ScottPlot.Diagnostic.Attributes;
+using ScottPlot.Drawing;
+using ScottPlot.plottables;
 using System;
+using System.ComponentModel;
 using System.Drawing;
 
 namespace ScottPlot
 {
-    public class PlottableText : Plottable
+    public class PlottableText : Plottable, IPlottable
     {
         [FiniteNumbers]
         public double x;
@@ -13,12 +16,15 @@ namespace ScottPlot
         public double y;
         public double rotation;
         public string text;
-        public Brush brush, frameBrush;
-        public Font font;
         public TextAlignment alignment;
         public bool frame;
         public Color frameColor;
         public string label;
+
+        public Color FontColor;
+        public string FontName;
+        public float FontSize;
+        public bool FontBold;
 
         public PlottableText(string text, double x, double y, Color color, string fontName, double fontSize, bool bold, string label, TextAlignment alignment, double rotation, bool frame, Color frameColor)
         {
@@ -31,99 +37,71 @@ namespace ScottPlot
             this.frame = frame;
             this.frameColor = frameColor;
 
-            brush = new SolidBrush(color);
-            frameBrush = new SolidBrush(frameColor);
-
-            FontStyle fontStyle = (bold == true) ? FontStyle.Bold : FontStyle.Regular;
-            font = new Font(fontName, (float)fontSize, fontStyle, GraphicsUnit.Pixel);
+            (FontColor, FontName, FontSize, FontBold) = (color, fontName, (float)fontSize, bold);
         }
 
-        public override string ToString()
+        public override string ToString() => $"PlottableText \"{text}\" at ({x}, {y})";
+
+        public override AxisLimits2D GetLimits() => new AxisLimits2D(x, x, y, y);
+
+        public override void Render(Settings settings) => throw new NotImplementedException("Use the other Render method");
+
+        public override int GetPointCount() => 1;
+
+        public override LegendItem[] GetLegendItems() => null; // never show in legend
+
+        private (float pixelX, float pixelY) ApplyAlignmentOffset(float pixelX, float pixelY, float stringWidth, float stringHeight)
         {
-            return $"PlottableText \"{text}\" at ({x}, {y})";
-        }
-
-        public override Config.AxisLimits2D GetLimits()
-        {
-            double[] limits = { x, x, y, y };
-
-            // TODO: use features of 2d axis
-            return new Config.AxisLimits2D(limits);
-        }
-
-        public override void Render(Settings settings)
-        {
-
-            PointF defaultPoint = settings.GetPixel(x, y);
-            PointF textLocationPoint = new PointF();
-            SizeF stringSize = Drawing.GDI.MeasureString(settings.gfxData, text, font);
-
-            if (rotation == 0)
+            switch (alignment)
             {
-                switch (alignment)
-                {
-                    case TextAlignment.lowerCenter:
-                        textLocationPoint.Y = defaultPoint.Y - stringSize.Height;
-                        textLocationPoint.X = defaultPoint.X - stringSize.Width / 2;
-                        break;
-                    case TextAlignment.lowerLeft:
-                        textLocationPoint.Y = defaultPoint.Y - stringSize.Height;
-                        textLocationPoint.X = defaultPoint.X;
-                        break;
-                    case TextAlignment.lowerRight:
-                        textLocationPoint.Y = defaultPoint.Y - stringSize.Height;
-                        textLocationPoint.X = defaultPoint.X - stringSize.Width;
-                        break;
-                    case TextAlignment.middleLeft:
-                        textLocationPoint.Y = defaultPoint.Y - stringSize.Height / 2;
-                        textLocationPoint.X = defaultPoint.X;
-                        break;
-                    case TextAlignment.middleRight:
-                        textLocationPoint.Y = defaultPoint.Y - stringSize.Height / 2;
-                        textLocationPoint.X = defaultPoint.X - stringSize.Width;
-                        break;
-                    case TextAlignment.upperCenter:
-                        textLocationPoint.Y = defaultPoint.Y;
-                        textLocationPoint.X = defaultPoint.X - stringSize.Width / 2;
-                        break;
-                    case TextAlignment.upperLeft:
-                        textLocationPoint = defaultPoint;
-                        break;
-                    case TextAlignment.upperRight:
-                        textLocationPoint.Y = defaultPoint.Y;
-                        textLocationPoint.X = defaultPoint.X - stringSize.Width;
-                        break;
-                    case TextAlignment.middleCenter:
-                        textLocationPoint.Y = defaultPoint.Y - stringSize.Height / 2;
-                        textLocationPoint.X = defaultPoint.X - stringSize.Width / 2;
-                        break;
-                }
+                case TextAlignment.lowerCenter:
+                    return (pixelX - stringWidth / 2, pixelY - stringHeight);
+                case TextAlignment.lowerLeft:
+                    return (pixelX, pixelY - stringHeight);
+                case TextAlignment.lowerRight:
+                    return (pixelX - stringWidth, pixelY - stringHeight);
+                case TextAlignment.middleLeft:
+                    return (pixelX, pixelY - stringHeight / 2);
+                case TextAlignment.middleRight:
+                    return (pixelX - stringWidth, pixelY - stringHeight / 2);
+                case TextAlignment.upperCenter:
+                    return (pixelX - stringWidth / 2, pixelY);
+                case TextAlignment.upperLeft:
+                    return (pixelX, pixelY);
+                case TextAlignment.upperRight:
+                    return (pixelX - stringWidth, pixelY);
+                case TextAlignment.middleCenter:
+                    return (pixelX - stringWidth / 2, pixelY - stringHeight / 2);
+                default:
+                    throw new InvalidEnumArgumentException("that alignment is not recognized");
             }
-            else
-            {
-                // ignore alignment if rotation is used
-                textLocationPoint = new PointF(defaultPoint.X, defaultPoint.Y);
-            }
-
-            settings.gfxData.TranslateTransform((int)textLocationPoint.X, (int)textLocationPoint.Y);
-            settings.gfxData.RotateTransform((float)rotation);
-            if (frame)
-            {
-                Rectangle stringRect = new Rectangle(0, 0, (int)stringSize.Width, (int)stringSize.Height);
-                settings.gfxData.FillRectangle(frameBrush, stringRect);
-            }
-            settings.gfxData.DrawString(text, font, brush, new PointF(0, 0));
-            settings.gfxData.ResetTransform();
         }
 
-        public override int GetPointCount()
+        public void Render(PlotDimensions dims, Bitmap bmp)
         {
-            return 1;
-        }
+            using (Graphics gfx = Graphics.FromImage(bmp))
+            using (var fontBrush = new SolidBrush(FontColor))
+            using (var frameBrush = new SolidBrush(frameColor))
+            using (var font = GDI.Font(FontName, FontSize, FontBold))
+            {
+                float pixelX = dims.GetPixelX(x);
+                float pixelY = dims.GetPixelY(y);
+                SizeF stringSize = GDI.MeasureString(gfx, text, font);
+                RectangleF stringRect = new RectangleF(0, 0, stringSize.Width, stringSize.Height);
 
-        public override LegendItem[] GetLegendItems()
-        {
-            return null; // don't show this in the legend
+                if (rotation == 0)
+                    (pixelX, pixelY) = ApplyAlignmentOffset(pixelX, pixelY, stringSize.Width, stringSize.Height);
+
+                gfx.TranslateTransform(pixelX, pixelY);
+                gfx.RotateTransform((float)rotation);
+
+                if (frame)
+                    gfx.FillRectangle(frameBrush, stringRect);
+
+                gfx.DrawString(text, font, fontBrush, new PointF(0, 0));
+
+                gfx.ResetTransform();
+            }
         }
     }
 }
