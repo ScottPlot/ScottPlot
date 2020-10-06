@@ -12,5 +12,8 @@ namespace ScottPlot
     public interface IPlottable
     {
         void Render(PlotDimensions dims, Bitmap bmp);
+
+        bool IsValidData(bool deepValidation = false);
+        string ValidationErrorMessage { get; }
     }
 }

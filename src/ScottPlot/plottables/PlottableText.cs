@@ -5,6 +5,7 @@ using ScottPlot.plottables;
 using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.Text;
 
 namespace ScottPlot
 {
@@ -50,6 +51,28 @@ namespace ScottPlot
 
         public override LegendItem[] GetLegendItems() => null; // never show in legend
 
+        public string ValidationErrorMessage { get; private set; }
+        public bool IsValidData(bool deepValidation = false)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            if (double.IsInfinity(x) || double.IsNaN(x))
+                sb.AppendLine("X must be a rational number");
+
+            if (double.IsInfinity(y) || double.IsNaN(y))
+                sb.AppendLine("Y must be a rational number");
+
+            if (double.IsInfinity(rotation) || double.IsNaN(rotation))
+                sb.AppendLine("rotation must be a rational number");
+
+            if (FontSize < 1)
+                sb.AppendLine("font must be at least size 1");
+
+            ValidationErrorMessage = sb.ToString();
+
+            return ValidationErrorMessage.Length == 0;
+        }
+
         private (float pixelX, float pixelY) ApplyAlignmentOffset(float pixelX, float pixelY, float stringWidth, float stringHeight)
         {
             switch (alignment)
@@ -79,6 +102,9 @@ namespace ScottPlot
 
         public void Render(PlotDimensions dims, Bitmap bmp)
         {
+            if (IsValidData() == false)
+                throw new InvalidOperationException($"Invalid data: {ValidationErrorMessage}");
+
             using (Graphics gfx = Graphics.FromImage(bmp))
             using (var fontBrush = new SolidBrush(FontColor))
             using (var frameBrush = new SolidBrush(frameColor))
