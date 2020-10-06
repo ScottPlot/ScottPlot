@@ -139,14 +139,14 @@ namespace ScottPlot.Config
                 low = settings.axes.y.min - settings.yAxisUnitsPerPixel; // add an extra pixel to capture the edge tick
                 high = settings.axes.y.max + settings.yAxisUnitsPerPixel; // add an extra pixel to capture the edge tick
                 maxTickCount = (int)(settings.dataSize.Height / maxLabelSize.Height);
-                tickSpacing = (settings.ticks.manualSpacingY != 0) ? settings.ticks.manualSpacingY : GetIdealTickSpacing(low, high, maxTickCount);
+                tickSpacing = (settings.ticks.manualSpacingY != 0) ? settings.ticks.manualSpacingY : GetIdealTickSpacing(low, high, maxTickCount, radix);
             }
             else
             {
                 low = settings.axes.x.min - settings.xAxisUnitsPerPixel; // add an extra pixel to capture the edge tick
                 high = settings.axes.x.max + settings.xAxisUnitsPerPixel; // add an extra pixel to capture the edge tick
                 maxTickCount = (int)(settings.dataSize.Width / maxLabelSize.Width * 1.2);
-                tickSpacing = (settings.ticks.manualSpacingX != 0) ? settings.ticks.manualSpacingX : GetIdealTickSpacing(low, high, maxTickCount);
+                tickSpacing = (settings.ticks.manualSpacingX != 0) ? settings.ticks.manualSpacingX : GetIdealTickSpacing(low, high, maxTickCount, radix);
             }
 
             // now that tick spacing is known, populate the list of ticks and labels
@@ -191,16 +191,18 @@ namespace ScottPlot.Config
             return $"Tick Collection: [{allTickLabels}] {cornerLabel}";
         }
 
-        private static double GetIdealTickSpacing(double low, double high, int maxTickCount)
+        private static readonly double[] DivByDecimal = { 2, 2, 2.5 }; // dividing from 10 yields 5, 2.5, and 1.
+        private static readonly double[] DivByHexadecimal = { 2, 2, 2, 2 }; // dividing from 16 yields 8, 4, 2, and 1.
+        private static double GetIdealTickSpacing(double low, double high, int maxTickCount, int radix = 10)
         {
             double range = high - low;
-            int exponent = (int)Math.Log10(range);
-            List<double> tickSpacings = new List<double>() { Math.Pow(10, exponent) };
+            int exponent = (int)Math.Log(range, radix);
+            List<double> tickSpacings = new List<double>() { Math.Pow(radix, exponent) };
             tickSpacings.Add(tickSpacings.Last());
             tickSpacings.Add(tickSpacings.Last());
 
             int divisions = 0;
-            double[] divBy = new double[] { 2, 2, 2.5 }; // dividing from 10 yields 5, 2.5, and 1.
+            double[] divBy = radix == 16 ? DivByHexadecimal : DivByDecimal;
 
             while (true)
             {
