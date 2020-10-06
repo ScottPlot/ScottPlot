@@ -11,9 +11,7 @@ namespace ScottPlot
 {
     public class PlottableText : Plottable, IPlottable
     {
-        [FiniteNumbers]
         public double x;
-        [FiniteNumbers]
         public double y;
         public double rotation;
         public string text;
@@ -27,6 +25,9 @@ namespace ScottPlot
         public float FontSize;
         public bool FontBold;
 
+        public PlottableText() { }
+
+        [Obsolete("use the new constructor with data-only arguments", true)]
         public PlottableText(string text, double x, double y, Color color, string fontName, double fontSize, bool bold, string label, TextAlignment alignment, double rotation, bool frame, Color frameColor)
         {
             this.text = text ?? throw new Exception("Text cannot be null");

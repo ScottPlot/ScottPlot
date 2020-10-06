@@ -27,32 +27,21 @@ namespace ScottPlot
             Color? frameColor = null
             )
         {
-            if (color == null)
-                color = settings.GetNextColor();
-
-            if (fontName == null)
-                fontName = Config.Fonts.GetDefaultFontName();
-
-            if (frameColor == null)
-                frameColor = Color.White;
-
-            fontName = Config.Fonts.GetValidFontName(fontName);
-
-            PlottableText plottableText = new PlottableText(
-                text: text,
-                x: x,
-                y: y,
-                color: (Color)color,
-                fontName: fontName,
-                fontSize: fontSize,
-                bold: bold,
-                label: label,
-                alignment: alignment,
-                rotation: rotation,
-                frame: frame,
-                frameColor: (Color)frameColor
-                );
-
+            PlottableText plottableText = new PlottableText()
+            {
+                text = text,
+                x = x,
+                y = y,
+                FontColor = color ?? settings.GetNextColor(),
+                FontName = fontName ?? Config.Fonts.GetDefaultFontName(),
+                FontSize = (float)fontSize,
+                FontBold = bold,
+                label = label,
+                alignment = alignment,
+                rotation = rotation,
+                frame = frame,
+                frameColor = frameColor ?? Color.White
+            };
             Add(plottableText);
             return plottableText;
         }
