@@ -456,6 +456,10 @@ namespace ScottPlot
 
             if (decimalLength != 0)
             {
+                if (output == "")
+                {
+                    output += "0";
+                }
                 output += ".";
                 output += ToDifferentBase(Math.Round(decimalPart * Math.Pow(radix, decimalPlaces)), radix, decimalPlaces, decimalPlaces);
                 if (dropTrailingZeroes)

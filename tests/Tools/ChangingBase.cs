@@ -16,6 +16,7 @@ namespace ScottPlotTests.Tools
         [TestCase(-0, 2, "0")]
         [TestCase(0x10000000, 16, "10000000")]
         [TestCase(0x20000000, 16, "20000000")]
+        [TestCase(0x21, 16, "21")]
 
         [TestCase(-255, 16, "-FF")]
         [TestCase(-112, 16, "-70")]
@@ -24,6 +25,7 @@ namespace ScottPlotTests.Tools
         [TestCase(-15, 2, "-1111")]
         [TestCase(-0x10000000, 16, "-10000000")]
         [TestCase(-0x20000000, 16, "-20000000")]
+        [TestCase(-0x21, 16, "-21")]
 
         public void TestIntegers(double number, int radix, string expectedOutput)
         {
@@ -42,7 +44,9 @@ namespace ScottPlotTests.Tools
         [TestCase(255.3, 2, 9, false, "11111111.010011010")]
         [TestCase(255.3, 16, 1, true, "FF.5")]
         [TestCase(255.3, 2, 1, true, "11111111")]
-        [TestCase(268435456.00390625, 16, 5, true, "10000000.021")]
+        [TestCase(268435456.008056640625, 16, 5, true, "10000000.021")]
+        [TestCase(0.008056640625, 16, 5, true, "0.021")]
+
 
         [TestCase(-200.1, 16, 3, true, "-C8.19A")]
         [TestCase(-200.1, 16, 9, true, "-C8.19999999A")]
@@ -56,7 +60,8 @@ namespace ScottPlotTests.Tools
         [TestCase(-255.3, 2, 9, false, "-11111111.010011010")]
         [TestCase(-255.3, 16, 1, true, "-FF.5")]
         [TestCase(-255.3, 2, 1, true, "-11111111")]
-        [TestCase(-268435456.00390625, 16, 5, true, "-10000000.021")]
+        [TestCase(-268435456.008056640625, 16, 5, true, "-10000000.021")]
+        [TestCase(-0.008056640625, 16, 5, true, "-0.021")]
         public void TestDecimals(double number, int radix, int decimalPlaces, bool dropTrailingZeroes, string expectedOutput)
         {
             Assert.AreEqual(expectedOutput, ScottPlot.Tools.ToDifferentBase(number, radix, decimalPlaces, dropTrailingZeroes: dropTrailingZeroes));
