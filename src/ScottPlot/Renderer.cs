@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using ScottPlot.Config;
 using ScottPlot.Drawing;
+using ScottPlot.plottables;
 
 namespace ScottPlot
 {
@@ -22,18 +23,30 @@ namespace ScottPlot
             if (settings.gfxData == null)
                 return;
 
+            // Construct the dimensions object to be injected into plottables during rendering.
+            var dims = new PlotDimensions(settings.figureSize, settings.dataSize, settings.dataOrigin, settings.axes.Limits);
+
             for (int i = 0; i < settings.plottables.Count; i++)
             {
-                Plottable pltThing = settings.plottables[i];
-                if (pltThing.visible)
+                Plottable plottable = settings.plottables[i];
+                if (plottable.visible)
                 {
                     try
                     {
-                        pltThing.Render(settings);
+                        if (plottable is IPlottable modernPlottable)
+                        {
+                            // use the new render method (that injections dimensions and the bitmap to draw on)
+                            modernPlottable.Render(dims, settings.bmpData);
+                        }
+                        else
+                        {
+                            // use the old render method (that reads state from settings module and draws on the bitmap stored there)
+                            plottable.Render(settings);
+                        }
                     }
                     catch (OverflowException)
                     {
-                        Debug.WriteLine($"OverflowException plotting: {pltThing}");
+                        Debug.WriteLine($"OverflowException plotting: {plottable}");
                     }
                 }
             }
