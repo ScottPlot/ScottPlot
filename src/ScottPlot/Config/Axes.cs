@@ -13,6 +13,7 @@ namespace ScottPlot.Config
         public bool equalAxes = false;
         public Axis x = new Axis();
         public Axis y = new Axis();
+        public AxisLimits2D Limits { get => new AxisLimits2D(x.min, x.max, y.min, y.max); }
 
         public bool hasBeenSet
         {
