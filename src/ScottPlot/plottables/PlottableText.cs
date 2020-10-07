@@ -11,36 +11,67 @@ namespace ScottPlot
 {
     public class PlottableText : Plottable, IPlottable
     {
+        /// <summary>
+        /// Horizontal position in coordinate space
+        /// </summary>
         public double x;
-        public double y;
-        public double rotation;
-        public string text;
-        public TextAlignment alignment;
-        public bool frame;
-        public Color frameColor;
-        public string label;
 
+        /// <summary>
+        /// Vertical position in coordinate space
+        /// </summary>
+        public double y;
+
+        /// <summary>
+        /// Rotation of text in degrees. If rotation is used text alignment will be ignored.
+        /// </summary>
+        public double rotation;
+
+        /// <summary>
+        /// Text to display on the plot
+        /// </summary>
+        public string text;
+
+        /// <summary>
+        /// Defines where the x/y point is relative to the text. 
+        /// Alignment is ignored when rotation is enabled.
+        /// </summary>
+        public TextAlignment alignment;
+
+        /// <summary>
+        /// Whether or not to draw a border around the text
+        /// </summary>
+        public bool frame;
+
+        /// <summary>
+        /// Color of the border around the text
+        /// </summary>
+        public Color frameColor;
+
+        /// <summary>
+        /// Color of the text
+        /// </summary>
         public Color FontColor;
+
+        /// <summary>
+        /// Name of the text font.
+        /// If this font does not exist a system default will be used.
+        /// </summary>
         public string FontName;
-        public float FontSize;
+
+        /// <summary>
+        /// Font size (in pixels)
+        /// </summary>
+        public float FontSize = 12;
+
+        /// <summary>
+        /// Renders bold font if true
+        /// </summary>
         public bool FontBold;
 
+        /// <summary>
+        /// The Text plot type displays a string at an X/Y position in coordinate space.
+        /// </summary>
         public PlottableText() { }
-
-        [Obsolete("use the new constructor with data-only arguments", true)]
-        public PlottableText(string text, double x, double y, Color color, string fontName, double fontSize, bool bold, string label, TextAlignment alignment, double rotation, bool frame, Color frameColor)
-        {
-            this.text = text ?? throw new Exception("Text cannot be null");
-            this.x = x;
-            this.y = y;
-            this.rotation = rotation;
-            this.label = label;
-            this.alignment = alignment;
-            this.frame = frame;
-            this.frameColor = frameColor;
-
-            (FontColor, FontName, FontSize, FontBold) = (color, fontName, (float)fontSize, bold);
-        }
 
         public override string ToString() => $"PlottableText \"{text}\" at ({x}, {y})";
 
@@ -50,7 +81,7 @@ namespace ScottPlot
 
         public override int GetPointCount() => 1;
 
-        public override LegendItem[] GetLegendItems() => null; // never show in legend
+        public override LegendItem[] GetLegendItems() => new LegendItem[] { };
 
         public string ValidationErrorMessage { get; private set; }
         public bool IsValidData(bool deepValidation = false)
@@ -74,6 +105,9 @@ namespace ScottPlot
             return ValidationErrorMessage.Length == 0;
         }
 
+        /// <summary>
+        /// Returns the point in pixel space shifted by the necessary amount to apply text alignment
+        /// </summary>
         private (float pixelX, float pixelY) ApplyAlignmentOffset(float pixelX, float pixelY, float stringWidth, float stringHeight)
         {
             switch (alignment)
@@ -103,12 +137,13 @@ namespace ScottPlot
 
         public void Render(PlotDimensions dims, Bitmap bmp)
         {
+            if (string.IsNullOrWhiteSpace(text))
+                return; // no render needed
+
             if (IsValidData() == false)
                 throw new InvalidOperationException($"Invalid data: {ValidationErrorMessage}");
 
             using (Graphics gfx = Graphics.FromImage(bmp))
-            using (var fontBrush = new SolidBrush(FontColor))
-            using (var frameBrush = new SolidBrush(frameColor))
             using (var font = GDI.Font(FontName, FontSize, FontBold))
             {
                 float pixelX = dims.GetPixelX(x);
@@ -123,9 +158,17 @@ namespace ScottPlot
                 gfx.RotateTransform((float)rotation);
 
                 if (frame)
-                    gfx.FillRectangle(frameBrush, stringRect);
+                {
+                    using (var frameBrush = new SolidBrush(frameColor))
+                    {
+                        gfx.FillRectangle(frameBrush, stringRect);
+                    }
+                }
 
-                gfx.DrawString(text, font, fontBrush, new PointF(0, 0));
+                using (var fontBrush = new SolidBrush(FontColor))
+                {
+                    gfx.DrawString(text, font, fontBrush, new PointF(0, 0));
+                }
 
                 gfx.ResetTransform();
             }

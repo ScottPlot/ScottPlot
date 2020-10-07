@@ -36,7 +36,6 @@ namespace ScottPlot
                 FontName = fontName ?? Config.Fonts.GetDefaultFontName(),
                 FontSize = (float)fontSize,
                 FontBold = bold,
-                label = label,
                 alignment = alignment,
                 rotation = rotation,
                 frame = frame,
