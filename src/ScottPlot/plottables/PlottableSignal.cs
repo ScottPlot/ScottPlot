@@ -1,5 +1,5 @@
-﻿using System.Drawing;
-using ScottPlot.MinMaxSearchStrategies;
+﻿using ScottPlot.MinMaxSearchStrategies;
+using System.Drawing;
 
 namespace ScottPlot
 {
@@ -15,7 +15,7 @@ namespace ScottPlot
 
         public override string ToString()
         {
-            string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
+            string label = string.IsNullOrWhiteSpace(this.Label) ? "" : $" ({this.Label})";
             return $"PlottableSignal{label} with {GetPointCount()} points";
         }
     }
