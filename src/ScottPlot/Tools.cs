@@ -419,7 +419,7 @@ namespace ScottPlot
             }
 
             char[] symbols = "0123456789ABCDEF".ToCharArray();
-            if (radix > symbols.Length || radix <= 0)
+            if (radix > symbols.Length || radix <= 1)
             {
                 throw new ArgumentOutOfRangeException(nameof(radix));
             }

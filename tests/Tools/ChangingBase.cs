@@ -70,6 +70,7 @@ namespace ScottPlotTests.Tools
         [TestCase(100, 17)] //If we add extra symbols (i.e. base64) this will no longer throw
         [TestCase(100, -1)]
         [TestCase(100, 0)]
+        [TestCase(100, 1)]
         public void TestOutOfRange(double number, int radix)
         {
             Assert.Throws<ArgumentOutOfRangeException>(() => ScottPlot.Tools.ToDifferentBase(number, radix));
