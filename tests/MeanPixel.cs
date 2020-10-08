@@ -40,6 +40,6 @@ namespace ScottPlotTests
 
         public bool IsNotGray() => !IsGray();
 
-        public bool IsMoreBlueThan(MeanPixel comparison) => B > comparison.RGB;
+        public bool IsMoreBlueThan(MeanPixel comparison) => B > comparison.B;
     }
 }
