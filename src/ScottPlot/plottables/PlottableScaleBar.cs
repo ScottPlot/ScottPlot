@@ -1,84 +1,129 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Text;
 using System.Text;
 using ScottPlot.Config;
+using ScottPlot.Drawing;
 
 namespace ScottPlot
 {
-    public class PlottableScaleBar : Plottable
+    public class PlottableScaleBar : Plottable, IPlottable
     {
-        readonly double sizeX;
-        readonly double sizeY;
-        readonly string labelX;
-        readonly string labelY;
-        readonly double padPx;
-        readonly double thickness;
-        readonly Color color;
-        readonly string fontName;
-        readonly double fontSize;
-        readonly FontStyle fontStyle = FontStyle.Regular;
+        /// <summary>
+        /// Width of the scalebar in cooridinate units
+        /// </summary>
+        public double Width;
 
-        public PlottableScaleBar(double sizeX, double sizeY, string labelX, string labelY,
-            double thickness, double fontSize, Color color, double padPx)
+        /// <summary>
+        /// Height of the scalebar in cooridinate units
+        /// </summary>
+        public double Height;
+
+        /// <summary>
+        /// Horizontal scalebar label
+        /// </summary>
+        public string HorizontalLabel;
+
+        /// <summary>
+        /// Vertical scalebar label
+        /// </summary>
+        public string VerticalLabel;
+
+        /// <summary>
+        /// Distance in pixels from the edge of the data area
+        /// </summary>
+        public float Padding;
+
+        /// <summary>
+        /// Thickness of the scalebar in pixels
+        /// </summary>
+        public float LineWidth = 2;
+
+        /// <summary>
+        /// Color of the scalebar lines
+        /// </summary>
+        public Color LineColor = Color.Black;
+
+        /// <summary>
+        /// Color of the font
+        /// </summary>
+        public Color FontColor = Color.Black;
+
+        /// <summary>
+        /// Name of the font to use for the labels.
+        /// If this font does not exist a system default will be used.
+        /// </summary>
+        public string FontName;
+
+        /// <summary>
+        /// Font size in pixels
+        /// </summary>
+        public float FontSize = 12;
+
+        /// <summary>
+        /// Renders bold font if true
+        /// </summary>
+        public bool FontBold = false;
+
+        public override string ToString() => $"PlottableScaleBar ({HorizontalLabel}={Width}, {VerticalLabel}={Height})";
+        public override LegendItem[] GetLegendItems() => null;
+        public override AxisLimits2D GetLimits() => new AxisLimits2D();
+        public override int GetPointCount() => 1;
+        public override void Render(Settings settings) => throw new InvalidOperationException("use other Render method");
+
+        public string ValidationErrorMessage { get; private set; }
+        public bool IsValidData(bool deepValidation = false)
         {
-            this.sizeX = sizeX;
-            this.sizeY = sizeY;
-            this.labelX = (labelX is null) ? sizeX.ToString() : labelX;
-            this.labelY = (labelY is null) ? sizeY.ToString() : labelY;
-            this.thickness = thickness;
-            this.fontSize = fontSize;
-            this.color = color;
-            this.padPx = padPx;
-            fontName = Fonts.GetDefaultFontName();
+            StringBuilder sb = new StringBuilder();
+
+            if (double.IsInfinity(Width) || double.IsNaN(Width))
+                sb.AppendLine("Width must be a rational number");
+
+            if (double.IsInfinity(Height) || double.IsNaN(Height))
+                sb.AppendLine("Width must be a rational number");
+
+            ValidationErrorMessage = sb.ToString();
+            return ValidationErrorMessage.Length == 0;
         }
 
-        public override string ToString()
+        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            return $"PlottableScaleBar ({labelX}, {labelY})";
-        }
+            if (IsValidData() == false)
+                throw new InvalidOperationException($"Invalid data: {ValidationErrorMessage}");
 
-        public override LegendItem[] GetLegendItems()
-        {
-            return null;
-        }
-
-        public override AxisLimits2D GetLimits()
-        {
-            return new AxisLimits2D();
-        }
-
-        public override int GetPointCount()
-        {
-            return 1;
-        }
-
-        public override void Render(Settings settings)
-        {
-            float widthPx = (float)(sizeX * settings.xAxisScale);
-            float heightPx = (float)(sizeY * settings.yAxisScale);
-
-            using (var font = new Font(fontName, (float)fontSize, fontStyle))
-            using (var brush = new SolidBrush(color))
-            using (var pen = new Pen(color, (float)thickness))
+            using (var gfx = Graphics.FromImage(bmp))
+            using (var font = GDI.Font(FontName, FontSize, FontBold))
+            using (var fontBrush = new SolidBrush(FontColor))
+            using (var linePen = new Pen(LineColor, LineWidth))
+            using (var sfNorth = new StringFormat() { LineAlignment = StringAlignment.Near, Alignment = StringAlignment.Center })
+            using (var sfWest = new StringFormat() { LineAlignment = StringAlignment.Center, Alignment = StringAlignment.Near })
             {
-                PointF cornerPoint = settings.GetPixel(settings.axes.x.max, settings.axes.y.min);
-                cornerPoint.X -= (float)padPx;
-                cornerPoint.Y -= (float)padPx;
+                gfx.SmoothingMode = lowQuality ? SmoothingMode.HighSpeed : SmoothingMode.AntiAlias;
+                gfx.TextRenderingHint = lowQuality ? TextRenderingHint.SingleBitPerPixelGridFit : TextRenderingHint.AntiAliasGridFit;
 
-                var xLabelSize = Drawing.GDI.MeasureString(settings.gfxData, labelX, font);
-                var yLabelSize = Drawing.GDI.MeasureString(settings.gfxData, labelY, font);
+                // determine where the corner of the scalebar will be
+                float widthPx = (float)(Width * dims.PxPerUnitX);
+                float heightPx = (float)(Height * dims.PxPerUnitY);
+                PointF cornerPoint = new PointF(dims.GetPixelX(dims.XMax) - Padding, dims.GetPixelY(dims.YMin) - Padding);
+
+                // move the corner point away from the edge to accommodate label size
+                var xLabelSize = GDI.MeasureString(gfx, HorizontalLabel, font);
+                var yLabelSize = GDI.MeasureString(gfx, VerticalLabel, font);
                 cornerPoint.X -= yLabelSize.Width * 1.2f;
                 cornerPoint.Y -= yLabelSize.Height;
 
+                // determine all other points relative to the corner point
                 PointF horizPoint = new PointF(cornerPoint.X - widthPx, cornerPoint.Y);
                 PointF vertPoint = new PointF(cornerPoint.X, cornerPoint.Y - heightPx);
                 PointF horizMidPoint = new PointF((cornerPoint.X + horizPoint.X) / 2, cornerPoint.Y);
                 PointF vertMidPoint = new PointF(cornerPoint.X, (cornerPoint.Y + vertPoint.Y) / 2);
 
-                settings.gfxData.DrawLines(pen, new PointF[] { horizPoint, cornerPoint, vertPoint });
-                settings.gfxData.DrawString(labelX, font, brush, horizMidPoint.X, cornerPoint.Y, settings.misc.sfNorth);
-                settings.gfxData.DrawString(labelY, font, brush, cornerPoint.X, vertMidPoint.Y, settings.misc.sfWest);
+                // draw the scalebar
+                gfx.DrawLines(linePen, new PointF[] { horizPoint, cornerPoint, vertPoint });
+                gfx.DrawString(HorizontalLabel, font, fontBrush, horizMidPoint.X, cornerPoint.Y, sfNorth);
+                gfx.DrawString(VerticalLabel, font, fontBrush, cornerPoint.X, vertMidPoint.Y, sfWest);
             }
         }
     }

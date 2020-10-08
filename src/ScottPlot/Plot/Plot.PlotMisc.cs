@@ -115,8 +115,18 @@ namespace ScottPlot
             double padPx = 10
             )
         {
-            color = (color is null) ? Color.Black : color.Value;
-            var scalebar = new PlottableScaleBar(sizeX, sizeY, labelX, labelY, thickness, fontSize, color.Value, padPx);
+            var scalebar = new PlottableScaleBar()
+            {
+                Width = sizeX,
+                Height = sizeY,
+                HorizontalLabel = labelX,
+                VerticalLabel = labelY,
+                LineWidth = (float)thickness,
+                FontSize = (float)fontSize,
+                FontColor = color ?? Color.Black,
+                LineColor = color ?? Color.Black,
+                Padding = (float)padPx
+            };
             Add(scalebar);
             return scalebar;
         }
