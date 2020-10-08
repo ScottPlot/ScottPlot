@@ -16,24 +16,27 @@ namespace ScottPlot.Drawing
      */
     public class PlotDimensions
     {
-        readonly float Width;
-        readonly float Height;
+        public readonly float Width;
+        public readonly float Height;
 
-        readonly float DataWidth;
-        readonly float DataHeight;
+        public readonly float DataWidth;
+        public readonly float DataHeight;
 
-        readonly float DataOffsetX;
-        readonly float DataOffsetY;
+        public readonly float DataOffsetX;
+        public readonly float DataOffsetY;
 
-        readonly double YMin;
-        readonly double YMax;
-        readonly double XMin;
-        readonly double XMax;
+        public readonly double YMin;
+        public readonly double YMax;
+        public readonly double XMin;
+        public readonly double XMax;
+        public double XSpan { get => XMax - XMin; }
+        public double YSpan { get => YMax - YMin; }
 
-        readonly double PxPerUnitX;
-        readonly double PxPerUnitY;
-        readonly double UnitsPerPxX;
-        readonly double UnitsPerPxY;
+        public readonly double PxPerUnitX;
+        public readonly double PxPerUnitY;
+        public readonly double UnitsPerPxX;
+        public readonly double UnitsPerPxY;
+
 
         public PlotDimensions(SizeF figureSize, SizeF dataSize, PointF dataOffset, AxisLimits2D axisLimits)
         {
