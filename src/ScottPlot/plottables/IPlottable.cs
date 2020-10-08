@@ -11,7 +11,7 @@ namespace ScottPlot
     //       move its abstract methods into this interface.
     public interface IPlottable
     {
-        void Render(PlotDimensions dims, Bitmap bmp);
+        void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false);
 
         bool IsValidData(bool deepValidation = false);
         string ValidationErrorMessage { get; }

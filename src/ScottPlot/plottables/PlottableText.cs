@@ -5,6 +5,8 @@ using ScottPlot.plottables;
 using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Text;
 using System.Text;
 
 namespace ScottPlot
@@ -22,7 +24,7 @@ namespace ScottPlot
         public double y;
 
         /// <summary>
-        /// Rotation of text in degrees. If rotation is used text alignment will be ignored.
+        /// Rotation of text in degrees. If rotation is used text alignment is ignored and the top left corner is fixed.
         /// </summary>
         public double rotation;
 
@@ -50,7 +52,7 @@ namespace ScottPlot
         /// <summary>
         /// Color of the text
         /// </summary>
-        public Color FontColor;
+        public Color FontColor = Color.Black;
 
         /// <summary>
         /// Name of the text font.
@@ -135,7 +137,7 @@ namespace ScottPlot
             }
         }
 
-        public void Render(PlotDimensions dims, Bitmap bmp)
+        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             if (string.IsNullOrWhiteSpace(text))
                 return; // no render needed
@@ -146,6 +148,9 @@ namespace ScottPlot
             using (Graphics gfx = Graphics.FromImage(bmp))
             using (var font = GDI.Font(FontName, FontSize, FontBold))
             {
+                gfx.SmoothingMode = lowQuality ? SmoothingMode.HighSpeed : SmoothingMode.AntiAlias;
+                gfx.TextRenderingHint = lowQuality ? TextRenderingHint.SingleBitPerPixelGridFit : TextRenderingHint.AntiAliasGridFit;
+
                 float pixelX = dims.GetPixelX(x);
                 float pixelY = dims.GetPixelY(y);
                 SizeF stringSize = GDI.MeasureString(gfx, text, font);

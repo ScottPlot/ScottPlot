@@ -25,6 +25,7 @@ namespace ScottPlot
 
             // Construct the dimensions object to be injected into plottables during rendering.
             var dims = new PlotDimensions(settings.figureSize, settings.dataSize, settings.dataOrigin, settings.axes.Limits);
+            bool lowQuality = !settings.misc.antiAliasData;
 
             for (int i = 0; i < settings.plottables.Count; i++)
             {
@@ -36,7 +37,7 @@ namespace ScottPlot
                         if (plottable is IPlottable modernPlottable)
                         {
                             // use the new render method (that injections dimensions and the bitmap to draw on)
-                            modernPlottable.Render(dims, settings.bmpData);
+                            modernPlottable.Render(dims, settings.bmpData, lowQuality);
                         }
                         else
                         {
