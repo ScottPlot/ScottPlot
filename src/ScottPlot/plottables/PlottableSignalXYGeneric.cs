@@ -43,7 +43,7 @@ namespace ScottPlot
         public override AxisLimits2D GetLimits()
         {
             var limits = base.GetLimits();
-            limits.SetX(Convert.ToDouble(xs[minRenderIndex]), Convert.ToDouble(xs[_maxRenderIndex]));
+            limits.SetX(Convert.ToDouble(xs[minRenderIndex]), Convert.ToDouble(xs[maxRenderIndex]));
             return limits;
         }
 
@@ -94,7 +94,7 @@ namespace ScottPlot
                 int searchTo;
 
                 // Calculate point before displayed points
-                int pointBeforeIndex = Array.BinarySearch(xs, minRenderIndex, _maxRenderIndex - minRenderIndex + 1, Convert.ChangeType(settings.axes.x.min, typeof(TX)));
+                int pointBeforeIndex = Array.BinarySearch(xs, minRenderIndex, maxRenderIndex - minRenderIndex + 1, Convert.ChangeType(settings.axes.x.min, typeof(TX)));
                 if (pointBeforeIndex < 0)
                 {
                     pointBeforeIndex = ~pointBeforeIndex;
@@ -112,13 +112,13 @@ namespace ScottPlot
                 }
 
                 // Calculate point after displayed points
-                int pointAfterIndex = Array.BinarySearch(xs, minRenderIndex, _maxRenderIndex - minRenderIndex + 1, Convert.ChangeType(settings.axes.x.max, typeof(TX)));
+                int pointAfterIndex = Array.BinarySearch(xs, minRenderIndex, maxRenderIndex - minRenderIndex + 1, Convert.ChangeType(settings.axes.x.max, typeof(TX)));
                 if (pointAfterIndex < 0)
                 {
                     pointAfterIndex = ~pointAfterIndex;
                 }
 
-                if (pointAfterIndex <= _maxRenderIndex)
+                if (pointAfterIndex <= maxRenderIndex)
                 {
                     PointAfter = new PointF[] { settings.GetPixel(Convert.ToDouble(xs[pointAfterIndex]), minmaxSearchStrategy.SourceElement(pointAfterIndex)) };
                     searchTo = pointAfterIndex;
@@ -126,7 +126,7 @@ namespace ScottPlot
                 else
                 {
                     PointAfter = new PointF[] { };
-                    searchTo = _maxRenderIndex;
+                    searchTo = maxRenderIndex;
                 }
 
                 IEnumerable<PointF> VisiblePoints;

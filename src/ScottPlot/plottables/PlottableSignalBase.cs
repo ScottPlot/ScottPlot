@@ -31,7 +31,7 @@ namespace ScottPlot
                 if (value == null)
                     throw new Exception("Y data cannot be null");
 
-                if (_maxRenderIndex > value.Length - 1)
+                if (maxRenderIndex > value.Length - 1)
                     MaxRenderIndexLowerYSPromise = true;
                 else
                     MaxRenderIndexLowerYSPromise = false;
@@ -80,7 +80,7 @@ namespace ScottPlot
                 if (value < 0)
                     throw new ArgumentException("MinRenderIndex must be positive");
 
-                if (value > _maxRenderIndex)
+                if (value > maxRenderIndex)
                     MaxRenderIndexHigherMinRenderIndexPromise = true;
                 else
                     MaxRenderIndexHigherMinRenderIndexPromise = false;
@@ -192,7 +192,7 @@ namespace ScottPlot
             this.minRenderIndex = minRenderIndex;
             if ((maxRenderIndex > ys.Length - 1) || maxRenderIndex < 0)
                 throw new ArgumentException("maxRenderIndex must be a valid index for ys[]");
-            this._maxRenderIndex = maxRenderIndex;
+            this.maxRenderIndex = maxRenderIndex;
             this.lineStyle = lineStyle;
             this.useParallel = useParallel;
 
@@ -238,8 +238,8 @@ namespace ScottPlot
         {
             double[] limits = new double[4];
             limits[0] = minRenderIndex + xOffset;
-            limits[1] = _samplePeriod * _maxRenderIndex + xOffset;
-            minmaxSearchStrategy.MinMaxRangeQuery(minRenderIndex, _maxRenderIndex, out limits[2], out limits[3]);
+            limits[1] = _samplePeriod * maxRenderIndex + xOffset;
+            minmaxSearchStrategy.MinMaxRangeQuery(minRenderIndex, maxRenderIndex, out limits[2], out limits[3]);
             limits[2] += yOffset;
             limits[3] += yOffset;
 
@@ -251,7 +251,7 @@ namespace ScottPlot
         {
             // this function is for when the graph is zoomed so far out its entire display is a single vertical pixel column
             double yMin, yMax;
-            minmaxSearchStrategy.MinMaxRangeQuery(minRenderIndex, _maxRenderIndex, out yMin, out yMax);
+            minmaxSearchStrategy.MinMaxRangeQuery(minRenderIndex, maxRenderIndex, out yMin, out yMax);
             PointF point1 = settings.GetPixel(xOffset, yMin + yOffset);
             PointF point2 = settings.GetPixel(xOffset, yMax + yOffset);
             settings.gfxData.DrawLine(penHD, point1, point2);
@@ -268,8 +268,8 @@ namespace ScottPlot
             List<PointF> linePoints = new List<PointF>(visibleIndex2 - visibleIndex1 + 2);
             if (visibleIndex2 > _ys.Length - 2)
                 visibleIndex2 = _ys.Length - 2;
-            if (visibleIndex2 > _maxRenderIndex)
-                visibleIndex2 = _maxRenderIndex - 1;
+            if (visibleIndex2 > maxRenderIndex)
+                visibleIndex2 = maxRenderIndex - 1;
             if (visibleIndex1 < 0)
                 visibleIndex1 = 0;
             if (visibleIndex1 < minRenderIndex)
@@ -344,8 +344,8 @@ namespace ScottPlot
 
             if (index2 > _ys.Length - 1)
                 index2 = _ys.Length - 1;
-            if (index2 > _maxRenderIndex)
-                index2 = _maxRenderIndex;
+            if (index2 > maxRenderIndex)
+                index2 = maxRenderIndex;
 
             // get the min and max value for this column                
             minmaxSearchStrategy.MinMaxRangeQuery(index1, index2, out double lowestValue, out double highestValue);
@@ -357,7 +357,7 @@ namespace ScottPlot
         private void RenderHighDensity(Settings settings, double offsetPoints, double columnPointCount, Pen penHD)
         {
             int xPxStart = (int)Math.Ceiling((-1 - offsetPoints + minRenderIndex) / columnPointCount - 1);
-            int xPxEnd = (int)Math.Ceiling((_maxRenderIndex - offsetPoints) / columnPointCount);
+            int xPxEnd = (int)Math.Ceiling((maxRenderIndex - offsetPoints) / columnPointCount);
             xPxStart = Math.Max(0, xPxStart);
             xPxEnd = Math.Min(settings.dataSize.Width, xPxEnd);
             if (xPxStart >= xPxEnd)
