@@ -114,11 +114,12 @@ namespace ScottPlot.Avalonia
             bool? equalAxes = null,
             double? middleClickMarginX = null,
             double? middleClickMarginY = null,
-            bool? recalculateLayoutOnMouseUp = null
+            bool? recalculateLayoutOnMouseUp = null,
+            bool? preserveY = null
             )
         {
             backend.Configure(enablePanning, enableRightClickZoom, enableRightClickMenu, enableScrollWheelZoom, lowQualityWhileDragging, enableDoubleClickBenchmark,
-                lockVerticalAxis, lockHorizontalAxis, equalAxes, middleClickMarginX, middleClickMarginY, recalculateLayoutOnMouseUp);
+                lockVerticalAxis, lockHorizontalAxis, equalAxes, middleClickMarginX, middleClickMarginY, recalculateLayoutOnMouseUp, preserveY);
         }
 
         private void OnKeyDown(object sender, KeyEventArgs e)

@@ -58,7 +58,7 @@ namespace ScottPlot.Interactive
                     plt.TightenLayout();
 
                 if (equalAxes)
-                    plt.AxisEqual();
+                    plt.AxisEqual(preserveY);
 
                 if (!(skipIfCurrentlyRendering && currentlyRendering))
                 {
@@ -91,6 +91,7 @@ namespace ScottPlot.Interactive
         private double middleClickMarginX = .1;
         private double middleClickMarginY = .1;
         private bool? recalculateLayoutOnMouseUp = null;
+        private bool preserveY = true;
         public void Configure(
             bool? enablePanning = null,
             bool? enableRightClickZoom = null,
@@ -103,7 +104,8 @@ namespace ScottPlot.Interactive
             bool? equalAxes = null,
             double? middleClickMarginX = null,
             double? middleClickMarginY = null,
-            bool? recalculateLayoutOnMouseUp = null
+            bool? recalculateLayoutOnMouseUp = null,
+            bool? preserveY = null
             )
         {
             if (enablePanning != null) this.enablePanning = (bool)enablePanning;
@@ -118,6 +120,7 @@ namespace ScottPlot.Interactive
             this.middleClickMarginX = middleClickMarginX ?? this.middleClickMarginX;
             this.middleClickMarginY = middleClickMarginY ?? this.middleClickMarginY;
             this.recalculateLayoutOnMouseUp = recalculateLayoutOnMouseUp;
+            this.preserveY = preserveY ?? this.preserveY;
         }
 
         protected bool isAltPressed = false;

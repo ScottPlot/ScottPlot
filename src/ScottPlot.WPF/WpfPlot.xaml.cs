@@ -124,7 +124,7 @@ namespace ScottPlot
                     plt.TightenLayout();
 
                 if (equalAxes)
-                    plt.AxisEqual();
+                    plt.AxisEqual(preserveY);
 
                 if (!(skipIfCurrentlyRendering && currentlyRendering))
                 {
@@ -162,6 +162,7 @@ namespace ScottPlot
         private bool? recalculateLayoutOnMouseUp = null;
         private bool lowQualityOnScrollWheel = true;
         private int lowQualityScrollWheelDelay = 500;
+        private bool preserveY = true;
         public void Configure(
             bool? enablePanning = null,
             bool? enableRightClickZoom = null,
@@ -177,7 +178,8 @@ namespace ScottPlot
             double? middleClickMarginY = null,
             bool? recalculateLayoutOnMouseUp = null,
             bool? lowQualityOnScrollWheel = null,
-            int? lowQualityScrollWheelDelay = null
+            int? lowQualityScrollWheelDelay = null,
+            bool? preserveY = null
             )
         {
             if (enablePanning != null) this.enablePanning = (bool)enablePanning;
@@ -195,6 +197,7 @@ namespace ScottPlot
             this.recalculateLayoutOnMouseUp = recalculateLayoutOnMouseUp;
             this.lowQualityOnScrollWheel = lowQualityOnScrollWheel ?? this.lowQualityOnScrollWheel;
             this.lowQualityScrollWheelDelay = lowQualityScrollWheelDelay ?? this.lowQualityScrollWheelDelay;
+            this.preserveY = preserveY ?? this.preserveY;
         }
 
         private bool isAltPressed { get { return Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt); } }
