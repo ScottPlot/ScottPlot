@@ -12,7 +12,6 @@ namespace ScottPlot
 {
     public partial class Plot
     {
-
         public PlottableOHLC PlotOHLC(
             OHLC[] ohlcs,
             Color? colorUp = null,
@@ -21,12 +20,15 @@ namespace ScottPlot
             bool sequential = false
             )
         {
-            if (colorUp is null)
-                colorUp = ColorTranslator.FromHtml("#26a69a");
-            if (colorDown is null)
-                colorDown = ColorTranslator.FromHtml("#ef5350");
-
-            PlottableOHLC ohlc = new PlottableOHLC(ohlcs, false, autoWidth, colorUp.Value, colorDown.Value, sequential);
+            PlottableOHLC ohlc = new PlottableOHLC()
+            {
+                ohlcs = ohlcs,
+                Candle = false,
+                AutoWidth = autoWidth,
+                Sqeuential = sequential,
+                ColorUp = colorUp ?? ColorTranslator.FromHtml("#26a69a"),
+                ColorDown = colorDown ?? ColorTranslator.FromHtml("#ef5350")
+            };
             Add(ohlc);
             return ohlc;
         }
@@ -39,12 +41,15 @@ namespace ScottPlot
             bool sequential = false
             )
         {
-            if (colorUp is null)
-                colorUp = ColorTranslator.FromHtml("#26a69a");
-            if (colorDown is null)
-                colorDown = ColorTranslator.FromHtml("#ef5350");
-
-            PlottableOHLC ohlc = new PlottableOHLC(ohlcs, true, autoWidth, colorUp.Value, colorDown.Value, sequential);
+            PlottableOHLC ohlc = new PlottableOHLC()
+            {
+                ohlcs = ohlcs,
+                Candle = true,
+                AutoWidth = autoWidth,
+                Sqeuential = sequential,
+                ColorUp = colorUp ?? ColorTranslator.FromHtml("#26a69a"),
+                ColorDown = colorDown ?? ColorTranslator.FromHtml("#ef5350")
+            };
             Add(ohlc);
             return ohlc;
         }

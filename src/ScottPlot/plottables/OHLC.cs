@@ -19,6 +19,13 @@ namespace ScottPlot
         public double lowestOpenClose;
         public bool closedHigher;
 
+        private bool IsNanOrInf(double val) => double.IsInfinity(val) || double.IsNaN(val);
+
+        public bool IsValid => !IsNanOrInf(open) && !IsNanOrInf(close) &&
+                               !IsNanOrInf(low) && !IsNanOrInf(high) &&
+                               !IsNanOrInf(time) && !IsNanOrInf(timeSpan) &&
+                               !IsNanOrInf(highestOpenClose) && !IsNanOrInf(lowestOpenClose);
+
         public OHLC(double open, double high, double low, double close, DateTime dateTime, double timeSpan = 1)
         {
             this.open = open;
@@ -30,7 +37,7 @@ namespace ScottPlot
 
             highestOpenClose = Math.Max(open, close);
             lowestOpenClose = Math.Min(open, close);
-            closedHigher = (close > open) ? true : false;
+            closedHigher = (close > open);
         }
 
         public OHLC(double open, double high, double low, double close, double time, double timeSpan = 1)
@@ -44,7 +51,7 @@ namespace ScottPlot
 
             highestOpenClose = Math.Max(open, close);
             lowestOpenClose = Math.Min(open, close);
-            closedHigher = (close > open) ? true : false;
+            closedHigher = (close > open);
         }
 
         public override string ToString()
