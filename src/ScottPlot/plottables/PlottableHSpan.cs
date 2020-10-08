@@ -96,10 +96,30 @@ namespace ScottPlot
         {
             if (DragEnabled)
             {
-                if (coordinateX < dragLimitX1) coordinateX = dragLimitX1;
-                if (coordinateX > dragLimitX2) coordinateX = dragLimitX2;
-
                 double sizeBeforeDrag = position2 - position1;
+
+                if (DragFixedSize || isShiftDown)
+                {
+                    double AbsSize = Math.Abs(sizeBeforeDrag);
+                    bool DragMaxEdge = (position2 >= position1 && edgeUnderMouse == Edge.Edge2)
+                                    || (position1 >= position2 && edgeUnderMouse == Edge.Edge1);
+                    if (DragMaxEdge)
+                    {
+                        if (coordinateX < dragLimitX1 + AbsSize) coordinateX = dragLimitX1 + AbsSize;
+                        if (coordinateX > dragLimitX2) coordinateX = dragLimitX2;
+                    }
+                    else
+                    {
+                        if (coordinateX < dragLimitX1) coordinateX = dragLimitX1;
+                        if (coordinateX > dragLimitX2 - AbsSize) coordinateX = dragLimitX2 - AbsSize;
+                    }
+                }
+                else
+                {
+                    if (coordinateX < dragLimitX1) coordinateX = dragLimitX1;
+                    if (coordinateX > dragLimitX2) coordinateX = dragLimitX2;
+                }
+
                 if (edgeUnderMouse == Edge.Edge1)
                 {
                     position1 = coordinateX;
