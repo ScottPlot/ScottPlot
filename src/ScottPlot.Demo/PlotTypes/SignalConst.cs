@@ -40,16 +40,16 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.Colorset(Colorset.OneHalfDark);
 
                 var sig = plt.PlotSignalConst(data);
-                sig.MinRenderIndex = 4000;
-                sig.MaxRenderIndex = 5000;
-                sig.MarkerSize = 0;
-                sig.Color = Color.Black;
-                sig.FillType = FillType.FillAboveAndBelow;
-                sig.FillColor1 = Color.FromArgb(255, 44, 160, 44); // Green
-                sig.GradientFillColor1 = Color.Transparent;
-                sig.FillColor2 = Color.FromArgb(255, 214, 39, 40); // Red
-                sig.GradientFillColor2 = Color.Transparent;
-                sig.Baseline = -35;
+                sig.minRenderIndex = 4000;
+                sig.maxRenderIndex = 5000;
+                sig.markerSize = 0;
+                sig.color = Color.Black;
+                sig.fillType = FillType.FillAboveAndBelow;
+                sig.fillColor1 = Color.FromArgb(255, 44, 160, 44); // Green
+                sig.gradientFillColor1 = Color.Transparent;
+                sig.fillColor2 = Color.FromArgb(255, 214, 39, 40); // Red
+                sig.gradientFillColor2 = Color.Transparent;
+                sig.baseline = -35;
 
                 plt.Title($"SignalConst displaying {data.Length} values");
                 plt.YLabel("Value");

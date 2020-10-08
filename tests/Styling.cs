@@ -27,9 +27,9 @@ namespace ScottPlotTests
             // do the same for a scatter plot
             var signal = plt.PlotSignal(ys: ys, yOffset: 5,
                 color: System.Drawing.Color.Green, lineWidth: 2, markerSize: 10); // TODO: marker shape not currently supported?
-            signal.LineWidth = 10;
-            signal.Color = System.Drawing.Color.Orange;
-            signal.MarkerSize = 20;
+            signal.lineWidth = 10;
+            signal.color = System.Drawing.Color.Orange;
+            signal.markerSize = 20;
 
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name;
             plt.SaveFig(System.IO.Path.GetFullPath(name + ".png"));

@@ -49,7 +49,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             tbLastValue.Text = (latestValue > 0) ? "+" + latestValue.ToString() : latestValue.ToString();
             tbLatestValue.Text = nextDataIndex.ToString();
 
-            signalPlot.MaxRenderIndex = nextDataIndex;
+            signalPlot.maxRenderIndex = nextDataIndex;
 
             nextDataIndex += 1;
         }

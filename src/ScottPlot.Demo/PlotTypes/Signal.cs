@@ -132,7 +132,7 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.XLabel("Array Index");
 
                 // you can change the points to plot later (useful for live plots of incoming data)
-                sig.MaxRenderIndex = 1234;
+                sig.maxRenderIndex = 1234;
                 plt.AxisAuto();
             }
         }
@@ -167,10 +167,10 @@ namespace ScottPlot.Demo.PlotTypes
                 double[] data = DataGen.RandomWalk(rand, 10_000);
 
                 var sig = plt.PlotSignal(data);
-                sig.MinRenderIndex = 4000;
-                sig.MaxRenderIndex = 5000;
-                sig.FillType = FillType.FillBelow;
-                sig.FillColor1 = Color.Blue;
+                sig.minRenderIndex = 4000;
+                sig.maxRenderIndex = 5000;
+                sig.fillType = FillType.FillBelow;
+                sig.fillColor1 = Color.Blue;
 
                 plt.Title($"Partial Display of a {data.Length} values using fill");
                 plt.YLabel("Value");
@@ -190,11 +190,11 @@ namespace ScottPlot.Demo.PlotTypes
                 double[] data = DataGen.RandomWalk(rand, 100_000);
 
                 var sig = plt.PlotSignal(data);
-                sig.MinRenderIndex = 4000;
-                sig.MaxRenderIndex = 5000;
-                sig.FillType = FillType.FillBelow;
-                sig.FillColor1 = Color.Blue;
-                sig.GradientFillColor1 = Color.Transparent;
+                sig.minRenderIndex = 4000;
+                sig.maxRenderIndex = 5000;
+                sig.fillType = FillType.FillBelow;
+                sig.fillColor1 = Color.Blue;
+                sig.gradientFillColor1 = Color.Transparent;
 
                 plt.Title($"Partial Display of a {data.Length} values using gradient fill below");
                 plt.YLabel("Value");
@@ -213,11 +213,11 @@ namespace ScottPlot.Demo.PlotTypes
                 Random rand = new Random(0);
                 double[] data = DataGen.RandomWalk(rand, 100_000);
                 var sig = plt.PlotSignal(data);
-                sig.MinRenderIndex = 4000;
-                sig.MaxRenderIndex = 5000;
-                sig.FillType = FillType.FillAbove;
-                sig.FillColor1 = Color.Blue;
-                sig.GradientFillColor1 = Color.Transparent;
+                sig.minRenderIndex = 4000;
+                sig.maxRenderIndex = 5000;
+                sig.fillType = FillType.FillAbove;
+                sig.fillColor1 = Color.Blue;
+                sig.gradientFillColor1 = Color.Transparent;
                 plt.Title($"Partial Display of a {data.Length} values using gradient fill above");
                 plt.YLabel("Value");
                 plt.XLabel("Array Index");
@@ -236,14 +236,14 @@ namespace ScottPlot.Demo.PlotTypes
                 double[] data = DataGen.RandomWalk(rand, 100_000);
 
                 var sig = plt.PlotSignal(data);
-                sig.MinRenderIndex = 4000;
-                sig.MaxRenderIndex = 5000;
-                sig.FillType = FillType.FillAboveAndBelow;
-                sig.FillColor1 = Color.Green;
-                sig.GradientFillColor1 = Color.Green;
-                sig.FillColor2 = Color.Red;
-                sig.GradientFillColor2 = Color.Red;
-                sig.Baseline = -35;
+                sig.minRenderIndex = 4000;
+                sig.maxRenderIndex = 5000;
+                sig.fillType = FillType.FillAboveAndBelow;
+                sig.fillColor1 = Color.Green;
+                sig.gradientFillColor1 = Color.Green;
+                sig.fillColor2 = Color.Red;
+                sig.gradientFillColor2 = Color.Red;
+                sig.baseline = -35;
 
                 plt.Title($"Partial Display of a {data.Length} values using fill above and below");
                 plt.YLabel("Value");
@@ -266,16 +266,16 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.Colorset(Colorset.OneHalfDark);
 
                 var sig = plt.PlotSignal(data);
-                sig.MinRenderIndex = 4000;
-                sig.MaxRenderIndex = 5000;
-                sig.MarkerSize = 0;
-                sig.Color = Color.Black;
-                sig.FillType = FillType.FillAboveAndBelow;
-                sig.FillColor1 = Color.FromArgb(255, 44, 160, 44); // Green
-                sig.GradientFillColor1 = Color.Transparent;
-                sig.FillColor2 = Color.FromArgb(255, 214, 39, 40); // Red
-                sig.GradientFillColor2 = Color.Transparent;
-                sig.Baseline = -35;
+                sig.minRenderIndex = 4000;
+                sig.maxRenderIndex = 5000;
+                sig.markerSize = 0;
+                sig.color = Color.Black;
+                sig.fillType = FillType.FillAboveAndBelow;
+                sig.fillColor1 = Color.FromArgb(255, 44, 160, 44); // Green
+                sig.gradientFillColor1 = Color.Transparent;
+                sig.fillColor2 = Color.FromArgb(255, 214, 39, 40); // Red
+                sig.gradientFillColor2 = Color.Transparent;
+                sig.baseline = -35;
 
                 plt.Title($"Partial Display of a {data.Length} values using gradient fill above and below");
                 plt.YLabel("Value");

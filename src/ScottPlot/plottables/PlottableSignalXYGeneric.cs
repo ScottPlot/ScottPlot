@@ -43,7 +43,7 @@ namespace ScottPlot
         public override AxisLimits2D GetLimits()
         {
             var limits = base.GetLimits();
-            limits.SetX(Convert.ToDouble(xs[MinRenderIndex]), Convert.ToDouble(xs[maxRenderIndex]));
+            limits.SetX(Convert.ToDouble(xs[minRenderIndex]), Convert.ToDouble(xs[_maxRenderIndex]));
             return limits;
         }
 
@@ -84,8 +84,8 @@ namespace ScottPlot
 
         public override void Render(Settings settings)
         {
-            using (var brush = new SolidBrush(Color))
-            using (var penHD = GDI.Pen(Color, (float)LineWidth, LineStyle.Solid, true))
+            using (var brush = new SolidBrush(color))
+            using (var penHD = GDI.Pen(color, (float)lineWidth, LineStyle.Solid, true))
             {
 
                 PointF[] PointBefore;
@@ -94,13 +94,13 @@ namespace ScottPlot
                 int searchTo;
 
                 // Calculate point before displayed points
-                int pointBeforeIndex = Array.BinarySearch(xs, MinRenderIndex, maxRenderIndex - MinRenderIndex + 1, Convert.ChangeType(settings.axes.x.min, typeof(TX)));
+                int pointBeforeIndex = Array.BinarySearch(xs, minRenderIndex, _maxRenderIndex - minRenderIndex + 1, Convert.ChangeType(settings.axes.x.min, typeof(TX)));
                 if (pointBeforeIndex < 0)
                 {
                     pointBeforeIndex = ~pointBeforeIndex;
                 }
 
-                if (pointBeforeIndex > MinRenderIndex)
+                if (pointBeforeIndex > minRenderIndex)
                 {
                     PointBefore = new PointF[] { settings.GetPixel(Convert.ToDouble(xs[pointBeforeIndex - 1]), minmaxSearchStrategy.SourceElement(pointBeforeIndex - 1)) };
                     searchFrom = pointBeforeIndex;
@@ -108,17 +108,17 @@ namespace ScottPlot
                 else
                 {
                     PointBefore = new PointF[] { };
-                    searchFrom = MinRenderIndex;
+                    searchFrom = minRenderIndex;
                 }
 
                 // Calculate point after displayed points
-                int pointAfterIndex = Array.BinarySearch(xs, MinRenderIndex, maxRenderIndex - MinRenderIndex + 1, Convert.ChangeType(settings.axes.x.max, typeof(TX)));
+                int pointAfterIndex = Array.BinarySearch(xs, minRenderIndex, _maxRenderIndex - minRenderIndex + 1, Convert.ChangeType(settings.axes.x.max, typeof(TX)));
                 if (pointAfterIndex < 0)
                 {
                     pointAfterIndex = ~pointAfterIndex;
                 }
 
-                if (pointAfterIndex <= maxRenderIndex)
+                if (pointAfterIndex <= _maxRenderIndex)
                 {
                     PointAfter = new PointF[] { settings.GetPixel(Convert.ToDouble(xs[pointAfterIndex]), minmaxSearchStrategy.SourceElement(pointAfterIndex)) };
                     searchTo = pointAfterIndex;
@@ -126,11 +126,11 @@ namespace ScottPlot
                 else
                 {
                     PointAfter = new PointF[] { };
-                    searchTo = maxRenderIndex;
+                    searchTo = _maxRenderIndex;
                 }
 
                 IEnumerable<PointF> VisiblePoints;
-                if (UseParallel)
+                if (useParallel)
                 {
                     VisiblePoints = Enumerable.Range(0, settings.dataSize.Width)
                                               .AsParallel()
@@ -177,7 +177,7 @@ namespace ScottPlot
                 {
                     float dataSpanXPx = PointsToDraw[PointsToDraw.Length - 1].X - PointsToDraw[0].X;
                     float markerPxRadius = .3f * dataSpanXPx / PointsToDraw.Length;
-                    markerPxRadius = Math.Min(markerPxRadius, MarkerSize / 2);
+                    markerPxRadius = Math.Min(markerPxRadius, markerSize / 2);
                     if (markerPxRadius > .3)
                     {
                         // skip not visible before and after points
@@ -202,7 +202,7 @@ namespace ScottPlot
 
         public override string ToString()
         {
-            string label = string.IsNullOrWhiteSpace(this.Label) ? "" : $" ({this.Label})";
+            string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
             return $"PlottableSignalXYGeneric{label} with {GetPointCount()} points ({typeof(TX).Name}, {typeof(TY).Name})";
         }
     }

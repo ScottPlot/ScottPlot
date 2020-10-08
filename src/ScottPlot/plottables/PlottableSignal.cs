@@ -15,7 +15,7 @@ namespace ScottPlot
 
         public override string ToString()
         {
-            string label = string.IsNullOrWhiteSpace(this.Label) ? "" : $" ({this.Label})";
+            string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
             return $"PlottableSignal{label} with {GetPointCount()} points";
         }
     }
