@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Text;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -13,7 +14,7 @@ using System.Text;
 
 namespace ScottPlot
 {
-    public class PlottableSignalBase<T> : Plottable, IExportable where T : struct, IComparable
+    public class PlottableSignalBase<T> : Plottable, IPlottable, IExportable where T : struct, IComparable
     {
         private bool MaxRenderIndexLowerYSPromise = false;
         private bool MaxRenderIndexHigherMinRenderIndexPromise = false;
@@ -247,21 +248,21 @@ namespace ScottPlot
             return new Config.AxisLimits2D(limits);
         }
 
-        private void RenderSingleLine(Settings settings, Pen penHD)
+        private void RenderSingleLine(PlotDimensions dims, Graphics gfx, Pen penHD)
         {
             // this function is for when the graph is zoomed so far out its entire display is a single vertical pixel column
             double yMin, yMax;
             minmaxSearchStrategy.MinMaxRangeQuery(minRenderIndex, maxRenderIndex, out yMin, out yMax);
-            PointF point1 = settings.GetPixel(xOffset, yMin + yOffset);
-            PointF point2 = settings.GetPixel(xOffset, yMax + yOffset);
-            settings.gfxData.DrawLine(penHD, point1, point2);
+            PointF point1 = new PointF(dims.GetPixelX(xOffset), dims.GetPixelY(yMin + yOffset));
+            PointF point2 = new PointF(dims.GetPixelX(xOffset), dims.GetPixelY(yMax + yOffset));
+            gfx.DrawLine(penHD, point1, point2);
         }
 
         private bool markersAreVisible = false;
 
         public string ValidationErrorMessage => throw new NotImplementedException();
 
-        private void RenderLowDensity(Settings settings, int visibleIndex1, int visibleIndex2, Brush brush, Pen penLD, Pen penHD)
+        private void RenderLowDensity(PlotDimensions dims, Graphics gfx, int visibleIndex1, int visibleIndex2, Brush brush, Pen penLD, Pen penHD)
         {
             // this function is for when the graph is zoomed in so individual data points can be seen
 
@@ -276,26 +277,26 @@ namespace ScottPlot
                 visibleIndex1 = minRenderIndex;
 
             for (int i = visibleIndex1; i <= visibleIndex2 + 1; i++)
-                linePoints.Add(settings.GetPixel(_samplePeriod * i + xOffset, minmaxSearchStrategy.SourceElement(i) + yOffset));
+                linePoints.Add(new PointF(dims.GetPixelX(_samplePeriod * i + xOffset), dims.GetPixelY(minmaxSearchStrategy.SourceElement(i) + yOffset)));
 
             if (linePoints.Count > 1)
             {
                 if (penLD.Width > 0)
-                    settings.gfxData.DrawLines(penHD, linePoints.ToArray());
+                    gfx.DrawLines(penHD, linePoints.ToArray());
 
                 if (fillType == FillType.FillAbove || fillType == FillType.FillBelow)
                 {
-                    FillAboveOrBelow(settings, linePoints[0].X, linePoints[linePoints.Count - 1].X, linePoints.ToArray(), fillType);
+                    FillAboveOrBelow(dims, gfx, linePoints[0].X, linePoints[linePoints.Count - 1].X, linePoints.ToArray(), fillType);
                 }
                 else if (fillType == FillType.FillAboveAndBelow)
                 {
-                    FillAboveAndBelow(settings, linePoints[0].X, linePoints[linePoints.Count - 1].X, linePoints.ToArray(), this.baseline);
+                    FillAboveAndBelow(dims, gfx, linePoints[0].X, linePoints[linePoints.Count - 1].X, linePoints.ToArray(), this.baseline);
                 }
 
                 if (markerSize > 0)
                 {
                     // make markers transition away smoothly by making them smaller as the user zooms out
-                    float pixelsBetweenPoints = (float)(_samplePeriod * settings.xAxisScale);
+                    float pixelsBetweenPoints = (float)(_samplePeriod * dims.DataWidth / dims.XSpan);
                     float zoomTransitionScale = Math.Min(1, pixelsBetweenPoints / 10);
                     float markerPxDiameter = markerSize * zoomTransitionScale;
                     float markerPxRadius = markerPxDiameter / 2;
@@ -306,7 +307,7 @@ namespace ScottPlot
                         // adjust marker offset to improve rendering on Linux and MacOS
                         float markerOffsetX = (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) ? 0 : 1;
                         foreach (PointF point in linePoints)
-                            settings.gfxData.FillEllipse(brush: brush,
+                            gfx.FillEllipse(brush: brush,
                                 x: point.X - markerPxRadius + markerOffsetX, y: point.Y - markerPxRadius,
                                 width: markerPxDiameter, height: markerPxDiameter);
                     }
@@ -332,7 +333,7 @@ namespace ScottPlot
             }
         }
 
-        private IntervalMinMax CalcInterval(int xPx, double offsetPoints, double columnPointCount, Settings settings)
+        private IntervalMinMax CalcInterval(int xPx, double offsetPoints, double columnPointCount, PlotDimensions dims)
         {
             int index1 = (int)(offsetPoints + columnPointCount * xPx);
             int index2 = (int)(offsetPoints + columnPointCount * (xPx + 1));
@@ -349,17 +350,17 @@ namespace ScottPlot
 
             // get the min and max value for this column                
             minmaxSearchStrategy.MinMaxRangeQuery(index1, index2, out double lowestValue, out double highestValue);
-            float yPxHigh = (float)settings.GetPixelY(lowestValue + yOffset);
-            float yPxLow = (float)settings.GetPixelY(highestValue + yOffset);
+            float yPxHigh = dims.GetPixelY(lowestValue + yOffset);
+            float yPxLow = dims.GetPixelY(highestValue + yOffset);
             return new IntervalMinMax(xPx, yPxLow, yPxHigh);
         }
 
-        private void RenderHighDensity(Settings settings, double offsetPoints, double columnPointCount, Pen penHD)
+        private void RenderHighDensity(PlotDimensions dims, Graphics gfx, double offsetPoints, double columnPointCount, Pen penHD)
         {
             int xPxStart = (int)Math.Ceiling((-1 - offsetPoints + minRenderIndex) / columnPointCount - 1);
             int xPxEnd = (int)Math.Ceiling((maxRenderIndex - offsetPoints) / columnPointCount);
             xPxStart = Math.Max(0, xPxStart);
-            xPxEnd = Math.Min(settings.dataSize.Width, xPxEnd);
+            xPxEnd = Math.Min((int)dims.DataWidth, xPxEnd);
             if (xPxStart >= xPxEnd)
                 return;
 
@@ -371,13 +372,13 @@ namespace ScottPlot
                 intervals = columns
                     .AsParallel()
                     .AsOrdered()
-                    .Select(xPx => CalcInterval(xPx, offsetPoints, columnPointCount, settings))
+                    .Select(xPx => CalcInterval(xPx, offsetPoints, columnPointCount, dims))
                     .AsSequential();
             }
             else
             {
                 intervals = columns
-                    .Select(xPx => CalcInterval(xPx, offsetPoints, columnPointCount, settings));
+                    .Select(xPx => CalcInterval(xPx, offsetPoints, columnPointCount, dims));
             }
 
             PointF[] linePoints = intervals
@@ -397,24 +398,24 @@ namespace ScottPlot
             }
 
             if (linePoints.Length > 0)
-                settings.gfxData.DrawLines(penHD, linePoints);
+                gfx.DrawLines(penHD, linePoints);
 
             if (fillType == FillType.FillAbove || fillType == FillType.FillBelow)
             {
-                FillAboveOrBelow(settings, xPxStart, xPxEnd, linePoints, fillType);
+                FillAboveOrBelow(dims, gfx, xPxStart, xPxEnd, linePoints, fillType);
             }
             else if (fillType == FillType.FillAboveAndBelow)
             {
-                FillAboveAndBelow(settings, xPxStart, xPxEnd, linePoints, this.baseline);
+                FillAboveAndBelow(dims, gfx, xPxStart, xPxEnd, linePoints, this.baseline);
             }
         }
 
-        private void FillAboveOrBelow(Settings settings, float xPxStart, float xPxEnd, PointF[] linePoints, FillType fillType)
+        private void FillAboveOrBelow(PlotDimensions dims, Graphics gfx, float xPxStart, float xPxEnd, PointF[] linePoints, FillType fillType)
         {
             if (fillType == FillType.FillAbove || fillType == FillType.FillBelow)
             {
                 float minVal = 0;
-                float maxVal = (settings.dataSize.Height * (fillType == FillType.FillAbove ? -1 : 1));
+                float maxVal = (dims.DataHeight * (fillType == FillType.FillAbove ? -1 : 1));
 
                 PointF first = new PointF(xPxStart, maxVal);
                 PointF last = new PointF(xPxEnd, maxVal);
@@ -436,7 +437,7 @@ namespace ScottPlot
                     gradientFillColor1 ?? _fillColor1.Value,
                     LinearGradientMode.Vertical);
 
-                settings.gfxData.FillPolygon(linearGradientBrush, points);
+                gfx.FillPolygon(linearGradientBrush, points);
             }
             else
             {
@@ -469,9 +470,9 @@ namespace ScottPlot
             }
         }
 
-        private void FillAboveAndBelow(Settings settings, float xPxStart, float xPxEnd, PointF[] linePoints, int baseline)
+        private void FillAboveAndBelow(PlotDimensions dims, Graphics gfx, float xPxStart, float xPxEnd, PointF[] linePoints, int baseline)
         {
-            baseline = (int)settings.GetPixelY(baseline);
+            baseline = (int)dims.GetPixelY(baseline);
 
             PointF first = new PointF(xPxStart, baseline);
             PointF last = new PointF(xPxEnd, baseline);
@@ -502,7 +503,7 @@ namespace ScottPlot
             }
 
             // Above graph
-            var aboveRect = GetFillRectangle(settings, xPxStart, xPxEnd, FillType.FillAbove);
+            var aboveRect = GetFillRectangle(dims, xPxStart, xPxEnd, FillType.FillAbove);
             if (aboveRect.Height != 0 && aboveRect.Width != 0)
             {
                 LinearGradientBrush linearGradientBrushAbove = new LinearGradientBrush(
@@ -511,7 +512,7 @@ namespace ScottPlot
                     gradientFillColor1 ?? _fillColor1.Value,
                     LinearGradientMode.Vertical);
 
-                settings.gfxData.FillPolygon(linearGradientBrushAbove,
+                gfx.FillPolygon(linearGradientBrushAbove,
                     new PointF[] { first }
                     .Concat(pointList.Where(p => p.Y <= baseline).ToArray())
                     .Concat(new PointF[] { last })
@@ -519,7 +520,7 @@ namespace ScottPlot
             }
 
             // Below graph
-            var belowRect = GetFillRectangle(settings, xPxStart, xPxEnd, FillType.FillBelow);
+            var belowRect = GetFillRectangle(dims, xPxStart, xPxEnd, FillType.FillBelow);
             if (belowRect.Height != 0 && belowRect.Width != 0)
             {
                 LinearGradientBrush linearGradientBrushBelow = new LinearGradientBrush(
@@ -528,7 +529,7 @@ namespace ScottPlot
                     gradientFillColor2 ?? _fillColor2.Value,
                     LinearGradientMode.Vertical);
 
-                settings.gfxData.FillPolygon(linearGradientBrushBelow,
+                gfx.FillPolygon(linearGradientBrushBelow,
                     new PointF[] { first }
                     .Concat(pointList.Where(p => p.Y >= baseline).ToArray())
                     .Concat(new PointF[] { last })
@@ -537,27 +538,27 @@ namespace ScottPlot
             }
 
             // Draw baseline
-            settings.gfxData.DrawLine(
+            gfx.DrawLine(
                 new Pen(Color.Black, 1),
                 baselinePointStart,
                 baselinePointEnd);
         }
 
-        private Rectangle GetFillRectangle(Settings settings, float startX, float xPxEnd, FillType fillType)
+        private Rectangle GetFillRectangle(PlotDimensions dims, float startX, float xPxEnd, FillType fillType)
         {
-            float maxVal = (settings.dataSize.Height * (fillType == FillType.FillAbove ? -1 : 1));
+            float maxVal = (dims.DataHeight * (fillType == FillType.FillAbove ? -1 : 1));
 
             Rectangle rectangle = new Rectangle((int)startX, 0, (int)(xPxEnd - startX), (int)maxVal);
 
             return rectangle;
         }
 
-        private void RenderHighDensityDistributionParallel(Settings settings, double offsetPoints, double columnPointCount)
+        private void RenderHighDensityDistributionParallel(PlotDimensions dims, Graphics gfx, double offsetPoints, double columnPointCount)
         {
             int xPxStart = (int)Math.Ceiling((-1 - offsetPoints) / columnPointCount - 1);
             int xPxEnd = (int)Math.Ceiling((_ys.Length - offsetPoints) / columnPointCount);
             xPxStart = Math.Max(0, xPxStart);
-            xPxEnd = Math.Min(settings.dataSize.Width, xPxEnd);
+            xPxEnd = Math.Min((int)dims.DataWidth, xPxEnd);
             if (xPxStart >= xPxEnd)
                 return;
             List<PointF> linePoints = new List<PointF>((xPxEnd - xPxStart) * 2 + 1);
@@ -589,7 +590,7 @@ namespace ScottPlot
 
             List<PointF[]> linePointsLevels = levelValues
                 .Select(x => x.levelsValues
-                                .Select(y => new PointF(x.xPx, (float)settings.GetPixelY(Convert.ToDouble(y) + yOffset)))
+                                .Select(y => new PointF(x.xPx, dims.GetPixelY(Convert.ToDouble(y) + yOffset)))
                                 .ToArray())
                 .ToList();
 
@@ -604,73 +605,21 @@ namespace ScottPlot
                         linePoints.Add(linePointsLevels[j][i + 1]);
                     }
                 }
-                settings.gfxData.DrawLines(penByDensity[i], linePoints.ToArray());
+                gfx.DrawLines(penByDensity[i], linePoints.ToArray());
 
 
                 if (fillType == FillType.FillAbove || fillType == FillType.FillBelow)
                 {
-                    FillAboveOrBelow(settings, xPxStart, xPxEnd, linePoints.ToArray(), fillType);
+                    FillAboveOrBelow(dims, gfx, xPxStart, xPxEnd, linePoints.ToArray(), fillType);
                 }
                 else if (fillType == FillType.FillAboveAndBelow)
                 {
-                    FillAboveAndBelow(settings, xPxStart, xPxEnd, linePoints.ToArray(), this.baseline);
+                    FillAboveAndBelow(dims, gfx, xPxStart, xPxEnd, linePoints.ToArray(), this.baseline);
                 }
             }
         }
 
-        public override void Render(Settings settings)
-        {
-            if (MaxRenderIndexLowerYSPromise)
-                throw new ArgumentException("maxRenderIndex must be a valid index for ys[]");
-            else if (MaxRenderIndexHigherMinRenderIndexPromise)
-                throw new ArgumentException("minRenderIndex must be lower maxRenderIndex");
-            else if (FillColor1MustBeSetPromise)
-                throw new Exception("A fill color needs to be specified if fill is used");
-            else if (FillColor2MustBeSetPromise)
-                throw new Exception("Two fill colors needs to be specified if fill above and below is used");
-
-
-            using (var brush = new SolidBrush(color))
-            using (var penLD = GDI.Pen(color, (float)lineWidth, lineStyle, true))
-            using (var penHD = GDI.Pen(color, (float)lineWidth, LineStyle.Solid, true))
-            {
-
-                double dataSpanUnits = _ys.Length * _samplePeriod;
-                double columnSpanUnits = settings.axes.x.span / settings.dataSize.Width;
-                double columnPointCount = (columnSpanUnits / dataSpanUnits) * _ys.Length;
-                double offsetUnits = settings.axes.x.min - xOffset;
-                double offsetPoints = offsetUnits / _samplePeriod;
-                int visibleIndex1 = (int)(offsetPoints);
-                int visibleIndex2 = (int)(offsetPoints + columnPointCount * (settings.dataSize.Width + 1));
-                int visiblePointCount = visibleIndex2 - visibleIndex1;
-                double pointsPerPixelColumn = visiblePointCount / settings.dataSize.Width;
-                double dataWidthPx2 = visibleIndex2 - visibleIndex1 + 2;
-
-                PointF firstPoint = settings.GetPixel(xOffset, minmaxSearchStrategy.SourceElement(0) + yOffset); ;
-                PointF lastPoint = settings.GetPixel(_samplePeriod * (_ys.Length - 1) + xOffset, minmaxSearchStrategy.SourceElement(_ys.Length - 1) + yOffset);
-                double dataWidthPx = lastPoint.X - firstPoint.X;
-
-                // set this now, and let the render function change it if it happens
-                markersAreVisible = false;
-
-                // use different rendering methods based on how dense the data is on screen
-                if ((dataWidthPx <= 1) || (dataWidthPx2 <= 1))
-                {
-                    RenderSingleLine(settings, penHD);
-                }
-                else if (pointsPerPixelColumn > 1)
-                {
-                    if (densityLevelCount > 0 && pointsPerPixelColumn > densityLevelCount)
-                        RenderHighDensityDistributionParallel(settings, offsetPoints, columnPointCount);
-                    else
-                        RenderHighDensity(settings, offsetPoints, columnPointCount, penHD);
-                }
-                else
-                {
-                    RenderLowDensity(settings, visibleIndex1, visibleIndex2, brush, penLD, penHD);
-                }
-            }
-        }
+        public override void Render(Settings settings) => throw new NotImplementedException("Use the other Render method");
 
         public override string ToString()
         {
@@ -708,9 +657,62 @@ namespace ScottPlot
             return new LegendItem[] { singleLegendItem };
         }
 
-        public void Render(PlotDimensions dims, Bitmap bmp)
+        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            throw new NotImplementedException();
+            if (MaxRenderIndexLowerYSPromise)
+                throw new ArgumentException("maxRenderIndex must be a valid index for ys[]");
+            else if (MaxRenderIndexHigherMinRenderIndexPromise)
+                throw new ArgumentException("minRenderIndex must be lower maxRenderIndex");
+            else if (FillColor1MustBeSetPromise)
+                throw new Exception("A fill color needs to be specified if fill is used");
+            else if (FillColor2MustBeSetPromise)
+                throw new Exception("Two fill colors needs to be specified if fill above and below is used");
+
+
+            using (Graphics gfx = Graphics.FromImage(bmp))
+            using (var brush = new SolidBrush(color))
+            using (var penLD = GDI.Pen(color, (float)lineWidth, lineStyle, true))
+            using (var penHD = GDI.Pen(color, (float)lineWidth, LineStyle.Solid, true))
+            {
+
+                gfx.SmoothingMode = lowQuality ? SmoothingMode.HighSpeed : SmoothingMode.AntiAlias;
+                gfx.TextRenderingHint = lowQuality ? TextRenderingHint.SingleBitPerPixelGridFit : TextRenderingHint.AntiAliasGridFit;
+
+                double dataSpanUnits = _ys.Length * _samplePeriod;
+                double columnSpanUnits = dims.XSpan / dims.DataWidth;
+                double columnPointCount = (columnSpanUnits / dataSpanUnits) * _ys.Length;
+                double offsetUnits = dims.XMin - xOffset;
+                double offsetPoints = offsetUnits / _samplePeriod;
+                int visibleIndex1 = (int)(offsetPoints);
+                int visibleIndex2 = (int)(offsetPoints + columnPointCount * (dims.DataWidth + 1));
+                int visiblePointCount = visibleIndex2 - visibleIndex1;
+                double pointsPerPixelColumn = visiblePointCount / dims.DataWidth;
+                double dataWidthPx2 = visibleIndex2 - visibleIndex1 + 2;
+
+                double firstPointX = dims.GetPixelX(xOffset);
+                double lastPointX = dims.GetPixelX(_samplePeriod * (_ys.Length - 1) + xOffset);
+                double dataWidthPx = lastPointX - firstPointX;
+
+                // set this now, and let the render function change it if it happens
+                markersAreVisible = false;
+
+                // use different rendering methods based on how dense the data is on screen
+                if ((dataWidthPx <= 1) || (dataWidthPx2 <= 1))
+                {
+                    RenderSingleLine(dims, gfx, penHD);
+                }
+                else if (pointsPerPixelColumn > 1)
+                {
+                    if (densityLevelCount > 0 && pointsPerPixelColumn > densityLevelCount)
+                        RenderHighDensityDistributionParallel(dims, gfx, offsetPoints, columnPointCount);
+                    else
+                        RenderHighDensity(dims, gfx, offsetPoints, columnPointCount, penHD);
+                }
+                else
+                {
+                    RenderLowDensity(dims, gfx, visibleIndex1, visibleIndex2, brush, penLD, penHD);
+                }
+            }
         }
 
         public bool IsValidData(bool deepValidation = false)
