@@ -158,21 +158,22 @@ namespace ScottPlot
             if (maxRenderIndex == null)
                 maxRenderIndex = ys.Length - 1;
 
-            PlottableSignalConst<T> signal = new PlottableSignalConst<T>(
-                ys: ys,
-                sampleRate: sampleRate,
-                xOffset: xOffset,
-                yOffset: yOffset,
-                color: (Color)color,
-                lineWidth: lineWidth,
-                markerSize: markerSize,
-                label: label,
-                colorByDensity: colorByDensity,
-                minRenderIndex: minRenderIndex.Value,
-                maxRenderIndex: maxRenderIndex.Value,
-                lineStyle: lineStyle,
-                useParallel: useParallel
-                );
+            PlottableSignalConst<T> signal = new PlottableSignalConst<T>()
+            {
+                ys = ys,
+                sampleRate = sampleRate,
+                xOffset = xOffset,
+                yOffset = yOffset,
+                color = (Color)color,
+                lineWidth = lineWidth,
+                markerSize = (float)markerSize,
+                label = label,
+                colorByDensity = colorByDensity,
+                minRenderIndex = minRenderIndex.Value,
+                maxRenderIndex = maxRenderIndex.Value,
+                lineStyle = lineStyle,
+                useParallel = useParallel
+            };
 
             Add(signal);
             return signal;
