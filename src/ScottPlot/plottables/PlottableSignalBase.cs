@@ -21,7 +21,8 @@ namespace ScottPlot
         private bool FillColor1MustBeSetPromise = false;
         private bool FillColor2MustBeSetPromise = false;
 
-        protected IMinMaxSearchStrategy<T> minmaxSearchStrategy;
+        protected IMinMaxSearchStrategy<T> minmaxSearchStrategy = new SegmentedTreeMinMaxSearchStrategy<T>();
+
         [FiniteNumbers, EqualLength]
         private T[] _ys;
         public T[] ys
@@ -38,10 +39,11 @@ namespace ScottPlot
                     MaxRenderIndexLowerYSPromise = false;
 
                 _ys = value;
+                minmaxSearchStrategy.SourceArray = _ys;
             }
         }
         [FiniteNumbers]
-        private double _sampleRate;
+        private double _sampleRate = 1;
         public double sampleRate
         {
             get => _sampleRate;
@@ -54,7 +56,7 @@ namespace ScottPlot
             }
         }
         [FiniteNumbers]
-        private double _samplePeriod;
+        private double _samplePeriod = 1;
         public double samplePeriod
         {
             get => _samplePeriod;
@@ -65,14 +67,14 @@ namespace ScottPlot
                 _samplePeriod = value;
             }
         }
-        public float markerSize { get; set; }
+        public float markerSize { get; set; } = 5;
         [FiniteNumbers]
-        public double xOffset { get; set; }
+        public double xOffset { get; set; } = 0;
         [FiniteNumbers]
-        public double yOffset { get; set; }
-        public double lineWidth { get; set; }
+        public double yOffset { get; set; } = 0;
+        public double lineWidth { get; set; } = 1;
 
-        protected int _minRenderIndex;
+        protected int _minRenderIndex = 0;
         public int minRenderIndex
         {
             get => _minRenderIndex;
@@ -89,7 +91,7 @@ namespace ScottPlot
                 _minRenderIndex = value;
             }
         }
-        protected int _maxRenderIndex;
+        protected int _maxRenderIndex = 0;
         public int maxRenderIndex
         {
             get => _maxRenderIndex;
@@ -113,11 +115,32 @@ namespace ScottPlot
         }
         private Pen[] penByDensity;
         private int densityLevelCount = 0;
-        public string label { get; set; }
-        public Color color { get; set; }
-        public LineStyle lineStyle { get; set; }
+
+        private Color[] _colorByDensity;
+        public Color[] colorByDensity
+        {
+            get => _colorByDensity;
+            set
+            {
+                if (colorByDensity != null)
+                {
+                    // turn the ramp into a pen triangle
+                    densityLevelCount = colorByDensity.Length * 2 - 1;
+                    penByDensity = new Pen[densityLevelCount];
+                    for (int i = 0; i < colorByDensity.Length; i++)
+                    {
+                        penByDensity[i] = new Pen(colorByDensity[i]);
+                        penByDensity[densityLevelCount - 1 - i] = new Pen(colorByDensity[i]);
+                    }
+                }
+            }
+        }
+
+        public string label { get; set; } = null;
+        public Color color { get; set; } = Color.Green;
+        public LineStyle lineStyle { get; set; } = LineStyle.Solid;
         public bool useParallel { get; set; } = true;
-        private FillType _fillType;
+        private FillType _fillType = FillType.NoFill;
         public FillType fillType
         {
             get => _fillType;
@@ -136,7 +159,7 @@ namespace ScottPlot
                 _fillType = value;
             }
         }
-        private Color? _fillColor1;
+        private Color? _fillColor1 = null;
         public Color? fillColor1
         {
             get => _fillColor1;
@@ -150,8 +173,8 @@ namespace ScottPlot
                 _fillColor1 = value;
             }
         }
-        public Color? gradientFillColor1 { get; set; }
-        private Color? _fillColor2;
+        public Color? gradientFillColor1 { get; set; } = null;
+        private Color? _fillColor2 = null;
         public Color? fillColor2
         {
             get => _fillColor2;
@@ -166,8 +189,12 @@ namespace ScottPlot
             }
         }
 
-        public Color? gradientFillColor2 { get; set; }
-        public int baseline { get; set; }
+        public Color? gradientFillColor2 { get; set; } = null;
+        public int baseline { get; set; } = 0;
+
+        public PlottableSignalBase()
+        {
+        }
 
         public PlottableSignalBase(T[] ys, double sampleRate, double xOffset, double yOffset, Color color,
             double lineWidth, double markerSize, string label, Color[] colorByDensity,
