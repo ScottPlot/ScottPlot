@@ -33,10 +33,7 @@ namespace ScottPlot
                 if (value == null)
                     throw new Exception("Y data cannot be null");
 
-                if (maxRenderIndex > value.Length - 1)
-                    MaxRenderIndexLowerYSPromise = true;
-                else
-                    MaxRenderIndexLowerYSPromise = false;
+                MaxRenderIndexLowerYSPromise = maxRenderIndex > value.Length - 1;
 
                 _ys = value;
                 minmaxSearchStrategy.SourceArray = _ys;
@@ -83,10 +80,7 @@ namespace ScottPlot
                 if (value < 0)
                     throw new ArgumentException("MinRenderIndex must be positive");
 
-                if (value > maxRenderIndex)
-                    MaxRenderIndexHigherMinRenderIndexPromise = true;
-                else
-                    MaxRenderIndexHigherMinRenderIndexPromise = false;
+                MaxRenderIndexHigherMinRenderIndexPromise = value > maxRenderIndex;
 
                 _minRenderIndex = value;
             }
@@ -100,15 +94,9 @@ namespace ScottPlot
                 if (value < 0)
                     throw new ArgumentException("MaxRenderIndex must be positive");
 
-                if (value < minRenderIndex)
-                    MaxRenderIndexHigherMinRenderIndexPromise = true;
-                else
-                    MaxRenderIndexHigherMinRenderIndexPromise = false;
+                MaxRenderIndexHigherMinRenderIndexPromise = minRenderIndex > value;
 
-                if (value > _ys.Length - 1)
-                    MaxRenderIndexLowerYSPromise = true;
-                else
-                    MaxRenderIndexLowerYSPromise = false;
+                MaxRenderIndexLowerYSPromise = value > _ys.Length - 1;
 
                 _maxRenderIndex = value;
             }
@@ -146,15 +134,9 @@ namespace ScottPlot
             get => _fillType;
             set
             {
-                if (_fillColor1 == null && value != FillType.NoFill)
-                    FillColor1MustBeSetPromise = true;
-                else
-                    FillColor1MustBeSetPromise = false;
+                FillColor1MustBeSetPromise = (_fillColor1 == null && value != FillType.NoFill);
 
-                if (_fillColor2 == null && value == FillType.FillAboveAndBelow)
-                    FillColor2MustBeSetPromise = true;
-                else
-                    FillColor2MustBeSetPromise = false;
+                FillColor2MustBeSetPromise = (_fillColor2 == null && value == FillType.FillAboveAndBelow);
 
                 _fillType = value;
             }
@@ -165,10 +147,7 @@ namespace ScottPlot
             get => _fillColor1;
             set
             {
-                if (value == null && fillType != FillType.NoFill)
-                    FillColor1MustBeSetPromise = true;
-                else
-                    FillColor1MustBeSetPromise = false;
+                FillColor1MustBeSetPromise = (value == null && fillType != FillType.NoFill);
 
                 _fillColor1 = value;
             }
@@ -180,10 +159,7 @@ namespace ScottPlot
             get => _fillColor2;
             set
             {
-                if (value == null && fillType == FillType.FillAboveAndBelow)
-                    FillColor2MustBeSetPromise = true;
-                else
-                    FillColor2MustBeSetPromise = false;
+                FillColor2MustBeSetPromise = (value == null && fillType == FillType.FillAboveAndBelow);
 
                 _fillColor2 = value;
             }

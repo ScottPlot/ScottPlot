@@ -30,10 +30,8 @@ namespace ScottPlot
                     if (value[i].CompareTo(value[i - 1]) < 0)
                         throw new ArgumentException("Xs must only contain ascending values");
 
-                if (value.Length != ys?.Length)
-                    XSequalYSPromise = true;
-                else
-                    XSequalYSPromise = false;
+                XSequalYSPromise = (value.Length != ys?.Length);
+
                 _xs = value;
             }
         }
@@ -45,10 +43,8 @@ namespace ScottPlot
             {
                 if (value.Length == 0)
                     throw new ArgumentException("YS must have at least one element");
-                if (value.Length != xs?.Length)
-                    XSequalYSPromise = true;
-                else
-                    XSequalYSPromise = false;
+
+                XSequalYSPromise = (value.Length != xs?.Length);
 
                 base.ys = value;
             }
