@@ -103,16 +103,8 @@ namespace ScottPlot
 
         public override void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            if (MaxRenderIndexLowerYSPromise)
-                throw new ArgumentException("maxRenderIndex must be a valid index for ys[]");
-            else if (MaxRenderIndexHigherMinRenderIndexPromise)
-                throw new ArgumentException("minRenderIndex must be lower maxRenderIndex");
-            else if (FillColor1MustBeSetPromise)
-                throw new Exception("A fill color needs to be specified if fill is used");
-            else if (FillColor2MustBeSetPromise)
-                throw new Exception("Two fill colors needs to be specified if fill above and below is used");
-            else if (XSequalYSPromise)
-                throw new Exception("Xs and Ys must have same length");
+            if (IsValidData() == false)
+                throw new InvalidOperationException($"Invalid data: {ValidationErrorMessage}");
 
             using (Graphics gfx = Graphics.FromImage(bmp))
             using (var brush = new SolidBrush(color))
@@ -237,6 +229,15 @@ namespace ScottPlot
                     }
                 }
             }
+        }
+
+        public override bool IsValidData(bool deepValidation = false)
+        {
+            base.IsValidData(deepValidation);
+            if (XSequalYSPromise)
+                ValidationErrorMessage += "\nXs and Ys must have same length";
+
+            return ValidationErrorMessage.Length == 0;
         }
 
         public override string ToString()

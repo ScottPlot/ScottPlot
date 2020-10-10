@@ -687,20 +687,20 @@ namespace ScottPlot
             }
         }
 
-        public string ValidationErrorMessage { get; private set; }
+        public string ValidationErrorMessage { get; protected set; }
 
-        public bool IsValidData(bool deepValidation = false)
+        public virtual bool IsValidData(bool deepValidation = false)
         {
             StringBuilder sb = new StringBuilder();
 
             if (MaxRenderIndexLowerYSPromise)
-                sb.Append("maxRenderIndex must be a valid index for ys[]");
+                sb.AppendLine("maxRenderIndex must be a valid index for ys[]");
             if (MaxRenderIndexHigherMinRenderIndexPromise)
-                sb.Append("minRenderIndex must be lower maxRenderIndex");
+                sb.AppendLine("minRenderIndex must be lower maxRenderIndex");
             if (FillColor1MustBeSetPromise)
-                sb.Append("A fill color needs to be specified if fill is used");
+                sb.AppendLine("A fill color needs to be specified if fill is used");
             if (FillColor2MustBeSetPromise)
-                sb.Append("Two fill colors needs to be specified if fill above and below is used");
+                sb.AppendLine("Two fill colors needs to be specified if fill above and below is used");
 
             ValidationErrorMessage = sb.ToString();
 
