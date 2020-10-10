@@ -196,52 +196,6 @@ namespace ScottPlot
         {
         }
 
-        public PlottableSignalBase(T[] ys, double sampleRate, double xOffset, double yOffset, Color color,
-            double lineWidth, double markerSize, string label, Color[] colorByDensity,
-            int minRenderIndex, int maxRenderIndex, LineStyle lineStyle, bool useParallel,
-            IMinMaxSearchStrategy<T> minMaxSearchStrategy = null)
-        {
-            if (ys == null)
-                throw new Exception("Y data cannot be null");
-
-            this._ys = ys;
-            this._sampleRate = sampleRate;
-            this._samplePeriod = 1.0 / sampleRate;
-            this.markerSize = (float)markerSize;
-            this.xOffset = xOffset;
-            this.label = label;
-            this.color = color;
-            this.lineWidth = lineWidth;
-            this.fillType = FillType.NoFill;
-            this.yOffset = yOffset;
-            this.baseline = 0;
-            if (minRenderIndex < 0 || minRenderIndex > maxRenderIndex)
-                throw new ArgumentException("minRenderIndex must be between 0 and maxRenderIndex");
-            this.minRenderIndex = minRenderIndex;
-            if ((maxRenderIndex > ys.Length - 1) || maxRenderIndex < 0)
-                throw new ArgumentException("maxRenderIndex must be a valid index for ys[]");
-            this.maxRenderIndex = maxRenderIndex;
-            this.lineStyle = lineStyle;
-            this.useParallel = useParallel;
-
-            if (colorByDensity != null)
-            {
-                // turn the ramp into a pen triangle
-                densityLevelCount = colorByDensity.Length * 2 - 1;
-                penByDensity = new Pen[densityLevelCount];
-                for (int i = 0; i < colorByDensity.Length; i++)
-                {
-                    penByDensity[i] = new Pen(colorByDensity[i]);
-                    penByDensity[densityLevelCount - 1 - i] = new Pen(colorByDensity[i]);
-                }
-            }
-            if (minMaxSearchStrategy == null)
-                this.minmaxSearchStrategy = new SegmentedTreeMinMaxSearchStrategy<T>();
-            else
-                this.minmaxSearchStrategy = minMaxSearchStrategy;
-            minmaxSearchStrategy.SourceArray = ys;
-        }
-
         public void updateData(int index, T newValue)
         {
             minmaxSearchStrategy.updateElement(index, newValue);
@@ -286,8 +240,6 @@ namespace ScottPlot
         }
 
         private bool markersAreVisible = false;
-
-        public string ValidationErrorMessage => throw new NotImplementedException();
 
         private void RenderLowDensity(PlotDimensions dims, Graphics gfx, int visibleIndex1, int visibleIndex2, Brush brush, Pen penLD, Pen penHD)
         {
@@ -686,15 +638,8 @@ namespace ScottPlot
 
         public virtual void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            if (MaxRenderIndexLowerYSPromise)
-                throw new ArgumentException("maxRenderIndex must be a valid index for ys[]");
-            else if (MaxRenderIndexHigherMinRenderIndexPromise)
-                throw new ArgumentException("minRenderIndex must be lower maxRenderIndex");
-            else if (FillColor1MustBeSetPromise)
-                throw new Exception("A fill color needs to be specified if fill is used");
-            else if (FillColor2MustBeSetPromise)
-                throw new Exception("Two fill colors needs to be specified if fill above and below is used");
-
+            if (IsValidData() == false)
+                throw new InvalidOperationException($"Invalid data: {ValidationErrorMessage}");
 
             using (Graphics gfx = Graphics.FromImage(bmp))
             using (var brush = new SolidBrush(color))
@@ -742,9 +687,24 @@ namespace ScottPlot
             }
         }
 
+        public string ValidationErrorMessage { get; private set; }
+
         public bool IsValidData(bool deepValidation = false)
         {
-            throw new NotImplementedException();
+            StringBuilder sb = new StringBuilder();
+
+            if (MaxRenderIndexLowerYSPromise)
+                sb.Append("maxRenderIndex must be a valid index for ys[]");
+            if (MaxRenderIndexHigherMinRenderIndexPromise)
+                sb.Append("minRenderIndex must be lower maxRenderIndex");
+            if (FillColor1MustBeSetPromise)
+                sb.Append("A fill color needs to be specified if fill is used");
+            if (FillColor2MustBeSetPromise)
+                sb.Append("Two fill colors needs to be specified if fill above and below is used");
+
+            ValidationErrorMessage = sb.ToString();
+
+            return ValidationErrorMessage.Length == 0;
         }
     }
 }
