@@ -32,18 +32,19 @@ namespace ScottPlot
             if (maxRenderIndex == null)
                 maxRenderIndex = ys.Length - 1;
 
-            PlottableSignalXY signal = new PlottableSignalXY(
-                xs: xs,
-                ys: ys,
-                color: (Color)color,
-                lineWidth: lineWidth,
-                markerSize: markerSize,
-                label: label,
-                minRenderIndex: minRenderIndex.Value,
-                maxRenderIndex: maxRenderIndex.Value,
-                lineStyle: lineStyle,
-                useParallel: useParallel
-                );
+            PlottableSignalXY signal = new PlottableSignalXY()
+            {
+                xs = xs,
+                ys = ys,
+                color = (Color)color,
+                lineWidth = lineWidth,
+                markerSize = (float)markerSize,
+                label = label,
+                minRenderIndex = minRenderIndex.Value,
+                maxRenderIndex = maxRenderIndex.Value,
+                lineStyle = lineStyle,
+                useParallel = useParallel
+            };
             Add(signal);
             return signal;
         }
@@ -70,18 +71,19 @@ namespace ScottPlot
             if (maxRenderIndex == null)
                 maxRenderIndex = ys.Length - 1;
 
-            PlottableSignalXYConst<TX, TY> signal = new PlottableSignalXYConst<TX, TY>(
-                xs: xs,
-                ys: ys,
-                color: (Color)color,
-                lineWidth: lineWidth,
-                markerSize: markerSize,
-                label: label,
-                minRenderIndex: minRenderIndex.Value,
-                maxRenderIndex: maxRenderIndex.Value,
-                lineStyle: lineStyle,
-                useParallel: useParallel
-                );
+            PlottableSignalXYConst<TX, TY> signal = new PlottableSignalXYConst<TX, TY>()
+            {
+                xs = xs,
+                ys = ys,
+                color = (Color)color,
+                lineWidth = lineWidth,
+                markerSize = (float)markerSize,
+                label = label,
+                minRenderIndex = minRenderIndex.Value,
+                maxRenderIndex = maxRenderIndex.Value,
+                lineStyle = lineStyle,
+                useParallel = useParallel
+            };
 
             Add(signal);
             return signal;

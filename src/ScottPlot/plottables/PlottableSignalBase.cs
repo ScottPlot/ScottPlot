@@ -16,16 +16,16 @@ namespace ScottPlot
 {
     public class PlottableSignalBase<T> : Plottable, IPlottable, IExportable where T : struct, IComparable
     {
-        private bool MaxRenderIndexLowerYSPromise = false;
-        private bool MaxRenderIndexHigherMinRenderIndexPromise = false;
-        private bool FillColor1MustBeSetPromise = false;
-        private bool FillColor2MustBeSetPromise = false;
+        protected bool MaxRenderIndexLowerYSPromise = false;
+        protected bool MaxRenderIndexHigherMinRenderIndexPromise = false;
+        protected bool FillColor1MustBeSetPromise = false;
+        protected bool FillColor2MustBeSetPromise = false;
 
         protected IMinMaxSearchStrategy<T> minmaxSearchStrategy = new SegmentedTreeMinMaxSearchStrategy<T>();
 
         [FiniteNumbers, EqualLength]
-        private T[] _ys;
-        public T[] ys
+        protected T[] _ys;
+        public virtual T[] ys
         {
             get => _ys;
             set
@@ -684,7 +684,7 @@ namespace ScottPlot
             return new LegendItem[] { singleLegendItem };
         }
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public virtual void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             if (MaxRenderIndexLowerYSPromise)
                 throw new ArgumentException("maxRenderIndex must be a valid index for ys[]");

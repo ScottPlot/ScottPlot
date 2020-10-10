@@ -1,7 +1,6 @@
 ﻿using ScottPlot.Config;
 using ScottPlot.Diagnostic.Attributes;
 using ScottPlot.Drawing;
-using ScottPlot.MinMaxSearchStrategies;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -13,31 +12,46 @@ namespace ScottPlot
 
     public class PlottableSignalXYGeneric<TX, TY> : PlottableSignalBase<TY> where TX : struct, IComparable where TY : struct, IComparable
     {
+        private bool XSequalYSPromise = false;
+
+        private TX[] _xs;
         [FiniteNumbers, EqualLength, Accending]
-        public TX[] xs;
-        public PlottableSignalXYGeneric(TX[] xs, TY[] ys, Color color, double lineWidth, double markerSize, string label, int minRenderIndex, int maxRenderIndex, LineStyle lineStyle, bool useParallel, IMinMaxSearchStrategy<TY> minMaxSearchStrategy = null)
-            : base(ys, 1, 0, 0, color, lineWidth, markerSize, label, null, minRenderIndex, maxRenderIndex, lineStyle, useParallel, minMaxSearchStrategy)
+        public TX[] xs
         {
-            if ((xs == null) || (ys == null))
-                throw new ArgumentException("X and Y data cannot be null");
+            get => _xs;
+            set
+            {
+                if (value == null)
+                    throw new ArgumentException("XS cannot be null");
+                if (value.Length == 0)
+                    throw new ArgumentException("XS must have at least one element");
+                if (value.Length != ys?.Length)
+                    XSequalYSPromise = true;
+                else
+                    XSequalYSPromise = false;
+                _xs = value;
+            }
+        }
 
-            if ((xs.Length == 0) || (ys.Length == 0))
-                throw new ArgumentException("xs and ys must have at least one element");
+        public override TY[] ys
+        {
+            get => _ys;
+            set
+            {
+                if (value.Length == 0)
+                    throw new ArgumentException("YS must have at least one element");
+                if (value.Length != xs?.Length)
+                    XSequalYSPromise = true;
+                else
+                    XSequalYSPromise = false;
 
-            if (xs.Length != ys.Length)
-                throw new ArgumentException("Xs and Ys must have same length");
+                base.ys = value;
+            }
+        }
 
-            for (int i = 1; i < xs.Length; i++)
-                if (xs[i].CompareTo(xs[i - 1]) < 0)
-                    throw new ArgumentException("Xs must only contain ascending values");
+        public PlottableSignalXYGeneric() : base()
+        {
 
-            if (minMaxSearchStrategy == null)
-                this.minmaxSearchStrategy = new SegmentedTreeMinMaxSearchStrategy<TY>();
-            else
-                this.minmaxSearchStrategy = minMaxSearchStrategy;
-            minmaxSearchStrategy.SourceArray = ys;
-
-            this.xs = xs;
         }
 
         public override AxisLimits2D GetLimits()
@@ -47,10 +61,10 @@ namespace ScottPlot
             return limits;
         }
 
-        public IEnumerable<PointF> ProcessInterval(int x, int from, int length, Settings settings)
+        public IEnumerable<PointF> ProcessInterval(int x, int from, int length, PlotDimensions dims)
         {
-            TX start = (TX)Convert.ChangeType(settings.axes.x.min + settings.axes.x.span / settings.dataSize.Width * x, typeof(TX));
-            TX end = (TX)Convert.ChangeType(settings.axes.x.min + settings.axes.x.span / settings.dataSize.Width * (x + 1), typeof(TX));
+            TX start = (TX)Convert.ChangeType(dims.XMin + dims.XSpan / dims.DataWidth * x, typeof(TX));
+            TX end = (TX)Convert.ChangeType(dims.XMin + dims.XSpan / dims.DataWidth * (x + 1), typeof(TX));
 
             int startIndex = Array.BinarySearch(xs, from, length, start);
             if (startIndex < 0)
@@ -73,17 +87,29 @@ namespace ScottPlot
 
             var pointsCount = endIndex - startIndex;
 
-            yield return new PointF(x, (float)settings.GetPixelY(minmaxSearchStrategy.SourceElement(startIndex)));
+            yield return new PointF(x, dims.GetPixelY(minmaxSearchStrategy.SourceElement(startIndex)));
             if (pointsCount > 1)
             {
-                yield return new PointF(x, (float)settings.GetPixelY(min));
-                yield return new PointF(x, (float)settings.GetPixelY(max));
-                yield return new PointF(x, (float)settings.GetPixelY(minmaxSearchStrategy.SourceElement(endIndex - 1)));
+                yield return new PointF(x, dims.GetPixelY(min));
+                yield return new PointF(x, dims.GetPixelY(max));
+                yield return new PointF(x, dims.GetPixelY(minmaxSearchStrategy.SourceElement(endIndex - 1)));
             }
         }
 
-        public override void Render(Settings settings)
+        public override void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
+            if (MaxRenderIndexLowerYSPromise)
+                throw new ArgumentException("maxRenderIndex must be a valid index for ys[]");
+            else if (MaxRenderIndexHigherMinRenderIndexPromise)
+                throw new ArgumentException("minRenderIndex must be lower maxRenderIndex");
+            else if (FillColor1MustBeSetPromise)
+                throw new Exception("A fill color needs to be specified if fill is used");
+            else if (FillColor2MustBeSetPromise)
+                throw new Exception("Two fill colors needs to be specified if fill above and below is used");
+            else if (XSequalYSPromise)
+                throw new Exception("Xs and Ys must have same length");
+
+            using (Graphics gfx = Graphics.FromImage(bmp))
             using (var brush = new SolidBrush(color))
             using (var penHD = GDI.Pen(color, (float)lineWidth, LineStyle.Solid, true))
             {
@@ -94,7 +120,7 @@ namespace ScottPlot
                 int searchTo;
 
                 // Calculate point before displayed points
-                int pointBeforeIndex = Array.BinarySearch(xs, minRenderIndex, maxRenderIndex - minRenderIndex + 1, Convert.ChangeType(settings.axes.x.min, typeof(TX)));
+                int pointBeforeIndex = Array.BinarySearch(xs, minRenderIndex, maxRenderIndex - minRenderIndex + 1, Convert.ChangeType(dims.XMin, typeof(TX)));
                 if (pointBeforeIndex < 0)
                 {
                     pointBeforeIndex = ~pointBeforeIndex;
@@ -102,7 +128,11 @@ namespace ScottPlot
 
                 if (pointBeforeIndex > minRenderIndex)
                 {
-                    PointBefore = new PointF[] { settings.GetPixel(Convert.ToDouble(xs[pointBeforeIndex - 1]), minmaxSearchStrategy.SourceElement(pointBeforeIndex - 1)) };
+                    PointBefore = new PointF[]
+                    {
+                        new PointF(dims.GetPixelX(Convert.ToDouble(xs[pointBeforeIndex - 1])),
+                                   dims.GetPixelY(minmaxSearchStrategy.SourceElement(pointBeforeIndex - 1)))
+                    };
                     searchFrom = pointBeforeIndex;
                 }
                 else
@@ -112,7 +142,7 @@ namespace ScottPlot
                 }
 
                 // Calculate point after displayed points
-                int pointAfterIndex = Array.BinarySearch(xs, minRenderIndex, maxRenderIndex - minRenderIndex + 1, Convert.ChangeType(settings.axes.x.max, typeof(TX)));
+                int pointAfterIndex = Array.BinarySearch(xs, minRenderIndex, maxRenderIndex - minRenderIndex + 1, Convert.ChangeType(dims.XMax, typeof(TX)));
                 if (pointAfterIndex < 0)
                 {
                     pointAfterIndex = ~pointAfterIndex;
@@ -120,7 +150,11 @@ namespace ScottPlot
 
                 if (pointAfterIndex <= maxRenderIndex)
                 {
-                    PointAfter = new PointF[] { settings.GetPixel(Convert.ToDouble(xs[pointAfterIndex]), minmaxSearchStrategy.SourceElement(pointAfterIndex)) };
+                    PointAfter = new PointF[]
+                    {
+                        new PointF(dims.GetPixelX(Convert.ToDouble(xs[pointAfterIndex])),
+                                   dims.GetPixelY(minmaxSearchStrategy.SourceElement(pointAfterIndex)))
+                    };
                     searchTo = pointAfterIndex;
                 }
                 else
@@ -132,17 +166,17 @@ namespace ScottPlot
                 IEnumerable<PointF> VisiblePoints;
                 if (useParallel)
                 {
-                    VisiblePoints = Enumerable.Range(0, settings.dataSize.Width)
+                    VisiblePoints = Enumerable.Range(0, (int)dims.DataWidth)
                                               .AsParallel()
                                               .AsOrdered()
-                                              .Select(x => ProcessInterval(x, searchFrom, searchTo - searchFrom + 1, settings))
+                                              .Select(x => ProcessInterval(x, searchFrom, searchTo - searchFrom + 1, dims))
                                               .SelectMany(x => x);
 
                 }
                 else
                 {
-                    VisiblePoints = Enumerable.Range(0, settings.dataSize.Width)
-                                              .Select(x => ProcessInterval(x, searchFrom, searchTo - searchFrom + 1, settings))
+                    VisiblePoints = Enumerable.Range(0, (int)dims.DataWidth)
+                                              .Select(x => ProcessInterval(x, searchFrom, searchTo - searchFrom + 1, dims))
                                               .SelectMany(x => x);
                 }
 
@@ -163,14 +197,14 @@ namespace ScottPlot
                     PointF lastPoint = PointsToDraw[PointsToDraw.Length - 2];
                     PointF afterPoint = PointsToDraw[PointsToDraw.Length - 1];
 
-                    float x1 = settings.dataSize.Width;
+                    float x1 = dims.DataWidth;
                     float y1 = lastPoint.Y + (afterPoint.Y - lastPoint.Y) * (x1 - lastPoint.X) / (afterPoint.X - lastPoint.X);
                     PointsToDraw[PointsToDraw.Length - 1] = new PointF(x1, y1);
                 }
 
                 // Draw lines
                 if (PointsToDraw.Length > 1)
-                    settings.gfxData.DrawLines(penHD, PointsToDraw.ToArray());
+                    gfx.DrawLines(penHD, PointsToDraw.ToArray());
 
                 // draw markers
                 if (PointsToDraw.Length > 1)
@@ -189,7 +223,7 @@ namespace ScottPlot
                             // adjust marker offset to improve rendering on Linux and MacOS
                             float markerOffsetX = (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) ? 0 : 1;
 
-                            settings.gfxData.FillEllipse(brush,
+                            gfx.FillEllipse(brush,
                                   x: pt.X - markerPxRadius + markerOffsetX,
                                   y: pt.Y - markerPxRadius,
                                   width: markerPxRadius * 2,
