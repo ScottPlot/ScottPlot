@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using ScottPlot.WinForms.Events;
 
 namespace ScottPlot
 {
@@ -278,7 +279,7 @@ namespace ScottPlot
             else
             {
                 // mouse is being used to drag a plottable
-                OnMouseDownOnPlottable(new PlottableDragEventArgs(plt, plottableBeingDragged, PlottableDragEventType.MouseDown, e));
+                OnMouseDownOnPlottable(new PlottableDragEventArgs(plottableBeingDragged, e));
             }
         }
 
@@ -372,7 +373,7 @@ namespace ScottPlot
             plottableBeingDragged.DragTo(
                 plt.CoordinateFromPixelX(GetPixelPosition(e).X), plt.CoordinateFromPixelY(GetPixelPosition(e).Y),
                 isShiftPressed, isAltPressed, isCtrlPressed);
-            OnMouseDragPlottable(new PlottableDragEventArgs(plt, plottableBeingDragged, PlottableDragEventType.MouseDrag, e));
+            OnMouseDragPlottable(new PlottableDragEventArgs(plottableBeingDragged, e));
             Render(true);
         }
 
@@ -391,8 +392,7 @@ namespace ScottPlot
 
             if (plottableBeingDragged != null)
             {
-                OnMouseUpPlottable(new PlottableDragEventArgs(plt, plottableBeingDragged,
-                    PlottableDragEventType.MouseUp, e));
+                OnMouseUpPlottable(new PlottableDragEventArgs(plottableBeingDragged, e));
                 plottableBeingDragged = null;
             }
 
