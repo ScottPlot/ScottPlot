@@ -238,7 +238,7 @@ namespace ScottPlot
             else
             {
                 // mouse is being used to drag a plottable
-                OnMouseDownOnPlottable(new PlottableDragEventArgs(plt, plottableBeingDragged,PlottableDragEventType.MouseDown, e));
+                OnMouseDownOnPlottable(new PlottableDragEventArgs(plt, plottableBeingDragged, PlottableDragEventType.MouseDown, e));
             }
 
             base.OnMouseDown(e);
@@ -407,7 +407,7 @@ namespace ScottPlot
 
             if (plottableBeingDragged != null)
             {
-                OnMouseDropPlottable(new PlottableDragEventArgs(plt, plottableBeingDragged,PlottableDragEventType.MouseUp, e));
+                OnMouseDropPlottable(new PlottableDragEventArgs(plt, plottableBeingDragged, PlottableDragEventType.MouseUp, e));
             }
 
             OnMouseClicked(e);

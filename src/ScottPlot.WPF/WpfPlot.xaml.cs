@@ -278,7 +278,7 @@ namespace ScottPlot
             else
             {
                 // mouse is being used to drag a plottable
-                OnMouseDownOnPlottable(new PlottableDragEventArgs(plt, plottableBeingDragged, PlottableDragEventType.MouseDown,e));
+                OnMouseDownOnPlottable(new PlottableDragEventArgs(plt, plottableBeingDragged, PlottableDragEventType.MouseDown, e));
             }
         }
 
