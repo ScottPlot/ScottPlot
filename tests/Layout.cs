@@ -1,37 +1,19 @@
 ﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ScottPlot;
 
 namespace ScottPlotTests
 {
     public class Layout
     {
-        string outputPath;
-        readonly int width = 640;
-        readonly int height = 480;
-
-        public Layout()
-        {
-            this.outputPath = System.IO.Path.GetFullPath("manualTests");
-            if (!System.IO.Directory.Exists(this.outputPath))
-                System.IO.Directory.CreateDirectory(this.outputPath);
-        }
-
         [Test]
         public void Test_Layout()
         {
-            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
-
             int pointCount = 50;
-            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
-            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
+            double[] dataXs = DataGen.Consecutive(pointCount);
+            double[] dataSin = DataGen.Sin(pointCount);
+            double[] dataCos = DataGen.Cos(pointCount);
 
-            var plt = new ScottPlot.Plot(width, height);
+            var plt = new ScottPlot.Plot();
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
 
@@ -39,22 +21,18 @@ namespace ScottPlotTests
             plt.XLabel("Experiment Duration");
             plt.YLabel("Productivity");
 
-            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {fileName}");
+            TestTools.SaveFig(plt);
         }
 
         [Test]
         public void Test_Layout_LabelsWithLineBreaks()
         {
-            string name = System.Reflection.MethodBase.GetCurrentMethod().Name.Replace("Figure_", "");
-            string fileName = System.IO.Path.GetFullPath($"{outputPath}/{name}.png");
-
             int pointCount = 50;
-            double[] dataXs = ScottPlot.DataGen.Consecutive(pointCount);
-            double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
-            double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
+            double[] dataXs = DataGen.Consecutive(pointCount);
+            double[] dataSin = DataGen.Sin(pointCount);
+            double[] dataCos = DataGen.Cos(pointCount);
 
-            var plt = new ScottPlot.Plot(width, height);
+            var plt = new ScottPlot.Plot();
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
 
@@ -63,8 +41,23 @@ namespace ScottPlotTests
             plt.XLabel(labelWithLineBreak);
             plt.YLabel(labelWithLineBreak);
 
-            if (outputPath != null) plt.SaveFig(fileName); else Console.WriteLine(plt.GetHashCode());
-            Console.WriteLine($"Saved: {fileName}");
+            TestTools.SaveFig(plt);
+        }
+
+        [Test]
+        public void Test_Layout_RotatedTicksWithRoom()
+        {
+            var plt = new ScottPlot.Plot(400, 300);
+            plt.PlotSignal(DataGen.Sin(51), xOffset: 1e6);
+            plt.PlotSignal(DataGen.Cos(51), xOffset: 1e6);
+
+            // WARNING: this resets the layout, so you must call Layout() after this
+            plt.XLabel("horizontal axis label");
+
+            plt.Ticks(xTickRotation: 45);
+            plt.Layout(xScaleHeight: 50);
+
+            TestTools.SaveFig(plt);
         }
     }
 }
