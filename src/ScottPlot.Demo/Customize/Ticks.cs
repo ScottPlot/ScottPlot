@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ScottPlot.Demo.Customize
@@ -85,6 +86,38 @@ namespace ScottPlot.Demo.Customize
                 double[] yPositions = { -1, 0, .5, 1 };
                 string[] yPabels = { "bottom", "center", "half", "top" };
                 plt.YTicks(yPositions, yPabels);
+            }
+        }
+
+        public class NonlinearTickSpacing : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Nonlinear Tick Spacing";
+            public string description { get; } = "Customize tick labels to give a nonlinear axis appearance";
+
+            public void Render(Plot plt)
+            {
+                // these are our nonlinear data values we wish to plot
+                double[] amplitudes = { 23.9, 24.2, 24.3, 24.5, 25.3, 26.3, 27.6, 31.4, 33.7, 36,
+                                        38.4, 42, 43.5, 46.1, 48.8, 51.5, 53.2, 55, 56.9, 58.7, 60.6 };
+                double[] frequencies = { 50, 63, 80, 100, 125, 160, 200, 250, 315, 400, 500, 630,
+                                         800, 1000, 1250, 1600, 2000, 2500, 3150, 4000, 5000 };
+
+                // ignore the "real" X values and plot data at consecutive X values (0, 1, 2, 3...)
+                double[] positions = DataGen.Consecutive(frequencies.Length);
+                plt.PlotScatter(positions, amplitudes);
+
+                // then define tick labels based on "real" X values, rotate them, and give them extra space
+                string[] labels = frequencies.Select(x => x.ToString()).ToArray();
+                plt.XTicks(positions, labels);
+                plt.Ticks(xTickRotation: 45);
+
+                // apply axis labels, trigging a layout reset
+                plt.Title("Vibrational Coupling");
+                plt.YLabel("Amplitude (dB)");
+                plt.XLabel("Frequency (Hz)");
+
+                // manually tweak the layout to add extra padding for rotated labels
+                plt.Layout(xScaleHeight: 30);
             }
         }
 
@@ -263,7 +296,11 @@ namespace ScottPlot.Demo.Customize
                 plt.PlotScatter(x, sin);
                 plt.PlotScatter(x, cos);
 
-                plt.Ticks(xTickRotation: 90);
+                // setting the axis label resets the layout so call this first
+                plt.XLabel("Horizontal Axis Label");
+
+                // define axis tick rotation and tweak the layout to provide extra padding
+                plt.Ticks(xTickRotation: 45);
             }
         }
 
