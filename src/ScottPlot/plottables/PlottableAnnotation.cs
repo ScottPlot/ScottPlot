@@ -2,6 +2,8 @@
 using ScottPlot.Drawing;
 using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Text;
 using System.Text;
 
 namespace ScottPlot
@@ -61,6 +63,9 @@ namespace ScottPlot
             using (var backgroundBrush = new SolidBrush(BackgroundColor))
             using (var borderPen = new Pen(BorderColor, BorderWidth))
             {
+                gfx.SmoothingMode = lowQuality ? SmoothingMode.HighSpeed : SmoothingMode.AntiAlias;
+                gfx.TextRenderingHint = lowQuality ? TextRenderingHint.SingleBitPerPixelGridFit : TextRenderingHint.AntiAliasGridFit;
+
                 SizeF size = GDI.MeasureString(gfx, label, font);
 
                 double x = (xPixel >= 0) ? xPixel : dims.DataWidth + xPixel - size.Width;
