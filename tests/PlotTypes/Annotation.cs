@@ -9,28 +9,6 @@ namespace ScottPlotTests.PlotTypes
     public class Annotation
     {
         [Test]
-        public void Test_Annotation_Plottable()
-        {
-            var plottable = new ScottPlot.PlottableAnnotation(
-                    xPixel: 50,
-                    yPixel: 10,
-                    label: "seems like it works",
-                    fontSize: 16,
-                    fontName: "Arial Narrow",
-                    fontColor: Color.Magenta,
-                    fill: true,
-                    fillColor: Color.Green,
-                    lineWidth: 2,
-                    lineColor: Color.Blue,
-                    shadow: true
-                );
-
-            var plt = new ScottPlot.Plot(400, 300);
-            plt.Add(plottable);
-            TestTools.SaveFig(plt);
-        }
-
-        [Test]
         public void Test_Annotation_PlotModule()
         {
             var plt = new ScottPlot.Plot(400, 300);
