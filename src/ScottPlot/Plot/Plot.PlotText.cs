@@ -5,6 +5,7 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 
@@ -27,6 +28,9 @@ namespace ScottPlot
             Color? frameColor = null
             )
         {
+            if (!string.IsNullOrWhiteSpace(label))
+                Debug.WriteLine("WARNING: the PlotText() label argument is ignored");
+
             PlottableText plottableText = new PlottableText()
             {
                 text = text,
