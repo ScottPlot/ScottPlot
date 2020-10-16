@@ -87,44 +87,30 @@ namespace ScottPlot
         public string ValidationErrorMessage { get; private set; }
         public bool IsValidData(bool deepValidation = false)
         {
-            if (xs is null || ys is null || yErr is null || yOffsets is null)
+            try
             {
-                ValidationErrorMessage = "xs, ys, yErr, and yOffsets must not be null";
+                Validate.AssertHasElements("xs", xs);
+                Validate.AssertHasElements("ys", ys);
+                Validate.AssertHasElements("yErr", yErr);
+                Validate.AssertHasElements("yOffsets", yOffsets);
+                Validate.AssertEqualLength("xs, ys, yErr, and yOffsets", xs, ys, yErr, yOffsets);
+
+                if (deepValidation)
+                {
+                    Validate.AssertAllReal("xs", xs);
+                    Validate.AssertAllReal("ys", ys);
+                    Validate.AssertAllReal("yErr", yErr);
+                    Validate.AssertAllReal("yOffsets", yOffsets);
+                }
+            }
+            catch (ArgumentException e)
+            {
+                ValidationErrorMessage = e.Message;
                 return false;
             }
 
-            if (ys.Length == 0)
-            {
-                ValidationErrorMessage = "ys must contain elements";
-                return false;
-            }
-
-            if (ys.Length != xs.Length || ys.Length != yErr.Length || ys.Length != yOffsets.Length)
-            {
-                ValidationErrorMessage = "xs, ys, yErr, and yOffsets must all have the same length";
-                return false;
-            }
-
-            if (deepValidation)
-            {
-                ThrowIfContainsBadValue(xs, "xs");
-                ThrowIfContainsBadValue(ys, "ys");
-                ThrowIfContainsBadValue(yErr, "yErr");
-                ThrowIfContainsBadValue(yOffsets, "yOffsets");
-            }
-
+            ValidationErrorMessage = null;
             return true;
-        }
-
-        private void ThrowIfContainsBadValue(double[] values, string label)
-        {
-            foreach (double value in values)
-            {
-                if (double.IsNaN(value))
-                    throw new InvalidOperationException(label + " cannot contain NaN");
-                if (double.IsInfinity(valueBase))
-                    throw new InvalidOperationException(label + " cannot contain infinity");
-            }
         }
 
         public override void Render(Settings settings) => throw new InvalidOperationException("Use new Render() method");

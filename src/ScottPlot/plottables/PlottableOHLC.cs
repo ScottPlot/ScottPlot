@@ -101,26 +101,26 @@ namespace ScottPlot
         public string ValidationErrorMessage { get; private set; }
         public bool IsValidData(bool deepValidation = false)
         {
-            StringBuilder sb = new StringBuilder();
-
-            if (ohlcs is null)
+            try
             {
-                sb.AppendLine("ohlcs array cannot be null");
-            }
-            else
-            {
-                // there will always be a small number of candles so we can validate deeply every time
+                if (ohlcs is null)
+                    throw new ArgumentException("ohlcs cannot be null");
                 for (int i = 0; i < ohlcs.Length; i++)
                 {
                     if (ohlcs[i] is null)
-                        sb.AppendLine($"ohlcs[{i}] cannot be null");
+                        throw new ArgumentException($"ohlcs[{i}] cannot be null");
                     if (!ohlcs[i].IsValid)
-                        sb.AppendLine($"ohlcs[{i}] does not contain valid data");
+                        throw new ArgumentException($"ohlcs[{i}] does not contain valid data");
                 }
             }
+            catch (ArgumentException e)
+            {
+                ValidationErrorMessage = e.Message;
+                return false;
+            }
 
-            ValidationErrorMessage = sb.ToString();
-            return ValidationErrorMessage.Length == 0;
+            ValidationErrorMessage = null;
+            return true;
         }
 
         public void RenderCandles(PlotDimensions dims, Bitmap bmp, bool lowQuality)

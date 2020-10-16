@@ -39,19 +39,20 @@ namespace ScottPlot
         public string ValidationErrorMessage { get; private set; }
         public bool IsValidData(bool deepValidation = false)
         {
-            StringBuilder sb = new StringBuilder();
+            try
+            {
+                Validate.AssertIsReal("xPixel", xPixel);
+                Validate.AssertIsReal("yPixel", yPixel);
+                Validate.AssertHasText("label", label);
+            }
+            catch (ArgumentException e)
+            {
+                ValidationErrorMessage = e.Message;
+                return false;
+            }
 
-            if (double.IsInfinity(xPixel) || double.IsNaN(xPixel))
-                sb.AppendLine("xPixel must be a rational number");
-
-            if (double.IsInfinity(yPixel) || double.IsNaN(yPixel))
-                sb.AppendLine("xPixel must be a rational number");
-
-            if (string.IsNullOrWhiteSpace(label))
-                sb.AppendLine("Annotation string can not be empty");
-
-            ValidationErrorMessage = sb.ToString();
-            return ValidationErrorMessage.Length == 0;
+            ValidationErrorMessage = null;
+            return true;
         }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
