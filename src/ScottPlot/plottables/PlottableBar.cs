@@ -1,98 +1,54 @@
 ﻿using ScottPlot.Config;
 using ScottPlot.Diagnostic.Attributes;
+using ScottPlot.Drawing;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Text;
+using System.Reflection;
+using System.Text;
 
 namespace ScottPlot
 {
-    public class PlottableBar : Plottable
+    public class PlottableBar : Plottable, IPlottable
     {
-        [FiniteNumbers, EqualLength]
         public double[] xs;
-        [FiniteNumbers, EqualLength]
-        public double[] ys;
-        [FiniteNumbers, EqualLength]
-        public double[] yErr;
-        [FiniteNumbers]
         public double xOffset;
-        [FiniteNumbers, EqualLength]
+        public double[] ys;
+        public double[] yErr;
         public double[] yOffsets;
 
-        public LineStyle lineStyle;
-        public Color fillColor;
-        public Color hatchColor;
-        public Color negativeColor;
+        public bool fill = true;
+        public Color fillColor = Color.Green;
+        public Color hatchColor = Color.Blue;
+        public Color negativeColor = Color.Red;
+        public Color borderColor = Color.Black;
+        public Color errorColor = Color.Black;
+        public float borderLineWidth = 1;
+        public float errorLineWidth = 1;
         public string label;
 
-        private double errorCapSize;
-
-        private double barWidth;
-        private double valueBase = 0;
-
-        public bool fill;
-        private Brush fillBrush;
-        private Pen errorPen;
-        private Pen outlinePen;
-
-        public bool verticalBars;
+        public string FontName;
+        public float FontSize = 12;
+        public bool FontBold;
+        public Color FontColor = Color.Black;
+        public double errorCapSize = .4;
+        public double barWidth = .8;
+        public double valueBase = 0;
+        public bool verticalBars = true;
         public bool showValues;
-
-        public Font valueTextFont;
-        public Brush valueTextBrush;
 
         public Drawing.HatchStyle hatchStyle = Drawing.HatchStyle.None;
 
-        public PlottableBar(double[] xs, double[] ys, string label,
-            double barWidth, double xOffset,
-            bool fill, Color fillColor,
-            double outlineWidth, Color outlineColor,
-            double[] yErr, double errorLineWidth, double errorCapSize, Color errorColor,
-            bool horizontal, bool showValues, Color valueColor, double[] yOffsets, Color negativeColor
-            )
+        public PlottableBar(double[] xs, double[] ys, double[] yErr, double[] yOffsets)
         {
             if (ys is null || ys.Length == 0)
-                throw new ArgumentException("ys must contain data values");
+                throw new ArgumentException("ys must be an array that contains elements");
 
-            if (xs is null)
-                xs = DataGen.Consecutive(ys.Length);
-
-            if (xs.Length != ys.Length)
-                throw new ArgumentException("xs and ys must have same number of elements");
-
-            if (yErr is null)
-                yErr = DataGen.Zeros(ys.Length);
-
-            if (yErr.Length != ys.Length)
-                throw new ArgumentException("yErr and ys must have same number of elements");
-
-            if (yOffsets is null)
-                yOffsets = DataGen.Zeros(ys.Length);
-
-
-            this.xs = xs;
             this.ys = ys;
-            this.yErr = yErr;
-            this.xOffset = xOffset;
-            this.label = label;
-            this.verticalBars = !horizontal;
-            this.showValues = showValues;
-
-            this.barWidth = barWidth;
-            this.errorCapSize = errorCapSize;
-
-            this.fill = fill;
-            this.fillColor = fillColor;
-            this.negativeColor = negativeColor;
-
-            this.yOffsets = yOffsets;
-
-            fillBrush = new SolidBrush(fillColor);
-            outlinePen = new Pen(outlineColor, (float)outlineWidth);
-            errorPen = new Pen(errorColor, (float)errorLineWidth);
-
-            valueTextFont = new Font(Fonts.GetDefaultFontName(), 12);
-            valueTextBrush = new SolidBrush(valueColor);
+            this.xs = xs ?? DataGen.Consecutive(ys.Length);
+            this.yErr = yErr ?? DataGen.Zeros(ys.Length);
+            this.yOffsets = yOffsets ?? DataGen.Zeros(ys.Length);
         }
 
         public override AxisLimits2D GetLimits()
@@ -128,106 +84,160 @@ namespace ScottPlot
                 return new AxisLimits2D(valueMin, valueMax, positionMin, positionMax);
         }
 
-        public override void Render(Settings settings)
+        public string ValidationErrorMessage { get; private set; }
+        public bool IsValidData(bool deepValidation = false)
         {
-            for (int i = 0; i < ys.Length; i++)
+            if (xs is null || ys is null || yErr is null || yOffsets is null)
             {
-                UpdateBrush(ys[i]);
+                ValidationErrorMessage = "xs, ys, yErr, and yOffsets must not be null";
+                return false;
+            }
 
-                if (verticalBars)
-                    RenderBarVertical(settings, xs[i] + xOffset, ys[i], yErr[i], yOffsets[i]);
-                else
-                    RenderBarHorizontal(settings, xs[i] + xOffset, ys[i], yErr[i], yOffsets[i]);
+            if (ys.Length == 0)
+            {
+                ValidationErrorMessage = "ys must contain elements";
+                return false;
+            }
+
+            if (ys.Length != xs.Length || ys.Length != yErr.Length || ys.Length != yOffsets.Length)
+            {
+                ValidationErrorMessage = "xs, ys, yErr, and yOffsets must all have the same length";
+                return false;
+            }
+
+            if (deepValidation)
+            {
+                ThrowIfContainsBadValue(xs, "xs");
+                ThrowIfContainsBadValue(ys, "ys");
+                ThrowIfContainsBadValue(yErr, "yErr");
+                ThrowIfContainsBadValue(yOffsets, "yOffsets");
+            }
+
+            return true;
+        }
+
+        private void ThrowIfContainsBadValue(double[] values, string label)
+        {
+            foreach (double value in values)
+            {
+                if (double.IsNaN(value))
+                    throw new InvalidOperationException(label + " cannot contain NaN");
+                if (double.IsInfinity(valueBase))
+                    throw new InvalidOperationException(label + " cannot contain infinity");
             }
         }
 
-        private void UpdateBrush(double value)
+        public override void Render(Settings settings) => throw new InvalidOperationException("Use new Render() method");
+
+        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            if (hatchStyle is Drawing.HatchStyle.None)
+            using (Graphics gfx = Graphics.FromImage(bmp))
             {
-                ((SolidBrush)fillBrush).Color = (value < 0) ? negativeColor : fillColor;
-            }
-            else
-            {
-                var hatchStyle = Drawing.GDI.ConvertToSDHatchStyle(this.hatchStyle).Value;
-                fillBrush = new HatchBrush(hatchStyle, hatchColor, fillColor);
+                gfx.SmoothingMode = lowQuality ? SmoothingMode.HighSpeed : SmoothingMode.AntiAlias;
+                gfx.TextRenderingHint = lowQuality ? TextRenderingHint.SingleBitPerPixelGridFit : TextRenderingHint.AntiAliasGridFit;
+
+                for (int barIndex = 0; barIndex < ys.Length; barIndex++)
+                {
+                    if (verticalBars)
+                        RenderBarVertical(dims, gfx, xs[barIndex] + xOffset, ys[barIndex], yErr[barIndex], yOffsets[barIndex]);
+                    else
+                        RenderBarHorizontal(dims, gfx, xs[barIndex] + xOffset, ys[barIndex], yErr[barIndex], yOffsets[barIndex]);
+                }
             }
         }
 
-        private void RenderBarVertical(Settings settings, double position, double value, double valueError, double yOffset)
+        private void RenderBarVertical(PlotDimensions dims, Graphics gfx, double position, double value, double valueError, double yOffset)
         {
-            float centerPx = (float)settings.GetPixelX(position);
+            // bar body
+            float centerPx = dims.GetPixelX(position);
             double edge1 = position - barWidth / 2;
             double value1 = Math.Min(valueBase, value) + yOffset;
             double value2 = Math.Max(valueBase, value) + yOffset;
             double valueSpan = value2 - value1;
-
             var rect = new RectangleF(
-                x: (float)settings.GetPixelX(edge1),
-                y: (float)settings.GetPixelY(value2),
-                width: (float)(barWidth * settings.xAxisScale),
-                height: (float)(valueSpan * settings.yAxisScale));
+                x: dims.GetPixelX(edge1),
+                y: dims.GetPixelY(value2),
+                width: (float)(barWidth * dims.PxPerUnitX),
+                height: (float)(valueSpan * dims.PxPerUnitY));
 
-            settings.gfxData.FillRectangle(fillBrush, rect.X, rect.Y, rect.Width, rect.Height);
+            // errorbar
+            double error1 = value > 0 ? value2 - Math.Abs(valueError) : value1 - Math.Abs(valueError);
+            double error2 = value > 0 ? value2 + Math.Abs(valueError) : value1 + Math.Abs(valueError);
+            float capPx1 = dims.GetPixelX(position - errorCapSize * barWidth / 2);
+            float capPx2 = dims.GetPixelX(position + errorCapSize * barWidth / 2);
+            float errorPx2 = dims.GetPixelY(error2);
+            float errorPx1 = dims.GetPixelY(error1);
 
-            if (outlinePen.Width > 0)
-                settings.gfxData.DrawRectangle(outlinePen, rect.X, rect.Y, rect.Width, rect.Height);
+            if (fill)
+                using (var fillBrush = GDI.Brush((value < 0) ? negativeColor : fillColor, hatchColor, hatchStyle))
+                    gfx.FillRectangle(fillBrush, rect.X, rect.Y, rect.Width, rect.Height);
 
-            if (errorPen.Width > 0 && valueError > 0)
+            if (borderLineWidth > 0)
+                using (var outlinePen = new Pen(borderColor, borderLineWidth))
+                    gfx.DrawRectangle(outlinePen, rect.X, rect.Y, rect.Width, rect.Height);
+
+            if (errorLineWidth > 0 && valueError > 0)
             {
-                double error1 = value > 0 ? value2 - Math.Abs(valueError) : value1 - Math.Abs(valueError);
-                double error2 = value > 0 ? value2 + Math.Abs(valueError) : value1 + Math.Abs(valueError);
-
-                float capPx1 = (float)settings.GetPixelX(position - errorCapSize * barWidth / 2);
-                float capPx2 = (float)settings.GetPixelX(position + errorCapSize * barWidth / 2);
-                float errorPx2 = (float)settings.GetPixelY(error2);
-                float errorPx1 = (float)settings.GetPixelY(error1);
-
-                settings.gfxData.DrawLine(errorPen, centerPx, errorPx1, centerPx, errorPx2);
-                settings.gfxData.DrawLine(errorPen, capPx1, errorPx1, capPx2, errorPx1);
-                settings.gfxData.DrawLine(errorPen, capPx1, errorPx2, capPx2, errorPx2);
+                using (var errorPen = new Pen(errorColor, errorLineWidth))
+                {
+                    gfx.DrawLine(errorPen, centerPx, errorPx1, centerPx, errorPx2);
+                    gfx.DrawLine(errorPen, capPx1, errorPx1, capPx2, errorPx1);
+                    gfx.DrawLine(errorPen, capPx1, errorPx2, capPx2, errorPx2);
+                }
             }
 
             if (showValues)
-                settings.gfxData.DrawString(value.ToString(), valueTextFont, valueTextBrush, centerPx, rect.Y, settings.misc.sfSouth);
+                using (var valueTextFont = GDI.Font(FontName, FontSize, FontBold))
+                using (var valueTextBrush = GDI.Brush(FontColor))
+                using (var sf = new StringFormat() { LineAlignment = StringAlignment.Far, Alignment = StringAlignment.Center })
+                    gfx.DrawString(value.ToString(), valueTextFont, valueTextBrush, centerPx, rect.Y, sf);
         }
 
-        private void RenderBarHorizontal(Settings settings, double position, double value, double valueError, double yOffset)
+        private void RenderBarHorizontal(PlotDimensions dims, Graphics gfx, double position, double value, double valueError, double yOffset)
         {
-            float centerPx = (float)settings.GetPixelY(position);
+            // bar body
+            float centerPx = dims.GetPixelY(position);
             double edge2 = position + barWidth / 2;
             double value1 = Math.Min(valueBase, value) + yOffset;
             double value2 = Math.Max(valueBase, value) + yOffset;
             double valueSpan = value2 - value1;
-
             var rect = new RectangleF(
-                x: (float)settings.GetPixelX(value1),
-                y: (float)settings.GetPixelY(edge2),
-                height: (float)(barWidth * settings.yAxisScale),
-                width: (float)(valueSpan * settings.xAxisScale));
+                x: dims.GetPixelX(value1),
+                y: dims.GetPixelY(edge2),
+                height: (float)(barWidth * dims.PxPerUnitY),
+                width: (float)(valueSpan * dims.PxPerUnitX));
 
-            settings.gfxData.FillRectangle(fillBrush, rect.X, rect.Y, rect.Width, rect.Height);
+            // errorbar
+            double error1 = value > 0 ? value2 - Math.Abs(valueError) : value1 - Math.Abs(valueError);
+            double error2 = value > 0 ? value2 + Math.Abs(valueError) : value1 + Math.Abs(valueError);
+            float capPx1 = dims.GetPixelY(position - errorCapSize * barWidth / 2);
+            float capPx2 = dims.GetPixelY(position + errorCapSize * barWidth / 2);
+            float errorPx2 = dims.GetPixelX(error2);
+            float errorPx1 = dims.GetPixelX(error1);
 
-            if (outlinePen.Width > 0)
-                settings.gfxData.DrawRectangle(outlinePen, rect.X, rect.Y, rect.Width, rect.Height);
+            if (fill)
+                using (var fillBrush = GDI.Brush((value < 0) ? negativeColor : fillColor, hatchColor, hatchStyle))
+                    gfx.FillRectangle(fillBrush, rect.X, rect.Y, rect.Width, rect.Height);
 
-            if (errorPen.Width > 0 && valueError > 0)
+            if (borderLineWidth > 0)
+                using (var outlinePen = new Pen(borderColor, borderLineWidth))
+                    gfx.DrawRectangle(outlinePen, rect.X, rect.Y, rect.Width, rect.Height);
+
+            if (errorLineWidth > 0 && valueError > 0)
             {
-                double error1 = value > 0 ? value2 - Math.Abs(valueError) : value1 - Math.Abs(valueError);
-                double error2 = value > 0 ? value2 + Math.Abs(valueError) : value1 + Math.Abs(valueError);
-
-                float capPx1 = (float)settings.GetPixelY(position - errorCapSize * barWidth / 2);
-                float capPx2 = (float)settings.GetPixelY(position + errorCapSize * barWidth / 2);
-                float errorPx2 = (float)settings.GetPixelX(error2);
-                float errorPx1 = (float)settings.GetPixelX(error1);
-
-                settings.gfxData.DrawLine(errorPen, errorPx1, centerPx, errorPx2, centerPx);
-                settings.gfxData.DrawLine(errorPen, errorPx1, capPx2, errorPx1, capPx1);
-                settings.gfxData.DrawLine(errorPen, errorPx2, capPx2, errorPx2, capPx1);
+                using (var errorPen = new Pen(errorColor, errorLineWidth))
+                {
+                    gfx.DrawLine(errorPen, errorPx1, centerPx, errorPx2, centerPx);
+                    gfx.DrawLine(errorPen, errorPx1, capPx2, errorPx1, capPx1);
+                    gfx.DrawLine(errorPen, errorPx2, capPx2, errorPx2, capPx1);
+                }
             }
 
             if (showValues)
-                settings.gfxData.DrawString(value.ToString(), valueTextFont, valueTextBrush, rect.X + rect.Width, centerPx, settings.misc.sfWest);
+                using (var valueTextFont = GDI.Font(FontName, FontSize, FontBold))
+                using (var valueTextBrush = GDI.Brush(FontColor))
+                using (var sf = new StringFormat() { LineAlignment = StringAlignment.Center, Alignment = StringAlignment.Near })
+                    gfx.DrawString(value.ToString(), valueTextFont, valueTextBrush, rect.X + rect.Width, centerPx, sf);
         }
 
         public override string ToString()
@@ -236,10 +246,7 @@ namespace ScottPlot
             return $"PlottableBar{label} with {GetPointCount()} points";
         }
 
-        public override int GetPointCount()
-        {
-            return ys.Length;
-        }
+        public override int GetPointCount() => ys is null ? 0 : ys.Length;
 
         public override LegendItem[] GetLegendItems()
         {
@@ -251,8 +258,8 @@ namespace ScottPlot
                 markerShape = MarkerShape.none,
                 hatchColor = hatchColor,
                 hatchStyle = hatchStyle,
-                borderColor = outlinePen.Color,
-                borderWith = outlinePen.Width
+                borderColor = borderColor,
+                borderWith = borderLineWidth
             };
             return new LegendItem[] { singleLegendItem };
         }

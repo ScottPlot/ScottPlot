@@ -39,33 +39,23 @@ namespace ScottPlot
             Color? negativeColor = null
             )
         {
-            fillColor = fillColor ?? settings.GetNextColor();
-            outlineColor = outlineColor ?? Color.Black;
-            errorColor = errorColor ?? Color.Black;
-            valueColor = valueColor ?? Color.Black;
-            negativeColor = negativeColor ?? fillColor;
-
-            PlottableBar barPlot = new PlottableBar(
-                xs: xs,
-                ys: ys,
-                barWidth: barWidth,
-                xOffset: xOffset,
-                fill: fill,
-                fillColor: fillColor.Value,
-                label: label,
-                yErr: errorY,
-                errorLineWidth: errorLineWidth,
-                errorCapSize: errorCapSize,
-                errorColor: errorColor.Value,
-                outlineWidth: outlineWidth,
-                outlineColor: outlineColor.Value,
-                horizontal: horizontal,
-                showValues: showValues,
-                valueColor: valueColor.Value,
-                yOffsets: yOffsets,
-                negativeColor: negativeColor.Value
-                );
-
+            PlottableBar barPlot = new PlottableBar(xs, ys, errorY, yOffsets)
+            {
+                barWidth = barWidth,
+                xOffset = xOffset,
+                fill = fill,
+                fillColor = fillColor ?? settings.GetNextColor(),
+                label = label,
+                errorLineWidth = (float)errorLineWidth,
+                errorCapSize = errorCapSize,
+                errorColor = errorColor ?? Color.Black,
+                borderLineWidth = (float)outlineWidth,
+                borderColor = outlineColor ?? Color.Black,
+                verticalBars = !horizontal,
+                showValues = showValues,
+                FontColor = valueColor ?? Color.Black,
+                negativeColor = negativeColor ?? Color.Black
+            };
             Add(barPlot);
 
             if (autoAxis)
