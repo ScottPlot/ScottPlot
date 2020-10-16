@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
@@ -98,6 +99,24 @@ namespace ScottPlot.Drawing
             return pen;
         }
 
+        public static Brush Brush(Color color, Color? hatchColor = null, HatchStyle hatchStyle = HatchStyle.None)
+        {
+            bool isHatched = hatchStyle != HatchStyle.None;
+
+            if (isHatched)
+            {
+                if (hatchColor is null)
+                    throw new ArgumentException("hatch color must be defined if hatch style is used");
+                else
+                    return new HatchBrush(ConvertToSDHatchStyle(hatchStyle).Value, hatchColor.Value, color);
+            }
+            else
+            {
+                return new SolidBrush(color);
+            }
+        }
+
+        [Obsolete("use Brush()", true)]
         public static System.Drawing.Brush HatchBrush(HatchStyle pattern, Color fillColor, Color hatchColor)
         {
             if (pattern == HatchStyle.None)

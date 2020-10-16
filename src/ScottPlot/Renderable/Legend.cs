@@ -141,7 +141,7 @@ namespace ScottPlot.Renderable
                     if (item.IsRectangle)
                     {
                         // draw a rectangle
-                        using (var legendItemFillBrush = GDI.HatchBrush(item.hatchStyle, item.color, item.hatchColor))
+                        using (var legendItemFillBrush = GDI.Brush(item.color, item.hatchColor, item.hatchStyle))
                         using (var legendItemOutlinePen = new Pen(item.borderColor, item.borderWith))
                         {
                             gfx.FillRectangle(legendItemFillBrush, rect);
