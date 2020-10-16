@@ -36,6 +36,8 @@ namespace ScottPlotTests
 
         public bool IsDarkerThan(MeanPixel comparison) => RGB < comparison.RGB;
 
+        public bool IsLighterThan(MeanPixel comparison) => RGB > comparison.RGB;
+
         public bool IsGray() => (R == G) && (G == B) && (B == R);
 
         public bool IsNotGray() => !IsGray();
