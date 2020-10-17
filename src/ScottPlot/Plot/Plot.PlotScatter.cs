@@ -154,21 +154,13 @@ namespace ScottPlot
             string label = null
             )
         {
-            if (color is null)
-                color = settings.GetNextColor();
-
-            PlottableErrorBars errorBars = new PlottableErrorBars(
-                xs,
-                ys,
-                xPositiveError,
-                xNegativeError,
-                yPositiveError,
-                yNegativeError,
-                color.Value,
-                lineWidth,
-                capWidth,
-                label
-                );
+            var errorBars = new PlottableErrorBars(xs, ys, xPositiveError, xNegativeError, yPositiveError, yNegativeError)
+            {
+                Color = color ?? settings.GetNextColor(),
+                LineWidth = (float)lineWidth,
+                CapSize = (float)capWidth,
+                label = label
+            };
 
             Add(errorBars);
             return errorBars;

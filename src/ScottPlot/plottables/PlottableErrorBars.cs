@@ -7,62 +7,34 @@ using System.Linq;
 
 namespace ScottPlot
 {
-    public class PlottableErrorBars : Plottable
+    public class PlottableErrorBars : Plottable, IPlottable
     {
-        [FiniteNumbers, EqualLength]
-        private readonly double[] xs;
-        [FiniteNumbers, EqualLength]
-        private readonly double[] ys;
-        [FiniteNumbers, EqualLength]
-        private readonly double[] xPositiveError;
-        [FiniteNumbers, EqualLength]
-        private readonly double[] xNegativeError;
-        [FiniteNumbers, EqualLength]
-        private readonly double[] yPositiveError;
-        [FiniteNumbers, EqualLength]
-        private readonly double[] yNegativeError;
-        private readonly float capSize;
-        private readonly Pen penLine;
-
+        public readonly double[] Xs;
+        public readonly double[] Ys;
+        public readonly double[] XErrorPositive;
+        public readonly double[] XErrorNegative;
+        public readonly double[] YErrorPositive;
+        public readonly double[] YErrorNegative;
         public string label;
-        public Color color;
-        public LineStyle lineStyle = LineStyle.Solid;
 
-        public PlottableErrorBars(double[] xs, double[] ys, double[] xPositiveError, double[] xNegativeError,
-            double[] yPositiveError, double[] yNegativeError, Color color, double lineWidth, double capSize, string label)
+        public float CapSize = 3;
+        public float LineWidth = 1;
+        public Color Color;
+        public LineStyle LineStyle = LineStyle.Solid;
+
+        public PlottableErrorBars(double[] xs, double[] ys,
+                                  double[] xPositiveError, double[] xNegativeError,
+                                  double[] yPositiveError, double[] yNegativeError)
         {
-            //check input
-            if (xs.Length != ys.Length)
-                throw new ArgumentException("X and Y arrays must have the same length");
-
-            //save properties
-            this.xs = xs;
-            this.ys = ys;
-            this.xPositiveError = SanitizeErrors(xPositiveError, xs.Length);
-            this.xNegativeError = SanitizeErrors(xNegativeError, xs.Length);
-            this.yPositiveError = SanitizeErrors(yPositiveError, xs.Length);
-            this.yNegativeError = SanitizeErrors(yNegativeError, xs.Length);
-            this.capSize = (float)capSize;
-            this.color = color;
-            this.label = label;
-
-            penLine = GDI.Pen(this.color, (float)lineWidth, lineStyle, true);
+            Xs = xs;
+            Ys = ys;
+            XErrorPositive = xPositiveError;
+            XErrorNegative = xNegativeError;
+            YErrorPositive = yPositiveError;
+            YErrorNegative = yNegativeError;
         }
 
-        private double[] SanitizeErrors(double[] errorArray, int expectedLength)
-        {
-            if (errorArray is null)
-                return null;
-
-            if (errorArray.Length != expectedLength)
-                throw new ArgumentException("Point arrays and error arrays must have the same length");
-
-            for (int i = 0; i < errorArray.Length; i++)
-                if (errorArray[i] < 0)
-                    errorArray[i] = -errorArray[i];
-
-            return errorArray;
-        }
+        public override int GetPointCount() => Ys.Length;
 
         public override string ToString()
         {
@@ -70,100 +42,132 @@ namespace ScottPlot
             return $"PlottableErrorBars{label} with {GetPointCount()} points";
         }
 
-        public override Config.AxisLimits2D GetLimits()
+        public override AxisLimits2D GetLimits()
         {
             double xMin = double.PositiveInfinity;
             double yMin = double.PositiveInfinity;
             double xMax = double.NegativeInfinity;
             double yMax = double.NegativeInfinity;
 
-            if (xNegativeError is null)
+            if (XErrorNegative is null)
             {
-                xMin = xs.Min();
+                xMin = Xs.Min();
             }
             else
             {
-                for (int i = 0; i < xs.Length; i++)
-                    xMin = Math.Min(xMin, xs[i] - xNegativeError[i]);
+                for (int i = 0; i < Xs.Length; i++)
+                    xMin = Math.Min(xMin, Xs[i] - XErrorNegative[i]);
             }
 
-            if (xPositiveError is null)
+            if (XErrorPositive is null)
             {
-                xMax = xs.Max();
+                xMax = Xs.Max();
             }
             else
             {
-                for (int i = 0; i < xs.Length; i++)
-                    xMax = Math.Max(xMax, xs[i] + xPositiveError[i]);
+                for (int i = 0; i < Xs.Length; i++)
+                    xMax = Math.Max(xMax, Xs[i] + XErrorPositive[i]);
             }
 
-            if (yNegativeError is null)
+            if (YErrorNegative is null)
             {
-                yMin = ys.Min();
+                yMin = Ys.Min();
             }
             else
             {
-                for (int i = 0; i < xs.Length; i++)
-                    yMin = Math.Min(yMin, ys[i] - yNegativeError[i]);
+                for (int i = 0; i < Xs.Length; i++)
+                    yMin = Math.Min(yMin, Ys[i] - YErrorNegative[i]);
             }
 
-            if (yPositiveError is null)
+            if (YErrorPositive is null)
             {
-                yMax = ys.Max();
+                yMax = Ys.Max();
             }
             else
             {
-                for (int i = 0; i < xs.Length; i++)
-                    yMax = Math.Max(yMax, ys[i] + yPositiveError[i]);
+                for (int i = 0; i < Xs.Length; i++)
+                    yMax = Math.Max(yMax, Ys[i] + YErrorPositive[i]);
             }
 
-            return new Config.AxisLimits2D(new double[] { xMin, xMax, yMin, yMax });
-        }
-
-
-        public override void Render(Settings settings)
-        {
-            DrawErrorBar(settings, xPositiveError, true, true);
-            DrawErrorBar(settings, xNegativeError, true, false);
-            DrawErrorBar(settings, yPositiveError, false, true);
-            DrawErrorBar(settings, yNegativeError, false, false);
-        }
-
-        public void DrawErrorBar(Settings settings, double[] errorArray, bool xError, bool positiveError)
-        {
-            if (errorArray is null)
-                return;
-
-            float slightPixelOffset = 0.01f; // to fix GDI bug that happens when small straight lines are drawn with anti-aliasing on
-
-            for (int i = 0; i < xs.Length; i++)
-            {
-                PointF centerPixel = settings.GetPixel(xs[i], ys[i]);
-                float errorSize = positiveError ? (float)errorArray[i] : -(float)errorArray[i];
-                if (xError)
-                {
-                    float xWithError = (float)settings.GetPixelX(xs[i] + errorSize);
-                    settings.gfxData.DrawLine(penLine, centerPixel.X, centerPixel.Y, xWithError, centerPixel.Y);
-                    settings.gfxData.DrawLine(penLine, xWithError, centerPixel.Y - capSize, xWithError + slightPixelOffset, centerPixel.Y + capSize);
-                }
-                else
-                {
-                    float yWithError = (float)settings.GetPixelY(ys[i] + errorSize);
-                    settings.gfxData.DrawLine(penLine, centerPixel.X, centerPixel.Y, centerPixel.X, yWithError);
-                    settings.gfxData.DrawLine(penLine, centerPixel.X - capSize, yWithError, centerPixel.X + capSize, yWithError + slightPixelOffset);
-                }
-            }
-        }
-
-        public override int GetPointCount()
-        {
-            return ys.Length;
+            return new AxisLimits2D(new double[] { xMin, xMax, yMin, yMax });
         }
 
         public override LegendItem[] GetLegendItems()
         {
-            var singleLegendItem = new Config.LegendItem(label, color, markerShape: MarkerShape.none);
+            var singleLegendItem = new LegendItem(label, Color, markerShape: MarkerShape.none);
             return new LegendItem[] { singleLegendItem };
+        }
+
+        public string ValidationErrorMessage { get; private set; }
+        public bool IsValidData(bool deepValidation = false)
+        {
+            try
+            {
+                Validate.AssertHasElements("xs", Xs);
+                Validate.AssertHasElements("ys", Ys);
+                Validate.AssertEqualLength("xs and ys", Xs, Ys);
+                if (XErrorNegative != null) Validate.AssertEqualLength("xs and xNegativeError", Xs, XErrorNegative);
+                if (YErrorNegative != null) Validate.AssertEqualLength("xs and yNegativeError", Xs, YErrorNegative);
+                if (XErrorPositive != null) Validate.AssertEqualLength("xs and xPositiveError", Xs, XErrorPositive);
+                if (YErrorPositive != null) Validate.AssertEqualLength("xs and yPositiveError", Xs, YErrorPositive);
+
+                if (deepValidation)
+                {
+                    Validate.AssertAllReal("xs", Xs);
+                    Validate.AssertAllReal("ys", Ys);
+                    if (XErrorNegative != null) Validate.AssertAllReal("xNegativeError", XErrorNegative);
+                    if (YErrorNegative != null) Validate.AssertAllReal("yNegativeError", YErrorNegative);
+                    if (XErrorPositive != null) Validate.AssertAllReal("xPositiveError", XErrorPositive);
+                    if (YErrorPositive != null) Validate.AssertAllReal("yPositiveError", YErrorPositive);
+                }
+            }
+            catch (ArgumentException e)
+            {
+                ValidationErrorMessage = e.Message;
+                return false;
+            }
+
+            ValidationErrorMessage = null;
+            return true;
+        }
+
+        public override void Render(Settings settings) => throw new InvalidOperationException("Use new Render()");
+
+        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        {
+            using (Graphics gfx = Graphics.FromImage(bmp))
+            using (var pen = GDI.Pen(Color, LineWidth, LineStyle, true))
+            {
+                if (XErrorPositive != null) DrawErrorBar(dims, gfx, pen, XErrorPositive, true, true);
+                if (XErrorNegative != null) DrawErrorBar(dims, gfx, pen, XErrorNegative, true, false);
+                if (YErrorPositive != null) DrawErrorBar(dims, gfx, pen, YErrorPositive, false, true);
+                if (YErrorNegative != null) DrawErrorBar(dims, gfx, pen, YErrorNegative, false, false);
+            }
+        }
+
+        public void DrawErrorBar(PlotDimensions dims, Graphics gfx, Pen penLine, double[] errorArray, bool xError, bool positiveError)
+        {
+            if (errorArray is null)
+                return;
+
+            for (int i = 0; i < Xs.Length; i++)
+            {
+                float centerPixelX = dims.GetPixelX(Xs[i]);
+                float centerPixelY = dims.GetPixelY(Ys[i]);
+                float errorSize = positiveError ? (float)errorArray[i] : -(float)errorArray[i];
+                if (xError)
+                {
+                    float xWithError = dims.GetPixelX(Xs[i] + errorSize);
+                    gfx.DrawLine(penLine, centerPixelX, centerPixelY, xWithError, centerPixelY);
+                    gfx.DrawLine(penLine, xWithError, centerPixelY - CapSize, xWithError, centerPixelY + CapSize);
+                }
+                else
+                {
+                    float yWithError = dims.GetPixelY(Ys[i] + errorSize);
+                    gfx.DrawLine(penLine, centerPixelX, centerPixelY, centerPixelX, yWithError);
+                    gfx.DrawLine(penLine, centerPixelX - CapSize, yWithError, centerPixelX + CapSize, yWithError);
+                }
+            }
         }
     }
 }
