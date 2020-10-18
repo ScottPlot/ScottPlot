@@ -5,6 +5,7 @@
  */
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -89,16 +90,20 @@ namespace ScottPlot
             double lineWidth = 1,
             double markerSize = 0,
             string label = "f(x)",
-            MarkerShape markerShape = MarkerShape.filledCircle,
+            MarkerShape markerShape = MarkerShape.none,
             LineStyle lineStyle = LineStyle.Solid
         )
         {
-            if (color == null)
-            {
-                color = settings.GetNextColor();
-            }
+            if (markerShape != MarkerShape.none || markerSize != 0)
+                throw new ArgumentException("function plots do not use markers");
 
-            PlottableFunction functionPlot = new PlottableFunction(function, color.Value, lineWidth, markerSize, label, markerShape, lineStyle);
+            PlottableFunction functionPlot = new PlottableFunction(function)
+            {
+                color = color ?? settings.GetNextColor(),
+                lineWidth = lineWidth,
+                lineStyle = lineStyle,
+                label = label
+            };
 
             Add(functionPlot);
             return functionPlot;
