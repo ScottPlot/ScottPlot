@@ -50,21 +50,17 @@ namespace ScottPlot
             double dragLimitUpper = double.PositiveInfinity
             )
         {
-            if (color == null)
-                color = settings.GetNextColor();
-
-            var axisSpan = new PlottableVSpan(
-                position1: y1,
-                position2: y2,
-                color: (Color)color,
-                alpha: alpha,
-                label: label,
-                draggable: draggable,
-                dragFixedSize: dragFixedSize,
-                dragLimitLower: dragLimitLower,
-                dragLimitUpper: dragLimitUpper
-                );
-
+            var axisSpan = new PlottableVSpan()
+            {
+                position1 = y1,
+                position2 = y2,
+                color = color ?? settings.GetNextColor(),
+                alpha = alpha,
+                label = label,
+                DragEnabled = draggable,
+                DragFixedSize = dragFixedSize,
+            };
+            axisSpan.SetLimits(null, null, dragLimitLower, dragLimitUpper);
             Add(axisSpan);
             return axisSpan;
         }
@@ -108,20 +104,17 @@ namespace ScottPlot
             double dragLimitUpper = double.PositiveInfinity
             )
         {
-            if (color == null)
-                color = settings.GetNextColor();
-
-            var axisSpan = new PlottableHSpan(
-                    position1: x1,
-                    position2: x2,
-                    color: (Color)color,
-                    alpha: alpha,
-                    label: label,
-                    draggable: draggable,
-                    dragFixedSize: dragFixedSize,
-                    dragLimitLower: dragLimitLower,
-                    dragLimitUpper: dragLimitUpper
-                    );
+            var axisSpan = new PlottableHSpan()
+            {
+                position1 = x1,
+                position2 = x2,
+                color = color ?? settings.GetNextColor(),
+                alpha = alpha,
+                label = label,
+                DragEnabled = draggable,
+                DragFixedSize = dragFixedSize
+            };
+            axisSpan.SetLimits(dragLimitLower, dragLimitUpper, null, null);
 
             Add(axisSpan);
             return axisSpan;
