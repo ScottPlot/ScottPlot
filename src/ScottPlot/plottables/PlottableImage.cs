@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using ScottPlot.Config;
+using ScottPlot.Drawing;
 
 namespace ScottPlot
 {
-    public class PlottableImage : Plottable
+    public class PlottableImage : Plottable, IPlottable
     {
         public double x;
         public double y;
@@ -18,98 +20,73 @@ namespace ScottPlot
         public int frameSize;
         public string label;
 
-        public override string ToString()
-        {
-            return $"PlottableImage Size(\"{image.Size}\") at ({x}, {y})";
-        }
+        public override string ToString() => $"PlottableImage Size(\"{image.Size}\") at ({x}, {y})";
 
-        public override Config.AxisLimits2D GetLimits()
-        {
-            double[] limits = { x, x, y, y };
-
-            // TODO: use features of 2d axis
-            return new Config.AxisLimits2D(limits);
-        }
-
-        public override void Render(Settings settings)
+        public string ValidationErrorMessage { get; private set; }
+        public bool IsValidData(bool deepValidation = false)
         {
             if (image is null)
-                throw new Exception("Image cannot be null");
-
-            PointF defaultPoint = settings.GetPixel(x, y);
-            PointF textLocationPoint = new PointF();
-
-            if (rotation == 0)
             {
-                switch (alignment)
-                {
-                    case ImageAlignment.lowerCenter:
-                        textLocationPoint.Y = defaultPoint.Y - image.Height;
-                        textLocationPoint.X = defaultPoint.X - image.Width / 2;
-                        break;
-                    case ImageAlignment.lowerLeft:
-                        textLocationPoint.Y = defaultPoint.Y - image.Height;
-                        textLocationPoint.X = defaultPoint.X;
-                        break;
-                    case ImageAlignment.lowerRight:
-                        textLocationPoint.Y = defaultPoint.Y - image.Height;
-                        textLocationPoint.X = defaultPoint.X - image.Width;
-                        break;
-                    case ImageAlignment.middleLeft:
-                        textLocationPoint.Y = defaultPoint.Y - image.Height / 2;
-                        textLocationPoint.X = defaultPoint.X;
-                        break;
-                    case ImageAlignment.middleRight:
-                        textLocationPoint.Y = defaultPoint.Y - image.Height / 2;
-                        textLocationPoint.X = defaultPoint.X - image.Width;
-                        break;
-                    case ImageAlignment.upperCenter:
-                        textLocationPoint.Y = defaultPoint.Y;
-                        textLocationPoint.X = defaultPoint.X - image.Width / 2;
-                        break;
-                    case ImageAlignment.upperLeft:
-                        textLocationPoint = defaultPoint;
-                        break;
-                    case ImageAlignment.upperRight:
-                        textLocationPoint.Y = defaultPoint.Y;
-                        textLocationPoint.X = defaultPoint.X - image.Width;
-                        break;
-                    case ImageAlignment.middleCenter:
-                        textLocationPoint.Y = defaultPoint.Y - image.Height / 2;
-                        textLocationPoint.X = defaultPoint.X - image.Width / 2;
-                        break;
-                }
-            }
-            else
-            {
-                // ignore alignment if rotation is used
-                textLocationPoint = new PointF(defaultPoint.X, defaultPoint.Y);
+                ValidationErrorMessage = "image must not be null";
+                return false;
             }
 
-            settings.gfxData.TranslateTransform((int)textLocationPoint.X, (int)textLocationPoint.Y);
-            settings.gfxData.RotateTransform((float)rotation);
-
-            if (frameSize > 0)
-            {
-                using (var framePen = new Pen(frameColor, frameSize * 2))
-                {
-                    Rectangle frameRect = new Rectangle(0, 0, image.Width - 1, image.Height - 1);
-                    settings.gfxData.DrawRectangle(framePen, frameRect);
-                }
-            }
-
-            settings.gfxData.DrawImage(image, new PointF(0, 0));
-            settings.gfxData.ResetTransform();
+            ValidationErrorMessage = "";
+            return true;
         }
 
-        public override int GetPointCount()
+        public override AxisLimits2D GetLimits() => new AxisLimits2D(new double[] { x, x, y, y });
+
+        public override int GetPointCount() => 1;
+
+        public override LegendItem[] GetLegendItems() => null;
+
+        private PointF TextLocation(PointF input)
         {
-            return 1;
+            switch (alignment)
+            {
+                case ImageAlignment.lowerCenter:
+                    return new PointF(input.X - image.Width / 2, input.Y - image.Height);
+                case ImageAlignment.lowerLeft:
+                    return new PointF(input.X, input.Y - image.Height);
+                case ImageAlignment.lowerRight:
+                    return new PointF(input.X - image.Width, input.Y - image.Height);
+                case ImageAlignment.middleLeft:
+                    return new PointF(input.X, input.Y - image.Height / 2);
+                case ImageAlignment.middleRight:
+                    return new PointF(input.X - image.Width, input.Y - image.Height / 2);
+                case ImageAlignment.upperCenter:
+                    return new PointF(input.X - image.Width / 2, input.Y);
+                case ImageAlignment.upperLeft:
+                    return new PointF(input.X, input.Y);
+                case ImageAlignment.upperRight:
+                    return new PointF(input.X - image.Width, input.Y);
+                case ImageAlignment.middleCenter:
+                    return new PointF(input.X - image.Width / 2, input.Y - image.Height / 2);
+                default:
+                    throw new InvalidEnumArgumentException();
+            }
         }
 
-        public override LegendItem[] GetLegendItems()
+        public override void Render(Settings settings) => throw new InvalidOperationException("use new Render()");
+
+        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            return null; // don't show this in the legend
+            PointF defaultPoint = new PointF(dims.GetPixelX(x), dims.GetPixelY(y));
+            PointF textLocationPoint = (rotation == 0) ? TextLocation(defaultPoint) : defaultPoint;
+
+            using (Graphics gfx = GDI.Graphics(bmp, lowQuality))
+            using (var framePen = new Pen(frameColor, frameSize * 2))
+            {
+                gfx.TranslateTransform((int)textLocationPoint.X, (int)textLocationPoint.Y);
+                gfx.RotateTransform((float)rotation);
+
+                if (frameSize > 0)
+                    gfx.DrawRectangle(framePen, new Rectangle(0, 0, image.Width - 1, image.Height - 1));
+
+                gfx.DrawImage(image, new PointF(0, 0));
+                gfx.ResetTransform();
+            }
         }
     }
 }
