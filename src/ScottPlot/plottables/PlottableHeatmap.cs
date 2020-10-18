@@ -1,6 +1,7 @@
 ﻿using ScottPlot.Config;
 using ScottPlot.Diagnostic.Attributes;
 using ScottPlot.Drawing;
+using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -11,97 +12,78 @@ namespace ScottPlot
 {
 
 #pragma warning disable CS0618 // Type or member is obsolete
-    public class PlottableHeatmap : Plottable
+    public class PlottableHeatmap : Plottable, IPlottable
     {
-        private int width;
-        private int height;
-        private double[] intensitiesNormalized;
-        private Colormap colorMap;
-        public string label;
-        private double[] axisOffsets;
-        private double[] axisMultipliers;
-        private double? scaleMin;
-        private double? scaleMax;
-        private double? transparencyThreshold;
-        private Bitmap backgroundImage;
-        private bool displayImageAbove;
-        private bool drawAxisLabels;
-
-        private Bitmap bmp;
-        private Bitmap scale;
+        // these fields are updated when the intensities are analyzed
+        private double[] NormalizedIntensities;
         private double min;
         private double max;
-        private SolidBrush brush;
-        private Pen pen;
+        private int width;
+        private int height;
+        private Bitmap BmpHeatmap;
+        private Bitmap BmpScale;
 
-        public PlottableHeatmap(double[,] intensities, Colormap colormap, string label, double[] axisOffsets, double[] axisMultipliers, double? scaleMin, double? scaleMax, double? transparencyThreshold, Bitmap backgroundImage, bool displayImageAbove, bool drawAxisLabels)
+        // these fields are customized by the user
+        public string label;
+        public Colormap Colormap;
+        public double[] AxisOffsets;
+        public double[] AxisMultipliers;
+        public double? ScaleMin;
+        public double? ScaleMax;
+        public double? TransparencyThreshold;
+        public Bitmap BackgroundImage;
+        public bool DisplayImageAbove;
+        public bool ShowAxisLabels;
+
+        // call this externally if data changes
+        public void UpdateData(double[,] intensities)
         {
-            this.width = intensities.GetLength(1);
-            this.height = intensities.GetLength(0);
-            double[] intensitiesFlattened = Flatten(intensities);
-            this.min = intensitiesFlattened.Min();
-            this.max = intensitiesFlattened.Max();
-            this.brush = new SolidBrush(Color.Black);
-            this.pen = new Pen(brush);
-            this.axisOffsets = axisOffsets;
-            this.axisMultipliers = axisMultipliers;
-            this.colorMap = colormap;
-            this.label = label;
-            this.scaleMin = scaleMin;
-            this.scaleMax = scaleMax;
-            this.backgroundImage = backgroundImage;
-            this.displayImageAbove = displayImageAbove;
-            this.drawAxisLabels = drawAxisLabels;
+            width = intensities.GetLength(1);
+            height = intensities.GetLength(0);
 
-            double normalizeMin = min;
-            double normalizeMax = max;
+            double[] intensitiesFlattened = intensities.Cast<double>().ToArray();
+            min = intensitiesFlattened.Min();
+            max = intensitiesFlattened.Max();
 
-            if (scaleMin.HasValue && scaleMin.Value < min)
-                normalizeMin = scaleMin.Value;
+            double normalizeMin = (ScaleMin.HasValue && ScaleMin.Value < min) ? ScaleMin.Value : min;
+            double normalizeMax = (ScaleMax.HasValue && ScaleMax.Value > max) ? ScaleMax.Value : max;
 
-            if (scaleMax.HasValue && scaleMax.Value > max)
-                normalizeMin = scaleMax.Value;
+            if (TransparencyThreshold.HasValue)
+                TransparencyThreshold = Normalize(TransparencyThreshold.Value, min, max, ScaleMin, ScaleMax);
 
-            if (transparencyThreshold.HasValue)
-                this.transparencyThreshold = Normalize(new double[] { transparencyThreshold.Value }, min, max, scaleMin, scaleMax)[0];
+            NormalizedIntensities = Normalize(intensitiesFlattened, null, null, ScaleMin, ScaleMax);
 
-            intensitiesNormalized = Normalize(intensitiesFlattened, null, null, scaleMin, scaleMax);
+            int[] flatARGB = Colormap.GetRGBAs(NormalizedIntensities, Colormap, minimumIntensity: TransparencyThreshold ?? 0);
+            double[] normalizedValues = Normalize(Enumerable.Range(0, 256).Select(i => (double)i).Reverse().ToArray(), null, null, ScaleMin, ScaleMax);
+            int[] scaleRGBA = Colormap.GetRGBAs(normalizedValues, Colormap);
 
-            int[] flatARGB = Colormap.GetRGBAs(intensitiesNormalized, colormap, minimumIntensity: transparencyThreshold ?? 0);
-
-            bmp = new Bitmap(width, height, PixelFormat.Format32bppArgb);
-            scale = new Bitmap(1, 256, PixelFormat.Format32bppArgb);
-
-            double[] normalizedValues = Normalize(Enumerable.Range(0, scale.Height).Select(i => (double)i).Reverse().ToArray(), null, null, scaleMin, scaleMax);
-            int[] scaleRGBA = Colormap.GetRGBAs(normalizedValues, colormap);
-
-            Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
-            Rectangle rectScale = new Rectangle(0, 0, scale.Width, scale.Height);
-            BitmapData bmpData = bmp.LockBits(rect, ImageLockMode.ReadWrite, bmp.PixelFormat);
-            BitmapData scaleBmpData = scale.LockBits(rectScale, ImageLockMode.ReadWrite, scale.PixelFormat);
-
+            BmpHeatmap?.Dispose();
+            BmpScale?.Dispose();
+            BmpHeatmap = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+            BmpScale = new Bitmap(1, 256, PixelFormat.Format32bppArgb);
+            Rectangle rect = new Rectangle(0, 0, BmpHeatmap.Width, BmpHeatmap.Height);
+            Rectangle rectScale = new Rectangle(0, 0, BmpScale.Width, BmpScale.Height);
+            BitmapData bmpData = BmpHeatmap.LockBits(rect, ImageLockMode.ReadWrite, BmpHeatmap.PixelFormat);
+            BitmapData scaleBmpData = BmpScale.LockBits(rectScale, ImageLockMode.ReadWrite, BmpScale.PixelFormat);
             Marshal.Copy(flatARGB, 0, bmpData.Scan0, flatARGB.Length);
             Marshal.Copy(scaleRGBA, 0, scaleBmpData.Scan0, scaleRGBA.Length);
-            bmp.UnlockBits(bmpData);
-            scale.UnlockBits(scaleBmpData);
+            BmpHeatmap.UnlockBits(bmpData);
+            BmpScale.UnlockBits(scaleBmpData);
         }
+
+        private double Normalize(double input, double? min = null, double? max = null, double? scaleMin = null, double? scaleMax = null)
+            => Normalize(new double[] { input }, min, max, scaleMin, scaleMax)[0];
 
         private double[] Normalize(double[] input, double? min = null, double? max = null, double? scaleMin = null, double? scaleMax = null)
         {
             min = min ?? input.Min();
             max = max ?? input.Max();
 
-            if (scaleMin.HasValue && scaleMin.Value < min)
-            {
-                min = scaleMin.Value;
-            }
-
-            if (scaleMax.HasValue && scaleMax.Value > max)
-            {
-                max = scaleMax.Value;
-            }
+            min = (scaleMin.HasValue && scaleMin.Value < min) ? scaleMin.Value : min;
+            max = (scaleMax.HasValue && scaleMax.Value > max) ? scaleMax.Value : max;
 
             double[] normalized = input.AsParallel().AsOrdered().Select(i => (i - min.Value) / (max.Value - min.Value)).ToArray();
+
             if (scaleMin.HasValue)
             {
                 double threshold = (scaleMin.Value - min.Value) / (max.Value - min.Value);
@@ -117,95 +99,116 @@ namespace ScottPlot
             return normalized;
         }
 
-        private double[] Invert(double[] input)
-        {
-            return input.Select(i => 1 - i).ToArray();
-        }
-
-        private T[] Flatten<T>(T[,] toFlatten)
-        {
-            return toFlatten.Cast<T>().ToArray();
-        }
-
-
         public override LegendItem[] GetLegendItems()
         {
-            var singleLegendItem = new LegendItem(label, System.Drawing.Color.Gray, lineWidth: 10, markerShape: MarkerShape.none); //Colours in the legend is kinda difficult...
+            var singleLegendItem = new LegendItem(label, Color.Gray, lineWidth: 10, markerShape: MarkerShape.none);
             return new LegendItem[] { singleLegendItem };
         }
 
-        public override AxisLimits2D GetLimits()
+        public override AxisLimits2D GetLimits() =>
+            ShowAxisLabels ?
+            new AxisLimits2D(-10, BmpHeatmap.Width, -5, BmpHeatmap.Height) :
+            new AxisLimits2D(-3, BmpHeatmap.Width, -3, BmpHeatmap.Height);
+
+        public override int GetPointCount() => NormalizedIntensities.Length;
+
+        public string ValidationErrorMessage { get; private set; }
+        public bool IsValidData(bool deepValidation = false)
         {
-            if (drawAxisLabels)
+            if (NormalizedIntensities is null || BmpHeatmap is null)
             {
-                return new AxisLimits2D(-10, bmp.Width, -5, bmp.Height);
+                ValidationErrorMessage = "Call UpdateData() to process data";
+                return false;
             }
-            else
+
+            ValidationErrorMessage = "";
+            return true;
+        }
+
+        public override void Render(Settings settings) =>
+            throw new NotImplementedException("use new Render method");
+
+        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        {
+            RenderHeatmap(dims, bmp, lowQuality);
+            RenderScale(dims, bmp, lowQuality);
+            if (ShowAxisLabels)
+                RenderAxis(dims, bmp, lowQuality);
+        }
+
+        private void RenderHeatmap(PlotDimensions dims, Bitmap bmp, bool lowQuality)
+        {
+            using (Graphics gfx = GDI.Graphics(bmp, lowQuality))
             {
-                return new AxisLimits2D(-3, bmp.Width, -3, bmp.Height);
+                gfx.InterpolationMode = InterpolationMode.NearestNeighbor;
+
+                double minScale = Math.Min(dims.PxPerUnitX, dims.PxPerUnitY);
+
+                if (BackgroundImage != null && !DisplayImageAbove)
+                    gfx.DrawImage(
+                        BackgroundImage,
+                        dims.GetPixelX(0),
+                        dims.GetPixelY(0) - (float)(height * minScale),
+                        (float)(width * minScale), (float)(height * minScale));
+
+                gfx.DrawImage(
+                    BmpHeatmap,
+                    dims.GetPixelX(0),
+                    dims.GetPixelY(0) - (float)(height * minScale),
+                    (float)(width * minScale),
+                    (float)(height * minScale));
+
+                if (BackgroundImage != null && DisplayImageAbove)
+                    gfx.DrawImage(BackgroundImage,
+                        dims.GetPixelX(0),
+                        dims.GetPixelY(0) - (float)(height * minScale),
+                        (float)(width * minScale),
+                        (float)(height * minScale));
             }
         }
 
-        public override int GetPointCount()
+        private void RenderScale(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            return intensitiesNormalized.Length;
-        }
-
-        public override void Render(Settings settings)
-        {
-            var interpMode = settings.gfxData.InterpolationMode;
-            settings.gfxData.InterpolationMode = InterpolationMode.NearestNeighbor;
-            double minScale = settings.xAxisScale < settings.yAxisScale ? settings.xAxisScale : settings.yAxisScale;
-            if (backgroundImage != null && !displayImageAbove)
+            using (Graphics gfx = GDI.Graphics(bmp, lowQuality))
+            using (var pen = GDI.Pen(Color.Black))
+            using (var brush = GDI.Brush(Color.Black))
+            using (Font font = GDI.Font(null, 12))
+            using (var sf2 = new StringFormat() { LineAlignment = StringAlignment.Far })
             {
-                settings.gfxData.DrawImage(backgroundImage, (float)settings.GetPixelX(0), (float)(settings.GetPixelY(0) - (height * minScale)), (float)(width * minScale), (float)(height * minScale));
+                gfx.InterpolationMode = InterpolationMode.NearestNeighbor;
+
+                float pxFromBottom = 30;
+                float pxFromRight = dims.Width - 150;
+                float pxWidth = 30;
+                RectangleF scaleRect = new RectangleF(pxFromRight, pxFromBottom, pxWidth, dims.DataHeight);
+                gfx.DrawImage(BmpScale, scaleRect);
+                gfx.DrawRectangle(pen, pxFromRight, pxFromBottom, pxWidth / 2, dims.DataHeight);
+
+                string maxString = ScaleMax.HasValue ? $"{(ScaleMax.Value < max ? "≥ " : "")}{ ScaleMax.Value:f3}" : $"{max:f3}";
+                string minString = ScaleMin.HasValue ? $"{(ScaleMin.Value > min ? "≤ " : "")}{ScaleMin.Value:f3}" : $"{min:f3}";
+                gfx.DrawString(maxString, font, brush, new PointF(scaleRect.X + 30, scaleRect.Top));
+                gfx.DrawString(minString, font, brush, new PointF(scaleRect.X + 30, scaleRect.Bottom), sf2);
             }
-            settings.gfxData.DrawImage(bmp, (float)settings.GetPixelX(0), (float)(settings.GetPixelY(0) - (height * minScale)), (float)(width * minScale), (float)(height * minScale));
-            if (backgroundImage != null && displayImageAbove)
-            {
-                settings.gfxData.DrawImage(backgroundImage, (float)settings.GetPixelX(0), (float)(settings.GetPixelY(0) - (height * minScale)), (float)(width * minScale), (float)(height * minScale));
-            }
-            RenderScale(settings);
-            if (drawAxisLabels)
-            {
-                RenderAxis(settings, minScale);
-            }
-            settings.gfxData.InterpolationMode = interpMode;
         }
 
-        private void RenderScale(Settings settings)
+        private void RenderAxis(PlotDimensions dims, Bitmap bmp, bool lowQuality)
         {
-            Rectangle scaleRect = new Rectangle(settings.figureSize.Width - 150, settings.layout.xLabelHeight, 30, settings.layout.plot.Height - settings.layout.xLabelHeight - settings.layout.xScaleHeight - settings.layout.titleHeight);
-
-            Rectangle scaleRectOutline = scaleRect;
-            scaleRectOutline.Width /= 2;
-            var interpMode = settings.gfxFigure.InterpolationMode;
-
-            settings.gfxFigure.InterpolationMode = InterpolationMode.NearestNeighbor; //This is necessary for the scale (as its a 1 pixel wide image)
-            settings.gfxFigure.DrawImage(scale, scaleRect);
-            settings.gfxFigure.DrawRectangle(pen, scaleRectOutline);
-            string maxString = scaleMax.HasValue ? $"{(scaleMax.Value < max ? "≥ " : "")}{ scaleMax.Value:f3}" : $"{max:f3}";
-            string minString = scaleMin.HasValue ? $"{(scaleMin.Value > min ? "≤ " : "")}{scaleMin.Value:f3}" : $"{min:f3}";
-
-            settings.gfxFigure.DrawString(maxString, new Font(FontFamily.GenericSansSerif, 12), brush, new Point(scaleRect.X + 30, scaleRect.Top));
-            settings.gfxFigure.DrawString(minString, new Font(FontFamily.GenericSansSerif, 12), brush, new Point(scaleRect.X + 30, scaleRect.Bottom), new StringFormat() { LineAlignment = StringAlignment.Far });
-
-            settings.gfxFigure.InterpolationMode = interpMode;
+            using (Graphics gfx = GDI.Graphics(bmp, lowQuality))
+            using (Pen pen = GDI.Pen(Color.Black))
+            using (Brush brush = GDI.Brush(Color.Black))
+            using (Font axisFont = GDI.Font(null, 12))
+            using (StringFormat right_centre = new StringFormat() { Alignment = StringAlignment.Far, LineAlignment = StringAlignment.Center })
+            using (StringFormat centre_top = new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Near })
+            {
+                double offset = -2;
+                double minScale = Math.Min(dims.PxPerUnitX, dims.PxPerUnitY);
+                gfx.DrawString($"{AxisOffsets[0]:f3}", axisFont, brush, dims.GetPixelX(0), dims.GetPixelY(offset), centre_top);
+                gfx.DrawString($"{AxisOffsets[0] + AxisMultipliers[0]:f3}", axisFont, brush, new PointF((float)((width * minScale) + dims.GetPixelX(0)), dims.GetPixelY(offset)), centre_top);
+                gfx.DrawString($"{AxisOffsets[1]:f3}", axisFont, brush, dims.GetPixelX(offset), dims.GetPixelY(0), right_centre);
+                gfx.DrawString($"{AxisOffsets[1] + AxisMultipliers[1]:f3}", axisFont, brush, new PointF(dims.GetPixelX(offset), dims.GetPixelY(0) - (float)(height * minScale)), right_centre);
+            }
         }
 
-        private void RenderAxis(Settings settings, double minScale)
-        {
-            StringFormat right_centre = new StringFormat() { Alignment = StringAlignment.Far, LineAlignment = StringAlignment.Center };
-            StringFormat centre_top = new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Near };
-            Font axisFont = new Font(FontFamily.GenericSansSerif, 12);
-            double offset = -2;
-
-            settings.gfxData.DrawString($"{axisOffsets[0]:f3}", axisFont, brush, settings.GetPixel(0, offset), centre_top);
-            settings.gfxData.DrawString($"{axisOffsets[0] + axisMultipliers[0]:f3}", axisFont, brush, new PointF((float)((width * minScale) + settings.GetPixelX(0)), (float)settings.GetPixelY(offset)), centre_top);
-
-            settings.gfxData.DrawString($"{axisOffsets[1]:f3}", axisFont, brush, settings.GetPixel(offset, 0), right_centre);
-            settings.gfxData.DrawString($"{axisOffsets[1] + axisMultipliers[1]:f3}", axisFont, brush, new PointF((float)settings.GetPixelX(offset), (float)(settings.GetPixelY(0) - (height * minScale))), right_centre);
-        }
         public override string ToString()
         {
             string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";

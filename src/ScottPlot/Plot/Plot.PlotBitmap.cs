@@ -54,16 +54,21 @@ namespace ScottPlot
             bool drawAxisLabels = true
             )
         {
-            if (colormap == null)
-                colormap = Drawing.Colormap.Viridis;
+            PlottableHeatmap heatmap = new PlottableHeatmap()
+            {
+                label = label,
+                AxisOffsets = axisOffsets ?? new double[] { 0, 0 },
+                AxisMultipliers = axisMultipliers ?? new double[] { 1, 1 },
+                ScaleMin = scaleMin,
+                ScaleMax = scaleMax,
+                TransparencyThreshold = transparencyThreshold,
+                BackgroundImage = backgroundImage,
+                DisplayImageAbove = displayImageAbove,
+                ShowAxisLabels = drawAxisLabels,
+                Colormap = colormap ?? Drawing.Colormap.Viridis
+            };
+            heatmap.UpdateData(intensities);
 
-            if (axisOffsets == null)
-                axisOffsets = new double[] { 0, 0 };
-
-            if (axisMultipliers == null)
-                axisMultipliers = new double[] { 1, 1 };
-
-            PlottableHeatmap heatmap = new PlottableHeatmap(intensities, colormap, label, axisOffsets, axisMultipliers, scaleMin, scaleMax, transparencyThreshold, backgroundImage, displayImageAbove, drawAxisLabels);
             Add(heatmap);
             MatchAxis(this);
             Ticks(false, false);
