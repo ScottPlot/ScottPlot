@@ -144,10 +144,16 @@ namespace ScottPlot
             string label = null
             )
         {
-            if (colors is null)
-                colors = Enumerable.Range(0, values.Length).Select(i => settings.colorset.GetColor(i)).ToArray();
+            colors = colors ?? Enumerable.Range(0, values.Length).Select(i => settings.colorset.GetColor(i)).ToArray();
 
-            PlottablePie pie = new PlottablePie(values, sliceLabels, colors, explodedChart, showValues, showPercentages, showLabels, label);
+            PlottablePie pie = new PlottablePie(values, sliceLabels, colors)
+            {
+                explodedChart = explodedChart,
+                showValues = showValues,
+                showPercentages = showPercentages,
+                showLabels = showLabels,
+                label = label
+            };
 
             Add(pie);
             return pie;
