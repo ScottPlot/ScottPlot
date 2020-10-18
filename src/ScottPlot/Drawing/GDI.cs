@@ -164,7 +164,7 @@ namespace ScottPlot.Drawing
             }
         }
 
-        public static System.Drawing.Font Font(string fontName, float fontSize, bool bold = false)
+        public static System.Drawing.Font Font(string fontName = null, float fontSize = 12, bool bold = false)
         {
             string validFontName = Config.Fonts.GetValidFontName(fontName);
             FontStyle fontStyle = bold ? FontStyle.Bold : FontStyle.Regular;
