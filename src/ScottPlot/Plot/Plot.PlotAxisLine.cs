@@ -23,19 +23,16 @@ namespace ScottPlot
             LineStyle lineStyle = LineStyle.Solid
             )
         {
-            if (color == null)
-                color = settings.GetNextColor();
-
-            PlottableVLine axLine = new PlottableVLine(
-                position: x,
-                color: (Color)color,
-                lineWidth: lineWidth,
-                label: label,
-                draggable: draggable,
-                dragLimitLower: dragLimitLower,
-                dragLimitUpper: dragLimitUpper,
-                lineStyle: lineStyle
-                );
+            PlottableVLine axLine = new PlottableVLine()
+            {
+                position = x,
+                color = color ?? settings.GetNextColor(),
+                lineWidth = (float)lineWidth,
+                label = label,
+                DragEnabled = draggable,
+                lineStyle = lineStyle,
+            };
+            axLine.SetLimits(dragLimitLower, dragLimitUpper, null, null);
 
             Add(axLine);
             return axLine;
@@ -83,22 +80,20 @@ namespace ScottPlot
             LineStyle lineStyle = LineStyle.Solid
             )
         {
-            if (color == null)
-                color = settings.GetNextColor();
+            var hline = new PlottableHLine()
+            {
+                position = y,
+                color = color ?? settings.GetNextColor(),
+                lineWidth = (float)lineWidth,
+                label = label,
+                DragEnabled = draggable,
+                lineStyle = lineStyle,
+            };
 
-            PlottableHLine axLine = new PlottableHLine(
-                position: y,
-                color: (Color)color,
-                lineWidth: lineWidth,
-                label: label,
-                draggable: draggable,
-                dragLimitLower: dragLimitLower,
-                dragLimitUpper: dragLimitUpper,
-                lineStyle: lineStyle
-                );
+            hline.SetLimits(null, null, dragLimitLower, dragLimitUpper);
 
-            Add(axLine);
-            return axLine;
+            Add(hline);
+            return hline;
         }
 
         public PlottableHSpan PlotHSpan(
