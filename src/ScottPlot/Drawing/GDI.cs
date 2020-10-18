@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Text;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -61,6 +62,14 @@ namespace ScottPlot.Drawing
             var colorA = System.Drawing.ColorTranslator.FromHtml(hexA);
             var colorB = System.Drawing.ColorTranslator.FromHtml(hexB);
             return Mix(colorA, colorB, fracA);
+        }
+
+        public static System.Drawing.Graphics Graphics(Bitmap bmp, bool lowQuality = false)
+        {
+            Graphics gfx = System.Drawing.Graphics.FromImage(bmp);
+            gfx.SmoothingMode = lowQuality ? SmoothingMode.HighSpeed : SmoothingMode.AntiAlias;
+            gfx.TextRenderingHint = lowQuality ? TextRenderingHint.SingleBitPerPixelGridFit : TextRenderingHint.AntiAliasGridFit;
+            return gfx;
         }
 
         public static System.Drawing.Pen Pen(System.Drawing.Color color, double width = 1, LineStyle lineStyle = LineStyle.Solid, bool rounded = false)
