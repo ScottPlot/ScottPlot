@@ -6,10 +6,11 @@ using System.Drawing;
 using System.Dynamic;
 using System.Text;
 using ScottPlot.Config;
+using ScottPlot.Drawing;
 
 namespace ScottPlot
 {
-    public class PlottableFunction : Plottable
+    public class PlottableFunction : Plottable/*, IPlottable*/
     {
         public Func<double, double?> function;
 
@@ -48,6 +49,21 @@ namespace ScottPlot
         private int PointCount;
 
         public override int GetPointCount() => PointCount;
+
+        // TODO: implement after scatter plots are refactored to use this render method
+        /*
+        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        {
+            throw new NotImplementedException();
+        }
+        */
+
+        public string ValidationErrorMessage { get; private set; }
+        public bool IsValidData(bool deepValidation = false)
+        {
+            ValidationErrorMessage = (function is null) ? "function cannot be null" : "";
+            return string.IsNullOrWhiteSpace(ValidationErrorMessage);
+        }
 
         public override void Render(Settings settings)
         {
