@@ -34,6 +34,8 @@ namespace ScottPlotTests
             return (R == r) && (G == g) && (B == b);
         }
 
+        public bool IsDifferentThan(MeanPixel comparison) => RGB != comparison.RGB;
+
         public bool IsDarkerThan(MeanPixel comparison) => RGB < comparison.RGB;
 
         public bool IsLighterThan(MeanPixel comparison) => RGB > comparison.RGB;
