@@ -19,7 +19,7 @@ namespace ScottPlot
 
         public float CapSize = 3;
         public float LineWidth = 1;
-        public Color Color;
+        public Color Color = Color.Black;
         public LineStyle LineStyle = LineStyle.Solid;
 
         public PlottableErrorBars(double[] xs, double[] ys,
