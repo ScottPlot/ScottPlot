@@ -137,6 +137,9 @@ namespace ScottPlot
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
+            if (xs is null || xs.Length == 0 || visible == false)
+                return;
+
             using (var gfx = Graphics.FromImage(bmp))
             using (var penLine = GDI.Pen(color, lineWidth, lineStyle, true))
             using (var penLineError = GDI.Pen(color, errorLineWidth, LineStyle.Solid, true))
@@ -144,68 +147,63 @@ namespace ScottPlot
                 gfx.SmoothingMode = lowQuality ? SmoothingMode.HighSpeed : SmoothingMode.AntiAlias;
                 gfx.TextRenderingHint = lowQuality ? TextRenderingHint.SingleBitPerPixelGridFit : TextRenderingHint.AntiAliasGridFit;
 
-                // TODO: use a single array
-                List<PointF> points = new List<PointF>(xs.Length);
+                PointF[] points = new PointF[xs.Length];
                 for (int i = 0; i < xs.Length; i++)
-                    points.Add(new PointF(dims.GetPixelX(xs[i]), dims.GetPixelY(ys[i])));
+                    points[i] = new PointF(dims.GetPixelX(xs[i]), dims.GetPixelY(ys[i]));
 
-                // draw Y errorbars
                 if (errorY != null)
                 {
-                    for (int i = 0; i < points.Count; i++)
+                    for (int i = 0; i < points.Length; i++)
                     {
-                        float xCenter = dims.GetPixelX(xs[i]);
                         float yBot = dims.GetPixelY(ys[i] - errorY[i]);
                         float yTop = dims.GetPixelY(ys[i] + errorY[i]);
-                        gfx.DrawLine(penLineError, xCenter, yBot, xCenter, yTop);
-                        gfx.DrawLine(penLineError, xCenter - errorCapSize, yBot, xCenter + errorCapSize, yBot);
-                        gfx.DrawLine(penLineError, xCenter - errorCapSize, yTop, xCenter + errorCapSize, yTop);
+                        gfx.DrawLine(penLineError, points[i].X, yBot, points[i].X, yTop);
+                        gfx.DrawLine(penLineError, points[i].X - errorCapSize, yBot, points[i].X + errorCapSize, yBot);
+                        gfx.DrawLine(penLineError, points[i].X - errorCapSize, yTop, points[i].X + errorCapSize, yTop);
                     }
                 }
 
-                // draw X errorbars
                 if (errorX != null)
                 {
-                    for (int i = 0; i < points.Count; i++)
+                    for (int i = 0; i < points.Length; i++)
                     {
-                        float yCenter = dims.GetPixelY(ys[i]);
                         float xLeft = dims.GetPixelX(xs[i] - errorX[i]);
                         float xRight = dims.GetPixelX(xs[i] + errorX[i]);
-                        gfx.DrawLine(penLineError, xLeft, yCenter, xRight, yCenter);
-                        gfx.DrawLine(penLineError, xLeft, yCenter - errorCapSize, xLeft, yCenter + errorCapSize);
-                        gfx.DrawLine(penLineError, xRight, yCenter - errorCapSize, xRight, yCenter + errorCapSize);
+                        gfx.DrawLine(penLineError, xLeft, points[i].Y, xRight, points[i].Y);
+                        gfx.DrawLine(penLineError, xLeft, points[i].Y - errorCapSize, xLeft, points[i].Y + errorCapSize);
+                        gfx.DrawLine(penLineError, xRight, points[i].Y - errorCapSize, xRight, points[i].Y + errorCapSize);
                     }
                 }
 
                 // draw the lines connecting points
-                if (penLine.Width > 0 && points.Count > 1)
+                if (lineWidth > 0 && lineStyle != LineStyle.None)
                 {
                     if (stepDisplay)
                     {
-                        List<PointF> pointsStep = new List<PointF>(points.Count * 2);
-                        for (int i = 0; i < points.Count - 1; i++)
+                        PointF[] pointsStep = new PointF[points.Length * 2 - 1];
+                        for (int i = 0; i < points.Length - 1; i++)
                         {
-                            pointsStep.Add(points[i]);
-                            pointsStep.Add(new PointF(points[i + 1].X, points[i].Y));
+                            pointsStep[i * 2] = points[i];
+                            pointsStep[i * 2 + 1] = new PointF(points[i + 1].X, points[i].Y);
                         }
-                        pointsStep.Add(points[points.Count - 1]);
-                        gfx.DrawLines(penLine, pointsStep.ToArray());
+                        pointsStep[pointsStep.Length - 1] = points[points.Length - 1];
+                        gfx.DrawLines(penLine, pointsStep);
                     }
                     else
                     {
                         if (IsArrow)
                         {
-                            penLine.CustomEndCap = new System.Drawing.Drawing2D.AdjustableArrowCap(ArrowheadWidth, ArrowheadLength, isFilled: true);
-                            penLine.StartCap = System.Drawing.Drawing2D.LineCap.Flat;
+                            penLine.CustomEndCap = new AdjustableArrowCap(ArrowheadWidth, ArrowheadLength, true);
+                            penLine.StartCap = LineCap.Flat;
                         }
 
-                        gfx.DrawLines(penLine, points.ToArray());
+                        gfx.DrawLines(penLine, points);
                     }
                 }
 
                 // draw a marker at each point
                 if ((markerSize > 0) && (markerShape != MarkerShape.none))
-                    for (int i = 0; i < points.Count; i++)
+                    for (int i = 0; i < points.Length; i++)
                         MarkerTools.DrawMarker(gfx, points[i], markerShape, markerSize, color);
             }
         }
