@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 
 namespace ScottPlot
 {
@@ -45,6 +46,30 @@ namespace ScottPlot
         /// Throw an exception if the array does not contain at least one element
         /// </summary>
         public static void AssertHasElements(string label, double[] values)
+        {
+            if (values is null)
+                throw new ArgumentException($"{label} must not be null");
+
+            if (values.Length == 0)
+                throw new ArgumentException($"{label} must contain at least one element");
+        }
+
+        /// <summary>
+        /// Throw an exception if the array does not contain at least one element
+        /// </summary>
+        public static void AssertHasElements(string label, Color[] values)
+        {
+            if (values is null)
+                throw new ArgumentException($"{label} must not be null");
+
+            if (values.Length == 0)
+                throw new ArgumentException($"{label} must contain at least one element");
+        }
+
+        /// <summary>
+        /// Throw an exception if the array does not contain at least one element
+        /// </summary>
+        public static void AssertHasElements(string label, string[] values)
         {
             if (values is null)
                 throw new ArgumentException($"{label} must not be null");
