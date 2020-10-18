@@ -10,7 +10,7 @@ using ScottPlot.Drawing;
 
 namespace ScottPlot
 {
-    public class PlottableFunction : Plottable/*, IPlottable*/
+    public class PlottableFunction : Plottable, IPlottable
     {
         public Func<double, double?> function;
 
@@ -50,34 +50,14 @@ namespace ScottPlot
 
         public override int GetPointCount() => PointCount;
 
-        // TODO: implement after scatter plots are refactored to use this render method
-        /*
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            throw new NotImplementedException();
-        }
-        */
-
-        public string ValidationErrorMessage { get; private set; }
-        public bool IsValidData(bool deepValidation = false)
-        {
-            ValidationErrorMessage = (function is null) ? "function cannot be null" : "";
-            return string.IsNullOrWhiteSpace(ValidationErrorMessage);
-        }
-
-        public override void Render(Settings settings)
-        {
-            double unitsPerColumn = settings.xAxisUnitsPerPixel;
-            double minRenderedX = settings.axes.limits[0];
-            double maxRenderedX = settings.axes.limits[1];
-            PointCount = (int)Math.Ceiling((maxRenderedX - minRenderedX) / unitsPerColumn);
-
             List<double> xList = new List<double>();
             List<double> yList = new List<double>();
 
-            for (int columnIndex = 0; columnIndex < PointCount; columnIndex++)
+            for (int columnIndex = 0; columnIndex < dims.DataWidth; columnIndex++)
             {
-                double x = columnIndex * unitsPerColumn + minRenderedX;
+                double x = columnIndex * dims.UnitsPerPxX + dims.XMin;
                 try
                 {
                     double? y = function(x);
@@ -101,9 +81,27 @@ namespace ScottPlot
             // create a temporary scatter plot and use it for rendering
             double[] xs = xList.ToArray();
             double[] ys = yList.ToArray();
-            var scatter = new PlottableScatter(xs, ys, color, lineWidth, 0, label, null, null, 0, 0, false, MarkerShape.none, lineStyle);
-            scatter.Render(settings);
+            var scatter = new PlottableScatter(xs, ys)
+            {
+                color = color,
+                lineWidth = lineWidth,
+                markerSize = 0,
+                label = label,
+                markerShape = MarkerShape.none,
+                lineStyle = lineStyle
+            };
+            scatter.Render(dims, bmp, lowQuality);
         }
+
+        public string ValidationErrorMessage { get; private set; }
+        public bool IsValidData(bool deepValidation = false)
+        {
+            ValidationErrorMessage = (function is null) ? "function cannot be null" : "";
+            return string.IsNullOrWhiteSpace(ValidationErrorMessage);
+        }
+
+        public override void Render(Settings settings) =>
+            throw new InvalidOperationException("use other Render method");
 
         public override string ToString()
         {

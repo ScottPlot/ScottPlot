@@ -30,24 +30,23 @@ namespace ScottPlot
             if (color == null)
                 color = settings.GetNextColor();
 
-            double[] errorXarray = (errorX != null) ? new double[] { (double)errorX } : null;
-            double[] errorYarray = (errorY != null) ? new double[] { (double)errorY } : null;
-
-            PlottableScatter scatterPlot = new PlottableScatter(
-                xs: new double[] { x },
-                ys: new double[] { y },
-                color: (Color)color,
-                lineWidth: 0,
-                markerSize: markerSize,
-                label: label,
-                errorX: errorXarray,
-                errorY: errorYarray,
-                errorLineWidth: errorLineWidth,
-                errorCapSize: errorCapSize,
-                stepDisplay: false,
-                markerShape: markerShape,
-                lineStyle: lineStyle
-                );
+            var scatterPlot = new PlottableScatter(
+                    xs: new double[] { x },
+                    ys: new double[] { y },
+                    errorX: (errorX is null) ? null : new double[] { (double)errorX },
+                    errorY: (errorY is null) ? null : new double[] { (double)errorY }
+                )
+            {
+                color = (Color)color,
+                lineWidth = 0,
+                markerSize = (float)markerSize,
+                label = label,
+                errorLineWidth = (float)errorLineWidth,
+                errorCapSize = (float)errorCapSize,
+                stepDisplay = false,
+                markerShape = markerShape,
+                lineStyle = lineStyle
+            };
 
             Add(scatterPlot);
             return scatterPlot;
@@ -71,21 +70,21 @@ namespace ScottPlot
             if (color == null)
                 color = settings.GetNextColor();
 
-            PlottableScatter scatterPlot = new PlottableScatter(
-                xs: xs,
-                ys: ys,
-                color: (Color)color,
-                lineWidth: lineWidth,
-                markerSize: markerSize,
-                label: label,
-                errorX: errorX,
-                errorY: errorY,
-                errorLineWidth: errorLineWidth,
-                errorCapSize: errorCapSize,
-                stepDisplay: false,
-                markerShape: markerShape,
-                lineStyle: lineStyle
-                );
+            if (xs is null || ys is null || xs.Length == 0 || xs.Length != ys.Length)
+                throw new ArgumentException("xs and ys must be equal length arrays with elements");
+
+            var scatterPlot = new PlottableScatter(xs, ys, errorX, errorY)
+            {
+                color = (Color)color,
+                lineWidth = lineWidth,
+                markerSize = (float)markerSize,
+                label = label,
+                errorLineWidth = (float)errorLineWidth,
+                errorCapSize = (float)errorCapSize,
+                stepDisplay = false,
+                markerShape = markerShape,
+                lineStyle = lineStyle
+            };
 
             Add(scatterPlot);
             return scatterPlot;
@@ -118,24 +117,21 @@ namespace ScottPlot
             if (highlightedMarkerSize is null)
                 highlightedMarkerSize = 2 * markerSize;
 
-            PlottableScatterHighlight scatterPlot = new PlottableScatterHighlight(
-                xs: xs,
-                ys: ys,
-                color: (Color)color,
-                lineWidth: lineWidth,
-                markerSize: markerSize,
-                label: label,
-                errorX: errorX,
-                errorY: errorY,
-                errorLineWidth: errorLineWidth,
-                errorCapSize: errorCapSize,
-                stepDisplay: false,
-                markerShape: markerShape,
-                lineStyle: lineStyle,
-                highlightedShape: highlightedShape,
-                highlightedColor: highlightedColor.Value,
-                highlightedMarkerSize: highlightedMarkerSize.Value
-                );
+            var scatterPlot = new PlottableScatterHighlight(xs, ys, errorX, errorY)
+            {
+                color = (Color)color,
+                lineWidth = lineWidth,
+                markerSize = (float)markerSize,
+                label = label,
+                errorLineWidth = (float)errorLineWidth,
+                errorCapSize = (float)errorCapSize,
+                stepDisplay = false,
+                markerShape = markerShape,
+                lineStyle = lineStyle,
+                highlightedShape = highlightedShape,
+                highlightedColor = highlightedColor.Value,
+                highlightedMarkerSize = (float)highlightedMarkerSize.Value
+            };
 
             Add(scatterPlot);
             return scatterPlot;
@@ -222,21 +218,20 @@ namespace ScottPlot
             if (color == null)
                 color = settings.GetNextColor();
 
-            PlottableScatter stepPlot = new PlottableScatter(
-                xs: xs,
-                ys: ys,
-                color: (Color)color,
-                lineWidth: lineWidth,
-                markerSize: 0,
-                label: label,
-                errorX: null,
-                errorY: null,
-                errorLineWidth: 0,
-                errorCapSize: 0,
-                stepDisplay: true,
-                markerShape: MarkerShape.none,
-                lineStyle: LineStyle.Solid
-                );
+            PlottableScatter stepPlot = new PlottableScatter(xs, ys)
+            {
+                color = (Color)color,
+                lineWidth = lineWidth,
+                markerSize = 0,
+                label = label,
+                errorX = null,
+                errorY = null,
+                errorLineWidth = 0,
+                errorCapSize = 0,
+                stepDisplay = true,
+                markerShape = MarkerShape.none,
+                lineStyle = LineStyle.Solid
+            };
 
             Add(stepPlot);
             return stepPlot;

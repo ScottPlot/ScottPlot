@@ -48,8 +48,7 @@ namespace ScottPlot
             string label = null
             )
         {
-
-            var arrow = PlotScatter(
+            var scatter = PlotScatter(
                                         xs: new double[] { baseX, tipX },
                                         ys: new double[] { baseY, tipY },
                                         color: color,
@@ -58,11 +57,9 @@ namespace ScottPlot
                                         markerSize: 0
                                     );
 
-            var arrowCap = new System.Drawing.Drawing2D.AdjustableArrowCap(arrowheadWidth, arrowheadLength, isFilled: true);
-            arrow.penLine.CustomEndCap = arrowCap;
-            arrow.penLine.StartCap = System.Drawing.Drawing2D.LineCap.Flat;
-
-            return arrow;
+            scatter.ArrowheadLength = arrowheadLength;
+            scatter.ArrowheadWidth = arrowheadWidth;
+            return scatter;
         }
 
         public PlottableRadar PlotRadar(
