@@ -108,6 +108,8 @@ namespace ScottPlot.Drawing
             return pen;
         }
 
+        public static Brush Brush(Color color, double alpha) => new SolidBrush(Color.FromArgb((byte)(255 * alpha), color));
+
         public static Brush Brush(Color color, Color? hatchColor = null, HatchStyle hatchStyle = HatchStyle.None)
         {
             bool isHatched = hatchStyle != HatchStyle.None;
