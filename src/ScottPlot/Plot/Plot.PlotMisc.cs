@@ -71,10 +71,15 @@ namespace ScottPlot
             Color? webColor = null
             )
         {
-            fillColors = fillColors ?? Enumerable.Range(0, values.Length).Select(i => settings.colorset.GetColor(i)).ToArray();
-            webColor = webColor ?? Color.Gray;
+            Color[] colors = fillColors ?? Enumerable.Range(0, values.Length).Select(i => settings.colorset.GetColor(i)).ToArray();
+            Color[] colorsAlpha = colors.Select(x => Color.FromArgb((byte)(255 * fillAlpha), x)).ToArray();
 
-            var plottable = new PlottableRadar(values, categoryNames, groupNames, fillColors, (byte)(fillAlpha * 256), webColor.Value);
+            var plottable = new PlottableRadar(values, colors, fillColors ?? colorsAlpha)
+            {
+                categoryNames = categoryNames,
+                groupNames = groupNames,
+                webColor = webColor ?? Color.Gray
+            };
             Add(plottable);
             MatchAxis(this);
 
