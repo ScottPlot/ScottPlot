@@ -55,6 +55,7 @@ namespace ScottPlot
             List<double> xList = new List<double>();
             List<double> yList = new List<double>();
 
+            PointCount = (int)dims.DataWidth;
             for (int columnIndex = 0; columnIndex < dims.DataWidth; columnIndex++)
             {
                 double x = columnIndex * dims.UnitsPerPxX + dims.XMin;
