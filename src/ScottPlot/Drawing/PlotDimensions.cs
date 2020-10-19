@@ -37,7 +37,6 @@ namespace ScottPlot.Drawing
         public readonly double UnitsPerPxX;
         public readonly double UnitsPerPxY;
 
-
         public PlotDimensions(SizeF figureSize, SizeF dataSize, PointF dataOffset, AxisLimits2D axisLimits)
         {
             (Width, Height) = (figureSize.Width, figureSize.Height);
@@ -69,6 +68,16 @@ namespace ScottPlot.Drawing
             double pxFromMax = unitsFromMax * PxPerUnitY;
             double pixel = drawingOnDataBitmap ? pxFromMax : DataOffsetY + pxFromMax;
             return (float)pixel;
+        }
+
+        public double GetCoordinateX(float pixel, int axisIndex = 0)
+        {
+            return (pixel - DataOffsetX) / PxPerUnitX + XMin;
+        }
+
+        public double GetCoordinateY(float pixel, int axisIndex = 0)
+        {
+            return DataHeight - ((pixel - YMin) * PxPerUnitY);
         }
     }
 }
