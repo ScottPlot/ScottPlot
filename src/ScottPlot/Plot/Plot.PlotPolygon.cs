@@ -154,24 +154,17 @@ namespace ScottPlot
             double fillAlpha = 1
             )
         {
-            if (lineColor is null)
-                lineColor = settings.GetNextColor();
-
-            if (fillColor is null)
-                fillColor = settings.GetNextColor();
-
-            var plottable = new ScottPlot.PlottablePolygons(
-                    polys: polys,
-                    label: label,
-                    lineWidth: lineWidth,
-                    lineColor: lineColor.Value,
-                    fill: fill,
-                    fillColor: fillColor.Value,
-                    fillAlpha: fillAlpha
-                );
+            var plottable = new PlottablePolygons(polys)
+            {
+                label = label,
+                lineWidth = lineWidth,
+                lineColor = lineColor ?? Color.Black,
+                fill = fill,
+                fillColor = fillColor ?? settings.GetNextColor(),
+                fillAlpha = fillAlpha
+            };
 
             Add(plottable);
-
             return plottable;
         }
     }
