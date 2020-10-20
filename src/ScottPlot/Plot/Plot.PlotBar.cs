@@ -203,7 +203,7 @@ namespace ScottPlot
             series.color = settings.GetNextColor();
             if (label != null)
                 series.seriesLabel = label;
-            var plottable = new PlottablePopulations(series, label);
+            var plottable = new PlottablePopulations(series);
             Add(plottable);
             return plottable;
         }

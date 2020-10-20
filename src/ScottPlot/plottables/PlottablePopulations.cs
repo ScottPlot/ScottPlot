@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using ScottPlot.Config;
+using ScottPlot.Drawing;
 using ScottPlot.Statistics;
 
 namespace ScottPlot
 {
-    public class PlottablePopulations : Plottable
+    public class PlottablePopulations : Plottable, IPlottable
     {
-        public PopulationMultiSeries popMultiSeries;
+        public readonly PopulationMultiSeries popMultiSeries;
         public int groupCount { get { return popMultiSeries.groupCount; } }
         public int seriesCount { get { return popMultiSeries.seriesCount; } }
         public string[] labels { get { return popMultiSeries.seriesLabels; } }
@@ -19,40 +21,31 @@ namespace ScottPlot
 
         public bool displayDistributionCurve = true;
         public LineStyle distributionCurveLineStyle = LineStyle.Solid;
-        public System.Drawing.Color distributionCurveColor = System.Drawing.Color.Black;
-        public System.Drawing.Color scatterOutlineColor = System.Drawing.Color.Black;
+        public Color distributionCurveColor = Color.Black;
+        public Color scatterOutlineColor = Color.Black;
         public DisplayItems displayItems = DisplayItems.BoxAndScatter;
         public BoxStyle boxStyle = BoxStyle.BoxMedianQuartileOutlier;
 
         public PlottablePopulations(PopulationMultiSeries groupedSeries)
         {
-            this.popMultiSeries = groupedSeries;
+            popMultiSeries = groupedSeries;
         }
 
-        public PlottablePopulations(Population[] populations, string label = null, System.Drawing.Color? color = null)
+        public PlottablePopulations(Population[] populations, string label = null, Color? color = null)
         {
-            if (color is null)
-                color = System.Drawing.Color.LightGray;
-
-            var ps = new PopulationSeries(populations, label, color.Value);
+            var ps = new PopulationSeries(populations, label, color ?? Color.LightGray);
             popMultiSeries = new PopulationMultiSeries(new PopulationSeries[] { ps });
         }
 
-        public PlottablePopulations(PopulationSeries populationSeries, string label = null, System.Drawing.Color? color = null)
+        public PlottablePopulations(PopulationSeries populationSeries)
         {
-            if (color is null)
-                color = System.Drawing.Color.LightGray;
-
             popMultiSeries = new PopulationMultiSeries(new PopulationSeries[] { populationSeries });
         }
 
-        public PlottablePopulations(Population population, string label = null, System.Drawing.Color? color = null)
+        public PlottablePopulations(Population population, string label = null, Color? color = null)
         {
-            if (color is null)
-                color = System.Drawing.Color.LightGray;
-
             var populations = new Population[] { population };
-            var ps = new PopulationSeries(populations, label, color.Value);
+            var ps = new PopulationSeries(populations, label, color ?? Color.LightGray);
             popMultiSeries = new PopulationMultiSeries(new PopulationSeries[] { ps });
         }
 
@@ -104,7 +97,13 @@ namespace ScottPlot
             return new AxisLimits2D(positionMin, positionMax, minValue, maxValue);
         }
 
-        public override void Render(Settings settings)
+        // TODO: add validation to the Population module and check for it here
+        public string ValidationErrorMessage { get; private set; }
+        public bool IsValidData(bool deepValidation = false) => true;
+
+        public override void Render(Settings settings) => throw new InvalidOperationException("use other Render method");
+
+        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             Random rand = new Random(0);
             double groupWidth = .8;
@@ -142,30 +141,30 @@ namespace ScottPlot
                             throw new NotImplementedException();
                     }
 
-                    RenderPopulation.Scatter(settings, population, rand, popLeft, popWidth, series.color, scatterOutlineColor, 128, scatterPos);
+                    RenderPopulation.Scatter(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, scatterOutlineColor, 128, scatterPos);
 
                     if (displayDistributionCurve)
-                        RenderPopulation.Distribution(settings, population, rand, popLeft, popWidth, distributionCurveColor, scatterPos, distributionCurveLineStyle);
+                        RenderPopulation.Distribution(dims, bmp, lowQuality, population, rand, popLeft, popWidth, distributionCurveColor, scatterPos, distributionCurveLineStyle);
 
                     switch (boxStyle)
                     {
                         case BoxStyle.BarMeanStdErr:
-                            RenderPopulation.Bar(settings, population, rand, popLeft, popWidth, series.color, boxPos, useStdErr: true);
+                            RenderPopulation.Bar(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, boxPos, useStdErr: true);
                             break;
                         case BoxStyle.BarMeanStDev:
-                            RenderPopulation.Bar(settings, population, rand, popLeft, popWidth, series.color, boxPos, useStdErr: false);
+                            RenderPopulation.Bar(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, boxPos, useStdErr: false);
                             break;
                         case BoxStyle.BoxMeanStdevStderr:
-                            RenderPopulation.Box(settings, population, rand, popLeft, popWidth, series.color, boxPos, RenderPopulation.BoxFormat.StdevStderrMean);
+                            RenderPopulation.Box(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, boxPos, RenderPopulation.BoxFormat.StdevStderrMean);
                             break;
                         case BoxStyle.BoxMedianQuartileOutlier:
-                            RenderPopulation.Box(settings, population, rand, popLeft, popWidth, series.color, boxPos, RenderPopulation.BoxFormat.OutlierQuartileMedian);
+                            RenderPopulation.Box(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, boxPos, RenderPopulation.BoxFormat.OutlierQuartileMedian);
                             break;
                         case BoxStyle.MeanAndStderr:
-                            RenderPopulation.MeanAndError(settings, population, rand, popLeft, popWidth, series.color, boxPos, useStdErr: true);
+                            RenderPopulation.MeanAndError(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, boxPos, useStdErr: true);
                             break;
                         case BoxStyle.MeanAndStdev:
-                            RenderPopulation.MeanAndError(settings, population, rand, popLeft, popWidth, series.color, boxPos, useStdErr: false);
+                            RenderPopulation.MeanAndError(dims, bmp, lowQuality, population, rand, popLeft, popWidth, series.color, boxPos, useStdErr: false);
                             break;
                         default:
                             throw new NotImplementedException();
