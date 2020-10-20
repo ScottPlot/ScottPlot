@@ -25,12 +25,9 @@ namespace ScottPlot
             double scaleFactor = 1
             )
         {
-            if (!color.HasValue)
-            {
-                color = settings.GetNextColor();
-            }
-
-            var vectorField = new PlottableVectorField(vectors, xs, ys, label, color.Value, colormap, scaleFactor);
+            var vectorField = new PlottableVectorField(vectors, xs, ys,
+                colormap, scaleFactor, color ?? settings.GetNextColor())
+            { label = label };
 
             Add(vectorField);
             return vectorField;

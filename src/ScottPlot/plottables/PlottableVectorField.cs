@@ -1,5 +1,4 @@
 ﻿using ScottPlot.Config;
-using ScottPlot.Diagnostic.Attributes;
 using ScottPlot.Drawing;
 using ScottPlot.Statistics;
 using System;
@@ -10,24 +9,16 @@ using System.Linq;
 namespace ScottPlot
 {
 #pragma warning disable CS0618 // Type or member is obsolete
-    public class PlottableVectorField : Plottable
+    public class PlottableVectorField : Plottable, IPlottable
     {
-        public Vector2[,] vectors;
-        [FiniteNumbers, EqualLength]
-        public double[] xs;
-        [FiniteNumbers, EqualLength]
-        public double[] ys;
+        private readonly Vector2[,] vectors;
+        private readonly double[] xs;
+        private readonly double[] ys;
+        private readonly Color[] arrowColors;
         public string label;
-        public Color color;
-        private Colormap colormap;
 
-        private Pen pen;
-        private Color[] arrowColors;
-        private double scaleFactor;
-
-        public PlottableVectorField(Vector2[,] vectors, double[] xs, double[] ys, string label, Color color, Colormap colormap, double scaleFactor)
+        public PlottableVectorField(Vector2[,] vectors, double[] xs, double[] ys, Colormap colormap, double scaleFactor, Color defaultColor)
         {
-            //the magnitude squared is faster to compute than the magnitude
             double minMagnitudeSquared = vectors[0, 0].Length();
             double maxMagnitudeSquared = vectors[0, 0].Length();
             for (int i = 0; i < xs.Length; i++)
@@ -35,85 +26,68 @@ namespace ScottPlot
                 for (int j = 0; j < ys.Length; j++)
                 {
                     if (vectors[i, j].LengthSquared() > maxMagnitudeSquared)
-                    {
                         maxMagnitudeSquared = vectors[i, j].LengthSquared();
-                    }
                     else if (vectors[i, j].LengthSquared() < minMagnitudeSquared)
-                    {
                         minMagnitudeSquared = vectors[i, j].LengthSquared();
-                    }
                 }
             }
             double minMagnitude = Math.Sqrt(minMagnitudeSquared);
             double maxMagnitude = Math.Sqrt(maxMagnitudeSquared);
-            double[,] intensities = new double[xs.Length, ys.Length];
 
+            double[,] intensities = new double[xs.Length, ys.Length];
             for (int i = 0; i < xs.Length; i++)
             {
                 for (int j = 0; j < ys.Length; j++)
                 {
                     if (colormap != null)
-                    {
                         intensities[i, j] = (vectors[i, j].Length() - minMagnitude) / (maxMagnitude - minMagnitude);
-                    }
-                    vectors[i, j] = Vector2.Multiply(vectors[i, j], (float)(scaleFactor / (maxMagnitude * 1.2))); //This is not a true normalize
+                    vectors[i, j] = Vector2.Multiply(vectors[i, j], (float)(scaleFactor / (maxMagnitude * 1.2)));
                 }
             }
 
-            if (colormap != null)
-            {
-                double[] flattenedIntensities = intensities.Cast<double>().ToArray();
-                arrowColors = Colormap.GetColors(flattenedIntensities, colormap);
-            }
+            double[] flattenedIntensities = intensities.Cast<double>().ToArray();
+            arrowColors = colormap is null ?
+                Enumerable.Range(0, flattenedIntensities.Length).Select(x => defaultColor).ToArray() :
+                Colormap.GetColors(flattenedIntensities, colormap);
 
             this.vectors = vectors;
             this.xs = xs;
             this.ys = ys;
-            this.label = label;
-            this.color = color;
-            this.colormap = colormap;
-            this.scaleFactor = scaleFactor;
-
-            pen = new Pen(color);
-            pen.CustomEndCap = new AdjustableArrowCap(2, 2);
         }
 
-        public override LegendItem[] GetLegendItems()
-        {
-            return new LegendItem[] { new LegendItem(label, color, lineWidth: 10, markerShape: MarkerShape.none) };
-        }
+        public string ValidationErrorMessage => null;
+        public bool IsValidData(bool deepValidation = false) => true; // assume data is always valid
 
-        public override AxisLimits2D GetLimits()
-        {
-            return new AxisLimits2D(xs.Min() - 1, xs.Max() + 1, ys.Min() - 1, ys.Max() + 1);
-        }
+        public override LegendItem[] GetLegendItems() =>
+            new LegendItem[] { new LegendItem(label, arrowColors[0], lineWidth: 10, markerShape: MarkerShape.none) };
 
-        public override int GetPointCount()
-        {
-            return vectors.Length;
-        }
+        public override AxisLimits2D GetLimits() =>
+            new AxisLimits2D(xs.Min() - 1, xs.Max() + 1, ys.Min() - 1, ys.Max() + 1);
 
-        public override void Render(Settings settings)
+        public override int GetPointCount() => vectors.Length;
+
+        public override void Render(Settings settings) => throw new NotImplementedException("use new Render method");
+
+        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            for (int i = 0; i < xs.Length; i++)
+            using (Graphics gfx = GDI.Graphics(bmp, lowQuality))
+            using (Pen pen = GDI.Pen(Color.Black))
             {
-                for (int j = 0; j < ys.Length; j++)
+                pen.CustomEndCap = new AdjustableArrowCap(2, 2);
+                for (int i = 0; i < xs.Length; i++)
                 {
-                    if (this.colormap != null)
+                    for (int j = 0; j < ys.Length; j++)
                     {
+                        Vector2 v = vectors[i, j];
+                        float tailX = dims.GetPixelX(xs[i] - v.X / 2);
+                        float tailY = dims.GetPixelY(ys[j] - v.Y / 2);
+                        float endX = dims.GetPixelX(xs[i] + v.X / 2);
+                        float endY = dims.GetPixelY(v.Y + ys[j] - v.Y / 2);
                         pen.Color = arrowColors[i * ys.Length + j];
+                        gfx.DrawLine(pen, tailX, tailY, endX, endY);
                     }
-                    PlotVector(vectors[i, j], xs[i], ys[j], settings);
                 }
             }
-        }
-
-        private void PlotVector(Vector2 v, double tailX, double tailY, Settings settings)
-        {
-            PointF tail = settings.GetPixel(tailX - v.X / 2, tailY - v.Y / 2);
-            PointF end = settings.GetPixel(tailX + v.X / 2, v.Y + tailY - v.Y / 2);
-
-            settings.gfxData.DrawLine(pen, tail, end);
         }
 
         public override string ToString()
