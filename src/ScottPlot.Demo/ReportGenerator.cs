@@ -116,7 +116,11 @@ namespace ScottPlot.Demo
                 md.AppendLine($"### {title}\n\n");
                 md.AppendLine($"{description}\n\n");
                 md.AppendLine($"```cs\n{sourceCode}\n```\n\n");
-                md.AppendLine($"![](images/{recipe.id}.png)\n\n");
+
+                if (recipe.categoryMinor != "DataDiagnostic")
+                {
+                    md.AppendLine($"![](images/{recipe.id}.png)\n\n");
+                }
             }
 
             md.Insert(0, $"## Table of Contents\n\n![](TOC)\n\n");

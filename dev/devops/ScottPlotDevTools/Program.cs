@@ -82,8 +82,11 @@ namespace ScottPlotDevTools
             var recipes = ScottPlot.Demo.Reflection.GetPlots();
             foreach (var recipe in recipes)
             {
-                Console.Write(".");
-                reportGeneratpr.CreateImage(recipe);
+                if (recipe.categoryMinor != "DataDiagnostic")
+                {
+                    Console.Write(".");
+                    reportGeneratpr.CreateImage(recipe);
+                }
             }
             Console.WriteLine();
 
