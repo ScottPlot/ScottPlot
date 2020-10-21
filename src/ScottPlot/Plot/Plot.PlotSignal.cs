@@ -10,7 +10,6 @@ namespace ScottPlot
 {
     public partial class Plot
     {
-
         public PlottableSignalXY PlotSignalXY(
             double[] xs,
             double[] ys,
@@ -24,27 +23,20 @@ namespace ScottPlot
             bool useParallel = true
             )
         {
-            if (color == null)
-                color = settings.GetNextColor();
-
-            if (minRenderIndex == null)
-                minRenderIndex = 0;
-            if (maxRenderIndex == null)
-                maxRenderIndex = ys.Length - 1;
-
             PlottableSignalXY signal = new PlottableSignalXY()
             {
                 xs = xs,
                 ys = ys,
-                color = (Color)color,
+                color = color ?? settings.GetNextColor(),
                 lineWidth = lineWidth,
                 markerSize = (float)markerSize,
                 label = label,
-                minRenderIndex = minRenderIndex.Value,
-                maxRenderIndex = maxRenderIndex.Value,
+                minRenderIndex = minRenderIndex ?? 0,
+                maxRenderIndex = maxRenderIndex ?? ys.Length - 1,
                 lineStyle = lineStyle,
                 useParallel = useParallel
             };
+
             Add(signal);
             return signal;
         }
@@ -63,24 +55,16 @@ namespace ScottPlot
             ) where TX : struct, IComparable where TY : struct, IComparable
 
         {
-            if (color == null)
-                color = settings.GetNextColor();
-
-            if (minRenderIndex == null)
-                minRenderIndex = 0;
-            if (maxRenderIndex == null)
-                maxRenderIndex = ys.Length - 1;
-
             PlottableSignalXYConst<TX, TY> signal = new PlottableSignalXYConst<TX, TY>()
             {
                 xs = xs,
                 ys = ys,
-                color = (Color)color,
+                color = color ?? settings.GetNextColor(),
                 lineWidth = lineWidth,
                 markerSize = (float)markerSize,
                 label = label,
-                minRenderIndex = minRenderIndex.Value,
-                maxRenderIndex = maxRenderIndex.Value,
+                minRenderIndex = minRenderIndex ?? 0,
+                maxRenderIndex = maxRenderIndex ?? ys.Length - 1,
                 lineStyle = lineStyle,
                 useParallel = useParallel
             };
@@ -105,28 +89,19 @@ namespace ScottPlot
             bool useParallel = true
             )
         {
-            if (color == null)
-                color = settings.GetNextColor();
-
-            if (minRenderIndex == null)
-                minRenderIndex = 0;
-
-            if (maxRenderIndex == null)
-                maxRenderIndex = ys.Length - 1;
-
             PlottableSignal signal = new PlottableSignal()
             {
                 ys = ys,
                 sampleRate = sampleRate,
                 xOffset = xOffset,
                 yOffset = yOffset,
-                color = (Color)color,
+                color = color ?? settings.GetNextColor(),
                 lineWidth = lineWidth,
                 markerSize = (float)markerSize,
                 label = label,
                 colorByDensity = colorByDensity,
-                minRenderIndex = minRenderIndex.Value,
-                maxRenderIndex = maxRenderIndex.Value,
+                minRenderIndex = minRenderIndex ?? 0,
+                maxRenderIndex = maxRenderIndex ?? ys.Length - 1,
                 lineStyle = lineStyle,
                 useParallel = useParallel,
             };
@@ -151,28 +126,19 @@ namespace ScottPlot
             bool useParallel = true
             ) where T : struct, IComparable
         {
-            if (color == null)
-                color = settings.GetNextColor();
-
-            if (minRenderIndex == null)
-                minRenderIndex = 0;
-
-            if (maxRenderIndex == null)
-                maxRenderIndex = ys.Length - 1;
-
             PlottableSignalConst<T> signal = new PlottableSignalConst<T>()
             {
                 ys = ys,
                 sampleRate = sampleRate,
                 xOffset = xOffset,
                 yOffset = yOffset,
-                color = (Color)color,
+                color = color ?? settings.GetNextColor(),
                 lineWidth = lineWidth,
                 markerSize = (float)markerSize,
                 label = label,
                 colorByDensity = colorByDensity,
-                minRenderIndex = minRenderIndex.Value,
-                maxRenderIndex = maxRenderIndex.Value,
+                minRenderIndex = minRenderIndex ?? 0,
+                maxRenderIndex = maxRenderIndex ?? ys.Length - 1,
                 lineStyle = lineStyle,
                 useParallel = useParallel
             };
