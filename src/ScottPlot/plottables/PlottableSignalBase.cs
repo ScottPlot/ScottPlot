@@ -101,24 +101,22 @@ namespace ScottPlot
                 _maxRenderIndex = value;
             }
         }
-        private Pen[] penByDensity;
         private int densityLevelCount = 0;
 
-        private Color[] _colorByDensity;
+        private Color[] PenColorsByDensity;
         public Color[] colorByDensity
         {
-            get => _colorByDensity;
             set
             {
-                if (colorByDensity != null)
+                if (value != null)
                 {
                     // turn the ramp into a pen triangle
-                    densityLevelCount = colorByDensity.Length * 2 - 1;
-                    penByDensity = new Pen[densityLevelCount];
-                    for (int i = 0; i < colorByDensity.Length; i++)
+                    densityLevelCount = value.Length * 2 - 1;
+                    PenColorsByDensity = new Color[densityLevelCount];
+                    for (int i = 0; i < value.Length; i++)
                     {
-                        penByDensity[i] = new Pen(colorByDensity[i]);
-                        penByDensity[densityLevelCount - 1 - i] = new Pen(colorByDensity[i]);
+                        PenColorsByDensity[i] = value[i];
+                        PenColorsByDensity[densityLevelCount - 1 - i] = value[i];
                     }
                 }
             }
@@ -493,10 +491,10 @@ namespace ScottPlot
             }
 
             // Draw baseline
-            gfx.DrawLine(
-                new Pen(Color.Black, 1),
-                baselinePointStart,
-                baselinePointEnd);
+            using (var baselinePen = GDI.Pen(Color.Black))
+            {
+                gfx.DrawLine(baselinePen, baselinePointStart, baselinePointEnd);
+            }
         }
 
         private Rectangle GetFillRectangle(PlotDimensions dims, float startX, float xPxEnd, FillType fillType)
@@ -560,7 +558,10 @@ namespace ScottPlot
                         linePoints.Add(linePointsLevels[j][i + 1]);
                     }
                 }
-                gfx.DrawLines(penByDensity[i], linePoints.ToArray());
+                using (Pen densityPen = GDI.Pen(PenColorsByDensity[i]))
+                {
+                    gfx.DrawLines(densityPen, linePoints.ToArray());
+                }
 
 
                 if (fillType == FillType.FillAbove || fillType == FillType.FillBelow)
