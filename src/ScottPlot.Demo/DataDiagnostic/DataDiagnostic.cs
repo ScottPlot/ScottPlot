@@ -67,36 +67,36 @@ namespace ScottPlot.Demo.DataDiagnostic
             }
         }
 
-        public class ScatterEqualLengthCheck : PlotDemo, IPlotDemo
+        public class ScatterValidation : PlotDemo, IPlotDemo
         {
             // TODO make good name/description
-            public string name { get; } = "Scatter with 1000 Points";
-            public string description { get; } = "After 5 seconds wrong data writed to xs array, this can be catch on Render with DiagnosticMode";
+            public string name { get; } = "Scatter with mismatched X/Y pairs";
+            public string description { get; } = "Demonstrates a bad dataset where xs and ys are different lengths";
+
+            public void Render(Plot plt)
+            {
+                double[] ys = DataGen.Consecutive(50);
+                double[] xs = DataGen.Sin(51);
+                plt.PlotScatter(xs, ys);
+            }
+        }
+
+        public class ScatterValidationDeep : PlotDemo, IPlotDemo
+        {
+            // TODO make good name/description
+            public string name { get; } = "Scatter with deep validation";
+            public string description { get; } = "Diagnostic mode ensures every data value is valid";
 
             public void Render(Plot plt)
             {
                 plt.DiagnosticMode = true;
+                double[] ys = DataGen.Consecutive(50);
+                double[] xs = DataGen.Sin(50);
 
-                // generate random, unevenly-spaced data
-                Random rand = new Random(0);
-                int pointCount = 1_000;
-                double[] ys = new double[pointCount];
-                double[] xs = new double[pointCount];
-                for (int i = 1; i < ys.Length; i++)
-                {
-                    ys[i] = ys[i - 1] + rand.NextDouble() - .5;
-                    xs[i] = xs[i - 1] + rand.NextDouble();
-                }
+                // insert an invalid number
+                ys[13] = double.NegativeInfinity;
 
-                plt.Title($"ScatterPlot ({pointCount:N0} points)");
-                var scatter = plt.PlotScatter(xs, ys);
-
-                // Check goes only on Render, so user must interract with plot after 5 seconds
-                Task.Run(() =>
-                  {
-                      Thread.Sleep(5000);
-                      scatter.ys = ys.Concat(new double[] { 42 }).ToArray();
-                  });
+                plt.PlotScatter(xs, ys);
             }
         }
     }

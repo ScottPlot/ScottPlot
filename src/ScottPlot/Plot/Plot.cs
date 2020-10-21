@@ -14,6 +14,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.Linq;
+using System.Text;
 
 namespace ScottPlot
 {
@@ -113,6 +114,8 @@ namespace ScottPlot
             }
 
             settings.Benchmark.Start();
+            StringBuilder errorMessages = new StringBuilder();
+
             if (settings.gfxFigure != null)
             {
                 settings.gfxFigure.SmoothingMode = settings.misc.antiAliasFigure ? SmoothingMode.AntiAlias : SmoothingMode.None;
@@ -130,18 +133,27 @@ namespace ScottPlot
                 settings.DataBackground.Render(settings);
                 settings.HorizontalGridLines.Render(settings);
                 settings.VerticalGridLines.Render(settings);
-                if (DiagnosticMode)
+                
+                foreach(var plottable in settings.plottables)
                 {
-                    new Diagnostic.DiagnosticDataChecker().CheckPlottables(settings.plottables);
+                    if (plottable is IPlottable p)
+                    {
+                        if (p.IsValidData(deepValidation: diagnosticMode) == false)
+                            errorMessages.AppendLine(p.ValidationErrorMessage);
+                    }
                 }
+
                 Renderer.DataPlottables(settings);
                 Renderer.MouseZoomRectangle(settings);
                 Renderer.PlaceDataOntoFigure(settings);
                 settings.Legend.Render(settings);
             }
+
             settings.Benchmark.Stop();
             settings.Benchmark.UpdateMessage(settings.plottables.Count, settings.GetTotalPointCount());
             settings.Benchmark.Render(settings);
+            settings.ErrorMessage.Text = errorMessages.ToString();
+            settings.ErrorMessage.Render(settings);
         }
 
         public Bitmap GetBitmap(bool renderFirst = true, bool lowQuality = false)

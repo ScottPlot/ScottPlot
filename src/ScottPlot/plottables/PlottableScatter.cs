@@ -137,7 +137,7 @@ namespace ScottPlot
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            if (xs is null || xs.Length == 0 || visible == false)
+            if (visible == false || IsValidData() == false)
                 return;
 
             using (var gfx = Graphics.FromImage(bmp))

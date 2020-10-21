@@ -67,15 +67,9 @@ namespace ScottPlot
             LineStyle lineStyle = LineStyle.Solid
             )
         {
-            if (color == null)
-                color = settings.GetNextColor();
-
-            if (xs is null || ys is null || xs.Length == 0 || xs.Length != ys.Length)
-                throw new ArgumentException("xs and ys must be equal length arrays with elements");
-
             var scatterPlot = new PlottableScatter(xs, ys, errorX, errorY)
             {
-                color = (Color)color,
+                color = color ?? settings.GetNextColor(),
                 lineWidth = lineWidth,
                 markerSize = (float)markerSize,
                 label = label,
