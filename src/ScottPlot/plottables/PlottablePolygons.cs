@@ -32,10 +32,31 @@ namespace ScottPlot
             return $"PlottablePolygons {label} with {GetPointCount()} polygons";
         }
 
-        public string ValidationErrorMessage => throw new NotImplementedException();
+        public string ValidationErrorMessage { get; private set; }
         public bool IsValidData(bool deepValidation = false)
         {
-            throw new NotImplementedException();
+            if (deepValidation)
+            {
+                foreach (var poly in polys)
+                {
+                    foreach (var point in poly)
+                    {
+                        try
+                        {
+                            Validate.AssertIsReal("x", point.x);
+                            Validate.AssertIsReal("y", point.y);
+                        }
+                        catch (ArgumentException e)
+                        {
+                            ValidationErrorMessage = e.ToString();
+                            return false;
+                        }
+                    }
+                }
+            }
+
+            ValidationErrorMessage = null;
+            return true;
         }
 
         public override int GetPointCount() => polys.Count;
