@@ -13,7 +13,7 @@ namespace ScottPlot.Demo.DataDiagnostic
             public string name => "SignalContainNAN";
 
             // TODO make good description
-            public string description => "Data values containing NAN values can be catched using DiagnosticMode";
+            public string description => "Data values containing NAN values can be caught using DiagnosticMode";
 
             public void Render(Plot plt)
             {
@@ -38,7 +38,7 @@ namespace ScottPlot.Demo.DataDiagnostic
         {
             // TODO make good name/description
             public string name { get; } = "Signal with X and Y data";
-            public string description { get; } = "After 5 seconds wrong data writed to xs array, this can be catch on Render with DiagnosticMode";
+            public string description { get; } = "After 5 seconds wrong data writed to xs array, this can be caught on Render with DiagnosticMode";
 
             public void Render(Plot plt)
             {
@@ -58,7 +58,7 @@ namespace ScottPlot.Demo.DataDiagnostic
                 plt.Title($"SignalXY Plot ({pointCount:N0} points)");
                 plt.PlotSignalXY(xs, ys);
 
-                // Check goes only on Render, so user must interract with plot after 5 seconds
+                // Check only happens on Render, so user must interract with plot after 5 seconds
                 Task.Run(() =>
                   {
                       Thread.Sleep(5000);
@@ -71,7 +71,7 @@ namespace ScottPlot.Demo.DataDiagnostic
         {
             // TODO make good name/description
             public string name { get; } = "Scatter with 1000 Points";
-            public string description { get; } = "After 5 seconds wrong data writed to xs array, this can be catch on Render with DiagnosticMode";
+            public string description { get; } = "After 5 seconds wrong data writed to xs array, this can be caught on Render with DiagnosticMode";
 
             public void Render(Plot plt)
             {
@@ -91,7 +91,7 @@ namespace ScottPlot.Demo.DataDiagnostic
                 plt.Title($"ScatterPlot ({pointCount:N0} points)");
                 var scatter = plt.PlotScatter(xs, ys);
 
-                // Check goes only on Render, so user must interract with plot after 5 seconds
+                // Check only happens on Render, so user must interract with plot after 5 seconds
                 Task.Run(() =>
                   {
                       Thread.Sleep(5000);
