@@ -133,8 +133,8 @@ namespace ScottPlot
                 settings.DataBackground.Render(settings);
                 settings.HorizontalGridLines.Render(settings);
                 settings.VerticalGridLines.Render(settings);
-                
-                foreach(var plottable in settings.plottables)
+
+                foreach (var plottable in settings.plottables)
                 {
                     if (plottable is IPlottable p)
                     {
