@@ -21,17 +21,6 @@ namespace ScottPlotTests.Plot
         }
 
         [Test]
-        public void Test_Scatter_EmptyArrays()
-        {
-            double[] dataX = { };
-            double[] dataY = { };
-
-            var plt = new ScottPlot.Plot(400, 300);
-
-            Assert.Throws<ArgumentException>(() => { plt.PlotScatter(dataX, dataY); });
-        }
-
-        [Test]
         public void Test_Scatter_HasNanY()
         {
             double[] dataX = { 1, 2, 3, 4, 5 };
