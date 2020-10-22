@@ -233,7 +233,7 @@ namespace ScottPlot
             if (XSequalYSPromise)
                 ValidationErrorMessage += "\nXs and Ys must have same length";
 
-            return ValidationErrorMessage.Length == 0;
+            return string.IsNullOrWhiteSpace(ValidationErrorMessage);
         }
 
         public override string ToString()

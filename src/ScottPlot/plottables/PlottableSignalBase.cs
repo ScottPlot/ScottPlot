@@ -4,6 +4,7 @@ using ScottPlot.Drawing;
 using ScottPlot.MinMaxSearchStrategies;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
@@ -658,20 +659,47 @@ namespace ScottPlot
 
         public virtual bool IsValidData(bool deepValidation = false)
         {
-            StringBuilder sb = new StringBuilder();
+            try
+            {
+                if (ys is null)
+                    throw new ArgumentException("ys cannot be null");
 
-            if (MaxRenderIndexLowerYSPromise)
-                sb.AppendLine("maxRenderIndex must be a valid index for ys[]");
-            if (MaxRenderIndexHigherMinRenderIndexPromise)
-                sb.AppendLine("minRenderIndex must be lower maxRenderIndex");
-            if (FillColor1MustBeSetPromise)
-                sb.AppendLine("A fill color needs to be specified if fill is used");
-            if (FillColor2MustBeSetPromise)
-                sb.AppendLine("Two fill colors needs to be specified if fill above and below is used");
+                if (minRenderIndex < 0 || minRenderIndex > maxRenderIndex)
+                    throw new ArgumentException("minRenderIndex must be between 0 and maxRenderIndex");
 
-            ValidationErrorMessage = sb.ToString();
+                if ((maxRenderIndex > ys.Length - 1) || maxRenderIndex < 0)
+                    throw new ArgumentException("maxRenderIndex must be a valid index for ys[]");
 
-            return ValidationErrorMessage.Length == 0;
+                if (deepValidation)
+                {
+                    for (int i = 0; i < ys.Length; i++)
+                    {
+                        double y = Convert.ToDouble(ys[i]);
+                        if (double.IsNaN(y) || double.IsInfinity(y))
+                            throw new ArgumentException($"ys[{i}] is {ys[i]}");
+                    }
+                }
+
+                if (MaxRenderIndexLowerYSPromise)
+                    throw new ArgumentException("maxRenderIndex must be a valid index for ys[]");
+
+                if (MaxRenderIndexHigherMinRenderIndexPromise)
+                    throw new ArgumentException("minRenderIndex must be lower maxRenderIndex");
+
+                if (FillColor1MustBeSetPromise)
+                    throw new ArgumentException("A fill color needs to be specified if fill is used");
+
+                if (FillColor2MustBeSetPromise)
+                    throw new ArgumentException("Two fill colors needs to be specified if fill above and below is used");
+
+                ValidationErrorMessage = null;
+                return true;
+            }
+            catch (ArgumentException e)
+            {
+                ValidationErrorMessage = e.ToString();
+                return false;
+            }
         }
     }
 }
