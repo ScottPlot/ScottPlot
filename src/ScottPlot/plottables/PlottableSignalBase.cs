@@ -384,13 +384,10 @@ namespace ScottPlot
                             (int)(last.X - first.X),
                             (int)(maxVal - minVal) + 2 * (fillType == FillType.FillAbove ? -1 : 1)));
 
-                LinearGradientBrush linearGradientBrush = new LinearGradientBrush(
-                    gradientRectangle,
-                    _fillColor1.Value,
-                    gradientFillColor1 ?? _fillColor1.Value,
-                    LinearGradientMode.Vertical);
-
-                gfx.FillPolygon(linearGradientBrush, points);
+                using (var brush = new LinearGradientBrush(gradientRectangle, _fillColor1.Value, gradientFillColor1 ?? _fillColor1.Value, LinearGradientMode.Vertical))
+                {
+                    gfx.FillPolygon(brush, points);
+                }
             }
             else
             {
@@ -459,35 +456,28 @@ namespace ScottPlot
             var aboveRect = GetFillRectangle(dims, xPxStart, xPxEnd, FillType.FillAbove);
             if (aboveRect.Height != 0 && aboveRect.Width != 0)
             {
-                LinearGradientBrush linearGradientBrushAbove = new LinearGradientBrush(
-                    aboveRect,
-                    _fillColor1.Value,
-                    gradientFillColor1 ?? _fillColor1.Value,
-                    LinearGradientMode.Vertical);
-
-                gfx.FillPolygon(linearGradientBrushAbove,
-                    new PointF[] { first }
-                    .Concat(pointList.Where(p => p.Y <= baseline).ToArray())
-                    .Concat(new PointF[] { last })
-                    .ToArray());
+                using (var brush = new LinearGradientBrush(aboveRect, _fillColor1.Value, gradientFillColor1 ?? _fillColor1.Value, LinearGradientMode.Vertical))
+                {
+                    gfx.FillPolygon(brush,
+                        new PointF[] { first }
+                        .Concat(pointList.Where(p => p.Y <= baseline).ToArray())
+                        .Concat(new PointF[] { last })
+                        .ToArray());
+                }
             }
 
             // Below graph
             var belowRect = GetFillRectangle(dims, xPxStart, xPxEnd, FillType.FillBelow);
             if (belowRect.Height != 0 && belowRect.Width != 0)
             {
-                LinearGradientBrush linearGradientBrushBelow = new LinearGradientBrush(
-                    belowRect,
-                    _fillColor2.Value,
-                    gradientFillColor2 ?? _fillColor2.Value,
-                    LinearGradientMode.Vertical);
-
-                gfx.FillPolygon(linearGradientBrushBelow,
-                    new PointF[] { first }
-                    .Concat(pointList.Where(p => p.Y >= baseline).ToArray())
-                    .Concat(new PointF[] { last })
-                    .ToArray());
-
+                using (var brush = new LinearGradientBrush(belowRect, _fillColor2.Value, gradientFillColor2 ?? _fillColor2.Value, LinearGradientMode.Vertical))
+                {
+                    gfx.FillPolygon(brush,
+                        new PointF[] { first }
+                        .Concat(pointList.Where(p => p.Y >= baseline).ToArray())
+                        .Concat(new PointF[] { last })
+                        .ToArray());
+                }
             }
 
             // Draw baseline
