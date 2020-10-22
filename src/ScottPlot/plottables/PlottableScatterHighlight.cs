@@ -1,43 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Text;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ScottPlot.Config;
 using ScottPlot.Drawing;
 using ScottPlot.plottables;
 
 namespace ScottPlot
 {
-    public class PlottableScatterHighlight : PlottableScatter, IExportable, IHighlightable
+    public class PlottableScatterHighlight : PlottableScatter, IExportable, IHighlightable, IPlottable
     {
-        public MarkerShape highlightedShape;
-        public float highlightedMarkerSize;
-        public Color highlightedColor;
+        public MarkerShape highlightedShape = MarkerShape.openCircle;
+        public float highlightedMarkerSize = 10;
+        public Color highlightedColor = Color.Red;
         protected bool[] isHighlighted;
 
-        public PlottableScatterHighlight(double[] xs, double[] ys, Color color, double lineWidth, double markerSize, string label,
-            double[] errorX, double[] errorY, double errorLineWidth, double errorCapSize, bool stepDisplay, MarkerShape markerShape, LineStyle lineStyle, MarkerShape highlightedShape, Color highlightedColor, double highlightedMarkerSize)
-            : base(xs, ys, color, lineWidth, markerSize, label, errorX, errorY, errorLineWidth, errorCapSize, stepDisplay, markerShape, lineStyle)
-        {
-            if (xs.Length != ys.Length)
-                throw new ArgumentException("xs and ys must have same length");
-            this.highlightedColor = highlightedColor;
-            this.highlightedMarkerSize = (float)highlightedMarkerSize;
-            this.highlightedShape = highlightedShape;
-            HighlightClear();
-        }
+        public PlottableScatterHighlight(double[] xs, double[] ys, double[] xErr = null, double[] yErr = null) :
+                                    base(xs, ys, xErr, yErr) => HighlightClear();
 
-        protected override void DrawPoint(Settings settings, List<PointF> points, int i)
+        public new void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            // always draw the underlying point
-            base.DrawPoint(settings, points, i);
+            base.Render(dims, bmp, lowQuality);
 
-            // if highlighted, draw the highlight marker on top of it
-            if (isHighlighted[i])
-                MarkerTools.DrawMarker(settings.gfxData, points[i], highlightedShape, highlightedMarkerSize, highlightedColor);
+            if (isHighlighted is null || isHighlighted.Length == 0)
+                return;
+
+            using (var gfx = Graphics.FromImage(bmp))
+            {
+                gfx.SmoothingMode = lowQuality ? SmoothingMode.HighSpeed : SmoothingMode.AntiAlias;
+                gfx.TextRenderingHint = lowQuality ? TextRenderingHint.SingleBitPerPixelGridFit : TextRenderingHint.AntiAliasGridFit;
+
+                var highlightedIndexes = Enumerable.Range(0, isHighlighted.Length).Where(x => isHighlighted[x]);
+                foreach (int i in highlightedIndexes)
+                {
+                    PointF pt = new PointF(dims.GetPixelX(xs[i]), dims.GetPixelY(ys[i]));
+                    MarkerTools.DrawMarker(gfx, pt, highlightedShape, highlightedMarkerSize, highlightedColor);
+                }
+            }
         }
 
         public void HighlightClear()

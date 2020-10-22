@@ -10,9 +10,9 @@ namespace ScottPlotTests.Plot
 {
     public class PlottableScatterHighlightTestable : PlottableScatterHighlight
     {
-        public PlottableScatterHighlightTestable(double[] xs, double[] ys, Color color, double lineWidth, double markerSize, string label,
-            double[] errorX, double[] errorY, double errorLineWidth, double errorCapSize, bool stepDisplay, MarkerShape markerShape, LineStyle lineStyle, MarkerShape highlightedShape, Color highlightedColor, double highlightedMarkerSize)
-            : base(xs, ys, color, lineWidth, markerSize, label, errorX, errorY, errorLineWidth, errorCapSize, stepDisplay, markerShape, lineStyle, highlightedShape, highlightedColor, highlightedMarkerSize)
+        public PlottableScatterHighlightTestable(
+            double[] xs, double[] ys, double[] errorX, double[] errorY)
+            : base(xs, ys, errorX, errorY)
         {
         }
 
@@ -39,7 +39,7 @@ namespace ScottPlotTests.Plot
             double[] xs = new double[] { 1.0, 2.0, 3.0, 4.0 };
             double[] ys = new double[] { 1.0, 2.0, 3.0, 4.0 };
             double[] error = new double[] { 0.1, 0.1, 0.1, 0.1 };
-            return new PlottableScatterHighlightTestable(xs, ys, Color.Red, 1, 1, "Test", error, error, 1, 1, false, MarkerShape.openCircle, LineStyle.Solid, MarkerShape.openSquare, Color.Green, 10);
+            return new PlottableScatterHighlightTestable(xs, ys, error, error) { color = Color.Green };
         }
 
         [Test]

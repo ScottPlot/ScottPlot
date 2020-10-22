@@ -5,6 +5,7 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 
@@ -27,6 +28,9 @@ namespace ScottPlot
             Color? frameColor = null
             )
         {
+            if (!string.IsNullOrWhiteSpace(label))
+                Debug.WriteLine("WARNING: the PlotText() label argument is ignored");
+
             PlottableText plottableText = new PlottableText()
             {
                 text = text,
@@ -62,28 +66,28 @@ namespace ScottPlot
             bool shadow = false
             )
         {
-
-            fontColor = (fontColor is null) ? Color.Black : fontColor.Value;
-            fillColor = (fillColor is null) ? Color.Yellow : fillColor.Value;
-            lineColor = (lineColor is null) ? Color.Black : lineColor.Value;
+            fontColor = fontColor ?? Color.Black;
+            fillColor = fillColor ?? Color.Yellow;
+            lineColor = lineColor ?? Color.Black;
 
             fontColor = Color.FromArgb((int)(255 * fontAlpha), fontColor.Value.R, fontColor.Value.G, fontColor.Value.B);
             fillColor = Color.FromArgb((int)(255 * fillAlpha), fillColor.Value.R, fillColor.Value.G, fillColor.Value.B);
             lineColor = Color.FromArgb((int)(255 * lineAlpha), lineColor.Value.R, lineColor.Value.G, lineColor.Value.B);
 
-            var plottable = new PlottableAnnotation(
-                    xPixel: xPixel,
-                    yPixel: yPixel,
-                    label: label,
-                    fontSize: fontSize,
-                    fontName: fontName,
-                    fontColor: fontColor.Value,
-                    fill: fill,
-                    fillColor: fillColor.Value,
-                    lineWidth: lineWidth,
-                    lineColor: lineColor.Value,
-                    shadow: shadow
-                );
+            var plottable = new PlottableAnnotation()
+            {
+                xPixel = xPixel,
+                yPixel = yPixel,
+                label = label,
+                FontSize = (float)fontSize,
+                FontName = fontName,
+                FontColor = fontColor.Value,
+                Background = fill,
+                BackgroundColor = fillColor.Value,
+                BorderWidth = (float)lineWidth,
+                BorderColor = lineColor.Value,
+                Shadow = shadow
+            };
 
             Add(plottable);
             return plottable;

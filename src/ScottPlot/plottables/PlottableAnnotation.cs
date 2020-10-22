@@ -1,89 +1,89 @@
 ﻿using ScottPlot.Config;
-using ScottPlot.Diagnostic.Attributes;
+using ScottPlot.Drawing;
+using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Text;
+using System.Text;
 
 namespace ScottPlot
 {
-    public class PlottableAnnotation : Plottable
+    public class PlottableAnnotation : Plottable, IPlottable
     {
-        [FiniteNumbers]
+        // TODO: capitalize these fields in a future version
         public double xPixel;
-        [FiniteNumbers]
         public double yPixel;
         public string label;
 
-        Font font;
-        Brush fontBrush;
-        bool fill;
-        Brush fillBrush;
-        Brush shadowBrush;
-        Pen pen;
-        bool shadow;
+        public string FontName;
+        public Color FontColor = Color.Red;
+        public float FontSize = 12;
+        public bool FontBold = false;
 
+        public bool Background = true;
+        public Color BackgroundColor = Color.White;
 
-        public PlottableAnnotation(double xPixel, double yPixel, string label,
-            double fontSize, string fontName, Color fontColor,
-            bool fill, Color fillColor,
-            double lineWidth, Color lineColor,
-            bool shadow)
+        public bool Shadow = true;
+        public Color ShadowColor = Color.FromArgb(25, Color.Black);
+
+        public bool Border = true;
+        public float BorderWidth = 2;
+        public Color BorderColor = Color.Black;
+
+        public override string ToString() => $"PlottableAnnotation at ({xPixel} px, {yPixel} px)";
+        public override int GetPointCount() => 1;
+        public override AxisLimits2D GetLimits() => new AxisLimits2D();
+        public override LegendItem[] GetLegendItems() => null;
+        public override void Render(Settings settings) => throw new InvalidOperationException("Use other Render method");
+
+        public string ValidationErrorMessage { get; private set; }
+        public bool IsValidData(bool deepValidation = false)
         {
-            this.xPixel = xPixel;
-            this.yPixel = yPixel;
-            this.label = label;
-            this.shadow = shadow;
+            try
+            {
+                Validate.AssertIsReal("xPixel", xPixel);
+                Validate.AssertIsReal("yPixel", yPixel);
+                Validate.AssertHasText("label", label);
+            }
+            catch (ArgumentException e)
+            {
+                ValidationErrorMessage = e.Message;
+                return false;
+            }
 
-            font = new Font(Fonts.GetValidFontName(fontName), (float)fontSize, FontStyle.Regular, GraphicsUnit.Pixel);
-            fontBrush = new SolidBrush(fontColor);
-
-            this.fill = fill;
-            fillBrush = new SolidBrush(fillColor);
-            shadowBrush = new SolidBrush(Color.FromArgb(50, 0, 0, 0));
-
-            pen = new Pen(lineColor, (float)lineWidth);
+            ValidationErrorMessage = null;
+            return true;
         }
 
-        public override string ToString()
+        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            return $"PlottableAnnotation at ({xPixel} px, {yPixel} px)";
-        }
+            using (var gfx = Graphics.FromImage(bmp))
+            using (var font = GDI.Font(FontName, FontSize, FontBold))
+            using (var fontBrush = new SolidBrush(FontColor))
+            using (var shadowBrush = new SolidBrush(ShadowColor))
+            using (var backgroundBrush = new SolidBrush(BackgroundColor))
+            using (var borderPen = new Pen(BorderColor, BorderWidth))
+            {
+                gfx.SmoothingMode = lowQuality ? SmoothingMode.HighSpeed : SmoothingMode.AntiAlias;
+                gfx.TextRenderingHint = lowQuality ? TextRenderingHint.SingleBitPerPixelGridFit : TextRenderingHint.AntiAliasGridFit;
 
-        public override int GetPointCount()
-        {
-            return 1;
-        }
+                SizeF size = GDI.MeasureString(gfx, label, font);
 
-        public override AxisLimits2D GetLimits()
-        {
-            return new AxisLimits2D();
-        }
+                double x = (xPixel >= 0) ? xPixel : dims.DataWidth + xPixel - size.Width;
+                double y = (yPixel >= 0) ? yPixel : dims.DataHeight + yPixel - size.Height;
+                PointF location = new PointF((float)x, (float)y);
 
-        public override LegendItem[] GetLegendItems()
-        {
-            return null;
-        }
+                if (Background && Shadow)
+                    gfx.FillRectangle(shadowBrush, location.X + 5, location.Y + 5, size.Width, size.Height);
 
-        public override void Render(Settings settings)
-        {
-            if (label is null)
-                return;
+                if (Background)
+                    gfx.FillRectangle(backgroundBrush, location.X, location.Y, size.Width, size.Height);
 
-            SizeF size = Drawing.GDI.MeasureString(settings.gfxData, label, font);
+                if (Border)
+                    gfx.DrawRectangle(borderPen, location.X, location.Y, size.Width, size.Height);
 
-            double x = (xPixel >= 0) ? xPixel : settings.bmpData.Width + xPixel - size.Width;
-            double y = (yPixel >= 0) ? yPixel : settings.bmpData.Height + yPixel - size.Height;
-
-            PointF location = new PointF((float)x, (float)y);
-
-            if (fill && shadow)
-                settings.gfxData.FillRectangle(shadowBrush, location.X + 5, location.Y + 5, size.Width, size.Height);
-
-            if (fill)
-                settings.gfxData.FillRectangle(fillBrush, location.X, location.Y, size.Width, size.Height);
-
-            if (pen.Width > 0)
-                settings.gfxData.DrawRectangle(pen, location.X, location.Y, size.Width, size.Height);
-
-            settings.gfxData.DrawString(label, font, fontBrush, location);
+                gfx.DrawString(label, font, fontBrush, location);
+            }
         }
     }
 }

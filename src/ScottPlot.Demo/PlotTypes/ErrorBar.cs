@@ -34,9 +34,9 @@ namespace ScottPlot.Demo.PlotTypes
                 var err3 = plt.PlotErrorBars(dataX, dataY3, null, errorXNegative, null, errorYNegative);
 
                 // draw scatter plots on top of the errorbars
-                plt.PlotScatter(dataX, dataY1, color: err1.color, label: "Both");
-                plt.PlotScatter(dataX, dataY2, color: err2.color, label: "Positive");
-                plt.PlotScatter(dataX, dataY3, color: err3.color, label: $"Negative");
+                plt.PlotScatter(dataX, dataY1, color: err1.Color, label: "Both");
+                plt.PlotScatter(dataX, dataY2, color: err2.Color, label: "Positive");
+                plt.PlotScatter(dataX, dataY3, color: err3.Color, label: $"Negative");
 
                 plt.Title("Error Bars with Asymmetric X and Y Values");
                 plt.Grid(false);

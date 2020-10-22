@@ -23,19 +23,16 @@ namespace ScottPlot
             LineStyle lineStyle = LineStyle.Solid
             )
         {
-            if (color == null)
-                color = settings.GetNextColor();
-
-            PlottableVLine axLine = new PlottableVLine(
-                position: x,
-                color: (Color)color,
-                lineWidth: lineWidth,
-                label: label,
-                draggable: draggable,
-                dragLimitLower: dragLimitLower,
-                dragLimitUpper: dragLimitUpper,
-                lineStyle: lineStyle
-                );
+            PlottableVLine axLine = new PlottableVLine()
+            {
+                position = x,
+                color = color ?? settings.GetNextColor(),
+                lineWidth = (float)lineWidth,
+                label = label,
+                DragEnabled = draggable,
+                lineStyle = lineStyle,
+            };
+            axLine.SetLimits(dragLimitLower, dragLimitUpper, null, null);
 
             Add(axLine);
             return axLine;
@@ -53,21 +50,17 @@ namespace ScottPlot
             double dragLimitUpper = double.PositiveInfinity
             )
         {
-            if (color == null)
-                color = settings.GetNextColor();
-
-            var axisSpan = new PlottableVSpan(
-                position1: y1,
-                position2: y2,
-                color: (Color)color,
-                alpha: alpha,
-                label: label,
-                draggable: draggable,
-                dragFixedSize: dragFixedSize,
-                dragLimitLower: dragLimitLower,
-                dragLimitUpper: dragLimitUpper
-                );
-
+            var axisSpan = new PlottableVSpan()
+            {
+                position1 = y1,
+                position2 = y2,
+                color = color ?? settings.GetNextColor(),
+                alpha = alpha,
+                label = label,
+                DragEnabled = draggable,
+                DragFixedSize = dragFixedSize,
+            };
+            axisSpan.SetLimits(null, null, dragLimitLower, dragLimitUpper);
             Add(axisSpan);
             return axisSpan;
         }
@@ -83,22 +76,20 @@ namespace ScottPlot
             LineStyle lineStyle = LineStyle.Solid
             )
         {
-            if (color == null)
-                color = settings.GetNextColor();
+            var hline = new PlottableHLine()
+            {
+                position = y,
+                color = color ?? settings.GetNextColor(),
+                lineWidth = (float)lineWidth,
+                label = label,
+                DragEnabled = draggable,
+                lineStyle = lineStyle,
+            };
 
-            PlottableHLine axLine = new PlottableHLine(
-                position: y,
-                color: (Color)color,
-                lineWidth: lineWidth,
-                label: label,
-                draggable: draggable,
-                dragLimitLower: dragLimitLower,
-                dragLimitUpper: dragLimitUpper,
-                lineStyle: lineStyle
-                );
+            hline.SetLimits(null, null, dragLimitLower, dragLimitUpper);
 
-            Add(axLine);
-            return axLine;
+            Add(hline);
+            return hline;
         }
 
         public PlottableHSpan PlotHSpan(
@@ -113,20 +104,17 @@ namespace ScottPlot
             double dragLimitUpper = double.PositiveInfinity
             )
         {
-            if (color == null)
-                color = settings.GetNextColor();
-
-            var axisSpan = new PlottableHSpan(
-                    position1: x1,
-                    position2: x2,
-                    color: (Color)color,
-                    alpha: alpha,
-                    label: label,
-                    draggable: draggable,
-                    dragFixedSize: dragFixedSize,
-                    dragLimitLower: dragLimitLower,
-                    dragLimitUpper: dragLimitUpper
-                    );
+            var axisSpan = new PlottableHSpan()
+            {
+                position1 = x1,
+                position2 = x2,
+                color = color ?? settings.GetNextColor(),
+                alpha = alpha,
+                label = label,
+                DragEnabled = draggable,
+                DragFixedSize = dragFixedSize
+            };
+            axisSpan.SetLimits(dragLimitLower, dragLimitUpper, null, null);
 
             Add(axisSpan);
             return axisSpan;

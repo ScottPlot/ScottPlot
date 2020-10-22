@@ -22,14 +22,15 @@ namespace ScottPlotTests.PlotTypes
 
                 var plottable = new ScottPlot.PlottablePolygon(
                         xs: ScottPlot.DataGen.Random(rand, 3, 100),
-                        ys: ScottPlot.DataGen.Random(rand, 3, 100),
-                        label: $"polygon {i + 1}",
-                        lineWidth: 2,
-                        lineColor: color,
-                        fill: true,
-                        fillColor: color,
-                        fillAlpha: .5
-                    );
+                        ys: ScottPlot.DataGen.Random(rand, 3, 100))
+                {
+                    label = $"polygon {i + 1}",
+                    lineWidth = 2,
+                    lineColor = color,
+                    fill = true,
+                    fillColor = color,
+                    fillAlpha = .5
+                };
 
                 plt.Add(plottable);
             }

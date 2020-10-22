@@ -93,17 +93,14 @@ namespace ScottPlot.Demo.PlotTypes
                 barCharts[0].hatchStyle = Drawing.HatchStyle.StripedWideUpwardDiagonal;
                 barCharts[0].fillColor = System.Drawing.Color.Gray;
                 barCharts[0].hatchColor = System.Drawing.Color.Black;
-                barCharts[0].Render(plt.GetSettings());
 
                 barCharts[1].hatchStyle = Drawing.HatchStyle.StripedWideDownwardDiagonal;
                 barCharts[1].fillColor = System.Drawing.Color.DodgerBlue;
                 barCharts[1].hatchColor = System.Drawing.Color.DeepSkyBlue;
-                barCharts[1].Render(plt.GetSettings());
 
                 barCharts[2].hatchStyle = Drawing.HatchStyle.LargeCheckerBoard;
                 barCharts[2].fillColor = System.Drawing.Color.SeaGreen;
                 barCharts[2].hatchColor = System.Drawing.Color.DarkSeaGreen;
-                barCharts[2].Render(plt.GetSettings());
 
                 // customize the plot to make it look nicer
                 plt.Grid(enableVertical: false, lineStyle: LineStyle.Dot);

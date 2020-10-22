@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Text;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -62,6 +64,14 @@ namespace ScottPlot.Drawing
             return Mix(colorA, colorB, fracA);
         }
 
+        public static System.Drawing.Graphics Graphics(Bitmap bmp, bool lowQuality = false)
+        {
+            Graphics gfx = System.Drawing.Graphics.FromImage(bmp);
+            gfx.SmoothingMode = lowQuality ? SmoothingMode.HighSpeed : SmoothingMode.AntiAlias;
+            gfx.TextRenderingHint = lowQuality ? TextRenderingHint.SingleBitPerPixelGridFit : TextRenderingHint.AntiAliasGridFit;
+            return gfx;
+        }
+
         public static System.Drawing.Pen Pen(System.Drawing.Color color, double width = 1, LineStyle lineStyle = LineStyle.Solid, bool rounded = false)
         {
             var pen = new System.Drawing.Pen(color, (float)width);
@@ -98,6 +108,26 @@ namespace ScottPlot.Drawing
             return pen;
         }
 
+        public static Brush Brush(Color color, double alpha) => new SolidBrush(Color.FromArgb((byte)(255 * alpha), color));
+
+        public static Brush Brush(Color color, Color? hatchColor = null, HatchStyle hatchStyle = HatchStyle.None)
+        {
+            bool isHatched = hatchStyle != HatchStyle.None;
+
+            if (isHatched)
+            {
+                if (hatchColor is null)
+                    throw new ArgumentException("hatch color must be defined if hatch style is used");
+                else
+                    return new HatchBrush(ConvertToSDHatchStyle(hatchStyle).Value, hatchColor.Value, color);
+            }
+            else
+            {
+                return new SolidBrush(color);
+            }
+        }
+
+        [Obsolete("use Brush()", true)]
         public static System.Drawing.Brush HatchBrush(HatchStyle pattern, Color fillColor, Color hatchColor)
         {
             if (pattern == HatchStyle.None)
@@ -136,7 +166,7 @@ namespace ScottPlot.Drawing
             }
         }
 
-        public static System.Drawing.Font Font(string fontName, float fontSize, bool bold = false)
+        public static System.Drawing.Font Font(string fontName = null, float fontSize = 12, bool bold = false)
         {
             string validFontName = Config.Fonts.GetValidFontName(fontName);
             FontStyle fontStyle = bold ? FontStyle.Bold : FontStyle.Regular;

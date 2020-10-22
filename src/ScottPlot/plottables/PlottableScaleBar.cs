@@ -76,16 +76,19 @@ namespace ScottPlot
         public string ValidationErrorMessage { get; private set; }
         public bool IsValidData(bool deepValidation = false)
         {
-            StringBuilder sb = new StringBuilder();
+            try
+            {
+                Validate.AssertIsReal("Width", Width);
+                Validate.AssertIsReal("Height", Height);
+            }
+            catch (ArgumentException e)
+            {
+                ValidationErrorMessage = e.Message;
+                return false;
+            }
 
-            if (double.IsInfinity(Width) || double.IsNaN(Width))
-                sb.AppendLine("Width must be a rational number");
-
-            if (double.IsInfinity(Height) || double.IsNaN(Height))
-                sb.AppendLine("Width must be a rational number");
-
-            ValidationErrorMessage = sb.ToString();
-            return ValidationErrorMessage.Length == 0;
+            ValidationErrorMessage = null;
+            return true;
         }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)

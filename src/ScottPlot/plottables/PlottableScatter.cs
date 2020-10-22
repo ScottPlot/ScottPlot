@@ -4,87 +4,86 @@ using ScottPlot.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Text;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 
 namespace ScottPlot
 {
-    public class PlottableScatter : Plottable, IExportable
+    public class PlottableScatter : Plottable, IExportable, IPlottable
     {
-        [FiniteNumbers, EqualLength]
         public double[] xs;
-        [FiniteNumbers, EqualLength]
         public double[] ys;
-        [FiniteNumbers, EqualLength]
         public double[] errorX;
-        [FiniteNumbers, EqualLength]
         public double[] errorY;
-        public double lineWidth;
-        public float errorLineWidth;
-        public float errorCapSize;
-        public float markerSize;
-        public bool stepDisplay;
+
+        public double lineWidth = 1;
+        public float errorLineWidth = 1;
+        public float errorCapSize = 3;
+        public float markerSize = 5;
+        public bool stepDisplay = false;
+
+        public bool IsArrow { get => ArrowheadWidth > 0 && ArrowheadLength > 0; }
+        public float ArrowheadWidth = 0;
+        public float ArrowheadLength = 0;
 
         public int? minRenderIndex { set { throw new NotImplementedException(); } }
         public int? maxRenderIndex { set { throw new NotImplementedException(); } }
 
-        public MarkerShape markerShape;
-        public Color color;
-        public LineStyle lineStyle;
+        public MarkerShape markerShape = MarkerShape.filledCircle;
+        public Color color = Color.Black;
+        public LineStyle lineStyle = LineStyle.Solid;
         public string label;
 
-        public Pen penLine;
-        private Pen penLineError;
-
-        public PlottableScatter(double[] xs, double[] ys, Color color, double lineWidth, double markerSize, string label,
-            double[] errorX, double[] errorY, double errorLineWidth, double errorCapSize, bool stepDisplay, MarkerShape markerShape, LineStyle lineStyle)
+        public PlottableScatter(double[] xs, double[] ys, double[] errorX = null, double[] errorY = null)
         {
-
-            if ((xs == null) || (ys == null))
-                throw new ArgumentException("X and Y data cannot be null");
-
-            if ((xs.Length == 0) || (ys.Length == 0))
-                throw new ArgumentException("xs and ys must have at least one element");
-
-            if (xs.Length != ys.Length)
-                throw new ArgumentException("Xs and Ys must have same length");
-
-            if (errorY != null)
-                for (int i = 0; i < errorY.Length; i++)
-                    if (errorY[i] < 0)
-                        errorY[i] = -errorY[i];
-
-            if (errorX != null)
-                for (int i = 0; i < errorX.Length; i++)
-                    if (errorX[i] < 0)
-                        errorX[i] = -errorX[i];
-
             this.xs = xs;
             this.ys = ys;
-            this.color = color;
-            this.lineWidth = lineWidth;
-            this.markerSize = (float)markerSize;
-            this.label = label;
             this.errorX = errorX;
             this.errorY = errorY;
-            this.errorLineWidth = (float)errorLineWidth;
-            this.errorCapSize = (float)errorCapSize;
-            this.stepDisplay = stepDisplay;
-            this.markerShape = markerShape;
-            this.lineStyle = lineStyle;
+        }
 
-            if (xs.Length != ys.Length)
-                throw new ArgumentException("X and Y arrays must have the same length");
+        public string ValidationErrorMessage { get; private set; }
+        public bool IsValidData(bool deepValidation = false)
+        {
+            try
+            {
+                Validate.AssertHasElements("xs", xs);
+                if (deepValidation)
+                    Validate.AssertAllReal("xs", xs);
 
-            if ((errorX != null) && (xs.Length != errorX.Length))
-                throw new ArgumentException("errorX must be the same length as the original data");
+                Validate.AssertHasElements("ys", ys);
+                if (deepValidation)
+                    Validate.AssertAllReal("ys", ys);
 
-            if ((errorY != null) && (xs.Length != errorY.Length))
-                throw new ArgumentException("errorY must be the same length as the original data");
+                Validate.AssertEqualLength("xs and ys", xs, ys);
 
-            penLine = GDI.Pen(color, lineWidth, lineStyle, true);
-            penLineError = GDI.Pen(color, errorLineWidth, LineStyle.Solid, true);
+                if (errorX != null)
+                {
+                    Validate.AssertHasElements("errorX", xs);
+                    Validate.AssertEqualLength("xs and errorX", xs, errorX);
+                    if (deepValidation)
+                        Validate.AssertAllReal("errorX", errorX);
+                }
+
+                if (errorY != null)
+                {
+                    Validate.AssertHasElements("errorY", ys);
+                    Validate.AssertEqualLength("ys and errorY", ys, errorY);
+                    if (deepValidation)
+                        Validate.AssertAllReal("errorY", errorY);
+                }
+            }
+            catch (ArgumentException e)
+            {
+                ValidationErrorMessage = e.Message;
+                return false;
+            }
+
+            ValidationErrorMessage = null;
+            return true;
         }
 
         public override string ToString()
@@ -136,80 +135,81 @@ namespace ScottPlot
             return new AxisLimits2D(limits);
         }
 
-        protected virtual void DrawPoint(Settings settings, List<PointF> points, int i)
+        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            MarkerTools.DrawMarker(settings.gfxData, points[i], markerShape, markerSize, color);
-        }
+            if (visible == false || IsValidData() == false)
+                return;
 
-        public override void Render(Settings settings)
-        {
-            penLine.Color = color;
-            penLine.Width = (float)lineWidth;
-
-            // create a List of only valid points
-            List<PointF> points = new List<PointF>(xs.Length);
-            for (int i = 0; i < xs.Length; i++)
-                if (!double.IsNaN(xs[i]) && !double.IsNaN(ys[i]))
-                    points.Add(settings.GetPixel(xs[i], ys[i]));
-
-            // draw Y errorbars
-            if (errorY != null)
+            using (var gfx = Graphics.FromImage(bmp))
+            using (var penLine = GDI.Pen(color, lineWidth, lineStyle, true))
+            using (var penLineError = GDI.Pen(color, errorLineWidth, LineStyle.Solid, true))
             {
-                for (int i = 0; i < points.Count; i++)
-                {
-                    PointF errorBelow = settings.GetPixel(xs[i], ys[i] - errorY[i]);
-                    PointF errorAbove = settings.GetPixel(xs[i], ys[i] + errorY[i]);
-                    float xCenter = errorBelow.X;
-                    float yTop = errorAbove.Y;
-                    float yBot = errorBelow.Y;
-                    settings.gfxData.DrawLine(penLineError, xCenter, yBot, xCenter, yTop);
-                    settings.gfxData.DrawLine(penLineError, xCenter - errorCapSize, yBot, xCenter + errorCapSize, yBot);
-                    settings.gfxData.DrawLine(penLineError, xCenter - errorCapSize, yTop, xCenter + errorCapSize, yTop);
-                }
-            }
+                gfx.SmoothingMode = lowQuality ? SmoothingMode.HighSpeed : SmoothingMode.AntiAlias;
+                gfx.TextRenderingHint = lowQuality ? TextRenderingHint.SingleBitPerPixelGridFit : TextRenderingHint.AntiAliasGridFit;
 
-            // draw X errorbars
-            if (errorX != null)
-            {
-                for (int i = 0; i < points.Count; i++)
-                {
-                    PointF errorLeft = settings.GetPixel(xs[i] - errorX[i], ys[i]);
-                    PointF errorRight = settings.GetPixel(xs[i] + errorX[i], ys[i]);
-                    float yCenter = errorLeft.Y;
-                    float xLeft = errorLeft.X;
-                    float xRight = errorRight.X;
-                    settings.gfxData.DrawLine(penLineError, xLeft, yCenter, xRight, yCenter);
-                    settings.gfxData.DrawLine(penLineError, xLeft, yCenter - errorCapSize, xLeft, yCenter + errorCapSize);
-                    settings.gfxData.DrawLine(penLineError, xRight, yCenter - errorCapSize, xRight, yCenter + errorCapSize);
-                }
-            }
+                PointF[] points = new PointF[xs.Length];
+                for (int i = 0; i < xs.Length; i++)
+                    points[i] = new PointF(dims.GetPixelX(xs[i]), dims.GetPixelY(ys[i]));
 
-            // draw the lines connecting points
-            if (penLine.Width > 0 && points.Count > 1)
-            {
-                if (stepDisplay)
+                if (errorY != null)
                 {
-                    List<PointF> pointsStep = new List<PointF>(points.Count * 2);
-                    for (int i = 0; i < points.Count - 1; i++)
+                    for (int i = 0; i < points.Length; i++)
                     {
-                        pointsStep.Add(points[i]);
-                        pointsStep.Add(new PointF(points[i + 1].X, points[i].Y));
+                        float yBot = dims.GetPixelY(ys[i] - errorY[i]);
+                        float yTop = dims.GetPixelY(ys[i] + errorY[i]);
+                        gfx.DrawLine(penLineError, points[i].X, yBot, points[i].X, yTop);
+                        gfx.DrawLine(penLineError, points[i].X - errorCapSize, yBot, points[i].X + errorCapSize, yBot);
+                        gfx.DrawLine(penLineError, points[i].X - errorCapSize, yTop, points[i].X + errorCapSize, yTop);
                     }
-                    pointsStep.Add(points[points.Count - 1]);
-                    settings.gfxData.DrawLines(penLine, pointsStep.ToArray());
                 }
-                else
+
+                if (errorX != null)
                 {
-                    settings.gfxData.DrawLines(penLine, points.ToArray());
+                    for (int i = 0; i < points.Length; i++)
+                    {
+                        float xLeft = dims.GetPixelX(xs[i] - errorX[i]);
+                        float xRight = dims.GetPixelX(xs[i] + errorX[i]);
+                        gfx.DrawLine(penLineError, xLeft, points[i].Y, xRight, points[i].Y);
+                        gfx.DrawLine(penLineError, xLeft, points[i].Y - errorCapSize, xLeft, points[i].Y + errorCapSize);
+                        gfx.DrawLine(penLineError, xRight, points[i].Y - errorCapSize, xRight, points[i].Y + errorCapSize);
+                    }
                 }
+
+                // draw the lines connecting points
+                if (lineWidth > 0 && lineStyle != LineStyle.None)
+                {
+                    if (stepDisplay)
+                    {
+                        PointF[] pointsStep = new PointF[points.Length * 2 - 1];
+                        for (int i = 0; i < points.Length - 1; i++)
+                        {
+                            pointsStep[i * 2] = points[i];
+                            pointsStep[i * 2 + 1] = new PointF(points[i + 1].X, points[i].Y);
+                        }
+                        pointsStep[pointsStep.Length - 1] = points[points.Length - 1];
+                        gfx.DrawLines(penLine, pointsStep);
+                    }
+                    else
+                    {
+                        if (IsArrow)
+                        {
+                            penLine.CustomEndCap = new AdjustableArrowCap(ArrowheadWidth, ArrowheadLength, true);
+                            penLine.StartCap = LineCap.Flat;
+                        }
+
+                        gfx.DrawLines(penLine, points);
+                    }
+                }
+
+                // draw a marker at each point
+                if ((markerSize > 0) && (markerShape != MarkerShape.none))
+                    for (int i = 0; i < points.Length; i++)
+                        MarkerTools.DrawMarker(gfx, points[i], markerShape, markerSize, color);
             }
-
-            // draw a marker at each point
-            if ((markerSize > 0) && (markerShape != MarkerShape.none))
-                for (int i = 0; i < points.Count; i++)
-                    DrawPoint(settings, points, i);
-
         }
+
+        public override void Render(Settings settings) =>
+            throw new InvalidOperationException("use other Render method");
 
         public void SaveCSV(string filePath, string delimiter = ", ", string separator = "\n")
         {

@@ -5,6 +5,7 @@
  */
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -24,12 +25,9 @@ namespace ScottPlot
             double scaleFactor = 1
             )
         {
-            if (!color.HasValue)
-            {
-                color = settings.GetNextColor();
-            }
-
-            var vectorField = new PlottableVectorField(vectors, xs, ys, label, color.Value, colormap, scaleFactor);
+            var vectorField = new PlottableVectorField(vectors, xs, ys,
+                colormap, scaleFactor, color ?? settings.GetNextColor())
+            { label = label };
 
             Add(vectorField);
             return vectorField;
@@ -47,8 +45,7 @@ namespace ScottPlot
             string label = null
             )
         {
-
-            var arrow = PlotScatter(
+            var scatter = PlotScatter(
                                         xs: new double[] { baseX, tipX },
                                         ys: new double[] { baseY, tipY },
                                         color: color,
@@ -57,11 +54,9 @@ namespace ScottPlot
                                         markerSize: 0
                                     );
 
-            var arrowCap = new System.Drawing.Drawing2D.AdjustableArrowCap(arrowheadWidth, arrowheadLength, isFilled: true);
-            arrow.penLine.CustomEndCap = arrowCap;
-            arrow.penLine.StartCap = System.Drawing.Drawing2D.LineCap.Flat;
-
-            return arrow;
+            scatter.ArrowheadLength = arrowheadLength;
+            scatter.ArrowheadWidth = arrowheadWidth;
+            return scatter;
         }
 
         public PlottableRadar PlotRadar(
@@ -73,10 +68,15 @@ namespace ScottPlot
             Color? webColor = null
             )
         {
-            fillColors = fillColors ?? Enumerable.Range(0, values.Length).Select(i => settings.colorset.GetColor(i)).ToArray();
-            webColor = webColor ?? Color.Gray;
+            Color[] colors = fillColors ?? Enumerable.Range(0, values.Length).Select(i => settings.colorset.GetColor(i)).ToArray();
+            Color[] colorsAlpha = colors.Select(x => Color.FromArgb((byte)(255 * fillAlpha), x)).ToArray();
 
-            var plottable = new PlottableRadar(values, categoryNames, groupNames, fillColors, (byte)(fillAlpha * 256), webColor.Value);
+            var plottable = new PlottableRadar(values, colors, fillColors ?? colorsAlpha)
+            {
+                categoryNames = categoryNames,
+                groupNames = groupNames,
+                webColor = webColor ?? Color.Gray
+            };
             Add(plottable);
             MatchAxis(this);
 
@@ -89,16 +89,20 @@ namespace ScottPlot
             double lineWidth = 1,
             double markerSize = 0,
             string label = "f(x)",
-            MarkerShape markerShape = MarkerShape.filledCircle,
+            MarkerShape markerShape = MarkerShape.none,
             LineStyle lineStyle = LineStyle.Solid
         )
         {
-            if (color == null)
-            {
-                color = settings.GetNextColor();
-            }
+            if (markerShape != MarkerShape.none || markerSize != 0)
+                throw new ArgumentException("function plots do not use markers");
 
-            PlottableFunction functionPlot = new PlottableFunction(function, color.Value, lineWidth, markerSize, label, markerShape, lineStyle);
+            PlottableFunction functionPlot = new PlottableFunction(function)
+            {
+                color = color ?? settings.GetNextColor(),
+                lineWidth = lineWidth,
+                lineStyle = lineStyle,
+                label = label
+            };
 
             Add(functionPlot);
             return functionPlot;
@@ -142,10 +146,16 @@ namespace ScottPlot
             string label = null
             )
         {
-            if (colors is null)
-                colors = Enumerable.Range(0, values.Length).Select(i => settings.colorset.GetColor(i)).ToArray();
+            colors = colors ?? Enumerable.Range(0, values.Length).Select(i => settings.colorset.GetColor(i)).ToArray();
 
-            PlottablePie pie = new PlottablePie(values, sliceLabels, colors, explodedChart, showValues, showPercentages, showLabels, label);
+            PlottablePie pie = new PlottablePie(values, sliceLabels, colors)
+            {
+                explodedChart = explodedChart,
+                showValues = showValues,
+                showPercentages = showPercentages,
+                showLabels = showLabels,
+                label = label
+            };
 
             Add(pie);
             return pie;

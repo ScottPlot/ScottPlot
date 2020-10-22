@@ -31,9 +31,9 @@ namespace ScottPlot.Renderable
         private FontStyle FontStyle { get { return FontBold ? FontStyle.Bold : FontStyle.Regular; } }
 
         public float Padding = 5;
-        private float symbolWidth { get { return 40 * FontSize / 12; } }
-        private float symbolPad { get { return FontSize / 3; } }
-        private float markerWidth { get { return FontSize / 2; } }
+        private float SymbolWidth { get { return 40 * FontSize / 12; } }
+        private float SymbolPad { get { return FontSize / 3; } }
+        private float MarkerWidth { get { return FontSize / 2; } }
 
         public void Render(Settings settings)
         {
@@ -86,7 +86,7 @@ namespace ScottPlot.Renderable
                 maxLabelHeight = Math.Max(maxLabelHeight, labelSize.Height);
             }
 
-            float width = symbolWidth + maxLabelWidth + symbolPad;
+            float width = SymbolWidth + maxLabelWidth + SymbolPad;
             float height = maxLabelHeight * items.Length;
 
             return (maxLabelWidth, maxLabelHeight, width, height);
@@ -94,7 +94,7 @@ namespace ScottPlot.Renderable
 
         private void RenderOnBitmap(Graphics gfx, LegendItem[] items, Font font,
             float locationX, float locationY, float width, float height, float maxLabelHeight,
-            bool shadow = true, bool fill = true, bool outline = true)
+            bool shadow = true, bool outline = true)
         {
             using (var fillBrush = new SolidBrush(FillColor))
             using (var shadowBrush = new SolidBrush(ShadowColor))
@@ -124,14 +124,14 @@ namespace ScottPlot.Renderable
                     float verticalOffset = i * maxLabelHeight;
 
                     // draw text
-                    gfx.DrawString(item.label, font, textBrush, locationX + symbolWidth, locationY + verticalOffset);
+                    gfx.DrawString(item.label, font, textBrush, locationX + SymbolWidth, locationY + verticalOffset);
 
                     // prepare values for drawing a line
                     outlinePen.Color = item.color;
                     outlinePen.Width = 1;
                     float lineY = locationY + verticalOffset + maxLabelHeight / 2;
-                    float lineX1 = locationX + symbolPad;
-                    float lineX2 = lineX1 + symbolWidth - symbolPad * 2;
+                    float lineX1 = locationX + SymbolPad;
+                    float lineX2 = lineX1 + SymbolWidth - SymbolPad * 2;
 
                     // prepare values for drawing a rectangle
                     PointF rectOrigin = new PointF(lineX1, (float)(lineY - item.lineWidth / 2));
@@ -141,7 +141,7 @@ namespace ScottPlot.Renderable
                     if (item.IsRectangle)
                     {
                         // draw a rectangle
-                        using (var legendItemFillBrush = GDI.HatchBrush(item.hatchStyle, item.color, item.hatchColor))
+                        using (var legendItemFillBrush = GDI.Brush(item.color, item.hatchColor, item.hatchStyle))
                         using (var legendItemOutlinePen = new Pen(item.borderColor, item.borderWith))
                         {
                             gfx.FillRectangle(legendItemFillBrush, rect);
@@ -158,7 +158,7 @@ namespace ScottPlot.Renderable
                         float lineXcenter = (lineX1 + lineX2) / 2;
                         PointF markerPoint = new PointF(lineXcenter, lineY);
                         if ((item.markerShape != MarkerShape.none) && (item.markerSize > 0))
-                            MarkerTools.DrawMarker(gfx, markerPoint, item.markerShape, markerWidth, item.color);
+                            MarkerTools.DrawMarker(gfx, markerPoint, item.markerShape, MarkerWidth, item.color);
                     }
                 }
             }

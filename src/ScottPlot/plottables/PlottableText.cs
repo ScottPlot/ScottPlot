@@ -88,23 +88,21 @@ namespace ScottPlot
         public string ValidationErrorMessage { get; private set; }
         public bool IsValidData(bool deepValidation = false)
         {
-            StringBuilder sb = new StringBuilder();
+            try
+            {
+                Validate.AssertIsReal("x", x);
+                Validate.AssertIsReal("y", y);
+                Validate.AssertIsReal("rotation", rotation);
+                Validate.AssertHasText("text", text);
+            }
+            catch (ArgumentException e)
+            {
+                ValidationErrorMessage = e.Message;
+                return false;
+            }
 
-            if (double.IsInfinity(x) || double.IsNaN(x))
-                sb.AppendLine("X must be a rational number");
-
-            if (double.IsInfinity(y) || double.IsNaN(y))
-                sb.AppendLine("Y must be a rational number");
-
-            if (double.IsInfinity(rotation) || double.IsNaN(rotation))
-                sb.AppendLine("rotation must be a rational number");
-
-            if (FontSize < 1)
-                sb.AppendLine("font must be at least size 1");
-
-            ValidationErrorMessage = sb.ToString();
-
-            return ValidationErrorMessage.Length == 0;
+            ValidationErrorMessage = null;
+            return true;
         }
 
         /// <summary>

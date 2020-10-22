@@ -1,52 +1,28 @@
 ﻿using ScottPlot.Config;
 using ScottPlot.Diagnostic.Attributes;
+using ScottPlot.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 
 namespace ScottPlot
 {
-    public class PlottablePolygon : Plottable
+    public class PlottablePolygon : Plottable, IPlottable
     {
-        [FiniteNumbers, EqualLength]
-        public readonly double[] xs;
-        [FiniteNumbers, EqualLength]
-        public readonly double[] ys;
+        public double[] xs;
+        public double[] ys;
         public string label;
 
-        public double lineWidth;
-        System.Drawing.Color lineColor;
-        public System.Drawing.Pen pen;
-        public bool fill;
-        System.Drawing.Color fillColor;
-        public System.Drawing.Brush brush;
+        public double lineWidth = 2;
+        public Color lineColor = Color.Black;
+        public bool fill = true;
+        public Color fillColor = Color.Gray;
+        public double fillAlpha = 0.5;
 
-        public PlottablePolygon(double[] xs, double[] ys, string label,
-            double lineWidth, System.Drawing.Color lineColor,
-            bool fill, System.Drawing.Color fillColor, double fillAlpha)
+        public PlottablePolygon(double[] xs, double[] ys)
         {
-            if (xs is null || ys is null)
-                throw new ArgumentException("xs and ys cannot be null");
-
-            if (xs.Length != ys.Length)
-                throw new ArgumentException("xs and ys must have the same number of elements");
-
-            if (xs.Length < 3)
-                throw new ArgumentException("polygons must contain at least 3 points");
-
             this.xs = xs;
             this.ys = ys;
-            this.label = label;
-            this.lineWidth = lineWidth;
-            this.lineColor = lineColor;
-            this.fill = fill;
-
-            pen = new System.Drawing.Pen(lineColor, (float)lineWidth)
-            {
-                LineJoin = System.Drawing.Drawing2D.LineJoin.Round, // prevent sharp corners
-            };
-            this.fillColor = System.Drawing.Color.FromArgb((int)(255 * fillAlpha), fillColor.R, fillColor.G, fillColor.B);
-            brush = new System.Drawing.SolidBrush(this.fillColor);
         }
 
         public override string ToString()
@@ -55,10 +31,7 @@ namespace ScottPlot
             return $"PlottablePolygon{label} with {GetPointCount()} points";
         }
 
-        public override int GetPointCount()
-        {
-            return xs.Length;
-        }
+        public override int GetPointCount() => xs.Length;
 
         public override AxisLimits2D GetLimits()
         {
@@ -78,34 +51,62 @@ namespace ScottPlot
             return new AxisLimits2D(xMin, xMax, yMin, yMax);
         }
 
-        public override LegendItem[] GetLegendItems()
+        public override LegendItem[] GetLegendItems() =>
+            new LegendItem[] {
+                new LegendItem(
+                    label: label,
+                    color: fill ? fillColor : lineColor,
+                    lineWidth: fill ? 10 : lineWidth,
+                    markerShape: MarkerShape.none
+                )
+            };
+
+        public string ValidationErrorMessage { get; private set; }
+        public bool IsValidData(bool deepValidation = false)
         {
-            if (fill)
-                return new LegendItem[] { new LegendItem(label, fillColor, lineWidth: 10, markerShape: MarkerShape.none) };
-            else
-                return new LegendItem[] { new LegendItem(label, lineColor, lineWidth: lineWidth, markerShape: MarkerShape.none) };
+            try
+            {
+                Validate.AssertHasElements("xs", xs);
+                Validate.AssertHasElements("ys", ys);
+                Validate.AssertEqualLength("xs and ys", xs, ys);
+
+                if (xs.Length < 3)
+                    throw new ArgumentException("polygons must contain at least 3 points");
+
+                if (deepValidation)
+                {
+                    Validate.AssertAllReal("xs", xs);
+                    Validate.AssertAllReal("ys", ys);
+                }
+
+                ValidationErrorMessage = "";
+                return true;
+            }
+            catch (ArgumentException e)
+            {
+                ValidationErrorMessage = e.Message;
+                return false;
+            }
         }
 
-        public override void Render(Settings settings)
+        public override void Render(Settings settings) => throw new InvalidOperationException("use new Render()");
+
+        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            var pointList = new List<PointF>(xs.Length);
+            PointF[] points = new PointF[xs.Length];
             for (int i = 0; i < xs.Length; i++)
+                points[i] = new PointF(dims.GetPixelX(xs[i]), dims.GetPixelY(ys[i]));
+
+            using (Graphics gfx = GDI.Graphics(bmp, lowQuality))
+            using (Brush fillBrush = GDI.Brush(Color.FromArgb((byte)(255 * fillAlpha), fillColor)))
+            using (Pen outlinePen = GDI.Pen(lineColor, (float)lineWidth))
             {
-                if (double.IsNaN(xs[i]) || double.IsNaN(ys[i]))
-                    continue;
+                if (fill)
+                    gfx.FillPolygon(fillBrush, points);
 
-                var thisPoint = new PointF(
-                    x: (float)settings.GetPixelX(xs[i]),
-                    y: (float)settings.GetPixelY(ys[i]));
-
-                pointList.Add(thisPoint);
+                if (lineWidth > 0)
+                    gfx.DrawPolygon(outlinePen, points);
             }
-            PointF[] points = pointList.ToArray();
-
-            if (fill)
-                settings.gfxData.FillPolygon(brush, points);
-            if (lineWidth > 0)
-                settings.gfxData.DrawPolygon(pen, points);
         }
     }
 }

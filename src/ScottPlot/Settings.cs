@@ -39,6 +39,7 @@ namespace ScottPlot
         public readonly GridLines HorizontalGridLines = new GridLines() { Orientation = Orientation.Horizontal };
         public readonly GridLines VerticalGridLines = new GridLines() { Orientation = Orientation.Vertical };
         public readonly Benchmark Benchmark = new Benchmark();
+        public readonly ErrorMessage ErrorMessage = new ErrorMessage();
         public readonly Legend Legend = new Legend();
 
         // plottables

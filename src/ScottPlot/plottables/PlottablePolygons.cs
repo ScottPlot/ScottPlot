@@ -3,54 +3,27 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using ScottPlot.Config;
+using ScottPlot.Drawing;
 
 namespace ScottPlot
 {
-    public class PlottablePolygons : Plottable
+    public class PlottablePolygons : Plottable, IPlottable
     {
-        public List<List<(double x, double y)>> polys;
+        public readonly List<List<(double x, double y)>> polys;
         public string label;
 
         public double lineWidth;
-        System.Drawing.Color lineColor;
-        public System.Drawing.Pen pen;
+        public Color lineColor;
         public bool fill;
-        System.Drawing.Color fillColor;
-        public System.Drawing.Brush brush;
+        public Color fillColor;
+        public double fillAlpha;
 
-        private bool checkOnInit = true;
-        private bool cutOffscreenPoly = true;
-        private bool smallPolySinglePixel = true;
+        public bool SkipOffScreenPolygons = true;
+        public bool RenderSmallPolygonsAsSinglePixels = true;
 
-        public PlottablePolygons(List<List<(double x, double y)>> polys, string label,
-            double lineWidth, System.Drawing.Color lineColor,
-            bool fill, System.Drawing.Color fillColor, double fillAlpha)
+        public PlottablePolygons(List<List<(double x, double y)>> polys)
         {
-            if (polys is null)
-                throw new ArgumentException("polys cannot be null");
-
-            if (checkOnInit)
-            {
-                foreach (var poly in polys)
-                {
-                    if (poly.Count < 3)
-                        throw new ArgumentException("polygons must contain at least 3 points");
-                }
-            }
-
             this.polys = polys;
-
-            this.label = label;
-            this.lineWidth = lineWidth;
-            this.lineColor = lineColor;
-            this.fill = fill;
-
-            pen = new System.Drawing.Pen(lineColor, (float)lineWidth)
-            {
-                LineJoin = System.Drawing.Drawing2D.LineJoin.Round, // prevent sharp corners
-            };
-            this.fillColor = System.Drawing.Color.FromArgb((int)(255 * fillAlpha), fillColor.R, fillColor.G, fillColor.B);
-            brush = new System.Drawing.SolidBrush(this.fillColor);
         }
 
         public override string ToString()
@@ -59,10 +32,34 @@ namespace ScottPlot
             return $"PlottablePolygons {label} with {GetPointCount()} polygons";
         }
 
-        public override int GetPointCount()
+        public string ValidationErrorMessage { get; private set; }
+        public bool IsValidData(bool deepValidation = false)
         {
-            return polys.Count;
+            if (deepValidation)
+            {
+                foreach (var poly in polys)
+                {
+                    foreach (var point in poly)
+                    {
+                        try
+                        {
+                            Validate.AssertIsReal("x", point.x);
+                            Validate.AssertIsReal("y", point.y);
+                        }
+                        catch (ArgumentException e)
+                        {
+                            ValidationErrorMessage = e.ToString();
+                            return false;
+                        }
+                    }
+                }
+            }
+
+            ValidationErrorMessage = null;
+            return true;
         }
+
+        public override int GetPointCount() => polys.Count;
 
         public override AxisLimits2D GetLimits()
         {
@@ -73,25 +70,27 @@ namespace ScottPlot
 
             foreach (var poly in polys)
             {
-                foreach (var point in poly)
+                foreach (var (x, y) in poly)
                 {
-                    xMin = Math.Min(xMin, point.x);
-                    xMax = Math.Max(xMax, point.x);
-                    yMin = Math.Min(yMin, point.y);
-                    yMax = Math.Max(yMax, point.y);
+                    xMin = Math.Min(xMin, x);
+                    xMax = Math.Max(xMax, x);
+                    yMin = Math.Min(yMin, y);
+                    yMax = Math.Max(yMax, y);
                 }
             }
 
             return new AxisLimits2D(xMin, xMax, yMin, yMax);
         }
 
-        public override LegendItem[] GetLegendItems()
-        {
-            if (fill)
-                return new LegendItem[] { new LegendItem(label, fillColor, lineWidth: 10, markerShape: MarkerShape.none) };
-            else
-                return new LegendItem[] { new LegendItem(label, lineColor, lineWidth: lineWidth, markerShape: MarkerShape.none) };
-        }
+        public override LegendItem[] GetLegendItems() =>
+            new LegendItem[] {
+                new LegendItem(
+                    label: label,
+                    color: fill ? fillColor : lineColor,
+                    lineWidth: fill ? 10 : lineWidth,
+                    markerShape: MarkerShape.none
+                )
+            };
 
         private bool IsBiggerThenPixel(List<(double x, double y)> poly, double UnitsPerPixelX, double UnitsPerPixelY)
         {
@@ -131,51 +130,37 @@ namespace ScottPlot
             return (maxX - minX > smallerThenPixelX || maxY - minY > smallerThenPixelY);
         }
 
-        public override void Render(Settings settings)
+        public override void Render(Settings settings) => throw new InvalidOperationException("use new Render");
+
+        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            IEnumerable<List<(double x, double y)>> polysToRender;
-
-            if (cutOffscreenPoly)
+            using (Graphics gfx = GDI.Graphics(bmp, lowQuality))
+            using (Brush brush = GDI.Brush(fillColor, fillAlpha))
+            using (Pen pen = GDI.Pen(lineColor, lineWidth))
             {
-                polysToRender = polys.Where(poly => poly
-                       .Any(p =>
-                                 p.x >= settings.axes.limits[0]
-                              && p.x <= settings.axes.limits[1]
-                              && p.y >= settings.axes.limits[2]
-                              && p.y <= settings.axes.limits[3]
-                               ));
-            }
-            else
-            {
-                polysToRender = polys;
-            }
-
-            var plotPoints = polysToRender.Select(poly =>
-            {
-                if (!smallPolySinglePixel || IsBiggerThenPixel(poly, settings.xAxisUnitsPerPixel, settings.yAxisUnitsPerPixel))
+                foreach (List<(double x, double y)> poly in polys)
                 {
-                    return poly.Select(point => settings.GetPixel(point.x, point.y));
-                }
-                else
-                    return new PointF[] { settings.GetPixel(poly[0].x, poly[0].y) };
-            });
+                    if (SkipOffScreenPolygons &&
+                        poly.Where(pt => pt.x >= dims.XMin && pt.x <= dims.XMax &&
+                                         pt.y >= dims.YMin && pt.y <= dims.YMax)
+                            .Count() == 0)
+                        continue;
 
-            foreach (var poly in plotPoints)
-            {
-                var polyArray = poly.ToArray();
-                if (fill)
-                {
-                    if (polyArray.Length >= 3)
-                        settings.gfxData.FillPolygon(brush, polyArray);
-                    else
+                    var polyArray = RenderSmallPolygonsAsSinglePixels && !IsBiggerThenPixel(poly, dims.UnitsPerPxX, dims.UnitsPerPxY) ?
+                        new PointF[] { new PointF(dims.GetPixelX(poly[0].x), dims.GetPixelY(poly[0].y)) } :
+                        poly.Select(point => new PointF(dims.GetPixelX(point.x), dims.GetPixelY(point.y))).ToArray();
+
+                    if (fill)
                     {
-                        if (polyArray[0].X >= 0 && polyArray[0].X < settings.bmpData.Width
-                            && polyArray[0].Y >= 0 && polyArray[0].Y < settings.bmpData.Height)
-                            settings.bmpData.SetPixel((int)polyArray[0].X, (int)polyArray[0].Y, fillColor);
+                        if (polyArray.Length >= 3)
+                            gfx.FillPolygon(brush, polyArray);
+                        else
+                            gfx.FillRectangle(brush, polyArray[0].X, polyArray[0].Y, 1, 1);
                     }
+
+                    if (lineWidth > 0)
+                        gfx.DrawPolygon(pen, polyArray);
                 }
-                if (lineWidth > 0)
-                    settings.gfxData.DrawPolygon(pen, polyArray);
             }
         }
     }
