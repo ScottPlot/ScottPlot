@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using ScottPlot.WinForms.Events;
 
 namespace ScottPlot
 {
@@ -278,6 +279,7 @@ namespace ScottPlot
             else
             {
                 // mouse is being used to drag a plottable
+                OnMouseDownOnPlottable(new PlottableDragEventArgs(plottableBeingDragged, e));
             }
         }
 
@@ -371,6 +373,7 @@ namespace ScottPlot
             plottableBeingDragged.DragTo(
                 plt.CoordinateFromPixelX(GetPixelPosition(e).X), plt.CoordinateFromPixelY(GetPixelPosition(e).Y),
                 isShiftPressed, isAltPressed, isCtrlPressed);
+            OnMouseDragPlottable(new PlottableDragEventArgs(plottableBeingDragged, e));
             Render(true);
         }
 
@@ -387,7 +390,11 @@ namespace ScottPlot
             ReleaseMouseCapture();
             var mouseLocation = GetPixelPosition(e);
 
-            plottableBeingDragged = null;
+            if (plottableBeingDragged != null)
+            {
+                OnMouseUpPlottable(new PlottableDragEventArgs(plottableBeingDragged, e));
+                plottableBeingDragged = null;
+            }
 
             if (mouseMiddleDownLocation != null)
             {
@@ -438,6 +445,7 @@ namespace ScottPlot
                     ContextMenu.IsOpen = false;
             }
 
+            plottableBeingDragged = null;
             mouseLeftDownLocation = null;
             mouseRightDownLocation = null;
             mouseMiddleDownLocation = null;
@@ -560,6 +568,13 @@ namespace ScottPlot
 
         public event EventHandler Rendered;
         public event EventHandler AxisChanged;
+        public event PlottableDragEventHandler MouseDownOnPlottable;
+        public event PlottableDragEventHandler MouseDragPlottable;
+        public event PlottableDragEventHandler MouseUpPlottable;
+
+        protected virtual void OnMouseDownOnPlottable(PlottableDragEventArgs e) { MouseDownOnPlottable?.Invoke(this, e); }
+        protected virtual void OnMouseDragPlottable(PlottableDragEventArgs e) { MouseDragPlottable?.Invoke(this, e); }
+        protected virtual void OnMouseUpPlottable(PlottableDragEventArgs e) { MouseUpPlottable?.Invoke(this, e); }
 
         #endregion
     }

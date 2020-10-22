@@ -238,7 +238,7 @@ namespace ScottPlot
             else
             {
                 // mouse is being used to drag a plottable
-                OnMouseDownOnPlottable(EventArgs.Empty);
+                OnMouseDownOnPlottable(new WinForms.Events.PlottableDragEventArgs(plottableBeingDragged, e));
             }
 
             base.OnMouseDown(e);
@@ -335,7 +335,7 @@ namespace ScottPlot
                 plt.CoordinateFromPixelX(e.Location.X),
                 plt.CoordinateFromPixelY(e.Location.Y),
                 isShiftPressed, isAltPressed, isCtrlPressed);
-            OnMouseDragPlottable(EventArgs.Empty);
+            OnMouseDragPlottable(new WinForms.Events.PlottableDragEventArgs(plottableBeingDragged, e));
             Render(true, lowQuality: lowQualityWhileDragging);
         }
 
@@ -407,7 +407,7 @@ namespace ScottPlot
 
             if (plottableBeingDragged != null)
             {
-                OnMouseDropPlottable(EventArgs.Empty);
+                OnMouseDropPlottable(new WinForms.Events.PlottableDragEventArgs(plottableBeingDragged, e));
             }
 
             OnMouseClicked(e);
