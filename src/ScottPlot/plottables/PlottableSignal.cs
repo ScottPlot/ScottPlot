@@ -1,16 +1,12 @@
-﻿using System.Drawing;
-using ScottPlot.MinMaxSearchStrategies;
+﻿using ScottPlot.MinMaxSearchStrategies;
 
 namespace ScottPlot
 {
     public class PlottableSignal : PlottableSignalBase<double>
     {
-        public PlottableSignal(double[] ys, double sampleRate, double xOffset, double yOffset, Color color,
-            double lineWidth, double markerSize, string label, Color[] colorByDensity,
-            int minRenderIndex, int maxRenderIndex, LineStyle lineStyle, bool useParallel)
-            : base(ys, sampleRate, xOffset, yOffset, color, lineWidth, markerSize, label, colorByDensity,
-                 minRenderIndex, maxRenderIndex, lineStyle, useParallel, new LinearDoubleOnlyMinMaxStrategy())
+        public PlottableSignal() : base()
         {
+            minmaxSearchStrategy = new LinearDoubleOnlyMinMaxStrategy();
         }
 
         public override string ToString()

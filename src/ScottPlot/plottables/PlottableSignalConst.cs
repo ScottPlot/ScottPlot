@@ -1,6 +1,5 @@
 ﻿using ScottPlot.MinMaxSearchStrategies;
 using System;
-using System.Drawing;
 
 namespace ScottPlot
 {
@@ -14,12 +13,10 @@ namespace ScottPlot
     public class PlottableSignalConst<T> : PlottableSignalBase<T> where T : struct, IComparable
     {
         public bool TreesReady => (minmaxSearchStrategy as SegmentedTreeMinMaxSearchStrategy<T>)?.TreesReady ?? false;
-        public PlottableSignalConst(T[] ys, double sampleRate, double xOffset, double yOffset, Color color,
-            double lineWidth, double markerSize, string label, Color[] colorByDensity,
-            int minRenderIndex, int maxRenderIndex, LineStyle lineStyle, bool useParallel)
-            : base(ys, sampleRate, xOffset, yOffset, color, lineWidth, markerSize, label, colorByDensity,
-                 minRenderIndex, maxRenderIndex, lineStyle, useParallel, new SegmentedTreeMinMaxSearchStrategy<T>())
+
+        public PlottableSignalConst() : base()
         {
+            minmaxSearchStrategy = new SegmentedTreeMinMaxSearchStrategy<T>();
         }
 
         public override string ToString()

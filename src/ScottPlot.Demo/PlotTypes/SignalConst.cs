@@ -43,7 +43,7 @@ namespace ScottPlot.Demo.PlotTypes
                 sig.minRenderIndex = 4000;
                 sig.maxRenderIndex = 5000;
                 sig.markerSize = 0;
-                sig.penHD = new Pen(Color.Black);
+                sig.color = Color.Black;
                 sig.fillType = FillType.FillAboveAndBelow;
                 sig.fillColor1 = Color.FromArgb(255, 44, 160, 44); // Green
                 sig.gradientFillColor1 = Color.Transparent;

@@ -10,92 +10,56 @@ namespace ScottPlot.Demo.DataDiagnostic
         public class SignalNANDemo : PlotDemo, IPlotDemo
         {
             // TODO make good name
-            public string name => "SignalContainNAN";
+            public string name => "Signal with NaN";
 
             // TODO make good description
-            public string description => "Data values containing NAN values can be catched using DiagnosticMode";
+            public string description => "Diagnostic mode identifies bad values in plotted data";
 
             public void Render(Plot plt)
             {
                 plt.DiagnosticMode = true;
 
+                // plot some valid data
                 Random rand = new Random(0);
-                int pointCount = (int)1e6;
-                int lineCount = 5;
-                var y = Enumerable.Range(0, lineCount).Select(i => DataGen.RandomWalk(rand, pointCount)).ToArray();
-                y[3][18] = Double.NaN;
-                for (int i = 0; i < lineCount; i++)
-                    plt.PlotSignal(y[i]);
+                double[] data = DataGen.RandomWalk(rand, 100_000);
+                plt.PlotSignal(data);
 
-                //TODO make good Title
-                plt.Title("Signal Plot Quickstart with NAN value throw");
-                plt.YLabel("Vertical Units");
-                plt.XLabel("Horizontal Units");
+                // change the value of a single data point to be invalid
+                data[1234] = double.NaN;
             }
         }
 
         public class SignalXYAccendingCheck : PlotDemo, IPlotDemo
         {
-            // TODO make good name/description
-            public string name { get; } = "Signal with X and Y data";
-            public string description { get; } = "After 5 seconds wrong data writed to xs array, this can be catch on Render with DiagnosticMode";
+            public string name { get; } = "Signal with bad X data";
+            public string description { get; } = "Diagnostic mode identifies bad X values in plotted data";
 
             public void Render(Plot plt)
             {
                 plt.DiagnosticMode = true;
 
-                // generate random, unevenly-spaced data
+                // plot some valid data
                 Random rand = new Random(0);
-                int pointCount = 100_000;
-                double[] ys = new double[pointCount];
-                double[] xs = new double[pointCount];
-                for (int i = 1; i < ys.Length; i++)
-                {
-                    ys[i] = ys[i - 1] + rand.NextDouble() - .5;
-                    xs[i] = xs[i - 1] + rand.NextDouble();
-                }
-
-                plt.Title($"SignalXY Plot ({pointCount:N0} points)");
+                double[] ys = DataGen.RandomWalk(rand, 1000);
+                double[] xs = DataGen.Consecutive(ys.Length);
                 plt.PlotSignalXY(xs, ys);
 
-                // Check goes only on Render, so user must interract with plot after 5 seconds
-                Task.Run(() =>
-                  {
-                      Thread.Sleep(5000);
-                      xs[245] = xs[244] - 9;
-                  });
+                // modify X values so they are not all ascending
+                xs[245] = xs[244] - 9;
             }
         }
 
-        public class ScatterValidation : PlotDemo, IPlotDemo
+        public class ScatterEqualLengthCheck : PlotDemo, IPlotDemo
         {
-            // TODO make good name/description
             public string name { get; } = "Scatter with mismatched X/Y pairs";
-            public string description { get; } = "Demonstrates a bad dataset where xs and ys are different lengths";
-
-            public void Render(Plot plt)
-            {
-                double[] ys = DataGen.Consecutive(50);
-                double[] xs = DataGen.Sin(51);
-                plt.PlotScatter(xs, ys);
-            }
-        }
-
-        public class ScatterValidationDeep : PlotDemo, IPlotDemo
-        {
-            // TODO make good name/description
-            public string name { get; } = "Scatter with deep validation";
-            public string description { get; } = "Diagnostic mode ensures every data value is valid";
+            public string description { get; } = "Diagnostic mode identifies when xs and ys do not match length";
 
             public void Render(Plot plt)
             {
                 plt.DiagnosticMode = true;
-                double[] ys = DataGen.Consecutive(50);
-                double[] xs = DataGen.Sin(50);
 
-                // insert an invalid number
-                ys[13] = double.NegativeInfinity;
-
+                double[] xs = { 1, 2, 3 };
+                double[] ys = { 1, 2, 3, 4 };
                 plt.PlotScatter(xs, ys);
             }
         }
