@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Text;
+using System.Threading;
 
 namespace ScottPlot
 {
@@ -106,6 +107,22 @@ namespace ScottPlot
             else
             {
                 Debug.WriteLine("DragTo() called but no side selected. Call IsUnderMouse() to select a side.");
+            }
+
+            // ensure fixed-width spans stay entirely inside the allowable range
+            double lowerLimit = IsHorizontal ? dragLimitX1 : dragLimitY1;
+            double upperLimit = IsHorizontal ? dragLimitX2 : dragLimitY2;
+            double belowLimit = lowerLimit - position1;
+            double aboveLimit = position2 - upperLimit;
+            if (belowLimit > 0)
+            {
+                position1 += belowLimit;
+                position2 += belowLimit;
+            }
+            if (aboveLimit > 0)
+            {
+                position1 -= aboveLimit;
+                position2 -= aboveLimit;
             }
         }
 

@@ -1,6 +1,7 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.1.0 ⚠️ _in active development_
+## ScottPlot 4.0.44 ⚠️ _in active development_
+* Improved limits for fixed-size axis spans (#586) _Thanks @citizen3942 and @StendProg_
 
 ## ScottPlot 4.0.43
 * Improved appearance of semi-transparent legend items (#567)
