@@ -54,10 +54,12 @@ namespace ScottPlot.Demo.PlotTypes
                     draggable: true, dragLimitLower: 0, dragLimitUpper: 50);
 
                 plt.PlotVSpan(y1: -.25, y2: -.05, label: "Fixed Size VSpan",
-                    draggable: true, dragFixedSize: true);
+                    draggable: true, dragLimitLower: -1, dragLimitUpper: 1,
+                    dragFixedSize: true);
 
                 plt.PlotHSpan(x1: 5, x2: 7, label: "Fixed Size HSpan",
-                    draggable: true, dragFixedSize: true);
+                    draggable: true, dragLimitLower: 0, dragLimitUpper: 50,
+                    dragFixedSize: true);
 
                 plt.Grid(lineStyle: LineStyle.Dot);
                 plt.Legend();
