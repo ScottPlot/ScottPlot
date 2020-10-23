@@ -28,7 +28,7 @@ namespace ScottPlot
         public bool DragEnabled { get; set; }
         public bool DragFixedSize { get; set; }
         public Cursor DragCursor => IsHorizontal ? Cursor.WE : Cursor.NS;
-        public bool visible { get; set; } = true;
+        public bool IsVisible { get; set; } = true;
 
         public override string ToString()
         {

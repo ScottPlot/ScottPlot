@@ -34,7 +34,7 @@ namespace ScottPlot
         public Bitmap BackgroundImage;
         public bool DisplayImageAbove;
         public bool ShowAxisLabels;
-        public bool visible { get; set; } = true;
+        public bool IsVisible { get; set; } = true;
 
         // call this externally if data changes
         public void UpdateData(double[,] intensities)

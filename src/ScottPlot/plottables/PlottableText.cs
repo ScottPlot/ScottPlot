@@ -70,7 +70,7 @@ namespace ScottPlot
         /// </summary>
         public bool FontBold;
 
-        public bool visible { get; set; } = true;
+        public bool IsVisible { get; set; } = true;
 
         /// <summary>
         /// The Text plot type displays a string at an X/Y position in coordinate space.

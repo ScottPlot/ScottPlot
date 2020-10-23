@@ -18,7 +18,7 @@ namespace ScottPlot
         public bool fill = true;
         public Color fillColor = Color.Gray;
         public double fillAlpha = 0.5;
-        public bool visible { get; set; } = true;
+        public bool IsVisible { get; set; } = true;
 
         public PlottablePolygon(double[] xs, double[] ys)
         {

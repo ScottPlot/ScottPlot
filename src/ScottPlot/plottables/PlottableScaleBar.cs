@@ -66,7 +66,7 @@ namespace ScottPlot
         /// Renders bold font if true
         /// </summary>
         public bool FontBold = false;
-        public bool visible { get; set; } = true;
+        public bool IsVisible { get; set; } = true;
 
         public override string ToString() => $"PlottableScaleBar ({HorizontalLabel}={Width}, {VerticalLabel}={Height})";
         public LegendItem[] GetLegendItems() => null;

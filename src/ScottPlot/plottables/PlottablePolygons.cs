@@ -17,7 +17,7 @@ namespace ScottPlot
         public bool fill;
         public Color fillColor;
         public double fillAlpha;
-        public bool visible { get; set; } = true;
+        public bool IsVisible { get; set; } = true;
 
         public bool SkipOffScreenPolygons = true;
         public bool RenderSmallPolygonsAsSinglePixels = true;

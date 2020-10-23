@@ -23,7 +23,7 @@ namespace ScottPlot
         protected bool FillColor2MustBeSetPromise = false;
 
         protected IMinMaxSearchStrategy<T> minmaxSearchStrategy = new SegmentedTreeMinMaxSearchStrategy<T>();
-        public bool visible { get; set; } = true;
+        public bool IsVisible { get; set; } = true;
 
         [FiniteNumbers, EqualLength]
         protected T[] _ys;

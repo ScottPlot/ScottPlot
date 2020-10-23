@@ -49,7 +49,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
                 // "roll" new values over old values like a traditional ECG machine
                 nextValueIndex = (nextValueIndex < liveData.Length - 1) ? nextValueIndex + 1 : 0;
                 liveData[nextValueIndex] = nextValue;
-                vline.visible = true;
+                vline.IsVisible = true;
                 vline.position = nextValueIndex;
             }
             else
@@ -57,7 +57,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
                 // "scroll" the whole chart to the left
                 Array.Copy(liveData, 1, liveData, 0, liveData.Length - 1);
                 liveData[liveData.Length - 1] = nextValue;
-                vline.visible = false;
+                vline.IsVisible = false;
             }
         }
 

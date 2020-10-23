@@ -45,7 +45,7 @@ namespace ScottPlot
 
         // TODO: good first issue - create a ColorNeutral for when the candle closed at the same price it opened at
 
-        public bool visible { get; set; } = true;
+        public bool IsVisible { get; set; } = true;
 
         public override string ToString() => $"PlottableOHLC with {GetPointCount()} points";
 

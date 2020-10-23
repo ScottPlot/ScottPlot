@@ -16,7 +16,7 @@ namespace ScottPlot
         private readonly double[] ys;
         private readonly Color[] arrowColors;
         public string label;
-        public bool visible { get; set; } = true;
+        public bool IsVisible { get; set; } = true;
 
         public PlottableVectorField(Vector2[,] vectors, double[] xs, double[] ys, Colormap colormap, double scaleFactor, Color defaultColor)
         {

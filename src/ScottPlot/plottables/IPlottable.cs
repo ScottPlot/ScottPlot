@@ -12,7 +12,7 @@ namespace ScottPlot
         void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false);
         bool IsValidData(bool deepValidation = false);
         string ValidationErrorMessage { get; }
-        bool visible { get; set; }
+        bool IsVisible { get; set; }
         string ToString();
         Config.AxisLimits2D GetLimits();
         int GetPointCount();

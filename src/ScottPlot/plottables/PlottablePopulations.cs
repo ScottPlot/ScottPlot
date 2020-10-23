@@ -15,7 +15,7 @@ namespace ScottPlot
         public int groupCount { get { return popMultiSeries.groupCount; } }
         public int seriesCount { get { return popMultiSeries.seriesCount; } }
         public string[] labels { get { return popMultiSeries.seriesLabels; } }
-        public bool visible { get; set; } = true;
+        public bool IsVisible { get; set; } = true;
 
         public enum DisplayItems { BoxOnly, BoxAndScatter, ScatterAndBox, ScatterOnly };
         public enum BoxStyle { BarMeanStDev, BarMeanStdErr, BoxMeanStdevStderr, BoxMedianQuartileOutlier, MeanAndStdev, MeanAndStderr };

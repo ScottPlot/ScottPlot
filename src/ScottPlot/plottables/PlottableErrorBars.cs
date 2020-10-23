@@ -21,7 +21,7 @@ namespace ScottPlot
         public float LineWidth = 1;
         public Color Color = Color.Black;
         public LineStyle LineStyle = LineStyle.Solid;
-        public bool visible { get; set; } = true;
+        public bool IsVisible { get; set; } = true;
 
         public PlottableErrorBars(double[] xs, double[] ys,
                                   double[] xPositiveError, double[] xNegativeError,

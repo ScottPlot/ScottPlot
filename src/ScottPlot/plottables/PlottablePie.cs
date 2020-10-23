@@ -27,7 +27,7 @@ namespace ScottPlot
         public float sliceFontSize = 14;
         public float centerFontSize = 36;
         public Color centerTextColor = Color.Black;
-        public bool visible { get; set; } = true;
+        public bool IsVisible { get; set; } = true;
 
         public PlottablePie(double[] values, string[] groupNames, Color[] colors)
         {

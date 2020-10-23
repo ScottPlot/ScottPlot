@@ -19,7 +19,7 @@ namespace ScottPlot
         public Color frameColor;
         public int frameSize;
         public string label;
-        public bool visible { get; set; } = true;
+        public bool IsVisible { get; set; } = true;
 
         public override string ToString() => $"PlottableImage Size(\"{image.Size}\") at ({x}, {y})";
 

@@ -37,7 +37,7 @@ namespace ScottPlot
         public double valueBase = 0;
         public bool verticalBars = true;
         public bool showValues;
-        public bool visible { get; set; } = true;
+        public bool IsVisible { get; set; } = true;
 
         public Drawing.HatchStyle hatchStyle = Drawing.HatchStyle.None;
 

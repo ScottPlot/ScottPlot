@@ -40,44 +40,44 @@ namespace ScottPlot.Demo.WPF.WpfDemos
         private void SinHide(object sender, RoutedEventArgs e)
         {
             if (wpfPlot1 is null) return;
-            sinPlot.visible = false;
+            sinPlot.IsVisible = false;
             wpfPlot1.Render();
         }
 
         private void SinShow(object sender, RoutedEventArgs e)
         {
             if (wpfPlot1 is null) return;
-            sinPlot.visible = true;
+            sinPlot.IsVisible = true;
             wpfPlot1.Render();
         }
 
         private void CosShow(object sender, RoutedEventArgs e)
         {
             if (wpfPlot1 is null) return;
-            cosPlot.visible = true;
+            cosPlot.IsVisible = true;
             wpfPlot1.Render();
         }
 
         private void CosHide(object sender, RoutedEventArgs e)
         {
             if (wpfPlot1 is null) return;
-            cosPlot.visible = false;
+            cosPlot.IsVisible = false;
             wpfPlot1.Render();
         }
 
         private void LinesShow(object sender, RoutedEventArgs e)
         {
             if (wpfPlot1 is null) return;
-            vline1.visible = true;
-            vline2.visible = true;
+            vline1.IsVisible = true;
+            vline2.IsVisible = true;
             wpfPlot1.Render();
         }
 
         private void LinesHide(object sender, RoutedEventArgs e)
         {
             if (wpfPlot1 is null) return;
-            vline1.visible = false;
-            vline2.visible = false;
+            vline1.IsVisible = false;
+            vline2.IsVisible = false;
             wpfPlot1.Render();
         }
     }

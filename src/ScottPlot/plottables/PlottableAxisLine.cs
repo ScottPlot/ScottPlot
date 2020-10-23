@@ -23,7 +23,7 @@ namespace ScottPlot
         public bool DragEnabled { get; set; } = false;
         public Cursor DragCursor => IsHorizontal ? Cursor.NS : Cursor.WE;
 
-        public bool visible { get; set; } = true;
+        public bool IsVisible { get; set; } = true;
         public override string ToString()
         {
             string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";

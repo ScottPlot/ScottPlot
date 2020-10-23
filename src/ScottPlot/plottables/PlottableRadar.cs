@@ -18,7 +18,7 @@ namespace ScottPlot
         public Color[] fillColors;
         public Color[] lineColors;
         public Color webColor;
-        public bool visible { get; set; } = true;
+        public bool IsVisible { get; set; } = true;
 
         public PlottableRadar(double[,] values, Color[] lineColors, Color[] fillColors)
         {

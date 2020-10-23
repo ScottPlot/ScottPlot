@@ -19,7 +19,7 @@ namespace ScottPlot
         public LineStyle lineStyle = LineStyle.Solid;
         public string label;
         public Color color = Color.Black;
-        public bool visible { get; set; } = true;
+        public bool IsVisible { get; set; } = true;
 
         public PlottableFunction(Func<double, double?> function)
         {

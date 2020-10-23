@@ -37,20 +37,20 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
 
         private void cbSin_CheckedChanged(object sender, EventArgs e)
         {
-            sinPlot.visible = cbSin.Checked;
+            sinPlot.IsVisible = cbSin.Checked;
             formsPlot1.Render();
         }
 
         private void cbCos_CheckedChanged(object sender, EventArgs e)
         {
-            cosPlot.visible = cbCos.Checked;
+            cosPlot.IsVisible = cbCos.Checked;
             formsPlot1.Render();
         }
 
         private void cbLines_CheckedChanged(object sender, EventArgs e)
         {
-            vline1.visible = cbLines.Checked;
-            vline2.visible = cbLines.Checked;
+            vline1.IsVisible = cbLines.Checked;
+            vline2.IsVisible = cbLines.Checked;
             formsPlot1.Render();
         }
     }

@@ -36,7 +36,7 @@ namespace ScottPlot
         public Color color = Color.Black;
         public LineStyle lineStyle = LineStyle.Solid;
         public string label;
-        public bool visible { get; set; } = true;
+        public bool IsVisible { get; set; } = true;
 
         public PlottableScatter(double[] xs, double[] ys, double[] errorX = null, double[] errorY = null)
         {
@@ -138,7 +138,7 @@ namespace ScottPlot
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            if (visible == false || IsValidData() == false)
+            if (IsVisible == false || IsValidData() == false)
                 return;
 
             using (var gfx = Graphics.FromImage(bmp))

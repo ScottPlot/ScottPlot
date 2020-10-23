@@ -30,7 +30,7 @@ namespace ScottPlot
         public float BorderWidth = 2;
         public Color BorderColor = Color.Black;
 
-        public bool visible { get; set; } = true;
+        public bool IsVisible { get; set; } = true;
 
         public override string ToString()
         {

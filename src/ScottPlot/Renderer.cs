@@ -30,7 +30,7 @@ namespace ScottPlot
             for (int i = 0; i < settings.plottables.Count; i++)
             {
                 var plottable = settings.plottables[i];
-                if (plottable.visible)
+                if (plottable.IsVisible)
                 {
                     try
                     {
