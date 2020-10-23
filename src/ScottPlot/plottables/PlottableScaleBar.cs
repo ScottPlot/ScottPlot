@@ -73,29 +73,22 @@ namespace ScottPlot
         public AxisLimits2D GetLimits() => new AxisLimits2D();
         public int GetPointCount() => 1;
 
-        public string ValidationErrorMessage { get; private set; }
-        public bool IsValidData(bool deepValidation = false)
+        public string ErrorMessage(bool deepValidation = false)
         {
             try
             {
                 Validate.AssertIsReal("Width", Width);
                 Validate.AssertIsReal("Height", Height);
+                return null;
             }
             catch (ArgumentException e)
             {
-                ValidationErrorMessage = e.Message;
-                return false;
+                return e.Message;
             }
-
-            ValidationErrorMessage = null;
-            return true;
         }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            if (IsValidData() == false)
-                throw new InvalidOperationException($"Invalid data: {ValidationErrorMessage}");
-
             using (var gfx = Graphics.FromImage(bmp))
             using (var font = GDI.Font(FontName, FontSize, FontBold))
             using (var fontBrush = new SolidBrush(FontColor))

@@ -99,8 +99,7 @@ namespace ScottPlot
         }
 
         // TODO: add validation to the Population module and check for it here
-        public string ValidationErrorMessage { get; private set; }
-        public bool IsValidData(bool deepValidation = false) => true;
+        public string ErrorMessage(bool deepValidation = false) => null;
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {

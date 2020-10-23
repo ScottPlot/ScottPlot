@@ -33,8 +33,7 @@ namespace ScottPlot
             return $"PlottablePolygons {label} with {GetPointCount()} polygons";
         }
 
-        public string ValidationErrorMessage { get; private set; }
-        public bool IsValidData(bool deepValidation = false)
+        public string ErrorMessage(bool deepValidation = false)
         {
             if (deepValidation)
             {
@@ -49,15 +48,13 @@ namespace ScottPlot
                         }
                         catch (ArgumentException e)
                         {
-                            ValidationErrorMessage = e.ToString();
-                            return false;
+                            return e.ToString();
                         }
                     }
                 }
             }
 
-            ValidationErrorMessage = null;
-            return true;
+            return null;
         }
 
         public int GetPointCount() => polys.Count;

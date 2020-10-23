@@ -62,8 +62,7 @@ namespace ScottPlot
                 )
             };
 
-        public string ValidationErrorMessage { get; private set; }
-        public bool IsValidData(bool deepValidation = false)
+        public string ErrorMessage(bool deepValidation = false)
         {
             try
             {
@@ -80,13 +79,11 @@ namespace ScottPlot
                     Validate.AssertAllReal("ys", ys);
                 }
 
-                ValidationErrorMessage = "";
-                return true;
+                return null;
             }
             catch (ArgumentException e)
             {
-                ValidationErrorMessage = e.Message;
-                return false;
+                return e.Message;
             }
         }
 

@@ -23,17 +23,12 @@ namespace ScottPlot
 
         public override string ToString() => $"PlottableImage Size(\"{image.Size}\") at ({x}, {y})";
 
-        public string ValidationErrorMessage { get; private set; }
-        public bool IsValidData(bool deepValidation = false)
+        public string ErrorMessage(bool deepValidation = false)
         {
             if (image is null)
-            {
-                ValidationErrorMessage = "image must not be null";
-                return false;
-            }
+                return "image must not be null";
 
-            ValidationErrorMessage = "";
-            return true;
+            return null;
         }
 
         public AxisLimits2D GetLimits() => new AxisLimits2D(new double[] { x, x, y, y });

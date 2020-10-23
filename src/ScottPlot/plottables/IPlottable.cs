@@ -1,4 +1,5 @@
-﻿using ScottPlot.Drawing;
+﻿using ScottPlot.Config;
+using ScottPlot.Drawing;
 using System;
 using System.Drawing;
 
@@ -10,12 +11,10 @@ namespace ScottPlot
     public interface IPlottable
     {
         void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false);
-        bool IsValidData(bool deepValidation = false);
-        string ValidationErrorMessage { get; }
+        string ErrorMessage(bool deepValidation = false);
         bool IsVisible { get; set; }
-        string ToString();
-        Config.AxisLimits2D GetLimits();
+        AxisLimits2D GetLimits();
         int GetPointCount();
-        Config.LegendItem[] GetLegendItems();
+        LegendItem[] GetLegendItems();
     }
 }

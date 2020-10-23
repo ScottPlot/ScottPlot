@@ -18,32 +18,6 @@ namespace ScottPlot
     //[Obsolete("Renderables should implement IRenderable")]
     public class Renderer
     {
-        public static void DataPlottables(Settings settings)
-        {
-            if (settings.gfxData == null)
-                return;
-
-            // Construct the dimensions object to be injected into plottables during rendering.
-            var dims = new PlotDimensions(settings.figureSize, settings.dataSize, settings.dataOrigin, settings.axes.Limits);
-            bool lowQuality = !settings.misc.antiAliasData;
-
-            for (int i = 0; i < settings.plottables.Count; i++)
-            {
-                var plottable = settings.plottables[i];
-                if (plottable.IsVisible)
-                {
-                    try
-                    {
-                        plottable.Render(dims, settings.bmpData, lowQuality);
-                    }
-                    catch (OverflowException)
-                    {
-                        Debug.WriteLine($"OverflowException plotting: {plottable}");
-                    }
-                }
-            }
-        }
-
         public static void PlaceDataOntoFigure(Settings settings)
         {
             if (settings.gfxFigure == null || settings.bmpData == null)

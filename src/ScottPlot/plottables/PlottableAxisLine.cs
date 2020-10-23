@@ -59,17 +59,12 @@ namespace ScottPlot
             }
         }
 
-        public string ValidationErrorMessage { get; private set; }
-        public bool IsValidData(bool deepValidation = false)
+        public string ErrorMessage(bool deepValidation = false)
         {
             if (double.IsInfinity(position) || double.IsNaN(position))
-            {
-                ValidationErrorMessage = "position must be finite";
-                return false;
-            }
+                return "position must be finite";
 
-            ValidationErrorMessage = null;
-            return true;
+            return null;
         }
 
         private double dragLimitX1 = double.NegativeInfinity;

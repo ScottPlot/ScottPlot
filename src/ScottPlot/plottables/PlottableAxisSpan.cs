@@ -149,18 +149,13 @@ namespace ScottPlot
             }
         }
 
-        public string ValidationErrorMessage { get; private set; }
-        public bool IsValidData(bool deepValidation = false)
+        public string ErrorMessage(bool deepValidation = false)
         {
             if (double.IsInfinity(position1) || double.IsNaN(position1) ||
                 double.IsInfinity(position2) || double.IsNaN(position2))
-            {
-                ValidationErrorMessage = "positions must be finite";
-                return false;
-            }
+                return "positions must be finite";
 
-            ValidationErrorMessage = null;
-            return true;
+            return null;
         }
     }
 }

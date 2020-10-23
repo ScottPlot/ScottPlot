@@ -46,8 +46,7 @@ namespace ScottPlot
             this.errorY = errorY;
         }
 
-        public string ValidationErrorMessage { get; private set; }
-        public bool IsValidData(bool deepValidation = false)
+        public string ErrorMessage(bool deepValidation = false)
         {
             try
             {
@@ -76,15 +75,13 @@ namespace ScottPlot
                     if (deepValidation)
                         Validate.AssertAllReal("errorY", errorY);
                 }
+
+                return null;
             }
             catch (ArgumentException e)
             {
-                ValidationErrorMessage = e.Message;
-                return false;
+                return e.Message;
             }
-
-            ValidationErrorMessage = null;
-            return true;
         }
 
         public override string ToString()
@@ -138,7 +135,7 @@ namespace ScottPlot
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            if (IsVisible == false || IsValidData() == false)
+            if (IsVisible == false)
                 return;
 
             using (var gfx = Graphics.FromImage(bmp))

@@ -95,15 +95,13 @@ namespace ScottPlot
             scatter.Render(dims, bmp, lowQuality);
         }
 
-        public string ValidationErrorMessage { get; private set; }
-        public bool IsValidData(bool deepValidation = false)
+        public string ErrorMessage(bool deepValidation = false)
         {
-            ValidationErrorMessage = (function is null) ? "function cannot be null" : "";
-            return string.IsNullOrWhiteSpace(ValidationErrorMessage);
-        }
+            if (function is null)
+                return "function cannot be null";
 
-        public void Render(Settings settings) =>
-            throw new InvalidOperationException("use other Render method");
+            return null;
+        }
 
         public override string ToString()
         {

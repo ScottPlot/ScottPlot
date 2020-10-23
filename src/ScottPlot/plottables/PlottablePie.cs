@@ -57,8 +57,7 @@ namespace ScottPlot
 
         public int GetPointCount() => values.Length;
 
-        public string ValidationErrorMessage { get; private set; }
-        public bool IsValidData(bool deepValidation = false)
+        public string ErrorMessage(bool deepValidation = false)
         {
             try
             {
@@ -71,12 +70,10 @@ namespace ScottPlot
             }
             catch (ArgumentException e)
             {
-                ValidationErrorMessage = e.Message;
-                return false;
+                return e.Message;
             }
 
-            ValidationErrorMessage = null;
-            return true;
+            return null;
         }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)

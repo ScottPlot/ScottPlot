@@ -56,8 +56,7 @@ namespace ScottPlot
             this.ys = ys;
         }
 
-        public string ValidationErrorMessage => null;
-        public bool IsValidData(bool deepValidation = false) => true; // assume data is always valid
+        public string ErrorMessage(bool deepValidation = false) => null; // assume data is always valid
 
         public LegendItem[] GetLegendItems() =>
             new LegendItem[] { new LegendItem(label, arrowColors[0], lineWidth: 10, markerShape: MarkerShape.none) };

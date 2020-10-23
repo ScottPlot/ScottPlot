@@ -87,8 +87,7 @@ namespace ScottPlot
 
         public LegendItem[] GetLegendItems() => new LegendItem[] { };
 
-        public string ValidationErrorMessage { get; private set; }
-        public bool IsValidData(bool deepValidation = false)
+        public string ErrorMessage(bool deepValidation = false)
         {
             try
             {
@@ -96,15 +95,12 @@ namespace ScottPlot
                 Validate.AssertIsReal("y", y);
                 Validate.AssertIsReal("rotation", rotation);
                 Validate.AssertHasText("text", text);
+                return null;
             }
             catch (ArgumentException e)
             {
-                ValidationErrorMessage = e.Message;
-                return false;
+                return e.Message;
             }
-
-            ValidationErrorMessage = null;
-            return true;
         }
 
         /// <summary>
@@ -141,9 +137,6 @@ namespace ScottPlot
         {
             if (string.IsNullOrWhiteSpace(text))
                 return; // no render needed
-
-            if (IsValidData() == false)
-                throw new InvalidOperationException($"Invalid data: {ValidationErrorMessage}");
 
             using (Graphics gfx = Graphics.FromImage(bmp))
             using (var font = GDI.Font(FontName, FontSize, FontBold))

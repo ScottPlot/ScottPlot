@@ -41,23 +41,19 @@ namespace ScottPlot
         public AxisLimits2D GetLimits() => new AxisLimits2D();
         public LegendItem[] GetLegendItems() => null;
 
-        public string ValidationErrorMessage { get; private set; }
-        public bool IsValidData(bool deepValidation = false)
+        public string ErrorMessage(bool deepValidation = false)
         {
             try
             {
                 Validate.AssertIsReal("xPixel", xPixel);
                 Validate.AssertIsReal("yPixel", yPixel);
                 Validate.AssertHasText("label", label);
+                return null;
             }
             catch (ArgumentException e)
             {
-                ValidationErrorMessage = e.Message;
-                return false;
+                return e.Message;
             }
-
-            ValidationErrorMessage = null;
-            return true;
         }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)

@@ -6,6 +6,7 @@
  * files in the Plot folder.
  */
 
+using ScottPlot.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -134,16 +135,33 @@ namespace ScottPlot
                 settings.HorizontalGridLines.Render(settings);
                 settings.VerticalGridLines.Render(settings);
 
+                // Construct the dimensions object to be injected into plottables during rendering.
+                var dims = new PlotDimensions(settings.figureSize, settings.dataSize, settings.dataOrigin, settings.axes.Limits);
+                bool lowQuality = !settings.misc.antiAliasData;
+
                 foreach (var plottable in settings.plottables)
                 {
                     if (plottable is IPlottable p)
                     {
-                        if (p.IsValidData(deepValidation: diagnosticMode) == false)
-                            errorMessages.AppendLine(p.ValidationErrorMessage);
+                        string error = p.ErrorMessage(deepValidation: diagnosticMode);
+                        if (p.IsVisible && string.IsNullOrWhiteSpace(error))
+                        {
+                            try
+                            {
+                                plottable.Render(dims, settings.bmpData, lowQuality);
+                            }
+                            catch (OverflowException)
+                            {
+                                Debug.WriteLine($"OverflowException plotting: {plottable}");
+                            }
+                        }
+                        else
+                        {
+                            errorMessages.AppendLine(error);
+                        }
                     }
                 }
 
-                Renderer.DataPlottables(settings);
                 Renderer.MouseZoomRectangle(settings);
                 Renderer.PlaceDataOntoFigure(settings);
                 settings.Legend.Render(settings);

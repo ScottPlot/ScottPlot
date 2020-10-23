@@ -113,17 +113,14 @@ namespace ScottPlot
 
         public int GetPointCount() => NormalizedIntensities.Length;
 
-        public string ValidationErrorMessage { get; private set; }
-        public bool IsValidData(bool deepValidation = false)
+        public string ErrorMessage(bool deepValidation = false)
         {
             if (NormalizedIntensities is null || BmpHeatmap is null)
             {
-                ValidationErrorMessage = "Call UpdateData() to process data";
-                return false;
+                return "Call UpdateData() to process data";
             }
 
-            ValidationErrorMessage = "";
-            return true;
+            return null;
         }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)

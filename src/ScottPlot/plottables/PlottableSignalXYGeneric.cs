@@ -99,9 +99,6 @@ namespace ScottPlot
 
         public override void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            if (IsValidData() == false)
-                throw new InvalidOperationException($"Invalid data: {ValidationErrorMessage}");
-
             using (Graphics gfx = Graphics.FromImage(bmp))
             using (var brush = new SolidBrush(color))
             using (var penHD = GDI.Pen(color, (float)lineWidth, LineStyle.Solid, true))
@@ -227,13 +224,19 @@ namespace ScottPlot
             }
         }
 
-        public override bool IsValidData(bool deepValidation = false)
+        public override string ErrorMessage(bool deepValidation = false)
         {
-            base.IsValidData(deepValidation);
-            if (XSequalYSPromise)
-                ValidationErrorMessage += "\nXs and Ys must have same length";
-
-            return string.IsNullOrWhiteSpace(ValidationErrorMessage);
+            try
+            {
+                Validate.AssertEqualLength("xs and ys", xs, ys);
+                Validate.AssertHasElements("xs", xs);
+                Validate.AssertAscending("xs", xs);
+                return null;
+            }
+            catch (ArgumentException e)
+            {
+                return e.Message;
+            }
         }
 
         public override string ToString()

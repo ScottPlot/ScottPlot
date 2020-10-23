@@ -30,6 +30,22 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Throw an exception if the array is null or contains NaN or infinity
+        /// </summary>
+        public static void AssertAllReal<T>(string label, T[] values)
+        {
+            if (values is null)
+                throw new ArgumentException($"{label} must not be null");
+
+            for (int i = 0; i < values.Length; i++)
+            {
+                double val = Convert.ToDouble(values[i]);
+                if (double.IsNaN(val) || double.IsInfinity(val))
+                    throw new ArgumentException($"{label} index {i} is invalid ({values[i]})");
+            }
+        }
+
+        /// <summary>
         /// Throw an exception if one elemnt is equal to or less than the previous element
         /// </summary>
         public static void AssertAscending(string label, double[] values)
@@ -43,9 +59,34 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Throw an exception if one elemnt is equal to or less than the previous element
+        /// </summary>
+        public static void AssertAscending<T>(string label, T[] values)
+        {
+            if (values is null)
+                throw new ArgumentException($"{label} must not be null");
+
+            for (int i = 0; i < values.Length - 1; i++)
+                if (Convert.ToDouble(values[i]) >= Convert.ToDouble(values[i + 1]))
+                    throw new ArgumentException($"{label} must be ascending values (index {i} >= {i + 1}");
+        }
+
+        /// <summary>
         /// Throw an exception if the array does not contain at least one element
         /// </summary>
         public static void AssertHasElements(string label, double[] values)
+        {
+            if (values is null)
+                throw new ArgumentException($"{label} must not be null");
+
+            if (values.Length == 0)
+                throw new ArgumentException($"{label} must contain at least one element");
+        }
+
+        /// <summary>
+        /// Throw an exception if the array does not contain at least one element
+        /// </summary>
+        public static void AssertHasElements<T>(string label, T[] values)
         {
             if (values is null)
                 throw new ArgumentException($"{label} must not be null");
@@ -86,6 +127,15 @@ namespace ScottPlot
             double[] d = null, double[] e = null, double[] f = null)
         {
             if (!IsEqualLength(a, b, c, d, e, f))
+                throw new ArgumentException($"{label} must all have same length");
+        }
+
+        /// <summary>
+        /// Throw an exception if non-null arrays have different lengths
+        /// </summary>
+        public static void AssertEqualLength<T1, T2>(string label, T1[] a, T2[] b)
+        {
+            if (a.Length != b.Length)
                 throw new ArgumentException($"{label} must all have same length");
         }
 

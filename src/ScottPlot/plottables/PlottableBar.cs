@@ -85,8 +85,7 @@ namespace ScottPlot
                 return new AxisLimits2D(valueMin, valueMax, positionMin, positionMax);
         }
 
-        public string ValidationErrorMessage { get; private set; }
-        public bool IsValidData(bool deepValidation = false)
+        public string ErrorMessage(bool deepValidation = false)
         {
             try
             {
@@ -103,15 +102,13 @@ namespace ScottPlot
                     Validate.AssertAllReal("yErr", yErr);
                     Validate.AssertAllReal("yOffsets", yOffsets);
                 }
+
+                return null;
             }
             catch (ArgumentException e)
             {
-                ValidationErrorMessage = e.Message;
-                return false;
+                return e.Message;
             }
-
-            ValidationErrorMessage = null;
-            return true;
         }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)

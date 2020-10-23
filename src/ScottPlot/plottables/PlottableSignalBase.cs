@@ -602,9 +602,6 @@ namespace ScottPlot
 
         public virtual void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            if (IsValidData() == false)
-                throw new InvalidOperationException($"Invalid data: {ValidationErrorMessage}");
-
             using (Graphics gfx = Graphics.FromImage(bmp))
             using (var brush = new SolidBrush(color))
             using (var penLD = GDI.Pen(color, (float)lineWidth, lineStyle, true))
@@ -651,9 +648,7 @@ namespace ScottPlot
             }
         }
 
-        public string ValidationErrorMessage { get; protected set; }
-
-        public virtual bool IsValidData(bool deepValidation = false)
+        public virtual string ErrorMessage(bool deepValidation = false)
         {
             try
             {
@@ -667,14 +662,7 @@ namespace ScottPlot
                     throw new ArgumentException("maxRenderIndex must be a valid index for ys[]");
 
                 if (deepValidation)
-                {
-                    for (int i = 0; i < ys.Length; i++)
-                    {
-                        double y = Convert.ToDouble(ys[i]);
-                        if (double.IsNaN(y) || double.IsInfinity(y))
-                            throw new ArgumentException($"ys[{i}] is {ys[i]}");
-                    }
-                }
+                    Validate.AssertAllReal("ys", ys);
 
                 if (MaxRenderIndexLowerYSPromise)
                     throw new ArgumentException("maxRenderIndex must be a valid index for ys[]");
@@ -688,13 +676,11 @@ namespace ScottPlot
                 if (FillColor2MustBeSetPromise)
                     throw new ArgumentException("Two fill colors needs to be specified if fill above and below is used");
 
-                ValidationErrorMessage = null;
-                return true;
+                return null;
             }
             catch (ArgumentException e)
             {
-                ValidationErrorMessage = e.ToString();
-                return false;
+                return e.Message;
             }
         }
     }

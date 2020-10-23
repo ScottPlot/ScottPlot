@@ -33,9 +33,7 @@ namespace ScottPlot
         public override string ToString() =>
             $"PlottableRadar with {GetPointCount()} points and {normalized.GetUpperBound(1) + 1} categories.";
 
-        public string ValidationErrorMessage { get; private set; }
-
-        public bool IsValidData(bool deepValidation = false)
+        public string ErrorMessage(bool deepValidation = false)
         {
             try
             {
@@ -51,13 +49,11 @@ namespace ScottPlot
                 if (categoryNames != null && categoryNames.Length != normalized.GetLength(1))
                     throw new ArgumentException("category names must match size of values");
 
-                ValidationErrorMessage = "";
-                return true;
+                return null;
             }
             catch (ArgumentException e)
             {
-                ValidationErrorMessage = e.Message;
-                return false;
+                return e.Message;
             }
         }
 
