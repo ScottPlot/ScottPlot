@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace ScottPlot
 {
-    public class PlottableErrorBars : Plottable, IPlottable
+    public class PlottableErrorBars : IPlottable
     {
         public readonly double[] Xs;
         public readonly double[] Ys;
@@ -21,6 +21,7 @@ namespace ScottPlot
         public float LineWidth = 1;
         public Color Color = Color.Black;
         public LineStyle LineStyle = LineStyle.Solid;
+        public bool visible { get; set; } = true;
 
         public PlottableErrorBars(double[] xs, double[] ys,
                                   double[] xPositiveError, double[] xNegativeError,
@@ -34,7 +35,7 @@ namespace ScottPlot
             YErrorNegative = yNegativeError;
         }
 
-        public override int GetPointCount() => Ys.Length;
+        public int GetPointCount() => Ys.Length;
 
         public override string ToString()
         {
@@ -42,7 +43,7 @@ namespace ScottPlot
             return $"PlottableErrorBars{label} with {GetPointCount()} points";
         }
 
-        public override AxisLimits2D GetLimits()
+        public AxisLimits2D GetLimits()
         {
             double xMin = double.PositiveInfinity;
             double yMin = double.PositiveInfinity;
@@ -92,7 +93,7 @@ namespace ScottPlot
             return new AxisLimits2D(new double[] { xMin, xMax, yMin, yMax });
         }
 
-        public override LegendItem[] GetLegendItems()
+        public LegendItem[] GetLegendItems()
         {
             var singleLegendItem = new LegendItem(label, Color, markerShape: MarkerShape.none);
             return new LegendItem[] { singleLegendItem };
@@ -130,8 +131,6 @@ namespace ScottPlot
             ValidationErrorMessage = null;
             return true;
         }
-
-        public override void Render(Settings settings) => throw new InvalidOperationException("Use new Render()");
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {

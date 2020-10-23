@@ -11,7 +11,7 @@ using System.Text;
 
 namespace ScottPlot
 {
-    public class PlottableText : Plottable, IPlottable
+    public class PlottableText : IPlottable
     {
         /// <summary>
         /// Horizontal position in coordinate space
@@ -70,6 +70,8 @@ namespace ScottPlot
         /// </summary>
         public bool FontBold;
 
+        public bool visible { get; set; } = true;
+
         /// <summary>
         /// The Text plot type displays a string at an X/Y position in coordinate space.
         /// </summary>
@@ -77,13 +79,13 @@ namespace ScottPlot
 
         public override string ToString() => $"PlottableText \"{text}\" at ({x}, {y})";
 
-        public override AxisLimits2D GetLimits() => new AxisLimits2D(x, x, y, y);
+        public AxisLimits2D GetLimits() => new AxisLimits2D(x, x, y, y);
 
-        public override void Render(Settings settings) => throw new NotImplementedException("Use the other Render method");
+        public void Render(Settings settings) => throw new NotImplementedException("Use the other Render method");
 
-        public override int GetPointCount() => 1;
+        public int GetPointCount() => 1;
 
-        public override LegendItem[] GetLegendItems() => new LegendItem[] { };
+        public LegendItem[] GetLegendItems() => new LegendItem[] { };
 
         public string ValidationErrorMessage { get; private set; }
         public bool IsValidData(bool deepValidation = false)

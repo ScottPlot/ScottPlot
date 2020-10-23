@@ -10,7 +10,7 @@ namespace ScottPlot.Diagnostic
             AttributesToCheck = new Attribute[] { new NotInfinityAttribute(), new FiniteNumbersAttribute() };
         }
 
-        public override bool Check(Plottable plottable)
+        public override bool Check(IPlottable plottable)
         {
             var fieldsToCheck = GetFieldsToCheck(plottable);
 

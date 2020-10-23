@@ -9,7 +9,7 @@ using ScottPlot.Drawing;
 
 namespace ScottPlot
 {
-    public class PlottableScaleBar : Plottable, IPlottable
+    public class PlottableScaleBar : IPlottable
     {
         /// <summary>
         /// Width of the scalebar in cooridinate units
@@ -66,12 +66,12 @@ namespace ScottPlot
         /// Renders bold font if true
         /// </summary>
         public bool FontBold = false;
+        public bool visible { get; set; } = true;
 
         public override string ToString() => $"PlottableScaleBar ({HorizontalLabel}={Width}, {VerticalLabel}={Height})";
-        public override LegendItem[] GetLegendItems() => null;
-        public override AxisLimits2D GetLimits() => new AxisLimits2D();
-        public override int GetPointCount() => 1;
-        public override void Render(Settings settings) => throw new InvalidOperationException("use other Render method");
+        public LegendItem[] GetLegendItems() => null;
+        public AxisLimits2D GetLimits() => new AxisLimits2D();
+        public int GetPointCount() => 1;
 
         public string ValidationErrorMessage { get; private set; }
         public bool IsValidData(bool deepValidation = false)

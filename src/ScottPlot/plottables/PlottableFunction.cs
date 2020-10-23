@@ -10,7 +10,7 @@ using ScottPlot.Drawing;
 
 namespace ScottPlot
 {
-    public class PlottableFunction : Plottable, IPlottable
+    public class PlottableFunction : IPlottable
     {
         public Func<double, double?> function;
 
@@ -19,13 +19,14 @@ namespace ScottPlot
         public LineStyle lineStyle = LineStyle.Solid;
         public string label;
         public Color color = Color.Black;
+        public bool visible { get; set; } = true;
 
         public PlottableFunction(Func<double, double?> function)
         {
             this.function = function;
         }
 
-        public override AxisLimits2D GetLimits()
+        public AxisLimits2D GetLimits()
         {
             double max = double.NegativeInfinity;
             double min = double.PositiveInfinity;
@@ -48,7 +49,7 @@ namespace ScottPlot
 
         private int PointCount;
 
-        public override int GetPointCount() => PointCount;
+        public int GetPointCount() => PointCount;
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
@@ -101,7 +102,7 @@ namespace ScottPlot
             return string.IsNullOrWhiteSpace(ValidationErrorMessage);
         }
 
-        public override void Render(Settings settings) =>
+        public void Render(Settings settings) =>
             throw new InvalidOperationException("use other Render method");
 
         public override string ToString()
@@ -110,7 +111,7 @@ namespace ScottPlot
             return $"PlottableFunction{label} displaying {GetPointCount()} points";
         }
 
-        public override LegendItem[] GetLegendItems()
+        public LegendItem[] GetLegendItems()
         {
             var singleLegendItem = new LegendItem(label, color, lineStyle, lineWidth, MarkerShape.none);
             return new LegendItem[] { singleLegendItem };

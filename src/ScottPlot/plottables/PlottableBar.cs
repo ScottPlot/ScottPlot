@@ -10,7 +10,7 @@ using System.Text;
 
 namespace ScottPlot
 {
-    public class PlottableBar : Plottable, IPlottable
+    public class PlottableBar : IPlottable
     {
         public double[] xs;
         public double xOffset;
@@ -37,6 +37,7 @@ namespace ScottPlot
         public double valueBase = 0;
         public bool verticalBars = true;
         public bool showValues;
+        public bool visible { get; set; } = true;
 
         public Drawing.HatchStyle hatchStyle = Drawing.HatchStyle.None;
 
@@ -51,7 +52,7 @@ namespace ScottPlot
             this.yOffsets = yOffsets ?? DataGen.Zeros(ys.Length);
         }
 
-        public override AxisLimits2D GetLimits()
+        public AxisLimits2D GetLimits()
         {
             double valueMin = double.PositiveInfinity;
             double valueMax = double.NegativeInfinity;
@@ -112,8 +113,6 @@ namespace ScottPlot
             ValidationErrorMessage = null;
             return true;
         }
-
-        public override void Render(Settings settings) => throw new InvalidOperationException("Use new Render() method");
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
@@ -232,9 +231,9 @@ namespace ScottPlot
             return $"PlottableBar{label} with {GetPointCount()} points";
         }
 
-        public override int GetPointCount() => ys is null ? 0 : ys.Length;
+        public int GetPointCount() => ys is null ? 0 : ys.Length;
 
-        public override LegendItem[] GetLegendItems()
+        public LegendItem[] GetLegendItems()
         {
             LegendItem singleLegendItem = new LegendItem()
             {

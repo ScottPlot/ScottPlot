@@ -12,7 +12,7 @@ namespace ScottPlot
 {
 
 #pragma warning disable CS0618 // Type or member is obsolete
-    public class PlottableHeatmap : Plottable, IPlottable
+    public class PlottableHeatmap : IPlottable
     {
         // these fields are updated when the intensities are analyzed
         private double[] NormalizedIntensities;
@@ -34,6 +34,7 @@ namespace ScottPlot
         public Bitmap BackgroundImage;
         public bool DisplayImageAbove;
         public bool ShowAxisLabels;
+        public bool visible { get; set; } = true;
 
         // call this externally if data changes
         public void UpdateData(double[,] intensities)
@@ -99,18 +100,18 @@ namespace ScottPlot
             return normalized;
         }
 
-        public override LegendItem[] GetLegendItems()
+        public LegendItem[] GetLegendItems()
         {
             var singleLegendItem = new LegendItem(label, Color.Gray, lineWidth: 10, markerShape: MarkerShape.none);
             return new LegendItem[] { singleLegendItem };
         }
 
-        public override AxisLimits2D GetLimits() =>
+        public AxisLimits2D GetLimits() =>
             ShowAxisLabels ?
             new AxisLimits2D(-10, BmpHeatmap.Width, -5, BmpHeatmap.Height) :
             new AxisLimits2D(-3, BmpHeatmap.Width, -3, BmpHeatmap.Height);
 
-        public override int GetPointCount() => NormalizedIntensities.Length;
+        public int GetPointCount() => NormalizedIntensities.Length;
 
         public string ValidationErrorMessage { get; private set; }
         public bool IsValidData(bool deepValidation = false)
@@ -124,9 +125,6 @@ namespace ScottPlot
             ValidationErrorMessage = "";
             return true;
         }
-
-        public override void Render(Settings settings) =>
-            throw new NotImplementedException("use new Render method");
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {

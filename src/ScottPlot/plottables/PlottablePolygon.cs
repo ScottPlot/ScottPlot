@@ -7,7 +7,7 @@ using System.Drawing;
 
 namespace ScottPlot
 {
-    public class PlottablePolygon : Plottable, IPlottable
+    public class PlottablePolygon : IPlottable
     {
         public double[] xs;
         public double[] ys;
@@ -18,6 +18,7 @@ namespace ScottPlot
         public bool fill = true;
         public Color fillColor = Color.Gray;
         public double fillAlpha = 0.5;
+        public bool visible { get; set; } = true;
 
         public PlottablePolygon(double[] xs, double[] ys)
         {
@@ -31,9 +32,9 @@ namespace ScottPlot
             return $"PlottablePolygon{label} with {GetPointCount()} points";
         }
 
-        public override int GetPointCount() => xs.Length;
+        public int GetPointCount() => xs.Length;
 
-        public override AxisLimits2D GetLimits()
+        public AxisLimits2D GetLimits()
         {
             double xMin = xs[0];
             double xMax = xs[0];
@@ -51,7 +52,7 @@ namespace ScottPlot
             return new AxisLimits2D(xMin, xMax, yMin, yMax);
         }
 
-        public override LegendItem[] GetLegendItems() =>
+        public LegendItem[] GetLegendItems() =>
             new LegendItem[] {
                 new LegendItem(
                     label: label,
@@ -89,7 +90,7 @@ namespace ScottPlot
             }
         }
 
-        public override void Render(Settings settings) => throw new InvalidOperationException("use new Render()");
+        public void Render(Settings settings) => throw new InvalidOperationException("use new Render()");
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {

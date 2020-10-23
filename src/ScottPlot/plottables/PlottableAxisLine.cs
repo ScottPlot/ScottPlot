@@ -11,7 +11,7 @@ namespace ScottPlot
 
     public class PlottableVLine : PlottableAxisLine { public PlottableVLine() { IsHorizontal = false; } }
 
-    public abstract class PlottableAxisLine : Plottable, IDraggable, IPlottable
+    public abstract class PlottableAxisLine : IDraggable, IPlottable
     {
         public double position;
         public LineStyle lineStyle = LineStyle.Solid;
@@ -23,6 +23,7 @@ namespace ScottPlot
         public bool DragEnabled { get; set; } = false;
         public Cursor DragCursor => IsHorizontal ? Cursor.NS : Cursor.WE;
 
+        public bool visible { get; set; } = true;
         public override string ToString()
         {
             string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
@@ -31,7 +32,7 @@ namespace ScottPlot
                 $"PlottableVLine{label} at X={position}";
         }
 
-        public override AxisLimits2D GetLimits() =>
+        public AxisLimits2D GetLimits() =>
             IsHorizontal ?
             new AxisLimits2D(double.NaN, double.NaN, position, position) :
             new AxisLimits2D(position, position, double.NaN, double.NaN);
@@ -57,9 +58,6 @@ namespace ScottPlot
                 }
             }
         }
-
-        public override void Render(Settings settings)
-            => throw new InvalidOperationException("use new render");
 
         public string ValidationErrorMessage { get; private set; }
         public bool IsValidData(bool deepValidation = false)
@@ -105,14 +103,14 @@ namespace ScottPlot
             }
         }
 
-        public override int GetPointCount() => 1;
+        public int GetPointCount() => 1;
 
         public bool IsUnderMouse(double coordinateX, double coordinateY, double snapX, double snapY) =>
             IsHorizontal ?
             Math.Abs(position - coordinateY) <= snapY :
             Math.Abs(position - coordinateX) <= snapX;
 
-        public override LegendItem[] GetLegendItems() =>
+        public LegendItem[] GetLegendItems() =>
             new LegendItem[] { new LegendItem(label, color, lineStyle, lineWidth, MarkerShape.none) };
     }
 }

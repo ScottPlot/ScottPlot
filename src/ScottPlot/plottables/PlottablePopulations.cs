@@ -9,12 +9,13 @@ using ScottPlot.Statistics;
 
 namespace ScottPlot
 {
-    public class PlottablePopulations : Plottable, IPlottable
+    public class PlottablePopulations : IPlottable
     {
         public readonly PopulationMultiSeries popMultiSeries;
         public int groupCount { get { return popMultiSeries.groupCount; } }
         public int seriesCount { get { return popMultiSeries.seriesCount; } }
         public string[] labels { get { return popMultiSeries.seriesLabels; } }
+        public bool visible { get; set; } = true;
 
         public enum DisplayItems { BoxOnly, BoxAndScatter, ScatterAndBox, ScatterOnly };
         public enum BoxStyle { BarMeanStDev, BarMeanStdErr, BoxMeanStdevStderr, BoxMedianQuartileOutlier, MeanAndStdev, MeanAndStderr };
@@ -54,7 +55,7 @@ namespace ScottPlot
             return $"PlottableSeries with {popMultiSeries.groupCount} groups, {popMultiSeries.seriesCount} series, and {GetPointCount()} total points";
         }
 
-        public override int GetPointCount()
+        public int GetPointCount()
         {
             int pointCount = 0;
             foreach (var group in popMultiSeries.multiSeries)
@@ -63,7 +64,7 @@ namespace ScottPlot
             return pointCount;
         }
 
-        public override LegendItem[] GetLegendItems()
+        public LegendItem[] GetLegendItems()
         {
             var items = new List<LegendItem>();
             foreach (var series in popMultiSeries.multiSeries)
@@ -71,7 +72,7 @@ namespace ScottPlot
             return items.ToArray();
         }
 
-        public override AxisLimits2D GetLimits()
+        public AxisLimits2D GetLimits()
         {
             double minValue = double.PositiveInfinity;
             double maxValue = double.NegativeInfinity;
@@ -100,8 +101,6 @@ namespace ScottPlot
         // TODO: add validation to the Population module and check for it here
         public string ValidationErrorMessage { get; private set; }
         public bool IsValidData(bool deepValidation = false) => true;
-
-        public override void Render(Settings settings) => throw new InvalidOperationException("use other Render method");
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {

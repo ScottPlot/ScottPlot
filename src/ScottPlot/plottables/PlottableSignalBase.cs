@@ -15,7 +15,7 @@ using System.Text;
 
 namespace ScottPlot
 {
-    public class PlottableSignalBase<T> : Plottable, IPlottable, IExportable where T : struct, IComparable
+    public class PlottableSignalBase<T> : IPlottable, IExportable where T : struct, IComparable
     {
         protected bool MaxRenderIndexLowerYSPromise = false;
         protected bool MaxRenderIndexHigherMinRenderIndexPromise = false;
@@ -23,6 +23,7 @@ namespace ScottPlot
         protected bool FillColor2MustBeSetPromise = false;
 
         protected IMinMaxSearchStrategy<T> minmaxSearchStrategy = new SegmentedTreeMinMaxSearchStrategy<T>();
+        public bool visible { get; set; } = true;
 
         [FiniteNumbers, EqualLength]
         protected T[] _ys;
@@ -191,7 +192,7 @@ namespace ScottPlot
             updateData(0, newData.Length, newData);
         }
 
-        public override Config.AxisLimits2D GetLimits()
+        public AxisLimits2D GetLimits()
         {
             double[] limits = new double[4];
             limits[0] = minRenderIndex + xOffset;
@@ -566,8 +567,6 @@ namespace ScottPlot
             }
         }
 
-        public override void Render(Settings settings) => throw new NotImplementedException("Use the other Render method");
-
         public override string ToString()
         {
             string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
@@ -587,12 +586,9 @@ namespace ScottPlot
             return csv.ToString();
         }
 
-        public override int GetPointCount()
-        {
-            return _ys.Length;
-        }
+        public int GetPointCount() => _ys.Length;
 
-        public override LegendItem[] GetLegendItems()
+        public LegendItem[] GetLegendItems()
         {
             var singleLegendItem = new Config.LegendItem(label, color)
             {

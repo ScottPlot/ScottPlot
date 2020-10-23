@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace ScottPlot
 {
-    public class PlottablePie : Plottable, IPlottable
+    public class PlottablePie : IPlottable
     {
         public double[] values;
         public string label;
@@ -27,6 +27,7 @@ namespace ScottPlot
         public float sliceFontSize = 14;
         public float centerFontSize = 36;
         public Color centerTextColor = Color.Black;
+        public bool visible { get; set; } = true;
 
         public PlottablePie(double[] values, string[] groupNames, Color[] colors)
         {
@@ -41,7 +42,7 @@ namespace ScottPlot
             return $"PlottablePie{label} with {GetPointCount()} points";
         }
 
-        public override LegendItem[] GetLegendItems()
+        public LegendItem[] GetLegendItems()
         {
             if (groupNames is null)
                 return null;
@@ -52,9 +53,9 @@ namespace ScottPlot
                 .ToArray();
         }
 
-        public override AxisLimits2D GetLimits() => new AxisLimits2D(-0.5, 0.5, -1, 1);
+        public AxisLimits2D GetLimits() => new AxisLimits2D(-0.5, 0.5, -1, 1);
 
-        public override int GetPointCount() => values.Length;
+        public int GetPointCount() => values.Length;
 
         public string ValidationErrorMessage { get; private set; }
         public bool IsValidData(bool deepValidation = false)
@@ -77,8 +78,6 @@ namespace ScottPlot
             ValidationErrorMessage = null;
             return true;
         }
-
-        public override void Render(Settings settings) => throw new InvalidOperationException("use new Render method");
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {

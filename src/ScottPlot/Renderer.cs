@@ -29,21 +29,12 @@ namespace ScottPlot
 
             for (int i = 0; i < settings.plottables.Count; i++)
             {
-                Plottable plottable = settings.plottables[i];
+                var plottable = settings.plottables[i];
                 if (plottable.visible)
                 {
                     try
                     {
-                        if (plottable is IPlottable modernPlottable)
-                        {
-                            // use the new render method (that injections dimensions and the bitmap to draw on)
-                            modernPlottable.Render(dims, settings.bmpData, lowQuality);
-                        }
-                        else
-                        {
-                            // use the old render method (that reads state from settings module and draws on the bitmap stored there)
-                            plottable.Render(settings);
-                        }
+                        plottable.Render(dims, settings.bmpData, lowQuality);
                     }
                     catch (OverflowException)
                     {

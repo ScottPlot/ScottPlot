@@ -9,7 +9,7 @@ using ScottPlot.Drawing;
 
 namespace ScottPlot
 {
-    public class PlottableImage : Plottable, IPlottable
+    public class PlottableImage : IPlottable
     {
         public double x;
         public double y;
@@ -19,6 +19,7 @@ namespace ScottPlot
         public Color frameColor;
         public int frameSize;
         public string label;
+        public bool visible { get; set; } = true;
 
         public override string ToString() => $"PlottableImage Size(\"{image.Size}\") at ({x}, {y})";
 
@@ -35,11 +36,11 @@ namespace ScottPlot
             return true;
         }
 
-        public override AxisLimits2D GetLimits() => new AxisLimits2D(new double[] { x, x, y, y });
+        public AxisLimits2D GetLimits() => new AxisLimits2D(new double[] { x, x, y, y });
 
-        public override int GetPointCount() => 1;
+        public int GetPointCount() => 1;
 
-        public override LegendItem[] GetLegendItems() => null;
+        public LegendItem[] GetLegendItems() => null;
 
         private PointF TextLocation(PointF input)
         {
@@ -67,8 +68,6 @@ namespace ScottPlot
                     throw new InvalidEnumArgumentException();
             }
         }
-
-        public override void Render(Settings settings) => throw new InvalidOperationException("use new Render()");
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {

@@ -9,7 +9,7 @@ using ScottPlot.Drawing;
 
 namespace ScottPlot
 {
-    public class PlottableRadar : Plottable, IPlottable
+    public class PlottableRadar : IPlottable
     {
         private readonly double[,] normalized;
         private readonly double normalizedMax;
@@ -18,6 +18,7 @@ namespace ScottPlot
         public Color[] fillColors;
         public Color[] lineColors;
         public Color webColor;
+        public bool visible { get; set; } = true;
 
         public PlottableRadar(double[,] values, Color[] lineColors, Color[] fillColors)
         {
@@ -79,7 +80,7 @@ namespace ScottPlot
             return max;
         }
 
-        public override LegendItem[] GetLegendItems()
+        public LegendItem[] GetLegendItems()
         {
             if (groupNames is null)
                 return null;
@@ -88,11 +89,9 @@ namespace ScottPlot
                 .Select(i => new LegendItem(groupNames[i], fillColors[i], lineWidth: 10, markerShape: MarkerShape.none)).ToArray();
         }
 
-        public override AxisLimits2D GetLimits() => new AxisLimits2D(-1.5, 1.5, -1.5, 1.5);
+        public AxisLimits2D GetLimits() => new AxisLimits2D(-1.5, 1.5, -1.5, 1.5);
 
-        public override int GetPointCount() => normalized.Length;
-
-        public override void Render(Settings settings) => throw new InvalidOperationException("use new Render()");
+        public int GetPointCount() => normalized.Length;
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {

@@ -16,7 +16,7 @@ namespace ScottPlot.Diagnostic
             };
         }
 
-        public void CheckPlottable(Plottable plottable)
+        public void CheckPlottable(IPlottable plottable)
         {
             var validatable = plottable as IValidatableData;
             if (validatable != null)
@@ -32,7 +32,7 @@ namespace ScottPlot.Diagnostic
             }
         }
 
-        public void CheckPlottables(List<Plottable> plottables)
+        public void CheckPlottables(List<IPlottable> plottables)
         {
             foreach (var plottable in plottables)
             {

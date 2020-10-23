@@ -168,7 +168,7 @@ namespace ScottPlot.Renderable
         {
             var items = new List<LegendItem>();
 
-            foreach (Plottable plottable in settings.plottables)
+            foreach (IPlottable plottable in settings.plottables)
             {
                 var legendItems = plottable.GetLegendItems();
 

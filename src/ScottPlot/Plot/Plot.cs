@@ -203,12 +203,12 @@ namespace ScottPlot
             settings.bmpFigure.Save(filePath, imageFormat);
         }
 
-        public void Add(Plottable plottable)
+        public void Add(IPlottable plottable)
         {
             settings.plottables.Add(plottable);
         }
 
-        public List<Plottable> GetPlottables()
+        public List<IPlottable> GetPlottables()
         {
             return settings.plottables;
         }
@@ -217,7 +217,7 @@ namespace ScottPlot
         {
             List<IDraggable> draggables = new List<IDraggable>();
 
-            foreach (Plottable plottable in GetPlottables())
+            foreach (var plottable in GetPlottables())
                 if (plottable is IDraggable draggable)
                     draggables.Add(draggable);
 

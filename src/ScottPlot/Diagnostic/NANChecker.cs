@@ -10,7 +10,7 @@ namespace ScottPlot.Diagnostic
             AttributesToCheck = new Attribute[] { new NotNANAttribute(), new FiniteNumbersAttribute() };
         }
 
-        public override bool Check(Plottable plottable)
+        public override bool Check(IPlottable plottable)
         {
             var fieldsToCheck = GetFieldsToCheck(plottable);
             foreach (var fi in fieldsToCheck)

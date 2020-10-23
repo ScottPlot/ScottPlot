@@ -12,7 +12,7 @@ namespace ScottPlot.Diagnostic
             AttributesToCheck = new Attribute[] { new EqualLengthAttribute() };
         }
 
-        public override bool Check(Plottable plottable)
+        public override bool Check(IPlottable plottable)
         {
             var fieldsToCheck = GetFieldsToCheck(plottable);
             (FieldInfo fi, int? Length)[] fieldsWithLength = fieldsToCheck.Select(fi =>

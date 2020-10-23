@@ -7,7 +7,7 @@ using ScottPlot.Drawing;
 
 namespace ScottPlot
 {
-    public class PlottablePolygons : Plottable, IPlottable
+    public class PlottablePolygons : IPlottable
     {
         public readonly List<List<(double x, double y)>> polys;
         public string label;
@@ -17,6 +17,7 @@ namespace ScottPlot
         public bool fill;
         public Color fillColor;
         public double fillAlpha;
+        public bool visible { get; set; } = true;
 
         public bool SkipOffScreenPolygons = true;
         public bool RenderSmallPolygonsAsSinglePixels = true;
@@ -59,9 +60,9 @@ namespace ScottPlot
             return true;
         }
 
-        public override int GetPointCount() => polys.Count;
+        public int GetPointCount() => polys.Count;
 
-        public override AxisLimits2D GetLimits()
+        public AxisLimits2D GetLimits()
         {
             double xMin = polys[0][0].x;
             double xMax = polys[0][0].x;
@@ -82,7 +83,7 @@ namespace ScottPlot
             return new AxisLimits2D(xMin, xMax, yMin, yMax);
         }
 
-        public override LegendItem[] GetLegendItems() =>
+        public LegendItem[] GetLegendItems() =>
             new LegendItem[] {
                 new LegendItem(
                     label: label,
@@ -129,8 +130,6 @@ namespace ScottPlot
             }
             return (maxX - minX > smallerThenPixelX || maxY - minY > smallerThenPixelY);
         }
-
-        public override void Render(Settings settings) => throw new InvalidOperationException("use new Render");
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {

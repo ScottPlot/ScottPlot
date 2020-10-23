@@ -12,7 +12,7 @@ using System.Text;
 
 namespace ScottPlot
 {
-    public class PlottableScatter : Plottable, IExportable, IPlottable
+    public class PlottableScatter : IExportable, IPlottable
     {
         public double[] xs;
         public double[] ys;
@@ -36,6 +36,7 @@ namespace ScottPlot
         public Color color = Color.Black;
         public LineStyle lineStyle = LineStyle.Solid;
         public string label;
+        public bool visible { get; set; } = true;
 
         public PlottableScatter(double[] xs, double[] ys, double[] errorX = null, double[] errorY = null)
         {
@@ -92,7 +93,7 @@ namespace ScottPlot
             return $"PlottableScatter{label} with {GetPointCount()} points";
         }
 
-        public override AxisLimits2D GetLimits()
+        public AxisLimits2D GetLimits()
         {
             double[] limits = new double[4];
 
@@ -208,7 +209,7 @@ namespace ScottPlot
             }
         }
 
-        public override void Render(Settings settings) =>
+        public void Render(Settings settings) =>
             throw new InvalidOperationException("use other Render method");
 
         public void SaveCSV(string filePath, string delimiter = ", ", string separator = "\n")
@@ -224,12 +225,12 @@ namespace ScottPlot
             return csv.ToString();
         }
 
-        public override int GetPointCount()
+        public int GetPointCount()
         {
             return ys.Length;
         }
 
-        public override LegendItem[] GetLegendItems()
+        public LegendItem[] GetLegendItems()
         {
             // TODO: determine how to respect line width in legend
             var singleLegendItem = new Config.LegendItem(label, color, lineStyle, lineWidth, markerShape, markerSize);

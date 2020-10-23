@@ -11,7 +11,7 @@ using ScottPlot.Drawing;
 
 namespace ScottPlot
 {
-    public class PlottableOHLC : Plottable, IPlottable
+    public class PlottableOHLC : IPlottable
     {
         /// <summary>
         /// Array of prices (open high low close)
@@ -45,13 +45,15 @@ namespace ScottPlot
 
         // TODO: good first issue - create a ColorNeutral for when the candle closed at the same price it opened at
 
+        public bool visible { get; set; } = true;
+
         public override string ToString() => $"PlottableOHLC with {GetPointCount()} points";
 
-        public override int GetPointCount() => ohlcs.Length;
+        public int GetPointCount() => ohlcs.Length;
 
-        public override LegendItem[] GetLegendItems() => null; // don't show this in the legend
+        public LegendItem[] GetLegendItems() => null; // don't show this in the legend
 
-        public override AxisLimits2D GetLimits()
+        public AxisLimits2D GetLimits()
         {
             double[] limits = new double[4];
             limits[0] = ohlcs[0].time;
@@ -79,8 +81,6 @@ namespace ScottPlot
 
             return new AxisLimits2D(limits);
         }
-
-        public override void Render(Settings settings) => throw new InvalidOperationException("use new Render method");
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {

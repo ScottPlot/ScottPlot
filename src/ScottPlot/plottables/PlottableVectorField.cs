@@ -9,13 +9,14 @@ using System.Linq;
 namespace ScottPlot
 {
 #pragma warning disable CS0618 // Type or member is obsolete
-    public class PlottableVectorField : Plottable, IPlottable
+    public class PlottableVectorField : IPlottable
     {
         private readonly Vector2[,] vectors;
         private readonly double[] xs;
         private readonly double[] ys;
         private readonly Color[] arrowColors;
         public string label;
+        public bool visible { get; set; } = true;
 
         public PlottableVectorField(Vector2[,] vectors, double[] xs, double[] ys, Colormap colormap, double scaleFactor, Color defaultColor)
         {
@@ -58,15 +59,13 @@ namespace ScottPlot
         public string ValidationErrorMessage => null;
         public bool IsValidData(bool deepValidation = false) => true; // assume data is always valid
 
-        public override LegendItem[] GetLegendItems() =>
+        public LegendItem[] GetLegendItems() =>
             new LegendItem[] { new LegendItem(label, arrowColors[0], lineWidth: 10, markerShape: MarkerShape.none) };
 
-        public override AxisLimits2D GetLimits() =>
+        public AxisLimits2D GetLimits() =>
             new AxisLimits2D(xs.Min() - 1, xs.Max() + 1, ys.Min() - 1, ys.Max() + 1);
 
-        public override int GetPointCount() => vectors.Length;
-
-        public override void Render(Settings settings) => throw new NotImplementedException("use new Render method");
+        public int GetPointCount() => vectors.Length;
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {

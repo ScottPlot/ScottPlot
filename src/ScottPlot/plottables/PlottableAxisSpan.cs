@@ -12,7 +12,7 @@ namespace ScottPlot
     public class PlottableHSpan : PlottableAxisSpan { public PlottableHSpan() { IsHorizontal = true; } }
     public class PlottableVSpan : PlottableAxisSpan { public PlottableVSpan() { IsHorizontal = false; } }
 
-    public abstract class PlottableAxisSpan : Plottable, IDraggable, IPlottable
+    public abstract class PlottableAxisSpan : IDraggable, IPlottable
     {
         public double position1;
         public double position2;
@@ -23,11 +23,12 @@ namespace ScottPlot
         public Color colorWithAlpha => Color.FromArgb((byte)(255 * alpha), color);
         public double alpha = .35;
         public string label;
-        public override int GetPointCount() => 1;
+        public int GetPointCount() => 1;
         public bool IsHorizontal = true;
         public bool DragEnabled { get; set; }
         public bool DragFixedSize { get; set; }
         public Cursor DragCursor => IsHorizontal ? Cursor.WE : Cursor.NS;
+        public bool visible { get; set; } = true;
 
         public override string ToString()
         {
@@ -37,10 +38,10 @@ namespace ScottPlot
                 $"PlottableVSpan{label} from Y={position1} to Y={position2}";
         }
 
-        public override LegendItem[] GetLegendItems() =>
+        public LegendItem[] GetLegendItems() =>
              new LegendItem[] { new LegendItem(label, colorWithAlpha, markerSize: 0, lineWidth: 10) };
 
-        public override AxisLimits2D GetLimits() =>
+        public AxisLimits2D GetLimits() =>
             IsHorizontal ? new AxisLimits2D(Min, Max, null, null) : new AxisLimits2D(null, null, Min, Max);
 
         private double dragLimitX1 = double.NegativeInfinity;
@@ -125,9 +126,6 @@ namespace ScottPlot
                 position2 -= aboveLimit;
             }
         }
-
-        public override void Render(Settings settings) =>
-            throw new InvalidOperationException("use new render method");
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {

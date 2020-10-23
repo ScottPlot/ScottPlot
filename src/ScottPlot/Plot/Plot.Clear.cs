@@ -10,7 +10,7 @@ namespace ScottPlot
         /// <summary>
         /// Remove the given plottable from the plot
         /// </summary>
-        public void Remove(Plottable plottable)
+        public void Remove(IPlottable plottable)
         {
             settings.plottables.Remove(plottable);
         }
@@ -49,7 +49,7 @@ namespace ScottPlot
         /// <summary>
         /// Clear all plottables of the same type as the one that is given
         /// </summary>
-        public void Clear(Plottable examplePlottable)
+        public void Clear(IPlottable examplePlottable)
         {
             settings.plottables.RemoveAll(x => x.GetType() == examplePlottable.GetType());
 
@@ -70,7 +70,7 @@ namespace ScottPlot
         /// <summary>
         /// Remove the given plottables from the plot
         /// </summary>
-        public void Clear(Predicate<Plottable> plottablesToClear)
+        public void Clear(Predicate<IPlottable> plottablesToClear)
         {
             if (plottablesToClear != null)
                 settings.plottables.RemoveAll(plottablesToClear);

@@ -8,7 +8,7 @@ using System.Text;
 
 namespace ScottPlot
 {
-    public class PlottableAnnotation : Plottable, IPlottable
+    public class PlottableAnnotation : IPlottable
     {
         // TODO: capitalize these fields in a future version
         public double xPixel;
@@ -30,11 +30,16 @@ namespace ScottPlot
         public float BorderWidth = 2;
         public Color BorderColor = Color.Black;
 
-        public override string ToString() => $"PlottableAnnotation at ({xPixel} px, {yPixel} px)";
-        public override int GetPointCount() => 1;
-        public override AxisLimits2D GetLimits() => new AxisLimits2D();
-        public override LegendItem[] GetLegendItems() => null;
-        public override void Render(Settings settings) => throw new InvalidOperationException("Use other Render method");
+        public bool visible { get; set; } = true;
+
+        public override string ToString()
+        {
+            return $"PlottableAnnotation at ({xPixel} px, {yPixel} px)";
+        }
+
+        public int GetPointCount() => 1;
+        public AxisLimits2D GetLimits() => new AxisLimits2D();
+        public LegendItem[] GetLegendItems() => null;
 
         public string ValidationErrorMessage { get; private set; }
         public bool IsValidData(bool deepValidation = false)

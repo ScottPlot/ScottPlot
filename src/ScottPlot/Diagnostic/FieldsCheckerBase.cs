@@ -13,13 +13,13 @@ namespace ScottPlot.Diagnostic
             AttributesToCheck = new Attribute[0];
         }
 
-        protected FieldInfo[] GetFieldsToCheck(Plottable plottable)
+        protected FieldInfo[] GetFieldsToCheck(IPlottable plottable)
         {
             var fieldsToCheck = plottable.GetType().GetFields().Where(f => AttributesToCheck.Any(a => f.IsDefined(a.GetType(), false))).ToArray();
             return fieldsToCheck;
         }
 
-        public virtual bool Check(Plottable plottable)
+        public virtual bool Check(IPlottable plottable)
         {
             return true;
         }

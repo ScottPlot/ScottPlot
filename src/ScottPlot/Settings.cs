@@ -43,7 +43,7 @@ namespace ScottPlot
         public readonly Legend Legend = new Legend();
 
         // plottables
-        public readonly List<Plottable> plottables = new List<Plottable>();
+        public readonly List<IPlottable> plottables = new List<IPlottable>();
 
         // TODO: STRANGLE CONFIG OBJECTS AS PART OF https://github.com/swharden/ScottPlot/pull/511
         public Config.TextLabel title = new Config.TextLabel() { fontSize = 16, bold = true };
@@ -303,7 +303,7 @@ namespace ScottPlot
         public int GetTotalPointCount()
         {
             int totalPointCount = 0;
-            foreach (Plottable plottable in plottables)
+            foreach (var plottable in plottables)
                 totalPointCount += plottable.GetPointCount();
             return totalPointCount;
         }
