@@ -1,8 +1,12 @@
 ﻿using ScottPlot.Drawing;
+using System;
 using System.Drawing;
 
 namespace ScottPlot
 {
+    [Obsolete("Use IPlottable", true)]
+    public abstract class Plottable { }
+
     public interface IPlottable
     {
         void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false);
