@@ -3,24 +3,24 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace ScottPlot
 {
     partial class Plot
     {
-        private bool diagnosticMode = false;
-        public bool DiagnosticMode
+        public enum ErrorAction { Render, SkipRender, DebugLog, ShowErrorOnPlot, ThrowException }
+
+        private bool ValidateEveryPoint = false;
+        private ErrorAction ValidationErrorAction = ErrorAction.ShowErrorOnPlot;
+
+        public void Validate(bool everyDataPoint, ErrorAction action = ErrorAction.ShowErrorOnPlot)
         {
-            get => diagnosticMode;
-            set
-            {
-                if (value)
-                    Debug.WriteLine("WARNING: diagnostic mode is enabled, reducing performance");
-                else
-                    Debug.WriteLine("Diagnostic mode is disabled");
-                diagnosticMode = value;
-            }
+            ValidateEveryPoint = everyDataPoint;
+            ValidationErrorAction = action;
+            if (everyDataPoint)
+                Debug.WriteLine("WARNING: every data point will be validated on each render, reducing performance");
         }
 
         public void AntiAlias(bool figure = true, bool data = false, bool legend = false)

@@ -139,25 +139,40 @@ namespace ScottPlot
                 var dims = new PlotDimensions(settings.figureSize, settings.dataSize, settings.dataOrigin, settings.axes.Limits);
                 bool lowQuality = !settings.misc.antiAliasData;
 
-                foreach (var plottable in settings.plottables)
+                foreach (var p in settings.plottables)
                 {
-                    if (plottable is IPlottable p)
+                    if (p.IsVisible == false)
+                        continue;
+
+                    string error = p.ErrorMessage(deepValidation: ValidateEveryPoint);
+                    bool hasError = string.IsNullOrWhiteSpace(error) == false;
+                    bool renderPlottable = true;
+                    if (hasError)
                     {
-                        string error = p.ErrorMessage(deepValidation: diagnosticMode);
-                        if (p.IsVisible && string.IsNullOrWhiteSpace(error))
-                        {
-                            try
-                            {
-                                plottable.Render(dims, settings.bmpData, lowQuality);
-                            }
-                            catch (OverflowException)
-                            {
-                                Debug.WriteLine($"OverflowException plotting: {plottable}");
-                            }
-                        }
-                        else
-                        {
+                        if (ValidationErrorAction == ErrorAction.SkipRender ||
+                            ValidationErrorAction == ErrorAction.DebugLog ||
+                            ValidationErrorAction == ErrorAction.ShowErrorOnPlot)
+                            renderPlottable = false;
+
+                        if (ValidationErrorAction == ErrorAction.DebugLog)
+                            Debug.WriteLine(error);
+
+                        if (ValidationErrorAction == ErrorAction.ShowErrorOnPlot)
                             errorMessages.AppendLine(error);
+
+                        if (ValidationErrorAction == ErrorAction.ThrowException)
+                            throw new InvalidOperationException(error);
+                    }
+
+                    if (renderPlottable)
+                    {
+                        try
+                        {
+                            p.Render(dims, settings.bmpData, lowQuality);
+                        }
+                        catch (OverflowException)
+                        {
+                            Debug.WriteLine($"OverflowException plotting: {p}");
                         }
                     }
                 }

@@ -17,7 +17,7 @@ namespace ScottPlot.Demo.DataDiagnostic
 
             public void Render(Plot plt)
             {
-                plt.DiagnosticMode = true;
+                plt.Validate(everyDataPoint: true);
 
                 // plot some valid data
                 Random rand = new Random(0);
@@ -36,7 +36,7 @@ namespace ScottPlot.Demo.DataDiagnostic
 
             public void Render(Plot plt)
             {
-                plt.DiagnosticMode = true;
+                plt.Validate(everyDataPoint: true);
 
                 // plot some valid data
                 Random rand = new Random(0);
@@ -56,7 +56,7 @@ namespace ScottPlot.Demo.DataDiagnostic
 
             public void Render(Plot plt)
             {
-                plt.DiagnosticMode = true;
+                plt.Validate(everyDataPoint: true);
 
                 double[] xs = { 1, 2, 3 };
                 double[] ys = { 1, 2, 3, 4 };
