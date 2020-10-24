@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot.Drawing;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
@@ -27,6 +28,11 @@ namespace ScottPlot.Renderable
                 else
                     RenderVerticalLines(pen, settings);
             }
+        }
+
+        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        {
+            throw new NotImplementedException();
         }
 
         private void RenderHorizontalLines(Pen pen, Settings settings)

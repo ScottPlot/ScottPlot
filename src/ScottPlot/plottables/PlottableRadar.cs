@@ -102,13 +102,13 @@ namespace ScottPlot
             using (Pen pen = GDI.Pen(webColor))
             using (Brush brush = GDI.Brush(Color.Black))
             using (StringFormat sf = new StringFormat() { LineAlignment = StringAlignment.Center })
-            using (Font font = GDI.Font())
+            using (var font = GDI.Font())
             {
                 for (int i = 0; i < radii.Length; i++)
                 {
                     gfx.DrawEllipse(pen, (int)(origin.X - radii[i]), (int)(origin.Y - radii[i]), (int)(radii[i] * 2), (int)(radii[i] * 2));
                     StringFormat stringFormat = new StringFormat() { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Far };
-                    gfx.DrawString($"{normalizedMax * radii[i] / minScale:f1}", new Font(FontFamily.GenericSansSerif, 8), brush, origin.X, (float)(-radii[i] + origin.Y), stringFormat);
+                    gfx.DrawString($"{normalizedMax * radii[i] / minScale:f1}", GDI.Font(null, 8), brush, origin.X, (float)(-radii[i] + origin.Y), stringFormat);
                 }
 
                 for (int i = 0; i < numCategories; i++)

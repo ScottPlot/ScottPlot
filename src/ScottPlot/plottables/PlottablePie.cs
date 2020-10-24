@@ -83,8 +83,8 @@ namespace ScottPlot
             using (Pen outlinePen = GDI.Pen(outlineColor, outlineSize))
             using (Brush brush = GDI.Brush(Color.Black))
             using (Brush fontBrush = GDI.Brush(centerTextColor))
-            using (Font sliceFont = GDI.Font(null, sliceFontSize))
-            using (Font centerFont = GDI.Font(null, centerFontSize))
+            using (var sliceFont = GDI.Font(null, sliceFontSize))
+            using (var centerFont = GDI.Font(null, centerFontSize))
             using (StringFormat sfCenter = new StringFormat() { LineAlignment = StringAlignment.Center, Alignment = StringAlignment.Center })
             {
                 double[] proportions = values.Select(x => x / values.Sum()).ToArray();

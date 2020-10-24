@@ -35,5 +35,10 @@ namespace ScottPlot.Renderable
                 settings.gfxFigure.DrawString(Text, font, fontBrush, txtLoc);
             }
         }
+
+        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

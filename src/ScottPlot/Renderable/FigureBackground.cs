@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot.Drawing;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
@@ -15,6 +16,11 @@ namespace ScottPlot.Renderable
                 return;
 
             settings.gfxFigure.Clear(Color);
+        }
+
+        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        {
+            throw new NotImplementedException();
         }
     }
 }

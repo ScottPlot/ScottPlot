@@ -170,7 +170,7 @@ namespace ScottPlot.Drawing
         {
             string validFontName = Config.Fonts.GetValidFontName(fontName);
             FontStyle fontStyle = bold ? FontStyle.Bold : FontStyle.Regular;
-            return new Font(validFontName, fontSize, fontStyle, GraphicsUnit.Pixel);
+            return new System.Drawing.Font(validFontName, fontSize, fontStyle, GraphicsUnit.Pixel);
         }
     }
 }

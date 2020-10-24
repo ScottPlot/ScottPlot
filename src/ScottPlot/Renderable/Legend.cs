@@ -28,7 +28,6 @@ namespace ScottPlot.Renderable
         public float FontSize = 14;
         public Color FontColor = Color.Black;
         public bool FontBold = false;
-        private FontStyle FontStyle { get { return FontBold ? FontStyle.Bold : FontStyle.Regular; } }
 
         public float Padding = 5;
         private float SymbolWidth { get { return 40 * FontSize / 12; } }
@@ -41,7 +40,7 @@ namespace ScottPlot.Renderable
                 return;
 
             using (var gfx = Graphics.FromImage(settings.bmpFigure))
-            using (var font = new Font(FontName, FontSize, FontStyle, GraphicsUnit.Pixel))
+            using (var font = GDI.Font(FontName, FontSize, FontBold))
             {
                 var items = GetLegendItems(settings);
                 if (items.Length == 0)
@@ -57,7 +56,7 @@ namespace ScottPlot.Renderable
         {
             using (var bmpTemp = new Bitmap(1, 1))
             using (var gfxTemp = Graphics.FromImage(bmpTemp))
-            using (var font = new Font(FontName, FontSize, FontStyle, GraphicsUnit.Pixel))
+            using (var font = GDI.Font(FontName, FontSize, FontBold))
             {
                 var items = GetLegendItems(settings);
                 if (items.Length == 0)
@@ -74,7 +73,7 @@ namespace ScottPlot.Renderable
         }
 
         private (float maxLabelWidth, float maxLabelHeight, float width, float height)
-            GetDimensions(Graphics gfx, LegendItem[] items, Font font)
+            GetDimensions(Graphics gfx, LegendItem[] items, System.Drawing.Font font)
         {
             // determine maximum label size and use it to define legend size
             float maxLabelWidth = 0;
@@ -92,7 +91,7 @@ namespace ScottPlot.Renderable
             return (maxLabelWidth, maxLabelHeight, width, height);
         }
 
-        private void RenderOnBitmap(Graphics gfx, LegendItem[] items, Font font,
+        private void RenderOnBitmap(Graphics gfx, LegendItem[] items, System.Drawing.Font font,
             float locationX, float locationY, float width, float height, float maxLabelHeight,
             bool shadow = true, bool outline = true)
         {
@@ -219,6 +218,11 @@ namespace ScottPlot.Renderable
                 default:
                     throw new NotImplementedException();
             }
+        }
+
+        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -167,7 +167,7 @@ namespace ScottPlot
             using (Graphics gfx = GDI.Graphics(bmp, lowQuality))
             using (var pen = GDI.Pen(Color.Black))
             using (var brush = GDI.Brush(Color.Black))
-            using (Font font = GDI.Font(null, 12))
+            using (var font = GDI.Font(null, 12))
             using (var sf2 = new StringFormat() { LineAlignment = StringAlignment.Far })
             {
                 gfx.InterpolationMode = InterpolationMode.NearestNeighbor;
@@ -191,7 +191,7 @@ namespace ScottPlot
             using (Graphics gfx = GDI.Graphics(bmp, lowQuality))
             using (Pen pen = GDI.Pen(Color.Black))
             using (Brush brush = GDI.Brush(Color.Black))
-            using (Font axisFont = GDI.Font(null, 12))
+            using (var axisFont = GDI.Font(null, 12))
             using (StringFormat right_centre = new StringFormat() { Alignment = StringAlignment.Far, LineAlignment = StringAlignment.Center })
             using (StringFormat centre_top = new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Near })
             {
