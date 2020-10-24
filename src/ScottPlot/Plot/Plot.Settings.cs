@@ -3,15 +3,12 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace ScottPlot
 {
     partial class Plot
     {
-        public enum ErrorAction { Render, SkipRender, DebugLog, ShowErrorOnPlot, ThrowException }
-
         private bool ValidateEveryPoint = false;
         private ErrorAction ValidationErrorAction = ErrorAction.ShowErrorOnPlot;
 
