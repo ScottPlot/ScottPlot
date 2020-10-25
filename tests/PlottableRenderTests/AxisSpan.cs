@@ -16,7 +16,7 @@ namespace ScottPlotTests.PlottableRenderTests
             plt.AntiAlias(false, false, false);
 
             // start with default settings
-            var axSpan = new PlottableHSpan() { position1 = 1.23, position2 = 2.34 };
+            var axSpan = new HSpan() { position1 = 1.23, position2 = 2.34 };
 
             plt.Add(axSpan);
             var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
@@ -43,7 +43,7 @@ namespace ScottPlotTests.PlottableRenderTests
             plt.AntiAlias(false, false, false);
 
             // start with default settings
-            var axSpan = new PlottableHSpan() { position1 = 1.23, position2 = 2.34, color = System.Drawing.Color.Gray };
+            var axSpan = new HSpan() { position1 = 1.23, position2 = 2.34, color = System.Drawing.Color.Gray };
 
             plt.Add(axSpan);
             var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
@@ -70,7 +70,7 @@ namespace ScottPlotTests.PlottableRenderTests
             plt.AntiAlias(false, false, false);
 
             // start with default settings
-            var axSpan = new PlottableHSpan() { position1 = 1.23, position2 = 2.34 };
+            var axSpan = new HSpan() { position1 = 1.23, position2 = 2.34 };
 
             plt.Add(axSpan);
             var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));

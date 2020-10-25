@@ -39,7 +39,7 @@ namespace ScottPlot
             return axLine;
         }
 
-        public PlottableVSpan PlotVSpan(
+        public VSpan PlotVSpan(
             double y1,
             double y2,
             Color? color = null,
@@ -51,7 +51,7 @@ namespace ScottPlot
             double dragLimitUpper = double.PositiveInfinity
             )
         {
-            var axisSpan = new PlottableVSpan()
+            var axisSpan = new VSpan()
             {
                 position1 = y1,
                 position2 = y2,
@@ -93,7 +93,7 @@ namespace ScottPlot
             return hline;
         }
 
-        public PlottableHSpan PlotHSpan(
+        public HSpan PlotHSpan(
             double x1,
             double x2,
             Color? color = null,
@@ -105,7 +105,7 @@ namespace ScottPlot
             double dragLimitUpper = double.PositiveInfinity
             )
         {
-            var axisSpan = new PlottableHSpan()
+            var axisSpan = new HSpan()
             {
                 position1 = x1,
                 position2 = x2,

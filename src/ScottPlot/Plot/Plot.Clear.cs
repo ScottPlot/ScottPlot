@@ -108,7 +108,7 @@ namespace ScottPlot
                     indicesToDelete.Add(i);
                 else if (settings.plottables[i] is PlottableOHLC && finance)
                     indicesToDelete.Add(i);
-                else if ((settings.plottables[i] is PlottableVSpan || settings.plottables[i] is PlottableHSpan) && axisSpans)
+                else if ((settings.plottables[i] is VSpan || settings.plottables[i] is HSpan) && axisSpans)
                     indicesToDelete.Add(i);
             }
 

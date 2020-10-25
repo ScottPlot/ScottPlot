@@ -1,18 +1,15 @@
 ﻿using ScottPlot.Config;
 using ScottPlot.Drawing;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Text;
-using System.Threading;
 
 namespace ScottPlot.Plottable
 {
-    public class PlottableHSpan : PlottableAxisSpan { public PlottableHSpan() { IsHorizontal = true; } }
-    public class PlottableVSpan : PlottableAxisSpan { public PlottableVSpan() { IsHorizontal = false; } }
+    public class HSpan : AxisSpan { public HSpan() { IsHorizontal = true; } }
+    public class VSpan : AxisSpan { public VSpan() { IsHorizontal = false; } }
 
-    public abstract class PlottableAxisSpan : IDraggable, IPlottable
+    public abstract class AxisSpan : IDraggable, IPlottable
     {
         public double position1;
         public double position2;
