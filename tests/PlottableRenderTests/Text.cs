@@ -17,7 +17,7 @@ namespace ScottPlotTests.PlottableRenderTests
             plt.AntiAlias(false, false, false);
 
             // start with default settings
-            var txt = new PlottableText() { text = "hello", FontColor = System.Drawing.Color.Gray };
+            var txt = new ScottPlot.Plottable.Text() { text = "hello", FontColor = System.Drawing.Color.Gray };
             plt.Add(txt);
             var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
 
@@ -45,7 +45,7 @@ namespace ScottPlotTests.PlottableRenderTests
             plt.AntiAlias(false, false, false);
 
             // start with default settings
-            var txt = new PlottableText() { text = "hello" };
+            var txt = new ScottPlot.Plottable.Text() { text = "hello" };
             plt.Add(txt);
             var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
             string hash1 = ScottPlot.Tools.BitmapHash(bmp1);
@@ -71,7 +71,7 @@ namespace ScottPlotTests.PlottableRenderTests
             plt.AntiAlias(false, false, false);
 
             // start with default settings
-            var txt = new PlottableText() { text = "hello" };
+            var txt = new ScottPlot.Plottable.Text() { text = "hello" };
             plt.Add(txt);
             var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
             string hash1 = ScottPlot.Tools.BitmapHash(bmp1);
@@ -97,7 +97,7 @@ namespace ScottPlotTests.PlottableRenderTests
             plt.AntiAlias(false, false, false);
 
             // start with default settings
-            var txt = new PlottableText() { text = "hello" };
+            var txt = new ScottPlot.Plottable.Text() { text = "hello" };
             plt.Add(txt);
             var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
 
@@ -124,7 +124,7 @@ namespace ScottPlotTests.PlottableRenderTests
             plt.AntiAlias(false, false, false);
 
             // start with default settings
-            var txt = new PlottableText() { text = "hello", frame = true, frameColor = System.Drawing.Color.Gray };
+            var txt = new ScottPlot.Plottable.Text() { text = "hello", frame = true, frameColor = System.Drawing.Color.Gray };
             plt.Add(txt);
             var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
 
@@ -152,7 +152,7 @@ namespace ScottPlotTests.PlottableRenderTests
             plt.AntiAlias(false, false, false);
 
             // start with default settings
-            var txt = new PlottableText() { text = "hello", FontColor = System.Drawing.Color.Gray };
+            var txt = new ScottPlot.Plottable.Text() { text = "hello", FontColor = System.Drawing.Color.Gray };
             plt.Add(txt);
             var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
 
@@ -180,7 +180,7 @@ namespace ScottPlotTests.PlottableRenderTests
             plt.AntiAlias(false, false, false);
 
             // start with default settings
-            var txt = new PlottableText() { text = "hello", FontSize = 12 };
+            var txt = new ScottPlot.Plottable.Text() { text = "hello", FontSize = 12 };
             plt.Add(txt);
             var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
 
@@ -210,7 +210,7 @@ namespace ScottPlotTests.PlottableRenderTests
             plt.AntiAlias(false, false, false);
 
             // start with default settings
-            var txt = new PlottableText() { text = "hello", FontSize = 12 };
+            var txt = new ScottPlot.Plottable.Text() { text = "hello", FontSize = 12 };
             plt.Add(txt);
             var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
 

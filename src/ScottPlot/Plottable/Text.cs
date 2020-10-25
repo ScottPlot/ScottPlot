@@ -5,12 +5,10 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Drawing.Text;
-using System.Text;
 
 namespace ScottPlot.Plottable
 {
-    public class PlottableText : IPlottable
+    public class Text : IPlottable
     {
         /// <summary>
         /// Horizontal position in coordinate space
@@ -74,7 +72,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// The Text plot type displays a string at an X/Y position in coordinate space.
         /// </summary>
-        public PlottableText() { }
+        public Text() { }
 
         public override string ToString() => $"PlottableText \"{text}\" at ({x}, {y})";
 
@@ -137,12 +135,9 @@ namespace ScottPlot.Plottable
             if (string.IsNullOrWhiteSpace(text))
                 return; // no render needed
 
-            using (Graphics gfx = Graphics.FromImage(bmp))
+            using (Graphics gfx = GDI.Graphics(bmp, lowQuality))
             using (var font = GDI.Font(FontName, FontSize, FontBold))
             {
-                gfx.SmoothingMode = lowQuality ? SmoothingMode.HighSpeed : SmoothingMode.AntiAlias;
-                gfx.TextRenderingHint = lowQuality ? TextRenderingHint.SingleBitPerPixelGridFit : TextRenderingHint.AntiAliasGridFit;
-
                 float pixelX = dims.GetPixelX(x);
                 float pixelY = dims.GetPixelY(y);
                 SizeF stringSize = GDI.MeasureString(gfx, text, font);

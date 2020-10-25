@@ -14,7 +14,7 @@ namespace ScottPlot
 {
     public partial class Plot
     {
-        public PlottableText PlotText(
+        public Text PlotText(
             string text,
             double x,
             double y,
@@ -32,7 +32,7 @@ namespace ScottPlot
             if (!string.IsNullOrWhiteSpace(label))
                 Debug.WriteLine("WARNING: the PlotText() label argument is ignored");
 
-            PlottableText plottableText = new PlottableText()
+            Text plottableText = new Text()
             {
                 text = text,
                 x = x,

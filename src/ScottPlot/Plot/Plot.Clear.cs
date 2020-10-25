@@ -102,7 +102,7 @@ namespace ScottPlot
                     indicesToDelete.Add(i);
                 else if (settings.plottables[i].GetType().IsGenericType && settings.plottables[i].GetType().GetGenericTypeDefinition() == typeof(SignalPlotConst<>) && signalPlots)
                     indicesToDelete.Add(i);
-                else if (settings.plottables[i] is PlottableText && text)
+                else if (settings.plottables[i] is Text && text)
                     indicesToDelete.Add(i);
                 else if (settings.plottables[i] is BarPlot && bar)
                     indicesToDelete.Add(i);
