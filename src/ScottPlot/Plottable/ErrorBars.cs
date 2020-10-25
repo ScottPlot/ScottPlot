@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace ScottPlot.Plottable
 {
-    public class PlottableErrorBars : IPlottable
+    public class ErrorBars : IPlottable
     {
         public readonly double[] Xs;
         public readonly double[] Ys;
@@ -23,7 +23,7 @@ namespace ScottPlot.Plottable
         public LineStyle LineStyle = LineStyle.Solid;
         public bool IsVisible { get; set; } = true;
 
-        public PlottableErrorBars(double[] xs, double[] ys,
+        public ErrorBars(double[] xs, double[] ys,
                                   double[] xPositiveError, double[] xNegativeError,
                                   double[] yPositiveError, double[] yNegativeError)
         {

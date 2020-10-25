@@ -132,7 +132,7 @@ namespace ScottPlot
             return scatterPlot;
         }
 
-        public PlottableErrorBars PlotErrorBars(
+        public ErrorBars PlotErrorBars(
             double[] xs,
             double[] ys,
             double[] xPositiveError = null,
@@ -145,7 +145,7 @@ namespace ScottPlot
             string label = null
             )
         {
-            var errorBars = new PlottableErrorBars(xs, ys, xPositiveError, xNegativeError, yPositiveError, yNegativeError)
+            var errorBars = new ErrorBars(xs, ys, xPositiveError, xNegativeError, yPositiveError, yNegativeError)
             {
                 Color = color ?? settings.GetNextColor(),
                 LineWidth = (float)lineWidth,

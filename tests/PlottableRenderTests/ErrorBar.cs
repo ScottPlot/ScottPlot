@@ -22,7 +22,7 @@ namespace ScottPlotTests.PlottableRenderTests
             double[] xErrPos = new double[] { .2, .2, .2, .2 };
             double[] yErrNeg = new double[] { 1, 1, 1, 1 };
             double[] yErrPos = new double[] { 1, 1, 1, 1 };
-            var err = new PlottableErrorBars(xs, ys, xErrPos, xErrNeg, yErrPos, yErrNeg) { };
+            var err = new ErrorBars(xs, ys, xErrPos, xErrNeg, yErrPos, yErrNeg) { };
 
             plt.Add(err);
             var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
@@ -55,7 +55,7 @@ namespace ScottPlotTests.PlottableRenderTests
             double[] xErrPos = new double[] { .2, .2, .2, .2 };
             double[] yErrNeg = new double[] { 1, 1, 1, 1 };
             double[] yErrPos = new double[] { 1, 1, 1, 1 };
-            var err = new PlottableErrorBars(xs, ys, xErrPos, xErrNeg, yErrPos, yErrNeg) { };
+            var err = new ErrorBars(xs, ys, xErrPos, xErrNeg, yErrPos, yErrNeg) { };
 
             plt.Add(err);
             var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
@@ -88,7 +88,7 @@ namespace ScottPlotTests.PlottableRenderTests
             double[] xErrPos = new double[] { .2, .2, .2, .2 };
             double[] yErrNeg = new double[] { 1, 1, 1, 1 };
             double[] yErrPos = new double[] { 1, 1, 1, 1 };
-            var err = new PlottableErrorBars(xs, ys, xErrPos, xErrNeg, yErrPos, yErrNeg) { };
+            var err = new ErrorBars(xs, ys, xErrPos, xErrNeg, yErrPos, yErrNeg) { };
 
             plt.Add(err);
             var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
@@ -121,7 +121,7 @@ namespace ScottPlotTests.PlottableRenderTests
             double[] xErrPos = new double[] { .2, .2, .2, .2 };
             double[] yErrNeg = new double[] { 1, 1, 1, 1 };
             double[] yErrPos = new double[] { 1, 1, 1, 1 };
-            var err = new PlottableErrorBars(xs, ys, xErrPos, xErrNeg, yErrPos, yErrNeg) { };
+            var err = new ErrorBars(xs, ys, xErrPos, xErrNeg, yErrPos, yErrNeg) { };
 
             plt.Add(err);
             var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
@@ -154,7 +154,7 @@ namespace ScottPlotTests.PlottableRenderTests
             double[] xErrPos = new double[] { .2, .2, .2, .2 };
             double[] yErrNeg = new double[] { 1, 1, 1, 1 };
             double[] yErrPos = new double[] { 1, 1, 1, 1 };
-            var err = new PlottableErrorBars(xs, ys, xErrPos, xErrNeg, yErrPos, yErrNeg) { };
+            var err = new ErrorBars(xs, ys, xErrPos, xErrNeg, yErrPos, yErrNeg) { };
 
             plt.Add(err);
             var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
