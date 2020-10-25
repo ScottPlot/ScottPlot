@@ -135,7 +135,7 @@ namespace ScottPlot
             return scalebar;
         }
 
-        public PlottablePie PlotPie(
+        public PiePlot PlotPie(
             double[] values,
             string[] sliceLabels = null,
             Color[] colors = null,
@@ -148,7 +148,7 @@ namespace ScottPlot
         {
             colors = colors ?? Enumerable.Range(0, values.Length).Select(i => settings.colorset.GetColor(i)).ToArray();
 
-            PlottablePie pie = new PlottablePie(values, sliceLabels, colors)
+            PiePlot pie = new PiePlot(values, sliceLabels, colors)
             {
                 explodedChart = explodedChart,
                 showValues = showValues,

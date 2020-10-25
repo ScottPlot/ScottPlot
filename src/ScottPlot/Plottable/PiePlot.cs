@@ -1,15 +1,13 @@
 ﻿using ScottPlot.Config;
-using ScottPlot.Diagnostic.Attributes;
 using ScottPlot.Drawing;
 using System;
-using System.Collections;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 
 namespace ScottPlot.Plottable
 {
-    public class PlottablePie : IPlottable
+    public class PiePlot : IPlottable
     {
         public double[] values;
         public string label;
@@ -29,7 +27,7 @@ namespace ScottPlot.Plottable
         public Color centerTextColor = Color.Black;
         public bool IsVisible { get; set; } = true;
 
-        public PlottablePie(double[] values, string[] groupNames, Color[] colors)
+        public PiePlot(double[] values, string[] groupNames, Color[] colors)
         {
             this.values = values;
             this.groupNames = groupNames;
