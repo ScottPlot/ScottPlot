@@ -1,5 +1,4 @@
 ﻿using ScottPlot.Config;
-using ScottPlot.Diagnostic.Attributes;
 using ScottPlot.Drawing;
 using System;
 using System.Drawing;
@@ -12,7 +11,7 @@ namespace ScottPlot.Plottable
 {
 
 #pragma warning disable CS0618 // Type or member is obsolete
-    public class PlottableHeatmap : IPlottable
+    public class Heatmap : IPlottable
     {
         // these fields are updated when the intensities are analyzed
         private double[] NormalizedIntensities;

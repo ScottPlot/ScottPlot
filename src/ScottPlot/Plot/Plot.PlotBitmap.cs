@@ -41,7 +41,7 @@ namespace ScottPlot
             return plottableImage;
         }
 
-        public PlottableHeatmap PlotHeatmap(
+        public Heatmap PlotHeatmap(
             double[,] intensities,
             Drawing.Colormap colormap = null,
             string label = null,
@@ -55,7 +55,7 @@ namespace ScottPlot
             bool drawAxisLabels = true
             )
         {
-            PlottableHeatmap heatmap = new PlottableHeatmap()
+            Heatmap heatmap = new Heatmap()
             {
                 label = label,
                 AxisOffsets = axisOffsets ?? new double[] { 0, 0 },
