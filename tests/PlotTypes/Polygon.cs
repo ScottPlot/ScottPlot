@@ -21,7 +21,7 @@ namespace ScottPlotTests.PlotTypes
             {
                 var color = plt.GetSettings(false).GetNextColor();
 
-                var plottable = new PlottablePolygon(
+                var plottable = new ScottPlot.Plottable.Polygon(
                         xs: ScottPlot.DataGen.Random(rand, 3, 100),
                         ys: ScottPlot.DataGen.Random(rand, 3, 100))
                 {

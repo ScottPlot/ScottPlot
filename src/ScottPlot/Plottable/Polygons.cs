@@ -7,7 +7,7 @@ using ScottPlot.Drawing;
 
 namespace ScottPlot.Plottable
 {
-    public class PlottablePolygons : IPlottable
+    public class Polygons : IPlottable
     {
         public readonly List<List<(double x, double y)>> polys;
         public string label;
@@ -22,7 +22,7 @@ namespace ScottPlot.Plottable
         public bool SkipOffScreenPolygons = true;
         public bool RenderSmallPolygonsAsSinglePixels = true;
 
-        public PlottablePolygons(List<List<(double x, double y)>> polys)
+        public Polygons(List<List<(double x, double y)>> polys)
         {
             this.polys = polys;
         }

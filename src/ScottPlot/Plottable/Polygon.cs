@@ -7,7 +7,7 @@ using System.Drawing;
 
 namespace ScottPlot.Plottable
 {
-    public class PlottablePolygon : IPlottable
+    public class Polygon : IPlottable
     {
         public double[] xs;
         public double[] ys;
@@ -20,7 +20,7 @@ namespace ScottPlot.Plottable
         public double fillAlpha = 0.5;
         public bool IsVisible { get; set; } = true;
 
-        public PlottablePolygon(double[] xs, double[] ys)
+        public Polygon(double[] xs, double[] ys)
         {
             this.xs = xs;
             this.ys = ys;
