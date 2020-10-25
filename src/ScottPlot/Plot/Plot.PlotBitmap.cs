@@ -14,7 +14,7 @@ namespace ScottPlot
     public partial class Plot
     {
 
-        public PlottableImage PlotBitmap(
+        public Plottable.Image PlotBitmap(
            Bitmap bitmap,
            double x,
            double y,
@@ -25,7 +25,7 @@ namespace ScottPlot
            int frameSize = 0
            )
         {
-            PlottableImage plottableImage = new PlottableImage()
+            Plottable.Image plottableImage = new Plottable.Image()
             {
                 image = bitmap,
                 x = x,

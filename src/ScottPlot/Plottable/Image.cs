@@ -1,20 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Drawing;
-using System.Linq;
-using System.Threading.Tasks;
 using ScottPlot.Config;
 using ScottPlot.Drawing;
 
 namespace ScottPlot.Plottable
 {
-    public class PlottableImage : IPlottable
+    public class Image : IPlottable
     {
         public double x;
         public double y;
         public double rotation;
-        public Image image;
+        public System.Drawing.Image image;
         public Alignment alignment;
         public Color frameColor;
         public int frameSize;
