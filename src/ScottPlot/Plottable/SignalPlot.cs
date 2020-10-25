@@ -2,10 +2,9 @@
 
 namespace ScottPlot.Plottable
 {
-    public class PlottableSignalXY : PlottableSignalXYGeneric<double, double>
+    public class SignalPlot : SignalPlotBase<double>
     {
-
-        public PlottableSignalXY() : base()
+        public SignalPlot() : base()
         {
             minmaxSearchStrategy = new LinearDoubleOnlyMinMaxStrategy();
         }
@@ -13,7 +12,7 @@ namespace ScottPlot.Plottable
         public override string ToString()
         {
             string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
-            return $"PlottableSignalXY{label} with {PointCount} points";
+            return $"PlottableSignal{label} with {PointCount} points";
         }
     }
 }

@@ -4,10 +4,8 @@ using ScottPlot.Drawing;
 using ScottPlot.MinMaxSearchStrategies;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Drawing.Text;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -15,7 +13,7 @@ using System.Text;
 
 namespace ScottPlot.Plottable
 {
-    public class PlottableSignalBase<T> : IPlottable, IExportable where T : struct, IComparable
+    public class SignalPlotBase<T> : IPlottable, IExportable where T : struct, IComparable
     {
         protected bool MaxRenderIndexLowerYSPromise = false;
         protected bool MaxRenderIndexHigherMinRenderIndexPromise = false;
@@ -168,7 +166,7 @@ namespace ScottPlot.Plottable
         public Color? gradientFillColor2 { get; set; } = null;
         public int baseline { get; set; } = 0;
 
-        public PlottableSignalBase()
+        public SignalPlotBase()
         {
         }
 
@@ -607,15 +605,11 @@ namespace ScottPlot.Plottable
 
         public virtual void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            using (Graphics gfx = Graphics.FromImage(bmp))
-            using (var brush = new SolidBrush(color))
+            using (var gfx = GDI.Graphics(bmp, lowQuality))
+            using (var brush = GDI.Brush(color))
             using (var penLD = GDI.Pen(color, (float)lineWidth, lineStyle, true))
             using (var penHD = GDI.Pen(color, (float)lineWidth, LineStyle.Solid, true))
             {
-
-                gfx.SmoothingMode = lowQuality ? SmoothingMode.HighSpeed : SmoothingMode.AntiAlias;
-                gfx.TextRenderingHint = lowQuality ? TextRenderingHint.SingleBitPerPixelGridFit : TextRenderingHint.AntiAliasGridFit;
-
                 double dataSpanUnits = _ys.Length * _samplePeriod;
                 double columnSpanUnits = dims.XSpan / dims.DataWidth;
                 double columnPointCount = (columnSpanUnits / dataSpanUnits) * _ys.Length;

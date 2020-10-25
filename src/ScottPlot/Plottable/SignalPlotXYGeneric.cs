@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 namespace ScottPlot.Plottable
 {
 
-    public class PlottableSignalXYGeneric<TX, TY> : PlottableSignalBase<TY> where TX : struct, IComparable where TY : struct, IComparable
+    public class SignalPlotXYGeneric<TX, TY> : SignalPlotBase<TY> where TX : struct, IComparable where TY : struct, IComparable
     {
         private bool XSequalYSPromise = false;
 
@@ -50,7 +50,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public PlottableSignalXYGeneric() : base()
+        public SignalPlotXYGeneric() : base()
         {
 
         }

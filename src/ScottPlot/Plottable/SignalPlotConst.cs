@@ -10,11 +10,11 @@ namespace ScottPlot.Plottable
     // - in x64 mode limit can be up to maximum array size (2G points) with special solution and 64 GB RAM (not tested)
     // - if source array is changed UpdateTrees() must be called
     // - source array can be change by call updateData(), updating by ranges much faster.
-    public class PlottableSignalConst<T> : PlottableSignalBase<T> where T : struct, IComparable
+    public class SignalPlotConst<T> : SignalPlotBase<T> where T : struct, IComparable
     {
         public bool TreesReady => (minmaxSearchStrategy as SegmentedTreeMinMaxSearchStrategy<T>)?.TreesReady ?? false;
 
-        public PlottableSignalConst() : base()
+        public SignalPlotConst() : base()
         {
             minmaxSearchStrategy = new SegmentedTreeMinMaxSearchStrategy<T>();
         }

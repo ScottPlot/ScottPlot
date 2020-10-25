@@ -3,11 +3,11 @@ using System;
 
 namespace ScottPlot.Plottable
 {
-    public class PlottableSignalXYConst<TX, TY> : PlottableSignalXYGeneric<TX, TY> where TX : struct, IComparable where TY : struct, IComparable
+    public class SignalPlotXYConst<TX, TY> : SignalPlotXYGeneric<TX, TY> where TX : struct, IComparable where TY : struct, IComparable
     {
         public bool TreesReady => (minmaxSearchStrategy as SegmentedTreeMinMaxSearchStrategy<TY>)?.TreesReady ?? false;
 
-        public PlottableSignalXYConst() : base()
+        public SignalPlotXYConst() : base()
         {
             minmaxSearchStrategy = new SegmentedTreeMinMaxSearchStrategy<TY>();
         }

@@ -11,7 +11,7 @@ namespace ScottPlot
 {
     public partial class Plot
     {
-        public PlottableSignalXY PlotSignalXY(
+        public SignalPlotXY PlotSignalXY(
             double[] xs,
             double[] ys,
             Color? color = null,
@@ -24,7 +24,7 @@ namespace ScottPlot
             bool useParallel = true
             )
         {
-            PlottableSignalXY signal = new PlottableSignalXY()
+            SignalPlotXY signal = new SignalPlotXY()
             {
                 xs = xs,
                 ys = ys,
@@ -42,7 +42,7 @@ namespace ScottPlot
             return signal;
         }
 
-        public PlottableSignalXYConst<TX, TY> PlotSignalXYConst<TX, TY>(
+        public SignalPlotXYConst<TX, TY> PlotSignalXYConst<TX, TY>(
             TX[] xs,
             TY[] ys,
             Color? color = null,
@@ -56,7 +56,7 @@ namespace ScottPlot
             ) where TX : struct, IComparable where TY : struct, IComparable
 
         {
-            PlottableSignalXYConst<TX, TY> signal = new PlottableSignalXYConst<TX, TY>()
+            SignalPlotXYConst<TX, TY> signal = new SignalPlotXYConst<TX, TY>()
             {
                 xs = xs,
                 ys = ys,
@@ -74,7 +74,7 @@ namespace ScottPlot
             return signal;
         }
 
-        public PlottableSignal PlotSignal(
+        public SignalPlot PlotSignal(
             double[] ys,
             double sampleRate = 1,
             double xOffset = 0,
@@ -90,7 +90,7 @@ namespace ScottPlot
             bool useParallel = true
             )
         {
-            PlottableSignal signal = new PlottableSignal()
+            SignalPlot signal = new SignalPlot()
             {
                 ys = ys,
                 sampleRate = sampleRate,
@@ -111,7 +111,7 @@ namespace ScottPlot
             return signal;
         }
 
-        public PlottableSignalConst<T> PlotSignalConst<T>(
+        public SignalPlotConst<T> PlotSignalConst<T>(
             T[] ys,
             double sampleRate = 1,
             double xOffset = 0,
@@ -127,7 +127,7 @@ namespace ScottPlot
             bool useParallel = true
             ) where T : struct, IComparable
         {
-            PlottableSignalConst<T> signal = new PlottableSignalConst<T>()
+            SignalPlotConst<T> signal = new SignalPlotConst<T>()
             {
                 ys = ys,
                 sampleRate = sampleRate,

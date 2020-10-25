@@ -98,9 +98,9 @@ namespace ScottPlot
                     indicesToDelete.Add(i);
                 else if (settings.plottables[i] is ScatterPlot && scatterPlots)
                     indicesToDelete.Add(i);
-                else if (settings.plottables[i] is PlottableSignal && signalPlots)
+                else if (settings.plottables[i] is SignalPlot && signalPlots)
                     indicesToDelete.Add(i);
-                else if (settings.plottables[i].GetType().IsGenericType && settings.plottables[i].GetType().GetGenericTypeDefinition() == typeof(PlottableSignalConst<>) && signalPlots)
+                else if (settings.plottables[i].GetType().IsGenericType && settings.plottables[i].GetType().GetGenericTypeDefinition() == typeof(SignalPlotConst<>) && signalPlots)
                     indicesToDelete.Add(i);
                 else if (settings.plottables[i] is PlottableText && text)
                     indicesToDelete.Add(i);

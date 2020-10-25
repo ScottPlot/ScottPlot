@@ -15,7 +15,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
     {
         public double[] data = new double[100_000];
         int nextDataIndex = 1;
-        PlottableSignal signalPlot;
+        SignalPlot signalPlot;
         Random rand = new Random(0);
 
         public LiveDataIncoming()
