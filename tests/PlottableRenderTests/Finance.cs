@@ -16,7 +16,7 @@ namespace ScottPlotTests.PlottableRenderTests
             plt.AntiAlias(false, false, false);
 
             // start with default settings
-            var op = new PlottableOHLC()
+            var op = new FinancePlot()
             {
                 ohlcs = new OHLC[]
                         {
@@ -51,7 +51,7 @@ namespace ScottPlotTests.PlottableRenderTests
             plt.AntiAlias(false, false, false);
 
             // start with default settings
-            var op = new PlottableOHLC()
+            var op = new FinancePlot()
             {
                 ohlcs = new OHLC[]
                         {
@@ -86,7 +86,7 @@ namespace ScottPlotTests.PlottableRenderTests
             plt.AntiAlias(false, false, false);
 
             // start with default settings
-            var op = new PlottableOHLC()
+            var op = new FinancePlot()
             {
                 ohlcs = new OHLC[]
                         {
@@ -121,7 +121,7 @@ namespace ScottPlotTests.PlottableRenderTests
             plt.AntiAlias(false, false, false);
 
             // start with default settings
-            var op = new PlottableOHLC()
+            var op = new FinancePlot()
             {
                 Candle = true,
                 ohlcs = new OHLC[]

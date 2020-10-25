@@ -13,7 +13,7 @@ namespace ScottPlot
 {
     public partial class Plot
     {
-        public PlottableOHLC PlotOHLC(
+        public FinancePlot PlotOHLC(
             OHLC[] ohlcs,
             Color? colorUp = null,
             Color? colorDown = null,
@@ -21,7 +21,7 @@ namespace ScottPlot
             bool sequential = false
             )
         {
-            PlottableOHLC ohlc = new PlottableOHLC()
+            FinancePlot ohlc = new FinancePlot()
             {
                 ohlcs = ohlcs,
                 Candle = false,
@@ -34,7 +34,7 @@ namespace ScottPlot
             return ohlc;
         }
 
-        public PlottableOHLC PlotCandlestick(
+        public FinancePlot PlotCandlestick(
             OHLC[] ohlcs,
             Color? colorUp = null,
             Color? colorDown = null,
@@ -42,7 +42,7 @@ namespace ScottPlot
             bool sequential = false
             )
         {
-            PlottableOHLC ohlc = new PlottableOHLC()
+            FinancePlot ohlc = new FinancePlot()
             {
                 ohlcs = ohlcs,
                 Candle = true,

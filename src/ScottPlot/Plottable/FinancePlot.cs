@@ -1,17 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Text;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ScottPlot.Config;
 using ScottPlot.Drawing;
 
 namespace ScottPlot.Plottable
 {
-    public class PlottableOHLC : IPlottable
+    public class FinancePlot : IPlottable
     {
         /// <summary>
         /// Array of prices (open high low close)
@@ -131,13 +125,10 @@ namespace ScottPlot.Plottable
                 boxWidth = (float)(spacingPx / 2 * fractionalTickWidth);
             }
 
-            using (Graphics gfx = Graphics.FromImage(bmp))
+            using (Graphics gfx = GDI.Graphics(bmp, lowQuality))
             using (Pen pen = new Pen(Color.Magenta))
             using (SolidBrush brush = new SolidBrush(Color.Magenta))
             {
-                gfx.SmoothingMode = lowQuality ? SmoothingMode.HighSpeed : SmoothingMode.AntiAlias;
-                gfx.TextRenderingHint = lowQuality ? TextRenderingHint.SingleBitPerPixelGridFit : TextRenderingHint.AntiAliasGridFit;
-
                 for (int i = 0; i < ohlcs.Length; i++)
                 {
                     var ohlc = ohlcs[i];
@@ -180,12 +171,9 @@ namespace ScottPlot.Plottable
                 boxWidth = (float)(spacingPx / 2 * fractionalTickWidth);
             }
 
-            using (Graphics gfx = Graphics.FromImage(bmp))
+            using (Graphics gfx = GDI.Graphics(bmp, lowQuality))
             using (Pen pen = new Pen(Color.Magenta))
             {
-                gfx.SmoothingMode = lowQuality ? SmoothingMode.HighSpeed : SmoothingMode.AntiAlias;
-                gfx.TextRenderingHint = lowQuality ? TextRenderingHint.SingleBitPerPixelGridFit : TextRenderingHint.AntiAliasGridFit;
-
                 for (int i = 0; i < ohlcs.Length; i++)
                 {
                     var ohlc = ohlcs[i];
