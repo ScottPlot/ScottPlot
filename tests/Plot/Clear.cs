@@ -126,6 +126,23 @@ namespace ScottPlotTests.Plot
             Assert.AreEqual(numberOfSignalsBefore, numberOfPlottablesRemoved);
         }
 
+        private string GetLegendLabels(ScottPlot.Plot plt)
+        {
+            List<string> names = new List<string>();
+            foreach (var plottable in plt.Plottables)
+            {
+                if (plottable is IHasLegendItems plottableWithLegend)
+                {
+                    if (plottableWithLegend.LegendItems.Length > 0)
+                    {
+                        names.Add(plottableWithLegend.LegendItems[0].label);
+                    }
+                }
+            }
+
+            return string.Join(",", names);
+        }
+
         [Test]
         public void Test_Remove_RemovesSinglePlot()
         {
@@ -140,11 +157,9 @@ namespace ScottPlotTests.Plot
             var sigE = plt.PlotSignal(DataGen.RandomWalk(rand, 100), label: "E");
             var barY = plt.PlotPoint(111, 222, label: "Y");
 
-            var plottablesWithLegends = plt.Plottables.Where(x => x is IHasLegendItems).Select(x => (IHasLegendItems)x).ToArray();
-
-            Assert.AreEqual("X,A,B,C,D,E,Y", string.Join(",", plottablesWithLegends.Select(x => x.LegendItems[0].label)));
+            Assert.AreEqual("X,A,B,C,D,E,Y", GetLegendLabels(plt));
             plt.Remove(sigC);
-            Assert.AreEqual("X,A,B,D,E,Y", string.Join(",", plottablesWithLegends.Select(x => x.LegendItems[0].label)));
+            Assert.AreEqual("X,A,B,D,E,Y", GetLegendLabels(plt));
         }
     }
 }
