@@ -8,20 +8,19 @@ namespace ScottPlotTests.Renderable
         [Test]
         public void Test_Renderable_Basic()
         {
-            var plt = new ScottPlot.Plot();
+            var plt = new ScottPlot.Plot(600, 400);
             plt.PlotSignal(DataGen.Sin(51));
 
-            double[] positions = { 1, 2, 3 };
-            double[] minorPositions = { .5, 1.5, 2.5, 3.5 };
-            string[] labels = { "1", "2", "3" };
+            // TODO: make this smart enough to calculate itself
+            plt.Layout(xLabelHeight: 40);
 
-            var newAxisX = new ScottPlot.Renderable.Axis(positions, labels, minorPositions)
-            {
+            plt.XAxis.Title = "Horizontal Axis";
+            plt.YAxis.Title = "Vertical Axis";
 
-            };
-            plt.Add(newAxisX);
+            var bmp = new System.Drawing.Bitmap(600, 400);
+            plt.Render(bmp);
 
-            TestTools.SaveFig(plt);
+            TestTools.SaveFig(bmp);
         }
     }
 }

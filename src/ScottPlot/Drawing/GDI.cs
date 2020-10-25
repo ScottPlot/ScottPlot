@@ -172,5 +172,28 @@ namespace ScottPlot.Drawing
             FontStyle fontStyle = bold ? FontStyle.Bold : FontStyle.Regular;
             return new System.Drawing.Font(validFontName, fontSize, fontStyle, GraphicsUnit.Pixel);
         }
+
+        public static StringFormat StringFormat(HorizontalAlignment h = HorizontalAlignment.Left, VerticalAlignment v = VerticalAlignment.Lower)
+        {
+            var sf = new StringFormat();
+
+            if (h == HorizontalAlignment.Left)
+                sf.Alignment = StringAlignment.Near;
+            else if (h == HorizontalAlignment.Center)
+                sf.Alignment = StringAlignment.Center;
+            else if (h == HorizontalAlignment.Right)
+                sf.Alignment = StringAlignment.Far;
+            else
+                throw new NotImplementedException();
+
+            if (v == VerticalAlignment.Upper)
+                sf.LineAlignment = StringAlignment.Near;
+            else if (v == VerticalAlignment.Middle)
+                sf.LineAlignment = StringAlignment.Center;
+            else if (v == VerticalAlignment.Lower)
+                sf.LineAlignment = StringAlignment.Far;
+
+            return sf;
+        }
     }
 }

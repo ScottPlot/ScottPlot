@@ -48,25 +48,25 @@ namespace ScottPlot.Drawing
             UnitsPerPxY = (YMax - YMin) / DataHeight;
         }
 
-        public float GetPixelX(double position, int axisIndex = 0, bool drawingOnDataBitmap = true)
+        public float GetPixelX(double position, int axisIndex = 0)
         {
             if (axisIndex != 0)
                 throw new NotImplementedException("multiple X axes are not yet supported");
 
             double unitsFromMin = position - XMin;
             double pxFromMin = unitsFromMin * PxPerUnitX;
-            double pixel = drawingOnDataBitmap ? pxFromMin : DataOffsetX + pxFromMin;
+            double pixel = DataOffsetX + pxFromMin;
             return (float)pixel;
         }
 
-        public float GetPixelY(double position, int axisIndex = 0, bool drawingOnDataBitmap = true)
+        public float GetPixelY(double position, int axisIndex = 0)
         {
             if (axisIndex != 0)
                 throw new NotImplementedException("multiple Y axes are not yet supported");
 
             double unitsFromMax = YMax - position; // intentionally inverted
             double pxFromMax = unitsFromMax * PxPerUnitY;
-            double pixel = drawingOnDataBitmap ? pxFromMax : DataOffsetY + pxFromMax;
+            double pixel = DataOffsetY + pxFromMax;
             return (float)pixel;
         }
 

@@ -12,6 +12,7 @@ namespace ScottPlot.Drawing
         public float Size = 12;
         public Color Color = Color.Black;
         public Alignment Alignment = Alignment.UpperLeft;
+        public bool Bold = false;
 
         public Font() { }
 

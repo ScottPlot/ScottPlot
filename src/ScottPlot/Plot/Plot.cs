@@ -13,17 +13,24 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using System.Drawing.Text;
 using System.Linq;
-using System.Text;
 
 namespace ScottPlot
 {
     public partial class Plot
     {
         private readonly Settings settings;
+
+        // settings the user can customize
+        FigureBackground FigureBackground = new FigureBackground();
+        DataBackground DataBackground = new DataBackground();
+
+        // Just 2 axes are supported now, but the structure is here to add more later
+        public Axis XAxis { get => XAxes[0]; }
+        public Axis YAxis { get => YAxes[0]; }
+        private List<Axis> XAxes = new List<Axis>() { new Axis() { Edge = Edge.Bottom } };
+        private List<Axis> YAxes = new List<Axis>() { new Axis() { Edge = Edge.Left } };
 
         public Plot(int width = 800, int height = 600)
         {
@@ -95,7 +102,30 @@ namespace ScottPlot
             }
         }
 
+        public Bitmap Render(Bitmap renderOnThis)
+        {
+            RenderBitmap(renderOnThis);
+            return renderOnThis;
+        }
+
         private void RenderBitmap()
+        {
+            RenderBitmap(settings.bmpFigure);
+        }
+
+        private void RenderBitmap(Bitmap bmp)
+        {
+            RenderLegacyLayoutAdjustment();
+
+            var dims = new PlotDimensions(settings.figureSize, settings.dataSize, settings.dataOrigin, settings.axes.Limits);
+            bool lowQuality = !settings.misc.antiAliasData;
+
+            RenderBeforePlottables(dims, bmp, lowQuality);
+            RenderPlottables(dims, bmp, lowQuality);
+            RenderAfterPlottables(dims, bmp, lowQuality);
+        }
+
+        private void RenderLegacyLayoutAdjustment()
         {
             if (!settings.axes.hasBeenSet)
                 settings.AxisAuto();
@@ -104,87 +134,44 @@ namespace ScottPlot
 
             if (!settings.layout.tighteningOccurred)
             {
-                // ticks must be populated before the layout can be tightened
                 Renderer.FigureTicks(settings);
                 TightenLayout();
-                // only after the layout is tightened can the ticks be properly decided
             }
+        }
 
-            settings.Benchmark.Start();
-            StringBuilder errorMessages = new StringBuilder();
+        private void RenderBeforePlottables(PlotDimensions dims, Bitmap bmp, bool lowQuality)
+        {
+            FigureBackground.Render(dims, bmp, lowQuality);
+            DataBackground.Render(dims, bmp, lowQuality);
 
-            if (settings.gfxFigure != null)
+            settings.ticks.x.Recalculate(settings);
+            XAxis.SetTicks(settings.ticks.x.tickPositionsMajor, settings.ticks.x.tickLabels, settings.ticks.x.tickPositionsMinor);
+            XAxis.Render(dims, bmp, lowQuality);
+
+            settings.ticks.y.Recalculate(settings);
+            YAxis.SetTicks(settings.ticks.y.tickPositionsMajor, settings.ticks.y.tickLabels, settings.ticks.y.tickPositionsMinor);
+            YAxis.Render(dims, bmp, lowQuality);
+        }
+
+        private void RenderPlottables(PlotDimensions dims, Bitmap bmp, bool lowQuality)
+        {
+            var plottablesToRender = settings.plottables.Where(x => x.IsVisible);
+            foreach (var plottable in plottablesToRender)
             {
-                settings.gfxFigure.SmoothingMode = settings.misc.antiAliasFigure ? SmoothingMode.AntiAlias : SmoothingMode.None;
-                settings.gfxFigure.TextRenderingHint = settings.misc.antiAliasFigure ? TextRenderingHint.AntiAliasGridFit : TextRenderingHint.SingleBitPerPixelGridFit;
-                settings.FigureBackground.Render(settings);
-                Renderer.FigureLabels(settings);
-                Renderer.FigureTicks(settings);
-                Renderer.FigureFrames(settings);
-            }
-
-            if (settings.gfxData != null)
-            {
-                settings.gfxData.SmoothingMode = settings.misc.antiAliasData ? SmoothingMode.AntiAlias : SmoothingMode.None;
-                settings.gfxData.TextRenderingHint = settings.misc.antiAliasData ? TextRenderingHint.AntiAliasGridFit : TextRenderingHint.SingleBitPerPixelGridFit;
-                settings.DataBackground.Render(settings);
-                settings.HorizontalGridLines.Render(settings);
-                settings.VerticalGridLines.Render(settings);
-
-                // Construct the dimensions object to be injected into plottables during rendering.
-                var dims = new PlotDimensions(settings.figureSize, settings.dataSize, settings.dataOrigin, settings.axes.Limits);
-                bool lowQuality = !settings.misc.antiAliasData;
-
-                foreach (var p in settings.plottables)
+                try
                 {
-                    if (p.IsVisible == false)
-                        continue;
-
-                    string error = null;
-                    if (p is IValidatable pVal)
-                        error = pVal.ErrorMessage(deepValidation: ValidateEveryPoint);
-                    bool hasError = string.IsNullOrWhiteSpace(error) == false;
-                    bool renderPlottable = true;
-                    if (hasError)
-                    {
-                        if (ValidationErrorAction == ErrorAction.SkipRender ||
-                            ValidationErrorAction == ErrorAction.DebugLog ||
-                            ValidationErrorAction == ErrorAction.ShowErrorOnPlot)
-                            renderPlottable = false;
-
-                        if (ValidationErrorAction == ErrorAction.DebugLog)
-                            Debug.WriteLine(error);
-
-                        if (ValidationErrorAction == ErrorAction.ShowErrorOnPlot)
-                            errorMessages.AppendLine(error);
-
-                        if (ValidationErrorAction == ErrorAction.ThrowException)
-                            throw new InvalidOperationException(error);
-                    }
-
-                    if (renderPlottable)
-                    {
-                        try
-                        {
-                            p.Render(dims, settings.bmpData, lowQuality);
-                        }
-                        catch (OverflowException)
-                        {
-                            Debug.WriteLine($"OverflowException plotting: {p}");
-                        }
-                    }
+                    plottable.Render(dims, bmp, lowQuality);
                 }
-
-                Renderer.MouseZoomRectangle(settings);
-                Renderer.PlaceDataOntoFigure(settings);
-                settings.Legend.Render(settings);
+                catch (OverflowException)
+                {
+                    Debug.WriteLine($"OverflowException plotting: {plottable}");
+                }
             }
+        }
 
-            settings.Benchmark.Stop();
-            settings.Benchmark.UpdateMessage(settings.plottables.Count);
-            settings.Benchmark.Render(settings);
-            settings.ErrorMessage.Text = errorMessages.ToString();
-            settings.ErrorMessage.Render(settings);
+        private void RenderAfterPlottables(PlotDimensions dims, Bitmap bmp, bool lowQuality)
+        {
+
         }
 
         public Bitmap GetBitmap(bool renderFirst = true, bool lowQuality = false)

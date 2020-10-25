@@ -1,4 +1,4 @@
-﻿namespace ScottPlot.Enums
+﻿namespace ScottPlot
 {
     public enum HorizontalAlignment
     {
