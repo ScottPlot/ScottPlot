@@ -2,13 +2,10 @@
 using ScottPlot.Drawing;
 using System;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Text;
-using System.Text;
 
 namespace ScottPlot.Plottable
 {
-    public class PlottableAnnotation : IPlottable
+    public class Annotation : IPlottable
     {
         // TODO: capitalize these fields in a future version
         public double xPixel;
@@ -58,16 +55,13 @@ namespace ScottPlot.Plottable
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            using (var gfx = Graphics.FromImage(bmp))
+            using (var gfx = GDI.Graphics(bmp, lowQuality))
             using (var font = GDI.Font(FontName, FontSize, FontBold))
             using (var fontBrush = new SolidBrush(FontColor))
             using (var shadowBrush = new SolidBrush(ShadowColor))
             using (var backgroundBrush = new SolidBrush(BackgroundColor))
             using (var borderPen = new Pen(BorderColor, BorderWidth))
             {
-                gfx.SmoothingMode = lowQuality ? SmoothingMode.HighSpeed : SmoothingMode.AntiAlias;
-                gfx.TextRenderingHint = lowQuality ? TextRenderingHint.SingleBitPerPixelGridFit : TextRenderingHint.AntiAliasGridFit;
-
                 SizeF size = GDI.MeasureString(gfx, label, font);
 
                 double x = (xPixel >= 0) ? xPixel : dims.DataWidth + xPixel - size.Width;

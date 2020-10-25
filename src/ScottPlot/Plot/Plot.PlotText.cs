@@ -50,7 +50,7 @@ namespace ScottPlot
             return plottableText;
         }
 
-        public PlottableAnnotation PlotAnnotation(
+        public Annotation PlotAnnotation(
             string label,
             double xPixel = 10,
             double yPixel = 10,
@@ -75,7 +75,7 @@ namespace ScottPlot
             fillColor = Color.FromArgb((int)(255 * fillAlpha), fillColor.Value.R, fillColor.Value.G, fillColor.Value.B);
             lineColor = Color.FromArgb((int)(255 * lineAlpha), lineColor.Value.R, lineColor.Value.G, lineColor.Value.B);
 
-            var plottable = new PlottableAnnotation()
+            var plottable = new Annotation()
             {
                 xPixel = xPixel,
                 yPixel = yPixel,

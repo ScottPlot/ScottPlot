@@ -16,7 +16,7 @@ namespace ScottPlotTests.PlottableRenderTests
             plt.AntiAlias(false, false, false);
 
             // start with default settings
-            var pa = new PlottableAnnotation() { label = "Hello", xPixel = 10, yPixel = 10, FontSize = 36 };
+            var pa = new ScottPlot.Plottable.Annotation() { label = "Hello", xPixel = 10, yPixel = 10, FontSize = 36 };
             plt.Add(pa);
             var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
 
@@ -42,7 +42,7 @@ namespace ScottPlotTests.PlottableRenderTests
             plt.AntiAlias(false, false, false);
 
             // start with default settings
-            var pa = new PlottableAnnotation() { label = "Hello", xPixel = 10, yPixel = 10 };
+            var pa = new ScottPlot.Plottable.Annotation() { label = "Hello", xPixel = 10, yPixel = 10 };
             plt.Add(pa);
             var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
 
@@ -68,7 +68,7 @@ namespace ScottPlotTests.PlottableRenderTests
             plt.AntiAlias(false, false, false);
 
             // start with default settings
-            var pa = new PlottableAnnotation() { label = "Hello", xPixel = 10, yPixel = 10 };
+            var pa = new ScottPlot.Plottable.Annotation() { label = "Hello", xPixel = 10, yPixel = 10 };
             plt.Add(pa);
             var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
 
@@ -94,7 +94,7 @@ namespace ScottPlotTests.PlottableRenderTests
             plt.AntiAlias(false, false, false);
 
             // start with default settings
-            var pa = new PlottableAnnotation() { label = "Hello", xPixel = 10, yPixel = 10, BorderColor = System.Drawing.Color.Gray };
+            var pa = new ScottPlot.Plottable.Annotation() { label = "Hello", xPixel = 10, yPixel = 10, BorderColor = System.Drawing.Color.Gray };
             plt.Add(pa);
             var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
 
@@ -120,7 +120,7 @@ namespace ScottPlotTests.PlottableRenderTests
             plt.AntiAlias(false, false, false);
 
             // start with default settings
-            var pa = new PlottableAnnotation() { label = "Hello", xPixel = 10, yPixel = 10 };
+            var pa = new ScottPlot.Plottable.Annotation() { label = "Hello", xPixel = 10, yPixel = 10 };
             plt.Add(pa);
             var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
 
