@@ -26,7 +26,7 @@ namespace ScottPlotTests.Groups
             Random rand = new Random(0);
             var ages = new Population(rand, 44, 78, 2);
 
-            var customPlottable = new PlottablePopulations(ages);
+            var customPlottable = new PopulationPlot(ages);
 
             // plot the multi-series
             var plt = new ScottPlot.Plot(400, 300);
@@ -59,7 +59,7 @@ namespace ScottPlotTests.Groups
                 new Population(rand, 44, 78, 2), // europe
                 new Population(rand, 14, 81, 1), // oceania
             };
-            var customPlottable = new PlottablePopulations(ages, color: System.Drawing.Color.CornflowerBlue);
+            var customPlottable = new PopulationPlot(ages, color: System.Drawing.Color.CornflowerBlue);
 
             // plot the multi-series
             var plt = new ScottPlot.Plot();
@@ -122,7 +122,7 @@ namespace ScottPlotTests.Groups
             // now collect all the series into a MultiSeries
             var multiSeries = new PopulationSeries[] { series1957, series1987, series2007 };
             var plottableMultiSeries = new PopulationMultiSeries(multiSeries);
-            var customPlottable = new PlottablePopulations(plottableMultiSeries);
+            var customPlottable = new PopulationPlot(plottableMultiSeries);
 
             // plot the multi-series
             var plt = new ScottPlot.Plot();

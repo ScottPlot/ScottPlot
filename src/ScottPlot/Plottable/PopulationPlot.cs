@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using ScottPlot.Config;
 using ScottPlot.Drawing;
 using ScottPlot.Statistics;
 
 namespace ScottPlot.Plottable
 {
-    public class PlottablePopulations : IPlottable
+    public class PopulationPlot : IPlottable
     {
         public readonly PopulationMultiSeries popMultiSeries;
         public int groupCount { get { return popMultiSeries.groupCount; } }
@@ -27,23 +25,23 @@ namespace ScottPlot.Plottable
         public DisplayItems displayItems = DisplayItems.BoxAndScatter;
         public BoxStyle boxStyle = BoxStyle.BoxMedianQuartileOutlier;
 
-        public PlottablePopulations(PopulationMultiSeries groupedSeries)
+        public PopulationPlot(PopulationMultiSeries groupedSeries)
         {
             popMultiSeries = groupedSeries;
         }
 
-        public PlottablePopulations(Population[] populations, string label = null, Color? color = null)
+        public PopulationPlot(Population[] populations, string label = null, Color? color = null)
         {
             var ps = new PopulationSeries(populations, label, color ?? Color.LightGray);
             popMultiSeries = new PopulationMultiSeries(new PopulationSeries[] { ps });
         }
 
-        public PlottablePopulations(PopulationSeries populationSeries)
+        public PopulationPlot(PopulationSeries populationSeries)
         {
             popMultiSeries = new PopulationMultiSeries(new PopulationSeries[] { populationSeries });
         }
 
-        public PlottablePopulations(Population population, string label = null, Color? color = null)
+        public PopulationPlot(Population population, string label = null, Color? color = null)
         {
             var populations = new Population[] { population };
             var ps = new PopulationSeries(populations, label, color ?? Color.LightGray);
