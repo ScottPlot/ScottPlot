@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 using ScottPlot.Config;
 using ScottPlot.Drawing;
 
 namespace ScottPlot.Plottable
 {
-    public class PlottableRadar : IPlottable
+    public class RadarPlot : IPlottable
     {
         private readonly double[,] normalized;
         private readonly double normalizedMax;
@@ -20,7 +18,7 @@ namespace ScottPlot.Plottable
         public Color webColor;
         public bool IsVisible { get; set; } = true;
 
-        public PlottableRadar(double[,] values, Color[] lineColors, Color[] fillColors)
+        public RadarPlot(double[,] values, Color[] lineColors, Color[] fillColors)
         {
             this.lineColors = lineColors;
             this.fillColors = fillColors;

@@ -59,7 +59,7 @@ namespace ScottPlot
             return scatter;
         }
 
-        public PlottableRadar PlotRadar(
+        public RadarPlot PlotRadar(
             double[,] values,
             string[] categoryNames = null,
             string[] groupNames = null,
@@ -71,7 +71,7 @@ namespace ScottPlot
             Color[] colors = fillColors ?? Enumerable.Range(0, values.Length).Select(i => settings.colorset.GetColor(i)).ToArray();
             Color[] colorsAlpha = colors.Select(x => Color.FromArgb((byte)(255 * fillAlpha), x)).ToArray();
 
-            var plottable = new PlottableRadar(values, colors, fillColors ?? colorsAlpha)
+            var plottable = new RadarPlot(values, colors, fillColors ?? colorsAlpha)
             {
                 categoryNames = categoryNames,
                 groupNames = groupNames,
