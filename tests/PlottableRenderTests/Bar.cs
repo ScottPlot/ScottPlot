@@ -15,7 +15,7 @@ namespace ScottPlotTests.PlottableRenderTests
 
             // start with default settings
             double[] ys = new double[] { 1, 3, 2, 4 };
-            var bar = new PlottableBar(null, ys, null, null) { };
+            var bar = new BarPlot(null, ys, null, null) { };
 
             plt.Add(bar);
             var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
@@ -44,7 +44,7 @@ namespace ScottPlotTests.PlottableRenderTests
             // start with default settings
             double[] ys = new double[] { 1, 3, 2, 4 };
             double[] yErr = new double[] { 0, 0, 0, 0 };
-            var bar = new PlottableBar(null, ys, yErr, null) { };
+            var bar = new BarPlot(null, ys, yErr, null) { };
 
             plt.Add(bar);
             var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
@@ -72,7 +72,7 @@ namespace ScottPlotTests.PlottableRenderTests
 
             // start with default settings
             double[] ys = new double[] { 1, 3, 2, 4 };
-            var bar = new PlottableBar(null, ys, null, null) { };
+            var bar = new BarPlot(null, ys, null, null) { };
 
             plt.Add(bar);
             var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
@@ -100,7 +100,7 @@ namespace ScottPlotTests.PlottableRenderTests
 
             // start with default settings
             double[] ys = new double[] { 1, 3, 2, 4 };
-            var bar = new PlottableBar(null, ys, null, null) { };
+            var bar = new BarPlot(null, ys, null, null) { };
 
             plt.Add(bar);
             var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
@@ -128,7 +128,7 @@ namespace ScottPlotTests.PlottableRenderTests
 
             // start with default settings
             double[] ys = new double[] { 1, 3, 2, 4 };
-            var bar = new PlottableBar(null, ys, null, null) { fillColor = System.Drawing.Color.Gray };
+            var bar = new BarPlot(null, ys, null, null) { fillColor = System.Drawing.Color.Gray };
 
             plt.Add(bar);
             var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
@@ -156,7 +156,7 @@ namespace ScottPlotTests.PlottableRenderTests
 
             // start with default settings
             double[] ys = new double[] { 1, 3, 2, 4 };
-            var bar = new PlottableBar(null, ys, null, null) { };
+            var bar = new BarPlot(null, ys, null, null) { };
 
             plt.Add(bar);
             var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
@@ -184,7 +184,7 @@ namespace ScottPlotTests.PlottableRenderTests
 
             // start with default settings
             double[] ys = new double[] { 1, 3, 2, 4 };
-            var bar = new PlottableBar(null, ys, null, null) { borderColor = System.Drawing.Color.Gray };
+            var bar = new BarPlot(null, ys, null, null) { borderColor = System.Drawing.Color.Gray };
 
             plt.Add(bar);
             var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
@@ -212,7 +212,7 @@ namespace ScottPlotTests.PlottableRenderTests
 
             // start with default settings
             double[] ys = new double[] { 1, 3, 2, 4 };
-            var bar = new PlottableBar(null, ys, ys, null) { };
+            var bar = new BarPlot(null, ys, ys, null) { };
 
             plt.Add(bar);
             var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
@@ -240,7 +240,7 @@ namespace ScottPlotTests.PlottableRenderTests
 
             // start with default settings
             double[] ys = new double[] { 1, 3, 2, 4 };
-            var bar = new PlottableBar(null, ys, ys, null) { };
+            var bar = new BarPlot(null, ys, ys, null) { };
 
             plt.Add(bar);
             var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
@@ -268,7 +268,7 @@ namespace ScottPlotTests.PlottableRenderTests
 
             // start with default settings
             double[] ys = new double[] { 1, 3, 2, 4 };
-            var bar = new PlottableBar(null, ys, ys, null) { errorColor = System.Drawing.Color.Gray };
+            var bar = new BarPlot(null, ys, ys, null) { errorColor = System.Drawing.Color.Gray };
 
             plt.Add(bar);
             var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
@@ -296,7 +296,7 @@ namespace ScottPlotTests.PlottableRenderTests
 
             // start with default settings
             double[] ys = new double[] { 1, 3, 2, 4 };
-            var bar = new PlottableBar(null, ys, null, null) { };
+            var bar = new BarPlot(null, ys, null, null) { };
 
             plt.Add(bar);
             plt.Axis(-1, 4, -1, 5);
@@ -325,7 +325,7 @@ namespace ScottPlotTests.PlottableRenderTests
 
             // start with default settings
             double[] ys = new double[] { 1, -3, 2, -4 };
-            var bar = new PlottableBar(null, ys, null, null) { fillColor = System.Drawing.Color.Gray };
+            var bar = new BarPlot(null, ys, null, null) { fillColor = System.Drawing.Color.Gray };
 
             plt.Add(bar);
             var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));

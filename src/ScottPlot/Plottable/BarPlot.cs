@@ -1,16 +1,11 @@
 ﻿using ScottPlot.Config;
-using ScottPlot.Diagnostic.Attributes;
 using ScottPlot.Drawing;
 using System;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Text;
-using System.Reflection;
-using System.Text;
 
 namespace ScottPlot.Plottable
 {
-    public class PlottableBar : IPlottable
+    public class BarPlot : IPlottable
     {
         public double[] xs;
         public double xOffset;
@@ -41,7 +36,7 @@ namespace ScottPlot.Plottable
 
         public Drawing.HatchStyle hatchStyle = Drawing.HatchStyle.None;
 
-        public PlottableBar(double[] xs, double[] ys, double[] yErr, double[] yOffsets)
+        public BarPlot(double[] xs, double[] ys, double[] yErr, double[] yOffsets)
         {
             if (ys is null || ys.Length == 0)
                 throw new ArgumentException("ys must be an array that contains elements");
@@ -113,11 +108,8 @@ namespace ScottPlot.Plottable
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            using (Graphics gfx = Graphics.FromImage(bmp))
+            using (Graphics gfx = GDI.Graphics(bmp, lowQuality))
             {
-                gfx.SmoothingMode = lowQuality ? SmoothingMode.HighSpeed : SmoothingMode.AntiAlias;
-                gfx.TextRenderingHint = lowQuality ? TextRenderingHint.SingleBitPerPixelGridFit : TextRenderingHint.AntiAliasGridFit;
-
                 for (int barIndex = 0; barIndex < ys.Length; barIndex++)
                 {
                     if (verticalBars)

@@ -104,7 +104,7 @@ namespace ScottPlot
                     indicesToDelete.Add(i);
                 else if (settings.plottables[i] is PlottableText && text)
                     indicesToDelete.Add(i);
-                else if (settings.plottables[i] is PlottableBar && bar)
+                else if (settings.plottables[i] is BarPlot && bar)
                     indicesToDelete.Add(i);
                 else if (settings.plottables[i] is PlottableOHLC && finance)
                     indicesToDelete.Add(i);

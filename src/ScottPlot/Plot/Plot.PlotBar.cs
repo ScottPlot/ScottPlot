@@ -18,7 +18,7 @@ namespace ScottPlot
 {
     public partial class Plot
     {
-        public PlottableBar PlotBar(
+        public BarPlot PlotBar(
             double[] xs,
             double[] ys,
             double[] errorY = null,
@@ -40,7 +40,7 @@ namespace ScottPlot
             Color? negativeColor = null
             )
         {
-            PlottableBar barPlot = new PlottableBar(xs, ys, errorY, yOffsets)
+            BarPlot barPlot = new BarPlot(xs, ys, errorY, yOffsets)
             {
                 barWidth = barWidth,
                 xOffset = xOffset,
@@ -88,7 +88,7 @@ namespace ScottPlot
             return barPlot;
         }
 
-        public PlottableBar PlotWaterfall(
+        public BarPlot PlotWaterfall(
             double[] xs,
             double[] ys,
             double[] errorY = null,
@@ -140,7 +140,7 @@ namespace ScottPlot
         /// <param name="seriesLabels">displayed in the legend</param>
         /// <param name="ys">Array of arrays (one per series) that contan one point per group</param>
         /// <returns></returns>
-        public PlottableBar[] PlotBarGroups(
+        public BarPlot[] PlotBarGroups(
                 string[] groupLabels,
                 string[] seriesLabels,
                 double[][] ys,
@@ -163,7 +163,7 @@ namespace ScottPlot
 
             int seriesCount = ys.Length;
             double barWidth = groupWidthFraction / seriesCount;
-            PlottableBar[] bars = new PlottableBar[seriesCount];
+            BarPlot[] bars = new BarPlot[seriesCount];
             bool containsNegativeY = false;
             for (int i = 0; i < seriesCount; i++)
             {
