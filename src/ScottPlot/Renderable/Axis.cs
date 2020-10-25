@@ -29,12 +29,17 @@ namespace ScottPlot.Renderable
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            throw new NotImplementedException();
-        }
-
-        public void Render(Settings settings)
-        {
-            throw new NotImplementedException();
+            using (var gfx = GDI.Graphics(bmp, lowQuality))
+            using (var testFill = GDI.Brush(Color.LightGray))
+            {
+                var rect = new RectangleF(
+                    x: dims.DataOffsetX,
+                    y: dims.DataOffsetY + dims.DataHeight,
+                    width: dims.DataWidth,
+                    height: dims.Height - (dims.DataHeight + dims.DataOffsetY));
+                gfx.FillRectangle(testFill, rect);
+                gfx.Clear(Color.Blue);
+            }
         }
     }
 }
