@@ -168,14 +168,17 @@ namespace ScottPlot.Renderable
         {
             var items = new List<LegendItem>();
 
-            foreach (IPlottable plottable in settings.plottables)
+            foreach (var plottable in settings.plottables)
             {
-                if (plottable.LegendItems is null)
-                    continue;
+                if (plottable is IHasLegendItems plottableWithLegendItems)
+                {
+                    if (plottableWithLegendItems.LegendItems is null)
+                        continue;
 
-                foreach (var plottableItem in plottable.LegendItems)
-                    if (plottableItem.label != null)
-                        items.Add(plottableItem);
+                    foreach (var plottableItem in plottableWithLegendItems.LegendItems)
+                        if (plottableItem.label != null)
+                            items.Add(plottableItem);
+                }
             }
 
             if (ReverseOrder)

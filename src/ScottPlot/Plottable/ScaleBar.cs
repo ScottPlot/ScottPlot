@@ -1,11 +1,10 @@
-﻿using System;
-using System.Drawing;
-using ScottPlot.Config;
+﻿using System.Drawing;
 using ScottPlot.Drawing;
+using ScottPlot.Renderable;
 
 namespace ScottPlot.Plottable
 {
-    public class ScaleBar : IPlottable
+    public class ScaleBar : IRenderable
     {
         /// <summary>
         /// Width of the scalebar in cooridinate units
@@ -65,23 +64,6 @@ namespace ScottPlot.Plottable
         public bool IsVisible { get; set; } = true;
 
         public override string ToString() => $"PlottableScaleBar ({HorizontalLabel}={Width}, {VerticalLabel}={Height})";
-        public LegendItem[] LegendItems { get => null; }
-        public AxisLimits2D GetLimits() => new AxisLimits2D();
-        public int PointCount { get => 1; }
-
-        public string ErrorMessage(bool deepValidation = false)
-        {
-            try
-            {
-                Validate.AssertIsReal("Width", Width);
-                Validate.AssertIsReal("Height", Height);
-                return null;
-            }
-            catch (ArgumentException e)
-            {
-                return e.Message;
-            }
-        }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {

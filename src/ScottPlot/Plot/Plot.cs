@@ -8,6 +8,7 @@
 
 using ScottPlot.Drawing;
 using ScottPlot.Plottable;
+using ScottPlot.Renderable;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -34,16 +35,8 @@ namespace ScottPlot
             TightenLayout();
         }
 
-        public override string ToString()
-        {
-            return string.Format($"ScottPlot ({0:n0} x {1:n0}) with {2:n0} objects ({3:n0} points)",
-                settings.figureSize.Width, settings.figureSize.Height,
-                Plottables.Length, TotalPoints);
-        }
-
-        [Obsolete("Access the 'Plot.TotalPoints' field instead", true)]
-        public int GetTotalPoints() => Plottables.Select(x => x.PointCount).Sum();
-        public int TotalPoints => Plottables.Select(x => x.PointCount).Sum();
+        public override string ToString() =>
+            $"ScottPlot ({settings.figureSize}) with {Plottables.Length:n0} plot objects";
 
         /// <summary>
         /// Return a new Plot with all the same Plottables (and some of the styles) of this one
@@ -147,7 +140,9 @@ namespace ScottPlot
                     if (p.IsVisible == false)
                         continue;
 
-                    string error = p.ErrorMessage(deepValidation: ValidateEveryPoint);
+                    string error = null;
+                    if (p is IValidatable pVal)
+                        error = pVal.ErrorMessage(deepValidation: ValidateEveryPoint);
                     bool hasError = string.IsNullOrWhiteSpace(error) == false;
                     bool renderPlottable = true;
                     if (hasError)
@@ -186,7 +181,7 @@ namespace ScottPlot
             }
 
             settings.Benchmark.Stop();
-            settings.Benchmark.UpdateMessage(settings.plottables.Count, settings.GetTotalPointCount());
+            settings.Benchmark.UpdateMessage(settings.plottables.Count);
             settings.Benchmark.Render(settings);
             settings.ErrorMessage.Text = errorMessages.ToString();
             settings.ErrorMessage.Render(settings);
@@ -239,14 +234,14 @@ namespace ScottPlot
             settings.bmpFigure.Save(filePath, imageFormat);
         }
 
-        public void Add(IPlottable plottable)
+        public void Add(IRenderable plottable)
         {
             settings.plottables.Add(plottable);
         }
 
         [Obsolete("Access the 'Plot.Plottables' array instead", true)]
-        public List<IPlottable> GetPlottables() => settings.plottables;
-        public IPlottable[] Plottables { get => settings.plottables.ToArray(); }
+        public List<IRenderable> GetPlottables() => settings.plottables;
+        public IRenderable[] Plottables { get => settings.plottables.ToArray(); }
 
         public List<IDraggable> GetDraggables()
         {

@@ -1,5 +1,6 @@
 ﻿using ScottPlot.Config;
 using ScottPlot.Drawing;
+using ScottPlot.Renderable;
 using System;
 using System.Drawing;
 
@@ -9,7 +10,7 @@ namespace ScottPlot.Plottable
 
     public class VLine : AxisLine { public VLine() { IsHorizontal = false; } }
 
-    public abstract class AxisLine : IDraggable, IPlottable
+    public abstract class AxisLine : IRenderable, IDraggable, IHasLegendItems, IHasAxisLimits
     {
         public double position;
         public LineStyle lineStyle = LineStyle.Solid;
@@ -57,14 +58,6 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public string ErrorMessage(bool deepValidation = false)
-        {
-            if (double.IsInfinity(position) || double.IsNaN(position))
-                return "position must be finite";
-
-            return null;
-        }
-
         private double dragLimitX1 = double.NegativeInfinity;
         private double dragLimitX2 = double.PositiveInfinity;
         private double dragLimitY1 = double.NegativeInfinity;
@@ -95,8 +88,6 @@ namespace ScottPlot.Plottable
                 position = coordinateX;
             }
         }
-
-        public int PointCount { get => 1; }
 
         public bool IsUnderMouse(double coordinateX, double coordinateY, double snapX, double snapY) =>
             IsHorizontal ?

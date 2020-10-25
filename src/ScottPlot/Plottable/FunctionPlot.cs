@@ -5,10 +5,11 @@ using System.Diagnostics;
 using System.Drawing;
 using ScottPlot.Config;
 using ScottPlot.Drawing;
+using ScottPlot.Renderable;
 
 namespace ScottPlot.Plottable
 {
-    public class FunctionPlot : IPlottable
+    public class FunctionPlot : IRenderable, IHasLegendItems, IHasAxisLimits, IValidatable
     {
         public Func<double, double?> function;
 

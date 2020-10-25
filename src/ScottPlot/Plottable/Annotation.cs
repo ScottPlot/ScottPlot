@@ -1,13 +1,13 @@
 ﻿using ScottPlot.Config;
 using ScottPlot.Drawing;
+using ScottPlot.Renderable;
 using System;
 using System.Drawing;
 
 namespace ScottPlot.Plottable
 {
-    public class Annotation : IPlottable
+    public class Annotation : IRenderable
     {
-        // TODO: capitalize these fields in a future version
         public double xPixel;
         public double yPixel;
         public string label;
@@ -29,29 +29,7 @@ namespace ScottPlot.Plottable
 
         public bool IsVisible { get; set; } = true;
 
-        public override string ToString()
-        {
-            return $"PlottableAnnotation at ({xPixel} px, {yPixel} px)";
-        }
-
-        public int PointCount { get => 1; }
-        public AxisLimits2D GetLimits() => new AxisLimits2D();
-        public LegendItem[] LegendItems { get => null; }
-
-        public string ErrorMessage(bool deepValidation = false)
-        {
-            try
-            {
-                Validate.AssertIsReal("xPixel", xPixel);
-                Validate.AssertIsReal("yPixel", yPixel);
-                Validate.AssertHasText("label", label);
-                return null;
-            }
-            catch (ArgumentException e)
-            {
-                return e.Message;
-            }
-        }
+        public override string ToString() => $"PlottableAnnotation at ({xPixel} px, {yPixel} px)";
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {

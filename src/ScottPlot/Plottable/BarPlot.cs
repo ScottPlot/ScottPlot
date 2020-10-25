@@ -1,11 +1,12 @@
 ﻿using ScottPlot.Config;
 using ScottPlot.Drawing;
+using ScottPlot.Renderable;
 using System;
 using System.Drawing;
 
 namespace ScottPlot.Plottable
 {
-    public class BarPlot : IPlottable
+    public class BarPlot : IRenderable, IHasLegendItems, IHasAxisLimits, IValidatable
     {
         public double[] xs;
         public double xOffset;
@@ -34,7 +35,7 @@ namespace ScottPlot.Plottable
         public bool showValues;
         public bool IsVisible { get; set; } = true;
 
-        public Drawing.HatchStyle hatchStyle = Drawing.HatchStyle.None;
+        public HatchStyle hatchStyle = HatchStyle.None;
 
         public BarPlot(double[] xs, double[] ys, double[] yErr, double[] yOffsets)
         {

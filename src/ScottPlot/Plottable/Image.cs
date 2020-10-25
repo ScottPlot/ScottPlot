@@ -2,10 +2,11 @@
 using System.Drawing;
 using ScottPlot.Config;
 using ScottPlot.Drawing;
+using ScottPlot.Renderable;
 
 namespace ScottPlot.Plottable
 {
-    public class Image : IPlottable
+    public class Image : IRenderable, IHasAxisLimits, IValidatable
     {
         public double x;
         public double y;
@@ -28,10 +29,6 @@ namespace ScottPlot.Plottable
         }
 
         public AxisLimits2D GetLimits() => new AxisLimits2D(new double[] { x, x, y, y });
-
-        public int PointCount { get => 1; }
-
-        public LegendItem[] LegendItems { get => null; }
 
         private PointF TextLocation(PointF input)
         {

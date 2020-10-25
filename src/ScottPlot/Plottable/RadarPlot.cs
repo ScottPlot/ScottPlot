@@ -4,10 +4,11 @@ using System.Drawing;
 using System.Linq;
 using ScottPlot.Config;
 using ScottPlot.Drawing;
+using ScottPlot.Renderable;
 
 namespace ScottPlot.Plottable
 {
-    public class RadarPlot : IPlottable
+    public class RadarPlot : IRenderable, IHasLegendItems, IHasAxisLimits, IValidatable
     {
         private readonly double[,] normalized;
         private readonly double normalizedMax;

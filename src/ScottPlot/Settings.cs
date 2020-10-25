@@ -44,7 +44,7 @@ namespace ScottPlot
         public readonly Legend Legend = new Legend();
 
         // plottables
-        public readonly List<IPlottable> plottables = new List<IPlottable>();
+        public readonly List<IRenderable> plottables = new List<IRenderable>();
 
         // TODO: STRANGLE CONFIG OBJECTS AS PART OF https://github.com/swharden/ScottPlot/pull/511
         public Config.TextLabel title = new Config.TextLabel() { fontSize = 16, bold = true };
@@ -201,11 +201,14 @@ namespace ScottPlot
 
             foreach (var plottable in plottables)
             {
-                Config.AxisLimits2D plottableLimits = plottable.GetLimits();
-                if (autoX && !yExpandOnly)
-                    newLimits.ExpandX(plottableLimits);
-                if (autoY && !xExpandOnly)
-                    newLimits.ExpandY(plottableLimits);
+                if (plottable is IHasAxisLimits plottableWithLimits)
+                {
+                    var plottableLimits = plottableWithLimits.GetLimits();
+                    if (autoX && !yExpandOnly)
+                        newLimits.ExpandX(plottableLimits);
+                    if (autoY && !xExpandOnly)
+                        newLimits.ExpandY(plottableLimits);
+                }
             }
 
             newLimits.MakeRational();
@@ -299,14 +302,6 @@ namespace ScottPlot
             // Return the X/Y location corresponding to a pixel position on the figure bitmap.
             // This is useful for converting a mouse position to an X/Y coordinate.
             return new PointF((float)GetLocationX(pixelX), (float)GetLocationY(pixelY));
-        }
-
-        public int GetTotalPointCount()
-        {
-            int totalPointCount = 0;
-            foreach (var plottable in plottables)
-                totalPointCount += plottable.PointCount;
-            return totalPointCount;
         }
     }
 }

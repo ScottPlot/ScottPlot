@@ -1,5 +1,4 @@
 ﻿using ScottPlot.Config;
-using ScottPlot.Diagnostic.Attributes;
 using ScottPlot.Drawing;
 using System;
 using System.Collections.Generic;
@@ -15,7 +14,6 @@ namespace ScottPlot.Plottable
         private bool XSequalYSPromise = false;
 
         private TX[] _xs;
-        [FiniteNumbers, EqualLength, Accending]
         public TX[] xs
         {
             get => _xs;

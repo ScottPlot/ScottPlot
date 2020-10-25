@@ -1,5 +1,6 @@
 ﻿using ScottPlot.Config;
 using ScottPlot.Drawing;
+using ScottPlot.Renderable;
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -9,7 +10,7 @@ namespace ScottPlot.Plottable
     public class HSpan : AxisSpan { public HSpan() { IsHorizontal = true; } }
     public class VSpan : AxisSpan { public VSpan() { IsHorizontal = false; } }
 
-    public abstract class AxisSpan : IDraggable, IPlottable
+    public abstract class AxisSpan : IDraggable, IRenderable, IHasLegendItems, IHasAxisLimits
     {
         public double position1;
         public double position2;
@@ -20,7 +21,6 @@ namespace ScottPlot.Plottable
         public Color colorWithAlpha => Color.FromArgb((byte)(255 * alpha), color);
         public double alpha = .35;
         public string label;
-        public int PointCount { get => 1; }
         public bool IsHorizontal = true;
         public bool DragEnabled { get; set; }
         public bool DragFixedSize { get; set; }
@@ -156,15 +156,6 @@ namespace ScottPlot.Plottable
             {
                 gfx.FillRectangle(brush, rect);
             }
-        }
-
-        public string ErrorMessage(bool deepValidation = false)
-        {
-            if (double.IsInfinity(position1) || double.IsNaN(position1) ||
-                double.IsInfinity(position2) || double.IsNaN(position2))
-                return "positions must be finite";
-
-            return null;
         }
     }
 }

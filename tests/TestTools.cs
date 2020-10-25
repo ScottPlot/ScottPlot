@@ -27,7 +27,7 @@ namespace ScottPlotTests
             string filePath = System.IO.Path.GetFullPath(fileName);
             plt.SaveFig(filePath);
 
-            DisplayRenderInfo(callingMethod, subName, plt.TotalPoints, plt.GetSettings(false).Benchmark.msec);
+            DisplayRenderInfo(callingMethod, subName, plt.GetSettings(false).Benchmark.msec);
             Console.WriteLine($"Saved: {filePath}");
             Console.WriteLine();
 
@@ -74,7 +74,7 @@ namespace ScottPlotTests
             string filePath = System.IO.Path.GetFullPath(fileName);
             bmp.Save(filePath, System.Drawing.Imaging.ImageFormat.Png);
 
-            DisplayRenderInfo(callingMethod, subName, 0, 0);
+            DisplayRenderInfo(callingMethod, subName, 0);
             Console.WriteLine($"Saved: {filePath}");
             Console.WriteLine();
 
@@ -96,10 +96,10 @@ namespace ScottPlotTests
             return filePath;
         }
 
-        private static void DisplayRenderInfo(string callingMethod, string subName, int totalPoints, double renderTimeMs)
+        private static void DisplayRenderInfo(string callingMethod, string subName, double renderTimeMs)
         {
             Console.WriteLine($"{callingMethod}() {subName}");
-            Console.WriteLine($"Rendered {totalPoints} points in {renderTimeMs} ms");
+            Console.WriteLine($"Rendered in {renderTimeMs} ms");
         }
 
         public static string HashedFig(ScottPlot.Plot plt, string subName = "")
@@ -109,7 +109,7 @@ namespace ScottPlotTests
             var stackTrace = new System.Diagnostics.StackTrace();
             string callingMethod = stackTrace.GetFrame(1).GetMethod().Name;
 
-            DisplayRenderInfo(callingMethod, subName, plt.TotalPoints, plt.GetSettings(false).Benchmark.msec);
+            DisplayRenderInfo(callingMethod, subName, plt.GetSettings(false).Benchmark.msec);
             Console.WriteLine($"Hash: {hash}");
             Console.WriteLine();
 

@@ -2,10 +2,11 @@
 using System.Drawing;
 using ScottPlot.Config;
 using ScottPlot.Drawing;
+using ScottPlot.Renderable;
 
 namespace ScottPlot.Plottable
 {
-    public class FinancePlot : IPlottable
+    public class FinancePlot : IRenderable, IHasAxisLimits, IValidatable
     {
         /// <summary>
         /// Array of prices (open high low close)
@@ -44,8 +45,6 @@ namespace ScottPlot.Plottable
         public override string ToString() => $"PlottableOHLC with {PointCount} points";
 
         public int PointCount { get => ohlcs.Length; }
-
-        public LegendItem[] LegendItems { get => null; }
 
         public AxisLimits2D GetLimits()
         {

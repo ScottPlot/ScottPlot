@@ -1,5 +1,6 @@
 ﻿using ScottPlot.Config;
 using ScottPlot.Drawing;
+using ScottPlot.Renderable;
 using ScottPlot.Statistics;
 using System;
 using System.Drawing;
@@ -9,7 +10,7 @@ using System.Linq;
 namespace ScottPlot.Plottable
 {
 #pragma warning disable CS0618 // Type or member is obsolete
-    public class VectorField : IPlottable
+    public class VectorField : IRenderable, IHasLegendItems, IHasAxisLimits
     {
         private readonly Vector2[,] vectors;
         private readonly double[] xs;
@@ -55,8 +56,6 @@ namespace ScottPlot.Plottable
             this.xs = xs;
             this.ys = ys;
         }
-
-        public string ErrorMessage(bool deepValidation = false) => null; // assume data is always valid
 
         public LegendItem[] LegendItems
         {

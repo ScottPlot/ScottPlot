@@ -3,11 +3,12 @@ using System.Drawing;
 using System.Linq;
 using ScottPlot.Config;
 using ScottPlot.Drawing;
+using ScottPlot.Renderable;
 using ScottPlot.Statistics;
 
 namespace ScottPlot.Plottable
 {
-    public class PopulationPlot : IPlottable
+    public class PopulationPlot : IRenderable, IHasLegendItems, IHasAxisLimits
     {
         public readonly PopulationMultiSeries popMultiSeries;
         public int groupCount { get { return popMultiSeries.groupCount; } }
@@ -100,9 +101,6 @@ namespace ScottPlot.Plottable
 
             return new AxisLimits2D(positionMin, positionMax, minValue, maxValue);
         }
-
-        // TODO: add validation to the Population module and check for it here
-        public string ErrorMessage(bool deepValidation = false) => null;
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {

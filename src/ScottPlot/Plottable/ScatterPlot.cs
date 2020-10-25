@@ -1,5 +1,6 @@
 ﻿using ScottPlot.Config;
 using ScottPlot.Drawing;
+using ScottPlot.Renderable;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -9,7 +10,7 @@ using System.Text;
 
 namespace ScottPlot.Plottable
 {
-    public class ScatterPlot : IExportable, IPlottable
+    public class ScatterPlot : IRenderable, IExportable, IHasLegendItems, IHasAxisLimits, IValidatable
     {
         public double[] xs;
         public double[] ys;

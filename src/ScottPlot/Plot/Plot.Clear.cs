@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using ScottPlot.Plottable;
+using ScottPlot.Renderable;
 
 namespace ScottPlot
 {
@@ -11,7 +12,7 @@ namespace ScottPlot
         /// <summary>
         /// Remove the given plottable from the plot
         /// </summary>
-        public void Remove(IPlottable plottable)
+        public void Remove(IRenderable plottable)
         {
             settings.plottables.Remove(plottable);
         }
@@ -50,7 +51,7 @@ namespace ScottPlot
         /// <summary>
         /// Clear all plottables of the same type as the one that is given
         /// </summary>
-        public void Clear(IPlottable examplePlottable)
+        public void Clear(IRenderable examplePlottable)
         {
             settings.plottables.RemoveAll(x => x.GetType() == examplePlottable.GetType());
 
@@ -71,7 +72,7 @@ namespace ScottPlot
         /// <summary>
         /// Remove the given plottables from the plot
         /// </summary>
-        public void Clear(Predicate<IPlottable> plottablesToClear)
+        public void Clear(Predicate<IRenderable> plottablesToClear)
         {
             if (plottablesToClear != null)
                 settings.plottables.RemoveAll(plottablesToClear);

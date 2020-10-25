@@ -1,7 +1,7 @@
 ﻿using ScottPlot.Config;
-using ScottPlot.Diagnostic.Attributes;
 using ScottPlot.Drawing;
 using ScottPlot.MinMaxSearchStrategies;
+using ScottPlot.Renderable;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -13,7 +13,7 @@ using System.Text;
 
 namespace ScottPlot.Plottable
 {
-    public class SignalPlotBase<T> : IPlottable, IExportable where T : struct, IComparable
+    public class SignalPlotBase<T> : IRenderable, IHasLegendItems, IHasAxisLimits, IValidatable, IExportable where T : struct, IComparable
     {
         protected bool MaxRenderIndexLowerYSPromise = false;
         protected bool MaxRenderIndexHigherMinRenderIndexPromise = false;
@@ -23,7 +23,6 @@ namespace ScottPlot.Plottable
         protected IMinMaxSearchStrategy<T> minmaxSearchStrategy = new SegmentedTreeMinMaxSearchStrategy<T>();
         public bool IsVisible { get; set; } = true;
 
-        [FiniteNumbers, EqualLength]
         protected T[] _ys;
         public virtual T[] ys
         {
@@ -39,7 +38,6 @@ namespace ScottPlot.Plottable
                 minmaxSearchStrategy.SourceArray = _ys;
             }
         }
-        [FiniteNumbers]
         private double _sampleRate = 1;
         public double sampleRate
         {
@@ -52,7 +50,6 @@ namespace ScottPlot.Plottable
                 _samplePeriod = 1.0 / value;
             }
         }
-        [FiniteNumbers]
         private double _samplePeriod = 1;
         public double samplePeriod
         {
@@ -65,9 +62,7 @@ namespace ScottPlot.Plottable
             }
         }
         public float markerSize { get; set; } = 5;
-        [FiniteNumbers]
         public double xOffset { get; set; } = 0;
-        [FiniteNumbers]
         public double yOffset { get; set; } = 0;
         public double lineWidth { get; set; } = 1;
 

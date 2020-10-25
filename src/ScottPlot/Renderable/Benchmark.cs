@@ -27,11 +27,10 @@ namespace ScottPlot.Renderable
         public void Stop() => stopwatch.Stop();
         public override string ToString() => text;
 
-        public void UpdateMessage(int plottableCount, int pointCount)
+        public void UpdateMessage(int plottableCount)
         {
-            text = "";
-            text += string.Format("Full render of {0:n0} objects ({1:n0} points)", plottableCount, pointCount);
-            text += string.Format(" took {0:0.000} ms ({1:0.00 Hz})", msec, hz);
+            text = $"Rendered {plottableCount} plot objects";
+            text += string.Format(" in {0:0.000} ms ({1:0.00 Hz})", msec, hz);
             if (plottableCount == 1)
                 text = text.Replace("objects", "object");
         }

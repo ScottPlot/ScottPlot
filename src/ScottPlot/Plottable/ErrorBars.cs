@@ -1,12 +1,13 @@
 ﻿using ScottPlot.Config;
 using ScottPlot.Drawing;
+using ScottPlot.Renderable;
 using System;
 using System.Drawing;
 using System.Linq;
 
 namespace ScottPlot.Plottable
 {
-    public class ErrorBars : IPlottable
+    public class ErrorBars : IRenderable, IHasLegendItems, IHasAxisLimits, IValidatable
     {
         public readonly double[] Xs;
         public readonly double[] Ys;

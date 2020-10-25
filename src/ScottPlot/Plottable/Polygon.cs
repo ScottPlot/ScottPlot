@@ -1,13 +1,12 @@
 ﻿using ScottPlot.Config;
-using ScottPlot.Diagnostic.Attributes;
 using ScottPlot.Drawing;
+using ScottPlot.Renderable;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 
 namespace ScottPlot.Plottable
 {
-    public class Polygon : IPlottable
+    public class Polygon : IRenderable, IHasLegendItems, IHasAxisLimits, IValidatable
     {
         public double[] xs;
         public double[] ys;
@@ -91,8 +90,6 @@ namespace ScottPlot.Plottable
                 return e.Message;
             }
         }
-
-        public void Render(Settings settings) => throw new InvalidOperationException("use new Render()");
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {

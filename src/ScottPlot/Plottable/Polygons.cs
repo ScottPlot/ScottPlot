@@ -4,10 +4,11 @@ using System.Drawing;
 using System.Linq;
 using ScottPlot.Config;
 using ScottPlot.Drawing;
+using ScottPlot.Renderable;
 
 namespace ScottPlot.Plottable
 {
-    public class Polygons : IPlottable
+    public class Polygons : IRenderable, IHasLegendItems, IHasAxisLimits, IValidatable
     {
         public readonly List<List<(double x, double y)>> polys;
         public string label;

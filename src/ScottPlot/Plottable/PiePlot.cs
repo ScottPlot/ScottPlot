@@ -1,5 +1,6 @@
 ﻿using ScottPlot.Config;
 using ScottPlot.Drawing;
+using ScottPlot.Renderable;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -7,7 +8,7 @@ using System.Linq;
 
 namespace ScottPlot.Plottable
 {
-    public class PiePlot : IPlottable
+    public class PiePlot : IRenderable, IHasLegendItems, IHasAxisLimits, IValidatable
     {
         public double[] values;
         public string label;

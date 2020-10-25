@@ -1,14 +1,13 @@
 ﻿using ScottPlot.Config;
-using ScottPlot.Diagnostic.Attributes;
 using ScottPlot.Drawing;
+using ScottPlot.Renderable;
 using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 
 namespace ScottPlot.Plottable
 {
-    public class Text : IPlottable
+    public class Text : IRenderable, IHasAxisLimits, IValidatable
     {
         /// <summary>
         /// Horizontal position in coordinate space
@@ -79,10 +78,6 @@ namespace ScottPlot.Plottable
         public AxisLimits2D GetLimits() => new AxisLimits2D(x, x, y, y);
 
         public void Render(Settings settings) => throw new NotImplementedException("Use the other Render method");
-
-        public int PointCount { get => 1; }
-
-        public LegendItem[] LegendItems { get => null; }
 
         public string ErrorMessage(bool deepValidation = false)
         {
