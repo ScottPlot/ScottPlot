@@ -37,10 +37,12 @@ namespace ScottPlot
         {
             return string.Format($"ScottPlot ({0:n0} x {1:n0}) with {2:n0} objects ({3:n0} points)",
                 settings.figureSize.Width, settings.figureSize.Height,
-                GetPlottables().Count, GetTotalPoints());
+                Plottables.Length, TotalPoints);
         }
 
-        public int GetTotalPoints() => GetPlottables().Select(x => x.GetPointCount()).Sum();
+        [Obsolete("Access the 'Plot.TotalPoints' field instead", true)]
+        public int GetTotalPoints() => Plottables.Select(x => x.GetPointCount()).Sum();
+        public int TotalPoints => Plottables.Select(x => x.GetPointCount()).Sum();
 
         /// <summary>
         /// Return a new Plot with all the same Plottables (and some of the styles) of this one
@@ -241,16 +243,15 @@ namespace ScottPlot
             settings.plottables.Add(plottable);
         }
 
-        public List<IPlottable> GetPlottables()
-        {
-            return settings.plottables;
-        }
+        [Obsolete("Access the 'Plot.Plottables' array instead", true)]
+        public List<IPlottable> GetPlottables() => settings.plottables;
+        public IPlottable[] Plottables { get => settings.plottables.ToArray(); }
 
         public List<IDraggable> GetDraggables()
         {
             List<IDraggable> draggables = new List<IDraggable>();
 
-            foreach (var plottable in GetPlottables())
+            foreach (var plottable in Plottables)
                 if (plottable is IDraggable draggable)
                     draggables.Add(draggable);
 

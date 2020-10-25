@@ -34,8 +34,7 @@ namespace ScottPlot.Demo.Experimental
                 customPlottable.rotation = 45;
 
                 // add the custom plottable to the list of plottables like this
-                var plottables = plt.GetPlottables();
-                plottables.Add(customPlottable);
+                plt.Add(customPlottable);
             }
         }
     }
