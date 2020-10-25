@@ -5,13 +5,19 @@ namespace ScottPlot
 {
     public static class Validate
     {
+        private static string ValidLabel(string label) =>
+            string.IsNullOrWhiteSpace(label) ? "[unknown variable]" : label;
+
         /// <summary>
         /// Throw an exception if the value is NaN or infinity
         /// </summary>
         public static void AssertIsReal(string label, double value)
         {
+            label = ValidLabel(label);
+
             if (double.IsNaN(value))
                 throw new ArgumentException($"{label} is NaN");
+
             if (double.IsInfinity(value))
                 throw new ArgumentException($"{label} is infinity");
         }
@@ -21,6 +27,8 @@ namespace ScottPlot
         /// </summary>
         public static void AssertAllReal(string label, double[] values)
         {
+            label = ValidLabel(label);
+
             if (values is null)
                 throw new ArgumentException($"{label} must not be null");
 
@@ -34,6 +42,8 @@ namespace ScottPlot
         /// </summary>
         public static void AssertAllReal<T>(string label, T[] values)
         {
+            label = ValidLabel(label);
+
             if (values is null)
                 throw new ArgumentException($"{label} must not be null");
 
@@ -50,6 +60,8 @@ namespace ScottPlot
         /// </summary>
         public static void AssertAscending(string label, double[] values)
         {
+            label = ValidLabel(label);
+
             if (values is null)
                 throw new ArgumentException($"{label} must not be null");
 
@@ -63,6 +75,8 @@ namespace ScottPlot
         /// </summary>
         public static void AssertAscending<T>(string label, T[] values)
         {
+            label = ValidLabel(label);
+
             if (values is null)
                 throw new ArgumentException($"{label} must not be null");
 
@@ -76,6 +90,8 @@ namespace ScottPlot
         /// </summary>
         public static void AssertHasElements(string label, double[] values)
         {
+            label = ValidLabel(label);
+
             if (values is null)
                 throw new ArgumentException($"{label} must not be null");
 
@@ -88,6 +104,8 @@ namespace ScottPlot
         /// </summary>
         public static void AssertHasElements<T>(string label, T[] values)
         {
+            label = ValidLabel(label);
+
             if (values is null)
                 throw new ArgumentException($"{label} must not be null");
 
@@ -100,6 +118,8 @@ namespace ScottPlot
         /// </summary>
         public static void AssertHasElements(string label, Color[] values)
         {
+            label = ValidLabel(label);
+
             if (values is null)
                 throw new ArgumentException($"{label} must not be null");
 
@@ -112,6 +132,8 @@ namespace ScottPlot
         /// </summary>
         public static void AssertHasElements(string label, string[] values)
         {
+            label = ValidLabel(label);
+
             if (values is null)
                 throw new ArgumentException($"{label} must not be null");
 
@@ -126,6 +148,8 @@ namespace ScottPlot
             double[] a, double[] b = null, double[] c = null,
             double[] d = null, double[] e = null, double[] f = null)
         {
+            label = ValidLabel(label);
+
             if (!IsEqualLength(a, b, c, d, e, f))
                 throw new ArgumentException($"{label} must all have same length");
         }
@@ -135,6 +159,8 @@ namespace ScottPlot
         /// </summary>
         public static void AssertEqualLength<T1, T2>(string label, T1[] a, T2[] b)
         {
+            label = ValidLabel(label);
+
             if (a.Length != b.Length)
                 throw new ArgumentException($"{label} must all have same length");
         }
@@ -160,6 +186,8 @@ namespace ScottPlot
         /// </summary>
         public static void AssertHasText(string label, string value)
         {
+            label = ValidLabel(label);
+
             if (string.IsNullOrWhiteSpace(value))
                 throw new ArgumentException($"{label} must contain text");
         }
