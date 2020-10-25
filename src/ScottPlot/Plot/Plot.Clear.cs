@@ -96,7 +96,7 @@ namespace ScottPlot
             {
                 if ((settings.plottables[i] is VLine || settings.plottables[i] is HLine) && axisLines)
                     indicesToDelete.Add(i);
-                else if (settings.plottables[i] is PlottableScatter && scatterPlots)
+                else if (settings.plottables[i] is ScatterPlot && scatterPlots)
                     indicesToDelete.Add(i);
                 else if (settings.plottables[i] is PlottableSignal && signalPlots)
                     indicesToDelete.Add(i);

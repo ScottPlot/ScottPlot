@@ -18,7 +18,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             InitializeComponent();
         }
 
-        PlottableScatter sinPlot, cosPlot;
+        ScatterPlot sinPlot, cosPlot;
         VLine vline1, vline2;
 
         private void ToggleVisibility_Load(object sender, EventArgs e)

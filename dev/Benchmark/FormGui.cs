@@ -14,7 +14,7 @@ namespace Benchmark
 {
     public partial class FormGui : Form
     {
-        PlottableScatter scat;
+        ScatterPlot scat;
         PlottableSignal sig;
         PlottableSignalConst<double> sigConst;
 

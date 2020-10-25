@@ -1,18 +1,15 @@
 ﻿using ScottPlot.Config;
-using ScottPlot.Diagnostic.Attributes;
 using ScottPlot.Drawing;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Drawing.Text;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 
 namespace ScottPlot.Plottable
 {
-    public class PlottableScatter : IExportable, IPlottable
+    public class ScatterPlot : IExportable, IPlottable
     {
         public double[] xs;
         public double[] ys;
@@ -38,7 +35,7 @@ namespace ScottPlot.Plottable
         public string label;
         public bool IsVisible { get; set; } = true;
 
-        public PlottableScatter(double[] xs, double[] ys, double[] errorX = null, double[] errorY = null)
+        public ScatterPlot(double[] xs, double[] ys, double[] errorX = null, double[] errorY = null)
         {
             this.xs = xs;
             this.ys = ys;
@@ -138,13 +135,10 @@ namespace ScottPlot.Plottable
             if (IsVisible == false)
                 return;
 
-            using (var gfx = Graphics.FromImage(bmp))
+            using (var gfx = GDI.Graphics(bmp, lowQuality))
             using (var penLine = GDI.Pen(color, lineWidth, lineStyle, true))
             using (var penLineError = GDI.Pen(color, errorLineWidth, LineStyle.Solid, true))
             {
-                gfx.SmoothingMode = lowQuality ? SmoothingMode.HighSpeed : SmoothingMode.AntiAlias;
-                gfx.TextRenderingHint = lowQuality ? TextRenderingHint.SingleBitPerPixelGridFit : TextRenderingHint.AntiAliasGridFit;
-
                 PointF[] points = new PointF[xs.Length];
                 for (int i = 0; i < xs.Length; i++)
                     points[i] = new PointF(dims.GetPixelX(xs[i]), dims.GetPixelY(ys[i]));

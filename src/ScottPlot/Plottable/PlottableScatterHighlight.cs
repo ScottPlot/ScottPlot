@@ -8,7 +8,7 @@ using ScottPlot.Drawing;
 
 namespace ScottPlot.Plottable
 {
-    public class PlottableScatterHighlight : PlottableScatter, IExportable, IHighlightable, IPlottable
+    public class PlottableScatterHighlight : ScatterPlot, IExportable, IHighlightable, IPlottable
     {
         public MarkerShape highlightedShape = MarkerShape.openCircle;
         public float highlightedMarkerSize = 10;

@@ -79,7 +79,7 @@ namespace ScottPlot.Plottable
             // create a temporary scatter plot and use it for rendering
             double[] xs = xList.ToArray();
             double[] ys = yList.ToArray();
-            var scatter = new PlottableScatter(xs, ys)
+            var scatter = new ScatterPlot(xs, ys)
             {
                 color = color,
                 lineWidth = lineWidth,

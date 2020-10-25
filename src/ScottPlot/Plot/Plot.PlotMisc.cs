@@ -33,7 +33,7 @@ namespace ScottPlot
             return vectorField;
         }
 
-        public PlottableScatter PlotArrow(
+        public ScatterPlot PlotArrow(
             double tipX,
             double tipY,
             double baseX,
