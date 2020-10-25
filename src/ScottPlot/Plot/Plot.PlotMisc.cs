@@ -15,7 +15,7 @@ namespace ScottPlot
 {
     public partial class Plot
     {
-        public PlottableVectorField PlotVectorField(
+        public VectorField PlotVectorField(
             Statistics.Vector2[,] vectors,
             double[] xs,
             double[] ys,
@@ -25,7 +25,7 @@ namespace ScottPlot
             double scaleFactor = 1
             )
         {
-            var vectorField = new PlottableVectorField(vectors, xs, ys,
+            var vectorField = new VectorField(vectors, xs, ys,
                 colormap, scaleFactor, color ?? settings.GetNextColor())
             { label = label };
 
