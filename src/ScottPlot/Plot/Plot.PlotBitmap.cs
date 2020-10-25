@@ -18,7 +18,7 @@ namespace ScottPlot
            double x,
            double y,
            string label = null,
-           ImageAlignment alignment = ImageAlignment.middleLeft,
+           Alignment alignment = Alignment.MiddleLeft,
            double rotation = 0,
            Color? frameColor = null,
            int frameSize = 0

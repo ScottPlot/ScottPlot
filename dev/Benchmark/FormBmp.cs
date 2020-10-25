@@ -57,7 +57,7 @@ namespace Benchmark
             formsPlot1.plt.Title("Benchmark (4:3 aspect)");
             formsPlot1.plt.YLabel("Render Time (ms)");
             formsPlot1.plt.XLabel("Plot Width (px)");
-            formsPlot1.plt.Legend(location: ScottPlot.legendLocation.upperLeft);
+            formsPlot1.plt.Legend(location: ScottPlot.Alignment.UpperLeft);
             formsPlot1.Render();
         }
 

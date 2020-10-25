@@ -61,7 +61,7 @@ namespace ScottPlot.Demo.PlotTypes
 
                 // customize the plot to make it look nicer
                 plt.Grid(enableVertical: false, lineStyle: LineStyle.Dot);
-                plt.Legend(location: legendLocation.upperRight);
+                plt.Legend(location: Alignment.UpperRight);
             }
         }
 
@@ -104,7 +104,7 @@ namespace ScottPlot.Demo.PlotTypes
 
                 // customize the plot to make it look nicer
                 plt.Grid(enableVertical: false, lineStyle: LineStyle.Dot);
-                plt.Legend(location: legendLocation.upperRight);
+                plt.Legend(location: Alignment.UpperRight);
             }
         }
 
@@ -156,7 +156,7 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.PlotBar(xs, valuesA, label: "Series A");
 
                 // improve the styling
-                plt.Legend(location: legendLocation.upperRight);
+                plt.Legend(location: Alignment.UpperRight);
                 plt.Title("Stacked Bar Charts");
             }
         }

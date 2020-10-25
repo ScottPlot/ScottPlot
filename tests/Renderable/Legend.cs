@@ -56,7 +56,7 @@ namespace ScottPlotTests.Renderable
 
             var mplt = new MultiPlot(1000, 800, 3, 3);
 
-            legendLocation[] locs = Enum.GetValues(typeof(legendLocation)).Cast<legendLocation>().ToArray();
+            Alignment[] locs = Enum.GetValues(typeof(Alignment)).Cast<Alignment>().ToArray();
             for (int i = 0; i < locs.Length; i++)
             {
                 var plt = mplt.subplots[i];

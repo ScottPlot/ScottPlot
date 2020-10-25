@@ -15,7 +15,7 @@ namespace ScottPlot
         public double y;
         public double rotation;
         public Image image;
-        public ImageAlignment alignment;
+        public Alignment alignment;
         public Color frameColor;
         public int frameSize;
         public string label;
@@ -41,23 +41,23 @@ namespace ScottPlot
         {
             switch (alignment)
             {
-                case ImageAlignment.lowerCenter:
+                case Alignment.LowerCenter:
                     return new PointF(input.X - image.Width / 2, input.Y - image.Height);
-                case ImageAlignment.lowerLeft:
+                case Alignment.LowerLeft:
                     return new PointF(input.X, input.Y - image.Height);
-                case ImageAlignment.lowerRight:
+                case Alignment.LowerRight:
                     return new PointF(input.X - image.Width, input.Y - image.Height);
-                case ImageAlignment.middleLeft:
+                case Alignment.MiddleLeft:
                     return new PointF(input.X, input.Y - image.Height / 2);
-                case ImageAlignment.middleRight:
+                case Alignment.MiddleRight:
                     return new PointF(input.X - image.Width, input.Y - image.Height / 2);
-                case ImageAlignment.upperCenter:
+                case Alignment.UpperCenter:
                     return new PointF(input.X - image.Width / 2, input.Y);
-                case ImageAlignment.upperLeft:
+                case Alignment.UpperLeft:
                     return new PointF(input.X, input.Y);
-                case ImageAlignment.upperRight:
+                case Alignment.UpperRight:
                     return new PointF(input.X - image.Width, input.Y);
-                case ImageAlignment.middleCenter:
+                case Alignment.MiddleCenter:
                     return new PointF(input.X - image.Width / 2, input.Y - image.Height / 2);
                 default:
                     throw new InvalidEnumArgumentException();

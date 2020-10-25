@@ -15,8 +15,8 @@ namespace ScottPlot
             Color? fontColor = null,
             Color? backColor = null,
             Color? frameColor = null,
-            legendLocation location = legendLocation.lowerRight,
-            shadowDirection shadowDirection = shadowDirection.lowerRight,
+            Alignment location = Alignment.LowerRight,
+            Alignment shadowDirection = Alignment.LowerRight,
             bool? fixedLineWidth = null,
             bool? reverseOrder = null
             )
@@ -39,22 +39,7 @@ namespace ScottPlot
             if (fixedLineWidth != null)
                 settings.Legend.FixedLineWidth = fixedLineWidth.Value;
 
-            if (location == legendLocation.upperLeft)
-                settings.Legend.Location = Direction.NW;
-            else if (location == legendLocation.upperCenter)
-                settings.Legend.Location = Direction.N;
-            else if (location == legendLocation.upperRight)
-                settings.Legend.Location = Direction.NE;
-            else if (location == legendLocation.middleRight)
-                settings.Legend.Location = Direction.E;
-            else if (location == legendLocation.lowerRight)
-                settings.Legend.Location = Direction.SE;
-            else if (location == legendLocation.lowerCenter)
-                settings.Legend.Location = Direction.S;
-            else if (location == legendLocation.lowerLeft)
-                settings.Legend.Location = Direction.SW;
-            else if (location == legendLocation.middleLeft)
-                settings.Legend.Location = Direction.W;
+            settings.Legend.Location = location;
         }
 
         public Bitmap GetLegendBitmap()

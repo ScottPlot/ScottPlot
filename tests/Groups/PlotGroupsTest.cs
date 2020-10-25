@@ -35,7 +35,7 @@ namespace ScottPlotTests.Groups
             // additional plot styling
             plt.Title("Life Expectancy in European Countries in 2007");
             plt.YLabel("Age (years)");
-            plt.Legend(location: legendLocation.lowerRight);
+            plt.Legend(location: Alignment.LowerRight);
             plt.Grid(lineStyle: LineStyle.Dot, enableVertical: false);
 
             TestTools.SaveFig(plt);
@@ -69,7 +69,7 @@ namespace ScottPlotTests.Groups
             // additional plot styling
             plt.Title("Life Expectancy in 2007", fontSize: 26);
             plt.YLabel("Age (years)", fontSize: 18);
-            plt.Legend(location: legendLocation.lowerRight);
+            plt.Legend(location: Alignment.LowerRight);
             plt.Grid(lineStyle: LineStyle.Dot, enableVertical: false);
 
             TestTools.SaveFig(plt);
@@ -132,7 +132,7 @@ namespace ScottPlotTests.Groups
             // additional plot styling
             plt.Title("Life Expectancy", fontSize: 26);
             plt.YLabel("Age (years)", fontSize: 18);
-            plt.Legend(location: legendLocation.lowerRight);
+            plt.Legend(location: Alignment.LowerRight);
             plt.Grid(lineStyle: LineStyle.Dot, enableVertical: false);
 
             TestTools.SaveFig(plt);

@@ -11,11 +11,11 @@ namespace ScottPlot.Drawing
         public string Name { get => _Name; set => _Name = Config.Fonts.GetValidFontName(value); }
         public float Size = 12;
         public Color Color = Color.Black;
-        public TextAlignment Alignment = TextAlignment.upperLeft;
+        public Alignment Alignment = Alignment.UpperLeft;
 
         public Font() { }
 
-        public Font(string name, float size, Color color, TextAlignment align = TextAlignment.upperLeft) =>
+        public Font(string name, float size, Color color, Alignment align = Alignment.UpperLeft) =>
             (Name, Size, Color, Alignment) = (name, size, color, align);
     }
 }

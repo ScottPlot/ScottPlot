@@ -202,7 +202,7 @@ namespace ScottPlot.Demo.PlotTypes
                 // improve the style of the plot
                 plt.Title($"Test Scores by Class");
                 plt.YLabel("Score");
-                plt.Legend(location: legendLocation.lowerLeft);
+                plt.Legend(location: Alignment.LowerLeft);
                 plt.Ticks(displayTicksX: false);
                 plt.Grid(lineStyle: LineStyle.Dot, enableVertical: false);
             }

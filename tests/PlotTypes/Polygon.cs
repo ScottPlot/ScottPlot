@@ -36,7 +36,7 @@ namespace ScottPlotTests.PlotTypes
             }
 
             plt.Title("Polygon Example");
-            plt.Legend(location: ScottPlot.legendLocation.lowerLeft);
+            plt.Legend(location: ScottPlot.Alignment.LowerLeft);
             TestTools.SaveFig(plt);
         }
 
@@ -56,7 +56,7 @@ namespace ScottPlotTests.PlotTypes
             }
 
             plt.Title("Polygon Example");
-            plt.Legend(location: ScottPlot.legendLocation.lowerLeft);
+            plt.Legend(location: ScottPlot.Alignment.LowerLeft);
             TestTools.SaveFig(plt);
         }
 
@@ -83,7 +83,7 @@ namespace ScottPlotTests.PlotTypes
             plt.PlotPolygon(arrX, arrY, lineWidth: 1, lineColor: Color.Black, fillAlpha: .5);
 
             plt.Title("Shaded Line Plot");
-            plt.Legend(location: ScottPlot.legendLocation.lowerLeft);
+            plt.Legend(location: ScottPlot.Alignment.LowerLeft);
             TestTools.SaveFig(plt);
         }
 

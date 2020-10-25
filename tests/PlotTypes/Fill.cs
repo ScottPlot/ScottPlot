@@ -78,7 +78,7 @@ namespace ScottPlotTests.PlotTypes
             plt.PlotFill(greenLineXs, greenLineYs,
                 fillColor: Color.Green, fillAlpha: .5, label: "green");
 
-            plt.Legend(shadowDirection: ScottPlot.shadowDirection.none);
+            plt.Legend(shadowDirection: ScottPlot.Alignment.MiddleCenter);
 
             plt.AxisAuto(0, 0);
 
@@ -94,7 +94,7 @@ namespace ScottPlotTests.PlotTypes
 
             var plt = new ScottPlot.Plot(400, 300);
             plt.PlotFillAboveBelow(xs, ys, fillAlpha: .5, labelAbove: "above", labelBelow: "below");
-            plt.Legend(location: ScottPlot.legendLocation.lowerLeft);
+            plt.Legend(location: ScottPlot.Alignment.LowerLeft);
             plt.AxisAuto(0);
 
             TestTools.SaveFig(plt);

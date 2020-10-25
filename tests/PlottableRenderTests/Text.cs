@@ -76,7 +76,7 @@ namespace ScottPlotTests.PlottableRenderTests
             string hash1 = ScottPlot.Tools.BitmapHash(bmp1);
 
             // change the plottable
-            txt.alignment = TextAlignment.middleCenter;
+            txt.alignment = Alignment.MiddleCenter;
             var bmp2 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
             string hash2 = ScottPlot.Tools.BitmapHash(bmp2);
 

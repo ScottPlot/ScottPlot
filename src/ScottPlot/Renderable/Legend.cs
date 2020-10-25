@@ -11,7 +11,7 @@ namespace ScottPlot.Renderable
 {
     public class Legend : IRenderable
     {
-        public Direction Location = Direction.SE;
+        public Alignment Location = Alignment.LowerRight;
         public bool FixedLineWidth = false;
         public bool ReverseOrder = false;
         public bool AntiAlias = true;
@@ -197,23 +197,23 @@ namespace ScottPlot.Renderable
 
             switch (Location)
             {
-                case Direction.NW:
+                case Alignment.UpperLeft:
                     return (leftX, topY);
-                case Direction.N:
+                case Alignment.UpperCenter:
                     return (centerX, topY);
-                case Direction.NE:
+                case Alignment.UpperRight:
                     return (rightX, topY);
-                case Direction.E:
+                case Alignment.MiddleRight:
                     return (rightX, centerY);
-                case Direction.SE:
+                case Alignment.LowerRight:
                     return (rightX, bottomY);
-                case Direction.S:
+                case Alignment.LowerCenter:
                     return (centerX, bottomY);
-                case Direction.SW:
+                case Alignment.LowerLeft:
                     return (leftX, bottomY);
-                case Direction.W:
+                case Alignment.MiddleLeft:
                     return (leftX, centerY);
-                case Direction.C:
+                case Alignment.MiddleCenter:
                     return (centerX, centerY);
                 default:
                     throw new NotImplementedException();

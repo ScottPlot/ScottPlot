@@ -37,7 +37,7 @@ namespace ScottPlot
         /// Defines where the x/y point is relative to the text. 
         /// Alignment is ignored when rotation is enabled.
         /// </summary>
-        public TextAlignment alignment;
+        public Alignment alignment;
 
         /// <summary>
         /// Whether or not to draw a border around the text
@@ -110,23 +110,23 @@ namespace ScottPlot
         {
             switch (alignment)
             {
-                case TextAlignment.lowerCenter:
+                case Alignment.LowerCenter:
                     return (pixelX - stringWidth / 2, pixelY - stringHeight);
-                case TextAlignment.lowerLeft:
+                case Alignment.LowerLeft:
                     return (pixelX, pixelY - stringHeight);
-                case TextAlignment.lowerRight:
+                case Alignment.LowerRight:
                     return (pixelX - stringWidth, pixelY - stringHeight);
-                case TextAlignment.middleLeft:
+                case Alignment.MiddleLeft:
                     return (pixelX, pixelY - stringHeight / 2);
-                case TextAlignment.middleRight:
+                case Alignment.MiddleRight:
                     return (pixelX - stringWidth, pixelY - stringHeight / 2);
-                case TextAlignment.upperCenter:
+                case Alignment.UpperCenter:
                     return (pixelX - stringWidth / 2, pixelY);
-                case TextAlignment.upperLeft:
+                case Alignment.UpperLeft:
                     return (pixelX, pixelY);
-                case TextAlignment.upperRight:
+                case Alignment.UpperRight:
                     return (pixelX - stringWidth, pixelY);
-                case TextAlignment.middleCenter:
+                case Alignment.MiddleCenter:
                     return (pixelX - stringWidth / 2, pixelY - stringHeight / 2);
                 default:
                     throw new InvalidEnumArgumentException("that alignment is not recognized");

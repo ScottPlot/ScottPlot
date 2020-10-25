@@ -21,7 +21,7 @@ namespace ScottPlotTests.Plot
                 double y = i % 2;
                 plt.PlotText(label, x, y, Color.Black,
                     rotation: rotations[i],
-                    alignment: ScottPlot.TextAlignment.upperLeft,
+                    alignment: ScottPlot.Alignment.UpperLeft,
                     fontSize: 24,
                     frame: true,
                     frameColor: Color.LightGray);
@@ -45,7 +45,7 @@ namespace ScottPlotTests.Plot
                 double y = i % 2;
                 plt.PlotText(label, x, y, Color.Black,
                     rotation: rotations[i],
-                    alignment: ScottPlot.TextAlignment.upperCenter,
+                    alignment: ScottPlot.Alignment.UpperCenter,
                     fontSize: 24,
                     frame: true,
                     frameColor: Color.LightGray);
@@ -69,7 +69,7 @@ namespace ScottPlotTests.Plot
                 double y = i % 2;
                 plt.PlotText(label, x, y, Color.Black,
                     rotation: rotations[i],
-                    alignment: ScottPlot.TextAlignment.lowerRight,
+                    alignment: ScottPlot.Alignment.LowerRight,
                     fontSize: 24,
                     frame: true,
                     frameColor: Color.LightGray);

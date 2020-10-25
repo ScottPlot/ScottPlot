@@ -22,7 +22,7 @@ namespace ScottPlot
             double fontSize = 12,
             bool bold = false,
             string label = null,
-            TextAlignment alignment = TextAlignment.middleLeft,
+            Alignment alignment = Alignment.MiddleLeft,
             double rotation = 0,
             bool frame = false,
             Color? frameColor = null

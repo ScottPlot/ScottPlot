@@ -24,7 +24,7 @@ namespace ScottPlot.Demo.Experimental
                     FontName = "arial",
                     FontSize = 26,
                     FontBold = true,
-                    alignment = TextAlignment.middleCenter,
+                    alignment = Alignment.MiddleCenter,
                     rotation = 0,
                     frame = false,
                     frameColor = System.Drawing.Color.Green
