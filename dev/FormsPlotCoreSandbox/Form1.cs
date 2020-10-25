@@ -21,7 +21,7 @@ namespace FormsPlotCoreSandbox
 
         VLine vline;
         HLine hline;
-        PlottableScatterHighlight sph;
+        ScatterPlotHighlight sph;
         private void Form1_Load(object sender, EventArgs e)
         {
             vline = formsPlot1.plt.PlotVLine(1);

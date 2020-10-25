@@ -18,7 +18,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             InitializeComponent();
         }
 
-        PlottableScatterHighlight sph;
+        ScatterPlotHighlight sph;
         private void ShowValueOnHover2_Load(object sender, EventArgs e)
         {
             int pointCount = 100;

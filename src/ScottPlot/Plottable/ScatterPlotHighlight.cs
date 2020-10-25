@@ -2,20 +2,19 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Drawing.Text;
 using System.Linq;
 using ScottPlot.Drawing;
 
 namespace ScottPlot.Plottable
 {
-    public class PlottableScatterHighlight : ScatterPlot, IExportable, IHighlightable, IPlottable
+    public class ScatterPlotHighlight : ScatterPlot, IExportable, IHighlightable, IPlottable
     {
         public MarkerShape highlightedShape = MarkerShape.openCircle;
         public float highlightedMarkerSize = 10;
         public Color highlightedColor = Color.Red;
         protected bool[] isHighlighted;
 
-        public PlottableScatterHighlight(double[] xs, double[] ys, double[] xErr = null, double[] yErr = null) :
+        public ScatterPlotHighlight(double[] xs, double[] ys, double[] xErr = null, double[] yErr = null) :
                                     base(xs, ys, xErr, yErr) => HighlightClear();
 
         public new void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
@@ -25,11 +24,8 @@ namespace ScottPlot.Plottable
             if (isHighlighted is null || isHighlighted.Length == 0)
                 return;
 
-            using (var gfx = Graphics.FromImage(bmp))
+            using (var gfx = GDI.Graphics(bmp, lowQuality))
             {
-                gfx.SmoothingMode = lowQuality ? SmoothingMode.HighSpeed : SmoothingMode.AntiAlias;
-                gfx.TextRenderingHint = lowQuality ? TextRenderingHint.SingleBitPerPixelGridFit : TextRenderingHint.AntiAliasGridFit;
-
                 var highlightedIndexes = Enumerable.Range(0, isHighlighted.Length).Where(x => isHighlighted[x]);
                 foreach (int i in highlightedIndexes)
                 {

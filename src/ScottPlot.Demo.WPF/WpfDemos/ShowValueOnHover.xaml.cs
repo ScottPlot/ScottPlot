@@ -18,7 +18,7 @@ namespace ScottPlot.Demo.WPF.WpfDemos
     /// </summary>
     public partial class ShowValueOnHover : Window
     {
-        PlottableScatterHighlight sph;
+        ScatterPlotHighlight sph;
 
         public ShowValueOnHover()
         {

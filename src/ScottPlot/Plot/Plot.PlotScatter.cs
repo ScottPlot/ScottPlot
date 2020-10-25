@@ -85,7 +85,7 @@ namespace ScottPlot
             return scatterPlot;
         }
 
-        public PlottableScatterHighlight PlotScatterHighlight(
+        public ScatterPlotHighlight PlotScatterHighlight(
            double[] xs,
            double[] ys,
            Color? color = null,
@@ -112,7 +112,7 @@ namespace ScottPlot
             if (highlightedMarkerSize is null)
                 highlightedMarkerSize = 2 * markerSize;
 
-            var scatterPlot = new PlottableScatterHighlight(xs, ys, errorX, errorY)
+            var scatterPlot = new ScatterPlotHighlight(xs, ys, errorX, errorY)
             {
                 color = (Color)color,
                 lineWidth = lineWidth,
