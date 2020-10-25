@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Text;
-using System.Text;
 using ScottPlot.Config;
 using ScottPlot.Drawing;
 
 namespace ScottPlot.Plottable
 {
-    public class PlottableScaleBar : IPlottable
+    public class ScaleBar : IPlottable
     {
         /// <summary>
         /// Width of the scalebar in cooridinate units
@@ -89,16 +85,13 @@ namespace ScottPlot.Plottable
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            using (var gfx = Graphics.FromImage(bmp))
+            using (var gfx = GDI.Graphics(bmp, lowQuality))
             using (var font = GDI.Font(FontName, FontSize, FontBold))
             using (var fontBrush = new SolidBrush(FontColor))
             using (var linePen = new Pen(LineColor, LineWidth))
             using (var sfNorth = new StringFormat() { LineAlignment = StringAlignment.Near, Alignment = StringAlignment.Center })
             using (var sfWest = new StringFormat() { LineAlignment = StringAlignment.Center, Alignment = StringAlignment.Near })
             {
-                gfx.SmoothingMode = lowQuality ? SmoothingMode.HighSpeed : SmoothingMode.AntiAlias;
-                gfx.TextRenderingHint = lowQuality ? TextRenderingHint.SingleBitPerPixelGridFit : TextRenderingHint.AntiAliasGridFit;
-
                 // determine where the corner of the scalebar will be
                 float widthPx = (float)(Width * dims.PxPerUnitX);
                 float heightPx = (float)(Height * dims.PxPerUnitY);

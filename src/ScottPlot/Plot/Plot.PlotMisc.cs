@@ -108,7 +108,7 @@ namespace ScottPlot
             return functionPlot;
         }
 
-        public PlottableScaleBar PlotScaleBar(
+        public ScaleBar PlotScaleBar(
             double sizeX,
             double sizeY,
             string labelX = null,
@@ -119,7 +119,7 @@ namespace ScottPlot
             double padPx = 10
             )
         {
-            var scalebar = new PlottableScaleBar()
+            var scalebar = new ScaleBar()
             {
                 Width = sizeX,
                 Height = sizeY,

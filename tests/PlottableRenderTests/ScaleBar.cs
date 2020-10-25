@@ -22,7 +22,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
 
             // add a scalebar
-            var sb = new PlottableScaleBar()
+            var sb = new ScottPlot.Plottable.ScaleBar()
             {
                 Width = 5,
                 Height = .25,
@@ -52,7 +52,7 @@ namespace ScottPlotTests.PlottableRenderTests
             // create plot with generic scalebar settings
             plt.PlotSignal(DataGen.Sin(51));
             plt.PlotSignal(DataGen.Cos(51));
-            var sb = new PlottableScaleBar()
+            var sb = new ScottPlot.Plottable.ScaleBar()
             {
                 Width = 5,
                 Height = .25,
@@ -86,7 +86,7 @@ namespace ScottPlotTests.PlottableRenderTests
             // create plot with generic scalebar settings
             plt.PlotSignal(DataGen.Sin(51));
             plt.PlotSignal(DataGen.Cos(51));
-            var sb = new PlottableScaleBar()
+            var sb = new ScottPlot.Plottable.ScaleBar()
             {
                 Width = 5,
                 Height = .25,
@@ -120,7 +120,7 @@ namespace ScottPlotTests.PlottableRenderTests
             // create plot with generic scalebar settings
             plt.PlotSignal(DataGen.Sin(51));
             plt.PlotSignal(DataGen.Cos(51));
-            var sb = new PlottableScaleBar()
+            var sb = new ScottPlot.Plottable.ScaleBar()
             {
                 Width = 5,
                 Height = .25,
@@ -154,7 +154,7 @@ namespace ScottPlotTests.PlottableRenderTests
             // create plot with generic scalebar settings
             plt.PlotSignal(DataGen.Sin(51));
             plt.PlotSignal(DataGen.Cos(51));
-            var sb = new PlottableScaleBar()
+            var sb = new ScottPlot.Plottable.ScaleBar()
             {
                 Width = 5,
                 Height = .25,
@@ -192,7 +192,7 @@ namespace ScottPlotTests.PlottableRenderTests
             // create plot with generic scalebar settings
             plt.PlotSignal(DataGen.Sin(51));
             plt.PlotSignal(DataGen.Cos(51));
-            var sb = new PlottableScaleBar()
+            var sb = new ScottPlot.Plottable.ScaleBar()
             {
                 Width = 5,
                 Height = .25,
