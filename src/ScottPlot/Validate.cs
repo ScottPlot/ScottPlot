@@ -42,17 +42,12 @@ namespace ScottPlot
         /// </summary>
         public static void AssertAllReal<T>(string label, T[] values)
         {
-            label = ValidLabel(label);
-
-            if (values is null)
-                throw new ArgumentException($"{label} must not be null");
-
-            for (int i = 0; i < values.Length; i++)
-            {
-                double val = Convert.ToDouble(values[i]);
-                if (double.IsNaN(val) || double.IsInfinity(val))
-                    throw new ArgumentException($"{label} index {i} is invalid ({values[i]})");
-            }
+            if (typeof(T) == typeof(double))
+                AssertAllReal(label, (double[])(object)values);
+            else if (typeof(T) == typeof(float))
+                AssertAllReal(label, (float[])(object)values);
+            else
+                throw new ArgumentException("values must be float[] or double[]");
         }
 
         /// <summary>
