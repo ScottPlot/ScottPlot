@@ -83,7 +83,7 @@ namespace ScottPlot
             return plottable;
         }
 
-        public PlottableFunction PlotFunction(
+        public FunctionPlot PlotFunction(
             Func<double, double?> function,
             Color? color = null,
             double lineWidth = 1,
@@ -96,7 +96,7 @@ namespace ScottPlot
             if (markerShape != MarkerShape.none || markerSize != 0)
                 throw new ArgumentException("function plots do not use markers");
 
-            PlottableFunction functionPlot = new PlottableFunction(function)
+            FunctionPlot functionPlot = new FunctionPlot(function)
             {
                 color = color ?? settings.GetNextColor(),
                 lineWidth = lineWidth,

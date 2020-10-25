@@ -1,5 +1,4 @@
 ﻿using ScottPlot.Config;
-using ScottPlot.Diagnostic.Attributes;
 using ScottPlot.Drawing;
 using System;
 using System.Drawing;

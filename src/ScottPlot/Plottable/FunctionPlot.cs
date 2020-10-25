@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
-using System.Dynamic;
-using System.Text;
 using ScottPlot.Config;
 using ScottPlot.Drawing;
 
 namespace ScottPlot.Plottable
 {
-    public class PlottableFunction : IPlottable
+    public class FunctionPlot : IPlottable
     {
         public Func<double, double?> function;
 
@@ -21,7 +19,7 @@ namespace ScottPlot.Plottable
         public Color color = Color.Black;
         public bool IsVisible { get; set; } = true;
 
-        public PlottableFunction(Func<double, double?> function)
+        public FunctionPlot(Func<double, double?> function)
         {
             this.function = function;
         }

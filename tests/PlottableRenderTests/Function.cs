@@ -16,7 +16,7 @@ namespace ScottPlotTests.PlottableRenderTests
 
             // start with default settings
             double? func(double x) => Math.Sqrt(x);
-            var funcPlot = new PlottableFunction(func) { };
+            var funcPlot = new FunctionPlot(func) { };
             plt.Axis(-1, 1, -.5, 1.5);
 
             plt.Add(funcPlot);
@@ -46,7 +46,7 @@ namespace ScottPlotTests.PlottableRenderTests
 
             // start with default settings
             double? func(double x) => Math.Sqrt(x);
-            var funcPlot = new PlottableFunction(func) { };
+            var funcPlot = new FunctionPlot(func) { };
             plt.Axis(-1, 1, -.5, 1.5);
 
             plt.Add(funcPlot);
@@ -75,7 +75,7 @@ namespace ScottPlotTests.PlottableRenderTests
 
             // start with default settings
             double? func(double x) => Math.Sqrt(x);
-            var funcPlot = new PlottableFunction(func) { };
+            var funcPlot = new FunctionPlot(func) { };
             plt.Axis(-1, 1, -.5, 1.5);
 
             plt.Add(funcPlot);
@@ -104,7 +104,7 @@ namespace ScottPlotTests.PlottableRenderTests
 
             // start with default settings
             double? func(double x) => Math.Sqrt(x);
-            var funcPlot = new PlottableFunction(func) { };
+            var funcPlot = new FunctionPlot(func) { };
             plt.Axis(-1, 1, -.5, 1.5);
 
             plt.Add(funcPlot);
