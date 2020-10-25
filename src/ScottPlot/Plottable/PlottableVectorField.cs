@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 
-namespace ScottPlot
+namespace ScottPlot.Plottable
 {
 #pragma warning disable CS0618 // Type or member is obsolete
     public class PlottableVectorField : IPlottable

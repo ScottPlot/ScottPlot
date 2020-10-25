@@ -1,7 +1,7 @@
 ﻿using ScottPlot.MinMaxSearchStrategies;
 using System;
 
-namespace ScottPlot
+namespace ScottPlot.Plottable
 {
     // Variation of PlottableSignal that uses a segmented tree for faster min/max range queries
     // - frequent min/max lookups are a bottleneck displaying large signals

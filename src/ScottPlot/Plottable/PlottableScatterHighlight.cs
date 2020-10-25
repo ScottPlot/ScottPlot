@@ -5,9 +5,8 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Linq;
 using ScottPlot.Drawing;
-using ScottPlot.plottables;
 
-namespace ScottPlot
+namespace ScottPlot.Plottable
 {
     public class PlottableScatterHighlight : PlottableScatter, IExportable, IHighlightable, IPlottable
     {

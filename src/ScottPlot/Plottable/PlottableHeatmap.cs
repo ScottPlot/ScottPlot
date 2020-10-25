@@ -8,7 +8,7 @@ using System.Drawing.Imaging;
 using System.Linq;
 using System.Runtime.InteropServices;
 
-namespace ScottPlot
+namespace ScottPlot.Plottable
 {
 
 #pragma warning disable CS0618 // Type or member is obsolete

@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using ScottPlot;
+using ScottPlot.Plottable;
 using System;
 
 namespace ScottPlotTests.PlottableRenderTests

@@ -8,14 +8,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ScottPlot.Plottable;
 
 namespace Benchmark
 {
     public partial class FormGui : Form
     {
-        ScottPlot.PlottableScatter scat;
-        ScottPlot.PlottableSignal sig;
-        ScottPlot.PlottableSignalConst<double> sigConst;
+        PlottableScatter scat;
+        PlottableSignal sig;
+        PlottableSignalConst<double> sigConst;
 
         public FormGui()
         {

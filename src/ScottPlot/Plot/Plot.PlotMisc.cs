@@ -3,6 +3,7 @@
  *   - Long lists of optional arguments (matplotlib style) are permitted.
  *   - Use one line per argument to simplify the tracking of changes.
  */
+using ScottPlot.Plottable;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,7 +15,6 @@ namespace ScottPlot
 {
     public partial class Plot
     {
-
         public PlottableVectorField PlotVectorField(
             Statistics.Vector2[,] vectors,
             double[] xs,

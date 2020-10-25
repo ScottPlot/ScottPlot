@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace ScottPlot
+namespace ScottPlot.Plottable
 {
     public class PlottablePolygon : IPlottable
     {

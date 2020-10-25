@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using ScottPlot;
+using ScottPlot.Plottable;
 using System;
 using System.Collections.Generic;
 using System.Text;

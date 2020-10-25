@@ -7,6 +7,7 @@
  */
 
 using ScottPlot.Drawing;
+using ScottPlot.Plottable;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

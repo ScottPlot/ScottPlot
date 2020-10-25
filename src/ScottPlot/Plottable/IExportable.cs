@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ScottPlot
+namespace ScottPlot.Plottable
 {
     /// <summary>
     /// describes Plottable objects whose data can be exported as a text file

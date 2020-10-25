@@ -1,6 +1,12 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.0.44 ⚠️ _in active development_
+## ScottPlot 4.0 -> 4.1 Major Changes
+* Plot methods are largely unchanged so most users will not experience breaking changes
+* The `Plottable` base class has been replaced with an `IPlottable` interface
+* Plottables have been renamed and moved into a `Plottable` namespace
+* Several enums have been renamed
+
+## ScottPlot 4.0.1 ⚠️ _in active development_
 * Improved limits for fixed-size axis spans (#586) _Thanks @citizen3942 and @StendProg_
 * Mouse drag/drop events now send useful event arguments (#593) _Thanks @charlescao460 and @StendProg_
 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using ScottPlot.Config;
 using ScottPlot.Drawing;
 
-namespace ScottPlot
+namespace ScottPlot.Plottable
 {
     public class PlottableImage : IPlottable
     {

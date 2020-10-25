@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using ScottPlot.Plottable;
 
 namespace ScottPlot.Diagnostic
 {

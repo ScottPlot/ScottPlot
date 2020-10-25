@@ -7,7 +7,7 @@ using ScottPlot.Config;
 using ScottPlot.Drawing;
 using ScottPlot.Statistics;
 
-namespace ScottPlot
+namespace ScottPlot.Plottable
 {
     public class PlottablePopulations : IPlottable
     {

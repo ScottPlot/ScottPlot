@@ -1,5 +1,6 @@
 ﻿using ScottPlot.Config;
 using ScottPlot.Renderable;
+using ScottPlot.Plottable;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

@@ -1,7 +1,7 @@
 ﻿using ScottPlot.MinMaxSearchStrategies;
 using System;
 
-namespace ScottPlot
+namespace ScottPlot.Plottable
 {
     public class PlottableSignalXYConst<TX, TY> : PlottableSignalXYGeneric<TX, TY> where TX : struct, IComparable where TY : struct, IComparable
     {

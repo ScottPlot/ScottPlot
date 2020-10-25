@@ -10,7 +10,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 
-namespace ScottPlot
+namespace ScottPlot.Plottable
 {
     public class PlottableScatter : IExportable, IPlottable
     {

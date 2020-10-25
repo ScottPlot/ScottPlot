@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using ScottPlot.Plottable;
 
 namespace ScottPlot.Diagnostic
 {

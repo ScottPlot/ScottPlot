@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot.Plottable;
+using System;
 using System.Windows.Input;
 
 namespace ScottPlot.WinForms.Events

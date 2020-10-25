@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ScottPlot
+namespace ScottPlot.Plottable
 {
     public interface IDraggable
     {

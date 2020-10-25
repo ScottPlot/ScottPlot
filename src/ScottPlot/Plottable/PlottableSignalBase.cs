@@ -13,7 +13,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace ScottPlot
+namespace ScottPlot.Plottable
 {
     public class PlottableSignalBase<T> : IPlottable, IExportable where T : struct, IComparable
     {

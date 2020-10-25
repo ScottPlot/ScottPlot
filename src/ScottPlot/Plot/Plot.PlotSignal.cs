@@ -5,6 +5,7 @@
  */
 using System;
 using System.Drawing;
+using ScottPlot.Plottable;
 
 namespace ScottPlot
 {

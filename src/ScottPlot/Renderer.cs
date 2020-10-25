@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using ScottPlot.Config;
 using ScottPlot.Drawing;
-using ScottPlot.plottables;
+using ScottPlot.Plottable;
 
 namespace ScottPlot
 {

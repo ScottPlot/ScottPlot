@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ScottPlot.Plottable;
 
 namespace FormsPlotCoreSandbox
 {
@@ -18,9 +19,9 @@ namespace FormsPlotCoreSandbox
             InitializeComponent();
         }
 
-        ScottPlot.PlottableVLine vline;
-        ScottPlot.PlottableHLine hline;
-        ScottPlot.PlottableScatterHighlight sph;
+        PlottableVLine vline;
+        PlottableHLine hline;
+        PlottableScatterHighlight sph;
         private void Form1_Load(object sender, EventArgs e)
         {
             vline = formsPlot1.plt.PlotVLine(1);

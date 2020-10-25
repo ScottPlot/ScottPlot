@@ -5,7 +5,7 @@ using System;
 using System.Drawing;
 using System.Linq;
 
-namespace ScottPlot
+namespace ScottPlot.Plottable
 {
     public class PlottableErrorBars : IPlottable
     {

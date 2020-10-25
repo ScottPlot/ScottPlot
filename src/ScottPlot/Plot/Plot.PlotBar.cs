@@ -12,6 +12,7 @@ using System.Drawing.Imaging;
 using System.Linq;
 using ScottPlot.Drawing;
 using ScottPlot.Statistics;
+using ScottPlot.Plottable;
 
 namespace ScottPlot
 {

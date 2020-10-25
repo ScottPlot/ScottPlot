@@ -3,7 +3,7 @@ using ScottPlot.Drawing;
 using System;
 using System.Drawing;
 
-namespace ScottPlot
+namespace ScottPlot.Plottable
 {
     public interface IPlottable // TODO: inherit IRenderable
     {

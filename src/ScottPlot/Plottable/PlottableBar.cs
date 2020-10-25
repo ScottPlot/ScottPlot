@@ -8,7 +8,7 @@ using System.Drawing.Text;
 using System.Reflection;
 using System.Text;
 
-namespace ScottPlot
+namespace ScottPlot.Plottable
 {
     public class PlottableBar : IPlottable
     {

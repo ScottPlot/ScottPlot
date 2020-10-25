@@ -3,6 +3,7 @@
  *   - Long lists of optional arguments (matplotlib style) are permitted.
  *   - Use one line per argument to simplify the tracking of changes.
  */
+using ScottPlot.Plottable;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -12,8 +13,6 @@ namespace ScottPlot
 {
     public partial class Plot
     {
-
-
         public PlottablePolygon PlotFill(
             double[] xs,
             double[] ys,

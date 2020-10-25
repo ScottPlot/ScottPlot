@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using ScottPlot;
+using ScottPlot.Plottable;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,12 +42,12 @@ namespace ScottPlotTests.Plot
             var plt = GetDemoPlot();
 
             int numberOfPlottablesBefore = plt.Plottables.Length;
-            int numberOfSignalsBefore = plt.Plottables.Where(x => x is ScottPlot.PlottableSignal).Count();
-            plt.Clear(x => x is ScottPlot.PlottableSignal);
+            int numberOfSignalsBefore = plt.Plottables.Where(x => x is PlottableSignal).Count();
+            plt.Clear(x => x is PlottableSignal);
             TestTools.SaveFig(plt);
             int numberOfPlottablesAfter = plt.Plottables.Length;
             int numberOfPlottablesRemoved = numberOfPlottablesBefore - numberOfPlottablesAfter;
-            int numberOfSignalsAfter = plt.Plottables.Where(x => x is ScottPlot.PlottableSignal).Count();
+            int numberOfSignalsAfter = plt.Plottables.Where(x => x is PlottableSignal).Count();
 
             Assert.AreEqual(2, numberOfSignalsBefore);
             Assert.AreEqual(0, numberOfSignalsAfter);
@@ -58,10 +59,10 @@ namespace ScottPlotTests.Plot
         {
             var plt = GetDemoPlot();
 
-            int numberOfSignalsBefore = plt.Plottables.Where(x => x is ScottPlot.PlottableSignal).Count();
-            plt.Clear(x => !(x is ScottPlot.PlottableSignal));
+            int numberOfSignalsBefore = plt.Plottables.Where(x => x is PlottableSignal).Count();
+            plt.Clear(x => !(x is PlottableSignal));
             TestTools.SaveFig(plt);
-            int numberOfSignalsAfter = plt.Plottables.Where(x => x is ScottPlot.PlottableSignal).Count();
+            int numberOfSignalsAfter = plt.Plottables.Where(x => x is PlottableSignal).Count();
 
             Assert.AreEqual(2, numberOfSignalsBefore);
             Assert.AreEqual(2, numberOfSignalsAfter);
@@ -74,12 +75,12 @@ namespace ScottPlotTests.Plot
             var plt = GetDemoPlot();
 
             int numberOfPlottablesBefore = plt.Plottables.Length;
-            int numberOfSignalsBefore = plt.Plottables.Where(x => x is ScottPlot.PlottableSignal).Count();
-            plt.Clear(typeof(ScottPlot.PlottableSignal));
+            int numberOfSignalsBefore = plt.Plottables.Where(x => x is PlottableSignal).Count();
+            plt.Clear(typeof(PlottableSignal));
             TestTools.SaveFig(plt);
             int numberOfPlottablesAfter = plt.Plottables.Length;
             int numberOfPlottablesRemoved = numberOfPlottablesBefore - numberOfPlottablesAfter;
-            int numberOfSignalsAfter = plt.Plottables.Where(x => x is ScottPlot.PlottableSignal).Count();
+            int numberOfSignalsAfter = plt.Plottables.Where(x => x is PlottableSignal).Count();
 
             Assert.AreEqual(2, numberOfSignalsBefore);
             Assert.AreEqual(0, numberOfSignalsAfter);
@@ -92,12 +93,12 @@ namespace ScottPlotTests.Plot
             var plt = GetDemoPlot();
 
             int numberOfPlottablesBefore = plt.Plottables.Length;
-            int numberOfSignalsBefore = plt.Plottables.Where(x => x is ScottPlot.PlottableSignal).Count();
-            plt.Clear<ScottPlot.PlottableSignal>();
+            int numberOfSignalsBefore = plt.Plottables.Where(x => x is PlottableSignal).Count();
+            plt.Clear<PlottableSignal>();
             TestTools.SaveFig(plt);
             int numberOfPlottablesAfter = plt.Plottables.Length;
             int numberOfPlottablesRemoved = numberOfPlottablesBefore - numberOfPlottablesAfter;
-            int numberOfSignalsAfter = plt.Plottables.Where(x => x is ScottPlot.PlottableSignal).Count();
+            int numberOfSignalsAfter = plt.Plottables.Where(x => x is PlottableSignal).Count();
 
             Assert.AreEqual(2, numberOfSignalsBefore);
             Assert.AreEqual(0, numberOfSignalsAfter);
@@ -110,7 +111,7 @@ namespace ScottPlotTests.Plot
             var plt = GetDemoPlot();
 
             int numberOfPlottablesBefore = plt.Plottables.Length;
-            int numberOfSignalsBefore = plt.Plottables.Where(x => x is ScottPlot.PlottableSignal).Count();
+            int numberOfSignalsBefore = plt.Plottables.Where(x => x is PlottableSignal).Count();
 
             var exampleSignal = plt.PlotSignal(DataGen.Sin(51));
             plt.Clear(exampleSignal);
@@ -118,7 +119,7 @@ namespace ScottPlotTests.Plot
             TestTools.SaveFig(plt);
             int numberOfPlottablesAfter = plt.Plottables.Length;
             int numberOfPlottablesRemoved = numberOfPlottablesBefore - numberOfPlottablesAfter;
-            int numberOfSignalsAfter = plt.Plottables.Where(x => x is ScottPlot.PlottableSignal).Count();
+            int numberOfSignalsAfter = plt.Plottables.Where(x => x is PlottableSignal).Count();
 
             Assert.AreEqual(2, numberOfSignalsBefore);
             Assert.AreEqual(0, numberOfSignalsAfter);

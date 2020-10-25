@@ -1,10 +1,11 @@
 ﻿using ScottPlot.MinMaxSearchStrategies;
 
-namespace ScottPlot
+namespace ScottPlot.Plottable
 {
-    public class PlottableSignal : PlottableSignalBase<double>
+    public class PlottableSignalXY : PlottableSignalXYGeneric<double, double>
     {
-        public PlottableSignal() : base()
+
+        public PlottableSignalXY() : base()
         {
             minmaxSearchStrategy = new LinearDoubleOnlyMinMaxStrategy();
         }
@@ -12,7 +13,7 @@ namespace ScottPlot
         public override string ToString()
         {
             string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
-            return $"PlottableSignal{label} with {PointCount} points";
+            return $"PlottableSignalXY{label} with {PointCount} points";
         }
     }
 }

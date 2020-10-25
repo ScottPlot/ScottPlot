@@ -7,7 +7,7 @@ using System.Drawing;
 using System.Text;
 using System.Threading;
 
-namespace ScottPlot
+namespace ScottPlot.Plottable
 {
     public class PlottableHSpan : PlottableAxisSpan { public PlottableHSpan() { IsHorizontal = true; } }
     public class PlottableVSpan : PlottableAxisSpan { public PlottableVSpan() { IsHorizontal = false; } }

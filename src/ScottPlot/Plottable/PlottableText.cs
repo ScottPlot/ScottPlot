@@ -1,7 +1,6 @@
 ﻿using ScottPlot.Config;
 using ScottPlot.Diagnostic.Attributes;
 using ScottPlot.Drawing;
-using ScottPlot.plottables;
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -9,7 +8,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Text;
 
-namespace ScottPlot
+namespace ScottPlot.Plottable
 {
     public class PlottableText : IPlottable
     {

@@ -5,7 +5,7 @@ using System.Linq;
 using ScottPlot.Config;
 using ScottPlot.Drawing;
 
-namespace ScottPlot
+namespace ScottPlot.Plottable
 {
     public class PlottablePolygons : IPlottable
     {

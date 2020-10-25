@@ -15,7 +15,7 @@ namespace ScottPlot.Demo.Experimental
             public void Render(Plot plt)
             {
                 // rather than call Plot.PlotText(), create the Plottable manually
-                var customPlottable = new PlottableText()
+                var customPlottable = new Plottable.PlottableText()
                 {
                     text = "test",
                     x = 2,

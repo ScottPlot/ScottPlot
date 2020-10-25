@@ -191,8 +191,8 @@ namespace ScottPlot.Demo.PlotTypes
                 popPlot.displayDistributionCurve = true;
                 popPlot.distributionCurveLineStyle = LineStyle.Dash;
                 popPlot.scatterOutlineColor = System.Drawing.Color.Transparent;
-                popPlot.displayItems = PlottablePopulations.DisplayItems.ScatterAndBox;
-                popPlot.boxStyle = PlottablePopulations.BoxStyle.BarMeanStDev;
+                popPlot.displayItems = Plottable.PlottablePopulations.DisplayItems.ScatterAndBox;
+                popPlot.boxStyle = Plottable.PlottablePopulations.BoxStyle.BarMeanStDev;
                 plt.Axis(y1: 0);
 
                 // colors are managed at the population series level:

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ScottPlot.Plottable;
 
 namespace ScottPlot.Demo.WinForms.WinFormsDemos
 {
@@ -17,7 +18,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             InitializeComponent();
         }
 
-        ScottPlot.PlottableScatterHighlight sph;
+        PlottableScatterHighlight sph;
         private void ShowValueOnHover2_Load(object sender, EventArgs e)
         {
             int pointCount = 100;

@@ -3,6 +3,7 @@ using ScottPlot;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using ScottPlot.Plottable;
 
 namespace ScottPlotTests.PlottableRenderTests
 {

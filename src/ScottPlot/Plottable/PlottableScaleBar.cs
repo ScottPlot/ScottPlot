@@ -7,7 +7,7 @@ using System.Text;
 using ScottPlot.Config;
 using ScottPlot.Drawing;
 
-namespace ScottPlot
+namespace ScottPlot.Plottable
 {
     public class PlottableScaleBar : IPlottable
     {

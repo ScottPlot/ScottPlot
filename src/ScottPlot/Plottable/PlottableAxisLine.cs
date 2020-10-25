@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
 
-namespace ScottPlot
+namespace ScottPlot.Plottable
 {
     public class PlottableHLine : PlottableAxisLine { public PlottableHLine() { IsHorizontal = true; } }
 

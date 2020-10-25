@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using ScottPlot.Config;
 using ScottPlot.Drawing;
 
-namespace ScottPlot
+namespace ScottPlot.Plottable
 {
     public class PlottableOHLC : IPlottable
     {

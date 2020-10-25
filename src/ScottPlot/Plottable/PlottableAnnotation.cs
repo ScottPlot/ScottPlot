@@ -6,7 +6,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Text;
 
-namespace ScottPlot
+namespace ScottPlot.Plottable
 {
     public class PlottableAnnotation : IPlottable
     {

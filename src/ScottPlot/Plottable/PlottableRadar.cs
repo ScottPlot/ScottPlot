@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 using ScottPlot.Config;
 using ScottPlot.Drawing;
 
-namespace ScottPlot
+namespace ScottPlot.Plottable
 {
     public class PlottableRadar : IPlottable
     {
