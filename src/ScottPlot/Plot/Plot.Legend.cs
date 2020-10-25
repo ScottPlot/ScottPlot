@@ -21,7 +21,7 @@ namespace ScottPlot
             bool? reverseOrder = null
             )
         {
-            settings.Legend.Visible = enableLegend;
+            settings.Legend.IsVisible = enableLegend;
             if (fontName != null)
                 settings.Legend.FontName = fontName;
             if (fontSize != null)

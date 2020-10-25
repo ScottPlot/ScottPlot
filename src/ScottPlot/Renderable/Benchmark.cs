@@ -21,7 +21,7 @@ namespace ScottPlot.Renderable
         public Color FillColor = Color.FromArgb(150, Color.LightYellow);
         public Color FontColor = Color.Black;
 
-        public bool Visible = false;
+        public bool IsVisible { get; set; } = false;
 
         public void Start() => stopwatch.Restart();
         public void Stop() => stopwatch.Stop();
@@ -38,7 +38,7 @@ namespace ScottPlot.Renderable
 
         public void Render(Settings settings)
         {
-            if (Visible == false)
+            if (IsVisible == false)
                 return;
 
             using (var font = new Font(FontName, FontSize, FontStyle.Regular, GraphicsUnit.Pixel))

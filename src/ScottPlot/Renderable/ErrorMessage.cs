@@ -13,11 +13,15 @@ namespace ScottPlot.Renderable
 
         public string Text = "BIG ERROR";
 
+        private bool _IsVisible = true;
+        public bool IsVisible
+        {
+            get => _IsVisible && !string.IsNullOrWhiteSpace(Text);
+            set => _IsVisible = value;
+        }
+
         public void Render(Settings settings)
         {
-            if (string.IsNullOrWhiteSpace(Text))
-                return;
-
             using (var font = GDI.Font(FontName, FontSize))
             using (var fontBrush = GDI.Brush(FontColor))
             using (var fillBrush = GDI.Brush(FillColor))

@@ -86,9 +86,9 @@ namespace ScottPlot
         public void Benchmark(bool show = true, bool toggle = false)
         {
             if (toggle)
-                settings.Benchmark.Visible = !settings.Benchmark.Visible;
+                settings.Benchmark.IsVisible = !settings.Benchmark.IsVisible;
             else
-                settings.Benchmark.Visible = show;
+                settings.Benchmark.IsVisible = show;
         }
 
         public void TightenLayout(int? padding = null, bool render = false)
@@ -149,15 +149,15 @@ namespace ScottPlot
         {
             if (enable != null)
             {
-                settings.HorizontalGridLines.Visible = enable.Value;
-                settings.VerticalGridLines.Visible = enable.Value;
+                settings.HorizontalGridLines.IsVisible = enable.Value;
+                settings.VerticalGridLines.IsVisible = enable.Value;
             }
 
             if (enableHorizontal != null)
-                settings.HorizontalGridLines.Visible = enableHorizontal.Value;
+                settings.HorizontalGridLines.IsVisible = enableHorizontal.Value;
 
             if (enableVertical != null)
-                settings.VerticalGridLines.Visible = enableVertical.Value;
+                settings.VerticalGridLines.IsVisible = enableVertical.Value;
 
             if (color != null)
             {

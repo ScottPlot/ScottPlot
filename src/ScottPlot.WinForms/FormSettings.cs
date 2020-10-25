@@ -47,10 +47,10 @@ namespace ScottPlot.UserControls
             // tick display options
             cbTicksOffset.Checked = plt.GetSettings().ticks.useOffsetNotation;
             cbTicksMult.Checked = plt.GetSettings().ticks.useMultiplierNotation;
-            cbGrid.Checked = plt.GetSettings().HorizontalGridLines.Visible;
+            cbGrid.Checked = plt.GetSettings().HorizontalGridLines.IsVisible;
 
             // legend
-            cbLegend.Checked = plt.GetSettings().Legend.Visible;
+            cbLegend.Checked = plt.GetSettings().Legend.IsVisible;
 
             // image quality
             rbQualityLow.Checked = !plt.GetSettings().misc.antiAliasData;

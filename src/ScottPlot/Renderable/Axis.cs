@@ -12,6 +12,7 @@ namespace ScottPlot.Renderable
     public class Axis : IRenderable
     {
         public Edge Edge { get; set; } = Edge.Bottom;
+        public bool IsVisible { get; set; } = true;
 
         public string Title = null;
         public Drawing.Font TitleFont = new Drawing.Font();

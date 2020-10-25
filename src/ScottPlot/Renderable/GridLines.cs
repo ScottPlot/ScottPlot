@@ -8,7 +8,7 @@ namespace ScottPlot.Renderable
 {
     public class GridLines : IRenderable
     {
-        public bool Visible = true;
+        public bool IsVisible { get; set; } = true;
         public bool SnapToNearestPixel = true;
 
         public Orientation Orientation;
@@ -18,7 +18,7 @@ namespace ScottPlot.Renderable
 
         public void Render(Settings settings)
         {
-            if ((Visible == false) || (LineWidth == 0))
+            if ((IsVisible == false) || (LineWidth == 0))
                 return;
 
             using (Pen pen = Drawing.GDI.Pen(Color, LineWidth, LineStyle))

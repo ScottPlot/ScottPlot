@@ -9,6 +9,7 @@ namespace ScottPlot.Renderable
     public class FigureBackground : IRenderable
     {
         public Color Color { get; set; } = Color.White;
+        public bool IsVisible { get; set; } = true;
 
         public void Render(Settings settings)
         {
