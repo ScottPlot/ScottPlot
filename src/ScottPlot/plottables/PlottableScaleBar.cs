@@ -69,9 +69,9 @@ namespace ScottPlot
         public bool IsVisible { get; set; } = true;
 
         public override string ToString() => $"PlottableScaleBar ({HorizontalLabel}={Width}, {VerticalLabel}={Height})";
-        public LegendItem[] GetLegendItems() => null;
+        public LegendItem[] LegendItems { get => null; }
         public AxisLimits2D GetLimits() => new AxisLimits2D();
-        public int GetPointCount() => 1;
+        public int PointCount { get => 1; }
 
         public string ErrorMessage(bool deepValidation = false)
         {

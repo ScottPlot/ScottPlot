@@ -30,7 +30,7 @@ namespace ScottPlot
         public override string ToString()
         {
             string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
-            return $"PlottablePolygons {label} with {GetPointCount()} polygons";
+            return $"PlottablePolygons {label} with {PointCount} polygons";
         }
 
         public string ErrorMessage(bool deepValidation = false)
@@ -57,7 +57,7 @@ namespace ScottPlot
             return null;
         }
 
-        public int GetPointCount() => polys.Count;
+        public int PointCount { get => polys.Count; }
 
         public AxisLimits2D GetLimits()
         {
@@ -80,15 +80,20 @@ namespace ScottPlot
             return new AxisLimits2D(xMin, xMax, yMin, yMax);
         }
 
-        public LegendItem[] GetLegendItems() =>
-            new LegendItem[] {
-                new LegendItem(
-                    label: label,
-                    color: fill ? fillColor : lineColor,
-                    lineWidth: fill ? 10 : lineWidth,
-                    markerShape: MarkerShape.none
-                )
-            };
+        public LegendItem[] LegendItems
+        {
+            get
+            {
+                var legendItem = new LegendItem()
+                {
+                    label = label,
+                    color = fill ? fillColor : lineColor,
+                    lineWidth = fill ? 10 : lineWidth,
+                    markerShape = MarkerShape.none
+                };
+                return new LegendItem[] { legendItem };
+            }
+        }
 
         private bool IsBiggerThenPixel(List<(double x, double y)> poly, double UnitsPerPixelX, double UnitsPerPixelY)
         {

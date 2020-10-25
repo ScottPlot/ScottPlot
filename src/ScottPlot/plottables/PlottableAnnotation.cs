@@ -37,9 +37,9 @@ namespace ScottPlot
             return $"PlottableAnnotation at ({xPixel} px, {yPixel} px)";
         }
 
-        public int GetPointCount() => 1;
+        public int PointCount { get => 1; }
         public AxisLimits2D GetLimits() => new AxisLimits2D();
-        public LegendItem[] GetLegendItems() => null;
+        public LegendItem[] LegendItems { get => null; }
 
         public string ErrorMessage(bool deepValidation = false)
         {

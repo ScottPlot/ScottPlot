@@ -29,10 +29,10 @@ namespace ScottPlot
         public override string ToString()
         {
             string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
-            return $"PlottablePolygon{label} with {GetPointCount()} points";
+            return $"PlottablePolygon{label} with {PointCount} points";
         }
 
-        public int GetPointCount() => xs.Length;
+        public int PointCount { get => xs.Length; }
 
         public AxisLimits2D GetLimits()
         {
@@ -52,15 +52,20 @@ namespace ScottPlot
             return new AxisLimits2D(xMin, xMax, yMin, yMax);
         }
 
-        public LegendItem[] GetLegendItems() =>
-            new LegendItem[] {
-                new LegendItem(
-                    label: label,
-                    color: fill ? fillColor : lineColor,
-                    lineWidth: fill ? 10 : lineWidth,
-                    markerShape: MarkerShape.none
-                )
-            };
+        public LegendItem[] LegendItems
+        {
+            get
+            {
+                var legendItem = new LegendItem()
+                {
+                    label = label,
+                    color = fill ? fillColor : lineColor,
+                    lineWidth = fill ? 10 : lineWidth,
+                    markerShape = MarkerShape.none
+                };
+                return new LegendItem[] { legendItem };
+            }
+        }
 
         public string ErrorMessage(bool deepValidation = false)
         {

@@ -47,9 +47,7 @@ namespace ScottPlot
             return new AxisLimits2D(limits);
         }
 
-        private int PointCount;
-
-        public int GetPointCount() => PointCount;
+        public int PointCount { get; private set; }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
@@ -106,13 +104,23 @@ namespace ScottPlot
         public override string ToString()
         {
             string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
-            return $"PlottableFunction{label} displaying {GetPointCount()} points";
+            return $"PlottableFunction{label} displaying {PointCount} points";
         }
 
-        public LegendItem[] GetLegendItems()
+        public LegendItem[] LegendItems
         {
-            var singleLegendItem = new LegendItem(label, color, lineStyle, lineWidth, MarkerShape.none);
-            return new LegendItem[] { singleLegendItem };
+            get
+            {
+                var singleLegendItem = new LegendItem()
+                {
+                    label = label,
+                    color = color,
+                    lineStyle = lineStyle,
+                    lineWidth = lineWidth,
+                    markerShape = MarkerShape.none
+                };
+                return new LegendItem[] { singleLegendItem };
+            }
         }
     }
 }

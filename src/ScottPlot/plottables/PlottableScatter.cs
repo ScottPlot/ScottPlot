@@ -87,7 +87,7 @@ namespace ScottPlot
         public override string ToString()
         {
             string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
-            return $"PlottableScatter{label} with {GetPointCount()} points";
+            return $"PlottableScatter{label} with {PointCount} points";
         }
 
         public AxisLimits2D GetLimits()
@@ -222,16 +222,23 @@ namespace ScottPlot
             return csv.ToString();
         }
 
-        public int GetPointCount()
-        {
-            return ys.Length;
-        }
+        public int PointCount { get => ys.Length; }
 
-        public LegendItem[] GetLegendItems()
+        public LegendItem[] LegendItems
         {
-            // TODO: determine how to respect line width in legend
-            var singleLegendItem = new Config.LegendItem(label, color, lineStyle, lineWidth, markerShape, markerSize);
-            return new LegendItem[] { singleLegendItem };
+            get
+            {
+                var legendItem = new LegendItem()
+                {
+                    label = label,
+                    color = color,
+                    lineStyle = lineStyle,
+                    lineWidth = lineWidth,
+                    markerShape = markerShape,
+                    markerSize = markerSize
+                };
+                return new LegendItem[] { legendItem };
+            }
         }
     }
 }

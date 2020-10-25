@@ -5,16 +5,13 @@ using System.Drawing;
 
 namespace ScottPlot
 {
-    [Obsolete("Use IPlottable", true)]
-    public abstract class Plottable { }
-
-    public interface IPlottable
+    public interface IPlottable // TODO: inherit IRenderable
     {
-        void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false);
-        string ErrorMessage(bool deepValidation = false);
-        bool IsVisible { get; set; }
+        bool IsVisible { get; set; } // TODO: move into IRenderable
+        void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false); // TODO: inherit from IRenderable
+        int PointCount { get; }
+        LegendItem[] LegendItems { get; } // TODO: interface segregation
         AxisLimits2D GetLimits();
-        int GetPointCount();
-        LegendItem[] GetLegendItems();
+        string ErrorMessage(bool deepValidation = false); // TODO: interface segregation
     }
 }

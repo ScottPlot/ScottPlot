@@ -169,12 +169,10 @@ namespace ScottPlot.Renderable
 
             foreach (IPlottable plottable in settings.plottables)
             {
-                var legendItems = plottable.GetLegendItems();
-
-                if (legendItems is null)
+                if (plottable.LegendItems is null)
                     continue;
 
-                foreach (var plottableItem in legendItems)
+                foreach (var plottableItem in plottable.LegendItems)
                     if (plottableItem.label != null)
                         items.Add(plottableItem);
             }

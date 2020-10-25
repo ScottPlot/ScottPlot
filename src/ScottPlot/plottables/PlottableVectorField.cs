@@ -58,13 +58,25 @@ namespace ScottPlot
 
         public string ErrorMessage(bool deepValidation = false) => null; // assume data is always valid
 
-        public LegendItem[] GetLegendItems() =>
-            new LegendItem[] { new LegendItem(label, arrowColors[0], lineWidth: 10, markerShape: MarkerShape.none) };
+        public LegendItem[] LegendItems
+        {
+            get
+            {
+                var item = new LegendItem()
+                {
+                    label = label,
+                    color = arrowColors[0],
+                    lineWidth = 10,
+                    markerShape = MarkerShape.none
+                };
+                return new LegendItem[] { item };
+            }
+        }
 
         public AxisLimits2D GetLimits() =>
             new AxisLimits2D(xs.Min() - 1, xs.Max() + 1, ys.Min() - 1, ys.Max() + 1);
 
-        public int GetPointCount() => vectors.Length;
+        public int PointCount { get => vectors.Length; }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
@@ -91,7 +103,7 @@ namespace ScottPlot
         public override string ToString()
         {
             string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
-            return $"PlottableVectorField{label} with {GetPointCount()} vectors";
+            return $"PlottableVectorField{label} with {PointCount} vectors";
         }
     }
 }

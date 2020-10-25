@@ -15,7 +15,7 @@ namespace ScottPlot
         public override string ToString()
         {
             string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
-            return $"PlottableSignalXYConst{label} with {GetPointCount()} points ({typeof(TX).Name}, {typeof(TY).Name})";
+            return $"PlottableSignalXYConst{label} with {PointCount} points ({typeof(TX).Name}, {typeof(TY).Name})";
         }
     }
 }

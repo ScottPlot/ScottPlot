@@ -98,14 +98,27 @@ namespace ScottPlot
             }
         }
 
-        public int GetPointCount() => 1;
+        public int PointCount { get => 1; }
 
         public bool IsUnderMouse(double coordinateX, double coordinateY, double snapX, double snapY) =>
             IsHorizontal ?
             Math.Abs(position - coordinateY) <= snapY :
             Math.Abs(position - coordinateX) <= snapX;
 
-        public LegendItem[] GetLegendItems() =>
-            new LegendItem[] { new LegendItem(label, color, lineStyle, lineWidth, MarkerShape.none) };
+        public LegendItem[] LegendItems
+        {
+            get
+            {
+                var item = new LegendItem()
+                {
+                    label = label,
+                    color = color,
+                    lineStyle = lineStyle,
+                    lineWidth = lineWidth,
+                    markerShape = MarkerShape.none
+                };
+                return new LegendItem[] { item };
+            }
+        }
     }
 }

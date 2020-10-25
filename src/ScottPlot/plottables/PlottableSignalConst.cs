@@ -22,7 +22,7 @@ namespace ScottPlot
         public override string ToString()
         {
             string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
-            return $"PlottableSignalConst{label} with {GetPointCount()} points ({typeof(T).Name})";
+            return $"PlottableSignalConst{label} with {PointCount} points ({typeof(T).Name})";
         }
     }
 }

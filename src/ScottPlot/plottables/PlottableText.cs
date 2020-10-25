@@ -83,9 +83,9 @@ namespace ScottPlot
 
         public void Render(Settings settings) => throw new NotImplementedException("Use the other Render method");
 
-        public int GetPointCount() => 1;
+        public int PointCount { get => 1; }
 
-        public LegendItem[] GetLegendItems() => new LegendItem[] { };
+        public LegendItem[] LegendItems { get => null; }
 
         public string ErrorMessage(bool deepValidation = false)
         {

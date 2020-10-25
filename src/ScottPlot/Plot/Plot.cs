@@ -41,8 +41,8 @@ namespace ScottPlot
         }
 
         [Obsolete("Access the 'Plot.TotalPoints' field instead", true)]
-        public int GetTotalPoints() => Plottables.Select(x => x.GetPointCount()).Sum();
-        public int TotalPoints => Plottables.Select(x => x.GetPointCount()).Sum();
+        public int GetTotalPoints() => Plottables.Select(x => x.PointCount).Sum();
+        public int TotalPoints => Plottables.Select(x => x.PointCount).Sum();
 
         /// <summary>
         /// Return a new Plot with all the same Plottables (and some of the styles) of this one

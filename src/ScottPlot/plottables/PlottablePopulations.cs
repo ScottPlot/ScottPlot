@@ -52,24 +52,29 @@ namespace ScottPlot
 
         public override string ToString()
         {
-            return $"PlottableSeries with {popMultiSeries.groupCount} groups, {popMultiSeries.seriesCount} series, and {GetPointCount()} total points";
+            return $"PlottableSeries with {popMultiSeries.groupCount} groups, {popMultiSeries.seriesCount} series, and {PointCount} total points";
         }
 
-        public int GetPointCount()
+        public int PointCount
         {
-            int pointCount = 0;
-            foreach (var group in popMultiSeries.multiSeries)
-                foreach (var population in group.populations)
-                    pointCount += population.count;
-            return pointCount;
+            get
+            {
+                int pointCount = 0;
+                foreach (var group in popMultiSeries.multiSeries)
+                    foreach (var population in group.populations)
+                        pointCount += population.count;
+                return pointCount;
+            }
         }
 
-        public LegendItem[] GetLegendItems()
+        public LegendItem[] LegendItems
         {
-            var items = new List<LegendItem>();
-            foreach (var series in popMultiSeries.multiSeries)
-                items.Add(new LegendItem(series.seriesLabel, series.color, lineWidth: 10));
-            return items.ToArray();
+            get
+            {
+                return popMultiSeries.multiSeries
+                    .Select(x => new LegendItem() { label = x.seriesLabel, color = x.color, lineWidth = 10 })
+                    .ToArray();
+            }
         }
 
         public AxisLimits2D GetLimits()

@@ -225,25 +225,28 @@ namespace ScottPlot
         public override string ToString()
         {
             string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
-            return $"PlottableBar{label} with {GetPointCount()} points";
+            return $"PlottableBar{label} with {PointCount} points";
         }
 
-        public int GetPointCount() => ys is null ? 0 : ys.Length;
+        public int PointCount { get => ys is null ? 0 : ys.Length; }
 
-        public LegendItem[] GetLegendItems()
+        public LegendItem[] LegendItems
         {
-            LegendItem singleLegendItem = new LegendItem()
+            get
             {
-                label = label,
-                color = fillColor,
-                lineWidth = 10,
-                markerShape = MarkerShape.none,
-                hatchColor = hatchColor,
-                hatchStyle = hatchStyle,
-                borderColor = borderColor,
-                borderWith = borderLineWidth
-            };
-            return new LegendItem[] { singleLegendItem };
+                LegendItem singleLegendItem = new LegendItem()
+                {
+                    label = label,
+                    color = fillColor,
+                    lineWidth = 10,
+                    markerShape = MarkerShape.none,
+                    hatchColor = hatchColor,
+                    hatchStyle = hatchStyle,
+                    borderColor = borderColor,
+                    borderWith = borderLineWidth
+                };
+                return new LegendItem[] { singleLegendItem };
+            }
         }
     }
 }

@@ -31,7 +31,7 @@ namespace ScottPlot
         }
 
         public override string ToString() =>
-            $"PlottableRadar with {GetPointCount()} points and {normalized.GetUpperBound(1) + 1} categories.";
+            $"PlottableRadar with {PointCount} points and {normalized.GetUpperBound(1) + 1} categories.";
 
         public string ErrorMessage(bool deepValidation = false)
         {
@@ -76,18 +76,33 @@ namespace ScottPlot
             return max;
         }
 
-        public LegendItem[] GetLegendItems()
+        public LegendItem[] LegendItems
         {
-            if (groupNames is null)
-                return null;
+            get
+            {
+                if (groupNames is null)
+                    return null;
 
-            return Enumerable.Range(0, groupNames.Length)
-                .Select(i => new LegendItem(groupNames[i], fillColors[i], lineWidth: 10, markerShape: MarkerShape.none)).ToArray();
+                List<LegendItem> legendItems = new List<LegendItem>();
+                for (int i = 0; i < groupNames.Length; i++)
+                {
+                    var item = new LegendItem()
+                    {
+                        label = groupNames[i],
+                        color = fillColors[i],
+                        lineWidth = 10,
+                        markerShape = MarkerShape.none
+                    };
+                    legendItems.Add(item);
+                }
+
+                return legendItems.ToArray();
+            }
         }
 
         public AxisLimits2D GetLimits() => new AxisLimits2D(-1.5, 1.5, -1.5, 1.5);
 
-        public int GetPointCount() => normalized.Length;
+        public int PointCount { get => normalized.Length; }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {

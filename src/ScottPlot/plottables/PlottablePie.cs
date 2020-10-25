@@ -39,23 +39,26 @@ namespace ScottPlot
         public override string ToString()
         {
             string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
-            return $"PlottablePie{label} with {GetPointCount()} points";
+            return $"PlottablePie{label} with {PointCount} points";
         }
 
-        public LegendItem[] GetLegendItems()
+        public LegendItem[] LegendItems
         {
-            if (groupNames is null)
-                return null;
+            get
+            {
+                if (groupNames is null)
+                    return null;
 
-            return Enumerable
-                .Range(0, values.Length)
-                .Select(i => new LegendItem(groupNames[i], colors[i], lineWidth: 10))
-                .ToArray();
+                return Enumerable
+                    .Range(0, values.Length)
+                    .Select(i => new LegendItem() { label = groupNames[i], color = colors[i], lineWidth = 10 })
+                    .ToArray();
+            }
         }
 
         public AxisLimits2D GetLimits() => new AxisLimits2D(-0.5, 0.5, -1, 1);
 
-        public int GetPointCount() => values.Length;
+        public int PointCount { get => values.Length; }
 
         public string ErrorMessage(bool deepValidation = false)
         {

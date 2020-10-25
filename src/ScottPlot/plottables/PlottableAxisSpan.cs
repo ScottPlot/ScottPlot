@@ -23,7 +23,7 @@ namespace ScottPlot
         public Color colorWithAlpha => Color.FromArgb((byte)(255 * alpha), color);
         public double alpha = .35;
         public string label;
-        public int GetPointCount() => 1;
+        public int PointCount { get => 1; }
         public bool IsHorizontal = true;
         public bool DragEnabled { get; set; }
         public bool DragFixedSize { get; set; }
@@ -38,8 +38,20 @@ namespace ScottPlot
                 $"PlottableVSpan{label} from Y={position1} to Y={position2}";
         }
 
-        public LegendItem[] GetLegendItems() =>
-             new LegendItem[] { new LegendItem(label, colorWithAlpha, markerSize: 0, lineWidth: 10) };
+        public LegendItem[] LegendItems
+        {
+            get
+            {
+                var item = new LegendItem()
+                {
+                    label = label,
+                    color = colorWithAlpha,
+                    markerSize = 0,
+                    lineWidth = 10
+                };
+                return new LegendItem[] { item };
+            }
+        }
 
         public AxisLimits2D GetLimits() =>
             IsHorizontal ? new AxisLimits2D(Min, Max, null, null) : new AxisLimits2D(null, null, Min, Max);

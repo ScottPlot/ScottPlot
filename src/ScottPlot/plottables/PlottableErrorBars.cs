@@ -35,12 +35,12 @@ namespace ScottPlot
             YErrorNegative = yNegativeError;
         }
 
-        public int GetPointCount() => Ys.Length;
+        public int PointCount { get => Ys.Length; }
 
         public override string ToString()
         {
             string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
-            return $"PlottableErrorBars{label} with {GetPointCount()} points";
+            return $"PlottableErrorBars{label} with {PointCount} points";
         }
 
         public AxisLimits2D GetLimits()
@@ -93,10 +93,18 @@ namespace ScottPlot
             return new AxisLimits2D(new double[] { xMin, xMax, yMin, yMax });
         }
 
-        public LegendItem[] GetLegendItems()
+        public LegendItem[] LegendItems
         {
-            var singleLegendItem = new LegendItem(label, Color, markerShape: MarkerShape.none);
-            return new LegendItem[] { singleLegendItem };
+            get
+            {
+                var singleLegendItem = new LegendItem()
+                {
+                    label = label,
+                    color = Color,
+                    markerShape = MarkerShape.none
+                };
+                return new LegendItem[] { singleLegendItem };
+            }
         }
 
         public string ErrorMessage(bool deepValidation = false)

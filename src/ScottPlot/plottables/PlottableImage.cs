@@ -33,9 +33,9 @@ namespace ScottPlot
 
         public AxisLimits2D GetLimits() => new AxisLimits2D(new double[] { x, x, y, y });
 
-        public int GetPointCount() => 1;
+        public int PointCount { get => 1; }
 
-        public LegendItem[] GetLegendItems() => null;
+        public LegendItem[] LegendItems { get => null; }
 
         private PointF TextLocation(PointF input)
         {

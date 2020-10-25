@@ -47,11 +47,11 @@ namespace ScottPlot
 
         public bool IsVisible { get; set; } = true;
 
-        public override string ToString() => $"PlottableOHLC with {GetPointCount()} points";
+        public override string ToString() => $"PlottableOHLC with {PointCount} points";
 
-        public int GetPointCount() => ohlcs.Length;
+        public int PointCount { get => ohlcs.Length; }
 
-        public LegendItem[] GetLegendItems() => null; // don't show this in the legend
+        public LegendItem[] LegendItems { get => null; }
 
         public AxisLimits2D GetLimits()
         {

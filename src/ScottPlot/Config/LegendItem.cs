@@ -23,24 +23,5 @@ namespace ScottPlot.Config
             get { return lineWidth >= 10; }
             set { lineWidth = 10; }
         }
-
-        public LegendItem() { }
-
-        // TODO: mark this obsolete
-        //[Obsolete("Custimize legend items by modifying their public properties")]
-        public LegendItem(
-            string label, System.Drawing.Color color,
-            LineStyle lineStyle = LineStyle.Solid, double lineWidth = 1,
-            MarkerShape markerShape = MarkerShape.filledCircle, double markerSize = 3
-            )
-        {
-            this.label = label;
-            this.color = color;
-
-            this.lineStyle = lineStyle;
-            this.lineWidth = lineWidth;
-            this.markerShape = markerShape;
-            this.markerSize = markerSize;
-        }
     }
 }

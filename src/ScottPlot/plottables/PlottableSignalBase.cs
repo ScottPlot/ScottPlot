@@ -570,7 +570,7 @@ namespace ScottPlot
         public override string ToString()
         {
             string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
-            return $"PlottableSignalBase{label} with {GetPointCount()} points ({typeof(T).Name})";
+            return $"PlottableSignalBase{label} with {PointCount} points ({typeof(T).Name})";
         }
 
         public void SaveCSV(string filePath, string delimiter = ", ", string separator = "\n")
@@ -586,18 +586,23 @@ namespace ScottPlot
             return csv.ToString();
         }
 
-        public int GetPointCount() => _ys.Length;
+        public int PointCount { get => _ys.Length; }
 
-        public LegendItem[] GetLegendItems()
+        public LegendItem[] LegendItems
         {
-            var singleLegendItem = new Config.LegendItem(label, color)
+            get
             {
-                lineStyle = lineStyle,
-                lineWidth = lineWidth,
-                markerShape = (markersAreVisible) ? MarkerShape.filledCircle : MarkerShape.none,
-                markerSize = (markersAreVisible) ? markerSize : 0
-            };
-            return new LegendItem[] { singleLegendItem };
+                var singleLegendItem = new LegendItem()
+                {
+                    label = label,
+                    color = color,
+                    lineStyle = lineStyle,
+                    lineWidth = lineWidth,
+                    markerShape = (markersAreVisible) ? MarkerShape.filledCircle : MarkerShape.none,
+                    markerSize = (markersAreVisible) ? markerSize : 0
+                };
+                return new LegendItem[] { singleLegendItem };
+            }
         }
 
         public virtual void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)

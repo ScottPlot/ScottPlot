@@ -139,9 +139,9 @@ namespace ScottPlotTests.Plot
             var sigE = plt.PlotSignal(DataGen.RandomWalk(rand, 100), label: "E");
             var barY = plt.PlotPoint(111, 222, label: "Y");
 
-            Assert.AreEqual("X,A,B,C,D,E,Y", string.Join(",", plt.Plottables.Select(x => x.GetLegendItems()[0].label)));
+            Assert.AreEqual("X,A,B,C,D,E,Y", string.Join(",", plt.Plottables.Select(x => x.LegendItems[0].label)));
             plt.Remove(sigC);
-            Assert.AreEqual("X,A,B,D,E,Y", string.Join(",", plt.Plottables.Select(x => x.GetLegendItems()[0].label)));
+            Assert.AreEqual("X,A,B,D,E,Y", string.Join(",", plt.Plottables.Select(x => x.LegendItems[0].label)));
         }
     }
 }

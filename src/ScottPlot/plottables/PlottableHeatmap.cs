@@ -100,10 +100,19 @@ namespace ScottPlot
             return normalized;
         }
 
-        public LegendItem[] GetLegendItems()
+        public LegendItem[] LegendItems
         {
-            var singleLegendItem = new LegendItem(label, Color.Gray, lineWidth: 10, markerShape: MarkerShape.none);
-            return new LegendItem[] { singleLegendItem };
+            get
+            {
+                var singleLegendItem = new LegendItem()
+                {
+                    label = label,
+                    color = Color.Gray,
+                    lineWidth = 10,
+                    markerShape = MarkerShape.none
+                };
+                return new LegendItem[] { singleLegendItem };
+            }
         }
 
         public AxisLimits2D GetLimits() =>
@@ -111,7 +120,7 @@ namespace ScottPlot
             new AxisLimits2D(-10, BmpHeatmap.Width, -5, BmpHeatmap.Height) :
             new AxisLimits2D(-3, BmpHeatmap.Width, -3, BmpHeatmap.Height);
 
-        public int GetPointCount() => NormalizedIntensities.Length;
+        public int PointCount { get => NormalizedIntensities.Length; }
 
         public string ErrorMessage(bool deepValidation = false)
         {
@@ -207,7 +216,7 @@ namespace ScottPlot
         public override string ToString()
         {
             string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
-            return $"PlottableHeatmap{label} with {GetPointCount()} points";
+            return $"PlottableHeatmap{label} with {PointCount} points";
         }
     }
 }

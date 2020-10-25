@@ -242,7 +242,7 @@ namespace ScottPlot
         public override string ToString()
         {
             string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
-            return $"PlottableSignalXYGeneric{label} with {GetPointCount()} points ({typeof(TX).Name}, {typeof(TY).Name})";
+            return $"PlottableSignalXYGeneric{label} with {PointCount} points ({typeof(TX).Name}, {typeof(TY).Name})";
         }
     }
 }

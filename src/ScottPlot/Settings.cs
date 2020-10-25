@@ -304,7 +304,7 @@ namespace ScottPlot
         {
             int totalPointCount = 0;
             foreach (var plottable in plottables)
-                totalPointCount += plottable.GetPointCount();
+                totalPointCount += plottable.PointCount;
             return totalPointCount;
         }
     }
