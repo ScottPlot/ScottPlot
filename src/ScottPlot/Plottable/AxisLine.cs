@@ -1,17 +1,15 @@
 ﻿using ScottPlot.Config;
 using ScottPlot.Drawing;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Text;
 
 namespace ScottPlot.Plottable
 {
-    public class PlottableHLine : PlottableAxisLine { public PlottableHLine() { IsHorizontal = true; } }
+    public class HLine : AxisLine { public HLine() { IsHorizontal = true; } }
 
-    public class PlottableVLine : PlottableAxisLine { public PlottableVLine() { IsHorizontal = false; } }
+    public class VLine : AxisLine { public VLine() { IsHorizontal = false; } }
 
-    public abstract class PlottableAxisLine : IDraggable, IPlottable
+    public abstract class AxisLine : IDraggable, IPlottable
     {
         public double position;
         public LineStyle lineStyle = LineStyle.Solid;

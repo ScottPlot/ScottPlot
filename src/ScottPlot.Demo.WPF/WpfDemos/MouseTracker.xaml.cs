@@ -18,8 +18,8 @@ namespace ScottPlot.Demo.WPF.WpfDemos
     /// </summary>
     public partial class MouseTracker : Window
     {
-        PlottableVLine vLine;
-        PlottableHLine hLine;
+        VLine vLine;
+        HLine hLine;
 
         public MouseTracker()
         {

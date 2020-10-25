@@ -19,7 +19,7 @@ namespace ScottPlot.Demo.WPF.WpfDemos
     public partial class ToggleVisibility : Window
     {
         PlottableScatter sinPlot, cosPlot;
-        PlottableVLine vline1, vline2;
+        VLine vline1, vline2;
 
         public ToggleVisibility()
         {

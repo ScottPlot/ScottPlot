@@ -16,7 +16,7 @@ namespace ScottPlotTests.PlottableRenderTests
             plt.AntiAlias(false, false, false);
 
             // start with default settings
-            var axLine = new PlottableHLine() { position = 1.23 };
+            var axLine = new HLine() { position = 1.23 };
 
             plt.Add(axLine);
             var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
@@ -38,7 +38,7 @@ namespace ScottPlotTests.PlottableRenderTests
             plt.AntiAlias(false, false, false);
 
             // start with default settings
-            var axLine = new PlottableHLine() { position = 1.23 };
+            var axLine = new HLine() { position = 1.23 };
 
             plt.Add(axLine);
             var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
@@ -65,7 +65,7 @@ namespace ScottPlotTests.PlottableRenderTests
             plt.AntiAlias(false, false, false);
 
             // start with default settings
-            var axLine = new PlottableHLine() { position = 1.23 };
+            var axLine = new HLine() { position = 1.23 };
 
             plt.Add(axLine);
             var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
@@ -92,7 +92,7 @@ namespace ScottPlotTests.PlottableRenderTests
             plt.AntiAlias(false, false, false);
 
             // start with default settings
-            var axLine = new PlottableHLine() { position = 1.23, color = System.Drawing.Color.Gray };
+            var axLine = new HLine() { position = 1.23, color = System.Drawing.Color.Gray };
 
             plt.Add(axLine);
             var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));

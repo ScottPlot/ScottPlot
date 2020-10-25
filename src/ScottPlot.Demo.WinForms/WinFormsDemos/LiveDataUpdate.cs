@@ -18,7 +18,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
         double[] liveData = new double[400];
         DataGen.Electrocardiogram ecg = new DataGen.Electrocardiogram();
         Stopwatch sw = Stopwatch.StartNew();
-        PlottableVLine vline;
+        VLine vline;
 
         public LiveDataUpdate()
         {

@@ -19,8 +19,8 @@ namespace FormsPlotCoreSandbox
             InitializeComponent();
         }
 
-        PlottableVLine vline;
-        PlottableHLine hline;
+        VLine vline;
+        HLine hline;
         PlottableScatterHighlight sph;
         private void Form1_Load(object sender, EventArgs e)
         {

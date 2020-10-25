@@ -13,8 +13,8 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
 {
     public partial class MouseTracker : Form
     {
-        PlottableVLine vLine;
-        PlottableHLine hLine;
+        VLine vLine;
+        HLine hLine;
 
         public MouseTracker()
         {

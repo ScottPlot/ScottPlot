@@ -13,7 +13,7 @@ namespace ScottPlot
 {
     public partial class Plot
     {
-        public PlottableVLine PlotVLine(
+        public VLine PlotVLine(
             double x,
             Color? color = null,
             double lineWidth = 1,
@@ -24,7 +24,7 @@ namespace ScottPlot
             LineStyle lineStyle = LineStyle.Solid
             )
         {
-            PlottableVLine axLine = new PlottableVLine()
+            VLine axLine = new VLine()
             {
                 position = x,
                 color = color ?? settings.GetNextColor(),
@@ -66,7 +66,7 @@ namespace ScottPlot
             return axisSpan;
         }
 
-        public PlottableHLine PlotHLine(
+        public HLine PlotHLine(
             double y,
             Color? color = null,
             double lineWidth = 1,
@@ -77,7 +77,7 @@ namespace ScottPlot
             LineStyle lineStyle = LineStyle.Solid
             )
         {
-            var hline = new PlottableHLine()
+            var hline = new HLine()
             {
                 position = y,
                 color = color ?? settings.GetNextColor(),
