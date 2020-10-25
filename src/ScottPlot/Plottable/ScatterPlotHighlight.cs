@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Dynamic;
 using System.Linq;
 using ScottPlot.Drawing;
+using ScottPlot.Renderable;
 
 namespace ScottPlot.Plottable
 {
-    public class ScatterPlotHighlight : ScatterPlot
+    public class ScatterPlotHighlight : ScatterPlot, IRenderable, IExportable, IHasLegendItems, IHasAxisLimits, IValidatable
     {
         public MarkerShape highlightedShape = MarkerShape.openCircle;
         public float highlightedMarkerSize = 10;
