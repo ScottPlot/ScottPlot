@@ -43,5 +43,13 @@ namespace ScottPlotTests.Axis
             plt.PlotScatter(xs, ys);
             TestTools.SaveFig(plt);
         }
+
+        [Test]
+        public void Test_Axis_ExtremelySmallSpan()
+        {
+            var plt = new ScottPlot.Plot(600, 400);
+            plt.PlotLine(0, 1, 1, 1.0000000000000001);
+            plt.GetBitmap();
+        }
     }
 }
