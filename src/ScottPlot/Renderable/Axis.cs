@@ -1,10 +1,7 @@
-﻿using ScottPlot.Config;
-using ScottPlot.Drawing;
+﻿using ScottPlot.Drawing;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 
 namespace ScottPlot.Renderable
 {
@@ -15,6 +12,7 @@ namespace ScottPlot.Renderable
     {
         public Edge Edge { get; set; } = Edge.Bottom;
         public bool IsVisible { get; set; } = true;
+        public float PixelSize = 40;
 
         public string Title = null;
         public Drawing.Font TitleFont = new Drawing.Font() { Size = 16 };
@@ -40,7 +38,6 @@ namespace ScottPlot.Renderable
                     y: dims.DataOffsetY + dims.DataHeight,
                     width: dims.DataWidth,
                     height: dims.Height - (dims.DataHeight + dims.DataOffsetY));
-                //gfx.FillRectangle(testFill, rect);
 
                 RenderTickMarks(dims, gfx, MajorTicks);
                 RenderTickMarks(dims, gfx, MinorTicks);
@@ -144,9 +141,8 @@ namespace ScottPlot.Renderable
                 }
                 else if (Edge == Edge.Left)
                 {
-                    sf.LineAlignment = StringAlignment.Far;
-                    float padding = MajorTicks.MarkLength + 15; // TODO: measure largest tick label
-                    gfx.TranslateTransform(left.X - padding, left.Y);
+                    sf.LineAlignment = StringAlignment.Near;
+                    gfx.TranslateTransform(0, left.Y);
                     gfx.RotateTransform(-90);
                     gfx.DrawString(Title, font, brush, 0, 0, sf);
                     gfx.ResetTransform();

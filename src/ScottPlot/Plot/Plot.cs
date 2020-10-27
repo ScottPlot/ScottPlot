@@ -29,8 +29,22 @@ namespace ScottPlot
         // Just 2 axes are supported now, but the structure is here to add more later
         public Axis XAxis { get => XAxes[0]; }
         public Axis YAxis { get => YAxes[0]; }
-        private List<Axis> XAxes = new List<Axis>() { new Axis() { Edge = Edge.Bottom } };
-        private List<Axis> YAxes = new List<Axis>() { new Axis() { Edge = Edge.Left } };
+        private List<Axis> XAxes = new List<Axis>() { new Axis() { Edge = Edge.Bottom, PixelSize = 40 } };
+        private List<Axis> YAxes = new List<Axis>() { new Axis() { Edge = Edge.Left, PixelSize = 60 } };
+
+        /// <summary>
+        /// Return the number of pixels 
+        /// </summary>
+        /// <returns></returns>
+        private (float left, float right, float bottom, float top) GetDataPadding()
+        {
+            float left = YAxes.Where(x => x.Edge == Edge.Left).Select(x => x.PixelSize).Sum();
+            float right = 10;
+            float bottom = XAxes.Where(x => x.Edge == Edge.Bottom).Select(x => x.PixelSize).Sum();
+            float top = 10;
+
+            return (left, right, bottom, top);
+        }
 
         public Plot(int width = 800, int height = 600)
         {
@@ -117,7 +131,18 @@ namespace ScottPlot
         {
             RenderLegacyLayoutAdjustment();
 
-            var dims = new PlotDimensions(settings.figureSize, settings.dataSize, settings.dataOrigin, settings.axes.Limits);
+            //var dims = new PlotDimensions(settings.figureSize, settings.dataSize, settings.dataOrigin, settings.axes.Limits);
+
+            // modify dimensions by latest layout
+            float width = bmp.Width;
+            float height = bmp.Height;
+            var padding = GetDataPadding();
+            var dims = new PlotDimensions(
+                figureSize: new SizeF(width, height),
+                dataSize: new SizeF(width - padding.left - padding.right, height - padding.top - padding.bottom),
+                dataOffset: new PointF(padding.left, padding.top),
+                axisLimits: settings.axes.Limits);
+
             bool lowQuality = !settings.misc.antiAliasData;
 
             RenderBeforePlottables(dims, bmp, lowQuality);
@@ -146,11 +171,13 @@ namespace ScottPlot
 
             settings.ticks.x.Recalculate(settings);
             XAxis.SetTicks(settings.ticks.x.tickPositionsMajor, settings.ticks.x.tickLabels, settings.ticks.x.tickPositionsMinor);
-            XAxis.Render(dims, bmp, lowQuality);
+            XAxis.Title = settings.xLabel.text;
+            XAxis.Render(dims, bmp, lowQuality: false);
 
             settings.ticks.y.Recalculate(settings);
             YAxis.SetTicks(settings.ticks.y.tickPositionsMajor, settings.ticks.y.tickLabels, settings.ticks.y.tickPositionsMinor);
-            YAxis.Render(dims, bmp, lowQuality);
+            YAxis.Title = settings.yLabel.text;
+            YAxis.Render(dims, bmp, lowQuality: false);
         }
 
         private void RenderPlottables(PlotDimensions dims, Bitmap bmp, bool lowQuality)

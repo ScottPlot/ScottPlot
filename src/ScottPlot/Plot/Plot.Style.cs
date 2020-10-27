@@ -91,6 +91,7 @@ namespace ScottPlot
                 settings.Benchmark.IsVisible = show;
         }
 
+        [Obsolete("dont use this old system", false)]
         public void TightenLayout(int? padding = null, bool render = false)
         {
             if (settings.gfxData is null)
@@ -110,6 +111,7 @@ namespace ScottPlot
             Resize();
         }
 
+        [Obsolete("dont use this old layout system", false)]
         public void Layout(
                 double? yLabelWidth = null,
                 double? yScaleWidth = null,
