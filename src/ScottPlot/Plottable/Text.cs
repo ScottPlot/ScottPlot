@@ -130,7 +130,7 @@ namespace ScottPlot.Plottable
             if (string.IsNullOrWhiteSpace(text))
                 return; // no render needed
 
-            using (Graphics gfx = GDI.Graphics(bmp, lowQuality))
+            using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (var font = GDI.Font(FontName, FontSize, FontBold))
             {
                 float pixelX = dims.GetPixelX(x);

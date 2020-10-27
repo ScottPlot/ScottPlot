@@ -72,6 +72,13 @@ namespace ScottPlot.Drawing
             return gfx;
         }
 
+        public static System.Drawing.Graphics Graphics(Bitmap bmp, PlotDimensions dims, bool lowQuality = false)
+        {
+            Graphics gfx = Graphics(bmp, lowQuality);
+            gfx.Clip = new Region(new RectangleF(dims.DataOffsetX, dims.DataOffsetY, dims.DataWidth, dims.DataHeight));
+            return gfx;
+        }
+
         public static System.Drawing.Pen Pen(System.Drawing.Color color, double width = 1, LineStyle lineStyle = LineStyle.Solid, bool rounded = false)
         {
             var pen = new System.Drawing.Pen(color, (float)width);

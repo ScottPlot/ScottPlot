@@ -600,7 +600,7 @@ namespace ScottPlot.Plottable
 
         public virtual void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            using (var gfx = GDI.Graphics(bmp, lowQuality))
+            using (var gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (var brush = GDI.Brush(color))
             using (var penLD = GDI.Pen(color, (float)lineWidth, lineStyle, true))
             using (var penHD = GDI.Pen(color, (float)lineWidth, LineStyle.Solid, true))

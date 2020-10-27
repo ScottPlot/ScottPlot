@@ -25,7 +25,7 @@ namespace ScottPlot.Plottable
             if (isHighlighted is null || isHighlighted.Length == 0)
                 return;
 
-            using (var gfx = GDI.Graphics(bmp, lowQuality))
+            using (var gfx = GDI.Graphics(bmp, dims, lowQuality))
             {
                 var highlightedIndexes = Enumerable.Range(0, isHighlighted.Length).Where(x => isHighlighted[x]);
                 foreach (int i in highlightedIndexes)

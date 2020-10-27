@@ -124,7 +124,7 @@ namespace ScottPlot.Plottable
                 boxWidth = (float)(spacingPx / 2 * fractionalTickWidth);
             }
 
-            using (Graphics gfx = GDI.Graphics(bmp, lowQuality))
+            using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (Pen pen = new Pen(Color.Magenta))
             using (SolidBrush brush = new SolidBrush(Color.Magenta))
             {
@@ -170,7 +170,7 @@ namespace ScottPlot.Plottable
                 boxWidth = (float)(spacingPx / 2 * fractionalTickWidth);
             }
 
-            using (Graphics gfx = GDI.Graphics(bmp, lowQuality))
+            using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (Pen pen = new Pen(Color.Magenta))
             {
                 for (int i = 0; i < ohlcs.Length; i++)

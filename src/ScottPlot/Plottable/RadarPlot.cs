@@ -112,7 +112,7 @@ namespace ScottPlot.Plottable
             PointF origin = new PointF(dims.GetPixelX(0), dims.GetPixelY(0));
             double[] radii = new double[] { 0.25 * minScale, 0.5 * minScale, 1 * minScale };
 
-            using (Graphics gfx = GDI.Graphics(bmp, lowQuality))
+            using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (Pen pen = GDI.Pen(webColor))
             using (Brush brush = GDI.Brush(Color.Black))
             using (StringFormat sf = new StringFormat() { LineAlignment = StringAlignment.Center })

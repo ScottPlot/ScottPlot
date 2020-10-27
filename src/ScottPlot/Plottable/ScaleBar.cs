@@ -67,7 +67,7 @@ namespace ScottPlot.Plottable
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            using (var gfx = GDI.Graphics(bmp, lowQuality))
+            using (var gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (var font = GDI.Font(FontName, FontSize, FontBold))
             using (var fontBrush = new SolidBrush(FontColor))
             using (var linePen = new Pen(LineColor, LineWidth))

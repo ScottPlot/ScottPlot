@@ -136,7 +136,7 @@ namespace ScottPlot.Plottable
             if (IsVisible == false)
                 return;
 
-            using (var gfx = GDI.Graphics(bmp, lowQuality))
+            using (var gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (var penLine = GDI.Pen(color, lineWidth, lineStyle, true))
             using (var penLineError = GDI.Pen(color, errorLineWidth, LineStyle.Solid, true))
             {

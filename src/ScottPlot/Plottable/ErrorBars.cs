@@ -139,7 +139,7 @@ namespace ScottPlot.Plottable
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            using (Graphics gfx = Graphics.FromImage(bmp))
+            using (var gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (var pen = GDI.Pen(Color, LineWidth, LineStyle, true))
             {
                 if (XErrorPositive != null) DrawErrorBar(dims, gfx, pen, XErrorPositive, true, true);

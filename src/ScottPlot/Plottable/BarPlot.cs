@@ -109,7 +109,7 @@ namespace ScottPlot.Plottable
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            using (Graphics gfx = GDI.Graphics(bmp, lowQuality))
+            using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             {
                 for (int barIndex = 0; barIndex < ys.Length; barIndex++)
                 {

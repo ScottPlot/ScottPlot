@@ -151,7 +151,7 @@ namespace ScottPlot.Plottable
             }
             RectangleF rect = new RectangleF(p1.X - 1, p2.Y - 1, p2.X - p1.X + 1, p1.Y - p2.Y + 1);
 
-            using (var gfx = GDI.Graphics(bmp, lowQuality))
+            using (var gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (var brush = GDI.Brush(colorWithAlpha))
             {
                 gfx.FillRectangle(brush, rect);

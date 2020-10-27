@@ -62,7 +62,7 @@ namespace ScottPlot.Plottable
             PointF defaultPoint = new PointF(dims.GetPixelX(x), dims.GetPixelY(y));
             PointF textLocationPoint = (rotation == 0) ? TextLocation(defaultPoint) : defaultPoint;
 
-            using (Graphics gfx = GDI.Graphics(bmp, lowQuality))
+            using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (var framePen = new Pen(frameColor, frameSize * 2))
             {
                 gfx.TranslateTransform((int)textLocationPoint.X, (int)textLocationPoint.Y);

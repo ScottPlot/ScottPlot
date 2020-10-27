@@ -142,7 +142,7 @@ namespace ScottPlot.Plottable
 
         private void RenderHeatmap(PlotDimensions dims, Bitmap bmp, bool lowQuality)
         {
-            using (Graphics gfx = GDI.Graphics(bmp, lowQuality))
+            using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             {
                 gfx.InterpolationMode = InterpolationMode.NearestNeighbor;
 
@@ -173,7 +173,7 @@ namespace ScottPlot.Plottable
 
         private void RenderScale(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            using (Graphics gfx = GDI.Graphics(bmp, lowQuality))
+            using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (var pen = GDI.Pen(Color.Black))
             using (var brush = GDI.Brush(Color.Black))
             using (var font = GDI.Font(null, 12))
@@ -197,7 +197,7 @@ namespace ScottPlot.Plottable
 
         private void RenderAxis(PlotDimensions dims, Bitmap bmp, bool lowQuality)
         {
-            using (Graphics gfx = GDI.Graphics(bmp, lowQuality))
+            using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (Pen pen = GDI.Pen(Color.Black))
             using (Brush brush = GDI.Brush(Color.Black))
             using (var axisFont = GDI.Font(null, 12))

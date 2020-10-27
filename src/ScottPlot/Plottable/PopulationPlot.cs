@@ -189,7 +189,7 @@ namespace ScottPlot.Plottable
 
             float radius = 5;
 
-            using (Graphics gfx = GDI.Graphics(bmp, lowQuality))
+            using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (Pen penEdge = GDI.Pen(Color.FromArgb(alpha, edgeColor)))
             using (Brush brushFill = GDI.Brush(Color.FromArgb(alpha, fillColor)))
             {
@@ -229,7 +229,7 @@ namespace ScottPlot.Plottable
                 points[i] = new PointF(x, y);
             }
 
-            using (Graphics gfx = GDI.Graphics(bmp, lowQuality))
+            using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (Pen pen = GDI.Pen(color, 1, lineStyle, true))
             {
                 gfx.DrawLines(pen, points);
@@ -268,7 +268,7 @@ namespace ScottPlot.Plottable
             double capPx2 = dims.GetPixelX(centerX + capWidth / 2);
             float radius = 5;
 
-            using (Graphics gfx = GDI.Graphics(bmp, lowQuality))
+            using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (Pen pen = GDI.Pen(color, 2))
             using (Brush brush = GDI.Brush(color))
             {
@@ -320,7 +320,7 @@ namespace ScottPlot.Plottable
 
             RectangleF rect = new RectangleF((float)leftPx, (float)yPxTop, (float)(rightPx - leftPx), (float)(yPxBase - yPxTop));
 
-            using (Graphics gfx = GDI.Graphics(bmp, lowQuality))
+            using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (Pen pen = GDI.Pen(Color.Black))
             using (Brush brush = GDI.Brush(color))
             {
@@ -408,7 +408,7 @@ namespace ScottPlot.Plottable
                     throw new NotImplementedException();
             }
 
-            using (Graphics gfx = GDI.Graphics(bmp, lowQuality))
+            using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (Pen pen = GDI.Pen(Color.Black))
             using (Brush brush = GDI.Brush(color))
             {

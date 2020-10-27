@@ -97,7 +97,7 @@ namespace ScottPlot.Plottable
             for (int i = 0; i < xs.Length; i++)
                 points[i] = new PointF(dims.GetPixelX(xs[i]), dims.GetPixelY(ys[i]));
 
-            using (Graphics gfx = GDI.Graphics(bmp, lowQuality))
+            using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (Brush fillBrush = GDI.Brush(Color.FromArgb((byte)(255 * fillAlpha), fillColor)))
             using (Pen outlinePen = GDI.Pen(lineColor, (float)lineWidth))
             {
