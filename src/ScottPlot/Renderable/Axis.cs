@@ -11,6 +11,8 @@ namespace ScottPlot.Renderable
     public class Axis : IRenderable
     {
         public Edge Edge { get; set; } = Edge.Bottom;
+        public bool IsHorizontal { get => Edge == Edge.Top || Edge == Edge.Bottom; }
+        public bool IsVertical { get => Edge == Edge.Left || Edge == Edge.Right; }
         public bool IsVisible { get; set; } = true;
         public float PixelSize = 40;
 
@@ -26,6 +28,40 @@ namespace ScottPlot.Renderable
             MajorTicks.Positions = positions;
             MajorTicks.Labels = labels;
             MinorTicks.Positions = minorPositions;
+        }
+
+        public void AutoSize()
+        {
+            // adjust PixelSize based on measured dimensions of the axis label and ticks
+
+            using (var tickFont = GDI.Font(MajorTicks.LabelFont))
+            using (var titleFont = GDI.Font(TitleFont))
+            {
+                var tickSize = LargestStringSize(MajorTicks.Labels, tickFont);
+                var titleSize = GDI.MeasureString(Title, titleFont);
+                if (IsHorizontal)
+                {
+                    PixelSize = tickSize.height + titleSize.Height;
+                }
+                else
+                {
+                    PixelSize = tickSize.width + titleSize.Height + 5;
+                }
+            }
+        }
+
+        private (float width, float height) LargestStringSize(string[] strings, System.Drawing.Font font)
+        {
+            if (strings is null || strings.Length == 0)
+                return (0, 0);
+
+            string largestString = "";
+            foreach (var s in strings)
+                if (s.Length > largestString.Length)
+                    largestString = s;
+
+            SizeF sz = GDI.MeasureString(largestString, font);
+            return (sz.Width, sz.Height);
         }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)

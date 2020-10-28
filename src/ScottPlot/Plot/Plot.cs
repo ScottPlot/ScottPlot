@@ -32,20 +32,6 @@ namespace ScottPlot
         private List<Axis> XAxes = new List<Axis>() { new Axis() { Edge = Edge.Bottom, PixelSize = 40 } };
         private List<Axis> YAxes = new List<Axis>() { new Axis() { Edge = Edge.Left, PixelSize = 60 } };
 
-        /// <summary>
-        /// Return the number of pixels 
-        /// </summary>
-        /// <returns></returns>
-        private (float left, float right, float bottom, float top) GetDataPadding()
-        {
-            float left = YAxes.Where(x => x.Edge == Edge.Left).Select(x => x.PixelSize).Sum();
-            float right = 10;
-            float bottom = XAxes.Where(x => x.Edge == Edge.Bottom).Select(x => x.PixelSize).Sum();
-            float top = 10;
-
-            return (left, right, bottom, top);
-        }
-
         public Plot(int width = 800, int height = 600)
         {
             if (width <= 0 || height <= 0)
@@ -131,16 +117,22 @@ namespace ScottPlot
         {
             RenderLegacyLayoutAdjustment();
 
-            //var dims = new PlotDimensions(settings.figureSize, settings.dataSize, settings.dataOrigin, settings.axes.Limits);
-
             // modify dimensions by latest layout
             float width = bmp.Width;
             float height = bmp.Height;
-            var padding = GetDataPadding();
+
+            // axes should determine how large they need to be based on their ticks and labels
+            XAxis.AutoSize();
+            YAxis.AutoSize();
+            float padLeft = YAxes.Where(x => x.Edge == Edge.Left).Select(x => x.PixelSize).Sum();
+            float padRight = 10;
+            float padBottom = XAxes.Where(x => x.Edge == Edge.Bottom).Select(x => x.PixelSize).Sum();
+            float padTop = 10;
+
             var dims = new PlotDimensions(
                 figureSize: new SizeF(width, height),
-                dataSize: new SizeF(width - padding.left - padding.right, height - padding.top - padding.bottom),
-                dataOffset: new PointF(padding.left, padding.top),
+                dataSize: new SizeF(width - padLeft - padRight, height - padTop - padBottom),
+                dataOffset: new PointF(padLeft, padTop),
                 axisLimits: settings.axes.Limits);
 
             bool lowQuality = !settings.misc.antiAliasData;
