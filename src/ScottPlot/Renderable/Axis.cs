@@ -85,6 +85,8 @@ namespace ScottPlot.Renderable
 
         private void RenderTickMarks(PlotDimensions dims, Graphics gfx, Ticks tick)
         {
+            if (tick is null || tick.Positions is null)
+                return;
             using (var pen = GDI.Pen(tick.MarkColor))
             {
                 if (Edge == Edge.Bottom)
