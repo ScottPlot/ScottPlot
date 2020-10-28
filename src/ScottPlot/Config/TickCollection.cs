@@ -152,7 +152,8 @@ namespace ScottPlot.Config
             // now that tick spacing is known, populate the list of ticks and labels
             double firstTickOffset = low % tickSpacing;
             int tickCount = (int)((high - low) / tickSpacing) + 2;
-            tickCount = Math.Max(tickCount, 1);
+            tickCount = tickCount > 1000 ? 1000 : tickCount;
+            tickCount = tickCount < 1 ? 1 : tickCount;
             tickPositionsMajor = Enumerable.Range(0, tickCount)
                                            .Select(x => low - firstTickOffset + tickSpacing * x)
                                            .Where(x => low <= x && x <= high)
