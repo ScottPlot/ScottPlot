@@ -17,36 +17,41 @@ namespace ScottPlot.Drawing
         private const float xMultiplierMacOS = 82.82f / 72;
         private const float yMultiplierMacOS = 27.16f / 20;
 
-        public static System.Drawing.SizeF MeasureString(System.Drawing.Graphics gfx, string text, string fontName, double fontSize, bool bold = false)
+        public static SizeF MeasureString(string text, System.Drawing.Font font)
         {
-            if (gfx is null)
-                throw new ArgumentException("a valid Graphics object is required");
-
-            var unit = System.Drawing.GraphicsUnit.Pixel;
-            var fontStyle = (bold) ? System.Drawing.FontStyle.Bold : System.Drawing.FontStyle.Regular;
-            using (var font = new System.Drawing.Font(fontName, (float)fontSize, fontStyle, unit))
+            using (Bitmap bmp = new Bitmap(1, 1))
+            using (Graphics gfx = Graphics(bmp, lowQuality: true))
             {
-                System.Drawing.SizeF size = gfx.MeasureString(text, font);
+                return MeasureString(gfx, text, font);
+            }
+        }
 
-                // compensate for OS-specific differences in font scaling
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                {
-                    size.Width *= xMultiplierLinux;
-                    size.Height *= yMultiplierLinux;
-                }
-                else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-                {
-                    size.Width *= xMultiplierMacOS;
-                    size.Height *= yMultiplierMacOS;
-                }
-
-                return size;
+        public static SizeF MeasureString(Graphics gfx, string text, string fontName, double fontSize, bool bold = false)
+        {
+            var fontStyle = (bold) ? FontStyle.Bold : FontStyle.Regular;
+            using (var font = new System.Drawing.Font(fontName, (float)fontSize, fontStyle, GraphicsUnit.Pixel))
+            {
+                return MeasureString(gfx, text, font);
             }
         }
 
         public static System.Drawing.SizeF MeasureString(System.Drawing.Graphics gfx, string text, System.Drawing.Font font)
         {
-            return MeasureString(gfx, text, font.Name, font.Size, font.Style == System.Drawing.FontStyle.Bold);
+            SizeF size = gfx.MeasureString(text, font);
+
+            // compensate for OS-specific differences in font scaling
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                size.Width *= xMultiplierLinux;
+                size.Height *= yMultiplierLinux;
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                size.Width *= xMultiplierMacOS;
+                size.Height *= yMultiplierMacOS;
+            }
+
+            return size;
         }
 
         public static System.Drawing.Color Mix(System.Drawing.Color colorA, System.Drawing.Color colorB, double fracA)
