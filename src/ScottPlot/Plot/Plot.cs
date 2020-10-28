@@ -113,27 +113,37 @@ namespace ScottPlot
             RenderBitmap(settings.bmpFigure);
         }
 
-        private void RenderBitmap(Bitmap bmp)
+        private PlotDimensions MakeDims(float width, float height, bool autoSizeAllAxes = false)
         {
-            RenderLegacyLayoutAdjustment();
+            if (autoSizeAllAxes)
+                foreach (var axis in XAxes.Concat(YAxes))
+                    axis.AutoSize();
 
-            // modify dimensions by latest layout
-            float width = bmp.Width;
-            float height = bmp.Height;
-
-            // axes should determine how large they need to be based on their ticks and labels
-            XAxis.AutoSize();
-            YAxis.AutoSize();
             float padLeft = YAxes.Where(x => x.Edge == Edge.Left).Select(x => x.PixelSize).Sum();
             float padRight = 10;
             float padBottom = XAxes.Where(x => x.Edge == Edge.Bottom).Select(x => x.PixelSize).Sum();
             float padTop = 10;
-
-            var dims = new PlotDimensions(
+            return new PlotDimensions(
                 figureSize: new SizeF(width, height),
                 dataSize: new SizeF(width - padLeft - padRight, height - padTop - padBottom),
                 dataOffset: new PointF(padLeft, padTop),
                 axisLimits: settings.axes.Limits);
+        }
+
+        private bool NeedsAutoLayout = true;
+        private void RenderBitmap(Bitmap bmp)
+        {
+            RenderLegacyLayoutAdjustment();
+            
+            var dims = MakeDims(bmp.Width, bmp.Height);
+
+            if (NeedsAutoLayout)
+            {
+                // on first layout two adjustments are requied: 
+                // one for gross tick placement, and another for string measurement
+                dims = MakeDims(bmp.Width, bmp.Height);
+                NeedsAutoLayout = false;
+            }
 
             bool lowQuality = !settings.misc.antiAliasData;
 
@@ -195,18 +205,25 @@ namespace ScottPlot
 
         public Bitmap GetBitmap(bool renderFirst = true, bool lowQuality = false)
         {
+            if (NeedsAutoLayout)
+                RenderBitmap();
+
             if (lowQuality)
             {
                 bool currentAAData = settings.misc.antiAliasData; // save currently using AA setting
                 settings.misc.antiAliasData = false; // disable AA for render
                 if (renderFirst)
+                {
                     RenderBitmap();
+                }
                 settings.misc.antiAliasData = currentAAData; // restore saved AA setting
             }
             else
             {
                 if (renderFirst)
+                {
                     RenderBitmap();
+                }
             }
             return settings.bmpFigure;
         }
