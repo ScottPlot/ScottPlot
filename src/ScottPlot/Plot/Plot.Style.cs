@@ -140,15 +140,15 @@ namespace ScottPlot
         {
             if (enable != null)
             {
-                XAxis.MajorTicks.GridLines = enable.Value;
-                YAxis.MajorTicks.GridLines = enable.Value;
+                XAxis.MajorTicks.GridEnable = enable.Value;
+                YAxis.MajorTicks.GridEnable = enable.Value;
             }
 
             if (enableHorizontal != null)
-                XAxis.MajorTicks.GridLines = enableHorizontal.Value;
+                XAxis.MajorTicks.GridEnable = enableHorizontal.Value;
 
             if (enableVertical != null)
-                YAxis.MajorTicks.GridLines = enableVertical.Value;
+                YAxis.MajorTicks.GridEnable = enableVertical.Value;
 
             if (color != null)
             {

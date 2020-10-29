@@ -1,5 +1,6 @@
 ﻿using ScottPlot.Drawing;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
@@ -21,8 +22,10 @@ namespace ScottPlot.Renderable
         public Drawing.Font TitleFont = new Drawing.Font() { Size = 16 };
         public Drawing.Font TickFont = new Drawing.Font() { Size = 11 };
 
-        public Ticks MajorTicks = new Ticks() { MarkLength = 5, GridLines = true };
-        public Ticks MinorTicks = new Ticks() { MarkLength = 2, GridLines = false };
+        public Ticks MajorTicks = new Ticks() { MarkLength = 5 };
+        public Ticks MinorTicks = new Ticks() { MarkLength = 2 };
+        public bool MajorGrid { get => MajorTicks.GridEnable; set => MajorTicks.GridEnable = value; }
+        public bool MinorGrid { get => MinorTicks.GridEnable; set => MinorTicks.GridEnable = value; }
 
         public void SetTicks(double[] positions, string[] labels, double[] minorPositions)
         {
@@ -85,28 +88,43 @@ namespace ScottPlot.Renderable
             }
         }
 
-        private void RenderTickMarks(PlotDimensions dims, Graphics gfx, Ticks tick)
+        private void RenderTickMarks(PlotDimensions dims, Graphics gfx, Ticks tick, bool gridLines = false)
         {
             if (tick is null || tick.Positions is null)
                 return;
-            using (var pen = GDI.Pen(tick.MarkColor))
+
+            if (IsVertical)
             {
-                if (Edge == Edge.Bottom)
-                {
-                    float y = dims.DataOffsetY + dims.DataHeight;
-                    foreach (float x in tick.Positions.Select(x => dims.GetPixelX(x)))
-                        gfx.DrawLine(pen, x, y, x, y + tick.MarkLength);
-                }
-                else if (Edge == Edge.Left)
-                {
-                    float x = dims.DataOffsetX;
-                    foreach (float y in tick.Positions.Select(y => dims.GetPixelY(y)))
+                float x = (Edge == Edge.Left) ? dims.DataOffsetX : dims.DataOffsetX + dims.DataWidth;
+                float x2 = (Edge == Edge.Left) ? dims.DataOffsetX + dims.DataWidth : dims.DataOffsetX;
+
+                var ys = tick.Positions.Select(i => dims.GetPixelY(i));
+
+                using (var pen = GDI.Pen(tick.MarkColor))
+                    foreach (float y in ys)
                         gfx.DrawLine(pen, x, y, x - tick.MarkLength, y);
-                }
-                else
-                {
-                    throw new NotImplementedException();
-                }
+
+                if (tick.IsGridVisible)
+                    using (var pen = GDI.Pen(tick.GridLineColor, tick.GridLineWidth, tick.GridLineStyle))
+                        foreach (float y in ys)
+                            gfx.DrawLine(pen, x, y, x2, y);
+            }
+
+            if (IsHorizontal)
+            {
+                float y = (Edge == Edge.Top) ? dims.DataOffsetY : dims.DataOffsetY + dims.DataHeight;
+                float y2 = (Edge == Edge.Top) ? dims.DataOffsetY + dims.DataHeight : dims.DataOffsetY;
+
+                var xs = tick.Positions.Select(i => dims.GetPixelX(i));
+
+                using (var pen = GDI.Pen(tick.MarkColor))
+                    foreach (float x in xs)
+                        gfx.DrawLine(pen, x, y, x, y + tick.MarkLength);
+
+                if (tick.IsGridVisible)
+                    using (var pen = GDI.Pen(tick.GridLineColor, tick.GridLineWidth, tick.GridLineStyle))
+                        foreach (float x in xs)
+                            gfx.DrawLine(pen, x, y, x, y2);
             }
         }
 

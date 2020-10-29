@@ -23,24 +23,24 @@ namespace ScottPlot
         private readonly Settings settings;
 
         // settings the user can customize
-        FigureBackground FigureBackground = new FigureBackground();
-        DataBackground DataBackground = new DataBackground();
+        readonly FigureBackground FigureBackground = new FigureBackground();
+        readonly DataBackground DataBackground = new DataBackground();
 
+        // axes contain axis label, tick, and grid settings
         private readonly List<Axis> XAxes = new List<Axis>() {
-            new Axis() { Edge = Edge.Bottom, PixelSize = 40 },
+            new Axis() { Edge = Edge.Bottom, PixelSize = 40, MajorGrid = true },
             new Axis() { Edge = Edge.Top, PixelSize = 40, Bold = true },
         };
         private readonly List<Axis> YAxes = new List<Axis>() {
-            new Axis() { Edge = Edge.Left, PixelSize = 60 },
+            new Axis() { Edge = Edge.Left, PixelSize = 60, MajorGrid = true },
             new Axis() { Edge = Edge.Right, PixelSize = 60 }
         };
         private Axis[] AllAxes { get => XAxes.Concat(YAxes).ToArray(); }
 
-        // alises for the common 4 axes
-        public Axis XAxis { get => XAxes[0]; }
-        public Axis YAxis { get => YAxes[0]; }
-        public Axis XAxis2 { get => XAxes[1]; }
-        public Axis YAxis2 { get => YAxes[1]; }
+        public Axis XAxis { get => XAxes[0]; } // bottom
+        public Axis XAxis2 { get => XAxes[1]; } // top (title)
+        public Axis YAxis { get => YAxes[0]; } // left
+        public Axis YAxis2 { get => YAxes[1]; } // right
 
         public Plot(int width = 800, int height = 600)
         {
