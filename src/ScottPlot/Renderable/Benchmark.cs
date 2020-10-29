@@ -1,11 +1,8 @@
 ﻿using ScottPlot.Config;
+using ScottPlot.Drawing;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ScottPlot.Renderable
 {
@@ -35,32 +32,25 @@ namespace ScottPlot.Renderable
                 text = text.Replace("objects", "object");
         }
 
-        public void Render(Settings settings)
+        public void Render(Drawing.PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            if (IsVisible == false)
-                return;
-
-            using (var font = new Font(FontName, FontSize, FontStyle.Regular, GraphicsUnit.Pixel))
+            using (var gfx = GDI.Graphics(bmp, lowQuality))
+            using (var font = GDI.Font(FontName, FontSize))
             using (var fontBrush = new SolidBrush(FontColor))
             using (var fillBrush = new SolidBrush(FillColor))
             using (var outline = new Pen(FontColor))
             {
                 int debugPadding = 3;
-                SizeF txtSize = settings.gfxData.MeasureString(text, font);
+                SizeF txtSize = GDI.MeasureString(gfx, text, font);
                 PointF txtLoc = new PointF(
-                    x: settings.dataSize.Width + settings.dataOrigin.X - debugPadding - txtSize.Width,
-                    y: settings.dataSize.Height + settings.dataOrigin.Y - debugPadding - txtSize.Height);
+                    x: dims.DataWidth + dims.DataOffsetX - debugPadding - txtSize.Width,
+                    y: dims.DataHeight + dims.DataOffsetY - debugPadding - txtSize.Height);
                 RectangleF textRect = new RectangleF(txtLoc, txtSize);
 
-                settings.gfxFigure.FillRectangle(fillBrush, textRect);
-                settings.gfxFigure.DrawRectangle(outline, Rectangle.Round(textRect));
-                settings.gfxFigure.DrawString(text, font, fontBrush, txtLoc);
+                gfx.FillRectangle(fillBrush, textRect);
+                gfx.DrawRectangle(outline, Rectangle.Round(textRect));
+                gfx.DrawString(text, font, fontBrush, txtLoc);
             }
-        }
-
-        public void Render(Drawing.PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
-        {
-            throw new NotImplementedException();
         }
     }
 }

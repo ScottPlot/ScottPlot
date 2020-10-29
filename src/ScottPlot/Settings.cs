@@ -29,16 +29,12 @@ namespace ScottPlot
         public Size dataSize { get { return layout.data.Size; } }
 
         // Eventually move graphics objects to their own module.
-        public Graphics gfxFigure;
-        public Graphics gfxData;
         public Bitmap bmpFigure;
         public Bitmap bmpData;
 
         // Renderables (eventually store these in a List)
         public readonly FigureBackground FigureBackground = new FigureBackground();
         public readonly DataBackground DataBackground = new DataBackground();
-        public readonly GridLines HorizontalGridLines = new GridLines() { Orientation = Orientation.Horizontal };
-        public readonly GridLines VerticalGridLines = new GridLines() { Orientation = Orientation.Vertical };
         public readonly Benchmark Benchmark = new Benchmark();
         public readonly ErrorMessage ErrorMessage = new ErrorMessage();
         public readonly Legend Legend = new Legend();
@@ -46,10 +42,6 @@ namespace ScottPlot
         // plottables
         public readonly List<IRenderable> plottables = new List<IRenderable>();
 
-        // TODO: STRANGLE CONFIG OBJECTS AS PART OF https://github.com/swharden/ScottPlot/pull/511
-        public Config.TextLabel title = new Config.TextLabel() { fontSize = 16, bold = true };
-        public Config.TextLabel xLabel = new Config.TextLabel() { fontSize = 16 };
-        public Config.TextLabel yLabel = new Config.TextLabel() { fontSize = 16 };
         public Config.Misc misc = new Config.Misc();
         //public Config.Benchmark benchmark = new Config.Benchmark();
         //public Config.Grid grid = new Config.Grid();
@@ -75,23 +67,6 @@ namespace ScottPlot
 
         public void Resize(int width, int height, bool useMeasuredStrings = false)
         {
-            if (useMeasuredStrings && gfxData != null)
-            {
-                // this section was added before display scaling issues (pixel-referenced font sizes) were figured out.
-                // it is probably not needed...
-
-                string sampleString = "IPjg8.8";
-                layout.yLabelWidth = (int)Drawing.GDI.MeasureString(gfxData, sampleString, yLabel.font).Height;
-                layout.y2LabelWidth = (int)Drawing.GDI.MeasureString(gfxData, sampleString, yLabel.font).Height; // currently y2 isn't supported
-                layout.titleHeight = (int)Drawing.GDI.MeasureString(gfxData, sampleString, title.font).Height;
-                layout.xLabelHeight = (int)Drawing.GDI.MeasureString(gfxData, sampleString, xLabel.font).Height;
-
-                var tickSize = Drawing.GDI.MeasureString(gfxData, "0.001", ticks.font);
-                layout.yScaleWidth = (int)tickSize.Width;
-                layout.y2ScaleWidth = (int)tickSize.Height; // currently y2 isn't supported
-                layout.xScaleHeight = (int)tickSize.Height;
-            }
-
             layout.Update(width, height);
 
             if (axes.equalAxes)
@@ -106,58 +81,6 @@ namespace ScottPlot
                 else
                     axes.Zoom(1, yUnitsPerPixel / xUnitsPerPixel);
             }
-        }
-
-        public void TightenLayout(int padLeft = 15, int padRight = 15, int padBottom = 15, int padTop = 15)
-        {
-            Resize(figureSize.Width, figureSize.Height);
-
-            // update the layout with sizes based on configuration in settings
-
-            layout.titleHeight = (int)title.size.Height + 3;
-
-            // disable y2 label and scale by default
-            layout.y2LabelWidth = 0;
-            layout.y2ScaleWidth = 0;
-
-            layout.yLabelWidth = (int)yLabel.size.Height + 3;
-            layout.xLabelHeight = (int)xLabel.size.Height + 3;
-
-            // automatically set yScale size to tick labels
-            int minYtickWidth = 40;
-            layout.yScaleWidth = Math.Max(minYtickWidth, (int)ticks.y.maxLabelSize.Width);
-
-            // automatically set xScale size to high labels
-            int minXtickHeight = 10;
-            layout.xScaleHeight = Math.Max(minXtickHeight, (int)ticks.x.maxLabelSize.Height);
-
-            // collapse things that are hidden or empty
-            if (!ticks.displayXmajor)
-                layout.xScaleHeight = 0;
-            if (!ticks.displayYmajor)
-                layout.yScaleWidth = 0;
-            if (title.text == "")
-                layout.titleHeight = 0;
-            if (yLabel.text == "")
-                layout.yLabelWidth = 0;
-            if (xLabel.text == "")
-                layout.xLabelHeight = 0;
-
-            // eliminate all right-side pixels if right-frame is not drawn
-            if (!layout.displayFrameByAxis[1])
-            {
-                layout.yLabelWidth = 0;
-                layout.y2ScaleWidth = 0;
-            }
-
-            // expand edges to accomodate argument padding
-            layout.yLabelWidth = Math.Max(layout.yLabelWidth, padLeft);
-            layout.y2LabelWidth = Math.Max(layout.y2LabelWidth, padRight);
-            layout.xLabelHeight = Math.Max(layout.xLabelHeight, padBottom);
-            layout.titleHeight = Math.Max(layout.titleHeight, padTop);
-
-            layout.Update(figureSize.Width, figureSize.Height);
-            layout.tighteningOccurred = true;
         }
 
         public void AxesPanPx(int dxPx, int dyPx)

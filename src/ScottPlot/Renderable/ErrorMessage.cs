@@ -20,29 +20,25 @@ namespace ScottPlot.Renderable
             set => _IsVisible = value;
         }
 
-        public void Render(Settings settings)
+        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
+            using (var gfx = GDI.Graphics(bmp, lowQuality))
             using (var font = GDI.Font(FontName, FontSize))
             using (var fontBrush = GDI.Brush(FontColor))
             using (var fillBrush = GDI.Brush(FillColor))
             using (var outlinePen = GDI.Pen(FontColor))
             {
                 int debugPadding = 3;
-                SizeF txtSize = settings.gfxData.MeasureString(Text, font);
+                SizeF txtSize = GDI.MeasureString(gfx, Text, font);
                 PointF txtLoc = new PointF(
-                    x: settings.dataOrigin.X + debugPadding,
-                    y: settings.dataOrigin.Y + debugPadding);
+                    x: dims.DataOffsetX + debugPadding,
+                    y: dims.DataOffsetY + debugPadding);
                 RectangleF textRect = new RectangleF(txtLoc, txtSize);
 
-                settings.gfxFigure.FillRectangle(fillBrush, textRect);
-                settings.gfxFigure.DrawRectangle(outlinePen, Rectangle.Round(textRect));
-                settings.gfxFigure.DrawString(Text, font, fontBrush, txtLoc);
+                gfx.FillRectangle(fillBrush, textRect);
+                gfx.DrawRectangle(outlinePen, Rectangle.Round(textRect));
+                gfx.DrawString(Text, font, fontBrush, txtLoc);
             }
-        }
-
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

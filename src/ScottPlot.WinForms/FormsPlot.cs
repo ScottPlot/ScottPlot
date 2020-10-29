@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
+using ScottPlot.Drawing;
 using ScottPlot.Plottable;
 
 namespace ScottPlot
@@ -79,7 +80,12 @@ namespace ScottPlot
                 plt.Style(Style.Control);
 
             settings = plt.GetSettings(showWarning: false);
-            dpiScale = settings.gfxFigure.DpiX / 96;
+
+            using (var bmp = new Bitmap(1, 1))
+            using (var gfx = GDI.Graphics(bmp, true))
+            {
+                dpiScale = gfx.DpiX / 96;
+            }
 
             PbPlot_MouseUp(null, null);
             PbPlot_SizeChanged(null, null);

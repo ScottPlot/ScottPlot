@@ -29,29 +29,20 @@ namespace ScottPlot
             Color? title = null
             )
         {
-            if (figBg != null)
-                settings.FigureBackground.Color = figBg.Value;
-            if (dataBg != null)
-                settings.DataBackground.Color = dataBg.Value;
-            if (grid != null)
+            DataBackground.Color = dataBg ?? DataBackground.Color;
+            FigureBackground.Color = figBg ?? FigureBackground.Color;
+
+            foreach (var axis in AllAxes)
             {
-                settings.HorizontalGridLines.Color = grid.Value;
-                settings.VerticalGridLines.Color = grid.Value;
+                axis.TitleFont.Color = label ?? axis.TitleFont.Color;
+                axis.TickFont.Color = tick ?? axis.TickFont.Color;
+                axis.MajorTicks.GridLineColor = grid ?? axis.MajorTicks.GridLineColor;
+                axis.MinorTicks.GridLineColor = grid ?? axis.MajorTicks.GridLineColor;
+                axis.MajorTicks.MarkColor = tick ?? axis.MajorTicks.MarkColor;
+                axis.MinorTicks.MarkColor = tick ?? axis.MinorTicks.MarkColor;
             }
-            if (tick != null)
-                settings.ticks.color = (Color)tick;
-            if (label != null)
-                settings.xLabel.color = (Color)label;
-            if (label != null)
-                settings.yLabel.color = (Color)label;
-            if (title != null)
-                settings.title.color = (Color)title;
-            if (dataBg != null)
-                settings.Legend.FillColor = (Color)dataBg;
-            if (tick != null)
-                settings.Legend.OutlineColor = (Color)tick;
-            if (label != null)
-                settings.Legend.FontColor = (Color)label;
+
+            XAxis2.TitleFont.Color = title ?? XAxis2.TitleFont.Color;
         }
 
         public void Style(Style style)
@@ -94,9 +85,6 @@ namespace ScottPlot
         [Obsolete("dont use this old system", false)]
         public void TightenLayout(int? padding = null, bool render = false)
         {
-            if (settings.gfxData is null)
-                return;
-
             if (render)
                 GetBitmap();
             if (!settings.axes.hasBeenSet && settings.plottables.Count > 0)
@@ -105,8 +93,9 @@ namespace ScottPlot
             settings.ticks?.x?.Recalculate(settings); // this probably never happens
             settings.ticks?.y?.Recalculate(settings); // this probably never happens
 
-            int pad = (padding is null) ? 15 : (int)padding;
-            settings.TightenLayout(pad, pad, pad, pad);
+            settings.Resize(settings.figureSize.Width, settings.figureSize.Height);
+            settings.layout.Update(settings.figureSize.Width, settings.figureSize.Height);
+            settings.layout.tighteningOccurred = true;
 
             Resize();
         }
@@ -151,20 +140,20 @@ namespace ScottPlot
         {
             if (enable != null)
             {
-                settings.HorizontalGridLines.IsVisible = enable.Value;
-                settings.VerticalGridLines.IsVisible = enable.Value;
+                XAxis.MajorTicks.GridLines = enable.Value;
+                YAxis.MajorTicks.GridLines = enable.Value;
             }
 
             if (enableHorizontal != null)
-                settings.HorizontalGridLines.IsVisible = enableHorizontal.Value;
+                XAxis.MajorTicks.GridLines = enableHorizontal.Value;
 
             if (enableVertical != null)
-                settings.VerticalGridLines.IsVisible = enableVertical.Value;
+                YAxis.MajorTicks.GridLines = enableVertical.Value;
 
             if (color != null)
             {
-                settings.HorizontalGridLines.Color = color.Value;
-                settings.VerticalGridLines.Color = color.Value;
+                XAxis.MajorTicks.GridLineColor = color.Value;
+                YAxis.MajorTicks.GridLineColor = color.Value;
             }
 
             if (xSpacing != null)
@@ -181,20 +170,20 @@ namespace ScottPlot
 
             if (lineWidth != null)
             {
-                settings.HorizontalGridLines.LineWidth = (float)lineWidth.Value;
-                settings.VerticalGridLines.LineWidth = (float)lineWidth.Value;
+                XAxis.MajorTicks.GridLineWidth = (float)lineWidth.Value;
+                YAxis.MajorTicks.GridLineWidth = (float)lineWidth.Value;
             }
 
             if (lineStyle != null)
             {
-                settings.HorizontalGridLines.LineStyle = lineStyle.Value;
-                settings.VerticalGridLines.LineStyle = lineStyle.Value;
+                XAxis.MajorTicks.GridLineStyle = lineStyle.Value;
+                YAxis.MajorTicks.GridLineStyle = lineStyle.Value;
             }
 
             if (snapToNearestPixel != null)
             {
-                settings.HorizontalGridLines.SnapToNearestPixel = snapToNearestPixel.Value;
-                settings.VerticalGridLines.SnapToNearestPixel = snapToNearestPixel.Value;
+                XAxis.MajorTicks.PixelSnap = snapToNearestPixel.Value;
+                YAxis.MajorTicks.PixelSnap = snapToNearestPixel.Value;
             }
         }
 

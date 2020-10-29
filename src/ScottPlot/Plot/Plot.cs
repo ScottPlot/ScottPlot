@@ -49,7 +49,6 @@ namespace ScottPlot
             settings = new Settings();
             StyleTools.SetStyle(this, ScottPlot.Style.Default);
             Resize(width, height);
-            TightenLayout();
         }
 
         public override string ToString() =>
@@ -67,11 +66,10 @@ namespace ScottPlot
             // TODO: add a Copy() method to the settings module, or perhaps Update(existingSettings).
 
             // copy over only the most relevant styles
-            plt2.Title(settings.title.text);
-            plt2.XLabel(settings.xLabel.text);
-            plt2.YLabel(settings.yLabel.text);
+            plt2.Title(XAxis2.Title);
+            plt2.XLabel(XAxis.Title);
+            plt2.YLabel(YAxis.Title);
 
-            plt2.TightenLayout();
             plt2.AxisAuto();
             return plt2;
         }
@@ -95,20 +93,16 @@ namespace ScottPlot
         private void InitializeBitmaps()
         {
             settings.bmpFigure = null;
-            settings.gfxFigure = null;
             settings.bmpData = null;
-            settings.gfxData = null;
 
             if (settings.figureSize.Width > 0 && settings.figureSize.Height > 0)
             {
                 settings.bmpFigure = new Bitmap(settings.figureSize.Width, settings.figureSize.Height, PixelFormat.Format32bppPArgb);
-                settings.gfxFigure = Graphics.FromImage(settings.bmpFigure);
             }
 
             if (settings.dataSize.Width > 0 && settings.dataSize.Height > 0)
             {
                 settings.bmpData = new Bitmap(settings.dataSize.Width, settings.dataSize.Height, PixelFormat.Format32bppPArgb);
-                settings.gfxData = Graphics.FromImage(settings.bmpData);
             }
         }
 
@@ -171,7 +165,6 @@ namespace ScottPlot
 
             if (!settings.layout.tighteningOccurred)
             {
-                Renderer.FigureTicks(settings);
                 TightenLayout();
             }
         }
@@ -183,12 +176,10 @@ namespace ScottPlot
 
             settings.ticks.x.Recalculate(settings);
             XAxis.SetTicks(settings.ticks.x.tickPositionsMajor, settings.ticks.x.tickLabels, settings.ticks.x.tickPositionsMinor);
-            XAxis.Title = settings.xLabel.text;
             XAxis.Render(dims, bmp, lowQuality: false);
 
             settings.ticks.y.Recalculate(settings);
             YAxis.SetTicks(settings.ticks.y.tickPositionsMajor, settings.ticks.y.tickLabels, settings.ticks.y.tickPositionsMinor);
-            YAxis.Title = settings.yLabel.text;
             YAxis.Render(dims, bmp, lowQuality: false);
 
             XAxis2.Render(dims, bmp, lowQuality: false);

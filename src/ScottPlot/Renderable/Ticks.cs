@@ -21,6 +21,7 @@ namespace ScottPlot.Renderable
         public bool GridLines = false;
         public Color GridLineColor = Color.Black;
         public LineStyle GridLineStyle = LineStyle.Solid;
+        public float GridLineWidth = 1;
 
         public bool PixelSnap = true;
     }

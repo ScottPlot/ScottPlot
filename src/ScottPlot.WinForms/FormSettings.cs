@@ -31,14 +31,14 @@ namespace ScottPlot.UserControls
         private void PopualteGuiFromPlot()
         {
             // vertical axis
-            tbYlabel.Text = plt.GetSettings().yLabel.text;
+            tbYlabel.Text = plt.YAxis.Title;
             tbY2.Text = Math.Round(plt.Axis()[3], 4).ToString();
             tbY1.Text = Math.Round(plt.Axis()[2], 4).ToString();
             cbYminor.Checked = plt.GetSettings().ticks.displayYminor;
             cbYdateTime.Checked = plt.GetSettings().ticks.y.dateFormat;
 
             // horizontal axis
-            tbXlabel.Text = plt.GetSettings().xLabel.text;
+            tbXlabel.Text = plt.XAxis.Title;
             tbX2.Text = Math.Round(plt.Axis()[1], 4).ToString();
             tbX1.Text = Math.Round(plt.Axis()[0], 4).ToString();
             cbXminor.Checked = plt.GetSettings().ticks.displayXminor;
@@ -47,7 +47,7 @@ namespace ScottPlot.UserControls
             // tick display options
             cbTicksOffset.Checked = plt.GetSettings().ticks.useOffsetNotation;
             cbTicksMult.Checked = plt.GetSettings().ticks.useMultiplierNotation;
-            cbGrid.Checked = plt.GetSettings().HorizontalGridLines.IsVisible;
+            cbGrid.Checked = plt.XAxis.MajorTicks.GridLines;
 
             // legend
             cbLegend.Checked = plt.GetSettings().Legend.IsVisible;
