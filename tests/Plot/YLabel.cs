@@ -53,47 +53,6 @@ namespace ScottPlotTests.Plot
         }
 
         [Test]
-        public void Test_Label_DoesntClearWithRepeatedMethodCalls()
-        {
-            ScottPlot.Plot plt = TestTools.SamplePlotScatter();
-
-            string hashDefault = TestTools.HashedFig(plt, "default");
-            plt.YLabel(sampleLabel);
-            string hashAfterLabel = TestTools.HashedFig(plt, "labeled");
-
-            plt.YLabel();
-            string hashAfterEmptyCall = TestTools.HashedFig(plt, "empty call");
-
-            Assert.That(hashDefault != hashAfterLabel);
-            Assert.That(hashAfterEmptyCall == hashAfterLabel);
-        }
-
-        [Test]
-        public void Test_Visible_IsSettable()
-        {
-            ScottPlot.Plot plt = TestTools.SamplePlotScatter();
-
-            plt.YLabel(sampleLabel);
-            bool visibleByDefault = plt.GetSettings(false).yLabel.visible;
-            string hashVisible = TestTools.HashedFig(plt, "visible");
-
-            plt.YLabel(sampleLabel, enable: false);
-            bool visibleAfterDisabled = plt.GetSettings(false).yLabel.visible;
-            string hashInvisible = TestTools.HashedFig(plt, "invisible");
-
-            plt.YLabel(sampleLabel, enable: true);
-            bool visibleAfterEnabled = plt.GetSettings(false).yLabel.visible;
-            string hashVisibleAgain = TestTools.HashedFig(plt, "visible again");
-
-            Assert.IsTrue(visibleByDefault);
-            Assert.IsFalse(visibleAfterDisabled);
-            Assert.IsTrue(visibleAfterEnabled);
-
-            Assert.That(hashVisible != hashInvisible);
-            Assert.That(hashVisible == hashVisibleAgain);
-        }
-
-        [Test]
         public void Test_Color_IsSettable()
         {
             ScottPlot.Plot plt = TestTools.SamplePlotScatter();

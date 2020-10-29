@@ -26,11 +26,21 @@ namespace ScottPlot
         FigureBackground FigureBackground = new FigureBackground();
         DataBackground DataBackground = new DataBackground();
 
-        // Just 2 axes are supported now, but the structure is here to add more later
+        private readonly List<Axis> XAxes = new List<Axis>() {
+            new Axis() { Edge = Edge.Bottom, PixelSize = 40 },
+            new Axis() { Edge = Edge.Top, PixelSize = 40, Bold = true },
+        };
+        private readonly List<Axis> YAxes = new List<Axis>() {
+            new Axis() { Edge = Edge.Left, PixelSize = 60 },
+            new Axis() { Edge = Edge.Right, PixelSize = 60 }
+        };
+        private Axis[] AllAxes { get => XAxes.Concat(YAxes).ToArray(); }
+
+        // alises for the common 4 axes
         public Axis XAxis { get => XAxes[0]; }
         public Axis YAxis { get => YAxes[0]; }
-        private List<Axis> XAxes = new List<Axis>() { new Axis() { Edge = Edge.Bottom, PixelSize = 40 } };
-        private List<Axis> YAxes = new List<Axis>() { new Axis() { Edge = Edge.Left, PixelSize = 60 } };
+        public Axis XAxis2 { get => XAxes[1]; }
+        public Axis YAxis2 { get => YAxes[1]; }
 
         public Plot(int width = 800, int height = 600)
         {
@@ -113,16 +123,16 @@ namespace ScottPlot
             RenderBitmap(settings.bmpFigure);
         }
 
-        private PlotDimensions MakeDims(float width, float height, bool autoSizeAllAxes = false)
+        private PlotDimensions MakeDims(float width, float height, bool autoSizeAllAxes = true)
         {
             if (autoSizeAllAxes)
-                foreach (var axis in XAxes.Concat(YAxes))
+                foreach (var axis in AllAxes)
                     axis.AutoSize();
 
-            float padLeft = YAxes.Where(x => x.Edge == Edge.Left).Select(x => x.PixelSize).Sum();
-            float padRight = 10;
-            float padBottom = XAxes.Where(x => x.Edge == Edge.Bottom).Select(x => x.PixelSize).Sum();
-            float padTop = 10;
+            float padLeft = AllAxes.Where(x => x.Edge == Edge.Left).Select(x => x.PixelSize).Sum();
+            float padRight = AllAxes.Where(x => x.Edge == Edge.Right).Select(x => x.PixelSize).Sum();
+            float padBottom = AllAxes.Where(x => x.Edge == Edge.Bottom).Select(x => x.PixelSize).Sum();
+            float padTop = AllAxes.Where(x => x.Edge == Edge.Top).Select(x => x.PixelSize).Sum();
             return new PlotDimensions(
                 figureSize: new SizeF(width, height),
                 dataSize: new SizeF(width - padLeft - padRight, height - padTop - padBottom),
@@ -134,7 +144,7 @@ namespace ScottPlot
         private void RenderBitmap(Bitmap bmp)
         {
             RenderLegacyLayoutAdjustment();
-            
+
             var dims = MakeDims(bmp.Width, bmp.Height);
 
             if (NeedsAutoLayout)
@@ -180,6 +190,9 @@ namespace ScottPlot
             YAxis.SetTicks(settings.ticks.y.tickPositionsMajor, settings.ticks.y.tickLabels, settings.ticks.y.tickPositionsMinor);
             YAxis.Title = settings.yLabel.text;
             YAxis.Render(dims, bmp, lowQuality: false);
+
+            XAxis2.Render(dims, bmp, lowQuality: false);
+            YAxis2.Render(dims, bmp, lowQuality: false);
         }
 
         private void RenderPlottables(PlotDimensions dims, Bitmap bmp, bool lowQuality)

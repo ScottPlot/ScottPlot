@@ -17,6 +17,7 @@ namespace ScottPlot.Renderable
         public float PixelSize = 40;
 
         public string Title = null;
+        public bool Bold { get => TitleFont.Bold; set => TitleFont.Bold = value; }
         public Drawing.Font TitleFont = new Drawing.Font() { Size = 16 };
         public Drawing.Font TickFont = new Drawing.Font() { Size = 11 };
 
@@ -37,15 +38,16 @@ namespace ScottPlot.Renderable
             using (var tickFont = GDI.Font(MajorTicks.LabelFont))
             using (var titleFont = GDI.Font(TitleFont))
             {
-                var tickSize = LargestStringSize(MajorTicks.Labels, tickFont);
-                var titleSize = GDI.MeasureString(Title, titleFont);
+                var (width, height) = (MajorTicks?.Labels?.Length > 0) ? LargestStringSize(MajorTicks.Labels, tickFont) : (0, 0);
+                var titleSize = (!string.IsNullOrWhiteSpace(Title)) ? GDI.MeasureString(Title, titleFont) : new SizeF(0, 0);
+
                 if (IsHorizontal)
                 {
-                    PixelSize = tickSize.height + titleSize.Height;
+                    PixelSize = height + titleSize.Height;
                 }
                 else
                 {
-                    PixelSize = tickSize.width + titleSize.Height + 5;
+                    PixelSize = width + titleSize.Height + 5;
                 }
             }
         }
@@ -110,6 +112,9 @@ namespace ScottPlot.Renderable
 
         private void RenderTickLabels(PlotDimensions dims, Graphics gfx, Ticks tick)
         {
+            if (tick is null || tick.Labels is null || tick.Labels.Length == 0)
+                return;
+
             using (var font = GDI.Font(TickFont.Name, TickFont.Size, TickFont.Bold))
             using (var brush = GDI.Brush(TickFont.Color))
             using (var sf = GDI.StringFormat(HorizontalAlignment.Center, VerticalAlignment.Middle))
@@ -147,24 +152,25 @@ namespace ScottPlot.Renderable
                 PointF bottomRight = new PointF(dims.DataOffsetX + dims.DataWidth, dims.DataOffsetY + dims.DataHeight);
 
                 if (Edge == Edge.Bottom)
-                {
                     gfx.DrawLine(pen, bottomLeft, bottomRight);
-                }
                 else if (Edge == Edge.Left)
-                {
                     gfx.DrawLine(pen, bottomLeft, topLeft);
-                }
+                else if (Edge == Edge.Right)
+                    gfx.DrawLine(pen, bottomRight, topRight);
+                else if (Edge == Edge.Top)
+                    gfx.DrawLine(pen, topLeft, topRight);
                 else
-                {
                     throw new NotImplementedException();
-                }
             }
         }
 
         private void RenderTitle(PlotDimensions dims, Graphics gfx)
         {
-            PointF bottom = new PointF(dims.DataOffsetX + dims.DataWidth / 2, dims.DataOffsetY + dims.DataHeight);
-            PointF left = new PointF(dims.DataOffsetX, dims.DataOffsetY + dims.DataHeight / 2);
+            if (string.IsNullOrWhiteSpace(Title))
+                return;
+
+            float dataCenterX = dims.DataOffsetX + dims.DataWidth / 2;
+            float dataCenterY = dims.DataOffsetY + dims.DataHeight / 2;
 
             using (var font = GDI.Font(TitleFont.Name, TitleFont.Size, TitleFont.Bold))
             using (var brush = GDI.Brush(TitleFont.Color))
@@ -173,17 +179,25 @@ namespace ScottPlot.Renderable
             {
                 if (Edge == Edge.Bottom)
                 {
+                    sf.LineAlignment = StringAlignment.Far;
+                    gfx.DrawString(Title, font, brush, dataCenterX, dims.Height, sf);
+                }
+                else if (Edge == Edge.Top)
+                {
                     sf.LineAlignment = StringAlignment.Near;
-                    float padding = MajorTicks.MarkLength + MajorTicks.LabelFont.Size;
-                    gfx.DrawString(Title, font, brush, bottom.X, bottom.Y + padding, sf);
+                    gfx.DrawString(Title, font, brush, dataCenterX, 0, sf);
                 }
                 else if (Edge == Edge.Left)
                 {
                     sf.LineAlignment = StringAlignment.Near;
-                    gfx.TranslateTransform(0, left.Y);
+                    gfx.TranslateTransform(0, dataCenterY);
                     gfx.RotateTransform(-90);
                     gfx.DrawString(Title, font, brush, 0, 0, sf);
                     gfx.ResetTransform();
+                }
+                else if (Edge == Edge.Right)
+                {
+                    throw new NotImplementedException();
                 }
                 else
                 {
