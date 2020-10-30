@@ -136,7 +136,7 @@ namespace ScottPlot
 
         #region user control configuration
 
-        private bool plotContainsHeatmap => settings?.plottables.Where(p => p is Heatmap).Count() > 0;
+        private bool plotContainsHeatmap => settings?.Plottables.Where(p => p is Heatmap).Count() > 0;
 
         private bool enablePanning = true;
         private bool enableRightClickZoom = true;

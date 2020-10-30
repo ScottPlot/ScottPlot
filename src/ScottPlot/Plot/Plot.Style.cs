@@ -82,7 +82,7 @@ namespace ScottPlot
         {
             if (render)
                 GetBitmap();
-            if (!settings.axes.hasBeenSet && settings.plottables.Count > 0)
+            if (!settings.axes.hasBeenSet && settings.Plottables.Count > 0)
                 settings.AxisAuto();
 
             settings.ticks?.x?.Recalculate(settings); // this probably never happens

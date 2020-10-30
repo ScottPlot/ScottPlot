@@ -37,7 +37,7 @@ namespace ScottPlot
                 frameSize = frameSize
             };
 
-            settings.plottables.Add(plottableImage);
+            settings.Plottables.Add(plottableImage);
             return plottableImage;
         }
 

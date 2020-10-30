@@ -52,8 +52,8 @@ namespace ScottPlot
         }
 
         // plottables
-        public readonly List<IRenderable> plottables = new List<IRenderable>();
-        public Color GetNextColor() { return PlottablePalette.GetColor(plottables.Count); }
+        public readonly List<IRenderable> Plottables = new List<IRenderable>();
+        public Color GetNextColor() { return PlottablePalette.GetColor(Plottables.Count); }
 
         // settings the user can customize
         public readonly FigureBackground FigureBackground = new FigureBackground();
@@ -162,7 +162,7 @@ namespace ScottPlot
             var oldLimits = new Config.AxisLimits2D(axes.ToArray());
             var newLimits = new Config.AxisLimits2D();
 
-            foreach (var plottable in plottables)
+            foreach (var plottable in Plottables)
             {
                 if (plottable is IHasAxisLimits plottableWithLimits)
                 {
@@ -208,7 +208,7 @@ namespace ScottPlot
                 axes.Zoom(1 - horizontalMargin, 1 - verticalMargin);
             }
 
-            if (plottables.Count == 0)
+            if (Plottables.Count == 0)
             {
                 axes.x.hasBeenSet = false;
                 axes.y.hasBeenSet = false;

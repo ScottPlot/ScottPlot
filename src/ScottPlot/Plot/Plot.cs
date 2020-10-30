@@ -42,7 +42,7 @@ namespace ScottPlot
         {
             Plot plt2 = new Plot(settings.Width, settings.Height);
             var settings2 = plt2.GetSettings(false);
-            settings2.plottables.AddRange(settings.plottables);
+            settings2.Plottables.AddRange(settings.Plottables);
 
             // TODO: add a Copy() method to the settings module, or perhaps Update(existingSettings).
 
@@ -139,7 +139,7 @@ namespace ScottPlot
 
         private void RenderPlottables(PlotDimensions dims, Bitmap bmp, bool lowQuality)
         {
-            var plottablesToRender = settings.plottables.Where(x => x.IsVisible);
+            var plottablesToRender = settings.Plottables.Where(x => x.IsVisible);
             foreach (var plottable in plottablesToRender)
             {
                 try
@@ -200,12 +200,12 @@ namespace ScottPlot
 
         public void Add(IRenderable plottable)
         {
-            settings.plottables.Add(plottable);
+            settings.Plottables.Add(plottable);
         }
 
         [Obsolete("Access the 'Plot.Plottables' array instead", true)]
-        public List<IRenderable> GetPlottables() => settings.plottables;
-        public IRenderable[] Plottables { get => settings.plottables.ToArray(); }
+        public List<IRenderable> GetPlottables() => settings.Plottables;
+        public IRenderable[] Plottables { get => settings.Plottables.ToArray(); }
 
         public List<IDraggable> GetDraggables()
         {

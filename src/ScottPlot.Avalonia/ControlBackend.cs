@@ -27,7 +27,7 @@ namespace ScottPlot.Interactive
         protected bool isDesignerMode;
         public double dpiScaleInput { get; protected set; } = 1;
         public double dpiScaleOutput { get; protected set; } = 1;
-        private bool plotContainsHeatmap => settings?.plottables.Where(p => p is Heatmap).Count() > 0;
+        private bool plotContainsHeatmap => settings?.Plottables.Where(p => p is Heatmap).Count() > 0;
 
 
         public List<ContextMenuItem> contextMenuItems;
