@@ -74,13 +74,8 @@ namespace ScottPlot
             TightenLayout();
         }
 
-        public void Benchmark(bool show = true, bool toggle = false)
-        {
-            if (toggle)
-                settings.Benchmark.IsVisible = !settings.Benchmark.IsVisible;
-            else
-                settings.Benchmark.IsVisible = show;
-        }
+        public void Benchmark(bool show = true, bool toggle = false) =>
+            BenchmarkMessage.IsVisible = toggle ? !BenchmarkMessage.IsVisible : show;
 
         [Obsolete("dont use this old system", false)]
         public void TightenLayout(int? padding = null, bool render = false)

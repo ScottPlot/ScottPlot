@@ -88,10 +88,7 @@ namespace ScottPlot.Demo.WinForms
 
         private void formsPlot1_Rendered(object sender, EventArgs e)
         {
-            if (formsPlot1.Visible)
-                tbBenchmark.Text = formsPlot1.plt.GetSettings(false).Benchmark.ToString();
-            else
-                tbBenchmark.Text = "This plot is a non-interactive Bitmap";
+            tbBenchmark.Text = formsPlot1.Visible ? formsPlot1.plt.BenchmarkMessage.Text : "This plot is a non-interactive Bitmap";
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.VisualTree;
+using ScottPlot.Drawing;
 using ScottPlot.Interactive;
 
 using Ava = global::Avalonia;
@@ -38,9 +39,11 @@ namespace ScottPlot.Avalonia
             {
                 // hide the version info
                 mainGrid.RowDefinitions[0].Height = new GridLength(0);
-                //CanvasPlot_SizeChanged(null, null);
-                //dpiScaleInput = settings.gfxFigure.DpiX / 96; THIS IS ONLY NECESSARY ON WPF
-                dpiScaleOutput = settings.gfxFigure.DpiX / 96;
+                using (var bmp = new Bitmap(1, 1))
+                using (var gfx = GDI.Graphics(bmp, lowQuality: true))
+                {
+                    dpiScaleOutput = gfx.DpiX / 96;
+                }
                 view.Find<StackPanel>("canvasDesigner").Background = view.transparentBrush;
                 view.Find<Canvas>("canvasPlot").Background = view.transparentBrush;
             }

@@ -23,8 +23,10 @@ namespace ScottPlot
         private readonly Settings settings;
 
         // settings the user can customize
-        readonly FigureBackground FigureBackground = new FigureBackground();
-        readonly DataBackground DataBackground = new DataBackground();
+        public readonly FigureBackground FigureBackground = new FigureBackground();
+        public readonly DataBackground DataBackground = new DataBackground();
+        public readonly BenchmarkMessage BenchmarkMessage = new BenchmarkMessage();
+        public readonly ErrorMessage ErrorMessage = new ErrorMessage();
 
         // axes contain axis label, tick, and grid settings
         private readonly List<Axis> XAxes = new List<Axis>() {
@@ -137,6 +139,7 @@ namespace ScottPlot
         private bool NeedsAutoLayout = true;
         private void RenderBitmap(Bitmap bmp)
         {
+            BenchmarkMessage.Restart();
             RenderLegacyLayoutAdjustment();
 
             var dims = MakeDims(bmp.Width, bmp.Height);
@@ -204,7 +207,12 @@ namespace ScottPlot
 
         private void RenderAfterPlottables(PlotDimensions dims, Bitmap bmp, bool lowQuality)
         {
+            BenchmarkMessage.Stop();
+            // TODO: set up validation check reporting
+            //ErrorMessage.Text = "Error Message";
 
+            BenchmarkMessage.Render(dims, bmp, lowQuality);
+            ErrorMessage.Render(dims, bmp, lowQuality);
         }
 
         public Bitmap GetBitmap(bool renderFirst = true, bool lowQuality = false)

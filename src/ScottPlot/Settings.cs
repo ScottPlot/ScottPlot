@@ -35,7 +35,6 @@ namespace ScottPlot
         // Renderables (eventually store these in a List)
         public readonly FigureBackground FigureBackground = new FigureBackground();
         public readonly DataBackground DataBackground = new DataBackground();
-        public readonly Benchmark Benchmark = new Benchmark();
         public readonly ErrorMessage ErrorMessage = new ErrorMessage();
         public readonly Legend Legend = new Legend();
 
@@ -43,8 +42,6 @@ namespace ScottPlot
         public readonly List<IRenderable> plottables = new List<IRenderable>();
 
         public Config.Misc misc = new Config.Misc();
-        //public Config.Benchmark benchmark = new Config.Benchmark();
-        //public Config.Grid grid = new Config.Grid();
         public Config.Axes axes = new Config.Axes();
         public readonly Config.Layout layout = new Config.Layout();
         public Config.Ticks ticks = new Config.Ticks();

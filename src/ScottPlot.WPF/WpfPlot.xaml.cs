@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using ScottPlot.WinForms.Events;
 using ScottPlot.Plottable;
+using ScottPlot.Drawing;
 
 namespace ScottPlot
 {
@@ -93,7 +94,11 @@ namespace ScottPlot
                 // hide the version info
                 mainGrid.RowDefinitions[0].Height = new GridLength(0);
                 CanvasPlot_SizeChanged(null, null);
-                dpiScale = settings.gfxFigure.DpiX / 96;
+                using (var bmp = new System.Drawing.Bitmap(1, 1))
+                using (var gfx = GDI.Graphics(bmp, lowQuality: true))
+                {
+                    dpiScale = gfx.DpiX / 96;
+                }
                 canvasDesigner.Background = Brushes.Transparent;
                 canvasPlot.Background = Brushes.Transparent;
             }
