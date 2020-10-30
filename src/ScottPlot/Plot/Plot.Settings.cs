@@ -24,7 +24,6 @@ namespace ScottPlot
         {
             settings.misc.antiAliasFigure = figure;
             settings.misc.antiAliasData = data;
-            settings.Legend.AntiAlias = legend;
         }
 
         public void SetCulture(System.Globalization.CultureInfo culture)

@@ -27,6 +27,7 @@ namespace ScottPlot
         public readonly DataBackground DataBackground = new DataBackground();
         public readonly BenchmarkMessage BenchmarkMessage = new BenchmarkMessage();
         public readonly ErrorMessage ErrorMessage = new ErrorMessage();
+        public readonly Legend CornerLegend = new Legend();
 
         // axes contain axis label, tick, and grid settings
         private readonly List<Axis> XAxes = new List<Axis>() {
@@ -201,6 +202,8 @@ namespace ScottPlot
 
         private void RenderAfterPlottables(PlotDimensions dims, Bitmap bmp, bool lowQuality)
         {
+            CornerLegend.UpdateLegendItems(Plottables);
+            CornerLegend.Render(dims, bmp, lowQuality);
             BenchmarkMessage.Stop();
             // TODO: set up validation check reporting
             //ErrorMessage.Text = "Error Message";

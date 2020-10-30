@@ -7,6 +7,8 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Text;
 using ScottPlot.Plottable;
+using System.Linq;
+using System.Diagnostics;
 
 namespace ScottPlot.Renderable
 {
@@ -35,39 +37,31 @@ namespace ScottPlot.Renderable
         private float SymbolPad { get { return FontSize / 3; } }
         private float MarkerWidth { get { return FontSize / 2; } }
 
-        public void Render(Settings settings)
+        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            if (IsVisible is false)
+            if (IsVisible is false || LegendItems is null || LegendItems.Length == 0)
                 return;
 
-            using (var gfx = Graphics.FromImage(settings.bmpFigure))
+            using (var gfx = GDI.Graphics(bmp, lowQuality))
             using (var font = GDI.Font(FontName, FontSize, FontBold))
             {
-                var items = GetLegendItems(settings);
-                if (items.Length == 0)
-                    return;
-
-                var (maxLabelWidth, maxLabelHeight, width, height) = GetDimensions(gfx, items, font);
-                var (x, y) = GetLocationPx(settings, width, height);
-                RenderOnBitmap(gfx, items, font, x, y, width, height, maxLabelHeight);
+                var (maxLabelWidth, maxLabelHeight, width, height) = GetDimensions(gfx, LegendItems, font);
+                var (x, y) = GetLocationPx(dims, width, height);
+                RenderOnBitmap(gfx, LegendItems, font, x, y, width, height, maxLabelHeight);
             }
         }
 
-        public Bitmap GetBitmap(Settings settings)
+        public Bitmap GetBitmap()
         {
             using (var bmpTemp = new Bitmap(1, 1))
-            using (var gfxTemp = Graphics.FromImage(bmpTemp))
+            using (var gfxTemp = GDI.Graphics(bmpTemp, true))
             using (var font = GDI.Font(FontName, FontSize, FontBold))
             {
-                var items = GetLegendItems(settings);
-                if (items.Length == 0)
-                    return null;
-
-                var (maxLabelWidth, maxLabelHeight, width, height) = GetDimensions(gfxTemp, items, font);
+                var (maxLabelWidth, maxLabelHeight, width, height) = GetDimensions(gfxTemp, LegendItems, font);
                 Bitmap bmp = new Bitmap((int)width, (int)height, PixelFormat.Format32bppPArgb);
 
                 using (var gfx = Graphics.FromImage(bmp))
-                    RenderOnBitmap(gfx, items, font, 0, 0, width, height, maxLabelHeight);
+                    RenderOnBitmap(gfx, LegendItems, font, 0, 0, width, height, maxLabelHeight);
 
                 return bmp;
             }
@@ -164,38 +158,28 @@ namespace ScottPlot.Renderable
             }
         }
 
-        public LegendItem[] GetLegendItems(Settings settings)
+        private LegendItem[] LegendItems;
+        public void UpdateLegendItems(IRenderable[] renderables)
         {
-            var items = new List<LegendItem>();
-
-            foreach (var plottable in settings.plottables)
-            {
-                if (plottable is IHasLegendItems plottableWithLegendItems)
-                {
-                    if (plottableWithLegendItems.LegendItems is null)
-                        continue;
-
-                    foreach (var plottableItem in plottableWithLegendItems.LegendItems)
-                        if (plottableItem.label != null)
-                            items.Add(plottableItem);
-                }
-            }
-
+            LegendItems = renderables.Where(x => x is IHasLegendItems)
+                                     .Select(x => (IHasLegendItems)x)
+                                     .Where(x => x.LegendItems != null)
+                                     .SelectMany(x => x.LegendItems)
+                                     .Where(x => !string.IsNullOrWhiteSpace(x.label))
+                                     .ToArray();
             if (ReverseOrder)
-                items.Reverse();
-
-            return items.ToArray();
+                Array.Reverse(LegendItems);
         }
 
-        private (float x, float y) GetLocationPx(Settings settings, float width, float height)
+        private (float x, float y) GetLocationPx(PlotDimensions dims, float width, float height)
         {
-            float leftX = settings.dataOrigin.X + Padding;
-            float rightX = settings.dataOrigin.X + settings.dataSize.Width - Padding - width;
-            float centerX = settings.dataOrigin.X + settings.dataSize.Width / 2 - width / 2;
+            float leftX = dims.DataOffsetX + Padding;
+            float rightX = dims.DataOffsetX + dims.DataWidth - Padding - width;
+            float centerX = dims.DataOffsetX + dims.DataWidth / 2 - width / 2;
 
-            float topY = settings.dataOrigin.Y + Padding;
-            float bottomY = settings.dataOrigin.Y + settings.dataSize.Height - Padding - height;
-            float centerY = settings.dataOrigin.Y + settings.dataSize.Height / 2 - height / 2;
+            float topY = dims.DataOffsetY + Padding;
+            float bottomY = dims.DataOffsetY + dims.DataHeight - Padding - height;
+            float centerY = dims.DataOffsetY + dims.DataHeight / 2 - height / 2;
 
             switch (Location)
             {
@@ -220,11 +204,6 @@ namespace ScottPlot.Renderable
                 default:
                     throw new NotImplementedException();
             }
-        }
-
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
-        {
-            throw new NotImplementedException();
         }
     }
 }

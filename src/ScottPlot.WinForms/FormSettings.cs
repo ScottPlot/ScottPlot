@@ -50,7 +50,7 @@ namespace ScottPlot.UserControls
             cbGrid.Checked = plt.XAxis.MajorTicks.GridEnable;
 
             // legend
-            cbLegend.Checked = plt.GetSettings().Legend.IsVisible;
+            cbLegend.Checked = plt.CornerLegend.IsVisible;
 
             // image quality
             rbQualityLow.Checked = !plt.GetSettings().misc.antiAliasData;

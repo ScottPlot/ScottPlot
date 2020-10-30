@@ -21,31 +21,22 @@ namespace ScottPlot
             bool? reverseOrder = null
             )
         {
-            settings.Legend.IsVisible = enableLegend;
-            if (fontName != null)
-                settings.Legend.FontName = fontName;
-            if (fontSize != null)
-                settings.Legend.FontSize = fontSize.Value;
-            if (fontColor != null)
-                settings.Legend.FontColor = fontColor.Value;
-            if (backColor != null)
-                settings.Legend.FillColor = backColor.Value;
-            if (frameColor != null)
-                settings.Legend.OutlineColor = frameColor.Value;
-            if (reverseOrder != null)
-                settings.Legend.ReverseOrder = reverseOrder.Value;
-            if (bold != null)
-                settings.Legend.FontBold = bold.Value;
-            if (fixedLineWidth != null)
-                settings.Legend.FixedLineWidth = fixedLineWidth.Value;
-
-            settings.Legend.Location = location;
+            CornerLegend.IsVisible = enableLegend;
+            CornerLegend.FontName = fontName ?? CornerLegend.FontName;
+            CornerLegend.FontSize = fontSize ?? CornerLegend.FontSize;
+            CornerLegend.FontColor = fontColor ?? CornerLegend.FontColor;
+            CornerLegend.FillColor = backColor ?? CornerLegend.FillColor;
+            CornerLegend.OutlineColor = frameColor ?? CornerLegend.OutlineColor;
+            CornerLegend.ReverseOrder = reverseOrder ?? CornerLegend.ReverseOrder;
+            CornerLegend.FontBold = bold ?? CornerLegend.FontBold;
+            CornerLegend.FixedLineWidth = fixedLineWidth ?? CornerLegend.FixedLineWidth;
+            CornerLegend.Location = location;
         }
 
         public Bitmap GetLegendBitmap()
         {
             RenderBitmap();
-            return settings.Legend.GetBitmap(settings);
+            return CornerLegend.GetBitmap();
         }
     }
 }
