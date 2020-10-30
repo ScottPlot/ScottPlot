@@ -5,11 +5,17 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using ScottPlot.Drawing;
+using System.Globalization;
 
 namespace ScottPlot
 {
+    /// <summary>
+    /// This module holds state for figure dimensions, axis limits, plot contents, and styling options.
+    /// A plot can be duplicated by copying the full stae of this settings module.
+    /// </summary>
     public class Settings
     {
+        // TODO: perhaps make this an object with error checking for bad state
         public int Width { get; private set; }
         public int Height { get; private set; }
         public float DataOffsetX { get; private set; }
@@ -20,25 +26,34 @@ namespace ScottPlot
         /// <summary>
         /// Return dimensions for the current figure size and axis limits
         /// </summary>
-        public PlotDimensions MakeDims(bool autoSizeAllAxes = true)
+        public PlotDimensions Dimensions
         {
-            if (autoSizeAllAxes)
-                foreach (var axis in AllAxes)
-                    axis.AutoSize();
+            get
+            {
+                float padLeft = AllAxes.Where(x => x.Edge == Edge.Left).Select(x => x.PixelSize).Sum();
+                float padRight = AllAxes.Where(x => x.Edge == Edge.Right).Select(x => x.PixelSize).Sum();
+                float padBottom = AllAxes.Where(x => x.Edge == Edge.Bottom).Select(x => x.PixelSize).Sum();
+                float padTop = AllAxes.Where(x => x.Edge == Edge.Top).Select(x => x.PixelSize).Sum();
+                return new PlotDimensions(
+                    figureSize: new SizeF(Width, Height),
+                    dataSize: new SizeF(Width - padLeft - padRight, Height - padTop - padBottom),
+                    dataOffset: new PointF(padLeft, padTop),
+                    axisLimits: axes.Limits);
+            }
+        }
 
-            float padLeft = AllAxes.Where(x => x.Edge == Edge.Left).Select(x => x.PixelSize).Sum();
-            float padRight = AllAxes.Where(x => x.Edge == Edge.Right).Select(x => x.PixelSize).Sum();
-            float padBottom = AllAxes.Where(x => x.Edge == Edge.Bottom).Select(x => x.PixelSize).Sum();
-            float padTop = AllAxes.Where(x => x.Edge == Edge.Top).Select(x => x.PixelSize).Sum();
-            return new PlotDimensions(
-                figureSize: new SizeF(Width, Height),
-                dataSize: new SizeF(Width - padLeft - padRight, Height - padTop - padBottom),
-                dataOffset: new PointF(padLeft, padTop),
-                axisLimits: axes.Limits);
+        /// <summary>
+        /// Measure all axis titles and ticks to determine how large each should be
+        /// </summary>
+        public void AutoSizeLayout()
+        {
+            foreach (var axis in AllAxes)
+                axis.AutoSize();
         }
 
         // plottables
         public readonly List<IRenderable> plottables = new List<IRenderable>();
+        public Color GetNextColor() { return PlottablePalette.GetColor(plottables.Count); }
 
         // settings the user can customize
         public readonly FigureBackground FigureBackground = new FigureBackground();
@@ -46,6 +61,8 @@ namespace ScottPlot
         public readonly BenchmarkMessage BenchmarkMessage = new BenchmarkMessage();
         public readonly ErrorMessage ErrorMessage = new ErrorMessage();
         public readonly Legend CornerLegend = new Legend();
+        public CultureInfo Culture = CultureInfo.DefaultThreadCurrentCulture;
+        public Palette PlottablePalette = Palette.Category10;
 
         // axes contain axis label, tick, and grid settings
         public readonly List<Axis> XAxes = new List<Axis>() {
@@ -65,18 +82,14 @@ namespace ScottPlot
 
         /*
          * ##################################################################################
-         * ##################################################################################
-         * ##################################################################################
+         * # OLD SETTINGS WHICH I AM WORKING TO STRANGLE
+         * 
          */
 
         public Config.Misc misc = new Config.Misc();
         public Config.Axes axes = new Config.Axes();
         public readonly Config.Layout layout = new Config.Layout();
         public Config.Ticks ticks = new Config.Ticks();
-        public System.Globalization.CultureInfo culture = System.Globalization.CultureInfo.DefaultThreadCurrentCulture;
-
-        // default colorset
-        public Drawing.Colorset colorset = Drawing.Colorset.Category10;
 
         // mouse interaction
         public Rectangle? mouseMiddleRect = null;
@@ -87,10 +100,7 @@ namespace ScottPlot
         public double xAxisUnitsPerPixel { get { return 1.0 / xAxisScale; } }
         public double yAxisUnitsPerPixel { get { return 1.0 / yAxisScale; } }
 
-        // this has to be here because color module is unaware of plottables list
-        public Color GetNextColor() { return colorset.GetColor(plottables.Count); }
-
-        public void Resize(int width, int height, bool useMeasuredStrings = false)
+        public void Resize(int width, int height)
         {
             layout.Update(width, height);
 
