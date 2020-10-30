@@ -308,18 +308,18 @@ namespace ScottPlot
                 int y1 = Math.Min(e.Location.Y, ((Point)mouseMiddleDownLocation).Y);
                 int y2 = Math.Max(e.Location.Y, ((Point)mouseMiddleDownLocation).Y);
 
-                Point origin = new Point(x1 - settings.dataOrigin.X, y1 - settings.dataOrigin.Y);
+                Point origin = new Point(x1 - (int)settings.DataOffsetX, y1 - (int)settings.DataOffsetY);
                 Size size = new Size(x2 - x1, y2 - y1);
 
                 if (lockVerticalAxis)
                 {
                     origin.Y = 0;
-                    size.Height = settings.dataSize.Height - 1;
+                    size.Height = (int)settings.DataHeight - 1;
                 }
                 if (lockHorizontalAxis)
                 {
                     origin.X = 0;
-                    size.Width = settings.dataSize.Width - 1;
+                    size.Width = (int)settings.DataWidth - 1;
                 }
 
                 settings.mouseMiddleRect = new Rectangle(origin, size);

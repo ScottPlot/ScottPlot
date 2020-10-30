@@ -217,18 +217,18 @@ namespace ScottPlot.Interactive
                 double y1 = Math.Min(mouseLocation.Y, mouseMiddleDownLocation.Value.Y);
                 double y2 = Math.Max(mouseLocation.Y, mouseMiddleDownLocation.Value.Y);
 
-                var origin = new System.Drawing.Point((int)x1 - settings.dataOrigin.X, (int)y1 - settings.dataOrigin.Y);
+                var origin = new System.Drawing.Point((int)x1 - (int)settings.DataOffsetX, (int)y1 - (int)settings.DataOffsetY);
                 var size = new System.Drawing.Size((int)(x2 - x1), (int)(y2 - y1));
 
                 if (lockVerticalAxis)
                 {
                     origin.Y = 0;
-                    size.Height = settings.dataSize.Height - 1;
+                    size.Height = (int)settings.DataHeight - 1;
                 }
                 if (lockHorizontalAxis)
                 {
                     origin.X = 0;
-                    size.Width = settings.dataSize.Width - 1;
+                    size.Width = (int)settings.DataWidth - 1;
                 }
 
                 settings.mouseMiddleRect = new System.Drawing.Rectangle(origin, size);

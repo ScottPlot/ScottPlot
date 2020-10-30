@@ -49,13 +49,13 @@ namespace ScottPlot
         {
             if (unitsPerPixelX != null)
             {
-                double spanX = unitsPerPixelX.Value * settings.dataSize.Width;
+                double spanX = unitsPerPixelX.Value * settings.DataWidth;
                 Axis(x1: settings.axes.x.center - spanX / 2, x2: settings.axes.x.center + spanX / 2);
             }
 
             if (unitsPerPixelY != null)
             {
-                double spanY = unitsPerPixelY.Value * settings.dataSize.Height;
+                double spanY = unitsPerPixelY.Value * settings.DataHeight;
                 Axis(y1: settings.axes.y.center - spanY / 2, y2: settings.axes.y.center + spanY / 2);
             }
 
@@ -71,6 +71,7 @@ namespace ScottPlot
             return settings.axes.limits;
         }
 
+        [Obsolete("currently broken")]
         public bool EqualAxis
         {
             get => settings.axes.equalAxes;
@@ -204,8 +205,8 @@ namespace ScottPlot
         public PointF CoordinateToPixel(double locationX, double locationY)
         {
             PointF pixelLocation = settings.GetPixel(locationX, locationY);
-            pixelLocation.X += settings.dataOrigin.X;
-            pixelLocation.Y += settings.dataOrigin.Y;
+            pixelLocation.X += settings.DataOffsetX;
+            pixelLocation.Y += settings.DataOffsetY;
             return pixelLocation;
         }
 

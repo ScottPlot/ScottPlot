@@ -88,8 +88,8 @@ namespace ScottPlot
             settings.ticks?.x?.Recalculate(settings); // this probably never happens
             settings.ticks?.y?.Recalculate(settings); // this probably never happens
 
-            settings.Resize(settings.figureSize.Width, settings.figureSize.Height);
-            settings.layout.Update(settings.figureSize.Width, settings.figureSize.Height);
+            settings.Resize(settings.Width, settings.Height);
+            settings.layout.Update(settings.Width, settings.Height);
             settings.layout.tighteningOccurred = true;
 
             Resize();

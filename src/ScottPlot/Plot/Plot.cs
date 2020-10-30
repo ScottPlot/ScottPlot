@@ -56,14 +56,14 @@ namespace ScottPlot
         }
 
         public override string ToString() =>
-            $"ScottPlot ({settings.figureSize}) with {Plottables.Length:n0} plot objects";
+            $"ScottPlot ({settings.Width}x{settings.Height}) with {Plottables.Length:n0} plot objects";
 
         /// <summary>
         /// Return a new Plot with all the same Plottables (and some of the styles) of this one
         /// </summary>
         public Plot Copy()
         {
-            Plot plt2 = new Plot(settings.figureSize.Width, settings.figureSize.Height);
+            Plot plt2 = new Plot(settings.Width, settings.Height);
             var settings2 = plt2.GetSettings(false);
             settings2.plottables.AddRange(settings.plottables);
 
@@ -81,9 +81,9 @@ namespace ScottPlot
         public void Resize(int? width = null, int? height = null)
         {
             if (width == null)
-                width = settings.figureSize.Width;
+                width = settings.Width;
             if (height == null)
-                height = settings.figureSize.Height;
+                height = settings.Height;
 
             if (width < 1)
                 width = 1;
@@ -100,7 +100,7 @@ namespace ScottPlot
         }
 
         private Bitmap RenderBitmap(bool lowQuality = false) =>
-             RenderBitmap(settings.figureSize.Width, settings.figureSize.Height);
+             RenderBitmap(settings.Width, settings.Height);
 
         private Bitmap RenderBitmap(int width, int height, bool lowQuality = false) =>
             RenderBitmap(new Bitmap(width, height, PixelFormat.Format32bppPArgb));
@@ -213,9 +213,6 @@ namespace ScottPlot
         public void SaveFig(string filePath, bool renderFirst = true)
         {
             Bitmap bmp = RenderBitmap();
-
-            if (settings.figureSize.Width == 1 || settings.figureSize.Height == 1)
-                throw new Exception("The figure has not yet been sized (it is 1px by 1px). Resize the figure and try to save again.");
 
             filePath = System.IO.Path.GetFullPath(filePath);
             string fileFolder = System.IO.Path.GetDirectoryName(filePath);
