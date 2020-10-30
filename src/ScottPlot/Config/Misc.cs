@@ -9,10 +9,6 @@ namespace ScottPlot.Config
 {
     public class Misc
     {
-        // drawing options
-        public bool antiAliasData = true;
-        public bool antiAliasFigure = true;
-
         // string formats (position indicates where their origin is)
         public StringFormat sfEast = new StringFormat() { LineAlignment = StringAlignment.Center, Alignment = StringAlignment.Far };
         public StringFormat sfNorth = new StringFormat() { LineAlignment = StringAlignment.Near, Alignment = StringAlignment.Center };

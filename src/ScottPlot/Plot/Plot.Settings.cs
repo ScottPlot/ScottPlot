@@ -20,11 +20,8 @@ namespace ScottPlot
                 Debug.WriteLine("WARNING: every data point will be validated on each render, reducing performance");
         }
 
-        public void AntiAlias(bool figure = true, bool data = false, bool legend = false)
-        {
-            settings.misc.antiAliasFigure = figure;
-            settings.misc.antiAliasData = data;
-        }
+        [Obsolete("define lowQuality argument when calling Render or SaveFig")]
+        public void AntiAlias(bool figure = true, bool data = false, bool legend = false) { }
 
         public void SetCulture(System.Globalization.CultureInfo culture)
         {

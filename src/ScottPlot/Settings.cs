@@ -11,7 +11,6 @@ namespace ScottPlot
         public Size figureSize { get { return layout.plot.Size; } }
         public Point dataOrigin { get { return layout.data.Location; } }
         public Size dataSize { get { return layout.data.Size; } }
-        public Bitmap bmpFigure;
 
         // plottables
         public readonly List<IRenderable> plottables = new List<IRenderable>();

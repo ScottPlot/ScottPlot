@@ -15,6 +15,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace ScottPlot
 {
@@ -90,17 +91,6 @@ namespace ScottPlot
                 height = 1;
 
             settings.Resize((int)width, (int)height);
-            InitializeBitmaps();
-        }
-
-        private void InitializeBitmaps()
-        {
-            settings.bmpFigure = null;
-
-            if (settings.figureSize.Width > 0 && settings.figureSize.Height > 0)
-            {
-                settings.bmpFigure = new Bitmap(settings.figureSize.Width, settings.figureSize.Height, PixelFormat.Format32bppPArgb);
-            }
         }
 
         public Bitmap Render(Bitmap renderOnThis)
@@ -109,10 +99,11 @@ namespace ScottPlot
             return renderOnThis;
         }
 
-        private void RenderBitmap()
-        {
-            RenderBitmap(settings.bmpFigure);
-        }
+        private Bitmap RenderBitmap(bool lowQuality = false) =>
+             RenderBitmap(settings.figureSize.Width, settings.figureSize.Height);
+
+        private Bitmap RenderBitmap(int width, int height, bool lowQuality = false) =>
+            RenderBitmap(new Bitmap(width, height, PixelFormat.Format32bppPArgb));
 
         private PlotDimensions MakeDims(float width, float height, bool autoSizeAllAxes = true)
         {
@@ -132,7 +123,7 @@ namespace ScottPlot
         }
 
         private bool NeedsAutoLayout = true;
-        private void RenderBitmap(Bitmap bmp)
+        private Bitmap RenderBitmap(Bitmap bmp, bool lowQuality = false)
         {
             BenchmarkMessage.Restart();
             RenderLegacyLayoutAdjustment();
@@ -147,11 +138,10 @@ namespace ScottPlot
                 NeedsAutoLayout = false;
             }
 
-            bool lowQuality = !settings.misc.antiAliasData;
-
             RenderBeforePlottables(dims, bmp, lowQuality);
             RenderPlottables(dims, bmp, lowQuality);
             RenderAfterPlottables(dims, bmp, lowQuality);
+            return bmp;
         }
 
         private void RenderLegacyLayoutAdjustment()
@@ -217,30 +207,12 @@ namespace ScottPlot
             if (NeedsAutoLayout)
                 RenderBitmap();
 
-            if (lowQuality)
-            {
-                bool currentAAData = settings.misc.antiAliasData; // save currently using AA setting
-                settings.misc.antiAliasData = false; // disable AA for render
-                if (renderFirst)
-                {
-                    RenderBitmap();
-                }
-                settings.misc.antiAliasData = currentAAData; // restore saved AA setting
-            }
-            else
-            {
-                if (renderFirst)
-                {
-                    RenderBitmap();
-                }
-            }
-            return settings.bmpFigure;
+            return RenderBitmap();
         }
 
         public void SaveFig(string filePath, bool renderFirst = true)
         {
-            if (renderFirst)
-                RenderBitmap();
+            Bitmap bmp = RenderBitmap();
 
             if (settings.figureSize.Width == 1 || settings.figureSize.Height == 1)
                 throw new Exception("The figure has not yet been sized (it is 1px by 1px). Resize the figure and try to save again.");
@@ -263,7 +235,7 @@ namespace ScottPlot
             else
                 throw new NotImplementedException("Extension not supported: " + extension);
 
-            settings.bmpFigure.Save(filePath, imageFormat);
+            bmp.Save(filePath, imageFormat);
         }
 
         public void Add(IRenderable plottable)
