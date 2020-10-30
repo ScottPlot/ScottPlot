@@ -16,7 +16,7 @@ namespace FormsPlotSandbox
         {
             InitializeComponent();
             formsPlot1.plt.Grid(color: Color.Gray);
-            checkBox2.Checked = formsPlot1.plt.YAxis.MajorTicks.PixelSnap;
+            checkBox2.Checked = formsPlot1.plt.GetSettings(false).YAxis.MajorTicks.PixelSnap;
             checkBox3.Checked = formsPlot1.plt.GetSettings(false).ticks.snapToNearestPixel;
         }
 

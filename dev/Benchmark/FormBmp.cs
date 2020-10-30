@@ -41,7 +41,7 @@ namespace Benchmark
                 {
                     progressBar1.Value = rendersPerSize * i + j + 1;
                     plt.GetBitmap(renderFirst: true);
-                    times[j] = plt.BenchmarkMessage.MSec;
+                    times[j] = plt.GetSettings(false).BenchmarkMessage.MSec;
                 }
 
                 mean[i] = ScottPlot.Statistics.Common.Mean(times);

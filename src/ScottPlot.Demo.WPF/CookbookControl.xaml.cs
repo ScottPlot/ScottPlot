@@ -32,7 +32,7 @@ namespace ScottPlot.Demo.WPF
         private void WpfPlot1_Rendered(object sender, EventArgs e)
         {
             if (wpfPlot1.Visibility == Visibility.Visible)
-                BenchmarkLabel.Content = wpfPlot1.plt.BenchmarkMessage.Text;
+                BenchmarkLabel.Content = wpfPlot1.plt.GetSettings(false).BenchmarkMessage.Text;
             else
                 BenchmarkLabel.Content = "This plot is a non-interactive Bitmap";
         }

@@ -23,29 +23,6 @@ namespace ScottPlot
     {
         private readonly Settings settings;
 
-        // settings the user can customize
-        public readonly FigureBackground FigureBackground = new FigureBackground();
-        public readonly DataBackground DataBackground = new DataBackground();
-        public readonly BenchmarkMessage BenchmarkMessage = new BenchmarkMessage();
-        public readonly ErrorMessage ErrorMessage = new ErrorMessage();
-        public readonly Legend CornerLegend = new Legend();
-
-        // axes contain axis label, tick, and grid settings
-        private readonly List<Axis> XAxes = new List<Axis>() {
-            new Axis() { Edge = Edge.Bottom, PixelSize = 40, MajorGrid = true },
-            new Axis() { Edge = Edge.Top, PixelSize = 40, Bold = true },
-        };
-        private readonly List<Axis> YAxes = new List<Axis>() {
-            new Axis() { Edge = Edge.Left, PixelSize = 60, MajorGrid = true },
-            new Axis() { Edge = Edge.Right, PixelSize = 60 }
-        };
-        private Axis[] AllAxes { get => XAxes.Concat(YAxes).ToArray(); }
-
-        public Axis XAxis { get => XAxes[0]; } // bottom
-        public Axis XAxis2 { get => XAxes[1]; } // top (title)
-        public Axis YAxis { get => YAxes[0]; } // left
-        public Axis YAxis2 { get => YAxes[1]; } // right
-
         public Plot(int width = 800, int height = 600)
         {
             if (width <= 0 || height <= 0)
@@ -70,9 +47,9 @@ namespace ScottPlot
             // TODO: add a Copy() method to the settings module, or perhaps Update(existingSettings).
 
             // copy over only the most relevant styles
-            plt2.Title(XAxis2.Title);
-            plt2.XLabel(XAxis.Title);
-            plt2.YLabel(YAxis.Title);
+            plt2.Title(settings.XAxis2.Title);
+            plt2.XLabel(settings.XAxis.Title);
+            plt2.YLabel(settings.YAxis.Title);
 
             plt2.AxisAuto();
             return plt2;
@@ -105,36 +82,21 @@ namespace ScottPlot
         private Bitmap RenderBitmap(int width, int height, bool lowQuality = false) =>
             RenderBitmap(new Bitmap(width, height, PixelFormat.Format32bppPArgb));
 
-        private PlotDimensions MakeDims(float width, float height, bool autoSizeAllAxes = true)
-        {
-            if (autoSizeAllAxes)
-                foreach (var axis in AllAxes)
-                    axis.AutoSize();
-
-            float padLeft = AllAxes.Where(x => x.Edge == Edge.Left).Select(x => x.PixelSize).Sum();
-            float padRight = AllAxes.Where(x => x.Edge == Edge.Right).Select(x => x.PixelSize).Sum();
-            float padBottom = AllAxes.Where(x => x.Edge == Edge.Bottom).Select(x => x.PixelSize).Sum();
-            float padTop = AllAxes.Where(x => x.Edge == Edge.Top).Select(x => x.PixelSize).Sum();
-            return new PlotDimensions(
-                figureSize: new SizeF(width, height),
-                dataSize: new SizeF(width - padLeft - padRight, height - padTop - padBottom),
-                dataOffset: new PointF(padLeft, padTop),
-                axisLimits: settings.axes.Limits);
-        }
-
         private bool NeedsAutoLayout = true;
         private Bitmap RenderBitmap(Bitmap bmp, bool lowQuality = false)
         {
-            BenchmarkMessage.Restart();
+            settings.BenchmarkMessage.Restart();
             RenderLegacyLayoutAdjustment();
 
-            var dims = MakeDims(bmp.Width, bmp.Height);
+            settings.Resize(bmp.Width, bmp.Height);
+            var dims = settings.MakeDims();
 
             if (NeedsAutoLayout)
             {
                 // on first layout two adjustments are requied: 
                 // one for gross tick placement, and another for string measurement
-                dims = MakeDims(bmp.Width, bmp.Height);
+                settings.Resize(bmp.Width, bmp.Height);
+                dims = settings.MakeDims();
                 NeedsAutoLayout = false;
             }
 
@@ -159,19 +121,19 @@ namespace ScottPlot
 
         private void RenderBeforePlottables(PlotDimensions dims, Bitmap bmp, bool lowQuality)
         {
-            FigureBackground.Render(dims, bmp, lowQuality);
-            DataBackground.Render(dims, bmp, lowQuality);
+            settings.FigureBackground.Render(dims, bmp, lowQuality);
+            settings.DataBackground.Render(dims, bmp, lowQuality);
 
             settings.ticks.x.Recalculate(settings);
-            XAxis.SetTicks(settings.ticks.x.tickPositionsMajor, settings.ticks.x.tickLabels, settings.ticks.x.tickPositionsMinor);
-            XAxis.Render(dims, bmp, lowQuality: false);
+            settings.XAxis.SetTicks(settings.ticks.x.tickPositionsMajor, settings.ticks.x.tickLabels, settings.ticks.x.tickPositionsMinor);
+            settings.XAxis.Render(dims, bmp, lowQuality: false);
 
             settings.ticks.y.Recalculate(settings);
-            YAxis.SetTicks(settings.ticks.y.tickPositionsMajor, settings.ticks.y.tickLabels, settings.ticks.y.tickPositionsMinor);
-            YAxis.Render(dims, bmp, lowQuality: false);
+            settings.YAxis.SetTicks(settings.ticks.y.tickPositionsMajor, settings.ticks.y.tickLabels, settings.ticks.y.tickPositionsMinor);
+            settings.YAxis.Render(dims, bmp, lowQuality: false);
 
-            XAxis2.Render(dims, bmp, lowQuality: false);
-            YAxis2.Render(dims, bmp, lowQuality: false);
+            settings.XAxis2.Render(dims, bmp, lowQuality: false);
+            settings.YAxis2.Render(dims, bmp, lowQuality: false);
         }
 
         private void RenderPlottables(PlotDimensions dims, Bitmap bmp, bool lowQuality)
@@ -192,14 +154,14 @@ namespace ScottPlot
 
         private void RenderAfterPlottables(PlotDimensions dims, Bitmap bmp, bool lowQuality)
         {
-            CornerLegend.UpdateLegendItems(Plottables);
-            CornerLegend.Render(dims, bmp, lowQuality);
-            BenchmarkMessage.Stop();
+            settings.CornerLegend.UpdateLegendItems(Plottables);
+            settings.CornerLegend.Render(dims, bmp, lowQuality);
+            settings.BenchmarkMessage.Stop();
             // TODO: set up validation check reporting
             //ErrorMessage.Text = "Error Message";
 
-            BenchmarkMessage.Render(dims, bmp, lowQuality);
-            ErrorMessage.Render(dims, bmp, lowQuality);
+            settings.BenchmarkMessage.Render(dims, bmp, lowQuality);
+            settings.ErrorMessage.Render(dims, bmp, lowQuality);
         }
 
         public Bitmap GetBitmap(bool renderFirst = true, bool lowQuality = false)
@@ -266,14 +228,6 @@ namespace ScottPlot
                         return draggable;
 
             return null;
-        }
-
-        public Settings GetSettings(bool showWarning = true)
-        {
-            if (showWarning)
-                Debug.WriteLine("WARNING: GetSettings() is only for development and testing. Be aware its class structure changes frequently!");
-
-            return settings;
         }
     }
 }

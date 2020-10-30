@@ -29,10 +29,10 @@ namespace ScottPlot
             Color? title = null
             )
         {
-            DataBackground.Color = dataBg ?? DataBackground.Color;
-            FigureBackground.Color = figBg ?? FigureBackground.Color;
+            settings.DataBackground.Color = dataBg ?? settings.DataBackground.Color;
+            settings.FigureBackground.Color = figBg ?? settings.FigureBackground.Color;
 
-            foreach (var axis in AllAxes)
+            foreach (var axis in settings.AllAxes)
             {
                 axis.TitleFont.Color = label ?? axis.TitleFont.Color;
                 axis.TickFont.Color = tick ?? axis.TickFont.Color;
@@ -42,7 +42,7 @@ namespace ScottPlot
                 axis.MinorTicks.MarkColor = tick ?? axis.MinorTicks.MarkColor;
             }
 
-            XAxis2.TitleFont.Color = title ?? XAxis2.TitleFont.Color;
+            settings.XAxis2.TitleFont.Color = title ?? settings.XAxis2.TitleFont.Color;
         }
 
         public void Style(Style style)
@@ -75,7 +75,7 @@ namespace ScottPlot
         }
 
         public void Benchmark(bool show = true, bool toggle = false) =>
-            BenchmarkMessage.IsVisible = toggle ? !BenchmarkMessage.IsVisible : show;
+            settings.BenchmarkMessage.IsVisible = toggle ? !settings.BenchmarkMessage.IsVisible : show;
 
         [Obsolete("dont use this old system", false)]
         public void TightenLayout(int? padding = null, bool render = false)
@@ -135,20 +135,20 @@ namespace ScottPlot
         {
             if (enable != null)
             {
-                XAxis.MajorTicks.GridEnable = enable.Value;
-                YAxis.MajorTicks.GridEnable = enable.Value;
+                settings.XAxis.MajorTicks.GridEnable = enable.Value;
+                settings.YAxis.MajorTicks.GridEnable = enable.Value;
             }
 
             if (enableHorizontal != null)
-                XAxis.MajorTicks.GridEnable = enableHorizontal.Value;
+                settings.XAxis.MajorTicks.GridEnable = enableHorizontal.Value;
 
             if (enableVertical != null)
-                YAxis.MajorTicks.GridEnable = enableVertical.Value;
+                settings.YAxis.MajorTicks.GridEnable = enableVertical.Value;
 
             if (color != null)
             {
-                XAxis.MajorTicks.GridLineColor = color.Value;
-                YAxis.MajorTicks.GridLineColor = color.Value;
+                settings.XAxis.MajorTicks.GridLineColor = color.Value;
+                settings.YAxis.MajorTicks.GridLineColor = color.Value;
             }
 
             if (xSpacing != null)
@@ -165,20 +165,20 @@ namespace ScottPlot
 
             if (lineWidth != null)
             {
-                XAxis.MajorTicks.GridLineWidth = (float)lineWidth.Value;
-                YAxis.MajorTicks.GridLineWidth = (float)lineWidth.Value;
+                settings.XAxis.MajorTicks.GridLineWidth = (float)lineWidth.Value;
+                settings.YAxis.MajorTicks.GridLineWidth = (float)lineWidth.Value;
             }
 
             if (lineStyle != null)
             {
-                XAxis.MajorTicks.GridLineStyle = lineStyle.Value;
-                YAxis.MajorTicks.GridLineStyle = lineStyle.Value;
+                settings.XAxis.MajorTicks.GridLineStyle = lineStyle.Value;
+                settings.YAxis.MajorTicks.GridLineStyle = lineStyle.Value;
             }
 
             if (snapToNearestPixel != null)
             {
-                XAxis.MajorTicks.PixelSnap = snapToNearestPixel.Value;
-                YAxis.MajorTicks.PixelSnap = snapToNearestPixel.Value;
+                settings.XAxis.MajorTicks.PixelSnap = snapToNearestPixel.Value;
+                settings.YAxis.MajorTicks.PixelSnap = snapToNearestPixel.Value;
             }
         }
 

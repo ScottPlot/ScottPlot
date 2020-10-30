@@ -29,7 +29,7 @@ namespace ScottPlotTests.Benchmark
                 for (int j = 0; j < reps[i]; j++)
                 {
                     plt.GetBitmap(renderFirst: true, lowQuality: true);
-                    times.Add(plt.BenchmarkMessage.MSec);
+                    times.Add(plt.GetSettings(false).BenchmarkMessage.MSec);
                 }
 
                 var stats = new ScottPlot.Statistics.Population(times.ToArray());

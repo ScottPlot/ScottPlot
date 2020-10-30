@@ -15,11 +15,11 @@ namespace ScottPlot
             bool? bold = null
             )
         {
-            XAxis2.Title = label;
-            XAxis2.TitleFont.Name = string.IsNullOrWhiteSpace(fontName) ? XAxis2.TitleFont.Name : fontName;
-            XAxis2.TitleFont.Size = fontSize ?? XAxis2.TitleFont.Size;
-            XAxis2.TitleFont.Color = color ?? XAxis2.TitleFont.Color;
-            XAxis2.TitleFont.Bold = bold ?? XAxis2.TitleFont.Bold;
+            settings.XAxis2.Title = label;
+            settings.XAxis2.TitleFont.Name = string.IsNullOrWhiteSpace(fontName) ? settings.XAxis2.TitleFont.Name : fontName;
+            settings.XAxis2.TitleFont.Size = fontSize ?? settings.XAxis2.TitleFont.Size;
+            settings.XAxis2.TitleFont.Color = color ?? settings.XAxis2.TitleFont.Color;
+            settings.XAxis2.TitleFont.Bold = bold ?? settings.XAxis2.TitleFont.Bold;
         }
 
         public void XLabel(
@@ -30,11 +30,11 @@ namespace ScottPlot
             bool? bold = null
             )
         {
-            XAxis.Title = label;
-            XAxis.TitleFont.Name = string.IsNullOrWhiteSpace(fontName) ? XAxis.TitleFont.Name : fontName;
-            XAxis.TitleFont.Size = fontSize ?? XAxis.TitleFont.Size;
-            XAxis.TitleFont.Color = color ?? XAxis.TitleFont.Color;
-            XAxis.TitleFont.Bold = bold ?? XAxis.TitleFont.Bold;
+            settings.XAxis.Title = label;
+            settings.XAxis.TitleFont.Name = string.IsNullOrWhiteSpace(fontName) ? settings.XAxis.TitleFont.Name : fontName;
+            settings.XAxis.TitleFont.Size = fontSize ?? settings.XAxis.TitleFont.Size;
+            settings.XAxis.TitleFont.Color = color ?? settings.XAxis.TitleFont.Color;
+            settings.XAxis.TitleFont.Bold = bold ?? settings.XAxis.TitleFont.Bold;
         }
 
         public void YLabel(
@@ -45,11 +45,11 @@ namespace ScottPlot
             bool? bold = null
             )
         {
-            YAxis.Title = label;
-            YAxis.TitleFont.Name = string.IsNullOrWhiteSpace(fontName) ? YAxis.TitleFont.Name : fontName;
-            YAxis.TitleFont.Size = fontSize ?? YAxis.TitleFont.Size;
-            YAxis.TitleFont.Color = color ?? YAxis.TitleFont.Color;
-            YAxis.TitleFont.Bold = bold ?? YAxis.TitleFont.Bold;
+            settings.YAxis.Title = label;
+            settings.YAxis.TitleFont.Name = string.IsNullOrWhiteSpace(fontName) ? settings.YAxis.TitleFont.Name : fontName;
+            settings.YAxis.TitleFont.Size = fontSize ?? settings.YAxis.TitleFont.Size;
+            settings.YAxis.TitleFont.Color = color ?? settings.YAxis.TitleFont.Color;
+            settings.YAxis.TitleFont.Bold = bold ?? settings.YAxis.TitleFont.Bold;
         }
     }
 }

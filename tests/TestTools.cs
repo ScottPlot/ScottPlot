@@ -27,7 +27,7 @@ namespace ScottPlotTests
             string filePath = System.IO.Path.GetFullPath(fileName);
             plt.SaveFig(filePath);
 
-            DisplayRenderInfo(callingMethod, subName, plt.BenchmarkMessage.MSec);
+            DisplayRenderInfo(callingMethod, subName, plt.GetSettings(false).BenchmarkMessage.MSec);
             Console.WriteLine($"Saved: {filePath}");
             Console.WriteLine();
 
@@ -109,7 +109,7 @@ namespace ScottPlotTests
             var stackTrace = new System.Diagnostics.StackTrace();
             string callingMethod = stackTrace.GetFrame(1).GetMethod().Name;
 
-            DisplayRenderInfo(callingMethod, subName, plt.BenchmarkMessage.MSec);
+            DisplayRenderInfo(callingMethod, subName, plt.GetSettings(false).BenchmarkMessage.MSec);
             Console.WriteLine($"Hash: {hash}");
             Console.WriteLine();
 

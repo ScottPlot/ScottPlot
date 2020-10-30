@@ -3,6 +3,8 @@ using ScottPlot.Plottable;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
+using ScottPlot.Drawing;
 
 namespace ScottPlot
 {
@@ -15,8 +17,57 @@ namespace ScottPlot
         public float DataWidth { get; private set; }
         public float DataHeight { get; private set; }
 
+        /// <summary>
+        /// Return dimensions for the current figure size and axis limits
+        /// </summary>
+        public PlotDimensions MakeDims(bool autoSizeAllAxes = true)
+        {
+            if (autoSizeAllAxes)
+                foreach (var axis in AllAxes)
+                    axis.AutoSize();
+
+            float padLeft = AllAxes.Where(x => x.Edge == Edge.Left).Select(x => x.PixelSize).Sum();
+            float padRight = AllAxes.Where(x => x.Edge == Edge.Right).Select(x => x.PixelSize).Sum();
+            float padBottom = AllAxes.Where(x => x.Edge == Edge.Bottom).Select(x => x.PixelSize).Sum();
+            float padTop = AllAxes.Where(x => x.Edge == Edge.Top).Select(x => x.PixelSize).Sum();
+            return new PlotDimensions(
+                figureSize: new SizeF(Width, Height),
+                dataSize: new SizeF(Width - padLeft - padRight, Height - padTop - padBottom),
+                dataOffset: new PointF(padLeft, padTop),
+                axisLimits: axes.Limits);
+        }
+
         // plottables
         public readonly List<IRenderable> plottables = new List<IRenderable>();
+
+        // settings the user can customize
+        public readonly FigureBackground FigureBackground = new FigureBackground();
+        public readonly DataBackground DataBackground = new DataBackground();
+        public readonly BenchmarkMessage BenchmarkMessage = new BenchmarkMessage();
+        public readonly ErrorMessage ErrorMessage = new ErrorMessage();
+        public readonly Legend CornerLegend = new Legend();
+
+        // axes contain axis label, tick, and grid settings
+        public readonly List<Axis> XAxes = new List<Axis>() {
+            new Axis() { Edge = Edge.Bottom, PixelSize = 40, MajorGrid = true },
+            new Axis() { Edge = Edge.Top, PixelSize = 40, Bold = true },
+        };
+        public readonly List<Axis> YAxes = new List<Axis>() {
+            new Axis() { Edge = Edge.Left, PixelSize = 60, MajorGrid = true },
+            new Axis() { Edge = Edge.Right, PixelSize = 60 }
+        };
+        public Axis[] AllAxes { get => XAxes.Concat(YAxes).ToArray(); }
+
+        public Axis XAxis { get => XAxes[0]; } // bottom
+        public Axis XAxis2 { get => XAxes[1]; } // top (title)
+        public Axis YAxis { get => YAxes[0]; } // left
+        public Axis YAxis2 { get => YAxes[1]; } // right
+
+        /*
+         * ##################################################################################
+         * ##################################################################################
+         * ##################################################################################
+         */
 
         public Config.Misc misc = new Config.Misc();
         public Config.Axes axes = new Config.Axes();

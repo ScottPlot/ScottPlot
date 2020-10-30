@@ -12,6 +12,15 @@ namespace ScottPlot
         private bool ValidateEveryPoint = false;
         private ErrorAction ValidationErrorAction = ErrorAction.ShowErrorOnPlot;
 
+        public Settings GetSettings(bool showWarning = true)
+        {
+            if (showWarning)
+                Debug.WriteLine("WARNING: GetSettings() is only for development and testing. " +
+                                "Be aware its class structure changes frequently!");
+
+            return settings;
+        }
+
         public void Validate(bool everyDataPoint, ErrorAction action = ErrorAction.ShowErrorOnPlot)
         {
             ValidateEveryPoint = everyDataPoint;
