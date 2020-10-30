@@ -68,7 +68,7 @@ namespace ScottPlot
             Color? webColor = null
             )
         {
-            Color[] colors = fillColors ?? Enumerable.Range(0, values.Length).Select(i => settings.colorset.GetColor(i)).ToArray();
+            Color[] colors = fillColors ?? Enumerable.Range(0, values.Length).Select(i => settings.PlottablePalette.GetColor(i)).ToArray();
             Color[] colorsAlpha = colors.Select(x => Color.FromArgb((byte)(255 * fillAlpha), x)).ToArray();
 
             var plottable = new RadarPlot(values, colors, fillColors ?? colorsAlpha)
@@ -146,7 +146,7 @@ namespace ScottPlot
             string label = null
             )
         {
-            colors = colors ?? Enumerable.Range(0, values.Length).Select(i => settings.colorset.GetColor(i)).ToArray();
+            colors = colors ?? Enumerable.Range(0, values.Length).Select(i => settings.PlottablePalette.GetColor(i)).ToArray();
 
             PiePlot pie = new PiePlot(values, sliceLabels, colors)
             {

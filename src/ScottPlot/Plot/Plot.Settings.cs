@@ -34,7 +34,7 @@ namespace ScottPlot
 
         public void SetCulture(System.Globalization.CultureInfo culture)
         {
-            settings.culture = culture;
+            settings.Culture = culture;
         }
 
         /// <summary>
@@ -70,26 +70,26 @@ namespace ScottPlot
 
             // settings.culture may be null if the thread culture is the same is the system culture.
             // If it is null, assigning it to a clone of the current culture solves this and also makes it mutable.
-            if (settings.culture is null)
-                settings.culture = (System.Globalization.CultureInfo)System.Globalization.CultureInfo.CurrentCulture.Clone();
+            if (settings.Culture is null)
+                settings.Culture = (System.Globalization.CultureInfo)System.Globalization.CultureInfo.CurrentCulture.Clone();
 
             if (shortDatePattern != null)
-                settings.culture.DateTimeFormat.ShortDatePattern = shortDatePattern;
+                settings.Culture.DateTimeFormat.ShortDatePattern = shortDatePattern;
 
             if (decimalDigits != null)
-                settings.culture.NumberFormat.NumberDecimalDigits = decimalDigits.Value;
+                settings.Culture.NumberFormat.NumberDecimalDigits = decimalDigits.Value;
 
             if (decimalSeparator != null)
-                settings.culture.NumberFormat.NumberDecimalSeparator = decimalSeparator;
+                settings.Culture.NumberFormat.NumberDecimalSeparator = decimalSeparator;
 
             if (numberGroupSeparator != null)
-                settings.culture.NumberFormat.NumberGroupSeparator = numberGroupSeparator;
+                settings.Culture.NumberFormat.NumberGroupSeparator = numberGroupSeparator;
 
             if (numberGroupSizes != null)
-                settings.culture.NumberFormat.NumberGroupSizes = numberGroupSizes;
+                settings.Culture.NumberFormat.NumberGroupSizes = numberGroupSizes;
 
             if (numberNegativePattern != null)
-                settings.culture.NumberFormat.NumberNegativePattern = numberNegativePattern.Value;
+                settings.Culture.NumberFormat.NumberNegativePattern = numberNegativePattern.Value;
         }
     }
 }

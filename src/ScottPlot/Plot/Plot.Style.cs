@@ -12,12 +12,12 @@ namespace ScottPlot
         /// <summary>
         /// Change the default color palette for new plottables
         /// </summary>
-        public Drawing.Colorset Colorset(Drawing.Colorset colorset = null)
+        public Drawing.Palette Colorset(Drawing.Palette colorset = null)
         {
             if (colorset != null)
-                settings.colorset = colorset;
+                settings.PlottablePalette = colorset;
 
-            return settings.colorset;
+            return settings.PlottablePalette;
         }
 
         public void Style(

@@ -106,7 +106,7 @@ namespace ScottPlot.Config
                     DateTime to = DateTime.FromOADate(high);
 
                     var unitFactory = new DateTimeUnitFactory();
-                    IDateTimeUnit tickUnit = unitFactory.CreateUnit(from, to, settings.culture, tickCount, dtManualUnits, (int)dtManualSpacing);
+                    IDateTimeUnit tickUnit = unitFactory.CreateUnit(from, to, settings.Culture, tickCount, dtManualUnits, (int)dtManualSpacing);
                     (tickPositionsMajor, tickLabels) = tickUnit.GetTicksAndLabels(from, to, dateTimeFormatString);
                 }
                 catch
@@ -162,7 +162,7 @@ namespace ScottPlot.Config
 
             if (dateFormat)
             {
-                tickLabels = GetDateLabels(tickPositionsMajor, settings.culture);
+                tickLabels = GetDateLabels(tickPositionsMajor, settings.Culture);
                 tickPositionsMinor = null;
             }
             else
@@ -173,7 +173,7 @@ namespace ScottPlot.Config
                         settings.ticks.useOffsetNotation,
                         settings.ticks.useExponentialNotation,
                         invertSign: invertSign,
-                        culture: settings.culture
+                        culture: settings.Culture
                     );
 
                 if (logScale)
