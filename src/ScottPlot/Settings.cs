@@ -1,41 +1,19 @@
-﻿using ScottPlot.Config;
-using ScottPlot.Renderable;
+﻿using ScottPlot.Renderable;
 using ScottPlot.Plottable;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
-
-// TODO: move plottables to their own module
-// TODO: move mouse/axes interaction functions into the mouse module somehow
 
 namespace ScottPlot
 {
-    /// <summary>
-    /// 
-    /// This class stores settings and data necessary to create a ScottPlot.
-    /// It is a data transfer object which is easy to pass but should be inaccessible to end users.
-    /// 
-    /// If you are passed this object, you have EVERYTHING you need to render an image.
-    /// An ultimate goal is for this settings object to be able to be passed to different rendering engines.
-    /// 
-    /// </summary>
     public class Settings
     {
-        // these properties get set at instantiation or after size or axis adjustments
         public Size figureSize { get { return layout.plot.Size; } }
         public Point dataOrigin { get { return layout.data.Location; } }
         public Size dataSize { get { return layout.data.Size; } }
 
-        // Eventually move graphics objects to their own module.
         public Bitmap bmpFigure;
-        public Bitmap bmpData;
 
-        // Renderables (eventually store these in a List)
-        public readonly FigureBackground FigureBackground = new FigureBackground();
-        public readonly DataBackground DataBackground = new DataBackground();
-        public readonly ErrorMessage ErrorMessage = new ErrorMessage();
         public readonly Legend Legend = new Legend();
 
         // plottables
