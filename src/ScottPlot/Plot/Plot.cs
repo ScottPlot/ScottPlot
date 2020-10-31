@@ -154,10 +154,12 @@ namespace ScottPlot
         {
             settings.CornerLegend.UpdateLegendItems(Plottables);
             settings.CornerLegend.Render(dims, bmp, lowQuality);
+
             settings.BenchmarkMessage.Stop();
             // TODO: set up validation check reporting
             //ErrorMessage.Text = "Error Message";
 
+            settings.ZoomRectangle.Render(dims, bmp, lowQuality);
             settings.BenchmarkMessage.Render(dims, bmp, lowQuality);
             settings.ErrorMessage.Render(dims, bmp, lowQuality);
         }

@@ -322,7 +322,7 @@ namespace ScottPlot
                     size.Width = (int)settings.DataWidth - 1;
                 }
 
-                settings.mouseMiddleRect = new Rectangle(origin, size);
+                settings.ZoomRectangle.Set(origin.X, origin.Y, size.Width, size.Height);
             }
 
             Render(true, lowQuality: lowQualityWhileDragging);
@@ -424,7 +424,7 @@ namespace ScottPlot
             mouseRightDownLocation = null;
             mouseMiddleDownLocation = null;
             axisLimitsOnMouseDown = null;
-            settings.mouseMiddleRect = null;
+            settings.ZoomRectangle.Clear();
             plottableBeingDragged = null;
 
             bool shouldRecalculate = recalculateLayoutOnMouseUp ?? plotContainsHeatmap == false;

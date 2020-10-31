@@ -231,7 +231,7 @@ namespace ScottPlot.Interactive
                     size.Width = (int)settings.DataWidth - 1;
                 }
 
-                settings.mouseMiddleRect = new System.Drawing.Rectangle(origin, size);
+                settings.ZoomRectangle.Set(origin.X, origin.Y, size.Width, size.Height);
             }
 
             Render(true, lowQuality: lowQualityWhileDragging);
@@ -295,7 +295,7 @@ namespace ScottPlot.Interactive
             mouseRightDownLocation = null;
             mouseMiddleDownLocation = null;
             axisLimitsOnMouseDown = null;
-            settings.mouseMiddleRect = null;
+            settings.ZoomRectangle.Clear();
 
             bool shouldRecalculate = recalculateLayoutOnMouseUp ?? !plotContainsHeatmap;
             Render(recalculateLayout: shouldRecalculate);

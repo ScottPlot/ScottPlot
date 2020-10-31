@@ -61,6 +61,7 @@ namespace ScottPlot
         public readonly BenchmarkMessage BenchmarkMessage = new BenchmarkMessage();
         public readonly ErrorMessage ErrorMessage = new ErrorMessage();
         public readonly Legend CornerLegend = new Legend();
+        public readonly ZoomRectangle ZoomRectangle = new ZoomRectangle();
         public CultureInfo Culture = CultureInfo.DefaultThreadCurrentCulture;
         public Palette PlottablePalette = Palette.Category10;
 
@@ -80,9 +81,6 @@ namespace ScottPlot
         public Axis YAxis { get => YAxes[0]; } // left
         public Axis YAxis2 { get => YAxes[1]; } // right
         public Axis[] PrimaryAxes => new Axis[] { YAxis, YAxis2, XAxis, XAxis2 }; // LRBT
-
-        // mouse interaction
-        public Rectangle? mouseMiddleRect = null;
 
         /*
          * ##################################################################################
