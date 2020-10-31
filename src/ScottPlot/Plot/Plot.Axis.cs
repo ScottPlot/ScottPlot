@@ -102,8 +102,6 @@ namespace ScottPlot
             settings.AxisAuto(horizontalMargin, verticalMargin, xExpandOnly, yExpandOnly);
             if (tightenLayout)
                 TightenLayout();
-            else
-                settings.layout.tighteningOccurred = true;
             return settings.axes.limits;
         }
 

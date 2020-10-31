@@ -1,8 +1,10 @@
 ﻿/* Code here relates to customization of the figure or plot layout or styling (not behavior) */
 
+using ScottPlot.Config;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace ScottPlot
@@ -59,18 +61,17 @@ namespace ScottPlot
             bool? top = true
         )
         {
-            if (drawFrame != null)
-                settings.layout.displayAxisFrames = (bool)drawFrame;
-            if (frameColor != null)
-                settings.ticks.color = (Color)frameColor;
-            if (left != null)
-                settings.layout.displayFrameByAxis[0] = (bool)left;
-            if (right != null)
-                settings.layout.displayFrameByAxis[1] = (bool)right;
-            if (bottom != null)
-                settings.layout.displayFrameByAxis[2] = (bool)bottom;
-            if (top != null)
-                settings.layout.displayFrameByAxis[3] = (bool)top;
+            foreach (var axis in settings.PrimaryAxes)
+            {
+                axis.Line = drawFrame ?? axis.Line;
+                axis.LineColor = frameColor ?? axis.LineColor;
+            }
+
+            settings.YAxis.Line = left ?? settings.YAxis.Line;
+            settings.YAxis2.Line = right ?? settings.YAxis2.Line;
+            settings.XAxis.Line = bottom ?? settings.XAxis.Line;
+            settings.XAxis2.Line = top ?? settings.XAxis2.Line;
+
             TightenLayout();
         }
 
@@ -82,6 +83,7 @@ namespace ScottPlot
         {
             if (render)
                 GetBitmap();
+
             if (!settings.axes.hasBeenSet && settings.Plottables.Count > 0)
                 settings.AxisAuto();
 
@@ -89,13 +91,19 @@ namespace ScottPlot
             settings.ticks?.y?.Recalculate(settings); // this probably never happens
 
             settings.Resize(settings.Width, settings.Height);
-            settings.layout.Update(settings.Width, settings.Height);
-            settings.layout.tighteningOccurred = true;
 
             Resize();
         }
 
-        [Obsolete("dont use this old layout system", false)]
+        public void Layout(double? leftAxisWidth, double? rightAxisWidth, double? bottomAxisHeight, double? topAxisHeight)
+        {
+            settings.YAxis.PixelSize = (float)(leftAxisWidth ?? settings.YAxis.PixelSize);
+            settings.YAxis2.PixelSize = (float)(rightAxisWidth ?? settings.YAxis2.PixelSize);
+            settings.XAxis.PixelSize = (float)(bottomAxisHeight ?? settings.XAxis.PixelSize);
+            settings.XAxis2.PixelSize = (float)(topAxisHeight ?? settings.XAxis2.PixelSize);
+        }
+
+        [Obsolete("use other overload", false)]
         public void Layout(
                 double? yLabelWidth = null,
                 double? yScaleWidth = null,
@@ -106,17 +114,6 @@ namespace ScottPlot
                 double? xScaleHeight = null
             )
         {
-            TightenLayout(render: true);
-
-            if (yLabelWidth != null) settings.layout.yLabelWidth = (int)yLabelWidth;
-            if (yScaleWidth != null) settings.layout.yScaleWidth = (int)yScaleWidth;
-            if (y2LabelWidth != null) settings.layout.y2LabelWidth = (int)y2LabelWidth;
-            if (y2ScaleWidth != null) settings.layout.y2ScaleWidth = (int)y2ScaleWidth;
-            if (titleHeight != null) settings.layout.titleHeight = (int)titleHeight;
-            if (xLabelHeight != null) settings.layout.xLabelHeight = (int)xLabelHeight;
-            if (xScaleHeight != null) settings.layout.xScaleHeight = (int)xScaleHeight;
-
-            Resize();
         }
 
         public void Grid(
@@ -192,21 +189,18 @@ namespace ScottPlot
 
             Resize();
 
-            var sourceLayout = sourcePlot.GetSettings(false).layout;
+            var sourceSettings = sourcePlot.GetSettings(false);
 
             if (horizontal)
             {
-                settings.layout.yLabelWidth = sourceLayout.yLabelWidth;
-                settings.layout.y2LabelWidth = sourceLayout.y2LabelWidth;
-                settings.layout.yScaleWidth = sourceLayout.yScaleWidth;
-                settings.layout.y2ScaleWidth = sourceLayout.y2ScaleWidth;
+                settings.YAxis.PixelSize = sourceSettings.YAxis.PixelSize;
+                settings.YAxis2.PixelSize = sourceSettings.YAxis2.PixelSize;
             }
 
             if (vertical)
             {
-                settings.layout.titleHeight = sourceLayout.titleHeight;
-                settings.layout.xLabelHeight = sourceLayout.xLabelHeight;
-                settings.layout.xScaleHeight = sourceLayout.xScaleHeight;
+                settings.XAxis.PixelSize = sourceSettings.XAxis.PixelSize;
+                settings.XAxis2.PixelSize = sourceSettings.XAxis2.PixelSize;
             }
         }
     }

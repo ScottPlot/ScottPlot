@@ -79,6 +79,10 @@ namespace ScottPlot
         public Axis XAxis2 { get => XAxes[1]; } // top (title)
         public Axis YAxis { get => YAxes[0]; } // left
         public Axis YAxis2 { get => YAxes[1]; } // right
+        public Axis[] PrimaryAxes => new Axis[] { YAxis, YAxis2, XAxis, XAxis2 }; // LRBT
+
+        // mouse interaction
+        public Rectangle? mouseMiddleRect = null;
 
         /*
          * ##################################################################################
@@ -86,15 +90,11 @@ namespace ScottPlot
          * 
          */
 
-        public Config.Misc misc = new Config.Misc();
-        public Config.Axes axes = new Config.Axes();
-        public readonly Config.Layout layout = new Config.Layout();
+        // TODO: move these settings into each Axis module
         public Config.Ticks ticks = new Config.Ticks();
 
-        // mouse interaction
-        public Rectangle? mouseMiddleRect = null;
-
-        // scales calculations must occur at this level because the axes are unaware of pixel dimensions
+        // TODO: move this functionality into the PlotDimensions module
+        public Config.Axes axes = new Config.Axes();
         public double xAxisScale { get { return DataWidth / axes.x.span; } } // pixels per unit
         public double yAxisScale { get { return DataHeight / axes.y.span; } } // pixels per unit
         public double xAxisUnitsPerPixel { get { return 1.0 / xAxisScale; } }
@@ -102,7 +102,15 @@ namespace ScottPlot
 
         public void Resize(int width, int height)
         {
-            layout.Update(width, height);
+            Width = width;
+            Height = height;
+            AutoSizeLayout();
+
+            var dims = Dimensions;
+            DataWidth = dims.DataWidth;
+            DataHeight = dims.DataHeight;
+            DataOffsetX = dims.DataOffsetX;
+            DataOffsetY = dims.DataOffsetY;
 
             if (axes.equalAxes)
             {
@@ -116,11 +124,6 @@ namespace ScottPlot
                 else
                     axes.Zoom(1, yUnitsPerPixel / xUnitsPerPixel);
             }
-
-            Width = width;
-            Height = height;
-            DataWidth = layout.data.Width;
-            DataHeight = layout.data.Height;
         }
 
         public void AxesPanPx(int dxPx, int dyPx)
@@ -213,8 +216,6 @@ namespace ScottPlot
                 axes.x.hasBeenSet = false;
                 axes.y.hasBeenSet = false;
             }
-
-            layout.tighteningOccurred = false;
         }
 
         /// <summary>

@@ -27,6 +27,10 @@ namespace ScottPlot.Renderable
         public bool MajorGrid { get => MajorTicks.GridEnable; set => MajorTicks.GridEnable = value; }
         public bool MinorGrid { get => MinorTicks.GridEnable; set => MinorTicks.GridEnable = value; }
 
+        public bool Line = true;
+        public Color LineColor = Color.Black;
+        public float LineWidth = 1;
+
         public void SetTicks(double[] positions, string[] labels, double[] minorPositions)
         {
             MajorTicks.Positions = positions;
@@ -162,7 +166,10 @@ namespace ScottPlot.Renderable
 
         private void RenderLine(PlotDimensions dims, Graphics gfx)
         {
-            using (var pen = GDI.Pen(MajorTicks.MarkColor))
+            if (Line == false)
+                return;
+
+            using (var pen = GDI.Pen(LineColor, LineWidth))
             {
                 PointF bottomLeft = new PointF(dims.DataOffsetX, dims.DataOffsetY + dims.DataHeight);
                 PointF topLeft = new PointF(dims.DataOffsetX, dims.DataOffsetY);

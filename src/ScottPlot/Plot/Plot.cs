@@ -114,10 +114,7 @@ namespace ScottPlot
             else
                 settings.axes.ApplyBounds();
 
-            if (!settings.layout.tighteningOccurred)
-            {
-                TightenLayout();
-            }
+            TightenLayout();
         }
 
         private void RenderBeforePlottables(PlotDimensions dims, Bitmap bmp, bool lowQuality)
