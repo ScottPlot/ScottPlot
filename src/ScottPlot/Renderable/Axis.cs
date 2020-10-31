@@ -16,6 +16,7 @@ namespace ScottPlot.Renderable
         public bool IsVertical { get => Edge == Edge.Left || Edge == Edge.Right; }
         public bool IsVisible { get; set; } = true;
         public float PixelSize = 40;
+        public float PixelSizeMinimum = 5;
 
         public string Title = null;
         public bool Bold { get => TitleFont.Bold; set => TitleFont.Bold = value; }
@@ -48,14 +49,11 @@ namespace ScottPlot.Renderable
                 var (width, height) = (MajorTicks?.Labels?.Length > 0) ? LargestStringSize(MajorTicks.Labels, tickFont) : (0, 0);
                 var titleSize = (!string.IsNullOrWhiteSpace(Title)) ? GDI.MeasureString(Title, titleFont) : new SizeF(0, 0);
 
-                if (IsHorizontal)
-                {
-                    PixelSize = height + titleSize.Height;
-                }
-                else
-                {
-                    PixelSize = width + titleSize.Height + 5;
-                }
+                PixelSize = IsHorizontal ?
+                    height + titleSize.Height :
+                    width + titleSize.Height + 5;
+
+                PixelSize = Math.Max(PixelSize, PixelSizeMinimum);
             }
         }
 
