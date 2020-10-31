@@ -24,31 +24,34 @@ namespace ScottPlot
         public float DataHeight { get; private set; }
 
         /// <summary>
-        /// Return dimensions for the current figure size and axis limits
+        /// Adjust data padding based on axis size
         /// </summary>
-        public PlotDimensions Dimensions
-        {
-            get
-            {
-                float padLeft = AllAxes.Where(x => x.Edge == Edge.Left).Select(x => x.PixelSize).Sum();
-                float padRight = AllAxes.Where(x => x.Edge == Edge.Right).Select(x => x.PixelSize).Sum();
-                float padBottom = AllAxes.Where(x => x.Edge == Edge.Bottom).Select(x => x.PixelSize).Sum();
-                float padTop = AllAxes.Where(x => x.Edge == Edge.Top).Select(x => x.PixelSize).Sum();
-                return new PlotDimensions(
-                    figureSize: new SizeF(Width, Height),
-                    dataSize: new SizeF(Width - padLeft - padRight, Height - padTop - padBottom),
-                    dataOffset: new PointF(padLeft, padTop),
-                    axisLimits: axes.Limits);
-            }
-        }
-
-        /// <summary>
-        /// Measure all axis titles and ticks to determine how large each should be
-        /// </summary>
-        public void AutoSizeLayout()
+        private void RecalculateLayout()
         {
             foreach (var axis in AllAxes)
                 axis.AutoSize();
+
+            float padLeft = AllAxes.Where(x => x.Edge == Edge.Left).Select(x => x.PixelSize).Sum();
+            float padRight = AllAxes.Where(x => x.Edge == Edge.Right).Select(x => x.PixelSize).Sum();
+            float padBottom = AllAxes.Where(x => x.Edge == Edge.Bottom).Select(x => x.PixelSize).Sum();
+            float padTop = AllAxes.Where(x => x.Edge == Edge.Top).Select(x => x.PixelSize).Sum();
+
+            DataOffsetX = padLeft;
+            DataOffsetY = padTop;
+            DataWidth = Width - padLeft - padRight;
+            DataHeight = Height - padTop - padBottom;
+        }
+
+        public PlotDimensions GetDimensions(bool recalculateLayout = false)
+        {
+            if (recalculateLayout)
+                RecalculateLayout();
+
+            return new PlotDimensions(
+                figureSize: new SizeF(Width, Height),
+                dataSize: new SizeF(DataWidth, DataHeight),
+                dataOffset: new PointF(DataOffsetX, DataOffsetY),
+                axisLimits: axes.Limits);
         }
 
         // plottables
@@ -102,13 +105,7 @@ namespace ScottPlot
         {
             Width = width;
             Height = height;
-            AutoSizeLayout();
-
-            var dims = Dimensions;
-            DataWidth = dims.DataWidth;
-            DataHeight = dims.DataHeight;
-            DataOffsetX = dims.DataOffsetX;
-            DataOffsetY = dims.DataOffsetY;
+            RecalculateLayout();
 
             if (axes.equalAxes)
             {

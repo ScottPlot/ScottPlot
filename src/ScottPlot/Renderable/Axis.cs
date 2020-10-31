@@ -65,7 +65,7 @@ namespace ScottPlot.Renderable
                 return (0, 0);
 
             string largestString = "";
-            foreach (var s in strings)
+            foreach (var s in strings.Where(x => string.IsNullOrWhiteSpace(x) == false))
                 if (s.Length > largestString.Length)
                     largestString = s;
 

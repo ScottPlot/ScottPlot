@@ -89,18 +89,16 @@ namespace ScottPlot
             RenderLegacyLayoutAdjustment();
 
             settings.Resize(bmp.Width, bmp.Height);
-            settings.AutoSizeLayout();
 
             if (NeedsAutoLayout)
             {
                 // on first layout two adjustments are requied: 
                 // one for gross tick placement, and another for string measurement
                 settings.Resize(bmp.Width, bmp.Height);
-                settings.AutoSizeLayout();
                 NeedsAutoLayout = false;
             }
 
-            var dims = settings.Dimensions;
+            var dims = settings.GetDimensions();
             RenderBeforePlottables(dims, bmp, lowQuality);
             RenderPlottables(dims, bmp, lowQuality);
             RenderAfterPlottables(dims, bmp, lowQuality);
