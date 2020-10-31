@@ -343,13 +343,13 @@ namespace ScottPlotTests.PlottableRenderTests
         [Test]
         public void Test_Scatter_Highlight()
         {
-            var plt = new ScottPlot.Plot();
+            var plt = new ScottPlot.Plot(400, 300);
             plt.AntiAlias(false, false, false);
 
             // start with default settings
             double[] xs = { 1, 2, 3, 4 };
             double[] ys = { 1, 4, 9, 16 };
-            var splt = new ScatterPlotHighlight(xs, ys) { };
+            var splt = new ScatterPlotHighlight(xs, ys) { highlightedMarkerSize = 20, highlightedColor = System.Drawing.Color.Black };
 
             plt.Add(splt);
             var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
