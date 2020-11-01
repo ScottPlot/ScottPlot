@@ -1,0 +1,21 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="ScottPlot.Demo.Avalonia.AboutControl">
+	<ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto">
+		<StackPanel Background="WhiteSmoke">
+			<TextBlock FontSize="24" FontWeight="SemiBold" >ScottPlot Interactive Cookbook</TextBlock>
+			<TextBlock Name="VersionLabel" FontSize="12" Margin="0,0,0,0" Foreground="Gray" Width="109" HorizontalAlignment="Left" >version 8.8.88</TextBlock>
+
+			
+			
+			<TextBlock Margin="5,10,5,5" TextWrapping="Wrap" FontSize="14">
+This program displays ScottPlot cookbook recipes interactively.
+Although this program uses the AvaPlot to display plots interactively, the source code for each plot could be used in console applications and plots saved as images.
+			</TextBlock>
+
+		</StackPanel>
+	</ScrollViewer>
+</UserControl>

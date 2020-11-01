@@ -100,6 +100,11 @@ namespace ScottPlot.Avalonia
             backend.Render();
         }
 
+        public void Reset()
+        {
+            backend.Reset();
+        }
+
         #region user control configuration
 
         public void Configure(
@@ -234,5 +239,19 @@ namespace ScottPlot.Avalonia
 
         #endregion
 
+        #region event handling
+
+        public event EventHandler Rendered
+        {
+            add { backend.Rendered += value; }
+            remove { backend.Rendered -= value; }
+        }
+        public event EventHandler AxisChanged
+        {
+            add { backend.AxisChanged += value; }
+            remove { backend.AxisChanged -= value; }
+        }
+
+        #endregion
     }
 }
