@@ -406,6 +406,7 @@ namespace ScottPlot
             return output;
         }
 
+
         public static string ToDifferentBase(double number, int radix = 16, int decimalPlaces = 3, int padInteger = 0, bool dropTrailingZeroes = true)
         {
             if (number < 0)
@@ -418,7 +419,7 @@ namespace ScottPlot
             }
 
             char[] symbols = "0123456789ABCDEF".ToCharArray();
-            if (radix > symbols.Length)
+            if (radix > symbols.Length || radix <= 1)
             {
                 throw new ArgumentOutOfRangeException(nameof(radix));
             }
@@ -437,7 +438,14 @@ namespace ScottPlot
 
             for (int i = 0; i < integerLength; i++)
             {
-                output = symbols[(int)(number % radix)] + output;
+                if (number == radix && padInteger == 0)
+                {
+                    output = "10" + output;
+                }
+                else
+                {
+                    output = symbols[(int)(number % radix)] + output;
+                }
                 number /= radix;
             }
 
@@ -448,6 +456,10 @@ namespace ScottPlot
 
             if (decimalLength != 0)
             {
+                if (output == "")
+                {
+                    output += "0";
+                }
                 output += ".";
                 output += ToDifferentBase(Math.Round(decimalPart * Math.Pow(radix, decimalPlaces)), radix, decimalPlaces, decimalPlaces);
                 if (dropTrailingZeroes)
