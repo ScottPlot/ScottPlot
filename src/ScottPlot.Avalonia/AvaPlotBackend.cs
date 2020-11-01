@@ -1,13 +1,9 @@
-﻿using System;
+﻿using Avalonia.Controls;
+using Avalonia.VisualTree;
+using ScottPlot.Interactive;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Text;
 using System.Threading.Tasks;
-using Avalonia.Controls;
-using Avalonia.VisualTree;
-using ScottPlot.Drawing;
-using ScottPlot.Interactive;
-
 using Ava = global::Avalonia;
 
 namespace ScottPlot.Avalonia
@@ -45,10 +41,12 @@ namespace ScottPlot.Avalonia
                     dpiScaleOutput = gfx.DpiX / 96;
                 }
                 view.Find<StackPanel>("canvasDesigner").Background = view.transparentBrush;
-                view.Find<Canvas>("canvasPlot").Background = view.transparentBrush;
+                var canvasPlot = view.Find<Canvas>("canvasPlot");
+                canvasPlot.Background = view.transparentBrush;
+                CanvasSizeChanged((int)(canvasPlot.Bounds.Width), (int)(canvasPlot.Bounds.Height));
             }
-
         }
+
         public void SetAltPressed(bool value)
         {
             isAltPressed = value;
