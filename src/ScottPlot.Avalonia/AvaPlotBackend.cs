@@ -1,5 +1,6 @@
 ﻿using Avalonia.Controls;
 using Avalonia.VisualTree;
+using ScottPlot.Drawing;
 using ScottPlot.Interactive;
 using System.Collections.Generic;
 using System.Drawing;

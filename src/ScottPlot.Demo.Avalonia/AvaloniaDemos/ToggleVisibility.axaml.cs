@@ -8,8 +8,8 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 {
     public class ToggleVisibility : Window
     {
-        PlottableScatter sinPlot, cosPlot;
-        PlottableVLine vline1, vline2;
+        Plottable.ScatterPlot sinPlot, cosPlot;
+        Plottable.VLine vline1, vline2;
 
         AvaPlot avaPlot1;
         public ToggleVisibility()
@@ -50,44 +50,44 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
         private void SinHide(object sender, RoutedEventArgs e)
         {
             if (avaPlot1 is null) return;
-            sinPlot.visible = false;
+            sinPlot.IsVisible = false;
             avaPlot1.Render();
         }
 
         private void SinShow(object sender, RoutedEventArgs e)
         {
             if (avaPlot1 is null) return;
-            sinPlot.visible = true;
+            sinPlot.IsVisible = true;
             avaPlot1.Render();
         }
 
         private void CosShow(object sender, RoutedEventArgs e)
         {
             if (avaPlot1 is null) return;
-            cosPlot.visible = true;
+            cosPlot.IsVisible = true;
             avaPlot1.Render();
         }
 
         private void CosHide(object sender, RoutedEventArgs e)
         {
             if (avaPlot1 is null) return;
-            cosPlot.visible = false;
+            cosPlot.IsVisible = false;
             avaPlot1.Render();
         }
 
         private void LinesShow(object sender, RoutedEventArgs e)
         {
             if (avaPlot1 is null) return;
-            vline1.visible = true;
-            vline2.visible = true;
+            vline1.IsVisible = true;
+            vline2.IsVisible = true;
             avaPlot1.Render();
         }
 
         private void LinesHide(object sender, RoutedEventArgs e)
         {
             if (avaPlot1 is null) return;
-            vline1.visible = false;
-            vline2.visible = false;
+            vline1.IsVisible = false;
+            vline2.IsVisible = false;
             avaPlot1.Render();
         }
     }

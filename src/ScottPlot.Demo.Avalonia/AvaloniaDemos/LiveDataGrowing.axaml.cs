@@ -13,7 +13,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
         AvaPlot avaPlot1;
         public double[] data = new double[100_000];
         int nextDataIndex = 1;
-        PlottableSignal signalPlot;
+        Plottable.SignalPlot signalPlot;
         Random rand = new Random(0);
 
         TextBox ReadingsTextbox;

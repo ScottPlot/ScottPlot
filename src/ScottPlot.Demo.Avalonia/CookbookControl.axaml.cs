@@ -29,7 +29,7 @@ namespace ScottPlot.Demo.Avalonia
             TextBlock BenchmarkLabel = this.Find<TextBlock>("BenchmarkLabel");
 
             if (AvaPlot1.IsVisible)
-                BenchmarkLabel.Text = AvaPlot1.plt.GetSettings(false).Benchmark.ToString();
+                BenchmarkLabel.Text = AvaPlot1.plt.GetSettings(false).BenchmarkMessage.Message;
             else
                 BenchmarkLabel.Text = "This plot is a non-interactive Bitmap";
         }
