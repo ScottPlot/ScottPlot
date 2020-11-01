@@ -113,7 +113,7 @@ namespace ScottPlot
             {
                 // why these in this order? voodoo magic
                 TightenLayout();
-                RenderBitmap();
+                RenderBitmap(lowQuality: true);
             }
 
             TightenLayout();

@@ -125,23 +125,23 @@ namespace ScottPlot
         private bool currentlyRendering = false;
         public void Render(bool skipIfCurrentlyRendering = false, bool lowQuality = false, bool recalculateLayout = false, bool processEvents = false)
         {
-            if (!isDesignerMode)
+            if (isDesignerMode || plt is null)
+                return;
+
+            if (recalculateLayout)
+                plt.TightenLayout();
+
+            if (equalAxes)
+                plt.AxisEqual();
+
+            if (!(skipIfCurrentlyRendering && currentlyRendering))
             {
-                if (recalculateLayout)
-                    plt.TightenLayout();
-
-                if (equalAxes)
-                    plt.AxisEqual();
-
-                if (!(skipIfCurrentlyRendering && currentlyRendering))
-                {
-                    currentlyRendering = true;
-                    imagePlot.Source = BmpImageFromBmp(plt.GetBitmap(true, lowQuality || lowQualityAlways));
-                    if (isPanningOrZooming || isMovingDraggable || processEvents)
-                        DoEvents();
-                    currentlyRendering = false;
-                    Rendered?.Invoke(null, null);
-                }
+                currentlyRendering = true;
+                imagePlot.Source = BmpImageFromBmp(plt.GetBitmap(true, lowQuality || lowQualityAlways));
+                if (isPanningOrZooming || isMovingDraggable || processEvents)
+                    DoEvents();
+                currentlyRendering = false;
+                Rendered?.Invoke(null, null);
             }
         }
 

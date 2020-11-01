@@ -70,25 +70,27 @@ namespace ScottPlot
             settings.Resize((int)width, (int)height);
         }
 
-        public Bitmap Render(Bitmap renderOnThis)
+        public Bitmap Render(Bitmap renderOnThis, bool lowQuality)
         {
-            RenderBitmap(renderOnThis);
+            RenderBitmap(renderOnThis, lowQuality);
             return renderOnThis;
         }
 
-        private Bitmap RenderBitmap(bool lowQuality = false) =>
-             RenderBitmap(settings.Width, settings.Height);
+        private Bitmap RenderBitmap(bool lowQuality) =>
+             RenderBitmap(settings.Width, settings.Height, lowQuality);
 
-        private Bitmap RenderBitmap(int width, int height, bool lowQuality = false) =>
-            RenderBitmap(new Bitmap(width, height, PixelFormat.Format32bppPArgb));
+        private Bitmap RenderBitmap(int width, int height, bool lowQuality) =>
+            RenderBitmap(new Bitmap(width, height, PixelFormat.Format32bppPArgb), lowQuality);
 
         private bool NeedsAutoLayout = true;
-        private Bitmap RenderBitmap(Bitmap bmp, bool lowQuality = false)
+        private Bitmap RenderBitmap(Bitmap bmp, bool lowQuality)
         {
             settings.BenchmarkMessage.Restart();
             RenderLegacyLayoutAdjustment();
 
             settings.Resize(bmp.Width, bmp.Height);
+            if (lowQuality == false)
+                settings.RecalculateLayout();
 
             if (NeedsAutoLayout)
             {
@@ -164,15 +166,14 @@ namespace ScottPlot
 
         public Bitmap GetBitmap(bool renderFirst = true, bool lowQuality = false)
         {
-            if (NeedsAutoLayout)
-                RenderBitmap();
-
-            return RenderBitmap();
+            if (NeedsAutoLayout || renderFirst)
+                RenderBitmap(lowQuality: false);
+            return RenderBitmap(lowQuality);
         }
 
         public void SaveFig(string filePath, bool renderFirst = true)
         {
-            Bitmap bmp = RenderBitmap();
+            Bitmap bmp = RenderBitmap(lowQuality: false);
 
             filePath = System.IO.Path.GetFullPath(filePath);
             string fileFolder = System.IO.Path.GetDirectoryName(filePath);

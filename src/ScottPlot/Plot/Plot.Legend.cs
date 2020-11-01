@@ -33,9 +33,9 @@ namespace ScottPlot
             settings.CornerLegend.Location = location;
         }
 
-        public Bitmap GetLegendBitmap()
+        public Bitmap GetLegendBitmap(bool lowQuality = false)
         {
-            RenderBitmap();
+            RenderBitmap(lowQuality);
             return settings.CornerLegend.GetBitmap();
         }
     }

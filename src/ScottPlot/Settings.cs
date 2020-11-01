@@ -26,7 +26,7 @@ namespace ScottPlot
         /// <summary>
         /// Adjust data padding based on axis size
         /// </summary>
-        private void RecalculateLayout()
+        public void RecalculateLayout()
         {
             foreach (var axis in AllAxes)
                 axis.AutoSize();
@@ -105,7 +105,6 @@ namespace ScottPlot
         {
             Width = width;
             Height = height;
-            RecalculateLayout();
 
             if (axes.equalAxes)
             {
