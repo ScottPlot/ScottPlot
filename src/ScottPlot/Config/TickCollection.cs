@@ -1,6 +1,8 @@
 ﻿using ScottPlot.Config.DateTimeTickUnits;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
@@ -191,8 +193,6 @@ namespace ScottPlot.Config
             return $"Tick Collection: [{allTickLabels}] {cornerLabel}";
         }
 
-        private static readonly double[] DivByDecimal = { 2, 2, 2.5 }; // dividing from 10 yields 5, 2.5, and 1.
-        private static readonly double[] DivByHexadecimal = { 2, 2, 2, 2 }; // dividing from 16 yields 8, 4, 2, and 1.
         private static double GetIdealTickSpacing(double low, double high, int maxTickCount, int radix = 10)
         {
             double range = high - low;
@@ -201,15 +201,20 @@ namespace ScottPlot.Config
             tickSpacings.Add(tickSpacings.Last());
             tickSpacings.Add(tickSpacings.Last());
 
-            int divisions = 0;
-            double[] divBy = radix == 16 ? DivByHexadecimal : DivByDecimal;
+            double[] divBy;
+            if (radix == 10)
+                divBy = new double[] { 2, 2, 2.5 }; // 10, 5, 2.5, 1
+            else if (radix == 16)
+                divBy = new double[] { 2, 2, 2, 2 }; // 16, 8, 4, 2, 1
+            else
+                throw new ArgumentException($"radix {radix} is not supported");
 
-            while (true)
+            int divisions = 0;
+            int tickCount = 0;
+            while ((tickCount < maxTickCount) && (tickSpacings.Count < 1000))
             {
                 tickSpacings.Add(tickSpacings.Last() / divBy[divisions++ % divBy.Length]);
-                int tickCount = (int)(range / tickSpacings.Last());
-                if ((tickCount > maxTickCount) || (tickSpacings.Count > 1000))
-                    break;
+                tickCount = (int)(range / tickSpacings.Last());
             }
 
             return tickSpacings[tickSpacings.Count - 3];
