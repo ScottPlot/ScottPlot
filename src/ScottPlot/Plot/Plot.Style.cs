@@ -148,17 +148,17 @@ namespace ScottPlot
                 settings.YAxis.MajorTicks.GridLineColor = color.Value;
             }
 
+            // TODO: support this with new axis system
+            /*
             if (xSpacing != null)
                 settings.ticks.manualSpacingX = xSpacing.Value;
-
             if (ySpacing != null)
                 settings.ticks.manualSpacingY = ySpacing.Value;
-
             if (xSpacingDateTimeUnit != null)
                 settings.ticks.manualDateTimeSpacingUnitX = xSpacingDateTimeUnit.Value;
-
             if (ySpacingDateTimeUnit != null)
                 settings.ticks.manualDateTimeSpacingUnitY = ySpacingDateTimeUnit.Value;
+            */
 
             if (lineWidth != null)
             {
