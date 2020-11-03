@@ -47,7 +47,7 @@ namespace ScottPlot.UserControls
             // tick display options
             cbTicksOffset.Checked = plt.GetSettings().ticks.useOffsetNotation;
             cbTicksMult.Checked = plt.GetSettings().ticks.useMultiplierNotation;
-            cbGrid.Checked = plt.GetSettings(false).XAxis.MajorTicks.GridEnable;
+            cbGrid.Checked = plt.GetSettings(false).XAxis.MajorTicks.IsGridVisible;
 
             // legend
             cbLegend.Checked = plt.GetSettings(false).CornerLegend.IsVisible;

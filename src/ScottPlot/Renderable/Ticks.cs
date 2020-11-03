@@ -10,6 +10,11 @@ namespace ScottPlot.Renderable
     /// </summary>
     public class Ticks
     {
+        public bool IsVisible = true;
+        public bool IsMarkerVisible = true;
+        public bool IsLabelVisible = true;
+        public bool IsGridVisible = true;
+
         public double[] Positions;
         public float MarkLength = 10;
         public Color MarkColor = Color.Black;
@@ -18,8 +23,6 @@ namespace ScottPlot.Renderable
         public Drawing.Font LabelFont = new Drawing.Font();
         public float LabelRotation = 0;
 
-        public bool IsGridVisible { get => (GridEnable) && (GridLineWidth > 0) && (GridLineStyle != LineStyle.None); }
-        public bool GridEnable = false;
         public Color GridLineColor = ColorTranslator.FromHtml("#efefef");
         public LineStyle GridLineStyle = LineStyle.Solid;
         public float GridLineWidth = 1;

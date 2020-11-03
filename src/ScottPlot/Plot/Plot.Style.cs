@@ -132,15 +132,15 @@ namespace ScottPlot
         {
             if (enable != null)
             {
-                settings.XAxis.MajorTicks.GridEnable = enable.Value;
-                settings.YAxis.MajorTicks.GridEnable = enable.Value;
+                settings.XAxis.MajorTicks.IsGridVisible = enable.Value;
+                settings.YAxis.MajorTicks.IsGridVisible = enable.Value;
             }
 
             if (enableHorizontal != null)
-                settings.XAxis.MajorTicks.GridEnable = enableHorizontal.Value;
+                settings.XAxis.MajorTicks.IsGridVisible = enableHorizontal.Value;
 
             if (enableVertical != null)
-                settings.YAxis.MajorTicks.GridEnable = enableVertical.Value;
+                settings.YAxis.MajorTicks.IsGridVisible = enableVertical.Value;
 
             if (color != null)
             {

@@ -24,13 +24,17 @@ namespace ScottPlot.Renderable
         public Drawing.Font TickFont = new Drawing.Font() { Size = 11 };
 
         public Ticks MajorTicks = new Ticks() { MarkLength = 5 };
-        public Ticks MinorTicks = new Ticks() { MarkLength = 2 };
-        public bool MajorGrid { get => MajorTicks.GridEnable; set => MajorTicks.GridEnable = value; }
-        public bool MinorGrid { get => MinorTicks.GridEnable; set => MinorTicks.GridEnable = value; }
+        public Ticks MinorTicks = new Ticks() { MarkLength = 2, IsGridVisible = false };
+        public bool MajorGrid { get => MajorTicks.IsGridVisible; set => MajorTicks.IsGridVisible = value; }
+        public bool MinorGrid { get => MinorTicks.IsGridVisible; set => MinorTicks.IsGridVisible = value; }
 
         public bool Line = true;
         public Color LineColor = Color.Black;
         public float LineWidth = 1;
+
+        // TODO: support ruler mode
+        // TODO: support offset and multiplier notation
+        // TODO: support inverted sign
 
         public void SetTicks(double[] positions, string[] labels, double[] minorPositions)
         {
