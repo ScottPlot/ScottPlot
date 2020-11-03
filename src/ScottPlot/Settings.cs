@@ -47,11 +47,21 @@ namespace ScottPlot
             if (recalculateLayout)
                 RecalculateLayout();
 
-            return new PlotDimensions(
+            var dims = new PlotDimensions(
                 figureSize: new SizeF(Width, Height),
                 dataSize: new SizeF(DataWidth, DataHeight),
                 dataOffset: new PointF(DataOffsetX, DataOffsetY),
                 axisLimits: axes.Limits);
+
+            if (axes.equalAxes)
+            {
+                if (dims.UnitsPerPxY > dims.UnitsPerPxX)
+                    axes.Zoom(dims.UnitsPerPxX / dims.UnitsPerPxY, 1);
+                else
+                    axes.Zoom(1, dims.UnitsPerPxY / dims.UnitsPerPxX);
+            }
+
+            return dims;
         }
 
         // plottables
