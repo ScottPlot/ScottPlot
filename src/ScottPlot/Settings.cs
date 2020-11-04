@@ -28,13 +28,13 @@ namespace ScottPlot
         /// </summary>
         public void RecalculateLayout()
         {
-            foreach (var axis in AllAxes)
+            foreach (var axis in Axes)
                 axis.AutoSize();
 
-            float padLeft = AllAxes.Where(x => x.Edge == Edge.Left).Select(x => x.PixelSize).Sum();
-            float padRight = AllAxes.Where(x => x.Edge == Edge.Right).Select(x => x.PixelSize).Sum();
-            float padBottom = AllAxes.Where(x => x.Edge == Edge.Bottom).Select(x => x.PixelSize).Sum();
-            float padTop = AllAxes.Where(x => x.Edge == Edge.Top).Select(x => x.PixelSize).Sum();
+            float padLeft = Axes.Where(x => x.Edge == Edge.Left).Select(x => x.PixelSize).Sum();
+            float padRight = Axes.Where(x => x.Edge == Edge.Right).Select(x => x.PixelSize).Sum();
+            float padBottom = Axes.Where(x => x.Edge == Edge.Bottom).Select(x => x.PixelSize).Sum();
+            float padTop = Axes.Where(x => x.Edge == Edge.Top).Select(x => x.PixelSize).Sum();
 
             DataOffsetX = padLeft;
             DataOffsetY = padTop;
@@ -78,22 +78,18 @@ namespace ScottPlot
         public CultureInfo Culture = CultureInfo.DefaultThreadCurrentCulture;
         public Palette PlottablePalette = Palette.Category10;
 
-        // axes contain axis label, tick, and grid settings
-        public readonly List<Axis> XAxes = new List<Axis>() {
-            new Axis() { Edge = Edge.Bottom, PixelSize = 40, MajorGrid = true },
-            new Axis() { Edge = Edge.Top, PixelSize = 40, Bold = true },
+        public List<Axis> Axes = new List<Axis>() {
+            new DefaultLeftAxis(),
+            new DefaultRightAxis(),
+            new DefaultBottomAxis(),
+            new DefaultTopAxis()
         };
-        public readonly List<Axis> YAxes = new List<Axis>() {
-            new Axis() { Edge = Edge.Left, PixelSize = 60, MajorGrid = true },
-            new Axis() { Edge = Edge.Right, PixelSize = 60 }
-        };
-        public Axis[] AllAxes { get => XAxes.Concat(YAxes).ToArray(); }
 
-        public Axis XAxis { get => XAxes[0]; } // bottom
-        public Axis XAxis2 { get => XAxes[1]; } // top (title)
-        public Axis YAxis { get => YAxes[0]; } // left
-        public Axis YAxis2 { get => YAxes[1]; } // right
-        public Axis[] PrimaryAxes => new Axis[] { YAxis, YAxis2, XAxis, XAxis2 }; // LRBT
+        public Axis YAxis => Axes[0];
+        public Axis YAxis2 => Axes[1];
+        public Axis XAxis => Axes[2];
+        public Axis XAxis2 => Axes[3];
+        public Axis[] PrimaryAxes => Axes.Take(4).ToArray();
 
         /*
          * ##################################################################################

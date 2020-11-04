@@ -6,31 +6,79 @@ using System.Linq;
 
 namespace ScottPlot.Renderable
 {
+    public class AxisTitleSettings
+    {
+        public bool Enable = true;
+        public string Label = null;
+        public Drawing.Font Font = new Drawing.Font() { Size = 16 };
+        public bool IsVisible => Enable && !string.IsNullOrWhiteSpace(Label);
+    }
+
+    // styles tick marks (major/minor), grid lines (major/minor), and tick labels (major)
+    public class AxisTickSettings
+    {
+        public bool Enable = true;
+        public Color Color = Color.Black;
+
+        public string[] MajorLabels;
+        public bool MajorLabelEnable = true;
+        public Drawing.Font MajorLabelFont = new Drawing.Font() { Size = 11 };
+
+        public double[] MajorPositions;
+        public bool MajorTickEnable = true;
+        public float MajorTickLength = 5;
+
+        public double[] MinorPositions;
+        public bool MinorTickEnable = true;
+        public float MinorTickLength = 2;
+        public bool MinorTickLogDistribution = false;
+
+        public LineStyle MajorGridStyle = LineStyle.None;
+        public Color MajorGridColor = ColorTranslator.FromHtml("#efefef");
+        public float MajorGridWidth = 1;
+
+        public LineStyle MinorGridStyle = LineStyle.None;
+        public Color MinorGridColor = ColorTranslator.FromHtml("#efefef");
+        public float MinorGridWidth = 1;
+
+        public bool RulerMode = false;
+        public bool SnapPx = true;
+    }
+
+    public class AxisLineSettings
+    {
+        public bool Enable = true;
+        public Color Color = Color.Black;
+        public float Width = 1;
+    }
+
     /// <summary>
     /// This class holds axis rendering details (label, ticks, tick labels) but no logic
     /// </summary>
     public class Axis : IRenderable
     {
-        public Edge Edge { get; set; } = Edge.Bottom;
-        public bool IsHorizontal { get => Edge == Edge.Top || Edge == Edge.Bottom; }
-        public bool IsVertical { get => Edge == Edge.Left || Edge == Edge.Right; }
         public bool IsVisible { get; set; } = true;
+
+        public Edge Edge = Edge.Bottom;
+        public bool IsHorizontal => Edge == Edge.Top || Edge == Edge.Bottom;
+        public bool IsVertical => Edge == Edge.Left || Edge == Edge.Right;
+
         public float PixelSize = 40;
         public float PixelSizeMinimum = 5;
 
-        public string Title = null;
-        public bool Bold { get => TitleFont.Bold; set => TitleFont.Bold = value; }
-        public Drawing.Font TitleFont = new Drawing.Font() { Size = 16 };
-        public Drawing.Font TickFont = new Drawing.Font() { Size = 11 };
-
-        public Ticks MajorTicks = new Ticks() { MarkLength = 5 };
-        public Ticks MinorTicks = new Ticks() { MarkLength = 2, IsGridVisible = false };
-        public bool MajorGrid { get => MajorTicks.IsGridVisible; set => MajorTicks.IsGridVisible = value; }
-        public bool MinorGrid { get => MinorTicks.IsGridVisible; set => MinorTicks.IsGridVisible = value; }
-
-        public bool Line = true;
-        public Color LineColor = Color.Black;
-        public float LineWidth = 1;
+        public readonly AxisTitleSettings Title = new AxisTitleSettings();
+        public readonly AxisTickSettings Ticks = new AxisTickSettings();
+        public readonly AxisLineSettings Line = new AxisLineSettings();
+        public Color Color
+        {
+            set
+            {
+                Title.Font.Color = value;
+                Ticks.MajorLabelFont.Color = value;
+                Ticks.Color = value;
+                Line.Color = value;
+            }
+        }
 
         // TODO: support ruler mode
         // TODO: support offset and multiplier notation
@@ -38,24 +86,29 @@ namespace ScottPlot.Renderable
 
         public void SetTicks(double[] positions, string[] labels, double[] minorPositions)
         {
-            MajorTicks.Positions = positions;
-            MajorTicks.Labels = labels;
-            MinorTicks.Positions = minorPositions;
+            Ticks.MajorPositions = positions;
+            Ticks.MajorLabels = labels;
+            Ticks.MinorPositions = minorPositions;
         }
 
         public void AutoSize()
         {
             // adjust PixelSize based on measured dimensions of the axis label and ticks
 
-            using (var tickFont = GDI.Font(MajorTicks.LabelFont))
-            using (var titleFont = GDI.Font(TitleFont))
+            using (var tickFont = GDI.Font(Ticks.MajorLabelFont))
+            using (var titleFont = GDI.Font(Title.Font))
             {
-                var (width, height) = (MajorTicks?.Labels?.Length > 0) ? LargestStringSize(MajorTicks.Labels, tickFont) : (0, 0);
-                var titleSize = (!string.IsNullOrWhiteSpace(Title)) ? GDI.MeasureString(Title, titleFont) : new SizeF(0, 0);
+                (float tickWidth, float tickHeight) = Ticks.MajorLabels?.Length > 0 ?
+                                                      LargestStringSize(Ticks.MajorLabels, tickFont) :
+                                                      (0, 0);
+
+                float titleHeight = Title.IsVisible ?
+                                    GDI.MeasureString(Title.Label, titleFont).Height :
+                                    0;
 
                 PixelSize = IsHorizontal ?
-                    height + titleSize.Height :
-                    width + titleSize.Height + 5;
+                    tickHeight + titleHeight :
+                    tickWidth + titleHeight + 5;
 
                 PixelSize = Math.Max(PixelSize, PixelSizeMinimum);
             }
@@ -86,17 +139,19 @@ namespace ScottPlot.Renderable
                     width: dims.DataWidth,
                     height: dims.Height - (dims.DataHeight + dims.DataOffsetY));
 
-                RenderTickMarks(dims, gfx, MajorTicks);
-                RenderTickMarks(dims, gfx, MinorTicks);
-                RenderTickLabels(dims, gfx, MajorTicks);
+                RenderTickMarks(dims, gfx, Ticks.MajorPositions, Ticks.MajorTickLength, Ticks.Color, Ticks.MajorGridStyle, Ticks.MajorGridColor, Ticks.MajorGridWidth);
+                RenderTickMarks(dims, gfx, Ticks.MinorPositions, Ticks.MinorTickLength, Ticks.Color, Ticks.MinorGridStyle, Ticks.MinorGridColor, Ticks.MinorGridWidth);
+
+                RenderTickLabels(dims, gfx);
                 RenderLine(dims, gfx);
                 RenderTitle(dims, gfx);
             }
         }
 
-        private void RenderTickMarks(PlotDimensions dims, Graphics gfx, Ticks tick, bool gridLines = false)
+        private void RenderTickMarks(PlotDimensions dims, Graphics gfx, double[] positions,
+            float tickLength, Color tickColor, LineStyle gridLineStyle, Color gridLineColor, float gridLineWidth)
         {
-            if (tick is null || tick.Positions is null)
+            if (positions is null || positions.Length == 0)
                 return;
 
             if (IsVertical)
@@ -104,14 +159,14 @@ namespace ScottPlot.Renderable
                 float x = (Edge == Edge.Left) ? dims.DataOffsetX : dims.DataOffsetX + dims.DataWidth;
                 float x2 = (Edge == Edge.Left) ? dims.DataOffsetX + dims.DataWidth : dims.DataOffsetX;
 
-                var ys = tick.Positions.Select(i => dims.GetPixelY(i));
+                var ys = positions.Select(i => dims.GetPixelY(i));
 
-                using (var pen = GDI.Pen(tick.MarkColor))
+                using (var pen = GDI.Pen(tickColor))
                     foreach (float y in ys)
-                        gfx.DrawLine(pen, x, y, x - tick.MarkLength, y);
+                        gfx.DrawLine(pen, x, y, x - tickLength, y);
 
-                if (tick.IsGridVisible)
-                    using (var pen = GDI.Pen(tick.GridLineColor, tick.GridLineWidth, tick.GridLineStyle))
+                if (gridLineStyle != LineStyle.None)
+                    using (var pen = GDI.Pen(gridLineColor, gridLineWidth, gridLineStyle))
                         foreach (float y in ys)
                             gfx.DrawLine(pen, x, y, x2, y);
             }
@@ -121,43 +176,43 @@ namespace ScottPlot.Renderable
                 float y = (Edge == Edge.Top) ? dims.DataOffsetY : dims.DataOffsetY + dims.DataHeight;
                 float y2 = (Edge == Edge.Top) ? dims.DataOffsetY + dims.DataHeight : dims.DataOffsetY;
 
-                var xs = tick.Positions.Select(i => dims.GetPixelX(i));
+                var xs = positions.Select(i => dims.GetPixelX(i));
 
-                using (var pen = GDI.Pen(tick.MarkColor))
+                using (var pen = GDI.Pen(tickColor))
                     foreach (float x in xs)
-                        gfx.DrawLine(pen, x, y, x, y + tick.MarkLength);
+                        gfx.DrawLine(pen, x, y, x, y + tickLength);
 
-                if (tick.IsGridVisible)
-                    using (var pen = GDI.Pen(tick.GridLineColor, tick.GridLineWidth, tick.GridLineStyle))
+                if (gridLineStyle != LineStyle.None)
+                    using (var pen = GDI.Pen(gridLineColor, gridLineWidth, gridLineStyle))
                         foreach (float x in xs)
                             gfx.DrawLine(pen, x, y, x, y2);
             }
         }
 
-        private void RenderTickLabels(PlotDimensions dims, Graphics gfx, Ticks tick)
+        private void RenderTickLabels(PlotDimensions dims, Graphics gfx)
         {
-            if (tick is null || tick.Labels is null || tick.Labels.Length == 0)
+            if (Ticks.MajorPositions is null || Ticks.MajorLabelFont is null)
                 return;
 
-            using (var font = GDI.Font(TickFont.Name, TickFont.Size, TickFont.Bold))
-            using (var brush = GDI.Brush(TickFont.Color))
+            using (var font = GDI.Font(Ticks.MajorLabelFont))
+            using (var brush = GDI.Brush(Ticks.Color))
             using (var sf = GDI.StringFormat(HorizontalAlignment.Center, VerticalAlignment.Middle))
             {
                 if (Edge == Edge.Bottom)
                 {
                     sf.LineAlignment = StringAlignment.Near;
-                    for (int i = 0; i < tick.Positions.Length; i++)
-                        gfx.DrawString(tick.Labels[i], font, brush, format: sf,
-                            x: dims.GetPixelX(tick.Positions[i]),
-                            y: dims.DataOffsetY + dims.DataHeight + tick.MarkLength);
+                    for (int i = 0; i < Ticks.MajorPositions.Length; i++)
+                        gfx.DrawString(Ticks.MajorLabels[i], font, brush, format: sf,
+                            x: dims.GetPixelX(Ticks.MajorPositions[i]),
+                            y: dims.DataOffsetY + dims.DataHeight + Ticks.MajorTickLength);
                 }
                 else if (Edge == Edge.Left)
                 {
                     sf.Alignment = StringAlignment.Far;
-                    for (int i = 0; i < tick.Positions.Length; i++)
-                        gfx.DrawString(tick.Labels[i], font, brush, format: sf,
-                            x: dims.DataOffsetX - tick.MarkLength,
-                            y: dims.GetPixelY(tick.Positions[i]));
+                    for (int i = 0; i < Ticks.MajorPositions.Length; i++)
+                        gfx.DrawString(Ticks.MajorLabels[i], font, brush, format: sf,
+                            x: dims.DataOffsetX - Ticks.MajorTickLength,
+                            y: dims.GetPixelY(Ticks.MajorPositions[i]));
                 }
                 else
                 {
@@ -168,10 +223,10 @@ namespace ScottPlot.Renderable
 
         private void RenderLine(PlotDimensions dims, Graphics gfx)
         {
-            if (Line == false)
+            if (!Line.Enable)
                 return;
 
-            using (var pen = GDI.Pen(LineColor, LineWidth))
+            using (var pen = GDI.Pen(Line.Color, Line.Width))
             {
                 PointF bottomLeft = new PointF(dims.DataOffsetX, dims.DataOffsetY + dims.DataHeight);
                 PointF topLeft = new PointF(dims.DataOffsetX, dims.DataOffsetY);
@@ -193,33 +248,32 @@ namespace ScottPlot.Renderable
 
         private void RenderTitle(PlotDimensions dims, Graphics gfx)
         {
-            if (string.IsNullOrWhiteSpace(Title))
+            if (string.IsNullOrWhiteSpace(Title.Label))
                 return;
 
             float dataCenterX = dims.DataOffsetX + dims.DataWidth / 2;
             float dataCenterY = dims.DataOffsetY + dims.DataHeight / 2;
 
-            using (var font = GDI.Font(TitleFont.Name, TitleFont.Size, TitleFont.Bold))
-            using (var brush = GDI.Brush(TitleFont.Color))
-            using (var pen = GDI.Pen(MajorTicks.MarkColor))
+            using (var font = GDI.Font(Title.Font))
+            using (var brush = GDI.Brush(Title.Font.Color))
             using (var sf = GDI.StringFormat(HorizontalAlignment.Center, VerticalAlignment.Lower))
             {
                 if (Edge == Edge.Bottom)
                 {
                     sf.LineAlignment = StringAlignment.Far;
-                    gfx.DrawString(Title, font, brush, dataCenterX, dims.Height, sf);
+                    gfx.DrawString(Title.Label, font, brush, dataCenterX, dims.Height, sf);
                 }
                 else if (Edge == Edge.Top)
                 {
                     sf.LineAlignment = StringAlignment.Near;
-                    gfx.DrawString(Title, font, brush, dataCenterX, 0, sf);
+                    gfx.DrawString(Title.Label, font, brush, dataCenterX, 0, sf);
                 }
                 else if (Edge == Edge.Left)
                 {
                     sf.LineAlignment = StringAlignment.Near;
                     gfx.TranslateTransform(0, dataCenterY);
                     gfx.RotateTransform(-90);
-                    gfx.DrawString(Title, font, brush, 0, 0, sf);
+                    gfx.DrawString(Title.Label, font, brush, 0, 0, sf);
                     gfx.ResetTransform();
                 }
                 else if (Edge == Edge.Right)

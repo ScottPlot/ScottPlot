@@ -47,9 +47,9 @@ namespace ScottPlot
             // TODO: add a Copy() method to the settings module, or perhaps Update(existingSettings).
 
             // copy over only the most relevant styles
-            plt2.Title(settings.XAxis2.Title);
-            plt2.XLabel(settings.XAxis.Title);
-            plt2.YLabel(settings.YAxis.Title);
+            plt2.Title(settings.XAxis2.Title.Label);
+            plt2.XLabel(settings.XAxis.Title.Label);
+            plt2.YLabel(settings.YAxis.Title.Label);
 
             plt2.AxisAuto();
             return plt2;

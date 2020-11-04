@@ -34,7 +34,9 @@ namespace ScottPlot
             settings.DataBackground.Color = dataBg ?? settings.DataBackground.Color;
             settings.FigureBackground.Color = figBg ?? settings.FigureBackground.Color;
 
-            foreach (var axis in settings.AllAxes)
+            // TODO: support this
+            /*
+            foreach (var axis in settings.Axes)
             {
                 axis.TitleFont.Color = label ?? axis.TitleFont.Color;
                 axis.TickFont.Color = tick ?? axis.TickFont.Color;
@@ -42,9 +44,11 @@ namespace ScottPlot
                 axis.MinorTicks.GridLineColor = grid ?? axis.MajorTicks.GridLineColor;
                 axis.MajorTicks.MarkColor = tick ?? axis.MajorTicks.MarkColor;
                 axis.MinorTicks.MarkColor = tick ?? axis.MinorTicks.MarkColor;
+            
             }
 
             settings.XAxis2.TitleFont.Color = title ?? settings.XAxis2.TitleFont.Color;
+            */
         }
 
         public void Style(Style style)
@@ -61,6 +65,8 @@ namespace ScottPlot
             bool? top = true
         )
         {
+            // TODO: support this
+            /*
             foreach (var axis in settings.PrimaryAxes)
             {
                 axis.Line = drawFrame ?? axis.Line;
@@ -73,6 +79,7 @@ namespace ScottPlot
             settings.XAxis2.Line = top ?? settings.XAxis2.Line;
 
             TightenLayout();
+            */
         }
 
         public void Benchmark(bool show = true, bool toggle = false) =>
@@ -130,6 +137,8 @@ namespace ScottPlot
             bool? snapToNearestPixel = null
             )
         {
+            // TODO: support this with new axis system
+            /*
             if (enable != null)
             {
                 settings.XAxis.MajorTicks.IsGridVisible = enable.Value;
@@ -148,8 +157,6 @@ namespace ScottPlot
                 settings.YAxis.MajorTicks.GridLineColor = color.Value;
             }
 
-            // TODO: support this with new axis system
-            /*
             if (xSpacing != null)
                 settings.ticks.manualSpacingX = xSpacing.Value;
             if (ySpacing != null)
@@ -158,7 +165,6 @@ namespace ScottPlot
                 settings.ticks.manualDateTimeSpacingUnitX = xSpacingDateTimeUnit.Value;
             if (ySpacingDateTimeUnit != null)
                 settings.ticks.manualDateTimeSpacingUnitY = ySpacingDateTimeUnit.Value;
-            */
 
             if (lineWidth != null)
             {
@@ -177,6 +183,7 @@ namespace ScottPlot
                 settings.XAxis.MajorTicks.PixelSnap = snapToNearestPixel.Value;
                 settings.YAxis.MajorTicks.PixelSnap = snapToNearestPixel.Value;
             }
+            */
         }
 
         public void MatchLayout(Plot sourcePlot, bool horizontal = true, bool vertical = true)
