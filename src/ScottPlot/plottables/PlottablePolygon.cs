@@ -18,6 +18,8 @@ namespace ScottPlot
         public bool fill = true;
         public Color fillColor = Color.Gray;
         public double fillAlpha = 0.5;
+        public Color hatchColor = Color.Transparent;
+        public HatchStyle hatchStyle = HatchStyle.None;
 
         public PlottablePolygon(double[] xs, double[] ys)
         {
@@ -58,7 +60,10 @@ namespace ScottPlot
                     color: fill ? fillColor : lineColor,
                     lineWidth: fill ? 10 : lineWidth,
                     markerShape: MarkerShape.none
-                )
+                ){
+                    hatchColor = hatchColor,
+                    hatchStyle = hatchStyle
+                }
             };
 
         public string ValidationErrorMessage { get; private set; }
@@ -98,7 +103,7 @@ namespace ScottPlot
                 points[i] = new PointF(dims.GetPixelX(xs[i]), dims.GetPixelY(ys[i]));
 
             using (Graphics gfx = GDI.Graphics(bmp, lowQuality))
-            using (Brush fillBrush = GDI.Brush(Color.FromArgb((byte)(255 * fillAlpha), fillColor)))
+            using (Brush fillBrush = hatchStyle == HatchStyle.None ? GDI.Brush(fillColor, fillAlpha) : GDI.Brush(fillColor, hatchColor: hatchColor, hatchStyle: hatchStyle))
             using (Pen outlinePen = GDI.Pen(lineColor, (float)lineWidth))
             {
                 if (fill)

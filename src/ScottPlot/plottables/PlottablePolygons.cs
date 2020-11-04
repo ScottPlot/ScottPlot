@@ -17,6 +17,8 @@ namespace ScottPlot
         public bool fill;
         public Color fillColor;
         public double fillAlpha;
+        public Color hatchColor = Color.Transparent;
+        public HatchStyle hatchStyle = HatchStyle.None;
 
         public bool SkipOffScreenPolygons = true;
         public bool RenderSmallPolygonsAsSinglePixels = true;
@@ -89,7 +91,10 @@ namespace ScottPlot
                     color: fill ? fillColor : lineColor,
                     lineWidth: fill ? 10 : lineWidth,
                     markerShape: MarkerShape.none
-                )
+                ){
+                    hatchColor = hatchColor,
+                    hatchStyle = hatchStyle
+                }
             };
 
         private bool IsBiggerThenPixel(List<(double x, double y)> poly, double UnitsPerPixelX, double UnitsPerPixelY)
@@ -135,7 +140,7 @@ namespace ScottPlot
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             using (Graphics gfx = GDI.Graphics(bmp, lowQuality))
-            using (Brush brush = GDI.Brush(fillColor, fillAlpha))
+            using (Brush brush = hatchStyle == HatchStyle.None ? GDI.Brush(fillColor, fillAlpha) : GDI.Brush(fillColor, hatchColor: hatchColor, hatchStyle: hatchStyle))
             using (Pen pen = GDI.Pen(lineColor, lineWidth))
             {
                 foreach (List<(double x, double y)> poly in polys)

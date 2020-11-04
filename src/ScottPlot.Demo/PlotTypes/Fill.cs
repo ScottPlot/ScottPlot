@@ -26,6 +26,31 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
+        public class FillHatchBeneathCurve : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Filled Curve (Hatch)";
+            public string description { get; } = "You can create a filled scatter plot where the area between the curve and baseline is shaded with a color. The baseline defaults to 0, but can be set with an optional argument.";
+
+            public void Render(Plot plt)
+            {
+                double[] xs = DataGen.Range(0, 10, .1, true);
+                double[] sin = DataGen.Sin(xs);
+                double[] cos = DataGen.Cos(xs);
+
+                var sinCurve = plt.PlotFill(xs, sin, "sin", lineWidth: 2, fillAlpha: .5);
+                var cosCurve = plt.PlotFill(xs, cos, "cos", lineWidth: 2, fillAlpha: .5);
+
+                sinCurve.hatchStyle = Drawing.HatchStyle.StripedDownwardDiagonal;
+                sinCurve.hatchColor = Color.Transparent; // This is the default
+                cosCurve.hatchStyle = Drawing.HatchStyle.StripedUpwardDiagonal;
+                cosCurve.hatchColor = Color.Transparent;
+
+                plt.PlotHLine(0, color: Color.Black);
+                plt.AxisAuto(0);
+                plt.Legend(location: legendLocation.lowerLeft);
+            }
+        }
+
         public class FillBetweenCurves : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Fill Between Curves";
@@ -45,6 +70,26 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
+        public class FillHatchBetweenCurves : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Fill Between Curves (Hatch)";
+            public string description { get; } = "You can fill the area between curves by supplying two pairs of X/Y coordinates";
+
+            public void Render(Plot plt)
+            {
+                double[] xs = DataGen.Range(0, 10, .1, true);
+                double[] sin = DataGen.Sin(xs);
+                double[] cos = DataGen.Cos(xs);
+
+                var filledRegion = plt.PlotFill(xs, sin, xs, cos, fillAlpha: .5);
+                filledRegion.hatchStyle = Drawing.HatchStyle.StripedUpwardDiagonal;
+                plt.PlotScatter(xs, sin, Color.Black);
+                plt.PlotScatter(xs, cos, Color.Black);
+
+                plt.AxisAuto(0);
+            }
+        }
+
         public class FillAboveBelow : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Fill Above and Below";
@@ -57,6 +102,29 @@ namespace ScottPlot.Demo.PlotTypes
                 var xs = ScottPlot.DataGen.Consecutive(ys.Length, spacing: 0.025);
 
                 plt.PlotFillAboveBelow(xs, ys, fillAlpha: .5, labelAbove: "above", labelBelow: "below");
+                plt.Legend(location: ScottPlot.legendLocation.lowerLeft);
+                plt.AxisAuto(0);
+            }
+        }
+
+        public class FillHatchAboveBelow : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Fill Above and Below (Hatch)";
+            public string description { get; } = "A special method lets you create a filled line plot with different colors above/below the baseline.";
+
+            public void Render(Plot plt)
+            {
+                Random rand = new Random(0);
+                var ys = ScottPlot.DataGen.RandomWalk(rand, 1000, offset: -10);
+                var xs = ScottPlot.DataGen.Consecutive(ys.Length, spacing: 0.025);
+
+                (var filledBelow, var filledAbove) = plt.PlotFillAboveBelow(xs, ys, labelAbove: "above", labelBelow: "below");
+                filledAbove.hatchStyle = Drawing.HatchStyle.StripedWideDownwardDiagonal;
+                filledAbove.hatchColor = Color.LightGreen;
+
+                filledBelow.hatchStyle = Drawing.HatchStyle.StripedWideUpwardDiagonal;
+                filledBelow.hatchColor = Color.LightPink;
+
                 plt.Legend(location: ScottPlot.legendLocation.lowerLeft);
                 plt.AxisAuto(0);
             }

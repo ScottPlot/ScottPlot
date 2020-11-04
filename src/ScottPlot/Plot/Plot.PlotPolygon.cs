@@ -3,6 +3,7 @@
  *   - Long lists of optional arguments (matplotlib style) are permitted.
  *   - Use one line per argument to simplify the tracking of changes.
  */
+using ScottPlot.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -23,7 +24,9 @@ namespace ScottPlot
             bool fill = true,
             Color? fillColor = null,
             double fillAlpha = 1,
-            double baseline = 0
+            double baseline = 0,
+            Color? hatchColor = null,
+            HatchStyle hatchStyle = HatchStyle.None
             )
         {
             if (xs.Length != ys.Length)
@@ -32,7 +35,7 @@ namespace ScottPlot
             double[] xs2 = Tools.Pad(xs, cloneEdges: true);
             double[] ys2 = Tools.Pad(ys, padWithLeft: baseline, padWithRight: baseline);
 
-            return PlotPolygon(xs2, ys2, label, lineWidth, lineColor, fill, fillColor, fillAlpha);
+            return PlotPolygon(xs2, ys2, label, lineWidth, lineColor, fill, fillColor, fillAlpha, hatchColor, hatchStyle);
         }
 
         public PlottablePolygon PlotFill(
@@ -46,7 +49,9 @@ namespace ScottPlot
             bool fill = true,
             Color? fillColor = null,
             double fillAlpha = 1,
-            double baseline = 0
+            double baseline = 0,
+            Color? hatchColor = null,
+            HatchStyle hatchStyle = HatchStyle.None
             )
         {
             if ((xs1.Length != ys1.Length) || (xs2.Length != ys2.Length))
@@ -67,7 +72,7 @@ namespace ScottPlot
                 bothY[ys1.Length + i] = ys2[ys2.Length - 1 - i];
             }
 
-            return PlotPolygon(bothX, bothY, label, lineWidth, lineColor, fill, fillColor, fillAlpha);
+            return PlotPolygon(bothX, bothY, label, lineWidth, lineColor, fill, fillColor, fillAlpha, hatchColor, hatchStyle);
         }
 
         public (PlottablePolygon, PlottablePolygon) PlotFillAboveBelow(
@@ -81,7 +86,9 @@ namespace ScottPlot
             Color? fillColorAbove = null,
             Color? fillColorBelow = null,
             double fillAlpha = 1,
-            double baseline = 0
+            double baseline = 0,
+            Color? hatchColor = null,
+            HatchStyle hatchStyle = HatchStyle.None
             )
         {
             if (xs.Length != ys.Length)
@@ -113,8 +120,8 @@ namespace ScottPlot
             if (lineColor is null)
                 lineColor = Color.Black;
 
-            var polyAbove = PlotPolygon(xs2, ys2above, labelAbove, lineWidth, lineColor, fill, fillColorAbove, fillAlpha);
-            var polyBelow = PlotPolygon(xs2, ys2below, labelBelow, lineWidth, lineColor, fill, fillColorBelow, fillAlpha);
+            var polyAbove = PlotPolygon(xs2, ys2above, labelAbove, lineWidth, lineColor, fill, fillColorAbove, fillAlpha, hatchColor, hatchStyle);
+            var polyBelow = PlotPolygon(xs2, ys2below, labelBelow, lineWidth, lineColor, fill, fillColorBelow, fillAlpha, hatchColor, hatchStyle);
 
             return (polyBelow, polyAbove);
         }
@@ -127,7 +134,9 @@ namespace ScottPlot
             Color? lineColor = null,
             bool fill = true,
             Color? fillColor = null,
-            double fillAlpha = 1
+            double fillAlpha = 1,
+            Color? hatchColor = null,
+            HatchStyle hatchStyle = HatchStyle.None
             )
         {
             var plottable = new PlottablePolygon(xs, ys)
@@ -137,7 +146,9 @@ namespace ScottPlot
                 lineColor = lineColor ?? Color.Black,
                 fill = fill,
                 fillColor = fillColor ?? settings.GetNextColor(),
-                fillAlpha = fillAlpha
+                fillAlpha = fillAlpha,
+                hatchColor = hatchColor ?? System.Drawing.Color.Transparent,
+                hatchStyle = hatchStyle
             };
 
             Add(plottable);
@@ -151,7 +162,9 @@ namespace ScottPlot
             Color? lineColor = null,
             bool fill = true,
             Color? fillColor = null,
-            double fillAlpha = 1
+            double fillAlpha = 1,
+            Color? hatchColor = null,
+            HatchStyle hatchStyle = HatchStyle.None
             )
         {
             var plottable = new PlottablePolygons(polys)
@@ -161,7 +174,9 @@ namespace ScottPlot
                 lineColor = lineColor ?? Color.Black,
                 fill = fill,
                 fillColor = fillColor ?? settings.GetNextColor(),
-                fillAlpha = fillAlpha
+                fillAlpha = fillAlpha,
+                hatchColor = hatchColor ?? System.Drawing.Color.Transparent,
+                hatchStyle = hatchStyle
             };
 
             Add(plottable);
