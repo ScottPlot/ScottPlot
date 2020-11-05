@@ -94,9 +94,6 @@ namespace ScottPlot
             if (!settings.axes.hasBeenSet && settings.Plottables.Count > 0)
                 settings.AxisAuto();
 
-            settings.ticks?.x?.Recalculate(settings); // this probably never happens
-            settings.ticks?.y?.Recalculate(settings); // this probably never happens
-
             settings.Resize(settings.Width, settings.Height);
 
             Resize();

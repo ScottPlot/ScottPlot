@@ -1,6 +1,8 @@
-﻿using ScottPlot.Drawing;
+﻿using ScottPlot.Config;
+using ScottPlot.Drawing;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 
@@ -20,15 +22,12 @@ namespace ScottPlot.Renderable
         public bool Enable = true;
         public Color Color = Color.Black;
 
-        public string[] MajorLabels;
         public bool MajorLabelEnable = true;
         public Drawing.Font MajorLabelFont = new Drawing.Font() { Size = 11 };
 
-        public double[] MajorPositions;
         public bool MajorTickEnable = true;
         public float MajorTickLength = 5;
 
-        public double[] MinorPositions;
         public bool MinorTickEnable = true;
         public float MinorTickLength = 2;
         public bool MinorTickLogDistribution = false;
@@ -66,6 +65,7 @@ namespace ScottPlot.Renderable
         public float PixelSize = 40;
         public float PixelSizeMinimum = 5;
 
+        public readonly TickCollection TickCollection = new TickCollection();
         public readonly AxisTitleSettings Title = new AxisTitleSettings();
         public readonly AxisTickSettings Ticks = new AxisTickSettings();
         public readonly AxisLineSettings Line = new AxisLineSettings();
@@ -84,13 +84,6 @@ namespace ScottPlot.Renderable
         // TODO: support offset and multiplier notation
         // TODO: support inverted sign
 
-        public void SetTicks(double[] positions, string[] labels, double[] minorPositions)
-        {
-            Ticks.MajorPositions = positions;
-            Ticks.MajorLabels = labels;
-            Ticks.MinorPositions = minorPositions;
-        }
-
         public void AutoSize()
         {
             // adjust PixelSize based on measured dimensions of the axis label and ticks
@@ -98,8 +91,8 @@ namespace ScottPlot.Renderable
             using (var tickFont = GDI.Font(Ticks.MajorLabelFont))
             using (var titleFont = GDI.Font(Title.Font))
             {
-                (float tickWidth, float tickHeight) = Ticks.MajorLabels?.Length > 0 ?
-                                                      LargestStringSize(Ticks.MajorLabels, tickFont) :
+                (float tickWidth, float tickHeight) = TickCollection.tickLabels?.Length > 0 ?
+                                                      LargestStringSize(TickCollection.tickLabels, tickFont) :
                                                       (0, 0);
 
                 float titleHeight = Title.IsVisible ?
@@ -130,6 +123,7 @@ namespace ScottPlot.Renderable
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
+            TickCollection.Recalculate(dims);
             using (var gfx = GDI.Graphics(bmp, lowQuality))
             using (var testFill = GDI.Brush(Color.LightGray))
             {
@@ -139,9 +133,8 @@ namespace ScottPlot.Renderable
                     width: dims.DataWidth,
                     height: dims.Height - (dims.DataHeight + dims.DataOffsetY));
 
-                RenderTickMarks(dims, gfx, Ticks.MajorPositions, Ticks.MajorTickLength, Ticks.Color, Ticks.MajorGridStyle, Ticks.MajorGridColor, Ticks.MajorGridWidth);
-                RenderTickMarks(dims, gfx, Ticks.MinorPositions, Ticks.MinorTickLength, Ticks.Color, Ticks.MinorGridStyle, Ticks.MinorGridColor, Ticks.MinorGridWidth);
-
+                RenderTickMarks(dims, gfx, TickCollection.tickPositionsMajor, Ticks.MajorTickLength, Ticks.Color, Ticks.MajorGridStyle, Ticks.MajorGridColor, Ticks.MajorGridWidth);
+                RenderTickMarks(dims, gfx, TickCollection.tickPositionsMinor, Ticks.MinorTickLength, Ticks.Color, Ticks.MinorGridStyle, Ticks.MinorGridColor, Ticks.MinorGridWidth);
                 RenderTickLabels(dims, gfx);
                 RenderLine(dims, gfx);
                 RenderTitle(dims, gfx);
@@ -191,7 +184,7 @@ namespace ScottPlot.Renderable
 
         private void RenderTickLabels(PlotDimensions dims, Graphics gfx)
         {
-            if (Ticks.MajorPositions is null || Ticks.MajorLabelFont is null)
+            if (TickCollection.tickLabels is null || TickCollection.tickLabels.Length == 0)
                 return;
 
             using (var font = GDI.Font(Ticks.MajorLabelFont))
@@ -201,22 +194,22 @@ namespace ScottPlot.Renderable
                 if (Edge == Edge.Bottom)
                 {
                     sf.LineAlignment = StringAlignment.Near;
-                    for (int i = 0; i < Ticks.MajorPositions.Length; i++)
-                        gfx.DrawString(Ticks.MajorLabels[i], font, brush, format: sf,
-                            x: dims.GetPixelX(Ticks.MajorPositions[i]),
+                    for (int i = 0; i < TickCollection.tickPositionsMajor.Length; i++)
+                        gfx.DrawString(TickCollection.tickLabels[i], font, brush, format: sf,
+                            x: dims.GetPixelX(TickCollection.tickPositionsMajor[i]),
                             y: dims.DataOffsetY + dims.DataHeight + Ticks.MajorTickLength);
                 }
                 else if (Edge == Edge.Left)
                 {
                     sf.Alignment = StringAlignment.Far;
-                    for (int i = 0; i < Ticks.MajorPositions.Length; i++)
-                        gfx.DrawString(Ticks.MajorLabels[i], font, brush, format: sf,
+                    for (int i = 0; i < TickCollection.tickPositionsMajor.Length; i++)
+                        gfx.DrawString(TickCollection.tickLabels[i], font, brush, format: sf,
                             x: dims.DataOffsetX - Ticks.MajorTickLength,
-                            y: dims.GetPixelY(Ticks.MajorPositions[i]));
+                            y: dims.GetPixelY(TickCollection.tickPositionsMajor[i]));
                 }
                 else
                 {
-                    throw new NotImplementedException();
+                    Debug.WriteLine($"Skipping render of labels on {Edge}");
                 }
             }
         }
@@ -278,7 +271,7 @@ namespace ScottPlot.Renderable
                 }
                 else if (Edge == Edge.Right)
                 {
-                    throw new NotImplementedException();
+                    Debug.WriteLine($"Skipping render of title on {Edge}");
                 }
                 else
                 {

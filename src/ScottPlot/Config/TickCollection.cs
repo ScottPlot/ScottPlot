@@ -26,7 +26,7 @@ namespace ScottPlot.Config
         public string cornerLabel;
         public SizeF maxLabelSize = new SizeF(15, 12);
         public bool dateFormat;
-        private bool verticalAxis;
+        public bool verticalAxis;
         public bool invertSign;
         public bool logScale;
         public string numericFormatString;
@@ -45,21 +45,6 @@ namespace ScottPlot.Config
         public bool useMultiplierNotation = false;
         public bool useOffsetNotation = false;
         public bool useExponentialNotation = true;
-
-        public TickCollection(bool verticalAxis)
-        {
-            this.verticalAxis = verticalAxis;
-        }
-
-        public void Recalculate(Settings settings)
-        {
-            var dims = new PlotDimensions(
-                figureSize: new SizeF(settings.Width, settings.Height),
-                dataSize: new SizeF(settings.DataWidth, settings.DataHeight),
-                dataOffset: new PointF(settings.DataOffsetX, settings.DataOffsetY),
-                axisLimits: new AxisLimits2D(settings.axes.x.min, settings.axes.x.max, settings.axes.y.min, settings.axes.y.max));
-            Recalculate(dims);
-        }
 
         public void Recalculate(PlotDimensions dims)
         {
@@ -93,7 +78,7 @@ namespace ScottPlot.Config
             else
             {
                 low = dims.XMin - dims.UnitsPerPxX; // add an extra pixel to capture the edge tick
-                high = dims.YMin + dims.UnitsPerPxX; // add an extra pixel to capture the edge tick
+                high = dims.XMax + dims.UnitsPerPxX; // add an extra pixel to capture the edge tick
                 tickCount = (int)(dims.DataWidth / maxLabelSize.Width);
             }
 

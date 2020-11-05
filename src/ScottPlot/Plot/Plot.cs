@@ -121,15 +121,8 @@ namespace ScottPlot
         {
             settings.FigureBackground.Render(dims, bmp, lowQuality);
             settings.DataBackground.Render(dims, bmp, lowQuality);
-
-            settings.ticks.x.Recalculate(settings);
-            settings.XAxis.SetTicks(settings.ticks.x.tickPositionsMajor, settings.ticks.x.tickLabels, settings.ticks.x.tickPositionsMinor);
             settings.XAxis.Render(dims, bmp, lowQuality: false);
-
-            settings.ticks.y.Recalculate(settings);
-            settings.YAxis.SetTicks(settings.ticks.y.tickPositionsMajor, settings.ticks.y.tickLabels, settings.ticks.y.tickPositionsMinor);
             settings.YAxis.Render(dims, bmp, lowQuality: false);
-
             settings.XAxis2.Render(dims, bmp, lowQuality: false);
             settings.YAxis2.Render(dims, bmp, lowQuality: false);
         }

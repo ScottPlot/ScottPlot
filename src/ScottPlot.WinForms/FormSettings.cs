@@ -34,19 +34,19 @@ namespace ScottPlot.UserControls
             tbYlabel.Text = plt.GetSettings(false).YAxis.Title.Label;
             tbY2.Text = Math.Round(plt.Axis()[3], 4).ToString();
             tbY1.Text = Math.Round(plt.Axis()[2], 4).ToString();
-            cbYminor.Checked = plt.GetSettings().ticks.displayYminor;
-            cbYdateTime.Checked = plt.GetSettings().ticks.y.dateFormat;
+            //cbYminor.Checked = plt.GetSettings().YAxis.TickCollection.displayYminor;
+            //cbYdateTime.Checked = plt.GetSettings().ticks.y.dateFormat;
 
             // horizontal axis
             tbXlabel.Text = plt.GetSettings(false).XAxis.Title.Label;
             tbX2.Text = Math.Round(plt.Axis()[1], 4).ToString();
             tbX1.Text = Math.Round(plt.Axis()[0], 4).ToString();
-            cbXminor.Checked = plt.GetSettings().ticks.displayXminor;
-            cbXdateTime.Checked = plt.GetSettings().ticks.x.dateFormat;
+            //cbXminor.Checked = plt.GetSettings().ticks.displayXminor;
+            //cbXdateTime.Checked = plt.GetSettings().ticks.x.dateFormat;
 
             // tick display options
-            cbTicksOffset.Checked = plt.GetSettings().ticks.useOffsetNotation;
-            cbTicksMult.Checked = plt.GetSettings().ticks.useMultiplierNotation;
+            //cbTicksOffset.Checked = plt.GetSettings().ticks.useOffsetNotation;
+            //cbTicksMult.Checked = plt.GetSettings().ticks.useMultiplierNotation;
             cbGrid.Checked = plt.GetSettings(false).XAxis.Ticks.MajorGridStyle != LineStyle.None;
 
             // legend

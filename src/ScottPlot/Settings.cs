@@ -97,9 +97,6 @@ namespace ScottPlot
          * 
          */
 
-        // TODO: move these settings into each Axis module
-        public Config.Ticks ticks = new Config.Ticks();
-
         // TODO: move this functionality into the PlotDimensions module
         public Config.Axes axes = new Config.Axes();
         public double xAxisScale { get { return DataWidth / axes.x.span; } } // pixels per unit

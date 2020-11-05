@@ -16,8 +16,8 @@ namespace ScottPlot.Config
         public bool displayYlabels = true;
         public bool displayXlabels = true;
 
-        public readonly TickCollection x = new TickCollection(false);
-        public readonly TickCollection y = new TickCollection(true);
+        public readonly TickCollection x = new TickCollection() { verticalAxis = false };
+        public readonly TickCollection y = new TickCollection() { verticalAxis = true };
         public int size = 5;
         public Color color = Color.Black;
 
