@@ -19,6 +19,11 @@
             PixelSize = 40;
             Title.Font.Bold = true;
             TickCollection.verticalAxis = false;
+            Title.Enable = true;
+
+            Ticks.MajorTickEnable = false;
+            Ticks.MinorTickEnable = false;
+            Ticks.MajorLabelEnable = false;
         }
     }
 
@@ -40,6 +45,11 @@
             Edge = Edge.Right;
             PixelSize = 60;
             TickCollection.verticalAxis = true;
+
+            Ticks.MajorTickEnable = false;
+            Ticks.MinorTickEnable = false;
+            Ticks.MajorLabelEnable = false;
+            Title.Enable = false;
         }
     }
 }

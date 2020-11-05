@@ -42,7 +42,60 @@ namespace ScottPlot
             string dateTimeFormatStringY = null
             )
         {
-            // TODO: support all of these
+            settings.XAxis.Configure(showMajorTicks: displayTicksX);
+            settings.XAxis.Configure(showMinorTicks: displayTicksX);
+            settings.XAxis.Configure(showLabels: displayTicksX);
+            settings.YAxis.Configure(showMajorTicks: displayTicksY);
+            settings.YAxis.Configure(showMinorTicks: displayTicksY);
+            settings.YAxis.Configure(showLabels: displayTicksY);
+
+            settings.XAxis.Configure(showMinorTicks: displayTicksXminor);
+            settings.YAxis.Configure(showMinorTicks: displayTicksYminor);
+            settings.XAxis.Configure(showLabels: displayTickLabelsX);
+            settings.YAxis.Configure(showLabels: displayTickLabelsY);
+
+            settings.XAxis.Configure(color: color);
+            settings.YAxis.Configure(color: color);
+
+            settings.XAxis.Configure(useMultiplierNotation: useMultiplierNotation);
+            settings.YAxis.Configure(useMultiplierNotation: useMultiplierNotation);
+            settings.XAxis.Configure(useOffsetNotation: useOffsetNotation);
+            settings.YAxis.Configure(useOffsetNotation: useOffsetNotation);
+            settings.XAxis.Configure(useExponentialNotation: useExponentialNotation);
+            settings.YAxis.Configure(useExponentialNotation: useExponentialNotation);
+
+            settings.XAxis.Configure(dateTime: dateTimeX);
+            settings.YAxis.Configure(dateTime: dateTimeY);
+
+            settings.XAxis.Configure(rulerMode: rulerModeX);
+            settings.YAxis.Configure(rulerMode: rulerModeY);
+            settings.XAxis.Configure(invertSign: invertSignX);
+            settings.YAxis.Configure(invertSign: invertSignY);
+
+            settings.XAxis.Configure(fontName: fontName);
+            settings.YAxis.Configure(fontName: fontName);
+            settings.XAxis.Configure(fontSize: fontSize);
+            settings.YAxis.Configure(fontSize: fontSize);
+
+            settings.XAxis.Configure(rotation: xTickRotation);
+
+            settings.XAxis.Configure(logScale: logScaleX);
+            settings.YAxis.Configure(logScale: logScaleY);
+
+            settings.XAxis.Configure(numericFormatString: numericFormatStringX);
+            settings.YAxis.Configure(numericFormatString: numericFormatStringY);
+
+            settings.XAxis.Configure(snapToNearestPixel: snapToNearestPixel);
+            settings.YAxis.Configure(snapToNearestPixel: snapToNearestPixel);
+
+            settings.XAxis.Configure(radix: baseX);
+            settings.YAxis.Configure(radix: baseY);
+
+            settings.XAxis.Configure(prefix: prefixX);
+            settings.YAxis.Configure(prefix: prefixY);
+
+            settings.XAxis.Configure(dateTimeFormatString: dateTimeFormatStringX);
+            settings.YAxis.Configure(dateTimeFormatString: dateTimeFormatStringY);
         }
 
         public void XTicks(string[] labels)
