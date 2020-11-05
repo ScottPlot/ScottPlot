@@ -10,20 +10,13 @@ namespace ScottPlotTests.AxisRenderTests
 {
     class AxisStyling
     {
-        [Test]
-        public void Test_Axis_Left()
+        private MeanPixel Mean(ScottPlot.Renderable.Axis axis, PlotDimensions dims = null, bool save = true)
         {
-            var dims = new PlotDimensions(
+            dims = dims ?? new PlotDimensions(
                 figureSize: new SizeF(100, 500),
                 dataSize: new SizeF(20, 400),
                 dataOffset: new PointF(75, 50),
                 axisLimits: new AxisLimits2D(-1, 1, -100, 100));
-
-            var axis = new ScottPlot.Renderable.Axis();
-            axis.Title.Label = "Axis Label";
-            axis.Edge = ScottPlot.Renderable.Edge.Left;
-            axis.TickCollection.Recalculate(dims);
-            axis.TickCollection.verticalAxis = true;
 
             using (var bmp = new System.Drawing.Bitmap((int)dims.Width, (int)dims.Height))
             using (var gfx = GDI.Graphics(bmp, lowQuality: true))
@@ -32,8 +25,66 @@ namespace ScottPlotTests.AxisRenderTests
                 gfx.Clear(Color.White);
                 gfx.FillRectangle(brush, dims.DataOffsetX, dims.DataOffsetY, dims.DataWidth, dims.DataHeight);
                 axis.Render(dims, bmp);
-                TestTools.SaveFig(bmp);
+                if (save)
+                    TestTools.SaveFig(bmp);
+                return new MeanPixel(bmp);
             }
+        }
+
+        [Test]
+        public void Test_AxisMajorTick_Enable()
+        {
+            var axis = new ScottPlot.Renderable.Axis();
+            axis.Title.Label = "Sample Left Axis";
+            axis.Edge = ScottPlot.Renderable.Edge.Left;
+            axis.TickCollection.verticalAxis = true;
+            var before = Mean(axis);
+
+            axis.Ticks.MajorTickEnable = false;
+            var after = Mean(axis);
+            Assert.That(after.IsLighterThan(before));
+        }
+
+        [Test]
+        public void Test_AxisMinorTick_Enable()
+        {
+            var axis = new ScottPlot.Renderable.Axis();
+            axis.Title.Label = "Sample Left Axis";
+            axis.Edge = ScottPlot.Renderable.Edge.Left;
+            axis.TickCollection.verticalAxis = true;
+            var before = Mean(axis);
+
+            axis.Ticks.MinorTickEnable = false;
+            var after = Mean(axis);
+            Assert.That(after.IsLighterThan(before));
+        }
+
+        [Test]
+        public void Test_AxisTitle_Enable()
+        {
+            var axis = new ScottPlot.Renderable.Axis();
+            axis.Title.Label = "Sample Left Axis";
+            axis.Edge = ScottPlot.Renderable.Edge.Left;
+            axis.TickCollection.verticalAxis = true;
+            var before = Mean(axis);
+
+            axis.Title.Enable = false;
+            var after = Mean(axis);
+            Assert.That(after.IsLighterThan(before));
+        }
+
+        [Test]
+        public void Test_AxisLine_Enable()
+        {
+            var axis = new ScottPlot.Renderable.Axis();
+            axis.Title.Label = "Sample Left Axis";
+            axis.Edge = ScottPlot.Renderable.Edge.Left;
+            axis.TickCollection.verticalAxis = true;
+            var before = Mean(axis);
+
+            axis.Line.Enable = false;
+            var after = Mean(axis);
+            Assert.That(after.IsLighterThan(before));
         }
     }
 }
