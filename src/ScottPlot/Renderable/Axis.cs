@@ -134,10 +134,10 @@ namespace ScottPlot.Renderable
 
                 if (Ticks.MajorTickEnable)
                     RenderTickMarks(dims, gfx, TickCollection.tickPositionsMajor, Ticks.MajorTickLength, Ticks.Color, Ticks.MajorGridStyle, Ticks.MajorGridColor, Ticks.MajorGridWidth);
-                
+
                 if (Ticks.MinorTickEnable)
                     RenderTickMarks(dims, gfx, TickCollection.tickPositionsMinor, Ticks.MinorTickLength, Ticks.Color, Ticks.MinorGridStyle, Ticks.MinorGridColor, Ticks.MinorGridWidth);
-                
+
                 if (Ticks.MajorLabelEnable)
                     RenderTickLabels(dims, gfx);
 
