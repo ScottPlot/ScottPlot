@@ -28,6 +28,18 @@ namespace ScottPlotTests
             return $"{pixels} pixels: {rgbVals} ({comparisons}) total={Math.Round(RGB, 3)}";
         }
 
+        public override bool Equals(object obj)
+        {
+            if (obj is MeanPixel comparison)
+            {
+                return (R == comparison.R) && (G == comparison.G) && (B == comparison.B);
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public bool IsEqualTo(System.Drawing.Bitmap bmp)
         {
             (_, double r, double g, double b) = TestTools.MeanPixel(bmp);
