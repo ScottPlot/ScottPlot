@@ -24,7 +24,7 @@ namespace ScottPlot.Config
         public string[] manualTickLabels;
 
         public string cornerLabel;
-        public SizeF maxLabelSize;
+        public SizeF maxLabelSize = new SizeF(15, 12);
         public bool dateFormat;
         private bool verticalAxis;
         public bool invertSign;
@@ -35,63 +35,66 @@ namespace ScottPlot.Config
         public int radix = 10;
         public string prefix = null;
 
+        public double manualSpacingX = 0;
+        public double manualSpacingY = 0;
+        public Config.DateTimeUnit? manualDateTimeSpacingUnitX = null;
+        public Config.DateTimeUnit? manualDateTimeSpacingUnitY = null;
+
+        public CultureInfo Culture = CultureInfo.DefaultThreadCurrentCulture;
+
+        public bool useMultiplierNotation = false;
+        public bool useOffsetNotation = false;
+        public bool useExponentialNotation = true;
 
         public TickCollection(bool verticalAxis)
         {
             this.verticalAxis = verticalAxis;
         }
 
-        public SizeF LargestLabel(Settings settings, string[] labels)
+        public void Recalculate(Settings settings)
         {
-            SizeF max = new SizeF(0, 0);
-            foreach (string label in labels)
-            {
-                SizeF tickLabelSize = GDI.MeasureString(label, settings.ticks.font);
-                max.Width = Math.Max(max.Width, tickLabelSize.Width);
-                max.Height = Math.Max(max.Height, tickLabelSize.Height);
-            }
-            return max;
+            var dims = new PlotDimensions(
+                figureSize: new SizeF(settings.Width, settings.Height),
+                dataSize: new SizeF(settings.DataWidth, settings.DataHeight),
+                dataOffset: new PointF(settings.DataOffsetX, settings.DataOffsetY),
+                axisLimits: new AxisLimits2D(settings.axes.x.min, settings.axes.x.max, settings.axes.y.min, settings.axes.y.max));
+            Recalculate(dims);
         }
 
-        public void Recalculate(Settings settings)
+        public void Recalculate(PlotDimensions dims)
         {
             if (manualTickPositions is null)
             {
                 if (dateFormat)
-                    RecalculatePositionsAutomaticDatetime(settings);
+                    RecalculatePositionsAutomaticDatetime(dims);
                 else
-                    RecalculatePositionsAutomaticNumeric(settings);
+                    RecalculatePositionsAutomaticNumeric(dims);
             }
             else
             {
                 tickPositionsMajor = manualTickPositions;
                 tickPositionsMinor = null;
                 tickLabels = manualTickLabels;
-                maxLabelSize = LargestLabel(settings, manualTickLabels);
                 cornerLabel = null;
             }
         }
 
-        private void RecalculatePositionsAutomaticDatetime(Settings settings)
+        private void RecalculatePositionsAutomaticDatetime(PlotDimensions dims)
         {
-            // the goal of this function is to set tickPositionsMajor, tickLabels, tickPositionsMinor, cornerLabel, and maxLabelSize
             double low, high;
             int tickCount;
 
-            // predict maxLabelSize up front using predetermined label sizes
-            maxLabelSize = GDI.MeasureString("2019-08-20\n8:42:17 PM", settings.ticks.font);
-
             if (verticalAxis)
             {
-                low = settings.axes.y.min - settings.yAxisUnitsPerPixel; // add an extra pixel to capture the edge tick
-                high = settings.axes.y.max + settings.yAxisUnitsPerPixel; // add an extra pixel to capture the edge tick
-                tickCount = (int)(settings.DataHeight / maxLabelSize.Height);
+                low = dims.YMin - dims.UnitsPerPxY; // add an extra pixel to capture the edge tick
+                high = dims.YMax + dims.UnitsPerPxY; // add an extra pixel to capture the edge tick
+                tickCount = (int)(dims.DataHeight / maxLabelSize.Height);
             }
             else
             {
-                low = settings.axes.x.min - settings.xAxisUnitsPerPixel; // add an extra pixel to capture the edge tick
-                high = settings.axes.x.max + settings.xAxisUnitsPerPixel; // add an extra pixel to capture the edge tick
-                tickCount = (int)(settings.DataWidth / maxLabelSize.Width);
+                low = dims.XMin - dims.UnitsPerPxX; // add an extra pixel to capture the edge tick
+                high = dims.YMin + dims.UnitsPerPxX; // add an extra pixel to capture the edge tick
+                tickCount = (int)(dims.DataWidth / maxLabelSize.Width);
             }
 
             if (low < high)
@@ -99,8 +102,8 @@ namespace ScottPlot.Config
                 low = Math.Max(low, DateTime.MinValue.ToOADate());
                 high = Math.Min(high, DateTime.MaxValue.ToOADate());
 
-                var dtManualUnits = (verticalAxis) ? settings.ticks.manualDateTimeSpacingUnitY : settings.ticks.manualDateTimeSpacingUnitX;
-                var dtManualSpacing = (verticalAxis) ? settings.ticks.manualSpacingY : settings.ticks.manualSpacingX;
+                var dtManualUnits = (verticalAxis) ? manualDateTimeSpacingUnitY : manualDateTimeSpacingUnitX;
+                var dtManualSpacing = (verticalAxis) ? manualSpacingY : manualSpacingX;
 
                 try
                 {
@@ -108,7 +111,7 @@ namespace ScottPlot.Config
                     DateTime to = DateTime.FromOADate(high);
 
                     var unitFactory = new DateTimeUnitFactory();
-                    IDateTimeUnit tickUnit = unitFactory.CreateUnit(from, to, settings.Culture, tickCount, dtManualUnits, (int)dtManualSpacing);
+                    IDateTimeUnit tickUnit = unitFactory.CreateUnit(from, to, Culture, tickCount, dtManualUnits, (int)dtManualSpacing);
                     (tickPositionsMajor, tickLabels) = tickUnit.GetTicksAndLabels(from, to, dateTimeFormatString);
                 }
                 catch
@@ -124,32 +127,26 @@ namespace ScottPlot.Config
             // dont forget to set all the things
             tickPositionsMinor = null;
             cornerLabel = null;
-            maxLabelSize = LargestLabel(settings, tickLabels);
         }
 
-        private void RecalculatePositionsAutomaticNumeric(Settings settings)
+        private void RecalculatePositionsAutomaticNumeric(PlotDimensions dims)
         {
-            // predict maxLabelSize up front using predetermined label sizes
-            string sampleDateFormatLabel = (dateTimeFormatString is null) ? "2019-08-20\n20:42:17" : dateTimeFormatString;
-            string longestLabel = (dateFormat) ? sampleDateFormatLabel : "-8888";
-            maxLabelSize = GDI.MeasureString(longestLabel, settings.ticks.font);
-
             double low, high, tickSpacing;
             int maxTickCount;
 
             if (verticalAxis)
             {
-                low = settings.axes.y.min - settings.yAxisUnitsPerPixel; // add an extra pixel to capture the edge tick
-                high = settings.axes.y.max + settings.yAxisUnitsPerPixel; // add an extra pixel to capture the edge tick
-                maxTickCount = (int)(settings.DataHeight / maxLabelSize.Height);
-                tickSpacing = (settings.ticks.manualSpacingY != 0) ? settings.ticks.manualSpacingY : GetIdealTickSpacing(low, high, maxTickCount, radix);
+                low = dims.YMin - dims.UnitsPerPxY; // add an extra pixel to capture the edge tick
+                high = dims.YMax + dims.UnitsPerPxY; // add an extra pixel to capture the edge tick
+                maxTickCount = (int)(dims.DataHeight / maxLabelSize.Height);
+                tickSpacing = (manualSpacingY != 0) ? manualSpacingY : GetIdealTickSpacing(low, high, maxTickCount, radix);
             }
             else
             {
-                low = settings.axes.x.min - settings.xAxisUnitsPerPixel; // add an extra pixel to capture the edge tick
-                high = settings.axes.x.max + settings.xAxisUnitsPerPixel; // add an extra pixel to capture the edge tick
-                maxTickCount = (int)(settings.DataWidth / maxLabelSize.Width * 1.2);
-                tickSpacing = (settings.ticks.manualSpacingX != 0) ? settings.ticks.manualSpacingX : GetIdealTickSpacing(low, high, maxTickCount, radix);
+                low = dims.XMin - dims.UnitsPerPxX; // add an extra pixel to capture the edge tick
+                high = dims.XMax + dims.UnitsPerPxX; // add an extra pixel to capture the edge tick
+                maxTickCount = (int)(dims.DataWidth / maxLabelSize.Width * 1.2);
+                tickSpacing = (manualSpacingX != 0) ? manualSpacingX : GetIdealTickSpacing(low, high, maxTickCount, radix);
             }
 
             // now that tick spacing is known, populate the list of ticks and labels
@@ -164,18 +161,18 @@ namespace ScottPlot.Config
 
             if (dateFormat)
             {
-                tickLabels = GetDateLabels(tickPositionsMajor, settings.Culture);
+                tickLabels = GetDateLabels(tickPositionsMajor, Culture);
                 tickPositionsMinor = null;
             }
             else
             {
                 (tickLabels, cornerLabel) = GetPrettyTickLabels(
                         tickPositionsMajor,
-                        settings.ticks.useMultiplierNotation,
-                        settings.ticks.useOffsetNotation,
-                        settings.ticks.useExponentialNotation,
+                        useMultiplierNotation,
+                        useOffsetNotation,
+                        useExponentialNotation,
                         invertSign: invertSign,
-                        culture: settings.Culture
+                        culture: Culture
                     );
 
                 if (logScale)
@@ -184,9 +181,6 @@ namespace ScottPlot.Config
                     tickPositionsMinor = MinorFromMajor(tickPositionsMajor, 5, low, high);
 
             }
-
-            // now set the maximum label size based on the actual labels created
-            maxLabelSize = LargestLabel(settings, tickLabels);
         }
 
         public override string ToString()
