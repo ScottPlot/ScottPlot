@@ -39,16 +39,12 @@ namespace ScottPlot.Renderable
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            Ticks.TickCollection.Recalculate(dims);
+            Ticks.TickCollection.Recalculate(dims, Ticks.MajorLabelFont);
             if (lowQuality == false)
             {
-                // TODO: make this more effecient
-                Ticks.TickCollection.UpdateMaxSize(Ticks.MajorLabelFont);
-                Ticks.TickCollection.Recalculate(dims);
-                Ticks.TickCollection.UpdateMaxSize(Ticks.MajorLabelFont);
-                Ticks.TickCollection.Recalculate(dims);
-                Ticks.TickCollection.UpdateMaxSize(Ticks.MajorLabelFont);
-                Ticks.TickCollection.Recalculate(dims);
+                Ticks.TickCollection.Recalculate(dims, Ticks.MajorLabelFont);
+                Ticks.TickCollection.Recalculate(dims, Ticks.MajorLabelFont);
+                Ticks.TickCollection.Recalculate(dims, Ticks.MajorLabelFont);
             }
 
             using (var gfx = GDI.Graphics(bmp, lowQuality))

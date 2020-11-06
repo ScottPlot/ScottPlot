@@ -46,7 +46,7 @@ namespace ScottPlot.Config
         public bool useOffsetNotation = false;
         public bool useExponentialNotation = true;
 
-        public void Recalculate(PlotDimensions dims)
+        public void Recalculate(PlotDimensions dims, Drawing.Font tickFont = null)
         {
             if (manualTickPositions is null)
             {
@@ -66,9 +66,12 @@ namespace ScottPlot.Config
                 tickLabels = manualTickLabels;
                 cornerLabel = null;
             }
+
+            if (tickFont != null)
+                UpdateMaxSize(tickFont);
         }
 
-        public void UpdateMaxSize(Drawing.Font tickFont)
+        private void UpdateMaxSize(Drawing.Font tickFont)
         {
             if (tickLabels is null || tickLabels.Length == 0)
             {
@@ -81,7 +84,7 @@ namespace ScottPlot.Config
                 if (s.Length > largestString.Length)
                     largestString = s;
 
-            maxLabelSize = GDI.MeasureString(largestString, tickFont);
+            maxLabelSize = GDI.MeasureString(largestString.Trim(), tickFont);
         }
 
         private void RecalculatePositionsAutomaticDatetime(PlotDimensions dims)
@@ -150,7 +153,7 @@ namespace ScottPlot.Config
             {
                 low = dims.XMin - dims.UnitsPerPxX; // add an extra pixel to capture the edge tick
                 high = dims.XMax + dims.UnitsPerPxX; // add an extra pixel to capture the edge tick
-                maxTickCount = (int)(dims.DataWidth / maxLabelSize.Width * 1.2);
+                maxTickCount = (int)(dims.DataWidth / maxLabelSize.Width);
                 tickSpacing = (manualSpacingX != 0) ? manualSpacingX : GetIdealTickSpacing(low, high, maxTickCount, radix);
             }
 
