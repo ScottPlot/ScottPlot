@@ -37,7 +37,7 @@ namespace ScottPlotTests.AxisRenderTests
             var axis = new ScottPlot.Renderable.Axis();
             axis.Title.Label = "Sample Left Axis";
             axis.Edge = ScottPlot.Renderable.Edge.Left;
-            axis.TickCollection.verticalAxis = true;
+            axis.Ticks.TickCollection.verticalAxis = true;
             var before = Mean(axis);
 
             axis.Ticks.MajorTickEnable = false;
@@ -51,7 +51,7 @@ namespace ScottPlotTests.AxisRenderTests
             var axis = new ScottPlot.Renderable.Axis();
             axis.Title.Label = "Sample Left Axis";
             axis.Edge = ScottPlot.Renderable.Edge.Left;
-            axis.TickCollection.verticalAxis = true;
+            axis.Ticks.TickCollection.verticalAxis = true;
             var before = Mean(axis);
 
             axis.Ticks.MinorTickEnable = false;
@@ -65,10 +65,10 @@ namespace ScottPlotTests.AxisRenderTests
             var axis = new ScottPlot.Renderable.Axis();
             axis.Title.Label = "Sample Left Axis";
             axis.Edge = ScottPlot.Renderable.Edge.Left;
-            axis.TickCollection.verticalAxis = true;
+            axis.Ticks.TickCollection.verticalAxis = true;
             var before = Mean(axis);
 
-            axis.Title.Enable = false;
+            axis.Title.IsVisible = false;
             var after = Mean(axis);
             Assert.That(after.IsLighterThan(before));
         }
@@ -79,10 +79,10 @@ namespace ScottPlotTests.AxisRenderTests
             var axis = new ScottPlot.Renderable.Axis();
             axis.Title.Label = "Sample Left Axis";
             axis.Edge = ScottPlot.Renderable.Edge.Left;
-            axis.TickCollection.verticalAxis = true;
+            axis.Ticks.TickCollection.verticalAxis = true;
             var before = Mean(axis);
 
-            axis.Line.Enable = false;
+            axis.Line.IsVisible = false;
             var after = Mean(axis);
             Assert.That(after.IsLighterThan(before));
         }

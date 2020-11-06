@@ -8,7 +8,7 @@ namespace ScottPlot.Renderable
 {
     public class AxisTitle : IRenderable
     {
-        public bool IsVisible { get; set; }
+        public bool IsVisible { get; set; } = true;
         public string Label = null;
         public Drawing.Font Font = new Drawing.Font() { Size = 16 };
         public Edge Edge;

@@ -46,8 +46,8 @@ namespace ScottPlotTests.AxisRenderTests
             var axis = new ScottPlot.Renderable.Axis();
             axis.Title.Label = "Sample Left Axis";
             axis.Edge = ScottPlot.Renderable.Edge.Left;
-            axis.TickCollection.verticalAxis = true;
-            axis.TickCollection.Recalculate(dims);
+            axis.Ticks.TickCollection.verticalAxis = true;
+            axis.Ticks.TickCollection.Recalculate(dims);
 
             using (var bmp = new System.Drawing.Bitmap((int)dims.Width, (int)dims.Height))
             using (var gfx = GDI.Graphics(bmp, lowQuality: true))
@@ -68,8 +68,8 @@ namespace ScottPlotTests.AxisRenderTests
             var axis = new ScottPlot.Renderable.Axis();
             axis.Title.Label = "Sample Right Axis";
             axis.Edge = ScottPlot.Renderable.Edge.Right;
-            axis.TickCollection.verticalAxis = true;
-            axis.TickCollection.Recalculate(dims);
+            axis.Ticks.TickCollection.verticalAxis = true;
+            axis.Ticks.TickCollection.Recalculate(dims);
 
             using (var bmp = new System.Drawing.Bitmap((int)dims.Width, (int)dims.Height))
             using (var gfx = GDI.Graphics(bmp, lowQuality: true))
@@ -90,8 +90,8 @@ namespace ScottPlotTests.AxisRenderTests
             var axis = new ScottPlot.Renderable.Axis();
             axis.Title.Label = "Sample Top Axis";
             axis.Edge = ScottPlot.Renderable.Edge.Top;
-            axis.TickCollection.verticalAxis = false;
-            axis.TickCollection.Recalculate(dims);
+            axis.Ticks.TickCollection.verticalAxis = false;
+            axis.Ticks.TickCollection.Recalculate(dims);
 
             using (var bmp = new System.Drawing.Bitmap((int)dims.Width, (int)dims.Height))
             using (var gfx = GDI.Graphics(bmp, lowQuality: true))
@@ -112,8 +112,8 @@ namespace ScottPlotTests.AxisRenderTests
             var axis = new ScottPlot.Renderable.Axis();
             axis.Title.Label = "Sample Bottom Axis";
             axis.Edge = ScottPlot.Renderable.Edge.Bottom;
-            axis.TickCollection.verticalAxis = false;
-            axis.TickCollection.Recalculate(dims);
+            axis.Ticks.TickCollection.verticalAxis = false;
+            axis.Ticks.TickCollection.Recalculate(dims);
 
             using (var bmp = new System.Drawing.Bitmap((int)dims.Width, (int)dims.Height))
             using (var gfx = GDI.Graphics(bmp, lowQuality: true))

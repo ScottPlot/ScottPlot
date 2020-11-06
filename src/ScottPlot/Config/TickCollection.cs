@@ -51,9 +51,13 @@ namespace ScottPlot.Config
             if (manualTickPositions is null)
             {
                 if (dateFormat)
+                {
                     RecalculatePositionsAutomaticDatetime(dims);
+                }
                 else
+                {
                     RecalculatePositionsAutomaticNumeric(dims);
+                }
             }
             else
             {
@@ -62,6 +66,22 @@ namespace ScottPlot.Config
                 tickLabels = manualTickLabels;
                 cornerLabel = null;
             }
+        }
+
+        public void UpdateMaxSize(Drawing.Font tickFont)
+        {
+            if (tickLabels is null || tickLabels.Length == 0)
+            {
+                maxLabelSize = new SizeF(0, 0);
+                return;
+            }
+
+            string largestString = "";
+            foreach (string s in tickLabels.Where(x => string.IsNullOrEmpty(x) == false))
+                if (s.Length > largestString.Length)
+                    largestString = s;
+
+            maxLabelSize = GDI.MeasureString(largestString, tickFont);
         }
 
         private void RecalculatePositionsAutomaticDatetime(PlotDimensions dims)

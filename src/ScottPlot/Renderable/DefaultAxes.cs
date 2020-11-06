@@ -7,7 +7,6 @@
             Edge = Edge.Bottom;
             PixelSize = 40;
             Ticks.MajorGridStyle = LineStyle.Solid;
-            TickCollection.verticalAxis = false;
         }
     }
 
@@ -18,7 +17,6 @@
             Edge = Edge.Top;
             PixelSize = 40;
             Title.Font.Bold = true;
-            TickCollection.verticalAxis = false;
             Title.IsVisible = true;
 
             Ticks.MajorTickEnable = false;
@@ -34,7 +32,6 @@
             Edge = Edge.Left;
             PixelSize = 60;
             Ticks.MajorGridStyle = LineStyle.Solid;
-            TickCollection.verticalAxis = true;
         }
     }
 
@@ -44,7 +41,6 @@
         {
             Edge = Edge.Right;
             PixelSize = 60;
-            TickCollection.verticalAxis = true;
 
             Ticks.MajorTickEnable = false;
             Ticks.MinorTickEnable = false;

@@ -17,12 +17,12 @@ namespace ScottPlot.Drawing
         private const float xMultiplierMacOS = 82.82f / 72;
         private const float yMultiplierMacOS = 27.16f / 20;
 
-        public static SizeF MeasureString(string text, System.Drawing.Font font)
+        public static SizeF MeasureString(string text, Font font)
         {
             using (Bitmap bmp = new Bitmap(1, 1))
             using (Graphics gfx = Graphics(bmp, lowQuality: true))
             {
-                return MeasureString(gfx, text, font);
+                return MeasureString(gfx, text, font.Name, font.Size, font.Bold);
             }
         }
 
@@ -35,7 +35,7 @@ namespace ScottPlot.Drawing
             }
         }
 
-        public static System.Drawing.SizeF MeasureString(System.Drawing.Graphics gfx, string text, System.Drawing.Font font)
+        public static SizeF MeasureString(Graphics gfx, string text, System.Drawing.Font font)
         {
             SizeF size = gfx.MeasureString(text, font);
 
