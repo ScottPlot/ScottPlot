@@ -8,14 +8,6 @@ using System.Linq;
 
 namespace ScottPlot.Renderable
 {
-    public class AxisTitleSettings
-    {
-        public bool Enable = true;
-        public string Label = null;
-        public Drawing.Font Font = new Drawing.Font() { Size = 16 };
-        public bool IsVisible => Enable && !string.IsNullOrWhiteSpace(Label);
-    }
-
     // styles tick marks (major/minor), grid lines (major/minor), and tick labels (major)
     public class AxisTickSettings
     {
@@ -56,18 +48,28 @@ namespace ScottPlot.Renderable
     /// </summary>
     public class Axis : IRenderable
     {
-        public bool IsVisible { get; set; } = true;
-
-        public Edge Edge = Edge.Bottom;
+        private Edge _Edge;
+        public Edge Edge
+        {
+            get => _Edge;
+            set
+            {
+                _Edge = value;
+                Title.Edge = value;
+            }
+        }
         public bool IsHorizontal => Edge == Edge.Top || Edge == Edge.Bottom;
         public bool IsVertical => Edge == Edge.Left || Edge == Edge.Right;
+
+        public bool IsVisible { get; set; } = true;
+
         public bool RulerMode = false;
 
         public float PixelSize = 40;
         public float PixelSizeMinimum = 5;
 
         public readonly TickCollection TickCollection = new TickCollection();
-        public readonly AxisTitleSettings Title = new AxisTitleSettings();
+        public readonly AxisTitle Title = new AxisTitle();
         public readonly AxisTickSettings Ticks = new AxisTickSettings();
         public readonly AxisLineSettings Line = new AxisLineSettings();
         public Color Color
@@ -106,7 +108,7 @@ namespace ScottPlot.Renderable
             string dateTimeFormatString = null
             )
         {
-            Title.Enable = showTitle ?? Title.Enable;
+            Title.IsVisible = showTitle ?? Title.IsVisible;
             Ticks.MajorLabelEnable = showLabels ?? Ticks.MajorLabelEnable;
             Ticks.MajorTickEnable = showMajorTicks ?? Ticks.MajorTickEnable;
             Ticks.MinorTickEnable = showMinorTicks ?? Ticks.MinorTickEnable;
@@ -199,8 +201,7 @@ namespace ScottPlot.Renderable
                 if (Line.Enable)
                     RenderLine(dims, gfx);
 
-                if (Title.Enable)
-                    RenderTitle(dims, gfx);
+                Title.Render(dims, bmp);
             }
         }
 
@@ -349,49 +350,5 @@ namespace ScottPlot.Renderable
             }
         }
 
-        private void RenderTitle(PlotDimensions dims, Graphics gfx)
-        {
-            if (string.IsNullOrWhiteSpace(Title.Label))
-                return;
-
-            float dataCenterX = dims.DataOffsetX + dims.DataWidth / 2;
-            float dataCenterY = dims.DataOffsetY + dims.DataHeight / 2;
-
-            using (var font = GDI.Font(Title.Font))
-            using (var brush = GDI.Brush(Title.Font.Color))
-            using (var sf = GDI.StringFormat(HorizontalAlignment.Center, VerticalAlignment.Lower))
-            {
-                if (Edge == Edge.Bottom)
-                {
-                    sf.LineAlignment = StringAlignment.Far;
-                    gfx.DrawString(Title.Label, font, brush, dataCenterX, dims.Height, sf);
-                }
-                else if (Edge == Edge.Top)
-                {
-                    sf.LineAlignment = StringAlignment.Near;
-                    gfx.DrawString(Title.Label, font, brush, dataCenterX, 0, sf);
-                }
-                else if (Edge == Edge.Left)
-                {
-                    sf.LineAlignment = StringAlignment.Near;
-                    gfx.TranslateTransform(0, dataCenterY);
-                    gfx.RotateTransform(-90);
-                    gfx.DrawString(Title.Label, font, brush, 0, 0, sf);
-                    gfx.ResetTransform();
-                }
-                else if (Edge == Edge.Right)
-                {
-                    sf.LineAlignment = StringAlignment.Near;
-                    gfx.TranslateTransform(dims.Width, dataCenterY);
-                    gfx.RotateTransform(90);
-                    gfx.DrawString(Title.Label, font, brush, 0, 0, sf);
-                    gfx.ResetTransform();
-                }
-                else
-                {
-                    throw new NotImplementedException();
-                }
-            }
-        }
     }
 }
