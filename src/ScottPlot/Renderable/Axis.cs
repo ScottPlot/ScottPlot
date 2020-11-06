@@ -122,7 +122,7 @@ namespace ScottPlot.Renderable
             {
                 float titleHeight = Title.IsVisible ? GDI.MeasureString(Title.Label, Title.Font).Height : 0;
                 PixelSize = IsHorizontal ?
-                    Ticks.TickCollection.maxLabelSize.Height + titleHeight + Ticks.MajorTickLength:
+                    Ticks.TickCollection.maxLabelSize.Height + titleHeight + Ticks.MajorTickLength :
                     Ticks.TickCollection.maxLabelSize.Width + titleHeight + Ticks.MajorTickLength;
                 PixelSize = Math.Max(PixelSize, PixelSizeMinimum);
             }
