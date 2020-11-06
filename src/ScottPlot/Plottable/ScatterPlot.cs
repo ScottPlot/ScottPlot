@@ -2,6 +2,7 @@
 using ScottPlot.Drawing;
 using ScottPlot.Renderable;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Globalization;
@@ -16,6 +17,7 @@ namespace ScottPlot.Plottable
         public double[] ys;
         public double[] errorX;
         public double[] errorY;
+        public bool FilterOutNansBeforeEveryRender = true;
 
         public double lineWidth = 1;
         public float errorLineWidth = 1;
@@ -140,13 +142,26 @@ namespace ScottPlot.Plottable
             using (var penLine = GDI.Pen(color, lineWidth, lineStyle, true))
             using (var penLineError = GDI.Pen(color, errorLineWidth, LineStyle.Solid, true))
             {
-                PointF[] points = new PointF[xs.Length];
-                for (int i = 0; i < xs.Length; i++)
-                    points[i] = new PointF(dims.GetPixelX(xs[i]), dims.GetPixelY(ys[i]));
+                PointF[] points;
+
+                if (FilterOutNansBeforeEveryRender)
+                {
+                    List<PointF> validPoints = new List<PointF>(xs.Length);
+                    for (int i = 0; i < xs.Length; i++)
+                        if (double.IsNaN(xs[i]) == false && double.IsNaN(ys[i]) == false)
+                            validPoints.Add(new PointF(dims.GetPixelX(xs[i]), dims.GetPixelY(ys[i])));
+                    points = validPoints.ToArray();
+                }
+                else
+                {
+                    points = new PointF[xs.Length];
+                    for (int i = 0; i < xs.Length; i++)
+                        points[i] = new PointF(dims.GetPixelX(xs[i]), dims.GetPixelY(ys[i]));
+                }
 
                 if (errorY != null)
                 {
-                    for (int i = 0; i < points.Length; i++)
+                    for (int i = 0; i < points.Count(); i++)
                     {
                         float yBot = dims.GetPixelY(ys[i] - errorY[i]);
                         float yTop = dims.GetPixelY(ys[i] + errorY[i]);
@@ -200,9 +215,6 @@ namespace ScottPlot.Plottable
                         MarkerTools.DrawMarker(gfx, points[i], markerShape, markerSize, color);
             }
         }
-
-        public void Render(Settings settings) =>
-            throw new InvalidOperationException("use other Render method");
 
         public void SaveCSV(string filePath, string delimiter = ", ", string separator = "\n")
         {

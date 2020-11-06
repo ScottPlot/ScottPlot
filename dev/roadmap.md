@@ -6,7 +6,10 @@ _Updated Nov 6, 2020_
   * Tick labels
     * Extremely large tick labels overlap. The fix is probably a largely refactored TickCollection module with improved font/measurement awareness.
     * Determine how/when to recalculate layout
-
+  * scatter plots
+    * clarify NaN behavior
+    * improve thread safety
+    * create a List scatter plot type
 
 _Updated October 4, 2020_
 
