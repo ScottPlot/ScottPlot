@@ -37,23 +37,20 @@ namespace ScottPlot.Renderable
         public readonly AxisTicks Ticks = new AxisTicks();
         public readonly AxisLine Line = new AxisLine();
 
-        public void RecalculateTickPositions(PlotDimensions dims, int times)
+        public int RecalculationCount { get; private set; } = 0;
+        public void RecalculateTickPositions(PlotDimensions dims)
         {
-            for (int i = 0; i < times; i++)
-                Ticks.TickCollection.Recalculate(dims, Ticks.MajorLabelFont);
+            Ticks.TickCollection.Recalculate(dims, Ticks.MajorLabelFont);
+            RecalculationCount += 1;
         }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            using (var gfx = GDI.Graphics(bmp, lowQuality))
-            using (var testFill = GDI.Brush(Color.LightGray))
-            {
-                var rect = new RectangleF(
-                    x: dims.DataOffsetX,
-                    y: dims.DataOffsetY + dims.DataHeight,
-                    width: dims.DataWidth,
-                    height: dims.Height - (dims.DataHeight + dims.DataOffsetY));
+            if (RecalculationCount == 0)
+                RecalculateTickPositions(dims);
 
+            using (var gfx = GDI.Graphics(bmp, lowQuality))
+            {
                 Ticks.Render(dims, bmp, lowQuality);
                 Title.Render(dims, bmp, lowQuality);
                 Line.Render(dims, bmp, lowQuality);

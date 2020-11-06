@@ -95,11 +95,9 @@ namespace ScottPlot
             if (lowQuality == false)
             {
                 // double-render to refine layout
-                RenderLegacyLayoutAdjustment();
-                settings.RecalculateLayout();
-                settings.Resize(bmp.Width, bmp.Height);
                 foreach (var axis in settings.Axes)
-                    axis.RecalculateTickPositions(settings.GetDimensions(), 4);
+                    axis.RecalculateTickPositions(settings.GetDimensions());
+                settings.RecalculateLayout();
             }
 
             var dims = settings.GetDimensions();
@@ -123,7 +121,7 @@ namespace ScottPlot
         private void RenderBeforePlottables(PlotDimensions dims, Bitmap bmp, bool lowQuality)
         {
             foreach (var axis in settings.Axes)
-                axis.RecalculateTickPositions(settings.GetDimensions(), 1);
+                axis.RecalculateTickPositions(settings.GetDimensions());
             settings.FigureBackground.Render(dims, bmp, lowQuality);
             settings.DataBackground.Render(dims, bmp, lowQuality);
             settings.XAxis.Render(dims, bmp, lowQuality);
