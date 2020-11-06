@@ -82,28 +82,31 @@ namespace ScottPlot
         private Bitmap RenderBitmap(int width, int height, bool lowQuality) =>
             RenderBitmap(new Bitmap(width, height, PixelFormat.Format32bppPArgb), lowQuality);
 
-        private bool NeedsAutoLayout = true;
+
+        public int RenderCount { get; private set; } = 0;
         private Bitmap RenderBitmap(Bitmap bmp, bool lowQuality)
         {
             settings.BenchmarkMessage.Restart();
+
             RenderLegacyLayoutAdjustment();
-
+            settings.RecalculateLayout();
             settings.Resize(bmp.Width, bmp.Height);
-            if (lowQuality == false)
-                settings.RecalculateLayout();
 
-            if (NeedsAutoLayout)
+            if (lowQuality == false)
             {
-                // on first layout two adjustments are requied: 
-                // one for gross tick placement, and another for string measurement
+                // double-render to refine layout
+                RenderLegacyLayoutAdjustment();
+                settings.RecalculateLayout();
                 settings.Resize(bmp.Width, bmp.Height);
-                NeedsAutoLayout = false;
+                foreach (var axis in settings.Axes)
+                    axis.RecalculateTickPositions(settings.GetDimensions(), 4);
             }
 
             var dims = settings.GetDimensions();
             RenderBeforePlottables(dims, bmp, lowQuality);
             RenderPlottables(dims, bmp, lowQuality);
             RenderAfterPlottables(dims, bmp, lowQuality);
+
             return bmp;
         }
 
@@ -119,12 +122,14 @@ namespace ScottPlot
 
         private void RenderBeforePlottables(PlotDimensions dims, Bitmap bmp, bool lowQuality)
         {
+            foreach (var axis in settings.Axes)
+                axis.RecalculateTickPositions(settings.GetDimensions(), 1);
             settings.FigureBackground.Render(dims, bmp, lowQuality);
             settings.DataBackground.Render(dims, bmp, lowQuality);
-            settings.XAxis.Render(dims, bmp, lowQuality: false);
-            settings.YAxis.Render(dims, bmp, lowQuality: false);
-            settings.XAxis2.Render(dims, bmp, lowQuality: false);
-            settings.YAxis2.Render(dims, bmp, lowQuality: false);
+            settings.XAxis.Render(dims, bmp, lowQuality);
+            settings.YAxis.Render(dims, bmp, lowQuality);
+            settings.XAxis2.Render(dims, bmp, lowQuality);
+            settings.YAxis2.Render(dims, bmp, lowQuality);
         }
 
         private void RenderPlottables(PlotDimensions dims, Bitmap bmp, bool lowQuality)
@@ -159,7 +164,7 @@ namespace ScottPlot
 
         public Bitmap GetBitmap(bool renderFirst = true, bool lowQuality = false)
         {
-            if (NeedsAutoLayout || renderFirst)
+            if (renderFirst)
                 RenderBitmap(lowQuality: false);
             return RenderBitmap(lowQuality);
         }
