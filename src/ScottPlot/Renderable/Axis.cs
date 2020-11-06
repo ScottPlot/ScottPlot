@@ -30,23 +30,21 @@ namespace ScottPlot.Renderable
         public bool IsVertical => Edge == Edge.Left || Edge == Edge.Right;
         public bool IsVisible { get; set; } = true;
 
-        public float PixelSize = 40;
+        public float PixelSize = 123;
         public float PixelSizeMinimum = 5;
 
         public readonly AxisTitle Title = new AxisTitle();
         public readonly AxisTicks Ticks = new AxisTicks();
         public readonly AxisLine Line = new AxisLine();
 
+        public void RecalculateTickPositions(PlotDimensions dims, int times)
+        {
+            for (int i = 0; i < times; i++)
+                Ticks.TickCollection.Recalculate(dims, Ticks.MajorLabelFont);
+        }
+
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            Ticks.TickCollection.Recalculate(dims, Ticks.MajorLabelFont);
-            if (lowQuality == false)
-            {
-                Ticks.TickCollection.Recalculate(dims, Ticks.MajorLabelFont);
-                Ticks.TickCollection.Recalculate(dims, Ticks.MajorLabelFont);
-                Ticks.TickCollection.Recalculate(dims, Ticks.MajorLabelFont);
-            }
-
             using (var gfx = GDI.Graphics(bmp, lowQuality))
             using (var testFill = GDI.Brush(Color.LightGray))
             {
@@ -120,10 +118,17 @@ namespace ScottPlot.Renderable
             using (var tickFont = GDI.Font(Ticks.MajorLabelFont))
             using (var titleFont = GDI.Font(Title.Font))
             {
-                float titleHeight = Title.IsVisible ? GDI.MeasureString(Title.Label, Title.Font).Height : 0;
-                PixelSize = IsHorizontal ?
-                    Ticks.TickCollection.maxLabelSize.Height + titleHeight + Ticks.MajorTickLength :
-                    Ticks.TickCollection.maxLabelSize.Width + titleHeight + Ticks.MajorTickLength;
+                PixelSize = 0;
+
+                if (Title.IsVisible)
+                    PixelSize += GDI.MeasureString(Title.Label, Title.Font).Height;
+
+                if (Ticks.MajorLabelEnable)
+                    PixelSize += IsHorizontal ? Ticks.TickCollection.maxLabelSize.Height : Ticks.TickCollection.maxLabelSize.Width * 1.2f;
+
+                if (Ticks.MajorTickEnable)
+                    PixelSize += Ticks.MajorTickLength;
+
                 PixelSize = Math.Max(PixelSize, PixelSizeMinimum);
             }
         }
