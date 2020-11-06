@@ -44,7 +44,7 @@ namespace ScottPlot.Plottable
 
                 double x = (xPixel >= 0) ? xPixel : dims.DataWidth + xPixel - size.Width;
                 double y = (yPixel >= 0) ? yPixel : dims.DataHeight + yPixel - size.Height;
-                PointF location = new PointF((float)x, (float)y);
+                PointF location = new PointF((float)x + dims.DataOffsetX, (float)y + dims.DataOffsetY);
 
                 if (Background && Shadow)
                     gfx.FillRectangle(shadowBrush, location.X + 5, location.Y + 5, size.Width, size.Height);
