@@ -1,5 +1,13 @@
 # ScottPlot Roadmap
 
+_Updated Nov 6, 2020_
+ 
+**ScottPlot 4.1 remaining TODOs:**
+  * Tick labels
+    * Extremely large tick labels overlap. The fix is probably a largely refactored TickCollection module with improved font/measurement awareness.
+    * Determine how/when to recalculate layout
+
+
 _Updated October 4, 2020_
 
 **My high priority goals are (in order):**
