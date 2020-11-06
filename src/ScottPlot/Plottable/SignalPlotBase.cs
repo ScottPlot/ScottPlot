@@ -345,6 +345,9 @@ namespace ScottPlot.Plottable
                 }
             }
 
+            for (int i = 0; i < linePoints.Length; i++)
+                linePoints[i].X += dims.DataOffsetX;
+
             if (linePoints.Length > 0)
                 gfx.DrawLines(penHD, linePoints);
 
