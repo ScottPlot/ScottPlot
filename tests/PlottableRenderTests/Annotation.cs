@@ -12,7 +12,7 @@ namespace ScottPlotTests.PlottableRenderTests
         [Test]
         public void Test_Annotation_ChangingText()
         {
-            var plt = new ScottPlot.Plot();
+            var plt = new ScottPlot.Plot(400, 300);
 
             // start with default settings
             var pa = new ScottPlot.Plottable.Annotation() { label = "Hello", xPixel = 10, yPixel = 10, FontSize = 36 };
@@ -37,7 +37,7 @@ namespace ScottPlotTests.PlottableRenderTests
         [Test]
         public void Test_Annotation_BackgroundColor()
         {
-            var plt = new ScottPlot.Plot();
+            var plt = new ScottPlot.Plot(400, 300);
 
             // start with default settings
             var pa = new ScottPlot.Plottable.Annotation() { label = "Hello", xPixel = 10, yPixel = 10 };
@@ -62,7 +62,7 @@ namespace ScottPlotTests.PlottableRenderTests
         [Test]
         public void Test_Annotation_ShadowColor()
         {
-            var plt = new ScottPlot.Plot();
+            var plt = new ScottPlot.Plot(400, 300);
 
             // start with default settings
             var pa = new ScottPlot.Plottable.Annotation() { label = "Hello", xPixel = 10, yPixel = 10 };
@@ -87,7 +87,7 @@ namespace ScottPlotTests.PlottableRenderTests
         [Test]
         public void Test_Annotation_BorderColor()
         {
-            var plt = new ScottPlot.Plot();
+            var plt = new ScottPlot.Plot(400, 300);
 
             // start with default settings
             var pa = new ScottPlot.Plottable.Annotation() { label = "Hello", xPixel = 10, yPixel = 10, BorderColor = System.Drawing.Color.Gray };
@@ -112,7 +112,7 @@ namespace ScottPlotTests.PlottableRenderTests
         [Test]
         public void Test_Annotation_BorderWidth()
         {
-            var plt = new ScottPlot.Plot();
+            var plt = new ScottPlot.Plot(400, 300);
 
             // start with default settings
             var pa = new ScottPlot.Plottable.Annotation() { label = "Hello", xPixel = 10, yPixel = 10 };

@@ -90,7 +90,7 @@ namespace ScottPlotTests.PlottableRenderTests
         [Test]
         public void Test_Text_Frame()
         {
-            var plt = new ScottPlot.Plot();
+            var plt = new ScottPlot.Plot(400, 300);
 
             // start with default settings
             var txt = new ScottPlot.Plottable.Text() { text = "hello" };
