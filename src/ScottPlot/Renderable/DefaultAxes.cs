@@ -6,7 +6,7 @@
         {
             Edge = Edge.Bottom;
             PixelSize = 40;
-            Ticks.MajorGridStyle = LineStyle.Solid;
+            Ticks.MajorGridEnable = true;
         }
     }
 
@@ -22,6 +22,7 @@
             Ticks.MajorTickEnable = false;
             Ticks.MinorTickEnable = false;
             Ticks.MajorLabelEnable = false;
+            Ticks.MajorGridEnable = false;
         }
     }
 
@@ -31,7 +32,7 @@
         {
             Edge = Edge.Left;
             PixelSize = 60;
-            Ticks.MajorGridStyle = LineStyle.Solid;
+            Ticks.MajorGridEnable = true;
         }
     }
 
@@ -46,6 +47,7 @@
             Ticks.MinorTickEnable = false;
             Ticks.MajorLabelEnable = false;
             Title.IsVisible = false;
+            Ticks.MajorGridEnable = false;
         }
     }
 }

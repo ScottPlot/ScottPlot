@@ -26,11 +26,13 @@ namespace ScottPlot.Renderable
         public bool MinorTickEnable = true;
         public float MinorTickLength = 2;
 
-        public LineStyle MajorGridStyle = LineStyle.None;
+        public bool MajorGridEnable = false;
+        public LineStyle MajorGridStyle = LineStyle.Solid;
         public Color MajorGridColor = ColorTranslator.FromHtml("#efefef");
         public float MajorGridWidth = 1;
 
-        public LineStyle MinorGridStyle = LineStyle.None;
+        public bool MinorGridEnable = false;
+        public LineStyle MinorGridStyle = LineStyle.Solid;
         public Color MinorGridColor = ColorTranslator.FromHtml("#efefef");
         public float MinorGridWidth = 1;
 
@@ -46,14 +48,17 @@ namespace ScottPlot.Renderable
                 if (MajorTickEnable)
                 {
                     RenderTickMarks(dims, gfx, TickCollection.tickPositionsMajor, RulerMode ? MajorTickLength * 4 : MajorTickLength, Color);
-                    RenderGridLines(dims, gfx, TickCollection.tickPositionsMajor, MajorGridStyle, MajorGridColor, MajorGridWidth);
                     RenderTickLabels(dims, gfx);
                 }
+
                 if (MinorTickEnable)
-                {
                     RenderTickMarks(dims, gfx, TickCollection.tickPositionsMinor, MinorTickLength, Color);
+
+                if (MajorGridEnable)
+                    RenderGridLines(dims, gfx, TickCollection.tickPositionsMajor, MajorGridStyle, MajorGridColor, MajorGridWidth);
+
+                if (MinorGridEnable)
                     RenderGridLines(dims, gfx, TickCollection.tickPositionsMinor, MinorGridStyle, MinorGridColor, MinorGridWidth);
-                }
             }
         }
 

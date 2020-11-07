@@ -134,60 +134,34 @@ namespace ScottPlot
             double? ySpacing = null,
             bool? enableHorizontal = null,
             bool? enableVertical = null,
-            Config.DateTimeUnit? xSpacingDateTimeUnit = null,
-            Config.DateTimeUnit? ySpacingDateTimeUnit = null,
-            double? lineWidth = null,
+            DateTimeUnit? xSpacingDateTimeUnit = null,
+            DateTimeUnit? ySpacingDateTimeUnit = null,
+            float? lineWidth = null,
             LineStyle? lineStyle = null,
             bool? snapToNearestPixel = null
             )
         {
-            // TODO: support this with new axis system
-            /*
-            if (enable != null)
-            {
-                settings.XAxis.MajorTicks.IsGridVisible = enable.Value;
-                settings.YAxis.MajorTicks.IsGridVisible = enable.Value;
-            }
+            settings.XAxis.Ticks.MajorGridEnable = enable ?? settings.XAxis.Ticks.MajorGridEnable;
+            settings.YAxis.Ticks.MajorGridEnable = enable ?? settings.YAxis.Ticks.MajorGridEnable;
+            settings.XAxis.Ticks.MajorGridEnable = enableHorizontal ?? settings.XAxis.Ticks.MajorGridEnable;
+            settings.YAxis.Ticks.MajorGridEnable = enableVertical ?? settings.YAxis.Ticks.MajorGridEnable;
 
-            if (enableHorizontal != null)
-                settings.XAxis.MajorTicks.IsGridVisible = enableHorizontal.Value;
+            settings.XAxis.Ticks.MajorGridColor = color ?? settings.XAxis.Ticks.MajorGridColor;
+            settings.YAxis.Ticks.MajorGridColor = color ?? settings.YAxis.Ticks.MajorGridColor;
 
-            if (enableVertical != null)
-                settings.YAxis.MajorTicks.IsGridVisible = enableVertical.Value;
+            settings.XAxis.Ticks.TickCollection.manualSpacingX = xSpacing ?? settings.XAxis.Ticks.TickCollection.manualSpacingX;
+            settings.YAxis.Ticks.TickCollection.manualSpacingY = ySpacing ?? settings.YAxis.Ticks.TickCollection.manualSpacingY;
+            settings.XAxis.Ticks.TickCollection.manualDateTimeSpacingUnitX = xSpacingDateTimeUnit ?? settings.XAxis.Ticks.TickCollection.manualDateTimeSpacingUnitX;
+            settings.YAxis.Ticks.TickCollection.manualDateTimeSpacingUnitY = ySpacingDateTimeUnit ?? settings.YAxis.Ticks.TickCollection.manualDateTimeSpacingUnitY;
 
-            if (color != null)
-            {
-                settings.XAxis.MajorTicks.GridLineColor = color.Value;
-                settings.YAxis.MajorTicks.GridLineColor = color.Value;
-            }
+            settings.XAxis.Ticks.MajorGridWidth = lineWidth ?? settings.XAxis.Ticks.MajorGridWidth;
+            settings.YAxis.Ticks.MajorGridWidth = lineWidth ?? settings.YAxis.Ticks.MajorGridWidth;
 
-            if (xSpacing != null)
-                settings.ticks.manualSpacingX = xSpacing.Value;
-            if (ySpacing != null)
-                settings.ticks.manualSpacingY = ySpacing.Value;
-            if (xSpacingDateTimeUnit != null)
-                settings.ticks.manualDateTimeSpacingUnitX = xSpacingDateTimeUnit.Value;
-            if (ySpacingDateTimeUnit != null)
-                settings.ticks.manualDateTimeSpacingUnitY = ySpacingDateTimeUnit.Value;
+            settings.XAxis.Ticks.MajorGridStyle = lineStyle ?? settings.XAxis.Ticks.MajorGridStyle;
+            settings.YAxis.Ticks.MajorGridStyle = lineStyle ?? settings.YAxis.Ticks.MajorGridStyle;
 
-            if (lineWidth != null)
-            {
-                settings.XAxis.MajorTicks.GridLineWidth = (float)lineWidth.Value;
-                settings.YAxis.MajorTicks.GridLineWidth = (float)lineWidth.Value;
-            }
-
-            if (lineStyle != null)
-            {
-                settings.XAxis.MajorTicks.GridLineStyle = lineStyle.Value;
-                settings.YAxis.MajorTicks.GridLineStyle = lineStyle.Value;
-            }
-
-            if (snapToNearestPixel != null)
-            {
-                settings.XAxis.MajorTicks.PixelSnap = snapToNearestPixel.Value;
-                settings.YAxis.MajorTicks.PixelSnap = snapToNearestPixel.Value;
-            }
-            */
+            settings.XAxis.Ticks.SnapPx = snapToNearestPixel ?? settings.XAxis.Ticks.SnapPx;
+            settings.YAxis.Ticks.SnapPx = snapToNearestPixel ?? settings.YAxis.Ticks.SnapPx;
         }
 
         public void MatchLayout(Plot sourcePlot, bool horizontal = true, bool vertical = true)
