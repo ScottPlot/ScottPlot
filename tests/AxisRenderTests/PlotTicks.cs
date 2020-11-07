@@ -26,16 +26,22 @@ namespace ScottPlotTests.AxisRenderTests
         [Test]
         public void Test_PlotTicks_DisplayTicks()
         {
-            var plt = new ScottPlot.Plot();
-            plt.XLabel("Horizontal Axis Label");
-            plt.YLabel("Vertical Axis Label");
-            var bothTicks = new MeanPixel(plt);
+            var plt1 = new ScottPlot.Plot();
+            plt1.XLabel("Horizontal Axis Label");
+            plt1.YLabel("Vertical Axis Label");
+            var bothTicks = new MeanPixel(plt1);
 
-            plt.Ticks(displayTicksX: false);
-            var yTicksOnly = new MeanPixel(plt);
+            var plt2 = new ScottPlot.Plot();
+            plt2.XLabel("Horizontal Axis Label");
+            plt2.YLabel("Vertical Axis Label");
+            plt2.Ticks(displayTicksX: false);
+            var yTicksOnly = new MeanPixel(plt2);
 
-            plt.Ticks(displayTicksY: false);
-            var noTicks = new MeanPixel(plt);
+            var plt3 = new ScottPlot.Plot();
+            plt3.XLabel("Horizontal Axis Label");
+            plt3.YLabel("Vertical Axis Label");
+            plt3.Ticks(displayTicksX: false, displayTicksY: false);
+            var noTicks = new MeanPixel(plt3);
 
             Assert.That(yTicksOnly.IsLighterThan(bothTicks));
             Assert.That(noTicks.IsLighterThan(yTicksOnly));
