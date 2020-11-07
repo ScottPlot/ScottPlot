@@ -51,6 +51,9 @@ namespace ScottPlot.Drawing
                 size.Height *= yMultiplierMacOS;
             }
 
+            // ensure the measured height is at least the font size
+            size.Height = Math.Max(font.Size, size.Height);
+
             return size;
         }
 
