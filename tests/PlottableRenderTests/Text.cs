@@ -13,7 +13,7 @@ namespace ScottPlotTests.PlottableRenderTests
         [Test]
         public void Test_Text_ChangingText()
         {
-            var plt = new ScottPlot.Plot();
+            var plt = new ScottPlot.Plot(400, 300);
 
             // start with default settings
             var txt = new ScottPlot.Plottable.Text() { text = "hello", FontColor = System.Drawing.Color.Gray };
@@ -40,7 +40,7 @@ namespace ScottPlotTests.PlottableRenderTests
         [Test]
         public void Test_Text_Rotation()
         {
-            var plt = new ScottPlot.Plot();
+            var plt = new ScottPlot.Plot(400, 300);
 
             // start with default settings
             var txt = new ScottPlot.Plottable.Text() { text = "hello" };
@@ -65,7 +65,7 @@ namespace ScottPlotTests.PlottableRenderTests
         [Test]
         public void Test_Text_Alignment()
         {
-            var plt = new ScottPlot.Plot();
+            var plt = new ScottPlot.Plot(400, 300);
 
             // start with default settings
             var txt = new ScottPlot.Plottable.Text() { text = "hello" };
@@ -116,7 +116,7 @@ namespace ScottPlotTests.PlottableRenderTests
         [Test]
         public void Test_Text_FrameColor()
         {
-            var plt = new ScottPlot.Plot();
+            var plt = new ScottPlot.Plot(400, 300);
 
             // start with default settings
             var txt = new ScottPlot.Plottable.Text() { text = "hello", frame = true, frameColor = System.Drawing.Color.Gray };
@@ -143,7 +143,7 @@ namespace ScottPlotTests.PlottableRenderTests
         [Test]
         public void Test_Text_FontColor()
         {
-            var plt = new ScottPlot.Plot();
+            var plt = new ScottPlot.Plot(400, 300);
 
             // start with default settings
             var txt = new ScottPlot.Plottable.Text() { text = "hello", FontColor = System.Drawing.Color.Gray };
@@ -170,7 +170,7 @@ namespace ScottPlotTests.PlottableRenderTests
         [Test]
         public void Test_Text_FontSize()
         {
-            var plt = new ScottPlot.Plot();
+            var plt = new ScottPlot.Plot(400, 300);
 
             // start with default settings
             var txt = new ScottPlot.Plottable.Text() { text = "hello", FontSize = 12 };
@@ -199,7 +199,7 @@ namespace ScottPlotTests.PlottableRenderTests
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) == false)
                 return;
 
-            var plt = new ScottPlot.Plot();
+            var plt = new ScottPlot.Plot(400, 300);
 
             // start with default settings
             var txt = new ScottPlot.Plottable.Text() { text = "hello", FontSize = 12 };
