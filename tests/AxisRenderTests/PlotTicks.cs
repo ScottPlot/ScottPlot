@@ -14,10 +14,10 @@ namespace ScottPlotTests.AxisRenderTests
             var plt = new ScottPlot.Plot();
             plt.XLabel("Horizontal Axis Label");
             plt.YLabel("Vertical Axis Label");
-            var before = new MeanPixel(plt.GetBitmap());
+            var before = new MeanPixel(plt);
 
             plt.Ticks(color: System.Drawing.Color.LightGreen);
-            var after = new MeanPixel(plt.GetBitmap());
+            var after = new MeanPixel(plt);
 
             Assert.That(before.IsGray());
             Assert.That(after.IsNotGray());
@@ -29,13 +29,13 @@ namespace ScottPlotTests.AxisRenderTests
             var plt = new ScottPlot.Plot(400, 300);
             plt.XLabel("Horizontal Axis Label");
             plt.YLabel("Vertical Axis Label");
-            var bothTicks = new MeanPixel(plt.GetBitmap());
+            var bothTicks = new MeanPixel(plt);
 
             plt.Ticks(displayTicksX: false);
-            var yTicksOnly = new MeanPixel(plt.GetBitmap());
+            var yTicksOnly = new MeanPixel(plt);
 
             plt.Ticks(displayTicksY: false);
-            var noTicks = new MeanPixel(plt.GetBitmap());
+            var noTicks = new MeanPixel(plt);
 
             Assert.That(yTicksOnly.IsLighterThan(bothTicks));
             Assert.That(noTicks.IsLighterThan(yTicksOnly));
@@ -48,10 +48,10 @@ namespace ScottPlotTests.AxisRenderTests
             plt.Axis(-1e10, 1e10, -1e10, 1e10);
             plt.XLabel("Horizontal Axis Label");
             plt.YLabel("Vertical Axis Label");
-            var before = new MeanPixel(plt.GetBitmap());
+            var before = new MeanPixel(plt);
 
             plt.Ticks(useMultiplierNotation: true);
-            var after = new MeanPixel(plt.GetBitmap());
+            var after = new MeanPixel(plt);
 
             TestTools.SaveFig(plt);
             Assert.That(after.IsDifferentThan(before));
@@ -64,10 +64,10 @@ namespace ScottPlotTests.AxisRenderTests
             plt.Axis(1e10, 1e10 + 10, 1e10, 1e10 + 10);
             plt.XLabel("Horizontal Axis Label");
             plt.YLabel("Vertical Axis Label");
-            var before = new MeanPixel(plt.GetBitmap());
+            var before = new MeanPixel(plt);
 
             plt.Ticks(useOffsetNotation: true);
-            var after = new MeanPixel(plt.GetBitmap());
+            var after = new MeanPixel(plt);
 
             TestTools.SaveFig(plt);
             Assert.That(after.IsDifferentThan(before));
@@ -81,10 +81,10 @@ namespace ScottPlotTests.AxisRenderTests
             plt.XLabel("Horizontal Axis Label");
             plt.YLabel("Vertical Axis Label");
             plt.Ticks(useMultiplierNotation: true);
-            var before = new MeanPixel(plt.GetBitmap());
+            var before = new MeanPixel(plt);
 
             plt.Ticks(useExponentialNotation: false);
-            var after = new MeanPixel(plt.GetBitmap());
+            var after = new MeanPixel(plt);
 
             TestTools.SaveFig(plt);
             Assert.That(after.IsDifferentThan(before));
@@ -100,10 +100,10 @@ namespace ScottPlotTests.AxisRenderTests
             plt.Axis(dt1.ToOADate(), dt2.ToOADate(), dt1.ToOADate(), dt2.ToOADate());
             plt.XLabel("Horizontal Axis Label");
             plt.YLabel("Vertical Axis Label");
-            var before = new MeanPixel(plt.GetBitmap());
+            var before = new MeanPixel(plt);
 
             plt.Ticks(dateTimeX: true, dateTimeY: true);
-            var after = new MeanPixel(plt.GetBitmap());
+            var after = new MeanPixel(plt);
 
             TestTools.SaveFig(plt);
             Assert.That(after.IsDifferentThan(before));
@@ -115,10 +115,10 @@ namespace ScottPlotTests.AxisRenderTests
             var plt = new ScottPlot.Plot();
             plt.XLabel("Horizontal Axis Label");
             plt.YLabel("Vertical Axis Label");
-            var before = new MeanPixel(plt.GetBitmap());
+            var before = new MeanPixel(plt);
 
             plt.Ticks(rulerModeX: true, rulerModeY: true);
-            var after = new MeanPixel(plt.GetBitmap());
+            var after = new MeanPixel(plt);
 
             TestTools.SaveFig(plt);
             Assert.That(after.IsDifferentThan(before));

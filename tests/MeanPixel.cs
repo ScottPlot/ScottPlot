@@ -8,6 +8,13 @@ namespace ScottPlotTests
         public double RGB { get => (R + G + B) / 3; }
         public readonly int pixels;
 
+        public MeanPixel(ScottPlot.Plot plt, bool lowQuality = true)
+        {
+            var bmp = plt.GetBitmap(lowQuality: lowQuality);
+            (A, R, G, B) = TestTools.MeanPixel(bmp);
+            pixels = bmp.Width * bmp.Height;
+        }
+
         public MeanPixel(System.Drawing.Bitmap bmp)
         {
             (A, R, G, B) = TestTools.MeanPixel(bmp);
