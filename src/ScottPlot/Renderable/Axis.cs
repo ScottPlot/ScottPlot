@@ -40,9 +40,9 @@ namespace ScottPlot.Renderable
         public readonly AxisLine Line = new AxisLine();
 
         public int RecalculationCount { get; private set; } = 0;
-        public void RecalculateTickPositions(PlotDimensions dims, bool recalculateLabelSize)
+        public void RecalculateTickPositions(PlotDimensions dims)
         {
-            Ticks.TickCollection.Recalculate(dims, Ticks.MajorLabelFont, recalculateLabelSize);
+            Ticks.TickCollection.Recalculate(dims, Ticks.MajorLabelFont);
             RecalculationCount += 1;
         }
 
@@ -52,7 +52,7 @@ namespace ScottPlot.Renderable
                 return;
 
             if (RecalculationCount == 0)
-                RecalculateTickPositions(dims, recalculateLabelSize: !lowQuality);
+                RecalculateTickPositions(dims);
 
             Title.PixelSizePadding = PixelSizePadding;
 

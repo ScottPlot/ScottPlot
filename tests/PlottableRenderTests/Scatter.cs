@@ -20,11 +20,11 @@ namespace ScottPlotTests.PlottableRenderTests
             var splt = new ScatterPlot(xs, ys) { };
 
             plt.Add(splt);
-            var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
             splt.ys[0] += 1;
-            var bmp2 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
             //TestTools.SaveFig(bmp1, "1");
@@ -55,7 +55,7 @@ namespace ScottPlotTests.PlottableRenderTests
             // change the plottable
             splt.errorX[0] += .1;
             splt.errorY[0] += .1;
-            var bmp2 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
             //TestTools.SaveFig(bmp1, "1");
@@ -81,11 +81,11 @@ namespace ScottPlotTests.PlottableRenderTests
             var splt = new ScatterPlot(xs, ys, xErr, yErr) { };
 
             plt.Add(splt);
-            var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
             splt.lineWidth += 1;
-            var bmp2 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
             //TestTools.SaveFig(bmp1, "1");
@@ -111,11 +111,11 @@ namespace ScottPlotTests.PlottableRenderTests
             var splt = new ScatterPlot(xs, ys, xErr, yErr) { };
 
             plt.Add(splt);
-            var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
             splt.errorLineWidth += 1;
-            var bmp2 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
             //TestTools.SaveFig(bmp1, "1");
@@ -141,11 +141,11 @@ namespace ScottPlotTests.PlottableRenderTests
             var splt = new ScatterPlot(xs, ys, xErr, yErr) { };
 
             plt.Add(splt);
-            var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
             splt.errorCapSize += 1;
-            var bmp2 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
             //TestTools.SaveFig(bmp1, "1");
@@ -171,11 +171,11 @@ namespace ScottPlotTests.PlottableRenderTests
             var splt = new ScatterPlot(xs, ys, xErr, yErr) { };
 
             plt.Add(splt);
-            var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
             splt.markerSize += 1;
-            var bmp2 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
             //TestTools.SaveFig(bmp1, "1");
@@ -199,11 +199,11 @@ namespace ScottPlotTests.PlottableRenderTests
             var splt = new ScatterPlot(xs, ys) { };
 
             plt.Add(splt);
-            var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
             splt.markerShape = MarkerShape.openCircle;
-            var bmp2 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
             //TestTools.SaveFig(bmp1, "1");
@@ -227,11 +227,11 @@ namespace ScottPlotTests.PlottableRenderTests
             var splt = new ScatterPlot(xs, ys) { };
 
             plt.Add(splt);
-            var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
             splt.stepDisplay = true;
-            var bmp2 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
             //TestTools.SaveFig(bmp1, "1");
@@ -255,12 +255,12 @@ namespace ScottPlotTests.PlottableRenderTests
             var splt = new ScatterPlot(xs, ys) { };
 
             plt.Add(splt);
-            var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
             splt.ArrowheadLength = 5;
             splt.ArrowheadWidth = 5;
-            var bmp2 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
             //TestTools.SaveFig(bmp1, "1");
@@ -284,11 +284,11 @@ namespace ScottPlotTests.PlottableRenderTests
             var splt = new ScatterPlot(xs, ys) { };
 
             plt.Add(splt);
-            var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
             splt.color = System.Drawing.Color.Gray;
-            var bmp2 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
             //TestTools.SaveFig(bmp1, "1");
@@ -312,11 +312,11 @@ namespace ScottPlotTests.PlottableRenderTests
             var splt = new ScatterPlot(xs, ys) { };
 
             plt.Add(splt);
-            var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
             splt.lineStyle = LineStyle.Dash;
-            var bmp2 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
             //TestTools.SaveFig(bmp1, "1");
@@ -340,11 +340,11 @@ namespace ScottPlotTests.PlottableRenderTests
             var splt = new ScatterPlotHighlight(xs, ys) { highlightedMarkerSize = 20, highlightedColor = System.Drawing.Color.Black };
 
             plt.Add(splt);
-            var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
             splt.HighlightPointNearest(2.1, 4.1);
-            var bmp2 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
             //TestTools.SaveFig(bmp1, "1");

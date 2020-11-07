@@ -15,7 +15,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace ScottPlot
 {
@@ -88,20 +87,26 @@ namespace ScottPlot
         {
             settings.BenchmarkMessage.Restart();
 
-            if (lowQuality == false || RenderCount == 0)
-            {
-                // only adjust layout if high quality or first render
-                RenderLegacyLayoutAdjustment();
-                settings.RecalculateLayout();
-                settings.Resize(bmp.Width, bmp.Height);
-
-                // double-render to refine layout
-                foreach (var axis in settings.Axes)
-                    axis.RecalculateTickPositions(settings.GetDimensions(), recalculateLabelSize: true);
-                settings.RecalculateLayout();
-            }
-
+            // layout-agnostic first-pass tick calculation to help measure tick sizes
             var dims = settings.GetDimensions();
+            dims = new PlotDimensions(
+                figureSize: new SizeF(dims.Width, dims.Height),
+                dataSize: new SizeF(dims.Width, dims.Height),
+                dataOffset: new PointF(0, 0),
+                axisLimits: new Config.AxisLimits2D(dims.XMin, dims.XMax, dims.YMin, dims.YMax));
+            foreach (var axis in settings.Axes)
+                axis.RecalculateTickPositions(dims);
+
+            // adjust the layout based on measured tick label sizes
+            settings.RecalculateLayout();
+            settings.Resize(bmp.Width, bmp.Height);
+            RenderLegacyLayoutAdjustment();
+
+            // calculate new ticks based on new layout
+            foreach (var axis in settings.Axes)
+                axis.RecalculateTickPositions(settings.GetDimensions());
+
+            dims = settings.GetDimensions();
             RenderBeforePlottables(dims, bmp, lowQuality);
             RenderPlottables(dims, bmp, lowQuality);
             RenderAfterPlottables(dims, bmp, lowQuality);
@@ -122,8 +127,6 @@ namespace ScottPlot
 
         private void RenderBeforePlottables(PlotDimensions dims, Bitmap bmp, bool lowQuality)
         {
-            foreach (var axis in settings.Axes)
-                axis.RecalculateTickPositions(settings.GetDimensions(), recalculateLabelSize: !lowQuality);
             settings.FigureBackground.Render(dims, bmp, lowQuality);
             settings.DataBackground.Render(dims, bmp, lowQuality);
             settings.XAxis.Render(dims, bmp, lowQuality);

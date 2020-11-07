@@ -10,6 +10,8 @@ _Updated Nov 6, 2020_
     * clarify NaN behavior
     * improve thread safety
     * create a List scatter plot type
+  * rendering
+    * repeated renders produce different output: Layout changes based on tick labels sizes, and tick labels change based on layout. This means repeated renders are not pixel-perfect. See if you can solve this problem...
 
 _Updated October 4, 2020_
 

@@ -48,7 +48,7 @@ namespace ScottPlot.Config
         public bool useOffsetNotation = false;
         public bool useExponentialNotation = true;
 
-        public void Recalculate(PlotDimensions dims, Drawing.Font tickFont, bool recalculateLabelSize)
+        public void Recalculate(PlotDimensions dims, Drawing.Font tickFont)
         {
             if (manualTickPositions is null)
             {
