@@ -24,8 +24,8 @@ namespace ScottPlot.Config
         public string[] manualTickLabels;
 
         public string cornerLabel;
-        public float maxLabelWidth;
-        public float maxLabelHeight;
+        public float maxLabelWidth = 15;
+        public float maxLabelHeight = 12;
 
         public bool dateFormat;
         public bool verticalAxis;
@@ -48,22 +48,25 @@ namespace ScottPlot.Config
         public bool useOffsetNotation = false;
         public bool useExponentialNotation = true;
 
-        public void Recalculate(PlotDimensions dims, Drawing.Font tickFont)
+        public void Recalculate(PlotDimensions dims, Drawing.Font tickFont, bool recalculateLabelSize)
         {
             if (manualTickPositions is null)
             {
                 // first pass density calculation based on fixed predicted tick label size
                 if (dateFormat)
-                    RecalculatePositionsAutomaticDatetime(dims, 20, 24);
-                else
-                    RecalculatePositionsAutomaticNumeric(dims, 15, 12);
-
-                // second pass calculates density using measured labels produced by the first pass
-                (maxLabelWidth, maxLabelHeight) = MaxLabelSize(tickFont);
-                if (dateFormat)
                     RecalculatePositionsAutomaticDatetime(dims, maxLabelWidth, maxLabelHeight);
                 else
                     RecalculatePositionsAutomaticNumeric(dims, maxLabelWidth, maxLabelHeight);
+
+                // second pass calculates density using measured labels produced by the first pass
+                if (recalculateLabelSize)
+                {
+                    (maxLabelWidth, maxLabelHeight) = MaxLabelSize(tickFont);
+                    if (dateFormat)
+                        RecalculatePositionsAutomaticDatetime(dims, maxLabelWidth, maxLabelHeight);
+                    else
+                        RecalculatePositionsAutomaticNumeric(dims, maxLabelWidth, maxLabelHeight);
+                }
             }
             else
             {
