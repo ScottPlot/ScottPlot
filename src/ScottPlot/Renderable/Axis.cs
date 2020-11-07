@@ -33,6 +33,7 @@ namespace ScottPlot.Renderable
 
         public float PixelSize = 123;
         public float PixelSizeMinimum = 5;
+        public float PixelSizePadding = 5;
 
         public readonly AxisTitle Title = new AxisTitle();
         public readonly AxisTicks Ticks = new AxisTicks();
@@ -47,6 +48,9 @@ namespace ScottPlot.Renderable
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
+            if (IsVisible == false)
+                return;
+
             if (RecalculationCount == 0)
                 RecalculateTickPositions(dims);
 
@@ -128,6 +132,7 @@ namespace ScottPlot.Renderable
                     PixelSize += Ticks.MajorTickLength;
 
                 PixelSize = Math.Max(PixelSize, PixelSizeMinimum);
+                PixelSize += PixelSizePadding;
             }
         }
     }

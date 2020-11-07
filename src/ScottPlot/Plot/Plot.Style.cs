@@ -99,6 +99,16 @@ namespace ScottPlot
             Resize();
         }
 
+        public void LayoutFrameless()
+        {
+            foreach (var axis in settings.Axes)
+            {
+                axis.IsVisible = false;
+                axis.PixelSizeMinimum = 0;
+                axis.PixelSizePadding = 0;
+            }
+        }
+
         public void Layout(double? leftAxisWidth, double? rightAxisWidth, double? bottomAxisHeight, double? topAxisHeight)
         {
             settings.YAxis.PixelSize = (float)(leftAxisWidth ?? settings.YAxis.PixelSize);
