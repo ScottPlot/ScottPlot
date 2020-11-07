@@ -39,7 +39,7 @@ namespace Benchmark
 
             formsPlot1.plt.Legend();
             formsPlot1.plt.Axis();
-            formsPlot1.Render();
+            formsPlot1.Render(AntiAliasCheckbox.Checked);
         }
 
         private double[] AxisMidWay(double frac)
@@ -101,10 +101,6 @@ namespace Benchmark
 
         private void AntiAliasCheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            formsPlot1.plt.AntiAlias(
-                figure: AntiAliasCheckbox.Checked,
-                data: AntiAliasCheckbox.Checked,
-                legend: AntiAliasCheckbox.Checked);
         }
     }
 }

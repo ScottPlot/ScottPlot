@@ -153,7 +153,7 @@ namespace ScottPlot.UserControls
             plt.Ticks(useOffsetNotation: cbTicksOffset.Checked, useMultiplierNotation: cbTicksMult.Checked);
 
             // image quality
-            plt.AntiAlias(figure: rbQualityHigh.Checked, data: rbQualityHigh.Checked);
+            //plt.AntiAlias(figure: rbQualityHigh.Checked, data: rbQualityHigh.Checked);
             //plt.mouseTracker.lowQualityWhileInteracting = cbQualityLowWhileDragging.Checked;
 
             // misc

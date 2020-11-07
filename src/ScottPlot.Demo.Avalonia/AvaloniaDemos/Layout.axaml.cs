@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using ScottPlot.Avalonia;
+using ScottPlot.Renderable;
 using System;
 
 namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
@@ -44,7 +45,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             avaPlot1.plt.XTicks(dataX, labels);
             avaPlot1.plt.Ticks(xTickRotation: 90);
             avaPlot1.plt.AxisAuto();
-            avaPlot1.plt.Layout(yLabelWidth: 20, titleHeight: 50, xLabelHeight: 50, y2LabelWidth: 20, xScaleHeight: 50);
+            avaPlot1.plt.Layout(left: 20, top: 50, bottom: 100, right: 20);
             avaPlot1.Configure(recalculateLayoutOnMouseUp: false);
 
             avaPlot1.Render();

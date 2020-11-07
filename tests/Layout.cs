@@ -55,7 +55,7 @@ namespace ScottPlotTests
             plt.XLabel("horizontal axis label");
 
             plt.Ticks(xTickRotation: 45);
-            plt.Layout(xScaleHeight: 50);
+            plt.Layout(bottom: 50);
 
             TestTools.SaveFig(plt);
         }

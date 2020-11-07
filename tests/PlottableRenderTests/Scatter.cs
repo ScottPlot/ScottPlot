@@ -13,7 +13,6 @@ namespace ScottPlotTests.PlottableRenderTests
         public void Test_Scatter_ChangeData()
         {
             var plt = new ScottPlot.Plot();
-            plt.AntiAlias(false, false, false);
 
             // start with default settings
             double[] xs = { 1, 2, 3, 4 };
@@ -42,7 +41,6 @@ namespace ScottPlotTests.PlottableRenderTests
         public void Test_Scatter_ChangeErrorData()
         {
             var plt = new ScottPlot.Plot();
-            plt.AntiAlias(false, false, false);
 
             // start with default settings
             double[] xs = { 1, 2, 3, 4 };
@@ -52,7 +50,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var splt = new ScatterPlot(xs, ys, xErr, yErr) { };
 
             plt.Add(splt);
-            var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
             splt.errorX[0] += .1;
@@ -74,7 +72,6 @@ namespace ScottPlotTests.PlottableRenderTests
         public void Test_Scatter_LineWidth()
         {
             var plt = new ScottPlot.Plot();
-            plt.AntiAlias(false, false, false);
 
             // start with default settings
             double[] xs = { 1, 2, 3, 4 };
@@ -105,7 +102,6 @@ namespace ScottPlotTests.PlottableRenderTests
         public void Test_Scatter_ErrorLineWidth()
         {
             var plt = new ScottPlot.Plot();
-            plt.AntiAlias(false, false, false);
 
             // start with default settings
             double[] xs = { 1, 2, 3, 4 };
@@ -136,7 +132,6 @@ namespace ScottPlotTests.PlottableRenderTests
         public void Test_Scatter_ErrorCapSize()
         {
             var plt = new ScottPlot.Plot();
-            plt.AntiAlias(false, false, false);
 
             // start with default settings
             double[] xs = { 1, 2, 3, 4 };
@@ -167,7 +162,6 @@ namespace ScottPlotTests.PlottableRenderTests
         public void Test_Scatter_MarkerSize()
         {
             var plt = new ScottPlot.Plot();
-            plt.AntiAlias(false, false, false);
 
             // start with default settings
             double[] xs = { 1, 2, 3, 4 };
@@ -198,7 +192,6 @@ namespace ScottPlotTests.PlottableRenderTests
         public void Test_Scatter_MarkerShape()
         {
             var plt = new ScottPlot.Plot();
-            plt.AntiAlias(false, false, false);
 
             // start with default settings
             double[] xs = { 1, 2, 3, 4 };
@@ -227,7 +220,6 @@ namespace ScottPlotTests.PlottableRenderTests
         public void Test_Scatter_Step()
         {
             var plt = new ScottPlot.Plot();
-            plt.AntiAlias(false, false, false);
 
             // start with default settings
             double[] xs = { 1, 2, 3, 4 };
@@ -256,7 +248,6 @@ namespace ScottPlotTests.PlottableRenderTests
         public void Test_Scatter_Arrow()
         {
             var plt = new ScottPlot.Plot();
-            plt.AntiAlias(false, false, false);
 
             // start with default settings
             double[] xs = { 1, 2, 3, 4 };
@@ -286,7 +277,6 @@ namespace ScottPlotTests.PlottableRenderTests
         public void Test_Scatter_Color()
         {
             var plt = new ScottPlot.Plot();
-            plt.AntiAlias(false, false, false);
 
             // start with default settings
             double[] xs = { 1, 2, 3, 4 };
@@ -315,7 +305,6 @@ namespace ScottPlotTests.PlottableRenderTests
         public void Test_Scatter_LineStyle()
         {
             var plt = new ScottPlot.Plot();
-            plt.AntiAlias(false, false, false);
 
             // start with default settings
             double[] xs = { 1, 2, 3, 4 };
@@ -344,7 +333,6 @@ namespace ScottPlotTests.PlottableRenderTests
         public void Test_Scatter_Highlight()
         {
             var plt = new ScottPlot.Plot(400, 300);
-            plt.AntiAlias(false, false, false);
 
             // start with default settings
             double[] xs = { 1, 2, 3, 4 };

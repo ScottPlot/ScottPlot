@@ -94,34 +94,5 @@ namespace ScottPlot.Demo.Customize
                 plt.LayoutFrameless();
             }
         }
-
-        public class AntiAliasing : PlotDemo, IPlotDemo
-        {
-            public string name { get; } = "Anti-Aliasing";
-            public string description { get; } = "Anti-aliasing makes plots look nicer but slightly reduces performance. Antialiasing of the Figure (containing the title, axis labels, and axis ticks) can be controlled independently from the data area and/or legend.";
-
-            public void Render(Plot plt)
-            {
-                int pointCount = 51;
-                double[] x = DataGen.Consecutive(pointCount);
-                double[] sin = DataGen.Sin(pointCount);
-                double[] cos = DataGen.Cos(pointCount);
-
-                plt.PlotScatter(x, sin, label: "Sin");
-                plt.PlotScatter(x, cos, label: "Cos");
-
-                plt.Title("Plot Title");
-                plt.XLabel("Horizontal Axis");
-                plt.YLabel("Vertical Axis");
-                plt.Legend();
-
-                plt.AntiAlias(figure: false, data: false, legend: false);
-
-                // NOTE: anti-aliasing is automatically in the user control
-                // while the mouse button is held down to improve performance
-                // while panning and zooming. You can disable this feature by:
-                // formsPlot1.Configure(lowQualityWhileDragging = false);
-            }
-        }
     }
 }

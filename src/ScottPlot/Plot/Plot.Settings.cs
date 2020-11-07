@@ -30,7 +30,7 @@ namespace ScottPlot
                 Debug.WriteLine("WARNING: every data point will be validated on each render, reducing performance");
         }
 
-        [Obsolete("define lowQuality argument when calling Render or SaveFig")]
+        [Obsolete("Disable anti-aliasing using the lowQuality argument in Render() or SaveFig()", true)]
         public void AntiAlias(bool figure = true, bool data = false, bool legend = false) { }
 
         public void SetCulture(System.Globalization.CultureInfo culture)

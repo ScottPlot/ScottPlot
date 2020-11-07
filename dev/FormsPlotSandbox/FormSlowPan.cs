@@ -28,7 +28,7 @@ namespace FormsPlotSandbox
         private void timer1_Tick(object sender, EventArgs e)
         {
             formsPlot1.plt.AxisPan(.001, .001);
-            formsPlot1.Render();
+            formsPlot1.Render(lowQuality: !checkBox5.Checked);
         }
 
         private void checkBox2_CheckedChanged(object sender, EventArgs e)
@@ -45,13 +45,6 @@ namespace FormsPlotSandbox
         {
             formsPlot1.plt.Ticks(rulerModeX: checkBox4.Checked);
             formsPlot1.plt.Ticks(rulerModeY: checkBox4.Checked);
-        }
-
-        private void checkBox5_CheckedChanged(object sender, EventArgs e)
-        {
-            formsPlot1.plt.AntiAlias(
-                figure: checkBox5.Checked,
-                data: checkBox5.Checked);
         }
     }
 }

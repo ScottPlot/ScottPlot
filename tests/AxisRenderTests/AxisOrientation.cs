@@ -47,7 +47,6 @@ namespace ScottPlotTests.AxisRenderTests
             axis.Title.Label = "Sample Left Axis";
             axis.Edge = ScottPlot.Renderable.Edge.Left;
             axis.Ticks.TickCollection.verticalAxis = true;
-            axis.Ticks.TickCollection.Recalculate(dims);
 
             using (var bmp = new System.Drawing.Bitmap((int)dims.Width, (int)dims.Height))
             using (var gfx = GDI.Graphics(bmp, lowQuality: true))
@@ -69,7 +68,6 @@ namespace ScottPlotTests.AxisRenderTests
             axis.Title.Label = "Sample Right Axis";
             axis.Edge = ScottPlot.Renderable.Edge.Right;
             axis.Ticks.TickCollection.verticalAxis = true;
-            axis.Ticks.TickCollection.Recalculate(dims);
 
             using (var bmp = new System.Drawing.Bitmap((int)dims.Width, (int)dims.Height))
             using (var gfx = GDI.Graphics(bmp, lowQuality: true))
@@ -91,7 +89,6 @@ namespace ScottPlotTests.AxisRenderTests
             axis.Title.Label = "Sample Top Axis";
             axis.Edge = ScottPlot.Renderable.Edge.Top;
             axis.Ticks.TickCollection.verticalAxis = false;
-            axis.Ticks.TickCollection.Recalculate(dims);
 
             using (var bmp = new System.Drawing.Bitmap((int)dims.Width, (int)dims.Height))
             using (var gfx = GDI.Graphics(bmp, lowQuality: true))
@@ -113,7 +110,6 @@ namespace ScottPlotTests.AxisRenderTests
             axis.Title.Label = "Sample Bottom Axis";
             axis.Edge = ScottPlot.Renderable.Edge.Bottom;
             axis.Ticks.TickCollection.verticalAxis = false;
-            axis.Ticks.TickCollection.Recalculate(dims);
 
             using (var bmp = new System.Drawing.Bitmap((int)dims.Width, (int)dims.Height))
             using (var gfx = GDI.Graphics(bmp, lowQuality: true))

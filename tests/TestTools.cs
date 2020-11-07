@@ -8,6 +8,9 @@ namespace ScottPlotTests
 {
     public static class TestTools
     {
+        public static System.Drawing.Bitmap GetLowQualityBitmap(ScottPlot.Plot plt) =>
+            new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true, lowQuality: true));
+
         [Obsolete("WARNING: LaunchFig() is just for testing by developers")]
         public static void LaunchFig(ScottPlot.Plot plt)
         {

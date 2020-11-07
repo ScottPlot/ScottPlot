@@ -12,8 +12,7 @@ namespace ScottPlotTests.PlottableRenderTests
         [Test]
         public void Test_ErrorBar_ChangingValues()
         {
-            var plt = new ScottPlot.Plot();
-            plt.AntiAlias(false, false, false);
+            var plt = new ScottPlot.Plot(400, 300);
 
             // start with default settings
             double[] xs = new double[] { 1, 3, 2, 4 };
@@ -25,11 +24,11 @@ namespace ScottPlotTests.PlottableRenderTests
             var err = new ErrorBars(xs, ys, xErrPos, xErrNeg, yErrPos, yErrNeg) { };
 
             plt.Add(err);
-            var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
             yErrPos[0] += 1;
-            var bmp2 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
             //TestTools.SaveFig(bmp1, "1");
@@ -45,8 +44,7 @@ namespace ScottPlotTests.PlottableRenderTests
         [Test]
         public void Test_ErrorBar_CapSize()
         {
-            var plt = new ScottPlot.Plot();
-            plt.AntiAlias(false, false, false);
+            var plt = new ScottPlot.Plot(400, 300);
 
             // start with default settings
             double[] xs = new double[] { 1, 3, 2, 4 };
@@ -58,11 +56,11 @@ namespace ScottPlotTests.PlottableRenderTests
             var err = new ErrorBars(xs, ys, xErrPos, xErrNeg, yErrPos, yErrNeg) { };
 
             plt.Add(err);
-            var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
             err.CapSize += 1;
-            var bmp2 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
             //TestTools.SaveFig(bmp1, "1");
@@ -79,7 +77,6 @@ namespace ScottPlotTests.PlottableRenderTests
         public void Test_ErrorBar_LineWidth()
         {
             var plt = new ScottPlot.Plot();
-            plt.AntiAlias(false, false, false);
 
             // start with default settings
             double[] xs = new double[] { 1, 3, 2, 4 };
@@ -91,11 +88,11 @@ namespace ScottPlotTests.PlottableRenderTests
             var err = new ErrorBars(xs, ys, xErrPos, xErrNeg, yErrPos, yErrNeg) { };
 
             plt.Add(err);
-            var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
             err.LineWidth += 1;
-            var bmp2 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
             //TestTools.SaveFig(bmp1, "1");
@@ -112,7 +109,6 @@ namespace ScottPlotTests.PlottableRenderTests
         public void Test_ErrorBar_Color()
         {
             var plt = new ScottPlot.Plot();
-            plt.AntiAlias(false, false, false);
 
             // start with default settings
             double[] xs = new double[] { 1, 3, 2, 4 };
@@ -124,11 +120,11 @@ namespace ScottPlotTests.PlottableRenderTests
             var err = new ErrorBars(xs, ys, xErrPos, xErrNeg, yErrPos, yErrNeg) { };
 
             plt.Add(err);
-            var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
             err.Color = System.Drawing.Color.Gray;
-            var bmp2 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
             //TestTools.SaveFig(bmp1, "1");
@@ -145,7 +141,6 @@ namespace ScottPlotTests.PlottableRenderTests
         public void Test_ErrorBar_LineStyle()
         {
             var plt = new ScottPlot.Plot();
-            plt.AntiAlias(false, false, false);
 
             // start with default settings
             double[] xs = new double[] { 1, 3, 2, 4 };
@@ -157,11 +152,11 @@ namespace ScottPlotTests.PlottableRenderTests
             var err = new ErrorBars(xs, ys, xErrPos, xErrNeg, yErrPos, yErrNeg) { };
 
             plt.Add(err);
-            var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
             err.LineStyle = LineStyle.Dot;
-            var bmp2 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
             //TestTools.SaveFig(bmp1, "1");

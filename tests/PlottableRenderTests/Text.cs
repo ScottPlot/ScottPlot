@@ -14,16 +14,15 @@ namespace ScottPlotTests.PlottableRenderTests
         public void Test_Text_ChangingText()
         {
             var plt = new ScottPlot.Plot();
-            plt.AntiAlias(false, false, false);
 
             // start with default settings
             var txt = new ScottPlot.Plottable.Text() { text = "hello", FontColor = System.Drawing.Color.Gray };
             plt.Add(txt);
-            var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
             txt.text += "world";
-            var bmp2 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
             //TestTools.SaveFig(bmp1, "1");
@@ -42,17 +41,16 @@ namespace ScottPlotTests.PlottableRenderTests
         public void Test_Text_Rotation()
         {
             var plt = new ScottPlot.Plot();
-            plt.AntiAlias(false, false, false);
 
             // start with default settings
             var txt = new ScottPlot.Plottable.Text() { text = "hello" };
             plt.Add(txt);
-            var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp1 = TestTools.GetLowQualityBitmap(plt);
             string hash1 = ScottPlot.Tools.BitmapHash(bmp1);
 
             // change the plottable
             txt.rotation = 45;
-            var bmp2 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp2 = TestTools.GetLowQualityBitmap(plt);
             string hash2 = ScottPlot.Tools.BitmapHash(bmp2);
 
             // measure what changed
@@ -68,17 +66,16 @@ namespace ScottPlotTests.PlottableRenderTests
         public void Test_Text_Alignment()
         {
             var plt = new ScottPlot.Plot();
-            plt.AntiAlias(false, false, false);
 
             // start with default settings
             var txt = new ScottPlot.Plottable.Text() { text = "hello" };
             plt.Add(txt);
-            var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp1 = TestTools.GetLowQualityBitmap(plt);
             string hash1 = ScottPlot.Tools.BitmapHash(bmp1);
 
             // change the plottable
             txt.alignment = Alignment.MiddleCenter;
-            var bmp2 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp2 = TestTools.GetLowQualityBitmap(plt);
             string hash2 = ScottPlot.Tools.BitmapHash(bmp2);
 
             // measure what changed
@@ -94,17 +91,16 @@ namespace ScottPlotTests.PlottableRenderTests
         public void Test_Text_Frame()
         {
             var plt = new ScottPlot.Plot();
-            plt.AntiAlias(false, false, false);
 
             // start with default settings
             var txt = new ScottPlot.Plottable.Text() { text = "hello" };
             plt.Add(txt);
-            var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
             txt.frame = true;
             txt.frameColor = System.Drawing.Color.Gray;
-            var bmp2 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
             //TestTools.SaveFig(bmp1, "1");
@@ -121,16 +117,15 @@ namespace ScottPlotTests.PlottableRenderTests
         public void Test_Text_FrameColor()
         {
             var plt = new ScottPlot.Plot();
-            plt.AntiAlias(false, false, false);
 
             // start with default settings
             var txt = new ScottPlot.Plottable.Text() { text = "hello", frame = true, frameColor = System.Drawing.Color.Gray };
             plt.Add(txt);
-            var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
             txt.frameColor = System.Drawing.Color.Blue;
-            var bmp2 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
             //TestTools.SaveFig(bmp1, "1");
@@ -149,16 +144,15 @@ namespace ScottPlotTests.PlottableRenderTests
         public void Test_Text_FontColor()
         {
             var plt = new ScottPlot.Plot();
-            plt.AntiAlias(false, false, false);
 
             // start with default settings
             var txt = new ScottPlot.Plottable.Text() { text = "hello", FontColor = System.Drawing.Color.Gray };
             plt.Add(txt);
-            var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
             txt.FontColor = System.Drawing.Color.Blue;
-            var bmp2 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
             //TestTools.SaveFig(bmp1, "1");
@@ -177,16 +171,15 @@ namespace ScottPlotTests.PlottableRenderTests
         public void Test_Text_FontSize()
         {
             var plt = new ScottPlot.Plot();
-            plt.AntiAlias(false, false, false);
 
             // start with default settings
             var txt = new ScottPlot.Plottable.Text() { text = "hello", FontSize = 12 };
             plt.Add(txt);
-            var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
             txt.FontSize = 36;
-            var bmp2 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
             //TestTools.SaveFig(bmp1, "1");
@@ -207,16 +200,15 @@ namespace ScottPlotTests.PlottableRenderTests
                 return;
 
             var plt = new ScottPlot.Plot();
-            plt.AntiAlias(false, false, false);
 
             // start with default settings
             var txt = new ScottPlot.Plottable.Text() { text = "hello", FontSize = 12 };
             plt.Add(txt);
-            var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
             txt.FontBold = true;
-            var bmp2 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
             //TestTools.SaveFig(bmp1, "1");
