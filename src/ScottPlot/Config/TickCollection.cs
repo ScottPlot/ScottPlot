@@ -52,21 +52,18 @@ namespace ScottPlot.Config
         {
             if (manualTickPositions is null)
             {
-                // first pass density calculation based on fixed predicted tick label size
+                // first pass uses forced density with manual label sizes to consistently approximate labels
                 if (dateFormat)
-                    RecalculatePositionsAutomaticDatetime(dims, maxLabelWidth, maxLabelHeight);
+                    RecalculatePositionsAutomaticDatetime(dims, 20, 24, 10);
                 else
-                    RecalculatePositionsAutomaticNumeric(dims, maxLabelWidth, maxLabelHeight);
+                    RecalculatePositionsAutomaticNumeric(dims, 15, 12, 10);
 
                 // second pass calculates density using measured labels produced by the first pass
-                if (recalculateLabelSize)
-                {
-                    (maxLabelWidth, maxLabelHeight) = MaxLabelSize(tickFont);
-                    if (dateFormat)
-                        RecalculatePositionsAutomaticDatetime(dims, maxLabelWidth, maxLabelHeight);
-                    else
-                        RecalculatePositionsAutomaticNumeric(dims, maxLabelWidth, maxLabelHeight);
-                }
+                (maxLabelWidth, maxLabelHeight) = MaxLabelSize(tickFont);
+                if (dateFormat)
+                    RecalculatePositionsAutomaticDatetime(dims, maxLabelWidth, maxLabelHeight, null);
+                else
+                    RecalculatePositionsAutomaticNumeric(dims, maxLabelWidth, maxLabelHeight, null);
             }
             else
             {
@@ -111,7 +108,7 @@ namespace ScottPlot.Config
             return (maxLabelSize.Width, maxLabelSize.Height);
         }
 
-        private void RecalculatePositionsAutomaticDatetime(PlotDimensions dims, float labelWidth, float labelHeight)
+        private void RecalculatePositionsAutomaticDatetime(PlotDimensions dims, float labelWidth, float labelHeight, int? forcedTickCount)
         {
             double low, high;
             int tickCount;
@@ -121,12 +118,14 @@ namespace ScottPlot.Config
                 low = dims.YMin - dims.UnitsPerPxY; // add an extra pixel to capture the edge tick
                 high = dims.YMax + dims.UnitsPerPxY; // add an extra pixel to capture the edge tick
                 tickCount = (int)(dims.DataHeight / labelWidth);
+                tickCount = forcedTickCount ?? tickCount;
             }
             else
             {
                 low = dims.XMin - dims.UnitsPerPxX; // add an extra pixel to capture the edge tick
                 high = dims.XMax + dims.UnitsPerPxX; // add an extra pixel to capture the edge tick
                 tickCount = (int)(dims.DataWidth / labelHeight);
+                tickCount = forcedTickCount ?? tickCount;
             }
 
             if (low < high)
@@ -161,7 +160,7 @@ namespace ScottPlot.Config
             cornerLabel = null;
         }
 
-        private void RecalculatePositionsAutomaticNumeric(PlotDimensions dims, float labelWidth, float labelHeight)
+        private void RecalculatePositionsAutomaticNumeric(PlotDimensions dims, float labelWidth, float labelHeight, int? forcedTickCount)
         {
             double low, high, tickSpacing;
             int maxTickCount;
@@ -171,6 +170,7 @@ namespace ScottPlot.Config
                 low = dims.YMin - dims.UnitsPerPxY; // add an extra pixel to capture the edge tick
                 high = dims.YMax + dims.UnitsPerPxY; // add an extra pixel to capture the edge tick
                 maxTickCount = (int)(dims.DataHeight / labelHeight);
+                maxTickCount = forcedTickCount ?? maxTickCount;
                 tickSpacing = (manualSpacingY != 0) ? manualSpacingY : GetIdealTickSpacing(low, high, maxTickCount, radix);
             }
             else
@@ -178,6 +178,7 @@ namespace ScottPlot.Config
                 low = dims.XMin - dims.UnitsPerPxX; // add an extra pixel to capture the edge tick
                 high = dims.XMax + dims.UnitsPerPxX; // add an extra pixel to capture the edge tick
                 maxTickCount = (int)(dims.DataWidth / labelWidth);
+                maxTickCount = forcedTickCount ?? maxTickCount;
                 tickSpacing = (manualSpacingX != 0) ? manualSpacingX : GetIdealTickSpacing(low, high, maxTickCount, radix);
             }
 
