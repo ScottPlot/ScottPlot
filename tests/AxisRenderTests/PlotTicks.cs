@@ -26,7 +26,7 @@ namespace ScottPlotTests.AxisRenderTests
         [Test]
         public void Test_PlotTicks_DisplayTicks()
         {
-            var plt = new ScottPlot.Plot(400, 300);
+            var plt = new ScottPlot.Plot();
             plt.XLabel("Horizontal Axis Label");
             plt.YLabel("Vertical Axis Label");
             var bothTicks = new MeanPixel(plt);

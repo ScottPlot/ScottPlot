@@ -10,6 +10,10 @@ namespace ScottPlotTests
 
         public MeanPixel(ScottPlot.Plot plt, bool lowQuality = true)
         {
+            // render once to refine layout
+            plt.GetBitmap(renderFirst: true, lowQuality: false);
+
+            // actual render for pixel comparison is low quality
             var bmp = plt.GetBitmap(lowQuality: lowQuality);
             (A, R, G, B) = TestTools.MeanPixel(bmp);
             pixels = bmp.Width * bmp.Height;
