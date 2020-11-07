@@ -33,7 +33,7 @@ namespace ScottPlot.Renderable
 
         public float PixelSize = 123;
         public float PixelSizeMinimum = 5;
-        public float PixelSizePadding = 5;
+        public float PixelSizePadding = 3;
 
         public readonly AxisTitle Title = new AxisTitle();
         public readonly AxisTicks Ticks = new AxisTicks();
@@ -53,6 +53,8 @@ namespace ScottPlot.Renderable
 
             if (RecalculationCount == 0)
                 RecalculateTickPositions(dims);
+
+            Title.PixelSizePadding = PixelSizePadding;
 
             using (var gfx = GDI.Graphics(bmp, lowQuality))
             {

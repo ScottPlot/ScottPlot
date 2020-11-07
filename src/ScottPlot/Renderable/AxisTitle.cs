@@ -12,6 +12,7 @@ namespace ScottPlot.Renderable
         public string Label = null;
         public Drawing.Font Font = new Drawing.Font() { Size = 16 };
         public Edge Edge;
+        public float PixelSizePadding;
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
@@ -29,19 +30,19 @@ namespace ScottPlot.Renderable
                 if (Edge == Edge.Bottom)
                 {
                     sf.LineAlignment = StringAlignment.Far;
-                    gfx.DrawString(Label, font, brush, dataCenterX, dims.Height, sf);
+                    gfx.DrawString(Label, font, brush, dataCenterX, dims.Height - PixelSizePadding, sf);
                 }
                 else if (Edge == Edge.Top)
                 {
                     sf.LineAlignment = StringAlignment.Near;
-                    gfx.DrawString(Label, font, brush, dataCenterX, 0, sf);
+                    gfx.DrawString(Label, font, brush, dataCenterX, PixelSizePadding, sf);
                 }
                 else if (Edge == Edge.Left)
                 {
                     sf.LineAlignment = StringAlignment.Near;
                     gfx.TranslateTransform(0, dataCenterY);
                     gfx.RotateTransform(-90);
-                    gfx.DrawString(Label, font, brush, 0, 0, sf);
+                    gfx.DrawString(Label, font, brush, 0, PixelSizePadding, sf);
                     gfx.ResetTransform();
                 }
                 else if (Edge == Edge.Right)
@@ -49,7 +50,7 @@ namespace ScottPlot.Renderable
                     sf.LineAlignment = StringAlignment.Near;
                     gfx.TranslateTransform(dims.Width, dataCenterY);
                     gfx.RotateTransform(90);
-                    gfx.DrawString(Label, font, brush, 0, 0, sf);
+                    gfx.DrawString(Label, font, brush, 0, PixelSizePadding, sf);
                     gfx.ResetTransform();
                 }
                 else
