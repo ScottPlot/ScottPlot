@@ -109,15 +109,21 @@ namespace ScottPlot
             }
         }
 
-        public void Layout(double? leftAxisWidth, double? rightAxisWidth, double? bottomAxisHeight, double? topAxisHeight)
+        /// <summary>
+        /// Define minimum size (in pixels) around the edge of the data area for each axis
+        /// </summary>
+        public void Layout(float? left = null, float? right = null, float? bottom = null, float? top = null, float? padding = 5)
         {
-            settings.YAxis.PixelSize = (float)(leftAxisWidth ?? settings.YAxis.PixelSize);
-            settings.YAxis2.PixelSize = (float)(rightAxisWidth ?? settings.YAxis2.PixelSize);
-            settings.XAxis.PixelSize = (float)(bottomAxisHeight ?? settings.XAxis.PixelSize);
-            settings.XAxis2.PixelSize = (float)(topAxisHeight ?? settings.XAxis2.PixelSize);
+            settings.YAxis.PixelSizeMinimum = left ?? settings.YAxis.PixelSize;
+            settings.YAxis2.PixelSizeMinimum = right ?? settings.YAxis2.PixelSize;
+            settings.XAxis.PixelSizeMinimum = bottom ?? settings.XAxis.PixelSize;
+            settings.XAxis2.PixelSizeMinimum = top ?? settings.XAxis2.PixelSize;
+
+            foreach (var axis in settings.Axes)
+                axis.PixelSizePadding = padding ?? axis.PixelSizePadding;
         }
 
-        [Obsolete("use other overload", false)]
+        [Obsolete("use other overload", true)]
         public void Layout(
                 double? yLabelWidth = null,
                 double? yScaleWidth = null,

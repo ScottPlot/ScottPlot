@@ -73,7 +73,7 @@ namespace ScottPlot
             Add(heatmap);
             MatchAxis(this);
             Ticks(false, false);
-            Layout(y2LabelWidth: 180);
+            Layout(top: 180);
 
             return heatmap;
         }

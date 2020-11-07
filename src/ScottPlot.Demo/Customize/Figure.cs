@@ -65,7 +65,7 @@ namespace ScottPlot.Demo.Customize
                 plt.Style(figBg: Color.LightBlue);
                 plt.Style(dataBg: Color.LightYellow);
 
-                plt.Layout(yScaleWidth: 80, titleHeight: 50, xLabelHeight: 20, y2LabelWidth: 20);
+                plt.Layout(left: 80, top: 50, bottom: 20, right: 20);
             }
         }
 
@@ -91,8 +91,6 @@ namespace ScottPlot.Demo.Customize
                 plt.Ticks(false, false);
                 plt.Frame(false);
 
-                // Eliminate space between the data area and frame edge by setting padding to 0.
-                // This must be repeated if the layout resets (such as when new items are added to the plot).
                 plt.LayoutFrameless();
             }
         }
