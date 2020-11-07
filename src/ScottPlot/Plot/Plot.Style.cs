@@ -34,21 +34,17 @@ namespace ScottPlot
             settings.DataBackground.Color = dataBg ?? settings.DataBackground.Color;
             settings.FigureBackground.Color = figBg ?? settings.FigureBackground.Color;
 
-            // TODO: support this
-            /*
             foreach (var axis in settings.Axes)
             {
-                axis.TitleFont.Color = label ?? axis.TitleFont.Color;
-                axis.TickFont.Color = tick ?? axis.TickFont.Color;
-                axis.MajorTicks.GridLineColor = grid ?? axis.MajorTicks.GridLineColor;
-                axis.MinorTicks.GridLineColor = grid ?? axis.MajorTicks.GridLineColor;
-                axis.MajorTicks.MarkColor = tick ?? axis.MajorTicks.MarkColor;
-                axis.MinorTicks.MarkColor = tick ?? axis.MinorTicks.MarkColor;
-            
+                axis.Title.Font.Color = label ?? axis.Title.Font.Color;
+                axis.Ticks.MajorLabelFont.Color = tick ?? axis.Ticks.MajorLabelFont.Color;
+                axis.Ticks.MajorGridColor = grid ?? axis.Ticks.MajorGridColor;
+                axis.Ticks.MinorGridColor = grid ?? axis.Ticks.MinorGridColor;
+                axis.Ticks.Color = tick ?? axis.Ticks.Color;
+                axis.Line.Color = tick ?? axis.Line.Color;
             }
 
-            settings.XAxis2.TitleFont.Color = title ?? settings.XAxis2.TitleFont.Color;
-            */
+            settings.XAxis2.Title.Font.Color = title ?? settings.XAxis2.Title.Font.Color;
         }
 
         public void Style(Style style)

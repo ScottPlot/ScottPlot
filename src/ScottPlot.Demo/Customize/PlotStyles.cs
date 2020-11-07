@@ -20,6 +20,9 @@ namespace ScottPlot.Demo.Customize
 
                 plt.PlotScatter(x, sin);
                 plt.PlotScatter(x, cos);
+                plt.XLabel("Horizontal Axis");
+                plt.YLabel("Vertical Axis");
+                plt.Title("Plot Style: Default");
 
                 plt.Style(ScottPlot.Style.Default);
             }
@@ -39,6 +42,9 @@ namespace ScottPlot.Demo.Customize
 
                 plt.PlotScatter(x, sin);
                 plt.PlotScatter(x, cos);
+                plt.XLabel("Horizontal Axis");
+                plt.YLabel("Vertical Axis");
+                plt.Title("Plot Style: Seaborn");
 
                 plt.Style(ScottPlot.Style.Seaborn);
             }
@@ -58,6 +64,9 @@ namespace ScottPlot.Demo.Customize
 
                 plt.PlotScatter(x, sin);
                 plt.PlotScatter(x, cos);
+                plt.XLabel("Horizontal Axis");
+                plt.YLabel("Vertical Axis");
+                plt.Title("Plot Style: Control");
 
                 plt.Style(ScottPlot.Style.Control);
             }
@@ -77,6 +86,9 @@ namespace ScottPlot.Demo.Customize
 
                 plt.PlotScatter(x, sin);
                 plt.PlotScatter(x, cos);
+                plt.XLabel("Horizontal Axis");
+                plt.YLabel("Vertical Axis");
+                plt.Title("Plot Style: Blue1");
 
                 plt.Style(ScottPlot.Style.Blue1);
             }
@@ -96,6 +108,9 @@ namespace ScottPlot.Demo.Customize
 
                 plt.PlotScatter(x, sin);
                 plt.PlotScatter(x, cos);
+                plt.XLabel("Horizontal Axis");
+                plt.YLabel("Vertical Axis");
+                plt.Title("Plot Style: Blue2");
 
                 plt.Style(ScottPlot.Style.Blue2);
             }
@@ -115,6 +130,9 @@ namespace ScottPlot.Demo.Customize
 
                 plt.PlotScatter(x, sin);
                 plt.PlotScatter(x, cos);
+                plt.XLabel("Horizontal Axis");
+                plt.YLabel("Vertical Axis");
+                plt.Title("Plot Style: Blue3");
 
                 plt.Style(ScottPlot.Style.Blue3);
             }
@@ -134,6 +152,9 @@ namespace ScottPlot.Demo.Customize
 
                 plt.PlotScatter(x, sin);
                 plt.PlotScatter(x, cos);
+                plt.XLabel("Horizontal Axis");
+                plt.YLabel("Vertical Axis");
+                plt.Title("Plot Style: Light1");
 
                 plt.Style(ScottPlot.Style.Light1);
             }
@@ -153,6 +174,9 @@ namespace ScottPlot.Demo.Customize
 
                 plt.PlotScatter(x, sin);
                 plt.PlotScatter(x, cos);
+                plt.XLabel("Horizontal Axis");
+                plt.YLabel("Vertical Axis");
+                plt.Title("Plot Style: Light2");
 
                 plt.Style(ScottPlot.Style.Light2);
             }
@@ -172,6 +196,9 @@ namespace ScottPlot.Demo.Customize
 
                 plt.PlotScatter(x, sin);
                 plt.PlotScatter(x, cos);
+                plt.XLabel("Horizontal Axis");
+                plt.YLabel("Vertical Axis");
+                plt.Title("Plot Style: Gray1");
 
                 plt.Style(ScottPlot.Style.Gray1);
             }
@@ -191,6 +218,9 @@ namespace ScottPlot.Demo.Customize
 
                 plt.PlotScatter(x, sin);
                 plt.PlotScatter(x, cos);
+                plt.XLabel("Horizontal Axis");
+                plt.YLabel("Vertical Axis");
+                plt.Title("Plot Style: Gray2");
 
                 plt.Style(ScottPlot.Style.Gray2);
             }
@@ -210,6 +240,9 @@ namespace ScottPlot.Demo.Customize
 
                 plt.PlotScatter(x, sin);
                 plt.PlotScatter(x, cos);
+                plt.XLabel("Horizontal Axis");
+                plt.YLabel("Vertical Axis");
+                plt.Title("Plot Style: Black");
 
                 plt.Style(ScottPlot.Style.Black);
             }
