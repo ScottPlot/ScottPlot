@@ -92,7 +92,7 @@ namespace ScottPlot
             settings.RecalculateLayout();
             settings.Resize(bmp.Width, bmp.Height);
 
-            if (lowQuality == false)
+            if (lowQuality == false || RenderCount == 0)
             {
                 // double-render to refine layout
                 foreach (var axis in settings.Axes)
@@ -105,6 +105,7 @@ namespace ScottPlot
             RenderPlottables(dims, bmp, lowQuality);
             RenderAfterPlottables(dims, bmp, lowQuality);
 
+            RenderCount += 1;
             return bmp;
         }
 
