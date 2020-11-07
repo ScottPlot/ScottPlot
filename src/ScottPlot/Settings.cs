@@ -75,7 +75,6 @@ namespace ScottPlot
         public readonly ErrorMessage ErrorMessage = new ErrorMessage();
         public readonly Legend CornerLegend = new Legend();
         public readonly ZoomRectangle ZoomRectangle = new ZoomRectangle();
-        public CultureInfo Culture = CultureInfo.DefaultThreadCurrentCulture;
         public Palette PlottablePalette = Palette.Category10;
 
         public List<Axis> Axes = new List<Axis>() {

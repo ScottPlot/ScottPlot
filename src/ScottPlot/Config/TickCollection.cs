@@ -46,7 +46,7 @@ namespace ScottPlot.Config
         public bool useOffsetNotation = false;
         public bool useExponentialNotation = true;
 
-        public void Recalculate(PlotDimensions dims, Drawing.Font tickFont = null)
+        public void Recalculate(PlotDimensions dims, Drawing.Font tickFont)
         {
             if (manualTickPositions is null)
             {
@@ -67,8 +67,27 @@ namespace ScottPlot.Config
                 cornerLabel = null;
             }
 
-            if (tickFont != null)
-                UpdateMaxSize(tickFont);
+            UpdateMaxSize(tickFont);
+        }
+
+        public void SetCulture(
+            string shortDatePattern = null,
+            string decimalSeparator = null,
+            string numberGroupSeparator = null,
+            int? decimalDigits = null,
+            int? numberNegativePattern = null,
+            int[] numberGroupSizes = null
+            )
+        {
+            // Culture may be null if the thread culture is the same is the system culture.
+            // If it is null, assigning it to a clone of the current culture solves this and also makes it mutable.
+            Culture = Culture ?? (CultureInfo)CultureInfo.CurrentCulture.Clone();
+            Culture.DateTimeFormat.ShortDatePattern = shortDatePattern ?? Culture.DateTimeFormat.ShortDatePattern;
+            Culture.NumberFormat.NumberDecimalDigits = decimalDigits ?? Culture.NumberFormat.NumberDecimalDigits;
+            Culture.NumberFormat.NumberDecimalSeparator = decimalSeparator ?? Culture.NumberFormat.NumberDecimalSeparator;
+            Culture.NumberFormat.NumberGroupSeparator = numberGroupSeparator ?? Culture.NumberFormat.NumberGroupSeparator;
+            Culture.NumberFormat.NumberGroupSizes = numberGroupSizes ?? Culture.NumberFormat.NumberGroupSizes;
+            Culture.NumberFormat.NumberNegativePattern = numberNegativePattern ?? Culture.NumberFormat.NumberNegativePattern;
         }
 
         private void UpdateMaxSize(Drawing.Font tickFont)

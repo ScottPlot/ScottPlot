@@ -1,5 +1,6 @@
 ﻿/* Code here customizes Plot behavior (not styling) */
 
+using ScottPlot.Config;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -34,11 +35,12 @@ namespace ScottPlot
 
         public void SetCulture(System.Globalization.CultureInfo culture)
         {
-            settings.Culture = culture;
+            foreach (var axis in settings.Axes)
+                axis.Ticks.TickCollection.Culture = culture;
         }
 
         /// <summary>
-        /// Updates the used culture to match your requirements.
+        /// Updates the culture used for displaying numbers in tick labels
         /// </summary>
         /// <param name="shortDatePattern">
         /// https://docs.microsoft.com/dotnet/standard/base-types/custom-date-and-time-format-strings
@@ -67,29 +69,10 @@ namespace ScottPlot
             int? numberNegativePattern = null,
             int[] numberGroupSizes = null)
         {
-
-            // settings.culture may be null if the thread culture is the same is the system culture.
-            // If it is null, assigning it to a clone of the current culture solves this and also makes it mutable.
-            if (settings.Culture is null)
-                settings.Culture = (System.Globalization.CultureInfo)System.Globalization.CultureInfo.CurrentCulture.Clone();
-
-            if (shortDatePattern != null)
-                settings.Culture.DateTimeFormat.ShortDatePattern = shortDatePattern;
-
-            if (decimalDigits != null)
-                settings.Culture.NumberFormat.NumberDecimalDigits = decimalDigits.Value;
-
-            if (decimalSeparator != null)
-                settings.Culture.NumberFormat.NumberDecimalSeparator = decimalSeparator;
-
-            if (numberGroupSeparator != null)
-                settings.Culture.NumberFormat.NumberGroupSeparator = numberGroupSeparator;
-
-            if (numberGroupSizes != null)
-                settings.Culture.NumberFormat.NumberGroupSizes = numberGroupSizes;
-
-            if (numberNegativePattern != null)
-                settings.Culture.NumberFormat.NumberNegativePattern = numberNegativePattern.Value;
+            foreach (var axis in settings.Axes)
+                axis.Ticks.TickCollection.SetCulture(
+                        shortDatePattern, decimalSeparator, numberGroupSeparator,
+                        decimalDigits, numberNegativePattern, numberGroupSizes);
         }
     }
 }
