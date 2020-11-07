@@ -65,21 +65,16 @@ namespace ScottPlot
             bool? top = true
         )
         {
-            // TODO: support this
-            /*
             foreach (var axis in settings.PrimaryAxes)
             {
-                axis.Line = drawFrame ?? axis.Line;
-                axis.LineColor = frameColor ?? axis.LineColor;
+                axis.Line.IsVisible = drawFrame ?? axis.Line.IsVisible;
+                axis.Line.Color = frameColor ?? axis.Line.Color;
             }
 
-            settings.YAxis.Line = left ?? settings.YAxis.Line;
-            settings.YAxis2.Line = right ?? settings.YAxis2.Line;
-            settings.XAxis.Line = bottom ?? settings.XAxis.Line;
-            settings.XAxis2.Line = top ?? settings.XAxis2.Line;
-
-            TightenLayout();
-            */
+            settings.YAxis.Line.IsVisible = left ?? settings.YAxis.Line.IsVisible;
+            settings.YAxis2.Line.IsVisible = right ?? settings.YAxis2.Line.IsVisible;
+            settings.XAxis.Line.IsVisible = bottom ?? settings.XAxis.Line.IsVisible;
+            settings.XAxis2.Line.IsVisible = top ?? settings.XAxis2.Line.IsVisible;
         }
 
         public void Benchmark(bool show = true, bool toggle = false) =>
