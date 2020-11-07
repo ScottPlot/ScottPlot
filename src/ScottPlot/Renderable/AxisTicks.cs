@@ -25,7 +25,6 @@ namespace ScottPlot.Renderable
 
         public bool MinorTickEnable = true;
         public float MinorTickLength = 2;
-        public bool MinorTickLogDistribution = false;
 
         public LineStyle MajorGridStyle = LineStyle.None;
         public Color MajorGridColor = ColorTranslator.FromHtml("#efefef");

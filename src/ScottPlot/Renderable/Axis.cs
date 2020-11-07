@@ -103,7 +103,7 @@ namespace ScottPlot.Renderable
             Ticks.MajorLabelFont.Name = fontName ?? Ticks.MajorLabelFont.Name;
             Ticks.MajorLabelFont.Size = fontSize ?? Ticks.MajorLabelFont.Size;
             Ticks.Rotation = (float)(rotation ?? Ticks.Rotation);
-            Ticks.MinorTickLogDistribution = logScale ?? Ticks.MinorTickLogDistribution;
+            Ticks.TickCollection.logScale = logScale ?? Ticks.TickCollection.logScale;
             Ticks.TickCollection.numericFormatString = numericFormatString ?? Ticks.TickCollection.numericFormatString;
             Ticks.SnapPx = snapToNearestPixel ?? Ticks.SnapPx;
             Ticks.TickCollection.radix = radix ?? Ticks.TickCollection.radix;
