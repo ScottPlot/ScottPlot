@@ -24,7 +24,9 @@ namespace ScottPlot.Config
         public string[] manualTickLabels;
 
         public string cornerLabel;
-        public SizeF maxLabelSize = new SizeF(15, 12);
+        public float maxLabelWidth;
+        public float maxLabelHeight;
+
         public bool dateFormat;
         public bool verticalAxis;
         public bool invertSign;
@@ -50,14 +52,18 @@ namespace ScottPlot.Config
         {
             if (manualTickPositions is null)
             {
+                // first pass density calculation based on fixed predicted tick label size
                 if (dateFormat)
-                {
-                    RecalculatePositionsAutomaticDatetime(dims);
-                }
+                    RecalculatePositionsAutomaticDatetime(dims, 20, 24);
                 else
-                {
-                    RecalculatePositionsAutomaticNumeric(dims);
-                }
+                    RecalculatePositionsAutomaticNumeric(dims, 15, 12);
+
+                // second pass calculates density using measured labels produced by the first pass
+                (maxLabelWidth, maxLabelHeight) = MaxLabelSize(tickFont);
+                if (dateFormat)
+                    RecalculatePositionsAutomaticDatetime(dims, maxLabelWidth, maxLabelHeight);
+                else
+                    RecalculatePositionsAutomaticNumeric(dims, maxLabelWidth, maxLabelHeight);
             }
             else
             {
@@ -66,8 +72,6 @@ namespace ScottPlot.Config
                 tickLabels = manualTickLabels;
                 cornerLabel = null;
             }
-
-            UpdateMaxSize(tickFont);
         }
 
         public void SetCulture(
@@ -90,23 +94,21 @@ namespace ScottPlot.Config
             Culture.NumberFormat.NumberNegativePattern = numberNegativePattern ?? Culture.NumberFormat.NumberNegativePattern;
         }
 
-        private void UpdateMaxSize(Drawing.Font tickFont)
+        private (float width, float height) MaxLabelSize(Drawing.Font tickFont)
         {
             if (tickLabels is null || tickLabels.Length == 0)
-            {
-                maxLabelSize = new SizeF(0, 0);
-                return;
-            }
+                return (0, 0);
 
             string largestString = "";
             foreach (string s in tickLabels.Where(x => string.IsNullOrEmpty(x) == false))
                 if (s.Length > largestString.Length)
                     largestString = s;
 
-            maxLabelSize = GDI.MeasureString(largestString.Trim(), tickFont);
+            var maxLabelSize = GDI.MeasureString(largestString.Trim(), tickFont);
+            return (maxLabelSize.Width, maxLabelSize.Height);
         }
 
-        private void RecalculatePositionsAutomaticDatetime(PlotDimensions dims)
+        private void RecalculatePositionsAutomaticDatetime(PlotDimensions dims, float labelWidth, float labelHeight)
         {
             double low, high;
             int tickCount;
@@ -115,13 +117,13 @@ namespace ScottPlot.Config
             {
                 low = dims.YMin - dims.UnitsPerPxY; // add an extra pixel to capture the edge tick
                 high = dims.YMax + dims.UnitsPerPxY; // add an extra pixel to capture the edge tick
-                tickCount = (int)(dims.DataHeight / maxLabelSize.Height);
+                tickCount = (int)(dims.DataHeight / labelWidth);
             }
             else
             {
                 low = dims.XMin - dims.UnitsPerPxX; // add an extra pixel to capture the edge tick
                 high = dims.XMax + dims.UnitsPerPxX; // add an extra pixel to capture the edge tick
-                tickCount = (int)(dims.DataWidth / maxLabelSize.Width);
+                tickCount = (int)(dims.DataWidth / labelHeight);
             }
 
             if (low < high)
@@ -156,7 +158,7 @@ namespace ScottPlot.Config
             cornerLabel = null;
         }
 
-        private void RecalculatePositionsAutomaticNumeric(PlotDimensions dims)
+        private void RecalculatePositionsAutomaticNumeric(PlotDimensions dims, float labelWidth, float labelHeight)
         {
             double low, high, tickSpacing;
             int maxTickCount;
@@ -165,14 +167,14 @@ namespace ScottPlot.Config
             {
                 low = dims.YMin - dims.UnitsPerPxY; // add an extra pixel to capture the edge tick
                 high = dims.YMax + dims.UnitsPerPxY; // add an extra pixel to capture the edge tick
-                maxTickCount = (int)(dims.DataHeight / maxLabelSize.Height);
+                maxTickCount = (int)(dims.DataHeight / labelHeight);
                 tickSpacing = (manualSpacingY != 0) ? manualSpacingY : GetIdealTickSpacing(low, high, maxTickCount, radix);
             }
             else
             {
                 low = dims.XMin - dims.UnitsPerPxX; // add an extra pixel to capture the edge tick
                 high = dims.XMax + dims.UnitsPerPxX; // add an extra pixel to capture the edge tick
-                maxTickCount = (int)(dims.DataWidth / maxLabelSize.Width);
+                maxTickCount = (int)(dims.DataWidth / labelWidth);
                 tickSpacing = (manualSpacingX != 0) ? manualSpacingX : GetIdealTickSpacing(low, high, maxTickCount, radix);
             }
 

@@ -142,7 +142,7 @@ namespace ScottPlot.Renderable
                     sf.Alignment = StringAlignment.Far;
                     gfx.DrawString(TickCollection.cornerLabel, font, brush, format: sf,
                         x: dims.DataOffsetX + dims.DataWidth,
-                        y: dims.DataOffsetY + dims.DataHeight + MajorTickLength + TickCollection.maxLabelSize.Height);
+                        y: dims.DataOffsetY + dims.DataHeight + MajorTickLength + TickCollection.maxLabelHeight);
                 }
                 else if (Edge == Edge.Top)
                 {

@@ -128,7 +128,7 @@ namespace ScottPlot.Renderable
                     PixelSize += GDI.MeasureString(Title.Label, Title.Font).Height;
 
                 if (Ticks.MajorLabelEnable)
-                    PixelSize += IsHorizontal ? Ticks.TickCollection.maxLabelSize.Height : Ticks.TickCollection.maxLabelSize.Width * 1.2f;
+                    PixelSize += IsHorizontal ? Ticks.TickCollection.maxLabelHeight : Ticks.TickCollection.maxLabelWidth * 1.2f;
 
                 if (Ticks.MajorTickEnable)
                     PixelSize += Ticks.MajorTickLength;
