@@ -20,11 +20,12 @@ namespace ScottPlot
             )
         {
             bool someValuesAreNull = (x1 == null) || (x2 == null) || (y1 == null) || (y2 == null);
-            if (someValuesAreNull && !settings.axes.hasBeenSet)
+            if (someValuesAreNull && !settings.AxesHaveBeenSet)
                 settings.AxisAuto();
 
-            settings.axes.Set(x1, x2, y1, y2);
-            return settings.axes.limits;
+            settings.Dims.SetAxis(x1, x2, y1, y2);
+            settings.AxesHaveBeenSet = true;
+            return settings.AxisLimits;
         }
 
         /// <summary>
@@ -35,7 +36,7 @@ namespace ScottPlot
             if ((axisLimits == null) || (axisLimits.Length != 4))
                 throw new ArgumentException("axis limits must contain 4 elements");
             Axis(axisLimits[0], axisLimits[1], axisLimits[2], axisLimits[3]);
-            return settings.axes.limits;
+            return settings.AxisLimits;
         }
 
         /// <summary>
@@ -47,10 +48,13 @@ namespace ScottPlot
             double minY = double.NegativeInfinity,
             double maxY = double.PositiveInfinity)
         {
+            // TODO: support bounds
+            /*
             settings.axes.x.boundMin = minX;
             settings.axes.x.boundMax = maxX;
             settings.axes.y.boundMin = minY;
             settings.axes.y.boundMax = maxY;
+            */
         }
 
         /// <summary>
@@ -61,16 +65,16 @@ namespace ScottPlot
             if (unitsPerPixelX != null)
             {
                 double spanX = unitsPerPixelX.Value * settings.DataWidth;
-                Axis(x1: settings.axes.x.center - spanX / 2, x2: settings.axes.x.center + spanX / 2);
+                Axis(x1: settings.Dims.XCenter - spanX / 2, x2: settings.Dims.XCenter + spanX / 2);
             }
 
             if (unitsPerPixelY != null)
             {
                 double spanY = unitsPerPixelY.Value * settings.DataHeight;
-                Axis(y1: settings.axes.y.center - spanY / 2, y2: settings.axes.y.center + spanY / 2);
+                Axis(y1: settings.Dims.YCenter - spanY / 2, y2: settings.Dims.YCenter + spanY / 2);
             }
 
-            return settings.axes.limits;
+            return settings.AxisLimits;
         }
 
         /// <summary>
@@ -82,12 +86,14 @@ namespace ScottPlot
                 AxisScale(unitsPerPixelX: settings.yAxisUnitsPerPixel);
             else
                 AxisScale(unitsPerPixelY: settings.xAxisUnitsPerPixel);
-            return settings.axes.limits;
+            return settings.AxisLimits;
         }
 
         public void AxisLockScalesTogether(bool enable)
         {
-            settings.axes.equalAxes = enable;
+            // TODO: support this
+            /*
+            settings.axes.equalAxes = enable;*/
         }
 
         [Obsolete("call AxisLockScalesTogether()", true)]
@@ -111,7 +117,7 @@ namespace ScottPlot
             bool yExpandOnly = false)
         {
             settings.AxisAuto(horizontalMargin, verticalMargin, xExpandOnly, yExpandOnly);
-            return settings.axes.limits;
+            return settings.AxisLimits;
         }
 
         /// <summary>
@@ -119,7 +125,7 @@ namespace ScottPlot
         /// </summary>
         public double[] AxisAutoX(double margin = .05, bool expandOnly = false)
         {
-            if (settings.axes.hasBeenSet == false)
+            if (settings.AxesHaveBeenSet == false)
                 AxisAuto();
 
             double[] originalLimits = Axis();
@@ -132,7 +138,7 @@ namespace ScottPlot
         /// </summary>
         public double[] AxisAutoY(double margin = .1, bool expandOnly = false)
         {
-            if (settings.axes.hasBeenSet == false)
+            if (settings.AxesHaveBeenSet == false)
                 AxisAuto();
 
             double[] originalLimits = Axis();
@@ -145,17 +151,18 @@ namespace ScottPlot
         /// </summary>
         public double[] AxisZoom(double xFrac = 1, double yFrac = 1, double? zoomToX = null, double? zoomToY = null)
         {
-            if (!settings.axes.hasBeenSet)
+            if (!settings.AxesHaveBeenSet)
                 settings.AxisAuto();
 
             if (zoomToX is null)
-                zoomToX = settings.axes.x.center;
+                zoomToX = settings.Dims.XCenter;
 
             if (zoomToY is null)
-                zoomToY = settings.axes.y.center;
+                zoomToY = settings.Dims.YCenter;
 
-            settings.axes.Zoom(xFrac, yFrac, zoomToX, zoomToY);
-            return settings.axes.limits;
+            settings.Dims.ZoomX(xFrac, zoomToX);
+            settings.Dims.ZoomY(yFrac, zoomToY);
+            return settings.AxisLimits;
         }
 
         /// <summary>
@@ -163,11 +170,10 @@ namespace ScottPlot
         /// </summary>
         public double[] AxisPan(double dx = 0, double dy = 0)
         {
-            if (!settings.axes.hasBeenSet)
+            if (!settings.AxesHaveBeenSet)
                 settings.AxisAuto();
-            settings.axes.x.Pan(dx);
-            settings.axes.y.Pan(dy);
-            return settings.axes.limits;
+            settings.Dims.Pan(dx, dy);
+            return settings.AxisLimits;
         }
 
         /// <summary>
@@ -207,22 +213,17 @@ namespace ScottPlot
         /// </summary>
         public void MatchAxis(Plot sourcePlot, bool horizontal = true, bool vertical = true)
         {
-            if (!sourcePlot.GetSettings(showWarning: false).axes.hasBeenSet)
+            if (!sourcePlot.GetSettings(showWarning: false).AxesHaveBeenSet)
                 sourcePlot.AxisAuto();
 
-            if (!settings.axes.hasBeenSet)
+            if (!settings.AxesHaveBeenSet)
                 AxisAuto();
 
-            if (horizontal)
-            {
-                settings.axes.x.min = sourcePlot.settings.axes.x.min;
-                settings.axes.x.max = sourcePlot.settings.axes.x.max;
-            }
-            if (vertical)
-            {
-                settings.axes.y.min = sourcePlot.settings.axes.y.min;
-                settings.axes.y.max = sourcePlot.settings.axes.y.max;
-            }
+            double x1 = horizontal ? sourcePlot.settings.Dims.XMin : settings.Dims.XMin;
+            double x2 = horizontal ? sourcePlot.settings.Dims.XMax : settings.Dims.YMax;
+            double y1 = vertical ? sourcePlot.settings.Dims.YMin : settings.Dims.YMin;
+            double y2 = vertical ? sourcePlot.settings.Dims.YMax : settings.Dims.YMax;
+            settings.Dims.SetAxis(x1, x2, y1, y2);
         }
     }
 }

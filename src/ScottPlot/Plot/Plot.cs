@@ -128,10 +128,8 @@ namespace ScottPlot
             settings.BenchmarkMessage.Restart();
 
             // pre-render axis adjustments
-            if (!settings.axes.hasBeenSet)
+            if (!settings.AxesHaveBeenSet)
                 settings.AxisAuto();
-            else
-                settings.axes.ApplyBounds();
 
             // auto-layout before every single frame
             LayoutAuto();

@@ -18,10 +18,9 @@ namespace ScottPlotTests
                 ys: new double[] { 1, 2 }
                 );
             plt.AxisAuto();
-            Console.WriteLine(plt.GetSettings().axes);
 
-            Assert.IsTrue(plt.GetSettings().axes.x.span > 0);
-            Assert.IsTrue(plt.GetSettings().axes.y.span > 0);
+            Assert.IsTrue(plt.GetSettings().Dims.YSpan > 0);
+            Assert.IsTrue(plt.GetSettings().Dims.XSpan > 0);
 
             TestTools.SaveFig(plt);
         }
@@ -35,10 +34,8 @@ namespace ScottPlotTests
                 ys: new double[] { 1, 2 }
                 );
             plt.AxisAuto();
-            Console.WriteLine(plt.GetSettings().axes);
-
-            Assert.IsTrue(plt.GetSettings().axes.x.span > 0);
-            Assert.IsTrue(plt.GetSettings().axes.y.span > 0);
+            Assert.IsTrue(plt.GetSettings().Dims.YSpan > 0);
+            Assert.IsTrue(plt.GetSettings().Dims.XSpan > 0);
         }
 
         [Test]
@@ -47,9 +44,8 @@ namespace ScottPlotTests
             var plt = new ScottPlot.Plot();
             plt.PlotCandlestick(ScottPlot.DataGen.RandomStockPrices(rand: null, pointCount: 1));
             plt.GetBitmap(); // force a render
-
-            Assert.IsTrue(plt.GetSettings().axes.x.span > 0);
-            Assert.IsTrue(plt.GetSettings().axes.y.span > 0);
+            Assert.IsTrue(plt.GetSettings().Dims.YSpan > 0);
+            Assert.IsTrue(plt.GetSettings().Dims.XSpan > 0);
         }
 
         [Test]
@@ -61,9 +57,8 @@ namespace ScottPlotTests
                 ys: new double[] { 1, 1 }
                 );
             plt.AxisAuto();
-
-            Assert.IsTrue(plt.GetSettings().axes.x.span > 0);
-            Assert.IsTrue(plt.GetSettings().axes.y.span > 0);
+            Assert.IsTrue(plt.GetSettings().Dims.YSpan > 0);
+            Assert.IsTrue(plt.GetSettings().Dims.XSpan > 0);
         }
 
         [Test]
@@ -75,10 +70,8 @@ namespace ScottPlotTests
                 ys: new double[] { 1, 2 }
                 );
             plt.AxisAuto();
-            Console.WriteLine(plt.GetSettings().axes);
-
-            Assert.IsTrue(plt.GetSettings().axes.x.span > 0);
-            Assert.IsTrue(plt.GetSettings().axes.y.span > 0);
+            Assert.IsTrue(plt.GetSettings().Dims.YSpan > 0);
+            Assert.IsTrue(plt.GetSettings().Dims.XSpan > 0);
         }
 
         [Test]
@@ -178,8 +171,6 @@ namespace ScottPlotTests
         [Test]
         public void Test_AutoAxis_ExpandYonly()
         {
-            Random rand = new Random(0);
-
             var plt = new ScottPlot.Plot();
 
             // small area
@@ -199,8 +190,6 @@ namespace ScottPlotTests
         [Test]
         public void Test_AutoAxis_ExpandXonly()
         {
-            Random rand = new Random(0);
-
             var plt = new ScottPlot.Plot();
 
             // small area
