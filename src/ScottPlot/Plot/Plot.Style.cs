@@ -76,9 +76,15 @@ namespace ScottPlot
         public void Benchmark(bool show = true, bool toggle = false) =>
             settings.BenchmarkMessage.IsVisible = toggle ? !settings.BenchmarkMessage.IsVisible : show;
 
-        [Obsolete("dont use this old system", false)]
+        /// <summary>
+        /// Adjust layout to accommodate axis title and tick label sizes
+        /// </summary>
         public void TightenLayout(int? padding = null, bool render = false)
         {
+            if (padding.HasValue)
+                foreach (var axis in settings.Axes)
+                    axis.PixelSizeMinimum = padding.Value;
+
             if (render)
                 GetBitmap();
 
@@ -86,8 +92,6 @@ namespace ScottPlot
                 settings.AxisAuto();
 
             settings.Resize(settings.Width, settings.Height);
-
-            Resize();
         }
 
         public void LayoutFrameless()

@@ -15,6 +15,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace ScottPlot
 {
@@ -69,6 +70,46 @@ namespace ScottPlot
             settings.Resize((int)width, (int)height);
         }
 
+        private void LayoutAuto()
+        {
+            // The goal of this function is to set axis pixel size to accommodate title and tick labels.
+
+            // This is a chicken-and-egg problem:
+            //   * TICK DENSITY depends on the DATA AREA SIZE
+            //   * DATA AREA SIZE depends on LAYOUT PADDING
+            //   * LAYOUT PADDING depends on MAXIMUM LABEL SIZE
+            //   * MAXIMUM LABEL SIZE depends on TICK DENSITY
+            // To solve this, start by assuming data area size == figure size, and layout padding == 0
+
+            // axis limits shall not change
+            var dims1 = settings.GetDimensions();
+            var limits = new Config.AxisLimits2D(dims1.XMin, dims1.XMax, dims1.YMin, dims1.YMax);
+            var figSize = new SizeF(dims1.Width, dims1.Height);
+
+            // first-pass tick calculation based on full image size 
+            var dimsFull = new PlotDimensions(figSize, figSize, new PointF(0, 0), limits);
+            foreach (var axis in settings.Axes)
+            {
+                axis.RecalculateTickPositions(dimsFull);
+                axis.RecalculateAxisSize();
+            }
+
+            // now adjust our layout based on measured axis sizes
+            settings.TightenLayout();
+
+            // now recalculate ticks based on new layout
+            var dims2 = settings.GetDimensions();
+            var dataSize = new SizeF(dims2.DataWidth, dims2.DataHeight);
+            var dataOffset = new PointF(dims2.DataOffsetX, dims2.DataOffsetY);
+
+            var dims3 = new PlotDimensions(figSize, dataSize, dataOffset, limits);
+            foreach (var axis in settings.Axes)
+                axis.RecalculateTickPositions(dims3);
+
+            // adjust the layout based on measured tick label sizes
+            settings.TightenLayout();
+        }
+
         public Bitmap Render(Bitmap renderOnThis, bool lowQuality)
         {
             RenderBitmap(renderOnThis, lowQuality);
@@ -81,48 +122,27 @@ namespace ScottPlot
         private Bitmap RenderBitmap(int width, int height, bool lowQuality) =>
             RenderBitmap(new Bitmap(width, height, PixelFormat.Format32bppPArgb), lowQuality);
 
-
         public int RenderCount { get; private set; } = 0;
         private Bitmap RenderBitmap(Bitmap bmp, bool lowQuality)
         {
             settings.BenchmarkMessage.Restart();
 
-            // layout-agnostic first-pass tick calculation to help measure tick sizes
+            // pre-render axis adjustments
+            if (!settings.axes.hasBeenSet)
+                settings.AxisAuto();
+            else
+                settings.axes.ApplyBounds();
+
+            // auto-layout before every single frame
+            LayoutAuto();
+
             var dims = settings.GetDimensions();
-            dims = new PlotDimensions(
-                figureSize: new SizeF(dims.Width, dims.Height),
-                dataSize: new SizeF(dims.Width, dims.Height),
-                dataOffset: new PointF(0, 0),
-                axisLimits: new Config.AxisLimits2D(dims.XMin, dims.XMax, dims.YMin, dims.YMax));
-            foreach (var axis in settings.Axes)
-                axis.RecalculateTickPositions(dims);
-
-            // adjust the layout based on measured tick label sizes
-            settings.RecalculateLayout();
-            settings.Resize(bmp.Width, bmp.Height);
-            RenderLegacyLayoutAdjustment();
-
-            // calculate new ticks based on new layout
-            foreach (var axis in settings.Axes)
-                axis.RecalculateTickPositions(settings.GetDimensions());
-
-            dims = settings.GetDimensions();
             RenderBeforePlottables(dims, bmp, lowQuality);
             RenderPlottables(dims, bmp, lowQuality);
             RenderAfterPlottables(dims, bmp, lowQuality);
 
             RenderCount += 1;
             return bmp;
-        }
-
-        private void RenderLegacyLayoutAdjustment()
-        {
-            if (!settings.axes.hasBeenSet)
-                settings.AxisAuto();
-            else
-                settings.axes.ApplyBounds();
-
-            TightenLayout();
         }
 
         private void RenderBeforePlottables(PlotDimensions dims, Bitmap bmp, bool lowQuality)

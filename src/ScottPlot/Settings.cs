@@ -26,11 +26,8 @@ namespace ScottPlot
         /// <summary>
         /// Adjust data padding based on axis size
         /// </summary>
-        public void RecalculateLayout()
+        public void TightenLayout()
         {
-            foreach (var axis in Axes)
-                axis.AutoSize();
-
             float padLeft = Axes.Where(x => x.Edge == Edge.Left).Select(x => x.PixelSize).Sum();
             float padRight = Axes.Where(x => x.Edge == Edge.Right).Select(x => x.PixelSize).Sum();
             float padBottom = Axes.Where(x => x.Edge == Edge.Bottom).Select(x => x.PixelSize).Sum();
@@ -42,11 +39,8 @@ namespace ScottPlot
             DataHeight = Height - padTop - padBottom;
         }
 
-        public PlotDimensions GetDimensions(bool recalculateLayout = false)
+        public PlotDimensions GetDimensions()
         {
-            if (recalculateLayout)
-                RecalculateLayout();
-
             var dims = new PlotDimensions(
                 figureSize: new SizeF(Width, Height),
                 dataSize: new SizeF(DataWidth, DataHeight),
@@ -120,6 +114,8 @@ namespace ScottPlot
                 else
                     axes.Zoom(1, yUnitsPerPixel / xUnitsPerPixel);
             }
+
+            TightenLayout();
         }
 
         public void AxesPanPx(int dxPx, int dyPx)

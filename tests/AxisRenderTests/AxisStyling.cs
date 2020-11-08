@@ -24,6 +24,7 @@ namespace ScottPlotTests.AxisRenderTests
             {
                 gfx.Clear(Color.White);
                 gfx.FillRectangle(brush, dims.DataOffsetX, dims.DataOffsetY, dims.DataWidth, dims.DataHeight);
+                axis.RecalculateTickPositions(dims);
                 axis.Render(dims, bmp);
                 if (save)
                     TestTools.SaveFig(bmp);

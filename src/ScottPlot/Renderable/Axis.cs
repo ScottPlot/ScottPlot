@@ -39,20 +39,15 @@ namespace ScottPlot.Renderable
         public readonly AxisTicks Ticks = new AxisTicks();
         public readonly AxisLine Line = new AxisLine();
 
-        public int RecalculationCount { get; private set; } = 0;
         public void RecalculateTickPositions(PlotDimensions dims)
         {
             Ticks.TickCollection.Recalculate(dims, Ticks.MajorLabelFont);
-            RecalculationCount += 1;
         }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             if (IsVisible == false)
                 return;
-
-            if (RecalculationCount == 0)
-                RecalculateTickPositions(dims);
 
             Title.PixelSizePadding = PixelSizePadding;
 
@@ -117,7 +112,7 @@ namespace ScottPlot.Renderable
             Ticks.TickCollection.dateTimeFormatString = dateTimeFormatString ?? Ticks.TickCollection.dateTimeFormatString;
         }
 
-        public void AutoSize()
+        public void RecalculateAxisSize()
         {
             using (var tickFont = GDI.Font(Ticks.MajorLabelFont))
             using (var titleFont = GDI.Font(Title.Font))
