@@ -117,14 +117,14 @@ namespace ScottPlot.Config
             {
                 low = dims.YMin - dims.UnitsPerPxY; // add an extra pixel to capture the edge tick
                 high = dims.YMax + dims.UnitsPerPxY; // add an extra pixel to capture the edge tick
-                tickCount = (int)(dims.DataHeight / labelWidth);
+                tickCount = (int)(dims.DataHeight / labelHeight);
                 tickCount = forcedTickCount ?? tickCount;
             }
             else
             {
                 low = dims.XMin - dims.UnitsPerPxX; // add an extra pixel to capture the edge tick
                 high = dims.XMax + dims.UnitsPerPxX; // add an extra pixel to capture the edge tick
-                tickCount = (int)(dims.DataWidth / labelHeight);
+                tickCount = (int)(dims.DataWidth / labelWidth);
                 tickCount = forcedTickCount ?? tickCount;
             }
 
@@ -144,6 +144,7 @@ namespace ScottPlot.Config
                     var unitFactory = new DateTimeUnitFactory();
                     IDateTimeUnit tickUnit = unitFactory.CreateUnit(from, to, Culture, tickCount, dtManualUnits, (int)dtManualSpacing);
                     (tickPositionsMajor, tickLabels) = tickUnit.GetTicksAndLabels(from, to, dateTimeFormatString);
+                    tickLabels = tickLabels.Select(x => x.Trim()).ToArray();
                 }
                 catch
                 {
