@@ -132,17 +132,35 @@ namespace ScottPlot.Renderable
             {
                 if (Edge == Edge.Bottom)
                 {
-                    sf.Alignment = RulerMode ? StringAlignment.Near : StringAlignment.Center;
-                    sf.LineAlignment = StringAlignment.Near;
-                    for (int i = 0; i < TickCollection.tickPositionsMajor.Length; i++)
-                        gfx.DrawString(TickCollection.tickLabels[i], font, brush, format: sf,
-                            x: dims.GetPixelX(TickCollection.tickPositionsMajor[i]),
-                            y: dims.DataOffsetY + dims.DataHeight + MajorTickLength);
+                    if (Rotation == 0)
+                    {
+                        sf.Alignment = RulerMode ? StringAlignment.Near : StringAlignment.Center;
+                        sf.LineAlignment = StringAlignment.Near;
+                        for (int i = 0; i < TickCollection.tickPositionsMajor.Length; i++)
+                            gfx.DrawString(TickCollection.tickLabels[i], font, brush, format: sf,
+                                x: dims.GetPixelX(TickCollection.tickPositionsMajor[i]),
+                                y: dims.DataOffsetY + dims.DataHeight + MajorTickLength);
 
-                    sf.Alignment = StringAlignment.Far;
-                    gfx.DrawString(TickCollection.cornerLabel, font, brush, format: sf,
-                        x: dims.DataOffsetX + dims.DataWidth,
-                        y: dims.DataOffsetY + dims.DataHeight + MajorTickLength + TickCollection.maxLabelHeight);
+                        sf.Alignment = StringAlignment.Far;
+                        gfx.DrawString(TickCollection.cornerLabel, font, brush, format: sf,
+                            x: dims.DataOffsetX + dims.DataWidth,
+                            y: dims.DataOffsetY + dims.DataHeight + MajorTickLength + TickCollection.maxLabelHeight);
+                    }
+                    else
+                    {
+                        for (int i = 0; i < TickCollection.tickPositionsMajor.Length; i++)
+                        {
+                            float x = dims.GetPixelX(TickCollection.tickPositionsMajor[i]);
+                            float y = dims.DataOffsetY + dims.DataHeight + MajorTickLength + 3;
+
+                            gfx.TranslateTransform(x, y);
+                            gfx.RotateTransform(-Rotation);
+                            sf.Alignment = StringAlignment.Far;
+                            sf.LineAlignment = StringAlignment.Center;
+                            gfx.DrawString(TickCollection.tickLabels[i], font, brush, 0, 0, sf);
+                            gfx.ResetTransform();
+                        }
+                    }
                 }
                 else if (Edge == Edge.Top)
                 {
