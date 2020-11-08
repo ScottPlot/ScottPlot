@@ -33,6 +33,7 @@ namespace ScottPlot.Renderable
 
         public float PixelSize = 123;
         public float PixelSizeMinimum = 5;
+        public float PixelSizeMaximum = float.PositiveInfinity;
         public float PixelSizePadding = 3;
 
         public readonly AxisTitle Title = new AxisTitle();
@@ -129,6 +130,7 @@ namespace ScottPlot.Renderable
                     PixelSize += Ticks.MajorTickLength;
 
                 PixelSize = Math.Max(PixelSize, PixelSizeMinimum);
+                PixelSize = Math.Min(PixelSize, PixelSizeMaximum);
                 PixelSize += PixelSizePadding;
             }
         }

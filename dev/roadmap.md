@@ -3,15 +3,11 @@
 _Updated Nov 6, 2020_
  
 **ScottPlot 4.1 remaining TODOs:**
-  * Tick labels
-    * Extremely large tick labels overlap. The fix is probably a largely refactored TickCollection module with improved font/measurement awareness.
-    * Determine how/when to recalculate layout
   * scatter plots
     * clarify NaN behavior
     * improve thread safety
     * create a List scatter plot type
-  * rendering
-    * repeated renders produce different output: Layout changes based on tick labels sizes, and tick labels change based on layout. This means repeated renders are not pixel-perfect. See if you can solve this problem...
+  * layout methods are awkward
 
 _Updated October 4, 2020_
 

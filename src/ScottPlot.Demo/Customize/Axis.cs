@@ -63,7 +63,7 @@ namespace ScottPlot.Demo.Customize
 
                 plt.Ticks(rulerModeX: true, displayTicksY: false);
                 plt.Frame(left: false, right: false, top: false);
-                plt.TightenLayout(padding: 0, render: true);
+                plt.Layout(left: 0, right: 0, top: 0);
             }
         }
 

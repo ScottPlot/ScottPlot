@@ -79,6 +79,7 @@ namespace ScottPlot
         /// <summary>
         /// Adjust layout to accommodate axis title and tick label sizes
         /// </summary>
+        [Obsolete("call Layout()", true)]
         public void TightenLayout(int? padding = null, bool render = false)
         {
             if (padding.HasValue)
@@ -100,6 +101,7 @@ namespace ScottPlot
             {
                 axis.IsVisible = false;
                 axis.PixelSizeMinimum = 0;
+                axis.PixelSizeMaximum = 0;
                 axis.PixelSizePadding = 0;
             }
         }

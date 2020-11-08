@@ -25,7 +25,7 @@ namespace FormsPlotSandbox
 
             formsPlot1.plt.Ticks(false, false);
             formsPlot1.plt.Frame(false);
-            formsPlot1.plt.TightenLayout(padding: 0);
+            formsPlot1.plt.LayoutFrameless();
             formsPlot1.Configure(recalculateLayoutOnMouseUp: false);
             formsPlot1.plt.Style(Style.Gray2);
 

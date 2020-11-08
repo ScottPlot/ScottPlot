@@ -108,9 +108,6 @@ namespace ScottPlot
             if (isDesignerMode || plt is null)
                 return;
 
-            if (recalculateLayout)
-                plt.TightenLayout();
-
             if (equalAxes)
                 plt.AxisEqual();
 
@@ -396,7 +393,7 @@ namespace ScottPlot
                 else
                 {
                     bool shouldTighten = recalculateLayoutOnMouseUp ?? plotContainsHeatmap == false;
-                    plt.AxisAuto(middleClickMarginX, middleClickMarginY, tightenLayout: shouldTighten);
+                    plt.AxisAuto(middleClickMarginX, middleClickMarginY);
                     OnAxisChanged();
                 }
             }

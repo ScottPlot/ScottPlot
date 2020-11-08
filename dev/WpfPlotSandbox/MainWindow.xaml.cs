@@ -33,7 +33,7 @@ namespace WpfPlotSandbox
 
             wpfPlot1.plt.Ticks(false, false);
             wpfPlot1.plt.Frame(false);
-            wpfPlot1.plt.TightenLayout(padding: 0);
+            wpfPlot1.plt.LayoutFrameless();
             wpfPlot1.Configure(recalculateLayoutOnMouseUp: false);
             wpfPlot1.plt.Style(ScottPlot.Style.Gray2);
 

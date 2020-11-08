@@ -95,13 +95,9 @@ namespace ScottPlot
             double horizontalMargin = .05,
             double verticalMargin = .1,
             bool xExpandOnly = false,
-            bool yExpandOnly = false,
-            bool tightenLayout = true
-            )
+            bool yExpandOnly = false)
         {
             settings.AxisAuto(horizontalMargin, verticalMargin, xExpandOnly, yExpandOnly);
-            if (tightenLayout)
-                TightenLayout();
             return settings.axes.limits;
         }
 
@@ -231,7 +227,6 @@ namespace ScottPlot
                 settings.axes.y.min = sourcePlot.settings.axes.y.min;
                 settings.axes.y.max = sourcePlot.settings.axes.y.max;
             }
-            TightenLayout();
         }
     }
 }

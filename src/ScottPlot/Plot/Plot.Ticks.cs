@@ -108,7 +108,6 @@ namespace ScottPlot
 
         public void XTicks(double[] positions = null, string[] labels = null)
         {
-            TightenLayout();
             settings.XAxis.Ticks.TickCollection.manualTickPositions = positions;
             settings.XAxis.Ticks.TickCollection.manualTickLabels = labels;
         }
@@ -123,7 +122,6 @@ namespace ScottPlot
 
         public void YTicks(double[] positions = null, string[] labels = null)
         {
-            TightenLayout();
             settings.YAxis.Ticks.TickCollection.manualTickPositions = positions;
             settings.YAxis.Ticks.TickCollection.manualTickLabels = labels;
         }

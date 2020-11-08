@@ -55,9 +55,6 @@ namespace ScottPlot.Interactive
         {
             if (!isDesignerMode)
             {
-                if (recalculateLayout)
-                    plt.TightenLayout();
-
                 if (equalAxes)
                     plt.AxisEqual();
 
@@ -286,7 +283,7 @@ namespace ScottPlot.Interactive
                 else
                 {
                     bool shouldTighten = recalculateLayoutOnMouseUp ?? !plotContainsHeatmap;
-                    plt.AxisAuto(middleClickMarginX, middleClickMarginY, tightenLayout: shouldTighten);
+                    plt.AxisAuto(middleClickMarginX, middleClickMarginY);
                     AxisChanged?.Invoke(null, null);
                 }
             }

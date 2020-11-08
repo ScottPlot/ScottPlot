@@ -175,7 +175,7 @@ namespace ScottPlot.UserControls
 
         private void BtnTighten_Click(object sender, EventArgs e)
         {
-            plt.TightenLayout();
+            
         }
     }
 }
