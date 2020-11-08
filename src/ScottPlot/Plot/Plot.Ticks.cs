@@ -9,6 +9,9 @@ namespace ScottPlot
 {
     partial class Plot
     {
+        /// <summary>
+        /// Configure the style and behavior of X and Y ticks
+        /// </summary>
         public void Ticks(
             bool? displayTicksX = null,
             bool? displayTicksY = null,
@@ -98,6 +101,9 @@ namespace ScottPlot
             settings.YAxis.Configure(dateTimeFormatString: dateTimeFormatStringY);
         }
 
+        /// <summary>
+        /// Manually define X axis tick labels
+        /// </summary>
         public void XTicks(string[] labels)
         {
             if (labels is null)
@@ -106,12 +112,18 @@ namespace ScottPlot
             XTicks(DataGen.Consecutive(labels.Length), labels);
         }
 
+        /// <summary>
+        /// Manually define X axis tick positions and labels
+        /// </summary>
         public void XTicks(double[] positions = null, string[] labels = null)
         {
             settings.XAxis.Ticks.TickCollection.manualTickPositions = positions;
             settings.XAxis.Ticks.TickCollection.manualTickLabels = labels;
         }
 
+        /// <summary>
+        /// Manually define Y axis tick labels
+        /// </summary>
         public void YTicks(string[] labels)
         {
             if (labels is null)
@@ -120,6 +132,9 @@ namespace ScottPlot
             YTicks(DataGen.Consecutive(labels.Length), labels);
         }
 
+        /// <summary>
+        /// Manually define Y axis tick positions and labels
+        /// </summary>
         public void YTicks(double[] positions = null, string[] labels = null)
         {
             settings.YAxis.Ticks.TickCollection.manualTickPositions = positions;

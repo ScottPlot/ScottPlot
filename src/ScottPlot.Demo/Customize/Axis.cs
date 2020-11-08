@@ -128,7 +128,7 @@ namespace ScottPlot.Demo.Customize
                 // plot the Cartesian data
                 plt.PlotScatter(xs, ys);
                 plt.Title("Scatter Plot of Polar Data");
-                plt.EqualAxis = true;
+                plt.AxisLockScalesTogether(true);
             }
         }
 

@@ -9,7 +9,9 @@ namespace ScottPlot
 {
     public partial class Plot
     {
-
+        /// <summary>
+        /// Optionally set axis limits and return the latest limits
+        /// </summary>
         public double[] Axis(
             double? x1 = null,
             double? x2 = null,
@@ -25,6 +27,9 @@ namespace ScottPlot
             return settings.axes.limits;
         }
 
+        /// <summary>
+        /// Set axis limits [xMin, xMax, yMin, yMax]
+        /// </summary>
         public double[] Axis(double[] axisLimits)
         {
             if ((axisLimits == null) || (axisLimits.Length != 4))
@@ -33,6 +38,9 @@ namespace ScottPlot
             return settings.axes.limits;
         }
 
+        /// <summary>
+        /// Set axis bounds (bounds restrict axis limits)
+        /// </summary>
         public void AxisBounds(
             double minX = double.NegativeInfinity,
             double maxX = double.PositiveInfinity,
@@ -45,6 +53,9 @@ namespace ScottPlot
             settings.axes.y.boundMax = maxY;
         }
 
+        /// <summary>
+        /// Adjust axis limits to achieve a certain pixel scale (units per pixel)
+        /// </summary>
         public double[] AxisScale(double? unitsPerPixelX = null, double? unitsPerPixelY = null)
         {
             if (unitsPerPixelX != null)
@@ -62,6 +73,9 @@ namespace ScottPlot
             return settings.axes.limits;
         }
 
+        /// <summary>
+        /// Zoom one axis to ensure its scale (units per pixel) matches the other axis
+        /// </summary>
         public double[] AxisEqual(bool preserveY = true)
         {
             if (preserveY)
@@ -71,17 +85,13 @@ namespace ScottPlot
             return settings.axes.limits;
         }
 
-        [Obsolete("currently broken")]
-        public bool EqualAxis
+        public void AxisLockScalesTogether(bool enable)
         {
-            get => settings.axes.equalAxes;
-            set
-            {
-                settings.axes.equalAxes = value;
-                if (value)
-                    settings.AxisAuto();
-            }
+            settings.axes.equalAxes = enable;
         }
+
+        [Obsolete("call AxisLockScalesTogether()", true)]
+        public bool EqualAxis;
 
         // Keep this in the Plot module to assist discoverability
         [Obsolete("use AxisAuto() to fit axis limits to the data", true)]
@@ -91,6 +101,9 @@ namespace ScottPlot
         [Obsolete("use AxisAuto() to fit axis limits to the data", true)]
         public double[] AutoScale() => AxisAuto();
 
+        /// <summary>
+        /// Automatically adjust axis limits to fit the data (with a little extra margin)
+        /// </summary>
         public double[] AxisAuto(
             double horizontalMargin = .05,
             double verticalMargin = .1,
@@ -101,10 +114,10 @@ namespace ScottPlot
             return settings.axes.limits;
         }
 
-        public double[] AxisAutoX(
-            double margin = .05,
-            bool expandOnly = false
-            )
+        /// <summary>
+        /// Automatically adjust axis limits to fit the data (with a little extra margin)
+        /// </summary>
+        public double[] AxisAutoX(double margin = .05, bool expandOnly = false)
         {
             if (settings.axes.hasBeenSet == false)
                 AxisAuto();
@@ -114,10 +127,10 @@ namespace ScottPlot
             return Axis(newLimits[0], newLimits[1], originalLimits[2], originalLimits[3]);
         }
 
-        public double[] AxisAutoY(
-            double margin = .1,
-            bool expandOnly = false
-            )
+        /// <summary>
+        /// Automatically adjust axis limits to fit the data (with a little extra margin)
+        /// </summary>
+        public double[] AxisAutoY(double margin = .1, bool expandOnly = false)
         {
             if (settings.axes.hasBeenSet == false)
                 AxisAuto();
@@ -127,12 +140,10 @@ namespace ScottPlot
             return Axis(originalLimits[0], originalLimits[1], newLimits[2], newLimits[3]);
         }
 
-        public double[] AxisZoom(
-            double xFrac = 1,
-            double yFrac = 1,
-            double? zoomToX = null,
-            double? zoomToY = null
-            )
+        /// <summary>
+        /// Adjust axis limits to simulate zooming
+        /// </summary>
+        public double[] AxisZoom(double xFrac = 1, double yFrac = 1, double? zoomToX = null, double? zoomToY = null)
         {
             if (!settings.axes.hasBeenSet)
                 settings.AxisAuto();
@@ -147,6 +158,9 @@ namespace ScottPlot
             return settings.axes.limits;
         }
 
+        /// <summary>
+        /// Adjust axis limits to simulate panning
+        /// </summary>
         public double[] AxisPan(double dx = 0, double dy = 0)
         {
             if (!settings.axes.hasBeenSet)
@@ -156,46 +170,27 @@ namespace ScottPlot
             return settings.axes.limits;
         }
 
-        public double CoordinateFromPixelX(double pixelX)
-        {
-            return settings.GetLocationX(pixelX);
-        }
+        /// <summary>
+        /// Retrun the coordinate (in plot space) for the given pixel
+        /// </summary>
+        public double CoordinateFromPixelX(double pixelX) => settings.GetLocationX(pixelX);
 
-        public double CoordinateFromPixelY(double pixelY)
-        {
-            return settings.GetLocationY(pixelY);
-        }
+        /// <summary>
+        /// Retrun the coordinate (in plot space) for the given pixel
+        /// </summary>
+        public double CoordinateFromPixelY(double pixelY) => settings.GetLocationY(pixelY);
 
-        [Obsolete("use CoordinateFromPixelX and CoordinateFromPixelY for improved precision")]
-        public PointF CoordinateFromPixel(int pixelX, int pixelY)
-        {
-            return settings.GetLocation(pixelX, pixelY);
-        }
+        /// <summary>
+        /// Retrun the pixel location of the given coordinate (in plot space)
+        /// </summary>
+        public float CoordinateToPixelX(double locationX) => (float)(settings.GetPixelX(locationX) + settings.DataOffsetX);
 
-        [Obsolete("use CoordinateFromPixelX and CoordinateFromPixelY for improved precision")]
-        public PointF CoordinateFromPixel(float pixelX, float pixelY)
-        {
-            return settings.GetLocation(pixelX, pixelY);
-        }
+        /// <summary>
+        /// Retrun the pixel location of the given coordinate (in plot space)
+        /// </summary>
+        public float CoordinateToPixelY(double locationY) => (float)(settings.GetPixelX(locationY) + settings.DataOffsetY);
 
-        [Obsolete("use CoordinateFromPixelX and CoordinateFromPixelY for improved precision")]
-        public PointF CoordinateFromPixel(double pixelX, double pixelY)
-        {
-            return settings.GetLocation(pixelX, pixelY);
-        }
-
-        [Obsolete("use CoordinateFromPixelX and CoordinateFromPixelY for improved precision")]
-        public PointF CoordinateFromPixel(Point pixel)
-        {
-            return CoordinateFromPixel(pixel.X, pixel.Y);
-        }
-
-        [Obsolete("use CoordinateFromPixelX and CoordinateFromPixelY for improved precision")]
-        public PointF CoordinateFromPixel(PointF pixel)
-        {
-            return CoordinateFromPixel(pixel.X, pixel.Y);
-        }
-
+        [Obsolete("use X/Y methods", true)]
         public PointF CoordinateToPixel(double locationX, double locationY)
         {
             PointF pixelLocation = settings.GetPixel(locationX, locationY);
@@ -204,11 +199,12 @@ namespace ScottPlot
             return pixelLocation;
         }
 
-        public PointF CoordinateToPixel(PointF location)
-        {
-            return CoordinateToPixel(location.X, location.Y);
-        }
+        [Obsolete("use X/Y methods", true)]
+        public PointF CoordinateToPixel(PointF location) => CoordinateToPixel(location.X, location.Y);
 
+        /// <summary>
+        /// Set this plot's axis limits to match those of the given plot
+        /// </summary>
         public void MatchAxis(Plot sourcePlot, bool horizontal = true, bool vertical = true)
         {
             if (!sourcePlot.GetSettings(showWarning: false).axes.hasBeenSet)

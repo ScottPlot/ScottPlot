@@ -287,14 +287,9 @@ namespace ScottPlot
         }
 
         [Obsolete("use Plot.CoordinateFromPixelX() and Plot.CoordinateFromPixelY()")]
-        public Point mouseCoordinates
-        {
-            get
-            {
-                var coord = plt.CoordinateFromPixel(mouseLocation.X, mouseLocation.Y);
-                return new Point(coord.X, coord.Y);
-            }
-        }
+        public Point mouseCoordinates =>
+                 new Point(plt.CoordinateToPixelX(mouseLocation.X), plt.CoordinateToPixelY(mouseLocation.Y));
+
         Point mouseLocation;
         private void UserControl_MouseMove(object sender, MouseEventArgs e)
         {

@@ -45,7 +45,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
 
             if (cbTooltip.Checked)
             {
-                PointF highlightedPoint = formsPlot1.plt.CoordinateToPixel(x, y);
+                PointF highlightedPoint = new PointF(formsPlot1.plt.CoordinateToPixelX(x), formsPlot1.plt.CoordinateToPixelY(y));
                 double dX = e.Location.X - highlightedPoint.X;
                 double dY = e.Location.Y - highlightedPoint.Y;
                 double distanceToPoint = Math.Sqrt(dX * dX + dY * dY);

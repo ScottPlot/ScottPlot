@@ -20,7 +20,7 @@ namespace ScottPlotTests.Plot
         {
             var plt = new ScottPlot.Plot();
             plt.PlotLine(0, 0, 5, 1);
-            plt.EqualAxis = true;
+            plt.AxisLockScalesTogether(true);
             plt.AxisAuto();
 
             var (xUnitsPerPixel, yUnitsPerPixel) = getUnitsPerPixel(plt);
@@ -34,7 +34,7 @@ namespace ScottPlotTests.Plot
             double[] ys = new double[] { 51, -5, 6, 12, 3 };
             var plt = new ScottPlot.Plot();
             plt.PlotScatter(xs, ys);
-            plt.EqualAxis = true;
+            plt.AxisLockScalesTogether(true);
             plt.AxisAuto();
 
             var (xUnitsPerPixel, yUnitsPerPixel) = getUnitsPerPixel(plt);
@@ -51,7 +51,7 @@ namespace ScottPlotTests.Plot
             double[] ys = new double[] { 51, -5, 6, 12, 3 };
             var plt = new ScottPlot.Plot(width, height);
             plt.PlotScatter(xs, ys);
-            plt.EqualAxis = true;
+            plt.AxisLockScalesTogether(true);
             plt.AxisAuto();
 
             var (xUnitsPerPixel, yUnitsPerPixel) = getUnitsPerPixel(plt);
@@ -69,7 +69,7 @@ namespace ScottPlotTests.Plot
             double[] ys = new double[] { 51, -5, 6, 12, 3 };
             var plt = new ScottPlot.Plot();
             plt.PlotScatter(xs, ys);
-            plt.EqualAxis = true;
+            plt.AxisLockScalesTogether(true);
             plt.AxisAuto();
 
             plt.Resize(width, height);
@@ -89,7 +89,7 @@ namespace ScottPlotTests.Plot
             double[] ys = new double[] { 51, -5, 6, 12, 3 };
             var plt = new ScottPlot.Plot();
             plt.PlotScatter(xs, ys);
-            plt.EqualAxis = true;
+            plt.AxisLockScalesTogether(true);
             plt.AxisAuto();
 
             plt.GetSettings(false).AxesZoomPx(dx, dy);
