@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using ScottPlot.Drawing;
 using System;
 
 namespace ScottPlotTests
@@ -28,7 +29,7 @@ namespace ScottPlotTests
         {
             for (int i = 0; i < multiplot.subplots.Length; i += 1)
             {
-                var limits = new ScottPlot.Config.AxisLimits2D(multiplot.subplots[i].Axis());
+                var limits = new AxisLimits2D(multiplot.subplots[i].Axis());
                 Console.WriteLine($"Subplot index {i} {limits}");
             }
         }
@@ -61,8 +62,9 @@ namespace ScottPlotTests
             Console.WriteLine($"Saved {filePath}");
             DisplayAxisInfo(multiplot);
 
-            var matchedAxisLimits = new ScottPlot.Config.AxisLimits2D(multiplot.subplots[2].Axis());
-            Assert.That(matchedAxisLimits.xSpan > 0 && matchedAxisLimits.ySpan > 0);
+            var matchedAxisLimits = new AxisLimits2D(multiplot.subplots[2].Axis());
+            Assert.Greater(matchedAxisLimits.XMax, matchedAxisLimits.XMin);
+            Assert.Greater(matchedAxisLimits.YMax, matchedAxisLimits.YMin);
         }
 
         [Test]
@@ -84,11 +86,14 @@ namespace ScottPlotTests
             Console.WriteLine($"Saved {filePath}");
 
             DisplayAxisInfo(multiplot);
-            var matchedVerticalLimits = new ScottPlot.Config.AxisLimits2D(multiplot.subplots[1].Axis());
-            var matchedHorizontalLimits = new ScottPlot.Config.AxisLimits2D(multiplot.subplots[1].Axis());
+            var matchedVerticalLimits = new AxisLimits2D(multiplot.subplots[1].Axis());
+            var matchedHorizontalLimits = new AxisLimits2D(multiplot.subplots[1].Axis());
 
-            Assert.That(matchedVerticalLimits.xSpan > 0 && matchedVerticalLimits.ySpan > 0);
-            Assert.That(matchedHorizontalLimits.xSpan > 0 && matchedHorizontalLimits.ySpan > 0);
+            Assert.Greater(matchedVerticalLimits.XMax, matchedVerticalLimits.XMin);
+            Assert.Greater(matchedVerticalLimits.YMax, matchedVerticalLimits.YMin);
+
+            Assert.Greater(matchedHorizontalLimits.XMax, matchedHorizontalLimits.XMin);
+            Assert.Greater(matchedHorizontalLimits.YMax, matchedHorizontalLimits.YMin);
         }
     }
 }

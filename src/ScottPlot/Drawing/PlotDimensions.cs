@@ -1,11 +1,8 @@
-﻿using ScottPlot.Config;
+﻿using ScottPlot.Drawing;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Text;
-using System.Xml.Linq;
 
-namespace ScottPlot.Drawing
+namespace ScottPlot
 {
     /* 
      * This object is only for passing plot dimensions into the render functions of plottables.
@@ -47,7 +44,7 @@ namespace ScottPlot.Drawing
         {
             (Width, Height) = (figureSize.Width, figureSize.Height);
             (DataWidth, DataHeight, DataOffsetX, DataOffsetY) = (dataSize.Width, dataSize.Height, dataOffset.X, dataOffset.Y);
-            (XMin, XMax, YMin, YMax) = (axisLimits.x1, axisLimits.x2, axisLimits.y1, axisLimits.y2);
+            (XMin, XMax, YMin, YMax) = (axisLimits.XMin, axisLimits.XMax, axisLimits.YMin, axisLimits.YMax);
             MakeRational();
         }
 

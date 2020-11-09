@@ -1,7 +1,9 @@
-﻿namespace ScottPlot.Plottable
+﻿using ScottPlot.Drawing;
+
+namespace ScottPlot.Plottable
 {
     public interface IHasAxisLimits
     {
-        Config.AxisLimits2D GetLimits();
+        AxisLimits2D GetLimits();
     }
 }

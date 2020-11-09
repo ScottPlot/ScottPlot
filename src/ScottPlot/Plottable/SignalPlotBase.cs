@@ -195,7 +195,7 @@ namespace ScottPlot.Plottable
             limits[3] += yOffset;
 
             // TODO: use features of 2d axis
-            return new Config.AxisLimits2D(limits[0], limits[1], limits[2], limits[3]);
+            return new AxisLimits2D(limits[0], limits[1], limits[2], limits[3]);
         }
 
         private void RenderSingleLine(PlotDimensions dims, Graphics gfx, Pen penHD)

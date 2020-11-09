@@ -1,10 +1,7 @@
 ﻿using NUnit.Framework;
-using ScottPlot.Config;
+using ScottPlot;
 using ScottPlot.Drawing;
-using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Text;
 
 namespace ScottPlotTests.AxisRenderTests
 {

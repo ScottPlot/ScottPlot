@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using ScottPlot.Config;
+using ScottPlot;
 using ScottPlot.Drawing;
 using System;
 using System.Collections.Generic;

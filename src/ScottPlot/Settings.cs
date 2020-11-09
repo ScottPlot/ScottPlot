@@ -114,8 +114,8 @@ namespace ScottPlot
             bool autoX = true, bool autoY = true
             )
         {
-            var oldLimits = new Config.AxisLimits2D(Dims.XMin, Dims.XMax, Dims.YMin, Dims.YMax);
-            var newLimits = new Config.AxisLimits2D();
+            var oldLimits = new AxisLimits2D(Dims.XMin, Dims.XMax, Dims.YMin, Dims.YMax);
+            var newLimits = new AxisLimits2D();
 
             foreach (var plottable in Plottables)
             {
@@ -123,9 +123,9 @@ namespace ScottPlot
                 {
                     var plottableLimits = plottableWithLimits.GetLimits();
                     if (autoX)
-                        newLimits.Expand(plottableLimits.x1, plottableLimits.x2, null, null);
+                        newLimits.Expand(plottableLimits.XMin, plottableLimits.XMax, null, null);
                     if (autoY)
-                        newLimits.Expand(null, null, plottableLimits.y1, plottableLimits.y2);
+                        newLimits.Expand(null, null, plottableLimits.YMin, plottableLimits.YMax);
                 }
             }
 
@@ -145,11 +145,11 @@ namespace ScottPlot
             */
 
             if (xExpandOnly)
-                Dims.SetAxis(newLimits.x1, newLimits.x2, oldLimits.y1, oldLimits.y2);
+                Dims.SetAxis(newLimits.XMin, newLimits.XMax, oldLimits.YMin, oldLimits.YMax);
             else if (yExpandOnly)
-                Dims.SetAxis(oldLimits.x1, oldLimits.x2, newLimits.y1, newLimits.y2);
+                Dims.SetAxis(oldLimits.XMin, oldLimits.XMax, newLimits.YMin, newLimits.YMax);
             else
-                Dims.SetAxis(newLimits.x1, newLimits.x2, newLimits.y1, newLimits.y2);
+                Dims.SetAxis(newLimits.XMin, newLimits.XMax, newLimits.YMin, newLimits.YMax);
 
             double zoomFracX = yExpandOnly ? 1 : 1 - horizontalMargin;
             double zoomFracY = xExpandOnly ? 1 : 1 - verticalMargin;

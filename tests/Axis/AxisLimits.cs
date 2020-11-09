@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using ScottPlot.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,64 +11,64 @@ namespace ScottPlotTests.Axis
         [Test]
         public void Test_EmptyConstructor_StartsAsNaN()
         {
-            var limits = new ScottPlot.Config.AxisLimits2D();
+            var limits = new AxisLimits2D();
             Console.WriteLine(limits);
 
-            Assert.IsNaN(limits.x1);
-            Assert.IsNaN(limits.x2);
-            Assert.IsNaN(limits.y1);
-            Assert.IsNaN(limits.y2);
+            Assert.IsNaN(limits.XMin);
+            Assert.IsNaN(limits.XMax);
+            Assert.IsNaN(limits.YMin);
+            Assert.IsNaN(limits.YMax);
         }
 
         [Test]
         public void Test_Constructor_StoresValues()
         {
-            var limits = new ScottPlot.Config.AxisLimits2D(11, 22, 33, 44);
+            var limits = new AxisLimits2D(11, 22, 33, 44);
             Console.WriteLine(limits);
 
-            Assert.AreEqual(11, limits.x1);
-            Assert.AreEqual(22, limits.x2);
-            Assert.AreEqual(33, limits.y1);
-            Assert.AreEqual(44, limits.y2);
+            Assert.AreEqual(11, limits.XMin);
+            Assert.AreEqual(22, limits.XMax);
+            Assert.AreEqual(33, limits.YMin);
+            Assert.AreEqual(44, limits.YMax);
         }
 
         [Test]
         public void Test_ExpandX_ExpectedOutput()
         {
-            var limits = new ScottPlot.Config.AxisLimits2D();
+            var limits = new AxisLimits2D();
 
             limits.Expand(-20, 20, null, null);
 
-            Assert.AreEqual(limits.x1, -20);
-            Assert.AreEqual(limits.x2, 20);
-            Assert.IsNaN(limits.y1);
-            Assert.IsNaN(limits.y2);
+            Assert.AreEqual(limits.XMin, -20);
+            Assert.AreEqual(limits.XMax, 20);
+            Assert.IsNaN(limits.YMin);
+            Assert.IsNaN(limits.YMax);
         }
 
         [Test]
         public void Test_ExpandY_ExpectedOutput()
         {
-            var limits = new ScottPlot.Config.AxisLimits2D();
+            var limits = new AxisLimits2D();
 
             limits.Expand(null, null, -20, 20);
 
-            Assert.IsNaN(limits.x1);
-            Assert.IsNaN(limits.x2);
-            Assert.AreEqual(limits.y1, -20);
-            Assert.AreEqual(limits.y2, 20);
+            Assert.IsNaN(limits.XMin);
+            Assert.IsNaN(limits.XMax);
+            Assert.AreEqual(limits.YMin, -20);
+            Assert.AreEqual(limits.YMax, 20);
         }
 
         [Test]
         public void Test_ExpandXY_ExpectedOutput()
         {
-            var limits = new ScottPlot.Config.AxisLimits2D();
+            var limits = new AxisLimits2D();
 
             limits.Expand(-10, 20, -30, 40);
 
-            Assert.AreEqual(limits.x1, -10);
-            Assert.AreEqual(limits.x2, 20);
-            Assert.AreEqual(limits.y1, -30);
-            Assert.AreEqual(limits.y2, 40);
+            Assert.AreEqual(limits.XMin, -10);
+            Assert.AreEqual(limits.XMax, 20);
+            Assert.AreEqual(limits.YMin, -30);
+            Assert.AreEqual(limits.YMax, 40);
         }
     }
 }
