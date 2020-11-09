@@ -25,7 +25,7 @@ namespace ScottPlot
 
             settings.Dims.SetAxis(x1, x2, y1, y2);
             settings.AxesHaveBeenSet = true;
-            return settings.AxisLimits;
+            return settings.Dims.LimitsArray;
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace ScottPlot
             if ((axisLimits == null) || (axisLimits.Length != 4))
                 throw new ArgumentException("axis limits must contain 4 elements");
             Axis(axisLimits[0], axisLimits[1], axisLimits[2], axisLimits[3]);
-            return settings.AxisLimits;
+            return settings.Dims.LimitsArray;
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace ScottPlot
                 Axis(y1: settings.Dims.YCenter - spanY / 2, y2: settings.Dims.YCenter + spanY / 2);
             }
 
-            return settings.AxisLimits;
+            return settings.Dims.LimitsArray;
         }
 
         /// <summary>
@@ -83,10 +83,10 @@ namespace ScottPlot
         public double[] AxisEqual(bool preserveY = true)
         {
             if (preserveY)
-                AxisScale(unitsPerPixelX: settings.yAxisUnitsPerPixel);
+                AxisScale(unitsPerPixelX: settings.Dims.UnitsPerPxY);
             else
-                AxisScale(unitsPerPixelY: settings.xAxisUnitsPerPixel);
-            return settings.AxisLimits;
+                AxisScale(unitsPerPixelY: settings.Dims.UnitsPerPxX);
+            return settings.Dims.LimitsArray;
         }
 
         public void AxisLockScalesTogether(bool enable)
@@ -117,7 +117,7 @@ namespace ScottPlot
             bool yExpandOnly = false)
         {
             settings.AxisAuto(horizontalMargin, verticalMargin, xExpandOnly, yExpandOnly);
-            return settings.AxisLimits;
+            return settings.Dims.LimitsArray;
         }
 
         /// <summary>
@@ -162,7 +162,7 @@ namespace ScottPlot
 
             settings.Dims.ZoomX(xFrac, zoomToX);
             settings.Dims.ZoomY(yFrac, zoomToY);
-            return settings.AxisLimits;
+            return settings.Dims.LimitsArray;
         }
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace ScottPlot
             if (!settings.AxesHaveBeenSet)
                 settings.AxisAuto();
             settings.Dims.Pan(dx, dy);
-            return settings.AxisLimits;
+            return settings.Dims.LimitsArray;
         }
 
         /// <summary>

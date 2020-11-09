@@ -15,10 +15,8 @@ namespace ScottPlot
     /// </summary>
     public class Settings
     {
-        // TODO: perhaps make this an object with error checking for bad state
         public readonly PlotDimensions Dims = new PlotDimensions();
         public bool AxesHaveBeenSet = false;
-        public double[] AxisLimits => new double[] { Dims.XMin, Dims.XMax, Dims.YMin, Dims.YMax };
 
         public int Width => (int)Dims.Width;
         public int Height => (int)Dims.Height;
@@ -71,11 +69,13 @@ namespace ScottPlot
          * 
          */
 
-        // TODO: move this functionality into the PlotDimensions module
-        public double xAxisScale => Dims.PxPerUnitX;
-        public double yAxisScale => Dims.PxPerUnitY;
-        public double xAxisUnitsPerPixel => Dims.UnitsPerPxX;
-        public double yAxisUnitsPerPixel => Dims.UnitsPerPxY;
+        public double GetPixelX(double locationX) => Dims.GetPixelX(locationX);
+        public double GetPixelY(double locationY) => Dims.GetPixelY(locationY);
+        public PointF GetPixel(double locationX, double locationY) => new PointF((float)GetPixelX(locationX), (float)GetPixelY(locationY));
+
+        public double GetLocationX(double pixelX) => Dims.GetCoordinateX((float)pixelX);
+        public double GetLocationY(double pixelY) => Dims.GetCoordinateY((float)pixelY);
+        public PointF GetLocation(double pixelX, double pixelY) => new PointF((float)GetLocationX(pixelX), (float)GetLocationY(pixelY));
 
         public void Resize(int width, int height) => Dims.Resize(width, height);
 
@@ -83,8 +83,8 @@ namespace ScottPlot
 
         public void AxesZoomPx(int xPx, int yPx, bool lockRatio = false)
         {
-            double dX = (double)xPx / xAxisScale;
-            double dY = (double)yPx / yAxisScale;
+            double dX = xPx * Dims.UnitsPerPxX;
+            double dY = yPx * Dims.UnitsPerPxY;
             double dXFrac = dX / (Math.Abs(dX) + Dims.XSpan);
             double dYFrac = dY / (Math.Abs(dY) + Dims.YSpan);
 
@@ -156,56 +156,6 @@ namespace ScottPlot
             Dims.Zoom(zoomFracX, zoomFracY);
 
             AxesHaveBeenSet = Plottables.Count > 0;
-        }
-
-        /// <summary>
-        /// Returns the X pixel corresponding to an X axis coordinate
-        /// </summary>
-        public double GetPixelX(double locationX)
-        {
-            return (locationX - Dims.XMin) * xAxisScale;
-        }
-
-        /// <summary>
-        /// Returns the Y pixel corresponding to a Y axis coordinate
-        /// </summary>
-        public double GetPixelY(double locationY)
-        {
-            return DataHeight - (float)((locationY - Dims.YMin) * yAxisScale);
-        }
-
-        /// <summary>
-        /// Returns the pixel corresponding to axis coordinates
-        /// </summary>
-        public PointF GetPixel(double locationX, double locationY)
-        {
-            return new PointF((float)GetPixelX(locationX), (float)GetPixelY(locationY));
-        }
-
-        /// <summary>
-        /// Returns the X axis coordinate corresponding to a X pixel on the plot
-        /// </summary>
-        public double GetLocationX(double pixelX)
-        {
-            return (pixelX - DataOffsetX) / xAxisScale + Dims.XMin;
-        }
-
-        /// <summary>
-        /// Returns the Y axis coordinate corresponding to a Y pixel on the plot
-        /// </summary>
-        public double GetLocationY(double pixelY)
-        {
-            return Dims.YMax - (pixelY - DataOffsetY) / yAxisScale;
-        }
-
-        /// <summary>
-        /// Returns axis coordinates corresponding to a pixel on the plot
-        /// </summary>
-        public PointF GetLocation(double pixelX, double pixelY)
-        {
-            // Return the X/Y location corresponding to a pixel position on the figure bitmap.
-            // This is useful for converting a mouse position to an X/Y coordinate.
-            return new PointF((float)GetLocationX(pixelX), (float)GetLocationY(pixelY));
         }
     }
 }

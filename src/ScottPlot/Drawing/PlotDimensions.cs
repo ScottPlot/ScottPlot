@@ -35,6 +35,9 @@ namespace ScottPlot
         public double UnitsPerPxX => XSpan / DataWidth;
         public double UnitsPerPxY => YSpan / DataHeight;
 
+        public double[] LimitsArray => new double[] { XMin, XMax, YMin, YMax };
+        public (double xMin, double xMax, double yMin, double yMax) LimitsTuple => (XMin, XMax, YMin, YMax);
+
         public PlotDimensions()
         {
             ResetAxes();

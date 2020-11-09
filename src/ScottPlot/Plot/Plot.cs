@@ -242,8 +242,8 @@ namespace ScottPlot
 
         public IDraggable GetDraggableUnderMouse(double pixelX, double pixelY, int snapDistancePixels = 5)
         {
-            double snapWidth = GetSettings(false).xAxisUnitsPerPixel * snapDistancePixels;
-            double snapHeight = GetSettings(false).yAxisUnitsPerPixel * snapDistancePixels;
+            double snapWidth = GetSettings(false).Dims.UnitsPerPxX * snapDistancePixels;
+            double snapHeight = GetSettings(false).Dims.UnitsPerPxY * snapDistancePixels;
 
             foreach (IDraggable draggable in GetDraggables())
                 if (draggable.IsUnderMouse(CoordinateFromPixelX(pixelX), CoordinateFromPixelY(pixelY), snapWidth, snapHeight))
