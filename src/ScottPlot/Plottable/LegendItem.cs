@@ -1,9 +1,6 @@
 ﻿using ScottPlot.Drawing;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace ScottPlot.Config
+namespace ScottPlot.Plottable
 {
     public class LegendItem
     {
