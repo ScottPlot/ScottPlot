@@ -92,8 +92,8 @@ namespace ScottPlot.Plottable
                 double[] proportions = values.Select(x => x / values.Sum()).ToArray();
 
                 AxisLimits2D limits = GetLimits();
-                double centreX = limits.xCenter;
-                double centreY = limits.yCenter;
+                double centreX = 0;
+                double centreY = 0;
                 float diameterPixels = .9f * Math.Min(dims.DataWidth, dims.DataHeight);
 
                 // record label details and draw them after slices to prevent cover-ups

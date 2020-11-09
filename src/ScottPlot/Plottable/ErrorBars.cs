@@ -90,7 +90,7 @@ namespace ScottPlot.Plottable
                     yMax = Math.Max(yMax, Ys[i] + YErrorPositive[i]);
             }
 
-            return new AxisLimits2D(new double[] { xMin, xMax, yMin, yMax });
+            return new AxisLimits2D(xMin, xMax, yMin, yMax);
         }
 
         public LegendItem[] LegendItems

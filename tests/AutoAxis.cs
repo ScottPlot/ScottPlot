@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using ScottPlot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,6 +71,7 @@ namespace ScottPlotTests
                 ys: new double[] { 1, 2 }
                 );
             plt.AxisAuto();
+            Console.WriteLine(plt.GetSettings(false).Dims);
             Assert.IsTrue(plt.GetSettings().Dims.YSpan > 0);
             Assert.IsTrue(plt.GetSettings().Dims.XSpan > 0);
         }
@@ -172,6 +174,7 @@ namespace ScottPlotTests
         public void Test_AutoAxis_ExpandYonly()
         {
             var plt = new ScottPlot.Plot();
+            plt.PlotSignal(DataGen.Sin(51));
 
             // small area
             plt.PlotLine(-5, -5, 5, 5);

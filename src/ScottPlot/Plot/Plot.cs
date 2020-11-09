@@ -82,9 +82,8 @@ namespace ScottPlot
             // To solve this, start by assuming data area size == figure size, and layout padding == 0
 
             // axis limits shall not change
-            var dims1 = settings.GetDimensions();
-            var limits = new Config.AxisLimits2D(dims1.XMin, dims1.XMax, dims1.YMin, dims1.YMax);
-            var figSize = new SizeF(dims1.Width, dims1.Height);
+            var limits = new Config.AxisLimits2D(settings.Dims.XMin, settings.Dims.XMax, settings.Dims.YMin, settings.Dims.YMax);
+            var figSize = new SizeF(settings.Dims.Width, settings.Dims.Height);
 
             // first-pass tick calculation based on full image size 
             var dimsFull = new PlotDimensions(figSize, figSize, new PointF(0, 0), limits);
@@ -98,9 +97,8 @@ namespace ScottPlot
             settings.TightenLayout();
 
             // now recalculate ticks based on new layout
-            var dims2 = settings.GetDimensions();
-            var dataSize = new SizeF(dims2.DataWidth, dims2.DataHeight);
-            var dataOffset = new PointF(dims2.DataOffsetX, dims2.DataOffsetY);
+            var dataSize = new SizeF(settings.Dims.DataWidth, settings.Dims.DataHeight);
+            var dataOffset = new PointF(settings.Dims.DataOffsetX, settings.Dims.DataOffsetY);
 
             var dims3 = new PlotDimensions(figSize, dataSize, dataOffset, limits);
             foreach (var axis in settings.Axes)
@@ -134,10 +132,9 @@ namespace ScottPlot
             // auto-layout before every single frame
             LayoutAuto();
 
-            var dims = settings.GetDimensions();
-            RenderBeforePlottables(dims, bmp, lowQuality);
-            RenderPlottables(dims, bmp, lowQuality);
-            RenderAfterPlottables(dims, bmp, lowQuality);
+            RenderBeforePlottables(settings.Dims, bmp, lowQuality);
+            RenderPlottables(settings.Dims, bmp, lowQuality);
+            RenderAfterPlottables(settings.Dims, bmp, lowQuality);
 
             RenderCount += 1;
             return bmp;
@@ -147,10 +144,18 @@ namespace ScottPlot
         {
             settings.FigureBackground.Render(dims, bmp, lowQuality);
             settings.DataBackground.Render(dims, bmp, lowQuality);
-            settings.XAxis.Render(dims, bmp, lowQuality);
-            settings.YAxis.Render(dims, bmp, lowQuality);
-            settings.XAxis2.Render(dims, bmp, lowQuality);
-            settings.YAxis2.Render(dims, bmp, lowQuality);
+
+            try
+            {
+                settings.XAxis.Render(dims, bmp, lowQuality);
+                settings.YAxis.Render(dims, bmp, lowQuality);
+                settings.XAxis2.Render(dims, bmp, lowQuality);
+                settings.YAxis2.Render(dims, bmp, lowQuality);
+            }
+            catch (OverflowException ex)
+            {
+                throw new InvalidOperationException("data cannot contain Infinity");
+            }
         }
 
         private void RenderPlottables(PlotDimensions dims, Bitmap bmp, bool lowQuality)

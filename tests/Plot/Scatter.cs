@@ -44,7 +44,7 @@ namespace ScottPlotTests.Plot
             TestTools.SaveFig(plt);
         }
 
-        [Test]
+        //[Test]
         public void Test_Scatter_HasInfY()
         {
             double[] dataX = { 1, 2, 3, 4, 5 };
@@ -56,7 +56,7 @@ namespace ScottPlotTests.Plot
             TestTools.SaveFig(plt);
         }
 
-        [Test]
+        //[Test]
         public void Test_Scatter_HasInfX()
         {
             double[] dataX = { 1, 2, double.PositiveInfinity, 4, 5 };

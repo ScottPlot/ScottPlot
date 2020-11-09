@@ -39,8 +39,6 @@ namespace ScottPlot
             Dims.ResizeDataWithPadding(padLeft, padRight, padBottom, padTop);
         }
 
-        public PlotDimensions GetDimensions() => Dims;
-
         // plottables
         public readonly List<IRenderable> Plottables = new List<IRenderable>();
         public Color GetNextColor() { return PlottablePalette.GetColor(Plottables.Count); }
@@ -124,14 +122,12 @@ namespace ScottPlot
                 if (plottable is IHasAxisLimits plottableWithLimits)
                 {
                     var plottableLimits = plottableWithLimits.GetLimits();
-                    if (autoX && !yExpandOnly)
-                        newLimits.ExpandX(plottableLimits);
-                    if (autoY && !xExpandOnly)
-                        newLimits.ExpandY(plottableLimits);
+                    if (autoX)
+                        newLimits.Expand(plottableLimits.x1, plottableLimits.x2, null, null);
+                    if (autoY)
+                        newLimits.Expand(null, null, plottableLimits.y1, plottableLimits.y2);
                 }
             }
-
-            newLimits.MakeRational();
 
             // TODO: equal axis
             /*
@@ -149,25 +145,17 @@ namespace ScottPlot
             */
 
             if (xExpandOnly)
-            {
-                oldLimits.ExpandX(newLimits);
-                Dims.SetAxis(oldLimits.x1, oldLimits.x2, null, null);
-                Dims.ZoomX(1 - horizontalMargin);
-                AxesHaveBeenSet = Plottables.Count > 0;
-            }
+                Dims.SetAxis(newLimits.x1, newLimits.x2, oldLimits.y1, oldLimits.y2);
             else if (yExpandOnly)
-            {
-                oldLimits.ExpandY(newLimits);
-                Dims.SetAxis(null, null, oldLimits.y1, oldLimits.y2);
-                Dims.ZoomY(1 - verticalMargin);
-                AxesHaveBeenSet = Plottables.Count > 0;
-            }
+                Dims.SetAxis(oldLimits.x1, oldLimits.x2, newLimits.y1, newLimits.y2);
             else
-            {
                 Dims.SetAxis(newLimits.x1, newLimits.x2, newLimits.y1, newLimits.y2);
-                Dims.Zoom(1 - horizontalMargin, 1 - verticalMargin);
-                AxesHaveBeenSet = Plottables.Count > 0;
-            }
+
+            double zoomFracX = yExpandOnly ? 1 : 1 - horizontalMargin;
+            double zoomFracY = xExpandOnly ? 1 : 1 - verticalMargin;
+            Dims.Zoom(zoomFracX, zoomFracY);
+
+            AxesHaveBeenSet = Plottables.Count > 0;
         }
 
         /// <summary>

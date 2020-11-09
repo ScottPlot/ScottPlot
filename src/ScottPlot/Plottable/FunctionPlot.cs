@@ -41,9 +41,7 @@ namespace ScottPlot.Plottable
             }
 
             // TODO: X limits should probably be null or NaN
-            double[] limits = { -10, 10, min, max };
-
-            return new AxisLimits2D(limits);
+            return new AxisLimits2D(-10, 10, min, max);
         }
 
         public int PointCount { get; private set; }

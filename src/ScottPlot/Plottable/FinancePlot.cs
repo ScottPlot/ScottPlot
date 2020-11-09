@@ -72,7 +72,7 @@ namespace ScottPlot.Plottable
                 limits[1] = ohlcs.Length - 1;
             }
 
-            return new AxisLimits2D(limits);
+            return new AxisLimits2D(limits[0], limits[1], limits[2], limits[3]);
         }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)

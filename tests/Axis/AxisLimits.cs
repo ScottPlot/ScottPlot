@@ -32,20 +32,11 @@ namespace ScottPlotTests.Axis
         }
 
         [Test]
-        public void Test_ToString_ExpectedOutput()
-        {
-            var limits = new ScottPlot.Config.AxisLimits2D(11, 22, 33, 44);
-            Console.WriteLine(limits);
-
-            Assert.AreEqual("x1=11.000, x2=22.000, y1=33.000, y2=44.000", limits.ToString());
-        }
-
-        [Test]
         public void Test_ExpandX_ExpectedOutput()
         {
             var limits = new ScottPlot.Config.AxisLimits2D();
 
-            limits.ExpandX(-20, 20);
+            limits.Expand(-20, 20, null, null);
 
             Assert.AreEqual(limits.x1, -20);
             Assert.AreEqual(limits.x2, 20);
@@ -58,7 +49,7 @@ namespace ScottPlotTests.Axis
         {
             var limits = new ScottPlot.Config.AxisLimits2D();
 
-            limits.ExpandY(-20, 20);
+            limits.Expand(null, null, -20, 20);
 
             Assert.IsNaN(limits.x1);
             Assert.IsNaN(limits.x2);
@@ -71,69 +62,12 @@ namespace ScottPlotTests.Axis
         {
             var limits = new ScottPlot.Config.AxisLimits2D();
 
-            limits.ExpandXY(-10, 20, -30, 40);
+            limits.Expand(-10, 20, -30, 40);
 
             Assert.AreEqual(limits.x1, -10);
             Assert.AreEqual(limits.x2, 20);
             Assert.AreEqual(limits.y1, -30);
             Assert.AreEqual(limits.y2, 40);
-        }
-
-        [Test]
-        public void Test_MakeRational_WhenAllAreNaN()
-        {
-            var limits = new ScottPlot.Config.AxisLimits2D();
-            limits.MakeRational();
-
-            Assert.That(limits.x1 < 0);
-            Assert.That(limits.x1 > -10);
-
-            Assert.That(limits.x2 > 0);
-            Assert.That(limits.x2 < 10);
-
-            Assert.That(limits.y1 < 0);
-            Assert.That(limits.y1 > -10);
-
-            Assert.That(limits.y2 > 0);
-            Assert.That(limits.y2 < 10);
-        }
-
-        [Test]
-        public void Test_MakeRational_WhenXsContainNaN()
-        {
-            var limits = new ScottPlot.Config.AxisLimits2D();
-            limits.ExpandY(-30, 40);
-            limits.MakeRational();
-
-            Console.WriteLine(limits);
-
-            Assert.That(limits.x1 < 0);
-            Assert.That(limits.x1 > -10);
-
-            Assert.That(limits.x2 > 0);
-            Assert.That(limits.x2 < 10);
-
-            Assert.That(limits.y1 == -30);
-            Assert.That(limits.y2 == 40);
-        }
-
-        [Test]
-        public void Test_MakeRational_WhenYsContainNaN()
-        {
-            var limits = new ScottPlot.Config.AxisLimits2D();
-            limits.ExpandX(-10, 20);
-            limits.MakeRational();
-
-            Console.WriteLine(limits);
-
-            Assert.That(limits.x1 == -10);
-            Assert.That(limits.x2 == 20);
-
-            Assert.That(limits.y1 < 0);
-            Assert.That(limits.y1 > -10);
-
-            Assert.That(limits.y2 > 0);
-            Assert.That(limits.y2 < 10);
         }
     }
 }

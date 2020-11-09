@@ -28,7 +28,6 @@ namespace ScottPlot.Drawing
         public double YMax { get; private set; }
         public double XMin { get; private set; }
         public double XMax { get; private set; }
-
         public double XSpan => XMax - XMin;
         public double YSpan => YMax - YMin;
         public double XCenter => (XMax + XMin) / 2;
@@ -49,6 +48,20 @@ namespace ScottPlot.Drawing
             (Width, Height) = (figureSize.Width, figureSize.Height);
             (DataWidth, DataHeight, DataOffsetX, DataOffsetY) = (dataSize.Width, dataSize.Height, dataOffset.X, dataOffset.Y);
             (XMin, XMax, YMin, YMax) = (axisLimits.x1, axisLimits.x2, axisLimits.y1, axisLimits.y2);
+            MakeRational();
+        }
+
+        private void MakeRational()
+        {
+            XMin = double.IsNaN(XMin) ? -10 : XMin;
+            XMax = double.IsNaN(XMax) ? 10 : XMax;
+            YMin = double.IsNaN(YMin) ? -10 : YMin;
+            YMax = double.IsNaN(YMax) ? 10 : YMax;
+
+            if (XMin == XMax)
+                (XMin, XMax) = (XMin - .5, XMax + .5);
+            if (YMin == YMax)
+                (YMin, YMax) = (YMin - .5, YMax + .5);
         }
 
         public void ResetAxes() =>
@@ -70,6 +83,7 @@ namespace ScottPlot.Drawing
             XMax = x2 ?? XMax;
             YMin = y1 ?? YMin;
             YMax = y2 ?? YMax;
+            MakeRational();
         }
 
         public void Pan(double xUnits, double yUnits)
