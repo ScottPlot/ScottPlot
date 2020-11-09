@@ -10,12 +10,8 @@ namespace ScottPlot.Config
         public double x2 { get; private set; }
         public double y1 { get; private set; }
         public double y2 { get; private set; }
-
-        public double xCenter { get { return (x1 + x2) / 2; } }
-        public double yCenter { get { return (y1 + y2) / 2; } }
-
-        public double xSpan { get { return x2 - x1; } }
-        public double ySpan { get { return y2 - y1; } }
+        public double xSpan => x2 - x1;
+        public double ySpan => y2 - y1;
 
         public AxisLimits2D()
         {
@@ -25,26 +21,18 @@ namespace ScottPlot.Config
             y2 = double.NaN;
         }
 
-        public AxisLimits2D(AxisLimits2D source)
+        public AxisLimits2D(double? xMin, double? xMax, double? yMin, double? yMax)
         {
-            x1 = source.x1;
-            x2 = source.x2;
-            y1 = source.y1;
-            y2 = source.y2;
-        }
-
-        public AxisLimits2D(double? x1, double? x2, double? y1, double? y2)
-        {
-            if (x1 != null) this.x1 = (double)x1;
-            if (x2 != null) this.x2 = (double)x2;
-            if (y1 != null) this.y1 = (double)y1;
-            if (y1 != null) this.y2 = (double)y2;
+            x1 = xMin ?? double.NaN;
+            x2 = xMax ?? double.NaN;
+            y1 = yMin ?? double.NaN;
+            y2 = yMax ?? double.NaN;
         }
 
         public AxisLimits2D(double[] limits)
         {
-            if (limits == null || limits.Length != 4)
-                throw new ArgumentException();
+            if (limits is null || limits.Length != 4)
+                throw new ArgumentException("limits must have 4 values");
 
             x1 = limits[0];
             x2 = limits[1];
@@ -52,121 +40,27 @@ namespace ScottPlot.Config
             y2 = limits[3];
         }
 
-        public override string ToString()
+        public override string ToString() => $"[{x1}, {x2}, {y1}, {y2}]";
+
+        public void Set(double? xMin, double? xMax, double? yMin, double? yMax)
         {
-            return $"x1={x1:0.000}, x2={x2:0.000}, y1={y1:0.000}, y2={y2:0.000}";
+            if (xMin.HasValue && !double.IsNaN(xMin.Value)) x1 = xMin.Value;
+            if (xMax.HasValue && !double.IsNaN(xMax.Value)) x2 = xMax.Value;
+            if (yMin.HasValue && !double.IsNaN(yMin.Value)) y1 = yMin.Value;
+            if (yMax.HasValue && !double.IsNaN(yMax.Value)) y2 = yMax.Value;
         }
 
-        public void SetX(double x1, double x2)
+        public void Expand(double? xMin, double? xMax, double? yMin, double? yMax)
         {
-            this.x1 = x1;
-            this.x2 = x2;
-        }
+            if (xMin.HasValue && !double.IsNaN(xMin.Value) && double.IsNaN(x1)) x1 = xMin.Value;
+            if (xMax.HasValue && !double.IsNaN(xMax.Value) && double.IsNaN(x2)) x2 = xMax.Value;
+            if (yMin.HasValue && !double.IsNaN(yMin.Value) && double.IsNaN(y1)) y1 = yMin.Value;
+            if (yMax.HasValue && !double.IsNaN(yMax.Value) && double.IsNaN(y2)) y2 = yMax.Value;
 
-        public void SetX(AxisLimits2D source)
-        {
-            SetX(source.x1, source.x2);
-        }
-
-        public void SetY(double y1, double y2)
-        {
-            this.y1 = y1;
-            this.y2 = y2;
-        }
-
-        public void SetY(AxisLimits2D source)
-        {
-            SetY(source.y1, source.y2);
-        }
-
-        public void SetXY(double x1, double x2, double y1, double y2)
-        {
-            SetX(x1, x2);
-            SetY(y1, y2);
-        }
-
-        public void ExpandX(double x1, double x2)
-        {
-            if (!double.IsNaN(x1))
-            {
-                if (double.IsNaN(this.x1))
-                    this.x1 = x1;
-                else if (x1 < this.x1)
-                    this.x1 = x1;
-            }
-
-            if (!double.IsNaN(x2))
-            {
-                if (double.IsNaN(this.x2))
-                    this.x2 = x2;
-                else if (x2 > this.x2)
-                    this.x2 = x2;
-            }
-        }
-
-        public void ExpandX(AxisLimits2D source)
-        {
-            if (source != null)
-                ExpandX(source.x1, source.x2);
-        }
-
-        public void ExpandY(double y1, double y2)
-        {
-            if (!double.IsNaN(y1))
-            {
-                if (double.IsNaN(this.y1))
-                    this.y1 = y1;
-                else if (y1 < this.y1)
-                    this.y1 = y1;
-            }
-
-            if (!double.IsNaN(y2))
-            {
-                if (double.IsNaN(this.y2))
-                    this.y2 = y2;
-                else if (y2 > this.y2)
-                    this.y2 = y2;
-            }
-        }
-
-        public void ExpandY(AxisLimits2D source)
-        {
-            if (source != null)
-                ExpandY(source.y1, source.y2);
-        }
-
-        public void ExpandXY(double x1, double x2, double y1, double y2)
-        {
-            ExpandX(x1, x2);
-            ExpandY(y1, y2);
-        }
-
-        public void ExpandXY(AxisLimits2D source)
-        {
-            ExpandX(source.x1, source.x2);
-            ExpandY(source.y1, source.y2);
-        }
-
-        public void MakeRational()
-        {
-            if (double.IsNaN(x1)) x1 = 0;
-            if (double.IsNaN(x2)) x2 = 0;
-            if (double.IsNaN(y1)) y1 = 0;
-            if (double.IsNaN(y2)) y2 = 0;
-
-            double padding = 1.5;
-
-            if (x1 == x2)
-            {
-                x1 -= padding;
-                x2 += padding;
-            }
-
-            if (y1 == y2)
-            {
-                y1 -= padding;
-                y2 += padding;
-            }
+            if (xMin.HasValue && !double.IsNaN(xMin.Value)) x1 = Math.Min(x1, xMin.Value);
+            if (xMax.HasValue && !double.IsNaN(xMax.Value)) x2 = Math.Max(x2, xMax.Value);
+            if (yMin.HasValue && !double.IsNaN(yMin.Value)) y1 = Math.Min(y1, yMin.Value);
+            if (yMax.HasValue && !double.IsNaN(yMax.Value)) y2 = Math.Max(y2, yMax.Value);
         }
     }
 }
