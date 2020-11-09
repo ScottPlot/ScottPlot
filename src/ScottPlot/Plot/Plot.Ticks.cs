@@ -1,5 +1,5 @@
 ﻿/* Code here customizes tick styling and behavior */
-using ScottPlot.Config;
+using ScottPlot.Ticks;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

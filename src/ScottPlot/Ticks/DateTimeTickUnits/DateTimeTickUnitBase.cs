@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
-namespace ScottPlot.Config.DateTimeTickUnits
+namespace ScottPlot.Ticks.DateTimeTickUnits
 {
     public class DateTimeTickUnitBase : IDateTimeUnit
     {

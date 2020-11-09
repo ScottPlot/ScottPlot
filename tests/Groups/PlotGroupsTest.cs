@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 using ScottPlot;
-using ScottPlot.Config;
+using ScottPlot.Ticks;
 using ScottPlot.Statistics;
 using System;
 using System.Collections.Generic;

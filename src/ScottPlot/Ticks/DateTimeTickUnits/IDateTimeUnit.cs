@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ScottPlot.Config.DateTimeTickUnits
+namespace ScottPlot.Ticks.DateTimeTickUnits
 {
     public interface IDateTimeUnit
     {

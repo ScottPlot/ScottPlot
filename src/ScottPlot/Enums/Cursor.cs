@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ScottPlot.Config
+namespace ScottPlot.Ticks
 {
     public enum Cursor
     {

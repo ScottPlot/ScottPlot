@@ -1,25 +1,25 @@
 ﻿using System;
 using System.Globalization;
 
-namespace ScottPlot.Config.DateTimeTickUnits
+namespace ScottPlot.Ticks.DateTimeTickUnits
 {
-    public class DateTimeTickThousandYear : DateTimeTickUnitBase
+    public class DateTimeTickHundredYear : DateTimeTickUnitBase
     {
-        public DateTimeTickThousandYear(CultureInfo culture, int maxTickCount, int? manualSpacing) : base(culture, maxTickCount, manualSpacing)
+        public DateTimeTickHundredYear(CultureInfo culture, int maxTickCount, int? manualSpacing) : base(culture, maxTickCount, manualSpacing)
         {
-            kind = DateTimeUnit.ThousandYear;
+            kind = DateTimeUnit.HundredYear;
             if (manualSpacing == null)
                 deltas = new int[] { 1, 2, 5 };
         }
 
         protected override DateTime Floor(DateTime value)
         {
-            return new DateTime(value.Year - (value.Year % 1000), 1, 1);
+            return new DateTime(value.Year - (value.Year % 100), 1, 1);
         }
 
         protected override DateTime Increment(DateTime value, int delta)
         {
-            return value.AddYears(delta * 1000);
+            return value.AddYears(delta * 100);
         }
 
         protected override string GetTickLabel(DateTime value)

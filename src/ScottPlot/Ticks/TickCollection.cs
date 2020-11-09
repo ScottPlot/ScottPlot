@@ -1,14 +1,11 @@
-﻿using ScottPlot.Config.DateTimeTickUnits;
+﻿using ScottPlot.Ticks.DateTimeTickUnits;
 using ScottPlot.Drawing;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Drawing;
 using System.Globalization;
 using System.Linq;
 
-namespace ScottPlot.Config
+namespace ScottPlot.Ticks
 {
     public class TickCollection
     {
@@ -39,8 +36,8 @@ namespace ScottPlot.Config
 
         public double manualSpacingX = 0;
         public double manualSpacingY = 0;
-        public Config.DateTimeUnit? manualDateTimeSpacingUnitX = null;
-        public Config.DateTimeUnit? manualDateTimeSpacingUnitY = null;
+        public Ticks.DateTimeUnit? manualDateTimeSpacingUnitX = null;
+        public Ticks.DateTimeUnit? manualDateTimeSpacingUnitY = null;
 
         public CultureInfo Culture = CultureInfo.DefaultThreadCurrentCulture;
 

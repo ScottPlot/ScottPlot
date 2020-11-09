@@ -1,25 +1,25 @@
 ﻿using System;
 using System.Globalization;
 
-namespace ScottPlot.Config.DateTimeTickUnits
+namespace ScottPlot.Ticks.DateTimeTickUnits
 {
-    public class DateTimeTickHour : DateTimeTickUnitBase
+    public class DateTimeTickMinute : DateTimeTickUnitBase
     {
-        public DateTimeTickHour(CultureInfo culture, int maxTickCount, int? manualSpacing) : base(culture, maxTickCount, manualSpacing)
+        public DateTimeTickMinute(CultureInfo culture, int maxTickCount, int? manualSpacing) : base(culture, maxTickCount, manualSpacing)
         {
-            kind = DateTimeUnit.Hour;
+            kind = DateTimeUnit.Minute;
             if (manualSpacing == null)
-                deltas = new int[] { 1, 2, 4, 8, 12 };
+                deltas = new int[] { 1, 2, 5, 10, 15, 30 };
         }
 
         protected override DateTime Floor(DateTime value)
         {
-            return new DateTime(value.Year, value.Month, value.Day);
+            return new DateTime(value.Year, value.Month, value.Day, value.Hour, 0, 0);
         }
 
         protected override DateTime Increment(DateTime value, int delta)
         {
-            return value.AddHours(delta);
+            return value.AddMinutes(delta);
         }
 
         protected override string GetTickLabel(DateTime value)

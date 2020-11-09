@@ -1,6 +1,6 @@
 ﻿/* Code here customizes Plot behavior (not styling) */
 
-using ScottPlot.Config;
+using ScottPlot.Ticks;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

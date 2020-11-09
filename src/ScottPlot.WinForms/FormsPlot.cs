@@ -219,14 +219,14 @@ namespace ScottPlot
         IDraggable plottableBeingDragged = null;
         private bool isMovingDraggable { get { return (plottableBeingDragged != null); } }
 
-        private Cursor GetCursor(Config.Cursor scottPlotCursor)
+        private Cursor GetCursor(Ticks.Cursor scottPlotCursor)
         {
             switch (scottPlotCursor)
             {
-                case Config.Cursor.Arrow: return Cursors.Arrow;
-                case Config.Cursor.WE: return Cursors.SizeWE;
-                case Config.Cursor.NS: return Cursors.SizeNS;
-                case Config.Cursor.All: return Cursors.SizeAll;
+                case Ticks.Cursor.Arrow: return Cursors.Arrow;
+                case Ticks.Cursor.WE: return Cursors.SizeWE;
+                case Ticks.Cursor.NS: return Cursors.SizeNS;
+                case Ticks.Cursor.All: return Cursors.SizeAll;
                 default: return Cursors.Help;
             }
         }
@@ -360,7 +360,7 @@ namespace ScottPlot
 
             // set the cursor based on what's beneath it
             var draggableUnderCursor = plt.GetDraggableUnderMouse(e.Location.X, e.Location.Y);
-            var spCursor = (draggableUnderCursor is null) ? Config.Cursor.Arrow : draggableUnderCursor.DragCursor;
+            var spCursor = (draggableUnderCursor is null) ? Ticks.Cursor.Arrow : draggableUnderCursor.DragCursor;
             pbPlot.Cursor = GetCursor(spCursor);
         }
 

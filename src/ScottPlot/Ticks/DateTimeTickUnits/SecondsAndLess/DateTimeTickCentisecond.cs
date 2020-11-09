@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Globalization;
 
-namespace ScottPlot.Config.DateTimeTickUnits
+namespace ScottPlot.Ticks.DateTimeTickUnits
 {
-    public class DateTimeTickMillisecond : DateTimeTickUnitBase
+    public class DateTimeTickCentisecond : DateTimeTickUnitBase
     {
-        public DateTimeTickMillisecond(CultureInfo culture, int maxTickCount, int? manualSpacing) : base(culture, maxTickCount, manualSpacing)
+        public DateTimeTickCentisecond(CultureInfo culture, int maxTickCount, int? manualSpacing) : base(culture, maxTickCount, manualSpacing)
         {
-            kind = DateTimeUnit.Millisecond;
+            kind = DateTimeUnit.Centisecond;
             if (manualSpacing == null)
                 deltas = new int[] { 1, 2, 5 };
         }
@@ -19,13 +19,13 @@ namespace ScottPlot.Config.DateTimeTickUnits
 
         protected override DateTime Increment(DateTime value, int delta)
         {
-            return value.AddMilliseconds(delta);
+            return value.AddMilliseconds(delta * 10);
         }
 
         protected override string GetTickLabel(DateTime value)
         {
             string date = value.ToString("d", culture); // short date
-            string time = value.ToString("hh:mm:ss.fff", culture); // long time
+            string time = value.ToString("hh:mm:ss.ff", culture); // long time
             return $"{date}\n{time}";
         }
     }

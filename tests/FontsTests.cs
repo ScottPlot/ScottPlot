@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using ScottPlot.Config;
+using ScottPlot.Ticks;
 using ScottPlot.Drawing;
 using System;
 using System.Runtime.InteropServices;

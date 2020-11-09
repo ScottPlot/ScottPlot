@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace ScottPlot.Config.DateTimeTickUnits
+namespace ScottPlot.Ticks.DateTimeTickUnits
 {
     class DateTimeTickSecond : DateTimeTickUnitBase
     {

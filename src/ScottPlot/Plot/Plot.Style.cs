@@ -1,6 +1,6 @@
 ﻿/* Code here relates to customization of the figure or plot layout or styling (not behavior) */
 
-using ScottPlot.Config;
+using ScottPlot.Ticks;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

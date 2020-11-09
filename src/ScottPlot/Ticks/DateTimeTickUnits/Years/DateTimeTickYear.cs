@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace ScottPlot.Config.DateTimeTickUnits
+namespace ScottPlot.Ticks.DateTimeTickUnits
 {
     public class DateTimeTickYear : DateTimeTickUnitBase
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
-using ScottPlot.Config;
+using ScottPlot.Ticks;
 using ScottPlot.Drawing;
 using ScottPlot.Renderable;
 
