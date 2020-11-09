@@ -11,18 +11,18 @@ namespace ScottPlot.Drawing
         public static string Default() => Sans();
 
         public static string Serif() =>
-            FromNames(new string[] { "Times New Roman", "DejaVu Serif", "Times" });
+            ValidFontName(new string[] { "Times New Roman", "DejaVu Serif", "Times" });
 
         public static string Sans() =>
-            FromNames(new string[] { "Segoe UI", "DejaVu Sans", "Helvetica" });
+            ValidFontName(new string[] { "Segoe UI", "DejaVu Sans", "Helvetica" });
 
         public static string Monospace() =>
-            FromNames(new string[] { "Consolas", "DejaVu Sans Mono", "Courier" });
+            ValidFontName(new string[] { "Consolas", "DejaVu Sans Mono", "Courier" });
 
         /// <summary>
         /// Returns a font name guaranteed to be installed on the system
         /// </summary>
-        public static string FromName(string fontName)
+        public static string ValidFontName(string fontName)
         {
             foreach (FontFamily installedFont in FontFamily.Families)
                 if (string.Equals(installedFont.Name, fontName, System.StringComparison.OrdinalIgnoreCase))
@@ -33,7 +33,7 @@ namespace ScottPlot.Drawing
         /// <summary>
         /// Returns a font name guaranteed to be installed on the system
         /// </summary>
-        public static string FromNames(string[] fontNames)
+        public static string ValidFontName(string[] fontNames)
         {
             foreach (string preferredFont in fontNames)
                 foreach (FontFamily font in FontFamily.Families)
