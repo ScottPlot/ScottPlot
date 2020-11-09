@@ -368,8 +368,8 @@ namespace ScottPlot.Plottable
                 float minVal = 0;
                 float maxVal = (dims.DataHeight * (fillType == FillType.FillAbove ? -1 : 1));
 
-                PointF first = new PointF(xPxStart, maxVal);
-                PointF last = new PointF(xPxEnd, maxVal);
+                PointF first = new PointF(xPxStart + dims.DataOffsetX, maxVal);
+                PointF last = new PointF(xPxEnd + dims.DataOffsetX, maxVal);
 
                 PointF[] points = new PointF[] { first }
                                 .Concat(linePoints)
@@ -422,8 +422,8 @@ namespace ScottPlot.Plottable
         {
             baseline = (int)dims.GetPixelY(baseline);
 
-            PointF first = new PointF(xPxStart, baseline);
-            PointF last = new PointF(xPxEnd, baseline);
+            PointF first = new PointF(xPxStart + dims.DataOffsetX, baseline);
+            PointF last = new PointF(xPxEnd + dims.DataOffsetX, baseline);
 
             PointF[] points = new PointF[] { first }
                             .Concat(linePoints)
