@@ -4,51 +4,41 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 
-namespace ScottPlot.Config
+namespace ScottPlot.Drawing
 {
-    public static class Fonts
+    public static class InstalledFont
     {
-        // TODO: use a new font function and only use it to enforce use of "GraphicsUnit.Pixel" everywhere
+        public static string Default() => Sans();
 
-        public static string GetDefaultFontName()
-        {
-            return GetSansFontName();
-        }
+        public static string Serif() =>
+            FromNames(new string[] { "Times New Roman", "DejaVu Serif", "Times" });
 
-        public static string GetSerifFontName()
-        {
-            string[] serifFonts = new string[] { "Times New Roman", "DejaVu Serif", "Times" };
-            return GetValidFontName(serifFonts);
-        }
+        public static string Sans() =>
+            FromNames(new string[] { "Segoe UI", "DejaVu Sans", "Helvetica" });
 
-        public static string GetSansFontName()
-        {
-            string[] sansFonts = new string[] { "Segoe UI", "DejaVu Sans", "Helvetica" };
-            return GetValidFontName(sansFonts);
-        }
+        public static string Monospace() =>
+            FromNames(new string[] { "Consolas", "DejaVu Sans Mono", "Courier" });
 
-        public static string GetMonospaceFontName()
-        {
-            string[] monospaceFonts = new string[] { "Consolas", "DejaVu Sans Mono", "Courier" };
-            return GetValidFontName(monospaceFonts);
-        }
-
-        public static string GetValidFontName(string fontName)
+        /// <summary>
+        /// Returns a font name guaranteed to be installed on the system
+        /// </summary>
+        public static string FromName(string fontName)
         {
             foreach (FontFamily installedFont in FontFamily.Families)
                 if (string.Equals(installedFont.Name, fontName, System.StringComparison.OrdinalIgnoreCase))
                     return installedFont.Name;
-
-            return GetDefaultFontName();
+            return SystemFonts.DefaultFont.Name;
         }
 
-        public static string GetValidFontName(string[] fontNames)
+        /// <summary>
+        /// Returns a font name guaranteed to be installed on the system
+        /// </summary>
+        public static string FromNames(string[] fontNames)
         {
             foreach (string preferredFont in fontNames)
                 foreach (FontFamily font in FontFamily.Families)
                     if (string.Equals(preferredFont, font.Name, System.StringComparison.OrdinalIgnoreCase))
                         return font.Name;
-
             return SystemFonts.DefaultFont.Name;
         }
     }

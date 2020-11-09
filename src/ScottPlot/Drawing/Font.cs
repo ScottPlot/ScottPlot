@@ -8,7 +8,7 @@ namespace ScottPlot.Drawing
     public class Font
     {
         private string _Name;
-        public string Name { get => _Name; set => _Name = Config.Fonts.GetValidFontName(value); }
+        public string Name { get => _Name; set => _Name = InstalledFont.FromName(value); }
         public float Size = 12;
         public Color Color = Color.Black;
         public Alignment Alignment = Alignment.UpperLeft;

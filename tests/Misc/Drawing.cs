@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using ScottPlot;
+using ScottPlot.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -128,7 +129,7 @@ namespace ScottPlotTests.Misc
         {
             string testString = "ScottPlot";
 
-            var fontName = ScottPlot.Config.Fonts.GetDefaultFontName();
+            var fontName = InstalledFont.Default();
             float fontSize = 14;
 
             // an active Graphics object is required to measure a string...

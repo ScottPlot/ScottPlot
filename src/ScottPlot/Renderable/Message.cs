@@ -49,7 +49,7 @@ namespace ScottPlot.Renderable
         public VerticalAlignment VAlign;
 
         public Color FontColor = Color.Black;
-        public string FontName = Fonts.GetMonospaceFontName();
+        public string FontName = InstalledFont.Monospace();
         public float FontSize = 12;
         public bool FontBold = false;
 

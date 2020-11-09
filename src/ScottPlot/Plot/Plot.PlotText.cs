@@ -38,7 +38,7 @@ namespace ScottPlot
                 x = x,
                 y = y,
                 FontColor = color ?? settings.GetNextColor(),
-                FontName = fontName ?? Config.Fonts.GetDefaultFontName(),
+                FontName = fontName ?? Drawing.InstalledFont.Default(),
                 FontSize = (float)fontSize,
                 FontBold = bold,
                 alignment = alignment,

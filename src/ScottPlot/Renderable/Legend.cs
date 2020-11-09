@@ -26,8 +26,8 @@ namespace ScottPlot.Renderable
         public float ShadowOffsetX = 2;
         public float ShadowOffsetY = 2;
 
-        private string _fontName = Fonts.GetDefaultFontName();
-        public string FontName { get { return _fontName; } set { _fontName = Fonts.GetValidFontName(FontName); } }
+        private string _fontName = InstalledFont.Default();
+        public string FontName { get { return _fontName; } set { _fontName = InstalledFont.FromName(FontName); } }
         public float FontSize = 14;
         public Color FontColor = Color.Black;
         public bool FontBold = false;
