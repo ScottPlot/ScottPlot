@@ -105,7 +105,7 @@ namespace ScottPlot.Plottable
 
         public int PointCount { get => normalized.Length; }
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions2D dims, Bitmap bmp, bool lowQuality = false)
         {
             int numGroups = normalized.GetUpperBound(0) + 1;
             int numCategories = normalized.GetUpperBound(1) + 1;

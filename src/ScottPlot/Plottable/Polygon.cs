@@ -93,7 +93,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions2D dims, Bitmap bmp, bool lowQuality = false)
         {
             PointF[] points = new PointF[xs.Length];
             for (int i = 0; i < xs.Length; i++)

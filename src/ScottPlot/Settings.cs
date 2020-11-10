@@ -78,11 +78,11 @@ namespace ScottPlot
         public double GetLocationY(double pixelY) => YAxis.Dims.GetUnit((float)pixelY);
         public PointF GetLocation(double pixelX, double pixelY) => new PointF((float)GetLocationX(pixelX), (float)GetLocationY(pixelY));
 
-        public PlotDimensions GetPlotDimensions()
+        public PlotDimensions2D GetPlotDimensions()
         {
             (double xMin, double xMax) = XAxis.Dims.RationalLimits();
             (double yMin, double yMax) = YAxis.Dims.RationalLimits();
-            return new PlotDimensions(
+            return new PlotDimensions2D(
                 figureSize: new SizeF(XAxis.Dims.FigureSizePx, YAxis.Dims.FigureSizePx),
                 dataSize: new SizeF(XAxis.Dims.DataSizePx, YAxis.Dims.DataSizePx),
                 dataOffset: new PointF(XAxis.Dims.DataOffsetPx, YAxis.Dims.DataOffsetPx),

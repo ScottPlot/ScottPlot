@@ -48,7 +48,7 @@ namespace ScottPlot.Plottable
 
         public int PointCount { get; private set; }
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions2D dims, Bitmap bmp, bool lowQuality = false)
         {
             List<double> xList = new List<double>();
             List<double> yList = new List<double>();

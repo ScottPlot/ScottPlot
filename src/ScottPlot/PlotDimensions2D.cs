@@ -1,5 +1,4 @@
 ﻿using ScottPlot.Drawing;
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 
@@ -8,7 +7,7 @@ namespace ScottPlot
     /// <summary>
     /// A DTO for passing plot and axis dimensions into render functions
     /// </summary>
-    public class PlotDimensions
+    public class PlotDimensions2D
     {
         // plot dimensions
         public readonly float Width;
@@ -19,10 +18,10 @@ namespace ScottPlot
         public readonly float DataOffsetY;
 
         // axis limits with methods to perform pixel/unit conversions
-        private readonly List<AxisInfo> XAxes = new List<AxisInfo>();
-        private readonly List<AxisInfo> YAxes = new List<AxisInfo>();
+        private readonly List<PlotDimensions1D> XAxes = new List<PlotDimensions1D>();
+        private readonly List<PlotDimensions1D> YAxes = new List<PlotDimensions1D>();
 
-        public PlotDimensions(SizeF figureSize, SizeF dataSize, PointF dataOffset, AxisLimits2D axisLimits)
+        public PlotDimensions2D(SizeF figureSize, SizeF dataSize, PointF dataOffset, AxisLimits2D axisLimits)
         {
             (Width, Height) = (figureSize.Width, figureSize.Height);
             (DataWidth, DataHeight, DataOffsetX, DataOffsetY) = (dataSize.Width, dataSize.Height, dataOffset.X, dataOffset.Y);
@@ -32,10 +31,10 @@ namespace ScottPlot
         }
 
         public void AddAxisX(double xMin, double xMax) =>
-            XAxes.Add(new AxisInfo(Width, DataWidth, DataOffsetX, xMin, xMax, false));
+            XAxes.Add(new PlotDimensions1D(Width, DataWidth, DataOffsetX, xMin, xMax, false));
 
         private void AddAxisY(double yMin, double yMax) =>
-            YAxes.Add(new AxisInfo(Height, DataHeight, DataOffsetY, yMin, yMax, true));
+            YAxes.Add(new PlotDimensions1D(Height, DataHeight, DataOffsetY, yMin, yMax, true));
 
         public override string ToString() =>
             $"Dimensions for figure ({Width}x{Height}), " +

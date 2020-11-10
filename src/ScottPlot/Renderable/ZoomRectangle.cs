@@ -19,7 +19,7 @@ namespace ScottPlot.Renderable
         public void Set(float x, float y, float width, float height) =>
             (X, Y, Width, Height, IsVisible) = (x, y, width, height, true);
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions2D dims, Bitmap bmp, bool lowQuality = false)
         {
             if (!IsVisible)
                 return;

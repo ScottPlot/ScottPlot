@@ -199,7 +199,7 @@ namespace ScottPlot.Plottable
             return (limits[0], limits[1], limits[2], limits[3]);
         }
 
-        private void RenderSingleLine(PlotDimensions dims, Graphics gfx, Pen penHD)
+        private void RenderSingleLine(PlotDimensions2D dims, Graphics gfx, Pen penHD)
         {
             // this function is for when the graph is zoomed so far out its entire display is a single vertical pixel column
             double yMin, yMax;
@@ -211,7 +211,7 @@ namespace ScottPlot.Plottable
 
         private bool markersAreVisible = false;
 
-        private void RenderLowDensity(PlotDimensions dims, Graphics gfx, int visibleIndex1, int visibleIndex2, Brush brush, Pen penLD, Pen penHD)
+        private void RenderLowDensity(PlotDimensions2D dims, Graphics gfx, int visibleIndex1, int visibleIndex2, Brush brush, Pen penLD, Pen penHD)
         {
             // this function is for when the graph is zoomed in so individual data points can be seen
 
@@ -282,7 +282,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        private IntervalMinMax CalcInterval(int xPx, double offsetPoints, double columnPointCount, PlotDimensions dims)
+        private IntervalMinMax CalcInterval(int xPx, double offsetPoints, double columnPointCount, PlotDimensions2D dims)
         {
             int index1 = (int)(offsetPoints + columnPointCount * xPx);
             int index2 = (int)(offsetPoints + columnPointCount * (xPx + 1));
@@ -304,7 +304,7 @@ namespace ScottPlot.Plottable
             return new IntervalMinMax(xPx, yPxLow, yPxHigh);
         }
 
-        private void RenderHighDensity(PlotDimensions dims, Graphics gfx, double offsetPoints, double columnPointCount, Pen penHD)
+        private void RenderHighDensity(PlotDimensions2D dims, Graphics gfx, double offsetPoints, double columnPointCount, Pen penHD)
         {
             int xPxStart = (int)Math.Ceiling((-1 - offsetPoints + minRenderIndex) / columnPointCount - 1);
             int xPxEnd = (int)Math.Ceiling((maxRenderIndex - offsetPoints) / columnPointCount);
@@ -362,7 +362,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        private void FillAboveOrBelow(PlotDimensions dims, Graphics gfx, float xPxStart, float xPxEnd, PointF[] linePoints, FillType fillType)
+        private void FillAboveOrBelow(PlotDimensions2D dims, Graphics gfx, float xPxStart, float xPxEnd, PointF[] linePoints, FillType fillType)
         {
             if (fillType == FillType.FillAbove || fillType == FillType.FillBelow)
             {
@@ -419,7 +419,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        private void FillAboveAndBelow(PlotDimensions dims, Graphics gfx, float xPxStart, float xPxEnd, PointF[] linePoints, int baseline)
+        private void FillAboveAndBelow(PlotDimensions2D dims, Graphics gfx, float xPxStart, float xPxEnd, PointF[] linePoints, int baseline)
         {
             baseline = (int)dims.GetPixelY(baseline);
 
@@ -486,7 +486,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        private Rectangle GetFillRectangle(PlotDimensions dims, float startX, float xPxEnd, FillType fillType)
+        private Rectangle GetFillRectangle(PlotDimensions2D dims, float startX, float xPxEnd, FillType fillType)
         {
             float maxVal = (dims.DataHeight * (fillType == FillType.FillAbove ? -1 : 1));
 
@@ -495,7 +495,7 @@ namespace ScottPlot.Plottable
             return rectangle;
         }
 
-        private void RenderHighDensityDistributionParallel(PlotDimensions dims, Graphics gfx, double offsetPoints, double columnPointCount)
+        private void RenderHighDensityDistributionParallel(PlotDimensions2D dims, Graphics gfx, double offsetPoints, double columnPointCount)
         {
             int xPxStart = (int)Math.Ceiling((-1 - offsetPoints) / columnPointCount - 1);
             int xPxEnd = (int)Math.Ceiling((_ys.Length - offsetPoints) / columnPointCount);
@@ -602,7 +602,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public virtual void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public virtual void Render(PlotDimensions2D dims, Bitmap bmp, bool lowQuality = false)
         {
             using (var gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (var brush = GDI.Brush(color))

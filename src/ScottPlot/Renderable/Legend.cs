@@ -37,7 +37,7 @@ namespace ScottPlot.Renderable
         private float SymbolPad { get { return FontSize / 3; } }
         private float MarkerWidth { get { return FontSize / 2; } }
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions2D dims, Bitmap bmp, bool lowQuality = false)
         {
             if (IsVisible is false || LegendItems is null || LegendItems.Length == 0)
                 return;
@@ -171,7 +171,7 @@ namespace ScottPlot.Renderable
                 Array.Reverse(LegendItems);
         }
 
-        private (float x, float y) GetLocationPx(PlotDimensions dims, float width, float height)
+        private (float x, float y) GetLocationPx(PlotDimensions2D dims, float width, float height)
         {
             float leftX = dims.DataOffsetX + Padding;
             float rightX = dims.DataOffsetX + dims.DataWidth - Padding - width;

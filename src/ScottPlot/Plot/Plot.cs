@@ -85,7 +85,7 @@ namespace ScottPlot
             var figSize = new SizeF(settings.Width, settings.Height);
 
             // first-pass tick calculation based on full image size 
-            var dimsFull = new PlotDimensions(figSize, figSize, new PointF(0, 0), limits);
+            var dimsFull = new PlotDimensions2D(figSize, figSize, new PointF(0, 0), limits);
             foreach (var axis in settings.Axes)
             {
                 axis.RecalculateTickPositions(dimsFull);
@@ -99,7 +99,7 @@ namespace ScottPlot
             var dataSize = new SizeF(settings.DataWidth, settings.DataHeight);
             var dataOffset = new PointF(settings.DataOffsetX, settings.DataOffsetY);
 
-            var dims3 = new PlotDimensions(figSize, dataSize, dataOffset, limits);
+            var dims3 = new PlotDimensions2D(figSize, dataSize, dataOffset, limits);
             foreach (var axis in settings.Axes)
                 axis.RecalculateTickPositions(dims3);
 
@@ -131,7 +131,7 @@ namespace ScottPlot
             // auto-layout before every single frame
             LayoutAuto();
 
-            PlotDimensions dims = settings.GetPlotDimensions();
+            PlotDimensions2D dims = settings.GetPlotDimensions();
             RenderBeforePlottables(dims, bmp, lowQuality);
             RenderPlottables(dims, bmp, lowQuality);
             RenderAfterPlottables(dims, bmp, lowQuality);
@@ -140,7 +140,7 @@ namespace ScottPlot
             return bmp;
         }
 
-        private void RenderBeforePlottables(PlotDimensions dims, Bitmap bmp, bool lowQuality)
+        private void RenderBeforePlottables(PlotDimensions2D dims, Bitmap bmp, bool lowQuality)
         {
             settings.FigureBackground.Render(dims, bmp, lowQuality);
             settings.DataBackground.Render(dims, bmp, lowQuality);
@@ -158,7 +158,7 @@ namespace ScottPlot
             }
         }
 
-        private void RenderPlottables(PlotDimensions dims, Bitmap bmp, bool lowQuality)
+        private void RenderPlottables(PlotDimensions2D dims, Bitmap bmp, bool lowQuality)
         {
             var plottablesToRender = settings.Plottables.Where(x => x.IsVisible);
             foreach (var plottable in plottablesToRender)
@@ -174,7 +174,7 @@ namespace ScottPlot
             }
         }
 
-        private void RenderAfterPlottables(PlotDimensions dims, Bitmap bmp, bool lowQuality)
+        private void RenderAfterPlottables(PlotDimensions2D dims, Bitmap bmp, bool lowQuality)
         {
             settings.CornerLegend.UpdateLegendItems(Plottables);
             settings.CornerLegend.Render(dims, bmp, lowQuality);

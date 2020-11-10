@@ -1,9 +1,9 @@
-﻿namespace ScottPlot.Drawing
+﻿namespace ScottPlot
 {
     /// <summary>
     /// Immutable information about an axis and methods to provide pixel/unit conversions
     /// </summary>
-    public class AxisInfo
+    public class PlotDimensions1D
     {
         public readonly float FigureSize;
         public readonly float DataSize;
@@ -16,7 +16,7 @@
         public readonly double UnitsPerPx;
         public readonly bool IsInverted;
 
-        public AxisInfo(float figureSize, float dataSize, float dataOffset, double min, double max, bool isInverted)
+        public PlotDimensions1D(float figureSize, float dataSize, float dataOffset, double min, double max, bool isInverted)
         {
             FigureSize = figureSize;
             DataSize = dataSize;

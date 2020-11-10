@@ -138,7 +138,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions2D dims, Bitmap bmp, bool lowQuality = false)
         {
             PointF p1, p2;
             if (IsHorizontal)

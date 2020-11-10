@@ -80,7 +80,7 @@ namespace ScottPlot.Plottable
             return null;
         }
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions2D dims, Bitmap bmp, bool lowQuality = false)
         {
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (Pen backgroundPen = GDI.Pen(dataBackgroundColor))

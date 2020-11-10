@@ -42,12 +42,12 @@ namespace ScottPlot.Renderable
         public readonly AxisTicks Ticks = new AxisTicks();
         public readonly AxisLine Line = new AxisLine();
 
-        public void RecalculateTickPositions(PlotDimensions dims)
+        public void RecalculateTickPositions(PlotDimensions2D dims)
         {
             Ticks.TickCollection.Recalculate(dims, Ticks.MajorLabelFont);
         }
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions2D dims, Bitmap bmp, bool lowQuality = false)
         {
             if (IsVisible == false)
                 return;

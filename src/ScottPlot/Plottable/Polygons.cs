@@ -136,7 +136,7 @@ namespace ScottPlot.Plottable
             return (maxX - minX > smallerThenPixelX || maxY - minY > smallerThenPixelY);
         }
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions2D dims, Bitmap bmp, bool lowQuality = false)
         {
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (Brush brush = GDI.Brush(fillColor, fillAlpha))

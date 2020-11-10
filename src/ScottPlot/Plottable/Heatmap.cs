@@ -134,7 +134,7 @@ namespace ScottPlot.Plottable
             return null;
         }
 
-        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions2D dims, Bitmap bmp, bool lowQuality = false)
         {
             RenderHeatmap(dims, bmp, lowQuality);
             RenderScale(dims, bmp, lowQuality);
@@ -142,7 +142,7 @@ namespace ScottPlot.Plottable
                 RenderAxis(dims, bmp, lowQuality);
         }
 
-        private void RenderHeatmap(PlotDimensions dims, Bitmap bmp, bool lowQuality)
+        private void RenderHeatmap(PlotDimensions2D dims, Bitmap bmp, bool lowQuality)
         {
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             {
@@ -173,7 +173,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        private void RenderScale(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
+        private void RenderScale(PlotDimensions2D dims, Bitmap bmp, bool lowQuality = false)
         {
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (var pen = GDI.Pen(Color.Black))
@@ -197,7 +197,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        private void RenderAxis(PlotDimensions dims, Bitmap bmp, bool lowQuality)
+        private void RenderAxis(PlotDimensions2D dims, Bitmap bmp, bool lowQuality)
         {
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (Pen pen = GDI.Pen(Color.Black))

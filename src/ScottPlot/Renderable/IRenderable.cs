@@ -10,6 +10,6 @@ namespace ScottPlot.Renderable
     public interface IRenderable
     {
         bool IsVisible { get; set; }
-        void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false);
+        void Render(PlotDimensions2D dims, Bitmap bmp, bool lowQuality = false);
     }
 }
