@@ -1,4 +1,4 @@
-﻿namespace ScottPlot
+﻿namespace ScottPlot.Renderable
 {
     /* This class stores mutable limits for a single axis.
      * Unlike PlotDimensions (immutable objects created just before rendering),
