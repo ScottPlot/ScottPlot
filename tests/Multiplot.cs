@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using ScottPlot.Drawing;
+using ScottPlot;
 using System;
 
 namespace ScottPlotTests

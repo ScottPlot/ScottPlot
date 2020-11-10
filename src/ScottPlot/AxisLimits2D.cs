@@ -1,7 +1,9 @@
 ﻿using System;
 
-namespace ScottPlot.Drawing
+namespace ScottPlot
 {
+    // TODO: consider merging this with AxisDimensions
+
     /// <summary>
     /// A DTO to make it easy to pass a set of 2D axis limits
     /// </summary>

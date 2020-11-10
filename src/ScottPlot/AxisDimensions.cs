@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.Text;
-
-namespace ScottPlot
+﻿namespace ScottPlot
 {
     /* This class stores mutable limits for a single axis.
      * Unlike PlotDimensions (immutable objects created just before rendering),

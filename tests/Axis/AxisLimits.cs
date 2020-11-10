@@ -1,8 +1,6 @@
 ﻿using NUnit.Framework;
-using ScottPlot.Drawing;
+using ScottPlot;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ScottPlotTests.Axis
 {
