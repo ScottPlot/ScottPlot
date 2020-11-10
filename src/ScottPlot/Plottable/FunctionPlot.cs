@@ -27,7 +27,7 @@ namespace ScottPlot.Plottable
             this.function = function;
         }
 
-        public AxisLimits2D GetAxisLimits()
+        public (double xMin, double xMax, double yMin, double yMax) GetAxisLimits()
         {
             double max = double.NegativeInfinity;
             double min = double.PositiveInfinity;
@@ -42,8 +42,8 @@ namespace ScottPlot.Plottable
                 }
             }
 
-            // TODO: X limits should probably be null or NaN
-            return new AxisLimits2D(-10, 10, min, max);
+            // TODO: should X limits be null or NaN?
+            return (-10, 10, min, max);
         }
 
         public int PointCount { get; private set; }

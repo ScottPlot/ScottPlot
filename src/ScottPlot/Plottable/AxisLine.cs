@@ -34,10 +34,10 @@ namespace ScottPlot.Plottable
                 $"PlottableVLine{label} at X={position}";
         }
 
-        public AxisLimits2D GetAxisLimits() =>
+        public (double xMin, double xMax, double yMin, double yMax) GetAxisLimits() =>
             IsHorizontal ?
-            new AxisLimits2D(double.NaN, double.NaN, position, position) :
-            new AxisLimits2D(position, position, double.NaN, double.NaN);
+            (double.NaN, double.NaN, position, position) :
+            (position, position, double.NaN, double.NaN);
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {

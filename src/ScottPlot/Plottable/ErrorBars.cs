@@ -45,7 +45,7 @@ namespace ScottPlot.Plottable
             return $"PlottableErrorBars{label} with {PointCount} points";
         }
 
-        public AxisLimits2D GetAxisLimits()
+        public (double xMin, double xMax, double yMin, double yMax) GetAxisLimits()
         {
             double xMin = double.PositiveInfinity;
             double yMin = double.PositiveInfinity;
@@ -92,7 +92,7 @@ namespace ScottPlot.Plottable
                     yMax = Math.Max(yMax, Ys[i] + YErrorPositive[i]);
             }
 
-            return new AxisLimits2D(xMin, xMax, yMin, yMax);
+            return (xMin, xMax, yMin, yMax);
         }
 
         public LegendItem[] LegendItems

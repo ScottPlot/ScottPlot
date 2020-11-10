@@ -2,6 +2,9 @@
 
 namespace ScottPlot.Drawing
 {
+    /// <summary>
+    /// A DTO to make it easy to pass a set of 2D axis limits
+    /// </summary>
     public class AxisLimits2D
     {
         public double XMin { get; private set; }

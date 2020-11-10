@@ -35,7 +35,7 @@ namespace ScottPlot.Plottable
 
         public int PointCount { get => xs.Length; }
 
-        public AxisLimits2D GetAxisLimits()
+        public (double xMin, double xMax, double yMin, double yMax) GetAxisLimits()
         {
             double xMin = xs[0];
             double xMax = xs[0];
@@ -50,7 +50,7 @@ namespace ScottPlot.Plottable
                 yMax = Math.Max(yMax, ys[i]);
             }
 
-            return new AxisLimits2D(xMin, xMax, yMin, yMax);
+            return (xMin, xMax, yMin, yMax);
         }
 
         public LegendItem[] LegendItems

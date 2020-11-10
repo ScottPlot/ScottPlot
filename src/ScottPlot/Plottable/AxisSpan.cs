@@ -52,8 +52,8 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public AxisLimits2D GetAxisLimits() =>
-            IsHorizontal ? new AxisLimits2D(Min, Max, null, null) : new AxisLimits2D(null, null, Min, Max);
+        public (double xMin, double xMax, double yMin, double yMax) GetAxisLimits() =>
+            IsHorizontal ? (Min, Max, double.NaN, double.NaN) : (double.NaN, double.NaN, Min, Max);
 
         private double dragLimitX1 = double.NegativeInfinity;
         private double dragLimitX2 = double.PositiveInfinity;

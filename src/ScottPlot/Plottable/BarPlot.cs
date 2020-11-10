@@ -50,7 +50,7 @@ namespace ScottPlot.Plottable
             this.yOffsets = yOffsets ?? DataGen.Zeros(ys.Length);
         }
 
-        public AxisLimits2D GetAxisLimits()
+        public (double xMin, double xMax, double yMin, double yMax) GetAxisLimits()
         {
             double valueMin = double.PositiveInfinity;
             double valueMax = double.NegativeInfinity;
@@ -77,10 +77,9 @@ namespace ScottPlot.Plottable
             positionMin += xOffset;
             positionMax += xOffset;
 
-            if (verticalBars)
-                return new AxisLimits2D(positionMin, positionMax, valueMin, valueMax);
-            else
-                return new AxisLimits2D(valueMin, valueMax, positionMin, positionMax);
+            return verticalBars ?
+                (positionMin, positionMax, valueMin, valueMax) :
+                (valueMin, valueMax, positionMin, positionMax);
         }
 
         public string ErrorMessage(bool deepValidation = false)

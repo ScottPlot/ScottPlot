@@ -152,7 +152,7 @@ namespace ScottPlot
                 settings.XAxis2.Render(dims, bmp, lowQuality);
                 settings.YAxis2.Render(dims, bmp, lowQuality);
             }
-            catch (OverflowException ex)
+            catch (OverflowException)
             {
                 throw new InvalidOperationException("data cannot contain Infinity");
             }

@@ -30,7 +30,7 @@ namespace ScottPlot.Plottable
             return null;
         }
 
-        public AxisLimits2D GetAxisLimits() => new AxisLimits2D(x, x, y, y);
+        public (double xMin, double xMax, double yMin, double yMax) GetAxisLimits() => (x, x, y, y);
 
         private PointF TextLocation(PointF input)
         {

@@ -49,7 +49,7 @@ namespace ScottPlot.Plottable
         public int HorizontalAxisIndex { get; set; } = 0;
         public int VerticalAxisIndex { get; set; } = 0;
 
-        public AxisLimits2D GetAxisLimits()
+        public (double xMin, double xMax, double yMin, double yMax) GetAxisLimits()
         {
             double[] limits = new double[4];
             limits[0] = ohlcs[0].time;
@@ -75,7 +75,7 @@ namespace ScottPlot.Plottable
                 limits[1] = ohlcs.Length - 1;
             }
 
-            return new AxisLimits2D(limits[0], limits[1], limits[2], limits[3]);
+            return (limits[0], limits[1], limits[2], limits[3]);
         }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)

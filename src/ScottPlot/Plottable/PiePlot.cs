@@ -57,7 +57,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public AxisLimits2D GetAxisLimits() => new AxisLimits2D(-0.5, 0.5, -1, 1);
+        public (double xMin, double xMax, double yMin, double yMax) GetAxisLimits() => (-0.5, 0.5, -1, 1);
 
         public int PointCount { get => values.Length; }
 
@@ -93,7 +93,6 @@ namespace ScottPlot.Plottable
             {
                 double[] proportions = values.Select(x => x / values.Sum()).ToArray();
 
-                AxisLimits2D limits = GetAxisLimits();
                 double centreX = 0;
                 double centreY = 0;
                 float diameterPixels = .9f * Math.Min(dims.DataWidth, dims.DataHeight);

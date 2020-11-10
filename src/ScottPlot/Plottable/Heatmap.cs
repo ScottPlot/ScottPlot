@@ -117,10 +117,10 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public AxisLimits2D GetAxisLimits() =>
+        public (double xMin, double xMax, double yMin, double yMax) GetAxisLimits() =>
             ShowAxisLabels ?
-            new AxisLimits2D(-10, BmpHeatmap.Width, -5, BmpHeatmap.Height) :
-            new AxisLimits2D(-3, BmpHeatmap.Width, -3, BmpHeatmap.Height);
+            (-10, BmpHeatmap.Width, -5, BmpHeatmap.Height) :
+            (-3, BmpHeatmap.Width, -3, BmpHeatmap.Height);
 
         public int PointCount { get => NormalizedIntensities.Length; }
 

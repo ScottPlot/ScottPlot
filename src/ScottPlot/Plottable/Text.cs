@@ -77,7 +77,7 @@ namespace ScottPlot.Plottable
 
         public override string ToString() => $"PlottableText \"{text}\" at ({x}, {y})";
 
-        public AxisLimits2D GetAxisLimits() => new AxisLimits2D(x, x, y, y);
+        public (double xMin, double xMax, double yMin, double yMax) GetAxisLimits() => (x, x, y, y);
 
         public void Render(Settings settings) => throw new NotImplementedException("Use the other Render method");
 

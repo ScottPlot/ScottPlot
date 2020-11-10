@@ -159,11 +159,11 @@ namespace ScottPlot
             {
                 if (plottable is IUsesAxes plottableWithLimits)
                 {
-                    var plottableLimits = plottableWithLimits.GetAxisLimits();
+                    var (xMin, xMax, yMin, yMax) = plottableWithLimits.GetAxisLimits();
                     if (autoX)
-                        newLimits.Expand(plottableLimits.XMin, plottableLimits.XMax, null, null);
+                        newLimits.Expand(xMin, xMax, null, null);
                     if (autoY)
-                        newLimits.Expand(null, null, plottableLimits.YMin, plottableLimits.YMax);
+                        newLimits.Expand(null, null, yMin, yMax);
                 }
             }
 
