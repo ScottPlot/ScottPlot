@@ -12,7 +12,7 @@ namespace ScottPlot.Plottable
 {
 
 #pragma warning disable CS0618 // Type or member is obsolete
-    public class Heatmap : IRenderable, IHasAxisLimits, IValidatable
+    public class Heatmap : IRenderable, IUsesAxes, IValidatable
     {
         // these fields are updated when the intensities are analyzed
         private double[] NormalizedIntensities;
@@ -35,6 +35,8 @@ namespace ScottPlot.Plottable
         public bool DisplayImageAbove;
         public bool ShowAxisLabels;
         public bool IsVisible { get; set; } = true;
+        public int HorizontalAxisIndex { get; set; } = 0;
+        public int VerticalAxisIndex { get; set; } = 0;
 
         // call this externally if data changes
         public void UpdateData(double[,] intensities)
@@ -115,7 +117,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public AxisLimits2D GetLimits() =>
+        public AxisLimits2D GetAxisLimits() =>
             ShowAxisLabels ?
             new AxisLimits2D(-10, BmpHeatmap.Width, -5, BmpHeatmap.Height) :
             new AxisLimits2D(-3, BmpHeatmap.Width, -3, BmpHeatmap.Height);

@@ -9,9 +9,11 @@ using ScottPlot.Renderable;
 
 namespace ScottPlot.Plottable
 {
-    public class FunctionPlot : IRenderable, IHasLegendItems, IHasAxisLimits, IValidatable
+    public class FunctionPlot : IRenderable, IHasLegendItems, IUsesAxes, IValidatable
     {
         public Func<double, double?> function;
+        public int HorizontalAxisIndex { get; set; } = 0;
+        public int VerticalAxisIndex { get; set; } = 0;
 
         // TODO: Capitalize these fields
         public double lineWidth = 1;
@@ -25,7 +27,7 @@ namespace ScottPlot.Plottable
             this.function = function;
         }
 
-        public AxisLimits2D GetLimits()
+        public AxisLimits2D GetAxisLimits()
         {
             double max = double.NegativeInfinity;
             double min = double.PositiveInfinity;

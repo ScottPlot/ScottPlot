@@ -55,7 +55,7 @@ namespace ScottPlot.Plottable
 
         public new AxisLimits2D GetLimits()
         {
-            var limits = base.GetLimits();
+            var limits = base.GetAxisLimits();
             limits.Set(Convert.ToDouble(xs[minRenderIndex]), Convert.ToDouble(xs[maxRenderIndex]), null, null);
             return limits;
         }

@@ -62,6 +62,8 @@ namespace ScottPlot.Plottable
         /// </summary>
         public bool FontBold = false;
         public bool IsVisible { get; set; } = true;
+        public int HorizontalAxisIndex { get; set; } = 0;
+        public int VerticalAxisIndex { get; set; } = 0;
 
         public override string ToString() => $"PlottableScaleBar ({HorizontalLabel}={Width}, {VerticalLabel}={Height})";
 

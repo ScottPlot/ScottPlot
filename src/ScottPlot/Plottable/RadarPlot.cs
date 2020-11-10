@@ -8,7 +8,7 @@ using ScottPlot.Renderable;
 
 namespace ScottPlot.Plottable
 {
-    public class RadarPlot : IRenderable, IHasLegendItems, IHasAxisLimits, IValidatable
+    public class RadarPlot : IRenderable, IHasLegendItems, IUsesAxes, IValidatable
     {
         private readonly double[,] normalized;
         private readonly double normalizedMax;
@@ -18,6 +18,8 @@ namespace ScottPlot.Plottable
         public Color[] lineColors;
         public Color webColor;
         public bool IsVisible { get; set; } = true;
+        public int HorizontalAxisIndex { get; set; } = 0;
+        public int VerticalAxisIndex { get; set; } = 0;
 
         public RadarPlot(double[,] values, Color[] lineColors, Color[] fillColors)
         {
@@ -99,7 +101,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public AxisLimits2D GetLimits() => new AxisLimits2D(-1.5, 1.5, -1.5, 1.5);
+        public AxisLimits2D GetAxisLimits() => new AxisLimits2D(-1.5, 1.5, -1.5, 1.5);
 
         public int PointCount { get => normalized.Length; }
 

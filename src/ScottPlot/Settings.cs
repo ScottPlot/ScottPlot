@@ -157,9 +157,9 @@ namespace ScottPlot
 
             foreach (var plottable in Plottables)
             {
-                if (plottable is IHasAxisLimits plottableWithLimits)
+                if (plottable is IUsesAxes plottableWithLimits)
                 {
-                    var plottableLimits = plottableWithLimits.GetLimits();
+                    var plottableLimits = plottableWithLimits.GetAxisLimits();
                     if (autoX)
                         newLimits.Expand(plottableLimits.XMin, plottableLimits.XMax, null, null);
                     if (autoY)

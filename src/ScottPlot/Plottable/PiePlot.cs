@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace ScottPlot.Plottable
 {
-    public class PiePlot : IRenderable, IHasLegendItems, IHasAxisLimits, IValidatable
+    public class PiePlot : IRenderable, IHasLegendItems, IUsesAxes, IValidatable
     {
         public double[] values;
         public string label;
@@ -27,6 +27,8 @@ namespace ScottPlot.Plottable
         public float centerFontSize = 36;
         public Color centerTextColor = Color.Black;
         public bool IsVisible { get; set; } = true;
+        public int HorizontalAxisIndex { get; set; } = 0;
+        public int VerticalAxisIndex { get; set; } = 0;
 
         public PiePlot(double[] values, string[] groupNames, Color[] colors)
         {
@@ -55,7 +57,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public AxisLimits2D GetLimits() => new AxisLimits2D(-0.5, 0.5, -1, 1);
+        public AxisLimits2D GetAxisLimits() => new AxisLimits2D(-0.5, 0.5, -1, 1);
 
         public int PointCount { get => values.Length; }
 
@@ -91,7 +93,7 @@ namespace ScottPlot.Plottable
             {
                 double[] proportions = values.Select(x => x / values.Sum()).ToArray();
 
-                AxisLimits2D limits = GetLimits();
+                AxisLimits2D limits = GetAxisLimits();
                 double centreX = 0;
                 double centreY = 0;
                 float diameterPixels = .9f * Math.Min(dims.DataWidth, dims.DataHeight);

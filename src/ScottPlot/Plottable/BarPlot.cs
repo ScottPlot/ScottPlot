@@ -6,13 +6,15 @@ using System.Drawing;
 
 namespace ScottPlot.Plottable
 {
-    public class BarPlot : IRenderable, IHasLegendItems, IHasAxisLimits, IValidatable
+    public class BarPlot : IRenderable, IHasLegendItems, IUsesAxes, IValidatable
     {
         public double[] xs;
         public double xOffset;
         public double[] ys;
         public double[] yErr;
         public double[] yOffsets;
+        public int HorizontalAxisIndex { get; set; } = 0;
+        public int VerticalAxisIndex { get; set; } = 0;
 
         public bool fill = true;
         public Color fillColor = Color.Green;
@@ -48,7 +50,7 @@ namespace ScottPlot.Plottable
             this.yOffsets = yOffsets ?? DataGen.Zeros(ys.Length);
         }
 
-        public AxisLimits2D GetLimits()
+        public AxisLimits2D GetAxisLimits()
         {
             double valueMin = double.PositiveInfinity;
             double valueMax = double.NegativeInfinity;

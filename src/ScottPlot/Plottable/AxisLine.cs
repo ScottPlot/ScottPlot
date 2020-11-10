@@ -10,9 +10,12 @@ namespace ScottPlot.Plottable
 
     public class VLine : AxisLine { public VLine() { IsHorizontal = false; } }
 
-    public abstract class AxisLine : IRenderable, IDraggable, IHasLegendItems, IHasAxisLimits
+    public abstract class AxisLine : IRenderable, IDraggable, IHasLegendItems, IUsesAxes
     {
         public double position;
+        public int HorizontalAxisIndex { get; set; } = 0;
+        public int VerticalAxisIndex { get; set; } = 0;
+
         public LineStyle lineStyle = LineStyle.Solid;
         public float lineWidth = 1;
         public Color color = Color.Black;
@@ -31,7 +34,7 @@ namespace ScottPlot.Plottable
                 $"PlottableVLine{label} at X={position}";
         }
 
-        public AxisLimits2D GetLimits() =>
+        public AxisLimits2D GetAxisLimits() =>
             IsHorizontal ?
             new AxisLimits2D(double.NaN, double.NaN, position, position) :
             new AxisLimits2D(position, position, double.NaN, double.NaN);

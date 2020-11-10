@@ -8,7 +8,7 @@ using ScottPlot.Renderable;
 
 namespace ScottPlot.Plottable
 {
-    public class Polygons : IRenderable, IHasLegendItems, IHasAxisLimits, IValidatable
+    public class Polygons : IRenderable, IHasLegendItems, IUsesAxes, IValidatable
     {
         public readonly List<List<(double x, double y)>> polys;
         public string label;
@@ -19,6 +19,8 @@ namespace ScottPlot.Plottable
         public Color fillColor;
         public double fillAlpha;
         public bool IsVisible { get; set; } = true;
+        public int HorizontalAxisIndex { get; set; } = 0;
+        public int VerticalAxisIndex { get; set; } = 0;
 
         public bool SkipOffScreenPolygons = true;
         public bool RenderSmallPolygonsAsSinglePixels = true;
@@ -60,7 +62,7 @@ namespace ScottPlot.Plottable
 
         public int PointCount { get => polys.Count; }
 
-        public AxisLimits2D GetLimits()
+        public AxisLimits2D GetAxisLimits()
         {
             double xMin = polys[0][0].x;
             double xMax = polys[0][0].x;

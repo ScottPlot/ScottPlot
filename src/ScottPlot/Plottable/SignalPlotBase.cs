@@ -13,12 +13,14 @@ using System.Text;
 
 namespace ScottPlot.Plottable
 {
-    public class SignalPlotBase<T> : IRenderable, IHasLegendItems, IHasAxisLimits, IValidatable, IExportable where T : struct, IComparable
+    public class SignalPlotBase<T> : IRenderable, IHasLegendItems, IUsesAxes, IValidatable, IExportable where T : struct, IComparable
     {
         protected bool MaxRenderIndexLowerYSPromise = false;
         protected bool MaxRenderIndexHigherMinRenderIndexPromise = false;
         protected bool FillColor1MustBeSetPromise = false;
         protected bool FillColor2MustBeSetPromise = false;
+        public int HorizontalAxisIndex { get; set; } = 0;
+        public int VerticalAxisIndex { get; set; } = 0;
 
         protected IMinMaxSearchStrategy<T> minmaxSearchStrategy = new SegmentedTreeMinMaxSearchStrategy<T>();
         public bool IsVisible { get; set; } = true;
@@ -185,7 +187,7 @@ namespace ScottPlot.Plottable
             updateData(0, newData.Length, newData);
         }
 
-        public AxisLimits2D GetLimits()
+        public AxisLimits2D GetAxisLimits()
         {
             double[] limits = new double[4];
             limits[0] = minRenderIndex + xOffset;

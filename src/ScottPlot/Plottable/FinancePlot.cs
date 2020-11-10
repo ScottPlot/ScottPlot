@@ -6,7 +6,7 @@ using ScottPlot.Renderable;
 
 namespace ScottPlot.Plottable
 {
-    public class FinancePlot : IRenderable, IHasAxisLimits, IValidatable
+    public class FinancePlot : IRenderable, IUsesAxes, IValidatable
     {
         /// <summary>
         /// Array of prices (open high low close)
@@ -46,7 +46,10 @@ namespace ScottPlot.Plottable
 
         public int PointCount { get => ohlcs.Length; }
 
-        public AxisLimits2D GetLimits()
+        public int HorizontalAxisIndex { get; set; } = 0;
+        public int VerticalAxisIndex { get; set; } = 0;
+
+        public AxisLimits2D GetAxisLimits()
         {
             double[] limits = new double[4];
             limits[0] = ohlcs[0].time;

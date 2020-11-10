@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace ScottPlot.Plottable
 {
-    public class ErrorBars : IRenderable, IHasLegendItems, IHasAxisLimits, IValidatable
+    public class ErrorBars : IRenderable, IHasLegendItems, IUsesAxes, IValidatable
     {
         public readonly double[] Xs;
         public readonly double[] Ys;
@@ -15,6 +15,8 @@ namespace ScottPlot.Plottable
         public readonly double[] XErrorNegative;
         public readonly double[] YErrorPositive;
         public readonly double[] YErrorNegative;
+        public int HorizontalAxisIndex { get; set; } = 0;
+        public int VerticalAxisIndex { get; set; } = 0;
         public string label;
 
         public float CapSize = 3;
@@ -43,7 +45,7 @@ namespace ScottPlot.Plottable
             return $"PlottableErrorBars{label} with {PointCount} points";
         }
 
-        public AxisLimits2D GetLimits()
+        public AxisLimits2D GetAxisLimits()
         {
             double xMin = double.PositiveInfinity;
             double yMin = double.PositiveInfinity;

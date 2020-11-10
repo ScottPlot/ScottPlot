@@ -7,7 +7,7 @@ using System.Drawing;
 
 namespace ScottPlot.Plottable
 {
-    public class Text : IRenderable, IHasAxisLimits, IValidatable
+    public class Text : IRenderable, IUsesAxes, IValidatable
     {
         /// <summary>
         /// Horizontal position in coordinate space
@@ -67,6 +67,8 @@ namespace ScottPlot.Plottable
         public bool FontBold;
 
         public bool IsVisible { get; set; } = true;
+        public int HorizontalAxisIndex { get; set; } = 0;
+        public int VerticalAxisIndex { get; set; } = 0;
 
         /// <summary>
         /// The Text plot type displays a string at an X/Y position in coordinate space.
@@ -75,7 +77,7 @@ namespace ScottPlot.Plottable
 
         public override string ToString() => $"PlottableText \"{text}\" at ({x}, {y})";
 
-        public AxisLimits2D GetLimits() => new AxisLimits2D(x, x, y, y);
+        public AxisLimits2D GetAxisLimits() => new AxisLimits2D(x, x, y, y);
 
         public void Render(Settings settings) => throw new NotImplementedException("Use the other Render method");
 

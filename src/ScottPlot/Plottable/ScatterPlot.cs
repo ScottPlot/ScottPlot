@@ -11,12 +11,14 @@ using System.Text;
 
 namespace ScottPlot.Plottable
 {
-    public class ScatterPlot : IRenderable, IExportable, IHasLegendItems, IHasAxisLimits, IValidatable
+    public class ScatterPlot : IRenderable, IExportable, IHasLegendItems, IUsesAxes, IValidatable
     {
         public double[] xs;
         public double[] ys;
         public double[] errorX;
         public double[] errorY;
+        public int HorizontalAxisIndex { get; set; } = 0;
+        public int VerticalAxisIndex { get; set; } = 0;
         public bool FilterOutNansBeforeEveryRender = true;
 
         public double lineWidth = 1;
@@ -90,7 +92,7 @@ namespace ScottPlot.Plottable
             return $"PlottableScatter{label} with {PointCount} points";
         }
 
-        public AxisLimits2D GetLimits()
+        public AxisLimits2D GetAxisLimits()
         {
             double[] limits = new double[4];
 

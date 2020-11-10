@@ -10,7 +10,7 @@ using System.Linq;
 namespace ScottPlot.Plottable
 {
 #pragma warning disable CS0618 // Type or member is obsolete
-    public class VectorField : IRenderable, IHasLegendItems, IHasAxisLimits
+    public class VectorField : IRenderable, IHasLegendItems, IUsesAxes
     {
         private readonly Vector2[,] vectors;
         private readonly double[] xs;
@@ -18,6 +18,8 @@ namespace ScottPlot.Plottable
         private readonly Color[] arrowColors;
         public string label;
         public bool IsVisible { get; set; } = true;
+        public int HorizontalAxisIndex { get; set; } = 0;
+        public int VerticalAxisIndex { get; set; } = 0;
 
         public VectorField(Vector2[,] vectors, double[] xs, double[] ys, Colormap colormap, double scaleFactor, Color defaultColor)
         {
@@ -72,7 +74,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public AxisLimits2D GetLimits() =>
+        public AxisLimits2D GetAxisLimits() =>
             new AxisLimits2D(xs.Min() - 1, xs.Max() + 1, ys.Min() - 1, ys.Max() + 1);
 
         public int PointCount { get => vectors.Length; }

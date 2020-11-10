@@ -8,13 +8,15 @@ using ScottPlot.Statistics;
 
 namespace ScottPlot.Plottable
 {
-    public class PopulationPlot : IRenderable, IHasLegendItems, IHasAxisLimits
+    public class PopulationPlot : IRenderable, IHasLegendItems, IUsesAxes
     {
         public readonly PopulationMultiSeries popMultiSeries;
         public int groupCount { get { return popMultiSeries.groupCount; } }
         public int seriesCount { get { return popMultiSeries.seriesCount; } }
         public string[] labels { get { return popMultiSeries.seriesLabels; } }
         public bool IsVisible { get; set; } = true;
+        public int HorizontalAxisIndex { get; set; } = 0;
+        public int VerticalAxisIndex { get; set; } = 0;
 
         public enum DisplayItems { BoxOnly, BoxAndScatter, ScatterAndBox, ScatterOnly };
         public enum BoxStyle { BarMeanStDev, BarMeanStdErr, BoxMeanStdevStderr, BoxMedianQuartileOutlier, MeanAndStdev, MeanAndStderr };
@@ -76,7 +78,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public AxisLimits2D GetLimits()
+        public AxisLimits2D GetAxisLimits()
         {
             double minValue = double.PositiveInfinity;
             double maxValue = double.NegativeInfinity;

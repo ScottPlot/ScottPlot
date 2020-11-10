@@ -6,7 +6,7 @@ using ScottPlot.Renderable;
 
 namespace ScottPlot.Plottable
 {
-    public class Image : IRenderable, IHasAxisLimits, IValidatable
+    public class Image : IRenderable, IUsesAxes, IValidatable
     {
         public double x;
         public double y;
@@ -17,6 +17,8 @@ namespace ScottPlot.Plottable
         public int frameSize;
         public string label;
         public bool IsVisible { get; set; } = true;
+        public int HorizontalAxisIndex { get; set; } = 0;
+        public int VerticalAxisIndex { get; set; } = 0;
 
         public override string ToString() => $"PlottableImage Size(\"{image.Size}\") at ({x}, {y})";
 
@@ -28,7 +30,7 @@ namespace ScottPlot.Plottable
             return null;
         }
 
-        public AxisLimits2D GetLimits() => new AxisLimits2D(x, x, y, y);
+        public AxisLimits2D GetAxisLimits() => new AxisLimits2D(x, x, y, y);
 
         private PointF TextLocation(PointF input)
         {

@@ -6,7 +6,7 @@ using System.Drawing;
 
 namespace ScottPlot.Plottable
 {
-    public class Polygon : IRenderable, IHasLegendItems, IHasAxisLimits, IValidatable
+    public class Polygon : IRenderable, IHasLegendItems, IUsesAxes, IValidatable
     {
         public double[] xs;
         public double[] ys;
@@ -18,6 +18,8 @@ namespace ScottPlot.Plottable
         public Color fillColor = Color.Gray;
         public double fillAlpha = 0.5;
         public bool IsVisible { get; set; } = true;
+        public int HorizontalAxisIndex { get; set; } = 0;
+        public int VerticalAxisIndex { get; set; } = 0;
 
         public Polygon(double[] xs, double[] ys)
         {
@@ -33,7 +35,7 @@ namespace ScottPlot.Plottable
 
         public int PointCount { get => xs.Length; }
 
-        public AxisLimits2D GetLimits()
+        public AxisLimits2D GetAxisLimits()
         {
             double xMin = xs[0];
             double xMax = xs[0];

@@ -10,12 +10,14 @@ namespace ScottPlot.Plottable
     public class HSpan : AxisSpan { public HSpan() { IsHorizontal = true; } }
     public class VSpan : AxisSpan { public VSpan() { IsHorizontal = false; } }
 
-    public abstract class AxisSpan : IDraggable, IRenderable, IHasLegendItems, IHasAxisLimits
+    public abstract class AxisSpan : IDraggable, IRenderable, IHasLegendItems, IUsesAxes
     {
         public double position1;
         public double position2;
         private double Min { get => Math.Min(position1, position2); }
         private double Max { get => Math.Max(position1, position2); }
+        public int HorizontalAxisIndex { get; set; } = 0;
+        public int VerticalAxisIndex { get; set; } = 0;
 
         public Color color;
         public Color colorWithAlpha => Color.FromArgb((byte)(255 * alpha), color);
@@ -50,7 +52,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public AxisLimits2D GetLimits() =>
+        public AxisLimits2D GetAxisLimits() =>
             IsHorizontal ? new AxisLimits2D(Min, Max, null, null) : new AxisLimits2D(null, null, Min, Max);
 
         private double dragLimitX1 = double.NegativeInfinity;
