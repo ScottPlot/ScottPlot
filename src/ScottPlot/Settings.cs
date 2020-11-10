@@ -160,10 +160,26 @@ namespace ScottPlot
                 if (plottable is IUsesAxes plottableWithLimits)
                 {
                     var (xMin, xMax, yMin, yMax) = plottableWithLimits.GetAxisLimits();
-                    if (autoX)
-                        newLimits.Expand(xMin, xMax, null, null);
-                    if (autoY)
-                        newLimits.Expand(null, null, yMin, yMax);
+                    if (autoX && !double.IsNaN(xMin))
+                    {
+                        if (double.IsNaN(newLimits.XMin)) newLimits.XMin = xMin;
+                        newLimits.XMin = Math.Min(newLimits.XMin, xMin);
+                    }
+                    if (autoX && !double.IsNaN(xMax))
+                    {
+                        if (double.IsNaN(newLimits.XMax)) newLimits.XMax = xMax;
+                        newLimits.XMax = Math.Max(newLimits.XMax, xMax);
+                    }
+                    if (autoY && !double.IsNaN(yMin))
+                    {
+                        if (double.IsNaN(newLimits.YMin)) newLimits.YMin = yMin;
+                        newLimits.YMin = Math.Min(newLimits.YMin, yMin);
+                    }
+                    if (autoY && !double.IsNaN(yMax))
+                    {
+                        if (double.IsNaN(newLimits.YMax)) newLimits.YMax = yMax;
+                        newLimits.YMax = Math.Max(newLimits.YMax, yMax);
+                    }
                 }
             }
 
