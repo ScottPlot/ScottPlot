@@ -5,8 +5,8 @@ using System.Text;
 
 namespace ScottPlot
 {
-    /* This class stores dimensions for a single axis.
-     * Unlike PlotDimensions (which are created just before rendering),
+    /* This class stores mutable limits for a single axis.
+     * Unlike PlotDimensions (immutable objects created just before rendering),
      * values in this class are intended for long term storage.
      */
     public class AxisDimensions
