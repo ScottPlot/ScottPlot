@@ -11,7 +11,7 @@ namespace ScottPlotTests.Plot
         private (double xUnitsPerPixel, double yUnitsPerPixel) getUnitsPerPixel(ScottPlot.Plot plt)
         {
             plt.GetBitmap();
-            return (plt.GetSettings(false).Dims.UnitsPerPxX, plt.GetSettings(false).Dims.UnitsPerPxY);
+            return (plt.GetSettings(false).XAxis.Dims.UnitsPerPx, plt.GetSettings(false).YAxis.Dims.UnitsPerPx);
         }
 
         //[Test]

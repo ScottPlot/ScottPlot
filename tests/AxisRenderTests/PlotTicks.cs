@@ -35,9 +35,11 @@ namespace ScottPlotTests.AxisRenderTests
             var bothTicks = new MeanPixel(plt);
 
             plt.Ticks(displayTicksX: false);
+            TestTools.SaveFig(plt, "before");
             var yTicksOnly = new MeanPixel(plt);
 
             plt.Ticks(displayTicksY: false);
+            TestTools.SaveFig(plt, "after");
             var noTicks = new MeanPixel(plt);
 
             Assert.That(yTicksOnly.IsLighterThan(bothTicks));

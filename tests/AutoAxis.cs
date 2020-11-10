@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Microsoft.VisualStudio.TestPlatform.ObjectModel;
+using NUnit.Framework;
 using ScottPlot;
 using ScottPlot.Drawing;
 using System;
@@ -21,10 +22,9 @@ namespace ScottPlotTests
                 );
             plt.AxisAuto();
 
-            Assert.IsTrue(plt.GetSettings().Dims.YSpan > 0);
-            Assert.IsTrue(plt.GetSettings().Dims.XSpan > 0);
-
-            TestTools.SaveFig(plt);
+            var (xMin, xMax, yMin, yMax) = plt.AxisLimits();
+            Assert.Greater(xMax, xMin);
+            Assert.Greater(yMax, yMin);
         }
 
         [Test]
@@ -36,18 +36,21 @@ namespace ScottPlotTests
                 ys: new double[] { 1, 2 }
                 );
             plt.AxisAuto();
-            Assert.IsTrue(plt.GetSettings().Dims.YSpan > 0);
-            Assert.IsTrue(plt.GetSettings().Dims.XSpan > 0);
+
+            var (xMin, xMax, yMin, yMax) = plt.AxisLimits();
+            Assert.Greater(xMax, xMin);
+            Assert.Greater(yMax, yMin);
         }
 
         [Test]
         public void Test_AutoAxis_CandlestickSinglePoint()
         {
             var plt = new ScottPlot.Plot();
-            plt.PlotCandlestick(ScottPlot.DataGen.RandomStockPrices(rand: null, pointCount: 1));
-            plt.GetBitmap(); // force a render
-            Assert.IsTrue(plt.GetSettings().Dims.YSpan > 0);
-            Assert.IsTrue(plt.GetSettings().Dims.XSpan > 0);
+            plt.PlotCandlestick(DataGen.RandomStockPrices(rand: null, pointCount: 1));
+
+            var (xMin, xMax, yMin, yMax) = plt.AxisLimits();
+            Assert.Greater(xMax, xMin);
+            Assert.Greater(yMax, yMin);
         }
 
         [Test]
@@ -59,8 +62,10 @@ namespace ScottPlotTests
                 ys: new double[] { 1, 1 }
                 );
             plt.AxisAuto();
-            Assert.IsTrue(plt.GetSettings().Dims.YSpan > 0);
-            Assert.IsTrue(plt.GetSettings().Dims.XSpan > 0);
+
+            var (xMin, xMax, yMin, yMax) = plt.AxisLimits();
+            Assert.Greater(xMax, xMin);
+            Assert.Greater(yMax, yMin);
         }
 
         [Test]
@@ -72,9 +77,10 @@ namespace ScottPlotTests
                 ys: new double[] { 1, 2 }
                 );
             plt.AxisAuto();
-            Console.WriteLine(plt.GetSettings(false).Dims);
-            Assert.IsTrue(plt.GetSettings().Dims.YSpan > 0);
-            Assert.IsTrue(plt.GetSettings().Dims.XSpan > 0);
+
+            var (xMin, xMax, yMin, yMax) = plt.AxisLimits();
+            Assert.Greater(xMax, xMin);
+            Assert.Greater(yMax, yMin);
         }
 
         [Test]

@@ -3,12 +3,18 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Text;
 
 namespace ScottPlot
 {
     public partial class Plot
     {
+        public (double xMin, double xMax, double yMin, double yMax) AxisLimits()
+        {
+            (double xMin, double xMax) = settings.XAxis.Dims.RationalLimits();
+            (double yMin, double yMax) = settings.YAxis.Dims.RationalLimits();
+            return (xMin, xMax, yMin, yMax);
+        }
+
         /// <summary>
         /// Optionally set axis limits and return the latest limits
         /// </summary>
@@ -23,9 +29,9 @@ namespace ScottPlot
             if (someValuesAreNull && !settings.AxesHaveBeenSet)
                 settings.AxisAuto();
 
-            settings.Dims.SetAxis(x1, x2, y1, y2);
+            settings.AxisSet(x1, x2, y1, y2);
             settings.AxesHaveBeenSet = true;
-            return settings.Dims.LimitsArray;
+            return settings.AxisLimitsArray();
         }
 
         /// <summary>
@@ -36,7 +42,7 @@ namespace ScottPlot
             if ((axisLimits == null) || (axisLimits.Length != 4))
                 throw new ArgumentException("axis limits must contain 4 elements");
             Axis(axisLimits[0], axisLimits[1], axisLimits[2], axisLimits[3]);
-            return settings.Dims.LimitsArray;
+            return settings.AxisLimitsArray();
         }
 
         /// <summary>
@@ -65,16 +71,16 @@ namespace ScottPlot
             if (unitsPerPixelX != null)
             {
                 double spanX = unitsPerPixelX.Value * settings.DataWidth;
-                Axis(x1: settings.Dims.XCenter - spanX / 2, x2: settings.Dims.XCenter + spanX / 2);
+                Axis(x1: settings.XAxis.Dims.Center - spanX / 2, x2: settings.XAxis.Dims.Center + spanX / 2);
             }
 
             if (unitsPerPixelY != null)
             {
                 double spanY = unitsPerPixelY.Value * settings.DataHeight;
-                Axis(y1: settings.Dims.YCenter - spanY / 2, y2: settings.Dims.YCenter + spanY / 2);
+                Axis(y1: settings.YAxis.Dims.Center - spanY / 2, y2: settings.YAxis.Dims.Center + spanY / 2);
             }
 
-            return settings.Dims.LimitsArray;
+            return settings.AxisLimitsArray();
         }
 
         /// <summary>
@@ -83,10 +89,10 @@ namespace ScottPlot
         public double[] AxisEqual(bool preserveY = true)
         {
             if (preserveY)
-                AxisScale(unitsPerPixelX: settings.Dims.UnitsPerPxY);
+                AxisScale(unitsPerPixelX: settings.YAxis.Dims.UnitsPerPx);
             else
-                AxisScale(unitsPerPixelY: settings.Dims.UnitsPerPxX);
-            return settings.Dims.LimitsArray;
+                AxisScale(unitsPerPixelY: settings.XAxis.Dims.UnitsPerPx);
+            return settings.AxisLimitsArray();
         }
 
         public void AxisLockScalesTogether(bool enable)
@@ -117,7 +123,7 @@ namespace ScottPlot
             bool yExpandOnly = false)
         {
             settings.AxisAuto(horizontalMargin, verticalMargin, xExpandOnly, yExpandOnly);
-            return settings.Dims.LimitsArray;
+            return settings.AxisLimitsArray();
         }
 
         /// <summary>
@@ -155,14 +161,14 @@ namespace ScottPlot
                 settings.AxisAuto();
 
             if (zoomToX is null)
-                zoomToX = settings.Dims.XCenter;
+                zoomToX = settings.XAxis.Dims.Center;
 
             if (zoomToY is null)
-                zoomToY = settings.Dims.YCenter;
+                zoomToY = settings.YAxis.Dims.Center;
 
-            settings.Dims.ZoomX(xFrac, zoomToX);
-            settings.Dims.ZoomY(yFrac, zoomToY);
-            return settings.Dims.LimitsArray;
+            settings.XAxis.Dims.Zoom(xFrac, zoomToX);
+            settings.YAxis.Dims.Zoom(yFrac, zoomToY);
+            return settings.AxisLimitsArray();
         }
 
         /// <summary>
@@ -172,8 +178,9 @@ namespace ScottPlot
         {
             if (!settings.AxesHaveBeenSet)
                 settings.AxisAuto();
-            settings.Dims.Pan(dx, dy);
-            return settings.Dims.LimitsArray;
+            settings.XAxis.Dims.Pan(dx);
+            settings.XAxis.Dims.Pan(dy);
+            return settings.AxisLimitsArray();
         }
 
         /// <summary>
@@ -219,11 +226,11 @@ namespace ScottPlot
             if (!settings.AxesHaveBeenSet)
                 AxisAuto();
 
-            double x1 = horizontal ? sourcePlot.settings.Dims.XMin : settings.Dims.XMin;
-            double x2 = horizontal ? sourcePlot.settings.Dims.XMax : settings.Dims.YMax;
-            double y1 = vertical ? sourcePlot.settings.Dims.YMin : settings.Dims.YMin;
-            double y2 = vertical ? sourcePlot.settings.Dims.YMax : settings.Dims.YMax;
-            settings.Dims.SetAxis(x1, x2, y1, y2);
+            double x1 = horizontal ? sourcePlot.settings.XAxis.Dims.Min : settings.XAxis.Dims.Min;
+            double x2 = horizontal ? sourcePlot.settings.XAxis.Dims.Max : settings.XAxis.Dims.Max;
+            double y1 = vertical ? sourcePlot.settings.YAxis.Dims.Min : settings.YAxis.Dims.Min;
+            double y2 = vertical ? sourcePlot.settings.YAxis.Dims.Max : settings.YAxis.Dims.Max;
+            settings.AxisSet(x1, x2, y1, y2);
         }
     }
 }

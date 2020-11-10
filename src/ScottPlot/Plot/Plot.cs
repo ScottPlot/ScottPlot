@@ -15,7 +15,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
-using System.Runtime.InteropServices;
 
 namespace ScottPlot
 {
@@ -82,8 +81,8 @@ namespace ScottPlot
             // To solve this, start by assuming data area size == figure size, and layout padding == 0
 
             // axis limits shall not change
-            var limits = new AxisLimits2D(settings.Dims.XMin, settings.Dims.XMax, settings.Dims.YMin, settings.Dims.YMax);
-            var figSize = new SizeF(settings.Dims.Width, settings.Dims.Height);
+            var limits = new AxisLimits2D(settings.GetPlotDimensions().LimitsArray);
+            var figSize = new SizeF(settings.Width, settings.Height);
 
             // first-pass tick calculation based on full image size 
             var dimsFull = new PlotDimensions(figSize, figSize, new PointF(0, 0), limits);
@@ -97,8 +96,8 @@ namespace ScottPlot
             settings.TightenLayout();
 
             // now recalculate ticks based on new layout
-            var dataSize = new SizeF(settings.Dims.DataWidth, settings.Dims.DataHeight);
-            var dataOffset = new PointF(settings.Dims.DataOffsetX, settings.Dims.DataOffsetY);
+            var dataSize = new SizeF(settings.DataWidth, settings.DataHeight);
+            var dataOffset = new PointF(settings.DataOffsetX, settings.DataOffsetY);
 
             var dims3 = new PlotDimensions(figSize, dataSize, dataOffset, limits);
             foreach (var axis in settings.Axes)
@@ -132,9 +131,10 @@ namespace ScottPlot
             // auto-layout before every single frame
             LayoutAuto();
 
-            RenderBeforePlottables(settings.Dims, bmp, lowQuality);
-            RenderPlottables(settings.Dims, bmp, lowQuality);
-            RenderAfterPlottables(settings.Dims, bmp, lowQuality);
+            PlotDimensions dims = settings.GetPlotDimensions();
+            RenderBeforePlottables(dims, bmp, lowQuality);
+            RenderPlottables(dims, bmp, lowQuality);
+            RenderAfterPlottables(dims, bmp, lowQuality);
 
             RenderCount += 1;
             return bmp;
@@ -242,8 +242,8 @@ namespace ScottPlot
 
         public IDraggable GetDraggableUnderMouse(double pixelX, double pixelY, int snapDistancePixels = 5)
         {
-            double snapWidth = GetSettings(false).Dims.UnitsPerPxX * snapDistancePixels;
-            double snapHeight = GetSettings(false).Dims.UnitsPerPxY * snapDistancePixels;
+            double snapWidth = GetSettings(false).XAxis.Dims.UnitsPerPx * snapDistancePixels;
+            double snapHeight = GetSettings(false).YAxis.Dims.UnitsPerPx * snapDistancePixels;
 
             foreach (IDraggable draggable in GetDraggables())
                 if (draggable.IsUnderMouse(CoordinateFromPixelX(pixelX), CoordinateFromPixelY(pixelY), snapWidth, snapHeight))

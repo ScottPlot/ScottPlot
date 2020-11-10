@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace ScottPlot
@@ -10,10 +11,10 @@ namespace ScottPlot
      */
     public class AxisDimensions
     {
-        public float FigureSize { get; private set; }
-        public float DataSize { get; private set; }
-        public float DataOffset { get; private set; }
-        public bool IsInverted { get; private set; }
+        public float FigureSizePx { get; private set; }
+        public float DataSizePx { get; private set; }
+        public float DataOffsetPx { get; private set; }
+        public readonly bool IsInverted;
 
         public double Min { get; private set; } = double.NaN;
         public double Max { get; private set; } = double.NaN;
@@ -21,8 +22,8 @@ namespace ScottPlot
 
         public double Span => Max - Min;
         public double Center => (Max + Min) / 2;
-        public double PxPerUnit => DataSize / Span;
-        public double UnitsPerPx => Span / DataSize;
+        public double PxPerUnit => DataSizePx / Span;
+        public double UnitsPerPx => Span / DataSizePx;
 
         public (double min, double max) RationalLimits()
         {
@@ -37,15 +38,15 @@ namespace ScottPlot
             Max = double.NaN;
         }
 
-        public void Resize(float newFigureSize)
+        public void Resize(float figureSizePx)
         {
-            FigureSize = newFigureSize;
+            FigureSizePx = figureSizePx;
         }
 
         public void SetPadding(float padBelow, float padAfter)
         {
-            DataOffset = padBelow;
-            DataSize = FigureSize - padBelow - padAfter;
+            DataOffsetPx = padBelow;
+            DataSizePx = FigureSizePx - padBelow - padAfter;
         }
 
         public void SetAxis(double? min, double? max)
@@ -74,20 +75,20 @@ namespace ScottPlot
             Max = zoomTo.Value + spanRight / frac;
         }
 
-        public float GetPixel(float unit)
+        public float GetPixel(double unit)
         {
             if (IsInverted)
             {
                 double unitsFromMin = unit - Min;
                 double pxFromMin = unitsFromMin * PxPerUnit;
-                double pixel = DataOffset + pxFromMin;
+                double pixel = DataOffsetPx + pxFromMin;
                 return (float)pixel;
             }
             else
             {
                 double unitsFromMax = Max - unit;
                 double pxFromMax = unitsFromMax * PxPerUnit;
-                double pixel = DataOffset + pxFromMax;
+                double pixel = DataOffsetPx + pxFromMax;
                 return (float)pixel;
             }
         }
@@ -96,11 +97,11 @@ namespace ScottPlot
         {
             if (IsInverted)
             {
-                return (pixel - DataOffset) / PxPerUnit + Min;
+                return DataSizePx - ((pixel - Min) * PxPerUnit);
             }
             else
             {
-                return DataSize - ((pixel - Min) * PxPerUnit);
+                return (pixel - DataOffsetPx) / PxPerUnit + Min;
             }
         }
     }

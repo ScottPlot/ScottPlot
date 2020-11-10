@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using ScottPlot.Drawing;
 using System.Globalization;
+using System.Diagnostics;
 
 namespace ScottPlot
 {
@@ -15,15 +16,14 @@ namespace ScottPlot
     /// </summary>
     public class Settings
     {
-        public readonly PlotDimensions Dims = new PlotDimensions();
         public bool AxesHaveBeenSet = false;
 
-        public int Width => (int)Dims.Width;
-        public int Height => (int)Dims.Height;
-        public float DataOffsetX => Dims.DataOffsetX;
-        public float DataOffsetY => Dims.DataOffsetY;
-        public float DataWidth => Dims.DataWidth;
-        public float DataHeight => Dims.DataHeight;
+        public int Width => (int)XAxis.Dims.FigureSizePx;
+        public int Height => (int)YAxis.Dims.FigureSizePx;
+        public float DataOffsetX => XAxis.Dims.DataOffsetPx;
+        public float DataOffsetY => YAxis.Dims.DataOffsetPx;
+        public float DataWidth => XAxis.Dims.DataSizePx;
+        public float DataHeight => YAxis.Dims.DataSizePx;
 
         /// <summary>
         /// Adjust data padding based on axis size
@@ -34,7 +34,8 @@ namespace ScottPlot
             float padRight = Axes.Where(x => x.Edge == Edge.Right).Select(x => x.PixelSize).Sum();
             float padBottom = Axes.Where(x => x.Edge == Edge.Bottom).Select(x => x.PixelSize).Sum();
             float padTop = Axes.Where(x => x.Edge == Edge.Top).Select(x => x.PixelSize).Sum();
-            Dims.ResizeDataWithPadding(padLeft, padRight, padBottom, padTop);
+            XAxis.Dims.SetPadding(padLeft, padRight);
+            YAxis.Dims.SetPadding(padTop, padBottom);
         }
 
         // plottables
@@ -69,24 +70,60 @@ namespace ScottPlot
          * 
          */
 
-        public double GetPixelX(double locationX) => Dims.GetPixelX(locationX);
-        public double GetPixelY(double locationY) => Dims.GetPixelY(locationY);
+        public double GetPixelX(double locationX) => XAxis.Dims.GetPixel(locationX);
+        public double GetPixelY(double locationY) => YAxis.Dims.GetPixel(locationY);
         public PointF GetPixel(double locationX, double locationY) => new PointF((float)GetPixelX(locationX), (float)GetPixelY(locationY));
 
-        public double GetLocationX(double pixelX) => Dims.GetCoordinateX((float)pixelX);
-        public double GetLocationY(double pixelY) => Dims.GetCoordinateY((float)pixelY);
+        public double GetLocationX(double pixelX) => XAxis.Dims.GetUnit((float)pixelX);
+        public double GetLocationY(double pixelY) => YAxis.Dims.GetUnit((float)pixelY);
         public PointF GetLocation(double pixelX, double pixelY) => new PointF((float)GetLocationX(pixelX), (float)GetLocationY(pixelY));
 
-        public void Resize(int width, int height) => Dims.Resize(width, height);
+        public PlotDimensions GetPlotDimensions()
+        {
+            (double xMin, double xMax) = XAxis.Dims.RationalLimits();
+            (double yMin, double yMax) = YAxis.Dims.RationalLimits();
+            return new PlotDimensions(
+                figureSize: new SizeF(XAxis.Dims.FigureSizePx, YAxis.Dims.FigureSizePx),
+                dataSize: new SizeF(XAxis.Dims.DataSizePx, YAxis.Dims.DataSizePx),
+                dataOffset: new PointF(XAxis.Dims.DataOffsetPx, YAxis.Dims.DataOffsetPx),
+                axisLimits: new AxisLimits2D(xMin, xMax, yMin, yMax));
+        }
 
-        public void AxesPanPx(int dxPx, int dyPx) => Dims.PanPx(dxPx, dyPx);
+        public void Resize(int width, int height)
+        {
+            XAxis.Dims.Resize(width);
+            YAxis.Dims.Resize(height);
+        }
+
+        public void ResetAxes()
+        {
+            XAxis.Dims.ResetLimits();
+            YAxis.Dims.ResetLimits();
+        }
+
+        public void AxisSet(double? xMin, double? xMax, double? yMin, double? yMax)
+        {
+            XAxis.Dims.SetAxis(xMin, xMax);
+            YAxis.Dims.SetAxis(yMin, yMax);
+        }
+
+        public double[] AxisLimitsArray()
+        {
+            return new double[] { XAxis.Dims.Min, XAxis.Dims.Max, YAxis.Dims.Min, YAxis.Dims.Max };
+        }
+
+        public void AxesPanPx(int dxPx, int dyPx)
+        {
+            XAxis.Dims.PanPx(dxPx);
+            YAxis.Dims.PanPx(dyPx);
+        }
 
         public void AxesZoomPx(int xPx, int yPx, bool lockRatio = false)
         {
-            double dX = xPx * Dims.UnitsPerPxX;
-            double dY = yPx * Dims.UnitsPerPxY;
-            double dXFrac = dX / (Math.Abs(dX) + Dims.XSpan);
-            double dYFrac = dY / (Math.Abs(dY) + Dims.YSpan);
+            double dX = xPx * XAxis.Dims.UnitsPerPx;
+            double dY = yPx * YAxis.Dims.UnitsPerPx;
+            double dXFrac = dX / (Math.Abs(dX) + XAxis.Dims.Span);
+            double dYFrac = dY / (Math.Abs(dY) + YAxis.Dims.Span);
 
             // TODO: equal axes
             /*
@@ -105,7 +142,8 @@ namespace ScottPlot
             }
             */
 
-            Dims.Zoom(Math.Pow(10, dXFrac), Math.Pow(10, dYFrac));
+            XAxis.Dims.Zoom(Math.Pow(10, dXFrac));
+            YAxis.Dims.Zoom(Math.Pow(10, dYFrac));
         }
 
         public void AxisAuto(
@@ -114,7 +152,7 @@ namespace ScottPlot
             bool autoX = true, bool autoY = true
             )
         {
-            var oldLimits = new AxisLimits2D(Dims.XMin, Dims.XMax, Dims.YMin, Dims.YMax);
+            var oldLimits = new AxisLimits2D(XAxis.Dims.Min, XAxis.Dims.Max, YAxis.Dims.Min, YAxis.Dims.Max);
             var newLimits = new AxisLimits2D();
 
             foreach (var plottable in Plottables)
@@ -145,15 +183,26 @@ namespace ScottPlot
             */
 
             if (xExpandOnly)
-                Dims.SetAxis(newLimits.XMin, newLimits.XMax, oldLimits.YMin, oldLimits.YMax);
+            {
+                XAxis.Dims.SetAxis(newLimits.XMin, newLimits.XMax);
+                YAxis.Dims.SetAxis(oldLimits.YMin, oldLimits.YMax);
+            }
             else if (yExpandOnly)
-                Dims.SetAxis(oldLimits.XMin, oldLimits.XMax, newLimits.YMin, newLimits.YMax);
+            {
+                XAxis.Dims.SetAxis(oldLimits.XMin, oldLimits.XMax);
+                YAxis.Dims.SetAxis(newLimits.YMin, newLimits.YMax);
+            }
             else
-                Dims.SetAxis(newLimits.XMin, newLimits.XMax, newLimits.YMin, newLimits.YMax);
+            {
+                XAxis.Dims.SetAxis(newLimits.XMin, newLimits.XMax);
+                YAxis.Dims.SetAxis(newLimits.YMin, newLimits.YMax);
+            }
 
             double zoomFracX = yExpandOnly ? 1 : 1 - horizontalMargin;
             double zoomFracY = xExpandOnly ? 1 : 1 - verticalMargin;
-            Dims.Zoom(zoomFracX, zoomFracY);
+
+            XAxis.Dims.Zoom(zoomFracX);
+            YAxis.Dims.Zoom(zoomFracY);
 
             AxesHaveBeenSet = Plottables.Count > 0;
         }
