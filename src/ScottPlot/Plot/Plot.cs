@@ -81,7 +81,8 @@ namespace ScottPlot
             // To solve this, start by assuming data area size == figure size, and layout padding == 0
 
             // axis limits shall not change
-            var limits = new AxisLimits2D(settings.GetPlotDimensions().LimitsArray);
+            var dims = settings.GetPlotDimensions();
+            var limits = new AxisLimits2D(dims.XMin, dims.XMax, dims.YMin, dims.YMax);
             var figSize = new SizeF(settings.Width, settings.Height);
 
             // first-pass tick calculation based on full image size 
