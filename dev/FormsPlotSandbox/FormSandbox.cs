@@ -20,14 +20,30 @@ namespace FormsPlotSandbox
 
         private void FormSandbox_Load(object sender, EventArgs e)
         {
-            formsPlot1.plt.PlotSignal(DataGen.Sin(51));
-            formsPlot1.plt.PlotSignal(DataGen.Cos(51));
+            Random rand = new Random(0);
+            var plt1 = formsPlot1.plt.PlotScatter(DataGen.Consecutive(100), DataGen.RandomWalk(rand, 100));
+            var plt2 = formsPlot1.plt.PlotScatter(DataGen.Consecutive(100), DataGen.RandomWalk(rand, 100, 10));
+            plt2.VerticalAxisIndex = 1;
 
-            formsPlot1.plt.Ticks(false, false);
-            formsPlot1.plt.Frame(false);
-            formsPlot1.plt.LayoutFrameless();
-            formsPlot1.Configure(recalculateLayoutOnMouseUp: false);
-            formsPlot1.plt.Style(Style.Gray2);
+            // TODO: figure out a simpler way to expose these objects
+            formsPlot1.plt.GetSettings(false).YAxis.Title.Label = "Primary Vertical Axis";
+
+            formsPlot1.plt.GetSettings(false).YAxis2.Title.Label = "Secondary Vertical Axis";
+            formsPlot1.plt.GetSettings(false).YAxis2.Title.IsVisible = true;
+            formsPlot1.plt.GetSettings(false).YAxis2.Ticks.MajorTickEnable = true;
+            formsPlot1.plt.GetSettings(false).YAxis2.Ticks.MinorTickEnable = true;
+            formsPlot1.plt.GetSettings(false).YAxis2.Ticks.MajorLabelEnable = true;
+
+            formsPlot1.plt.GetSettings(false).XAxis.Title.Label = "Primary Horizontal Axis";
+            formsPlot1.plt.GetSettings(false).XAxis.Ticks.MajorTickEnable = true;
+            formsPlot1.plt.GetSettings(false).XAxis.Ticks.MinorTickEnable = true;
+            formsPlot1.plt.GetSettings(false).XAxis.Ticks.MajorLabelEnable = true;
+
+            formsPlot1.plt.GetSettings(false).XAxis2.Title.Label = "Multiple Axes";
+            formsPlot1.plt.GetSettings(false).XAxis2.Ticks.MajorTickEnable = true;
+            formsPlot1.plt.GetSettings(false).XAxis2.Ticks.MinorTickEnable = true;
+            formsPlot1.plt.GetSettings(false).XAxis2.Ticks.MajorLabelEnable = true;
+
 
             formsPlot1.Render();
         }
