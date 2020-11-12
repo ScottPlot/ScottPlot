@@ -15,6 +15,7 @@
         public DefaultTopAxis()
         {
             Edge = Edge.Top;
+            AxisIndex = 1;
             PixelSize = 40;
             Title.Font.Bold = true;
             Title.IsVisible = true;
@@ -41,6 +42,7 @@
         public DefaultRightAxis()
         {
             Edge = Edge.Right;
+            AxisIndex = 1;
             PixelSize = 60;
 
             Ticks.MajorTickEnable = false;

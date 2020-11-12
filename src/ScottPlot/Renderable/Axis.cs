@@ -15,7 +15,7 @@ namespace ScottPlot.Renderable
     public class Axis : IRenderable
     {
         public readonly AxisDimensions Dims = new AxisDimensions();
-
+        public int AxisIndex = 1;
         private Edge _Edge;
         public Edge Edge
         {
