@@ -32,11 +32,5 @@ namespace ScottPlot
             settings.CornerLegend.FixedLineWidth = fixedLineWidth ?? settings.CornerLegend.FixedLineWidth;
             settings.CornerLegend.Location = location;
         }
-
-        public Bitmap GetLegendBitmap(bool lowQuality = false)
-        {
-            RenderBitmap(lowQuality);
-            return settings.CornerLegend.GetBitmap();
-        }
     }
 }
