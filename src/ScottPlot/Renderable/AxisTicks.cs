@@ -164,7 +164,7 @@ namespace ScottPlot.Renderable
                 }
                 else if (Edge == Edge.Top)
                 {
-                    sf.Alignment = RulerMode ? StringAlignment.Near : StringAlignment.Far;
+                    sf.Alignment = RulerMode ? StringAlignment.Near : StringAlignment.Center;
                     sf.LineAlignment = StringAlignment.Far;
                     for (int i = 0; i < TickCollection.tickPositionsMajor.Length; i++)
                         gfx.DrawString(TickCollection.tickLabels[i], font, brush, format: sf,
