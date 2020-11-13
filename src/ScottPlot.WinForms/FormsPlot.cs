@@ -204,6 +204,7 @@ namespace ScottPlot
         ToolTip tooltip = new ToolTip();
         private Point? mouseLeftDownLocation, mouseRightDownLocation, mouseMiddleDownLocation;
         double[] axisLimitsOnMouseDown;
+        double[] axisLimitsOnMouseDown2;
         private bool isPanningOrZooming
         {
             get
@@ -243,7 +244,8 @@ namespace ScottPlot
                 else if (e.Button == MouseButtons.Left && enablePanning) mouseLeftDownLocation = e.Location;
                 else if (e.Button == MouseButtons.Right && enableRightClickZoom) mouseRightDownLocation = e.Location;
                 else if (e.Button == MouseButtons.Middle && enableScrollWheelZoom) mouseMiddleDownLocation = e.Location;
-                axisLimitsOnMouseDown = plt.Axis();
+                axisLimitsOnMouseDown = plt.Axis(xAxisIndex: 0, yAxisIndex: 0);
+                axisLimitsOnMouseDown2 = plt.Axis(xAxisIndex: 1, yAxisIndex: 1);
             }
             else
             {
@@ -278,6 +280,7 @@ namespace ScottPlot
         private void MouseMovedToPanOrZoom(MouseEventArgs e)
         {
             plt.Axis(axisLimitsOnMouseDown);
+            plt.Axis(axisLimitsOnMouseDown2, xAxisIndex: 1, yAxisIndex: 1);
 
             if (mouseLeftDownLocation != null)
             {

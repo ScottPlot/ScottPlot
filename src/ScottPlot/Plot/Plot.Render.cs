@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot.Renderable;
+using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -25,6 +26,15 @@ namespace ScottPlot
         private Bitmap RenderBitmap(Bitmap bmp, bool lowQuality)
         {
             settings.BenchmarkMessage.Restart();
+
+            // copy plot dimensions from primary axis to all others
+            foreach (Axis axis in settings.Axes)
+            {
+                if (axis.IsHorizontal)
+                    axis.Dims.Resize(settings.Width, settings.DataWidth, settings.DataOffsetX);
+                else
+                    axis.Dims.Resize(settings.Height, settings.DataHeight, settings.DataOffsetY);
+            }
 
             // pre-render axis adjustments
             if (!settings.AllAxesHaveBeenSet)

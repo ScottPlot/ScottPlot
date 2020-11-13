@@ -34,9 +34,11 @@
             HasBeenSet = false;
         }
 
-        public void Resize(float figureSizePx)
+        public void Resize(float figureSizePx, float? dataSizePx = null, float? dataOffsetPx = null)
         {
             FigureSizePx = figureSizePx;
+            DataSizePx = dataSizePx ?? DataSizePx;
+            DataOffsetPx = dataOffsetPx ?? DataOffsetPx;
         }
 
         public void SetPadding(float padBelow, float padAfter)

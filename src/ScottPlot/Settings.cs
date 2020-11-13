@@ -124,51 +124,37 @@ namespace ScottPlot
             }
         }
 
-        public double[] AxisLimitsArray()
+        public double[] AxisLimitsArray(int xAxisIndex, int yAxisIndex)
         {
-            return new double[] { XAxis.Dims.Min, XAxis.Dims.Max, YAxis.Dims.Min, YAxis.Dims.Max };
+            Axis xAxis = Axes.Where(x => x.IsHorizontal && x.AxisIndex == xAxisIndex).First();
+            Axis yAxis = Axes.Where(x => x.IsVertical && x.AxisIndex == yAxisIndex).First();
+            return new double[] { xAxis.Dims.Min, xAxis.Dims.Max, yAxis.Dims.Min, yAxis.Dims.Max };
         }
 
         public void AxesPanPx(int dxPx, int dyPx)
         {
-            XAxis.Dims.PanPx(dxPx);
-            YAxis.Dims.PanPx(dyPx);
+            foreach (Axis axis in Axes)
+                axis.Dims.PanPx(axis.IsHorizontal ? dxPx : dyPx);
         }
 
         public void AxesZoomPx(int xPx, int yPx, bool lockRatio = false)
         {
-            double dX = xPx * XAxis.Dims.UnitsPerPx;
-            double dY = yPx * YAxis.Dims.UnitsPerPx;
-            double dXFrac = dX / (Math.Abs(dX) + XAxis.Dims.Span);
-            double dYFrac = dY / (Math.Abs(dY) + YAxis.Dims.Span);
-
             // TODO: equal axes
-            /*
-            if (axes.equalAxes)
+            foreach (Axis axis in Axes)
             {
-                double zoomValue = dX + dY; // NE - max zoomIn, SW - max ZoomOut, NW and SE - 0 zoomValue
-                double zoomFrac = zoomValue / (Math.Abs(zoomValue) + axes.x.span);
-                dXFrac = zoomFrac;
-                dYFrac = zoomFrac;
+                double deltaPx = axis.IsHorizontal ? xPx : yPx;
+                double delta = deltaPx * axis.Dims.UnitsPerPx;
+                double deltaFrac = delta / (Math.Abs(delta) + axis.Dims.Span);
+                axis.Dims.Zoom(Math.Pow(10, deltaFrac));
             }
-            if (lockRatio)
-            {
-                double meanFrac = (dXFrac + dYFrac) / 2;
-                dXFrac = meanFrac;
-                dYFrac = meanFrac;
-            }
-            */
-
-            XAxis.Dims.Zoom(Math.Pow(10, dXFrac));
-            YAxis.Dims.Zoom(Math.Pow(10, dYFrac));
         }
 
         public void AxisAuto(
-            double horizontalMargin = .1, 
+            double horizontalMargin = .1,
             double verticalMargin = .1,
-            bool xExpandOnly = false, 
+            bool xExpandOnly = false,
             bool yExpandOnly = false,
-            bool autoX = true, 
+            bool autoX = true,
             bool autoY = true,
             int xAxisIndex = 0,
             int yAxisIndex = 0
