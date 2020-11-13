@@ -22,15 +22,16 @@ namespace ScottPlot
             double? x1 = null,
             double? x2 = null,
             double? y1 = null,
-            double? y2 = null
+            double? y2 = null,
+            int xAxisIndex = 0,
+            int yAxisIndex = 0
             )
         {
             bool someValuesAreNull = (x1 == null) || (x2 == null) || (y1 == null) || (y2 == null);
-            if (someValuesAreNull && !settings.AxesHaveBeenSet)
+            if (someValuesAreNull && !settings.AllAxesHaveBeenSet)
                 settings.AxisAuto();
 
-            settings.AxisSet(x1, x2, y1, y2);
-            settings.AxesHaveBeenSet = true;
+            settings.AxisSet(x1, x2, y1, y2, xAxisIndex, yAxisIndex);
             return settings.AxisLimitsArray();
         }
 
@@ -131,7 +132,7 @@ namespace ScottPlot
         /// </summary>
         public double[] AxisAutoX(double margin = .05, bool expandOnly = false)
         {
-            if (settings.AxesHaveBeenSet == false)
+            if (settings.AllAxesHaveBeenSet == false)
                 AxisAuto();
 
             double[] originalLimits = Axis();
@@ -144,7 +145,7 @@ namespace ScottPlot
         /// </summary>
         public double[] AxisAutoY(double margin = .1, bool expandOnly = false)
         {
-            if (settings.AxesHaveBeenSet == false)
+            if (settings.AllAxesHaveBeenSet == false)
                 AxisAuto();
 
             double[] originalLimits = Axis();
@@ -157,7 +158,7 @@ namespace ScottPlot
         /// </summary>
         public double[] AxisZoom(double xFrac = 1, double yFrac = 1, double? zoomToX = null, double? zoomToY = null)
         {
-            if (!settings.AxesHaveBeenSet)
+            if (!settings.AllAxesHaveBeenSet)
                 settings.AxisAuto();
 
             if (zoomToX is null)
@@ -176,7 +177,7 @@ namespace ScottPlot
         /// </summary>
         public double[] AxisPan(double dx = 0, double dy = 0)
         {
-            if (!settings.AxesHaveBeenSet)
+            if (!settings.AllAxesHaveBeenSet)
                 settings.AxisAuto();
             settings.XAxis.Dims.Pan(dx);
             settings.XAxis.Dims.Pan(dy);
@@ -220,17 +221,17 @@ namespace ScottPlot
         /// </summary>
         public void MatchAxis(Plot sourcePlot, bool horizontal = true, bool vertical = true)
         {
-            if (!sourcePlot.GetSettings(showWarning: false).AxesHaveBeenSet)
+            if (!sourcePlot.GetSettings(showWarning: false).AllAxesHaveBeenSet)
                 sourcePlot.AxisAuto();
 
-            if (!settings.AxesHaveBeenSet)
+            if (!settings.AllAxesHaveBeenSet)
                 AxisAuto();
 
             double x1 = horizontal ? sourcePlot.settings.XAxis.Dims.Min : settings.XAxis.Dims.Min;
             double x2 = horizontal ? sourcePlot.settings.XAxis.Dims.Max : settings.XAxis.Dims.Max;
             double y1 = vertical ? sourcePlot.settings.YAxis.Dims.Min : settings.YAxis.Dims.Min;
             double y2 = vertical ? sourcePlot.settings.YAxis.Dims.Max : settings.YAxis.Dims.Max;
-            settings.AxisSet(x1, x2, y1, y2);
+            settings.AxisSet(x1, x2, y1, y2, 0, 0);
         }
     }
 }

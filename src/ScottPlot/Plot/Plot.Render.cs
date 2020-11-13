@@ -27,23 +27,24 @@ namespace ScottPlot
             settings.BenchmarkMessage.Restart();
 
             // pre-render axis adjustments
-            if (!settings.AxesHaveBeenSet)
+            if (!settings.AllAxesHaveBeenSet)
                 settings.AxisAuto();
 
             // auto-layout before every single frame
-            LayoutAuto();
+            LayoutAuto(0, 0);
+            LayoutAuto(1, 1);
 
-            PlotDimensions2D dims = settings.GetPlotDimensions();
-            RenderBeforePlottables(dims, bmp, lowQuality);
-            RenderPlottables(dims, bmp, lowQuality);
-            RenderAfterPlottables(dims, bmp, lowQuality);
+            RenderBeforePlottables(bmp, lowQuality);
+            RenderPlottables(bmp, lowQuality);
+            RenderAfterPlottables(bmp, lowQuality);
 
             RenderCount += 1;
             return bmp;
         }
 
-        private void RenderBeforePlottables(PlotDimensions2D dims, Bitmap bmp, bool lowQuality)
+        private void RenderBeforePlottables(Bitmap bmp, bool lowQuality)
         {
+            PlotDimensions2D dims = settings.GetPlotDimensions(0, 0);
             settings.FigureBackground.Render(dims, bmp, lowQuality);
             settings.DataBackground.Render(dims, bmp, lowQuality);
 
@@ -51,8 +52,10 @@ namespace ScottPlot
             {
                 settings.XAxis.Render(dims, bmp, lowQuality);
                 settings.YAxis.Render(dims, bmp, lowQuality);
-                settings.XAxis2.Render(dims, bmp, lowQuality);
-                settings.YAxis2.Render(dims, bmp, lowQuality);
+
+                PlotDimensions2D dims2 = settings.GetPlotDimensions(1, 1);
+                settings.XAxis2.Render(dims2, bmp, lowQuality);
+                settings.YAxis2.Render(dims2, bmp, lowQuality);
             }
             catch (OverflowException)
             {
@@ -60,11 +63,16 @@ namespace ScottPlot
             }
         }
 
-        private void RenderPlottables(PlotDimensions2D dims, Bitmap bmp, bool lowQuality)
+        private void RenderPlottables(Bitmap bmp, bool lowQuality)
         {
-            var plottablesToRender = settings.Plottables.Where(x => x.IsVisible);
-            foreach (var plottable in plottablesToRender)
+            foreach (var plottable in settings.Plottables)
             {
+                if (plottable.IsVisible == false)
+                    continue;
+
+                PlotDimensions2D dims = (plottable is Plottable.IUsesAxes p) ?
+                    settings.GetPlotDimensions(p.HorizontalAxisIndex, p.VerticalAxisIndex) :
+                    settings.GetPlotDimensions(0, 0);
                 try
                 {
                     plottable.Render(dims, bmp, lowQuality);
@@ -76,8 +84,10 @@ namespace ScottPlot
             }
         }
 
-        private void RenderAfterPlottables(PlotDimensions2D dims, Bitmap bmp, bool lowQuality)
+        private void RenderAfterPlottables(Bitmap bmp, bool lowQuality)
         {
+            PlotDimensions2D dims = settings.GetPlotDimensions(0, 0);
+
             settings.CornerLegend.UpdateLegendItems(Plottables);
             settings.CornerLegend.Render(dims, bmp, lowQuality);
 

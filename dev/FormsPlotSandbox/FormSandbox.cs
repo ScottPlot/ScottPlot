@@ -22,7 +22,9 @@ namespace FormsPlotSandbox
         {
             Random rand = new Random(0);
             var plt1 = formsPlot1.plt.PlotScatter(DataGen.Consecutive(100), DataGen.RandomWalk(rand, 100));
-            var plt2 = formsPlot1.plt.PlotScatter(DataGen.Consecutive(100), DataGen.RandomWalk(rand, 100, 10));
+
+            var plt2 = formsPlot1.plt.PlotScatter(DataGen.Consecutive(10), DataGen.RandomWalk(rand, 100, 50));
+            plt2.HorizontalAxisIndex = 1;
             plt2.VerticalAxisIndex = 1;
 
             // TODO: figure out a simpler way to expose these objects
@@ -44,6 +46,8 @@ namespace FormsPlotSandbox
             formsPlot1.plt.GetSettings(false).XAxis2.Ticks.MinorTickEnable = true;
             formsPlot1.plt.GetSettings(false).XAxis2.Ticks.MajorLabelEnable = true;
 
+            formsPlot1.plt.Axis(-10, 110, -5, 25, 0, 0);
+            formsPlot1.plt.Axis(-1, 11, -100, 100, 1, 1);
 
             formsPlot1.Render();
         }

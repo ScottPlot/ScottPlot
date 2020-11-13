@@ -31,6 +31,7 @@
         {
             Min = double.NaN;
             Max = double.NaN;
+            HasBeenSet = false;
         }
 
         public void Resize(float figureSizePx)
@@ -48,6 +49,7 @@
         {
             Min = min ?? Min;
             Max = max ?? Max;
+            HasBeenSet = true;
         }
 
         public void Pan(double units)

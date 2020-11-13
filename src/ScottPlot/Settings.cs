@@ -16,7 +16,7 @@ namespace ScottPlot
     /// </summary>
     public class Settings
     {
-        public bool AxesHaveBeenSet = false;
+        public bool AllAxesHaveBeenSet => Axes.All(x => x.Dims.HasBeenSet);
 
         public int Width => (int)XAxis.Dims.FigureSizePx;
         public int Height => (int)YAxis.Dims.FigureSizePx;
@@ -78,33 +78,50 @@ namespace ScottPlot
         public double GetLocationY(double pixelY) => YAxis.Dims.GetUnit((float)pixelY);
         public PointF GetLocation(double pixelX, double pixelY) => new PointF((float)GetLocationX(pixelX), (float)GetLocationY(pixelY));
 
-        public PlotDimensions2D GetPlotDimensions()
+        public PlotDimensions2D GetPlotDimensions(int xAxisIndex, int yAxisIndex)
         {
-            (double xMin, double xMax) = XAxis.Dims.RationalLimits();
-            (double yMin, double yMax) = YAxis.Dims.RationalLimits();
-            return new PlotDimensions2D(
-                figureSize: new SizeF(XAxis.Dims.FigureSizePx, YAxis.Dims.FigureSizePx),
-                dataSize: new SizeF(XAxis.Dims.DataSizePx, YAxis.Dims.DataSizePx),
-                dataOffset: new PointF(XAxis.Dims.DataOffsetPx, YAxis.Dims.DataOffsetPx),
-                axisLimits: new AxisLimits2D(xMin, xMax, yMin, yMax));
+            Axis xAxis = Axes.Where(x => x.IsHorizontal && x.AxisIndex == xAxisIndex).First();
+            Axis yAxis = Axes.Where(x => x.IsVertical && x.AxisIndex == yAxisIndex).First();
+
+            // determine figure dimensions based on primary X and Y axis
+            var figureSize = new SizeF(XAxis.Dims.FigureSizePx, YAxis.Dims.FigureSizePx);
+            var dataSize = new SizeF(XAxis.Dims.DataSizePx, YAxis.Dims.DataSizePx);
+            var dataOffset = new PointF(XAxis.Dims.DataOffsetPx, YAxis.Dims.DataOffsetPx);
+
+            // determine figure dimensions based on specific X and Y axes
+            //var figureSize = new SizeF(xAxis.Dims.FigureSizePx, yAxis.Dims.FigureSizePx);
+            //var dataSize = new SizeF(xAxis.Dims.DataSizePx, yAxis.Dims.DataSizePx);
+            //var dataOffset = new PointF(xAxis.Dims.DataOffsetPx, yAxis.Dims.DataOffsetPx);
+
+            // determine axis limits based on specific X and Y axes
+            (double xMin, double xMax) = xAxis.Dims.RationalLimits();
+            (double yMin, double yMax) = yAxis.Dims.RationalLimits();
+            AxisLimits2D limits = new AxisLimits2D(xMin, xMax, yMin, yMax);
+
+            return new PlotDimensions2D(figureSize, dataSize, dataOffset, limits);
         }
 
         public void Resize(int width, int height)
         {
-            XAxis.Dims.Resize(width);
-            YAxis.Dims.Resize(height);
+            foreach (Axis axis in Axes)
+                axis.Dims.Resize(axis.IsHorizontal ? width : height);
         }
 
         public void ResetAxes()
         {
-            XAxis.Dims.ResetLimits();
-            YAxis.Dims.ResetLimits();
+            foreach (Axis axis in Axes)
+                axis.Dims.ResetLimits();
         }
 
-        public void AxisSet(double? xMin, double? xMax, double? yMin, double? yMax)
+        public void AxisSet(double? xMin, double? xMax, double? yMin, double? yMax, int xAxisIndex, int yAxisIndex)
         {
-            XAxis.Dims.SetAxis(xMin, xMax);
-            YAxis.Dims.SetAxis(yMin, yMax);
+            foreach (Axis axis in Axes)
+            {
+                if (axis.IsHorizontal && axis.AxisIndex == xAxisIndex)
+                    axis.Dims.SetAxis(xMin, xMax);
+                if (axis.IsVertical && axis.AxisIndex == yAxisIndex)
+                    axis.Dims.SetAxis(yMin, yMax);
+            }
         }
 
         public double[] AxisLimitsArray()
@@ -147,9 +164,14 @@ namespace ScottPlot
         }
 
         public void AxisAuto(
-            double horizontalMargin = .1, double verticalMargin = .1,
-            bool xExpandOnly = false, bool yExpandOnly = false,
-            bool autoX = true, bool autoY = true
+            double horizontalMargin = .1, 
+            double verticalMargin = .1,
+            bool xExpandOnly = false, 
+            bool yExpandOnly = false,
+            bool autoX = true, 
+            bool autoY = true,
+            int xAxisIndex = 0,
+            int yAxisIndex = 0
             )
         {
             var oldLimits = new AxisLimits2D(XAxis.Dims.Min, XAxis.Dims.Max, YAxis.Dims.Min, YAxis.Dims.Max);
@@ -157,9 +179,12 @@ namespace ScottPlot
 
             foreach (var plottable in Plottables)
             {
-                if (plottable is IUsesAxes plottableWithLimits)
+                if (plottable is IUsesAxes p)
                 {
-                    var (xMin, xMax, yMin, yMax) = plottableWithLimits.GetAxisLimits();
+                    if (p.HorizontalAxisIndex != xAxisIndex || p.VerticalAxisIndex != yAxisIndex)
+                        continue;
+
+                    var (xMin, xMax, yMin, yMax) = p.GetAxisLimits();
                     if (autoX && !double.IsNaN(xMin))
                     {
                         if (double.IsNaN(newLimits.XMin)) newLimits.XMin = xMin;
@@ -219,8 +244,6 @@ namespace ScottPlot
 
             XAxis.Dims.Zoom(zoomFracX);
             YAxis.Dims.Zoom(zoomFracY);
-
-            AxesHaveBeenSet = Plottables.Count > 0;
         }
     }
 }

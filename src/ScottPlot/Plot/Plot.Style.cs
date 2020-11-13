@@ -89,7 +89,7 @@ namespace ScottPlot
             if (render)
                 GetBitmap();
 
-            if (!settings.AxesHaveBeenSet && settings.Plottables.Count > 0)
+            if (!settings.AllAxesHaveBeenSet && settings.Plottables.Count > 0)
                 settings.AxisAuto();
 
             settings.Resize(settings.Width, settings.Height);
@@ -172,10 +172,10 @@ namespace ScottPlot
 
         public void MatchLayout(Plot sourcePlot, bool horizontal = true, bool vertical = true)
         {
-            if (!sourcePlot.GetSettings(showWarning: false).AxesHaveBeenSet)
+            if (!sourcePlot.GetSettings(showWarning: false).AllAxesHaveBeenSet)
                 sourcePlot.AxisAuto();
 
-            if (!settings.AxesHaveBeenSet)
+            if (!settings.AllAxesHaveBeenSet)
                 AxisAuto();
 
             Resize();

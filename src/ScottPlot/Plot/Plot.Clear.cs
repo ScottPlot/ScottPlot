@@ -24,7 +24,6 @@ namespace ScottPlot
         {
             settings.Plottables.Clear();
             settings.ResetAxes();
-            settings.AxesHaveBeenSet = false;
         }
 
         /// <summary>

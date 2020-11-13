@@ -69,7 +69,7 @@ namespace ScottPlot
             settings.Resize((int)width, (int)height);
         }
 
-        private void LayoutAuto()
+        private void LayoutAuto(int xAxisIndex, int yAxisIndex)
         {
             // The goal of this function is to set axis pixel size to accommodate title and tick labels.
 
@@ -81,16 +81,22 @@ namespace ScottPlot
             // To solve this, start by assuming data area size == figure size, and layout padding == 0
 
             // axis limits shall not change
-            var dims = settings.GetPlotDimensions();
+            var dims = settings.GetPlotDimensions(xAxisIndex, yAxisIndex);
             var limits = new AxisLimits2D(dims.XMin, dims.XMax, dims.YMin, dims.YMax);
             var figSize = new SizeF(settings.Width, settings.Height);
 
             // first-pass tick calculation based on full image size 
             var dimsFull = new PlotDimensions2D(figSize, figSize, new PointF(0, 0), limits);
+
             foreach (var axis in settings.Axes)
             {
-                axis.RecalculateTickPositions(dimsFull);
-                axis.RecalculateAxisSize();
+                bool isMatchingXAxis = axis.IsHorizontal && axis.AxisIndex == xAxisIndex;
+                bool isMatchingYAxis = axis.IsVertical && axis.AxisIndex == yAxisIndex;
+                if (isMatchingXAxis || isMatchingYAxis)
+                {
+                    axis.RecalculateTickPositions(dimsFull);
+                    axis.RecalculateAxisSize();
+                }
             }
 
             // now adjust our layout based on measured axis sizes
@@ -102,7 +108,14 @@ namespace ScottPlot
 
             var dims3 = new PlotDimensions2D(figSize, dataSize, dataOffset, limits);
             foreach (var axis in settings.Axes)
-                axis.RecalculateTickPositions(dims3);
+            {
+                bool isMatchingXAxis = axis.IsHorizontal && axis.AxisIndex == xAxisIndex;
+                bool isMatchingYAxis = axis.IsVertical && axis.AxisIndex == yAxisIndex;
+                if (isMatchingXAxis || isMatchingYAxis)
+                {
+                    axis.RecalculateTickPositions(dims3);
+                }
+            }
 
             // adjust the layout based on measured tick label sizes
             settings.TightenLayout();
