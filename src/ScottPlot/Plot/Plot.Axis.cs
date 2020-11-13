@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 namespace ScottPlot
 {
@@ -123,13 +124,13 @@ namespace ScottPlot
             double horizontalMargin = .05,
             double verticalMargin = .1,
             bool xExpandOnly = false,
-            bool yExpandOnly = false, 
+            bool yExpandOnly = false,
             int xAxisIndex = 0,
             int yAxisIndex = 0)
         {
             settings.AxisAuto(
-                horizontalMargin, verticalMargin, 
-                xExpandOnly, yExpandOnly, 
+                horizontalMargin, verticalMargin,
+                xExpandOnly, yExpandOnly,
                 xAxisIndex: xAxisIndex, yAxisIndex: yAxisIndex);
 
             return settings.AxisLimitsArray(xAxisIndex, yAxisIndex);
@@ -164,22 +165,24 @@ namespace ScottPlot
         /// <summary>
         /// Adjust axis limits to simulate zooming
         /// </summary>
-        public double[] AxisZoom(double xFrac = 1, double yFrac = 1, double? zoomToX = null, double? zoomToY = null)
+        public double[] AxisZoom(
+            double xFrac = 1,
+            double yFrac = 1,
+            double? zoomToX = null,
+            double? zoomToY = null,
+            int xAxisIndex = 0,
+            int yAxisIndex = 0)
         {
-            if (!settings.AllAxesHaveBeenSet)
-                settings.AxisAuto();
+            var xAxis = settings.Axes.Where(x => x.IsHorizontal && x.AxisIndex == xAxisIndex).First();
+            var yAxis = settings.Axes.Where(x => x.IsVertical && x.AxisIndex == yAxisIndex).First();
 
-            if (zoomToX is null)
-                zoomToX = settings.XAxis.Dims.Center;
+            if (xAxis.Dims.HasBeenSet == false || yAxis.Dims.HasBeenSet == false)
+                settings.AxisAuto(xAxisIndex: xAxisIndex, yAxisIndex: yAxisIndex);
 
-            if (zoomToY is null)
-                zoomToY = settings.YAxis.Dims.Center;
+            xAxis.Dims.Zoom(xFrac, zoomToX ?? xAxis.Dims.Center);
+            yAxis.Dims.Zoom(yFrac, zoomToY ?? yAxis.Dims.Center);
 
-            settings.XAxis.Dims.Zoom(xFrac, zoomToX);
-            settings.YAxis.Dims.Zoom(yFrac, zoomToY);
-
-            // TODO: support axis index
-            return settings.AxisLimitsArray(0, 0);
+            return settings.AxisLimitsArray(xAxisIndex, yAxisIndex);
         }
 
         /// <summary>

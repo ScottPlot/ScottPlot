@@ -160,7 +160,10 @@ namespace ScottPlot
             int yAxisIndex = 0
             )
         {
-            var oldLimits = new AxisLimits2D(XAxis.Dims.Min, XAxis.Dims.Max, YAxis.Dims.Min, YAxis.Dims.Max);
+            var xAxis = Axes.Where(x => x.IsHorizontal && x.AxisIndex == xAxisIndex).First();
+            var yAxis = Axes.Where(x => x.IsVertical && x.AxisIndex == yAxisIndex).First();
+
+            var oldLimits = new AxisLimits2D(xAxis.Dims.Min, xAxis.Dims.Max, yAxis.Dims.Min, yAxis.Dims.Max);
             var newLimits = new AxisLimits2D();
 
             foreach (var plottable in Plottables)
@@ -211,25 +214,25 @@ namespace ScottPlot
 
             if (xExpandOnly)
             {
-                XAxis.Dims.SetAxis(newLimits.XMin, newLimits.XMax);
-                YAxis.Dims.SetAxis(oldLimits.YMin, oldLimits.YMax);
+                xAxis.Dims.SetAxis(newLimits.XMin, newLimits.XMax);
+                yAxis.Dims.SetAxis(oldLimits.YMin, oldLimits.YMax);
             }
             else if (yExpandOnly)
             {
-                XAxis.Dims.SetAxis(oldLimits.XMin, oldLimits.XMax);
-                YAxis.Dims.SetAxis(newLimits.YMin, newLimits.YMax);
+                xAxis.Dims.SetAxis(oldLimits.XMin, oldLimits.XMax);
+                yAxis.Dims.SetAxis(newLimits.YMin, newLimits.YMax);
             }
             else
             {
-                XAxis.Dims.SetAxis(newLimits.XMin, newLimits.XMax);
-                YAxis.Dims.SetAxis(newLimits.YMin, newLimits.YMax);
+                xAxis.Dims.SetAxis(newLimits.XMin, newLimits.XMax);
+                yAxis.Dims.SetAxis(newLimits.YMin, newLimits.YMax);
             }
 
             double zoomFracX = yExpandOnly ? 1 : 1 - horizontalMargin;
             double zoomFracY = xExpandOnly ? 1 : 1 - verticalMargin;
 
-            XAxis.Dims.Zoom(zoomFracX);
-            YAxis.Dims.Zoom(zoomFracY);
+            xAxis.Dims.Zoom(zoomFracX);
+            yAxis.Dims.Zoom(zoomFracY);
         }
     }
 }
