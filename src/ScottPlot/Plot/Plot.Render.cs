@@ -36,6 +36,12 @@ namespace ScottPlot
                     axis.Dims.Resize(settings.Height, settings.DataHeight, settings.DataOffsetY);
             }
 
+            // auto-axis any axes which have not been set yet
+            if (settings.Axes.Any(x => x.Dims.HasBeenSet == false && x.AxisIndex == 0))
+                AxisAuto(xAxisIndex: 0, yAxisIndex: 0);
+            if (settings.Axes.Any(x => x.Dims.HasBeenSet == false && x.AxisIndex == 1))
+                AxisAuto(xAxisIndex: 1, yAxisIndex: 1);
+
             // pre-render axis adjustments
             if (!settings.AllAxesHaveBeenSet)
                 settings.AxisAuto();
