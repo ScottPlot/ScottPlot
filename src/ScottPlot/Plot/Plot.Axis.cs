@@ -29,8 +29,14 @@ namespace ScottPlot
             )
         {
             bool someValuesAreNull = (x1 == null) || (x2 == null) || (y1 == null) || (y2 == null);
-            if (someValuesAreNull && !settings.AllAxesHaveBeenSet)
-                settings.AxisAuto();
+            if (someValuesAreNull)
+            {
+                // auto-axis before assigning the rest of the values
+                var xAxis = settings.Axes.Where(x => x.IsHorizontal && x.AxisIndex == xAxisIndex).First();
+                var yAxis = settings.Axes.Where(x => x.IsVertical && x.AxisIndex == yAxisIndex).First();
+                if (xAxis.Dims.HasBeenSet == false || yAxis.Dims.HasBeenSet == false)
+                    AxisAuto(xAxisIndex, yAxisIndex);
+            }
 
             settings.AxisSet(x1, x2, y1, y2, xAxisIndex, yAxisIndex);
             return settings.AxisLimitsArray(xAxisIndex, yAxisIndex);
