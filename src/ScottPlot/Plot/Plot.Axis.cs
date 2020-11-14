@@ -128,18 +128,10 @@ namespace ScottPlot
         /// </summary>
         public double[] AxisAuto(
             double horizontalMargin = .05,
-            double verticalMargin = .1,
-            bool xExpandOnly = false,
-            bool yExpandOnly = false,
-            int xAxisIndex = 0,
-            int yAxisIndex = 0)
+            double verticalMargin = .1)
         {
-            settings.AxisAuto(
-                horizontalMargin, verticalMargin,
-                xExpandOnly, yExpandOnly,
-                xAxisIndex: xAxisIndex, yAxisIndex: yAxisIndex);
-
-            return settings.AxisLimitsArray(xAxisIndex, yAxisIndex);
+            settings.AxisAuto(horizontalMargin, verticalMargin);
+            return settings.AxisLimitsArray(0, 0);
         }
 
         /// <summary>
@@ -151,20 +143,20 @@ namespace ScottPlot
                 AxisAuto();
 
             double[] originalLimits = Axis();
-            double[] newLimits = AxisAuto(horizontalMargin: margin, xExpandOnly: expandOnly);
+            double[] newLimits = AxisAuto(horizontalMargin: margin);
             return Axis(newLimits[0], newLimits[1], originalLimits[2], originalLimits[3]);
         }
 
         /// <summary>
         /// Automatically adjust axis limits to fit the data (with a little extra margin)
         /// </summary>
-        public double[] AxisAutoY(double margin = .1, bool expandOnly = false)
+        public double[] AxisAutoY(double margin = .1)
         {
             if (settings.AllAxesHaveBeenSet == false)
                 AxisAuto();
 
             double[] originalLimits = Axis();
-            double[] newLimits = AxisAuto(verticalMargin: margin, yExpandOnly: expandOnly);
+            double[] newLimits = AxisAuto(verticalMargin: margin);
             return Axis(originalLimits[0], originalLimits[1], newLimits[2], newLimits[3]);
         }
 
@@ -183,7 +175,7 @@ namespace ScottPlot
             var yAxis = settings.GetYAxis(yAxisIndex);
 
             if (xAxis.Dims.HasBeenSet == false || yAxis.Dims.HasBeenSet == false)
-                settings.AxisAuto(xAxisIndex: xAxisIndex, yAxisIndex: yAxisIndex);
+                settings.AxisAuto();
 
             xAxis.Dims.Zoom(xFrac, zoomToX ?? xAxis.Dims.Center);
             yAxis.Dims.Zoom(yFrac, zoomToY ?? yAxis.Dims.Center);

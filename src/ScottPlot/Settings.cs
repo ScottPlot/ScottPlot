@@ -152,98 +152,81 @@ namespace ScottPlot
             }
         }
 
-        public void AxisAutoUnsetAxes()
+        public void AxisAuto(Axis axis)
         {
-            if (Axes.Any(x => x.Dims.HasBeenSet == false && x.AxisIndex == 0))
-                AxisAuto(xAxisIndex: 0, yAxisIndex: 0);
-            if (Axes.Any(x => x.Dims.HasBeenSet == false && x.AxisIndex == 1))
-                AxisAuto(xAxisIndex: 1, yAxisIndex: 1);
+            if (axis.IsHorizontal)
+                AxisAutoX(axis.AxisIndex);
+            else
+                AxisAutoY(axis.AxisIndex);
+        }
+
+        public void AxisAutoX(int xAxisIndex, double margin = .1, bool expandOnly = false)
+        {
+            double min = double.NaN;
+            double max = double.NaN;
+            double zoomFrac = 1 - margin;
+
+            var plottableLimits = Plottables.Where(x => x is IUsesAxes)
+                                               .Select(x => (IUsesAxes)x)
+                                               .Where(x => x.HorizontalAxisIndex == xAxisIndex)
+                                               .Select(x => x.GetAxisLimits())
+                                               .ToArray();
+
+            foreach (var limits in plottableLimits)
+            {
+                (double xMin, double xMax, _, _) = limits;
+                min = double.IsNaN(min) ? xMin : Math.Min(min, xMin);
+                max = double.IsNaN(max) ? xMax : Math.Max(max, xMax);
+            }
+
+            var xAxis = GetXAxis(xAxisIndex);
+            xAxis.Dims.SetAxis(min, max);
+            xAxis.Dims.Zoom(zoomFrac);
+        }
+
+        public void AxisAutoY(int yAxisIndex, double margin = .1)
+        {
+            double min = double.NaN;
+            double max = double.NaN;
+            double zoomFrac = 1 - margin;
+
+            var plottableLimits = Plottables.Where(x => x is IUsesAxes)
+                                               .Select(x => (IUsesAxes)x)
+                                               .Where(x => x.VerticalAxisIndex == yAxisIndex)
+                                               .Select(x => x.GetAxisLimits())
+                                               .ToArray();
+
+            foreach (var limits in plottableLimits)
+            {
+                (_, _, double yMin, double yMax) = limits;
+                min = double.IsNaN(min) ? yMin : Math.Min(min, yMin);
+                max = double.IsNaN(max) ? yMax : Math.Max(max, yMax);
+            }
+
+            var yAxis = GetYAxis(yAxisIndex);
+            yAxis.Dims.SetAxis(min, max);
+            yAxis.Dims.Zoom(zoomFrac);
         }
 
         public void AxisAuto(
             double horizontalMargin = .1,
             double verticalMargin = .1,
-            bool xExpandOnly = false,
-            bool yExpandOnly = false,
             bool autoX = true,
-            bool autoY = true,
-            int xAxisIndex = 0,
-            int yAxisIndex = 0
+            bool autoY = true
             )
         {
-            var xAxis = GetXAxis(xAxisIndex);
-            var yAxis = GetYAxis(yAxisIndex);
-
-            var oldLimits = new AxisLimits2D(xAxis.Dims.Min, xAxis.Dims.Max, yAxis.Dims.Min, yAxis.Dims.Max);
-            var newLimits = new AxisLimits2D();
-
-            foreach (var plottable in Plottables)
-            {
-                if (plottable is IUsesAxes p)
-                {
-                    if (p.HorizontalAxisIndex != xAxisIndex || p.VerticalAxisIndex != yAxisIndex)
-                        continue;
-
-                    var (xMin, xMax, yMin, yMax) = p.GetAxisLimits();
-                    if (autoX && !double.IsNaN(xMin))
-                    {
-                        if (double.IsNaN(newLimits.XMin)) newLimits.XMin = xMin;
-                        newLimits.XMin = Math.Min(newLimits.XMin, xMin);
-                    }
-                    if (autoX && !double.IsNaN(xMax))
-                    {
-                        if (double.IsNaN(newLimits.XMax)) newLimits.XMax = xMax;
-                        newLimits.XMax = Math.Max(newLimits.XMax, xMax);
-                    }
-                    if (autoY && !double.IsNaN(yMin))
-                    {
-                        if (double.IsNaN(newLimits.YMin)) newLimits.YMin = yMin;
-                        newLimits.YMin = Math.Min(newLimits.YMin, yMin);
-                    }
-                    if (autoY && !double.IsNaN(yMax))
-                    {
-                        if (double.IsNaN(newLimits.YMax)) newLimits.YMax = yMax;
-                        newLimits.YMax = Math.Max(newLimits.YMax, yMax);
-                    }
-                }
-            }
-
             // TODO: equal axis
-            /*
-            if (axes.equalAxes)
-            {
-                var xUnitsPerPixel = newLimits.xSpan / (DataWidth * (1 - horizontalMargin));
-                var yUnitsPerPixel = newLimits.ySpan / (DataHeight * (1 - verticalMargin));
-                axes.Set(newLimits);
-                if (yUnitsPerPixel > xUnitsPerPixel)
-                    axes.Zoom((1 - horizontalMargin) * xUnitsPerPixel / yUnitsPerPixel, 1 - verticalMargin);
-                else
-                    axes.Zoom(1 - horizontalMargin, (1 - verticalMargin) * yUnitsPerPixel / xUnitsPerPixel);
-                return;
-            }
-            */
 
-            if (xExpandOnly)
-            {
-                xAxis.Dims.SetAxis(newLimits.XMin, newLimits.XMax);
-                yAxis.Dims.SetAxis(oldLimits.YMin, oldLimits.YMax);
-            }
-            else if (yExpandOnly)
-            {
-                xAxis.Dims.SetAxis(oldLimits.XMin, oldLimits.XMax);
-                yAxis.Dims.SetAxis(newLimits.YMin, newLimits.YMax);
-            }
-            else
-            {
-                xAxis.Dims.SetAxis(newLimits.XMin, newLimits.XMax);
-                yAxis.Dims.SetAxis(newLimits.YMin, newLimits.YMax);
-            }
+            int[] xAxisIndexes = Axes.Where(x => x.IsHorizontal).Select(x => x.AxisIndex).Distinct().ToArray();
+            int[] yAxisIndexes = Axes.Where(x => x.IsVertical).Select(x => x.AxisIndex).Distinct().ToArray();
 
-            double zoomFracX = yExpandOnly ? 1 : 1 - horizontalMargin;
-            double zoomFracY = xExpandOnly ? 1 : 1 - verticalMargin;
+            if (autoX)
+                foreach (int i in xAxisIndexes)
+                    AxisAutoX(i, horizontalMargin);
 
-            xAxis.Dims.Zoom(zoomFracX);
-            yAxis.Dims.Zoom(zoomFracY);
+            if (autoY)
+                foreach (int i in yAxisIndexes)
+                    AxisAutoY(i, verticalMargin);
         }
     }
 }

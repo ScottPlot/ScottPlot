@@ -396,8 +396,7 @@ namespace ScottPlot
                 else
                 {
                     bool shouldTighten = recalculateLayoutOnMouseUp ?? plotContainsHeatmap == false;
-                    plt.AxisAuto(middleClickMarginX, middleClickMarginY, xAxisIndex: 0, yAxisIndex: 0);
-                    plt.AxisAuto(middleClickMarginX, middleClickMarginY, xAxisIndex: 1, yAxisIndex: 1);
+                    plt.AxisAuto(middleClickMarginX, middleClickMarginY);
                     OnAxisChanged();
                 }
             }

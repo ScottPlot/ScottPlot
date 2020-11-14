@@ -1,6 +1,6 @@
 # ScottPlot Roadmap
 
-_Updated Nov 6, 2020_
+_Updated Nov 13, 2020_
  
 **ScottPlot 4.1 remaining TODOs:**
   * scatter plots
@@ -8,6 +8,8 @@ _Updated Nov 6, 2020_
     * improve thread safety
     * create a List scatter plot type
   * layout methods are awkward
+  * axis lock (matched scales) don't work
+  * verify Plot method arguments did not change between 4.0 and 4.1 (especially ticks methods)
 
 _Updated October 4, 2020_
 

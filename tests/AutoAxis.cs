@@ -123,40 +123,6 @@ namespace ScottPlotTests
         }
 
         [Test]
-        public void Test_AxisLine_FarAwayOnlyExpandX()
-        {
-            Random rand = new Random(0);
-
-            var plt = new ScottPlot.Plot();
-            var data = ScottPlot.DataGen.RandomWalk(rand, 100);
-            plt.PlotSignal(data, xOffset: 100, yOffset: 100, label: "scatter");
-            plt.PlotVLine(-100, label: "vertical");
-            plt.PlotHLine(-100, label: "horizontal");
-            plt.Legend();
-
-            plt.AxisAuto(xExpandOnly: true);
-
-            TestTools.SaveFig(plt);
-        }
-
-        [Test]
-        public void Test_AxisLine_FarAwayOnlyExpandY()
-        {
-            Random rand = new Random(0);
-
-            var plt = new ScottPlot.Plot();
-            var data = ScottPlot.DataGen.RandomWalk(rand, 100);
-            plt.PlotSignal(data, xOffset: 100, yOffset: 100, label: "scatter");
-            plt.PlotVLine(-100, label: "vertical");
-            plt.PlotHLine(-100, label: "horizontal");
-            plt.Legend();
-
-            plt.AxisAuto(yExpandOnly: true);
-
-            TestTools.SaveFig(plt);
-        }
-
-        [Test]
         public void Test_AutoAxis_ExpandXY()
         {
             var plt = new ScottPlot.Plot();
@@ -175,51 +141,6 @@ namespace ScottPlotTests
             Assert.That(limitsB.XMax > limitsA.XMax);
             Assert.That(limitsB.YMin < limitsA.YMin);
             Assert.That(limitsB.YMax > limitsA.YMax);
-        }
-
-        [Test]
-        public void Test_AutoAxis_ExpandYonly()
-        {
-            var plt = new ScottPlot.Plot();
-            plt.PlotSignal(DataGen.Sin(51));
-
-            // small area
-            plt.PlotLine(-5, -5, 5, 5);
-            plt.AxisAuto();
-            var limitsA = new AxisLimits2D(plt.Axis());
-
-            // large area
-            plt.PlotLine(-99, -99, 99, 99);
-            plt.AxisAuto(yExpandOnly: true);
-            var limitsB = new AxisLimits2D(plt.Axis());
-
-            Assert.That(limitsB.XMin == limitsA.XMin);
-            Assert.That(limitsB.XMax == limitsA.XMax);
-            Assert.That(limitsB.YMin < limitsA.YMin);
-            Assert.That(limitsB.YMax > limitsA.YMax);
-        }
-
-        [Test]
-        public void Test_AutoAxis_ExpandXonly()
-        {
-            var plt = new ScottPlot.Plot();
-
-            // small area
-            plt.PlotLine(-5, -5, 5, 5);
-            plt.AxisAuto();
-            var limitsA = new AxisLimits2D(plt.Axis());
-            Console.WriteLine($"limits A: {limitsA}");
-
-            // large area
-            plt.PlotLine(-99, -99, 99, 99);
-            plt.AxisAuto(xExpandOnly: true);
-            var limitsB = new AxisLimits2D(plt.Axis());
-            Console.WriteLine($"limits B: {limitsB}");
-
-            Assert.That(limitsB.XMin < limitsA.XMin);
-            Assert.That(limitsB.XMax > limitsA.XMax);
-            Assert.That(limitsB.YMin == limitsA.YMin);
-            Assert.That(limitsB.YMax == limitsA.YMax);
         }
 
         [Test]

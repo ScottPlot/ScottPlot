@@ -36,7 +36,9 @@ namespace ScottPlot
                     axis.Dims.Resize(settings.Height, settings.DataHeight, settings.DataOffsetY);
             }
 
-            settings.AxisAutoUnsetAxes();
+            // call AxisAuto on axes which have not yet been set
+            foreach (Axis axis in settings.Axes.Where(x => x.Dims.HasBeenSet == false))
+                settings.AxisAuto(axis);
 
             // pre-render axis adjustments
             if (!settings.AllAxesHaveBeenSet)
