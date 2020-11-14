@@ -60,7 +60,7 @@ namespace ScottPlot.Interactive
         protected bool isDesignerMode;
 
         /// <summary>
-        ///     For DPI scaling. On DPI unaware platforms this should be left at 1. For DPI aware platforms this can be set like so:
+        ///     For DPI scaling. On DPI unaware platforms this should be left at 1. For DPI aware platforms which do not DPI correct mouse positions this can be set like so:
         ///     
         ///     <example>
         ///         <code>
