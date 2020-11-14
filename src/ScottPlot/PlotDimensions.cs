@@ -36,7 +36,7 @@ namespace ScottPlot
         public double GetCoordinateX(float pixel) => (pixel - DataOffsetX) / PxPerUnitX + XMin;
         public double GetCoordinateY(float pixel) => DataHeight - ((pixel - YMin) * PxPerUnitY);
 
-        public PlotDimensions(SizeF figureSize, SizeF dataSize, PointF dataOffset, AxisLimits2D axisLimits)
+        public PlotDimensions(SizeF figureSize, SizeF dataSize, PointF dataOffset, AxisLimits axisLimits)
         {
             (Width, Height) = (figureSize.Width, figureSize.Height);
             (DataWidth, DataHeight) = (dataSize.Width, dataSize.Height);

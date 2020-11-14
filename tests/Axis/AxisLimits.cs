@@ -9,7 +9,7 @@ namespace ScottPlotTests.Axis
         [Test]
         public void Test_EmptyConstructor_StartsAsNaN()
         {
-            var limits = new AxisLimits2D();
+            var limits = new ScottPlot.AxisLimits();
             Console.WriteLine(limits);
 
             Assert.IsNaN(limits.XMin);
@@ -21,7 +21,7 @@ namespace ScottPlotTests.Axis
         [Test]
         public void Test_Constructor_StoresValues()
         {
-            var limits = new AxisLimits2D(11, 22, 33, 44);
+            var limits = new ScottPlot.AxisLimits(11, 22, 33, 44);
             Console.WriteLine(limits);
 
             Assert.AreEqual(11, limits.XMin);

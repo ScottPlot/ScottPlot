@@ -29,7 +29,7 @@ namespace ScottPlotTests
         {
             for (int i = 0; i < multiplot.subplots.Length; i += 1)
             {
-                var limits = new AxisLimits2D(multiplot.subplots[i].Axis());
+                var limits = new AxisLimits(multiplot.subplots[i].Axis());
                 Console.WriteLine($"Subplot index {i} {limits}");
             }
         }
@@ -62,7 +62,7 @@ namespace ScottPlotTests
             Console.WriteLine($"Saved {filePath}");
             DisplayAxisInfo(multiplot);
 
-            var matchedAxisLimits = new AxisLimits2D(multiplot.subplots[2].Axis());
+            var matchedAxisLimits = new AxisLimits(multiplot.subplots[2].Axis());
             Assert.Greater(matchedAxisLimits.XMax, matchedAxisLimits.XMin);
             Assert.Greater(matchedAxisLimits.YMax, matchedAxisLimits.YMin);
         }
@@ -86,8 +86,8 @@ namespace ScottPlotTests
             Console.WriteLine($"Saved {filePath}");
 
             DisplayAxisInfo(multiplot);
-            var matchedVerticalLimits = new AxisLimits2D(multiplot.subplots[1].Axis());
-            var matchedHorizontalLimits = new AxisLimits2D(multiplot.subplots[1].Axis());
+            var matchedVerticalLimits = new AxisLimits(multiplot.subplots[1].Axis());
+            var matchedHorizontalLimits = new AxisLimits(multiplot.subplots[1].Axis());
 
             Assert.Greater(matchedVerticalLimits.XMax, matchedVerticalLimits.XMin);
             Assert.Greater(matchedVerticalLimits.YMax, matchedVerticalLimits.YMin);

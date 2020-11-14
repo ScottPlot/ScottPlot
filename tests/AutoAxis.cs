@@ -130,12 +130,12 @@ namespace ScottPlotTests
             // small area
             plt.PlotLine(-5, -5, 5, 5);
             plt.AxisAuto();
-            var limitsA = new AxisLimits2D(plt.Axis());
+            var limitsA = new AxisLimits(plt.Axis());
 
             // large area
             plt.PlotLine(-99, -99, 99, 99);
             plt.AxisAuto();
-            var limitsB = new AxisLimits2D(plt.Axis());
+            var limitsB = new AxisLimits(plt.Axis());
 
             Assert.That(limitsB.XMin < limitsA.XMin);
             Assert.That(limitsB.XMax > limitsA.XMax);
@@ -151,17 +151,17 @@ namespace ScottPlotTests
             // small area
             plt.PlotLine(-5, -5, 5, 5);
             plt.AxisAuto();
-            var limitsA = new AxisLimits2D(plt.Axis());
+            var limitsA = new AxisLimits(plt.Axis());
             Console.WriteLine($"limits A: {limitsA}");
 
             // expand to large area
             plt.Axis(-123, 123, -123, 123);
-            var limitsB = new AxisLimits2D(plt.Axis());
+            var limitsB = new AxisLimits(plt.Axis());
             Console.WriteLine($"limits B: {limitsB}");
 
             // shrink back to small area
             plt.AxisAuto();
-            var limitsC = new AxisLimits2D(plt.Axis());
+            var limitsC = new AxisLimits(plt.Axis());
             Console.WriteLine($"limits C: {limitsC}");
 
             Assert.That(limitsB.XMin < limitsA.XMin);

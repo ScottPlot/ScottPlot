@@ -82,7 +82,7 @@ namespace ScottPlot
 
             // axis limits shall not change
             var dims = settings.GetPlotDimensions(xAxisIndex, yAxisIndex);
-            var limits = new AxisLimits2D(dims.XMin, dims.XMax, dims.YMin, dims.YMax);
+            var limits = new AxisLimits(dims.XMin, dims.XMax, dims.YMin, dims.YMax);
             var figSize = new SizeF(settings.Width, settings.Height);
 
             // first-pass tick calculation based on full image size 
