@@ -16,33 +16,11 @@ namespace ScottPlot
     /// </summary>
     public class Settings
     {
-        public bool AllAxesHaveBeenSet => Axes.All(x => x.Dims.HasBeenSet);
-
-        public int Width => (int)XAxis.Dims.FigureSizePx;
-        public int Height => (int)YAxis.Dims.FigureSizePx;
-        public float DataOffsetX => XAxis.Dims.DataOffsetPx;
-        public float DataOffsetY => YAxis.Dims.DataOffsetPx;
-        public float DataWidth => XAxis.Dims.DataSizePx;
-        public float DataHeight => YAxis.Dims.DataSizePx;
-
-        /// <summary>
-        /// Adjust data padding based on axis size
-        /// </summary>
-        public void TightenLayout()
-        {
-            float padLeft = Axes.Where(x => x.Edge == Edge.Left).Select(x => x.PixelSize).Sum();
-            float padRight = Axes.Where(x => x.Edge == Edge.Right).Select(x => x.PixelSize).Sum();
-            float padBottom = Axes.Where(x => x.Edge == Edge.Bottom).Select(x => x.PixelSize).Sum();
-            float padTop = Axes.Where(x => x.Edge == Edge.Top).Select(x => x.PixelSize).Sum();
-            XAxis.Dims.SetPadding(padLeft, padRight);
-            YAxis.Dims.SetPadding(padTop, padBottom);
-        }
-
         // plottables
         public readonly List<IRenderable> Plottables = new List<IRenderable>();
         public Color GetNextColor() { return PlottablePalette.GetColor(Plottables.Count); }
 
-        // settings the user can customize
+        // renderable objects the user can customize
         public readonly FigureBackground FigureBackground = new FigureBackground();
         public readonly DataBackground DataBackground = new DataBackground();
         public readonly BenchmarkMessage BenchmarkMessage = new BenchmarkMessage();
@@ -51,6 +29,7 @@ namespace ScottPlot
         public readonly ZoomRectangle ZoomRectangle = new ZoomRectangle();
         public Palette PlottablePalette = Palette.Category10;
 
+        // the Axes list stores styling info for each axis and its limits
         public List<Axis> Axes = new List<Axis>() {
             new DefaultLeftAxis(),
             new DefaultRightAxis(),
@@ -58,14 +37,44 @@ namespace ScottPlot
             new DefaultTopAxis()
         };
 
+        public Axis GetXAxis(int xAxisIndex) => Axes.Where(x => x.IsHorizontal && x.AxisIndex == xAxisIndex).First();
+        public Axis GetYAxis(int yAxisIndex) => Axes.Where(x => x.IsVertical && x.AxisIndex == yAxisIndex).First();
+
+        // shortcuts to fixed axes indexes
         public Axis YAxis => Axes[0];
         public Axis YAxis2 => Axes[1];
         public Axis XAxis => Axes[2];
         public Axis XAxis2 => Axes[3];
         public Axis[] PrimaryAxes => Axes.Take(4).ToArray();
 
-        public Axis GetXAxis(int xAxisIndex) => Axes.Where(x => x.IsHorizontal && x.AxisIndex == xAxisIndex).First();
-        public Axis GetYAxis(int yAxisIndex) => Axes.Where(x => x.IsVertical && x.AxisIndex == yAxisIndex).First();
+        /// <summary>
+        /// Resize the layout by padding the data area based on the size of all axes
+        /// </summary>
+        public void TightenLayout()
+        {
+            float padLeft = Axes.Where(x => x.Edge == Edge.Left).Select(x => x.PixelSize).Sum();
+            float padRight = Axes.Where(x => x.Edge == Edge.Right).Select(x => x.PixelSize).Sum();
+            float padBottom = Axes.Where(x => x.Edge == Edge.Bottom).Select(x => x.PixelSize).Sum();
+            float padTop = Axes.Where(x => x.Edge == Edge.Top).Select(x => x.PixelSize).Sum();
+
+            foreach(Axis axis in Axes)
+            {
+                if (axis.IsHorizontal)
+                    axis.Dims.SetPadding(padLeft, padRight);
+                else
+                    axis.Dims.SetPadding(padTop, padBottom);
+            }
+        }
+
+        public bool AllAxesHaveBeenSet => Axes.All(x => x.Dims.HasBeenSet);
+
+        // TODO: This should be readonly and a Resize() method updates sizes for all Axes (while retaining data size and offset)
+        public int Width => (int)XAxis.Dims.FigureSizePx;
+        public int Height => (int)YAxis.Dims.FigureSizePx;
+        public float DataOffsetX => XAxis.Dims.DataOffsetPx;
+        public float DataOffsetY => YAxis.Dims.DataOffsetPx;
+        public float DataWidth => XAxis.Dims.DataSizePx;
+        public float DataHeight => YAxis.Dims.DataSizePx;
 
         /*
          * ##################################################################################
