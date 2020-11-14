@@ -17,7 +17,6 @@
             AxisIndex = 1;
             Title.Font.Bold = true;
             Title.IsVisible = true;
-
             Ticks.MajorTickEnable = false;
             Ticks.MinorTickEnable = false;
             Ticks.MajorLabelEnable = false;
@@ -40,7 +39,6 @@
         {
             Edge = Edge.Right;
             AxisIndex = 1;
-
             Ticks.MajorTickEnable = false;
             Ticks.MinorTickEnable = false;
             Ticks.MajorLabelEnable = false;
@@ -51,70 +49,56 @@
 
     public class AdditionalRightAxis : Axis
     {
-        public AdditionalRightAxis(int yAxisIndex, bool visible)
+        public AdditionalRightAxis(int yAxisIndex)
         {
             Edge = Edge.Right;
             AxisIndex = yAxisIndex;
-
-            Title.IsVisible = visible;
-            Ticks.MajorTickEnable = visible;
-            Ticks.MajorLabelEnable = visible;
-            Ticks.MinorTickEnable = visible;
-
+            Title.IsVisible = true;
+            Ticks.MajorTickEnable = true;
+            Ticks.MajorLabelEnable = true;
+            Ticks.MinorTickEnable = true;
             Ticks.MajorGridEnable = false;
         }
     }
 
     public class AdditionalLeftAxis : Axis
     {
-        public AdditionalLeftAxis(int yAxisIndex, bool visible)
+        public AdditionalLeftAxis(int yAxisIndex)
         {
             Edge = Edge.Left;
             AxisIndex = yAxisIndex;
-            PixelSize = 60;
-            PixelOffset = 60;
-
-            Title.IsVisible = visible;
-            Ticks.MajorTickEnable = visible;
-            Ticks.MajorLabelEnable = visible;
-            Ticks.MinorTickEnable = visible;
-
+            Title.IsVisible = true;
+            Ticks.MajorTickEnable = true;
+            Ticks.MajorLabelEnable = true;
+            Ticks.MinorTickEnable = true;
             Ticks.MajorGridEnable = false;
         }
     }
 
     public class AdditionalTopAxis : Axis
     {
-        public AdditionalTopAxis(int xAxisIndex, bool visible)
+        public AdditionalTopAxis(int xAxisIndex)
         {
             Edge = Edge.Top;
             AxisIndex = xAxisIndex;
-            PixelSize = 50;
-            PixelOffset = 50;
-
-            Title.IsVisible = visible;
-            Ticks.MajorTickEnable = visible;
-            Ticks.MajorLabelEnable = visible;
-            Ticks.MinorTickEnable = visible;
-
+            Title.IsVisible = true;
+            Ticks.MajorTickEnable = true;
+            Ticks.MajorLabelEnable = true;
+            Ticks.MinorTickEnable = true;
             Ticks.MajorGridEnable = false;
         }
     }
 
     public class AdditionalBottomAxis : Axis
     {
-        public AdditionalBottomAxis(int xAxisIndex, bool visible)
+        public AdditionalBottomAxis(int xAxisIndex)
         {
             Edge = Edge.Bottom;
             AxisIndex = xAxisIndex;
-            PixelSize = 50;
-            PixelOffset = 50;
-
-            Title.IsVisible = visible;
-            Ticks.MajorTickEnable = visible;
-            Ticks.MajorLabelEnable = visible;
-            Ticks.MinorTickEnable = visible;
-
+            Title.IsVisible = true;
+            Ticks.MajorTickEnable = true;
+            Ticks.MajorLabelEnable = true;
+            Ticks.MinorTickEnable = true;
             Ticks.MajorGridEnable = false;
         }
     }
