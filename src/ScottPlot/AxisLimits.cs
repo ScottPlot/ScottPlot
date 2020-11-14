@@ -9,6 +9,9 @@ namespace ScottPlot
         public double YMin { get; set; }
         public double YMax { get; set; }
 
+        public double[] AsArray => new double[] { XMin, XMax, YMin, YMax };
+        public (double xMin, double xMax, double yMin, double yMax) AsTuple => (XMin, XMax, YMin, YMax);
+
         public override string ToString() => $"Axis limits: X=[{XMin}, {XMax}] Y=[{YMin}, {YMax}]";
 
         public AxisLimits() =>
