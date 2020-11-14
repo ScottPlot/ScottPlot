@@ -7,41 +7,45 @@ namespace ScottPlot
      */
     public class PlotDimensions2D
     {
-        private readonly PlotDimensions1D XAxis;
-        private readonly PlotDimensions1D YAxis;
-
         // plot dimensions
-        public float Width => XAxis.FigureSize;
-        public float Height => YAxis.FigureSize;
-        public float DataWidth => XAxis.DataSize;
-        public float DataHeight => YAxis.DataSize;
-        public float DataOffsetX => XAxis.DataOffset;
-        public float DataOffsetY => YAxis.DataOffset;
+        public readonly float Width;
+        public readonly float Height;
+        public readonly float DataWidth;
+        public readonly float DataHeight;
+        public readonly float DataOffsetX;
+        public readonly float DataOffsetY;
 
         // axis limits
-        public double XMin => XAxis.Min;
-        public double XMax => XAxis.Max;
-        public double YMin => YAxis.Min;
-        public double YMax => YAxis.Max;
-        public double XSpan => XAxis.Span;
-        public double YSpan => YAxis.Span;
-        public double XCenter => XAxis.Center;
-        public double YCenter => YAxis.Center;
+        public readonly double XMin;
+        public readonly double XMax;
+        public readonly double YMin;
+        public readonly double YMax;
+        public readonly double XSpan;
+        public readonly double YSpan;
+        public readonly double XCenter;
+        public readonly double YCenter;
 
         // pixel/coordinate conversions
-        public double PxPerUnitX => XAxis.PxPerUnit;
-        public double PxPerUnitY => YAxis.PxPerUnit;
-        public double UnitsPerPxX => XAxis.UnitsPerPx;
-        public double UnitsPerPxY => YAxis.UnitsPerPx;
-        public float GetPixelX(double position) => XAxis.GetPixel(position);
-        public float GetPixelY(double position) => YAxis.GetPixel(position);
-        public double GetCoordinateX(float pixel) => XAxis.GetUnit(pixel);
-        public double GetCoordinateY(float pixel) => YAxis.GetUnit(pixel);
+        public readonly double PxPerUnitX;
+        public readonly double PxPerUnitY;
+        public readonly double UnitsPerPxX;
+        public readonly double UnitsPerPxY;
+
+        public float GetPixelX(double position) => (float)(DataOffsetX + ((position - XMin) * PxPerUnitX));
+        public float GetPixelY(double position) => (float)(DataOffsetY + ((YMax - position) * PxPerUnitY));
+        public double GetCoordinateX(float pixel) => (pixel - DataOffsetX) / PxPerUnitX + XMin;
+        public double GetCoordinateY(float pixel) => DataHeight - ((pixel - YMin) * PxPerUnitY);
 
         public PlotDimensions2D(SizeF figureSize, SizeF dataSize, PointF dataOffset, AxisLimits2D axisLimits)
         {
-            XAxis = new PlotDimensions1D(figureSize.Width, dataSize.Width, dataOffset.X, axisLimits.XMin, axisLimits.XMax, false);
-            YAxis = new PlotDimensions1D(figureSize.Height, dataSize.Height, dataOffset.Y, axisLimits.YMin, axisLimits.YMax, true);
+            (Width, Height) = (figureSize.Width, figureSize.Height);
+            (DataWidth, DataHeight) = (dataSize.Width, dataSize.Height);
+            (DataOffsetX, DataOffsetY) = (dataOffset.X, dataOffset.Y);
+            (XMin, XMax, YMin, YMax) = (axisLimits.XMin, axisLimits.XMax, axisLimits.YMin, axisLimits.YMax);
+            (XSpan, YSpan) = (XMax - XMin, YMax - YMin);
+            (XCenter, YCenter) = ((XMin + XMax) / 2, (YMin + YMax) / 2);
+            (PxPerUnitX, PxPerUnitY) = (DataWidth / XSpan, DataHeight / YSpan);
+            (UnitsPerPxX, UnitsPerPxY) = (XSpan / DataWidth, YSpan / DataHeight);
         }
 
         public override string ToString() =>
