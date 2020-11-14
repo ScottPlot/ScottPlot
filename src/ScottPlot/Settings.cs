@@ -99,7 +99,7 @@ namespace ScottPlot
             // determine axis limits based on specific X and Y axes
             (double xMin, double xMax) = xAxis.Dims.RationalLimits();
             (double yMin, double yMax) = yAxis.Dims.RationalLimits();
-            AxisLimits limits = new AxisLimits(xMin, xMax, yMin, yMax);
+            var limits = (xMin, xMax, yMin, yMax);
 
             return new PlotDimensions(figureSize, dataSize, dataOffset, limits);
         }

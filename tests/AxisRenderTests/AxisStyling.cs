@@ -13,13 +13,13 @@ namespace ScottPlotTests.AxisRenderTests
                 figureSize: new SizeF(100, 500),
                 dataSize: new SizeF(20, 400),
                 dataOffset: new PointF(75, 50),
-                axisLimits: new AxisLimits(-1, 1, -100, 100));
+                axisLimits: (-1, 1, -100, 100));
 
             var horizontalDims = new PlotDimensions(
                 figureSize: new SizeF(500, 100),
                 dataSize: new SizeF(400, 20),
                 dataOffset: new PointF(50, 25),
-                axisLimits: new AxisLimits(-100, 100, -1, 1));
+                axisLimits: (-100, 100, -1, 1));
 
             var altDims = axis.IsVertical ? verticalDims : horizontalDims;
 

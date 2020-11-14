@@ -28,10 +28,7 @@ namespace ScottPlotTests
         private void DisplayAxisInfo(ScottPlot.MultiPlot multiplot)
         {
             for (int i = 0; i < multiplot.subplots.Length; i += 1)
-            {
-                var limits = new AxisLimits(multiplot.subplots[i].Axis());
-                Console.WriteLine($"Subplot index {i} {limits}");
-            }
+                Console.WriteLine($"Subplot index {i} {multiplot.subplots[i].AxisLimits()}");
         }
 
         [Test]
@@ -62,9 +59,9 @@ namespace ScottPlotTests
             Console.WriteLine($"Saved {filePath}");
             DisplayAxisInfo(multiplot);
 
-            var matchedAxisLimits = new AxisLimits(multiplot.subplots[2].Axis());
-            Assert.Greater(matchedAxisLimits.XMax, matchedAxisLimits.XMin);
-            Assert.Greater(matchedAxisLimits.YMax, matchedAxisLimits.YMin);
+            var matchedAxisLimits = multiplot.subplots[2].AxisLimits();
+            Assert.Greater(matchedAxisLimits.xMax, matchedAxisLimits.xMin);
+            Assert.Greater(matchedAxisLimits.yMax, matchedAxisLimits.yMin);
         }
 
         [Test]
@@ -86,14 +83,14 @@ namespace ScottPlotTests
             Console.WriteLine($"Saved {filePath}");
 
             DisplayAxisInfo(multiplot);
-            var matchedVerticalLimits = new AxisLimits(multiplot.subplots[1].Axis());
-            var matchedHorizontalLimits = new AxisLimits(multiplot.subplots[1].Axis());
+            var matchedVerticalLimits = multiplot.subplots[1].AxisLimits();
+            var matchedHorizontalLimits = multiplot.subplots[1].AxisLimits();
 
-            Assert.Greater(matchedVerticalLimits.XMax, matchedVerticalLimits.XMin);
-            Assert.Greater(matchedVerticalLimits.YMax, matchedVerticalLimits.YMin);
+            Assert.Greater(matchedVerticalLimits.xMax, matchedVerticalLimits.xMin);
+            Assert.Greater(matchedVerticalLimits.yMax, matchedVerticalLimits.yMin);
 
-            Assert.Greater(matchedHorizontalLimits.XMax, matchedHorizontalLimits.XMin);
-            Assert.Greater(matchedHorizontalLimits.YMax, matchedHorizontalLimits.YMin);
+            Assert.Greater(matchedHorizontalLimits.xMax, matchedHorizontalLimits.xMin);
+            Assert.Greater(matchedHorizontalLimits.yMax, matchedHorizontalLimits.yMin);
         }
     }
 }
