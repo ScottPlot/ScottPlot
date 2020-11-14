@@ -28,7 +28,7 @@ namespace WpfPlotSandbox
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            var YAxis3 = new ScottPlot.Renderable.AdditionalRightAxis(2, true);
+            var YAxis3 = new ScottPlot.Renderable.AdditionalRightAxis(2);
             YAxis3.Title.Label = "Tertiary Vertical Axis";
             wpfPlot1.plt.GetSettings(false).Axes.Add(YAxis3);
 

@@ -23,7 +23,7 @@ namespace FormsPlotSandbox
             formsPlot1.plt.YLabel("Primary Vertical Axis");
             formsPlot1.plt.YLabel2("Secondary Vertical Axis");
 
-            var YAxis3 = new ScottPlot.Renderable.AdditionalRightAxis(2, true);
+            var YAxis3 = new ScottPlot.Renderable.AdditionalRightAxis(2);
             YAxis3.Title.Label = "Tertiary Vertical Axis";
             formsPlot1.plt.GetSettings(false).Axes.Add(YAxis3);
 
