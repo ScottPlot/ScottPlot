@@ -38,6 +38,7 @@ namespace ScottPlot.Renderable
 
         public bool RulerMode = false;
         public bool SnapPx = true;
+        public float PixelOffset;
 
         public readonly TickCollection TickCollection = new TickCollection();
 
@@ -69,8 +70,7 @@ namespace ScottPlot.Renderable
 
             if (IsVertical)
             {
-                float x = (Edge == Edge.Left) ? dims.DataOffsetX : dims.DataOffsetX + dims.DataWidth;
-                float x2 = (Edge == Edge.Left) ? dims.DataOffsetX + dims.DataWidth : dims.DataOffsetX;
+                float x = (Edge == Edge.Left) ? dims.DataOffsetX - PixelOffset : dims.DataOffsetX + dims.DataWidth + PixelOffset;
                 float tickDelta = (Edge == Edge.Left) ? -tickLength : tickLength;
 
                 var ys = positions.Select(i => dims.GetPixelY(i));
@@ -81,8 +81,7 @@ namespace ScottPlot.Renderable
 
             if (IsHorizontal)
             {
-                float y = (Edge == Edge.Top) ? dims.DataOffsetY : dims.DataOffsetY + dims.DataHeight;
-                float y2 = (Edge == Edge.Top) ? dims.DataOffsetY + dims.DataHeight : dims.DataOffsetY;
+                float y = (Edge == Edge.Top) ? dims.DataOffsetY - PixelOffset : dims.DataOffsetY + dims.DataHeight + PixelOffset;
                 float tickDelta = (Edge == Edge.Top) ? -tickLength : tickLength;
 
                 var xs = positions.Select(i => dims.GetPixelX(i));
@@ -139,7 +138,7 @@ namespace ScottPlot.Renderable
                         for (int i = 0; i < TickCollection.tickPositionsMajor.Length; i++)
                             gfx.DrawString(TickCollection.tickLabels[i], font, brush, format: sf,
                                 x: dims.GetPixelX(TickCollection.tickPositionsMajor[i]),
-                                y: dims.DataOffsetY + dims.DataHeight + MajorTickLength);
+                                y: dims.DataOffsetY + dims.DataHeight + PixelOffset + MajorTickLength);
 
                         sf.Alignment = StringAlignment.Far;
                         gfx.DrawString(TickCollection.cornerLabel, font, brush, format: sf,
@@ -169,7 +168,7 @@ namespace ScottPlot.Renderable
                     for (int i = 0; i < TickCollection.tickPositionsMajor.Length; i++)
                         gfx.DrawString(TickCollection.tickLabels[i], font, brush, format: sf,
                             x: dims.GetPixelX(TickCollection.tickPositionsMajor[i]),
-                            y: dims.DataOffsetY - MajorTickLength);
+                            y: dims.DataOffsetY - PixelOffset - MajorTickLength);
                 }
                 else if (Edge == Edge.Left)
                 {
@@ -177,7 +176,7 @@ namespace ScottPlot.Renderable
                     sf.Alignment = StringAlignment.Far;
                     for (int i = 0; i < TickCollection.tickPositionsMajor.Length; i++)
                         gfx.DrawString(TickCollection.tickLabels[i], font, brush, format: sf,
-                            x: dims.DataOffsetX - MajorTickLength,
+                            x: dims.DataOffsetX - PixelOffset - MajorTickLength,
                             y: dims.GetPixelY(TickCollection.tickPositionsMajor[i]));
 
                     sf.LineAlignment = StringAlignment.Far;
@@ -190,7 +189,7 @@ namespace ScottPlot.Renderable
                     sf.Alignment = StringAlignment.Near;
                     for (int i = 0; i < TickCollection.tickPositionsMajor.Length; i++)
                         gfx.DrawString(TickCollection.tickLabels[i], font, brush, format: sf,
-                            x: dims.DataOffsetX + MajorTickLength + dims.DataWidth,
+                            x: dims.DataOffsetX + PixelOffset + MajorTickLength + dims.DataWidth,
                             y: dims.GetPixelY(TickCollection.tickPositionsMajor[i]));
                 }
                 else

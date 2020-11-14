@@ -55,11 +55,66 @@
 
     public class AdditionalRightAxis : Axis
     {
-        public AdditionalRightAxis(int xAxisIndex, bool visible)
+        public AdditionalRightAxis(int yAxisIndex, bool visible)
         {
             Edge = Edge.Right;
-            AxisIndex = xAxisIndex;
+            AxisIndex = yAxisIndex;
             PixelSize = 60;
+            PixelOffset = 60;
+
+            Title.IsVisible = visible;
+            Ticks.MajorTickEnable = visible;
+            Ticks.MajorLabelEnable = visible;
+            Ticks.MinorTickEnable = visible;
+
+            Ticks.MajorGridEnable = false;
+        }
+    }
+
+    public class AdditionalLeftAxis : Axis
+    {
+        public AdditionalLeftAxis(int yAxisIndex, bool visible)
+        {
+            Edge = Edge.Left;
+            AxisIndex = yAxisIndex;
+            PixelSize = 60;
+            PixelOffset = 60;
+
+            Title.IsVisible = visible;
+            Ticks.MajorTickEnable = visible;
+            Ticks.MajorLabelEnable = visible;
+            Ticks.MinorTickEnable = visible;
+
+            Ticks.MajorGridEnable = false;
+        }
+    }
+
+    public class AdditionalTopAxis : Axis
+    {
+        public AdditionalTopAxis(int xAxisIndex, bool visible)
+        {
+            Edge = Edge.Top;
+            AxisIndex = xAxisIndex;
+            PixelSize = 50;
+            PixelOffset = 50;
+
+            Title.IsVisible = visible;
+            Ticks.MajorTickEnable = visible;
+            Ticks.MajorLabelEnable = visible;
+            Ticks.MinorTickEnable = visible;
+
+            Ticks.MajorGridEnable = false;
+        }
+    }
+
+    public class AdditionalBottomAxis : Axis
+    {
+        public AdditionalBottomAxis(int xAxisIndex, bool visible)
+        {
+            Edge = Edge.Bottom;
+            AxisIndex = xAxisIndex;
+            PixelSize = 50;
+            PixelOffset = 50;
 
             Title.IsVisible = visible;
             Ticks.MajorTickEnable = visible;

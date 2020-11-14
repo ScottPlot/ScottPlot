@@ -14,6 +14,9 @@ namespace ScottPlot.Renderable
         public Edge Edge;
         public float PixelSizePadding;
 
+        public float PixelOffset;
+        public float PixelSize;
+
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             if (IsVisible == false || string.IsNullOrWhiteSpace(Label))
@@ -30,17 +33,24 @@ namespace ScottPlot.Renderable
                 if (Edge == Edge.Bottom)
                 {
                     sf.LineAlignment = StringAlignment.Far;
-                    gfx.DrawString(Label, font, brush, dataCenterX, dims.Height - PixelSizePadding, sf);
+                    float y = dims.DataOffsetY + dims.DataHeight + PixelOffset + PixelSize;
+                    gfx.TranslateTransform(dataCenterX, y);
+                    gfx.DrawString(Label, font, brush, 0, -PixelSizePadding, sf);
+                    gfx.ResetTransform();
                 }
                 else if (Edge == Edge.Top)
                 {
                     sf.LineAlignment = StringAlignment.Near;
-                    gfx.DrawString(Label, font, brush, dataCenterX, PixelSizePadding, sf);
+                    float y = dims.DataOffsetY - PixelOffset - PixelSize;
+                    gfx.TranslateTransform(dataCenterX, y);
+                    gfx.DrawString(Label, font, brush, 0, PixelSizePadding, sf);
+                    gfx.ResetTransform();
                 }
                 else if (Edge == Edge.Left)
                 {
                     sf.LineAlignment = StringAlignment.Near;
-                    gfx.TranslateTransform(0, dataCenterY);
+                    float x = dims.DataOffsetX - PixelOffset - PixelSize;
+                    gfx.TranslateTransform(x, dataCenterY);
                     gfx.RotateTransform(-90);
                     gfx.DrawString(Label, font, brush, 0, PixelSizePadding, sf);
                     gfx.ResetTransform();
@@ -48,7 +58,8 @@ namespace ScottPlot.Renderable
                 else if (Edge == Edge.Right)
                 {
                     sf.LineAlignment = StringAlignment.Near;
-                    gfx.TranslateTransform(dims.Width, dataCenterY);
+                    float x = dims.DataOffsetX + dims.DataWidth + PixelOffset + PixelSize;
+                    gfx.TranslateTransform(x, dataCenterY);
                     gfx.RotateTransform(90);
                     gfx.DrawString(Label, font, brush, 0, PixelSizePadding, sf);
                     gfx.ResetTransform();

@@ -33,6 +33,7 @@ namespace ScottPlot.Renderable
         public bool IsVertical => Edge == Edge.Left || Edge == Edge.Right;
         public bool IsVisible { get; set; } = true;
 
+        public float PixelOffset = 0;
         public float PixelSize = 123;
         public float PixelSizeMinimum = 5;
         public float PixelSizeMaximum = float.PositiveInfinity;
@@ -53,6 +54,10 @@ namespace ScottPlot.Renderable
                 return;
 
             Title.PixelSizePadding = PixelSizePadding;
+            Ticks.PixelOffset = PixelOffset;
+            Title.PixelOffset = PixelOffset;
+            Title.PixelSize = PixelSize;
+            Line.PixelOffset = PixelOffset;
 
             using (var gfx = GDI.Graphics(bmp, lowQuality))
             {

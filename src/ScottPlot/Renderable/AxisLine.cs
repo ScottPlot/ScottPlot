@@ -12,6 +12,7 @@ namespace ScottPlot.Renderable
         public Color Color = Color.Black;
         public float Width = 1;
         public Edge Edge;
+        public float PixelOffset;
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
@@ -21,19 +22,19 @@ namespace ScottPlot.Renderable
             using (var gfx = GDI.Graphics(bmp, lowQuality))
             using (var pen = GDI.Pen(Color, Width))
             {
-                PointF bottomLeft = new PointF(dims.DataOffsetX, dims.DataOffsetY + dims.DataHeight);
-                PointF topLeft = new PointF(dims.DataOffsetX, dims.DataOffsetY);
-                PointF topRight = new PointF(dims.DataOffsetX + dims.DataWidth, dims.DataOffsetY);
-                PointF bottomRight = new PointF(dims.DataOffsetX + dims.DataWidth, dims.DataOffsetY + dims.DataHeight);
+                float left = dims.DataOffsetX;
+                float right = dims.DataOffsetX + dims.DataWidth;
+                float top = dims.DataOffsetY;
+                float bottom = dims.DataOffsetY + dims.DataHeight;
 
                 if (Edge == Edge.Bottom)
-                    gfx.DrawLine(pen, bottomLeft, bottomRight);
+                    gfx.DrawLine(pen, left, bottom + PixelOffset, right, bottom + PixelOffset);
                 else if (Edge == Edge.Left)
-                    gfx.DrawLine(pen, bottomLeft, topLeft);
+                    gfx.DrawLine(pen, left - PixelOffset, bottom, left - PixelOffset, top);
                 else if (Edge == Edge.Right)
-                    gfx.DrawLine(pen, bottomRight, topRight);
+                    gfx.DrawLine(pen, right + PixelOffset, bottom, right + PixelOffset, top);
                 else if (Edge == Edge.Top)
-                    gfx.DrawLine(pen, topLeft, topRight);
+                    gfx.DrawLine(pen, left, top - PixelOffset, right, top - PixelOffset);
                 else
                     throw new NotImplementedException();
             }
