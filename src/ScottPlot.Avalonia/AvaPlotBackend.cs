@@ -36,7 +36,6 @@ namespace ScottPlot.Avalonia
                 // hide the version info
                 mainGrid.RowDefinitions[0].Height = new GridLength(0);
                 //dpiScaleInput = settings.gfxFigure.DpiX / 96; THIS IS ONLY NECESSARY ON WPF
-                dpiScaleOutput = settings.gfxFigure.DpiX / 96;
                 view.Find<StackPanel>("canvasDesigner").Background = view.transparentBrush;
                 var canvasPlot = view.Find<Canvas>("canvasPlot");
                 canvasPlot.Background = view.transparentBrush;

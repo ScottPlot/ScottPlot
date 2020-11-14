@@ -170,7 +170,7 @@ namespace ScottPlot.Avalonia
         private Ava.Point GetPixelPosition(PointerEventArgs e)
         {
             Ava.Point pos = e.GetPosition(this);
-            Ava.Point dpiCorrectedPos = new Ava.Point(pos.X * backend.dpiScaleInput, pos.Y * backend.dpiScaleInput);
+            Ava.Point dpiCorrectedPos = new Ava.Point(pos.X * backend.dpiScale, pos.Y * backend.dpiScale);
             return dpiCorrectedPos;
         }
 
