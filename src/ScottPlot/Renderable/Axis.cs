@@ -33,8 +33,8 @@ namespace ScottPlot.Renderable
         public bool IsVertical => Edge == Edge.Left || Edge == Edge.Right;
         public bool IsVisible { get; set; } = true;
 
-        public float PixelOffset = 0;
-        public float PixelSize = 123;
+        public float PixelOffset; // TightenLayout() populates this value based on other PixelSize values
+        public float PixelSize; // RecalculateAxisSize() populates this value
         public float PixelSizeMinimum = 5;
         public float PixelSizeMaximum = float.PositiveInfinity;
         public float PixelSizePadding = 3;

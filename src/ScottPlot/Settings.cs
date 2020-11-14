@@ -66,6 +66,17 @@ namespace ScottPlot
         /// </summary>
         public void TightenLayout()
         {
+            Edge[] edges = { Edge.Left, Edge.Right, Edge.Top, Edge.Bottom };
+            foreach (var edge in edges)
+            {
+                float offset = 0;
+                foreach (var axis in Axes.Where(x => x.Edge == edge))
+                {
+                    axis.PixelOffset = offset;
+                    offset += axis.PixelSize;
+                }
+            }
+
             float padLeft = Axes.Where(x => x.Edge == Edge.Left).Select(x => x.PixelSize).Sum();
             float padRight = Axes.Where(x => x.Edge == Edge.Right).Select(x => x.PixelSize).Sum();
             float padBottom = Axes.Where(x => x.Edge == Edge.Bottom).Select(x => x.PixelSize).Sum();

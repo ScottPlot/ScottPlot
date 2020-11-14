@@ -5,7 +5,6 @@
         public DefaultBottomAxis()
         {
             Edge = Edge.Bottom;
-            PixelSize = 40;
             Ticks.MajorGridEnable = true;
         }
     }
@@ -16,7 +15,6 @@
         {
             Edge = Edge.Top;
             AxisIndex = 1;
-            PixelSize = 40;
             Title.Font.Bold = true;
             Title.IsVisible = true;
 
@@ -32,7 +30,6 @@
         public DefaultLeftAxis()
         {
             Edge = Edge.Left;
-            PixelSize = 60;
             Ticks.MajorGridEnable = true;
         }
     }
@@ -43,7 +40,6 @@
         {
             Edge = Edge.Right;
             AxisIndex = 1;
-            PixelSize = 60;
 
             Ticks.MajorTickEnable = false;
             Ticks.MinorTickEnable = false;
@@ -59,8 +55,6 @@
         {
             Edge = Edge.Right;
             AxisIndex = yAxisIndex;
-            PixelSize = 60;
-            PixelOffset = 60;
 
             Title.IsVisible = visible;
             Ticks.MajorTickEnable = visible;
