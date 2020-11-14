@@ -237,8 +237,8 @@ namespace ScottPlot.Interactive
 
         public (double x, double y) GetMouseCoordinates()
         {
-            double x = plt.CoordinateFromPixelX(mouseLocation.X / dpiScaleInput);
-            double y = plt.CoordinateFromPixelY(mouseLocation.Y / dpiScaleInput);
+            double x = plt.CoordinateFromPixelX((float)(mouseLocation.X / dpiScaleInput));
+            double y = plt.CoordinateFromPixelY((float)(mouseLocation.Y / dpiScaleInput));
             return (x, y);
         }
 

@@ -57,7 +57,7 @@ namespace ScottPlot
             float padBottom = Axes.Where(x => x.Edge == Edge.Bottom).Select(x => x.PixelSize).Sum();
             float padTop = Axes.Where(x => x.Edge == Edge.Top).Select(x => x.PixelSize).Sum();
 
-            foreach(Axis axis in Axes)
+            foreach (Axis axis in Axes)
             {
                 if (axis.IsHorizontal)
                     axis.Dims.SetPadding(padLeft, padRight);
@@ -81,14 +81,6 @@ namespace ScottPlot
          * # OLD SETTINGS WHICH I AM WORKING TO STRANGLE
          * 
          */
-
-        public double GetPixelX(double locationX) => XAxis.Dims.GetPixel(locationX);
-        public double GetPixelY(double locationY) => YAxis.Dims.GetPixel(locationY);
-        public PointF GetPixel(double locationX, double locationY) => new PointF((float)GetPixelX(locationX), (float)GetPixelY(locationY));
-
-        public double GetLocationX(double pixelX) => XAxis.Dims.GetUnit((float)pixelX);
-        public double GetLocationY(double pixelY) => YAxis.Dims.GetUnit((float)pixelY);
-        public PointF GetLocation(double pixelX, double pixelY) => new PointF((float)GetLocationX(pixelX), (float)GetLocationY(pixelY));
 
         public PlotDimensions GetPlotDimensions(int xAxisIndex, int yAxisIndex)
         {

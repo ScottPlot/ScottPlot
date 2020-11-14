@@ -200,34 +200,22 @@ namespace ScottPlot
         /// <summary>
         /// Retrun the coordinate (in plot space) for the given pixel
         /// </summary>
-        public double CoordinateFromPixelX(double pixelX) => settings.GetLocationX(pixelX);
+        public double CoordinateFromPixelX(float pixelX) => settings.XAxis.Dims.GetUnit(pixelX);
 
         /// <summary>
         /// Retrun the coordinate (in plot space) for the given pixel
         /// </summary>
-        public double CoordinateFromPixelY(double pixelY) => settings.GetLocationY(pixelY);
+        public double CoordinateFromPixelY(float pixelY) => settings.YAxis.Dims.GetUnit(pixelY);
 
         /// <summary>
         /// Retrun the pixel location of the given coordinate (in plot space)
         /// </summary>
-        public float CoordinateToPixelX(double locationX) => (float)(settings.GetPixelX(locationX) + settings.DataOffsetX);
+        public float CoordinateToPixelX(double locationX) => settings.XAxis.Dims.GetPixel(locationX);
 
         /// <summary>
         /// Retrun the pixel location of the given coordinate (in plot space)
         /// </summary>
-        public float CoordinateToPixelY(double locationY) => (float)(settings.GetPixelX(locationY) + settings.DataOffsetY);
-
-        [Obsolete("use X/Y methods", true)]
-        public PointF CoordinateToPixel(double locationX, double locationY)
-        {
-            PointF pixelLocation = settings.GetPixel(locationX, locationY);
-            pixelLocation.X += settings.DataOffsetX;
-            pixelLocation.Y += settings.DataOffsetY;
-            return pixelLocation;
-        }
-
-        [Obsolete("use X/Y methods", true)]
-        public PointF CoordinateToPixel(PointF location) => CoordinateToPixel(location.X, location.Y);
+        public float CoordinateToPixelY(double locationY) => settings.YAxis.Dims.GetPixel(locationY);
 
         /// <summary>
         /// Set this plot's axis limits to match those of the given plot

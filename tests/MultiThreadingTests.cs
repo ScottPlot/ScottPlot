@@ -43,26 +43,12 @@ namespace ScottPlotTests
         }
 
         [Test]
-        public void GetPixel_MultipleParallelCalls_NotThrows()
-        {
-            var plt = new ScottPlot.Plot(800, 400);
-            var settings = plt.GetSettings();
-
-            var pixels = Enumerable.Range(0, 5000).AsParallel().Select(x => settings.GetPixel(x, x * 3));
-
-            Assert.DoesNotThrow(() =>
-            {
-                var array = pixels.ToArray();
-            });
-        }
-
-        [Test]
         public void GetPixelX_MultipleParallelCalls_NotThrows()
         {
             var plt = new ScottPlot.Plot(800, 400);
             var settings = plt.GetSettings();
 
-            var pixels = Enumerable.Range(0, 5000).AsParallel().Select(x => settings.GetPixelX(x));
+            var pixels = Enumerable.Range(0, 5000).AsParallel().Select(x => settings.XAxis.Dims.GetPixel(x));
 
             Assert.DoesNotThrow(() =>
             {
@@ -76,21 +62,7 @@ namespace ScottPlotTests
             var plt = new ScottPlot.Plot(800, 400);
             var settings = plt.GetSettings();
 
-            var pixels = Enumerable.Range(0, 5000).AsParallel().Select(x => settings.GetPixelY(x * 3));
-
-            Assert.DoesNotThrow(() =>
-            {
-                var array = pixels.ToArray();
-            });
-        }
-
-        [Test]
-        public void GetLocation_MultipleParallelCalls_NotThrows()
-        {
-            var plt = new ScottPlot.Plot(800, 400);
-            var settings = plt.GetSettings();
-
-            var pixels = Enumerable.Range(0, 5000).AsParallel().Select(x => settings.GetLocation(x, x * 3));
+            var pixels = Enumerable.Range(0, 5000).AsParallel().Select(x => settings.YAxis.Dims.GetPixel(x * 3));
 
             Assert.DoesNotThrow(() =>
             {
@@ -104,7 +76,7 @@ namespace ScottPlotTests
             var plt = new ScottPlot.Plot(800, 400);
             var settings = plt.GetSettings();
 
-            var pixels = Enumerable.Range(0, 5000).AsParallel().Select(x => settings.GetLocationX(x));
+            var pixels = Enumerable.Range(0, 5000).AsParallel().Select(x => settings.XAxis.Dims.GetUnit(x));
 
             Assert.DoesNotThrow(() =>
             {
@@ -118,7 +90,7 @@ namespace ScottPlotTests
             var plt = new ScottPlot.Plot(800, 400);
             var settings = plt.GetSettings();
 
-            var pixels = Enumerable.Range(0, 5000).AsParallel().Select(x => settings.GetLocationY(x * 3));
+            var pixels = Enumerable.Range(0, 5000).AsParallel().Select(x => settings.YAxis.Dims.GetUnit(x * 3));
 
             Assert.DoesNotThrow(() =>
             {
