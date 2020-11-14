@@ -32,8 +32,8 @@ namespace ScottPlot
             if (someValuesAreNull)
             {
                 // auto-axis before assigning the rest of the values
-                var xAxis = settings.Axes.Where(x => x.IsHorizontal && x.AxisIndex == xAxisIndex).First();
-                var yAxis = settings.Axes.Where(x => x.IsVertical && x.AxisIndex == yAxisIndex).First();
+                var xAxis = settings.GetXAxis(xAxisIndex);
+                var yAxis = settings.GetYAxis(yAxisIndex);
                 if (xAxis.Dims.HasBeenSet == false || yAxis.Dims.HasBeenSet == false)
                     AxisAuto(xAxisIndex, yAxisIndex);
             }
@@ -179,8 +179,8 @@ namespace ScottPlot
             int xAxisIndex = 0,
             int yAxisIndex = 0)
         {
-            var xAxis = settings.Axes.Where(x => x.IsHorizontal && x.AxisIndex == xAxisIndex).First();
-            var yAxis = settings.Axes.Where(x => x.IsVertical && x.AxisIndex == yAxisIndex).First();
+            var xAxis = settings.GetXAxis(xAxisIndex);
+            var yAxis = settings.GetYAxis(yAxisIndex);
 
             if (xAxis.Dims.HasBeenSet == false || yAxis.Dims.HasBeenSet == false)
                 settings.AxisAuto(xAxisIndex: xAxisIndex, yAxisIndex: yAxisIndex);

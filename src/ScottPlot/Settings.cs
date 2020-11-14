@@ -64,6 +64,9 @@ namespace ScottPlot
         public Axis XAxis2 => Axes[3];
         public Axis[] PrimaryAxes => Axes.Take(4).ToArray();
 
+        public Axis GetXAxis(int xAxisIndex) => Axes.Where(x => x.IsHorizontal && x.AxisIndex == xAxisIndex).First();
+        public Axis GetYAxis(int yAxisIndex) => Axes.Where(x => x.IsVertical && x.AxisIndex == yAxisIndex).First();
+
         /*
          * ##################################################################################
          * # OLD SETTINGS WHICH I AM WORKING TO STRANGLE
@@ -80,8 +83,8 @@ namespace ScottPlot
 
         public PlotDimensions2D GetPlotDimensions(int xAxisIndex, int yAxisIndex)
         {
-            Axis xAxis = Axes.Where(x => x.IsHorizontal && x.AxisIndex == xAxisIndex).First();
-            Axis yAxis = Axes.Where(x => x.IsVertical && x.AxisIndex == yAxisIndex).First();
+            var xAxis = GetXAxis(xAxisIndex);
+            var yAxis = GetYAxis(yAxisIndex);
 
             // determine figure dimensions based on primary X and Y axis
             var figureSize = new SizeF(XAxis.Dims.FigureSizePx, YAxis.Dims.FigureSizePx);
@@ -126,8 +129,8 @@ namespace ScottPlot
 
         public double[] AxisLimitsArray(int xAxisIndex, int yAxisIndex)
         {
-            Axis xAxis = Axes.Where(x => x.IsHorizontal && x.AxisIndex == xAxisIndex).First();
-            Axis yAxis = Axes.Where(x => x.IsVertical && x.AxisIndex == yAxisIndex).First();
+            var xAxis = GetXAxis(xAxisIndex);
+            var yAxis = GetYAxis(yAxisIndex);
             return new double[] { xAxis.Dims.Min, xAxis.Dims.Max, yAxis.Dims.Min, yAxis.Dims.Max };
         }
 
@@ -149,6 +152,14 @@ namespace ScottPlot
             }
         }
 
+        public void AxisAutoUnsetAxes()
+        {
+            if (Axes.Any(x => x.Dims.HasBeenSet == false && x.AxisIndex == 0))
+                AxisAuto(xAxisIndex: 0, yAxisIndex: 0);
+            if (Axes.Any(x => x.Dims.HasBeenSet == false && x.AxisIndex == 1))
+                AxisAuto(xAxisIndex: 1, yAxisIndex: 1);
+        }
+
         public void AxisAuto(
             double horizontalMargin = .1,
             double verticalMargin = .1,
@@ -160,8 +171,8 @@ namespace ScottPlot
             int yAxisIndex = 0
             )
         {
-            var xAxis = Axes.Where(x => x.IsHorizontal && x.AxisIndex == xAxisIndex).First();
-            var yAxis = Axes.Where(x => x.IsVertical && x.AxisIndex == yAxisIndex).First();
+            var xAxis = GetXAxis(xAxisIndex);
+            var yAxis = GetYAxis(yAxisIndex);
 
             var oldLimits = new AxisLimits2D(xAxis.Dims.Min, xAxis.Dims.Max, yAxis.Dims.Min, yAxis.Dims.Max);
             var newLimits = new AxisLimits2D();
