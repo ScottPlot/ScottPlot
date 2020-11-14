@@ -2,9 +2,6 @@
 
 namespace ScottPlot
 {
-    /// <summary>
-    /// Mutable axis limits for a 2D space
-    /// </summary>
     public class AxisLimits2D
     {
         public double XMin { get; set; }
@@ -12,23 +9,13 @@ namespace ScottPlot
         public double YMin { get; set; }
         public double YMax { get; set; }
 
-        public override string ToString() => $"[{XMin}, {XMax}, {YMin}, {YMax}]";
+        public override string ToString() => $"Axis limits: X=[{XMin}, {XMax}] Y=[{YMin}, {YMax}]";
 
-        public AxisLimits2D()
-        {
-            XMin = double.NaN;
-            XMax = double.NaN;
-            YMin = double.NaN;
-            YMax = double.NaN;
-        }
+        public AxisLimits2D() =>
+            (XMin, XMax, YMin, YMax) = (double.NaN, double.NaN, double.NaN, double.NaN);
 
-        public AxisLimits2D(double? xMin, double? xMax, double? yMin, double? yMax)
-        {
-            XMin = xMin ?? double.NaN;
-            XMax = xMax ?? double.NaN;
-            YMin = yMin ?? double.NaN;
-            YMax = yMax ?? double.NaN;
-        }
+        public AxisLimits2D(double xMin, double xMax, double yMin, double yMax) =>
+            (XMin, XMax, YMin, YMax) = (xMin, xMax, yMin, yMax);
 
         public AxisLimits2D(double[] limits)
         {
