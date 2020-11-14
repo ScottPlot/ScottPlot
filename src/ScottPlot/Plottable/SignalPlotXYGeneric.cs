@@ -61,7 +61,7 @@ namespace ScottPlot.Plottable
             return (newXMin, newXMax, baseLimits.yMin, baseLimits.yMax);
         }
 
-        public IEnumerable<PointF> ProcessInterval(int x, int from, int length, PlotDimensions2D dims)
+        public IEnumerable<PointF> ProcessInterval(int x, int from, int length, PlotDimensions dims)
         {
             TX start = (TX)Convert.ChangeType(dims.XMin + dims.XSpan / dims.DataWidth * x, typeof(TX));
             TX end = (TX)Convert.ChangeType(dims.XMin + dims.XSpan / dims.DataWidth * (x + 1), typeof(TX));
@@ -96,7 +96,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public override void Render(PlotDimensions2D dims, Bitmap bmp, bool lowQuality = false)
+        public override void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             using (Graphics gfx = Graphics.FromImage(bmp))
             using (var brush = new SolidBrush(color))

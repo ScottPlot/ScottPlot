@@ -139,7 +139,7 @@ namespace ScottPlot.Plottable
             return null;
         }
 
-        public void Render(PlotDimensions2D dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             using (var gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (var pen = GDI.Pen(Color, LineWidth, LineStyle, true))
@@ -151,7 +151,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public void DrawErrorBar(PlotDimensions2D dims, Graphics gfx, Pen penLine, double[] errorArray, bool xError, bool positiveError)
+        public void DrawErrorBar(PlotDimensions dims, Graphics gfx, Pen penLine, double[] errorArray, bool xError, bool positiveError)
         {
             if (errorArray is null)
                 return;

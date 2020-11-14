@@ -108,7 +108,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public void Render(PlotDimensions2D dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             {
@@ -122,7 +122,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        private void RenderBarVertical(PlotDimensions2D dims, Graphics gfx, double position, double value, double valueError, double yOffset)
+        private void RenderBarVertical(PlotDimensions dims, Graphics gfx, double position, double value, double valueError, double yOffset)
         {
             // bar body
             float centerPx = dims.GetPixelX(position);
@@ -169,7 +169,7 @@ namespace ScottPlot.Plottable
                     gfx.DrawString(value.ToString(), valueTextFont, valueTextBrush, centerPx, rect.Y, sf);
         }
 
-        private void RenderBarHorizontal(PlotDimensions2D dims, Graphics gfx, double position, double value, double valueError, double yOffset)
+        private void RenderBarHorizontal(PlotDimensions dims, Graphics gfx, double position, double value, double valueError, double yOffset)
         {
             // bar body
             float centerPx = dims.GetPixelY(position);

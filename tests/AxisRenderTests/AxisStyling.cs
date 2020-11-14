@@ -7,15 +7,15 @@ namespace ScottPlotTests.AxisRenderTests
 {
     class AxisStyling
     {
-        private MeanPixel Mean(ScottPlot.Renderable.Axis axis, PlotDimensions2D dims = null, bool save = true)
+        private MeanPixel Mean(ScottPlot.Renderable.Axis axis, PlotDimensions dims = null, bool save = true)
         {
-            var verticalDims = new PlotDimensions2D(
+            var verticalDims = new PlotDimensions(
                 figureSize: new SizeF(100, 500),
                 dataSize: new SizeF(20, 400),
                 dataOffset: new PointF(75, 50),
                 axisLimits: new AxisLimits2D(-1, 1, -100, 100));
 
-            var horizontalDims = new PlotDimensions2D(
+            var horizontalDims = new PlotDimensions(
                 figureSize: new SizeF(500, 100),
                 dataSize: new SizeF(400, 20),
                 dataOffset: new PointF(50, 25),

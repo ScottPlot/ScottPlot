@@ -61,7 +61,7 @@ namespace ScottPlot.Renderable
 
         public bool IsVisible { get; set; } = false;
 
-        public void Render(PlotDimensions2D dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             if (!IsVisible || string.IsNullOrWhiteSpace(Text))
                 return;

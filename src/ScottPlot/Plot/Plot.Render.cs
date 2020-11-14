@@ -54,7 +54,7 @@ namespace ScottPlot
 
         private void RenderBeforePlottables(Bitmap bmp, bool lowQuality)
         {
-            PlotDimensions2D dims = settings.GetPlotDimensions(0, 0);
+            PlotDimensions dims = settings.GetPlotDimensions(0, 0);
             settings.FigureBackground.Render(dims, bmp, lowQuality);
             settings.DataBackground.Render(dims, bmp, lowQuality);
 
@@ -63,7 +63,7 @@ namespace ScottPlot
                 settings.XAxis.Render(dims, bmp, lowQuality);
                 settings.YAxis.Render(dims, bmp, lowQuality);
 
-                PlotDimensions2D dims2 = settings.GetPlotDimensions(1, 1);
+                PlotDimensions dims2 = settings.GetPlotDimensions(1, 1);
                 settings.XAxis2.Render(dims2, bmp, lowQuality);
                 settings.YAxis2.Render(dims2, bmp, lowQuality);
             }
@@ -80,7 +80,7 @@ namespace ScottPlot
                 if (plottable.IsVisible == false)
                     continue;
 
-                PlotDimensions2D dims = (plottable is Plottable.IUsesAxes p) ?
+                PlotDimensions dims = (plottable is Plottable.IUsesAxes p) ?
                     settings.GetPlotDimensions(p.HorizontalAxisIndex, p.VerticalAxisIndex) :
                     settings.GetPlotDimensions(0, 0);
                 try
@@ -96,7 +96,7 @@ namespace ScottPlot
 
         private void RenderAfterPlottables(Bitmap bmp, bool lowQuality)
         {
-            PlotDimensions2D dims = settings.GetPlotDimensions(0, 0);
+            PlotDimensions dims = settings.GetPlotDimensions(0, 0);
 
             settings.CornerLegend.UpdateLegendItems(Plottables);
             settings.CornerLegend.Render(dims, bmp, lowQuality);

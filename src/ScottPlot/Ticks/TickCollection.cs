@@ -45,7 +45,7 @@ namespace ScottPlot.Ticks
         public bool useOffsetNotation = false;
         public bool useExponentialNotation = true;
 
-        public void Recalculate(PlotDimensions2D dims, Drawing.Font tickFont)
+        public void Recalculate(PlotDimensions dims, Drawing.Font tickFont)
         {
             if (manualTickPositions is null)
             {
@@ -105,7 +105,7 @@ namespace ScottPlot.Ticks
             return (maxLabelSize.Width, maxLabelSize.Height);
         }
 
-        private void RecalculatePositionsAutomaticDatetime(PlotDimensions2D dims, float labelWidth, float labelHeight, int? forcedTickCount)
+        private void RecalculatePositionsAutomaticDatetime(PlotDimensions dims, float labelWidth, float labelHeight, int? forcedTickCount)
         {
             double low, high;
             int tickCount;
@@ -158,7 +158,7 @@ namespace ScottPlot.Ticks
             cornerLabel = null;
         }
 
-        private void RecalculatePositionsAutomaticNumeric(PlotDimensions2D dims, float labelWidth, float labelHeight, int? forcedTickCount)
+        private void RecalculatePositionsAutomaticNumeric(PlotDimensions dims, float labelWidth, float labelHeight, int? forcedTickCount)
         {
             double low, high, tickSpacing;
             int maxTickCount;

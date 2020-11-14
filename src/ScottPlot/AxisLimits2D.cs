@@ -2,10 +2,8 @@
 
 namespace ScottPlot
 {
-    // TODO: consider merging this with AxisDimensions
-
     /// <summary>
-    /// A DTO to make it easy to pass a set of 2D axis limits
+    /// Mutable axis limits for a 2D space
     /// </summary>
     public class AxisLimits2D
     {

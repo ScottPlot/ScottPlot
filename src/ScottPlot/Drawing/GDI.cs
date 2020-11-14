@@ -80,7 +80,7 @@ namespace ScottPlot.Drawing
             return gfx;
         }
 
-        public static System.Drawing.Graphics Graphics(Bitmap bmp, PlotDimensions2D dims, bool lowQuality = false)
+        public static System.Drawing.Graphics Graphics(Bitmap bmp, PlotDimensions dims, bool lowQuality = false)
         {
             Graphics gfx = Graphics(bmp, lowQuality);
             gfx.Clip = new Region(new RectangleF(dims.DataOffsetX, dims.DataOffsetY, dims.DataWidth, dims.DataHeight));

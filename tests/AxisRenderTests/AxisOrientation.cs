@@ -10,29 +10,29 @@ namespace ScottPlotTests.AxisRenderTests
 {
     class AxisOrientation
     {
-        public PlotDimensions2D DimsLeft =>
-            new PlotDimensions2D(
+        public PlotDimensions DimsLeft =>
+            new PlotDimensions(
                 figureSize: new SizeF(100, 500),
                 dataSize: new SizeF(20, 400),
                 dataOffset: new PointF(75, 50),
                 axisLimits: new AxisLimits2D(-1, 1, -100, 100));
 
-        public PlotDimensions2D DimsRight =>
-            new PlotDimensions2D(
+        public PlotDimensions DimsRight =>
+            new PlotDimensions(
                 figureSize: new SizeF(100, 500),
                 dataSize: new SizeF(20, 400),
                 dataOffset: new PointF(5, 50),
                 axisLimits: new AxisLimits2D(-1, 1, -100, 100));
 
-        public PlotDimensions2D DimsTop =>
-            new PlotDimensions2D(
+        public PlotDimensions DimsTop =>
+            new PlotDimensions(
                 figureSize: new SizeF(500, 100),
                 dataSize: new SizeF(450, 20),
                 dataOffset: new PointF(25, 75),
                 axisLimits: new AxisLimits2D(-1, 1, -100, 100));
 
-        public PlotDimensions2D DimsBottom =>
-            new PlotDimensions2D(
+        public PlotDimensions DimsBottom =>
+            new PlotDimensions(
                 figureSize: new SizeF(500, 100),
                 dataSize: new SizeF(450, 20),
                 dataOffset: new PointF(25, 5),

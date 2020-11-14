@@ -135,7 +135,7 @@ namespace ScottPlot.Plottable
             return (limits[0], limits[1], limits[2], limits[3]);
         }
 
-        public void Render(PlotDimensions2D dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             if (IsVisible == false)
                 return;

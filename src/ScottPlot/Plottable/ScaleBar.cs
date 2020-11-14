@@ -67,7 +67,7 @@ namespace ScottPlot.Plottable
 
         public override string ToString() => $"PlottableScaleBar ({HorizontalLabel}={Width}, {VerticalLabel}={Height})";
 
-        public void Render(PlotDimensions2D dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             using (var gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (var font = GDI.Font(FontName, FontSize, FontBold))

@@ -104,7 +104,7 @@ namespace ScottPlot.Plottable
             return (positionMin, positionMax, minValue, maxValue);
         }
 
-        public void Render(PlotDimensions2D dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             Random rand = new Random(0);
             double groupWidth = .8;
@@ -176,7 +176,7 @@ namespace ScottPlot.Plottable
 
         public enum Position { Hide, Center, Left, Right }
 
-        public static void Scatter(PlotDimensions2D dims, Bitmap bmp, bool lowQuality, Population pop, Random rand,
+        public static void Scatter(PlotDimensions dims, Bitmap bmp, bool lowQuality, Population pop, Random rand,
             double popLeft, double popWidth, Color fillColor, Color edgeColor, byte alpha, Position position)
         {
             // adjust edges to accomodate special positions
@@ -205,7 +205,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public static void Distribution(PlotDimensions2D dims, Bitmap bmp, bool lowQuality, Population pop, Random rand,
+        public static void Distribution(PlotDimensions dims, Bitmap bmp, bool lowQuality, Population pop, Random rand,
             double popLeft, double popWidth, Color color, Position position, LineStyle lineStyle)
         {
             // adjust edges to accomodate special positions
@@ -238,7 +238,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public static void MeanAndError(PlotDimensions2D dims, Bitmap bmp, bool lowQuality, Population pop, Random rand,
+        public static void MeanAndError(PlotDimensions dims, Bitmap bmp, bool lowQuality, Population pop, Random rand,
             double popLeft, double popWidth, Color color, Position position, bool useStdErr = false)
         {
             // adjust edges to accomodate special positions
@@ -281,7 +281,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public static void Bar(PlotDimensions2D dims, Bitmap bmp, bool lowQuality, Population pop, Random rand,
+        public static void Bar(PlotDimensions dims, Bitmap bmp, bool lowQuality, Population pop, Random rand,
             double popLeft, double popWidth, Color color, Position position, bool useStdErr = false)
         {
             // adjust edges to accomodate special positions
@@ -337,7 +337,7 @@ namespace ScottPlot.Plottable
         public enum BoxFormat { StdevStderrMean, OutlierQuartileMedian }
         public enum HorizontalAlignment { Left, Center, Right }
 
-        public static void Box(PlotDimensions2D dims, Bitmap bmp, bool lowQuality, Population pop, Random rand,
+        public static void Box(PlotDimensions dims, Bitmap bmp, bool lowQuality, Population pop, Random rand,
             double popLeft, double popWidth, Color color, Position position, BoxFormat boxFormat,
             HorizontalAlignment errorAlignment = HorizontalAlignment.Right)
         {

@@ -78,7 +78,7 @@ namespace ScottPlot.Plottable
             return (limits[0], limits[1], limits[2], limits[3]);
         }
 
-        public void Render(PlotDimensions2D dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             if (Candle)
                 RenderCandles(dims, bmp, lowQuality);
@@ -116,7 +116,7 @@ namespace ScottPlot.Plottable
             return null;
         }
 
-        public void RenderCandles(PlotDimensions2D dims, Bitmap bmp, bool lowQuality)
+        public void RenderCandles(PlotDimensions dims, Bitmap bmp, bool lowQuality)
         {
             double fractionalTickWidth = .7;
             float boxWidth = 10;
@@ -162,7 +162,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public void RenderOhlc(PlotDimensions2D dims, Bitmap bmp, bool lowQuality)
+        public void RenderOhlc(PlotDimensions dims, Bitmap bmp, bool lowQuality)
         {
             double fractionalTickWidth = .7;
             float boxWidth = 10;

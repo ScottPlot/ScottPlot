@@ -14,7 +14,7 @@ namespace ScottPlot.Renderable
         public Edge Edge;
         public float PixelSizePadding;
 
-        public void Render(PlotDimensions2D dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             if (IsVisible == false || string.IsNullOrWhiteSpace(Label))
                 return;

@@ -18,7 +18,7 @@ namespace ScottPlot.Plottable
         public ScatterPlotHighlight(double[] xs, double[] ys, double[] xErr = null, double[] yErr = null) :
                                     base(xs, ys, xErr, yErr) => HighlightClear();
 
-        public new void Render(PlotDimensions2D dims, Bitmap bmp, bool lowQuality = false)
+        public new void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             base.Render(dims, bmp, lowQuality);
 

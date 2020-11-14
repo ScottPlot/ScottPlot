@@ -2,10 +2,10 @@
 
 namespace ScottPlot
 {
-    /* This class is a DTO intended to pass axis and figure dimensions
-     * for a single X/Y plane into a render function.
-     */
-    public class PlotDimensions2D
+    /// <summary>
+    /// PlotDimensions supplies figure dimensions and pixel/coordinate lookup methods for a single 2D plane
+    /// </summary>
+    public class PlotDimensions
     {
         // plot dimensions
         public readonly float Width;
@@ -36,12 +36,14 @@ namespace ScottPlot
         public double GetCoordinateX(float pixel) => (pixel - DataOffsetX) / PxPerUnitX + XMin;
         public double GetCoordinateY(float pixel) => DataHeight - ((pixel - YMin) * PxPerUnitY);
 
-        public PlotDimensions2D(SizeF figureSize, SizeF dataSize, PointF dataOffset, AxisLimits2D axisLimits)
+        public PlotDimensions(SizeF figureSize, SizeF dataSize, PointF dataOffset, AxisLimits2D axisLimits)
         {
             (Width, Height) = (figureSize.Width, figureSize.Height);
             (DataWidth, DataHeight) = (dataSize.Width, dataSize.Height);
             (DataOffsetX, DataOffsetY) = (dataOffset.X, dataOffset.Y);
-            (XMin, XMax, YMin, YMax) = (axisLimits.XMin, axisLimits.XMax, axisLimits.YMin, axisLimits.YMax);
+            (XMin, XMax, YMin, YMax) = axisLimits is null ?
+                (double.NaN, double.NaN, double.NaN, double.NaN) :
+                (axisLimits.XMin, axisLimits.XMax, axisLimits.YMin, axisLimits.YMax);
             (XSpan, YSpan) = (XMax - XMin, YMax - YMin);
             (XCenter, YCenter) = ((XMin + XMax) / 2, (YMin + YMax) / 2);
             (PxPerUnitX, PxPerUnitY) = (DataWidth / XSpan, DataHeight / YSpan);

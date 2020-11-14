@@ -86,7 +86,7 @@ namespace ScottPlot
             var figSize = new SizeF(settings.Width, settings.Height);
 
             // first-pass tick calculation based on full image size 
-            var dimsFull = new PlotDimensions2D(figSize, figSize, new PointF(0, 0), limits);
+            var dimsFull = new PlotDimensions(figSize, figSize, new PointF(0, 0), limits);
 
             foreach (var axis in settings.Axes)
             {
@@ -106,7 +106,7 @@ namespace ScottPlot
             var dataSize = new SizeF(settings.DataWidth, settings.DataHeight);
             var dataOffset = new PointF(settings.DataOffsetX, settings.DataOffsetY);
 
-            var dims3 = new PlotDimensions2D(figSize, dataSize, dataOffset, limits);
+            var dims3 = new PlotDimensions(figSize, dataSize, dataOffset, limits);
             foreach (var axis in settings.Axes)
             {
                 bool isMatchingXAxis = axis.IsHorizontal && axis.AxisIndex == xAxisIndex;

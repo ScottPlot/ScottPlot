@@ -31,7 +31,7 @@ namespace ScottPlot.Plottable
 
         public override string ToString() => $"PlottableAnnotation at ({xPixel} px, {yPixel} px)";
 
-        public void Render(PlotDimensions2D dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             using (var gfx = GDI.Graphics(bmp, lowQuality))
             using (var font = GDI.Font(FontName, FontSize, FontBold))

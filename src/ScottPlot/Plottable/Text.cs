@@ -127,7 +127,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public void Render(PlotDimensions2D dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             if (string.IsNullOrWhiteSpace(text))
                 return; // no render needed

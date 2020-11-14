@@ -41,7 +41,7 @@ namespace ScottPlot.Renderable
 
         public readonly TickCollection TickCollection = new TickCollection();
 
-        public void Render(PlotDimensions2D dims, Bitmap bmp, bool lowQuality = false)
+        public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             using (Graphics gfx = GDI.Graphics(bmp, lowQuality))
             {
@@ -62,7 +62,7 @@ namespace ScottPlot.Renderable
             }
         }
 
-        private void RenderTickMarks(PlotDimensions2D dims, Graphics gfx, double[] positions, float tickLength, Color tickColor)
+        private void RenderTickMarks(PlotDimensions dims, Graphics gfx, double[] positions, float tickLength, Color tickColor)
         {
             if (positions is null || positions.Length == 0)
                 return;
@@ -92,7 +92,7 @@ namespace ScottPlot.Renderable
             }
         }
 
-        private void RenderGridLines(PlotDimensions2D dims, Graphics gfx, double[] positions,
+        private void RenderGridLines(PlotDimensions dims, Graphics gfx, double[] positions,
             LineStyle gridLineStyle, Color gridLineColor, float gridLineWidth)
         {
             if (positions is null || positions.Length == 0 || gridLineStyle == LineStyle.None)
@@ -121,7 +121,7 @@ namespace ScottPlot.Renderable
             }
         }
 
-        private void RenderTickLabels(PlotDimensions2D dims, Graphics gfx)
+        private void RenderTickLabels(PlotDimensions dims, Graphics gfx)
         {
             if (TickCollection.tickLabels is null || TickCollection.tickLabels.Length == 0 || MajorLabelEnable == false)
                 return;
