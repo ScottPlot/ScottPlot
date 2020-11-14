@@ -23,6 +23,11 @@
         public override string ToString() =>
              $"Axis ({Min} to {Max}), figure size {FigureSizePx}, data size {DataSizePx}";
 
+        private double MinRemembered = double.NaN;
+        private double MaxRemembered = double.NaN;
+        public void Remember() => (MinRemembered, MaxRemembered) = (Min, Max);
+        public void Recall() => (Min, Max) = (MinRemembered, MaxRemembered);
+
         public (double min, double max) RationalLimits()
         {
             double min = double.IsNaN(Min) ? -10 : Min;

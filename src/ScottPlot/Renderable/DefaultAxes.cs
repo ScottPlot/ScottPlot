@@ -52,4 +52,21 @@
             Ticks.MajorGridEnable = false;
         }
     }
+
+    public class AdditionalRightAxis : Axis
+    {
+        public AdditionalRightAxis(int xAxisIndex, bool visible)
+        {
+            Edge = Edge.Right;
+            AxisIndex = xAxisIndex;
+            PixelSize = 60;
+
+            Title.IsVisible = visible;
+            Ticks.MajorTickEnable = visible;
+            Ticks.MajorLabelEnable = visible;
+            Ticks.MinorTickEnable = visible;
+
+            Ticks.MajorGridEnable = false;
+        }
+    }
 }

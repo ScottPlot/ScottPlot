@@ -28,14 +28,17 @@ namespace WpfPlotSandbox
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            wpfPlot1.plt.PlotSignal(DataGen.Sin(51));
-            wpfPlot1.plt.PlotSignal(DataGen.Cos(51));
+            var YAxis3 = new ScottPlot.Renderable.AdditionalRightAxis(2, true);
+            YAxis3.Title.Label = "Tertiary Vertical Axis";
+            wpfPlot1.plt.GetSettings(false).Axes.Add(YAxis3);
 
-            wpfPlot1.plt.Ticks(false, false);
-            wpfPlot1.plt.Frame(false);
-            wpfPlot1.plt.LayoutFrameless();
-            wpfPlot1.Configure(recalculateLayoutOnMouseUp: false);
-            wpfPlot1.plt.Style(ScottPlot.Style.Gray2);
+            var sig1 = wpfPlot1.plt.PlotSignal(DataGen.Sin(51, mult: 1, phase: 0));
+            var sig2 = wpfPlot1.plt.PlotSignal(DataGen.Sin(51, mult: 10, phase: .2));
+            var sig3 = wpfPlot1.plt.PlotSignal(DataGen.Sin(51, mult: 100, phase: .4));
+
+            sig1.VerticalAxisIndex = 0;
+            sig2.VerticalAxisIndex = 1;
+            sig3.VerticalAxisIndex = 2;
 
             wpfPlot1.Render();
         }

@@ -37,8 +37,22 @@ namespace ScottPlot
             new DefaultTopAxis()
         };
 
+        public int[] XAxisIndexes => Axes.Where(x => x.IsHorizontal).Select(x => x.AxisIndex).Distinct().ToArray();
+        public int[] YAxisIndexes => Axes.Where(x => x.IsVertical).Select(x => x.AxisIndex).Distinct().ToArray();
         public Axis GetXAxis(int xAxisIndex) => Axes.Where(x => x.IsHorizontal && x.AxisIndex == xAxisIndex).First();
         public Axis GetYAxis(int yAxisIndex) => Axes.Where(x => x.IsVertical && x.AxisIndex == yAxisIndex).First();
+
+        public void RememberAxisLimits()
+        {
+            foreach (Axis axis in Axes)
+                axis.Dims.Remember();
+        }
+
+        public void RecallAxisLimits()
+        {
+            foreach (Axis axis in Axes)
+                axis.Dims.Recall();
+        }
 
         // shortcuts to fixed axes indexes
         public Axis YAxis => Axes[0];

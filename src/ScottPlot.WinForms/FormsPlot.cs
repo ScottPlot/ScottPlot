@@ -203,13 +203,12 @@ namespace ScottPlot
 
         ToolTip tooltip = new ToolTip();
         private Point? mouseLeftDownLocation, mouseRightDownLocation, mouseMiddleDownLocation;
-        double[] axisLimitsOnMouseDown;
-        double[] axisLimitsOnMouseDown2;
+        bool rememberingAxisLimits;
         private bool isPanningOrZooming
         {
             get
             {
-                if (axisLimitsOnMouseDown is null) return false;
+                if (rememberingAxisLimits == false) return false;
                 if (mouseLeftDownLocation != null) return true;
                 else if (mouseRightDownLocation != null) return true;
                 else if (mouseMiddleDownLocation != null) return true;
@@ -244,8 +243,8 @@ namespace ScottPlot
                 else if (e.Button == MouseButtons.Left && enablePanning) mouseLeftDownLocation = e.Location;
                 else if (e.Button == MouseButtons.Right && enableRightClickZoom) mouseRightDownLocation = e.Location;
                 else if (e.Button == MouseButtons.Middle && enableScrollWheelZoom) mouseMiddleDownLocation = e.Location;
-                axisLimitsOnMouseDown = plt.Axis(xAxisIndex: 0, yAxisIndex: 0);
-                axisLimitsOnMouseDown2 = plt.Axis(xAxisIndex: 1, yAxisIndex: 1);
+                plt.GetSettings(false).RememberAxisLimits();
+                rememberingAxisLimits = true;
             }
             else
             {
@@ -279,8 +278,7 @@ namespace ScottPlot
 
         private void MouseMovedToPanOrZoom(MouseEventArgs e)
         {
-            plt.Axis(axisLimitsOnMouseDown);
-            plt.Axis(axisLimitsOnMouseDown2, xAxisIndex: 1, yAxisIndex: 1);
+            plt.GetSettings(false).RecallAxisLimits();
 
             if (mouseLeftDownLocation != null)
             {
@@ -429,7 +427,7 @@ namespace ScottPlot
             mouseLeftDownLocation = null;
             mouseRightDownLocation = null;
             mouseMiddleDownLocation = null;
-            axisLimitsOnMouseDown = null;
+            rememberingAxisLimits = false;
             settings.ZoomRectangle.Clear();
             plottableBeingDragged = null;
 

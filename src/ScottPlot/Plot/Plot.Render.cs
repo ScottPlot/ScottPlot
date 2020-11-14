@@ -9,12 +9,8 @@ namespace ScottPlot
 {
     partial class Plot
     {
-
-        public Bitmap Render(Bitmap renderOnThis, bool lowQuality)
-        {
+        public Bitmap Render(Bitmap renderOnThis, bool lowQuality) =>
             RenderBitmap(renderOnThis, lowQuality);
-            return renderOnThis;
-        }
 
         private Bitmap RenderBitmap(bool lowQuality) =>
              RenderBitmap(settings.Width, settings.Height, lowQuality);
@@ -40,9 +36,11 @@ namespace ScottPlot
             foreach (Axis axis in settings.Axes.Where(x => x.Dims.HasBeenSet == false))
                 settings.AxisAuto(axis);
 
-            // auto-layout before every single frame
-            LayoutAuto(0, 0);
-            LayoutAuto(1, 1);
+            // auto-layout before frame
+            foreach (int xAxisIndex in settings.XAxisIndexes)
+                LayoutAuto(xAxisIndex, 0);
+            foreach (int yAxisIndex in settings.YAxisIndexes)
+                LayoutAuto(0, yAxisIndex);
 
             RenderBeforePlottables(bmp, lowQuality);
             RenderPlottables(bmp, lowQuality);
@@ -58,18 +56,20 @@ namespace ScottPlot
             settings.FigureBackground.Render(dims, bmp, lowQuality);
             settings.DataBackground.Render(dims, bmp, lowQuality);
 
-            try
+            foreach (var axis in settings.Axes)
             {
-                settings.XAxis.Render(dims, bmp, lowQuality);
-                settings.YAxis.Render(dims, bmp, lowQuality);
+                PlotDimensions dims2 = axis.IsHorizontal ?
+                    settings.GetPlotDimensions(axis.AxisIndex, 0) :
+                    settings.GetPlotDimensions(0, axis.AxisIndex);
 
-                PlotDimensions dims2 = settings.GetPlotDimensions(1, 1);
-                settings.XAxis2.Render(dims2, bmp, lowQuality);
-                settings.YAxis2.Render(dims2, bmp, lowQuality);
-            }
-            catch (OverflowException)
-            {
-                throw new InvalidOperationException("data cannot contain Infinity");
+                try
+                {
+                    axis.Render(dims2, bmp, lowQuality);
+                }
+                catch (OverflowException)
+                {
+                    throw new InvalidOperationException("data cannot contain Infinity");
+                }
             }
         }
 
@@ -83,6 +83,7 @@ namespace ScottPlot
                 PlotDimensions dims = (plottable is Plottable.IUsesAxes p) ?
                     settings.GetPlotDimensions(p.HorizontalAxisIndex, p.VerticalAxisIndex) :
                     settings.GetPlotDimensions(0, 0);
+
                 try
                 {
                     plottable.Render(dims, bmp, lowQuality);
