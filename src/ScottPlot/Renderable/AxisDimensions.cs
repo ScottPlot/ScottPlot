@@ -20,6 +20,9 @@
         public double PxPerUnit => DataSizePx / Span;
         public double UnitsPerPx => Span / DataSizePx;
 
+        public override string ToString() =>
+             $"Axis ({Min} to {Max}), figure size {FigureSizePx}, data size {DataSizePx}";
+
         public (double min, double max) RationalLimits()
         {
             double min = double.IsNaN(Min) ? -10 : Min;

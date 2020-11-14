@@ -40,10 +40,6 @@ namespace ScottPlot
             foreach (Axis axis in settings.Axes.Where(x => x.Dims.HasBeenSet == false))
                 settings.AxisAuto(axis);
 
-            // pre-render axis adjustments
-            if (!settings.AllAxesHaveBeenSet)
-                settings.AxisAuto();
-
             // auto-layout before every single frame
             LayoutAuto(0, 0);
             LayoutAuto(1, 1);
