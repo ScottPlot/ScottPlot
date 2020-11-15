@@ -178,8 +178,6 @@ namespace ScottPlot
             if (!settings.AllAxesHaveBeenSet)
                 AxisAuto();
 
-            Resize();
-
             var sourceSettings = sourcePlot.GetSettings(false);
 
             if (horizontal)

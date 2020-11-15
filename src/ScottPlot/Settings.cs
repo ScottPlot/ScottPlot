@@ -117,11 +117,6 @@ namespace ScottPlot
             var dataSize = new SizeF(XAxis.Dims.DataSizePx, YAxis.Dims.DataSizePx);
             var dataOffset = new PointF(XAxis.Dims.DataOffsetPx, YAxis.Dims.DataOffsetPx);
 
-            // determine figure dimensions based on specific X and Y axes
-            //var figureSize = new SizeF(xAxis.Dims.FigureSizePx, yAxis.Dims.FigureSizePx);
-            //var dataSize = new SizeF(xAxis.Dims.DataSizePx, yAxis.Dims.DataSizePx);
-            //var dataOffset = new PointF(xAxis.Dims.DataOffsetPx, yAxis.Dims.DataOffsetPx);
-
             // determine axis limits based on specific X and Y axes
             (double xMin, double xMax) = xAxis.Dims.RationalLimits();
             (double yMin, double yMax) = yAxis.Dims.RationalLimits();
@@ -130,7 +125,7 @@ namespace ScottPlot
             return new PlotDimensions(figureSize, dataSize, dataOffset, limits);
         }
 
-        public void Resize(int width, int height)
+        public void Resize(float width, float height)
         {
             foreach (Axis axis in Axes)
                 axis.Dims.Resize(axis.IsHorizontal ? width : height);

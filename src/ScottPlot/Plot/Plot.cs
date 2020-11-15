@@ -6,27 +6,22 @@
  * files in the Plot folder.
  */
 
-using ScottPlot.Drawing;
 using ScottPlot.Plottable;
 using ScottPlot.Renderable;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Imaging;
-using System.Linq;
 
 namespace ScottPlot
 {
     public partial class Plot
     {
-        private readonly Settings settings;
+        private readonly Settings settings = new Settings();
 
         public Plot(int width = 800, int height = 600)
         {
             if (width <= 0 || height <= 0)
                 throw new ArgumentException("width and height must each be greater than 0");
-            settings = new Settings();
             StyleTools.SetStyle(this, ScottPlot.Style.Default);
             Resize(width, height);
         }
@@ -54,25 +49,17 @@ namespace ScottPlot
             return plt2;
         }
 
-        public void Resize(int? width = null, int? height = null)
-        {
-            if (width == null)
-                width = settings.Width;
-            if (height == null)
-                height = settings.Height;
-
-            if (width < 1)
-                width = 1;
-            if (height < 1)
-                height = 1;
-
-            settings.Resize((int)width, (int)height);
-        }
+        public void Resize(float width, float height) => settings.Resize(width, height);
 
         private void LayoutAuto(int xAxisIndex, int yAxisIndex)
         {
-            // The goal of this function is to set axis pixel size to accommodate title and tick labels.
+            // TODO: separate this into distinct X and Y functions
+            bool atLeastOneAxisIsZero = xAxisIndex == 0 || yAxisIndex == 0;
+            if (!atLeastOneAxisIsZero)
+                throw new InvalidOperationException();
 
+            // Adjust padding around the data area to accommodate title and tick labels.
+            //
             // This is a chicken-and-egg problem:
             //   * TICK DENSITY depends on the DATA AREA SIZE
             //   * DATA AREA SIZE depends on LAYOUT PADDING
