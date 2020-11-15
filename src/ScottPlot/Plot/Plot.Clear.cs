@@ -23,7 +23,7 @@ namespace ScottPlot
         public void Clear()
         {
             settings.Plottables.Clear();
-            settings.ResetAxes();
+            settings.ResetAxisLimits();
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace ScottPlot
             settings.Plottables.RemoveAll(x => x is T);
 
             if (settings.Plottables.Count == 0)
-                settings.ResetAxes();
+                settings.ResetAxisLimits();
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace ScottPlot
             settings.Plottables.RemoveAll(x => x.GetType() == typeToClear);
 
             if (settings.Plottables.Count == 0)
-                settings.ResetAxes();
+                settings.ResetAxisLimits();
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace ScottPlot
             settings.Plottables.RemoveAll(x => x.GetType() == examplePlottable.GetType());
 
             if (settings.Plottables.Count == 0)
-                settings.ResetAxes();
+                settings.ResetAxisLimits();
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace ScottPlot
                 settings.Plottables.RemoveAll(plottablesToClear);
 
             if (settings.Plottables.Count == 0)
-                settings.ResetAxes();
+                settings.ResetAxisLimits();
         }
 
         [Obsolete("This overload is deprecated. Clear plots using a different overload of the Clear() method.")]
@@ -117,7 +117,7 @@ namespace ScottPlot
             for (int i = 0; i < indicesToDelete.Count; i++)
                 settings.Plottables.RemoveAt(indicesToDelete[i]);
 
-            settings.ResetAxes();
+            settings.ResetAxisLimits();
         }
     }
 }

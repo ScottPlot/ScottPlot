@@ -1,5 +1,4 @@
-﻿using ScottPlot.Renderable;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -9,44 +8,26 @@ namespace ScottPlot
 {
     partial class Plot
     {
-        public Bitmap Render(Bitmap renderOnThis, bool lowQuality) =>
+        public Bitmap Render(Bitmap renderOnThis, bool lowQuality = false) =>
             RenderBitmap(renderOnThis, lowQuality);
 
-        private Bitmap RenderBitmap(bool lowQuality) =>
+        public Bitmap RenderBitmap(bool lowQuality = false) =>
              RenderBitmap(settings.Width, settings.Height, lowQuality);
 
-        private Bitmap RenderBitmap(int width, int height, bool lowQuality) =>
+        public Bitmap RenderBitmap(int width, int height, bool lowQuality = false) =>
             RenderBitmap(new Bitmap(width, height, PixelFormat.Format32bppPArgb), lowQuality);
 
-        public int RenderCount { get; private set; } = 0;
-        private Bitmap RenderBitmap(Bitmap bmp, bool lowQuality)
+        private Bitmap RenderBitmap(Bitmap bmp, bool lowQuality = false)
         {
             settings.BenchmarkMessage.Restart();
-
-            // copy plot dimensions from primary axis to all others
-            foreach (Axis axis in settings.Axes)
-            {
-                if (axis.IsHorizontal)
-                    axis.Dims.Resize(settings.Width, settings.DataWidth, settings.DataOffsetX);
-                else
-                    axis.Dims.Resize(settings.Height, settings.DataHeight, settings.DataOffsetY);
-            }
-
-            // call AxisAuto on axes which have not yet been set
-            foreach (Axis axis in settings.Axes.Where(x => x.Dims.HasBeenSet == false))
-                settings.AxisAuto(axis);
-
-            // auto-layout before frame
-            foreach (int xAxisIndex in settings.XAxisIndexes)
-                LayoutAuto(xAxisIndex, 0);
-            foreach (int yAxisIndex in settings.YAxisIndexes)
-                LayoutAuto(0, yAxisIndex);
+            settings.CopyPrimaryLayoutToAllAxes();
+            settings.AxisAutoUnsetAxes();
+            settings.LayoutAuto();
 
             RenderBeforePlottables(bmp, lowQuality);
             RenderPlottables(bmp, lowQuality);
             RenderAfterPlottables(bmp, lowQuality);
 
-            RenderCount += 1;
             return bmp;
         }
 
@@ -98,24 +79,14 @@ namespace ScottPlot
         private void RenderAfterPlottables(Bitmap bmp, bool lowQuality)
         {
             PlotDimensions dims = settings.GetPlotDimensions(0, 0);
-
             settings.CornerLegend.UpdateLegendItems(Plottables);
             settings.CornerLegend.Render(dims, bmp, lowQuality);
 
             settings.BenchmarkMessage.Stop();
-            // TODO: set up validation check reporting
-            //ErrorMessage.Text = "Error Message";
 
             settings.ZoomRectangle.Render(dims, bmp, lowQuality);
             settings.BenchmarkMessage.Render(dims, bmp, lowQuality);
             settings.ErrorMessage.Render(dims, bmp, lowQuality);
-        }
-
-        public Bitmap GetBitmap(bool renderFirst = true, bool lowQuality = false)
-        {
-            if (renderFirst)
-                RenderBitmap(lowQuality: false);
-            return RenderBitmap(lowQuality);
         }
 
         public Bitmap GetLegendBitmap(bool lowQuality = false)

@@ -41,18 +41,7 @@ namespace ScottPlot
         public int[] YAxisIndexes => Axes.Where(x => x.IsVertical).Select(x => x.AxisIndex).Distinct().ToArray();
         public Axis GetXAxis(int xAxisIndex) => Axes.Where(x => x.IsHorizontal && x.AxisIndex == xAxisIndex).First();
         public Axis GetYAxis(int yAxisIndex) => Axes.Where(x => x.IsVertical && x.AxisIndex == yAxisIndex).First();
-
-        public void RememberAxisLimits()
-        {
-            foreach (Axis axis in Axes)
-                axis.Dims.Remember();
-        }
-
-        public void RecallAxisLimits()
-        {
-            foreach (Axis axis in Axes)
-                axis.Dims.Recall();
-        }
+        public bool AllAxesHaveBeenSet => Axes.All(x => x.Dims.HasBeenSet);
 
         // shortcuts to fixed axes indexes
         public Axis YAxis => Axes[0];
@@ -60,6 +49,14 @@ namespace ScottPlot
         public Axis XAxis => Axes[2];
         public Axis XAxis2 => Axes[3];
         public Axis[] PrimaryAxes => Axes.Take(4).ToArray();
+
+        // public fields represent primary X and Y axes
+        public int Width => (int)XAxis.Dims.FigureSizePx;
+        public int Height => (int)YAxis.Dims.FigureSizePx;
+        public float DataOffsetX => XAxis.Dims.DataOffsetPx;
+        public float DataOffsetY => YAxis.Dims.DataOffsetPx;
+        public float DataWidth => XAxis.Dims.DataSizePx;
+        public float DataHeight => YAxis.Dims.DataSizePx;
 
         /// <summary>
         /// Resize the layout by padding the data area based on the size of all axes
@@ -91,22 +88,9 @@ namespace ScottPlot
             }
         }
 
-        public bool AllAxesHaveBeenSet => Axes.All(x => x.Dims.HasBeenSet);
-
-        // TODO: This should be readonly and a Resize() method updates sizes for all Axes (while retaining data size and offset)
-        public int Width => (int)XAxis.Dims.FigureSizePx;
-        public int Height => (int)YAxis.Dims.FigureSizePx;
-        public float DataOffsetX => XAxis.Dims.DataOffsetPx;
-        public float DataOffsetY => YAxis.Dims.DataOffsetPx;
-        public float DataWidth => XAxis.Dims.DataSizePx;
-        public float DataHeight => YAxis.Dims.DataSizePx;
-
-        /*
-         * ##################################################################################
-         * # OLD SETTINGS WHICH I AM WORKING TO STRANGLE
-         * 
-         */
-
+        /// <summary>
+        /// Return figure dimensions for the specified X and Y axes
+        /// </summary>
         public PlotDimensions GetPlotDimensions(int xAxisIndex, int yAxisIndex)
         {
             var xAxis = GetXAxis(xAxisIndex);
@@ -125,29 +109,36 @@ namespace ScottPlot
             return new PlotDimensions(figureSize, dataSize, dataOffset, limits);
         }
 
+        /// <summary>
+        /// Set the default size for rendering images
+        /// </summary>
         public void Resize(float width, float height)
         {
             foreach (Axis axis in Axes)
                 axis.Dims.Resize(axis.IsHorizontal ? width : height);
         }
 
-        public void ResetAxes()
+        /// <summary>
+        /// Reset axis limits to their defauts
+        /// </summary>
+        public void ResetAxisLimits()
         {
             foreach (Axis axis in Axes)
                 axis.Dims.ResetLimits();
         }
 
+        /// <summary>
+        /// Define axis limits for a particuar axis
+        /// </summary>
         public void AxisSet(double? xMin, double? xMax, double? yMin, double? yMax, int xAxisIndex, int yAxisIndex)
         {
-            foreach (Axis axis in Axes)
-            {
-                if (axis.IsHorizontal && axis.AxisIndex == xAxisIndex)
-                    axis.Dims.SetAxis(xMin, xMax);
-                if (axis.IsVertical && axis.AxisIndex == yAxisIndex)
-                    axis.Dims.SetAxis(yMin, yMax);
-            }
+            GetXAxis(xAxisIndex).Dims.SetAxis(xMin, xMax);
+            GetYAxis(yAxisIndex).Dims.SetAxis(yMin, yMax);
         }
 
+        /// <summary>
+        /// Return X and Y axis limits
+        /// </summary>
         public double[] AxisLimitsArray(int xAxisIndex, int yAxisIndex)
         {
             var xAxis = GetXAxis(xAxisIndex);
@@ -155,15 +146,23 @@ namespace ScottPlot
             return new double[] { xAxis.Dims.Min, xAxis.Dims.Max, yAxis.Dims.Min, yAxis.Dims.Max };
         }
 
+        /// <summary>
+        /// Pan all axes by the given pixel distance
+        /// </summary>
         public void AxesPanPx(int dxPx, int dyPx)
         {
             foreach (Axis axis in Axes)
                 axis.Dims.PanPx(axis.IsHorizontal ? dxPx : dyPx);
         }
 
+        /// <summary>
+        /// Zoom all axes by the given pixel distance
+        /// </summary>
         public void AxesZoomPx(int xPx, int yPx, bool lockRatio = false)
         {
-            // TODO: equal axes
+            if (lockRatio)
+                (xPx, yPx) = (Math.Max(xPx, yPx), Math.Max(xPx, yPx));
+
             foreach (Axis axis in Axes)
             {
                 double deltaPx = axis.IsHorizontal ? xPx : yPx;
@@ -173,15 +172,50 @@ namespace ScottPlot
             }
         }
 
-        public void AxisAuto(Axis axis)
+        /// <summary>
+        /// Automatically adjust X and Y axis limits to fit the data
+        /// </summary>
+        public void AxisAuto(double horizontalMargin = .1, double verticalMargin = .1, int xAxisIndex = 0, int yAxisIndex = 0)
         {
-            if (axis.IsHorizontal)
-                AxisAutoX(axis.AxisIndex);
-            else
-                AxisAutoY(axis.AxisIndex);
+            AxisAutoX(horizontalMargin, xAxisIndex);
+            AxisAutoY(verticalMargin, yAxisIndex);
         }
 
-        public void AxisAutoX(int xAxisIndex, double margin = .1, bool expandOnly = false)
+        /// <summary>
+        /// Automatically adjust axis limits for all axes which have not yet been set
+        /// </summary>
+        public void AxisAutoUnsetAxes()
+        {
+            foreach (Axis axis in Axes.Where(x => x.Dims.HasBeenSet == false))
+            {
+                if (axis.IsHorizontal)
+                    AxisAutoX(axis.AxisIndex);
+                else
+                    AxisAutoY(axis.AxisIndex);
+            }
+        }
+
+        /// <summary>
+        /// Automatically adjust X axis limits to fit the data
+        /// </summary>
+        public void AxisAutoX(double margin = .1, int xAxisIndex = 0)
+        {
+            int[] xAxisIndexes = Axes.Where(x => x.IsHorizontal).Select(x => x.AxisIndex).Distinct().ToArray();
+            foreach (int i in xAxisIndexes)
+                AxisAutoX(i, margin);
+        }
+
+        /// <summary>
+        /// Automatically adjust Y axis limits to fit the data
+        /// </summary>
+        public void AxisAutoY(double margin = .1, int yAxisIndex = 0)
+        {
+            int[] yAxisIndexes = Axes.Where(x => x.IsVertical).Select(x => x.AxisIndex).Distinct().ToArray();
+            foreach (int i in yAxisIndexes)
+                AxisAutoY(i, margin);
+        }
+
+        private void AxisAutoX(int xAxisIndex, double margin = .1, bool expandOnly = false)
         {
             double min = double.NaN;
             double max = double.NaN;
@@ -210,7 +244,7 @@ namespace ScottPlot
             xAxis.Dims.Zoom(zoomFrac);
         }
 
-        public void AxisAutoY(int yAxisIndex, double margin = .1)
+        private void AxisAutoY(int yAxisIndex, double margin = .1)
         {
             double min = double.NaN;
             double max = double.NaN;
@@ -239,25 +273,101 @@ namespace ScottPlot
             yAxis.Dims.Zoom(zoomFrac);
         }
 
-        public void AxisAuto(
-            double horizontalMargin = .1,
-            double verticalMargin = .1,
-            bool autoX = true,
-            bool autoY = true
-            )
+        /// <summary>
+        /// Store axis limits (useful for storing state upon a MouseDown event)
+        /// </summary>
+        public void RememberAxisLimits()
         {
-            // TODO: equal axis
+            foreach (Axis axis in Axes)
+                axis.Dims.Remember();
+        }
 
-            int[] xAxisIndexes = Axes.Where(x => x.IsHorizontal).Select(x => x.AxisIndex).Distinct().ToArray();
-            int[] yAxisIndexes = Axes.Where(x => x.IsVertical).Select(x => x.AxisIndex).Distinct().ToArray();
+        /// <summary>
+        /// Recall axis limits (useful for recalling state from a previous MouseDown event)
+        /// </summary>
+        public void RecallAxisLimits()
+        {
+            foreach (Axis axis in Axes)
+                axis.Dims.Recall();
+        }
 
-            if (autoX)
-                foreach (int i in xAxisIndexes)
-                    AxisAutoX(i, horizontalMargin);
+        /// <summary>
+        /// Ensure all axes have the same size and offset as the primary X and Y axis
+        /// </summary>
+        public void CopyPrimaryLayoutToAllAxes()
+        {
+            foreach (Axis axis in Axes)
+            {
+                if (axis.IsHorizontal)
+                    axis.Dims.Resize(Width, DataWidth, DataOffsetX);
+                else
+                    axis.Dims.Resize(Height, DataHeight, DataOffsetY);
+            }
+        }
 
-            if (autoY)
-                foreach (int i in yAxisIndexes)
-                    AxisAutoY(i, verticalMargin);
+        public void LayoutAuto()
+        {
+            foreach (int xAxisIndex in XAxisIndexes)
+                LayoutAuto(xAxisIndex, 0);
+            foreach (int yAxisIndex in YAxisIndexes)
+                LayoutAuto(0, yAxisIndex);
+        }
+
+        private void LayoutAuto(int xAxisIndex, int yAxisIndex)
+        {
+            // TODO: separate this into distinct X and Y functions (requires refactoring plottable interface)
+            bool atLeastOneAxisIsZero = xAxisIndex == 0 || yAxisIndex == 0;
+            if (!atLeastOneAxisIsZero)
+                throw new InvalidOperationException();
+
+            // Adjust padding around the data area to accommodate title and tick labels.
+            //
+            // This is a chicken-and-egg problem:
+            //   * TICK DENSITY depends on the DATA AREA SIZE
+            //   * DATA AREA SIZE depends on LAYOUT PADDING
+            //   * LAYOUT PADDING depends on MAXIMUM LABEL SIZE
+            //   * MAXIMUM LABEL SIZE depends on TICK DENSITY
+            // To solve this, start by assuming data area size == figure size, and layout padding == 0
+
+            // axis limits shall not change
+            var dims = GetPlotDimensions(xAxisIndex, yAxisIndex);
+            var limits = (dims.XMin, dims.XMax, dims.YMin, dims.YMax);
+            var figSize = new SizeF(Width, Height);
+
+            // first-pass tick calculation based on full image size 
+            var dimsFull = new PlotDimensions(figSize, figSize, new PointF(0, 0), limits);
+
+            foreach (var axis in Axes)
+            {
+                bool isMatchingXAxis = axis.IsHorizontal && axis.AxisIndex == xAxisIndex;
+                bool isMatchingYAxis = axis.IsVertical && axis.AxisIndex == yAxisIndex;
+                if (isMatchingXAxis || isMatchingYAxis)
+                {
+                    axis.RecalculateTickPositions(dimsFull);
+                    axis.RecalculateAxisSize();
+                }
+            }
+
+            // now adjust our layout based on measured axis sizes
+            TightenLayout();
+
+            // now recalculate ticks based on new layout
+            var dataSize = new SizeF(DataWidth, DataHeight);
+            var dataOffset = new PointF(DataOffsetX, DataOffsetY);
+
+            var dims3 = new PlotDimensions(figSize, dataSize, dataOffset, limits);
+            foreach (var axis in Axes)
+            {
+                bool isMatchingXAxis = axis.IsHorizontal && axis.AxisIndex == xAxisIndex;
+                bool isMatchingYAxis = axis.IsVertical && axis.AxisIndex == yAxisIndex;
+                if (isMatchingXAxis || isMatchingYAxis)
+                {
+                    axis.RecalculateTickPositions(dims3);
+                }
+            }
+
+            // adjust the layout based on measured tick label sizes
+            TightenLayout();
         }
     }
 }

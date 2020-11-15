@@ -80,14 +80,11 @@ namespace ScottPlot
         /// Adjust layout to accommodate axis title and tick label sizes
         /// </summary>
         [Obsolete("call Layout()", true)]
-        public void TightenLayout(int? padding = null, bool render = false)
+        public void TightenLayout(int? padding = null)
         {
             if (padding.HasValue)
                 foreach (var axis in settings.Axes)
                     axis.PixelSizeMinimum = padding.Value;
-
-            if (render)
-                GetBitmap();
 
             if (!settings.AllAxesHaveBeenSet && settings.Plottables.Count > 0)
                 settings.AxisAuto();
