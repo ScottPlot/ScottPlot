@@ -21,7 +21,7 @@ namespace ScottPlot
         /// Render the plot onto a new Bitmap of the given dimensions
         /// </summary>
         public Bitmap Render(int width, int height, bool lowQuality = false) =>
-            Render(new Bitmap(width, height, PixelFormat.Format32bppPArgb), lowQuality);
+            Render(new Bitmap(Math.Max(1, width), Math.Max(1, height), PixelFormat.Format32bppPArgb), lowQuality);
 
         /// <summary>
         /// Render the plot onto an existing bitmap
