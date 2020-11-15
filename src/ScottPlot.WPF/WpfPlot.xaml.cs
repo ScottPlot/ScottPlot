@@ -125,7 +125,7 @@ namespace ScottPlot
         private bool currentlyRendering = false;
         public void Render(bool skipIfCurrentlyRendering = false, bool lowQuality = false, bool recalculateLayout = false, bool processEvents = false)
         {
-            if (isDesignerMode || plt is null)
+            if (isDesignerMode || plt is null || pbPlot.Width < 1 || pbPlot.Height < 1)
                 return;
 
             if (equalAxes)
