@@ -518,7 +518,7 @@ namespace ScottPlot
 
         private void CopyImage(object sender, EventArgs e)
         {
-            Clipboard.SetImage(plt.RenderBitmap());
+            Clipboard.SetImage(plt.Render());
         }
 
         private void OpenSettingsWindow(object sender, EventArgs e)

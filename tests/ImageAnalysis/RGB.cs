@@ -72,7 +72,7 @@ namespace ScottPlotTests.ImageAnalysis
             plt.PlotSignal(ys, yOffset: 4, color: System.Drawing.Color.FromArgb(255, 255, 255), label: "white");
             plt.Legend();
 
-            System.Drawing.Bitmap bmp = plt.GetBitmap();
+            System.Drawing.Bitmap bmp = plt.Render();
 
             var means = MeanPixel(bmp);
             Console.WriteLine($"mean bitmap intensity (ARGB): {means.A}, {means.R}, {means.G}, {means.B}");

@@ -18,7 +18,7 @@ namespace ScottPlotTests.PlottableRenderTests
             // start plot without scalebar
             plt.PlotSignal(DataGen.Sin(51));
             plt.PlotSignal(DataGen.Cos(51));
-            var bmp1 =  TestTools.GetLowQualityBitmap(plt);
+            var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // add a scalebar
             var sb = new ScottPlot.Plottable.ScaleBar()
@@ -29,7 +29,7 @@ namespace ScottPlotTests.PlottableRenderTests
                 HorizontalLabel = "250 ms"
             };
             plt.Add(sb);
-            var bmp2 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
             //TestTools.SaveFig(bmp1, "1");

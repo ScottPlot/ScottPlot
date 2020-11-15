@@ -48,7 +48,7 @@ namespace ScottPlotTests.Axis
         {
             var plt = new ScottPlot.Plot(600, 400);
             plt.PlotLine(0, 1, 1, 1.0000000000000001);
-            plt.GetBitmap();
+            plt.Render();
         }
     }
 }

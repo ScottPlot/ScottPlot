@@ -125,7 +125,7 @@ namespace ScottPlot
         private bool currentlyRendering = false;
         public void Render(bool skipIfCurrentlyRendering = false, bool lowQuality = false, bool recalculateLayout = false, bool processEvents = false)
         {
-            if (isDesignerMode || plt is null || pbPlot.Width < 1 || pbPlot.Height < 1)
+            if (isDesignerMode || plt is null || imagePlot.Width < 1 || imagePlot.Height < 1)
                 return;
 
             if (equalAxes)
@@ -134,7 +134,7 @@ namespace ScottPlot
             if (!(skipIfCurrentlyRendering && currentlyRendering))
             {
                 currentlyRendering = true;
-                imagePlot.Source = BmpImageFromBmp(plt.GetBitmap(true, lowQuality || lowQualityAlways));
+                imagePlot.Source = BmpImageFromBmp(plt.Render(lowQuality || lowQualityAlways));
                 if (isPanningOrZooming || isMovingDraggable || processEvents)
                     DoEvents();
                 currentlyRendering = false;

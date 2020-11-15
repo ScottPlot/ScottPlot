@@ -45,7 +45,7 @@ namespace ScottPlot
             {
                 for (int col = 0; col < cols; col++)
                 {
-                    Bitmap subplotBmp = subplots[subplotIndex++].RenderBitmap(subplotWidth, subplotHeight, false);
+                    Bitmap subplotBmp = subplots[subplotIndex++].Render(subplotWidth, subplotHeight, false);
                     Point pt = new Point(col * subplotWidth, row * subplotHeight);
                     gfx.DrawImage(subplotBmp, pt);
                 }

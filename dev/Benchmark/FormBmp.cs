@@ -34,13 +34,13 @@ namespace Benchmark
                 int width = (int)widths[i];
                 int height = width * 3 / 4;
                 plt.Resize(width, height);
-                plt.GetBitmap();
+                plt.Render();
 
                 double[] times = new double[rendersPerSize];
                 for (int j = 0; j < rendersPerSize; j++)
                 {
                     progressBar1.Value = rendersPerSize * i + j + 1;
-                    plt.GetBitmap(renderFirst: true);
+                    plt.Render();
                     times[j] = plt.GetSettings(false).BenchmarkMessage.MSec;
                 }
 
@@ -48,7 +48,7 @@ namespace Benchmark
                 err[i] = ScottPlot.Statistics.Common.StDev(times);
 
                 pictureBox1.Image?.Dispose();
-                pictureBox1.Image = (Bitmap)plt.GetBitmap().Clone();
+                pictureBox1.Image = (Bitmap)plt.Render();
                 Application.DoEvents();
             }
 

@@ -10,7 +10,7 @@ namespace ScottPlotTests.Plot
     {
         private (double xUnitsPerPixel, double yUnitsPerPixel) getUnitsPerPixel(ScottPlot.Plot plt)
         {
-            plt.GetBitmap();
+            plt.Render();
             return (plt.GetSettings(false).XAxis.Dims.UnitsPerPx, plt.GetSettings(false).YAxis.Dims.UnitsPerPx);
         }
 

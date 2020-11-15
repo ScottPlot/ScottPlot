@@ -8,7 +8,7 @@ class Program
 
         var plt = new ScottPlot.Plot(600, 400);
         plt.PlotLine(0, 1, 1, 1.0000000000000009);
-        plt.GetBitmap();
+        plt.Render();
 
         Console.WriteLine("Done!");
     }

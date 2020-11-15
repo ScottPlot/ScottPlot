@@ -9,7 +9,7 @@ namespace ScottPlotTests
     public static class TestTools
     {
         public static System.Drawing.Bitmap GetLowQualityBitmap(ScottPlot.Plot plt) =>
-            new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true, lowQuality: true));
+            new System.Drawing.Bitmap(plt.Render(lowQuality: true));
 
         [Obsolete("WARNING: LaunchFig() is just for testing by developers")]
         public static void LaunchFig(ScottPlot.Plot plt)
@@ -107,7 +107,7 @@ namespace ScottPlotTests
 
         public static string HashedFig(ScottPlot.Plot plt, string subName = "")
         {
-            string hash = ScottPlot.Tools.BitmapHash(plt.GetBitmap(true));
+            string hash = ScottPlot.Tools.BitmapHash(plt.Render(lowQuality: true));
 
             var stackTrace = new System.Diagnostics.StackTrace();
             string callingMethod = stackTrace.GetFrame(1).GetMethod().Name;

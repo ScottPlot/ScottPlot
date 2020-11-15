@@ -23,12 +23,12 @@ namespace ScottPlotTests.Benchmark
                 double[] xs = DataGen.Random(rand, pointCount);
                 double[] ys = DataGen.RandomWalk(rand, pointCount);
                 plt.PlotScatter(xs, ys);
-                plt.GetBitmap(renderFirst: true, lowQuality: true);
+                plt.Render(lowQuality: true);
 
                 List<double> times = new List<double>();
                 for (int j = 0; j < reps[i]; j++)
                 {
-                    plt.GetBitmap(renderFirst: true, lowQuality: true);
+                    plt.Render(lowQuality: true);
                     times.Add(plt.GetSettings(false).BenchmarkMessage.MSec);
                 }
 

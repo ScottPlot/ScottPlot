@@ -12,14 +12,14 @@ namespace ScottPlotTests
         {
             {
                 var plt = new ScottPlot.Plot(321, 123);
-                System.Drawing.Bitmap bmp = plt.GetBitmap();
+                System.Drawing.Bitmap bmp = plt.Render();
                 Assert.AreEqual(bmp.Width, 321);
                 Assert.AreEqual(bmp.Height, 123);
             }
 
             {
                 var plt = new ScottPlot.Plot(321, 123);
-                System.Drawing.Bitmap bmp = plt.GetBitmap(false, false);
+                System.Drawing.Bitmap bmp = plt.Render();
                 Assert.AreEqual(bmp.Width, 321);
                 Assert.AreEqual(bmp.Height, 123);
             }
@@ -42,7 +42,7 @@ namespace ScottPlotTests
             {
                 var plt = new ScottPlot.Plot(321, 123);
                 string file = Path.GetTempPath() + "test.png";
-                plt.SaveFig(file, renderFirst: false);
+                plt.SaveFig(file);
                 using (System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(file))
                 {
                     Assert.AreEqual(bmp.Width, 321);

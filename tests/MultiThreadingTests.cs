@@ -16,7 +16,7 @@ namespace ScottPlotTests
             var plt = new ScottPlot.Plot(800, 400);
             plt.PlotSignal(TestArray);
 
-            Assert.DoesNotThrow(() => plt.GetBitmap());
+            Assert.DoesNotThrow(() => plt.Render());
         }
 
         [Test]
@@ -28,7 +28,7 @@ namespace ScottPlotTests
             var plt = new ScottPlot.Plot(800, 400);
             plt.PlotSignal(TestArray, colorByDensity: Levels);
 
-            Assert.DoesNotThrow(() => plt.GetBitmap());
+            Assert.DoesNotThrow(() => plt.Render());
         }
 
         [Test]
@@ -39,7 +39,7 @@ namespace ScottPlotTests
             var plt = new ScottPlot.Plot(800, 400);
             plt.PlotSignalConst(TestArray);
 
-            Assert.DoesNotThrow(() => plt.GetBitmap());
+            Assert.DoesNotThrow(() => plt.Render());
         }
 
         [Test]

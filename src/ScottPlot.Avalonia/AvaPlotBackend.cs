@@ -111,7 +111,7 @@ namespace ScottPlot.Avalonia
 
         public override void SetImagePlot(bool lowQuality)
         {
-            view.Find<Ava.Controls.Image>("imagePlot").Source = BmpImageFromBmp(plt.GetBitmap(true, lowQuality));
+            view.Find<Ava.Controls.Image>("imagePlot").Source = BmpImageFromBmp(plt.Render(lowQuality));
         }
 
         public override void OpenInNewWindow()

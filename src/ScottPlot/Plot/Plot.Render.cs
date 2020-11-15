@@ -8,18 +8,29 @@ namespace ScottPlot
 {
     partial class Plot
     {
-        public Bitmap Render(Bitmap renderOnThis, bool lowQuality = false) =>
-            RenderBitmap(renderOnThis, lowQuality);
+        [Obsolete("Call the Render() method", true)]
+        public Bitmap GetBitmap() => null;
 
-        public Bitmap RenderBitmap(bool lowQuality = false) =>
-             RenderBitmap(settings.Width, settings.Height, lowQuality);
+        /// <summary>
+        /// Render the plot onto a new Bitmap (using size defined by Plot.Width and Plot.Height)
+        /// </summary>
+        public Bitmap Render(bool lowQuality = false) =>
+             Render(settings.Width, settings.Height, lowQuality);
 
-        public Bitmap RenderBitmap(int width, int height, bool lowQuality = false) =>
-            RenderBitmap(new Bitmap(width, height, PixelFormat.Format32bppPArgb), lowQuality);
+        /// <summary>
+        /// Render the plot onto a new Bitmap of the given dimensions
+        /// </summary>
+        public Bitmap Render(int width, int height, bool lowQuality = false) =>
+            Render(new Bitmap(width, height, PixelFormat.Format32bppPArgb), lowQuality);
 
-        private Bitmap RenderBitmap(Bitmap bmp, bool lowQuality = false)
+        /// <summary>
+        /// Render the plot onto an existing bitmap
+        /// </summary>
+        public Bitmap Render(Bitmap bmp, bool lowQuality = false)
         {
             settings.BenchmarkMessage.Restart();
+
+            settings.Resize(bmp.Width, bmp.Height);
             settings.CopyPrimaryLayoutToAllAxes();
             settings.AxisAutoUnsetAxes();
             settings.LayoutAuto();
@@ -89,15 +100,22 @@ namespace ScottPlot
             settings.ErrorMessage.Render(dims, bmp, lowQuality);
         }
 
-        public Bitmap GetLegendBitmap(bool lowQuality = false)
+        /// <summary>
+        /// Return a new Bitmap containing only the legend
+        /// </summary>
+        /// <returns></returns>
+        public Bitmap GetLegendBitmap()
         {
-            RenderBitmap(lowQuality);
+            Render();
             return settings.CornerLegend.GetBitmap();
         }
 
-        public void SaveFig(string filePath, bool renderFirst = true)
+        /// <summary>
+        /// Save the plot as an image file
+        /// </summary>
+        public void SaveFig(string filePath)
         {
-            Bitmap bmp = RenderBitmap(lowQuality: false);
+            Bitmap bmp = Render();
 
             filePath = System.IO.Path.GetFullPath(filePath);
             string fileFolder = System.IO.Path.GetDirectoryName(filePath);
