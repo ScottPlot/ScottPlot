@@ -59,36 +59,6 @@ namespace ScottPlot
         public float DataHeight => YAxis.Dims.DataSizePx;
 
         /// <summary>
-        /// Resize the layout by padding the data area based on the size of all axes
-        /// </summary>
-        public void TightenLayout()
-        {
-            Edge[] edges = { Edge.Left, Edge.Right, Edge.Top, Edge.Bottom };
-            foreach (var edge in edges)
-            {
-                float offset = 0;
-                foreach (var axis in Axes.Where(x => x.Edge == edge))
-                {
-                    axis.PixelOffset = offset;
-                    offset += axis.PixelSize;
-                }
-            }
-
-            float padLeft = Axes.Where(x => x.Edge == Edge.Left).Select(x => x.PixelSize).Sum();
-            float padRight = Axes.Where(x => x.Edge == Edge.Right).Select(x => x.PixelSize).Sum();
-            float padBottom = Axes.Where(x => x.Edge == Edge.Bottom).Select(x => x.PixelSize).Sum();
-            float padTop = Axes.Where(x => x.Edge == Edge.Top).Select(x => x.PixelSize).Sum();
-
-            foreach (Axis axis in Axes)
-            {
-                if (axis.IsHorizontal)
-                    axis.Dims.SetPadding(padLeft, padRight);
-                else
-                    axis.Dims.SetPadding(padTop, padBottom);
-            }
-        }
-
-        /// <summary>
         /// Return figure dimensions for the specified X and Y axes
         /// </summary>
         public PlotDimensions GetPlotDimensions(int xAxisIndex, int yAxisIndex)
@@ -327,7 +297,9 @@ namespace ScottPlot
             //   * DATA AREA SIZE depends on LAYOUT PADDING
             //   * LAYOUT PADDING depends on MAXIMUM LABEL SIZE
             //   * MAXIMUM LABEL SIZE depends on TICK DENSITY
-            // To solve this, start by assuming data area size == figure size, and layout padding == 0
+            //
+            // To solve this, start by assuming data area size == figure size and layout padding == 0,
+            // then calculate ticks, then set padding based on the largest tick, then re-calculate ticks.
 
             // axis limits shall not change
             var dims = GetPlotDimensions(xAxisIndex, yAxisIndex);
@@ -349,7 +321,7 @@ namespace ScottPlot
             }
 
             // now adjust our layout based on measured axis sizes
-            TightenLayout();
+            RecalculateDataPadding();
 
             // now recalculate ticks based on new layout
             var dataSize = new SizeF(DataWidth, DataHeight);
@@ -367,7 +339,34 @@ namespace ScottPlot
             }
 
             // adjust the layout based on measured tick label sizes
-            TightenLayout();
+            RecalculateDataPadding();
+        }
+
+        private void RecalculateDataPadding()
+        {
+            Edge[] edges = { Edge.Left, Edge.Right, Edge.Top, Edge.Bottom };
+            foreach (var edge in edges)
+            {
+                float offset = 0;
+                foreach (var axis in Axes.Where(x => x.Edge == edge))
+                {
+                    axis.PixelOffset = offset;
+                    offset += axis.PixelSize;
+                }
+            }
+
+            float padLeft = Axes.Where(x => x.Edge == Edge.Left).Select(x => x.PixelSize).Sum();
+            float padRight = Axes.Where(x => x.Edge == Edge.Right).Select(x => x.PixelSize).Sum();
+            float padBottom = Axes.Where(x => x.Edge == Edge.Bottom).Select(x => x.PixelSize).Sum();
+            float padTop = Axes.Where(x => x.Edge == Edge.Top).Select(x => x.PixelSize).Sum();
+
+            foreach (Axis axis in Axes)
+            {
+                if (axis.IsHorizontal)
+                    axis.Dims.SetPadding(padLeft, padRight);
+                else
+                    axis.Dims.SetPadding(padTop, padBottom);
+            }
         }
     }
 }

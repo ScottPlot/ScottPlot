@@ -73,63 +73,6 @@ namespace ScottPlot
             settings.XAxis2.Line.IsVisible = top ?? settings.XAxis2.Line.IsVisible;
         }
 
-        public void Benchmark(bool show = true, bool toggle = false) =>
-            settings.BenchmarkMessage.IsVisible = toggle ? !settings.BenchmarkMessage.IsVisible : show;
-
-        /// <summary>
-        /// Adjust layout to accommodate axis title and tick label sizes
-        /// </summary>
-        [Obsolete("call Layout()", true)]
-        public void TightenLayout(int? padding = null)
-        {
-            if (padding.HasValue)
-                foreach (var axis in settings.Axes)
-                    axis.PixelSizeMinimum = padding.Value;
-
-            if (!settings.AllAxesHaveBeenSet && settings.Plottables.Count > 0)
-                settings.AxisAuto();
-
-            settings.Resize(settings.Width, settings.Height);
-        }
-
-        public void LayoutFrameless()
-        {
-            foreach (var axis in settings.Axes)
-            {
-                axis.IsVisible = false;
-                axis.PixelSizeMinimum = 0;
-                axis.PixelSizeMaximum = 0;
-                axis.PixelSizePadding = 0;
-            }
-        }
-
-        /// <summary>
-        /// Define minimum size (in pixels) around the edge of the data area for each axis
-        /// </summary>
-        public void Layout(float? left = null, float? right = null, float? bottom = null, float? top = null, float? padding = 5)
-        {
-            settings.YAxis.PixelSizeMinimum = left ?? settings.YAxis.PixelSize;
-            settings.YAxis2.PixelSizeMinimum = right ?? settings.YAxis2.PixelSize;
-            settings.XAxis.PixelSizeMinimum = bottom ?? settings.XAxis.PixelSize;
-            settings.XAxis2.PixelSizeMinimum = top ?? settings.XAxis2.PixelSize;
-
-            foreach (var axis in settings.Axes)
-                axis.PixelSizePadding = padding ?? axis.PixelSizePadding;
-        }
-
-        [Obsolete("use other overload", true)]
-        public void Layout(
-                double? yLabelWidth = null,
-                double? yScaleWidth = null,
-                double? y2LabelWidth = null,
-                double? y2ScaleWidth = null,
-                double? titleHeight = null,
-                double? xLabelHeight = null,
-                double? xScaleHeight = null
-            )
-        {
-        }
-
         public void Grid(
             bool? enable = null,
             Color? color = null,

@@ -51,63 +51,6 @@ namespace ScottPlot
 
         public void Resize(float width, float height) => settings.Resize(width, height);
 
-        private void LayoutAuto(int xAxisIndex, int yAxisIndex)
-        {
-            // TODO: separate this into distinct X and Y functions
-            bool atLeastOneAxisIsZero = xAxisIndex == 0 || yAxisIndex == 0;
-            if (!atLeastOneAxisIsZero)
-                throw new InvalidOperationException();
-
-            // Adjust padding around the data area to accommodate title and tick labels.
-            //
-            // This is a chicken-and-egg problem:
-            //   * TICK DENSITY depends on the DATA AREA SIZE
-            //   * DATA AREA SIZE depends on LAYOUT PADDING
-            //   * LAYOUT PADDING depends on MAXIMUM LABEL SIZE
-            //   * MAXIMUM LABEL SIZE depends on TICK DENSITY
-            // To solve this, start by assuming data area size == figure size, and layout padding == 0
-
-            // axis limits shall not change
-            var dims = settings.GetPlotDimensions(xAxisIndex, yAxisIndex);
-            var limits = (dims.XMin, dims.XMax, dims.YMin, dims.YMax);
-            var figSize = new SizeF(settings.Width, settings.Height);
-
-            // first-pass tick calculation based on full image size 
-            var dimsFull = new PlotDimensions(figSize, figSize, new PointF(0, 0), limits);
-
-            foreach (var axis in settings.Axes)
-            {
-                bool isMatchingXAxis = axis.IsHorizontal && axis.AxisIndex == xAxisIndex;
-                bool isMatchingYAxis = axis.IsVertical && axis.AxisIndex == yAxisIndex;
-                if (isMatchingXAxis || isMatchingYAxis)
-                {
-                    axis.RecalculateTickPositions(dimsFull);
-                    axis.RecalculateAxisSize();
-                }
-            }
-
-            // now adjust our layout based on measured axis sizes
-            settings.TightenLayout();
-
-            // now recalculate ticks based on new layout
-            var dataSize = new SizeF(settings.DataWidth, settings.DataHeight);
-            var dataOffset = new PointF(settings.DataOffsetX, settings.DataOffsetY);
-
-            var dims3 = new PlotDimensions(figSize, dataSize, dataOffset, limits);
-            foreach (var axis in settings.Axes)
-            {
-                bool isMatchingXAxis = axis.IsHorizontal && axis.AxisIndex == xAxisIndex;
-                bool isMatchingYAxis = axis.IsVertical && axis.AxisIndex == yAxisIndex;
-                if (isMatchingXAxis || isMatchingYAxis)
-                {
-                    axis.RecalculateTickPositions(dims3);
-                }
-            }
-
-            // adjust the layout based on measured tick label sizes
-            settings.TightenLayout();
-        }
-
         public void Add(IRenderable plottable)
         {
             settings.Plottables.Add(plottable);
@@ -140,5 +83,8 @@ namespace ScottPlot
 
             return null;
         }
+
+        public void Benchmark(bool show = true, bool toggle = false) =>
+            settings.BenchmarkMessage.IsVisible = toggle ? !settings.BenchmarkMessage.IsVisible : show;
     }
 }
