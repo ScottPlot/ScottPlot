@@ -9,7 +9,7 @@
         public float FigureSizePx { get; private set; }
         public float DataSizePx { get; private set; }
         public float DataOffsetPx { get; private set; }
-        public readonly bool IsInverted;
+        public bool IsInverted;
 
         public double Min { get; private set; } = double.NaN;
         public double Max { get; private set; } = double.NaN;
@@ -84,32 +84,16 @@
 
         public float GetPixel(double unit)
         {
-            if (IsInverted)
-            {
-                double unitsFromMin = unit - Min;
-                double pxFromMin = unitsFromMin * PxPerUnit;
-                double pixel = DataOffsetPx + pxFromMin;
-                return (float)pixel;
-            }
-            else
-            {
-                double unitsFromMax = Max - unit;
-                double pxFromMax = unitsFromMax * PxPerUnit;
-                double pixel = DataOffsetPx + pxFromMax;
-                return (float)pixel;
-            }
+            double unitsFromMin = IsInverted ? unit - Min : unit - Min;
+            double pxFromMin = unitsFromMin * PxPerUnit;
+            double pixel = DataOffsetPx + pxFromMin;
+            return (float)pixel;
         }
 
         public double GetUnit(float pixel)
         {
-            if (IsInverted)
-            {
-                return DataSizePx - ((pixel - Min) * PxPerUnit);
-            }
-            else
-            {
-                return (pixel - DataOffsetPx) / PxPerUnit + Min;
-            }
+            double pxFromMin = IsInverted ? DataSizePx + DataOffsetPx - pixel : pixel - DataOffsetPx;
+            return pxFromMin * UnitsPerPx + Min;
         }
     }
 }

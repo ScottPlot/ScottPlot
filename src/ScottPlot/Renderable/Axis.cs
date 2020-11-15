@@ -26,7 +26,9 @@ namespace ScottPlot.Renderable
                 Line.Edge = value;
                 Title.Edge = value;
                 Ticks.Edge = value;
-                Ticks.TickCollection.verticalAxis = (value == Edge.Left || value == Edge.Right);
+                bool isVertical = (value == Edge.Left || value == Edge.Right);
+                Ticks.TickCollection.verticalAxis = isVertical;
+                Dims.IsInverted = isVertical;
             }
         }
         public bool IsHorizontal => Edge == Edge.Top || Edge == Edge.Bottom;
