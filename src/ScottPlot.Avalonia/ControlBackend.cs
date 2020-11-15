@@ -130,12 +130,12 @@ namespace ScottPlot.Interactive
         public System.Drawing.PointF? mouseRightDownLocation { get; private set; }
         public System.Drawing.PointF? mouseMiddleDownLocation { get; private set; }
 
-        double[] axisLimitsOnMouseDown;
+        bool rememberingAxisLimits;
         private bool isPanningOrZooming
         {
             get
             {
-                if (axisLimitsOnMouseDown is null) return false;
+                if (rememberingAxisLimits == false) return false;
                 if (mouseLeftDownLocation != null) return true;
                 else if (mouseRightDownLocation != null) return true;
                 else if (mouseMiddleDownLocation != null) return true;
@@ -157,7 +157,8 @@ namespace ScottPlot.Interactive
                 else if (button == MouseButtons.Left && enablePanning) mouseLeftDownLocation = mousePosition;
                 else if (button == MouseButtons.Right && enableZooming) mouseRightDownLocation = mousePosition;
                 else if (button == MouseButtons.Middle && enableScrollWheelZoom) mouseMiddleDownLocation = mousePosition;
-                axisLimitsOnMouseDown = plt.Axis();
+                rememberingAxisLimits = true;
+                plt.GetSettings(false).RememberAxisLimits();
             }
             else
             {
@@ -180,7 +181,7 @@ namespace ScottPlot.Interactive
 
         private void MouseMovedToPanOrZoom()
         {
-            plt.Axis(axisLimitsOnMouseDown);
+            plt.GetSettings(false).RecallAxisLimits();
 
             if (mouseLeftDownLocation != null)
             {
@@ -291,7 +292,7 @@ namespace ScottPlot.Interactive
             mouseLeftDownLocation = null;
             mouseRightDownLocation = null;
             mouseMiddleDownLocation = null;
-            axisLimitsOnMouseDown = null;
+            rememberingAxisLimits = false;
             settings.ZoomRectangle.Clear();
 
             bool shouldRecalculate = recalculateLayoutOnMouseUp ?? !plotContainsHeatmap;
