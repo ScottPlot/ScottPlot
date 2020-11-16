@@ -66,9 +66,9 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
         {
             if (cbAutoAxis.Checked == false)
             {
-                double[] autoAxisLimits = formsPlot1.plt.AxisAuto(verticalMargin: .5);
-                double oldX2 = autoAxisLimits[1];
-                formsPlot1.plt.Axis(x2: oldX2 + 1000);
+                formsPlot1.plt.AxisAuto(verticalMargin: .5);
+                var oldLimits = formsPlot1.plt.AxisLimits();
+                formsPlot1.plt.Axis(x2: oldLimits.XMax + 1000);
             }
         }
     }

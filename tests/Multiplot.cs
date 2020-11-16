@@ -60,8 +60,8 @@ namespace ScottPlotTests
             DisplayAxisInfo(multiplot);
 
             var matchedAxisLimits = multiplot.subplots[2].AxisLimits();
-            Assert.Greater(matchedAxisLimits.xMax, matchedAxisLimits.xMin);
-            Assert.Greater(matchedAxisLimits.yMax, matchedAxisLimits.yMin);
+            Assert.Greater(matchedAxisLimits.XMax, matchedAxisLimits.XMin);
+            Assert.Greater(matchedAxisLimits.YMax, matchedAxisLimits.YMin);
         }
 
         [Test]
@@ -86,11 +86,11 @@ namespace ScottPlotTests
             var matchedVerticalLimits = multiplot.subplots[1].AxisLimits();
             var matchedHorizontalLimits = multiplot.subplots[1].AxisLimits();
 
-            Assert.Greater(matchedVerticalLimits.xMax, matchedVerticalLimits.xMin);
-            Assert.Greater(matchedVerticalLimits.yMax, matchedVerticalLimits.yMin);
+            Assert.Greater(matchedVerticalLimits.XMax, matchedVerticalLimits.XMin);
+            Assert.Greater(matchedVerticalLimits.YMax, matchedVerticalLimits.YMin);
 
-            Assert.Greater(matchedHorizontalLimits.xMax, matchedHorizontalLimits.xMin);
-            Assert.Greater(matchedHorizontalLimits.yMax, matchedHorizontalLimits.yMin);
+            Assert.Greater(matchedHorizontalLimits.XMax, matchedHorizontalLimits.XMin);
+            Assert.Greater(matchedHorizontalLimits.YMax, matchedHorizontalLimits.YMin);
         }
     }
 }

@@ -77,9 +77,9 @@ namespace ScottPlot.Demo.WPF.WpfDemos
 
         private void DisableAutoAxis(object sender, RoutedEventArgs e)
         {
-            double[] autoAxisLimits = wpfPlot1.plt.AxisAuto(verticalMargin: .5);
-            double oldX2 = autoAxisLimits[1];
-            wpfPlot1.plt.Axis(x2: oldX2 + 1000);
+            wpfPlot1.plt.AxisAuto(verticalMargin: .5);
+            var oldLimits = wpfPlot1.plt.AxisLimits();
+            wpfPlot1.plt.Axis(x2: oldLimits.XMax + 1000);
         }
     }
 }

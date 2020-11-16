@@ -1,25 +1,22 @@
 ﻿/* Code here is for adjusting axis limits and converting between pixel and coordinate units */
 
 using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
 
 namespace ScottPlot
 {
     public partial class Plot
     {
-        public (double xMin, double xMax, double yMin, double yMax) AxisLimits()
+        public AxisLimits AxisLimits(int xAxisIndex = 0, int yAxisIndex = 0)
         {
-            (double xMin, double xMax) = settings.XAxis.Dims.RationalLimits();
-            (double yMin, double yMax) = settings.YAxis.Dims.RationalLimits();
-            return (xMin, xMax, yMin, yMax);
+            (double xMin, double xMax) = settings.GetXAxis(xAxisIndex).Dims.RationalLimits();
+            (double yMin, double yMax) = settings.GetYAxis(yAxisIndex).Dims.RationalLimits();
+            return new AxisLimits(xMin, xMax, yMin, yMax);
         }
 
         /// <summary>
         /// Optionally set axis limits and return the latest limits
         /// </summary>
-        public double[] Axis(
+        public void Axis(
             double? x1 = null,
             double? x2 = null,
             double? y1 = null,
@@ -28,6 +25,7 @@ namespace ScottPlot
             int yAxisIndex = 0
             )
         {
+            // TODO: make overload that accepts xMin, xMax, yMin, yMax arguments and mark this one obsolete
             bool someValuesAreNull = (x1 == null) || (x2 == null) || (y1 == null) || (y2 == null);
             if (someValuesAreNull)
             {
@@ -39,19 +37,25 @@ namespace ScottPlot
             }
 
             settings.AxisSet(x1, x2, y1, y2, xAxisIndex, yAxisIndex);
-            return settings.AxisLimitsArray(xAxisIndex, yAxisIndex);
         }
 
         /// <summary>
         /// Set axis limits [xMin, xMax, yMin, yMax]
         /// </summary>
-        public double[] Axis(double[] axisLimits, int xAxisIndex = 0, int yAxisIndex = 0)
+        [Obsolete("use one of the other overloads to set axis limits")]
+        public void Axis(double[] axisLimits, int xAxisIndex = 0, int yAxisIndex = 0)
         {
             if ((axisLimits == null) || (axisLimits.Length != 4))
                 throw new ArgumentException("axis limits must contain 4 elements");
             Axis(axisLimits[0], axisLimits[1], axisLimits[2], axisLimits[3], xAxisIndex, yAxisIndex);
-            return settings.AxisLimitsArray(xAxisIndex, yAxisIndex);
         }
+
+        /// <summary>
+        /// Set axis limits [xMin, xMax, yMin, yMax]
+        /// </summary>
+        [Obsolete("use one of the other overloads to set axis limits")]
+        public void Axis(AxisLimits limits, int xAxisIndex = 0, int yAxisIndex = 0) =>
+            Axis(limits.XMin, limits.XMax, limits.YMin, limits.YMax, xAxisIndex, yAxisIndex);
 
         /// <summary>
         /// Set axis bounds (bounds restrict axis limits)
@@ -74,7 +78,7 @@ namespace ScottPlot
         /// <summary>
         /// Adjust axis limits to achieve a certain pixel scale (units per pixel)
         /// </summary>
-        public double[] AxisScale(double? unitsPerPixelX = null, double? unitsPerPixelY = null)
+        public void AxisScale(double? unitsPerPixelX = null, double? unitsPerPixelY = null)
         {
             if (unitsPerPixelX != null)
             {
@@ -87,83 +91,63 @@ namespace ScottPlot
                 double spanY = unitsPerPixelY.Value * settings.DataHeight;
                 Axis(y1: settings.YAxis.Dims.Center - spanY / 2, y2: settings.YAxis.Dims.Center + spanY / 2);
             }
-
-            // TODO: respect axis indexes
-            return settings.AxisLimitsArray(0, 0);
         }
 
         /// <summary>
         /// Zoom one axis to ensure its scale (units per pixel) matches the other axis
         /// </summary>
-        public double[] AxisEqual(bool preserveY = true)
+        public void AxisEqual(bool preserveY = true)
         {
             if (preserveY)
                 AxisScale(unitsPerPixelX: settings.YAxis.Dims.UnitsPerPx);
             else
                 AxisScale(unitsPerPixelY: settings.XAxis.Dims.UnitsPerPx);
-            // TODO: respect axis indexes
-            return settings.AxisLimitsArray(0, 0);
         }
 
         public void AxisLockScalesTogether(bool enable)
         {
             // TODO: support this
-            /*
-            settings.axes.equalAxes = enable;*/
         }
 
-        [Obsolete("call AxisLockScalesTogether()", true)]
+        [Obsolete("call AxisLockScales()", true)]
         public bool EqualAxis;
 
-        // Keep this in the Plot module to assist discoverability
-        [Obsolete("use AxisAuto() to fit axis limits to the data", true)]
-        public double[] AutoAxis() => AxisAuto();
-
-        // Keep this in the Plot module to assist discoverability
-        [Obsolete("use AxisAuto() to fit axis limits to the data", true)]
-        public double[] AutoScale() => AxisAuto();
-
         /// <summary>
         /// Automatically adjust axis limits to fit the data (with a little extra margin)
         /// </summary>
-        public double[] AxisAuto(
-            double horizontalMargin = .05,
-            double verticalMargin = .1)
-        {
+        public void AxisAuto(double horizontalMargin = .05, double verticalMargin = .1) =>
             settings.AxisAuto(horizontalMargin, verticalMargin);
-            return settings.AxisLimitsArray(0, 0);
+
+        /// <summary>
+        /// Automatically adjust axis limits to fit the data (with a little extra margin)
+        /// </summary>
+        public void AxisAutoX(double margin = .05, bool expandOnly = false)
+        {
+            if (settings.AllAxesHaveBeenSet == false)
+                AxisAuto();
+
+            AxisLimits originalLimits = AxisLimits();
+            AxisAuto(horizontalMargin: margin);
+            Axis(y1: originalLimits.YMin, y2: originalLimits.YMax);
         }
 
         /// <summary>
         /// Automatically adjust axis limits to fit the data (with a little extra margin)
         /// </summary>
-        public double[] AxisAutoX(double margin = .05, bool expandOnly = false)
+        public void AxisAutoY(double margin = .1)
         {
             if (settings.AllAxesHaveBeenSet == false)
                 AxisAuto();
 
-            double[] originalLimits = Axis();
-            double[] newLimits = AxisAuto(horizontalMargin: margin);
-            return Axis(newLimits[0], newLimits[1], originalLimits[2], originalLimits[3]);
-        }
-
-        /// <summary>
-        /// Automatically adjust axis limits to fit the data (with a little extra margin)
-        /// </summary>
-        public double[] AxisAutoY(double margin = .1)
-        {
-            if (settings.AllAxesHaveBeenSet == false)
-                AxisAuto();
-
-            double[] originalLimits = Axis();
-            double[] newLimits = AxisAuto(verticalMargin: margin);
-            return Axis(originalLimits[0], originalLimits[1], newLimits[2], newLimits[3]);
+            AxisLimits originalLimits = AxisLimits();
+            AxisAuto(horizontalMargin: margin);
+            Axis(x1: originalLimits.XMin, x2: originalLimits.XMax);
         }
 
         /// <summary>
         /// Adjust axis limits to simulate zooming
         /// </summary>
-        public double[] AxisZoom(
+        public void AxisZoom(
             double xFrac = 1,
             double yFrac = 1,
             double? zoomToX = null,
@@ -179,22 +163,17 @@ namespace ScottPlot
 
             xAxis.Dims.Zoom(xFrac, zoomToX ?? xAxis.Dims.Center);
             yAxis.Dims.Zoom(yFrac, zoomToY ?? yAxis.Dims.Center);
-
-            return settings.AxisLimitsArray(xAxisIndex, yAxisIndex);
         }
 
         /// <summary>
         /// Adjust axis limits to simulate panning
         /// </summary>
-        public double[] AxisPan(double dx = 0, double dy = 0)
+        public void AxisPan(double dx = 0, double dy = 0)
         {
             if (!settings.AllAxesHaveBeenSet)
                 settings.AxisAuto();
             settings.XAxis.Dims.Pan(dx);
             settings.XAxis.Dims.Pan(dy);
-
-            // TODO: support axis index
-            return settings.AxisLimitsArray(0, 0);
         }
 
         /// <summary>
@@ -233,6 +212,43 @@ namespace ScottPlot
             double y1 = vertical ? sourcePlot.settings.YAxis.Dims.Min : settings.YAxis.Dims.Min;
             double y2 = vertical ? sourcePlot.settings.YAxis.Dims.Max : settings.YAxis.Dims.Max;
             settings.AxisSet(x1, x2, y1, y2, 0, 0);
+        }
+
+        /// <summary>
+        /// Return the first horizontal axis with the specified index
+        /// </summary>
+        public Renderable.Axis GetXAxis(int xAxisIndex) =>
+            settings.GetXAxis(xAxisIndex);
+
+        /// <summary>
+        /// Return the first vertical axis with the specified index
+        /// </summary>
+        public Renderable.Axis GetYAxis(int yAxisIndex) =>
+            settings.GetYAxis(yAxisIndex);
+
+        /// <summary>
+        /// Create and return an additional axis
+        /// </summary>
+        public Renderable.Axis AddAxis(Renderable.Edge edge, int axisIndex, string title, System.Drawing.Color? color = null)
+        {
+            Renderable.Axis axis;
+
+            if (edge == Renderable.Edge.Left)
+                axis = new Renderable.AdditionalLeftAxis(axisIndex, title);
+            else if (edge == Renderable.Edge.Right)
+                axis = new Renderable.AdditionalRightAxis(axisIndex, title);
+            else if (edge == Renderable.Edge.Bottom)
+                axis = new Renderable.AdditionalBottomAxis(axisIndex, title);
+            else if (edge == Renderable.Edge.Top)
+                axis = new Renderable.AdditionalTopAxis(axisIndex, title);
+            else
+                throw new NotImplementedException("unsupported edge");
+
+            axis.Title.Label = title;
+            axis.Configure(color: color);
+
+            settings.Axes.Add(axis);
+            return axis;
         }
     }
 }

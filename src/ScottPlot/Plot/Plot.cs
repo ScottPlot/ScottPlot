@@ -10,7 +10,6 @@ using ScottPlot.Plottable;
 using ScottPlot.Renderable;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 
 namespace ScottPlot
 {

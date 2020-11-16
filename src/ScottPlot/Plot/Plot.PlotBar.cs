@@ -63,7 +63,7 @@ namespace ScottPlot
             {
                 // perform a tight axis adjustment
                 AxisAuto(0, 0);
-                double[] tightAxisLimits = Axis();
+                var tightAxisLimits = AxisLimits();
 
                 // now loosen it up a bit
                 AxisAuto();
@@ -71,16 +71,16 @@ namespace ScottPlot
                 // now set one of the axis edges to zero
                 if (horizontal)
                 {
-                    if (tightAxisLimits[0] == 0)
+                    if (tightAxisLimits.XMin == 0)
                         Axis(x1: 0);
-                    else if (tightAxisLimits[1] == 0)
+                    else if (tightAxisLimits.XMax == 0)
                         Axis(x2: 0);
                 }
                 else
                 {
-                    if (tightAxisLimits[2] == 0)
+                    if (tightAxisLimits.YMin == 0)
                         Axis(y1: 0);
-                    else if (tightAxisLimits[3] == 0)
+                    else if (tightAxisLimits.YMax == 0)
                         Axis(y2: 0);
                 }
             }

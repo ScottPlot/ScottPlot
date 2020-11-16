@@ -49,7 +49,7 @@
 
     public class AdditionalRightAxis : Axis
     {
-        public AdditionalRightAxis(int yAxisIndex)
+        public AdditionalRightAxis(int yAxisIndex, string title)
         {
             Edge = Edge.Right;
             AxisIndex = yAxisIndex;
@@ -58,12 +58,13 @@
             Ticks.MajorLabelEnable = true;
             Ticks.MinorTickEnable = true;
             Ticks.MajorGridEnable = false;
+            Title.Label = title;
         }
     }
 
     public class AdditionalLeftAxis : Axis
     {
-        public AdditionalLeftAxis(int yAxisIndex)
+        public AdditionalLeftAxis(int yAxisIndex, string title)
         {
             Edge = Edge.Left;
             AxisIndex = yAxisIndex;
@@ -72,12 +73,13 @@
             Ticks.MajorLabelEnable = true;
             Ticks.MinorTickEnable = true;
             Ticks.MajorGridEnable = false;
+            Title.Label = title;
         }
     }
 
     public class AdditionalTopAxis : Axis
     {
-        public AdditionalTopAxis(int xAxisIndex)
+        public AdditionalTopAxis(int xAxisIndex, string title)
         {
             Edge = Edge.Top;
             AxisIndex = xAxisIndex;
@@ -86,12 +88,13 @@
             Ticks.MajorLabelEnable = true;
             Ticks.MinorTickEnable = true;
             Ticks.MajorGridEnable = false;
+            Title.Label = title;
         }
     }
 
     public class AdditionalBottomAxis : Axis
     {
-        public AdditionalBottomAxis(int xAxisIndex)
+        public AdditionalBottomAxis(int xAxisIndex, string title)
         {
             Edge = Edge.Bottom;
             AxisIndex = xAxisIndex;
@@ -100,6 +103,7 @@
             Ticks.MajorLabelEnable = true;
             Ticks.MinorTickEnable = true;
             Ticks.MajorGridEnable = false;
+            Title.Label = title;
         }
     }
 }

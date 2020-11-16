@@ -22,9 +22,9 @@ namespace ScottPlotTests
                 );
             plt.AxisAuto();
 
-            var (xMin, xMax, yMin, yMax) = plt.AxisLimits();
-            Assert.Greater(xMax, xMin);
-            Assert.Greater(yMax, yMin);
+            var limits = plt.AxisLimits();
+            Assert.Greater(limits.XSpan, 0);
+            Assert.Greater(limits.YSpan, 0);
         }
 
         [Test]
@@ -37,9 +37,9 @@ namespace ScottPlotTests
                 );
             plt.AxisAuto();
 
-            var (xMin, xMax, yMin, yMax) = plt.AxisLimits();
-            Assert.Greater(xMax, xMin);
-            Assert.Greater(yMax, yMin);
+            var limits = plt.AxisLimits();
+            Assert.Greater(limits.XSpan, 0);
+            Assert.Greater(limits.YSpan, 0);
         }
 
         [Test]
@@ -48,9 +48,9 @@ namespace ScottPlotTests
             var plt = new ScottPlot.Plot();
             plt.PlotCandlestick(DataGen.RandomStockPrices(rand: null, pointCount: 1));
 
-            var (xMin, xMax, yMin, yMax) = plt.AxisLimits();
-            Assert.Greater(xMax, xMin);
-            Assert.Greater(yMax, yMin);
+            var limits = plt.AxisLimits();
+            Assert.Greater(limits.XSpan, 0);
+            Assert.Greater(limits.YSpan, 0);
         }
 
         [Test]
@@ -63,9 +63,9 @@ namespace ScottPlotTests
                 );
             plt.AxisAuto();
 
-            var (xMin, xMax, yMin, yMax) = plt.AxisLimits();
-            Assert.Greater(xMax, xMin);
-            Assert.Greater(yMax, yMin);
+            var limits = plt.AxisLimits();
+            Assert.Greater(limits.XSpan, 0);
+            Assert.Greater(limits.YSpan, 0);
         }
 
         [Test]
@@ -78,9 +78,9 @@ namespace ScottPlotTests
                 );
             plt.AxisAuto();
 
-            var (xMin, xMax, yMin, yMax) = plt.AxisLimits();
-            Assert.Greater(xMax, xMin);
-            Assert.Greater(yMax, yMin);
+            var limits = plt.AxisLimits();
+            Assert.Greater(limits.XSpan, 0);
+            Assert.Greater(limits.YSpan, 0);
         }
 
         [Test]
@@ -92,19 +92,19 @@ namespace ScottPlotTests
             plt.PlotPoint(-0.1, -0.1);
             plt.AxisAuto();
             plt.Render(); // force a render
-            Assert.Greater(plt.Axis()[0], -5);
+            Assert.Greater(plt.AxisLimits().XMin, -5);
 
             plt.PlotPoint(999, 999);
             plt.PlotPoint(-999, -999);
             plt.AxisAuto();
             plt.Render(); // force a render
-            Assert.Less(plt.Axis()[0], -800);
+            Assert.Less(plt.AxisLimits().XMin, -800);
 
             plt.Clear();
             plt.PlotPoint(0.1, 0.1);
             plt.PlotPoint(-0.1, -0.1);
             plt.Render(); // force a render
-            Assert.Greater(plt.Axis()[0], -5);
+            Assert.Greater(plt.AxisLimits().XMin, -5);
         }
 
         [Test]
@@ -113,7 +113,7 @@ namespace ScottPlotTests
             Random rand = new Random(0);
 
             var plt = new ScottPlot.Plot();
-            var data = ScottPlot.DataGen.RandomWalk(rand, 100);
+            var data = DataGen.RandomWalk(rand, 100);
             plt.PlotSignal(data, xOffset: 100, yOffset: 100, label: "scatter");
             plt.PlotVLine(-100, label: "vertical");
             plt.PlotHLine(-100, label: "horizontal");
@@ -137,10 +137,10 @@ namespace ScottPlotTests
             plt.AxisAuto();
             var limitsB = plt.AxisLimits();
 
-            Assert.That(limitsB.xMin < limitsA.xMin);
-            Assert.That(limitsB.xMax > limitsA.xMax);
-            Assert.That(limitsB.yMin < limitsA.yMin);
-            Assert.That(limitsB.yMax > limitsA.yMax);
+            Assert.That(limitsB.XMin < limitsA.XMin);
+            Assert.That(limitsB.XMax > limitsA.XMax);
+            Assert.That(limitsB.YMin < limitsA.YMin);
+            Assert.That(limitsB.YMax > limitsA.YMax);
         }
 
         [Test]
@@ -164,15 +164,15 @@ namespace ScottPlotTests
             var limitsC = plt.AxisLimits();
             Console.WriteLine($"limits C: {limitsC}");
 
-            Assert.That(limitsB.xMin < limitsA.xMin);
-            Assert.That(limitsB.xMax > limitsA.xMax);
-            Assert.That(limitsB.yMin < limitsA.yMin);
-            Assert.That(limitsB.yMax > limitsA.yMax);
+            Assert.That(limitsB.XMin < limitsA.XMin);
+            Assert.That(limitsB.XMax > limitsA.XMax);
+            Assert.That(limitsB.YMin < limitsA.YMin);
+            Assert.That(limitsB.YMax > limitsA.YMax);
 
-            Assert.That(limitsB.xMin < limitsC.xMin);
-            Assert.That(limitsB.xMax > limitsC.xMax);
-            Assert.That(limitsB.yMin < limitsC.yMin);
-            Assert.That(limitsB.yMax > limitsC.yMax);
+            Assert.That(limitsB.XMin < limitsC.XMin);
+            Assert.That(limitsB.XMax > limitsC.XMax);
+            Assert.That(limitsB.YMin < limitsC.YMin);
+            Assert.That(limitsB.YMax > limitsC.YMax);
         }
     }
 }

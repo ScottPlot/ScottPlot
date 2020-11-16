@@ -109,11 +109,11 @@ namespace ScottPlot
         /// <summary>
         /// Return X and Y axis limits
         /// </summary>
-        public double[] AxisLimitsArray(int xAxisIndex, int yAxisIndex)
+        public AxisLimits AxisLimits(int xAxisIndex, int yAxisIndex)
         {
             var xAxis = GetXAxis(xAxisIndex);
             var yAxis = GetYAxis(yAxisIndex);
-            return new double[] { xAxis.Dims.Min, xAxis.Dims.Max, yAxis.Dims.Min, yAxis.Dims.Max };
+            return new AxisLimits(xAxis.Dims.Min, xAxis.Dims.Max, yAxis.Dims.Min, yAxis.Dims.Max);
         }
 
         /// <summary>
