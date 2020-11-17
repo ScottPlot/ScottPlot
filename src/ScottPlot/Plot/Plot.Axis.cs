@@ -66,13 +66,8 @@ namespace ScottPlot
             double minY = double.NegativeInfinity,
             double maxY = double.PositiveInfinity)
         {
-            // TODO: support bounds
-            /*
-            settings.axes.x.boundMin = minX;
-            settings.axes.x.boundMax = maxX;
-            settings.axes.y.boundMin = minY;
-            settings.axes.y.boundMax = maxY;
-            */
+            settings.XAxis.Dims.SetBounds(minX, maxX);
+            settings.YAxis.Dims.SetBounds(minY, maxY);
         }
 
         /// <summary>

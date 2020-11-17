@@ -1,4 +1,6 @@
-﻿namespace ScottPlot.Renderable
+﻿using System;
+
+namespace ScottPlot.Renderable
 {
     /* This class stores mutable limits for a single axis.
      * Unlike PlotDimensions (immutable objects created just before rendering),
@@ -13,6 +15,8 @@
 
         public double Min { get; private set; } = double.NaN;
         public double Max { get; private set; } = double.NaN;
+        public double LowerBound { get; private set; } = double.NegativeInfinity;
+        public double UpperBound { get; private set; } = double.PositiveInfinity;
         public bool HasBeenSet { get; private set; } = false;
 
         public double Span => Max - Min;
@@ -55,10 +59,23 @@
             DataSizePx = FigureSizePx - padBelow - padAfter;
         }
 
+        public void SetBounds(double lower = double.NegativeInfinity, double upper = double.PositiveInfinity)
+        {
+            LowerBound = lower;
+            UpperBound = upper;
+        }
+
+        private void ApplyBounds()
+        {
+            Min = Math.Max(Min, LowerBound);
+            Max = Math.Min(Max, UpperBound);
+        }
+
         public void SetAxis(double? min, double? max)
         {
             Min = min ?? Min;
             Max = max ?? Max;
+            ApplyBounds();
             HasBeenSet = true;
         }
 
@@ -66,6 +83,7 @@
         {
             Min += units;
             Max += units;
+            ApplyBounds();
         }
 
         public void PanPx(float pixels)
@@ -80,6 +98,7 @@
             double spanRight = Max - zoomTo.Value;
             Min = zoomTo.Value - spanLeft / frac;
             Max = zoomTo.Value + spanRight / frac;
+            ApplyBounds();
         }
 
         public float GetPixel(double unit)
