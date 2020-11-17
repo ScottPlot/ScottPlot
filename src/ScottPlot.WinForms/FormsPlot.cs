@@ -465,13 +465,7 @@ namespace ScottPlot
                     if (isCtrlPressed) yFrac = 1;
                     if (isShiftPressed) xFrac = 1;
 
-                    // TODO: axis-specific support for this
-                    double? xCoordinate = plt.CoordinateFromPixelX(e.Location.X);
-                    double? yCoordinate = plt.CoordinateFromPixelX(e.Location.Y);
-                    xCoordinate = null;
-                    yCoordinate = null;
-                    plt.AxisZoom(xFrac, yFrac, xCoordinate, yCoordinate, xAxisIndex: 0, yAxisIndex: 0);
-                    plt.AxisZoom(xFrac, yFrac, xCoordinate, yCoordinate, xAxisIndex: 1, yAxisIndex: 1);
+                    plt.AxisZoom(xFrac, yFrac, plt.CoordinateFromPixelX(e.Location.X), plt.CoordinateFromPixelY(e.Location.Y));
                 }
 
                 bool shouldRecalculate = recalculateLayoutOnMouseUp ?? plotContainsHeatmap == false;
