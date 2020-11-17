@@ -201,12 +201,6 @@ namespace ScottPlot
         /// </summary>
         public void MatchAxis(Plot sourcePlot, bool horizontal = true, bool vertical = true)
         {
-            if (!sourcePlot.GetSettings(showWarning: false).AllAxesHaveBeenSet)
-                sourcePlot.AxisAuto();
-
-            if (!settings.AllAxesHaveBeenSet)
-                AxisAuto();
-
             double x1 = horizontal ? sourcePlot.settings.XAxis.Dims.Min : settings.XAxis.Dims.Min;
             double x2 = horizontal ? sourcePlot.settings.XAxis.Dims.Max : settings.XAxis.Dims.Max;
             double y1 = vertical ? sourcePlot.settings.YAxis.Dims.Min : settings.YAxis.Dims.Min;
