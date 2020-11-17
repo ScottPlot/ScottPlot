@@ -143,12 +143,23 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Automatically adjust X and Y axis limits to fit the data
+        /// Automatically adjust X and Y axis limits of the primary axes to fit the data
         /// </summary>
         public void AxisAuto(double horizontalMargin = .1, double verticalMargin = .1, int xAxisIndex = 0, int yAxisIndex = 0)
         {
             AxisAutoX(horizontalMargin, xAxisIndex);
             AxisAutoY(verticalMargin, yAxisIndex);
+        }
+
+        /// <summary>
+        /// Automatically adjust X and Y axis limits of all axes to fit the data
+        /// </summary>
+        public void AxisAutoAll(double horizontalMargin = .1, double verticalMargin = .1)
+        {
+            foreach (var index in Axes.Where(x => x.IsHorizontal).Select(x => x.AxisIndex).Distinct())
+                AxisAutoX(horizontalMargin, index);
+            foreach (var index in Axes.Where(x => x.IsVertical).Select(x => x.AxisIndex).Distinct())
+                AxisAutoY(verticalMargin, index);
         }
 
         /// <summary>
