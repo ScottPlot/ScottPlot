@@ -21,6 +21,9 @@ namespace ScottPlot.Plottable
         public int HorizontalAxisIndex { get; set; } = 0;
         public int VerticalAxisIndex { get; set; } = 0;
 
+        public Color HatchColor = Color.Transparent;
+        public HatchStyle HatchStyle = HatchStyle.None;
+
         public Polygon(double[] xs, double[] ys)
         {
             this.xs = xs;
@@ -99,8 +102,10 @@ namespace ScottPlot.Plottable
             for (int i = 0; i < xs.Length; i++)
                 points[i] = new PointF(dims.GetPixelX(xs[i]), dims.GetPixelY(ys[i]));
 
+            Color colorWithAlpha = Color.FromArgb((byte)(255 * fillAlpha), fillColor);
+
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
-            using (Brush fillBrush = GDI.Brush(Color.FromArgb((byte)(255 * fillAlpha), fillColor)))
+            using (Brush fillBrush = GDI.Brush(colorWithAlpha, HatchColor, HatchStyle))
             using (Pen outlinePen = GDI.Pen(lineColor, (float)lineWidth))
             {
                 if (fill)

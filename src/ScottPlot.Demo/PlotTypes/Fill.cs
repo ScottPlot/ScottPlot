@@ -26,6 +26,31 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
+        public class FillBeneathCurveHatched : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Filled Curve with Hatch Style";
+            public string description { get; } = "Decorate the filled plot with a custom hatch style.";
+
+            public void Render(Plot plt)
+            {
+                double[] xs = DataGen.Range(0, 10, .1, true);
+                double[] sin = DataGen.Sin(xs);
+                double[] cos = DataGen.Cos(xs);
+
+                var sinPlot = plt.PlotFill(xs, sin, "sin", lineWidth: 2, fillAlpha: .5);
+                var cosPlot = plt.PlotFill(xs, cos, "cos", lineWidth: 2, fillAlpha: .5);
+
+                sinPlot.HatchStyle = Drawing.HatchStyle.StripedDownwardDiagonal;
+                sinPlot.HatchColor = Color.Black;
+                cosPlot.HatchStyle = Drawing.HatchStyle.StripedUpwardDiagonal;
+                cosPlot.HatchColor = Color.White;
+
+                plt.PlotHLine(0, color: Color.Black);
+                plt.AxisAuto(0);
+                plt.Legend(location: Alignment.UpperRight);
+            }
+        }
+
         public class FillBetweenCurves : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Fill Between Curves";
