@@ -22,6 +22,9 @@ namespace ScottPlot.Plottable
         public int HorizontalAxisIndex { get; set; } = 0;
         public int VerticalAxisIndex { get; set; } = 0;
 
+        public Color HatchColor = Color.Transparent;
+        public HatchStyle HatchStyle = HatchStyle.None;
+
         public bool SkipOffScreenPolygons = true;
         public bool RenderSmallPolygonsAsSinglePixels = true;
 
@@ -92,7 +95,9 @@ namespace ScottPlot.Plottable
                     label = label,
                     color = fill ? fillColor : lineColor,
                     lineWidth = fill ? 10 : lineWidth,
-                    markerShape = MarkerShape.none
+                    markerShape = MarkerShape.none,
+                    hatchColor = HatchColor,
+                    hatchStyle = HatchStyle
                 };
                 return new LegendItem[] { legendItem };
             }
@@ -138,8 +143,9 @@ namespace ScottPlot.Plottable
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
+            Color colorWithAlpha = Color.FromArgb((byte)(255 * fillAlpha), fillColor);
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
-            using (Brush brush = GDI.Brush(fillColor, fillAlpha))
+            using (Brush brush = GDI.Brush(fillColor, HatchColor, HatchStyle))
             using (Pen pen = GDI.Pen(lineColor, lineWidth))
             {
                 foreach (List<(double x, double y)> poly in polys)
