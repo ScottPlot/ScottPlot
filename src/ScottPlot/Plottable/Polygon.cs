@@ -65,7 +65,9 @@ namespace ScottPlot.Plottable
                     label = label,
                     color = fill ? fillColor : lineColor,
                     lineWidth = fill ? 10 : lineWidth,
-                    markerShape = MarkerShape.none
+                    markerShape = MarkerShape.none,
+                    hatchColor = HatchColor,
+                    hatchStyle = HatchStyle
                 };
                 return new LegendItem[] { legendItem };
             }
