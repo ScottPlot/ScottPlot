@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ScottPlot.Plottable;
 
 namespace ScottPlot.Demo.WinForms.WinFormsDemos
 {
@@ -17,8 +18,8 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             InitializeComponent();
         }
 
-        PlottableScatter sinPlot, cosPlot;
-        PlottableVLine vline1, vline2;
+        ScatterPlot sinPlot, cosPlot;
+        VLine vline1, vline2;
 
         private void ToggleVisibility_Load(object sender, EventArgs e)
         {
@@ -37,20 +38,20 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
 
         private void cbSin_CheckedChanged(object sender, EventArgs e)
         {
-            sinPlot.visible = cbSin.Checked;
+            sinPlot.IsVisible = cbSin.Checked;
             formsPlot1.Render();
         }
 
         private void cbCos_CheckedChanged(object sender, EventArgs e)
         {
-            cosPlot.visible = cbCos.Checked;
+            cosPlot.IsVisible = cbCos.Checked;
             formsPlot1.Render();
         }
 
         private void cbLines_CheckedChanged(object sender, EventArgs e)
         {
-            vline1.visible = cbLines.Checked;
-            vline2.visible = cbLines.Checked;
+            vline1.IsVisible = cbLines.Checked;
+            vline2.IsVisible = cbLines.Checked;
             formsPlot1.Render();
         }
     }

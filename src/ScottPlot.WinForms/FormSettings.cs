@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot.Plottable;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -30,35 +31,36 @@ namespace ScottPlot.UserControls
         private void PopualteGuiFromPlot()
         {
             // vertical axis
-            tbYlabel.Text = plt.GetSettings().yLabel.text;
-            tbY2.Text = Math.Round(plt.Axis()[3], 4).ToString();
-            tbY1.Text = Math.Round(plt.Axis()[2], 4).ToString();
-            cbYminor.Checked = plt.GetSettings().ticks.displayYminor;
-            cbYdateTime.Checked = plt.GetSettings().ticks.y.dateFormat;
+            tbYlabel.Text = plt.GetSettings(false).YAxis.Title.Label;
+            var limits = plt.AxisLimits();
+            tbY2.Text = Math.Round(limits.YMax, 4).ToString();
+            tbY1.Text = Math.Round(limits.YMin, 4).ToString();
+            //cbYminor.Checked = plt.GetSettings().YAxis.TickCollection.displayYminor;
+            //cbYdateTime.Checked = plt.GetSettings().ticks.y.dateFormat;
 
             // horizontal axis
-            tbXlabel.Text = plt.GetSettings().xLabel.text;
-            tbX2.Text = Math.Round(plt.Axis()[1], 4).ToString();
-            tbX1.Text = Math.Round(plt.Axis()[0], 4).ToString();
-            cbXminor.Checked = plt.GetSettings().ticks.displayXminor;
-            cbXdateTime.Checked = plt.GetSettings().ticks.x.dateFormat;
+            tbXlabel.Text = plt.GetSettings(false).XAxis.Title.Label;
+            tbX2.Text = Math.Round(limits.XMax, 4).ToString();
+            tbX1.Text = Math.Round(limits.XMin, 4).ToString();
+            //cbXminor.Checked = plt.GetSettings().ticks.displayXminor;
+            //cbXdateTime.Checked = plt.GetSettings().ticks.x.dateFormat;
 
             // tick display options
-            cbTicksOffset.Checked = plt.GetSettings().ticks.useOffsetNotation;
-            cbTicksMult.Checked = plt.GetSettings().ticks.useMultiplierNotation;
-            cbGrid.Checked = plt.GetSettings().HorizontalGridLines.Visible;
+            //cbTicksOffset.Checked = plt.GetSettings().ticks.useOffsetNotation;
+            //cbTicksMult.Checked = plt.GetSettings().ticks.useMultiplierNotation;
+            cbGrid.Checked = plt.GetSettings(false).XAxis.Ticks.MajorGridStyle != LineStyle.None;
 
             // legend
-            cbLegend.Checked = plt.GetSettings().Legend.Visible;
+            cbLegend.Checked = plt.GetSettings(false).CornerLegend.IsVisible;
 
             // image quality
-            rbQualityLow.Checked = !plt.GetSettings().misc.antiAliasData;
-            rbQualityHigh.Checked = plt.GetSettings().misc.antiAliasData;
+            //rbQualityLow.Checked = !plt.GetSettings().misc.antiAliasData;
+            //rbQualityHigh.Checked = plt.GetSettings().misc.antiAliasData;
             //cbQualityLowWhileDragging.Checked = plt.mouseTracker.lowQualityWhileInteracting;
 
             // list of plottables
             lbPlotObjects.Items.Clear();
-            foreach (var plotObject in plt.GetPlottables())
+            foreach (var plotObject in plt.Plottables)
                 lbPlotObjects.Items.Add(plotObject);
 
             // list of color styles
@@ -80,14 +82,14 @@ namespace ScottPlot.UserControls
         private void btnCopyCSV_Click(object sender, EventArgs e)
         {
             int plotObjectIndex = lbPlotObjects.SelectedIndex;
-            IExportable plottable = (IExportable)plt.GetPlottables()[plotObjectIndex];
+            IExportable plottable = (IExportable)plt.Plottables[plotObjectIndex];
             Clipboard.SetText(plottable.GetCSV());
         }
 
         private void BtnExportCSV_Click(object sender, EventArgs e)
         {
             int plotObjectIndex = lbPlotObjects.SelectedIndex;
-            IExportable plottable = (IExportable)plt.GetPlottables()[plotObjectIndex];
+            IExportable plottable = (IExportable)plt.Plottables[plotObjectIndex];
 
             SaveFileDialog savefile = new SaveFileDialog();
             savefile.Title = $"Export CSV data for {plottable}";
@@ -102,7 +104,7 @@ namespace ScottPlot.UserControls
             if (lbPlotObjects.Items.Count > 0 && lbPlotObjects.SelectedItem != null)
             {
                 int plotObjectIndex = lbPlotObjects.SelectedIndex;
-                var plottable = plt.GetPlottables()[plotObjectIndex];
+                var plottable = plt.Plottables[plotObjectIndex];
 
                 btnExportCSV.Enabled = plottable is IExportable;
                 btnCopyCSV.Enabled = plottable is IExportable;
@@ -152,7 +154,7 @@ namespace ScottPlot.UserControls
             plt.Ticks(useOffsetNotation: cbTicksOffset.Checked, useMultiplierNotation: cbTicksMult.Checked);
 
             // image quality
-            plt.AntiAlias(figure: rbQualityHigh.Checked, data: rbQualityHigh.Checked);
+            //plt.AntiAlias(figure: rbQualityHigh.Checked, data: rbQualityHigh.Checked);
             //plt.mouseTracker.lowQualityWhileInteracting = cbQualityLowWhileDragging.Checked;
 
             // misc
@@ -174,7 +176,7 @@ namespace ScottPlot.UserControls
 
         private void BtnTighten_Click(object sender, EventArgs e)
         {
-            plt.TightenLayout();
+
         }
     }
 }

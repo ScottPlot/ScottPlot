@@ -1,5 +1,6 @@
 ﻿using Avalonia.Controls;
 using Avalonia.VisualTree;
+using ScottPlot.Drawing;
 using ScottPlot.Interactive;
 using System.Collections.Generic;
 using System.Drawing;
@@ -35,8 +36,11 @@ namespace ScottPlot.Avalonia
             {
                 // hide the version info
                 mainGrid.RowDefinitions[0].Height = new GridLength(0);
-                //dpiScaleInput = settings.gfxFigure.DpiX / 96; THIS IS ONLY NECESSARY ON WPF
-                dpiScaleOutput = settings.gfxFigure.DpiX / 96;
+                using (var bmp = new Bitmap(1, 1))
+                using (var gfx = GDI.Graphics(bmp, lowQuality: true))
+                {
+                    dpiScaleOutput = gfx.DpiX / 96;
+                }
                 view.Find<StackPanel>("canvasDesigner").Background = view.transparentBrush;
                 var canvasPlot = view.Find<Canvas>("canvasPlot");
                 canvasPlot.Background = view.transparentBrush;
@@ -107,7 +111,7 @@ namespace ScottPlot.Avalonia
 
         public override void SetImagePlot(bool lowQuality)
         {
-            view.Find<Ava.Controls.Image>("imagePlot").Source = BmpImageFromBmp(plt.GetBitmap(true, lowQuality));
+            view.Find<Ava.Controls.Image>("imagePlot").Source = BmpImageFromBmp(plt.Render(lowQuality));
         }
 
         public override void OpenInNewWindow()

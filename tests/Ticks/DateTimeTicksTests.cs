@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using ScottPlot.Config.DateTimeTickUnits;
+using ScottPlot.Ticks.DateTimeTickUnits;
 using System;
 using System.Collections.Generic;
 using System.Drawing.Printing;

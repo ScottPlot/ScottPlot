@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ScottPlot.Plottable;
 
 namespace ScottPlot.Demo.WPF.WpfDemos
 {
@@ -17,7 +18,7 @@ namespace ScottPlot.Demo.WPF.WpfDemos
     /// </summary>
     public partial class ShowValueOnHover : Window
     {
-        ScottPlot.PlottableScatterHighlight sph;
+        ScatterPlotHighlight sph;
 
         public ShowValueOnHover()
         {

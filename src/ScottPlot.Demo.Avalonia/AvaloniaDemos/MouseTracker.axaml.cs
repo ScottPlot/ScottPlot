@@ -8,8 +8,8 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 {
     public class MouseTracker : Window
     {
-        PlottableVLine vLine;
-        PlottableHLine hLine;
+        Plottable.VLine vLine;
+        Plottable.HLine hLine;
         AvaPlot avaPlot1;
 
         public MouseTracker()

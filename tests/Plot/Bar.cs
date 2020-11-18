@@ -35,7 +35,7 @@ namespace ScottPlotTests.Plot
 
             plt.Axis(y1: 0);
             plt.Grid(enableVertical: false, lineStyle: LineStyle.Dot);
-            plt.Legend(location: legendLocation.upperRight);
+            plt.Legend(location: Alignment.UpperRight);
             TestTools.SaveFig(plt);
         }
     }

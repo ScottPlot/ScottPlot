@@ -37,7 +37,7 @@ namespace ScottPlot.Demo.PlotTypes
                 double[] data = DataGen.RandomWalk(rand, 100_000);
 
                 plt.Style(Style.Gray1);
-                plt.Colorset(Colorset.OneHalfDark);
+                plt.Colorset(Palette.OneHalfDark);
 
                 var sig = plt.PlotSignalConst(data);
                 sig.minRenderIndex = 4000;

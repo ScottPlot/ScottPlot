@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using ScottPlot.Plottable;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -20,7 +21,7 @@ namespace ScottPlotTests.PlotTypes
             {
                 var color = plt.GetSettings(false).GetNextColor();
 
-                var plottable = new ScottPlot.PlottablePolygon(
+                var plottable = new ScottPlot.Plottable.Polygon(
                         xs: ScottPlot.DataGen.Random(rand, 3, 100),
                         ys: ScottPlot.DataGen.Random(rand, 3, 100))
                 {
@@ -36,7 +37,7 @@ namespace ScottPlotTests.PlotTypes
             }
 
             plt.Title("Polygon Example");
-            plt.Legend(location: ScottPlot.legendLocation.lowerLeft);
+            plt.Legend(location: ScottPlot.Alignment.LowerLeft);
             TestTools.SaveFig(plt);
         }
 
@@ -56,7 +57,7 @@ namespace ScottPlotTests.PlotTypes
             }
 
             plt.Title("Polygon Example");
-            plt.Legend(location: ScottPlot.legendLocation.lowerLeft);
+            plt.Legend(location: ScottPlot.Alignment.LowerLeft);
             TestTools.SaveFig(plt);
         }
 
@@ -83,7 +84,7 @@ namespace ScottPlotTests.PlotTypes
             plt.PlotPolygon(arrX, arrY, lineWidth: 1, lineColor: Color.Black, fillAlpha: .5);
 
             plt.Title("Shaded Line Plot");
-            plt.Legend(location: ScottPlot.legendLocation.lowerLeft);
+            plt.Legend(location: ScottPlot.Alignment.LowerLeft);
             TestTools.SaveFig(plt);
         }
 

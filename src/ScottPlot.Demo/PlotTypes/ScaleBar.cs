@@ -25,7 +25,7 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.Frame(false);
                 plt.Ticks(false, false);
                 plt.AxisAuto(0);
-                plt.TightenLayout(0);
+                plt.LayoutFrameless();
             }
         }
     }

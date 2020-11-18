@@ -26,7 +26,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class Alignment : PlotDemo, IPlotDemo
+        public class ImageAlignment : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Image Alignment";
             public string description { get; } = "Image alignment and rotation can be customized using arguments.";
@@ -49,10 +49,10 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.PlotBitmap(image, 20, 0.3);
                 plt.PlotPoint(20, 0.3, color: Color.Black, markerSize: 15);
 
-                plt.PlotBitmap(image, 30, 0, alignment: ImageAlignment.middleCenter);
+                plt.PlotBitmap(image, 30, 0, alignment: Alignment.MiddleCenter);
                 plt.PlotPoint(30, 0, color: Color.Black, markerSize: 15);
 
-                plt.PlotBitmap(image, 30, -0.3, alignment: ImageAlignment.upperLeft);
+                plt.PlotBitmap(image, 30, -0.3, alignment: Alignment.UpperLeft);
                 plt.PlotPoint(30, -0.3, color: Color.Black, markerSize: 15);
 
                 plt.PlotBitmap(image, 5, -.5, rotation: -30);

@@ -13,7 +13,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
         AvaPlot avaPlot1;
         public double[] data = new double[100_000];
         int nextDataIndex = 1;
-        PlottableSignal signalPlot;
+        Plottable.SignalPlot signalPlot;
         Random rand = new Random(0);
 
         TextBox ReadingsTextbox;
@@ -86,9 +86,9 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 
         private void DisableAutoAxis(object sender, RoutedEventArgs e)
         {
-            double[] autoAxisLimits = avaPlot1.plt.AxisAuto(verticalMargin: .5);
-            double oldX2 = autoAxisLimits[1];
-            avaPlot1.plt.Axis(x2: oldX2 + 1000);
+            avaPlot1.plt.AxisAuto(verticalMargin: .5);
+            var autoLimits = avaPlot1.plt.AxisLimits();
+            avaPlot1.plt.Axis(x2: autoLimits.XMax + 1000);
         }
     }
 }

@@ -35,7 +35,7 @@ namespace ScottPlot.Demo.Customize
 
             public void Render(Plot plt)
             {
-                plt.Colorset(Colorset.Nord);
+                plt.Colorset(Palette.Nord);
                 plt.Title($"{plt.Colorset().Name} Colorset");
 
                 Random rand = new Random(0);
@@ -56,7 +56,7 @@ namespace ScottPlot.Demo.Customize
             public void Render(Plot plt)
             {
                 plt.Style(Style.Gray1);
-                plt.Colorset(Colorset.OneHalfDark);
+                plt.Colorset(Palette.OneHalfDark);
                 plt.Title($"{plt.Colorset().Name} Colorset");
 
                 Random rand = new Random(0);

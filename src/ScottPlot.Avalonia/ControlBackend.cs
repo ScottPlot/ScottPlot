@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using ScottPlot.Plottable;
 
 namespace ScottPlot.Interactive
 {
@@ -26,7 +27,7 @@ namespace ScottPlot.Interactive
         protected bool isDesignerMode;
         public double dpiScaleInput { get; protected set; } = 1;
         public double dpiScaleOutput { get; protected set; } = 1;
-        private bool plotContainsHeatmap => settings?.plottables.Where(p => p is PlottableHeatmap).Count() > 0;
+        private bool plotContainsHeatmap => settings?.Plottables.Where(p => p is Heatmap).Count() > 0;
 
 
         public List<ContextMenuItem> contextMenuItems;
@@ -54,9 +55,6 @@ namespace ScottPlot.Interactive
         {
             if (!isDesignerMode)
             {
-                if (recalculateLayout)
-                    plt.TightenLayout();
-
                 if (equalAxes)
                     plt.AxisEqual();
 
@@ -132,12 +130,12 @@ namespace ScottPlot.Interactive
         public System.Drawing.PointF? mouseRightDownLocation { get; private set; }
         public System.Drawing.PointF? mouseMiddleDownLocation { get; private set; }
 
-        double[] axisLimitsOnMouseDown;
+        bool rememberingAxisLimits;
         private bool isPanningOrZooming
         {
             get
             {
-                if (axisLimitsOnMouseDown is null) return false;
+                if (rememberingAxisLimits == false) return false;
                 if (mouseLeftDownLocation != null) return true;
                 else if (mouseRightDownLocation != null) return true;
                 else if (mouseMiddleDownLocation != null) return true;
@@ -159,7 +157,8 @@ namespace ScottPlot.Interactive
                 else if (button == MouseButtons.Left && enablePanning) mouseLeftDownLocation = mousePosition;
                 else if (button == MouseButtons.Right && enableZooming) mouseRightDownLocation = mousePosition;
                 else if (button == MouseButtons.Middle && enableScrollWheelZoom) mouseMiddleDownLocation = mousePosition;
-                axisLimitsOnMouseDown = plt.Axis();
+                rememberingAxisLimits = true;
+                plt.GetSettings(false).RememberAxisLimits();
             }
             else
             {
@@ -182,7 +181,7 @@ namespace ScottPlot.Interactive
 
         private void MouseMovedToPanOrZoom()
         {
-            plt.Axis(axisLimitsOnMouseDown);
+            plt.GetSettings(false).RecallAxisLimits();
 
             if (mouseLeftDownLocation != null)
             {
@@ -216,21 +215,21 @@ namespace ScottPlot.Interactive
                 double y1 = Math.Min(mouseLocation.Y, mouseMiddleDownLocation.Value.Y);
                 double y2 = Math.Max(mouseLocation.Y, mouseMiddleDownLocation.Value.Y);
 
-                var origin = new System.Drawing.Point((int)x1 - settings.dataOrigin.X, (int)y1 - settings.dataOrigin.Y);
+                var origin = new System.Drawing.Point((int)x1 - (int)settings.DataOffsetX, (int)y1 - (int)settings.DataOffsetY);
                 var size = new System.Drawing.Size((int)(x2 - x1), (int)(y2 - y1));
 
                 if (lockVerticalAxis)
                 {
                     origin.Y = 0;
-                    size.Height = settings.dataSize.Height - 1;
+                    size.Height = (int)settings.DataHeight - 1;
                 }
                 if (lockHorizontalAxis)
                 {
                     origin.X = 0;
-                    size.Width = settings.dataSize.Width - 1;
+                    size.Width = (int)settings.DataWidth - 1;
                 }
 
-                settings.mouseMiddleRect = new System.Drawing.Rectangle(origin, size);
+                settings.ZoomRectangle.Set(origin.X, origin.Y, size.Width, size.Height);
             }
 
             Render(true, lowQuality: lowQualityWhileDragging);
@@ -239,8 +238,8 @@ namespace ScottPlot.Interactive
 
         public (double x, double y) GetMouseCoordinates()
         {
-            double x = plt.CoordinateFromPixelX(mouseLocation.X / dpiScaleInput);
-            double y = plt.CoordinateFromPixelY(mouseLocation.Y / dpiScaleInput);
+            double x = plt.CoordinateFromPixelX((float)(mouseLocation.X / dpiScaleInput));
+            double y = plt.CoordinateFromPixelY((float)(mouseLocation.Y / dpiScaleInput));
             return (x, y);
         }
 
@@ -285,7 +284,7 @@ namespace ScottPlot.Interactive
                 else
                 {
                     bool shouldTighten = recalculateLayoutOnMouseUp ?? !plotContainsHeatmap;
-                    plt.AxisAuto(middleClickMarginX, middleClickMarginY, tightenLayout: shouldTighten);
+                    plt.AxisAuto(middleClickMarginX, middleClickMarginY);
                     AxisChanged?.Invoke(null, null);
                 }
             }
@@ -293,8 +292,8 @@ namespace ScottPlot.Interactive
             mouseLeftDownLocation = null;
             mouseRightDownLocation = null;
             mouseMiddleDownLocation = null;
-            axisLimitsOnMouseDown = null;
-            settings.mouseMiddleRect = null;
+            rememberingAxisLimits = false;
+            settings.ZoomRectangle.Clear();
 
             bool shouldRecalculate = recalculateLayoutOnMouseUp ?? !plotContainsHeatmap;
             Render(recalculateLayout: shouldRecalculate);

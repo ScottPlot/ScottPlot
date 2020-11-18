@@ -26,7 +26,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class Alignment : PlotDemo, IPlotDemo
+        public class TextAlignment : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Text Alignment";
             public string description { get; } = "Text alignment and rotation can be customized using arguments.";
@@ -48,10 +48,10 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.PlotText(" default alignment", 30, 0.3, fontSize: 16, bold: true, color: Color.Magenta);
 
                 plt.PlotPoint(30, 0, color: Color.Black, markerSize: 15);
-                plt.PlotText("middle center", 30, 0, fontSize: 16, bold: true, color: Color.Magenta, alignment: TextAlignment.middleCenter);
+                plt.PlotText("middle center", 30, 0, fontSize: 16, bold: true, color: Color.Magenta, alignment: Alignment.MiddleCenter);
 
                 plt.PlotPoint(30, -0.3, color: Color.Black, markerSize: 15);
-                plt.PlotText("upper left", 30, -0.3, fontSize: 16, bold: true, color: Color.Magenta, alignment: TextAlignment.upperLeft);
+                plt.PlotText("upper left", 30, -0.3, fontSize: 16, bold: true, color: Color.Magenta, alignment: Alignment.UpperLeft);
 
                 plt.PlotPoint(5, -.5, color: Color.Blue, markerSize: 15);
                 plt.PlotText(" Rotated Text", 5, -.5, fontSize: 16, color: Color.Blue, bold: true, rotation: -30);

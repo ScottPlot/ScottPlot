@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ScottPlot.Plottable;
 
 namespace ScottPlot.Demo.WinForms.WinFormsDemos
 {
@@ -17,7 +18,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
         double[] liveData = new double[400];
         DataGen.Electrocardiogram ecg = new DataGen.Electrocardiogram();
         Stopwatch sw = Stopwatch.StartNew();
-        PlottableVLine vline;
+        VLine vline;
 
         public LiveDataUpdate()
         {
@@ -49,7 +50,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
                 // "roll" new values over old values like a traditional ECG machine
                 nextValueIndex = (nextValueIndex < liveData.Length - 1) ? nextValueIndex + 1 : 0;
                 liveData[nextValueIndex] = nextValue;
-                vline.visible = true;
+                vline.IsVisible = true;
                 vline.position = nextValueIndex;
             }
             else
@@ -57,7 +58,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
                 // "scroll" the whole chart to the left
                 Array.Copy(liveData, 1, liveData, 0, liveData.Length - 1);
                 liveData[liveData.Length - 1] = nextValue;
-                vline.visible = false;
+                vline.IsVisible = false;
             }
         }
 

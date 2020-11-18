@@ -5,10 +5,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
+using ScottPlot.Plottable;
 
 namespace ScottPlotTests.Plot
 {
-    public class PlottableScatterHighlightTestable : PlottableScatterHighlight
+    public class PlottableScatterHighlightTestable : ScatterPlotHighlight
     {
         public PlottableScatterHighlightTestable(
             double[] xs, double[] ys, double[] errorX, double[] errorY)

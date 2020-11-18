@@ -3,6 +3,7 @@
  *   - Long lists of optional arguments (matplotlib style) are permitted.
  *   - Use one line per argument to simplify the tracking of changes.
  */
+using ScottPlot.Plottable;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -12,9 +13,7 @@ namespace ScottPlot
 {
     public partial class Plot
     {
-
-
-        public PlottablePolygon PlotFill(
+        public Polygon PlotFill(
             double[] xs,
             double[] ys,
             string label = null,
@@ -35,7 +34,7 @@ namespace ScottPlot
             return PlotPolygon(xs2, ys2, label, lineWidth, lineColor, fill, fillColor, fillAlpha);
         }
 
-        public PlottablePolygon PlotFill(
+        public Polygon PlotFill(
             double[] xs1,
             double[] ys1,
             double[] xs2,
@@ -70,7 +69,7 @@ namespace ScottPlot
             return PlotPolygon(bothX, bothY, label, lineWidth, lineColor, fill, fillColor, fillAlpha);
         }
 
-        public (PlottablePolygon, PlottablePolygon) PlotFillAboveBelow(
+        public (Polygon, Polygon) PlotFillAboveBelow(
             double[] xs,
             double[] ys,
             string labelAbove = null,
@@ -119,7 +118,7 @@ namespace ScottPlot
             return (polyBelow, polyAbove);
         }
 
-        public PlottablePolygon PlotPolygon(
+        public Polygon PlotPolygon(
             double[] xs,
             double[] ys,
             string label = null,
@@ -130,7 +129,7 @@ namespace ScottPlot
             double fillAlpha = 1
             )
         {
-            var plottable = new PlottablePolygon(xs, ys)
+            var plottable = new Polygon(xs, ys)
             {
                 label = label,
                 lineWidth = lineWidth,
@@ -144,7 +143,7 @@ namespace ScottPlot
             return plottable;
         }
 
-        public PlottablePolygons PlotPolygons(
+        public Polygons PlotPolygons(
             List<List<(double x, double y)>> polys,
             string label = null,
             double lineWidth = 0,
@@ -154,7 +153,7 @@ namespace ScottPlot
             double fillAlpha = 1
             )
         {
-            var plottable = new PlottablePolygons(polys)
+            var plottable = new Polygons(polys)
             {
                 label = label,
                 lineWidth = lineWidth,

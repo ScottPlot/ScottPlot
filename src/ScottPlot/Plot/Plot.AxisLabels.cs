@@ -8,61 +8,86 @@ namespace ScottPlot
     partial class Plot
     {
         public void Title(
-            string title = null,
-            bool? enable = null,
+            string label = null,
             string fontName = null,
             float? fontSize = null,
             Color? color = null,
             bool? bold = null
             )
         {
-
-            settings.title.text = title ?? settings.title.text;
-            settings.title.visible = enable ?? settings.title.visible;
-            settings.title.fontName = fontName ?? settings.title.fontName;
-            settings.title.fontSize = fontSize ?? settings.title.fontSize;
-            settings.title.color = color ?? settings.title.color;
-            settings.title.bold = bold ?? settings.title.bold;
-
-            TightenLayout();
+            settings.XAxis2.Title.Label = label;
+            settings.XAxis2.Title.Font.Name = string.IsNullOrWhiteSpace(fontName) ? settings.XAxis2.Title.Font.Name : fontName;
+            settings.XAxis2.Title.Font.Size = fontSize ?? settings.XAxis2.Title.Font.Size;
+            settings.XAxis2.Title.Font.Color = color ?? settings.XAxis2.Title.Font.Color;
+            settings.XAxis2.Title.Font.Bold = bold ?? settings.XAxis2.Title.Font.Bold;
         }
 
         public void XLabel(
-            string xLabel = null,
+            string label = null,
             Color? color = null,
-            bool? enable = null,
             string fontName = null,
             float? fontSize = null,
             bool? bold = null
             )
         {
-            settings.xLabel.text = xLabel ?? settings.xLabel.text;
-            settings.xLabel.color = color ?? settings.xLabel.color;
-            settings.xLabel.visible = enable ?? settings.xLabel.visible;
-            settings.xLabel.fontName = fontName ?? settings.xLabel.fontName;
-            settings.xLabel.fontSize = fontSize ?? settings.xLabel.fontSize;
-            settings.xLabel.bold = bold ?? settings.xLabel.bold;
-
-            TightenLayout();
+            settings.XAxis.Title.Label = label;
+            settings.XAxis.Title.Font.Name = string.IsNullOrWhiteSpace(fontName) ? settings.XAxis.Title.Font.Name : fontName;
+            settings.XAxis.Title.Font.Size = fontSize ?? settings.XAxis.Title.Font.Size;
+            settings.XAxis.Configure(color: color);
+            settings.XAxis.Title.Font.Bold = bold ?? settings.XAxis.Title.Font.Bold;
         }
 
         public void YLabel(
-            string yLabel = null,
-            bool? enable = null,
+            string label = null,
             string fontName = null,
             float? fontSize = null,
             Color? color = null,
             bool? bold = null
             )
         {
-            settings.yLabel.text = yLabel ?? settings.yLabel.text;
-            settings.yLabel.color = color ?? settings.yLabel.color;
-            settings.yLabel.visible = enable ?? settings.yLabel.visible;
-            settings.yLabel.fontName = fontName ?? settings.yLabel.fontName;
-            settings.yLabel.fontSize = fontSize ?? settings.yLabel.fontSize;
-            settings.yLabel.bold = bold ?? settings.yLabel.bold;
+            settings.YAxis.Title.Label = label;
+            settings.YAxis.Title.Font.Name = string.IsNullOrWhiteSpace(fontName) ? settings.YAxis.Title.Font.Name : fontName;
+            settings.YAxis.Title.Font.Size = fontSize ?? settings.YAxis.Title.Font.Size;
+            settings.YAxis.Configure(color: color);
+            settings.YAxis.Title.Font.Bold = bold ?? settings.YAxis.Title.Font.Bold;
+        }
 
-            TightenLayout();
+        public void YLabel2(
+            string label = null,
+            string fontName = null,
+            float? fontSize = null,
+            Color? color = null,
+            bool? bold = null
+            )
+        {
+            settings.YAxis2.Title.Label = label;
+            settings.YAxis2.Title.Font.Name = string.IsNullOrWhiteSpace(fontName) ? settings.YAxis2.Title.Font.Name : fontName;
+            settings.YAxis2.Title.Font.Size = fontSize ?? settings.YAxis2.Title.Font.Size;
+            settings.YAxis2.Configure(color: color);
+            settings.YAxis2.Title.Font.Bold = bold ?? settings.YAxis2.Title.Font.Bold;
+            settings.YAxis2.Title.IsVisible = true;
+            settings.YAxis2.Ticks.MajorTickEnable = true;
+            settings.YAxis2.Ticks.MinorTickEnable = true;
+            settings.YAxis2.Ticks.MajorLabelEnable = true;
+        }
+
+        public void XLabel2(
+            string label = null,
+            string fontName = null,
+            float? fontSize = null,
+            Color? color = null,
+            bool? bold = null
+            )
+        {
+            settings.XAxis2.Title.Label = label;
+            settings.XAxis2.Title.Font.Name = string.IsNullOrWhiteSpace(fontName) ? settings.XAxis2.Title.Font.Name : fontName;
+            settings.XAxis2.Title.Font.Size = fontSize ?? settings.XAxis2.Title.Font.Size;
+            settings.XAxis2.Configure(color: color);
+            settings.XAxis2.Title.Font.Bold = bold ?? settings.XAxis2.Title.Font.Bold;
+            settings.XAxis2.Title.IsVisible = true;
+            settings.XAxis2.Ticks.MajorTickEnable = true;
+            settings.XAxis2.Ticks.MinorTickEnable = true;
+            settings.XAxis2.Ticks.MajorLabelEnable = true;
         }
     }
 }

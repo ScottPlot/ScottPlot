@@ -3,6 +3,7 @@
  *   - Long lists of optional arguments (matplotlib style) are permitted.
  *   - Use one line per argument to simplify the tracking of changes.
  */
+using ScottPlot.Plottable;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,8 +15,7 @@ namespace ScottPlot
 {
     public partial class Plot
     {
-
-        public PlottableVectorField PlotVectorField(
+        public VectorField PlotVectorField(
             Statistics.Vector2[,] vectors,
             double[] xs,
             double[] ys,
@@ -25,7 +25,7 @@ namespace ScottPlot
             double scaleFactor = 1
             )
         {
-            var vectorField = new PlottableVectorField(vectors, xs, ys,
+            var vectorField = new VectorField(vectors, xs, ys,
                 colormap, scaleFactor, color ?? settings.GetNextColor())
             { label = label };
 
@@ -33,7 +33,7 @@ namespace ScottPlot
             return vectorField;
         }
 
-        public PlottableScatter PlotArrow(
+        public ScatterPlot PlotArrow(
             double tipX,
             double tipY,
             double baseX,
@@ -59,7 +59,7 @@ namespace ScottPlot
             return scatter;
         }
 
-        public PlottableRadar PlotRadar(
+        public RadarPlot PlotRadar(
             double[,] values,
             string[] categoryNames = null,
             string[] groupNames = null,
@@ -68,10 +68,10 @@ namespace ScottPlot
             Color? webColor = null
             )
         {
-            Color[] colors = fillColors ?? Enumerable.Range(0, values.Length).Select(i => settings.colorset.GetColor(i)).ToArray();
+            Color[] colors = fillColors ?? Enumerable.Range(0, values.Length).Select(i => settings.PlottablePalette.GetColor(i)).ToArray();
             Color[] colorsAlpha = colors.Select(x => Color.FromArgb((byte)(255 * fillAlpha), x)).ToArray();
 
-            var plottable = new PlottableRadar(values, colors, fillColors ?? colorsAlpha)
+            var plottable = new RadarPlot(values, colors, fillColors ?? colorsAlpha)
             {
                 categoryNames = categoryNames,
                 groupNames = groupNames,
@@ -83,7 +83,7 @@ namespace ScottPlot
             return plottable;
         }
 
-        public PlottableFunction PlotFunction(
+        public FunctionPlot PlotFunction(
             Func<double, double?> function,
             Color? color = null,
             double lineWidth = 1,
@@ -96,7 +96,7 @@ namespace ScottPlot
             if (markerShape != MarkerShape.none || markerSize != 0)
                 throw new ArgumentException("function plots do not use markers");
 
-            PlottableFunction functionPlot = new PlottableFunction(function)
+            FunctionPlot functionPlot = new FunctionPlot(function)
             {
                 color = color ?? settings.GetNextColor(),
                 lineWidth = lineWidth,
@@ -108,7 +108,7 @@ namespace ScottPlot
             return functionPlot;
         }
 
-        public PlottableScaleBar PlotScaleBar(
+        public ScaleBar PlotScaleBar(
             double sizeX,
             double sizeY,
             string labelX = null,
@@ -119,7 +119,7 @@ namespace ScottPlot
             double padPx = 10
             )
         {
-            var scalebar = new PlottableScaleBar()
+            var scalebar = new ScaleBar()
             {
                 Width = sizeX,
                 Height = sizeY,
@@ -135,7 +135,7 @@ namespace ScottPlot
             return scalebar;
         }
 
-        public PlottablePie PlotPie(
+        public PiePlot PlotPie(
             double[] values,
             string[] sliceLabels = null,
             Color[] colors = null,
@@ -146,9 +146,9 @@ namespace ScottPlot
             string label = null
             )
         {
-            colors = colors ?? Enumerable.Range(0, values.Length).Select(i => settings.colorset.GetColor(i)).ToArray();
+            colors = colors ?? Enumerable.Range(0, values.Length).Select(i => settings.PlottablePalette.GetColor(i)).ToArray();
 
-            PlottablePie pie = new PlottablePie(values, sliceLabels, colors)
+            PiePlot pie = new PiePlot(values, sliceLabels, colors)
             {
                 explodedChart = explodedChart,
                 showValues = showValues,

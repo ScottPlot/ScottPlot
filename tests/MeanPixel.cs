@@ -2,11 +2,19 @@
 
 namespace ScottPlotTests
 {
+#pragma warning disable CS0659 // Type overrides Object.Equals(object o) but does not override Object.GetHashCode()
     public class MeanPixel
     {
         public readonly double A, R, G, B;
         public double RGB { get => (R + G + B) / 3; }
         public readonly int pixels;
+
+        public MeanPixel(ScottPlot.Plot plt, bool lowQuality = true)
+        {
+            var bmp = plt.Render(lowQuality);
+            (A, R, G, B) = TestTools.MeanPixel(bmp);
+            pixels = bmp.Width * bmp.Height;
+        }
 
         public MeanPixel(System.Drawing.Bitmap bmp)
         {
@@ -28,6 +36,18 @@ namespace ScottPlotTests
             return $"{pixels} pixels: {rgbVals} ({comparisons}) total={Math.Round(RGB, 3)}";
         }
 
+        public override bool Equals(object obj)
+        {
+            if (obj is MeanPixel comparison)
+            {
+                return (R == comparison.R) && (G == comparison.G) && (B == comparison.B);
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public bool IsEqualTo(System.Drawing.Bitmap bmp)
         {
             (_, double r, double g, double b) = TestTools.MeanPixel(bmp);
@@ -39,6 +59,8 @@ namespace ScottPlotTests
         public bool IsDarkerThan(MeanPixel comparison) => RGB < comparison.RGB;
 
         public bool IsLighterThan(MeanPixel comparison) => RGB > comparison.RGB;
+
+        public bool IsEqualTo(MeanPixel comparison) => RGB == comparison.RGB;
 
         public bool IsGray() => (R == G) && (G == B) && (B == R);
 

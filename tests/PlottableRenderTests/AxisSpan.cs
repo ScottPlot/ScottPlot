@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using ScottPlot;
+using ScottPlot.Plottable;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,17 +13,16 @@ namespace ScottPlotTests.PlottableRenderTests
         public void Test_AxisSpan_ChangesPosition()
         {
             var plt = new ScottPlot.Plot();
-            plt.AntiAlias(false, false, false);
 
             // start with default settings
-            var axSpan = new PlottableHSpan() { position1 = 1.23, position2 = 2.34 };
+            var axSpan = new HSpan() { position1 = 1.23, position2 = 2.34 };
 
             plt.Add(axSpan);
-            var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp1 =  TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
             axSpan.position2 += 1;
-            var bmp2 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp2 =  TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
             //TestTools.SaveFig(bmp1, "1");
@@ -39,17 +39,16 @@ namespace ScottPlotTests.PlottableRenderTests
         public void Test_AxisSpan_Color()
         {
             var plt = new ScottPlot.Plot();
-            plt.AntiAlias(false, false, false);
 
             // start with default settings
-            var axSpan = new PlottableHSpan() { position1 = 1.23, position2 = 2.34, color = System.Drawing.Color.Gray };
+            var axSpan = new HSpan() { position1 = 1.23, position2 = 2.34, color = System.Drawing.Color.Gray };
 
             plt.Add(axSpan);
-            var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp1 =  TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
             axSpan.color = System.Drawing.Color.Black;
-            var bmp2 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp2 =  TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
             //TestTools.SaveFig(bmp1, "1");
@@ -66,17 +65,16 @@ namespace ScottPlotTests.PlottableRenderTests
         public void Test_AxisSpan_Alpha()
         {
             var plt = new ScottPlot.Plot();
-            plt.AntiAlias(false, false, false);
 
             // start with default settings
-            var axSpan = new PlottableHSpan() { position1 = 1.23, position2 = 2.34 };
+            var axSpan = new HSpan() { position1 = 1.23, position2 = 2.34 };
 
             plt.Add(axSpan);
-            var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp1 =  TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
             axSpan.alpha /= 2;
-            var bmp2 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp2 =  TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
             //TestTools.SaveFig(bmp1, "1");

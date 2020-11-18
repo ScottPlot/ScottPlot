@@ -17,7 +17,6 @@ namespace ScottPlotTests.Axis
             plt.PlotSignal(DataGen.Cos(51));
 
             plt.Axis(y1: -10e50, y2: 10e50);
-            plt.TightenLayout();
 
             TestTools.SaveFig(plt);
         }
@@ -49,7 +48,7 @@ namespace ScottPlotTests.Axis
         {
             var plt = new ScottPlot.Plot(600, 400);
             plt.PlotLine(0, 1, 1, 1.0000000000000001);
-            plt.GetBitmap();
+            plt.Render();
         }
     }
 }

@@ -191,8 +191,8 @@ namespace ScottPlot.Demo.PlotTypes
                 popPlot.displayDistributionCurve = true;
                 popPlot.distributionCurveLineStyle = LineStyle.Dash;
                 popPlot.scatterOutlineColor = System.Drawing.Color.Transparent;
-                popPlot.displayItems = PlottablePopulations.DisplayItems.ScatterAndBox;
-                popPlot.boxStyle = PlottablePopulations.BoxStyle.BarMeanStDev;
+                popPlot.displayItems = Plottable.PopulationPlot.DisplayItems.ScatterAndBox;
+                popPlot.boxStyle = Plottable.PopulationPlot.BoxStyle.BarMeanStDev;
                 plt.Axis(y1: 0);
 
                 // colors are managed at the population series level:
@@ -202,7 +202,7 @@ namespace ScottPlot.Demo.PlotTypes
                 // improve the style of the plot
                 plt.Title($"Test Scores by Class");
                 plt.YLabel("Score");
-                plt.Legend(location: legendLocation.lowerLeft);
+                plt.Legend(location: Alignment.LowerLeft);
                 plt.Ticks(displayTicksX: false);
                 plt.Grid(lineStyle: LineStyle.Dot, enableVertical: false);
             }

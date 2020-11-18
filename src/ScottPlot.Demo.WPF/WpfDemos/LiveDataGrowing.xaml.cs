@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot.Plottable;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -20,7 +21,7 @@ namespace ScottPlot.Demo.WPF.WpfDemos
     {
         public double[] data = new double[100_000];
         int nextDataIndex = 1;
-        PlottableSignal signalPlot;
+        SignalPlot signalPlot;
         Random rand = new Random(0);
 
         public LiveDataGrowing()
@@ -76,9 +77,9 @@ namespace ScottPlot.Demo.WPF.WpfDemos
 
         private void DisableAutoAxis(object sender, RoutedEventArgs e)
         {
-            double[] autoAxisLimits = wpfPlot1.plt.AxisAuto(verticalMargin: .5);
-            double oldX2 = autoAxisLimits[1];
-            wpfPlot1.plt.Axis(x2: oldX2 + 1000);
+            wpfPlot1.plt.AxisAuto(verticalMargin: .5);
+            var oldLimits = wpfPlot1.plt.AxisLimits();
+            wpfPlot1.plt.Axis(x2: oldLimits.XMax + 1000);
         }
     }
 }

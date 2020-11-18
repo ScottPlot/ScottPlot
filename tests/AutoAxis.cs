@@ -1,4 +1,7 @@
-﻿using NUnit.Framework;
+﻿using Microsoft.VisualStudio.TestPlatform.ObjectModel;
+using NUnit.Framework;
+using ScottPlot;
+using ScottPlot.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,12 +21,10 @@ namespace ScottPlotTests
                 ys: new double[] { 1, 2 }
                 );
             plt.AxisAuto();
-            Console.WriteLine(plt.GetSettings().axes);
 
-            Assert.IsTrue(plt.GetSettings().axes.x.span > 0);
-            Assert.IsTrue(plt.GetSettings().axes.y.span > 0);
-
-            TestTools.SaveFig(plt);
+            var limits = plt.AxisLimits();
+            Assert.Greater(limits.XSpan, 0);
+            Assert.Greater(limits.YSpan, 0);
         }
 
         [Test]
@@ -35,21 +36,21 @@ namespace ScottPlotTests
                 ys: new double[] { 1, 2 }
                 );
             plt.AxisAuto();
-            Console.WriteLine(plt.GetSettings().axes);
 
-            Assert.IsTrue(plt.GetSettings().axes.x.span > 0);
-            Assert.IsTrue(plt.GetSettings().axes.y.span > 0);
+            var limits = plt.AxisLimits();
+            Assert.Greater(limits.XSpan, 0);
+            Assert.Greater(limits.YSpan, 0);
         }
 
         [Test]
         public void Test_AutoAxis_CandlestickSinglePoint()
         {
             var plt = new ScottPlot.Plot();
-            plt.PlotCandlestick(ScottPlot.DataGen.RandomStockPrices(rand: null, pointCount: 1));
-            plt.GetBitmap(); // force a render
+            plt.PlotCandlestick(DataGen.RandomStockPrices(rand: null, pointCount: 1));
 
-            Assert.IsTrue(plt.GetSettings().axes.x.span > 0);
-            Assert.IsTrue(plt.GetSettings().axes.y.span > 0);
+            var limits = plt.AxisLimits();
+            Assert.Greater(limits.XSpan, 0);
+            Assert.Greater(limits.YSpan, 0);
         }
 
         [Test]
@@ -62,8 +63,9 @@ namespace ScottPlotTests
                 );
             plt.AxisAuto();
 
-            Assert.IsTrue(plt.GetSettings().axes.x.span > 0);
-            Assert.IsTrue(plt.GetSettings().axes.y.span > 0);
+            var limits = plt.AxisLimits();
+            Assert.Greater(limits.XSpan, 0);
+            Assert.Greater(limits.YSpan, 0);
         }
 
         [Test]
@@ -75,10 +77,10 @@ namespace ScottPlotTests
                 ys: new double[] { 1, 2 }
                 );
             plt.AxisAuto();
-            Console.WriteLine(plt.GetSettings().axes);
 
-            Assert.IsTrue(plt.GetSettings().axes.x.span > 0);
-            Assert.IsTrue(plt.GetSettings().axes.y.span > 0);
+            var limits = plt.AxisLimits();
+            Assert.Greater(limits.XSpan, 0);
+            Assert.Greater(limits.YSpan, 0);
         }
 
         [Test]
@@ -89,20 +91,20 @@ namespace ScottPlotTests
             plt.PlotPoint(0.1, 0.1);
             plt.PlotPoint(-0.1, -0.1);
             plt.AxisAuto();
-            plt.GetBitmap(); // force a render
-            Assert.Greater(plt.Axis()[0], -5);
+            plt.Render(); // force a render
+            Assert.Greater(plt.AxisLimits().XMin, -5);
 
             plt.PlotPoint(999, 999);
             plt.PlotPoint(-999, -999);
             plt.AxisAuto();
-            plt.GetBitmap(); // force a render
-            Assert.Less(plt.Axis()[0], -800);
+            plt.Render(); // force a render
+            Assert.Less(plt.AxisLimits().XMin, -800);
 
             plt.Clear();
             plt.PlotPoint(0.1, 0.1);
             plt.PlotPoint(-0.1, -0.1);
-            plt.GetBitmap(); // force a render
-            Assert.Greater(plt.Axis()[0], -5);
+            plt.Render(); // force a render
+            Assert.Greater(plt.AxisLimits().XMin, -5);
         }
 
         [Test]
@@ -111,45 +113,11 @@ namespace ScottPlotTests
             Random rand = new Random(0);
 
             var plt = new ScottPlot.Plot();
-            var data = ScottPlot.DataGen.RandomWalk(rand, 100);
+            var data = DataGen.RandomWalk(rand, 100);
             plt.PlotSignal(data, xOffset: 100, yOffset: 100, label: "scatter");
             plt.PlotVLine(-100, label: "vertical");
             plt.PlotHLine(-100, label: "horizontal");
             plt.Legend();
-
-            TestTools.SaveFig(plt);
-        }
-
-        [Test]
-        public void Test_AxisLine_FarAwayOnlyExpandX()
-        {
-            Random rand = new Random(0);
-
-            var plt = new ScottPlot.Plot();
-            var data = ScottPlot.DataGen.RandomWalk(rand, 100);
-            plt.PlotSignal(data, xOffset: 100, yOffset: 100, label: "scatter");
-            plt.PlotVLine(-100, label: "vertical");
-            plt.PlotHLine(-100, label: "horizontal");
-            plt.Legend();
-
-            plt.AxisAuto(xExpandOnly: true);
-
-            TestTools.SaveFig(plt);
-        }
-
-        [Test]
-        public void Test_AxisLine_FarAwayOnlyExpandY()
-        {
-            Random rand = new Random(0);
-
-            var plt = new ScottPlot.Plot();
-            var data = ScottPlot.DataGen.RandomWalk(rand, 100);
-            plt.PlotSignal(data, xOffset: 100, yOffset: 100, label: "scatter");
-            plt.PlotVLine(-100, label: "vertical");
-            plt.PlotHLine(-100, label: "horizontal");
-            plt.Legend();
-
-            plt.AxisAuto(yExpandOnly: true);
 
             TestTools.SaveFig(plt);
         }
@@ -157,96 +125,54 @@ namespace ScottPlotTests
         [Test]
         public void Test_AutoAxis_ExpandXY()
         {
-            Random rand = new Random(0);
-
             var plt = new ScottPlot.Plot();
 
             // small area
             plt.PlotLine(-5, -5, 5, 5);
             plt.AxisAuto();
-            var limitsA = new ScottPlot.Config.AxisLimits2D(plt.Axis());
+            var limitsA = plt.AxisLimits();
 
             // large area
             plt.PlotLine(-99, -99, 99, 99);
             plt.AxisAuto();
-            var limitsB = new ScottPlot.Config.AxisLimits2D(plt.Axis());
+            var limitsB = plt.AxisLimits();
 
-            Assert.That(limitsA.xSpan < limitsB.xSpan);
-            Assert.That(limitsA.ySpan < limitsB.ySpan);
-        }
-
-        [Test]
-        public void Test_AutoAxis_ExpandYonly()
-        {
-            Random rand = new Random(0);
-
-            var plt = new ScottPlot.Plot();
-
-            // small area
-            plt.PlotLine(-5, -5, 5, 5);
-            plt.AxisAuto();
-            var limitsA = new ScottPlot.Config.AxisLimits2D(plt.Axis());
-
-            // large area
-            plt.PlotLine(-99, -99, 99, 99);
-            plt.AxisAuto(yExpandOnly: true);
-            var limitsB = new ScottPlot.Config.AxisLimits2D(plt.Axis());
-
-            Assert.That(limitsA.xSpan == limitsB.xSpan);
-            Assert.That(limitsA.ySpan < limitsB.ySpan);
-        }
-
-        [Test]
-        public void Test_AutoAxis_ExpandXonly()
-        {
-            Random rand = new Random(0);
-
-            var plt = new ScottPlot.Plot();
-
-            // small area
-            plt.PlotLine(-5, -5, 5, 5);
-            plt.AxisAuto();
-            var limitsA = new ScottPlot.Config.AxisLimits2D(plt.Axis());
-            Console.WriteLine($"limits A: {limitsA}");
-
-            // large area
-            plt.PlotLine(-99, -99, 99, 99);
-            plt.AxisAuto(xExpandOnly: true);
-            var limitsB = new ScottPlot.Config.AxisLimits2D(plt.Axis());
-            Console.WriteLine($"limits B: {limitsB}");
-
-            Assert.That(limitsA.xSpan < limitsB.xSpan);
-            Assert.That(limitsA.ySpan == limitsB.ySpan);
+            Assert.That(limitsB.XMin < limitsA.XMin);
+            Assert.That(limitsB.XMax > limitsA.XMax);
+            Assert.That(limitsB.YMin < limitsA.YMin);
+            Assert.That(limitsB.YMax > limitsA.YMax);
         }
 
         [Test]
         public void Test_AutoAxis_ShrinkWhenNeeded()
         {
-            Random rand = new Random(0);
-
             var plt = new ScottPlot.Plot();
 
             // small area
             plt.PlotLine(-5, -5, 5, 5);
             plt.AxisAuto();
-            var limitsA = new ScottPlot.Config.AxisLimits2D(plt.Axis());
+            var limitsA = plt.AxisLimits();
             Console.WriteLine($"limits A: {limitsA}");
 
             // expand to large area
             plt.Axis(-123, 123, -123, 123);
-            var limitsB = new ScottPlot.Config.AxisLimits2D(plt.Axis());
+            var limitsB = plt.AxisLimits();
             Console.WriteLine($"limits B: {limitsB}");
 
             // shrink back to small area
             plt.AxisAuto();
-            var limitsC = new ScottPlot.Config.AxisLimits2D(plt.Axis());
+            var limitsC = plt.AxisLimits();
             Console.WriteLine($"limits C: {limitsC}");
 
-            Assert.That(limitsB.xSpan > limitsC.xSpan);
-            Assert.That(limitsB.ySpan > limitsC.ySpan);
+            Assert.That(limitsB.XMin < limitsA.XMin);
+            Assert.That(limitsB.XMax > limitsA.XMax);
+            Assert.That(limitsB.YMin < limitsA.YMin);
+            Assert.That(limitsB.YMax > limitsA.YMax);
 
-            Assert.That(limitsA.xSpan == limitsC.xSpan);
-            Assert.That(limitsA.ySpan == limitsC.ySpan);
+            Assert.That(limitsB.XMin < limitsC.XMin);
+            Assert.That(limitsB.XMax > limitsC.XMax);
+            Assert.That(limitsB.YMin < limitsC.YMin);
+            Assert.That(limitsB.YMax > limitsC.YMax);
         }
     }
 }

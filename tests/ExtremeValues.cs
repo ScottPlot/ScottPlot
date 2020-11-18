@@ -15,11 +15,7 @@ namespace ScottPlotTests
 
             var plt = new ScottPlot.Plot();
             plt.PlotScatter(xs, ys);
-
             plt.AxisAuto();
-            var ax = plt.Axis();
-            Console.WriteLine($"Automatic axis limits: x1={ax[0]}, x2={ax[0]}, y1={ax[0]}, y2={ax[0]}");
-
             plt.Axis(-2, 7, -10, 40);
 
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name;

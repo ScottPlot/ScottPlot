@@ -20,14 +20,18 @@ namespace FormsPlotSandbox
 
         private void FormSandbox_Load(object sender, EventArgs e)
         {
-            formsPlot1.plt.PlotSignal(DataGen.Sin(51));
-            formsPlot1.plt.PlotSignal(DataGen.Cos(51));
+            formsPlot1.plt.YLabel("Primary Vertical Axis");
+            formsPlot1.plt.YLabel2("Secondary Vertical Axis");
 
-            formsPlot1.plt.Ticks(false, false);
-            formsPlot1.plt.Frame(false);
-            formsPlot1.plt.TightenLayout(padding: 0);
-            formsPlot1.Configure(recalculateLayoutOnMouseUp: false);
-            formsPlot1.plt.Style(Style.Gray2);
+            formsPlot1.plt.AddAxis(ScottPlot.Renderable.Edge.Right, 2, "Tertiary Vertical Axis");
+
+            var sig1 = formsPlot1.plt.PlotSignal(DataGen.Sin(51, mult: 1, phase: 0));
+            var sig2 = formsPlot1.plt.PlotSignal(DataGen.Sin(51, mult: 10, phase: .2));
+            var sig3 = formsPlot1.plt.PlotSignal(DataGen.Sin(51, mult: 100, phase: .4));
+
+            sig1.VerticalAxisIndex = 0;
+            sig2.VerticalAxisIndex = 1;
+            sig3.VerticalAxisIndex = 2;
 
             formsPlot1.Render();
         }

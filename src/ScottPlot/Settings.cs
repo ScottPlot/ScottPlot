@@ -1,311 +1,383 @@
-﻿using ScottPlot.Config;
-using ScottPlot.Renderable;
+﻿using ScottPlot.Renderable;
+using ScottPlot.Plottable;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-
-// TODO: move plottables to their own module
-// TODO: move mouse/axes interaction functions into the mouse module somehow
+using ScottPlot.Drawing;
+using System.Globalization;
+using System.Diagnostics;
 
 namespace ScottPlot
 {
     /// <summary>
-    /// 
-    /// This class stores settings and data necessary to create a ScottPlot.
-    /// It is a data transfer object which is easy to pass but should be inaccessible to end users.
-    /// 
-    /// If you are passed this object, you have EVERYTHING you need to render an image.
-    /// An ultimate goal is for this settings object to be able to be passed to different rendering engines.
-    /// 
+    /// This module holds state for figure dimensions, axis limits, plot contents, and styling options.
+    /// A plot can be duplicated by copying the full stae of this settings module.
     /// </summary>
     public class Settings
     {
-        // these properties get set at instantiation or after size or axis adjustments
-        public Size figureSize { get { return layout.plot.Size; } }
-        public Point dataOrigin { get { return layout.data.Location; } }
-        public Size dataSize { get { return layout.data.Size; } }
+        // plottables
+        public readonly List<IRenderable> Plottables = new List<IRenderable>();
+        public Color GetNextColor() { return PlottablePalette.GetColor(Plottables.Count); }
 
-        // Eventually move graphics objects to their own module.
-        public Graphics gfxFigure;
-        public Graphics gfxData;
-        public Bitmap bmpFigure;
-        public Bitmap bmpData;
-
-        // Renderables (eventually store these in a List)
+        // renderable objects the user can customize
         public readonly FigureBackground FigureBackground = new FigureBackground();
         public readonly DataBackground DataBackground = new DataBackground();
-        public readonly GridLines HorizontalGridLines = new GridLines() { Orientation = Orientation.Horizontal };
-        public readonly GridLines VerticalGridLines = new GridLines() { Orientation = Orientation.Vertical };
-        public readonly Benchmark Benchmark = new Benchmark();
+        public readonly BenchmarkMessage BenchmarkMessage = new BenchmarkMessage();
         public readonly ErrorMessage ErrorMessage = new ErrorMessage();
-        public readonly Legend Legend = new Legend();
+        public readonly Legend CornerLegend = new Legend();
+        public readonly ZoomRectangle ZoomRectangle = new ZoomRectangle();
+        public Palette PlottablePalette = Palette.Category10;
 
-        // plottables
-        public readonly List<Plottable> plottables = new List<Plottable>();
+        // the Axes list stores styling info for each axis and its limits
+        public List<Axis> Axes = new List<Axis>() {
+            new DefaultLeftAxis(),
+            new DefaultRightAxis(),
+            new DefaultBottomAxis(),
+            new DefaultTopAxis()
+        };
 
-        // TODO: STRANGLE CONFIG OBJECTS AS PART OF https://github.com/swharden/ScottPlot/pull/511
-        public Config.TextLabel title = new Config.TextLabel() { fontSize = 16, bold = true };
-        public Config.TextLabel xLabel = new Config.TextLabel() { fontSize = 16 };
-        public Config.TextLabel yLabel = new Config.TextLabel() { fontSize = 16 };
-        public Config.Misc misc = new Config.Misc();
-        //public Config.Benchmark benchmark = new Config.Benchmark();
-        //public Config.Grid grid = new Config.Grid();
-        public Config.Axes axes = new Config.Axes();
-        public readonly Config.Layout layout = new Config.Layout();
-        public Config.Ticks ticks = new Config.Ticks();
-        public System.Globalization.CultureInfo culture = System.Globalization.CultureInfo.DefaultThreadCurrentCulture;
+        public int[] XAxisIndexes => Axes.Where(x => x.IsHorizontal).Select(x => x.AxisIndex).Distinct().ToArray();
+        public int[] YAxisIndexes => Axes.Where(x => x.IsVertical).Select(x => x.AxisIndex).Distinct().ToArray();
+        public Axis GetXAxis(int xAxisIndex) => Axes.Where(x => x.IsHorizontal && x.AxisIndex == xAxisIndex).First();
+        public Axis GetYAxis(int yAxisIndex) => Axes.Where(x => x.IsVertical && x.AxisIndex == yAxisIndex).First();
+        public bool AllAxesHaveBeenSet => Axes.All(x => x.Dims.HasBeenSet);
 
-        // default colorset
-        public Drawing.Colorset colorset = Drawing.Colorset.Category10;
+        // shortcuts to fixed axes indexes
+        public Axis YAxis => Axes[0];
+        public Axis YAxis2 => Axes[1];
+        public Axis XAxis => Axes[2];
+        public Axis XAxis2 => Axes[3];
+        public Axis[] PrimaryAxes => Axes.Take(4).ToArray();
 
-        // mouse interaction
-        public Rectangle? mouseMiddleRect = null;
+        // public fields represent primary X and Y axes
+        public int Width => (int)XAxis.Dims.FigureSizePx;
+        public int Height => (int)YAxis.Dims.FigureSizePx;
+        public float DataOffsetX => XAxis.Dims.DataOffsetPx;
+        public float DataOffsetY => YAxis.Dims.DataOffsetPx;
+        public float DataWidth => XAxis.Dims.DataSizePx;
+        public float DataHeight => YAxis.Dims.DataSizePx;
 
-        // scales calculations must occur at this level because the axes are unaware of pixel dimensions
-        public double xAxisScale { get { return dataSize.Width / axes.x.span; } } // pixels per unit
-        public double yAxisScale { get { return dataSize.Height / axes.y.span; } } // pixels per unit
-        public double xAxisUnitsPerPixel { get { return 1.0 / xAxisScale; } }
-        public double yAxisUnitsPerPixel { get { return 1.0 / yAxisScale; } }
-
-        // this has to be here because color module is unaware of plottables list
-        public Color GetNextColor() { return colorset.GetColor(plottables.Count); }
-
-        public void Resize(int width, int height, bool useMeasuredStrings = false)
+        /// <summary>
+        /// Return figure dimensions for the specified X and Y axes
+        /// </summary>
+        public PlotDimensions GetPlotDimensions(int xAxisIndex, int yAxisIndex)
         {
-            if (useMeasuredStrings && gfxData != null)
-            {
-                // this section was added before display scaling issues (pixel-referenced font sizes) were figured out.
-                // it is probably not needed...
+            var xAxis = GetXAxis(xAxisIndex);
+            var yAxis = GetYAxis(yAxisIndex);
 
-                string sampleString = "IPjg8.8";
-                layout.yLabelWidth = (int)Drawing.GDI.MeasureString(gfxData, sampleString, yLabel.font).Height;
-                layout.y2LabelWidth = (int)Drawing.GDI.MeasureString(gfxData, sampleString, yLabel.font).Height; // currently y2 isn't supported
-                layout.titleHeight = (int)Drawing.GDI.MeasureString(gfxData, sampleString, title.font).Height;
-                layout.xLabelHeight = (int)Drawing.GDI.MeasureString(gfxData, sampleString, xLabel.font).Height;
+            // determine figure dimensions based on primary X and Y axis
+            var figureSize = new SizeF(XAxis.Dims.FigureSizePx, YAxis.Dims.FigureSizePx);
+            var dataSize = new SizeF(XAxis.Dims.DataSizePx, YAxis.Dims.DataSizePx);
+            var dataOffset = new PointF(XAxis.Dims.DataOffsetPx, YAxis.Dims.DataOffsetPx);
 
-                var tickSize = Drawing.GDI.MeasureString(gfxData, "0.001", ticks.font);
-                layout.yScaleWidth = (int)tickSize.Width;
-                layout.y2ScaleWidth = (int)tickSize.Height; // currently y2 isn't supported
-                layout.xScaleHeight = (int)tickSize.Height;
-            }
+            // determine axis limits based on specific X and Y axes
+            (double xMin, double xMax) = xAxis.Dims.RationalLimits();
+            (double yMin, double yMax) = yAxis.Dims.RationalLimits();
+            var limits = (xMin, xMax, yMin, yMax);
 
-            layout.Update(width, height);
-
-            if (axes.equalAxes)
-            {
-                var limits = new Config.AxisLimits2D(axes.ToArray());
-
-                double xUnitsPerPixel = limits.xSpan / dataSize.Width;
-                double yUnitsPerPixel = limits.ySpan / dataSize.Height;
-
-                if (yUnitsPerPixel > xUnitsPerPixel)
-                    axes.Zoom(xUnitsPerPixel / yUnitsPerPixel, 1);
-                else
-                    axes.Zoom(1, yUnitsPerPixel / xUnitsPerPixel);
-            }
+            return new PlotDimensions(figureSize, dataSize, dataOffset, limits);
         }
 
-        public void TightenLayout(int padLeft = 15, int padRight = 15, int padBottom = 15, int padTop = 15)
+        /// <summary>
+        /// Set the default size for rendering images
+        /// </summary>
+        public void Resize(float width, float height)
         {
-            Resize(figureSize.Width, figureSize.Height);
-
-            // update the layout with sizes based on configuration in settings
-
-            layout.titleHeight = (int)title.size.Height + 3;
-
-            // disable y2 label and scale by default
-            layout.y2LabelWidth = 0;
-            layout.y2ScaleWidth = 0;
-
-            layout.yLabelWidth = (int)yLabel.size.Height + 3;
-            layout.xLabelHeight = (int)xLabel.size.Height + 3;
-
-            // automatically set yScale size to tick labels
-            int minYtickWidth = 40;
-            layout.yScaleWidth = Math.Max(minYtickWidth, (int)ticks.y.maxLabelSize.Width);
-
-            // automatically set xScale size to high labels
-            int minXtickHeight = 10;
-            layout.xScaleHeight = Math.Max(minXtickHeight, (int)ticks.x.maxLabelSize.Height);
-
-            // collapse things that are hidden or empty
-            if (!ticks.displayXmajor)
-                layout.xScaleHeight = 0;
-            if (!ticks.displayYmajor)
-                layout.yScaleWidth = 0;
-            if (title.text == "")
-                layout.titleHeight = 0;
-            if (yLabel.text == "")
-                layout.yLabelWidth = 0;
-            if (xLabel.text == "")
-                layout.xLabelHeight = 0;
-
-            // eliminate all right-side pixels if right-frame is not drawn
-            if (!layout.displayFrameByAxis[1])
-            {
-                layout.yLabelWidth = 0;
-                layout.y2ScaleWidth = 0;
-            }
-
-            // expand edges to accomodate argument padding
-            layout.yLabelWidth = Math.Max(layout.yLabelWidth, padLeft);
-            layout.y2LabelWidth = Math.Max(layout.y2LabelWidth, padRight);
-            layout.xLabelHeight = Math.Max(layout.xLabelHeight, padBottom);
-            layout.titleHeight = Math.Max(layout.titleHeight, padTop);
-
-            layout.Update(figureSize.Width, figureSize.Height);
-            layout.tighteningOccurred = true;
+            foreach (Axis axis in Axes)
+                axis.Dims.Resize(axis.IsHorizontal ? width : height);
         }
 
+        /// <summary>
+        /// Reset axis limits to their defauts
+        /// </summary>
+        public void ResetAxisLimits()
+        {
+            foreach (Axis axis in Axes)
+                axis.Dims.ResetLimits();
+        }
+
+        /// <summary>
+        /// Define axis limits for a particuar axis
+        /// </summary>
+        public void AxisSet(double? xMin, double? xMax, double? yMin, double? yMax, int xAxisIndex, int yAxisIndex)
+        {
+            GetXAxis(xAxisIndex).Dims.SetAxis(xMin, xMax);
+            GetYAxis(yAxisIndex).Dims.SetAxis(yMin, yMax);
+        }
+
+        /// <summary>
+        /// Return X and Y axis limits
+        /// </summary>
+        public AxisLimits AxisLimits(int xAxisIndex, int yAxisIndex)
+        {
+            var xAxis = GetXAxis(xAxisIndex);
+            var yAxis = GetYAxis(yAxisIndex);
+            return new AxisLimits(xAxis.Dims.Min, xAxis.Dims.Max, yAxis.Dims.Min, yAxis.Dims.Max);
+        }
+
+        /// <summary>
+        /// Pan all axes by the given pixel distance
+        /// </summary>
         public void AxesPanPx(int dxPx, int dyPx)
         {
-            if (!axes.hasBeenSet)
-                AxisAuto();
-            axes.x.Pan((double)dxPx / xAxisScale);
-            axes.y.Pan((double)dyPx / yAxisScale);
+            foreach (Axis axis in Axes)
+                axis.Dims.PanPx(axis.IsHorizontal ? dxPx : dyPx);
         }
 
+        /// <summary>
+        /// Zoom all axes by the given pixel distance
+        /// </summary>
         public void AxesZoomPx(int xPx, int yPx, bool lockRatio = false)
         {
-            double dX = (double)xPx / xAxisScale;
-            double dY = (double)yPx / yAxisScale;
-            double dXFrac = dX / (Math.Abs(dX) + axes.x.span);
-            double dYFrac = dY / (Math.Abs(dY) + axes.y.span);
-            if (axes.equalAxes)
-            {
-                double zoomValue = dX + dY; // NE - max zoomIn, SW - max ZoomOut, NW and SE - 0 zoomValue
-                double zoomFrac = zoomValue / (Math.Abs(zoomValue) + axes.x.span);
-                dXFrac = zoomFrac;
-                dYFrac = zoomFrac;
-            }
             if (lockRatio)
+                (xPx, yPx) = (Math.Max(xPx, yPx), Math.Max(xPx, yPx));
+
+            foreach (Axis axis in Axes)
             {
-                double meanFrac = (dXFrac + dYFrac) / 2;
-                dXFrac = meanFrac;
-                dYFrac = meanFrac;
+                double deltaPx = axis.IsHorizontal ? xPx : yPx;
+                double delta = deltaPx * axis.Dims.UnitsPerPx;
+                double deltaFrac = delta / (Math.Abs(delta) + axis.Dims.Span);
+                axis.Dims.Zoom(Math.Pow(10, deltaFrac));
             }
-            axes.Zoom(Math.Pow(10, dXFrac), Math.Pow(10, dYFrac));
         }
 
-        public void AxisAuto(
-            double horizontalMargin = .1, double verticalMargin = .1,
-            bool xExpandOnly = false, bool yExpandOnly = false,
-            bool autoX = true, bool autoY = true
-            )
+        /// <summary>
+        /// Automatically adjust X and Y axis limits of the primary axes to fit the data
+        /// </summary>
+        public void AxisAuto(double horizontalMargin = .1, double verticalMargin = .1, int xAxisIndex = 0, int yAxisIndex = 0)
         {
-            var oldLimits = new Config.AxisLimits2D(axes.ToArray());
-            var newLimits = new Config.AxisLimits2D();
+            AxisAutoX(horizontalMargin, xAxisIndex);
+            AxisAutoY(verticalMargin, yAxisIndex);
+        }
 
-            foreach (var plottable in plottables)
+        /// <summary>
+        /// Automatically adjust X and Y axis limits of all axes to fit the data
+        /// </summary>
+        public void AxisAutoAll(double horizontalMargin = .1, double verticalMargin = .1)
+        {
+            foreach (var index in Axes.Where(x => x.IsHorizontal).Select(x => x.AxisIndex).Distinct())
+                AxisAutoX(horizontalMargin, index);
+            foreach (var index in Axes.Where(x => x.IsVertical).Select(x => x.AxisIndex).Distinct())
+                AxisAutoY(verticalMargin, index);
+        }
+
+        /// <summary>
+        /// Automatically adjust axis limits for all axes which have not yet been set
+        /// </summary>
+        public void AxisAutoUnsetAxes()
+        {
+            foreach (Axis axis in Axes.Where(x => x.Dims.HasBeenSet == false))
             {
-                Config.AxisLimits2D plottableLimits = plottable.GetLimits();
-                if (autoX && !yExpandOnly)
-                    newLimits.ExpandX(plottableLimits);
-                if (autoY && !xExpandOnly)
-                    newLimits.ExpandY(plottableLimits);
-            }
-
-            newLimits.MakeRational();
-
-            if (axes.equalAxes)
-            {
-                var xUnitsPerPixel = newLimits.xSpan / (dataSize.Width * (1 - horizontalMargin));
-                var yUnitsPerPixel = newLimits.ySpan / (dataSize.Height * (1 - verticalMargin));
-                axes.Set(newLimits);
-                if (yUnitsPerPixel > xUnitsPerPixel)
-                    axes.Zoom((1 - horizontalMargin) * xUnitsPerPixel / yUnitsPerPixel, 1 - verticalMargin);
+                if (axis.IsHorizontal)
+                    AxisAutoX(axis.AxisIndex);
                 else
-                    axes.Zoom(1 - horizontalMargin, (1 - verticalMargin) * yUnitsPerPixel / xUnitsPerPixel);
+                    AxisAutoY(axis.AxisIndex);
+            }
+        }
+
+        /// <summary>
+        /// Automatically adjust X axis limits to fit the data
+        /// </summary>
+        public void AxisAutoX(double margin = .1, int xAxisIndex = 0)
+        {
+            int[] xAxisIndexes = Axes.Where(x => x.IsHorizontal).Select(x => x.AxisIndex).Distinct().ToArray();
+            foreach (int i in xAxisIndexes)
+                AxisAutoX(i, margin);
+        }
+
+        /// <summary>
+        /// Automatically adjust Y axis limits to fit the data
+        /// </summary>
+        public void AxisAutoY(double margin = .1, int yAxisIndex = 0)
+        {
+            int[] yAxisIndexes = Axes.Where(x => x.IsVertical).Select(x => x.AxisIndex).Distinct().ToArray();
+            foreach (int i in yAxisIndexes)
+                AxisAutoY(i, margin);
+        }
+
+        private void AxisAutoX(int xAxisIndex, double margin = .1, bool expandOnly = false)
+        {
+            double min = double.NaN;
+            double max = double.NaN;
+            double zoomFrac = 1 - margin;
+
+            var plottableLimits = Plottables.Where(x => x is IUsesAxes)
+                                               .Select(x => (IUsesAxes)x)
+                                               .Where(x => x.HorizontalAxisIndex == xAxisIndex)
+                                               .Select(x => x.GetAxisLimits())
+                                               .ToArray();
+
+            foreach (var limits in plottableLimits)
+            {
+                (double xMin, double xMax, _, _) = limits;
+                if (!double.IsNaN(xMin))
+                    min = double.IsNaN(min) ? xMin : Math.Min(min, xMin);
+                if (!double.IsNaN(xMax))
+                    max = double.IsNaN(max) ? xMax : Math.Max(max, xMax);
+            }
+
+            if (double.IsNaN(min) && double.IsNaN(max))
                 return;
-            }
 
-            if (xExpandOnly)
+            var xAxis = GetXAxis(xAxisIndex);
+            xAxis.Dims.SetAxis(min, max);
+            xAxis.Dims.Zoom(zoomFrac);
+        }
+
+        private void AxisAutoY(int yAxisIndex, double margin = .1)
+        {
+            double min = double.NaN;
+            double max = double.NaN;
+            double zoomFrac = 1 - margin;
+
+            var plottableLimits = Plottables.Where(x => x is IUsesAxes)
+                                               .Select(x => (IUsesAxes)x)
+                                               .Where(x => x.VerticalAxisIndex == yAxisIndex)
+                                               .Select(x => x.GetAxisLimits())
+                                               .ToArray();
+
+            foreach (var limits in plottableLimits)
             {
-                oldLimits.ExpandX(newLimits);
-                axes.Set(oldLimits.x1, oldLimits.x2, null, null);
-                axes.Zoom(1 - horizontalMargin, 1);
+                (_, _, double yMin, double yMax) = limits;
+                if (!double.IsNaN(yMin))
+                    min = double.IsNaN(min) ? yMin : Math.Min(min, yMin);
+                if (!double.IsNaN(yMax))
+                    max = double.IsNaN(max) ? yMax : Math.Max(max, yMax);
             }
 
-            if (yExpandOnly)
+            if (double.IsNaN(min) && double.IsNaN(max))
+                return;
+
+            var yAxis = GetYAxis(yAxisIndex);
+            yAxis.Dims.SetAxis(min, max);
+            yAxis.Dims.Zoom(zoomFrac);
+        }
+
+        /// <summary>
+        /// Store axis limits (useful for storing state upon a MouseDown event)
+        /// </summary>
+        public void RememberAxisLimits()
+        {
+            foreach (Axis axis in Axes)
+                axis.Dims.Remember();
+        }
+
+        /// <summary>
+        /// Recall axis limits (useful for recalling state from a previous MouseDown event)
+        /// </summary>
+        public void RecallAxisLimits()
+        {
+            foreach (Axis axis in Axes)
+                axis.Dims.Recall();
+        }
+
+        /// <summary>
+        /// Ensure all axes have the same size and offset as the primary X and Y axis
+        /// </summary>
+        public void CopyPrimaryLayoutToAllAxes()
+        {
+            foreach (Axis axis in Axes)
             {
-                oldLimits.ExpandY(newLimits);
-                axes.Set(null, null, oldLimits.y1, oldLimits.y2);
-                axes.Zoom(1, 1 - verticalMargin);
+                if (axis.IsHorizontal)
+                    axis.Dims.Resize(Width, DataWidth, DataOffsetX);
+                else
+                    axis.Dims.Resize(Height, DataHeight, DataOffsetY);
             }
+        }
 
-            if ((!xExpandOnly) && (!yExpandOnly))
+        public void LayoutAuto()
+        {
+            foreach (int xAxisIndex in XAxisIndexes)
+                LayoutAuto(xAxisIndex, 0);
+            foreach (int yAxisIndex in YAxisIndexes)
+                LayoutAuto(0, yAxisIndex);
+        }
+
+        private void LayoutAuto(int xAxisIndex, int yAxisIndex)
+        {
+            // TODO: separate this into distinct X and Y functions (requires refactoring plottable interface)
+            bool atLeastOneAxisIsZero = xAxisIndex == 0 || yAxisIndex == 0;
+            if (!atLeastOneAxisIsZero)
+                throw new InvalidOperationException();
+
+            // Adjust padding around the data area to accommodate title and tick labels.
+            //
+            // This is a chicken-and-egg problem:
+            //   * TICK DENSITY depends on the DATA AREA SIZE
+            //   * DATA AREA SIZE depends on LAYOUT PADDING
+            //   * LAYOUT PADDING depends on MAXIMUM LABEL SIZE
+            //   * MAXIMUM LABEL SIZE depends on TICK DENSITY
+            //
+            // To solve this, start by assuming data area size == figure size and layout padding == 0,
+            // then calculate ticks, then set padding based on the largest tick, then re-calculate ticks.
+
+            // axis limits shall not change
+            var dims = GetPlotDimensions(xAxisIndex, yAxisIndex);
+            var limits = (dims.XMin, dims.XMax, dims.YMin, dims.YMax);
+            var figSize = new SizeF(Width, Height);
+
+            // first-pass tick calculation based on full image size 
+            var dimsFull = new PlotDimensions(figSize, figSize, new PointF(0, 0), limits);
+
+            foreach (var axis in Axes)
             {
-                axes.Set(newLimits);
-                axes.Zoom(1 - horizontalMargin, 1 - verticalMargin);
+                bool isMatchingXAxis = axis.IsHorizontal && axis.AxisIndex == xAxisIndex;
+                bool isMatchingYAxis = axis.IsVertical && axis.AxisIndex == yAxisIndex;
+                if (isMatchingXAxis || isMatchingYAxis)
+                {
+                    axis.RecalculateTickPositions(dimsFull);
+                    axis.RecalculateAxisSize();
+                }
             }
 
-            if (plottables.Count == 0)
+            // now adjust our layout based on measured axis sizes
+            RecalculateDataPadding();
+
+            // now recalculate ticks based on new layout
+            var dataSize = new SizeF(DataWidth, DataHeight);
+            var dataOffset = new PointF(DataOffsetX, DataOffsetY);
+
+            var dims3 = new PlotDimensions(figSize, dataSize, dataOffset, limits);
+            foreach (var axis in Axes)
             {
-                axes.x.hasBeenSet = false;
-                axes.y.hasBeenSet = false;
+                bool isMatchingXAxis = axis.IsHorizontal && axis.AxisIndex == xAxisIndex;
+                bool isMatchingYAxis = axis.IsVertical && axis.AxisIndex == yAxisIndex;
+                if (isMatchingXAxis || isMatchingYAxis)
+                {
+                    axis.RecalculateTickPositions(dims3);
+                }
             }
 
-            layout.tighteningOccurred = false;
+            // adjust the layout based on measured tick label sizes
+            RecalculateDataPadding();
         }
 
-        /// <summary>
-        /// Returns the X pixel corresponding to an X axis coordinate
-        /// </summary>
-        public double GetPixelX(double locationX)
+        private void RecalculateDataPadding()
         {
-            return (locationX - axes.x.min) * xAxisScale;
-        }
+            Edge[] edges = { Edge.Left, Edge.Right, Edge.Top, Edge.Bottom };
+            foreach (var edge in edges)
+            {
+                float offset = 0;
+                foreach (var axis in Axes.Where(x => x.Edge == edge))
+                {
+                    axis.PixelOffset = offset;
+                    offset += axis.PixelSize;
+                }
+            }
 
-        /// <summary>
-        /// Returns the Y pixel corresponding to a Y axis coordinate
-        /// </summary>
-        public double GetPixelY(double locationY)
-        {
-            return dataSize.Height - (float)((locationY - axes.y.min) * yAxisScale);
-        }
+            float padLeft = Axes.Where(x => x.Edge == Edge.Left).Select(x => x.PixelSize).Sum();
+            float padRight = Axes.Where(x => x.Edge == Edge.Right).Select(x => x.PixelSize).Sum();
+            float padBottom = Axes.Where(x => x.Edge == Edge.Bottom).Select(x => x.PixelSize).Sum();
+            float padTop = Axes.Where(x => x.Edge == Edge.Top).Select(x => x.PixelSize).Sum();
 
-        /// <summary>
-        /// Returns the pixel corresponding to axis coordinates
-        /// </summary>
-        public PointF GetPixel(double locationX, double locationY)
-        {
-            return new PointF((float)GetPixelX(locationX), (float)GetPixelY(locationY));
-        }
-
-        /// <summary>
-        /// Returns the X axis coordinate corresponding to a X pixel on the plot
-        /// </summary>
-        public double GetLocationX(double pixelX)
-        {
-            return (pixelX - dataOrigin.X) / xAxisScale + axes.x.min;
-        }
-
-        /// <summary>
-        /// Returns the Y axis coordinate corresponding to a Y pixel on the plot
-        /// </summary>
-        public double GetLocationY(double pixelY)
-        {
-            return axes.y.max - (pixelY - dataOrigin.Y) / yAxisScale;
-        }
-
-        /// <summary>
-        /// Returns axis coordinates corresponding to a pixel on the plot
-        /// </summary>
-        public PointF GetLocation(double pixelX, double pixelY)
-        {
-            // Return the X/Y location corresponding to a pixel position on the figure bitmap.
-            // This is useful for converting a mouse position to an X/Y coordinate.
-            return new PointF((float)GetLocationX(pixelX), (float)GetLocationY(pixelY));
-        }
-
-        public int GetTotalPointCount()
-        {
-            int totalPointCount = 0;
-            foreach (Plottable plottable in plottables)
-                totalPointCount += plottable.GetPointCount();
-            return totalPointCount;
+            foreach (Axis axis in Axes)
+            {
+                if (axis.IsHorizontal)
+                    axis.Dims.SetPadding(padLeft, padRight);
+                else
+                    axis.Dims.SetPadding(padTop, padBottom);
+            }
         }
     }
 }

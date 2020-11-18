@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using ScottPlot;
+using ScottPlot.Plottable;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,17 +12,16 @@ namespace ScottPlotTests.PlottableRenderTests
         [Test]
         public void Test_Annotation_ChangingText()
         {
-            var plt = new ScottPlot.Plot();
-            plt.AntiAlias(false, false, false);
+            var plt = new ScottPlot.Plot(400, 300);
 
             // start with default settings
-            var pa = new PlottableAnnotation() { label = "Hello", xPixel = 10, yPixel = 10, FontSize = 36 };
+            var pa = new ScottPlot.Plottable.Annotation() { label = "Hello", xPixel = 10, yPixel = 10, FontSize = 36 };
             plt.Add(pa);
-            var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
             pa.label += "World";
-            var bmp2 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
             //TestTools.SaveFig(bmp1, "1");
@@ -37,17 +37,16 @@ namespace ScottPlotTests.PlottableRenderTests
         [Test]
         public void Test_Annotation_BackgroundColor()
         {
-            var plt = new ScottPlot.Plot();
-            plt.AntiAlias(false, false, false);
+            var plt = new ScottPlot.Plot(400, 300);
 
             // start with default settings
-            var pa = new PlottableAnnotation() { label = "Hello", xPixel = 10, yPixel = 10 };
+            var pa = new ScottPlot.Plottable.Annotation() { label = "Hello", xPixel = 10, yPixel = 10 };
             plt.Add(pa);
-            var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
             pa.BackgroundColor = System.Drawing.Color.Gray;
-            var bmp2 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
             //TestTools.SaveFig(bmp1, "1");
@@ -63,17 +62,16 @@ namespace ScottPlotTests.PlottableRenderTests
         [Test]
         public void Test_Annotation_ShadowColor()
         {
-            var plt = new ScottPlot.Plot();
-            plt.AntiAlias(false, false, false);
+            var plt = new ScottPlot.Plot(400, 300);
 
             // start with default settings
-            var pa = new PlottableAnnotation() { label = "Hello", xPixel = 10, yPixel = 10 };
+            var pa = new ScottPlot.Plottable.Annotation() { label = "Hello", xPixel = 10, yPixel = 10 };
             plt.Add(pa);
-            var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
             pa.ShadowColor = System.Drawing.Color.Black;
-            var bmp2 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
             //TestTools.SaveFig(bmp1, "1");
@@ -89,17 +87,16 @@ namespace ScottPlotTests.PlottableRenderTests
         [Test]
         public void Test_Annotation_BorderColor()
         {
-            var plt = new ScottPlot.Plot();
-            plt.AntiAlias(false, false, false);
+            var plt = new ScottPlot.Plot(400, 300);
 
             // start with default settings
-            var pa = new PlottableAnnotation() { label = "Hello", xPixel = 10, yPixel = 10, BorderColor = System.Drawing.Color.Gray };
+            var pa = new ScottPlot.Plottable.Annotation() { label = "Hello", xPixel = 10, yPixel = 10, BorderColor = System.Drawing.Color.Gray };
             plt.Add(pa);
-            var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
             pa.BorderColor = System.Drawing.Color.Black;
-            var bmp2 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
             //TestTools.SaveFig(bmp1, "1");
@@ -115,17 +112,16 @@ namespace ScottPlotTests.PlottableRenderTests
         [Test]
         public void Test_Annotation_BorderWidth()
         {
-            var plt = new ScottPlot.Plot();
-            plt.AntiAlias(false, false, false);
+            var plt = new ScottPlot.Plot(400, 300);
 
             // start with default settings
-            var pa = new PlottableAnnotation() { label = "Hello", xPixel = 10, yPixel = 10 };
+            var pa = new ScottPlot.Plottable.Annotation() { label = "Hello", xPixel = 10, yPixel = 10 };
             plt.Add(pa);
-            var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
             pa.BorderWidth += 1;
-            var bmp2 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
             //TestTools.SaveFig(bmp1, "1");

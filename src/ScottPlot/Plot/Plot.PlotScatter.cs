@@ -7,13 +7,14 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
+using ScottPlot.Plottable;
 
 namespace ScottPlot
 {
     public partial class Plot
     {
 
-        public PlottableScatter PlotPoint(
+        public ScatterPlot PlotPoint(
             double x,
             double y,
             Color? color = null,
@@ -30,7 +31,7 @@ namespace ScottPlot
             if (color == null)
                 color = settings.GetNextColor();
 
-            var scatterPlot = new PlottableScatter(
+            var scatterPlot = new ScatterPlot(
                     xs: new double[] { x },
                     ys: new double[] { y },
                     errorX: (errorX is null) ? null : new double[] { (double)errorX },
@@ -52,7 +53,7 @@ namespace ScottPlot
             return scatterPlot;
         }
 
-        public PlottableScatter PlotScatter(
+        public ScatterPlot PlotScatter(
             double[] xs,
             double[] ys,
             Color? color = null,
@@ -67,7 +68,7 @@ namespace ScottPlot
             LineStyle lineStyle = LineStyle.Solid
             )
         {
-            var scatterPlot = new PlottableScatter(xs, ys, errorX, errorY)
+            var scatterPlot = new ScatterPlot(xs, ys, errorX, errorY)
             {
                 color = color ?? settings.GetNextColor(),
                 lineWidth = lineWidth,
@@ -84,7 +85,7 @@ namespace ScottPlot
             return scatterPlot;
         }
 
-        public PlottableScatterHighlight PlotScatterHighlight(
+        public ScatterPlotHighlight PlotScatterHighlight(
            double[] xs,
            double[] ys,
            Color? color = null,
@@ -111,7 +112,7 @@ namespace ScottPlot
             if (highlightedMarkerSize is null)
                 highlightedMarkerSize = 2 * markerSize;
 
-            var scatterPlot = new PlottableScatterHighlight(xs, ys, errorX, errorY)
+            var scatterPlot = new ScatterPlotHighlight(xs, ys, errorX, errorY)
             {
                 color = (Color)color,
                 lineWidth = lineWidth,
@@ -131,7 +132,7 @@ namespace ScottPlot
             return scatterPlot;
         }
 
-        public PlottableErrorBars PlotErrorBars(
+        public ErrorBars PlotErrorBars(
             double[] xs,
             double[] ys,
             double[] xPositiveError = null,
@@ -144,7 +145,7 @@ namespace ScottPlot
             string label = null
             )
         {
-            var errorBars = new PlottableErrorBars(xs, ys, xPositiveError, xNegativeError, yPositiveError, yNegativeError)
+            var errorBars = new ErrorBars(xs, ys, xPositiveError, xNegativeError, yPositiveError, yNegativeError)
             {
                 Color = color ?? settings.GetNextColor(),
                 LineWidth = (float)lineWidth,
@@ -156,7 +157,7 @@ namespace ScottPlot
             return errorBars;
         }
 
-        public PlottableScatter PlotLine(
+        public ScatterPlot PlotLine(
             double x1,
             double y1,
             double x2,
@@ -178,7 +179,7 @@ namespace ScottPlot
                 );
         }
 
-        public PlottableScatter PlotLine(
+        public ScatterPlot PlotLine(
             double slope,
             double offset,
             (double x1, double x2) xLimits,
@@ -201,7 +202,7 @@ namespace ScottPlot
                 );
         }
 
-        public PlottableScatter PlotStep(
+        public ScatterPlot PlotStep(
             double[] xs,
             double[] ys,
             Color? color = null,
@@ -212,7 +213,7 @@ namespace ScottPlot
             if (color == null)
                 color = settings.GetNextColor();
 
-            PlottableScatter stepPlot = new PlottableScatter(xs, ys)
+            ScatterPlot stepPlot = new ScatterPlot(xs, ys)
             {
                 color = (Color)color,
                 lineWidth = lineWidth,

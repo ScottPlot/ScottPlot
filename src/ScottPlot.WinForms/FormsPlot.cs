@@ -5,6 +5,8 @@ using System.Drawing;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
+using ScottPlot.Drawing;
+using ScottPlot.Plottable;
 
 namespace ScottPlot
 {
@@ -78,7 +80,12 @@ namespace ScottPlot
                 plt.Style(Style.Control);
 
             settings = plt.GetSettings(showWarning: false);
-            dpiScale = settings.gfxFigure.DpiX / 96;
+
+            using (var bmp = new Bitmap(1, 1))
+            using (var gfx = GDI.Graphics(bmp, true))
+            {
+                dpiScale = gfx.DpiX / 96;
+            }
 
             PbPlot_MouseUp(null, null);
             PbPlot_SizeChanged(null, null);
@@ -98,19 +105,22 @@ namespace ScottPlot
         private bool currentlyRendering;
         public void Render(bool skipIfCurrentlyRendering = false, bool lowQuality = false, bool recalculateLayout = false, bool processEvents = false)
         {
-            if (isDesignerMode)
+            if (isDesignerMode || plt is null || pbPlot.Width < 1 || pbPlot.Height < 1)
                 return;
-
-            if (recalculateLayout)
-                plt.TightenLayout();
 
             if (equalAxes)
                 plt.AxisEqual();
 
+            if (pbPlot.Image is null || pbPlot.Image.Width != pbPlot.Width || pbPlot?.Image.Height != pbPlot.Height)
+            {
+                pbPlot.Image?.Dispose();
+                pbPlot.Image = new Bitmap(pbPlot.Width, pbPlot.Height, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+            }
+
             if (!(skipIfCurrentlyRendering && currentlyRendering))
             {
                 currentlyRendering = true;
-                pbPlot.Image = plt?.GetBitmap(true, lowQuality || lowQualityAlways);
+                pbPlot.Image = plt.Render((Bitmap)pbPlot.Image, lowQuality || lowQualityAlways);
                 if (isPanningOrZooming || isMovingDraggable || processEvents)
                     Application.DoEvents();
                 currentlyRendering = false;
@@ -129,7 +139,7 @@ namespace ScottPlot
 
         #region user control configuration
 
-        private bool plotContainsHeatmap => settings?.plottables.Where(p => p is PlottableHeatmap).Count() > 0;
+        private bool plotContainsHeatmap => settings?.Plottables.Where(p => p is Heatmap).Count() > 0;
 
         private bool enablePanning = true;
         private bool enableRightClickZoom = true;
@@ -193,12 +203,12 @@ namespace ScottPlot
 
         ToolTip tooltip = new ToolTip();
         private Point? mouseLeftDownLocation, mouseRightDownLocation, mouseMiddleDownLocation;
-        double[] axisLimitsOnMouseDown;
+        bool rememberingAxisLimits;
         private bool isPanningOrZooming
         {
             get
             {
-                if (axisLimitsOnMouseDown is null) return false;
+                if (rememberingAxisLimits == false) return false;
                 if (mouseLeftDownLocation != null) return true;
                 else if (mouseRightDownLocation != null) return true;
                 else if (mouseMiddleDownLocation != null) return true;
@@ -209,14 +219,14 @@ namespace ScottPlot
         IDraggable plottableBeingDragged = null;
         private bool isMovingDraggable { get { return (plottableBeingDragged != null); } }
 
-        private Cursor GetCursor(Config.Cursor scottPlotCursor)
+        private Cursor GetCursor(Ticks.Cursor scottPlotCursor)
         {
             switch (scottPlotCursor)
             {
-                case Config.Cursor.Arrow: return Cursors.Arrow;
-                case Config.Cursor.WE: return Cursors.SizeWE;
-                case Config.Cursor.NS: return Cursors.SizeNS;
-                case Config.Cursor.All: return Cursors.SizeAll;
+                case Ticks.Cursor.Arrow: return Cursors.Arrow;
+                case Ticks.Cursor.WE: return Cursors.SizeWE;
+                case Ticks.Cursor.NS: return Cursors.SizeNS;
+                case Ticks.Cursor.All: return Cursors.SizeAll;
                 default: return Cursors.Help;
             }
         }
@@ -233,7 +243,8 @@ namespace ScottPlot
                 else if (e.Button == MouseButtons.Left && enablePanning) mouseLeftDownLocation = e.Location;
                 else if (e.Button == MouseButtons.Right && enableRightClickZoom) mouseRightDownLocation = e.Location;
                 else if (e.Button == MouseButtons.Middle && enableScrollWheelZoom) mouseMiddleDownLocation = e.Location;
-                axisLimitsOnMouseDown = plt.Axis();
+                plt.GetSettings(false).RememberAxisLimits();
+                rememberingAxisLimits = true;
             }
             else
             {
@@ -245,7 +256,7 @@ namespace ScottPlot
         }
 
         [Obsolete("use Plot.CoordinateFromPixelX() and Plot.CoordinateFromPixelY()")]
-        public PointF mouseCoordinates { get { return plt.CoordinateFromPixel(mouseLocation); } }
+        public PointF mouseCoordinates => new PointF();
         Point mouseLocation;
 
         private void PbPlot_MouseMove(object sender, MouseEventArgs e)
@@ -267,7 +278,7 @@ namespace ScottPlot
 
         private void MouseMovedToPanOrZoom(MouseEventArgs e)
         {
-            plt.Axis(axisLimitsOnMouseDown);
+            plt.GetSettings(false).RecallAxisLimits();
 
             if (mouseLeftDownLocation != null)
             {
@@ -301,21 +312,21 @@ namespace ScottPlot
                 int y1 = Math.Min(e.Location.Y, ((Point)mouseMiddleDownLocation).Y);
                 int y2 = Math.Max(e.Location.Y, ((Point)mouseMiddleDownLocation).Y);
 
-                Point origin = new Point(x1 - settings.dataOrigin.X, y1 - settings.dataOrigin.Y);
+                Point origin = new Point(x1 - (int)settings.DataOffsetX, y1 - (int)settings.DataOffsetY);
                 Size size = new Size(x2 - x1, y2 - y1);
 
                 if (lockVerticalAxis)
                 {
                     origin.Y = 0;
-                    size.Height = settings.dataSize.Height - 1;
+                    size.Height = (int)settings.DataHeight - 1;
                 }
                 if (lockHorizontalAxis)
                 {
                     origin.X = 0;
-                    size.Width = settings.dataSize.Width - 1;
+                    size.Width = (int)settings.DataWidth - 1;
                 }
 
-                settings.mouseMiddleRect = new Rectangle(origin, size);
+                settings.ZoomRectangle.Set(origin.X, origin.Y, size.Width, size.Height);
             }
 
             Render(true, lowQuality: lowQualityWhileDragging);
@@ -350,7 +361,7 @@ namespace ScottPlot
 
             // set the cursor based on what's beneath it
             var draggableUnderCursor = plt.GetDraggableUnderMouse(e.Location.X, e.Location.Y);
-            var spCursor = (draggableUnderCursor is null) ? Config.Cursor.Arrow : draggableUnderCursor.DragCursor;
+            var spCursor = (draggableUnderCursor is null) ? Ticks.Cursor.Arrow : draggableUnderCursor.DragCursor;
             pbPlot.Cursor = GetCursor(spCursor);
         }
 
@@ -383,7 +394,7 @@ namespace ScottPlot
                 else
                 {
                     bool shouldTighten = recalculateLayoutOnMouseUp ?? plotContainsHeatmap == false;
-                    plt.AxisAuto(middleClickMarginX, middleClickMarginY, tightenLayout: shouldTighten);
+                    plt.AxisAuto(middleClickMarginX, middleClickMarginY);
                     OnAxisChanged();
                 }
             }
@@ -416,8 +427,8 @@ namespace ScottPlot
             mouseLeftDownLocation = null;
             mouseRightDownLocation = null;
             mouseMiddleDownLocation = null;
-            axisLimitsOnMouseDown = null;
-            settings.mouseMiddleRect = null;
+            rememberingAxisLimits = false;
+            settings.ZoomRectangle.Clear();
             plottableBeingDragged = null;
 
             bool shouldRecalculate = recalculateLayoutOnMouseUp ?? plotContainsHeatmap == false;
@@ -501,7 +512,7 @@ namespace ScottPlot
 
         private void CopyImage(object sender, EventArgs e)
         {
-            Clipboard.SetImage(plt.GetBitmap(true));
+            Clipboard.SetImage(plt.Render());
         }
 
         private void OpenSettingsWindow(object sender, EventArgs e)

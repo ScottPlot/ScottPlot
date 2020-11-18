@@ -1,11 +1,12 @@
 ﻿using NUnit.Framework;
 using ScottPlot;
-using ScottPlot.Config;
+using ScottPlot.Ticks;
 using ScottPlot.Statistics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ScottPlot.Plottable;
 
 namespace ScottPlotTests.Groups
 {
@@ -25,7 +26,7 @@ namespace ScottPlotTests.Groups
             Random rand = new Random(0);
             var ages = new Population(rand, 44, 78, 2);
 
-            var customPlottable = new PlottablePopulations(ages);
+            var customPlottable = new PopulationPlot(ages);
 
             // plot the multi-series
             var plt = new ScottPlot.Plot(400, 300);
@@ -35,7 +36,7 @@ namespace ScottPlotTests.Groups
             // additional plot styling
             plt.Title("Life Expectancy in European Countries in 2007");
             plt.YLabel("Age (years)");
-            plt.Legend(location: legendLocation.lowerRight);
+            plt.Legend(location: Alignment.LowerRight);
             plt.Grid(lineStyle: LineStyle.Dot, enableVertical: false);
 
             TestTools.SaveFig(plt);
@@ -58,7 +59,7 @@ namespace ScottPlotTests.Groups
                 new Population(rand, 44, 78, 2), // europe
                 new Population(rand, 14, 81, 1), // oceania
             };
-            var customPlottable = new PlottablePopulations(ages, color: System.Drawing.Color.CornflowerBlue);
+            var customPlottable = new PopulationPlot(ages, color: System.Drawing.Color.CornflowerBlue);
 
             // plot the multi-series
             var plt = new ScottPlot.Plot();
@@ -69,7 +70,7 @@ namespace ScottPlotTests.Groups
             // additional plot styling
             plt.Title("Life Expectancy in 2007", fontSize: 26);
             plt.YLabel("Age (years)", fontSize: 18);
-            plt.Legend(location: legendLocation.lowerRight);
+            plt.Legend(location: Alignment.LowerRight);
             plt.Grid(lineStyle: LineStyle.Dot, enableVertical: false);
 
             TestTools.SaveFig(plt);
@@ -121,7 +122,7 @@ namespace ScottPlotTests.Groups
             // now collect all the series into a MultiSeries
             var multiSeries = new PopulationSeries[] { series1957, series1987, series2007 };
             var plottableMultiSeries = new PopulationMultiSeries(multiSeries);
-            var customPlottable = new PlottablePopulations(plottableMultiSeries);
+            var customPlottable = new PopulationPlot(plottableMultiSeries);
 
             // plot the multi-series
             var plt = new ScottPlot.Plot();
@@ -132,7 +133,7 @@ namespace ScottPlotTests.Groups
             // additional plot styling
             plt.Title("Life Expectancy", fontSize: 26);
             plt.YLabel("Age (years)", fontSize: 18);
-            plt.Legend(location: legendLocation.lowerRight);
+            plt.Legend(location: Alignment.LowerRight);
             plt.Grid(lineStyle: LineStyle.Dot, enableVertical: false);
 
             TestTools.SaveFig(plt);

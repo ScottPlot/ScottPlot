@@ -15,7 +15,7 @@ namespace ScottPlot.Demo.Experimental
             public void Render(Plot plt)
             {
                 // rather than call Plot.PlotText(), create the Plottable manually
-                var customPlottable = new PlottableText()
+                var customPlottable = new Plottable.Text()
                 {
                     text = "test",
                     x = 2,
@@ -24,7 +24,7 @@ namespace ScottPlot.Demo.Experimental
                     FontName = "arial",
                     FontSize = 26,
                     FontBold = true,
-                    alignment = TextAlignment.middleCenter,
+                    alignment = Alignment.MiddleCenter,
                     rotation = 0,
                     frame = false,
                     frameColor = System.Drawing.Color.Green
@@ -34,8 +34,7 @@ namespace ScottPlot.Demo.Experimental
                 customPlottable.rotation = 45;
 
                 // add the custom plottable to the list of plottables like this
-                List<Plottable> plottables = plt.GetPlottables();
-                plottables.Add(customPlottable);
+                plt.Add(customPlottable);
             }
         }
     }

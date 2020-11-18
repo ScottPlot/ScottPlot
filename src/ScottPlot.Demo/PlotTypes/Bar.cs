@@ -61,7 +61,7 @@ namespace ScottPlot.Demo.PlotTypes
 
                 // customize the plot to make it look nicer
                 plt.Grid(enableVertical: false, lineStyle: LineStyle.Dot);
-                plt.Legend(location: legendLocation.upperRight);
+                plt.Legend(location: Alignment.UpperRight);
             }
         }
 
@@ -84,7 +84,7 @@ namespace ScottPlot.Demo.PlotTypes
                 double[] err2 = DataGen.RandomNormal(rand, groupCount, 5, 2);
                 double[] err3 = DataGen.RandomNormal(rand, groupCount, 5, 2);
 
-                PlottableBar[] barCharts = plt.PlotBarGroups(
+                var barCharts = plt.PlotBarGroups(
                     groupLabels: groupNames,
                     seriesLabels: seriesNames,
                     ys: new double[][] { ys1, ys2, ys3 },
@@ -104,7 +104,7 @@ namespace ScottPlot.Demo.PlotTypes
 
                 // customize the plot to make it look nicer
                 plt.Grid(enableVertical: false, lineStyle: LineStyle.Dot);
-                plt.Legend(location: legendLocation.upperRight);
+                plt.Legend(location: Alignment.UpperRight);
             }
         }
 
@@ -156,7 +156,7 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.PlotBar(xs, valuesA, label: "Series A");
 
                 // improve the styling
-                plt.Legend(location: legendLocation.upperRight);
+                plt.Legend(location: Alignment.UpperRight);
                 plt.Title("Stacked Bar Charts");
             }
         }

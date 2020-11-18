@@ -66,10 +66,10 @@ namespace ScottPlotTests.Ticks
             pltTest.Title("xSpacing = 1 day");
             pltTest.PlotScatter(dates, values);
             pltTest.Ticks(dateTimeX: true, xTickRotation: 45);
-            pltTest.Layout(xScaleHeight: 60); // need extra height to accomodate rotated labels
+            pltTest.Layout(bottom: 60); // need extra height to accomodate rotated labels
 
             // force 1 tick per day on a DateTime axis
-            pltTest.Grid(xSpacing: 1, xSpacingDateTimeUnit: ScottPlot.Config.DateTimeUnit.Day);
+            pltTest.Grid(xSpacing: 1, xSpacingDateTimeUnit: ScottPlot.Ticks.DateTimeUnit.Day);
 
             TestTools.SaveFig(mplt);
         }

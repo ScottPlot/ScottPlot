@@ -31,7 +31,7 @@ namespace ScottPlot.Demo.Advanced
                 plt.Axis(y1: 0);
                 plt.Grid(enableVertical: false, lineStyle: LineStyle.Dot);
                 plt.Axis(y1: 0);
-                plt.Legend(location: legendLocation.upperRight);
+                plt.Legend(location: Alignment.UpperRight);
 
                 // apply custom axis tick labels
                 string[] labels = { "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten" };

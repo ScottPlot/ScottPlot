@@ -34,21 +34,21 @@ namespace Benchmark
                 int width = (int)widths[i];
                 int height = width * 3 / 4;
                 plt.Resize(width, height);
-                plt.GetBitmap();
+                plt.Render();
 
                 double[] times = new double[rendersPerSize];
                 for (int j = 0; j < rendersPerSize; j++)
                 {
                     progressBar1.Value = rendersPerSize * i + j + 1;
-                    plt.GetBitmap(renderFirst: true);
-                    times[j] = plt.GetSettings(false).Benchmark.msec;
+                    plt.Render();
+                    times[j] = plt.GetSettings(false).BenchmarkMessage.MSec;
                 }
 
                 mean[i] = ScottPlot.Statistics.Common.Mean(times);
                 err[i] = ScottPlot.Statistics.Common.StDev(times);
 
                 pictureBox1.Image?.Dispose();
-                pictureBox1.Image = (Bitmap)plt.GetBitmap().Clone();
+                pictureBox1.Image = (Bitmap)plt.Render();
                 Application.DoEvents();
             }
 
@@ -57,7 +57,7 @@ namespace Benchmark
             formsPlot1.plt.Title("Benchmark (4:3 aspect)");
             formsPlot1.plt.YLabel("Render Time (ms)");
             formsPlot1.plt.XLabel("Plot Width (px)");
-            formsPlot1.plt.Legend(location: ScottPlot.legendLocation.upperLeft);
+            formsPlot1.plt.Legend(location: ScottPlot.Alignment.UpperLeft);
             formsPlot1.Render();
         }
 

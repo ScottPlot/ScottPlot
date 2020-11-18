@@ -10,7 +10,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
     public class ShowValueOnHover : Window
     {
         AvaPlot avaPlot1;
-        ScottPlot.PlottableScatterHighlight sph;
+        ScottPlot.Plottable.ScatterPlotHighlight sph;
         public ShowValueOnHover()
         {
             this.InitializeComponent();

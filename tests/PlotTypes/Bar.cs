@@ -99,7 +99,7 @@ namespace ScottPlotTests.PlotTypes
             plt.PlotBar(xs, ys2, xOffset: +.20, barWidth: 0.3, label: "Group B");
 
             plt.Grid(lineStyle: ScottPlot.LineStyle.Dot, enableVertical: false);
-            plt.Legend(location: ScottPlot.legendLocation.upperRight);
+            plt.Legend(location: ScottPlot.Alignment.UpperRight);
             TestTools.SaveFig(plt);
         }
 
@@ -131,7 +131,7 @@ namespace ScottPlotTests.PlotTypes
             var plt = new ScottPlot.Plot(400, 300);
             plt.PlotBar(xs, valuesB2, label: "Series B"); // plot the uppermost bar first
             plt.PlotBar(xs, valuesA, label: "Series A"); // plot lower bars last (in front)
-            plt.Legend(location: ScottPlot.legendLocation.upperRight);
+            plt.Legend(location: ScottPlot.Alignment.UpperRight);
             plt.Axis(y2: 7);
             plt.Title("Stacked Bar Charts");
             TestTools.SaveFig(plt);
@@ -150,7 +150,7 @@ namespace ScottPlotTests.PlotTypes
             plt.PlotBar(xs, ys2, xOffset: +.20, barWidth: 0.3, showValues: true, label: "Series B");
 
             plt.Grid(lineStyle: ScottPlot.LineStyle.Dot, enableVertical: false);
-            plt.Legend(location: ScottPlot.legendLocation.upperRight);
+            plt.Legend(location: ScottPlot.Alignment.UpperRight);
             plt.Axis(y1: 0);
             TestTools.SaveFig(plt);
         }
@@ -168,7 +168,7 @@ namespace ScottPlotTests.PlotTypes
             plt.PlotBar(xs, ys2, xOffset: +.20, barWidth: 0.3, showValues: true, label: "Series B", horizontal: true);
 
             plt.Grid(lineStyle: ScottPlot.LineStyle.Dot, enableVertical: false);
-            plt.Legend(location: ScottPlot.legendLocation.upperRight);
+            plt.Legend(location: ScottPlot.Alignment.UpperRight);
             plt.Axis(x1: 0);
             TestTools.SaveFig(plt);
         }

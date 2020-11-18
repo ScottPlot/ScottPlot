@@ -8,14 +8,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ScottPlot.Plottable;
 
 namespace Benchmark
 {
     public partial class FormGui : Form
     {
-        ScottPlot.PlottableScatter scat;
-        ScottPlot.PlottableSignal sig;
-        ScottPlot.PlottableSignalConst<double> sigConst;
+        ScatterPlot scat;
+        SignalPlot sig;
+        SignalPlotConst<double> sigConst;
 
         public FormGui()
         {
@@ -38,7 +39,7 @@ namespace Benchmark
 
             formsPlot1.plt.Legend();
             formsPlot1.plt.Axis();
-            formsPlot1.Render();
+            formsPlot1.Render(AntiAliasCheckbox.Checked);
         }
 
         private double[] AxisMidWay(double frac)
@@ -100,10 +101,6 @@ namespace Benchmark
 
         private void AntiAliasCheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            formsPlot1.plt.AntiAlias(
-                figure: AntiAliasCheckbox.Checked,
-                data: AntiAliasCheckbox.Checked,
-                legend: AntiAliasCheckbox.Checked);
         }
     }
 }

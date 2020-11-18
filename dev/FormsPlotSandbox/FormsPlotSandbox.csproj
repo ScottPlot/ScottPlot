@@ -56,12 +56,6 @@
     <Compile Include="FormColormapGenerator.Designer.cs">
       <DependentUpon>FormColormapGenerator.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormExperimentalTick.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormExperimentalTick.Designer.cs">
-      <DependentUpon>FormExperimentalTick.cs</DependentUpon>
-    </Compile>
     <Compile Include="FormMouse.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -90,9 +84,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FormColormapGenerator.resx">
       <DependentUpon>FormColormapGenerator.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormExperimentalTick.resx">
-      <DependentUpon>FormExperimentalTick.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormMouse.resx">
       <DependentUpon>FormMouse.cs</DependentUpon>

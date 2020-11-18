@@ -111,7 +111,6 @@
             this.checkBox5.TabIndex = 5;
             this.checkBox5.Text = "Anti-aliasing";
             this.checkBox5.UseVisualStyleBackColor = true;
-            this.checkBox5.CheckedChanged += new System.EventHandler(this.checkBox5_CheckedChanged);
             // 
             // FormSlowPan
             // 

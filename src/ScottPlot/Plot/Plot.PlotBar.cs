@@ -12,12 +12,13 @@ using System.Drawing.Imaging;
 using System.Linq;
 using ScottPlot.Drawing;
 using ScottPlot.Statistics;
+using ScottPlot.Plottable;
 
 namespace ScottPlot
 {
     public partial class Plot
     {
-        public PlottableBar PlotBar(
+        public BarPlot PlotBar(
             double[] xs,
             double[] ys,
             double[] errorY = null,
@@ -39,7 +40,7 @@ namespace ScottPlot
             Color? negativeColor = null
             )
         {
-            PlottableBar barPlot = new PlottableBar(xs, ys, errorY, yOffsets)
+            BarPlot barPlot = new BarPlot(xs, ys, errorY, yOffsets)
             {
                 barWidth = barWidth,
                 xOffset = xOffset,
@@ -62,7 +63,7 @@ namespace ScottPlot
             {
                 // perform a tight axis adjustment
                 AxisAuto(0, 0);
-                double[] tightAxisLimits = Axis();
+                var tightAxisLimits = AxisLimits();
 
                 // now loosen it up a bit
                 AxisAuto();
@@ -70,16 +71,16 @@ namespace ScottPlot
                 // now set one of the axis edges to zero
                 if (horizontal)
                 {
-                    if (tightAxisLimits[0] == 0)
+                    if (tightAxisLimits.XMin == 0)
                         Axis(x1: 0);
-                    else if (tightAxisLimits[1] == 0)
+                    else if (tightAxisLimits.XMax == 0)
                         Axis(x2: 0);
                 }
                 else
                 {
-                    if (tightAxisLimits[2] == 0)
+                    if (tightAxisLimits.YMin == 0)
                         Axis(y1: 0);
-                    else if (tightAxisLimits[3] == 0)
+                    else if (tightAxisLimits.YMax == 0)
                         Axis(y2: 0);
                 }
             }
@@ -87,7 +88,7 @@ namespace ScottPlot
             return barPlot;
         }
 
-        public PlottableBar PlotWaterfall(
+        public BarPlot PlotWaterfall(
             double[] xs,
             double[] ys,
             double[] errorY = null,
@@ -139,7 +140,7 @@ namespace ScottPlot
         /// <param name="seriesLabels">displayed in the legend</param>
         /// <param name="ys">Array of arrays (one per series) that contan one point per group</param>
         /// <returns></returns>
-        public PlottableBar[] PlotBarGroups(
+        public BarPlot[] PlotBarGroups(
                 string[] groupLabels,
                 string[] seriesLabels,
                 double[][] ys,
@@ -162,7 +163,7 @@ namespace ScottPlot
 
             int seriesCount = ys.Length;
             double barWidth = groupWidthFraction / seriesCount;
-            PlottableBar[] bars = new PlottableBar[seriesCount];
+            BarPlot[] bars = new BarPlot[seriesCount];
             bool containsNegativeY = false;
             for (int i = 0; i < seriesCount; i++)
             {
@@ -184,36 +185,36 @@ namespace ScottPlot
             return bars;
         }
 
-        public PlottablePopulations PlotPopulations(Population population, string label = null)
+        public PopulationPlot PlotPopulations(Population population, string label = null)
         {
-            var plottable = new PlottablePopulations(population, label, settings.GetNextColor());
+            var plottable = new PopulationPlot(population, label, settings.GetNextColor());
             Add(plottable);
             return plottable;
         }
 
-        public PlottablePopulations PlotPopulations(Population[] populations, string label = null)
+        public PopulationPlot PlotPopulations(Population[] populations, string label = null)
         {
-            var plottable = new PlottablePopulations(populations, label);
+            var plottable = new PopulationPlot(populations, label);
             Add(plottable);
             return plottable;
         }
 
-        public PlottablePopulations PlotPopulations(PopulationSeries series, string label = null)
+        public PopulationPlot PlotPopulations(PopulationSeries series, string label = null)
         {
             series.color = settings.GetNextColor();
             if (label != null)
                 series.seriesLabel = label;
-            var plottable = new PlottablePopulations(series);
+            var plottable = new PopulationPlot(series);
             Add(plottable);
             return plottable;
         }
 
-        public PlottablePopulations PlotPopulations(PopulationMultiSeries multiSeries)
+        public PopulationPlot PlotPopulations(PopulationMultiSeries multiSeries)
         {
             for (int i = 0; i < multiSeries.multiSeries.Length; i++)
-                multiSeries.multiSeries[i].color = settings.colorset.GetColor(i);
+                multiSeries.multiSeries[i].color = settings.PlottablePalette.GetColor(i);
 
-            var plottable = new PlottablePopulations(multiSeries);
+            var plottable = new PopulationPlot(multiSeries);
             Add(plottable);
             return plottable;
         }

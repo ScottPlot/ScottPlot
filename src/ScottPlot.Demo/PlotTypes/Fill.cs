@@ -22,7 +22,7 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.PlotFill(xs, cos, "cos", lineWidth: 2, fillAlpha: .5);
                 plt.PlotHLine(0, color: Color.Black);
                 plt.AxisAuto(0);
-                plt.Legend(location: legendLocation.lowerLeft);
+                plt.Legend(location: Alignment.UpperRight);
             }
         }
 
@@ -57,7 +57,7 @@ namespace ScottPlot.Demo.PlotTypes
                 var xs = ScottPlot.DataGen.Consecutive(ys.Length, spacing: 0.025);
 
                 plt.PlotFillAboveBelow(xs, ys, fillAlpha: .5, labelAbove: "above", labelBelow: "below");
-                plt.Legend(location: ScottPlot.legendLocation.lowerLeft);
+                plt.Legend(location: Alignment.UpperRight);
                 plt.AxisAuto(0);
             }
         }

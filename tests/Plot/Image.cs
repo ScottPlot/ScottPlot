@@ -22,7 +22,7 @@ namespace ScottPlotTests.Plot
                 plt.PlotBitmap(bitmap: image,
                     x, y,
                     rotation: rotations[i],
-                    alignment: ScottPlot.ImageAlignment.upperLeft,
+                    alignment: ScottPlot.Alignment.UpperLeft,
                     frameColor: Color.LightGray,
                     frameSize: 5);
                 plt.PlotPoint(x, y, Color.Red, markerSize: 5);
@@ -46,7 +46,7 @@ namespace ScottPlotTests.Plot
                 plt.PlotBitmap(bitmap: image,
                     x, y,
                     rotation: rotations[i],
-                    alignment: ScottPlot.ImageAlignment.upperCenter,
+                    alignment: ScottPlot.Alignment.UpperCenter,
                     frameColor: Color.LightGray,
                     frameSize: 5);
                 plt.PlotPoint(x, y, Color.Red, markerSize: 5);
@@ -70,7 +70,7 @@ namespace ScottPlotTests.Plot
                 plt.PlotBitmap(bitmap: image,
                     x, y,
                     rotation: rotations[i],
-                    alignment: ScottPlot.ImageAlignment.lowerRight,
+                    alignment: ScottPlot.Alignment.LowerRight,
                     frameColor: Color.LightGray,
                     frameSize: 5);
                 plt.PlotPoint(x, y, Color.Red, markerSize: 5);

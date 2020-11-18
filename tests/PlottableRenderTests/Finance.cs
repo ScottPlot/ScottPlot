@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using ScottPlot;
+using ScottPlot.Plottable;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,10 +13,9 @@ namespace ScottPlotTests.PlottableRenderTests
         public void Test_Finance_OhlcVsCandle()
         {
             var plt = new ScottPlot.Plot();
-            plt.AntiAlias(false, false, false);
 
             // start with default settings
-            var op = new PlottableOHLC()
+            var op = new FinancePlot()
             {
                 ohlcs = new OHLC[]
                         {
@@ -26,11 +26,11 @@ namespace ScottPlotTests.PlottableRenderTests
                         }
             };
             plt.Add(op);
-            var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp1 =  TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
             op.Candle = true;
-            var bmp2 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp2 =  TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
             //TestTools.SaveFig(bmp1, "1");
@@ -47,10 +47,9 @@ namespace ScottPlotTests.PlottableRenderTests
         public void Test_Finance_ColorUp()
         {
             var plt = new ScottPlot.Plot();
-            plt.AntiAlias(false, false, false);
 
             // start with default settings
-            var op = new PlottableOHLC()
+            var op = new FinancePlot()
             {
                 ohlcs = new OHLC[]
                         {
@@ -61,11 +60,11 @@ namespace ScottPlotTests.PlottableRenderTests
                         }
             };
             plt.Add(op);
-            var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp1 =  TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
             op.ColorUp = System.Drawing.Color.Blue;
-            var bmp2 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp2 =  TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
             //TestTools.SaveFig(bmp1, "1");
@@ -82,10 +81,9 @@ namespace ScottPlotTests.PlottableRenderTests
         public void Test_Finance_ColorDown()
         {
             var plt = new ScottPlot.Plot();
-            plt.AntiAlias(false, false, false);
 
             // start with default settings
-            var op = new PlottableOHLC()
+            var op = new FinancePlot()
             {
                 ohlcs = new OHLC[]
                         {
@@ -96,11 +94,11 @@ namespace ScottPlotTests.PlottableRenderTests
                         }
             };
             plt.Add(op);
-            var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp1 =  TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
             op.ColorDown = System.Drawing.Color.Blue;
-            var bmp2 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp2 =  TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
             //TestTools.SaveFig(bmp1, "1");
@@ -117,10 +115,9 @@ namespace ScottPlotTests.PlottableRenderTests
         public void Test_Finance_AutoWidth()
         {
             var plt = new ScottPlot.Plot();
-            plt.AntiAlias(false, false, false);
 
             // start with default settings
-            var op = new PlottableOHLC()
+            var op = new FinancePlot()
             {
                 Candle = true,
                 ohlcs = new OHLC[]
@@ -133,11 +130,11 @@ namespace ScottPlotTests.PlottableRenderTests
                         }
             };
             plt.Add(op);
-            var bmp1 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp1 =  TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
             op.AutoWidth = true;
-            var bmp2 = new System.Drawing.Bitmap(plt.GetBitmap(renderFirst: true));
+            var bmp2 =  TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
             //TestTools.SaveFig(bmp1, "1");

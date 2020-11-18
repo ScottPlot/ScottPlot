@@ -1,6 +1,46 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.0.44 ⚠️ _in active development_
+## ScottPlot 4.1.0 ⚠️ in development
+
+Work toward ScottPlot 4.1 began in October, 2020 and merged into the master branch one month later ([#605](https://github.com/swharden/ScottPlot/pull/605)). Improvements are focused at enhanced performance, improved thread safety, support for multiple axes, and options for data validation. See [roadmap.md](roadmap.md) for details.
+
+### Changes Affecting Users
+* **Most plotting methods are unchanged so many users will not experience any breaking changes.**
+* **Axis Limits**
+  * Axis limits are described by a `AxisLimits` struct (previously `double[]` was used)
+  * Methods which modify axis limits do not return anything (previously they returned `double[]`)
+  * To get the latest axis limits call `Plot.AxisLimits()` which returns a `AxisLimits` object
+* **Multiple Axes**
+  * Multiple axes are now supported! There is no change to the traditional workflow if this feature is not used.
+  * Most axis methods accept a `xAxisIndex` and `yAxisIndex` arguments to specify which axes they will modify or return
+  * Most plottable objects have `xAxisIndex` and `yAxisIndex` fields which specify which axes they will render on
+  * You can enable a second Y and X axis by calling `YLabel2` and `XLabel2()`
+  * You can obtain an axis by calling `GetXAxis(xAxisIndex)` or `GetYAxis(yAxisIndex)`, then modify its public fields to customize its behavior
+  * The default axes (left and bottom) both use axis index `0`
+  * The secondary axes (right and top) both use axis index `1`
+  * You can create additional axes by calling `Plot.AddAxis()` and customize it by modifying fields of the `Axis` it returns.
+* **Layout**
+  * The layout is re-calculated on every render, so it automatically adjusts to accommodate axis labels and ticks.
+  * To achieve extra space around the data area, call `Layout()` to supply a minimum size for each axis.
+  * To achieve a frameless plot where the data area fills the full figure, call `LayoutFrameless()`
+
+### Changes Affecting Developers
+* **Some namespaces and class names have changed**
+  * The `Plottable` base class has been replaced with an `IPlottable` interface
+  * Plottables have been renamed and moved into a `Plottable` namespace (e.g., `PlottableScatter` is  now `Plottable.ScatterPlot`)
+  * Several enums have been renamed
+* **The Settings module has been greatly refactored**
+  * It is still private, but you can request it with `Plot.GetSettings()`
+  * Many of its objects implement `IRenderable`, so their customization options are stored at the same level as their render methods.
+* **The Render system is now stateless**
+  * `Bitmap` objects are never stored. The `Render()` method will create and return a new `Bitmap` when called, or will render onto an existing `Bitmap` if it is supplied as an argument. This allows controls to manage their own performance optimization by optionally re-using a `Bitmap` for multiple renders.
+  * Drawing is achieved with `using` statements which respect all `IDisposable` drawing objects, improving thread safety and garbage collection performance.
+
+---
+
+> ⚠️ The master branch of this repository transitioned from ScottPlot 4.0 (stable) to ScottPlot 4.1 (pre-release) in November, 2020. Final ScottPlot 4.0 source code (including all cookbook examples and demo applications) can be found on the [releases page](https://github.com/swharden/ScottPlot/releases).
+
+### ScottPlot 4.0.44 (merged with 4.1.0)
 * Improved limits for fixed-size axis spans (#586) _Thanks @citizen3942 and @StendProg_
 * Mouse drag/drop events now send useful event arguments (#593) _Thanks @charlescao460 and @StendProg_
 * Fixed a bug that affected plots with extremely small (<1E-10) axis spans (#607) _Thanks @RFIsoft_

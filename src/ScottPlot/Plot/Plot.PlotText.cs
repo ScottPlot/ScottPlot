@@ -8,12 +8,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Text;
+using ScottPlot.Plottable;
 
 namespace ScottPlot
 {
     public partial class Plot
     {
-        public PlottableText PlotText(
+        public Text PlotText(
             string text,
             double x,
             double y,
@@ -22,7 +23,7 @@ namespace ScottPlot
             double fontSize = 12,
             bool bold = false,
             string label = null,
-            TextAlignment alignment = TextAlignment.middleLeft,
+            Alignment alignment = Alignment.MiddleLeft,
             double rotation = 0,
             bool frame = false,
             Color? frameColor = null
@@ -31,13 +32,13 @@ namespace ScottPlot
             if (!string.IsNullOrWhiteSpace(label))
                 Debug.WriteLine("WARNING: the PlotText() label argument is ignored");
 
-            PlottableText plottableText = new PlottableText()
+            Text plottableText = new Text()
             {
                 text = text,
                 x = x,
                 y = y,
                 FontColor = color ?? settings.GetNextColor(),
-                FontName = fontName ?? Config.Fonts.GetDefaultFontName(),
+                FontName = fontName ?? Drawing.InstalledFont.Default(),
                 FontSize = (float)fontSize,
                 FontBold = bold,
                 alignment = alignment,
@@ -49,7 +50,7 @@ namespace ScottPlot
             return plottableText;
         }
 
-        public PlottableAnnotation PlotAnnotation(
+        public Annotation PlotAnnotation(
             string label,
             double xPixel = 10,
             double yPixel = 10,
@@ -74,7 +75,7 @@ namespace ScottPlot
             fillColor = Color.FromArgb((int)(255 * fillAlpha), fillColor.Value.R, fillColor.Value.G, fillColor.Value.B);
             lineColor = Color.FromArgb((int)(255 * lineAlpha), lineColor.Value.R, lineColor.Value.G, lineColor.Value.B);
 
-            var plottable = new PlottableAnnotation()
+            var plottable = new Annotation()
             {
                 xPixel = xPixel,
                 yPixel = yPixel,

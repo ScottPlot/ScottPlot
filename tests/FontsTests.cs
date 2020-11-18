@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
-using ScottPlot.Config;
+using ScottPlot.Ticks;
+using ScottPlot.Drawing;
 using System;
 using System.Runtime.InteropServices;
 
@@ -12,16 +13,16 @@ namespace ScottPlotTests
         public void Test_DefaultFont_MatchesOsExpectations()
         {
 
-            string defaultFont = Fonts.GetDefaultFontName();
+            string defaultFont = InstalledFont.Default();
             Console.WriteLine($">>> Default font: {defaultFont}");
 
-            string defaultFontSans = Fonts.GetSansFontName();
+            string defaultFontSans = InstalledFont.Sans();
             Console.WriteLine($">>> Default sans font: {defaultFontSans}");
 
-            string defaultFontSerif = Fonts.GetSerifFontName();
+            string defaultFontSerif = InstalledFont.Serif();
             Console.WriteLine($">>> Default serif font: {defaultFontSerif}");
 
-            string defaultFontMonospace = Fonts.GetMonospaceFontName();
+            string defaultFontMonospace = InstalledFont.Monospace();
             Console.WriteLine($">>> Default monospace font: {defaultFontMonospace}");
 
             Assert.That(defaultFont == defaultFontSans);

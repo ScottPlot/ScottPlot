@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using ScottPlot.Plottable;
+using ScottPlot.Renderable;
 
 namespace ScottPlot
 {
@@ -10,9 +12,9 @@ namespace ScottPlot
         /// <summary>
         /// Remove the given plottable from the plot
         /// </summary>
-        public void Remove(Plottable plottable)
+        public void Remove(IRenderable plottable)
         {
-            settings.plottables.Remove(plottable);
+            settings.Plottables.Remove(plottable);
         }
 
         /// <summary>
@@ -20,8 +22,8 @@ namespace ScottPlot
         /// </summary>
         public void Clear()
         {
-            settings.plottables.Clear();
-            settings.axes.Reset();
+            settings.Plottables.Clear();
+            settings.ResetAxisLimits();
         }
 
         /// <summary>
@@ -29,10 +31,10 @@ namespace ScottPlot
         /// </summary>
         public void Clear<T>()
         {
-            settings.plottables.RemoveAll(x => x is T);
+            settings.Plottables.RemoveAll(x => x is T);
 
-            if (settings.plottables.Count == 0)
-                settings.axes.Reset();
+            if (settings.Plottables.Count == 0)
+                settings.ResetAxisLimits();
         }
 
         /// <summary>
@@ -40,21 +42,21 @@ namespace ScottPlot
         /// </summary>
         public void Clear(Type typeToClear)
         {
-            settings.plottables.RemoveAll(x => x.GetType() == typeToClear);
+            settings.Plottables.RemoveAll(x => x.GetType() == typeToClear);
 
-            if (settings.plottables.Count == 0)
-                settings.axes.Reset();
+            if (settings.Plottables.Count == 0)
+                settings.ResetAxisLimits();
         }
 
         /// <summary>
         /// Clear all plottables of the same type as the one that is given
         /// </summary>
-        public void Clear(Plottable examplePlottable)
+        public void Clear(IRenderable examplePlottable)
         {
-            settings.plottables.RemoveAll(x => x.GetType() == examplePlottable.GetType());
+            settings.Plottables.RemoveAll(x => x.GetType() == examplePlottable.GetType());
 
-            if (settings.plottables.Count == 0)
-                settings.axes.Reset();
+            if (settings.Plottables.Count == 0)
+                settings.ResetAxisLimits();
         }
 
         /// <summary>
@@ -70,13 +72,13 @@ namespace ScottPlot
         /// <summary>
         /// Remove the given plottables from the plot
         /// </summary>
-        public void Clear(Predicate<Plottable> plottablesToClear)
+        public void Clear(Predicate<IRenderable> plottablesToClear)
         {
             if (plottablesToClear != null)
-                settings.plottables.RemoveAll(plottablesToClear);
+                settings.Plottables.RemoveAll(plottablesToClear);
 
-            if (settings.plottables.Count == 0)
-                settings.axes.Reset();
+            if (settings.Plottables.Count == 0)
+                settings.ResetAxisLimits();
         }
 
         [Obsolete("This overload is deprecated. Clear plots using a different overload of the Clear() method.")]
@@ -91,31 +93,31 @@ namespace ScottPlot
             )
         {
             List<int> indicesToDelete = new List<int>();
-            for (int i = 0; i < settings.plottables.Count; i++)
+            for (int i = 0; i < settings.Plottables.Count; i++)
             {
-                if ((settings.plottables[i] is PlottableVLine || settings.plottables[i] is PlottableHLine) && axisLines)
+                if ((settings.Plottables[i] is VLine || settings.Plottables[i] is HLine) && axisLines)
                     indicesToDelete.Add(i);
-                else if (settings.plottables[i] is PlottableScatter && scatterPlots)
+                else if (settings.Plottables[i] is ScatterPlot && scatterPlots)
                     indicesToDelete.Add(i);
-                else if (settings.plottables[i] is PlottableSignal && signalPlots)
+                else if (settings.Plottables[i] is SignalPlot && signalPlots)
                     indicesToDelete.Add(i);
-                else if (settings.plottables[i].GetType().IsGenericType && settings.plottables[i].GetType().GetGenericTypeDefinition() == typeof(PlottableSignalConst<>) && signalPlots)
+                else if (settings.Plottables[i].GetType().IsGenericType && settings.Plottables[i].GetType().GetGenericTypeDefinition() == typeof(SignalPlotConst<>) && signalPlots)
                     indicesToDelete.Add(i);
-                else if (settings.plottables[i] is PlottableText && text)
+                else if (settings.Plottables[i] is Text && text)
                     indicesToDelete.Add(i);
-                else if (settings.plottables[i] is PlottableBar && bar)
+                else if (settings.Plottables[i] is BarPlot && bar)
                     indicesToDelete.Add(i);
-                else if (settings.plottables[i] is PlottableOHLC && finance)
+                else if (settings.Plottables[i] is FinancePlot && finance)
                     indicesToDelete.Add(i);
-                else if ((settings.plottables[i] is PlottableVSpan || settings.plottables[i] is PlottableHSpan) && axisSpans)
+                else if ((settings.Plottables[i] is VSpan || settings.Plottables[i] is HSpan) && axisSpans)
                     indicesToDelete.Add(i);
             }
 
             indicesToDelete.Reverse();
             for (int i = 0; i < indicesToDelete.Count; i++)
-                settings.plottables.RemoveAt(indicesToDelete[i]);
+                settings.Plottables.RemoveAt(indicesToDelete[i]);
 
-            settings.axes.Reset();
+            settings.ResetAxisLimits();
         }
     }
 }

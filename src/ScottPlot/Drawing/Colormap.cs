@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using ScottPlot.Config;
+using ScottPlot.Ticks;
 
 namespace ScottPlot.Drawing
 {
