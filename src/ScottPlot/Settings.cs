@@ -1,12 +1,10 @@
-﻿using ScottPlot.Renderable;
+﻿using ScottPlot.Drawing;
 using ScottPlot.Plottable;
+using ScottPlot.Renderable;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using ScottPlot.Drawing;
-using System.Globalization;
-using System.Diagnostics;
 
 namespace ScottPlot
 {
@@ -100,7 +98,7 @@ namespace ScottPlot
         /// <summary>
         /// Define axis limits for a particuar axis
         /// </summary>
-        public void AxisSet(double? xMin, double? xMax, double? yMin, double? yMax, int xAxisIndex, int yAxisIndex)
+        public void AxisSet(double? xMin, double? xMax, double? yMin, double? yMax, int xAxisIndex = 0, int yAxisIndex = 0)
         {
             GetXAxis(xAxisIndex).Dims.SetAxis(xMin, xMax);
             GetYAxis(yAxisIndex).Dims.SetAxis(yMin, yMax);
@@ -119,7 +117,7 @@ namespace ScottPlot
         /// <summary>
         /// Pan all axes by the given pixel distance
         /// </summary>
-        public void AxesPanPx(int dxPx, int dyPx)
+        public void AxesPanPx(float dxPx, float dyPx)
         {
             foreach (Axis axis in Axes)
                 axis.Dims.PanPx(axis.IsHorizontal ? dxPx : dyPx);
@@ -128,7 +126,7 @@ namespace ScottPlot
         /// <summary>
         /// Zoom all axes by the given pixel distance
         /// </summary>
-        public void AxesZoomPx(int xPx, int yPx, bool lockRatio = false)
+        public void AxesZoomPx(float xPx, float yPx, bool lockRatio = false)
         {
             if (lockRatio)
                 (xPx, yPx) = (Math.Max(xPx, yPx), Math.Max(xPx, yPx));
@@ -270,6 +268,66 @@ namespace ScottPlot
         {
             foreach (Axis axis in Axes)
                 axis.Dims.Recall();
+        }
+
+        private float MouseDownX;
+        private float MouseDownY;
+
+        /// <summary>
+        /// Remember mouse position (do this before calling MousePan or MouseZoom)
+        /// </summary>
+        public void MouseDown(float mouseDownX, float mouseDownY)
+        {
+            RememberAxisLimits();
+            MouseDownX = mouseDownX;
+            MouseDownY = mouseDownY;
+        }
+
+        public bool MouseHasMoved(float mouseNowX, float mouseNowY, float threshold = 2) =>
+            Math.Abs(mouseNowX - MouseDownX) >= threshold &&
+            Math.Abs(mouseNowY - MouseDownY) >= threshold;
+
+        /// <summary>
+        /// Pan all axes based on the mouse position now vs that last given to MouseDown()
+        /// </summary>
+        public void MousePan(float mouseNowX, float mouseNowY)
+        {
+            RecallAxisLimits();
+            AxesPanPx(MouseDownX - mouseNowX, mouseNowY - MouseDownY);
+        }
+
+        /// <summary>
+        /// Zoom all axes based on the mouse position now vs that last given to MouseDown()
+        /// </summary>
+        public void MouseZoom(float mouseNowX, float mouseNowY)
+        {
+            RecallAxisLimits();
+            AxesZoomPx(mouseNowX - MouseDownX, MouseDownY - mouseNowY);
+        }
+
+        public void MouseZoomRect(float mouseNowX, float mouseNowY, bool finalize = false)
+        {
+            float left = Math.Min(MouseDownX, mouseNowX);
+            float right = Math.Max(MouseDownX, mouseNowX);
+            float top = Math.Min(MouseDownY, mouseNowY);
+            float bottom = Math.Max(MouseDownY, mouseNowY);
+            float width = right - left;
+            float height = bottom - top;
+
+            if (finalize)
+            {
+                double x1 = XAxis.Dims.GetUnit(left);
+                double x2 = XAxis.Dims.GetUnit(right);
+                double y1 = YAxis.Dims.GetUnit(bottom);
+                double y2 = YAxis.Dims.GetUnit(top);
+                ZoomRectangle.Clear();
+                AxisSet(x1, x2, y1, y2);
+            }
+            else
+            {
+                // TODO: dont require data offset shifting prior to calling this
+                ZoomRectangle.Set(left - DataOffsetX, top - DataOffsetY, width, height);
+            }
         }
 
         /// <summary>
