@@ -23,11 +23,14 @@ namespace ScottPlot
         public Bitmap Render(int width, int height, bool lowQuality = false) =>
             Render(new Bitmap(Math.Max(1, width), Math.Max(1, height), PixelFormat.Format32bppPArgb), lowQuality);
 
+        public bool IsRendering { get; private set; }
+
         /// <summary>
         /// Render the plot onto an existing bitmap
         /// </summary>
         public Bitmap Render(Bitmap bmp, bool lowQuality = false)
         {
+            IsRendering = true;
             settings.BenchmarkMessage.Restart();
 
             settings.Resize(bmp.Width, bmp.Height);
@@ -39,6 +42,7 @@ namespace ScottPlot
             RenderPlottables(bmp, lowQuality);
             RenderAfterPlottables(bmp, lowQuality);
 
+            IsRendering = false;
             return bmp;
         }
 
