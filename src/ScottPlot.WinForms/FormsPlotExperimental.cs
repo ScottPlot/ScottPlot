@@ -16,6 +16,7 @@ namespace ScottPlot.WinForms
         private readonly Timer RenderTimer = new Timer();
         private readonly bool IsDesignerMode;
 
+        private bool IsMouseDown => MouseButtons != MouseButtons.None;
         private bool IsMouseDownLeft => MouseButtons == MouseButtons.Left;
         private bool IsMouseDownRight => MouseButtons == MouseButtons.Right;
         private bool IsMouseDownMiddle => MouseButtons == MouseButtons.Middle;
@@ -115,21 +116,17 @@ namespace ScottPlot.WinForms
 
         private void PictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
+            if (IsMouseDown == false)
+                return;
+
             if (IsMouseDownLeft)
-            {
                 Settings.MousePan(e.Location.X, e.Location.Y);
-                Render();
-            }
             else if (IsMouseDownRight)
-            {
                 Settings.MouseZoom(e.Location.X, e.Location.Y);
-                Render();
-            }
             else if (IsMouseDownMiddle)
-            {
                 Settings.MouseZoomRect(e.Location.X, e.Location.Y);
-                Render();
-            }
+
+            Render();
         }
 
         private void PictureBox1_MouseUp(object sender, MouseEventArgs e)
