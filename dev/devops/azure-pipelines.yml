@@ -29,14 +29,15 @@ pool:
 
 steps:
 
-### FAIL THE BUILD IF THE AUTOFORMATTER WAS NOT RUN
+### DEFINE .NET VERSION
 
 - task: UseDotNet@2
-  displayName: 'Acquire .NET Core 3'
-  condition: eq(variables['purpose'], 'autoformat')
+  displayName: 'Use .NET 5'
   inputs:
     packageType: 'sdk'
-    version: '3.x'
+    version: '5.x'
+
+### FAIL THE BUILD IF THE AUTOFORMATTER WAS NOT RUN
 
 - task: DotNetCoreCLI@2
   displayName: 'Install dotnet-format'
