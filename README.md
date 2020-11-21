@@ -13,7 +13,7 @@
 * **If you enjoy ScottPlot, give us a star! ⭐**
 
 <div align='center'>
-<img src='dev/nuget/ScottPlot.gif'>
+<img src='dev/ScottPlot.gif'>
 </div>
 
 ### Quickstart
