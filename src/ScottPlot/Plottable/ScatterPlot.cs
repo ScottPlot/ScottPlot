@@ -125,7 +125,7 @@ namespace ScottPlot.Plottable
             return $"PlottableScatter{label} with {PointCount} points";
         }
 
-        public new AxisLimits GetAxisLimits()
+        public AxisLimits GetAxisLimits()
         {
             double[] limits = new double[4];
 

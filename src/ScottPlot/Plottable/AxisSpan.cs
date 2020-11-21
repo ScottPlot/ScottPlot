@@ -52,7 +52,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public new AxisLimits GetAxisLimits() =>
+        public AxisLimits GetAxisLimits() =>
             IsHorizontal ?
             new AxisLimits(Min, Max, double.NaN, double.NaN) :
             new AxisLimits(double.NaN, double.NaN, Min, Max);
