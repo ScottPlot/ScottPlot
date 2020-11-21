@@ -58,7 +58,7 @@ namespace ScottPlotTests.PlottableRenderTests
                 HorizontalLabel = "250 ms"
             };
             plt.Add(sb);
-            var bmp1 =  TestTools.GetLowQualityBitmap(plt);
+            var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // customize the scalebar
             sb.LineWidth += 1;

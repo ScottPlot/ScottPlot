@@ -18,11 +18,11 @@ namespace ScottPlotTests.PlottableRenderTests
             var axSpan = new HSpan() { position1 = 1.23, position2 = 2.34 };
 
             plt.Add(axSpan);
-            var bmp1 =  TestTools.GetLowQualityBitmap(plt);
+            var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
             axSpan.position2 += 1;
-            var bmp2 =  TestTools.GetLowQualityBitmap(plt);
+            var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
             //TestTools.SaveFig(bmp1, "1");
@@ -44,11 +44,11 @@ namespace ScottPlotTests.PlottableRenderTests
             var axSpan = new HSpan() { position1 = 1.23, position2 = 2.34, color = System.Drawing.Color.Gray };
 
             plt.Add(axSpan);
-            var bmp1 =  TestTools.GetLowQualityBitmap(plt);
+            var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
             axSpan.color = System.Drawing.Color.Black;
-            var bmp2 =  TestTools.GetLowQualityBitmap(plt);
+            var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
             //TestTools.SaveFig(bmp1, "1");
@@ -70,11 +70,11 @@ namespace ScottPlotTests.PlottableRenderTests
             var axSpan = new HSpan() { position1 = 1.23, position2 = 2.34 };
 
             plt.Add(axSpan);
-            var bmp1 =  TestTools.GetLowQualityBitmap(plt);
+            var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
             axSpan.alpha /= 2;
-            var bmp2 =  TestTools.GetLowQualityBitmap(plt);
+            var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
             //TestTools.SaveFig(bmp1, "1");

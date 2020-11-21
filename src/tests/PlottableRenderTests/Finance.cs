@@ -26,11 +26,11 @@ namespace ScottPlotTests.PlottableRenderTests
                         }
             };
             plt.Add(op);
-            var bmp1 =  TestTools.GetLowQualityBitmap(plt);
+            var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
             op.Candle = true;
-            var bmp2 =  TestTools.GetLowQualityBitmap(plt);
+            var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
             //TestTools.SaveFig(bmp1, "1");
@@ -60,11 +60,11 @@ namespace ScottPlotTests.PlottableRenderTests
                         }
             };
             plt.Add(op);
-            var bmp1 =  TestTools.GetLowQualityBitmap(plt);
+            var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
             op.ColorUp = System.Drawing.Color.Blue;
-            var bmp2 =  TestTools.GetLowQualityBitmap(plt);
+            var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
             //TestTools.SaveFig(bmp1, "1");
@@ -94,11 +94,11 @@ namespace ScottPlotTests.PlottableRenderTests
                         }
             };
             plt.Add(op);
-            var bmp1 =  TestTools.GetLowQualityBitmap(plt);
+            var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
             op.ColorDown = System.Drawing.Color.Blue;
-            var bmp2 =  TestTools.GetLowQualityBitmap(plt);
+            var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
             //TestTools.SaveFig(bmp1, "1");
@@ -130,11 +130,11 @@ namespace ScottPlotTests.PlottableRenderTests
                         }
             };
             plt.Add(op);
-            var bmp1 =  TestTools.GetLowQualityBitmap(plt);
+            var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
             op.AutoWidth = true;
-            var bmp2 =  TestTools.GetLowQualityBitmap(plt);
+            var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
             //TestTools.SaveFig(bmp1, "1");
