@@ -102,5 +102,5 @@ steps:
   displayName: 'Build Release (Windows)'
   condition: eq(variables['purpose'], 'solution')
   inputs:
-    solution: 'src/ScottPlotV4.sln'
+    solution: 'src/ScottPlot.sln'
     configuration: 'release'
