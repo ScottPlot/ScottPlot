@@ -119,7 +119,7 @@ namespace ScottPlot.Demo
             // first try in every folder up from here
             for (int i = 0; i < searchDepth; i++)
             {
-                string testPath = folderPath + "/src/ScottPlot.Demo/";
+                string testPath = folderPath + "/src/cookbook/ScottPlot.Demo/";
                 if (System.IO.File.Exists(testPath + "IPlotDemo.cs"))
                     return System.IO.Path.GetFullPath(testPath);
                 else

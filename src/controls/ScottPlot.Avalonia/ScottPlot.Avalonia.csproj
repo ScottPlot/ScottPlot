@@ -1,14 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Library</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="0.9.11" />
     <PackageReference Include="Avalonia.Desktop" Version="0.9.11" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ScottPlot.Avalonia\ScottPlot.Avalonia.csproj" />
-    <ProjectReference Include="..\ScottPlot.Demo\ScottPlot.Demo.csproj" />
+    <ProjectReference Include="..\..\ScottPlot\ScottPlot.csproj" />
   </ItemGroup>
 </Project>

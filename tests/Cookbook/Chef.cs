@@ -16,7 +16,7 @@ namespace ScottPlot.Tests.Cookbook
             //if (System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.OSX))
             //return; // TODO: figure out how to get this working in MacOS
 
-            string sourceFolder = System.IO.Path.GetFullPath("../../../../src/ScottPlot.Demo");
+            string sourceFolder = System.IO.Path.GetFullPath("../../../../src/cookbook/ScottPlot.Demo");
             var reportGen = new ReportGenerator(useDLL: true, sourceFolder: sourceFolder);
             Console.WriteLine("Generating cookbook in: " + reportGen.outputFolder);
 
