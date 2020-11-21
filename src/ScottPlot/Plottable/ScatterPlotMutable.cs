@@ -53,10 +53,10 @@ namespace ScottPlot.Plottable
             Add(xs, ys);
         }
 
-        public (double xMin, double xMax, double yMin, double yMax) GetAxisLimits()
+        public AxisLimits GetAxisLimits()
         {
             if (Count == 0)
-                return (double.NaN, double.NaN, double.NaN, double.NaN);
+                return new AxisLimits(double.NaN, double.NaN, double.NaN, double.NaN);
 
             double xMin = Xs[0];
             double xMax = Xs[0];
@@ -71,7 +71,7 @@ namespace ScottPlot.Plottable
                 yMax = Math.Max(yMax, Ys[i]);
             }
 
-            return (xMin, xMax, yMin, yMax);
+            return new AxisLimits(xMin, xMax, yMin, yMax);
         }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)

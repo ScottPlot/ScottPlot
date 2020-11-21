@@ -53,12 +53,12 @@ namespace ScottPlot.Plottable
 
         }
 
-        public (double xMin, double xMax, double yMin, double yMax) GetLimits()
+        public AxisLimits GetLimits()
         {
             var baseLimits = GetAxisLimits();
             var newXMin = Convert.ToDouble(xs[minRenderIndex]);
             var newXMax = Convert.ToDouble(xs[maxRenderIndex]);
-            return (newXMin, newXMax, baseLimits.yMin, baseLimits.yMax);
+            return new AxisLimits(newXMin, newXMax, baseLimits.YMin, baseLimits.YMax);
         }
 
         public IEnumerable<PointF> ProcessInterval(int x, int from, int length, PlotDimensions dims)

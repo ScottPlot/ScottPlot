@@ -101,7 +101,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public (double xMin, double xMax, double yMin, double yMax) GetAxisLimits() => (-1.5, 1.5, -1.5, 1.5);
+        public AxisLimits GetAxisLimits() => new AxisLimits(-1.5, 1.5, -1.5, 1.5);
 
         public int PointCount { get => normalized.Length; }
 

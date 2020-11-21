@@ -65,7 +65,7 @@ namespace ScottPlot.Plottable
 
         public int PointCount { get => polys.Count; }
 
-        public (double xMin, double xMax, double yMin, double yMax) GetAxisLimits()
+        public AxisLimits GetAxisLimits()
         {
             double xMin = polys[0][0].x;
             double xMax = polys[0][0].x;
@@ -83,7 +83,7 @@ namespace ScottPlot.Plottable
                 }
             }
 
-            return (xMin, xMax, yMin, yMax);
+            return new AxisLimits(xMin, xMax, yMin, yMax);
         }
 
         public LegendItem[] LegendItems

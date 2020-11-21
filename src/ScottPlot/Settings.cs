@@ -208,11 +208,10 @@ namespace ScottPlot
 
             foreach (var limits in plottableLimits)
             {
-                (double xMin, double xMax, _, _) = limits;
-                if (!double.IsNaN(xMin))
-                    min = double.IsNaN(min) ? xMin : Math.Min(min, xMin);
-                if (!double.IsNaN(xMax))
-                    max = double.IsNaN(max) ? xMax : Math.Max(max, xMax);
+                if (!double.IsNaN(limits.XMin))
+                    min = double.IsNaN(min) ? limits.XMin : Math.Min(min, limits.XMin);
+                if (!double.IsNaN(limits.XMax))
+                    max = double.IsNaN(max) ? limits.XMax : Math.Max(max, limits.XMax);
             }
 
             if (double.IsNaN(min) && double.IsNaN(max))
@@ -237,11 +236,10 @@ namespace ScottPlot
 
             foreach (var limits in plottableLimits)
             {
-                (_, _, double yMin, double yMax) = limits;
-                if (!double.IsNaN(yMin))
-                    min = double.IsNaN(min) ? yMin : Math.Min(min, yMin);
-                if (!double.IsNaN(yMax))
-                    max = double.IsNaN(max) ? yMax : Math.Max(max, yMax);
+                if (!double.IsNaN(limits.YMin))
+                    min = double.IsNaN(min) ? limits.YMin : Math.Min(min, limits.YMin);
+                if (!double.IsNaN(limits.YMax))
+                    max = double.IsNaN(max) ? limits.YMax : Math.Max(max, limits.YMax);
             }
 
             if (double.IsNaN(min) && double.IsNaN(max))

@@ -187,7 +187,7 @@ namespace ScottPlot.Plottable
             updateData(0, newData.Length, newData);
         }
 
-        public (double xMin, double xMax, double yMin, double yMax) GetAxisLimits()
+        public AxisLimits GetAxisLimits()
         {
             double[] limits = new double[4];
             limits[0] = minRenderIndex + xOffset;
@@ -196,7 +196,7 @@ namespace ScottPlot.Plottable
             limits[2] += yOffset;
             limits[3] += yOffset;
 
-            return (limits[0], limits[1], limits[2], limits[3]);
+            return new AxisLimits(limits[0], limits[1], limits[2], limits[3]);
         }
 
         private void RenderSingleLine(PlotDimensions dims, Graphics gfx, Pen penHD)

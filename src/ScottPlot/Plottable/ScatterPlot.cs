@@ -125,7 +125,7 @@ namespace ScottPlot.Plottable
             return $"PlottableScatter{label} with {PointCount} points";
         }
 
-        public (double xMin, double xMax, double yMin, double yMax) GetAxisLimits()
+        public new AxisLimits GetAxisLimits()
         {
             double[] limits = new double[4];
 
@@ -165,7 +165,7 @@ namespace ScottPlot.Plottable
                 }
             }
 
-            return (limits[0], limits[1], limits[2], limits[3]);
+            return new AxisLimits(limits[0], limits[1], limits[2], limits[3]);
         }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)

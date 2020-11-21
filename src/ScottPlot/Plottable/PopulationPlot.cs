@@ -78,7 +78,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public (double xMin, double xMax, double yMin, double yMax) GetAxisLimits()
+        public AxisLimits GetAxisLimits()
         {
             double minValue = double.PositiveInfinity;
             double maxValue = double.NegativeInfinity;
@@ -101,7 +101,7 @@ namespace ScottPlot.Plottable
             positionMin -= .5;
             positionMax += .5;
 
-            return (positionMin, positionMax, minValue, maxValue);
+            return new AxisLimits(positionMin, positionMax, minValue, maxValue);
         }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)

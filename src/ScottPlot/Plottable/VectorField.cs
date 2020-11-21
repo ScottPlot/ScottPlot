@@ -74,8 +74,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public (double xMin, double xMax, double yMin, double yMax) GetAxisLimits() =>
-            (xs.Min() - 1, xs.Max() + 1, ys.Min() - 1, ys.Max() + 1);
+        public AxisLimits GetAxisLimits() => new AxisLimits(xs.Min() - 1, xs.Max() + 1, ys.Min() - 1, ys.Max() + 1);
 
         public int PointCount { get => vectors.Length; }
 
