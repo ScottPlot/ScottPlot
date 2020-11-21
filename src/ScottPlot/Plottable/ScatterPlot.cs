@@ -13,10 +13,10 @@ namespace ScottPlot.Plottable
 {
     public class ScatterPlot : IRenderable, IExportable, IHasLegendItems, IUsesAxes, IValidatable
     {
-        public double[] xs;
-        public double[] ys;
-        public double[] errorX;
-        public double[] errorY;
+        public double[] xs { get; private set; }
+        public double[] ys { get; private set; }
+        public double[] errorX { get; private set; }
+        public double[] errorY { get; private set; }
         public int HorizontalAxisIndex { get; set; } = 0;
         public int VerticalAxisIndex { get; set; } = 0;
         public bool FilterOutNansBeforeEveryRender = true;
@@ -46,6 +46,39 @@ namespace ScottPlot.Plottable
             this.ys = ys;
             this.errorX = errorX;
             this.errorY = errorY;
+        }
+
+        public void ReplaceX(double[] xs)
+        {
+            if (xs is null)
+                throw new ArgumentException("xs must not be null");
+            if (xs.Length != ys.Length)
+                throw new ArgumentException("xs and ys must have the same length");
+
+            this.xs = xs;
+        }
+
+        public void ReplaceY(double[] ys)
+        {
+            if (ys is null)
+                throw new ArgumentException("ys must not be null");
+            if (xs.Length != ys.Length)
+                throw new ArgumentException("xs and ys must have the same length");
+
+            this.ys = ys;
+        }
+
+        public void ReplaceXY(double[] xs, double[] ys)
+        {
+            if (xs is null)
+                throw new ArgumentException("xs must not be null");
+            if (ys is null)
+                throw new ArgumentException("ys must not be null");
+            if (xs.Length != ys.Length)
+                throw new ArgumentException("xs and ys must have the same length");
+
+            this.xs = xs;
+            this.ys = ys;
         }
 
         public string ErrorMessage(bool deepValidation = false)

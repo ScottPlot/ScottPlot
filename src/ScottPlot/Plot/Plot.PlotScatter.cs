@@ -219,8 +219,6 @@ namespace ScottPlot
                 lineWidth = lineWidth,
                 markerSize = 0,
                 label = label,
-                errorX = null,
-                errorY = null,
                 errorLineWidth = 0,
                 errorCapSize = 0,
                 stepDisplay = true,
