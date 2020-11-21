@@ -14,7 +14,7 @@
 * **If you enjoy ScottPlot, give us a star! ⭐**
 
 <div align='center'>
-<img src='dev/ScottPlot.gif'>
+<img src='dev/graphics/ScottPlot.gif'>
 </div>
 
 ### Quickstart
