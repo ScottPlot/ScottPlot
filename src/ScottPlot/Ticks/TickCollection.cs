@@ -249,19 +249,20 @@ namespace ScottPlot.Ticks
 
         private string FormatLocal(double value, CultureInfo culture)
         {
+            // if a custom format string exists use it
+            if (numericFormatString != null)
+                return value.ToString(numericFormatString, culture);
+
+            // if the number is round or large, use the numeric format
+            // https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#the-numeric-n-format-specifier
             bool isRoundNumber = ((int)value == value);
             bool isLargeNumber = (Math.Abs(value) > 1000);
+            if (isRoundNumber || isLargeNumber)
+                return value.ToString("N0", culture);
 
-            // https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings
-            if (numericFormatString is null)
-            {
-                string defaultFormat = (isRoundNumber || isLargeNumber) ? "N0" : "G";
-                return value.ToString(defaultFormat, culture);
-            }
-            else
-            {
-                return value.ToString(numericFormatString, culture);
-            }
+            // otherwise the number is probably small or very precise to use the general format (with slight rounding)
+            // https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#the-general-g-format-specifier
+            return Math.Round(value, 10).ToString("G", culture);
         }
 
         public (string[], string) GetPrettyTickLabels(
