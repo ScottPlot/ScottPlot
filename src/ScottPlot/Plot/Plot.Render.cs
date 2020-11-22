@@ -115,9 +115,9 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Save the plot as an image file
+        /// Save the plot as an image file and return the full path of the new file
         /// </summary>
-        public void SaveFig(string filePath)
+        public string SaveFig(string filePath)
         {
             Bitmap bmp = Render();
 
@@ -140,6 +140,7 @@ namespace ScottPlot
                 throw new NotImplementedException("Extension not supported: " + extension);
 
             bmp.Save(filePath, imageFormat);
+            return filePath;
         }
     }
 }
