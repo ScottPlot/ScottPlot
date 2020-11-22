@@ -221,7 +221,7 @@ namespace ScottPlot.Plottable
             double[] ys = DataGen.Range(pop.minus3stDev, pop.plus3stDev, dims.UnitsPerPxY);
             if (ys.Length == 0)
                 return;
-            double[] ysFrac = pop.GetDistribution(ys);
+            double[] ysFrac = pop.GetDistribution(ys, normalize: false);
 
             PointF[] points = new PointF[ys.Length];
             for (int i = 0; i < ys.Length; i++)

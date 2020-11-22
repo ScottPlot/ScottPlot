@@ -142,12 +142,19 @@ namespace ScottPlot.Statistics
             stdErr = stDev / Math.Sqrt(count);
         }
 
-        public double[] GetDistribution(double[] xs, bool normalize = true)
+        public double[] GetDistribution(double[] xs, bool normalize)
         {
             double[] ys = new double[xs.Length];
-            double multiplier = (normalize) ? 1 : 1 / (stDev * Math.Sqrt(2 * Math.PI));
             for (int i = 0; i < xs.Length; i++)
-                ys[i] = multiplier * Math.Exp(-.5 * Math.Pow((xs[i] - mean) / stDev, 2));
+                ys[i] = Math.Exp(-.5 * Math.Pow((xs[i] - mean) / stDev, 2));
+
+            if (normalize)
+            {
+                double sum = ys.Sum();
+                for (int i = 0; i < ys.Length; i++)
+                    ys[i] /= sum;
+            }
+
             return ys;
         }
     }
