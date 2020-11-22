@@ -40,5 +40,23 @@ namespace ScottPlotTests.Axis
 
             TestTools.SaveFig(plt);
         }
+
+        [Test]
+        public void Test_AxisAuto_SignalWithMinMaxIndexSet()
+        {
+            var plt = new ScottPlot.Plot(400, 300);
+            var sig = plt.PlotSignal(ScottPlot.DataGen.Sin(1000), sampleRate: 10);
+            sig.minRenderIndex = 450;
+            sig.maxRenderIndex = 550;
+            plt.AxisAuto();
+
+            var limits = plt.AxisLimits();
+            Console.WriteLine($"AutoAxis Limits: {limits}");
+
+            Assert.Less(limits.XMin, limits.XMax);
+            Assert.Less(limits.YMin, limits.YMax);
+
+            TestTools.SaveFig(plt);
+        }
     }
 }

@@ -190,14 +190,10 @@ namespace ScottPlot.Plottable
 
         public AxisLimits GetAxisLimits()
         {
-            double[] limits = new double[4];
-            limits[0] = minRenderIndex + xOffset;
-            limits[1] = _samplePeriod * maxRenderIndex + xOffset;
-            minmaxSearchStrategy.MinMaxRangeQuery(minRenderIndex, maxRenderIndex, out limits[2], out limits[3]);
-            limits[2] += yOffset;
-            limits[3] += yOffset;
-
-            return new AxisLimits(limits[0], limits[1], limits[2], limits[3]);
+            double xMin = _samplePeriod * minRenderIndex;
+            double xMax = _samplePeriod * maxRenderIndex;
+            minmaxSearchStrategy.MinMaxRangeQuery(minRenderIndex, maxRenderIndex, out double yMin, out double yMax);
+            return new AxisLimits(xMin + xOffset, xMax + xOffset, yMin + yOffset, yMax + yOffset);
         }
 
         private void RenderSingleLine(PlotDimensions dims, Graphics gfx, Pen penHD)
