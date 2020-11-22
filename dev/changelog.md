@@ -1,14 +1,17 @@
-# ScottPlot Changelog
+# ScottPlot 4.0 Changelog
 
-## ScottPlot 4.0.44 ⚠️ _in active development_
+## ScottPlot 4.0.44
 * Improved limits for fixed-size axis spans (#586) _Thanks @citizen3942 and @StendProg_
 * Mouse drag/drop events now send useful event arguments (#593) _Thanks @charlescao460 and @StendProg_
 * Fixed a bug that affected plots with extremely small (<1E-10) axis spans (#607) _Thanks @RFIsoft_
+* Plot.SaveFig() now returns the full path to the file it created (#608)
+* Fixed AxisAuto() bug affecting signal plots using min/max render indexes with a custom sample rate (#621) _Thanks @LB767_
+
+## ScottPlot 4.0.43
 * Improved appearance of semi-transparent legend items (#567)
 * Improved tick labels for ticks smaller than 1E-5 (#568) _Thanks @ozgur640_
 * Improved support for Avalonia 0.10 (#571) _Thanks @Benny121221 and @apkrymov_
 * Improved positions for base16 ticks (#582, #581) _Thanks @Benny121221_
-* Plot.SaveFig() now returns the full path to the file it created (#608)
 
 ## ScottPlot 4.0.42
 * Improved DPI scaling support when using WinForms in .NET Core applications (#563) _Thanks @citizen3942_

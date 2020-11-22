@@ -191,17 +191,12 @@ namespace ScottPlot
             updateData(0, newData.Length, newData);
         }
 
-        public override Config.AxisLimits2D GetLimits()
+        public override AxisLimits2D GetLimits()
         {
-            double[] limits = new double[4];
-            limits[0] = minRenderIndex + xOffset;
-            limits[1] = _samplePeriod * maxRenderIndex + xOffset;
-            minmaxSearchStrategy.MinMaxRangeQuery(minRenderIndex, maxRenderIndex, out limits[2], out limits[3]);
-            limits[2] += yOffset;
-            limits[3] += yOffset;
-
-            // TODO: use features of 2d axis
-            return new Config.AxisLimits2D(limits);
+            double xMin = _samplePeriod * minRenderIndex;
+            double xMax = _samplePeriod * maxRenderIndex + xOffset;
+            minmaxSearchStrategy.MinMaxRangeQuery(minRenderIndex, maxRenderIndex, out double yMin, out double yMax);
+            return new AxisLimits2D(xMin + xOffset, xMax + xOffset, yMin + yOffset, yMax + yOffset);
         }
 
         private void RenderSingleLine(PlotDimensions dims, Graphics gfx, Pen penHD)
