@@ -174,7 +174,7 @@ namespace ScottPlot
             return settings.bmpFigure;
         }
 
-        public void SaveFig(string filePath, bool renderFirst = true)
+        public string SaveFig(string filePath, bool renderFirst = true)
         {
             if (renderFirst)
                 RenderBitmap();
@@ -201,6 +201,8 @@ namespace ScottPlot
                 throw new NotImplementedException("Extension not supported: " + extension);
 
             settings.bmpFigure.Save(filePath, imageFormat);
+
+            return filePath;
         }
 
         public void Add(Plottable plottable)
