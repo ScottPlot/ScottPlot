@@ -61,6 +61,7 @@ namespace ScottPlot.Plottable
                 if (_samplePeriod <= 0)
                     throw new Exception("SamplePeriod must be greater then zero");
                 _samplePeriod = value;
+                _sampleRate = 1.0 / value;
             }
         }
         public float markerSize { get; set; } = 5;
