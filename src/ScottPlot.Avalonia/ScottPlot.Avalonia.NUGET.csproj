@@ -7,7 +7,7 @@
     <RootNamespace>ScottPlot</RootNamespace>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <PackageIcon>icon.png</PackageIcon>
-    <Description>This package provides an Avalonia control to interactively display ScottPlot graphs in Avalonia applications. This package targets both .NET Framework and .NET Core.</Description>
+    <Description>This package provides an Avalonia control to interactively display ScottPlot plots in Avalonia applications.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>http://swharden.com/scottplot/</PackageProjectUrl>
     <PackageTags>plot graph data chart signal line bar C# WPF control interactive</PackageTags>

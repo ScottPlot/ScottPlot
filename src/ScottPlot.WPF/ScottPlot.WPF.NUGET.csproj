@@ -9,7 +9,7 @@
     <UseWPF>true</UseWPF>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <PackageIcon>icon.png</PackageIcon>
-    <Description>This package provides a WPF control to interactively display ScottPlot graphs in WPF applications. This package targets both .NET Framework and .NET Core.</Description>
+    <Description>This package provides a WPF control to interactively display ScottPlot plots in WPF applications.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>http://swharden.com/scottplot/</PackageProjectUrl>
     <PackageTags>plot graph data chart signal line bar C# WPF control interactive</PackageTags>
