@@ -69,7 +69,7 @@ namespace ScottPlot.Statistics
             cumulativeCounts = GetCumulative(counts);
             countsFrac = GetNormalized(counts);
             cumulativeFrac = GetCumulative(countsFrac);
-            countsFracCurve = population.GetDistribution(bins, false);
+            countsFracCurve = population.GetDistribution(bins, true);
         }
 
         private static double[] GetNormalized(double[] values)

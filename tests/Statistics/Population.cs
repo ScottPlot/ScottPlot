@@ -17,7 +17,7 @@ namespace ScottPlotTests.Statistics
             var ages = new ScottPlot.Statistics.Population(rand, 44, 78, 2);
 
             double[] curveXs = DataGen.Range(ages.minus3stDev, ages.plus3stDev, .1);
-            double[] curveYs = ages.GetDistribution(curveXs);
+            double[] curveYs = ages.GetDistribution(curveXs, false);
 
             var plt = new ScottPlot.Plot(400, 300);
             plt.PlotScatter(ages.values, DataGen.Random(rand, ages.values.Length),
@@ -35,7 +35,7 @@ namespace ScottPlotTests.Statistics
             var ages = new ScottPlot.Statistics.Population(rand, 44, 78, 2);
 
             double[] curveXs = DataGen.Range(ages.minus3stDev, ages.plus3stDev, .1);
-            double[] curveYs = ages.GetDistribution(curveXs);
+            double[] curveYs = ages.GetDistribution(curveXs, false);
 
             var plt = new ScottPlot.Plot(400, 300);
             plt.PlotScatter(DataGen.Random(rand, ages.values.Length), ages.values,

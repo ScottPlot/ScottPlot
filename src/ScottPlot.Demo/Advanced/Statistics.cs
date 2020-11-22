@@ -101,7 +101,7 @@ namespace ScottPlot.Demo.Advanced
 
                 // display the bell curve for this distribution
                 double[] curveXs = DataGen.Range(pop.minus3stDev, pop.plus3stDev, .1);
-                double[] curveYs = pop.GetDistribution(curveXs);
+                double[] curveYs = pop.GetDistribution(curveXs, normalize: false);
                 plt.PlotScatter(curveXs, curveYs, markerSize: 0, lineWidth: 2);
 
                 // improve the style of the plot
