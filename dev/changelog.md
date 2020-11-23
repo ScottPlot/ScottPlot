@@ -7,6 +7,7 @@
 * Plot.SaveFig() now returns the full path to the file it created (#608)
 * Fixed AxisAuto() bug affecting signal plots using min/max render indexes with a custom sample rate (#621) _Thanks @LB767_
 * Fixed a bug affecting histogram normalization (#624) _Thanks @LB767_
+* WPF and Windows Forms user controls now also target .NET 5
 
 ## ScottPlot 4.0.43
 * Improved appearance of semi-transparent legend items (#567)
