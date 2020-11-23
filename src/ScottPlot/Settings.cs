@@ -145,8 +145,8 @@ namespace ScottPlot
         /// </summary>
         public void AxisAuto(double horizontalMargin = .1, double verticalMargin = .1, int xAxisIndex = 0, int yAxisIndex = 0)
         {
-            AxisAutoX(horizontalMargin, xAxisIndex);
-            AxisAutoY(verticalMargin, yAxisIndex);
+            AxisAutoX(xAxisIndex, horizontalMargin);
+            AxisAutoY(yAxisIndex, verticalMargin);
         }
 
         /// <summary>
@@ -154,10 +154,8 @@ namespace ScottPlot
         /// </summary>
         public void AxisAutoAll(double horizontalMargin = .1, double verticalMargin = .1)
         {
-            foreach (var index in Axes.Where(x => x.IsHorizontal).Select(x => x.AxisIndex).Distinct())
-                AxisAutoX(horizontalMargin, index);
-            foreach (var index in Axes.Where(x => x.IsVertical).Select(x => x.AxisIndex).Distinct())
-                AxisAutoY(verticalMargin, index);
+            AxisAutoAllX(horizontalMargin);
+            AxisAutoAllY(verticalMargin);
         }
 
         /// <summary>
@@ -177,7 +175,7 @@ namespace ScottPlot
         /// <summary>
         /// Automatically adjust X axis limits to fit the data
         /// </summary>
-        public void AxisAutoX(double margin = .1, int xAxisIndex = 0)
+        public void AxisAutoAllX(double margin = .1)
         {
             int[] xAxisIndexes = Axes.Where(x => x.IsHorizontal).Select(x => x.AxisIndex).Distinct().ToArray();
             foreach (int i in xAxisIndexes)
@@ -187,7 +185,7 @@ namespace ScottPlot
         /// <summary>
         /// Automatically adjust Y axis limits to fit the data
         /// </summary>
-        public void AxisAutoY(double margin = .1, int yAxisIndex = 0)
+        public void AxisAutoAllY(double margin = .1)
         {
             int[] yAxisIndexes = Axes.Where(x => x.IsVertical).Select(x => x.AxisIndex).Distinct().ToArray();
             foreach (int i in yAxisIndexes)
