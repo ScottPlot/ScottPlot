@@ -5,5 +5,6 @@
         int HorizontalAxisIndex { get; set; }
         int VerticalAxisIndex { get; set; }
         AxisLimits GetAxisLimits();
+        bool IsVisible { get; set; }
     }
 }

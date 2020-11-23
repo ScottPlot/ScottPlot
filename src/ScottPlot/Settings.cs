@@ -200,6 +200,7 @@ namespace ScottPlot
 
             var plottableLimits = Plottables.Where(x => x is IUsesAxes)
                                                .Select(x => (IUsesAxes)x)
+                                               .Where(x => x.IsVisible)
                                                .Where(x => x.HorizontalAxisIndex == xAxisIndex)
                                                .Select(x => x.GetAxisLimits())
                                                .ToArray();
@@ -228,6 +229,7 @@ namespace ScottPlot
 
             var plottableLimits = Plottables.Where(x => x is IUsesAxes)
                                                .Select(x => (IUsesAxes)x)
+                                               .Where(x => x.IsVisible)
                                                .Where(x => x.VerticalAxisIndex == yAxisIndex)
                                                .Select(x => x.GetAxisLimits())
                                                .ToArray();
