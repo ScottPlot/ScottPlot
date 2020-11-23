@@ -64,7 +64,9 @@ namespace ScottPlot.Demo.WinForms
             DemoNameLabel.Text = demoPlot.name;
             sourceCodeGroupbox.Text = demoPlot.classPath.Replace("+", ".");
             DescriptionTextbox.Text = (demoPlot.description is null) ? "no descriton provided..." : demoPlot.description;
-            sourceCodeTextbox.Text = demoPlot.GetSourceCode("../../../../src/ScottPlot.Demo/");
+
+            string sourceFolderPath = System.IO.Directory.Exists("./source") ? "source/" : "../../../../src/ScottPlot.Demo/";
+            sourceCodeTextbox.Text = demoPlot.GetSourceCode(sourceFolderPath);
 
             formsPlot1.Reset();
 
