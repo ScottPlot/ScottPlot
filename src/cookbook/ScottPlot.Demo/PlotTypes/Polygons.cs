@@ -31,7 +31,7 @@ namespace ScottPlot.Demo.PlotTypes
                 }
 
                 // customize the plot
-                plt.AxisLockScalesTogether(true);
+                plt.AxisEqualScale(true);
                 plt.Title($"PlotPolygon with {polygonCount:N0} {pointsPerPolygon}-sided polygons");
             }
         }
@@ -64,7 +64,7 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.PlotPolygons(polys, fillColor: Color.Green);
 
                 // customize the plot
-                plt.AxisLockScalesTogether(true);
+                plt.AxisEqualScale(true);
                 plt.Title($"PlotPolygons with {polys.Count:N0} {pointsPerPolygon}-sided polygons");
             }
         }

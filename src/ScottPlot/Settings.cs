@@ -40,6 +40,7 @@ namespace ScottPlot
         public Axis GetXAxis(int xAxisIndex) => Axes.Where(x => x.IsHorizontal && x.AxisIndex == xAxisIndex).First();
         public Axis GetYAxis(int yAxisIndex) => Axes.Where(x => x.IsVertical && x.AxisIndex == yAxisIndex).First();
         public bool AllAxesHaveBeenSet => Axes.All(x => x.Dims.HasBeenSet);
+        public bool AxisEqualScale = false;
 
         // shortcuts to fixed axes indexes
         public Axis YAxis => Axes[0];
@@ -170,6 +171,26 @@ namespace ScottPlot
                 else
                     AxisAutoY(axis.AxisIndex);
             }
+        }
+
+        /// <summary>
+        /// Ensure X and Y axes have the same scale (units per pixel) if AxisEqualScale is True
+        /// </summary>
+        public void EnforceEqualAxisScales()
+        {
+            if (AxisEqualScale == false)
+                return;
+
+            double unitsPerPixel = Math.Max(XAxis.Dims.UnitsPerPx, YAxis.Dims.UnitsPerPx);
+            double xHalfSize = (XAxis.Dims.DataSizePx / 2) * unitsPerPixel;
+            double yHalfSize = (YAxis.Dims.DataSizePx / 2) * unitsPerPixel;
+
+            double xMin = XAxis.Dims.Center - xHalfSize;
+            double xMax = XAxis.Dims.Center + xHalfSize;
+            double yMin = YAxis.Dims.Center - yHalfSize;
+            double yMax = YAxis.Dims.Center + yHalfSize;
+
+            AxisSet(xMin, xMax, yMin, yMax);
         }
 
         /// <summary>

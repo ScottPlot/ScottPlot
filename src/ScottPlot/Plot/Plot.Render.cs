@@ -36,7 +36,9 @@ namespace ScottPlot
             settings.Resize(bmp.Width, bmp.Height);
             settings.CopyPrimaryLayoutToAllAxes();
             settings.AxisAutoUnsetAxes();
+            settings.EnforceEqualAxisScales();
             settings.LayoutAuto();
+            settings.EnforceEqualAxisScales();
 
             RenderBeforePlottables(bmp, lowQuality);
             RenderPlottables(bmp, lowQuality);

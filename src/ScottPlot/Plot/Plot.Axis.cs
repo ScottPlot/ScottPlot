@@ -99,12 +99,12 @@ namespace ScottPlot
                 AxisScale(unitsPerPixelY: settings.XAxis.Dims.UnitsPerPx);
         }
 
-        public void AxisLockScalesTogether(bool enable)
-        {
-            // TODO: support this
-        }
+        /// <summary>
+        /// Lock the primary X and Y scale (units per pixel) together. When enabled, squares cannot be distorted.
+        /// </summary>
+        public void AxisEqualScale(bool enable = true) => settings.AxisEqualScale = enable;
 
-        [Obsolete("call AxisLockScales()", true)]
+        [Obsolete("call AxisEqualScale()", true)]
         public bool EqualAxis;
 
         /// <summary>
