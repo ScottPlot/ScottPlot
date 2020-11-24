@@ -1,8 +1,10 @@
 ﻿/* Code here relates to customization of the figure or plot layout or styling (not behavior) */
 
+using ScottPlot.Ticks;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace ScottPlot
@@ -12,12 +14,12 @@ namespace ScottPlot
         /// <summary>
         /// Change the default color palette for new plottables
         /// </summary>
-        public Drawing.Colorset Colorset(Drawing.Colorset colorset = null)
+        public Drawing.Palette Colorset(Drawing.Palette colorset = null)
         {
             if (colorset != null)
-                settings.colorset = colorset;
+                settings.PlottablePalette = colorset;
 
-            return settings.colorset;
+            return settings.PlottablePalette;
         }
 
         public void Style(
@@ -29,29 +31,20 @@ namespace ScottPlot
             Color? title = null
             )
         {
-            if (figBg != null)
-                settings.FigureBackground.Color = figBg.Value;
-            if (dataBg != null)
-                settings.DataBackground.Color = dataBg.Value;
-            if (grid != null)
+            settings.DataBackground.Color = dataBg ?? settings.DataBackground.Color;
+            settings.FigureBackground.Color = figBg ?? settings.FigureBackground.Color;
+
+            foreach (var axis in settings.Axes)
             {
-                settings.HorizontalGridLines.Color = grid.Value;
-                settings.VerticalGridLines.Color = grid.Value;
+                axis.Title.Font.Color = label ?? axis.Title.Font.Color;
+                axis.Ticks.MajorLabelFont.Color = tick ?? axis.Ticks.MajorLabelFont.Color;
+                axis.Ticks.MajorGridColor = grid ?? axis.Ticks.MajorGridColor;
+                axis.Ticks.MinorGridColor = grid ?? axis.Ticks.MinorGridColor;
+                axis.Ticks.Color = tick ?? axis.Ticks.Color;
+                axis.Line.Color = tick ?? axis.Line.Color;
             }
-            if (tick != null)
-                settings.ticks.color = (Color)tick;
-            if (label != null)
-                settings.xLabel.color = (Color)label;
-            if (label != null)
-                settings.yLabel.color = (Color)label;
-            if (title != null)
-                settings.title.color = (Color)title;
-            if (dataBg != null)
-                settings.Legend.FillColor = (Color)dataBg;
-            if (tick != null)
-                settings.Legend.OutlineColor = (Color)tick;
-            if (label != null)
-                settings.Legend.FontColor = (Color)label;
+
+            settings.XAxis2.Title.Font.Color = title ?? settings.XAxis2.Title.Font.Color;
         }
 
         public void Style(Style style)
@@ -68,69 +61,16 @@ namespace ScottPlot
             bool? top = true
         )
         {
-            if (drawFrame != null)
-                settings.layout.displayAxisFrames = (bool)drawFrame;
-            if (frameColor != null)
-                settings.ticks.color = (Color)frameColor;
-            if (left != null)
-                settings.layout.displayFrameByAxis[0] = (bool)left;
-            if (right != null)
-                settings.layout.displayFrameByAxis[1] = (bool)right;
-            if (bottom != null)
-                settings.layout.displayFrameByAxis[2] = (bool)bottom;
-            if (top != null)
-                settings.layout.displayFrameByAxis[3] = (bool)top;
-            TightenLayout();
-        }
+            foreach (var axis in settings.PrimaryAxes)
+            {
+                axis.Line.IsVisible = drawFrame ?? axis.Line.IsVisible;
+                axis.Line.Color = frameColor ?? axis.Line.Color;
+            }
 
-        public void Benchmark(bool show = true, bool toggle = false)
-        {
-            if (toggle)
-                settings.Benchmark.Visible = !settings.Benchmark.Visible;
-            else
-                settings.Benchmark.Visible = show;
-        }
-
-        public void TightenLayout(int? padding = null, bool render = false)
-        {
-            if (settings.gfxData is null)
-                return;
-
-            if (render)
-                GetBitmap();
-            if (!settings.axes.hasBeenSet && settings.plottables.Count > 0)
-                settings.AxisAuto();
-
-            settings.ticks?.x?.Recalculate(settings); // this probably never happens
-            settings.ticks?.y?.Recalculate(settings); // this probably never happens
-
-            int pad = (padding is null) ? 15 : (int)padding;
-            settings.TightenLayout(pad, pad, pad, pad);
-
-            Resize();
-        }
-
-        public void Layout(
-                double? yLabelWidth = null,
-                double? yScaleWidth = null,
-                double? y2LabelWidth = null,
-                double? y2ScaleWidth = null,
-                double? titleHeight = null,
-                double? xLabelHeight = null,
-                double? xScaleHeight = null
-            )
-        {
-            TightenLayout(render: true);
-
-            if (yLabelWidth != null) settings.layout.yLabelWidth = (int)yLabelWidth;
-            if (yScaleWidth != null) settings.layout.yScaleWidth = (int)yScaleWidth;
-            if (y2LabelWidth != null) settings.layout.y2LabelWidth = (int)y2LabelWidth;
-            if (y2ScaleWidth != null) settings.layout.y2ScaleWidth = (int)y2ScaleWidth;
-            if (titleHeight != null) settings.layout.titleHeight = (int)titleHeight;
-            if (xLabelHeight != null) settings.layout.xLabelHeight = (int)xLabelHeight;
-            if (xScaleHeight != null) settings.layout.xScaleHeight = (int)xScaleHeight;
-
-            Resize();
+            settings.YAxis.Line.IsVisible = left ?? settings.YAxis.Line.IsVisible;
+            settings.YAxis2.Line.IsVisible = right ?? settings.YAxis2.Line.IsVisible;
+            settings.XAxis.Line.IsVisible = bottom ?? settings.XAxis.Line.IsVisible;
+            settings.XAxis2.Line.IsVisible = top ?? settings.XAxis2.Line.IsVisible;
         }
 
         public void Grid(
@@ -140,87 +80,56 @@ namespace ScottPlot
             double? ySpacing = null,
             bool? enableHorizontal = null,
             bool? enableVertical = null,
-            Config.DateTimeUnit? xSpacingDateTimeUnit = null,
-            Config.DateTimeUnit? ySpacingDateTimeUnit = null,
-            double? lineWidth = null,
+            DateTimeUnit? xSpacingDateTimeUnit = null,
+            DateTimeUnit? ySpacingDateTimeUnit = null,
+            float? lineWidth = null,
             LineStyle? lineStyle = null,
             bool? snapToNearestPixel = null
             )
         {
-            if (enable != null)
-            {
-                settings.HorizontalGridLines.Visible = enable.Value;
-                settings.VerticalGridLines.Visible = enable.Value;
-            }
+            settings.XAxis.Ticks.MajorGridEnable = enable ?? settings.XAxis.Ticks.MajorGridEnable;
+            settings.YAxis.Ticks.MajorGridEnable = enable ?? settings.YAxis.Ticks.MajorGridEnable;
+            settings.XAxis.Ticks.MajorGridEnable = enableHorizontal ?? settings.XAxis.Ticks.MajorGridEnable;
+            settings.YAxis.Ticks.MajorGridEnable = enableVertical ?? settings.YAxis.Ticks.MajorGridEnable;
 
-            if (enableHorizontal != null)
-                settings.HorizontalGridLines.Visible = enableHorizontal.Value;
+            settings.XAxis.Ticks.MajorGridColor = color ?? settings.XAxis.Ticks.MajorGridColor;
+            settings.YAxis.Ticks.MajorGridColor = color ?? settings.YAxis.Ticks.MajorGridColor;
 
-            if (enableVertical != null)
-                settings.VerticalGridLines.Visible = enableVertical.Value;
+            settings.XAxis.Ticks.TickCollection.manualSpacingX = xSpacing ?? settings.XAxis.Ticks.TickCollection.manualSpacingX;
+            settings.YAxis.Ticks.TickCollection.manualSpacingY = ySpacing ?? settings.YAxis.Ticks.TickCollection.manualSpacingY;
+            settings.XAxis.Ticks.TickCollection.manualDateTimeSpacingUnitX = xSpacingDateTimeUnit ?? settings.XAxis.Ticks.TickCollection.manualDateTimeSpacingUnitX;
+            settings.YAxis.Ticks.TickCollection.manualDateTimeSpacingUnitY = ySpacingDateTimeUnit ?? settings.YAxis.Ticks.TickCollection.manualDateTimeSpacingUnitY;
 
-            if (color != null)
-            {
-                settings.HorizontalGridLines.Color = color.Value;
-                settings.VerticalGridLines.Color = color.Value;
-            }
+            settings.XAxis.Ticks.MajorGridWidth = lineWidth ?? settings.XAxis.Ticks.MajorGridWidth;
+            settings.YAxis.Ticks.MajorGridWidth = lineWidth ?? settings.YAxis.Ticks.MajorGridWidth;
 
-            if (xSpacing != null)
-                settings.ticks.manualSpacingX = xSpacing.Value;
+            settings.XAxis.Ticks.MajorGridStyle = lineStyle ?? settings.XAxis.Ticks.MajorGridStyle;
+            settings.YAxis.Ticks.MajorGridStyle = lineStyle ?? settings.YAxis.Ticks.MajorGridStyle;
 
-            if (ySpacing != null)
-                settings.ticks.manualSpacingY = ySpacing.Value;
-
-            if (xSpacingDateTimeUnit != null)
-                settings.ticks.manualDateTimeSpacingUnitX = xSpacingDateTimeUnit.Value;
-
-            if (ySpacingDateTimeUnit != null)
-                settings.ticks.manualDateTimeSpacingUnitY = ySpacingDateTimeUnit.Value;
-
-            if (lineWidth != null)
-            {
-                settings.HorizontalGridLines.LineWidth = (float)lineWidth.Value;
-                settings.VerticalGridLines.LineWidth = (float)lineWidth.Value;
-            }
-
-            if (lineStyle != null)
-            {
-                settings.HorizontalGridLines.LineStyle = lineStyle.Value;
-                settings.VerticalGridLines.LineStyle = lineStyle.Value;
-            }
-
-            if (snapToNearestPixel != null)
-            {
-                settings.HorizontalGridLines.SnapToNearestPixel = snapToNearestPixel.Value;
-                settings.VerticalGridLines.SnapToNearestPixel = snapToNearestPixel.Value;
-            }
+            settings.XAxis.Ticks.SnapPx = snapToNearestPixel ?? settings.XAxis.Ticks.SnapPx;
+            settings.YAxis.Ticks.SnapPx = snapToNearestPixel ?? settings.YAxis.Ticks.SnapPx;
         }
 
         public void MatchLayout(Plot sourcePlot, bool horizontal = true, bool vertical = true)
         {
-            if (!sourcePlot.GetSettings(showWarning: false).axes.hasBeenSet)
+            if (!sourcePlot.GetSettings(showWarning: false).AllAxesHaveBeenSet)
                 sourcePlot.AxisAuto();
 
-            if (!settings.axes.hasBeenSet)
+            if (!settings.AllAxesHaveBeenSet)
                 AxisAuto();
 
-            Resize();
-
-            var sourceLayout = sourcePlot.GetSettings(false).layout;
+            var sourceSettings = sourcePlot.GetSettings(false);
 
             if (horizontal)
             {
-                settings.layout.yLabelWidth = sourceLayout.yLabelWidth;
-                settings.layout.y2LabelWidth = sourceLayout.y2LabelWidth;
-                settings.layout.yScaleWidth = sourceLayout.yScaleWidth;
-                settings.layout.y2ScaleWidth = sourceLayout.y2ScaleWidth;
+                settings.YAxis.PixelSize = sourceSettings.YAxis.PixelSize;
+                settings.YAxis2.PixelSize = sourceSettings.YAxis2.PixelSize;
             }
 
             if (vertical)
             {
-                settings.layout.titleHeight = sourceLayout.titleHeight;
-                settings.layout.xLabelHeight = sourceLayout.xLabelHeight;
-                settings.layout.xScaleHeight = sourceLayout.xScaleHeight;
+                settings.XAxis.PixelSize = sourceSettings.XAxis.PixelSize;
+                settings.XAxis2.PixelSize = sourceSettings.XAxis2.PixelSize;
             }
         }
     }

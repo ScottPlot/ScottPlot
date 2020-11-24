@@ -7,24 +7,25 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
+using ScottPlot.Plottable;
 
 namespace ScottPlot
 {
     public partial class Plot
     {
 
-        public PlottableImage PlotBitmap(
+        public Plottable.Image PlotBitmap(
            Bitmap bitmap,
            double x,
            double y,
            string label = null,
-           ImageAlignment alignment = ImageAlignment.middleLeft,
+           Alignment alignment = Alignment.MiddleLeft,
            double rotation = 0,
            Color? frameColor = null,
            int frameSize = 0
            )
         {
-            PlottableImage plottableImage = new PlottableImage()
+            Plottable.Image plottableImage = new Plottable.Image()
             {
                 image = bitmap,
                 x = x,
@@ -36,11 +37,11 @@ namespace ScottPlot
                 frameSize = frameSize
             };
 
-            settings.plottables.Add(plottableImage);
+            settings.Plottables.Add(plottableImage);
             return plottableImage;
         }
 
-        public PlottableHeatmap PlotHeatmap(
+        public Heatmap PlotHeatmap(
             double[,] intensities,
             Drawing.Colormap colormap = null,
             string label = null,
@@ -54,7 +55,7 @@ namespace ScottPlot
             bool drawAxisLabels = true
             )
         {
-            PlottableHeatmap heatmap = new PlottableHeatmap()
+            Heatmap heatmap = new Heatmap()
             {
                 label = label,
                 AxisOffsets = axisOffsets ?? new double[] { 0, 0 },
@@ -72,7 +73,7 @@ namespace ScottPlot
             Add(heatmap);
             MatchAxis(this);
             Ticks(false, false);
-            Layout(y2LabelWidth: 180);
+            Layout(top: 180);
 
             return heatmap;
         }

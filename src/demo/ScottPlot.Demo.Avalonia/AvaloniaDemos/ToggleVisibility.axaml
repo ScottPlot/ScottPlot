@@ -1,0 +1,18 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="ScottPlot.Demo.Avalonia.AvaloniaDemos.ToggleVisibility"
+        xmlns:ScottPlot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
+		SizeToContent="WidthAndHeight"
+        Title="ToggleVisibility">
+	<DockPanel>
+		<StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+			<CheckBox Content="Sin" IsChecked="True" Margin="10" Name="sineCheckbox" />
+			<CheckBox Content="Cos" IsChecked="True" Margin="10" Name="cosineCheckbox" />
+			<CheckBox Content="Lines" IsChecked="True" Margin="10" Name="linesCheckbox" />
+		</StackPanel>
+		<ScottPlot:AvaPlot x:Name="avaPlot1" Height="300" Width="400"/>
+	</DockPanel>
+</Window>

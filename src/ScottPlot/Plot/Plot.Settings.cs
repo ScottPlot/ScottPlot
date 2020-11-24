@@ -1,5 +1,6 @@
 ﻿/* Code here customizes Plot behavior (not styling) */
 
+using ScottPlot.Ticks;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,34 +10,37 @@ namespace ScottPlot
 {
     partial class Plot
     {
-        private bool diagnosticMode = false;
-        public bool DiagnosticMode
+        private bool ValidateEveryPoint = false;
+        private ErrorAction ValidationErrorAction = ErrorAction.ShowErrorOnPlot;
+
+        public Settings GetSettings(bool showWarning = true)
         {
-            get => diagnosticMode;
-            set
-            {
-                if (value)
-                    Debug.WriteLine("WARNING: diagnostic mode is enabled, reducing performance");
-                else
-                    Debug.WriteLine("Diagnostic mode is disabled");
-                diagnosticMode = value;
-            }
+            if (showWarning)
+                Debug.WriteLine("WARNING: GetSettings() is only for development and testing. " +
+                                "Be aware its class structure changes frequently!");
+
+            return settings;
         }
 
-        public void AntiAlias(bool figure = true, bool data = false, bool legend = false)
+        public void Validate(bool everyDataPoint, ErrorAction action = ErrorAction.ShowErrorOnPlot)
         {
-            settings.misc.antiAliasFigure = figure;
-            settings.misc.antiAliasData = data;
-            settings.Legend.AntiAlias = legend;
+            ValidateEveryPoint = everyDataPoint;
+            ValidationErrorAction = action;
+            if (everyDataPoint)
+                Debug.WriteLine("WARNING: every data point will be validated on each render, reducing performance");
         }
+
+        [Obsolete("Disable anti-aliasing using the lowQuality argument in Render() or SaveFig()", true)]
+        public void AntiAlias(bool figure = true, bool data = false, bool legend = false) { }
 
         public void SetCulture(System.Globalization.CultureInfo culture)
         {
-            settings.culture = culture;
+            foreach (var axis in settings.Axes)
+                axis.Ticks.TickCollection.Culture = culture;
         }
 
         /// <summary>
-        /// Updates the used culture to match your requirements.
+        /// Updates the culture used for displaying numbers in tick labels
         /// </summary>
         /// <param name="shortDatePattern">
         /// https://docs.microsoft.com/dotnet/standard/base-types/custom-date-and-time-format-strings
@@ -65,29 +69,10 @@ namespace ScottPlot
             int? numberNegativePattern = null,
             int[] numberGroupSizes = null)
         {
-
-            // settings.culture may be null if the thread culture is the same is the system culture.
-            // If it is null, assigning it to a clone of the current culture solves this and also makes it mutable.
-            if (settings.culture is null)
-                settings.culture = (System.Globalization.CultureInfo)System.Globalization.CultureInfo.CurrentCulture.Clone();
-
-            if (shortDatePattern != null)
-                settings.culture.DateTimeFormat.ShortDatePattern = shortDatePattern;
-
-            if (decimalDigits != null)
-                settings.culture.NumberFormat.NumberDecimalDigits = decimalDigits.Value;
-
-            if (decimalSeparator != null)
-                settings.culture.NumberFormat.NumberDecimalSeparator = decimalSeparator;
-
-            if (numberGroupSeparator != null)
-                settings.culture.NumberFormat.NumberGroupSeparator = numberGroupSeparator;
-
-            if (numberGroupSizes != null)
-                settings.culture.NumberFormat.NumberGroupSizes = numberGroupSizes;
-
-            if (numberNegativePattern != null)
-                settings.culture.NumberFormat.NumberNegativePattern = numberNegativePattern.Value;
+            foreach (var axis in settings.Axes)
+                axis.Ticks.TickCollection.SetCulture(
+                        shortDatePattern, decimalSeparator, numberGroupSeparator,
+                        decimalDigits, numberNegativePattern, numberGroupSizes);
         }
     }
 }

@@ -29,14 +29,15 @@ pool:
 
 steps:
 
-### FAIL THE BUILD IF THE AUTOFORMATTER WAS NOT RUN
+### DEFINE .NET VERSION
 
 - task: UseDotNet@2
-  displayName: 'Acquire .NET Core 3'
-  condition: eq(variables['purpose'], 'autoformat')
+  displayName: 'Use .NET 5'
   inputs:
     packageType: 'sdk'
-    version: '3.x'
+    version: '5.x'
+
+### FAIL THE BUILD IF THE AUTOFORMATTER WAS NOT RUN
 
 - task: DotNetCoreCLI@2
   displayName: 'Install dotnet-format'
@@ -52,7 +53,7 @@ steps:
   inputs:
     command: 'custom'
     custom: 'format'
-    arguments: '-w src/ScottPlotV4.sln --dry-run --check --verbosity diagnostic'
+    arguments: '-w src/ScottPlot.sln --dry-run --check'
 
 ### INSTALL NUGET AND RESTORE PACKAGES
 
@@ -64,7 +65,7 @@ steps:
   displayName: 'Restore packages'
   condition: or(eq(variables['purpose'], 'library'), eq(variables['purpose'], 'solution'))
   inputs:
-    restoreSolution: 'src/ScottPlotV4.sln'
+    restoreSolution: 'src/ScottPlot.sln'
 
 ### BUILD THE CORE SCOTTPLOT LIBRARY AND DEMO AND RUN TESTS
 
@@ -80,21 +81,21 @@ steps:
   condition: eq(variables['purpose'], 'library')
   inputs:
     command: 'build'
-    projects: 'src/ScottPlot.Demo/ScottPlot.Demo.csproj'
+    projects: 'src/cookbook/ScottPlot.Demo/ScottPlot.Demo.csproj'
 
 - task: DotNetCoreCLI@2
   displayName: 'Build Tests'
   condition: eq(variables['purpose'], 'library')
   inputs:
     command: 'build'
-    projects: 'tests/ScottPlotTests.csproj'
+    projects: 'src/tests/ScottPlotTests.csproj'
 
 - task: DotNetCoreCLI@2
   displayName: 'Run Tests'
   condition: eq(variables['purpose'], 'library')
   inputs:
     command: test
-    projects: 'tests/ScottPlotTests.csproj'
+    projects: 'src/tests/ScottPlotTests.csproj'
 
 ### REBUILD FULL SOLUTION
     
@@ -102,5 +103,5 @@ steps:
   displayName: 'Build Release (Windows)'
   condition: eq(variables['purpose'], 'solution')
   inputs:
-    solution: 'src/ScottPlotV4.sln'
+    solution: 'src/ScottPlot.sln'
     configuration: 'release'

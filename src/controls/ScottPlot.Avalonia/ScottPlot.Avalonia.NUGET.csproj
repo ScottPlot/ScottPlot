@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFrameworks>net461;net472;netcoreapp3.0</TargetFrameworks>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <AssemblyName>ScottPlot.Avalonia</AssemblyName>
+    <RootNamespace>ScottPlot</RootNamespace>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+    <PackageIcon>icon.png</PackageIcon>
+    <Description>This package provides an Avalonia control to interactively display ScottPlot graphs in Avalonia applications. This package targets both .NET Framework and .NET Core.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>http://swharden.com/scottplot/</PackageProjectUrl>
+    <PackageTags>plot graph data chart signal line bar C# WPF control interactive</PackageTags>
+    <PackageReleaseNotes>Release notes: https://github.com/swharden/ScottPlot/releases
+Release cookbook: http://swharden.com/scottplot/cookbook
+Release demo: http://swharden.com/scottplot/demo</PackageReleaseNotes>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <Version>4.1.0-alpha</Version>
+    <AssemblyVersion>4.1.0.0</AssemblyVersion>
+    <FileVersion>4.1.0.0</FileVersion>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
+    <DelaySign>false</DelaySign>
+    <Authors>Scott Harden</Authors>
+    <Company>Harden Technologies, LLC</Company>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="0.9.11" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.9.11" />
+    <ProjectReference Include="..\ScottPlot\ScottPlot.csproj" />
+    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
+    <None Include="icon.png" Pack="true" PackagePath="\" />
+    <None Include="icon.ico" Pack="true" PackagePath="\" />
+  </ItemGroup>
+  
+</Project>

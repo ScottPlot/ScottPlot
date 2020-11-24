@@ -135,66 +135,6 @@ namespace ScottPlot
             return positions;
         }
 
-        [Obsolete]
-        public static Bitmap DesignerModeBitmap(Size size, bool drawArrows = false)
-        {
-            Bitmap bmp = new Bitmap(size.Width, size.Height);
-
-            Graphics gfx = Graphics.FromImage(bmp);
-            gfx.Clear(ColorTranslator.FromHtml("#003366"));
-            Brush brushLogo = new SolidBrush(ColorTranslator.FromHtml("#FFFFFF"));
-            Brush brushMeasurements = new SolidBrush(ColorTranslator.FromHtml("#006699"));
-            Pen pen = new Pen(ColorTranslator.FromHtml("#006699"), 3);
-            pen.StartCap = System.Drawing.Drawing2D.LineCap.Round;
-            pen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
-            float arrowSize = 7;
-            float padding = 3;
-
-            // logo
-            FontFamily ff = new FontFamily(Config.Fonts.GetDefaultFontName());
-            gfx.DrawString("ScottPlot", new Font(ff, 24, FontStyle.Bold), brushLogo, 10, 10);
-            var titleSize = Drawing.GDI.MeasureString(gfx, "ScottPlot", new Font(ff, 24, FontStyle.Bold));
-            gfx.DrawString($"version {GetVersionString()}", new Font(ff, 12, FontStyle.Italic), brushLogo, 12, (int)(10 + titleSize.Height * .7));
-
-            if (drawArrows)
-            {
-                // horizontal arrow
-                PointF left = new PointF(padding, size.Height / 2);
-                PointF leftA = new PointF(left.X + arrowSize, left.Y + arrowSize);
-                PointF leftB = new PointF(left.X + arrowSize, left.Y - arrowSize);
-                PointF right = new PointF(size.Width - padding, size.Height / 2);
-                PointF rightA = new PointF(right.X - arrowSize, right.Y + arrowSize);
-                PointF rightB = new PointF(right.X - arrowSize, right.Y - arrowSize);
-                gfx.DrawLine(pen, left, right);
-                gfx.DrawLine(pen, left, leftA);
-                gfx.DrawLine(pen, left, leftB);
-                gfx.DrawLine(pen, right, rightA);
-                gfx.DrawLine(pen, right, rightB);
-                gfx.DrawString($"{size.Width}px",
-                    new Font(ff, 12, FontStyle.Bold), brushMeasurements,
-                    (float)(size.Width * .2), (float)(size.Height * .5));
-
-                // vertical arrow
-                PointF top = new PointF(size.Width / 2, padding);
-                PointF topA = new PointF(top.X - arrowSize, top.Y + arrowSize);
-                PointF topB = new PointF(top.X + arrowSize, top.Y + arrowSize);
-                PointF bot = new PointF(size.Width / 2, size.Height - padding);
-                PointF botA = new PointF(bot.X - arrowSize, bot.Y - arrowSize);
-                PointF botB = new PointF(bot.X + arrowSize, bot.Y - arrowSize);
-                gfx.DrawLine(pen, top, bot);
-                gfx.DrawLine(pen, bot, botA);
-                gfx.DrawLine(pen, bot, botB);
-                gfx.DrawLine(pen, top, topA);
-                gfx.DrawLine(pen, top, topB);
-                gfx.RotateTransform(-90);
-                gfx.DrawString($"{size.Height}px",
-                    new Font(ff, 12, FontStyle.Bold), brushMeasurements,
-                    (float)(-size.Height * .4), (float)(size.Width * .5));
-            }
-
-            return bmp;
-        }
-
         private static double[] DoubleArray<T>(T[] dataIn)
         {
             double[] dataOut = new double[dataIn.Length];
@@ -406,6 +346,7 @@ namespace ScottPlot
             return output;
         }
 
+
         public static string ToDifferentBase(double number, int radix = 16, int decimalPlaces = 3, int padInteger = 0, bool dropTrailingZeroes = true)
         {
             if (number < 0)
@@ -418,7 +359,7 @@ namespace ScottPlot
             }
 
             char[] symbols = "0123456789ABCDEF".ToCharArray();
-            if (radix > symbols.Length)
+            if (radix > symbols.Length || radix <= 1)
             {
                 throw new ArgumentOutOfRangeException(nameof(radix));
             }
@@ -437,7 +378,14 @@ namespace ScottPlot
 
             for (int i = 0; i < integerLength; i++)
             {
-                output = symbols[(int)(number % radix)] + output;
+                if (number == radix && padInteger == 0)
+                {
+                    output = "10" + output;
+                }
+                else
+                {
+                    output = symbols[(int)(number % radix)] + output;
+                }
                 number /= radix;
             }
 
@@ -448,6 +396,10 @@ namespace ScottPlot
 
             if (decimalLength != 0)
             {
+                if (output == "")
+                {
+                    output += "0";
+                }
                 output += ".";
                 output += ToDifferentBase(Math.Round(decimalPart * Math.Pow(radix, decimalPlaces)), radix, decimalPlaces, decimalPlaces);
                 if (dropTrailingZeroes)

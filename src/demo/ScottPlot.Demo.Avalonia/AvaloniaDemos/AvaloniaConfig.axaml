@@ -1,0 +1,29 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ScottPlot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="ScottPlot.Demo.Avalonia.AvaloniaDemos.AvaloniaConfig"
+        Title="AvaloniaConfig">
+	<DockPanel>
+		<StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+			<StackPanel Margin="0, 0, 20, 0">
+				<CheckBox Content="Pannable" Margin="5" IsChecked="True" Checked="PanEnable" Unchecked="PanDisable"/>
+				<CheckBox Content="Zoomable" Margin="5" IsChecked="True" Checked="ZoomEnable" Unchecked="ZoomDisable"/>
+				<CheckBox Content="Low quality while dragging" Margin="5" IsChecked="True" Checked="DragLowQualityEnable" Unchecked="DragLowQualityDisable"/>
+			</StackPanel>
+			<StackPanel Margin="0, 0, 20, 0">
+				<CheckBox Content="Lock vertical axis" Margin="5" Checked="VerticalLock" Unchecked="VerticalUnlock"/>
+				<CheckBox Content="Lock horizontal axis" Margin="5" Checked="HorizontalLock" Unchecked="HorizontalUnlock"/>
+				<CheckBox Content="Equal axes" Margin="5" Checked="EqualAxisLock" Unchecked="EqualAxisUnlock"/>
+			</StackPanel>
+			<StackPanel Margin="0, 0, 20, 0">
+				<CheckBox Content="Right-click menu" Margin="5" IsChecked="True" Checked="RightClickMenuEnable" Unchecked="RightClickMenuDisable" IsEnabled="False"/>
+				<CheckBox Content="Custom right-click" Margin="5" Checked="CustomRightClickEnable" Unchecked="CustomRightClickDisable" IsEnabled="False"/>
+				<CheckBox Content="Double-click Benchmark" Margin="5" IsChecked="True" Checked="DoubleClickBenchmarkEnable" Unchecked="DoubleClickBenchmarkDisable"/>
+			</StackPanel>
+		</StackPanel>
+		<ScottPlot:AvaPlot Name="avaPlot1"/>
+	</DockPanel>
+</Window>

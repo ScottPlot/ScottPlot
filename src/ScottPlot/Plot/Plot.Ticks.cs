@@ -1,4 +1,5 @@
 ﻿/* Code here customizes tick styling and behavior */
+using ScottPlot.Ticks;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -8,6 +9,9 @@ namespace ScottPlot
 {
     partial class Plot
     {
+        /// <summary>
+        /// Configure the style and behavior of X and Y ticks
+        /// </summary>
         public void Ticks(
             bool? displayTicksX = null,
             bool? displayTicksY = null,
@@ -41,84 +45,65 @@ namespace ScottPlot
             string dateTimeFormatStringY = null
             )
         {
-            if (displayTicksX != null)
-                settings.ticks.displayXmajor = (bool)displayTicksX;
-            if (displayTicksY != null)
-                settings.ticks.displayYmajor = (bool)displayTicksY;
-            if (color != null)
-                settings.ticks.color = (Color)color;
-            if (useMultiplierNotation != null)
-                settings.ticks.useMultiplierNotation = (bool)useMultiplierNotation;
-            if (useOffsetNotation != null)
-                settings.ticks.useOffsetNotation = (bool)useOffsetNotation;
-            if (useExponentialNotation != null)
-                settings.ticks.useExponentialNotation = (bool)useExponentialNotation;
-            if (displayTicksXminor != null)
-                settings.ticks.displayXminor = (bool)displayTicksXminor;
-            if (displayTicksYminor != null)
-                settings.ticks.displayYminor = (bool)displayTicksYminor;
-            if (dateTimeX != null)
-                settings.ticks.x.dateFormat = (bool)dateTimeX;
-            if (dateTimeY != null)
-                settings.ticks.y.dateFormat = (bool)dateTimeY;
-            if (rulerModeX != null)
-                settings.ticks.rulerModeX = (bool)rulerModeX;
-            if (rulerModeY != null)
-                settings.ticks.rulerModeY = (bool)rulerModeY;
-            if (invertSignX != null)
-                settings.ticks.x.invertSign = (bool)invertSignX;
-            if (invertSignY != null)
-                settings.ticks.y.invertSign = (bool)invertSignY;
-            if (fontSize != null)
-                settings.ticks.fontSize = (float)fontSize;
-            if (fontName != null)
-                settings.ticks.fontName = fontName;
-            if (displayTickLabelsX != null)
-                settings.ticks.displayXlabels = (bool)displayTickLabelsX;
-            if (displayTickLabelsY != null)
-                settings.ticks.displayYlabels = (bool)displayTickLabelsY;
-            if (xTickRotation != null)
-                settings.ticks.rotationX = xTickRotation.Value;
-            if (logScaleX != null)
-                settings.ticks.x.logScale = logScaleX.Value;
-            if (logScaleY != null)
-                settings.ticks.y.logScale = logScaleY.Value;
-            if (numericFormatStringX != null)
-                settings.ticks.x.numericFormatString = numericFormatStringX;
-            if (numericFormatStringY != null)
-                settings.ticks.y.numericFormatString = numericFormatStringY;
-            if (snapToNearestPixel != null)
-                settings.ticks.snapToNearestPixel = snapToNearestPixel.Value;
-            if (dateTimeFormatStringX != null)
-                settings.ticks.x.dateTimeFormatString = dateTimeFormatStringX;
-            if (dateTimeFormatStringY != null)
-                settings.ticks.y.dateTimeFormatString = dateTimeFormatStringY;
+            settings.XAxis.Configure(showMajorTicks: displayTicksX);
+            settings.XAxis.Configure(showMinorTicks: displayTicksX);
+            settings.XAxis.Configure(showLabels: displayTicksX);
+            settings.YAxis.Configure(showMajorTicks: displayTicksY);
+            settings.YAxis.Configure(showMinorTicks: displayTicksY);
+            settings.YAxis.Configure(showLabels: displayTicksY);
 
-            if (baseX != null)
-            {
-                settings.ticks.x.radix = baseX.Value;
-                settings.ticks.x.prefix = prefixX;
-            }
-            if (baseY != null)
-            {
-                settings.ticks.y.radix = baseY.Value;
-                settings.ticks.y.prefix = prefixY;
-            }
+            settings.XAxis.Configure(showMinorTicks: displayTicksXminor);
+            settings.YAxis.Configure(showMinorTicks: displayTicksYminor);
+            settings.XAxis.Configure(showLabels: displayTickLabelsX);
+            settings.YAxis.Configure(showLabels: displayTickLabelsY);
 
-            // dont use offset notation if the sign is inverted
-            if (settings.ticks.x.invertSign || settings.ticks.y.invertSign)
-                settings.ticks.useOffsetNotation = false;
+            settings.XAxis.Configure(color: color);
+            settings.YAxis.Configure(color: color);
 
-            if (dateTimeX != null || dateTimeY != null)
-            {
-                // why these in this order? voodoo magic
-                TightenLayout();
-                RenderBitmap();
-            }
+            settings.XAxis.Configure(useMultiplierNotation: useMultiplierNotation);
+            settings.YAxis.Configure(useMultiplierNotation: useMultiplierNotation);
+            settings.XAxis.Configure(useOffsetNotation: useOffsetNotation);
+            settings.YAxis.Configure(useOffsetNotation: useOffsetNotation);
+            settings.XAxis.Configure(useExponentialNotation: useExponentialNotation);
+            settings.YAxis.Configure(useExponentialNotation: useExponentialNotation);
 
-            TightenLayout();
+            settings.XAxis.Configure(dateTime: dateTimeX);
+            settings.YAxis.Configure(dateTime: dateTimeY);
+
+            settings.XAxis.Configure(rulerMode: rulerModeX);
+            settings.YAxis.Configure(rulerMode: rulerModeY);
+            settings.XAxis.Configure(invertSign: invertSignX);
+            settings.YAxis.Configure(invertSign: invertSignY);
+
+            settings.XAxis.Configure(fontName: fontName);
+            settings.YAxis.Configure(fontName: fontName);
+            settings.XAxis.Configure(fontSize: fontSize);
+            settings.YAxis.Configure(fontSize: fontSize);
+
+            settings.XAxis.Configure(rotation: xTickRotation);
+
+            settings.XAxis.Configure(logScale: logScaleX);
+            settings.YAxis.Configure(logScale: logScaleY);
+
+            settings.XAxis.Configure(numericFormatString: numericFormatStringX);
+            settings.YAxis.Configure(numericFormatString: numericFormatStringY);
+
+            settings.XAxis.Configure(snapToNearestPixel: snapToNearestPixel);
+            settings.YAxis.Configure(snapToNearestPixel: snapToNearestPixel);
+
+            settings.XAxis.Configure(radix: baseX);
+            settings.YAxis.Configure(radix: baseY);
+
+            settings.XAxis.Configure(prefix: prefixX);
+            settings.YAxis.Configure(prefix: prefixY);
+
+            settings.XAxis.Configure(dateTimeFormatString: dateTimeFormatStringX);
+            settings.YAxis.Configure(dateTimeFormatString: dateTimeFormatStringY);
         }
 
+        /// <summary>
+        /// Manually define X axis tick labels
+        /// </summary>
         public void XTicks(string[] labels)
         {
             if (labels is null)
@@ -127,13 +112,18 @@ namespace ScottPlot
             XTicks(DataGen.Consecutive(labels.Length), labels);
         }
 
+        /// <summary>
+        /// Manually define X axis tick positions and labels
+        /// </summary>
         public void XTicks(double[] positions = null, string[] labels = null)
         {
-            TightenLayout();
-            settings.ticks.x.manualTickPositions = positions;
-            settings.ticks.x.manualTickLabels = labels;
+            settings.XAxis.Ticks.TickCollection.manualTickPositions = positions;
+            settings.XAxis.Ticks.TickCollection.manualTickLabels = labels;
         }
 
+        /// <summary>
+        /// Manually define Y axis tick labels
+        /// </summary>
         public void YTicks(string[] labels)
         {
             if (labels is null)
@@ -142,11 +132,13 @@ namespace ScottPlot
             YTicks(DataGen.Consecutive(labels.Length), labels);
         }
 
+        /// <summary>
+        /// Manually define Y axis tick positions and labels
+        /// </summary>
         public void YTicks(double[] positions = null, string[] labels = null)
         {
-            TightenLayout();
-            settings.ticks.y.manualTickPositions = positions;
-            settings.ticks.y.manualTickLabels = labels;
+            settings.YAxis.Ticks.TickCollection.manualTickPositions = positions;
+            settings.YAxis.Ticks.TickCollection.manualTickLabels = labels;
         }
     }
 }

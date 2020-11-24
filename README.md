@@ -1,6 +1,7 @@
 # ScottPlot
 
 [![](https://img.shields.io/azure-devops/build/swharden/swharden/2?label=Build&logo=azure%20pipelines)](https://dev.azure.com/swharden/swharden/_build/latest?definitionId=2&branchName=master)
+[![](https://img.shields.io/azure-devops/tests/swharden/swharden/2?label=Tests&logo=azure%20pipelines)](https://dev.azure.com/swharden/swharden/_build/latest?definitionId=2&branchName=master)
 [![](https://img.shields.io/nuget/dt/ScottPlot?color=004880&label=Installs&logo=nuget)](https://www.nuget.org/packages/ScottPlot/)
 [![Nuget](https://img.shields.io/nuget/v/scottplot?label=NuGet&logo=nuget)](https://www.nuget.org/packages/ScottPlot/)
 
@@ -10,8 +11,10 @@
 
 * **[ScottPlot Cookbook](https://swharden.com/scottplot/cookbook)** 👈 _Learn how to use ScottPlot_
 
+* **If you enjoy ScottPlot, give us a star! ⭐**
+
 <div align='center'>
-<img src='dev/nuget/ScottPlot.gif'>
+<img src='dev/graphics/ScottPlot.gif'>
 </div>
 
 ### Quickstart
@@ -28,13 +31,16 @@
 
 ### Miscellaneous
 
-* **If you enjoy ScottPlot, give us a star! ⭐**
-
-* **New features** are listed on the [releases](https://github.com/swharden/ScottPlot/releases) page
-
+* **New features** are on the [**releases page**](https://github.com/swharden/ScottPlot/releases)
+* **The [ScottPlot Roadmap](dev/roadmap.md)** summarizes ScottPlot's origins and discusses future goals
 * **Contributions are welcome!** See [contributing.md](CONTRIBUTING.md) to get started
-
 * **Build ScottPlot from source** with notes in [src/readme.md](src)
+
+### ScottPlot 4.1 (November, 2020)
+
+* The master branch of this repository holds source code for ScottPlot `4.1-beta` (pre-release)
+* See [dev/roadmap.md](dev/roadmap.md) for details about this transition and [dev/changelog.md](dev/changelog.md) for a description of new features
+* Source code for previous versions can be downloaded from [releases](https://github.com/swharden/ScottPlot/releases) or [branches](https://github.com/swharden/ScottPlot/branches)
 
 ### About ScottPlot
 
