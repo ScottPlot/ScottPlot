@@ -107,53 +107,38 @@ namespace ScottPlot
 
             if (!settings.layout.tighteningOccurred)
             {
-                // ticks must be populated before the layout can be tightened
                 Renderer.FigureTicks(settings);
                 TightenLayout();
-                // only after the layout is tightened can the ticks be properly decided
             }
+
+            if (settings.gfxFigure is null)
+                return;
 
             settings.Benchmark.Start();
-            StringBuilder errorMessages = new StringBuilder();
+            settings.gfxFigure.SmoothingMode = settings.misc.antiAliasFigure ? SmoothingMode.AntiAlias : SmoothingMode.None;
+            settings.gfxFigure.TextRenderingHint = settings.misc.antiAliasFigure ? TextRenderingHint.AntiAliasGridFit : TextRenderingHint.SingleBitPerPixelGridFit;
+            settings.FigureBackground.Render(settings);
+            Renderer.FigureLabels(settings);
+            Renderer.FigureTicks(settings);
+            Renderer.FigureFrames(settings);
 
-            if (settings.gfxFigure != null)
-            {
-                settings.gfxFigure.SmoothingMode = settings.misc.antiAliasFigure ? SmoothingMode.AntiAlias : SmoothingMode.None;
-                settings.gfxFigure.TextRenderingHint = settings.misc.antiAliasFigure ? TextRenderingHint.AntiAliasGridFit : TextRenderingHint.SingleBitPerPixelGridFit;
-                settings.FigureBackground.Render(settings);
-                Renderer.FigureLabels(settings);
-                Renderer.FigureTicks(settings);
-                Renderer.FigureFrames(settings);
-            }
+            if (settings.gfxData is null)
+                return;
 
-            if (settings.gfxData != null)
-            {
-                settings.gfxData.SmoothingMode = settings.misc.antiAliasData ? SmoothingMode.AntiAlias : SmoothingMode.None;
-                settings.gfxData.TextRenderingHint = settings.misc.antiAliasData ? TextRenderingHint.AntiAliasGridFit : TextRenderingHint.SingleBitPerPixelGridFit;
-                settings.DataBackground.Render(settings);
-                settings.HorizontalGridLines.Render(settings);
-                settings.VerticalGridLines.Render(settings);
+            settings.gfxData.SmoothingMode = settings.misc.antiAliasData ? SmoothingMode.AntiAlias : SmoothingMode.None;
+            settings.gfxData.TextRenderingHint = settings.misc.antiAliasData ? TextRenderingHint.AntiAliasGridFit : TextRenderingHint.SingleBitPerPixelGridFit;
+            settings.DataBackground.Render(settings);
+            settings.HorizontalGridLines.Render(settings);
+            settings.VerticalGridLines.Render(settings);
 
-                foreach (var plottable in settings.plottables)
-                {
-                    if (plottable is IPlottable p)
-                    {
-                        if (p.IsValidData(deepValidation: diagnosticMode) == false)
-                            errorMessages.AppendLine(p.ValidationErrorMessage);
-                    }
-                }
-
-                Renderer.DataPlottables(settings);
-                Renderer.MouseZoomRectangle(settings);
-                Renderer.PlaceDataOntoFigure(settings);
-                settings.Legend.Render(settings);
-            }
+            Renderer.DataPlottables(settings);
+            Renderer.MouseZoomRectangle(settings);
+            Renderer.PlaceDataOntoFigure(settings);
+            settings.Legend.Render(settings);
 
             settings.Benchmark.Stop();
             settings.Benchmark.UpdateMessage(settings.plottables.Count, settings.GetTotalPointCount());
             settings.Benchmark.Render(settings);
-            settings.ErrorMessage.Text = errorMessages.ToString();
-            settings.ErrorMessage.Render(settings);
         }
 
         public Bitmap GetBitmap(bool renderFirst = true, bool lowQuality = false)
