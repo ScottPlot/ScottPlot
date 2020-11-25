@@ -48,7 +48,6 @@
             this.Controls.Add(this.formsPlot1);
             this.Name = "FormSandbox";
             this.Text = "ScottPlot Sandbox - Windows Forms";
-            this.Load += new System.EventHandler(this.FormSandbox_Load);
             this.ResumeLayout(false);
 
         }
