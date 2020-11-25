@@ -1,5 +1,9 @@
 # ScottPlot 4.0 Changelog
 
+## ScottPlot 4.0.45
+* Fixed a bug that affected very small plots with the benchmark enabled (#626) _Thanks @martin-brajer_
+* Improved labels in bar graphs using a yOffset (#584) _Thanks Terbaco_
+
 ## ScottPlot 4.0.44
 * Improved limits for fixed-size axis spans (#586) _Thanks @citizen3942 and @StendProg_
 * Mouse drag/drop events now send useful event arguments (#593) _Thanks @charlescao460 and @StendProg_

@@ -176,7 +176,7 @@ namespace ScottPlot
                 using (var valueTextFont = GDI.Font(FontName, FontSize, FontBold))
                 using (var valueTextBrush = GDI.Brush(FontColor))
                 using (var sf = new StringFormat() { LineAlignment = StringAlignment.Far, Alignment = StringAlignment.Center })
-                    gfx.DrawString(value.ToString(), valueTextFont, valueTextBrush, centerPx, rect.Y, sf);
+                    gfx.DrawString((value + yOffset).ToString(), valueTextFont, valueTextBrush, centerPx, rect.Y, sf);
         }
 
         private void RenderBarHorizontal(PlotDimensions dims, Graphics gfx, double position, double value, double valueError, double yOffset)
@@ -223,7 +223,7 @@ namespace ScottPlot
                 using (var valueTextFont = GDI.Font(FontName, FontSize, FontBold))
                 using (var valueTextBrush = GDI.Brush(FontColor))
                 using (var sf = new StringFormat() { LineAlignment = StringAlignment.Center, Alignment = StringAlignment.Near })
-                    gfx.DrawString(value.ToString(), valueTextFont, valueTextBrush, rect.X + rect.Width, centerPx, sf);
+                    gfx.DrawString((value + yOffset).ToString(), valueTextFont, valueTextBrush, rect.X + rect.Width, centerPx, sf);
         }
 
         public override string ToString()
