@@ -242,5 +242,17 @@ namespace ScottPlot.Demo.Customize
                 plt.Legend();
             }
         }
+
+        public class RotatedTickLabels : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Rotated Tick Labels";
+            public string description { get; } = "Axis tick labels can be rotated";
+
+            public void Render(Plot plt)
+            {
+                plt.PlotSignal(DataGen.Sin(51));
+                plt.Ticks(xTickRotation: -45); // TODO: rotations other than 0-90 look bad!
+            }
+        }
     }
 }
