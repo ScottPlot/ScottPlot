@@ -45,6 +45,8 @@ namespace ScottPlot.Renderable
         public readonly AxisTicks Ticks = new AxisTicks();
         public readonly AxisLine Line = new AxisLine();
 
+        public override string ToString() => $"{Edge} axis from {Dims.Min} to {Dims.Max}";
+
         public void RecalculateTickPositions(PlotDimensions dims)
         {
             Ticks.TickCollection.Recalculate(dims, Ticks.MajorLabelFont);
