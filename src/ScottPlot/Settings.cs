@@ -3,6 +3,7 @@ using ScottPlot.Plottable;
 using ScottPlot.Renderable;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 
@@ -120,8 +121,25 @@ namespace ScottPlot
         /// </summary>
         public void AxesPanPx(float dxPx, float dyPx)
         {
-            foreach (Axis axis in Axes)
-                axis.Dims.PanPx(axis.IsHorizontal ? dxPx : dyPx);
+            List<int> modifiedXs = new List<int>();
+            foreach (Axis axis in Axes.Where(x => x.IsHorizontal))
+            {
+                if (!modifiedXs.Contains(axis.AxisIndex))
+                {
+                    axis.Dims.PanPx(axis.IsHorizontal ? dxPx : dyPx);
+                    modifiedXs.Add(axis.AxisIndex);
+                }
+            }
+
+            List<int> modifiedYs = new List<int>();
+            foreach (Axis axis in Axes.Where(x => x.IsVertical))
+            {
+                if (!modifiedYs.Contains(axis.AxisIndex))
+                {
+                    axis.Dims.PanPx(axis.IsHorizontal ? dxPx : dyPx);
+                    modifiedYs.Add(axis.AxisIndex);
+                }
+            }
         }
 
         /// <summary>
@@ -164,12 +182,34 @@ namespace ScottPlot
         /// </summary>
         public void AxisAutoUnsetAxes()
         {
-            foreach (Axis axis in Axes.Where(x => x.Dims.HasBeenSet == false))
+            /* Extra logic here ensures axes index only get auto-set once 
+             * in the case that multiple axes share the same axis index
+             */
+
+            var xAxes = Axes.Where(x => x.IsHorizontal);
+            var yAxes = Axes.Where(x => x.IsVertical);
+
+            var setIndexesX = xAxes.Where(x => x.Dims.HasBeenSet).Select(x => x.AxisIndex).Distinct().ToList();
+            var setIndexesY = yAxes.Where(x => x.Dims.HasBeenSet).Select(x => x.AxisIndex).Distinct().ToList();
+
+            foreach (Axis axis in xAxes)
             {
-                if (axis.IsHorizontal)
-                    AxisAutoX(axis.AxisIndex);
-                else
-                    AxisAutoY(axis.AxisIndex);
+                if (axis.Dims.HasBeenSet)
+                    continue;
+                if (setIndexesX.Contains(axis.AxisIndex))
+                    continue;
+                setIndexesX.Add(axis.AxisIndex);
+                AxisAutoX(axis.AxisIndex);
+            }
+
+            foreach (Axis axis in yAxes)
+            {
+                if (axis.Dims.HasBeenSet)
+                    continue;
+                if (setIndexesY.Contains(axis.AxisIndex))
+                    continue;
+                setIndexesY.Add(axis.AxisIndex);
+                AxisAutoY(axis.AxisIndex);
             }
         }
 
