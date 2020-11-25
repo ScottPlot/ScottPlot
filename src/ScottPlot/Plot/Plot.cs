@@ -98,8 +98,32 @@ namespace ScottPlot
             }
         }
 
+        private bool IsRenderLocked = false;
+
+        /// <summary>
+        /// Wait for the current render to finish, then prevent future renders until RenderUnlock() is called.
+        /// </summary>
+        public void RenderLock()
+        {
+            IsRenderLocked = true; // prevent new renders from starting
+            while (IsRendering) { } // wait for the current render to finish
+        }
+
+        /// <summary>
+        /// Release the render lock, allowing renders to proceed.
+        /// </summary>
+        public void RenderUnlock()
+        {
+            IsRenderLocked = false; // allow new renders to occur
+        }
+
+        private bool IsRendering = false;
         private void RenderBitmap()
         {
+            while (IsRenderLocked) { }
+
+            IsRendering = true;
+
             if (!settings.axes.hasBeenSet)
                 settings.AxisAuto();
             else
@@ -112,7 +136,10 @@ namespace ScottPlot
             }
 
             if (settings.gfxFigure is null)
+            {
+                IsRendering = false;
                 return;
+            }
 
             settings.Benchmark.Start();
             settings.gfxFigure.SmoothingMode = settings.misc.antiAliasFigure ? SmoothingMode.AntiAlias : SmoothingMode.None;
@@ -123,7 +150,10 @@ namespace ScottPlot
             Renderer.FigureFrames(settings);
 
             if (settings.gfxData is null)
+            {
+                IsRendering = false;
                 return;
+            }
 
             settings.gfxData.SmoothingMode = settings.misc.antiAliasData ? SmoothingMode.AntiAlias : SmoothingMode.None;
             settings.gfxData.TextRenderingHint = settings.misc.antiAliasData ? TextRenderingHint.AntiAliasGridFit : TextRenderingHint.SingleBitPerPixelGridFit;
@@ -139,6 +169,8 @@ namespace ScottPlot
             settings.Benchmark.Stop();
             settings.Benchmark.UpdateMessage(settings.plottables.Count, settings.GetTotalPointCount());
             settings.Benchmark.Render(settings);
+
+            IsRendering = false;
         }
 
         public Bitmap GetBitmap(bool renderFirst = true, bool lowQuality = false)

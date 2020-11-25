@@ -3,6 +3,7 @@
 ## ScottPlot 4.0.45
 * Fixed a bug that affected very small plots with the benchmark enabled (#626) _Thanks @martin-brajer_
 * Improved labels in bar graphs using a yOffset (#584) _Thanks Terbaco_
+* Added RenderLock() and RenderUnlock() to the Plot module to facilitate multi-threaded plot modification (#609) _Thanks @ZTaiIT1025_
 
 ## ScottPlot 4.0.44
 * Improved limits for fixed-size axis spans (#586) _Thanks @citizen3942 and @StendProg_
