@@ -22,12 +22,10 @@ namespace ScottPlotTests.Concurrency
             ScottPlot.Plot plt = (ScottPlot.Plot)data;
             while (ContinueModifyingPlottables)
             {
-                // wait for the current render to complete before modifying the plot
-                while (plt.IsRendering) { /* wait */}
-
-                // then be quick to modify it when you do
+                plt.RenderLock();
                 plt.Clear();
                 plt.PlotSignal(new double[] { 1, 2, 3 });
+                plt.RenderUnlock();
             }
             Debug.WriteLine("Modification thread shutting down...");
             Thread.Sleep(100);

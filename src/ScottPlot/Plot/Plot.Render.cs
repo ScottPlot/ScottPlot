@@ -8,6 +8,9 @@ namespace ScottPlot
 {
     partial class Plot
     {
+        private bool IsRendering = false; // Becomes true only while the render loop is running and not locked
+        private bool IsRenderLocked = false; // RenderBitmap() will hang infinitely while this is true
+
         [Obsolete("Call the Render() method", true)]
         public Bitmap GetBitmap() => null;
 
@@ -23,16 +26,32 @@ namespace ScottPlot
         public Bitmap Render(int width, int height, bool lowQuality = false) =>
             Render(new Bitmap(Math.Max(1, width), Math.Max(1, height), PixelFormat.Format32bppPArgb), lowQuality);
 
-        public bool IsRendering { get; private set; }
+        /// <summary>
+        /// Wait for the current render to finish, then prevent future renders until RenderUnlock() is called.
+        /// </summary>
+        public void RenderLock()
+        {
+            IsRenderLocked = true; // prevent new renders from starting
+            while (IsRendering) { } // wait for the current render to finish
+        }
+
+        /// <summary>
+        /// Release the render lock, allowing renders to proceed.
+        /// </summary>
+        public void RenderUnlock()
+        {
+            IsRenderLocked = false; // allow new renders to occur
+        }
 
         /// <summary>
         /// Render the plot onto an existing bitmap
         /// </summary>
         public Bitmap Render(Bitmap bmp, bool lowQuality = false)
         {
+            while (IsRenderLocked) { }
             IsRendering = true;
-            settings.BenchmarkMessage.Restart();
 
+            settings.BenchmarkMessage.Restart();
             settings.Resize(bmp.Width, bmp.Height);
             settings.CopyPrimaryLayoutToAllAxes();
             settings.AxisAutoUnsetAxes();
