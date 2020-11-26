@@ -190,6 +190,10 @@ namespace ScottPlot.Plottable
                     PointsToDraw[PointsToDraw.Length - 1] = new PointF(x1, y1);
                 }
 
+                // correct points for data offset
+                for (int i = 0; i < PointsToDraw.Length; i++)
+                    PointsToDraw[i].X += dims.DataOffsetX;
+
                 // Draw lines
                 if (PointsToDraw.Length > 1)
                     gfx.DrawLines(penHD, PointsToDraw.ToArray());
