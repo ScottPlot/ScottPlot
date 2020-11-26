@@ -1,6 +1,7 @@
 ﻿using ScottPlot.Drawing;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -52,11 +53,12 @@ namespace ScottPlot.Plottable
 
         }
 
-        public AxisLimits GetLimits()
+        public override AxisLimits GetAxisLimits()
         {
-            var baseLimits = GetAxisLimits();
+            var baseLimits = base.GetAxisLimits();
             var newXMin = Convert.ToDouble(xs[minRenderIndex]);
             var newXMax = Convert.ToDouble(xs[maxRenderIndex]);
+            Debug.WriteLine($"Limits: {newXMin} {newXMax}");
             return new AxisLimits(newXMin, newXMax, baseLimits.YMin, baseLimits.YMax);
         }
 

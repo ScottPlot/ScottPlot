@@ -187,7 +187,7 @@ namespace ScottPlot.Plottable
             updateData(0, newData.Length, newData);
         }
 
-        public AxisLimits GetAxisLimits()
+        public virtual AxisLimits GetAxisLimits()
         {
             double xMin = _samplePeriod * minRenderIndex;
             double xMax = _samplePeriod * maxRenderIndex;
