@@ -6,6 +6,7 @@
         public readonly double XMax;
         public readonly double YMin;
         public readonly double YMax;
+        public override string ToString() => $"AxisLimits: x=[{XMin}, {XMax}] y=[{YMin}, {YMax}]";
 
         public readonly double XSpan;
         public readonly double YSpan;
