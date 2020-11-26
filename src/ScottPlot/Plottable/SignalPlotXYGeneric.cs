@@ -99,7 +99,7 @@ namespace ScottPlot.Plottable
 
         public override void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            using (Graphics gfx = Graphics.FromImage(bmp))
+            using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (var brush = new SolidBrush(color))
             using (var penHD = GDI.Pen(color, (float)lineWidth, LineStyle.Solid, true))
             {
