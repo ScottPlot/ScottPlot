@@ -72,7 +72,7 @@ namespace ScottPlot.Plottable
         public void ValidateData(bool deep = false)
         {
             if (popMultiSeries is null)
-                throw new NoNullAllowedException();
+                throw new InvalidOperationException("population multi-series cannot be null");
         }
 
         public LegendItem[] GetLegendItems() => popMultiSeries.multiSeries

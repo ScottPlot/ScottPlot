@@ -95,7 +95,7 @@ namespace ScottPlot.Plottable
         public void ValidateData(bool deepValidation = false)
         {
             if (function is null)
-                throw new NoNullAllowedException("function cannot be null");
+                throw new InvalidOperationException("function cannot be null");
         }
 
         public override string ToString()

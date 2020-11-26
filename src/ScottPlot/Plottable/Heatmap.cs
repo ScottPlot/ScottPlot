@@ -1,9 +1,6 @@
-﻿using ScottPlot.Ticks;
-using ScottPlot.Drawing;
-using ScottPlot.Renderable;
+﻿using ScottPlot.Drawing;
 using System;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -139,7 +136,7 @@ namespace ScottPlot.Plottable
         {
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             {
-                gfx.InterpolationMode = InterpolationMode.NearestNeighbor;
+                gfx.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
 
                 double minScale = Math.Min(dims.PxPerUnitX, dims.PxPerUnitY);
 
@@ -174,7 +171,7 @@ namespace ScottPlot.Plottable
             using (var font = GDI.Font(null, 12))
             using (var sf2 = new StringFormat() { LineAlignment = StringAlignment.Far })
             {
-                gfx.InterpolationMode = InterpolationMode.NearestNeighbor;
+                gfx.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
 
                 float pxFromBottom = 30;
                 float pxFromRight = dims.Width - 150;

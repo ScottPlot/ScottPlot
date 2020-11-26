@@ -35,16 +35,16 @@ namespace ScottPlot.Plottable
         public void ValidateData(bool deep = false)
         {
             if (groupNames != null && groupNames.Length != normalized.GetLength(0))
-                throw new ArgumentException("group names must match size of values");
+                throw new InvalidOperationException("group names must match size of values");
 
             if (fillColors.Length != normalized.GetLength(0))
-                throw new ArgumentException("fill colors array must match size of values");
+                throw new InvalidOperationException("fill colors array must match size of values");
 
             if (lineColors.Length != normalized.GetLength(0))
-                throw new ArgumentException("line colors array must match size of values");
+                throw new InvalidOperationException("line colors array must match size of values");
 
             if (categoryNames != null && categoryNames.Length != normalized.GetLength(1))
-                throw new ArgumentException("category names must match size of values");
+                throw new InvalidOperationException("category names must match size of values");
         }
 
         /// <summary>

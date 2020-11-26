@@ -81,16 +81,16 @@ namespace ScottPlot.Plottable
         public void ValidateData(bool deep = false)
         {
             if (double.IsNaN(x) || double.IsNaN(y))
-                throw new NotFiniteNumberException("X and Y cannot be NaN");
+                throw new InvalidOperationException("X and Y cannot be NaN");
 
             if (double.IsInfinity(x) || double.IsInfinity(y))
-                throw new NotFiniteNumberException("X and Y cannot be Infinity");
+                throw new InvalidOperationException("X and Y cannot be Infinity");
 
             if (double.IsInfinity(rotation) || double.IsInfinity(rotation))
-                throw new NotFiniteNumberException("Rotation cannot be Infinity");
+                throw new InvalidOperationException("Rotation cannot be Infinity");
 
             if (string.IsNullOrWhiteSpace(text))
-                throw new NoNullAllowedException("text cannot be null or whitespace");
+                throw new InvalidOperationException("text cannot be null or whitespace");
         }
 
         /// <summary>

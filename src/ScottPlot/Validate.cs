@@ -16,10 +16,10 @@ namespace ScottPlot
             label = ValidLabel(label);
 
             if (double.IsNaN(value))
-                throw new ArgumentException($"{label} is NaN");
+                throw new InvalidOperationException($"{label} is NaN");
 
             if (double.IsInfinity(value))
-                throw new ArgumentException($"{label} is infinity");
+                throw new InvalidOperationException($"{label} is infinity");
         }
 
         /// <summary>
@@ -30,11 +30,11 @@ namespace ScottPlot
             label = ValidLabel(label);
 
             if (values is null)
-                throw new ArgumentException($"{label} must not be null");
+                throw new InvalidOperationException($"{label} must not be null");
 
             for (int i = 0; i < values.Length; i++)
                 if (double.IsNaN(values[i]) || double.IsInfinity(values[i]))
-                    throw new ArgumentException($"{label} index {i} is invalid ({values[i]})");
+                    throw new InvalidOperationException($"{label} index {i} is invalid ({values[i]})");
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace ScottPlot
             else if (typeof(T) == typeof(float))
                 AssertAllReal(label, (float[])(object)values);
             else
-                throw new ArgumentException("values must be float[] or double[]");
+                throw new InvalidOperationException("values must be float[] or double[]");
         }
 
         /// <summary>
@@ -58,11 +58,11 @@ namespace ScottPlot
             label = ValidLabel(label);
 
             if (values is null)
-                throw new ArgumentException($"{label} must not be null");
+                throw new InvalidOperationException($"{label} must not be null");
 
             for (int i = 0; i < values.Length - 1; i++)
                 if (values[i] >= values[i + 1])
-                    throw new ArgumentException($"{label} must be ascending values (index {i} >= {i + 1}");
+                    throw new InvalidOperationException($"{label} must be ascending values (index {i} >= {i + 1}");
         }
 
         /// <summary>
@@ -73,11 +73,11 @@ namespace ScottPlot
             label = ValidLabel(label);
 
             if (values is null)
-                throw new ArgumentException($"{label} must not be null");
+                throw new InvalidOperationException($"{label} must not be null");
 
             for (int i = 0; i < values.Length - 1; i++)
                 if (Convert.ToDouble(values[i]) >= Convert.ToDouble(values[i + 1]))
-                    throw new ArgumentException($"{label} must be ascending values (index {i} >= {i + 1}");
+                    throw new InvalidOperationException($"{label} must be ascending values (index {i} >= {i + 1}");
         }
 
         /// <summary>
@@ -88,10 +88,10 @@ namespace ScottPlot
             label = ValidLabel(label);
 
             if (values is null)
-                throw new ArgumentException($"{label} must not be null");
+                throw new InvalidOperationException($"{label} must not be null");
 
             if (values.Length == 0)
-                throw new ArgumentException($"{label} must contain at least one element");
+                throw new InvalidOperationException($"{label} must contain at least one element");
         }
 
         /// <summary>
@@ -102,10 +102,10 @@ namespace ScottPlot
             label = ValidLabel(label);
 
             if (values is null)
-                throw new ArgumentException($"{label} must not be null");
+                throw new InvalidOperationException($"{label} must not be null");
 
             if (values.Length == 0)
-                throw new ArgumentException($"{label} must contain at least one element");
+                throw new InvalidOperationException($"{label} must contain at least one element");
         }
 
         /// <summary>
@@ -116,10 +116,10 @@ namespace ScottPlot
             label = ValidLabel(label);
 
             if (values is null)
-                throw new ArgumentException($"{label} must not be null");
+                throw new InvalidOperationException($"{label} must not be null");
 
             if (values.Length == 0)
-                throw new ArgumentException($"{label} must contain at least one element");
+                throw new InvalidOperationException($"{label} must contain at least one element");
         }
 
         /// <summary>
@@ -130,10 +130,10 @@ namespace ScottPlot
             label = ValidLabel(label);
 
             if (values is null)
-                throw new ArgumentException($"{label} must not be null");
+                throw new InvalidOperationException($"{label} must not be null");
 
             if (values.Length == 0)
-                throw new ArgumentException($"{label} must contain at least one element");
+                throw new InvalidOperationException($"{label} must contain at least one element");
         }
 
         /// <summary>
@@ -146,7 +146,7 @@ namespace ScottPlot
             label = ValidLabel(label);
 
             if (!IsEqualLength(a, b, c, d, e, f))
-                throw new ArgumentException($"{label} must all have same length");
+                throw new InvalidOperationException($"{label} must all have same length");
         }
 
         /// <summary>
@@ -157,7 +157,7 @@ namespace ScottPlot
             label = ValidLabel(label);
 
             if (a.Length != b.Length)
-                throw new ArgumentException($"{label} must all have same length");
+                throw new InvalidOperationException($"{label} must all have same length");
         }
 
         /// <summary>
@@ -167,7 +167,7 @@ namespace ScottPlot
                                          double[] d = null, double[] e = null, double[] f = null)
         {
             if (a is null)
-                throw new ArgumentException($"first array must not be null");
+                throw new InvalidOperationException($"first array must not be null");
             if (b is object && b.Length != a.Length) return false;
             if (c is object && c.Length != a.Length) return false;
             if (d is object && d.Length != a.Length) return false;
@@ -184,7 +184,7 @@ namespace ScottPlot
             label = ValidLabel(label);
 
             if (string.IsNullOrWhiteSpace(value))
-                throw new ArgumentException($"{label} must contain text");
+                throw new InvalidOperationException($"{label} must contain text");
         }
     }
 }

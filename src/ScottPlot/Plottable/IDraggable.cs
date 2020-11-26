@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ScottPlot.Plottable
+﻿namespace ScottPlot.Plottable
 {
     public interface IDraggable
     {

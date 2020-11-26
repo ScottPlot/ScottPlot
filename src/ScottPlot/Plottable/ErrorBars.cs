@@ -1,6 +1,4 @@
-﻿using ScottPlot.Ticks;
-using ScottPlot.Drawing;
-using ScottPlot.Renderable;
+﻿using ScottPlot.Drawing;
 using System;
 using System.Drawing;
 using System.Linq;

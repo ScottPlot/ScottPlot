@@ -643,7 +643,7 @@ namespace ScottPlot.Plottable
         {
             // check Y values
             if (ys is null)
-                throw new NoNullAllowedException("ys cannot be null");
+                throw new InvalidOperationException("ys cannot be null");
             if (deep)
                 Validate.AssertAllReal("ys", ys);
 
@@ -659,9 +659,9 @@ namespace ScottPlot.Plottable
 
             // check misc styling options
             if (FillColor1MustBeSetPromise)
-                throw new ArgumentException("A fill color needs to be specified if fill is used");
+                throw new InvalidOperationException("A fill color needs to be specified if fill is used");
             if (FillColor2MustBeSetPromise)
-                throw new ArgumentException("Two fill colors needs to be specified if fill above and below is used");
+                throw new InvalidOperationException("Two fill colors needs to be specified if fill above and below is used");
         }
     }
 }

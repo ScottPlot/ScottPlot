@@ -1,6 +1,4 @@
-﻿using ScottPlot.Ticks;
-using ScottPlot.Drawing;
-using ScottPlot.Renderable;
+﻿using ScottPlot.Drawing;
 using System;
 using System.Drawing;
 using System.Data;
@@ -43,7 +41,7 @@ namespace ScottPlot.Plottable
         public BarPlot(double[] xs, double[] ys, double[] yErr, double[] yOffsets)
         {
             if (ys is null || ys.Length == 0)
-                throw new NoNullAllowedException("ys must be an array that contains elements");
+                throw new InvalidOperationException("ys must be an array that contains elements");
 
             this.ys = ys;
             this.xs = xs ?? DataGen.Consecutive(ys.Length);

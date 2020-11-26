@@ -1,6 +1,5 @@
 ﻿using ScottPlot.Ticks;
 using ScottPlot.Drawing;
-using ScottPlot.Renderable;
 using System;
 using System.Drawing;
 
@@ -43,7 +42,7 @@ namespace ScottPlot.Plottable
         public void ValidateData(bool deep = false)
         {
             if (double.IsNaN(position) || double.IsInfinity(position))
-                throw new NotFiniteNumberException("position must be a valid number");
+                throw new InvalidOperationException("position must be a valid number");
         }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)

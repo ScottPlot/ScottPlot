@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Drawing;
-using ScottPlot.Ticks;
 using ScottPlot.Drawing;
-using ScottPlot.Renderable;
 using System.Data;
 
 namespace ScottPlot.Plottable
@@ -98,14 +96,14 @@ namespace ScottPlot.Plottable
         public void ValidateData(bool deepValidation = false)
         {
             if (ohlcs is null)
-                throw new NoNullAllowedException("ohlcs cannot be null");
+                throw new InvalidOperationException("ohlcs cannot be null");
 
             for (int i = 0; i < ohlcs.Length; i++)
             {
                 if (ohlcs[i] is null)
-                    throw new NoNullAllowedException($"ohlcs[{i}] cannot be null");
+                    throw new InvalidOperationException($"ohlcs[{i}] cannot be null");
                 if (!ohlcs[i].IsValid)
-                    throw new NotFiniteNumberException($"ohlcs[{i}] does not contain valid data");
+                    throw new InvalidOperationException($"ohlcs[{i}] does not contain valid data");
             }
         }
 

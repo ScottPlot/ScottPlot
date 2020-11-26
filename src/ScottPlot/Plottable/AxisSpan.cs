@@ -1,6 +1,5 @@
 ﻿using ScottPlot.Ticks;
 using ScottPlot.Drawing;
-using ScottPlot.Renderable;
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -40,10 +39,10 @@ namespace ScottPlot.Plottable
         public void ValidateData(bool deep = false)
         {
             if (double.IsNaN(position1) || double.IsInfinity(position1))
-                throw new NotFiniteNumberException("position1 must be a valid number");
+                throw new InvalidOperationException("position1 must be a valid number");
 
             if (double.IsNaN(position2) || double.IsInfinity(position2))
-                throw new NotFiniteNumberException("position2 must be a valid number");
+                throw new InvalidOperationException("position2 must be a valid number");
         }
 
         public LegendItem[] GetLegendItems()

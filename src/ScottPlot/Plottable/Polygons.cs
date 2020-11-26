@@ -49,10 +49,10 @@ namespace ScottPlot.Plottable
                 foreach (var point in poly)
                 {
                     if (double.IsNaN(point.x) || double.IsNaN(point.y))
-                        throw new NotFiniteNumberException("points cannot contain NaN");
+                        throw new InvalidOperationException("points cannot contain NaN");
 
                     if (double.IsInfinity(point.x) || double.IsInfinity(point.y))
-                        throw new NotFiniteNumberException("points cannot contain Infinity");
+                        throw new InvalidOperationException("points cannot contain Infinity");
                 }
             }
         }

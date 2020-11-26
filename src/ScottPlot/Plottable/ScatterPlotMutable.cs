@@ -30,10 +30,10 @@ namespace ScottPlot.Plottable
                 for (int i = 0; i < Xs.Count; i++)
                 {
                     if (double.IsNaN(Xs[i]) || double.IsNaN(Ys[i]))
-                        throw new NotFiniteNumberException("Xs and Ys cannot contain NaN");
+                        throw new InvalidOperationException("Xs and Ys cannot contain NaN");
 
                     if (double.IsInfinity(Xs[i]) || double.IsInfinity(Ys[i]))
-                        throw new NotFiniteNumberException("Xs and Ys cannot contain Infinity");
+                        throw new InvalidOperationException("Xs and Ys cannot contain Infinity");
                 }
             }
         }

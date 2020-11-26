@@ -29,6 +29,7 @@ namespace ScottPlot.Plottable
         public float ArrowheadWidth = 0;
         public float ArrowheadLength = 0;
 
+        // TODO: limit render indexes
         public int? minRenderIndex { set { throw new NotImplementedException(); } }
         public int? maxRenderIndex { set { throw new NotImplementedException(); } }
 

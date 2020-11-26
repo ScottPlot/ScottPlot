@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Drawing;
 using ScottPlot.Drawing;
-using ScottPlot.Renderable;
 using System;
 using System.Data;
 
@@ -28,16 +27,16 @@ namespace ScottPlot.Plottable
         public void ValidateData(bool deep = false)
         {
             if (double.IsNaN(x) || double.IsInfinity(x))
-                throw new NotFiniteNumberException("x must be a real value");
+                throw new InvalidOperationException("x must be a real value");
 
             if (double.IsNaN(y) || double.IsInfinity(y))
-                throw new NotFiniteNumberException("y must be a real value");
+                throw new InvalidOperationException("y must be a real value");
 
             if (double.IsNaN(rotation) || double.IsInfinity(rotation))
-                throw new NotFiniteNumberException("rotation must be a real value");
+                throw new InvalidOperationException("rotation must be a real value");
 
             if (image is null)
-                throw new NoNullAllowedException("image cannot be null");
+                throw new InvalidOperationException("image cannot be null");
         }
 
         private PointF TextLocation(PointF input)
