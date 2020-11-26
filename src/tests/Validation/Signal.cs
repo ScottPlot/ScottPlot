@@ -46,20 +46,27 @@ namespace ScottPlotTests.Validation
             Assert.Throws<InvalidOperationException>(() => { plt.Validate(deep: true); });
         }
 
-        /*
         [Test]
-        public void Test_Render_YContainsNan()
+        public void Test_Render_YIsAllNan()
+        {
+            double[] ys = { double.NaN, double.NaN, double.NaN, double.NaN, double.NaN };
+
+            var plt = new ScottPlot.Plot();
+            plt.PlotSignal(ys);
+
+            Assert.Throws<InvalidOperationException>(() => { plt.AxisAuto(); });
+        }
+
+        [Test]
+        public void Test_Render_YHasNanPixel()
         {
             double[] ys = { 1, 4, double.NaN, 16, 25 };
 
             var plt = new ScottPlot.Plot();
             plt.PlotSignal(ys);
 
-            plt.AxisAuto();
-            Console.WriteLine(plt.AxisLimits());
-
+            Assert.DoesNotThrow(() => { plt.AxisAuto(); });
             Assert.Throws<InvalidOperationException>(() => { plt.Render(); });
         }
-        */
     }
 }

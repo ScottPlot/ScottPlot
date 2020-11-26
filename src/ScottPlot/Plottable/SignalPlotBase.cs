@@ -192,6 +192,12 @@ namespace ScottPlot.Plottable
             double xMin = _samplePeriod * minRenderIndex;
             double xMax = _samplePeriod * maxRenderIndex;
             minmaxSearchStrategy.MinMaxRangeQuery(minRenderIndex, maxRenderIndex, out double yMin, out double yMax);
+
+            if (double.IsNaN(yMin) || double.IsNaN(yMax))
+                throw new InvalidOperationException("Signal data must not contain NaN");
+            if (double.IsInfinity(yMin) || double.IsInfinity(yMax))
+                throw new InvalidOperationException("Signal data must not contain Infinity");
+
             return new AxisLimits(xMin + xOffset, xMax + xOffset, yMin + yOffset, yMax + yOffset);
         }
 
@@ -226,16 +232,20 @@ namespace ScottPlot.Plottable
 
             if (linePoints.Count > 1)
             {
+
+                PointF[] pointsArray = linePoints.ToArray();
+                ValidatePoints(pointsArray);
+
                 if (penLD.Width > 0)
-                    gfx.DrawLines(penHD, linePoints.ToArray());
+                    gfx.DrawLines(penHD, pointsArray);
 
                 if (fillType == FillType.FillAbove || fillType == FillType.FillBelow)
                 {
-                    FillAboveOrBelow(dims, gfx, linePoints[0].X, linePoints[linePoints.Count - 1].X, linePoints.ToArray(), fillType);
+                    FillAboveOrBelow(dims, gfx, linePoints[0].X, linePoints[linePoints.Count - 1].X, pointsArray, fillType);
                 }
                 else if (fillType == FillType.FillAboveAndBelow)
                 {
-                    FillAboveAndBelow(dims, gfx, linePoints[0].X, linePoints[linePoints.Count - 1].X, linePoints.ToArray(), this.baseline);
+                    FillAboveAndBelow(dims, gfx, linePoints[0].X, linePoints[linePoints.Count - 1].X, pointsArray, baseline);
                 }
 
                 if (markerSize > 0)
@@ -346,7 +356,10 @@ namespace ScottPlot.Plottable
                 linePoints[i].X += dims.DataOffsetX;
 
             if (linePoints.Length > 0)
+            {
+                ValidatePoints(linePoints);
                 gfx.DrawLines(penHD, linePoints);
+            }
 
             if (fillType == FillType.FillAbove || fillType == FillType.FillBelow)
             {
@@ -543,19 +556,21 @@ namespace ScottPlot.Plottable
                         linePoints.Add(linePointsLevels[j][i + 1]);
                     }
                 }
+
+                PointF[] pointsArray = linePoints.ToArray();
+                ValidatePoints(pointsArray);
                 using (Pen densityPen = GDI.Pen(PenColorsByDensity[i]))
                 {
-                    gfx.DrawLines(densityPen, linePoints.ToArray());
+                    gfx.DrawLines(densityPen, pointsArray);
                 }
-
 
                 if (fillType == FillType.FillAbove || fillType == FillType.FillBelow)
                 {
-                    FillAboveOrBelow(dims, gfx, xPxStart, xPxEnd, linePoints.ToArray(), fillType);
+                    FillAboveOrBelow(dims, gfx, xPxStart, xPxEnd, pointsArray, fillType);
                 }
                 else if (fillType == FillType.FillAboveAndBelow)
                 {
-                    FillAboveAndBelow(dims, gfx, xPxStart, xPxEnd, linePoints.ToArray(), this.baseline);
+                    FillAboveAndBelow(dims, gfx, xPxStart, xPxEnd, pointsArray, baseline);
                 }
             }
         }
@@ -637,6 +652,13 @@ namespace ScottPlot.Plottable
                     RenderLowDensity(dims, gfx, visibleIndex1, visibleIndex2, brush, penLD, penHD);
                 }
             }
+        }
+
+        private void ValidatePoints(PointF[] points)
+        {
+            foreach (PointF pt in points)
+                if (float.IsNaN(pt.Y))
+                    throw new InvalidOperationException("Data must not contain NaN");
         }
 
         public void ValidateData(bool deep = false)
