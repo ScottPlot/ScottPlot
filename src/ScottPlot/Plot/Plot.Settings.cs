@@ -22,12 +22,14 @@ namespace ScottPlot
             return settings;
         }
 
-        public void Validate(bool everyDataPoint, ErrorAction action = ErrorAction.ShowErrorOnPlot)
+        /// <summary>
+        /// Throw an exception of any plottable contains invalid data.
+        /// </summary>
+        /// <param name="deep">Deep validation is more thorough but slower.</param>
+        public void Validate(bool deep = true)
         {
-            ValidateEveryPoint = everyDataPoint;
-            ValidationErrorAction = action;
-            if (everyDataPoint)
-                Debug.WriteLine("WARNING: every data point will be validated on each render, reducing performance");
+            foreach (var plottable in settings.Plottables)
+                plottable.ValidateData(deep);
         }
 
         [Obsolete("Disable anti-aliasing using the lowQuality argument in Render() or SaveFig()", true)]
