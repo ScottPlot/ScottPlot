@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 
 namespace ScottPlot.Demo.PlotTypes
@@ -89,13 +90,15 @@ namespace ScottPlot.Demo.PlotTypes
                 Random rand = new Random(0);
                 ScottPlot.OHLC[] ohlcs = DataGen.RandomStockPrices(rand, 75, sequential: true);
                 double[] xs = DataGen.Consecutive(ohlcs.Length);
-                double[] sma20 = Statistics.Finance.SMA(ohlcs, 8);
-                double[] sma50 = Statistics.Finance.SMA(ohlcs, 20);
+                double[] sma8ys = Statistics.Finance.SMA(ohlcs, 8);
+                double[] sma8xs = xs.Skip(8).ToArray();
+                double[] sma20ys = Statistics.Finance.SMA(ohlcs, 20);
+                double[] sma20xs = xs.Skip(20).ToArray();
 
                 plt.PlotCandlestick(ohlcs);
-                plt.PlotScatter(xs, sma20, label: "8 day SMA",
+                plt.PlotScatter(sma8xs, sma8ys, label: "8 day SMA",
                     color: Color.Blue, markerSize: 0, lineWidth: 2);
-                plt.PlotScatter(xs, sma50, label: "20 day SMA",
+                plt.PlotScatter(sma20xs, sma20ys, label: "20 day SMA",
                     color: Color.Navy, markerSize: 0, lineWidth: 2);
 
                 // decorate the plot
@@ -116,12 +119,13 @@ namespace ScottPlot.Demo.PlotTypes
                 Random rand = new Random(0);
                 ScottPlot.OHLC[] ohlcs = DataGen.RandomStockPrices(rand, 100, sequential: true);
                 double[] xs = DataGen.Consecutive(ohlcs.Length);
-                (var sma, var bolL, var bolU) = ScottPlot.Statistics.Finance.Bollinger(ohlcs);
+                (var sma, var bolL, var bolU) = ScottPlot.Statistics.Finance.Bollinger(ohlcs, 20);
+                double[] xs2 = xs.Skip(20).ToArray();
 
                 plt.PlotCandlestick(ohlcs);
-                plt.PlotScatter(xs, bolL, color: Color.Blue, markerSize: 0);
-                plt.PlotScatter(xs, bolU, color: Color.Blue, markerSize: 0);
-                plt.PlotScatter(xs, sma, color: Color.Blue, markerSize: 0, lineStyle: LineStyle.Dash);
+                plt.PlotScatter(xs2, bolL, color: Color.Blue, markerSize: 0);
+                plt.PlotScatter(xs2, bolU, color: Color.Blue, markerSize: 0);
+                plt.PlotScatter(xs2, sma, color: Color.Blue, markerSize: 0, lineStyle: LineStyle.Dash);
 
                 // decorate the plot
                 plt.Title("Bollinger Bands");
