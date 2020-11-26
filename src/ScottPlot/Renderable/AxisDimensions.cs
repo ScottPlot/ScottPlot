@@ -18,6 +18,7 @@ namespace ScottPlot.Renderable
         public double LowerBound { get; private set; } = double.NegativeInfinity;
         public double UpperBound { get; private set; } = double.PositiveInfinity;
         public bool HasBeenSet { get; private set; } = false;
+        public bool IsNan => double.IsNaN(Min) || double.IsNaN(Max);
 
         public double Span => Max - Min;
         public double Center => (Max + Min) / 2;

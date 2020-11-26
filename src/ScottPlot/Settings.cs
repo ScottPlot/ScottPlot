@@ -189,12 +189,12 @@ namespace ScottPlot
             var xAxes = Axes.Where(x => x.IsHorizontal);
             var yAxes = Axes.Where(x => x.IsVertical);
 
-            var setIndexesX = xAxes.Where(x => x.Dims.HasBeenSet).Select(x => x.AxisIndex).Distinct().ToList();
-            var setIndexesY = yAxes.Where(x => x.Dims.HasBeenSet).Select(x => x.AxisIndex).Distinct().ToList();
+            var setIndexesX = xAxes.Where(x => x.Dims.HasBeenSet && !x.Dims.IsNan).Select(x => x.AxisIndex).Distinct().ToList();
+            var setIndexesY = yAxes.Where(x => x.Dims.HasBeenSet && !x.Dims.IsNan).Select(x => x.AxisIndex).Distinct().ToList();
 
             foreach (Axis axis in xAxes)
             {
-                if (axis.Dims.HasBeenSet)
+                if (axis.Dims.HasBeenSet && !axis.Dims.IsNan)
                     continue;
                 if (setIndexesX.Contains(axis.AxisIndex))
                     continue;
@@ -204,7 +204,7 @@ namespace ScottPlot
 
             foreach (Axis axis in yAxes)
             {
-                if (axis.Dims.HasBeenSet)
+                if (axis.Dims.HasBeenSet && !axis.Dims.IsNan)
                     continue;
                 if (setIndexesY.Contains(axis.AxisIndex))
                     continue;
@@ -316,6 +316,7 @@ namespace ScottPlot
         /// </summary>
         public void RememberAxisLimits()
         {
+            AxisAutoUnsetAxes();
             foreach (Axis axis in Axes)
                 axis.Dims.Remember();
         }
