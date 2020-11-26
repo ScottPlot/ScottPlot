@@ -17,7 +17,6 @@ namespace ScottPlot.Plottable
         public double[] errorY { get; private set; }
         public int HorizontalAxisIndex { get; set; } = 0;
         public int VerticalAxisIndex { get; set; } = 0;
-        public bool FilterOutNansBeforeEveryRender = true;
 
         public double lineWidth = 1;
         public float errorLineWidth = 1;
@@ -182,21 +181,14 @@ namespace ScottPlot.Plottable
             using (var penLine = GDI.Pen(color, lineWidth, lineStyle, true))
             using (var penLineError = GDI.Pen(color, errorLineWidth, LineStyle.Solid, true))
             {
-                PointF[] points;
-
-                if (FilterOutNansBeforeEveryRender)
+                PointF[] points = new PointF[xs.Length];
+                for (int i = 0; i < xs.Length; i++)
                 {
-                    List<PointF> validPoints = new List<PointF>(xs.Length);
-                    for (int i = 0; i < xs.Length; i++)
-                        if (double.IsNaN(xs[i]) == false && double.IsNaN(ys[i]) == false)
-                            validPoints.Add(new PointF(dims.GetPixelX(xs[i]), dims.GetPixelY(ys[i])));
-                    points = validPoints.ToArray();
-                }
-                else
-                {
-                    points = new PointF[xs.Length];
-                    for (int i = 0; i < xs.Length; i++)
-                        points[i] = new PointF(dims.GetPixelX(xs[i]), dims.GetPixelY(ys[i]));
+                    float x = dims.GetPixelX(xs[i]);
+                    float y = dims.GetPixelY(ys[i]);
+                    if (float.IsNaN(x) || float.IsNaN(y))
+                        throw new NotImplementedException("Data must not contain NaN");
+                    points[i] = new PointF(x, y);
                 }
 
                 if (errorY != null)
