@@ -12,7 +12,7 @@ namespace ScottPlotTests.Documentation
     {
         private string createHash = null;
 
-        [Test]
+        //[Test]
         public void Test_DocPlottables_CreateAndAdd()
         {
             double[] xs = { 1, 2, 3, 4, 5 };

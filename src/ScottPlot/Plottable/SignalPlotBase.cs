@@ -1,7 +1,5 @@
-﻿using ScottPlot.Ticks;
-using ScottPlot.Drawing;
+﻿using ScottPlot.Drawing;
 using ScottPlot.MinMaxSearchStrategies;
-using ScottPlot.Renderable;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -10,10 +8,11 @@ using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Data;
 
 namespace ScottPlot.Plottable
 {
-    public class SignalPlotBase<T> : IRenderable, IHasLegendItems, IUsesAxes, IValidatable, IExportable where T : struct, IComparable
+    public class SignalPlotBase<T> : IPlottable, IExportable where T : struct, IComparable
     {
         protected bool MaxRenderIndexLowerYSPromise = false;
         protected bool MaxRenderIndexHigherMinRenderIndexPromise = false;
@@ -582,21 +581,18 @@ namespace ScottPlot.Plottable
 
         public int PointCount { get => _ys.Length; }
 
-        public LegendItem[] LegendItems
+        public LegendItem[] GetLegendItems()
         {
-            get
+            var singleLegendItem = new LegendItem()
             {
-                var singleLegendItem = new LegendItem()
-                {
-                    label = label,
-                    color = color,
-                    lineStyle = lineStyle,
-                    lineWidth = lineWidth,
-                    markerShape = (markersAreVisible) ? MarkerShape.filledCircle : MarkerShape.none,
-                    markerSize = (markersAreVisible) ? markerSize : 0
-                };
-                return new LegendItem[] { singleLegendItem };
-            }
+                label = label,
+                color = color,
+                lineStyle = lineStyle,
+                lineWidth = lineWidth,
+                markerShape = markersAreVisible ? MarkerShape.filledCircle : MarkerShape.none,
+                markerSize = markersAreVisible ? markerSize : 0
+            };
+            return new LegendItem[] { singleLegendItem };
         }
 
         public virtual void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
@@ -643,40 +639,29 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public virtual string ErrorMessage(bool deepValidation = false)
+        public void ValidateData(bool deep = false)
         {
-            try
-            {
-                if (ys is null)
-                    throw new ArgumentException("ys cannot be null");
+            // check Y values
+            if (ys is null)
+                throw new NoNullAllowedException("ys cannot be null");
+            if (deep)
+                Validate.AssertAllReal("ys", ys);
 
-                if (minRenderIndex < 0 || minRenderIndex > maxRenderIndex)
-                    throw new ArgumentException("minRenderIndex must be between 0 and maxRenderIndex");
+            // check render indexes
+            if (minRenderIndex < 0 || minRenderIndex > maxRenderIndex)
+                throw new IndexOutOfRangeException("minRenderIndex must be between 0 and maxRenderIndex");
+            if ((maxRenderIndex > ys.Length - 1) || maxRenderIndex < 0)
+                throw new IndexOutOfRangeException("maxRenderIndex must be a valid index for ys[]");
+            if (MaxRenderIndexLowerYSPromise)
+                throw new IndexOutOfRangeException("maxRenderIndex must be a valid index for ys[]");
+            if (MaxRenderIndexHigherMinRenderIndexPromise)
+                throw new IndexOutOfRangeException("minRenderIndex must be lower maxRenderIndex");
 
-                if ((maxRenderIndex > ys.Length - 1) || maxRenderIndex < 0)
-                    throw new ArgumentException("maxRenderIndex must be a valid index for ys[]");
-
-                if (deepValidation)
-                    Validate.AssertAllReal("ys", ys);
-
-                if (MaxRenderIndexLowerYSPromise)
-                    throw new ArgumentException("maxRenderIndex must be a valid index for ys[]");
-
-                if (MaxRenderIndexHigherMinRenderIndexPromise)
-                    throw new ArgumentException("minRenderIndex must be lower maxRenderIndex");
-
-                if (FillColor1MustBeSetPromise)
-                    throw new ArgumentException("A fill color needs to be specified if fill is used");
-
-                if (FillColor2MustBeSetPromise)
-                    throw new ArgumentException("Two fill colors needs to be specified if fill above and below is used");
-
-                return null;
-            }
-            catch (ArgumentException e)
-            {
-                return e.Message;
-            }
+            // check misc styling options
+            if (FillColor1MustBeSetPromise)
+                throw new ArgumentException("A fill color needs to be specified if fill is used");
+            if (FillColor2MustBeSetPromise)
+                throw new ArgumentException("Two fill colors needs to be specified if fill above and below is used");
         }
     }
 }

@@ -3,10 +3,11 @@ using ScottPlot.Drawing;
 using ScottPlot.Renderable;
 using System;
 using System.Drawing;
+using System.Data;
 
 namespace ScottPlot.Plottable
 {
-    public class BarPlot : IRenderable, IHasLegendItems, IUsesAxes, IValidatable
+    public class BarPlot : IPlottable
     {
         public double[] xs;
         public double xOffset;
@@ -42,7 +43,7 @@ namespace ScottPlot.Plottable
         public BarPlot(double[] xs, double[] ys, double[] yErr, double[] yOffsets)
         {
             if (ys is null || ys.Length == 0)
-                throw new ArgumentException("ys must be an array that contains elements");
+                throw new NoNullAllowedException("ys must be an array that contains elements");
 
             this.ys = ys;
             this.xs = xs ?? DataGen.Consecutive(ys.Length);
@@ -82,29 +83,20 @@ namespace ScottPlot.Plottable
                 new AxisLimits(valueMin, valueMax, positionMin, positionMax);
         }
 
-        public string ErrorMessage(bool deepValidation = false)
+        public void ValidateData(bool deep = false)
         {
-            try
-            {
-                Validate.AssertHasElements("xs", xs);
-                Validate.AssertHasElements("ys", ys);
-                Validate.AssertHasElements("yErr", yErr);
-                Validate.AssertHasElements("yOffsets", yOffsets);
-                Validate.AssertEqualLength("xs, ys, yErr, and yOffsets", xs, ys, yErr, yOffsets);
+            Validate.AssertHasElements("xs", xs);
+            Validate.AssertHasElements("ys", ys);
+            Validate.AssertHasElements("yErr", yErr);
+            Validate.AssertHasElements("yOffsets", yOffsets);
+            Validate.AssertEqualLength("xs, ys, yErr, and yOffsets", xs, ys, yErr, yOffsets);
 
-                if (deepValidation)
-                {
-                    Validate.AssertAllReal("xs", xs);
-                    Validate.AssertAllReal("ys", ys);
-                    Validate.AssertAllReal("yErr", yErr);
-                    Validate.AssertAllReal("yOffsets", yOffsets);
-                }
-
-                return null;
-            }
-            catch (ArgumentException e)
+            if (deep)
             {
-                return e.Message;
+                Validate.AssertAllReal("xs", xs);
+                Validate.AssertAllReal("ys", ys);
+                Validate.AssertAllReal("yErr", yErr);
+                Validate.AssertAllReal("yOffsets", yOffsets);
             }
         }
 
@@ -224,23 +216,20 @@ namespace ScottPlot.Plottable
 
         public int PointCount { get => ys is null ? 0 : ys.Length; }
 
-        public LegendItem[] LegendItems
+        public LegendItem[] GetLegendItems()
         {
-            get
+            var singleItem = new LegendItem()
             {
-                LegendItem singleLegendItem = new LegendItem()
-                {
-                    label = label,
-                    color = fillColor,
-                    lineWidth = 10,
-                    markerShape = MarkerShape.none,
-                    hatchColor = hatchColor,
-                    hatchStyle = hatchStyle,
-                    borderColor = borderColor,
-                    borderWith = borderLineWidth
-                };
-                return new LegendItem[] { singleLegendItem };
-            }
+                label = label,
+                color = fillColor,
+                lineWidth = 10,
+                markerShape = MarkerShape.none,
+                hatchColor = hatchColor,
+                hatchStyle = hatchStyle,
+                borderColor = borderColor,
+                borderWith = borderLineWidth
+            };
+            return new LegendItem[] { singleItem };
         }
     }
 }

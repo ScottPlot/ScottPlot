@@ -1,6 +1,4 @@
-﻿using ScottPlot.Ticks;
-using ScottPlot.Drawing;
-using ScottPlot.Renderable;
+﻿using ScottPlot.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -11,7 +9,7 @@ using System.Text;
 
 namespace ScottPlot.Plottable
 {
-    public class ScatterPlot : IRenderable, IExportable, IHasLegendItems, IUsesAxes, IValidatable
+    public class ScatterPlot : IPlottable, IExportable
     {
         public double[] xs { get; private set; }
         public double[] ys { get; private set; }
@@ -81,41 +79,34 @@ namespace ScottPlot.Plottable
             this.ys = ys;
         }
 
-        public string ErrorMessage(bool deepValidation = false)
+        public void ValidateData(bool deep = false)
         {
-            try
+            Validate.AssertHasElements("xs", xs);
+            Validate.AssertHasElements("ys", ys);
+            Validate.AssertEqualLength("xs and ys", xs, ys);
+
+            if (errorX != null)
             {
-                Validate.AssertHasElements("xs", xs);
-                if (deepValidation)
-                    Validate.AssertAllReal("xs", xs);
+                Validate.AssertHasElements("errorX", xs);
+                Validate.AssertEqualLength("xs and errorX", xs, errorX);
+            }
 
-                Validate.AssertHasElements("ys", ys);
-                if (deepValidation)
-                    Validate.AssertAllReal("ys", ys);
+            if (errorY != null)
+            {
+                Validate.AssertHasElements("errorY", ys);
+                Validate.AssertEqualLength("ys and errorY", ys, errorY);
+            }
 
-                Validate.AssertEqualLength("xs and ys", xs, ys);
+            if (deep)
+            {
+                Validate.AssertAllReal("xs", xs);
+                Validate.AssertAllReal("ys", ys);
 
                 if (errorX != null)
-                {
-                    Validate.AssertHasElements("errorX", xs);
-                    Validate.AssertEqualLength("xs and errorX", xs, errorX);
-                    if (deepValidation)
-                        Validate.AssertAllReal("errorX", errorX);
-                }
+                    Validate.AssertAllReal("errorX", errorX);
 
                 if (errorY != null)
-                {
-                    Validate.AssertHasElements("errorY", ys);
-                    Validate.AssertEqualLength("ys and errorY", ys, errorY);
-                    if (deepValidation)
-                        Validate.AssertAllReal("errorY", errorY);
-                }
-
-                return null;
-            }
-            catch (ArgumentException e)
-            {
-                return e.Message;
+                    Validate.AssertAllReal("errorY", errorY);
             }
         }
 
@@ -266,21 +257,18 @@ namespace ScottPlot.Plottable
 
         public int PointCount { get => ys.Length; }
 
-        public LegendItem[] LegendItems
+        public LegendItem[] GetLegendItems()
         {
-            get
+            var singleLegendItem = new LegendItem()
             {
-                var legendItem = new LegendItem()
-                {
-                    label = label,
-                    color = color,
-                    lineStyle = lineStyle,
-                    lineWidth = lineWidth,
-                    markerShape = markerShape,
-                    markerSize = markerSize
-                };
-                return new LegendItem[] { legendItem };
-            }
+                label = label,
+                color = color,
+                lineStyle = lineStyle,
+                lineWidth = lineWidth,
+                markerShape = markerShape,
+                markerSize = markerSize
+            };
+            return new LegendItem[] { singleLegendItem };
         }
     }
 }

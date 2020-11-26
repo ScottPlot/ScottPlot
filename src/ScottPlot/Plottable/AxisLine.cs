@@ -10,7 +10,7 @@ namespace ScottPlot.Plottable
 
     public class VLine : AxisLine { public VLine() { IsHorizontal = false; } }
 
-    public abstract class AxisLine : IRenderable, IDraggable, IHasLegendItems, IUsesAxes
+    public abstract class AxisLine : IDraggable, IPlottable
     {
         public double position;
         public int HorizontalAxisIndex { get; set; } = 0;
@@ -26,6 +26,7 @@ namespace ScottPlot.Plottable
         public Cursor DragCursor => IsHorizontal ? Cursor.NS : Cursor.WE;
 
         public bool IsVisible { get; set; } = true;
+
         public override string ToString()
         {
             string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
@@ -38,6 +39,12 @@ namespace ScottPlot.Plottable
             IsHorizontal ?
             new AxisLimits(double.NaN, double.NaN, position, position) :
             new AxisLimits(position, position, double.NaN, double.NaN);
+
+        public void ValidateData(bool deep = false)
+        {
+            if (double.IsNaN(position) || double.IsInfinity(position))
+                throw new NotFiniteNumberException("position must be a valid number");
+        }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
@@ -97,20 +104,17 @@ namespace ScottPlot.Plottable
             Math.Abs(position - coordinateY) <= snapY :
             Math.Abs(position - coordinateX) <= snapX;
 
-        public LegendItem[] LegendItems
+        public LegendItem[] GetLegendItems()
         {
-            get
+            var singleItem = new LegendItem()
             {
-                var item = new LegendItem()
-                {
-                    label = label,
-                    color = color,
-                    lineStyle = lineStyle,
-                    lineWidth = lineWidth,
-                    markerShape = MarkerShape.none
-                };
-                return new LegendItem[] { item };
-            }
+                label = label,
+                color = color,
+                lineStyle = lineStyle,
+                lineWidth = lineWidth,
+                markerShape = MarkerShape.none
+            };
+            return new LegendItem[] { singleItem };
         }
     }
 }

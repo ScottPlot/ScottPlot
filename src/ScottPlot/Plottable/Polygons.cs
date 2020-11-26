@@ -8,7 +8,7 @@ using ScottPlot.Renderable;
 
 namespace ScottPlot.Plottable
 {
-    public class Polygons : IRenderable, IHasLegendItems, IUsesAxes, IValidatable
+    public class Polygons : IPlottable
     {
         public readonly List<List<(double x, double y)>> polys;
         public string label;
@@ -39,28 +39,22 @@ namespace ScottPlot.Plottable
             return $"PlottablePolygons {label} with {PointCount} polygons";
         }
 
-        public string ErrorMessage(bool deepValidation = false)
+        public void ValidateData(bool deep = false)
         {
-            if (deepValidation)
+            if (deep == false)
+                return;
+
+            foreach (var poly in polys)
             {
-                foreach (var poly in polys)
+                foreach (var point in poly)
                 {
-                    foreach (var point in poly)
-                    {
-                        try
-                        {
-                            Validate.AssertIsReal("x", point.x);
-                            Validate.AssertIsReal("y", point.y);
-                        }
-                        catch (ArgumentException e)
-                        {
-                            return e.ToString();
-                        }
-                    }
+                    if (double.IsNaN(point.x) || double.IsNaN(point.y))
+                        throw new NotFiniteNumberException("points cannot contain NaN");
+
+                    if (double.IsInfinity(point.x) || double.IsInfinity(point.y))
+                        throw new NotFiniteNumberException("points cannot contain Infinity");
                 }
             }
-
-            return null;
         }
 
         public int PointCount { get => polys.Count; }
@@ -86,21 +80,18 @@ namespace ScottPlot.Plottable
             return new AxisLimits(xMin, xMax, yMin, yMax);
         }
 
-        public LegendItem[] LegendItems
+        public LegendItem[] GetLegendItems()
         {
-            get
+            var singleLegendItem = new LegendItem()
             {
-                var legendItem = new LegendItem()
-                {
-                    label = label,
-                    color = fill ? fillColor : lineColor,
-                    lineWidth = fill ? 10 : lineWidth,
-                    markerShape = MarkerShape.none,
-                    hatchColor = HatchColor,
-                    hatchStyle = HatchStyle
-                };
-                return new LegendItem[] { legendItem };
-            }
+                label = label,
+                color = fill ? fillColor : lineColor,
+                lineWidth = fill ? 10 : lineWidth,
+                markerShape = MarkerShape.none,
+                hatchColor = HatchColor,
+                hatchStyle = HatchStyle
+            };
+            return new LegendItem[] { singleLegendItem };
         }
 
         private bool IsBiggerThenPixel(List<(double x, double y)> poly, double UnitsPerPixelX, double UnitsPerPixelY)

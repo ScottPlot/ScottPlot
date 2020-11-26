@@ -1,13 +1,11 @@
 ﻿using ScottPlot.Drawing;
-using ScottPlot.Renderable;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Text;
 
 namespace ScottPlot.Plottable
 {
-    public class ScatterPlotMutable : IRenderable, IHasLegendItems, IUsesAxes
+    public class ScatterPlotMutable : IPlottable
     {
         private readonly List<double> Xs = new List<double>();
         private readonly List<double> Ys = new List<double>();
@@ -21,6 +19,24 @@ namespace ScottPlot.Plottable
         public LineStyle LineStyle = LineStyle.Solid;
         public float MarkerSize = 3;
         public MarkerShape MarkerShape = MarkerShape.filledCircle;
+
+        public void ValidateData(bool deep = false)
+        {
+            if (Xs.Count != Ys.Count)
+                throw new InvalidOperationException("Xs and Ys must be same length");
+
+            if (deep)
+            {
+                for (int i = 0; i < Xs.Count; i++)
+                {
+                    if (double.IsNaN(Xs[i]) || double.IsNaN(Ys[i]))
+                        throw new NotFiniteNumberException("Xs and Ys cannot contain NaN");
+
+                    if (double.IsInfinity(Xs[i]) || double.IsInfinity(Ys[i]))
+                        throw new NotFiniteNumberException("Xs and Ys cannot contain Infinity");
+                }
+            }
+        }
 
         public void Clear()
         {
@@ -99,17 +115,14 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public LegendItem[] LegendItems
+        public LegendItem[] GetLegendItems()
         {
-            get
+            var singleLegendItem = new LegendItem()
             {
-                LegendItem item = new LegendItem()
-                {
-                    label = "scatter",
-                    color = Color.Black
-                };
-                return new LegendItem[] { item };
-            }
+                label = "scatter",
+                color = Color.Black
+            };
+            return new LegendItem[] { singleLegendItem };
         }
     }
 }

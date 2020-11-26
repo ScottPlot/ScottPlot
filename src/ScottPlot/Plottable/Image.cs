@@ -1,12 +1,13 @@
 ﻿using System.ComponentModel;
 using System.Drawing;
-using ScottPlot.Ticks;
 using ScottPlot.Drawing;
 using ScottPlot.Renderable;
+using System;
+using System.Data;
 
 namespace ScottPlot.Plottable
 {
-    public class Image : IRenderable, IUsesAxes, IValidatable
+    public class Image : IPlottable
     {
         public double x;
         public double y;
@@ -21,16 +22,23 @@ namespace ScottPlot.Plottable
         public int VerticalAxisIndex { get; set; } = 0;
 
         public override string ToString() => $"PlottableImage Size(\"{image.Size}\") at ({x}, {y})";
-
-        public string ErrorMessage(bool deepValidation = false)
-        {
-            if (image is null)
-                return "image must not be null";
-
-            return null;
-        }
-
         public AxisLimits GetAxisLimits() => new AxisLimits(x, x, y, y);
+        public LegendItem[] GetLegendItems() => null;
+
+        public void ValidateData(bool deep = false)
+        {
+            if (double.IsNaN(x) || double.IsInfinity(x))
+                throw new NotFiniteNumberException("x must be a real value");
+
+            if (double.IsNaN(y) || double.IsInfinity(y))
+                throw new NotFiniteNumberException("y must be a real value");
+
+            if (double.IsNaN(rotation) || double.IsInfinity(rotation))
+                throw new NotFiniteNumberException("rotation must be a real value");
+
+            if (image is null)
+                throw new NoNullAllowedException("image cannot be null");
+        }
 
         private PointF TextLocation(PointF input)
         {

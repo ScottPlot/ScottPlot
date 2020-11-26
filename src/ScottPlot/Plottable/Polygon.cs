@@ -1,12 +1,11 @@
-﻿using ScottPlot.Ticks;
-using ScottPlot.Drawing;
+﻿using ScottPlot.Drawing;
 using ScottPlot.Renderable;
 using System;
 using System.Drawing;
 
 namespace ScottPlot.Plottable
 {
-    public class Polygon : IRenderable, IHasLegendItems, IUsesAxes, IValidatable
+    public class Polygon : IPlottable
     {
         public double[] xs;
         public double[] ys;
@@ -56,45 +55,33 @@ namespace ScottPlot.Plottable
             return new AxisLimits(xMin, xMax, yMin, yMax);
         }
 
-        public LegendItem[] LegendItems
+        public LegendItem[] GetLegendItems()
         {
-            get
+            var singleLegendItem = new LegendItem()
             {
-                var legendItem = new LegendItem()
-                {
-                    label = label,
-                    color = fill ? fillColor : lineColor,
-                    lineWidth = fill ? 10 : lineWidth,
-                    markerShape = MarkerShape.none,
-                    hatchColor = HatchColor,
-                    hatchStyle = HatchStyle
-                };
-                return new LegendItem[] { legendItem };
-            }
+                label = label,
+                color = fill ? fillColor : lineColor,
+                lineWidth = fill ? 10 : lineWidth,
+                markerShape = MarkerShape.none,
+                hatchColor = HatchColor,
+                hatchStyle = HatchStyle
+            };
+            return new LegendItem[] { singleLegendItem };
         }
 
-        public string ErrorMessage(bool deepValidation = false)
+        public void ValidateData(bool deep = false)
         {
-            try
+            Validate.AssertHasElements("xs", xs);
+            Validate.AssertHasElements("ys", ys);
+            Validate.AssertEqualLength("xs and ys", xs, ys);
+
+            if (xs.Length < 3)
+                throw new InvalidOperationException("polygons must contain at least 3 points");
+
+            if (deep)
             {
-                Validate.AssertHasElements("xs", xs);
-                Validate.AssertHasElements("ys", ys);
-                Validate.AssertEqualLength("xs and ys", xs, ys);
-
-                if (xs.Length < 3)
-                    throw new ArgumentException("polygons must contain at least 3 points");
-
-                if (deepValidation)
-                {
-                    Validate.AssertAllReal("xs", xs);
-                    Validate.AssertAllReal("ys", ys);
-                }
-
-                return null;
-            }
-            catch (ArgumentException e)
-            {
-                return e.Message;
+                Validate.AssertAllReal("xs", xs);
+                Validate.AssertAllReal("ys", ys);
             }
         }
 

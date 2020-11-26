@@ -159,12 +159,10 @@ namespace ScottPlot.Renderable
         }
 
         private LegendItem[] LegendItems;
-        public void UpdateLegendItems(IRenderable[] renderables)
+        public void UpdateLegendItems(IPlottable[] renderables)
         {
-            LegendItems = renderables.Where(x => x is IHasLegendItems)
-                                     .Select(x => (IHasLegendItems)x)
-                                     .Where(x => x.LegendItems != null)
-                                     .SelectMany(x => x.LegendItems)
+            LegendItems = renderables.Where(x => x.GetLegendItems() != null)
+                                     .SelectMany(x => x.GetLegendItems())
                                      .Where(x => !string.IsNullOrWhiteSpace(x.label))
                                      .ToArray();
             if (ReverseOrder)

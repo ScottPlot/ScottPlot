@@ -12,7 +12,7 @@ namespace ScottPlot.Plottable
 {
 
 #pragma warning disable CS0618 // Type or member is obsolete
-    public class Heatmap : IRenderable, IUsesAxes, IValidatable
+    public class Heatmap : IPlottable
     {
         // these fields are updated when the intensities are analyzed
         private double[] NormalizedIntensities;
@@ -102,19 +102,16 @@ namespace ScottPlot.Plottable
             return normalized;
         }
 
-        public LegendItem[] LegendItems
+        public LegendItem[] GetLegendItems()
         {
-            get
+            var singleLegendItem = new LegendItem()
             {
-                var singleLegendItem = new LegendItem()
-                {
-                    label = label,
-                    color = Color.Gray,
-                    lineWidth = 10,
-                    markerShape = MarkerShape.none
-                };
-                return new LegendItem[] { singleLegendItem };
-            }
+                label = label,
+                color = Color.Gray,
+                lineWidth = 10,
+                markerShape = MarkerShape.none
+            };
+            return new LegendItem[] { singleLegendItem };
         }
 
         public AxisLimits GetAxisLimits() =>
@@ -124,14 +121,10 @@ namespace ScottPlot.Plottable
 
         public int PointCount { get => NormalizedIntensities.Length; }
 
-        public string ErrorMessage(bool deepValidation = false)
+        public void ValidateData(bool deepValidation = false)
         {
             if (NormalizedIntensities is null || BmpHeatmap is null)
-            {
-                return "Call UpdateData() to process data";
-            }
-
-            return null;
+                throw new InvalidOperationException("UpdateData() was not called prior to rendering");
         }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)

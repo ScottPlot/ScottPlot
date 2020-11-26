@@ -97,7 +97,7 @@ namespace ScottPlot
                 if (plottable.IsVisible == false)
                     continue;
 
-                PlotDimensions dims = (plottable is Plottable.IUsesAxes p) ?
+                PlotDimensions dims = (plottable is Plottable.IPlottable p) ?
                     settings.GetPlotDimensions(p.HorizontalAxisIndex, p.VerticalAxisIndex) :
                     settings.GetPlotDimensions(0, 0);
 

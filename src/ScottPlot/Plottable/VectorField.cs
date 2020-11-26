@@ -1,6 +1,4 @@
-﻿using ScottPlot.Ticks;
-using ScottPlot.Drawing;
-using ScottPlot.Renderable;
+﻿using ScottPlot.Drawing;
 using ScottPlot.Statistics;
 using System;
 using System.Drawing;
@@ -10,7 +8,7 @@ using System.Linq;
 namespace ScottPlot.Plottable
 {
 #pragma warning disable CS0618 // Type or member is obsolete
-    public class VectorField : IRenderable, IHasLegendItems, IUsesAxes
+    public class VectorField : IPlottable
     {
         private readonly Vector2[,] vectors;
         private readonly double[] xs;
@@ -59,19 +57,18 @@ namespace ScottPlot.Plottable
             this.ys = ys;
         }
 
-        public LegendItem[] LegendItems
+        public void ValidateData(bool deep = false) { /* validation occurs in constructor */ }
+
+        public LegendItem[] GetLegendItems()
         {
-            get
+            var singleLegendItem = new LegendItem()
             {
-                var item = new LegendItem()
-                {
-                    label = label,
-                    color = arrowColors[0],
-                    lineWidth = 10,
-                    markerShape = MarkerShape.none
-                };
-                return new LegendItem[] { item };
-            }
+                label = label,
+                color = arrowColors[0],
+                lineWidth = 10,
+                markerShape = MarkerShape.none
+            };
+            return new LegendItem[] { singleLegendItem };
         }
 
         public AxisLimits GetAxisLimits() => new AxisLimits(xs.Min() - 1, xs.Max() + 1, ys.Min() - 1, ys.Max() + 1);

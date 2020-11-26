@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace ScottPlot.Plottable
 {
-    public class ErrorBars : IRenderable, IHasLegendItems, IUsesAxes, IValidatable
+    public class ErrorBars : IPlottable
     {
         public readonly double[] Xs;
         public readonly double[] Ys;
@@ -95,48 +95,37 @@ namespace ScottPlot.Plottable
             return new AxisLimits(xMin, xMax, yMin, yMax);
         }
 
-        public LegendItem[] LegendItems
+        public LegendItem[] GetLegendItems()
         {
-            get
+            var singleLegendItem = new LegendItem()
             {
-                var singleLegendItem = new LegendItem()
-                {
-                    label = label,
-                    color = Color,
-                    markerShape = MarkerShape.none
-                };
-                return new LegendItem[] { singleLegendItem };
-            }
+                label = label,
+                color = Color,
+                markerShape = MarkerShape.none
+            };
+            return new LegendItem[] { singleLegendItem };
         }
 
-        public string ErrorMessage(bool deepValidation = false)
+        public void ValidateData(bool deepValidation = false)
         {
-            try
-            {
-                Validate.AssertHasElements("xs", Xs);
-                Validate.AssertHasElements("ys", Ys);
-                Validate.AssertEqualLength("xs and ys", Xs, Ys);
-                if (XErrorNegative != null) Validate.AssertEqualLength("xs and xNegativeError", Xs, XErrorNegative);
-                if (YErrorNegative != null) Validate.AssertEqualLength("xs and yNegativeError", Xs, YErrorNegative);
-                if (XErrorPositive != null) Validate.AssertEqualLength("xs and xPositiveError", Xs, XErrorPositive);
-                if (YErrorPositive != null) Validate.AssertEqualLength("xs and yPositiveError", Xs, YErrorPositive);
+            Validate.AssertHasElements("xs", Xs);
+            Validate.AssertHasElements("ys", Ys);
+            Validate.AssertEqualLength("xs and ys", Xs, Ys);
 
-                if (deepValidation)
-                {
-                    Validate.AssertAllReal("xs", Xs);
-                    Validate.AssertAllReal("ys", Ys);
-                    if (XErrorNegative != null) Validate.AssertAllReal("xNegativeError", XErrorNegative);
-                    if (YErrorNegative != null) Validate.AssertAllReal("yNegativeError", YErrorNegative);
-                    if (XErrorPositive != null) Validate.AssertAllReal("xPositiveError", XErrorPositive);
-                    if (YErrorPositive != null) Validate.AssertAllReal("yPositiveError", YErrorPositive);
-                }
-            }
-            catch (ArgumentException e)
-            {
-                return e.Message;
-            }
+            if (XErrorNegative != null) Validate.AssertEqualLength("xs and xNegativeError", Xs, XErrorNegative);
+            if (YErrorNegative != null) Validate.AssertEqualLength("xs and yNegativeError", Xs, YErrorNegative);
+            if (XErrorPositive != null) Validate.AssertEqualLength("xs and xPositiveError", Xs, XErrorPositive);
+            if (YErrorPositive != null) Validate.AssertEqualLength("xs and yPositiveError", Xs, YErrorPositive);
 
-            return null;
+            if (deepValidation)
+            {
+                Validate.AssertAllReal("xs", Xs);
+                Validate.AssertAllReal("ys", Ys);
+                if (XErrorNegative != null) Validate.AssertAllReal("xNegativeError", XErrorNegative);
+                if (YErrorNegative != null) Validate.AssertAllReal("yNegativeError", YErrorNegative);
+                if (XErrorPositive != null) Validate.AssertAllReal("xPositiveError", XErrorPositive);
+                if (YErrorPositive != null) Validate.AssertAllReal("yPositiveError", YErrorPositive);
+            }
         }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)

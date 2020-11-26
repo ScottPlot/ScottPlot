@@ -5,10 +5,11 @@ using ScottPlot.Ticks;
 using ScottPlot.Drawing;
 using ScottPlot.Renderable;
 using ScottPlot.Statistics;
+using System.Data;
 
 namespace ScottPlot.Plottable
 {
-    public class PopulationPlot : IRenderable, IHasLegendItems, IUsesAxes
+    public class PopulationPlot : IPlottable
     {
         public readonly PopulationMultiSeries popMultiSeries;
         public int groupCount { get { return popMultiSeries.groupCount; } }
@@ -68,15 +69,15 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public LegendItem[] LegendItems
+        public void ValidateData(bool deep = false)
         {
-            get
-            {
-                return popMultiSeries.multiSeries
-                    .Select(x => new LegendItem() { label = x.seriesLabel, color = x.color, lineWidth = 10 })
-                    .ToArray();
-            }
+            if (popMultiSeries is null)
+                throw new NoNullAllowedException();
         }
+
+        public LegendItem[] GetLegendItems() => popMultiSeries.multiSeries
+                .Select(x => new LegendItem() { label = x.seriesLabel, color = x.color, lineWidth = 10 })
+                .ToArray();
 
         public AxisLimits GetAxisLimits()
         {

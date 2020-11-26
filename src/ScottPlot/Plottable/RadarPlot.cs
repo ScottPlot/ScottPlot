@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using ScottPlot.Ticks;
 using ScottPlot.Drawing;
-using ScottPlot.Renderable;
 
 namespace ScottPlot.Plottable
 {
-    public class RadarPlot : IRenderable, IHasLegendItems, IUsesAxes, IValidatable
+    public class RadarPlot : IPlottable
     {
         private readonly double[,] normalized;
         private readonly double normalizedMax;
@@ -34,28 +32,19 @@ namespace ScottPlot.Plottable
         public override string ToString() =>
             $"PlottableRadar with {PointCount} points and {normalized.GetUpperBound(1) + 1} categories.";
 
-        public string ErrorMessage(bool deepValidation = false)
+        public void ValidateData(bool deep = false)
         {
-            try
-            {
-                if (groupNames != null && groupNames.Length != normalized.GetLength(0))
-                    throw new ArgumentException("group names must match size of values");
+            if (groupNames != null && groupNames.Length != normalized.GetLength(0))
+                throw new ArgumentException("group names must match size of values");
 
-                if (fillColors.Length != normalized.GetLength(0))
-                    throw new ArgumentException("fill colors array must match size of values");
+            if (fillColors.Length != normalized.GetLength(0))
+                throw new ArgumentException("fill colors array must match size of values");
 
-                if (lineColors.Length != normalized.GetLength(0))
-                    throw new ArgumentException("line colors array must match size of values");
+            if (lineColors.Length != normalized.GetLength(0))
+                throw new ArgumentException("line colors array must match size of values");
 
-                if (categoryNames != null && categoryNames.Length != normalized.GetLength(1))
-                    throw new ArgumentException("category names must match size of values");
-
-                return null;
-            }
-            catch (ArgumentException e)
-            {
-                return e.Message;
-            }
+            if (categoryNames != null && categoryNames.Length != normalized.GetLength(1))
+                throw new ArgumentException("category names must match size of values");
         }
 
         /// <summary>
@@ -77,28 +66,25 @@ namespace ScottPlot.Plottable
             return max;
         }
 
-        public LegendItem[] LegendItems
+        public LegendItem[] GetLegendItems()
         {
-            get
+            if (groupNames is null)
+                return null;
+
+            List<LegendItem> legendItems = new List<LegendItem>();
+            for (int i = 0; i < groupNames.Length; i++)
             {
-                if (groupNames is null)
-                    return null;
-
-                List<LegendItem> legendItems = new List<LegendItem>();
-                for (int i = 0; i < groupNames.Length; i++)
+                var item = new LegendItem()
                 {
-                    var item = new LegendItem()
-                    {
-                        label = groupNames[i],
-                        color = fillColors[i],
-                        lineWidth = 10,
-                        markerShape = MarkerShape.none
-                    };
-                    legendItems.Add(item);
-                }
-
-                return legendItems.ToArray();
+                    label = groupNames[i],
+                    color = fillColors[i],
+                    lineWidth = 10,
+                    markerShape = MarkerShape.none
+                };
+                legendItems.Add(item);
             }
+
+            return legendItems.ToArray();
         }
 
         public AxisLimits GetAxisLimits() => new AxisLimits(-1.5, 1.5, -1.5, 1.5);

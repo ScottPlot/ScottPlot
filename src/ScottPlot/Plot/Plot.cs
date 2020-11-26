@@ -50,14 +50,14 @@ namespace ScottPlot
 
         public void Resize(float width, float height) => settings.Resize(width, height);
 
-        public void Add(IRenderable plottable)
+        public void Add(IPlottable plottable)
         {
             settings.Plottables.Add(plottable);
         }
 
         [Obsolete("Access the 'Plot.Plottables' array instead", true)]
-        public List<IRenderable> GetPlottables() => settings.Plottables;
-        public IRenderable[] Plottables { get => settings.Plottables.ToArray(); }
+        public List<IPlottable> GetPlottables() => settings.Plottables;
+        public IPlottable[] Plottables { get => settings.Plottables.ToArray(); }
 
         public List<IDraggable> GetDraggables()
         {

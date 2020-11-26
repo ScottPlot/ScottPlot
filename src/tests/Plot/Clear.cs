@@ -131,13 +131,9 @@ namespace ScottPlotTests.Plot
             List<string> names = new List<string>();
             foreach (var plottable in plt.Plottables)
             {
-                if (plottable is IHasLegendItems plottableWithLegend)
-                {
-                    if (plottableWithLegend.LegendItems.Length > 0)
-                    {
-                        names.Add(plottableWithLegend.LegendItems[0].label);
-                    }
-                }
+                var legendItems = plottable.GetLegendItems();
+                if (legendItems != null && legendItems.Length > 0)
+                    names.Add(legendItems[0].label);
             }
 
             return string.Join(",", names);

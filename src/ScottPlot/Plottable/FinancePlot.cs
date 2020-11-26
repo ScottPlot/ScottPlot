@@ -3,10 +3,11 @@ using System.Drawing;
 using ScottPlot.Ticks;
 using ScottPlot.Drawing;
 using ScottPlot.Renderable;
+using System.Data;
 
 namespace ScottPlot.Plottable
 {
-    public class FinancePlot : IRenderable, IUsesAxes, IValidatable
+    public class FinancePlot : IPlottable
     {
         /// <summary>
         /// Array of prices (open high low close)
@@ -43,9 +44,8 @@ namespace ScottPlot.Plottable
         public bool IsVisible { get; set; } = true;
 
         public override string ToString() => $"PlottableOHLC with {PointCount} points";
-
+        public LegendItem[] GetLegendItems() => null;
         public int PointCount { get => ohlcs.Length; }
-
         public int HorizontalAxisIndex { get; set; } = 0;
         public int VerticalAxisIndex { get; set; } = 0;
 
@@ -95,26 +95,18 @@ namespace ScottPlot.Plottable
             return smallestSpacing;
         }
 
-        public string ErrorMessage(bool deepValidation = false)
+        public void ValidateData(bool deepValidation = false)
         {
-            try
-            {
-                if (ohlcs is null)
-                    throw new ArgumentException("ohlcs cannot be null");
-                for (int i = 0; i < ohlcs.Length; i++)
-                {
-                    if (ohlcs[i] is null)
-                        throw new ArgumentException($"ohlcs[{i}] cannot be null");
-                    if (!ohlcs[i].IsValid)
-                        throw new ArgumentException($"ohlcs[{i}] does not contain valid data");
-                }
-            }
-            catch (ArgumentException e)
-            {
-                return e.Message;
-            }
+            if (ohlcs is null)
+                throw new NoNullAllowedException("ohlcs cannot be null");
 
-            return null;
+            for (int i = 0; i < ohlcs.Length; i++)
+            {
+                if (ohlcs[i] is null)
+                    throw new NoNullAllowedException($"ohlcs[{i}] cannot be null");
+                if (!ohlcs[i].IsValid)
+                    throw new NotFiniteNumberException($"ohlcs[{i}] does not contain valid data");
+            }
         }
 
         public void RenderCandles(PlotDimensions dims, Bitmap bmp, bool lowQuality)

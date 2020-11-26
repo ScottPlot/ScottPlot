@@ -10,7 +10,7 @@ namespace ScottPlot.Plottable
     public class HSpan : AxisSpan { public HSpan() { IsHorizontal = true; } }
     public class VSpan : AxisSpan { public VSpan() { IsHorizontal = false; } }
 
-    public abstract class AxisSpan : IDraggable, IRenderable, IHasLegendItems, IUsesAxes
+    public abstract class AxisSpan : IPlottable, IDraggable
     {
         public double position1;
         public double position2;
@@ -37,19 +37,25 @@ namespace ScottPlot.Plottable
                 $"PlottableVSpan{label} from Y={position1} to Y={position2}";
         }
 
-        public LegendItem[] LegendItems
+        public void ValidateData(bool deep = false)
         {
-            get
+            if (double.IsNaN(position1) || double.IsInfinity(position1))
+                throw new NotFiniteNumberException("position1 must be a valid number");
+
+            if (double.IsNaN(position2) || double.IsInfinity(position2))
+                throw new NotFiniteNumberException("position2 must be a valid number");
+        }
+
+        public LegendItem[] GetLegendItems()
+        {
+            var singleItem = new LegendItem()
             {
-                var item = new LegendItem()
-                {
-                    label = label,
-                    color = colorWithAlpha,
-                    markerSize = 0,
-                    lineWidth = 10
-                };
-                return new LegendItem[] { item };
-            }
+                label = label,
+                color = colorWithAlpha,
+                markerSize = 0,
+                lineWidth = 10
+            };
+            return new LegendItem[] { singleItem };
         }
 
         public AxisLimits GetAxisLimits() =>

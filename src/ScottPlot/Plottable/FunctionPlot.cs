@@ -9,7 +9,7 @@ using ScottPlot.Renderable;
 
 namespace ScottPlot.Plottable
 {
-    public class FunctionPlot : IRenderable, IHasLegendItems, IUsesAxes, IValidatable
+    public class FunctionPlot : IPlottable
     {
         public Func<double, double?> function;
         public int HorizontalAxisIndex { get; set; } = 0;
@@ -92,12 +92,10 @@ namespace ScottPlot.Plottable
             scatter.Render(dims, bmp, lowQuality);
         }
 
-        public string ErrorMessage(bool deepValidation = false)
+        public void ValidateData(bool deepValidation = false)
         {
             if (function is null)
-                return "function cannot be null";
-
-            return null;
+                throw new NoNullAllowedException("function cannot be null");
         }
 
         public override string ToString()
@@ -106,20 +104,17 @@ namespace ScottPlot.Plottable
             return $"PlottableFunction{label} displaying {PointCount} points";
         }
 
-        public LegendItem[] LegendItems
+        public LegendItem[] GetLegendItems()
         {
-            get
+            var singleLegendItem = new LegendItem()
             {
-                var singleLegendItem = new LegendItem()
-                {
-                    label = label,
-                    color = color,
-                    lineStyle = lineStyle,
-                    lineWidth = lineWidth,
-                    markerShape = MarkerShape.none
-                };
-                return new LegendItem[] { singleLegendItem };
-            }
+                label = label,
+                color = color,
+                lineStyle = lineStyle,
+                lineWidth = lineWidth,
+                markerShape = MarkerShape.none
+            };
+            return new LegendItem[] { singleLegendItem };
         }
     }
 }

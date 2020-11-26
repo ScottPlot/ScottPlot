@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ScottPlot.Plottable
+﻿namespace ScottPlot.Plottable
 {
     /// <summary>
-    /// describes Plottable objects whose data can be exported as a text file
+    /// For Plottables whose data can be exported as a text file
     /// </summary>
     public interface IExportable
     {

@@ -1,5 +1,4 @@
-﻿using ScottPlot.Ticks;
-using ScottPlot.Drawing;
+﻿using ScottPlot.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -223,19 +222,12 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public override string ErrorMessage(bool deepValidation = false)
+        public new void ValidateData(bool deep = false)
         {
-            try
-            {
-                Validate.AssertEqualLength("xs and ys", xs, ys);
-                Validate.AssertHasElements("xs", xs);
-                Validate.AssertAscending("xs", xs);
-                return null;
-            }
-            catch (ArgumentException e)
-            {
-                return e.Message;
-            }
+            base.ValidateData(deep);
+            Validate.AssertEqualLength("xs and ys", xs, ys);
+            Validate.AssertHasElements("xs", xs);
+            Validate.AssertAscending("xs", xs);
         }
 
         public override string ToString()

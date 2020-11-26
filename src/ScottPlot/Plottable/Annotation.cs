@@ -6,7 +6,7 @@ using System.Drawing;
 
 namespace ScottPlot.Plottable
 {
-    public class Annotation : IRenderable
+    public class Annotation : IPlottable
     {
         public double xPixel;
         public double yPixel;
@@ -28,8 +28,21 @@ namespace ScottPlot.Plottable
         public Color BorderColor = Color.Black;
 
         public bool IsVisible { get; set; } = true;
+        public int HorizontalAxisIndex { get; set; } = 0;
+        public int VerticalAxisIndex { get; set; } = 0;
 
         public override string ToString() => $"PlottableAnnotation at ({xPixel} px, {yPixel} px)";
+        public LegendItem[] GetLegendItems() => null;
+        public AxisLimits GetAxisLimits() => new AxisLimits(double.NaN, double.NaN, double.NaN, double.NaN);
+
+        public void ValidateData(bool deep = false)
+        {
+            if (double.IsNaN(xPixel) || double.IsInfinity(xPixel))
+                throw new NotFiniteNumberException("xPixel must be a valid number");
+
+            if (double.IsNaN(yPixel) || double.IsInfinity(yPixel))
+                throw new NotFiniteNumberException("xPixel must be a valid number");
+        }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {

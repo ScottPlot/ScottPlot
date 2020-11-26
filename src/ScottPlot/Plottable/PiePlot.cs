@@ -1,6 +1,4 @@
-﻿using ScottPlot.Ticks;
-using ScottPlot.Drawing;
-using ScottPlot.Renderable;
+﻿using ScottPlot.Drawing;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -8,7 +6,7 @@ using System.Linq;
 
 namespace ScottPlot.Plottable
 {
-    public class PiePlot : IRenderable, IHasLegendItems, IUsesAxes, IValidatable
+    public class PiePlot : IPlottable
     {
         public double[] values;
         public string label;
@@ -43,41 +41,29 @@ namespace ScottPlot.Plottable
             return $"PlottablePie{label} with {PointCount} points";
         }
 
-        public LegendItem[] LegendItems
+        public LegendItem[] GetLegendItems()
         {
-            get
-            {
-                if (groupNames is null)
-                    return null;
+            if (groupNames is null)
+                return null;
 
-                return Enumerable
-                    .Range(0, values.Length)
-                    .Select(i => new LegendItem() { label = groupNames[i], color = colors[i], lineWidth = 10 })
-                    .ToArray();
-            }
+            return Enumerable
+                .Range(0, values.Length)
+                .Select(i => new LegendItem() { label = groupNames[i], color = colors[i], lineWidth = 10 })
+                .ToArray();
         }
 
         public AxisLimits GetAxisLimits() => new AxisLimits(-0.5, 0.5, -1, 1);
 
         public int PointCount { get => values.Length; }
 
-        public string ErrorMessage(bool deepValidation = false)
+        public void ValidateData(bool deep = false)
         {
-            try
-            {
-                Validate.AssertHasElements("values", values);
-                Validate.AssertHasElements("groupNames", groupNames);
-                Validate.AssertHasElements("colors", colors);
-                Validate.AssertAllReal("values", values);
-                if (values.Length != groupNames.Length || values.Length != colors.Length)
-                    throw new ArgumentException("values, groupNames, and colors must have equal length");
-            }
-            catch (ArgumentException e)
-            {
-                return e.Message;
-            }
-
-            return null;
+            Validate.AssertHasElements("values", values);
+            Validate.AssertHasElements("groupNames", groupNames);
+            Validate.AssertHasElements("colors", colors);
+            Validate.AssertAllReal("values", values);
+            if (values.Length != groupNames.Length || values.Length != colors.Length)
+                throw new InvalidOperationException("values, groupNames, and colors must have equal length");
         }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)

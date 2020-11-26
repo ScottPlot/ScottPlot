@@ -16,7 +16,7 @@ namespace ScottPlot
     public class Settings
     {
         // plottables
-        public readonly List<IRenderable> Plottables = new List<IRenderable>();
+        public readonly List<IPlottable> Plottables = new List<IPlottable>();
         public Color GetNextColor() { return PlottablePalette.GetColor(Plottables.Count); }
 
         // renderable objects the user can customize
@@ -259,8 +259,8 @@ namespace ScottPlot
             double max = double.NaN;
             double zoomFrac = 1 - margin;
 
-            var plottableLimits = Plottables.Where(x => x is IUsesAxes)
-                                               .Select(x => (IUsesAxes)x)
+            var plottableLimits = Plottables.Where(x => x is IPlottable)
+                                               .Select(x => (IPlottable)x)
                                                .Where(x => x.IsVisible)
                                                .Where(x => x.HorizontalAxisIndex == xAxisIndex)
                                                .Select(x => x.GetAxisLimits())
@@ -288,8 +288,8 @@ namespace ScottPlot
             double max = double.NaN;
             double zoomFrac = 1 - margin;
 
-            var plottableLimits = Plottables.Where(x => x is IUsesAxes)
-                                               .Select(x => (IUsesAxes)x)
+            var plottableLimits = Plottables.Where(x => x is IPlottable)
+                                               .Select(x => (IPlottable)x)
                                                .Where(x => x.IsVisible)
                                                .Where(x => x.VerticalAxisIndex == yAxisIndex)
                                                .Select(x => x.GetAxisLimits())

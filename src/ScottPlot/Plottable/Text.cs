@@ -1,13 +1,12 @@
-﻿using ScottPlot.Ticks;
-using ScottPlot.Drawing;
-using ScottPlot.Renderable;
+﻿using ScottPlot.Drawing;
 using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.Data;
 
 namespace ScottPlot.Plottable
 {
-    public class Text : IRenderable, IUsesAxes, IValidatable
+    public class Text : IPlottable
     {
         /// <summary>
         /// Horizontal position in coordinate space
@@ -76,25 +75,22 @@ namespace ScottPlot.Plottable
         public Text() { }
 
         public override string ToString() => $"PlottableText \"{text}\" at ({x}, {y})";
-
         public AxisLimits GetAxisLimits() => new AxisLimits(x, x, y, y);
+        public LegendItem[] GetLegendItems() => null;
 
-        public void Render(Settings settings) => throw new NotImplementedException("Use the other Render method");
-
-        public string ErrorMessage(bool deepValidation = false)
+        public void ValidateData(bool deep = false)
         {
-            try
-            {
-                Validate.AssertIsReal("x", x);
-                Validate.AssertIsReal("y", y);
-                Validate.AssertIsReal("rotation", rotation);
-                Validate.AssertHasText("text", text);
-                return null;
-            }
-            catch (ArgumentException e)
-            {
-                return e.Message;
-            }
+            if (double.IsNaN(x) || double.IsNaN(y))
+                throw new NotFiniteNumberException("X and Y cannot be NaN");
+
+            if (double.IsInfinity(x) || double.IsInfinity(y))
+                throw new NotFiniteNumberException("X and Y cannot be Infinity");
+
+            if (double.IsInfinity(rotation) || double.IsInfinity(rotation))
+                throw new NotFiniteNumberException("Rotation cannot be Infinity");
+
+            if (string.IsNullOrWhiteSpace(text))
+                throw new NoNullAllowedException("text cannot be null or whitespace");
         }
 
         /// <summary>

@@ -2,6 +2,9 @@
 
 namespace ScottPlot.Plottable
 {
+    /// <summary>
+    /// This class describes a single item that appears in the figure legend.
+    /// </summary>
     public class LegendItem
     {
         public string label;
