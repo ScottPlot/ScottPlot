@@ -119,6 +119,9 @@ namespace ScottPlot.Plottable
 
         public AxisLimits GetAxisLimits()
         {
+            ValidateData(deep: false);
+
+            // TODO: don't use an array for this
             double[] limits = new double[4];
 
             if (errorX == null)
@@ -156,6 +159,16 @@ namespace ScottPlot.Plottable
                         limits[3] = ys[i] + errorY[i];
                 }
             }
+
+            if (double.IsNaN(limits[0]) || double.IsNaN(limits[1]))
+                throw new InvalidOperationException("X data must not contain NaN");
+            if (double.IsNaN(limits[2]) || double.IsNaN(limits[3]))
+                throw new InvalidOperationException("Y data must not contain NaN");
+
+            if (double.IsInfinity(limits[0]) || double.IsInfinity(limits[1]))
+                throw new InvalidOperationException("X data must not contain Infinity");
+            if (double.IsInfinity(limits[2]) || double.IsInfinity(limits[3]))
+                throw new InvalidOperationException("Y data must not contain Infinity");
 
             return new AxisLimits(limits[0], limits[1], limits[2], limits[3]);
         }
