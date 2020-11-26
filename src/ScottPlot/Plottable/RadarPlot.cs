@@ -82,7 +82,7 @@ namespace ScottPlot.Plottable
             return legendItems.ToArray();
         }
 
-        public AxisLimits GetAxisLimits() => new AxisLimits(-1.5, 1.5, -1.5, 1.5);
+        public AxisLimits GetAxisLimits() => new AxisLimits(-2.5, 2.5, -2.5, 2.5);
 
         public int PointCount { get => normalized.Length; }
 
