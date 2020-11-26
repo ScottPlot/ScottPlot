@@ -59,11 +59,9 @@ namespace ScottPlot.Plottable
         public void ValidateData(bool deep = false)
         {
             Validate.AssertHasElements("values", values);
-            Validate.AssertHasElements("groupNames", groupNames);
             Validate.AssertHasElements("colors", colors);
             Validate.AssertAllReal("values", values);
-            if (values.Length != groupNames.Length || values.Length != colors.Length)
-                throw new InvalidOperationException("values, groupNames, and colors must have equal length");
+            // TODO: ensure the length of colors and group names matches expected length
         }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
