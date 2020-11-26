@@ -18,6 +18,7 @@ namespace ScottPlot.Plottable
         public bool IsVisible { get; set; } = true;
         public int HorizontalAxisIndex { get; set; } = 0;
         public int VerticalAxisIndex { get; set; } = 0;
+        public Drawing.Font Font = new Drawing.Font();
 
         public RadarPlot(double[,] values, Color[] lineColors, Color[] fillColors)
         {
@@ -98,13 +99,14 @@ namespace ScottPlot.Plottable
             using (Pen pen = GDI.Pen(webColor))
             using (Brush brush = GDI.Brush(Color.Black))
             using (StringFormat sf = new StringFormat() { LineAlignment = StringAlignment.Center })
-            using (var font = GDI.Font())
+            using (System.Drawing.Font font = GDI.Font(Font))
+            using (Brush fontBrush = GDI.Brush(Font.Color))
             {
                 for (int i = 0; i < radii.Length; i++)
                 {
                     gfx.DrawEllipse(pen, (int)(origin.X - radii[i]), (int)(origin.Y - radii[i]), (int)(radii[i] * 2), (int)(radii[i] * 2));
                     StringFormat stringFormat = new StringFormat() { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Far };
-                    gfx.DrawString($"{normalizedMax * radii[i] / minScale:f1}", GDI.Font(null, 8), brush, origin.X, (float)(-radii[i] + origin.Y), stringFormat);
+                    gfx.DrawString($"{normalizedMax * radii[i] / minScale:f1}", font, fontBrush, origin.X, (float)(-radii[i] + origin.Y), stringFormat);
                 }
 
                 for (int i = 0; i < numCategories; i++)
@@ -122,7 +124,7 @@ namespace ScottPlot.Plottable
                             sf.Alignment = StringAlignment.Center;
                         else
                             sf.Alignment = dims.GetCoordinateX(textDestination.X) < 0 ? StringAlignment.Far : StringAlignment.Near;
-                        gfx.DrawString(categoryNames[i], font, brush, textDestination, sf);
+                        gfx.DrawString(categoryNames[i], font, fontBrush, textDestination, sf);
                     }
                 }
 
