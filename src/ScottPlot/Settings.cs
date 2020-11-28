@@ -48,7 +48,6 @@ namespace ScottPlot
         public Axis YAxis2 => Axes[1];
         public Axis XAxis => Axes[2];
         public Axis XAxis2 => Axes[3];
-        public Axis[] PrimaryAxes => Axes.Take(4).ToArray();
 
         // public fields represent primary X and Y axes
         public int Width => (int)XAxis.Dims.FigureSizePx;

@@ -61,7 +61,8 @@ namespace ScottPlot
             bool? top = true
         )
         {
-            foreach (var axis in settings.PrimaryAxes)
+            var primaryAxes = new Renderable.Axis[] { XAxis, XAxis2, YAxis, YAxis2 };
+            foreach (var axis in primaryAxes)
             {
                 axis.Line.IsVisible = drawFrame ?? axis.Line.IsVisible;
                 axis.Line.Color = frameColor ?? axis.Line.Color;
