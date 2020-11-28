@@ -6,7 +6,7 @@ using ScottPlot.Drawing;
 
 namespace ScottPlot.Plottable
 {
-    public class ScatterPlotHighlight : ScatterPlot, IExportable, IPlottable
+    public class ScatterPlotHighlight : ScatterPlot, IPlottable, IExportable, IHasPoints, IHasHighlightablePoints
     {
         public MarkerShape highlightedShape = MarkerShape.openCircle;
         public float highlightedMarkerSize = 10;
