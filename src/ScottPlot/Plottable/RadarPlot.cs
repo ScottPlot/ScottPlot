@@ -121,7 +121,17 @@ namespace ScottPlot.Plottable
 			return legendItems.ToArray();
 		}
 
-		public AxisLimits GetAxisLimits() => new AxisLimits(-2.5, 2.5, -2.5, 2.5);
+		public AxisLimits GetAxisLimits()
+		{
+			if (groupNames != null)
+			{
+				return new AxisLimits(-3.5, 3.5, -3.5, 3.5);
+			}
+			else
+			{
+				return new AxisLimits(-2.5, 2.5, -2.5, 2.5);
+			}
+		}
 
 		public int PointCount { get => normalized.Length; }
 
