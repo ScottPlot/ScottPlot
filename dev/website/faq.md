@@ -13,3 +13,4 @@
   * Customize right-click menu
   * Get position under mouse
   * Print dialogue
+  * MVVM pattern
