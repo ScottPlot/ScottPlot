@@ -6,6 +6,11 @@ namespace ScottPlot
 {
     public partial class Plot
     {
+        Renderable.Axis XAxis => settings.XAxis;
+        Renderable.Axis XAxis2 => settings.XAxis2;
+        Renderable.Axis YAxis => settings.YAxis;
+        Renderable.Axis YAxis2 => settings.YAxis2;
+
         public AxisLimits AxisLimits(int xAxisIndex = 0, int yAxisIndex = 0)
         {
             (double xMin, double xMax) = settings.GetXAxis(xAxisIndex).Dims.RationalLimits();
