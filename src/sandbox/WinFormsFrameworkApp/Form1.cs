@@ -16,7 +16,7 @@ namespace WinFormsFrameworkApp
     {
         private readonly HLine HLine;
         private readonly VLine VLine;
-        private readonly SignalPlot Signal;
+        private readonly SignalPlotConst<double> Signal;
 
         public Form1()
         {
@@ -26,7 +26,7 @@ namespace WinFormsFrameworkApp
             int sampleRate = 48_000;
             Random rand = new Random(0);
             double[] data = ScottPlot.DataGen.RandomWalk(rand, sampleRate * 10);
-            Signal = formsPlot1.plt.PlotSignal(data, sampleRate);
+            Signal = formsPlot1.plt.PlotSignalConst(data, sampleRate);
 
             // markers to indicate where the mouse is
             HLine = formsPlot1.plt.PlotHLine(0, Color.Red, lineStyle: ScottPlot.LineStyle.Dash);
@@ -38,14 +38,17 @@ namespace WinFormsFrameworkApp
         private void formsPlot1_MouseMove(object sender, MouseEventArgs e)
         {
             double mouseX = formsPlot1.plt.CoordinateFromPixelX(e.X);
-            double mouseY = formsPlot1.plt.CoordinateFromPixelY(e.Y);
+            (double x, double y, int pointIndex) = Signal.GetPointNearestX(mouseX);
+            Text = $"Mouse is over point {pointIndex:N0} ({x:.03}, {y:.03})";
 
-            (double pointX, double pointY, int pointIndex) = Signal.GetPointNearestX(mouseX);
-            Text = $"Mouse is over point {pointIndex} ({pointX}, {pointY})";
-
-            HLine.position = pointY;
-            VLine.position = pointX;
+            HLine.position = y;
+            VLine.position = x;
             formsPlot1.Render();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
