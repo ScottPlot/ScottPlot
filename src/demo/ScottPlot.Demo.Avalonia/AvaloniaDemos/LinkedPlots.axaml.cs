@@ -40,13 +40,13 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 
         private void axisChanged1(object sender, EventArgs e)
         {
-            avaPlot2.plt.MatchAxis(avaPlot1.plt);
+            avaPlot2.plt.SetAxisLimits(avaPlot1.plt.GetAxisLimits());
             avaPlot2.Render();
         }
 
         private void axisChanged2(object sender, EventArgs e)
         {
-            avaPlot1.plt.MatchAxis(avaPlot2.plt);
+            avaPlot1.plt.SetAxisLimits(avaPlot2.plt.GetAxisLimits());
             avaPlot1.Render();
         }
     }

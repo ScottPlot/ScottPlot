@@ -53,7 +53,7 @@ namespace ScottPlot.Demo.Advanced
                 // adjust the bottom left plot to match the bottom right plot
                 var plotToAdjust = mp.GetSubplot(1, 0);
                 var plotReference = mp.GetSubplot(1, 1);
-                plotToAdjust.MatchAxis(plotReference);
+                plotToAdjust.SetAxisLimits(plotReference.GetAxisLimits());
                 plotToAdjust.MatchLayout(plotReference);
 
                 return mp.GetBitmap();

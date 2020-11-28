@@ -50,7 +50,7 @@ namespace ScottPlotTests
             ScottPlot.MultiPlot multiplot = SampleMultiPlot();
 
             // update the lower left (index 2) plot to use the scale of the lower right (index 3)
-            multiplot.subplots[2].MatchAxis(multiplot.subplots[3]);
+            multiplot.subplots[2].SetAxisLimits(multiplot.subplots[3].GetAxisLimits());
             multiplot.subplots[2].Title("#2 (matched to #3)");
 
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name;
@@ -59,38 +59,9 @@ namespace ScottPlotTests
             Console.WriteLine($"Saved {filePath}");
             DisplayAxisInfo(multiplot);
 
-            var matchedAxisLimits = multiplot.subplots[2].AxisLimits();
+            var matchedAxisLimits = multiplot.subplots[2].GetAxisLimits();
             Assert.Greater(matchedAxisLimits.XMax, matchedAxisLimits.XMin);
             Assert.Greater(matchedAxisLimits.YMax, matchedAxisLimits.YMin);
-        }
-
-        [Test]
-        public void Test_MultiPlot_MatchJustOneAxis()
-        {
-            ScottPlot.MultiPlot multiplot = SampleMultiPlot();
-
-            multiplot.subplots[1].MatchAxis(multiplot.subplots[3], horizontal: false);
-            multiplot.subplots[1].MatchLayout(multiplot.subplots[3], horizontal: false);
-            multiplot.subplots[1].Title("#1 (matched vertical to #3)");
-
-            multiplot.subplots[2].MatchAxis(multiplot.subplots[3], vertical: false);
-            multiplot.subplots[2].MatchLayout(multiplot.subplots[3], vertical: false);
-            multiplot.subplots[2].Title("#2 (matched hoizontal to #3)");
-
-            string name = System.Reflection.MethodBase.GetCurrentMethod().Name;
-            string filePath = System.IO.Path.GetFullPath(name + ".png");
-            multiplot.SaveFig(filePath);
-            Console.WriteLine($"Saved {filePath}");
-
-            DisplayAxisInfo(multiplot);
-            var matchedVerticalLimits = multiplot.subplots[1].AxisLimits();
-            var matchedHorizontalLimits = multiplot.subplots[1].AxisLimits();
-
-            Assert.Greater(matchedVerticalLimits.XMax, matchedVerticalLimits.XMin);
-            Assert.Greater(matchedVerticalLimits.YMax, matchedVerticalLimits.YMin);
-
-            Assert.Greater(matchedHorizontalLimits.XMax, matchedHorizontalLimits.XMin);
-            Assert.Greater(matchedHorizontalLimits.YMax, matchedHorizontalLimits.YMin);
         }
     }
 }

@@ -34,13 +34,13 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
 
         private void formsPlot1_AxesChanged(object sender, EventArgs e)
         {
-            formsPlot2.plt.MatchAxis(formsPlot1.plt);
+            formsPlot2.plt.SetAxisLimits(formsPlot1.plt.GetAxisLimits());
             formsPlot2.Render(skipIfCurrentlyRendering: true, processEvents: cbProcessEvents.Checked);
         }
 
         private void formsPlot2_AxesChanged(object sender, EventArgs e)
         {
-            formsPlot1.plt.MatchAxis(formsPlot2.plt);
+            formsPlot1.plt.SetAxisLimits(formsPlot2.plt.GetAxisLimits());
             formsPlot1.Render(skipIfCurrentlyRendering: true, processEvents: cbProcessEvents.Checked);
         }
     }

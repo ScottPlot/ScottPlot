@@ -264,13 +264,13 @@ namespace ScottPlot
         public AxisLimits Axis(double? x1 = null, double? x2 = null, double? y1 = null, double? y2 = null,
             int xAxisIndex = 0, int yAxisIndex = 0) => throw new NotImplementedException();
 
-        [Obsolete("use GetAxisLimits() and SetAxisLimits()")]
+        [Obsolete("use GetAxisLimits() and SetAxisLimits()", true)]
         public void Axis(double[] axisLimits, int xAxisIndex = 0, int yAxisIndex = 0) => throw new NotImplementedException();
 
-        [Obsolete("use GetAxisLimits() and SetAxisLimits()")]
+        [Obsolete("use GetAxisLimits() and SetAxisLimits()", true)]
         public void MatchAxis(Plot sourcePlot, bool horizontal = true, bool vertical = true) => throw new NotImplementedException();
 
-        [Obsolete("use GetAxisLimits() and SetAxisLimits()")]
+        [Obsolete("use GetAxisLimits() and SetAxisLimits()", true)]
         public void Axis(AxisLimits limits, int xAxisIndex = 0, int yAxisIndex = 0) => throw new NotImplementedException();
 
         [Obsolete("use AxisEqualScale()", true)]

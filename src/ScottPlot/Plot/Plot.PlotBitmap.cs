@@ -71,7 +71,6 @@ namespace ScottPlot
             heatmap.UpdateData(intensities);
 
             Add(heatmap);
-            MatchAxis(this);
             Ticks(false, false);
             Layout(top: 180);
 

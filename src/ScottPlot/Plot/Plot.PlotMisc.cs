@@ -78,7 +78,6 @@ namespace ScottPlot
                 webColor = webColor ?? Color.Gray
             };
             Add(plottable);
-            MatchAxis(this);
 
             return plottable;
         }

@@ -35,13 +35,13 @@ namespace ScottPlot.Demo.WPF.WpfDemos
 
         private void axisChanged1(object sender, EventArgs e)
         {
-            wpfPlot2.plt.MatchAxis(wpfPlot1.plt);
+            wpfPlot2.plt.SetAxisLimits(wpfPlot1.plt.GetAxisLimits());
             wpfPlot2.Render();
         }
 
         private void axisChanged2(object sender, EventArgs e)
         {
-            wpfPlot1.plt.MatchAxis(wpfPlot2.plt);
+            wpfPlot1.plt.SetAxisLimits(wpfPlot2.plt.GetAxisLimits());
             wpfPlot1.Render();
         }
     }
