@@ -17,29 +17,37 @@ namespace ScottPlot
     {
         private readonly Settings settings = new Settings();
 
+        /// <summary>
+        /// A ScottPlot stores data in plottable objects and draws it on a bitmap when Render() is called
+        /// </summary>
         public Plot(int width = 800, int height = 600)
         {
             if (width <= 0 || height <= 0)
                 throw new ArgumentException("width and height must each be greater than 0");
+
             StyleTools.SetStyle(this, ScottPlot.Style.Default);
             Resize(width, height);
         }
 
         public override string ToString() =>
-            $"ScottPlot ({settings.Width}x{settings.Height}) with {Plottables.Length:n0} plot objects";
+            $"ScottPlot ({settings.Width}x{settings.Height}) " +
+            $"with {settings.Plottables.Count:n0} plottables";
 
         /// <summary>
-        /// Return a new Plot with all the same Plottables (and some of the styles) of this one
+        /// Return a new Plot with all the same Plottables (and some of the styles) of this one.
         /// </summary>
         public Plot Copy()
         {
+            // This is typically only called when you right-click a plot in a control and hit "open in new window".
+            // All state from the old plot must be copied to the new plot.
+
             Plot plt2 = new Plot(settings.Width, settings.Height);
             var settings2 = plt2.GetSettings(false);
+
+            // Copying state of plottables is easy because they contain their own state.
             settings2.Plottables.AddRange(settings.Plottables);
 
-            // TODO: add a Copy() method to the settings module, or perhaps Update(existingSettings).
-
-            // copy over only the most relevant styles
+            // TODO: copy axes, since they now carry their own state too.
             plt2.Title(settings.XAxis2.Title.Label);
             plt2.XLabel(settings.XAxis.Title.Label);
             plt2.YLabel(settings.YAxis.Title.Label);
@@ -48,28 +56,41 @@ namespace ScottPlot
             return plt2;
         }
 
+        /// <summary>
+        /// Set the default size for new renders
+        /// </summary>
         public void Resize(float width, float height) => settings.Resize(width, height);
 
-        public void Add(IPlottable plottable)
-        {
-            settings.Plottables.Add(plottable);
-        }
+        /// <summary>
+        /// Add a plottable to the plot
+        /// </summary>
+        public void Add(IPlottable plottable) => settings.Plottables.Add(plottable);
 
-        [Obsolete("Access the 'Plot.Plottables' array instead", true)]
-        public List<IPlottable> GetPlottables() => settings.Plottables;
-        public IPlottable[] Plottables { get => settings.Plottables.ToArray(); }
+        /// <summary>
+        /// Return a copy of the list of plottables
+        /// </summary>
+        /// <returns></returns>
+        public IPlottable[] GetPlottables() => settings.Plottables.ToArray();
 
-        public List<IDraggable> GetDraggables()
+        /// <summary>
+        /// Return a copy of the list of draggable plottables
+        /// </summary>
+        /// <returns></returns>
+        public IDraggable[] GetDraggables()
         {
+            // TODO: linq
             List<IDraggable> draggables = new List<IDraggable>();
 
-            foreach (var plottable in Plottables)
+            foreach (var plottable in settings.Plottables)
                 if (plottable is IDraggable draggable)
                     draggables.Add(draggable);
 
-            return draggables;
+            return draggables.ToArray();
         }
 
+        /// <summary>
+        /// Return the draggable plottable under the mouse cursor (or null if there isn't one)
+        /// </summary>
         public IDraggable GetDraggableUnderMouse(double pixelX, double pixelY, int snapDistancePixels = 5)
         {
             double snapWidth = GetSettings(false).XAxis.Dims.UnitsPerPx * snapDistancePixels;
@@ -83,7 +104,19 @@ namespace ScottPlot
             return null;
         }
 
-        public void Benchmark(bool show = true, bool toggle = false) =>
-            settings.BenchmarkMessage.IsVisible = toggle ? !settings.BenchmarkMessage.IsVisible : show;
+        /// <summary>
+        /// Display render benchmark information on the plot
+        /// </summary>
+        public void Benchmark(bool enable = true) => settings.BenchmarkMessage.IsVisible = enable;
+        public void BenchmarkToggle() => settings.BenchmarkMessage.IsVisible = !settings.BenchmarkMessage.IsVisible;
+
+        /// <summary>
+        /// Throw an exception if any plottable contains an invalid state. Deep validation is more thorough but slower.
+        /// </summary>
+        public void ValidatePlottableData(bool deep = true)
+        {
+            foreach (var plottable in settings.Plottables)
+                plottable.ValidateData(deep);
+        }
     }
 }

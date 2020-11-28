@@ -110,7 +110,7 @@ namespace ScottPlot.WinForms
 
         private void PictureBox1_DoubleClick(object sender, EventArgs e)
         {
-            MainPlot.Benchmark(toggle: true);
+            MainPlot.BenchmarkToggle();
             Render();
         }
 

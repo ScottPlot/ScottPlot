@@ -554,7 +554,7 @@ namespace ScottPlot
             MouseDoubleClicked?.Invoke(this, e);
             if (doubleClickingTogglesBenchmark)
             {
-                plt.Benchmark(toggle: true);
+                plt.BenchmarkToggle();
                 Render();
             }
         }

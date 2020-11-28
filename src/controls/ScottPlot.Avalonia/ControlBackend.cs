@@ -324,7 +324,7 @@ namespace ScottPlot.Interactive
         {
             if (doubleClickingTogglesBenchmark)
             {
-                plt.Benchmark(toggle: true);
+                plt.BenchmarkToggle();
                 Render();
             }
         }

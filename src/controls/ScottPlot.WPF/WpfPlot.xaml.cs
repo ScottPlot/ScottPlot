@@ -528,7 +528,7 @@ namespace ScottPlot
         {
             if (doubleClickingTogglesBenchmark)
             {
-                plt.Benchmark(toggle: true);
+                plt.BenchmarkToggle();
                 Render();
             }
         }

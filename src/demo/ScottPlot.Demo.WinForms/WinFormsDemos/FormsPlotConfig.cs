@@ -70,7 +70,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
         {
             if (cbDoubleClickBenchmark.Checked is false)
             {
-                formsPlot1.plt.Benchmark(show: false);
+                formsPlot1.plt.Benchmark(enable: false);
                 formsPlot1.Render();
             }
 
