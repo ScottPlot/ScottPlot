@@ -9,7 +9,7 @@ using System.Text;
 
 namespace ScottPlot.Plottable
 {
-    public class ScatterPlot : IPlottable, IExportable
+    public class ScatterPlot : IPlottable, IHasPoints, IExportable
     {
         public double[] xs { get; private set; }
         public double[] ys { get; private set; }
@@ -275,6 +275,62 @@ namespace ScottPlot.Plottable
                 markerSize = markerSize
             };
             return new LegendItem[] { singleLegendItem };
+        }
+
+
+        public (double x, double y, int index) GetPointNearestX(double x)
+        {
+            double minDistance = Math.Abs(xs[0] - x);
+            int minIndex = 0;
+            for (int i = 1; i < xs.Length; i++)
+            {
+                double currDistance = Math.Abs(xs[i] - x);
+                if (currDistance < minDistance)
+                {
+                    minIndex = i;
+                    minDistance = currDistance;
+                }
+            }
+
+            return (xs[minIndex], ys[minIndex], minIndex);
+        }
+
+        public (double x, double y, int index) GetPointNearestY(double y)
+        {
+            double minDistance = Math.Abs(ys[0] - y);
+            int minIndex = 0;
+            for (int i = 1; i < ys.Length; i++)
+            {
+                double currDistance = Math.Abs(ys[i] - y);
+                if (currDistance < minDistance)
+                {
+                    minIndex = i;
+                    minDistance = currDistance;
+                }
+            }
+
+            return (xs[minIndex], ys[minIndex], minIndex);
+        }
+
+        public (double x, double y, int index) GetPointNearest(double x, double y)
+        {
+            List<(double x, double y)> points = xs.Zip(ys, (first, second) => (first, second)).ToList();
+
+            double pointDistanceSquared(double x1, double y1) => (x1 - x) * (x1 - x) + (y1 - y) * (y1 - y);
+
+            double minDistance = pointDistanceSquared(points[0].x, points[0].y);
+            int minIndex = 0;
+            for (int i = 1; i < points.Count; i++)
+            {
+                double currDistance = pointDistanceSquared(points[i].x, points[i].y);
+                if (currDistance < minDistance)
+                {
+                    minIndex = i;
+                    minDistance = currDistance;
+                }
+            }
+
+            return (xs[minIndex], ys[minIndex], minIndex);
         }
     }
 }
