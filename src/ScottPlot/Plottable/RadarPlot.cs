@@ -21,6 +21,7 @@ namespace ScottPlot.Plottable
 		public int HorizontalAxisIndex { get; set; } = 0;
 		public int VerticalAxisIndex { get; set; } = 0;
 		public Drawing.Font Font = new Drawing.Font();
+		public bool showAxisLabels { get; set; } = true;
 
 		public RadarPlot(double[,] values, Color[] lineColors, Color[] fillColors, bool independentAxes)
 		{
@@ -143,28 +144,31 @@ namespace ScottPlot.Plottable
 				for (int i = 0; i < radii.Length; i++)
 				{
 					gfx.DrawEllipse(pen, (int)(origin.X - radii[i]), (int)(origin.Y - radii[i]), (int)(radii[i] * 2), (int)(radii[i] * 2));
-					using (StringFormat stringFormat = new StringFormat() { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Far })
+					if (showAxisLabels)
 					{
-						if (independentAxes)
+						using (StringFormat stringFormat = new StringFormat() { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Far })
 						{
-							for (int j = 0; j < numCategories; j++)
+							if (independentAxes)
 							{
-								string text = $"{normalizedMaxes[j] * radii[i] / minScale:f1}";
+								for (int j = 0; j < numCategories; j++)
+								{
+									string text = $"{normalizedMaxes[j] * radii[i] / minScale:f1}";
 
-								double hypotenuse = (radii[i] / radii[radii.Length - 1]);
+									double hypotenuse = (radii[i] / radii[radii.Length - 1]);
 
-								float x = (float)(hypotenuse * Math.Cos(sweepAngle * j - Math.PI / 2) * minScale + origin.X);
-								float y = (float)(hypotenuse * Math.Sin(sweepAngle * j - Math.PI / 2) * minScale + origin.Y);
+									float x = (float)(hypotenuse * Math.Cos(sweepAngle * j - Math.PI / 2) * minScale + origin.X);
+									float y = (float)(hypotenuse * Math.Sin(sweepAngle * j - Math.PI / 2) * minScale + origin.Y);
 
-								stringFormat.Alignment = x < origin.X ? StringAlignment.Far : StringAlignment.Near;
-								stringFormat.LineAlignment = y < origin.Y ? StringAlignment.Far : StringAlignment.Near;
+									stringFormat.Alignment = x < origin.X ? StringAlignment.Far : StringAlignment.Near;
+									stringFormat.LineAlignment = y < origin.Y ? StringAlignment.Far : StringAlignment.Near;
 
-								gfx.DrawString(text, font, fontBrush, x, y, stringFormat);
+									gfx.DrawString(text, font, fontBrush, x, y, stringFormat);
+								}
 							}
-						}
-						else
-						{
-							gfx.DrawString($"{normalizedMax * radii[i] / minScale:f1}", font, fontBrush, origin.X, (float)(-radii[i] + origin.Y), stringFormat);
+							else
+							{
+								gfx.DrawString($"{normalizedMax * radii[i] / minScale:f1}", font, fontBrush, origin.X, (float)(-radii[i] + origin.Y), stringFormat);
+							}
 						}
 					}
 				}
