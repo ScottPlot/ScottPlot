@@ -12,7 +12,7 @@ using System.Data;
 
 namespace ScottPlot.Plottable
 {
-    public class SignalPlotBase<T> : IPlottable, IExportable where T : struct, IComparable
+    public class SignalPlotBase<T> : IPlottable, IHasPoints, IExportable where T : struct, IComparable
     {
         protected bool MaxRenderIndexLowerYSPromise = false;
         protected bool MaxRenderIndexHigherMinRenderIndexPromise = false;
@@ -685,5 +685,19 @@ namespace ScottPlot.Plottable
             if (FillColor2MustBeSetPromise)
                 throw new InvalidOperationException("Two fill colors needs to be specified if fill above and below is used");
         }
+
+        public (double x, double y, int index) GetPointNearestX(double x)
+        {
+            int index = (int)((x - xOffset) / samplePeriod);
+            index = Math.Max(index, 0);
+            index = Math.Min(index, ys.Length - 1);
+            return (xOffset + index * samplePeriod, Convert.ToDouble(ys[index]) + yOffset, index);
+        }
+
+        [Obsolete("Only GetPointNearestX() is appropraite for signal plots.", true)]
+        public (double x, double y, int index) GetPointNearestY(double y) => throw new NotImplementedException();
+
+        [Obsolete("Only GetPointNearestX() is appropraite for signal plots.", true)]
+        public (double x, double y, int index) GetPointNearest(double x, double y) => throw new NotImplementedException();
     }
 }
