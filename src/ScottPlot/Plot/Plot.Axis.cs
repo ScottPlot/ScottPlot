@@ -254,10 +254,10 @@ namespace ScottPlot
         [Obsolete("use GetCoordinateY()")]
         public double CoordinateFromPixelY(float pixelY) => throw new NotImplementedException();
 
-        [Obsolete("use GetPixelX()")]
+        [Obsolete("use GetPixelX()", true)]
         public float CoordinateToPixelX(double locationX) => throw new NotImplementedException();
 
-        [Obsolete("use GetPixelY()")]
+        [Obsolete("use GetPixelY()", true)]
         public float CoordinateToPixelY(double locationY) => throw new NotImplementedException();
 
         [Obsolete("use GetAxisLimits() and SetAxisLimits()", true)]
