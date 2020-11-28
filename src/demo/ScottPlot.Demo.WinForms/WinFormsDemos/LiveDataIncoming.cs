@@ -67,7 +67,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             if (cbAutoAxis.Checked == false)
             {
                 formsPlot1.plt.AxisAuto(verticalMargin: .5);
-                var oldLimits = formsPlot1.plt.AxisLimits();
+                var oldLimits = formsPlot1.plt.GetAxisLimits();
                 formsPlot1.plt.SetAxisLimits(xMax: oldLimits.XMax + 1000);
             }
         }

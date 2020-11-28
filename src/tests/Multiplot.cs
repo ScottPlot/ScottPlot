@@ -28,7 +28,7 @@ namespace ScottPlotTests
         private void DisplayAxisInfo(ScottPlot.MultiPlot multiplot)
         {
             for (int i = 0; i < multiplot.subplots.Length; i += 1)
-                Console.WriteLine($"Subplot index {i} {multiplot.subplots[i].AxisLimits()}");
+                Console.WriteLine($"Subplot index {i} {multiplot.subplots[i].GetAxisLimits()}");
         }
 
         [Test]

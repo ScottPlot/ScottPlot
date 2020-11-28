@@ -87,7 +87,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
         private void DisableAutoAxis(object sender, RoutedEventArgs e)
         {
             avaPlot1.plt.AxisAuto(verticalMargin: .5);
-            var autoLimits = avaPlot1.plt.AxisLimits();
+            var autoLimits = avaPlot1.plt.GetAxisLimits();
             avaPlot1.plt.SetAxisLimits(xMax: autoLimits.XMax + 1000);
         }
     }

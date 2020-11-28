@@ -64,7 +64,7 @@ namespace ScottPlot
             {
                 // perform a tight axis adjustment
                 AxisAuto(0, 0);
-                var tightAxisLimits = AxisLimits();
+                var tightAxisLimits = GetAxisLimits();
 
                 // now loosen it up a bit
                 AxisAuto();

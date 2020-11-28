@@ -50,7 +50,7 @@ namespace ScottPlotTests.Axis
             sig.maxRenderIndex = 550;
             plt.AxisAuto();
 
-            var limits = plt.AxisLimits();
+            var limits = plt.GetAxisLimits();
             Console.WriteLine($"AutoAxis Limits: {limits}");
 
             Assert.Less(limits.XMin, limits.XMax);

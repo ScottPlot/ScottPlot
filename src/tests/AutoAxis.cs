@@ -22,7 +22,7 @@ namespace ScottPlotTests
                 );
             plt.AxisAuto();
 
-            var limits = plt.AxisLimits();
+            var limits = plt.GetAxisLimits();
             Assert.Greater(limits.XSpan, 0);
             Assert.Greater(limits.YSpan, 0);
         }
@@ -37,7 +37,7 @@ namespace ScottPlotTests
                 );
             plt.AxisAuto();
 
-            var limits = plt.AxisLimits();
+            var limits = plt.GetAxisLimits();
             Assert.Greater(limits.XSpan, 0);
             Assert.Greater(limits.YSpan, 0);
         }
@@ -48,7 +48,7 @@ namespace ScottPlotTests
             var plt = new ScottPlot.Plot();
             plt.PlotCandlestick(DataGen.RandomStockPrices(rand: null, pointCount: 1));
 
-            var limits = plt.AxisLimits();
+            var limits = plt.GetAxisLimits();
             Assert.Greater(limits.XSpan, 0);
             Assert.Greater(limits.YSpan, 0);
         }
@@ -63,7 +63,7 @@ namespace ScottPlotTests
                 );
             plt.AxisAuto();
 
-            var limits = plt.AxisLimits();
+            var limits = plt.GetAxisLimits();
             Assert.Greater(limits.XSpan, 0);
             Assert.Greater(limits.YSpan, 0);
         }
@@ -78,7 +78,7 @@ namespace ScottPlotTests
                 );
             plt.AxisAuto();
 
-            var limits = plt.AxisLimits();
+            var limits = plt.GetAxisLimits();
             Assert.Greater(limits.XSpan, 0);
             Assert.Greater(limits.YSpan, 0);
         }
@@ -92,19 +92,19 @@ namespace ScottPlotTests
             plt.PlotPoint(-0.1, -0.1);
             plt.AxisAuto();
             plt.Render(); // force a render
-            Assert.Greater(plt.AxisLimits().XMin, -5);
+            Assert.Greater(plt.GetAxisLimits().XMin, -5);
 
             plt.PlotPoint(999, 999);
             plt.PlotPoint(-999, -999);
             plt.AxisAuto();
             plt.Render(); // force a render
-            Assert.Less(plt.AxisLimits().XMin, -800);
+            Assert.Less(plt.GetAxisLimits().XMin, -800);
 
             plt.Clear();
             plt.PlotPoint(0.1, 0.1);
             plt.PlotPoint(-0.1, -0.1);
             plt.Render(); // force a render
-            Assert.Greater(plt.AxisLimits().XMin, -5);
+            Assert.Greater(plt.GetAxisLimits().XMin, -5);
         }
 
         [Test]
@@ -130,12 +130,12 @@ namespace ScottPlotTests
             // small area
             plt.PlotLine(-5, -5, 5, 5);
             plt.AxisAuto();
-            var limitsA = plt.AxisLimits();
+            var limitsA = plt.GetAxisLimits();
 
             // large area
             plt.PlotLine(-99, -99, 99, 99);
             plt.AxisAuto();
-            var limitsB = plt.AxisLimits();
+            var limitsB = plt.GetAxisLimits();
 
             Assert.That(limitsB.XMin < limitsA.XMin);
             Assert.That(limitsB.XMax > limitsA.XMax);
@@ -151,17 +151,17 @@ namespace ScottPlotTests
             // small area
             plt.PlotLine(-5, -5, 5, 5);
             plt.AxisAuto();
-            var limitsA = plt.AxisLimits();
+            var limitsA = plt.GetAxisLimits();
             Console.WriteLine($"limits A: {limitsA}");
 
             // expand to large area
             plt.SetAxisLimits(-123, 123, -123, 123);
-            var limitsB = plt.AxisLimits();
+            var limitsB = plt.GetAxisLimits();
             Console.WriteLine($"limits B: {limitsB}");
 
             // shrink back to small area
             plt.AxisAuto();
-            var limitsC = plt.AxisLimits();
+            var limitsC = plt.GetAxisLimits();
             Console.WriteLine($"limits C: {limitsC}");
 
             Assert.That(limitsB.XMin < limitsA.XMin);

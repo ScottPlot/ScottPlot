@@ -245,13 +245,13 @@ namespace ScottPlot
 
         #region obsolete
 
-        [Obsolete("Use SetAxisLimits() and GetAxisLimits()")]
+        [Obsolete("Use SetAxisLimits() and GetAxisLimits()", true)]
         public AxisLimits AxisLimits(int xAxisIndex = 0, int yAxisIndex = 0) => throw new NotImplementedException();
 
-        [Obsolete("use GetCoordinateX()")]
+        [Obsolete("use GetCoordinateX()", true)]
         public double CoordinateFromPixelX(float pixelX) => throw new NotImplementedException();
 
-        [Obsolete("use GetCoordinateY()")]
+        [Obsolete("use GetCoordinateY()", true)]
         public double CoordinateFromPixelY(float pixelY) => throw new NotImplementedException();
 
         [Obsolete("use GetPixelX()", true)]
@@ -262,8 +262,7 @@ namespace ScottPlot
 
         [Obsolete("use GetAxisLimits() and SetAxisLimits()", true)]
         public AxisLimits Axis(
-            double? x1 = null, double? x2 = null, 
-            double? y1 = null, double? y2 = null,
+            double? x1 = null, double? x2 = null, double? y1 = null, double? y2 = null,
             int xAxisIndex = 0, int yAxisIndex = 0) => throw new NotImplementedException();
 
         [Obsolete("use GetAxisLimits() and SetAxisLimits()", true)]

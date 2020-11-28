@@ -32,7 +32,7 @@ namespace ScottPlot.UserControls
         {
             // vertical axis
             tbYlabel.Text = plt.GetSettings(false).YAxis.Title.Label;
-            var limits = plt.AxisLimits();
+            var limits = plt.GetAxisLimits();
             tbY2.Text = Math.Round(limits.YMax, 4).ToString();
             tbY1.Text = Math.Round(limits.YMin, 4).ToString();
             //cbYminor.Checked = plt.GetSettings().YAxis.TickCollection.displayYminor;
