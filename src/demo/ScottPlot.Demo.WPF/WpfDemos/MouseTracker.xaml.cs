@@ -42,8 +42,8 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             XPixelLabel.Content = $"{pixelX:0.000}";
             YPixelLabel.Content = $"{pixelY:0.000}";
 
-            XCoordinateLabel.Content = $"{wpfPlot1.plt.CoordinateFromPixelX(pixelX):0.00000000}";
-            YCoordinateLabel.Content = $"{wpfPlot1.plt.CoordinateFromPixelY(pixelY):0.00000000}";
+            XCoordinateLabel.Content = $"{wpfPlot1.plt.GetCoordinateX(pixelX):0.00000000}";
+            YCoordinateLabel.Content = $"{wpfPlot1.plt.GetCoordinateY(pixelY):0.00000000}";
 
             vLine.position = coordinateX;
             hLine.position = coordinateY;

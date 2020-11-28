@@ -362,15 +362,15 @@ namespace ScottPlot
 
         public (double x, double y) GetMouseCoordinates()
         {
-            double x = plt.CoordinateFromPixelX((float)mouseLocation.X);
-            double y = plt.CoordinateFromPixelY((float)mouseLocation.Y);
+            double x = plt.GetCoordinateX((float)mouseLocation.X);
+            double y = plt.GetCoordinateY((float)mouseLocation.Y);
             return (x, y);
         }
 
         private void MouseMovedToMoveDraggable(MouseEventArgs e)
         {
             plottableBeingDragged.DragTo(
-                plt.CoordinateFromPixelX((float)GetPixelPosition(e).X), plt.CoordinateFromPixelY((float)GetPixelPosition(e).Y),
+                plt.GetCoordinateX((float)GetPixelPosition(e).X), plt.GetCoordinateY((float)GetPixelPosition(e).Y),
                 isShiftPressed, isAltPressed, isCtrlPressed);
             OnMouseDragPlottable(new PlottableDragEventArgs(plottableBeingDragged, e));
             Render(true);
@@ -411,12 +411,12 @@ namespace ScottPlot
                     // only change axes if suffeciently large square was drawn
                     if (!lockHorizontalAxis)
                         plt.SetAxisLimits(
-                            xMin: plt.CoordinateFromPixelX((float)topLeft.X),
-                            xMax: plt.CoordinateFromPixelX((float)botRight.X));
+                            xMin: plt.GetCoordinateX((float)topLeft.X),
+                            xMax: plt.GetCoordinateX((float)botRight.X));
                     if (!lockVerticalAxis)
                         plt.SetAxisLimits(
-                            yMin: plt.CoordinateFromPixelY((float)botRight.Y),
-                            yMax: plt.CoordinateFromPixelY((float)topLeft.Y));
+                            yMin: plt.GetCoordinateY((float)botRight.Y),
+                            yMax: plt.GetCoordinateY((float)topLeft.Y));
                     AxisChanged?.Invoke(null, null);
                 }
                 else
@@ -499,7 +499,7 @@ namespace ScottPlot
                     if (isCtrlPressed) yFrac = 1;
                     if (isShiftPressed) xFrac = 1;
 
-                    plt.AxisZoom(xFrac, yFrac, plt.CoordinateFromPixelX((float)mousePixel.X), plt.CoordinateFromPixelY((float)mousePixel.Y));
+                    plt.AxisZoom(xFrac, yFrac, plt.GetCoordinateX((float)mousePixel.X), plt.GetCoordinateY((float)mousePixel.Y));
                     AxisChanged?.Invoke(null, null);
                 }
 

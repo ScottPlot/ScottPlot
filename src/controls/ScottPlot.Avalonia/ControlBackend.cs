@@ -238,15 +238,15 @@ namespace ScottPlot.Interactive
 
         public (double x, double y) GetMouseCoordinates()
         {
-            double x = plt.CoordinateFromPixelX((float)(mouseLocation.X / dpiScaleInput));
-            double y = plt.CoordinateFromPixelY((float)(mouseLocation.Y / dpiScaleInput));
+            double x = plt.GetCoordinateX((float)(mouseLocation.X / dpiScaleInput));
+            double y = plt.GetCoordinateY((float)(mouseLocation.Y / dpiScaleInput));
             return (x, y);
         }
 
         private void MouseMovedToMoveDraggable()
         {
             plottableBeingDragged.DragTo(
-                plt.CoordinateFromPixelX(mouseLocation.X), plt.CoordinateFromPixelY(mouseLocation.Y),
+                plt.GetCoordinateX(mouseLocation.X), plt.GetCoordinateY(mouseLocation.Y),
                 isShiftPressed, isAltPressed, isCtrlPressed);
             Render(true);
         }
@@ -273,12 +273,12 @@ namespace ScottPlot.Interactive
                     // only change axes if suffeciently large square was drawn
                     if (!lockHorizontalAxis)
                         plt.SetAxisLimits(
-                            xMin: plt.CoordinateFromPixelX(topLeft.X),
-                            xMax: plt.CoordinateFromPixelX(botRight.X));
+                            xMin: plt.GetCoordinateX(topLeft.X),
+                            xMax: plt.GetCoordinateX(botRight.X));
                     if (!lockVerticalAxis)
                         plt.SetAxisLimits(
-                            yMin: plt.CoordinateFromPixelY(botRight.Y),
-                            yMax: plt.CoordinateFromPixelY(topLeft.Y));
+                            yMin: plt.GetCoordinateY(botRight.Y),
+                            yMax: plt.GetCoordinateY(topLeft.Y));
                     AxisChanged?.Invoke(null, null);
                 }
                 else
@@ -314,7 +314,7 @@ namespace ScottPlot.Interactive
             if (isCtrlPressed) yFrac = 1;
             if (isShiftPressed) xFrac = 1;
 
-            plt.AxisZoom(xFrac, yFrac, plt.CoordinateFromPixelX(mouseLocation.X), plt.CoordinateFromPixelY(mouseLocation.Y));
+            plt.AxisZoom(xFrac, yFrac, plt.GetCoordinateX(mouseLocation.X), plt.GetCoordinateY(mouseLocation.Y));
             AxisChanged?.Invoke(null, null);
             bool shouldRecalculate = recalculateLayoutOnMouseUp ?? !plotContainsHeatmap;
             Render(recalculateLayout: shouldRecalculate);

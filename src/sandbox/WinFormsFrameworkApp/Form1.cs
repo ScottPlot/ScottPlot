@@ -33,7 +33,7 @@ namespace WinFormsFrameworkApp
             if (e.Button != MouseButtons.None)
                 return; // don't move markers if actively panning or zooming
 
-            double mouseX = formsPlot1.plt.CoordinateFromPixelX(e.X);
+            double mouseX = formsPlot1.plt.GetCoordinateX(e.X);
             (double x, double y, int index) = Signal.GetPointNearestX(mouseX);
             VLine.position = x;
             HLine.position = y;

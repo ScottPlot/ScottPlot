@@ -331,16 +331,16 @@ namespace ScottPlot
 
         public (double x, double y) GetMouseCoordinates()
         {
-            double x = plt.CoordinateFromPixelX(mouseLocation.X);
-            double y = plt.CoordinateFromPixelY(mouseLocation.Y);
+            double x = plt.GetCoordinateX(mouseLocation.X);
+            double y = plt.GetCoordinateY(mouseLocation.Y);
             return (x, y);
         }
 
         private void MouseMovedToMoveDraggable(MouseEventArgs e)
         {
             plottableBeingDragged.DragTo(
-                plt.CoordinateFromPixelX(e.Location.X),
-                plt.CoordinateFromPixelY(e.Location.Y),
+                plt.GetCoordinateX(e.Location.X),
+                plt.GetCoordinateY(e.Location.Y),
                 isShiftPressed, isAltPressed, isCtrlPressed);
             OnMouseDragPlottable(new WinForms.Events.PlottableDragEventArgs(plottableBeingDragged, e));
             Render(true, lowQuality: lowQualityWhileDragging);
@@ -350,8 +350,8 @@ namespace ScottPlot
         {
             if (showCoordinatesTooltip)
             {
-                double coordX = plt.CoordinateFromPixelX(e.Location.X);
-                double coordY = plt.CoordinateFromPixelY(e.Location.Y);
+                double coordX = plt.GetCoordinateX(e.Location.X);
+                double coordY = plt.GetCoordinateY(e.Location.Y);
                 tooltip.Show($"{coordX:N2}, {coordY:N2}", this, e.Location.X + 15, e.Location.Y);
             }
 
@@ -379,12 +379,12 @@ namespace ScottPlot
                     // only change axes if suffeciently large square was drawn
                     if (!lockHorizontalAxis)
                         plt.SetAxisLimits(
-                            xMin: plt.CoordinateFromPixelX(topLeft.X),
-                            xMax: plt.CoordinateFromPixelX(botRight.X));
+                            xMin: plt.GetCoordinateX(topLeft.X),
+                            xMax: plt.GetCoordinateX(botRight.X));
                     if (!lockVerticalAxis)
                         plt.SetAxisLimits(
-                            yMin: plt.CoordinateFromPixelY(botRight.Y),
-                            yMax: plt.CoordinateFromPixelY(topLeft.Y));
+                            yMin: plt.GetCoordinateY(botRight.Y),
+                            yMax: plt.GetCoordinateY(topLeft.Y));
                     OnAxisChanged();
                 }
                 else
@@ -461,7 +461,7 @@ namespace ScottPlot
                     if (isCtrlPressed) yFrac = 1;
                     if (isShiftPressed) xFrac = 1;
 
-                    plt.AxisZoom(xFrac, yFrac, plt.CoordinateFromPixelX(e.Location.X), plt.CoordinateFromPixelY(e.Location.Y));
+                    plt.AxisZoom(xFrac, yFrac, plt.GetCoordinateX(e.Location.X), plt.GetCoordinateY(e.Location.Y));
                 }
 
                 bool shouldRecalculate = recalculateLayoutOnMouseUp ?? plotContainsHeatmap == false;

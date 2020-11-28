@@ -33,8 +33,8 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
         ToolTip tooltip = new ToolTip();
         private void formsPlot1_MouseMove(object sender, MouseEventArgs e)
         {
-            double mouseX = formsPlot1.plt.CoordinateFromPixelX(e.Location.X);
-            double mouseY = formsPlot1.plt.CoordinateFromPixelY(e.Location.Y);
+            double mouseX = formsPlot1.plt.GetCoordinateX(e.Location.X);
+            double mouseY = formsPlot1.plt.GetCoordinateY(e.Location.Y);
 
             sph.HighlightClear();
             var (x, y, index) = sph.HighlightPointNearest(mouseX, mouseY);

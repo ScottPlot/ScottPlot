@@ -76,7 +76,7 @@ namespace ScottPlot
             double snapHeight = GetSettings(false).YAxis.Dims.UnitsPerPx * snapDistancePixels;
 
             foreach (IDraggable draggable in GetDraggables())
-                if (draggable.IsUnderMouse(CoordinateFromPixelX((float)pixelX), CoordinateFromPixelY((float)pixelY), snapWidth, snapHeight))
+                if (draggable.IsUnderMouse(GetCoordinateX((float)pixelX), GetCoordinateY((float)pixelY), snapWidth, snapHeight))
                     if (draggable.DragEnabled)
                         return draggable;
 
