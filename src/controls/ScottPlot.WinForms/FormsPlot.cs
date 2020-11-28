@@ -111,20 +111,16 @@ namespace ScottPlot
             if (equalAxes)
                 plt.AxisEqual();
 
-            if (pbPlot.Image is null || pbPlot.Image.Width != pbPlot.Width || pbPlot?.Image.Height != pbPlot.Height)
-            {
-                pbPlot.Image?.Dispose();
-                pbPlot.Image = new Bitmap(pbPlot.Width, pbPlot.Height, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
-            }
-
             if (!(skipIfCurrentlyRendering && currentlyRendering))
             {
                 currentlyRendering = true;
-                pbPlot.Image = plt.Render((Bitmap)pbPlot.Image, lowQuality || lowQualityAlways);
+                System.Drawing.Image oldImage = pbPlot.Image;
+                pbPlot.Image = plt.Render(lowQuality || lowQualityAlways);
+                oldImage?.Dispose();
+                Rendered?.Invoke(this, EventArgs.Empty);
                 if (isPanningOrZooming || isMovingDraggable || processEvents)
                     Application.DoEvents();
                 currentlyRendering = false;
-                Rendered?.Invoke(this, EventArgs.Empty);
             }
         }
 
