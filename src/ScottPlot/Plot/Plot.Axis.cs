@@ -118,6 +118,12 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Set limits for the given axes
+        /// </summary>
+        public void SetAxisLimits(AxisLimits limits, int xAxisIndex = 0, int yAxisIndex = 0) =>
+            settings.AxisSet(limits, xAxisIndex, yAxisIndex);
+
+        /// <summary>
         /// Set boundaries of the primary axes (you cannot zoom, pan, or set axis limits beyond these boundaries)
         /// </summary>
         public void SetAxisBoundaries(

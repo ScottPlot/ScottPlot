@@ -106,6 +106,15 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Define axis limits for a particuar axis
+        /// </summary>
+        public void AxisSet(AxisLimits limits, int xAxisIndex = 0, int yAxisIndex = 0)
+        {
+            GetXAxis(xAxisIndex).Dims.SetAxis(limits.XMin, limits.XMax);
+            GetYAxis(yAxisIndex).Dims.SetAxis(limits.YMin, limits.YMax);
+        }
+
+        /// <summary>
         /// Return X and Y axis limits
         /// </summary>
         public AxisLimits AxisLimits(int xAxisIndex, int yAxisIndex)
