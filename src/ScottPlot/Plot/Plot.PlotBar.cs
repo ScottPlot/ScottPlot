@@ -40,12 +40,13 @@ namespace ScottPlot
             Color? negativeColor = null
             )
         {
+            Color nextColor = settings.GetNextColor();
             BarPlot barPlot = new BarPlot(xs, ys, errorY, yOffsets)
             {
                 barWidth = barWidth,
                 xOffset = xOffset,
                 fill = fill,
-                fillColor = fillColor ?? settings.GetNextColor(),
+                fillColor = fillColor ?? nextColor,
                 label = label,
                 errorLineWidth = (float)errorLineWidth,
                 errorCapSize = errorCapSize,
@@ -55,7 +56,7 @@ namespace ScottPlot
                 verticalBars = !horizontal,
                 showValues = showValues,
                 FontColor = valueColor ?? Color.Black,
-                negativeColor = negativeColor ?? Color.Black
+                negativeColor = negativeColor ?? nextColor
             };
             Add(barPlot);
 
