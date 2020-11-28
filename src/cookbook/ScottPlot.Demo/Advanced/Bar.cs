@@ -28,9 +28,9 @@ namespace ScottPlot.Demo.Advanced
                 plt.PlotBar(xs, ys2, err2, "data B", barWidth: .3, xOffset: .2);
 
                 // customize the plot to make it look nicer
-                plt.Axis(y1: 0);
+                plt.SetAxisLimits(yMin: 0);
                 plt.Grid(enableVertical: false, lineStyle: LineStyle.Dot);
-                plt.Axis(y1: 0);
+                plt.SetAxisLimits(yMin: 0);
                 plt.Legend(location: Alignment.UpperRight);
 
                 // apply custom axis tick labels

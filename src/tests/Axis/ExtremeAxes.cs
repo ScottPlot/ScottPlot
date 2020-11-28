@@ -16,7 +16,7 @@ namespace ScottPlotTests.Axis
             plt.PlotSignal(DataGen.Sin(51));
             plt.PlotSignal(DataGen.Cos(51));
 
-            plt.Axis(y1: -10e50, y2: 10e50);
+            plt.SetAxisLimits(yMin: -10e50, yMax: 10e50);
 
             TestTools.SaveFig(plt);
         }

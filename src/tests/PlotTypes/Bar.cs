@@ -132,7 +132,7 @@ namespace ScottPlotTests.PlotTypes
             plt.PlotBar(xs, valuesB2, label: "Series B"); // plot the uppermost bar first
             plt.PlotBar(xs, valuesA, label: "Series A"); // plot lower bars last (in front)
             plt.Legend(location: ScottPlot.Alignment.UpperRight);
-            plt.Axis(y2: 7);
+            plt.SetAxisLimits(yMax: 7);
             plt.Title("Stacked Bar Charts");
             TestTools.SaveFig(plt);
         }
@@ -151,7 +151,7 @@ namespace ScottPlotTests.PlotTypes
 
             plt.Grid(lineStyle: ScottPlot.LineStyle.Dot, enableVertical: false);
             plt.Legend(location: ScottPlot.Alignment.UpperRight);
-            plt.Axis(y1: 0);
+            plt.SetAxisLimits(yMin: 0);
             TestTools.SaveFig(plt);
         }
 
@@ -169,7 +169,7 @@ namespace ScottPlotTests.PlotTypes
 
             plt.Grid(lineStyle: ScottPlot.LineStyle.Dot, enableVertical: false);
             plt.Legend(location: ScottPlot.Alignment.UpperRight);
-            plt.Axis(x1: 0);
+            plt.SetAxisLimits(xMin: 0);
             TestTools.SaveFig(plt);
         }
     }

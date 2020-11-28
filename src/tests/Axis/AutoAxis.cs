@@ -17,7 +17,7 @@ namespace ScottPlotTests.Axis
 
             var plt = new ScottPlot.Plot(400, 300);
             plt.PlotScatter(xs, ys);
-            plt.Axis(-5, 10, -15, 40);
+            plt.SetAxisLimits(-5, 10, -15, 40);
 
             for (int i = 0; i < 10; i++)
                 plt.AxisAutoY();
@@ -33,7 +33,7 @@ namespace ScottPlotTests.Axis
 
             var plt = new ScottPlot.Plot(400, 300);
             plt.PlotScatter(xs, ys);
-            plt.Axis(-5, 10, -15, 40);
+            plt.SetAxisLimits(-5, 10, -15, 40);
 
             for (int i = 0; i < 10; i++)
                 plt.AxisAutoX();

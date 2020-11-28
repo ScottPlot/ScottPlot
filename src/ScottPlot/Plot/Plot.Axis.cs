@@ -260,8 +260,10 @@ namespace ScottPlot
         [Obsolete("use GetPixelY()")]
         public float CoordinateToPixelY(double locationY) => throw new NotImplementedException();
 
-        [Obsolete("use GetAxisLimits() and SetAxisLimits()")]
-        public AxisLimits Axis(double? x1 = null, double? x2 = null, double? y1 = null, double? y2 = null,
+        [Obsolete("use GetAxisLimits() and SetAxisLimits()", true)]
+        public AxisLimits Axis(
+            double? x1 = null, double? x2 = null, 
+            double? y1 = null, double? y2 = null,
             int xAxisIndex = 0, int yAxisIndex = 0) => throw new NotImplementedException();
 
         [Obsolete("use GetAxisLimits() and SetAxisLimits()", true)]

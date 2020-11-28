@@ -193,7 +193,7 @@ namespace ScottPlot.Demo.PlotTypes
                 popPlot.scatterOutlineColor = System.Drawing.Color.Transparent;
                 popPlot.displayItems = Plottable.PopulationPlot.DisplayItems.ScatterAndBox;
                 popPlot.boxStyle = Plottable.PopulationPlot.BoxStyle.BarMeanStDev;
-                plt.Axis(y1: 0);
+                plt.SetAxisLimits(yMin: 0);
 
                 // colors are managed at the population series level:
                 foreach (var popSeries in popPlot.popMultiSeries.multiSeries)

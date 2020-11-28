@@ -140,7 +140,7 @@ namespace ScottPlot.UserControls
             double y1, y2;
             double.TryParse(tbY1.Text, out y1);
             double.TryParse(tbY2.Text, out y2);
-            plt.Axis(y1: y1, y2: y2);
+            plt.SetAxisLimits(yMin: y1, yMax: y2);
 
             // horizontal axis
             plt.XLabel(tbXlabel.Text);
@@ -148,7 +148,7 @@ namespace ScottPlot.UserControls
             double x1, x2;
             double.TryParse(tbX1.Text, out x1);
             double.TryParse(tbX2.Text, out x2);
-            plt.Axis(x1: x1, x2: x2);
+            plt.SetAxisLimits(xMin: x1, xMax: x2);
 
             // tick display options
             plt.Ticks(useOffsetNotation: cbTicksOffset.Checked, useMultiplierNotation: cbTicksMult.Checked);

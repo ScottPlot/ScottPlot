@@ -16,7 +16,7 @@ namespace ScottPlotTests.PlottableRenderTests
             // start with default settings
             double? func(double x) => Math.Sqrt(x);
             var funcPlot = new FunctionPlot(func) { };
-            plt.Axis(-1, 1, -.5, 1.5);
+            plt.SetAxisLimits(-1, 1, -.5, 1.5);
 
             plt.Add(funcPlot);
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
@@ -45,7 +45,7 @@ namespace ScottPlotTests.PlottableRenderTests
             // start with default settings
             double? func(double x) => Math.Sqrt(x);
             var funcPlot = new FunctionPlot(func) { };
-            plt.Axis(-1, 1, -.5, 1.5);
+            plt.SetAxisLimits(-1, 1, -.5, 1.5);
 
             plt.Add(funcPlot);
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
@@ -73,7 +73,7 @@ namespace ScottPlotTests.PlottableRenderTests
             // start with default settings
             double? func(double x) => Math.Sqrt(x);
             var funcPlot = new FunctionPlot(func) { };
-            plt.Axis(-1, 1, -.5, 1.5);
+            plt.SetAxisLimits(-1, 1, -.5, 1.5);
 
             plt.Add(funcPlot);
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
@@ -101,7 +101,7 @@ namespace ScottPlotTests.PlottableRenderTests
             // start with default settings
             double? func(double x) => Math.Sqrt(x);
             var funcPlot = new FunctionPlot(func) { };
-            plt.Axis(-1, 1, -.5, 1.5);
+            plt.SetAxisLimits(-1, 1, -.5, 1.5);
 
             plt.Add(funcPlot);
             var bmp1 = TestTools.GetLowQualityBitmap(plt);

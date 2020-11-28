@@ -21,7 +21,7 @@ namespace ScottPlotTests.PlotTypes
             var plt = new ScottPlot.Plot(400, 300);
             plt.Grid(false);
             plt.PlotCandlestick(ohlcs, autoWidth: false);
-            plt.Axis(-1, 5);
+            plt.SetAxisLimits(xMin: -1, xMax: 5);
             TestTools.SaveFig(plt);
         }
 
@@ -39,7 +39,7 @@ namespace ScottPlotTests.PlotTypes
             var plt = new ScottPlot.Plot(400, 300);
             plt.Grid(false);
             plt.PlotOHLC(ohlcs, autoWidth: false);
-            plt.Axis(-1, 5);
+            plt.SetAxisLimits(xMin: -1, xMax: 5);
             TestTools.SaveFig(plt);
         }
 
@@ -59,7 +59,7 @@ namespace ScottPlotTests.PlotTypes
 
             var plt = new ScottPlot.Plot(400, 300);
             plt.PlotCandlestick(ohlcs, colorUp, colorDown, autoWidth: false);
-            plt.Axis(-1, 5);
+            plt.SetAxisLimits(xMin: -1, xMax: 5);
             TestTools.SaveFig(plt);
         }
 

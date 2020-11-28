@@ -18,7 +18,7 @@ namespace ScottPlotTests.Misc
 
             mplt.GetSubplot(0, 1).PlotSignal(DataGen.Sin(10000), markerSize: 10);
             mplt.GetSubplot(0, 1).Title("Zoomed In");
-            mplt.GetSubplot(0, 1).Axis(0, 20, -.1, .1);
+            mplt.GetSubplot(0, 1).SetAxisLimits(0, 20, -.1, .1);
 
             TestTools.SaveFig(mplt);
         }

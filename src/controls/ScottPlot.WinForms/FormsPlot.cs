@@ -378,13 +378,13 @@ namespace ScottPlot
                 {
                     // only change axes if suffeciently large square was drawn
                     if (!lockHorizontalAxis)
-                        plt.Axis(
-                            x1: plt.CoordinateFromPixelX(topLeft.X),
-                            x2: plt.CoordinateFromPixelX(botRight.X));
+                        plt.SetAxisLimits(
+                            xMin: plt.CoordinateFromPixelX(topLeft.X),
+                            xMax: plt.CoordinateFromPixelX(botRight.X));
                     if (!lockVerticalAxis)
-                        plt.Axis(
-                            y1: plt.CoordinateFromPixelY(botRight.Y),
-                            y2: plt.CoordinateFromPixelY(topLeft.Y));
+                        plt.SetAxisLimits(
+                            yMin: plt.CoordinateFromPixelY(botRight.Y),
+                            yMax: plt.CoordinateFromPixelY(topLeft.Y));
                     OnAxisChanged();
                 }
                 else

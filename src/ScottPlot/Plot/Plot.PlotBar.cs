@@ -73,16 +73,16 @@ namespace ScottPlot
                 if (horizontal)
                 {
                     if (tightAxisLimits.XMin == 0)
-                        Axis(x1: 0);
+                        SetAxisLimits(xMin: 0);
                     else if (tightAxisLimits.XMax == 0)
-                        Axis(x2: 0);
+                        SetAxisLimits(xMax: 0);
                 }
                 else
                 {
                     if (tightAxisLimits.YMin == 0)
-                        Axis(y1: 0);
+                        SetAxisLimits(yMin: 0);
                     else if (tightAxisLimits.YMax == 0)
-                        Axis(y2: 0);
+                        SetAxisLimits(yMax: 0);
                 }
             }
 

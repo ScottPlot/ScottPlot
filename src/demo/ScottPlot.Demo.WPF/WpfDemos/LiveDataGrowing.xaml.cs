@@ -79,7 +79,7 @@ namespace ScottPlot.Demo.WPF.WpfDemos
         {
             wpfPlot1.plt.AxisAuto(verticalMargin: .5);
             var oldLimits = wpfPlot1.plt.AxisLimits();
-            wpfPlot1.plt.Axis(x2: oldLimits.XMax + 1000);
+            wpfPlot1.plt.SetAxisLimits(xMax: oldLimits.XMax + 1000);
         }
     }
 }

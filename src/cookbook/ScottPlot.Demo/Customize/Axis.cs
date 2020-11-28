@@ -233,7 +233,7 @@ namespace ScottPlot.Demo.Customize
 
                 // configure ticks for base 16 Y-axis
                 plt.Ticks(baseY: 16, prefixY: "0x");
-                plt.Axis(-1, 1, 0, 0x1A0000000);
+                plt.SetAxisLimits(-1, 1, 0, 0x1A0000000);
 
                 // further customize the plot
                 plt.Ticks(displayTicksX: false, displayTicksY: true);

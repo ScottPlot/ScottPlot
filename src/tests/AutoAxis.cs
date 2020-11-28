@@ -155,7 +155,7 @@ namespace ScottPlotTests
             Console.WriteLine($"limits A: {limitsA}");
 
             // expand to large area
-            plt.Axis(-123, 123, -123, 123);
+            plt.SetAxisLimits(-123, 123, -123, 123);
             var limitsB = plt.AxisLimits();
             Console.WriteLine($"limits B: {limitsB}");
 

@@ -72,7 +72,7 @@ namespace ScottPlot.Demo.Customize
                 plt.PlotPoint(1, 9, label: "point");
                 plt.PlotArrow(8, 8, 8.5, 8.5, label: "arrow");
 
-                plt.Axis(0, 13, -1, 11);
+                plt.SetAxisLimits(0, 13, -1, 11);
                 plt.Legend();
                 plt.Grid(false);
             }

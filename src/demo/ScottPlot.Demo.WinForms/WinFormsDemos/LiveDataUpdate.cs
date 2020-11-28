@@ -28,7 +28,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             // plot the data array only once and we can updates its values later
             formsPlot1.plt.PlotSignal(liveData);
             formsPlot1.plt.AxisAutoX(margin: 0);
-            formsPlot1.plt.Axis(y1: -1, y2: 2.5);
+            formsPlot1.plt.SetAxisLimits(yMin: -1, yMax: 2.5);
 
             // plot a red vertical line and save it so we can move it later
             vline = formsPlot1.plt.PlotVLine(0, Color.Red, lineWidth: 2);

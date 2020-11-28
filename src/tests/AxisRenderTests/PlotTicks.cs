@@ -50,7 +50,7 @@ namespace ScottPlotTests.AxisRenderTests
         public void Test_PlotTicks_MultiplierNotation()
         {
             var plt = new ScottPlot.Plot();
-            plt.Axis(-1e10, 1e10, -1e10, 1e10);
+            plt.SetAxisLimits(-1e10, 1e10, -1e10, 1e10);
             plt.XLabel("Horizontal Axis Label");
             plt.YLabel("Vertical Axis Label");
             var before = new MeanPixel(plt);
@@ -66,7 +66,7 @@ namespace ScottPlotTests.AxisRenderTests
         public void Test_PlotTicks_OffsetNotation()
         {
             var plt = new ScottPlot.Plot();
-            plt.Axis(1e10, 1e10 + 10, 1e10, 1e10 + 10);
+            plt.SetAxisLimits(1e10, 1e10 + 10, 1e10, 1e10 + 10);
             plt.XLabel("Horizontal Axis Label");
             plt.YLabel("Vertical Axis Label");
             var before = new MeanPixel(plt);
@@ -82,7 +82,7 @@ namespace ScottPlotTests.AxisRenderTests
         public void Test_PlotTicks_ExponentialNotation()
         {
             var plt = new ScottPlot.Plot();
-            plt.Axis(-1e10, 1e10, -1e10, 1e10);
+            plt.SetAxisLimits(-1e10, 1e10, -1e10, 1e10);
             plt.XLabel("Horizontal Axis Label");
             plt.YLabel("Vertical Axis Label");
             plt.Ticks(useMultiplierNotation: true);
@@ -102,7 +102,7 @@ namespace ScottPlotTests.AxisRenderTests
 
             DateTime dt1 = new DateTime(2020, 1, 1);
             DateTime dt2 = new DateTime(2020, 12, 25);
-            plt.Axis(dt1.ToOADate(), dt2.ToOADate(), dt1.ToOADate(), dt2.ToOADate());
+            plt.SetAxisLimits(dt1.ToOADate(), dt2.ToOADate(), dt1.ToOADate(), dt2.ToOADate());
             plt.XLabel("Horizontal Axis Label");
             plt.YLabel("Vertical Axis Label");
             var before = new MeanPixel(plt);

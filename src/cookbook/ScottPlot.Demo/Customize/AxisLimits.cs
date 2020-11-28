@@ -59,7 +59,7 @@ namespace ScottPlot.Demo.Customize
                 plt.PlotScatter(x, sin);
                 plt.PlotScatter(x, cos);
 
-                plt.Axis(-10, 60, -3, 3);
+                plt.SetAxisLimits(-10, 60, -3, 3);
             }
         }
 

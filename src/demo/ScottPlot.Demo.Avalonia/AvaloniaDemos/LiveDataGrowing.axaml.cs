@@ -88,7 +88,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
         {
             avaPlot1.plt.AxisAuto(verticalMargin: .5);
             var autoLimits = avaPlot1.plt.AxisLimits();
-            avaPlot1.plt.Axis(x2: autoLimits.XMax + 1000);
+            avaPlot1.plt.SetAxisLimits(xMax: autoLimits.XMax + 1000);
         }
     }
 }

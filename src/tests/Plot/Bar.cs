@@ -33,7 +33,7 @@ namespace ScottPlotTests.Plot
                 ys: new double[][] { ys1, ys2, ys3 },
                 yErr: new double[][] { err1, err2, err3 });
 
-            plt.Axis(y1: 0);
+            plt.SetAxisLimits(yMin: 0);
             plt.Grid(enableVertical: false, lineStyle: LineStyle.Dot);
             plt.Legend(location: Alignment.UpperRight);
             TestTools.SaveFig(plt);

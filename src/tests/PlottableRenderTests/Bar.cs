@@ -288,7 +288,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var bar = new BarPlot(null, ys, null, null) { };
 
             plt.Add(bar);
-            plt.Axis(-1, 4, -1, 5);
+            plt.SetAxisLimits(-1, 4, -1, 5);
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable

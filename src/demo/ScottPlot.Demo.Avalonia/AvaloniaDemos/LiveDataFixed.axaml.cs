@@ -30,7 +30,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             // plot the data array only once
             avaPlot1.plt.PlotSignal(liveData);
             avaPlot1.plt.AxisAutoX(margin: 0);
-            avaPlot1.plt.Axis(y1: -1, y2: 2.5);
+            avaPlot1.plt.SetAxisLimits(yMin: -1, yMax: 2.5);
 
             // create a traditional timer to update the data
             _timer = new Timer(_ => UpdateData(), null, 0, 5);

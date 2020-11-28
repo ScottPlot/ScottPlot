@@ -23,7 +23,7 @@ namespace ScottPlotTests.PlotTypes
 
             var plt = new ScottPlot.Plot(500, 350);
             plt.PlotSignalXY(xs, ys);
-            plt.Axis(20530, 20560, -61, -57);
+            plt.SetAxisLimits(20530, 20560, -61, -57);
             TestTools.SaveFig(plt);
         }
 
@@ -53,7 +53,7 @@ namespace ScottPlotTests.PlotTypes
             double[] ys = ScottPlot.DataGen.RandomWalk(rand, 100_000);
             var plt = new ScottPlot.Plot(500, 350);
             plt.PlotSignalXY(xs, ys, minRenderIndex: 4000, maxRenderIndex: 5000);
-            plt.Axis(y1: -200, y2: 200);
+            plt.SetAxisLimits(yMin: -200, yMax: 200);
             TestTools.SaveFig(plt);
         }
     }
