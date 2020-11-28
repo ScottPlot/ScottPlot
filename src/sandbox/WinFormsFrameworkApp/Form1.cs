@@ -1,13 +1,6 @@
 ﻿using ScottPlot.Plottable;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WinFormsFrameworkApp
@@ -37,18 +30,15 @@ namespace WinFormsFrameworkApp
 
         private void formsPlot1_MouseMove(object sender, MouseEventArgs e)
         {
+            if (e.Button != MouseButtons.None)
+                return; // don't move markers if actively panning or zooming
+
             double mouseX = formsPlot1.plt.CoordinateFromPixelX(e.X);
-            (double x, double y, int pointIndex) = Signal.GetPointNearestX(mouseX);
-            Text = $"Mouse is over point {pointIndex:N0} ({x:.03}, {y:.03})";
-
-            HLine.position = y;
+            (double x, double y, int index) = Signal.GetPointNearestX(mouseX);
             VLine.position = x;
+            HLine.position = y;
+            Text = $"Mouse is over point {index:N0} ({x:.03}, {y:.03})";
             formsPlot1.Render();
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }
