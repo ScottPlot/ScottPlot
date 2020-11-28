@@ -40,6 +40,7 @@ namespace WinFormsFrameworkApp
             this.formsPlot1.Name = "formsPlot1";
             this.formsPlot1.Size = new System.Drawing.Size(800, 450);
             this.formsPlot1.TabIndex = 0;
+            this.formsPlot1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.formsPlot1_MouseMove);
             // 
             // Form1
             // 
@@ -49,7 +50,6 @@ namespace WinFormsFrameworkApp
             this.Controls.Add(this.formsPlot1);
             this.Name = "Form1";
             this.Text = "ScottPlot Sandbox - WinForms (.NET Framework)";
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
 
         }
