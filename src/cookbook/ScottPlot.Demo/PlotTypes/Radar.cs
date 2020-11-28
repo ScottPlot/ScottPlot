@@ -54,5 +54,33 @@ namespace ScottPlot.Demo.PlotTypes
                  */
             }
         }
+
+        public class RadarSeveralAxes : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Radar With Multiple Axes";
+            public string description { get; } = "Radar charts support multiple axes.";
+
+            public void Render(Plot plt)
+            {
+                double[,] values = { { 5, 3, 10, 15, 3, 2,  256}, { 5, 2, 10, 10, 1, 4, 252 }, };
+                string[] categories = { "Wins", "Poles", "Podiums", "Points Finishes", "DNFs", "Fastest Laps", "Points" };
+                string[] groups = { "Sebastian Vettel", "Fernando Alonso" };
+
+                plt.PlotRadar(values, categories, groups, independentAxes: true);
+                plt.Legend();
+
+                // customize the plot
+                plt.Grid(false);
+                plt.Frame(false);
+                plt.Ticks(false, false);
+                plt.Title("2010 Formula One World Championship");
+
+                /* Data represents the 2010 Formula One World Championship
+                 * https://en.wikipedia.org/wiki/2010_Formula_One_World_Championship
+                 * Note: Alonso did not finish (DNF) in the Malaysian GP, but was included 
+                 * here because he completed >90% of the race distance.
+                 */
+            }
+        }
     }
 }
