@@ -16,7 +16,7 @@ namespace ScottPlot.Demo.Customize
 
             public void Render(Plot plt)
             {
-                plt.Title($"{plt.Colorset().Name} Colorset (Default)");
+                plt.Title($"Default Colorset (Default)");
 
                 Random rand = new Random(0);
                 plt.PlotSignal(DataGen.RandomWalk(rand, 1000), lineWidth: 2);
@@ -36,7 +36,7 @@ namespace ScottPlot.Demo.Customize
             public void Render(Plot plt)
             {
                 plt.Colorset(Palette.Nord);
-                plt.Title($"{plt.Colorset().Name} Colorset");
+                plt.Title($"Nord Colorset");
 
                 Random rand = new Random(0);
                 plt.PlotSignal(DataGen.RandomWalk(rand, 1000), lineWidth: 2);
@@ -57,7 +57,7 @@ namespace ScottPlot.Demo.Customize
             {
                 plt.Style(Style.Gray1);
                 plt.Colorset(Palette.OneHalfDark);
-                plt.Title($"{plt.Colorset().Name} Colorset");
+                plt.Title($"OneHalfDark Colorset");
 
                 Random rand = new Random(0);
                 plt.PlotSignal(DataGen.RandomWalk(rand, 1000), lineWidth: 2);

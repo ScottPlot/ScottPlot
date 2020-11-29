@@ -24,7 +24,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             formsPlot1.plt.PlotScatter(x, sin);
             formsPlot1.plt.PlotScatter(x, cos);
 
-            formsPlot1.plt.Style(figBg: Color.Transparent, dataBg: Color.Transparent);
+            formsPlot1.plt.Style(figureBackgroundColor: Color.Transparent, dataBackgroundColor: Color.Transparent);
             formsPlot1.BackColor = Color.Transparent;
             button6_Click(null, null);
         }

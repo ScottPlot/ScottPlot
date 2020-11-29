@@ -22,8 +22,8 @@ namespace ScottPlot.Demo.Customize
                 plt.PlotScatter(x, sin);
                 plt.PlotScatter(x, cos);
 
-                plt.Style(figBg: Color.LightBlue);
-                plt.Style(dataBg: Color.LightYellow);
+                plt.Style(figureBackgroundColor: Color.LightBlue);
+                plt.Style(dataBackgroundColor: Color.LightYellow);
             }
         }
 
@@ -62,8 +62,8 @@ namespace ScottPlot.Demo.Customize
                 plt.PlotScatter(x, cos);
 
                 // custom colors are used to make it easier to see the data and figure areas
-                plt.Style(figBg: Color.LightBlue);
-                plt.Style(dataBg: Color.LightYellow);
+                plt.Style(figureBackgroundColor: Color.LightBlue);
+                plt.Style(dataBackgroundColor: Color.LightYellow);
 
                 plt.Layout(left: 80, top: 50, bottom: 20, right: 20);
             }
@@ -85,8 +85,8 @@ namespace ScottPlot.Demo.Customize
                 plt.PlotScatter(x, cos);
 
                 // custom colors are used to make it easier to see the data and figure areas
-                plt.Style(figBg: Color.LightBlue);
-                plt.Style(dataBg: Color.LightYellow);
+                plt.Style(figureBackgroundColor: Color.LightBlue);
+                plt.Style(dataBackgroundColor: Color.LightYellow);
 
                 plt.Ticks(false, false);
                 plt.Frame(false);

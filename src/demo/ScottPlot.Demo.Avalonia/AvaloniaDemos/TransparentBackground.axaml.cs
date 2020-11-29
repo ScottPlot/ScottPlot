@@ -24,8 +24,8 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             avaPlot1.plt.PlotScatter(x, sin);
             avaPlot1.plt.PlotScatter(x, cos);
 
-            avaPlot1.plt.Style(figBg: System.Drawing.Color.Transparent);
-            avaPlot1.plt.Style(dataBg: System.Drawing.Color.Transparent);
+            avaPlot1.plt.Style(figureBackgroundColor: System.Drawing.Color.Transparent);
+            avaPlot1.plt.Style(dataBackgroundColor: System.Drawing.Color.Transparent);
             avaPlot1.Render();
         }
 

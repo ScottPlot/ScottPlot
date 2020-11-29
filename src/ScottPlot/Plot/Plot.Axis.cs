@@ -254,6 +254,33 @@ namespace ScottPlot
         [Obsolete("use GetCoordinateY()", true)]
         public double CoordinateFromPixelY(float pixelY) => throw new NotImplementedException();
 
+        [Obsolete("use GetCoordinateX()", true)]
+        public double CoordinateFromPixelX(double pixelX) => throw new NotImplementedException();
+
+        [Obsolete("use GetCoordinateY()", true)]
+        public double CoordinateFromPixelY(double pixelY) => throw new NotImplementedException();
+
+        [Obsolete("use GetCoordinate(), GetCoordinateX() or GetCoordinateY()", true)]
+        public System.Drawing.PointF CoordinateFromPixel(int pixelX, int pixelY) => throw new NotImplementedException();
+
+        [Obsolete("use GetCoordinate(), GetCoordinateX() or GetCoordinateY()", true)]
+        public System.Drawing.PointF CoordinateFromPixel(float pixelX, float pixelY) => throw new NotImplementedException();
+
+        [Obsolete("use GetCoordinate(), GetCoordinateX() or GetCoordinateY()", true)]
+        public System.Drawing.PointF CoordinateFromPixel(double pixelX, double pixelY) => throw new NotImplementedException();
+
+        [Obsolete("use GetCoordinate(), GetCoordinateX() or GetCoordinateY()", true)]
+        public System.Drawing.PointF CoordinateFromPixel(System.Drawing.Point pixel) => throw new NotImplementedException();
+
+        [Obsolete("use GetCoordinate(), GetCoordinateX() or GetCoordinateY()", true)]
+        public System.Drawing.PointF CoordinateFromPixel(System.Drawing.PointF pixel) => throw new NotImplementedException();
+
+        [Obsolete("use GetPixel, GetPixelX(), or GetPixelY()", true)]
+        public System.Drawing.PointF CoordinateToPixel(System.Drawing.PointF location) => throw new NotImplementedException();
+
+        [Obsolete("use GetPixel, GetPixelX(), or GetPixelY()", true)]
+        public System.Drawing.PointF CoordinateToPixel(double locationX, double locationY) => throw new NotImplementedException();
+
         [Obsolete("use GetPixelX()", true)]
         public float CoordinateToPixelX(double locationX) => throw new NotImplementedException();
 
@@ -261,12 +288,17 @@ namespace ScottPlot
         public float CoordinateToPixelY(double locationY) => throw new NotImplementedException();
 
         [Obsolete("use GetAxisLimits() and SetAxisLimits()", true)]
-        public AxisLimits Axis(
-            double? x1 = null, double? x2 = null, double? y1 = null, double? y2 = null,
-            int xAxisIndex = 0, int yAxisIndex = 0) => throw new NotImplementedException();
+        public AxisLimits Axis(double? x1 = null, double? x2 = null, double? y1 = null, double? y2 = null)
+            => throw new NotImplementedException();
 
         [Obsolete("use GetAxisLimits() and SetAxisLimits()", true)]
         public void Axis(double[] axisLimits, int xAxisIndex = 0, int yAxisIndex = 0) => throw new NotImplementedException();
+
+        [Obsolete("use GetAxisLimits() and SetAxisLimits()", true)]
+        public double[] Axis(double? x1 = null, double? x2 = null, double? y1 = null, double? y2 = null, double? _ = null) => null;
+
+        [Obsolete("use GetAxisLimits() and SetAxisLimits()", true)]
+        public double[] Axis(double[] axisLimits) => null;
 
         [Obsolete("use GetAxisLimits() and SetAxisLimits()", true)]
         public void MatchAxis(Plot sourcePlot, bool horizontal = true, bool vertical = true) => throw new NotImplementedException();
@@ -276,6 +308,12 @@ namespace ScottPlot
 
         [Obsolete("use AxisEqualScale()", true)]
         public bool EqualAxis;
+
+        [Obsolete("Use AxisAuto()", true)]
+        public double[] AutoAxis() => null;
+
+        [Obsolete("Use AxisAuto()", true)]
+        public double[] AutoScale() => null;
 
         #endregion
     }

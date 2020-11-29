@@ -19,7 +19,7 @@ namespace ScottPlotTests.Misc
         public void Test_SmallPlot_WithAxisLabels()
         {
             var plt = new ScottPlot.Plot(250, 175);
-            plt.Style(figBg: Color.WhiteSmoke);
+            plt.Style(figureBackgroundColor: Color.WhiteSmoke);
             plt.PlotSignal(ScottPlot.DataGen.Sin(100));
             plt.Title("Small Plot Title");
             plt.XLabel("Horizontal Axis");
