@@ -314,7 +314,7 @@ namespace ScottPlot.Interactive
             if (isCtrlPressed) yFrac = 1;
             if (isShiftPressed) xFrac = 1;
 
-            plt.AxisZoom(xFrac, yFrac, plt.GetCoordinateX(mouseLocation.X), plt.GetCoordinateY(mouseLocation.Y));
+            settings.AxesZoomTo(xFrac, yFrac, mouseLocation.X, mouseLocation.Y);
             AxisChanged?.Invoke(null, null);
             bool shouldRecalculate = recalculateLayoutOnMouseUp ?? !plotContainsHeatmap;
             Render(recalculateLayout: shouldRecalculate);

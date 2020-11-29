@@ -461,7 +461,7 @@ namespace ScottPlot
                     if (isCtrlPressed) yFrac = 1;
                     if (isShiftPressed) xFrac = 1;
 
-                    plt.AxisZoom(xFrac, yFrac, plt.GetCoordinateX(e.Location.X), plt.GetCoordinateY(e.Location.Y));
+                    settings.AxesZoomTo(xFrac, yFrac, e.Location.X, e.Location.Y);
                 }
 
                 bool shouldRecalculate = recalculateLayoutOnMouseUp ?? plotContainsHeatmap == false;

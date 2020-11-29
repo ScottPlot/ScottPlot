@@ -499,7 +499,7 @@ namespace ScottPlot
                     if (isCtrlPressed) yFrac = 1;
                     if (isShiftPressed) xFrac = 1;
 
-                    plt.AxisZoom(xFrac, yFrac, plt.GetCoordinateX((float)mousePixel.X), plt.GetCoordinateY((float)mousePixel.Y));
+                    settings.AxesZoomTo(xFrac, yFrac, (float)mousePixel.X, (float)mousePixel.Y);
                     AxisChanged?.Invoke(null, null);
                 }
 

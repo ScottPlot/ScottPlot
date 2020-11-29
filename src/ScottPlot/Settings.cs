@@ -168,6 +168,20 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Zoom all axes by the given fraction
+        /// </summary>
+        public void AxesZoomTo(double xFrac, double yFrac, float xPixel, float yPixel)
+        {
+            foreach (Axis axis in Axes)
+            {
+                double frac = axis.IsHorizontal ? xFrac : yFrac;
+                float centerPixel = axis.IsHorizontal ? xPixel : yPixel;
+                double center = axis.Dims.GetUnit(centerPixel);
+                axis.Dims.Zoom(frac, center);
+            }
+        }
+
+        /// <summary>
         /// Automatically adjust X and Y axis limits of all axes to fit the data
         /// </summary>
         public void AxisAutoAll(double horizontalMargin = .1, double verticalMargin = .1)
