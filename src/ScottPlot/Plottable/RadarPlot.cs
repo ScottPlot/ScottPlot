@@ -164,65 +164,65 @@ namespace ScottPlot.Plottable
                         }
                         gfx.DrawPolygon(pen, points);
                     }
-                if (showAxisLabels)
-                {
+                    if (showAxisLabels)
                     {
-                        if (independentAxes)
                         {
-                            for (int j = 0; j < numCategories; j++)
+                            if (independentAxes)
                             {
-                                string text = $"{normalizedMaxes[j] * radii[i] / minScale:f1}";
+                                for (int j = 0; j < numCategories; j++)
+                                {
+                                    string text = $"{normalizedMaxes[j] * radii[i] / minScale:f1}";
 
-                                float x = (float)(hypotenuse * Math.Cos(sweepAngle * j - Math.PI / 2) * minScale + origin.X);
-                                float y = (float)(hypotenuse * Math.Sin(sweepAngle * j - Math.PI / 2) * minScale + origin.Y);
+                                    float x = (float)(hypotenuse * Math.Cos(sweepAngle * j - Math.PI / 2) * minScale + origin.X);
+                                    float y = (float)(hypotenuse * Math.Sin(sweepAngle * j - Math.PI / 2) * minScale + origin.Y);
 
-                                sf2.Alignment = x < origin.X ? StringAlignment.Far : StringAlignment.Near;
-                                sf2.LineAlignment = y < origin.Y ? StringAlignment.Far : StringAlignment.Near;
+                                    sf2.Alignment = x < origin.X ? StringAlignment.Far : StringAlignment.Near;
+                                    sf2.LineAlignment = y < origin.Y ? StringAlignment.Far : StringAlignment.Near;
 
-                                gfx.DrawString(text, font, fontBrush, x, y, sf2);
+                                    gfx.DrawString(text, font, fontBrush, x, y, sf2);
+                                }
                             }
-                        }
-                        else
-                        {
-                            gfx.DrawString($"{normalizedMax * radii[i] / minScale:f1}", font, fontBrush, origin.X, (float)(-radii[i] + origin.Y), sf2);
+                            else
+                            {
+                                gfx.DrawString($"{normalizedMax * radii[i] / minScale:f1}", font, fontBrush, origin.X, (float)(-radii[i] + origin.Y), sf2);
+                            }
                         }
                     }
                 }
-            }
 
-            for (int i = 0; i < numCategories; i++)
-            {
-                PointF destination = new PointF((float)(1.1 * Math.Cos(sweepAngle * i - Math.PI / 2) * minScale + origin.X), (float)(1.1 * Math.Sin(sweepAngle * i - Math.PI / 2) * minScale + origin.Y));
-                gfx.DrawLine(pen, origin, destination);
-
-                if (categoryNames != null)
+                for (int i = 0; i < numCategories; i++)
                 {
-                    PointF textDestination = new PointF(
-                        (float)(1.3 * Math.Cos(sweepAngle * i - Math.PI / 2) * minScale + origin.X),
-                        (float)(1.3 * Math.Sin(sweepAngle * i - Math.PI / 2) * minScale + origin.Y));
+                    PointF destination = new PointF((float)(1.1 * Math.Cos(sweepAngle * i - Math.PI / 2) * minScale + origin.X), (float)(1.1 * Math.Sin(sweepAngle * i - Math.PI / 2) * minScale + origin.Y));
+                    gfx.DrawLine(pen, origin, destination);
 
-                    if (Math.Abs(textDestination.X - origin.X) < 0.1)
-                        sf.Alignment = StringAlignment.Center;
-                    else
-                        sf.Alignment = dims.GetCoordinateX(textDestination.X) < 0 ? StringAlignment.Far : StringAlignment.Near;
-                    gfx.DrawString(categoryNames[i], font, fontBrush, textDestination, sf);
+                    if (categoryNames != null)
+                    {
+                        PointF textDestination = new PointF(
+                            (float)(1.3 * Math.Cos(sweepAngle * i - Math.PI / 2) * minScale + origin.X),
+                            (float)(1.3 * Math.Sin(sweepAngle * i - Math.PI / 2) * minScale + origin.Y));
+
+                        if (Math.Abs(textDestination.X - origin.X) < 0.1)
+                            sf.Alignment = StringAlignment.Center;
+                        else
+                            sf.Alignment = dims.GetCoordinateX(textDestination.X) < 0 ? StringAlignment.Far : StringAlignment.Near;
+                        gfx.DrawString(categoryNames[i], font, fontBrush, textDestination, sf);
+                    }
                 }
-            }
 
-            for (int i = 0; i < numGroups; i++)
-            {
-                PointF[] points = new PointF[numCategories];
-                for (int j = 0; j < numCategories; j++)
-                    points[j] = new PointF(
-                        (float)(normalized[i, j] * Math.Cos(sweepAngle * j - Math.PI / 2) * minScale + origin.X),
-                        (float)(normalized[i, j] * Math.Sin(sweepAngle * j - Math.PI / 2) * minScale + origin.Y));
+                for (int i = 0; i < numGroups; i++)
+                {
+                    PointF[] points = new PointF[numCategories];
+                    for (int j = 0; j < numCategories; j++)
+                        points[j] = new PointF(
+                            (float)(normalized[i, j] * Math.Cos(sweepAngle * j - Math.PI / 2) * minScale + origin.X),
+                            (float)(normalized[i, j] * Math.Sin(sweepAngle * j - Math.PI / 2) * minScale + origin.Y));
 
-                ((SolidBrush)brush).Color = fillColors[i];
-                pen.Color = lineColors[i];
-                gfx.FillPolygon(brush, points);
-                gfx.DrawPolygon(pen, points);
+                    ((SolidBrush)brush).Color = fillColors[i];
+                    pen.Color = lineColors[i];
+                    gfx.FillPolygon(brush, points);
+                    gfx.DrawPolygon(pen, points);
+                }
             }
         }
     }
-}
 }
