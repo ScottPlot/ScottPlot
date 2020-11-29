@@ -148,6 +148,7 @@ namespace ScottPlot.Plottable
             using (Pen pen = GDI.Pen(webColor))
             using (Brush brush = GDI.Brush(Color.Black))
             using (StringFormat sf = new StringFormat() { LineAlignment = StringAlignment.Center })
+            using (StringFormat sf2 = new StringFormat())
             using (System.Drawing.Font font = GDI.Font(Font))
             using (Brush fontBrush = GDI.Brush(Font.Color))
             {
@@ -156,7 +157,6 @@ namespace ScottPlot.Plottable
                     gfx.DrawEllipse(pen, (int)(origin.X - radii[i]), (int)(origin.Y - radii[i]), (int)(radii[i] * 2), (int)(radii[i] * 2));
                     if (showAxisLabels)
                     {
-                        using (StringFormat stringFormat = new StringFormat() { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Far })
                         {
                             if (independentAxes)
                             {
@@ -169,15 +169,15 @@ namespace ScottPlot.Plottable
                                     float x = (float)(hypotenuse * Math.Cos(sweepAngle * j - Math.PI / 2) * minScale + origin.X);
                                     float y = (float)(hypotenuse * Math.Sin(sweepAngle * j - Math.PI / 2) * minScale + origin.Y);
 
-                                    stringFormat.Alignment = x < origin.X ? StringAlignment.Far : StringAlignment.Near;
-                                    stringFormat.LineAlignment = y < origin.Y ? StringAlignment.Far : StringAlignment.Near;
+                                    sf2.Alignment = x < origin.X ? StringAlignment.Far : StringAlignment.Near;
+                                    sf2.LineAlignment = y < origin.Y ? StringAlignment.Far : StringAlignment.Near;
 
-                                    gfx.DrawString(text, font, fontBrush, x, y, stringFormat);
+                                    gfx.DrawString(text, font, fontBrush, x, y, sf2);
                                 }
                             }
                             else
                             {
-                                gfx.DrawString($"{normalizedMax * radii[i] / minScale:f1}", font, fontBrush, origin.X, (float)(-radii[i] + origin.Y), stringFormat);
+                                gfx.DrawString($"{normalizedMax * radii[i] / minScale:f1}", font, fontBrush, origin.X, (float)(-radii[i] + origin.Y), sf2);
                             }
                         }
                     }
