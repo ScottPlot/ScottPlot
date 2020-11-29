@@ -93,10 +93,12 @@ namespace ScottPlot.Renderable
             bool? snapToNearestPixel = null,
             int? radix = null,
             string prefix = null,
-            string dateTimeFormatString = null
-            )
+            string dateTimeFormatString = null,
+            string label = null)
         {
             Title.IsVisible = showTitle ?? Title.IsVisible;
+            Title.Label = label ?? Title.Label;
+
             Ticks.MajorLabelEnable = showLabels ?? Ticks.MajorLabelEnable;
             Ticks.MajorTickEnable = showMajorTicks ?? Ticks.MajorTickEnable;
             Ticks.MinorTickEnable = showMinorTicks ?? Ticks.MinorTickEnable;

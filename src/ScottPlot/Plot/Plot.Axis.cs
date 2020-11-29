@@ -31,7 +31,7 @@ namespace ScottPlot
         /// <summary>
         /// Create and return an additional axis
         /// </summary>
-        public Renderable.Axis AddAxis(Renderable.Edge edge, int axisIndex, string title, System.Drawing.Color? color = null)
+        public Renderable.Axis AddAxis(Renderable.Edge edge, int axisIndex, string title = null, System.Drawing.Color? color = null)
         {
             Renderable.Axis axis;
 
