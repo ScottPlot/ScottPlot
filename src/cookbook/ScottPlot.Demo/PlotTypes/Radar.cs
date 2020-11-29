@@ -27,6 +27,51 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
+        public class RadarPolygon : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "Polygonal Axis";
+            public string description { get; } = "A radar chart can have a polygonal axis as well.";
+
+            public void Render(Plot plt)
+            {
+                double[,] values = {
+                    { 78, 83, 84, 76, 43 },
+                    { 100, 50, 70, 60, 90 }
+                };
+
+                var radarPlot = plt.PlotRadar(values);
+                radarPlot.axisType = RadarAxis.Polygon;
+
+                // customize the plot
+                plt.Grid(false);
+                plt.Frame(false);
+                plt.Ticks(false, false);
+            }
+        }
+
+        public class RadarNoAxis : PlotDemo, IPlotDemo
+        {
+            public string name { get; } = "No Axis";
+            public string description { get; } = "A radar chart can have no drawn axis as well.";
+
+            public void Render(Plot plt)
+            {
+                double[,] values = {
+                    { 78, 83, 84, 76, 43 },
+                    { 100, 50, 70, 60, 90 }
+                };
+
+                var radarPlot = plt.PlotRadar(values);
+                radarPlot.axisType = RadarAxis.None;
+                radarPlot.showAxisLabels = false; // Looks weird without this
+
+                // customize the plot
+                plt.Grid(false);
+                plt.Frame(false);
+                plt.Ticks(false, false);
+            }
+        }
+
         public class RadarWithLabels : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Radar With Labels";
