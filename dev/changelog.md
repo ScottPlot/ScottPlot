@@ -1,7 +1,7 @@
 # ScottPlot Changelog
 
 ## ScottPlot 4.1.0 ⚠️ in development
-* Additional customizations for radar charts (#634, #628) _Thanks @Benny121221_
+* Additional customizations for radar charts (#634, #628, #635) _Thanks @Benny121221_
 
 Work toward ScottPlot 4.1 began in October, 2020 and merged into the master branch one month later ([#605](https://github.com/swharden/ScottPlot/pull/605)). Improvements are focused at enhanced performance, improved thread safety, support for multiple axes, and options for data validation. See [roadmap.md](roadmap.md) for details.
 
