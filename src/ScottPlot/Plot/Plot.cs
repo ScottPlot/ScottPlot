@@ -7,9 +7,8 @@
  */
 
 using ScottPlot.Plottable;
-using ScottPlot.Renderable;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 
 namespace ScottPlot
 {
@@ -76,17 +75,7 @@ namespace ScottPlot
         /// Return a copy of the list of draggable plottables
         /// </summary>
         /// <returns></returns>
-        public IDraggable[] GetDraggables()
-        {
-            // TODO: linq
-            List<IDraggable> draggables = new List<IDraggable>();
-
-            foreach (var plottable in settings.Plottables)
-                if (plottable is IDraggable draggable)
-                    draggables.Add(draggable);
-
-            return draggables.ToArray();
-        }
+        public IDraggable[] GetDraggables() => settings.Plottables.Where(x => x is IDraggable).Select(x => (IDraggable)x).ToArray();
 
         /// <summary>
         /// Return the draggable plottable under the mouse cursor (or null if there isn't one)
