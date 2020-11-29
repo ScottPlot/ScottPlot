@@ -45,6 +45,10 @@ namespace ScottPlot.Renderable
         public readonly AxisTicks Ticks = new AxisTicks();
         public readonly AxisLine Line = new AxisLine();
 
+        // shortcuts allow components to be customized without having to reach in too far
+        public string Label { get => Title.Label; set => Title.Label = value; }
+        public Color Color { get => Title.Font.Color; set => Configure(color: value); }
+
         public override string ToString() => $"{Edge} axis from {Dims.Min} to {Dims.Max}";
 
         public void RecalculateTickPositions(PlotDimensions dims)
