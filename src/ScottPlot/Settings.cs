@@ -168,15 +168,6 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Automatically adjust X and Y axis limits of the primary axes to fit the data
-        /// </summary>
-        public void AxisAuto(double horizontalMargin = .1, double verticalMargin = .1, int xAxisIndex = 0, int yAxisIndex = 0)
-        {
-            AxisAutoX(xAxisIndex, horizontalMargin);
-            AxisAutoY(yAxisIndex, verticalMargin);
-        }
-
-        /// <summary>
         /// Automatically adjust X and Y axis limits of all axes to fit the data
         /// </summary>
         public void AxisAutoAll(double horizontalMargin = .1, double verticalMargin = .1)

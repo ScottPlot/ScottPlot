@@ -142,7 +142,7 @@ namespace ScottPlot
         /// Automatically adjust axis limits to fit the data (with a little extra margin)
         /// </summary>
         public void AxisAuto(double horizontalMargin = .05, double verticalMargin = .1) =>
-            settings.AxisAuto(horizontalMargin, verticalMargin);
+            settings.AxisAutoAll(horizontalMargin, verticalMargin);
 
         /// <summary>
         /// Automatically adjust axis limits to fit the data (with a little extra margin)
@@ -224,7 +224,7 @@ namespace ScottPlot
             var yAxis = settings.GetYAxis(yAxisIndex);
 
             if (xAxis.Dims.HasBeenSet == false || yAxis.Dims.HasBeenSet == false)
-                settings.AxisAuto();
+                settings.AxisAutoAll();
 
             xAxis.Dims.Zoom(xFrac, zoomToX ?? xAxis.Dims.Center);
             yAxis.Dims.Zoom(yFrac, zoomToY ?? yAxis.Dims.Center);
@@ -236,7 +236,7 @@ namespace ScottPlot
         public void AxisPan(double dx = 0, double dy = 0)
         {
             if (!settings.AllAxesHaveBeenSet)
-                settings.AxisAuto();
+                settings.AxisAutoAll();
             settings.XAxis.Dims.Pan(dx);
             settings.XAxis.Dims.Pan(dy);
         }
