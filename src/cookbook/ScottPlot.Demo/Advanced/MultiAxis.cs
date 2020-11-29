@@ -25,19 +25,21 @@ namespace ScottPlot.Demo.Advanced
                 double[] organisms = DataGen.RandomWalk(rand, pointCount, 1000, 20000); // large values
 
                 // customize the primary X axis
-                plt.XAxis.Configure(label: "Days After Volcano Eruption");
+                plt.XAxis.Label = "Days After Volcano Eruption";
 
                 // add a scatter plot and customize the primary Y axis
                 var scatter1 = plt.PlotScatter(xs, rainfall);
-                plt.YAxis.Configure(label: "Daily Rainfall (cm)", color: scatter1.color);
+                plt.YAxis.Label = "Daily Rainfall (cm)";
+                plt.YAxis.Color = scatter1.color;
 
                 // add another scatter plot but give it a custom vertical axis index
                 var scatter2 = plt.PlotScatter(xs, organisms);
                 scatter2.VerticalAxisIndex = 3;
 
                 // add a new vertical axis using same axis index as the second scatter plot
-                var secondLeftAxis = plt.AddAxis(Renderable.Edge.Left, axisIndex: 3);
-                secondLeftAxis.Configure(label: "Number of Organisms", color: scatter2.color);
+                var yAxis3 = plt.AddAxis(Renderable.Edge.Left, axisIndex: 3);
+                yAxis3.Label = "Number of Organisms";
+                yAxis3.Color = scatter2.color;
             }
         }
     }
