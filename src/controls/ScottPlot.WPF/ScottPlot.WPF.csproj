@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\ScottPlot\ScottPlot.csproj" />
-    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
+    <PackageReference Include="System.Drawing.Common" Version="5.0.0" />
     <None Include="VisualStudioToolsManifest.xml" Pack="true" PackagePath="tools" />
   </ItemGroup>
 
