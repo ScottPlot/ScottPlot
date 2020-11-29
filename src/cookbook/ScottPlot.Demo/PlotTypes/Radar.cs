@@ -62,7 +62,7 @@ namespace ScottPlot.Demo.PlotTypes
 
             public void Render(Plot plt)
             {
-                double[,] values = { { 5, 3, 10, 15, 3, 2,  256}, { 5, 2, 10, 10, 1, 4, 252 }, };
+                double[,] values = { { 5, 3, 10, 15, 3, 2, 256 }, { 5, 2, 10, 10, 1, 4, 252 }, };
                 string[] categories = { "Wins", "Poles", "Podiums", "Points Finishes", "DNFs", "Fastest Laps", "Points" };
                 string[] groups = { "Sebastian Vettel", "Fernando Alonso" };
 
