@@ -22,7 +22,7 @@ Release cookbook: https://swharden.com/scottplot/cookbook
 Release demo: https://swharden.com/scottplot/demo</PackageReleaseNotes>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <Version>4.1.0-alpha</Version>
+    <Version>4.1.0-beta</Version>
     <AssemblyVersion>4.1.0.0</AssemblyVersion>
     <FileVersion>4.1.0.0</FileVersion>
     <LangVersion>7.3</LangVersion>
@@ -37,7 +37,7 @@ Release demo: https://swharden.com/scottplot/demo</PackageReleaseNotes>
   <ItemGroup>
     <None Include="icon.png" Pack="true" PackagePath="\" />
     <None Include="icon.ico" Pack="true" PackagePath="\" />
-    <Content Include="README.txt" Pack="true" PackagePath="\" />
+    <None Include="README.txt" Pack="true" PackagePath="\" />
     <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
     <PackageReference Include="runtime.osx.10.10-x64.CoreCompat.System.Drawing" Version="5.8.64" Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))' == 'true'" />
   </ItemGroup>
