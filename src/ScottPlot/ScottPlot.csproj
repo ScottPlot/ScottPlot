@@ -10,7 +10,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>ScottPlot is a free and open-source plotting library for .NET. This package can be used to create static plots, and user controls for interactively displaying plots in WinForms or WPF applications are available as separate packages.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>http://swharden.com/scottplot/</PackageProjectUrl>
+    <PackageProjectUrl>https://swharden.com/scottplot/</PackageProjectUrl>
     <PackageIconUrl></PackageIconUrl>
     <PackageTags>plot graph data chart signal line bar C#</PackageTags>
     <PackageReleaseNotes>Interactive WinForms control: https://www.nuget.org/packages/ScottPlot.WinForms
@@ -18,8 +18,8 @@ Interactive WPF control: https://www.nuget.org/packages/ScottPlot.WPF
 Interactive Avalonia control: https://www.nuget.org/packages/ScottPlot.Avalonia
 
 Release notes: https://github.com/swharden/ScottPlot/releases
-Release cookbook: http://swharden.com/scottplot/cookbook
-Release demo: http://swharden.com/scottplot/demo</PackageReleaseNotes>
+Release cookbook: https://swharden.com/scottplot/cookbook
+Release demo: https://swharden.com/scottplot/demo</PackageReleaseNotes>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <Version>4.1.0-alpha</Version>
@@ -31,11 +31,13 @@ Release demo: http://swharden.com/scottplot/demo</PackageReleaseNotes>
     <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
     <Authors>Scott Harden</Authors>
     <Company>Harden Technologies, LLC</Company>
+    <RepositoryUrl>https://github.com/swharden/ScottPlot</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
     <None Include="icon.png" Pack="true" PackagePath="\" />
     <None Include="icon.ico" Pack="true" PackagePath="\" />
+    <Content Include="README.txt" Pack="true" PackagePath="\" />
     <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
     <PackageReference Include="runtime.osx.10.10-x64.CoreCompat.System.Drawing" Version="5.8.64" Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))' == 'true'" />
   </ItemGroup>
