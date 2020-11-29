@@ -10,24 +10,35 @@ namespace ScottPlot.Plottable
     {
         private readonly double[,] normalized;
         private readonly double normalizedMax;
+        private readonly double[] normalizedMaxes;
         public string[] categoryNames;
         public string[] groupNames;
         public Color[] fillColors;
         public Color[] lineColors;
         public Color webColor;
+        public readonly bool independentAxes;
         public bool IsVisible { get; set; } = true;
         public int HorizontalAxisIndex { get; set; } = 0;
         public int VerticalAxisIndex { get; set; } = 0;
         public Drawing.Font Font = new Drawing.Font();
+        public bool showAxisLabels { get; set; } = true;
 
-        public RadarPlot(double[,] values, Color[] lineColors, Color[] fillColors)
+        public RadarPlot(double[,] values, Color[] lineColors, Color[] fillColors, bool independentAxes)
         {
             this.lineColors = lineColors;
             this.fillColors = fillColors;
+            this.independentAxes = independentAxes;
 
             normalized = new double[values.GetLength(0), values.GetLength(1)];
             Array.Copy(values, 0, normalized, 0, values.Length);
-            normalizedMax = NormalizeInPlace(normalized);
+            if (independentAxes)
+            {
+                normalizedMaxes = NormalizeSeveralInPlace(normalized);
+            }
+            else
+            {
+                normalizedMax = NormalizeInPlace(normalized);
+            }
         }
 
         public override string ToString() =>
@@ -61,6 +72,34 @@ namespace ScottPlot.Plottable
             return max;
         }
 
+        /// <summary>
+        /// Normalize each row of a 2D array independently by dividing all values by the maximum value.
+        /// </summary>
+        /// <returns>maximum value in each row of the array before normalization</returns>
+        private double[] NormalizeSeveralInPlace(double[,] input)
+        {
+            double[] maxes = new double[input.GetLength(1)];
+            for (int i = 0; i < input.GetLength(1); i++)
+            {
+                double max = input[0, i];
+                for (int j = 0; j < input.GetLength(0); j++)
+                {
+                    max = Math.Max(input[j, i], max);
+                }
+                maxes[i] = max;
+            }
+
+            for (int i = 0; i < input.GetLength(0); i++)
+            {
+                for (int j = 0; j < input.GetLength(1); j++)
+                {
+                    input[i, j] /= maxes[j];
+                }
+            }
+
+            return maxes;
+        }
+
         public LegendItem[] GetLegendItems()
         {
             if (groupNames is null)
@@ -82,7 +121,8 @@ namespace ScottPlot.Plottable
             return legendItems.ToArray();
         }
 
-        public AxisLimits GetAxisLimits() => new AxisLimits(-2.5, 2.5, -2.5, 2.5);
+        public AxisLimits GetAxisLimits() =>
+            (groupNames != null) ? new AxisLimits(-3.5, 3.5, -3.5, 3.5) : new AxisLimits(-2.5, 2.5, -2.5, 2.5);
 
         public int PointCount { get => normalized.Length; }
 
@@ -99,14 +139,39 @@ namespace ScottPlot.Plottable
             using (Pen pen = GDI.Pen(webColor))
             using (Brush brush = GDI.Brush(Color.Black))
             using (StringFormat sf = new StringFormat() { LineAlignment = StringAlignment.Center })
+            using (StringFormat sf2 = new StringFormat())
             using (System.Drawing.Font font = GDI.Font(Font))
             using (Brush fontBrush = GDI.Brush(Font.Color))
             {
                 for (int i = 0; i < radii.Length; i++)
                 {
                     gfx.DrawEllipse(pen, (int)(origin.X - radii[i]), (int)(origin.Y - radii[i]), (int)(radii[i] * 2), (int)(radii[i] * 2));
-                    StringFormat stringFormat = new StringFormat() { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Far };
-                    gfx.DrawString($"{normalizedMax * radii[i] / minScale:f1}", font, fontBrush, origin.X, (float)(-radii[i] + origin.Y), stringFormat);
+                    if (showAxisLabels)
+                    {
+                        {
+                            if (independentAxes)
+                            {
+                                for (int j = 0; j < numCategories; j++)
+                                {
+                                    string text = $"{normalizedMaxes[j] * radii[i] / minScale:f1}";
+
+                                    double hypotenuse = (radii[i] / radii[radii.Length - 1]);
+
+                                    float x = (float)(hypotenuse * Math.Cos(sweepAngle * j - Math.PI / 2) * minScale + origin.X);
+                                    float y = (float)(hypotenuse * Math.Sin(sweepAngle * j - Math.PI / 2) * minScale + origin.Y);
+
+                                    sf2.Alignment = x < origin.X ? StringAlignment.Far : StringAlignment.Near;
+                                    sf2.LineAlignment = y < origin.Y ? StringAlignment.Far : StringAlignment.Near;
+
+                                    gfx.DrawString(text, font, fontBrush, x, y, sf2);
+                                }
+                            }
+                            else
+                            {
+                                gfx.DrawString($"{normalizedMax * radii[i] / minScale:f1}", font, fontBrush, origin.X, (float)(-radii[i] + origin.Y), sf2);
+                            }
+                        }
+                    }
                 }
 
                 for (int i = 0; i < numCategories; i++)
