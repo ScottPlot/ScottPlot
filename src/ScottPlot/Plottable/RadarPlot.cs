@@ -22,6 +22,7 @@ namespace ScottPlot.Plottable
         public int VerticalAxisIndex { get; set; } = 0;
         public Drawing.Font Font = new Drawing.Font();
         public bool showAxisLabels { get; set; } = true;
+        public RadarAxis axisType { get; set; } = RadarAxis.Circle;
 
         public RadarPlot(double[,] values, Color[] lineColors, Color[] fillColors, bool independentAxes)
         {
@@ -145,7 +146,24 @@ namespace ScottPlot.Plottable
             {
                 for (int i = 0; i < radii.Length; i++)
                 {
-                    gfx.DrawEllipse(pen, (int)(origin.X - radii[i]), (int)(origin.Y - radii[i]), (int)(radii[i] * 2), (int)(radii[i] * 2));
+                    double hypotenuse = (radii[i] / radii[radii.Length - 1]);
+
+                    if (axisType == RadarAxis.Circle)
+                    {
+                        gfx.DrawEllipse(pen, (int)(origin.X - radii[i]), (int)(origin.Y - radii[i]), (int)(radii[i] * 2), (int)(radii[i] * 2));
+                    }
+                    else if (axisType == RadarAxis.Polygon)
+                    {
+                        PointF[] points = new PointF[numCategories];
+                        for (int j = 0; j < numCategories; j++)
+                        {
+                            float x = (float)(hypotenuse * Math.Cos(sweepAngle * j - Math.PI / 2) * minScale + origin.X);
+                            float y = (float)(hypotenuse * Math.Sin(sweepAngle * j - Math.PI / 2) * minScale + origin.Y);
+
+                            points[j] = new PointF(x, y);
+                        }
+                        gfx.DrawPolygon(pen, points);
+                    }
                     if (showAxisLabels)
                     {
                         {
@@ -154,8 +172,6 @@ namespace ScottPlot.Plottable
                                 for (int j = 0; j < numCategories; j++)
                                 {
                                     string text = $"{normalizedMaxes[j] * radii[i] / minScale:f1}";
-
-                                    double hypotenuse = (radii[i] / radii[radii.Length - 1]);
 
                                     float x = (float)(hypotenuse * Math.Cos(sweepAngle * j - Math.PI / 2) * minScale + origin.X);
                                     float y = (float)(hypotenuse * Math.Sin(sweepAngle * j - Math.PI / 2) * minScale + origin.Y);
