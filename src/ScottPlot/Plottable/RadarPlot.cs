@@ -24,7 +24,7 @@ namespace ScottPlot.Plottable
         public bool showAxisLabels { get; set; } = true;
         public RadarAxis axisType { get; set; } = RadarAxis.Circle;
 
-        public RadarPlot(double[,] values, Color[] lineColors, Color[] fillColors, bool independentAxes)
+        public RadarPlot(double[,] values, Color[] lineColors, Color[] fillColors, bool independentAxes, double[] maxValues = null)
         {
             this.lineColors = lineColors;
             this.fillColors = fillColors;
@@ -34,11 +34,11 @@ namespace ScottPlot.Plottable
             Array.Copy(values, 0, normalized, 0, values.Length);
             if (independentAxes)
             {
-                normalizedMaxes = NormalizeSeveralInPlace(normalized);
+                normalizedMaxes = NormalizeSeveralInPlace(normalized, maxValues);
             }
             else
             {
-                normalizedMax = NormalizeInPlace(normalized);
+                normalizedMax = NormalizeInPlace(normalized, maxValues);
             }
         }
 
@@ -58,13 +58,20 @@ namespace ScottPlot.Plottable
         /// Normalize a 2D array by dividing all values by the maximum value.
         /// </summary>
         /// <returns>maximum value in the array before normalization</returns>
-        private double NormalizeInPlace(double[,] input)
+        private double NormalizeInPlace(double[,] input, double[] maxValues = null)
         {
-            double max = input[0, 0];
-
-            for (int i = 0; i < input.GetLength(0); i++)
-                for (int j = 0; j < input.GetLength(1); j++)
-                    max = Math.Max(max, input[i, j]);
+            double max;
+            if (maxValues != null && maxValues.Length == 1)
+            {
+                max = maxValues[0];
+            }
+            else
+            {
+                max = input[0, 0];
+                for (int i = 0; i < input.GetLength(0); i++)
+                    for (int j = 0; j < input.GetLength(1); j++)
+                        max = Math.Max(max, input[i, j]);
+            }
 
             for (int i = 0; i < input.GetLength(0); i++)
                 for (int j = 0; j < input.GetLength(1); j++)
@@ -77,17 +84,25 @@ namespace ScottPlot.Plottable
         /// Normalize each row of a 2D array independently by dividing all values by the maximum value.
         /// </summary>
         /// <returns>maximum value in each row of the array before normalization</returns>
-        private double[] NormalizeSeveralInPlace(double[,] input)
+        private double[] NormalizeSeveralInPlace(double[,] input, double[] maxValues = null)
         {
-            double[] maxes = new double[input.GetLength(1)];
-            for (int i = 0; i < input.GetLength(1); i++)
+            double[] maxes;
+            if (maxValues != null && input.GetLength(1) == maxValues.Length)
             {
-                double max = input[0, i];
-                for (int j = 0; j < input.GetLength(0); j++)
+                maxes = maxValues;
+            }
+            else
+            {
+                maxes = new double[input.GetLength(1)];
+                for (int i = 0; i < input.GetLength(1); i++)
                 {
-                    max = Math.Max(input[j, i], max);
+                    double max = input[0, i];
+                    for (int j = 0; j < input.GetLength(0); j++)
+                    {
+                        max = Math.Max(input[j, i], max);
+                    }
+                    maxes[i] = max;
                 }
-                maxes[i] = max;
             }
 
             for (int i = 0; i < input.GetLength(0); i++)

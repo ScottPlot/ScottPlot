@@ -66,13 +66,14 @@ namespace ScottPlot
             Color[] fillColors = null,
             double fillAlpha = .4,
             Color? webColor = null,
-            bool independentAxes = false
+            bool independentAxes = false,
+            double[] maxValues = null
             )
         {
             Color[] colors = fillColors ?? Enumerable.Range(0, values.Length).Select(i => settings.PlottablePalette.GetColor(i)).ToArray();
             Color[] colorsAlpha = colors.Select(x => Color.FromArgb((byte)(255 * fillAlpha), x)).ToArray();
 
-            var plottable = new RadarPlot(values, colors, fillColors ?? colorsAlpha, independentAxes)
+            var plottable = new RadarPlot(values, colors, fillColors ?? colorsAlpha, independentAxes, maxValues)
             {
                 categoryNames = categoryNames,
                 groupNames = groupNames,
