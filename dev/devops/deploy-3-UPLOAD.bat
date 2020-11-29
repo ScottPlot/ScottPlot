@@ -1,6 +1,6 @@
 @echo off
 
-:: this script requires nuget.exe to be in this folder
+:: this script requires nuget.exe to be in the system path
 :: https://www.nuget.org/downloads
 :: and have your API key stored on your systeminfo
 :: nuget SetApiKey 123456789
@@ -23,15 +23,15 @@ nuget push ..\..\src\ScottPlot\bin\Release\*.nupkg -Source https://api.nuget.org
 
 echo.
 echo ### UPLOADING [ScottPlot.WinForms] TO NUGET ###
-nuget push ..\..\src\ScottPlot.WinForms\bin\Release\*.nupkg -Source https://api.nuget.org/v3/index.json
+nuget push ..\..\src\controls\ScottPlot.WinForms\bin\Release\*.nupkg -Source https://api.nuget.org/v3/index.json
 
 echo.
 echo ### UPLOADING [ScottPlot.WPF] TO NUGET ###
-nuget push ..\..\src\ScottPlot.WPF\bin\Release\*.nupkg -Source https://api.nuget.org/v3/index.json
+nuget push ..\..\src\controls\ScottPlot.WPF\bin\Release\*.nupkg -Source https://api.nuget.org/v3/index.json
 
 echo.
 echo ### UPLOADING [ScottPlot.Avalonia] TO NUGET ###
-nuget push ..\..\src\ScottPlot.Avalonia\bin\Release\*.nupkg -Source https://api.nuget.org/v3/index.json
+nuget push ..\..\src\controls\ScottPlot.Avalonia\bin\Release\*.nupkg -Source https://api.nuget.org/v3/index.json
 
 echo.
 pause
