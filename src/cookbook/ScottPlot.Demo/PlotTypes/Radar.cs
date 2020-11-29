@@ -127,7 +127,7 @@ namespace ScottPlot.Demo.PlotTypes
                  */
             }
         }
-        
+
         public class RadarSeveralAxesWithMax : PlotDemo, IPlotDemo
         {
             public string name { get; } = "Radar With Multiple Axes And Pre-Defined Max Values";
