@@ -97,11 +97,17 @@ namespace ScottPlot.Renderable
             if (positions is null || positions.Length == 0 || gridLineStyle == LineStyle.None)
                 return;
 
+            // don't draw grid lines on the last pixel to prevent drawing over the data frame
+            float xEdgeLeft = dims.DataOffsetX + 1;
+            float xEdgeRight = dims.DataOffsetX + dims.DataWidth - 1;
+            float yEdgeTop = dims.DataOffsetY + 1;
+            float yEdgeBottom = dims.DataOffsetY + dims.DataHeight - 1;
+
             if (IsVertical)
             {
                 float x = (Edge == Edge.Left) ? dims.DataOffsetX : dims.DataOffsetX + dims.DataWidth;
                 float x2 = (Edge == Edge.Left) ? dims.DataOffsetX + dims.DataWidth : dims.DataOffsetX;
-                var ys = positions.Select(i => dims.GetPixelY(i));
+                var ys = positions.Select(i => dims.GetPixelY(i)).Where(y => yEdgeTop < y && y < yEdgeBottom);
                 if (gridLineStyle != LineStyle.None)
                     using (var pen = GDI.Pen(gridLineColor, gridLineWidth, gridLineStyle))
                         foreach (float y in ys)
@@ -112,7 +118,7 @@ namespace ScottPlot.Renderable
             {
                 float y = (Edge == Edge.Top) ? dims.DataOffsetY : dims.DataOffsetY + dims.DataHeight;
                 float y2 = (Edge == Edge.Top) ? dims.DataOffsetY + dims.DataHeight : dims.DataOffsetY;
-                var xs = positions.Select(i => dims.GetPixelX(i));
+                var xs = positions.Select(i => dims.GetPixelX(i)).Where(x => xEdgeLeft < x && x < xEdgeRight);
                 if (gridLineStyle != LineStyle.None)
                     using (var pen = GDI.Pen(gridLineColor, gridLineWidth, gridLineStyle))
                         foreach (float x in xs)
