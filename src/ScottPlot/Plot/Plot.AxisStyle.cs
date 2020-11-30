@@ -1,111 +1,63 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Text;
 
 namespace ScottPlot
 {
     partial class Plot
     {
         /// <summary>
-        /// Customize styling options for the bottom axis (XAxis)
+        /// Customize styling options for the bottom axis (XAxis) label
         /// </summary>
-        public void XLabel(string label = null, Color? color = null, string fontName = null, float? fontSize = null, bool? bold = null)
-        {
-            XAxis.Title.Label = label;
-            XAxis.Title.Font.Name = string.IsNullOrWhiteSpace(fontName) ? XAxis.Title.Font.Name : fontName;
-            XAxis.Title.Font.Size = fontSize ?? XAxis.Title.Font.Size;
-            XAxis.Configure(color: color);
-            XAxis.Title.Font.Bold = bold ?? XAxis.Title.Font.Bold;
-        }
+        public void XLabel(string label = null, Color? color = null, string fontName = null, float? fontSize = null, bool? bold = null) =>
+            XAxis.ConfigureAxisLabel(true, label, color, fontSize, bold, fontName);
 
         /// <summary>
-        /// Customize styling options for the left axis (YAxis)
+        /// Customize styling options for the left axis (YAxis) label
         /// </summary>
-        public void YLabel(string label = null, string fontName = null, float? fontSize = null, Color? color = null, bool? bold = null)
-        {
-            YAxis.Title.Label = label;
-            YAxis.Title.Font.Name = string.IsNullOrWhiteSpace(fontName) ? YAxis.Title.Font.Name : fontName;
-            YAxis.Title.Font.Size = fontSize ?? YAxis.Title.Font.Size;
-            YAxis.Configure(color: color);
-            YAxis.Title.Font.Bold = bold ?? YAxis.Title.Font.Bold;
-        }
+        public void YLabel(string label = null, string fontName = null, float? fontSize = null, Color? color = null, bool? bold = null) =>
+            YAxis.ConfigureAxisLabel(true, label, color, fontSize, bold, fontName);
 
         /// <summary>
-        /// Customize styling options for the right axis (YAxis2)
+        /// Customize styling options for the right axis (YAxis2) label
         /// </summary>
-        public void YLabel2(string label = null, string fontName = null, float? fontSize = null, Color? color = null, bool? bold = null)
-        {
-            YAxis2.Title.Label = label;
-            YAxis2.Title.Font.Name = string.IsNullOrWhiteSpace(fontName) ? YAxis2.Title.Font.Name : fontName;
-            YAxis2.Title.Font.Size = fontSize ?? YAxis2.Title.Font.Size;
-            YAxis2.Configure(color: color);
-            YAxis2.Title.Font.Bold = bold ?? YAxis2.Title.Font.Bold;
-            YAxis2.Title.IsVisible = true;
-            YAxis2.Ticks.MajorTickEnable = true;
-            YAxis2.Ticks.MinorTickEnable = true;
-            YAxis2.Ticks.MajorLabelEnable = true;
-        }
+        public void YLabel2(string label = null, string fontName = null, float? fontSize = null, Color? color = null, bool? bold = null) =>
+            YAxis2.ConfigureAxisLabel(true, label, color, fontSize, bold, fontName);
 
         /// <summary>
-        /// Customize styling options for the top axis (XAxis2)
+        /// Customize styling options for the top axis (XAxis2) label
         /// </summary>
-        public void XLabel2(string label = null, string fontName = null, float? fontSize = null, Color? color = null, bool? bold = null)
-        {
-            XAxis2.Title.Label = label;
-            XAxis2.Title.Font.Name = string.IsNullOrWhiteSpace(fontName) ? XAxis2.Title.Font.Name : fontName;
-            XAxis2.Title.Font.Size = fontSize ?? XAxis2.Title.Font.Size;
-            XAxis2.Configure(color: color);
-            XAxis2.Title.Font.Bold = bold ?? XAxis2.Title.Font.Bold;
-            XAxis2.Title.IsVisible = true;
-            XAxis2.Ticks.MajorTickEnable = true;
-            XAxis2.Ticks.MinorTickEnable = true;
-            XAxis2.Ticks.MajorLabelEnable = true;
-        }
+        public void XLabel2(string label = null, string fontName = null, float? fontSize = null, Color? color = null, bool? bold = null) =>
+            XAxis2.ConfigureAxisLabel(true, label, color, fontSize, bold, fontName);
 
         /// <summary>
         /// Customize styling options for title (which is just the axis label for the top axis, XAxis2)
         /// </summary>
-        public void Title(string label = null, string fontName = null, float? fontSize = null, Color? color = null, bool? bold = null)
-        {
-            XAxis2.Title.Label = label;
-            XAxis2.Title.Font.Name = string.IsNullOrWhiteSpace(fontName) ? XAxis2.Title.Font.Name : fontName;
-            XAxis2.Title.Font.Size = fontSize ?? XAxis2.Title.Font.Size;
-            XAxis2.Title.Font.Color = color ?? XAxis2.Title.Font.Color;
-            XAxis2.Title.Font.Bold = bold ?? XAxis2.Title.Font.Bold;
-        }
+        public void Title(string label = null, string fontName = null, float? fontSize = null, Color? color = null, bool? bold = null) =>
+            XAxis2.ConfigureAxisLabel(true, label, color, fontSize, bold, fontName);
 
         /// <summary>
-        /// Control color and visibility of the plot area outlines (frame)
+        /// Configure color and visibility of the frame that outlines the data area (lines along the edges of the primary axes)
         /// </summary>
-        public void Frame(bool? drawFrame = true, System.Drawing.Color? frameColor = null,
-            bool? left = true, bool? right = true, bool? bottom = true, bool? top = true)
+        public void Frame(bool? visible = true, Color? color = null, bool? left = true, bool? right = true, bool? bottom = true, bool? top = true)
         {
             var primaryAxes = new Renderable.Axis[] { XAxis, XAxis2, YAxis, YAxis2 };
             foreach (var axis in primaryAxes)
-            {
-                axis.Line.IsVisible = drawFrame ?? axis.Line.IsVisible;
-                axis.Line.Color = frameColor ?? axis.Line.Color;
-            }
+                axis.ConfigureLine(visible, color);
 
-            YAxis.Line.IsVisible = left ?? YAxis.Line.IsVisible;
-            YAxis2.Line.IsVisible = right ?? YAxis2.Line.IsVisible;
-            XAxis.Line.IsVisible = bottom ?? XAxis.Line.IsVisible;
-            XAxis2.Line.IsVisible = top ?? XAxis2.Line.IsVisible;
+            YAxis.ConfigureLine(visible: left);
+            YAxis2.ConfigureLine(visible: right);
+            XAxis.ConfigureLine(visible: bottom);
+            XAxis2.ConfigureLine(visible: top);
         }
 
         /// <summary>
-        /// Disable visibility of all axes and set their size and padding to zero so the data area covers the whole figure
+        /// Set size of the primary axes to zero so the data area covers the whole figure
         /// </summary>
         public void LayoutFrameless()
         {
-            foreach (var axis in settings.Axes)
-            {
-                axis.IsVisible = false;
-                axis.PixelSizeMinimum = 0;
-                axis.PixelSizeMaximum = 0;
-                axis.PixelSizePadding = 0;
-            }
+            var primaryAxes = new Renderable.Axis[] { XAxis, XAxis2, YAxis, YAxis2 };
+            foreach (var axis in primaryAxes)
+                axis.Hide();
         }
 
         /// <summary>
@@ -124,27 +76,19 @@ namespace ScottPlot
             LineStyle? lineStyle = null,
             bool? snapToNearestPixel = null)
         {
-            XAxis.Ticks.MajorGridEnable = enable ?? XAxis.Ticks.MajorGridEnable;
-            YAxis.Ticks.MajorGridEnable = enable ?? YAxis.Ticks.MajorGridEnable;
-            XAxis.Ticks.MajorGridEnable = enableHorizontal ?? XAxis.Ticks.MajorGridEnable;
-            YAxis.Ticks.MajorGridEnable = enableVertical ?? YAxis.Ticks.MajorGridEnable;
+            XAxis.ConfigureMajorGrid(enable, color, lineWidth, lineStyle);
+            YAxis.ConfigureMajorGrid(enable, color, lineWidth, lineStyle);
 
-            XAxis.Ticks.MajorGridColor = color ?? XAxis.Ticks.MajorGridColor;
-            YAxis.Ticks.MajorGridColor = color ?? YAxis.Ticks.MajorGridColor;
+            XAxis.ConfigureTickLabelStyle(snapToNearestPixel: snapToNearestPixel);
+            YAxis.ConfigureTickLabelStyle(snapToNearestPixel: snapToNearestPixel);
 
-            XAxis.Ticks.TickCollection.manualSpacingX = xSpacing ?? XAxis.Ticks.TickCollection.manualSpacingX;
-            YAxis.Ticks.TickCollection.manualSpacingY = ySpacing ?? YAxis.Ticks.TickCollection.manualSpacingY;
-            XAxis.Ticks.TickCollection.manualDateTimeSpacingUnitX = xSpacingDateTimeUnit ?? XAxis.Ticks.TickCollection.manualDateTimeSpacingUnitX;
-            YAxis.Ticks.TickCollection.manualDateTimeSpacingUnitY = ySpacingDateTimeUnit ?? YAxis.Ticks.TickCollection.manualDateTimeSpacingUnitY;
+            XAxis.ConfigureMajorGrid(enable: enableVertical);
+            YAxis.ConfigureMajorGrid(enable: enableHorizontal);
 
-            XAxis.Ticks.MajorGridWidth = lineWidth ?? XAxis.Ticks.MajorGridWidth;
-            YAxis.Ticks.MajorGridWidth = lineWidth ?? YAxis.Ticks.MajorGridWidth;
-
-            XAxis.Ticks.MajorGridStyle = lineStyle ?? XAxis.Ticks.MajorGridStyle;
-            YAxis.Ticks.MajorGridStyle = lineStyle ?? YAxis.Ticks.MajorGridStyle;
-
-            XAxis.Ticks.SnapPx = snapToNearestPixel ?? XAxis.Ticks.SnapPx;
-            YAxis.Ticks.SnapPx = snapToNearestPixel ?? YAxis.Ticks.SnapPx;
+            XAxis.ConfigureTicks(manualSpacing: xSpacing);
+            YAxis.ConfigureTicks(manualSpacing: ySpacing);
+            XAxis.ConfigureTicks(manualSpacingDateTimeUnit: xSpacingDateTimeUnit);
+            YAxis.ConfigureTicks(manualSpacingDateTimeUnit: ySpacingDateTimeUnit);
         }
 
         /// <summary>
@@ -152,14 +96,10 @@ namespace ScottPlot
         /// </summary>
         public void Layout(float? left = null, float? right = null, float? bottom = null, float? top = null, float? padding = 5)
         {
-            foreach (var axis in settings.Axes)
-            {
-                if (axis.Edge == Renderable.Edge.Left) axis.PixelSizeMinimum = left ?? axis.PixelSizeMinimum;
-                if (axis.Edge == Renderable.Edge.Right) axis.PixelSizeMinimum = right ?? axis.PixelSizeMinimum;
-                if (axis.Edge == Renderable.Edge.Bottom) axis.PixelSizeMinimum = bottom ?? axis.PixelSizeMinimum;
-                if (axis.Edge == Renderable.Edge.Top) axis.PixelSizeMinimum = top ?? axis.PixelSizeMinimum;
-                axis.PixelSizePadding = padding ?? axis.PixelSizePadding;
-            }
+            YAxis.ConfigureLayout(padding, left);
+            YAxis2.ConfigureLayout(padding, right);
+            XAxis.ConfigureLayout(padding, bottom);
+            XAxis2.ConfigureLayout(padding, top);
         }
 
         /// <summary>
@@ -191,42 +131,24 @@ namespace ScottPlot
         /// <summary>
         /// Manually define X axis tick labels
         /// </summary>
-        public void XTicks(string[] labels)
-        {
-            if (labels is null)
-                throw new ArgumentException("labels cannot be null");
-
-            XTicks(DataGen.Consecutive(labels.Length), labels);
-        }
+        public void XTicks(string[] labels) => XTicks(DataGen.Consecutive(labels.Length), labels);
 
         /// <summary>
         /// Manually define X axis tick positions and labels
         /// </summary>
-        public void XTicks(double[] positions = null, string[] labels = null)
-        {
-            settings.XAxis.Ticks.TickCollection.manualTickPositions = positions;
-            settings.XAxis.Ticks.TickCollection.manualTickLabels = labels;
-        }
+        public void XTicks(double[] positions = null, string[] labels = null) =>
+            XAxis.ConfigureTicks(definedPositions: positions, definedLabels: labels);
 
         /// <summary>
         /// Manually define Y axis tick labels
         /// </summary>
-        public void YTicks(string[] labels)
-        {
-            if (labels is null)
-                throw new ArgumentException("labels cannot be null");
-
-            YTicks(DataGen.Consecutive(labels.Length), labels);
-        }
+        public void YTicks(string[] labels) => YTicks(DataGen.Consecutive(labels.Length), labels);
 
         /// <summary>
         /// Manually define Y axis tick positions and labels
         /// </summary>
-        public void YTicks(double[] positions = null, string[] labels = null)
-        {
-            settings.YAxis.Ticks.TickCollection.manualTickPositions = positions;
-            settings.YAxis.Ticks.TickCollection.manualTickLabels = labels;
-        }
+        public void YTicks(double[] positions = null, string[] labels = null) =>
+            YAxis.ConfigureTicks(definedPositions: positions, definedLabels: labels);
 
         /// <summary>
         /// Configure the style and behavior of X and Y ticks
@@ -250,7 +172,7 @@ namespace ScottPlot
             bool? invertSignY = null,
             string fontName = null,
             float? fontSize = null,
-            double? xTickRotation = null,
+            float? xTickRotation = null,
             bool? logScaleX = null,
             bool? logScaleY = null,
             string numericFormatStringX = null,
@@ -264,60 +186,50 @@ namespace ScottPlot
             string dateTimeFormatStringY = null
             )
         {
-            settings.XAxis.Configure(showMajorTicks: displayTicksX);
-            settings.XAxis.Configure(showMinorTicks: displayTicksX);
-            settings.XAxis.Configure(showLabels: displayTicksX);
-            settings.YAxis.Configure(showMajorTicks: displayTicksY);
-            settings.YAxis.Configure(showMinorTicks: displayTicksY);
-            settings.YAxis.Configure(showLabels: displayTicksY);
+            // PRIMARY TICK COMPONENTS
+            settings.XAxis.ConfigureTicks(majorTickMarks: displayTicksX);
+            settings.YAxis.ConfigureTicks(majorTickMarks: displayTicksY);
+            settings.XAxis.ConfigureTicks(minorTickMarks: displayTicksXminor);
+            settings.YAxis.ConfigureTicks(minorTickMarks: displayTicksYminor);
+            settings.XAxis.ConfigureTicks(majorTickLabels: displayTickLabelsX);
+            settings.YAxis.ConfigureTicks(majorTickLabels: displayTickLabelsY);
 
-            settings.XAxis.Configure(showMinorTicks: displayTicksXminor);
-            settings.YAxis.Configure(showMinorTicks: displayTicksYminor);
-            settings.XAxis.Configure(showLabels: displayTickLabelsX);
-            settings.YAxis.Configure(showLabels: displayTickLabelsY);
+            // AXIS LABEL
+            settings.XAxis.ConfigureAxisLabel(fontName: fontName);
+            settings.YAxis.ConfigureAxisLabel(fontName: fontName);
+            settings.XAxis.ConfigureAxisLabel(fontSize: fontSize);
+            settings.YAxis.ConfigureAxisLabel(fontSize: fontSize);
 
-            settings.XAxis.Configure(color: color);
-            settings.YAxis.Configure(color: color);
+            // TICK LABEL NOTATION
+            settings.XAxis.ConfigureTickLabelNotation(useMultiplierNotation: useMultiplierNotation);
+            settings.YAxis.ConfigureTickLabelNotation(useMultiplierNotation: useMultiplierNotation);
+            settings.XAxis.ConfigureTickLabelNotation(useOffsetNotation: useOffsetNotation);
+            settings.YAxis.ConfigureTickLabelNotation(useOffsetNotation: useOffsetNotation);
+            settings.XAxis.ConfigureTickLabelNotation(useExponentialNotation: useExponentialNotation);
+            settings.YAxis.ConfigureTickLabelNotation(useExponentialNotation: useExponentialNotation);
+            settings.XAxis.ConfigureTickLabelNotation(dateTime: dateTimeX);
+            settings.YAxis.ConfigureTickLabelNotation(dateTime: dateTimeY);
+            settings.XAxis.ConfigureTickLabelNotation(invertSign: invertSignX);
+            settings.YAxis.ConfigureTickLabelNotation(invertSign: invertSignY);
+            settings.XAxis.ConfigureTickLabelNotation(customFormatStringNumeric: numericFormatStringX);
+            settings.YAxis.ConfigureTickLabelNotation(customFormatStringNumeric: numericFormatStringY);
+            settings.XAxis.ConfigureTickLabelNotation(customFormatStringDateTime: dateTimeFormatStringX);
+            settings.YAxis.ConfigureTickLabelNotation(customFormatStringDateTime: dateTimeFormatStringY);
+            settings.XAxis.ConfigureTickLabelNotation(radix: baseX);
+            settings.YAxis.ConfigureTickLabelNotation(radix: baseY);
+            settings.XAxis.ConfigureTickLabelNotation(prefix: prefixX);
+            settings.YAxis.ConfigureTickLabelNotation(prefix: prefixY);
 
-            settings.XAxis.Configure(useMultiplierNotation: useMultiplierNotation);
-            settings.YAxis.Configure(useMultiplierNotation: useMultiplierNotation);
-            settings.XAxis.Configure(useOffsetNotation: useOffsetNotation);
-            settings.YAxis.Configure(useOffsetNotation: useOffsetNotation);
-            settings.XAxis.Configure(useExponentialNotation: useExponentialNotation);
-            settings.YAxis.Configure(useExponentialNotation: useExponentialNotation);
-
-            settings.XAxis.Configure(dateTime: dateTimeX);
-            settings.YAxis.Configure(dateTime: dateTimeY);
-
-            settings.XAxis.Configure(rulerMode: rulerModeX);
-            settings.YAxis.Configure(rulerMode: rulerModeY);
-            settings.XAxis.Configure(invertSign: invertSignX);
-            settings.YAxis.Configure(invertSign: invertSignY);
-
-            settings.XAxis.Configure(fontName: fontName);
-            settings.YAxis.Configure(fontName: fontName);
-            settings.XAxis.Configure(fontSize: fontSize);
-            settings.YAxis.Configure(fontSize: fontSize);
-
-            settings.XAxis.Configure(rotation: xTickRotation);
-
-            settings.XAxis.Configure(logScale: logScaleX);
-            settings.YAxis.Configure(logScale: logScaleY);
-
-            settings.XAxis.Configure(numericFormatString: numericFormatStringX);
-            settings.YAxis.Configure(numericFormatString: numericFormatStringY);
-
-            settings.XAxis.Configure(snapToNearestPixel: snapToNearestPixel);
-            settings.YAxis.Configure(snapToNearestPixel: snapToNearestPixel);
-
-            settings.XAxis.Configure(radix: baseX);
-            settings.YAxis.Configure(radix: baseY);
-
-            settings.XAxis.Configure(prefix: prefixX);
-            settings.YAxis.Configure(prefix: prefixY);
-
-            settings.XAxis.Configure(dateTimeFormatString: dateTimeFormatStringX);
-            settings.YAxis.Configure(dateTimeFormatString: dateTimeFormatStringY);
+            // TICK STYLING
+            settings.XAxis.ConfigureTickLabelStyle(rulerMode: rulerModeX);
+            settings.YAxis.ConfigureTickLabelStyle(rulerMode: rulerModeY);
+            settings.XAxis.ConfigureTickLabelStyle(rotation: xTickRotation);
+            settings.XAxis.ConfigureTickLabelStyle(color: color);
+            settings.YAxis.ConfigureTickLabelStyle(color: color);
+            settings.XAxis.ConfigureTickLabelStyle(logScale: logScaleX);
+            settings.YAxis.ConfigureTickLabelStyle(logScale: logScaleY);
+            settings.XAxis.ConfigureTickLabelStyle(snapToNearestPixel: snapToNearestPixel);
+            settings.YAxis.ConfigureTickLabelStyle(snapToNearestPixel: snapToNearestPixel);
         }
     }
 }
