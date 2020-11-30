@@ -230,6 +230,8 @@ namespace ScottPlot
             settings.CornerLegend.FontBold = bold ?? settings.CornerLegend.FontBold;
             settings.CornerLegend.FixedLineWidth = fixedLineWidth ?? settings.CornerLegend.FixedLineWidth;
             settings.CornerLegend.Location = location;
+
+            // TODO: support shadowDirection
         }
 
         #endregion
