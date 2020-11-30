@@ -266,7 +266,7 @@ namespace ScottPlot
                 AxisAutoY(i, margin);
         }
 
-        private void AxisAutoX(int xAxisIndex, double margin = .1, bool expandOnly = false)
+        private void AxisAutoX(int xAxisIndex, double margin = .1)
         {
             double min = double.NaN;
             double max = double.NaN;
