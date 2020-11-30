@@ -1,9 +1,6 @@
-﻿/* This file contains API methods to remote plottables from the list */
+﻿/* This file contains methods to remove plottables from the plot */
 using System;
-using System.Collections.Generic;
-using System.Text;
 using ScottPlot.Plottable;
-using ScottPlot.Renderable;
 
 namespace ScottPlot
 {
@@ -12,10 +9,7 @@ namespace ScottPlot
         /// <summary>
         /// Remove the given plottable from the plot
         /// </summary>
-        public void Remove(IPlottable plottable)
-        {
-            settings.Plottables.Remove(plottable);
-        }
+        public void Remove(IPlottable plottable) => settings.Plottables.Remove(plottable);
 
         /// <summary>
         /// Clear all plottables
@@ -81,43 +75,8 @@ namespace ScottPlot
                 settings.ResetAxisLimits();
         }
 
-        [Obsolete("This overload is deprecated. Clear plots using a different overload of the Clear() method.")]
-        public void Clear(
-            bool axisLines = true,
-            bool scatterPlots = true,
-            bool signalPlots = true,
-            bool text = true,
-            bool bar = true,
-            bool finance = true,
-            bool axisSpans = true
-            )
-        {
-            List<int> indicesToDelete = new List<int>();
-            for (int i = 0; i < settings.Plottables.Count; i++)
-            {
-                if ((settings.Plottables[i] is VLine || settings.Plottables[i] is HLine) && axisLines)
-                    indicesToDelete.Add(i);
-                else if (settings.Plottables[i] is ScatterPlot && scatterPlots)
-                    indicesToDelete.Add(i);
-                else if (settings.Plottables[i] is SignalPlot && signalPlots)
-                    indicesToDelete.Add(i);
-                else if (settings.Plottables[i].GetType().IsGenericType && settings.Plottables[i].GetType().GetGenericTypeDefinition() == typeof(SignalPlotConst<>) && signalPlots)
-                    indicesToDelete.Add(i);
-                else if (settings.Plottables[i] is Text && text)
-                    indicesToDelete.Add(i);
-                else if (settings.Plottables[i] is BarPlot && bar)
-                    indicesToDelete.Add(i);
-                else if (settings.Plottables[i] is FinancePlot && finance)
-                    indicesToDelete.Add(i);
-                else if ((settings.Plottables[i] is VSpan || settings.Plottables[i] is HSpan) && axisSpans)
-                    indicesToDelete.Add(i);
-            }
-
-            indicesToDelete.Reverse();
-            for (int i = 0; i < indicesToDelete.Count; i++)
-                settings.Plottables.RemoveAt(indicesToDelete[i]);
-
-            settings.ResetAxisLimits();
-        }
+        [Obsolete("This overload is deprecated.", true)]
+        public void Clear(bool axisLines = true, bool scatterPlots = true, bool signalPlots = true, bool text = true,
+            bool bar = true, bool finance = true, bool axisSpans = true) => throw new NotImplementedException();
     }
 }
