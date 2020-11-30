@@ -161,6 +161,7 @@ namespace ScottPlot
             int b = rand.Next(min, max);
             return Color.FromArgb(r, g, b);
         }
+
         public static double[] RandomWalk(Random rand, int pointCount, double mult = 1, double offset = 0)
         {
             if (rand is null)
@@ -169,9 +170,6 @@ namespace ScottPlot
             data[0] = offset;
             for (int i = 1; i < data.Length; i++)
                 data[i] = data[i - 1] + (rand.NextDouble() * 2 - 1) * mult;
-            double maxVal = data.Max();
-            double minVal = data.Min();
-            double span = maxVal - minVal;
             return data;
         }
 
@@ -301,7 +299,7 @@ namespace ScottPlot
             Marshal.Copy(bytes, 0, bmpData.Scan0, bytes.Length);
             bmp.UnlockBits(bmpData);
 
-            Colormap.Viridis.Apply(bmp);
+            cmap.Apply(bmp);
             Bitmap bmp2 = new Bitmap(width, height, PixelFormat.Format32bppPArgb);
 
             using (Graphics gfx = Graphics.FromImage(bmp2))
