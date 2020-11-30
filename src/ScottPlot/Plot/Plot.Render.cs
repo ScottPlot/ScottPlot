@@ -8,40 +8,7 @@ namespace ScottPlot
 {
     partial class Plot
     {
-        private bool IsRendering = false; // Becomes true only while the render loop is running and not locked
-        private bool IsRenderLocked = false; // RenderBitmap() will hang infinitely while this is true
-
-        [Obsolete("Call the Render() method", true)]
-        public Bitmap GetBitmap() => null;
-
-        /// <summary>
-        /// Render the plot onto a new Bitmap (using size defined by Plot.Width and Plot.Height)
-        /// </summary>
-        public Bitmap Render(bool lowQuality = false) =>
-             Render(settings.Width, settings.Height, lowQuality);
-
-        /// <summary>
-        /// Render the plot onto a new Bitmap of the given dimensions
-        /// </summary>
-        public Bitmap Render(int width, int height, bool lowQuality = false) =>
-            Render(new Bitmap(Math.Max(1, width), Math.Max(1, height), PixelFormat.Format32bppPArgb), lowQuality);
-
-        /// <summary>
-        /// Wait for the current render to finish, then prevent future renders until RenderUnlock() is called.
-        /// </summary>
-        public void RenderLock()
-        {
-            IsRenderLocked = true; // prevent new renders from starting
-            while (IsRendering) { } // wait for the current render to finish
-        }
-
-        /// <summary>
-        /// Release the render lock, allowing renders to proceed.
-        /// </summary>
-        public void RenderUnlock()
-        {
-            IsRenderLocked = false; // allow new renders to occur
-        }
+        #region primary render system
 
         /// <summary>
         /// Render the plot onto an existing bitmap
@@ -66,6 +33,7 @@ namespace ScottPlot
             IsRendering = false;
             return bmp;
         }
+
 
         private void RenderBeforePlottables(Bitmap bmp, bool lowQuality)
         {
@@ -127,6 +95,49 @@ namespace ScottPlot
             settings.ErrorMessage.Render(dims, bmp, lowQuality);
         }
 
+        #endregion
+
+        #region render lock
+
+        private bool IsRendering = false; // Becomes true only while the render loop is running and not locked
+        private bool IsRenderLocked = false; // RenderBitmap() will hang infinitely while this is true
+
+        /// <summary>
+        /// Wait for the current render to finish, then prevent future renders until RenderUnlock() is called.
+        /// </summary>
+        public void RenderLock()
+        {
+            IsRenderLocked = true; // prevent new renders from starting
+            while (IsRendering) { } // wait for the current render to finish
+        }
+
+        /// <summary>
+        /// Release the render lock, allowing renders to proceed.
+        /// </summary>
+        public void RenderUnlock()
+        {
+            IsRenderLocked = false; // allow new renders to occur
+        }
+
+        #endregion
+
+        #region render helper methods
+
+        /// <summary>
+        /// Render the plot onto a new Bitmap (using size defined by Plot.Width and Plot.Height)
+        /// </summary>
+        public Bitmap Render(bool lowQuality = false) =>
+             Render(settings.Width, settings.Height, lowQuality);
+
+        /// <summary>
+        /// Render the plot onto a new Bitmap of the given dimensions
+        /// </summary>
+        public Bitmap Render(int width, int height, bool lowQuality = false) =>
+            Render(new Bitmap(Math.Max(1, width), Math.Max(1, height), PixelFormat.Format32bppPArgb), lowQuality);
+
+        [Obsolete("Call the Render() method", true)]
+        public Bitmap GetBitmap() => null; // bitmaps are no longer pre-rendered and stored
+
         /// <summary>
         /// Return a new Bitmap containing only the legend
         /// </summary>
@@ -165,5 +176,7 @@ namespace ScottPlot
             bmp.Save(filePath, imageFormat);
             return filePath;
         }
+
+        #endregion
     }
 }
