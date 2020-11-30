@@ -46,6 +46,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinFormsApp", "sandbox\WinF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormsFrameworkApp", "sandbox\WinFormsFrameworkApp\WinFormsFrameworkApp.csproj", "{E15C32C7-ACFE-413D-8B97-4A0ABAA0E6E5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Versioner", "..\dev\tools\Versioner\Versioner.csproj", "{0F7DFE8E-E516-4950-B3A2-A55F7AD6CEDF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -104,6 +106,10 @@ Global
 		{E15C32C7-ACFE-413D-8B97-4A0ABAA0E6E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E15C32C7-ACFE-413D-8B97-4A0ABAA0E6E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E15C32C7-ACFE-413D-8B97-4A0ABAA0E6E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F7DFE8E-E516-4950-B3A2-A55F7AD6CEDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F7DFE8E-E516-4950-B3A2-A55F7AD6CEDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F7DFE8E-E516-4950-B3A2-A55F7AD6CEDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F7DFE8E-E516-4950-B3A2-A55F7AD6CEDF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -121,6 +127,7 @@ Global
 		{C9D7BA42-87BF-4AA5-88D7-041DD8FC3D79} = {2211896B-D6E5-4500-A576-A495A11C5524}
 		{811B3AE4-4BF7-4CAD-991C-567D6377F428} = {2211896B-D6E5-4500-A576-A495A11C5524}
 		{E15C32C7-ACFE-413D-8B97-4A0ABAA0E6E5} = {2211896B-D6E5-4500-A576-A495A11C5524}
+		{0F7DFE8E-E516-4950-B3A2-A55F7AD6CEDF} = {35F8F55D-8E1E-44BC-9DE2-C60DCD42BDCB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FBAE082A-173A-4F13-BE31-E6C070513C9C}
