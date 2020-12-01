@@ -132,6 +132,24 @@ namespace ScottPlot
             return scatterPlot;
         }
 
+        public ScatterPlotList PlotScatterList(
+            Color? color = null,
+            float lineWidth = 1,
+            float markerSize = 5,
+            string label = null)
+        {
+            var spl = new ScatterPlotList()
+            {
+                Color = color ?? settings.GetNextColor(),
+                LineWidth = lineWidth,
+                MarkerSize = markerSize,
+                Label = label
+            };
+
+            Add(spl);
+            return spl;
+        }
+
         public ErrorBars PlotErrorBars(
             double[] xs,
             double[] ys,
