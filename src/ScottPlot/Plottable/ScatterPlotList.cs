@@ -5,7 +5,7 @@ using System.Drawing;
 
 namespace ScottPlot.Plottable
 {
-    public class ScatterPlotMutable : IPlottable
+    public class ScatterPlotList : IPlottable
     {
         private readonly List<double> Xs = new List<double>();
         private readonly List<double> Ys = new List<double>();
