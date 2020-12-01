@@ -17,4 +17,13 @@
     <ProjectReference Include="..\ScottPlot\ScottPlot.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Cookbook\Figure\" />
+    <Folder Include="Cookbook\Axis\" />
+    <Folder Include="Cookbook\Misc\" />
+    <Folder Include="Cookbook\Quickstart\" />
+    <Folder Include="Cookbook\Ticks\" />
+    <Folder Include="Cookbook\Tools\" />
+  </ItemGroup>
+
 </Project>
