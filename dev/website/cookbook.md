@@ -1,5 +1,7 @@
 ## ScottPlot Cookbook
 
+Examples of all plot types and advanced customization of plottables, axes, and figure styling
+
 ### Figure Customization
 * standard styles
 * Figure background

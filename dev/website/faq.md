@@ -1,4 +1,6 @@
 ## ScottPlot FAQ
+Answers to common questions and notes about edge cases.
+
 * Working with DateTime data
 * Adjust figure padding
 * Low quality rendering (anti-aliasing off)
