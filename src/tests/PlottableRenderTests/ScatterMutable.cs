@@ -24,7 +24,7 @@ namespace ScottPlotTests.PlottableRenderTests
             plt.AxisAuto();
             TestTools.SaveFig(plt, "two_points");
 
-            scatter.Add(new double[] { 3, 4, 5 }, new double[] { 1, 6, 3 });
+            scatter.AddRange(new double[] { 3, 4, 5 }, new double[] { 1, 6, 3 });
             plt.AxisAuto();
             TestTools.SaveFig(plt, "many_points");
         }
