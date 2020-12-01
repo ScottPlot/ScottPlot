@@ -11,6 +11,7 @@ namespace ScottPlot.Plottable
         private readonly List<double> Ys = new List<double>();
         public int Count => Xs.Count;
 
+        public string Label;
         public bool IsVisible { get; set; } = true;
         public int HorizontalAxisIndex { get; set; } = 0;
         public int VerticalAxisIndex { get; set; } = 0;
@@ -50,7 +51,7 @@ namespace ScottPlot.Plottable
             Ys.Add(y);
         }
 
-        public void Add(double[] xs, double[] ys)
+        public void AddRange(double[] xs, double[] ys)
         {
             if (xs is null)
                 throw new ArgumentException("xs must not be null");
@@ -66,7 +67,7 @@ namespace ScottPlot.Plottable
         public void Replace(double[] xs, double[] ys)
         {
             Clear();
-            Add(xs, ys);
+            AddRange(xs, ys);
         }
 
         public AxisLimits GetAxisLimits()
@@ -119,7 +120,7 @@ namespace ScottPlot.Plottable
         {
             var singleLegendItem = new LegendItem()
             {
-                label = "scatter",
+                label = Label,
                 color = Color.Black
             };
             return new LegendItem[] { singleLegendItem };
