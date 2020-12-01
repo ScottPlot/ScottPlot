@@ -31,7 +31,7 @@ namespace ScottPlot.Demo.PlotTypes
                 sph.HighlightPointNearestX(8.123);
 
                 // or highlight the point nearest another point in 2D space
-                plt.PlotPoint(4.43, 1.48);
+                plt.AddPoint(4.43, 1.48);
                 sph.HighlightPointNearest(4.43, 1.48);
             }
         }

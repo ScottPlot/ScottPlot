@@ -24,8 +24,8 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.PlotScatter(x, cos);
 
                 // add a few points
-                plt.PlotPoint(25, 0.8);
-                plt.PlotPoint(30, 0.3, color: Color.Magenta, markerSize: 15);
+                plt.AddPoint(25, 0.8);
+                plt.AddPoint(30, 0.3, color: Color.Magenta, markerSize: 15);
             }
         }
     }

@@ -69,7 +69,7 @@ namespace ScottPlot.Demo.Customize
 
                 plt.PlotText("ScottPlot", 6, 6, rotation: 25, fontSize: 14, bold: true);
 
-                plt.PlotPoint(1, 9, label: "point");
+                plt.AddPoint(1, 9, label: "point");
                 plt.PlotArrow(8, 8, 8.5, 8.5, label: "arrow");
 
                 plt.SetAxisLimits(0, 13, -1, 11);

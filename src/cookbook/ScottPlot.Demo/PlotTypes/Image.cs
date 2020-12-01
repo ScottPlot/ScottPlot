@@ -44,19 +44,19 @@ namespace ScottPlot.Demo.PlotTypes
                 Bitmap image = DataGen.SampleImage();
 
                 plt.PlotBitmap(image, 5, 0.8);
-                plt.PlotPoint(5, 0.8, color: Color.Green);
+                plt.AddPoint(5, 0.8, color: Color.Green);
 
                 plt.PlotBitmap(image, 20, 0.3);
-                plt.PlotPoint(20, 0.3, color: Color.Black, markerSize: 15);
+                plt.AddPoint(20, 0.3, color: Color.Black, markerSize: 15);
 
                 plt.PlotBitmap(image, 30, 0, alignment: Alignment.MiddleCenter);
-                plt.PlotPoint(30, 0, color: Color.Black, markerSize: 15);
+                plt.AddPoint(30, 0, color: Color.Black, markerSize: 15);
 
                 plt.PlotBitmap(image, 30, -0.3, alignment: Alignment.UpperLeft);
-                plt.PlotPoint(30, -0.3, color: Color.Black, markerSize: 15);
+                plt.AddPoint(30, -0.3, color: Color.Black, markerSize: 15);
 
                 plt.PlotBitmap(image, 5, -.5, rotation: -30);
-                plt.PlotPoint(5, -.5, color: Color.Blue, markerSize: 15);
+                plt.AddPoint(5, -.5, color: Color.Blue, markerSize: 15);
 
                 plt.PlotBitmap(image, 15, -.6, frameSize: 3, frameColor: Color.Magenta);
             }

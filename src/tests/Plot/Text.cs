@@ -25,7 +25,7 @@ namespace ScottPlotTests.Plot
                     fontSize: 24,
                     frame: true,
                     frameColor: Color.LightGray);
-                plt.PlotPoint(x, y, Color.Red, markerSize: 5);
+                plt.AddPoint(x, y, Color.Red, markerSize: 5);
             }
             plt.Title("TextAlignment.upperLeft");
             plt.AxisAuto(.5, .5);
@@ -49,7 +49,7 @@ namespace ScottPlotTests.Plot
                     fontSize: 24,
                     frame: true,
                     frameColor: Color.LightGray);
-                plt.PlotPoint(x, y, Color.Red, markerSize: 5);
+                plt.AddPoint(x, y, Color.Red, markerSize: 5);
             }
             plt.Title("TextAlignment.upperCenter");
             plt.AxisAuto(.5, .5);
@@ -73,7 +73,7 @@ namespace ScottPlotTests.Plot
                     fontSize: 24,
                     frame: true,
                     frameColor: Color.LightGray);
-                plt.PlotPoint(x, y, Color.Red, markerSize: 5);
+                plt.AddPoint(x, y, Color.Red, markerSize: 5);
             }
             plt.Title("TextAlignment.lowerRight");
             plt.AxisAuto(.5, .5);

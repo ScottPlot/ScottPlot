@@ -88,21 +88,21 @@ namespace ScottPlotTests
         {
             var plt = new ScottPlot.Plot();
 
-            plt.PlotPoint(0.1, 0.1);
-            plt.PlotPoint(-0.1, -0.1);
+            plt.AddPoint(0.1, 0.1);
+            plt.AddPoint(-0.1, -0.1);
             plt.AxisAuto();
             plt.Render(); // force a render
             Assert.Greater(plt.GetAxisLimits().XMin, -5);
 
-            plt.PlotPoint(999, 999);
-            plt.PlotPoint(-999, -999);
+            plt.AddPoint(999, 999);
+            plt.AddPoint(-999, -999);
             plt.AxisAuto();
             plt.Render(); // force a render
             Assert.Less(plt.GetAxisLimits().XMin, -800);
 
             plt.Clear();
-            plt.PlotPoint(0.1, 0.1);
-            plt.PlotPoint(-0.1, -0.1);
+            plt.AddPoint(0.1, 0.1);
+            plt.AddPoint(-0.1, -0.1);
             plt.Render(); // force a render
             Assert.Greater(plt.GetAxisLimits().XMin, -5);
         }

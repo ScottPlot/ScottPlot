@@ -13,45 +13,28 @@ namespace ScottPlot
 {
     public partial class Plot
     {
-
-        public ScatterPlot PlotPoint(
-            double x,
-            double y,
-            Color? color = null,
-            double markerSize = 5,
-            string label = null,
-            double? errorX = null,
-            double? errorY = null,
-            double errorLineWidth = 1,
-            double errorCapSize = 3,
-            MarkerShape markerShape = MarkerShape.filledCircle,
-            LineStyle lineStyle = LineStyle.Solid
-            )
+        /// <summary>
+        /// Create a scatter plot with a single point, add it to the plot, and return it
+        /// </summary>
+        public ScatterPlot AddPoint(double x, double y, Color? color = null, float markerSize = 5, string label = null)
         {
-            if (color == null)
-                color = settings.GetNextColor();
-
-            var scatterPlot = new ScatterPlot(
-                    xs: new double[] { x },
-                    ys: new double[] { y },
-                    errorX: (errorX is null) ? null : new double[] { (double)errorX },
-                    errorY: (errorY is null) ? null : new double[] { (double)errorY }
-                )
+            double[] xs = { x };
+            double[] ys = { y };
+            var sp = new ScatterPlot(xs, ys)
             {
-                color = (Color)color,
-                lineWidth = 0,
-                markerSize = (float)markerSize,
-                label = label,
-                errorLineWidth = (float)errorLineWidth,
-                errorCapSize = (float)errorCapSize,
-                stepDisplay = false,
-                markerShape = markerShape,
-                lineStyle = lineStyle
+                color = color ?? settings.GetNextColor(),
+                markerSize = markerSize,
+                label = label
             };
-
-            Add(scatterPlot);
-            return scatterPlot;
+            Add(sp);
+            return sp;
         }
+
+        [Obsolete("Use AddPoint() and optionally customize the object it returns", true)]
+        public ScatterPlot PlotPoint(double x, double y, Color? color = null, double markerSize = 5, string label = null,
+            double? errorX = null, double? errorY = null, double errorLineWidth = 1, double errorCapSize = 3,
+            MarkerShape markerShape = MarkerShape.filledCircle, LineStyle lineStyle = LineStyle.Solid)
+            => throw new NotImplementedException();
 
         public ScatterPlot PlotScatter(
             double[] xs,
