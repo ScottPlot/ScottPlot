@@ -18,9 +18,7 @@ namespace ScottPlot
         /// </summary>
         public ScatterPlot AddPoint(double x, double y, Color? color = null, float markerSize = 5, string label = null)
         {
-            double[] xs = { x };
-            double[] ys = { y };
-            var sp = new ScatterPlot(xs, ys)
+            var sp = new ScatterPlot(new double[] { x }, new double[] { y })
             {
                 color = color ?? settings.GetNextColor(),
                 markerSize = markerSize,

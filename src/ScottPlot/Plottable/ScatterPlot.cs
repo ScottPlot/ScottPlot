@@ -216,7 +216,7 @@ namespace ScottPlot.Plottable
                 }
 
                 // draw the lines connecting points
-                if (lineWidth > 0 && lineStyle != LineStyle.None)
+                if (lineWidth > 0 && points.Length > 1 && lineStyle != LineStyle.None)
                 {
                     if (stepDisplay)
                     {
