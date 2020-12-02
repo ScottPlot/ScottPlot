@@ -5,15 +5,16 @@ using System.Text;
 
 namespace ScottPlot.Cookbook.Recipes.Plottable
 {
-    public class Annotation : Recipe
+    public class Annotation : IRecipe, IPlottableRecipe
     {
-        public override string ID => "PlotType_Annotation";
-        public override string Title => "Annotate the Figure";
-        public override string Description =>
+        public string ID => "annotation_quickstart";
+        public string PlotType => "Annotation";
+        public string Title => "Annotate the Figure";
+        public string Description =>
             "Annotations are labels fixed to the figure (not the data area) " +
             "so they don't move around as the axes are adjusted.";
 
-        public override void ExecuteRecipe(Plot plt)
+        public void ExecuteRecipe(Plot plt)
         {
             double[] xs = DataGen.Range(0, 5, .1);
             plt.PlotScatter(xs, DataGen.Sin(xs));

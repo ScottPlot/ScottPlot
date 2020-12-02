@@ -5,13 +5,16 @@ using System.Text;
 
 namespace ScottPlot.Cookbook.Recipes.Plottable
 {
-    public class AxisLine : Recipe
+    public class AxisLine : IRecipe, IPlottableRecipe
     {
-        public override string ID => "PlotType_AxisLine_Introduction";
-        public override string Title => "Axis Line Introduction";
-        public override string Description => "Horizontal and vertical lines can be placed using HLine() and VLine(). Styling can be customized using arguments.";
+        public string ID => "axisLine_basics";
+        public string PlotType => "Axis Line";
+        public string Title => "Axis Line Basics";
+        public string Description =>
+            "Horizontal and vertical lines can be placed using HLine() and VLine(). " +
+            "Styling can be customized using arguments.";
 
-        public override void ExecuteRecipe(Plot plt)
+        public void ExecuteRecipe(Plot plt)
         {
             int pointCount = 51;
             double[] x = DataGen.Consecutive(pointCount);
@@ -30,13 +33,14 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
-    public class Draggable : Recipe
+    public class Draggable : IRecipe, IPlottableRecipe
     {
-        public override string ID => "PlotType_AxisLine_Draggable";
-        public override string Title => "Draggable Axis Lines";
-        public override string Description => "Use arguments to enable draggable lines (with optional limits).";
+        public string ID => "axisLine_draggable";
+        public string PlotType => "Axis Line";
+        public string Title => "Draggable Axis Lines";
+        public string Description => "Use arguments to enable draggable lines (with optional limits).";
 
-        public override void ExecuteRecipe(Plot plt)
+        public void ExecuteRecipe(Plot plt)
         {
             int pointCount = 51;
             double[] x = DataGen.Consecutive(pointCount);

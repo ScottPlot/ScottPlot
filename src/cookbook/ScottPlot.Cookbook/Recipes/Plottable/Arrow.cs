@@ -2,14 +2,15 @@
 
 namespace ScottPlot.Cookbook.Recipes.Plottable
 {
-    public class Arrow : Recipe
+    public class Arrow : IRecipe, IPlottableRecipe
     {
-        public override string ID => "PlotType_Arrow";
-        public override string Title => "Drawing Arrows";
-        public override string Description => "Arrows point to specific locations on the plot. " +
+        public string ID => "plottable_arrow_quickstart";
+        public string PlotType => "Arrow";
+        public string Title => "Drawing Arrows";
+        public string Description => "Arrows point to specific locations on the plot. " +
             "Arrows are actually just scatter plots with two points and an arrowhead.";
 
-        public override void ExecuteRecipe(Plot plt)
+        public void ExecuteRecipe(Plot plt)
         {
             int pointCount = 51;
             double[] x = DataGen.Consecutive(pointCount);
