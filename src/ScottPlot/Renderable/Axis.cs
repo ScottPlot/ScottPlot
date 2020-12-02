@@ -47,7 +47,9 @@ namespace ScottPlot.Renderable
 
         // shortcuts allow components to be customized without having to reach in too far
         public string Label { get => Title.Label; set => ConfigureAxisLabel(visible: value != null, label: value); }
-        public Color Color { get => Title.Font.Color; set => ConfigureAxisLabel(color: value); }
+        public Color Color { get => Title.Font.Color; set => Configure(color: value); }
+        public bool DateTime { get => Ticks.TickCollection.dateFormat; set => Ticks.TickCollection.dateFormat = value; }
+        public bool Grid { get => Ticks.MajorGridEnable; set => Ticks.MajorGridEnable = value; }
 
         public override string ToString() => $"{Edge} axis from {Dims.Min} to {Dims.Max}";
 
@@ -221,62 +223,15 @@ namespace ScottPlot.Renderable
             PixelSizePadding = 0;
         }
 
-        // pass arguments from the Plot module to this level
-        [Obsolete("use a more specific method", true)]
-        public void Configure(
-            bool? showTitle = null,
-            bool? showLabels = null,
-            bool? showMajorTicks = null,
-            bool? showMinorTicks = null,
-            bool? showLine = null,
-            Color? color = null,
-            bool? useMultiplierNotation = null,
-            bool? useOffsetNotation = null,
-            bool? useExponentialNotation = null,
-            bool? dateTime = null,
-            bool? rulerMode = null,
-            bool? invertSign = null,
-            string fontName = null,
-            float? fontSize = null,
-            bool? fontBold = null,
-            double? rotation = null,
-            bool? logScale = null,
-            string numericFormatString = null,
-            bool? snapToNearestPixel = null,
-            int? radix = null,
-            string prefix = null,
-            string dateTimeFormatString = null,
-            string label = null)
+        /// <summary>
+        /// High-level configuration for axis label, tick labels, and all tick lines
+        /// </summary>
+        public void Configure(Color color)
         {
-            Title.IsVisible = showTitle ?? Title.IsVisible;
-            Title.Label = label ?? Title.Label;
-            Title.Font.Color = color ?? Title.Font.Color;
-            Title.Font.Bold = fontBold ?? Title.Font.Bold;
-
-            Ticks.MajorLabelEnable = showLabels ?? Ticks.MajorLabelEnable;
-            Ticks.MajorTickEnable = showMajorTicks ?? Ticks.MajorTickEnable;
-            Ticks.MinorTickEnable = showMinorTicks ?? Ticks.MinorTickEnable;
-            Line.IsVisible = showLine ?? Line.IsVisible;
-
-            Ticks.Color = color ?? Ticks.Color;
-            Line.Color = color ?? Line.Color;
-
-            Ticks.TickCollection.useMultiplierNotation = useMultiplierNotation ?? Ticks.TickCollection.useMultiplierNotation;
-            Ticks.TickCollection.useOffsetNotation = useOffsetNotation ?? Ticks.TickCollection.useOffsetNotation;
-            Ticks.TickCollection.useExponentialNotation = useExponentialNotation ?? Ticks.TickCollection.useExponentialNotation;
-
-            Ticks.TickCollection.dateFormat = dateTime ?? Ticks.TickCollection.dateFormat;
-            Ticks.RulerMode = rulerMode ?? Ticks.RulerMode;
-            Ticks.TickCollection.invertSign = invertSign ?? Ticks.TickCollection.invertSign;
-            Ticks.MajorLabelFont.Name = fontName ?? Ticks.MajorLabelFont.Name;
-            Ticks.MajorLabelFont.Size = fontSize ?? Ticks.MajorLabelFont.Size;
-            Ticks.Rotation = (float)(rotation ?? Ticks.Rotation);
-            Ticks.TickCollection.logScale = logScale ?? Ticks.TickCollection.logScale;
-            Ticks.TickCollection.numericFormatString = numericFormatString ?? Ticks.TickCollection.numericFormatString;
-            Ticks.SnapPx = snapToNearestPixel ?? Ticks.SnapPx;
-            Ticks.TickCollection.radix = radix ?? Ticks.TickCollection.radix;
-            Ticks.TickCollection.prefix = prefix ?? Ticks.TickCollection.prefix;
-            Ticks.TickCollection.dateTimeFormatString = dateTimeFormatString ?? Ticks.TickCollection.dateTimeFormatString;
+            ConfigureAxisLabel(color: color);
+            ConfigureTickLabelStyle(color: color);
+            Ticks.Color = color;
+            Line.Color = color;
         }
 
         public void RecalculateAxisSize()
