@@ -5,7 +5,7 @@ namespace ScottPlot.Demo.PlotTypes
 {
     class SignalXY
     {
-        public class Quickstart : PlotDemo, IPlotDemo
+        public class Quickstart : RecipeBase, IRecipe
         {
             public string name { get; } = "Signal with X and Y data";
             public string description { get; } = "SignalXY is a speed-optimized plot for displaying vaues (Ys) with unevenly-spaced positions (Xs) that are in ascending order. If your data is evenly-spaced, Signal and SignalConst is faster.";
@@ -28,7 +28,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class HasXGaps : PlotDemo, IPlotDemo
+        public class HasXGaps : RecipeBase, IRecipe
         {
             public string name { get; } = "Big Gaps";
             public string description { get; } = "Signal with defined Xs that contain gaps";
@@ -53,7 +53,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class SignalWithDifferentDensity : PlotDemo, IPlotDemo
+        public class SignalWithDifferentDensity : RecipeBase, IRecipe
         {
             public string name { get; } = "Different Densities";
             public string description { get; } = "Signal with mised low and high density data";

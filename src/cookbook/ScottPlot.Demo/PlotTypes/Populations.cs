@@ -6,7 +6,7 @@ namespace ScottPlot.Demo.PlotTypes
 {
     class Populations
     {
-        public class PlotPopulation : PlotDemo, IPlotDemo
+        public class PlotPopulation : RecipeBase, IRecipe
         {
             public string name { get; } = "Plot a Population";
             public string description { get; } = "Population objects can be plotted with Plot.Populations(). The default display format is to show a box-and-whisker plot (showing outliers, quartiles, and median) next to a scatter plot of the original data values and the distribution curve.";
@@ -30,7 +30,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class PlotPopulationSeriesUniform : PlotDemo, IPlotDemo
+        public class PlotPopulationSeriesUniform : RecipeBase, IRecipe
         {
             public string name { get; } = "Uniform Population Series";
             public string description { get; } = "A series of populations can be plotted as a single object. Every population in a series has the same style, and a series will appear only once in the legend.";
@@ -63,7 +63,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class PlotPopulationSeriesUnique : PlotDemo, IPlotDemo
+        public class PlotPopulationSeriesUnique : RecipeBase, IRecipe
         {
             public string name { get; } = "Unique Population Series";
             public string description { get; } = "To give every population in a series a different style, plot it as a MultiSeries where each group only contains 1 series. This way every population will have a unique style, and each population will be listed in the legend.";
@@ -94,7 +94,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class PlotPopulationMultiSeries : PlotDemo, IPlotDemo
+        public class PlotPopulationMultiSeries : RecipeBase, IRecipe
         {
             public string name { get; } = "Plot a Population Multi-Series";
             public string description { get; } = "To compare groups of population series, construct a PopulationMultiSeries object and pot it. Each series within the MultiSeries will appear once in the legend.";
@@ -165,7 +165,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class AdvancedStyling : PlotDemo, IPlotDemo
+        public class AdvancedStyling : RecipeBase, IRecipe
         {
             public string name { get; } = "Advanced Styling";
             public string description { get; } = "Store the object returned by Plot.Populations() and modify its properties to further customize how group plots are displayed.";

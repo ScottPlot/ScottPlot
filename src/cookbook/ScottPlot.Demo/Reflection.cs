@@ -9,13 +9,13 @@ namespace ScottPlot.Demo
 {
     public static class Reflection
     {
-        public static IPlotDemo[] GetPlots(string namespaceStartsWith = "ScottPlot.Demo.", bool useDLL = false)
+        public static IRecipe[] GetPlots(string namespaceStartsWith = "ScottPlot.Demo.", bool useDLL = false)
         {
             if (useDLL)
             {
                 var plotObjects = Assembly.LoadFrom("ScottPlot.Demo.dll").GetTypes();
                 return plotObjects
-                    .Where(p => typeof(IPlotDemo).IsAssignableFrom(p))
+                    .Where(p => typeof(IRecipe).IsAssignableFrom(p))
                     .Where(p => p.IsInterface == false)
                     .Where(p => p.ToString().StartsWith(namespaceStartsWith))
                     .Select(x => x.ToString())
@@ -27,7 +27,7 @@ namespace ScottPlot.Demo
                 var plotObjects = AppDomain.CurrentDomain.GetAssemblies();
                 return plotObjects
                         .SelectMany(s => s.GetTypes())
-                        .Where(p => typeof(IPlotDemo).IsAssignableFrom(p))
+                        .Where(p => typeof(IRecipe).IsAssignableFrom(p))
                         .Where(p => p.IsInterface == false)
                         .Where(p => p.ToString().StartsWith(namespaceStartsWith))
                         .Select(x => x.ToString())
@@ -38,9 +38,9 @@ namespace ScottPlot.Demo
 
         }
 
-        public static IPlotDemo[] GetPlotsInOrder(bool useDLL = false)
+        public static IRecipe[] GetPlotsInOrder(bool useDLL = false)
         {
-            List<IPlotDemo> recipes = new List<IPlotDemo>();
+            List<IRecipe> recipes = new List<IRecipe>();
 
             // define the order of cookbook examples here
             recipes.AddRange(GetPlots("ScottPlot.Demo.Quickstart", useDLL));
@@ -57,7 +57,7 @@ namespace ScottPlot.Demo
 
         public static List<DemoNodeItem> GetPlotNodeItems(bool expandAndSelectDefaultNode = true)
         {
-            IPlotDemo[] plots = GetPlotsInOrder();
+            IRecipe[] plots = GetPlotsInOrder();
 
             var nodeItems = plots
                 .GroupBy(x => x.categoryMajor)
@@ -95,13 +95,13 @@ namespace ScottPlot.Demo
             return nodeItems;
         }
 
-        public static IPlotDemo GetPlot(string plotObjectPath)
+        public static IRecipe GetPlot(string plotObjectPath)
         {
             if (!plotObjectPath.StartsWith("ScottPlot.Demo."))
                 throw new ArgumentException("plot object path must start with 'ScottPlot.Demo.'");
 
             var type = Type.GetType(plotObjectPath);
-            IPlotDemo demoPlot = (IPlotDemo)Activator.CreateInstance(type);
+            IRecipe demoPlot = (IRecipe)Activator.CreateInstance(type);
             return demoPlot;
         }
 

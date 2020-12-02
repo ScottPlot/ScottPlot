@@ -7,7 +7,7 @@ namespace ScottPlot.Demo.Customize
 {
     class Figure
     {
-        public class Background : PlotDemo, IPlotDemo
+        public class Background : RecipeBase, IRecipe
         {
             public string name { get; } = "Background Colors";
             public string description { get; } = "Figure and data area background colors can be set individually.";
@@ -27,7 +27,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class Frame : PlotDemo, IPlotDemo
+        public class Frame : RecipeBase, IRecipe
         {
             public string name { get; } = "Corner Frame";
             public string description { get; } = "The data are is typically surrounded by a frame (a 1px line). This frame can be customized using arguments.";
@@ -46,7 +46,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class FigurePadding : PlotDemo, IPlotDemo
+        public class FigurePadding : RecipeBase, IRecipe
         {
             public string name { get; } = "Figure Padding";
             public string description { get; } = "Extra padding can be added around the data area if desired.";
@@ -69,7 +69,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class NoPad : PlotDemo, IPlotDemo
+        public class NoPad : RecipeBase, IRecipe
         {
             public string name { get; } = "No Padding";
             public string description { get; } = "This example shows how to only plot the data area (no axis labels, ticks, or tick labels)";

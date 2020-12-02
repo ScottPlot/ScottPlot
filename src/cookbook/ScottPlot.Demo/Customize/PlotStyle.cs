@@ -7,7 +7,7 @@ namespace ScottPlot.Demo.Customize
 {
     class PlotStyle
     {
-        public class ModifyAfterPlot : PlotDemo, IPlotDemo
+        public class ModifyAfterPlot : RecipeBase, IRecipe
         {
             public string name { get; } = "Modify styles after plotting";
             public string description { get; } = "Styles are typically defined as arguments when data is initially plotted. However, plotting functions return objects which contain style information that can be modified after it has been plotted. In some cases these properties allow more extensive customization than the initial function arguments.";
@@ -32,7 +32,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class StyledLabels : PlotDemo, IPlotDemo
+        public class StyledLabels : RecipeBase, IRecipe
         {
             public string name { get; } = "Custom Fonts Everywhere";
             public string description { get; } = "Uses cutom font, color, and sizes for numerous types of labels";
@@ -60,7 +60,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class CustomLegend : PlotDemo, IPlotDemo
+        public class CustomLegend : RecipeBase, IRecipe
         {
             public string name { get; } = "Legend";
             public string description { get; } = "A legend is available to display data that was plotted using the 'label' argument. Arguments for Legend() allow the user to define its position.";

@@ -8,7 +8,7 @@ namespace ScottPlot.Demo.PlotTypes
 {
     class Finance
     {
-        public class OHLC : PlotDemo, IPlotDemo
+        public class OHLC : RecipeBase, IRecipe
         {
             public string name { get; } = "Financial OHLC Chart";
             public string description { get; } = "Display OHLC (open, high, low, close) data by plotting an array of OHLC objects.";
@@ -23,7 +23,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class Candle : PlotDemo, IPlotDemo
+        public class Candle : RecipeBase, IRecipe
         {
             public string name { get; } = "Financial Candlestick Chart";
             public string description { get; } = "Display candlestick data by plotting an array of OHLC objects.";
@@ -38,7 +38,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class CandleSkipWeekends : PlotDemo, IPlotDemo
+        public class CandleSkipWeekends : RecipeBase, IRecipe
         {
             public string name { get; } = "OHLC with gaps";
             public string description { get; } = "This example demonstrates that by default the horizontal axis is strictly linear. Missing OHLC data produces gaps in the plot.";
@@ -54,7 +54,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class CandleNoSkippedDays : PlotDemo, IPlotDemo
+        public class CandleNoSkippedDays : RecipeBase, IRecipe
         {
             public string name { get; } = "OHLC without gaps";
             public string description { get; } = "This example demonstrates how to plot OHLC data continuously even though there are gaps on the horizontal axis (for days the market is closed). The strategy is to plot it on a linear horizontal axis (not a DateTime axis) and then to come back later and define custom tick labels.";
@@ -80,7 +80,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class SimpleMovingAverage : PlotDemo, IPlotDemo
+        public class SimpleMovingAverage : RecipeBase, IRecipe
         {
             public string name { get; } = "Simple Moving Average (SMA)";
             public string description { get; } = "This example demonstrates how to plot OHLC data and display Simple Moving Average (SMA) lines on top.";
@@ -109,7 +109,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class Bollinger : PlotDemo, IPlotDemo
+        public class Bollinger : RecipeBase, IRecipe
         {
             public string name { get; } = "Bollinger Bands";
             public string description { get; } = "This example demonstrates how to plot OHLC data and display Bollinger Bands on top.";

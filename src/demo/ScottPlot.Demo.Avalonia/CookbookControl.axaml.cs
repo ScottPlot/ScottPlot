@@ -60,7 +60,7 @@ namespace ScottPlot.Demo.Avalonia
 
             avaPlot1.Reset();
 
-            if (demoPlot is IBitmapDemo bmpPlot)
+            if (demoPlot is IRecipeNonInteractive bmpPlot)
             {
                 imagePlot1.IsVisible = true;
                 avaPlot1.IsVisible = false;

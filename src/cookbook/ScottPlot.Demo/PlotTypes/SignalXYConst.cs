@@ -5,7 +5,7 @@ namespace ScottPlot.Demo.PlotTypes
 {
     class SignalXYConst
     {
-        public class Quickstart : PlotDemo, IPlotDemo
+        public class Quickstart : RecipeBase, IRecipe
         {
             public string name { get; } = "SignalConst with X and Y data";
             // TODO describe Const benefits in description
@@ -29,7 +29,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class MixedDataTypes : PlotDemo, IPlotDemo
+        public class MixedDataTypes : RecipeBase, IRecipe
         {
             public string name { get; } = "Different data types for xs and ys";
             // TODO make detailed description
@@ -55,7 +55,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class HeavyLoadSignalXYConst : PlotDemo, IPlotDemo
+        public class HeavyLoadSignalXYConst : RecipeBase, IRecipe
         {
             public string name { get; } = "Lots of points SignalXYConst";
             public string description { get; } = "SignalXYConst with 100_000_000 points";
@@ -83,7 +83,7 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.PlotSignalXYConst(xs, ys);
             }
         }
-        public class HeavyLoadSignalXY : PlotDemo, IPlotDemo
+        public class HeavyLoadSignalXY : RecipeBase, IRecipe
         {
             public string name { get; } = "Lots of points SignalXY (Slow)";
             public string description { get; } = "SignalXY with 100_000_000 points";

@@ -7,7 +7,7 @@ namespace ScottPlot.Demo.PlotTypes
 {
     public static class Fill
     {
-        public class FillBeneathCurve : PlotDemo, IPlotDemo
+        public class FillBeneathCurve : RecipeBase, IRecipe
         {
             public string name { get; } = "Filled Curve";
             public string description { get; } = "You can create a filled scatter plot where the area between the curve and baseline is shaded with a color. The baseline defaults to 0, but can be set with an optional argument.";
@@ -26,7 +26,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class FillBeneathCurveHatched : PlotDemo, IPlotDemo
+        public class FillBeneathCurveHatched : RecipeBase, IRecipe
         {
             public string name { get; } = "Filled Curve with Hatch Style";
             public string description { get; } = "Decorate the filled plot with a custom hatch style.";
@@ -51,7 +51,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class FillBetweenCurves : PlotDemo, IPlotDemo
+        public class FillBetweenCurves : RecipeBase, IRecipe
         {
             public string name { get; } = "Fill Between Curves";
             public string description { get; } = "You can fill the area between curves by supplying two pairs of X/Y coordinates";
@@ -70,7 +70,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class FillAboveBelow : PlotDemo, IPlotDemo
+        public class FillAboveBelow : RecipeBase, IRecipe
         {
             public string name { get; } = "Fill Above and Below";
             public string description { get; } = "A special method lets you create a filled line plot with different colors above/below the baseline.";
@@ -87,7 +87,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class FillAboveBelowWithBaseline : PlotDemo, IPlotDemo
+        public class FillAboveBelowWithBaseline : RecipeBase, IRecipe
         {
             public string name { get; } = "Fill Above and Below with Baseline";
             public string description { get; } = "A custom baseline can be provided.";

@@ -8,7 +8,7 @@ namespace ScottPlot.Demo.PlotTypes
 {
     class Pie
     {
-        public class PieQuickstart : PlotDemo, IPlotDemo
+        public class PieQuickstart : RecipeBase, IRecipe
         {
             public string name { get; } = "Quickstart";
             public string description { get; } = "A pie chart (or a circle chart) illustrates numerical proportions as slices of a circle.";
@@ -25,7 +25,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class ExplodingPie : PlotDemo, IPlotDemo
+        public class ExplodingPie : RecipeBase, IRecipe
         {
             public string name { get; } = "Exploding Pie";
             public string description { get; } = "There is an option to have an \"exploding\" pie chart.";
@@ -42,7 +42,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class DonutPie : PlotDemo, IPlotDemo
+        public class DonutPie : RecipeBase, IRecipe
         {
             public string name { get; } = "Donut Plot";
             public string description { get; } = "Donut plots are circle plots with a hollow center.";
@@ -61,7 +61,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class DonutPieWithPercentageInDonut : PlotDemo, IPlotDemo
+        public class DonutPieWithPercentageInDonut : RecipeBase, IRecipe
         {
             public string name { get; } = "Donut Plot With Text";
             public string description { get; } = "Custom text can be displayed inside the donut.";
@@ -87,7 +87,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class PieShowValues : PlotDemo, IPlotDemo
+        public class PieShowValues : RecipeBase, IRecipe
         {
             public string name { get; } = "Show Values";
             public string description { get; } = "There is an option to show slice values on the chart.";
@@ -104,7 +104,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class PieShowPercentages : PlotDemo, IPlotDemo
+        public class PieShowPercentages : RecipeBase, IRecipe
         {
             public string name { get; } = "Show Percentages";
             public string description { get; } = "There is an option to show slice percentages on the chart.";
@@ -121,7 +121,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class PieLabelSlices : PlotDemo, IPlotDemo
+        public class PieLabelSlices : RecipeBase, IRecipe
         {
             public string name { get; } = "Show Labels in Slices";
             public string description { get; } = "Labels can also be shown on slices.";
@@ -139,7 +139,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class PieLegend : PlotDemo, IPlotDemo
+        public class PieLegend : RecipeBase, IRecipe
         {
             public string name { get; } = "Labels in Legend";
             public string description { get; } = "You can label slices and show them in the legend.";
@@ -158,7 +158,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class PieShowEverything : PlotDemo, IPlotDemo
+        public class PieShowEverything : RecipeBase, IRecipe
         {
             public string name { get; } = "Show Everything";
             public string description { get; } = "Values, percentages, labels, and legend";
@@ -177,7 +177,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class PieCustomSliceLabels : PlotDemo, IPlotDemo
+        public class PieCustomSliceLabels : RecipeBase, IRecipe
         {
             public string name { get; } = "Custom Slice Labels";
             public string description { get; } = "The best way to show labels and data is to make the string labels yourself";

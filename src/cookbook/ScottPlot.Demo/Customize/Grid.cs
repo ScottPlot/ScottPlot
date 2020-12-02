@@ -6,7 +6,7 @@ namespace ScottPlot.Demo.Customize
 {
     class Grid
     {
-        public class Hide : PlotDemo, IPlotDemo
+        public class Hide : RecipeBase, IRecipe
         {
             public string name { get; } = "Hide the grid";
             public string description { get; } = "Grid visibility (and numerous other options) are available as arguments in the Grid() method.";
@@ -25,7 +25,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class LineWidth : PlotDemo, IPlotDemo
+        public class LineWidth : RecipeBase, IRecipe
         {
             public string name { get; } = "Grid Line Width";
             public string description { get; } = "Grid line width can be customized. Floating point values are acceptable.";
@@ -44,7 +44,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class LineStyle : PlotDemo, IPlotDemo
+        public class LineStyle : RecipeBase, IRecipe
         {
             public string name { get; } = "Grid Line Style";
             public string description { get; } = "Grid line style can be customized.";
@@ -63,7 +63,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class DefineSpacing : PlotDemo, IPlotDemo
+        public class DefineSpacing : RecipeBase, IRecipe
         {
             public string name { get; } = "Defined Grid Spacing";
             public string description { get; } = "The space between grid lines (the same as tick marks) can be manually defined.";

@@ -7,7 +7,7 @@ namespace ScottPlot.Demo.PlotTypes
 {
     class ScatterHighlight
     {
-        public class Quickstart : PlotDemo, IPlotDemo
+        public class Quickstart : RecipeBase, IRecipe
         {
             public string name { get; } = "Highlight Scatter Plot Quickstart";
             public string description { get; } = "Allows higlighting points on a scatter plot";

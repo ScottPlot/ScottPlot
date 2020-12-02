@@ -6,7 +6,7 @@ namespace ScottPlot.Demo.Advanced
 {
     class MultiAxis
     {
-        public class MultiAxisQuickstart : PlotDemo, IPlotDemo
+        public class MultiAxisQuickstart : RecipeBase, IRecipe
         {
             public string name { get; } = "Additional Y Axis";
             public string description { get; } =

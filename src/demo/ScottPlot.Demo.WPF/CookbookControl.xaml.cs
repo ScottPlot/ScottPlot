@@ -60,7 +60,7 @@ namespace ScottPlot.Demo.WPF
 
             wpfPlot1.Reset();
 
-            if (demoPlot is IBitmapDemo bmpPlot)
+            if (demoPlot is IRecipeNonInteractive bmpPlot)
             {
                 imagePlot.Visibility = Visibility.Visible;
                 wpfPlot1.Visibility = Visibility.Hidden;

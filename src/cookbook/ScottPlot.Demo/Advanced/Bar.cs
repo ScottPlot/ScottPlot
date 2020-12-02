@@ -6,7 +6,7 @@ namespace ScottPlot.Demo.Advanced
 {
     class Bar
     {
-        public class MultipleBars : PlotDemo, IPlotDemo
+        public class MultipleBars : RecipeBase, IRecipe
         {
             public string name { get; } = "Multiple Bar Graphs";
             public string description { get; } = "Multiple bar graphs can be displayed together by tweaking the widths and offsets of two separate bar graphs. " +

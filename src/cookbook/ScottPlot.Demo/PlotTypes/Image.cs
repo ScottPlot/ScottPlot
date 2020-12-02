@@ -6,7 +6,7 @@ namespace ScottPlot.Demo.PlotTypes
 {
     class Image
     {
-        public class Quickstart : PlotDemo, IPlotDemo
+        public class Quickstart : RecipeBase, IRecipe
         {
             public string name { get; } = "Image Quickstart";
             public string description { get; } = "Images can be placed at any X/Y location and styled using arguments.";
@@ -26,7 +26,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class ImageAlignment : PlotDemo, IPlotDemo
+        public class ImageAlignment : RecipeBase, IRecipe
         {
             public string name { get; } = "Image Alignment";
             public string description { get; } = "Image alignment and rotation can be customized using arguments.";

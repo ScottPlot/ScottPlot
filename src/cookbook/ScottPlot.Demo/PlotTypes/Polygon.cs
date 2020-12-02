@@ -9,7 +9,7 @@ namespace ScottPlot.Demo.PlotTypes
 {
     public static class Polygon
     {
-        public class Quickstart : PlotDemo, IPlotDemo
+        public class Quickstart : RecipeBase, IRecipe
         {
             public string name { get; } = "Polygon Quickstart";
             public string description { get; } = "Pairs of X/Y points can be used to display polygons.";
@@ -33,7 +33,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class FilledLinePlots : PlotDemo, IPlotDemo
+        public class FilledLinePlots : RecipeBase, IRecipe
         {
             public string name { get; } = "Filled Line Plots";
             public string description { get; } = "Polygons shaped to appear like filled line plots.";
@@ -56,7 +56,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class FilledLinePlotsStacked : PlotDemo, IPlotDemo
+        public class FilledLinePlotsStacked : RecipeBase, IRecipe
         {
             public string name { get; } = "Filled Line Plots Stacked";
             public string description { get; } = "Polygons shaped to appear like stacked filled line plots.";

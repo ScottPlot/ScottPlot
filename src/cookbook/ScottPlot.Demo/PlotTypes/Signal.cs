@@ -8,7 +8,7 @@ namespace ScottPlot.Demo.PlotTypes
 {
     public static class Signal
     {
-        public class Quickstart : PlotDemo, IPlotDemo
+        public class Quickstart : RecipeBase, IRecipe
         {
             public string name { get; } = "Signal Plot Quickstart";
             public string description { get; } = "Signal plots are ideal for evenly-spaced data with thousands or millions of points.";
@@ -23,7 +23,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class CustomLineAndMarkers : PlotDemo, IPlotDemo
+        public class CustomLineAndMarkers : RecipeBase, IRecipe
         {
             public string name { get; } = "Styled Signal Plot";
             public string description { get; } = "Signal plot with styled lines and markers";
@@ -42,7 +42,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class RandomWalk_5millionPoints_Signal : PlotDemo, IPlotDemo
+        public class RandomWalk_5millionPoints_Signal : RecipeBase, IRecipe
         {
             public string name { get; } = "5 Million Points";
             public string description { get; } = "Signal plots with millions of points can be interacted with in real time.";
@@ -58,7 +58,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class SaveData : PlotDemo, IPlotDemo
+        public class SaveData : RecipeBase, IRecipe
         {
             public string name { get; } = "Save signal plot data";
             public string description { get; } = "Many plot types have a .SaveCSV() method";
@@ -73,7 +73,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class Density : PlotDemo, IPlotDemo
+        public class Density : RecipeBase, IRecipe
         {
             public string name { get; } = "Display data density";
             public string description { get; } = "When plotting extremely high density data, you can't always see the trends underneath all those overlapping data points. If you send an array of colors to PlotSignal(), it will use those colors to display density.";
@@ -108,7 +108,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class FirstNPoints : PlotDemo, IPlotDemo
+        public class FirstNPoints : RecipeBase, IRecipe
         {
             public string name { get; } = "Display first N points";
             public string description { get; } = "When plotting live data it is useful to allocate a large array in memory then fill it with values as they come in. By setting the maxRenderIndex property of a scatter plot to can prevent rendering the end of the array (which is probably filled with zeros).";
@@ -137,7 +137,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class PlotRange : PlotDemo, IPlotDemo
+        public class PlotRange : RecipeBase, IRecipe
         {
             public string name { get; } = "Plot a Range of Points";
             public string description { get; } = "It is sometimes useful to only display values within a range of the source data array.";
@@ -156,7 +156,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class PlotFillRange : PlotDemo, IPlotDemo
+        public class PlotFillRange : RecipeBase, IRecipe
         {
             public string name { get; } = "Fill Below";
             public string description { get; } = "It is also possible to display values within a range and using the fill attribute.";
@@ -179,7 +179,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class PlotGradientFillRange : PlotDemo, IPlotDemo
+        public class PlotGradientFillRange : RecipeBase, IRecipe
         {
             public string name { get; } = "Gradient Fill Below";
             public string description { get; } = "Plotting a range of values using gradient fill below graph.";
@@ -203,7 +203,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class PlotGradientFillAboveRange : PlotDemo, IPlotDemo
+        public class PlotGradientFillAboveRange : RecipeBase, IRecipe
         {
             public string name { get; } = "Gradient Fill Above";
             public string description { get; } = "Plotting a range of values using gradient fill above graph.";
@@ -225,7 +225,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class PlotFillAboveAndBelowRange : PlotDemo, IPlotDemo
+        public class PlotFillAboveAndBelowRange : RecipeBase, IRecipe
         {
             public string name { get; } = "Fill Above and Below";
             public string description { get; } = "Plotting a range of values using fill above and below.";
@@ -252,7 +252,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class PlotGradientFillAboveAndBelowRange : PlotDemo, IPlotDemo
+        public class PlotGradientFillAboveAndBelowRange : RecipeBase, IRecipe
         {
             public string name { get; } = "Gradient Fill Above and Below";
             public string description { get; } = "Plotting a range of values using gradient fill above and below.";

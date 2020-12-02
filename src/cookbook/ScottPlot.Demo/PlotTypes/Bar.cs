@@ -8,7 +8,7 @@ namespace ScottPlot.Demo.PlotTypes
 {
     class Bar
     {
-        public class Quickstart : PlotDemo, IPlotDemo
+        public class Quickstart : RecipeBase, IRecipe
         {
             public string name { get; } = "Bar Plot Quickstart";
             public string description { get; } = "Bar graph series can be created by supply Xs and Ys. Optionally apply errorbars as a third array using an argument.";
@@ -34,7 +34,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class NewMultipleBars : PlotDemo, IPlotDemo
+        public class NewMultipleBars : RecipeBase, IRecipe
         {
             public string name { get; } = "Grouped Bar Graphs";
             public string description { get; } = "This example demonstrates how to display grouped bar plots. Data group labels are displayed as labels on the horizontal axis, while series labels are displayed in the legend.";
@@ -65,7 +65,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class PatternedMultipleBars : PlotDemo, IPlotDemo
+        public class PatternedMultipleBars : RecipeBase, IRecipe
         {
             public string name { get; } = "Patterned Bar Graphs";
             public string description { get; } = "This example demonstrates how to display patterned bar plots.";
@@ -108,7 +108,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class Horizontal : PlotDemo, IPlotDemo
+        public class Horizontal : RecipeBase, IRecipe
         {
             public string name { get; } = "Horizontal Bar Graph";
             public string description { get; } = "Bar graphs can be displayed horizontally.";
@@ -134,7 +134,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class Stacked : PlotDemo, IPlotDemo
+        public class Stacked : RecipeBase, IRecipe
         {
             public string name { get; } = "Stacked Bar Graphs";
             public string description { get; } = "Stacked bar charts can be created like this.";
@@ -161,7 +161,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class Labels : PlotDemo, IPlotDemo
+        public class Labels : RecipeBase, IRecipe
         {
             public string name { get; } = "Show values above bars";
             public string description { get; } = "Values for each bar can be shown on the graph by setting the 'showValues' argument.";
@@ -186,7 +186,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class Waterfall : PlotDemo, IPlotDemo
+        public class Waterfall : RecipeBase, IRecipe
         {
             public string name { get; } = "Waterfall Plot";
             public string description { get; } = "Waterfall plots are a type of box plot where each box starts where the previous box ended.";

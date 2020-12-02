@@ -6,7 +6,7 @@ namespace ScottPlot.Demo.PlotTypes
 {
     class Radar
     {
-        public class RadarQuickstart : PlotDemo, IPlotDemo
+        public class RadarQuickstart : RecipeBase, IRecipe
         {
             public string name { get; } = "Radar Chart Quickstart";
             public string description { get; } =
@@ -29,7 +29,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class RadarPolygon : PlotDemo, IPlotDemo
+        public class RadarPolygon : RecipeBase, IRecipe
         {
             public string name { get; } = "Straight Axis Lines";
             public string description { get; } = "Change the axis type to polygon to display radar charts with straight lines.";
@@ -51,7 +51,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class RadarNoAxis : PlotDemo, IPlotDemo
+        public class RadarNoAxis : RecipeBase, IRecipe
         {
             public string name { get; } = "No Axis Lines";
             public string description { get; } = "A radar chart can have no drawn axis as well.";
@@ -74,7 +74,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class RadarUnlabeledAxes : PlotDemo, IPlotDemo
+        public class RadarUnlabeledAxes : RecipeBase, IRecipe
         {
             public string name { get; } = "Labeled Categories";
             public string description { get; } = "Category labels can be displayed on the radar chart.";
@@ -103,7 +103,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class RadarWithLabels : PlotDemo, IPlotDemo
+        public class RadarWithLabels : RecipeBase, IRecipe
         {
             public string name { get; } = "Labeled Values";
             public string description { get; } = "Labels can be displayed on the arms of the radar chart.";
@@ -131,7 +131,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class RadarSeveralAxes : PlotDemo, IPlotDemo
+        public class RadarSeveralAxes : RecipeBase, IRecipe
         {
             public string name { get; } = "Independent Axis Scaling";
             public string description { get; } =
@@ -161,7 +161,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class RadarSeveralAxesWithMax : PlotDemo, IPlotDemo
+        public class RadarSeveralAxesWithMax : RecipeBase, IRecipe
         {
             public string name { get; } = "Defined Axis Limits";
             public string description { get; } =

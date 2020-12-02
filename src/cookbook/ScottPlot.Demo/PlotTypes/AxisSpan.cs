@@ -7,7 +7,7 @@ namespace ScottPlot.Demo.PlotTypes
 {
     class AxisSpan
     {
-        public class Quickstart : PlotDemo, IPlotDemo
+        public class Quickstart : RecipeBase, IRecipe
         {
             public string name { get; } = "Axis Span Quickstart";
             public string description { get; } = "Horizontal and vertical spans can be placed using VSpan() and HSpan(). Styling can be customized using arguments.";
@@ -30,7 +30,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class Draggable : PlotDemo, IPlotDemo
+        public class Draggable : RecipeBase, IRecipe
         {
             public string name { get; } = "Draggable Axis Spans";
             public string description { get; } = "Horizontal and vertical spans can be made draggable " +

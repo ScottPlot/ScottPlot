@@ -7,7 +7,7 @@ namespace ScottPlot.Demo.PlotTypes
 {
     public static class Annotation
     {
-        public class AnnotationQuickstart : PlotDemo, IPlotDemo
+        public class AnnotationQuickstart : RecipeBase, IRecipe
         {
             public string name { get; } = "Annotation Quickstart";
             public string description { get; } = "Annotations are labels fixed to the figure (not the data area), so they don't move around as the axes are adjusted.";

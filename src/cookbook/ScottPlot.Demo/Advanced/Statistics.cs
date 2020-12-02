@@ -7,7 +7,7 @@ namespace ScottPlot.Demo.Advanced
 {
     class Statistics
     {
-        public class Histogram : PlotDemo, IPlotDemo
+        public class Histogram : RecipeBase, IRecipe
         {
             public string name { get; } = "Histogram";
             public string description { get; } = "This example demonstrates how to plot the histogram of a dataset.";
@@ -30,7 +30,7 @@ namespace ScottPlot.Demo.Advanced
             }
         }
 
-        public class CPH : PlotDemo, IPlotDemo
+        public class CPH : RecipeBase, IRecipe
         {
             public string name { get; } = "CPH";
             public string description { get; } = "This example demonstrates how to plot a cumulative probability histogram (CPH) to compare the distribution of two datasets.";
@@ -56,7 +56,7 @@ namespace ScottPlot.Demo.Advanced
             }
         }
 
-        public class LinReg : PlotDemo, IPlotDemo
+        public class LinReg : RecipeBase, IRecipe
         {
             public string name { get; } = "Linear Regression";
             public string description { get; } = "This example shows how to create a linear regression line for X/Y data.";
@@ -80,7 +80,7 @@ namespace ScottPlot.Demo.Advanced
             }
         }
 
-        public class Population : PlotDemo, IPlotDemo
+        public class Population : RecipeBase, IRecipe
         {
             public string name { get; } = "Population Statistics";
             public string description { get; } = "The Population class makes it easy to work with population statistics. Instantiate the Population class with a double array of values, then access its properties and methods as desired.";
@@ -111,7 +111,7 @@ namespace ScottPlot.Demo.Advanced
             }
         }
 
-        public class SplineInterpolation : PlotDemo, IPlotDemo
+        public class SplineInterpolation : RecipeBase, IRecipe
         {
             public string name { get; } = "Spline Interpolation";
             public string description { get; } = "Interpolated splines create curves with many X/Y points to smoothly connect a limited number of input points.";

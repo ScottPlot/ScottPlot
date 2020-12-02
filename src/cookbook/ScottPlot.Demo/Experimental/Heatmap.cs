@@ -12,7 +12,7 @@ namespace ScottPlot.Demo.Experimental
 {
     public static class Heatmap
     {
-        public class HeatmapQuickstart : PlotDemo, IPlotDemo
+        public class HeatmapQuickstart : RecipeBase, IRecipe
         {
             public string name { get; } = "Heatmap Quickstart";
             public string description { get; } = "Heatmaps are a good way to show intensity data.";
@@ -26,7 +26,7 @@ namespace ScottPlot.Demo.Experimental
             }
         }
 
-        public class HeatmapSinCos : PlotDemo, IPlotDemo
+        public class HeatmapSinCos : RecipeBase, IRecipe
         {
             public string name { get; } = "2D Waveform";
             public string description { get; } = "Another heatmap example.";
@@ -49,7 +49,7 @@ namespace ScottPlot.Demo.Experimental
             }
         }
 
-        public class HeatmapCustomizability : PlotDemo, IPlotDemo
+        public class HeatmapCustomizability : RecipeBase, IRecipe
         {
             public string name { get; } = "Customizing Heatmaps";
             public string description { get; } = "Heatmaps have a lot of customization options";
@@ -75,7 +75,7 @@ namespace ScottPlot.Demo.Experimental
             }
         }
 
-        public class HeatmapCustomScale : PlotDemo, IPlotDemo
+        public class HeatmapCustomScale : RecipeBase, IRecipe
         {
             public string name { get; } = "Custom Scale";
             public string description { get; } = "Heatmaps have a lot of customization options";
@@ -100,7 +100,7 @@ namespace ScottPlot.Demo.Experimental
                 plt.PlotHeatmap(intensities, Colormap.Turbo, axisOffsets: new double[] { -5, -5 }, axisMultipliers: new double[] { 10, 10 }, scaleMin: -150, scaleMax: 300);
             }
         }
-        public class HeatmapFromXYGaussian : PlotDemo, IPlotDemo
+        public class HeatmapFromXYGaussian : RecipeBase, IRecipe
         {
             public string name { get; } = "Heatmap From XY Data (Gaussian)";
             public string description { get; } = "Useful for showing clusters of points";
@@ -118,7 +118,7 @@ namespace ScottPlot.Demo.Experimental
             }
         }
 
-        public class HeatmapFromXYDensity : PlotDemo, IPlotDemo
+        public class HeatmapFromXYDensity : RecipeBase, IRecipe
         {
             public string name { get; } = "Heatmap From XY Data (Density)";
             public string description { get; } = "Useful for showing clusters of points";
@@ -137,7 +137,7 @@ namespace ScottPlot.Demo.Experimental
         }
 
 
-        public class HeatmapImage : PlotDemo, IPlotDemo
+        public class HeatmapImage : RecipeBase, IRecipe
         {
             public string name { get; } = "Heatmap Image";
             public string description { get; } = "A sample image displayed using a heatmap";
@@ -149,7 +149,7 @@ namespace ScottPlot.Demo.Experimental
             }
         }
 
-        public class BackGroundImage : PlotDemo, IPlotDemo
+        public class BackGroundImage : RecipeBase, IRecipe
         {
             public string name { get; } = "Heatmap Background Image";
             public string description { get; } = "Heatmap values below a threshold can be replaced by a Bitmap image.";

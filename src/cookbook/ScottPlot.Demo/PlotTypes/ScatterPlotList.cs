@@ -8,7 +8,7 @@ namespace ScottPlot.Demo.PlotTypes
 {
     class ScatterPlotList
     {
-        public class Quickstart : PlotDemo, IPlotDemo
+        public class Quickstart : RecipeBase, IRecipe
         {
             public string name { get; } = "ScatterPlotList Quickstart";
             public string description { get; } = "The ScatterPlotList displays a variable number of paired X/Y data points.";

@@ -6,7 +6,7 @@ namespace ScottPlot.Demo.Customize
 {
     class Axis
     {
-        public class AxisLabels : PlotDemo, IPlotDemo
+        public class AxisLabels : RecipeBase, IRecipe
         {
             public string name { get; } = "Title and Axis Labels";
             public string description { get; } = "Title and axis labels can be defined and custoized using arguments.";
@@ -27,7 +27,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class RulerMode : PlotDemo, IPlotDemo
+        public class RulerMode : RecipeBase, IRecipe
         {
             public string name { get; } = "Ruler Mode";
             public string description { get; } = "Ruler mode is an alternative way to display axis tick labels";
@@ -46,7 +46,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class RulerModeXOnly : PlotDemo, IPlotDemo
+        public class RulerModeXOnly : RecipeBase, IRecipe
         {
             public string name { get; } = "Ruler Mode (X only)";
             public string description { get; } = "Display a ruler on just one axis";
@@ -67,7 +67,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class LogAxis : PlotDemo, IPlotDemo
+        public class LogAxis : RecipeBase, IRecipe
         {
             public string name { get; } = "Log Axis";
             public string description { get; } = "ScottPlot can only display data on a linear 2D plane, " +
@@ -101,7 +101,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class PolarAxis : PlotDemo, IPlotDemo
+        public class PolarAxis : RecipeBase, IRecipe
         {
             public string name { get; } = "Polar Axis";
             public string description { get; } = "A helper function converts radius and theta arrays " +
@@ -132,7 +132,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class DateTimeAxis : PlotDemo, IPlotDemo
+        public class DateTimeAxis : RecipeBase, IRecipe
         {
             public string name { get; } = "DateTime Axis";
             public string description { get; } = "Axis tick labels can show DateTime format if DateTime.ToOADate() was used to plot the data";
@@ -156,7 +156,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class TimeOnly : PlotDemo, IPlotDemo
+        public class TimeOnly : RecipeBase, IRecipe
         {
             public string name { get; } = "Time Only";
             public string description { get; } = "Typically DateTime tick labels show date and time, " +
@@ -181,7 +181,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class TimeCodeAxis : PlotDemo, IPlotDemo
+        public class TimeCodeAxis : RecipeBase, IRecipe
         {
             public string name { get; } = "Time Code Axis";
             public string description { get; } = "Axis tick labels show HH:MM:SS.SSS timecodes (useful for audio and video editing)";
@@ -204,7 +204,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class HexadecimalAxis : PlotDemo, IPlotDemo
+        public class HexadecimalAxis : RecipeBase, IRecipe
         {
             public string name { get; } = "Hexadecimal Axis";
             public string description { get; } = "Axis tick labels can be in any base, not just base 10";
@@ -243,7 +243,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class RotatedTickLabels : PlotDemo, IPlotDemo
+        public class RotatedTickLabels : RecipeBase, IRecipe
         {
             public string name { get; } = "Rotated Tick Labels";
             public string description { get; } = "Axis tick labels can be rotated";

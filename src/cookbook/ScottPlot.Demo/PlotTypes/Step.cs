@@ -6,7 +6,7 @@ namespace ScottPlot.Demo.PlotTypes
 {
     class Step
     {
-        public class Quickstart : PlotDemo, IPlotDemo
+        public class Quickstart : RecipeBase, IRecipe
         {
             public string name { get; } = "Step Plot Quickstart";
             public string description { get; } = "Step plots are really just scatter plots whose points are connected by elbows rather than straight lines.";

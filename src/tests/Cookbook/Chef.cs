@@ -21,7 +21,7 @@ namespace ScottPlot.Tests.Cookbook
             Console.WriteLine("Generating cookbook in: " + reportGen.outputFolder);
 
             reportGen.ClearFolders();
-            foreach (IPlotDemo recipe in reportGen.recipes.Where(r => r.categoryMajor != "DataDiagnostic"))
+            foreach (IRecipe recipe in reportGen.recipes.Where(r => r.categoryMajor != "DataDiagnostic"))
             {
                 Console.WriteLine($"Generating {recipe}...");
                 reportGen.CreateImage(recipe);

@@ -6,7 +6,7 @@ namespace ScottPlot.Demo.Advanced
 {
     class Multiplot
     {
-        public class Quickstart : PlotDemo, IPlotDemo, IBitmapDemo
+        public class Quickstart : RecipeBase, IRecipe, IRecipeNonInteractive
         {
             public string name { get; } = "Multiplot Quickstart";
             public string description { get; } = "Multiplots are single images which contain multiple subplots.";
@@ -30,7 +30,7 @@ namespace ScottPlot.Demo.Advanced
             }
         }
 
-        public class MatchAxis : PlotDemo, IPlotDemo, IBitmapDemo
+        public class MatchAxis : RecipeBase, IRecipe, IRecipeNonInteractive
         {
             public string name { get; } = "Match Subplot Axis";
             public string description { get; } = "Axis and layout information from one subplot can be applied to another subplot.";

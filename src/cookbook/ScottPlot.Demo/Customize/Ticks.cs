@@ -7,7 +7,7 @@ namespace ScottPlot.Demo.Customize
 {
     class Ticks
     {
-        public class Visibility : PlotDemo, IPlotDemo
+        public class Visibility : RecipeBase, IRecipe
         {
             public string name { get; } = "Hide Tick Labels";
             public string description { get; } = "Tick label visibility can be controlled with arguments to the Ticks() method";
@@ -26,7 +26,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class Formatting : PlotDemo, IPlotDemo
+        public class Formatting : RecipeBase, IRecipe
         {
             public string name { get; } = "Numeric Tick Formatting";
             public string description { get; } = "Display format of numeric ticks can be customized using numeric format strings.";
@@ -46,7 +46,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class DateAxis : PlotDemo, IPlotDemo
+        public class DateAxis : RecipeBase, IRecipe
         {
             public string name { get; } = "DateTime Axis";
             public string description { get; } = "Axis tick labels can be set to display date and time format if the values (double[]) are OATime values.";
@@ -64,7 +64,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class Positions : PlotDemo, IPlotDemo
+        public class Positions : RecipeBase, IRecipe
         {
             public string name { get; } = "Define Tick Positions";
             public string description { get; } = "An array of tick positions and labels can be manually defined.";
@@ -89,7 +89,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class NonlinearTickSpacing : PlotDemo, IPlotDemo
+        public class NonlinearTickSpacing : RecipeBase, IRecipe
         {
             public string name { get; } = "Nonlinear Tick Spacing";
             public string description { get; } = "Customize tick labels to give a nonlinear axis appearance";
@@ -121,7 +121,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class Inverted : PlotDemo, IPlotDemo
+        public class Inverted : RecipeBase, IRecipe
         {
             public string name { get; } = "Descending Ticks";
             public string description { get; } = "ScottPlot will ALWAYS display data where X values ascend from left to right. To simulate an inverted axis (where numbers decrease from left to right) plot data in the NEGATIVE space, then use a Tick() argument to invert the sign of tick labels.";
@@ -137,7 +137,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class DefineSpacing : PlotDemo, IPlotDemo
+        public class DefineSpacing : RecipeBase, IRecipe
         {
             public string name { get; } = "Defined Tick Spacing";
             public string description { get; } = "The space between tick marks can be manually defined by setting the grid spacing.";
@@ -156,7 +156,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class LocalizedHungarian : PlotDemo, IPlotDemo
+        public class LocalizedHungarian : RecipeBase, IRecipe
         {
             public string name { get; } = "Localized Formatting (Hungarian)";
             public string description { get; } = "Large numbers and dates are formatted differently for different cultures. Hungarian is a good example of this: they use spaces to separate large numbers, and periods to separate fields in dates.";
@@ -182,7 +182,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class LocalizedGerman : PlotDemo, IPlotDemo
+        public class LocalizedGerman : RecipeBase, IRecipe
         {
             public string name { get; } = "Localized Formatting (German)";
             public string description { get; } = "Large numbers and dates are formatted differently for different cultures. German is a good example of this: they use periods to separate large numbers, and periods to separate fields in dates.";
@@ -208,7 +208,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class CustomCulture : PlotDemo, IPlotDemo
+        public class CustomCulture : RecipeBase, IRecipe
         {
             public string name { get; } = "Format Ticks with Custom Culture";
             public string description { get; } = "SetCulture() as arguments to let the user manually define formatting strings which will be used globally to change how numbers and dates are formatted.";
@@ -230,7 +230,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class Large : PlotDemo, IPlotDemo
+        public class Large : RecipeBase, IRecipe
         {
             public string name { get; } = "Accomodating Large Ticks";
             public string description { get; } = "The plot layout adjusts automatically to accomodate large tick labels.";
@@ -247,7 +247,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class MultiplierNotation : PlotDemo, IPlotDemo
+        public class MultiplierNotation : RecipeBase, IRecipe
         {
             public string name { get; } = "Multiplier Notation";
             public string description { get; } = "To keep tick labels small 'multiplier' notation can be used when their values are large.";
@@ -264,7 +264,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class OffsetNotation : PlotDemo, IPlotDemo
+        public class OffsetNotation : RecipeBase, IRecipe
         {
             public string name { get; } = "Offset Notation";
             public string description { get; } = "To keep tick labels small 'offset' notation can be used when their values are very far from zero.";
@@ -281,7 +281,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class RotatedTicks : PlotDemo, IPlotDemo
+        public class RotatedTicks : RecipeBase, IRecipe
         {
             public string name { get; } = "Rotated Ticks";
             public string description { get; } = "Horizontal ticks can be rotated an arbitrary amount.";
@@ -304,7 +304,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class DateAxisFixedSpace : PlotDemo, IPlotDemo
+        public class DateAxisFixedSpace : RecipeBase, IRecipe
         {
             public string name { get; } = "Defined DateTime Tick Spacing";
             public string description { get; } = "This example shows how to use a fixed inter-tick distance.";

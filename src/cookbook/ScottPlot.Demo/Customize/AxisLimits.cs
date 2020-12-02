@@ -6,7 +6,7 @@ namespace ScottPlot.Demo.Customize
 {
     class AxisLimits
     {
-        public class Auto : PlotDemo, IPlotDemo
+        public class Auto : RecipeBase, IRecipe
         {
             public string name { get; } = "Automatically fit to data";
             public string description { get; } = "Automatically adjust axis limits to fit data. By default the data is slightly padded with extra space.";
@@ -25,7 +25,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class AutoMargin : PlotDemo, IPlotDemo
+        public class AutoMargin : RecipeBase, IRecipe
         {
             public string name { get; } = "Automatic fit with specified margin";
             public string description { get; } = "AxisAuto() arguments allow the user to define the amount of padding (margin) for each axis. Setting the margin to 0 will adjust the plot axis limits to tightly fit the data.";
@@ -44,7 +44,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class Manual : PlotDemo, IPlotDemo
+        public class Manual : RecipeBase, IRecipe
         {
             public string name { get; } = "Manually define axis limits";
             public string description { get; } = "The user can manually define axis limits. If a null is passed in, that axis limit is not adjusted.";
@@ -63,7 +63,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class Zoom : PlotDemo, IPlotDemo
+        public class Zoom : RecipeBase, IRecipe
         {
             public string name { get; } = "Zoom";
             public string description { get; } = "The user can easily zoom and zoom by providing a fractional zoom amount. Numbers >1 zoom in while numbers <1 zoom out.";
@@ -82,7 +82,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class Pan : PlotDemo, IPlotDemo
+        public class Pan : RecipeBase, IRecipe
         {
             public string name { get; } = "Pan";
             public string description { get; } = "The user can easily pan by a defined amount on each axis.";

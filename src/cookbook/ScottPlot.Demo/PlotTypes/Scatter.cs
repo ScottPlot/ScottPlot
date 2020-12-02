@@ -7,7 +7,7 @@ namespace ScottPlot.Demo.PlotTypes
 {
     class Scatter
     {
-        public class Quickstart : PlotDemo, IPlotDemo
+        public class Quickstart : RecipeBase, IRecipe
         {
             public string name { get; } = "Scatter Plot Quickstart";
             public string description { get; } = "Scatter plots are best for small numbers of paired X/Y data points. For evenly-spaced data points Signal is much faster.";
@@ -24,7 +24,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class CustomizeMarkers : PlotDemo, IPlotDemo
+        public class CustomizeMarkers : RecipeBase, IRecipe
         {
             public string name { get; } = "Custom markers";
             public string description { get; } = "Arguments allow markers to be customized";
@@ -41,7 +41,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class AllMarkers : PlotDemo, IPlotDemo
+        public class AllMarkers : RecipeBase, IRecipe
         {
             public string name { get; } = "All marker shapes";
             public string description { get; } = "This plot demonstrates all available markers";
@@ -65,7 +65,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class CustomizeLines : PlotDemo, IPlotDemo
+        public class CustomizeLines : RecipeBase, IRecipe
         {
             public string name { get; } = "Custom lines";
             public string description { get; } = "Arguments allow line color, size, and pattern to be customized. Setting markerSize to 0 prevents markers from being rendered.";
@@ -86,7 +86,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class RandomXY : PlotDemo, IPlotDemo
+        public class RandomXY : RecipeBase, IRecipe
         {
             public string name { get; } = "Random X/Y Points";
             public string description { get; } = "X data for scatter plots does not have to be evenly spaced, making scatter plots are ideal for displaying random data like this.";
@@ -106,7 +106,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class ErrorBars : PlotDemo, IPlotDemo
+        public class ErrorBars : RecipeBase, IRecipe
         {
             public string name { get; } = "Scatter Plot with Errorbars";
             public string description { get; } = "X and Y error ranges can be supplied as optional double arrays";
@@ -142,7 +142,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class SaveData : PlotDemo, IPlotDemo
+        public class SaveData : RecipeBase, IRecipe
         {
             public string name { get; } = "Save scatter plot data";
             public string description { get; } = "Many plot types have a .SaveCSV() method";

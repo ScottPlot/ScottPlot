@@ -6,7 +6,7 @@ namespace ScottPlot.Demo.PlotTypes
 {
     class ScaleBar
     {
-        public class ScaleBarQuickstart : PlotDemo, IPlotDemo
+        public class ScaleBarQuickstart : RecipeBase, IRecipe
         {
             public string name { get; } = "Scale Bar";
             public string description { get; } = "An L-shaped scalebar can be added in the corner of any plot";

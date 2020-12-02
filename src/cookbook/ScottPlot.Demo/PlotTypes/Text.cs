@@ -7,7 +7,7 @@ namespace ScottPlot.Demo.PlotTypes
 {
     class Text
     {
-        public class Quickstart : PlotDemo, IPlotDemo
+        public class Quickstart : RecipeBase, IRecipe
         {
             public string name { get; } = "Text Quickstart";
             public string description { get; } = "Text can be placed at any X/Y location and styled using arguments.";
@@ -26,7 +26,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class TextAlignment : PlotDemo, IPlotDemo
+        public class TextAlignment : RecipeBase, IRecipe
         {
             public string name { get; } = "Text Alignment";
             public string description { get; } = "Text alignment and rotation can be customized using arguments.";

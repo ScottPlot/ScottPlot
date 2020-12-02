@@ -8,7 +8,7 @@ namespace ScottPlot.Demo.PlotTypes
 {
     class SignalConst
     {
-        public class RandomWalk_5millionPoints_SignalConst : PlotDemo, IPlotDemo
+        public class RandomWalk_5millionPoints_SignalConst : RecipeBase, IRecipe
         {
             public string name { get; } = "5 Million Points";
             public string description { get; } = "SignalConst plots pre-processes data to render much faster than Signal plots. Pre-processing takes a little time up-front and requires 4x the memory of Signal.";
@@ -26,7 +26,7 @@ namespace ScottPlot.Demo.PlotTypes
 
         // TODO: need an example showing how to update data
 
-        public class PlotGradientFillAboveAndBelowRange : PlotDemo, IPlotDemo
+        public class PlotGradientFillAboveAndBelowRange : RecipeBase, IRecipe
         {
             public string name { get; } = "Gradient Fill Above and Below";
             public string description { get; } = "Plot a range of values using gradient fill above and below.";

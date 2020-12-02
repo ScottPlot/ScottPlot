@@ -6,7 +6,7 @@ namespace ScottPlot.Demo.Experimental
 {
     class CustomPlottables
     {
-        public class AddPlottable : PlotDemo, IPlotDemo
+        public class AddPlottable : RecipeBase, IRecipe
         {
 
             public string name { get; } = "Add a Plottable Manually";

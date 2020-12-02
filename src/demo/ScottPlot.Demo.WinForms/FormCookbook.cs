@@ -67,7 +67,7 @@ namespace ScottPlot.Demo.WinForms
 
             formsPlot1.Reset();
 
-            if (demoPlot is IBitmapDemo bmpPlot)
+            if (demoPlot is IRecipeNonInteractive bmpPlot)
             {
                 formsPlot1.Visible = false;
                 pictureBox1.Visible = true;

@@ -7,7 +7,7 @@ namespace ScottPlot.Demo.PlotTypes
 {
     class Point
     {
-        public class Quickstart : PlotDemo, IPlotDemo
+        public class Quickstart : RecipeBase, IRecipe
         {
             public string name { get; } = "Plot points";
             public string description { get; } = "Points are essentially scatter plots with a single point.";

@@ -10,7 +10,7 @@ namespace ScottPlot.Demo.PlotTypes
 {
     public static class VectorField
     {
-        public class Quickstart : PlotDemo, IPlotDemo
+        public class Quickstart : RecipeBase, IRecipe
         {
             public string name { get; } = "Quickstart";
             public string description { get; } = "A vector field can be useful to show data explained by differential equations";
@@ -31,7 +31,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class WithChangeingMagnitude : PlotDemo, IPlotDemo
+        public class WithChangeingMagnitude : RecipeBase, IRecipe
         {
             public string name { get; } = "Angle and Magnitude";
             public string description { get; } = "This example demonstrates how to define vectors according to a given angle and magnitude.";
@@ -58,7 +58,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class Pendulum : PlotDemo, IPlotDemo
+        public class Pendulum : RecipeBase, IRecipe
         {
             public string name { get; } = "Custom Colormap";
             public string description { get; } = "A colormap can be supplied to color arrows according to their magnitude";
@@ -88,7 +88,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class CustomScaleFactor : PlotDemo, IPlotDemo
+        public class CustomScaleFactor : RecipeBase, IRecipe
         {
             public string name { get; } = "Custom Scale Factor";
             public string description { get; } = "A custom scale factor can adjust the length of the arrows.";

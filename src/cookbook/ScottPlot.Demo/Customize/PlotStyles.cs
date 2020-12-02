@@ -6,7 +6,7 @@ namespace ScottPlot.Demo.Customize
 {
     public class PlotStyles
     {
-        public class Default : PlotDemo, IPlotDemo
+        public class Default : RecipeBase, IRecipe
         {
             public string name { get; } = "Plot Style (Default)";
             public string description { get; }
@@ -28,7 +28,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class Seaborn : PlotDemo, IPlotDemo
+        public class Seaborn : RecipeBase, IRecipe
         {
             public string name { get; } = "Plot Style (Seaborn)";
             public string description { get; }
@@ -50,7 +50,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class Control : PlotDemo, IPlotDemo
+        public class Control : RecipeBase, IRecipe
         {
             public string name { get; } = "Plot Style (Control)";
             public string description { get; }
@@ -72,7 +72,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class Blue1 : PlotDemo, IPlotDemo
+        public class Blue1 : RecipeBase, IRecipe
         {
             public string name { get; } = "Plot Style (Blue1)";
             public string description { get; }
@@ -94,7 +94,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class Blue2 : PlotDemo, IPlotDemo
+        public class Blue2 : RecipeBase, IRecipe
         {
             public string name { get; } = "Plot Style (Blue2)";
             public string description { get; }
@@ -116,7 +116,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class Blue3 : PlotDemo, IPlotDemo
+        public class Blue3 : RecipeBase, IRecipe
         {
             public string name { get; } = "Plot Style (Blue3)";
             public string description { get; }
@@ -138,7 +138,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class Light1 : PlotDemo, IPlotDemo
+        public class Light1 : RecipeBase, IRecipe
         {
             public string name { get; } = "Plot Style (Light1)";
             public string description { get; }
@@ -160,7 +160,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class Light2 : PlotDemo, IPlotDemo
+        public class Light2 : RecipeBase, IRecipe
         {
             public string name { get; } = "Plot Style (Light2)";
             public string description { get; }
@@ -182,7 +182,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class Gray1 : PlotDemo, IPlotDemo
+        public class Gray1 : RecipeBase, IRecipe
         {
             public string name { get; } = "Plot Style (Gray1)";
             public string description { get; }
@@ -204,7 +204,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class Gray2 : PlotDemo, IPlotDemo
+        public class Gray2 : RecipeBase, IRecipe
         {
             public string name { get; } = "Plot Style (Gray2)";
             public string description { get; }
@@ -226,7 +226,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class Black : PlotDemo, IPlotDemo
+        public class Black : RecipeBase, IRecipe
         {
             public string name { get; } = "Plot Style (Black)";
             public string description { get; }

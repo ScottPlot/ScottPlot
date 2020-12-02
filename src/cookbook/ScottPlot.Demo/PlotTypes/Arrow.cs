@@ -6,7 +6,7 @@ namespace ScottPlot.Demo.PlotTypes
 {
     class Arrow
     {
-        public class Quickstart : PlotDemo, IPlotDemo
+        public class Quickstart : RecipeBase, IRecipe
         {
             public string name { get; } = "Plot arrows";
             public string description { get; } = "arrows can be added which point at specific points on the plot";

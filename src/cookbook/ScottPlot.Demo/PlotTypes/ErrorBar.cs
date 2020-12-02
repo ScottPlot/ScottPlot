@@ -6,7 +6,7 @@ namespace ScottPlot.Demo.PlotTypes
 {
     class ErrorBar
     {
-        public class ErrorBarsAsymmetric : PlotDemo, IPlotDemo
+        public class ErrorBarsAsymmetric : RecipeBase, IRecipe
         {
             public string name { get; } = "Scatter Plot with Asymmetric Errorbars";
             public string description { get; } = "Asymmetric X and Y error ranges can be supplied as optional double arrays for positive and/or negative error bars";

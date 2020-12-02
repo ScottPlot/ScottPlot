@@ -6,7 +6,7 @@ namespace ScottPlot.Demo.Experimental
 {
     public class FringeCase
     {
-        public class EmptyPlot : PlotDemo, IPlotDemo
+        public class EmptyPlot : RecipeBase, IRecipe
         {
 
             public string name { get; } = "Empty Plot";

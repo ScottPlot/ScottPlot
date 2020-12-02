@@ -6,7 +6,7 @@ namespace ScottPlot.Demo.Customize
 {
     class Legend
     {
-        public class LegendDemo : PlotDemo, IPlotDemo
+        public class LegendDemo : RecipeBase, IRecipe
         {
             public string name { get; } = "Legend Demo";
             public string description { get; } = "Demonstrates how various plot types appear in the legend.";

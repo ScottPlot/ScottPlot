@@ -7,7 +7,7 @@ namespace ScottPlot.Demo.PlotTypes
 {
     class AxisLine
     {
-        public class Quickstart : PlotDemo, IPlotDemo
+        public class Quickstart : RecipeBase, IRecipe
         {
             public string name { get; } = "Axis Line Quickstart";
             public string description { get; } = "Horizontal and vertical lines can be placed using HLine() and VLine(). Styling can be customized using arguments.";
@@ -31,7 +31,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class Draggable : PlotDemo, IPlotDemo
+        public class Draggable : RecipeBase, IRecipe
         {
             public string name { get; } = "Draggable Axis Lines";
             public string description { get; } = "Use arguments to enable draggable lines (with optional limits).";

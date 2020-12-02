@@ -11,7 +11,7 @@ namespace ScottPlot.Demo
         public readonly int width;
         public readonly int height;
 
-        public readonly IPlotDemo[] recipes;
+        public readonly IRecipe[] recipes;
 
         public ReportGenerator(int width = 600, int height = 400, string sourceFolder = null, string outputFolder = "./output", bool useDLL = false)
         {
@@ -42,7 +42,7 @@ namespace ScottPlot.Demo
         public void MakeCookbookAllAtOnce()
         {
             ClearFolders();
-            foreach (IPlotDemo recipe in Reflection.GetPlots())
+            foreach (IRecipe recipe in Reflection.GetPlots())
                 CreateImage(recipe);
             MakeReports();
         }
@@ -67,11 +67,11 @@ namespace ScottPlot.Demo
         /// <summary>
         /// Render the given demo plot and save it as a PNG file
         /// </summary>
-        public void CreateImage(IPlotDemo recipe)
+        public void CreateImage(IRecipe recipe)
         {
             string imageFilePath = $"{outputFolder}/images/{recipe.id}.png";
 
-            if (recipe is IBitmapDemo bmpDemo)
+            if (recipe is IRecipeNonInteractive bmpDemo)
             {
                 System.Drawing.Bitmap bmp = bmpDemo.Render(width, height);
                 bmp.Save(imageFilePath, System.Drawing.Imaging.ImageFormat.Png);
@@ -100,7 +100,7 @@ namespace ScottPlot.Demo
             StringBuilder md = new StringBuilder();
 
             string lastMajorCategory = "";
-            foreach (IPlotDemo recipe in recipes)
+            foreach (IRecipe recipe in recipes)
             {
                 string title = $"{recipe.categoryMajor}: {recipe.categoryMinor} - {recipe.name}";
                 string sourceCode = recipe.GetSourceCode(sourceCodeFolder);

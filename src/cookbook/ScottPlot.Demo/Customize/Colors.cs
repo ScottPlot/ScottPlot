@@ -9,7 +9,7 @@ namespace ScottPlot.Demo.Customize
 {
     class Colors
     {
-        public class DefaultColorset : PlotDemo, IPlotDemo
+        public class DefaultColorset : RecipeBase, IRecipe
         {
             public string name { get; } = "Default Colorset";
             public string description { get; } = "Default colorset is the same one used by matplotlib.";
@@ -28,7 +28,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class NordColorset : PlotDemo, IPlotDemo
+        public class NordColorset : RecipeBase, IRecipe
         {
             public string name { get; } = "Nord Colorset";
             public string description { get; } = "Example colorset using Nord colors.";
@@ -48,7 +48,7 @@ namespace ScottPlot.Demo.Customize
             }
         }
 
-        public class DarkColorset : PlotDemo, IPlotDemo
+        public class DarkColorset : RecipeBase, IRecipe
         {
             public string name { get; } = "Dark Colorset";
             public string description { get; } = "Example colorset designed for use on a dark background.";

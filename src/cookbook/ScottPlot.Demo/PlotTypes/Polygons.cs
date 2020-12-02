@@ -8,7 +8,7 @@ namespace ScottPlot.Demo.PlotTypes
 {
     public class Polygons
     {
-        public class BenchmarkPolygon : PlotDemo, IPlotDemo
+        public class BenchmarkPolygon : RecipeBase, IRecipe
         {
             public string name { get; } = "PlotPolygon with many polygons";
             public string description { get; } = "PlotPolygon can display thousands of polygons, but this is SLOW! Use PlotPolygons for this purpose instead.";
@@ -36,7 +36,7 @@ namespace ScottPlot.Demo.PlotTypes
             }
         }
 
-        public class BenchmarkPolygons : PlotDemo, IPlotDemo
+        public class BenchmarkPolygons : RecipeBase, IRecipe
         {
             public string name { get; } = "PlotPolygons with many polygons";
             public string description { get; } = "PlottablePolygons is a speed-optimized method of displaying large numbers of polygons.";

@@ -7,7 +7,7 @@ namespace ScottPlot.Demo.PlotTypes
 {
     class Colormap
     {
-        public class Quickstart : PlotDemo, IPlotDemo
+        public class Quickstart : RecipeBase, IRecipe
         {
             public string name { get; } = "Colormap Quickstart";
             public string description { get; } = "Colormaps make it easy to translate a fractional value (from 0 to 1) into a color.";
