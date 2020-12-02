@@ -162,6 +162,15 @@ namespace ScottPlot
             return Color.FromArgb(r, g, b);
         }
 
+        /// <summary>
+        /// Return the cumulative sum of a random set of numbers using a fixed seed
+        /// </summary>
+        public static double[] RandomWalk(int pointCount, double mult = 1, double offset = 0) =>
+            RandomWalk(new Random(0), pointCount, mult, offset);
+
+        /// <summary>
+        /// Return the cumulative sum of a random set of numbers
+        /// </summary>
         public static double[] RandomWalk(Random rand, int pointCount, double mult = 1, double offset = 0)
         {
             if (rand is null)
