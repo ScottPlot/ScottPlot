@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
 
-namespace ScottPlot.Cookbook.Plottable
+namespace ScottPlot.Cookbook.Recipes.Plottable
 {
-    class Annotation : RecipeBase, IRecipe
+    public class Annotation : Recipe
     {
-        public string ID => "PlotType_Annotation_Introduction";
-        public string Title => "Annotate the Figure";
-        public string Description => 
+        public override string ID => "PlotType_Annotation";
+        public override string Title => "Annotate the Figure";
+        public override string Description =>
             "Annotations are labels fixed to the figure (not the data area) " +
             "so they don't move around as the axes are adjusted.";
 
-        public void ExecuteRecipe(Plot plt)
+        public override void ExecuteRecipe(Plot plt)
         {
             double[] xs = DataGen.Range(0, 5, .1);
             plt.PlotScatter(xs, DataGen.Sin(xs));
