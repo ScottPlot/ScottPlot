@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Plot\Axis\**" />
+    <Compile Remove="Plot\Figure\**" />
+    <Compile Remove="Plot\Quickstart\**" />
+    <Compile Remove="Plot\Ticks\**" />
+    <Compile Remove="Plot\Tools\**" />
+    <EmbeddedResource Remove="Plot\Axis\**" />
+    <EmbeddedResource Remove="Plot\Figure\**" />
+    <EmbeddedResource Remove="Plot\Quickstart\**" />
+    <EmbeddedResource Remove="Plot\Ticks\**" />
+    <EmbeddedResource Remove="Plot\Tools\**" />
+    <None Remove="Plot\Axis\**" />
+    <None Remove="Plot\Figure\**" />
+    <None Remove="Plot\Quickstart\**" />
+    <None Remove="Plot\Ticks\**" />
+    <None Remove="Plot\Tools\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\ScottPlot\ScottPlot.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Plot\" />
+  </ItemGroup>
+
+</Project>
