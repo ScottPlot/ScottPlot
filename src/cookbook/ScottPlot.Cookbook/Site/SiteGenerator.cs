@@ -54,7 +54,7 @@ namespace ScottPlot.Cookbook.Site
             string description = raw[1].Substring(2).Trim();
             string code = string.Join("<br>\n", raw.Skip(2));
             sb.AppendLine($"<div style='margin: 10px;'>&nbsp</div>");
-            sb.AppendLine($"<div><b>{title}</b></div>");
+            sb.AppendLine($"<div><b><a href='#{id}' name='{id}'>{title}</a></b></div>");
             sb.AppendLine($"<div><i>{description}</i></div>");
             sb.AppendLine($"<div style='display: inline-block; padding: 5px; margin: 20px; " +
                 "background-color: #f6f6f6; border: 1px solid #eeeeee; '>" +
