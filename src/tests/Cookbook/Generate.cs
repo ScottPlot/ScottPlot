@@ -11,24 +11,24 @@ namespace ScottPlotTests.Cookbook
     class Generate
     {
         const string SourceFolder = "../../../../cookbook/ScottPlot.Cookbook";
-        const string OutputFolder = "./recipes";
+        const string RecipeFolder = "./cookbook/source";
 
         [Test]
         public void Test_Cookbook_Generate()
         {
             // ensure clean output folder exists
-            if (!System.IO.Directory.Exists(OutputFolder))
-                System.IO.Directory.CreateDirectory(OutputFolder);
-            foreach (var fname in System.IO.Directory.GetFiles(OutputFolder))
+            if (!System.IO.Directory.Exists(RecipeFolder))
+                System.IO.Directory.CreateDirectory(RecipeFolder);
+            foreach (var fname in System.IO.Directory.GetFiles(RecipeFolder))
                 System.IO.File.Delete(fname);
 
             // create recipe folder
             var chef = new Chef();
-            chef.CreateCookbookImages(OutputFolder);
-            chef.CreateCookbookSource(SourceFolder, OutputFolder);
+            chef.CreateCookbookImages(RecipeFolder);
+            chef.CreateCookbookSource(SourceFolder, RecipeFolder);
 
             // start the cookbook website maker
-            var gen = new ScottPlot.Cookbook.Site.SiteGenerator(OutputFolder);
+            var gen = new ScottPlot.Cookbook.Site.SiteGenerator(RecipeFolder);
             var recipes = Reflection.GetRecipes();
 
             // single page of all examples
@@ -37,7 +37,6 @@ namespace ScottPlotTests.Cookbook
 
             // single page per category
             string[] categories = Reflection.GetRecipes().Select(x => x.Category).Distinct().ToArray();
-
             foreach (string category in categories)
             {
                 var categoryIDs = recipes.Where(x => x.Category == category).Select(x => x.ID).ToArray();
