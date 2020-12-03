@@ -29,14 +29,14 @@ namespace ScottPlotTests.Cookbook
 
             // start the cookbook website maker
             var gen = new ScottPlot.Cookbook.Site.SiteGenerator(RecipeFolder);
-            var recipes = Reflection.GetRecipes();
+            var recipes = Locate.GetRecipes();
 
             // single page of all examples
             string[] allIDs = recipes.Select(x => x.ID).ToArray();
             gen.MakeCookbookPage(allIDs, "All Cookbook Examples");
 
             // single page per category
-            string[] categories = Reflection.GetRecipes().Select(x => x.Category).Distinct().ToArray();
+            string[] categories = Locate.GetRecipes().Select(x => x.Category).Distinct().ToArray();
             foreach (string category in categories)
             {
                 var categoryIDs = recipes.Where(x => x.Category == category).Select(x => x.ID).ToArray();

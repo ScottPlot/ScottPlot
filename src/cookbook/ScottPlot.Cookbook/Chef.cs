@@ -31,7 +31,7 @@ namespace ScottPlot.Cookbook
             if (!Directory.Exists(outputPath))
                 throw new ArgumentException($"output path does not exist: {outputPath}");
 
-            var recipes = Reflection.GetRecipes();
+            var recipes = Locate.GetRecipes();
             Console.WriteLine($"Cooking {recipes.Length} recipes in: {outputPath}");
             foreach (var recipe in recipes)
             {
@@ -113,7 +113,7 @@ namespace ScottPlot.Cookbook
 
                     // read the file's source code for primary recipe components
                     string id = GetRecipeID(singleClassSourceCode);
-                    IRecipe recipe = Reflection.GetRecipe(id);
+                    IRecipe recipe = Locate.GetRecipe(id);
                     string source = $"var plt = new ScottPlot.Plot({Width}, {Height});\n" +
                                     GetRecipeSource(singleClassSourceCode, csFilePath) + "\n" +
                                     $"plt.SaveFig({id}{Extension});";

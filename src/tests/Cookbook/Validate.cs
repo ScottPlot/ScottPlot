@@ -14,7 +14,7 @@ namespace ScottPlotTests.Cookbook
         [Test]
         public void Test_CookbookRecipes_Exist()
         {
-            var recipes = ScottPlot.Cookbook.Reflection.GetRecipes();
+            var recipes = ScottPlot.Cookbook.Recipes.GetRecipes();
             Assert.IsNotEmpty(recipes);
 
             foreach (var recipe in recipes)
@@ -24,7 +24,7 @@ namespace ScottPlotTests.Cookbook
         [Test]
         public void Test_CookbookRecipes_AllHaveSourceCode()
         {
-            var recipes = ScottPlot.Cookbook.Reflection.GetRecipes();
+            var recipes = ScottPlot.Cookbook.Recipes.GetRecipes();
             var chef = new ScottPlot.Cookbook.Chef();
             var sources = chef.GetRecipeSources(SourceFolder);
 
@@ -36,7 +36,7 @@ namespace ScottPlotTests.Cookbook
         public void Test_CookbookRecipes_DescriptorsAreValid()
         {
             string allowedSpecialCharacters = " _'()[];.,";
-            foreach (var recipe in ScottPlot.Cookbook.Reflection.GetRecipes())
+            foreach (var recipe in ScottPlot.Cookbook.Recipes.GetRecipes())
             {
                 foreach (var c in recipe.Title + recipe.Description)
                 {
@@ -52,7 +52,7 @@ namespace ScottPlotTests.Cookbook
         public void Test_CookbookRecipes_IDsAreValid()
         {
             string allowedSpecialCharacters = "_";
-            foreach (var recipe in ScottPlot.Cookbook.Reflection.GetRecipes())
+            foreach (var recipe in ScottPlot.Cookbook.Recipes.GetRecipes())
             {
                 foreach (var c in recipe.ID.ToCharArray())
                 {
@@ -67,7 +67,7 @@ namespace ScottPlotTests.Cookbook
         [Test]
         public void Test_CookbookRecipes_IDsAreUnique()
         {
-            var recipes = ScottPlot.Cookbook.Reflection.GetRecipes();
+            var recipes = ScottPlot.Cookbook.Recipes.GetRecipes();
             string[] ids = recipes.Select(x => x.ID.ToLower()).ToArray();
 
             if (ids.Distinct().Count() < ids.Length)
@@ -77,7 +77,7 @@ namespace ScottPlotTests.Cookbook
         [Test]
         public void Test_CookbookRecipes_CategoriesRemainUniqueAfterSanitization()
         {
-            var recipes = ScottPlot.Cookbook.Reflection.GetRecipes();
+            var recipes = ScottPlot.Cookbook.Recipes.GetRecipes();
             int uniqueFull = recipes.Select(x => x.Category).Distinct().Count();
             int uniqueClean = recipes.Select(x => x.Category).Select(x => SiteGenerator.Sanitize(x)).Distinct().Count();
             Assert.AreEqual(uniqueClean, uniqueFull);

@@ -17,53 +17,54 @@ namespace ScottPlot.Demo.WinForms
         {
             InitializeComponent();
             pictureBox1.Dock = DockStyle.Fill;
-            LoadTreeWithDemos();
+            LoadTreeWithDemosNew();
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            treeView1.HideSelection = false;
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
+        private void Form1_Load(object sender, EventArgs e) { }
 
-        }
-
-        private void LoadTreeWithDemos()
+        private void LoadTreeWithDemosNew()
         {
-            foreach (DemoNodeItem majorItem in Reflection.GetPlotNodeItems())
+            treeView1.Nodes.Clear();
+            foreach (var dict in Cookbook.Locate.GetCategorizedRecipes())
             {
-                var majorNode = new TreeNode(majorItem.Header);
-                treeView1.Nodes.Add(majorNode);
-                foreach (DemoNodeItem minorItem in majorItem.Items)
+                string category = dict.Key;
+                Cookbook.IRecipe[] recipes = dict.Value;
+
+                TreeNode categoryNode = new TreeNode(category);
+                treeView1.Nodes.Add(categoryNode);
+
+                foreach (Cookbook.IRecipe recipe in recipes)
                 {
-                    var minorNode = new TreeNode(minorItem.Header);
-                    majorNode.Nodes.Add(minorNode);
-                    foreach (DemoNodeItem plotItem in minorItem.Items)
-                    {
-                        var plotNode = new TreeNode(plotItem.Header);
-                        plotNode.Tag = plotItem.Tag;
-                        minorNode.Nodes.Add(plotNode);
-                    }
+                    TreeNode recipeNode = new TreeNode(recipe.Title) { Tag = recipe.ID };
+                    categoryNode.Nodes.Add(recipeNode);
                 }
             }
-            treeView1.Nodes[1].Expand();
-            treeView1.Nodes[2].Expand();
-            treeView1.SelectedNode = treeView1.Nodes[0].Nodes[0].Nodes[0];
+
+            // expand and select the first example
+            treeView1.Nodes[0].Expand();
+            treeView1.SelectedNode = treeView1.Nodes[0].Nodes[0];
         }
 
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            string tag = treeView1.SelectedNode?.Tag?.ToString();
-            if (tag != null)
-                LoadDemo(tag);
+            TreeNode selectedNode = treeView1.SelectedNode;
+            if (selectedNode is null || selectedNode.Tag is null)
+                return;
+            LoadDemo(selectedNode.Tag.ToString());
         }
 
-        private void LoadDemo(string objectPath)
+        private void LoadDemo(string id)
         {
-            var demoPlot = Reflection.GetPlot(objectPath);
+            if (id is null)
+                return;
 
-            DemoNameLabel.Text = demoPlot.name;
-            sourceCodeGroupbox.Text = demoPlot.classPath.Replace("+", ".");
-            DescriptionTextbox.Text = (demoPlot.description is null) ? "no descriton provided..." : demoPlot.description;
-            sourceCodeTextbox.Text = demoPlot.GetSourceCode("../../../../../cookbook/ScottPlot.Demo/");
+            var demoPlot = Cookbook.Locate.GetRecipe(id);
+
+            DemoNameLabel.Text = demoPlot.Title;
+            DescriptionTextbox.Text = demoPlot.Description;
+            sourceCodeTextbox.Text = Cookbook.Locate.RecipeSourceCode(id);
 
             formsPlot1.Reset();
 
@@ -72,24 +73,15 @@ namespace ScottPlot.Demo.WinForms
                 formsPlot1.Visible = false;
                 pictureBox1.Visible = true;
                 pictureBox1.Image = bmpPlot.Render(800, 600);
-                formsPlot1_Rendered(null, null);
             }
             else
             {
                 formsPlot1.Visible = true;
                 pictureBox1.Visible = false;
 
-                demoPlot.Render(formsPlot1.plt);
+                demoPlot.ExecuteRecipe(formsPlot1.plt);
                 formsPlot1.Render();
             }
-
-        }
-
-        private void formsPlot1_Rendered(object sender, EventArgs e)
-        {
-            tbBenchmark.Text = formsPlot1.Visible ?
-                formsPlot1.plt.GetSettings(false).BenchmarkMessage.Text :
-                "This plot is a non-interactive Bitmap";
         }
     }
 }

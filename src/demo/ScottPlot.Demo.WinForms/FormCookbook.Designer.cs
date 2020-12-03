@@ -133,7 +133,6 @@
             this.formsPlot1.Name = "formsPlot1";
             this.formsPlot1.Size = new System.Drawing.Size(693, 378);
             this.formsPlot1.TabIndex = 0;
-            this.formsPlot1.Rendered += new System.EventHandler(this.formsPlot1_Rendered);
             // 
             // gbPlot
             // 
