@@ -53,12 +53,14 @@ namespace ScottPlot.Cookbook.Site
             string title = raw[0].Substring(2).Trim();
             string description = raw[1].Substring(2).Trim();
             string code = string.Join("<br>\n", raw.Skip(2));
+            sb.AppendLine($"<div style='margin: 10px;'>&nbsp</div>");
             sb.AppendLine($"<div><b>{title}</b></div>");
             sb.AppendLine($"<div><i>{description}</i></div>");
-            sb.AppendLine($"<div style='display: inline-block; background-color: #efefef; padding: 5px; margin: 10px;'>" +
+            sb.AppendLine($"<div style='display: inline-block; padding: 5px; margin: 20px; " +
+                "background-color: #f6f6f6; border: 1px solid #eeeeee; '>" +
                 $"<code class='prettyprint cs'>{code}</code></div>");
             sb.AppendLine($"<div><img src='source/{imageUrl}' /></div>");
-            sb.AppendLine($"<hr>");
+            sb.AppendLine($"<div style='margin: 20px;'>&nbsp</div>");
             return sb.ToString();
         }
 
