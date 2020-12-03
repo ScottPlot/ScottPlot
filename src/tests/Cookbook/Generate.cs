@@ -12,28 +12,22 @@ namespace ScottPlotTests.Cookbook
         const string SourceFolder = "../../../../cookbook/ScottPlot.Cookbook";
         const string OutputFolder = "./recipes";
 
-        [OneTimeSetUp]
-        public void EmptyOutputFolder()
+        [Test]
+        public void Test_Cookbook_Generate()
         {
+            // ensure clean output folder exists
             if (!System.IO.Directory.Exists(OutputFolder))
                 System.IO.Directory.CreateDirectory(OutputFolder);
-
             foreach (var fname in System.IO.Directory.GetFiles(OutputFolder))
                 System.IO.File.Delete(fname);
-        }
 
-        [Test]
-        public void Test_Cookbook_GenerateImages()
-        {
+            // create recipe folder
             var chef = new ScottPlot.Cookbook.Chef();
             chef.CreateCookbookImages(OutputFolder);
-        }
-
-        [Test]
-        public void Test_Cookbook_GenerateSource()
-        {
-            var chef = new ScottPlot.Cookbook.Chef();
             chef.CreateCookbookSource(SourceFolder, OutputFolder);
+
+            // create website
+            var gen = new ScottPlot.Cookbook.Site.SiteGenerator(OutputFolder);
         }
     }
 }

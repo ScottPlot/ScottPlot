@@ -15,6 +15,7 @@ namespace ScottPlot.Cookbook
         public int Width = 600;
         public int Height = 400;
         public string Extension = ".png";
+        string ExecutionMethod = "public void ExecuteRecipe";
 
         public Chef()
         {
@@ -103,10 +104,18 @@ namespace ScottPlot.Cookbook
 
                 foreach (string singleClassSourceCode in sourceCodeByClass)
                 {
+                    // ensure functions are at the correct indentation level
+                    int executionMethodCount = Regex.Matches(singleClassSourceCode, ExecutionMethod).Count;
+                    string indentedMethod = "\n        " + ExecutionMethod;
+                    int indentedMethodCount = Regex.Matches(singleClassSourceCode, indentedMethod).Count;
+                    if (executionMethodCount != indentedMethodCount)
+                        throw new InvalidOperationException($"recipe structure error in: {csFilePath}");
+
+                    // read the file's source code for primary recipe components
                     string id = GetRecipeID(singleClassSourceCode);
                     IRecipe recipe = Reflection.GetRecipe(id);
                     string source = $"var plt = new ScottPlot.Plot({Width}, {Height});\n" +
-                                    GetRecipeSource(singleClassSourceCode) + "\n" +
+                                    GetRecipeSource(singleClassSourceCode, csFilePath) + "\n" +
                                     $"plt.SaveFig({id}{Extension});";
 
                     sources.Add((recipe.ID, recipe.Title, recipe.Description, source));
@@ -142,19 +151,18 @@ namespace ScottPlot.Cookbook
         /// <summary>
         /// Given source code for a recipe class, return its prettified execution source code
         /// </summary>
-        private string GetRecipeSource(string classSource)
+        private string GetRecipeSource(string classSource, string filePath)
         {
-            string executionMethod = "public void ExecuteRecipe";
-            int executionMethodCount = Regex.Matches(classSource, executionMethod).Count;
+            int executionMethodCount = Regex.Matches(classSource, ExecutionMethod).Count;
             if (executionMethodCount == 0)
-                throw new InvalidOperationException("recipe does not contain execution method");
+                throw new InvalidOperationException($"cannot located execution method in {filePath}");
             if (executionMethodCount > 1)
-                throw new InvalidOperationException("recipe has more than one execution method");
+                throw new InvalidOperationException($"recipe has more than one execution method in {filePath}");
 
             string[] lines = classSource.Split('\n');
 
             int indexOfRecipeStart = Enumerable.Range(0, lines.Length)
-                                               .Where(x => lines[x].Contains(executionMethod))
+                                               .Where(x => lines[x].Contains(ExecutionMethod))
                                                .First();
 
             string twelveSpaces = string.Concat(Enumerable.Repeat(" ", 12));
