@@ -6,7 +6,6 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
     {
         public string Category => "Plottable: Arrow";
         public string ID => "plottable_arrow_quickstart";
-        public string PlotType => "Arrow";
         public string Title => "Drawing Arrows";
         public string Description => "Arrows point to specific locations on the plot. " +
             "Arrows are actually just scatter plots with two points and an arrowhead.";

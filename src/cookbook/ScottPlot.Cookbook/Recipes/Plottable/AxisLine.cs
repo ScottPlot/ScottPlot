@@ -9,7 +9,6 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
     {
         public string Category => "Plottable: Axis Line";
         public string ID => "axisLine_basics";
-        public string PlotType => "Axis Line";
         public string Title => "Axis Line Basics";
         public string Description =>
             "Horizontal and vertical lines can be placed using HLine() and VLine(). " +
@@ -38,7 +37,6 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
     {
         public string Category => "Plottable: Axis Line";
         public string ID => "axisLine_draggable";
-        public string PlotType => "Axis Line";
         public string Title => "Draggable Axis Lines";
         public string Description => "Use arguments to enable draggable lines (with optional limits).";
 

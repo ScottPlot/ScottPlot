@@ -9,7 +9,6 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
     {
         public string Category => "Plottable: Annotation";
         public string ID => "annotation_quickstart";
-        public string PlotType => "Annotation";
         public string Title => "Annotate the Figure";
         public string Description =>
             "Annotations are labels fixed to the figure (not the data area) " +
