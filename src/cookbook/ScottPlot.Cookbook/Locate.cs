@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Text;
 
 namespace ScottPlot.Cookbook
 {
@@ -44,7 +46,26 @@ namespace ScottPlot.Cookbook
 
         public static string RecipeSourceCode(string id)
         {
-            return $"fake source for {id}";
+            string[] possiblePaths = {
+                "cookbook/source", // same folder as this EXE
+                "../../../../../tests/bin/Debug/net5.0/cookbook/source", // tests output if we are running from VS
+            };
+
+            StringBuilder sb = new StringBuilder();
+            foreach (string possiblePath in possiblePaths)
+            {
+                string recipeSourceFile = System.IO.Path.Combine(possiblePath, id + ".cs");
+                recipeSourceFile = System.IO.Path.GetFullPath(recipeSourceFile);
+                sb.AppendLine($"Looking for: {recipeSourceFile}");
+                if (System.IO.File.Exists(recipeSourceFile))
+                {
+                    var codeLines = System.IO.File.ReadLines(recipeSourceFile).Skip(2);
+                    var codeText = string.Join(Environment.NewLine, codeLines);
+                    return codeText;
+                }
+            }
+            Debug.WriteLine(sb.ToString());
+            throw new InvalidOperationException("could not locate cookbook source code");
         }
     }
 }
