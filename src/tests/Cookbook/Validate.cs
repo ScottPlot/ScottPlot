@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using ScottPlot.Cookbook.Site;
 using System;
 using System.Linq;
 using System.Text;
@@ -71,6 +72,15 @@ namespace ScottPlotTests.Cookbook
 
             if (ids.Distinct().Count() < ids.Length)
                 Assert.Fail("all lowercase recipe IDs must be unique");
+        }
+
+        [Test]
+        public void Test_CookbookRecipes_CategoriesRemainUniqueAfterSanitization()
+        {
+            var recipes = ScottPlot.Cookbook.Reflection.GetRecipes();
+            int uniqueFull = recipes.Select(x => x.Category).Distinct().Count();
+            int uniqueClean = recipes.Select(x => x.Category).Select(x => SiteGenerator.Sanitize(x)).Distinct().Count();
+            Assert.AreEqual(uniqueClean, uniqueFull);
         }
     }
 }
