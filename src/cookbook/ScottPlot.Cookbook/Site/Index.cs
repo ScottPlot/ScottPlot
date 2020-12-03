@@ -19,6 +19,11 @@ namespace ScottPlot.Cookbook.Site
             SB.AppendLine($"<div style='margin-top: 20px;'>{html}</div>");
         }
 
+        public void AddHTML(string html)
+        {
+            SB.AppendLine($"<div style='margin-top: 20px;'>{html}</div>");
+        }
+
         public void AddRecipeGroup(string groupName, IRecipe[] recipes)
         {
             // section header 

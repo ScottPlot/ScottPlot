@@ -71,7 +71,7 @@ namespace ScottPlot
             isDesignerMode = Process.GetCurrentProcess().ProcessName == "devenv";
             lblTitle.Visible = isDesignerMode;
             lblVersion.Visible = isDesignerMode;
-            lblVersion.Text = Tools.GetVersionString();
+            lblVersion.Text = Plot.Version;
             pbPlot.BackColor = ColorTranslator.FromHtml("#003366");
             lblTitle.BackColor = ColorTranslator.FromHtml("#003366");
             lblVersion.BackColor = ColorTranslator.FromHtml("#003366");

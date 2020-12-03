@@ -12,7 +12,7 @@ namespace ScottPlot.Avalonia
         public HelpWindow()
         {
             this.InitializeComponent();
-            this.Find<TextBlock>("VersionLabel").Text = Tools.GetVersionString();
+            this.Find<TextBlock>("VersionLabel").Text = Plot.Version;
 
             StringBuilder msg = new StringBuilder();
             msg.AppendLine("Left-click-drag: pan");

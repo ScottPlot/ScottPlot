@@ -64,6 +64,9 @@ namespace ScottPlotTests.Cookbook
             // start building a HTML index
             var index = new ScottPlot.Cookbook.Site.Index();
 
+            index.AddHTML("<div style='font-size: 300%; font-weight: bold'>ScottPlot Cookbook</div>");
+            index.AddHTML($"<div style='font-size: 150%; font-style: italic'>Version {ScottPlot.Plot.Version}</div>");
+
             // start with categories matching the GUI demo application
             foreach (var stuff in Locate.GetCategorizedRecipes())
             {

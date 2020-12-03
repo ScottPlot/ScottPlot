@@ -79,7 +79,7 @@ namespace ScottPlot
 
         private void InitializeScottPlot()
         {
-            lblVersion.Content = Tools.GetVersionString();
+            lblVersion.Content = Plot.Version;
             isDesignerMode = DesignerProperties.GetIsInDesignMode(this);
 
             settings = plt.GetSettings(showWarning: false);

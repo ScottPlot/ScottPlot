@@ -33,6 +33,11 @@ namespace ScottPlot
             $"with {settings.Plottables.Count:n0} plottables";
 
         /// <summary>
+        /// ScottPlot version in the format "1.2.3" ("1.2.3-beta" for pre-releases)
+        /// </summary>
+        public static string Version => typeof(Plot).Assembly.GetName().Version.ToString() + "-beta";
+
+        /// <summary>
         /// Return a new Plot with all the same Plottables (and some of the styles) of this one.
         /// </summary>
         public Plot Copy()

@@ -29,7 +29,7 @@ namespace ScottPlot.WinForms
 
             if (IsDesignerMode)
             {
-                MainPlot.Title($"ScottPlot {Tools.GetVersionString()}");
+                MainPlot.Title($"ScottPlot {Plot.Version}");
                 MainPlot.PlotSignal(DataGen.Sin(51));
                 MainPlot.PlotSignal(DataGen.Cos(51));
                 MainPlot.Legend();
