@@ -24,13 +24,7 @@
         </StackPanel>
 
         <Border Grid.Column="0" Grid.Row="1" Margin="5" BorderThickness="2" BorderBrush="LightGray" Background="LightGray" >
-            <DockPanel>
-                <Label x:Name="BenchmarkLabel" Content="benchmark info" DockPanel.Dock="Top" Foreground="Gray" />
-                <Grid>
-                    <ScottPlot:WpfPlot Name="wpfPlot1" Rendered="WpfPlot1_Rendered"/>
-                    <Image Name="imagePlot"/>
-                </Grid>
-            </DockPanel>
+            <ScottPlot:WpfPlot Name="wpfPlot1"/>
         </Border>
 
         <Border Grid.Column="0" Grid.Row="2" Margin="5" BorderThickness="2" BorderBrush="#2a3a56" Background="#2a3a56" >

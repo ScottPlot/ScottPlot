@@ -28,24 +28,31 @@ namespace ScottPlot.Demo.WPF
 
         private void DemoSelected(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            var selectedDemoItem = (DemoNodeItem)DemoTreeview.SelectedItem;
-            if (selectedDemoItem.Tag != null)
-            {
-                DemoPlotControl1.Visibility = Visibility.Visible;
-                AboutControl.Visibility = Visibility.Hidden;
-                DemoPlotControl1.LoadDemo(selectedDemoItem.Tag);
-            }
-            else
-            {
-                DemoPlotControl1.Visibility = Visibility.Hidden;
-                AboutControl.Visibility = Visibility.Visible;
-            }
+            TreeViewItem sel = (TreeViewItem)DemoTreeview.SelectedItem;
+            DemoPlotControl1.LoadDemo(sel.Tag.ToString());
         }
 
         private void LoadTreeWithDemos()
         {
-            DemoTreeview.ItemsSource = Reflection.GetPlotNodeItems();
+            DemoTreeview.Items.Clear();
+            foreach (var dict in Cookbook.Locate.GetCategorizedRecipes())
+            {
+                string category = dict.Key;
+                Cookbook.IRecipe[] recipes = dict.Value;
+
+                TreeViewItem categoryNode = new TreeViewItem() { Header = category };
+                DemoTreeview.Items.Add(categoryNode);
+
+                foreach (Cookbook.IRecipe recipe in recipes)
+                {
+                    TreeViewItem recipeNode = new TreeViewItem() { Header = recipe.Title, Tag = recipe.ID };
+                    categoryNode.Items.Add(recipeNode);
+                }
+            }
+
             DemoTreeview.Focus();
+            ((TreeViewItem)DemoTreeview.Items[0]).IsExpanded = true;
+            ((TreeViewItem)((TreeViewItem)DemoTreeview.Items[0]).Items[0]).IsSelected = true;
         }
     }
 }
