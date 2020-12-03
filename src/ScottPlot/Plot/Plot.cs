@@ -35,7 +35,15 @@ namespace ScottPlot
         /// <summary>
         /// ScottPlot version in the format "1.2.3" ("1.2.3-beta" for pre-releases)
         /// </summary>
-        public static string Version => typeof(Plot).Assembly.GetName().Version.ToString() + "-beta";
+        public static string Version
+        {
+            get
+            {
+                Version v = typeof(Plot).Assembly.GetName().Version;
+                string versionString = $"{v.Major}.{v.Minor}.{v.Build}-beta";
+                return versionString;
+            }
+        }
 
         /// <summary>
         /// Return a new Plot with all the same Plottables (and some of the styles) of this one.
