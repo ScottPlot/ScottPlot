@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using ScottPlot.Cookbook;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,12 +23,35 @@ namespace ScottPlotTests.Cookbook
                 System.IO.File.Delete(fname);
 
             // create recipe folder
-            var chef = new ScottPlot.Cookbook.Chef();
+            var chef = new Chef();
             chef.CreateCookbookImages(OutputFolder);
             chef.CreateCookbookSource(SourceFolder, OutputFolder);
 
-            // create website
+            // start the cookbook website maker
             var gen = new ScottPlot.Cookbook.Site.SiteGenerator(OutputFolder);
+            var recipes = Reflection.GetRecipes();
+
+            // single page of all examples
+            string[] allIDs = recipes.Select(x => x.ID).ToArray();
+            gen.MakeCookbookPage(allIDs, "All Cookbook Examples");
+
+            // single page for each plottable type
+            var plottableTypes = Reflection.GetRecipes()
+                                           .Where(x => x is IPlottableRecipe)
+                                           .Select(x => (IPlottableRecipe)x)
+                                           .Select(x => x.PlotType)
+                                           .Distinct()
+                                           .ToArray();
+
+            foreach (var plottableType in plottableTypes)
+            {
+                var thisPlotTypeIDs = recipes.Where(x => x is IPlottableRecipe)
+                                             .Where(x => ((IPlottableRecipe)x).PlotType == plottableType)
+                                             .Select(x => x.ID)
+                                             .ToArray();
+
+                gen.MakeCookbookPage(thisPlotTypeIDs, $"Plottable: {plottableType}");
+            }
         }
     }
 }
