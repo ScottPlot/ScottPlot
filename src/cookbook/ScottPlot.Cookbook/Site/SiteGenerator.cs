@@ -14,18 +14,18 @@ namespace ScottPlot.Cookbook.Site
         readonly string ImageExtension = ".png";
         readonly string CodeExtension = ".cs";
         readonly string RecipeFolder;
+        readonly string OutputFolder;
 
-        public SiteGenerator(string recipeFolder)
+        public SiteGenerator(string sourceFolder)
         {
-            if (!Directory.Exists(recipeFolder))
-                throw new ArgumentException("recipe folder not found");
-            RecipeFolder = Path.GetFullPath(recipeFolder);
+            RecipeFolder = Path.GetFullPath(sourceFolder);
+            OutputFolder = Path.GetDirectoryName(RecipeFolder);
         }
 
         /// <summary>
         /// Sanitize text to a url-friendly string
         /// </summary>
-        public string Sanitize(string s) => s.ToLower().Replace(" ", "_").Replace(":", "");
+        public static string Sanitize(string s) => s.ToLower().Replace(" ", "_").Replace(":", "");
 
         /// <summary>
         /// Create a webpage containing just the recipe IDs specified
@@ -36,7 +36,7 @@ namespace ScottPlot.Cookbook.Site
             foreach (string id in ids)
                 sb.AppendLine(GetHtmlRecipe(RecipeFolder, id));
             string html = WrapInBody(sb.ToString(), title);
-            string htmlFilePath = Path.Combine(RecipeFolder, Sanitize(title) + ".html");
+            string htmlFilePath = Path.Combine(OutputFolder, Sanitize(title) + ".html");
             File.WriteAllText(htmlFilePath, html);
             Console.WriteLine($"Saved: {htmlFilePath}");
         }
@@ -56,8 +56,8 @@ namespace ScottPlot.Cookbook.Site
             sb.AppendLine($"<div><b>{title}</b></div>");
             sb.AppendLine($"<div><i>{description}</i></div>");
             sb.AppendLine($"<div style='display: inline-block; background-color: #efefef; padding: 5px; margin: 10px;'>" +
-                $"<code>{code}</code></div>");
-            sb.AppendLine($"<div><img src='{imageUrl}' /></div>");
+                $"<code class='prettyprint cs'>{code}</code></div>");
+            sb.AppendLine($"<div><img src='source/{imageUrl}' /></div>");
             sb.AppendLine($"<hr>");
             return sb.ToString();
         }
@@ -68,7 +68,9 @@ namespace ScottPlot.Cookbook.Site
         private string WrapInBody(string content, string title)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("<html><body>");
+            sb.AppendLine("<html><head>");
+            sb.AppendLine("<script src='https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js'></script>");
+            sb.AppendLine("</head><body>");
             sb.AppendLine($"<h1>{title}</h1>");
             sb.AppendLine(content);
             sb.AppendLine("</body></html>");
