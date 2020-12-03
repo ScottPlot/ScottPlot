@@ -26,7 +26,7 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
     {
         public string Category => "Axis";
         public string ID => "grid_custom";
-        public string Title => "Cursomize Grid";
+        public string Title => "Customize Grid Style";
         public string Description => "Grid lines can be extensively customized using various configuration methods.";
 
         public void ExecuteRecipe(Plot plt)
