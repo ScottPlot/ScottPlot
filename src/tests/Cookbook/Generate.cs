@@ -76,7 +76,7 @@ namespace ScottPlotTests.Cookbook
             }
 
             // create a final section for all recipes
-            index.AddDiv("<a href='all_cookbook_examples.html'>view all Cookbook recipes on one page</a>");
+            index.AddDiv("<a href='all_cookbook_recipes.html' style='font-size: 200%;'>view all Cookbook recipes on one page</a>");
 
             // save master index
             string indexFolder = System.IO.Path.GetDirectoryName(RecipeFolder);
