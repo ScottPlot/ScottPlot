@@ -7,6 +7,7 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
 {
     class GridDisable : IRecipe
     {
+        public string Category => "Axis";
         public string ID => "grid_disable";
         public string Title => "Disable Grid";
         public string Description => "Visibility of grid lines can be controlled for each axis.";
@@ -23,6 +24,7 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
 
     class GridConfigure : IRecipe
     {
+        public string Category => "Axis";
         public string ID => "grid_custom";
         public string Title => "Cursomize Grid";
         public string Description => "Grid lines can be extensively customized using various configuration methods.";

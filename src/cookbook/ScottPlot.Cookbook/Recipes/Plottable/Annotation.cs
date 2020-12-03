@@ -5,8 +5,9 @@ using System.Text;
 
 namespace ScottPlot.Cookbook.Recipes.Plottable
 {
-    public class Annotation : IRecipe, IPlottableRecipe
+    public class Annotation : IRecipe
     {
+        public string Category => "Plottable: Annotation";
         public string ID => "annotation_quickstart";
         public string PlotType => "Annotation";
         public string Title => "Annotate the Figure";

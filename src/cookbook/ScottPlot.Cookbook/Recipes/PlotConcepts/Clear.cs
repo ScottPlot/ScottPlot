@@ -7,6 +7,7 @@ namespace ScottPlot.Cookbook.Recipes.PlotConcepts
 {
     class Clear : IRecipe
     {
+        public string Category => "Add and Remove Plottables";
         public string ID => "plot_clear";
         public string Title => "Clear plottables from the plot";
         public string Description =>

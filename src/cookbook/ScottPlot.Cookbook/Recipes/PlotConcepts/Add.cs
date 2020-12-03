@@ -7,6 +7,7 @@ namespace ScottPlot.Cookbook.Recipes.PlotConcepts
 {
     class Add : IRecipe
     {
+        public string Category => "Plottables";
         public string ID => "plot_add";
         public string Title => "Manually Add a Plottable to the Plot";
         public string Description =>

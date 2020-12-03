@@ -25,7 +25,7 @@ namespace ScottPlot.Cookbook.Site
         /// <summary>
         /// Sanitize text to a url-friendly string
         /// </summary>
-        private string Sanitize(string s) => s.ToLower().Replace(" ", "_").Replace(":", "");
+        public string Sanitize(string s) => s.ToLower().Replace(" ", "_").Replace(":", "");
 
         /// <summary>
         /// Create a webpage containing just the recipe IDs specified

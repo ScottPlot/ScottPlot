@@ -8,6 +8,7 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
 {
     class AxisColor : IRecipe
     {
+        public string Category => "Ticks";
         public string ID => "Ticks_DateTime";
         public string Title => "Plotting DateTime Data";
         public string Description =>

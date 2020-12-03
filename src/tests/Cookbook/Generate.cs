@@ -35,22 +35,13 @@ namespace ScottPlotTests.Cookbook
             string[] allIDs = recipes.Select(x => x.ID).ToArray();
             gen.MakeCookbookPage(allIDs, "All Cookbook Examples");
 
-            // single page for each plottable type
-            var plottableTypes = Reflection.GetRecipes()
-                                           .Where(x => x is IPlottableRecipe)
-                                           .Select(x => (IPlottableRecipe)x)
-                                           .Select(x => x.PlotType)
-                                           .Distinct()
-                                           .ToArray();
+            // single page per category
+            string[] categories = Reflection.GetRecipes().Select(x => x.Category).Distinct().ToArray();
 
-            foreach (var plottableType in plottableTypes)
+            foreach (string category in categories)
             {
-                var thisPlotTypeIDs = recipes.Where(x => x is IPlottableRecipe)
-                                             .Where(x => ((IPlottableRecipe)x).PlotType == plottableType)
-                                             .Select(x => x.ID)
-                                             .ToArray();
-
-                gen.MakeCookbookPage(thisPlotTypeIDs, $"Plottable: {plottableType}");
+                var categoryIDs = recipes.Where(x => x.Category == category).Select(x => x.ID).ToArray();
+                gen.MakeCookbookPage(categoryIDs, category);
             }
         }
     }

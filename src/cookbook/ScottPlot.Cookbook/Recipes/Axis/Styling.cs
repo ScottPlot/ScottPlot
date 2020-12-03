@@ -7,7 +7,8 @@ namespace ScottPlot.Cookbook.Recipes.Axis
 {
     class AxisLabel : IRecipe
     {
-        public string ID => "Axis_Label";
+        public string ID => "Axis_label";
+        public string Category => "Axis";
         public string Title => "Axis labels";
         public string Description => "Axis labels can be individually customized.";
 
@@ -31,6 +32,7 @@ namespace ScottPlot.Cookbook.Recipes.Axis
     class AxisColor : IRecipe
     {
         public string ID => "Axis_color";
+        public string Category => "Axis";
         public string Title => "Axis color";
         public string Description =>
             "An axis has a label, tick lines, tick marks, tick mark labels, and a line along its edge. " +

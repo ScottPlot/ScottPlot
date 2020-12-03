@@ -2,8 +2,9 @@
 
 namespace ScottPlot.Cookbook.Recipes.Plottable
 {
-    public class Arrow : IRecipe, IPlottableRecipe
+    public class Arrow : IRecipe
     {
+        public string Category => "Plottable: Arrow";
         public string ID => "plottable_arrow_quickstart";
         public string PlotType => "Arrow";
         public string Title => "Drawing Arrows";

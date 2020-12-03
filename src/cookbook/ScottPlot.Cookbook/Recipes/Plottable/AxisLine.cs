@@ -5,8 +5,9 @@ using System.Text;
 
 namespace ScottPlot.Cookbook.Recipes.Plottable
 {
-    public class AxisLine : IRecipe, IPlottableRecipe
+    public class AxisLine : IRecipe
     {
+        public string Category => "Plottable: Axis Line";
         public string ID => "axisLine_basics";
         public string PlotType => "Axis Line";
         public string Title => "Axis Line Basics";
@@ -33,8 +34,9 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
-    public class Draggable : IRecipe, IPlottableRecipe
+    public class Draggable : IRecipe
     {
+        public string Category => "Plottable: Axis Line";
         public string ID => "axisLine_draggable";
         public string PlotType => "Axis Line";
         public string Title => "Draggable Axis Lines";
