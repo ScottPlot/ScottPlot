@@ -35,7 +35,7 @@ namespace ScottPlotTests.Cookbook
         [Test]
         public void Test_CookbookRecipes_DescriptorsAreValid()
         {
-            string allowedSpecialCharacters = " _'()[];.,";
+            string allowedSpecialCharacters = " _'()[];.,/";
             foreach (var recipe in ScottPlot.Cookbook.Locate.GetRecipes())
             {
                 foreach (var c in recipe.Title + recipe.Description)
