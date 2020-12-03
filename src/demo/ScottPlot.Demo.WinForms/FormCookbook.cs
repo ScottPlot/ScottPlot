@@ -1,12 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ScottPlot.Demo.WinForms
@@ -16,7 +8,6 @@ namespace ScottPlot.Demo.WinForms
         public FormCookbook()
         {
             InitializeComponent();
-            pictureBox1.Dock = DockStyle.Fill;
             LoadTreeWithDemosNew();
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
             treeView1.HideSelection = false;
@@ -60,28 +51,14 @@ namespace ScottPlot.Demo.WinForms
             if (id is null)
                 return;
 
-            var demoPlot = Cookbook.Locate.GetRecipe(id);
-
-            DemoNameLabel.Text = demoPlot.Title;
-            DescriptionTextbox.Text = demoPlot.Description;
+            var recipe = Cookbook.Locate.GetRecipe(id);
+            DemoNameLabel.Text = recipe.Title;
+            DescriptionTextbox.Text = recipe.Description;
             sourceCodeTextbox.Text = Cookbook.Locate.RecipeSourceCode(id);
 
             formsPlot1.Reset();
-
-            if (demoPlot is IRecipeNonInteractive bmpPlot)
-            {
-                formsPlot1.Visible = false;
-                pictureBox1.Visible = true;
-                pictureBox1.Image = bmpPlot.Render(800, 600);
-            }
-            else
-            {
-                formsPlot1.Visible = true;
-                pictureBox1.Visible = false;
-
-                demoPlot.ExecuteRecipe(formsPlot1.plt);
-                formsPlot1.Render();
-            }
+            recipe.ExecuteRecipe(formsPlot1.plt);
+            formsPlot1.Render();
         }
     }
 }
