@@ -28,15 +28,21 @@ namespace ScottPlot.Cookbook.Site
         public static string Sanitize(string s) => s.ToLower().Replace(" ", "_").Replace(":", "");
 
         /// <summary>
-        /// Create a webpage containing just the recipe IDs specified
+        /// Sanitize text to a url-friendly string
         /// </summary>
-        public void MakeCookbookPage(string[] ids, string title)
+        public static string[] Sanitize(string[] s) => s.Select(x => Sanitize(x)).ToArray();
+
+        /// <summary>
+        /// Create a webpage containing just the recipe IDs specified and return its filename
+        /// </summary>
+        public void MakeCookbookPage(IRecipe[] recipes, string title)
         {
             StringBuilder sb = new StringBuilder();
-            foreach (string id in ids)
-                sb.AppendLine(GetHtmlRecipe(RecipeFolder, id));
+            foreach (IRecipe recipe in recipes)
+                sb.AppendLine(GetHtmlRecipe(RecipeFolder, recipe.ID));
             string html = WrapInBody(sb.ToString(), title);
-            string htmlFilePath = Path.Combine(OutputFolder, Sanitize(title) + ".html");
+            string htmlFileName = Sanitize(title) + ".html";
+            string htmlFilePath = Path.Combine(OutputFolder, htmlFileName);
             File.WriteAllText(htmlFilePath, html);
             Console.WriteLine($"Saved: {htmlFilePath}");
         }
