@@ -3,25 +3,28 @@
     public interface IRecipe
     {
         /// <summary>
-        /// Filename of the example image and source code (must be unique)
+        /// A unique identifier for each recipe. This becomes the filename and URL anchor for this example.
         /// </summary>
         string ID { get; }
 
         /// <summary>
-        /// The recipes with the same category appear on the same cookbook page
+        /// Every category gets its own page in the cookbook and appears as a top-level node in the demo application.
         /// </summary>
         string Category { get; }
 
         /// <summary>
-        /// Heading for the recipe (as short as possible)
+        /// The heading for the recipe should be as short as possible.
         /// </summary>
         string Title { get; }
 
         /// <summary>
-        /// Description has no word limit
+        /// The description for the recipe has no size limit. Line breaks are permitted.
         /// </summary>
         string Description { get; }
 
+        /// <summary>
+        /// The content of your recipe goes here. Assume the plot coming in is a new, clean plot.
+        /// </summary>
         void ExecuteRecipe(Plot plt);
     }
 }
