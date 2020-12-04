@@ -71,7 +71,7 @@ namespace ScottPlotTests.Cookbook
             {
                 var categoryPage = new ScottPlot.Cookbook.Site.RecipesPage(CookbookFolder);
                 categoryPage.AddRecipiesFromCategory(category);
-                categoryPage.SaveAs(category, category + " Recipes");
+                categoryPage.SaveAs(category, category);
             }
 
             var allPage = new ScottPlot.Cookbook.Site.RecipesPage(CookbookFolder);
@@ -83,7 +83,7 @@ namespace ScottPlotTests.Cookbook
         {
             var index = new ScottPlot.Cookbook.Site.IndexPage(CookbookFolder);
             index.AddLinksToRecipes();
-            index.SaveAs("index.html", "ScottPlot Cookbook");
+            index.SaveAs("index.html", null);
         }
     }
 }

@@ -19,15 +19,32 @@ namespace ScottPlot.Cookbook.Site
         public Page(string cookbookSiteFolder)
         {
             SiteFolder = Path.GetFullPath(cookbookSiteFolder);
+
+            DivStart("messageBox");
+            AddHTML($"<br>- You are viewing the <a href='./'>ScottPlot {Plot.Version} Cookbook</a>");
+            AddHTML($"<br>- Newer versions of ScottPlot may be available");
+            AddHTML($"<br>- Additional documentation can be found on the <a href='https://swharden.com/scottplot'>ScottPlot Website</a>");
+            AddHTML($"<br>- If you enjoy ScottPlot <a href='https://github.com/swharden/scottplot'>give us a star</a>!");
+            DivEnd();
         }
 
         public static string Sanitize(string s) => s.ToLower().Replace(" ", "_").Replace(":", "");
-
         public static string[] Sanitize(string[] s) => s.Select(x => Sanitize(x)).ToArray();
-
         public void AddDiv(string html) => SB.AppendLine($"<div>{html}</div>");
-
+        public void AddDiv(string html, string divClass) => SB.AppendLine($"<div class='{divClass}'>{html}</div>");
         public void AddHTML(string html) => SB.AppendLine(html);
+        public void DivStart(string divClass) => SB.AppendLine($"<div class='{divClass}'>");
+        public void DivEnd() => SB.AppendLine("</div>");
+        public void UlStart() => SB.AppendLine($"<ul>");
+        public void UlEnd() => SB.AppendLine("</ul>");
+        public void Li(string html) => SB.AppendLine($"<li>{html}</li>");
+
+        public void AddCode(string code)
+        {
+            DivStart("codeBlock");
+            SB.AppendLine($"<code class='prettyprint cs'>{code}</code>");
+            DivEnd();
+        }
 
         public void SaveAs(string fileName, string title)
         {
@@ -42,13 +59,23 @@ namespace ScottPlot.Cookbook.Site
 
         private string WrapInBody(string content, string title)
         {
+            string pageTitle = string.IsNullOrWhiteSpace(title) ?
+                "ScottPlot Cookbook" :
+                $"ScottPlot Cookbook: {title}";
+
+            string htmlTitle = string.IsNullOrWhiteSpace(title) ?
+                $"<a href='./'>ScottPlot Cookbook</a>" :
+                $"<a href='./'>ScottPlot Cookbook</a><br>{title}";
+
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("<html><head>");
+            sb.AppendLine($"<title>{pageTitle}</title>");
+            sb.AppendLine("<link rel='stylesheet' type='text/css' href='style.css'>");
             sb.AppendLine("<script src='https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js'></script>");
-            sb.AppendLine("</head><body>");
-            sb.AppendLine($"<h1>{title}</h1>");
+            sb.AppendLine("</head><body><div class='content'>");
+            sb.AppendLine($"<div class='title'>{htmlTitle}</div>");
             sb.AppendLine(content);
-            sb.AppendLine("</body></html>");
+            sb.AppendLine("&nbsp;</div></body></html>");
             return sb.ToString();
         }
     }

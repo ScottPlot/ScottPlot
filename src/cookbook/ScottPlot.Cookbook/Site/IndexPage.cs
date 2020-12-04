@@ -16,31 +16,48 @@ namespace ScottPlot.Cookbook.Site
             foreach (var stuff in Locate.GetCategorizedRecipes())
                 AddRecipeGroup(stuff.Key, stuff.Value);
 
-            AddDiv("<a href='all_cookbook_recipes.html' style='font-size: 200%;'>View all Cookbook Recipes</a>");
-
+            DivStart("categorySection");
+            AddGroupHeader("View all Cookbook Recipes", "all_recipes.html");
+            DivEnd();
         }
 
         private void AddRecipeGroup(string groupName, IRecipe[] recipes)
         {
-            // section header 
-            string titleID = Sanitize(groupName);
-            SB.AppendLine($"<div style='margin-top: 20px; font-size: 200%;'><a href='{titleID}{ExtPage}'>{groupName}</a></div>");
+            DivStart("categorySection");
+            AddGroupHeader(groupName);
+            AddRecipeLinks(recipes);
+            AddRecipeThumbnails(recipes);
+            DivEnd();
+        }
 
-            // bullet list of links to recipes
-            SB.AppendLine("<ul>");
+        private void AddGroupHeader(string title, string manualUrl = null)
+        {
+            string url = manualUrl ?? Sanitize(title) + ExtPage;
+            DivStart("categoryTitle");
+            SB.AppendLine($"<a href='{url}'>{title}</a>");
+            DivEnd();
+        }
+
+        private void AddRecipeLinks(IRecipe[] recipes)
+        {
+            //SB.AppendLine("<ul>");
             foreach (IRecipe recipe in recipes)
             {
-                string pageUrl = $"{titleID}{ExtPage}#{recipe.ID}";
-                SB.AppendLine($"<li><a href='{pageUrl}'>{recipe.Title}</a> - {recipe.Description}</li>");
+                string categoryPageName = $"{Sanitize(recipe.Category)}{ExtPage}";
+                string recipeUrl = $"{categoryPageName}#{recipe.ID}";
+                SB.AppendLine($"<p><a href='{recipeUrl}'>{recipe.Title}</a> - {recipe.Description}</p>");
             }
-            SB.AppendLine("</ul>");
+            //SB.AppendLine("</ul>");
+        }
 
-            // thumbnails
+        private void AddRecipeThumbnails(IRecipe[] recipes)
+        {
             foreach (IRecipe recipe in recipes)
             {
-                string pageUrl = $"{titleID}{ExtPage}#{recipe.ID}";
+                string categoryPageName = $"{Sanitize(recipe.Category)}{ExtPage}";
+                string recipeUrl = $"{categoryPageName}#{recipe.ID}";
                 string imageUrl = $"source/{recipe.ID}{ExtImage}";
-                SB.AppendLine($"<a href='{pageUrl}'><img src='{imageUrl}' style='height: 150px;'/></a>");
+                SB.AppendLine($"<a href='{recipeUrl}'><img src='{imageUrl}' style='height: 150px;'/></a>");
             }
         }
     }

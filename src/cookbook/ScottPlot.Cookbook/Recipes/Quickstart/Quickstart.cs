@@ -30,7 +30,7 @@ namespace ScottPlot.Cookbook.Recipes.Quickstart
         public string ID => "quickstart_signal";
         public string Title => "Signal Plot";
         public string Description => "Signal plots have evenly spaced Y points. " +
-            "Signal plots are very fast and can interactively display millions of data points. " + 
+            "Signal plots are very fast and can interactively display millions of data points. " +
             "There are many different types of plottable objects, each serving a different purpose.";
 
         public void ExecuteRecipe(Plot plt)

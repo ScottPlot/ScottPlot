@@ -34,14 +34,17 @@ namespace ScottPlot.Cookbook.Site
             string[] raw = File.ReadAllLines(codeFilePath);
             string code = string.Join("<br>\n", raw.Skip(2));
 
-            SB.AppendLine($"<div style='margin: 10px;'>&nbsp</div>");
-            SB.AppendLine($"<div><b><a href='#{id}' name='{id}'>{recipe.Title}</a></b></div>");
-            SB.AppendLine($"<div><i>{recipe.Description}</i></div>");
-            SB.AppendLine($"<div style='display: inline-block; padding: 5px; margin: 20px; " +
-                "background-color: #f6f6f6; border: 1px solid #eeeeee; '>" +
-                $"<code class='prettyprint cs'>{code}</code></div>");
-            SB.AppendLine($"<div><img src='source/{imageUrl}' /></div>");
-            SB.AppendLine($"<div style='margin: 20px;'>&nbsp</div>");
+            DivStart("recipeSection");
+
+            AddDiv($"<a href='#{id}' name='{id}'>{recipe.Title}</a>", "recipeTitle");
+            AddDiv(recipe.Description, "recipeDescription");
+            AddCode(code);
+
+            DivStart("recipeImages");
+            SB.AppendLine($"<img src='source/{imageUrl}' />");
+            DivEnd();
+
+            DivEnd();
         }
     }
 }
