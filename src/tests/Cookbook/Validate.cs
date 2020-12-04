@@ -79,7 +79,7 @@ namespace ScottPlotTests.Cookbook
         {
             var recipes = ScottPlot.Cookbook.Locate.GetRecipes();
             int uniqueFull = recipes.Select(x => x.Category).Distinct().Count();
-            int uniqueClean = recipes.Select(x => x.Category).Select(x => SiteGenerator.Sanitize(x)).Distinct().Count();
+            int uniqueClean = recipes.Select(x => x.Category).Select(x => RecipesPage.Sanitize(x)).Distinct().Count();
             Assert.AreEqual(uniqueClean, uniqueFull);
         }
     }
