@@ -19,8 +19,9 @@ namespace ScottPlotTests.Cookbook
         {
             EnsureCookbookFoldersExist();
             CleanCookbookFolders();
-            GenerateRecipeImagesAndCodeFiles();
-            BuildIndividualCookbookPages();
+            BuildRecipeImagesAndCode();
+            CopyResourceFiles();
+            BuildRecipePages();
             BuildIndexPage();
         }
 
@@ -40,14 +41,31 @@ namespace ScottPlotTests.Cookbook
                 System.IO.File.Delete(filePath);
         }
 
-        private void GenerateRecipeImagesAndCodeFiles()
+        private void BuildRecipeImagesAndCode()
         {
             var chef = new Chef();
             chef.CreateCookbookImages(RecipeFolder);
             chef.CreateCookbookSource(SourceFolder, RecipeFolder);
         }
 
-        private void BuildIndividualCookbookPages()
+        private void CopyResourceFiles()
+        {
+            string resourceFolder = System.IO.Path.Join(SourceFolder, "Resources");
+            string[] sourceFileNames = System.IO.Directory.GetFiles(resourceFolder, "*.*")
+                                                          .Where(x => !x.EndsWith(".cs"))
+                                                          .Where(x => !x.EndsWith(".csproj"))
+                                                          .Select(x => System.IO.Path.GetFileName(x))
+                                                          .ToArray();
+
+            foreach (string fileName in sourceFileNames)
+            {
+                string sourcePath = System.IO.Path.Join(resourceFolder, fileName);
+                string destPath = System.IO.Path.Join(CookbookFolder, fileName);
+                System.IO.File.Copy(sourcePath, destPath);
+            }
+        }
+
+        private void BuildRecipePages()
         {
             foreach (string category in Locate.GetRecipes().Select(x => x.Category).Distinct())
             {
