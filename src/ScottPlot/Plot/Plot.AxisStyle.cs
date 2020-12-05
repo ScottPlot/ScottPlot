@@ -195,10 +195,10 @@ namespace ScottPlot
             settings.YAxis.ConfigureTicks(majorTickLabels: displayTickLabelsY);
 
             // AXIS LABEL
-            settings.XAxis.ConfigureAxisLabel(fontName: fontName);
-            settings.YAxis.ConfigureAxisLabel(fontName: fontName);
-            settings.XAxis.ConfigureAxisLabel(fontSize: fontSize);
-            settings.YAxis.ConfigureAxisLabel(fontSize: fontSize);
+            settings.XAxis.ConfigureTickLabelStyle(fontName: fontName);
+            settings.YAxis.ConfigureTickLabelStyle(fontName: fontName);
+            settings.XAxis.ConfigureTickLabelStyle(fontSize: fontSize);
+            settings.YAxis.ConfigureTickLabelStyle(fontSize: fontSize);
 
             // TICK LABEL NOTATION
             settings.XAxis.ConfigureTickLabelNotation(useMultiplierNotation: useMultiplierNotation);

@@ -7,6 +7,7 @@
 using ScottPlot.Plottable;
 using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 
 namespace ScottPlot
@@ -115,6 +116,12 @@ namespace ScottPlot
         #endregion
 
         #region plot settings and styling
+
+        /// <summary>
+        /// Return a new color from the Pallette based on the number of plottables already in the plot.
+        /// Use this to ensure every plottable gets a unique color.
+        /// </summary>
+        public Color GetNextColor() => settings.GetNextColor();
 
         /// <summary>
         /// Get access to the plot settings module (not exposed by default because its internal API changes frequently)
@@ -234,13 +241,13 @@ namespace ScottPlot
             )
         {
             settings.CornerLegend.IsVisible = enableLegend;
-            settings.CornerLegend.FontName = fontName ?? settings.CornerLegend.FontName;
-            settings.CornerLegend.FontSize = fontSize ?? settings.CornerLegend.FontSize;
-            settings.CornerLegend.FontColor = fontColor ?? settings.CornerLegend.FontColor;
+            settings.CornerLegend.FontName = fontName ?? settings.CornerLegend.Font.Name;
+            settings.CornerLegend.FontSize = fontSize ?? settings.CornerLegend.Font.Size;
+            settings.CornerLegend.FontColor = fontColor ?? settings.CornerLegend.Font.Color;
             settings.CornerLegend.FillColor = backColor ?? settings.CornerLegend.FillColor;
             settings.CornerLegend.OutlineColor = frameColor ?? settings.CornerLegend.OutlineColor;
             settings.CornerLegend.ReverseOrder = reverseOrder ?? settings.CornerLegend.ReverseOrder;
-            settings.CornerLegend.FontBold = bold ?? settings.CornerLegend.FontBold;
+            settings.CornerLegend.FontBold = bold ?? settings.CornerLegend.Font.Bold;
             settings.CornerLegend.FixedLineWidth = fixedLineWidth ?? settings.CornerLegend.FixedLineWidth;
             settings.CornerLegend.Location = location;
 
@@ -249,30 +256,48 @@ namespace ScottPlot
 
         #endregion
 
-        #region obsolete
+        #region Plottable Creation Helper Methods
 
-        [Obsolete("use ValidatePlottableData()", true)]
-        public bool DiagnosticMode;
+        /* These methods allower users to create plottables and add them to the plot with a single line.
+         * - Only the most common plottables have helper methods
+         * - Only the most common styling options are configurable with optional arguments
+         * - Methods return the plottables they create, so the user can further customize them if desired
+         * - Partial classes will not be used
+         */
 
-        [Obsolete("Use the lowQuality argument in Render() or SaveFig() to disable anti-aliasing", true)]
-        public void AntiAlias(bool figure = true, bool data = false, bool legend = false) { }
+        /// <summary>
+        /// Display text in the data area at a pixel location (not a X/Y coordinates)
+        /// </summary>
+        public Annotation AddAnnotation(string label, double x, double y, float size = 12, Color? color = null, Color? backColor = null)
+        {
+            var plottable = new Annotation() { label = label, xPixel = x, yPixel = y, FontSize = size };
+            plottable.Font.Color = color ?? plottable.Font.Color;
+            plottable.BackgroundColor = backColor ?? plottable.BackgroundColor;
+            Add(plottable);
+            return plottable;
+        }
 
-        [Obsolete("use Benchmark() or BenchmarkToggle()", true)]
-        public void Benchmark(bool show = true, bool toggle = false) { }
+        /// <summary>
+        /// Display text at specific X/Y coordinates
+        /// </summary>
+        public Text AddText(string label, double x, double y, float size = 12, Color? color = null)
+        {
+            var plottable = new Text() { text = label, x = x, y = y, FontSize = size };
+            plottable.Font.Color = color ?? GetNextColor();
+            Add(plottable);
+            return plottable;
+        }
 
-        [Obsolete("use Render() to create a Bitmap or render onto an existing Bitmap", true)]
-        public System.Drawing.Bitmap GetBitmap(bool renderFirst = true, bool lowQuality = false) => throw new NotImplementedException();
-
-        [Obsolete("this method is no longer supported", true)]
-        public int GetTotalPoints() => throw new NotImplementedException();
-
-        [Obsolete("Use the other Layout() method", true)]
-        public void Layout(double? yLabelWidth = null, double? yScaleWidth = null, double? y2LabelWidth = null, double? y2ScaleWidth = null, double? titleHeight = null, double? xLabelHeight = null, double? xScaleHeight = null) { }
-
-        [Obsolete("This function is no longer required. Use Layout() to manualy define padding.", true)]
-        public void TightenLayout(int? padding = null) { }
+        /// <summary>
+        /// Display text at specific X/Y coordinates
+        /// </summary>
+        public Text AddText(string label, double x, double y, Drawing.Font font)
+        {
+            var plottable = new Text() { text = label, x = x, y = y, Font = font };
+            Add(plottable);
+            return plottable;
+        }
 
         #endregion
-
     }
 }

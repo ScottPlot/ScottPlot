@@ -74,7 +74,7 @@ namespace ScottPlot.Cookbook
                 }
             }
             Debug.WriteLine(sb.ToString());
-            throw new InvalidOperationException("could not locate cookbook source code");
+            throw new InvalidOperationException("Could not locate cookbook source code. Run tests to generate it.");
         }
     }
 }

@@ -5,14 +5,14 @@ using System.Text;
 
 namespace ScottPlot.Cookbook.Recipes.Plottable
 {
-    public class Annotation : IRecipe
+    public class AnnotationQuickstart : IRecipe
     {
         public string Category => "Plottable: Annotation";
         public string ID => "annotation_quickstart";
-        public string Title => "Annotate the Figure";
+        public string Title => "Figure Annotations";
         public string Description =>
-            "Annotations are labels fixed to the figure (not the data area) " +
-            "so they don't move around as the axes are adjusted.";
+            "Annotations are labels placed at a X/Y location on the figure (not coordinates of the data area). " +
+            "Unlike the Text plottable, annotations do not move as the axes are adjusted.";
 
         public void ExecuteRecipe(Plot plt)
         {
@@ -20,16 +20,23 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.PlotScatter(xs, DataGen.Sin(xs));
             plt.PlotScatter(xs, DataGen.Cos(xs));
 
-            // negative coordinates snap text to the lower or right edges
-            plt.PlotAnnotation("Top Left", 10, 10);
-            plt.PlotAnnotation("Lower Left", 10, -10);
-            plt.PlotAnnotation("Top Right", -10, 10);
-            plt.PlotAnnotation("Lower Right", -10, -10);
+            // default placement is upper left
+            plt.AddAnnotation("Top Left", 10, 10);
 
-            // arguments allow customization of style
-            plt.PlotAnnotation("Fancy Annotation", 10, 40,
-                fontSize: 24, fontName: "Impact", fontColor: Color.Red, shadow: true,
-                fill: true, fillColor: Color.White, fillAlpha: 1, lineWidth: 2);
+            // negative coordinates can be used to place text along different edges
+            plt.AddAnnotation("Lower Left", 10, -10);
+            plt.AddAnnotation("Top Right", -10, 10);
+            plt.AddAnnotation("Lower Right", -10, -10);
+
+            // Additional customizations are available
+            var fancy = plt.AddAnnotation("Fancy Annotation", 10, 40);
+            fancy.FontSize = 24;
+            fancy.FontName = "Impact";
+            fancy.FontColor = Color.Red;
+            fancy.Shadow = false;
+            fancy.BackgroundColor = Color.FromArgb(25, Color.Blue);
+            fancy.BorderWidth = 2;
+            fancy.BorderColor = Color.Magenta;
         }
     }
 }

@@ -67,7 +67,9 @@ namespace ScottPlot.Demo.Customize
                     label: "Signal Plot"
                     );
 
-                plt.PlotText("ScottPlot", 6, 6, rotation: 25, fontSize: 14, bold: true);
+                var txt = plt.AddText(label: "ScottPlot", x: 6, y: 6, size: 14);
+                txt.FontBold = true;
+                txt.rotation = 25;
 
                 plt.AddPoint(1, 9, label: "point");
                 plt.PlotArrow(8, 8, 8.5, 8.5, label: "arrow");

@@ -14,6 +14,7 @@ namespace ScottPlot
 {
     public partial class Plot
     {
+        [Obsolete("Use AddText() and customize the object it returns")]
         public Text PlotText(
             string text,
             double x,
@@ -38,18 +39,19 @@ namespace ScottPlot
                 x = x,
                 y = y,
                 FontColor = color ?? settings.GetNextColor(),
-                FontName = fontName ?? Drawing.InstalledFont.Default(),
+                FontName = fontName,
                 FontSize = (float)fontSize,
                 FontBold = bold,
                 alignment = alignment,
-                rotation = rotation,
-                frame = frame,
-                frameColor = frameColor ?? Color.White
+                rotation = (float)rotation,
+                FillBackground = frame,
+                BackgroundColor = frameColor ?? Color.White
             };
             Add(plottableText);
             return plottableText;
         }
 
+        [Obsolete("Use AddAnnotation() and customize the object it returns")]
         public Annotation PlotAnnotation(
             string label,
             double xPixel = 10,

@@ -6,7 +6,6 @@ namespace ScottPlot.Drawing
     {
         public float Size = 12;
         public Color Color = Color.Black;
-        public Color BackgroundColor = Color.Yellow;
         public Alignment Alignment = Alignment.UpperLeft;
         public bool Bold = false;
         public float Rotation = 0;
