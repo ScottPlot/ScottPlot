@@ -69,19 +69,19 @@ namespace ScottPlotTests.Cookbook
         {
             foreach (string category in Locate.GetRecipes().Select(x => x.Category).Distinct())
             {
-                var categoryPage = new ScottPlot.Cookbook.Site.RecipesPage(CookbookFolder);
+                var categoryPage = new ScottPlot.Cookbook.Site.RecipesPage(CookbookFolder, SourceFolder);
                 categoryPage.AddRecipiesFromCategory(category);
                 categoryPage.SaveAs(category, category);
             }
 
-            var allPage = new ScottPlot.Cookbook.Site.RecipesPage(CookbookFolder);
+            var allPage = new ScottPlot.Cookbook.Site.RecipesPage(CookbookFolder, SourceFolder);
             allPage.AddAllRecipies();
             allPage.SaveAs("all_recipes.html", "All Recipes");
         }
 
         private void BuildIndexPage()
         {
-            var index = new ScottPlot.Cookbook.Site.IndexPage(CookbookFolder);
+            var index = new ScottPlot.Cookbook.Site.IndexPage(CookbookFolder, SourceFolder);
             index.AddLinksToRecipes();
             index.SaveAs("index.html", null);
         }

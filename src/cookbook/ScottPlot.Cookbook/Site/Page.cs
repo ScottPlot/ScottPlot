@@ -14,18 +14,13 @@ namespace ScottPlot.Cookbook.Site
         protected readonly string ExtPage = ".html";
         protected readonly string ExtImage = ".png";
         protected readonly string SiteFolder;
+        protected readonly string ResourceFolder;
         protected readonly StringBuilder SB = new StringBuilder();
 
-        public Page(string cookbookSiteFolder)
+        public Page(string cookbookSiteFolder, string sourceFolder)
         {
             SiteFolder = Path.GetFullPath(cookbookSiteFolder);
-
-            DivStart("messageBox");
-            AddHTML($"<br>- You are viewing the <a href='./'>ScottPlot {Plot.Version} Cookbook</a>");
-            AddHTML($"<br>- Newer versions of ScottPlot may be available");
-            AddHTML($"<br>- Additional documentation can be found on the <a href='https://swharden.com/scottplot'>ScottPlot Website</a>");
-            AddHTML($"<br>- If you enjoy ScottPlot <a href='https://github.com/swharden/scottplot'>give us a star</a>!");
-            DivEnd();
+            ResourceFolder = Path.GetFullPath(Path.Combine(sourceFolder, "Resources"));
         }
 
         public static string Sanitize(string s) => s.ToLower().Replace(" ", "_").Replace(":", "");
@@ -33,7 +28,7 @@ namespace ScottPlot.Cookbook.Site
         public void AddDiv(string html) => SB.AppendLine($"<div>{html}</div>");
         public void AddDiv(string html, string divClass) => SB.AppendLine($"<div class='{divClass}'>{html}</div>");
         public void AddHTML(string html) => SB.AppendLine(html);
-        public void DivStart(string divClass) => SB.AppendLine($"<div class='{divClass}'>");
+        public void DivStart(string divClass = null) => SB.AppendLine($"<div class='{divClass}'>");
         public void DivEnd() => SB.AppendLine("</div>");
         public void UlStart() => SB.AppendLine($"<ul>");
         public void UlEnd() => SB.AppendLine("</ul>");
@@ -41,9 +36,7 @@ namespace ScottPlot.Cookbook.Site
 
         public void AddCode(string code)
         {
-            DivStart("codeBlock");
-            SB.AppendLine($"<code class='prettyprint cs'>{code}</code>");
-            DivEnd();
+            SB.AppendLine($"<pre class='prettyprint cs'>{code}</pre>");
         }
 
         public void SaveAs(string fileName, string title)
@@ -52,31 +45,40 @@ namespace ScottPlot.Cookbook.Site
                 fileName = Sanitize(fileName) + ExtPage;
             fileName = Path.GetFileName(fileName);
             string filePath = Path.Combine(SiteFolder, fileName);
-            string html = WrapInBody(SB.ToString(), title);
-            File.WriteAllText(filePath, html);
+            File.WriteAllText(filePath, ApplyTemplate(title));
             Console.WriteLine($"Saved: {filePath}");
         }
 
-        private string WrapInBody(string content, string title)
+        private string ApplyTemplate(string title)
         {
+            string html = File.ReadAllText(Path.Combine(ResourceFolder, "Template.html"));
+
+            // shows in the head area
             string pageTitle = string.IsNullOrWhiteSpace(title) ?
                 "ScottPlot Cookbook" :
                 $"ScottPlot Cookbook: {title}";
+            html = html.Replace("{{title}}", pageTitle);
 
+            // shows at the top of the page
             string htmlTitle = string.IsNullOrWhiteSpace(title) ?
-                $"<a href='./'>ScottPlot Cookbook</a>" :
-                $"<a href='./'>ScottPlot Cookbook</a><br>{title}";
+                $"ScottPlot Cookbook" :
+                $"<a href='./index.html' style='color: black;'>ScottPlot Cookbook</a>: {title}";
+            string warning = "" +
+                "\n<blockquote>" +
+                "<b>⚠️</b> <strong>Documentation is version-specific:</strong> " +
+                "This page was generated for <code>ScottPlot 1.2.3-beta</code><br> " +
+                "Additional documentation and more version-specific cookbooks are on the " +
+                "<a href='https://swharden.com/scottplot' style='font-weight: 600;'>ScottPlot Website</a>" +
+                "</blockquote>\n";
 
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine("<html><head>");
-            sb.AppendLine($"<title>{pageTitle}</title>");
-            sb.AppendLine("<link rel='stylesheet' type='text/css' href='style.css'>");
-            sb.AppendLine("<script src='https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js'></script>");
-            sb.AppendLine("</head><body><div class='content'>");
-            sb.AppendLine($"<div class='title'>{htmlTitle}</div>");
-            sb.AppendLine(content);
-            sb.AppendLine("&nbsp;</div></body></html>");
-            return sb.ToString();
+            // assemble the article
+            string content = $"<h1>{htmlTitle}</h1>" + warning + SB.ToString();
+            html = html.Replace("{{content}}", content);
+
+            html = html.Replace("{{version}}", $"ScottPlot {Plot.Version}");
+            html = html.Replace("{{date}}", DateTime.Now.ToString("MMMM dd, yyyy"));
+
+            return html;
         }
     }
 }

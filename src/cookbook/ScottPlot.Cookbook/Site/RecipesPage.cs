@@ -11,7 +11,7 @@ namespace ScottPlot.Cookbook.Site
     /// </summary>
     public class RecipesPage : Page
     {
-        public RecipesPage(string cookbookSiteFolder) : base(cookbookSiteFolder) { }
+        public RecipesPage(string cookbookSiteFolder, string resourceFolder) : base(cookbookSiteFolder, resourceFolder) { }
 
         public void AddRecipiesFromCategory(string category) =>
             AddRecipes(Locate.GetRecipes().Where(x => x.Category == category).ToArray());
@@ -32,19 +32,13 @@ namespace ScottPlot.Cookbook.Site
             string codeFilePath = Path.Combine(recipeFolder, id + ExtCode);
             string imageUrl = id + ExtImage;
             string[] raw = File.ReadAllLines(codeFilePath);
-            string code = string.Join("<br>\n", raw.Skip(2));
+            string code = string.Join("\n", raw.Skip(2));
 
-            DivStart("recipeSection");
-
-            AddDiv($"<a href='#{id}' name='{id}'>{recipe.Title}</a>", "recipeTitle");
-            AddDiv(recipe.Description, "recipeDescription");
+            AddHTML($"<h2><a href='#{id}' name='{id}' style='color: black;'>{recipe.Title}</a></h2>");
+            AddHTML(recipe.Description);
             AddCode(code);
 
-            DivStart("recipeImages");
-            SB.AppendLine($"<img src='source/{imageUrl}' />");
-            DivEnd();
-
-            DivEnd();
+            SB.AppendLine($"<div class='center'><img src='source/{imageUrl}' /></div>");
         }
     }
 }

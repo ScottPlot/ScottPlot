@@ -9,7 +9,7 @@ namespace ScottPlot.Cookbook.Site
     /// </summary>
     public class IndexPage : Page
     {
-        public IndexPage(string cookbookSiteFolder) : base(cookbookSiteFolder) { }
+        public IndexPage(string cookbookSiteFolder, string resourceFolder) : base(cookbookSiteFolder, resourceFolder) { }
 
         public void AddLinksToRecipes()
         {
@@ -17,7 +17,8 @@ namespace ScottPlot.Cookbook.Site
                 AddRecipeGroup(stuff.Key, stuff.Value);
 
             DivStart("categorySection");
-            AddGroupHeader("View all Cookbook Recipes", "all_recipes.html");
+            AddGroupHeader("Miscellaneous");
+            AddHTML("<div style='margin-left: 1em;'><a href='all_recipes.html'>Single page with all recipes</a></div>");
             DivEnd();
         }
 
@@ -30,24 +31,24 @@ namespace ScottPlot.Cookbook.Site
             DivEnd();
         }
 
-        private void AddGroupHeader(string title, string manualUrl = null)
+        private void AddGroupHeader(string title)
         {
-            string url = manualUrl ?? Sanitize(title) + ExtPage;
-            DivStart("categoryTitle");
-            SB.AppendLine($"<a href='{url}'>{title}</a>");
-            DivEnd();
+            string anchor = Sanitize(title);
+            SB.AppendLine($"<h2 style='margin-top: 1em;'>");
+            SB.AppendLine($"<a href='#{anchor}' name='{anchor}' style='color: black; text-decoration: none; font-weight: 600;'>{title}</a>");
+            SB.AppendLine($"</h2>");
         }
 
         private void AddRecipeLinks(IRecipe[] recipes)
         {
-            //SB.AppendLine("<ul>");
+            SB.Append("<div style='margin-left: 1em;'>");
             foreach (IRecipe recipe in recipes)
             {
                 string categoryPageName = $"{Sanitize(recipe.Category)}{ExtPage}";
                 string recipeUrl = $"{categoryPageName}#{recipe.ID}";
-                SB.AppendLine($"<p><a href='{recipeUrl}'>{recipe.Title}</a> - {recipe.Description}</p>");
+                SB.AppendLine($"<p><a href='{recipeUrl}' style='font-weight: 600;'>{recipe.Title}</a> - {recipe.Description}</p>");
             }
-            //SB.AppendLine("</ul>");
+            SB.Append("</div>");
         }
 
         private void AddRecipeThumbnails(IRecipe[] recipes)
