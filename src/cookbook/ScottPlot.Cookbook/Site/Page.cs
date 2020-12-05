@@ -13,6 +13,7 @@ namespace ScottPlot.Cookbook.Site
         protected readonly string ExtCode = ".cs";
         protected readonly string ExtPage = ".html";
         protected readonly string ExtImage = ".png";
+        protected readonly string ExtThumb = "_thumb.jpg";
         protected readonly string SiteFolder;
         protected readonly string ResourceFolder;
         protected readonly StringBuilder SB = new StringBuilder();

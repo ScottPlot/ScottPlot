@@ -57,8 +57,8 @@ namespace ScottPlot.Cookbook.Site
             {
                 string categoryPageName = $"{Sanitize(recipe.Category)}{ExtPage}";
                 string recipeUrl = $"{categoryPageName}#{recipe.ID}";
-                string imageUrl = $"source/{recipe.ID}{ExtImage}";
-                SB.AppendLine($"<a href='{recipeUrl}'><img src='{imageUrl}' style='height: 150px;'/></a>");
+                string imageUrl = $"source/{recipe.ID}{ExtThumb}";
+                SB.AppendLine($"<a href='{recipeUrl}'><img src='{imageUrl}' style='padding: 10px;'/></a>");
             }
         }
     }

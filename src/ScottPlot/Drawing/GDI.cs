@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -212,6 +213,26 @@ namespace ScottPlot.Drawing
                 sf.LineAlignment = StringAlignment.Far;
 
             return sf;
+        }
+
+        public static Bitmap Resize(Image bmp, int width, int height)
+        {
+            var bmp2 = new Bitmap(width, height);
+            var rect = new Rectangle(0, 0, width, height);
+
+            using (var gfx = System.Drawing.Graphics.FromImage(bmp2))
+            using (var attribs = new ImageAttributes())
+            {
+                gfx.CompositingMode = CompositingMode.SourceCopy;
+                gfx.CompositingQuality = CompositingQuality.HighQuality;
+                gfx.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                gfx.SmoothingMode = SmoothingMode.HighQuality;
+                gfx.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                attribs.SetWrapMode(WrapMode.TileFlipXY);
+                gfx.DrawImage(bmp, rect, 0, 0, bmp.Width, bmp.Height, GraphicsUnit.Pixel, attribs);
+            }
+
+            return bmp2;
         }
     }
 }

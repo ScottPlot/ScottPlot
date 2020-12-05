@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -14,8 +15,10 @@ namespace ScottPlot.Cookbook
     {
         public int Width = 600;
         public int Height = 400;
-        public string Extension = ".png";
-        string ExecutionMethod = "public void ExecuteRecipe";
+
+        const string Ext = ".png";
+        const string ExtThumb = "_thumb.jpg";
+        const string ExecutionMethod = "public void ExecuteRecipe";
 
         public Chef()
         {
@@ -39,9 +42,19 @@ namespace ScottPlot.Cookbook
                 var plt = new Plot(Width, Height);
                 recipe.ExecuteRecipe(plt);
 
-                string fileName = recipe.ID + Extension;
-                string filePath = Path.Combine(outputPath, fileName.ToLower());
-                plt.SaveFig(filePath);
+                // save full size image
+                Bitmap bmp = plt.Render();
+                string fileName = (recipe.ID + Ext).ToLower();
+                string filePath = Path.Combine(outputPath, fileName);
+                bmp.Save(filePath, System.Drawing.Imaging.ImageFormat.Png);
+
+                // thumbnail
+                int thumbHeight = 180;
+                int thumbWidth = thumbHeight * bmp.Width / bmp.Height;
+                Bitmap thumb = Drawing.GDI.Resize(bmp, thumbWidth, thumbHeight);
+                string thumbFileName = (recipe.ID + ExtThumb).ToLower();
+                string thumbFilePath = Path.Combine(outputPath, thumbFileName);
+                thumb.Save(thumbFilePath, System.Drawing.Imaging.ImageFormat.Jpeg);
             }
         }
 
@@ -116,7 +129,7 @@ namespace ScottPlot.Cookbook
                     IRecipe recipe = Locate.GetRecipe(id);
                     string source = $"var plt = new ScottPlot.Plot({Width}, {Height});\n" +
                                     GetRecipeSource(singleClassSourceCode, csFilePath) + "\n" +
-                                    $"plt.SaveFig({id}{Extension});";
+                                    $"plt.SaveFig({id}{Ext});";
 
                     sources.Add((recipe.ID, recipe.Title, recipe.Description, source));
                 }
