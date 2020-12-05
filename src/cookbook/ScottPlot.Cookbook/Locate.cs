@@ -35,11 +35,20 @@ namespace ScottPlot.Cookbook
                 categorizedRecipeList.Add(recipesForCategory);
             }
 
-            // move quickstart to top
-            string moveCategory = "Quickstart";
-            var moveThis = categorizedRecipeList.Where(x => x.Key == moveCategory).First(); ;
-            categorizedRecipeList.Remove(moveThis);
-            categorizedRecipeList.Insert(0, moveThis);
+            string[] topCategories =
+            {
+                "Quickstart",
+                "Managing Plottables",
+                "Axis",
+                "Ticks"
+            };
+
+            foreach (string category in topCategories.Reverse())
+            {
+                var moveThis = categorizedRecipeList.Where(x => x.Key == category).First(); ;
+                categorizedRecipeList.Remove(moveThis);
+                categorizedRecipeList.Insert(0, moveThis);
+            }
 
             return categorizedRecipeList;
         }
