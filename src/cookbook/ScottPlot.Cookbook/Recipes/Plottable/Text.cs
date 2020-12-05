@@ -9,7 +9,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
     {
         public string Category => "Plottable: Text";
         public string ID => "text_quickstart";
-        public string Title => "Plot Text";
+        public string Title => "Text";
         public string Description =>
             "The Text plottable displays a string at an X/Y coordinate in unit space. " +
             "Unlike the Annotation plottable, text moves when the axes are adjusted.";

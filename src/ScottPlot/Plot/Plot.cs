@@ -262,7 +262,6 @@ namespace ScottPlot
          * - Only the most common plottables have helper methods
          * - Only the most common styling options are configurable with optional arguments
          * - Methods return the plottables they create, so the user can further customize them if desired
-         * - Partial classes will not be used
          */
 
         /// <summary>
@@ -270,7 +269,13 @@ namespace ScottPlot
         /// </summary>
         public Annotation AddAnnotation(string label, double x, double y, float size = 12, Color? color = null, Color? backColor = null)
         {
-            var plottable = new Annotation() { label = label, xPixel = x, yPixel = y, FontSize = size };
+            var plottable = new Annotation()
+            {
+                label = label,
+                xPixel = x,
+                yPixel = y,
+                FontSize = size
+            };
             plottable.Font.Color = color ?? plottable.Font.Color;
             plottable.BackgroundColor = backColor ?? plottable.BackgroundColor;
             Add(plottable);
@@ -278,12 +283,20 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Display text at specific X/Y coordinates
+        /// Display an arrow pointing to a spot in coordinate space
         /// </summary>
-        public Text AddText(string label, double x, double y, float size = 12, Color? color = null)
+        public ScatterPlot AddArrow(double xTip, double yTip, double xBase, double yBase, float lineWidth = 5, Color? color = null)
         {
-            var plottable = new Text() { text = label, x = x, y = y, FontSize = size };
-            plottable.Font.Color = color ?? GetNextColor();
+            double[] xs = { xBase, xTip };
+            double[] ys = { yBase, yTip };
+            var plottable = new ScatterPlot(xs, ys)
+            {
+                lineWidth = lineWidth,
+                markerSize = 0,
+                color = color ?? GetNextColor(),
+                ArrowheadLength = 3,
+                ArrowheadWidth = 3
+            };
             Add(plottable);
             return plottable;
         }
@@ -291,9 +304,21 @@ namespace ScottPlot
         /// <summary>
         /// Display text at specific X/Y coordinates
         /// </summary>
+        public Text AddText(string label, double x, double y, float size = 12, Color? color = null) =>
+            AddText(label, x, y, new Drawing.Font() { Size = size, Color = color ?? GetNextColor() });
+
+        /// <summary>
+        /// Display text at specific X/Y coordinates
+        /// </summary>
         public Text AddText(string label, double x, double y, Drawing.Font font)
         {
-            var plottable = new Text() { text = label, x = x, y = y, Font = font };
+            var plottable = new Text()
+            {
+                text = label,
+                x = x,
+                y = y,
+                Font = font
+            };
             Add(plottable);
             return plottable;
         }

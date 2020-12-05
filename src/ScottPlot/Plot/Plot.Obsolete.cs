@@ -14,43 +14,6 @@ namespace ScottPlot
 {
     public partial class Plot
     {
-        [Obsolete("Use AddText() and customize the object it returns")]
-        public Text PlotText(
-            string text,
-            double x,
-            double y,
-            Color? color = null,
-            string fontName = null,
-            double fontSize = 12,
-            bool bold = false,
-            string label = null,
-            Alignment alignment = Alignment.MiddleLeft,
-            double rotation = 0,
-            bool frame = false,
-            Color? frameColor = null
-            )
-        {
-            if (!string.IsNullOrWhiteSpace(label))
-                Debug.WriteLine("WARNING: the PlotText() label argument is ignored");
-
-            Text plottableText = new Text()
-            {
-                text = text,
-                x = x,
-                y = y,
-                FontColor = color ?? settings.GetNextColor(),
-                FontName = fontName,
-                FontSize = (float)fontSize,
-                FontBold = bold,
-                alignment = alignment,
-                rotation = (float)rotation,
-                FillBackground = frame,
-                BackgroundColor = frameColor ?? Color.White
-            };
-            Add(plottableText);
-            return plottableText;
-        }
-
         [Obsolete("Use AddAnnotation() and customize the object it returns")]
         public Annotation PlotAnnotation(
             string label,
@@ -96,5 +59,68 @@ namespace ScottPlot
             return plottable;
         }
 
+        [Obsolete("Use AddArrow() and customize the object it returns")]
+        public ScatterPlot PlotArrow(
+            double tipX,
+            double tipY,
+            double baseX,
+            double baseY,
+            double lineWidth = 5,
+            float arrowheadWidth = 3,
+            float arrowheadLength = 3,
+            Color? color = null,
+            string label = null
+            )
+        {
+            var scatter = PlotScatter(
+                                        xs: new double[] { baseX, tipX },
+                                        ys: new double[] { baseY, tipY },
+                                        color: color,
+                                        lineWidth: lineWidth,
+                                        label: label,
+                                        markerSize: 0
+                                    );
+
+            scatter.ArrowheadLength = arrowheadLength;
+            scatter.ArrowheadWidth = arrowheadWidth;
+            return scatter;
+        }
+
+        [Obsolete("Use AddText() and customize the object it returns")]
+        public Text PlotText(
+            string text,
+            double x,
+            double y,
+            Color? color = null,
+            string fontName = null,
+            double fontSize = 12,
+            bool bold = false,
+            string label = null,
+            Alignment alignment = Alignment.MiddleLeft,
+            double rotation = 0,
+            bool frame = false,
+            Color? frameColor = null
+            )
+        {
+            if (!string.IsNullOrWhiteSpace(label))
+                Debug.WriteLine("WARNING: the PlotText() label argument is ignored");
+
+            Text plottableText = new Text()
+            {
+                text = text,
+                x = x,
+                y = y,
+                FontColor = color ?? settings.GetNextColor(),
+                FontName = fontName,
+                FontSize = (float)fontSize,
+                FontBold = bold,
+                alignment = alignment,
+                rotation = (float)rotation,
+                FillBackground = frame,
+                BackgroundColor = frameColor ?? Color.White
+            };
+            Add(plottableText);
+            return plottableText;
+        }
     }
 }

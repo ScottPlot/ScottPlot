@@ -33,32 +33,6 @@ namespace ScottPlot
             return vectorField;
         }
 
-        public ScatterPlot PlotArrow(
-            double tipX,
-            double tipY,
-            double baseX,
-            double baseY,
-            double lineWidth = 5,
-            float arrowheadWidth = 3,
-            float arrowheadLength = 3,
-            Color? color = null,
-            string label = null
-            )
-        {
-            var scatter = PlotScatter(
-                                        xs: new double[] { baseX, tipX },
-                                        ys: new double[] { baseY, tipY },
-                                        color: color,
-                                        lineWidth: lineWidth,
-                                        label: label,
-                                        markerSize: 0
-                                    );
-
-            scatter.ArrowheadLength = arrowheadLength;
-            scatter.ArrowheadWidth = arrowheadWidth;
-            return scatter;
-        }
-
         public RadarPlot PlotRadar(
             double[,] values,
             string[] categoryNames = null,
