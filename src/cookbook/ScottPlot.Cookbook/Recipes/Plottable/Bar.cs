@@ -115,7 +115,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public void ExecuteRecipe(Plot plt)
         {
             // create sample data
-            double[] values = DataGen.RandomNormal(0, 10, 20, 5);
+            double[] values = { 27.3, 23.1, 21.2, 16.1, 6.4, 19.2, 18.7, 17.3, 20.3, 13.1 };
 
             // add a bar graph to the plot and enable values to be displayed above each bar
             var bar = plt.AddBar(values);
