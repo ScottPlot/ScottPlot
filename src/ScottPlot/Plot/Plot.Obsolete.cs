@@ -212,6 +212,34 @@ namespace ScottPlot
             return bars;
         }
 
+        [Obsolete("Create this plottable manually with new, then Add() it to the plot.")]
+        public Plottable.Image PlotBitmap(
+           Bitmap bitmap,
+           double x,
+           double y,
+           string label = null,
+           Alignment alignment = Alignment.MiddleLeft,
+           double rotation = 0,
+           Color? frameColor = null,
+           int frameSize = 0
+           )
+        {
+            Plottable.Image plottableImage = new Plottable.Image()
+            {
+                image = bitmap,
+                x = x,
+                y = y,
+                label = label,
+                alignment = alignment,
+                rotation = rotation,
+                frameColor = frameColor ?? Color.White,
+                frameSize = frameSize
+            };
+
+            settings.Plottables.Add(plottableImage);
+            return plottableImage;
+        }
+
         [Obsolete("use AddCandlesticks() and customize the object it returns")]
         public FinancePlot PlotCandlestick(
             OHLC[] ohlcs,
@@ -366,6 +394,43 @@ namespace ScottPlot
 
             Add(functionPlot);
             return functionPlot;
+        }
+
+        [Obsolete("Create this plottable manually with new, then Add() it to the plot.")]
+        public Heatmap PlotHeatmap(
+            double[,] intensities,
+            Drawing.Colormap colormap = null,
+            string label = null,
+            double[] axisOffsets = null,
+            double[] axisMultipliers = null,
+            double? scaleMin = null,
+            double? scaleMax = null,
+            double? transparencyThreshold = null,
+            Bitmap backgroundImage = null,
+            bool displayImageAbove = false,
+            bool drawAxisLabels = true
+            )
+        {
+            Heatmap heatmap = new Heatmap()
+            {
+                label = label,
+                AxisOffsets = axisOffsets ?? new double[] { 0, 0 },
+                AxisMultipliers = axisMultipliers ?? new double[] { 1, 1 },
+                ScaleMin = scaleMin,
+                ScaleMax = scaleMax,
+                TransparencyThreshold = transparencyThreshold,
+                BackgroundImage = backgroundImage,
+                DisplayImageAbove = displayImageAbove,
+                ShowAxisLabels = drawAxisLabels,
+                Colormap = colormap ?? Drawing.Colormap.Viridis
+            };
+            heatmap.UpdateData(intensities);
+
+            Add(heatmap);
+            Ticks(false, false);
+            Layout(top: 180);
+
+            return heatmap;
         }
 
         [Obsolete("Use AddHorizontalLine() and customize the object it returns")]
