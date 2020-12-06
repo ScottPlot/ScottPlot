@@ -525,6 +525,9 @@ namespace ScottPlot
             return (polyAbove, polyBelow);
         }
 
+        /// <summary>
+        /// Add a line plot that uses a function (rather than X/Y points) to place the curve
+        /// </summary>
         public FunctionPlot AddFunction(Func<double, double?> function, Color? color = null, double lineWidth = 1, LineStyle lineStyle = LineStyle.Solid)
         {
             FunctionPlot plottable = new FunctionPlot(function)

@@ -10,7 +10,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string ID => "function_quickstart";
         public string Title => "Function";
         public string Description =>
-            "Function plots accept a function delegate (rather than X/Y data points) so the curve " +
+            "Function plots are defined by a function (not X/Y data points) so the curve " +
             "is continuous and can be zoomed in and out infinitely";
 
         public void ExecuteRecipe(Plot plt)
