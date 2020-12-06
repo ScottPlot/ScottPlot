@@ -11,7 +11,7 @@ namespace ScottPlot.Plottable
         public double[] ys;
         public string label;
 
-        public double lineWidth = 2;
+        public double lineWidth = 1;
         public Color lineColor = Color.Black;
         public bool fill = true;
         public Color fillColor = Color.Gray;
