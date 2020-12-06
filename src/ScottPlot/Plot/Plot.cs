@@ -391,6 +391,141 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Add candlesticks to the chart from OHLC (open, high, low, close) data
+        /// </summary>
+        public FinancePlot AddCandlesticks(OHLC[] ohlcs)
+        {
+            FinancePlot plottable = new FinancePlot()
+            {
+                ohlcs = ohlcs,
+                Candle = true,
+                ColorUp = ColorTranslator.FromHtml("#26a69a"),
+                ColorDown = ColorTranslator.FromHtml("#ef5350"),
+            };
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
+        /// Display errorbars with 4 custom directions at the defined X and Y positions.
+        /// Null is accepted for error ranges which will not be displayed.
+        /// </summary>
+        public ErrorBars AddErrorBars(double[] x, double[] y, double[] xNeg, double[] xPos, double[] yNeg, double[] yPos, Color? color = null)
+        {
+            var plottable = new ErrorBars(x, y, xPos, xNeg, yPos, yNeg) { Color = color ?? GetNextColor() };
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
+        /// Display paired horizontal errorbars at the defined X and Y positions.
+        /// </summary>
+        public ErrorBars AddErrorBarsX(double[] x, double[] y, double[] err, Color? color = null)
+        {
+            var plottable = new ErrorBars(x, y, err, err, null, null) { Color = color ?? GetNextColor() };
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
+        /// Display paired vertical errorbars at the defined X and Y positions.
+        /// </summary>
+        public ErrorBars AddErrorBarsY(double[] x, double[] y, double[] err, Color? color = null)
+        {
+            var plottable = new ErrorBars(x, y, null, null, err, err) { Color = color ?? GetNextColor() };
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
+        /// Create a polygon to fill the area between Y values and a baseline.
+        /// </summary>
+        public Polygon AddFill(double[] xs, double[] ys, double baseline = 0, Color? color = null)
+        {
+            var plottable = new Polygon(
+                xs: Tools.Pad(xs, cloneEdges: true),
+                ys: Tools.Pad(ys, 1, baseline, baseline))
+            {
+                fill = true,
+                fillColor = color ?? GetNextColor(.5),
+            };
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
+        /// Create a polygon to fill the area between Y values of two curves.
+        /// </summary>
+        public Polygon AddFill(double[] xs1, double[] ys1, double[] xs2, double[] ys2, Color? color = null)
+        {
+            // combine xs and ys to make one big curve
+            int pointCount = xs1.Length + xs2.Length;
+            double[] bothX = new double[pointCount];
+            double[] bothY = new double[pointCount];
+
+            // copy the first dataset as-is
+            Array.Copy(xs1, 0, bothX, 0, xs1.Length);
+            Array.Copy(ys1, 0, bothY, 0, ys1.Length);
+
+            // copy the second dataset in reverse order
+            for (int i = 0; i < xs2.Length; i++)
+            {
+                bothX[xs1.Length + i] = xs2[xs2.Length - 1 - i];
+                bothY[ys1.Length + i] = ys2[ys2.Length - 1 - i];
+            }
+
+            var plottable = new Polygon(bothX, bothY)
+            {
+                fill = true,
+                fillColor = color ?? GetNextColor(.5),
+            };
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
+        /// Create a polygon to fill the area between Y values and a baseline
+        /// that uses two different colors for area above and area below the baseline.
+        /// </summary>
+        public (Polygon polyAbove, Polygon polyBelow) AddFillAboveAndBelow(double[] xs, double[] ys, double baseline = 0, Color? colorAbove = null, Color? colorBelow = null)
+        {
+            // TODO: this almost works perfectly, but not quite.
+            // look at scatter plots with low numbers of points
+            // that cross the baseline a lot. The same X value appears
+            // to have filled area both above and below the curve.
+
+            double[] xs2 = Tools.Pad(xs, cloneEdges: true);
+            double[] ys2 = Tools.Pad(ys, padWithLeft: baseline, padWithRight: baseline);
+            double[] ys2below = new double[ys2.Length];
+            double[] ys2above = new double[ys2.Length];
+
+            for (int i = 0; i < ys2.Length; i++)
+            {
+                if (ys2[i] < baseline)
+                {
+                    ys2below[i] = ys2[i];
+                    ys2above[i] = baseline;
+                }
+                else
+                {
+                    ys2above[i] = ys2[i];
+                    ys2below[i] = baseline;
+                }
+            }
+
+            Polygon polyAbove = new Polygon(xs2, ys2above);
+            Polygon polyBelow = new Polygon(xs2, ys2below);
+
+            polyAbove.fillColor = colorAbove ?? Color.Green;
+            polyBelow.fillColor = colorBelow ?? Color.Red;
+
+            Add(polyAbove);
+            Add(polyBelow);
+
+            return (polyAbove, polyBelow);
+        }
+
+        /// <summary>
         /// Add a horizontal axis line at a specific Y position
         /// </summary>
         public HLine AddHorizontalLine(double y, Color? color = null, float width = 1, LineStyle style = LineStyle.Solid)
@@ -401,6 +536,22 @@ namespace ScottPlot
                 color = color ?? settings.GetNextColor(),
                 lineWidth = width,
                 lineStyle = style
+            };
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
+        /// Add OHLC (open, high, low, close) data to the plot
+        /// </summary>
+        public FinancePlot AddOHLCs(OHLC[] ohlcs)
+        {
+            FinancePlot plottable = new FinancePlot()
+            {
+                ohlcs = ohlcs,
+                Candle = false,
+                ColorUp = ColorTranslator.FromHtml("#26a69a"),
+                ColorDown = ColorTranslator.FromHtml("#ef5350"),
             };
             Add(plottable);
             return plottable;
