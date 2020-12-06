@@ -525,6 +525,18 @@ namespace ScottPlot
             return (polyAbove, polyBelow);
         }
 
+        public FunctionPlot AddFunction(Func<double, double?> function, Color? color = null, double lineWidth = 1, LineStyle lineStyle = LineStyle.Solid)
+        {
+            FunctionPlot plottable = new FunctionPlot(function)
+            {
+                color = color ?? settings.GetNextColor(),
+                lineWidth = lineWidth,
+                lineStyle = lineStyle
+            };
+            Add(plottable);
+            return plottable;
+        }
+
         /// <summary>
         /// Add a horizontal axis line at a specific Y position
         /// </summary>

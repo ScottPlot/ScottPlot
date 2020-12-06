@@ -58,31 +58,6 @@ namespace ScottPlot
             return plottable;
         }
 
-        public FunctionPlot PlotFunction(
-            Func<double, double?> function,
-            Color? color = null,
-            double lineWidth = 1,
-            double markerSize = 0,
-            string label = "f(x)",
-            MarkerShape markerShape = MarkerShape.none,
-            LineStyle lineStyle = LineStyle.Solid
-        )
-        {
-            if (markerShape != MarkerShape.none || markerSize != 0)
-                throw new ArgumentException("function plots do not use markers");
-
-            FunctionPlot functionPlot = new FunctionPlot(function)
-            {
-                color = color ?? settings.GetNextColor(),
-                lineWidth = lineWidth,
-                lineStyle = lineStyle,
-                label = label
-            };
-
-            Add(functionPlot);
-            return functionPlot;
-        }
-
         public ScaleBar PlotScaleBar(
             double sizeX,
             double sizeY,
