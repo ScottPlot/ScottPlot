@@ -23,6 +23,8 @@ namespace ScottPlot.Plottable
 
         public bool DragEnabled { get; set; } = false;
         public Cursor DragCursor => IsHorizontal ? Cursor.NS : Cursor.WE;
+        public double DragLimitMin = double.NegativeInfinity;
+        public double DragLimitMax = double.PositiveInfinity;
 
         public bool IsVisible { get; set; } = true;
 
@@ -67,18 +69,6 @@ namespace ScottPlot.Plottable
             }
         }
 
-        private double dragLimitX1 = double.NegativeInfinity;
-        private double dragLimitX2 = double.PositiveInfinity;
-        private double dragLimitY1 = double.NegativeInfinity;
-        private double dragLimitY2 = double.PositiveInfinity;
-        public void SetLimits(double? x1, double? x2, double? y1, double? y2)
-        {
-            dragLimitX1 = x1 ?? dragLimitX1;
-            dragLimitX2 = x2 ?? dragLimitX2;
-            dragLimitY1 = y1 ?? dragLimitY1;
-            dragLimitY2 = y2 ?? dragLimitY2;
-        }
-
         public void DragTo(double coordinateX, double coordinateY, bool isShiftDown = false, bool isAltDown = false, bool isCtrlDown = false)
         {
             if (!DragEnabled)
@@ -86,14 +76,14 @@ namespace ScottPlot.Plottable
 
             if (IsHorizontal)
             {
-                if (coordinateY < dragLimitY1) coordinateY = dragLimitY1;
-                if (coordinateY > dragLimitY2) coordinateY = dragLimitY2;
+                if (coordinateY < DragLimitMin) coordinateY = DragLimitMin;
+                if (coordinateY > DragLimitMax) coordinateY = DragLimitMax;
                 position = coordinateY;
             }
             else
             {
-                if (coordinateX < dragLimitX1) coordinateX = dragLimitX1;
-                if (coordinateX > dragLimitX2) coordinateX = dragLimitX2;
+                if (coordinateX < DragLimitMin) coordinateX = DragLimitMin;
+                if (coordinateX > DragLimitMax) coordinateX = DragLimitMax;
                 position = coordinateX;
             }
         }

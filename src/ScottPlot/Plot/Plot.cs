@@ -302,6 +302,22 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Add a horizontal axis line at a specific Y position
+        /// </summary>
+        public HLine AddHorizontalLine(double y, Color? color = null, float width = 1, LineStyle style = LineStyle.Solid)
+        {
+            HLine plottable = new HLine()
+            {
+                position = y,
+                color = color ?? settings.GetNextColor(),
+                lineWidth = width,
+                lineStyle = style
+            };
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
         /// Display text at specific X/Y coordinates
         /// </summary>
         public Text AddText(string label, double x, double y, float size = 12, Color? color = null) =>
@@ -318,6 +334,22 @@ namespace ScottPlot
                 x = x,
                 y = y,
                 Font = font
+            };
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
+        /// Add a vertical axis line at a specific Y position
+        /// </summary>
+        public VLine AddVerticalLine(double x, Color? color = null, float width = 1, LineStyle style = LineStyle.Solid)
+        {
+            VLine plottable = new VLine()
+            {
+                position = x,
+                color = color ?? settings.GetNextColor(),
+                lineWidth = width,
+                lineStyle = style
             };
             Add(plottable);
             return plottable;
