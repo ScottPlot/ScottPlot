@@ -302,6 +302,95 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Add a bar plot for the given values. Bars will be placed at X positions 0, 1, 2, etc.
+        /// </summary>
+        public BarPlot AddBar(double[] values, Color? color = null)
+        {
+            double[] xs = DataGen.Consecutive(values.Length);
+            var plottable = new BarPlot(xs, values, null, null)
+            {
+                fillColor = color ?? GetNextColor()
+            };
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
+        /// Add a bar plot for the given values using defined bar positions
+        /// </summary>
+        public BarPlot AddBar(double[] values, double[] positions, Color? color = null)
+        {
+            var plottable = new BarPlot(positions, values, null, null)
+            {
+                fillColor = color ?? GetNextColor()
+            };
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
+        /// Add a bar plot (values +/- errors) using defined positions
+        /// </summary>
+        public BarPlot AddBar(double[] values, double[] errors, double[] positions, Color? color = null)
+        {
+            var plottable = new BarPlot(positions, values, errors, null)
+            {
+                fillColor = color ?? GetNextColor()
+            };
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
+        /// Create a series of bar plots and customize the ticks and legend
+        /// </summary>
+        public BarPlot[] AddBarGroups(string[] groupLabels, string[] seriesLabels, double[][] ys, double[][] yErr)
+        {
+            if (groupLabels is null || seriesLabels is null || ys is null)
+                throw new ArgumentException("labels and ys cannot be null");
+
+            if (seriesLabels.Length != ys.Length)
+                throw new ArgumentException("groupLabels and ys must be the same length");
+
+            foreach (double[] subArray in ys)
+                if (subArray.Length != groupLabels.Length)
+                    throw new ArgumentException("all arrays inside ys must be the same length as groupLabels");
+
+            double groupWidthFraction = 0.8;
+            double barWidthFraction = 0.8;
+            double errorCapSize = 0.38;
+
+            int seriesCount = ys.Length;
+            double barWidth = groupWidthFraction / seriesCount;
+            BarPlot[] bars = new BarPlot[seriesCount];
+            bool containsNegativeY = false;
+            for (int i = 0; i < seriesCount; i++)
+            {
+                double[] barYs = ys[i];
+                double[] barYerr = yErr?[i];
+                double[] barXs = DataGen.Consecutive(barYs.Length);
+                containsNegativeY |= barYs.Where(y => y < 0).Any();
+                var bar = new BarPlot(barXs, barYs, barYerr, null)
+                {
+                    label = seriesLabels[i],
+                    barWidth = barWidth * barWidthFraction,
+                    xOffset = i * barWidth,
+                    errorCapSize = errorCapSize,
+                    fillColor = GetNextColor()
+                };
+                Add(bar);
+            }
+
+            if (containsNegativeY)
+                AxisAuto();
+
+            double[] groupPositions = DataGen.Consecutive(groupLabels.Length, offset: (groupWidthFraction - barWidth) / 2);
+            XTicks(groupPositions, groupLabels);
+
+            return bars;
+        }
+
+        /// <summary>
         /// Add a horizontal axis line at a specific Y position
         /// </summary>
         public HLine AddHorizontalLine(double y, Color? color = null, float width = 1, LineStyle style = LineStyle.Solid)

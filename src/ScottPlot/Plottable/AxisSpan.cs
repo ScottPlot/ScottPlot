@@ -19,7 +19,7 @@ namespace ScottPlot.Plottable
         public int VerticalAxisIndex { get; set; } = 0;
         public bool IsVisible { get; set; } = true;
 
-        public Color color;
+        public Color color = Color.FromArgb(128, Color.Magenta);
         public string label;
         public bool IsHorizontal = true;
         public bool DragEnabled { get; set; }

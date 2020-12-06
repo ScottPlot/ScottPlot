@@ -119,6 +119,9 @@ namespace ScottPlot
             }
         }
 
+        public static double[] RandomNormal(int seed, int pointCount, double mean = .5, double stdDev = .5, double maxSdMultiple = 10) =>
+            RandomNormal(new Random(seed), pointCount, mean, stdDev, maxSdMultiple);
+
         public static double[] RandomNormal(Random rand, int pointCount, double mean = .5, double stdDev = .5, double maxSdMultiple = 10)
         {
             if (rand == null)
