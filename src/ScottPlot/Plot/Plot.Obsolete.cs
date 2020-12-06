@@ -130,14 +130,13 @@ namespace ScottPlot
             {
                 position1 = x1,
                 position2 = x2,
-                color = color ?? settings.GetNextColor(),
-                alpha = alpha,
+                color = color ?? GetNextColor(alpha),
                 label = label,
                 DragEnabled = draggable,
-                DragFixedSize = dragFixedSize
+                DragFixedSize = dragFixedSize,
+                DragLimitMin = dragLimitLower,
+                DragLimitMax = dragLimitUpper,
             };
-            axisSpan.SetLimits(dragLimitLower, dragLimitUpper, null, null);
-
             Add(axisSpan);
             return axisSpan;
         }
@@ -223,13 +222,13 @@ namespace ScottPlot
             {
                 position1 = y1,
                 position2 = y2,
-                color = color ?? settings.GetNextColor(),
-                alpha = alpha,
+                color = color ?? GetNextColor(alpha),
                 label = label,
                 DragEnabled = draggable,
                 DragFixedSize = dragFixedSize,
+                DragLimitMin = dragLimitLower,
+                DragLimitMax = dragLimitUpper
             };
-            axisSpan.SetLimits(null, null, dragLimitLower, dragLimitUpper);
             Add(axisSpan);
             return axisSpan;
         }

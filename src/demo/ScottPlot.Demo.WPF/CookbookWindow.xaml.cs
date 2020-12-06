@@ -29,6 +29,8 @@ namespace ScottPlot.Demo.WPF
         private void DemoSelected(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             TreeViewItem sel = (TreeViewItem)DemoTreeview.SelectedItem;
+            if (sel is null || sel.Tag is null)
+                return;
             DemoPlotControl1.LoadDemo(sel.Tag.ToString());
         }
 

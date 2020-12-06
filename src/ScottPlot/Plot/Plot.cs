@@ -121,7 +121,7 @@ namespace ScottPlot
         /// Return a new color from the Pallette based on the number of plottables already in the plot.
         /// Use this to ensure every plottable gets a unique color.
         /// </summary>
-        public Color GetNextColor() => settings.GetNextColor();
+        public Color GetNextColor(double alpha = 1) => Color.FromArgb((byte)(alpha * 255), settings.GetNextColor());
 
         /// <summary>
         /// Get access to the plot settings module (not exposed by default because its internal API changes frequently)
@@ -318,6 +318,21 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Add a horizontal span (shades the region between two X positions)
+        /// </summary>
+        public HSpan AddHorizontalSpan(double xMin, double xMax, Color? color = null)
+        {
+            var plottable = new HSpan()
+            {
+                position1 = xMin,
+                position2 = xMax,
+                color = color ?? GetNextColor(.5),
+            };
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
         /// Display text at specific X/Y coordinates
         /// </summary>
         public Text AddText(string label, double x, double y, float size = 12, Color? color = null) =>
@@ -350,6 +365,21 @@ namespace ScottPlot
                 color = color ?? settings.GetNextColor(),
                 lineWidth = width,
                 lineStyle = style
+            };
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
+        /// Add a horizontal span (shades the region between two X positions)
+        /// </summary>
+        public VSpan AddVerticalSpan(double yMin, double yMax, Color? color = null)
+        {
+            var plottable = new VSpan()
+            {
+                position1 = yMin,
+                position2 = yMax,
+                color = color ?? GetNextColor(.5),
             };
             Add(plottable);
             return plottable;

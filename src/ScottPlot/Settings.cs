@@ -17,7 +17,7 @@ namespace ScottPlot
     {
         // plottables
         public readonly List<IPlottable> Plottables = new List<IPlottable>();
-        public Color GetNextColor() { return PlottablePalette.GetColor(Plottables.Count); }
+        public Color GetNextColor() => PlottablePalette.GetColor(Plottables.Count);
 
         // renderable objects the user can customize
         public readonly FigureBackground FigureBackground = new FigureBackground();

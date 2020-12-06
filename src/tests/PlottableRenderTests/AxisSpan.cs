@@ -60,31 +60,5 @@ namespace ScottPlotTests.PlottableRenderTests
 
             Assert.That(after.IsDarkerThan(before));
         }
-
-        [Test]
-        public void Test_AxisSpan_Alpha()
-        {
-            var plt = new ScottPlot.Plot();
-
-            // start with default settings
-            var axSpan = new HSpan() { position1 = 1.23, position2 = 2.34 };
-
-            plt.Add(axSpan);
-            var bmp1 = TestTools.GetLowQualityBitmap(plt);
-
-            // change the plottable
-            axSpan.alpha /= 2;
-            var bmp2 = TestTools.GetLowQualityBitmap(plt);
-
-            // measure what changed
-            //TestTools.SaveFig(bmp1, "1");
-            //TestTools.SaveFig(bmp2, "2");
-            var before = new MeanPixel(bmp1);
-            var after = new MeanPixel(bmp2);
-            Console.WriteLine($"Before: {before}");
-            Console.WriteLine($"After: {after}");
-
-            Assert.That(after.IsLighterThan(before));
-        }
     }
 }
