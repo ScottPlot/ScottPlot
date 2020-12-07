@@ -205,7 +205,11 @@ namespace ScottPlot
         /// <summary>
         /// Lock X and Y axis scales together (so squares cannot be distorted)
         /// </summary>
-        public void AxisEqualScale(bool lockScales = true) => settings.AxisEqualScale = lockScales;
+        public void AxisEqualScale(bool lockScales = true)
+        {
+            settings.AxisAutoUnsetAxes();
+            settings.AxisEqualScale = lockScales;
+        }
 
         #endregion
 

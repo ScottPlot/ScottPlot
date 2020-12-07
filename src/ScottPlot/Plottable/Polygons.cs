@@ -15,7 +15,7 @@ namespace ScottPlot.Plottable
 
         public double lineWidth;
         public Color lineColor;
-        public bool fill;
+        public bool fill = true;
         public Color fillColor;
         public double fillAlpha;
         public bool IsVisible { get; set; } = true;

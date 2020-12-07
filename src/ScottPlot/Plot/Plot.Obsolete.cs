@@ -593,15 +593,14 @@ namespace ScottPlot
                 lineWidth = lineWidth,
                 lineColor = lineColor ?? Color.Black,
                 fill = fill,
-                fillColor = fillColor ?? settings.GetNextColor(),
-                fillAlpha = fillAlpha
+                fillColor = fillColor ?? GetNextColor(fillAlpha),
             };
 
             Add(plottable);
             return plottable;
         }
 
-        [Obsolete("Use AddPolygon() and customize the object it returns")]
+        [Obsolete("Use AddPolygons() and customize the object it returns")]
         public Polygons PlotPolygons(
             List<List<(double x, double y)>> polys,
             string label = null,

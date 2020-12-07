@@ -6,6 +6,7 @@
 
 using ScottPlot.Plottable;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
@@ -619,6 +620,36 @@ namespace ScottPlot
                 color = color ?? settings.GetNextColor(),
                 markerSize = size,
                 markerShape = shape
+            };
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
+        /// Add a polygon to the plot
+        /// </summary>
+        public Polygon AddPolygon(double[] xs, double[] ys, Color? fillColor = null, double lineWidth = 0, Color? lineColor = null)
+        {
+            var plottable = new Polygon(xs, ys)
+            {
+                lineWidth = lineWidth,
+                lineColor = lineColor ?? Color.Black,
+                fillColor = fillColor ?? settings.GetNextColor(),
+            };
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
+        /// Add many polygons using an optimized rendering method
+        /// </summary>
+        public Polygons AddPolygons(List<List<(double x, double y)>> polys, Color? fillColor = null, double lineWidth = 0, Color? lineColor = null)
+        {
+            var plottable = new Polygons(polys)
+            {
+                lineWidth = lineWidth,
+                lineColor = lineColor ?? Color.Black,
+                fillColor = fillColor ?? settings.GetNextColor(),
             };
             Add(plottable);
             return plottable;

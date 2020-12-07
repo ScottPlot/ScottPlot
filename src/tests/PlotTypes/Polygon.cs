@@ -30,7 +30,6 @@ namespace ScottPlotTests.PlotTypes
                     lineColor = color,
                     fill = true,
                     fillColor = color,
-                    fillAlpha = .5
                 };
 
                 plt.Add(plottable);
