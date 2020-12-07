@@ -510,6 +510,33 @@ namespace ScottPlot
             return ohlc;
         }
 
+        [Obsolete("use AddPie() and customize the object it returns")]
+        public PiePlot PlotPie(
+            double[] values,
+            string[] sliceLabels = null,
+            Color[] colors = null,
+            bool explodedChart = false,
+            bool showValues = false,
+            bool showPercentages = false,
+            bool showLabels = true,
+            string label = null
+            )
+        {
+            colors = colors ?? Enumerable.Range(0, values.Length).Select(i => settings.PlottablePalette.GetColor(i)).ToArray();
+
+            PiePlot pie = new PiePlot(values, sliceLabels, colors)
+            {
+                explodedChart = explodedChart,
+                showValues = showValues,
+                showPercentages = showPercentages,
+                showLabels = showLabels,
+                label = label
+            };
+
+            Add(pie);
+            return pie;
+        }
+
         [Obsolete("Use AddPolygon() and customize the object it returns")]
         public Polygon PlotPolygon(
             double[] xs,

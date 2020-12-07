@@ -573,6 +573,28 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Add a pie chart to the plot
+        /// </summary>
+        public PiePlot AddPie(double[] values, bool hideGridAndFrame = true)
+        {
+            Color[] colors = Enumerable.Range(0, values.Length)
+                                       .Select(i => settings.PlottablePalette.GetColor(i))
+                                       .ToArray();
+
+            PiePlot pie = new PiePlot(values, null, colors);
+            Add(pie);
+
+            if (hideGridAndFrame)
+            {
+                XAxis.Grid = false;
+                YAxis.Grid = false;
+                LayoutFrameless();
+            }
+
+            return pie;
+        }
+
+        /// <summary>
         /// Add a horizontal span (shades the region between two X positions)
         /// </summary>
         public HSpan AddHorizontalSpan(double xMin, double xMax, Color? color = null)
