@@ -71,11 +71,10 @@ namespace ScottPlot.Demo.Customize
                 txt.FontBold = true;
                 txt.rotation = 25;
 
-                plt.AddPoint(1, 9, label: "point");
-                plt.PlotArrow(8, 8, 8.5, 8.5, label: "arrow");
+                plt.AddPoint(1, 9);
+                plt.PlotArrow(8, 8, 8.5, 8.5);
 
                 plt.SetAxisLimits(0, 13, -1, 11);
-                plt.Legend();
                 plt.Grid(false);
             }
         }

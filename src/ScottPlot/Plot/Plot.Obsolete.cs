@@ -537,6 +537,44 @@ namespace ScottPlot
             return pie;
         }
 
+        [Obsolete("Use AddPoint() and customize the object it returns")]
+        public ScatterPlot PlotPoint(double x, double y, Color? color = null, double markerSize = 5, string label = null,
+            double? errorX = null, double? errorY = null, double errorLineWidth = 1, double errorCapSize = 3,
+            MarkerShape markerShape = MarkerShape.filledCircle, LineStyle lineStyle = LineStyle.Solid)
+            => throw new NotImplementedException();
+
+        public ScatterPlot PlotScatter(
+            double[] xs,
+            double[] ys,
+            Color? color = null,
+            double lineWidth = 1,
+            double markerSize = 5,
+            string label = null,
+            double[] errorX = null,
+            double[] errorY = null,
+            double errorLineWidth = 1,
+            double errorCapSize = 3,
+            MarkerShape markerShape = MarkerShape.filledCircle,
+            LineStyle lineStyle = LineStyle.Solid
+            )
+        {
+            var scatterPlot = new ScatterPlot(xs, ys, errorX, errorY)
+            {
+                color = color ?? settings.GetNextColor(),
+                lineWidth = lineWidth,
+                markerSize = (float)markerSize,
+                label = label,
+                errorLineWidth = (float)errorLineWidth,
+                errorCapSize = (float)errorCapSize,
+                stepDisplay = false,
+                markerShape = markerShape,
+                lineStyle = lineStyle
+            };
+
+            Add(scatterPlot);
+            return scatterPlot;
+        }
+
         [Obsolete("Use AddPolygon() and customize the object it returns")]
         public Polygon PlotPolygon(
             double[] xs,

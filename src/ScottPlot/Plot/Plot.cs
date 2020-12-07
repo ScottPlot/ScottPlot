@@ -557,6 +557,21 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Add a horizontal span (shades the region between two X positions)
+        /// </summary>
+        public HSpan AddHorizontalSpan(double xMin, double xMax, Color? color = null)
+        {
+            var plottable = new HSpan()
+            {
+                position1 = xMin,
+                position2 = xMax,
+                color = color ?? GetNextColor(.5),
+            };
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
         /// Add OHLC (open, high, low, close) data to the plot
         /// </summary>
         public FinancePlot AddOHLCs(OHLC[] ohlcs)
@@ -595,15 +610,15 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Add a horizontal span (shades the region between two X positions)
+        /// Add a point (a scatter plot with a single marker)
         /// </summary>
-        public HSpan AddHorizontalSpan(double xMin, double xMax, Color? color = null)
+        public ScatterPlot AddPoint(double x, double y, Color? color = null, float size = 5, MarkerShape shape = MarkerShape.filledCircle)
         {
-            var plottable = new HSpan()
+            var plottable = new ScatterPlot(new double[] { x }, new double[] { y })
             {
-                position1 = xMin,
-                position2 = xMax,
-                color = color ?? GetNextColor(.5),
+                color = color ?? settings.GetNextColor(),
+                markerSize = size,
+                markerShape = shape
             };
             Add(plottable);
             return plottable;

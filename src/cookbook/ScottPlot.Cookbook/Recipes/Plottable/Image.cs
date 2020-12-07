@@ -56,9 +56,9 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.Add(ip2);
             plt.Add(ip3);
 
-            plt.AddPoint(ip1.x, ip1.y, color: Color.Magenta, markerSize: 20);
-            plt.AddPoint(ip2.x, ip2.y, color: Color.Magenta, markerSize: 20);
-            plt.AddPoint(ip3.x, ip3.y, color: Color.Magenta, markerSize: 20);
+            plt.AddPoint(ip1.x, ip1.y, Color.Magenta, size: 20);
+            plt.AddPoint(ip2.x, ip2.y, Color.Magenta, size: 20);
+            plt.AddPoint(ip3.x, ip3.y, Color.Magenta, size: 20);
         }
     }
 
@@ -80,7 +80,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             Bitmap monaLisa = DataGen.SampleImage();
             var ip1 = new ScottPlot.Plottable.Image() { image = monaLisa, x = 10, y = .5, rotation = 30 };
             plt.Add(ip1);
-            plt.AddPoint(ip1.x, ip1.y, color: Color.Magenta, markerSize: 20);
+            plt.AddPoint(ip1.x, ip1.y, color: Color.Magenta, size: 20);
         }
     }
 

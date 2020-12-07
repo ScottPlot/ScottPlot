@@ -13,59 +13,6 @@ namespace ScottPlot
 {
     public partial class Plot
     {
-        /// <summary>
-        /// Create a scatter plot with a single point, add it to the plot, and return it
-        /// </summary>
-        public ScatterPlot AddPoint(double x, double y, Color? color = null, float markerSize = 5, string label = null)
-        {
-            var sp = new ScatterPlot(new double[] { x }, new double[] { y })
-            {
-                color = color ?? settings.GetNextColor(),
-                markerSize = markerSize,
-                label = label
-            };
-            Add(sp);
-            return sp;
-        }
-
-        [Obsolete("Use AddPoint() and optionally customize the object it returns", true)]
-        public ScatterPlot PlotPoint(double x, double y, Color? color = null, double markerSize = 5, string label = null,
-            double? errorX = null, double? errorY = null, double errorLineWidth = 1, double errorCapSize = 3,
-            MarkerShape markerShape = MarkerShape.filledCircle, LineStyle lineStyle = LineStyle.Solid)
-            => throw new NotImplementedException();
-
-        public ScatterPlot PlotScatter(
-            double[] xs,
-            double[] ys,
-            Color? color = null,
-            double lineWidth = 1,
-            double markerSize = 5,
-            string label = null,
-            double[] errorX = null,
-            double[] errorY = null,
-            double errorLineWidth = 1,
-            double errorCapSize = 3,
-            MarkerShape markerShape = MarkerShape.filledCircle,
-            LineStyle lineStyle = LineStyle.Solid
-            )
-        {
-            var scatterPlot = new ScatterPlot(xs, ys, errorX, errorY)
-            {
-                color = color ?? settings.GetNextColor(),
-                lineWidth = lineWidth,
-                markerSize = (float)markerSize,
-                label = label,
-                errorLineWidth = (float)errorLineWidth,
-                errorCapSize = (float)errorCapSize,
-                stepDisplay = false,
-                markerShape = markerShape,
-                lineStyle = lineStyle
-            };
-
-            Add(scatterPlot);
-            return scatterPlot;
-        }
-
         public ScatterPlotHighlight PlotScatterHighlight(
            double[] xs,
            double[] ys,

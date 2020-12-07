@@ -47,16 +47,16 @@ namespace ScottPlot.Demo.PlotTypes
                 plt.AddPoint(5, 0.8, color: Color.Green);
 
                 plt.PlotBitmap(image, 20, 0.3);
-                plt.AddPoint(20, 0.3, color: Color.Black, markerSize: 15);
+                plt.AddPoint(20, 0.3, color: Color.Black, size: 15);
 
                 plt.PlotBitmap(image, 30, 0, alignment: Alignment.MiddleCenter);
-                plt.AddPoint(30, 0, color: Color.Black, markerSize: 15);
+                plt.AddPoint(30, 0, color: Color.Black, size: 15);
 
                 plt.PlotBitmap(image, 30, -0.3, alignment: Alignment.UpperLeft);
-                plt.AddPoint(30, -0.3, color: Color.Black, markerSize: 15);
+                plt.AddPoint(30, -0.3, color: Color.Black, size: 15);
 
                 plt.PlotBitmap(image, 5, -.5, rotation: -30);
-                plt.AddPoint(5, -.5, color: Color.Blue, markerSize: 15);
+                plt.AddPoint(5, -.5, color: Color.Blue, size: 15);
 
                 plt.PlotBitmap(image, 15, -.6, frameSize: 3, frameColor: Color.Magenta);
             }
