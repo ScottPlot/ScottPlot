@@ -5,6 +5,7 @@
  */
 
 using ScottPlot.Plottable;
+using ScottPlot.Statistics;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -651,6 +652,39 @@ namespace ScottPlot
                 lineColor = lineColor ?? Color.Black,
                 fillColor = fillColor ?? settings.GetNextColor(),
             };
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
+        /// Add a population to the plot
+        /// </summary>
+        public PopulationPlot AddPopulation(Population population, string label = null)
+        {
+            var plottable = new PopulationPlot(population, label, settings.GetNextColor());
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
+        /// Add multiple populations to the plot as a single series
+        /// </summary>
+        public PopulationPlot AddPopulations(Population[] populations, string label = null)
+        {
+            var plottable = new PopulationPlot(populations, label, settings.GetNextColor());
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
+        /// Add multiple populations to the plot as a single series
+        /// </summary>
+        public PopulationPlot AddPopulations(PopulationMultiSeries multiSeries)
+        {
+            for (int i = 0; i < multiSeries.multiSeries.Length; i++)
+                multiSeries.multiSeries[i].color = settings.PlottablePalette.GetColor(i);
+
+            var plottable = new PopulationPlot(multiSeries);
             Add(plottable);
             return plottable;
         }

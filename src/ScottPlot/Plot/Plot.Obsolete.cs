@@ -633,7 +633,7 @@ namespace ScottPlot
             return plottable;
         }
 
-        [Obsolete("Use AddPopulation() and customize the object it returns")]
+        [Obsolete("Use AddPopulations() and customize the object it returns")]
         public PopulationPlot PlotPopulations(Population[] populations, string label = null)
         {
             var plottable = new PopulationPlot(populations, label);
@@ -641,7 +641,7 @@ namespace ScottPlot
             return plottable;
         }
 
-        [Obsolete("Use AddPopulation() and customize the object it returns")]
+        [Obsolete("Use AddPopulations() and customize the object it returns")]
         public PopulationPlot PlotPopulations(PopulationSeries series, string label = null)
         {
             series.color = settings.GetNextColor();
@@ -652,7 +652,7 @@ namespace ScottPlot
             return plottable;
         }
 
-        [Obsolete("Use AddPopulation() and customize the object it returns")]
+        [Obsolete("Use AddPopulations() and customize the object it returns")]
         public PopulationPlot PlotPopulations(PopulationMultiSeries multiSeries)
         {
             for (int i = 0; i < multiSeries.multiSeries.Length; i++)

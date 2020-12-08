@@ -226,12 +226,28 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// High-level configuration for axis label, tick labels, and all tick lines
         /// </summary>
-        public void Configure(Color color)
+        public void Configure(Color? color = null, bool? ticks = null, bool ? grid = null)
         {
-            ConfigureAxisLabel(color: color);
-            ConfigureTickLabelStyle(color: color);
-            Ticks.Color = color;
-            Line.Color = color;
+            if (color.HasValue)
+            {
+                ConfigureAxisLabel(color: color);
+                ConfigureTickLabelStyle(color: color);
+                Ticks.Color = color.Value;
+                Line.Color = color.Value;
+            }
+
+            if (ticks.HasValue)
+            {
+                Ticks.MajorTickEnable = ticks.Value;
+                Ticks.MinorTickEnable = ticks.Value;
+                Ticks.MajorLabelEnable = ticks.Value;
+            }
+
+            if (grid.HasValue)
+            {
+                Ticks.MajorGridEnable = grid.Value;
+                Ticks.MinorTickEnable = grid.Value;
+            }
         }
 
         public void RecalculateAxisSize()
