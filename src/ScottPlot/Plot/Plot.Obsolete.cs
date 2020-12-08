@@ -543,6 +543,7 @@ namespace ScottPlot
             MarkerShape markerShape = MarkerShape.filledCircle, LineStyle lineStyle = LineStyle.Solid)
             => throw new NotImplementedException();
 
+        [Obsolete("Use AddScatter() and customize the object it returns")]
         public ScatterPlot PlotScatter(
             double[] xs,
             double[] ys,

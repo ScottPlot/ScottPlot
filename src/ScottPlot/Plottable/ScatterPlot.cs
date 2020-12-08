@@ -13,8 +13,8 @@ namespace ScottPlot.Plottable
     {
         public double[] xs { get; private set; }
         public double[] ys { get; private set; }
-        public double[] errorX { get; private set; }
-        public double[] errorY { get; private set; }
+        public double[] errorX { get; set; }
+        public double[] errorY { get; set; }
         public int HorizontalAxisIndex { get; set; } = 0;
         public int VerticalAxisIndex { get; set; } = 0;
 

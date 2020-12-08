@@ -730,6 +730,33 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Add a scatter plot from X/Y pairs. 
+        /// Scatter plots are slower than Signal plots.
+        /// </summary>
+        public ScatterPlot AddScatter(
+            double[] xs,
+            double[] ys,
+            Color? color = null,
+            float lineWidth = 1,
+            float markerSize = 5,
+            string label = null,
+            MarkerShape markerShape = MarkerShape.filledCircle,
+            LineStyle lineStyle = LineStyle.Solid)
+        {
+            var plottable = new ScatterPlot(xs, ys, null, null)
+            {
+                color = color ?? GetNextColor(),
+                lineWidth = lineWidth,
+                markerSize = markerSize,
+                label = label,
+                markerShape = markerShape,
+                lineStyle = lineStyle
+            };
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
         /// Display text at specific X/Y coordinates
         /// </summary>
         public Text AddText(string label, double x, double y, float size = 12, Color? color = null) =>
