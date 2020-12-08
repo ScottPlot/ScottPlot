@@ -38,9 +38,10 @@ namespace ScottPlot
         /// <summary>
         /// Configure color and visibility of the frame that outlines the data area (lines along the edges of the primary axes)
         /// </summary>
-        public void Frame(bool? visible = true, Color? color = null, bool? left = true, bool? right = true, bool? bottom = true, bool? top = true)
+        public void Frame(bool? visible = null, Color? color = null, bool? left = null, bool? right = null, bool? bottom = null, bool? top = null)
         {
             var primaryAxes = new Renderable.Axis[] { XAxis, XAxis2, YAxis, YAxis2 };
+
             foreach (var axis in primaryAxes)
                 axis.ConfigureLine(visible, color);
 

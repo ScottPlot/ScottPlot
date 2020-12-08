@@ -689,7 +689,10 @@ namespace ScottPlot
             return plottable;
         }
 
-        public RadarPlot AddRadar(double[,] values, bool independentAxes = false, double[] maxValues = null)
+        /// <summary>
+        /// Add a radar plot
+        /// </summary>
+        public RadarPlot AddRadar(double[,] values, bool independentAxes = false, double[] maxValues = null, bool disableFrameAndGrid = true)
         {
 
             Color[] colors = Enumerable.Range(0, values.Length)
@@ -700,7 +703,30 @@ namespace ScottPlot
 
             RadarPlot plottable = new RadarPlot(values, colors, fills, independentAxes, maxValues);
             Add(plottable);
+
+            if (disableFrameAndGrid)
+            {
+                LayoutFrameless();
+                DisableGrid();
+            }
+
             return plottable;
+        }
+
+        /// <summary>
+        /// Add an L-shaped scalebar to the corner of the plot
+        /// </summary>
+        public ScaleBar AddScaleBar(double width, double height, string xLabel = null, string yLabel = null)
+        {
+            var scalebar = new ScaleBar()
+            {
+                Width = width,
+                Height = height,
+                HorizontalLabel = xLabel,
+                VerticalLabel = yLabel,
+            };
+            Add(scalebar);
+            return scalebar;
         }
 
         /// <summary>

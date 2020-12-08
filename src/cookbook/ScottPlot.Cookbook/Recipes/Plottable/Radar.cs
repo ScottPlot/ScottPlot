@@ -45,10 +45,6 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             var radarPlot = plt.AddRadar(values);
             radarPlot.axisType = RadarAxis.Polygon;
-
-            // customize the plot
-            plt.LayoutFrameless();
-            plt.DisableGrid();
         }
     }
 
@@ -69,10 +65,6 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             var radarPlot = plt.AddRadar(values);
             radarPlot.axisType = RadarAxis.None;
             radarPlot.showAxisLabels = false;
-
-            // customize the plot
-            plt.LayoutFrameless();
-            plt.DisableGrid();
         }
     }
 
@@ -97,8 +89,6 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             // customize the plot
             plt.Title("2010 Formula One World Championship");
-            plt.LayoutFrameless();
-            plt.DisableGrid();
             plt.Legend();
 
             /* Data represents the 2010 Formula One World Championship
@@ -129,8 +119,6 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             // customize the plot
             plt.Title("2010 Formula One World Championship");
-            plt.LayoutFrameless();
-            plt.DisableGrid();
             plt.Legend();
 
             /* Data represents the 2010 Formula One World Championship
@@ -160,8 +148,6 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             // customize the plot
             plt.Title("2010 Formula One World Championship");
-            plt.LayoutFrameless();
-            plt.DisableGrid();
             plt.Legend();
 
             /* Data represents the 2010 Formula One World Championship
@@ -196,8 +182,6 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             // customize the plot
             plt.Title("2010 Formula One World Championship");
-            plt.LayoutFrameless();
-            plt.DisableGrid();
             plt.Legend();
 
             /* Data represents the 2010 Formula One World Championship

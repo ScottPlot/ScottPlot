@@ -29,7 +29,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Distance in pixels from the edge of the data area
         /// </summary>
-        public float Padding;
+        public float Padding = 10;
 
         /// <summary>
         /// Thickness of the scalebar in pixels

@@ -689,6 +689,34 @@ namespace ScottPlot
             return plottable;
         }
 
+        [Obsolete("use AddScalebar() and customize the object it returns")]
+        public ScaleBar PlotScaleBar(
+            double sizeX,
+            double sizeY,
+            string labelX = null,
+            string labelY = null,
+            double thickness = 2,
+            double fontSize = 12,
+            Color? color = null,
+            double padPx = 10
+            )
+        {
+            var scalebar = new ScaleBar()
+            {
+                Width = sizeX,
+                Height = sizeY,
+                HorizontalLabel = labelX,
+                VerticalLabel = labelY,
+                LineWidth = (float)thickness,
+                FontSize = (float)fontSize,
+                FontColor = color ?? Color.Black,
+                LineColor = color ?? Color.Black,
+                Padding = (float)padPx
+            };
+            Add(scalebar);
+            return scalebar;
+        }
+
         [Obsolete("Use AddText() and customize the object it returns")]
         public Text PlotText(
             string text,
@@ -724,6 +752,25 @@ namespace ScottPlot
             };
             Add(plottableText);
             return plottableText;
+        }
+
+        [Obsolete("Use AddVectorField() and customize the object it returns")]
+        public VectorField PlotVectorField(
+            Vector2[,] vectors,
+            double[] xs,
+            double[] ys,
+            string label = null,
+            Color? color = null,
+            Drawing.Colormap colormap = null,
+            double scaleFactor = 1
+            )
+        {
+            var vectorField = new VectorField(vectors, xs, ys,
+                colormap, scaleFactor, color ?? settings.GetNextColor())
+            { label = label };
+
+            Add(vectorField);
+            return vectorField;
         }
 
         [Obsolete("Use AddVerticalLine() and customize the object it returns")]
