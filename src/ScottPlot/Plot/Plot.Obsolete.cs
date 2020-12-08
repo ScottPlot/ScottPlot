@@ -663,6 +663,32 @@ namespace ScottPlot
             return plottable;
         }
 
+        [Obsolete("Use AddRader() and customize the object it returns")]
+        public RadarPlot PlotRadar(
+            double[,] values,
+            string[] categoryNames = null,
+            string[] groupNames = null,
+            Color[] fillColors = null,
+            double fillAlpha = .4,
+            Color? webColor = null,
+            bool independentAxes = false,
+            double[] maxValues = null
+            )
+        {
+            Color[] colors = fillColors ?? Enumerable.Range(0, values.Length).Select(i => settings.PlottablePalette.GetColor(i)).ToArray();
+            Color[] colorsAlpha = colors.Select(x => Color.FromArgb((byte)(255 * fillAlpha), x)).ToArray();
+
+            var plottable = new RadarPlot(values, colors, fillColors ?? colorsAlpha, independentAxes, maxValues)
+            {
+                categoryNames = categoryNames,
+                groupNames = groupNames,
+                webColor = webColor ?? Color.Gray
+            };
+            Add(plottable);
+
+            return plottable;
+        }
+
         [Obsolete("Use AddText() and customize the object it returns")]
         public Text PlotText(
             string text,

@@ -689,6 +689,20 @@ namespace ScottPlot
             return plottable;
         }
 
+        public RadarPlot AddRadar(double[,] values, bool independentAxes = false, double[] maxValues = null)
+        {
+
+            Color[] colors = Enumerable.Range(0, values.Length)
+                                       .Select(i => settings.PlottablePalette.GetColor(i))
+                                       .ToArray();
+
+            Color[] fills = colors.Select(x => Color.FromArgb(50, x)).ToArray();
+
+            RadarPlot plottable = new RadarPlot(values, colors, fills, independentAxes, maxValues);
+            Add(plottable);
+            return plottable;
+        }
+
         /// <summary>
         /// Display text at specific X/Y coordinates
         /// </summary>

@@ -15,7 +15,7 @@ namespace ScottPlot.Plottable
         public string[] groupNames;
         public Color[] fillColors;
         public Color[] lineColors;
-        public Color webColor;
+        public Color webColor = Color.Gray;
         public readonly bool independentAxes;
         public bool IsVisible { get; set; } = true;
         public int HorizontalAxisIndex { get; set; } = 0;

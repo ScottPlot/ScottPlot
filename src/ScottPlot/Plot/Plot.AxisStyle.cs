@@ -61,6 +61,15 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Disable grid line visibility for the primary X and Y axes
+        /// </summary>
+        public void DisableGrid()
+        {
+            XAxis.Configure(grid: false);
+            YAxis.Configure(grid: false);
+        }
+
+        /// <summary>
         /// Customize styling options for the primary X and Y major grid lines
         /// </summary>
         public void Grid(
