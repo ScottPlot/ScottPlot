@@ -16,8 +16,11 @@ namespace ScottPlot.Cookbook.Site
         public void AddRecipiesFromCategory(string category) =>
             AddRecipes(Locate.GetRecipes().Where(x => x.Category == category).ToArray());
 
-        public void AddAllRecipies() =>
-            AddRecipes(Locate.GetRecipes());
+        public void AddAllRecipies()
+        {
+            IRecipe[] sortedRecipes = Locate.GetRecipes().OrderBy(x => x.ID).ToArray();
+            AddRecipes(sortedRecipes);
+        }
 
         private void AddRecipes(IRecipe[] recipes)
         {
