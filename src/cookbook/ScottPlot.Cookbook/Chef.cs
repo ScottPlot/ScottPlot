@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -20,10 +21,6 @@ namespace ScottPlot.Cookbook
         const string ExtThumb = "_thumb.jpg";
         const string ExecutionMethod = "public void ExecuteRecipe";
 
-        public Chef()
-        {
-        }
-
         /// <summary>
         /// Use reflection to determine all IRecipe objects in the project, execute each of them, 
         /// and save the output using the recipe ID as its base filename.
@@ -38,7 +35,7 @@ namespace ScottPlot.Cookbook
             Console.WriteLine($"Cooking {recipes.Length} recipes in: {outputPath}");
             foreach (var recipe in recipes)
             {
-                Console.Write(recipe.ID + " ");
+                Debug.WriteLine($"Executing {recipe.ID}");
                 var plt = new Plot(Width, Height);
                 recipe.ExecuteRecipe(plt);
 
@@ -127,9 +124,9 @@ namespace ScottPlot.Cookbook
                     // read the file's source code for primary recipe components
                     string id = GetRecipeID(singleClassSourceCode);
                     IRecipe recipe = Locate.GetRecipe(id);
-                    string source = $"var plt = new ScottPlot.Plot({Width}, {Height});\n" +
-                                    GetRecipeSource(singleClassSourceCode, csFilePath) + "\n" +
-                                    $"plt.SaveFig({id}{Ext});";
+                    string source = $"var plt = new ScottPlot.Plot({Width}, {Height});\n\n" +
+                                    GetRecipeSource(singleClassSourceCode, csFilePath) + "\n\n" +
+                                    $"plt.SaveFig(\"{id}{Ext}\");";
 
                     sources.Add((recipe.ID, recipe.Title, recipe.Description, source));
                 }

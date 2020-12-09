@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -47,7 +48,7 @@ namespace ScottPlot.Cookbook.Site
             fileName = Path.GetFileName(fileName);
             string filePath = Path.Combine(SiteFolder, fileName);
             File.WriteAllText(filePath, ApplyTemplate(title));
-            Console.WriteLine($"Saved: {filePath}");
+            Debug.WriteLine($"Saved: {filePath}");
         }
 
         private string ApplyTemplate(string title)
@@ -61,9 +62,14 @@ namespace ScottPlot.Cookbook.Site
             html = html.Replace("{{title}}", pageTitle);
 
             // shows at the top of the page
-            string htmlTitle = string.IsNullOrWhiteSpace(title) ?
-                $"ScottPlot Cookbook" :
-                $"<a href='./index.html' style='color: black;'>ScottPlot Cookbook</a>: {title}";
+            string htmlTitle = $"<a href='./index.html' style='color: black;'>ScottPlot Cookbook</a>";
+            if (!string.IsNullOrWhiteSpace(title))
+            {
+                string linkHereUrl = Sanitize(title) + ".html";
+                string linkHereTitle = title.Replace(": ", " - ");
+                htmlTitle += $": <i><a href='{linkHereUrl}' style='color: black;'>{linkHereTitle}</a></i>";
+            }
+
             string warning = "" +
                 "\n<blockquote>" +
                 "<b>⚠️</b> <strong>Documentation is version-specific:</strong> " +

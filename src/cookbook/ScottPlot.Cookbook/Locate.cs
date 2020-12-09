@@ -40,6 +40,7 @@ namespace ScottPlot.Cookbook
                 "Quickstart",
                 "Managing Plottables",
                 "Axis",
+                "Multi-Axis",
                 "Ticks"
             };
 

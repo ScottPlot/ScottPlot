@@ -84,6 +84,7 @@ namespace ScottPlotTests.Cookbook
             var index = new ScottPlot.Cookbook.Site.IndexPage(CookbookFolder, SourceFolder);
             index.AddLinksToRecipes();
             index.SaveAs("index.html", null);
+            Console.WriteLine($"View Cookbook: {System.IO.Path.GetFullPath(CookbookFolder)}/index.html");
         }
     }
 }
