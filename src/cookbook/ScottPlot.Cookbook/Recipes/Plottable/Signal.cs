@@ -255,7 +255,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
     public class PlotGradientFillAboveAndBelowRange : IRecipe
     {
         public string Category => "Plottable: Signal Plot";
-        public string ID => "signal_gradientAboveAndBelow";
+        public string ID => "signal_gradientAboveAndBelowGradient";
         public string Title => "Gradient Fill Above and Below";
         public string Description =>
             "Gradients can be used to fill above and below.";

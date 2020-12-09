@@ -8,7 +8,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
     public class SignalConstQuickstart : IRecipe
     {
         public string Category => "Plottable: SignalConst";
-        public string ID => "signal_quickstart";
+        public string ID => "signalconst_quickstart";
         public string Title => "SignalConst Quickstart";
         public string Description =>
             "SignalConst plots pre-processes data to render much faster than Signal plots. " +
