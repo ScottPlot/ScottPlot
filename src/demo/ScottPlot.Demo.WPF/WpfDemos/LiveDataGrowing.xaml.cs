@@ -24,6 +24,9 @@ namespace ScottPlot.Demo.WPF.WpfDemos
         SignalPlot signalPlot;
         Random rand = new Random(0);
 
+        private DispatcherTimer _updateDataTimer;
+        private DispatcherTimer _renderTimer;
+
         public LiveDataGrowing()
         {
             InitializeComponent();
@@ -34,16 +37,22 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             wpfPlot1.plt.XLabel("Sample Number");
 
             // create a timer to modify the data
-            DispatcherTimer updateDataTimer = new DispatcherTimer();
-            updateDataTimer.Interval = TimeSpan.FromMilliseconds(1);
-            updateDataTimer.Tick += UpdateData;
-            updateDataTimer.Start();
+            _updateDataTimer = new DispatcherTimer();
+            _updateDataTimer.Interval = TimeSpan.FromMilliseconds(1);
+            _updateDataTimer.Tick += UpdateData;
+            _updateDataTimer.Start();
 
             // create a timer to update the GUI
-            DispatcherTimer renderTimer = new DispatcherTimer();
-            renderTimer.Interval = TimeSpan.FromMilliseconds(20);
-            renderTimer.Tick += Render;
-            renderTimer.Start();
+            _renderTimer = new DispatcherTimer();
+            _renderTimer.Interval = TimeSpan.FromMilliseconds(20);
+            _renderTimer.Tick += Render;
+            _renderTimer.Start();
+
+            Closed += (sender, args) =>
+            {
+                _updateDataTimer?.Stop();
+                _renderTimer?.Stop();
+            };
         }
 
         void UpdateData(object sender, EventArgs e)

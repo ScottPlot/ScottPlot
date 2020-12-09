@@ -25,7 +25,8 @@ namespace ScottPlot.Demo.WPF.WpfDemos
         DataGen.Electrocardiogram ecg = new DataGen.Electrocardiogram();
         Stopwatch sw = Stopwatch.StartNew();
 
-        private System.Threading.Timer _timer;
+        private Timer _updateDataTimer;
+        private DispatcherTimer _renderTimer;
 
         public LiveDataFixed()
         {
@@ -38,13 +39,19 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             wpfPlot1.plt.SetAxisLimits(yMin: -1, yMax: 2.5);
 
             // create a traditional timer to update the data
-            _timer = new Timer(_ => UpdateData(), null, 0, 5);
+            _updateDataTimer = new Timer(_ => UpdateData(), null, 0, 5);
 
             // create a separate timer to update the GUI
-            DispatcherTimer renderTimer = new DispatcherTimer();
-            renderTimer.Interval = TimeSpan.FromMilliseconds(10);
-            renderTimer.Tick += Render;
-            renderTimer.Start();
+            _renderTimer = new DispatcherTimer();
+            _renderTimer.Interval = TimeSpan.FromMilliseconds(10);
+            _renderTimer.Tick += Render;
+            _renderTimer.Start();
+
+            Closed += (sender, args) =>
+            {
+                _updateDataTimer?.Dispose();
+                _renderTimer?.Stop();
+            };
         }
 
         void UpdateData()

@@ -54,12 +54,16 @@ namespace ScottPlot.Demo.WinForms
 
         private void LiveData_Click(object sender, EventArgs e)
         {
-            new WinFormsDemos.LiveDataUpdate().ShowDialog();
+            var liveDataUpdate = new WinFormsDemos.LiveDataUpdate();
+            liveDataUpdate.ShowDialog();
+            liveDataUpdate.Dispose();
         }
 
         private void GrowingData_Click(object sender, EventArgs e)
         {
-            new WinFormsDemos.LiveDataIncoming().ShowDialog();
+            var liveDataIncoming = new WinFormsDemos.LiveDataIncoming();
+            liveDataIncoming.ShowDialog();
+            liveDataIncoming.Dispose();
         }
 
         private void btnShowOnHover_Click(object sender, EventArgs e)
