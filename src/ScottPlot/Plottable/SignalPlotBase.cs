@@ -541,7 +541,7 @@ namespace ScottPlot.Plottable
 
             List<PointF[]> linePointsLevels = levelValues
                 .Select(x => x.levelsValues
-                                .Select(y => new PointF(x.xPx, dims.GetPixelY(Convert.ToDouble(y) + yOffset)))
+                                .Select(y => new PointF(x.xPx + dims.DataOffsetX, dims.GetPixelY(Convert.ToDouble(y) + yOffset)))
                                 .ToArray())
                 .ToList();
 
