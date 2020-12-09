@@ -138,18 +138,18 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public void ExecuteRecipe(Plot plt)
         {
             int pointCount = 20;
-
             Random rand = new Random(0);
             double[] xs = DataGen.Consecutive(pointCount);
             double[] ys = DataGen.RandomWalk(rand, pointCount);
             double[] xErr = DataGen.RandomNormal(rand, pointCount, .2);
             double[] yErr = DataGen.RandomNormal(rand, pointCount);
 
-            var sp = plt.AddScatter(xs, ys, markerSize: 7, lineStyle: LineStyle.Dot);
+            var sp = plt.AddScatter(xs, ys);
             sp.errorX = xErr;
             sp.errorY = yErr;
-            sp.errorCapSize = 5;
-            sp.errorLineWidth = 2;
+            sp.errorCapSize = 3;
+            sp.errorLineWidth = 1;
+            sp.lineStyle = LineStyle.Dot;
         }
     }
 }

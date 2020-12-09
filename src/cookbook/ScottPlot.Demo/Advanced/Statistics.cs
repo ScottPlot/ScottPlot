@@ -76,7 +76,7 @@ namespace ScottPlot.Demo.Advanced
                 // plot the original data and add the regression line
                 plt.Title($"Y = {model.slope:0.0000}x + {model.offset:0.0}\nR² = {model.rSquared:0.0000}");
                 plt.PlotScatter(xs, ys, lineWidth: 0);
-                plt.PlotLine(model.slope, model.offset, (x1, x2), lineWidth: 2);
+                //plt.PlotLine(model.slope, model.offset, (x1, x2), lineWidth: 2);
             }
         }
 

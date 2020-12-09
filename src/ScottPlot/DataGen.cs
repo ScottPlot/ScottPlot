@@ -177,7 +177,7 @@ namespace ScottPlot
         public static double[] RandomWalk(Random rand, int pointCount, double mult = 1, double offset = 0)
         {
             if (rand is null)
-                rand = new Random();
+                rand = new Random(0);
             var data = new double[pointCount];
             data[0] = offset;
             for (int i = 1; i < data.Length; i++)

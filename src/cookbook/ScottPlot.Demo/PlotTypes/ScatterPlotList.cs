@@ -15,7 +15,7 @@ namespace ScottPlot.Demo.PlotTypes
 
             public void Render(Plot plt)
             {
-                var spl = plt.PlotScatterList();
+                var spl = plt.AddScatterList();
 
                 // add points
                 spl.Add(1, 5);

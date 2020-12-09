@@ -393,6 +393,28 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Add a line (a scatter plot with two points) to the plot
+        /// </summary>
+        public ScatterPlot AddLine(
+            double x1,
+            double y1,
+            double x2,
+            double y2,
+            Color? color = null,
+            float lineWidth = 1,
+            LineStyle lineStyle = LineStyle.Solid
+            )
+        {
+            return AddScatter(
+                xs: new double[] { x1, x2 },
+                ys: new double[] { y1, y2 },
+                color: color,
+                lineWidth: lineWidth,
+                lineStyle: lineStyle,
+                markerSize: 0);
+        }
+
+        /// <summary>
         /// Add candlesticks to the chart from OHLC (open, high, low, close) data
         /// </summary>
         public FinancePlot AddCandlesticks(OHLC[] ohlcs)
@@ -754,6 +776,50 @@ namespace ScottPlot
             };
             Add(plottable);
             return plottable;
+        }
+
+        /// <summary>
+        /// Scatter plot with Add() and Clear() methods for updating data
+        /// </summary>
+        public ScatterPlotList AddScatterList(
+            Color? color = null,
+            float lineWidth = 1,
+            float markerSize = 5,
+            string label = null,
+            MarkerShape markerShape = MarkerShape.filledCircle,
+            LineStyle lineStyle = LineStyle.Solid)
+        {
+            var spl = new ScatterPlotList()
+            {
+                Color = color ?? GetNextColor(),
+                LineWidth = lineWidth,
+                MarkerSize = markerSize,
+                Label = label,
+                MarkerShape = markerShape,
+                LineStyle = lineStyle
+            };
+
+            Add(spl);
+            return spl;
+        }
+
+        /// <summary>
+        /// Signal plots have evenly-spaced X points and render very fast.
+        /// </summary>
+        public SignalPlot AddSignal(double[] ys, double sampleRate = 1, Color? color = null)
+        {
+            SignalPlot signal = new SignalPlot()
+            {
+                ys = ys,
+                sampleRate = sampleRate,
+                color = color ?? settings.GetNextColor(),
+
+                // TODO: FIX THIS!!!
+                minRenderIndex = 0,
+                maxRenderIndex = ys.Length - 1,
+            };
+            Add(signal);
+            return signal;
         }
 
         /// <summary>

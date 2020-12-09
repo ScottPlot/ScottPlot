@@ -262,6 +262,32 @@ namespace ScottPlot
             return ohlc;
         }
 
+        [Obsolete("You should probably use a scatter plot with no line or marker")]
+        public ErrorBars PlotErrorBars(
+            double[] xs,
+            double[] ys,
+            double[] xPositiveError = null,
+            double[] xNegativeError = null,
+            double[] yPositiveError = null,
+            double[] yNegativeError = null,
+            Color? color = null,
+            double lineWidth = 1,
+            double capWidth = 3,
+            string label = null
+            )
+        {
+            var errorBars = new ErrorBars(xs, ys, xPositiveError, xNegativeError, yPositiveError, yNegativeError)
+            {
+                Color = color ?? settings.GetNextColor(),
+                LineWidth = (float)lineWidth,
+                CapSize = (float)capWidth,
+                label = label
+            };
+
+            Add(errorBars);
+            return errorBars;
+        }
+
         [Obsolete("Use AddFill() and customize the object it returns")]
         public Polygon PlotFill(
             double[] xs,
@@ -488,6 +514,29 @@ namespace ScottPlot
             return axisSpan;
         }
 
+        [Obsolete("use AddLine() and customize the object it returns")]
+        public ScatterPlot PlotLine(
+            double x1,
+            double y1,
+            double x2,
+            double y2,
+            Color? color = null,
+            double lineWidth = 1,
+            string label = null,
+            LineStyle lineStyle = LineStyle.Solid
+            )
+        {
+            return PlotScatter(
+                xs: new double[] { x1, x2 },
+                ys: new double[] { y1, y2 },
+                color: color,
+                lineWidth: lineWidth,
+                label: label,
+                lineStyle: lineStyle,
+                markerSize: 0
+                );
+        }
+
         [Obsolete("use AddOHLC() and customize the object it returns")]
         public FinancePlot PlotOHLC(
             OHLC[] ohlcs,
@@ -574,6 +623,223 @@ namespace ScottPlot
 
             Add(scatterPlot);
             return scatterPlot;
+        }
+        [Obsolete("AddScatter() then AddPoint() and move the point around")]
+        public ScatterPlotHighlight PlotScatterHighlight(
+           double[] xs,
+           double[] ys,
+           Color? color = null,
+           double lineWidth = 1,
+           double markerSize = 5,
+           string label = null,
+           double[] errorX = null,
+           double[] errorY = null,
+           double errorLineWidth = 1,
+           double errorCapSize = 3,
+           MarkerShape markerShape = MarkerShape.filledCircle,
+           LineStyle lineStyle = LineStyle.Solid,
+           MarkerShape highlightedShape = MarkerShape.openCircle,
+           Color? highlightedColor = null,
+           double? highlightedMarkerSize = null
+           )
+        {
+            if (color is null)
+                color = settings.GetNextColor();
+
+            if (highlightedColor is null)
+                highlightedColor = Color.Red;
+
+            if (highlightedMarkerSize is null)
+                highlightedMarkerSize = 2 * markerSize;
+
+            var scatterPlot = new ScatterPlotHighlight(xs, ys, errorX, errorY)
+            {
+                color = (Color)color,
+                lineWidth = lineWidth,
+                markerSize = (float)markerSize,
+                label = label,
+                errorLineWidth = (float)errorLineWidth,
+                errorCapSize = (float)errorCapSize,
+                stepDisplay = false,
+                markerShape = markerShape,
+                lineStyle = lineStyle,
+                highlightedShape = highlightedShape,
+                highlightedColor = highlightedColor.Value,
+                highlightedMarkerSize = (float)highlightedMarkerSize.Value
+            };
+
+            Add(scatterPlot);
+            return scatterPlot;
+        }
+
+        [Obsolete("Use AddSignal() and customize the object it returns")]
+        public SignalPlot PlotSignal(
+            double[] ys,
+            double sampleRate = 1,
+            double xOffset = 0,
+            double yOffset = 0,
+            Color? color = null,
+            double lineWidth = 1,
+            double markerSize = 5,
+            string label = null,
+            Color[] colorByDensity = null,
+            int? minRenderIndex = null,
+            int? maxRenderIndex = null,
+            LineStyle lineStyle = LineStyle.Solid,
+            bool useParallel = true
+            )
+        {
+            SignalPlot signal = new SignalPlot()
+            {
+                ys = ys,
+                sampleRate = sampleRate,
+                xOffset = xOffset,
+                yOffset = yOffset,
+                color = color ?? settings.GetNextColor(),
+                lineWidth = lineWidth,
+                markerSize = (float)markerSize,
+                label = label,
+                colorByDensity = colorByDensity,
+                minRenderIndex = minRenderIndex ?? 0,
+                maxRenderIndex = maxRenderIndex ?? ys.Length - 1,
+                lineStyle = lineStyle,
+                useParallel = useParallel,
+            };
+
+            Add(signal);
+            return signal;
+        }
+
+        [Obsolete("Use AddSignalConst() and customize the object it returns")]
+        public SignalPlotConst<T> PlotSignalConst<T>(
+            T[] ys,
+            double sampleRate = 1,
+            double xOffset = 0,
+            double yOffset = 0,
+            Color? color = null,
+            double lineWidth = 1,
+            double markerSize = 5,
+            string label = null,
+            Color[] colorByDensity = null,
+            int? minRenderIndex = null,
+            int? maxRenderIndex = null,
+            LineStyle lineStyle = LineStyle.Solid,
+            bool useParallel = true
+            ) where T : struct, IComparable
+        {
+            SignalPlotConst<T> signal = new SignalPlotConst<T>()
+            {
+                ys = ys,
+                sampleRate = sampleRate,
+                xOffset = xOffset,
+                yOffset = yOffset,
+                color = color ?? settings.GetNextColor(),
+                lineWidth = lineWidth,
+                markerSize = (float)markerSize,
+                label = label,
+                colorByDensity = colorByDensity,
+                minRenderIndex = minRenderIndex ?? 0,
+                maxRenderIndex = maxRenderIndex ?? ys.Length - 1,
+                lineStyle = lineStyle,
+                useParallel = useParallel
+            };
+
+            Add(signal);
+            return signal;
+        }
+
+        [Obsolete("Use AddSignalXY() and customize the object it returns")]
+        public SignalPlotXY PlotSignalXY(
+            double[] xs,
+            double[] ys,
+            Color? color = null,
+            double lineWidth = 1,
+            double markerSize = 5,
+            string label = null,
+            int? minRenderIndex = null,
+            int? maxRenderIndex = null,
+            LineStyle lineStyle = LineStyle.Solid,
+            bool useParallel = true
+            )
+        {
+            SignalPlotXY signal = new SignalPlotXY()
+            {
+                xs = xs,
+                ys = ys,
+                color = color ?? settings.GetNextColor(),
+                lineWidth = lineWidth,
+                markerSize = (float)markerSize,
+                label = label,
+                minRenderIndex = minRenderIndex ?? 0,
+                maxRenderIndex = maxRenderIndex ?? ys.Length - 1,
+                lineStyle = lineStyle,
+                useParallel = useParallel
+            };
+
+            Add(signal);
+            return signal;
+        }
+
+        [Obsolete("Use AddSignalXYConst() and customize the object it returns")]
+        public SignalPlotXYConst<TX, TY> PlotSignalXYConst<TX, TY>(
+            TX[] xs,
+            TY[] ys,
+            Color? color = null,
+            double lineWidth = 1,
+            double markerSize = 5,
+            string label = null,
+            int? minRenderIndex = null,
+            int? maxRenderIndex = null,
+            LineStyle lineStyle = LineStyle.Solid,
+            bool useParallel = true
+            ) where TX : struct, IComparable where TY : struct, IComparable
+
+        {
+            SignalPlotXYConst<TX, TY> signal = new SignalPlotXYConst<TX, TY>()
+            {
+                xs = xs,
+                ys = ys,
+                color = color ?? settings.GetNextColor(),
+                lineWidth = lineWidth,
+                markerSize = (float)markerSize,
+                label = label,
+                minRenderIndex = minRenderIndex ?? 0,
+                maxRenderIndex = maxRenderIndex ?? ys.Length - 1,
+                lineStyle = lineStyle,
+                useParallel = useParallel
+            };
+
+            Add(signal);
+            return signal;
+        }
+
+        [Obsolete("Use AddScatter() and customize the object it returns")]
+        public ScatterPlot PlotStep(
+            double[] xs,
+            double[] ys,
+            Color? color = null,
+            double lineWidth = 1,
+            string label = null
+            )
+        {
+            if (color == null)
+                color = settings.GetNextColor();
+
+            ScatterPlot stepPlot = new ScatterPlot(xs, ys)
+            {
+                color = (Color)color,
+                lineWidth = lineWidth,
+                markerSize = 0,
+                label = label,
+                errorLineWidth = 0,
+                errorCapSize = 0,
+                stepDisplay = true,
+                markerShape = MarkerShape.none,
+                lineStyle = LineStyle.Solid
+            };
+
+            Add(stepPlot);
+            return stepPlot;
         }
 
         [Obsolete("Use AddPolygon() and customize the object it returns")]
