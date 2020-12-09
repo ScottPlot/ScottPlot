@@ -70,8 +70,9 @@ namespace ScottPlotTests.Cookbook
             var recipes = ScottPlot.Cookbook.Locate.GetRecipes();
             string[] ids = recipes.Select(x => x.ID.ToLower()).ToArray();
 
-            if (ids.Distinct().Count() < ids.Length)
-                Assert.Fail("all lowercase recipe IDs must be unique");
+            foreach (string id in ids)
+                if (ids.Where(x => x == id).Count() > 1)
+                    Assert.Fail($"duplicate id: {id}");
         }
 
         [Test]

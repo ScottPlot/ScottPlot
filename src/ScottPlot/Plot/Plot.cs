@@ -596,6 +596,22 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Add a straight line to the plot (really just a scatter plot with 2 points)
+        /// </summary>
+        public ScatterPlot AddLine(double x1, double y1, double x2, double y2, Color? color = null, float linewidth = 1)
+        {
+            double[] xs = { x1, x2 };
+            double[] ys = { y1, y2 };
+            var plottable = new ScatterPlot(xs, ys)
+            {
+                color = color ?? GetNextColor(),
+                lineWidth = linewidth
+            };
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
         /// Add OHLC (open, high, low, close) data to the plot
         /// </summary>
         public FinancePlot AddOHLCs(OHLC[] ohlcs)
@@ -842,6 +858,43 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Speed-optimized plot for Ys with unevenly-spaced ascending Xs
+        /// </summary>
+        public SignalPlotXY AddSignalXY(double[] xs, double[] ys, Color? color = null)
+        {
+            SignalPlotXY plottable = new SignalPlotXY()
+            {
+                xs = xs,
+                ys = ys,
+                color = color ?? settings.GetNextColor(),
+                minRenderIndex = 0,
+                maxRenderIndex = ys.Length - 1,
+            };
+            Add(plottable);
+            return plottable;
+        }
+
+
+        /// <summary>
+        /// Speed-optimized plot for Ys with unevenly-spaced ascending Xs.
+        /// Faster than SignalXY but values cannot be modified after loading.
+        /// </summary>
+        public SignalPlotXYConst<TX, TY> AddSignalXYConst<TX, TY>(TX[] xs, TY[] ys, Color? color = null)
+            where TX : struct, IComparable where TY : struct, IComparable
+        {
+            SignalPlotXYConst<TX, TY> signal = new SignalPlotXYConst<TX, TY>()
+            {
+                xs = xs,
+                ys = ys,
+                color = color ?? settings.GetNextColor(),
+                minRenderIndex = 0,
+                maxRenderIndex = ys.Length - 1,
+            };
+            Add(signal);
+            return signal;
+        }
+
+        /// <summary>
         /// Display text at specific X/Y coordinates
         /// </summary>
         public Text AddText(string label, double x, double y, float size = 12, Color? color = null) =>
@@ -861,6 +914,28 @@ namespace ScottPlot
             };
             Add(plottable);
             return plottable;
+        }
+
+        /// <summary>
+        /// Add a 2D vector field to the plot
+        /// </summary>
+        public VectorField AddVectorField(
+            Vector2[,] vectors,
+            double[] xs,
+            double[] ys,
+            string label = null,
+            Color? color = null,
+            Drawing.Colormap colormap = null,
+            double scaleFactor = 1
+            )
+        {
+            // TODO: refactor constructor to eliminate styling arguments
+            var vectorField = new VectorField(vectors, xs, ys,
+                colormap, scaleFactor, color ?? settings.GetNextColor())
+            { label = label };
+
+            Add(vectorField);
+            return vectorField;
         }
 
         /// <summary>

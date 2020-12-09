@@ -1021,7 +1021,7 @@ namespace ScottPlot
             return plottableText;
         }
 
-        [Obsolete("Use AddVectorField() and customize the object it returns")]
+        [Obsolete("Create a VectorField manually then call Add()")]
         public VectorField PlotVectorField(
             Vector2[,] vectors,
             double[] xs,
