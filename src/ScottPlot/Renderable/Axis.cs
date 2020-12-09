@@ -121,6 +121,13 @@ namespace ScottPlot.Renderable
             Ticks.TickCollection.prefix = prefix ?? Ticks.TickCollection.prefix;
         }
 
+        public void ConfigureTickSpacing(double manualSpacing)
+        {
+            // TODO: cutt X and Y out of this
+            Ticks.TickCollection.manualSpacingX = manualSpacing;
+            Ticks.TickCollection.manualSpacingY = manualSpacing;
+        }
+
         /// <summary>
         /// Customize styling of the tick labels
         /// </summary>
@@ -132,7 +139,8 @@ namespace ScottPlot.Renderable
             bool? fontBold = null,
             float? rotation = null,
             bool? snapToNearestPixel = null,
-            bool? logScale = null)
+            bool? logScale = null,
+            bool? invertSign = null)
         {
             Ticks.Color = color ?? Ticks.Color;
             Ticks.RulerMode = rulerMode ?? Ticks.RulerMode;
@@ -142,6 +150,7 @@ namespace ScottPlot.Renderable
             Ticks.Rotation = rotation ?? Ticks.Rotation;
             Ticks.SnapPx = snapToNearestPixel ?? Ticks.SnapPx;
             Ticks.TickCollection.logScale = logScale ?? Ticks.TickCollection.logScale;
+            Ticks.TickCollection.invertSign = invertSign ?? Ticks.TickCollection.invertSign;
         }
 
         /// <summary>

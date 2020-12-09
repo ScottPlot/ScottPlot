@@ -393,28 +393,6 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Add a line (a scatter plot with two points) to the plot
-        /// </summary>
-        public ScatterPlot AddLine(
-            double x1,
-            double y1,
-            double x2,
-            double y2,
-            Color? color = null,
-            float lineWidth = 1,
-            LineStyle lineStyle = LineStyle.Solid
-            )
-        {
-            return AddScatter(
-                xs: new double[] { x1, x2 },
-                ys: new double[] { y1, y2 },
-                color: color,
-                lineWidth: lineWidth,
-                lineStyle: lineStyle,
-                markerSize: 0);
-        }
-
-        /// <summary>
         /// Add candlesticks to the chart from OHLC (open, high, low, close) data
         /// </summary>
         public FinancePlot AddCandlesticks(OHLC[] ohlcs)
@@ -565,19 +543,21 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Add a straight line to the plot (really just a scatter plot with 2 points)
+        /// Add a line (a scatter plot with two points) to the plot
         /// </summary>
-        public ScatterPlot AddLine(double x1, double y1, double x2, double y2, Color? color = null, float linewidth = 1)
+        public ScatterPlot AddLine(double x1, double y1, double x2, double y2, Color? color = null, float lineWidth = 1)
         {
-            double[] xs = { x1, x2 };
-            double[] ys = { y1, y2 };
-            var plottable = new ScatterPlot(xs, ys)
-            {
-                color = color ?? GetNextColor(),
-                lineWidth = linewidth
-            };
-            Add(plottable);
-            return plottable;
+            return AddScatter(new double[] { x1, x2 }, new double[] { y1, y2 }, color, lineWidth, 0);
+        }
+
+        /// <summary>
+        /// Add a line (a scatter plot with two points) to the plot
+        /// </summary>
+        public ScatterPlot AddLine(double slope, double offset, (double x1, double x2) xLimits, Color? color = null, float lineWidth = 1)
+        {
+            double y1 = xLimits.x1 * slope + offset;
+            double y2 = xLimits.x2 * slope + offset;
+            return AddScatter(new double[] { xLimits.x1, xLimits.x2 }, new double[] { y1, y2 }, color, lineWidth, 0);
         }
 
         /// <summary>

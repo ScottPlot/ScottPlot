@@ -136,7 +136,7 @@ namespace ScottPlot
         public static double[] NoisyLinear(Random rand, int pointCount = 100, double slope = 1, double offset = 0, double noise = 0.1)
         {
             if (rand is null)
-                rand = new Random();
+                rand = new Random(0);
 
             double[] data = new double[pointCount];
             for (int i = 0; i < data.Length; i++)
@@ -148,7 +148,7 @@ namespace ScottPlot
         public static double[] NoisySin(Random rand, int pointCount, double oscillations = 1, double noiseLevel = .5, double mult = 1)
         {
             if (rand is null)
-                rand = new Random();
+                rand = new Random(0);
             double[] values = Sin(pointCount, oscillations);
             for (int i = 0; i < values.Length; i++)
                 values[i] += (rand.NextDouble() - .5) * noiseLevel * mult;

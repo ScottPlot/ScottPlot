@@ -537,6 +537,30 @@ namespace ScottPlot
                 );
         }
 
+        [Obsolete("use AddLine() and customize the object it returns")]
+        public ScatterPlot PlotLine(
+            double slope,
+            double offset,
+            (double x1, double x2) xLimits,
+            Color? color = null,
+            double lineWidth = 1,
+            string label = null,
+            LineStyle lineStyle = LineStyle.Solid
+            )
+        {
+            double y1 = xLimits.x1 * slope + offset;
+            double y2 = xLimits.x2 * slope + offset;
+            return PlotScatter(
+                xs: new double[] { xLimits.x1, xLimits.x2 },
+                ys: new double[] { y1, y2 },
+                color: color,
+                lineWidth: lineWidth,
+                label: label,
+                lineStyle: lineStyle,
+                markerSize: 0
+                );
+        }
+
         [Obsolete("use AddOHLC() and customize the object it returns")]
         public FinancePlot PlotOHLC(
             OHLC[] ohlcs,
