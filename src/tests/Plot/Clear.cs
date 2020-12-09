@@ -146,16 +146,18 @@ namespace ScottPlotTests.Plot
 
             Random rand = new Random(0);
             var barX = plt.AddPoint(111, 222);
-            var sigA = plt.PlotSignal(DataGen.RandomWalk(rand, 100), label: "A");
-            var sigB = plt.PlotSignal(DataGen.RandomWalk(rand, 100), label: "B");
-            var sigC = plt.PlotSignal(DataGen.RandomWalk(rand, 100), label: "C");
-            var sigD = plt.PlotSignal(DataGen.RandomWalk(rand, 100), label: "D");
-            var sigE = plt.PlotSignal(DataGen.RandomWalk(rand, 100), label: "E");
+            var sigA = plt.AddSignal(DataGen.RandomWalk(rand, 100));
+            var sigB = plt.AddSignal(DataGen.RandomWalk(rand, 100));
+            var sigC = plt.AddSignal(DataGen.RandomWalk(rand, 100));
+            var sigD = plt.AddSignal(DataGen.RandomWalk(rand, 100));
+            var sigE = plt.AddSignal(DataGen.RandomWalk(rand, 100));
             var barY = plt.AddPoint(111, 222);
 
-            Assert.AreEqual("X,A,B,C,D,E,Y", GetLegendLabels(plt));
+            sigC.label = "C";
+
+            Assert.AreEqual(",,,C,,,", GetLegendLabels(plt));
             plt.Remove(sigC);
-            Assert.AreEqual("X,A,B,D,E,Y", GetLegendLabels(plt));
+            Assert.AreEqual(",,,,,", GetLegendLabels(plt));
         }
     }
 }
