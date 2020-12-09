@@ -76,5 +76,37 @@ namespace ScottPlot.Cookbook
             Debug.WriteLine(sb.ToString());
             return "Could not locate cookbook source code. Run tests to generate it.";
         }
+
+        // TODO: use this for all controls
+        public static List<DemoNodeItem> GetPlotNodeItems()
+        {
+            List<DemoNodeItem> nodes = new List<DemoNodeItem>();
+            foreach (var dict in GetCategorizedRecipes())
+            {
+                string category = dict.Key;
+                IRecipe[] recipes = dict.Value;
+
+                var categoryNode = new DemoNodeItem() { Header = category, Items = new List<DemoNodeItem>() };
+                nodes.Add(categoryNode);
+
+                foreach (IRecipe recipe in recipes)
+                {
+                    var recipeNode = new DemoNodeItem() { Header = recipe.Title, Tag = recipe.ID };
+                    categoryNode.Items.Add(recipeNode);
+                }
+            }
+
+            return nodes;
+        }
+    }
+
+    // TODO: use this for all controls
+    public class DemoNodeItem
+    {
+        public string Header { get; set; }
+        public string Tag { get; set; }
+        public bool IsExpanded { get; set; }
+        public bool IsSelected { get; set; }
+        public List<DemoNodeItem> Items { get; set; }
     }
 }

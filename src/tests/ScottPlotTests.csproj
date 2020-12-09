@@ -35,7 +35,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\cookbook\ScottPlot.Cookbook\ScottPlot.Cookbook.csproj" />
-    <ProjectReference Include="..\cookbook\ScottPlot.Demo\ScottPlot.Demo.csproj" />
     <ProjectReference Include="..\ScottPlot\ScottPlot.csproj" />
   </ItemGroup>
 

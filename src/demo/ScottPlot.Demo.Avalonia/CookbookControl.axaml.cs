@@ -9,8 +9,6 @@ namespace ScottPlot.Demo.Avalonia
 {
     public class CookbookControl : UserControl
     {
-        string sourceCodeFolder = Reflection.FindDemoSourceFolder();
-
         public CookbookControl()
         {
             this.InitializeComponent();
@@ -47,36 +45,23 @@ namespace ScottPlot.Demo.Avalonia
             }
         }
 
-        public void LoadDemo(string objectPath)
+        public void LoadDemo(string id)
         {
-            var demoPlot = Reflection.GetPlot(objectPath);
+            Cookbook.IRecipe recipe = Cookbook.Locate.GetRecipe(id);
             var avaPlot1 = this.Find<ScottPlot.Avalonia.AvaPlot>("AvaPlot1");
             var imagePlot1 = this.Find<Image>("imagePlot");
 
-            this.Find<TextBlock>("DemoNameLabel").Text = demoPlot.name;
-            this.Find<TextBlock>("SourceCodeLabel").Text = $"{demoPlot.sourceFile} ({demoPlot.categoryClass})";
-            this.Find<TextBox>("DescriptionTextbox").Text = (demoPlot.description is null) ? "no descriton provided..." : demoPlot.description;
-            string sourceCode = demoPlot.GetSourceCode(sourceCodeFolder);
+            this.Find<TextBlock>("DemoNameLabel").Text = recipe.Title;
+            this.Find<TextBlock>("SourceCodeLabel").Text = "Source Code";
+            this.Find<TextBox>("DescriptionTextbox").Text = recipe.Description;
+            string sourceCode = Cookbook.Locate.RecipeSourceCode(id);
+            this.Find<TextBox>("SourceTextBox").Text = sourceCode;
 
             avaPlot1.Reset();
-
-            if (demoPlot is IRecipeNonInteractive bmpPlot)
-            {
-                imagePlot1.IsVisible = true;
-                avaPlot1.IsVisible = false;
-                imagePlot1.Source = BmpImageFromBmp(bmpPlot.Render(600, 400));
-                AvaPlot1_Rendered(null, null);
-            }
-            else
-            {
-                imagePlot1.IsVisible = false;
-                avaPlot1.IsVisible = true;
-
-                demoPlot.Render(avaPlot1.plt);
-                avaPlot1.Render();
-            }
-
-            this.Find<TextBox>("SourceTextBox").Text = sourceCode;
+            imagePlot1.IsVisible = false;
+            avaPlot1.IsVisible = true;
+            recipe.ExecuteRecipe(avaPlot1.plt);
+            avaPlot1.Render();
         }
     }
 }

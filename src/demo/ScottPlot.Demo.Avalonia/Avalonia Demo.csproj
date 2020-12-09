@@ -9,6 +9,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\controls\ScottPlot.Avalonia\ScottPlot.Avalonia.csproj" />
-    <ProjectReference Include="..\..\cookbook\ScottPlot.Demo\ScottPlot.Demo.csproj" />
+    <ProjectReference Include="..\..\cookbook\ScottPlot.Cookbook\ScottPlot.Cookbook.csproj" />
   </ItemGroup>
 </Project>
