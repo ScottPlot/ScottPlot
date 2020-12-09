@@ -14,8 +14,8 @@ namespace ScottPlot.Cookbook.Recipes.Axis
 
         public void ExecuteRecipe(Plot plt)
         {
-            plt.PlotSignal(DataGen.Sin(51));
-            plt.PlotSignal(DataGen.Cos(51));
+            plt.AddSignal(DataGen.Sin(51));
+            plt.AddSignal(DataGen.Cos(51));
 
             // simple way to set an axis label
             plt.XAxis.Label = "Horizontal Axis";
@@ -40,8 +40,8 @@ namespace ScottPlot.Cookbook.Recipes.Axis
 
         public void ExecuteRecipe(Plot plt)
         {
-            plt.PlotSignal(DataGen.Sin(51));
-            plt.PlotSignal(DataGen.Cos(51));
+            plt.AddSignal(DataGen.Sin(51));
+            plt.AddSignal(DataGen.Cos(51));
 
             plt.YAxis.Label = "Vertical Axis";
             plt.YAxis.Color = Color.Magenta;

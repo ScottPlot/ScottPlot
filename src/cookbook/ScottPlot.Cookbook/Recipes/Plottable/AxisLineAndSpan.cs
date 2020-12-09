@@ -17,8 +17,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public void ExecuteRecipe(Plot plt)
         {
             // plot sample data
-            plt.PlotSignal(DataGen.Sin(51));
-            plt.PlotSignal(DataGen.Cos(51));
+            plt.AddSignal(DataGen.Sin(51));
+            plt.AddSignal(DataGen.Cos(51));
 
             // add axis lines
             plt.AddHorizontalLine(.85);
@@ -41,8 +41,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public void ExecuteRecipe(Plot plt)
         {
             // plot sample data
-            plt.PlotSignal(DataGen.Sin(51));
-            plt.PlotSignal(DataGen.Cos(51));
+            plt.AddSignal(DataGen.Sin(51));
+            plt.AddSignal(DataGen.Cos(51));
 
             // add axis lines and configure their drag settings
             var hLine = plt.AddHorizontalLine(.85);
@@ -72,8 +72,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public void ExecuteRecipe(Plot plt)
         {
             // plot sample data
-            plt.PlotSignal(DataGen.Sin(51));
-            plt.PlotSignal(DataGen.Cos(51));
+            plt.AddSignal(DataGen.Sin(51));
+            plt.AddSignal(DataGen.Cos(51));
 
             // add axis spans
             plt.AddVerticalSpan(.15, .85);
@@ -93,8 +93,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public void ExecuteRecipe(Plot plt)
         {
             // plot sample data
-            plt.PlotSignal(DataGen.Sin(51));
-            plt.PlotSignal(DataGen.Cos(51));
+            plt.AddSignal(DataGen.Sin(51));
+            plt.AddSignal(DataGen.Cos(51));
 
             // dragging can be enabled and optionally limited to a range
             var vSpan = plt.AddVerticalSpan(.15, .85);

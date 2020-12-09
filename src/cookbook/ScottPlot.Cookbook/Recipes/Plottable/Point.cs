@@ -18,8 +18,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         {
             // add sample data
             Color clearGray = Color.FromArgb(20, Color.Black);
-            plt.PlotSignal(DataGen.Sin(51), color: clearGray);
-            plt.PlotSignal(DataGen.Cos(51), color: clearGray);
+            plt.AddSignal(DataGen.Sin(51), color: clearGray);
+            plt.AddSignal(DataGen.Cos(51), color: clearGray);
 
             // add a few points around the plot
             plt.AddPoint(5, .5);

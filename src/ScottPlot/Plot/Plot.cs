@@ -431,37 +431,6 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Display errorbars with 4 custom directions at the defined X and Y positions.
-        /// Null is accepted for error ranges which will not be displayed.
-        /// </summary>
-        public ErrorBars AddErrorBars(double[] x, double[] y, double[] xNeg, double[] xPos, double[] yNeg, double[] yPos, Color? color = null)
-        {
-            var plottable = new ErrorBars(x, y, xPos, xNeg, yPos, yNeg) { Color = color ?? GetNextColor() };
-            Add(plottable);
-            return plottable;
-        }
-
-        /// <summary>
-        /// Display paired horizontal errorbars at the defined X and Y positions.
-        /// </summary>
-        public ErrorBars AddErrorBarsX(double[] x, double[] y, double[] err, Color? color = null)
-        {
-            var plottable = new ErrorBars(x, y, err, err, null, null) { Color = color ?? GetNextColor() };
-            Add(plottable);
-            return plottable;
-        }
-
-        /// <summary>
-        /// Display paired vertical errorbars at the defined X and Y positions.
-        /// </summary>
-        public ErrorBars AddErrorBarsY(double[] x, double[] y, double[] err, Color? color = null)
-        {
-            var plottable = new ErrorBars(x, y, null, null, err, err) { Color = color ?? GetNextColor() };
-            Add(plottable);
-            return plottable;
-        }
-
-        /// <summary>
         /// Create a polygon to fill the area between Y values and a baseline.
         /// </summary>
         public Polygon AddFill(double[] xs, double[] ys, double baseline = 0, Color? color = null)

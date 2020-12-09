@@ -26,7 +26,7 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
             // Convert DateTime[] to double[] before plotting
             double[] xs = myDates.Select(x => x.ToOADate()).ToArray();
             double[] ys = DataGen.RandomWalk(myDates.Length);
-            plt.PlotScatter(xs, ys);
+            plt.AddScatter(xs, ys);
 
             // Then tell the axis to display tick labels using a time format
             plt.XAxis.DateTime = true;

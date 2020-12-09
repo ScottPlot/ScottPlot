@@ -262,7 +262,7 @@ namespace ScottPlot
             return ohlc;
         }
 
-        [Obsolete("You should probably use a scatter plot with no line or marker")]
+        [Obsolete("Use AddScatter() and customize it for no line, no marker, and errorbars as desired")]
         public ErrorBars PlotErrorBars(
             double[] xs,
             double[] ys,

@@ -121,8 +121,8 @@ namespace ScottPlot
             double[] dataSin = ScottPlot.DataGen.Sin(pointCount);
             double[] dataCos = ScottPlot.DataGen.Cos(pointCount);
 
-            plt.PlotScatter(dataXs, dataSin);
-            plt.PlotScatter(dataXs, dataCos);
+            plt.AddScatter(dataXs, dataSin);
+            plt.AddScatter(dataXs, dataCos);
             plt.AxisAuto(0);
             plt.Title("ScottPlot User Control");
             plt.YLabel("Sample Data");

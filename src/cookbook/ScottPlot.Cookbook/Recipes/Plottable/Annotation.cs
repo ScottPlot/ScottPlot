@@ -17,8 +17,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public void ExecuteRecipe(Plot plt)
         {
             double[] xs = DataGen.Range(0, 5, .1);
-            plt.PlotScatter(xs, DataGen.Sin(xs));
-            plt.PlotScatter(xs, DataGen.Cos(xs));
+            plt.AddScatter(xs, DataGen.Sin(xs));
+            plt.AddScatter(xs, DataGen.Cos(xs));
 
             // default placement is upper left
             plt.AddAnnotation("Top Left", 10, 10);

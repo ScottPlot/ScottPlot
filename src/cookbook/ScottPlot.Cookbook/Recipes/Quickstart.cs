@@ -19,8 +19,8 @@ namespace ScottPlot.Cookbook.Recipes.Quickstart
             double[] cos = DataGen.Cos(51);
 
             // plot the data
-            plt.PlotScatter(xs, sin);
-            plt.PlotScatter(xs, cos);
+            plt.AddScatter(xs, sin);
+            plt.AddScatter(xs, cos);
         }
     }
 
@@ -36,7 +36,7 @@ namespace ScottPlot.Cookbook.Recipes.Quickstart
         public void ExecuteRecipe(Plot plt)
         {
             double[] values = DataGen.RandomWalk(1_000_000);
-            plt.PlotSignal(values, sampleRate: 48_000);
+            plt.AddSignal(values, sampleRate: 48_000);
             plt.XAxis2.Label = "One Million Points";
         }
     }
@@ -52,7 +52,7 @@ namespace ScottPlot.Cookbook.Recipes.Quickstart
         {
             double[] time = DataGen.Consecutive(51);
             double[] voltage = DataGen.Sin(51);
-            plt.PlotScatter(time, voltage);
+            plt.AddScatter(time, voltage);
 
             // Axes can be customized
             plt.XAxis.Label = "Time (milliseconds)";

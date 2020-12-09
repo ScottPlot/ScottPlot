@@ -21,8 +21,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] sin = DataGen.Sin(pointCount);
             double[] cos = DataGen.Cos(pointCount);
 
-            plt.PlotScatter(x, sin);
-            plt.PlotScatter(x, cos);
+            plt.AddScatter(x, sin);
+            plt.AddScatter(x, cos);
 
             plt.AddText("sample text", 10, .5, size: 16, color: Color.Blue);
         }
@@ -44,8 +44,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] sin = DataGen.Sin(pointCount);
             double[] cos = DataGen.Cos(pointCount);
 
-            plt.PlotScatter(x, sin);
-            plt.PlotScatter(x, cos);
+            plt.AddScatter(x, sin);
+            plt.AddScatter(x, cos);
 
             plt.AddPoint(25, 0.8, color: Color.Green);
             var t1 = plt.AddText(" Important Point (1)", 25, 0.8, 16, Color.Green);
@@ -83,8 +83,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public void ExecuteRecipe(Plot plt)
         {
             // display some interesting data in the background
-            plt.PlotSignal(DataGen.Sin(51), label: "Sin");
-            plt.PlotSignal(DataGen.Cos(51), label: "Cos");
+            plt.AddSignal(DataGen.Sin(51));
+            plt.AddSignal(DataGen.Cos(51));
 
             // add text with custom fonts
             plt.AddText("very graph", 25, .8, new Drawing.Font() { Name = "comic sans ms", Size = 24, Color = Color.Blue, Bold = true });

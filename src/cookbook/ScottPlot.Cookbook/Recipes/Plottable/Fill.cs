@@ -75,8 +75,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.AddFill(xs, ys1, xs, ys2);
 
             // add two scatter plots the traditional way
-            plt.PlotScatter(xs, ys1, color: Color.Black);
-            plt.PlotScatter(xs, ys2, color: Color.Black);
+            plt.AddScatter(xs, ys1, color: Color.Black);
+            plt.AddScatter(xs, ys2, color: Color.Black);
 
             // tighten the axis limits so we don't see lines on the edges
             plt.SetAxisLimits(xMin: 0, xMax: 10);

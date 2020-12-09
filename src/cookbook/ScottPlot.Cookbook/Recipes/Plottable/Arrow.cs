@@ -12,8 +12,8 @@
         public void ExecuteRecipe(Plot plt)
         {
             // plot some sample data
-            plt.PlotSignal(DataGen.Sin(51));
-            plt.PlotSignal(DataGen.Cos(51));
+            plt.AddSignal(DataGen.Sin(51));
+            plt.AddSignal(DataGen.Cos(51));
 
             // add arrows using coordinates
             plt.AddArrow(25, 0, 27, .2);

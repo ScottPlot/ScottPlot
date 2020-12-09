@@ -16,8 +16,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public void ExecuteRecipe(Plot plt)
         {
             // plot sample data
-            plt.PlotSignal(DataGen.Sin(51));
-            plt.PlotSignal(DataGen.Cos(51));
+            plt.AddSignal(DataGen.Sin(51));
+            plt.AddSignal(DataGen.Cos(51));
 
             // remove traditional scale indicators
             plt.DisableGrid();
@@ -39,8 +39,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public void ExecuteRecipe(Plot plt)
         {
             // plot sample data 
-            plt.PlotSignal(DataGen.Sin(51));
-            plt.PlotSignal(DataGen.Cos(51));
+            plt.AddSignal(DataGen.Sin(51));
+            plt.AddSignal(DataGen.Cos(51));
 
             // remove horizontal scale only
             plt.XAxis.Configure(ticks: false);

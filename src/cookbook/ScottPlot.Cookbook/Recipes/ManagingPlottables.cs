@@ -47,9 +47,9 @@ namespace ScottPlot.Cookbook.Recipes.PlotConcepts
             double[] sin = DataGen.Sin(51);
             double[] cos = DataGen.Sin(51);
 
-            plt.PlotScatter(xs, sin, color: Color.Red);
+            plt.AddScatter(xs, sin, color: Color.Red);
             plt.Clear();
-            plt.PlotScatter(xs, cos, color: Color.Blue);
+            plt.AddScatter(xs, cos, color: Color.Blue);
         }
     }
 }

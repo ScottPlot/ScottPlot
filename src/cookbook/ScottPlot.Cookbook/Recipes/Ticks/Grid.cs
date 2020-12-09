@@ -14,8 +14,8 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
 
         public void ExecuteRecipe(Plot plt)
         {
-            plt.PlotSignal(DataGen.Sin(51));
-            plt.PlotSignal(DataGen.Cos(51));
+            plt.AddSignal(DataGen.Sin(51));
+            plt.AddSignal(DataGen.Cos(51));
 
             plt.XAxis.Grid = false;
             plt.YAxis.Grid = false;
@@ -31,8 +31,8 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
 
         public void ExecuteRecipe(Plot plt)
         {
-            plt.PlotSignal(DataGen.Sin(51));
-            plt.PlotSignal(DataGen.Cos(51));
+            plt.AddSignal(DataGen.Sin(51));
+            plt.AddSignal(DataGen.Cos(51));
 
             plt.XAxis.ConfigureMajorGrid(color: Color.FromArgb(100, Color.Black));
             plt.XAxis.ConfigureMinorGrid(enable: true, color: Color.FromArgb(20, Color.Black));

@@ -112,10 +112,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             // plot technical indicators as scatter plots above the financial chart
             plt.AddCandlesticks(ohlcs);
-            plt.PlotScatter(sma8xs, sma8ys, markerSize: 0, color: Color.Blue, lineWidth: 2, label: "SMA 8");
-            plt.PlotScatter(sma20xs, sma20ys, markerSize: 0, color: Color.Navy, lineWidth: 2, label: "SMA 20");
-
-            plt.Legend();
+            plt.AddScatter(sma8xs, sma8ys, markerSize: 0, color: Color.Blue, lineWidth: 2);
+            plt.AddScatter(sma20xs, sma20ys, markerSize: 0, color: Color.Navy, lineWidth: 2);
         }
     }
 
@@ -140,9 +138,9 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             // plot technical indicators as scatter plots above the financial chart
             plt.AddCandlesticks(ohlcs);
-            plt.PlotScatter(xs2, sma, markerSize: 0, color: Color.Blue);
-            plt.PlotScatter(xs2, bolL, markerSize: 0, color: Color.Blue, lineStyle: LineStyle.Dash);
-            plt.PlotScatter(xs2, bolU, markerSize: 0, color: Color.Blue, lineStyle: LineStyle.Dash);
+            plt.AddScatter(xs2, sma, markerSize: 0, color: Color.Blue);
+            plt.AddScatter(xs2, bolL, markerSize: 0, color: Color.Blue, lineStyle: LineStyle.Dash);
+            plt.AddScatter(xs2, bolU, markerSize: 0, color: Color.Blue, lineStyle: LineStyle.Dash);
         }
     }
 }
