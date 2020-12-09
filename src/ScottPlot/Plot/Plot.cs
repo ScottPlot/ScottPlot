@@ -823,6 +823,25 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// SignalConts plots have evenly-spaced X points and render faster than Signal plots
+        /// but data in source arrays cannot be changed after it is loaded.
+        /// Methods can be used to update all or portions of the data.
+        /// </summary>
+        public SignalPlotConst<T> AddSignalConst<T>(T[] ys, double sampleRate = 1, Color? color = null) where T : struct, IComparable
+        {
+            SignalPlotConst<T> plottable = new SignalPlotConst<T>()
+            {
+                ys = ys,
+                sampleRate = sampleRate,
+                color = color ?? settings.GetNextColor(),
+                minRenderIndex = 0,
+                maxRenderIndex = ys.Length - 1,
+            };
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
         /// Display text at specific X/Y coordinates
         /// </summary>
         public Text AddText(string label, double x, double y, float size = 12, Color? color = null) =>
