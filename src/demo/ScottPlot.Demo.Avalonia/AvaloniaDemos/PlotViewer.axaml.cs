@@ -39,7 +39,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             plt.Title($"{pointCount} Random Walk Points");
 
             var plotViewer = new ScottPlot.Avalonia.AvaPlotViewer(plt, 500, 300, "Random Walk Data");
-            plotViewer.Owner = this; // so it closes if this window closes
+            plotViewer.SetWindowOwner(this); // so it closes if this window closes
             plotViewer.Find<AvaPlot>("avaPlot1").Configure(lowQualityWhileDragging: false); // customize as desired
             plotViewer.Show(); // or ShowDialog() for a blocking window
         }
@@ -61,7 +61,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             plt.Title($"{sinCount} Random Sine Waves");
 
             var plotViewer = new ScottPlot.Avalonia.AvaPlotViewer(plt, 500, 300, "Random Sine Wave Data");
-            plotViewer.Owner = this; // so it closes if this window closes
+            plotViewer.SetWindowOwner(this); // so it closes if this window closes
             plotViewer.Find<AvaPlot>("avaPlot1").Configure(lowQualityWhileDragging: false); // customize as desired
             plotViewer.Show(); // or ShowDialog() for a blocking window
         }

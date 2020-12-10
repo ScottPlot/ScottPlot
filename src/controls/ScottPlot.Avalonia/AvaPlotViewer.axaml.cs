@@ -29,5 +29,10 @@ namespace ScottPlot.Avalonia
         {
             AvaloniaXamlLoader.Load(this);
         }
+
+        public void SetWindowOwner(WindowBase owner)
+        {
+            this.Owner = owner;
+        }
     }
 }
