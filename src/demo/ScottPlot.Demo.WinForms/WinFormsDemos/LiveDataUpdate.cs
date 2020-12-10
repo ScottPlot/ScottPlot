@@ -38,6 +38,12 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             formsPlot1.plt.YLabel("Potential (mV)");
             formsPlot1.plt.XLabel("Time (seconds)");
             formsPlot1.plt.Grid(false);
+            
+            Closed += (sender, args) =>
+            {
+                timerUpdateData?.Stop();
+                timerRender?.Stop();
+            };
         }
 
         int nextValueIndex = -1;

@@ -20,6 +20,9 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
         TextBox LatestValueTextbox;
         CheckBox AutoAxisCheckbox;
 
+        private DispatcherTimer _updateDataTimer;
+        private DispatcherTimer _renderTimer;
+
         public LiveDataGrowing()
         {
             this.InitializeComponent();
@@ -38,16 +41,22 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             avaPlot1.plt.XLabel("Sample Number");
 
             // create a timer to modify the data
-            DispatcherTimer updateDataTimer = new DispatcherTimer();
-            updateDataTimer.Interval = TimeSpan.FromMilliseconds(1);
-            updateDataTimer.Tick += UpdateData;
-            updateDataTimer.Start();
+            _updateDataTimer = new DispatcherTimer();
+            _updateDataTimer.Interval = TimeSpan.FromMilliseconds(1);
+            _updateDataTimer.Tick += UpdateData;
+            _updateDataTimer.Start();
 
             // create a timer to update the GUI
-            DispatcherTimer renderTimer = new DispatcherTimer();
-            renderTimer.Interval = TimeSpan.FromMilliseconds(20);
-            renderTimer.Tick += Render;
-            renderTimer.Start();
+            _renderTimer = new DispatcherTimer();
+            _renderTimer.Interval = TimeSpan.FromMilliseconds(20);
+            _renderTimer.Tick += Render;
+            _renderTimer.Start();
+
+            Closed += (sender, args) =>
+            {
+                _updateDataTimer?.Stop();
+                _renderTimer?.Stop();
+            };
         }
 
         private void InitializeComponent()
