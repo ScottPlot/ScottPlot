@@ -26,16 +26,16 @@ namespace ScottPlot.Renderable
         public float ShadowOffsetX = 2;
         public float ShadowOffsetY = 2;
 
-        private string _fontName = InstalledFont.Default();
-        public string FontName { get { return _fontName; } set { _fontName = InstalledFont.ValidFontName(FontName); } }
-        public float FontSize = 14;
-        public Color FontColor = Color.Black;
-        public bool FontBold = false;
+        public Drawing.Font Font = new Drawing.Font();
+        public string FontName { set { Font.Name = value; } }
+        public float FontSize { set { Font.Size = value; } }
+        public Color FontColor { set { Font.Color = value; } }
+        public bool FontBold { set { Font.Bold = value; } }
 
         public float Padding = 5;
-        private float SymbolWidth { get { return 40 * FontSize / 12; } }
-        private float SymbolPad { get { return FontSize / 3; } }
-        private float MarkerWidth { get { return FontSize / 2; } }
+        private float SymbolWidth { get { return 40 * Font.Size / 12; } }
+        private float SymbolPad { get { return Font.Size / 3; } }
+        private float MarkerWidth { get { return Font.Size / 2; } }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
@@ -43,7 +43,7 @@ namespace ScottPlot.Renderable
                 return;
 
             using (var gfx = GDI.Graphics(bmp, lowQuality))
-            using (var font = GDI.Font(FontName, FontSize, FontBold))
+            using (var font = GDI.Font(Font))
             {
                 var (maxLabelWidth, maxLabelHeight, width, height) = GetDimensions(gfx, LegendItems, font);
                 var (x, y) = GetLocationPx(dims, width, height);
@@ -55,7 +55,7 @@ namespace ScottPlot.Renderable
         {
             using (var bmpTemp = new Bitmap(1, 1))
             using (var gfxTemp = GDI.Graphics(bmpTemp, true))
-            using (var font = GDI.Font(FontName, FontSize, FontBold))
+            using (var font = GDI.Font(Font))
             {
                 var (maxLabelWidth, maxLabelHeight, width, height) = GetDimensions(gfxTemp, LegendItems, font);
                 Bitmap bmp = new Bitmap((int)width, (int)height, PixelFormat.Format32bppPArgb);
@@ -92,7 +92,7 @@ namespace ScottPlot.Renderable
         {
             using (var fillBrush = new SolidBrush(FillColor))
             using (var shadowBrush = new SolidBrush(ShadowColor))
-            using (var textBrush = new SolidBrush(FontColor))
+            using (var textBrush = new SolidBrush(Font.Color))
             using (var outlinePen = new Pen(OutlineColor))
             {
                 if (AntiAlias)

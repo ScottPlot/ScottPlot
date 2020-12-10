@@ -15,7 +15,7 @@ namespace ScottPlot.UserControls
         public FormHelp()
         {
             InitializeComponent();
-            lblVersion.Text = Tools.GetVersionString();
+            lblVersion.Text = Plot.Version;
             btnScottPlotGithub.Select();
         }
 

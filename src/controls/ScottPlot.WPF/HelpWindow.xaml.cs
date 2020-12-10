@@ -20,7 +20,7 @@ namespace ScottPlot.WPF
         public HelpWindow()
         {
             InitializeComponent();
-            VersionLabel.Content = Tools.GetVersionString();
+            VersionLabel.Content = Plot.Version;
 
             StringBuilder msg = new StringBuilder();
             msg.AppendLine("Left-click-drag: pan");

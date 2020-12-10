@@ -35,7 +35,7 @@
 					<TreeView x:Name="DemoTreeview" BorderThickness="0" Background="WhiteSmoke">
 						<TreeView.ItemTemplate>
 							<TreeDataTemplate ItemsSource="{Binding Path=Items}">
-								<TextBlock Text="{Binding Header}" />
+								<TextBlock Text="{Binding Title}" />
 							</TreeDataTemplate>
 						</TreeView.ItemTemplate>
 						<TreeView.Styles>

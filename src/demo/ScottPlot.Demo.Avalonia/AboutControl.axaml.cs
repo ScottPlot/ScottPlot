@@ -9,7 +9,7 @@ namespace ScottPlot.Demo.Avalonia
         public AboutControl()
         {
             this.InitializeComponent();
-            this.Find<TextBlock>("VersionLabel").Text = $"version {Tools.GetVersionString()}";
+            this.Find<TextBlock>("VersionLabel").Text = $"version {Plot.Version}";
         }
 
         private void InitializeComponent()

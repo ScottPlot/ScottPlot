@@ -33,6 +33,9 @@ namespace ScottPlot
         /// </summary>
         public Renderable.Axis AddAxis(Renderable.Edge edge, int axisIndex, string title = null, System.Drawing.Color? color = null)
         {
+            if (axisIndex <= 1)
+                throw new ArgumentException("The default axes already occupy indexes 0 and 1. Additional axes require higher indexes.");
+
             Renderable.Axis axis;
 
             if (edge == Renderable.Edge.Left)
@@ -205,7 +208,11 @@ namespace ScottPlot
         /// <summary>
         /// Lock X and Y axis scales together (so squares cannot be distorted)
         /// </summary>
-        public void AxisEqualScale(bool lockScales = true) => settings.AxisEqualScale = lockScales;
+        public void AxisEqualScale(bool lockScales = true)
+        {
+            settings.AxisAutoUnsetAxes();
+            settings.AxisEqualScale = lockScales;
+        }
 
         #endregion
 

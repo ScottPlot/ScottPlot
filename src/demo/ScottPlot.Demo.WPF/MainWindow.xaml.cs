@@ -21,7 +21,7 @@ namespace ScottPlot.Demo.WPF
         public LauncherWindow()
         {
             InitializeComponent();
-            VersionLabel.Content = Tools.GetVersionString();
+            VersionLabel.Content = Plot.Version;
         }
 
         private void LaunchCookbook(object sender, RoutedEventArgs e)

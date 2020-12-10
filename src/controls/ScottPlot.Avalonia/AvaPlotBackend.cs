@@ -19,7 +19,7 @@ namespace ScottPlot.Avalonia
 
         public override void InitializeScottPlot()
         {
-            view.Find<TextBlock>("lblVersion").Text = Tools.GetVersionString();
+            view.Find<TextBlock>("lblVersion").Text = Plot.Version;
             //isDesignerMode = DesignerProperties.GetIsInDesignMode(this);
             isDesignerMode = false;
 

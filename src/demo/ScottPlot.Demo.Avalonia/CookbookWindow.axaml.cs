@@ -1,6 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using System.Diagnostics;
 
 namespace ScottPlot.Demo.Avalonia
 {
@@ -29,13 +30,12 @@ namespace ScottPlot.Demo.Avalonia
             CookbookControl DemoPlotControl1 = this.Find<CookbookControl>("DemoPlotControl1");
             var AboutControl1 = this.Find<AboutControl>("AboutControl1");
 
-
-            DemoNodeItem selectedDemoItem = (DemoNodeItem)DemoTreeview.SelectedItem;
-            if (selectedDemoItem.Tag != null)
+            var selectedDemoItem = (Cookbook.TreeNode)DemoTreeview.SelectedItem;
+            if (selectedDemoItem.ID != null)
             {
                 DemoPlotControl1.IsVisible = true;
                 AboutControl1.IsVisible = false;
-                DemoPlotControl1.LoadDemo(selectedDemoItem.Tag);
+                DemoPlotControl1.LoadDemo(selectedDemoItem.ID);
             }
             else
             {
@@ -47,14 +47,14 @@ namespace ScottPlot.Demo.Avalonia
         private void LoadTreeWithDemos()
         {
             TreeView DemoTreeview = this.Find<TreeView>("DemoTreeview");
-            var demos = Reflection.GetPlotNodeItems();
+            var demos = Cookbook.Tree.GetRecipes();
             DemoTreeview.Items = demos;
 
             CookbookControl DemoPlotControl1 = this.Find<CookbookControl>("DemoPlotControl1");
             var AboutControl1 = this.Find<AboutControl>("AboutControl1");
             DemoPlotControl1.IsVisible = true;
             AboutControl1.IsVisible = false;
-            DemoPlotControl1.LoadDemo(demos[0].Items[0].Items[0].Tag);
+            DemoPlotControl1.LoadDemo(demos[0].Items[0].ID);
         }
     }
 }

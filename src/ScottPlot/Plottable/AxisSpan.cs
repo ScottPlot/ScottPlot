@@ -17,16 +17,16 @@ namespace ScottPlot.Plottable
         private double Max { get => Math.Max(position1, position2); }
         public int HorizontalAxisIndex { get; set; } = 0;
         public int VerticalAxisIndex { get; set; } = 0;
+        public bool IsVisible { get; set; } = true;
 
-        public Color color;
-        public Color colorWithAlpha => Color.FromArgb((byte)(255 * alpha), color);
-        public double alpha = .35;
+        public Color color = Color.FromArgb(128, Color.Magenta);
         public string label;
         public bool IsHorizontal = true;
         public bool DragEnabled { get; set; }
         public bool DragFixedSize { get; set; }
+        public double DragLimitMin = double.NegativeInfinity;
+        public double DragLimitMax = double.PositiveInfinity;
         public Cursor DragCursor => IsHorizontal ? Cursor.WE : Cursor.NS;
-        public bool IsVisible { get; set; } = true;
 
         public override string ToString()
         {
@@ -50,7 +50,7 @@ namespace ScottPlot.Plottable
             var singleItem = new LegendItem()
             {
                 label = label,
-                color = colorWithAlpha,
+                color = color,
                 markerSize = 0,
                 lineWidth = 10
             };
@@ -61,18 +61,6 @@ namespace ScottPlot.Plottable
             IsHorizontal ?
             new AxisLimits(Min, Max, double.NaN, double.NaN) :
             new AxisLimits(double.NaN, double.NaN, Min, Max);
-
-        private double dragLimitX1 = double.NegativeInfinity;
-        private double dragLimitX2 = double.PositiveInfinity;
-        private double dragLimitY1 = double.NegativeInfinity;
-        private double dragLimitY2 = double.PositiveInfinity;
-        public void SetLimits(double? x1, double? x2, double? y1, double? y2)
-        {
-            dragLimitX1 = x1 ?? dragLimitX1;
-            dragLimitX2 = x2 ?? dragLimitX2;
-            dragLimitY1 = y1 ?? dragLimitY1;
-            dragLimitY2 = y2 ?? dragLimitY2;
-        }
 
         private enum Edge { Edge1, Edge2, Neither };
         Edge edgeUnderMouse = Edge.Neither;
@@ -105,10 +93,16 @@ namespace ScottPlot.Plottable
             if (!DragEnabled)
                 return;
 
-            if (coordinateX < dragLimitX1) coordinateX = dragLimitX1;
-            if (coordinateX > dragLimitX2) coordinateX = dragLimitX2;
-            if (coordinateY < dragLimitY1) coordinateY = dragLimitY1;
-            if (coordinateY > dragLimitY2) coordinateY = dragLimitY2;
+            if (IsHorizontal)
+            {
+                coordinateX = Math.Max(coordinateX, DragLimitMin);
+                coordinateX = Math.Min(coordinateX, DragLimitMax);
+            }
+            else
+            {
+                coordinateY = Math.Max(coordinateY, DragLimitMin);
+                coordinateY = Math.Min(coordinateY, DragLimitMax);
+            }
 
             double sizeBeforeDrag = position2 - position1;
             if (edgeUnderMouse == Edge.Edge1)
@@ -129,10 +123,8 @@ namespace ScottPlot.Plottable
             }
 
             // ensure fixed-width spans stay entirely inside the allowable range
-            double lowerLimit = IsHorizontal ? dragLimitX1 : dragLimitY1;
-            double upperLimit = IsHorizontal ? dragLimitX2 : dragLimitY2;
-            double belowLimit = lowerLimit - position1;
-            double aboveLimit = position2 - upperLimit;
+            double belowLimit = DragLimitMin - position1;
+            double aboveLimit = position2 - DragLimitMax;
             if (belowLimit > 0)
             {
                 position1 += belowLimit;
@@ -161,7 +153,7 @@ namespace ScottPlot.Plottable
             RectangleF rect = new RectangleF(p1.X - 1, p2.Y - 1, p2.X - p1.X + 1, p1.Y - p2.Y + 1);
 
             using (var gfx = GDI.Graphics(bmp, dims, lowQuality))
-            using (var brush = GDI.Brush(colorWithAlpha))
+            using (var brush = GDI.Brush(color))
             {
                 gfx.FillRectangle(brush, rect);
             }

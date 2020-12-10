@@ -11,11 +11,10 @@ namespace ScottPlot.Plottable
         public double[] ys;
         public string label;
 
-        public double lineWidth = 2;
+        public double lineWidth = 1;
         public Color lineColor = Color.Black;
         public bool fill = true;
         public Color fillColor = Color.Gray;
-        public double fillAlpha = 0.5;
         public bool IsVisible { get; set; } = true;
         public int HorizontalAxisIndex { get; set; } = 0;
         public int VerticalAxisIndex { get; set; } = 0;
@@ -91,10 +90,8 @@ namespace ScottPlot.Plottable
             for (int i = 0; i < xs.Length; i++)
                 points[i] = new PointF(dims.GetPixelX(xs[i]), dims.GetPixelY(ys[i]));
 
-            Color colorWithAlpha = Color.FromArgb((byte)(255 * fillAlpha), fillColor);
-
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
-            using (Brush fillBrush = GDI.Brush(colorWithAlpha, HatchColor, HatchStyle))
+            using (Brush fillBrush = GDI.Brush(fillColor, HatchColor, HatchStyle))
             using (Pen outlinePen = GDI.Pen(lineColor, (float)lineWidth))
             {
                 if (fill)

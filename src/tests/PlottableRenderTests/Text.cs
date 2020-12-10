@@ -98,8 +98,8 @@ namespace ScottPlotTests.PlottableRenderTests
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            txt.frame = true;
-            txt.frameColor = System.Drawing.Color.Gray;
+            txt.FillBackground = true;
+            txt.BackgroundColor = System.Drawing.Color.Gray;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -119,12 +119,12 @@ namespace ScottPlotTests.PlottableRenderTests
             var plt = new ScottPlot.Plot(400, 300);
 
             // start with default settings
-            var txt = new ScottPlot.Plottable.Text() { text = "hello", frame = true, frameColor = System.Drawing.Color.Gray };
+            var txt = new ScottPlot.Plottable.Text() { text = "hello", FillBackground = true, BackgroundColor = System.Drawing.Color.Gray };
             plt.Add(txt);
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            txt.frameColor = System.Drawing.Color.Blue;
+            txt.BackgroundColor = System.Drawing.Color.Blue;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed

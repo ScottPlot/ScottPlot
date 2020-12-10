@@ -9,15 +9,15 @@ strategy:
       imageName: 'ubuntu-latest'
 
     'Build and Test on MacOS':
-      purpose: 'library' # build and test ScottPlot and ScottPlot.Demo
+      purpose: 'library' # build and test ScottPlot and ScottPlot.Cookbook
       imageName: 'macOS-latest'
 
     'Build and Test on Linux':
-      purpose: 'library' # build and test ScottPlot and ScottPlot.Demo
+      purpose: 'library' # build and test ScottPlot and ScottPlot.Cookbook
       imageName: 'ubuntu-latest'
 
     'Build and Test on Windows':
-      purpose: 'library' # build and test ScottPlot and ScottPlot.Demo
+      purpose: 'library' # build and test ScottPlot and ScottPlot.Cookbook
       imageName: 'windows-latest'
 
     'Rebuild Solution on Windows':
@@ -77,11 +77,11 @@ steps:
     projects: 'src/ScottPlot/ScottPlot.csproj'
 
 - task: DotNetCoreCLI@2
-  displayName: 'Build ScottPlot.Demo'
+  displayName: 'Build ScottPlot.Cookbook'
   condition: eq(variables['purpose'], 'library')
   inputs:
     command: 'build'
-    projects: 'src/cookbook/ScottPlot.Demo/ScottPlot.Demo.csproj'
+    projects: 'src/cookbook/ScottPlot.Cookbook/ScottPlot.Cookbook.csproj'
 
 - task: DotNetCoreCLI@2
   displayName: 'Build Tests'

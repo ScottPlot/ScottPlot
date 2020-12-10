@@ -10,19 +10,22 @@ namespace ScottPlot.Plottable
         public double yPixel;
         public string label;
 
-        public string FontName;
-        public Color FontColor = Color.Red;
-        public float FontSize = 12;
-        public bool FontBold = false;
+        public Drawing.Font Font = new Drawing.Font();
+        public Color FontColor { set => Font.Color = value; }
+        public string FontName { set => Font.Name = value; }
+        public float FontSize { set => Font.Size = value; }
+        public bool FontBold { set => Font.Bold = value; }
+        public Alignment alignment { set => Font.Alignment = value; }
+        public float rotation { set => Font.Rotation = value; }
 
         public bool Background = true;
-        public Color BackgroundColor = Color.White;
+        public Color BackgroundColor = Color.Yellow;
 
         public bool Shadow = true;
         public Color ShadowColor = Color.FromArgb(25, Color.Black);
 
         public bool Border = true;
-        public float BorderWidth = 2;
+        public float BorderWidth = 1;
         public Color BorderColor = Color.Black;
 
         public bool IsVisible { get; set; } = true;
@@ -42,11 +45,13 @@ namespace ScottPlot.Plottable
                 throw new InvalidOperationException("xPixel must be a valid number");
         }
 
+        // TODO: the negative coordiante thing is silly. Use alignment fields to control this behavior.
+
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             using (var gfx = GDI.Graphics(bmp, lowQuality))
-            using (var font = GDI.Font(FontName, FontSize, FontBold))
-            using (var fontBrush = new SolidBrush(FontColor))
+            using (var font = GDI.Font(Font))
+            using (var fontBrush = new SolidBrush(Font.Color))
             using (var shadowBrush = new SolidBrush(ShadowColor))
             using (var backgroundBrush = new SolidBrush(BackgroundColor))
             using (var borderPen = new Pen(BorderColor, BorderWidth))

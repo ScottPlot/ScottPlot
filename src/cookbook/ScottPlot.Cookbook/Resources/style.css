@@ -1,0 +1,457 @@
+body {
+    background-color: #F6F4F8;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
+    font-size: 16px;
+    line-height: 150%;
+    margin: 0px;
+}
+
+    body strong {
+        font-weight: 600;
+    }
+
+    body b {
+        font-weight: 600;
+    }
+
+#backsplash {
+    background-color: magenta;
+    height: 450px;
+    width: 100%;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    z-index: -1;
+}
+
+#pageAboveArticle {
+}
+
+#headerBlock {
+    color: white;
+    margin: auto;
+    padding-bottom: 1.5em;
+    max-width: 900px;
+    margin: auto;
+}
+
+    #headerBlock .title {
+        font-size: 3em;
+        line-height: 1em;
+        margin-top: 1em;
+    }
+
+        #headerBlock .title a {
+            text-decoration: none;
+            color: #F6F4F8;
+        }
+
+    #headerBlock .subtitle {
+        opacity: .5;
+        line-height: 1.5em;
+    }
+
+#headerMenu {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    color: #F6F4F8;
+    width: 100%;
+    font-size: 1.4em;
+    padding-top: .5em;
+}
+
+    #headerMenu .menuButton {
+        display: inline-block;
+    }
+
+    #headerMenu .menuButtonDropdown {
+        text-align: left;
+        display: none;
+        position: absolute;
+        padding-top: .5em;
+        line-height: 2em;
+        z-index: 1;
+    }
+
+    #headerMenu .menuButton:hover .menuButtonDropdown {
+        display: block;
+    }
+
+    #headerMenu .menuButton a {
+        /*font-size: 1.2em;*/
+        text-decoration: none;
+        color: #F6F4F8;
+        padding: .5em 1em .5em 1em;
+    }
+
+        #headerMenu .menuButton a:hover {
+            color: white;
+            background-color: rgba(0, 0, 0, .5);
+        }
+
+    #headerMenu a:active {
+        background-color: rgba(0, 0, 0, .2);
+    }
+
+#githubButtonWrapper {
+    float: right;
+    position: relative;
+    top: -20px;
+}
+
+@media only screen and (max-width: 500px) {
+    /* make the menu easier to hit if using mobile */
+    #headerMenu {
+        margin-bottom: 1em;
+        text-align: right;
+        font-size: 1.2em;
+    }
+
+        #headerMenu .menuButton {
+            line-height: 200%;
+            padding: .5em;
+            text-decoration: none;
+            color: #F6F4F8;
+        }
+
+            #headerMenu .menuButton:hover .menuButtonDropdown {
+                display: block;
+                background-color: rgba(0, 0, 0, .5);
+            }
+
+    #githubButtonWrapper {
+        visibility: hidden;
+        clear: both;
+        float: left;
+        margin: 0;
+        width: 0%;
+        display: none;
+    }
+
+    #headerBlock {
+        width: 100%;
+    }
+
+        #headerBlock .title {
+            font-size: 2em;
+            margin-left: .5em;
+        }
+
+        #headerBlock .subtitle {
+            margin-left: 1em;
+        }
+
+    #footerBlock {
+        font-size: .6em;
+    }
+
+    #md2html iframe {
+        height: 300px;
+    }
+}
+
+article {
+    background-color: white;
+    margin: auto;
+    margin-bottom: 5em;
+    max-width: 900px;
+    box-shadow: 0 3px 5px 0 rgba(0, 0, 0, .05);
+    z-index: 1;
+    position: relative;
+    padding: 1em;
+    border-top: 3px solid rgba(0, 0, 0, .2);
+    min-height: 500px;
+}
+
+footer {
+    margin-top: 5em;
+    background-color: #2a2a2a;
+    color: #999;
+}
+
+    footer a {
+        color: #999;
+    }
+
+        footer a:hover {
+            color: white;
+        }
+
+#footerBlock {
+    padding: 1em;
+    margin: auto;
+    text-align: center;
+}
+
+.center {
+    text-align: center;
+}
+
+.thumbnail img {
+    height: 9em !important;
+    margin: .5em !important;
+}
+
+.small img {
+    max-width: 35% !important;
+    margin: 1em !important;
+}
+
+.medium img {
+    max-width: 65% !important;
+}
+
+.large img {
+    max-width: 100% !important;
+}
+
+.center iframe, .center table {
+    margin: 2em auto 2em auto !important;
+}
+
+.border img, .border iframe {
+    margin: 2em;
+    border: 1px solid black;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, .2);
+}
+
+#md2html img {
+    max-width: 85%;
+}
+
+#lowerNavBar {
+    max-width: 900px;
+    margin: auto;
+    padding: 1em;
+}
+
+    #lowerNavBar a {
+        text-decoration: none;
+        color: blue;
+    }
+
+        #lowerNavBar a:hover {
+            text-decoration: underline;
+        }
+
+    #lowerNavBar div {
+        margin: 1em 0em;
+    }
+
+.postMeta {
+    position: relative;
+    top: -1em;
+    line-height: 1.2em;
+    float: right;
+    text-align: right;
+    font-size: 80%;
+}
+
+.listTags {
+    display: inline;
+    font-size: 80%;
+    color: #ccc;
+}
+
+.listTag {
+    display: inline;
+    background-color: #fafafa;
+    color: #ccc;
+    border: 1px solid #f0f0f0;
+    padding: 0em .2em;
+}
+
+    .listTag:hover {
+        background-color: #f0f0f0;
+    }
+
+.tagLink {
+    color: #cccccc !important;
+    text-decoration: none;
+}
+
+.listTag a:hover {
+    color: blue !important;
+    text-decoration: underline;
+}
+
+/* here are styles I made that should probably be removed now 
+
+.codeBlock {
+    padding: .5em;
+    margin: 1em;
+    background-color: #f6f6f6;
+    border: 1px solid #eeeeee;
+    line-height: 125%;
+}*/
+
+/* below this are md2html styles I use to look like GitHub markdown in readme files */
+
+#md2html {
+    background-color: white;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
+    font-size: 16px;
+    line-height: 150%;
+    margin: 0px;
+}
+
+    #md2html a {
+        text-decoration: none;
+        color: #0366d6;
+    }
+
+        #md2html a:hover {
+            text-decoration: underline;
+            opacity: 1 !important;
+        }
+
+    #md2html strong {
+        font-weight: 600;
+    }
+
+    #md2html em {
+        /*font-weight: 600;*/
+        font-style: italic;
+    }
+
+    #md2html .anchorLink {
+        position: relative;
+        color: black;
+        opacity: 0;
+    }
+
+        #md2html .anchorLink a:active {
+            opacity: 1 !important;
+        }
+
+    #md2html .anchorText {
+        position: relative;
+    }
+
+    #md2html h1 {
+        margin-bottom: 16px;
+        font-size: 2em;
+        font-weight: 600;
+        padding-bottom: .3em;
+        border-bottom: 1px solid #eaecef;
+        line-height: 110%;
+    }
+
+    #md2html h2 {
+        margin-top: 24px;
+        margin-bottom: 16px;
+        font-size: 1.5em;
+        font-weight: 600;
+        padding-bottom: .3em;
+        border-bottom: 1px solid #eaecef;
+        line-height: 110%;
+    }
+
+    #md2html h3 {
+        margin-top: 24px;
+        margin-bottom: 16px;
+        font-size: 1.25em;
+        font-weight: 600;
+        text-indent: -.5em;
+        line-height: 110%;
+    }
+
+    #md2html h4 {
+        margin-top: 24px;
+        margin-bottom: 16px;
+        font-size: 1em;
+        font-weight: 600;
+        text-indent: -.5em;
+        line-height: 110%;
+    }
+
+    #md2html h5 {
+        margin-top: 24px;
+        margin-bottom: 16px;
+        font-size: .875em;
+        font-weight: 600;
+        text-indent: -.5em;
+        line-height: 110%;
+    }
+
+    #md2html h6 {
+        margin-top: 24px;
+        margin-bottom: 16px;
+        font-size: .85em;
+        font-weight: 600;
+        color: #6a737d;
+        text-indent: -.5em;
+        line-height: 110%;
+    }
+
+    #md2html code {
+        background-color: #F6F4F8;
+        padding: .2em .4em;
+        font-size: 85%;
+    }
+
+    #md2html pre code {
+        background-color: transparent;
+        padding: 0;
+        font-size: 100%;
+    }
+
+    #md2html p {
+        line-height: 1.5;
+    }
+
+.prettyprint {
+    background: #f8f8f8;
+    border-radius: 5px;
+    border: 1px solid #ddd !important;
+    padding: 1em !important;
+    font-size: 14px;
+    line-height: 150%;
+    overflow-x: auto;
+}
+
+#md2html blockquote {
+    background: #f6f8fa;
+    padding: 1em;
+    border-left: 5px solid #dfe2e5;
+}
+
+    #md2html blockquote p {
+        margin: 0;
+        padding: 0;
+    }
+
+#md2html table {
+    border-collapse: collapse;
+    margin: 2em;
+}
+
+#md2html th {
+    border: 1px solid #dfe2e5;
+    background: #f6f8fa;
+    font-weight: 600;
+    padding: 10px;
+}
+
+#md2html td {
+    border: 1px solid #dfe2e5;
+    padding: 10px;
+}
+
+#md2html img {
+    max-width: 100%;
+}
+
+#md2html .youtube {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    max-width: 100%;
+    border: 1px solid black;
+    box-shadow: 0 3px 10px 0 rgba(0, 0, 0, .3);
+    width: 854px;
+    height: 480px;
+}

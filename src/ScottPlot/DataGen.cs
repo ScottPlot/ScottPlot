@@ -119,10 +119,13 @@ namespace ScottPlot
             }
         }
 
+        public static double[] RandomNormal(int seed, int pointCount, double mean = .5, double stdDev = .5, double maxSdMultiple = 10) =>
+            RandomNormal(new Random(seed), pointCount, mean, stdDev, maxSdMultiple);
+
         public static double[] RandomNormal(Random rand, int pointCount, double mean = .5, double stdDev = .5, double maxSdMultiple = 10)
         {
             if (rand == null)
-                rand = new Random();
+                rand = new Random(0);
             double[] values = new double[pointCount];
             for (int i = 0; i < values.Length; i++)
                 values[i] = RandomNormalValue(rand, mean, stdDev, maxSdMultiple);
@@ -133,7 +136,7 @@ namespace ScottPlot
         public static double[] NoisyLinear(Random rand, int pointCount = 100, double slope = 1, double offset = 0, double noise = 0.1)
         {
             if (rand is null)
-                rand = new Random();
+                rand = new Random(0);
 
             double[] data = new double[pointCount];
             for (int i = 0; i < data.Length; i++)
@@ -145,7 +148,7 @@ namespace ScottPlot
         public static double[] NoisySin(Random rand, int pointCount, double oscillations = 1, double noiseLevel = .5, double mult = 1)
         {
             if (rand is null)
-                rand = new Random();
+                rand = new Random(0);
             double[] values = Sin(pointCount, oscillations);
             for (int i = 0; i < values.Length; i++)
                 values[i] += (rand.NextDouble() - .5) * noiseLevel * mult;
@@ -162,10 +165,19 @@ namespace ScottPlot
             return Color.FromArgb(r, g, b);
         }
 
+        /// <summary>
+        /// Return the cumulative sum of a random set of numbers using a fixed seed
+        /// </summary>
+        public static double[] RandomWalk(int pointCount, double mult = 1, double offset = 0) =>
+            RandomWalk(new Random(0), pointCount, mult, offset);
+
+        /// <summary>
+        /// Return the cumulative sum of a random set of numbers
+        /// </summary>
         public static double[] RandomWalk(Random rand, int pointCount, double mult = 1, double offset = 0)
         {
             if (rand is null)
-                rand = new Random();
+                rand = new Random(0);
             var data = new double[pointCount];
             data[0] = offset;
             for (int i = 1; i < data.Length; i++)
@@ -173,48 +185,66 @@ namespace ScottPlot
             return data;
         }
 
-        public static OHLC[] RandomStockPrices(Random rand, int pointCount, double mult = 10, double startingPrice = 123.45, int deltaMinutes = 0, int deltaDays = 1, bool sequential = false)
+        /// <summary>
+        /// Return OHLC array with random prices X positions as DateTime.ToOATime() values using the given time delta
+        /// </summary>
+        public static OHLC[] RandomStockPrices(Random rand, int pointCount, TimeSpan delta, double mult = 10, double startingPrice = 123.45)
         {
-            if (rand is null)
-                rand = new Random(0);
-
-            double[] basePrices = ScottPlot.DataGen.RandomWalk(rand, pointCount, mult, startingPrice);
-
-            OHLC[] ohlcs = new OHLC[pointCount];
+            OHLC[] ohlcs = RandomStockPrices(rand, pointCount, mult, startingPrice);
 
             DateTime dt = new DateTime(1985, 9, 24, 9, 30, 0);
 
             for (int i = 0; i < ohlcs.Length; i++)
             {
+                dt = dt + delta;
+
+                while ((dt.DayOfWeek == DayOfWeek.Saturday) || (dt.DayOfWeek == DayOfWeek.Sunday))
+                    dt = dt + TimeSpan.FromDays(1);
+
+                ohlcs[i].time = dt.ToOADate();
+                ohlcs[i].timeSpan = delta.TotalDays;
+            }
+
+            return ohlcs;
+        }
+
+        /// <summary>
+        /// Return OHLC array with random prices X positions as sequential numbers (0, 1, 2, etc.)
+        /// </summary>
+        private static OHLC[] RandomStockPrices(Random rand, int pointCount, double mult = 10, double startingPrice = 123.45)
+        {
+            if (rand is null)
+                rand = new Random(0);
+
+            double[] basePrices = RandomWalk(rand, pointCount, mult, startingPrice);
+
+            OHLC[] ohlcs = new OHLC[pointCount];
+            for (int i = 0; i < ohlcs.Length; i++)
+            {
+                double basePrice = basePrices[i];
                 double open = rand.NextDouble() * 10 + 50;
                 double close = rand.NextDouble() * 10 + 50;
                 double high = Math.Max(open, close) + rand.NextDouble() * 10;
                 double low = Math.Min(open, close) - rand.NextDouble() * 10;
 
-                // offset prices by randomwalk
-                open += basePrices[i];
-                close += basePrices[i];
-                high += basePrices[i];
-                low += basePrices[i];
+                open += basePrice;
+                close += basePrice;
+                high += basePrice;
+                low += basePrice;
 
-                if (deltaMinutes > 0)
-                {
-                    dt = dt.AddMinutes(deltaMinutes);
-                }
-                else if (deltaDays > 0)
-                {
-                    dt = dt.AddDays(deltaDays);
-                    while ((dt.DayOfWeek == DayOfWeek.Saturday) || (dt.DayOfWeek == DayOfWeek.Sunday))
-                        dt = dt.AddDays(1);
-                }
-
-                if (sequential)
-                    ohlcs[i] = new OHLC(open, high, low, close, i);
-                else
-                    ohlcs[i] = new OHLC(open, high, low, close, dt);
+                ohlcs[i] = new OHLC(open, high, low, close, i);
             }
 
             return ohlcs;
+        }
+
+        public static OHLC[] RandomStockPrices(Random rand, int pointCount, double mult = 10, double startingPrice = 123.45, int deltaMinutes = 0, int deltaDays = 1, bool sequential = true)
+        {
+            TimeSpan ts = TimeSpan.FromMinutes(deltaMinutes) + TimeSpan.FromDays(deltaDays);
+            if (sequential)
+                return RandomStockPrices(rand, pointCount, mult, startingPrice);
+            else
+                return RandomStockPrices(rand, pointCount, ts, mult, startingPrice);
         }
 
         public static (double, double) RandomSpan(Random rand = null, double low = 0, double high = 100, double minimumSpacing = 10)

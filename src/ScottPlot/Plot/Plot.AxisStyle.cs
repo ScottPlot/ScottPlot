@@ -38,9 +38,10 @@ namespace ScottPlot
         /// <summary>
         /// Configure color and visibility of the frame that outlines the data area (lines along the edges of the primary axes)
         /// </summary>
-        public void Frame(bool? visible = true, Color? color = null, bool? left = true, bool? right = true, bool? bottom = true, bool? top = true)
+        public void Frame(bool? visible = null, Color? color = null, bool? left = null, bool? right = null, bool? bottom = null, bool? top = null)
         {
             var primaryAxes = new Renderable.Axis[] { XAxis, XAxis2, YAxis, YAxis2 };
+
             foreach (var axis in primaryAxes)
                 axis.ConfigureLine(visible, color);
 
@@ -58,6 +59,15 @@ namespace ScottPlot
             var primaryAxes = new Renderable.Axis[] { XAxis, XAxis2, YAxis, YAxis2 };
             foreach (var axis in primaryAxes)
                 axis.Hide();
+        }
+
+        /// <summary>
+        /// Disable grid line visibility for the primary X and Y axes
+        /// </summary>
+        public void DisableGrid()
+        {
+            XAxis.Configure(grid: false);
+            YAxis.Configure(grid: false);
         }
 
         /// <summary>
@@ -195,10 +205,10 @@ namespace ScottPlot
             settings.YAxis.ConfigureTicks(majorTickLabels: displayTickLabelsY);
 
             // AXIS LABEL
-            settings.XAxis.ConfigureAxisLabel(fontName: fontName);
-            settings.YAxis.ConfigureAxisLabel(fontName: fontName);
-            settings.XAxis.ConfigureAxisLabel(fontSize: fontSize);
-            settings.YAxis.ConfigureAxisLabel(fontSize: fontSize);
+            settings.XAxis.ConfigureTickLabelStyle(fontName: fontName);
+            settings.YAxis.ConfigureTickLabelStyle(fontName: fontName);
+            settings.XAxis.ConfigureTickLabelStyle(fontSize: fontSize);
+            settings.YAxis.ConfigureTickLabelStyle(fontSize: fontSize);
 
             // TICK LABEL NOTATION
             settings.XAxis.ConfigureTickLabelNotation(useMultiplierNotation: useMultiplierNotation);

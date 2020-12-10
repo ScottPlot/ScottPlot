@@ -6,6 +6,27 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Cookbook\Axis\**" />
+    <Compile Remove="Cookbook\Figure\**" />
+    <Compile Remove="Cookbook\Misc\**" />
+    <Compile Remove="Cookbook\Quickstart\**" />
+    <Compile Remove="Cookbook\Ticks\**" />
+    <Compile Remove="Cookbook\Tools\**" />
+    <EmbeddedResource Remove="Cookbook\Axis\**" />
+    <EmbeddedResource Remove="Cookbook\Figure\**" />
+    <EmbeddedResource Remove="Cookbook\Misc\**" />
+    <EmbeddedResource Remove="Cookbook\Quickstart\**" />
+    <EmbeddedResource Remove="Cookbook\Ticks\**" />
+    <EmbeddedResource Remove="Cookbook\Tools\**" />
+    <None Remove="Cookbook\Axis\**" />
+    <None Remove="Cookbook\Figure\**" />
+    <None Remove="Cookbook\Misc\**" />
+    <None Remove="Cookbook\Quickstart\**" />
+    <None Remove="Cookbook\Ticks\**" />
+    <None Remove="Cookbook\Tools\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="nunit" Version="3.12.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.13.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
@@ -13,17 +34,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\cookbook\ScottPlot.Demo\ScottPlot.Demo.csproj" />
+    <ProjectReference Include="..\cookbook\ScottPlot.Cookbook\ScottPlot.Cookbook.csproj" />
     <ProjectReference Include="..\ScottPlot\ScottPlot.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Cookbook\Figure\" />
-    <Folder Include="Cookbook\Axis\" />
-    <Folder Include="Cookbook\Misc\" />
-    <Folder Include="Cookbook\Quickstart\" />
-    <Folder Include="Cookbook\Ticks\" />
-    <Folder Include="Cookbook\Tools\" />
   </ItemGroup>
 
 </Project>
