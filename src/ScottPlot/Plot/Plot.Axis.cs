@@ -49,7 +49,8 @@ namespace ScottPlot
             else
                 throw new NotImplementedException("unsupported edge");
 
-            axis.Color = color ?? axis.Color;
+            if (color.HasValue)
+                axis.SetColor(color.Value);
 
             settings.Axes.Add(axis);
             return axis;

@@ -7,21 +7,18 @@ namespace ScottPlot
     {
         /// <summary>
         /// Set the label for the vertical axis to the right of the plot (XAxis). 
-        /// Use XAxis.ConfigureAxisLabel() for additional customization.
         /// </summary>
-        public void XLabel(string label) => XAxis.ConfigureAxisLabel(visible: true, label: label);
+        public void XLabel(string label) => XAxis.SetLabel(label);
 
         /// <summary>
         /// Set the label for the vertical axis to the right of the plot (YAxis2). 
-        /// Use YAxis2.ConfigureAxisLabel() for additional customization.
         /// </summary>
-        public void YLabel(string label) => YAxis.ConfigureAxisLabel(visible: true, label: label);
+        public void YLabel(string label) => YAxis.SetLabel(label);
 
         /// <summary>
         /// Set the label for the horizontal axis above the plot (XAxis2). 
-        /// Use XAxis2.ConfigureAxisLabel() for additional customization.
         /// </summary>
-        public void Title(string label, bool bold = true) => XAxis2.ConfigureAxisLabel(visible: true, label: label, fontBold: bold);
+        public void Title(string label, bool bold = true) => XAxis2.ConfigureLabel(visible: true, label: label, fontBold: bold);
 
         /// <summary>
         /// Configure color and visibility of the frame that outlines the data area (lines along the edges of the primary axes)

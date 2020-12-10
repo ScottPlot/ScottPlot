@@ -18,10 +18,10 @@ namespace ScottPlot.Cookbook.Recipes.Axis
             plt.AddSignal(DataGen.Cos(51));
 
             // simple way to set an axis label
-            plt.XAxis.Label = "Horizontal Axis";
+            plt.XAxis.SetLabel("Horizontal Axis");
 
             // advanced customizations are available
-            plt.YAxis.ConfigureAxisLabel(
+            plt.YAxis.ConfigureLabel(
                 label: "Vertical Axis",
                 color: Color.Magenta,
                 fontSize: 24,
@@ -43,8 +43,8 @@ namespace ScottPlot.Cookbook.Recipes.Axis
             plt.AddSignal(DataGen.Sin(51));
             plt.AddSignal(DataGen.Cos(51));
 
-            plt.YAxis.Label = "Vertical Axis";
-            plt.YAxis.Color = Color.Magenta;
+            plt.YAxis.SetLabel("Vertical Axis");
+            plt.YAxis.SetColor(Color.Magenta);
         }
     }
 

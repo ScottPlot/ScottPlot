@@ -218,9 +218,9 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
 
             // further decorate the plot
             plt.XAxis.DateTime = true;
-            plt.YAxis.Label = "Price";
-            plt.XAxis.Label = "Date and Time";
-            plt.XAxis2.Label = "Hungarian Formatted DateTime Tick Labels";
+            plt.YAxis.SetLabel("Price");
+            plt.XAxis.SetLabel("Date and Time");
+            plt.XAxis2.SetLabel("Hungarian Formatted DateTime Tick Labels");
         }
     }
 

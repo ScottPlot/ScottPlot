@@ -37,9 +37,9 @@ namespace ScottPlotTests
             plt.PlotScatter(dataXs, dataCos);
 
             string labelWithLineBreak = "Line One\nLine Two";
-            plt.XAxis2.ConfigureAxisLabel(label: labelWithLineBreak, fontSize: 30);
-            plt.XAxis.Label = labelWithLineBreak;
-            plt.YAxis.Label = labelWithLineBreak;
+            plt.XAxis2.ConfigureLabel(label: labelWithLineBreak, fontSize: 30);
+            plt.XAxis.SetLabel(labelWithLineBreak);
+            plt.YAxis.SetLabel(labelWithLineBreak);
 
             TestTools.SaveFig(plt);
         }

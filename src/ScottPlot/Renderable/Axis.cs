@@ -46,8 +46,6 @@ namespace ScottPlot.Renderable
         public readonly AxisLine Line = new AxisLine();
 
         // shortcuts allow components to be customized without having to reach in too far
-        public string Label { get => Title.Label; set => ConfigureAxisLabel(visible: value != null, label: value); }
-        public Color Color { get => Title.Font.Color; set => Configure(color: value); }
         public bool DateTime { get => Ticks.TickCollection.dateFormat; set => Ticks.TickCollection.dateFormat = value; }
 
         public override string ToString() => $"{Edge} axis from {Dims.Min} to {Dims.Max}";
@@ -77,11 +75,11 @@ namespace ScottPlot.Renderable
         }
 
         // TODO: axis label shouldn't have a visibility flag. This should be controlled by whether it's null or not.
-
+        // TODO: delete this?
         /// <summary>
-        /// Customize the axis label visibility, content, and styling
+        /// Deep configuration options for the axis label
         /// </summary>
-        public void ConfigureAxisLabel(
+        public void ConfigureLabel(
             bool? visible = null,
             string label = null,
             Color? color = null,
@@ -101,7 +99,7 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// Enable visibility of the axis label and define its text and color
         /// </summary>
-        public void ConfigureAxisLabel(string label, Color color)
+        public void SetLabel(string label, Color color)
         {
             Title.IsVisible = true;
             Title.Label = label;
@@ -113,10 +111,21 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// Enable visibility of the axis label and define its text
         /// </summary>
-        public void ConfigureAxisLabel(string label)
+        public void SetLabel(string label)
         {
             Title.IsVisible = true;
             Title.Label = label;
+        }
+
+        /// <summary>
+        /// Set color of axis label, axis line, tick marks, and tick labels
+        /// </summary>
+        public void SetColor(Color color)
+        {
+            ConfigureLabel(color: color);
+            ConfigureTickLabelStyle(color: color);
+            Ticks.Color = color;
+            Line.Color = color;
         }
 
         /// <summary>
@@ -265,26 +274,27 @@ namespace ScottPlot.Renderable
             Ticks.MinorTickEnable = enable;
         }
 
-        // TODO: remove grid argument
+        /// <summary>
+        /// Control visibility of major tick marks, major tick labels, and minor tick marks
+        /// </summary>
+        public void TickMarks(bool enable)
+        {
+            Ticks.MajorTickEnable = enable;
+            Ticks.MajorLabelEnable = enable;
+            Ticks.MinorTickEnable = enable;
+        }
+
+        // TODO: delete this in favor of individual setters?
         /// <summary>
         /// High-level configuration for axis label, tick labels, and all tick lines
         /// </summary>
         public void Configure(Color? color = null, bool? ticks = null, bool? grid = null)
         {
             if (color.HasValue)
-            {
-                ConfigureAxisLabel(color: color);
-                ConfigureTickLabelStyle(color: color);
-                Ticks.Color = color.Value;
-                Line.Color = color.Value;
-            }
+                SetColor(color.Value);
 
             if (ticks.HasValue)
-            {
-                Ticks.MajorTickEnable = ticks.Value;
-                Ticks.MinorTickEnable = ticks.Value;
-                Ticks.MajorLabelEnable = ticks.Value;
-            }
+                TickMarks(ticks.Value);
 
             if (grid.HasValue)
                 Grid(grid.Value);

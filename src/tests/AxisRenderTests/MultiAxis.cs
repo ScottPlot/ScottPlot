@@ -29,10 +29,10 @@ namespace ScottPlotTests.AxisRenderTests
             sig4.HorizontalAxisIndex = 3;
 
             // by default ther are already 4 axes, so customize them all
-            plt.XAxis.ConfigureAxisLabel("Primary Bottom Axis", color: sig1.color);
-            plt.YAxis.ConfigureAxisLabel("Primary Left Axis", color: sig1.color);
-            plt.XAxis2.ConfigureAxisLabel("Primary Top Axis", color: sig2.color);
-            plt.YAxis2.ConfigureAxisLabel("Primary Right Axis", color: sig2.color);
+            plt.XAxis.SetLabel("Primary Bottom Axis", color: sig1.color);
+            plt.YAxis.SetLabel("Primary Left Axis", color: sig1.color);
+            plt.XAxis2.SetLabel("Primary Top Axis", color: sig2.color);
+            plt.YAxis2.SetLabel("Primary Right Axis", color: sig2.color);
 
             // create a new axis for each side
             plt.AddAxis(ScottPlot.Renderable.Edge.Bottom, 2, "Secondary Bottom Axis", sig3.color);
