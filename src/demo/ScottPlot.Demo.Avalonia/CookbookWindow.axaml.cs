@@ -30,7 +30,11 @@ namespace ScottPlot.Demo.Avalonia
             CookbookControl DemoPlotControl1 = this.Find<CookbookControl>("DemoPlotControl1");
             var AboutControl1 = this.Find<AboutControl>("AboutControl1");
 
-            var selectedDemoItem = (Cookbook.TreeNode)DemoTreeview.SelectedItems[0];
+            Cookbook.TreeNode selectedDemoItem = null;
+            if (DemoTreeview.SelectedItems.Count > 0)
+            {
+                selectedDemoItem = (Cookbook.TreeNode)DemoTreeview.SelectedItems[0];
+            }
             if (selectedDemoItem != null && selectedDemoItem.ID != null)
             {
                 DemoPlotControl1.IsVisible = true;
