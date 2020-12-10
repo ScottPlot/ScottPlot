@@ -11,7 +11,7 @@ namespace ScottPlot.Cookbook.Recipes
         public string Title => "Primary Axes";
         public string Description =>
             "Plots always have 4 fundamental axes available to work with. " +
-            "Primary axes (XAxis and YAxis) are axis index 0." +
+            "Primary axes (XAxis and YAxis) are axis index 0. " +
             "Secondary axes (XAxis2 and YAxis2) are axis index 1." +
             "By default primary axes are totally visible, and secondary axes have ticks hidden and no label. " +
             "Sometimes the top axis (XAxis2) is given a label to simulate a plot title.";

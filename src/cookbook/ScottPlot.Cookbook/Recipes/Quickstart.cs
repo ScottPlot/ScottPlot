@@ -21,6 +21,11 @@ namespace ScottPlot.Cookbook.Recipes.Quickstart
             // plot the data
             plt.AddScatter(xs, sin);
             plt.AddScatter(xs, cos);
+
+            // customize the axis labels
+            plt.Title("ScottPlot Quickstart");
+            plt.XLabel("Horizontal Axis");
+            plt.YLabel("Vertical Axis");
         }
     }
 
@@ -37,7 +42,7 @@ namespace ScottPlot.Cookbook.Recipes.Quickstart
         {
             double[] values = DataGen.RandomWalk(1_000_000);
             plt.AddSignal(values, sampleRate: 48_000);
-            plt.XAxis2.Label = "One Million Points";
+            plt.Title("One Million Points");
         }
     }
 
