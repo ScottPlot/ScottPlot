@@ -235,7 +235,7 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// High-level configuration for axis label, tick labels, and all tick lines
         /// </summary>
-        public void Configure(Color? color = null, bool? ticks = null, bool ?grid = null)
+        public void Configure(Color? color = null, bool? ticks = null, bool? grid = null)
         {
             if (color.HasValue)
             {

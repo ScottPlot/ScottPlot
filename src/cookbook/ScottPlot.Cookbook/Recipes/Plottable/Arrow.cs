@@ -5,7 +5,7 @@
         public string Category => "Plottable: Arrow";
         public string ID => "plottable_arrow_quickstart";
         public string Title => "Arrows";
-        public string Description => 
+        public string Description =>
             "Arrows point to specific locations on the plot. " +
             "Arrows are actually just scatter plots with two points and an arrowhead.";
 

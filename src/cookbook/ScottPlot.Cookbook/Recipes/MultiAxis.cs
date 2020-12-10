@@ -44,7 +44,7 @@ namespace ScottPlot.Cookbook.Recipes
         public string Category => "Multi-Axis";
         public string ID => "multiAxis_additional";
         public string Title => "Additional Y Axis";
-        public string Description => 
+        public string Description =>
             "Additional axes can be added on any edge. " +
             "Additional axes stack away from the plot area.";
 

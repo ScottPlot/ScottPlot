@@ -11,7 +11,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string ID => "point_quickstart";
         public string Title => "Point";
         public string Description =>
-            "You can add a single point to the plot. " + 
+            "You can add a single point to the plot. " +
             "A point is really a scatter plot with a single X/Y coordinate.";
 
         public void ExecuteRecipe(Plot plt)
