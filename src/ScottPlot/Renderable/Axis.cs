@@ -45,9 +45,6 @@ namespace ScottPlot.Renderable
         public readonly AxisTicks Ticks = new AxisTicks();
         public readonly AxisLine Line = new AxisLine();
 
-        // shortcuts allow components to be customized without having to reach in too far
-        public bool DateTime { get => Ticks.TickCollection.dateFormat; set => Ticks.TickCollection.dateFormat = value; }
-
         public override string ToString() => $"{Edge} axis from {Dims.Min} to {Dims.Max}";
 
         public void RecalculateTickPositions(PlotDimensions dims)
@@ -72,6 +69,15 @@ namespace ScottPlot.Renderable
                 Title.Render(dims, bmp, lowQuality);
                 Line.Render(dims, bmp, lowQuality);
             }
+        }
+        
+        /// <summary>
+        /// Controls tick mark placement behavior. DateTime format assumes axis represents DateTime.ToOATime() units.
+        /// </summary>
+        /// <param name="enable"></param>
+        public void DateTimeFormat(bool enable)
+        {
+            Ticks.TickCollection.dateFormat = enable;
         }
 
         // TODO: axis label shouldn't have a visibility flag. This should be controlled by whether it's null or not.

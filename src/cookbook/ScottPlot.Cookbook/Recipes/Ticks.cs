@@ -65,7 +65,7 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
             plt.AddScatter(xs, ys);
 
             // Then tell the axis to display tick labels using a time format
-            plt.XAxis.DateTime = true;
+            plt.XAxis.DateTimeFormat(true);
         }
     }
 
@@ -217,7 +217,7 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
             plt.SetCulture(culture);
 
             // further decorate the plot
-            plt.XAxis.DateTime = true;
+            plt.XAxis.DateTimeFormat(true);
             plt.YAxis.SetLabel("Price");
             plt.XAxis.SetLabel("Date and Time");
             plt.XAxis2.SetLabel("Hungarian Formatted DateTime Tick Labels");
@@ -245,7 +245,7 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
 
             // plot the data with custom tick format (https://tinyurl.com/ycwh45af)
             plt.AddScatter(days, values);
-            plt.XAxis.DateTime = true;
+            plt.XAxis.DateTimeFormat(true);
             plt.XAxis.ConfigureTickLabelNotation(customFormatStringDateTime: "M\\/dd");
         }
     }
@@ -309,7 +309,7 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
                 values[i] = values[i - 1] + rand.NextDouble();
 
             plt.AddScatter(dates, values);
-            plt.XAxis.DateTime = true;
+            plt.XAxis.DateTimeFormat(true);
 
             // define tick spacing as 1 day (every day will be shown)
             plt.XAxis.ConfigureTicks(

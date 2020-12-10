@@ -62,7 +62,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             // add the OHLCs to the plot and the horizontal axis to display DateTime tick labels
             plt.AddCandlesticks(prices);
-            plt.XAxis.DateTime = true;
+            plt.XAxis.DateTimeFormat(true);
         }
     }
 
