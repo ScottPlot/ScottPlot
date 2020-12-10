@@ -25,7 +25,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             var pop = new Statistics.Population(scores);
 
             // You can access population statistics as public fields
-            Console.WriteLine($"Mean: {pop.mean} +/- {pop.stdErr}");
+            plt.Title($"Mean: {pop.mean} +/- {pop.stdErr}");
 
             // You can plot a population
             plt.AddPopulation(pop);
