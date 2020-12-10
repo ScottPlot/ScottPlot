@@ -30,7 +30,7 @@ namespace ScottPlot.Cookbook.Site
 
         private void AddRecipe(IRecipe recipe)
         {
-            string id = recipe.ID;
+            string id = recipe.ID.ToLower();
             string recipeFolder = Path.Combine(SiteFolder, "source");
             string codeFilePath = Path.Combine(recipeFolder, id + ExtCode);
             string imageUrl = id + ExtImage;
