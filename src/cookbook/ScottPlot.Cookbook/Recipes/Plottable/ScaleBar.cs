@@ -20,8 +20,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.AddSignal(DataGen.Cos(51));
 
             // remove traditional scale indicators
-            plt.DisableGrid();
-            plt.LayoutFrameless();
+            plt.Grid(enable: false);
+            plt.Frameless();
 
             // add an L-shaped scalebar
             plt.AddScaleBar(5, .25, "100 ms", "250 mV");
@@ -45,7 +45,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             // remove horizontal scale only
             plt.XAxis.Configure(ticks: false);
             plt.Frame(visible: false, left: true);
-            plt.DisableGrid();
+            plt.Grid(enable: false);
 
             // add a horizontal scale bar (no Y height)
             plt.AddScaleBar(5, 0, "100 ms", null);

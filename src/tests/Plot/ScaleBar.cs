@@ -21,7 +21,7 @@ namespace ScottPlotTests.Plot
             plt.Frame(false);
             plt.Ticks(false, false);
             plt.AxisAuto(0);
-            plt.LayoutFrameless();
+            plt.Frameless();
 
             TestTools.SaveFig(plt);
         }

@@ -43,9 +43,9 @@ namespace ScottPlot.Demo.WPF.WpfDemos
                 {
                     var plt = new ScottPlot.Plot();
                     plt.PlotSignal(DataGen.RandomWalk(rand, 10));
-                    plt.Title($"Well {(char)(65 + rowIndex)} {columnIndex + 1}", fontSize: 12);
+                    plt.Title($"Well {(char)(65 + rowIndex)} {columnIndex + 1}");
                     plt.Ticks(fontSize: 10);
-                    plt.Grid(enable: false, xSpacing: 5, ySpacing: 1);
+                    plt.Grid(false);
                     plots.Add(new PlotElement(columnIndex, rowIndex, plt));
                 }
             }

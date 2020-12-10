@@ -18,7 +18,7 @@ namespace ScottPlotTests
             var plt = new ScottPlot.Plot();
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
-            plt.Grid(enableVertical: true, enableHorizontal: false);
+            plt.YAxis.Configure(grid: false);
 
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name;
             string filePath = System.IO.Path.GetFullPath(name + ".png");
@@ -37,7 +37,7 @@ namespace ScottPlotTests
             var plt = new ScottPlot.Plot();
             plt.PlotScatter(dataXs, dataSin);
             plt.PlotScatter(dataXs, dataCos);
-            plt.Grid(enableVertical: false, enableHorizontal: true);
+            plt.XAxis.Configure(grid: false);
 
             string name = System.Reflection.MethodBase.GetCurrentMethod().Name;
             string filePath = System.IO.Path.GetFullPath(name + ".png");

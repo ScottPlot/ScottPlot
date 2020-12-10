@@ -49,7 +49,6 @@ namespace ScottPlot.Renderable
         public string Label { get => Title.Label; set => ConfigureAxisLabel(visible: value != null, label: value); }
         public Color Color { get => Title.Font.Color; set => Configure(color: value); }
         public bool DateTime { get => Ticks.TickCollection.dateFormat; set => Ticks.TickCollection.dateFormat = value; }
-        public bool Grid { get => Ticks.MajorGridEnable; set => Ticks.MajorGridEnable = value; }
 
         public override string ToString() => $"{Edge} axis from {Dims.Min} to {Dims.Max}";
 
@@ -77,6 +76,8 @@ namespace ScottPlot.Renderable
             }
         }
 
+        // TODO: axis label shouldn't have a visibility flag. This should be controlled by whether it's null or not.
+
         /// <summary>
         /// Customize the axis label visibility, content, and styling
         /// </summary>
@@ -94,6 +95,28 @@ namespace ScottPlot.Renderable
             Title.Font.Size = fontSize ?? Title.Font.Size;
             Title.Font.Bold = fontBold ?? Title.Font.Bold;
             Title.Font.Name = fontName ?? Title.Font.Name;
+        }
+
+        // this is the most commonly called set of options
+        /// <summary>
+        /// Enable visibility of the axis label and define its text and color
+        /// </summary>
+        public void ConfigureAxisLabel(string label, Color color)
+        {
+            Title.IsVisible = true;
+            Title.Label = label;
+            Title.Font.Color = color;
+        }
+
+        // TODO: rename to Label()
+        // this is the most commonly called set of options
+        /// <summary>
+        /// Enable visibility of the axis label and define its text
+        /// </summary>
+        public void ConfigureAxisLabel(string label)
+        {
+            Title.IsVisible = true;
+            Title.Label = label;
         }
 
         /// <summary>
@@ -233,6 +256,17 @@ namespace ScottPlot.Renderable
         }
 
         /// <summary>
+        /// Set visibility for major tick grid lines
+        /// </summary>
+        /// <param name="enable"></param>
+        public void Grid(bool enable)
+        {
+            Ticks.MajorGridEnable = enable;
+            Ticks.MinorTickEnable = enable;
+        }
+
+        // TODO: remove grid argument
+        /// <summary>
         /// High-level configuration for axis label, tick labels, and all tick lines
         /// </summary>
         public void Configure(Color? color = null, bool? ticks = null, bool? grid = null)
@@ -253,10 +287,7 @@ namespace ScottPlot.Renderable
             }
 
             if (grid.HasValue)
-            {
-                Ticks.MajorGridEnable = grid.Value;
-                Ticks.MinorTickEnable = grid.Value;
-            }
+                Grid(grid.Value);
         }
 
         public void RecalculateAxisSize()

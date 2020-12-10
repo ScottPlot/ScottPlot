@@ -23,8 +23,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.AddRadar(values);
 
             // improve plot styling
-            plt.LayoutFrameless();
-            plt.DisableGrid();
+            plt.Frameless();
+            plt.Grid(enable: false);
         }
     }
 

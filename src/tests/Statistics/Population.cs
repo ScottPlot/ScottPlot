@@ -23,7 +23,7 @@ namespace ScottPlotTests.Statistics
             plt.PlotScatter(ages.values, DataGen.Random(rand, ages.values.Length),
                 markerSize: 10, markerShape: MarkerShape.openCircle, lineWidth: 0);
             plt.PlotScatter(curveXs, curveYs, markerSize: 0);
-            plt.Grid(lineStyle: LineStyle.Dot);
+            plt.GridLineStyle(ScottPlot.LineStyle.Dot);
 
             TestTools.SaveFig(plt);
         }
@@ -41,7 +41,7 @@ namespace ScottPlotTests.Statistics
             plt.PlotScatter(DataGen.Random(rand, ages.values.Length), ages.values,
                 markerSize: 10, markerShape: MarkerShape.openCircle, lineWidth: 0);
             plt.PlotScatter(curveYs, curveXs, markerSize: 0);
-            plt.Grid(lineStyle: LineStyle.Dot);
+            plt.GridLineStyle(ScottPlot.LineStyle.Dot);
 
             TestTools.SaveFig(plt);
         }

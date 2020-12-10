@@ -72,7 +72,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
                 plt.AddScatter(x, sin, markerSize: 7, markerShape: ms, label: markerShapeNames[i]);
             }
 
-            plt.DisableGrid();
+            plt.Grid(enable: false);
             plt.Legend(fontSize: 10);
         }
     }

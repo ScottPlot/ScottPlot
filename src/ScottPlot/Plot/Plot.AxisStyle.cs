@@ -6,34 +6,22 @@ namespace ScottPlot
     partial class Plot
     {
         /// <summary>
-        /// Customize styling options for the bottom axis (XAxis) label
+        /// Set the label for the vertical axis to the right of the plot (XAxis). 
+        /// Use XAxis.ConfigureAxisLabel() for additional customization.
         /// </summary>
-        public void XLabel(string label = null, Color? color = null, string fontName = null, float? fontSize = null, bool? bold = null) =>
-            XAxis.ConfigureAxisLabel(true, label, color, fontSize, bold, fontName);
+        public void XLabel(string label) => XAxis.ConfigureAxisLabel(visible: true, label: label);
 
         /// <summary>
-        /// Customize styling options for the left axis (YAxis) label
+        /// Set the label for the vertical axis to the right of the plot (YAxis2). 
+        /// Use YAxis2.ConfigureAxisLabel() for additional customization.
         /// </summary>
-        public void YLabel(string label = null, string fontName = null, float? fontSize = null, Color? color = null, bool? bold = null) =>
-            YAxis.ConfigureAxisLabel(true, label, color, fontSize, bold, fontName);
+        public void YLabel(string label) => YAxis.ConfigureAxisLabel(visible: true, label: label);
 
         /// <summary>
-        /// Customize styling options for the right axis (YAxis2) label
+        /// Set the label for the horizontal axis above the plot (XAxis2). 
+        /// Use XAxis2.ConfigureAxisLabel() for additional customization.
         /// </summary>
-        public void YLabel2(string label = null, string fontName = null, float? fontSize = null, Color? color = null, bool? bold = null) =>
-            YAxis2.ConfigureAxisLabel(true, label, color, fontSize, bold, fontName);
-
-        /// <summary>
-        /// Customize styling options for the top axis (XAxis2) label
-        /// </summary>
-        public void XLabel2(string label = null, string fontName = null, float? fontSize = null, Color? color = null, bool? bold = null) =>
-            XAxis2.ConfigureAxisLabel(true, label, color, fontSize, bold, fontName);
-
-        /// <summary>
-        /// Customize styling options for title (which is just the axis label for the top axis, XAxis2)
-        /// </summary>
-        public void Title(string label = null, string fontName = null, float? fontSize = null, Color? color = null, bool? bold = null) =>
-            XAxis2.ConfigureAxisLabel(true, label, color, fontSize, bold, fontName);
+        public void Title(string label, bool bold = true) => XAxis2.ConfigureAxisLabel(visible: true, label: label, fontBold: bold);
 
         /// <summary>
         /// Configure color and visibility of the frame that outlines the data area (lines along the edges of the primary axes)
@@ -54,7 +42,7 @@ namespace ScottPlot
         /// <summary>
         /// Set size of the primary axes to zero so the data area covers the whole figure
         /// </summary>
-        public void LayoutFrameless()
+        public void Frameless()
         {
             var primaryAxes = new Renderable.Axis[] { XAxis, XAxis2, YAxis, YAxis2 };
             foreach (var axis in primaryAxes)
@@ -62,18 +50,37 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Disable grid line visibility for the primary X and Y axes
+        /// Control visibility of axis grid lines at major ticks for the primary X and Y axes. 
+        /// Interact with XAxis.Configure() and YAxis.Configure() for more advanced configuration options.
         /// </summary>
-        public void DisableGrid()
+        public void Grid(bool enable)
         {
-            XAxis.Configure(grid: false);
-            YAxis.Configure(grid: false);
+            XAxis.Configure(grid: enable);
+            YAxis.Configure(grid: enable);
         }
 
         /// <summary>
-        /// Customize styling options for the primary X and Y major grid lines
+        /// Set color and line style of X and Y axis major grid lines.
+        /// Interact with XAxis.Configure() and YAxis.Configure() for more advanced configuration options.
         /// </summary>
-        public void Grid(
+        public void GridLineStyle(LineStyle lineStyle)
+        {
+            XAxis.ConfigureMajorGrid(lineStyle: lineStyle);
+            YAxis.ConfigureMajorGrid(lineStyle: lineStyle);
+        }
+
+        /// <summary>
+        /// Set color of X and Y axis major grid lines.
+        /// Interact with XAxis.Configure() and YAxis.Configure() for more advanced configuration options.
+        /// </summary>
+        public void GridColor(Color color)
+        {
+            XAxis.ConfigureMajorGrid(color: color);
+            YAxis.ConfigureMajorGrid(color: color);
+        }
+
+        [Obsolete("Use another Grid method or interact with XAxis and YAxis directly to customize major grid lines")]
+        public void Grid_obsolete(
             bool? enable = null,
             Color? color = null,
             double? xSpacing = null,
@@ -88,13 +95,10 @@ namespace ScottPlot
         {
             XAxis.ConfigureMajorGrid(enable, color, lineWidth, lineStyle);
             YAxis.ConfigureMajorGrid(enable, color, lineWidth, lineStyle);
-
             XAxis.ConfigureTickLabelStyle(snapToNearestPixel: snapToNearestPixel);
             YAxis.ConfigureTickLabelStyle(snapToNearestPixel: snapToNearestPixel);
-
             XAxis.ConfigureMajorGrid(enable: enableVertical);
             YAxis.ConfigureMajorGrid(enable: enableHorizontal);
-
             XAxis.ConfigureTicks(manualSpacing: xSpacing);
             YAxis.ConfigureTicks(manualSpacing: ySpacing);
             XAxis.ConfigureTicks(manualSpacingDateTimeUnit: xSpacingDateTimeUnit);

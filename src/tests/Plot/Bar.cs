@@ -34,7 +34,9 @@ namespace ScottPlotTests.Plot
                 yErr: new double[][] { err1, err2, err3 });
 
             plt.SetAxisLimits(yMin: 0);
-            plt.Grid(enableVertical: false, lineStyle: LineStyle.Dot);
+            plt.GridLineStyle(ScottPlot.LineStyle.Dot);
+            plt.XAxis.Grid(false);
+            plt.XAxis.Configure(grid: false);
             plt.Legend(location: Alignment.UpperRight);
             TestTools.SaveFig(plt);
         }

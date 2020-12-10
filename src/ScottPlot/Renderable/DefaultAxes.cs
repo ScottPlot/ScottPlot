@@ -15,7 +15,6 @@
         {
             Edge = Edge.Top;
             AxisIndex = 1;
-            Title.Font.Bold = true;
             Title.IsVisible = true;
             Ticks.MajorTickEnable = false;
             Ticks.MinorTickEnable = false;

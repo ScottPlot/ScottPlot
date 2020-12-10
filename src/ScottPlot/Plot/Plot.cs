@@ -590,9 +590,8 @@ namespace ScottPlot
 
             if (hideGridAndFrame)
             {
-                XAxis.Grid = false;
-                YAxis.Grid = false;
-                LayoutFrameless();
+                Grid(false);
+                Frameless();
             }
 
             return pie;
@@ -693,8 +692,8 @@ namespace ScottPlot
 
             if (disableFrameAndGrid)
             {
-                LayoutFrameless();
-                DisableGrid();
+                Frameless();
+                Grid(enable: false);
             }
 
             return plottable;

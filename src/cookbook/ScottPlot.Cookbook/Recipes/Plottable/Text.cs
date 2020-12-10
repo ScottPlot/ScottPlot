@@ -93,13 +93,16 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.AddText("wow.", 10, .6, new Drawing.Font() { Name = "comic sans ms", Size = 36, Color = Color.Green, Bold = true });
             plt.AddText("NuGet", 32, 0, new Drawing.Font() { Name = "comic sans ms", Size = 24, Color = Color.Gold, Bold = true });
 
-            // continue the theme by using custom fonts in axes
-            plt.Title("Impressive Graph", fontName: "courier new", fontSize: 24, color: Color.Purple, bold: true);
-            plt.YLabel("vertical units", fontName: "impact", fontSize: 24, color: Color.Red, bold: true);
-            plt.XLabel("horizontal units", fontName: "georgia", fontSize: 24, color: Color.Blue, bold: true);
-            plt.Legend(fontName: "comic sans ms", fontSize: 18, bold: true, fontColor: Color.DarkBlue);
+            // configure axis labels
+            plt.YAxis.ConfigureAxisLabel(visible: true, label: "vertical units", fontName: "impact", fontSize: 24, color: Color.Red, fontBold: true);
+            plt.XAxis.ConfigureAxisLabel(visible: true, label: "horizontal units", fontName: "georgia", fontSize: 24, color: Color.Blue, fontBold: true);
+            plt.XAxis2.ConfigureAxisLabel(visible: true, label: "Impressive Graph", fontSize: 24, color: Color.Purple, fontBold: true);
+
+            // configure tick labels
             plt.XAxis.ConfigureTickLabelStyle(color: Color.DarkBlue, fontName: "comic sans ms", fontSize: 16);
             plt.YAxis.ConfigureTickLabelStyle(color: Color.DarkGreen, fontName: "comic sans ms", fontSize: 16);
+
+            plt.Legend(fontName: "comic sans ms", fontSize: 18, bold: true, fontColor: Color.DarkBlue);
         }
     }
 }

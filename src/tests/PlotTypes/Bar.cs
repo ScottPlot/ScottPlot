@@ -82,7 +82,7 @@ namespace ScottPlotTests.PlotTypes
 
             var plt = new ScottPlot.Plot(400, 300);
             plt.PlotBar(xs, ys, yErr);
-            plt.Grid(lineStyle: ScottPlot.LineStyle.Dot);
+            plt.GridLineStyle(ScottPlot.LineStyle.Dot);
             TestTools.SaveFig(plt);
         }
 
@@ -98,7 +98,8 @@ namespace ScottPlotTests.PlotTypes
             plt.PlotBar(xs, ys1, xOffset: -.20, barWidth: 0.3, label: "Group A");
             plt.PlotBar(xs, ys2, xOffset: +.20, barWidth: 0.3, label: "Group B");
 
-            plt.Grid(lineStyle: ScottPlot.LineStyle.Dot, enableVertical: false);
+            plt.GridLineStyle(ScottPlot.LineStyle.Dot);
+            plt.XAxis.Grid(false);
             plt.Legend(location: ScottPlot.Alignment.UpperRight);
             TestTools.SaveFig(plt);
         }
@@ -112,7 +113,7 @@ namespace ScottPlotTests.PlotTypes
 
             var plt = new ScottPlot.Plot(400, 300);
             plt.PlotBar(xs, ys, yErr, horizontal: true);
-            plt.Grid(lineStyle: ScottPlot.LineStyle.Dot);
+            plt.GridLineStyle(ScottPlot.LineStyle.Dot);
             TestTools.SaveFig(plt);
         }
 
@@ -149,7 +150,8 @@ namespace ScottPlotTests.PlotTypes
             plt.PlotBar(xs, ys1, xOffset: -.20, barWidth: 0.3, showValues: true, label: "Series A");
             plt.PlotBar(xs, ys2, xOffset: +.20, barWidth: 0.3, showValues: true, label: "Series B");
 
-            plt.Grid(lineStyle: ScottPlot.LineStyle.Dot, enableVertical: false);
+            plt.GridLineStyle(ScottPlot.LineStyle.Dot);
+            plt.XAxis.Grid(false);
             plt.Legend(location: ScottPlot.Alignment.UpperRight);
             plt.SetAxisLimits(yMin: 0);
             TestTools.SaveFig(plt);
@@ -167,7 +169,8 @@ namespace ScottPlotTests.PlotTypes
             plt.PlotBar(xs, ys1, xOffset: -.20, barWidth: 0.3, showValues: true, label: "Series A", horizontal: true);
             plt.PlotBar(xs, ys2, xOffset: +.20, barWidth: 0.3, showValues: true, label: "Series B", horizontal: true);
 
-            plt.Grid(lineStyle: ScottPlot.LineStyle.Dot, enableVertical: false);
+            plt.GridLineStyle(ScottPlot.LineStyle.Dot);
+            plt.XAxis.Grid(false);
             plt.Legend(location: ScottPlot.Alignment.UpperRight);
             plt.SetAxisLimits(xMin: 0);
             TestTools.SaveFig(plt);

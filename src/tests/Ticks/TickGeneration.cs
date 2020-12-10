@@ -33,7 +33,7 @@ namespace ScottPlotTests.Ticks
             pltTest.PlotScatter(days, values);
 
             // force inter-tick distance on a numerical axis
-            pltTest.Grid(xSpacing: 1);
+            pltTest.XAxis.ConfigureTicks(manualSpacing: 1);
 
             TestTools.SaveFig(mplt);
         }
@@ -69,7 +69,7 @@ namespace ScottPlotTests.Ticks
             pltTest.Layout(bottom: 60); // need extra height to accomodate rotated labels
 
             // force 1 tick per day on a DateTime axis
-            pltTest.Grid(xSpacing: 1, xSpacingDateTimeUnit: ScottPlot.Ticks.DateTimeUnit.Day);
+            pltTest.XAxis.ConfigureTicks(manualSpacing: 1, manualSpacingDateTimeUnit: ScottPlot.Ticks.DateTimeUnit.Day);
 
             TestTools.SaveFig(mplt);
         }
