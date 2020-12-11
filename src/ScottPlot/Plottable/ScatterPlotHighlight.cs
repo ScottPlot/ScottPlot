@@ -6,6 +6,7 @@ using ScottPlot.Drawing;
 
 namespace ScottPlot.Plottable
 {
+    [Obsolete("SCATTER PLOTS HAVE MOST OF THESE FUNCTIONS - THIS CLASS WILL BE DELETED SHORTLY")]
     public class ScatterPlotHighlight : ScatterPlot, IPlottable, IExportable, IHasPoints, IHasHighlightablePoints
     {
         public MarkerShape highlightedShape = MarkerShape.openCircle;
