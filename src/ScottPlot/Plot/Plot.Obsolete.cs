@@ -225,14 +225,14 @@ namespace ScottPlot
         {
             Plottable.Image plottableImage = new Plottable.Image()
             {
-                image = bitmap,
-                x = x,
-                y = y,
-                label = label,
-                alignment = alignment,
-                rotation = rotation,
-                frameColor = frameColor ?? Color.White,
-                frameSize = frameSize
+                Bitmap = bitmap,
+                X = x,
+                Y = y,
+                Label = label,
+                Alignment = alignment,
+                Rotation = rotation,
+                BorderColor = frameColor ?? Color.White,
+                BorderSize = frameSize
             };
 
             settings.Plottables.Add(plottableImage);

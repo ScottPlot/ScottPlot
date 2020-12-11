@@ -25,7 +25,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             Bitmap monaLisa = DataGen.SampleImage();
 
             // create the image plottable and add it to the plot
-            var imagePlot = new ScottPlot.Plottable.Image() { image = monaLisa, x = 10, y = .5 };
+            var imagePlot = new ScottPlot.Plottable.Image() { Bitmap = monaLisa, X = 10, Y = .5 };
 
             plt.Add(imagePlot);
         }
@@ -48,17 +48,17 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             // display an image with 3 different alignments
             Bitmap monaLisa = DataGen.SampleImage();
-            var ip1 = new ScottPlot.Plottable.Image() { image = monaLisa, x = 10 };
-            var ip2 = new ScottPlot.Plottable.Image() { image = monaLisa, x = 25, alignment = Alignment.MiddleCenter };
-            var ip3 = new ScottPlot.Plottable.Image() { image = monaLisa, x = 40, alignment = Alignment.LowerRight };
+            var ip1 = new ScottPlot.Plottable.Image() { Bitmap = monaLisa, X = 10 };
+            var ip2 = new ScottPlot.Plottable.Image() { Bitmap = monaLisa, X = 25, Alignment = Alignment.MiddleCenter };
+            var ip3 = new ScottPlot.Plottable.Image() { Bitmap = monaLisa, X = 40, Alignment = Alignment.LowerRight };
 
             plt.Add(ip1);
             plt.Add(ip2);
             plt.Add(ip3);
 
-            plt.AddPoint(ip1.x, ip1.y, Color.Magenta, size: 20);
-            plt.AddPoint(ip2.x, ip2.y, Color.Magenta, size: 20);
-            plt.AddPoint(ip3.x, ip3.y, Color.Magenta, size: 20);
+            plt.AddPoint(ip1.X, ip1.Y, Color.Magenta, size: 20);
+            plt.AddPoint(ip2.X, ip2.Y, Color.Magenta, size: 20);
+            plt.AddPoint(ip3.X, ip3.Y, Color.Magenta, size: 20);
         }
     }
 
@@ -78,9 +78,9 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             // place a rotated image on the plot
             Bitmap monaLisa = DataGen.SampleImage();
-            var ip1 = new ScottPlot.Plottable.Image() { image = monaLisa, x = 10, y = .5, rotation = 30 };
+            var ip1 = new ScottPlot.Plottable.Image() { Bitmap = monaLisa, X = 10, Y = .5, Rotation = 30 };
             plt.Add(ip1);
-            plt.AddPoint(ip1.x, ip1.y, color: Color.Magenta, size: 20);
+            plt.AddPoint(ip1.X, ip1.Y, color: Color.Magenta, size: 20);
         }
     }
 
@@ -101,12 +101,12 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             // place an image on the plot
             plt.Add(new ScottPlot.Plottable.Image()
             {
-                image = DataGen.SampleImage(),
-                x = 10,
-                y = .5,
-                rotation = 30,
-                frameColor = Color.Magenta,
-                frameSize = 5,
+                Bitmap = DataGen.SampleImage(),
+                X = 10,
+                Y = .5,
+                Rotation = 30,
+                BorderColor = Color.Magenta,
+                BorderSize = 5,
             });
         }
     }
