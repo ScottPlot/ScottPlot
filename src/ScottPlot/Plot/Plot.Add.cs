@@ -70,7 +70,7 @@ namespace ScottPlot
             double[] xs = DataGen.Consecutive(values.Length);
             var plottable = new BarPlot(xs, values, null, null)
             {
-                fillColor = color ?? GetNextColor()
+                FillColor = color ?? GetNextColor()
             };
             Add(plottable);
             return plottable;
@@ -83,7 +83,7 @@ namespace ScottPlot
         {
             var plottable = new BarPlot(positions, values, null, null)
             {
-                fillColor = color ?? GetNextColor()
+                FillColor = color ?? GetNextColor()
             };
             Add(plottable);
             return plottable;
@@ -96,7 +96,7 @@ namespace ScottPlot
         {
             var plottable = new BarPlot(positions, values, errors, null)
             {
-                fillColor = color ?? GetNextColor()
+                FillColor = color ?? GetNextColor()
             };
             Add(plottable);
             return plottable;
@@ -133,11 +133,11 @@ namespace ScottPlot
                 containsNegativeY |= barYs.Where(y => y < 0).Any();
                 var bar = new BarPlot(barXs, barYs, barYerr, null)
                 {
-                    label = seriesLabels[i],
-                    barWidth = barWidth * barWidthFraction,
-                    xOffset = i * barWidth,
-                    errorCapSize = errorCapSize,
-                    fillColor = GetNextColor()
+                    Label = seriesLabels[i],
+                    BarWidth = barWidth * barWidthFraction,
+                    XOffset = i * barWidth,
+                    ErrorCapSize = errorCapSize,
+                    FillColor = GetNextColor()
                 };
                 Add(bar);
             }

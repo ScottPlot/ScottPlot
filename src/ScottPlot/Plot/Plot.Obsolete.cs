@@ -114,20 +114,19 @@ namespace ScottPlot
             Color nextColor = settings.GetNextColor();
             BarPlot barPlot = new BarPlot(xs, ys, errorY, yOffsets)
             {
-                barWidth = barWidth,
-                xOffset = xOffset,
-                fill = fill,
-                fillColor = fillColor ?? nextColor,
-                label = label,
-                errorLineWidth = (float)errorLineWidth,
-                errorCapSize = errorCapSize,
-                errorColor = errorColor ?? Color.Black,
-                borderLineWidth = (float)outlineWidth,
-                borderColor = outlineColor ?? Color.Black,
-                verticalBars = !horizontal,
-                showValues = showValues,
+                BarWidth = barWidth,
+                XOffset = xOffset,
+                FillColor = fillColor ?? nextColor,
+                Label = label,
+                ErrorLineWidth = (float)errorLineWidth,
+                ErrorCapSize = errorCapSize,
+                ErrorColor = errorColor ?? Color.Black,
+                BorderLineWidth = (float)outlineWidth,
+                BorderColor = outlineColor ?? Color.Black,
+                VerticalOrientation = !horizontal,
+                ShowValuesAboveBars = showValues,
                 FontColor = valueColor ?? Color.Black,
-                negativeColor = negativeColor ?? nextColor
+                FillColorNegative = negativeColor ?? nextColor
             };
             Add(barPlot);
 

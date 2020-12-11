@@ -20,11 +20,11 @@ namespace ScottPlot.Cookbook.Recipes
 
             // plot the bins as a bar graph (on the primary Y axis)
             var bar = plt.AddBar(hist.counts, hist.bins);
-            bar.barWidth = hist.binSize * 1.2; // oversize to reduce render artifacts
-            bar.borderLineWidth = 0;
+            bar.BarWidth = hist.binSize * 1.2; // oversize to reduce render artifacts
+            bar.BorderLineWidth = 0;
             bar.VerticalAxisIndex = 0;
             plt.YAxis.Label("Count (#)");
-            plt.YAxis.Color(bar.fillColor);
+            plt.YAxis.Color(bar.FillColor);
 
             // plot the mean curve as a scatter plot (on the secondary Y axis)
             var sp = plt.AddScatter(hist.bins, hist.countsFracCurve);

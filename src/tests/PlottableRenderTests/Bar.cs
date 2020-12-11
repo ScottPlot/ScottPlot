@@ -20,7 +20,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            bar.ys[0] += 1;
+            bar.Ys[0] += 1;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -48,7 +48,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            bar.yErr[0] = .25;
+            bar.YErrors[0] = .25;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -75,7 +75,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            bar.barWidth += .1;
+            bar.BarWidth += .1;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -90,46 +90,19 @@ namespace ScottPlotTests.PlottableRenderTests
         }
 
         [Test]
-        public void Test_Bar_Fill()
-        {
-            var plt = new ScottPlot.Plot();
-
-            // start with default settings
-            double[] ys = new double[] { 1, 3, 2, 4 };
-            var bar = new BarPlot(null, ys, null, null) { };
-
-            plt.Add(bar);
-            var bmp1 = TestTools.GetLowQualityBitmap(plt);
-
-            // change the plottable
-            bar.fill = false;
-            var bmp2 = TestTools.GetLowQualityBitmap(plt);
-
-            // measure what changed
-            //TestTools.SaveFig(bmp1, "1");
-            //TestTools.SaveFig(bmp2, "2");
-            var before = new MeanPixel(bmp1);
-            var after = new MeanPixel(bmp2);
-            Console.WriteLine($"Before: {before}");
-            Console.WriteLine($"After: {after}");
-
-            Assert.That(after.IsLighterThan(before));
-        }
-
-        [Test]
         public void Test_Bar_FillColor()
         {
             var plt = new ScottPlot.Plot();
 
             // start with default settings
             double[] ys = new double[] { 1, 3, 2, 4 };
-            var bar = new BarPlot(null, ys, null, null) { fillColor = System.Drawing.Color.Gray };
+            var bar = new BarPlot(null, ys, null, null) { FillColor = System.Drawing.Color.Gray };
 
             plt.Add(bar);
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            bar.fillColor = System.Drawing.Color.Black;
+            bar.FillColor = System.Drawing.Color.Black;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -156,7 +129,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            bar.borderLineWidth += 1;
+            bar.BorderLineWidth += 1;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -177,13 +150,13 @@ namespace ScottPlotTests.PlottableRenderTests
 
             // start with default settings
             double[] ys = new double[] { 1, 3, 2, 4 };
-            var bar = new BarPlot(null, ys, null, null) { borderColor = System.Drawing.Color.Gray };
+            var bar = new BarPlot(null, ys, null, null) { BorderColor = System.Drawing.Color.Gray };
 
             plt.Add(bar);
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            bar.borderColor = System.Drawing.Color.Black;
+            bar.BorderColor = System.Drawing.Color.Black;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -210,7 +183,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            bar.errorLineWidth += 1;
+            bar.ErrorLineWidth += 1;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -237,7 +210,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            bar.errorCapSize += 1;
+            bar.ErrorCapSize += 1;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -258,13 +231,13 @@ namespace ScottPlotTests.PlottableRenderTests
 
             // start with default settings
             double[] ys = new double[] { 1, 3, 2, 4 };
-            var bar = new BarPlot(null, ys, ys, null) { errorColor = System.Drawing.Color.Gray };
+            var bar = new BarPlot(null, ys, ys, null) { ErrorColor = System.Drawing.Color.Gray };
 
             plt.Add(bar);
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            bar.errorColor = System.Drawing.Color.Black;
+            bar.ErrorColor = System.Drawing.Color.Black;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -292,7 +265,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            bar.showValues = true;
+            bar.ShowValuesAboveBars = true;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -313,13 +286,13 @@ namespace ScottPlotTests.PlottableRenderTests
 
             // start with default settings
             double[] ys = new double[] { 1, -3, 2, -4 };
-            var bar = new BarPlot(null, ys, null, null) { fillColor = System.Drawing.Color.Gray };
+            var bar = new BarPlot(null, ys, null, null) { FillColor = System.Drawing.Color.Gray };
 
             plt.Add(bar);
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            bar.negativeColor = System.Drawing.Color.Black;
+            bar.FillColorNegative = System.Drawing.Color.Black;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
