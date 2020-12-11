@@ -305,7 +305,7 @@ namespace ScottPlot.Cookbook.Recipes
             plt.AddScatter(dataXs, dataYsLog, lineWidth: 0);
 
             // place minor ticks to simulate a log scale
-            plt.YAxis.MinorTicks(enable: true, logScale: true);
+            plt.YAxis.MinorLogScale(true);
 
             // make minor grid lines visible for added effect
             plt.YAxis.ConfigureMinorGrid(enable: true, color: Color.FromArgb(10, Color.Black));

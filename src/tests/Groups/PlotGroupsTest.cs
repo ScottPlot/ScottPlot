@@ -31,7 +31,7 @@ namespace ScottPlotTests.Groups
             // plot the multi-series
             var plt = new ScottPlot.Plot(400, 300);
             plt.Add(customPlottable);
-            plt.XAxis.MajorTicks(false);
+            plt.XAxis.Ticks(false);
 
             // additional plot styling
             plt.Title("Life Expectancy in European Countries in 2007");

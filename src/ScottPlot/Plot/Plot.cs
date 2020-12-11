@@ -63,9 +63,9 @@ namespace ScottPlot
             settings2.Plottables.AddRange(settings.Plottables);
 
             // TODO: copy axes, since they now carry their own state too.
-            plt2.Title(settings.XAxis2.Title.Label);
-            plt2.XLabel(settings.XAxis.Title.Label);
-            plt2.YLabel(settings.YAxis.Title.Label);
+            plt2.Title(settings.XAxis2.AxTitle.Label);
+            plt2.XLabel(settings.XAxis.AxTitle.Label);
+            plt2.YLabel(settings.YAxis.AxTitle.Label);
 
             plt2.AxisAuto();
             return plt2;
@@ -174,15 +174,15 @@ namespace ScottPlot
 
             foreach (var axis in settings.Axes)
             {
-                axis.Title.Font.Color = axisLabelColor ?? axis.Title.Font.Color;
-                axis.Ticks.MajorLabelFont.Color = tickColor ?? axis.Ticks.MajorLabelFont.Color;
-                axis.Ticks.MajorGridColor = gridColor ?? axis.Ticks.MajorGridColor;
-                axis.Ticks.MinorGridColor = gridColor ?? axis.Ticks.MinorGridColor;
-                axis.Ticks.Color = tickColor ?? axis.Ticks.Color;
-                axis.Line.Color = tickColor ?? axis.Line.Color;
+                axis.AxTitle.Font.Color = axisLabelColor ?? axis.AxTitle.Font.Color;
+                axis.AxTicks.MajorLabelFont.Color = tickColor ?? axis.AxTicks.MajorLabelFont.Color;
+                axis.AxTicks.MajorGridColor = gridColor ?? axis.AxTicks.MajorGridColor;
+                axis.AxTicks.MinorGridColor = gridColor ?? axis.AxTicks.MinorGridColor;
+                axis.AxTicks.Color = tickColor ?? axis.AxTicks.Color;
+                axis.AxLine.Color = tickColor ?? axis.AxLine.Color;
             }
 
-            settings.XAxis2.Title.Font.Color = titleLabelColor ?? settings.XAxis2.Title.Font.Color;
+            settings.XAxis2.AxTitle.Font.Color = titleLabelColor ?? settings.XAxis2.AxTitle.Font.Color;
         }
 
         /// <summary>
@@ -191,7 +191,7 @@ namespace ScottPlot
         public void SetCulture(System.Globalization.CultureInfo culture)
         {
             foreach (var axis in settings.Axes)
-                axis.Ticks.TickCollection.Culture = culture;
+                axis.AxTicks.TickCollection.Culture = culture;
         }
 
         /// <summary>
@@ -220,7 +220,7 @@ namespace ScottPlot
             int? decimalDigits = null, int? numberNegativePattern = null, int[] numberGroupSizes = null)
         {
             foreach (var axis in settings.Axes)
-                axis.Ticks.TickCollection.SetCulture(
+                axis.AxTicks.TickCollection.SetCulture(
                         shortDatePattern, decimalSeparator, numberGroupSeparator,
                         decimalDigits, numberNegativePattern, numberGroupSizes);
         }

@@ -1,11 +1,7 @@
-﻿using ScottPlot.Ticks;
-using ScottPlot.Drawing;
+﻿using ScottPlot.Drawing;
+using ScottPlot.Ticks;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
-using System.Globalization;
-using System.Linq;
 
 namespace ScottPlot.Renderable
 {
@@ -23,11 +19,11 @@ namespace ScottPlot.Renderable
             set
             {
                 _Edge = value;
-                Line.Edge = value;
-                Title.Edge = value;
-                Ticks.Edge = value;
+                AxLine.Edge = value;
+                AxTitle.Edge = value;
+                AxTicks.Edge = value;
                 bool isVertical = (value == Edge.Left || value == Edge.Right);
-                Ticks.TickCollection.verticalAxis = isVertical;
+                AxTicks.TickCollection.verticalAxis = isVertical;
                 Dims.IsInverted = isVertical;
             }
         }
@@ -41,15 +37,15 @@ namespace ScottPlot.Renderable
         public float PixelSizeMaximum = float.PositiveInfinity;
         public float PixelSizePadding = 3;
 
-        public readonly AxisTitle Title = new AxisTitle();
-        public readonly AxisTicks Ticks = new AxisTicks();
-        public readonly AxisLine Line = new AxisLine();
+        public readonly AxisTitle AxTitle = new AxisTitle();
+        public readonly AxisTicks AxTicks = new AxisTicks();
+        public readonly AxisLine AxLine = new AxisLine();
 
         public override string ToString() => $"{Edge} axis from {Dims.Min} to {Dims.Max}";
 
         public void RecalculateTickPositions(PlotDimensions dims)
         {
-            Ticks.TickCollection.Recalculate(dims, Ticks.MajorLabelFont);
+            AxTicks.TickCollection.Recalculate(dims, AxTicks.MajorLabelFont);
         }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
@@ -57,17 +53,17 @@ namespace ScottPlot.Renderable
             if (IsVisible == false)
                 return;
 
-            Title.PixelSizePadding = PixelSizePadding;
-            Ticks.PixelOffset = PixelOffset;
-            Title.PixelOffset = PixelOffset;
-            Title.PixelSize = PixelSize;
-            Line.PixelOffset = PixelOffset;
+            AxTitle.PixelSizePadding = PixelSizePadding;
+            AxTicks.PixelOffset = PixelOffset;
+            AxTitle.PixelOffset = PixelOffset;
+            AxTitle.PixelSize = PixelSize;
+            AxLine.PixelOffset = PixelOffset;
 
             using (var gfx = GDI.Graphics(bmp, lowQuality))
             {
-                Ticks.Render(dims, bmp, lowQuality);
-                Title.Render(dims, bmp, lowQuality);
-                Line.Render(dims, bmp, lowQuality);
+                AxTicks.Render(dims, bmp, lowQuality);
+                AxTitle.Render(dims, bmp, lowQuality);
+                AxLine.Render(dims, bmp, lowQuality);
             }
         }
 
@@ -76,7 +72,7 @@ namespace ScottPlot.Renderable
         /// </summary>
         public void DateTimeFormat(bool enable)
         {
-            Ticks.TickCollection.dateFormat = enable;
+            AxTicks.TickCollection.dateFormat = enable;
         }
 
         /// <summary>
@@ -84,12 +80,12 @@ namespace ScottPlot.Renderable
         /// </summary>
         public void SetLabel(string label = null, Color? color = null, float? size = null, bool? bold = null, string fontName = null)
         {
-            Title.IsVisible = true;
-            Title.Label = label ?? Title.Label;
-            Title.Font.Color = color ?? Title.Font.Color;
-            Title.Font.Size = size ?? Title.Font.Size;
-            Title.Font.Bold = bold ?? Title.Font.Bold;
-            Title.Font.Name = fontName ?? Title.Font.Name;
+            AxTitle.IsVisible = true;
+            AxTitle.Label = label ?? AxTitle.Label;
+            AxTitle.Font.Color = color ?? AxTitle.Font.Color;
+            AxTitle.Font.Size = size ?? AxTitle.Font.Size;
+            AxTitle.Font.Bold = bold ?? AxTitle.Font.Bold;
+            AxTitle.Font.Name = fontName ?? AxTitle.Font.Name;
         }
 
         /// <summary>
@@ -99,8 +95,8 @@ namespace ScottPlot.Renderable
         {
             SetLabel(color: color);
             TickLabelStyle(color: color);
-            Ticks.Color = color;
-            Line.Color = color;
+            AxTicks.Color = color;
+            AxLine.Color = color;
         }
 
         /// <summary>
@@ -110,12 +106,12 @@ namespace ScottPlot.Renderable
         {
             if (dateTimeFormat)
             {
-                Ticks.TickCollection.dateTimeFormatString = format;
+                AxTicks.TickCollection.dateTimeFormatString = format;
                 DateTimeFormat(true);
             }
             else
             {
-                Ticks.TickCollection.numericFormatString = format;
+                AxTicks.TickCollection.numericFormatString = format;
                 DateTimeFormat(false);
             }
         }
@@ -131,12 +127,12 @@ namespace ScottPlot.Renderable
             int? radix = null,
             string prefix = null)
         {
-            Ticks.TickCollection.useMultiplierNotation = multiplier ?? Ticks.TickCollection.useMultiplierNotation;
-            Ticks.TickCollection.useOffsetNotation = offset ?? Ticks.TickCollection.useOffsetNotation;
-            Ticks.TickCollection.useExponentialNotation = exponential ?? Ticks.TickCollection.useExponentialNotation;
-            Ticks.TickCollection.invertSign = invertSign ?? Ticks.TickCollection.invertSign;
-            Ticks.TickCollection.radix = radix ?? Ticks.TickCollection.radix;
-            Ticks.TickCollection.prefix = prefix ?? Ticks.TickCollection.prefix;
+            AxTicks.TickCollection.useMultiplierNotation = multiplier ?? AxTicks.TickCollection.useMultiplierNotation;
+            AxTicks.TickCollection.useOffsetNotation = offset ?? AxTicks.TickCollection.useOffsetNotation;
+            AxTicks.TickCollection.useExponentialNotation = exponential ?? AxTicks.TickCollection.useExponentialNotation;
+            AxTicks.TickCollection.invertSign = invertSign ?? AxTicks.TickCollection.invertSign;
+            AxTicks.TickCollection.radix = radix ?? AxTicks.TickCollection.radix;
+            AxTicks.TickCollection.prefix = prefix ?? AxTicks.TickCollection.prefix;
         }
 
         /// <summary>
@@ -145,8 +141,8 @@ namespace ScottPlot.Renderable
         public void SetTickSpacing(double manualSpacing)
         {
             // TODO: cutt X and Y out of this
-            Ticks.TickCollection.manualSpacingX = manualSpacing;
-            Ticks.TickCollection.manualSpacingY = manualSpacing;
+            AxTicks.TickCollection.manualSpacingX = manualSpacing;
+            AxTicks.TickCollection.manualSpacingY = manualSpacing;
         }
 
         /// <summary>
@@ -155,19 +151,19 @@ namespace ScottPlot.Renderable
         public void SetTickSpacing(double manualSpacing, DateTimeUnit manualSpacingDateTimeUnit)
         {
             SetTickSpacing(manualSpacing);
-            Ticks.TickCollection.manualDateTimeSpacingUnitX = manualSpacingDateTimeUnit;
+            AxTicks.TickCollection.manualDateTimeSpacingUnitX = manualSpacingDateTimeUnit;
         }
 
         /// <summary>
         /// Ruler mode draws long tick marks and offsets tick labels for a ruler appearance
         /// </summary>
-        public void RulerMode(bool enable) => Ticks.RulerMode = enable;
+        public void RulerMode(bool enable) => AxTicks.RulerMode = enable;
 
         /// <summary>
         /// Enable this to snap major ticks (and grid lines) to the nearest pixel to avoid anti-aliasing artifacts
         /// </summary>
         /// <param name="enable"></param>
-        public void PixelSnap(bool enable) => Ticks.SnapPx = enable;
+        public void PixelSnap(bool enable) => AxTicks.SnapPx = enable;
 
         /// <summary>
         /// Customize styling of the tick labels
@@ -179,11 +175,11 @@ namespace ScottPlot.Renderable
             bool? fontBold = null,
             float? rotation = null)
         {
-            Ticks.Color = color ?? Ticks.Color;
-            Ticks.MajorLabelFont.Name = fontName ?? Ticks.MajorLabelFont.Name;
-            Ticks.MajorLabelFont.Size = fontSize ?? Ticks.MajorLabelFont.Size;
-            Ticks.MajorLabelFont.Bold = fontBold ?? Ticks.MajorLabelFont.Bold;
-            Ticks.Rotation = rotation ?? Ticks.Rotation;
+            AxTicks.Color = color ?? AxTicks.Color;
+            AxTicks.MajorLabelFont.Name = fontName ?? AxTicks.MajorLabelFont.Name;
+            AxTicks.MajorLabelFont.Size = fontSize ?? AxTicks.MajorLabelFont.Size;
+            AxTicks.MajorLabelFont.Bold = fontBold ?? AxTicks.MajorLabelFont.Bold;
+            AxTicks.Rotation = rotation ?? AxTicks.Rotation;
         }
 
         /// <summary>
@@ -191,31 +187,26 @@ namespace ScottPlot.Renderable
         /// </summary>
         public void SetTickPositions(double[] positions, string[] labels)
         {
-            Ticks.TickCollection.manualTickPositions = positions;
-            Ticks.TickCollection.manualTickLabels = labels;
+            AxTicks.TickCollection.manualTickPositions = positions;
+            AxTicks.TickCollection.manualTickLabels = labels;
         }
 
         // TODO: rename this to just ticks!
 
         /// <summary>
-        /// Set visibility of major ticks and labels
+        /// Set visibility of primary tick components
         /// </summary>
-        public void MajorTicks(bool enable, bool labels = true, bool minorToo = true)
+        public void Ticks(bool major, bool minor = true, bool majorLabels = true)
         {
-            Ticks.MajorTickEnable = enable;
-            Ticks.MajorLabelEnable = enable && labels;
-            if (minorToo)
-                Ticks.MinorTickEnable = enable;
+            AxTicks.MajorTickEnable = major;
+            AxTicks.MajorLabelEnable = major && majorLabels;
+            AxTicks.MinorTickEnable = minor;
         }
 
         /// <summary>
-        /// Set visibility of major ticks and labels
+        /// Sets whether minor ticks are evenly spaced or log-distributed between major tick positions
         /// </summary>
-        public void MinorTicks(bool enable, bool logScale = false)
-        {
-            Ticks.MinorTickEnable = enable;
-            Ticks.TickCollection.logScale = logScale;
-        }
+        public void MinorLogScale(bool enable) => AxTicks.TickCollection.logScale = enable;
 
         /// <summary>
         /// Configure tick visibility and positioning
@@ -225,7 +216,7 @@ namespace ScottPlot.Renderable
             bool? majorTickLabels = null,
             bool? minorTickMarks = null)
         {
-            Ticks.MinorTickEnable = minorTickMarks ?? Ticks.MinorTickEnable;
+            AxTicks.MinorTickEnable = minorTickMarks ?? AxTicks.MinorTickEnable;
         }
 
         /// <summary>
@@ -233,9 +224,9 @@ namespace ScottPlot.Renderable
         /// </summary>
         public void ConfigureLine(bool? visible = null, Color? color = null, float? width = null)
         {
-            Line.IsVisible = visible ?? Line.IsVisible;
-            Line.Color = color ?? Line.Color;
-            Line.Width = width ?? Line.Width;
+            AxLine.IsVisible = visible ?? AxLine.IsVisible;
+            AxLine.Color = color ?? AxLine.Color;
+            AxLine.Width = width ?? AxLine.Width;
         }
 
         /// <summary>
@@ -257,10 +248,10 @@ namespace ScottPlot.Renderable
             float? lineWidth = null,
             LineStyle? lineStyle = null)
         {
-            Ticks.MajorGridEnable = enable ?? Ticks.MajorGridEnable;
-            Ticks.MajorGridColor = color ?? Ticks.MajorGridColor;
-            Ticks.MajorGridWidth = lineWidth ?? Ticks.MajorGridWidth;
-            Ticks.MajorGridStyle = lineStyle ?? Ticks.MajorGridStyle;
+            AxTicks.MajorGridEnable = enable ?? AxTicks.MajorGridEnable;
+            AxTicks.MajorGridColor = color ?? AxTicks.MajorGridColor;
+            AxTicks.MajorGridWidth = lineWidth ?? AxTicks.MajorGridWidth;
+            AxTicks.MajorGridStyle = lineStyle ?? AxTicks.MajorGridStyle;
         }
 
         public void ConfigureMinorGrid(
@@ -269,10 +260,10 @@ namespace ScottPlot.Renderable
             float? lineWidth = null,
             LineStyle? lineStyle = null)
         {
-            Ticks.MinorGridEnable = enable ?? Ticks.MinorGridEnable;
-            Ticks.MinorGridColor = color ?? Ticks.MinorGridColor;
-            Ticks.MinorGridWidth = lineWidth ?? Ticks.MinorGridWidth;
-            Ticks.MinorGridStyle = lineStyle ?? Ticks.MinorGridStyle;
+            AxTicks.MinorGridEnable = enable ?? AxTicks.MinorGridEnable;
+            AxTicks.MinorGridColor = color ?? AxTicks.MinorGridColor;
+            AxTicks.MinorGridWidth = lineWidth ?? AxTicks.MinorGridWidth;
+            AxTicks.MinorGridStyle = lineStyle ?? AxTicks.MinorGridStyle;
         }
 
         /// <summary>
@@ -292,8 +283,8 @@ namespace ScottPlot.Renderable
         /// <param name="enable"></param>
         public void Grid(bool enable)
         {
-            Ticks.MajorGridEnable = enable;
-            Ticks.MinorTickEnable = enable;
+            AxTicks.MajorGridEnable = enable;
+            AxTicks.MinorTickEnable = enable;
         }
 
         /// <summary>
@@ -301,9 +292,9 @@ namespace ScottPlot.Renderable
         /// </summary>
         public void TickMarks(bool enable)
         {
-            Ticks.MajorTickEnable = enable;
-            Ticks.MajorLabelEnable = enable;
-            Ticks.MinorTickEnable = enable;
+            AxTicks.MajorTickEnable = enable;
+            AxTicks.MajorLabelEnable = enable;
+            AxTicks.MinorTickEnable = enable;
         }
 
         // TODO: delete this in favor of individual setters?
@@ -324,19 +315,19 @@ namespace ScottPlot.Renderable
 
         public void RecalculateAxisSize()
         {
-            using (var tickFont = GDI.Font(Ticks.MajorLabelFont))
-            using (var titleFont = GDI.Font(Title.Font))
+            using (var tickFont = GDI.Font(AxTicks.MajorLabelFont))
+            using (var titleFont = GDI.Font(AxTitle.Font))
             {
                 PixelSize = 0;
 
-                if (Title.IsVisible)
-                    PixelSize += GDI.MeasureString(Title.Label, Title.Font).Height;
+                if (AxTitle.IsVisible)
+                    PixelSize += GDI.MeasureString(AxTitle.Label, AxTitle.Font).Height;
 
-                if (Ticks.MajorLabelEnable)
-                    PixelSize += IsHorizontal ? Ticks.TickCollection.maxLabelHeight : Ticks.TickCollection.maxLabelWidth * 1.2f;
+                if (AxTicks.MajorLabelEnable)
+                    PixelSize += IsHorizontal ? AxTicks.TickCollection.maxLabelHeight : AxTicks.TickCollection.maxLabelWidth * 1.2f;
 
-                if (Ticks.MajorTickEnable)
-                    PixelSize += Ticks.MajorTickLength;
+                if (AxTicks.MajorTickEnable)
+                    PixelSize += AxTicks.MajorTickLength;
 
                 PixelSize = Math.Max(PixelSize, PixelSizeMinimum);
                 PixelSize = Math.Min(PixelSize, PixelSizeMaximum);

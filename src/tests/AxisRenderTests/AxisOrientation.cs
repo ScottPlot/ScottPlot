@@ -44,9 +44,9 @@ namespace ScottPlotTests.AxisRenderTests
             var dims = DimsLeft;
 
             var axis = new ScottPlot.Renderable.Axis();
-            axis.Title.Label = "Sample Left Axis";
+            axis.AxTitle.Label = "Sample Left Axis";
             axis.Edge = ScottPlot.Renderable.Edge.Left;
-            axis.Ticks.TickCollection.verticalAxis = true;
+            axis.AxTicks.TickCollection.verticalAxis = true;
 
             using (var bmp = new System.Drawing.Bitmap((int)dims.Width, (int)dims.Height))
             using (var gfx = GDI.Graphics(bmp, lowQuality: true))
@@ -65,9 +65,9 @@ namespace ScottPlotTests.AxisRenderTests
             var dims = DimsRight;
 
             var axis = new ScottPlot.Renderable.Axis();
-            axis.Title.Label = "Sample Right Axis";
+            axis.AxTitle.Label = "Sample Right Axis";
             axis.Edge = ScottPlot.Renderable.Edge.Right;
-            axis.Ticks.TickCollection.verticalAxis = true;
+            axis.AxTicks.TickCollection.verticalAxis = true;
 
             using (var bmp = new System.Drawing.Bitmap((int)dims.Width, (int)dims.Height))
             using (var gfx = GDI.Graphics(bmp, lowQuality: true))
@@ -86,9 +86,9 @@ namespace ScottPlotTests.AxisRenderTests
             var dims = DimsTop;
 
             var axis = new ScottPlot.Renderable.Axis();
-            axis.Title.Label = "Sample Top Axis";
+            axis.AxTitle.Label = "Sample Top Axis";
             axis.Edge = ScottPlot.Renderable.Edge.Top;
-            axis.Ticks.TickCollection.verticalAxis = false;
+            axis.AxTicks.TickCollection.verticalAxis = false;
 
             using (var bmp = new System.Drawing.Bitmap((int)dims.Width, (int)dims.Height))
             using (var gfx = GDI.Graphics(bmp, lowQuality: true))
@@ -107,9 +107,9 @@ namespace ScottPlotTests.AxisRenderTests
             var dims = DimsBottom;
 
             var axis = new ScottPlot.Renderable.Axis();
-            axis.Title.Label = "Sample Bottom Axis";
+            axis.AxTitle.Label = "Sample Bottom Axis";
             axis.Edge = ScottPlot.Renderable.Edge.Bottom;
-            axis.Ticks.TickCollection.verticalAxis = false;
+            axis.AxTicks.TickCollection.verticalAxis = false;
 
             using (var bmp = new System.Drawing.Bitmap((int)dims.Width, (int)dims.Height))
             using (var gfx = GDI.Graphics(bmp, lowQuality: true))

@@ -22,8 +22,8 @@ namespace ScottPlotTests.PlotTypes
 
             plt.Grid(false);
             plt.Frame(false);
-            plt.XAxis.MajorTicks(false);
-            plt.YAxis.MajorTicks(false);
+            plt.XAxis.Ticks(false);
+            plt.YAxis.Ticks(false);
 
             TestTools.SaveFig(plt);
         }
@@ -41,8 +41,8 @@ namespace ScottPlotTests.PlotTypes
 
             plt.Grid(false);
             plt.Frame(false);
-            plt.XAxis.MajorTicks(false);
-            plt.YAxis.MajorTicks(false);
+            plt.XAxis.Ticks(false);
+            plt.YAxis.Ticks(false);
 
             TestTools.SaveFig(plt);
         }

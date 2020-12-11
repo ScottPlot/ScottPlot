@@ -5,7 +5,7 @@
         public DefaultBottomAxis()
         {
             Edge = Edge.Bottom;
-            Ticks.MajorGridEnable = true;
+            AxTicks.MajorGridEnable = true;
         }
     }
 
@@ -15,11 +15,11 @@
         {
             Edge = Edge.Top;
             AxisIndex = 1;
-            Title.IsVisible = true;
-            Ticks.MajorTickEnable = false;
-            Ticks.MinorTickEnable = false;
-            Ticks.MajorLabelEnable = false;
-            Ticks.MajorGridEnable = false;
+            AxTitle.IsVisible = true;
+            AxTicks.MajorTickEnable = false;
+            AxTicks.MinorTickEnable = false;
+            AxTicks.MajorLabelEnable = false;
+            AxTicks.MajorGridEnable = false;
         }
     }
 
@@ -28,7 +28,7 @@
         public DefaultLeftAxis()
         {
             Edge = Edge.Left;
-            Ticks.MajorGridEnable = true;
+            AxTicks.MajorGridEnable = true;
         }
     }
 
@@ -38,11 +38,11 @@
         {
             Edge = Edge.Right;
             AxisIndex = 1;
-            Ticks.MajorTickEnable = false;
-            Ticks.MinorTickEnable = false;
-            Ticks.MajorLabelEnable = false;
-            Title.IsVisible = false;
-            Ticks.MajorGridEnable = false;
+            AxTicks.MajorTickEnable = false;
+            AxTicks.MinorTickEnable = false;
+            AxTicks.MajorLabelEnable = false;
+            AxTitle.IsVisible = false;
+            AxTicks.MajorGridEnable = false;
         }
     }
 
@@ -52,12 +52,12 @@
         {
             Edge = Edge.Right;
             AxisIndex = yAxisIndex;
-            Title.IsVisible = true;
-            Ticks.MajorTickEnable = true;
-            Ticks.MajorLabelEnable = true;
-            Ticks.MinorTickEnable = true;
-            Ticks.MajorGridEnable = false;
-            Title.Label = title;
+            AxTitle.IsVisible = true;
+            AxTicks.MajorTickEnable = true;
+            AxTicks.MajorLabelEnable = true;
+            AxTicks.MinorTickEnable = true;
+            AxTicks.MajorGridEnable = false;
+            AxTitle.Label = title;
         }
     }
 
@@ -67,12 +67,12 @@
         {
             Edge = Edge.Left;
             AxisIndex = yAxisIndex;
-            Title.IsVisible = true;
-            Ticks.MajorTickEnable = true;
-            Ticks.MajorLabelEnable = true;
-            Ticks.MinorTickEnable = true;
-            Ticks.MajorGridEnable = false;
-            Title.Label = title;
+            AxTitle.IsVisible = true;
+            AxTicks.MajorTickEnable = true;
+            AxTicks.MajorLabelEnable = true;
+            AxTicks.MinorTickEnable = true;
+            AxTicks.MajorGridEnable = false;
+            AxTitle.Label = title;
         }
     }
 
@@ -82,12 +82,12 @@
         {
             Edge = Edge.Top;
             AxisIndex = xAxisIndex;
-            Title.IsVisible = true;
-            Ticks.MajorTickEnable = true;
-            Ticks.MajorLabelEnable = true;
-            Ticks.MinorTickEnable = true;
-            Ticks.MajorGridEnable = false;
-            Title.Label = title;
+            AxTitle.IsVisible = true;
+            AxTicks.MajorTickEnable = true;
+            AxTicks.MajorLabelEnable = true;
+            AxTicks.MinorTickEnable = true;
+            AxTicks.MajorGridEnable = false;
+            AxTitle.Label = title;
         }
     }
 
@@ -97,12 +97,12 @@
         {
             Edge = Edge.Bottom;
             AxisIndex = xAxisIndex;
-            Title.IsVisible = true;
-            Ticks.MajorTickEnable = true;
-            Ticks.MajorLabelEnable = true;
-            Ticks.MinorTickEnable = true;
-            Ticks.MajorGridEnable = false;
-            Title.Label = title;
+            AxTitle.IsVisible = true;
+            AxTicks.MajorTickEnable = true;
+            AxTicks.MajorLabelEnable = true;
+            AxTicks.MinorTickEnable = true;
+            AxTicks.MajorGridEnable = false;
+            AxTitle.Label = title;
         }
     }
 }
