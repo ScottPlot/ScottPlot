@@ -102,7 +102,7 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// Manually define the string format to use for translating tick positions to tick labels
         /// </summary>
-        public void SetTickLabelFormat(string format, bool dateTimeFormat)
+        public void TickLabelFormat(string format, bool dateTimeFormat)
         {
             if (dateTimeFormat)
             {
@@ -286,16 +286,6 @@ namespace ScottPlot.Renderable
         public void Grid(bool enable)
         {
             AxTicks.MajorGridEnable = enable;
-            AxTicks.MinorTickEnable = enable;
-        }
-
-        /// <summary>
-        /// Control visibility of major tick marks, major tick labels, and minor tick marks
-        /// </summary>
-        public void TickMarks(bool enable)
-        {
-            AxTicks.MajorTickEnable = enable;
-            AxTicks.MajorLabelEnable = enable;
             AxTicks.MinorTickEnable = enable;
         }
 

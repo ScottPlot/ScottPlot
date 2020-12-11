@@ -22,7 +22,7 @@ namespace ScottPlotTests.Axis
             double pointsPerDay = 24.0 * 60 * 60 * pointsPerSecond;
             plt.AddSignal(ys, sampleRate: pointsPerDay);
 
-            plt.XAxis.SetTickLabelFormat("HH:mm:ss:fff", true);
+            plt.XAxis.TickLabelFormat("HH:mm:ss:fff", true);
 
             TestTools.SaveFig(plt);
         }

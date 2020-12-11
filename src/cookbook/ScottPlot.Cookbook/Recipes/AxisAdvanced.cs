@@ -40,8 +40,8 @@ namespace ScottPlot.Cookbook.Recipes
             plt.AddSignal(DataGen.Cos(51));
 
             // See https://tinyurl.com/y86clj9k to learn about numeric format strings
-            plt.XAxis.SetTickLabelFormat("E2", dateTimeFormat: false);
-            plt.YAxis.SetTickLabelFormat("P1", dateTimeFormat: false);
+            plt.XAxis.TickLabelFormat("E2", dateTimeFormat: false);
+            plt.YAxis.TickLabelFormat("P1", dateTimeFormat: false);
         }
     }
 
@@ -202,7 +202,7 @@ namespace ScottPlot.Cookbook.Recipes
 
             // plot the data with custom tick format (https://tinyurl.com/ycwh45af)
             plt.AddScatter(days, values);
-            plt.XAxis.SetTickLabelFormat("M\\/dd", dateTimeFormat: true);
+            plt.XAxis.TickLabelFormat("M\\/dd", dateTimeFormat: true);
         }
     }
 
