@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 
 namespace ScottPlot.Demo.PlotTypes
@@ -87,16 +88,20 @@ namespace ScottPlot.Demo.PlotTypes
             public void Render(Plot plt)
             {
                 Random rand = new Random(0);
-                ScottPlot.OHLC[] ohlcs = DataGen.RandomStockPrices(rand, 75, sequential: true);
-                double[] xs = DataGen.Consecutive(ohlcs.Length);
-                double[] sma20 = Statistics.Finance.SMA(ohlcs, 8);
-                double[] sma50 = Statistics.Finance.SMA(ohlcs, 20);
 
+                // start with random stock data with a full set of days
+                ScottPlot.OHLC[] ohlcs = DataGen.RandomStockPrices(rand, 75, sequential: true);
                 plt.PlotCandlestick(ohlcs);
-                plt.PlotScatter(xs, sma20, label: "8 day SMA",
-                    color: Color.Blue, markerSize: 0, lineWidth: 2);
-                plt.PlotScatter(xs, sma50, label: "20 day SMA",
-                    color: Color.Navy, markerSize: 0, lineWidth: 2);
+
+                // calculate SMAs of different durations using helper methods
+                double[] xs = DataGen.Consecutive(ohlcs.Length);
+                double[] sma8xs = xs.Skip(8).ToArray();
+                double[] sma8ys = Statistics.Finance.SMA(ohlcs, 8).Skip(8).ToArray();
+                double[] sma20xs = xs.Skip(20).ToArray();
+                double[] sma20ys = Statistics.Finance.SMA(ohlcs, 20).Skip(20).ToArray(); 
+
+                plt.PlotScatter(sma8xs, sma8ys, label: "8 day SMA", color: Color.Blue, markerSize: 0, lineWidth: 2);
+                plt.PlotScatter(sma20xs, sma20ys, label: "20 day SMA", color: Color.Navy, markerSize: 0, lineWidth: 2);
 
                 // decorate the plot
                 plt.Title("Simple Moving Averages (SMA)");
@@ -116,6 +121,8 @@ namespace ScottPlot.Demo.PlotTypes
                 Random rand = new Random(0);
                 ScottPlot.OHLC[] ohlcs = DataGen.RandomStockPrices(rand, 100, sequential: true);
                 double[] xs = DataGen.Consecutive(ohlcs.Length);
+
+
                 (var sma, var bolL, var bolU) = ScottPlot.Statistics.Finance.Bollinger(ohlcs);
 
                 plt.PlotCandlestick(ohlcs);
