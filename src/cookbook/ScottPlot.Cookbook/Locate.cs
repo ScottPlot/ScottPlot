@@ -38,10 +38,9 @@ namespace ScottPlot.Cookbook
             string[] topCategories =
             {
                 "Quickstart",
-                "Managing Plottables",
-                "Axis",
+                "Axis and Ticks",
+                "Advanced Axis Features",
                 "Multi-Axis",
-                "Ticks"
             };
 
             foreach (string category in topCategories.Reverse())
@@ -49,6 +48,18 @@ namespace ScottPlot.Cookbook
                 var moveThis = categorizedRecipeList.Where(x => x.Key == category).First(); ;
                 categorizedRecipeList.Remove(moveThis);
                 categorizedRecipeList.Insert(0, moveThis);
+            }
+
+            string[] bottomCategories =
+            {
+                "Style",
+            };
+
+            foreach (string category in bottomCategories)
+            {
+                var moveThis = categorizedRecipeList.Where(x => x.Key == category).First(); ;
+                categorizedRecipeList.Remove(moveThis);
+                categorizedRecipeList.Add(moveThis);
             }
 
             return categorizedRecipeList;

@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 
-namespace ScottPlot.Cookbook.Recipes.Ticks
+namespace ScottPlot.Cookbook.Recipes
 {
-    class TicksHideX : IRecipe
+    class GridAdvanced : IRecipe
     {
-        public string Category => "Ticks";
-        public string ID => "ticks_hidex";
-        public string Title => "Disable X Ticks";
-        public string Description => "Ticks can be hidden on a single axis.";
+        public string Category => "Advanced Axis Features";
+        public string ID => "asis_gridAdvanced";
+        public string Title => "Advanced Grid Customization";
+        public string Description => "Grid lines can be extensively customized using various configuration methods.";
 
         public void ExecuteRecipe(Plot plt)
         {
@@ -18,14 +19,16 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
             plt.AddSignal(DataGen.Sin(51));
             plt.AddSignal(DataGen.Cos(51));
 
-            // hide just the horizontal axis ticks
-            plt.XAxis.Configure(ticks: false);
+            // advanced grid customizations are available by accessing Axes directly
+            plt.XAxis.ConfigureMajorGrid(color: Color.FromArgb(100, Color.Black));
+            plt.XAxis.ConfigureMinorGrid(enable: true, color: Color.FromArgb(20, Color.Black));
+            plt.YAxis.ConfigureMajorGrid(lineWidth: 2, lineStyle: LineStyle.Dash, color: Color.Magenta);
         }
     }
 
     class TicksNumericFormatString : IRecipe
     {
-        public string Category => "Ticks";
+        public string Category => "Advanced Axis Features";
         public string ID => "ticks_numericFormatString";
         public string Title => "Numeric Format String";
         public string Description => "Tick labels can be converted to text using a custom format string.";
@@ -42,36 +45,9 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
         }
     }
 
-    class TicksDateTime : IRecipe
-    {
-        public string Category => "Ticks";
-        public string ID => "ticks_dateTime";
-        public string Title => "Plotting DateTime Data";
-        public string Description =>
-            "This example shows how to display DateTime data on the horizontal axis. " +
-            "Use DateTime.ToOADate() to convert DateTime[] to double[], plot the data, " +
-            " then tell the axis to format tick labels as dates.";
-
-        public void ExecuteRecipe(Plot plt)
-        {
-            // create data sample data
-            DateTime[] myDates = new DateTime[100];
-            for (int i = 0; i < myDates.Length; i++)
-                myDates[i] = new DateTime(1985, 9, 24).AddDays(7 * i);
-
-            // Convert DateTime[] to double[] before plotting
-            double[] xs = myDates.Select(x => x.ToOADate()).ToArray();
-            double[] ys = DataGen.RandomWalk(myDates.Length);
-            plt.AddScatter(xs, ys);
-
-            // Then tell the axis to display tick labels using a time format
-            plt.XAxis.DateTimeFormat(true);
-        }
-    }
-
     class TicksDefined : IRecipe
     {
-        public string Category => "Ticks";
+        public string Category => "Advanced Axis Features";
         public string ID => "ticks_defined";
         public string Title => "Manual Tick Labels";
         public string Description =>
@@ -99,7 +75,7 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
 
     class TicksNonLinearX : IRecipe
     {
-        public string Category => "Ticks";
+        public string Category => "Advanced Axis Features";
         public string ID => "ticks_nonLinearX";
         public string Title => "NonLinear Tick Spacing";
         public string Description =>
@@ -122,6 +98,7 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
             string[] labels = frequencies.Select(x => x.ToString()).ToArray();
             plt.XAxis.ConfigureTicks(definedPositions: positions, definedLabels: labels);
             plt.XAxis.ConfigureTickLabelStyle(rotation: 45);
+            plt.XAxis.PixelSizeMinimum = 50; // extra padding for rotated ticks
 
             // apply axis labels, trigging a layout reset
             plt.Title("Vibrational Coupling");
@@ -130,27 +107,9 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
         }
     }
 
-    class TicksRotated : IRecipe
-    {
-        public string Category => "Ticks";
-        public string ID => "ticks_rotated";
-        public string Title => "Rotated Ticks";
-        public string Description => "Tick labels can be rotated as desired.";
-
-        public void ExecuteRecipe(Plot plt)
-        {
-            // plot sample data
-            plt.AddSignal(DataGen.Sin(51));
-            plt.AddSignal(DataGen.Cos(51));
-
-            // rotate horizontal axis tick labels
-            plt.XAxis.ConfigureTickLabelStyle(rotation: 45);
-        }
-    }
-
     class TicksDescending : IRecipe
     {
-        public string Category => "Ticks";
+        public string Category => "Advanced Axis Features";
         public string ID => "ticks_descending";
         public string Title => "Descending Ticks";
         public string Description =>
@@ -173,7 +132,7 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
 
     class TicksDefinedSpacing : IRecipe
     {
-        public string Category => "Ticks";
+        public string Category => "Advanced Axis Features";
         public string ID => "ticks_definedSpacing";
         public string Title => "Defined Tick Spacing";
         public string Description =>
@@ -194,7 +153,7 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
 
     class TicksCulture : IRecipe
     {
-        public string Category => "Ticks";
+        public string Category => "Advanced Axis Features";
         public string ID => "ticks_culture";
         public string Title => "Tick Label Culture";
         public string Description =>
@@ -226,7 +185,7 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
 
     class TicksCultureCustom : IRecipe
     {
-        public string Category => "Ticks";
+        public string Category => "Advanced Axis Features";
         public string ID => "ticks_cultureCustom";
         public string Title => "Custom Tick Label Culture";
         public string Description =>
@@ -252,7 +211,7 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
 
     class TicksMultiplier : IRecipe
     {
-        public string Category => "Ticks";
+        public string Category => "Advanced Axis Features";
         public string ID => "ticks_multiplier";
         public string Title => "Multiplier Notation";
         public string Description =>
@@ -270,7 +229,7 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
 
     class TicksOffset : IRecipe
     {
-        public string Category => "Ticks";
+        public string Category => "Advanced Axis Features";
         public string ID => "ticks_offset";
         public string Title => "Offset Notation";
         public string Description =>
@@ -288,7 +247,7 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
 
     class TicksDefinedDateTimeSpace : IRecipe
     {
-        public string Category => "Ticks";
+        public string Category => "Advanced Axis Features";
         public string ID => "ticks_definedDateTimeSpace";
         public string Title => "Defined DateTime Spacing";
         public string Description => "This example shows how to use a fixed inter-tick distance for a DateTime axis";
