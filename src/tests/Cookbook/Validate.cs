@@ -22,14 +22,24 @@ namespace ScottPlotTests.Cookbook
         }
 
         [Test]
-        public void Test_CookbookRecipes_AllHaveSourceCode()
+        public void Test_CookbookRecipes_AllHaveValidSourceCode()
         {
             var recipes = ScottPlot.Cookbook.Locate.GetRecipes();
             var chef = new ScottPlot.Cookbook.Chef();
             var sources = chef.GetRecipeSources(SourceFolder);
 
+            // ensure every recipe has source code
             foreach (ScottPlot.Cookbook.IRecipe recipe in recipes)
-                Assert.NotZero(sources.Where(x => x.id == recipe.ID).Count());
+                Assert.AreEqual(1, sources.Where(x => x.id == recipe.ID).Count());
+
+            // ensure there are no hanging { or }
+            foreach (ScottPlot.Cookbook.IRecipe recipe in recipes)
+            {
+                string source = sources.Where(x => x.id == recipe.ID).First().source;
+                int openCount = source.Count(f => f == '{');
+                int closeCount = source.Count(f => f == '}');
+                Assert.AreEqual(openCount, closeCount, message: $"{recipe.Category} : {recipe.ID} format error - empty lines after a class?");
+            }
         }
 
         [Test]

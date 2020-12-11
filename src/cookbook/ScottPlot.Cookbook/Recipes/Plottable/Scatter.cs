@@ -28,7 +28,6 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
-
     public class CustomizeMarkers : IRecipe
     {
         public string Category => "Plottable: Scatter Plot";

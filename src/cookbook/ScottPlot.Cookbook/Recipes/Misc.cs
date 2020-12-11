@@ -81,7 +81,6 @@ namespace ScottPlot.Cookbook.Recipes
         }
     }
 
-
     class MiscLinearRegression : IRecipe
     {
         public string Category => "Misc";
@@ -108,7 +107,6 @@ namespace ScottPlot.Cookbook.Recipes
             plt.AddLine(model.slope, model.offset, (x1, x2), lineWidth: 2);
         }
     }
-
 
     class MiscInterpolation : IRecipe
     {
