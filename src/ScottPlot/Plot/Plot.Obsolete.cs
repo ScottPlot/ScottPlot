@@ -426,7 +426,7 @@ namespace ScottPlot
         {
             Heatmap heatmap = new Heatmap()
             {
-                label = label,
+                Label = label,
                 AxisOffsets = axisOffsets ?? new double[] { 0, 0 },
                 AxisMultipliers = axisMultipliers ?? new double[] { 1, 1 },
                 ScaleMin = scaleMin,

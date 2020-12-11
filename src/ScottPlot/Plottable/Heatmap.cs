@@ -7,21 +7,19 @@ using System.Runtime.InteropServices;
 
 namespace ScottPlot.Plottable
 {
-
-#pragma warning disable CS0618 // Type or member is obsolete
     public class Heatmap : IPlottable
     {
         // these fields are updated when the intensities are analyzed
         private double[] NormalizedIntensities;
-        private double min;
-        private double max;
-        private int width;
-        private int height;
+        private double Min;
+        private double Max;
+        private int Width;
+        private int Height;
         private Bitmap BmpHeatmap;
         private Bitmap BmpScale;
 
         // these fields are customized by the user
-        public string label;
+        public string Label;
         public Colormap Colormap;
         public double[] AxisOffsets;
         public double[] AxisMultipliers;
@@ -38,18 +36,18 @@ namespace ScottPlot.Plottable
         // call this externally if data changes
         public void UpdateData(double[,] intensities)
         {
-            width = intensities.GetLength(1);
-            height = intensities.GetLength(0);
+            Width = intensities.GetLength(1);
+            Height = intensities.GetLength(0);
 
             double[] intensitiesFlattened = intensities.Cast<double>().ToArray();
-            min = intensitiesFlattened.Min();
-            max = intensitiesFlattened.Max();
+            Min = intensitiesFlattened.Min();
+            Max = intensitiesFlattened.Max();
 
-            double normalizeMin = (ScaleMin.HasValue && ScaleMin.Value < min) ? ScaleMin.Value : min;
-            double normalizeMax = (ScaleMax.HasValue && ScaleMax.Value > max) ? ScaleMax.Value : max;
+            double normalizeMin = (ScaleMin.HasValue && ScaleMin.Value < Min) ? ScaleMin.Value : Min;
+            double normalizeMax = (ScaleMax.HasValue && ScaleMax.Value > Max) ? ScaleMax.Value : Max;
 
             if (TransparencyThreshold.HasValue)
-                TransparencyThreshold = Normalize(TransparencyThreshold.Value, min, max, ScaleMin, ScaleMax);
+                TransparencyThreshold = Normalize(TransparencyThreshold.Value, Min, Max, ScaleMin, ScaleMax);
 
             NormalizedIntensities = Normalize(intensitiesFlattened, null, null, ScaleMin, ScaleMax);
 
@@ -59,7 +57,7 @@ namespace ScottPlot.Plottable
 
             BmpHeatmap?.Dispose();
             BmpScale?.Dispose();
-            BmpHeatmap = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+            BmpHeatmap = new Bitmap(Width, Height, PixelFormat.Format32bppArgb);
             BmpScale = new Bitmap(1, 256, PixelFormat.Format32bppArgb);
             Rectangle rect = new Rectangle(0, 0, BmpHeatmap.Width, BmpHeatmap.Height);
             Rectangle rectScale = new Rectangle(0, 0, BmpScale.Width, BmpScale.Height);
@@ -103,7 +101,7 @@ namespace ScottPlot.Plottable
         {
             var singleLegendItem = new LegendItem()
             {
-                label = label,
+                label = Label,
                 color = Color.Gray,
                 lineWidth = 10,
                 markerShape = MarkerShape.none
@@ -144,22 +142,22 @@ namespace ScottPlot.Plottable
                     gfx.DrawImage(
                         BackgroundImage,
                         dims.GetPixelX(0),
-                        dims.GetPixelY(0) - (float)(height * minScale),
-                        (float)(width * minScale), (float)(height * minScale));
+                        dims.GetPixelY(0) - (float)(Height * minScale),
+                        (float)(Width * minScale), (float)(Height * minScale));
 
                 gfx.DrawImage(
                     BmpHeatmap,
                     dims.GetPixelX(0),
-                    dims.GetPixelY(0) - (float)(height * minScale),
-                    (float)(width * minScale),
-                    (float)(height * minScale));
+                    dims.GetPixelY(0) - (float)(Height * minScale),
+                    (float)(Width * minScale),
+                    (float)(Height * minScale));
 
                 if (BackgroundImage != null && DisplayImageAbove)
                     gfx.DrawImage(BackgroundImage,
                         dims.GetPixelX(0),
-                        dims.GetPixelY(0) - (float)(height * minScale),
-                        (float)(width * minScale),
-                        (float)(height * minScale));
+                        dims.GetPixelY(0) - (float)(Height * minScale),
+                        (float)(Width * minScale),
+                        (float)(Height * minScale));
             }
         }
 
@@ -180,8 +178,8 @@ namespace ScottPlot.Plottable
                 gfx.DrawImage(BmpScale, scaleRect);
                 gfx.DrawRectangle(pen, pxFromRight, pxFromBottom, pxWidth / 2, dims.DataHeight);
 
-                string maxString = ScaleMax.HasValue ? $"{(ScaleMax.Value < max ? "≥ " : "")}{ ScaleMax.Value:f3}" : $"{max:f3}";
-                string minString = ScaleMin.HasValue ? $"{(ScaleMin.Value > min ? "≤ " : "")}{ScaleMin.Value:f3}" : $"{min:f3}";
+                string maxString = ScaleMax.HasValue ? $"{(ScaleMax.Value < Max ? "≥ " : "")}{ ScaleMax.Value:f3}" : $"{Max:f3}";
+                string minString = ScaleMin.HasValue ? $"{(ScaleMin.Value > Min ? "≤ " : "")}{ScaleMin.Value:f3}" : $"{Min:f3}";
                 gfx.DrawString(maxString, font, brush, new PointF(scaleRect.X + 30, scaleRect.Top));
                 gfx.DrawString(minString, font, brush, new PointF(scaleRect.X + 30, scaleRect.Bottom), sf2);
             }
@@ -199,15 +197,15 @@ namespace ScottPlot.Plottable
                 double offset = -2;
                 double minScale = Math.Min(dims.PxPerUnitX, dims.PxPerUnitY);
                 gfx.DrawString($"{AxisOffsets[0]:f3}", axisFont, brush, dims.GetPixelX(0), dims.GetPixelY(offset), centre_top);
-                gfx.DrawString($"{AxisOffsets[0] + AxisMultipliers[0]:f3}", axisFont, brush, new PointF((float)((width * minScale) + dims.GetPixelX(0)), dims.GetPixelY(offset)), centre_top);
+                gfx.DrawString($"{AxisOffsets[0] + AxisMultipliers[0]:f3}", axisFont, brush, new PointF((float)((Width * minScale) + dims.GetPixelX(0)), dims.GetPixelY(offset)), centre_top);
                 gfx.DrawString($"{AxisOffsets[1]:f3}", axisFont, brush, dims.GetPixelX(offset), dims.GetPixelY(0), right_centre);
-                gfx.DrawString($"{AxisOffsets[1] + AxisMultipliers[1]:f3}", axisFont, brush, new PointF(dims.GetPixelX(offset), dims.GetPixelY(0) - (float)(height * minScale)), right_centre);
+                gfx.DrawString($"{AxisOffsets[1] + AxisMultipliers[1]:f3}", axisFont, brush, new PointF(dims.GetPixelX(offset), dims.GetPixelY(0) - (float)(Height * minScale)), right_centre);
             }
         }
 
         public override string ToString()
         {
-            string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
+            string label = string.IsNullOrWhiteSpace(this.Label) ? "" : $" ({this.Label})";
             return $"PlottableHeatmap{label} with {PointCount} points";
         }
     }
