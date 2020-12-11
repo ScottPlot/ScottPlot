@@ -194,7 +194,7 @@ namespace ScottPlot
         public override AxisLimits2D GetLimits()
         {
             double xMin = _samplePeriod * minRenderIndex;
-            double xMax = _samplePeriod * maxRenderIndex + xOffset;
+            double xMax = _samplePeriod * maxRenderIndex;
             minmaxSearchStrategy.MinMaxRangeQuery(minRenderIndex, maxRenderIndex, out double yMin, out double yMax);
             return new AxisLimits2D(xMin + xOffset, xMax + xOffset, yMin + yOffset, yMax + yOffset);
         }
