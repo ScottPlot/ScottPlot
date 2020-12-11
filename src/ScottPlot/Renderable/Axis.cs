@@ -209,17 +209,6 @@ namespace ScottPlot.Renderable
         public void MinorLogScale(bool enable) => AxTicks.TickCollection.logScale = enable;
 
         /// <summary>
-        /// Configure tick visibility and positioning
-        /// </summary>
-        public void ConfigureTicks(
-            bool? majorTickMarks = null,
-            bool? majorTickLabels = null,
-            bool? minorTickMarks = null)
-        {
-            AxTicks.MinorTickEnable = minorTickMarks ?? AxTicks.MinorTickEnable;
-        }
-
-        /// <summary>
         /// Configure the line drawn along the edge of the axis
         /// </summary>
         public void ConfigureLine(bool? visible = null, Color? color = null, float? width = null)

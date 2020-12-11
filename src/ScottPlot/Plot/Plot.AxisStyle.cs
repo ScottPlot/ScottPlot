@@ -216,12 +216,12 @@ namespace ScottPlot
             )
         {
             // PRIMARY TICK COMPONENTS
-            settings.XAxis.ConfigureTicks(majorTickMarks: displayTicksX);
-            settings.YAxis.ConfigureTicks(majorTickMarks: displayTicksY);
-            settings.XAxis.ConfigureTicks(minorTickMarks: displayTicksXminor);
-            settings.YAxis.ConfigureTicks(minorTickMarks: displayTicksYminor);
-            settings.XAxis.ConfigureTicks(majorTickLabels: displayTickLabelsX);
-            settings.YAxis.ConfigureTicks(majorTickLabels: displayTickLabelsY);
+            //settings.XAxis.ConfigureTicks(majorTickMarks: displayTicksX);
+            //settings.YAxis.ConfigureTicks(majorTickMarks: displayTicksY);
+            //settings.XAxis.ConfigureTicks(minorTickMarks: displayTicksXminor);
+            //settings.YAxis.ConfigureTicks(minorTickMarks: displayTicksYminor);
+            //settings.XAxis.ConfigureTicks(majorTickLabels: displayTickLabelsX);
+            //settings.YAxis.ConfigureTicks(majorTickLabels: displayTickLabelsY);
 
             // AXIS LABEL
             settings.XAxis.TickLabelStyle(fontName: fontName);
