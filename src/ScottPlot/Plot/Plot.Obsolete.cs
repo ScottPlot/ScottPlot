@@ -866,11 +866,11 @@ namespace ScottPlot
         {
             var plottable = new Polygon(xs, ys)
             {
-                label = label,
-                lineWidth = lineWidth,
-                lineColor = lineColor ?? Color.Black,
-                fill = fill,
-                fillColor = fillColor ?? GetNextColor(fillAlpha),
+                Label = label,
+                LineWidth = lineWidth,
+                LineColor = lineColor ?? Color.Black,
+                Fill = fill,
+                FillColor = fillColor ?? GetNextColor(fillAlpha),
             };
 
             Add(plottable);

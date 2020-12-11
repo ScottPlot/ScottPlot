@@ -7,48 +7,49 @@ namespace ScottPlot.Plottable
 {
     public class Polygon : IPlottable
     {
-        public double[] xs;
-        public double[] ys;
-        public string label;
+        // data
+        public double[] Xs;
+        public double[] Ys;
 
-        public double lineWidth = 1;
-        public Color lineColor = Color.Black;
-        public bool fill = true;
-        public Color fillColor = Color.Gray;
+        // configuration
+        public string Label;
+        public double LineWidth = 1;
+        public Color LineColor = Color.Black;
+        public bool Fill = true;
+        public Color FillColor = Color.Gray;
         public bool IsVisible { get; set; } = true;
         public int HorizontalAxisIndex { get; set; } = 0;
         public int VerticalAxisIndex { get; set; } = 0;
-
         public Color HatchColor = Color.Transparent;
         public HatchStyle HatchStyle = HatchStyle.None;
 
         public Polygon(double[] xs, double[] ys)
         {
-            this.xs = xs;
-            this.ys = ys;
+            Xs = xs;
+            Ys = ys;
         }
 
         public override string ToString()
         {
-            string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
+            string label = string.IsNullOrWhiteSpace(this.Label) ? "" : $" ({this.Label})";
             return $"PlottablePolygon{label} with {PointCount} points";
         }
 
-        public int PointCount { get => xs.Length; }
+        public int PointCount { get => Xs.Length; }
 
         public AxisLimits GetAxisLimits()
         {
-            double xMin = xs[0];
-            double xMax = xs[0];
-            double yMin = ys[0];
-            double yMax = ys[0];
+            double xMin = Xs[0];
+            double xMax = Xs[0];
+            double yMin = Ys[0];
+            double yMax = Ys[0];
 
-            for (int i = 1; i < xs.Length; i++)
+            for (int i = 1; i < Xs.Length; i++)
             {
-                xMin = Math.Min(xMin, xs[i]);
-                xMax = Math.Max(xMax, xs[i]);
-                yMin = Math.Min(yMin, ys[i]);
-                yMax = Math.Max(yMax, ys[i]);
+                xMin = Math.Min(xMin, Xs[i]);
+                xMax = Math.Max(xMax, Xs[i]);
+                yMin = Math.Min(yMin, Ys[i]);
+                yMax = Math.Max(yMax, Ys[i]);
             }
 
             return new AxisLimits(xMin, xMax, yMin, yMax);
@@ -58,9 +59,9 @@ namespace ScottPlot.Plottable
         {
             var singleLegendItem = new LegendItem()
             {
-                label = label,
-                color = fill ? fillColor : lineColor,
-                lineWidth = fill ? 10 : lineWidth,
+                label = Label,
+                color = Fill ? FillColor : LineColor,
+                lineWidth = Fill ? 10 : LineWidth,
                 markerShape = MarkerShape.none,
                 hatchColor = HatchColor,
                 hatchStyle = HatchStyle
@@ -70,34 +71,34 @@ namespace ScottPlot.Plottable
 
         public void ValidateData(bool deep = false)
         {
-            Validate.AssertHasElements("xs", xs);
-            Validate.AssertHasElements("ys", ys);
-            Validate.AssertEqualLength("xs and ys", xs, ys);
+            Validate.AssertHasElements("xs", Xs);
+            Validate.AssertHasElements("ys", Ys);
+            Validate.AssertEqualLength("xs and ys", Xs, Ys);
 
-            if (xs.Length < 3)
+            if (Xs.Length < 3)
                 throw new InvalidOperationException("polygons must contain at least 3 points");
 
             if (deep)
             {
-                Validate.AssertAllReal("xs", xs);
-                Validate.AssertAllReal("ys", ys);
+                Validate.AssertAllReal("xs", Xs);
+                Validate.AssertAllReal("ys", Ys);
             }
         }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            PointF[] points = new PointF[xs.Length];
-            for (int i = 0; i < xs.Length; i++)
-                points[i] = new PointF(dims.GetPixelX(xs[i]), dims.GetPixelY(ys[i]));
+            PointF[] points = new PointF[Xs.Length];
+            for (int i = 0; i < Xs.Length; i++)
+                points[i] = new PointF(dims.GetPixelX(Xs[i]), dims.GetPixelY(Ys[i]));
 
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
-            using (Brush fillBrush = GDI.Brush(fillColor, HatchColor, HatchStyle))
-            using (Pen outlinePen = GDI.Pen(lineColor, (float)lineWidth))
+            using (Brush fillBrush = GDI.Brush(FillColor, HatchColor, HatchStyle))
+            using (Pen outlinePen = GDI.Pen(LineColor, (float)LineWidth))
             {
-                if (fill)
+                if (Fill)
                     gfx.FillPolygon(fillBrush, points);
 
-                if (lineWidth > 0)
+                if (LineWidth > 0)
                     gfx.DrawPolygon(outlinePen, points);
             }
         }

@@ -25,11 +25,11 @@ namespace ScottPlotTests.PlotTypes
                         xs: ScottPlot.DataGen.Random(rand, 3, 100),
                         ys: ScottPlot.DataGen.Random(rand, 3, 100))
                 {
-                    label = $"polygon {i + 1}",
-                    lineWidth = 2,
-                    lineColor = color,
-                    fill = true,
-                    fillColor = color,
+                    Label = $"polygon {i + 1}",
+                    LineWidth = 2,
+                    LineColor = color,
+                    Fill = true,
+                    FillColor = color,
                 };
 
                 plt.Add(plottable);

@@ -176,8 +176,8 @@ namespace ScottPlot
                 xs: Tools.Pad(xs, cloneEdges: true),
                 ys: Tools.Pad(ys, 1, baseline, baseline))
             {
-                fill = true,
-                fillColor = color ?? GetNextColor(.5),
+                Fill = true,
+                FillColor = color ?? GetNextColor(.5),
             };
             Add(plottable);
             return plottable;
@@ -206,8 +206,8 @@ namespace ScottPlot
 
             var plottable = new Polygon(bothX, bothY)
             {
-                fill = true,
-                fillColor = color ?? GetNextColor(.5),
+                Fill = true,
+                FillColor = color ?? GetNextColor(.5),
             };
             Add(plottable);
             return plottable;
@@ -246,8 +246,8 @@ namespace ScottPlot
             Polygon polyAbove = new Polygon(xs2, ys2above);
             Polygon polyBelow = new Polygon(xs2, ys2below);
 
-            polyAbove.fillColor = colorAbove ?? Color.Green;
-            polyBelow.fillColor = colorBelow ?? Color.Red;
+            polyAbove.FillColor = colorAbove ?? Color.Green;
+            polyBelow.FillColor = colorBelow ?? Color.Red;
 
             Add(polyAbove);
             Add(polyBelow);
@@ -380,9 +380,9 @@ namespace ScottPlot
         {
             var plottable = new Polygon(xs, ys)
             {
-                lineWidth = lineWidth,
-                lineColor = lineColor ?? Color.Black,
-                fillColor = fillColor ?? settings.GetNextColor(),
+                LineWidth = lineWidth,
+                LineColor = lineColor ?? Color.Black,
+                FillColor = fillColor ?? settings.GetNextColor(),
             };
             Add(plottable);
             return plottable;
