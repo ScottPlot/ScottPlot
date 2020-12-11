@@ -62,11 +62,6 @@ namespace ScottPlot
             // Copying state of plottables is easy because they contain their own state.
             settings2.Plottables.AddRange(settings.Plottables);
 
-            // TODO: copy axes, since they now carry their own state too.
-            plt2.Title(settings.XAxis2.AxTitle.Label);
-            plt2.XLabel(settings.XAxis.AxTitle.Label);
-            plt2.YLabel(settings.YAxis.AxTitle.Label);
-
             plt2.AxisAuto();
             return plt2;
         }
@@ -174,15 +169,15 @@ namespace ScottPlot
 
             foreach (var axis in settings.Axes)
             {
-                axis.AxTitle.Font.Color = axisLabelColor ?? axis.AxTitle.Font.Color;
-                axis.AxTicks.MajorLabelFont.Color = tickColor ?? axis.AxTicks.MajorLabelFont.Color;
-                axis.AxTicks.MajorGridColor = gridColor ?? axis.AxTicks.MajorGridColor;
-                axis.AxTicks.MinorGridColor = gridColor ?? axis.AxTicks.MinorGridColor;
-                axis.AxTicks.Color = tickColor ?? axis.AxTicks.Color;
-                axis.AxLine.Color = tickColor ?? axis.AxLine.Color;
+                axis.Label(color: axisLabelColor);
+                axis.TickLabelStyle(color: tickColor);
+                axis.MajorGrid(color: gridColor);
+                axis.MinorGrid(color: gridColor);
+                axis.TickMarkStyle(color: tickColor);
+                axis.Line(color: tickColor);
             }
 
-            settings.XAxis2.AxTitle.Font.Color = titleLabelColor ?? settings.XAxis2.AxTitle.Font.Color;
+            XAxis2.TickLabelStyle(color: titleLabelColor);
         }
 
         /// <summary>
@@ -191,7 +186,7 @@ namespace ScottPlot
         public void SetCulture(System.Globalization.CultureInfo culture)
         {
             foreach (var axis in settings.Axes)
-                axis.AxTicks.TickCollection.Culture = culture;
+                axis.SetCulture(culture);
         }
 
         /// <summary>
@@ -220,9 +215,7 @@ namespace ScottPlot
             int? decimalDigits = null, int? numberNegativePattern = null, int[] numberGroupSizes = null)
         {
             foreach (var axis in settings.Axes)
-                axis.AxTicks.TickCollection.SetCulture(
-                        shortDatePattern, decimalSeparator, numberGroupSeparator,
-                        decimalDigits, numberNegativePattern, numberGroupSizes);
+                axis.SetCulture(shortDatePattern, decimalSeparator, numberGroupSeparator, decimalDigits, numberNegativePattern, numberGroupSizes);
         }
 
         /// <summary>

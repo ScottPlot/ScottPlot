@@ -37,9 +37,9 @@ namespace ScottPlot.Renderable
         public float PixelSizeMaximum = float.PositiveInfinity;
         public float PixelSizePadding = 3;
 
-        public readonly AxisTitle AxTitle = new AxisTitle();
-        public readonly AxisTicks AxTicks = new AxisTicks();
-        public readonly AxisLine AxLine = new AxisLine();
+        private readonly AxisTitle AxTitle = new AxisTitle();
+        private readonly AxisTicks AxTicks = new AxisTicks();
+        private readonly AxisLine AxLine = new AxisLine();
 
         public override string ToString() => $"{Edge} axis from {Dims.Min} to {Dims.Max}";
 
@@ -173,6 +173,25 @@ namespace ScottPlot.Renderable
         /// </summary>
         /// <param name="enable"></param>
         public void PixelSnap(bool enable) => AxTicks.SnapPx = enable;
+
+        /// <summary>
+        /// Set style of the tick mark lines
+        /// </summary>
+        public void TickMarkStyle(Color? color) => AxTicks.Color = color ?? AxTicks.Color;
+
+        /// <summary>
+        /// Set the culture to use for unit-to-string tick mark conversion
+        /// </summary>
+        public void SetCulture(System.Globalization.CultureInfo culture) => AxTicks.TickCollection.Culture = culture;
+
+        /// <summary>
+        /// Manually define culture to use for unit-to-string tick mark conversion
+        /// </summary>
+        public void SetCulture(
+            string shortDatePattern = null, string decimalSeparator = null, string numberGroupSeparator = null,
+            int? decimalDigits = null, int? numberNegativePattern = null, int[] numberGroupSizes = null) =>
+            AxTicks.TickCollection.SetCulture(shortDatePattern, decimalSeparator, numberGroupSeparator,
+                decimalDigits, numberNegativePattern, numberGroupSizes);
 
         /// <summary>
         /// Customize styling of the tick labels

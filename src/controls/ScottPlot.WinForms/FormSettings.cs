@@ -31,7 +31,7 @@ namespace ScottPlot.UserControls
         private void PopualteGuiFromPlot()
         {
             // vertical axis
-            tbYlabel.Text = plt.GetSettings(false).YAxis.AxTitle.Label;
+            //tbYlabel.Text = plt.GetSettings(false).YAxis.AxTitle.Label;
             var limits = plt.GetAxisLimits();
             tbY2.Text = Math.Round(limits.YMax, 4).ToString();
             tbY1.Text = Math.Round(limits.YMin, 4).ToString();
@@ -39,7 +39,7 @@ namespace ScottPlot.UserControls
             //cbYdateTime.Checked = plt.GetSettings().ticks.y.dateFormat;
 
             // horizontal axis
-            tbXlabel.Text = plt.GetSettings(false).XAxis.AxTitle.Label;
+            //tbXlabel.Text = plt.GetSettings(false).XAxis.AxTitle.Label;
             tbX2.Text = Math.Round(limits.XMax, 4).ToString();
             tbX1.Text = Math.Round(limits.XMin, 4).ToString();
             //cbXminor.Checked = plt.GetSettings().ticks.displayXminor;
@@ -48,7 +48,7 @@ namespace ScottPlot.UserControls
             // tick display options
             //cbTicksOffset.Checked = plt.GetSettings().ticks.useOffsetNotation;
             //cbTicksMult.Checked = plt.GetSettings().ticks.useMultiplierNotation;
-            cbGrid.Checked = plt.GetSettings(false).XAxis.AxTicks.MajorGridStyle != LineStyle.None;
+            //cbGrid.Checked = plt.GetSettings(false).XAxis.AxTicks.MajorGridStyle != LineStyle.None;
 
             // legend
             cbLegend.Checked = plt.GetSettings(false).CornerLegend.IsVisible;
