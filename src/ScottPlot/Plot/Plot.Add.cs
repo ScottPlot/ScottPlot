@@ -278,10 +278,10 @@ namespace ScottPlot
             HLine plottable = new HLine()
             {
                 Y = y,
-                color = color ?? settings.GetNextColor(),
-                lineWidth = width,
-                lineStyle = style,
-                label = label,
+                Color = color ?? settings.GetNextColor(),
+                LineWidth = width,
+                LineStyle = style,
+                Label = label,
             };
             Add(plottable);
             return plottable;
@@ -659,10 +659,10 @@ namespace ScottPlot
             VLine plottable = new VLine()
             {
                 X = x,
-                color = color ?? settings.GetNextColor(),
-                lineWidth = width,
-                lineStyle = style,
-                label = label
+                Color = color ?? settings.GetNextColor(),
+                LineWidth = width,
+                LineStyle = style,
+                Label = label
             };
             Add(plottable);
             return plottable;

@@ -4,6 +4,9 @@ using System.Drawing;
 
 namespace ScottPlot.Plottable
 {
+    /// <summary>
+    /// Text placed at a location relative to the data area that does not move when the axis limits change
+    /// </summary>
     public class Annotation : IPlottable
     {
         /// <summary>

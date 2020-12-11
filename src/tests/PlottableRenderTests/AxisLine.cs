@@ -42,7 +42,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            axLine.lineStyle = LineStyle.Dash;
+            axLine.LineStyle = LineStyle.Dash;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -68,7 +68,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            axLine.lineWidth += 1;
+            axLine.LineWidth += 1;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -88,13 +88,13 @@ namespace ScottPlotTests.PlottableRenderTests
             var plt = new ScottPlot.Plot();
 
             // start with default settings
-            var axLine = new HLine() { Y = 1.23, color = System.Drawing.Color.Gray };
+            var axLine = new HLine() { Y = 1.23, Color = System.Drawing.Color.Gray };
 
             plt.Add(axLine);
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            axLine.color = System.Drawing.Color.Black;
+            axLine.Color = System.Drawing.Color.Black;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed

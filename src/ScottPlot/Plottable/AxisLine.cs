@@ -5,49 +5,51 @@ using System.Drawing;
 
 namespace ScottPlot.Plottable
 {
+    /// <summary>
+    /// Horizontal line at a Y position
+    /// </summary>
     public class HLine : AxisLine
     {
         public double Y { get => Position; set => Position = value; }
-
         public override string ToString() => $"Horizontal line at Y={Y}";
-
-        public HLine()
-        {
-            IsHorizontal = true;
-        }
-
+        public HLine() : base(true) { }
     }
 
+    /// <summary>
+    /// Vertical line at an X position
+    /// </summary>
     public class VLine : AxisLine
     {
         public double X { get => Position; set => Position = value; }
-
         public override string ToString() => $"Vertical line at X={X}";
-
-        public VLine()
-        {
-            IsHorizontal = false;
-        }
+        public VLine() : base(false) { }
     }
 
     public abstract class AxisLine : IDraggable, IPlottable
     {
+        // orientation and location
         protected double Position;
+        private readonly bool IsHorizontal;
+
+        // customizations
+        public bool IsVisible { get; set; } = true;
         public int HorizontalAxisIndex { get; set; } = 0;
         public int VerticalAxisIndex { get; set; } = 0;
+        public LineStyle LineStyle = LineStyle.Solid;
+        public float LineWidth = 1;
+        public Color Color = Color.Black;
+        public string Label;
 
-        public LineStyle lineStyle = LineStyle.Solid;
-        public float lineWidth = 1;
-        public Color color = Color.Black;
-        public string label;
-        public bool IsHorizontal = true;
-
+        // mouse interaction
         public bool DragEnabled { get; set; } = false;
         public Cursor DragCursor => IsHorizontal ? Cursor.NS : Cursor.WE;
         public double DragLimitMin = double.NegativeInfinity;
         public double DragLimitMax = double.PositiveInfinity;
 
-        public bool IsVisible { get; set; } = true;
+        public AxisLine(bool isHorizontal)
+        {
+            IsHorizontal = isHorizontal;
+        }
 
         public AxisLimits GetAxisLimits() =>
             IsHorizontal ?
@@ -63,7 +65,7 @@ namespace ScottPlot.Plottable
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             using (var gfx = GDI.Graphics(bmp, dims, lowQuality))
-            using (var pen = GDI.Pen(color, lineWidth, lineStyle, true))
+            using (var pen = GDI.Pen(Color, LineWidth, LineStyle, true))
             {
                 if (IsHorizontal)
                 {
@@ -110,10 +112,10 @@ namespace ScottPlot.Plottable
         {
             var singleItem = new LegendItem()
             {
-                label = label,
-                color = color,
-                lineStyle = lineStyle,
-                lineWidth = lineWidth,
+                label = Label,
+                color = Color,
+                lineStyle = LineStyle,
+                lineWidth = LineWidth,
                 markerShape = MarkerShape.none
             };
             return new LegendItem[] { singleItem };

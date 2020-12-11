@@ -473,11 +473,11 @@ namespace ScottPlot
             var hline = new HLine()
             {
                 Y = y,
-                color = color ?? settings.GetNextColor(),
-                lineWidth = (float)lineWidth,
-                label = label,
+                Color = color ?? settings.GetNextColor(),
+                LineWidth = (float)lineWidth,
+                Label = label,
                 DragEnabled = draggable,
-                lineStyle = lineStyle,
+                LineStyle = lineStyle,
                 DragLimitMin = dragLimitLower,
                 DragLimitMax = dragLimitUpper
             };
@@ -1078,11 +1078,11 @@ namespace ScottPlot
             VLine axLine = new VLine()
             {
                 X = x,
-                color = color ?? settings.GetNextColor(),
-                lineWidth = (float)lineWidth,
-                label = label,
+                Color = color ?? settings.GetNextColor(),
+                LineWidth = (float)lineWidth,
+                Label = label,
                 DragEnabled = draggable,
-                lineStyle = lineStyle,
+                LineStyle = lineStyle,
                 DragLimitMin = dragLimitLower,
                 DragLimitMax = dragLimitUpper
             };
