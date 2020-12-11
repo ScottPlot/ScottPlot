@@ -21,8 +21,8 @@ namespace ScottPlotTests.Documentation
             var plt = new ScottPlot.Plot(400, 300);
             var scatter = new ScottPlot.Plottable.ScatterPlot(xs, ys)
             {
-                color = Color.Green,
-                lineWidth = 2
+                Color = Color.Green,
+                LineWidth = 2
             };
             plt.Add(scatter);
 
@@ -57,8 +57,8 @@ namespace ScottPlotTests.Documentation
 
             var plt = new ScottPlot.Plot(400, 300);
             var scatter = plt.PlotScatter(xs, ys);
-            scatter.color = Color.Red;
-            scatter.lineWidth = 2;
+            scatter.Color = Color.Red;
+            scatter.LineWidth = 2;
 
             TestTools.SaveFig(plt);
 

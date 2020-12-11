@@ -88,9 +88,9 @@ namespace ScottPlot.Cookbook.Recipes.Quickstart
             var splt = new ScottPlot.Plottable.ScatterPlot(xs, sin);
 
             // customize its style or change its data as desired
-            splt.color = Color.Navy;
-            splt.markerSize = 10;
-            splt.markerShape = MarkerShape.filledDiamond;
+            splt.Color = Color.Navy;
+            splt.MarkerSize = 10;
+            splt.MarkerShape = MarkerShape.filledDiamond;
 
             // add it to the plot
             plt.Add(splt);

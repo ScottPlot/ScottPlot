@@ -85,12 +85,12 @@ namespace ScottPlot.Plottable
             double[] ys = yList.ToArray();
             var scatter = new ScatterPlot(xs, ys)
             {
-                color = Color,
-                lineWidth = LineWidth,
-                markerSize = 0,
-                label = Label,
-                markerShape = MarkerShape.none,
-                lineStyle = LineStyle
+                Color = Color,
+                LineWidth = LineWidth,
+                MarkerSize = 0,
+                Label = Label,
+                MarkerShape = MarkerShape.none,
+                LineStyle = LineStyle
             };
             scatter.Render(dims, bmp, lowQuality);
         }

@@ -28,11 +28,11 @@ namespace ScottPlot.Cookbook.Recipes
 
             // plot the mean curve as a scatter plot (on the secondary Y axis)
             var sp = plt.AddScatter(hist.bins, hist.countsFracCurve);
-            sp.markerSize = 0;
-            sp.lineWidth = 2;
+            sp.MarkerSize = 0;
+            sp.LineWidth = 2;
             sp.VerticalAxisIndex = 1;
             plt.YAxis2.Label("Fraction");
-            plt.YAxis2.Color(sp.color);
+            plt.YAxis2.Color(sp.Color);
             plt.YAxis2.Ticks(true);
 
             // decorate the plot
@@ -63,14 +63,14 @@ namespace ScottPlot.Cookbook.Recipes
 
             // display datasets as step plots
             var sp1 = plt.AddScatter(hist1.bins, hist1.cumulativeFrac);
-            sp1.label = "Sample A";
-            sp1.stepDisplay = true;
-            sp1.markerSize = 0;
+            sp1.Label = "Sample A";
+            sp1.StepDisplay = true;
+            sp1.MarkerSize = 0;
 
             var sp2 = plt.AddScatter(hist2.bins, hist2.cumulativeFrac);
-            sp2.label = "Sample B";
-            sp2.stepDisplay = true;
-            sp2.markerSize = 0;
+            sp2.Label = "Sample B";
+            sp2.StepDisplay = true;
+            sp2.MarkerSize = 0;
 
             // decorate the plot
             plt.Legend();

@@ -23,7 +23,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            splt.ys[0] += 1;
+            splt.Ys[0] += 1;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -53,8 +53,8 @@ namespace ScottPlotTests.PlottableRenderTests
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            splt.errorX[0] += .1;
-            splt.errorY[0] += .1;
+            splt.XError[0] += .1;
+            splt.YError[0] += .1;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -84,7 +84,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            splt.lineWidth += 1;
+            splt.LineWidth += 1;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -114,7 +114,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            splt.errorLineWidth += 1;
+            splt.ErrorLineWidth += 1;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -144,7 +144,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            splt.errorCapSize += 1;
+            splt.ErrorCapSize += 1;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -174,7 +174,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            splt.markerSize += 1;
+            splt.MarkerSize += 1;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -202,7 +202,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            splt.markerShape = MarkerShape.openCircle;
+            splt.MarkerShape = MarkerShape.openCircle;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -230,7 +230,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            splt.stepDisplay = true;
+            splt.StepDisplay = true;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -287,7 +287,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            splt.color = System.Drawing.Color.Gray;
+            splt.Color = System.Drawing.Color.Gray;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -315,7 +315,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            splt.lineStyle = LineStyle.Dash;
+            splt.LineStyle = LineStyle.Dash;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed

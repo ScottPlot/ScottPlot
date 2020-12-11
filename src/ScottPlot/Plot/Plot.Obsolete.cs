@@ -620,15 +620,15 @@ namespace ScottPlot
         {
             var scatterPlot = new ScatterPlot(xs, ys, errorX, errorY)
             {
-                color = color ?? settings.GetNextColor(),
-                lineWidth = lineWidth,
-                markerSize = (float)markerSize,
-                label = label,
-                errorLineWidth = (float)errorLineWidth,
-                errorCapSize = (float)errorCapSize,
-                stepDisplay = false,
-                markerShape = markerShape,
-                lineStyle = lineStyle
+                Color = color ?? settings.GetNextColor(),
+                LineWidth = lineWidth,
+                MarkerSize = (float)markerSize,
+                Label = label,
+                ErrorLineWidth = (float)errorLineWidth,
+                ErrorCapSize = (float)errorCapSize,
+                StepDisplay = false,
+                MarkerShape = markerShape,
+                LineStyle = lineStyle
             };
 
             Add(scatterPlot);
@@ -664,15 +664,15 @@ namespace ScottPlot
 
             var scatterPlot = new ScatterPlotHighlight(xs, ys, errorX, errorY)
             {
-                color = (Color)color,
-                lineWidth = lineWidth,
-                markerSize = (float)markerSize,
-                label = label,
-                errorLineWidth = (float)errorLineWidth,
-                errorCapSize = (float)errorCapSize,
-                stepDisplay = false,
-                markerShape = markerShape,
-                lineStyle = lineStyle,
+                Color = (Color)color,
+                LineWidth = lineWidth,
+                MarkerSize = (float)markerSize,
+                Label = label,
+                ErrorLineWidth = (float)errorLineWidth,
+                ErrorCapSize = (float)errorCapSize,
+                StepDisplay = false,
+                MarkerShape = markerShape,
+                LineStyle = lineStyle,
                 highlightedShape = highlightedShape,
                 highlightedColor = highlightedColor.Value,
                 highlightedMarkerSize = (float)highlightedMarkerSize.Value
@@ -837,15 +837,15 @@ namespace ScottPlot
 
             ScatterPlot stepPlot = new ScatterPlot(xs, ys)
             {
-                color = (Color)color,
-                lineWidth = lineWidth,
-                markerSize = 0,
-                label = label,
-                errorLineWidth = 0,
-                errorCapSize = 0,
-                stepDisplay = true,
-                markerShape = MarkerShape.none,
-                lineStyle = LineStyle.Solid
+                Color = (Color)color,
+                LineWidth = lineWidth,
+                MarkerSize = 0,
+                Label = label,
+                ErrorLineWidth = 0,
+                ErrorCapSize = 0,
+                StepDisplay = true,
+                MarkerShape = MarkerShape.none,
+                LineStyle = LineStyle.Solid
             };
 
             Add(stepPlot);

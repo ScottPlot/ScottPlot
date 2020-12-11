@@ -28,7 +28,7 @@ namespace ScottPlot.Plottable
                 var highlightedIndexes = Enumerable.Range(0, isHighlighted.Length).Where(x => isHighlighted[x]);
                 foreach (int i in highlightedIndexes)
                 {
-                    PointF pt = new PointF(dims.GetPixelX(xs[i]), dims.GetPixelY(ys[i]));
+                    PointF pt = new PointF(dims.GetPixelX(Xs[i]), dims.GetPixelY(Ys[i]));
                     MarkerTools.DrawMarker(gfx, pt, highlightedShape, highlightedMarkerSize, highlightedColor);
                 }
             }
@@ -36,19 +36,19 @@ namespace ScottPlot.Plottable
 
         public void HighlightClear()
         {
-            isHighlighted = new bool[xs.Length];
+            isHighlighted = new bool[Xs.Length];
         }
 
         public (double x, double y, int index) HighlightPoint(int index)
         {
             // if the size of xs changed, reset isHighlighted to match its new size
-            if (isHighlighted.Length != xs.Length)
+            if (isHighlighted.Length != Xs.Length)
                 HighlightClear();
 
             if (index < 0 || index >= isHighlighted.Length)
                 throw new ArgumentException("Invalid index");
             isHighlighted[index] = true;
-            return (xs[index], ys[index], index);
+            return (Xs[index], Ys[index], index);
         }
 
         public (double x, double y, int index) HighlightPointNearestX(double x)
@@ -56,7 +56,7 @@ namespace ScottPlot.Plottable
             var point = GetPointNearestX(x);
 
             // if the size of xs changed, reset isHighlighted to match its new size
-            if (isHighlighted.Length != xs.Length)
+            if (isHighlighted.Length != Xs.Length)
                 HighlightClear();
 
             isHighlighted[point.index] = true;
@@ -68,7 +68,7 @@ namespace ScottPlot.Plottable
             var point = GetPointNearestY(y);
 
             // if the size of xs changed, reset isHighlighted to match its new size
-            if (isHighlighted.Length != xs.Length)
+            if (isHighlighted.Length != Xs.Length)
                 HighlightClear();
 
             isHighlighted[point.index] = true;
@@ -80,7 +80,7 @@ namespace ScottPlot.Plottable
             var point = GetPointNearest(x, y);
 
             // if the size of xs changed, reset isHighlighted to match its new size
-            if (isHighlighted.Length != xs.Length)
+            if (isHighlighted.Length != Xs.Length)
                 HighlightClear();
 
             isHighlighted[point.index] = true;

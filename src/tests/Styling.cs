@@ -19,10 +19,10 @@ namespace ScottPlotTests
 
 
             // modify for thick magenta line and circle markers
-            scatter.lineWidth = 10;
-            scatter.color = System.Drawing.Color.Magenta;
-            scatter.markerSize = 20;
-            scatter.markerShape = ScottPlot.MarkerShape.filledCircle;
+            scatter.LineWidth = 10;
+            scatter.Color = System.Drawing.Color.Magenta;
+            scatter.MarkerSize = 20;
+            scatter.MarkerShape = ScottPlot.MarkerShape.filledCircle;
 
             // do the same for a scatter plot
             var signal = plt.PlotSignal(ys: ys, yOffset: 5,

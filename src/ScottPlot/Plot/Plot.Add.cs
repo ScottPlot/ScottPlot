@@ -52,9 +52,9 @@ namespace ScottPlot
             double[] ys = { yBase, yTip };
             var plottable = new ScatterPlot(xs, ys)
             {
-                lineWidth = lineWidth,
-                markerSize = 0,
-                color = color ?? GetNextColor(),
+                LineWidth = lineWidth,
+                MarkerSize = 0,
+                Color = color ?? GetNextColor(),
                 ArrowheadLength = 3,
                 ArrowheadWidth = 3
             };
@@ -365,9 +365,9 @@ namespace ScottPlot
         {
             var plottable = new ScatterPlot(new double[] { x }, new double[] { y })
             {
-                color = color ?? settings.GetNextColor(),
-                markerSize = size,
-                markerShape = shape
+                Color = color ?? settings.GetNextColor(),
+                MarkerSize = size,
+                MarkerShape = shape
             };
             Add(plottable);
             return plottable;
@@ -492,12 +492,12 @@ namespace ScottPlot
         {
             var plottable = new ScatterPlot(xs, ys, null, null)
             {
-                color = color ?? GetNextColor(),
-                lineWidth = lineWidth,
-                markerSize = markerSize,
-                label = label,
-                markerShape = markerShape,
-                lineStyle = lineStyle
+                Color = color ?? GetNextColor(),
+                LineWidth = lineWidth,
+                MarkerSize = markerSize,
+                Label = label,
+                MarkerShape = markerShape,
+                LineStyle = lineStyle
             };
             Add(plottable);
             return plottable;

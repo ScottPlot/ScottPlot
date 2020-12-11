@@ -40,7 +40,7 @@ namespace ScottPlotTests.Plot
             double[] xs = new double[] { 1.0, 2.0, 3.0, 4.0 };
             double[] ys = new double[] { 1.0, 2.0, 3.0, 4.0 };
             double[] error = new double[] { 0.1, 0.1, 0.1, 0.1 };
-            return new PlottableScatterHighlightTestable(xs, ys, error, error) { color = Color.Green };
+            return new PlottableScatterHighlightTestable(xs, ys, error, error) { Color = Color.Green };
         }
 
         [Test]

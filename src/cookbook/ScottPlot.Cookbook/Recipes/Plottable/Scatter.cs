@@ -44,10 +44,10 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             // add scatter plots and customize markers
             var sp1 = plt.AddScatter(x, sin, markerSize: 15);
-            sp1.markerShape = MarkerShape.openCircle;
+            sp1.MarkerShape = MarkerShape.openCircle;
 
             var sp2 = plt.AddScatter(x, cos, markerSize: 7);
-            sp2.markerShape = MarkerShape.filledSquare;
+            sp2.MarkerShape = MarkerShape.filledSquare;
         }
     }
 
@@ -146,11 +146,11 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] yErr = DataGen.RandomNormal(rand, pointCount);
 
             var sp = plt.AddScatter(xs, ys);
-            sp.errorX = xErr;
-            sp.errorY = yErr;
-            sp.errorCapSize = 3;
-            sp.errorLineWidth = 1;
-            sp.lineStyle = LineStyle.Dot;
+            sp.XError = xErr;
+            sp.YError = yErr;
+            sp.ErrorCapSize = 3;
+            sp.ErrorLineWidth = 1;
+            sp.LineStyle = LineStyle.Dot;
         }
     }
 }
