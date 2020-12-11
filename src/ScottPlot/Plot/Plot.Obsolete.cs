@@ -500,10 +500,10 @@ namespace ScottPlot
         {
             var axisSpan = new HSpan()
             {
-                position1 = x1,
-                position2 = x2,
-                color = color ?? GetNextColor(alpha),
-                label = label,
+                X1 = x1,
+                X2 = x2,
+                Color = color ?? GetNextColor(alpha),
+                Label = label,
                 DragEnabled = draggable,
                 DragFixedSize = dragFixedSize,
                 DragLimitMin = dragLimitLower,
@@ -1105,10 +1105,10 @@ namespace ScottPlot
         {
             var axisSpan = new VSpan()
             {
-                position1 = y1,
-                position2 = y2,
-                color = color ?? GetNextColor(alpha),
-                label = label,
+                Y1 = y1,
+                Y2 = y2,
+                Color = color ?? GetNextColor(alpha),
+                Label = label,
                 DragEnabled = draggable,
                 DragFixedSize = dragFixedSize,
                 DragLimitMin = dragLimitLower,

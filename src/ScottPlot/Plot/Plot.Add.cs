@@ -294,10 +294,10 @@ namespace ScottPlot
         {
             var plottable = new HSpan()
             {
-                position1 = xMin,
-                position2 = xMax,
-                color = color ?? GetNextColor(.5),
-                label = label,
+                X1 = xMin,
+                X2 = xMax,
+                Color = color ?? GetNextColor(.5),
+                Label = label,
             };
             Add(plottable);
             return plottable;
@@ -675,10 +675,10 @@ namespace ScottPlot
         {
             var plottable = new VSpan()
             {
-                position1 = yMin,
-                position2 = yMax,
-                color = color ?? GetNextColor(.5),
-                label = label,
+                Y1 = yMin,
+                Y2 = yMax,
+                Color = color ?? GetNextColor(.5),
+                Label = label,
             };
             Add(plottable);
             return plottable;

@@ -15,13 +15,13 @@ namespace ScottPlotTests.PlottableRenderTests
             var plt = new ScottPlot.Plot();
 
             // start with default settings
-            var axSpan = new HSpan() { position1 = 1.23, position2 = 2.34 };
+            var axSpan = new HSpan() { X1 = 1.23, X2 = 2.34 };
 
             plt.Add(axSpan);
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            axSpan.position2 += 1;
+            axSpan.X2 += 1;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -41,13 +41,13 @@ namespace ScottPlotTests.PlottableRenderTests
             var plt = new ScottPlot.Plot();
 
             // start with default settings
-            var axSpan = new HSpan() { position1 = 1.23, position2 = 2.34, color = System.Drawing.Color.Gray };
+            var axSpan = new HSpan() { X1 = 1.23, X2 = 2.34, Color = System.Drawing.Color.Gray };
 
             plt.Add(axSpan);
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            axSpan.color = System.Drawing.Color.Black;
+            axSpan.Color = System.Drawing.Color.Black;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed

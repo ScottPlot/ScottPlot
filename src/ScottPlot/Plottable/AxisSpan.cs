@@ -6,42 +6,62 @@ using System.Drawing;
 
 namespace ScottPlot.Plottable
 {
-    public class HSpan : AxisSpan { public HSpan() { IsHorizontal = true; } }
-    public class VSpan : AxisSpan { public VSpan() { IsHorizontal = false; } }
+    /// <summary>
+    /// Shaded horizontal region between two X values
+    /// </summary>
+    public class HSpan : AxisSpan
+    {
+        public double X1 { get => Position1; set => Position1 = value; }
+        public double X2 { get => Position2; set => Position2 = value; }
+        public HSpan() : base(true) { }
+        public override string ToString() => $"Horizontal span between Y1={X1} and Y2={X2}";
+    }
+
+    /// <summary>
+    /// Shade the region between two Y values
+    /// </summary>
+    public class VSpan : AxisSpan
+    {
+        public double Y1 { get => Position1; set => Position1 = value; }
+        public double Y2 { get => Position2; set => Position2 = value; }
+        public VSpan() : base(false) { }
+        public override string ToString() => $"Vertical span between X1={Y1} and X2={Y2}";
+    }
 
     public abstract class AxisSpan : IPlottable, IDraggable
     {
-        public double position1;
-        public double position2;
-        private double Min { get => Math.Min(position1, position2); }
-        private double Max { get => Math.Max(position1, position2); }
+        // location and orientation
+        protected double Position1;
+        protected double Position2;
+        private double Min { get => Math.Min(Position1, Position2); }
+        private double Max { get => Math.Max(Position1, Position2); }
+        readonly bool IsHorizontal;
+
+        // configuration
         public int HorizontalAxisIndex { get; set; } = 0;
         public int VerticalAxisIndex { get; set; } = 0;
         public bool IsVisible { get; set; } = true;
+        public Color Color = Color.FromArgb(128, Color.Magenta);
+        public string Label;
 
-        public Color color = Color.FromArgb(128, Color.Magenta);
-        public string label;
-        public bool IsHorizontal = true;
+        // mouse interaction
         public bool DragEnabled { get; set; }
         public bool DragFixedSize { get; set; }
         public double DragLimitMin = double.NegativeInfinity;
         public double DragLimitMax = double.PositiveInfinity;
         public Cursor DragCursor => IsHorizontal ? Cursor.WE : Cursor.NS;
 
-        public override string ToString()
+        public AxisSpan(bool isHorizontal)
         {
-            string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
-            return IsHorizontal ?
-                $"PlottableVSpan{label} from X={position1} to X={position2}" :
-                $"PlottableVSpan{label} from Y={position1} to Y={position2}";
+            IsHorizontal = isHorizontal;
         }
 
         public void ValidateData(bool deep = false)
         {
-            if (double.IsNaN(position1) || double.IsInfinity(position1))
+            if (double.IsNaN(Position1) || double.IsInfinity(Position1))
                 throw new InvalidOperationException("position1 must be a valid number");
 
-            if (double.IsNaN(position2) || double.IsInfinity(position2))
+            if (double.IsNaN(Position2) || double.IsInfinity(Position2))
                 throw new InvalidOperationException("position2 must be a valid number");
         }
 
@@ -49,8 +69,8 @@ namespace ScottPlot.Plottable
         {
             var singleItem = new LegendItem()
             {
-                label = label,
-                color = color,
+                label = Label,
+                color = Color,
                 markerSize = 0,
                 lineWidth = 10
             };
@@ -68,18 +88,18 @@ namespace ScottPlot.Plottable
         {
             if (IsHorizontal)
             {
-                if (Math.Abs(position1 - coordinateX) <= snapX)
+                if (Math.Abs(Position1 - coordinateX) <= snapX)
                     edgeUnderMouse = Edge.Edge1;
-                else if (Math.Abs(position2 - coordinateX) <= snapX)
+                else if (Math.Abs(Position2 - coordinateX) <= snapX)
                     edgeUnderMouse = Edge.Edge2;
                 else
                     edgeUnderMouse = Edge.Neither;
             }
             else
             {
-                if (Math.Abs(position1 - coordinateY) <= snapY)
+                if (Math.Abs(Position1 - coordinateY) <= snapY)
                     edgeUnderMouse = Edge.Edge1;
-                else if (Math.Abs(position2 - coordinateY) <= snapY)
+                else if (Math.Abs(Position2 - coordinateY) <= snapY)
                     edgeUnderMouse = Edge.Edge2;
                 else
                     edgeUnderMouse = Edge.Neither;
@@ -104,18 +124,18 @@ namespace ScottPlot.Plottable
                 coordinateY = Math.Min(coordinateY, DragLimitMax);
             }
 
-            double sizeBeforeDrag = position2 - position1;
+            double sizeBeforeDrag = Position2 - Position1;
             if (edgeUnderMouse == Edge.Edge1)
             {
-                position1 = IsHorizontal ? coordinateX : coordinateY;
+                Position1 = IsHorizontal ? coordinateX : coordinateY;
                 if (DragFixedSize || isShiftDown)
-                    position2 = position1 + sizeBeforeDrag;
+                    Position2 = Position1 + sizeBeforeDrag;
             }
             else if (edgeUnderMouse == Edge.Edge2)
             {
-                position2 = IsHorizontal ? coordinateX : coordinateY;
+                Position2 = IsHorizontal ? coordinateX : coordinateY;
                 if (DragFixedSize || isShiftDown)
-                    position1 = position2 - sizeBeforeDrag;
+                    Position1 = Position2 - sizeBeforeDrag;
             }
             else
             {
@@ -123,17 +143,17 @@ namespace ScottPlot.Plottable
             }
 
             // ensure fixed-width spans stay entirely inside the allowable range
-            double belowLimit = DragLimitMin - position1;
-            double aboveLimit = position2 - DragLimitMax;
+            double belowLimit = DragLimitMin - Position1;
+            double aboveLimit = Position2 - DragLimitMax;
             if (belowLimit > 0)
             {
-                position1 += belowLimit;
-                position2 += belowLimit;
+                Position1 += belowLimit;
+                Position2 += belowLimit;
             }
             if (aboveLimit > 0)
             {
-                position1 -= aboveLimit;
-                position2 -= aboveLimit;
+                Position1 -= aboveLimit;
+                Position2 -= aboveLimit;
             }
         }
 
@@ -153,7 +173,7 @@ namespace ScottPlot.Plottable
             RectangleF rect = new RectangleF(p1.X - 1, p2.Y - 1, p2.X - p1.X + 1, p1.Y - p2.Y + 1);
 
             using (var gfx = GDI.Graphics(bmp, dims, lowQuality))
-            using (var brush = GDI.Brush(color))
+            using (var brush = GDI.Brush(Color))
             {
                 gfx.FillRectangle(brush, rect);
             }
