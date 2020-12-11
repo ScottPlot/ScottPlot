@@ -890,12 +890,11 @@ namespace ScottPlot
         {
             var plottable = new Polygons(polys)
             {
-                label = label,
-                lineWidth = lineWidth,
-                lineColor = lineColor ?? Color.Black,
-                fill = fill,
-                fillColor = fillColor ?? settings.GetNextColor(),
-                fillAlpha = fillAlpha
+                Label = label,
+                LineWidth = lineWidth,
+                LineColor = lineColor ?? Color.Black,
+                Fill = fill,
+                FillColor = Color.FromArgb((byte)(255 * fillAlpha), fillColor ?? GetNextColor()),
             };
 
             Add(plottable);

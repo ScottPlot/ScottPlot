@@ -2,40 +2,37 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using ScottPlot.Ticks;
 using ScottPlot.Drawing;
-using ScottPlot.Renderable;
 
 namespace ScottPlot.Plottable
 {
     public class Polygons : IPlottable
     {
-        public readonly List<List<(double x, double y)>> polys;
-        public string label;
+        // data
+        public readonly List<List<(double x, double y)>> Polys;
 
-        public double lineWidth;
-        public Color lineColor;
-        public bool fill = true;
-        public Color fillColor;
-        public double fillAlpha;
+        // customization
+        public string Label;
+        public double LineWidth;
+        public Color LineColor;
+        public bool Fill = true;
+        public Color FillColor;
         public bool IsVisible { get; set; } = true;
         public int HorizontalAxisIndex { get; set; } = 0;
         public int VerticalAxisIndex { get; set; } = 0;
-
         public Color HatchColor = Color.Transparent;
         public HatchStyle HatchStyle = HatchStyle.None;
-
         public bool SkipOffScreenPolygons = true;
         public bool RenderSmallPolygonsAsSinglePixels = true;
 
         public Polygons(List<List<(double x, double y)>> polys)
         {
-            this.polys = polys;
+            Polys = polys;
         }
 
         public override string ToString()
         {
-            string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
+            string label = string.IsNullOrWhiteSpace(this.Label) ? "" : $" ({this.Label})";
             return $"PlottablePolygons {label} with {PointCount} polygons";
         }
 
@@ -44,7 +41,7 @@ namespace ScottPlot.Plottable
             if (deep == false)
                 return;
 
-            foreach (var poly in polys)
+            foreach (var poly in Polys)
             {
                 foreach (var point in poly)
                 {
@@ -57,16 +54,16 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public int PointCount { get => polys.Count; }
+        public int PointCount { get => Polys.Count; }
 
         public AxisLimits GetAxisLimits()
         {
-            double xMin = polys[0][0].x;
-            double xMax = polys[0][0].x;
-            double yMin = polys[0][0].y;
-            double yMax = polys[0][0].y;
+            double xMin = Polys[0][0].x;
+            double xMax = Polys[0][0].x;
+            double yMin = Polys[0][0].y;
+            double yMax = Polys[0][0].y;
 
-            foreach (var poly in polys)
+            foreach (var poly in Polys)
             {
                 foreach (var (x, y) in poly)
                 {
@@ -84,9 +81,9 @@ namespace ScottPlot.Plottable
         {
             var singleLegendItem = new LegendItem()
             {
-                label = label,
-                color = fill ? fillColor : lineColor,
-                lineWidth = fill ? 10 : lineWidth,
+                label = Label,
+                color = Fill ? FillColor : LineColor,
+                lineWidth = Fill ? 10 : LineWidth,
                 markerShape = MarkerShape.none,
                 hatchColor = HatchColor,
                 hatchStyle = HatchStyle
@@ -134,12 +131,11 @@ namespace ScottPlot.Plottable
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            Color colorWithAlpha = Color.FromArgb((byte)(255 * fillAlpha), fillColor);
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
-            using (Brush brush = GDI.Brush(fillColor, HatchColor, HatchStyle))
-            using (Pen pen = GDI.Pen(lineColor, lineWidth))
+            using (Brush brush = GDI.Brush(FillColor, HatchColor, HatchStyle))
+            using (Pen pen = GDI.Pen(LineColor, LineWidth))
             {
-                foreach (List<(double x, double y)> poly in polys)
+                foreach (List<(double x, double y)> poly in Polys)
                 {
                     if (SkipOffScreenPolygons &&
                         poly.Where(pt => pt.x >= dims.XMin && pt.x <= dims.XMax &&
@@ -151,7 +147,7 @@ namespace ScottPlot.Plottable
                         new PointF[] { new PointF(dims.GetPixelX(poly[0].x), dims.GetPixelY(poly[0].y)) } :
                         poly.Select(point => new PointF(dims.GetPixelX(point.x), dims.GetPixelY(point.y))).ToArray();
 
-                    if (fill)
+                    if (Fill)
                     {
                         if (polyArray.Length >= 3)
                             gfx.FillPolygon(brush, polyArray);
@@ -159,7 +155,7 @@ namespace ScottPlot.Plottable
                             gfx.FillRectangle(brush, polyArray[0].X, polyArray[0].Y, 1, 1);
                     }
 
-                    if (lineWidth > 0)
+                    if (LineWidth > 0)
                         gfx.DrawPolygon(pen, polyArray);
                 }
             }

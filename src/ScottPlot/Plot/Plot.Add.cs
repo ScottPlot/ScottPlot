@@ -395,9 +395,9 @@ namespace ScottPlot
         {
             var plottable = new Polygons(polys)
             {
-                lineWidth = lineWidth,
-                lineColor = lineColor ?? Color.Black,
-                fillColor = fillColor ?? settings.GetNextColor(),
+                LineWidth = lineWidth,
+                LineColor = lineColor ?? Color.Black,
+                FillColor = fillColor ?? settings.GetNextColor(),
             };
             Add(plottable);
             return plottable;
