@@ -35,9 +35,9 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
     class GridDisable : IRecipe
     {
         public string Category => "Axis and Ticks";
-        public string ID => "axis_gridDisable";
+        public string ID => "axis_gridDisableAll";
         public string Title => "Disable Grid";
-        public string Description => "Visibility of grid lines can be controlled for each axis.";
+        public string Description => "Visibility of primary X and Y grids can be set using a single method.";
 
         public void ExecuteRecipe(Plot plt)
         {
@@ -45,9 +45,30 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
             plt.AddSignal(DataGen.Sin(51));
             plt.AddSignal(DataGen.Cos(51));
 
-            // disable both grids
+            // hide grids
+            plt.Grid(false);
+        }
+    }
+
+    class GridOne : IRecipe
+    {
+        public string Category => "Axis and Ticks";
+        public string ID => "axis_gridDisableOne";
+        public string Title => "Disable Vertical Grid";
+        public string Description =>
+            "Grid line visibility can be controlled for each axis individually. " +
+            "Use this to selectively enable grid lines only for the axes of interest. " +
+            "Keep in mind that vertical grid lines are controlled by horizontal axes.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            // plot sample data
+            plt.AddSignal(DataGen.Sin(51));
+            plt.AddSignal(DataGen.Cos(51));
+
+            // control grid visibility by axis
             plt.XAxis.Grid(false);
-            plt.YAxis.Grid(false);
+            plt.YAxis.Grid(true);
         }
     }
 
@@ -65,8 +86,8 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
             plt.AddSignal(DataGen.Cos(51));
 
             // common grid customizations are color and style
-            plt.GridColor(Color.LightBlue);
-            plt.GridLineStyle(LineStyle.Dash);
+            plt.GridColor(Color.FromArgb(50, Color.Green));
+            plt.GridLineStyle(LineStyle.Dot);
         }
     }
 
@@ -87,7 +108,6 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
             plt.XAxis.Configure(ticks: false);
         }
     }
-
 
     class TicksRotated : IRecipe
     {
