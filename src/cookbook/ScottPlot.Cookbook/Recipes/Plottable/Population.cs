@@ -174,14 +174,14 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             var popPlot = plt.AddPopulations(multiSeries);
 
             // now customize its public fields to extensively customize its display options
-            popPlot.displayDistributionCurve = true;
-            popPlot.distributionCurveLineStyle = LineStyle.Dash;
-            popPlot.scatterOutlineColor = System.Drawing.Color.Transparent;
-            popPlot.displayItems = ScottPlot.Plottable.PopulationPlot.DisplayItems.ScatterAndBox;
-            popPlot.boxStyle = ScottPlot.Plottable.PopulationPlot.BoxStyle.BarMeanStDev;
+            popPlot.DistributionCurve = true;
+            popPlot.DistributionCurveLineStyle = LineStyle.Dash;
+            popPlot.ScatterOutlineColor = System.Drawing.Color.Transparent;
+            popPlot.DataFormat = ScottPlot.Plottable.PopulationPlot.DisplayItems.ScatterAndBox;
+            popPlot.DataBoxStyle = ScottPlot.Plottable.PopulationPlot.BoxStyle.BarMeanStDev;
 
             // colors are managed at the population series level:
-            foreach (var popSeries in popPlot.popMultiSeries.multiSeries)
+            foreach (var popSeries in popPlot.MultiSeries.multiSeries)
                 popSeries.color = Tools.GetRandomColor(rand);
 
             // improve the style of the plot
