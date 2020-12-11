@@ -159,11 +159,23 @@ namespace ScottPlot.Renderable
             Ticks.TickCollection.prefix = prefix ?? Ticks.TickCollection.prefix;
         }
 
-        public void ConfigureTickSpacing(double manualSpacing)
+        /// <summary>
+        /// Define a manual spacing between major ticks (and major grid lines)
+        /// </summary>
+        public void SetTickSpacing(double manualSpacing)
         {
             // TODO: cutt X and Y out of this
             Ticks.TickCollection.manualSpacingX = manualSpacing;
             Ticks.TickCollection.manualSpacingY = manualSpacing;
+        }
+
+        /// <summary>
+        /// Define a manual spacing between major ticks (and major grid lines) for axes configured to display using DateTime format
+        /// </summary>
+        public void SetTickSpacing(double manualSpacing, DateTimeUnit manualSpacingDateTimeUnit)
+        {
+            SetTickSpacing(manualSpacing);
+            Ticks.TickCollection.manualDateTimeSpacingUnitX = manualSpacingDateTimeUnit;
         }
 
         /// <summary>
@@ -198,16 +210,12 @@ namespace ScottPlot.Renderable
             bool? majorTickMarks = null,
             bool? majorTickLabels = null,
             bool? minorTickMarks = null,
-            double? manualSpacing = null,
-            Ticks.DateTimeUnit? manualSpacingDateTimeUnit = null,
             double[] definedPositions = null,
             string[] definedLabels = null)
         {
             Ticks.MajorTickEnable = majorTickMarks ?? Ticks.MajorTickEnable;
             Ticks.MajorLabelEnable = majorTickLabels ?? Ticks.MajorLabelEnable;
             Ticks.MinorTickEnable = minorTickMarks ?? Ticks.MinorTickEnable;
-            Ticks.TickCollection.manualSpacingX = manualSpacing ?? Ticks.TickCollection.manualSpacingX;
-            Ticks.TickCollection.manualDateTimeSpacingUnitX = manualSpacingDateTimeUnit ?? Ticks.TickCollection.manualDateTimeSpacingUnitX;
             Ticks.TickCollection.manualTickPositions = definedPositions;
             Ticks.TickCollection.manualTickLabels = definedLabels;
         }

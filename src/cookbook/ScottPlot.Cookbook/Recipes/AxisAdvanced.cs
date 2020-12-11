@@ -146,8 +146,8 @@ namespace ScottPlot.Cookbook.Recipes
             sig.xOffset = -50;
 
             // then invert the sign of the axis tick labels
-            plt.XAxis.ConfigureTickSpacing(2);
-            plt.YAxis.ConfigureTickSpacing(.1);
+            plt.XAxis.SetTickSpacing(2);
+            plt.YAxis.SetTickSpacing(.1);
         }
     }
 
@@ -271,9 +271,7 @@ namespace ScottPlot.Cookbook.Recipes
             plt.XAxis.DateTimeFormat(true);
 
             // define tick spacing as 1 day (every day will be shown)
-            plt.XAxis.ConfigureTicks(
-                manualSpacing: 1,
-                manualSpacingDateTimeUnit: ScottPlot.Ticks.DateTimeUnit.Day);
+            plt.XAxis.SetTickSpacing(1, ScottPlot.Ticks.DateTimeUnit.Day);
             plt.XAxis.ConfigureTickLabelStyle(rotation: 45);
 
             // add some extra space for rotated ticks

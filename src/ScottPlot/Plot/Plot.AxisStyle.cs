@@ -96,10 +96,22 @@ namespace ScottPlot
             YAxis.ConfigureTickLabelStyle(snapToNearestPixel: snapToNearestPixel);
             XAxis.ConfigureMajorGrid(enable: enableVertical);
             YAxis.ConfigureMajorGrid(enable: enableHorizontal);
-            XAxis.ConfigureTicks(manualSpacing: xSpacing);
-            YAxis.ConfigureTicks(manualSpacing: ySpacing);
-            XAxis.ConfigureTicks(manualSpacingDateTimeUnit: xSpacingDateTimeUnit);
-            YAxis.ConfigureTicks(manualSpacingDateTimeUnit: ySpacingDateTimeUnit);
+
+            if (xSpacing.HasValue)
+            {
+                if (xSpacingDateTimeUnit.HasValue)
+                    XAxis.SetTickSpacing(xSpacing.Value, xSpacingDateTimeUnit.Value);
+                else
+                    XAxis.SetTickSpacing(xSpacing.Value);
+            }
+
+            if (ySpacing.HasValue)
+            {
+                if (ySpacingDateTimeUnit.HasValue)
+                    XAxis.SetTickSpacing(ySpacing.Value, ySpacingDateTimeUnit.Value);
+                else
+                    XAxis.SetTickSpacing(ySpacing.Value);
+            }
         }
 
         /// <summary>
