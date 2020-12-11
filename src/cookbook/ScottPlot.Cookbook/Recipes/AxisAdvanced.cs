@@ -95,7 +95,7 @@ namespace ScottPlot.Cookbook.Recipes
             // then define tick labels based on "real" X values, rotate them, and give them extra space
             string[] labels = frequencies.Select(x => x.ToString()).ToArray();
             plt.XAxis.SetTickPositions(positions, labels);
-            plt.XAxis.ConfigureTickLabelStyle(rotation: 45);
+            plt.XAxis.TickLabelStyle(rotation: 45);
             plt.XAxis.PixelSizeMinimum = 50; // extra padding for rotated ticks
 
             // apply axis labels, trigging a layout reset
@@ -123,8 +123,8 @@ namespace ScottPlot.Cookbook.Recipes
             sig.xOffset = -50;
 
             // then invert the sign of the axis tick labels
-            plt.XAxis.ConfigureTickLabelStyle(invertSign: true);
-            plt.YAxis.ConfigureTickLabelStyle(invertSign: true);
+            plt.XAxis.TickLabelNotation(invertSign: true);
+            plt.YAxis.TickLabelNotation(invertSign: true);
         }
     }
 
@@ -269,7 +269,7 @@ namespace ScottPlot.Cookbook.Recipes
 
             // define tick spacing as 1 day (every day will be shown)
             plt.XAxis.SetTickSpacing(1, ScottPlot.Ticks.DateTimeUnit.Day);
-            plt.XAxis.ConfigureTickLabelStyle(rotation: 45);
+            plt.XAxis.TickLabelStyle(rotation: 45);
 
             // add some extra space for rotated ticks
             plt.XAxis.PixelSizeMinimum = 50;

@@ -123,7 +123,7 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
             plt.AddSignal(DataGen.Cos(51));
 
             // rotate horizontal axis tick labels
-            plt.XAxis.ConfigureTickLabelStyle(rotation: 45);
+            plt.XAxis.TickLabelStyle(rotation: 45);
         }
     }
 

@@ -99,8 +99,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.XAxis2.SetLabel(label: "Impressive Graph", size: 24, color: Color.Purple, bold: true);
 
             // configure tick labels
-            plt.XAxis.ConfigureTickLabelStyle(color: Color.DarkBlue, fontName: "comic sans ms", fontSize: 16);
-            plt.YAxis.ConfigureTickLabelStyle(color: Color.DarkGreen, fontName: "comic sans ms", fontSize: 16);
+            plt.XAxis.TickLabelStyle(color: Color.DarkBlue, fontName: "comic sans ms", fontSize: 16);
+            plt.YAxis.TickLabelStyle(color: Color.DarkGreen, fontName: "comic sans ms", fontSize: 16);
 
             // add a legend to the corner
             plt.Legend(fontName: "comic sans ms", fontSize: 18, bold: true, fontColor: Color.DarkBlue);

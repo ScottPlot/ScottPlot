@@ -62,8 +62,8 @@ namespace ScottPlot
         /// </summary>
         public void GridLineStyle(LineStyle lineStyle)
         {
-            XAxis.ConfigureMajorGrid(lineStyle: lineStyle);
-            YAxis.ConfigureMajorGrid(lineStyle: lineStyle);
+            XAxis.MajorGrid(lineStyle: lineStyle);
+            YAxis.MajorGrid(lineStyle: lineStyle);
         }
 
         /// <summary>
@@ -72,8 +72,8 @@ namespace ScottPlot
         /// </summary>
         public void GridColor(Color color)
         {
-            XAxis.ConfigureMajorGrid(color: color);
-            YAxis.ConfigureMajorGrid(color: color);
+            XAxis.MajorGrid(color: color);
+            YAxis.MajorGrid(color: color);
         }
 
         [Obsolete("Use another Grid method or interact with XAxis and YAxis directly to customize major grid lines")]
@@ -90,12 +90,17 @@ namespace ScottPlot
             LineStyle? lineStyle = null,
             bool? snapToNearestPixel = null)
         {
-            XAxis.ConfigureMajorGrid(enable, color, lineWidth, lineStyle);
-            YAxis.ConfigureMajorGrid(enable, color, lineWidth, lineStyle);
-            XAxis.ConfigureTickLabelStyle(snapToNearestPixel: snapToNearestPixel);
-            YAxis.ConfigureTickLabelStyle(snapToNearestPixel: snapToNearestPixel);
-            XAxis.ConfigureMajorGrid(enable: enableVertical);
-            YAxis.ConfigureMajorGrid(enable: enableHorizontal);
+            XAxis.MajorGrid(enable, color, lineWidth, lineStyle);
+            YAxis.MajorGrid(enable, color, lineWidth, lineStyle);
+
+            if (snapToNearestPixel.HasValue)
+            {
+                XAxis.PixelSnap(snapToNearestPixel.Value);
+                YAxis.PixelSnap(snapToNearestPixel.Value);
+            }
+
+            XAxis.MajorGrid(enable: enableVertical);
+            YAxis.MajorGrid(enable: enableHorizontal);
 
             if (xSpacing.HasValue)
             {
@@ -176,7 +181,7 @@ namespace ScottPlot
         /// <summary>
         /// Configure the style and behavior of X and Y ticks
         /// </summary>
-        [Obsolete("Do not use this method. Call methods of individual axes (e.g., XAxis and YAxis)")]
+        [Obsolete("Do not use this method! Call methods of individual axes (e.g., XAxis and YAxis)")]
         public void Ticks(
             bool? displayTicksX = null,
             bool? displayTicksY = null,
@@ -219,10 +224,10 @@ namespace ScottPlot
             settings.YAxis.ConfigureTicks(majorTickLabels: displayTickLabelsY);
 
             // AXIS LABEL
-            settings.XAxis.ConfigureTickLabelStyle(fontName: fontName);
-            settings.YAxis.ConfigureTickLabelStyle(fontName: fontName);
-            settings.XAxis.ConfigureTickLabelStyle(fontSize: fontSize);
-            settings.YAxis.ConfigureTickLabelStyle(fontSize: fontSize);
+            settings.XAxis.TickLabelStyle(fontName: fontName);
+            settings.YAxis.TickLabelStyle(fontName: fontName);
+            settings.XAxis.TickLabelStyle(fontSize: fontSize);
+            settings.YAxis.TickLabelStyle(fontSize: fontSize);
 
             // TICK LABEL NOTATION
             settings.XAxis.TickLabelNotation(multiplier: useMultiplierNotation);
@@ -243,15 +248,15 @@ namespace ScottPlot
             settings.YAxis.TickLabelNotation(prefix: prefixY);
 
             // TICK STYLING
-            settings.XAxis.ConfigureTickLabelStyle(rulerMode: rulerModeX);
-            settings.YAxis.ConfigureTickLabelStyle(rulerMode: rulerModeY);
-            settings.XAxis.ConfigureTickLabelStyle(rotation: xTickRotation);
-            settings.XAxis.ConfigureTickLabelStyle(color: color);
-            settings.YAxis.ConfigureTickLabelStyle(color: color);
-            settings.XAxis.ConfigureTickLabelStyle(logScale: logScaleX);
-            settings.YAxis.ConfigureTickLabelStyle(logScale: logScaleY);
-            settings.XAxis.ConfigureTickLabelStyle(snapToNearestPixel: snapToNearestPixel);
-            settings.YAxis.ConfigureTickLabelStyle(snapToNearestPixel: snapToNearestPixel);
+            //settings.XAxis.ConfigureTickLabelStyle(rulerMode: rulerModeX);
+            //settings.YAxis.ConfigureTickLabelStyle(rulerMode: rulerModeY);
+            settings.XAxis.TickLabelStyle(rotation: xTickRotation);
+            settings.XAxis.TickLabelStyle(color: color);
+            settings.YAxis.TickLabelStyle(color: color);
+            //settings.XAxis.SetLogMinorTicks(logScaleX);
+            //settings.YAxis.SetLogMinorTicks(logScaleY);
+            //settings.XAxis.TickLabelStyle(snapToNearestPixel: snapToNearestPixel);
+            //settings.YAxis.TickLabelStyle(snapToNearestPixel: snapToNearestPixel);
         }
     }
 }

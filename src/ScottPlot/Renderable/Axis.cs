@@ -98,7 +98,7 @@ namespace ScottPlot.Renderable
         public void SetColor(Color color)
         {
             SetLabel(color: color);
-            ConfigureTickLabelStyle(color: color);
+            TickLabelStyle(color: color);
             Ticks.Color = color;
             Line.Color = color;
         }
@@ -159,30 +159,38 @@ namespace ScottPlot.Renderable
         }
 
         /// <summary>
+        /// Controls whether minor tick positions are evenly spaced or log-distributed between major tick marks
+        /// </summary>
+        public void SetLogMinorTicks(bool enable) => Ticks.TickCollection.logScale = enable;
+
+        /// <summary>
+        /// Ruler mode draws long tick marks and offsets tick labels for a ruler appearance
+        /// </summary>
+        public void RulerMode(bool enable) => Ticks.RulerMode = enable;
+
+        /// <summary>
+        /// Enable this to snap major ticks (and grid lines) to the nearest pixel to avoid anti-aliasing artifacts
+        /// </summary>
+        /// <param name="enable"></param>
+        public void PixelSnap(bool enable) => Ticks.SnapPx = enable;
+
+        /// <summary>
         /// Customize styling of the tick labels
         /// </summary>
-        public void ConfigureTickLabelStyle(
+        public void TickLabelStyle(
             Color? color = null,
-            bool? rulerMode = null,
             string fontName = null,
             float? fontSize = null,
             bool? fontBold = null,
-            float? rotation = null,
-            bool? snapToNearestPixel = null,
-            bool? logScale = null,
-            bool? invertSign = null)
+            float? rotation = null)
         {
             Ticks.Color = color ?? Ticks.Color;
-            Ticks.RulerMode = rulerMode ?? Ticks.RulerMode;
             Ticks.MajorLabelFont.Name = fontName ?? Ticks.MajorLabelFont.Name;
             Ticks.MajorLabelFont.Size = fontSize ?? Ticks.MajorLabelFont.Size;
             Ticks.MajorLabelFont.Bold = fontBold ?? Ticks.MajorLabelFont.Bold;
             Ticks.Rotation = rotation ?? Ticks.Rotation;
-            Ticks.SnapPx = snapToNearestPixel ?? Ticks.SnapPx;
-            Ticks.TickCollection.logScale = logScale ?? Ticks.TickCollection.logScale;
-            Ticks.TickCollection.invertSign = invertSign ?? Ticks.TickCollection.invertSign;
         }
-        
+
         /// <summary>
         /// Manually define major tick (and grid) positions and labels
         /// </summary>
@@ -228,7 +236,7 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// Configure visibility and styling of the major grid
         /// </summary>
-        public void ConfigureMajorGrid(
+        public void MajorGrid(
             bool? enable = null,
             Color? color = null,
             float? lineWidth = null,
