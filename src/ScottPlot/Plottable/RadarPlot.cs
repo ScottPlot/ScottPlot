@@ -8,49 +8,49 @@ namespace ScottPlot.Plottable
 {
     public class RadarPlot : IPlottable
     {
-        private readonly double[,] normalized;
-        private readonly double normalizedMax;
-        private readonly double[] normalizedMaxes;
-        public string[] categoryNames;
-        public string[] groupNames;
-        public Color[] fillColors;
-        public Color[] lineColors;
-        public Color webColor = Color.Gray;
-        public readonly bool independentAxes;
+        private readonly double[,] Norm;
+        private readonly double NormMax;
+        private readonly double[] NormMaxes;
+        public string[] CategoryLabels;
+        public string[] GroupLabels;
+        public Color[] FillColors;
+        public Color[] LineColors;
+        public Color WebColor = Color.Gray;
+        public readonly bool IndependentAxes;
         public bool IsVisible { get; set; } = true;
         public int HorizontalAxisIndex { get; set; } = 0;
         public int VerticalAxisIndex { get; set; } = 0;
         public Drawing.Font Font = new Drawing.Font();
-        public bool showAxisLabels { get; set; } = true;
-        public RadarAxis axisType { get; set; } = RadarAxis.Circle;
+        public bool ShowAxisValues { get; set; } = true;
+        public RadarAxis AxisType { get; set; } = RadarAxis.Circle;
 
         public RadarPlot(double[,] values, Color[] lineColors, Color[] fillColors, bool independentAxes, double[] maxValues = null)
         {
-            this.lineColors = lineColors;
-            this.fillColors = fillColors;
-            this.independentAxes = independentAxes;
+            this.LineColors = lineColors;
+            this.FillColors = fillColors;
+            this.IndependentAxes = independentAxes;
 
-            normalized = new double[values.GetLength(0), values.GetLength(1)];
-            Array.Copy(values, 0, normalized, 0, values.Length);
+            Norm = new double[values.GetLength(0), values.GetLength(1)];
+            Array.Copy(values, 0, Norm, 0, values.Length);
             if (independentAxes)
             {
-                normalizedMaxes = NormalizeSeveralInPlace(normalized, maxValues);
+                NormMaxes = NormalizeSeveralInPlace(Norm, maxValues);
             }
             else
             {
-                normalizedMax = NormalizeInPlace(normalized, maxValues);
+                NormMax = NormalizeInPlace(Norm, maxValues);
             }
         }
 
         public override string ToString() =>
-            $"PlottableRadar with {PointCount} points and {normalized.GetUpperBound(1) + 1} categories.";
+            $"PlottableRadar with {PointCount} points and {Norm.GetUpperBound(1) + 1} categories.";
 
         public void ValidateData(bool deep = false)
         {
-            if (groupNames != null && groupNames.Length != normalized.GetLength(0))
+            if (GroupLabels != null && GroupLabels.Length != Norm.GetLength(0))
                 throw new InvalidOperationException("group names must match size of values");
 
-            if (categoryNames != null && categoryNames.Length != normalized.GetLength(1))
+            if (CategoryLabels != null && CategoryLabels.Length != Norm.GetLength(1))
                 throw new InvalidOperationException("category names must match size of values");
         }
 
@@ -118,16 +118,16 @@ namespace ScottPlot.Plottable
 
         public LegendItem[] GetLegendItems()
         {
-            if (groupNames is null)
+            if (GroupLabels is null)
                 return null;
 
             List<LegendItem> legendItems = new List<LegendItem>();
-            for (int i = 0; i < groupNames.Length; i++)
+            for (int i = 0; i < GroupLabels.Length; i++)
             {
                 var item = new LegendItem()
                 {
-                    label = groupNames[i],
-                    color = fillColors[i],
+                    label = GroupLabels[i],
+                    color = FillColors[i],
                     lineWidth = 10,
                     markerShape = MarkerShape.none
                 };
@@ -138,21 +138,21 @@ namespace ScottPlot.Plottable
         }
 
         public AxisLimits GetAxisLimits() =>
-            (groupNames != null) ? new AxisLimits(-3.5, 3.5, -3.5, 3.5) : new AxisLimits(-2.5, 2.5, -2.5, 2.5);
+            (GroupLabels != null) ? new AxisLimits(-3.5, 3.5, -3.5, 3.5) : new AxisLimits(-2.5, 2.5, -2.5, 2.5);
 
-        public int PointCount { get => normalized.Length; }
+        public int PointCount { get => Norm.Length; }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            int numGroups = normalized.GetUpperBound(0) + 1;
-            int numCategories = normalized.GetUpperBound(1) + 1;
+            int numGroups = Norm.GetUpperBound(0) + 1;
+            int numCategories = Norm.GetUpperBound(1) + 1;
             double sweepAngle = 2 * Math.PI / numCategories;
             double minScale = new double[] { dims.PxPerUnitX, dims.PxPerUnitX }.Min();
             PointF origin = new PointF(dims.GetPixelX(0), dims.GetPixelY(0));
             double[] radii = new double[] { 0.25 * minScale, 0.5 * minScale, 1 * minScale };
 
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
-            using (Pen pen = GDI.Pen(webColor))
+            using (Pen pen = GDI.Pen(WebColor))
             using (Brush brush = GDI.Brush(Color.Black))
             using (StringFormat sf = new StringFormat() { LineAlignment = StringAlignment.Center })
             using (StringFormat sf2 = new StringFormat())
@@ -163,11 +163,11 @@ namespace ScottPlot.Plottable
                 {
                     double hypotenuse = (radii[i] / radii[radii.Length - 1]);
 
-                    if (axisType == RadarAxis.Circle)
+                    if (AxisType == RadarAxis.Circle)
                     {
                         gfx.DrawEllipse(pen, (int)(origin.X - radii[i]), (int)(origin.Y - radii[i]), (int)(radii[i] * 2), (int)(radii[i] * 2));
                     }
-                    else if (axisType == RadarAxis.Polygon)
+                    else if (AxisType == RadarAxis.Polygon)
                     {
                         PointF[] points = new PointF[numCategories];
                         for (int j = 0; j < numCategories; j++)
@@ -179,28 +179,26 @@ namespace ScottPlot.Plottable
                         }
                         gfx.DrawPolygon(pen, points);
                     }
-                    if (showAxisLabels)
+                    if (ShowAxisValues)
                     {
+                        if (IndependentAxes)
                         {
-                            if (independentAxes)
+                            for (int j = 0; j < numCategories; j++)
                             {
-                                for (int j = 0; j < numCategories; j++)
-                                {
-                                    string text = $"{normalizedMaxes[j] * radii[i] / minScale:f1}";
+                                float x = (float)(hypotenuse * Math.Cos(sweepAngle * j - Math.PI / 2) * minScale + origin.X);
+                                float y = (float)(hypotenuse * Math.Sin(sweepAngle * j - Math.PI / 2) * minScale + origin.Y);
 
-                                    float x = (float)(hypotenuse * Math.Cos(sweepAngle * j - Math.PI / 2) * minScale + origin.X);
-                                    float y = (float)(hypotenuse * Math.Sin(sweepAngle * j - Math.PI / 2) * minScale + origin.Y);
+                                sf2.Alignment = x < origin.X ? StringAlignment.Far : StringAlignment.Near;
+                                sf2.LineAlignment = y < origin.Y ? StringAlignment.Far : StringAlignment.Near;
 
-                                    sf2.Alignment = x < origin.X ? StringAlignment.Far : StringAlignment.Near;
-                                    sf2.LineAlignment = y < origin.Y ? StringAlignment.Far : StringAlignment.Near;
-
-                                    gfx.DrawString(text, font, fontBrush, x, y, sf2);
-                                }
+                                double val = NormMaxes[j] * radii[i] / minScale;
+                                gfx.DrawString($"{val:f1}", font, fontBrush, x, y, sf2);
                             }
-                            else
-                            {
-                                gfx.DrawString($"{normalizedMax * radii[i] / minScale:f1}", font, fontBrush, origin.X, (float)(-radii[i] + origin.Y), sf2);
-                            }
+                        }
+                        else
+                        {
+                            double val = NormMax * radii[i] / minScale;
+                            gfx.DrawString($"{val:f1}", font, fontBrush, origin.X, (float)(-radii[i] + origin.Y), sf2);
                         }
                     }
                 }
@@ -210,7 +208,7 @@ namespace ScottPlot.Plottable
                     PointF destination = new PointF((float)(1.1 * Math.Cos(sweepAngle * i - Math.PI / 2) * minScale + origin.X), (float)(1.1 * Math.Sin(sweepAngle * i - Math.PI / 2) * minScale + origin.Y));
                     gfx.DrawLine(pen, origin, destination);
 
-                    if (categoryNames != null)
+                    if (CategoryLabels != null)
                     {
                         PointF textDestination = new PointF(
                             (float)(1.3 * Math.Cos(sweepAngle * i - Math.PI / 2) * minScale + origin.X),
@@ -220,7 +218,7 @@ namespace ScottPlot.Plottable
                             sf.Alignment = StringAlignment.Center;
                         else
                             sf.Alignment = dims.GetCoordinateX(textDestination.X) < 0 ? StringAlignment.Far : StringAlignment.Near;
-                        gfx.DrawString(categoryNames[i], font, fontBrush, textDestination, sf);
+                        gfx.DrawString(CategoryLabels[i], font, fontBrush, textDestination, sf);
                     }
                 }
 
@@ -229,11 +227,11 @@ namespace ScottPlot.Plottable
                     PointF[] points = new PointF[numCategories];
                     for (int j = 0; j < numCategories; j++)
                         points[j] = new PointF(
-                            (float)(normalized[i, j] * Math.Cos(sweepAngle * j - Math.PI / 2) * minScale + origin.X),
-                            (float)(normalized[i, j] * Math.Sin(sweepAngle * j - Math.PI / 2) * minScale + origin.Y));
+                            (float)(Norm[i, j] * Math.Cos(sweepAngle * j - Math.PI / 2) * minScale + origin.X),
+                            (float)(Norm[i, j] * Math.Sin(sweepAngle * j - Math.PI / 2) * minScale + origin.Y));
 
-                    ((SolidBrush)brush).Color = fillColors[i];
-                    pen.Color = lineColors[i];
+                    ((SolidBrush)brush).Color = FillColors[i];
+                    pen.Color = LineColors[i];
                     gfx.FillPolygon(brush, points);
                     gfx.DrawPolygon(pen, points);
                 }

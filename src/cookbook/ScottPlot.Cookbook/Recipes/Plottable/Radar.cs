@@ -44,7 +44,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
                 };
 
             var radarPlot = plt.AddRadar(values);
-            radarPlot.axisType = RadarAxis.Polygon;
+            radarPlot.AxisType = RadarAxis.Polygon;
         }
     }
 
@@ -63,8 +63,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
                 };
 
             var radarPlot = plt.AddRadar(values);
-            radarPlot.axisType = RadarAxis.None;
-            radarPlot.showAxisLabels = false;
+            radarPlot.AxisType = RadarAxis.None;
+            radarPlot.ShowAxisValues = false;
         }
     }
 
@@ -83,9 +83,9 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             };
 
             var radar = plt.AddRadar(values, independentAxes: true);
-            radar.categoryNames = new string[] { "Wins", "Poles", "Podiums", "Points Finishes", "DNFs", "Fastest Laps", "Points" };
-            radar.groupNames = new[] { "Sebastian Vettel", "Fernando Alonso" };
-            radar.showAxisLabels = false;
+            radar.CategoryLabels = new string[] { "Wins", "Poles", "Podiums", "Points Finishes", "DNFs", "Fastest Laps", "Points" };
+            radar.GroupLabels = new[] { "Sebastian Vettel", "Fernando Alonso" };
+            radar.ShowAxisValues = false;
 
             // customize the plot
             plt.Title("2010 Formula One World Championship");
@@ -114,8 +114,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             };
 
             var radar = plt.AddRadar(values);
-            radar.categoryNames = new string[] { "Wins", "Poles", "Podiums", "Points Finishes", "DNFs", "Fastest Laps" };
-            radar.groupNames = new string[] { "Sebastian Vettel", "Fernando Alonso" };
+            radar.CategoryLabels = new string[] { "Wins", "Poles", "Podiums", "Points Finishes", "DNFs", "Fastest Laps" };
+            radar.GroupLabels = new string[] { "Sebastian Vettel", "Fernando Alonso" };
 
             // customize the plot
             plt.Title("2010 Formula One World Championship");
@@ -143,8 +143,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[,] values = { { 5, 3, 10, 15, 3, 2, 256 }, { 5, 2, 10, 10, 1, 4, 252 }, };
 
             var radar = plt.AddRadar(values, independentAxes: true);
-            radar.categoryNames = new string[] { "Wins", "Poles", "Podiums", "Points Finishes", "DNFs", "Fastest Laps", "Points" };
-            radar.groupNames = new string[] { "Sebastian Vettel", "Fernando Alonso" };
+            radar.CategoryLabels = new string[] { "Wins", "Poles", "Podiums", "Points Finishes", "DNFs", "Fastest Laps", "Points" };
+            radar.GroupLabels = new string[] { "Sebastian Vettel", "Fernando Alonso" };
 
             // customize the plot
             plt.Title("2010 Formula One World Championship");
@@ -177,8 +177,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] maxValues = { 13, 15, 17, 15, 10, 10, 413 };
 
             var radar = plt.AddRadar(values, independentAxes: true, maxValues: maxValues);
-            radar.categoryNames = new string[] { "Wins", "Poles", "Podiums", "Points Finishes", "DNFs", "Fastest Laps", "Points" };
-            radar.groupNames = new string[] { "Sebastian Vettel", "Fernando Alonso" };
+            radar.CategoryLabels = new string[] { "Wins", "Poles", "Podiums", "Points Finishes", "DNFs", "Fastest Laps", "Points" };
+            radar.GroupLabels = new string[] { "Sebastian Vettel", "Fernando Alonso" };
 
             // customize the plot
             plt.Title("2010 Formula One World Championship");

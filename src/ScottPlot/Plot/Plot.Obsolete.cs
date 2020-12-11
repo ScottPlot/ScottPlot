@@ -956,9 +956,9 @@ namespace ScottPlot
 
             var plottable = new RadarPlot(values, colors, fillColors ?? colorsAlpha, independentAxes, maxValues)
             {
-                categoryNames = categoryNames,
-                groupNames = groupNames,
-                webColor = webColor ?? Color.Gray
+                CategoryLabels = categoryNames,
+                GroupLabels = groupNames,
+                WebColor = webColor ?? Color.Gray
             };
             Add(plottable);
 
