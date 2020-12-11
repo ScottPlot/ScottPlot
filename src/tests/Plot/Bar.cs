@@ -34,7 +34,7 @@ namespace ScottPlotTests.Plot
                 yErr: new double[][] { err1, err2, err3 });
 
             plt.SetAxisLimits(yMin: 0);
-            plt.GridLineStyle(ScottPlot.LineStyle.Dot);
+            plt.Grid(lineStyle: ScottPlot.LineStyle.Dot);
             plt.XAxis.Grid(false);
             plt.XAxis.Grid(false);
             plt.Legend(location: Alignment.UpperRight);

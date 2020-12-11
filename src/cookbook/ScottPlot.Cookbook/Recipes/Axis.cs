@@ -20,15 +20,16 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
             plt.AddSignal(DataGen.Sin(51));
             plt.AddSignal(DataGen.Cos(51));
 
-            // This is the simplest way to give an axis a label
+            // These shortcuts are the easiest way to set axis labels
             plt.XLabel("Horizontal Axis");
+            plt.YLabel("Vertical Axis");
+            plt.Title("Axis Customization");
 
-            // Axes can be addressed individually, giving the user access to more options
-            plt.XAxis.SetLabel("Horizontal Axis");
+            // Axes labels can be further customized for any axis
+            plt.YAxis.SetLabel("Vertical Axis", Color.Magenta, size: 24, fontName: "Comic Sans MS");
+
+            // This method will set the color of axis labels, lines, ticks, and tick labels
             plt.XAxis.SetColor(Color.Green);
-
-            // Many customizations are available through public methods
-            plt.YAxis.SetLabel(label: "Vertical Axis", color: Color.Magenta, size: 24, fontName: "Comic Sans MS");
         }
     }
 
@@ -66,9 +67,8 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
             plt.AddSignal(DataGen.Sin(51));
             plt.AddSignal(DataGen.Cos(51));
 
-            // control grid visibility by axis
+            // each axis has its own visibility controls
             plt.XAxis.Grid(false);
-            plt.YAxis.Grid(true);
         }
     }
 
@@ -85,9 +85,9 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
             plt.AddSignal(DataGen.Sin(51));
             plt.AddSignal(DataGen.Cos(51));
 
-            // common grid customizations are color and style
-            plt.GridColor(Color.FromArgb(50, Color.Green));
-            plt.GridLineStyle(LineStyle.Dot);
+            // these helper methods set grid 
+            plt.Grid(color: Color.FromArgb(50, Color.Green));
+            plt.Grid(lineStyle: LineStyle.Dot);
         }
     }
 

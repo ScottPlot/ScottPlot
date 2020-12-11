@@ -188,7 +188,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.Legend(location: Alignment.LowerLeft);
             plt.XAxis.Ticks(false);
             plt.XAxis.Grid(false);
-            plt.GridLineStyle(LineStyle.Dot);
+            plt.YAxis.MajorGrid(lineStyle: LineStyle.Dot);
             plt.SetAxisLimits(yMin: 0);
         }
     }

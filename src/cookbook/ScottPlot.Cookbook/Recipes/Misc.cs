@@ -39,7 +39,7 @@ namespace ScottPlot.Cookbook.Recipes
             plt.XAxis2.SetLabel("Normal Random Data");
             plt.XAxis.SetLabel("Value (units)");
             plt.SetAxisLimits(yMin: 0);
-            plt.GridLineStyle(LineStyle.Dot);
+            plt.Grid(lineStyle: LineStyle.Dot);
         }
     }
 
@@ -75,7 +75,7 @@ namespace ScottPlot.Cookbook.Recipes
             // decorate the plot
             plt.Legend();
             plt.SetAxisLimits(yMin: 0, yMax: 1);
-            plt.GridLineStyle(LineStyle.Dot);
+            plt.Grid(lineStyle: LineStyle.Dot);
             plt.Title("Cumulative Probability Histogram");
             plt.XAxis.SetLabel("Probability (fraction)");
             plt.YAxis.SetLabel("Value (units)");

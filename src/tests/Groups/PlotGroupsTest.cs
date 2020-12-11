@@ -37,7 +37,7 @@ namespace ScottPlotTests.Groups
             plt.Title("Life Expectancy in European Countries in 2007");
             plt.YLabel("Age (years)");
             plt.Legend(location: Alignment.LowerRight);
-            plt.GridLineStyle(LineStyle.Dot);
+            plt.Grid(lineStyle: LineStyle.Dot);
             plt.XAxis.Grid(false);
 
             TestTools.SaveFig(plt);
@@ -73,7 +73,7 @@ namespace ScottPlotTests.Groups
             plt.XAxis2.SetLabel(label: "Life Expectancy in 2007", size: 26);
             plt.YAxis.SetLabel(label: "Age (years)", size: 18);
             plt.Legend(location: Alignment.LowerRight);
-            plt.GridLineStyle(LineStyle.Dot);
+            plt.Grid(lineStyle: LineStyle.Dot);
             plt.XAxis.Grid(false);
 
             TestTools.SaveFig(plt);
@@ -138,7 +138,7 @@ namespace ScottPlotTests.Groups
             plt.XAxis2.SetLabel(label: "Life Expectancy", size: 26);
             plt.YAxis.SetLabel(label: "Age (years)", size: 18);
             plt.Legend(location: Alignment.LowerRight);
-            plt.GridLineStyle(LineStyle.Dot);
+            plt.Grid(lineStyle: LineStyle.Dot);
             plt.XAxis.Grid(false);
 
             TestTools.SaveFig(plt);

@@ -47,76 +47,19 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Control visibility of axis grid lines at major ticks for the primary X and Y axes. 
-        /// Interact with XAxis.Configure() and YAxis.Configure() for more advanced configuration options.
+        /// Customize basic options for the primary X and Y axes. 
+        /// Call XAxis and YAxis methods to further customize individual axes.
         /// </summary>
-        public void Grid(bool enable)
+        public void Grid(bool? enable = null, Color? color = null, LineStyle? lineStyle = null)
         {
-            XAxis.Grid(enable);
-            YAxis.Grid(enable);
-        }
-
-        /// <summary>
-        /// Set color and line style of X and Y axis major grid lines.
-        /// Interact with XAxis.Configure() and YAxis.Configure() for more advanced configuration options.
-        /// </summary>
-        public void GridLineStyle(LineStyle lineStyle)
-        {
-            XAxis.MajorGrid(lineStyle: lineStyle);
-            YAxis.MajorGrid(lineStyle: lineStyle);
-        }
-
-        /// <summary>
-        /// Set color of X and Y axis major grid lines.
-        /// Interact with XAxis.Configure() and YAxis.Configure() for more advanced configuration options.
-        /// </summary>
-        public void GridColor(Color color)
-        {
-            XAxis.MajorGrid(color: color);
-            YAxis.MajorGrid(color: color);
-        }
-
-        [Obsolete("Use another Grid method or interact with XAxis and YAxis directly to customize major grid lines")]
-        public void Grid_obsolete(
-            bool? enable = null,
-            Color? color = null,
-            double? xSpacing = null,
-            double? ySpacing = null,
-            bool? enableHorizontal = null,
-            bool? enableVertical = null,
-            Ticks.DateTimeUnit? xSpacingDateTimeUnit = null,
-            Ticks.DateTimeUnit? ySpacingDateTimeUnit = null,
-            float? lineWidth = null,
-            LineStyle? lineStyle = null,
-            bool? snapToNearestPixel = null)
-        {
-            XAxis.MajorGrid(enable, color, lineWidth, lineStyle);
-            YAxis.MajorGrid(enable, color, lineWidth, lineStyle);
-
-            if (snapToNearestPixel.HasValue)
+            if (enable.HasValue)
             {
-                XAxis.PixelSnap(snapToNearestPixel.Value);
-                YAxis.PixelSnap(snapToNearestPixel.Value);
+                XAxis.Grid(enable.Value);
+                YAxis.Grid(enable.Value);
             }
 
-            XAxis.MajorGrid(enable: enableVertical);
-            YAxis.MajorGrid(enable: enableHorizontal);
-
-            if (xSpacing.HasValue)
-            {
-                if (xSpacingDateTimeUnit.HasValue)
-                    XAxis.SetTickSpacing(xSpacing.Value, xSpacingDateTimeUnit.Value);
-                else
-                    XAxis.SetTickSpacing(xSpacing.Value);
-            }
-
-            if (ySpacing.HasValue)
-            {
-                if (ySpacingDateTimeUnit.HasValue)
-                    XAxis.SetTickSpacing(ySpacing.Value, ySpacingDateTimeUnit.Value);
-                else
-                    XAxis.SetTickSpacing(ySpacing.Value);
-            }
+            XAxis.MajorGrid(color: color, lineStyle: lineStyle);
+            YAxis.MajorGrid(color: color, lineStyle: lineStyle);
         }
 
         /// <summary>
