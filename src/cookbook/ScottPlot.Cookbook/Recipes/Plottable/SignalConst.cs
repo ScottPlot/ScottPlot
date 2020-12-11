@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ScottPlot.Cookbook.Recipes.Plottable
 {
-
+    // TODO: need an example showing how to update data
     public class SignalConstQuickstart : IRecipe
     {
         public string Category => "Plottable: SignalConst";
@@ -18,9 +18,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         {
             double[] values = DataGen.RandomWalk(1_000_000);
             plt.AddSignal(values);
+            plt.Title("One Million Points");
             plt.Benchmark();
         }
     }
-
-    // TODO: need an example showing how to update data
 }

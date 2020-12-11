@@ -83,8 +83,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public void ExecuteRecipe(Plot plt)
         {
             // display some interesting data in the background
-            plt.AddSignal(DataGen.Sin(51));
-            plt.AddSignal(DataGen.Cos(51));
+            plt.AddSignal(DataGen.Sin(51), label: "sin");
+            plt.AddSignal(DataGen.Cos(51), label: "cos");
 
             // add text with custom fonts
             plt.AddText("very graph", 25, .8, new Drawing.Font() { Name = "comic sans ms", Size = 24, Color = Color.Blue, Bold = true });
@@ -102,6 +102,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.XAxis.ConfigureTickLabelStyle(color: Color.DarkBlue, fontName: "comic sans ms", fontSize: 16);
             plt.YAxis.ConfigureTickLabelStyle(color: Color.DarkGreen, fontName: "comic sans ms", fontSize: 16);
 
+            // add a legend to the corner
             plt.Legend(fontName: "comic sans ms", fontSize: 18, bold: true, fontColor: Color.DarkBlue);
         }
     }
