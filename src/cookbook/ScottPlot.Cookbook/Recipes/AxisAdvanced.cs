@@ -40,8 +40,8 @@ namespace ScottPlot.Cookbook.Recipes
             plt.AddSignal(DataGen.Cos(51));
 
             // See https://tinyurl.com/y86clj9k to learn about numeric format strings
-            plt.XAxis.ConfigureTickLabelNotation(customFormatStringNumeric: "E2");
-            plt.YAxis.ConfigureTickLabelNotation(customFormatStringNumeric: "P1");
+            plt.XAxis.SetTickLabelFormat("E2", dateTimeFormat: false);
+            plt.YAxis.SetTickLabelFormat("P1", dateTimeFormat: false);
         }
     }
 
@@ -204,8 +204,7 @@ namespace ScottPlot.Cookbook.Recipes
 
             // plot the data with custom tick format (https://tinyurl.com/ycwh45af)
             plt.AddScatter(days, values);
-            plt.XAxis.DateTimeFormat(true);
-            plt.XAxis.ConfigureTickLabelNotation(customFormatStringDateTime: "M\\/dd");
+            plt.XAxis.SetTickLabelFormat("M\\/dd", dateTimeFormat: true);
         }
     }
 
@@ -223,7 +222,7 @@ namespace ScottPlot.Cookbook.Recipes
             double[] largeYs = DataGen.Random(null, 100, multiplier: 1e6);
 
             plt.AddScatter(largeXs, largeYs);
-            plt.XAxis.ConfigureTickLabelNotation(useMultiplierNotation: true);
+            plt.XAxis.TickLabelNotation(multiplier: true);
         }
     }
 
@@ -241,7 +240,7 @@ namespace ScottPlot.Cookbook.Recipes
             double[] largeYs = DataGen.Random(null, 100, multiplier: 1e6);
 
             plt.AddScatter(largeXs, largeYs);
-            plt.XAxis.ConfigureTickLabelNotation(useOffsetNotation: true);
+            plt.XAxis.TickLabelNotation(offset: true);
         }
     }
 

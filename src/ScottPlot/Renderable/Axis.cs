@@ -72,16 +72,15 @@ namespace ScottPlot.Renderable
         }
 
         /// <summary>
-        /// Controls tick mark placement behavior. DateTime format assumes axis represents DateTime.ToOATime() units.
+        /// DateTime format assumes axis represents DateTime.ToOATime() units and displays tick labels accordingly.
         /// </summary>
-        /// <param name="enable"></param>
         public void DateTimeFormat(bool enable)
         {
             Ticks.TickCollection.dateFormat = enable;
         }
 
         /// <summary>
-        /// Deep configuration options for the axis label
+        /// Configure the label of this axis
         /// </summary>
         public void SetLabel(string label = null, Color? color = null, float? size = null, bool? bold = null, string fontName = null)
         {
@@ -94,7 +93,7 @@ namespace ScottPlot.Renderable
         }
 
         /// <summary>
-        /// Set color of axis label, axis line, tick marks, and tick labels
+        /// Set color of every component of this axis (label, line, tick marks, and tick labels)
         /// </summary>
         public void SetColor(Color color)
         {
@@ -105,26 +104,39 @@ namespace ScottPlot.Renderable
         }
 
         /// <summary>
+        /// Manually define the string format to use for translating tick positions to tick labels
+        /// </summary>
+        public void SetTickLabelFormat(string format, bool dateTimeFormat)
+        {
+            if (dateTimeFormat)
+            {
+                Ticks.TickCollection.dateTimeFormatString = format;
+                DateTimeFormat(true);
+            }
+            else
+            {
+                Ticks.TickCollection.numericFormatString = format;
+                DateTimeFormat(false);
+            }
+        }
+
+        /// <summary>
         /// Customize string settings for the tick labels
         /// </summary>
-        public void ConfigureTickLabelNotation(
+        public void TickLabelNotation(
             bool? dateTime = null,
-            bool? useMultiplierNotation = null,
-            bool? useOffsetNotation = null,
-            bool? useExponentialNotation = null,
+            bool? multiplier = null,
+            bool? offset = null,
+            bool? exponential = null,
             bool? invertSign = null,
-            string customFormatStringNumeric = null,
-            string customFormatStringDateTime = null,
             int? radix = null,
             string prefix = null)
         {
-            Ticks.TickCollection.useMultiplierNotation = useMultiplierNotation ?? Ticks.TickCollection.useMultiplierNotation;
-            Ticks.TickCollection.useOffsetNotation = useOffsetNotation ?? Ticks.TickCollection.useOffsetNotation;
-            Ticks.TickCollection.useExponentialNotation = useExponentialNotation ?? Ticks.TickCollection.useExponentialNotation;
+            Ticks.TickCollection.useMultiplierNotation = multiplier ?? Ticks.TickCollection.useMultiplierNotation;
+            Ticks.TickCollection.useOffsetNotation = offset ?? Ticks.TickCollection.useOffsetNotation;
+            Ticks.TickCollection.useExponentialNotation = exponential ?? Ticks.TickCollection.useExponentialNotation;
             Ticks.TickCollection.dateFormat = dateTime ?? Ticks.TickCollection.dateFormat;
             Ticks.TickCollection.invertSign = invertSign ?? Ticks.TickCollection.invertSign;
-            Ticks.TickCollection.numericFormatString = customFormatStringNumeric ?? Ticks.TickCollection.numericFormatString;
-            Ticks.TickCollection.dateTimeFormatString = customFormatStringDateTime ?? Ticks.TickCollection.dateTimeFormatString;
             Ticks.TickCollection.radix = radix ?? Ticks.TickCollection.radix;
             Ticks.TickCollection.prefix = prefix ?? Ticks.TickCollection.prefix;
         }

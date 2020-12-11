@@ -224,24 +224,22 @@ namespace ScottPlot
             settings.YAxis.ConfigureTickLabelStyle(fontSize: fontSize);
 
             // TICK LABEL NOTATION
-            settings.XAxis.ConfigureTickLabelNotation(useMultiplierNotation: useMultiplierNotation);
-            settings.YAxis.ConfigureTickLabelNotation(useMultiplierNotation: useMultiplierNotation);
-            settings.XAxis.ConfigureTickLabelNotation(useOffsetNotation: useOffsetNotation);
-            settings.YAxis.ConfigureTickLabelNotation(useOffsetNotation: useOffsetNotation);
-            settings.XAxis.ConfigureTickLabelNotation(useExponentialNotation: useExponentialNotation);
-            settings.YAxis.ConfigureTickLabelNotation(useExponentialNotation: useExponentialNotation);
-            settings.XAxis.ConfigureTickLabelNotation(dateTime: dateTimeX);
-            settings.YAxis.ConfigureTickLabelNotation(dateTime: dateTimeY);
-            settings.XAxis.ConfigureTickLabelNotation(invertSign: invertSignX);
-            settings.YAxis.ConfigureTickLabelNotation(invertSign: invertSignY);
-            settings.XAxis.ConfigureTickLabelNotation(customFormatStringNumeric: numericFormatStringX);
-            settings.YAxis.ConfigureTickLabelNotation(customFormatStringNumeric: numericFormatStringY);
-            settings.XAxis.ConfigureTickLabelNotation(customFormatStringDateTime: dateTimeFormatStringX);
-            settings.YAxis.ConfigureTickLabelNotation(customFormatStringDateTime: dateTimeFormatStringY);
-            settings.XAxis.ConfigureTickLabelNotation(radix: baseX);
-            settings.YAxis.ConfigureTickLabelNotation(radix: baseY);
-            settings.XAxis.ConfigureTickLabelNotation(prefix: prefixX);
-            settings.YAxis.ConfigureTickLabelNotation(prefix: prefixY);
+            settings.XAxis.TickLabelNotation(multiplier: useMultiplierNotation);
+            settings.YAxis.TickLabelNotation(multiplier: useMultiplierNotation);
+            settings.XAxis.TickLabelNotation(offset: useOffsetNotation);
+            settings.YAxis.TickLabelNotation(offset: useOffsetNotation);
+            settings.XAxis.TickLabelNotation(exponential: useExponentialNotation);
+            settings.YAxis.TickLabelNotation(exponential: useExponentialNotation);
+            settings.XAxis.TickLabelNotation(dateTime: dateTimeX);
+            settings.YAxis.TickLabelNotation(dateTime: dateTimeY);
+            settings.XAxis.TickLabelNotation(invertSign: invertSignX);
+            settings.YAxis.TickLabelNotation(invertSign: invertSignY);
+            //settings.XAxis.SetTickLabelFormat(numericFormatStringX ?? dateTimeFormatStringX);
+            //settings.YAxis.SetTickLabelFormat(numericFormatStringY ?? dateTimeFormatStringY);
+            settings.XAxis.TickLabelNotation(radix: baseX);
+            settings.YAxis.TickLabelNotation(radix: baseY);
+            settings.XAxis.TickLabelNotation(prefix: prefixX);
+            settings.YAxis.TickLabelNotation(prefix: prefixY);
 
             // TICK STYLING
             settings.XAxis.ConfigureTickLabelStyle(rulerMode: rulerModeX);
