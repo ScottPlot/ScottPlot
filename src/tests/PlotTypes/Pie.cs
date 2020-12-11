@@ -16,8 +16,8 @@ namespace ScottPlotTests.PlotTypes
             var plt = new ScottPlot.Plot(300, 800);
 
             var pie = plt.AddPie(values);
-            pie.groupNames = labels;
-            pie.showLabels = false;
+            pie.GroupNames = labels;
+            pie.ShowLabels = false;
             plt.Legend();
 
             plt.Grid(false);

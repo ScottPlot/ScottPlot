@@ -585,11 +585,11 @@ namespace ScottPlot
 
             PiePlot pie = new PiePlot(values, sliceLabels, colors)
             {
-                explodedChart = explodedChart,
-                showValues = showValues,
-                showPercentages = showPercentages,
-                showLabels = showLabels,
-                label = label
+                Explode = explodedChart,
+                ShowValues = showValues,
+                ShowPercentages = showPercentages,
+                ShowLabels = showLabels,
+                Label = label
             };
 
             Add(pie);
