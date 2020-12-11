@@ -40,8 +40,8 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             XCoordinateLabel.Text = $"{coordinateX:0.00000000}";
             YCoordinateLabel.Text = $"{coordinateY:0.00000000}";
 
-            vLine.position = coordinateX;
-            hLine.position = coordinateY;
+            vLine.X = coordinateX;
+            hLine.Y = coordinateY;
 
             formsPlot1.Render(skipIfCurrentlyRendering: true);
         }

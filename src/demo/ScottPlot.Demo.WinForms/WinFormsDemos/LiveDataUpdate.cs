@@ -57,7 +57,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
                 nextValueIndex = (nextValueIndex < liveData.Length - 1) ? nextValueIndex + 1 : 0;
                 liveData[nextValueIndex] = nextValue;
                 vline.IsVisible = true;
-                vline.position = nextValueIndex;
+                vline.X = nextValueIndex;
             }
             else
             {

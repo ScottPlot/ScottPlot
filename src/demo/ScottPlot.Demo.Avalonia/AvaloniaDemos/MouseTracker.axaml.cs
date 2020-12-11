@@ -47,8 +47,8 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             this.Find<TextBlock>("XCoordinateLabel").Text = $"{avaPlot1.plt.GetCoordinateX(pixelX):0.00000000}";
             this.Find<TextBlock>("YCoordinateLabel").Text = $"{avaPlot1.plt.GetCoordinateY(pixelY):0.00000000}";
 
-            vLine.position = coordinateX;
-            hLine.position = coordinateY;
+            vLine.X = coordinateX;
+            hLine.Y = coordinateY;
 
             avaPlot1.Render();
         }

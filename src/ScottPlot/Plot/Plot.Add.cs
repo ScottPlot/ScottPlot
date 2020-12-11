@@ -277,7 +277,7 @@ namespace ScottPlot
         {
             HLine plottable = new HLine()
             {
-                position = y,
+                Y = y,
                 color = color ?? settings.GetNextColor(),
                 lineWidth = width,
                 lineStyle = style,
@@ -658,7 +658,7 @@ namespace ScottPlot
         {
             VLine plottable = new VLine()
             {
-                position = x,
+                X = x,
                 color = color ?? settings.GetNextColor(),
                 lineWidth = width,
                 lineStyle = style,

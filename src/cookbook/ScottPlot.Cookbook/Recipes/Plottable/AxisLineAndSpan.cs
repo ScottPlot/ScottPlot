@@ -57,7 +57,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             vLine.DragLimitMax = 50;
 
             // you can access the position of an axis line at any time
-            Debug.WriteLine($"Vertical line is at X={vLine.position}");
+            Debug.WriteLine($"Vertical line is at X={vLine.X}");
         }
     }
 

@@ -35,8 +35,8 @@ namespace WinFormsFrameworkApp
 
             double mouseX = formsPlot1.plt.GetCoordinateX(e.X);
             (double x, double y, int index) = Signal.GetPointNearestX(mouseX);
-            VLine.position = x;
-            HLine.position = y;
+            VLine.X = x;
+            HLine.Y = y;
             Text = $"Mouse is over point {index:N0} ({x:.03}, {y:.03})";
             formsPlot1.Render();
         }

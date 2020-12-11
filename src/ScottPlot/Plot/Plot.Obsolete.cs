@@ -472,7 +472,7 @@ namespace ScottPlot
         {
             var hline = new HLine()
             {
-                position = y,
+                Y = y,
                 color = color ?? settings.GetNextColor(),
                 lineWidth = (float)lineWidth,
                 label = label,
@@ -1077,7 +1077,7 @@ namespace ScottPlot
         {
             VLine axLine = new VLine()
             {
-                position = x,
+                X = x,
                 color = color ?? settings.GetNextColor(),
                 lineWidth = (float)lineWidth,
                 label = label,

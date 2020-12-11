@@ -5,13 +5,34 @@ using System.Drawing;
 
 namespace ScottPlot.Plottable
 {
-    public class HLine : AxisLine { public HLine() { IsHorizontal = true; } }
+    public class HLine : AxisLine
+    {
+        public double Y { get => Position; set => Position = value; }
 
-    public class VLine : AxisLine { public VLine() { IsHorizontal = false; } }
+        public override string ToString() => $"Horizontal line at Y={Y}";
+
+        public HLine()
+        {
+            IsHorizontal = true;
+        }
+
+    }
+
+    public class VLine : AxisLine
+    {
+        public double X { get => Position; set => Position = value; }
+
+        public override string ToString() => $"Vertical line at X={X}";
+
+        public VLine()
+        {
+            IsHorizontal = false;
+        }
+    }
 
     public abstract class AxisLine : IDraggable, IPlottable
     {
-        public double position;
+        protected double Position;
         public int HorizontalAxisIndex { get; set; } = 0;
         public int VerticalAxisIndex { get; set; } = 0;
 
@@ -28,22 +49,14 @@ namespace ScottPlot.Plottable
 
         public bool IsVisible { get; set; } = true;
 
-        public override string ToString()
-        {
-            string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
-            return IsHorizontal ?
-                $"PlottableHLine{label} at Y={position}" :
-                $"PlottableVLine{label} at X={position}";
-        }
-
         public AxisLimits GetAxisLimits() =>
             IsHorizontal ?
-            new AxisLimits(double.NaN, double.NaN, position, position) :
-            new AxisLimits(position, position, double.NaN, double.NaN);
+            new AxisLimits(double.NaN, double.NaN, Position, Position) :
+            new AxisLimits(Position, Position, double.NaN, double.NaN);
 
         public void ValidateData(bool deep = false)
         {
-            if (double.IsNaN(position) || double.IsInfinity(position))
+            if (double.IsNaN(Position) || double.IsInfinity(Position))
                 throw new InvalidOperationException("position must be a valid number");
         }
 
@@ -56,12 +69,12 @@ namespace ScottPlot.Plottable
                 {
                     float pixelX1 = dims.GetPixelX(dims.XMin);
                     float pixelX2 = dims.GetPixelX(dims.XMax);
-                    float pixelY = dims.GetPixelY(position);
+                    float pixelY = dims.GetPixelY(Position);
                     gfx.DrawLine(pen, pixelX1, pixelY, pixelX2, pixelY);
                 }
                 else
                 {
-                    float pixelX = dims.GetPixelX(position);
+                    float pixelX = dims.GetPixelX(Position);
                     float pixelY1 = dims.GetPixelY(dims.YMin);
                     float pixelY2 = dims.GetPixelY(dims.YMax);
                     gfx.DrawLine(pen, pixelX, pixelY1, pixelX, pixelY2);
@@ -78,20 +91,20 @@ namespace ScottPlot.Plottable
             {
                 if (coordinateY < DragLimitMin) coordinateY = DragLimitMin;
                 if (coordinateY > DragLimitMax) coordinateY = DragLimitMax;
-                position = coordinateY;
+                Position = coordinateY;
             }
             else
             {
                 if (coordinateX < DragLimitMin) coordinateX = DragLimitMin;
                 if (coordinateX > DragLimitMax) coordinateX = DragLimitMax;
-                position = coordinateX;
+                Position = coordinateX;
             }
         }
 
         public bool IsUnderMouse(double coordinateX, double coordinateY, double snapX, double snapY) =>
             IsHorizontal ?
-            Math.Abs(position - coordinateY) <= snapY :
-            Math.Abs(position - coordinateX) <= snapX;
+            Math.Abs(Position - coordinateY) <= snapY :
+            Math.Abs(Position - coordinateX) <= snapX;
 
         public LegendItem[] GetLegendItems()
         {
