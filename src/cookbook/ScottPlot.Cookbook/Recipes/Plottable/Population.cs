@@ -31,7 +31,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.AddPopulation(pop);
 
             // improve the style of the plot
-            plt.XAxis.Configure(ticks: false, grid: false);
+            plt.XAxis.Ticks(true);
+            plt.XAxis.Grid(false);
         }
     }
 
@@ -62,7 +63,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.AddPopulations(poulations);
 
             // improve the style of the plot
-            plt.XAxis.Configure(grid: false);
+            plt.XAxis.Grid(false);
             plt.XTicks(populationNames);
         }
     }
@@ -132,7 +133,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             // improve the style of the plot
             string[] groupNames = new string[] { "Fall", "Spring", "Summer A", "Summer B" };
             plt.XTicks(groupNames);
-            plt.XAxis.Configure(grid: false);
+            plt.XAxis.Grid(false);
             plt.Legend();
         }
     }
@@ -186,7 +187,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             // improve the style of the plot
             plt.Legend(location: Alignment.LowerLeft);
             plt.XAxis.Ticks(false);
-            plt.XAxis.Configure(grid: false);
+            plt.XAxis.Grid(false);
             plt.GridLineStyle(LineStyle.Dot);
             plt.SetAxisLimits(yMin: 0);
         }

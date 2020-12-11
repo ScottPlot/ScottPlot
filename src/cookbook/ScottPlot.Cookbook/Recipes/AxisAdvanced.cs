@@ -21,7 +21,7 @@ namespace ScottPlot.Cookbook.Recipes
 
             // advanced grid customizations are available by accessing Axes directly
             plt.XAxis.MajorGrid(color: Color.FromArgb(100, Color.Black));
-            plt.XAxis.ConfigureMinorGrid(enable: true, color: Color.FromArgb(20, Color.Black));
+            plt.XAxis.MinorGrid(enable: true, color: Color.FromArgb(20, Color.Black));
             plt.YAxis.MajorGrid(lineWidth: 2, lineStyle: LineStyle.Dash, color: Color.Magenta);
         }
     }
@@ -308,7 +308,7 @@ namespace ScottPlot.Cookbook.Recipes
             plt.YAxis.MinorLogScale(true);
 
             // make minor grid lines visible for added effect
-            plt.YAxis.ConfigureMinorGrid(enable: true, color: Color.FromArgb(10, Color.Black));
+            plt.YAxis.MinorGrid(enable: true, color: Color.FromArgb(10, Color.Black));
 
             // decorate the plot
             plt.Title("Data (Log Scale)");

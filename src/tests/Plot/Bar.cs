@@ -36,7 +36,7 @@ namespace ScottPlotTests.Plot
             plt.SetAxisLimits(yMin: 0);
             plt.GridLineStyle(ScottPlot.LineStyle.Dot);
             plt.XAxis.Grid(false);
-            plt.XAxis.Configure(grid: false);
+            plt.XAxis.Grid(false);
             plt.Legend(location: Alignment.UpperRight);
             TestTools.SaveFig(plt);
         }

@@ -52,8 +52,8 @@ namespace ScottPlot
         /// </summary>
         public void Grid(bool enable)
         {
-            XAxis.Configure(grid: enable);
-            YAxis.Configure(grid: enable);
+            XAxis.Grid(enable);
+            YAxis.Grid(enable);
         }
 
         /// <summary>

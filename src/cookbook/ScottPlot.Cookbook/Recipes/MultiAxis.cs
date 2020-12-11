@@ -31,8 +31,8 @@ namespace ScottPlot.Cookbook.Recipes
             var sigBig = plt.AddSignal(DataGen.Cos(51, mult: 100), sampleRate: 100);
             sigBig.VerticalAxisIndex = 1;
             sigBig.HorizontalAxisIndex = 1;
-            plt.YAxis2.Configure(ticks: true); // ticks weren't visible by default
-            plt.XAxis2.Configure(ticks: true); // ticks weren't visible by default
+            plt.YAxis2.Ticks(true); // ticks weren't visible by default
+            plt.XAxis2.Ticks(true); // ticks weren't visible by default
             plt.YAxis2.SetColor(sigBig.color);
             plt.XAxis2.SetColor(sigBig.color);
             plt.YAxis2.SetLabel("Secondary Y Axis");

@@ -105,7 +105,7 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
             plt.AddSignal(DataGen.Cos(51));
 
             // hide just the horizontal axis ticks
-            plt.XAxis.Configure(ticks: false);
+            plt.XAxis.Ticks(false);
         }
     }
 

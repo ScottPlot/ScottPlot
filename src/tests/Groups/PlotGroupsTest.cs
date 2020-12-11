@@ -38,8 +38,7 @@ namespace ScottPlotTests.Groups
             plt.YLabel("Age (years)");
             plt.Legend(location: Alignment.LowerRight);
             plt.GridLineStyle(LineStyle.Dot);
-            plt.XAxis.Configure(grid: false);
-
+            plt.XAxis.Grid(false);
 
             TestTools.SaveFig(plt);
         }

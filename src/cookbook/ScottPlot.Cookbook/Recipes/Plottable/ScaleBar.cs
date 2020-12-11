@@ -43,7 +43,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.AddSignal(DataGen.Cos(51));
 
             // remove horizontal scale only
-            plt.XAxis.Configure(ticks: false);
+            plt.XAxis.Ticks(false);
             plt.Frame(visible: false, left: true);
             plt.Grid(enable: false);
 

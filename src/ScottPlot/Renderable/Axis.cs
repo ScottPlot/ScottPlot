@@ -191,10 +191,18 @@ namespace ScottPlot.Renderable
             AxTicks.TickCollection.manualTickLabels = labels;
         }
 
-        // TODO: rename this to just ticks!
+        /// <summary>
+        /// Set visibility of all ticks
+        /// </summary>
+        public void Ticks(bool enable)
+        {
+            AxTicks.MajorTickEnable = enable;
+            AxTicks.MajorLabelEnable = enable;
+            AxTicks.MinorTickEnable = enable;
+        }
 
         /// <summary>
-        /// Set visibility of primary tick components
+        /// Set visibility of individual tick components
         /// </summary>
         public void Ticks(bool major, bool minor = true, bool majorLabels = true)
         {
@@ -243,16 +251,21 @@ namespace ScottPlot.Renderable
             AxTicks.MajorGridStyle = lineStyle ?? AxTicks.MajorGridStyle;
         }
 
-        public void ConfigureMinorGrid(
+        /// <summary>
+        /// Configure visibility and styling of the minor grid
+        /// </summary>
+        public void MinorGrid(
             bool? enable = null,
             Color? color = null,
             float? lineWidth = null,
-            LineStyle? lineStyle = null)
+            LineStyle? lineStyle = null,
+            bool? logScale = null)
         {
             AxTicks.MinorGridEnable = enable ?? AxTicks.MinorGridEnable;
             AxTicks.MinorGridColor = color ?? AxTicks.MinorGridColor;
             AxTicks.MinorGridWidth = lineWidth ?? AxTicks.MinorGridWidth;
             AxTicks.MinorGridStyle = lineStyle ?? AxTicks.MinorGridStyle;
+            AxTicks.TickCollection.logScale = logScale ?? AxTicks.TickCollection.logScale;
         }
 
         /// <summary>
@@ -284,22 +297,6 @@ namespace ScottPlot.Renderable
             AxTicks.MajorTickEnable = enable;
             AxTicks.MajorLabelEnable = enable;
             AxTicks.MinorTickEnable = enable;
-        }
-
-        // TODO: delete this in favor of individual setters?
-        /// <summary>
-        /// High-level configuration for axis label, tick labels, and all tick lines
-        /// </summary>
-        public void Configure(Color? color = null, bool? ticks = null, bool? grid = null)
-        {
-            if (color.HasValue)
-                SetColor(color.Value);
-
-            if (ticks.HasValue)
-                TickMarks(ticks.Value);
-
-            if (grid.HasValue)
-                Grid(grid.Value);
         }
 
         public void RecalculateAxisSize()

@@ -24,7 +24,7 @@ namespace ScottPlot.Cookbook.Recipes
             bar.borderLineWidth = 0;
             bar.VerticalAxisIndex = 0;
             plt.YAxis.SetLabel("Count (#)");
-            plt.YAxis.Configure(color: bar.fillColor, ticks: true);
+            plt.YAxis.SetColor(bar.fillColor);
 
             // plot the mean curve as a scatter plot (on the secondary Y axis)
             var sp = plt.AddScatter(hist.bins, hist.countsFracCurve);
@@ -32,7 +32,8 @@ namespace ScottPlot.Cookbook.Recipes
             sp.lineWidth = 2;
             sp.VerticalAxisIndex = 1;
             plt.YAxis2.SetLabel("Fraction");
-            plt.YAxis2.Configure(color: sp.color, ticks: true);
+            plt.YAxis2.SetColor(sp.color);
+            plt.YAxis2.Ticks(true);
 
             // decorate the plot
             plt.XAxis2.SetLabel("Normal Random Data");
