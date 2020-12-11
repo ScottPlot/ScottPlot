@@ -20,9 +20,9 @@ namespace ScottPlot.Cookbook.Recipes
             plt.AddSignal(DataGen.Cos(51));
 
             // advanced grid customizations are available by accessing Axes directly
-            plt.XAxis.ConfigureMajorGrid(color: Color.FromArgb(100, Color.Black));
+            plt.XAxis.MajorGrid(color: Color.FromArgb(100, Color.Black));
             plt.XAxis.ConfigureMinorGrid(enable: true, color: Color.FromArgb(20, Color.Black));
-            plt.YAxis.ConfigureMajorGrid(lineWidth: 2, lineStyle: LineStyle.Dash, color: Color.Magenta);
+            plt.YAxis.MajorGrid(lineWidth: 2, lineStyle: LineStyle.Dash, color: Color.Magenta);
         }
     }
 
@@ -273,6 +273,102 @@ namespace ScottPlot.Cookbook.Recipes
 
             // add some extra space for rotated ticks
             plt.XAxis.PixelSizeMinimum = 50;
+        }
+    }
+
+    class LogScale : IRecipe
+    {
+        public string Category => "Advanced Axis Features";
+        public string ID => "asis_log";
+        public string Title => "Log Scale";
+        public string Description =>
+            "ScottPlot will only display data on a linear 2D plane, however you can log-transform " +
+            "data before plotting it to give the appearance of log scales. Customizing tick options " +
+            "for log-spaced minor ticks further improves appearance of these graphs.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            // generate some interesting log-distributed data
+            int pointCount = 200;
+            double[] dataXs = new double[pointCount];
+            double[] dataYs = new double[pointCount];
+            Random rand = new Random(0);
+            for (int i = 0; i < pointCount; i++)
+            {
+                double x = 10.0 * i / pointCount;
+                dataXs[i] = x;
+                dataYs[i] = Math.Pow(2, x) + rand.NextDouble() * i;
+            }
+
+            // this tool can convert linear data to log data
+            double[] dataYsLog = ScottPlot.Tools.Log10(dataYs);
+            plt.AddScatter(dataXs, dataYsLog, lineWidth: 0);
+
+            // place minor ticks to simulate a log scale
+            plt.YAxis.SetLogMinorTicks(true);
+
+            // make minor grid lines visible for added effect
+            plt.YAxis.ConfigureMinorGrid(enable: true, color: Color.FromArgb(10, Color.Black));
+
+            // decorate the plot
+            plt.Title("Data (Log Scale)");
+            plt.YLabel("Vertical Units (10^x)");
+            plt.XLabel("Horizontal Units");
+        }
+    }
+
+    class Ruler : IRecipe
+    {
+        public string Category => "Advanced Axis Features";
+        public string ID => "asis_ruler";
+        public string Title => "Ruler mode";
+        public string Description =>
+            "Ruler mode is an alternative way to display axis ticks. " +
+            "It draws long ticks and offsets the tick labels to give the appearance of a ruler.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.AddSignal(DataGen.Sin(51));
+            plt.AddSignal(DataGen.Cos(51));
+
+            plt.XAxis.RulerMode(true);
+            plt.YAxis.RulerMode(true);
+        }
+    }
+
+    class Polar : IRecipe
+    {
+        public string Category => "Advanced Axis Features";
+        public string ID => "asis_polar";
+        public string Title => "Polar Coordinates";
+        public string Description =>
+            "A helper function converts radius and theta arrays into Cartesian " +
+            "coordinates suitable for plotting with traditioanl plot types.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            // create data with polar coordinates
+            int count = 400;
+            double step = 0.01;
+
+            double[] rs = new double[count];
+            double[] thetas = new double[count];
+
+            for (int i = 0; i < rs.Length; i++)
+            {
+                rs[i] = 1 + i * step;
+                thetas[i] = i * 2 * Math.PI * step;
+            }
+
+            // convert polar data to Cartesian data
+            (double[] xs, double[] ys) = ScottPlot.Tools.ConvertPolarCoordinates(rs, thetas);
+
+            // plot the Cartesian data
+            plt.AddScatter(xs, ys);
+
+            // decorate the plot
+            plt.Title("Scatter Plot of Polar Data");
+            plt.AxisEqualScale(true);
         }
     }
 }
