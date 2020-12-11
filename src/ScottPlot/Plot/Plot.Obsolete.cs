@@ -262,7 +262,7 @@ namespace ScottPlot
         }
 
         [Obsolete("Use AddScatter() and customize it for no line, no marker, and errorbars as desired")]
-        public ErrorBars PlotErrorBars(
+        public void PlotErrorBars(
             double[] xs,
             double[] ys,
             double[] xPositiveError = null,
@@ -273,19 +273,7 @@ namespace ScottPlot
             double lineWidth = 1,
             double capWidth = 3,
             string label = null
-            )
-        {
-            var errorBars = new ErrorBars(xs, ys, xPositiveError, xNegativeError, yPositiveError, yNegativeError)
-            {
-                Color = color ?? settings.GetNextColor(),
-                LineWidth = (float)lineWidth,
-                CapSize = (float)capWidth,
-                label = label
-            };
-
-            Add(errorBars);
-            return errorBars;
-        }
+            ) => throw new NotImplementedException();
 
         [Obsolete("Use AddFill() and customize the object it returns")]
         public Polygon PlotFill(
