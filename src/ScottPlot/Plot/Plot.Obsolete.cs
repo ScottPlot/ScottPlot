@@ -250,7 +250,7 @@ namespace ScottPlot
         {
             FinancePlot ohlc = new FinancePlot()
             {
-                ohlcs = ohlcs,
+                OHLCs = ohlcs,
                 Candle = true,
                 AutoWidth = autoWidth,
                 Sqeuential = sequential,
@@ -558,7 +558,7 @@ namespace ScottPlot
         {
             FinancePlot ohlc = new FinancePlot()
             {
-                ohlcs = ohlcs,
+                OHLCs = ohlcs,
                 Candle = false,
                 AutoWidth = autoWidth,
                 Sqeuential = sequential,

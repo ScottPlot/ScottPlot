@@ -17,7 +17,7 @@ namespace ScottPlotTests.PlottableRenderTests
             // start with default settings
             var op = new FinancePlot()
             {
-                ohlcs = new OHLC[]
+                OHLCs = new OHLC[]
                         {
                             // open, high, low, close, time, timeSpan
                             new OHLC(273, 275, 264, 265, 1, 1),
@@ -51,7 +51,7 @@ namespace ScottPlotTests.PlottableRenderTests
             // start with default settings
             var op = new FinancePlot()
             {
-                ohlcs = new OHLC[]
+                OHLCs = new OHLC[]
                         {
                             // open, high, low, close, time, timeSpan
                             new OHLC(273, 275, 264, 265, 1, 1),
@@ -85,7 +85,7 @@ namespace ScottPlotTests.PlottableRenderTests
             // start with default settings
             var op = new FinancePlot()
             {
-                ohlcs = new OHLC[]
+                OHLCs = new OHLC[]
                         {
                             // open, high, low, close, time, timeSpan
                             new OHLC(273, 275, 264, 265, 1, 1),
@@ -120,7 +120,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var op = new FinancePlot()
             {
                 Candle = true,
-                ohlcs = new OHLC[]
+                OHLCs = new OHLC[]
                         {
                             // open, high, low, close, time, timeSpan
                             new OHLC(273, 275, 264, 265, 1, 1),

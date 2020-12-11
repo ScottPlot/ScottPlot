@@ -5,12 +5,15 @@ using System.Data;
 
 namespace ScottPlot.Plottable
 {
+    /// <summary>
+    /// Finance plots display open/high/low/close (OHLC) data
+    /// </summary>
     public class FinancePlot : IPlottable
     {
         /// <summary>
         /// Array of prices (open high low close)
         /// </summary>
-        public OHLC[] ohlcs;
+        public OHLC[] OHLCs;
 
         /// <summary>
         /// Display prices as filled candlesticks (otherwise display as OHLC lines)
@@ -27,51 +30,41 @@ namespace ScottPlot.Plottable
         /// </summary>
         public bool Sqeuential;
 
-        /// <summary>
-        /// Color when the OHLC closed above the open price
-        /// </summary>
-        public Color ColorUp = Color.LightGreen;
-
-        /// <summary>
-        /// Color when the OHLC did not close above the open price
-        /// </summary>
-        public Color ColorDown = Color.LightCoral;
-
-        // TODO: good first issue - create a ColorNeutral for when the candle closed at the same price it opened at
-
+        // customizations
         public bool IsVisible { get; set; } = true;
-
         public override string ToString() => $"PlottableOHLC with {PointCount} points";
         public LegendItem[] GetLegendItems() => null;
-        public int PointCount { get => ohlcs.Length; }
+        public int PointCount { get => OHLCs.Length; }
         public int HorizontalAxisIndex { get; set; } = 0;
         public int VerticalAxisIndex { get; set; } = 0;
+        public Color ColorUp = Color.LightGreen;
+        public Color ColorDown = Color.LightCoral;
 
         public AxisLimits GetAxisLimits()
         {
             // TODO: dont use an array here
             double[] limits = new double[4];
-            limits[0] = ohlcs[0].time;
-            limits[1] = ohlcs[0].time;
-            limits[2] = ohlcs[0].low;
-            limits[3] = ohlcs[0].high;
+            limits[0] = OHLCs[0].time;
+            limits[1] = OHLCs[0].time;
+            limits[2] = OHLCs[0].low;
+            limits[3] = OHLCs[0].high;
 
-            for (int i = 1; i < ohlcs.Length; i++)
+            for (int i = 1; i < OHLCs.Length; i++)
             {
-                if (ohlcs[i].time < limits[0])
-                    limits[0] = ohlcs[i].time;
-                if (ohlcs[i].time > limits[1])
-                    limits[1] = ohlcs[i].time;
-                if (ohlcs[i].low < limits[2])
-                    limits[2] = ohlcs[i].low;
-                if (ohlcs[i].high > limits[3])
-                    limits[3] = ohlcs[i].high;
+                if (OHLCs[i].time < limits[0])
+                    limits[0] = OHLCs[i].time;
+                if (OHLCs[i].time > limits[1])
+                    limits[1] = OHLCs[i].time;
+                if (OHLCs[i].low < limits[2])
+                    limits[2] = OHLCs[i].low;
+                if (OHLCs[i].high > limits[3])
+                    limits[3] = OHLCs[i].high;
             }
 
             if (Sqeuential)
             {
                 limits[0] = 0;
-                limits[1] = ohlcs.Length - 1;
+                limits[1] = OHLCs.Length - 1;
             }
 
             return new AxisLimits(limits[0], limits[1], limits[2], limits[3]);
@@ -88,21 +81,21 @@ namespace ScottPlot.Plottable
         private double GetSmallestSpacing()
         {
             double smallestSpacing = double.PositiveInfinity;
-            for (int i = 1; i < ohlcs.Length; i++)
-                smallestSpacing = Math.Min(ohlcs[i].time - ohlcs[i - 1].time, smallestSpacing);
+            for (int i = 1; i < OHLCs.Length; i++)
+                smallestSpacing = Math.Min(OHLCs[i].time - OHLCs[i - 1].time, smallestSpacing);
             return smallestSpacing;
         }
 
         public void ValidateData(bool deepValidation = false)
         {
-            if (ohlcs is null)
+            if (OHLCs is null)
                 throw new InvalidOperationException("ohlcs cannot be null");
 
-            for (int i = 0; i < ohlcs.Length; i++)
+            for (int i = 0; i < OHLCs.Length; i++)
             {
-                if (ohlcs[i] is null)
+                if (OHLCs[i] is null)
                     throw new InvalidOperationException($"ohlcs[{i}] cannot be null");
-                if (!ohlcs[i].IsValid)
+                if (!OHLCs[i].IsValid)
                     throw new InvalidOperationException($"ohlcs[{i}] does not contain valid data");
             }
         }
@@ -122,9 +115,9 @@ namespace ScottPlot.Plottable
             using (Pen pen = new Pen(Color.Magenta))
             using (SolidBrush brush = new SolidBrush(Color.Magenta))
             {
-                for (int i = 0; i < ohlcs.Length; i++)
+                for (int i = 0; i < OHLCs.Length; i++)
                 {
-                    var ohlc = ohlcs[i];
+                    var ohlc = OHLCs[i];
                     var ohlcTime = (Sqeuential) ? i : ohlc.time;
                     float pixelX = dims.GetPixelX(ohlcTime);
 
@@ -167,9 +160,9 @@ namespace ScottPlot.Plottable
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (Pen pen = new Pen(Color.Magenta))
             {
-                for (int i = 0; i < ohlcs.Length; i++)
+                for (int i = 0; i < OHLCs.Length; i++)
                 {
-                    var ohlc = ohlcs[i];
+                    var ohlc = OHLCs[i];
                     var ohlcTime = (Sqeuential) ? i : ohlc.time;
                     float pixelX = dims.GetPixelX(ohlcTime);
 

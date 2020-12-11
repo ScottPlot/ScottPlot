@@ -158,7 +158,7 @@ namespace ScottPlot
         {
             FinancePlot plottable = new FinancePlot()
             {
-                ohlcs = ohlcs,
+                OHLCs = ohlcs,
                 Candle = true,
                 ColorUp = ColorTranslator.FromHtml("#26a69a"),
                 ColorDown = ColorTranslator.FromHtml("#ef5350"),
@@ -328,7 +328,7 @@ namespace ScottPlot
         {
             FinancePlot plottable = new FinancePlot()
             {
-                ohlcs = ohlcs,
+                OHLCs = ohlcs,
                 Candle = false,
                 ColorUp = ColorTranslator.FromHtml("#26a69a"),
                 ColorDown = ColorTranslator.FromHtml("#ef5350"),
