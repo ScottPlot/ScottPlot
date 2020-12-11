@@ -221,7 +221,7 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// Set the minimum size and padding of the axis
         /// </summary>
-        public void ConfigureLayout(float? padding = null, float? minimumSize = null, float? maximumSize = null)
+        public void Layout(float? padding = null, float? minimumSize = null, float? maximumSize = null)
         {
             PixelSizePadding = padding ?? PixelSizePadding;
             PixelSizeMinimum = minimumSize ?? PixelSizeMinimum;

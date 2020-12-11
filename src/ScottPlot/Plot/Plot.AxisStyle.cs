@@ -124,10 +124,10 @@ namespace ScottPlot
         /// </summary>
         public void Layout(float? left = null, float? right = null, float? bottom = null, float? top = null, float? padding = 5)
         {
-            YAxis.ConfigureLayout(padding, left);
-            YAxis2.ConfigureLayout(padding, right);
-            XAxis.ConfigureLayout(padding, bottom);
-            XAxis2.ConfigureLayout(padding, top);
+            YAxis.Layout(padding, left);
+            YAxis2.Layout(padding, right);
+            XAxis.Layout(padding, bottom);
+            XAxis2.Layout(padding, top);
         }
 
         /// <summary>
