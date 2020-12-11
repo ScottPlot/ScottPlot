@@ -62,14 +62,12 @@ namespace ScottPlot.Cookbook.Recipes
             // manually define X axis tick positions and labels
             double[] xPositions = { 7, 21, 37, 46 };
             string[] xLabels = { "VII", "XXI", "XXXVII", "XLVI" };
-            plt.XAxis.ConfigureTicks(definedPositions: xPositions);
-            plt.XAxis.ConfigureTicks(definedLabels: xLabels);
+            plt.XAxis.SetTickPositions(xPositions, xLabels);
 
             // manually define Y axis tick positions and labels
             double[] yPositions = { -1, 0, .5, 1 };
             string[] yLabels = { "bottom", "center", "half", "top" };
-            plt.YAxis.ConfigureTicks(definedPositions: yPositions);
-            plt.YAxis.ConfigureTicks(definedLabels: yLabels);
+            plt.YAxis.SetTickPositions(yPositions, yLabels);
         }
     }
 
@@ -96,7 +94,7 @@ namespace ScottPlot.Cookbook.Recipes
 
             // then define tick labels based on "real" X values, rotate them, and give them extra space
             string[] labels = frequencies.Select(x => x.ToString()).ToArray();
-            plt.XAxis.ConfigureTicks(definedPositions: positions, definedLabels: labels);
+            plt.XAxis.SetTickPositions(positions, labels);
             plt.XAxis.ConfigureTickLabelStyle(rotation: 45);
             plt.XAxis.PixelSizeMinimum = 50; // extra padding for rotated ticks
 

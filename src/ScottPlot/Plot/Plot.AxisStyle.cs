@@ -160,7 +160,7 @@ namespace ScottPlot
         /// Manually define X axis tick positions and labels
         /// </summary>
         public void XTicks(double[] positions = null, string[] labels = null) =>
-            XAxis.ConfigureTicks(definedPositions: positions, definedLabels: labels);
+            XAxis.SetTickPositions(positions, labels);
 
         /// <summary>
         /// Manually define Y axis tick labels
@@ -171,7 +171,7 @@ namespace ScottPlot
         /// Manually define Y axis tick positions and labels
         /// </summary>
         public void YTicks(double[] positions = null, string[] labels = null) =>
-            YAxis.ConfigureTicks(definedPositions: positions, definedLabels: labels);
+            YAxis.SetTickPositions(positions, labels);
 
         /// <summary>
         /// Configure the style and behavior of X and Y ticks

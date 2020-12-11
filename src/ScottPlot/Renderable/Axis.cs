@@ -182,6 +182,15 @@ namespace ScottPlot.Renderable
             Ticks.TickCollection.logScale = logScale ?? Ticks.TickCollection.logScale;
             Ticks.TickCollection.invertSign = invertSign ?? Ticks.TickCollection.invertSign;
         }
+        
+        /// <summary>
+        /// Manually define major tick (and grid) positions and labels
+        /// </summary>
+        public void SetTickPositions(double[] positions, string[] labels)
+        {
+            Ticks.TickCollection.manualTickPositions = positions;
+            Ticks.TickCollection.manualTickLabels = labels;
+        }
 
         /// <summary>
         /// Configure tick visibility and positioning
@@ -189,15 +198,11 @@ namespace ScottPlot.Renderable
         public void ConfigureTicks(
             bool? majorTickMarks = null,
             bool? majorTickLabels = null,
-            bool? minorTickMarks = null,
-            double[] definedPositions = null,
-            string[] definedLabels = null)
+            bool? minorTickMarks = null)
         {
             Ticks.MajorTickEnable = majorTickMarks ?? Ticks.MajorTickEnable;
             Ticks.MajorLabelEnable = majorTickLabels ?? Ticks.MajorLabelEnable;
             Ticks.MinorTickEnable = minorTickMarks ?? Ticks.MinorTickEnable;
-            Ticks.TickCollection.manualTickPositions = definedPositions;
-            Ticks.TickCollection.manualTickLabels = definedLabels;
         }
 
         /// <summary>
