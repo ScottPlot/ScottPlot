@@ -23,7 +23,7 @@ namespace ScottPlotTests.PlottableRenderTests
 
             // change the plottable
             double? func2(double x) => Math.Pow(x, 2);
-            funcPlot.function = func2;
+            funcPlot.Function = func2;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -51,7 +51,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            funcPlot.lineWidth += 1;
+            funcPlot.LineWidth += 1;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -79,7 +79,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            funcPlot.lineStyle = LineStyle.Dash;
+            funcPlot.LineStyle = LineStyle.Dash;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -107,7 +107,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            funcPlot.color = Color.Gray;
+            funcPlot.Color = Color.Gray;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed

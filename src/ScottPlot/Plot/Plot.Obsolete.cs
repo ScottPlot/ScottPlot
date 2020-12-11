@@ -399,10 +399,10 @@ namespace ScottPlot
 
             FunctionPlot functionPlot = new FunctionPlot(function)
             {
-                color = color ?? settings.GetNextColor(),
-                lineWidth = lineWidth,
-                lineStyle = lineStyle,
-                label = label
+                Color = color ?? settings.GetNextColor(),
+                LineWidth = lineWidth,
+                LineStyle = lineStyle,
+                Label = label
             };
 
             Add(functionPlot);

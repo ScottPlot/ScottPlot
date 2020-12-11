@@ -262,9 +262,9 @@ namespace ScottPlot
         {
             FunctionPlot plottable = new FunctionPlot(function)
             {
-                color = color ?? settings.GetNextColor(),
-                lineWidth = lineWidth,
-                lineStyle = lineStyle
+                Color = color ?? settings.GetNextColor(),
+                LineWidth = lineWidth,
+                LineStyle = lineStyle
             };
             Add(plottable);
             return plottable;
