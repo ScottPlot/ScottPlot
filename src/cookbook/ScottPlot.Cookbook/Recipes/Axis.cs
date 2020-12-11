@@ -28,7 +28,7 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
             plt.XAxis.SetColor(Color.Green);
 
             // Many customizations are available through public methods
-            plt.YAxis.ConfigureLabel(label: "Vertical Axis", color: Color.Magenta, fontSize: 24, fontName: "Comic Sans MS");
+            plt.YAxis.SetLabel(label: "Vertical Axis", color: Color.Magenta, size: 24, fontName: "Comic Sans MS");
         }
     }
 

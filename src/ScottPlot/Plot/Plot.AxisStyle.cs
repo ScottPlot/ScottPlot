@@ -18,7 +18,7 @@ namespace ScottPlot
         /// <summary>
         /// Set the label for the horizontal axis above the plot (XAxis2). 
         /// </summary>
-        public void Title(string label, bool bold = true) => XAxis2.ConfigureLabel(visible: true, label: label, fontBold: bold);
+        public void Title(string label, bool bold = true) => XAxis2.SetLabel(label, bold: bold);
 
         /// <summary>
         /// Configure color and visibility of the frame that outlines the data area (lines along the edges of the primary axes)

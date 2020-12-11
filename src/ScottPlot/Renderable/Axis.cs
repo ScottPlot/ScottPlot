@@ -70,7 +70,7 @@ namespace ScottPlot.Renderable
                 Line.Render(dims, bmp, lowQuality);
             }
         }
-        
+
         /// <summary>
         /// Controls tick mark placement behavior. DateTime format assumes axis represents DateTime.ToOATime() units.
         /// </summary>
@@ -80,47 +80,17 @@ namespace ScottPlot.Renderable
             Ticks.TickCollection.dateFormat = enable;
         }
 
-        // TODO: axis label shouldn't have a visibility flag. This should be controlled by whether it's null or not.
-        // TODO: delete this?
         /// <summary>
         /// Deep configuration options for the axis label
         /// </summary>
-        public void ConfigureLabel(
-            bool? visible = null,
-            string label = null,
-            Color? color = null,
-            float? fontSize = null,
-            bool? fontBold = null,
-            string fontName = null)
+        public void SetLabel(string label = null, Color? color = null, float? size = null, bool? bold = null, string fontName = null)
         {
-            Title.IsVisible = visible ?? Title.IsVisible;
+            Title.IsVisible = true;
             Title.Label = label ?? Title.Label;
             Title.Font.Color = color ?? Title.Font.Color;
-            Title.Font.Size = fontSize ?? Title.Font.Size;
-            Title.Font.Bold = fontBold ?? Title.Font.Bold;
+            Title.Font.Size = size ?? Title.Font.Size;
+            Title.Font.Bold = bold ?? Title.Font.Bold;
             Title.Font.Name = fontName ?? Title.Font.Name;
-        }
-
-        // this is the most commonly called set of options
-        /// <summary>
-        /// Enable visibility of the axis label and define its text and color
-        /// </summary>
-        public void SetLabel(string label, Color color)
-        {
-            Title.IsVisible = true;
-            Title.Label = label;
-            Title.Font.Color = color;
-        }
-
-        // TODO: rename to Label()
-        // this is the most commonly called set of options
-        /// <summary>
-        /// Enable visibility of the axis label and define its text
-        /// </summary>
-        public void SetLabel(string label)
-        {
-            Title.IsVisible = true;
-            Title.Label = label;
         }
 
         /// <summary>
@@ -128,7 +98,7 @@ namespace ScottPlot.Renderable
         /// </summary>
         public void SetColor(Color color)
         {
-            ConfigureLabel(color: color);
+            SetLabel(color: color);
             ConfigureTickLabelStyle(color: color);
             Ticks.Color = color;
             Line.Color = color;
