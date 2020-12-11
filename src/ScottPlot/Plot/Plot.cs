@@ -514,14 +514,15 @@ namespace ScottPlot
         /// <summary>
         /// Add a horizontal axis line at a specific Y position
         /// </summary>
-        public HLine AddHorizontalLine(double y, Color? color = null, float width = 1, LineStyle style = LineStyle.Solid)
+        public HLine AddHorizontalLine(double y, Color? color = null, float width = 1, LineStyle style = LineStyle.Solid, string label = null)
         {
             HLine plottable = new HLine()
             {
                 position = y,
                 color = color ?? settings.GetNextColor(),
                 lineWidth = width,
-                lineStyle = style
+                lineStyle = style,
+                label = label,
             };
             Add(plottable);
             return plottable;
@@ -530,13 +531,14 @@ namespace ScottPlot
         /// <summary>
         /// Add a horizontal span (shades the region between two X positions)
         /// </summary>
-        public HSpan AddHorizontalSpan(double xMin, double xMax, Color? color = null)
+        public HSpan AddHorizontalSpan(double xMin, double xMax, Color? color = null, string label = null)
         {
             var plottable = new HSpan()
             {
                 position1 = xMin,
                 position2 = xMax,
                 color = color ?? GetNextColor(.5),
+                label = label,
             };
             Add(plottable);
             return plottable;
@@ -770,13 +772,14 @@ namespace ScottPlot
         /// <summary>
         /// Signal plots have evenly-spaced X points and render very fast.
         /// </summary>
-        public SignalPlot AddSignal(double[] ys, double sampleRate = 1, Color? color = null)
+        public SignalPlot AddSignal(double[] ys, double sampleRate = 1, Color? color = null, string label = null)
         {
             SignalPlot signal = new SignalPlot()
             {
                 ys = ys,
                 sampleRate = sampleRate,
                 color = color ?? settings.GetNextColor(),
+                label = label,
 
                 // TODO: FIX THIS!!!
                 minRenderIndex = 0,
@@ -791,13 +794,14 @@ namespace ScottPlot
         /// but data in source arrays cannot be changed after it is loaded.
         /// Methods can be used to update all or portions of the data.
         /// </summary>
-        public SignalPlotConst<T> AddSignalConst<T>(T[] ys, double sampleRate = 1, Color? color = null) where T : struct, IComparable
+        public SignalPlotConst<T> AddSignalConst<T>(T[] ys, double sampleRate = 1, Color? color = null, string label = null) where T : struct, IComparable
         {
             SignalPlotConst<T> plottable = new SignalPlotConst<T>()
             {
                 ys = ys,
                 sampleRate = sampleRate,
                 color = color ?? settings.GetNextColor(),
+                label = label,
                 minRenderIndex = 0,
                 maxRenderIndex = ys.Length - 1,
             };
@@ -808,13 +812,14 @@ namespace ScottPlot
         /// <summary>
         /// Speed-optimized plot for Ys with unevenly-spaced ascending Xs
         /// </summary>
-        public SignalPlotXY AddSignalXY(double[] xs, double[] ys, Color? color = null)
+        public SignalPlotXY AddSignalXY(double[] xs, double[] ys, Color? color = null, string label = null)
         {
             SignalPlotXY plottable = new SignalPlotXY()
             {
                 xs = xs,
                 ys = ys,
                 color = color ?? settings.GetNextColor(),
+                label = label,
                 minRenderIndex = 0,
                 maxRenderIndex = ys.Length - 1,
             };
@@ -827,7 +832,7 @@ namespace ScottPlot
         /// Speed-optimized plot for Ys with unevenly-spaced ascending Xs.
         /// Faster than SignalXY but values cannot be modified after loading.
         /// </summary>
-        public SignalPlotXYConst<TX, TY> AddSignalXYConst<TX, TY>(TX[] xs, TY[] ys, Color? color = null)
+        public SignalPlotXYConst<TX, TY> AddSignalXYConst<TX, TY>(TX[] xs, TY[] ys, Color? color = null, string label = null)
             where TX : struct, IComparable where TY : struct, IComparable
         {
             SignalPlotXYConst<TX, TY> signal = new SignalPlotXYConst<TX, TY>()
@@ -835,6 +840,7 @@ namespace ScottPlot
                 xs = xs,
                 ys = ys,
                 color = color ?? settings.GetNextColor(),
+                label = label,
                 minRenderIndex = 0,
                 maxRenderIndex = ys.Length - 1,
             };
@@ -889,14 +895,15 @@ namespace ScottPlot
         /// <summary>
         /// Add a vertical axis line at a specific Y position
         /// </summary>
-        public VLine AddVerticalLine(double x, Color? color = null, float width = 1, LineStyle style = LineStyle.Solid)
+        public VLine AddVerticalLine(double x, Color? color = null, float width = 1, LineStyle style = LineStyle.Solid, string label = null)
         {
             VLine plottable = new VLine()
             {
                 position = x,
                 color = color ?? settings.GetNextColor(),
                 lineWidth = width,
-                lineStyle = style
+                lineStyle = style,
+                label = label
             };
             Add(plottable);
             return plottable;
@@ -905,13 +912,14 @@ namespace ScottPlot
         /// <summary>
         /// Add a horizontal span (shades the region between two X positions)
         /// </summary>
-        public VSpan AddVerticalSpan(double yMin, double yMax, Color? color = null)
+        public VSpan AddVerticalSpan(double yMin, double yMax, Color? color = null, string label = null)
         {
             var plottable = new VSpan()
             {
                 position1 = yMin,
                 position2 = yMax,
                 color = color ?? GetNextColor(.5),
+                label = label,
             };
             Add(plottable);
             return plottable;
