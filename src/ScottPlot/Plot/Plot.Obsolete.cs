@@ -44,9 +44,9 @@ namespace ScottPlot
 
             var plottable = new Annotation()
             {
-                xPixel = xPixel,
-                yPixel = yPixel,
-                label = label,
+                X = xPixel,
+                Y = yPixel,
+                Label = label,
                 FontSize = (float)fontSize,
                 FontName = fontName,
                 FontColor = fontColor.Value,

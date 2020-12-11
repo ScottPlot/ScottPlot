@@ -15,12 +15,12 @@ namespace ScottPlotTests.PlottableRenderTests
             var plt = new ScottPlot.Plot(400, 300);
 
             // start with default settings
-            var pa = new ScottPlot.Plottable.Annotation() { label = "Hello", xPixel = 10, yPixel = 10, FontSize = 36 };
+            var pa = new ScottPlot.Plottable.Annotation() { Label = "Hello", X = 10, Y = 10, FontSize = 36 };
             plt.Add(pa);
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            pa.label += "World";
+            pa.Label += "World";
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -40,7 +40,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var plt = new ScottPlot.Plot(400, 300);
 
             // start with default settings
-            var pa = new ScottPlot.Plottable.Annotation() { label = "Hello", xPixel = 10, yPixel = 10 };
+            var pa = new ScottPlot.Plottable.Annotation() { Label = "Hello", X = 10, Y = 10 };
             plt.Add(pa);
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
@@ -65,7 +65,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var plt = new ScottPlot.Plot(400, 300);
 
             // start with default settings
-            var pa = new ScottPlot.Plottable.Annotation() { label = "Hello", xPixel = 10, yPixel = 10 };
+            var pa = new ScottPlot.Plottable.Annotation() { Label = "Hello", X = 10, Y = 10 };
             plt.Add(pa);
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
@@ -90,7 +90,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var plt = new ScottPlot.Plot(400, 300);
 
             // start with default settings
-            var pa = new ScottPlot.Plottable.Annotation() { label = "Hello", xPixel = 10, yPixel = 10, BorderColor = System.Drawing.Color.Gray };
+            var pa = new ScottPlot.Plottable.Annotation() { Label = "Hello", X = 10, Y = 10, BorderColor = System.Drawing.Color.Gray };
             plt.Add(pa);
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
@@ -115,7 +115,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var plt = new ScottPlot.Plot(400, 300);
 
             // start with default settings
-            var pa = new ScottPlot.Plottable.Annotation() { label = "Hello", xPixel = 10, yPixel = 10 };
+            var pa = new ScottPlot.Plottable.Annotation() { Label = "Hello", X = 10, Y = 10 };
             plt.Add(pa);
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 

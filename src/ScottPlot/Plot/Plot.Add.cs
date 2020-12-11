@@ -32,9 +32,9 @@ namespace ScottPlot
         {
             var plottable = new Annotation()
             {
-                label = label,
-                xPixel = x,
-                yPixel = y,
+                Label = label,
+                X = x,
+                Y = y,
                 FontSize = size
             };
             plottable.Font.Color = color ?? plottable.Font.Color;

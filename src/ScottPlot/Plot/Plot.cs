@@ -229,7 +229,7 @@ namespace ScottPlot
 
             return newPlot;
         }
-        
+
         #endregion
     }
 }
