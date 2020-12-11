@@ -162,7 +162,7 @@ namespace ScottPlot.UserControls
 
             // misc
             plt.Grid(enable: cbGrid.Checked);
-            plt.Legend(enableLegend: cbLegend.Checked);
+            plt.Legend(enable: cbLegend.Checked);
             if (cbStyle.Text != "")
             {
                 Style newStyle = (Style)Enum.Parse(typeof(Style), cbStyle.Text);

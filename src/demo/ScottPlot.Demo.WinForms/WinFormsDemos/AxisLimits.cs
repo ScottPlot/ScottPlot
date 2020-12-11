@@ -18,7 +18,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             formsPlot1.plt.PlotSignal(DataGen.Sin(51));
             formsPlot1.plt.PlotSignal(DataGen.Cos(51));
             formsPlot1.plt.AxisAuto();
-            formsPlot1.plt.SetAxisBoundaries(0, 50, -1, 1);
+            formsPlot1.plt.SetViewLimits(0, 50, -1, 1);
             formsPlot1.Render();
         }
     }

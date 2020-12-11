@@ -129,7 +129,7 @@ namespace ScottPlot
             if (plt is null)
                 return;
 
-            plt.Resize(Width, Height);
+            plt.SetSize(Width, Height);
             Render(skipIfCurrentlyRendering: false);
         }
 

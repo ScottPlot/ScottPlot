@@ -30,8 +30,8 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             wpfPlot1.plt.PlotScatter(x, sin);
             wpfPlot1.plt.PlotScatter(x, cos);
 
-            wpfPlot1.plt.Style(figureBackgroundColor: System.Drawing.Color.Transparent);
-            wpfPlot1.plt.Style(dataBackgroundColor: System.Drawing.Color.Transparent);
+            wpfPlot1.plt.Style(figureBackground: System.Drawing.Color.Transparent);
+            wpfPlot1.plt.Style(dataBackground: System.Drawing.Color.Transparent);
             wpfPlot1.Render();
         }
     }

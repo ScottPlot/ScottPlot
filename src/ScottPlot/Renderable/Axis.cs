@@ -78,7 +78,7 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// Configure the label of this axis
         /// </summary>
-        public void Label(string label = null, Color? color = null, float? size = null, bool? bold = null, string fontName = null)
+        public string Label(string label = null, Color? color = null, float? size = null, bool? bold = null, string fontName = null)
         {
             AxTitle.IsVisible = true;
             AxTitle.Label = label ?? AxTitle.Label;
@@ -86,6 +86,7 @@ namespace ScottPlot.Renderable
             AxTitle.Font.Size = size ?? AxTitle.Font.Size;
             AxTitle.Font.Bold = bold ?? AxTitle.Font.Bold;
             AxTitle.Font.Name = fontName ?? AxTitle.Font.Name;
+            return AxTitle.Label;
         }
 
         /// <summary>

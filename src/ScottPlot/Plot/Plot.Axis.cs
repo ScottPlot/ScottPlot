@@ -1,12 +1,22 @@
-﻿/* Code here is for adjusting axis limits and converting between pixel and coordinate units */
+﻿/* 
+ * This file contains code related to Axes including:
+ *   - Unit/Pixel conversions
+ *   - Configuring axis limits and boundaries
+ *   - Axis labels (XLabel, YLabel, Title, etc)
+ *   - Adding multiple axes
+ *   - Grid lines
+ *   - Tick marks
+ *   - Tick labels
+ */
 
 using System;
+using System.Drawing;
 
 namespace ScottPlot
 {
     public partial class Plot
     {
-        #region Axis access and creation
+        #region shortcuts: primary axes
 
         /// <summary>
         /// Axis on the bottom edge of the plot
@@ -27,6 +37,155 @@ namespace ScottPlot
         /// Axis on the right edge of the plot
         /// </summary>
         public Renderable.Axis YAxis2 => settings.YAxis2;
+
+        #endregion
+
+        #region shortcuts: axis label, tick, and grid
+
+        /// <summary>
+        /// Set the label for the vertical axis to the right of the plot (XAxis). 
+        /// </summary>
+        public void XLabel(string label) => XAxis.Label(label);
+
+        /// <summary>
+        /// Set the label for the vertical axis to the right of the plot (YAxis2). 
+        /// </summary>
+        public void YLabel(string label) => YAxis.Label(label);
+
+        /// <summary>
+        /// Set the label for the horizontal axis above the plot (XAxis2). 
+        /// </summary>
+        public void Title(string label, bool bold = true) => XAxis2.Label(label, bold: bold);
+
+        /// <summary>
+        /// Configure color and visibility of the frame that outlines the data area (lines along the edges of the primary axes)
+        /// </summary>
+        public void Frame(bool? visible = null, Color? color = null, bool? left = null, bool? right = null, bool? bottom = null, bool? top = null)
+        {
+            var primaryAxes = new Renderable.Axis[] { XAxis, XAxis2, YAxis, YAxis2 };
+
+            foreach (var axis in primaryAxes)
+                axis.Line(visible, color);
+
+            YAxis.Line(visible: left);
+            YAxis2.Line(visible: right);
+            XAxis.Line(visible: bottom);
+            XAxis2.Line(visible: top);
+        }
+
+        /// <summary>
+        /// Set size of the primary axes to zero so the data area covers the whole figure
+        /// </summary>
+        public void Frameless()
+        {
+            var primaryAxes = new Renderable.Axis[] { XAxis, XAxis2, YAxis, YAxis2 };
+            foreach (var axis in primaryAxes)
+                axis.Hide();
+        }
+
+        /// <summary>
+        /// Customize basic options for the primary X and Y axes. 
+        /// Call XAxis and YAxis methods to further customize individual axes.
+        /// </summary>
+        public void Grid(bool? enable = null, Color? color = null, LineStyle? lineStyle = null)
+        {
+            if (enable.HasValue)
+            {
+                XAxis.Grid(enable.Value);
+                YAxis.Grid(enable.Value);
+            }
+
+            XAxis.MajorGrid(color: color, lineStyle: lineStyle);
+            YAxis.MajorGrid(color: color, lineStyle: lineStyle);
+        }
+
+        /// <summary>
+        /// Set padding around the data area by defining the minimum size and padding for all axes
+        /// </summary>
+        public void Layout(float? left = null, float? right = null, float? bottom = null, float? top = null, float? padding = 5)
+        {
+            YAxis.Layout(padding, left);
+            YAxis2.Layout(padding, right);
+            XAxis.Layout(padding, bottom);
+            XAxis2.Layout(padding, top);
+        }
+
+        /// <summary>
+        /// Adjust this axis layout based on the layout of a source plot
+        /// </summary>
+        public void MatchLayout(Plot sourcePlot, bool horizontal = true, bool vertical = true)
+        {
+            if (!sourcePlot.GetSettings(showWarning: false).AllAxesHaveBeenSet)
+                sourcePlot.AxisAuto();
+
+            if (!settings.AllAxesHaveBeenSet)
+                AxisAuto();
+
+            var sourceSettings = sourcePlot.GetSettings(false);
+
+            if (horizontal)
+            {
+                YAxis.PixelSize = sourceSettings.YAxis.PixelSize;
+                YAxis2.PixelSize = sourceSettings.YAxis2.PixelSize;
+            }
+
+            if (vertical)
+            {
+                XAxis.PixelSize = sourceSettings.XAxis.PixelSize;
+                XAxis2.PixelSize = sourceSettings.XAxis2.PixelSize;
+            }
+        }
+
+        /// <summary>
+        /// Manually define X axis tick labels
+        /// </summary>
+        public void XTicks(string[] labels) => XTicks(DataGen.Consecutive(labels.Length), labels);
+
+        /// <summary>
+        /// Manually define X axis tick positions and labels
+        /// </summary>
+        public void XTicks(double[] positions = null, string[] labels = null) =>
+            XAxis.ManualTickPositions(positions, labels);
+
+        /// <summary>
+        /// Manually define Y axis tick labels
+        /// </summary>
+        public void YTicks(string[] labels) => YTicks(DataGen.Consecutive(labels.Length), labels);
+
+        /// <summary>
+        /// Manually define Y axis tick positions and labels
+        /// </summary>
+        public void YTicks(double[] positions = null, string[] labels = null) =>
+            YAxis.ManualTickPositions(positions, labels);
+
+        /// <summary>
+        /// Set the culture to use for number-to-string converstion for tick labels of all axes
+        /// </summary>
+        public void SetCulture(System.Globalization.CultureInfo culture)
+        {
+            foreach (var axis in settings.Axes)
+                axis.SetCulture(culture);
+        }
+
+        /// <summary>
+        /// Set the culture to use for number-to-string converstion for tick labels of all axes
+        /// </summary>
+        /// <param name="shortDatePattern"></param>
+        /// <param name="decimalSeparator">Separates the decimal digits</param>
+        /// <param name="numberGroupSeparator">Separates large numbers ito groups of digits for readability</param>
+        /// <param name="decimalDigits">Number of digits after the numberDecimalSeparator</param>
+        /// <param name="numberNegativePattern"></param>
+        /// <param name="numberGroupSizes">Sizes of decimal groups which are separated by the numberGroupSeparator</param>
+        public void SetCulture(string shortDatePattern = null, string decimalSeparator = null, string numberGroupSeparator = null,
+            int? decimalDigits = null, int? numberNegativePattern = null, int[] numberGroupSizes = null)
+        {
+            foreach (var axis in settings.Axes)
+                axis.SetCulture(shortDatePattern, decimalSeparator, numberGroupSeparator, decimalDigits, numberNegativePattern, numberGroupSizes);
+        }
+
+        #endregion
+
+        #region Axis creation
 
         /// <summary>
         /// Create and return an additional axis
@@ -121,15 +280,25 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Set limits for the primary X axis
+        /// </summary>
+        public void SetAxisLimitsX(double xMin, double xMax) => SetAxisLimits(xMin, xMax, null, null);
+
+        /// <summary>
+        /// Set limits for the primary Y axis
+        /// </summary>
+        public void SetAxisLimitsY(double yMin, double yMax) => SetAxisLimits(null, null, yMin, yMax);
+
+        /// <summary>
         /// Set limits for the given axes
         /// </summary>
         public void SetAxisLimits(AxisLimits limits, int xAxisIndex = 0, int yAxisIndex = 0) =>
             settings.AxisSet(limits, xAxisIndex, yAxisIndex);
 
         /// <summary>
-        /// Set boundaries of the primary axes (you cannot zoom, pan, or set axis limits beyond these boundaries)
+        /// Set limits of the view for the primary axes (you cannot zoom, pan, or set axis limits beyond these boundaries)
         /// </summary>
-        public void SetAxisBoundaries(
+        public void SetViewLimits(
             double xMin = double.NegativeInfinity, double xMax = double.PositiveInfinity,
             double yMin = double.NegativeInfinity, double yMax = double.PositiveInfinity)
         {
@@ -321,6 +490,41 @@ namespace ScottPlot
 
         [Obsolete("Use AxisAuto()", true)]
         public double[] AutoScale() => null;
+
+
+        [Obsolete("Individual axes (e.g., XAxis and YAxis) have their own tick configuration methods", true)]
+        public void Ticks(
+            bool? displayTicksX = null,
+            bool? displayTicksY = null,
+            bool? displayTicksXminor = null,
+            bool? displayTicksYminor = null,
+            bool? displayTickLabelsX = null,
+            bool? displayTickLabelsY = null,
+            Color? color = null,
+            bool? useMultiplierNotation = null,
+            bool? useOffsetNotation = null,
+            bool? useExponentialNotation = null,
+            bool? dateTimeX = null,
+            bool? dateTimeY = null,
+            bool? rulerModeX = null,
+            bool? rulerModeY = null,
+            bool? invertSignX = null,
+            bool? invertSignY = null,
+            string fontName = null,
+            float? fontSize = null,
+            float? xTickRotation = null,
+            bool? logScaleX = null,
+            bool? logScaleY = null,
+            string numericFormatStringX = null,
+            string numericFormatStringY = null,
+            bool? snapToNearestPixel = null,
+            int? baseX = null,
+            int? baseY = null,
+            string prefixX = null,
+            string prefixY = null,
+            string dateTimeFormatStringX = null,
+            string dateTimeFormatStringY = null
+            ) => throw new NotImplementedException();
 
         #endregion
     }

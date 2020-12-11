@@ -103,7 +103,11 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.YAxis.TickLabelStyle(color: Color.DarkGreen, fontName: "comic sans ms", fontSize: 16);
 
             // add a legend to the corner
-            plt.Legend(fontName: "comic sans ms", fontSize: 18, bold: true, fontColor: Color.DarkBlue);
+            var legend = plt.Legend();
+            legend.FontName = "comic sans ms";
+            legend.FontSize = 18;
+            legend.FontBold = true;
+            legend.FontColor = Color.DarkBlue;
         }
     }
 }

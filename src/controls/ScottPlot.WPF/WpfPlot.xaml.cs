@@ -144,7 +144,7 @@ namespace ScottPlot
 
         private void CanvasPlot_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            plt?.Resize((int)(canvasPlot.ActualWidth * dpiScale), (int)(canvasPlot.ActualHeight * dpiScale));
+            plt?.SetSize((int)(canvasPlot.ActualWidth * dpiScale), (int)(canvasPlot.ActualHeight * dpiScale));
             Render();
         }
 

@@ -72,7 +72,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             }
 
             plt.Grid(enable: false);
-            plt.Legend(fontSize: 10);
+            var legend = plt.Legend();
+            legend.FontSize = 10;
         }
     }
 
@@ -97,7 +98,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.AddScatter(x, cos, color: Color.Green, lineWidth: 5, markerSize: 0);
             plt.AddScatter(x, cos2, color: Color.Blue, lineWidth: 3, markerSize: 0, lineStyle: LineStyle.DashDot);
 
-            plt.Legend(fixedLineWidth: false);
+            var legend = plt.Legend();
+            legend.FixedLineWidth = false;
         }
     }
 

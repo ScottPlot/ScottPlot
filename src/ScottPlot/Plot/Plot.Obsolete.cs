@@ -453,7 +453,6 @@ namespace ScottPlot
             heatmap.UpdateData(intensities);
 
             Add(heatmap);
-            Ticks(false, false);
             Layout(top: 180);
 
             return heatmap;

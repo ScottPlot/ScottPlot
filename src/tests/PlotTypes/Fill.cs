@@ -71,14 +71,11 @@ namespace ScottPlotTests.PlotTypes
 
             var plt = new ScottPlot.Plot(400, 300);
 
-            plt.PlotFill(blueLineXs, blueLineYs,
-                fillColor: Color.Blue, fillAlpha: .5, label: "blue");
-            plt.PlotFill(redLineXs, redLineYs,
-                fillColor: Color.Red, fillAlpha: .5, label: "red");
-            plt.PlotFill(greenLineXs, greenLineYs,
-                fillColor: Color.Green, fillAlpha: .5, label: "green");
+            plt.PlotFill(blueLineXs, blueLineYs, fillColor: Color.Blue, fillAlpha: .5, label: "blue");
+            plt.PlotFill(redLineXs, redLineYs, fillColor: Color.Red, fillAlpha: .5, label: "red");
+            plt.PlotFill(greenLineXs, greenLineYs, fillColor: Color.Green, fillAlpha: .5, label: "green");
 
-            plt.Legend(shadowDirection: ScottPlot.Alignment.MiddleCenter);
+            plt.Legend();
 
             plt.AxisAuto(0, 0);
 

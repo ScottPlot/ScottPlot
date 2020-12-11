@@ -63,7 +63,7 @@ namespace ScottPlotTests.ImageAnalysis
             double[] ys = DataGen.RandomWalk(rand, 100);
 
             var plt = new ScottPlot.Plot(400, 300);
-            plt.Style(figureBackgroundColor: System.Drawing.Color.Gray, dataBackgroundColor: System.Drawing.Color.Gray);
+            plt.Style(figureBackground: System.Drawing.Color.Gray, dataBackground: System.Drawing.Color.Gray);
 
             plt.PlotSignal(ys, yOffset: 0, color: System.Drawing.Color.FromArgb(255, 0, 0), label: "red", lineWidth: 2);
             plt.PlotSignal(ys, yOffset: 1, color: System.Drawing.Color.FromArgb(0, 255, 0), label: "green", lineWidth: 3);

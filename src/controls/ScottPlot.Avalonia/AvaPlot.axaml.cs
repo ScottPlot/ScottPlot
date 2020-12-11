@@ -89,7 +89,7 @@ namespace ScottPlot.Avalonia
             //Debug.WriteLine(e.Property.Name);
             if (e.Property.Name == "Bounds")
             {
-                plt.Resize((int)((Ava.Rect)e.NewValue).Width, (int)((Ava.Rect)e.NewValue).Height);
+                plt.SetSize((int)((Ava.Rect)e.NewValue).Width, (int)((Ava.Rect)e.NewValue).Height);
                 Render();
             }
 

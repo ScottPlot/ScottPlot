@@ -72,7 +72,7 @@ namespace ScottPlot.Interactive
 
         public void CanvasSizeChanged(int dpiCorrectedWidth, int dpiCorrectedHeight)
         {
-            plt?.Resize(dpiCorrectedWidth, dpiCorrectedHeight);
+            plt?.SetSize(dpiCorrectedWidth, dpiCorrectedHeight);
             Render();
         }
 
