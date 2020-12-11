@@ -28,12 +28,12 @@ namespace ScottPlot
             var primaryAxes = new Renderable.Axis[] { XAxis, XAxis2, YAxis, YAxis2 };
 
             foreach (var axis in primaryAxes)
-                axis.ConfigureLine(visible, color);
+                axis.Line(visible, color);
 
-            YAxis.ConfigureLine(visible: left);
-            YAxis2.ConfigureLine(visible: right);
-            XAxis.ConfigureLine(visible: bottom);
-            XAxis2.ConfigureLine(visible: top);
+            YAxis.Line(visible: left);
+            YAxis2.Line(visible: right);
+            XAxis.Line(visible: bottom);
+            XAxis2.Line(visible: top);
         }
 
         /// <summary>

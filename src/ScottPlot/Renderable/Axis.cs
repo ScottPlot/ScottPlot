@@ -211,7 +211,7 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// Configure the line drawn along the edge of the axis
         /// </summary>
-        public void ConfigureLine(bool? visible = null, Color? color = null, float? width = null)
+        public void Line(bool? visible = null, Color? color = null, float? width = null)
         {
             AxLine.IsVisible = visible ?? AxLine.IsVisible;
             AxLine.Color = color ?? AxLine.Color;
