@@ -19,7 +19,8 @@ namespace ScottPlotTests.Plot
 
             plt.Grid(false);
             plt.Frame(false);
-            plt.Ticks(false, false);
+            plt.XAxis.MajorTicks(false);
+            plt.YAxis.MajorTicks(false);
             plt.AxisAuto(0);
             plt.Frameless();
 

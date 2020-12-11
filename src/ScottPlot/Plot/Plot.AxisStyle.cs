@@ -181,7 +181,7 @@ namespace ScottPlot
         /// <summary>
         /// Configure the style and behavior of X and Y ticks
         /// </summary>
-        [Obsolete("Do not use this method! Call methods of individual axes (e.g., XAxis and YAxis)")]
+        [Obsolete("Do not use this method! Call methods of individual axes (e.g., XAxis and YAxis)", true)]
         public void Ticks(
             bool? displayTicksX = null,
             bool? displayTicksY = null,

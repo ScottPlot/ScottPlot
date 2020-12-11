@@ -31,7 +31,7 @@ namespace ScottPlotTests.Groups
             // plot the multi-series
             var plt = new ScottPlot.Plot(400, 300);
             plt.Add(customPlottable);
-            plt.Ticks(displayTicksX: false);
+            plt.XAxis.MajorTicks(false);
 
             // additional plot styling
             plt.Title("Life Expectancy in European Countries in 2007");
@@ -67,7 +67,8 @@ namespace ScottPlotTests.Groups
             var plt = new ScottPlot.Plot();
             plt.Add(customPlottable);
             plt.XTicks(labels: new string[] { "Africas", "Americas", "Asia", "Europe", "Oceania" });
-            plt.Ticks(fontSize: 18);
+            plt.XAxis.TickLabelStyle(fontSize: 18);
+            plt.YAxis.TickLabelStyle(fontSize: 18);
 
             // additional plot styling
             plt.XAxis2.SetLabel(label: "Life Expectancy in 2007", size: 26);
@@ -131,7 +132,8 @@ namespace ScottPlotTests.Groups
             var plt = new ScottPlot.Plot();
             plt.Add(customPlottable);
             plt.XTicks(labels: groupLabels);
-            plt.Ticks(fontSize: 18);
+            plt.XAxis.TickLabelStyle(fontSize: 18);
+            plt.YAxis.TickLabelStyle(fontSize: 18);
 
             // additional plot styling
             plt.XAxis2.SetLabel(label: "Life Expectancy", size: 26);

@@ -48,7 +48,8 @@ namespace ScottPlotTests.Misc
             plt.PlotLine(xs[0], ys[0], xs[1], ys[1], Color.Blue);
             plt.Grid(false);
             plt.Frame(false);
-            plt.Ticks(false, false);
+            plt.XAxis.MajorTicks(false);
+            plt.YAxis.MajorTicks(false);
             plt.Title("Line/Scatter");
 
             TestTools.SaveFig(plt);
@@ -71,7 +72,8 @@ namespace ScottPlotTests.Misc
                 );
             plt.Grid(false);
             plt.Frame(false);
-            plt.Ticks(false, false);
+            plt.XAxis.MajorTicks(false);
+            plt.YAxis.MajorTicks(false);
             plt.Title("Signal");
 
             TestTools.SaveFig(plt);
@@ -94,7 +96,8 @@ namespace ScottPlotTests.Misc
                 );
             plt.Grid(false);
             plt.Frame(false);
-            plt.Ticks(false, false);
+            plt.XAxis.MajorTicks(false);
+            plt.YAxis.MajorTicks(false);
             plt.Title("Large Value Signal");
 
             TestTools.SaveFig(plt);

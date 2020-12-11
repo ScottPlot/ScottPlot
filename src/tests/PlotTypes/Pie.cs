@@ -15,12 +15,15 @@ namespace ScottPlotTests.PlotTypes
 
             var plt = new ScottPlot.Plot(300, 800);
 
-            plt.PlotPie(values, labels, showLabels: false);
+            var pie = plt.AddPie(values);
+            pie.groupNames = labels;
+            pie.showLabels = false;
             plt.Legend();
 
             plt.Grid(false);
             plt.Frame(false);
-            plt.Ticks(false, false);
+            plt.XAxis.MajorTicks(false);
+            plt.YAxis.MajorTicks(false);
 
             TestTools.SaveFig(plt);
         }
@@ -38,7 +41,8 @@ namespace ScottPlotTests.PlotTypes
 
             plt.Grid(false);
             plt.Frame(false);
-            plt.Ticks(false, false);
+            plt.XAxis.MajorTicks(false);
+            plt.YAxis.MajorTicks(false);
 
             TestTools.SaveFig(plt);
         }

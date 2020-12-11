@@ -136,7 +136,8 @@ namespace ScottPlot.UserControls
 
             // vertical axis
             plt.YLabel(tbYlabel.Text);
-            plt.Ticks(displayTicksYminor: cbYminor.Checked, dateTimeY: cbYdateTime.Checked);
+            plt.YAxis.MinorTicks(cbYminor.Checked);
+            plt.YAxis.DateTimeFormat(cbYdateTime.Checked);
             double y1, y2;
             double.TryParse(tbY1.Text, out y1);
             double.TryParse(tbY2.Text, out y2);
@@ -144,14 +145,16 @@ namespace ScottPlot.UserControls
 
             // horizontal axis
             plt.XLabel(tbXlabel.Text);
-            plt.Ticks(displayTicksXminor: cbXminor.Checked, dateTimeX: cbXdateTime.Checked);
+            plt.YAxis.MinorTicks(cbXminor.Checked);
+            plt.YAxis.DateTimeFormat(cbXdateTime.Checked);
             double x1, x2;
             double.TryParse(tbX1.Text, out x1);
             double.TryParse(tbX2.Text, out x2);
             plt.SetAxisLimits(xMin: x1, xMax: x2);
 
             // tick display options
-            plt.Ticks(useOffsetNotation: cbTicksOffset.Checked, useMultiplierNotation: cbTicksMult.Checked);
+            plt.XAxis.TickLabelNotation(offset: cbTicksOffset.Checked, multiplier: cbTicksMult.Checked);
+            plt.YAxis.TickLabelNotation(offset: cbTicksOffset.Checked, multiplier: cbTicksMult.Checked);
 
             // image quality
             //plt.AntiAlias(figure: rbQualityHigh.Checked, data: rbQualityHigh.Checked);

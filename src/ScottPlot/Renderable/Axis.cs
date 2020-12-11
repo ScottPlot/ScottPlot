@@ -159,11 +159,6 @@ namespace ScottPlot.Renderable
         }
 
         /// <summary>
-        /// Controls whether minor tick positions are evenly spaced or log-distributed between major tick marks
-        /// </summary>
-        public void SetLogMinorTicks(bool enable) => Ticks.TickCollection.logScale = enable;
-
-        /// <summary>
         /// Ruler mode draws long tick marks and offsets tick labels for a ruler appearance
         /// </summary>
         public void RulerMode(bool enable) => Ticks.RulerMode = enable;
@@ -200,6 +195,28 @@ namespace ScottPlot.Renderable
             Ticks.TickCollection.manualTickLabels = labels;
         }
 
+        // TODO: rename this to just ticks!
+
+        /// <summary>
+        /// Set visibility of major ticks and labels
+        /// </summary>
+        public void MajorTicks(bool enable, bool labels = true, bool minorToo = true)
+        {
+            Ticks.MajorTickEnable = enable;
+            Ticks.MajorLabelEnable = enable && labels;
+            if (minorToo)
+                Ticks.MinorTickEnable = enable;
+        }
+
+        /// <summary>
+        /// Set visibility of major ticks and labels
+        /// </summary>
+        public void MinorTicks(bool enable, bool logScale = false)
+        {
+            Ticks.MinorTickEnable = enable;
+            Ticks.TickCollection.logScale = logScale;
+        }
+
         /// <summary>
         /// Configure tick visibility and positioning
         /// </summary>
@@ -208,8 +225,6 @@ namespace ScottPlot.Renderable
             bool? majorTickLabels = null,
             bool? minorTickMarks = null)
         {
-            Ticks.MajorTickEnable = majorTickMarks ?? Ticks.MajorTickEnable;
-            Ticks.MajorLabelEnable = majorTickLabels ?? Ticks.MajorLabelEnable;
             Ticks.MinorTickEnable = minorTickMarks ?? Ticks.MinorTickEnable;
         }
 

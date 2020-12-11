@@ -20,9 +20,9 @@ namespace ScottPlotTests.Axis
 
             // for DateTime compatibility, sample rate must be points/day
             double pointsPerDay = 24.0 * 60 * 60 * pointsPerSecond;
-            plt.PlotSignal(ys, sampleRate: pointsPerDay);
+            plt.AddSignal(ys, sampleRate: pointsPerDay);
 
-            plt.Ticks(dateTimeX: true, dateTimeFormatStringX: "HH:mm:ss:fff");
+            plt.XAxis.SetTickLabelFormat("HH:mm:ss:fff", true);
 
             TestTools.SaveFig(plt);
         }

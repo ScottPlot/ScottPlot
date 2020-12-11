@@ -54,7 +54,7 @@ namespace ScottPlotTests
             // WARNING: this resets the layout, so you must call Layout() after this
             plt.XLabel("horizontal axis label");
 
-            plt.Ticks(xTickRotation: 45);
+            plt.XAxis.TickLabelStyle(rotation: 45);
             plt.Layout(bottom: 50);
 
             TestTools.SaveFig(plt);

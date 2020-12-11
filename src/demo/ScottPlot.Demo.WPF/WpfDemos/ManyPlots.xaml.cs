@@ -42,9 +42,10 @@ namespace ScottPlot.Demo.WPF.WpfDemos
                 for (int rowIndex = 0; rowIndex < rowCount; rowIndex++)
                 {
                     var plt = new ScottPlot.Plot();
-                    plt.PlotSignal(DataGen.RandomWalk(rand, 10));
+                    plt.AddSignal(DataGen.RandomWalk(rand, 10));
                     plt.Title($"Well {(char)(65 + rowIndex)} {columnIndex + 1}");
-                    plt.Ticks(fontSize: 10);
+                    plt.XAxis.TickLabelStyle(fontSize: 10);
+                    plt.YAxis.TickLabelStyle(fontSize: 10);
                     plt.Grid(false);
                     plots.Add(new PlotElement(columnIndex, rowIndex, plt));
                 }

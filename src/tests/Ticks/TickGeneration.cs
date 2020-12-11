@@ -60,12 +60,13 @@ namespace ScottPlotTests.Ticks
             var pltDefault = mplt.GetSubplot(0, 0);
             pltDefault.Title("Default xSpacing");
             pltDefault.PlotScatter(dates, values);
-            pltDefault.Ticks(dateTimeX: true);
+            pltDefault.XAxis.DateTimeFormat(true);
 
             var pltTest = mplt.GetSubplot(0, 1);
             pltTest.Title("xSpacing = 1 day");
             pltTest.PlotScatter(dates, values);
-            pltTest.Ticks(dateTimeX: true, xTickRotation: 45);
+            pltTest.XAxis.DateTimeFormat(true);
+            pltTest.XAxis.TickLabelStyle(rotation: 45);
             pltTest.Layout(bottom: 60); // need extra height to accomodate rotated labels
 
             // force 1 tick per day on a DateTime axis
@@ -82,8 +83,10 @@ namespace ScottPlotTests.Ticks
             DateTime firstDay = new DateTime(2020, 1, 1);
 
             var plt = new ScottPlot.Plot(4000, 400);
-            plt.PlotSignal(data, sampleRate: 60 * 24, xOffset: firstDay.ToOADate());
-            plt.Ticks(dateTimeX: true);
+            var sig = plt.AddSignal(data, sampleRate: 60 * 24);
+            sig.xOffset = firstDay.ToOADate();
+
+            plt.XAxis.DateTimeFormat(true);
 
             TestTools.SaveFig(plt);
         }

@@ -123,7 +123,8 @@ namespace ScottPlot
                         titleLabelColor: Color.Black
                         );
                     existingPlot.Frame(false);
-                    existingPlot.Ticks(displayTicksXminor: false, displayTicksYminor: false);
+                    existingPlot.XAxis.MinorTicks(true);
+                    existingPlot.YAxis.MinorTicks(true);
                     break;
 
                 default:

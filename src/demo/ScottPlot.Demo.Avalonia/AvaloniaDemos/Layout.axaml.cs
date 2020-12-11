@@ -43,7 +43,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             avaPlot1.plt.YLabel("Vertical Axis");
 
             avaPlot1.plt.XTicks(dataX, labels);
-            avaPlot1.plt.Ticks(xTickRotation: 90);
+            avaPlot1.plt.XAxis.TickLabelStyle(rotation: 90);
             avaPlot1.plt.AxisAuto();
             avaPlot1.plt.Layout(left: 20, top: 50, bottom: 100, right: 20);
             avaPlot1.Configure(recalculateLayoutOnMouseUp: false);
