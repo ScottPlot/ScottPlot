@@ -73,7 +73,7 @@ namespace ScottPlot.Cookbook.Site
             string warning = "" +
                 "\n<blockquote>" +
                 "<b>⚠️</b> <strong>Documentation is version-specific:</strong> " +
-                "This page was generated for <code>ScottPlot 1.2.3-beta</code><br> " +
+                $"This page was generated for <code>ScottPlot {Plot.Version}</code><br> " +
                 "Additional documentation and more version-specific cookbooks are on the " +
                 "<a href='https://swharden.com/scottplot' style='font-weight: 600;'>ScottPlot Website</a>" +
                 "</blockquote>\n";
