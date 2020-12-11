@@ -176,6 +176,7 @@ namespace ScottPlot
         /// <summary>
         /// Configure the style and behavior of X and Y ticks
         /// </summary>
+        [Obsolete("Do not use this method. Call methods of individual axes (e.g., XAxis and YAxis)")]
         public void Ticks(
             bool? displayTicksX = null,
             bool? displayTicksY = null,
@@ -230,8 +231,8 @@ namespace ScottPlot
             settings.YAxis.TickLabelNotation(offset: useOffsetNotation);
             settings.XAxis.TickLabelNotation(exponential: useExponentialNotation);
             settings.YAxis.TickLabelNotation(exponential: useExponentialNotation);
-            settings.XAxis.TickLabelNotation(dateTime: dateTimeX);
-            settings.YAxis.TickLabelNotation(dateTime: dateTimeY);
+            //settings.XAxis.TickLabelNotation(dateTime: dateTimeX);
+            //settings.YAxis.TickLabelNotation(dateTime: dateTimeY);
             settings.XAxis.TickLabelNotation(invertSign: invertSignX);
             settings.YAxis.TickLabelNotation(invertSign: invertSignY);
             //settings.XAxis.SetTickLabelFormat(numericFormatStringX ?? dateTimeFormatStringX);

@@ -124,7 +124,6 @@ namespace ScottPlot.Renderable
         /// Customize string settings for the tick labels
         /// </summary>
         public void TickLabelNotation(
-            bool? dateTime = null,
             bool? multiplier = null,
             bool? offset = null,
             bool? exponential = null,
@@ -135,7 +134,6 @@ namespace ScottPlot.Renderable
             Ticks.TickCollection.useMultiplierNotation = multiplier ?? Ticks.TickCollection.useMultiplierNotation;
             Ticks.TickCollection.useOffsetNotation = offset ?? Ticks.TickCollection.useOffsetNotation;
             Ticks.TickCollection.useExponentialNotation = exponential ?? Ticks.TickCollection.useExponentialNotation;
-            Ticks.TickCollection.dateFormat = dateTime ?? Ticks.TickCollection.dateFormat;
             Ticks.TickCollection.invertSign = invertSign ?? Ticks.TickCollection.invertSign;
             Ticks.TickCollection.radix = radix ?? Ticks.TickCollection.radix;
             Ticks.TickCollection.prefix = prefix ?? Ticks.TickCollection.prefix;
