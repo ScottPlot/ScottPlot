@@ -70,8 +70,8 @@ namespace ScottPlotTests.Groups
             plt.YAxis.TickLabelStyle(fontSize: 18);
 
             // additional plot styling
-            plt.XAxis2.SetLabel(label: "Life Expectancy in 2007", size: 26);
-            plt.YAxis.SetLabel(label: "Age (years)", size: 18);
+            plt.XAxis2.Label(label: "Life Expectancy in 2007", size: 26);
+            plt.YAxis.Label(label: "Age (years)", size: 18);
             plt.Legend(location: Alignment.LowerRight);
             plt.Grid(lineStyle: LineStyle.Dot);
             plt.XAxis.Grid(false);
@@ -135,8 +135,8 @@ namespace ScottPlotTests.Groups
             plt.YAxis.TickLabelStyle(fontSize: 18);
 
             // additional plot styling
-            plt.XAxis2.SetLabel(label: "Life Expectancy", size: 26);
-            plt.YAxis.SetLabel(label: "Age (years)", size: 18);
+            plt.XAxis2.Label(label: "Life Expectancy", size: 26);
+            plt.YAxis.Label(label: "Age (years)", size: 18);
             plt.Legend(location: Alignment.LowerRight);
             plt.Grid(lineStyle: LineStyle.Dot);
             plt.XAxis.Grid(false);

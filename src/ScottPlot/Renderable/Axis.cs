@@ -78,7 +78,7 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// Configure the label of this axis
         /// </summary>
-        public void SetLabel(string label = null, Color? color = null, float? size = null, bool? bold = null, string fontName = null)
+        public void Label(string label = null, Color? color = null, float? size = null, bool? bold = null, string fontName = null)
         {
             AxTitle.IsVisible = true;
             AxTitle.Label = label ?? AxTitle.Label;
@@ -91,9 +91,9 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// Set color of every component of this axis (label, line, tick marks, and tick labels)
         /// </summary>
-        public void SetColor(Color color)
+        public void Color(Color color)
         {
-            SetLabel(color: color);
+            Label(color: color);
             TickLabelStyle(color: color);
             AxTicks.Color = color;
             AxLine.Color = color;
@@ -138,7 +138,7 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// Define a manual spacing between major ticks (and major grid lines)
         /// </summary>
-        public void SetTickSpacing(double manualSpacing)
+        public void ManualTickSpacing(double manualSpacing)
         {
             // TODO: cutt X and Y out of this
             AxTicks.TickCollection.manualSpacingX = manualSpacing;
@@ -148,10 +148,19 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// Define a manual spacing between major ticks (and major grid lines) for axes configured to display using DateTime format
         /// </summary>
-        public void SetTickSpacing(double manualSpacing, DateTimeUnit manualSpacingDateTimeUnit)
+        public void ManualTickSpacing(double manualSpacing, DateTimeUnit manualSpacingDateTimeUnit)
         {
-            SetTickSpacing(manualSpacing);
+            ManualTickSpacing(manualSpacing);
             AxTicks.TickCollection.manualDateTimeSpacingUnitX = manualSpacingDateTimeUnit;
+        }
+
+        /// <summary>
+        /// Manually define major tick (and grid) positions and labels
+        /// </summary>
+        public void ManualTickPositions(double[] positions, string[] labels)
+        {
+            AxTicks.TickCollection.manualTickPositions = positions;
+            AxTicks.TickCollection.manualTickLabels = labels;
         }
 
         /// <summary>
@@ -180,15 +189,6 @@ namespace ScottPlot.Renderable
             AxTicks.MajorLabelFont.Size = fontSize ?? AxTicks.MajorLabelFont.Size;
             AxTicks.MajorLabelFont.Bold = fontBold ?? AxTicks.MajorLabelFont.Bold;
             AxTicks.Rotation = rotation ?? AxTicks.Rotation;
-        }
-
-        /// <summary>
-        /// Manually define major tick (and grid) positions and labels
-        /// </summary>
-        public void SetTickPositions(double[] positions, string[] labels)
-        {
-            AxTicks.TickCollection.manualTickPositions = positions;
-            AxTicks.TickCollection.manualTickLabels = labels;
         }
 
         /// <summary>

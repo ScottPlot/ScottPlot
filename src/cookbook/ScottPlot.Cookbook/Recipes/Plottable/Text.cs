@@ -94,9 +94,9 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.AddText("NuGet", 32, 0, new Drawing.Font() { Name = "comic sans ms", Size = 24, Color = Color.Gold, Bold = true });
 
             // configure axis labels
-            plt.YAxis.SetLabel(label: "vertical units", fontName: "impact", size: 24, color: Color.Red, bold: true);
-            plt.XAxis.SetLabel(label: "horizontal units", fontName: "georgia", size: 24, color: Color.Blue, bold: true);
-            plt.XAxis2.SetLabel(label: "Impressive Graph", size: 24, color: Color.Purple, bold: true);
+            plt.YAxis.Label(label: "vertical units", fontName: "impact", size: 24, color: Color.Red, bold: true);
+            plt.XAxis.Label(label: "horizontal units", fontName: "georgia", size: 24, color: Color.Blue, bold: true);
+            plt.XAxis2.Label(label: "Impressive Graph", size: 24, color: Color.Purple, bold: true);
 
             // configure tick labels
             plt.XAxis.TickLabelStyle(color: Color.DarkBlue, fontName: "comic sans ms", fontSize: 16);

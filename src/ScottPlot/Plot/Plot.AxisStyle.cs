@@ -8,17 +8,17 @@ namespace ScottPlot
         /// <summary>
         /// Set the label for the vertical axis to the right of the plot (XAxis). 
         /// </summary>
-        public void XLabel(string label) => XAxis.SetLabel(label);
+        public void XLabel(string label) => XAxis.Label(label);
 
         /// <summary>
         /// Set the label for the vertical axis to the right of the plot (YAxis2). 
         /// </summary>
-        public void YLabel(string label) => YAxis.SetLabel(label);
+        public void YLabel(string label) => YAxis.Label(label);
 
         /// <summary>
         /// Set the label for the horizontal axis above the plot (XAxis2). 
         /// </summary>
-        public void Title(string label, bool bold = true) => XAxis2.SetLabel(label, bold: bold);
+        public void Title(string label, bool bold = true) => XAxis2.Label(label, bold: bold);
 
         /// <summary>
         /// Configure color and visibility of the frame that outlines the data area (lines along the edges of the primary axes)
@@ -108,7 +108,7 @@ namespace ScottPlot
         /// Manually define X axis tick positions and labels
         /// </summary>
         public void XTicks(double[] positions = null, string[] labels = null) =>
-            XAxis.SetTickPositions(positions, labels);
+            XAxis.ManualTickPositions(positions, labels);
 
         /// <summary>
         /// Manually define Y axis tick labels
@@ -119,7 +119,7 @@ namespace ScottPlot
         /// Manually define Y axis tick positions and labels
         /// </summary>
         public void YTicks(double[] positions = null, string[] labels = null) =>
-            YAxis.SetTickPositions(positions, labels);
+            YAxis.ManualTickPositions(positions, labels);
 
         /// <summary>
         /// Configure the style and behavior of X and Y ticks

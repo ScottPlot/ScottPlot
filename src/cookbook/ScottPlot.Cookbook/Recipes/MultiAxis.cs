@@ -22,10 +22,10 @@ namespace ScottPlot.Cookbook.Recipes
             var sigSmall = plt.AddSignal(DataGen.Sin(51, mult: 1), sampleRate: 1);
             sigSmall.VerticalAxisIndex = 0;
             sigSmall.HorizontalAxisIndex = 0;
-            plt.XAxis.SetLabel("Primary X Axis");
-            plt.YAxis.SetLabel("Secondary Y Axis");
-            plt.XAxis.SetColor(sigSmall.color);
-            plt.YAxis.SetColor(sigSmall.color);
+            plt.XAxis.Label("Primary X Axis");
+            plt.YAxis.Label("Secondary Y Axis");
+            plt.XAxis.Color(sigSmall.color);
+            plt.YAxis.Color(sigSmall.color);
 
             // plot another set of data using the secondary axes
             var sigBig = plt.AddSignal(DataGen.Cos(51, mult: 100), sampleRate: 100);
@@ -33,10 +33,10 @@ namespace ScottPlot.Cookbook.Recipes
             sigBig.HorizontalAxisIndex = 1;
             plt.YAxis2.Ticks(true); // ticks weren't visible by default
             plt.XAxis2.Ticks(true); // ticks weren't visible by default
-            plt.YAxis2.SetColor(sigBig.color);
-            plt.XAxis2.SetColor(sigBig.color);
-            plt.YAxis2.SetLabel("Secondary Y Axis");
-            plt.XAxis2.SetLabel("Secondary X Axis");
+            plt.YAxis2.Color(sigBig.color);
+            plt.XAxis2.Color(sigBig.color);
+            plt.YAxis2.Label("Secondary Y Axis");
+            plt.XAxis2.Label("Secondary X Axis");
         }
     }
 
@@ -54,15 +54,15 @@ namespace ScottPlot.Cookbook.Recipes
             // plot one set of data using the primary Y axis
             var sigSmall = plt.AddSignal(DataGen.Sin(51, mult: 1));
             sigSmall.VerticalAxisIndex = 0;
-            plt.YAxis.SetLabel("Primary Axis");
-            plt.YAxis.SetColor(sigSmall.color);
+            plt.YAxis.Label("Primary Axis");
+            plt.YAxis.Color(sigSmall.color);
 
             // plot another set of data using an additional axis
             var sigBig = plt.AddSignal(DataGen.Cos(51, mult: 100));
             var yAxis3 = plt.AddAxis(Renderable.Edge.Left, axisIndex: 2);
             sigBig.VerticalAxisIndex = 2;
-            yAxis3.SetLabel("Additional Axis");
-            yAxis3.SetColor(sigBig.color);
+            yAxis3.Label("Additional Axis");
+            yAxis3.Color(sigBig.color);
         }
     }
 }

@@ -23,21 +23,21 @@ namespace ScottPlot.Cookbook.Recipes
             bar.barWidth = hist.binSize * 1.2; // oversize to reduce render artifacts
             bar.borderLineWidth = 0;
             bar.VerticalAxisIndex = 0;
-            plt.YAxis.SetLabel("Count (#)");
-            plt.YAxis.SetColor(bar.fillColor);
+            plt.YAxis.Label("Count (#)");
+            plt.YAxis.Color(bar.fillColor);
 
             // plot the mean curve as a scatter plot (on the secondary Y axis)
             var sp = plt.AddScatter(hist.bins, hist.countsFracCurve);
             sp.markerSize = 0;
             sp.lineWidth = 2;
             sp.VerticalAxisIndex = 1;
-            plt.YAxis2.SetLabel("Fraction");
-            plt.YAxis2.SetColor(sp.color);
+            plt.YAxis2.Label("Fraction");
+            plt.YAxis2.Color(sp.color);
             plt.YAxis2.Ticks(true);
 
             // decorate the plot
-            plt.XAxis2.SetLabel("Normal Random Data");
-            plt.XAxis.SetLabel("Value (units)");
+            plt.XAxis2.Label("Normal Random Data");
+            plt.XAxis.Label("Value (units)");
             plt.SetAxisLimits(yMin: 0);
             plt.Grid(lineStyle: LineStyle.Dot);
         }
@@ -77,8 +77,8 @@ namespace ScottPlot.Cookbook.Recipes
             plt.SetAxisLimits(yMin: 0, yMax: 1);
             plt.Grid(lineStyle: LineStyle.Dot);
             plt.Title("Cumulative Probability Histogram");
-            plt.XAxis.SetLabel("Probability (fraction)");
-            plt.YAxis.SetLabel("Value (units)");
+            plt.XAxis.Label("Probability (fraction)");
+            plt.YAxis.Label("Value (units)");
         }
     }
 

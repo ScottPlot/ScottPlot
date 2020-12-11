@@ -26,10 +26,10 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
             plt.Title("Axis Customization");
 
             // Axes labels can be further customized for any axis
-            plt.YAxis.SetLabel("Vertical Axis", Color.Magenta, size: 24, fontName: "Comic Sans MS");
+            plt.YAxis.Label("Vertical Axis", Color.Magenta, size: 24, fontName: "Comic Sans MS");
 
             // This method will set the color of axis labels, lines, ticks, and tick labels
-            plt.XAxis.SetColor(Color.Green);
+            plt.XAxis.Color(Color.Green);
         }
     }
 
