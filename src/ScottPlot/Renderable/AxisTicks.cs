@@ -1,14 +1,14 @@
-﻿/* This module is responsible for calculating, storing, and rendering:
- *   - tick marks (major and minor)
- *   - tick labels
- *   - grid lines (major and minor)
- * 
+﻿/* The AxisTicks object contains:
+ *   - A TickCollection responsible for calculating tick positions and labels
+ *   - major tick label styling
+ *   - major/minor tick mark styling
+ *   - major/minor grid line styling
  */
+
 using ScottPlot.Ticks;
 using ScottPlot.Drawing;
 using System;
 using System.Drawing;
-using System.Linq;
 
 namespace ScottPlot.Renderable
 {
@@ -49,166 +49,26 @@ namespace ScottPlot.Renderable
         public float PixelOffset = 0;
         public bool IsVisible { get; set; } = true;
 
+        // TODO: store the TickCollection in the Axis module, not in the Ticks module.
+
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             using (Graphics gfx = GDI.Graphics(bmp, lowQuality))
             {
                 if (MajorTickVisible)
-                    RenderTickMarks(dims, gfx, TickCollection.tickPositionsMajor, RulerMode ? MajorTickLength * 4 : MajorTickLength, MajorTickColor);
+                    AxisTicksRender.RenderTickMarks(dims, gfx, TickCollection.tickPositionsMajor, RulerMode ? MajorTickLength * 4 : MajorTickLength, MajorTickColor, Edge, PixelOffset);
 
                 if (MajorTickVisible && TickLabelVisible)
-                    RenderTickLabels(dims, gfx);
+                    AxisTicksRender.RenderTickLabels(dims, gfx, TickCollection, TickLabelFont, Edge, TickLabelRotation, RulerMode, PixelOffset, MajorTickLength, MinorTickLength);
 
                 if (MinorTickVisible)
-                    RenderTickMarks(dims, gfx, TickCollection.tickPositionsMinor, MinorTickLength, MinorTickColor);
+                    AxisTicksRender.RenderTickMarks(dims, gfx, TickCollection.tickPositionsMinor, MinorTickLength, MinorTickColor, Edge, PixelOffset);
 
                 if (MajorGridVisible)
-                    RenderGridLines(dims, gfx, TickCollection.tickPositionsMajor, MajorGridStyle, MajorGridColor, MajorGridWidth);
+                    AxisTicksRender.RenderGridLines(dims, gfx, TickCollection.tickPositionsMajor, MajorGridStyle, MajorGridColor, MajorGridWidth, Edge);
 
                 if (MinorGridVisible)
-                    RenderGridLines(dims, gfx, TickCollection.tickPositionsMinor, MinorGridStyle, MinorGridColor, MinorGridWidth);
-            }
-        }
-
-        private void RenderTickMarks(PlotDimensions dims, Graphics gfx, double[] positions, float tickLength, Color tickColor)
-        {
-            if (positions is null || positions.Length == 0)
-                return;
-
-            if (IsVertical)
-            {
-                float x = (Edge == Edge.Left) ? dims.DataOffsetX - PixelOffset : dims.DataOffsetX + dims.DataWidth + PixelOffset;
-                float tickDelta = (Edge == Edge.Left) ? -tickLength : tickLength;
-
-                var ys = positions.Select(i => dims.GetPixelY(i));
-                using (var pen = GDI.Pen(tickColor))
-                    foreach (float y in ys)
-                        gfx.DrawLine(pen, x, y, x + tickDelta, y);
-            }
-
-            if (IsHorizontal)
-            {
-                float y = (Edge == Edge.Top) ? dims.DataOffsetY - PixelOffset : dims.DataOffsetY + dims.DataHeight + PixelOffset;
-                float tickDelta = (Edge == Edge.Top) ? -tickLength : tickLength;
-
-                var xs = positions.Select(i => dims.GetPixelX(i));
-                using (var pen = GDI.Pen(tickColor))
-                    foreach (float x in xs)
-                        gfx.DrawLine(pen, x, y, x, y + tickDelta);
-            }
-        }
-
-        private void RenderGridLines(PlotDimensions dims, Graphics gfx, double[] positions,
-            LineStyle gridLineStyle, Color gridLineColor, float gridLineWidth)
-        {
-            if (positions is null || positions.Length == 0 || gridLineStyle == LineStyle.None)
-                return;
-
-            // don't draw grid lines on the last pixel to prevent drawing over the data frame
-            float xEdgeLeft = dims.DataOffsetX + 1;
-            float xEdgeRight = dims.DataOffsetX + dims.DataWidth - 1;
-            float yEdgeTop = dims.DataOffsetY + 1;
-            float yEdgeBottom = dims.DataOffsetY + dims.DataHeight - 1;
-
-            if (IsVertical)
-            {
-                float x = (Edge == Edge.Left) ? dims.DataOffsetX : dims.DataOffsetX + dims.DataWidth;
-                float x2 = (Edge == Edge.Left) ? dims.DataOffsetX + dims.DataWidth : dims.DataOffsetX;
-                var ys = positions.Select(i => dims.GetPixelY(i)).Where(y => yEdgeTop < y && y < yEdgeBottom);
-                if (gridLineStyle != LineStyle.None)
-                    using (var pen = GDI.Pen(gridLineColor, gridLineWidth, gridLineStyle))
-                        foreach (float y in ys)
-                            gfx.DrawLine(pen, x, y, x2, y);
-            }
-
-            if (IsHorizontal)
-            {
-                float y = (Edge == Edge.Top) ? dims.DataOffsetY : dims.DataOffsetY + dims.DataHeight;
-                float y2 = (Edge == Edge.Top) ? dims.DataOffsetY + dims.DataHeight : dims.DataOffsetY;
-                var xs = positions.Select(i => dims.GetPixelX(i)).Where(x => xEdgeLeft < x && x < xEdgeRight);
-                if (gridLineStyle != LineStyle.None)
-                    using (var pen = GDI.Pen(gridLineColor, gridLineWidth, gridLineStyle))
-                        foreach (float x in xs)
-                            gfx.DrawLine(pen, x, y, x, y2);
-            }
-        }
-
-        private void RenderTickLabels(PlotDimensions dims, Graphics gfx)
-        {
-            if (TickCollection.tickLabels is null || TickCollection.tickLabels.Length == 0 || TickLabelVisible == false)
-                return;
-
-            using (var font = GDI.Font(TickLabelFont))
-            using (var brush = GDI.Brush(TickLabelFont.Color))
-            using (var sf = GDI.StringFormat())
-            {
-                if (Edge == Edge.Bottom)
-                {
-                    if (TickLabelRotation == 0)
-                    {
-                        sf.Alignment = RulerMode ? StringAlignment.Near : StringAlignment.Center;
-                        sf.LineAlignment = StringAlignment.Near;
-                        for (int i = 0; i < TickCollection.tickPositionsMajor.Length; i++)
-                            gfx.DrawString(TickCollection.tickLabels[i], font, brush, format: sf,
-                                x: dims.GetPixelX(TickCollection.tickPositionsMajor[i]),
-                                y: dims.DataOffsetY + dims.DataHeight + PixelOffset + MajorTickLength);
-
-                        sf.Alignment = StringAlignment.Far;
-                        gfx.DrawString(TickCollection.cornerLabel, font, brush, format: sf,
-                            x: dims.DataOffsetX + dims.DataWidth,
-                            y: dims.DataOffsetY + dims.DataHeight + MajorTickLength + TickCollection.maxLabelHeight);
-                    }
-                    else
-                    {
-                        for (int i = 0; i < TickCollection.tickPositionsMajor.Length; i++)
-                        {
-                            float x = dims.GetPixelX(TickCollection.tickPositionsMajor[i]);
-                            float y = dims.DataOffsetY + dims.DataHeight + MajorTickLength + 3;
-
-                            gfx.TranslateTransform(x, y);
-                            gfx.RotateTransform(-TickLabelRotation);
-                            sf.Alignment = StringAlignment.Far;
-                            sf.LineAlignment = StringAlignment.Center;
-                            gfx.DrawString(TickCollection.tickLabels[i], font, brush, 0, 0, sf);
-                            gfx.ResetTransform();
-                        }
-                    }
-                }
-                else if (Edge == Edge.Top)
-                {
-                    sf.Alignment = RulerMode ? StringAlignment.Near : StringAlignment.Center;
-                    sf.LineAlignment = StringAlignment.Far;
-                    for (int i = 0; i < TickCollection.tickPositionsMajor.Length; i++)
-                        gfx.DrawString(TickCollection.tickLabels[i], font, brush, format: sf,
-                            x: dims.GetPixelX(TickCollection.tickPositionsMajor[i]),
-                            y: dims.DataOffsetY - PixelOffset - MajorTickLength);
-                }
-                else if (Edge == Edge.Left)
-                {
-                    sf.LineAlignment = RulerMode ? StringAlignment.Far : StringAlignment.Center;
-                    sf.Alignment = StringAlignment.Far;
-                    for (int i = 0; i < TickCollection.tickPositionsMajor.Length; i++)
-                        gfx.DrawString(TickCollection.tickLabels[i], font, brush, format: sf,
-                            x: dims.DataOffsetX - PixelOffset - MajorTickLength,
-                            y: dims.GetPixelY(TickCollection.tickPositionsMajor[i]));
-
-                    sf.LineAlignment = StringAlignment.Far;
-                    sf.Alignment = StringAlignment.Near;
-                    gfx.DrawString(TickCollection.cornerLabel, font, brush, dims.DataOffsetX, dims.DataOffsetY, sf);
-                }
-                else if (Edge == Edge.Right)
-                {
-                    sf.LineAlignment = RulerMode ? StringAlignment.Far : StringAlignment.Center;
-                    sf.Alignment = StringAlignment.Near;
-                    for (int i = 0; i < TickCollection.tickPositionsMajor.Length; i++)
-                        gfx.DrawString(TickCollection.tickLabels[i], font, brush, format: sf,
-                            x: dims.DataOffsetX + PixelOffset + MajorTickLength + dims.DataWidth,
-                            y: dims.GetPixelY(TickCollection.tickPositionsMajor[i]));
-                }
-                else
-                {
-                    throw new NotImplementedException();
-                }
+                    AxisTicksRender.RenderGridLines(dims, gfx, TickCollection.tickPositionsMinor, MinorGridStyle, MinorGridColor, MinorGridWidth, Edge);
             }
         }
     }
