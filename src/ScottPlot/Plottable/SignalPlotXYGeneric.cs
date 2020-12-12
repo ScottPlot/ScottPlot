@@ -8,15 +8,12 @@ using System.Runtime.InteropServices;
 
 namespace ScottPlot.Plottable
 {
-
     public class SignalPlotXYGeneric<TX, TY> : SignalPlotBase<TY> where TX : struct, IComparable where TY : struct, IComparable
     {
-        private bool XSequalYSPromise = false;
-
-        private TX[] _xs;
-        public TX[] xs
+        private TX[] _Xs;
+        public TX[] Xs
         {
-            get => _xs;
+            get => _Xs;
             set
             {
                 if (value == null)
@@ -28,9 +25,7 @@ namespace ScottPlot.Plottable
                     if (value[i].CompareTo(value[i - 1]) < 0)
                         throw new ArgumentException("Xs must only contain ascending values");
 
-                XSequalYSPromise = (value.Length != Ys?.Length);
-
-                _xs = value;
+                _Xs = value;
             }
         }
 
@@ -41,8 +36,6 @@ namespace ScottPlot.Plottable
             {
                 if (value.Length == 0)
                     throw new ArgumentException("YS must have at least one element");
-
-                XSequalYSPromise = (value.Length != xs?.Length);
 
                 base.Ys = value;
             }
@@ -56,8 +49,8 @@ namespace ScottPlot.Plottable
         public override AxisLimits GetAxisLimits()
         {
             var baseLimits = base.GetAxisLimits();
-            var newXMin = Convert.ToDouble(xs[MinRenderIndex]);
-            var newXMax = Convert.ToDouble(xs[MaxRenderIndex]);
+            var newXMin = Convert.ToDouble(Xs[MinRenderIndex]);
+            var newXMax = Convert.ToDouble(Xs[MaxRenderIndex]);
             Debug.WriteLine($"Limits: {newXMin} {newXMax}");
             return new AxisLimits(newXMin, newXMax, baseLimits.YMin, baseLimits.YMax);
         }
@@ -67,13 +60,13 @@ namespace ScottPlot.Plottable
             TX start = (TX)Convert.ChangeType(dims.XMin + dims.XSpan / dims.DataWidth * x, typeof(TX));
             TX end = (TX)Convert.ChangeType(dims.XMin + dims.XSpan / dims.DataWidth * (x + 1), typeof(TX));
 
-            int startIndex = Array.BinarySearch(xs, from, length, start);
+            int startIndex = Array.BinarySearch(Xs, from, length, start);
             if (startIndex < 0)
             {
                 startIndex = ~startIndex;
             }
 
-            int endIndex = Array.BinarySearch(xs, from, length, end);
+            int endIndex = Array.BinarySearch(Xs, from, length, end);
             if (endIndex < 0)
             {
                 endIndex = ~endIndex;
@@ -110,7 +103,7 @@ namespace ScottPlot.Plottable
                 int searchTo;
 
                 // Calculate point before displayed points
-                int pointBeforeIndex = Array.BinarySearch(xs, MinRenderIndex, MaxRenderIndex - MinRenderIndex + 1, Convert.ChangeType(dims.XMin, typeof(TX)));
+                int pointBeforeIndex = Array.BinarySearch(Xs, MinRenderIndex, MaxRenderIndex - MinRenderIndex + 1, Convert.ChangeType(dims.XMin, typeof(TX)));
                 if (pointBeforeIndex < 0)
                 {
                     pointBeforeIndex = ~pointBeforeIndex;
@@ -120,7 +113,7 @@ namespace ScottPlot.Plottable
                 {
                     PointBefore = new PointF[]
                     {
-                        new PointF(dims.GetPixelX(Convert.ToDouble(xs[pointBeforeIndex - 1])),
+                        new PointF(dims.GetPixelX(Convert.ToDouble(Xs[pointBeforeIndex - 1])),
                                    dims.GetPixelY(Strategy.SourceElement(pointBeforeIndex - 1)))
                     };
                     searchFrom = pointBeforeIndex;
@@ -132,7 +125,7 @@ namespace ScottPlot.Plottable
                 }
 
                 // Calculate point after displayed points
-                int pointAfterIndex = Array.BinarySearch(xs, MinRenderIndex, MaxRenderIndex - MinRenderIndex + 1, Convert.ChangeType(dims.XMax, typeof(TX)));
+                int pointAfterIndex = Array.BinarySearch(Xs, MinRenderIndex, MaxRenderIndex - MinRenderIndex + 1, Convert.ChangeType(dims.XMax, typeof(TX)));
                 if (pointAfterIndex < 0)
                 {
                     pointAfterIndex = ~pointAfterIndex;
@@ -142,7 +135,7 @@ namespace ScottPlot.Plottable
                 {
                     PointAfter = new PointF[]
                     {
-                        new PointF(dims.GetPixelX(Convert.ToDouble(xs[pointAfterIndex])),
+                        new PointF(dims.GetPixelX(Convert.ToDouble(Xs[pointAfterIndex])),
                                    dims.GetPixelY(Strategy.SourceElement(pointAfterIndex)))
                     };
                     searchTo = pointAfterIndex;
@@ -231,9 +224,9 @@ namespace ScottPlot.Plottable
         public new void ValidateData(bool deep = false)
         {
             base.ValidateData(deep);
-            Validate.AssertEqualLength("xs and ys", xs, Ys);
-            Validate.AssertHasElements("xs", xs);
-            Validate.AssertAscending("xs", xs);
+            Validate.AssertEqualLength("xs and ys", Xs, Ys);
+            Validate.AssertHasElements("xs", Xs);
+            Validate.AssertAscending("xs", Xs);
         }
 
         public override string ToString()

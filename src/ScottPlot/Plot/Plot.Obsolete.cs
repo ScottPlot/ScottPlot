@@ -774,7 +774,7 @@ namespace ScottPlot
         {
             SignalPlotXY signal = new SignalPlotXY()
             {
-                xs = xs,
+                Xs = xs,
                 Ys = ys,
                 Color = color ?? settings.GetNextColor(),
                 LineWidth = lineWidth,
@@ -807,7 +807,7 @@ namespace ScottPlot
         {
             SignalPlotXYConst<TX, TY> signal = new SignalPlotXYConst<TX, TY>()
             {
-                xs = xs,
+                Xs = xs,
                 Ys = ys,
                 Color = color ?? settings.GetNextColor(),
                 LineWidth = lineWidth,
