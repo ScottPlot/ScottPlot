@@ -357,12 +357,7 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// Set visibility for major tick grid lines
         /// </summary>
-        /// <param name="enable"></param>
-        public void Grid(bool enable)
-        {
-            AxisTicks.MajorGridVisible = enable;
-            AxisTicks.MinorTickVisible = enable;
-        }
+        public void Grid(bool enable) => AxisTicks.MajorGridVisible = enable;
 
         /// <summary>
         /// Set pixel size based on the latest axis label, tick marks, and tick label
