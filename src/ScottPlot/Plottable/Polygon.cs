@@ -18,8 +18,8 @@ namespace ScottPlot.Plottable
         public bool Fill = true;
         public Color FillColor = Color.Gray;
         public bool IsVisible { get; set; } = true;
-        public int HorizontalAxisIndex { get; set; } = 0;
-        public int VerticalAxisIndex { get; set; } = 0;
+        public int XAxisIndex { get; set; } = 0;
+        public int YAxisIndex { get; set; } = 0;
         public Color HatchColor = Color.Transparent;
         public HatchStyle HatchStyle = HatchStyle.None;
 

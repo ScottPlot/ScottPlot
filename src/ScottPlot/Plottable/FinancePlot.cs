@@ -35,8 +35,8 @@ namespace ScottPlot.Plottable
         public override string ToString() => $"PlottableOHLC with {PointCount} points";
         public LegendItem[] GetLegendItems() => null;
         public int PointCount { get => OHLCs.Length; }
-        public int HorizontalAxisIndex { get; set; } = 0;
-        public int VerticalAxisIndex { get; set; } = 0;
+        public int XAxisIndex { get; set; } = 0;
+        public int YAxisIndex { get; set; } = 0;
         public Color ColorUp = Color.LightGreen;
         public Color ColorDown = Color.LightCoral;
 

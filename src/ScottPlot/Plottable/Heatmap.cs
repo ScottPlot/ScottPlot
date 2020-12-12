@@ -30,8 +30,8 @@ namespace ScottPlot.Plottable
         public bool DisplayImageAbove;
         public bool ShowAxisLabels;
         public bool IsVisible { get; set; } = true;
-        public int HorizontalAxisIndex { get; set; } = 0;
-        public int VerticalAxisIndex { get; set; } = 0;
+        public int XAxisIndex { get; set; } = 0;
+        public int YAxisIndex { get; set; } = 0;
 
         // call this externally if data changes
         public void UpdateData(double[,] intensities)

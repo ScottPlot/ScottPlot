@@ -18,8 +18,8 @@ namespace ScottPlot.Plottable
         protected bool MaxRenderIndexHigherMinRenderIndexPromise = false;
         protected bool FillColor1MustBeSetPromise = false;
         protected bool FillColor2MustBeSetPromise = false;
-        public int HorizontalAxisIndex { get; set; } = 0;
-        public int VerticalAxisIndex { get; set; } = 0;
+        public int XAxisIndex { get; set; } = 0;
+        public int YAxisIndex { get; set; } = 0;
         public bool IsVisible { get; set; } = true;
         public float MarkerSize { get; set; } = 5;
         public double OffsetX { get; set; } = 0;

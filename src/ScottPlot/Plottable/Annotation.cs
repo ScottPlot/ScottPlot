@@ -43,8 +43,8 @@ namespace ScottPlot.Plottable
         public Color BorderColor = Color.Black;
 
         public bool IsVisible { get; set; } = true;
-        public int HorizontalAxisIndex { get; set; } = 0;
-        public int VerticalAxisIndex { get; set; } = 0;
+        public int XAxisIndex { get; set; } = 0;
+        public int YAxisIndex { get; set; } = 0;
 
         public override string ToString() => $"PlottableAnnotation at ({X} px, {Y} px)";
         public LegendItem[] GetLegendItems() => null;

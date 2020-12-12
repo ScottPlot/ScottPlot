@@ -20,8 +20,8 @@ namespace ScottPlot.Plottable
         public Color BorderColor;
         public float BorderSize;
         public string Label;
-        public int HorizontalAxisIndex { get; set; } = 0;
-        public int VerticalAxisIndex { get; set; } = 0;
+        public int XAxisIndex { get; set; } = 0;
+        public int YAxisIndex { get; set; } = 0;
 
         public override string ToString() => $"PlottableImage Size(\"{Bitmap.Size}\") at ({X}, {Y})";
         public AxisLimits GetAxisLimits() => new AxisLimits(X, X, Y, Y);

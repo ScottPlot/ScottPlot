@@ -22,7 +22,7 @@ namespace ScottPlot.Cookbook.Recipes
             var bar = plt.AddBar(hist.counts, hist.bins);
             bar.BarWidth = hist.binSize * 1.2; // oversize to reduce render artifacts
             bar.BorderLineWidth = 0;
-            bar.VerticalAxisIndex = 0;
+            bar.YAxisIndex = 0;
             plt.YAxis.Label("Count (#)");
             plt.YAxis.Color(bar.FillColor);
 
@@ -30,7 +30,7 @@ namespace ScottPlot.Cookbook.Recipes
             var sp = plt.AddScatter(hist.bins, hist.countsFracCurve);
             sp.MarkerSize = 0;
             sp.LineWidth = 2;
-            sp.VerticalAxisIndex = 1;
+            sp.YAxisIndex = 1;
             plt.YAxis2.Label("Fraction");
             plt.YAxis2.Color(sp.Color);
             plt.YAxis2.Ticks(true);
@@ -161,7 +161,7 @@ namespace ScottPlot.Cookbook.Recipes
 
             // plot the voltage in blue on the primary Y axis
             var sig1 = plt.AddSignal(ap, sampleRate);
-            sig1.VerticalAxisIndex = 0;
+            sig1.YAxisIndex = 0;
             sig1.LineWidth = 3;
             sig1.Color = Color.Blue;
             plt.YAxis.Label("Membrane Potential (mV)");
@@ -175,7 +175,7 @@ namespace ScottPlot.Cookbook.Recipes
 
             // plot the first derivative in red on the secondary Y axis
             var sig2 = plt.AddSignal(deriv, sampleRate);
-            sig2.VerticalAxisIndex = 1;
+            sig2.YAxisIndex = 1;
             sig2.LineWidth = 3;
             sig2.Color = Color.FromArgb(120, Color.Red);
             plt.YAxis2.Label("Rate of Change (mV/ms)");

@@ -16,8 +16,8 @@ namespace ScottPlot.Plottable
         public int SeriesCount { get { return MultiSeries.seriesCount; } }
         public string[] SeriesLabels { get { return MultiSeries.seriesLabels; } }
         public bool IsVisible { get; set; } = true;
-        public int HorizontalAxisIndex { get; set; } = 0;
-        public int VerticalAxisIndex { get; set; } = 0;
+        public int XAxisIndex { get; set; } = 0;
+        public int YAxisIndex { get; set; } = 0;
         public enum DisplayItems { BoxOnly, BoxAndScatter, ScatterAndBox, ScatterOnly };
         public enum BoxStyle { BarMeanStDev, BarMeanStdErr, BoxMeanStdevStderr, BoxMedianQuartileOutlier, MeanAndStdev, MeanAndStderr };
         public bool DistributionCurve = true;

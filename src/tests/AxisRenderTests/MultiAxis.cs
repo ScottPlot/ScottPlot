@@ -18,15 +18,15 @@ namespace ScottPlotTests.AxisRenderTests
             var sig3 = plt.PlotSignal(ScottPlot.DataGen.Sin(51, mult: 100, phase: -.2), sampleRate: .01);
             var sig4 = plt.PlotSignal(ScottPlot.DataGen.Sin(51, mult: 1000, phase: -.3), sampleRate: .001);
 
-            sig1.VerticalAxisIndex = 0;
-            sig2.VerticalAxisIndex = 1;
-            sig3.VerticalAxisIndex = 2;
-            sig4.VerticalAxisIndex = 3;
+            sig1.YAxisIndex = 0;
+            sig2.YAxisIndex = 1;
+            sig3.YAxisIndex = 2;
+            sig4.YAxisIndex = 3;
 
-            sig1.HorizontalAxisIndex = 0;
-            sig2.HorizontalAxisIndex = 1;
-            sig3.HorizontalAxisIndex = 2;
-            sig4.HorizontalAxisIndex = 3;
+            sig1.XAxisIndex = 0;
+            sig2.XAxisIndex = 1;
+            sig3.XAxisIndex = 2;
+            sig4.XAxisIndex = 3;
 
             // by default ther are already 4 axes, so customize them all
             plt.XAxis.Label("Primary Bottom Axis", color: sig1.Color);

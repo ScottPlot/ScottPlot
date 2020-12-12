@@ -38,8 +38,8 @@ namespace ScottPlot.Plottable
         readonly bool IsHorizontal;
 
         // configuration
-        public int HorizontalAxisIndex { get; set; } = 0;
-        public int VerticalAxisIndex { get; set; } = 0;
+        public int XAxisIndex { get; set; } = 0;
+        public int YAxisIndex { get; set; } = 0;
         public bool IsVisible { get; set; } = true;
         public Color Color = Color.FromArgb(128, Color.Magenta);
         public string Label;

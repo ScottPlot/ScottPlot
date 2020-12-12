@@ -18,8 +18,8 @@ namespace ScottPlot.Plottable
 
         // customization
         public bool IsVisible { get; set; } = true;
-        public int HorizontalAxisIndex { get; set; } = 0;
-        public int VerticalAxisIndex { get; set; } = 0;
+        public int XAxisIndex { get; set; } = 0;
+        public int YAxisIndex { get; set; } = 0;
         public bool BackgroundFill = false;
         public Color BackgroundColor;
         public Drawing.Font Font = new Drawing.Font();

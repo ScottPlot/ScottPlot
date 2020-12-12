@@ -68,7 +68,7 @@ namespace ScottPlot
                 plottable.ValidateData(deep: false);
 
                 PlotDimensions dims = (plottable is Plottable.IPlottable p) ?
-                    settings.GetPlotDimensions(p.HorizontalAxisIndex, p.VerticalAxisIndex) :
+                    settings.GetPlotDimensions(p.XAxisIndex, p.YAxisIndex) :
                     settings.GetPlotDimensions(0, 0);
 
                 try

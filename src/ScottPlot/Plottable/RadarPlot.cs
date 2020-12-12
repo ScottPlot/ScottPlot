@@ -18,8 +18,8 @@ namespace ScottPlot.Plottable
         public Color WebColor = Color.Gray;
         public readonly bool IndependentAxes;
         public bool IsVisible { get; set; } = true;
-        public int HorizontalAxisIndex { get; set; } = 0;
-        public int VerticalAxisIndex { get; set; } = 0;
+        public int XAxisIndex { get; set; } = 0;
+        public int YAxisIndex { get; set; } = 0;
         public Drawing.Font Font = new Drawing.Font();
         public bool ShowAxisValues { get; set; } = true;
         public RadarAxis AxisType { get; set; } = RadarAxis.Circle;

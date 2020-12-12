@@ -33,8 +33,8 @@ namespace ScottPlot.Plottable
 
         // customizations
         public bool IsVisible { get; set; } = true;
-        public int HorizontalAxisIndex { get; set; } = 0;
-        public int VerticalAxisIndex { get; set; } = 0;
+        public int XAxisIndex { get; set; } = 0;
+        public int YAxisIndex { get; set; } = 0;
         public LineStyle LineStyle = LineStyle.Solid;
         public float LineWidth = 1;
         public Color Color = Color.Black;
