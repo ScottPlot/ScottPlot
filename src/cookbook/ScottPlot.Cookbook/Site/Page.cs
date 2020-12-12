@@ -70,9 +70,10 @@ namespace ScottPlot.Cookbook.Site
                 htmlTitle += $": <i><a href='{linkHereUrl}' style='color: black;'>{linkHereTitle}</a></i>";
             }
 
+            string warningEmojiHtml = "&#9888;&#65039;";
             string warning = "" +
                 "\n<blockquote>" +
-                "<b>⚠️</b> <strong>Documentation is version-specific:</strong> " +
+                $"<b>{warningEmojiHtml}</b> <strong>Documentation is version-specific:</strong> " +
                 $"This page was generated for <code>ScottPlot {Plot.Version}</code><br> " +
                 "Additional documentation and more version-specific cookbooks are on the " +
                 "<a href='https://swharden.com/scottplot' style='font-weight: 600;'>ScottPlot Website</a>" +
