@@ -382,6 +382,8 @@ namespace ScottPlot
         {
             settings.AxisAutoUnsetAxes();
             settings.AxisEqualScale = lockScales;
+            settings.LayoutAuto();
+            settings.EnforceEqualAxisScales();
         }
 
         #endregion
