@@ -53,6 +53,7 @@ namespace ScottPlot.Cookbook
             string[] bottomCategories =
             {
                 "Style",
+                "Misc"
             };
 
             foreach (string category in bottomCategories)
