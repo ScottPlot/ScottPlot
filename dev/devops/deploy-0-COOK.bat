@@ -1,0 +1,1 @@
+explorer ..\..\src\tests\bin\Debug\net5.0\cookbook
