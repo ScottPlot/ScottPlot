@@ -96,7 +96,7 @@ namespace ScottPlot.Cookbook.Recipes
             string[] labels = frequencies.Select(x => x.ToString()).ToArray();
             plt.XAxis.ManualTickPositions(positions, labels);
             plt.XAxis.TickLabelStyle(rotation: 45);
-            plt.XAxis.PixelSizeMinimum = 50; // extra padding for rotated ticks
+            plt.XAxis.SetSizeLimit(min: 50); // extra space for rotated ticks
 
             // apply axis labels, trigging a layout reset
             plt.Title("Vibrational Coupling");
@@ -272,7 +272,7 @@ namespace ScottPlot.Cookbook.Recipes
             plt.XAxis.TickLabelStyle(rotation: 45);
 
             // add some extra space for rotated ticks
-            plt.XAxis.PixelSizeMinimum = 50;
+            plt.XAxis.SetSizeLimit(min: 50);
         }
     }
 

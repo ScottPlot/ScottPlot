@@ -1,4 +1,10 @@
-﻿using ScottPlot.Ticks;
+﻿/* This module is responsible for calculating, storing, and rendering:
+ *   - tick marks (major and minor)
+ *   - tick labels
+ *   - grid lines (major and minor)
+ * 
+ */
+using ScottPlot.Ticks;
 using ScottPlot.Drawing;
 using System;
 using System.Drawing;
@@ -8,57 +14,58 @@ namespace ScottPlot.Renderable
 {
     public class AxisTicks : IRenderable
     {
-        public bool IsVisible { get; set; } = true;
+        // the tick collection determines where ticks should go and what tick labels should say
+        public readonly TickCollection TickCollection = new TickCollection();
 
-        public Edge Edge;
-        public bool IsHorizontal => Edge == Edge.Top || Edge == Edge.Bottom;
-        public bool IsVertical => Edge == Edge.Left || Edge == Edge.Right;
+        // tick label styling
+        public bool TickLabelVisible = true;
+        public float TickLabelRotation = 0;
+        public Drawing.Font TickLabelFont = new Drawing.Font() { Size = 11 };
 
-        public Color Color = Color.Black;
-        public float Rotation = 0;
-
-        public bool MajorLabelEnable = true;
-        public Drawing.Font MajorLabelFont = new Drawing.Font() { Size = 11 };
-
-        public bool MajorTickEnable = true;
+        // major tick/grid styling
+        public bool MajorTickVisible = true;
         public float MajorTickLength = 5;
-
-        public bool MinorTickEnable = true;
-        public float MinorTickLength = 2;
-
-        public bool MajorGridEnable = false;
+        public Color MajorTickColor = Color.Black;
+        public bool MajorGridVisible = false;
         public LineStyle MajorGridStyle = LineStyle.Solid;
         public Color MajorGridColor = ColorTranslator.FromHtml("#efefef");
         public float MajorGridWidth = 1;
 
-        public bool MinorGridEnable = false;
+        // minor tick/grid styling
+        public bool MinorTickVisible = true;
+        public float MinorTickLength = 2;
+        public Color MinorTickColor = Color.Black;
+        public bool MinorGridVisible = false;
         public LineStyle MinorGridStyle = LineStyle.Solid;
         public Color MinorGridColor = ColorTranslator.FromHtml("#efefef");
         public float MinorGridWidth = 1;
 
+        // misc configuration
+        public Edge Edge;
+        public bool IsHorizontal => Edge == Edge.Top || Edge == Edge.Bottom;
+        public bool IsVertical => Edge == Edge.Left || Edge == Edge.Right;
         public bool RulerMode = false;
         public bool SnapPx = true;
-        public float PixelOffset;
-
-        public readonly TickCollection TickCollection = new TickCollection();
+        public float PixelOffset = 0;
+        public bool IsVisible { get; set; } = true;
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             using (Graphics gfx = GDI.Graphics(bmp, lowQuality))
             {
-                if (MajorTickEnable)
-                {
-                    RenderTickMarks(dims, gfx, TickCollection.tickPositionsMajor, RulerMode ? MajorTickLength * 4 : MajorTickLength, Color);
+                if (MajorTickVisible)
+                    RenderTickMarks(dims, gfx, TickCollection.tickPositionsMajor, RulerMode ? MajorTickLength * 4 : MajorTickLength, MajorTickColor);
+
+                if (MajorTickVisible && TickLabelVisible)
                     RenderTickLabels(dims, gfx);
-                }
 
-                if (MinorTickEnable)
-                    RenderTickMarks(dims, gfx, TickCollection.tickPositionsMinor, MinorTickLength, Color);
+                if (MinorTickVisible)
+                    RenderTickMarks(dims, gfx, TickCollection.tickPositionsMinor, MinorTickLength, MinorTickColor);
 
-                if (MajorGridEnable)
+                if (MajorGridVisible)
                     RenderGridLines(dims, gfx, TickCollection.tickPositionsMajor, MajorGridStyle, MajorGridColor, MajorGridWidth);
 
-                if (MinorGridEnable)
+                if (MinorGridVisible)
                     RenderGridLines(dims, gfx, TickCollection.tickPositionsMinor, MinorGridStyle, MinorGridColor, MinorGridWidth);
             }
         }
@@ -128,16 +135,16 @@ namespace ScottPlot.Renderable
 
         private void RenderTickLabels(PlotDimensions dims, Graphics gfx)
         {
-            if (TickCollection.tickLabels is null || TickCollection.tickLabels.Length == 0 || MajorLabelEnable == false)
+            if (TickCollection.tickLabels is null || TickCollection.tickLabels.Length == 0 || TickLabelVisible == false)
                 return;
 
-            using (var font = GDI.Font(MajorLabelFont))
-            using (var brush = GDI.Brush(Color))
+            using (var font = GDI.Font(TickLabelFont))
+            using (var brush = GDI.Brush(TickLabelFont.Color))
             using (var sf = GDI.StringFormat())
             {
                 if (Edge == Edge.Bottom)
                 {
-                    if (Rotation == 0)
+                    if (TickLabelRotation == 0)
                     {
                         sf.Alignment = RulerMode ? StringAlignment.Near : StringAlignment.Center;
                         sf.LineAlignment = StringAlignment.Near;
@@ -159,7 +166,7 @@ namespace ScottPlot.Renderable
                             float y = dims.DataOffsetY + dims.DataHeight + MajorTickLength + 3;
 
                             gfx.TranslateTransform(x, y);
-                            gfx.RotateTransform(-Rotation);
+                            gfx.RotateTransform(-TickLabelRotation);
                             sf.Alignment = StringAlignment.Far;
                             sf.LineAlignment = StringAlignment.Center;
                             gfx.DrawString(TickCollection.tickLabels[i], font, brush, 0, 0, sf);

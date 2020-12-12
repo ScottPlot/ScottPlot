@@ -177,7 +177,8 @@ namespace ScottPlot
                 axis.TickLabelStyle(color: tick);
                 axis.MajorGrid(color: grid);
                 axis.MinorGrid(color: grid);
-                axis.TickMarkStyle(color: tick);
+                if (tick.HasValue)
+                    axis.TickMarkColor(color: tick.Value);
                 axis.Line(color: tick);
             }
 

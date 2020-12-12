@@ -492,15 +492,15 @@ namespace ScottPlot
                 float offset = 0;
                 foreach (var axis in Axes.Where(x => x.Edge == edge))
                 {
-                    axis.PixelOffset = offset;
-                    offset += axis.PixelSize;
+                    axis.SetOffset(offset);
+                    offset += axis.GetSize();
                 }
             }
 
-            float padLeft = Axes.Where(x => x.Edge == Edge.Left).Select(x => x.PixelSize).Sum();
-            float padRight = Axes.Where(x => x.Edge == Edge.Right).Select(x => x.PixelSize).Sum();
-            float padBottom = Axes.Where(x => x.Edge == Edge.Bottom).Select(x => x.PixelSize).Sum();
-            float padTop = Axes.Where(x => x.Edge == Edge.Top).Select(x => x.PixelSize).Sum();
+            float padLeft = Axes.Where(x => x.Edge == Edge.Left).Select(x => x.GetSize()).Sum();
+            float padRight = Axes.Where(x => x.Edge == Edge.Right).Select(x => x.GetSize()).Sum();
+            float padBottom = Axes.Where(x => x.Edge == Edge.Bottom).Select(x => x.GetSize()).Sum();
+            float padTop = Axes.Where(x => x.Edge == Edge.Top).Select(x => x.GetSize()).Sum();
 
             foreach (Axis axis in Axes)
             {

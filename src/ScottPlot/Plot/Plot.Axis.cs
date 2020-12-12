@@ -125,14 +125,14 @@ namespace ScottPlot
 
             if (horizontal)
             {
-                YAxis.PixelSize = sourceSettings.YAxis.PixelSize;
-                YAxis2.PixelSize = sourceSettings.YAxis2.PixelSize;
+                YAxis.SetSize(sourceSettings.YAxis.GetSize());
+                YAxis2.SetSize(sourceSettings.YAxis2.GetSize());
             }
 
             if (vertical)
             {
-                XAxis.PixelSize = sourceSettings.XAxis.PixelSize;
-                XAxis2.PixelSize = sourceSettings.XAxis2.PixelSize;
+                XAxis.SetSize(sourceSettings.XAxis.GetSize());
+                XAxis2.SetSize(sourceSettings.XAxis2.GetSize());
             }
         }
 
