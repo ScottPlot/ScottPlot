@@ -1043,7 +1043,7 @@ namespace ScottPlot
         {
             var vectorField = new VectorField(vectors, xs, ys,
                 colormap, scaleFactor, color ?? settings.GetNextColor())
-            { label = label };
+            { Label = label };
 
             Add(vectorField);
             return vectorField;

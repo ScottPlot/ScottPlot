@@ -7,14 +7,16 @@ using System.Linq;
 
 namespace ScottPlot.Plottable
 {
-#pragma warning disable CS0618 // Type or member is obsolete
     public class VectorField : IPlottable
     {
-        private readonly Vector2[,] vectors;
-        private readonly double[] xs;
-        private readonly double[] ys;
-        private readonly Color[] arrowColors;
-        public string label;
+        // data
+        private readonly double[] Xs;
+        private readonly double[] Ys;
+        private readonly Vector2[,] Vectors;
+        private readonly Color[] VectorColors;
+
+        // customization
+        public string Label;
         public bool IsVisible { get; set; } = true;
         public int HorizontalAxisIndex { get; set; } = 0;
         public int VerticalAxisIndex { get; set; } = 0;
@@ -48,13 +50,13 @@ namespace ScottPlot.Plottable
             }
 
             double[] flattenedIntensities = intensities.Cast<double>().ToArray();
-            arrowColors = colormap is null ?
+            VectorColors = colormap is null ?
                 Enumerable.Range(0, flattenedIntensities.Length).Select(x => defaultColor).ToArray() :
                 Colormap.GetColors(flattenedIntensities, colormap);
 
-            this.vectors = vectors;
-            this.xs = xs;
-            this.ys = ys;
+            this.Vectors = vectors;
+            this.Xs = xs;
+            this.Ys = ys;
         }
 
         public void ValidateData(bool deep = false) { /* validation occurs in constructor */ }
@@ -63,17 +65,17 @@ namespace ScottPlot.Plottable
         {
             var singleLegendItem = new LegendItem()
             {
-                label = label,
-                color = arrowColors[0],
+                label = Label,
+                color = VectorColors[0],
                 lineWidth = 10,
                 markerShape = MarkerShape.none
             };
             return new LegendItem[] { singleLegendItem };
         }
 
-        public AxisLimits GetAxisLimits() => new AxisLimits(xs.Min() - 1, xs.Max() + 1, ys.Min() - 1, ys.Max() + 1);
+        public AxisLimits GetAxisLimits() => new AxisLimits(Xs.Min() - 1, Xs.Max() + 1, Ys.Min() - 1, Ys.Max() + 1);
 
-        public int PointCount { get => vectors.Length; }
+        public int PointCount { get => Vectors.Length; }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
@@ -81,16 +83,16 @@ namespace ScottPlot.Plottable
             using (Pen pen = GDI.Pen(Color.Black))
             {
                 pen.CustomEndCap = new AdjustableArrowCap(2, 2);
-                for (int i = 0; i < xs.Length; i++)
+                for (int i = 0; i < Xs.Length; i++)
                 {
-                    for (int j = 0; j < ys.Length; j++)
+                    for (int j = 0; j < Ys.Length; j++)
                     {
-                        Vector2 v = vectors[i, j];
-                        float tailX = dims.GetPixelX(xs[i] - v.X / 2);
-                        float tailY = dims.GetPixelY(ys[j] - v.Y / 2);
-                        float endX = dims.GetPixelX(xs[i] + v.X / 2);
-                        float endY = dims.GetPixelY(v.Y + ys[j] - v.Y / 2);
-                        pen.Color = arrowColors[i * ys.Length + j];
+                        Vector2 v = Vectors[i, j];
+                        float tailX = dims.GetPixelX(Xs[i] - v.X / 2);
+                        float tailY = dims.GetPixelY(Ys[j] - v.Y / 2);
+                        float endX = dims.GetPixelX(Xs[i] + v.X / 2);
+                        float endY = dims.GetPixelY(v.Y + Ys[j] - v.Y / 2);
+                        pen.Color = VectorColors[i * Ys.Length + j];
                         gfx.DrawLine(pen, tailX, tailY, endX, endY);
                     }
                 }
@@ -99,7 +101,7 @@ namespace ScottPlot.Plottable
 
         public override string ToString()
         {
-            string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
+            string label = string.IsNullOrWhiteSpace(this.Label) ? "" : $" ({this.Label})";
             return $"PlottableVectorField{label} with {PointCount} vectors";
         }
     }
