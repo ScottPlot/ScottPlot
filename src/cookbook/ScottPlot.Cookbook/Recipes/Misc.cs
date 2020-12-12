@@ -36,7 +36,7 @@ namespace ScottPlot.Cookbook.Recipes
             plt.YAxis2.Ticks(true);
 
             // decorate the plot
-            plt.XAxis2.Label("Normal Random Data");
+            plt.XAxis2.Label("Normal Random Data", bold: true);
             plt.XAxis.Label("Value (units)");
             plt.SetAxisLimits(yMin: 0);
             plt.Grid(lineStyle: LineStyle.Dot);
