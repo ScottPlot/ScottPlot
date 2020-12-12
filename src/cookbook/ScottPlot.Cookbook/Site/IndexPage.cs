@@ -45,7 +45,7 @@ namespace ScottPlot.Cookbook.Site
             foreach (IRecipe recipe in recipes)
             {
                 string categoryPageName = $"{Sanitize(recipe.Category)}{ExtPage}";
-                string recipeUrl = $"{categoryPageName}#{recipe.ID}";
+                string recipeUrl = $"{categoryPageName}#{recipe.ID}".ToLower();
                 SB.AppendLine($"<p><a href='{recipeUrl}' style='font-weight: 600;'>{recipe.Title}</a> - {recipe.Description}</p>");
             }
             SB.Append("</div>");
@@ -56,8 +56,8 @@ namespace ScottPlot.Cookbook.Site
             foreach (IRecipe recipe in recipes)
             {
                 string categoryPageName = $"{Sanitize(recipe.Category)}{ExtPage}";
-                string recipeUrl = $"{categoryPageName}#{recipe.ID}";
-                string imageUrl = $"source/{recipe.ID}{ExtThumb}";
+                string recipeUrl = $"{categoryPageName}#{recipe.ID}".ToLower();
+                string imageUrl = $"source/{recipe.ID}{ExtThumb}".ToLower();
                 SB.AppendLine($"<a href='{recipeUrl}'><img src='{imageUrl}' style='padding: 10px;'/></a>");
             }
         }
