@@ -16,12 +16,12 @@ namespace ScottPlotTests.PlottableRenderTests
             var plt = new ScottPlot.Plot(400, 300);
 
             // start with default settings
-            var txt = new ScottPlot.Plottable.Text() { text = "hello", FontColor = System.Drawing.Color.Gray };
+            var txt = new ScottPlot.Plottable.Text() { Label = "hello", Color = System.Drawing.Color.Gray };
             plt.Add(txt);
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            txt.text += "world";
+            txt.Label += "world";
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -43,13 +43,13 @@ namespace ScottPlotTests.PlottableRenderTests
             var plt = new ScottPlot.Plot(400, 300);
 
             // start with default settings
-            var txt = new ScottPlot.Plottable.Text() { text = "hello" };
+            var txt = new ScottPlot.Plottable.Text() { Label = "hello" };
             plt.Add(txt);
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
             string hash1 = ScottPlot.Tools.BitmapHash(bmp1);
 
             // change the plottable
-            txt.rotation = 45;
+            txt.Rotation = 45;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
             string hash2 = ScottPlot.Tools.BitmapHash(bmp2);
 
@@ -68,13 +68,13 @@ namespace ScottPlotTests.PlottableRenderTests
             var plt = new ScottPlot.Plot(400, 300);
 
             // start with default settings
-            var txt = new ScottPlot.Plottable.Text() { text = "hello" };
+            var txt = new ScottPlot.Plottable.Text() { Label = "hello" };
             plt.Add(txt);
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
             string hash1 = ScottPlot.Tools.BitmapHash(bmp1);
 
             // change the plottable
-            txt.alignment = Alignment.MiddleCenter;
+            txt.Alignment = Alignment.MiddleCenter;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
             string hash2 = ScottPlot.Tools.BitmapHash(bmp2);
 
@@ -93,12 +93,12 @@ namespace ScottPlotTests.PlottableRenderTests
             var plt = new ScottPlot.Plot(400, 300);
 
             // start with default settings
-            var txt = new ScottPlot.Plottable.Text() { text = "hello" };
+            var txt = new ScottPlot.Plottable.Text() { Label = "hello" };
             plt.Add(txt);
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            txt.FillBackground = true;
+            txt.BackgroundFill = true;
             txt.BackgroundColor = System.Drawing.Color.Gray;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
@@ -119,7 +119,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var plt = new ScottPlot.Plot(400, 300);
 
             // start with default settings
-            var txt = new ScottPlot.Plottable.Text() { text = "hello", FillBackground = true, BackgroundColor = System.Drawing.Color.Gray };
+            var txt = new ScottPlot.Plottable.Text() { Label = "hello", BackgroundFill = true, BackgroundColor = System.Drawing.Color.Gray };
             plt.Add(txt);
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
@@ -146,12 +146,12 @@ namespace ScottPlotTests.PlottableRenderTests
             var plt = new ScottPlot.Plot(400, 300);
 
             // start with default settings
-            var txt = new ScottPlot.Plottable.Text() { text = "hello", FontColor = System.Drawing.Color.Gray };
+            var txt = new ScottPlot.Plottable.Text() { Label = "hello", Color = System.Drawing.Color.Gray };
             plt.Add(txt);
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // change the plottable
-            txt.FontColor = System.Drawing.Color.Blue;
+            txt.Color = System.Drawing.Color.Blue;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
@@ -173,7 +173,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var plt = new ScottPlot.Plot(400, 300);
 
             // start with default settings
-            var txt = new ScottPlot.Plottable.Text() { text = "hello", FontSize = 12 };
+            var txt = new ScottPlot.Plottable.Text() { Label = "hello", FontSize = 12 };
             plt.Add(txt);
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
@@ -202,7 +202,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var plt = new ScottPlot.Plot(400, 300);
 
             // start with default settings
-            var txt = new ScottPlot.Plottable.Text() { text = "hello", FontSize = 12 };
+            var txt = new ScottPlot.Plottable.Text() { Label = "hello", FontSize = 12 };
             plt.Add(txt);
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 

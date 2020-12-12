@@ -620,9 +620,9 @@ namespace ScottPlot
         {
             var plottable = new Text()
             {
-                text = label,
-                x = x,
-                y = y,
+                Label = label,
+                X = x,
+                Y = y,
                 Font = font
             };
             Add(plottable);

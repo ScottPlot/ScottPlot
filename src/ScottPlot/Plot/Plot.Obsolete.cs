@@ -1014,16 +1014,16 @@ namespace ScottPlot
 
             Text plottableText = new Text()
             {
-                text = text,
-                x = x,
-                y = y,
-                FontColor = color ?? settings.GetNextColor(),
+                Label = text,
+                X = x,
+                Y = y,
+                Color = color ?? settings.GetNextColor(),
                 FontName = fontName,
                 FontSize = (float)fontSize,
                 FontBold = bold,
-                alignment = alignment,
-                rotation = (float)rotation,
-                FillBackground = frame,
+                Alignment = alignment,
+                Rotation = (float)rotation,
+                BackgroundFill = frame,
                 BackgroundColor = frameColor ?? Color.White
             };
             Add(plottableText);

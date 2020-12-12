@@ -55,20 +55,20 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             plt.AddPoint(30, 0, color: Color.Black, size: 15);
             var t3 = plt.AddText("Middle center (3)", 30, 0, 16);
-            t3.alignment = Alignment.MiddleCenter;
+            t3.Alignment = Alignment.MiddleCenter;
 
             plt.AddPoint(30, -0.3, color: Color.Black, size: 15);
             var t4 = plt.AddText("Upper left (4)", 30, -0.3, 16);
-            t4.alignment = Alignment.UpperLeft;
+            t4.Alignment = Alignment.UpperLeft;
 
             plt.AddPoint(5, -.5, color: Color.Blue, size: 15);
             var t5 = plt.AddText(" Rotated Text (5)", 5, -.5, 16);
-            t5.rotation = -30;
+            t5.Rotation = -30;
 
             var t6 = plt.AddText(" Filled Background (6)", 15, -.6, 16);
-            t6.FontColor = Color.Red;
+            t6.Color = Color.Red;
             t6.FontBold = true;
-            t6.FillBackground = true;
+            t6.BackgroundFill = true;
             t6.BackgroundColor = Color.LightBlue;
         }
     }

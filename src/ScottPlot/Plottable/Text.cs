@@ -6,41 +6,43 @@ using System.Data;
 
 namespace ScottPlot.Plottable
 {
+    /// <summary>
+    /// Display a text label at an X/Y position in coordinate space
+    /// </summary>
     public class Text : IPlottable
     {
-        public double x;
-        public double y;
-        public string text;
-        public bool FillBackground;
-        public Color BackgroundColor;
+        // data
+        public double X;
+        public double Y;
+        public string Label;
 
-        public Drawing.Font Font = new Drawing.Font();
-        public Color FontColor { set => Font.Color = value; }
-        public string FontName { set => Font.Name = value; }
-        public float FontSize { set => Font.Size = value; }
-        public bool FontBold { set => Font.Bold = value; }
-        public Alignment alignment { set => Font.Alignment = value; }
-        public float rotation { set => Font.Rotation = value; }
-
+        // customization
         public bool IsVisible { get; set; } = true;
         public int HorizontalAxisIndex { get; set; } = 0;
         public int VerticalAxisIndex { get; set; } = 0;
+        public bool BackgroundFill = false;
+        public Color BackgroundColor;
+        public Drawing.Font Font = new Drawing.Font();
+        public Color Color { set => Font.Color = value; }
+        public string FontName { set => Font.Name = value; }
+        public float FontSize { set => Font.Size = value; }
+        public bool FontBold { set => Font.Bold = value; }
+        public Alignment Alignment { set => Font.Alignment = value; }
+        public float Rotation { set => Font.Rotation = value; }
 
-        public override string ToString() => $"PlottableText \"{text}\" at ({x}, {y})";
-        public AxisLimits GetAxisLimits() => new AxisLimits(x, x, y, y);
+        public override string ToString() => $"PlottableText \"{Label}\" at ({X}, {Y})";
+        public AxisLimits GetAxisLimits() => new AxisLimits(X, X, Y, Y);
         public LegendItem[] GetLegendItems() => null;
-
-        // TODO: add options for a border
 
         public void ValidateData(bool deep = false)
         {
-            if (double.IsNaN(x) || double.IsNaN(y))
+            if (double.IsNaN(X) || double.IsNaN(Y))
                 throw new InvalidOperationException("X and Y cannot be NaN");
 
-            if (double.IsInfinity(x) || double.IsInfinity(y))
+            if (double.IsInfinity(X) || double.IsInfinity(Y))
                 throw new InvalidOperationException("X and Y cannot be Infinity");
 
-            if (string.IsNullOrWhiteSpace(text))
+            if (string.IsNullOrWhiteSpace(Label))
                 throw new InvalidOperationException("text cannot be null or whitespace");
         }
 
@@ -76,7 +78,7 @@ namespace ScottPlot.Plottable
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            if (string.IsNullOrWhiteSpace(text) || IsVisible == false)
+            if (string.IsNullOrWhiteSpace(Label) || IsVisible == false)
                 return;
 
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
@@ -84,9 +86,9 @@ namespace ScottPlot.Plottable
             using (var fontBrush = new SolidBrush(Font.Color))
             using (var frameBrush = new SolidBrush(BackgroundColor))
             {
-                float pixelX = dims.GetPixelX(x);
-                float pixelY = dims.GetPixelY(y);
-                SizeF stringSize = GDI.MeasureString(gfx, text, font);
+                float pixelX = dims.GetPixelX(X);
+                float pixelY = dims.GetPixelY(Y);
+                SizeF stringSize = GDI.MeasureString(gfx, Label, font);
 
                 if (Font.Rotation == 0)
                     (pixelX, pixelY) = ApplyAlignmentOffset(pixelX, pixelY, stringSize.Width, stringSize.Height);
@@ -94,13 +96,13 @@ namespace ScottPlot.Plottable
                 gfx.TranslateTransform(pixelX, pixelY);
                 gfx.RotateTransform(Font.Rotation);
 
-                if (FillBackground)
+                if (BackgroundFill)
                 {
                     RectangleF stringRect = new RectangleF(0, 0, stringSize.Width, stringSize.Height);
                     gfx.FillRectangle(frameBrush, stringRect);
                 }
 
-                gfx.DrawString(text, font, fontBrush, new PointF(0, 0));
+                gfx.DrawString(Label, font, fontBrush, new PointF(0, 0));
 
                 gfx.ResetTransform();
             }
