@@ -7,12 +7,12 @@ namespace ScottPlot.Plottable
 
         public SignalPlotXY() : base()
         {
-            minmaxSearchStrategy = new LinearDoubleOnlyMinMaxStrategy();
+            Strategy = new LinearDoubleOnlyMinMaxStrategy();
         }
 
         public override string ToString()
         {
-            string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
+            string label = string.IsNullOrWhiteSpace(this.Label) ? "" : $" ({this.Label})";
             return $"PlottableSignalXY{label} with {PointCount} points";
         }
     }

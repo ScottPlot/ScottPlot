@@ -8,82 +8,90 @@ using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Data;
 
 namespace ScottPlot.Plottable
 {
     public class SignalPlotBase<T> : IPlottable, IHasPoints, IExportable where T : struct, IComparable
     {
+        protected IMinMaxSearchStrategy<T> Strategy = new SegmentedTreeMinMaxSearchStrategy<T>();
         protected bool MaxRenderIndexLowerYSPromise = false;
         protected bool MaxRenderIndexHigherMinRenderIndexPromise = false;
         protected bool FillColor1MustBeSetPromise = false;
         protected bool FillColor2MustBeSetPromise = false;
         public int HorizontalAxisIndex { get; set; } = 0;
         public int VerticalAxisIndex { get; set; } = 0;
-
-        protected IMinMaxSearchStrategy<T> minmaxSearchStrategy = new SegmentedTreeMinMaxSearchStrategy<T>();
         public bool IsVisible { get; set; } = true;
+        public float MarkerSize { get; set; } = 5;
+        public double OffsetX { get; set; } = 0;
+        public double OffsetY { get; set; } = 0;
+        public double LineWidth { get; set; } = 1;
+        public string Label { get; set; } = null;
+        public Color Color { get; set; } = Color.Green;
+        public LineStyle LineStyle { get; set; } = LineStyle.Solid;
+        public bool UseParallel { get; set; } = true;
+        public int BaselineY { get; set; } = 0;
+        public Color? GradientFillColor1 { get; set; } = null;
+        public Color? GradientFillColor2 { get; set; } = null;
+        private bool ShowMarkers { get; set; } = false; // this gets set in the render loop
 
-        protected T[] _ys;
-        public virtual T[] ys
+        protected T[] _Ys;
+        public virtual T[] Ys
         {
-            get => _ys;
+            get => _Ys;
             set
             {
                 if (value == null)
                     throw new Exception("Y data cannot be null");
 
-                MaxRenderIndexLowerYSPromise = maxRenderIndex > value.Length - 1;
+                MaxRenderIndexLowerYSPromise = MaxRenderIndex > value.Length - 1;
 
-                _ys = value;
-                minmaxSearchStrategy.SourceArray = _ys;
+                _Ys = value;
+                Strategy.SourceArray = _Ys;
             }
         }
-        private double _sampleRate = 1;
-        public double sampleRate
+
+        private double _SampleRate = 1;
+        public double SampleRate
         {
-            get => _sampleRate;
+            get => _SampleRate;
             set
             {
                 if (value <= 0)
                     throw new Exception("SampleRate must be greater then zero");
-                _sampleRate = value;
-                _samplePeriod = 1.0 / value;
+                _SampleRate = value;
+                _SamplePeriod = 1.0 / value;
             }
         }
-        private double _samplePeriod = 1;
-        public double samplePeriod
+
+        private double _SamplePeriod = 1;
+        public double SamplePeriod
         {
-            get => _samplePeriod;
+            get => _SamplePeriod;
             set
             {
-                if (_samplePeriod <= 0)
+                if (_SamplePeriod <= 0)
                     throw new Exception("SamplePeriod must be greater then zero");
-                _samplePeriod = value;
-                _sampleRate = 1.0 / value;
+                _SamplePeriod = value;
+                _SampleRate = 1.0 / value;
             }
         }
-        public float markerSize { get; set; } = 5;
-        public double xOffset { get; set; } = 0;
-        public double yOffset { get; set; } = 0;
-        public double lineWidth { get; set; } = 1;
 
-        protected int _minRenderIndex = 0;
-        public int minRenderIndex
+        protected int _MinRenderIndex = 0;
+        public int MinRenderIndex
         {
-            get => _minRenderIndex;
+            get => _MinRenderIndex;
             set
             {
                 if (value < 0)
                     throw new ArgumentException("MinRenderIndex must be positive");
 
-                MaxRenderIndexHigherMinRenderIndexPromise = value > maxRenderIndex;
+                MaxRenderIndexHigherMinRenderIndexPromise = value > MaxRenderIndex;
 
-                _minRenderIndex = value;
+                _MinRenderIndex = value;
             }
         }
         protected int _maxRenderIndex = 0;
-        public int maxRenderIndex
+        public int MaxRenderIndex
         {
             get => _maxRenderIndex;
             set
@@ -91,144 +99,133 @@ namespace ScottPlot.Plottable
                 if (value < 0)
                     throw new ArgumentException("MaxRenderIndex must be positive");
 
-                MaxRenderIndexHigherMinRenderIndexPromise = minRenderIndex > value;
+                MaxRenderIndexHigherMinRenderIndexPromise = MinRenderIndex > value;
 
-                MaxRenderIndexLowerYSPromise = value > _ys.Length - 1;
+                MaxRenderIndexLowerYSPromise = value > _Ys.Length - 1;
 
                 _maxRenderIndex = value;
             }
         }
-        private int densityLevelCount = 0;
 
+        private int DensityLevelCount = 0;
         private Color[] PenColorsByDensity;
-        public Color[] colorByDensity
+        public Color[] DensityColors
         {
             set
             {
                 if (value != null)
                 {
                     // turn the ramp into a pen triangle
-                    densityLevelCount = value.Length * 2 - 1;
-                    PenColorsByDensity = new Color[densityLevelCount];
+                    DensityLevelCount = value.Length * 2 - 1;
+                    PenColorsByDensity = new Color[DensityLevelCount];
                     for (int i = 0; i < value.Length; i++)
                     {
                         PenColorsByDensity[i] = value[i];
-                        PenColorsByDensity[densityLevelCount - 1 - i] = value[i];
+                        PenColorsByDensity[DensityLevelCount - 1 - i] = value[i];
                     }
                 }
             }
         }
 
-        public string label { get; set; } = null;
-        public Color color { get; set; } = Color.Green;
-        public LineStyle lineStyle { get; set; } = LineStyle.Solid;
-        public bool useParallel { get; set; } = true;
-        private FillType _fillType = FillType.NoFill;
-        public FillType fillType
+        private FillType _FillType = FillType.NoFill;
+        public FillType FillType
         {
-            get => _fillType;
+            get => _FillType;
             set
             {
-                FillColor1MustBeSetPromise = (_fillColor1 == null && value != FillType.NoFill);
+                FillColor1MustBeSetPromise = (_FillColor1 == null && value != FillType.NoFill);
 
-                FillColor2MustBeSetPromise = (_fillColor2 == null && value == FillType.FillAboveAndBelow);
+                FillColor2MustBeSetPromise = (_FillColor2 == null && value == FillType.FillAboveAndBelow);
 
-                _fillType = value;
-            }
-        }
-        private Color? _fillColor1 = null;
-        public Color? fillColor1
-        {
-            get => _fillColor1;
-            set
-            {
-                FillColor1MustBeSetPromise = (value == null && fillType != FillType.NoFill);
-
-                _fillColor1 = value;
-            }
-        }
-        public Color? gradientFillColor1 { get; set; } = null;
-        private Color? _fillColor2 = null;
-        public Color? fillColor2
-        {
-            get => _fillColor2;
-            set
-            {
-                FillColor2MustBeSetPromise = (value == null && fillType == FillType.FillAboveAndBelow);
-
-                _fillColor2 = value;
+                _FillType = value;
             }
         }
 
-        public Color? gradientFillColor2 { get; set; } = null;
-        public int baseline { get; set; } = 0;
-
-        public SignalPlotBase()
+        private Color? _FillColor1 = null;
+        public Color? FillColor1
         {
+            get => _FillColor1;
+            set
+            {
+                FillColor1MustBeSetPromise = (value == null && FillType != FillType.NoFill);
+
+                _FillColor1 = value;
+            }
         }
 
-        public void updateData(int index, T newValue)
+        private Color? _FillColor2 = null;
+        public Color? FillColor2
         {
-            minmaxSearchStrategy.updateElement(index, newValue);
+            get => _FillColor2;
+            set
+            {
+                FillColor2MustBeSetPromise = (value == null && FillType == FillType.FillAboveAndBelow);
+
+                _FillColor2 = value;
+            }
         }
 
-        public void updateData(int from, int to, T[] newData, int fromData = 0) // RangeUpdate
-        {
-            minmaxSearchStrategy.updateRange(from, to, newData, fromData);
-        }
+        /// <summary>
+        /// Replace a single Y value
+        /// </summary>
+        public void Update(int index, T newValue) => Strategy.updateElement(index, newValue);
 
-        public void updateData(int from, T[] newData)
-        {
-            updateData(from, newData.Length, newData);
-        }
+        /// <summary>
+        /// Replace a range of Y values
+        /// </summary>
+        public void Update(int firstIndex, int lastIndex, T[] newData, int fromData = 0) =>
+            Strategy.updateRange(firstIndex, lastIndex, newData, fromData);
 
-        public void updateData(T[] newData)
-        {
-            updateData(0, newData.Length, newData);
-        }
+        /// <summary>
+        /// Replace all Y values from the given index through the end of the array
+        /// </summary>
+        public void Update(int firstIndex, T[] newData) => Update(firstIndex, newData.Length, newData);
+
+        /// <summary>
+        /// Replace all Y values with new ones
+        /// </summary>
+        public void Update(T[] newData) => Update(0, newData.Length, newData);
 
         public virtual AxisLimits GetAxisLimits()
         {
-            double xMin = _samplePeriod * minRenderIndex;
-            double xMax = _samplePeriod * maxRenderIndex;
-            minmaxSearchStrategy.MinMaxRangeQuery(minRenderIndex, maxRenderIndex, out double yMin, out double yMax);
+            double xMin = _SamplePeriod * MinRenderIndex;
+            double xMax = _SamplePeriod * MaxRenderIndex;
+            Strategy.MinMaxRangeQuery(MinRenderIndex, MaxRenderIndex, out double yMin, out double yMax);
 
             if (double.IsNaN(yMin) || double.IsNaN(yMax))
                 throw new InvalidOperationException("Signal data must not contain NaN");
             if (double.IsInfinity(yMin) || double.IsInfinity(yMax))
                 throw new InvalidOperationException("Signal data must not contain Infinity");
 
-            return new AxisLimits(xMin + xOffset, xMax + xOffset, yMin + yOffset, yMax + yOffset);
+            return new AxisLimits(xMin + OffsetX, xMax + OffsetX, yMin + OffsetY, yMax + OffsetY);
         }
 
         private void RenderSingleLine(PlotDimensions dims, Graphics gfx, Pen penHD)
         {
             // this function is for when the graph is zoomed so far out its entire display is a single vertical pixel column
             double yMin, yMax;
-            minmaxSearchStrategy.MinMaxRangeQuery(minRenderIndex, maxRenderIndex, out yMin, out yMax);
-            PointF point1 = new PointF(dims.GetPixelX(xOffset), dims.GetPixelY(yMin + yOffset));
-            PointF point2 = new PointF(dims.GetPixelX(xOffset), dims.GetPixelY(yMax + yOffset));
+            Strategy.MinMaxRangeQuery(MinRenderIndex, MaxRenderIndex, out yMin, out yMax);
+            PointF point1 = new PointF(dims.GetPixelX(OffsetX), dims.GetPixelY(yMin + OffsetY));
+            PointF point2 = new PointF(dims.GetPixelX(OffsetX), dims.GetPixelY(yMax + OffsetY));
             gfx.DrawLine(penHD, point1, point2);
         }
-
-        private bool markersAreVisible = false;
 
         private void RenderLowDensity(PlotDimensions dims, Graphics gfx, int visibleIndex1, int visibleIndex2, Brush brush, Pen penLD, Pen penHD)
         {
             // this function is for when the graph is zoomed in so individual data points can be seen
 
             List<PointF> linePoints = new List<PointF>(visibleIndex2 - visibleIndex1 + 2);
-            if (visibleIndex2 > _ys.Length - 2)
-                visibleIndex2 = _ys.Length - 2;
-            if (visibleIndex2 > maxRenderIndex)
-                visibleIndex2 = maxRenderIndex - 1;
+            if (visibleIndex2 > _Ys.Length - 2)
+                visibleIndex2 = _Ys.Length - 2;
+            if (visibleIndex2 > MaxRenderIndex)
+                visibleIndex2 = MaxRenderIndex - 1;
             if (visibleIndex1 < 0)
                 visibleIndex1 = 0;
-            if (visibleIndex1 < minRenderIndex)
-                visibleIndex1 = minRenderIndex;
+            if (visibleIndex1 < MinRenderIndex)
+                visibleIndex1 = MinRenderIndex;
 
             for (int i = visibleIndex1; i <= visibleIndex2 + 1; i++)
-                linePoints.Add(new PointF(dims.GetPixelX(_samplePeriod * i + xOffset), dims.GetPixelY(minmaxSearchStrategy.SourceElement(i) + yOffset)));
+                linePoints.Add(new PointF(dims.GetPixelX(_SamplePeriod * i + OffsetX), dims.GetPixelY(Strategy.SourceElement(i) + OffsetY)));
 
             if (linePoints.Count > 1)
             {
@@ -239,25 +236,25 @@ namespace ScottPlot.Plottable
                 if (penLD.Width > 0)
                     gfx.DrawLines(penHD, pointsArray);
 
-                if (fillType == FillType.FillAbove || fillType == FillType.FillBelow)
+                if (FillType == FillType.FillAbove || FillType == FillType.FillBelow)
                 {
-                    FillAboveOrBelow(dims, gfx, linePoints[0].X, linePoints[linePoints.Count - 1].X, pointsArray, fillType);
+                    FillAboveOrBelow(dims, gfx, linePoints[0].X, linePoints[linePoints.Count - 1].X, pointsArray, FillType);
                 }
-                else if (fillType == FillType.FillAboveAndBelow)
+                else if (FillType == FillType.FillAboveAndBelow)
                 {
-                    FillAboveAndBelow(dims, gfx, linePoints[0].X, linePoints[linePoints.Count - 1].X, pointsArray, baseline);
+                    FillAboveAndBelow(dims, gfx, linePoints[0].X, linePoints[linePoints.Count - 1].X, pointsArray, BaselineY);
                 }
 
-                if (markerSize > 0)
+                if (MarkerSize > 0)
                 {
                     // make markers transition away smoothly by making them smaller as the user zooms out
-                    float pixelsBetweenPoints = (float)(_samplePeriod * dims.DataWidth / dims.XSpan);
+                    float pixelsBetweenPoints = (float)(_SamplePeriod * dims.DataWidth / dims.XSpan);
                     float zoomTransitionScale = Math.Min(1, pixelsBetweenPoints / 10);
-                    float markerPxDiameter = markerSize * zoomTransitionScale;
+                    float markerPxDiameter = MarkerSize * zoomTransitionScale;
                     float markerPxRadius = markerPxDiameter / 2;
                     if (markerPxRadius > .25)
                     {
-                        markersAreVisible = true;
+                        ShowMarkers = true;
 
                         // adjust marker offset to improve rendering on Linux and MacOS
                         float markerOffsetX = (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) ? 0 : 1;
@@ -295,25 +292,25 @@ namespace ScottPlot.Plottable
 
             if (index1 < 0)
                 index1 = 0;
-            if (index1 < minRenderIndex)
-                index1 = minRenderIndex;
+            if (index1 < MinRenderIndex)
+                index1 = MinRenderIndex;
 
-            if (index2 > _ys.Length - 1)
-                index2 = _ys.Length - 1;
-            if (index2 > maxRenderIndex)
-                index2 = maxRenderIndex;
+            if (index2 > _Ys.Length - 1)
+                index2 = _Ys.Length - 1;
+            if (index2 > MaxRenderIndex)
+                index2 = MaxRenderIndex;
 
             // get the min and max value for this column                
-            minmaxSearchStrategy.MinMaxRangeQuery(index1, index2, out double lowestValue, out double highestValue);
-            float yPxHigh = dims.GetPixelY(lowestValue + yOffset);
-            float yPxLow = dims.GetPixelY(highestValue + yOffset);
+            Strategy.MinMaxRangeQuery(index1, index2, out double lowestValue, out double highestValue);
+            float yPxHigh = dims.GetPixelY(lowestValue + OffsetY);
+            float yPxLow = dims.GetPixelY(highestValue + OffsetY);
             return new IntervalMinMax(xPx, yPxLow, yPxHigh);
         }
 
         private void RenderHighDensity(PlotDimensions dims, Graphics gfx, double offsetPoints, double columnPointCount, Pen penHD)
         {
-            int xPxStart = (int)Math.Ceiling((-1 - offsetPoints + minRenderIndex) / columnPointCount - 1);
-            int xPxEnd = (int)Math.Ceiling((maxRenderIndex - offsetPoints) / columnPointCount);
+            int xPxStart = (int)Math.Ceiling((-1 - offsetPoints + MinRenderIndex) / columnPointCount - 1);
+            int xPxEnd = (int)Math.Ceiling((MaxRenderIndex - offsetPoints) / columnPointCount);
             xPxStart = Math.Max(0, xPxStart);
             xPxEnd = Math.Min((int)dims.DataWidth, xPxEnd);
             if (xPxStart >= xPxEnd)
@@ -322,7 +319,7 @@ namespace ScottPlot.Plottable
             var columns = Enumerable.Range(xPxStart, xPxEnd - xPxStart);
 
             IEnumerable<IntervalMinMax> intervals;
-            if (useParallel)
+            if (UseParallel)
             {
                 intervals = columns
                     .AsParallel()
@@ -361,13 +358,13 @@ namespace ScottPlot.Plottable
                 gfx.DrawLines(penHD, linePoints);
             }
 
-            if (fillType == FillType.FillAbove || fillType == FillType.FillBelow)
+            if (FillType == FillType.FillAbove || FillType == FillType.FillBelow)
             {
-                FillAboveOrBelow(dims, gfx, xPxStart, xPxEnd, linePoints, fillType);
+                FillAboveOrBelow(dims, gfx, xPxStart, xPxEnd, linePoints, FillType);
             }
-            else if (fillType == FillType.FillAboveAndBelow)
+            else if (FillType == FillType.FillAboveAndBelow)
             {
-                FillAboveAndBelow(dims, gfx, xPxStart, xPxEnd, linePoints, this.baseline);
+                FillAboveAndBelow(dims, gfx, xPxStart, xPxEnd, linePoints, this.BaselineY);
             }
         }
 
@@ -392,7 +389,7 @@ namespace ScottPlot.Plottable
                             (int)(last.X - first.X),
                             (int)(maxVal - minVal) + 2 * (fillType == FillType.FillAbove ? -1 : 1)));
 
-                using (var brush = new LinearGradientBrush(gradientRectangle, _fillColor1.Value, gradientFillColor1 ?? _fillColor1.Value, LinearGradientMode.Vertical))
+                using (var brush = new LinearGradientBrush(gradientRectangle, _FillColor1.Value, GradientFillColor1 ?? _FillColor1.Value, LinearGradientMode.Vertical))
                 {
                     gfx.FillPolygon(brush, points);
                 }
@@ -464,7 +461,7 @@ namespace ScottPlot.Plottable
             var aboveRect = GetFillRectangle(dims, xPxStart, xPxEnd, FillType.FillAbove);
             if (aboveRect.Height != 0 && aboveRect.Width != 0)
             {
-                using (var brush = new LinearGradientBrush(aboveRect, _fillColor1.Value, gradientFillColor1 ?? _fillColor1.Value, LinearGradientMode.Vertical))
+                using (var brush = new LinearGradientBrush(aboveRect, _FillColor1.Value, GradientFillColor1 ?? _FillColor1.Value, LinearGradientMode.Vertical))
                 {
                     gfx.FillPolygon(brush,
                         new PointF[] { first }
@@ -478,7 +475,7 @@ namespace ScottPlot.Plottable
             var belowRect = GetFillRectangle(dims, xPxStart, xPxEnd, FillType.FillBelow);
             if (belowRect.Height != 0 && belowRect.Width != 0)
             {
-                using (var brush = new LinearGradientBrush(belowRect, _fillColor2.Value, gradientFillColor2 ?? _fillColor2.Value, LinearGradientMode.Vertical))
+                using (var brush = new LinearGradientBrush(belowRect, _FillColor2.Value, GradientFillColor2 ?? _FillColor2.Value, LinearGradientMode.Vertical))
                 {
                     gfx.FillPolygon(brush,
                         new PointF[] { first }
@@ -507,7 +504,7 @@ namespace ScottPlot.Plottable
         private void RenderHighDensityDistributionParallel(PlotDimensions dims, Graphics gfx, double offsetPoints, double columnPointCount)
         {
             int xPxStart = (int)Math.Ceiling((-1 - offsetPoints) / columnPointCount - 1);
-            int xPxEnd = (int)Math.Ceiling((_ys.Length - offsetPoints) / columnPointCount);
+            int xPxEnd = (int)Math.Ceiling((_Ys.Length - offsetPoints) / columnPointCount);
             xPxStart = Math.Max(0, xPxStart);
             xPxEnd = Math.Min((int)dims.DataWidth, xPxEnd);
             if (xPxStart >= xPxEnd)
@@ -525,14 +522,14 @@ namespace ScottPlot.Plottable
 
                     if (index1 < 0)
                         index1 = 0;
-                    if (index1 > _ys.Length - 1)
-                        index1 = _ys.Length - 1;
-                    if (index2 > _ys.Length - 1)
-                        index2 = _ys.Length - 1;
+                    if (index1 > _Ys.Length - 1)
+                        index1 = _Ys.Length - 1;
+                    if (index2 > _Ys.Length - 1)
+                        index2 = _Ys.Length - 1;
 
-                    var indexes = Enumerable.Range(0, densityLevelCount + 1).Select(x => x * (index2 - index1 - 1) / (densityLevelCount));
+                    var indexes = Enumerable.Range(0, DensityLevelCount + 1).Select(x => x * (index2 - index1 - 1) / (DensityLevelCount));
 
-                    var levelsValues = new ArraySegment<T>(_ys, index1, index2 - index1)
+                    var levelsValues = new ArraySegment<T>(_Ys, index1, index2 - index1)
                         .OrderBy(x => x)
                         .Where((y, i) => indexes.Contains(i)).ToArray();
                     return (xPx, levelsValues);
@@ -541,11 +538,11 @@ namespace ScottPlot.Plottable
 
             List<PointF[]> linePointsLevels = levelValues
                 .Select(x => x.levelsValues
-                                .Select(y => new PointF(x.xPx + dims.DataOffsetX, dims.GetPixelY(Convert.ToDouble(y) + yOffset)))
+                                .Select(y => new PointF(x.xPx + dims.DataOffsetX, dims.GetPixelY(Convert.ToDouble(y) + OffsetY)))
                                 .ToArray())
                 .ToList();
 
-            for (int i = 0; i < densityLevelCount; i++)
+            for (int i = 0; i < DensityLevelCount; i++)
             {
                 linePoints.Clear();
                 for (int j = 0; j < linePointsLevels.Count; j++)
@@ -564,20 +561,20 @@ namespace ScottPlot.Plottable
                     gfx.DrawLines(densityPen, pointsArray);
                 }
 
-                if (fillType == FillType.FillAbove || fillType == FillType.FillBelow)
+                if (FillType == FillType.FillAbove || FillType == FillType.FillBelow)
                 {
-                    FillAboveOrBelow(dims, gfx, xPxStart, xPxEnd, pointsArray, fillType);
+                    FillAboveOrBelow(dims, gfx, xPxStart, xPxEnd, pointsArray, FillType);
                 }
-                else if (fillType == FillType.FillAboveAndBelow)
+                else if (FillType == FillType.FillAboveAndBelow)
                 {
-                    FillAboveAndBelow(dims, gfx, xPxStart, xPxEnd, pointsArray, baseline);
+                    FillAboveAndBelow(dims, gfx, xPxStart, xPxEnd, pointsArray, BaselineY);
                 }
             }
         }
 
         public override string ToString()
         {
-            string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
+            string label = string.IsNullOrWhiteSpace(this.Label) ? "" : $" ({this.Label})";
             return $"PlottableSignalBase{label} with {PointCount} points ({typeof(T).Name})";
         }
 
@@ -589,23 +586,23 @@ namespace ScottPlot.Plottable
         public string GetCSV(string delimiter = ", ", string separator = "\n")
         {
             StringBuilder csv = new StringBuilder();
-            for (int i = 0; i < _ys.Length; i++)
-                csv.AppendFormat(CultureInfo.InvariantCulture, "{0}{1}{2}{3}", xOffset + i * _samplePeriod, delimiter, minmaxSearchStrategy.SourceElement(i) + yOffset, separator);
+            for (int i = 0; i < _Ys.Length; i++)
+                csv.AppendFormat(CultureInfo.InvariantCulture, "{0}{1}{2}{3}", OffsetX + i * _SamplePeriod, delimiter, Strategy.SourceElement(i) + OffsetY, separator);
             return csv.ToString();
         }
 
-        public int PointCount { get => _ys.Length; }
+        public int PointCount { get => _Ys.Length; }
 
         public LegendItem[] GetLegendItems()
         {
             var singleLegendItem = new LegendItem()
             {
-                label = label,
-                color = color,
-                lineStyle = lineStyle,
-                lineWidth = lineWidth,
-                markerShape = markersAreVisible ? MarkerShape.filledCircle : MarkerShape.none,
-                markerSize = markersAreVisible ? markerSize : 0
+                label = Label,
+                color = Color,
+                lineStyle = LineStyle,
+                lineWidth = LineWidth,
+                markerShape = ShowMarkers ? MarkerShape.filledCircle : MarkerShape.none,
+                markerSize = ShowMarkers ? MarkerSize : 0
             };
             return new LegendItem[] { singleLegendItem };
         }
@@ -613,27 +610,27 @@ namespace ScottPlot.Plottable
         public virtual void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             using (var gfx = GDI.Graphics(bmp, dims, lowQuality))
-            using (var brush = GDI.Brush(color))
-            using (var penLD = GDI.Pen(color, (float)lineWidth, lineStyle, true))
-            using (var penHD = GDI.Pen(color, (float)lineWidth, LineStyle.Solid, true))
+            using (var brush = GDI.Brush(Color))
+            using (var penLD = GDI.Pen(Color, (float)LineWidth, LineStyle, true))
+            using (var penHD = GDI.Pen(Color, (float)LineWidth, LineStyle.Solid, true))
             {
-                double dataSpanUnits = _ys.Length * _samplePeriod;
+                double dataSpanUnits = _Ys.Length * _SamplePeriod;
                 double columnSpanUnits = dims.XSpan / dims.DataWidth;
-                double columnPointCount = (columnSpanUnits / dataSpanUnits) * _ys.Length;
-                double offsetUnits = dims.XMin - xOffset;
-                double offsetPoints = offsetUnits / _samplePeriod;
+                double columnPointCount = (columnSpanUnits / dataSpanUnits) * _Ys.Length;
+                double offsetUnits = dims.XMin - OffsetX;
+                double offsetPoints = offsetUnits / _SamplePeriod;
                 int visibleIndex1 = (int)(offsetPoints);
                 int visibleIndex2 = (int)(offsetPoints + columnPointCount * (dims.DataWidth + 1));
                 int visiblePointCount = visibleIndex2 - visibleIndex1;
                 double pointsPerPixelColumn = visiblePointCount / dims.DataWidth;
                 double dataWidthPx2 = visibleIndex2 - visibleIndex1 + 2;
 
-                double firstPointX = dims.GetPixelX(xOffset);
-                double lastPointX = dims.GetPixelX(_samplePeriod * (_ys.Length - 1) + xOffset);
+                double firstPointX = dims.GetPixelX(OffsetX);
+                double lastPointX = dims.GetPixelX(_SamplePeriod * (_Ys.Length - 1) + OffsetX);
                 double dataWidthPx = lastPointX - firstPointX;
 
                 // set this now, and let the render function change it if it happens
-                markersAreVisible = false;
+                ShowMarkers = false;
 
                 // use different rendering methods based on how dense the data is on screen
                 if ((dataWidthPx <= 1) || (dataWidthPx2 <= 1))
@@ -642,7 +639,7 @@ namespace ScottPlot.Plottable
                 }
                 else if (pointsPerPixelColumn > 1)
                 {
-                    if (densityLevelCount > 0 && pointsPerPixelColumn > densityLevelCount)
+                    if (DensityLevelCount > 0 && pointsPerPixelColumn > DensityLevelCount)
                         RenderHighDensityDistributionParallel(dims, gfx, offsetPoints, columnPointCount);
                     else
                         RenderHighDensity(dims, gfx, offsetPoints, columnPointCount, penHD);
@@ -664,15 +661,15 @@ namespace ScottPlot.Plottable
         public void ValidateData(bool deep = false)
         {
             // check Y values
-            if (ys is null)
+            if (Ys is null)
                 throw new InvalidOperationException("ys cannot be null");
             if (deep)
-                Validate.AssertAllReal("ys", ys);
+                Validate.AssertAllReal("ys", Ys);
 
             // check render indexes
-            if (minRenderIndex < 0 || minRenderIndex > maxRenderIndex)
+            if (MinRenderIndex < 0 || MinRenderIndex > MaxRenderIndex)
                 throw new IndexOutOfRangeException("minRenderIndex must be between 0 and maxRenderIndex");
-            if ((maxRenderIndex > ys.Length - 1) || maxRenderIndex < 0)
+            if ((MaxRenderIndex > Ys.Length - 1) || MaxRenderIndex < 0)
                 throw new IndexOutOfRangeException("maxRenderIndex must be a valid index for ys[]");
             if (MaxRenderIndexLowerYSPromise)
                 throw new IndexOutOfRangeException("maxRenderIndex must be a valid index for ys[]");
@@ -688,10 +685,10 @@ namespace ScottPlot.Plottable
 
         public (double x, double y, int index) GetPointNearestX(double x)
         {
-            int index = (int)((x - xOffset) / samplePeriod);
+            int index = (int)((x - OffsetX) / SamplePeriod);
             index = Math.Max(index, 0);
-            index = Math.Min(index, ys.Length - 1);
-            return (xOffset + index * samplePeriod, Convert.ToDouble(ys[index]) + yOffset, index);
+            index = Math.Min(index, Ys.Length - 1);
+            return (OffsetX + index * SamplePeriod, Convert.ToDouble(Ys[index]) + OffsetY, index);
         }
 
         [Obsolete("Only GetPointNearestX() is appropraite for signal plots.", true)]

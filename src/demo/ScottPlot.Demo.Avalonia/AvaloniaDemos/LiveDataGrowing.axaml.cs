@@ -80,7 +80,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             double randomValue = Math.Round(rand.NextDouble() - .5, 3);
             double latestValue = data[nextDataIndex - 1] + randomValue;
             data[nextDataIndex] = latestValue;
-            signalPlot.maxRenderIndex = nextDataIndex;
+            signalPlot.MaxRenderIndex = nextDataIndex;
             ReadingsTextbox.Text = $"{nextDataIndex + 1}";
             LatestValueTextbox.Text = $"{latestValue:0.000}";
             nextDataIndex += 1;

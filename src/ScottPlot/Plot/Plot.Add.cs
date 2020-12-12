@@ -535,14 +535,14 @@ namespace ScottPlot
         {
             SignalPlot signal = new SignalPlot()
             {
-                ys = ys,
-                sampleRate = sampleRate,
-                color = color ?? settings.GetNextColor(),
-                label = label,
+                Ys = ys,
+                SampleRate = sampleRate,
+                Color = color ?? settings.GetNextColor(),
+                Label = label,
 
                 // TODO: FIX THIS!!!
-                minRenderIndex = 0,
-                maxRenderIndex = ys.Length - 1,
+                MinRenderIndex = 0,
+                MaxRenderIndex = ys.Length - 1,
             };
             Add(signal);
             return signal;
@@ -557,12 +557,12 @@ namespace ScottPlot
         {
             SignalPlotConst<T> plottable = new SignalPlotConst<T>()
             {
-                ys = ys,
-                sampleRate = sampleRate,
-                color = color ?? settings.GetNextColor(),
-                label = label,
-                minRenderIndex = 0,
-                maxRenderIndex = ys.Length - 1,
+                Ys = ys,
+                SampleRate = sampleRate,
+                Color = color ?? settings.GetNextColor(),
+                Label = label,
+                MinRenderIndex = 0,
+                MaxRenderIndex = ys.Length - 1,
             };
             Add(plottable);
             return plottable;
@@ -576,11 +576,11 @@ namespace ScottPlot
             SignalPlotXY plottable = new SignalPlotXY()
             {
                 xs = xs,
-                ys = ys,
-                color = color ?? settings.GetNextColor(),
-                label = label,
-                minRenderIndex = 0,
-                maxRenderIndex = ys.Length - 1,
+                Ys = ys,
+                Color = color ?? settings.GetNextColor(),
+                Label = label,
+                MinRenderIndex = 0,
+                MaxRenderIndex = ys.Length - 1,
             };
             Add(plottable);
             return plottable;
@@ -597,11 +597,11 @@ namespace ScottPlot
             SignalPlotXYConst<TX, TY> signal = new SignalPlotXYConst<TX, TY>()
             {
                 xs = xs,
-                ys = ys,
-                color = color ?? settings.GetNextColor(),
-                label = label,
-                minRenderIndex = 0,
-                maxRenderIndex = ys.Length - 1,
+                Ys = ys,
+                Color = color ?? settings.GetNextColor(),
+                Label = label,
+                MinRenderIndex = 0,
+                MaxRenderIndex = ys.Length - 1,
             };
             Add(signal);
             return signal;

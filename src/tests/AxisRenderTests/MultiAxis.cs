@@ -29,16 +29,16 @@ namespace ScottPlotTests.AxisRenderTests
             sig4.HorizontalAxisIndex = 3;
 
             // by default ther are already 4 axes, so customize them all
-            plt.XAxis.Label("Primary Bottom Axis", color: sig1.color);
-            plt.YAxis.Label("Primary Left Axis", color: sig1.color);
-            plt.XAxis2.Label("Primary Top Axis", color: sig2.color);
-            plt.YAxis2.Label("Primary Right Axis", color: sig2.color);
+            plt.XAxis.Label("Primary Bottom Axis", color: sig1.Color);
+            plt.YAxis.Label("Primary Left Axis", color: sig1.Color);
+            plt.XAxis2.Label("Primary Top Axis", color: sig2.Color);
+            plt.YAxis2.Label("Primary Right Axis", color: sig2.Color);
 
             // create a new axis for each side
-            plt.AddAxis(ScottPlot.Renderable.Edge.Bottom, 2, "Secondary Bottom Axis", sig3.color);
-            plt.AddAxis(ScottPlot.Renderable.Edge.Left, 2, "Secondary Left Axis", sig3.color);
-            plt.AddAxis(ScottPlot.Renderable.Edge.Top, 3, "Secondary Top Axis", sig4.color);
-            plt.AddAxis(ScottPlot.Renderable.Edge.Right, 3, "Secondary Right Axis", sig4.color);
+            plt.AddAxis(ScottPlot.Renderable.Edge.Bottom, 2, "Secondary Bottom Axis", sig3.Color);
+            plt.AddAxis(ScottPlot.Renderable.Edge.Left, 2, "Secondary Left Axis", sig3.Color);
+            plt.AddAxis(ScottPlot.Renderable.Edge.Top, 3, "Secondary Top Axis", sig4.Color);
+            plt.AddAxis(ScottPlot.Renderable.Edge.Right, 3, "Secondary Right Axis", sig4.Color);
 
             TestTools.SaveFig(plt);
         }

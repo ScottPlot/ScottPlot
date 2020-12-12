@@ -84,7 +84,7 @@ namespace ScottPlotTests.Ticks
 
             var plt = new ScottPlot.Plot(4000, 400);
             var sig = plt.AddSignal(data, sampleRate: 60 * 24);
-            sig.xOffset = firstDay.ToOADate();
+            sig.OffsetX = firstDay.ToOADate();
 
             plt.XAxis.DateTimeFormat(true);
 

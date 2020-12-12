@@ -81,7 +81,7 @@ namespace ScottPlotTests.Plot
             var sigE = plt.AddSignal(DataGen.RandomWalk(rand, 100));
             var barY = plt.AddPoint(111, 222);
 
-            sigC.label = "C";
+            sigC.Label = "C";
 
             Assert.AreEqual(",,,C,,,", GetLegendLabels(plt));
             plt.Remove(sigC);

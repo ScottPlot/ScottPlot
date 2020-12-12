@@ -120,7 +120,7 @@ namespace ScottPlot.Cookbook.Recipes
             // plot the positive data in the negative space
             double[] values = DataGen.Sin(50);
             var sig = plt.AddSignal(values);
-            sig.xOffset = -50;
+            sig.OffsetX = -50;
 
             // then invert the sign of the axis tick labels
             plt.XAxis.TickLabelNotation(invertSign: true);
@@ -141,7 +141,7 @@ namespace ScottPlot.Cookbook.Recipes
             // plot the positive data in the negative space
             double[] values = DataGen.Sin(50);
             var sig = plt.AddSignal(values);
-            sig.xOffset = -50;
+            sig.OffsetX = -50;
 
             // then invert the sign of the axis tick labels
             plt.XAxis.ManualTickSpacing(2);
@@ -167,7 +167,7 @@ namespace ScottPlot.Cookbook.Recipes
 
             // create the plot
             var sig = plt.AddSignal(price, pointsPerDay);
-            sig.xOffset = start.ToOADate();
+            sig.OffsetX = start.ToOADate();
 
             // set the localization
             var culture = System.Globalization.CultureInfo.CreateSpecificCulture("hu"); // Hungarian

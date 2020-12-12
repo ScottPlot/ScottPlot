@@ -701,19 +701,19 @@ namespace ScottPlot
         {
             SignalPlot signal = new SignalPlot()
             {
-                ys = ys,
-                sampleRate = sampleRate,
-                xOffset = xOffset,
-                yOffset = yOffset,
-                color = color ?? settings.GetNextColor(),
-                lineWidth = lineWidth,
-                markerSize = (float)markerSize,
-                label = label,
-                colorByDensity = colorByDensity,
-                minRenderIndex = minRenderIndex ?? 0,
-                maxRenderIndex = maxRenderIndex ?? ys.Length - 1,
-                lineStyle = lineStyle,
-                useParallel = useParallel,
+                Ys = ys,
+                SampleRate = sampleRate,
+                OffsetX = xOffset,
+                OffsetY = yOffset,
+                Color = color ?? settings.GetNextColor(),
+                LineWidth = lineWidth,
+                MarkerSize = (float)markerSize,
+                Label = label,
+                DensityColors = colorByDensity,
+                MinRenderIndex = minRenderIndex ?? 0,
+                MaxRenderIndex = maxRenderIndex ?? ys.Length - 1,
+                LineStyle = lineStyle,
+                UseParallel = useParallel,
             };
 
             Add(signal);
@@ -739,19 +739,19 @@ namespace ScottPlot
         {
             SignalPlotConst<T> signal = new SignalPlotConst<T>()
             {
-                ys = ys,
-                sampleRate = sampleRate,
-                xOffset = xOffset,
-                yOffset = yOffset,
-                color = color ?? settings.GetNextColor(),
-                lineWidth = lineWidth,
-                markerSize = (float)markerSize,
-                label = label,
-                colorByDensity = colorByDensity,
-                minRenderIndex = minRenderIndex ?? 0,
-                maxRenderIndex = maxRenderIndex ?? ys.Length - 1,
-                lineStyle = lineStyle,
-                useParallel = useParallel
+                Ys = ys,
+                SampleRate = sampleRate,
+                OffsetX = xOffset,
+                OffsetY = yOffset,
+                Color = color ?? settings.GetNextColor(),
+                LineWidth = lineWidth,
+                MarkerSize = (float)markerSize,
+                Label = label,
+                DensityColors = colorByDensity,
+                MinRenderIndex = minRenderIndex ?? 0,
+                MaxRenderIndex = maxRenderIndex ?? ys.Length - 1,
+                LineStyle = lineStyle,
+                UseParallel = useParallel
             };
 
             Add(signal);
@@ -775,15 +775,15 @@ namespace ScottPlot
             SignalPlotXY signal = new SignalPlotXY()
             {
                 xs = xs,
-                ys = ys,
-                color = color ?? settings.GetNextColor(),
-                lineWidth = lineWidth,
-                markerSize = (float)markerSize,
-                label = label,
-                minRenderIndex = minRenderIndex ?? 0,
-                maxRenderIndex = maxRenderIndex ?? ys.Length - 1,
-                lineStyle = lineStyle,
-                useParallel = useParallel
+                Ys = ys,
+                Color = color ?? settings.GetNextColor(),
+                LineWidth = lineWidth,
+                MarkerSize = (float)markerSize,
+                Label = label,
+                MinRenderIndex = minRenderIndex ?? 0,
+                MaxRenderIndex = maxRenderIndex ?? ys.Length - 1,
+                LineStyle = lineStyle,
+                UseParallel = useParallel
             };
 
             Add(signal);
@@ -808,15 +808,15 @@ namespace ScottPlot
             SignalPlotXYConst<TX, TY> signal = new SignalPlotXYConst<TX, TY>()
             {
                 xs = xs,
-                ys = ys,
-                color = color ?? settings.GetNextColor(),
-                lineWidth = lineWidth,
-                markerSize = (float)markerSize,
-                label = label,
-                minRenderIndex = minRenderIndex ?? 0,
-                maxRenderIndex = maxRenderIndex ?? ys.Length - 1,
-                lineStyle = lineStyle,
-                useParallel = useParallel
+                Ys = ys,
+                Color = color ?? settings.GetNextColor(),
+                LineWidth = lineWidth,
+                MarkerSize = (float)markerSize,
+                Label = label,
+                MinRenderIndex = minRenderIndex ?? 0,
+                MaxRenderIndex = maxRenderIndex ?? ys.Length - 1,
+                LineStyle = lineStyle,
+                UseParallel = useParallel
             };
 
             Add(signal);

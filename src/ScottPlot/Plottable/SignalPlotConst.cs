@@ -12,16 +12,16 @@ namespace ScottPlot.Plottable
     // - source array can be change by call updateData(), updating by ranges much faster.
     public class SignalPlotConst<T> : SignalPlotBase<T> where T : struct, IComparable
     {
-        public bool TreesReady => (minmaxSearchStrategy as SegmentedTreeMinMaxSearchStrategy<T>)?.TreesReady ?? false;
+        public bool TreesReady => (Strategy as SegmentedTreeMinMaxSearchStrategy<T>)?.TreesReady ?? false;
 
         public SignalPlotConst() : base()
         {
-            minmaxSearchStrategy = new SegmentedTreeMinMaxSearchStrategy<T>();
+            Strategy = new SegmentedTreeMinMaxSearchStrategy<T>();
         }
 
         public override string ToString()
         {
-            string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
+            string label = string.IsNullOrWhiteSpace(this.Label) ? "" : $" ({this.Label})";
             return $"PlottableSignalConst{label} with {PointCount} points ({typeof(T).Name})";
         }
     }

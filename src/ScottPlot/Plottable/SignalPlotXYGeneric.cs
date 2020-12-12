@@ -28,15 +28,15 @@ namespace ScottPlot.Plottable
                     if (value[i].CompareTo(value[i - 1]) < 0)
                         throw new ArgumentException("Xs must only contain ascending values");
 
-                XSequalYSPromise = (value.Length != ys?.Length);
+                XSequalYSPromise = (value.Length != Ys?.Length);
 
                 _xs = value;
             }
         }
 
-        public override TY[] ys
+        public override TY[] Ys
         {
-            get => _ys;
+            get => _Ys;
             set
             {
                 if (value.Length == 0)
@@ -44,7 +44,7 @@ namespace ScottPlot.Plottable
 
                 XSequalYSPromise = (value.Length != xs?.Length);
 
-                base.ys = value;
+                base.Ys = value;
             }
         }
 
@@ -56,8 +56,8 @@ namespace ScottPlot.Plottable
         public override AxisLimits GetAxisLimits()
         {
             var baseLimits = base.GetAxisLimits();
-            var newXMin = Convert.ToDouble(xs[minRenderIndex]);
-            var newXMax = Convert.ToDouble(xs[maxRenderIndex]);
+            var newXMin = Convert.ToDouble(xs[MinRenderIndex]);
+            var newXMax = Convert.ToDouble(xs[MaxRenderIndex]);
             Debug.WriteLine($"Limits: {newXMin} {newXMax}");
             return new AxisLimits(newXMin, newXMax, baseLimits.YMin, baseLimits.YMax);
         }
@@ -84,24 +84,24 @@ namespace ScottPlot.Plottable
                 yield break;
             }
 
-            minmaxSearchStrategy.MinMaxRangeQuery(startIndex, endIndex - 1, out double min, out double max);
+            Strategy.MinMaxRangeQuery(startIndex, endIndex - 1, out double min, out double max);
 
             var pointsCount = endIndex - startIndex;
 
-            yield return new PointF(x, dims.GetPixelY(minmaxSearchStrategy.SourceElement(startIndex)));
+            yield return new PointF(x, dims.GetPixelY(Strategy.SourceElement(startIndex)));
             if (pointsCount > 1)
             {
                 yield return new PointF(x, dims.GetPixelY(min));
                 yield return new PointF(x, dims.GetPixelY(max));
-                yield return new PointF(x, dims.GetPixelY(minmaxSearchStrategy.SourceElement(endIndex - 1)));
+                yield return new PointF(x, dims.GetPixelY(Strategy.SourceElement(endIndex - 1)));
             }
         }
 
         public override void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
-            using (var brush = new SolidBrush(color))
-            using (var penHD = GDI.Pen(color, (float)lineWidth, LineStyle.Solid, true))
+            using (var brush = new SolidBrush(Color))
+            using (var penHD = GDI.Pen(Color, (float)LineWidth, LineStyle.Solid, true))
             {
 
                 PointF[] PointBefore;
@@ -110,51 +110,51 @@ namespace ScottPlot.Plottable
                 int searchTo;
 
                 // Calculate point before displayed points
-                int pointBeforeIndex = Array.BinarySearch(xs, minRenderIndex, maxRenderIndex - minRenderIndex + 1, Convert.ChangeType(dims.XMin, typeof(TX)));
+                int pointBeforeIndex = Array.BinarySearch(xs, MinRenderIndex, MaxRenderIndex - MinRenderIndex + 1, Convert.ChangeType(dims.XMin, typeof(TX)));
                 if (pointBeforeIndex < 0)
                 {
                     pointBeforeIndex = ~pointBeforeIndex;
                 }
 
-                if (pointBeforeIndex > minRenderIndex)
+                if (pointBeforeIndex > MinRenderIndex)
                 {
                     PointBefore = new PointF[]
                     {
                         new PointF(dims.GetPixelX(Convert.ToDouble(xs[pointBeforeIndex - 1])),
-                                   dims.GetPixelY(minmaxSearchStrategy.SourceElement(pointBeforeIndex - 1)))
+                                   dims.GetPixelY(Strategy.SourceElement(pointBeforeIndex - 1)))
                     };
                     searchFrom = pointBeforeIndex;
                 }
                 else
                 {
                     PointBefore = new PointF[] { };
-                    searchFrom = minRenderIndex;
+                    searchFrom = MinRenderIndex;
                 }
 
                 // Calculate point after displayed points
-                int pointAfterIndex = Array.BinarySearch(xs, minRenderIndex, maxRenderIndex - minRenderIndex + 1, Convert.ChangeType(dims.XMax, typeof(TX)));
+                int pointAfterIndex = Array.BinarySearch(xs, MinRenderIndex, MaxRenderIndex - MinRenderIndex + 1, Convert.ChangeType(dims.XMax, typeof(TX)));
                 if (pointAfterIndex < 0)
                 {
                     pointAfterIndex = ~pointAfterIndex;
                 }
 
-                if (pointAfterIndex <= maxRenderIndex)
+                if (pointAfterIndex <= MaxRenderIndex)
                 {
                     PointAfter = new PointF[]
                     {
                         new PointF(dims.GetPixelX(Convert.ToDouble(xs[pointAfterIndex])),
-                                   dims.GetPixelY(minmaxSearchStrategy.SourceElement(pointAfterIndex)))
+                                   dims.GetPixelY(Strategy.SourceElement(pointAfterIndex)))
                     };
                     searchTo = pointAfterIndex;
                 }
                 else
                 {
                     PointAfter = new PointF[] { };
-                    searchTo = maxRenderIndex;
+                    searchTo = MaxRenderIndex;
                 }
 
                 IEnumerable<PointF> VisiblePoints;
-                if (useParallel)
+                if (UseParallel)
                 {
                     VisiblePoints = Enumerable.Range(0, (int)dims.DataWidth)
                                               .AsParallel()
@@ -205,7 +205,7 @@ namespace ScottPlot.Plottable
                 {
                     float dataSpanXPx = PointsToDraw[PointsToDraw.Length - 1].X - PointsToDraw[0].X;
                     float markerPxRadius = .3f * dataSpanXPx / PointsToDraw.Length;
-                    markerPxRadius = Math.Min(markerPxRadius, markerSize / 2);
+                    markerPxRadius = Math.Min(markerPxRadius, MarkerSize / 2);
                     if (markerPxRadius > .3)
                     {
                         // skip not visible before and after points
@@ -231,14 +231,14 @@ namespace ScottPlot.Plottable
         public new void ValidateData(bool deep = false)
         {
             base.ValidateData(deep);
-            Validate.AssertEqualLength("xs and ys", xs, ys);
+            Validate.AssertEqualLength("xs and ys", xs, Ys);
             Validate.AssertHasElements("xs", xs);
             Validate.AssertAscending("xs", xs);
         }
 
         public override string ToString()
         {
-            string label = string.IsNullOrWhiteSpace(this.label) ? "" : $" ({this.label})";
+            string label = string.IsNullOrWhiteSpace(this.Label) ? "" : $" ({this.Label})";
             return $"PlottableSignalXYGeneric{label} with {PointCount} points ({typeof(TX).Name}, {typeof(TY).Name})";
         }
     }

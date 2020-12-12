@@ -162,8 +162,8 @@ namespace ScottPlot.Cookbook.Recipes
             // plot the voltage in blue on the primary Y axis
             var sig1 = plt.AddSignal(ap, sampleRate);
             sig1.VerticalAxisIndex = 0;
-            sig1.lineWidth = 3;
-            sig1.color = Color.Blue;
+            sig1.LineWidth = 3;
+            sig1.Color = Color.Blue;
             plt.YAxis.Label("Membrane Potential (mV)");
             plt.YAxis.Color(Color.Blue);
 
@@ -176,8 +176,8 @@ namespace ScottPlot.Cookbook.Recipes
             // plot the first derivative in red on the secondary Y axis
             var sig2 = plt.AddSignal(deriv, sampleRate);
             sig2.VerticalAxisIndex = 1;
-            sig2.lineWidth = 3;
-            sig2.color = Color.FromArgb(120, Color.Red);
+            sig2.LineWidth = 3;
+            sig2.Color = Color.FromArgb(120, Color.Red);
             plt.YAxis2.Label("Rate of Change (mV/ms)");
             plt.YAxis2.Color(Color.Red);
             plt.YAxis2.Ticks(true);

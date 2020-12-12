@@ -60,10 +60,10 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             int sampleRate = 10;
 
             var sp2 = plt.AddSignal(ys, sampleRate, Color.Magenta);
-            sp2.yOffset = 1000;
-            sp2.xOffset = 300;
-            sp2.lineStyle = LineStyle.Dash;
-            sp2.lineWidth = 2;
+            sp2.OffsetY = 1000;
+            sp2.OffsetX = 300;
+            sp2.LineStyle = LineStyle.Dash;
+            sp2.LineWidth = 2;
         }
     }
 
@@ -110,15 +110,15 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             // plot the noisy signal using the traditional method
             var sp1 = plt.AddSignal(data);
-            sp1.yOffset = -40;
-            sp1.color = Color.Red;
+            sp1.OffsetY = -40;
+            sp1.Color = Color.Red;
 
             // use a custom colors to display data of different densities
             string[] colorCodes = { "#440154", "#39568C", "#1F968B", "#73D055" };
             Color[] colors = colorCodes.Select(x => ColorTranslator.FromHtml(x)).ToArray();
 
             var sp2 = plt.AddSignal(data);
-            sp2.colorByDensity = colors;
+            sp2.DensityColors = colors;
 
             plt.Title("Color by Density vs. Solid Color");
             plt.AxisAuto(0, .1);
@@ -142,7 +142,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             // only render the first N points of the signal
             var sig = plt.AddSignal(values);
-            sig.maxRenderIndex = 500;
+            sig.MaxRenderIndex = 500;
         }
     }
 
@@ -161,8 +161,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             // only render values between the two defined indexes
             var sig = plt.AddSignal(values);
-            sig.minRenderIndex = 400;
-            sig.maxRenderIndex = 500;
+            sig.MinRenderIndex = 400;
+            sig.MaxRenderIndex = 500;
         }
     }
 
@@ -179,8 +179,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] data = DataGen.RandomWalk(1000);
 
             var sig = plt.AddSignal(data);
-            sig.fillType = FillType.FillBelow;
-            sig.fillColor1 = Color.Blue;
+            sig.FillType = FillType.FillBelow;
+            sig.FillColor1 = Color.Blue;
 
             plt.AxisAutoX(0);
         }
@@ -199,9 +199,9 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] data = DataGen.RandomWalk(1000);
 
             var sig = plt.AddSignal(data);
-            sig.fillType = FillType.FillBelow;
-            sig.fillColor1 = Color.Blue;
-            sig.gradientFillColor1 = Color.Transparent;
+            sig.FillType = FillType.FillBelow;
+            sig.FillColor1 = Color.Blue;
+            sig.GradientFillColor1 = Color.Transparent;
 
             plt.AxisAutoX(0);
         }
@@ -220,9 +220,9 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] data = DataGen.RandomWalk(1000);
 
             var sig = plt.AddSignal(data);
-            sig.fillType = FillType.FillAbove;
-            sig.fillColor1 = Color.Blue;
-            sig.gradientFillColor1 = Color.Transparent;
+            sig.FillType = FillType.FillAbove;
+            sig.FillColor1 = Color.Blue;
+            sig.GradientFillColor1 = Color.Transparent;
 
             plt.AxisAutoX(0);
         }
@@ -241,12 +241,12 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] data = DataGen.RandomWalk(1000);
 
             var sig = plt.AddSignal(data);
-            sig.fillType = FillType.FillAboveAndBelow;
-            sig.fillColor1 = Color.Green;
-            sig.gradientFillColor1 = Color.Green;
-            sig.fillColor2 = Color.Red;
-            sig.gradientFillColor2 = Color.Red;
-            sig.baseline = 5;
+            sig.FillType = FillType.FillAboveAndBelow;
+            sig.FillColor1 = Color.Green;
+            sig.GradientFillColor1 = Color.Green;
+            sig.FillColor2 = Color.Red;
+            sig.GradientFillColor2 = Color.Red;
+            sig.BaselineY = 5;
 
             plt.AxisAutoX(0);
         }
@@ -268,14 +268,14 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.Colorset(Drawing.Palette.OneHalfDark);
 
             var sig = plt.AddSignal(data);
-            sig.markerSize = 0;
-            sig.color = Color.Black;
-            sig.fillType = FillType.FillAboveAndBelow;
-            sig.fillColor1 = Color.FromArgb(255, 44, 160, 44); // Green
-            sig.gradientFillColor1 = Color.Transparent;
-            sig.fillColor2 = Color.FromArgb(255, 214, 39, 40); // Red
-            sig.gradientFillColor2 = Color.Transparent;
-            sig.baseline = 5;
+            sig.MarkerSize = 0;
+            sig.Color = Color.Black;
+            sig.FillType = FillType.FillAboveAndBelow;
+            sig.FillColor1 = Color.FromArgb(255, 44, 160, 44); // Green
+            sig.GradientFillColor1 = Color.Transparent;
+            sig.FillColor2 = Color.FromArgb(255, 214, 39, 40); // Red
+            sig.GradientFillColor2 = Color.Transparent;
+            sig.BaselineY = 5;
 
             plt.AxisAutoX(0);
         }
