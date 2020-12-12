@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Xml.Linq;
 
 namespace Versioner
@@ -11,17 +12,26 @@ namespace Versioner
         /// </summary>
         static void Main(string[] args)
         {
-            (Version version, string suffix) = GetCurrentVersion("../../../../../../src/ScottPlot/ScottPlot.csproj");
+            if (args.Length != 1)
+                throw new ArgumentException("argument required: path to src folder");
 
-            IncrementVersion("../../../../../../src/ScottPlot/ScottPlot.csproj", version, suffix);
-            IncrementVersion("../../../../../../src/controls/ScottPlot.WinForms/ScottPlot.WinForms.NUGET.csproj", version, suffix);
-            IncrementVersion("../../../../../../src/controls/ScottPlot.WPF/ScottPlot.WPF.NUGET.csproj", version, suffix);
-            IncrementVersion("../../../../../../src/controls/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj", version, suffix);
+            string srcPath = Path.GetFullPath(args[0]);
+            string slnPath = Path.Combine(srcPath, "ScottPlot.sln");
+            if (!File.Exists(slnPath))
+                throw new ArgumentException($"bad path: {slnPath}");
+
+            (Version version, string suffix) = GetCurrentVersion(Path.Combine(srcPath, "ScottPlot/ScottPlot.csproj"));
+            IncrementVersion(Path.Combine(srcPath, "ScottPlot/ScottPlot.csproj"), version, suffix);
+            IncrementVersion(Path.Combine(srcPath, "controls/ScottPlot.WinForms/ScottPlot.WinForms.NUGET.csproj"), version, suffix);
+            IncrementVersion(Path.Combine(srcPath, "controls/ScottPlot.WPF/ScottPlot.WPF.NUGET.csproj"), version, suffix);
+            IncrementVersion(Path.Combine(srcPath, "controls/ScottPlot.Avalonia/ScottPlot.Avalonia.NUGET.csproj"), version, suffix);
+
+            Console.WriteLine("COMPLETE");
         }
 
         public static (Version version, string suffix) GetCurrentVersion(string csprojPath)
         {
-            csprojPath = System.IO.Path.GetFullPath(csprojPath);
+            csprojPath = Path.GetFullPath(csprojPath);
             Console.WriteLine($"Reading version from {csprojPath}");
 
             XDocument doc = XDocument.Load(csprojPath);
@@ -64,7 +74,7 @@ namespace Versioner
                 if (lines[i].StartsWith("    <FileVersion>"))
                     lines[i] = $"    <FileVersion>{newVersionNumber}</FileVersion>";
             }
-            System.IO.File.WriteAllLines(csprojPath, lines);
+            File.WriteAllLines(csprojPath, lines);
         }
     }
 }
