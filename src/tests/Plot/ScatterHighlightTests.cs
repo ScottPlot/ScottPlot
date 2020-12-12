@@ -63,7 +63,7 @@ namespace ScottPlotTests.Plot
             var plottable = InitWithTestValues();
             double[] xs = new double[] { 1, 2, 3, 4, 5 };
             double[] ys = new double[] { 1, 2, 3, 4, 5 };
-            plottable.ReplaceXY(xs, ys);
+            plottable.Update(xs, ys);
 
             plottable.HighlightPoint(index);
             Assert.AreEqual(plottable.HighlightedIndexes.Count, 1);
@@ -79,7 +79,7 @@ namespace ScottPlotTests.Plot
             var plottable = InitWithTestValues();
             double[] xs = new double[] { 1, 2, 3, 4, 5 };
             double[] ys = new double[] { 1, 2, 3, 4, 5 };
-            plottable.ReplaceXY(xs, ys);
+            plottable.Update(xs, ys);
 
             Assert.Throws<ArgumentException>(() => { plottable.HighlightPoint(index); });
         }
@@ -97,7 +97,7 @@ namespace ScottPlotTests.Plot
             var plottable = InitWithTestValues();
             double[] xs = new double[] { -3, -2, -1, 0, 1, 3, 5 };
             double[] ys = new double[] { 12, 3, -5, 0, 10, 0, 7 };
-            plottable.ReplaceXY(xs, ys);
+            plottable.Update(xs, ys);
 
             Console.WriteLine(x);
             plottable.GetPointNearestX(x);
@@ -120,7 +120,7 @@ namespace ScottPlotTests.Plot
             var plottable = InitWithTestValues();
             double[] xs = new double[] { 12, 3, -5, 0, 10, 0, 7 };
             double[] ys = new double[] { -3, -2, -1, 0, 1, 3, 5 };
-            plottable.ReplaceXY(xs, ys);
+            plottable.Update(xs, ys);
 
             plottable.HighlightPointNearestY(y);
 
@@ -139,7 +139,7 @@ namespace ScottPlotTests.Plot
             var plottable = InitWithTestValues();
             double[] xs = new double[] { 1, 0, -1, 0 };
             double[] ys = new double[] { 0, 1, 0, -1 };
-            plottable.ReplaceXY(xs, ys);
+            plottable.Update(xs, ys);
 
             plottable.HighlightPointNearest(x, y);
 
@@ -160,7 +160,7 @@ namespace ScottPlotTests.Plot
             var plottable = InitWithTestValues();
             double[] xs = new double[] { -3, -2, -1, 0, 1, 3, 5 };
             double[] ys = new double[] { 12, 3, -5, 0, 10, 0, 7 };
-            plottable.ReplaceXY(xs, ys);
+            plottable.Update(xs, ys);
 
             var result = plottable.GetPointNearestX(x);
 
@@ -181,7 +181,7 @@ namespace ScottPlotTests.Plot
             var plottable = InitWithTestValues();
             double[] xs = new double[] { -3, -2, -1, 0, 1, 3, 5 };
             double[] ys = new double[] { 12, 3, -5, 0, 10, 0, 7 };
-            plottable.ReplaceXY(xs, ys);
+            plottable.Update(xs, ys);
 
             var result = plottable.GetPointNearestY(y);
 
@@ -200,7 +200,7 @@ namespace ScottPlotTests.Plot
             var plottable = InitWithTestValues();
             double[] xs = new double[] { 1, 0, -1, 0 };
             double[] ys = new double[] { 0, 1, 0, -1 };
-            plottable.ReplaceXY(xs, ys);
+            plottable.Update(xs, ys);
 
             var result = plottable.GetPointNearest(x, y);
 

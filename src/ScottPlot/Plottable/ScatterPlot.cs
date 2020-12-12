@@ -46,7 +46,10 @@ namespace ScottPlot.Plottable
             YError = errorY;
         }
 
-        public void ReplaceX(double[] xs)
+        /// <summary>
+        /// Replace the Xs array with a new one
+        /// </summary>
+        public void UpdateX(double[] xs)
         {
             if (xs is null)
                 throw new ArgumentException("xs must not be null");
@@ -56,7 +59,10 @@ namespace ScottPlot.Plottable
             Xs = xs;
         }
 
-        public void ReplaceY(double[] ys)
+        /// <summary>
+        /// Replace the Ys array with a new one
+        /// </summary>
+        public void UpdateY(double[] ys)
         {
             if (ys is null)
                 throw new ArgumentException("ys must not be null");
@@ -66,7 +72,10 @@ namespace ScottPlot.Plottable
             Ys = ys;
         }
 
-        public void ReplaceXY(double[] xs, double[] ys)
+        /// <summary>
+        /// Replace Xs and Ys arrays with new ones
+        /// </summary>
+        public void Update(double[] xs, double[] ys)
         {
             if (xs is null)
                 throw new ArgumentException("xs must not be null");
