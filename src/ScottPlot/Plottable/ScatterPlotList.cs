@@ -64,12 +64,6 @@ namespace ScottPlot.Plottable
             Ys.AddRange(ys);
         }
 
-        public void Replace(double[] xs, double[] ys)
-        {
-            Clear();
-            AddRange(xs, ys);
-        }
-
         public AxisLimits GetAxisLimits()
         {
             if (Count == 0)
