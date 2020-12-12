@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ScottPlot.Renderable
 {
-    public class AxisTitle : IRenderable
+    public class AxisLabel : IRenderable
     {
         public bool IsVisible { get; set; } = true;
         public string Label = null;

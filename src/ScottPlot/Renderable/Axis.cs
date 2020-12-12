@@ -11,8 +11,13 @@ namespace ScottPlot.Renderable
     /// </summary>
     public class Axis : IRenderable
     {
+        /// <summary>
+        /// Axis dimensions and methods for pixel/unit conversions
+        /// </summary>
         public readonly AxisDimensions Dims = new AxisDimensions();
+
         public int AxisIndex = 0;
+
         private Edge _Edge;
         public Edge Edge
         {
@@ -21,7 +26,7 @@ namespace ScottPlot.Renderable
             {
                 _Edge = value;
                 AxLine.Edge = value;
-                AxTitle.Edge = value;
+                AxLabel.Edge = value;
                 AxTicks.Edge = value;
                 bool isVertical = (value == Edge.Left || value == Edge.Right);
                 AxTicks.TickCollection.verticalAxis = isVertical;
@@ -30,6 +35,7 @@ namespace ScottPlot.Renderable
         }
         public bool IsHorizontal => Edge == Edge.Top || Edge == Edge.Bottom;
         public bool IsVertical => Edge == Edge.Left || Edge == Edge.Right;
+
         public bool IsVisible { get; set; } = true;
 
         public float PixelOffset; // TightenLayout() populates this value based on other PixelSize values
@@ -38,7 +44,7 @@ namespace ScottPlot.Renderable
         public float PixelSizeMaximum = float.PositiveInfinity;
         public float PixelSizePadding = 3;
 
-        private readonly AxisTitle AxTitle = new AxisTitle();
+        private readonly AxisLabel AxLabel = new AxisLabel();
         private readonly AxisTicks AxTicks = new AxisTicks();
         private readonly AxisLine AxLine = new AxisLine();
 
@@ -54,16 +60,16 @@ namespace ScottPlot.Renderable
             if (IsVisible == false)
                 return;
 
-            AxTitle.PixelSizePadding = PixelSizePadding;
+            AxLabel.PixelSizePadding = PixelSizePadding;
             AxTicks.PixelOffset = PixelOffset;
-            AxTitle.PixelOffset = PixelOffset;
-            AxTitle.PixelSize = PixelSize;
+            AxLabel.PixelOffset = PixelOffset;
+            AxLabel.PixelSize = PixelSize;
             AxLine.PixelOffset = PixelOffset;
 
             using (var gfx = GDI.Graphics(bmp, lowQuality))
             {
                 AxTicks.Render(dims, bmp, lowQuality);
-                AxTitle.Render(dims, bmp, lowQuality);
+                AxLabel.Render(dims, bmp, lowQuality);
                 AxLine.Render(dims, bmp, lowQuality);
             }
         }
@@ -81,13 +87,13 @@ namespace ScottPlot.Renderable
         /// </summary>
         public string Label(string label = null, Color? color = null, float? size = null, bool? bold = null, string fontName = null)
         {
-            AxTitle.IsVisible = true;
-            AxTitle.Label = label ?? AxTitle.Label;
-            AxTitle.Font.Color = color ?? AxTitle.Font.Color;
-            AxTitle.Font.Size = size ?? AxTitle.Font.Size;
-            AxTitle.Font.Bold = bold ?? AxTitle.Font.Bold;
-            AxTitle.Font.Name = fontName ?? AxTitle.Font.Name;
-            return AxTitle.Label;
+            AxLabel.IsVisible = true;
+            AxLabel.Label = label ?? AxLabel.Label;
+            AxLabel.Font.Color = color ?? AxLabel.Font.Color;
+            AxLabel.Font.Size = size ?? AxLabel.Font.Size;
+            AxLabel.Font.Bold = bold ?? AxLabel.Font.Bold;
+            AxLabel.Font.Name = fontName ?? AxLabel.Font.Name;
+            return AxLabel.Label;
         }
 
         /// <summary>
@@ -313,12 +319,12 @@ namespace ScottPlot.Renderable
         public void RecalculateAxisSize()
         {
             using (var tickFont = GDI.Font(AxTicks.MajorLabelFont))
-            using (var titleFont = GDI.Font(AxTitle.Font))
+            using (var titleFont = GDI.Font(AxLabel.Font))
             {
                 PixelSize = 0;
 
-                if (AxTitle.IsVisible)
-                    PixelSize += GDI.MeasureString(AxTitle.Label, AxTitle.Font).Height;
+                if (AxLabel.IsVisible)
+                    PixelSize += GDI.MeasureString(AxLabel.Label, AxLabel.Font).Height;
 
                 if (AxTicks.MajorLabelEnable)
                     PixelSize += IsHorizontal ? AxTicks.TickCollection.maxLabelHeight : AxTicks.TickCollection.maxLabelWidth * 1.2f;
