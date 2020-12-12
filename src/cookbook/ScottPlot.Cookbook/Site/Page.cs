@@ -57,8 +57,8 @@ namespace ScottPlot.Cookbook.Site
 
             // shows in the head area
             string pageTitle = string.IsNullOrWhiteSpace(title) ?
-                "ScottPlot Cookbook" :
-                $"ScottPlot Cookbook: {title}";
+                $"ScottPlot {Plot.Version} Cookbook" :
+                $"ScottPlot {Plot.Version} Cookbook: {title}";
             html = html.Replace("{{title}}", pageTitle);
 
             // shows at the top of the page
