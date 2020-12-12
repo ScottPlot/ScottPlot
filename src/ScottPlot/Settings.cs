@@ -11,7 +11,7 @@ namespace ScottPlot
 {
     /// <summary>
     /// This module holds state for figure dimensions, axis limits, plot contents, and styling options.
-    /// A plot can be duplicated by copying the full stae of this settings module.
+    /// A plot can be duplicated by copying the full state of this settings module.
     /// </summary>
     public class Settings
     {

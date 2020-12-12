@@ -6,7 +6,8 @@ using System.Drawing;
 namespace ScottPlot.Renderable
 {
     /// <summary>
-    /// This class holds axis rendering details (label, ticks, tick labels) but no logic
+    /// An Axis stores dimensions (axis limits and pixel/unit conversion methods) and can render
+    /// itself including axis label, tick marks, tick labels, and grid lines
     /// </summary>
     public class Axis : IRenderable
     {
