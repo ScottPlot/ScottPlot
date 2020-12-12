@@ -131,6 +131,9 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             // plot the list of polygons with one step
             plt.AddPolygons(polys, fillColor: Color.Green);
+
+            // ensure X and Y pixel scales are the same (so circles aren't ovals)
+            plt.AxisScaleLock(true);
         }
     }
 }

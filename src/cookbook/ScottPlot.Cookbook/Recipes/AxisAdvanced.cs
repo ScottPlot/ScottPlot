@@ -368,7 +368,7 @@ namespace ScottPlot.Cookbook.Recipes
 
             // decorate the plot
             plt.Title("Scatter Plot of Polar Data");
-            plt.AxisEqualScale(true);
+            plt.AxisScaleLock(true);
         }
     }
 }

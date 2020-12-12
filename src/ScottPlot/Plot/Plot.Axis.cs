@@ -365,23 +365,12 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Zoom one axis to ensure its scale (units per pixel) matches the other axis
+        /// Lock X and Y axis scales (units per pixel) together to protect symmetry of circles and squares
         /// </summary>
-        public void AxisEqual(bool preserveY = true)
-        {
-            if (preserveY)
-                AxisScale(unitsPerPixelX: settings.YAxis.Dims.UnitsPerPx);
-            else
-                AxisScale(unitsPerPixelY: settings.XAxis.Dims.UnitsPerPx);
-        }
-
-        /// <summary>
-        /// Lock X and Y axis scales together (so squares cannot be distorted)
-        /// </summary>
-        public void AxisEqualScale(bool lockScales = true)
+        public void AxisScaleLock(bool enable)
         {
             settings.AxisAutoUnsetAxes();
-            settings.AxisEqualScale = lockScales;
+            settings.AxisEqualScale = enable;
             settings.LayoutAuto();
             settings.EnforceEqualAxisScales();
         }

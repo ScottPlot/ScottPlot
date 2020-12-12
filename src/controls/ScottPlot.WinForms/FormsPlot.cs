@@ -108,9 +108,6 @@ namespace ScottPlot
             if (isDesignerMode || plt is null || pbPlot.Width < 1 || pbPlot.Height < 1)
                 return;
 
-            if (equalAxes)
-                plt.AxisEqual();
-
             if (!(skipIfCurrentlyRendering && currentlyRendering))
             {
                 currentlyRendering = true;
@@ -145,7 +142,6 @@ namespace ScottPlot
         private bool doubleClickingTogglesBenchmark = true;
         private bool lockVerticalAxis = false;
         private bool lockHorizontalAxis = false;
-        private bool equalAxes = false;
         private double middleClickMarginX = .1;
         private double middleClickMarginY = .1;
         private bool? recalculateLayoutOnMouseUp = null;
@@ -180,7 +176,7 @@ namespace ScottPlot
             if (enableDoubleClickBenchmark != null) this.doubleClickingTogglesBenchmark = (bool)enableDoubleClickBenchmark;
             if (lockVerticalAxis != null) this.lockVerticalAxis = (bool)lockVerticalAxis;
             if (lockHorizontalAxis != null) this.lockHorizontalAxis = (bool)lockHorizontalAxis;
-            if (equalAxes != null) this.equalAxes = (bool)equalAxes;
+            if (equalAxes.HasValue) plt.AxisScaleLock(equalAxes.Value);
             this.middleClickMarginX = middleClickMarginX ?? this.middleClickMarginX;
             this.middleClickMarginY = middleClickMarginY ?? this.middleClickMarginY;
             this.recalculateLayoutOnMouseUp = recalculateLayoutOnMouseUp;
