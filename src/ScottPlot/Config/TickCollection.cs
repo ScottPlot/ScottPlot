@@ -226,6 +226,9 @@ namespace ScottPlot.Config
             bool isRoundNumber = ((int)value == value);
             bool isLargeNumber = (Math.Abs(value) > 1000);
 
+            // round it to 10 digits to fix accumulated floating-point errors
+            value = Math.Round(value, 10);
+
             // https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings
             if (numericFormatString is null)
             {
