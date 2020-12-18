@@ -1,5 +1,5 @@
-﻿using ScottPlot.Ticks;
-using ScottPlot.Drawing;
+﻿using ScottPlot.Drawing;
+using ScottPlot.Ticks;
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -157,18 +157,35 @@ namespace ScottPlot.Plottable
             }
         }
 
+        private double ClipWithRange(double value, double min, double max, double offset)
+        {
+            double result = value;
+
+            if (result < min)
+                result = min - offset;
+            if (result > max)
+                result = max + offset;
+            return result;
+        }
+
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             PointF p1, p2;
             if (IsHorizontal)
             {
-                p1 = new PointF(dims.GetPixelX(Min), dims.GetPixelY(dims.YMin));
-                p2 = new PointF(dims.GetPixelX(Max), dims.GetPixelY(dims.YMax));
+                var min = ClipWithRange(Min, dims.XMin, dims.XMax, dims.UnitsPerPxX);
+                var max = ClipWithRange(Max, dims.XMin, dims.XMax, dims.UnitsPerPxX);
+
+                p1 = new PointF(dims.GetPixelX(min), dims.GetPixelY(dims.YMin));
+                p2 = new PointF(dims.GetPixelX(max), dims.GetPixelY(dims.YMax));
             }
             else
             {
-                p1 = new PointF(dims.GetPixelX(dims.XMin), dims.GetPixelY(Min));
-                p2 = new PointF(dims.GetPixelX(dims.XMax), dims.GetPixelY(Max));
+                var min = ClipWithRange(Min, dims.YMin, dims.YMax, dims.UnitsPerPxY);
+                var max = ClipWithRange(Max, dims.YMin, dims.YMax, dims.UnitsPerPxY);
+
+                p1 = new PointF(dims.GetPixelX(dims.XMin), dims.GetPixelY(min));
+                p2 = new PointF(dims.GetPixelX(dims.XMax), dims.GetPixelY(max));
             }
             RectangleF rect = new RectangleF(p1.X - 1, p2.Y - 1, p2.X - p1.X + 1, p1.Y - p2.Y + 1);
 
