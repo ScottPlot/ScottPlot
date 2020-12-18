@@ -102,7 +102,7 @@ namespace ScottPlotTests.PlottableRenderTests
 
             // Compare mean pixel with delta, because different ticks
             // Y Ticks has more affect on mean pixel
-            Assert.AreEqual(smallZoom.RGB, extremeZoom.RGB, 10);
+            Assert.AreEqual(smallZoom.RGB, extremeZoom.RGB, 20);
         }
     }
 }
