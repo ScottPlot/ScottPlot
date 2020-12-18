@@ -1,9 +1,6 @@
 ﻿using NUnit.Framework;
-using ScottPlot;
 using ScottPlot.Plottable;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ScottPlotTests.PlottableRenderTests
 {
@@ -59,6 +56,29 @@ namespace ScottPlotTests.PlottableRenderTests
             Console.WriteLine($"After: {after}");
 
             Assert.That(after.IsDarkerThan(before));
+        }
+
+        [Test]
+        public void AxisSpan_ExtremeZoomIn_FullScreenIsSpanColor()
+        {
+            var plt = new ScottPlot.Plot();
+            var axSpan = new HSpan() { X1 = 1, X2 = 10, Color = System.Drawing.Color.Green };
+            plt.Add(axSpan);
+
+            // Initial zoom to fill full plot with span color
+            plt.AxisZoom(10);
+
+            var smallZoomBmp = TestTools.GetLowQualityBitmap(plt);
+            var smallZoom = new MeanPixel(smallZoomBmp);
+
+            // Extreme zoom to prove that full plot filled with span Color
+            plt.AxisZoom(10_000_000);
+
+            var extremeZoomBmp = TestTools.GetLowQualityBitmap(plt);
+            var extremeZoom = new MeanPixel(extremeZoomBmp);
+
+            // Compare mean pixel with delta, because different ticks
+            Assert.AreEqual(smallZoom.RGB, extremeZoom.RGB, 1.0);
         }
     }
 }
