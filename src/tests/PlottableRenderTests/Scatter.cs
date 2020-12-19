@@ -196,7 +196,11 @@ namespace ScottPlotTests.PlottableRenderTests
             // start with default settings
             double[] xs = { 1, 2, 3, 4 };
             double[] ys = { 1, 4, 9, 16 };
-            var splt = new ScatterPlot(xs, ys) { };
+            var splt = new ScatterPlot(xs, ys)
+            {
+                MarkerSize = 20,
+                MarkerShape = MarkerShape.filledCircle
+            };
 
             plt.Add(splt);
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
