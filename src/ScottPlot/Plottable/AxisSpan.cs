@@ -50,6 +50,7 @@ namespace ScottPlot.Plottable
         public double DragLimitMin = double.NegativeInfinity;
         public double DragLimitMax = double.PositiveInfinity;
         public Cursor DragCursor => IsHorizontal ? Cursor.WE : Cursor.NS;
+        public event EventHandler Dragged = delegate { };
 
         public AxisSpan(bool isHorizontal)
         {
@@ -155,6 +156,8 @@ namespace ScottPlot.Plottable
                 Position1 -= aboveLimit;
                 Position2 -= aboveLimit;
             }
+
+            Dragged(this, EventArgs.Empty);
         }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)

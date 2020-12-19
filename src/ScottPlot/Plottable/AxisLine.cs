@@ -45,6 +45,7 @@ namespace ScottPlot.Plottable
         public Cursor DragCursor => IsHorizontal ? Cursor.NS : Cursor.WE;
         public double DragLimitMin = double.NegativeInfinity;
         public double DragLimitMax = double.PositiveInfinity;
+        public event EventHandler Dragged = delegate { };
 
         public AxisLine(bool isHorizontal)
         {
@@ -101,6 +102,8 @@ namespace ScottPlot.Plottable
                 if (coordinateX > DragLimitMax) coordinateX = DragLimitMax;
                 Position = coordinateX;
             }
+
+            Dragged(this, EventArgs.Empty);
         }
 
         public bool IsUnderMouse(double coordinateX, double coordinateY, double snapX, double snapY) =>

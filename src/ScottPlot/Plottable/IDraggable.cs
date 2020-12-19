@@ -1,4 +1,6 @@
-﻿namespace ScottPlot.Plottable
+﻿using System;
+
+namespace ScottPlot.Plottable
 {
     public interface IDraggable
     {
@@ -6,5 +8,6 @@
         Ticks.Cursor DragCursor { get; }
         bool IsUnderMouse(double coordinateX, double coordinateY, double snapX, double snapY);
         void DragTo(double coordinateX, double coordinateY, bool isShiftDown, bool isAltDown, bool isCtrlDown);
+        event EventHandler Dragged;
     }
 }
