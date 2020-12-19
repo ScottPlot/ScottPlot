@@ -7,7 +7,11 @@
         mc:Ignorable="d"
         xmlns:ScottPlot="clr-namespace:ScottPlot;assembly=ScottPlot.WPF"
         Title="ScottPlot Sandbox - WPF" Height="450" Width="800">
-    <Grid>
-        <ScottPlot:WpfPlot Name="WpfPlot1"/>
-    </Grid>
+    <ScrollViewer>
+        <StackPanel>
+            <ScottPlot:WpfPlot x:Name="WpfPlot1" Height="300"/>
+            <ScottPlot:WpfPlot x:Name="WpfPlot2" Height="300"/>
+            <ScottPlot:WpfPlot x:Name="WpfPlot3" Height="300"/>
+        </StackPanel>
+    </ScrollViewer>
 </Window>

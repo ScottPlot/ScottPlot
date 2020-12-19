@@ -20,14 +20,24 @@ namespace WpfApp
     /// </summary>
     public partial class MainWindow : Window
     {
+        Random rand = new Random();
+
         public MainWindow()
         {
             InitializeComponent();
+            PlotRandomBars(WpfPlot1.plt);
+            PlotRandomBars(WpfPlot2.plt);
+            PlotRandomBars(WpfPlot3.plt);
+        }
 
-            var xs = new double[] { 1, 2, 3, 4, 5 };
-            var ys = new double[] { 1, 4, 9, 16, 25 };
-
-            WpfPlot1.plt.PlotScatter(xs, ys);
+        private void PlotRandomBars(ScottPlot.Plot plt, int count = 10)
+        {
+            double[] values = ScottPlot.DataGen.Random(rand, count);
+            string[] labels = Enumerable.Range(1, count).Select(x => $"bar number {x}").ToArray();
+            plt.AddBar(values);
+            plt.XTicks(labels);
+            plt.XAxis.TickLabelStyle(rotation: 45);
+            plt.SetAxisLimits(yMin: 0);
         }
     }
 }
