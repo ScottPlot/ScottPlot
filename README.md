@@ -17,7 +17,7 @@
 
 <a href='https://swharden.com/scottplot'><img src='dev/graphics/ScottPlot.gif'></a>
 
-<a href=''><img src='dev/graphics/cookbook.jpg'></a>
+<a href='https://swharden.com/scottplot/cookbook'><img src='dev/graphics/cookbook.jpg'></a>
 
 </div>
 
