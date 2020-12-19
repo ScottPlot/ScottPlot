@@ -1,14 +1,14 @@
 # Contribute to ScottPlot
 
-**ScottPlot welcomes input from the open-source community!**
+ScottPlot welcomes input from the open-source community!
 
-* [**Report a bug**](https://github.com/swharden/ScottPlot/issues/new/choose)
+* **Report a bug** by creating a GitHub issue
 
-* [**Ask a question**](https://github.com/swharden/ScottPlot/issues/new/choose)
+* **Ask a question** on StackOverflow with the `scottplot` tag ([link](https://stackoverflow.com/questions/ask?tags=scottplot)) or by creating a GitHub issue
 
-* [**Suggest a feature**](https://github.com/swharden/ScottPlot/issues/new/choose)
+* **Suggest a feature** by creating a GitHub issue
 
-* [**Roadmap**](/dev/roadmap.md)
+* See the [**ScottPlot Roadmap**](/dev/roadmap.md) for notes about current development goals
 
 ### Making Changes
 
@@ -16,8 +16,6 @@
 
 * **For small changes,** make the change and create a pull request (no issue required)
 
-* **Auto-format your code** or the build will fail. An autoformat script is located in the source folder.
+* **⚠️ Auto-format your code or the build will fail.** An autoformat script is located in the source folder.
 
-* **Favor demonstrating new features with new tests** instead of adding new code to the demo applications or cookbook
-
-* **Modify the minimum number of files and lines** necessary to implement the change to simplify review of your pull request
+* **⚠️ Modify the minimum number of files and lines** necessary to implement the change to simplify review of your pull request
