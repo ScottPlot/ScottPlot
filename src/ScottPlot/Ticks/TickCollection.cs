@@ -68,6 +68,7 @@ namespace ScottPlot.Ticks
                 tickPositionsMinor = null;
                 tickLabels = manualTickLabels;
                 cornerLabel = null;
+                (maxLabelWidth, maxLabelHeight) = MaxLabelSize(tickFont);
             }
         }
 

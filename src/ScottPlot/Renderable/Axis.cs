@@ -373,7 +373,14 @@ namespace ScottPlot.Renderable
                     PixelSize += GDI.MeasureString(AxisLabel.Label, AxisLabel.Font).Height;
 
                 if (AxisTicks.TickLabelVisible)
-                    PixelSize += IsHorizontal ? AxisTicks.TickCollection.maxLabelHeight : AxisTicks.TickCollection.maxLabelWidth * 1.2f;
+                {
+                    float maxHeight = AxisTicks.TickCollection.maxLabelHeight;
+                    float maxWidth = AxisTicks.TickCollection.maxLabelWidth * 1.2f;
+                    float sizeNeeded = IsHorizontal ? maxHeight : maxWidth;
+                    float diff = Math.Max(maxWidth, maxHeight) - Math.Min(maxWidth, maxHeight);
+                    sizeNeeded = Math.Min(maxWidth, maxHeight) + diff * (float)Math.Sin(AxisTicks.TickLabelRotation * Math.PI / 180);
+                    PixelSize += sizeNeeded;
+                }
 
                 if (AxisTicks.MajorTickVisible)
                     PixelSize += AxisTicks.MajorTickLength;
