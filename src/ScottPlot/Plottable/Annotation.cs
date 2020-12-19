@@ -24,13 +24,13 @@ namespace ScottPlot.Plottable
         /// </summary>
         public string Label;
 
-        public Drawing.Font Font = new Drawing.Font();
+        public readonly Drawing.Font Font = new Drawing.Font();
         public Color FontColor { set => Font.Color = value; }
         public string FontName { set => Font.Name = value; }
         public float FontSize { set => Font.Size = value; }
         public bool FontBold { set => Font.Bold = value; }
-        public Alignment alignment { set => Font.Alignment = value; }
-        public float rotation { set => Font.Rotation = value; }
+        public Alignment Alignment { set => Font.Alignment = value; }
+        public float Rotation { set => Font.Rotation = value; }
 
         public bool Background = true;
         public Color BackgroundColor = Color.Yellow;

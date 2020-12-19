@@ -33,10 +33,13 @@ namespace ScottPlot.Plottable
         public double ErrorCapSize = .4;
         public Color BorderColor = Color.Black;
         public float BorderLineWidth = 1;
-        public string FontName;
-        public float FontSize = 12;
-        public bool FontBold;
-        public Color FontColor = Color.Black;
+
+        public readonly Drawing.Font Font = new Drawing.Font();
+        public string FontName { set => Font.Name = value; }
+        public float FontSize { set => Font.Size = value; }
+        public bool FontBold { set => Font.Bold = value; }
+        public Color FontColor { set => Font.Color = value; }
+
         public double BarWidth = .8;
         public double BaseValue = 0;
         public bool VerticalOrientation = true;
@@ -157,8 +160,8 @@ namespace ScottPlot.Plottable
             }
 
             if (ShowValuesAboveBars)
-                using (var valueTextFont = GDI.Font(FontName, FontSize, FontBold))
-                using (var valueTextBrush = GDI.Brush(FontColor))
+                using (var valueTextFont = GDI.Font(Font))
+                using (var valueTextBrush = GDI.Brush(Font.Color))
                 using (var sf = new StringFormat() { LineAlignment = StringAlignment.Far, Alignment = StringAlignment.Center })
                     gfx.DrawString(value.ToString(), valueTextFont, valueTextBrush, centerPx, rect.Y, sf);
         }
@@ -203,8 +206,8 @@ namespace ScottPlot.Plottable
             }
 
             if (ShowValuesAboveBars)
-                using (var valueTextFont = GDI.Font(FontName, FontSize, FontBold))
-                using (var valueTextBrush = GDI.Brush(FontColor))
+                using (var valueTextFont = GDI.Font(Font))
+                using (var valueTextBrush = GDI.Brush(Font.Color))
                 using (var sf = new StringFormat() { LineAlignment = StringAlignment.Center, Alignment = StringAlignment.Near })
                     gfx.DrawString(value.ToString(), valueTextFont, valueTextBrush, rect.X + rect.Width, centerPx, sf);
         }

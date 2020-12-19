@@ -22,8 +22,7 @@ namespace ScottPlot.Plottable
 
         public double DonutSize;
         public string DonutLabel;
-        public float DonutFontSize = 36;
-        public Color DonutFontColor = Color.Black;
+        public readonly Drawing.Font DonutFont = new Drawing.Font();
 
         public float OutlineSize = 0;
         public Color OutlineColor = Color.Black;
@@ -38,6 +37,8 @@ namespace ScottPlot.Plottable
             Values = values;
             GroupNames = groupNames;
             Colors = colors;
+
+            DonutFont.Size = 36;
         }
 
         public override string ToString()
@@ -75,9 +76,9 @@ namespace ScottPlot.Plottable
             using (Pen backgroundPen = GDI.Pen(BackgroundColor))
             using (Pen outlinePen = GDI.Pen(OutlineColor, OutlineSize))
             using (Brush brush = GDI.Brush(Color.Black))
-            using (Brush fontBrush = GDI.Brush(DonutFontColor))
-            using (var sliceFont = GDI.Font(null, SliceFontSize))
-            using (var centerFont = GDI.Font(null, DonutFontSize))
+            using (Brush fontBrush = GDI.Brush(DonutFont.Color))
+            using (var sliceFont = GDI.Font(DonutFont))
+            using (var centerFont = GDI.Font(DonutFont))
             using (StringFormat sfCenter = new StringFormat() { LineAlignment = StringAlignment.Center, Alignment = StringAlignment.Center })
             {
                 double[] proportions = Values.Select(x => x / Values.Sum()).ToArray();

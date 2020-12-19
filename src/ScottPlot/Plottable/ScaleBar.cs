@@ -17,50 +17,20 @@ namespace ScottPlot.Plottable
         public double Height;
 
         /// <summary>
-        /// Horizontal scalebar label
-        /// </summary>
-        public string HorizontalLabel;
-
-        /// <summary>
-        /// Vertical scalebar label
-        /// </summary>
-        public string VerticalLabel;
-
-        /// <summary>
         /// Distance in pixels from the edge of the data area
         /// </summary>
         public float Padding = 10;
 
-        /// <summary>
-        /// Thickness of the scalebar in pixels
-        /// </summary>
+        public string HorizontalLabel;
+        public string VerticalLabel;
         public float LineWidth = 2;
-
-        /// <summary>
-        /// Color of the scalebar lines
-        /// </summary>
         public Color LineColor = Color.Black;
+        public readonly Drawing.Font Font = new Drawing.Font();
+        public float FontSize { set => Font.Size = value; }
+        public Color FontColor { set => Font.Color = value; }
+        public bool FontBold { set => Font.Bold = value; }
+        public Color Color { set => (LineColor, FontColor) = (value, value); }
 
-        /// <summary>
-        /// Color of the font
-        /// </summary>
-        public Color FontColor = Color.Black;
-
-        /// <summary>
-        /// Name of the font to use for the labels.
-        /// If this font does not exist a system default will be used.
-        /// </summary>
-        public string FontName;
-
-        /// <summary>
-        /// Font size in pixels
-        /// </summary>
-        public float FontSize = 12;
-
-        /// <summary>
-        /// Renders bold font if true
-        /// </summary>
-        public bool FontBold = false;
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
@@ -80,8 +50,8 @@ namespace ScottPlot.Plottable
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             using (var gfx = GDI.Graphics(bmp, dims, lowQuality))
-            using (var font = GDI.Font(FontName, FontSize, FontBold))
-            using (var fontBrush = new SolidBrush(FontColor))
+            using (var font = GDI.Font(Font))
+            using (var fontBrush = new SolidBrush(Font.Color))
             using (var linePen = new Pen(LineColor, LineWidth))
             using (var sfNorth = new StringFormat() { LineAlignment = StringAlignment.Near, Alignment = StringAlignment.Center })
             using (var sfWest = new StringFormat() { LineAlignment = StringAlignment.Center, Alignment = StringAlignment.Near })

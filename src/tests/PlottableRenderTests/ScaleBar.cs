@@ -160,7 +160,7 @@ namespace ScottPlotTests.PlottableRenderTests
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
             // customize the scalebar
-            sb.FontSize *= 2;
+            sb.Font.Size *= 2;
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
 
             // measure what changed
