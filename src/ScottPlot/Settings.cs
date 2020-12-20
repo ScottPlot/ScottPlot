@@ -343,8 +343,8 @@ namespace ScottPlot
                 axis.Dims.Recall();
         }
 
-        private float MouseDownX;
-        private float MouseDownY;
+        public float MouseDownX { get; private set; }
+        public float MouseDownY { get; private set; }
 
         /// <summary>
         /// Remember mouse position (do this before calling MousePan or MouseZoom)

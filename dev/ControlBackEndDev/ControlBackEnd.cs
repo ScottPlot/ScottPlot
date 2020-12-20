@@ -6,6 +6,25 @@
  *    - use events to tell controls when to update the image or change the mouse cursor
  *    - TODO: render calls should be non-blocking so GUI/controls aren't slowed by render requests
  *    - TODO: move this module into the ScottPlot project
+ *    - TODO: a timer should ask for a high quality render after mouse interaction stops
+ *   
+ *   Default Controls:
+ *   
+ *    - Left-click-drag: pan
+ *    - Right-click-drag: zoom
+ *    - Middle-click-drag: zoom region
+ *    - ALT+Left-click-drag: zoom region
+ *    - Scroll wheel: zoom to cursor
+ *   
+ *    - Right-click: show menu
+ *    - Middle-click: auto-axis
+ *    - Double-click: show benchmark
+ *   
+ *    - CTRL+Left-click-drag to pan horizontally
+ *    - SHIFT+Left-click-drag to pan vertically
+ *    - CTRL+Right-click-drag to zoom horizontally
+ *    - SHIFT+Right-click-drag to zoom vertically
+ *    - CTRL+SHIFT+Right-click-drag to zoom evenly
  *   
  */
 
@@ -18,7 +37,7 @@ using System.Threading.Tasks;
 
 namespace ControlBackEndDev
 {
-    public class MouseState
+    public class InputState
     {
         public float X = float.NaN;
         public float Y = float.NaN;
@@ -26,6 +45,9 @@ namespace ControlBackEndDev
         public bool RightDown = false;
         public bool MiddleDown = false;
         public bool ButtonDown => LeftDown || RightDown || MiddleDown;
+        public bool ShiftDown = false;
+        public bool CtrlDown = false;
+        public bool AltDown = false;
     }
 
     public class ControlBackEnd
@@ -77,41 +99,69 @@ namespace ControlBackEndDev
             Render(false);
         }
 
-        public void MouseDown(MouseState mouse)
+        public void MouseDown(InputState input)
         {
-            Settings.MouseDown(mouse.X, mouse.Y);
+            Settings.MouseDown(input.X, input.Y);
         }
 
-        public void MouseMove(MouseState mouse)
+        public void MouseMove(InputState input)
         {
-            if (mouse.ButtonDown)
-            {
-                if (mouse.LeftDown)
-                    Settings.MousePan(mouse.X, mouse.Y);
-                else if (mouse.RightDown)
-                    Settings.MouseZoom(mouse.X, mouse.Y);
-                else if (mouse.MiddleDown)
-                    Settings.MouseZoomRect(mouse.X, mouse.Y);
+            bool isPanning = input.LeftDown && !input.AltDown;
+            bool isZooming = input.RightDown;
+            bool isZoomingRectangle = input.MiddleDown || (input.LeftDown && input.AltDown);
 
-                Render(lowQuality: true);
+            bool needsRender = isPanning || isZooming || isZoomingRectangle;
+            if (needsRender == false)
+                return;
+
+            float x = input.X;
+            float y = input.Y;
+
+            if (isPanning)
+            {
+                x = input.ShiftDown ? Settings.MouseDownX : x;
+                y = input.CtrlDown ? Settings.MouseDownY : y;
+                Settings.MousePan(x, y);
             }
+            else if (isZooming)
+            {
+                if (input.ShiftDown && input.CtrlDown)
+                {
+                    float px = Math.Max(x - Settings.MouseDownX, -(y - Settings.MouseDownY));
+                    Settings.MouseZoom(Settings.MouseDownX + px, Settings.MouseDownY - px);
+                }
+                else
+                {
+                    x = input.ShiftDown ? Settings.MouseDownX : x;
+                    y = input.CtrlDown ? Settings.MouseDownY : y;
+                    Settings.MouseZoom(x, y);
+                }
+            }
+            else if (isZoomingRectangle)
+            {
+                Settings.MouseZoomRect(input.X, input.Y);
+            }
+
+            Render(lowQuality: true);
         }
 
-        public void MouseUp(MouseState mouse)
+        public void MouseUp(InputState input)
         {
-            if (mouse.MiddleDown)
+            bool isZoomingRectangle = input.MiddleDown || (input.LeftDown && input.AltDown);
+            if (isZoomingRectangle)
             {
-                Settings.RecallAxisLimits();
-
-                if (Settings.MouseHasMoved(mouse.X, mouse.Y) == false)
+                if (Settings.MouseHasMoved(input.X, input.Y))
+                {
+                    Settings.RecallAxisLimits();
+                    Settings.MouseZoomRect(input.X, input.Y, finalize: true);
+                }
+                else
                 {
                     MiddleClickAutoAxis();
-                    return;
                 }
-
-                Settings.MouseZoomRect(mouse.X, mouse.Y, finalize: true);
-                Render(false);
             }
+
+            Render(false);
         }
 
         private void MiddleClickAutoAxis()
@@ -121,11 +171,11 @@ namespace ControlBackEndDev
             Render(false);
         }
 
-        public void MouseWheel(MouseState mouse, bool wheelUp)
+        public void MouseWheel(InputState input, bool wheelUp)
         {
             double xFrac = wheelUp ? 1.15 : 0.85;
             double yFrac = wheelUp ? 1.15 : 0.85;
-            Settings.AxesZoomTo(xFrac, yFrac, mouse.X, mouse.Y);
+            Settings.AxesZoomTo(xFrac, yFrac, input.X, input.Y);
             Render(false);
         }
 
