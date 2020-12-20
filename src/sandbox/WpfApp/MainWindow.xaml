@@ -7,11 +7,18 @@
         mc:Ignorable="d"
         xmlns:ScottPlot="clr-namespace:ScottPlot;assembly=ScottPlot.WPF"
         Title="ScottPlot Sandbox - WPF" Height="450" Width="800">
-    <ScrollViewer>
-        <StackPanel>
-            <ScottPlot:WpfPlot x:Name="WpfPlot1" Height="300"/>
-            <ScottPlot:WpfPlot x:Name="WpfPlot2" Height="300"/>
-            <ScottPlot:WpfPlot x:Name="WpfPlot3" Height="300"/>
-        </StackPanel>
-    </ScrollViewer>
+<DockPanel>
+    <TabControl>
+        <TabItem Header="ScottPlot 1">
+            <DockPanel>
+                <ScottPlot:WpfPlot Name="WpfPlot1"/>
+            </DockPanel>
+        </TabItem>
+        <TabItem Header="ScottPlot 2">
+            <DockPanel>
+                <ScottPlot:WpfPlot Name="WpfPlot2"/>
+            </DockPanel>
+        </TabItem>
+    </TabControl>
+</DockPanel>
 </Window>
