@@ -26,6 +26,7 @@ namespace ScottPlot.Plottable
         public double? ScaleMin;
         public double? ScaleMax;
         public double? TransparencyThreshold;
+        public double? TransparencyThresholdNormalized;
         public Bitmap BackgroundImage;
         public bool DisplayImageAbove;
         public bool ShowAxisLabels;
@@ -47,11 +48,11 @@ namespace ScottPlot.Plottable
             double normalizeMax = (ScaleMax.HasValue && ScaleMax.Value > Max) ? ScaleMax.Value : Max;
 
             if (TransparencyThreshold.HasValue)
-                TransparencyThreshold = Normalize(TransparencyThreshold.Value, Min, Max, ScaleMin, ScaleMax);
+                TransparencyThresholdNormalized = Normalize(TransparencyThreshold.Value, Min, Max, ScaleMin, ScaleMax);
 
             NormalizedIntensities = Normalize(intensitiesFlattened, null, null, ScaleMin, ScaleMax);
 
-            int[] flatARGB = Colormap.GetRGBAs(NormalizedIntensities, Colormap, minimumIntensity: TransparencyThreshold ?? 0);
+            int[] flatARGB = Colormap.GetRGBAs(NormalizedIntensities, Colormap, minimumIntensity: TransparencyThresholdNormalized ?? 0);
             double[] normalizedValues = Normalize(Enumerable.Range(0, 256).Select(i => (double)i).Reverse().ToArray(), null, null, ScaleMin, ScaleMax);
             int[] scaleRGBA = Colormap.GetRGBAs(normalizedValues, Colormap);
 
