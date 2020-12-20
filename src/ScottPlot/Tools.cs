@@ -289,18 +289,57 @@ namespace ScottPlot
             double[,] output = new double[height, width];
             if (mode == IntensityMode.gaussian)
             {
+                double[,] intermediate = new double[height, width];
+                int radius = 2; // 2 Standard deviations is ~0.95, i.e. close enough
                 for (int i = 0; i < xs.Length; i++)
                 {
-
-                    for (int j = -2 * sampleWidth; j < 2 * sampleWidth; j++) // 2 Standard deviations is ~0.95, i.e. close enough
+                    if (xs[i] >= 0 && xs[i] < width && ys[i] >= 0 && ys[i] < height)
                     {
-                        for (int k = -2 * sampleWidth; k < 2 * sampleWidth; k++)
+                        intermediate[ys[i], xs[i]] += 1;
+                    }
+                }
+
+                double[] kernel = new double[2 * radius * sampleWidth + 1];
+                for (int i = 0; i < kernel.Length; i++)
+                {
+                    kernel[i] = NormPDF(i - kernel.Length / 2, 0, sampleWidth);
+                }
+
+                for (int i = 0; i < height; i++)
+                {
+                    for (int j = 0; j < width; j++)
+                    {
+                        double sum = 0;
+                        double kernelSum = 0; // The kernelSum can be precomputed, but this gives incorrect output at the edges of the image
+                        for (int k = -radius * sampleWidth; k <= radius * sampleWidth; k++)
                         {
-                            if (xs[i] + j > 0 && xs[i] + j < width && ys[i] + k > 0 && ys[i] + k < height)
+                            if (i + k >= 0 && i + k < height)
                             {
-                                output[ys[i] + k, xs[i] + j] += NormPDF(Math.Sqrt(j * j + k * k), 0, sampleWidth);
+                                sum += intermediate[i + k, j] * kernel[k + kernel.Length / 2];
+                                kernelSum += kernel[k + kernel.Length / 2];
                             }
                         }
+
+                        output[i, j] = sum / kernelSum;
+                    }
+                }
+
+                for (int i = 0; i < height; i++)
+                {
+                    for (int j = 0; j < width; j++)
+                    {
+                        double sum = 0;
+                        double kernelSum = 0;
+                        for (int k = -radius * sampleWidth; k <= radius * sampleWidth; k++)
+                        {
+                            if (j + k >= 0 && j + k < width)
+                            {
+                                sum += output[i, j + k] * kernel[k + kernel.Length / 2];
+                                kernelSum += kernel[k + kernel.Length / 2];
+                            }
+                        }
+
+                        output[i, j] = sum / kernelSum;
                     }
                 }
             }
