@@ -45,6 +45,10 @@ namespace ScottPlot.Plottable
 
             foreach (double? curr in intensitiesFlattened)
             {
+                if (curr.HasValue && double.IsNaN(curr.Value))
+                {
+                    throw new ArgumentException("Heatmaps do not support intensities of double.NaN");
+                }
                 if (curr.HasValue && curr.Value < Min)
                 {
                     Min = curr.Value;
