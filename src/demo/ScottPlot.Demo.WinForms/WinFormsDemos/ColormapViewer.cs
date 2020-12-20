@@ -31,7 +31,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
 
         private void Redraw()
         {
-            Drawing.Colormap cmap = colormaps[lbColormapNames.SelectedIndex];
+            Drawing.Colormap cmap = colormaps[lbColormapNames.SelectedIndex >= 0 ? lbColormapNames.SelectedIndex : 0];
             lblColormap.Text = cmap.Name;
 
             pbColormap.Image?.Dispose();

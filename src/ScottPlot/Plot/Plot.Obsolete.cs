@@ -411,6 +411,33 @@ namespace ScottPlot
 
         [Obsolete("Create this plottable manually with new, then Add() it to the plot.")]
         public Heatmap PlotHeatmap(
+            double[,] intensities,
+            Drawing.Colormap colormap = null,
+            string label = null,
+            double[] axisOffsets = null,
+            double[] axisMultipliers = null,
+            double? scaleMin = null,
+            double? scaleMax = null,
+            double? transparencyThreshold = null,
+            Bitmap backgroundImage = null,
+            bool displayImageAbove = false,
+            bool drawAxisLabels = true
+            )
+        {
+            double?[,] tmp = new double?[intensities.GetLength(0), intensities.GetLength(1)];
+            for (int i = 0; i < intensities.GetLength(0); i++)
+            {
+                for (int j = 0; j < intensities.GetLength(1); j++)
+                {
+                    tmp[i, j] = intensities[i, j];
+                }
+            }
+
+            return PlotHeatmap(tmp, colormap, label, axisOffsets, axisMultipliers, scaleMin, scaleMax, transparencyThreshold, backgroundImage, displayImageAbove, drawAxisLabels);
+        }
+
+        [Obsolete("Create this plottable manually with new, then Add() it to the plot.")]
+        public Heatmap PlotHeatmap(
             double?[,] intensities,
             Drawing.Colormap colormap = null,
             string label = null,

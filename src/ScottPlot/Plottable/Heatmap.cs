@@ -82,6 +82,20 @@ namespace ScottPlot.Plottable
             BmpScale.UnlockBits(scaleBmpData);
         }
 
+        public void UpdateData(double[,] intensities)
+        {
+            double?[,] tmp = new double?[intensities.GetLength(0), intensities.GetLength(1)];
+            for (int i = 0; i < intensities.GetLength(0); i++)
+            {
+                for (int j = 0; j < intensities.GetLength(1); j++)
+                {
+                    tmp[i, j] = intensities[i, j];
+                }
+            }
+
+            UpdateData(tmp);
+        }
+
         private double? Normalize(double? input, double? min = null, double? max = null, double? scaleMin = null, double? scaleMax = null)
             => Normalize(new double?[] { input }, min, max, scaleMin, scaleMax)[0];
 
