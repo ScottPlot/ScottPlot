@@ -131,9 +131,31 @@ namespace ScottPlot.Drawing
             {
                 byte pixelIntensity = (byte)Math.Max(Math.Min(intensities[i] * 255, 255), 0);
                 var (r, g, b) = colorMap.GetRGB(pixelIntensity);
-                byte alpha = intensities[i] < minimumIntensity ? (byte)0 : (byte)255;
+                byte alpha = pixelIntensity < minimumIntensity ? (byte)0 : (byte)255;
                 byte[] argb = { b, g, r, alpha };
                 rgbas[i] = BitConverter.ToInt32(argb, 0);
+            }
+            return rgbas;
+        }
+
+        public static int[] GetRGBAs(double?[] intensities, Colormap colorMap, double minimumIntensity = 0)
+        {
+            int[] rgbas = new int[intensities.Length];
+            for (int i = 0; i < intensities.Length; i++)
+            {
+                if (intensities[i].HasValue)
+                {
+                    byte pixelIntensity = (byte)Math.Max(Math.Min(intensities[i].Value * 255, 255), 0);
+                    var (r, g, b) = colorMap.GetRGB(pixelIntensity);
+                    byte alpha = pixelIntensity < minimumIntensity ? (byte)0 : (byte)255;
+                    byte[] argb = { b, g, r, alpha };
+                    rgbas[i] = BitConverter.ToInt32(argb, 0);
+                }
+                else
+                {
+                    byte[] argb = { 0, 0, 0, 0 };
+                    rgbas[i] = BitConverter.ToInt32(argb, 0);
+                }
             }
             return rgbas;
         }

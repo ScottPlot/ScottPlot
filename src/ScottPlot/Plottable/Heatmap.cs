@@ -10,7 +10,7 @@ namespace ScottPlot.Plottable
     public class Heatmap : IPlottable
     {
         // these fields are updated when the intensities are analyzed
-        private double[] NormalizedIntensities;
+        private double?[] NormalizedIntensities;
         private double Min;
         private double Max;
         private int Width;
@@ -26,7 +26,6 @@ namespace ScottPlot.Plottable
         public double? ScaleMin;
         public double? ScaleMax;
         public double? TransparencyThreshold;
-        public double? TransparencyThresholdNormalized;
         public Bitmap BackgroundImage;
         public bool DisplayImageAbove;
         public bool ShowAxisLabels;
@@ -35,25 +34,38 @@ namespace ScottPlot.Plottable
         public int YAxisIndex { get; set; } = 0;
 
         // call this externally if data changes
-        public void UpdateData(double[,] intensities)
+        public void UpdateData(double?[,] intensities)
         {
             Width = intensities.GetLength(1);
             Height = intensities.GetLength(0);
 
-            double[] intensitiesFlattened = intensities.Cast<double>().ToArray();
-            Min = intensitiesFlattened.Min();
-            Max = intensitiesFlattened.Max();
+            double?[] intensitiesFlattened = intensities.Cast<double?>().ToArray();
+            Min = double.PositiveInfinity;
+            Max = double.NegativeInfinity;
+
+            foreach (double? curr in intensitiesFlattened)
+            {
+                if (curr.HasValue && curr.Value < Min)
+                {
+                    Min = curr.Value;
+                }
+
+                if (curr.HasValue && curr.Value > Max)
+                {
+                    Max = curr.Value;
+                }
+            }
 
             double normalizeMin = (ScaleMin.HasValue && ScaleMin.Value < Min) ? ScaleMin.Value : Min;
             double normalizeMax = (ScaleMax.HasValue && ScaleMax.Value > Max) ? ScaleMax.Value : Max;
 
             if (TransparencyThreshold.HasValue)
-                TransparencyThresholdNormalized = Normalize(TransparencyThreshold.Value, Min, Max, ScaleMin, ScaleMax);
+                TransparencyThreshold = Normalize(TransparencyThreshold.Value, Min, Max, ScaleMin, ScaleMax);
 
             NormalizedIntensities = Normalize(intensitiesFlattened, null, null, ScaleMin, ScaleMax);
 
-            int[] flatARGB = Colormap.GetRGBAs(NormalizedIntensities, Colormap, minimumIntensity: TransparencyThresholdNormalized ?? 0);
-            double[] normalizedValues = Normalize(Enumerable.Range(0, 256).Select(i => (double)i).Reverse().ToArray(), null, null, ScaleMin, ScaleMax);
+            int[] flatARGB = Colormap.GetRGBAs(NormalizedIntensities, Colormap, minimumIntensity: TransparencyThreshold ?? 0);
+            double?[] normalizedValues = Normalize(Enumerable.Range(0, 256).Select(i => (double?)i).Reverse().ToArray(), null, null, ScaleMin, ScaleMax);
             int[] scaleRGBA = Colormap.GetRGBAs(normalizedValues, Colormap);
 
             BmpHeatmap?.Dispose();
@@ -70,18 +82,27 @@ namespace ScottPlot.Plottable
             BmpScale.UnlockBits(scaleBmpData);
         }
 
-        private double Normalize(double input, double? min = null, double? max = null, double? scaleMin = null, double? scaleMax = null)
-            => Normalize(new double[] { input }, min, max, scaleMin, scaleMax)[0];
+        private double? Normalize(double? input, double? min = null, double? max = null, double? scaleMin = null, double? scaleMax = null)
+            => Normalize(new double?[] { input }, min, max, scaleMin, scaleMax)[0];
 
-        private double[] Normalize(double[] input, double? min = null, double? max = null, double? scaleMin = null, double? scaleMax = null)
+        private double?[] Normalize(double?[] input, double? min = null, double? max = null, double? scaleMin = null, double? scaleMax = null)
         {
+            double? NormalizePreserveNull(double? i)
+            {
+                if (i.HasValue)
+                {
+                    return (i.Value - min.Value) / (max.Value - min.Value);
+                }
+                return null;
+            }
+
             min = min ?? input.Min();
             max = max ?? input.Max();
 
             min = (scaleMin.HasValue && scaleMin.Value < min) ? scaleMin.Value : min;
             max = (scaleMax.HasValue && scaleMax.Value > max) ? scaleMax.Value : max;
 
-            double[] normalized = input.AsParallel().AsOrdered().Select(i => (i - min.Value) / (max.Value - min.Value)).ToArray();
+            double?[] normalized = input.AsParallel().AsOrdered().Select<double?, double?>(i => NormalizePreserveNull(i)).ToArray();
 
             if (scaleMin.HasValue)
             {

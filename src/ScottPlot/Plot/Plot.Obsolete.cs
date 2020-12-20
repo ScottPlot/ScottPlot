@@ -411,7 +411,7 @@ namespace ScottPlot
 
         [Obsolete("Create this plottable manually with new, then Add() it to the plot.")]
         public Heatmap PlotHeatmap(
-            double[,] intensities,
+            double?[,] intensities,
             Drawing.Colormap colormap = null,
             string label = null,
             double[] axisOffsets = null,
