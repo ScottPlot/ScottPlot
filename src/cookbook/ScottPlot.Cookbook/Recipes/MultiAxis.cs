@@ -65,4 +65,23 @@ namespace ScottPlot.Cookbook.Recipes
             yAxis3.Color(sigBig.Color);
         }
     }
+
+    public class RightAxis : IRecipe
+    {
+        public string Category => "Multi-Axis";
+        public string ID => "multiAxis_right";
+        public string Title => "Right Y Axis";
+        public string Description => "This example shows how to display a Y axis only on the right side.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[] values = DataGen.RandomWalk(100);
+            plt.AddSignal(values);
+
+            plt.YAxis.Ticks(false);
+            plt.YAxis2.Ticks(true);
+            plt.YAxis2.Label("Value");
+            plt.XAxis.Label("Sample Number");
+        }
+    }
 }
