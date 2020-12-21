@@ -35,7 +35,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             (double coordinateX, double coordinateY) = formsPlot1.GetMouseCoordinates();
 
             XPixelLabel.Text = $"{e.X:0.000}";
-            YPixelLabel.Text = $"{e.X:0.000}";
+            YPixelLabel.Text = $"{e.Y:0.000}";
 
             XCoordinateLabel.Text = $"{coordinateX:0.00000000}";
             YCoordinateLabel.Text = $"{coordinateY:0.00000000}";
