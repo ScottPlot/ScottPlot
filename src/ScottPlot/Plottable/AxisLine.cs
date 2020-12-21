@@ -85,7 +85,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public void DragTo(double coordinateX, double coordinateY, bool isShiftDown = false, bool isAltDown = false, bool isCtrlDown = false)
+        public void DragTo(double coordinateX, double coordinateY, bool fixedSize)
         {
             if (!DragEnabled)
                 return;

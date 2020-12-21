@@ -16,7 +16,7 @@ namespace ScottPlot
         public Plot plt { get; private set; }
         private Settings settings;
         private bool isDesignerMode;
-        public Cursor cursor = Cursors.Arrow;
+        public System.Windows.Forms.Cursor cursor = Cursors.Arrow;
         private float dpiScale;
 
         public override Color BackColor
@@ -211,14 +211,14 @@ namespace ScottPlot
         IDraggable plottableBeingDragged = null;
         private bool isMovingDraggable { get { return (plottableBeingDragged != null); } }
 
-        private Cursor GetCursor(Ticks.Cursor scottPlotCursor)
+        private System.Windows.Forms.Cursor GetCursor(Cursor scottPlotCursor)
         {
             switch (scottPlotCursor)
             {
-                case Ticks.Cursor.Arrow: return Cursors.Arrow;
-                case Ticks.Cursor.WE: return Cursors.SizeWE;
-                case Ticks.Cursor.NS: return Cursors.SizeNS;
-                case Ticks.Cursor.All: return Cursors.SizeAll;
+                case ScottPlot.Cursor.Arrow: return Cursors.Arrow;
+                case ScottPlot.Cursor.WE: return Cursors.SizeWE;
+                case ScottPlot.Cursor.NS: return Cursors.SizeNS;
+                case ScottPlot.Cursor.All: return Cursors.SizeAll;
                 default: return Cursors.Help;
             }
         }
@@ -334,10 +334,9 @@ namespace ScottPlot
 
         private void MouseMovedToMoveDraggable(MouseEventArgs e)
         {
-            plottableBeingDragged.DragTo(
-                plt.GetCoordinateX(e.Location.X),
-                plt.GetCoordinateY(e.Location.Y),
-                isShiftPressed, isAltPressed, isCtrlPressed);
+            double x = plt.GetCoordinateX(e.Location.X);
+            double y = plt.GetCoordinateY(e.Location.Y);
+            plottableBeingDragged.DragTo(x, y, isShiftPressed);
             OnMouseDragPlottable(new WinForms.Events.PlottableDragEventArgs(plottableBeingDragged, e));
             Render(true, lowQuality: lowQualityWhileDragging);
         }
@@ -353,7 +352,7 @@ namespace ScottPlot
 
             // set the cursor based on what's beneath it
             var draggableUnderCursor = plt.GetDraggableUnderMouse(e.Location.X, e.Location.Y);
-            var spCursor = (draggableUnderCursor is null) ? Ticks.Cursor.Arrow : draggableUnderCursor.DragCursor;
+            var spCursor = (draggableUnderCursor is null) ? ScottPlot.Cursor.Arrow : draggableUnderCursor.DragCursor;
             pbPlot.Cursor = GetCursor(spCursor);
         }
 

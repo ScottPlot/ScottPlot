@@ -25,6 +25,7 @@
  *    - CTRL+Right-click-drag to zoom horizontally
  *    - SHIFT+Right-click-drag to zoom vertically
  *    - CTRL+SHIFT+Right-click-drag to zoom evenly
+ *    - SHIFT+click-drag draggables for fixed-size dragging
  *   
  */
 
@@ -54,10 +55,13 @@ namespace ControlBackEndDev
     {
         public event EventHandler BitmapUpdated = delegate { };
         public event EventHandler BitmapChanged = delegate { };
+        public event EventHandler CursorChanged = delegate { };
+
         public readonly ScottPlot.Plot Plot;
         public readonly ScottPlot.Settings Settings;
         private Bitmap Bmp;
         private readonly List<Bitmap> OldBitmaps = new List<Bitmap>();
+        public ScottPlot.Cursor Cursor { get; private set; } = ScottPlot.Cursor.Arrow;
 
         public ControlBackEnd(float width, float height)
         {
@@ -99,54 +103,83 @@ namespace ControlBackEndDev
             Render(false);
         }
 
+        private ScottPlot.Plottable.IDraggable PlottableBeingDragged = null;
         public void MouseDown(InputState input)
         {
+            PlottableBeingDragged = Plot.GetDraggableUnderMouse(input.X, input.Y);
             Settings.MouseDown(input.X, input.Y);
         }
 
         public void MouseMove(InputState input)
         {
-            bool isPanning = input.LeftDown && !input.AltDown;
-            bool isZooming = input.RightDown;
-            bool isZoomingRectangle = input.MiddleDown || (input.LeftDown && input.AltDown);
+            if (PlottableBeingDragged != null)
+                MouseMovedToDragPlottable(input);
+            else if (input.LeftDown && !input.AltDown)
+                MouseMovedToPan(input);
+            else if (input.RightDown)
+                MouseMovedToZoom(input);
+            else if (input.MiddleDown || (input.LeftDown && input.AltDown))
+                MouseMovedToZoomRectangle(input);
+            else
+                MouseMovedWithoutInteraction(input);
+        }
 
-            bool needsRender = isPanning || isZooming || isZoomingRectangle;
-            if (needsRender == false)
-                return;
-
-            float x = input.X;
-            float y = input.Y;
-
-            if (isPanning)
-            {
-                x = input.ShiftDown ? Settings.MouseDownX : x;
-                y = input.CtrlDown ? Settings.MouseDownY : y;
-                Settings.MousePan(x, y);
-            }
-            else if (isZooming)
-            {
-                if (input.ShiftDown && input.CtrlDown)
-                {
-                    float px = Math.Max(x - Settings.MouseDownX, -(y - Settings.MouseDownY));
-                    Settings.MouseZoom(Settings.MouseDownX + px, Settings.MouseDownY - px);
-                }
-                else
-                {
-                    x = input.ShiftDown ? Settings.MouseDownX : x;
-                    y = input.CtrlDown ? Settings.MouseDownY : y;
-                    Settings.MouseZoom(x, y);
-                }
-            }
-            else if (isZoomingRectangle)
-            {
-                Settings.MouseZoomRect(input.X, input.Y);
-            }
-
+        private void MouseMovedToDragPlottable(InputState input)
+        {
+            double x = Plot.GetCoordinateX(input.X);
+            double y = Plot.GetCoordinateY(input.Y);
+            PlottableBeingDragged.DragTo(x, y, fixedSize: input.ShiftDown);
             Render(lowQuality: true);
+        }
+
+        private void MouseMovedToPan(InputState input)
+        {
+            float x = input.ShiftDown ? Settings.MouseDownX : input.X;
+            float y = input.CtrlDown ? Settings.MouseDownY : input.Y;
+            Settings.MousePan(x, y);
+            Render(lowQuality: true);
+        }
+
+        private void MouseMovedToZoom(InputState input)
+        {
+            if (input.ShiftDown && input.CtrlDown)
+            {
+                float dx = input.X - Settings.MouseDownX;
+                float dy = Settings.MouseDownY - input.Y;
+                float delta = Math.Max(dx, dy);
+                Settings.MouseZoom(Settings.MouseDownX + delta, Settings.MouseDownY - delta);
+            }
+            else
+            {
+                float x = input.ShiftDown ? Settings.MouseDownX : input.X;
+                float y = input.CtrlDown ? Settings.MouseDownY : input.Y;
+                Settings.MouseZoom(x, y);
+            }
+            Render(lowQuality: true);
+        }
+
+        private void MouseMovedToZoomRectangle(InputState input)
+        {
+            Settings.MouseZoomRect(input.X, input.Y);
+            Render(lowQuality: true);
+        }
+
+        private void MouseMovedWithoutInteraction(InputState input)
+        {
+            UpdateCursor(input);
+        }
+
+        private void UpdateCursor(InputState input)
+        {
+            var draggableUnderCursor = Plot.GetDraggableUnderMouse(input.X, input.Y);
+            Cursor = (draggableUnderCursor is null) ? ScottPlot.Cursor.Arrow : draggableUnderCursor.DragCursor;
+            CursorChanged(null, EventArgs.Empty);
         }
 
         public void MouseUp(InputState input)
         {
+            PlottableBeingDragged = null;
+
             bool isZoomingRectangle = input.MiddleDown || (input.LeftDown && input.AltDown);
             if (isZoomingRectangle)
             {
@@ -162,6 +195,7 @@ namespace ControlBackEndDev
             }
 
             Render(false);
+            UpdateCursor(input);
         }
 
         private void MiddleClickAutoAxis()

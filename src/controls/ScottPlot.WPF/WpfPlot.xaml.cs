@@ -28,7 +28,7 @@ namespace ScottPlot
         public Plot plt { get; private set; }
         private Settings settings;
         private bool isDesignerMode;
-        public Cursor cursor = Cursors.Arrow;
+        public System.Windows.Input.Cursor cursor = Cursors.Arrow;
         private double dpiScale = 1;
 
         public WpfPlot(Plot plt)
@@ -223,14 +223,14 @@ namespace ScottPlot
         IDraggable plottableBeingDragged = null;
         private bool isMovingDraggable { get { return (plottableBeingDragged != null); } }
 
-        private Cursor GetCursor(Ticks.Cursor scottPlotCursor)
+        private System.Windows.Input.Cursor GetCursor(Cursor scottPlotCursor)
         {
             switch (scottPlotCursor)
             {
-                case Ticks.Cursor.Arrow: return Cursors.Arrow;
-                case Ticks.Cursor.WE: return Cursors.SizeWE;
-                case Ticks.Cursor.NS: return Cursors.SizeNS;
-                case Ticks.Cursor.All: return Cursors.SizeAll;
+                case ScottPlot.Cursor.Arrow: return Cursors.Arrow;
+                case ScottPlot.Cursor.WE: return Cursors.SizeWE;
+                case ScottPlot.Cursor.NS: return Cursors.SizeNS;
+                case ScottPlot.Cursor.All: return Cursors.SizeAll;
                 default: return Cursors.Help;
             }
         }
@@ -365,9 +365,9 @@ namespace ScottPlot
 
         private void MouseMovedToMoveDraggable(MouseEventArgs e)
         {
-            plottableBeingDragged.DragTo(
-                plt.GetCoordinateX((float)GetPixelPosition(e).X), plt.GetCoordinateY((float)GetPixelPosition(e).Y),
-                isShiftPressed, isAltPressed, isCtrlPressed);
+            double x = plt.GetCoordinateX((float)GetPixelPosition(e).X);
+            double y = plt.GetCoordinateY((float)GetPixelPosition(e).Y);
+            plottableBeingDragged.DragTo(x, y, isShiftPressed);
             OnMouseDragPlottable(new PlottableDragEventArgs(plottableBeingDragged, e));
             Render(true);
         }
@@ -376,7 +376,7 @@ namespace ScottPlot
         {
             // set the cursor based on what's beneath it
             var draggableUnderCursor = plt.GetDraggableUnderMouse(GetPixelPosition(e).X, GetPixelPosition(e).Y);
-            var spCursor = (draggableUnderCursor is null) ? Ticks.Cursor.Arrow : draggableUnderCursor.DragCursor;
+            var spCursor = (draggableUnderCursor is null) ? ScottPlot.Cursor.Arrow : draggableUnderCursor.DragCursor;
             imagePlot.Cursor = GetCursor(spCursor);
         }
 

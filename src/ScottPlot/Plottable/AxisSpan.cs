@@ -109,7 +109,7 @@ namespace ScottPlot.Plottable
             return edgeUnderMouse != Edge.Neither;
         }
 
-        public void DragTo(double coordinateX, double coordinateY, bool isShiftDown = false, bool isAltDown = false, bool isCtrlDown = false)
+        public void DragTo(double coordinateX, double coordinateY, bool fixedSize)
         {
             if (!DragEnabled)
                 return;
@@ -129,13 +129,13 @@ namespace ScottPlot.Plottable
             if (edgeUnderMouse == Edge.Edge1)
             {
                 Position1 = IsHorizontal ? coordinateX : coordinateY;
-                if (DragFixedSize || isShiftDown)
+                if (DragFixedSize || fixedSize)
                     Position2 = Position1 + sizeBeforeDrag;
             }
             else if (edgeUnderMouse == Edge.Edge2)
             {
                 Position2 = IsHorizontal ? coordinateX : coordinateY;
-                if (DragFixedSize || isShiftDown)
+                if (DragFixedSize || fixedSize)
                     Position1 = Position2 - sizeBeforeDrag;
             }
             else
