@@ -258,8 +258,8 @@ namespace ScottPlot.Renderable
             bool? fontBold = null,
             float? rotation = null)
         {
-            AxisTicks.MajorTickColor = color ?? AxisTicks.MajorTickColor;
-            AxisTicks.MinorTickColor = color ?? AxisTicks.MinorTickColor;
+            AxisTicks.TickLabelFont.Color = color ?? AxisTicks.TickLabelFont.Color;
+            AxisTicks.TickLabelFont.Color = color ?? AxisTicks.TickLabelFont.Color;
             AxisTicks.TickLabelFont.Name = fontName ?? AxisTicks.TickLabelFont.Name;
             AxisTicks.TickLabelFont.Size = fontSize ?? AxisTicks.TickLabelFont.Size;
             AxisTicks.TickLabelFont.Bold = fontBold ?? AxisTicks.TickLabelFont.Bold;
