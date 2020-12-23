@@ -1,5 +1,5 @@
-﻿using ScottPlot.Ticks;
-using ScottPlot.Drawing;
+﻿using ScottPlot.Drawing;
+using ScottPlot.Ticks;
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -160,24 +160,29 @@ namespace ScottPlot.Plottable
             Dragged(this, EventArgs.Empty);
         }
 
+        private RectangleF GetClippedRectangle(PlotDimensions dims)
+        {
+            // clip the rectangle to the size of the data area to avoid GDI rendering errors
+            float ClippedPixelX(double x) => dims.GetPixelX(Math.Max(dims.XMin, Math.Min(x, dims.XMax)));
+            float ClippedPixelY(double y) => dims.GetPixelY(Math.Max(dims.YMin, Math.Min(y, dims.YMax)));
+
+            float left = IsHorizontal ? ClippedPixelX(Min) : dims.DataOffsetX;
+            float right = IsHorizontal ? ClippedPixelX(Max) : dims.DataOffsetX + dims.DataWidth;
+            float top = IsHorizontal ? dims.DataOffsetY : ClippedPixelY(Max);
+            float bottom = IsHorizontal ? dims.DataOffsetY + dims.DataHeight : ClippedPixelY(Min);
+
+            float width = right - left + 1;
+            float height = bottom - top + 1;
+
+            return new RectangleF(left, top, width, height);
+        }
+
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            PointF p1, p2;
-            if (IsHorizontal)
-            {
-                p1 = new PointF(dims.GetPixelX(Min), dims.GetPixelY(dims.YMin));
-                p2 = new PointF(dims.GetPixelX(Max), dims.GetPixelY(dims.YMax));
-            }
-            else
-            {
-                p1 = new PointF(dims.GetPixelX(dims.XMin), dims.GetPixelY(Min));
-                p2 = new PointF(dims.GetPixelX(dims.XMax), dims.GetPixelY(Max));
-            }
-            RectangleF rect = new RectangleF(p1.X - 1, p2.Y - 1, p2.X - p1.X + 1, p1.Y - p2.Y + 1);
-
             using (var gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (var brush = GDI.Brush(Color))
             {
+                RectangleF rect = GetClippedRectangle(dims);
                 gfx.FillRectangle(brush, rect);
             }
         }
