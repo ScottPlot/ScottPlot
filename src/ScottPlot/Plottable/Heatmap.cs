@@ -218,11 +218,12 @@ namespace ScottPlot.Plottable
             using (var font = GDI.Font(null, 12))
             using (var sf2 = new StringFormat() { LineAlignment = StringAlignment.Far })
             {
+                gfx.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
                 PointF scaleLoc = new PointF(dims.DataOffsetX + dims.DataWidth + scaleLeftPad, dims.DataOffsetY);
                 SizeF scaleSize = new SizeF(scaleWidth, dims.DataHeight);
                 RectangleF scaleRect = new RectangleF(scaleLoc, scaleSize);
                 gfx.DrawImage(BmpScale, scaleRect);
-                gfx.DrawRectangle(outlinePen, scaleRect.X, scaleRect.Y, scaleRect.Width, scaleRect.Height);
+                gfx.DrawRectangle(outlinePen, scaleRect.X, scaleRect.Y, scaleRect.Width / 2, scaleRect.Height); // No, I don't know why I need to divide by 2 here. Very strange...
 
                 string minString = (ScaleMin.HasValue && ScaleMin > Min) ? $"≤ {ScaleMin:f3}" : $"{Min:f3}";
                 string maxString = (ScaleMax.HasValue && ScaleMax < Max) ? $"≥ {ScaleMax:f3}" : $"{Max:f3}";
