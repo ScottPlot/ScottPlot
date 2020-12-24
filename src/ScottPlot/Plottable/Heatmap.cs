@@ -203,25 +203,32 @@ namespace ScottPlot.Plottable
 
         private void RenderScale(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
-            using (var pen = GDI.Pen(Color.Black))
+            float scaleLeftPad = 10;
+            float scaleWidth = 20;
+
+            using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality, false))
+            using (var outlinePen = GDI.Pen(Color.Black))
             using (var brush = GDI.Brush(Color.Black))
             using (var font = GDI.Font(null, 12))
             using (var sf2 = new StringFormat() { LineAlignment = StringAlignment.Far })
             {
-                gfx.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-
-                float pxFromBottom = 30;
-                float pxFromRight = dims.Width - 150;
-                float pxWidth = 30;
-                RectangleF scaleRect = new RectangleF(pxFromRight, pxFromBottom, pxWidth, dims.DataHeight);
+                PointF scaleLoc = new PointF(dims.DataOffsetX + dims.DataWidth + scaleLeftPad, dims.DataOffsetY);
+                SizeF scaleSize = new SizeF(scaleWidth, dims.DataHeight);
+                RectangleF scaleRect = new RectangleF(scaleLoc, scaleSize);
                 gfx.DrawImage(BmpScale, scaleRect);
-                gfx.DrawRectangle(pen, pxFromRight, pxFromBottom, pxWidth / 2, dims.DataHeight);
+                gfx.DrawRectangle(outlinePen, scaleRect.X, scaleRect.Y, scaleRect.Width, scaleRect.Height);
 
-                string maxString = ScaleMax.HasValue ? $"{(ScaleMax.Value < Max ? "≥ " : "")}{ ScaleMax.Value:f3}" : $"{Max:f3}";
-                string minString = ScaleMin.HasValue ? $"{(ScaleMin.Value > Min ? "≤ " : "")}{ScaleMin.Value:f3}" : $"{Min:f3}";
-                gfx.DrawString(maxString, font, brush, new PointF(scaleRect.X + 30, scaleRect.Top));
-                gfx.DrawString(minString, font, brush, new PointF(scaleRect.X + 30, scaleRect.Bottom), sf2);
+                string minString = $"{Min:f3}";
+                string maxString = $"{Max:f3}";
+
+                if (ScaleMin.HasValue && ScaleMin > Min)
+                    minString = "≤ " + minString;
+
+                if (ScaleMax.HasValue && ScaleMax < Max)
+                    maxString = "≥ " + maxString;
+
+                gfx.DrawString(maxString, font, brush, new PointF(scaleRect.Right, scaleRect.Top));
+                gfx.DrawString(minString, font, brush, new PointF(scaleRect.Right, scaleRect.Bottom), sf2);
             }
         }
 
