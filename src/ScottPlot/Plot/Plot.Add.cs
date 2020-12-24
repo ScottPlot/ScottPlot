@@ -271,6 +271,19 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Add a heatmap to the plot
+        /// </summary>
+        public Heatmap AddHeatmap(double[,] initialData, int scalebarSpace = 100, bool lockScales = true)
+        {
+            var plottable = new Heatmap();
+            plottable.Update(initialData);
+            Add(plottable);
+            YAxis2.SetSizeLimit(min: scalebarSpace);
+            AxisScaleLock(lockScales);
+            return plottable;
+        }
+
+        /// <summary>
         /// Add a horizontal axis line at a specific Y position
         /// </summary>
         public HLine AddHorizontalLine(double y, Color? color = null, float width = 1, LineStyle style = LineStyle.Solid, string label = null)

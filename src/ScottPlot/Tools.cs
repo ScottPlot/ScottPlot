@@ -273,12 +273,6 @@ namespace ScottPlot
             return hash;
         }
 
-        public enum IntensityMode
-        {
-            gaussian,
-            density
-        }
-
         public static double[,] XYToIntensities(IntensityMode mode, int[] xs, int[] ys, int width, int height, int sampleWidth)
         {
             double NormPDF(double x, double mu, double sigma)
@@ -287,7 +281,7 @@ namespace ScottPlot
             }
 
             double[,] output = new double[height, width];
-            if (mode == IntensityMode.gaussian)
+            if (mode == IntensityMode.Gaussian)
             {
                 double[,] intermediate = new double[height, width];
                 int radius = 2; // 2 Standard deviations is ~0.95, i.e. close enough
@@ -343,7 +337,7 @@ namespace ScottPlot
                     }
                 }
             }
-            else if (mode == IntensityMode.density)
+            else if (mode == IntensityMode.Density)
             {
                 (int x, int y)[] points = xs.Zip(ys, (x, y) => (x, y)).ToArray();
                 points = points.OrderBy(p => p.x).ToArray();
@@ -385,7 +379,6 @@ namespace ScottPlot
 
             return output;
         }
-
 
         public static string ToDifferentBase(double number, int radix = 16, int decimalPlaces = 3, int padInteger = 0, bool dropTrailingZeroes = true)
         {

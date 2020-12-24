@@ -409,7 +409,7 @@ namespace ScottPlot
             return functionPlot;
         }
 
-        [Obsolete("Create this plottable manually with new, then Add() it to the plot.")]
+        [Obsolete("Use AddHeatmap() and customize the object it returns")]
         public Heatmap PlotHeatmap(
             double[,] intensities,
             Drawing.Colormap colormap = null,
@@ -464,7 +464,7 @@ namespace ScottPlot
                 ShowAxisLabels = drawAxisLabels,
                 Colormap = colormap ?? Drawing.Colormap.Viridis
             };
-            heatmap.UpdateData(intensities);
+            heatmap.Update(intensities);
 
             Add(heatmap);
             Layout(top: 180);
