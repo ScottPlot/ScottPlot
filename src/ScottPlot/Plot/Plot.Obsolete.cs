@@ -464,7 +464,7 @@ namespace ScottPlot
                 ShowAxisLabels = drawAxisLabels,
                 Colormap = colormap ?? Drawing.Colormap.Viridis
             };
-            heatmap.UpdateData(intensities);
+            heatmap.Update(intensities);
 
             Add(heatmap);
             Layout(top: 180);

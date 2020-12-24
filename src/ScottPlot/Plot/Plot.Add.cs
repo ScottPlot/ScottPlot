@@ -287,7 +287,7 @@ namespace ScottPlot
                 DisplayImageAbove = false,
                 Colormap = Drawing.Colormap.Viridis
             };
-            plottable.UpdateData(intensities);
+            plottable.Update(intensities);
             Add(plottable);
             YAxis2.SetSizeLimit(min: scalebarSpace);
             AxisScaleLock(lockScales);

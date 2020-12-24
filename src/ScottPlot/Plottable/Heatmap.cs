@@ -37,7 +37,7 @@ namespace ScottPlot.Plottable
             Colormap = Colormap.Viridis;
         }
 
-        public void UpdateData(double?[,] intensities, Colormap colormap = null)
+        public void Update(double?[,] intensities, Colormap colormap = null)
         {
             /* This method analyzes the intensities and colormap to create a bitmap
              * with a single pixel for every intensity value. The bitmap is stored
@@ -90,13 +90,13 @@ namespace ScottPlot.Plottable
             BmpScale.UnlockBits(scaleBmpData);
         }
 
-        public void UpdateData(double[,] intensities, Colormap colormap = null)
+        public void Update(double[,] intensities, Colormap colormap = null)
         {
             double?[,] tmp = new double?[intensities.GetLength(0), intensities.GetLength(1)];
             for (int i = 0; i < intensities.GetLength(0); i++)
                 for (int j = 0; j < intensities.GetLength(1); j++)
                     tmp[i, j] = intensities[i, j];
-            UpdateData(tmp, colormap);
+            Update(tmp, colormap);
         }
 
         private double? Normalize(double? input, double? min = null, double? max = null, double? scaleMin = null, double? scaleMax = null)

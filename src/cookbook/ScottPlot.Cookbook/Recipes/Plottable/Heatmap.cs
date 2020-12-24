@@ -60,7 +60,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
                     intensities[x, y] = (Math.Sin(x * .2) + Math.Cos(y * .2)) * 100;
 
             var heatmap = plt.AddHeatmap(intensities);
-            heatmap.UpdateData(intensities, Drawing.Colormap.Turbo);
+            heatmap.Update(intensities, Drawing.Colormap.Turbo);
         }
     }
 }
