@@ -129,7 +129,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string Title => "Gaussian Interpolation";
         public string Description =>
             "Heatmaps can be created from 2D data points using bilinear interpolation with Gaussian weighting. " +
-            "This option results in a colormap with 4x the number of squares.";
+            "This option results in a colormap with a standard deviation of 4.";
 
         public void ExecuteRecipe(Plot plt)
         {
