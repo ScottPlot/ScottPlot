@@ -271,6 +271,28 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Add a heatmap to the plot
+        /// </summary>
+        public Heatmap AddHeatmap(double[,] intensities)
+        {
+            var plottable = new Heatmap()
+            {
+                Label = null,
+                AxisOffsets = new double[] { 0, 0 },
+                AxisMultipliers = new double[] { 1, 1 },
+                ScaleMin = null,
+                ScaleMax = null,
+                TransparencyThreshold = null,
+                BackgroundImage = null,
+                DisplayImageAbove = false,
+                Colormap = Drawing.Colormap.Viridis
+            };
+            plottable.UpdateData(intensities);
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
         /// Add a horizontal axis line at a specific Y position
         /// </summary>
         public HLine AddHorizontalLine(double y, Color? color = null, float width = 1, LineStyle style = LineStyle.Solid, string label = null)

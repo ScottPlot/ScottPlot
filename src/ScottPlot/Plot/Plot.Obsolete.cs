@@ -409,7 +409,7 @@ namespace ScottPlot
             return functionPlot;
         }
 
-        [Obsolete("Create this plottable manually with new, then Add() it to the plot.")]
+        [Obsolete("Use AddHeatmap() and customize the object it returns")]
         public Heatmap PlotHeatmap(
             double[,] intensities,
             Drawing.Colormap colormap = null,
