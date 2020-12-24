@@ -10,7 +10,6 @@ namespace ScottPlot.Plottable
     public class Heatmap : IPlottable
     {
         // these fields are updated when the intensities are analyzed
-        private double?[] NormalizedIntensities;
         private double Min;
         private double Max;
         private int Width;
@@ -33,11 +32,21 @@ namespace ScottPlot.Plottable
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
 
-        // call this externally if data changes
-        public void UpdateData(double?[,] intensities)
+        public Heatmap()
         {
+            Colormap = Colormap.Viridis;
+        }
+
+        public void UpdateData(double?[,] intensities, Colormap colormap = null)
+        {
+            /* This method analyzes the intensities and colormap to create a bitmap
+             * with a single pixel for every intensity value. The bitmap is stored
+             * and displayed (without anti-alias interpolation) when Render() is called.
+             */
+
             Width = intensities.GetLength(1);
             Height = intensities.GetLength(0);
+            Colormap = colormap ?? Colormap;
 
             double?[] intensitiesFlattened = intensities.Cast<double?>().ToArray();
             Min = double.PositiveInfinity;
@@ -46,18 +55,13 @@ namespace ScottPlot.Plottable
             foreach (double? curr in intensitiesFlattened)
             {
                 if (curr.HasValue && double.IsNaN(curr.Value))
-                {
                     throw new ArgumentException("Heatmaps do not support intensities of double.NaN");
-                }
+
                 if (curr.HasValue && curr.Value < Min)
-                {
                     Min = curr.Value;
-                }
 
                 if (curr.HasValue && curr.Value > Max)
-                {
                     Max = curr.Value;
-                }
             }
 
             double normalizeMin = (ScaleMin.HasValue && ScaleMin.Value < Min) ? ScaleMin.Value : Min;
@@ -66,7 +70,7 @@ namespace ScottPlot.Plottable
             if (TransparencyThreshold.HasValue)
                 TransparencyThreshold = Normalize(TransparencyThreshold.Value, Min, Max, ScaleMin, ScaleMax);
 
-            NormalizedIntensities = Normalize(intensitiesFlattened, null, null, ScaleMin, ScaleMax);
+            double?[] NormalizedIntensities = Normalize(intensitiesFlattened, null, null, ScaleMin, ScaleMax);
 
             int[] flatARGB = Colormap.GetRGBAs(NormalizedIntensities, Colormap, minimumIntensity: TransparencyThreshold ?? 0);
             double?[] normalizedValues = Normalize(Enumerable.Range(0, 256).Select(i => (double?)i).Reverse().ToArray(), null, null, ScaleMin, ScaleMax);
@@ -86,18 +90,13 @@ namespace ScottPlot.Plottable
             BmpScale.UnlockBits(scaleBmpData);
         }
 
-        public void UpdateData(double[,] intensities)
+        public void UpdateData(double[,] intensities, Colormap colormap = null)
         {
             double?[,] tmp = new double?[intensities.GetLength(0), intensities.GetLength(1)];
             for (int i = 0; i < intensities.GetLength(0); i++)
-            {
                 for (int j = 0; j < intensities.GetLength(1); j++)
-                {
                     tmp[i, j] = intensities[i, j];
-                }
-            }
-
-            UpdateData(tmp);
+            UpdateData(tmp, colormap);
         }
 
         private double? Normalize(double? input, double? min = null, double? max = null, double? scaleMin = null, double? scaleMax = null)
@@ -154,11 +153,9 @@ namespace ScottPlot.Plottable
             new AxisLimits(-10, BmpHeatmap.Width, -5, BmpHeatmap.Height) :
             new AxisLimits(-3, BmpHeatmap.Width, -3, BmpHeatmap.Height);
 
-        public int PointCount { get => NormalizedIntensities.Length; }
-
         public void ValidateData(bool deepValidation = false)
         {
-            if (NormalizedIntensities is null || BmpHeatmap is null)
+            if (BmpHeatmap is null)
                 throw new InvalidOperationException("UpdateData() was not called prior to rendering");
         }
 
@@ -250,10 +247,6 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public override string ToString()
-        {
-            string label = string.IsNullOrWhiteSpace(this.Label) ? "" : $" ({this.Label})";
-            return $"PlottableHeatmap{label} with {PointCount} points";
-        }
+        public override string ToString() => $"PlottableHeatmap ({BmpHeatmap.Size})";
     }
 }
