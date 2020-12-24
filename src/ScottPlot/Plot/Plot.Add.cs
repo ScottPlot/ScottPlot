@@ -273,7 +273,7 @@ namespace ScottPlot
         /// <summary>
         /// Add a heatmap to the plot
         /// </summary>
-        public Heatmap AddHeatmap(double[,] intensities)
+        public Heatmap AddHeatmap(double[,] intensities, int scalebarSpace = 100, bool lockScales = true)
         {
             var plottable = new Heatmap()
             {
@@ -289,6 +289,8 @@ namespace ScottPlot
             };
             plottable.UpdateData(intensities);
             Add(plottable);
+            YAxis2.SetSizeLimit(min: scalebarSpace);
+            AxisScaleLock(lockScales);
             return plottable;
         }
 
