@@ -273,21 +273,10 @@ namespace ScottPlot
         /// <summary>
         /// Add a heatmap to the plot
         /// </summary>
-        public Heatmap AddHeatmap(double[,] intensities, int scalebarSpace = 100, bool lockScales = true)
+        public Heatmap AddHeatmap(double[,] initialData, int scalebarSpace = 100, bool lockScales = true)
         {
-            var plottable = new Heatmap()
-            {
-                Label = null,
-                AxisOffsets = new double[] { 0, 0 },
-                AxisMultipliers = new double[] { 1, 1 },
-                ScaleMin = null,
-                ScaleMax = null,
-                TransparencyThreshold = null,
-                BackgroundImage = null,
-                DisplayImageAbove = false,
-                Colormap = Drawing.Colormap.Viridis
-            };
-            plottable.Update(intensities);
+            var plottable = new Heatmap();
+            plottable.Update(initialData);
             Add(plottable);
             YAxis2.SetSizeLimit(min: scalebarSpace);
             AxisScaleLock(lockScales);

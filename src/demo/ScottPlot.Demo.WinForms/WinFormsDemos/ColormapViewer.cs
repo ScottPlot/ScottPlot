@@ -78,7 +78,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             int[] xs = DataGen.RandomNormal(rand, 10000, 25, 10).Select(x => (int)x).ToArray();
             int[] ys = DataGen.RandomNormal(rand, 10000, 25, 10).Select(y => (int)y).ToArray();
 
-            double[,] intensities = Tools.XYToIntensities(Tools.IntensityMode.gaussian, xs, ys, 50, 50, 4);
+            double[,] intensities = Tools.XYToIntensities(IntensityMode.Gaussian, xs, ys, 50, 50, 4);
 
             plt.Clear();
             plt.PlotHeatmap(intensities, cmap);

@@ -34,10 +34,12 @@ namespace ScottPlot.Plottable
 
         public Heatmap()
         {
+            AxisOffsets = new double[] { 0, 0 };
+            AxisMultipliers = new double[] { 1, 1 };
             Colormap = Colormap.Viridis;
         }
 
-        public void Update(double?[,] intensities, Colormap colormap = null)
+        public void Update(double?[,] intensities, Colormap colormap = null, double? min = null, double? max = null)
         {
             /* This method analyzes the intensities and colormap to create a bitmap
              * with a single pixel for every intensity value. The bitmap is stored
@@ -47,6 +49,8 @@ namespace ScottPlot.Plottable
             Width = intensities.GetLength(1);
             Height = intensities.GetLength(0);
             Colormap = colormap ?? Colormap;
+            ScaleMin = min;
+            ScaleMax = max;
 
             double?[] intensitiesFlattened = intensities.Cast<double?>().ToArray();
             Min = double.PositiveInfinity;
@@ -90,13 +94,13 @@ namespace ScottPlot.Plottable
             BmpScale.UnlockBits(scaleBmpData);
         }
 
-        public void Update(double[,] intensities, Colormap colormap = null)
+        public void Update(double[,] intensities, Colormap colormap = null, double? min = null, double? max = null)
         {
             double?[,] tmp = new double?[intensities.GetLength(0), intensities.GetLength(1)];
             for (int i = 0; i < intensities.GetLength(0); i++)
                 for (int j = 0; j < intensities.GetLength(1); j++)
                     tmp[i, j] = intensities[i, j];
-            Update(tmp, colormap);
+            Update(tmp, colormap, min, max);
         }
 
         private double? Normalize(double? input, double? min = null, double? max = null, double? scaleMin = null, double? scaleMax = null)
@@ -148,10 +152,15 @@ namespace ScottPlot.Plottable
             return new LegendItem[] { singleLegendItem };
         }
 
-        public AxisLimits GetAxisLimits() =>
-            ShowAxisLabels ?
-            new AxisLimits(-10, BmpHeatmap.Width, -5, BmpHeatmap.Height) :
-            new AxisLimits(-3, BmpHeatmap.Width, -3, BmpHeatmap.Height);
+        public AxisLimits GetAxisLimits()
+        {
+            if (BmpHeatmap is null)
+                return new AxisLimits();
+
+            return ShowAxisLabels ?
+                new AxisLimits(-10, BmpHeatmap.Width, -5, BmpHeatmap.Height) :
+                new AxisLimits(-3, BmpHeatmap.Width, -3, BmpHeatmap.Height);
+        }
 
         public void ValidateData(bool deepValidation = false)
         {
@@ -215,15 +224,8 @@ namespace ScottPlot.Plottable
                 gfx.DrawImage(BmpScale, scaleRect);
                 gfx.DrawRectangle(outlinePen, scaleRect.X, scaleRect.Y, scaleRect.Width, scaleRect.Height);
 
-                string minString = $"{Min:f3}";
-                string maxString = $"{Max:f3}";
-
-                if (ScaleMin.HasValue && ScaleMin > Min)
-                    minString = "≤ " + minString;
-
-                if (ScaleMax.HasValue && ScaleMax < Max)
-                    maxString = "≥ " + maxString;
-
+                string minString = (ScaleMin.HasValue && ScaleMin > Min) ? $"≤ {ScaleMin:f3}" : $"{Min:f3}";
+                string maxString = (ScaleMax.HasValue && ScaleMax < Max) ? $"≥ {ScaleMax:f3}" : $"{Max:f3}";
                 gfx.DrawString(maxString, font, brush, new PointF(scaleRect.Right, scaleRect.Top));
                 gfx.DrawString(minString, font, brush, new PointF(scaleRect.Right, scaleRect.Bottom), sf2);
             }
