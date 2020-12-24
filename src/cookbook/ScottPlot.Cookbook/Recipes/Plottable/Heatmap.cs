@@ -15,10 +15,25 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
         public void ExecuteRecipe(Plot plt)
         {
-            double[,] imageData = { { 1, 2, 3 },
-                                    { 4, 5, 6 } };
+            double[,] data2D = { { 1, 2, 3 },
+                                 { 4, 5, 6 } };
 
-            plt.AddHeatmap(imageData);
+            plt.AddHeatmap(data2D);
+        }
+    }
+
+    public class HeatmapImage : IRecipe
+    {
+        public string Category => "Plottable: Heatmap";
+        public string ID => "heatmap_image";
+        public string Title => "Heatmap Image";
+        public string Description =>
+            "Image data can be plotted using the heatmap plot type.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[,] imageData = DataGen.SampleImageData();
+            var heatmap = plt.AddHeatmap(imageData);
         }
     }
 
@@ -69,7 +84,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
     {
         public string Category => "Plottable: Heatmap";
         public string ID => "heatmap_limitScale";
-        public string Title => "Colormap";
+        public string Title => "Scale Limits";
         public string Description =>
             "Heatmap colormap scale can use a defined min/max value.";
 
@@ -85,35 +100,13 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
-    public class HeatmapGaussian : IRecipe
-    {
-        public string Category => "Plottable: Heatmap";
-        public string ID => "heatmap_gaussian";
-        public string Title => "Colormap";
-        public string Description =>
-            "Heatmaps can be created from 2D data points using bilinear interpolation with Gaussian weighting.";
-
-        public void ExecuteRecipe(Plot plt)
-        {
-            Random rand = new Random(0);
-            int[] xs = DataGen.RandomNormal(rand, 10000, 25, 10).Select(x => (int)x).ToArray();
-            int[] ys = DataGen.RandomNormal(rand, 10000, 25, 10).Select(y => (int)y).ToArray();
-
-            double[,] intensities = Tools.XYToIntensities(mode: IntensityMode.Gaussian,
-                xs: xs, ys: ys, width: 50, height: 50, sampleWidth: 4);
-
-            var heatmap = plt.AddHeatmap(intensities);
-            heatmap.Update(intensities);
-        }
-    }
-
     public class HeatmapDensity : IRecipe
     {
         public string Category => "Plottable: Heatmap";
         public string ID => "heatmap_density";
-        public string Title => "Colormap";
+        public string Title => "Interpolation by Density";
         public string Description =>
-            "Heatmaps can be created from random 2D data points using bilinear interpolation without weighting.";
+            "Heatmaps can be created from random 2D data points using bilinear interpolation.";
 
         public void ExecuteRecipe(Plot plt)
         {
@@ -122,6 +115,29 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             int[] ys = DataGen.RandomNormal(rand, 10000, 25, 10).Select(y => (int)y).ToArray();
 
             double[,] intensities = Tools.XYToIntensities(mode: IntensityMode.Density,
+                xs: xs, ys: ys, width: 50, height: 50, sampleWidth: 4);
+
+            var heatmap = plt.AddHeatmap(intensities);
+            heatmap.Update(intensities);
+        }
+    }
+
+    public class HeatmapGaussian : IRecipe
+    {
+        public string Category => "Plottable: Heatmap";
+        public string ID => "heatmap_gaussian";
+        public string Title => "Gaussian Interpolation";
+        public string Description =>
+            "Heatmaps can be created from 2D data points using bilinear interpolation with Gaussian weighting. " +
+            "This option results in a colormap with 4x the number of squares.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            Random rand = new Random(0);
+            int[] xs = DataGen.RandomNormal(rand, 10000, 25, 10).Select(x => (int)x).ToArray();
+            int[] ys = DataGen.RandomNormal(rand, 10000, 25, 10).Select(y => (int)y).ToArray();
+
+            double[,] intensities = Tools.XYToIntensities(mode: IntensityMode.Gaussian,
                 xs: xs, ys: ys, width: 50, height: 50, sampleWidth: 4);
 
             var heatmap = plt.AddHeatmap(intensities);

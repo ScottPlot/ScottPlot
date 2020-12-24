@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using ScottPlot.Cookbook.Site;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -70,6 +71,21 @@ namespace ScottPlotTests.Cookbook
                         continue;
                     else
                         Assert.Fail("IDs must not contain special characters (except underscore)");
+                }
+            }
+        }
+
+        [Test]
+        public void Test_CookbookRecipes_TitlesInsideACategoryAreUnique()
+        {
+            foreach (var cat in ScottPlot.Cookbook.Locate.GetCategorizedRecipes())
+            {
+                List<string> seen = new List<string>();
+                foreach (string title in cat.Value.Select(x => x.Title))
+                {
+                    if (seen.Contains(title))
+                        throw new InvalidOperationException($"'{cat.Key}' has multiple recipes titled '{title}'");
+                    seen.Add(title);
                 }
             }
         }

@@ -30,7 +30,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
     {
         public string Category => "Plottable: Signal Plot";
         public string ID => "signal_advantage";
-        public string Title => "Signal Plot Quickstart";
+        public string Title => "Speed Test";
         public string Description => "Compare the speed to the same data plotted as a scatter plot.";
 
         public void ExecuteRecipe(Plot plt)
