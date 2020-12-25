@@ -106,7 +106,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string ID => "heatmap_density";
         public string Title => "Interpolation by Density";
         public string Description =>
-            "Heatmaps can be created from random 2D data points using bilinear interpolation.";
+            "Heatmaps can be created from random 2D data points using the count within a square of fixed size.";
 
         public void ExecuteRecipe(Plot plt)
         {
