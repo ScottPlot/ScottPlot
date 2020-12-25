@@ -22,6 +22,25 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         }
     }
 
+    public class HeatmapColorbar : IRecipe
+    {
+        public string Category => "Plottable: Heatmap";
+        public string ID => "heatmap_colorbar";
+        public string Title => "Heatmap with Colorbar";
+        public string Description =>
+            "Heatmaps display a 2D array using a colormap.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[,] data2D = { { 1, 2, 3 },
+                                 { 4, 5, 6 } };
+
+            var hm = plt.AddHeatmap(data2D);
+            var cb = plt.AddColorbar(hm.Colormap);
+            cb.SetTicks(hm.ColorbarMin, hm.ColorbarMax);
+        }
+    }
+
     public class HeatmapImage : IRecipe
     {
         public string Category => "Plottable: Heatmap";
@@ -33,7 +52,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public void ExecuteRecipe(Plot plt)
         {
             double[,] imageData = DataGen.SampleImageData();
-            var heatmap = plt.AddHeatmap(imageData);
+            plt.AddHeatmap(imageData);
         }
     }
 
@@ -56,7 +75,9 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
                 for (int y = 0; y < height; y++)
                     intensities[x, y] = (Math.Sin(x * .2) + Math.Cos(y * .2)) * 100;
 
-            plt.AddHeatmap(intensities);
+            var hm = plt.AddHeatmap(intensities);
+            var cb = plt.AddColorbar(hm.Colormap);
+            cb.SetTicks(hm.ColorbarMin, hm.ColorbarMax);
         }
     }
 
@@ -75,8 +96,11 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
                 for (int y = 0; y < 100; y++)
                     intensities[x, y] = (Math.Sin(x * .2) + Math.Cos(y * .2)) * 100;
 
-            var heatmap = plt.AddHeatmap(intensities);
-            heatmap.Update(intensities, Drawing.Colormap.Turbo);
+            var hm = plt.AddHeatmap(intensities);
+            hm.Update(intensities, Drawing.Colormap.Turbo);
+
+            var cb = plt.AddColorbar(hm.Colormap);
+            cb.SetTicks(hm.ColorbarMin, hm.ColorbarMax);
         }
     }
 
@@ -95,8 +119,11 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
                 for (int y = 0; y < 100; y++)
                     intensities[x, y] = (Math.Sin(x * .2) + Math.Cos(y * .2)) * 100;
 
-            var heatmap = plt.AddHeatmap(intensities);
-            heatmap.Update(intensities, min: 0, max: 200);
+            var hm = plt.AddHeatmap(intensities);
+            hm.Update(intensities, min: 0, max: 200);
+
+            var cb = plt.AddColorbar(hm.Colormap);
+            cb.SetTicks(hm.ColorbarMin, hm.ColorbarMax);
         }
     }
 
@@ -117,8 +144,11 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[,] intensities = Tools.XYToIntensities(mode: IntensityMode.Density,
                 xs: xs, ys: ys, width: 50, height: 50, sampleWidth: 4);
 
-            var heatmap = plt.AddHeatmap(intensities);
-            heatmap.Update(intensities);
+            var hm = plt.AddHeatmap(intensities);
+            hm.Update(intensities);
+
+            var cb = plt.AddColorbar(hm.Colormap);
+            cb.SetTicks(hm.ColorbarMin, hm.ColorbarMax);
         }
     }
 
@@ -140,8 +170,11 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[,] intensities = Tools.XYToIntensities(mode: IntensityMode.Gaussian,
                 xs: xs, ys: ys, width: 50, height: 50, sampleWidth: 4);
 
-            var heatmap = plt.AddHeatmap(intensities);
-            heatmap.Update(intensities);
+            var hm = plt.AddHeatmap(intensities);
+            hm.Update(intensities);
+
+            var cb = plt.AddColorbar(hm.Colormap);
+            cb.SetTicks(hm.ColorbarMin, hm.ColorbarMax);
         }
     }
 }
