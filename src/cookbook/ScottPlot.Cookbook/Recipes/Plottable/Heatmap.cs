@@ -133,7 +133,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string ID => "heatmap_density";
         public string Title => "Interpolation by Density";
         public string Description =>
-            "Heatmaps can be created from random 2D data points using bilinear interpolation.";
+            "Heatmaps can be created from random 2D data points using the count within a square of fixed size.";
 
         public void ExecuteRecipe(Plot plt)
         {
@@ -159,7 +159,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string Title => "Gaussian Interpolation";
         public string Description =>
             "Heatmaps can be created from 2D data points using bilinear interpolation with Gaussian weighting. " +
-            "This option results in a colormap with 4x the number of squares.";
+            "This option results in a heatmap with a standard deviation of 4.";
 
         public void ExecuteRecipe(Plot plt)
         {
