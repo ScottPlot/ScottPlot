@@ -83,10 +83,15 @@ namespace ScottPlot.Plottable
 
         private void UpdateBitmap()
         {
-            int valueCount = 256;
             BmpScale?.Dispose();
-            BmpScale = Colormap.Colorbar(Colormap, width: Width, height: valueCount, vertical: true);
+            BmpScale = GetBitmap();
         }
+
+        public Bitmap GetBitmap() =>
+            Colormap.Colorbar(Colormap, Width, 256, true);
+
+        public Bitmap GetBitmap(int width, int height, bool vertical = true) =>
+            Colormap.Colorbar(Colormap, width, height, vertical);
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
