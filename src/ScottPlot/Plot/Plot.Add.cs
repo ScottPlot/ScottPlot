@@ -168,6 +168,17 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Add a colorbar to display a colormap beside the data area
+        /// </summary>
+        public Colorbar AddColorbar(Drawing.Colormap colormap = null, int space = 100)
+        {
+            var plottable = new Colorbar(colormap);
+            Add(plottable);
+            YAxis2.SetSizeLimit(min: space);
+            return plottable;
+        }
+
+        /// <summary>
         /// Create a polygon to fill the area between Y values and a baseline.
         /// </summary>
         public Polygon AddFill(double[] xs, double[] ys, double baseline = 0, Color? color = null)
@@ -273,13 +284,15 @@ namespace ScottPlot
         /// <summary>
         /// Add a heatmap to the plot
         /// </summary>
-        public Heatmap AddHeatmap(double[,] initialData, int scalebarSpace = 100, bool lockScales = true)
+        public Heatmap AddHeatmap(double[,] intensities, bool lockScales = true, Drawing.Colormap colormap = null)
         {
+            if (lockScales)
+                AxisScaleLock(true);
+
             var plottable = new Heatmap();
-            plottable.Update(initialData);
+            plottable.Update(intensities, colormap);
             Add(plottable);
-            YAxis2.SetSizeLimit(min: scalebarSpace);
-            AxisScaleLock(lockScales);
+
             return plottable;
         }
 

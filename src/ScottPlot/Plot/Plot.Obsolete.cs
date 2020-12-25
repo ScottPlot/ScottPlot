@@ -462,7 +462,6 @@ namespace ScottPlot
                 BackgroundImage = backgroundImage,
                 DisplayImageAbove = displayImageAbove,
                 ShowAxisLabels = drawAxisLabels,
-                Colormap = colormap ?? Drawing.Colormap.Viridis
             };
             heatmap.Update(intensities);
 
