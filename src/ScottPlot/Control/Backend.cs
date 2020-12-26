@@ -41,50 +41,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
-namespace ControlBackEndDev
+namespace ScottPlot.Control
 {
-    public enum RenderQuality
-    {
-        LowQualityAlways,
-        LowQualityWhileDragging,
-        HighQualityAlways
-    }
-
-    public class Configuration
-    {
-        public RenderQuality RenderQuality = RenderQuality.LowQualityWhileDragging;
-
-        public bool LeftClickDragPan = true;
-        public bool RightClickDragZoom = true;
-        public bool MiddleClickDragZoom = true;
-        public bool MiddleClickAutoAxis = true;
-        public bool ScrollWheelZoom = true;
-        public bool DoubleClickBenchmark = true;
-
-        public bool LockVerticalAxis = false;
-        public bool LockHorizontalAxis = false;
-
-        public bool RenderIfPlottableCountChanges = true;
-    }
-
-    public class InputState
-    {
-        public float X = float.NaN;
-        public float Y = float.NaN;
-        public bool LeftDown = false;
-        public bool RightDown = false;
-        public bool MiddleDown = false;
-        public bool ButtonDown => LeftDown || RightDown || MiddleDown;
-        public bool ShiftDown = false;
-        public bool CtrlDown = false;
-        public bool AltDown = false;
-    }
 
     public class ControlBackEnd
     {
@@ -96,8 +56,8 @@ namespace ControlBackEndDev
         public readonly ScottPlot.Plot Plot;
         public readonly ScottPlot.Settings Settings;
         public readonly Configuration Configuration = new Configuration();
-        private Bitmap Bmp;
-        private readonly List<Bitmap> OldBitmaps = new List<Bitmap>();
+        private System.Drawing.Bitmap Bmp;
+        private readonly List<System.Drawing.Bitmap> OldBitmaps = new List<System.Drawing.Bitmap>();
         public ScottPlot.Cursor Cursor { get; private set; } = ScottPlot.Cursor.Arrow;
 
         public ControlBackEnd(float width, float height)
@@ -108,9 +68,9 @@ namespace ControlBackEndDev
             NewBitmap(600, 400);
         }
 
-        public Bitmap GetLatestBitmap()
+        public System.Drawing.Bitmap GetLatestBitmap()
         {
-            foreach (Bitmap bmp in OldBitmaps)
+            foreach (System.Drawing.Bitmap bmp in OldBitmaps)
                 bmp?.Dispose();
             OldBitmaps.Clear();
             return Bmp;
@@ -124,29 +84,29 @@ namespace ControlBackEndDev
             // Disposing a Bitmap the GUI is displaying will cause an exception.
             // Keep track of old bitmaps so they can be disposed of later.
             OldBitmaps.Add(Bmp);
-            Bmp = new Bitmap((int)width, (int)height);
+            Bmp = new System.Drawing.Bitmap((int)width, (int)height);
             BitmapChanged(this, EventArgs.Empty);
         }
 
         private int PlottableCountOnLastRender = -1;
         public void Render(bool lowQuality = false)
         {
-            if (Configuration.RenderQuality == RenderQuality.HighQualityAlways)
+            if (Configuration.Quality == QualityMode.High)
                 lowQuality = true;
-            else if (Configuration.RenderQuality == RenderQuality.LowQualityAlways)
+            else if (Configuration.Quality == QualityMode.Low)
                 lowQuality = false;
 
-            PlottableCountOnLastRender = Settings.Plottables.Count();
+            PlottableCountOnLastRender = Settings.Plottables.Count;
             Plot.Render(Bmp, lowQuality);
             BitmapUpdated(null, EventArgs.Empty);
         }
 
-        private void RenderAfterDragging() => 
-            Render(lowQuality: Configuration.RenderQuality == RenderQuality.LowQualityWhileDragging);
+        private void RenderAfterDragging() =>
+            Render(lowQuality: Configuration.Quality == QualityMode.LowWhileDragging);
 
         public void RenderIfPlottableCountChanged()
         {
-            if (Settings.Plottables.Count() != PlottableCountOnLastRender)
+            if (Settings.Plottables.Count != PlottableCountOnLastRender)
                 Render();
         }
 

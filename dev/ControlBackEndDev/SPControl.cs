@@ -7,11 +7,11 @@ namespace ControlBackEndDev
 {
     public partial class SPControl : UserControl
     {
-        private readonly ControlBackEnd CBE;
+        private readonly ScottPlot.Control.ControlBackEnd Backend;
         private readonly Dictionary<ScottPlot.Cursor, Cursor> Cursors;
 
-        public ScottPlot.Plot Plot => CBE.Plot;
-        public Configuration Configuration => CBE.Configuration;
+        public ScottPlot.Plot Plot => Backend.Plot;
+        public ScottPlot.Control.Configuration Configuration => Backend.Configuration;
         public ContextMenuStrip RightClickMenu;
 
         public SPControl()
@@ -29,31 +29,31 @@ namespace ControlBackEndDev
                 [ScottPlot.Cursor.Question] = System.Windows.Forms.Cursors.Help,
             };
 
-            CBE = new ControlBackEnd(Width, Height);
-            CBE.BitmapChanged += new EventHandler(OnBitmapChanged);
-            CBE.BitmapUpdated += new EventHandler(OnBitmapUpdated);
-            CBE.CursorChanged += new EventHandler(OnCursorChanged);
-            CBE.RightClicked += new EventHandler(OnRightClicked);
+            Backend = new ScottPlot.Control.ControlBackEnd(Width, Height);
+            Backend.BitmapChanged += new EventHandler(OnBitmapChanged);
+            Backend.BitmapUpdated += new EventHandler(OnBitmapUpdated);
+            Backend.CursorChanged += new EventHandler(OnCursorChanged);
+            Backend.RightClicked += new EventHandler(OnRightClicked);
             pictureBox1.MouseWheel += PictureBox1_MouseWheel;
         }
 
-        public void Render(bool lowQuality = false) => CBE.Render(lowQuality);
-        private void PlottableCountTimer_Tick(object sender, EventArgs e) => CBE.RenderIfPlottableCountChanged();
+        public void Render(bool lowQuality = false) => Backend.Render(lowQuality);
+        private void PlottableCountTimer_Tick(object sender, EventArgs e) => Backend.RenderIfPlottableCountChanged();
 
         private void OnBitmapUpdated(object sender, EventArgs e) => pictureBox1.Invalidate();
-        private void OnBitmapChanged(object sender, EventArgs e) => pictureBox1.Image = CBE.GetLatestBitmap();
-        private void OnCursorChanged(object sender, EventArgs e) => Cursor = Cursors[CBE.Cursor];
+        private void OnBitmapChanged(object sender, EventArgs e) => pictureBox1.Image = Backend.GetLatestBitmap();
+        private void OnCursorChanged(object sender, EventArgs e) => Cursor = Cursors[Backend.Cursor];
         private void OnRightClicked(object sender, EventArgs e) => RightClickMenu.Show(Cursor.Position);
-        private void OnSizeChanged(object sender, EventArgs e) => CBE.Resize(Width, Height);
+        private void OnSizeChanged(object sender, EventArgs e) => Backend.Resize(Width, Height);
 
-        private void pictureBox1_MouseDown(object sender, MouseEventArgs e) => CBE.MouseDown(GetInputState(e));
-        private void pictureBox1_MouseUp(object sender, MouseEventArgs e) => CBE.MouseUp(GetInputState(e));
-        private void pictureBox1_DoubleClick(object sender, EventArgs e) => CBE.DoubleClick();
-        private void PictureBox1_MouseWheel(object sender, MouseEventArgs e) => CBE.MouseWheel(GetInputState(e), e.Delta > 0);
-        private void pictureBox1_MouseMove(object sender, MouseEventArgs e) => CBE.MouseMove(GetInputState(e));
+        private void pictureBox1_MouseDown(object sender, MouseEventArgs e) => Backend.MouseDown(GetInputState(e));
+        private void pictureBox1_MouseUp(object sender, MouseEventArgs e) => Backend.MouseUp(GetInputState(e));
+        private void pictureBox1_DoubleClick(object sender, EventArgs e) => Backend.DoubleClick();
+        private void PictureBox1_MouseWheel(object sender, MouseEventArgs e) => Backend.MouseWheel(GetInputState(e), e.Delta > 0);
+        private void pictureBox1_MouseMove(object sender, MouseEventArgs e) => Backend.MouseMove(GetInputState(e));
 
-        private InputState GetInputState(MouseEventArgs e) =>
-            new InputState()
+        private ScottPlot.Control.InputState GetInputState(MouseEventArgs e) =>
+            new ScottPlot.Control.InputState()
             {
                 X = e.X,
                 Y = e.Y,
