@@ -56,6 +56,7 @@ namespace ControlBackEndDev
         public event EventHandler BitmapUpdated = delegate { };
         public event EventHandler BitmapChanged = delegate { };
         public event EventHandler CursorChanged = delegate { };
+        public event EventHandler RightClicked = delegate { };
 
         public readonly ScottPlot.Plot Plot;
         public readonly ScottPlot.Settings Settings;
@@ -179,11 +180,12 @@ namespace ControlBackEndDev
         public void MouseUp(InputState input)
         {
             PlottableBeingDragged = null;
+            bool mouseWasDragged = Settings.MouseHasMoved(input.X, input.Y);
 
             bool isZoomingRectangle = input.MiddleDown || (input.LeftDown && input.AltDown);
             if (isZoomingRectangle)
             {
-                if (Settings.MouseHasMoved(input.X, input.Y))
+                if (mouseWasDragged)
                 {
                     Settings.RecallAxisLimits();
                     Settings.MouseZoomRect(input.X, input.Y, finalize: true);
@@ -192,6 +194,12 @@ namespace ControlBackEndDev
                 {
                     MiddleClickAutoAxis();
                 }
+            }
+
+            if (input.RightDown && mouseWasDragged == false)
+            {
+                RightClicked(null, EventArgs.Empty);
+                return;
             }
 
             Render(false);
