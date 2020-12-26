@@ -80,7 +80,7 @@ namespace ScottPlotTests.Cookbook
         {
             foreach (var cat in ScottPlot.Cookbook.Locate.GetCategorizedRecipes())
             {
-                List<string> seen = new List<string>();
+                HashSet<string> seen = new HashSet<string>();
                 foreach (string title in cat.Value.Select(x => x.Title))
                 {
                     if (seen.Contains(title))
