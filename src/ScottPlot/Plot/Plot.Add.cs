@@ -182,7 +182,7 @@ namespace ScottPlot
         /// Add a colorbar to display a colormap beside the data area
         /// </summary>
         /// 
-        public Colorbar AddColorbarFromHeatmap(Heatmap hm, bool synced = true, int space = 100)
+        public Colorbar AddColorbarFromHeatmap(Heatmap hm, int space = 100, bool synced = true)
         {
             var plottable = hm.CreateColorBar(synced);
             Add(plottable);
