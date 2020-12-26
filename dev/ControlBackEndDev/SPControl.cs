@@ -46,11 +46,11 @@ namespace ControlBackEndDev
         private void OnRightClicked(object sender, EventArgs e) => RightClickMenu.Show(Cursor.Position);
         private void OnSizeChanged(object sender, EventArgs e) => Backend.Resize(Width, Height);
 
-        private void pictureBox1_MouseDown(object sender, MouseEventArgs e) => Backend.MouseDown(GetInputState(e));
-        private void pictureBox1_MouseUp(object sender, MouseEventArgs e) => Backend.MouseUp(GetInputState(e));
-        private void pictureBox1_DoubleClick(object sender, EventArgs e) => Backend.DoubleClick();
+        private void PictureBox1_MouseDown(object sender, MouseEventArgs e) => Backend.MouseDown(GetInputState(e));
+        private void PictureBox1_MouseUp(object sender, MouseEventArgs e) => Backend.MouseUp(GetInputState(e));
+        private void PictureBox1_DoubleClick(object sender, EventArgs e) => Backend.DoubleClick();
         private void PictureBox1_MouseWheel(object sender, MouseEventArgs e) => Backend.MouseWheel(GetInputState(e), e.Delta > 0);
-        private void pictureBox1_MouseMove(object sender, MouseEventArgs e) => Backend.MouseMove(GetInputState(e));
+        private void PictureBox1_MouseMove(object sender, MouseEventArgs e) => Backend.MouseMove(GetInputState(e));
 
         private ScottPlot.Control.InputState GetInputState(MouseEventArgs e) =>
             new ScottPlot.Control.InputState()
