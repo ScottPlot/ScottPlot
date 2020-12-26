@@ -36,8 +36,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
                                  { 4, 5, 6 } };
 
             var hm = plt.AddHeatmap(data2D);
-            var cb = plt.AddColorbar(hm.Colormap);
-            cb.SetTicks(hm.ColorbarMin, hm.ColorbarMax);
+            var cb = plt.AddColorbarFromHeatmap(hm);
         }
     }
 
@@ -76,8 +75,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
                     intensities[x, y] = (Math.Sin(x * .2) + Math.Cos(y * .2)) * 100;
 
             var hm = plt.AddHeatmap(intensities);
-            var cb = plt.AddColorbar(hm.Colormap);
-            cb.SetTicks(hm.ColorbarMin, hm.ColorbarMax);
+            var cb = plt.AddColorbarFromHeatmap(hm);
         }
     }
 
@@ -99,8 +97,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             var hm = plt.AddHeatmap(intensities);
             hm.Update(intensities, Drawing.Colormap.Turbo);
 
-            var cb = plt.AddColorbar(hm.Colormap);
-            cb.SetTicks(hm.ColorbarMin, hm.ColorbarMax);
+            var cb = plt.AddColorbarFromHeatmap(hm);
         }
     }
 
@@ -122,8 +119,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             var hm = plt.AddHeatmap(intensities);
             hm.Update(intensities, min: 0, max: 200);
 
-            var cb = plt.AddColorbar(hm.Colormap);
-            cb.SetTicks(hm.ColorbarMin, hm.ColorbarMax);
+            var cb = plt.AddColorbarFromHeatmap(hm);
         }
     }
 
@@ -147,8 +143,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             var hm = plt.AddHeatmap(intensities);
             hm.Update(intensities);
 
-            var cb = plt.AddColorbar(hm.Colormap);
-            cb.SetTicks(hm.ColorbarMin, hm.ColorbarMax);
+            var cb = plt.AddColorbarFromHeatmap(hm);
         }
     }
 
@@ -173,8 +168,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             var hm = plt.AddHeatmap(intensities);
             hm.Update(intensities);
 
-            var cb = plt.AddColorbar(hm.Colormap);
-            cb.SetTicks(hm.ColorbarMin, hm.ColorbarMax);
+            var cb = plt.AddColorbarFromHeatmap(hm);
         }
     }
 }
