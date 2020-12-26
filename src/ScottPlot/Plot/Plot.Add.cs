@@ -172,10 +172,23 @@ namespace ScottPlot
         /// </summary>
         public Colorbar AddColorbar(Drawing.Colormap colormap = null, int space = 100)
         {
-            var plottable = new Colorbar(colormap);
-            Add(plottable);
+            var cb = new Colorbar(colormap);
+            Add(cb);
             YAxis2.SetSizeLimit(min: space);
-            return plottable;
+            return cb;
+        }
+
+        /// <summary>
+        /// Add a colorbar initialized with settings from a heatmap
+        /// </summary>
+        public Colorbar AddColorbar(Heatmap heatmap, int space = 100)
+        {
+            var cb = new Colorbar(heatmap.Colormap);
+            cb.AddTick(0, heatmap.ColorbarMin);
+            cb.AddTick(1, heatmap.ColorbarMax);
+            Add(cb);
+            YAxis2.SetSizeLimit(min: space);
+            return cb;
         }
 
         /// <summary>
@@ -284,7 +297,7 @@ namespace ScottPlot
         /// <summary>
         /// Add a heatmap to the plot
         /// </summary>
-        public Heatmap AddHeatmap(double[,] intensities, bool lockScales = true, Drawing.Colormap colormap = null)
+        public Heatmap AddHeatmap(double[,] intensities, Drawing.Colormap colormap = null, bool lockScales = true)
         {
             if (lockScales)
                 AxisScaleLock(true);

@@ -52,13 +52,6 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public void SetTicks(string minTickLabel, string maxTickLabel)
-        {
-            ClearTicks();
-            AddTick(0, minTickLabel);
-            AddTick(1, maxTickLabel);
-        }
-
         public void SetTicks(double[] fractions, string[] labels)
         {
             ClearTicks();

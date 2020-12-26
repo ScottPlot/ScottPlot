@@ -28,7 +28,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string ID => "heatmap_colorbar";
         public string Title => "Heatmap with Colorbar";
         public string Description =>
-            "Heatmaps display a 2D array using a colormap.";
+            "Colorbars are often added when heatmaps are used.";
 
         public void ExecuteRecipe(Plot plt)
         {
@@ -36,8 +36,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
                                  { 4, 5, 6 } };
 
             var hm = plt.AddHeatmap(data2D);
-            var cb = plt.AddColorbar(hm.Colormap);
-            cb.SetTicks(hm.ColorbarMin, hm.ColorbarMax);
+            var cb = plt.AddColorbar(hm);
         }
     }
 
@@ -76,8 +75,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
                     intensities[x, y] = (Math.Sin(x * .2) + Math.Cos(y * .2)) * 100;
 
             var hm = plt.AddHeatmap(intensities);
-            var cb = plt.AddColorbar(hm.Colormap);
-            cb.SetTicks(hm.ColorbarMin, hm.ColorbarMax);
+            var cb = plt.AddColorbar(hm);
         }
     }
 
@@ -96,11 +94,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
                 for (int y = 0; y < 100; y++)
                     intensities[x, y] = (Math.Sin(x * .2) + Math.Cos(y * .2)) * 100;
 
-            var hm = plt.AddHeatmap(intensities);
-            hm.Update(intensities, Drawing.Colormap.Turbo);
-
-            var cb = plt.AddColorbar(hm.Colormap);
-            cb.SetTicks(hm.ColorbarMin, hm.ColorbarMax);
+            var hm = plt.AddHeatmap(intensities, Drawing.Colormap.Turbo);
+            var cb = plt.AddColorbar(hm);
         }
     }
 
@@ -122,8 +117,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             var hm = plt.AddHeatmap(intensities);
             hm.Update(intensities, min: 0, max: 200);
 
-            var cb = plt.AddColorbar(hm.Colormap);
-            cb.SetTicks(hm.ColorbarMin, hm.ColorbarMax);
+            var cb = plt.AddColorbar(hm);
         }
     }
 
@@ -145,10 +139,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
                 xs: xs, ys: ys, width: 50, height: 50, sampleWidth: 4);
 
             var hm = plt.AddHeatmap(intensities);
-            hm.Update(intensities);
-
-            var cb = plt.AddColorbar(hm.Colormap);
-            cb.SetTicks(hm.ColorbarMin, hm.ColorbarMax);
+            var cb = plt.AddColorbar(hm);
         }
     }
 
@@ -171,10 +162,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
                 xs: xs, ys: ys, width: 50, height: 50, sampleWidth: 4);
 
             var hm = plt.AddHeatmap(intensities);
-            hm.Update(intensities);
-
-            var cb = plt.AddColorbar(hm.Colormap);
-            cb.SetTicks(hm.ColorbarMin, hm.ColorbarMax);
+            var cb = plt.AddColorbar(hm);
         }
     }
 }
