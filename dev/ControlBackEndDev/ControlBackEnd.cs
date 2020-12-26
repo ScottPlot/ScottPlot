@@ -49,11 +49,21 @@ using System.Threading.Tasks;
 
 namespace ControlBackEndDev
 {
+    public enum RenderQuality
+    {
+        LowQualityAlways,
+        LowQualityWhileDragging,
+        HighQualityAlways
+    }
+
     public class Configuration
     {
+        public RenderQuality RenderQuality = RenderQuality.LowQualityWhileDragging;
+
         public bool LeftClickDragPan = true;
         public bool RightClickDragZoom = true;
         public bool MiddleClickDragZoom = true;
+        public bool MiddleClickAutoAxis = true;
         public bool ScrollWheelZoom = true;
         public bool DoubleClickBenchmark = true;
 
@@ -82,7 +92,6 @@ namespace ControlBackEndDev
         public event EventHandler BitmapChanged = delegate { };
         public event EventHandler CursorChanged = delegate { };
         public event EventHandler RightClicked = delegate { };
-        private event EventHandler PlottableCountChanged = delegate { };
 
         public readonly ScottPlot.Plot Plot;
         public readonly ScottPlot.Settings Settings;
@@ -120,17 +129,25 @@ namespace ControlBackEndDev
         }
 
         private int PlottableCountOnLastRender = -1;
-        public void Render(bool lowQuality)
+        public void Render(bool lowQuality = false)
         {
+            if (Configuration.RenderQuality == RenderQuality.HighQualityAlways)
+                lowQuality = true;
+            else if (Configuration.RenderQuality == RenderQuality.LowQualityAlways)
+                lowQuality = false;
+
             PlottableCountOnLastRender = Settings.Plottables.Count();
             Plot.Render(Bmp, lowQuality);
             BitmapUpdated(null, EventArgs.Empty);
         }
 
+        private void RenderAfterDragging() => 
+            Render(lowQuality: Configuration.RenderQuality == RenderQuality.LowQualityWhileDragging);
+
         public void RenderIfPlottableCountChanged()
         {
             if (Settings.Plottables.Count() != PlottableCountOnLastRender)
-                Render(lowQuality: false);
+                Render();
         }
 
         public void Resize(float width, float height)
@@ -165,7 +182,7 @@ namespace ControlBackEndDev
             double x = Plot.GetCoordinateX(input.X);
             double y = Plot.GetCoordinateY(input.Y);
             PlottableBeingDragged.DragTo(x, y, fixedSize: input.ShiftDown);
-            Render(lowQuality: true);
+            RenderAfterDragging();
         }
 
         private void MouseMovedToPan(InputState input)
@@ -177,7 +194,7 @@ namespace ControlBackEndDev
             float y = (input.CtrlDown || Configuration.LockVerticalAxis) ? Settings.MouseDownY : input.Y;
             Settings.MousePan(x, y);
 
-            Render(lowQuality: true);
+            RenderAfterDragging();
         }
 
         private void MouseMovedToZoom(InputState input)
@@ -207,13 +224,13 @@ namespace ControlBackEndDev
             if (Configuration.LockVerticalAxis)
                 Plot.SetAxisLimitsY(originalLimits.YMin, originalLimits.YMax);
 
-            Render(lowQuality: true);
+            RenderAfterDragging();
         }
 
         private void MouseMovedToZoomRectangle(InputState input)
         {
             Settings.MouseZoomRect(input.X, input.Y);
-            Render(lowQuality: true);
+            RenderAfterDragging();
         }
 
         private void MouseMovedWithoutInteraction(InputState input)
@@ -248,7 +265,7 @@ namespace ControlBackEndDev
                 return;
             }
 
-            Render(false);
+            Render();
             UpdateCursor(input);
         }
 
@@ -272,9 +289,18 @@ namespace ControlBackEndDev
 
         private void MiddleClickAutoAxis()
         {
+            if (Configuration.MiddleClickAutoAxis == false)
+                return;
+
             Settings.ZoomRectangle.Clear();
-            Plot.AxisAuto();
-            Render(false);
+
+            if (Configuration.LockVerticalAxis == false)
+                Plot.AxisAutoY();
+
+            if (Configuration.LockHorizontalAxis == false)
+                Plot.AxisAutoX();
+
+            Render();
         }
 
         public void MouseWheel(InputState input, bool wheelUp)
@@ -291,7 +317,7 @@ namespace ControlBackEndDev
                 yFrac = 1;
 
             Settings.AxesZoomTo(xFrac, yFrac, input.X, input.Y);
-            Render(false);
+            Render();
         }
 
         public void DoubleClick()
@@ -300,7 +326,7 @@ namespace ControlBackEndDev
                 return;
 
             Plot.BenchmarkToggle();
-            Render(false);
+            Render();
         }
     }
 }
