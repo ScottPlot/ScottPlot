@@ -38,6 +38,7 @@ namespace ControlBackEndDev
             this.autoAxisMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.helpMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.PlottableCountTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.DefaultRightClickMenu.SuspendLayout();
             this.SuspendLayout();
@@ -66,45 +67,51 @@ namespace ControlBackEndDev
             this.toolStripSeparator2,
             this.helpMenuItem});
             this.DefaultRightClickMenu.Name = "contextMenuStrip1";
-            this.DefaultRightClickMenu.Size = new System.Drawing.Size(181, 126);
+            this.DefaultRightClickMenu.Size = new System.Drawing.Size(164, 104);
             // 
             // copyMenuItem
             // 
             this.copyMenuItem.Name = "copyMenuItem";
-            this.copyMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.copyMenuItem.Size = new System.Drawing.Size(163, 22);
             this.copyMenuItem.Text = "Copy Image";
             this.copyMenuItem.Click += new System.EventHandler(this.RightClickMenu_Copy_Click);
             // 
             // saveImageMenuItem
             // 
             this.saveImageMenuItem.Name = "saveImageMenuItem";
-            this.saveImageMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveImageMenuItem.Size = new System.Drawing.Size(163, 22);
             this.saveImageMenuItem.Text = "Save Image As...";
             this.saveImageMenuItem.Click += new System.EventHandler(this.RightClickMenu_SaveImage_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(160, 6);
             // 
             // autoAxisMenuItem
             // 
             this.autoAxisMenuItem.Name = "autoAxisMenuItem";
-            this.autoAxisMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.autoAxisMenuItem.Size = new System.Drawing.Size(163, 22);
             this.autoAxisMenuItem.Text = "Zoom to Fit Data";
             this.autoAxisMenuItem.Click += new System.EventHandler(this.RightClickMenu_AutoAxis_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(160, 6);
             // 
             // helpMenuItem
             // 
             this.helpMenuItem.Name = "helpMenuItem";
-            this.helpMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.helpMenuItem.Size = new System.Drawing.Size(163, 22);
             this.helpMenuItem.Text = "Help";
             this.helpMenuItem.Click += new System.EventHandler(this.RightClickMenu_Help_Click);
+            // 
+            // PlottableCountTimer
+            // 
+            this.PlottableCountTimer.Enabled = true;
+            this.PlottableCountTimer.Interval = 10;
+            this.PlottableCountTimer.Tick += new System.EventHandler(this.PlottableCountTimer_Tick);
             // 
             // SPControl
             // 
@@ -130,5 +137,6 @@ namespace ControlBackEndDev
         private System.Windows.Forms.ToolStripMenuItem copyMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.Timer PlottableCountTimer;
     }
 }

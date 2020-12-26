@@ -7,9 +7,11 @@ namespace ControlBackEndDev
 {
     public partial class SPControl : UserControl
     {
-        public readonly ControlBackEnd CBE;
-        public ScottPlot.Plot Plot => CBE.Plot;
+        private readonly ControlBackEnd CBE;
         private readonly Dictionary<ScottPlot.Cursor, Cursor> Cursors;
+
+        public ScottPlot.Plot Plot => CBE.Plot;
+        public Configuration Configuration => CBE.Configuration;
         public ContextMenuStrip RightClickMenu;
 
         public SPControl()
@@ -36,6 +38,7 @@ namespace ControlBackEndDev
         }
 
         public void Render(bool lowQuality = false) => CBE.Render(lowQuality);
+        private void PlottableCountTimer_Tick(object sender, EventArgs e) => CBE.RenderIfPlottableCountChanged();
 
         private void OnBitmapUpdated(object sender, EventArgs e) => pictureBox1.Invalidate();
         private void OnBitmapChanged(object sender, EventArgs e) => pictureBox1.Image = CBE.GetLatestBitmap();

@@ -26,6 +26,16 @@
  *    - SHIFT+Right-click-drag to zoom vertically
  *    - CTRL+SHIFT+Right-click-drag to zoom evenly
  *    - SHIFT+click-drag draggables for fixed-size dragging
+ *    
+ *  These options should be configurable somehow:
+ *    - left-click-drag pan
+ *    - right-click-drag zoom
+ *    - lock vertical or horizontal axis
+ *    - middle-click auto-axis margin
+ *    - double-click benchmark toggle
+ *    - scrollwheel zoom
+ *    - low quality (never / while dragging / always)
+ *    - high quality delay
  *   
  */
 
@@ -34,10 +44,25 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ControlBackEndDev
 {
+    public class Configuration
+    {
+        public bool LeftClickDragPan = true;
+        public bool RightClickDragZoom = true;
+        public bool MiddleClickDragZoom = true;
+        public bool ScrollWheelZoom = true;
+        public bool DoubleClickBenchmark = true;
+
+        public bool LockVerticalAxis = false;
+        public bool LockHorizontalAxis = false;
+
+        public bool RenderIfPlottableCountChanges = true;
+    }
+
     public class InputState
     {
         public float X = float.NaN;
@@ -57,9 +82,11 @@ namespace ControlBackEndDev
         public event EventHandler BitmapChanged = delegate { };
         public event EventHandler CursorChanged = delegate { };
         public event EventHandler RightClicked = delegate { };
+        private event EventHandler PlottableCountChanged = delegate { };
 
         public readonly ScottPlot.Plot Plot;
         public readonly ScottPlot.Settings Settings;
+        public readonly Configuration Configuration = new Configuration();
         private Bitmap Bmp;
         private readonly List<Bitmap> OldBitmaps = new List<Bitmap>();
         public ScottPlot.Cursor Cursor { get; private set; } = ScottPlot.Cursor.Arrow;
@@ -92,10 +119,18 @@ namespace ControlBackEndDev
             BitmapChanged(this, EventArgs.Empty);
         }
 
+        private int PlottableCountOnLastRender = -1;
         public void Render(bool lowQuality)
         {
+            PlottableCountOnLastRender = Settings.Plottables.Count();
             Plot.Render(Bmp, lowQuality);
             BitmapUpdated(null, EventArgs.Empty);
+        }
+
+        public void RenderIfPlottableCountChanged()
+        {
+            if (Settings.Plottables.Count() != PlottableCountOnLastRender)
+                Render(lowQuality: false);
         }
 
         public void Resize(float width, float height)
@@ -135,14 +170,23 @@ namespace ControlBackEndDev
 
         private void MouseMovedToPan(InputState input)
         {
-            float x = input.ShiftDown ? Settings.MouseDownX : input.X;
-            float y = input.CtrlDown ? Settings.MouseDownY : input.Y;
+            if (Configuration.LeftClickDragPan == false)
+                return;
+
+            float x = (input.ShiftDown || Configuration.LockHorizontalAxis) ? Settings.MouseDownX : input.X;
+            float y = (input.CtrlDown || Configuration.LockVerticalAxis) ? Settings.MouseDownY : input.Y;
             Settings.MousePan(x, y);
+
             Render(lowQuality: true);
         }
 
         private void MouseMovedToZoom(InputState input)
         {
+            if (Configuration.RightClickDragZoom == false)
+                return;
+
+            var originalLimits = Plot.GetAxisLimits();
+
             if (input.ShiftDown && input.CtrlDown)
             {
                 float dx = input.X - Settings.MouseDownX;
@@ -156,6 +200,13 @@ namespace ControlBackEndDev
                 float y = input.CtrlDown ? Settings.MouseDownY : input.Y;
                 Settings.MouseZoom(x, y);
             }
+
+            if (Configuration.LockHorizontalAxis)
+                Plot.SetAxisLimitsX(originalLimits.XMin, originalLimits.XMax);
+
+            if (Configuration.LockVerticalAxis)
+                Plot.SetAxisLimitsY(originalLimits.YMin, originalLimits.YMax);
+
             Render(lowQuality: true);
         }
 
@@ -186,14 +237,9 @@ namespace ControlBackEndDev
             if (isZoomingRectangle)
             {
                 if (mouseWasDragged)
-                {
-                    Settings.RecallAxisLimits();
-                    Settings.MouseZoomRect(input.X, input.Y, finalize: true);
-                }
+                    ApplyZoomRectangle(input);
                 else
-                {
                     MiddleClickAutoAxis();
-                }
             }
 
             if (input.RightDown && mouseWasDragged == false)
@@ -206,6 +252,24 @@ namespace ControlBackEndDev
             UpdateCursor(input);
         }
 
+        private void ApplyZoomRectangle(InputState input)
+        {
+            if (Configuration.MiddleClickDragZoom == false)
+                return;
+
+            Settings.RecallAxisLimits();
+
+            var originalLimits = Plot.GetAxisLimits();
+
+            Settings.MouseZoomRect(input.X, input.Y, finalize: true);
+
+            if (Configuration.LockHorizontalAxis)
+                Plot.SetAxisLimitsX(originalLimits.XMin, originalLimits.XMax);
+
+            if (Configuration.LockVerticalAxis)
+                Plot.SetAxisLimitsY(originalLimits.YMin, originalLimits.YMax);
+        }
+
         private void MiddleClickAutoAxis()
         {
             Settings.ZoomRectangle.Clear();
@@ -215,14 +279,26 @@ namespace ControlBackEndDev
 
         public void MouseWheel(InputState input, bool wheelUp)
         {
+            if (Configuration.ScrollWheelZoom == false)
+                return;
+
             double xFrac = wheelUp ? 1.15 : 0.85;
             double yFrac = wheelUp ? 1.15 : 0.85;
+
+            if (Configuration.LockHorizontalAxis)
+                xFrac = 1;
+            if (Configuration.LockVerticalAxis)
+                yFrac = 1;
+
             Settings.AxesZoomTo(xFrac, yFrac, input.X, input.Y);
             Render(false);
         }
 
         public void DoubleClick()
         {
+            if (Configuration.DoubleClickBenchmark == false)
+                return;
+
             Plot.BenchmarkToggle();
             Render(false);
         }
