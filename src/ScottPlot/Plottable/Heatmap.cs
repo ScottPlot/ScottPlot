@@ -1,5 +1,6 @@
 ﻿using ScottPlot.Drawing;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
@@ -9,6 +10,8 @@ namespace ScottPlot.Plottable
 {
     public class Heatmap : IPlottable
     {
+        private List<Colorbar> subscribers = new List<Colorbar>();
+
         // these fields are updated when the intensities are analyzed
         private double Min;
         private double Max;
@@ -36,6 +39,33 @@ namespace ScottPlot.Plottable
             AxisOffsets = new double[] { 0, 0 };
             AxisMultipliers = new double[] { 1, 1 };
             Colormap = Colormap.Viridis;
+        }
+
+        public Colorbar CreateColorBar(bool synced = true)
+        {
+            Colorbar cb = new Colorbar();
+            SyncColorBar(cb);
+
+            if (synced)
+            {
+                subscribers.Add(cb);
+            }
+
+            return cb;
+        }
+
+        private void SyncColorBar(Colorbar cb)
+        {
+            cb.UpdateColormap(Colormap);
+            cb.SetTicks(ColorbarMin, ColorbarMax);
+        }
+
+        private void ModifySubscribers()
+        {
+            foreach (Colorbar curr in subscribers)
+            {
+                SyncColorBar(curr);
+            }
         }
 
         public void Update(double?[,] intensities, Colormap colormap = null, double? min = null, double? max = null)

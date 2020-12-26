@@ -179,6 +179,18 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Add a colorbar to display a colormap beside the data area
+        /// </summary>
+        /// 
+        public Colorbar AddColorbarFromHeatmap(Heatmap hm, bool synced = true, int space = 100)
+        {
+            var plottable = hm.CreateColorBar(synced);
+            Add(plottable);
+            YAxis2.SetSizeLimit(min: space);
+            return plottable;
+        }
+
+        /// <summary>
         /// Create a polygon to fill the area between Y values and a baseline.
         /// </summary>
         public Polygon AddFill(double[] xs, double[] ys, double baseline = 0, Color? color = null)
