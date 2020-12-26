@@ -10,7 +10,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string ID => "colorbar_quickstart";
         public string Title => "Colorbar";
         public string Description =>
-            "A colorbar displays a colormap beside the data area. " + 
+            "A colorbar displays a colormap beside the data area. " +
             "Colorbars are typically added to plots containing heatmaps.";
 
         public void ExecuteRecipe(Plot plt)
@@ -39,7 +39,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string ID => "colorbar_ticks";
         public string Title => "Colorbar Ticks";
         public string Description =>
-            "Tick marks can be added to colorbars. Each tick is described by a position " + 
+            "Tick marks can be added to colorbars. Each tick is described by a position " +
             "(a fraction of the distance from the bottom to the top) and a string (the tick label).";
 
         public void ExecuteRecipe(Plot plt)
