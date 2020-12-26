@@ -119,6 +119,8 @@ namespace ScottPlot.Plottable
             BitmapData bmpData = BmpHeatmap.LockBits(rect, ImageLockMode.ReadWrite, BmpHeatmap.PixelFormat);
             Marshal.Copy(flatARGB, 0, bmpData.Scan0, flatARGB.Length);
             BmpHeatmap.UnlockBits(bmpData);
+
+            ModifySubscribers();
         }
 
         public string ColorbarMin { get; private set; }
