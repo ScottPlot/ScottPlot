@@ -456,15 +456,12 @@ namespace ScottPlot
                 Label = label,
                 AxisOffsets = axisOffsets ?? new double[] { 0, 0 },
                 AxisMultipliers = axisMultipliers ?? new double[] { 1, 1 },
-                ScaleMin = scaleMin,
-                ScaleMax = scaleMax,
                 TransparencyThreshold = transparencyThreshold,
                 BackgroundImage = backgroundImage,
                 DisplayImageAbove = displayImageAbove,
                 ShowAxisLabels = drawAxisLabels,
-                Colormap = colormap ?? Drawing.Colormap.Viridis
             };
-            heatmap.Update(intensities);
+            heatmap.Update(intensities, colormap ?? Drawing.Colormap.Viridis, scaleMin, scaleMax);
 
             Add(heatmap);
             Layout(top: 180);
