@@ -26,7 +26,8 @@
  *    - CTRL+SHIFT+Right-click-drag to zoom evenly
  *    - SHIFT+click-drag draggables for fixed-size dragging
  *    
- *  These options should be configurable somehow:
+ *  Configurable options:
+ *  
  *    - left-click-drag pan
  *    - right-click-drag zoom
  *    - lock vertical or horizontal axis
@@ -244,10 +245,7 @@ namespace ScottPlot.Control
                 MiddleClickAutoAxis();
 
             if (IsRightDown && mouseWasDragged == false)
-            {
-                if (Configuration.RightClickMenu)
-                    RightClicked(null, EventArgs.Empty);
-            }
+                RightClicked(null, EventArgs.Empty);
 
             IsMiddleDown = false;
             IsRightDown = false;

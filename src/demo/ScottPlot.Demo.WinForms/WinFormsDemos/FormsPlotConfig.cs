@@ -65,23 +65,24 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             formsPlot1.Render();
         }
 
-        private void cbRightClickMenu_CheckedChanged(object sender, EventArgs e)
-        {
-            formsPlot1.Configuration.RightClickMenu = cbRightClickMenu.Checked;
-        }
-
         private void cbDoubleClickBenchmark_CheckedChanged(object sender, EventArgs e)
         {
             formsPlot1.Configuration.DoubleClickBenchmark = cbDoubleClickBenchmark.Checked;
         }
 
-        private void cbCustomRightClick_CheckedChanged(object sender, EventArgs e)
+        private void cbRightClickMenu_CheckedChanged(object sender, EventArgs e) => InitializeRightClickMenu();
+
+        private void cbCustomRightClick_CheckedChanged(object sender, EventArgs e) => InitializeRightClickMenu();
+
+        private void InitializeRightClickMenu()
         {
             // remove both possible right-click actions
             formsPlot1.RightClicked -= formsPlot1.DefaultRightClickEvent;
             formsPlot1.RightClicked -= CustomRightClickEvent;
 
-            // add just the one that makes sense based on this checkbox
+            if (cbRightClickMenu.Enabled == false)
+                return;
+
             formsPlot1.RightClicked += cbCustomRightClick.Checked ? CustomRightClickEvent : formsPlot1.DefaultRightClickEvent;
         }
 

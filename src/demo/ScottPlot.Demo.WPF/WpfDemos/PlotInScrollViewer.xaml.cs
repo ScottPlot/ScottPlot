@@ -33,8 +33,6 @@ namespace ScottPlot.Demo.WPF.WpfDemos
                     wpfPlot.Plot.AddSignal(DataGen.RandomWalk(rand, 100));
 
                 wpfPlot.Configuration.ScrollWheelZoom = false;
-                wpfPlot.Configuration.RightClickMenu = false;
-
                 wpfPlot.Render();
             }
         }
