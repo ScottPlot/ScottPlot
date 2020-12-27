@@ -219,36 +219,10 @@ namespace ScottPlot
         /// </summary>
         public (Polygon polyAbove, Polygon polyBelow) AddFillAboveAndBelow(double[] xs, double[] ys, double baseline = 0, Color? colorAbove = null, Color? colorBelow = null)
         {
-            // TODO: this almost works perfectly, but not quite.
-            // look at scatter plots with low numbers of points
-            // that cross the baseline a lot. The same X value appears
-            // to have filled area both above and below the curve.
+            var (xs2, ysAbove, ysBelow) = Drawing.Tools.PolyAboveAndBelow(xs, ys, baseline);
 
-            double[] xs2 = Tools.Pad(xs, cloneEdges: true);
-            double[] ys2 = Tools.Pad(ys, padWithLeft: baseline, padWithRight: baseline);
-            double[] ys2below = new double[ys2.Length];
-            double[] ys2above = new double[ys2.Length];
-
-            for (int i = 0; i < ys2.Length; i++)
-            {
-                if (ys2[i] < baseline)
-                {
-                    ys2below[i] = ys2[i];
-                    ys2above[i] = baseline;
-                }
-                else
-                {
-                    ys2above[i] = ys2[i];
-                    ys2below[i] = baseline;
-                }
-            }
-
-            Polygon polyAbove = new Polygon(xs2, ys2above);
-            Polygon polyBelow = new Polygon(xs2, ys2below);
-
-            polyAbove.FillColor = colorAbove ?? Color.Green;
-            polyBelow.FillColor = colorBelow ?? Color.Red;
-
+            var polyAbove = new Polygon(xs2, ysAbove) { FillColor = colorAbove ?? Color.Green };
+            var polyBelow = new Polygon(xs2, ysBelow) { FillColor = colorBelow ?? Color.Red };
             Add(polyAbove);
             Add(polyBelow);
 
