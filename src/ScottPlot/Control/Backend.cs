@@ -101,9 +101,9 @@ namespace ScottPlot.Control
                 return;
 
             if (Configuration.Quality == QualityMode.High)
-                lowQuality = true;
-            else if (Configuration.Quality == QualityMode.Low)
                 lowQuality = false;
+            else if (Configuration.Quality == QualityMode.Low)
+                lowQuality = true;
 
             PlottableCountOnLastRender = Settings.Plottables.Count;
             Plot.Render(Bmp, lowQuality);
