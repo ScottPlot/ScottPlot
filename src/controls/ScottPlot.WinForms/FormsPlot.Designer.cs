@@ -1,4 +1,5 @@
-﻿namespace ScottPlot
+﻿
+namespace ScottPlot
 {
     partial class FormsPlot
     {
@@ -28,70 +29,114 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.pbPlot = new System.Windows.Forms.PictureBox();
-            this.lblTitle = new System.Windows.Forms.Label();
-            this.lblVersion = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.pbPlot)).BeginInit();
+            this.components = new System.ComponentModel.Container();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.DefaultRightClickMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.copyMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveImageMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.autoAxisMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.helpMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.PlottableCountTimer = new System.Windows.Forms.Timer(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.DefaultRightClickMenu.SuspendLayout();
             this.SuspendLayout();
             // 
-            // pbPlot
+            // pictureBox1
             // 
-            this.pbPlot.BackColor = System.Drawing.Color.Navy;
-            this.pbPlot.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pbPlot.Location = new System.Drawing.Point(0, 0);
-            this.pbPlot.Name = "pbPlot";
-            this.pbPlot.Size = new System.Drawing.Size(500, 350);
-            this.pbPlot.TabIndex = 0;
-            this.pbPlot.TabStop = false;
-            this.pbPlot.SizeChanged += new System.EventHandler(this.PbPlot_SizeChanged);
-            this.pbPlot.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.PbPlot_MouseDoubleClick);
-            this.pbPlot.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PbPlot_MouseDown);
-            this.pbPlot.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PbPlot_MouseMove);
-            this.pbPlot.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PbPlot_MouseUp);
+            this.pictureBox1.BackColor = System.Drawing.Color.Maroon;
+            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(400, 300);
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.DoubleClick += new System.EventHandler(this.PictureBox1_DoubleClick);
+            this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PictureBox1_MouseDown);
+            this.pictureBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PictureBox1_MouseMove);
+            this.pictureBox1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBox1_MouseUp);
             // 
-            // lblTitle
+            // DefaultRightClickMenu
             // 
-            this.lblTitle.AutoSize = true;
-            this.lblTitle.BackColor = System.Drawing.Color.Navy;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTitle.ForeColor = System.Drawing.Color.White;
-            this.lblTitle.Location = new System.Drawing.Point(3, 2);
-            this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(137, 37);
-            this.lblTitle.TabIndex = 1;
-            this.lblTitle.Text = "ScottPlot";
+            this.DefaultRightClickMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.copyMenuItem,
+            this.saveImageMenuItem,
+            this.toolStripSeparator1,
+            this.autoAxisMenuItem,
+            this.toolStripSeparator2,
+            this.helpMenuItem});
+            this.DefaultRightClickMenu.Name = "contextMenuStrip1";
+            this.DefaultRightClickMenu.Size = new System.Drawing.Size(164, 104);
             // 
-            // lblVersion
+            // copyMenuItem
             // 
-            this.lblVersion.BackColor = System.Drawing.Color.Navy;
-            this.lblVersion.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblVersion.ForeColor = System.Drawing.Color.White;
-            this.lblVersion.Location = new System.Drawing.Point(10, 39);
-            this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Size = new System.Drawing.Size(130, 37);
-            this.lblVersion.TabIndex = 2;
-            this.lblVersion.Text = "0.0.0.0";
-            this.lblVersion.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.copyMenuItem.Name = "copyMenuItem";
+            this.copyMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.copyMenuItem.Text = "Copy Image";
+            this.copyMenuItem.Click += new System.EventHandler(this.RightClickMenu_Copy_Click);
             // 
-            // FormsPlot
+            // saveImageMenuItem
+            // 
+            this.saveImageMenuItem.Name = "saveImageMenuItem";
+            this.saveImageMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.saveImageMenuItem.Text = "Save Image As...";
+            this.saveImageMenuItem.Click += new System.EventHandler(this.RightClickMenu_SaveImage_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(160, 6);
+            // 
+            // autoAxisMenuItem
+            // 
+            this.autoAxisMenuItem.Name = "autoAxisMenuItem";
+            this.autoAxisMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.autoAxisMenuItem.Text = "Zoom to Fit Data";
+            this.autoAxisMenuItem.Click += new System.EventHandler(this.RightClickMenu_AutoAxis_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(160, 6);
+            // 
+            // helpMenuItem
+            // 
+            this.helpMenuItem.Name = "helpMenuItem";
+            this.helpMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.helpMenuItem.Text = "Help";
+            this.helpMenuItem.Click += new System.EventHandler(this.RightClickMenu_Help_Click);
+            // 
+            // PlottableCountTimer
+            // 
+            this.PlottableCountTimer.Enabled = true;
+            this.PlottableCountTimer.Interval = 10;
+            this.PlottableCountTimer.Tick += new System.EventHandler(this.PlottableCountTimer_Tick);
+            // 
+            // SPControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.lblVersion);
-            this.Controls.Add(this.lblTitle);
-            this.Controls.Add(this.pbPlot);
-            this.Name = "FormsPlot";
-            this.Size = new System.Drawing.Size(500, 350);
-            ((System.ComponentModel.ISupportInitialize)(this.pbPlot)).EndInit();
+            this.Controls.Add(this.pictureBox1);
+            this.Name = "SPControl";
+            this.Size = new System.Drawing.Size(400, 300);
+            this.SizeChanged += new System.EventHandler(this.OnSizeChanged);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.DefaultRightClickMenu.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.PictureBox pbPlot;
-        private System.Windows.Forms.Label lblTitle;
-        private System.Windows.Forms.Label lblVersion;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.ContextMenuStrip DefaultRightClickMenu;
+        private System.Windows.Forms.ToolStripMenuItem autoAxisMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveImageMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem helpMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem copyMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.Timer PlottableCountTimer;
     }
 }

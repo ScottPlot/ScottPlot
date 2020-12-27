@@ -28,7 +28,7 @@ namespace WinFormsFrameworkApp
             formsPlot1.Render();
         }
 
-        private void formsPlot1_MouseMove(object sender, MouseEventArgs e)
+        private void FormsPlot1_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.Button != MouseButtons.None)
                 return; // don't move markers if actively panning or zooming

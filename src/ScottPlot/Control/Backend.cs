@@ -45,27 +45,33 @@ using System.Text;
 
 namespace ScottPlot.Control
 {
-
     public class ControlBackEnd
     {
         public event EventHandler BitmapUpdated = delegate { };
         public event EventHandler BitmapChanged = delegate { };
         public event EventHandler CursorChanged = delegate { };
+        public event EventHandler AxesChanged = delegate { };
         public event EventHandler RightClicked = delegate { };
 
-        public readonly ScottPlot.Plot Plot;
-        public readonly ScottPlot.Settings Settings;
         public readonly Configuration Configuration = new Configuration();
+        public ScottPlot.Plot Plot { get; private set; }
+
+        private ScottPlot.Settings Settings;
         private System.Drawing.Bitmap Bmp;
         private readonly List<System.Drawing.Bitmap> OldBitmaps = new List<System.Drawing.Bitmap>();
         public ScottPlot.Cursor Cursor { get; private set; } = ScottPlot.Cursor.Arrow;
 
-        public ControlBackEnd(float width, float height)
+        public ControlBackEnd(float width, float height) =>
+            Reset(width, height);
+
+        public void Reset(float width, float height) =>
+            Reset(width, height, new Plot());
+
+        public void Reset(float width, float height, Plot newPlot)
         {
-            Plot = new ScottPlot.Plot();
+            Plot = newPlot;
             Settings = Plot.GetSettings(false);
             Resize(width, height);
-            NewBitmap(600, 400);
         }
 
         public System.Drawing.Bitmap GetLatestBitmap()
@@ -88,6 +94,7 @@ namespace ScottPlot.Control
             BitmapChanged(this, EventArgs.Empty);
         }
 
+        private AxisLimits LimitsOnLastRender = new AxisLimits();
         private int PlottableCountOnLastRender = -1;
         public void Render(bool lowQuality = false)
         {
@@ -99,6 +106,11 @@ namespace ScottPlot.Control
             PlottableCountOnLastRender = Settings.Plottables.Count;
             Plot.Render(Bmp, lowQuality);
             BitmapUpdated(null, EventArgs.Empty);
+
+            ScottPlot.AxisLimits newLimits = Plot.GetAxisLimits();
+            if (!newLimits.Equals(LimitsOnLastRender) && Configuration.AxesChangedEventEnabled)
+                AxesChanged(null, EventArgs.Empty);
+            LimitsOnLastRender = newLimits;
         }
 
         private void RenderAfterDragging() =>
@@ -123,8 +135,17 @@ namespace ScottPlot.Control
             Settings.MouseDown(input.X, input.Y);
         }
 
+        private float MouseLocationX;
+        private float MouseLocationY;
+
+        public (double x, double y) GetMouseCoordinates() => Plot.GetCoordinate(MouseLocationX, MouseLocationY);
+
+        public (float x, float y) GetMousePixel() => (MouseLocationX, MouseLocationY);
+
         public void MouseMove(InputState input)
         {
+            MouseLocationX = input.X;
+            MouseLocationY = input.Y;
             if (PlottableBeingDragged != null)
                 MouseMovedToDragPlottable(input);
             else if (input.LeftDown && !input.AltDown)
@@ -221,7 +242,8 @@ namespace ScottPlot.Control
 
             if (input.RightDown && mouseWasDragged == false)
             {
-                RightClicked(null, EventArgs.Empty);
+                if (Configuration.RightClickMenu)
+                    RightClicked(null, EventArgs.Empty);
                 return;
             }
 
@@ -255,10 +277,10 @@ namespace ScottPlot.Control
             Settings.ZoomRectangle.Clear();
 
             if (Configuration.LockVerticalAxis == false)
-                Plot.AxisAutoY();
+                Plot.AxisAutoY(Configuration.MiddleClickAutoAxisMarginY);
 
             if (Configuration.LockHorizontalAxis == false)
-                Plot.AxisAutoX();
+                Plot.AxisAutoX(Configuration.MiddleClickAutoAxisMarginX);
 
             Render();
         }

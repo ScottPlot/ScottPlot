@@ -57,8 +57,7 @@ namespace ScottPlot.Demo.WinForms
             sourceCodeTextbox.Text = Cookbook.Locate.RecipeSourceCode(id);
 
             formsPlot1.Reset();
-            recipe.ExecuteRecipe(formsPlot1.plt);
-            formsPlot1.Render();
+            recipe.ExecuteRecipe(formsPlot1.Plot);
         }
     }
 }

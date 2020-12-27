@@ -9,4 +9,10 @@
     <ProjectReference Include="..\..\ScottPlot\ScottPlot.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="FormsPlot.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+  </ItemGroup>
+
 </Project>
