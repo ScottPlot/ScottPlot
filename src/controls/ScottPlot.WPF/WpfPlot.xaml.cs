@@ -70,8 +70,8 @@ namespace ScottPlot
         private void OnAxesChanged(object sender, EventArgs e) => AxesChanged?.Invoke(sender, e);
         private void OnSizeChanged(object sender, EventArgs e) => Backend.Resize((float)ActualWidth, (float)ActualHeight);
 
-        private void OnMouseDown(object sender, MouseButtonEventArgs e) => Backend.MouseDown(GetInputState(e));
-        private void OnMouseUp(object sender, MouseButtonEventArgs e) => Backend.MouseUp(GetInputState(e));
+        private void OnMouseDown(object sender, MouseButtonEventArgs e) { CaptureMouse(); Backend.MouseDown(GetInputState(e)); }
+        private void OnMouseUp(object sender, MouseButtonEventArgs e) { Backend.MouseUp(GetInputState(e)); ReleaseMouseCapture(); }
         private void OnDoubleClick(object sender, MouseButtonEventArgs e) => Backend.DoubleClick();
         private void OnMouseWheel(object sender, MouseWheelEventArgs e) => Backend.MouseWheel(GetInputState(e), e.Delta > 0);
         private void OnMouseMove(object sender, MouseEventArgs e) { Backend.MouseMove(GetInputState(e)); base.OnMouseMove(e); }
