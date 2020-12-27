@@ -138,11 +138,13 @@ namespace ScottPlot.Control
 
         private bool IsMiddleDown;
         private bool IsRightDown;
+        private bool IsLeftDown;
         private ScottPlot.Plottable.IDraggable PlottableBeingDragged = null;
         public void MouseDown(InputState input)
         {
-            IsMiddleDown = input.MiddleDown;
-            IsRightDown = input.RightDown;
+            IsMiddleDown = input.MiddleWasJustPressed;
+            IsRightDown = input.RightWasJustPressed;
+            IsLeftDown = input.LeftWasJustPressed;
             PlottableBeingDragged = Plot.GetDraggableUnderMouse(input.X, input.Y);
             Settings.MouseDown(input.X, input.Y);
         }
@@ -157,14 +159,14 @@ namespace ScottPlot.Control
         private bool IsZoomingRectangle;
         public void MouseMove(InputState input)
         {
-            IsZoomingRectangle = input.MiddleDown || (input.LeftDown && input.AltDown);
+            IsZoomingRectangle = IsMiddleDown || (IsLeftDown && input.AltDown);
             MouseLocationX = input.X;
             MouseLocationY = input.Y;
             if (PlottableBeingDragged != null)
                 MouseMovedToDragPlottable(input);
-            else if (input.LeftDown && !input.AltDown)
+            else if (IsLeftDown && !input.AltDown)
                 MouseMovedToPan(input);
-            else if (input.RightDown)
+            else if (IsRightDown)
                 MouseMovedToZoom(input);
             else if (IsZoomingRectangle)
                 MouseMovedToZoomRectangle(input);
@@ -255,6 +257,7 @@ namespace ScottPlot.Control
 
             IsMiddleDown = false;
             IsRightDown = false;
+            IsLeftDown = false;
 
             Render();
             UpdateCursor(input);

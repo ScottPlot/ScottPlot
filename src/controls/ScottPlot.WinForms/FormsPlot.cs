@@ -70,9 +70,9 @@ namespace ScottPlot
             {
                 X = e.X,
                 Y = e.Y,
-                LeftDown = e.Button == MouseButtons.Left,
-                RightDown = e.Button == MouseButtons.Right,
-                MiddleDown = e.Button == MouseButtons.Middle,
+                LeftWasJustPressed = e.Button == MouseButtons.Left,
+                RightWasJustPressed = e.Button == MouseButtons.Right,
+                MiddleWasJustPressed = e.Button == MouseButtons.Middle,
                 ShiftDown = ModifierKeys.HasFlag(Keys.Shift),
                 CtrlDown = ModifierKeys.HasFlag(Keys.Control),
                 AltDown = ModifierKeys.HasFlag(Keys.Alt),

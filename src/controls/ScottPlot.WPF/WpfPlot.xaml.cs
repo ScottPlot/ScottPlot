@@ -81,9 +81,9 @@ namespace ScottPlot
             {
                 X = (float)e.GetPosition(this).X,
                 Y = (float)e.GetPosition(this).Y,
-                LeftDown = e.LeftButton == MouseButtonState.Pressed,
-                RightDown = e.RightButton == MouseButtonState.Pressed,
-                MiddleDown = e.MiddleButton == MouseButtonState.Pressed,
+                LeftWasJustPressed = e.LeftButton == MouseButtonState.Pressed,
+                RightWasJustPressed = e.RightButton == MouseButtonState.Pressed,
+                MiddleWasJustPressed = e.MiddleButton == MouseButtonState.Pressed,
                 ShiftDown = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift),
                 CtrlDown = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl),
                 AltDown = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt),
