@@ -20,35 +20,30 @@ namespace ScottPlot.Demo.WPF.WpfDemos
         public WpfConfig()
         {
             InitializeComponent();
-
-            int pointCount = 51;
-            double[] dataXs = DataGen.Consecutive(pointCount);
-            double[] dataSin = DataGen.Sin(pointCount);
-            double[] dataCos = DataGen.Cos(pointCount);
-
-            wpfPlot1.plt.PlotScatter(dataXs, dataSin);
-            wpfPlot1.plt.PlotScatter(dataXs, dataCos);
+            wpfPlot1.Plot.AddSignal(DataGen.Sin(51));
+            wpfPlot1.Plot.AddSignal(DataGen.Cos(51));
             wpfPlot1.Render();
         }
 
-        private void PanEnable(object sender, RoutedEventArgs e) { wpfPlot1?.Configure(enablePanning: true); }
-        private void PanDisable(object sender, RoutedEventArgs e) { wpfPlot1?.Configure(enablePanning: false); }
-        private void ZoomEnable(object sender, RoutedEventArgs e) { wpfPlot1?.Configure(enableRightClickZoom: true, enableScrollWheelZoom: true); }
-        private void ZoomDisable(object sender, RoutedEventArgs e) { wpfPlot1?.Configure(enableRightClickZoom: false, enableScrollWheelZoom: false); }
-        private void DragLowQualityEnable(object sender, RoutedEventArgs e) { wpfPlot1?.Configure(lowQualityWhileDragging: true); }
-        private void DragLowQualityDisable(object sender, RoutedEventArgs e) { wpfPlot1?.Configure(lowQualityWhileDragging: false); }
-        private void VerticalLock(object sender, RoutedEventArgs e) { wpfPlot1?.Configure(lockVerticalAxis: true); }
-        private void VerticalUnlock(object sender, RoutedEventArgs e) { wpfPlot1?.Configure(lockVerticalAxis: false); }
-        private void HorizontalLock(object sender, RoutedEventArgs e) { wpfPlot1?.Configure(lockHorizontalAxis: true); }
-        private void HorizontalUnlock(object sender, RoutedEventArgs e) { wpfPlot1?.Configure(lockHorizontalAxis: true); }
-        private void EqualAxisLock(object sender, RoutedEventArgs e) { wpfPlot1?.Configure(equalAxes: true); wpfPlot1.Render(); }
-        private void EqualAxisUnlock(object sender, RoutedEventArgs e) { wpfPlot1?.Configure(equalAxes: false); }
-        private void DoubleClickBenchmarkEnable(object sender, RoutedEventArgs e) { wpfPlot1?.Configure(enableDoubleClickBenchmark: true); }
-        private void DoubleClickBenchmarkDisable(object sender, RoutedEventArgs e) { wpfPlot1?.Configure(enableDoubleClickBenchmark: false); wpfPlot1.plt.Benchmark(false); wpfPlot1.Render(); }
+        // TODO: use proper binding (perhaps with the configuration object itself?)
+        private void PanEnable(object sender, RoutedEventArgs e) { if (wpfPlot1 is null) return; wpfPlot1.Configuration.LeftClickDragPan = true; }
+        private void PanDisable(object sender, RoutedEventArgs e) { if (wpfPlot1 is null) return; wpfPlot1.Configuration.LeftClickDragPan = false; }
+        private void ZoomEnable(object sender, RoutedEventArgs e) { if (wpfPlot1 is null) return; wpfPlot1.Configuration.RightClickDragZoom = true; wpfPlot1.Configuration.ScrollWheelZoom = true; }
+        private void ZoomDisable(object sender, RoutedEventArgs e) { if (wpfPlot1 is null) return; wpfPlot1.Configuration.RightClickDragZoom = false; wpfPlot1.Configuration.ScrollWheelZoom = false; }
+        private void DragLowQualityEnable(object sender, RoutedEventArgs e) { if (wpfPlot1 is null) return; wpfPlot1.Configuration.Quality = Control.QualityMode.LowWhileDragging; }
+        private void DragLowQualityDisable(object sender, RoutedEventArgs e) { if (wpfPlot1 is null) return; wpfPlot1.Configuration.Quality = Control.QualityMode.High; }
+        private void VerticalLock(object sender, RoutedEventArgs e) { if (wpfPlot1 is null) return; wpfPlot1.Configuration.LockVerticalAxis = true; }
+        private void VerticalUnlock(object sender, RoutedEventArgs e) { if (wpfPlot1 is null) return; wpfPlot1.Configuration.LockVerticalAxis = false; }
+        private void HorizontalLock(object sender, RoutedEventArgs e) { if (wpfPlot1 is null) return; wpfPlot1.Configuration.LockHorizontalAxis = true; }
+        private void HorizontalUnlock(object sender, RoutedEventArgs e) { if (wpfPlot1 is null) return; wpfPlot1.Configuration.LockHorizontalAxis = false; }
+        private void EqualAxisLock(object sender, RoutedEventArgs e) { if (wpfPlot1 is null) return; wpfPlot1.Plot.AxisScaleLock(true); wpfPlot1.Render(); }
+        private void EqualAxisUnlock(object sender, RoutedEventArgs e) { if (wpfPlot1 is null) return; wpfPlot1.Plot.AxisScaleLock(false); }
+        private void DoubleClickBenchmarkEnable(object sender, RoutedEventArgs e) { if (wpfPlot1 is null) return; wpfPlot1.Configuration.DoubleClickBenchmark = true; wpfPlot1.Render(); }
+        private void DoubleClickBenchmarkDisable(object sender, RoutedEventArgs e) { if (wpfPlot1 is null) return; wpfPlot1.Configuration.DoubleClickBenchmark = false; wpfPlot1.Render(); }
 
         private void RightClickMenuEnable(object sender, RoutedEventArgs e)
         {
-            // TODO - currently WPF control has no right-click menu
+
         }
 
         private void RightClickMenuDisable(object sender, RoutedEventArgs e)
@@ -65,6 +60,5 @@ namespace ScottPlot.Demo.WPF.WpfDemos
         {
 
         }
-
     }
 }

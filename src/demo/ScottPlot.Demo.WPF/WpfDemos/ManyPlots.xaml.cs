@@ -22,7 +22,8 @@ namespace ScottPlot.Demo.WPF.WpfDemos
         {
             this.columnIndex = columnIndex;
             this.rowIndex = rowIndex;
-            wpfPlot = new WpfPlot(plt);
+            wpfPlot = new WpfPlot();
+            wpfPlot.Reset(plt);
         }
     }
 

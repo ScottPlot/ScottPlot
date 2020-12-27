@@ -29,7 +29,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             formsPlot2.Render();
             formsPlot2.Configuration.AxesChangedEventEnabled = true;
         }
-        
+
         private void formsPlot2_AxesChanged(object sender, EventArgs e)
         {
             if (cbLinked.Checked == false)

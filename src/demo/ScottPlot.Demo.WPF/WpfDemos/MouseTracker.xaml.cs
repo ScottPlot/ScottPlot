@@ -48,7 +48,7 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             vLine.X = coordinateX;
             hLine.Y = coordinateY;
 
-            wpfPlot1.Render(skipIfCurrentlyRendering: true);
+            wpfPlot1.Render();
         }
     }
 }

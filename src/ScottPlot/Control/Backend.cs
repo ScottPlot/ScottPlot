@@ -98,6 +98,9 @@ namespace ScottPlot.Control
         private int PlottableCountOnLastRender = -1;
         public void Render(bool lowQuality = false)
         {
+            if (Bmp is null)
+                return;
+
             if (Configuration.Quality == QualityMode.High)
                 lowQuality = true;
             else if (Configuration.Quality == QualityMode.Low)
@@ -128,9 +131,13 @@ namespace ScottPlot.Control
             Render(false);
         }
 
+        private bool IsMiddleDown;
+        private bool IsRightDown;
         private ScottPlot.Plottable.IDraggable PlottableBeingDragged = null;
         public void MouseDown(InputState input)
         {
+            IsMiddleDown = input.MiddleDown;
+            IsRightDown = input.RightDown;
             PlottableBeingDragged = Plot.GetDraggableUnderMouse(input.X, input.Y);
             Settings.MouseDown(input.X, input.Y);
         }
@@ -142,8 +149,10 @@ namespace ScottPlot.Control
 
         public (float x, float y) GetMousePixel() => (MouseLocationX, MouseLocationY);
 
+        private bool IsZoomingRectangle;
         public void MouseMove(InputState input)
         {
+            IsZoomingRectangle = input.MiddleDown || (input.LeftDown && input.AltDown);
             MouseLocationX = input.X;
             MouseLocationY = input.Y;
             if (PlottableBeingDragged != null)
@@ -152,7 +161,7 @@ namespace ScottPlot.Control
                 MouseMovedToPan(input);
             else if (input.RightDown)
                 MouseMovedToZoom(input);
-            else if (input.MiddleDown || (input.LeftDown && input.AltDown))
+            else if (IsZoomingRectangle)
                 MouseMovedToZoomRectangle(input);
             else
                 MouseMovedWithoutInteraction(input);
@@ -231,21 +240,19 @@ namespace ScottPlot.Control
             PlottableBeingDragged = null;
             bool mouseWasDragged = Settings.MouseHasMoved(input.X, input.Y);
 
-            bool isZoomingRectangle = input.MiddleDown || (input.LeftDown && input.AltDown);
-            if (isZoomingRectangle)
-            {
-                if (mouseWasDragged)
-                    ApplyZoomRectangle(input);
-                else
-                    MiddleClickAutoAxis();
-            }
+            if (IsZoomingRectangle && mouseWasDragged)
+                ApplyZoomRectangle(input);
+            else if (IsMiddleDown)
+                MiddleClickAutoAxis();
 
-            if (input.RightDown && mouseWasDragged == false)
+            if (IsRightDown && mouseWasDragged == false)
             {
                 if (Configuration.RightClickMenu)
                     RightClicked(null, EventArgs.Empty);
-                return;
             }
+
+            IsMiddleDown = false;
+            IsRightDown = false;
 
             Render();
             UpdateCursor(input);

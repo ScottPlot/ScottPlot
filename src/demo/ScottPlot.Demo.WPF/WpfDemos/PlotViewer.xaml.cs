@@ -35,12 +35,12 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             double[] randomWalkData = DataGen.RandomWalk(rand, pointCount);
 
             var plt = new ScottPlot.Plot();
-            plt.PlotSignal(randomWalkData);
+            plt.AddSignal(randomWalkData);
             plt.Title($"{pointCount} Random Walk Points");
 
             var plotViewer = new ScottPlot.WpfPlotViewer(plt, 500, 300, "Random Walk Data");
             plotViewer.Owner = this; // so it closes if this window closes
-            plotViewer.wpfPlot1.Configure(lowQualityWhileDragging: false); // customize as desired
+            plotViewer.wpfPlot1.Configuration.Quality = Control.QualityMode.High; // customize as desired
             plotViewer.Show(); // or ShowDialog() for a blocking window
         }
 
@@ -56,13 +56,13 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             for (int i = 0; i < sinCount; i++)
             {
                 double[] randomSinValues = DataGen.Sin(50, rand.NextDouble() * 10, rand.NextDouble(), rand.NextDouble(), rand.NextDouble() * 100);
-                plt.PlotSignal(randomSinValues);
+                plt.AddSignal(randomSinValues);
             }
             plt.Title($"{sinCount} Random Sine Waves");
 
             var plotViewer = new ScottPlot.WpfPlotViewer(plt, 500, 300, "Random Sine Wave Data");
             plotViewer.Owner = this; // so it closes if this window closes
-            plotViewer.wpfPlot1.Configure(lowQualityWhileDragging: false); // customize as desired
+            plotViewer.wpfPlot1.Configuration.Quality = Control.QualityMode.High; // customize as desired
             plotViewer.Show(); // or ShowDialog() for a blocking window
         }
     }

@@ -19,6 +19,7 @@ namespace ScottPlot
 
         public FormsPlot()
         {
+            // TODO: something different in designer mode
             Backend = new ScottPlot.Control.ControlBackEnd(Width, Height);
             Backend.BitmapChanged += new EventHandler(OnBitmapChanged);
             Backend.BitmapUpdated += new EventHandler(OnBitmapUpdated);
