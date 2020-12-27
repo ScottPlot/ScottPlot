@@ -41,6 +41,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace ScottPlot.Control
 {
@@ -100,6 +101,8 @@ namespace ScottPlot.Control
             if (Bmp is null)
                 return;
 
+            //Debug.WriteLine("Render called by:" + new StackTrace().GetFrame(1).GetMethod().Name);
+
             if (Configuration.Quality == QualityMode.High)
                 lowQuality = false;
             else if (Configuration.Quality == QualityMode.Low)
@@ -107,12 +110,13 @@ namespace ScottPlot.Control
 
             PlottableCountOnLastRender = Settings.Plottables.Count;
             Plot.Render(Bmp, lowQuality);
-            BitmapUpdated(null, EventArgs.Empty);
 
             ScottPlot.AxisLimits newLimits = Plot.GetAxisLimits();
             if (!newLimits.Equals(LimitsOnLastRender) && Configuration.AxesChangedEventEnabled)
                 AxesChanged(null, EventArgs.Empty);
             LimitsOnLastRender = newLimits;
+
+            BitmapUpdated(null, EventArgs.Empty);
         }
 
         private void RenderAfterDragging() =>
@@ -120,6 +124,8 @@ namespace ScottPlot.Control
 
         public void RenderIfPlottableCountChanged()
         {
+            if (Bmp is null)
+                return;
             if (Settings.Plottables.Count != PlottableCountOnLastRender)
                 Render();
         }
