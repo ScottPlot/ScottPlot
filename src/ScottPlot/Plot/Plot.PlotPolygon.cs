@@ -87,34 +87,9 @@ namespace ScottPlot
             if (xs.Length != ys.Length)
                 throw new ArgumentException("xs and ys must all have the same length");
 
-            double[] xs2 = Tools.Pad(xs, cloneEdges: true);
-            double[] ys2 = Tools.Pad(ys, padWithLeft: baseline, padWithRight: baseline);
-
-            double[] ys2below = new double[ys2.Length];
-            double[] ys2above = new double[ys2.Length];
-            for (int i = 0; i < ys2.Length; i++)
-            {
-                if (ys2[i] < baseline)
-                {
-                    ys2below[i] = ys2[i];
-                    ys2above[i] = baseline;
-                }
-                else
-                {
-                    ys2above[i] = ys2[i];
-                    ys2below[i] = baseline;
-                }
-            }
-
-            if (fillColorAbove is null)
-                fillColorAbove = Color.Green;
-            if (fillColorBelow is null)
-                fillColorBelow = Color.Red;
-            if (lineColor is null)
-                lineColor = Color.Black;
-
-            var polyAbove = PlotPolygon(xs2, ys2above, labelAbove, lineWidth, lineColor, fill, fillColorAbove, fillAlpha);
-            var polyBelow = PlotPolygon(xs2, ys2below, labelBelow, lineWidth, lineColor, fill, fillColorBelow, fillAlpha);
+            var (xs2, ysAbove, ysBelow) = Drawing.Tools.PolyAboveAndBelow(xs, ys, baseline);
+            var polyAbove = PlotPolygon(xs2, ysAbove, labelAbove, lineWidth, lineColor, fill, fillColorAbove ?? Color.Green, fillAlpha);
+            var polyBelow = PlotPolygon(xs2, ysBelow, labelBelow, lineWidth, lineColor, fill, fillColorBelow ?? Color.Red, fillAlpha);
 
             return (polyBelow, polyAbove);
         }
