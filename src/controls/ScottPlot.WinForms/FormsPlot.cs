@@ -9,8 +9,8 @@ namespace ScottPlot
     {
         public ScottPlot.Plot Plot => Backend.Plot;
         public ScottPlot.Control.Configuration Configuration => Backend.Configuration;
-        public event EventHandler AxesChanged = delegate { }; // the user can add custom handlers
-        public event EventHandler RightClicked = delegate { }; // the user can add custom handlers
+        public event EventHandler AxesChanged;
+        public event EventHandler RightClicked;
         private readonly ScottPlot.Control.ControlBackEnd Backend;
         private readonly Dictionary<ScottPlot.Cursor, System.Windows.Forms.Cursor> Cursors;
 
@@ -50,14 +50,13 @@ namespace ScottPlot
         public void Reset(Plot newPlot) => Backend.Reset(Width, Height, newPlot);
         public void Render(bool lowQuality = false) => Backend.Render(lowQuality);
         private void PlottableCountTimer_Tick(object sender, EventArgs e) => Backend.RenderIfPlottableCountChanged();
-        public void DefaultRightClickEvent(object sender, EventArgs e) => DefaultRightClickMenu.Show(System.Windows.Forms.Cursor.Position);
 
         private void OnBitmapUpdated(object sender, EventArgs e) => pictureBox1.Invalidate();
         private void OnBitmapChanged(object sender, EventArgs e) => pictureBox1.Image = Backend.GetLatestBitmap();
         private void OnCursorChanged(object sender, EventArgs e) => Cursor = Cursors[Backend.Cursor];
         private void OnSizeChanged(object sender, EventArgs e) => Backend.Resize(Width, Height);
-        private void OnAxesChanged(object sender, EventArgs e) => AxesChanged(sender, e);
-        private void OnRightClicked(object sender, EventArgs e) => RightClicked(sender, e);
+        private void OnAxesChanged(object sender, EventArgs e) => AxesChanged?.Invoke(sender, e);
+        private void OnRightClicked(object sender, EventArgs e) => RightClicked?.Invoke(sender, e);
 
         private void PictureBox1_MouseDown(object sender, MouseEventArgs e) => Backend.MouseDown(GetInputState(e));
         private void PictureBox1_MouseUp(object sender, MouseEventArgs e) => Backend.MouseUp(GetInputState(e));
@@ -78,6 +77,7 @@ namespace ScottPlot
                 AltDown = ModifierKeys.HasFlag(Keys.Alt),
             };
 
+        public void DefaultRightClickEvent(object sender, EventArgs e) => DefaultRightClickMenu.Show(System.Windows.Forms.Cursor.Position);
         private void RightClickMenu_Copy_Click(object sender, EventArgs e) => Clipboard.SetImage(Plot.Render());
         private void RightClickMenu_Help_Click(object sender, EventArgs e) => Process.Start("https://swharden.com/scottplot");
         private void RightClickMenu_AutoAxis_Click(object sender, EventArgs e) { Plot.AxisAuto(); Render(); }
