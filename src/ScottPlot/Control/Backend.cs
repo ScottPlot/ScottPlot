@@ -5,7 +5,6 @@
  *    - single location for mouse interaction logic so controls don't have to implement it
  *    - use events to tell controls when to update the image or change the mouse cursor
  *    - TODO: render calls should be non-blocking so GUI/controls aren't slowed by render requests
- *    - TODO: move this module into the ScottPlot project
  *    - TODO: a timer should ask for a high quality render after mouse interaction stops
  *   
  *   Default Controls:
@@ -41,7 +40,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace ScottPlot.Control
 {
