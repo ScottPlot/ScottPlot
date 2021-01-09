@@ -208,8 +208,10 @@ namespace ScottPlot.Cookbook.Recipes
 
             double tenth_percentile = ScottPlot.Statistics.Common.NthOrderStatistic(ys, k); // Note that the 10th percentile is different from 10% lows, which are the average of the bottom 10%
 
-            plt.AddSignal(ys);
-            plt.AddHorizontalLine(tenth_percentile);
+            plt.AddSignal(ys, label: "Random Data");
+            plt.AddHorizontalLine(tenth_percentile, label: "10th Percentile");
+
+            plt.Legend();
 
         }
     }
