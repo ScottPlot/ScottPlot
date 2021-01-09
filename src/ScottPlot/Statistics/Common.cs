@@ -33,7 +33,10 @@ namespace ScottPlot.Statistics
 
         public static double NthOrderStatistic(double[] values, int n)
         {
-            return QuickSelect(values, 0, values.Length - 1, n);
+            double[] copied_values = new double[values.Length];
+            Array.Copy(values, copied_values, values.Length); // QuickSelect mutates the array
+
+            return QuickSelect(copied_values, 0, values.Length - 1, n);
         }
 
         private static double QuickSelect(double[] values, int begin, int end, int i)
