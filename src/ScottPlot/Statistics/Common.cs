@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace ScottPlot.Statistics
@@ -28,6 +29,76 @@ namespace ScottPlot.Statistics
                 sum += values[i];
             double mean = sum / values.Length;
             return mean;
+        }
+
+        public static double NthOrderStatistic(double[] values, int n)
+        {
+            return QuickSelect(values, 0, values.Length - 1, n);
+        }
+
+        private static double QuickSelect(double[] values, int begin, int end, int i)
+        {
+            // QuickSelect (aka Hoare's Algorithm) is a selection algorithm (i.e. given an integer i it returns the ith smallest element in a sequence) with O(n) expected time.
+            // In the worst case it is O(n^2), i.e. when the chosen pivot is always the max or min at each call. It is very similar to QuickSort and developed by the same man.
+            // The use of a random pivot virtually assures linear time performance.
+            // There is a guaranteed linear time algorithm which uses median of medians to choose a pivot but the overhead is often not worth it.
+
+            if (begin == end)
+            {
+                return values[begin];
+            }
+
+            int pivot_index = Partition(values, begin, end);
+            int k = pivot_index - begin;
+
+            if (i == k)
+            {
+                return values[pivot_index];
+            }
+            else if (i < k)
+            {
+                return QuickSelect(values, begin, pivot_index - 1, i);
+            }
+            else
+            {
+                return QuickSelect(values, pivot_index + 1, end, i - k - 1);
+            }
+        }
+
+        private static RNGCryptoServiceProvider rand = new RNGCryptoServiceProvider(); // In principle QuickSelect could have its performance degraded through timing attacks, hence the CSPRNG
+        private static int Partition(double[] values, int begin, int end)
+        {
+            byte[] random_bytes = new byte[sizeof(int)];
+            rand.GetBytes(random_bytes);
+            int pivot_index = Math.Abs(BitConverter.ToInt32(random_bytes, 0) % (end - begin)) + begin; // Modulo can return negative numbers in C# if the dividend is negative
+
+
+            // Moving the pivot to the end is far easier than handling it where it is
+            // This also allows you to turn this into the non-randomized Partition
+            double swap = values[pivot_index];
+            values[pivot_index] = values[end];
+            values[end] = swap;
+
+            double pivot = values[end];
+
+            int i = begin - 1;
+            for (int j = begin; j < end; j++)
+            {
+                if (values[j] <= pivot)
+                {
+                    i++;
+                    double tmp1 = values[j];
+                    values[j] = values[i];
+                    values[i] = tmp1;
+                }
+            }
+
+            i++;
+            double tmp2 = values[end];
+            values[end] = values[i];
+            values[i] = tmp2;
+
+            return i;
         }
     }
 }
