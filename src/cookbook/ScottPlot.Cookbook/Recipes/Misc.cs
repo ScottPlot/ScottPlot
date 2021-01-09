@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 
 namespace ScottPlot.Cookbook.Recipes
@@ -184,6 +185,32 @@ namespace ScottPlot.Cookbook.Recipes
 
             // zoom in on the interesting area
             plt.SetAxisLimits(40, 60);
+        }
+    }
+
+    class OrderStatistics : IRecipe
+    {
+        public string Category => "Misc";
+        public string ID => "misc_orderStatistics";
+        public string Title => "Kth Order Statistics";
+        public string Description =>
+            "The kth order statistic of a set is the kth smallest value of the set (in this case, indexed from zero).";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            Random rand = new Random(0);
+
+            const int n = 500;
+
+            double[] ys = DataGen.Random(rand, n);
+
+            int k = 10 * n / 100;
+
+            double tenth_percentile = ScottPlot.Statistics.Common.NthOrderStatistic(ys, k); // Note that the 10th percentile is different from 10% lows, which are the average of the bottom 10%
+
+            plt.AddSignal(ys);
+            plt.AddHorizontalLine(tenth_percentile);
+
         }
     }
 }
