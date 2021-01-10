@@ -20,20 +20,8 @@ namespace ScottPlot.WPF
         public HelpWindow()
         {
             InitializeComponent();
-            VersionLabel.Content = Plot.Version;
-
-            StringBuilder msg = new StringBuilder();
-            msg.AppendLine("Left-click-drag: pan");
-            msg.AppendLine("Right-click-drag: zoom");
-            msg.AppendLine("Middle-click-drag: zoom region");
-            msg.AppendLine("");
-            msg.AppendLine("Right-click: show menu");
-            msg.AppendLine("Middle-click: auto-axis");
-            msg.AppendLine("Double-click: show benchmark");
-            msg.AppendLine("");
-            msg.AppendLine("Hold CTRL to lock vertical axis");
-            msg.AppendLine("Hold ALT to lock horizontal axis");
-            InfoTextBlock.Text = msg.ToString();
+            VersionLabel.Content = $"ScottPlot {Plot.Version}";
+            InfoTextBlock.Text = Control.ControlBackEnd.GetHelpMessage();
         }
 
         private void LaunchScottPlotWebsite(object sender, RoutedEventArgs e)

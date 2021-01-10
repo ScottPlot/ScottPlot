@@ -147,7 +147,7 @@ namespace ScottPlot
         }
 
         private void RightClickMenu_Copy_Click(object sender, EventArgs e) => System.Windows.Clipboard.SetImage(BmpImageFromBmp(Backend.GetLatestBitmap()));
-        private void RightClickMenu_Help_Click(object sender, EventArgs e) => System.Diagnostics.Process.Start("https://swharden.com/scottplot");
+        private void RightClickMenu_Help_Click(object sender, EventArgs e) => new WPF.HelpWindow().Show();
         private void RightClickMenu_AutoAxis_Click(object sender, EventArgs e) { Plot.AxisAuto(); Render(); }
         private void RightClickMenu_SaveImage_Click(object sender, EventArgs e)
         {
