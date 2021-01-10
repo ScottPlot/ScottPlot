@@ -51,6 +51,34 @@ namespace ScottPlot.Statistics
                 return values[begin];
             }
 
+            if(i == 0)
+			{
+                double min = values[begin];
+                for(int j = begin; j <= end; j++)
+				{
+                    if(values[j] < min)
+					{
+                        min = values[j];
+					}
+				}
+
+                return min;
+			}
+
+            if(i == end - begin)
+			{
+                double max = values[begin];
+                for (int j = begin; j <= end; j++)
+                {
+                    if (values[j] > max)
+                    {
+                        max = values[j];
+                    }
+                }
+
+                return max;
+            }
+
             int pivot_index = Partition(values, begin, end);
             int k = pivot_index - begin;
 
