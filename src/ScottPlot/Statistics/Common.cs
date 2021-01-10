@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -39,6 +40,27 @@ namespace ScottPlot.Statistics
             return QuickSelect(copied_values, 0, values.Length - 1, n - 1);
         }
 
+        public static double Quantile(double[] values, int i, int numQuantiles)
+        {
+            // Not everyone uses the 0th and qth quantile, for completeness sake they are defined below.
+            if (i == 0)
+            {
+                return values.Min();
+            }
+
+            if (i == numQuantiles)
+            {
+                return values.Max();
+            }
+
+            return NthOrderStatistic(values, i * values.Length / numQuantiles);
+        }
+
+        public static double Percentile(double[] values, int i)
+        {
+            return Quantile(values, i, 100);
+        }
+
         private static double QuickSelect(double[] values, int begin, int end, int i)
         {
             // QuickSelect (aka Hoare's Algorithm) is a selection algorithm (i.e. given an integer i it returns the ith smallest element in a sequence) with O(n) expected time.
@@ -51,22 +73,22 @@ namespace ScottPlot.Statistics
                 return values[begin];
             }
 
-            if(i == 0)
-			{
+            if (i == 0)
+            {
                 double min = values[begin];
-                for(int j = begin; j <= end; j++)
-				{
-                    if(values[j] < min)
-					{
+                for (int j = begin; j <= end; j++)
+                {
+                    if (values[j] < min)
+                    {
                         min = values[j];
-					}
-				}
+                    }
+                }
 
                 return min;
-			}
+            }
 
-            if(i == end - begin)
-			{
+            if (i == end - begin)
+            {
                 double max = values[begin];
                 for (int j = begin; j <= end; j++)
                 {

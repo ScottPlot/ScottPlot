@@ -48,5 +48,23 @@ namespace ScottPlotTests.Statistics
             double maxValue = SortedValues.Last();
             Assert.AreEqual(maxValue, nthValue);
         }
+
+        [Test]
+        public void Test_0thPercentileIsMin()
+        {
+            int n = 0;
+            double nthValue = ScottPlot.Statistics.Common.Percentile(RandomValues, n);
+            double minValue = SortedValues.First();
+            Assert.AreEqual(minValue, nthValue);
+        }
+
+        [Test]
+        public void Test_100thPercentileIsMax()
+        {
+            int n = 100;
+            double nthValue = ScottPlot.Statistics.Common.Percentile(RandomValues, n);
+            double maxValue = SortedValues.Last();
+            Assert.AreEqual(maxValue, nthValue);
+        }
     }
 }
