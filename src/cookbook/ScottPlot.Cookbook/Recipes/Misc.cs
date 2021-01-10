@@ -194,7 +194,7 @@ namespace ScottPlot.Cookbook.Recipes
         public string ID => "misc_orderStatistics";
         public string Title => "Kth Order Statistics";
         public string Description =>
-            "The kth order statistic of a set is the kth smallest value of the set (in this case, indexed from zero).";
+            "The kth order statistic of a set is the kth smallest value of the set (indexed from 1).";
 
         public void ExecuteRecipe(Plot plt)
         {
@@ -204,12 +204,64 @@ namespace ScottPlot.Cookbook.Recipes
 
             double[] ys = DataGen.Random(rand, n);
 
-            int k = 10 * n / 100;
+            int k = 200;
 
-            double tenth_percentile = ScottPlot.Statistics.Common.NthOrderStatistic(ys, k); // Note that the 10th percentile is different from 10% lows, which are the average of the bottom 10%
+            double y = ScottPlot.Statistics.Common.NthOrderStatistic(ys, k);
+
+            plt.AddSignal(ys, label: "Random Data");
+            plt.AddHorizontalLine(y, label: $"{k}th Order Statistic");
+
+            plt.Legend();
+
+        }
+    }
+
+    class Percentiles : IRecipe
+    {
+        public string Category => "Misc";
+        public string ID => "misc_percentiles";
+        public string Title => "Percentiles";
+        public string Description =>
+            "Percentiles are a good tool to analyze the distribution of your data and filter out extreme values.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            Random rand = new Random(0);
+
+            const int n = 500;
+
+            double[] ys = DataGen.Random(rand, n);
+
+            double tenth_percentile = ScottPlot.Statistics.Common.Percentile(ys, 10); // Note that the 10th percentile is different from 10% lows, which is the average of the bottom 10%
 
             plt.AddSignal(ys, label: "Random Data");
             plt.AddHorizontalLine(tenth_percentile, label: "10th Percentile");
+
+            plt.Legend();
+
+        }
+    }
+
+    class Quantiles : IRecipe
+    {
+        public string Category => "Misc";
+        public string ID => "misc_quantiles";
+        public string Title => "Quantiles";
+        public string Description =>
+            "A q-Quantile is a generalization of quartiles and percentiles to any number of buckets.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            Random rand = new Random(0);
+
+            const int n = 500;
+
+            double[] ys = DataGen.Random(rand, n);
+
+            double second_septile = ScottPlot.Statistics.Common.Quantile(ys, 2, 7); // A septile is a 7-quantile
+
+            plt.AddSignal(ys, label: "Random Data");
+            plt.AddHorizontalLine(second_septile, label: "2nd Septile");
 
             plt.Legend();
 
