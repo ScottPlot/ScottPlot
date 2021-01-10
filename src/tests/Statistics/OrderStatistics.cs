@@ -26,7 +26,7 @@ namespace ScottPlotTests.Statistics
             foreach (int n in randomNs)
             {
                 double nthValue = ScottPlot.Statistics.Common.NthOrderStatistic(RandomValues, n);
-                double expectedNthValue = SortedValues[n];
+                double expectedNthValue = SortedValues[n - 1];
                 Assert.AreEqual(expectedNthValue, nthValue);
             }
         }
@@ -34,7 +34,7 @@ namespace ScottPlotTests.Statistics
         [Test]
         public void Test_NthOrderStatistic_MinValue()
         {
-            int n = 0;
+            int n = 1;
             double nthValue = ScottPlot.Statistics.Common.NthOrderStatistic(RandomValues, n);
             double minValue = SortedValues.First();
             Assert.AreEqual(minValue, nthValue);
@@ -43,7 +43,7 @@ namespace ScottPlotTests.Statistics
         [Test]
         public void Test_NthOrderStatistic_MaxValue()
         {
-            int n = RandomValues.Length - 1;
+            int n = RandomValues.Length;
             double nthValue = ScottPlot.Statistics.Common.NthOrderStatistic(RandomValues, n);
             double maxValue = SortedValues.Last();
             Assert.AreEqual(maxValue, nthValue);

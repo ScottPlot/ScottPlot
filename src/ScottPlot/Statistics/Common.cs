@@ -36,7 +36,7 @@ namespace ScottPlot.Statistics
             double[] copied_values = new double[values.Length];
             Array.Copy(values, copied_values, values.Length); // QuickSelect mutates the array
 
-            return QuickSelect(copied_values, 0, values.Length - 1, n);
+            return QuickSelect(copied_values, 0, values.Length - 1, n - 1);
         }
 
         private static double QuickSelect(double[] values, int begin, int end, int i)
