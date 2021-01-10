@@ -1,29 +1,52 @@
 ﻿using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 
 namespace ScottPlotTests.Statistics
 {
-    class NthOrderStatistics
+    class OrderStatistics
     {
-        [Test]
-        public void MatchesSortedOrder()
+        double[] RandomValues;
+        double[] SortedValues;
+
+        [OneTimeSetUp]
+        public void SetUp()
         {
             Random rand = new Random(0);
+            RandomValues = ScottPlot.DataGen.Random(rand, pointCount: 5000);
+            SortedValues = RandomValues.OrderBy(x => x).ToArray();
+        }
 
-            const int n = 5000;
-            double[] values = Enumerable.Range(0, n).Select(_ => rand.NextDouble()).ToArray();
-            double[] sorted_values = new double[n];
-            values.CopyTo(sorted_values, 0);
-            Array.Sort(sorted_values);
+        [Test]
+        public void Test_NthOrderStatistic_ReturnsNthElementForRandomNs()
+        {
+            Random rand = new Random(0);
+            var randomNs = Enumerable.Range(0, 100).Select(x => rand.Next(1, RandomValues.Length - 1));
 
-            for (int i = 0; i < n; i++)
+            foreach (int n in randomNs)
             {
-                Assert.AreEqual(sorted_values[i], ScottPlot.Statistics.Common.NthOrderStatistic(values, i));
+                double nthValue = ScottPlot.Statistics.Common.NthOrderStatistic(RandomValues, n);
+                double expectedNthValue = SortedValues[n];
+                Assert.AreEqual(expectedNthValue, nthValue);
             }
+        }
+
+        [Test]
+        public void Test_NthOrderStatistic_MinValue()
+        {
+            int n = 0;
+            double nthValue = ScottPlot.Statistics.Common.NthOrderStatistic(RandomValues, n);
+            double minValue = SortedValues.First();
+            Assert.AreEqual(minValue, nthValue);
+        }
+
+        [Test]
+        public void Test_NthOrderStatistic_MaxValue()
+        {
+            int n = RandomValues.Length - 1;
+            double nthValue = ScottPlot.Statistics.Common.NthOrderStatistic(RandomValues, n);
+            double maxValue = SortedValues.Last();
+            Assert.AreEqual(maxValue, nthValue);
         }
     }
 }
