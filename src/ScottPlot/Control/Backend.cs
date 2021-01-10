@@ -67,6 +67,28 @@ namespace ScottPlot.Control
         public void Reset(float width, float height) =>
             Reset(width, height, new Plot());
 
+        public static string GetHelpMessage()
+        {
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("Left-click-drag: pan");
+            sb.AppendLine("Right-click-drag: zoom");
+            sb.AppendLine("Middle-click-drag: zoom region");
+            sb.AppendLine("ALT+Left-click-drag: zoom region");
+            sb.AppendLine("Scroll wheel: zoom to cursor");
+            sb.AppendLine("");
+            sb.AppendLine("Right-click: show menu");
+            sb.AppendLine("Middle-click: auto-axis");
+            sb.AppendLine("Double-click: show benchmark");
+            sb.AppendLine("");
+            sb.AppendLine("CTRL+Left-click-drag to pan horizontally");
+            sb.AppendLine("SHIFT+Left-click-drag to pan vertically");
+            sb.AppendLine("CTRL+Right-click-drag to zoom horizontally");
+            sb.AppendLine("SHIFT+Right-click-drag to zoom vertically");
+            sb.AppendLine("CTRL+SHIFT+Right-click-drag to zoom evenly");
+            sb.AppendLine("SHIFT+click-drag draggables for fixed-size dragging");
+            return sb.ToString();
+        }
+
         public void Reset(float width, float height, Plot newPlot)
         {
             Plot = newPlot;
