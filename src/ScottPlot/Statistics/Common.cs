@@ -61,6 +61,20 @@ namespace ScottPlot.Statistics
             return Quantile(values, i, 100);
         }
 
+        public static double Median(double[] values)
+        {
+            // Note, this is one of many definitions of a median. It is the most common.
+
+            if (values.Length % 2 == 1)
+            {
+                return NthOrderStatistic(values, values.Length / 2 + 1);
+            }
+            else
+            {
+                return (NthOrderStatistic(values, values.Length / 2) + NthOrderStatistic(values, values.Length / 2 + 1)) / 2;
+            }
+        }
+
         private static double QuickSelect(double[] values, int begin, int end, int i)
         {
             // QuickSelect (aka Hoare's Algorithm) is a selection algorithm (i.e. given an integer i it returns the ith smallest element in a sequence) with O(n) expected time.

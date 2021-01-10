@@ -66,5 +66,25 @@ namespace ScottPlotTests.Statistics
             double maxValue = SortedValues.Last();
             Assert.AreEqual(maxValue, nthValue);
         }
+
+        [Test]
+        public void Test_MedianOdd()
+        {
+            int n = 101;
+            double[] values = ScottPlot.DataGen.Random(new Random(0), n);
+            double[] valuesSorted = values.OrderBy(x => x).ToArray();
+
+            Assert.AreEqual(ScottPlot.Statistics.Common.Median(values), valuesSorted[n / 2]);
+        }
+
+        [Test]
+        public void Test_MedianEven()
+        {
+            int n = 100;
+            double[] values = ScottPlot.DataGen.Random(new Random(0), n);
+            double[] valuesSorted = values.OrderBy(x => x).ToArray();
+
+            Assert.AreEqual(ScottPlot.Statistics.Common.Median(values), (valuesSorted[n / 2] + valuesSorted[n / 2 - 1]) / 2);
+        }
     }
 }
