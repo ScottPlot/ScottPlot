@@ -1,6 +1,7 @@
 ﻿using ScottPlot.Drawing;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace ScottPlot.Plottable
         public Renderable.Edge Edge = Renderable.Edge.Right;
 
         private Colormap Colormap;
-        private Bitmap BmpScale;
+        private Bitmap? BmpScale;
         private readonly List<string> TickLabels = new List<string>();
         private readonly List<double> TickFractions = new List<double>();
 
@@ -23,7 +24,7 @@ namespace ScottPlot.Plottable
         public int YAxisIndex { get => 0; set { } }
         public int Width = 20;
 
-        public Colorbar(Colormap colormap = null)
+        public Colorbar(Colormap? colormap = null)
         {
             UpdateColormap(colormap ?? Colormap.Viridis);
         }
@@ -58,7 +59,7 @@ namespace ScottPlot.Plottable
             AddTicks(fractions, labels);
         }
 
-        public LegendItem[] GetLegendItems() => null;
+        public LegendItem[]? GetLegendItems() => null;
 
         public AxisLimits GetAxisLimits() => new AxisLimits();
 
@@ -68,6 +69,7 @@ namespace ScottPlot.Plottable
                 throw new InvalidOperationException("Tick labels and positions must have the same length");
         }
 
+        [MemberNotNull(nameof(Colormap))]
         public void UpdateColormap(Colormap newColormap)
         {
             Colormap = newColormap;
@@ -80,10 +82,10 @@ namespace ScottPlot.Plottable
             BmpScale = GetBitmap();
         }
 
-        public Bitmap GetBitmap() =>
+        public Bitmap? GetBitmap() =>
             Colormap.Colorbar(Colormap, Width, 256, true);
 
-        public Bitmap GetBitmap(int width, int height, bool vertical = true) =>
+        public Bitmap? GetBitmap(int width, int height, bool vertical = true) =>
             Colormap.Colorbar(Colormap, width, height, vertical);
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)

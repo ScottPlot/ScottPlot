@@ -9,6 +9,8 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
+// TODO: Need to inspect Random instantiation because some of them is seed (new Random(0)), some not (new Random())
+
 namespace ScottPlot
 {
     public static class DataGen
@@ -87,7 +89,7 @@ namespace ScottPlot
             return ys;
         }
 
-        public static double[] Random(Random rand, int pointCount, double multiplier = 1, double offset = 0)
+        public static double[] Random(Random? rand, int pointCount, double multiplier = 1, double offset = 0)
         {
             if (rand is null)
                 rand = new Random();
@@ -97,7 +99,7 @@ namespace ScottPlot
             return ys;
         }
 
-        public static int[] RandomInts(Random rand, int pointCount, double multiplier = 1, double offset = 0)
+        public static int[] RandomInts(Random? rand, int pointCount, double multiplier = 1, double offset = 0)
         {
             if (rand is null)
                 rand = new Random();
@@ -133,7 +135,7 @@ namespace ScottPlot
             return values;
         }
 
-        public static double[] NoisyLinear(Random rand, int pointCount = 100, double slope = 1, double offset = 0, double noise = 0.1)
+        public static double[] NoisyLinear(Random? rand, int pointCount = 100, double slope = 1, double offset = 0, double noise = 0.1)
         {
             if (rand is null)
                 rand = new Random(0);
@@ -145,7 +147,7 @@ namespace ScottPlot
             return data;
         }
 
-        public static double[] NoisySin(Random rand, int pointCount, double oscillations = 1, double noiseLevel = .5, double mult = 1)
+        public static double[] NoisySin(Random? rand, int pointCount, double oscillations = 1, double noiseLevel = .5, double mult = 1)
         {
             if (rand is null)
                 rand = new Random(0);
@@ -155,7 +157,7 @@ namespace ScottPlot
             return values;
         }
 
-        public static Color RandomColor(Random rand, int min = 0, int max = 255)
+        public static Color RandomColor(Random? rand, int min = 0, int max = 255)
         {
             if (rand is null)
                 rand = new Random();
@@ -211,7 +213,7 @@ namespace ScottPlot
         /// <summary>
         /// Return OHLC array with random prices X positions as sequential numbers (0, 1, 2, etc.)
         /// </summary>
-        private static OHLC[] RandomStockPrices(Random rand, int pointCount, double mult = 10, double startingPrice = 123.45)
+        private static OHLC[] RandomStockPrices(Random? rand, int pointCount, double mult = 10, double startingPrice = 123.45)
         {
             if (rand is null)
                 rand = new Random(0);
@@ -247,7 +249,7 @@ namespace ScottPlot
                 return RandomStockPrices(rand, pointCount, ts, mult, startingPrice);
         }
 
-        public static (double, double) RandomSpan(Random rand = null, double low = 0, double high = 100, double minimumSpacing = 10)
+        public static (double, double) RandomSpan(Random? rand = null, double low = 0, double high = 100, double minimumSpacing = 10)
         {
             if (rand is null)
                 rand = new Random();
@@ -582,7 +584,7 @@ namespace ScottPlot
              * differs from other typical ECG simulators Is that i have used the principle Of Fourier
              * series. The calculations used And other necessary descriptions are included In the file
              * attached.
-             * 
+             *
              * https://www.mathworks.com/matlabcentral/fileexchange/10858-ecg-simulation-using-matlab
              * (c) 2019 karthik raviprakash. All rights reserved. MIT license.
              */

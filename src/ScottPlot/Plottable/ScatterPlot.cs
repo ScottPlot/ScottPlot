@@ -14,14 +14,14 @@ namespace ScottPlot.Plottable
         // data
         public double[] Xs { get; private set; }
         public double[] Ys { get; private set; }
-        public double[] XError { get; set; }
-        public double[] YError { get; set; }
+        public double[]? XError { get; set; }
+        public double[]? YError { get; set; }
 
         // customization
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
-        public string Label;
+        public string? Label;
         public Color Color = Color.Black;
         public LineStyle LineStyle = LineStyle.Solid;
         public MarkerShape MarkerShape = MarkerShape.filledCircle;
@@ -38,7 +38,7 @@ namespace ScottPlot.Plottable
         public int? MinRenderIndex { set { throw new NotImplementedException(); } }
         public int? MaxRenderIndex { set { throw new NotImplementedException(); } }
 
-        public ScatterPlot(double[] xs, double[] ys, double[] errorX = null, double[] errorY = null)
+        public ScatterPlot(double[] xs, double[] ys, double[]? errorX = null, double[]? errorY = null)
         {
             Xs = xs;
             Ys = ys;

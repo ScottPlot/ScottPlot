@@ -4,7 +4,7 @@ namespace ScottPlot.MinMaxSearchStrategies
 {
     public class LinearFastDoubleMinMaxSearchStrategy<T> : LinearMinMaxSearchStrategy<T> where T : struct, IComparable
     {
-        private double[] sourceArrayDouble;
+        private double[]? sourceArrayDouble;
 
         public override T[] SourceArray
         {

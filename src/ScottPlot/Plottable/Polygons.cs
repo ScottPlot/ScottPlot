@@ -9,10 +9,10 @@ namespace ScottPlot.Plottable
     public class Polygons : IPlottable
     {
         // data
-        public readonly List<List<(double x, double y)>> Polys;
+        public readonly IList<IList<(double x, double y)>> Polys;
 
         // customization
-        public string Label;
+        public string? Label;
         public double LineWidth;
         public Color LineColor;
         public bool Fill = true;
@@ -25,7 +25,7 @@ namespace ScottPlot.Plottable
         public bool SkipOffScreenPolygons = true;
         public bool RenderSmallPolygonsAsSinglePixels = true;
 
-        public Polygons(List<List<(double x, double y)>> polys)
+        public Polygons(IList<IList<(double x, double y)>> polys)
         {
             Polys = polys;
         }
@@ -91,7 +91,7 @@ namespace ScottPlot.Plottable
             return new LegendItem[] { singleLegendItem };
         }
 
-        private bool IsBiggerThenPixel(List<(double x, double y)> poly, double UnitsPerPixelX, double UnitsPerPixelY)
+        private bool IsBiggerThenPixel(IList<(double x, double y)> poly, double UnitsPerPixelX, double UnitsPerPixelY)
         {
             double minX = poly[0].x;
             double maxX = poly[0].x;
@@ -135,7 +135,7 @@ namespace ScottPlot.Plottable
             using (Brush brush = GDI.Brush(FillColor, HatchColor, HatchStyle))
             using (Pen pen = GDI.Pen(LineColor, LineWidth))
             {
-                foreach (List<(double x, double y)> poly in Polys)
+                foreach (IList<(double x, double y)> poly in Polys)
                 {
                     if (SkipOffScreenPolygons &&
                         poly.Where(pt => pt.x >= dims.XMin && pt.x <= dims.XMax &&

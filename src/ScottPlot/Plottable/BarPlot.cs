@@ -6,7 +6,7 @@ using System.Data;
 namespace ScottPlot.Plottable
 {
     /// <summary>
-    /// Bar plots display a series of bars. 
+    /// Bar plots display a series of bars.
     /// Positions are defined by Xs.
     /// Heights are defined by Ys (relative to BaseValue and YOffsets).
     /// </summary>
@@ -23,7 +23,7 @@ namespace ScottPlot.Plottable
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
-        public string Label;
+        public string? Label;
         public Color FillColor = Color.Green;
         public Color FillColorNegative = Color.Red;
         public Color FillColorHatch = Color.Blue;
@@ -46,7 +46,7 @@ namespace ScottPlot.Plottable
         public bool HorizontalOrientation { get => !VerticalOrientation; set => VerticalOrientation = !value; }
         public bool ShowValuesAboveBars;
 
-        public BarPlot(double[] xs, double[] ys, double[] yErr, double[] yOffsets)
+        public BarPlot(double[]? xs, double[] ys, double[]? yErr, double[]? yOffsets)
         {
             if (ys is null || ys.Length == 0)
                 throw new InvalidOperationException("ys must be an array that contains elements");

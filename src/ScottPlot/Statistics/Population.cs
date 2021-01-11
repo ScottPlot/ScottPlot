@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
@@ -56,7 +57,7 @@ namespace ScottPlot.Statistics
         }
 
         [Obsolete("This constructor overload is deprecated. Please remove the fullAnalysis argument.")]
-        public Population(double[] values, bool fullAnalysis = true)
+        public Population(double[] values, bool fullAnalysis = true) // warning will gone with this constructor
         {
             if (values is null)
                 throw new ArgumentException("values cannot be null");
@@ -66,6 +67,7 @@ namespace ScottPlot.Statistics
                 Recalculate();
         }
 
+        [MemberNotNull(nameof(sortedValues), nameof(lowOutliers), nameof(highOutliers))]
         public void Recalculate()
         {
             count = values.Length;

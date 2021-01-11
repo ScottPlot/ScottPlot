@@ -9,12 +9,12 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>ScottPlot is a free and open-source plotting library for .NET
 
-        The ScottPlot package can plot data and save images or return bitmaps.  
+        The ScottPlot package can plot data and save images or return bitmaps.
         It is uses .NET Stanard 2.0 so it supports all modern .NET platforms.
 
-        ScottPlot.WinForms and ScottPlot.WPF packages provide user controls 
+        ScottPlot.WinForms and ScottPlot.WPF packages provide user controls
         for mouse-interactive plots in graphical applications.
-      
+
     </Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/swharden/ScottPlot</PackageProjectUrl>
@@ -26,7 +26,7 @@
     <Version>4.0.26</Version>
     <AssemblyVersion>4.0.26</AssemblyVersion>
     <FileVersion>4.0.26</FileVersion>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

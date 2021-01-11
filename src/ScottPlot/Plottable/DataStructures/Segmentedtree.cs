@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -6,29 +7,27 @@ namespace ScottPlot.DataStructures
 {
     public class SegmentedTree<T> where T : struct, IComparable
     {
-        private T[] sourceArray;
+        private T[] sourceArray = Array.Empty<T>();
 
-        private T[] TreeMin;
-        private T[] TreeMax;
+        private T[]? TreeMin;
+        private T[]? TreeMax;
         private int n = 0; // size of each Tree
         public bool TreesReady = false;
         // precompiled lambda expressions for fast math on generic
-        private static Func<T, T, T> MinExp;
-        private static Func<T, T, T> MaxExp;
-        private static Func<T, T, bool> EqualExp;
-        private static Func<T> MaxValue;
-        private static Func<T> MinValue;
-        private static Func<T, T, bool> LessThanExp;
-        private static Func<T, T, bool> GreaterThanExp;
+        private static Func<T, T, T>? MinExp;
+        private static Func<T, T, T>? MaxExp;
+        private static Func<T, T, bool>? EqualExp;
+        private static Func<T>? MaxValue;
+        private static Func<T>? MinValue;
+        private static Func<T, T, bool>? LessThanExp;
+        private static Func<T, T, bool>? GreaterThanExp;
 
         public T[] SourceArray
         {
             get => sourceArray;
             set
             {
-                if (value == null)
-                    throw new Exception("Source Array cannot be null");
-                sourceArray = value;
+                sourceArray = value ?? throw new Exception("Source Array cannot be null");
                 UpdateTrees();
             }
         }
@@ -53,14 +52,20 @@ namespace ScottPlot.DataStructures
 
         public async Task SetSourceAsync(T[] data)
         {
-            if (data == null)
-                throw new Exception("Data cannot be null");
-            sourceArray = data;
-            await Task.Run(() => UpdateTreesInBackground());
+            sourceArray = data ?? throw new ArgumentNullException("Data cannot be null");
+            await Task.Run(() => UpdateTrees());
         }
 
-        private void InitExp()
+        [MemberNotNull(nameof(MinExp), nameof(MaxExp), nameof(EqualExp), nameof(MaxValue), nameof(MinValue), nameof(LessThanExp), nameof(GreaterThanExp))]
+        private static void InitExp()
         {
+            if (MinExp is not null)
+            {
+#nullable disable
+                return;
+#nullable restore
+            }
+
             ParameterExpression paramA = Expression.Parameter(typeof(T), "a");
             ParameterExpression paramB = Expression.Parameter(typeof(T), "b");
             // add the parameters together
@@ -83,8 +88,9 @@ namespace ScottPlot.DataStructures
 
         public void updateElement(int index, T newValue)
         {
+            InitExp();
             sourceArray[index] = newValue;
-            // Update Tree, can be optimized            
+            // Update Tree, can be optimized
             if (index == sourceArray.Length - 1) // last elem haven't pair
             {
                 TreeMin[n / 2 + index / 2] = sourceArray[index];
@@ -120,6 +126,7 @@ namespace ScottPlot.DataStructures
 
         public void updateRange(int from, int to, T[] newData, int fromData = 0) // RangeUpdate
         {
+            InitExp();
             //update source signal
             for (int i = from; i < to; i++)
             {
@@ -150,7 +157,7 @@ namespace ScottPlot.DataStructures
             {
                 if (from != to)
                 {
-                    for (int i = from; i <= to; i++) // Recalc all level nodes in range 
+                    for (int i = from; i <= to; i++) // Recalc all level nodes in range
                     {
                         TreeMin[i] = MinExp(TreeMin[i * 2], TreeMin[i * 2 + 1]);
                         TreeMax[i] = MaxExp(TreeMax[i * 2], TreeMax[i * 2 + 1]);
@@ -200,6 +207,8 @@ namespace ScottPlot.DataStructures
 
         public void UpdateTrees()
         {
+            InitExp();
+
             // O(n) to build trees
             TreesReady = false;
             try
@@ -254,6 +263,8 @@ namespace ScottPlot.DataStructures
         //  O(log(n)) for each range min/max query
         public void MinMaxRangeQuery(int l, int r, out double lowestValue, out double highestValue)
         {
+            InitExp();
+
             T lowestValueT;
             T highestValueT;
             // if the tree calculation isn't finished or if it crashed

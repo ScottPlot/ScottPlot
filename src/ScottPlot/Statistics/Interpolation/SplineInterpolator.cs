@@ -13,13 +13,13 @@ namespace ScottPlot.Statistics.Interpolation
         public double[] givenYs, givenXs;
         public double[] interpolatedXs, interpolatedYs;
 
-        protected Matrix m;
-        protected MatrixSolver gauss;
+        protected Matrix? m;
+        protected MatrixSolver? gauss;
 
         protected readonly int n;
-        protected double[] a, b, c, d, h;
+        protected double[] a = null!, b = null!, c = null!, d = null!, h = null!; // they're assigned in derived classes
 
-        public SplineInterpolator(double[] xs, double[] ys, int resolution = 10)
+        protected SplineInterpolator(double[] xs, double[] ys, int resolution = 10)
         {
             if (xs is null || ys is null)
                 throw new ArgumentException("xs and ys cannot be null");

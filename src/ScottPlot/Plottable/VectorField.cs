@@ -16,12 +16,12 @@ namespace ScottPlot.Plottable
         private readonly Color[] VectorColors;
 
         // customization
-        public string Label;
+        public string? Label;
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
 
-        public VectorField(Vector2[,] vectors, double[] xs, double[] ys, Colormap colormap, double scaleFactor, Color defaultColor)
+        public VectorField(Vector2[,] vectors, double[] xs, double[] ys, Colormap? colormap, double scaleFactor, Color defaultColor)
         {
             double minMagnitudeSquared = vectors[0, 0].Length();
             double maxMagnitudeSquared = vectors[0, 0].Length();

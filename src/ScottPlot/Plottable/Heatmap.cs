@@ -1,5 +1,6 @@
 ﻿using ScottPlot.Drawing;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
@@ -14,17 +15,17 @@ namespace ScottPlot.Plottable
         private double Max;
         private int Width;
         private int Height;
-        private Bitmap BmpHeatmap;
+        private Bitmap? BmpHeatmap;
 
         // these fields are customized by the user
-        public string Label;
-        public Colormap Colormap { get; private set; }
+        public string? Label;
+        public Colormap? Colormap { get; private set; }
         public double[] AxisOffsets;
         public double[] AxisMultipliers;
         public double? ScaleMin;
         public double? ScaleMax;
         public double? TransparencyThreshold;
-        public Bitmap BackgroundImage;
+        public Bitmap? BackgroundImage;
         public bool DisplayImageAbove;
         public bool ShowAxisLabels;
         public bool IsVisible { get; set; } = true;
@@ -38,7 +39,8 @@ namespace ScottPlot.Plottable
             Colormap = Colormap.Viridis;
         }
 
-        public void Update(double?[,] intensities, Colormap colormap = null, double? min = null, double? max = null)
+        [MemberNotNull(nameof(ColorbarMin), nameof(ColorbarMax))]
+        public void Update(double?[,] intensities, Colormap? colormap = null, double? min = null, double? max = null)
         {
             /* This method analyzes the intensities and colormap to create a bitmap
              * with a single pixel for every intensity value. The bitmap is stored
@@ -91,10 +93,10 @@ namespace ScottPlot.Plottable
             BmpHeatmap.UnlockBits(bmpData);
         }
 
-        public string ColorbarMin { get; private set; }
-        public string ColorbarMax { get; private set; }
+        public string? ColorbarMin { get; private set; }
+        public string? ColorbarMax { get; private set; }
 
-        public void Update(double[,] intensities, Colormap colormap = null, double? min = null, double? max = null)
+        public void Update(double[,] intensities, Colormap? colormap = null, double? min = null, double? max = null)
         {
             double?[,] tmp = new double?[intensities.GetLength(0), intensities.GetLength(1)];
             for (int i = 0; i < intensities.GetLength(0); i++)
@@ -110,20 +112,16 @@ namespace ScottPlot.Plottable
         {
             double? NormalizePreserveNull(double? i)
             {
-                if (i.HasValue)
-                {
-                    return (i.Value - min.Value) / (max.Value - min.Value);
-                }
-                return null;
+                return (i - min) / (max - min);
             }
 
-            min = min ?? input.Min();
-            max = max ?? input.Max();
+            min ??= input.Min();
+            max ??= input.Max();
 
             min = (scaleMin.HasValue && scaleMin.Value < min) ? scaleMin.Value : min;
             max = (scaleMax.HasValue && scaleMax.Value > max) ? scaleMax.Value : max;
 
-            double?[] normalized = input.AsParallel().AsOrdered().Select<double?, double?>(i => NormalizePreserveNull(i)).ToArray();
+            double?[] normalized = input.AsParallel().AsOrdered().Select(i => NormalizePreserveNull(i)).ToArray();
 
             if (scaleMin.HasValue)
             {

@@ -1,5 +1,5 @@
 ﻿/* The Axis module seeks to provide a simple facade to a lot of complex logic.
- * 
+ *
  * Axes have many functions:
  *   - Unit/Pixel conversions
  *   - Configuring axis limits and boundaries
@@ -8,7 +8,7 @@
  *   - Grid lines
  *   - Tick marks
  *   - Tick labels
- * 
+ *
  */
 
 using ScottPlot.Drawing;
@@ -127,7 +127,7 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// Configure the label of this axis
         /// </summary>
-        public string Label(string label = null, Color? color = null, float? size = null, bool? bold = null, string fontName = null)
+        public string? Label(string? label = null, Color? color = null, float? size = null, bool? bold = null, string? fontName = null)
         {
             AxisLabel.IsVisible = true;
             AxisLabel.Label = label ?? AxisLabel.Label;
@@ -176,7 +176,7 @@ namespace ScottPlot.Renderable
             bool? exponential = null,
             bool? invertSign = null,
             int? radix = null,
-            string prefix = null)
+            string? prefix = null)
         {
             AxisTicks.TickCollection.useMultiplierNotation = multiplier ?? AxisTicks.TickCollection.useMultiplierNotation;
             AxisTicks.TickCollection.useOffsetNotation = offset ?? AxisTicks.TickCollection.useOffsetNotation;
@@ -208,7 +208,7 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// Manually define major tick (and grid) positions and labels
         /// </summary>
-        public void ManualTickPositions(double[] positions, string[] labels)
+        public void ManualTickPositions(double[]? positions, string[]? labels)
         {
             AxisTicks.TickCollection.manualTickPositions = positions;
             AxisTicks.TickCollection.manualTickLabels = labels;
@@ -243,8 +243,8 @@ namespace ScottPlot.Renderable
         /// Manually define culture to use for unit-to-string tick mark conversion
         /// </summary>
         public void SetCulture(
-            string shortDatePattern = null, string decimalSeparator = null, string numberGroupSeparator = null,
-            int? decimalDigits = null, int? numberNegativePattern = null, int[] numberGroupSizes = null) =>
+            string? shortDatePattern = null, string? decimalSeparator = null, string? numberGroupSeparator = null,
+            int? decimalDigits = null, int? numberNegativePattern = null, int[]? numberGroupSizes = null) =>
             AxisTicks.TickCollection.SetCulture(shortDatePattern, decimalSeparator, numberGroupSeparator,
                 decimalDigits, numberNegativePattern, numberGroupSizes);
 
@@ -253,7 +253,7 @@ namespace ScottPlot.Renderable
         /// </summary>
         public void TickLabelStyle(
             Color? color = null,
-            string fontName = null,
+            string? fontName = null,
             float? fontSize = null,
             bool? fontBold = null,
             float? rotation = null)

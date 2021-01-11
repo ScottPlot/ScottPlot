@@ -22,7 +22,7 @@ namespace ScottPlot.Drawing
         /// <summary>
         /// Returns a font name guaranteed to be installed on the system
         /// </summary>
-        public static string ValidFontName(string fontName)
+        public static string ValidFontName(string? fontName)
         {
             foreach (FontFamily installedFont in FontFamily.Families)
                 if (string.Equals(installedFont.Name, fontName, System.StringComparison.OrdinalIgnoreCase))
@@ -45,7 +45,7 @@ namespace ScottPlot.Drawing
 }
 
 /*
- 
+
 These fonts are on Azure Pipelines on Linux:
     Century Schoolbook L
     DejaVu Sans

@@ -18,7 +18,7 @@ namespace ScottPlot.Drawing
         private const float xMultiplierMacOS = 82.82f / 72;
         private const float yMultiplierMacOS = 27.16f / 20;
 
-        public static SizeF MeasureString(string text, Font font)
+        public static SizeF MeasureString(string? text, Font font)
         {
             using (Bitmap bmp = new Bitmap(1, 1))
             using (Graphics gfx = Graphics(bmp, lowQuality: true))
@@ -27,7 +27,7 @@ namespace ScottPlot.Drawing
             }
         }
 
-        public static SizeF MeasureString(Graphics gfx, string text, string fontName, double fontSize, bool bold = false)
+        public static SizeF MeasureString(Graphics gfx, string? text, string? fontName, double fontSize, bool bold = false)
         {
             var fontStyle = (bold) ? FontStyle.Bold : FontStyle.Regular;
             using (var font = new System.Drawing.Font(fontName, (float)fontSize, fontStyle, GraphicsUnit.Pixel))
@@ -36,7 +36,7 @@ namespace ScottPlot.Drawing
             }
         }
 
-        public static SizeF MeasureString(Graphics gfx, string text, System.Drawing.Font font)
+        public static SizeF MeasureString(Graphics gfx, string? text, System.Drawing.Font font)
         {
             SizeF size = gfx.MeasureString(text, font);
 
@@ -155,38 +155,25 @@ namespace ScottPlot.Drawing
 
         public static System.Drawing.Drawing2D.HatchStyle? ConvertToSDHatchStyle(Drawing.HatchStyle pattern)
         {
-            switch (pattern)
+            return pattern switch
             {
-                case HatchStyle.StripedUpwardDiagonal:
-                    return System.Drawing.Drawing2D.HatchStyle.LightUpwardDiagonal;
-                case HatchStyle.StripedDownwardDiagonal:
-                    return System.Drawing.Drawing2D.HatchStyle.LightDownwardDiagonal;
-                case HatchStyle.StripedWideUpwardDiagonal:
-                    return System.Drawing.Drawing2D.HatchStyle.WideUpwardDiagonal;
-                case HatchStyle.StripedWideDownwardDiagonal:
-                    return System.Drawing.Drawing2D.HatchStyle.WideDownwardDiagonal;
-                case HatchStyle.LargeCheckerBoard:
-                    return System.Drawing.Drawing2D.HatchStyle.LargeCheckerBoard;
-                case HatchStyle.SmallCheckerBoard:
-                    return System.Drawing.Drawing2D.HatchStyle.SmallCheckerBoard;
-                case HatchStyle.LargeGrid:
-                    return System.Drawing.Drawing2D.HatchStyle.LargeGrid;
-                case HatchStyle.SmallGrid:
-                    return System.Drawing.Drawing2D.HatchStyle.SmallGrid;
-                case HatchStyle.DottedDiamond:
-                    return System.Drawing.Drawing2D.HatchStyle.DottedDiamond;
-
-                case HatchStyle.None:
-                default:
-                    return null;
-
-            }
+                HatchStyle.StripedUpwardDiagonal => System.Drawing.Drawing2D.HatchStyle.LightUpwardDiagonal,
+                HatchStyle.StripedDownwardDiagonal => System.Drawing.Drawing2D.HatchStyle.LightDownwardDiagonal,
+                HatchStyle.StripedWideUpwardDiagonal => System.Drawing.Drawing2D.HatchStyle.WideUpwardDiagonal,
+                HatchStyle.StripedWideDownwardDiagonal => System.Drawing.Drawing2D.HatchStyle.WideDownwardDiagonal,
+                HatchStyle.LargeCheckerBoard => System.Drawing.Drawing2D.HatchStyle.LargeCheckerBoard,
+                HatchStyle.SmallCheckerBoard => System.Drawing.Drawing2D.HatchStyle.SmallCheckerBoard,
+                HatchStyle.LargeGrid => System.Drawing.Drawing2D.HatchStyle.LargeGrid,
+                HatchStyle.SmallGrid => System.Drawing.Drawing2D.HatchStyle.SmallGrid,
+                HatchStyle.DottedDiamond => System.Drawing.Drawing2D.HatchStyle.DottedDiamond,
+                _ => null,
+            };
         }
 
         public static System.Drawing.Font Font(ScottPlot.Drawing.Font font) =>
             Font(font.Name, font.Size, font.Bold);
 
-        public static System.Drawing.Font Font(string fontName = null, float fontSize = 12, bool bold = false)
+        public static System.Drawing.Font Font(string? fontName = null, float fontSize = 12, bool bold = false)
         {
             string validFontName = InstalledFont.ValidFontName(fontName);
             FontStyle fontStyle = bold ? FontStyle.Bold : FontStyle.Regular;

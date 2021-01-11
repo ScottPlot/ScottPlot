@@ -11,7 +11,7 @@ namespace ScottPlot.Plottable
         private readonly List<double> Ys = new List<double>();
         public int Count => Xs.Count;
 
-        public string Label;
+        public string? Label;
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;

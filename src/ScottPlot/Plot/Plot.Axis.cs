@@ -1,4 +1,4 @@
-﻿/* 
+﻿/*
  * This file contains code related to Axes including:
  *   - Unit/Pixel conversions
  *   - Configuring axis limits and boundaries
@@ -43,17 +43,17 @@ namespace ScottPlot
         #region shortcuts: axis label, tick, and grid
 
         /// <summary>
-        /// Set the label for the vertical axis to the right of the plot (XAxis). 
+        /// Set the label for the vertical axis to the right of the plot (XAxis).
         /// </summary>
         public void XLabel(string label) => XAxis.Label(label);
 
         /// <summary>
-        /// Set the label for the vertical axis to the right of the plot (YAxis2). 
+        /// Set the label for the vertical axis to the right of the plot (YAxis2).
         /// </summary>
         public void YLabel(string label) => YAxis.Label(label);
 
         /// <summary>
-        /// Set the label for the horizontal axis above the plot (XAxis2). 
+        /// Set the label for the horizontal axis above the plot (XAxis2).
         /// </summary>
         public void Title(string label, bool bold = true) => XAxis2.Label(label, bold: bold);
 
@@ -84,7 +84,7 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Customize basic options for the primary X and Y axes. 
+        /// Customize basic options for the primary X and Y axes.
         /// Call XAxis and YAxis methods to further customize individual axes.
         /// </summary>
         public void Grid(bool? enable = null, Color? color = null, LineStyle? lineStyle = null)
@@ -144,7 +144,7 @@ namespace ScottPlot
         /// <summary>
         /// Manually define X axis tick positions and labels
         /// </summary>
-        public void XTicks(double[] positions = null, string[] labels = null) =>
+        public void XTicks(double[]? positions = null, string[]? labels = null) =>
             XAxis.ManualTickPositions(positions, labels);
 
         /// <summary>
@@ -155,7 +155,7 @@ namespace ScottPlot
         /// <summary>
         /// Manually define Y axis tick positions and labels
         /// </summary>
-        public void YTicks(double[] positions = null, string[] labels = null) =>
+        public void YTicks(double[]? positions = null, string[]? labels = null) =>
             YAxis.ManualTickPositions(positions, labels);
 
         /// <summary>
@@ -176,8 +176,8 @@ namespace ScottPlot
         /// <param name="decimalDigits">Number of digits after the numberDecimalSeparator</param>
         /// <param name="numberNegativePattern"></param>
         /// <param name="numberGroupSizes">Sizes of decimal groups which are separated by the numberGroupSeparator</param>
-        public void SetCulture(string shortDatePattern = null, string decimalSeparator = null, string numberGroupSeparator = null,
-            int? decimalDigits = null, int? numberNegativePattern = null, int[] numberGroupSizes = null)
+        public void SetCulture(string? shortDatePattern = null, string? decimalSeparator = null, string? numberGroupSeparator = null,
+            int? decimalDigits = null, int? numberNegativePattern = null, int[]? numberGroupSizes = null)
         {
             foreach (var axis in settings.Axes)
                 axis.SetCulture(shortDatePattern, decimalSeparator, numberGroupSeparator, decimalDigits, numberNegativePattern, numberGroupSizes);
@@ -190,23 +190,19 @@ namespace ScottPlot
         /// <summary>
         /// Create and return an additional axis
         /// </summary>
-        public Renderable.Axis AddAxis(Renderable.Edge edge, int axisIndex, string title = null, System.Drawing.Color? color = null)
+        public Renderable.Axis AddAxis(Renderable.Edge edge, int axisIndex, string? title = null, System.Drawing.Color? color = null)
         {
             if (axisIndex <= 1)
                 throw new ArgumentException("The default axes already occupy indexes 0 and 1. Additional axes require higher indexes.");
 
-            Renderable.Axis axis;
-
-            if (edge == Renderable.Edge.Left)
-                axis = new Renderable.AdditionalLeftAxis(axisIndex, title);
-            else if (edge == Renderable.Edge.Right)
-                axis = new Renderable.AdditionalRightAxis(axisIndex, title);
-            else if (edge == Renderable.Edge.Bottom)
-                axis = new Renderable.AdditionalBottomAxis(axisIndex, title);
-            else if (edge == Renderable.Edge.Top)
-                axis = new Renderable.AdditionalTopAxis(axisIndex, title);
-            else
-                throw new NotImplementedException("unsupported edge");
+            Renderable.Axis axis = edge switch
+            {
+                Renderable.Edge.Left => new Renderable.AdditionalLeftAxis(axisIndex, title),
+                Renderable.Edge.Right => new Renderable.AdditionalRightAxis(axisIndex, title),
+                Renderable.Edge.Bottom => new Renderable.AdditionalBottomAxis(axisIndex, title),
+                Renderable.Edge.Top => new Renderable.AdditionalTopAxis(axisIndex, title),
+                _ => throw new NotImplementedException("unsupported edge"),
+            };
 
             if (color.HasValue)
                 axis.Color(color.Value);
@@ -462,10 +458,10 @@ namespace ScottPlot
         public void Axis(double[] axisLimits, int xAxisIndex = 0, int yAxisIndex = 0) => throw new NotImplementedException();
 
         [Obsolete("use GetAxisLimits() and SetAxisLimits()", true)]
-        public double[] Axis(double? x1 = null, double? x2 = null, double? y1 = null, double? y2 = null, double? _ = null) => null;
+        public double[]? Axis(double? x1 = null, double? x2 = null, double? y1 = null, double? y2 = null, double? _ = null) => null;
 
         [Obsolete("use GetAxisLimits() and SetAxisLimits()", true)]
-        public double[] Axis(double[] axisLimits) => null;
+        public double[]? Axis(double[] axisLimits) => null;
 
         [Obsolete("use GetAxisLimits() and SetAxisLimits()", true)]
         public void MatchAxis(Plot sourcePlot, bool horizontal = true, bool vertical = true) => throw new NotImplementedException();
@@ -477,10 +473,10 @@ namespace ScottPlot
         public bool EqualAxis;
 
         [Obsolete("Use AxisAuto()", true)]
-        public double[] AutoAxis() => null;
+        public double[]? AutoAxis() => null;
 
         [Obsolete("Use AxisAuto()", true)]
-        public double[] AutoScale() => null;
+        public double[]? AutoScale() => null;
 
 
         [Obsolete("Individual axes (e.g., XAxis and YAxis) have their own tick configuration methods", true)]
@@ -501,20 +497,20 @@ namespace ScottPlot
             bool? rulerModeY = null,
             bool? invertSignX = null,
             bool? invertSignY = null,
-            string fontName = null,
+            string? fontName = null,
             float? fontSize = null,
             float? xTickRotation = null,
             bool? logScaleX = null,
             bool? logScaleY = null,
-            string numericFormatStringX = null,
-            string numericFormatStringY = null,
+            string? numericFormatStringX = null,
+            string? numericFormatStringY = null,
             bool? snapToNearestPixel = null,
             int? baseX = null,
             int? baseY = null,
-            string prefixX = null,
-            string prefixY = null,
-            string dateTimeFormatStringX = null,
-            string dateTimeFormatStringY = null
+            string? prefixX = null,
+            string? prefixY = null,
+            string? dateTimeFormatStringX = null,
+            string? dateTimeFormatStringY = null
             ) => throw new NotImplementedException();
 
         #endregion

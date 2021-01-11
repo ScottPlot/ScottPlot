@@ -1,5 +1,5 @@
 ﻿/* This file describes the ScottPlot back-end control module.
- * 
+ *
  *  Goals for this module:
  *    - handle interact with the Plot object so controls don't have to
  *    - single location for mouse interaction logic so controls don't have to implement it
@@ -7,26 +7,26 @@
  *    - TODO: render calls should be non-blocking so GUI/controls aren't slowed by render requests
  *    - TODO: move this module into the ScottPlot project
  *    - TODO: a timer should ask for a high quality render after mouse interaction stops
- *   
+ *
  *   Default Controls:
- *   
+ *
  *    - Left-click-drag: pan
  *    - Right-click-drag: zoom
  *    - Middle-click-drag: zoom region
  *    - ALT+Left-click-drag: zoom region
  *    - Scroll wheel: zoom to cursor
- *   
+ *
  *    - Right-click: show menu
  *    - Middle-click: auto-axis
  *    - Double-click: show benchmark
- *   
+ *
  *    - CTRL+Left-click-drag to pan horizontally
  *    - SHIFT+Left-click-drag to pan vertically
  *    - CTRL+Right-click-drag to zoom horizontally
  *    - SHIFT+Right-click-drag to zoom vertically
  *    - CTRL+SHIFT+Right-click-drag to zoom evenly
  *    - SHIFT+click-drag draggables for fixed-size dragging
- *    
+ *
  *  These options should be configurable somehow:
  *    - left-click-drag pan
  *    - right-click-drag zoom
@@ -36,11 +36,12 @@
  *    - scrollwheel zoom
  *    - low quality (never / while dragging / always)
  *    - high quality delay
- *   
+ *
  */
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace ScottPlot.Control
@@ -57,7 +58,7 @@ namespace ScottPlot.Control
         public readonly ScottPlot.Settings Settings;
         public readonly Configuration Configuration = new Configuration();
         private System.Drawing.Bitmap Bmp;
-        private readonly List<System.Drawing.Bitmap> OldBitmaps = new List<System.Drawing.Bitmap>();
+        private readonly List<System.Drawing.Bitmap?> OldBitmaps = new List<System.Drawing.Bitmap?>();
         public ScottPlot.Cursor Cursor { get; private set; } = ScottPlot.Cursor.Arrow;
 
         public ControlBackEnd(float width, float height)
@@ -68,18 +69,21 @@ namespace ScottPlot.Control
             NewBitmap(600, 400);
         }
 
-        public System.Drawing.Bitmap GetLatestBitmap()
+        public System.Drawing.Bitmap? GetLatestBitmap()
         {
-            foreach (System.Drawing.Bitmap bmp in OldBitmaps)
+            foreach (System.Drawing.Bitmap? bmp in OldBitmaps)
                 bmp?.Dispose();
             OldBitmaps.Clear();
             return Bmp;
         }
 
+        [MemberNotNull(nameof(Bmp))]
         private void NewBitmap(float width, float height)
         {
             if (width < 1 || height < 1)
-                return;
+#pragma warning disable 8774
+                return; // suppress because we won't get here from constructor
+#pragma warning restore 8774
 
             // Disposing a Bitmap the GUI is displaying will cause an exception.
             // Keep track of old bitmaps so they can be disposed of later.
@@ -116,7 +120,7 @@ namespace ScottPlot.Control
             Render(false);
         }
 
-        private ScottPlot.Plottable.IDraggable PlottableBeingDragged = null;
+        private ScottPlot.Plottable.IDraggable? PlottableBeingDragged = null;
         public void MouseDown(InputState input)
         {
             PlottableBeingDragged = Plot.GetDraggableUnderMouse(input.X, input.Y);
@@ -141,7 +145,7 @@ namespace ScottPlot.Control
         {
             double x = Plot.GetCoordinateX(input.X);
             double y = Plot.GetCoordinateY(input.Y);
-            PlottableBeingDragged.DragTo(x, y, fixedSize: input.ShiftDown);
+            PlottableBeingDragged!.DragTo(x, y, fixedSize: input.ShiftDown);
             RenderAfterDragging();
         }
 

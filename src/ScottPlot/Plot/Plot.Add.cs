@@ -1,15 +1,15 @@
-﻿/* This file contains helper methods for creating plottables, customizing them based on optional arguments, 
+﻿/* This file contains helper methods for creating plottables, customizing them based on optional arguments,
  * adding them to the plot, then returning them for additional customization all with a single method call.
- * 
+ *
  * Plottable-creating helper methods try to obey these rules:
- * 
+ *
  *   1. Only the most common plot types get helper methods.
  *      Uncommon or experimental plottables can be created by the user and added with Add().
- *   
+ *
  *   2. Only the most common styling options are configurable with optional arguments.
  *      This is subjective, but guided by what is in the cookbook and often seen in the wild.
  *      Plottables are always returned by helper methods, so users can customize them extensively as desired.
- *   
+ *
  */
 
 using ScottPlot.Plottable;
@@ -92,7 +92,7 @@ namespace ScottPlot
         /// <summary>
         /// Add a bar plot (values +/- errors) using defined positions
         /// </summary>
-        public BarPlot AddBar(double[] values, double[] errors, double[] positions, Color? color = null)
+        public BarPlot AddBar(double[] values, double[]? errors, double[]? positions, Color? color = null)
         {
             var plottable = new BarPlot(positions, values, errors, null)
             {
@@ -128,7 +128,7 @@ namespace ScottPlot
             for (int i = 0; i < seriesCount; i++)
             {
                 double[] barYs = ys[i];
-                double[] barYerr = yErr?[i];
+                double[]? barYerr = yErr?[i];
                 double[] barXs = DataGen.Consecutive(barYs.Length);
                 containsNegativeY |= barYs.Where(y => y < 0).Any();
                 var bar = new BarPlot(barXs, barYs, barYerr, null)
@@ -170,7 +170,7 @@ namespace ScottPlot
         /// <summary>
         /// Add a colorbar to display a colormap beside the data area
         /// </summary>
-        public Colorbar AddColorbar(Drawing.Colormap colormap = null, int space = 100)
+        public Colorbar AddColorbar(Drawing.Colormap? colormap = null, int space = 100)
         {
             var cb = new Colorbar(colormap);
             Add(cb);
@@ -271,7 +271,7 @@ namespace ScottPlot
         /// <summary>
         /// Add a heatmap to the plot
         /// </summary>
-        public Heatmap AddHeatmap(double[,] intensities, Drawing.Colormap colormap = null, bool lockScales = true)
+        public Heatmap AddHeatmap(double[,] intensities, Drawing.Colormap? colormap = null, bool lockScales = true)
         {
             if (lockScales)
                 AxisScaleLock(true);
@@ -286,7 +286,7 @@ namespace ScottPlot
         /// <summary>
         /// Add a horizontal axis line at a specific Y position
         /// </summary>
-        public HLine AddHorizontalLine(double y, Color? color = null, float width = 1, LineStyle style = LineStyle.Solid, string label = null)
+        public HLine AddHorizontalLine(double y, Color? color = null, float width = 1, LineStyle style = LineStyle.Solid, string? label = null)
         {
             HLine plottable = new HLine()
             {
@@ -303,7 +303,7 @@ namespace ScottPlot
         /// <summary>
         /// Add a horizontal span (shades the region between two X positions)
         /// </summary>
-        public HSpan AddHorizontalSpan(double xMin, double xMax, Color? color = null, string label = null)
+        public HSpan AddHorizontalSpan(double xMin, double xMax, Color? color = null, string? label = null)
         {
             var plottable = new HSpan()
             {
@@ -404,7 +404,7 @@ namespace ScottPlot
         /// <summary>
         /// Add many polygons using an optimized rendering method
         /// </summary>
-        public Polygons AddPolygons(List<List<(double x, double y)>> polys, Color? fillColor = null, double lineWidth = 0, Color? lineColor = null)
+        public Polygons AddPolygons(IList<IList<(double x, double y)>> polys, Color? fillColor = null, double lineWidth = 0, Color? lineColor = null)
         {
             var plottable = new Polygons(polys)
             {
@@ -419,7 +419,7 @@ namespace ScottPlot
         /// <summary>
         /// Add a population to the plot
         /// </summary>
-        public PopulationPlot AddPopulation(Population population, string label = null)
+        public PopulationPlot AddPopulation(Population population, string? label = null)
         {
             var plottable = new PopulationPlot(population, label, settings.GetNextColor());
             Add(plottable);
@@ -429,7 +429,7 @@ namespace ScottPlot
         /// <summary>
         /// Add multiple populations to the plot as a single series
         /// </summary>
-        public PopulationPlot AddPopulations(Population[] populations, string label = null)
+        public PopulationPlot AddPopulations(Population[] populations, string? label = null)
         {
             var plottable = new PopulationPlot(populations, label, settings.GetNextColor());
             Add(plottable);
@@ -452,7 +452,7 @@ namespace ScottPlot
         /// <summary>
         /// Add a radar plot
         /// </summary>
-        public RadarPlot AddRadar(double[,] values, bool independentAxes = false, double[] maxValues = null, bool disableFrameAndGrid = true)
+        public RadarPlot AddRadar(double[,] values, bool independentAxes = false, double[]? maxValues = null, bool disableFrameAndGrid = true)
         {
 
             Color[] colors = Enumerable.Range(0, values.Length)
@@ -476,7 +476,7 @@ namespace ScottPlot
         /// <summary>
         /// Add an L-shaped scalebar to the corner of the plot
         /// </summary>
-        public ScaleBar AddScaleBar(double width, double height, string xLabel = null, string yLabel = null)
+        public ScaleBar AddScaleBar(double width, double height, string? xLabel = null, string? yLabel = null)
         {
             var scalebar = new ScaleBar()
             {
@@ -490,7 +490,7 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Add a scatter plot from X/Y pairs. 
+        /// Add a scatter plot from X/Y pairs.
         /// Scatter plots are slower than Signal plots.
         /// </summary>
         public ScatterPlot AddScatter(
@@ -499,7 +499,7 @@ namespace ScottPlot
             Color? color = null,
             float lineWidth = 1,
             float markerSize = 5,
-            string label = null,
+            string? label = null,
             MarkerShape markerShape = MarkerShape.filledCircle,
             LineStyle lineStyle = LineStyle.Solid)
         {
@@ -523,7 +523,7 @@ namespace ScottPlot
             Color? color = null,
             float lineWidth = 1,
             float markerSize = 5,
-            string label = null,
+            string? label = null,
             MarkerShape markerShape = MarkerShape.filledCircle,
             LineStyle lineStyle = LineStyle.Solid)
         {
@@ -544,7 +544,7 @@ namespace ScottPlot
         /// <summary>
         /// Signal plots have evenly-spaced X points and render very fast.
         /// </summary>
-        public SignalPlot AddSignal(double[] ys, double sampleRate = 1, Color? color = null, string label = null)
+        public SignalPlot AddSignal(double[] ys, double sampleRate = 1, Color? color = null, string? label = null)
         {
             SignalPlot signal = new SignalPlot()
             {
@@ -566,7 +566,7 @@ namespace ScottPlot
         /// but data in source arrays cannot be changed after it is loaded.
         /// Methods can be used to update all or portions of the data.
         /// </summary>
-        public SignalPlotConst<T> AddSignalConst<T>(T[] ys, double sampleRate = 1, Color? color = null, string label = null) where T : struct, IComparable
+        public SignalPlotConst<T> AddSignalConst<T>(T[] ys, double sampleRate = 1, Color? color = null, string? label = null) where T : struct, IComparable
         {
             SignalPlotConst<T> plottable = new SignalPlotConst<T>()
             {
@@ -584,7 +584,7 @@ namespace ScottPlot
         /// <summary>
         /// Speed-optimized plot for Ys with unevenly-spaced ascending Xs
         /// </summary>
-        public SignalPlotXY AddSignalXY(double[] xs, double[] ys, Color? color = null, string label = null)
+        public SignalPlotXY AddSignalXY(double[] xs, double[] ys, Color? color = null, string? label = null)
         {
             SignalPlotXY plottable = new SignalPlotXY()
             {
@@ -604,7 +604,7 @@ namespace ScottPlot
         /// Speed-optimized plot for Ys with unevenly-spaced ascending Xs.
         /// Faster than SignalXY but values cannot be modified after loading.
         /// </summary>
-        public SignalPlotXYConst<TX, TY> AddSignalXYConst<TX, TY>(TX[] xs, TY[] ys, Color? color = null, string label = null)
+        public SignalPlotXYConst<TX, TY> AddSignalXYConst<TX, TY>(TX[] xs, TY[] ys, Color? color = null, string? label = null)
             where TX : struct, IComparable where TY : struct, IComparable
         {
             SignalPlotXYConst<TX, TY> signal = new SignalPlotXYConst<TX, TY>()
@@ -649,9 +649,9 @@ namespace ScottPlot
             Vector2[,] vectors,
             double[] xs,
             double[] ys,
-            string label = null,
+            string? label = null,
             Color? color = null,
-            Drawing.Colormap colormap = null,
+            Drawing.Colormap? colormap = null,
             double scaleFactor = 1
             )
         {
@@ -667,7 +667,7 @@ namespace ScottPlot
         /// <summary>
         /// Add a vertical axis line at a specific Y position
         /// </summary>
-        public VLine AddVerticalLine(double x, Color? color = null, float width = 1, LineStyle style = LineStyle.Solid, string label = null)
+        public VLine AddVerticalLine(double x, Color? color = null, float width = 1, LineStyle style = LineStyle.Solid, string? label = null)
         {
             VLine plottable = new VLine()
             {
@@ -684,7 +684,7 @@ namespace ScottPlot
         /// <summary>
         /// Add a horizontal span (shades the region between two X positions)
         /// </summary>
-        public VSpan AddVerticalSpan(double yMin, double yMax, Color? color = null, string label = null)
+        public VSpan AddVerticalSpan(double yMin, double yMax, Color? color = null, string? label = null)
         {
             var plottable = new VSpan()
             {

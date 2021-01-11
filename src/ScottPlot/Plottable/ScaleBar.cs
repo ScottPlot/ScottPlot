@@ -21,8 +21,8 @@ namespace ScottPlot.Plottable
         /// </summary>
         public float Padding = 10;
 
-        public string HorizontalLabel;
-        public string VerticalLabel;
+        public string? HorizontalLabel;
+        public string? VerticalLabel;
         public float LineWidth = 2;
         public Color LineColor = Color.Black;
         public readonly Drawing.Font Font = new Drawing.Font();
@@ -37,7 +37,7 @@ namespace ScottPlot.Plottable
 
         public override string ToString() => $"PlottableScaleBar ({HorizontalLabel}={Width}, {VerticalLabel}={Height})";
         public AxisLimits GetAxisLimits() => new AxisLimits(double.NaN, double.NaN, double.NaN, double.NaN);
-        public LegendItem[] GetLegendItems() => null;
+        public LegendItem[]? GetLegendItems() => null;
 
         public void ValidateData(bool deep = false)
         {

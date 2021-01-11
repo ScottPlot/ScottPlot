@@ -9,6 +9,7 @@ using System.Text;
 using ScottPlot.Plottable;
 using System.Linq;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ScottPlot.Renderable
 {
@@ -158,7 +159,9 @@ namespace ScottPlot.Renderable
             }
         }
 
-        private LegendItem[] LegendItems;
+        private LegendItem[]? LegendItems;
+
+        [MemberNotNull(nameof(LegendItems))]
         public void UpdateLegendItems(IPlottable[] renderables)
         {
             LegendItems = renderables.Where(x => x.GetLegendItems() != null)

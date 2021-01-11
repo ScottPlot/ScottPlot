@@ -22,7 +22,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Text displayed in the annotation
         /// </summary>
-        public string Label;
+        public string? Label;
 
         public readonly Drawing.Font Font = new Drawing.Font();
         public Color FontColor { set => Font.Color = value; }
@@ -47,7 +47,7 @@ namespace ScottPlot.Plottable
         public int YAxisIndex { get; set; } = 0;
 
         public override string ToString() => $"PlottableAnnotation at ({X} px, {Y} px)";
-        public LegendItem[] GetLegendItems() => null;
+        public LegendItem[]? GetLegendItems() => null;
         public AxisLimits GetAxisLimits() => new AxisLimits(double.NaN, double.NaN, double.NaN, double.NaN);
 
         public void ValidateData(bool deep = false)

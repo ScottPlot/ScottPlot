@@ -143,11 +143,11 @@ namespace ScottPlot.Drawing
             int[] rgbas = new int[intensities.Length];
             for (int i = 0; i < intensities.Length; i++)
             {
-                if (intensities[i].HasValue)
+                if (intensities[i] is double value)
                 {
-                    byte pixelIntensity = (byte)Math.Max(Math.Min(intensities[i].Value * 255, 255), 0);
+                    byte pixelIntensity = (byte)Math.Max(Math.Min(value * 255, 255), 0);
                     var (r, g, b) = colorMap.GetRGB(pixelIntensity);
-                    byte alpha = intensities[i] < minimumIntensity ? (byte)0 : (byte)255;
+                    byte alpha = value < minimumIntensity ? 0 : 255;
                     byte[] argb = { b, g, r, alpha };
                     rgbas[i] = BitConverter.ToInt32(argb, 0);
                 }
@@ -172,7 +172,7 @@ namespace ScottPlot.Drawing
             return colors;
         }
 
-        public static Bitmap Colorbar(Colormap cmap, int width, int height, bool vertical = false)
+        public static Bitmap? Colorbar(Colormap cmap, int width, int height, bool vertical = false)
         {
             if (width < 1 || height < 1)
                 return null;

@@ -9,7 +9,7 @@ namespace ScottPlot.Renderable
     public class AxisLabel : IRenderable
     {
         public bool IsVisible { get; set; } = true;
-        public string Label = null;
+        public string? Label = null;
         public Drawing.Font Font = new Drawing.Font() { Size = 16 };
         public Edge Edge;
         public float PixelSizePadding;

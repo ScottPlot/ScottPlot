@@ -12,7 +12,7 @@ namespace ScottPlot
 {
     public static class Tools
     {
-        public static Color GetRandomColor(Random rand = null)
+        public static Color GetRandomColor(Random? rand = null)
         {
             if (rand is null)
                 rand = new Random();
@@ -84,7 +84,7 @@ namespace ScottPlot
         }
 
         [Obsolete("use ScottPlot.Config.Fonts.GetValidFontName()", error: true)]
-        public static string VerifyFont(string fontName)
+        public static string? VerifyFont(string fontName)
         {
             return null;
         }

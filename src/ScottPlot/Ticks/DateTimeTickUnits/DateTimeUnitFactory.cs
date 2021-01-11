@@ -62,11 +62,11 @@ namespace ScottPlot.Ticks.DateTimeTickUnits
                 (DateTimeUnit.Centisecond, 1.0 / 24 / 3600 / 100 * halfDensity),
                 (DateTimeUnit.Millisecond, 1.0 / 24 / 3600 / 1000 * halfDensity),
             };
+            // suppressing tr!.Value because it's safe
+            var bestTickUnitKind = tickUnitBorders.FirstOrDefault(tr => daysApart > tr!.Value.border);
+            bestTickUnitKind ??= tickUnitBorders.Last(); // last tickUnit if not found best
 
-            var bestTickUnitKind = tickUnitBorders.FirstOrDefault(tr => daysApart > tr.Value.border);
-            bestTickUnitKind = bestTickUnitKind ?? tickUnitBorders.Last(); // last tickUnit if not found best
-
-            return Create(bestTickUnitKind.Value.kind, culture, maxTickCount, null);
+            return Create(bestTickUnitKind!.Value.kind, culture, maxTickCount, null);
         }
 
         public IDateTimeUnit CreateUnit(DateTime from, DateTime to, CultureInfo culture, int maxTickCount, DateTimeUnit? manualUnits, int? manualSpacing)

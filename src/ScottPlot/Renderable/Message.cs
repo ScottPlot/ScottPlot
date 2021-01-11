@@ -43,7 +43,7 @@ namespace ScottPlot.Renderable
 
     public class Message : IRenderable
     {
-        public string Text;
+        public string? Text;
 
         public HorizontalAlignment HAlign;
         public VerticalAlignment VAlign;

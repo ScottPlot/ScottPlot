@@ -38,7 +38,7 @@ namespace ScottPlot.Plottable
         public LineStyle LineStyle = LineStyle.Solid;
         public float LineWidth = 1;
         public Color Color = Color.Black;
-        public string Label;
+        public string? Label;
 
         // mouse interaction
         public bool DragEnabled { get; set; } = false;

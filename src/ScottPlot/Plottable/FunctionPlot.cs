@@ -22,7 +22,7 @@ namespace ScottPlot.Plottable
         public int YAxisIndex { get; set; } = 0;
         public double LineWidth = 1;
         public LineStyle LineStyle = LineStyle.Solid;
-        public string Label;
+        public string? Label;
         public Color Color = Color.Black;
 
         public FunctionPlot(Func<double, double?> function)

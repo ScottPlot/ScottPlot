@@ -42,7 +42,7 @@
 
     public class AdditionalRightAxis : Axis
     {
-        public AdditionalRightAxis(int yAxisIndex, string title)
+        public AdditionalRightAxis(int yAxisIndex, string? title)
         {
             Edge = Edge.Right;
             AxisIndex = yAxisIndex;
@@ -54,7 +54,7 @@
 
     public class AdditionalLeftAxis : Axis
     {
-        public AdditionalLeftAxis(int yAxisIndex, string title)
+        public AdditionalLeftAxis(int yAxisIndex, string? title)
         {
             Edge = Edge.Left;
             AxisIndex = yAxisIndex;
@@ -66,7 +66,7 @@
 
     public class AdditionalTopAxis : Axis
     {
-        public AdditionalTopAxis(int xAxisIndex, string title)
+        public AdditionalTopAxis(int xAxisIndex, string? title)
         {
             Edge = Edge.Top;
             AxisIndex = xAxisIndex;
@@ -78,7 +78,7 @@
 
     public class AdditionalBottomAxis : Axis
     {
-        public AdditionalBottomAxis(int xAxisIndex, string title)
+        public AdditionalBottomAxis(int xAxisIndex, string? title)
         {
             Edge = Edge.Bottom;
             AxisIndex = xAxisIndex;

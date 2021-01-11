@@ -7,7 +7,7 @@ namespace ScottPlot.Plottable
     /// </summary>
     public class LegendItem
     {
-        public string label;
+        public string? label;
         public System.Drawing.Color color;
         public System.Drawing.Color hatchColor;
         public System.Drawing.Color borderColor;

@@ -38,7 +38,7 @@ namespace ScottPlot.Ticks.DateTimeTickUnits
             return $"{date}\n{time}";
         }
 
-        public (double[] Ticks, string[] Labels) GetTicksAndLabels(DateTime from, DateTime to, string format)
+        public (double[] Ticks, string[] Labels) GetTicksAndLabels(DateTime from, DateTime to, string? format)
         {
             DateTime[] ticks = GetTicks(from, to, deltas, maxTickCount);
             string[] labels = (format is null) ?

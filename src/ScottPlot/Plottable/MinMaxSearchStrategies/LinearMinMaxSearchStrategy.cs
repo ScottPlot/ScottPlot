@@ -1,22 +1,24 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 
 namespace ScottPlot.MinMaxSearchStrategies
 {
     public class LinearMinMaxSearchStrategy<T> : IMinMaxSearchStrategy<T> where T : struct, IComparable
     {
-        private T[] sourceArray;
-        public virtual T[] SourceArray
-        {
-            get => sourceArray;
-            set => sourceArray = value;
-        }
+        public virtual T[] SourceArray { get; set; }
 
         // precompiled lambda expressions for fast math on generic
-        private static Func<T, T, bool> LessThanExp;
-        private static Func<T, T, bool> GreaterThanExp;
-        private void InitExp()
+        private static Func<T, T, bool> LessThanExp = null!; // they will be assigned on constructor call
+        private static Func<T, T, bool> GreaterThanExp = null!;
+
+        public LinearMinMaxSearchStrategy()
         {
+            if (LessThanExp is not null && GreaterThanExp is not null)
+            {
+                return;
+            }
+
             ParameterExpression paramA = Expression.Parameter(typeof(T), "a");
             ParameterExpression paramB = Expression.Parameter(typeof(T), "b");
             // add the parameters together
@@ -27,21 +29,16 @@ namespace ScottPlot.MinMaxSearchStrategies
             GreaterThanExp = Expression.Lambda<Func<T, T, bool>>(bodyGreaterThan, paramA, paramB).Compile();
         }
 
-        public LinearMinMaxSearchStrategy()
-        {
-            InitExp();
-        }
-
         public virtual void MinMaxRangeQuery(int l, int r, out double lowestValue, out double highestValue)
         {
-            T lowestValueT = sourceArray[l];
-            T highestValueT = sourceArray[l];
+            T lowestValueT = SourceArray[l];
+            T highestValueT = SourceArray[l];
             for (int i = l; i <= r; i++)
             {
-                if (LessThanExp(sourceArray[i], lowestValueT))
-                    lowestValueT = sourceArray[i];
-                if (GreaterThanExp(sourceArray[i], highestValueT))
-                    highestValueT = sourceArray[i];
+                if (LessThanExp(SourceArray[i], lowestValueT))
+                    lowestValueT = SourceArray[i];
+                if (GreaterThanExp(SourceArray[i], highestValueT))
+                    highestValueT = SourceArray[i];
             }
             lowestValue = Convert.ToDouble(lowestValueT);
             highestValue = Convert.ToDouble(highestValueT);
@@ -49,20 +46,17 @@ namespace ScottPlot.MinMaxSearchStrategies
 
         public virtual double SourceElement(int index)
         {
-            return Convert.ToDouble(sourceArray[index]);
+            return Convert.ToDouble(SourceArray[index]);
         }
 
         public void updateElement(int index, T newValue)
         {
-            sourceArray[index] = newValue;
+            SourceArray[index] = newValue;
         }
 
         public void updateRange(int from, int to, T[] newData, int fromData = 0)
         {
-            for (int i = from; i < to; i++)
-            {
-                sourceArray[i] = newData[i - from + fromData];
-            }
+            Array.Copy(newData, fromData, SourceArray, from, to - from);
         }
     }
 }

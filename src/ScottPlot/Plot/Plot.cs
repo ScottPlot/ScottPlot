@@ -95,7 +95,7 @@ namespace ScottPlot
         /// <summary>
         /// Return the draggable plottable under the mouse cursor (or null if there isn't one)
         /// </summary>
-        public IDraggable GetDraggableUnderMouse(double pixelX, double pixelY, int snapDistancePixels = 5)
+        public IDraggable? GetDraggableUnderMouse(double pixelX, double pixelY, int snapDistancePixels = 5)
         {
             double snapWidth = GetSettings(false).XAxis.Dims.UnitsPerPx * snapDistancePixels;
             double snapHeight = GetSettings(false).YAxis.Dims.UnitsPerPx * snapDistancePixels;

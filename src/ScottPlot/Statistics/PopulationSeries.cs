@@ -10,10 +10,10 @@ namespace ScottPlot.Statistics
     public class PopulationSeries
     {
         public Population[] populations;
-        public string seriesLabel;
+        public string? seriesLabel;
         public System.Drawing.Color color;
 
-        public PopulationSeries(Population[] populations, string seriesLabel = null, System.Drawing.Color? color = null)
+        public PopulationSeries(Population[] populations, string? seriesLabel = null, System.Drawing.Color? color = null)
         {
             this.populations = populations;
             this.seriesLabel = seriesLabel;

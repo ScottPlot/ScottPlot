@@ -25,7 +25,7 @@ namespace ScottPlot.Plottable
         public double OffsetX { get; set; } = 0;
         public double OffsetY { get; set; } = 0;
         public double LineWidth { get; set; } = 1;
-        public string Label { get; set; } = null;
+        public string? Label { get; set; } = null;
         public Color Color { get; set; } = Color.Green;
         public LineStyle LineStyle { get; set; } = LineStyle.Solid;
         public bool UseParallel { get; set; } = true;
@@ -108,8 +108,8 @@ namespace ScottPlot.Plottable
         }
 
         private int DensityLevelCount = 0;
-        private Color[] PenColorsByDensity;
-        public Color[] DensityColors
+        private Color[]? PenColorsByDensity;
+        public Color[]? DensityColors
         {
             set
             {
@@ -300,7 +300,7 @@ namespace ScottPlot.Plottable
             if (index2 > MaxRenderIndex)
                 index2 = MaxRenderIndex;
 
-            // get the min and max value for this column                
+            // get the min and max value for this column
             Strategy.MinMaxRangeQuery(index1, index2, out double lowestValue, out double highestValue);
             float yPxHigh = dims.GetPixelY(lowestValue + OffsetY);
             float yPxLow = dims.GetPixelY(highestValue + OffsetY);

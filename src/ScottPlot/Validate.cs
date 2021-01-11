@@ -5,8 +5,8 @@ namespace ScottPlot
 {
     public static class Validate
     {
-        private static string ValidLabel(string label) =>
-            string.IsNullOrWhiteSpace(label) ? "[unknown variable]" : label;
+        private static string ValidLabel(string? label) =>
+            string.IsNullOrWhiteSpace(label) ? "[unknown variable]" : label!;
 
         /// <summary>
         /// Throw an exception if the value is NaN or infinity
@@ -140,8 +140,8 @@ namespace ScottPlot
         /// Throw an exception if non-null arrays have different lengths
         /// </summary>
         public static void AssertEqualLength(string label,
-            double[] a, double[] b = null, double[] c = null,
-            double[] d = null, double[] e = null, double[] f = null)
+            double[] a, double[]? b = null, double[]? c = null,
+            double[]? d = null, double[]? e = null, double[]? f = null)
         {
             label = ValidLabel(label);
 
@@ -163,8 +163,8 @@ namespace ScottPlot
         /// <summary>
         /// Returns true if all non-null arguments have equal length
         /// </summary>
-        public static bool IsEqualLength(double[] a, double[] b = null, double[] c = null,
-                                         double[] d = null, double[] e = null, double[] f = null)
+        public static bool IsEqualLength(double[] a, double[]? b = null, double[]? c = null,
+                                         double[]? d = null, double[]? e = null, double[]? f = null)
         {
             if (a is null)
                 throw new InvalidOperationException($"first array must not be null");

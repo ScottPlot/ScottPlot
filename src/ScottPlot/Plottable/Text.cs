@@ -14,7 +14,7 @@ namespace ScottPlot.Plottable
         // data
         public double X;
         public double Y;
-        public string Label;
+        public string? Label;
 
         // customization
         public bool IsVisible { get; set; } = true;
@@ -24,7 +24,7 @@ namespace ScottPlot.Plottable
         public Color BackgroundColor;
         public Drawing.Font Font = new Drawing.Font();
         public Color Color { set => Font.Color = value; }
-        public string FontName { set => Font.Name = value; }
+        public string? FontName { set => Font.Name = value; }
         public float FontSize { set => Font.Size = value; }
         public bool FontBold { set => Font.Bold = value; }
         public Alignment Alignment { set => Font.Alignment = value; }
@@ -32,7 +32,7 @@ namespace ScottPlot.Plottable
 
         public override string ToString() => $"PlottableText \"{Label}\" at ({X}, {Y})";
         public AxisLimits GetAxisLimits() => new AxisLimits(X, X, Y, Y);
-        public LegendItem[] GetLegendItems() => null;
+        public LegendItem[]? GetLegendItems() => null;
 
         public void ValidateData(bool deep = false)
         {

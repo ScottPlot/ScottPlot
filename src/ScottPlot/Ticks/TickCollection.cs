@@ -10,17 +10,17 @@ namespace ScottPlot.Ticks
     public class TickCollection
     {
         // This class creates pretty tick labels (with offset and exponent) uses graph settings
-        // to inspect the tick font and ensure tick labels will not overlap. 
+        // to inspect the tick font and ensure tick labels will not overlap.
         // It also respects manually defined tick spacing settings set via plt.Grid().
 
-        public double[] tickPositionsMajor;
-        public double[] tickPositionsMinor;
-        public string[] tickLabels;
+        public double[]? tickPositionsMajor;
+        public double[]? tickPositionsMinor;
+        public string[]? tickLabels;
 
-        public double[] manualTickPositions;
-        public string[] manualTickLabels;
+        public double[]? manualTickPositions;
+        public string[]? manualTickLabels;
 
-        public string cornerLabel;
+        public string? cornerLabel;
         public float maxLabelWidth = 15;
         public float maxLabelHeight = 12;
 
@@ -28,11 +28,11 @@ namespace ScottPlot.Ticks
         public bool verticalAxis;
         public bool invertSign;
         public bool logScale;
-        public string numericFormatString;
-        public string dateTimeFormatString;
+        public string? numericFormatString;
+        public string? dateTimeFormatString;
 
         public int radix = 10;
-        public string prefix = null;
+        public string? prefix = null;
 
         public double manualSpacingX = 0;
         public double manualSpacingY = 0;
@@ -73,12 +73,12 @@ namespace ScottPlot.Ticks
         }
 
         public void SetCulture(
-            string shortDatePattern = null,
-            string decimalSeparator = null,
-            string numberGroupSeparator = null,
+            string? shortDatePattern = null,
+            string? decimalSeparator = null,
+            string? numberGroupSeparator = null,
             int? decimalDigits = null,
             int? numberNegativePattern = null,
-            int[] numberGroupSizes = null
+            int[]? numberGroupSizes = null
             )
         {
             // Culture may be null if the thread culture is the same is the system culture.
@@ -331,7 +331,7 @@ namespace ScottPlot.Ticks
             return (labels, cornerLabel);
         }
 
-        public double[] MinorFromMajor(double[] majorTicks, double minorTicksPerMajorTick, double lowerLimit, double upperLimit)
+        public double[]? MinorFromMajor(double[] majorTicks, double minorTicksPerMajorTick, double lowerLimit, double upperLimit)
         {
             if ((majorTicks == null) || (majorTicks.Length < 2))
                 return null;
@@ -357,7 +357,7 @@ namespace ScottPlot.Ticks
             return minorTicks.ToArray();
         }
 
-        public double[] MinorFromMajorLog(double[] majorTicks, double lowerLimit, double upperLimit)
+        public double[]? MinorFromMajorLog(double[] majorTicks, double lowerLimit, double upperLimit)
         {
             if ((majorTicks == null) || (majorTicks.Length < 2))
                 return null;
@@ -382,7 +382,7 @@ namespace ScottPlot.Ticks
         {
 
             TimeSpan dtTickSep;
-            string dtFmt = null;
+            string? dtFmt = null;
 
             try
             {

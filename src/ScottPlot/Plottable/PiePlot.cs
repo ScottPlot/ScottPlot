@@ -9,8 +9,8 @@ namespace ScottPlot.Plottable
     public class PiePlot : IPlottable
     {
         public double[] Values;
-        public string Label;
-        public string[] GroupNames;
+        public string? Label;
+        public string[]? GroupNames;
 
         public Color[] Colors;
         public Color BackgroundColor;
@@ -21,7 +21,7 @@ namespace ScottPlot.Plottable
         public bool ShowLabels;
 
         public double DonutSize;
-        public string DonutLabel;
+        public string? DonutLabel;
         public readonly Drawing.Font DonutFont = new Drawing.Font();
 
         public float OutlineSize = 0;
@@ -32,7 +32,7 @@ namespace ScottPlot.Plottable
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
 
-        public PiePlot(double[] values, string[] groupNames, Color[] colors)
+        public PiePlot(double[] values, string[]? groupNames, Color[] colors)
         {
             Values = values;
             GroupNames = groupNames;
@@ -47,7 +47,7 @@ namespace ScottPlot.Plottable
             return $"PlottablePie{label} with {PointCount} points";
         }
 
-        public LegendItem[] GetLegendItems()
+        public LegendItem[]? GetLegendItems()
         {
             if (GroupNames is null)
                 return null;

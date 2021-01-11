@@ -109,7 +109,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public void ExecuteRecipe(Plot plt)
         {
             // create a list of random polygons
-            List<List<(double x, double y)>> polys = new List<List<(double x, double y)>>();
+            var polys = new List<IList<(double x, double y)>>();
             int polygonCount = 5_000;
             int pointsPerPolygon = 100;
             Random rand = new Random(0);
