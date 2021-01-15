@@ -13,6 +13,7 @@
  */
 
 using ScottPlot.Plottable;
+using ScottPlot.Renderable;
 using ScottPlot.Statistics;
 using System;
 using System.Collections.Generic;
@@ -42,6 +43,30 @@ namespace ScottPlot
             Add(plottable);
             return plottable;
         }
+
+        public Tooltip AddTooltip(string contents, double x, double y, float size = 12, Color? color = null, Color? backColor = null)
+		{
+            var tooltip = new Tooltip()
+            {
+                Contents = contents,
+                Coordinates = (x, y),
+                FontSize = size,
+            };
+
+
+			if (color.HasValue)
+			{
+                tooltip.FontColor = color.Value;
+			}
+
+			if (backColor.HasValue)
+			{
+                tooltip.BackgroundColor = backColor.Value;
+			}
+
+            settings.ToolTips.Add(tooltip);
+            return tooltip;
+		}
 
         /// <summary>
         /// Display an arrow pointing to a spot in coordinate space
