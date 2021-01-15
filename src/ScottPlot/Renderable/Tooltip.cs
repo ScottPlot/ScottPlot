@@ -35,7 +35,6 @@ namespace ScottPlot.Renderable
                 PointF topLeftCorner = new PointF(dims.GetPixelX(dims.XMin), dims.GetPixelY(dims.YMax));
                 SizeF size = new SizeF(dims.GetPixelX(dims.XMax) - topLeftCorner.X, dims.GetPixelY(dims.YMin) - topLeftCorner.Y);
                 var clipRect = new RectangleF(topLeftCorner, size);
-                //RectangleF clipRect = new RectangleF(dims.GetPixelX(dims.XMin), dims.GetPixelX(dims.XMax), dims.GetPixelY(dims.YMax), dims.GetPixelY(dims.YMin));
                 gfx.Clip = new Region(clipRect);
 
                 SizeF contentSize = gfx.MeasureString(Contents, font);
