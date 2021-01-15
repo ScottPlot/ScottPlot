@@ -6,7 +6,7 @@ using System.Text;
 namespace ScottPlot.Cookbook.Recipes
 {
     class MiscTooltip : IRecipe
-	{
+    {
         public string Category => "Misc";
         public string ID => "misc_tooltip";
         public string Title => "Tooltips";

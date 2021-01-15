@@ -81,9 +81,9 @@ namespace ScottPlot
         }
 
         public void Remove(Renderable.Tooltip tooltip)
-		{
+        {
             settings.ToolTips.Remove(tooltip);
-		}
+        }
 
         /// <summary>
         /// Return a copy of the list of plottables

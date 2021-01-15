@@ -86,7 +86,7 @@ namespace ScottPlot
         {
             PlotDimensions dims = settings.GetPlotDimensions(0, 0);
             settings.ToolTips.ForEach(tt => tt.Render(dims, bmp, lowQuality));
-            
+
             settings.CornerLegend.UpdateLegendItems(GetPlottables());
             settings.CornerLegend.Render(dims, bmp, lowQuality);
 
