@@ -80,6 +80,9 @@ namespace ScottPlot
                 settings.ResetAxisLimits();
         }
 
+        /// <summary>
+        /// Remove a specific tooltip 
+        /// </summary>
         public void Remove(Renderable.Tooltip tooltip)
         {
             settings.ToolTips.Remove(tooltip);
