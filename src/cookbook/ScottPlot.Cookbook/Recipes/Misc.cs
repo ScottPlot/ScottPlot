@@ -5,6 +5,26 @@ using System.Text;
 
 namespace ScottPlot.Cookbook.Recipes
 {
+    class MiscTooltip : IRecipe
+	{
+        public string Category => "Misc";
+        public string ID => "misc_tooltip";
+        public string Title => "Tooltips";
+        public string Description => "The tooltip class allows you to annotate your data.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            int pointCount = 500;
+            double[] ys = DataGen.Sin(pointCount, oscillations: pointCount * Math.PI);
+
+            Func<double, double?> functionToPlot = (double x) => Math.Sin(x);
+
+            plt.AddFunction(functionToPlot);
+
+            plt.AddTooltip("This is the max of the\nsine function.", Math.PI / 2, 1);
+        }
+    }
+
     class MiscGaussian : IRecipe
     {
         public string Category => "Misc";
