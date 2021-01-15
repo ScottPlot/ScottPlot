@@ -56,8 +56,8 @@ namespace ScottPlot.Renderable
                     arrowHeadLocation,
                     upperArrowVertex,
                     new PointF(contentBoxInsideEdgeX, upperArrowVertex.Y - padding),
-                    new PointF(contentBoxInsideEdgeX + sign * contentSize.Width, upperArrowVertex.Y - padding),
-                    new PointF(contentBoxInsideEdgeX + sign * contentSize.Width, contentBoxBottomEdge),
+                    new PointF(contentBoxInsideEdgeX + sign * (contentSize.Width + padding), upperArrowVertex.Y - padding),
+                    new PointF(contentBoxInsideEdgeX + sign * (contentSize.Width + padding), contentBoxBottomEdge),
                     new PointF(contentBoxInsideEdgeX, contentBoxBottomEdge),
                     lowerArrowVertex,
                     arrowHeadLocation
@@ -71,7 +71,7 @@ namespace ScottPlot.Renderable
                 gfx.FillPath(fillBrush, path);
 
                 float xOffset = sign != -1 ? 0 : -contentSize.Width;
-                gfx.DrawString(Contents, font, fontBrush, new PointF(contentBoxInsideEdgeX + xOffset + padding / 2, upperArrowVertex.Y));
+                gfx.DrawString(Contents, font, fontBrush, new PointF(contentBoxInsideEdgeX + xOffset + sign * padding / 2, upperArrowVertex.Y));
             }
         }
     }
