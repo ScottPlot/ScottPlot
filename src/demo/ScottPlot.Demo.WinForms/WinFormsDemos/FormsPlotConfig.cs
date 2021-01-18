@@ -24,79 +24,69 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             double[] dataSin = DataGen.Sin(pointCount);
             double[] dataCos = DataGen.Cos(pointCount);
 
-            formsPlot1.plt.PlotScatter(dataXs, dataSin);
-            formsPlot1.plt.PlotScatter(dataXs, dataCos);
+            formsPlot1.Plot.AddScatter(dataXs, dataSin);
+            formsPlot1.Plot.AddScatter(dataXs, dataCos);
 
             formsPlot1.Render();
         }
 
         private void cbPannable_CheckedChanged(object sender, EventArgs e)
         {
-            formsPlot1.Configure(enablePanning: cbPannable.Checked);
+            formsPlot1.Configuration.LeftClickDragPan = cbPannable.Checked;
         }
 
         private void cbZoomable_CheckedChanged(object sender, EventArgs e)
         {
-            formsPlot1.Configure(enableZooming: cbZoomable.Checked, enableScrollWheelZoom: cbZoomable.Checked);
+            formsPlot1.Configuration.RightClickDragZoom = cbZoomable.Checked;
+            formsPlot1.Configuration.ScrollWheelZoom = cbZoomable.Checked;
         }
 
         private void cbLowQualWhileDragging_CheckedChanged(object sender, EventArgs e)
         {
-            formsPlot1.Configure(lowQualityWhileDragging: cbLowQualWhileDragging.Checked);
+            formsPlot1.Configuration.Quality =
+                cbLowQualWhileDragging.Checked ?
+                Control.QualityMode.LowWhileDragging :
+                Control.QualityMode.High;
         }
 
         private void cbLockVertical_CheckedChanged(object sender, EventArgs e)
         {
-            formsPlot1.Configure(lockVerticalAxis: cbLockVertical.Checked);
+            formsPlot1.Configuration.LockVerticalAxis = cbLockVertical.Checked;
         }
 
         private void cbLockHorizontal_CheckedChanged(object sender, EventArgs e)
         {
-            formsPlot1.Configure(lockHorizontalAxis: cbLockHorizontal.Checked);
+            formsPlot1.Configuration.LockHorizontalAxis = cbLockHorizontal.Checked;
         }
 
         private void cbEqualAxes_CheckedChanged(object sender, EventArgs e)
         {
-            formsPlot1.Configure(equalAxes: cbEqualAxes.Checked);
+            formsPlot1.Plot.AxisScaleLock(cbEqualAxes.Checked);
             formsPlot1.Render();
-        }
-
-        private void cbRightClickMenu_CheckedChanged(object sender, EventArgs e)
-        {
-            formsPlot1.Configure(enableRightClickMenu: cbRightClickMenu.Checked);
         }
 
         private void cbDoubleClickBenchmark_CheckedChanged(object sender, EventArgs e)
         {
-            if (cbDoubleClickBenchmark.Checked is false)
-            {
-                formsPlot1.plt.Benchmark(enable: false);
-                formsPlot1.Render();
-            }
-
-            formsPlot1.Configure(enableDoubleClickBenchmark: cbDoubleClickBenchmark.Checked);
+            formsPlot1.Configuration.DoubleClickBenchmark = cbDoubleClickBenchmark.Checked;
         }
 
-        private void cbCustomRightClick_CheckedChanged(object sender, EventArgs e)
+        private void cbRightClickMenu_CheckedChanged(object sender, EventArgs e) => InitializeRightClickMenu();
+
+        private void cbCustomRightClick_CheckedChanged(object sender, EventArgs e) => InitializeRightClickMenu();
+
+        private void InitializeRightClickMenu()
         {
-            if (cbCustomRightClick.Checked)
-            {
-                cbRightClickMenu.Checked = false;
-                formsPlot1.Configure(enableRightClickMenu: false);
-            }
+            // remove both possible right-click actions
+            formsPlot1.RightClicked -= formsPlot1.DefaultRightClickEvent;
+            formsPlot1.RightClicked -= CustomRightClickEvent;
+
+            if (cbRightClickMenu.Enabled == false)
+                return;
+
+            formsPlot1.RightClicked += cbCustomRightClick.Checked ? CustomRightClickEvent : formsPlot1.DefaultRightClickEvent;
         }
 
-        private void formsPlot1_MouseClicked(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right && cbCustomRightClick.Checked)
-            {
-                MessageBox.Show("This is a custom right-click action");
-            }
-        }
-
-        private void cbTooltip_CheckedChanged(object sender, EventArgs e)
-        {
-            formsPlot1.Configure(showCoordinatesTooltip: cbTooltip.Checked);
-        }
+        private void CustomRightClickEvent(object sender, EventArgs e) =>
+            MessageBox.Show("This is a custom right-click action");
     }
 }

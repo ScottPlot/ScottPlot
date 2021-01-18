@@ -15,33 +15,30 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
         public LinkedPlots()
         {
             InitializeComponent();
-        }
-
-        private void LinkedPlots_Load(object sender, EventArgs e)
-        {
-            Random rand = new Random(0);
-            int pointCount = 5000;
-            double[] dataXs = DataGen.Consecutive(pointCount);
-            double[] dataSin = DataGen.NoisySin(rand, pointCount);
-            double[] dataCos = DataGen.NoisySin(rand, pointCount);
-
-            formsPlot1.plt.PlotScatter(dataXs, dataSin);
-            formsPlot1.Render();
-
-            formsPlot2.plt.PlotScatter(dataXs, dataCos);
-            formsPlot2.Render();
+            formsPlot1.Plot.AddSignal(DataGen.Sin(51));
+            formsPlot2.Plot.AddSignal(DataGen.Cos(51));
         }
 
         private void formsPlot1_AxesChanged(object sender, EventArgs e)
         {
-            formsPlot2.plt.SetAxisLimits(formsPlot1.plt.GetAxisLimits());
-            formsPlot2.Render(skipIfCurrentlyRendering: true, processEvents: cbProcessEvents.Checked);
+            if (cbLinked.Checked == false)
+                return;
+
+            formsPlot2.Configuration.AxesChangedEventEnabled = false; // disable this to avoid an infinite loop
+            formsPlot2.Plot.SetAxisLimits(formsPlot1.Plot.GetAxisLimits());
+            formsPlot2.Render();
+            formsPlot2.Configuration.AxesChangedEventEnabled = true;
         }
 
         private void formsPlot2_AxesChanged(object sender, EventArgs e)
         {
-            formsPlot1.plt.SetAxisLimits(formsPlot2.plt.GetAxisLimits());
-            formsPlot1.Render(skipIfCurrentlyRendering: true, processEvents: cbProcessEvents.Checked);
+            if (cbLinked.Checked == false)
+                return;
+
+            formsPlot1.Configuration.AxesChangedEventEnabled = false; // disable this to avoid an infinite loop
+            formsPlot1.Plot.SetAxisLimits(formsPlot2.Plot.GetAxisLimits());
+            formsPlot1.Render();
+            formsPlot1.Configuration.AxesChangedEventEnabled = true;
         }
     }
 }

@@ -30,10 +30,9 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             foreach (WpfPlot wpfPlot in wpfPlots)
             {
                 for (int i = 0; i < 3; i++)
-                    wpfPlot.plt.PlotSignal(DataGen.RandomWalk(rand, 100));
+                    wpfPlot.Plot.AddSignal(DataGen.RandomWalk(rand, 100));
 
-                wpfPlot.Configure(enableScrollWheelZoom: false, enableRightClickMenu: false);
-
+                wpfPlot.Configuration.ScrollWheelZoom = false;
                 wpfPlot.Render();
             }
         }

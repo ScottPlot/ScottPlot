@@ -20,29 +20,24 @@ namespace ScottPlot.Demo.WPF.WpfDemos
         public LinkedPlots()
         {
             InitializeComponent();
-
-            int pointCount = 51;
-            double[] dataXs = DataGen.Consecutive(pointCount);
-            double[] dataSin = DataGen.Sin(pointCount);
-            double[] dataCos = DataGen.Cos(pointCount);
-
-            wpfPlot1.plt.PlotScatter(dataXs, dataSin);
-            wpfPlot1.Render();
-
-            wpfPlot2.plt.PlotScatter(dataXs, dataCos);
-            wpfPlot2.Render();
+            wpfPlot1.Plot.AddSignal(DataGen.Sin(51));
+            wpfPlot2.Plot.AddSignal(DataGen.Cos(51));
         }
 
-        private void axisChanged1(object sender, EventArgs e)
+        private void AxesChanged1(object sender, EventArgs e)
         {
-            wpfPlot2.plt.SetAxisLimits(wpfPlot1.plt.GetAxisLimits());
+            wpfPlot2.Configuration.AxesChangedEventEnabled = false; // disable this to prevent an infinite loop
+            wpfPlot2.Plot.SetAxisLimits(wpfPlot1.Plot.GetAxisLimits());
             wpfPlot2.Render();
+            wpfPlot2.Configuration.AxesChangedEventEnabled = true;
         }
 
-        private void axisChanged2(object sender, EventArgs e)
+        private void AxesChanged2(object sender, EventArgs e)
         {
-            wpfPlot1.plt.SetAxisLimits(wpfPlot2.plt.GetAxisLimits());
+            wpfPlot1.Configuration.AxesChangedEventEnabled = false; // disable this to prevent an infinite loop
+            wpfPlot1.Plot.SetAxisLimits(wpfPlot2.Plot.GetAxisLimits());
             wpfPlot1.Render();
+            wpfPlot1.Configuration.AxesChangedEventEnabled = true;
         }
     }
 }

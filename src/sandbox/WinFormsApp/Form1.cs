@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WinFormsApp
@@ -23,10 +16,11 @@ namespace WinFormsApp
             formsPlot1 = new ScottPlot.FormsPlot() { Dock = DockStyle.Fill };
             Controls.Add(formsPlot1);
 
-            double[] ys = { 200, 150, 1100, 100, 125, 175, 125, 450, 250, 1000, 150, 450, 50, 50, 200, 400, 150, 100 };
-            double[] xs = ScottPlot.DataGen.Consecutive(ys.Length);
-            formsPlot1.plt.AddFillAboveAndBelow(xs, ys, 200);
-            formsPlot1.Render();
+            int pointCount = 10;
+            var rand = new Random(0);
+            double[] xs = ScottPlot.DataGen.Random(rand, pointCount);
+            double[] ys = ScottPlot.DataGen.Random(rand, pointCount);
+            formsPlot1.Plot.AddScatter(xs, ys);
         }
     }
 }

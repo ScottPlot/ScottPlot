@@ -43,7 +43,6 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             wpfPlot1.plt.XAxis.TickLabelStyle(rotation: 90);
             wpfPlot1.plt.AxisAuto();
             wpfPlot1.plt.Layout(left: 20, top: 50, bottom: 100, right: 20);
-            wpfPlot1.Configure(recalculateLayoutOnMouseUp: false);
 
             wpfPlot1.Render();
         }

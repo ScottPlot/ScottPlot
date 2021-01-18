@@ -81,7 +81,7 @@ namespace ScottPlot.Demo.WPF.WpfDemos
         {
             if (AutoAxisCheckbox.IsChecked == true)
                 wpfPlot1.plt.AxisAuto();
-            wpfPlot1.Render(skipIfCurrentlyRendering: true);
+            wpfPlot1.Render();
         }
 
         private void DisableAutoAxis(object sender, RoutedEventArgs e)

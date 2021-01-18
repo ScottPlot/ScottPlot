@@ -31,12 +31,12 @@ namespace ScottPlot.Demo.WPF.WpfDemos
         public LiveDataFixed()
         {
             InitializeComponent();
-            wpfPlot1.Configure(middleClickMarginX: 0);
+            wpfPlot1.Configuration.MiddleClickAutoAxisMarginX = 0;
 
             // plot the data array only once
-            wpfPlot1.plt.PlotSignal(liveData);
-            wpfPlot1.plt.AxisAutoX(margin: 0);
-            wpfPlot1.plt.SetAxisLimits(yMin: -1, yMax: 2.5);
+            wpfPlot1.Plot.PlotSignal(liveData);
+            wpfPlot1.Plot.AxisAutoX(margin: 0);
+            wpfPlot1.Plot.SetAxisLimits(yMin: -1, yMax: 2.5);
 
             // create a traditional timer to update the data
             _updateDataTimer = new Timer(_ => UpdateData(), null, 0, 5);
@@ -66,7 +66,7 @@ namespace ScottPlot.Demo.WPF.WpfDemos
 
         void Render(object sender, EventArgs e)
         {
-            wpfPlot1.Render(skipIfCurrentlyRendering: true);
+            wpfPlot1.Render();
         }
     }
 }

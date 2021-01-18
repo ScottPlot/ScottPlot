@@ -13,25 +13,19 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
 {
     public partial class MouseTracker : Form
     {
-        VLine vLine;
-        HLine hLine;
+        private readonly VLine vLine;
+        private readonly HLine hLine;
 
         public MouseTracker()
         {
             InitializeComponent();
-            formsPlot1.plt.PlotSignal(DataGen.RandomWalk(null, 100));
-
-            vLine = formsPlot1.plt.PlotVLine(0, color: Color.Red, lineStyle: LineStyle.Dash);
-            hLine = formsPlot1.plt.PlotHLine(0, color: Color.Red, lineStyle: LineStyle.Dash);
-
-            formsPlot1.Render();
+            formsPlot1.Plot.AddSignal(DataGen.RandomWalk(null, 100));
+            vLine = formsPlot1.Plot.AddVerticalLine(0, Color.Red, 1, LineStyle.Dash);
+            hLine = formsPlot1.Plot.AddHorizontalLine(0, Color.Red, 1, LineStyle.Dash);
         }
 
         private void formsPlot1_MouseMoved_1(object sender, MouseEventArgs e)
         {
-            int pixelX = e.X;
-            int pixelY = e.Y;
-
             (double coordinateX, double coordinateY) = formsPlot1.GetMouseCoordinates();
 
             XPixelLabel.Text = $"{e.X:0.000}";
@@ -43,7 +37,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             vLine.X = coordinateX;
             hLine.Y = coordinateY;
 
-            formsPlot1.Render(skipIfCurrentlyRendering: true);
+            formsPlot1.Render();
         }
     }
 }

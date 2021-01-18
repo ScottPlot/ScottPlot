@@ -22,11 +22,18 @@ namespace ScottPlot.Demo.WPF.WpfDemos
         public RightClickMenu()
         {
             InitializeComponent();
+            wpfPlot1.Plot.AddSignal(DataGen.Sin(51));
+            wpfPlot1.Plot.AddSignal(DataGen.Cos(51));
 
-            wpfPlot1.plt.PlotSignal(DataGen.Sin(51));
-            wpfPlot1.plt.PlotSignal(DataGen.Cos(51));
-            wpfPlot1.Render();
+            // unsubscribe from the default right-click menu event
+            wpfPlot1.RightClicked -= wpfPlot1.DefaultRightClickEvent;
 
+            // add your own custom event
+            wpfPlot1.RightClicked += DeployCustomMenu;
+        }
+
+        private void DeployCustomMenu(object sender, EventArgs e)
+        {
             MenuItem addSinMenuItem = new MenuItem() { Header = "Add Sine Wave" };
             addSinMenuItem.Click += AddSine;
             MenuItem clearPlotMenuItem = new MenuItem() { Header = "Clear Plot" };
@@ -36,22 +43,21 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             rightClickMenu.Items.Add(addSinMenuItem);
             rightClickMenu.Items.Add(clearPlotMenuItem);
 
-            wpfPlot1.ContextMenu = rightClickMenu;
+            rightClickMenu.IsOpen = true;
         }
 
         private void AddSine(object sender, RoutedEventArgs e)
         {
             Random rand = new Random();
-            wpfPlot1.plt.PlotSignal(DataGen.Sin(51, phase: rand.NextDouble() * 1000));
-            wpfPlot1.plt.AxisAuto();
-            wpfPlot1.Render();
+            double[] data = DataGen.Sin(51, phase: rand.NextDouble() * 1000);
+            wpfPlot1.Plot.AddSignal(data);
+            wpfPlot1.Plot.AxisAuto();
         }
 
         private void ClearPlot(object sender, RoutedEventArgs e)
         {
-            wpfPlot1.plt.Clear();
-            wpfPlot1.plt.AxisAuto();
-            wpfPlot1.Render();
+            wpfPlot1.Plot.Clear();
+            wpfPlot1.Plot.AxisAuto();
         }
     }
 }
