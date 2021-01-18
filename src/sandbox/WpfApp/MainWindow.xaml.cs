@@ -25,7 +25,7 @@ namespace WpfApp
             InitializeComponent();
 
             Random rand = new Random(0);
-            int pointCount = 10;
+            int pointCount = 1_000;
             double[] xs = ScottPlot.DataGen.Random(rand, pointCount);
             double[] ys = ScottPlot.DataGen.Random(rand, pointCount);
             WpfPlot1.Plot.AddScatter(xs, ys);

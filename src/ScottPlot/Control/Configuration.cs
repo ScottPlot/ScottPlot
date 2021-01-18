@@ -12,8 +12,8 @@
         /// </summary>
         public bool Zoom
         {
-            get => RightClickDragZoom; set =>
- (RightClickDragZoom, MiddleClickDragZoom, ScrollWheelZoom) = (value, value, value);
+            get => RightClickDragZoom;
+            set => (RightClickDragZoom, MiddleClickDragZoom, ScrollWheelZoom) = (value, value, value);
         }
 
         /// <summary>
@@ -85,5 +85,10 @@
         /// Controls whether or not a render event will be triggered if a change in the axis limits is detected
         /// </summary>
         public bool AxesChangedEventEnabled = true;
+
+        /// <summary>
+        /// Permitting dropped frames makes interactive mouse manipulation feel faster
+        /// </summary>
+        public bool AllowDroppedFramesWhileDragging = true;
     }
 }

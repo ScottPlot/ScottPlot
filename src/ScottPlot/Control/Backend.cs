@@ -123,10 +123,15 @@ namespace ScottPlot.Control
 
         private AxisLimits LimitsOnLastRender = new AxisLimits();
         private int PlottableCountOnLastRender = -1;
-        public void Render(bool lowQuality = false)
+        private bool currentlyRendering = false;
+        public void Render(bool lowQuality = false, bool skipIfCurrentlyRendering = false)
         {
             if (Bmp is null)
                 return;
+
+            if (currentlyRendering && skipIfCurrentlyRendering)
+                return;
+            currentlyRendering = true;
 
             //Debug.WriteLine("Render called by:" + new StackTrace().GetFrame(1).GetMethod().Name);
 
@@ -144,10 +149,13 @@ namespace ScottPlot.Control
             LimitsOnLastRender = newLimits;
 
             BitmapUpdated(null, EventArgs.Empty);
+            currentlyRendering = false;
         }
 
         private void RenderAfterDragging() =>
-            Render(lowQuality: Configuration.Quality == QualityMode.LowWhileDragging);
+            Render(
+                lowQuality: Configuration.Quality == QualityMode.LowWhileDragging,
+                skipIfCurrentlyRendering: Configuration.AllowDroppedFramesWhileDragging);
 
         public void RenderIfPlottableCountChanged()
         {
@@ -382,11 +390,11 @@ namespace ScottPlot.Control
         {
             if (MouseWheelStopwatch.IsRunning)
                 return;
-            
+
             MouseWheelStopwatch.Start();
             while (true)
             {
-                while(MouseWheelQueue.Count > 0)
+                while (MouseWheelQueue.Count > 0)
                 {
                     Debug.WriteLine($"{MouseWheelStopwatch.ElapsedMilliseconds} rendering LW");
                     MouseWheelRender(MouseWheelQueue.Dequeue());

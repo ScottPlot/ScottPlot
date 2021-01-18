@@ -23,7 +23,7 @@ namespace WinFormsApp
             formsPlot1 = new ScottPlot.FormsPlot() { Dock = DockStyle.Fill };
             Controls.Add(formsPlot1);
 
-            int pointCount = 10;
+            int pointCount = 1_000;
             var rand = new Random(0);
             double[] xs = ScottPlot.DataGen.Random(rand, pointCount);
             double[] ys = ScottPlot.DataGen.Random(rand, pointCount);
