@@ -168,6 +168,30 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Add a colorbar to display a colormap beside the data area
+        /// </summary>
+        public Colorbar AddColorbar(Drawing.Colormap colormap = null, int space = 100)
+        {
+            var cb = new Colorbar(colormap);
+            Add(cb);
+            YAxis2.SetSizeLimit(min: space);
+            return cb;
+        }
+
+        /// <summary>
+        /// Add a colorbar initialized with settings from a heatmap
+        /// </summary>
+        public Colorbar AddColorbar(Heatmap heatmap, int space = 100)
+        {
+            var cb = new Colorbar(heatmap.Colormap);
+            cb.AddTick(0, heatmap.ColorbarMin);
+            cb.AddTick(1, heatmap.ColorbarMax);
+            Add(cb);
+            YAxis2.SetSizeLimit(min: space);
+            return cb;
+        }
+
+        /// <summary>
         /// Create a polygon to fill the area between Y values and a baseline.
         /// </summary>
         public Polygon AddFill(double[] xs, double[] ys, double baseline = 0, Color? color = null)
@@ -219,36 +243,10 @@ namespace ScottPlot
         /// </summary>
         public (Polygon polyAbove, Polygon polyBelow) AddFillAboveAndBelow(double[] xs, double[] ys, double baseline = 0, Color? colorAbove = null, Color? colorBelow = null)
         {
-            // TODO: this almost works perfectly, but not quite.
-            // look at scatter plots with low numbers of points
-            // that cross the baseline a lot. The same X value appears
-            // to have filled area both above and below the curve.
+            var (xs2, ysAbove, ysBelow) = Drawing.Tools.PolyAboveAndBelow(xs, ys, baseline);
 
-            double[] xs2 = Tools.Pad(xs, cloneEdges: true);
-            double[] ys2 = Tools.Pad(ys, padWithLeft: baseline, padWithRight: baseline);
-            double[] ys2below = new double[ys2.Length];
-            double[] ys2above = new double[ys2.Length];
-
-            for (int i = 0; i < ys2.Length; i++)
-            {
-                if (ys2[i] < baseline)
-                {
-                    ys2below[i] = ys2[i];
-                    ys2above[i] = baseline;
-                }
-                else
-                {
-                    ys2above[i] = ys2[i];
-                    ys2below[i] = baseline;
-                }
-            }
-
-            Polygon polyAbove = new Polygon(xs2, ys2above);
-            Polygon polyBelow = new Polygon(xs2, ys2below);
-
-            polyAbove.FillColor = colorAbove ?? Color.Green;
-            polyBelow.FillColor = colorBelow ?? Color.Red;
-
+            var polyAbove = new Polygon(xs2, ysAbove) { FillColor = colorAbove ?? Color.Green };
+            var polyBelow = new Polygon(xs2, ysBelow) { FillColor = colorBelow ?? Color.Red };
             Add(polyAbove);
             Add(polyBelow);
 
@@ -273,13 +271,15 @@ namespace ScottPlot
         /// <summary>
         /// Add a heatmap to the plot
         /// </summary>
-        public Heatmap AddHeatmap(double[,] initialData, int scalebarSpace = 100, bool lockScales = true)
+        public Heatmap AddHeatmap(double[,] intensities, Drawing.Colormap colormap = null, bool lockScales = true)
         {
+            if (lockScales)
+                AxisScaleLock(true);
+
             var plottable = new Heatmap();
-            plottable.Update(initialData);
+            plottable.Update(intensities, colormap);
             Add(plottable);
-            YAxis2.SetSizeLimit(min: scalebarSpace);
-            AxisScaleLock(lockScales);
+
             return plottable;
         }
 

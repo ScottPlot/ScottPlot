@@ -15,11 +15,10 @@ namespace ScottPlot.Plottable
         private int Width;
         private int Height;
         private Bitmap BmpHeatmap;
-        private Bitmap BmpScale;
 
         // these fields are customized by the user
         public string Label;
-        public Colormap Colormap;
+        public Colormap Colormap { get; private set; }
         public double[] AxisOffsets;
         public double[] AxisMultipliers;
         public double? ScaleMin;
@@ -68,6 +67,10 @@ namespace ScottPlot.Plottable
                     Max = curr.Value;
             }
 
+            // labels for colorbar ticks
+            ColorbarMin = (ScaleMin.HasValue && ScaleMin > Min) ? $"≤ {ScaleMin:f3}" : $"{Min:f3}";
+            ColorbarMax = (ScaleMax.HasValue && ScaleMax < Max) ? $"≥ {ScaleMax:f3}" : $"{Max:f3}";
+
             double normalizeMin = (ScaleMin.HasValue && ScaleMin.Value < Min) ? ScaleMin.Value : Min;
             double normalizeMax = (ScaleMax.HasValue && ScaleMax.Value > Max) ? ScaleMax.Value : Max;
 
@@ -81,18 +84,15 @@ namespace ScottPlot.Plottable
             int[] scaleRGBA = Colormap.GetRGBAs(normalizedValues, Colormap);
 
             BmpHeatmap?.Dispose();
-            BmpScale?.Dispose();
             BmpHeatmap = new Bitmap(Width, Height, PixelFormat.Format32bppArgb);
-            BmpScale = new Bitmap(1, 256, PixelFormat.Format32bppArgb);
             Rectangle rect = new Rectangle(0, 0, BmpHeatmap.Width, BmpHeatmap.Height);
-            Rectangle rectScale = new Rectangle(0, 0, BmpScale.Width, BmpScale.Height);
             BitmapData bmpData = BmpHeatmap.LockBits(rect, ImageLockMode.ReadWrite, BmpHeatmap.PixelFormat);
-            BitmapData scaleBmpData = BmpScale.LockBits(rectScale, ImageLockMode.ReadWrite, BmpScale.PixelFormat);
             Marshal.Copy(flatARGB, 0, bmpData.Scan0, flatARGB.Length);
-            Marshal.Copy(scaleRGBA, 0, scaleBmpData.Scan0, scaleRGBA.Length);
             BmpHeatmap.UnlockBits(bmpData);
-            BmpScale.UnlockBits(scaleBmpData);
         }
+
+        public string ColorbarMin { get; private set; }
+        public string ColorbarMax { get; private set; }
 
         public void Update(double[,] intensities, Colormap colormap = null, double? min = null, double? max = null)
         {
@@ -165,13 +165,12 @@ namespace ScottPlot.Plottable
         public void ValidateData(bool deepValidation = false)
         {
             if (BmpHeatmap is null)
-                throw new InvalidOperationException("UpdateData() was not called prior to rendering");
+                throw new InvalidOperationException("Update() was not called prior to rendering");
         }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
             RenderHeatmap(dims, bmp, lowQuality);
-            RenderScale(dims, bmp, lowQuality);
             if (ShowAxisLabels)
                 RenderAxis(dims, bmp, lowQuality);
         }
@@ -204,30 +203,6 @@ namespace ScottPlot.Plottable
                         dims.GetPixelY(0) - (float)(Height * minScale),
                         (float)(Width * minScale),
                         (float)(Height * minScale));
-            }
-        }
-
-        private void RenderScale(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
-        {
-            float scaleLeftPad = 10;
-            float scaleWidth = 20;
-
-            using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality, false))
-            using (var outlinePen = GDI.Pen(Color.Black))
-            using (var brush = GDI.Brush(Color.Black))
-            using (var font = GDI.Font(null, 12))
-            using (var sf2 = new StringFormat() { LineAlignment = StringAlignment.Far })
-            {
-                PointF scaleLoc = new PointF(dims.DataOffsetX + dims.DataWidth + scaleLeftPad, dims.DataOffsetY);
-                SizeF scaleSize = new SizeF(scaleWidth, dims.DataHeight);
-                RectangleF scaleRect = new RectangleF(scaleLoc, scaleSize);
-                gfx.DrawImage(BmpScale, scaleRect);
-                gfx.DrawRectangle(outlinePen, scaleRect.X, scaleRect.Y, scaleRect.Width, scaleRect.Height);
-
-                string minString = (ScaleMin.HasValue && ScaleMin > Min) ? $"≤ {ScaleMin:f3}" : $"{Min:f3}";
-                string maxString = (ScaleMax.HasValue && ScaleMax < Max) ? $"≥ {ScaleMax:f3}" : $"{Max:f3}";
-                gfx.DrawString(maxString, font, brush, new PointF(scaleRect.Right, scaleRect.Top));
-                gfx.DrawString(minString, font, brush, new PointF(scaleRect.Right, scaleRect.Bottom), sf2);
             }
         }
 
