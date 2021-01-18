@@ -1,14 +1,10 @@
 # ScottPlot Roadmap
 
-### Note from Scott (December 19, 2020)
+### Note from Scott (December 27, 2020)
 
-Over the last few months I refactored a lot of the core ScottPlot library (major changes are described in [version-4.1.md](version-4.1.md)). Remaining tasks include:
+Over the last few months I refactored much of ScottPlot (major changes are described in [version-4.1.md](version-4.1.md)). Remaining tasks include:
 * Create a FAQ section for the website
-* Improve plottable data validation and error reporting
-* Create a signal plot that supports growing data
-* Refactor user controls to increase simplicity, consistency, and performance
-  * Render in a separate thread (wso the GUI is not blocked)
-  * Use a common control module in the ScottPlot project so configuration and rendering methods are shared across all user controls
+* Refactor user controls to render in a separate thread (so the GUI is not blocked while rendering)
 
 ## Versions
 

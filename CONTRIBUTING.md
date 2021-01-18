@@ -2,13 +2,13 @@
 
 ScottPlot welcomes input from the open-source community!
 
-* **Report a bug** by creating a GitHub issue
+* **Report a bug** by creating an [Issue](https://github.com/swharden/ScottPlot/issues)
 
-* **Ask a question** on StackOverflow with the `scottplot` tag ([link](https://stackoverflow.com/questions/ask?tags=scottplot)) or by creating a GitHub issue
+* **Ask a question** in [Discussions](https://github.com/swharden/ScottPlot/discussions/categories/q-a), [Issues](https://github.com/swharden/ScottPlot/issues), or [on StackOverflow]((https://stackoverflow.com/questions/ask?tags=scottplot))
 
-* **Suggest a feature** by creating a GitHub issue
+* **Suggest a feature** by creating an [Issue](https://github.com/swharden/ScottPlot/issues)
 
-* See the [**ScottPlot Roadmap**](/dev/roadmap.md) for notes about current development goals
+* See the [**Roadmap**](/dev/roadmap.md) for notes about current development goals
 
 ### Making Changes
 

@@ -23,9 +23,9 @@
 
 ### Questions and Feedback
 
-* [**Ask a question on StackOverflow**](https://stackoverflow.com/questions/ask?tags=scottplot) using the `scottplot` tag
+* **Ask questions** in [Discussions](https://github.com/swharden/ScottPlot/discussions/categories/q-a), [Issues](https://github.com/swharden/ScottPlot/issues), or [on StackOverflow]((https://stackoverflow.com/questions/ask?tags=scottplot))
 
-* [**Create an issue**](https://github.com/swharden/ScottPlot/issues) for questions, feature suggestions, or bug reports
+* [**Create an issue**](https://github.com/swharden/ScottPlot/issues) for a feature suggestion or bug report
 
 * If you enjoy ScottPlot **give us a star!** ⭐
 
@@ -33,14 +33,16 @@
 
 * See [**Releases**](https://github.com/swharden/ScottPlot/releases) for source code and notes for all versions
 
-* **`ScottPlot 4.1`** is being actively-developed and is currently available as a pre-release package on NuGet.
+* **`ScottPlot 4.1`** is being actively-developed and is currently available as a pre-release package on NuGet. This version is faster than 4.0, supports multiple axes, and has a simpler API and a better cookbook.
 
 * **`ScottPlot 4.0`** is stable, available on NuGet, and has its own [branch](https://github.com/swharden/ScottPlot/branches) for continued bug fixes and refinements. However, new features are no longer being developed for this version.
 
 ### Developer Notes
 
 * **Minimum Supported Platforms:** .NET Core 2.0 and .NET Framework 4.6.1 ([see details](https://swharden.com/scottplot/#supported-platforms))
+
 * **The [ScottPlot Roadmap](dev/roadmap.md)** summarizes ScottPlot's origins and tracks development goals
+
 * **Contributions are welcome!** See [contributing.md](CONTRIBUTING.md) to get started
 
 ### About ScottPlot
