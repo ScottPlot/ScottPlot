@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WinFormsApp
@@ -23,7 +16,7 @@ namespace WinFormsApp
             formsPlot1 = new ScottPlot.FormsPlot() { Dock = DockStyle.Fill };
             Controls.Add(formsPlot1);
 
-            int pointCount = 1_000;
+            int pointCount = 10;
             var rand = new Random(0);
             double[] xs = ScottPlot.DataGen.Random(rand, pointCount);
             double[] ys = ScottPlot.DataGen.Random(rand, pointCount);
