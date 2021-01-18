@@ -1,10 +1,10 @@
 # ScottPlot Roadmap
 
-### Note from Scott (December 27, 2020)
+### Note from Scott (Jan 18, 2021)
 
 Over the last few months I refactored much of ScottPlot (major changes are described in [version-4.1.md](version-4.1.md)). Remaining tasks include:
 * Create a FAQ section for the website
-* Refactor user controls to render in a separate thread (so the GUI is not blocked while rendering)
+* Simplify the demo application
 
 ## Versions
 
