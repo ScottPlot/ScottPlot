@@ -52,7 +52,7 @@ namespace ScottPlot
         public void Render(bool lowQuality = false) { Application.DoEvents(); Backend.Render(lowQuality); }
         private void PlottableCountTimer_Tick(object sender, EventArgs e) => Backend.RenderIfPlottableCountChanged();
 
-        private void OnBitmapUpdated(object sender, EventArgs e) { if (MouseButtons != MouseButtons.None) Application.DoEvents(); pictureBox1.Invalidate(); }
+        private void OnBitmapUpdated(object sender, EventArgs e) { Application.DoEvents(); pictureBox1.Invalidate(); }
         private void OnBitmapChanged(object sender, EventArgs e) => pictureBox1.Image = Backend.GetLatestBitmap();
         private void OnCursorChanged(object sender, EventArgs e) => Cursor = Cursors[Backend.Cursor];
         private void OnSizeChanged(object sender, EventArgs e) => Backend.Resize(Width, Height);
@@ -62,7 +62,7 @@ namespace ScottPlot
         private void PictureBox1_MouseDown(object sender, MouseEventArgs e) => Backend.MouseDown(GetInputState(e));
         private void PictureBox1_MouseUp(object sender, MouseEventArgs e) => Backend.MouseUp(GetInputState(e));
         private void PictureBox1_DoubleClick(object sender, EventArgs e) => Backend.DoubleClick();
-        private void PictureBox1_MouseWheel(object sender, MouseEventArgs e) => Backend.MouseWheel(GetInputState(e), e.Delta > 0);
+        private void PictureBox1_MouseWheel(object sender, MouseEventArgs e) => Backend.MouseWheel(GetInputState(e));
         private void PictureBox1_MouseMove(object sender, MouseEventArgs e) { Backend.MouseMove(GetInputState(e)); base.OnMouseMove(e); }
 
         private static ScottPlot.Control.InputState GetInputState(MouseEventArgs e) =>
@@ -76,6 +76,8 @@ namespace ScottPlot
                 ShiftDown = ModifierKeys.HasFlag(Keys.Shift),
                 CtrlDown = ModifierKeys.HasFlag(Keys.Control),
                 AltDown = ModifierKeys.HasFlag(Keys.Alt),
+                WheelScrolledUp = e.Delta > 0,
+                WheelScrolledDown = e.Delta < 0,
             };
 
         public void DefaultRightClickEvent(object sender, EventArgs e) => DefaultRightClickMenu.Show(System.Windows.Forms.Cursor.Position);

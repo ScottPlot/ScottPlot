@@ -15,5 +15,7 @@ namespace ScottPlot.Control
         public bool ShiftDown = false;
         public bool CtrlDown = false;
         public bool AltDown = false;
+        public bool WheelScrolledUp = false;
+        public bool WheelScrolledDown = false;
     }
 }

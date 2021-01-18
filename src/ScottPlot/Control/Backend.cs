@@ -35,13 +35,15 @@
  *    - double-click benchmark toggle
  *    - scrollwheel zoom
  *    - low quality (never / while dragging / always)
- *    - high quality delay
+ *    - delayed high quality render after scrollwheel
  *   
  */
 
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ScottPlot.Control
 {
@@ -60,6 +62,9 @@ namespace ScottPlot.Control
         private System.Drawing.Bitmap Bmp;
         private readonly List<System.Drawing.Bitmap> OldBitmaps = new List<System.Drawing.Bitmap>();
         public ScottPlot.Cursor Cursor { get; private set; } = ScottPlot.Cursor.Arrow;
+
+        private readonly Queue<InputState> MouseWheelQueue = new Queue<InputState>();
+        private readonly Stopwatch MouseWheelStopwatch = new Stopwatch();
 
         public ControlBackEnd(float width, float height) =>
             Reset(width, height);
@@ -319,23 +324,6 @@ namespace ScottPlot.Control
             Render();
         }
 
-        public void MouseWheel(InputState input, bool wheelUp)
-        {
-            if (Configuration.ScrollWheelZoom == false)
-                return;
-
-            double xFrac = wheelUp ? 1.15 : 0.85;
-            double yFrac = wheelUp ? 1.15 : 0.85;
-
-            if (Configuration.LockHorizontalAxis)
-                xFrac = 1;
-            if (Configuration.LockVerticalAxis)
-                yFrac = 1;
-
-            Settings.AxesZoomTo(xFrac, yFrac, input.X, input.Y);
-            Render();
-        }
-
         public void DoubleClick()
         {
             if (Configuration.DoubleClickBenchmark == false)
@@ -343,6 +331,81 @@ namespace ScottPlot.Control
 
             Plot.BenchmarkToggle();
             Render();
+        }
+
+        /// <summary>
+        /// Apply a scroll wheel action, perform a low quality render, and later re-render in high quality.
+        /// </summary>
+        public void MouseWheel(InputState input)
+        {
+            // this method is suitable for WinForms
+            MouseWheelQueue.Enqueue(input);
+            _ = MouseWheelQueueProcessorAsync(sendUpdateEvents: true);
+        }
+
+        /// <summary>
+        /// Apply a scroll wheel action, perform a low quality render, and later re-render in high quality.
+        /// </summary>
+        public async Task MouseWheelAsync(InputState input)
+        {
+            // this method is suitable for WPF
+            MouseWheelQueue.Enqueue(input);
+            await MouseWheelQueueProcessorAsync(sendUpdateEvents: false);
+        }
+
+        /// <summary>
+        /// Perform a low quality render after a mouse wheel.
+        /// The MouseWheelQueueProcessor will later repeat a render using high quality.
+        /// </summary>
+        private void MouseWheelRender(InputState input)
+        {
+            if (Configuration.ScrollWheelZoom == false)
+                return;
+
+            double xFrac = input.WheelScrolledUp ? 1.15 : 0.85;
+            double yFrac = input.WheelScrolledUp ? 1.15 : 0.85;
+
+            if (Configuration.LockHorizontalAxis)
+                xFrac = 1;
+            if (Configuration.LockVerticalAxis)
+                yFrac = 1;
+
+            Settings.AxesZoomTo(xFrac, yFrac, input.X, input.Y);
+            Render(lowQuality: true);
+        }
+
+        /// <summary>
+        /// Watches the queue for mouse events and processes them as they come in using low quality rendering.
+        /// After a certain amount of time without new events, perform a high quality render and exit.
+        /// </summary>
+        private async Task MouseWheelQueueProcessorAsync(bool sendUpdateEvents)
+        {
+            if (MouseWheelStopwatch.IsRunning)
+                return;
+            
+            MouseWheelStopwatch.Start();
+            while (true)
+            {
+                while(MouseWheelQueue.Count > 0)
+                {
+                    Debug.WriteLine($"{MouseWheelStopwatch.ElapsedMilliseconds} rendering LW");
+                    MouseWheelRender(MouseWheelQueue.Dequeue());
+                    MouseWheelStopwatch.Restart();
+                }
+
+                if (sendUpdateEvents)
+                    BitmapUpdated.Invoke(null, EventArgs.Empty);
+
+                await Task.Delay(10);
+
+                if (MouseWheelStopwatch.ElapsedMilliseconds >= Configuration.ScrollWheelZoomHighQualityDelay)
+                {
+                    Debug.WriteLine($"{MouseWheelStopwatch.ElapsedMilliseconds} rendering HQ");
+                    Render(lowQuality: false);
+                    MouseWheelStopwatch.Reset();
+                    return;
+                }
+            }
         }
     }
 }

@@ -23,32 +23,11 @@ namespace WinFormsApp
             formsPlot1 = new ScottPlot.FormsPlot() { Dock = DockStyle.Fill };
             Controls.Add(formsPlot1);
 
-            var xs = new double[] { 1, 2, 3, 4, 5 };
-            var ys = new double[] { 1, 4, 9, 16, 25 };
-            formsPlot1.plt.AddScatter(xs, ys);
-
-            var vline = formsPlot1.plt.AddVerticalLine(3.5);
-            vline.LineWidth = 3;
-            vline.DragEnabled = true;
-            vline.Dragged += new EventHandler(OnDragLine);
-
-            var vspan = formsPlot1.plt.AddVerticalSpan(10, 20);
-            vspan.DragEnabled = true;
-            vspan.Dragged += new EventHandler(OnDragSpan);
-
-            formsPlot1.Render();
-        }
-
-        private void OnDragLine(object sender, EventArgs e)
-        {
-            var line = sender as ScottPlot.Plottable.VLine;
-            Text = $"Line X={line.X}";
-        }
-
-        private void OnDragSpan(object sender, EventArgs e)
-        {
-            var span = sender as ScottPlot.Plottable.VSpan;
-            Text = $"Span Y={span.Y1} Y2={span.Y2}";
+            int pointCount = 10;
+            var rand = new Random(0);
+            double[] xs = ScottPlot.DataGen.Random(rand, pointCount);
+            double[] ys = ScottPlot.DataGen.Random(rand, pointCount);
+            formsPlot1.Plot.AddScatter(xs, ys);
         }
     }
 }

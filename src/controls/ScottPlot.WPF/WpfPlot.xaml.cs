@@ -73,10 +73,10 @@ namespace ScottPlot
         private void OnMouseDown(object sender, MouseButtonEventArgs e) { CaptureMouse(); Backend.MouseDown(GetInputState(e)); }
         private void OnMouseUp(object sender, MouseButtonEventArgs e) { Backend.MouseUp(GetInputState(e)); ReleaseMouseCapture(); }
         private void OnDoubleClick(object sender, MouseButtonEventArgs e) => Backend.DoubleClick();
-        private void OnMouseWheel(object sender, MouseWheelEventArgs e) => Backend.MouseWheel(GetInputState(e), e.Delta > 0);
+        private void OnMouseWheel(object sender, MouseWheelEventArgs e) => Backend.MouseWheel(GetInputState(e, e.Delta));
         private void OnMouseMove(object sender, MouseEventArgs e) { Backend.MouseMove(GetInputState(e)); base.OnMouseMove(e); }
 
-        private ScottPlot.Control.InputState GetInputState(MouseEventArgs e) =>
+        private ScottPlot.Control.InputState GetInputState(MouseEventArgs e, double? delta = null) =>
             new ScottPlot.Control.InputState()
             {
                 X = (float)e.GetPosition(this).X,
@@ -87,6 +87,8 @@ namespace ScottPlot
                 ShiftDown = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift),
                 CtrlDown = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl),
                 AltDown = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt),
+                WheelScrolledUp = delta.HasValue && delta > 0,
+                WheelScrolledDown = delta.HasValue && delta < 0,
             };
 
         private void InitializeLayout()

@@ -37,6 +37,11 @@
         public bool ScrollWheelZoom = true;
 
         /// <summary>
+        /// Number of milliseconds after low quality scroll wheel zoom to re-render using high quality
+        /// </summary>
+        public double ScrollWheelZoomHighQualityDelay = 500;
+
+        /// <summary>
         /// Control whether middle-click-drag zooming to a rectangle is enabled
         /// </summary>
         public bool MiddleClickDragZoom = true;
