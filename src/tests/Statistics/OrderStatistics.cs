@@ -89,6 +89,21 @@ namespace ScottPlotTests.Statistics
             Assert.AreEqual(ScottPlot.Statistics.Common.Median(values), (valuesSorted[n / 2] + valuesSorted[n / 2 - 1]) / 2);
         }
 
+        [Test]
+        [TestCase(100)]
+        [TestCase(50)]
+        [TestCase(256)]
+        [TestCase(77)]
+        [TestCase(123)]
+        public void Test_FloatPercentile(int n)
+        {
+            Random rand = new Random(0);
+            double[] values = ScottPlot.DataGen.Random(rand, pointCount: n);
+            Assert.AreEqual(ScottPlot.Statistics.Common.Percentile(values, 25), ScottPlot.Statistics.Common.Quartile(values, 1));
+            Assert.AreEqual(ScottPlot.Statistics.Common.Percentile(values, 50), ScottPlot.Statistics.Common.Quartile(values, 2));
+            Assert.AreEqual(ScottPlot.Statistics.Common.Percentile(values, 75), ScottPlot.Statistics.Common.Quartile(values, 3));
+        }
+
         //[Test]
         public void Test_RandomIntGenerator_IncludesLowerAndExcludesUpper()
         {
