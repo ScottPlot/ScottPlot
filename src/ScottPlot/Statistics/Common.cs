@@ -99,10 +99,9 @@ namespace ScottPlot.Statistics
                 return values.Max();
             int percentileIndex = (int)(percentile / 100.0 * (values.Length - 1));
 
-            double[] sortedValues = new double[values.Length];
-            Array.Copy(values, sortedValues, values.Length);
-            Array.Sort(values);
-            return values[percentileIndex];
+            double[] copiedValues = new double[values.Length];
+            Array.Copy(values, copiedValues, values.Length);
+            return NthOrderStatistic(values, percentileIndex + 1);
         }
 
         /// <summary>
@@ -125,7 +124,7 @@ namespace ScottPlot.Statistics
 
         /// <summary>
         /// Return the kth smallest value from a range of the given array.
-        /// WARNING: values will be sorted in place.
+        /// WARNING: values will be mutated.
         /// </summary>
         /// <param name="values"></param>
         /// <param name="leftIndex">inclusive lower bound</param>
@@ -195,11 +194,11 @@ namespace ScottPlot.Statistics
             byte[] randomBytes = new byte[sizeof(int)];
             Rand.GetBytes(randomBytes);
             int randomInt = BitConverter.ToInt32(randomBytes, 0);
-            return Math.Abs(randomInt % (max - min)) + min;
+            return Math.Abs(randomInt % (max - min + 1)) + min;
         }
 
         /// <summary>
-        /// Sort the array between the defined bounds according to a randomly chosen pivot value
+        /// Partition the array between the defined bounds according to elements above and below a randomly chosen pivot value
         /// </summary>
         /// <param name="values"></param>
         /// <param name="leftIndex"></param>
