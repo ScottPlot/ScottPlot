@@ -34,19 +34,21 @@ namespace ScottPlotTests.Statistics
         [Test]
         public void Test_NthOrderStatistic_MinValue()
         {
-            int n = 1;
-            double nthValue = ScottPlot.Statistics.Common.NthOrderStatistic(RandomValues, n);
+            int smallestValidN = 1;
+            double nthValue = ScottPlot.Statistics.Common.NthOrderStatistic(RandomValues, smallestValidN);
             double minValue = SortedValues.First();
             Assert.AreEqual(minValue, nthValue);
+            Assert.Throws<ArgumentException>(() => ScottPlot.Statistics.Common.NthOrderStatistic(RandomValues, smallestValidN - 1));
         }
 
         [Test]
         public void Test_NthOrderStatistic_MaxValue()
         {
-            int n = RandomValues.Length;
-            double nthValue = ScottPlot.Statistics.Common.NthOrderStatistic(RandomValues, n);
+            int largestValidN = RandomValues.Length;
+            double nthValue = ScottPlot.Statistics.Common.NthOrderStatistic(RandomValues, largestValidN);
             double maxValue = SortedValues.Last();
             Assert.AreEqual(maxValue, nthValue);
+            Assert.Throws<ArgumentException>(() => ScottPlot.Statistics.Common.NthOrderStatistic(RandomValues, largestValidN + 1));
         }
 
         [Test]
@@ -85,6 +87,18 @@ namespace ScottPlotTests.Statistics
             double[] valuesSorted = values.OrderBy(x => x).ToArray();
 
             Assert.AreEqual(ScottPlot.Statistics.Common.Median(values), (valuesSorted[n / 2] + valuesSorted[n / 2 - 1]) / 2);
+        }
+
+        //[Test]
+        public void Test_RandomIntGenerator_IncludesLowerAndExcludesUpper()
+        {
+            int replicates = 1000;
+            int[] randomInts = new int[replicates];
+            for (int i = 0; i < randomInts.Length; i++)
+                randomInts[i] = ScottPlot.Statistics.Common.GetRandomInt(0, 5);
+
+            Assert.AreEqual(0, randomInts.Min());
+            Assert.AreEqual(4, randomInts.Max());
         }
     }
 }

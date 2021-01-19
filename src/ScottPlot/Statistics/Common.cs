@@ -8,6 +8,11 @@ namespace ScottPlot.Statistics
 {
     public static class Common
     {
+        private readonly static RNGCryptoServiceProvider Rand = new RNGCryptoServiceProvider();
+
+        /// <summary>
+        /// Return the standard deviation of the given values
+        /// </summary>
         public static double StDev(double[] values)
         {
             double mean = Mean(values);
@@ -23,6 +28,14 @@ namespace ScottPlot.Statistics
             return stDev;
         }
 
+        /// <summary>
+        /// Return the standard error of the given values
+        /// </summary>
+        public static double StdErr(double[] values) => StDev(values) / Math.Sqrt(values.Length);
+
+        /// <summary>
+        /// Return the mean of the given values
+        /// </summary>
         public static double Mean(double[] values)
         {
             double sum = 0;
@@ -32,65 +45,110 @@ namespace ScottPlot.Statistics
             return mean;
         }
 
+        /// <summary>
+        /// Return the Nth smallest value in the given array.
+        /// </summary>
         public static double NthOrderStatistic(double[] values, int n)
         {
-            double[] copied_values = new double[values.Length];
-            Array.Copy(values, copied_values, values.Length); // QuickSelect mutates the array
+            if (n < 1 || n > values.Length)
+                throw new ArgumentException("n must be a number from 1 to the length of the array");
 
-            return QuickSelect(copied_values, 0, values.Length - 1, n - 1);
+            double[] valuesCopy = new double[values.Length];
+            Array.Copy(values, valuesCopy, values.Length);
+            return QuickSelect(valuesCopy, 0, values.Length - 1, n - 1);
         }
 
-        public static double Quantile(double[] values, int i, int numQuantiles)
+        /// <summary>
+        /// Return the value of the Nth quantile.
+        /// </summary>
+        public static double Quantile(double[] values, int n, int quantileCount)
         {
-            // Not everyone uses the 0th and qth quantile, for completeness sake they are defined below.
-            if (i == 0)
-            {
+            if (n == 0)
                 return values.Min();
-            }
-
-            if (i == numQuantiles)
-            {
+            else if (n == quantileCount)
                 return values.Max();
-            }
-
-            return NthOrderStatistic(values, i * values.Length / numQuantiles);
+            else
+                return NthOrderStatistic(values, n * values.Length / quantileCount);
         }
 
-        public static double Percentile(double[] values, int i)
+        /// <summary>
+        /// Return the value of the Nth quartile
+        /// </summary>
+        /// <param name="values"></param>
+        /// <param name="quartile">quartile 1, 2, or 3</param>
+        public static double Quartile(double[] values, int quartile) => Quantile(values, quartile, 4);
+
+        /// <summary>
+        /// Return the percentile of the given array
+        /// </summary>
+        /// <param name="values"></param>
+        /// <param name="percentile">number from 0 to 100</param>
+        /// <returns></returns>
+        public static double Percentile(double[] values, int percentile) => Quantile(values, percentile, 100);
+
+        /// <summary>
+        /// Return the percentile of the given array
+        /// </summary>
+        /// <param name="values"></param>
+        /// <param name="percentile">number from 0 to 100</param>
+        public static double Percentile(double[] values, double percentile)
         {
-            return Quantile(values, i, 100);
+            if (percentile == 0)
+                return values.Min();
+            else if (percentile == 100)
+                return values.Max();
+            int percentileIndex = (int)(percentile / 100.0 * (values.Length - 1));
+
+            double[] sortedValues = new double[values.Length];
+            Array.Copy(values, sortedValues, values.Length);
+            Array.Sort(values);
+            return values[percentileIndex];
         }
 
+        /// <summary>
+        /// Return the median of the given array.
+        /// If the length of the array is even, this value is the mean of the upper and lower medians.
+        /// </summary>
         public static double Median(double[] values)
         {
-            // Note, this is one of many definitions of a median. It is the most common.
-
             if (values.Length % 2 == 1)
             {
                 return NthOrderStatistic(values, values.Length / 2 + 1);
             }
             else
             {
-                return (NthOrderStatistic(values, values.Length / 2) + NthOrderStatistic(values, values.Length / 2 + 1)) / 2;
+                double lowerMedian = NthOrderStatistic(values, values.Length / 2);
+                double upperMedian = NthOrderStatistic(values, values.Length / 2 + 1);
+                return (lowerMedian + upperMedian) / 2;
             }
         }
 
-        private static double QuickSelect(double[] values, int begin, int end, int i)
+        /// <summary>
+        /// Return the kth smallest value from a range of the given array.
+        /// WARNING: values will be sorted in place.
+        /// </summary>
+        /// <param name="values"></param>
+        /// <param name="leftIndex">inclusive lower bound</param>
+        /// <param name="rightIndex">inclusive upper bound</param>
+        /// <param name="k">number starting at 0</param>
+        /// <returns></returns>
+        private static double QuickSelect(double[] values, int leftIndex, int rightIndex, int k)
         {
-            // QuickSelect (aka Hoare's Algorithm) is a selection algorithm (i.e. given an integer i it returns the ith smallest element in a sequence) with O(n) expected time.
-            // In the worst case it is O(n^2), i.e. when the chosen pivot is always the max or min at each call. It is very similar to QuickSort and developed by the same man.
-            // The use of a random pivot virtually assures linear time performance.
-            // There is a guaranteed linear time algorithm which uses median of medians to choose a pivot but the overhead is often not worth it.
+            /*
+             * QuickSelect (aka Hoare's Algorithm) is a selection algorithm 
+             *  - Given an integer k it returns the kth smallest element in a sequence) with O(n) expected time.
+             *  - In the worst case it is O(n^2), i.e. when the chosen pivot is always the max or min at each call.
+             *  - The use of a random pivot virtually assures linear time performance.
+             *  - https://en.wikipedia.org/wiki/Quickselect
+             */
 
-            if (begin == end)
-            {
-                return values[begin];
-            }
+            if (leftIndex == rightIndex)
+                return values[leftIndex];
 
-            if (i == 0)
+            if (k == 0)
             {
-                double min = values[begin];
-                for (int j = begin; j <= end; j++)
+                double min = values[leftIndex];
+                for (int j = leftIndex; j <= rightIndex; j++)
                 {
                     if (values[j] < min)
                     {
@@ -101,10 +159,10 @@ namespace ScottPlot.Statistics
                 return min;
             }
 
-            if (i == end - begin)
+            if (k == rightIndex - leftIndex)
             {
-                double max = values[begin];
-                for (int j = begin; j <= end; j++)
+                double max = values[leftIndex];
+                for (int j = leftIndex; j <= rightIndex; j++)
                 {
                     if (values[j] > max)
                     {
@@ -115,57 +173,67 @@ namespace ScottPlot.Statistics
                 return max;
             }
 
-            int pivot_index = Partition(values, begin, end);
-            int k = pivot_index - begin;
+            int partitionIndex = Partition(values, leftIndex, rightIndex);
+            int pivotIndex = partitionIndex - leftIndex;
 
-            if (i == k)
-            {
-                return values[pivot_index];
-            }
-            else if (i < k)
-            {
-                return QuickSelect(values, begin, pivot_index - 1, i);
-            }
+            if (k == pivotIndex)
+                return values[partitionIndex];
+            else if (k < pivotIndex)
+                return QuickSelect(values, leftIndex, partitionIndex - 1, k);
             else
-            {
-                return QuickSelect(values, pivot_index + 1, end, i - k - 1);
-            }
+                return QuickSelect(values, partitionIndex + 1, rightIndex, k - pivotIndex - 1);
         }
 
-        private static RNGCryptoServiceProvider rand = new RNGCryptoServiceProvider(); // In principle QuickSelect could have its performance degraded through timing attacks, hence the CSPRNG
-        private static int Partition(double[] values, int begin, int end)
+        /// <summary>
+        /// Return a random integer from within the given range
+        /// </summary>
+        /// <param name="min">inclusive lower bound</param>
+        /// <param name="max">exclusive upper bound</param>
+        /// <returns></returns>
+        public static int GetRandomInt(int min, int max)
         {
-            byte[] random_bytes = new byte[sizeof(int)];
-            rand.GetBytes(random_bytes);
-            int pivot_index = Math.Abs(BitConverter.ToInt32(random_bytes, 0) % (end - begin)) + begin; // Modulo can return negative numbers in C# if the dividend is negative
+            byte[] randomBytes = new byte[sizeof(int)];
+            Rand.GetBytes(randomBytes);
+            int randomInt = BitConverter.ToInt32(randomBytes, 0);
+            return Math.Abs(randomInt % (max - min)) + min;
+        }
 
-
+        /// <summary>
+        /// Sort the array between the defined bounds according to a randomly chosen pivot value
+        /// </summary>
+        /// <param name="values"></param>
+        /// <param name="leftIndex"></param>
+        /// <param name="rightIndex"></param>
+        /// <returns>index of the pivot used</returns>
+        private static int Partition(double[] values, int leftIndex, int rightIndex)
+        {
             // Moving the pivot to the end is far easier than handling it where it is
             // This also allows you to turn this into the non-randomized Partition
-            double swap = values[pivot_index];
-            values[pivot_index] = values[end];
-            values[end] = swap;
+            int initialPivotIndex = GetRandomInt(leftIndex, rightIndex);
+            double swap = values[initialPivotIndex];
+            values[initialPivotIndex] = values[rightIndex];
+            values[rightIndex] = swap;
 
-            double pivot = values[end];
+            double pivotValue = values[rightIndex];
 
-            int i = begin - 1;
-            for (int j = begin; j < end; j++)
+            int pivotIndex = leftIndex - 1;
+            for (int j = leftIndex; j < rightIndex; j++)
             {
-                if (values[j] <= pivot)
+                if (values[j] <= pivotValue)
                 {
-                    i++;
+                    pivotIndex++;
                     double tmp1 = values[j];
-                    values[j] = values[i];
-                    values[i] = tmp1;
+                    values[j] = values[pivotIndex];
+                    values[pivotIndex] = tmp1;
                 }
             }
 
-            i++;
-            double tmp2 = values[end];
-            values[end] = values[i];
-            values[i] = tmp2;
+            pivotIndex++;
+            double tmp2 = values[rightIndex];
+            values[rightIndex] = values[pivotIndex];
+            values[pivotIndex] = tmp2;
 
-            return i;
+            return pivotIndex;
         }
     }
 }
