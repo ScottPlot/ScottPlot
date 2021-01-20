@@ -63,7 +63,7 @@ namespace ScottPlot.Avalonia
             PlottableCountTimer.Tick += PlottableCountTimer_Tick;
             PlottableCountTimer.Interval = new TimeSpan(0, 0, 0, 0, milliseconds: 10);
             PlottableCountTimer.Start();
-            
+
             InitializeLayout();
         }
 
