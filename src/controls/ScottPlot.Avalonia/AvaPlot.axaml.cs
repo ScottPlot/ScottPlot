@@ -74,8 +74,19 @@ namespace ScottPlot.Avalonia
         public void Render(bool lowQuality = false) => Backend.Render(lowQuality);
         private void PlottableCountTimer_Tick(object sender, EventArgs e) => Backend.RenderIfPlottableCountChanged();
 
-        private void OnBitmapChanged(object sender, EventArgs e) => PlotImage.Source = BmpImageFromBmp(Backend.GetLatestBitmap());
-        private void OnBitmapUpdated(object sender, EventArgs e) => PlotImage.Source = BmpImageFromBmp(Backend.GetLatestBitmap());
+        private Task SetImagePlot(Ava.Media.Imaging.Bitmap bmp)
+        {
+            return Task.Run(() =>
+            {
+                Dispatcher.UIThread.InvokeAsync(() =>
+                {
+                    PlotImage.Source = bmp;
+                });
+            });
+        }
+
+        private void OnBitmapChanged(object sender, EventArgs e) => SetImagePlot(BmpImageFromBmp(Backend.GetLatestBitmap()));
+        private void OnBitmapUpdated(object sender, EventArgs e) => SetImagePlot(BmpImageFromBmp(Backend.GetLatestBitmap()));
         private void OnRightClicked(object sender, EventArgs e) => RightClicked?.Invoke(sender, e);
         private void OnAxesChanged(object sender, EventArgs e) => AxesChanged?.Invoke(sender, e);
         private void OnSizeChanged(object sender, EventArgs e) => Backend.Resize((float)this.Bounds.Width, (float)this.Bounds.Height);
