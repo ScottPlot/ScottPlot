@@ -33,20 +33,20 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             AvaloniaXamlLoader.Load(this);
         }
 
-        private void PanEnable(object sender, RoutedEventArgs e) { avaPlot1?.Configure(enablePanning: true); }
-        private void PanDisable(object sender, RoutedEventArgs e) { avaPlot1?.Configure(enablePanning: false); }
-        private void ZoomEnable(object sender, RoutedEventArgs e) { avaPlot1?.Configure(enableRightClickZoom: true, enableScrollWheelZoom: true); }
-        private void ZoomDisable(object sender, RoutedEventArgs e) { avaPlot1?.Configure(enableRightClickZoom: false, enableScrollWheelZoom: false); }
-        private void DragLowQualityEnable(object sender, RoutedEventArgs e) { avaPlot1?.Configure(lowQualityWhileDragging: true); }
-        private void DragLowQualityDisable(object sender, RoutedEventArgs e) { avaPlot1?.Configure(lowQualityWhileDragging: false); }
-        private void VerticalLock(object sender, RoutedEventArgs e) { avaPlot1?.Configure(lockVerticalAxis: true); }
-        private void VerticalUnlock(object sender, RoutedEventArgs e) { avaPlot1?.Configure(lockVerticalAxis: false); }
-        private void HorizontalLock(object sender, RoutedEventArgs e) { avaPlot1?.Configure(lockHorizontalAxis: true); }
-        private void HorizontalUnlock(object sender, RoutedEventArgs e) { avaPlot1?.Configure(lockHorizontalAxis: false); }
-        private void EqualAxisLock(object sender, RoutedEventArgs e) { avaPlot1?.Configure(equalAxes: true); avaPlot1.Render(); }
-        private void EqualAxisUnlock(object sender, RoutedEventArgs e) { avaPlot1?.Configure(equalAxes: false); }
-        private void DoubleClickBenchmarkEnable(object sender, RoutedEventArgs e) { avaPlot1?.Configure(enableDoubleClickBenchmark: true); }
-        private void DoubleClickBenchmarkDisable(object sender, RoutedEventArgs e) { avaPlot1?.Configure(enableDoubleClickBenchmark: false); avaPlot1.plt.Benchmark(false); avaPlot1.Render(); }
+        private void PanEnable(object sender, RoutedEventArgs e) { if (avaPlot1 is null) return; avaPlot1.Configuration.LeftClickDragPan = true; }
+        private void PanDisable(object sender, RoutedEventArgs e) { if (avaPlot1 is null) return; avaPlot1.Configuration.LeftClickDragPan = false; }
+        private void ZoomEnable(object sender, RoutedEventArgs e) { if (avaPlot1 is null) return; avaPlot1.Configuration.RightClickDragZoom = true; avaPlot1.Configuration.ScrollWheelZoom = true; }
+        private void ZoomDisable(object sender, RoutedEventArgs e) { if (avaPlot1 is null) return; avaPlot1.Configuration.RightClickDragZoom = false; avaPlot1.Configuration.ScrollWheelZoom = false; }
+        private void DragLowQualityEnable(object sender, RoutedEventArgs e) { if (avaPlot1 is null) return; avaPlot1.Configuration.Quality = Control.QualityMode.LowWhileDragging; }
+        private void DragLowQualityDisable(object sender, RoutedEventArgs e) { if (avaPlot1 is null) return; avaPlot1.Configuration.Quality = Control.QualityMode.High; }
+        private void VerticalLock(object sender, RoutedEventArgs e) { if (avaPlot1 is null) return; avaPlot1.Configuration.LockVerticalAxis = true; }
+        private void VerticalUnlock(object sender, RoutedEventArgs e) { if (avaPlot1 is null) return; avaPlot1.Configuration.LockVerticalAxis = false; }
+        private void HorizontalLock(object sender, RoutedEventArgs e) { if (avaPlot1 is null) return; avaPlot1.Configuration.LockHorizontalAxis = true; }
+        private void HorizontalUnlock(object sender, RoutedEventArgs e) { if (avaPlot1 is null) return; avaPlot1.Configuration.LockHorizontalAxis = false; }
+        private void EqualAxisLock(object sender, RoutedEventArgs e) { if (avaPlot1 is null) return; avaPlot1.Plot.AxisScaleLock(true); avaPlot1.Render(); }
+        private void EqualAxisUnlock(object sender, RoutedEventArgs e) { if (avaPlot1 is null) return; avaPlot1.Plot.AxisScaleLock(false); }
+        private void DoubleClickBenchmarkEnable(object sender, RoutedEventArgs e) { if (avaPlot1 is null) return; avaPlot1.Configuration.DoubleClickBenchmark = true; avaPlot1.Render(); }
+        private void DoubleClickBenchmarkDisable(object sender, RoutedEventArgs e) { if (avaPlot1 is null) return; avaPlot1.Configuration.DoubleClickBenchmark = false; avaPlot1.Render(); }
 
         private void RightClickMenuEnable(object sender, RoutedEventArgs e)
         {

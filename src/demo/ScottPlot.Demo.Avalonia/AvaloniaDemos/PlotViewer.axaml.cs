@@ -40,7 +40,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 
             var plotViewer = new ScottPlot.Avalonia.AvaPlotViewer(plt, 500, 300, "Random Walk Data");
             plotViewer.Owner = this; // so it closes if this window closes
-            plotViewer.Find<AvaPlot>("avaPlot1").Configure(lowQualityWhileDragging: false); // customize as desired
+            plotViewer.Find<AvaPlot>("avaPlot1").Configuration.Quality = Control.QualityMode.LowWhileDragging; // customize as desired
             plotViewer.Show(); // or ShowDialog() for a blocking window
         }
 
@@ -62,7 +62,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 
             var plotViewer = new ScottPlot.Avalonia.AvaPlotViewer(plt, 500, 300, "Random Sine Wave Data");
             plotViewer.Owner = this; // so it closes if this window closes
-            plotViewer.Find<AvaPlot>("avaPlot1").Configure(lowQualityWhileDragging: false); // customize as desired
+            plotViewer.Find<AvaPlot>("avaPlot1").Configuration.Quality = Control.QualityMode.LowWhileDragging; // customize as desired
             plotViewer.Show(); // or ShowDialog() for a blocking window
         }
     }
