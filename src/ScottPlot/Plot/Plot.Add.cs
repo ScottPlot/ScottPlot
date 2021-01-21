@@ -643,17 +643,18 @@ namespace ScottPlot
             return plottable;
         }
 
-        public Tooltip AddTooltip(string contents, double x, double y, float fontSize = 12, Color? fontColor = null, Color? fillColor = null)
+        public Tooltip AddTooltip(string label, double x, double y, float fontSize = 12, Color? fontColor = null, Color? fillColor = null)
         {
             var tooltip = new Tooltip()
             {
-                Contents = contents,
-                Coordinates = (x, y),
-                FontSize = fontSize,
+                Label = label,
+                X = x,
+                Y = y
             };
 
-            tooltip.FontColor = fontColor ?? tooltip.FontColor;
-            tooltip.BackgroundColor = fillColor ?? tooltip.BackgroundColor;
+            tooltip.Font.Size = fontSize;
+            tooltip.Font.Color = fontColor ?? tooltip.Font.Color;
+            tooltip.FillColor = fillColor ?? tooltip.FillColor;
 
             settings.ToolTips.Add(tooltip);
             return tooltip;
