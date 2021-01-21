@@ -29,43 +29,19 @@ namespace ScottPlot
         /// <summary>
         /// Display text in the data area at a pixel location (not a X/Y coordinates)
         /// </summary>
-        public Annotation AddAnnotation(string label, double x, double y, float size = 12, Color? color = null, Color? backColor = null)
+        public Annotation AddAnnotation(string label, double x, double y, float fontSize = 12, Color? fontColor = null, Color? fillColor = null)
         {
             var plottable = new Annotation()
             {
                 Label = label,
                 X = x,
                 Y = y,
-                FontSize = size
+                FontSize = fontSize
             };
-            plottable.Font.Color = color ?? plottable.Font.Color;
-            plottable.BackgroundColor = backColor ?? plottable.BackgroundColor;
+            plottable.Font.Color = fontColor ?? plottable.Font.Color;
+            plottable.BackgroundColor = fillColor ?? plottable.BackgroundColor;
             Add(plottable);
             return plottable;
-        }
-
-        public Tooltip AddTooltip(string contents, double x, double y, float size = 12, Color? color = null, Color? backColor = null)
-        {
-            var tooltip = new Tooltip()
-            {
-                Contents = contents,
-                Coordinates = (x, y),
-                FontSize = size,
-            };
-
-
-            if (color.HasValue)
-            {
-                tooltip.FontColor = color.Value;
-            }
-
-            if (backColor.HasValue)
-            {
-                tooltip.BackgroundColor = backColor.Value;
-            }
-
-            settings.ToolTips.Add(tooltip);
-            return tooltip;
         }
 
         /// <summary>
@@ -665,6 +641,22 @@ namespace ScottPlot
             };
             Add(plottable);
             return plottable;
+        }
+
+        public Tooltip AddTooltip(string contents, double x, double y, float fontSize = 12, Color? fontColor = null, Color? fillColor = null)
+        {
+            var tooltip = new Tooltip()
+            {
+                Contents = contents,
+                Coordinates = (x, y),
+                FontSize = fontSize,
+            };
+
+            tooltip.FontColor = fontColor ?? tooltip.FontColor;
+            tooltip.BackgroundColor = fillColor ?? tooltip.BackgroundColor;
+
+            settings.ToolTips.Add(tooltip);
+            return tooltip;
         }
 
         /// <summary>
