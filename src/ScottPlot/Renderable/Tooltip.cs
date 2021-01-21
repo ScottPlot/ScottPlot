@@ -32,39 +32,33 @@ namespace ScottPlot.Renderable
             if (!IsVisible)
                 return;
 
-            using (var gfx = GDI.Graphics(bmp, lowQuality))
+            using (var gfx = GDI.Graphics(bmp, dims, lowQuality, clipToDataArea: true))
             using (var font = GDI.Font(Font))
             using (var fillBrush = GDI.Brush(FillColor))
             using (var fontBrush = GDI.Brush(Font.Color))
             using (var pen = GDI.Pen(BorderColor, BorderWidth))
             {
-                PointF topLeftCorner = new PointF(dims.GetPixelX(dims.XMin), dims.GetPixelY(dims.YMax));
-                SizeF size = new SizeF(dims.GetPixelX(dims.XMax) - topLeftCorner.X, dims.GetPixelY(dims.YMin) - topLeftCorner.Y);
-                var clipRect = new RectangleF(topLeftCorner, size);
-                gfx.Clip = new Region(clipRect);
+                SizeF labelSize = gfx.MeasureString(Label, font);
 
-                SizeF contentSize = gfx.MeasureString(Label, font);
-
-                // Negative draws in reverse, i.e. the content is left of the point
-                int sign = Math.Sign(dims.DataWidth - dims.GetPixelX(X) - contentSize.Width); 
+                bool labelIsOnRight = dims.DataWidth - dims.GetPixelX(X) - labelSize.Width > 0;
+                int sign = labelIsOnRight ? 1 : -1; 
 
                 PointF arrowHeadLocation = new PointF(dims.GetPixelX(X), dims.GetPixelY(Y));
 
                 float contentBoxInsideEdgeX = arrowHeadLocation.X + sign * arrowHeadSideLength;
-
                 PointF upperArrowVertex = new PointF(contentBoxInsideEdgeX, arrowHeadLocation.Y - arrowHeadSideLength);
                 PointF lowerArrowVertex = new PointF(contentBoxInsideEdgeX, arrowHeadLocation.Y + arrowHeadSideLength);
 
                 float contentBoxTopEdge = upperArrowVertex.Y - padding;
-                float contentBoxBottomEdge = Math.Max(contentBoxTopEdge + contentSize.Height, lowerArrowVertex.Y) + 2 * padding;
+                float contentBoxBottomEdge = Math.Max(contentBoxTopEdge + labelSize.Height, lowerArrowVertex.Y) + 2 * padding;
 
                 PointF[] points =
                 {
                     arrowHeadLocation,
                     upperArrowVertex,
                     new PointF(contentBoxInsideEdgeX, upperArrowVertex.Y - padding),
-                    new PointF(contentBoxInsideEdgeX + sign * (contentSize.Width + padding), upperArrowVertex.Y - padding),
-                    new PointF(contentBoxInsideEdgeX + sign * (contentSize.Width + padding), contentBoxBottomEdge),
+                    new PointF(contentBoxInsideEdgeX + sign * (labelSize.Width + padding), upperArrowVertex.Y - padding),
+                    new PointF(contentBoxInsideEdgeX + sign * (labelSize.Width + padding), contentBoxBottomEdge),
                     new PointF(contentBoxInsideEdgeX, contentBoxBottomEdge),
                     lowerArrowVertex,
                     arrowHeadLocation
@@ -77,8 +71,10 @@ namespace ScottPlot.Renderable
                 gfx.DrawPath(pen, path);
                 gfx.FillPath(fillBrush, path);
 
-                float xOffset = sign != -1 ? 0 : -contentSize.Width;
-                gfx.DrawString(Label, font, fontBrush, new PointF(contentBoxInsideEdgeX + xOffset + sign * padding / 2, upperArrowVertex.Y));
+                float labelOffsetX = labelIsOnRight ? 0 : -labelSize.Width;
+                float labelX = contentBoxInsideEdgeX + labelOffsetX + sign * padding / 2;
+                float labelY = upperArrowVertex.Y;
+                gfx.DrawString(Label, font, fontBrush, labelX, labelY);
             }
         }
     }
