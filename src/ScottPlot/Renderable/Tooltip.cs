@@ -41,7 +41,7 @@ namespace ScottPlot.Renderable
                 SizeF labelSize = gfx.MeasureString(Label, font);
 
                 bool labelIsOnRight = dims.DataWidth - dims.GetPixelX(X) - labelSize.Width > 0;
-                int sign = labelIsOnRight ? 1 : -1; 
+                int sign = labelIsOnRight ? 1 : -1;
 
                 PointF arrowHeadLocation = new PointF(dims.GetPixelX(X), dims.GetPixelY(Y));
 
