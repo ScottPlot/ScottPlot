@@ -23,8 +23,8 @@ namespace ScottPlot.Plottable
 
         public VectorField(Vector2[,] vectors, double[] xs, double[] ys, Colormap colormap, double scaleFactor, Color defaultColor)
         {
-            double minMagnitudeSquared = vectors[0, 0].Length();
-            double maxMagnitudeSquared = vectors[0, 0].Length();
+            double minMagnitudeSquared = vectors[0, 0].LengthSquared();
+            double maxMagnitudeSquared = vectors[0, 0].LengthSquared();
             for (int i = 0; i < xs.Length; i++)
             {
                 for (int j = 0; j < ys.Length; j++)
