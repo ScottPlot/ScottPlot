@@ -24,21 +24,12 @@ namespace ScottPlot
 {
     public partial class Plot
     {
-
         /// <summary>
         /// Display text in the data area at a pixel location (not a X/Y coordinates)
         /// </summary>
-        public Annotation AddAnnotation(string label, double x, double y, float size = 12, Color? color = null, Color? backColor = null)
+        public Annotation AddAnnotation(string label, double x, double y)
         {
-            var plottable = new Annotation()
-            {
-                Label = label,
-                X = x,
-                Y = y,
-                FontSize = size
-            };
-            plottable.Font.Color = color ?? plottable.Font.Color;
-            plottable.BackgroundColor = backColor ?? plottable.BackgroundColor;
+            var plottable = new Annotation() { Label = label, X = x, Y = y };
             Add(plottable);
             return plottable;
         }
@@ -638,6 +629,16 @@ namespace ScottPlot
                 Y = y,
                 Font = font
             };
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
+        /// Display a text bubble that points to an X/Y location on the plot
+        /// </summary>
+        public Tooltip AddTooltip(string label, double x, double y)
+        {
+            var plottable = new Tooltip() { Label = label, X = x, Y = y };
             Add(plottable);
             return plottable;
         }
