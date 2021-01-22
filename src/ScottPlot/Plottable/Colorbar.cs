@@ -22,6 +22,7 @@ namespace ScottPlot.Plottable
         public int XAxisIndex { get => 0; set { } }
         public int YAxisIndex { get => 0; set { } }
         public int Width = 20;
+        public string Label { get; set; }
 
         public Colorbar(Colormap colormap = null)
         {

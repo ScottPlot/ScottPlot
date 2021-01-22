@@ -20,6 +20,7 @@ namespace ScottPlot.Plottable
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
+        public string Label { get; set; }
         public Drawing.Font Font = new Drawing.Font();
         public bool ShowAxisValues { get; set; } = true;
         public RadarAxis AxisType { get; set; } = RadarAxis.Circle;

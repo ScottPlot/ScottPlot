@@ -21,7 +21,7 @@ namespace ScottPlot.Plottable
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
-        public string Label;
+        public string Label { get; set; }
         public Color Color = Color.Black;
         public LineStyle LineStyle = LineStyle.Solid;
         public MarkerShape MarkerShape = MarkerShape.filledCircle;

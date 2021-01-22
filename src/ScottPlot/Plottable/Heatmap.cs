@@ -17,7 +17,7 @@ namespace ScottPlot.Plottable
         private Bitmap BmpHeatmap;
 
         // these fields are customized by the user
-        public string Label;
+        public string Label { get; set; }
         public Colormap Colormap { get; private set; }
         public double[] AxisOffsets;
         public double[] AxisMultipliers;

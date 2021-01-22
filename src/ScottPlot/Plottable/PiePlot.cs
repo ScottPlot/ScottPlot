@@ -9,7 +9,7 @@ namespace ScottPlot.Plottable
     public class PiePlot : IPlottable
     {
         public double[] Values;
-        public string Label;
+        public string Label { get; set; }
         public string[] GroupNames;
 
         public Color[] Colors;

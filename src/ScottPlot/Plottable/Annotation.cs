@@ -22,7 +22,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Text displayed in the annotation
         /// </summary>
-        public string Label;
+        public string Label { get; set; }
 
         public readonly Drawing.Font Font = new Drawing.Font();
         public Color FontColor { set => Font.Color = value; }

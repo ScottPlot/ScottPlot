@@ -18,6 +18,7 @@ namespace ScottPlot.Plottable
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
+        public string Label { get; set; }
         public enum DisplayItems { BoxOnly, BoxAndScatter, ScatterAndBox, ScatterOnly };
         public enum BoxStyle { BarMeanStDev, BarMeanStdErr, BoxMeanStdevStderr, BoxMedianQuartileOutlier, MeanAndStdev, MeanAndStderr };
         public bool DistributionCurve = true;

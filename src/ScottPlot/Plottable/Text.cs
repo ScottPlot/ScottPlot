@@ -14,7 +14,7 @@ namespace ScottPlot.Plottable
         // data
         public double X;
         public double Y;
-        public string Label;
+        public string Label { get; set; }
 
         // customization
         public bool IsVisible { get; set; } = true;

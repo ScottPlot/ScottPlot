@@ -7,6 +7,7 @@
 
         int XAxisIndex { get; set; }
         int YAxisIndex { get; set; }
+        string Label { get; set; }
 
         /// <summary>
         /// Returns items to show in the legend. Most plottables return a single item. in this array will appear in the legend.

@@ -23,7 +23,7 @@ namespace ScottPlot.Plottable
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
-        public string Label;
+        public string Label { get; set; }
         public Color FillColor = Color.Green;
         public Color FillColorNegative = Color.Red;
         public Color FillColorHatch = Color.Blue;

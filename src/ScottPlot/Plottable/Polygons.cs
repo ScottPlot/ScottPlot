@@ -12,7 +12,7 @@ namespace ScottPlot.Plottable
         public readonly List<List<(double x, double y)>> Polys;
 
         // customization
-        public string Label;
+        public string Label { get; set; }
         public double LineWidth;
         public Color LineColor;
         public bool Fill = true;

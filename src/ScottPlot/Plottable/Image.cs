@@ -19,7 +19,7 @@ namespace ScottPlot.Plottable
         public Alignment Alignment;
         public Color BorderColor;
         public float BorderSize;
-        public string Label;
+        public string Label { get; set; }
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
 

@@ -39,6 +39,7 @@ namespace ScottPlot.Plottable
         public int YAxisIndex { get; set; } = 0;
         public Color ColorUp = Color.LightGreen;
         public Color ColorDown = Color.LightCoral;
+        public string Label { get; set; }
 
         public AxisLimits GetAxisLimits()
         {

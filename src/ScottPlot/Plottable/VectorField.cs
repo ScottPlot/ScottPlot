@@ -16,7 +16,7 @@ namespace ScottPlot.Plottable
         private readonly Color[] VectorColors;
 
         // customization
-        public string Label;
+        public string Label { get; set; }
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;

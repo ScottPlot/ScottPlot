@@ -42,7 +42,7 @@ namespace ScottPlot.Plottable
         public int YAxisIndex { get; set; } = 0;
         public bool IsVisible { get; set; } = true;
         public Color Color = Color.FromArgb(128, Color.Magenta);
-        public string Label;
+        public string Label { get; set; }
 
         // mouse interaction
         public bool DragEnabled { get; set; }
