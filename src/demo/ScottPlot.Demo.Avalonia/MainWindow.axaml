@@ -160,7 +160,7 @@
 								</TextBlock>
 							</Button>
 							<TextBlock >
-								Shows how to create a transparent WpfPlot that lets you see through to the background behind the control
+								Shows how to create a transparent AvaPlot that lets you see through to the background behind the control
 							</TextBlock>
 						</DockPanel>
 
