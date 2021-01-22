@@ -85,7 +85,6 @@ namespace ScottPlot
         private void RenderAfterPlottables(Bitmap bmp, bool lowQuality)
         {
             PlotDimensions dims = settings.GetPlotDimensions(0, 0);
-
             settings.CornerLegend.UpdateLegendItems(GetPlottables());
             settings.CornerLegend.Render(dims, bmp, lowQuality);
 

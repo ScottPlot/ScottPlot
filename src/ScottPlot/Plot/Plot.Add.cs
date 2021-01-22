@@ -24,21 +24,12 @@ namespace ScottPlot
 {
     public partial class Plot
     {
-
         /// <summary>
         /// Display text in the data area at a pixel location (not a X/Y coordinates)
         /// </summary>
-        public Annotation AddAnnotation(string label, double x, double y, float fontSize = 12, Color? fontColor = null, Color? fillColor = null)
+        public Annotation AddAnnotation(string label, double x, double y)
         {
-            var plottable = new Annotation()
-            {
-                Label = label,
-                X = x,
-                Y = y,
-                FontSize = fontSize
-            };
-            plottable.Font.Color = fontColor ?? plottable.Font.Color;
-            plottable.BackgroundColor = fillColor ?? plottable.BackgroundColor;
+            var plottable = new Annotation() { Label = label, X = x, Y = y };
             Add(plottable);
             return plottable;
         }
