@@ -26,7 +26,6 @@ namespace ScottPlot
         public readonly ErrorMessage ErrorMessage = new ErrorMessage();
         public readonly Legend CornerLegend = new Legend();
         public readonly ZoomRectangle ZoomRectangle = new ZoomRectangle();
-        public readonly List<Tooltip> ToolTips = new List<Tooltip>();
         public Palette PlottablePalette = Palette.Category10;
 
         // the Axes list stores styling info for each axis and its limits

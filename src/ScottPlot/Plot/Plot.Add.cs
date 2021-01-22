@@ -13,7 +13,6 @@
  */
 
 using ScottPlot.Plottable;
-using ScottPlot.Renderable;
 using ScottPlot.Statistics;
 using System;
 using System.Collections.Generic;
@@ -643,21 +642,14 @@ namespace ScottPlot
             return plottable;
         }
 
-        public Tooltip AddTooltip(string label, double x, double y, float fontSize = 12, Color? fontColor = null, Color? fillColor = null)
+        /// <summary>
+        /// Display a text bubble that points to an X/Y location on the plot
+        /// </summary>
+        public Tooltip AddTooltip(string label, double x, double y)
         {
-            var tooltip = new Tooltip()
-            {
-                Label = label,
-                X = x,
-                Y = y
-            };
-
-            tooltip.Font.Size = fontSize;
-            tooltip.Font.Color = fontColor ?? tooltip.Font.Color;
-            tooltip.FillColor = fillColor ?? tooltip.FillColor;
-
-            settings.ToolTips.Add(tooltip);
-            return tooltip;
+            var plottable = new Tooltip() { Label = label, X = x, Y = y };
+            Add(plottable);
+            return plottable;
         }
 
         /// <summary>
