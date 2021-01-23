@@ -53,10 +53,8 @@ namespace ScottPlot.DataStructures
 
         public async Task SetSourceAsync(T[] data)
         {
-            if (data == null)
-                throw new Exception("Data cannot be null");
-            sourceArray = data;
-            await Task.Run(() => UpdateTreesInBackground());
+            sourceArray = data ?? throw new ArgumentNullException("Data cannot be null");
+            await Task.Run(() => UpdateTrees());
         }
 
         private void InitExp()
