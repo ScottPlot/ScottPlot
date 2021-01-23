@@ -31,7 +31,7 @@ namespace ScottPlot.Statistics
                     // TODO: could optimize this for perforance by not copying
                     // to do this create a Common.Mean overload
                     var periodValues = new double[period];
-                    Array.Copy(values, i - period, periodValues, 0, period);
+                    Array.Copy(values, i - period + 1, periodValues, 0, period);
                     sma[i] = Common.Mean(periodValues);
                 }
             }
@@ -62,7 +62,7 @@ namespace ScottPlot.Statistics
                 else
                 {
                     var periodValues = new double[period];
-                    Array.Copy(values, i - period, periodValues, 0, period);
+                    Array.Copy(values, i - period + 1, periodValues, 0, period);
                     stDev[i] = Common.StDev(periodValues);
                 }
             }
