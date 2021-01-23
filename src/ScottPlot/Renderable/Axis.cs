@@ -378,7 +378,21 @@ namespace ScottPlot.Renderable
                     float maxWidth = AxisTicks.TickCollection.maxLabelWidth * 1.2f;
                     float sizeNeeded = IsHorizontal ? maxHeight : maxWidth;
                     float diff = Math.Max(maxWidth, maxHeight) - Math.Min(maxWidth, maxHeight);
-                    sizeNeeded = Math.Min(maxWidth, maxHeight) + diff * (float)Math.Sin(AxisTicks.TickLabelRotation * Math.PI / 180);
+
+                    switch (Edge)
+                    {
+                        case Edge.Top:
+                        case Edge.Bottom:
+                            sizeNeeded = Math.Min(maxWidth, maxHeight) + diff * (float)Math.Sin(AxisTicks.TickLabelRotation * Math.PI / 180);
+                            break;
+
+                        case Edge.Left:
+                        case Edge.Right:
+                            sizeNeeded = Math.Min(maxWidth, maxHeight) + diff * (float)Math.Cos(AxisTicks.TickLabelRotation * Math.PI / 180);
+                            break;
+
+
+                    }
                     PixelSize += sizeNeeded;
                 }
 
