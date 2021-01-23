@@ -253,7 +253,7 @@ namespace ScottPlot
                 OHLCs = ohlcs,
                 Candle = true,
                 AutoWidth = autoWidth,
-                Sqeuential = sequential,
+                Sequential = sequential,
                 ColorUp = colorUp ?? ColorTranslator.FromHtml("#26a69a"),
                 ColorDown = colorDown ?? ColorTranslator.FromHtml("#ef5350")
             };
@@ -585,7 +585,7 @@ namespace ScottPlot
                 OHLCs = ohlcs,
                 Candle = false,
                 AutoWidth = autoWidth,
-                Sqeuential = sequential,
+                Sequential = sequential,
                 ColorUp = colorUp ?? ColorTranslator.FromHtml("#26a69a"),
                 ColorDown = colorDown ?? ColorTranslator.FromHtml("#ef5350")
             };

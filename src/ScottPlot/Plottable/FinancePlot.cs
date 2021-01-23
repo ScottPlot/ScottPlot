@@ -28,7 +28,7 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// If True then OHLC timestamps are ignored and candles are placed at x= 0, 1, 2, 3, etc.
         /// </summary>
-        public bool Sqeuential;
+        public bool Sequential;
 
         // customizations
         public bool IsVisible { get; set; } = true;
@@ -61,7 +61,7 @@ namespace ScottPlot.Plottable
                     limits[3] = OHLCs[i].high;
             }
 
-            if (Sqeuential)
+            if (Sequential)
             {
                 limits[0] = 0;
                 limits[1] = OHLCs.Length - 1;
@@ -118,7 +118,7 @@ namespace ScottPlot.Plottable
                 for (int i = 0; i < OHLCs.Length; i++)
                 {
                     var ohlc = OHLCs[i];
-                    var ohlcTime = (Sqeuential) ? i : ohlc.time;
+                    var ohlcTime = (Sequential) ? i : ohlc.time;
                     float pixelX = dims.GetPixelX(ohlcTime);
 
                     if (AutoWidth == false)
@@ -163,7 +163,7 @@ namespace ScottPlot.Plottable
                 for (int i = 0; i < OHLCs.Length; i++)
                 {
                     var ohlc = OHLCs[i];
-                    var ohlcTime = (Sqeuential) ? i : ohlc.time;
+                    var ohlcTime = (Sequential) ? i : ohlc.time;
                     float pixelX = dims.GetPixelX(ohlcTime);
 
                     if (AutoWidth == false)
