@@ -12,6 +12,16 @@ namespace ScottPlotTests.Finance
     class TechnicalIndicators
     {
         [Test]
+        public void Test_SMA_ProducesExpectedOutput()
+        {
+            double[] values = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+            double[] sma = ScottPlot.Statistics.Finance.SMA(values, 3, trimNan: false);
+            double[] expected = { double.NaN, double.NaN, double.NaN, 3, 4, 5, 6, 7, 8, 9 };
+
+            Assert.That(sma, Is.EquivalentTo(expected));
+        }
+
+        [Test]
         public void Test_SMA_DoubleArray()
         {
             Random rand = new Random(0);
