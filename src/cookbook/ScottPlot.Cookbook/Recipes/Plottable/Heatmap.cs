@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace ScottPlot.Cookbook.Recipes.Plottable
 {
@@ -163,6 +161,29 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             var hm = plt.AddHeatmap(intensities);
             var cb = plt.AddColorbar(hm);
+        }
+    }
+
+    public class HeatmapCoordinated : IRecipe
+    {
+        public string Category => "Plottable: Heatmap";
+        public string ID => "heatmap_coordinated";
+        public string Title => "Coordinated Heatmap";
+        public string Description =>
+            "CoordinatedHeatmap is Heatmap stretched to provided boundaries" +
+            "Coordinatedheatmap used to display two-dimensional distributions on a rectangular surface";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            Random rand = new Random(0);
+            int[] xs = DataGen.RandomNormal(rand, 10000, 25, 10).Select(x => (int)x).ToArray();
+            int[] ys = DataGen.RandomNormal(rand, 10000, 25, 10).Select(y => (int)y).ToArray();
+
+            double[,] intensities = Tools.XYToIntensities(mode: IntensityMode.Gaussian,
+                xs: xs, ys: ys, width: 50, height: 50, sampleWidth: 4);
+
+            var hmc = plt.AddHeatMapCoordinated(intensities, -100, 500, 200, 201);
+            var cb = plt.AddColorbar(hmc);
         }
     }
 }
