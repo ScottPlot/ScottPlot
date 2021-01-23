@@ -23,7 +23,6 @@
 
 		<Border Grid.Column="0" Grid.Row="1" Margin="5" BorderThickness="2" BorderBrush="LightGray" Background="LightGray" >
 			<DockPanel>
-				<TextBlock x:Name="BenchmarkLabel" DockPanel.Dock="Top" Foreground="Gray">benchmark info</TextBlock>
 				<Grid>
 					<ScottPlotAva:AvaPlot Name="AvaPlot1" />
 					<Image Name="imagePlot"/>

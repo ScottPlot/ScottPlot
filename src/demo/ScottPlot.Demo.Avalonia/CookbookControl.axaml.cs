@@ -13,7 +13,7 @@ namespace ScottPlot.Demo.Avalonia
         {
             this.InitializeComponent();
 
-            this.Find<ScottPlot.Avalonia.AvaPlot>("AvaPlot1").Rendered += AvaPlot1_Rendered;
+            //this.Find<ScottPlot.Avalonia.AvaPlot>("AvaPlot1").Backend.Rendered += AvaPlot1_Rendered;
         }
 
         private void InitializeComponent()

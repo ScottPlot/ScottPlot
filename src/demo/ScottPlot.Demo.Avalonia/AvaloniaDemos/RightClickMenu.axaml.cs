@@ -21,8 +21,8 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 #endif
             avaPlot1 = this.Find<AvaPlot>("avaPlot1");
 
-            avaPlot1.plt.PlotSignal(DataGen.Sin(51));
-            avaPlot1.plt.PlotSignal(DataGen.Cos(51));
+            avaPlot1.Plot.PlotSignal(DataGen.Sin(51));
+            avaPlot1.Plot.PlotSignal(DataGen.Cos(51));
             avaPlot1.Render();
 
             List<ContextMenuItem> contextMenu = new List<ContextMenuItem>();
@@ -38,7 +38,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
                 onClick = ClearPlot
             });
 
-            avaPlot1.SetContextMenu(contextMenu);
+            //avaPlot1.SetContextMenu(contextMenu);
         }
 
         public void InitializeComponent()
