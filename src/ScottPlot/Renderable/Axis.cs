@@ -87,7 +87,7 @@ namespace ScottPlot.Renderable
         /// RecalculateAxisSize() populates this value.
         /// </summary>
         public void SetSize(float pixels) => PixelSize = pixels;
-        public float GetSize() => PixelSize;
+        public float GetSize() => IsVisible ? PixelSize : 0;
 
         public override string ToString() => $"{Edge} axis from {Dims.Min} to {Dims.Max}";
 
