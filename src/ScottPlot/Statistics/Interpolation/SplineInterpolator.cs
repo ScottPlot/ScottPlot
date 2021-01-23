@@ -19,7 +19,7 @@ namespace ScottPlot.Statistics.Interpolation
         protected readonly int n;
         protected double[] a, b, c, d, h;
 
-        public SplineInterpolator(double[] xs, double[] ys, int resolution = 10)
+        protected SplineInterpolator(double[] xs, double[] ys, int resolution = 10)
         {
             if (xs is null || ys is null)
                 throw new ArgumentException("xs and ys cannot be null");
