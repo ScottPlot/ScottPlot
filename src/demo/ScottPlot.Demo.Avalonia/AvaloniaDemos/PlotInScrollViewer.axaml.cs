@@ -20,9 +20,9 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             foreach (AvaPlot avaPlot in avaPlots)
             {
                 for (int i = 0; i < 3; i++)
-                    avaPlot.plt.PlotSignal(DataGen.RandomWalk(rand, 100));
+                    avaPlot.Plot.PlotSignal(DataGen.RandomWalk(rand, 100));
 
-                avaPlot.Configure(enableScrollWheelZoom: false, enableRightClickMenu: false);
+                //avaPlot.Configure(enableScrollWheelZoom: false, enableRightClickMenu: false);
 
                 avaPlot.Render();
             }

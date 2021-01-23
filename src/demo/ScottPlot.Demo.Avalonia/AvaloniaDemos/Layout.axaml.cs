@@ -37,16 +37,16 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             double[] dataY = DataGen.Random(rand, pointCount);
             string[] labels = { "One", "Two", "Three", "Four", "Five" };
 
-            avaPlot1.plt.PlotScatter(dataX, dataY, label: "series 1");
-            avaPlot1.plt.Title("Plot Title");
-            avaPlot1.plt.XLabel("Horizontal Axis");
-            avaPlot1.plt.YLabel("Vertical Axis");
+            avaPlot1.Plot.PlotScatter(dataX, dataY, label: "series 1");
+            avaPlot1.Plot.Title("Plot Title");
+            avaPlot1.Plot.XLabel("Horizontal Axis");
+            avaPlot1.Plot.YLabel("Vertical Axis");
 
-            avaPlot1.plt.XTicks(dataX, labels);
-            avaPlot1.plt.XAxis.TickLabelStyle(rotation: 90);
-            avaPlot1.plt.AxisAuto();
-            avaPlot1.plt.Layout(left: 20, top: 50, bottom: 100, right: 20);
-            avaPlot1.Configure(recalculateLayoutOnMouseUp: false);
+            avaPlot1.Plot.XTicks(dataX, labels);
+            avaPlot1.Plot.XAxis.TickLabelStyle(rotation: 90);
+            avaPlot1.Plot.AxisAuto();
+            avaPlot1.Plot.Layout(left: 20, top: 50, bottom: 100, right: 20);
+            //avaPlot1.Configure(recalculateLayoutOnMouseUp: false);
 
             avaPlot1.Render();
         }
