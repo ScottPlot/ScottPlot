@@ -1,14 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.9.11" />
-    <PackageReference Include="Avalonia.Desktop" Version="0.9.11" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\controls\ScottPlot.Avalonia\ScottPlot.Avalonia.csproj" />
-    <ProjectReference Include="..\..\cookbook\ScottPlot.Cookbook\ScottPlot.Cookbook.csproj" />
-  </ItemGroup>
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <Platforms>AnyCPU;x64</Platforms>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Avalonia" Version="0.10.0" />
+        <PackageReference Include="Avalonia.Desktop" Version="0.10.0" />
+        <PackageReference Include="Avalonia.Diagnostics" Version="0.10.0" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\controls\ScottPlot.Avalonia\ScottPlot.Avalonia.csproj" />
+        <ProjectReference Include="..\..\cookbook\ScottPlot.Cookbook\ScottPlot.Cookbook.csproj" />
+    </ItemGroup>
 </Project>

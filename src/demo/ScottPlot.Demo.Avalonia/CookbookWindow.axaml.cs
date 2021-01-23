@@ -26,12 +26,16 @@ namespace ScottPlot.Demo.Avalonia
 
         private void DemoSelected(object sender, SelectionChangedEventArgs e)
         {
-            TreeView DemoTreeview = this.Find<TreeView>("DemoTreeview");
+            TreeView DemoTreeview = (TreeView)sender; ;
             CookbookControl DemoPlotControl1 = this.Find<CookbookControl>("DemoPlotControl1");
             var AboutControl1 = this.Find<AboutControl>("AboutControl1");
 
-            var selectedDemoItem = (Cookbook.TreeNode)DemoTreeview.SelectedItem;
-            if (selectedDemoItem.ID != null)
+            Cookbook.TreeNode selectedDemoItem = null;
+            if (DemoTreeview.SelectedItems.Count > 0)
+            {
+                selectedDemoItem = (Cookbook.TreeNode)DemoTreeview.SelectedItems[0];
+            }
+            if (selectedDemoItem != null && selectedDemoItem.ID != null)
             {
                 DemoPlotControl1.IsVisible = true;
                 AboutControl1.IsVisible = false;
