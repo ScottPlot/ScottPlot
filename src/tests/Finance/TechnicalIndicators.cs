@@ -25,9 +25,9 @@ namespace ScottPlotTests.Finance
             double[] sma50xs = xs.Skip(50).ToArray();
 
             var plt = new ScottPlot.Plot(600, 400);
-            plt.PlotScatter(xs, prices, lineWidth: 0, label: "Price");
-            plt.PlotScatter(sma20xs, sma20, label: "20 day SMA", markerSize: 0, lineWidth: 2);
-            plt.PlotScatter(sma50xs, sma50, label: "50 day SMA", markerSize: 0, lineWidth: 2);
+            plt.AddScatter(xs, prices, lineWidth: 0, label: "Price");
+            plt.AddScatter(sma20xs, sma20, label: "20 day SMA", markerSize: 0, lineWidth: 2);
+            plt.AddScatter(sma50xs, sma50, label: "50 day SMA", markerSize: 0, lineWidth: 2);
 
             plt.YLabel("Price");
             plt.XLabel("Days");
@@ -53,10 +53,10 @@ namespace ScottPlotTests.Finance
                 ohlcs[i].time = i;
 
             var plt = new ScottPlot.Plot(600, 400);
-            plt.PlotCandlestick(ohlcs);
-            plt.PlotScatter(sma20xs, sma20, label: "20 day SMA",
+            plt.AddCandlesticks(ohlcs);
+            plt.AddScatter(sma20xs, sma20, label: "20 day SMA",
                 color: Color.Blue, markerSize: 0, lineWidth: 2);
-            plt.PlotScatter(sma50xs, sma50, label: "50 day SMA",
+            plt.AddScatter(sma50xs, sma50, label: "50 day SMA",
                 color: Color.Maroon, markerSize: 0, lineWidth: 2);
 
             plt.Title("Simple Moving Average (SMA)");
@@ -83,11 +83,11 @@ namespace ScottPlotTests.Finance
                 ohlcs[i].time = i;
 
             var plt = new ScottPlot.Plot(600, 400);
-            plt.PlotCandlestick(ohlcs);
-            plt.PlotFill(xs2, bolL, xs2, bolU, fillColor: Color.Blue, fillAlpha: .05);
-            plt.PlotScatter(xs2, bolL, color: Color.Navy, markerSize: 0, label: "Bollinger Bands");
-            plt.PlotScatter(xs2, bolU, color: Color.Navy, markerSize: 0);
-            plt.PlotScatter(xs2, sma, color: Color.Navy, markerSize: 0, lineStyle: LineStyle.Dash, label: "SMA 20");
+            plt.AddCandlesticks(ohlcs);
+            plt.AddFill(xs2, bolL, xs2, bolU, color: Color.FromArgb(10, Color.Blue));
+            plt.AddScatter(xs2, bolL, color: Color.Navy, markerSize: 0, label: "Bollinger Bands");
+            plt.AddScatter(xs2, bolU, color: Color.Navy, markerSize: 0);
+            plt.AddScatter(xs2, sma, color: Color.Navy, markerSize: 0, lineStyle: LineStyle.Dash, label: "SMA 20");
 
             plt.Title("Moving Average and Standard Deviation");
             plt.YLabel("Price");
