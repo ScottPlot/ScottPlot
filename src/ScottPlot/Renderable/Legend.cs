@@ -162,6 +162,7 @@ namespace ScottPlot.Renderable
         public void UpdateLegendItems(IPlottable[] renderables)
         {
             LegendItems = renderables.Where(x => x.GetLegendItems() != null)
+                                     .Where(x => x.IsVisible)
                                      .SelectMany(x => x.GetLegendItems())
                                      .Where(x => !string.IsNullOrWhiteSpace(x.label))
                                      .ToArray();
