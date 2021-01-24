@@ -87,7 +87,14 @@ namespace ScottPlot.Cookbook
                 }
             }
             Debug.WriteLine(sb.ToString());
-            return "Could not locate cookbook source code. Run tests to generate it.";
+
+            // Return a message indicating exactly what the user can do to fix the problem.
+            StringBuilder sb2 = new StringBuilder();
+            sb2.AppendLine($"ERROR: Recipe information file was not found!");
+            sb2.AppendLine($"Developers can generate these files by running the tests:");
+            sb2.AppendLine($"To run tests from Visual Studio, click 'Test' and select 'Run All Tests'.");
+            sb2.AppendLine($"To run tests from the command line, run 'dotnet test' in the src folder.");
+            return sb2.ToString();
         }
     }
 }
