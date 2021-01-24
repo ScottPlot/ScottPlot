@@ -113,17 +113,39 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
     {
         public string Category => "Axis and Ticks";
         public string ID => "ticks_rotated";
-        public string Title => "Rotated Ticks";
-        public string Description => "Tick labels can be rotated as desired.";
+        public string Title => "Rotated X Ticks";
+        public string Description => "Horizontal tick labels can be rotated as desired.";
 
         public void ExecuteRecipe(Plot plt)
         {
             // plot sample data
             plt.AddSignal(DataGen.Sin(51));
             plt.AddSignal(DataGen.Cos(51));
+            plt.XAxis.Label("Horizontal Axis");
+            plt.YAxis.Label("Vertical Axis");
 
             // rotate horizontal axis tick labels
             plt.XAxis.TickLabelStyle(rotation: 45);
+        }
+    }
+
+    class TicksRotatedY : IRecipe
+    {
+        public string Category => "Axis and Ticks";
+        public string ID => "ticks_rotatedY";
+        public string Title => "Rotated Y Ticks";
+        public string Description => "Vertical tick labels can be rotated as desired.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            // plot sample data
+            plt.AddSignal(DataGen.Sin(51));
+            plt.AddSignal(DataGen.Cos(51));
+            plt.XAxis.Label("Horizontal Axis");
+            plt.YAxis.Label("Vertical Axis");
+
+            // rotate horizontal axis tick labels
+            plt.YAxis.TickLabelStyle(rotation: 45);
         }
     }
 

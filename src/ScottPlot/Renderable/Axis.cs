@@ -374,12 +374,20 @@ namespace ScottPlot.Renderable
 
                 if (AxisTicks.TickLabelVisible)
                 {
+                    // determine how many pixels the largest tick label occupies
                     float maxHeight = AxisTicks.TickCollection.maxLabelHeight;
                     float maxWidth = AxisTicks.TickCollection.maxLabelWidth * 1.2f;
-                    float sizeNeeded = IsHorizontal ? maxHeight : maxWidth;
-                    float diff = Math.Max(maxWidth, maxHeight) - Math.Min(maxWidth, maxHeight);
-                    sizeNeeded = Math.Min(maxWidth, maxHeight) + diff * (float)Math.Sin(AxisTicks.TickLabelRotation * Math.PI / 180);
-                    PixelSize += sizeNeeded;
+
+                    // calculate the width and height of the rotated label
+                    float largerEdgeLength = Math.Max(maxWidth, maxHeight);
+                    float shorterEdgeLength = Math.Min(maxWidth, maxHeight);
+                    float differenceInEdgeLengths = largerEdgeLength - shorterEdgeLength;
+                    double radians = AxisTicks.TickLabelRotation * Math.PI / 180;
+                    double fraction = IsHorizontal ? Math.Sin(radians) : Math.Cos(radians);
+                    double rotatedSize = shorterEdgeLength + differenceInEdgeLengths * fraction;
+
+                    // add the rotated label size to the size of this axis
+                    PixelSize += (float)rotatedSize;
                 }
 
                 if (AxisTicks.MajorTickVisible)
