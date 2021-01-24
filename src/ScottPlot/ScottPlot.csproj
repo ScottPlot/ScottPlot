@@ -42,13 +42,14 @@ Release demo: https://swharden.com/scottplot/demo</PackageReleaseNotes>
   </ItemGroup>
 
   <!-- MacOS requires a special DLL to use System.Drawing -->
-  <ItemGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))' == 'true'" >
+  <ItemGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))' == 'true'">
     <PackageReference Include="runtime.osx.10.10-x64.CoreCompat.System.Drawing" Version="5.8.64" />
   </ItemGroup>
 
-  <!-- .NET 4.6.1 requires a package to support value tuples -->
+  <!-- .NET 4.6.1 requires a package to support value tuples and OS information -->
   <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+    <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
   </ItemGroup>
 
 </Project>
