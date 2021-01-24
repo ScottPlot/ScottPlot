@@ -374,26 +374,21 @@ namespace ScottPlot.Renderable
 
                 if (AxisTicks.TickLabelVisible)
                 {
+                    // determine how many pixels the largest tick label occupies
                     float maxHeight = AxisTicks.TickCollection.maxLabelHeight;
                     float maxWidth = AxisTicks.TickCollection.maxLabelWidth * 1.2f;
-                    float sizeNeeded = IsHorizontal ? maxHeight : maxWidth;
-                    float diff = Math.Max(maxWidth, maxHeight) - Math.Min(maxWidth, maxHeight);
 
-                    switch (Edge)
-                    {
-                        case Edge.Top:
-                        case Edge.Bottom:
-                            sizeNeeded = Math.Min(maxWidth, maxHeight) + diff * (float)Math.Sin(AxisTicks.TickLabelRotation * Math.PI / 180);
-                            break;
+                    // calculate the width and height of the rotated label
+                    float largerEdgeLength = Math.Max(maxWidth, maxHeight);
+                    float shorterEdgeLength = Math.Min(maxWidth, maxHeight);
+                    float differenceInEdgeLengths = largerEdgeLength - shorterEdgeLength;
+                    float sinRotation = IsHorizontal ?
+                        (float)Math.Sin(AxisTicks.TickLabelRotation * Math.PI / 180) :
+                        (float)Math.Cos(AxisTicks.TickLabelRotation * Math.PI / 180);
+                    float rotatedLabelSize = shorterEdgeLength + differenceInEdgeLengths * sinRotation;
 
-                        case Edge.Left:
-                        case Edge.Right:
-                            sizeNeeded = Math.Min(maxWidth, maxHeight) + diff * (float)Math.Cos(AxisTicks.TickLabelRotation * Math.PI / 180);
-                            break;
-
-
-                    }
-                    PixelSize += sizeNeeded;
+                    // add the rotated label size to the size of this axis
+                    PixelSize += rotatedLabelSize;
                 }
 
                 if (AxisTicks.MajorTickVisible)
