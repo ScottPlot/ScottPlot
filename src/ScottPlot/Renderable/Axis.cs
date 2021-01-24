@@ -382,12 +382,13 @@ namespace ScottPlot.Renderable
                     float largerEdgeLength = Math.Max(maxWidth, maxHeight);
                     float shorterEdgeLength = Math.Min(maxWidth, maxHeight);
                     float differenceInEdgeLengths = largerEdgeLength - shorterEdgeLength;
-                    double radians = AxisTicks.TickLabelRotation * Math.PI / 180;
-                    double fraction = IsHorizontal ? Math.Sin(radians) : Math.Cos(radians);
-                    double rotatedSize = shorterEdgeLength + differenceInEdgeLengths * fraction;
+                    float sinRotation = IsHorizontal ?
+                        (float)Math.Sin(AxisTicks.TickLabelRotation * Math.PI / 180) :
+                        (float)Math.Cos(AxisTicks.TickLabelRotation * Math.PI / 180);
+                    float rotatedLabelSize = shorterEdgeLength + differenceInEdgeLengths * sinRotation;
 
                     // add the rotated label size to the size of this axis
-                    PixelSize += (float)rotatedSize;
+                    PixelSize += rotatedLabelSize;
                 }
 
                 if (AxisTicks.MajorTickVisible)
