@@ -84,6 +84,10 @@ namespace ScottPlot.Renderable
             using (var brush = GDI.Brush(tickFont.Color))
             using (var sf = GDI.StringFormat())
             {
+                // TODO: Refactor to improve rotated tick label rendering:
+                //  1) rotation should always be assumed
+                //  2) a separate function should translate/rotate/render/reset
+                //  3) all edges should support rotation
                 if (edge == Edge.Bottom)
                 {
                     if (rotation == 0)
@@ -127,16 +131,34 @@ namespace ScottPlot.Renderable
                 }
                 else if (edge == Edge.Left)
                 {
-                    sf.LineAlignment = rulerMode ? StringAlignment.Far : StringAlignment.Center;
-                    sf.Alignment = StringAlignment.Far;
-                    for (int i = 0; i < tc.tickPositionsMajor.Length; i++)
-                        gfx.DrawString(tc.tickLabels[i], font, brush, format: sf,
-                            x: dims.DataOffsetX - PixelOffset - MajorTickLength,
-                            y: dims.GetPixelY(tc.tickPositionsMajor[i]));
+                    if (rotation == 0)
+                    {
+                        sf.LineAlignment = rulerMode ? StringAlignment.Far : StringAlignment.Center;
+                        sf.Alignment = StringAlignment.Far;
+                        for (int i = 0; i < tc.tickPositionsMajor.Length; i++)
+                            gfx.DrawString(tc.tickLabels[i], font, brush, format: sf,
+                                x: dims.DataOffsetX - PixelOffset - MajorTickLength,
+                                y: dims.GetPixelY(tc.tickPositionsMajor[i]));
 
-                    sf.LineAlignment = StringAlignment.Far;
-                    sf.Alignment = StringAlignment.Near;
-                    gfx.DrawString(tc.cornerLabel, font, brush, dims.DataOffsetX, dims.DataOffsetY, sf);
+                        sf.LineAlignment = StringAlignment.Far;
+                        sf.Alignment = StringAlignment.Near;
+                        gfx.DrawString(tc.cornerLabel, font, brush, dims.DataOffsetX, dims.DataOffsetY, sf);
+                    }
+                    else
+                    {
+                        for (int i = 0; i < tc.tickPositionsMajor.Length; i++)
+                        {
+                            float x = dims.DataOffsetX - PixelOffset - MajorTickLength;
+                            float y = dims.GetPixelY(tc.tickPositionsMajor[i]);
+
+                            gfx.TranslateTransform(x, y);
+                            gfx.RotateTransform(-rotation);
+                            sf.Alignment = StringAlignment.Far;
+                            sf.LineAlignment = StringAlignment.Center;
+                            gfx.DrawString(tc.tickLabels[i], font, brush, 0, 0, sf);
+                            gfx.ResetTransform();
+                        }
+                    }
                 }
                 else if (edge == Edge.Right)
                 {
