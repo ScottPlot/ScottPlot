@@ -129,7 +129,6 @@ namespace ScottPlot.Cookbook.Recipes.Ticks
         }
     }
 
-
     class TicksRotatedY : IRecipe
     {
         public string Category => "Axis and Ticks";
