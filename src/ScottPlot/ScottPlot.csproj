@@ -1,8 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>net461;netstandard2.0;net5.0</TargetFrameworks>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <PackageIcon>icon.png</PackageIcon>
@@ -25,7 +25,7 @@ Release demo: https://swharden.com/scottplot/demo</PackageReleaseNotes>
     <Version>4.1.3-beta</Version>
     <AssemblyVersion>4.1.3.0</AssemblyVersion>
     <FileVersion>4.1.3.0</FileVersion>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>latest</LangVersion>
     <SignAssembly>true</SignAssembly>
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
@@ -39,7 +39,22 @@ Release demo: https://swharden.com/scottplot/demo</PackageReleaseNotes>
     <None Include="icon.png" Pack="true" PackagePath="\" />
     <None Include="icon.ico" Pack="true" PackagePath="\" />
     <None Include="README.txt" Pack="true" PackagePath="\" />
-    <PackageReference Include="runtime.osx.10.10-x64.CoreCompat.System.Drawing" Version="5.8.64" Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))' == 'true'" />
   </ItemGroup>
+
+  <!-- MacOS requires a special DLL to use System.Drawing -->
+  <ItemGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))' == 'true'">
+    <PackageReference Include="runtime.osx.10.10-x64.CoreCompat.System.Drawing" Version="5.8.64" />
+  </ItemGroup>
+
+  <!-- .NET Framework 4.6.1 requires packages to support C# 7 features -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+    <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
+  </ItemGroup>
+
+  <!-- .NET Framework builds may not use language features newer than C# 7.3 -->
+  <PropertyGroup Condition="$(TargetFramework.StartsWith('net4'))">
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
 
 </Project>
