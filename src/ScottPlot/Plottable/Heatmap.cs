@@ -198,8 +198,8 @@ namespace ScottPlot.Plottable
                             destRect,
                             0,
                             0,
-                            BmpHeatmap.Width,
-                            BmpHeatmap.Height,
+                            BackgroundImage.Width,
+                            BackgroundImage.Height,
                             GraphicsUnit.Pixel,
                             attr);
 
@@ -219,8 +219,8 @@ namespace ScottPlot.Plottable
                             destRect,
                             0,
                             0,
-                            BmpHeatmap.Width,
-                            BmpHeatmap.Height,
+                            BackgroundImage.Width,
+                            BackgroundImage.Height,
                             GraphicsUnit.Pixel,
                             attr);
             }
