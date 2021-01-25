@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
@@ -51,10 +51,5 @@ Release demo: https://swharden.com/scottplot/demo</PackageReleaseNotes>
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
     <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
   </ItemGroup>
-
-  <!-- .NET Framework builds may not use language features newer than C# 7.3 -->
-  <PropertyGroup Condition="$(TargetFramework.StartsWith('net4'))">
-    <LangVersion>7.3</LangVersion>
-  </PropertyGroup>
 
 </Project>
