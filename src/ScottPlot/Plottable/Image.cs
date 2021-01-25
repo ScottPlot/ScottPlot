@@ -44,29 +44,19 @@ namespace ScottPlot.Plottable
 
         private PointF TextLocation(PointF input)
         {
-            switch (Alignment)
+            return Alignment switch
             {
-                case Alignment.LowerCenter:
-                    return new PointF(input.X - Bitmap.Width / 2, input.Y - Bitmap.Height);
-                case Alignment.LowerLeft:
-                    return new PointF(input.X, input.Y - Bitmap.Height);
-                case Alignment.LowerRight:
-                    return new PointF(input.X - Bitmap.Width, input.Y - Bitmap.Height);
-                case Alignment.MiddleLeft:
-                    return new PointF(input.X, input.Y - Bitmap.Height / 2);
-                case Alignment.MiddleRight:
-                    return new PointF(input.X - Bitmap.Width, input.Y - Bitmap.Height / 2);
-                case Alignment.UpperCenter:
-                    return new PointF(input.X - Bitmap.Width / 2, input.Y);
-                case Alignment.UpperLeft:
-                    return new PointF(input.X, input.Y);
-                case Alignment.UpperRight:
-                    return new PointF(input.X - Bitmap.Width, input.Y);
-                case Alignment.MiddleCenter:
-                    return new PointF(input.X - Bitmap.Width / 2, input.Y - Bitmap.Height / 2);
-                default:
-                    throw new InvalidEnumArgumentException();
-            }
+                Alignment.LowerCenter => new PointF(input.X - Bitmap.Width / 2, input.Y - Bitmap.Height),
+                Alignment.LowerLeft => new PointF(input.X, input.Y - Bitmap.Height),
+                Alignment.LowerRight => new PointF(input.X - Bitmap.Width, input.Y - Bitmap.Height),
+                Alignment.MiddleLeft => new PointF(input.X, input.Y - Bitmap.Height / 2),
+                Alignment.MiddleRight => new PointF(input.X - Bitmap.Width, input.Y - Bitmap.Height / 2),
+                Alignment.UpperCenter => new PointF(input.X - Bitmap.Width / 2, input.Y),
+                Alignment.UpperLeft => new PointF(input.X, input.Y),
+                Alignment.UpperRight => new PointF(input.X - Bitmap.Width, input.Y),
+                Alignment.MiddleCenter => new PointF(input.X - Bitmap.Width / 2, input.Y - Bitmap.Height / 2),
+                _ => throw new InvalidEnumArgumentException(),
+            };
         }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
