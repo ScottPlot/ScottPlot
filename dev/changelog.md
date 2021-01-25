@@ -1,7 +1,42 @@
 # ScottPlot Changelog
 
-## ScottPlot 4.1.0 ⚠️ in development
+## ScottPlot Roadmap
+* [Roadmap.md](roadmap.md) contains the history and big-picture plans for ScottPlot
+
+## ScottPlot 4.1.5-beta ⚠️ in development
+
+_no notes yet_
+
+## ScottPlot 4.1.4-beta
+* User controls have been extensively redesigned (#683)
+  * All user controls are almost entirely logic-free and pass events to `ScottPlot.Control`, a shared common back-end module which handles mouse interaction and pixel/coordinate conversions.
+  * Controls no longer have a `Configure()` method with numerous named arguments, but instead a `Configuration` field with XML-documented public fields to customize behavior.
+  * Renders occur automatically when the number of plottables changes, meaning you do not have to manually call `Render()` when plotting data for the first time. This behavior can be disabled in the configuration.
+  * Avalonia 0.10.0 is now supported and uses this new back-end (#656, #700) _Thanks @Benny121221_
+  * Events are used to provide custom right-click menu actions.
+  * The right-click plot settings window (that was only available from the WinForms control) has been removed.
+* New methods were added to `ScottPlot.Statistics.Common` which efficiently find the Nth smallest number, quartiles, or other quantiles from arrays of numbers (#690) _Thanks @Benny121221_
+* New tooltip plot type (#696) _Thanks @Benny121221_
+* Fixed simple moving average (SMA) calculation (#703) _Thanks @Saklut_
+* Improved multi-axis rendering (#706) _Thanks @Benny121221_
+* Improved `SetSourceAsync()` for segmented trees (#705, #692) _Thanks @jl0pd and @StendProg_
+* Improved layout for axes with rotated ticks (#706, #699) _Thanks @MisterRedactus and @Benny121221_
+* ScottPlot now multi-targets more platforms and supports the latest C# language version on modern platforms but restricts the language to C# 7.3 for .NET Framework projects (#691, #711) _Thanks @jl0pd_
+* Improved project file to install `System.ValueTuple` when targeting .NET Framework 4.6.1 (#88, #691)
+
+## ScottPlot 4.1.3
+* Scott will make a document to summarize 4.0 → 4.1 changes as we get closer to a non-beta release
+* Fixed rendering bug affecting axis spans when zoomed far in (#662) _Thanks @StendProg_
+* Improved Gaussian blur performance (#667) _Thanks @Benny121221_
+* Largely refactored heatmaps (#679, #680) _Thanks @Benny121221_
+* New Colorbar plot type (#681, see cookbook)
+* Improved SMA and Bollinger band generators (#647) _Thanks @Saklut_
+* Improved tick label rounding (#657)
+* Improved setting of tick label color (#672)
+* Improved fill above and below for scatter plots (#676) _Thanks @MithrilMan_
 * Additional customizations for radar charts (#634, #628, #635) _Thanks @Benny121221 and @SommerEngineering_
+
+## ScottPlot 4.1.0
 
 Work toward ScottPlot 4.1 began in October, 2020 and merged into the master branch one month later ([#605](https://github.com/swharden/ScottPlot/pull/605)). Improvements are focused at enhanced performance, improved thread safety, support for multiple axes, and options for data validation. See [roadmap.md](roadmap.md) for details.
 
