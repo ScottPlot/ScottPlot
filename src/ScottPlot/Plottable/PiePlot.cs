@@ -12,7 +12,7 @@ namespace ScottPlot.Plottable
         public string Label;
         public string[] GroupNames;
 
-        public Color[] Colors;
+        public Color[] SliceFillColors;
         public Color BackgroundColor;
 
         public bool Explode;
@@ -22,11 +22,11 @@ namespace ScottPlot.Plottable
 
         public double DonutSize;
         public string DonutLabel;
-        public readonly Drawing.Font DonutFont = new Drawing.Font();
+        public readonly Drawing.Font CenterFont = new Drawing.Font();
+        public readonly Drawing.Font SliceFont = new Drawing.Font();
 
         public float OutlineSize = 0;
         public Color OutlineColor = Color.Black;
-        public float SliceFontSize = 14;
 
         public bool IsVisible { get; set; } = true;
         public int XAxisIndex { get; set; } = 0;
@@ -36,9 +36,14 @@ namespace ScottPlot.Plottable
         {
             Values = values;
             GroupNames = groupNames;
-            Colors = colors;
+            SliceFillColors = colors;
 
-            DonutFont.Size = 36;
+            SliceFont.Size = 18;
+            SliceFont.Bold = true;
+            SliceFont.Color = Color.White;
+
+            CenterFont.Size = 48;
+            CenterFont.Bold = true;
         }
 
         public override string ToString()
@@ -54,7 +59,7 @@ namespace ScottPlot.Plottable
 
             return Enumerable
                 .Range(0, Values.Length)
-                .Select(i => new LegendItem() { label = GroupNames[i], color = Colors[i], lineWidth = 10 })
+                .Select(i => new LegendItem() { label = GroupNames[i], color = SliceFillColors[i], lineWidth = 10 })
                 .ToArray();
         }
 
@@ -65,7 +70,7 @@ namespace ScottPlot.Plottable
         public void ValidateData(bool deep = false)
         {
             Validate.AssertHasElements("values", Values);
-            Validate.AssertHasElements("colors", Colors);
+            Validate.AssertHasElements("colors", SliceFillColors);
             Validate.AssertAllReal("values", Values);
             // TODO: ensure the length of colors and group names matches expected length
         }
@@ -75,10 +80,11 @@ namespace ScottPlot.Plottable
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             using (Pen backgroundPen = GDI.Pen(BackgroundColor))
             using (Pen outlinePen = GDI.Pen(OutlineColor, OutlineSize))
-            using (Brush brush = GDI.Brush(Color.Black))
-            using (Brush fontBrush = GDI.Brush(DonutFont.Color))
-            using (var sliceFont = GDI.Font(DonutFont))
-            using (var centerFont = GDI.Font(DonutFont))
+            using (Brush sliceFillBrush = GDI.Brush(Color.Black))
+            using (var sliceFont = GDI.Font(SliceFont))
+            using (Brush sliceFontBrush = GDI.Brush(SliceFont.Color))
+            using (var centerFont = GDI.Font(CenterFont))
+            using (Brush centerFontBrush = GDI.Brush(CenterFont.Color))
             using (StringFormat sfCenter = new StringFormat() { LineAlignment = StringAlignment.Center, Alignment = StringAlignment.Center })
             {
                 double[] proportions = Values.Select(x => x / Values.Sum()).ToArray();
@@ -131,8 +137,8 @@ namespace ScottPlot.Plottable
                     string sliceLabelName = (ShowLabels && GroupNames != null) ? GroupNames[i] : "";
                     labelStrings[i] = $"{sliceLabelValue}\n{sliceLabelPercentage}\n{sliceLabelName}".Trim();
 
-                    ((SolidBrush)brush).Color = Colors[i];
-                    gfx.FillPie(brush: brush,
+                    ((SolidBrush)sliceFillBrush).Color = SliceFillColors[i];
+                    gfx.FillPie(brush: sliceFillBrush,
                         x: (int)(boundingRectangle.X + xOffset),
                         y: (int)(boundingRectangle.Y + yOffset),
                         width: boundingRectangle.Width,
@@ -154,10 +160,9 @@ namespace ScottPlot.Plottable
                     start += sweep;
                 }
 
-                ((SolidBrush)brush).Color = Color.White;
                 for (int i = 0; i < Values.Length; i++)
                     if (!string.IsNullOrWhiteSpace(labelStrings[i]))
-                        gfx.DrawString(labelStrings[i], sliceFont, brush, (float)labelXs[i], (float)labelYs[i], sfCenter);
+                        gfx.DrawString(labelStrings[i], sliceFont, sliceFontBrush, (float)labelXs[i], (float)labelYs[i], sfCenter);
 
                 if (OutlineSize > 0)
                     gfx.DrawEllipse(
@@ -170,7 +175,7 @@ namespace ScottPlot.Plottable
                 gfx.ResetClip();
 
                 if (DonutLabel != null)
-                    gfx.DrawString(DonutLabel, centerFont, fontBrush, dims.GetPixelX(0), dims.GetPixelY(0), sfCenter);
+                    gfx.DrawString(DonutLabel, centerFont, centerFontBrush, dims.GetPixelX(0), dims.GetPixelY(0), sfCenter);
 
                 if (Explode)
                 {

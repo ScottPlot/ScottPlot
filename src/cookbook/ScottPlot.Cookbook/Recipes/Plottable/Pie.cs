@@ -73,9 +73,9 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             var pie = plt.AddPie(values);
             pie.DonutSize = .6;
             pie.DonutLabel = centerText;
-            pie.DonutFont.Color = color1;
+            pie.CenterFont.Color = color1;
             pie.OutlineSize = 2;
-            pie.Colors = new Color[] { color1, color2 };
+            pie.SliceFillColors = new Color[] { color1, color2 };
         }
     }
 
