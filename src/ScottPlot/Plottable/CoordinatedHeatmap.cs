@@ -1,6 +1,8 @@
 ﻿using ScottPlot.Drawing;
+using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 
 namespace ScottPlot.Plottable
 {
@@ -17,19 +19,23 @@ namespace ScottPlot.Plottable
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             {
                 gfx.InterpolationMode = Interpolation;
+                gfx.PixelOffsetMode = PixelOffsetMode.Half;
 
-                float drawFrom = dims.GetPixelX(XMin);
-                float drawTo = dims.GetPixelY(YMax);
-                float drawWidth = (float)(dims.PxPerUnitX * (XMax - XMin));
-                float drawHeight = (float)(dims.PxPerUnitY * (YMax - YMin));
+                int drawFromX = (int)Math.Round(dims.GetPixelX(XMin));
+                int drawFromY = (int)Math.Round(dims.GetPixelY(YMax));
+                int drawWidth = (int)Math.Round(dims.GetPixelX(XMax) - drawFromX);
+                int drawHeight = (int)Math.Round(dims.GetPixelY(YMin) - drawFromY);
+                Rectangle destRect = new Rectangle(drawFromX, drawFromY, drawWidth, drawHeight);
+                ImageAttributes attr = new ImageAttributes();
+                attr.SetWrapMode(WrapMode.TileFlipXY);
 
                 if (BackgroundImage != null && !DisplayImageAbove)
-                    gfx.DrawImage(BackgroundImage, drawFrom, drawTo, drawWidth, drawHeight);
+                    gfx.DrawImage(BackgroundImage, destRect, 0, 0, BackgroundImage.Width, BackgroundImage.Height, GraphicsUnit.Pixel, attr);
 
-                gfx.DrawImage(BmpHeatmap, drawFrom, drawTo, drawWidth, drawHeight);
+                gfx.DrawImage(BmpHeatmap, destRect, 0, 0, BmpHeatmap.Width, BmpHeatmap.Height, GraphicsUnit.Pixel, attr);
 
                 if (BackgroundImage != null && DisplayImageAbove)
-                    gfx.DrawImage(BackgroundImage, drawFrom, drawTo, drawWidth, drawHeight);
+                    gfx.DrawImage(BackgroundImage, destRect, 0, 0, BackgroundImage.Width, BackgroundImage.Height, GraphicsUnit.Pixel, attr);
             }
         }
 
