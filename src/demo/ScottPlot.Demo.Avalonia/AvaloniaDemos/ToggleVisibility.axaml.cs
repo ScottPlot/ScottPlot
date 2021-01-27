@@ -25,10 +25,10 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 
             avaPlot1 = this.Find<AvaPlot>("avaPlot1");
 
-            sinPlot = avaPlot1.plt.PlotScatter(dataXs, dataSin);
-            cosPlot = avaPlot1.plt.PlotScatter(dataXs, dataCos);
-            vline1 = avaPlot1.plt.PlotVLine(0);
-            vline2 = avaPlot1.plt.PlotVLine(50);
+            sinPlot = avaPlot1.Plot.PlotScatter(dataXs, dataSin);
+            cosPlot = avaPlot1.Plot.PlotScatter(dataXs, dataCos);
+            vline1 = avaPlot1.Plot.PlotVLine(0);
+            vline2 = avaPlot1.Plot.PlotVLine(50);
 
             avaPlot1.Render();
 

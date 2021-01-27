@@ -21,9 +21,9 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 
             avaPlot1 = this.Find<AvaPlot>("avaPlot1");
 
-            avaPlot1.plt.PlotSignal(DataGen.RandomWalk(null, 100));
-            vLine = avaPlot1.plt.PlotVLine(0, color: System.Drawing.Color.Red, lineStyle: LineStyle.Dash);
-            hLine = avaPlot1.plt.PlotHLine(0, color: System.Drawing.Color.Red, lineStyle: LineStyle.Dash);
+            avaPlot1.Plot.PlotSignal(DataGen.RandomWalk(null, 100));
+            vLine = avaPlot1.Plot.PlotVLine(0, color: System.Drawing.Color.Red, lineStyle: LineStyle.Dash);
+            hLine = avaPlot1.Plot.PlotHLine(0, color: System.Drawing.Color.Red, lineStyle: LineStyle.Dash);
             avaPlot1.Render();
 
             avaPlot1.PointerMoved += OnMouseMove;
@@ -44,8 +44,8 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             this.Find<TextBlock>("XPixelLabel").Text = $"{pixelX:0.000}";
             this.Find<TextBlock>("YPixelLabel").Text = $"{pixelY:0.000}";
 
-            this.Find<TextBlock>("XCoordinateLabel").Text = $"{avaPlot1.plt.GetCoordinateX(pixelX):0.00000000}";
-            this.Find<TextBlock>("YCoordinateLabel").Text = $"{avaPlot1.plt.GetCoordinateY(pixelY):0.00000000}";
+            this.Find<TextBlock>("XCoordinateLabel").Text = $"{avaPlot1.Plot.GetCoordinateX(pixelX):0.00000000}";
+            this.Find<TextBlock>("YCoordinateLabel").Text = $"{avaPlot1.Plot.GetCoordinateY(pixelY):0.00000000}";
 
             vLine.X = coordinateX;
             hLine.Y = coordinateY;

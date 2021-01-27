@@ -25,10 +25,10 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             avaPlot1 = this.Find<AvaPlot>("avaPlot1");
             avaPlot2 = this.Find<AvaPlot>("avaPlot2");
 
-            avaPlot1.plt.PlotScatter(dataXs, dataSin);
+            avaPlot1.Plot.PlotScatter(dataXs, dataSin);
             avaPlot1.Render();
 
-            avaPlot2.plt.PlotScatter(dataXs, dataCos);
+            avaPlot2.Plot.PlotScatter(dataXs, dataCos);
             avaPlot2.Render();
 
         }
@@ -40,13 +40,13 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 
         private void axisChanged1(object sender, EventArgs e)
         {
-            avaPlot2.plt.SetAxisLimits(avaPlot1.plt.GetAxisLimits());
+            avaPlot2.Plot.SetAxisLimits(avaPlot1.Plot.GetAxisLimits());
             avaPlot2.Render();
         }
 
         private void axisChanged2(object sender, EventArgs e)
         {
-            avaPlot1.plt.SetAxisLimits(avaPlot2.plt.GetAxisLimits());
+            avaPlot1.Plot.SetAxisLimits(avaPlot2.Plot.GetAxisLimits());
             avaPlot1.Render();
         }
     }

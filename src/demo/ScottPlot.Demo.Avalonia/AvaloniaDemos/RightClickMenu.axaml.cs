@@ -49,15 +49,15 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
         private void AddSine()
         {
             Random rand = new Random();
-            avaPlot1.plt.PlotSignal(DataGen.Sin(51, phase: rand.NextDouble() * 1000));
-            avaPlot1.plt.AxisAuto();
+            avaPlot1.Plot.PlotSignal(DataGen.Sin(51, phase: rand.NextDouble() * 1000));
+            avaPlot1.Plot.AxisAuto();
             avaPlot1.Render();
         }
 
         private void ClearPlot()
         {
-            avaPlot1.plt.Clear();
-            avaPlot1.plt.AxisAuto();
+            avaPlot1.Plot.Clear();
+            avaPlot1.Plot.AxisAuto();
             avaPlot1.Render();
         }
     }

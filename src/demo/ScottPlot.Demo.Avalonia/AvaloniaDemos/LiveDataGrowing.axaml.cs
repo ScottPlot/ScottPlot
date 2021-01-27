@@ -36,9 +36,9 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             AutoAxisCheckbox = this.Find<CheckBox>("AutoAxisCheckbox");
 
             // plot the data array only once
-            signalPlot = avaPlot1.plt.PlotSignal(data);
-            avaPlot1.plt.YLabel("Value");
-            avaPlot1.plt.XLabel("Sample Number");
+            signalPlot = avaPlot1.Plot.PlotSignal(data);
+            avaPlot1.Plot.YLabel("Value");
+            avaPlot1.Plot.XLabel("Sample Number");
 
             // create a timer to modify the data
             _updateDataTimer = new DispatcherTimer();
@@ -89,15 +89,15 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
         void Render(object sender, EventArgs e)
         {
             if (AutoAxisCheckbox.IsChecked == true)
-                avaPlot1.plt.AxisAuto();
+                avaPlot1.Plot.AxisAuto();
             avaPlot1.Render();
         }
 
         private void DisableAutoAxis(object sender, RoutedEventArgs e)
         {
-            avaPlot1.plt.AxisAuto(verticalMargin: .5);
-            var autoLimits = avaPlot1.plt.GetAxisLimits();
-            avaPlot1.plt.SetAxisLimits(xMax: autoLimits.XMax + 1000);
+            avaPlot1.Plot.AxisAuto(verticalMargin: .5);
+            var autoLimits = avaPlot1.Plot.GetAxisLimits();
+            avaPlot1.Plot.SetAxisLimits(xMax: autoLimits.XMax + 1000);
         }
     }
 }
