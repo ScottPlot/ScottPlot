@@ -1,43 +1,87 @@
 ﻿using ScottPlot.Plottable;
 using System;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace WinFormsFrameworkApp
 {
     public partial class Form1 : Form
     {
-        private readonly HLine HLine;
-        private readonly VLine VLine;
-        private readonly SignalPlot Signal;
+        private readonly ScatterPlot MyScatterPlot;
+        private readonly ScatterPlot HighlightedPoint;
+        private int LastHighlightedIndex = -1;
 
         public Form1()
         {
             InitializeComponent();
 
-            // simulate 10 seconds of 48 kHz audio
-            int sampleRate = 48_000;
+            // create some random data to display
             Random rand = new Random(0);
-            double[] data = ScottPlot.DataGen.RandomWalk(rand, sampleRate * 10);
-            Signal = formsPlot1.Plot.AddSignal(data, sampleRate);
+            int pointCount = 20;
+            double[] xs = ScottPlot.DataGen.Random(rand, pointCount);
+            double[] ys = ScottPlot.DataGen.Random(rand, pointCount);
 
-            // markers to indicate where the mouse is
-            HLine = formsPlot1.Plot.AddHorizontalLine(0, Color.Red, 1, ScottPlot.LineStyle.Dash);
-            VLine = formsPlot1.Plot.AddVerticalLine(0, Color.Red, 1, ScottPlot.LineStyle.Dash);
-
-            formsPlot1.Render();
+            // Add a scatter plot and a point (keeps the objects that are created)
+            MyScatterPlot = formsPlot1.Plot.AddScatterPoints(xs, ys);
+            HighlightedPoint = formsPlot1.Plot.AddPoint(0, 0);
+            HighlightedPoint.Color = Color.Red;
+            HighlightedPoint.MarkerSize = 10;
+            HighlightedPoint.MarkerShape = ScottPlot.MarkerShape.openCircle;
+            HighlightedPoint.IsVisible = false;
         }
 
         private void FormsPlot1_MouseMove(object sender, MouseEventArgs e)
         {
-            if (e.Button != MouseButtons.None)
-                return; // don't move markers if actively panning or zooming
+            // determine where the cursor is
+            double mousePixelX = e.X;
+            double mousePixelY = e.Y;
+            (double mouseCoordX, double mouseCoordY) = formsPlot1.GetMouseCoordinates();
 
-            double mouseX = formsPlot1.Plot.GetCoordinateX(e.X);
-            (double x, double y, int index) = Signal.GetPointNearestX(mouseX);
-            VLine.X = x;
-            HLine.Y = y;
-            Text = $"Mouse is over point {index:N0} ({x:.03}, {y:.03})";
+            // determine point nearest the cursor
+            (double pointCoordX, double pointCoordY, int pointIndex) = MyScatterPlot.GetPointNearest(mouseCoordX, mouseCoordY);
+            (double pointPixelX, double pointPixelY) = formsPlot1.Plot.GetPixel(pointCoordX, pointCoordY);
+
+            // highlight the point of interest
+            HighlightedPoint.Xs[0] = pointCoordX;
+            HighlightedPoint.Ys[0] = pointCoordY;
+            HighlightedPoint.IsVisible = true;
+
+            // display details in GUI
+            tbCursorCoord.Text = $"{mouseCoordX:N1}, {mouseCoordY:N1}";
+            tbCursorPixel.Text = $"{mousePixelX:N1}, {mousePixelY:N1}";
+            tbPointCoord.Text = $"{pointCoordX:N1}, {pointCoordY:N1}";
+            tbPointPixel.Text = $"{pointPixelX:N1}, {pointPixelY:N1}";
+
+            // render if the highlighted point chnaged
+            if (LastHighlightedIndex != pointIndex)
+            {
+                LastHighlightedIndex = pointIndex;
+                formsPlot1.Render();
+            }
+        }
+
+        private void btnSimilar_Click(object sender, EventArgs e)
+        {
+            Random rand = new Random();
+            int pointCount = 20;
+            double[] newXs = ScottPlot.DataGen.Random(rand, pointCount);
+            double[] newYs = ScottPlot.DataGen.Random(rand, pointCount);
+            MyScatterPlot.Update(newXs, newYs);
+            HighlightedPoint.IsVisible = false;
+            formsPlot1.Plot.AxisAuto();
+            formsPlot1.Render();
+        }
+
+        private void btnDifferent_Click(object sender, EventArgs e)
+        {
+            Random rand = new Random();
+            int pointCount = 20;
+            double[] newXs = ScottPlot.DataGen.Random(rand, pointCount);
+            double[] newYs = ScottPlot.DataGen.Random(rand, pointCount, multiplier: 1000);
+            MyScatterPlot.Update(newXs, newYs);
+            HighlightedPoint.IsVisible = false;
+            formsPlot1.Plot.AxisAuto();
             formsPlot1.Render();
         }
     }
