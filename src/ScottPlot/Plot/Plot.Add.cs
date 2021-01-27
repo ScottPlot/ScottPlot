@@ -308,6 +308,22 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Display an image at a specific coordinate
+        /// </summary>
+        public Plottable.Image AddImage(Bitmap bitmap, double x, double y)
+        {
+            Plottable.Image plottable = new Plottable.Image()
+            {
+                Bitmap = bitmap,
+                X = x,
+                Y = y,
+            };
+
+            settings.Plottables.Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
         /// Add a line (a scatter plot with two points) to the plot
         /// </summary>
         public ScatterPlot AddLine(double x1, double y1, double x2, double y2, Color? color = null, float lineWidth = 1)
@@ -482,6 +498,7 @@ namespace ScottPlot
 
         /// <summary>
         /// Add a scatter plot from X/Y pairs. 
+        /// Lines and markers are shown by default.
         /// Scatter plots are slower than Signal plots.
         /// </summary>
         public ScatterPlot AddScatter(
@@ -490,9 +507,9 @@ namespace ScottPlot
             Color? color = null,
             float lineWidth = 1,
             float markerSize = 5,
-            string label = null,
             MarkerShape markerShape = MarkerShape.filledCircle,
-            LineStyle lineStyle = LineStyle.Solid)
+            LineStyle lineStyle = LineStyle.Solid,
+            string label = null)
         {
             var plottable = new ScatterPlot(xs, ys, null, null)
             {
@@ -502,6 +519,54 @@ namespace ScottPlot
                 Label = label,
                 MarkerShape = markerShape,
                 LineStyle = lineStyle
+            };
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
+        /// Add a scatter plot from X/Y pairs connected by lines (no markers).
+        /// Scatter plots are slower than Signal plots.
+        /// </summary>
+        public ScatterPlot AddScatterLines(
+            double[] xs,
+            double[] ys,
+            Color? color = null,
+            float lineWidth = 1,
+            LineStyle lineStyle = LineStyle.Solid,
+            string label = null)
+        {
+            var plottable = new ScatterPlot(xs, ys, null, null)
+            {
+                Color = color ?? GetNextColor(),
+                LineWidth = lineWidth,
+                MarkerSize = 0,
+                Label = label,
+                LineStyle = lineStyle
+            };
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
+        /// Add a scatter plot from X/Y pairs using markers at points (no lines).
+        /// Scatter plots are slower than Signal plots.
+        /// </summary>
+        public ScatterPlot AddScatterPoints(
+            double[] xs,
+            double[] ys,
+            Color? color = null,
+            float markerSize = 5,
+            MarkerShape markerShape = MarkerShape.filledCircle,
+            string label = null)
+        {
+            var plottable = new ScatterPlot(xs, ys, null, null)
+            {
+                Color = color ?? GetNextColor(),
+                LineWidth = 0,
+                MarkerSize = markerSize,
+                Label = label,
+                MarkerShape = markerShape
             };
             Add(plottable);
             return plottable;

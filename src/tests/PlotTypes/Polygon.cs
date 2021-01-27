@@ -51,8 +51,8 @@ namespace ScottPlotTests.PlotTypes
             {
                 double[] xs = ScottPlot.DataGen.Random(rand, 3, 100);
                 double[] ys = ScottPlot.DataGen.Random(rand, 3, 100);
-                plt.PlotPolygon(xs, ys, $"polygon {i + 1}",
-                    lineWidth: 2, lineColor: Color.Black, fillAlpha: .5);
+                var p = plt.AddPolygon(xs, ys, lineWidth: 2, lineColor: Color.Black);
+                p.Label = $"polygon {i + 1}";
             }
 
             plt.Title("Polygon Example");
@@ -80,7 +80,7 @@ namespace ScottPlotTests.PlotTypes
             arrY[arrY.Length - 1] = baseline;
 
             var plt = new ScottPlot.Plot();
-            plt.PlotPolygon(arrX, arrY, lineWidth: 1, lineColor: Color.Black, fillAlpha: .5);
+            plt.AddPolygon(arrX, arrY, lineWidth: 1, lineColor: Color.Black);
 
             plt.Title("Shaded Line Plot");
             plt.Legend(location: ScottPlot.Alignment.LowerLeft);
@@ -119,10 +119,8 @@ namespace ScottPlotTests.PlotTypes
 
             // now plot the arrays as polygons
             var plt = new ScottPlot.Plot();
-            plt.PlotPolygon(xs, neg, "negative", lineWidth: 1,
-                lineColor: Color.Black, fillColor: Color.Red, fillAlpha: .5);
-            plt.PlotPolygon(xs, pos, "positive", lineWidth: 1,
-                lineColor: Color.Black, fillColor: Color.Green, fillAlpha: .5);
+            plt.AddPolygon(xs, neg, lineWidth: 1, lineColor: Color.Black, fillColor: Color.Red);
+            plt.AddPolygon(xs, pos, lineWidth: 1, lineColor: Color.Black, fillColor: Color.Green);
             plt.Title("Shaded Line Plot (negative vs. positive)");
             plt.AxisAuto(0);
             TestTools.SaveFig(plt);

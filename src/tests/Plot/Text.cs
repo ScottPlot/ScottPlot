@@ -19,12 +19,10 @@ namespace ScottPlotTests.Plot
                 string label = $"Rot{rotations[i]}";
                 double x = i / 2;
                 double y = i % 2;
-                plt.PlotText(label, x, y, Color.Black,
-                    rotation: rotations[i],
-                    alignment: ScottPlot.Alignment.UpperLeft,
-                    fontSize: 24,
-                    frame: true,
-                    frameColor: Color.LightGray);
+                var txt = plt.AddText(label, x, y);
+                txt.Rotation = rotations[i];
+                txt.Alignment = ScottPlot.Alignment.UpperLeft;
+                txt.Font.Size = 24;
                 plt.AddPoint(x, y, Color.Red, size: 5);
             }
             plt.Title("TextAlignment.upperLeft");
@@ -43,12 +41,10 @@ namespace ScottPlotTests.Plot
                 string label = $"Rot{rotations[i]}";
                 double x = i / 2;
                 double y = i % 2;
-                plt.PlotText(label, x, y, Color.Black,
-                    rotation: rotations[i],
-                    alignment: ScottPlot.Alignment.UpperCenter,
-                    fontSize: 24,
-                    frame: true,
-                    frameColor: Color.LightGray);
+                var txt = plt.AddText(label, x, y);
+                txt.Rotation = rotations[i];
+                txt.Alignment = ScottPlot.Alignment.UpperCenter;
+                txt.Font.Size = 24;
                 plt.AddPoint(x, y, Color.Red, size: 5);
             }
             plt.Title("TextAlignment.upperCenter");
@@ -67,12 +63,10 @@ namespace ScottPlotTests.Plot
                 string label = $"Rot{rotations[i]}";
                 double x = i / 2;
                 double y = i % 2;
-                plt.PlotText(label, x, y, Color.Black,
-                    rotation: rotations[i],
-                    alignment: ScottPlot.Alignment.LowerRight,
-                    fontSize: 24,
-                    frame: true,
-                    frameColor: Color.LightGray);
+                var txt = plt.AddText(label, x, y);
+                txt.Rotation = rotations[i];
+                txt.Alignment = ScottPlot.Alignment.LowerRight;
+                txt.Font.Size = 24;
                 plt.AddPoint(x, y, Color.Red, size: 5);
             }
             plt.Title("TextAlignment.lowerRight");

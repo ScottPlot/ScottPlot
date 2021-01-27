@@ -29,7 +29,7 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             double[] xs = DataGen.Consecutive(pointCount, 0.1);
             double[] ys = DataGen.NoisySin(rand, pointCount);
 
-            sph = wpfPlot1.plt.PlotScatterHighlight(xs, ys);
+            sph = wpfPlot1.Plot.PlotScatterHighlight(xs, ys);
             wpfPlot1.Render();
         }
 

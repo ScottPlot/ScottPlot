@@ -31,9 +31,9 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             avaPlot1.Configuration.MiddleClickAutoAxisMarginX = 0;
 
             // plot the data array only once
-            avaPlot1.plt.PlotSignal(liveData);
-            avaPlot1.plt.AxisAutoX(margin: 0);
-            avaPlot1.plt.SetAxisLimits(yMin: -1, yMax: 2.5);
+            avaPlot1.Plot.AddSignal(liveData);
+            avaPlot1.Plot.AxisAutoX(margin: 0);
+            avaPlot1.Plot.SetAxisLimits(yMin: -1, yMax: 2.5);
 
             // create a traditional timer to update the data
             _updateDataTimer = new Timer(_ => UpdateData(), null, 0, 5);

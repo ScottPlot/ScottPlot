@@ -16,8 +16,8 @@ namespace ScottPlotTests.PlotTypes
             double[] ys = ScottPlot.DataGen.Sin(xs);
 
             var plt = new ScottPlot.Plot(400, 300);
-            plt.PlotFill(xs, ys, fillAlpha: .5);
-            plt.PlotHLine(0, color: Color.Black, lineStyle: ScottPlot.LineStyle.Dash);
+            plt.AddFill(xs, ys);
+            plt.AddHorizontalLine(0, color: Color.Black);
             plt.AxisAuto(0);
 
             TestTools.SaveFig(plt);
@@ -30,8 +30,8 @@ namespace ScottPlotTests.PlotTypes
             double[] ys = ScottPlot.DataGen.Sin(xs);
 
             var plt = new ScottPlot.Plot(400, 300);
-            plt.PlotFill(xs, ys, fillAlpha: .5, baseline: .5);
-            plt.PlotHLine(0.5, color: Color.Black, lineStyle: ScottPlot.LineStyle.Dash);
+            plt.AddFill(xs, ys, baseline: .5);
+            plt.AddHorizontalLine(0.5, color: Color.Black);
             plt.AxisAuto(0);
 
             TestTools.SaveFig(plt);
@@ -49,9 +49,9 @@ namespace ScottPlotTests.PlotTypes
             double[] ys2 = ScottPlot.DataGen.Cos(xs2);
 
             var plt = new ScottPlot.Plot(400, 300);
-            plt.PlotFill(xs1, ys1, xs2, ys2, fillAlpha: .3);
-            plt.PlotScatter(xs1, ys1, Color.Black, 2);
-            plt.PlotScatter(xs2, ys2, Color.Black, 2);
+            plt.AddFill(xs1, ys1, xs2, ys2);
+            plt.AddScatter(xs1, ys1, Color.Black, 2);
+            plt.AddScatter(xs2, ys2, Color.Black, 2);
             plt.AxisAuto(0);
 
             TestTools.SaveFig(plt);
@@ -71,11 +71,9 @@ namespace ScottPlotTests.PlotTypes
 
             var plt = new ScottPlot.Plot(400, 300);
 
-            plt.PlotFill(blueLineXs, blueLineYs, fillColor: Color.Blue, fillAlpha: .5, label: "blue");
-            plt.PlotFill(redLineXs, redLineYs, fillColor: Color.Red, fillAlpha: .5, label: "red");
-            plt.PlotFill(greenLineXs, greenLineYs, fillColor: Color.Green, fillAlpha: .5, label: "green");
-
-            plt.Legend();
+            plt.AddFill(blueLineXs, blueLineYs, color: Color.Blue);
+            plt.AddFill(redLineXs, redLineYs, color: Color.Red);
+            plt.AddFill(greenLineXs, greenLineYs, color: Color.Green);
 
             plt.AxisAuto(0, 0);
 
@@ -90,7 +88,7 @@ namespace ScottPlotTests.PlotTypes
             var xs = ScottPlot.DataGen.Consecutive(ys.Length, spacing: 0.025);
 
             var plt = new ScottPlot.Plot(400, 300);
-            plt.PlotFillAboveBelow(xs, ys, fillAlpha: .5, labelAbove: "above", labelBelow: "below");
+            plt.AddFillAboveAndBelow(xs, ys);
             plt.Legend(location: ScottPlot.Alignment.LowerLeft);
             plt.AxisAuto(0);
 

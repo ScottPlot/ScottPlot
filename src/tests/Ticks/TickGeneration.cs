@@ -26,11 +26,11 @@ namespace ScottPlotTests.Ticks
 
             var pltDefault = mplt.GetSubplot(0, 0);
             pltDefault.Title("Default xSpacing");
-            pltDefault.PlotScatter(days, values);
+            pltDefault.AddScatter(days, values);
 
             var pltTest = mplt.GetSubplot(0, 1);
             pltTest.Title("xSpacing = 1 unit");
-            pltTest.PlotScatter(days, values);
+            pltTest.AddScatter(days, values);
 
             // force inter-tick distance on a numerical axis
             pltTest.XAxis.ManualTickSpacing(1);
@@ -59,12 +59,12 @@ namespace ScottPlotTests.Ticks
 
             var pltDefault = mplt.GetSubplot(0, 0);
             pltDefault.Title("Default xSpacing");
-            pltDefault.PlotScatter(dates, values);
+            pltDefault.AddScatter(dates, values);
             pltDefault.XAxis.DateTimeFormat(true);
 
             var pltTest = mplt.GetSubplot(0, 1);
             pltTest.Title("xSpacing = 1 day");
-            pltTest.PlotScatter(dates, values);
+            pltTest.AddScatter(dates, values);
             pltTest.XAxis.DateTimeFormat(true);
             pltTest.XAxis.TickLabelStyle(rotation: 45);
             pltTest.Layout(bottom: 60); // need extra height to accomodate rotated labels

@@ -27,7 +27,7 @@ namespace ScottPlot.Demo.Avalonia
             TextBlock BenchmarkLabel = this.Find<TextBlock>("BenchmarkLabel");
 
             if (AvaPlot1.IsVisible)
-                BenchmarkLabel.Text = AvaPlot1.plt.GetSettings(false).BenchmarkMessage.Message;
+                BenchmarkLabel.Text = AvaPlot1.Plot.GetSettings(false).BenchmarkMessage.Message;
             else
                 BenchmarkLabel.Text = "This plot is a non-interactive Bitmap";
         }
@@ -60,7 +60,7 @@ namespace ScottPlot.Demo.Avalonia
             avaPlot1.Reset();
             imagePlot1.IsVisible = false;
             avaPlot1.IsVisible = true;
-            recipe.ExecuteRecipe(avaPlot1.plt);
+            recipe.ExecuteRecipe(avaPlot1.Plot);
             avaPlot1.Render();
         }
     }

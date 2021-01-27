@@ -124,7 +124,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] values = { 778, 43, 283, 76, 184 };
             string[] labels = { "C#", "JAVA", "Python", "F#", "PHP" };
             var pie = plt.AddPie(values);
-            pie.GroupNames = labels;
+            pie.SliceLabels = labels;
             pie.ShowLabels = true;
         }
     }
@@ -142,7 +142,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] values = { 778, 43, 283, 76, 184 };
             string[] labels = { "C#", "JAVA", "Python", "F#", "PHP" };
             var pie = plt.AddPie(values);
-            pie.GroupNames = labels;
+            pie.SliceLabels = labels;
             plt.Legend();
         }
     }
@@ -160,7 +160,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] values = { 778, 43, 283, 76, 184 };
             string[] labels = { "C#", "JAVA", "Python", "F#", "PHP" };
             var pie = plt.AddPie(values);
-            pie.GroupNames = labels;
+            pie.SliceLabels = labels;
             pie.ShowPercentages = true;
             pie.ShowValues = true;
             pie.ShowLabels = true;
@@ -187,7 +187,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
                                .ToArray();
 
             var pie = plt.AddPie(values);
-            pie.GroupNames = labels;
+            pie.SliceLabels = labels;
             pie.ShowLabels = true;
         }
     }

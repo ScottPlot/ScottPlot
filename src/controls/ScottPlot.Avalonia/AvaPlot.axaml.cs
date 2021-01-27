@@ -38,8 +38,6 @@ namespace ScottPlot.Avalonia
         public event EventHandler AxesChanged;
         public event EventHandler RightClicked;
 
-        private readonly SolidColorBrush transparentBrush = new SolidColorBrush(Ava.Media.Color.FromUInt32(0), 0);
-
         private readonly Control.ControlBackEnd Backend;
         //private readonly Dictionary<ScottPlot.Cursor, System.Windows.Input.Cursor> Cursors;
         private Ava.Controls.Image PlotImage = new Ava.Controls.Image();
@@ -265,12 +263,5 @@ namespace ScottPlot.Avalonia
         {
             Backend.Render();
         }
-
-
-        private System.Drawing.PointF SDPointF(Ava.Point pt)
-        {
-            return new System.Drawing.PointF((float)pt.X, (float)pt.Y);
-        }
-
     }
 }

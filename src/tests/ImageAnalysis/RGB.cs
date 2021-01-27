@@ -55,32 +55,5 @@ namespace ScottPlotTests.ImageAnalysis
 
             return (A / pixelCount, R / pixelCount, G / pixelCount, B / pixelCount);
         }
-
-        [NUnit.Framework.Test]
-        public void Test_RGB_analysis()
-        {
-            Random rand = new Random(0);
-            double[] ys = DataGen.RandomWalk(rand, 100);
-
-            var plt = new ScottPlot.Plot(400, 300);
-            plt.Style(figureBackground: System.Drawing.Color.Gray, dataBackground: System.Drawing.Color.Gray);
-
-            plt.PlotSignal(ys, yOffset: 0, color: System.Drawing.Color.FromArgb(255, 0, 0), label: "red", lineWidth: 2);
-            plt.PlotSignal(ys, yOffset: 1, color: System.Drawing.Color.FromArgb(0, 255, 0), label: "green", lineWidth: 3);
-            plt.PlotSignal(ys, yOffset: 2, color: System.Drawing.Color.FromArgb(0, 0, 255), label: "blue", lineWidth: 4);
-            plt.PlotSignal(ys, yOffset: 3, color: System.Drawing.Color.FromArgb(0, 0, 0), label: "black");
-            plt.PlotSignal(ys, yOffset: 4, color: System.Drawing.Color.FromArgb(255, 255, 255), label: "white");
-            plt.Legend();
-
-            System.Drawing.Bitmap bmp = plt.Render();
-
-            var means = MeanPixel(bmp);
-            Console.WriteLine($"mean bitmap intensity (ARGB): {means.A}, {means.R}, {means.G}, {means.B}");
-            // mean bitmap intensity (ARGB): 255, 123.4157, 124.8481, 126.327066666667
-
-            Assert.AreEqual(means.A, 255); // image is not transparent
-            Assert.Greater(means.B, means.G); // blue line is thicker than green line
-            Assert.Greater(means.G, means.R); // green line is thicker than red line
-        }
     }
 }

@@ -10,7 +10,7 @@ namespace ConsoleApp
             var ys = new double[] { 1, 4, 9, 16, 25 };
 
             var plt = new ScottPlot.Plot();
-            plt.PlotScatter(xs, ys);
+            plt.AddScatter(xs, ys);
             plt.SaveFig("demo.png");
         }
     }

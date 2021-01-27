@@ -32,9 +32,9 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             InitializeComponent();
 
             // plot the data array only once
-            signalPlot = wpfPlot1.plt.PlotSignal(data);
-            wpfPlot1.plt.YLabel("Value");
-            wpfPlot1.plt.XLabel("Sample Number");
+            signalPlot = wpfPlot1.Plot.AddSignal(data);
+            wpfPlot1.Plot.YLabel("Value");
+            wpfPlot1.Plot.XLabel("Sample Number");
 
             // create a timer to modify the data
             _updateDataTimer = new DispatcherTimer();
@@ -80,15 +80,15 @@ namespace ScottPlot.Demo.WPF.WpfDemos
         void Render(object sender, EventArgs e)
         {
             if (AutoAxisCheckbox.IsChecked == true)
-                wpfPlot1.plt.AxisAuto();
+                wpfPlot1.Plot.AxisAuto();
             wpfPlot1.Render();
         }
 
         private void DisableAutoAxis(object sender, RoutedEventArgs e)
         {
-            wpfPlot1.plt.AxisAuto(verticalMargin: .5);
-            var oldLimits = wpfPlot1.plt.GetAxisLimits();
-            wpfPlot1.plt.SetAxisLimits(xMax: oldLimits.XMax + 1000);
+            wpfPlot1.Plot.AxisAuto(verticalMargin: .5);
+            var oldLimits = wpfPlot1.Plot.GetAxisLimits();
+            wpfPlot1.Plot.SetAxisLimits(xMax: oldLimits.XMax + 1000);
         }
     }
 }

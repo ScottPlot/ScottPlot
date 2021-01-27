@@ -13,8 +13,8 @@ namespace ScottPlotTests.Axis
         {
             var plt = new ScottPlot.Plot();
 
-            plt.PlotSignal(DataGen.Sin(51));
-            plt.PlotSignal(DataGen.Cos(51));
+            plt.AddSignal(DataGen.Sin(51));
+            plt.AddSignal(DataGen.Cos(51));
 
             plt.SetAxisLimits(yMin: -10e50, yMax: 10e50);
 
@@ -28,7 +28,7 @@ namespace ScottPlotTests.Axis
             plt.Title("Moderately Small (e-8)");
             double[] xs = { 1e-8, 2e-8, 3e-8, 4e-8 };
             double[] ys = { 1e-8, 4e-8, 3e-8, 6e-8 };
-            plt.PlotScatter(xs, ys);
+            plt.AddScatter(xs, ys);
             TestTools.SaveFig(plt);
         }
 
@@ -39,7 +39,7 @@ namespace ScottPlotTests.Axis
             plt.Title("Extremely Small (e-20)");
             double[] xs = { 1e-20, 2e-20, 3e-20, 4e-20 };
             double[] ys = { 1e-20, 4e-20, 3e-20, 6e-20 };
-            plt.PlotScatter(xs, ys);
+            plt.AddScatter(xs, ys);
             TestTools.SaveFig(plt);
         }
 
@@ -47,7 +47,7 @@ namespace ScottPlotTests.Axis
         public void Test_Axis_ExtremelySmallSpan()
         {
             var plt = new ScottPlot.Plot(600, 400);
-            plt.PlotLine(0, 1, 1, 1.0000000000000001);
+            plt.AddLine(0, 1, 1, 1.0000000000000001);
             plt.Render();
         }
     }

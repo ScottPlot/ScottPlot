@@ -10,7 +10,7 @@ namespace ScottPlot.Plottable
     {
         public double[] Values;
         public string Label;
-        public string[] GroupNames;
+        public string[] SliceLabels;
 
         public Color[] SliceFillColors;
         public Color BackgroundColor;
@@ -35,7 +35,7 @@ namespace ScottPlot.Plottable
         public PiePlot(double[] values, string[] groupNames, Color[] colors)
         {
             Values = values;
-            GroupNames = groupNames;
+            SliceLabels = groupNames;
             SliceFillColors = colors;
 
             SliceFont.Size = 18;
@@ -54,12 +54,12 @@ namespace ScottPlot.Plottable
 
         public LegendItem[] GetLegendItems()
         {
-            if (GroupNames is null)
+            if (SliceLabels is null)
                 return null;
 
             return Enumerable
                 .Range(0, Values.Length)
-                .Select(i => new LegendItem() { label = GroupNames[i], color = SliceFillColors[i], lineWidth = 10 })
+                .Select(i => new LegendItem() { label = SliceLabels[i], color = SliceFillColors[i], lineWidth = 10 })
                 .ToArray();
         }
 
@@ -134,7 +134,7 @@ namespace ScottPlot.Plottable
                     labelYs[i] = (boundingRectangle.Y + diameterPixels / 2 + yOffset + Math.Sin(angle) * sliceLabelR);
                     string sliceLabelValue = (ShowValues) ? $"{Values[i]}" : "";
                     string sliceLabelPercentage = ShowPercentages ? $"{proportions[i] * 100:f1}%" : "";
-                    string sliceLabelName = (ShowLabels && GroupNames != null) ? GroupNames[i] : "";
+                    string sliceLabelName = (ShowLabels && SliceLabels != null) ? SliceLabels[i] : "";
                     labelStrings[i] = $"{sliceLabelValue}\n{sliceLabelPercentage}\n{sliceLabelName}".Trim();
 
                     ((SolidBrush)sliceFillBrush).Color = SliceFillColors[i];

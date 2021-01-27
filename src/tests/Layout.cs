@@ -14,8 +14,8 @@ namespace ScottPlotTests
             double[] dataCos = DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot();
-            plt.PlotScatter(dataXs, dataSin);
-            plt.PlotScatter(dataXs, dataCos);
+            plt.AddScatter(dataXs, dataSin);
+            plt.AddScatter(dataXs, dataCos);
 
             plt.Title("Very Complicated Data");
             plt.XLabel("Experiment Duration");
@@ -33,8 +33,8 @@ namespace ScottPlotTests
             double[] dataCos = DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot();
-            plt.PlotScatter(dataXs, dataSin);
-            plt.PlotScatter(dataXs, dataCos);
+            plt.AddScatter(dataXs, dataSin);
+            plt.AddScatter(dataXs, dataCos);
 
             string labelWithLineBreak = "Line One\nLine Two";
             plt.XAxis2.Label(label: labelWithLineBreak, size: 30);
@@ -48,8 +48,10 @@ namespace ScottPlotTests
         public void Test_Layout_RotatedTicksWithRoom()
         {
             var plt = new ScottPlot.Plot(400, 300);
-            plt.PlotSignal(DataGen.Sin(51), xOffset: 1e6);
-            plt.PlotSignal(DataGen.Cos(51), xOffset: 1e6);
+            var s1 = plt.AddSignal(DataGen.Sin(51));
+            var s2 = plt.AddSignal(DataGen.Cos(51));
+            s1.OffsetX = 1e6;
+            s2.OffsetX = 1e6;
 
             // WARNING: this resets the layout, so you must call Layout() after this
             plt.XLabel("horizontal axis label");

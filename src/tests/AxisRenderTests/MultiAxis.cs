@@ -13,10 +13,10 @@ namespace ScottPlotTests.AxisRenderTests
             // plot data using 4 different vertical axis indexes
             var plt = new ScottPlot.Plot();
 
-            var sig1 = plt.PlotSignal(ScottPlot.DataGen.Sin(51, mult: 1, phase: 0), sampleRate: 1);
-            var sig2 = plt.PlotSignal(ScottPlot.DataGen.Sin(51, mult: 10, phase: -.1), sampleRate: .1);
-            var sig3 = plt.PlotSignal(ScottPlot.DataGen.Sin(51, mult: 100, phase: -.2), sampleRate: .01);
-            var sig4 = plt.PlotSignal(ScottPlot.DataGen.Sin(51, mult: 1000, phase: -.3), sampleRate: .001);
+            var sig1 = plt.AddSignal(ScottPlot.DataGen.Sin(51, mult: 1, phase: 0), sampleRate: 1);
+            var sig2 = plt.AddSignal(ScottPlot.DataGen.Sin(51, mult: 10, phase: -.1), sampleRate: .1);
+            var sig3 = plt.AddSignal(ScottPlot.DataGen.Sin(51, mult: 100, phase: -.2), sampleRate: .01);
+            var sig4 = plt.AddSignal(ScottPlot.DataGen.Sin(51, mult: 1000, phase: -.3), sampleRate: .001);
 
             sig1.YAxisIndex = 0;
             sig2.YAxisIndex = 1;

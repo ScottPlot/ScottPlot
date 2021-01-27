@@ -37,7 +37,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             double[] dataY = DataGen.Random(rand, pointCount);
             string[] labels = { "One", "Two", "Three", "Four", "Five" };
 
-            avaPlot1.Plot.PlotScatter(dataX, dataY, label: "series 1");
+            avaPlot1.Plot.AddScatter(dataX, dataY, label: "series 1");
             avaPlot1.Plot.Title("Plot Title");
             avaPlot1.Plot.XLabel("Horizontal Axis");
             avaPlot1.Plot.YLabel("Vertical Axis");

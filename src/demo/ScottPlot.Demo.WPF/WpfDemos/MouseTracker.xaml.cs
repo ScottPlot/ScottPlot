@@ -24,10 +24,10 @@ namespace ScottPlot.Demo.WPF.WpfDemos
         public MouseTracker()
         {
             InitializeComponent();
-            wpfPlot1.plt.PlotSignal(DataGen.RandomWalk(null, 100));
+            wpfPlot1.Plot.AddSignal(DataGen.RandomWalk(null, 100));
 
-            vLine = wpfPlot1.plt.PlotVLine(0, color: System.Drawing.Color.Red, lineStyle: LineStyle.Dash);
-            hLine = wpfPlot1.plt.PlotHLine(0, color: System.Drawing.Color.Red, lineStyle: LineStyle.Dash);
+            vLine = wpfPlot1.Plot.AddVerticalLine(0, color: System.Drawing.Color.Red, style: LineStyle.Dash);
+            hLine = wpfPlot1.Plot.AddHorizontalLine(0, color: System.Drawing.Color.Red, style: LineStyle.Dash);
 
             wpfPlot1.Render();
         }
@@ -42,8 +42,8 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             XPixelLabel.Content = $"{pixelX:0.000}";
             YPixelLabel.Content = $"{pixelY:0.000}";
 
-            XCoordinateLabel.Content = $"{wpfPlot1.plt.GetCoordinateX(pixelX):0.00000000}";
-            YCoordinateLabel.Content = $"{wpfPlot1.plt.GetCoordinateY(pixelY):0.00000000}";
+            XCoordinateLabel.Content = $"{wpfPlot1.Plot.GetCoordinateX(pixelX):0.00000000}";
+            YCoordinateLabel.Content = $"{wpfPlot1.Plot.GetCoordinateY(pixelY):0.00000000}";
 
             vLine.X = coordinateX;
             hLine.Y = coordinateY;

@@ -16,7 +16,7 @@ namespace ScottPlotTests
         public void Test_AutoAxis_ScatterDiagonalLine()
         {
             var plt = new ScottPlot.Plot();
-            plt.PlotScatter(
+            plt.AddScatter(
                 xs: new double[] { 1, 2 },
                 ys: new double[] { 1, 2 }
                 );
@@ -31,7 +31,7 @@ namespace ScottPlotTests
         public void Test_AutoAxis_ScatterSinglePoint()
         {
             var plt = new ScottPlot.Plot();
-            plt.PlotScatter(
+            plt.AddScatter(
                 xs: new double[] { 1, 2 },
                 ys: new double[] { 1, 2 }
                 );
@@ -46,7 +46,7 @@ namespace ScottPlotTests
         public void Test_AutoAxis_CandlestickSinglePoint()
         {
             var plt = new ScottPlot.Plot();
-            plt.PlotCandlestick(DataGen.RandomStockPrices(rand: null, pointCount: 1));
+            plt.AddCandlesticks(DataGen.RandomStockPrices(rand: null, pointCount: 1));
 
             var limits = plt.GetAxisLimits();
             Assert.Greater(limits.XSpan, 0);
@@ -57,7 +57,7 @@ namespace ScottPlotTests
         public void Test_AutoAxis_ScatterHorizontalLine()
         {
             var plt = new ScottPlot.Plot();
-            plt.PlotScatter(
+            plt.AddScatter(
                 xs: new double[] { 1, 2 },
                 ys: new double[] { 1, 1 }
                 );
@@ -72,7 +72,7 @@ namespace ScottPlotTests
         public void Test_AutoAxis_ScatterVerticalLine()
         {
             var plt = new ScottPlot.Plot();
-            plt.PlotScatter(
+            plt.AddScatter(
                 xs: new double[] { 1, 1 },
                 ys: new double[] { 1, 2 }
                 );
@@ -114,9 +114,14 @@ namespace ScottPlotTests
 
             var plt = new ScottPlot.Plot();
             var data = DataGen.RandomWalk(rand, 100);
-            plt.PlotSignal(data, xOffset: 100, yOffset: 100, label: "scatter");
-            plt.PlotVLine(-100, label: "vertical");
-            plt.PlotHLine(-100, label: "horizontal");
+
+            var sig = plt.AddSignal(data);
+            sig.OffsetX = 100;
+            sig.OffsetY = 100;
+            sig.Label = "scatter";
+
+            plt.AddVerticalLine(-100, label: "vertical");
+            plt.AddHorizontalLine(-100, label: "horizontal");
             plt.Legend();
 
             TestTools.SaveFig(plt);
@@ -128,12 +133,12 @@ namespace ScottPlotTests
             var plt = new ScottPlot.Plot();
 
             // small area
-            plt.PlotLine(-5, -5, 5, 5);
+            plt.AddLine(-5, -5, 5, 5);
             plt.AxisAuto();
             var limitsA = plt.GetAxisLimits();
 
             // large area
-            plt.PlotLine(-99, -99, 99, 99);
+            plt.AddLine(-99, -99, 99, 99);
             plt.AxisAuto();
             var limitsB = plt.GetAxisLimits();
 
@@ -149,7 +154,7 @@ namespace ScottPlotTests
             var plt = new ScottPlot.Plot();
 
             // small area
-            plt.PlotLine(-5, -5, 5, 5);
+            plt.AddLine(-5, -5, 5, 5);
             plt.AxisAuto();
             var limitsA = plt.GetAxisLimits();
             Console.WriteLine($"limits A: {limitsA}");

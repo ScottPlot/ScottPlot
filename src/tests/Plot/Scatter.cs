@@ -15,7 +15,7 @@ namespace ScottPlotTests.Plot
             double[] dataY = { 0, 0, 0, 0, 0 };
 
             var plt = new ScottPlot.Plot(400, 300);
-            plt.PlotScatter(dataX, dataY);
+            plt.AddScatter(dataX, dataY);
 
             TestTools.SaveFig(plt);
         }

@@ -126,8 +126,8 @@ namespace ScottPlotTests
             double[] dataCos = ScottPlot.DataGen.Cos(50);
 
             var plt = new ScottPlot.Plot(width, height);
-            plt.PlotScatter(dataXs, dataSin);
-            plt.PlotScatter(dataXs, dataCos);
+            plt.AddScatter(dataXs, dataSin);
+            plt.AddScatter(dataXs, dataCos);
 
             return plt;
         }

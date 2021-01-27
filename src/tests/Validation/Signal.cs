@@ -15,7 +15,7 @@ namespace ScottPlotTests.Validation
             double[] ys = { 1, 4, 9, 16, 25 };
 
             var plt = new ScottPlot.Plot();
-            plt.PlotSignal(ys);
+            plt.AddSignal(ys);
 
             TestTools.SaveFig(plt);
 
@@ -28,7 +28,7 @@ namespace ScottPlotTests.Validation
             double[] ys = { 1, 4, double.NaN, 16, 25 };
 
             var plt = new ScottPlot.Plot();
-            plt.PlotSignal(ys);
+            plt.AddSignal(ys);
 
             Assert.DoesNotThrow(() => { plt.Validate(deep: false); });
             Assert.Throws<InvalidOperationException>(() => { plt.Validate(deep: true); });
@@ -40,7 +40,7 @@ namespace ScottPlotTests.Validation
             double[] ys = { 1, 4, double.PositiveInfinity, 16, 25 };
 
             var plt = new ScottPlot.Plot();
-            plt.PlotSignal(ys);
+            plt.AddSignal(ys);
 
             Assert.DoesNotThrow(() => { plt.Validate(deep: false); });
             Assert.Throws<InvalidOperationException>(() => { plt.Validate(deep: true); });
@@ -52,7 +52,7 @@ namespace ScottPlotTests.Validation
             double[] ys = { double.NaN, double.NaN, double.NaN, double.NaN, double.NaN };
 
             var plt = new ScottPlot.Plot();
-            plt.PlotSignal(ys);
+            plt.AddSignal(ys);
 
             Assert.Throws<InvalidOperationException>(() => { plt.AxisAuto(); });
         }
@@ -63,7 +63,7 @@ namespace ScottPlotTests.Validation
             double[] ys = { 1, 4, double.NaN, 16, 25 };
 
             var plt = new ScottPlot.Plot();
-            plt.PlotSignal(ys);
+            plt.AddSignal(ys);
 
             Assert.DoesNotThrow(() => { plt.AxisAuto(); });
             Assert.Throws<InvalidOperationException>(() => { plt.Render(); });

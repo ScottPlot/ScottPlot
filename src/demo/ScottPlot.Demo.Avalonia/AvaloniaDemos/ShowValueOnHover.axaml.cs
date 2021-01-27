@@ -24,7 +24,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             double[] xs = DataGen.Consecutive(pointCount, 0.1);
             double[] ys = DataGen.NoisySin(rand, pointCount);
 
-            sph = avaPlot1.plt.PlotScatterHighlight(xs, ys);
+            sph = avaPlot1.Plot.PlotScatterHighlight(xs, ys);
             avaPlot1.Render();
 
             avaPlot1.PointerMoved += MouseMove;
