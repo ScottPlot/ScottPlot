@@ -18,6 +18,16 @@ namespace ScottPlot.Drawing
         private const float xMultiplierMacOS = 82.82f / 72;
         private const float yMultiplierMacOS = 27.16f / 20;
 
+        public static float GetDPIScale()
+        {
+            const int DEFAULT_DPI = 96;
+
+            using (Graphics gfx = Drawing.GDI.Graphics(new Bitmap(1, 1)))
+            {
+                return gfx.DpiX / DEFAULT_DPI;
+            }
+        }
+
         public static SizeF MeasureString(string text, Font font)
         {
             using (Bitmap bmp = new Bitmap(1, 1))

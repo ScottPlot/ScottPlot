@@ -64,8 +64,9 @@ namespace ScottPlot.Control
         private System.Drawing.Bitmap Bmp;
         private readonly List<System.Drawing.Bitmap> OldBitmaps = new List<System.Drawing.Bitmap>();
         public ScottPlot.Cursor Cursor { get; private set; } = ScottPlot.Cursor.Arrow;
+        public readonly float DPIFactor = Drawing.GDI.GetDPIScale();
 
-        private readonly Queue<InputState> MouseWheelQueue = new Queue<InputState>();
+        private readonly Queue<IInputState> MouseWheelQueue = new Queue<IInputState>();
         private readonly Stopwatch MouseWheelStopwatch = new Stopwatch();
 
         public ControlBackEnd(float width, float height) =>
@@ -200,7 +201,7 @@ namespace ScottPlot.Control
         private bool IsRightDown;
         private bool IsLeftDown;
         private ScottPlot.Plottable.IDraggable PlottableBeingDragged = null;
-        public void MouseDown(InputState input)
+        public void MouseDown(IInputState input)
         {
             IsMiddleDown = input.MiddleWasJustPressed;
             IsRightDown = input.RightWasJustPressed;
@@ -218,7 +219,7 @@ namespace ScottPlot.Control
 
         private bool IsZoomingRectangle;
         private bool IsZoomingWithAlt;
-        public void MouseMove(InputState input)
+        public void MouseMove(IInputState input)
         {
             bool altWasLifted = IsZoomingWithAlt && !input.AltDown;
             if (IsZoomingRectangle && altWasLifted)
@@ -243,7 +244,7 @@ namespace ScottPlot.Control
                 MouseMovedWithoutInteraction(input);
         }
 
-        private void MouseMovedToDragPlottable(InputState input)
+        private void MouseMovedToDragPlottable(IInputState input)
         {
             double x = Plot.GetCoordinateX(input.X);
             double y = Plot.GetCoordinateY(input.Y);
@@ -251,7 +252,7 @@ namespace ScottPlot.Control
             RenderAfterDragging();
         }
 
-        private void MouseMovedToPan(InputState input)
+        private void MouseMovedToPan(IInputState input)
         {
             if (Configuration.LeftClickDragPan == false)
                 return;
@@ -263,7 +264,7 @@ namespace ScottPlot.Control
             RenderAfterDragging();
         }
 
-        private void MouseMovedToZoom(InputState input)
+        private void MouseMovedToZoom(IInputState input)
         {
             if (Configuration.RightClickDragZoom == false)
                 return;
@@ -293,25 +294,25 @@ namespace ScottPlot.Control
             RenderAfterDragging();
         }
 
-        private void MouseMovedToZoomRectangle(InputState input)
+        private void MouseMovedToZoomRectangle(IInputState input)
         {
             Settings.MouseZoomRect(input.X, input.Y);
             RenderAfterDragging();
         }
 
-        private void MouseMovedWithoutInteraction(InputState input)
+        private void MouseMovedWithoutInteraction(IInputState input)
         {
             UpdateCursor(input);
         }
 
-        private void UpdateCursor(InputState input)
+        private void UpdateCursor(IInputState input)
         {
             var draggableUnderCursor = GetDraggableUnderMouse(input.X, input.Y);
             Cursor = (draggableUnderCursor is null) ? ScottPlot.Cursor.Arrow : draggableUnderCursor.DragCursor;
             CursorChanged(null, EventArgs.Empty);
         }
 
-        public void MouseUp(InputState input)
+        public void MouseUp(IInputState input)
         {
             PlottableBeingDragged = null;
             bool mouseWasDragged = Settings.MouseHasMoved(input.X, input.Y);
@@ -332,7 +333,7 @@ namespace ScottPlot.Control
             UpdateCursor(input);
         }
 
-        private void ApplyZoomRectangle(InputState input)
+        private void ApplyZoomRectangle(IInputState input)
         {
             if (Configuration.MiddleClickDragZoom == false)
                 return;
@@ -378,7 +379,7 @@ namespace ScottPlot.Control
         /// <summary>
         /// Apply a scroll wheel action, perform a low quality render, and later re-render in high quality.
         /// </summary>
-        public void MouseWheel(InputState input)
+        public void MouseWheel(IInputState input)
         {
             // this method is suitable for WinForms
             MouseWheelQueue.Enqueue(input);
@@ -388,7 +389,7 @@ namespace ScottPlot.Control
         /// <summary>
         /// Apply a scroll wheel action, perform a low quality render, and later re-render in high quality.
         /// </summary>
-        public async Task MouseWheelAsync(InputState input)
+        public async Task MouseWheelAsync(IInputState input)
         {
             // this method is suitable for WPF
             MouseWheelQueue.Enqueue(input);
@@ -399,7 +400,7 @@ namespace ScottPlot.Control
         /// Perform a low quality render after a mouse wheel.
         /// The MouseWheelQueueProcessor will later repeat a render using high quality.
         /// </summary>
-        private void MouseWheelRender(InputState input)
+        private void MouseWheelRender(IInputState input)
         {
             if (Configuration.ScrollWheelZoom == false)
                 return;
