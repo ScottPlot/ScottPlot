@@ -16,7 +16,7 @@ namespace ScottPlotTests.PlotTypes
             var plt = new ScottPlot.Plot(300, 800);
 
             var pie = plt.AddPie(values);
-            pie.GroupNames = labels;
+            pie.SliceLabels = labels;
             pie.ShowLabels = false;
             plt.Legend();
 
@@ -36,7 +36,9 @@ namespace ScottPlotTests.PlotTypes
 
             var plt = new ScottPlot.Plot(800, 300);
 
-            plt.PlotPie(values, labels, showLabels: false);
+            var pie = plt.AddPie(values);
+            pie.SliceLabels = labels;
+            pie.ShowLabels = false;
             plt.Legend();
 
             plt.Grid(false);
