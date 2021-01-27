@@ -22,7 +22,7 @@ namespace ScottPlotTests.Benchmark
                 Random rand = new Random(0);
                 double[] xs = DataGen.Random(rand, pointCount);
                 double[] ys = DataGen.RandomWalk(rand, pointCount);
-                plt.PlotScatter(xs, ys);
+                plt.AddScatter(xs, ys);
                 plt.Render(lowQuality: true);
 
                 List<double> times = new List<double>();
@@ -41,7 +41,7 @@ namespace ScottPlotTests.Benchmark
             plt2.Title("Scatter Plot Benchmark");
             plt2.YLabel("Time (ms)");
             plt2.XLabel("Number of Points");
-            plt2.PlotScatter(pointCounts, speeds);
+            plt2.AddScatter(pointCounts, speeds);
             TestTools.SaveFig(plt2);
         }
     }

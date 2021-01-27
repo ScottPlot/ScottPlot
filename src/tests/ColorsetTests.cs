@@ -17,10 +17,10 @@ namespace ScottPlotTests
 
             for (int i = 0; i < cset.Count(); i++)
             {
-                double[] ys = DataGen.Sin(51,
-                    //mult: 1 - .5 * i / cset.Count(),
-                    phase: -i / Math.PI / cset.Count());
-                plt.PlotSignal(ys, color: cset.GetColor(i), markerSize: 0, lineWidth: lineWidth);
+                double[] ys = DataGen.Sin(51, phase: -i / Math.PI / cset.Count());
+                var sig = plt.AddSignal(ys, color: cset.GetColor(i));
+                sig.MarkerSize = 0;
+                sig.LineWidth = lineWidth;
             }
 
             if (dark)

@@ -17,7 +17,7 @@ namespace ScottPlotTests
             {
                 double zoom = Math.Pow(i + 1, 2);
                 multiplot.subplots[i].Title($"#{i}");
-                multiplot.subplots[i].PlotScatter(
+                multiplot.subplots[i].AddScatter(
                         xs: ScottPlot.DataGen.Random(rand, pointCount, multiplier: zoom, offset: -.5 * zoom),
                         ys: ScottPlot.DataGen.Random(rand, pointCount, multiplier: zoom, offset: -.5 * zoom)
                     );

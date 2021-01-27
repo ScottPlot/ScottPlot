@@ -21,8 +21,8 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             double[] sin = DataGen.Sin(pointCount);
             double[] cos = DataGen.Cos(pointCount);
 
-            avaPlot1.Plot.PlotScatter(x, sin);
-            avaPlot1.Plot.PlotScatter(x, cos);
+            avaPlot1.Plot.AddScatter(x, sin);
+            avaPlot1.Plot.AddScatter(x, cos);
 
             avaPlot1.Plot.Style(figureBackground: System.Drawing.Color.Transparent);
             avaPlot1.Plot.Style(dataBackground: System.Drawing.Color.Transparent);

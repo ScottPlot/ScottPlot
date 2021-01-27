@@ -15,8 +15,8 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
         public AxisLimits()
         {
             InitializeComponent();
-            formsPlot1.Plot.PlotSignal(DataGen.Sin(51));
-            formsPlot1.Plot.PlotSignal(DataGen.Cos(51));
+            formsPlot1.Plot.AddSignal(DataGen.Sin(51));
+            formsPlot1.Plot.AddSignal(DataGen.Cos(51));
             formsPlot1.Plot.AxisAuto();
             formsPlot1.Plot.SetViewLimits(0, 50, -1, 1);
             formsPlot1.Render();

@@ -36,7 +36,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             AutoAxisCheckbox = this.Find<CheckBox>("AutoAxisCheckbox");
 
             // plot the data array only once
-            signalPlot = avaPlot1.Plot.PlotSignal(data);
+            signalPlot = avaPlot1.Plot.AddSignal(data);
             avaPlot1.Plot.YLabel("Value");
             avaPlot1.Plot.XLabel("Sample Number");
 

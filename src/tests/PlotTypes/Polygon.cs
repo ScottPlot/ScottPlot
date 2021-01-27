@@ -51,7 +51,8 @@ namespace ScottPlotTests.PlotTypes
             {
                 double[] xs = ScottPlot.DataGen.Random(rand, 3, 100);
                 double[] ys = ScottPlot.DataGen.Random(rand, 3, 100);
-                plt.AddPolygon(xs, ys, $"polygon {i + 1}", lineWidth: 2, lineColor: Color.Black);
+                var p = plt.AddPolygon(xs, ys, lineWidth: 2, lineColor: Color.Black);
+                p.Label = $"polygon {i + 1}";
             }
 
             plt.Title("Polygon Example");

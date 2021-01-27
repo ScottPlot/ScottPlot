@@ -52,7 +52,7 @@ namespace ScottPlotTests.Statistics
             // plot to visually assess goodness of fit
             var plt = new ScottPlot.Plot(450, 300);
             plt.Title($"Y = {model.slope:0.0000}x + {model.offset:0.0}\nR² = {model.rSquared:0.0000}");
-            plt.PlotScatter(xs, ys, lineWidth: 0);
+            plt.AddScatterPoints(xs, ys);
             // ADD THIS BACK IN!
             //plt.PlotLine(model.slope, model.offset, (xs.Min(), xs.Max()), lineWidth: 2, label: "model", lineStyle: ScottPlot.LineStyle.Dash);
             //plt.PlotLine(actualSlope, actualOffset, (xs.Min(), xs.Max()), lineWidth: 2, label: "actual");
@@ -78,7 +78,7 @@ namespace ScottPlotTests.Statistics
             // plot to visually assess goodness of fit
             var plt = new ScottPlot.Plot(450, 300);
             plt.Title($"Y = {model.slope:0.0000}x + {model.offset:0.0}\nR² = {model.rSquared:0.0000}");
-            plt.AddScatter(xs, ys, lineWidth: 0);
+            plt.AddScatterPoints(xs, ys);
             // ADD THIS BACK IN!
             //plt.PlotLine(model.slope, model.offset, (xs.Min(), xs.Max()), lineWidth: 2, label: "model", lineStyle: ScottPlot.LineStyle.Dash);
             //plt.PlotLine(actualSlope, actualOffset, (xs.Min(), xs.Max()), lineWidth: 2, label: "actual");

@@ -35,7 +35,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             double[] randomWalkData = DataGen.RandomWalk(rand, pointCount);
 
             var plt = new ScottPlot.Plot();
-            plt.PlotSignal(randomWalkData);
+            plt.AddSignal(randomWalkData);
             plt.Title($"{pointCount} Random Walk Points");
 
             var plotViewer = new ScottPlot.Avalonia.AvaPlotViewer(plt, 500, 300, "Random Walk Data");
@@ -56,7 +56,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             for (int i = 0; i < sinCount; i++)
             {
                 double[] randomSinValues = DataGen.Sin(50, rand.NextDouble() * 10, rand.NextDouble(), rand.NextDouble(), rand.NextDouble() * 100);
-                plt.PlotSignal(randomSinValues);
+                plt.AddSignal(randomSinValues);
             }
             plt.Title($"{sinCount} Random Sine Waves");
 

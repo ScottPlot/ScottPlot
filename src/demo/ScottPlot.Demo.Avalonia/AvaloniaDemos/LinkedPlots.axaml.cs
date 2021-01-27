@@ -25,10 +25,10 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             avaPlot1 = this.Find<AvaPlot>("avaPlot1");
             avaPlot2 = this.Find<AvaPlot>("avaPlot2");
 
-            avaPlot1.Plot.PlotScatter(dataXs, dataSin);
+            avaPlot1.Plot.AddScatter(dataXs, dataSin);
             avaPlot1.Render();
 
-            avaPlot2.Plot.PlotScatter(dataXs, dataCos);
+            avaPlot2.Plot.AddScatter(dataXs, dataCos);
             avaPlot2.Render();
 
         }

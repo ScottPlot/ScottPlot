@@ -21,7 +21,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
         public LiveDataIncoming()
         {
             InitializeComponent();
-            signalPlot = formsPlot1.Plot.PlotSignal(data);
+            signalPlot = formsPlot1.Plot.AddSignal(data);
             formsPlot1.Plot.YLabel("Value");
             formsPlot1.Plot.XLabel("Sample Number");
 

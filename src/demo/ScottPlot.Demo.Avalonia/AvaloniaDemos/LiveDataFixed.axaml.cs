@@ -31,7 +31,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             avaPlot1.Configuration.MiddleClickAutoAxisMarginX = 0;
 
             // plot the data array only once
-            avaPlot1.Plot.PlotSignal(liveData);
+            avaPlot1.Plot.AddSignal(liveData);
             avaPlot1.Plot.AxisAutoX(margin: 0);
             avaPlot1.Plot.SetAxisLimits(yMin: -1, yMax: 2.5);
 

@@ -24,7 +24,7 @@ namespace ScottPlotTests.Concurrency
             {
                 plt.RenderLock();
                 plt.Clear();
-                plt.PlotSignal(new double[] { 1, 2, 3 });
+                plt.AddSignal(new double[] { 1, 2, 3 });
                 plt.RenderUnlock();
             }
             Debug.WriteLine("Modification thread shutting down...");

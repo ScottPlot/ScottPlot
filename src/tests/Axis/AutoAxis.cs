@@ -16,7 +16,7 @@ namespace ScottPlotTests.Axis
             double[] ys = { 1, 4, 9, 16, 25 };
 
             var plt = new ScottPlot.Plot(400, 300);
-            plt.PlotScatter(xs, ys);
+            plt.AddScatter(xs, ys);
             plt.SetAxisLimits(-5, 10, -15, 40);
 
             for (int i = 0; i < 10; i++)
@@ -32,7 +32,7 @@ namespace ScottPlotTests.Axis
             double[] ys = { 1, 4, 9, 16, 25 };
 
             var plt = new ScottPlot.Plot(400, 300);
-            plt.PlotScatter(xs, ys);
+            plt.AddScatter(xs, ys);
             plt.SetAxisLimits(-5, 10, -15, 40);
 
             for (int i = 0; i < 10; i++)
@@ -45,7 +45,7 @@ namespace ScottPlotTests.Axis
         public void Test_AxisAuto_SignalWithMinMaxIndexSet()
         {
             var plt = new ScottPlot.Plot(400, 300);
-            var sig = plt.PlotSignal(ScottPlot.DataGen.Sin(1000), sampleRate: 10);
+            var sig = plt.AddSignal(ScottPlot.DataGen.Sin(1000), sampleRate: 10);
             sig.MinRenderIndex = 450;
             sig.MaxRenderIndex = 550;
             plt.AxisAuto();

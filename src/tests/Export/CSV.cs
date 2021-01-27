@@ -17,7 +17,7 @@ namespace ScottPlotTests.Export
         public void Test_CSV_Signal(string cultureName)
         {
             var plt = new ScottPlot.Plot();
-            var sig = plt.PlotSignal(
+            var sig = plt.AddSignal(
                 ys: new double[] { 1.11, 2.22, 3.33, 4.44 },
                 sampleRate: 0.1);
 
@@ -37,7 +37,7 @@ namespace ScottPlotTests.Export
         public void Test_CSV_SignalConst(string cultureName)
         {
             var plt = new ScottPlot.Plot();
-            var sig = plt.PlotSignalConst(
+            var sig = plt.AddSignalConst(
                 ys: new double[] { 1.11, 2.22, 3.33, 4.44 },
                 sampleRate: 0.1);
 
@@ -57,7 +57,7 @@ namespace ScottPlotTests.Export
         public void Test_CSV_Scatter(string cultureName)
         {
             var plt = new ScottPlot.Plot();
-            var sig = plt.PlotScatter(
+            var sig = plt.AddScatter(
                 xs: new double[] { 0, 10, 20, 30 },
                 ys: new double[] { 1.11, 2.22, 3.33, 4.44 });
 

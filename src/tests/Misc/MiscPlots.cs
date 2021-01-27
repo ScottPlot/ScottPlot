@@ -20,7 +20,7 @@ namespace ScottPlotTests.Misc
         {
             var plt = new ScottPlot.Plot(250, 175);
             plt.Style(figureBackground: Color.WhiteSmoke);
-            plt.PlotSignal(ScottPlot.DataGen.Sin(100));
+            plt.AddSignal(ScottPlot.DataGen.Sin(100));
             plt.Title("Small Plot Title");
             plt.XLabel("Horizontal Axis");
             plt.YLabel("Vertical Axis");

@@ -17,8 +17,8 @@ namespace ScottPlotTests.Misc
             double[] cos = ScottPlot.DataGen.Cos(pointCount);
 
             var plt = new ScottPlot.Plot(600, 400);
-            plt.PlotScatter(x, sin, label: "sin");
-            plt.PlotScatter(x, cos, label: "cos");
+            plt.AddScatter(x, sin, label: "sin");
+            plt.AddScatter(x, cos, label: "cos");
 
             plt.YLabel("vertical units");
             plt.XLabel("horizontal units");
@@ -34,19 +34,19 @@ namespace ScottPlotTests.Misc
         {
             var plt = new ScottPlot.Plot();
 
-            plt.PlotScatter(
+            plt.AddScatter(
                 new double[] { 1, 2, 3, 4 },
                 new double[] { -1, 1, -1, 1 },
                 markerSize: 10
                 );
 
-            plt.PlotScatter(
+            plt.AddScatter(
                 new double[] { 1, 2, 3, 4 },
                 new double[] { 1, -1, 1, -1 }
                 );
 
             double[] xs = ScottPlot.DataGen.Range(1, 4, .02, true);
-            plt.PlotScatter(xs, ScottPlot.DataGen.Sin(xs.Length, 2));
+            plt.AddScatter(xs, ScottPlot.DataGen.Sin(xs.Length, 2));
 
             plt.YLabel("vertical units");
             plt.XLabel("horizontal units");

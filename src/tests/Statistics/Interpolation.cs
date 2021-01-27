@@ -28,10 +28,10 @@ namespace ScottPlotTests.Statistics
             Assert.AreEqual(-2040768015, ScottPlot.Tools.SimpleHash(esi.interpolatedYs));
 
             var plt = new ScottPlot.Plot();
-            plt.PlotScatter(xs, ys, Color.Black, markerSize: 10, lineWidth: 0, label: "Original Data");
-            plt.PlotScatter(nsi.interpolatedXs, nsi.interpolatedYs, Color.Red, markerSize: 3, label: "Natural Spline");
-            plt.PlotScatter(psi.interpolatedXs, psi.interpolatedYs, Color.Green, markerSize: 3, label: "Periodic Spline");
-            plt.PlotScatter(esi.interpolatedXs, esi.interpolatedYs, Color.Blue, markerSize: 3, label: "End Slope Spline");
+            plt.AddScatter(xs, ys, Color.Black, markerSize: 10, lineWidth: 0, label: "Original Data");
+            plt.AddScatter(nsi.interpolatedXs, nsi.interpolatedYs, Color.Red, markerSize: 3, label: "Natural Spline");
+            plt.AddScatter(psi.interpolatedXs, psi.interpolatedYs, Color.Green, markerSize: 3, label: "Periodic Spline");
+            plt.AddScatter(esi.interpolatedXs, esi.interpolatedYs, Color.Blue, markerSize: 3, label: "End Slope Spline");
             plt.Legend();
             TestTools.SaveFig(plt);
         }

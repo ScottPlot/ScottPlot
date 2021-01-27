@@ -20,7 +20,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             foreach (AvaPlot avaPlot in avaPlots)
             {
                 for (int i = 0; i < 3; i++)
-                    avaPlot.Plot.PlotSignal(DataGen.RandomWalk(rand, 100));
+                    avaPlot.Plot.AddSignal(DataGen.RandomWalk(rand, 100));
 
                 //avaPlot.Configure(enableScrollWheelZoom: false, enableRightClickMenu: false);
 

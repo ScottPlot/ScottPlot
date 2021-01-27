@@ -34,7 +34,7 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             wpfPlot1.Configuration.MiddleClickAutoAxisMarginX = 0;
 
             // plot the data array only once
-            wpfPlot1.Plot.PlotSignal(liveData);
+            wpfPlot1.Plot.AddSignal(liveData);
             wpfPlot1.Plot.AxisAutoX(margin: 0);
             wpfPlot1.Plot.SetAxisLimits(yMin: -1, yMax: 2.5);
 

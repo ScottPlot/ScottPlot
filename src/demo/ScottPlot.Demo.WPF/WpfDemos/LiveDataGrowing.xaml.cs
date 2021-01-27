@@ -32,7 +32,7 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             InitializeComponent();
 
             // plot the data array only once
-            signalPlot = wpfPlot1.Plot.PlotSignal(data);
+            signalPlot = wpfPlot1.Plot.AddSignal(data);
             wpfPlot1.Plot.YLabel("Value");
             wpfPlot1.Plot.XLabel("Sample Number");
 

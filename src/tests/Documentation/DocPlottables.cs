@@ -40,7 +40,7 @@ namespace ScottPlotTests.Documentation
             double[] ys = { 1, 4, 9, 16, 25 };
 
             var plt = new ScottPlot.Plot(400, 300);
-            plt.PlotScatter(xs, ys, color: Color.Red, lineWidth: 2);
+            plt.AddScatter(xs, ys, color: Color.Red, lineWidth: 2);
 
             TestTools.SaveFig(plt);
 
@@ -56,7 +56,7 @@ namespace ScottPlotTests.Documentation
             double[] ys = { 1, 4, 9, 16, 25 };
 
             var plt = new ScottPlot.Plot(400, 300);
-            var scatter = plt.PlotScatter(xs, ys);
+            var scatter = plt.AddScatter(xs, ys);
             scatter.Color = Color.Red;
             scatter.LineWidth = 2;
 
@@ -74,7 +74,7 @@ namespace ScottPlotTests.Documentation
             double[] ys = { 1, 4, 9, 16, 25 };
 
             var plt = new ScottPlot.Plot(400, 300);
-            var scatter = plt.PlotScatter(xs, ys);
+            var scatter = plt.AddScatter(xs, ys);
 
             TestTools.SaveFig(plt, "before");
             ys[2] = 23;
