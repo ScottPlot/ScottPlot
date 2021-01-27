@@ -2,10 +2,10 @@
 
 ## ScottPlot Roadmap
 * [Roadmap.md](roadmap.md) contains the history and big-picture plans for ScottPlot
+* The Issues page often has a pinned triage issue that tracks areas of active development
 
 ## ScottPlot 4.1.5-beta ⚠️ in development
-
-_no notes yet_
+* Helper methods were added for creating scatter plots with just lines (`AddScatterLines()`) or just markers (`AddScatterPoints()`).
 
 ## ScottPlot 4.1.4-beta
 * User controls have been extensively redesigned (#683)
