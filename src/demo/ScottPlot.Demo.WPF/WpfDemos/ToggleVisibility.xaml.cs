@@ -30,10 +30,10 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             double[] dataSin = DataGen.Sin(pointCount);
             double[] dataCos = DataGen.Cos(pointCount);
 
-            sinPlot = wpfPlot1.plt.PlotScatter(dataXs, dataSin);
-            cosPlot = wpfPlot1.plt.PlotScatter(dataXs, dataCos);
-            vline1 = wpfPlot1.plt.PlotVLine(0);
-            vline2 = wpfPlot1.plt.PlotVLine(50);
+            sinPlot = wpfPlot1.Plot.PlotScatter(dataXs, dataSin);
+            cosPlot = wpfPlot1.Plot.PlotScatter(dataXs, dataCos);
+            vline1 = wpfPlot1.Plot.PlotVLine(0);
+            vline2 = wpfPlot1.Plot.PlotVLine(50);
 
             wpfPlot1.Render();
         }

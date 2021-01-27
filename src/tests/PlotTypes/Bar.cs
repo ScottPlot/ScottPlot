@@ -15,7 +15,7 @@ namespace ScottPlotTests.PlotTypes
             double[] ys = { 10, 15, 12, 6, 8, 4, 12 };
 
             var plt = new ScottPlot.Plot(400, 300);
-            plt.PlotBar(xs, ys);
+            plt.AddBar(xs, ys);
             TestTools.SaveFig(plt);
         }
 
@@ -31,7 +31,7 @@ namespace ScottPlotTests.PlotTypes
             double[] ys = ScottPlot.DataGen.RandomNormal(rand, barCount, 0, 10);
             double[] yError = ScottPlot.DataGen.RandomNormal(rand, barCount, 5, 2);
 
-            plt.PlotBar(xs, ys, yError);
+            plt.AddBar(xs, ys, yError);
 
             plt.XTicks(xs, labels);
             TestTools.SaveFig(plt);
@@ -49,7 +49,7 @@ namespace ScottPlotTests.PlotTypes
             double[] ys = ScottPlot.DataGen.RandomNormal(rand, barCount, 50, 10);
             double[] yError = ScottPlot.DataGen.RandomNormal(rand, barCount, 5, 2);
 
-            plt.PlotBar(xs, ys, yError);
+            plt.AddBar(xs, ys, yError);
 
             plt.XTicks(xs, labels);
             TestTools.SaveFig(plt);
@@ -67,7 +67,7 @@ namespace ScottPlotTests.PlotTypes
             double[] ys = ScottPlot.DataGen.RandomNormal(rand, barCount, -50, 10);
             double[] yError = ScottPlot.DataGen.RandomNormal(rand, barCount, 5, 2);
 
-            plt.PlotBar(xs, ys, yError);
+            plt.AddBar(xs, ys, yError);
 
             plt.XTicks(xs, labels);
             TestTools.SaveFig(plt);
@@ -81,7 +81,7 @@ namespace ScottPlotTests.PlotTypes
             double[] yErr = { 4, 1, 7, 3, 6, 2, 3 };
 
             var plt = new ScottPlot.Plot(400, 300);
-            plt.PlotBar(xs, ys, yErr);
+            plt.AddBar(xs, ys, yErr);
             plt.Grid(lineStyle: ScottPlot.LineStyle.Dot);
             TestTools.SaveFig(plt);
         }
@@ -95,8 +95,20 @@ namespace ScottPlotTests.PlotTypes
 
             var plt = new ScottPlot.Plot(400, 300);
 
-            plt.PlotBar(xs, ys1, xOffset: -.20, barWidth: 0.3, label: "Group A");
-            plt.PlotBar(xs, ys2, xOffset: +.20, barWidth: 0.3, label: "Group B");
+            var bar1 = plt.AddBar(xs, ys1);
+            bar1.XOffset = -.20;
+            bar1.BarWidth = .3;
+            bar1.ShowValuesAboveBars = true;
+            bar1.HorizontalOrientation = true;
+            bar1.Label = "Series A";
+
+            plt.AddBar(xs, ys2);
+            var bar2 = plt.AddBar(xs, ys2);
+            bar2.XOffset = +.20;
+            bar2.BarWidth = 0.3;
+            bar2.ShowValuesAboveBars = true;
+            bar2.Label = "Series B";
+            bar2.HorizontalOrientation = true;
 
             plt.Grid(lineStyle: ScottPlot.LineStyle.Dot);
             plt.XAxis.Grid(false);
@@ -112,7 +124,8 @@ namespace ScottPlotTests.PlotTypes
             double[] yErr = { 4, 1, 7, 3, 6, 2, 3 };
 
             var plt = new ScottPlot.Plot(400, 300);
-            plt.PlotBar(xs, ys, yErr, horizontal: true);
+            var bar = plt.AddBar(xs, ys, yErr);
+            bar.HorizontalOrientation = true;
             plt.Grid(lineStyle: ScottPlot.LineStyle.Dot);
             TestTools.SaveFig(plt);
         }
@@ -130,8 +143,15 @@ namespace ScottPlotTests.PlotTypes
                 valuesB2[i] = valuesA[i] + valuesB[i];
 
             var plt = new ScottPlot.Plot(400, 300);
-            plt.PlotBar(xs, valuesB2, label: "Series B"); // plot the uppermost bar first
-            plt.PlotBar(xs, valuesA, label: "Series A"); // plot lower bars last (in front)
+
+            // plot the uppermost bar first
+            var bar1 = plt.AddBar(xs, valuesB2);
+            bar1.Label = "Series B";
+
+            // plot lower bars last (in front)
+            var bar2 = plt.AddBar(xs, valuesA);
+            bar2.Label = "Series A";
+
             plt.Legend(location: ScottPlot.Alignment.UpperRight);
             plt.SetAxisLimits(yMax: 7);
             plt.Title("Stacked Bar Charts");
@@ -147,8 +167,20 @@ namespace ScottPlotTests.PlotTypes
 
             var plt = new ScottPlot.Plot(400, 300);
 
-            plt.PlotBar(xs, ys1, xOffset: -.20, barWidth: 0.3, showValues: true, label: "Series A");
-            plt.PlotBar(xs, ys2, xOffset: +.20, barWidth: 0.3, showValues: true, label: "Series B");
+            var bar1 = plt.AddBar(xs, ys1);
+            bar1.XOffset = -.20;
+            bar1.BarWidth = .3;
+            bar1.ShowValuesAboveBars = true;
+            bar1.HorizontalOrientation = true;
+            bar1.Label = "Series A";
+
+            plt.AddBar(xs, ys2);
+            var bar2 = plt.AddBar(xs, ys2);
+            bar2.XOffset = +.20;
+            bar2.BarWidth = 0.3;
+            bar2.ShowValuesAboveBars = true;
+            bar2.Label = "Series B";
+            bar2.HorizontalOrientation = true;
 
             plt.Grid(lineStyle: ScottPlot.LineStyle.Dot);
             plt.XAxis.Grid(false);
@@ -166,8 +198,20 @@ namespace ScottPlotTests.PlotTypes
 
             var plt = new ScottPlot.Plot(400, 300);
 
-            plt.PlotBar(xs, ys1, xOffset: -.20, barWidth: 0.3, showValues: true, label: "Series A", horizontal: true);
-            plt.PlotBar(xs, ys2, xOffset: +.20, barWidth: 0.3, showValues: true, label: "Series B", horizontal: true);
+            var bar1 = plt.AddBar(xs, ys1);
+            bar1.XOffset = -.20;
+            bar1.BarWidth = .3;
+            bar1.ShowValuesAboveBars = true;
+            bar1.HorizontalOrientation = true;
+            bar1.Label = "Series A";
+
+            plt.AddBar(xs, ys2);
+            var bar2 = plt.AddBar(xs, ys2);
+            bar2.XOffset = +.20;
+            bar2.BarWidth = 0.3;
+            bar2.ShowValuesAboveBars = true;
+            bar2.Label = "Series B";
+            bar2.HorizontalOrientation = true;
 
             plt.Grid(lineStyle: ScottPlot.LineStyle.Dot);
             plt.XAxis.Grid(false);

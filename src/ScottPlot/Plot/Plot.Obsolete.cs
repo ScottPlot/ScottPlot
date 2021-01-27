@@ -211,7 +211,7 @@ namespace ScottPlot
             return bars;
         }
 
-        [Obsolete("Create this plottable manually with new, then Add() it to the plot.")]
+        [Obsolete("Use AddImage() and customize the object it returns.")]
         public Plottable.Image PlotBitmap(
            Bitmap bitmap,
            double x,

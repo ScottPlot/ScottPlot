@@ -34,15 +34,15 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             double[] dataY = DataGen.Random(rand, pointCount);
             string[] labels = { "One", "Two", "Three", "Four", "Five" };
 
-            wpfPlot1.plt.AddScatter(dataX, dataY, label: "series 1");
-            wpfPlot1.plt.Title("Plot Title");
-            wpfPlot1.plt.XLabel("Horizontal Axis");
-            wpfPlot1.plt.YLabel("Vertical Axis");
+            wpfPlot1.Plot.AddScatter(dataX, dataY, label: "series 1");
+            wpfPlot1.Plot.Title("Plot Title");
+            wpfPlot1.Plot.XLabel("Horizontal Axis");
+            wpfPlot1.Plot.YLabel("Vertical Axis");
 
-            wpfPlot1.plt.XTicks(dataX, labels);
-            wpfPlot1.plt.XAxis.TickLabelStyle(rotation: 90);
-            wpfPlot1.plt.AxisAuto();
-            wpfPlot1.plt.Layout(left: 20, top: 50, bottom: 100, right: 20);
+            wpfPlot1.Plot.XTicks(dataX, labels);
+            wpfPlot1.Plot.XAxis.TickLabelStyle(rotation: 90);
+            wpfPlot1.Plot.AxisAuto();
+            wpfPlot1.Plot.Layout(left: 20, top: 50, bottom: 100, right: 20);
 
             wpfPlot1.Render();
         }

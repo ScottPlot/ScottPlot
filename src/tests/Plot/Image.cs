@@ -19,12 +19,11 @@ namespace ScottPlotTests.Plot
             {
                 double x = i / 2;
                 double y = i % 2;
-                plt.PlotBitmap(bitmap: image,
-                    x, y,
-                    rotation: rotations[i],
-                    alignment: ScottPlot.Alignment.UpperLeft,
-                    frameColor: Color.LightGray,
-                    frameSize: 5);
+                var img = plt.AddImage(image, x, y);
+                img.Rotation = rotations[i];
+                img.Alignment = ScottPlot.Alignment.UpperLeft;
+                img.BorderColor = Color.LightGray;
+                img.BorderSize = 5;
                 plt.AddPoint(x, y, Color.Red, size: 5);
             }
             plt.Title("TextAlignment.upperLeft");
@@ -43,12 +42,11 @@ namespace ScottPlotTests.Plot
             {
                 double x = i / 2;
                 double y = i % 2;
-                plt.PlotBitmap(bitmap: image,
-                    x, y,
-                    rotation: rotations[i],
-                    alignment: ScottPlot.Alignment.UpperCenter,
-                    frameColor: Color.LightGray,
-                    frameSize: 5);
+                var img = plt.AddImage(image, x, y);
+                img.Rotation = rotations[i];
+                img.Alignment = ScottPlot.Alignment.UpperCenter;
+                img.BorderColor = Color.LightGray;
+                img.BorderSize = 5;
                 plt.AddPoint(x, y, Color.Red, size: 5);
             }
             plt.Title("TextAlignment.upperCenter");
@@ -67,12 +65,11 @@ namespace ScottPlotTests.Plot
             {
                 double x = i / 2;
                 double y = i % 2;
-                plt.PlotBitmap(bitmap: image,
-                    x, y,
-                    rotation: rotations[i],
-                    alignment: ScottPlot.Alignment.LowerRight,
-                    frameColor: Color.LightGray,
-                    frameSize: 5);
+                var img = plt.AddImage(image, x, y);
+                img.Rotation = rotations[i];
+                img.Alignment = ScottPlot.Alignment.LowerRight;
+                img.BorderColor = Color.LightGray;
+                img.BorderSize = 5;
                 plt.AddPoint(x, y, Color.Red, size: 5);
             }
             plt.Title("TextAlignment.lowerRight");

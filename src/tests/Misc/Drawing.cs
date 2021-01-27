@@ -44,8 +44,8 @@ namespace ScottPlotTests.Misc
             double[] ys = { -100, -75, -200, -220 };
 
             var plt = new ScottPlot.Plot(320, 240);
-            plt.PlotPolygon(xs, ys, fillColor: Color.LightGreen);
-            plt.PlotLine(xs[0], ys[0], xs[1], ys[1], Color.Blue);
+            plt.AddPolygon(xs, ys, fillColor: Color.LightGreen);
+            plt.AddLine(xs[0], ys[0], xs[1], ys[1], Color.Blue);
             plt.Grid(false);
             plt.Frame(false);
             plt.XAxis.Ticks(false);
@@ -62,14 +62,14 @@ namespace ScottPlotTests.Misc
             double[] ys = { -100, -75, -200, -220 };
 
             var plt = new ScottPlot.Plot(320, 240);
-            plt.PlotPolygon(xs, ys, fillColor: Color.LightGreen);
-            plt.PlotSignal(
+            plt.AddPolygon(xs, ys, fillColor: Color.LightGreen);
+            var sig = plt.AddSignal(
                 ys: new double[] { ys[0], ys[1] },
                 sampleRate: 1.0 / (xs[1] - xs[0]),
-                xOffset: xs[0],
-                color: Color.Blue,
-                markerSize: 0
-                );
+                color: Color.Blue);
+            sig.MarkerSize = 0;
+            sig.OffsetX = xs[0];
+
             plt.Grid(false);
             plt.Frame(false);
             plt.XAxis.Ticks(false);
@@ -86,14 +86,13 @@ namespace ScottPlotTests.Misc
             double[] ys = { 1e6 - 100, 1e6 - 75, 1e6 - 200, 1e6 - 220 };
 
             var plt = new ScottPlot.Plot(320, 240);
-            plt.PlotPolygon(xs, ys, fillColor: Color.LightGreen);
-            plt.PlotSignal(
+            plt.AddPolygon(xs, ys, fillColor: Color.LightGreen);
+            var sig = plt.AddSignal(
                 ys: new double[] { ys[0], ys[1] },
                 sampleRate: 1.0 / (xs[1] - xs[0]),
-                xOffset: xs[0],
-                color: Color.Blue,
-                markerSize: 0
-                );
+                color: Color.Blue);
+            sig.MarkerSize = 0;
+            sig.OffsetX = xs[0];
             plt.Grid(false);
             plt.Frame(false);
             plt.XAxis.Ticks(false);
@@ -111,8 +110,8 @@ namespace ScottPlotTests.Misc
             double[] ys = DataGen.RandomWalk(rand, xs.Length, .5);
 
             var plt = new ScottPlot.Plot(320, 240);
-            plt.PlotScatter(xs, ys, markerSize: 0);
-            plt.PlotScatter(ys, xs, markerSize: 0);
+            plt.AddScatter(xs, ys, markerSize: 0);
+            plt.AddScatter(ys, xs, markerSize: 0);
             plt.AxisAuto(0, 0);
 
             TestTools.SaveFig(plt);

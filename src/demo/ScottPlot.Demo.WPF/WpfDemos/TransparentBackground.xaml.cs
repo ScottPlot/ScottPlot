@@ -27,11 +27,11 @@ namespace ScottPlot.Demo.WPF.WpfDemos
             double[] sin = DataGen.Sin(pointCount);
             double[] cos = DataGen.Cos(pointCount);
 
-            wpfPlot1.plt.PlotScatter(x, sin);
-            wpfPlot1.plt.PlotScatter(x, cos);
+            wpfPlot1.Plot.PlotScatter(x, sin);
+            wpfPlot1.Plot.PlotScatter(x, cos);
 
-            wpfPlot1.plt.Style(figureBackground: System.Drawing.Color.Transparent);
-            wpfPlot1.plt.Style(dataBackground: System.Drawing.Color.Transparent);
+            wpfPlot1.Plot.Style(figureBackground: System.Drawing.Color.Transparent);
+            wpfPlot1.Plot.Style(dataBackground: System.Drawing.Color.Transparent);
             wpfPlot1.Render();
         }
     }

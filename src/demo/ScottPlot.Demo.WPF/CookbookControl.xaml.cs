@@ -46,7 +46,7 @@ namespace ScottPlot.Demo.WPF
             SourceTextBox.Text = Cookbook.Locate.RecipeSourceCode(id);
 
             wpfPlot1.Reset();
-            recipe.ExecuteRecipe(wpfPlot1.plt);
+            recipe.ExecuteRecipe(wpfPlot1.Plot);
             wpfPlot1.Render();
         }
     }

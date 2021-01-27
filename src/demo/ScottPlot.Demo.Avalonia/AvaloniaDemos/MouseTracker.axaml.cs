@@ -21,9 +21,9 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 
             avaPlot1 = this.Find<AvaPlot>("avaPlot1");
 
-            avaPlot1.Plot.PlotSignal(DataGen.RandomWalk(null, 100));
-            vLine = avaPlot1.Plot.PlotVLine(0, color: System.Drawing.Color.Red, lineStyle: LineStyle.Dash);
-            hLine = avaPlot1.Plot.PlotHLine(0, color: System.Drawing.Color.Red, lineStyle: LineStyle.Dash);
+            avaPlot1.Plot.AddSignal(DataGen.RandomWalk(null, 100));
+            vLine = avaPlot1.Plot.AddVerticalLine(0, color: System.Drawing.Color.Red, style: LineStyle.Dash);
+            hLine = avaPlot1.Plot.AddHorizontalLine(0, color: System.Drawing.Color.Red, style: LineStyle.Dash);
             avaPlot1.Render();
 
             avaPlot1.PointerMoved += OnMouseMove;

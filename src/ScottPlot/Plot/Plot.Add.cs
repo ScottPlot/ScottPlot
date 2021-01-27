@@ -308,6 +308,22 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Display an image at a specific coordinate
+        /// </summary>
+        public Plottable.Image AddImage(Bitmap bitmap, double x, double y)
+        {
+            Plottable.Image plottable = new Plottable.Image()
+            {
+                Bitmap = bitmap,
+                X = x,
+                Y = y,
+            };
+
+            settings.Plottables.Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
         /// Add a line (a scatter plot with two points) to the plot
         /// </summary>
         public ScatterPlot AddLine(double x1, double y1, double x2, double y2, Color? color = null, float lineWidth = 1)
