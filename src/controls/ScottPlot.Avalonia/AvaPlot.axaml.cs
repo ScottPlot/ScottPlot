@@ -95,7 +95,8 @@ namespace ScottPlot.Avalonia
         private void CaptureMouse(IPointer pointer) => pointer.Capture(this);
         private void UncaptureMouse(IPointer pointer) => pointer.Capture(null);
 
-        private ScottPlot.Control.InputState GetInputState(PointerEventArgs e, double? delta = null) =>
+        // This does not use a DPI corrected InputState because Avalonia does that itself.
+        private ScottPlot.Control.IInputState GetInputState(PointerEventArgs e, double? delta = null) =>
             new ScottPlot.Control.InputState()
             {
                 X = (float)e.GetPosition(this).X,

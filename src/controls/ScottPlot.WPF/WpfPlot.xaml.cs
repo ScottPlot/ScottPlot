@@ -76,8 +76,8 @@ namespace ScottPlot
         private void OnMouseWheel(object sender, MouseWheelEventArgs e) => Backend.MouseWheel(GetInputState(e, e.Delta));
         private void OnMouseMove(object sender, MouseEventArgs e) { Backend.MouseMove(GetInputState(e)); base.OnMouseMove(e); }
 
-        private ScottPlot.Control.InputState GetInputState(MouseEventArgs e, double? delta = null) =>
-            new ScottPlot.Control.InputState()
+        private ScottPlot.Control.IInputState GetInputState(MouseEventArgs e, double? delta = null) =>
+            new ScottPlot.Control.DPICorrectedInputState(new ScottPlot.Control.InputState()
             {
                 X = (float)e.GetPosition(this).X,
                 Y = (float)e.GetPosition(this).Y,
@@ -89,7 +89,7 @@ namespace ScottPlot
                 AltDown = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt),
                 WheelScrolledUp = delta.HasValue && delta > 0,
                 WheelScrolledDown = delta.HasValue && delta < 0,
-            };
+            }, Backend.DPIFactor);
 
         private void InitializeLayout()
         {
