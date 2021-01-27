@@ -28,10 +28,10 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             double[] dataSin = DataGen.Sin(pointCount);
             double[] dataCos = DataGen.Cos(pointCount);
 
-            sinPlot = formsPlot1.Plot.PlotScatter(dataXs, dataSin);
-            cosPlot = formsPlot1.Plot.PlotScatter(dataXs, dataCos);
-            vline1 = formsPlot1.Plot.PlotVLine(0);
-            vline2 = formsPlot1.Plot.PlotVLine(50);
+            sinPlot = formsPlot1.Plot.AddScatter(dataXs, dataSin);
+            cosPlot = formsPlot1.Plot.AddScatter(dataXs, dataCos);
+            vline1 = formsPlot1.Plot.AddVerticalLine(0);
+            vline2 = formsPlot1.Plot.AddVerticalLine(50);
 
             formsPlot1.Render();
         }

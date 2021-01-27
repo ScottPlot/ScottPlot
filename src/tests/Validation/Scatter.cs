@@ -16,7 +16,7 @@ namespace ScottPlotTests.Validation
             double[] ys = { 1, 4, 9, 16, 25 };
 
             var plt = new ScottPlot.Plot();
-            plt.PlotScatter(xs, ys);
+            plt.AddScatter(xs, ys);
 
             TestTools.SaveFig(plt);
 
@@ -30,7 +30,7 @@ namespace ScottPlotTests.Validation
             double[] ys = { 1, 4, 9, 16, 25 };
 
             var plt = new ScottPlot.Plot();
-            plt.PlotScatter(xs, ys);
+            plt.AddScatter(xs, ys);
 
             Assert.DoesNotThrow(() => { plt.Validate(deep: false); });
             Assert.Throws<InvalidOperationException>(() => { plt.Validate(deep: true); });
@@ -43,7 +43,7 @@ namespace ScottPlotTests.Validation
             double[] ys = { 1, 4, 9, 16, 25 };
 
             var plt = new ScottPlot.Plot();
-            plt.PlotScatter(xs, ys);
+            plt.AddScatter(xs, ys);
 
             Assert.Throws<InvalidOperationException>(() => { plt.Render(); });
         }
@@ -55,7 +55,7 @@ namespace ScottPlotTests.Validation
             double[] ys = { 1, 4, double.NaN, 16, 25 };
 
             var plt = new ScottPlot.Plot();
-            plt.PlotScatter(xs, ys);
+            plt.AddScatter(xs, ys);
 
             Assert.DoesNotThrow(() => { plt.Validate(deep: false); });
             Assert.Throws<InvalidOperationException>(() => { plt.Validate(deep: true); });
@@ -68,7 +68,7 @@ namespace ScottPlotTests.Validation
             double[] ys = { 1, 4, 9, 16, 25 };
 
             var plt = new ScottPlot.Plot();
-            plt.PlotScatter(xs, ys);
+            plt.AddScatter(xs, ys);
 
             Assert.DoesNotThrow(() => { plt.Validate(deep: false); });
             Assert.Throws<InvalidOperationException>(() => { plt.Validate(deep: true); });
@@ -81,7 +81,7 @@ namespace ScottPlotTests.Validation
             double[] ys = { 1, 4, double.PositiveInfinity, 16, 25 };
 
             var plt = new ScottPlot.Plot();
-            plt.PlotScatter(xs, ys);
+            plt.AddScatter(xs, ys);
 
             Assert.DoesNotThrow(() => { plt.Validate(deep: false); });
             Assert.Throws<InvalidOperationException>(() => { plt.Validate(deep: true); });
@@ -94,7 +94,7 @@ namespace ScottPlotTests.Validation
             double[] ys = { 1, 4, 9, 16 };
 
             var plt = new ScottPlot.Plot();
-            plt.PlotScatter(xs, ys);
+            plt.AddScatter(xs, ys);
 
             Assert.Throws<InvalidOperationException>(() => { plt.Validate(deep: false); });
         }
@@ -106,7 +106,7 @@ namespace ScottPlotTests.Validation
             double[] ys = { 1, 4, 9, 16 };
 
             var plt = new ScottPlot.Plot();
-            plt.PlotScatter(xs, ys);
+            plt.AddScatter(xs, ys);
 
             Assert.Throws<InvalidOperationException>(() => { plt.AxisAuto(); });
         }

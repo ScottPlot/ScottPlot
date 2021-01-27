@@ -13,7 +13,7 @@ namespace ScottPlotTests
             var plt = new ScottPlot.Plot(400, 300);
 
             // initialize with thin green line and diamond markers
-            var scatter = plt.PlotScatter(xs: xs, ys: ys,
+            var scatter = plt.AddScatter(xs: xs, ys: ys,
                 color: System.Drawing.Color.Green, lineWidth: 2, markerSize: 10,
                 markerShape: ScottPlot.MarkerShape.filledDiamond);
 
@@ -25,8 +25,8 @@ namespace ScottPlotTests
             scatter.MarkerShape = ScottPlot.MarkerShape.filledCircle;
 
             // do the same for a scatter plot
-            var signal = plt.PlotSignal(ys: ys, yOffset: 5,
-                color: System.Drawing.Color.Green, lineWidth: 2, markerSize: 10); // TODO: marker shape not currently supported?
+            var signal = plt.AddSignal(ys: ys, color: System.Drawing.Color.Green);
+            signal.OffsetY = 5;
             signal.LineWidth = 10;
             signal.Color = System.Drawing.Color.Orange;
             signal.MarkerSize = 20;
