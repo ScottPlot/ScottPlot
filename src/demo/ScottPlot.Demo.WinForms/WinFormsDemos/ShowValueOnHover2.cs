@@ -26,15 +26,15 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             double[] xs = DataGen.Consecutive(pointCount, 0.1);
             double[] ys = DataGen.NoisySin(rand, pointCount);
 
-            sph = formsPlot1.plt.PlotScatterHighlight(xs, ys);
+            sph = formsPlot1.Plot.PlotScatterHighlight(xs, ys);
             formsPlot1.Render();
         }
 
         ToolTip tooltip = new ToolTip();
         private void formsPlot1_MouseMove(object sender, MouseEventArgs e)
         {
-            double mouseX = formsPlot1.plt.GetCoordinateX(e.Location.X);
-            double mouseY = formsPlot1.plt.GetCoordinateY(e.Location.Y);
+            double mouseX = formsPlot1.Plot.GetCoordinateX(e.Location.X);
+            double mouseY = formsPlot1.Plot.GetCoordinateY(e.Location.Y);
 
             sph.HighlightClear();
             var (x, y, index) = sph.HighlightPointNearest(mouseX, mouseY);
@@ -45,7 +45,7 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
 
             if (cbTooltip.Checked)
             {
-                PointF highlightedPoint = new PointF(formsPlot1.plt.GetPixelX(x), formsPlot1.plt.GetPixelY(y));
+                PointF highlightedPoint = new PointF(formsPlot1.Plot.GetPixelX(x), formsPlot1.Plot.GetPixelY(y));
                 double dX = e.Location.X - highlightedPoint.X;
                 double dY = e.Location.Y - highlightedPoint.Y;
                 double distanceToPoint = Math.Sqrt(dX * dX + dY * dY);

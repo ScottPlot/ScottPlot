@@ -21,10 +21,10 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
             double[] sin = DataGen.Sin(pointCount);
             double[] cos = DataGen.Cos(pointCount);
 
-            formsPlot1.plt.PlotScatter(x, sin);
-            formsPlot1.plt.PlotScatter(x, cos);
+            formsPlot1.Plot.PlotScatter(x, sin);
+            formsPlot1.Plot.PlotScatter(x, cos);
 
-            formsPlot1.plt.Style(figureBackground: Color.Transparent, dataBackground: Color.Transparent);
+            formsPlot1.Plot.Style(figureBackground: Color.Transparent, dataBackground: Color.Transparent);
             formsPlot1.BackColor = Color.Transparent;
             button6_Click(null, null);
         }
