@@ -21,13 +21,13 @@ namespace ScottPlotTests.Plot
         {
             get
             {
-                return Enumerable.Range(0, isHighlighted.Length).Where(x => isHighlighted[x]).ToList();
+                return isHighlighted.ToList();
             }
             set
             {
                 HighlightClear();
                 foreach (var index in value)
-                    isHighlighted[index] = true;
+                    isHighlighted.Add(index);
             }
         }
     }

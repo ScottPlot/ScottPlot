@@ -12,7 +12,7 @@ namespace ScottPlot.Plottable
         public MarkerShape highlightedShape = MarkerShape.openCircle;
         public float highlightedMarkerSize = 10;
         public Color highlightedColor = Color.Red;
-        protected bool[] isHighlighted;
+        protected HashSet<int> isHighlighted = new HashSet<int>();
 
         public ScatterPlotHighlight(double[] xs, double[] ys, double[] xErr = null, double[] yErr = null) :
                                     base(xs, ys, xErr, yErr) => HighlightClear();
@@ -21,13 +21,12 @@ namespace ScottPlot.Plottable
         {
             base.Render(dims, bmp, lowQuality);
 
-            if (isHighlighted is null || isHighlighted.Length == 0)
+            if (isHighlighted is null || isHighlighted.Count == 0)
                 return;
 
             using (var gfx = GDI.Graphics(bmp, dims, lowQuality))
             {
-                var highlightedIndexes = Enumerable.Range(0, isHighlighted.Length).Where(x => isHighlighted[x]);
-                foreach (int i in highlightedIndexes)
+                foreach (int i in isHighlighted)
                 {
                     PointF pt = new PointF(dims.GetPixelX(Xs[i]), dims.GetPixelY(Ys[i]));
                     MarkerTools.DrawMarker(gfx, pt, highlightedShape, highlightedMarkerSize, highlightedColor);
@@ -37,18 +36,14 @@ namespace ScottPlot.Plottable
 
         public void HighlightClear()
         {
-            isHighlighted = new bool[Xs.Length];
+            isHighlighted.Clear();
         }
 
         public (double x, double y, int index) HighlightPoint(int index)
         {
-            // if the size of xs changed, reset isHighlighted to match its new size
-            if (isHighlighted.Length != Xs.Length)
-                HighlightClear();
-
-            if (index < 0 || index >= isHighlighted.Length)
+            if (index < 0 || index >= Xs.Length)
                 throw new ArgumentException("Invalid index");
-            isHighlighted[index] = true;
+            isHighlighted.Add(index);
             return (Xs[index], Ys[index], index);
         }
 
@@ -56,11 +51,7 @@ namespace ScottPlot.Plottable
         {
             var point = GetPointNearestX(x);
 
-            // if the size of xs changed, reset isHighlighted to match its new size
-            if (isHighlighted.Length != Xs.Length)
-                HighlightClear();
-
-            isHighlighted[point.index] = true;
+            isHighlighted.Add(point.index);
             return point;
         }
 
@@ -68,11 +59,7 @@ namespace ScottPlot.Plottable
         {
             var point = GetPointNearestY(y);
 
-            // if the size of xs changed, reset isHighlighted to match its new size
-            if (isHighlighted.Length != Xs.Length)
-                HighlightClear();
-
-            isHighlighted[point.index] = true;
+            isHighlighted.Add(point.index);
             return point;
         }
 
@@ -80,11 +67,7 @@ namespace ScottPlot.Plottable
         {
             var point = GetPointNearest(x, y);
 
-            // if the size of xs changed, reset isHighlighted to match its new size
-            if (isHighlighted.Length != Xs.Length)
-                HighlightClear();
-
-            isHighlighted[point.index] = true;
+            isHighlighted.Add(point.index);
             return point;
         }
     }
