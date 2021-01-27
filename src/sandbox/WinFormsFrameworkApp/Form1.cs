@@ -39,7 +39,8 @@ namespace WinFormsFrameworkApp
             (double mouseCoordX, double mouseCoordY) = formsPlot1.GetMouseCoordinates();
 
             // determine point nearest the cursor
-            (double pointCoordX, double pointCoordY, int pointIndex) = MyScatterPlot.GetPointNearest(mouseCoordX, mouseCoordY);
+            double xyRatio = formsPlot1.Plot.XAxis.Dims.PxPerUnit / formsPlot1.Plot.YAxis.Dims.PxPerUnit;
+            (double pointCoordX, double pointCoordY, int pointIndex) = MyScatterPlot.GetPointNearest(mouseCoordX, mouseCoordY, xyRatio);
             (double pointPixelX, double pointPixelY) = formsPlot1.Plot.GetPixel(pointCoordX, pointCoordY);
 
             // highlight the point of interest
