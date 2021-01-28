@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using ScottPlot.Plottable;
 
@@ -13,49 +7,51 @@ namespace ScottPlot.Demo.WinForms.WinFormsDemos
 {
     public partial class ShowValueOnHover2 : Form
     {
+        private readonly ScatterPlot MyScatterPlot;
+        private readonly ScatterPlot HighlightedPoint;
+        private int LastHighlightedIndex = -1;
+
         public ShowValueOnHover2()
         {
             InitializeComponent();
-        }
 
-        ScatterPlotHighlight sph;
-        private void ShowValueOnHover2_Load(object sender, EventArgs e)
-        {
-            int pointCount = 100;
+            // create a scatter plot from some random data and save it
             Random rand = new Random(0);
-            double[] xs = DataGen.Consecutive(pointCount, 0.1);
-            double[] ys = DataGen.NoisySin(rand, pointCount);
+            int pointCount = 20;
+            double[] xs = DataGen.Random(rand, pointCount);
+            double[] ys = DataGen.Random(rand, pointCount, multiplier: 1_000);
+            MyScatterPlot = formsPlot1.Plot.AddScatterPoints(xs, ys);
 
-            sph = formsPlot1.Plot.PlotScatterHighlight(xs, ys);
-            formsPlot1.Render();
+            // Add a red circle we can move around later as a highlighted point indicator
+            HighlightedPoint = formsPlot1.Plot.AddPoint(0, 0);
+            HighlightedPoint.Color = Color.Red;
+            HighlightedPoint.MarkerSize = 10;
+            HighlightedPoint.MarkerShape = ScottPlot.MarkerShape.openCircle;
+            HighlightedPoint.IsVisible = false;
         }
 
-        ToolTip tooltip = new ToolTip();
         private void formsPlot1_MouseMove(object sender, MouseEventArgs e)
         {
-            double mouseX = formsPlot1.Plot.GetCoordinateX(e.Location.X);
-            double mouseY = formsPlot1.Plot.GetCoordinateY(e.Location.Y);
+            // determine point nearest the cursor
+            (double mouseCoordX, double mouseCoordY) = formsPlot1.GetMouseCoordinates();
+            double xyRatio = formsPlot1.Plot.XAxis.Dims.PxPerUnit / formsPlot1.Plot.YAxis.Dims.PxPerUnit;
+            (double pointX, double pointY, int pointIndex) = MyScatterPlot.GetPointNearest(mouseCoordX, mouseCoordY, xyRatio);
 
-            sph.HighlightClear();
-            var (x, y, index) = sph.HighlightPointNearest(mouseX, mouseY);
-            formsPlot1.Render();
+            // place the highlight over the point of interest
+            HighlightedPoint.Xs[0] = pointX;
+            HighlightedPoint.Ys[0] = pointY;
+            HighlightedPoint.IsVisible = true;
 
-            label1.Text = $"Closest point to ({mouseX:N2}, {mouseY:N2}) " +
-                $"is index {index} ({x:N2}, {y:N2})";
-
-            if (cbTooltip.Checked)
+            // render if the highlighted point chnaged
+            if (LastHighlightedIndex != pointIndex)
             {
-                PointF highlightedPoint = new PointF(formsPlot1.Plot.GetPixelX(x), formsPlot1.Plot.GetPixelY(y));
-                double dX = e.Location.X - highlightedPoint.X;
-                double dY = e.Location.Y - highlightedPoint.Y;
-                double distanceToPoint = Math.Sqrt(dX * dX + dY * dY);
-                if (distanceToPoint < 15)
-                    tooltip.Show($"{x}, {y}", this,
-                        (int)highlightedPoint.X + formsPlot1.Location.X,
-                        (int)highlightedPoint.Y + formsPlot1.Location.Y);
-                else
-                    tooltip.Hide(this);
+                LastHighlightedIndex = pointIndex;
+                formsPlot1.Render();
             }
+
+            // update the GUI to describe the highlighted point
+            label1.Text = $"Closest point to ({e.X:N0}, {e.Y:N0}) " +
+                $"is index {pointIndex} ({pointX:N2}, {pointY:N2})";
         }
     }
 }
