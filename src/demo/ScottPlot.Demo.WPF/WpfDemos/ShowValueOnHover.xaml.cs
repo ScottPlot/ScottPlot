@@ -18,31 +18,53 @@ namespace ScottPlot.Demo.WPF.WpfDemos
     /// </summary>
     public partial class ShowValueOnHover : Window
     {
-        ScatterPlotHighlight sph;
+        private readonly ScatterPlot MyScatterPlot;
+        private readonly ScatterPlot HighlightedPoint;
+        private int LastHighlightedIndex = -1;
 
         public ShowValueOnHover()
         {
             InitializeComponent();
 
-            int pointCount = 100;
+            // create a scatter plot from some random data and save it
             Random rand = new Random(0);
-            double[] xs = DataGen.Consecutive(pointCount, 0.1);
-            double[] ys = DataGen.NoisySin(rand, pointCount);
+            int pointCount = 20;
+            double[] xs = DataGen.Random(rand, pointCount);
+            double[] ys = DataGen.Random(rand, pointCount, multiplier: 1_000);
+            MyScatterPlot = wpfPlot1.Plot.AddScatterPoints(xs, ys);
 
-            sph = wpfPlot1.Plot.PlotScatterHighlight(xs, ys);
-            wpfPlot1.Render();
+            // Add a red circle we can move around later as a highlighted point indicator
+            HighlightedPoint = wpfPlot1.Plot.AddPoint(0, 0);
+            HighlightedPoint.Color = System.Drawing.Color.Red;
+            HighlightedPoint.MarkerSize = 10;
+            HighlightedPoint.MarkerShape = ScottPlot.MarkerShape.openCircle;
+            HighlightedPoint.IsVisible = false;
         }
 
         private void wpfPlot1_MouseMove(object sender, MouseEventArgs e)
         {
-            (double mouseX, double mouseY) = wpfPlot1.GetMouseCoordinates();
+            // determine point nearest the cursor
+            (double mouseCoordX, double mouseCoordY) = wpfPlot1.GetMouseCoordinates();
+            double xyRatio = wpfPlot1.Plot.XAxis.Dims.PxPerUnit / wpfPlot1.Plot.YAxis.Dims.PxPerUnit;
+            (double pointX, double pointY, int pointIndex) = MyScatterPlot.GetPointNearest(mouseCoordX, mouseCoordY, xyRatio);
 
-            sph.HighlightClear();
-            var (x, y, index) = sph.HighlightPointNearest(mouseX, mouseY);
-            wpfPlot1.Render();
+            // place the highlight over the point of interest
+            HighlightedPoint.Xs[0] = pointX;
+            HighlightedPoint.Ys[0] = pointY;
+            HighlightedPoint.IsVisible = true;
 
+            // render if the highlighted point chnaged
+            if (LastHighlightedIndex != pointIndex)
+            {
+                LastHighlightedIndex = pointIndex;
+                wpfPlot1.Render();
+            }
+
+            // update the GUI to describe the highlighted point
+            double mouseX = e.GetPosition(this).X;
+            double mouseY = e.GetPosition(this).Y;
             label1.Content = $"Closest point to ({mouseX:N2}, {mouseY:N2}) " +
-                $"is index {index} ({x:N2}, {y:N2})";
+                $"is index {pointIndex} ({pointX:N2}, {pointY:N2})";
         }
     }
 }
