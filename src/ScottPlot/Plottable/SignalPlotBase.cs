@@ -692,9 +692,11 @@ namespace ScottPlot.Plottable
         }
 
         [Obsolete("Only GetPointNearestX() is appropraite for signal plots.", true)]
-        public (double x, double y, int index) GetPointNearestY(double y) => throw new NotImplementedException();
+        public (double x, double y, int index) GetPointNearestY(double y) =>
+            throw new NotImplementedException();
 
         [Obsolete("Only GetPointNearestX() is appropraite for signal plots.", true)]
-        public (double x, double y, int index) GetPointNearest(double x, double y) => throw new NotImplementedException();
+        public (double x, double y, int index) GetPointNearest(double x, double y, double xyRatio = 1) =>
+            throw new NotImplementedException();
     }
 }

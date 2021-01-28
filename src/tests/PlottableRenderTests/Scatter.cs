@@ -332,33 +332,5 @@ namespace ScottPlotTests.PlottableRenderTests
 
             Assert.That(after.IsLighterThan(before));
         }
-
-        [Test]
-        public void Test_Scatter_Highlight()
-        {
-            var plt = new ScottPlot.Plot(400, 300);
-
-            // start with default settings
-            double[] xs = { 1, 2, 3, 4 };
-            double[] ys = { 1, 4, 9, 16 };
-            var splt = new ScatterPlotHighlight(xs, ys) { highlightedMarkerSize = 20, highlightedColor = System.Drawing.Color.Black };
-
-            plt.Add(splt);
-            var bmp1 = TestTools.GetLowQualityBitmap(plt);
-
-            // change the plottable
-            splt.HighlightPointNearest(2.1, 4.1);
-            var bmp2 = TestTools.GetLowQualityBitmap(plt);
-
-            // measure what changed
-            //TestTools.SaveFig(bmp1, "1");
-            //TestTools.SaveFig(bmp2, "2");
-            var before = new MeanPixel(bmp1);
-            var after = new MeanPixel(bmp2);
-            Console.WriteLine($"Before: {before}");
-            Console.WriteLine($"After: {after}");
-
-            Assert.That(after.IsDarkerThan(before));
-        }
     }
 }

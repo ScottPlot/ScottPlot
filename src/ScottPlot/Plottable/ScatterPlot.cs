@@ -321,11 +321,19 @@ namespace ScottPlot.Plottable
             return (Xs[minIndex], Ys[minIndex], minIndex);
         }
 
-        public (double x, double y, int index) GetPointNearest(double x, double y)
+        /// <summary>
+        /// Return the position and index of the data point nearest the given coordinate
+        /// </summary>
+        /// <param name="x">location in coordinate space</param>
+        /// <param name="y">location in coordinate space</param>
+        /// <param name="xyRatio">Ratio of pixels per unit (X/Y) when rendered</param>
+        public (double x, double y, int index) GetPointNearest(double x, double y, double xyRatio = 1)
         {
             List<(double x, double y)> points = Xs.Zip(Ys, (first, second) => (first, second)).ToList();
 
-            double pointDistanceSquared(double x1, double y1) => (x1 - x) * (x1 - x) + (y1 - y) * (y1 - y);
+            double xyRatioSquared = xyRatio * xyRatio;
+            double pointDistanceSquared(double x1, double y1) =>
+                (x1 - x) * (x1 - x) * xyRatioSquared + (y1 - y) * (y1 - y);
 
             double minDistance = pointDistanceSquared(points[0].x, points[0].y);
             int minIndex = 0;

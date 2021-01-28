@@ -10,6 +10,7 @@ namespace WinFormsFrameworkApp
         private readonly HLine HLine;
         private readonly VLine VLine;
         private readonly SignalPlot Signal;
+        private int LastHighlightedIndex = -1;
 
         public Form1()
         {
@@ -34,11 +35,17 @@ namespace WinFormsFrameworkApp
                 return; // don't move markers if actively panning or zooming
 
             double mouseX = formsPlot1.Plot.GetCoordinateX(e.X);
-            (double x, double y, int index) = Signal.GetPointNearestX(mouseX);
+            (double x, double y, int pointIndex) = Signal.GetPointNearestX(mouseX);
             VLine.X = x;
             HLine.Y = y;
-            Text = $"Mouse is over point {index:N0} ({x:.03}, {y:.03})";
-            formsPlot1.Render();
+            Text = $"Mouse is over point {pointIndex:N0} ({x:.03}, {y:.03})";
+
+            // render if the highlighted point chnaged
+            if (LastHighlightedIndex != pointIndex)
+            {
+                LastHighlightedIndex = pointIndex;
+                formsPlot1.Render(skipIfCurrentlyRendering: true);
+            }
         }
     }
 }
