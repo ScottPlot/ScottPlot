@@ -49,8 +49,13 @@ namespace ScottPlot
         public (float x, float y) GetMousePixel() => Backend.GetMousePixel();
         public void Reset() => Backend.Reset(Width, Height);
         public void Reset(Plot newPlot) => Backend.Reset(Width, Height, newPlot);
-        public void Render(bool lowQuality = false) { Application.DoEvents(); Backend.Render(lowQuality); }
         private void PlottableCountTimer_Tick(object sender, EventArgs e) => Backend.RenderIfPlottableCountChanged();
+        public void Render(bool lowQuality = false, bool skipIfCurrentlyRendering = false)
+        {
+            // TODO: if "skipIfCurrentlyRendering", setup a timer to render later
+            Application.DoEvents();
+            Backend.Render(lowQuality, skipIfCurrentlyRendering);
+        }
 
         private void OnBitmapUpdated(object sender, EventArgs e) { Application.DoEvents(); pictureBox1.Invalidate(); }
         private void OnBitmapChanged(object sender, EventArgs e) { pictureBox1.Image = Backend.GetLatestBitmap(); }
