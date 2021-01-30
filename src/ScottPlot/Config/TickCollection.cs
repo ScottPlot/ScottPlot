@@ -63,7 +63,9 @@ namespace ScottPlot.Config
             }
             else
             {
-                tickPositionsMajor = manualTickPositions;
+                double min = verticalAxis ? settings.axes.y.min : settings.axes.x.min;
+                double max = verticalAxis ? settings.axes.y.max : settings.axes.x.max;
+                tickPositionsMajor = manualTickPositions.Where(x => x >= min && x <= max).ToArray();
                 tickPositionsMinor = null;
                 tickLabels = manualTickLabels;
                 maxLabelSize = LargestLabel(settings, manualTickLabels);
