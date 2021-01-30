@@ -1,10 +1,10 @@
 # ScottPlot Roadmap
 
-### Note from Scott (Jan 18, 2021)
+**⚠️ If the [issues page](https://github.com/ScottPlot/ScottPlot/issues) has a "triaged tasks and features" issue pinned, it is likely to contain the most up-to-date information about active targets for development effort.**
 
-Over the last few months I refactored much of ScottPlot (major changes are described in [version-4.1.md](version-4.1.md)). Remaining tasks include:
-* Create a FAQ section for the website
-* Simplify the demo application
+### Note from Scott (Jan 29, 2021)
+
+Over the last few months I refactored much of ScottPlot (major changes are described in [version-4.1.md](version-4.1.md)). Remaining tasks prior to full release relate to refining the API and improving the documentation.
 
 ## Versions
 
