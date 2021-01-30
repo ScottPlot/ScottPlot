@@ -1,12 +1,11 @@
 # ScottPlot Changelog
 
-## ScottPlot Roadmap
-* [Roadmap.md](roadmap.md) contains the history and big-picture plans for ScottPlot
-* The Issues page often has a pinned triage issue that tracks areas of active development
+_See [roadmap.md](roadmap.md) for ScottPlot's history and future plans_
 
 ## ScottPlot 4.1.5-beta ⚠️ in development
 * Helper methods were added for creating scatter plots with just lines (`AddScatterLines()`) or just markers (`AddScatterPoints()`).
 * Scatter and Signal plots have `GetPointNearest()` which now has a `xyRatio` argument to support identifying points near the cursor in pixel space (#709, #722) _Thanks @olofszymczak, @StendProg, @bclehmann_
+* Improved display of manual tick labels (#724) _Thanks @bclehmann_
 
 ## ScottPlot 4.1.4-beta
 * User controls have been extensively redesigned (#683)
