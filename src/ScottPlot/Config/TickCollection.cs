@@ -126,13 +126,8 @@ namespace ScottPlot.Config
             maxLabelSize = LargestLabel(settings, tickLabels);
         }
 
-        private void RecalculatePositionsAutomaticNumeric(Settings settings)
+        private (double low, double high) PopulateTickPositions(Settings settings, double tickCountMultiplier = 1)
         {
-            // predict maxLabelSize up front using predetermined label sizes
-            string sampleDateFormatLabel = (dateTimeFormatString is null) ? "2019-08-20\n20:42:17" : dateTimeFormatString;
-            string longestLabel = (dateFormat) ? sampleDateFormatLabel : "-8888";
-            maxLabelSize = Drawing.GDI.MeasureString(settings.gfxData, longestLabel, settings.ticks.font);
-
             double low, high, tickSpacing;
             int maxTickCount;
 
@@ -140,18 +135,17 @@ namespace ScottPlot.Config
             {
                 low = settings.axes.y.min - settings.yAxisUnitsPerPixel; // add an extra pixel to capture the edge tick
                 high = settings.axes.y.max + settings.yAxisUnitsPerPixel; // add an extra pixel to capture the edge tick
-                maxTickCount = (int)(settings.dataSize.Height / maxLabelSize.Height);
+                maxTickCount = (int)(tickCountMultiplier * settings.dataSize.Height / maxLabelSize.Height);
                 tickSpacing = (settings.ticks.manualSpacingY != 0) ? settings.ticks.manualSpacingY : GetIdealTickSpacing(low, high, maxTickCount, radix);
             }
             else
             {
                 low = settings.axes.x.min - settings.xAxisUnitsPerPixel; // add an extra pixel to capture the edge tick
                 high = settings.axes.x.max + settings.xAxisUnitsPerPixel; // add an extra pixel to capture the edge tick
-                maxTickCount = (int)(settings.dataSize.Width / maxLabelSize.Width * 1.2);
+                maxTickCount = (int)(1.2 * tickCountMultiplier * settings.dataSize.Width / maxLabelSize.Width);
                 tickSpacing = (settings.ticks.manualSpacingX != 0) ? settings.ticks.manualSpacingX : GetIdealTickSpacing(low, high, maxTickCount, radix);
             }
 
-            // now that tick spacing is known, populate the list of ticks and labels
             double firstTickOffset = low % tickSpacing;
             int tickCount = (int)((high - low) / tickSpacing) + 2;
             tickCount = tickCount > 1000 ? 1000 : tickCount;
@@ -160,6 +154,25 @@ namespace ScottPlot.Config
                                            .Select(x => low - firstTickOffset + tickSpacing * x)
                                            .Where(x => low <= x && x <= high)
                                            .ToArray();
+
+            return (low, high);
+        }
+
+        private void RecalculatePositionsAutomaticNumeric(Settings settings)
+        {
+            // predict maxLabelSize up front using predetermined label sizes
+            string sampleDateFormatLabel = (dateTimeFormatString is null) ? "2019-08-20\n20:42:17" : dateTimeFormatString;
+            string longestLabel = (dateFormat) ? sampleDateFormatLabel : "-8888";
+            maxLabelSize = Drawing.GDI.MeasureString(settings.gfxData, longestLabel, settings.ticks.font);
+
+            // now that tick spacing is known, populate the list of ticks and labels
+            double low;
+            double high;
+            (low, high) = PopulateTickPositions(settings);
+
+            // if only one tick, try again with a higher tick density
+            if (tickPositionsMajor.Length <= 1)
+                (low, high) = PopulateTickPositions(settings, 3);
 
             if (dateFormat)
             {
