@@ -32,10 +32,7 @@ Release demo: https://swharden.com/scottplot/demo</PackageReleaseNotes>
     <Authors>Scott Harden</Authors>
     <Company>Harden Technologies, LLC</Company>
     <RepositoryUrl>https://github.com/swharden/ScottPlot</RepositoryUrl>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net461|AnyCPU'">
-    <DocumentationFile>C:\Users\scott\Documents\GitHub\ScottPlot\src\ScottPlot\ScottPlot.xml</DocumentationFile>
+    <DocumentationFile>ScottPlot.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
