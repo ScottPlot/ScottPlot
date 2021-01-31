@@ -1,736 +1,1401 @@
 # ScottPlot.Plot API
+Virtually all functionality in ScottPlot is achieved by calling methods of the Plot module.
+
+This document was generated for `ScottPlot 4.1.4-beta`
+### Methods to Manipulate the Plot
+Method | Summary
+---|---
+[**Add()**](#Add())|Add a plottable to the plot
+[**AddAxis()**](#AddAxis())|Create and return an additional axis
+[**AxisAuto()**](#AxisAuto())|Automatically adjust axis limits to fit the data (with a little extra margin)
+[**AxisAutoX()**](#AxisAutoX())|Automatically adjust axis limits to fit the data (with a little extra margin)
+[**AxisAutoY()**](#AxisAutoY())|Automatically adjust axis limits to fit the data (with a little extra margin)
+[**AxisPan()**](#AxisPan())|Pan by a delta defined in coordinates
+[**AxisScale()**](#AxisScale())|Adjust axis limits to achieve a certain pixel scale (units per pixel)
+[**AxisScaleLock()**](#AxisScaleLock())|Lock X and Y axis scales (units per pixel) together to protect symmetry of circles and squares
+[**AxisZoom()**](#AxisZoom())|Zoom by a fraction (zoom in if fraction > 1)
+[**Benchmark()**](#Benchmark())|Display render benchmark information on the plot
+[**BenchmarkToggle()**](#BenchmarkToggle())|
+[**Clear()**](#Clear())|Clear all plottables
+[**Clear()**](#Clear())|Remove all plottables of the given type
+[**Colorset()**](#Colorset())|Change the default color palette for new plottables
+[**Copy()**](#Copy())|Return a new Plot with all the same Plottables (and some of the styles) of this one. This is called when you right-click a plot in a control and hit "open in new window".
+[**Equals()**](#Equals())|
+[**Frame()**](#Frame())|Configure color and visibility of the frame that outlines the data area (lines along the edges of the primary axes)
+[**Frameless()**](#Frameless())|Set size of the primary axes to zero so the data area covers the whole figure
+[**get_Version()**](#get_Version())|
+[**get_XAxis()**](#get_XAxis())|
+[**get_XAxis2()**](#get_XAxis2())|
+[**get_YAxis()**](#get_YAxis())|
+[**get_YAxis2()**](#get_YAxis2())|
+[**GetAxisLimits()**](#GetAxisLimits())|Get limits for the given axes
+[**GetCoordinate()**](#GetCoordinate())|Retrun the coordinate (in plot space) for the given pixel
+[**GetCoordinateX()**](#GetCoordinateX())|Retrun the coordinate (in plot space) for the given pixel
+[**GetCoordinateY()**](#GetCoordinateY())|Retrun the coordinate (in plot space) for the given pixel
+[**GetDraggables()**](#GetDraggables())|Return a copy of the list of draggable plottables
+[**GetDraggableUnderMouse()**](#GetDraggableUnderMouse())|Return the draggable plottable under the mouse cursor (or null if there isn't one)
+[**GetHashCode()**](#GetHashCode())|
+[**GetLegendBitmap()**](#GetLegendBitmap())|Return a new Bitmap containing only the legend
+[**GetNextColor()**](#GetNextColor())|Return a new color from the Pallette based on the number of plottables already in the plot. Use this to ensure every plottable gets a unique color.
+[**GetPixel()**](#GetPixel())|Retrun the pixel location of the given coordinate (in plot space)
+[**GetPixelX()**](#GetPixelX())|Retrun the pixel location of the given coordinate (in plot space)
+[**GetPixelY()**](#GetPixelY())|Retrun the pixel location of the given coordinate (in plot space)
+[**GetPlottables()**](#GetPlottables())|Return a copy of the list of plottables
+[**GetSettings()**](#GetSettings())|Get access to the plot settings module (not exposed by default because its internal API changes frequently)
+[**GetType()**](#GetType())|
+[**Grid()**](#Grid())|Customize basic options for the primary X and Y axes. Call XAxis and YAxis methods to further customize individual axes.
+[**Layout()**](#Layout())|Set padding around the data area by defining the minimum size and padding for all axes
+[**Legend()**](#Legend())|Set legend visibility and location. Save the returned object for additional customizations.
+[**MatchLayout()**](#MatchLayout())|Adjust this axis layout based on the layout of a source plot
+[**Remove()**](#Remove())|Remove a specific plottable
+[**Render()**](#Render())|Render the plot onto a new Bitmap (using size defined by Plot.Width and Plot.Height)
+[**Render()**](#Render())|Render the plot onto a new Bitmap of the given dimensions
+[**Render()**](#Render())|Render the plot onto an existing bitmap
+[**RenderLock()**](#RenderLock())|Wait for the current render to finish, then prevent future renders until RenderUnlock() is called.
+[**RenderUnlock()**](#RenderUnlock())|Release the render lock, allowing renders to proceed.
+[**SaveFig()**](#SaveFig())|Save the plot as an image file and return the full path of the new file
+[**SetAxisLimits()**](#SetAxisLimits())|Set limits for the given axes
+[**SetAxisLimits()**](#SetAxisLimits())|Set limits for the given axes
+[**SetAxisLimitsX()**](#SetAxisLimitsX())|Set limits for the primary X axis
+[**SetAxisLimitsY()**](#SetAxisLimitsY())|Set limits for the primary Y axis
+[**SetCulture()**](#SetCulture())|Set the culture to use for number-to-string converstion for tick labels of all axes
+[**SetCulture()**](#SetCulture())|Set the culture to use for number-to-string converstion for tick labels of all axes
+[**SetSize()**](#SetSize())|Set the default size for new renders
+[**SetViewLimits()**](#SetViewLimits())|Set limits of the view for the primary axes (you cannot zoom, pan, or set axis limits beyond these boundaries)
+[**Style()**](#Style())|Set colors of all plot components using pre-defined styles
+[**Style()**](#Style())|Set the color of specific plot components
+[**Title()**](#Title())|Set the label for the horizontal axis above the plot (XAxis2).
+[**ToString()**](#ToString())|
+[**Validate()**](#Validate())|Throw an exception if any plottable contains an invalid state. Deep validation is more thorough but slower.
+[**XLabel()**](#XLabel())|Set the label for the vertical axis to the right of the plot (XAxis).
+[**XTicks()**](#XTicks())|Manually define X axis tick labels
+[**XTicks()**](#XTicks())|Manually define X axis tick positions and labels
+[**YLabel()**](#YLabel())|Set the label for the vertical axis to the right of the plot (YAxis2).
+[**YTicks()**](#YTicks())|Manually define Y axis tick labels
+[**YTicks()**](#YTicks())|Manually define Y axis tick positions and labels
+### Shortcuts for Adding Plottables
+Method | Summary
+---|---
+[**AddAnnotation()**](#AddAnnotation())|Display text in the data area at a pixel location (not a X/Y coordinates)
+[**AddArrow()**](#AddArrow())|Display an arrow pointing to a spot in coordinate space
+[**AddBar()**](#AddBar())|Add a bar plot for the given values. Bars will be placed at X positions 0, 1, 2, etc.
+[**AddBar()**](#AddBar())|Add a bar plot for the given values using defined bar positions
+[**AddBar()**](#AddBar())|Add a bar plot (values +/- errors) using defined positions
+[**AddBarGroups()**](#AddBarGroups())|Create a series of bar plots and customize the ticks and legend
+[**AddCandlesticks()**](#AddCandlesticks())|Add candlesticks to the chart from OHLC (open, high, low, close) data
+[**AddColorbar()**](#AddColorbar())|Add a colorbar to display a colormap beside the data area
+[**AddColorbar()**](#AddColorbar())|Add a colorbar initialized with settings from a heatmap
+[**AddFill()**](#AddFill())|Create a polygon to fill the area between Y values and a baseline.
+[**AddFill()**](#AddFill())|Create a polygon to fill the area between Y values of two curves.
+[**AddFillAboveAndBelow()**](#AddFillAboveAndBelow())|Create a polygon to fill the area between Y values and a baseline that uses two different colors for area above and area below the baseline.
+[**AddFunction()**](#AddFunction())|
+[**AddHeatmap()**](#AddHeatmap())|
+[**AddHorizontalLine()**](#AddHorizontalLine())|Add a horizontal axis line at a specific Y position
+[**AddHorizontalSpan()**](#AddHorizontalSpan())|Add a horizontal span (shades the region between two X positions)
+[**AddImage()**](#AddImage())|Display an image at a specific coordinate
+[**AddLine()**](#AddLine())|Add a line (a scatter plot with two points) to the plot
+[**AddLine()**](#AddLine())|
+[**AddOHLCs()**](#AddOHLCs())|Add OHLC (open, high, low, close) data to the plot
+[**AddPie()**](#AddPie())|Add a pie chart to the plot
+[**AddPoint()**](#AddPoint())|Add a point (a scatter plot with a single marker)
+[**AddPolygon()**](#AddPolygon())|Add a polygon to the plot
+[**AddPolygons()**](#AddPolygons())|
+[**AddPopulation()**](#AddPopulation())|Add a population to the plot
+[**AddPopulations()**](#AddPopulations())|Add multiple populations to the plot as a single series
+[**AddPopulations()**](#AddPopulations())|Add multiple populations to the plot as a single series
+[**AddRadar()**](#AddRadar())|
+[**AddScaleBar()**](#AddScaleBar())|Add an L-shaped scalebar to the corner of the plot
+[**AddScatter()**](#AddScatter())|Add a scatter plot from X/Y pairs. Lines and markers are shown by default. Scatter plots are slower than Signal plots.
+[**AddScatterLines()**](#AddScatterLines())|Add a scatter plot from X/Y pairs connected by lines (no markers). Scatter plots are slower than Signal plots.
+[**AddScatterList()**](#AddScatterList())|Scatter plot with Add() and Clear() methods for updating data
+[**AddScatterPoints()**](#AddScatterPoints())|Add a scatter plot from X/Y pairs using markers at points (no lines). Scatter plots are slower than Signal plots.
+[**AddSignal()**](#AddSignal())|Signal plots have evenly-spaced X points and render very fast.
+[**AddSignalConst()**](#AddSignalConst())|SignalConts plots have evenly-spaced X points and render faster than Signal plots but data in source arrays cannot be changed after it is loaded. Methods can be used to update all or portions of the data.
+[**AddSignalXY()**](#AddSignalXY())|Speed-optimized plot for Ys with unevenly-spaced ascending Xs
+[**AddSignalXYConst()**](#AddSignalXYConst())|Speed-optimized plot for Ys with unevenly-spaced ascending Xs. Faster than SignalXY but values cannot be modified after loading.
+[**AddText()**](#AddText())|Display text at specific X/Y coordinates
+[**AddText()**](#AddText())|Display text at specific X/Y coordinates
+[**AddTooltip()**](#AddTooltip())|Display a text bubble that points to an X/Y location on the plot
+[**AddVectorField()**](#AddVectorField())|
+[**AddVerticalLine()**](#AddVerticalLine())|Add a vertical axis line at a specific Y position
+[**AddVerticalSpan()**](#AddVerticalSpan())|Add a horizontal span (shades the region between two X positions)
+
 ## Add()
-_Add a plottable to the plot_
-* Returns `Void`
-* Parameters
-  * `ScottPlot.Plottable.IPlottable` **`plottable`**
+
+**Summary:** Add a plottable to the plot
+
+**Parameters:**
+* `ScottPlot.Plottable.IPlottable` plottable
+
+**Returns:**
+* `Void`
+
 ## AddAnnotation()
-_Display text in the data area at a pixel location (not a X/Y coordinates)_
-* Returns `ScottPlot.Plottable.Annotation`
-* Parameters
-  * `string` **`label`**
-  * `double` **`x`**
-  * `double` **`y`**
+
+**Summary:** Display text in the data area at a pixel location (not a X/Y coordinates)
+
+**Parameters:**
+* `string` label
+* `double` x
+* `double` y
+
+**Returns:**
+* `ScottPlot.Plottable.Annotation`
+
 ## AddArrow()
-_Display an arrow pointing to a spot in coordinate space_
-* Returns `ScottPlot.Plottable.ScatterPlot`
-* Parameters
-  * `double` **`xTip`**
-  * `double` **`yTip`**
-  * `double` **`xBase`**
-  * `double` **`yBase`**
-  * `float` **`lineWidth`**
-  * `System.Drawing.Color?` **`color`**
+
+**Summary:** Display an arrow pointing to a spot in coordinate space
+
+**Parameters:**
+* `double` xTip
+* `double` yTip
+* `double` xBase
+* `double` yBase
+* `float` lineWidth
+* `Drawing.Color?` color
+
+**Returns:**
+* `ScottPlot.Plottable.ScatterPlot`
+
 ## AddAxis()
-_Create and return an additional axis_
-* Returns `ScottPlot.Renderable.Axis`
-* Parameters
-  * `ScottPlot.Renderable.Edge` **`edge`**
-  * `int` **`axisIndex`**
-  * `string` **`title`**
-  * `System.Drawing.Color?` **`color`**
+
+**Summary:** Create and return an additional axis
+
+**Parameters:**
+* `ScottPlot.Renderable.Edge` edge
+* `int` axisIndex
+* `string` title
+* `Drawing.Color?` color
+
+**Returns:**
+* `ScottPlot.Renderable.Axis`
+
 ## AddBar()
-_Add a bar plot for the given values. Bars will be placed at X positions 0, 1, 2, etc._
-* Returns `ScottPlot.Plottable.BarPlot`
-* Parameters
-  * `double[]` **`values`**
-  * `System.Drawing.Color?` **`color`**
+
+**Summary:** Add a bar plot for the given values. Bars will be placed at X positions 0, 1, 2, etc.
+
+**Parameters:**
+* `Double[]` values
+* `Drawing.Color?` color
+
+**Returns:**
+* `ScottPlot.Plottable.BarPlot`
+
 ## AddBar()
-_Add a bar plot for the given values using defined bar positions_
-* Returns `ScottPlot.Plottable.BarPlot`
-* Parameters
-  * `double[]` **`values`**
-  * `double[]` **`positions`**
-  * `System.Drawing.Color?` **`color`**
+
+**Summary:** Add a bar plot for the given values using defined bar positions
+
+**Parameters:**
+* `Double[]` values
+* `Double[]` positions
+* `Drawing.Color?` color
+
+**Returns:**
+* `ScottPlot.Plottable.BarPlot`
+
 ## AddBar()
-_Add a bar plot (values +/- errors) using defined positions_
-* Returns `ScottPlot.Plottable.BarPlot`
-* Parameters
-  * `double[]` **`values`**
-  * `double[]` **`errors`**
-  * `double[]` **`positions`**
-  * `System.Drawing.Color?` **`color`**
+
+**Summary:** Add a bar plot (values +/- errors) using defined positions
+
+**Parameters:**
+* `Double[]` values
+* `Double[]` errors
+* `Double[]` positions
+* `Drawing.Color?` color
+
+**Returns:**
+* `ScottPlot.Plottable.BarPlot`
+
 ## AddBarGroups()
-_Create a series of bar plots and customize the ticks and legend_
-* Returns `ScottPlot.Plottable.BarPlot[]`
-* Parameters
-  * `string[]` **`groupLabels`**
-  * `string[]` **`seriesLabels`**
-  * `Double[][]` **`ys`**
-  * `Double[][]` **`yErr`**
+
+**Summary:** Create a series of bar plots and customize the ticks and legend
+
+**Parameters:**
+* `String[]` groupLabels
+* `String[]` seriesLabels
+* `Double[][]` ys
+* `Double[][]` yErr
+
+**Returns:**
+* `ScottPlot.Plottable.BarPlot[]`
+
 ## AddCandlesticks()
-_Add candlesticks to the chart from OHLC (open, high, low, close) data_
-* Returns `ScottPlot.Plottable.FinancePlot`
-* Parameters
-  * `ScottPlot.OHLC[]` **`ohlcs`**
+
+**Summary:** Add candlesticks to the chart from OHLC (open, high, low, close) data
+
+**Parameters:**
+* `ScottPlot.OHLC[]` ohlcs
+
+**Returns:**
+* `ScottPlot.Plottable.FinancePlot`
+
 ## AddColorbar()
-_Add a colorbar to display a colormap beside the data area_
-* Returns `ScottPlot.Plottable.Colorbar`
-* Parameters
-  * `ScottPlot.Drawing.Colormap` **`colormap`**
-  * `int` **`space`**
+
+**Summary:** Add a colorbar to display a colormap beside the data area
+
+**Parameters:**
+* `ScottPlot.Drawing.Colormap` colormap
+* `int` space
+
+**Returns:**
+* `ScottPlot.Plottable.Colorbar`
+
 ## AddColorbar()
-_Add a colorbar initialized with settings from a heatmap_
-* Returns `ScottPlot.Plottable.Colorbar`
-* Parameters
-  * `ScottPlot.Plottable.Heatmap` **`heatmap`**
-  * `int` **`space`**
+
+**Summary:** Add a colorbar initialized with settings from a heatmap
+
+**Parameters:**
+* `ScottPlot.Plottable.Heatmap` heatmap
+* `int` space
+
+**Returns:**
+* `ScottPlot.Plottable.Colorbar`
+
 ## AddFill()
-_Create a polygon to fill the area between Y values and a baseline._
-* Returns `ScottPlot.Plottable.Polygon`
-* Parameters
-  * `double[]` **`xs`**
-  * `double[]` **`ys`**
-  * `double` **`baseline`**
-  * `System.Drawing.Color?` **`color`**
+
+**Summary:** Create a polygon to fill the area between Y values and a baseline.
+
+**Parameters:**
+* `Double[]` xs
+* `Double[]` ys
+* `double` baseline
+* `Drawing.Color?` color
+
+**Returns:**
+* `ScottPlot.Plottable.Polygon`
+
 ## AddFill()
-_Create a polygon to fill the area between Y values of two curves._
-* Returns `ScottPlot.Plottable.Polygon`
-* Parameters
-  * `double[]` **`xs1`**
-  * `double[]` **`ys1`**
-  * `double[]` **`xs2`**
-  * `double[]` **`ys2`**
-  * `System.Drawing.Color?` **`color`**
+
+**Summary:** Create a polygon to fill the area between Y values of two curves.
+
+**Parameters:**
+* `Double[]` xs1
+* `Double[]` ys1
+* `Double[]` xs2
+* `Double[]` ys2
+* `Drawing.Color?` color
+
+**Returns:**
+* `ScottPlot.Plottable.Polygon`
+
 ## AddFillAboveAndBelow()
-_Create a polygon to fill the area between Y values and a baseline
-            that uses two different colors for area above and area below the baseline._
-* Returns `ValueTuple`2[ScottPlot.Plottable.Polygon,ScottPlot.Plottable.Polygon]`
-* Parameters
-  * `double[]` **`xs`**
-  * `double[]` **`ys`**
-  * `double` **`baseline`**
-  * `System.Drawing.Color?` **`colorAbove`**
-  * `System.Drawing.Color?` **`colorBelow`**
+
+**Summary:** Create a polygon to fill the area between Y values and a baseline that uses two different colors for area above and area below the baseline.
+
+**Parameters:**
+* `Double[]` xs
+* `Double[]` ys
+* `double` baseline
+* `Drawing.Color?` colorAbove
+* `Drawing.Color?` colorBelow
+
+**Returns:**
+* `ValueTuple<T>`
+
 ## AddFunction()
-_Add a line plot that uses a function (rather than X/Y points) to place the curve_
-* Returns `ScottPlot.Plottable.FunctionPlot`
-* Parameters
-  * `Func`2[Double,Nullable`1[Double]]` **`function`**
-  * `System.Drawing.Color?` **`color`**
-  * `double` **`lineWidth`**
-  * `ScottPlot.LineStyle` **`lineStyle`**
+
+> **WARNING:** This method does not have XML documentation
+
+**Parameters:**
+* `Double?` function
+* `Drawing.Color?` color
+* `double` lineWidth
+* `ScottPlot.LineStyle` lineStyle
+
+**Returns:**
+* `ScottPlot.Plottable.FunctionPlot`
+
 ## AddHeatmap()
-_Add a heatmap to the plot_
-* Returns `ScottPlot.Plottable.Heatmap`
-* Parameters
-  * `Double[,]` **`intensities`**
-  * `ScottPlot.Drawing.Colormap` **`colormap`**
-  * `Boolean` **`lockScales`**
+
+> **WARNING:** This method does not have XML documentation
+
+**Parameters:**
+* `Double[,]` intensities
+* `ScottPlot.Drawing.Colormap` colormap
+* `Boolean` lockScales
+
+**Returns:**
+* `ScottPlot.Plottable.Heatmap`
+
 ## AddHorizontalLine()
-_Add a horizontal axis line at a specific Y position_
-* Returns `ScottPlot.Plottable.HLine`
-* Parameters
-  * `double` **`y`**
-  * `System.Drawing.Color?` **`color`**
-  * `float` **`width`**
-  * `ScottPlot.LineStyle` **`style`**
-  * `string` **`label`**
+
+**Summary:** Add a horizontal axis line at a specific Y position
+
+**Parameters:**
+* `double` y
+* `Drawing.Color?` color
+* `float` width
+* `ScottPlot.LineStyle` style
+* `string` label
+
+**Returns:**
+* `ScottPlot.Plottable.HLine`
+
 ## AddHorizontalSpan()
-_Add a horizontal span (shades the region between two X positions)_
-* Returns `ScottPlot.Plottable.HSpan`
-* Parameters
-  * `double` **`xMin`**
-  * `double` **`xMax`**
-  * `System.Drawing.Color?` **`color`**
-  * `string` **`label`**
+
+**Summary:** Add a horizontal span (shades the region between two X positions)
+
+**Parameters:**
+* `double` xMin
+* `double` xMax
+* `Drawing.Color?` color
+* `string` label
+
+**Returns:**
+* `ScottPlot.Plottable.HSpan`
+
 ## AddImage()
-_Display an image at a specific coordinate_
-* Returns `ScottPlot.Plottable.Image`
-* Parameters
-  * `System.Drawing.Bitmap` **`bitmap`**
-  * `double` **`x`**
-  * `double` **`y`**
+
+**Summary:** Display an image at a specific coordinate
+
+**Parameters:**
+* `Drawing.Bitmap` bitmap
+* `double` x
+* `double` y
+
+**Returns:**
+* `ScottPlot.Plottable.Image`
+
 ## AddLine()
-_Add a line (a scatter plot with two points) to the plot_
-* Returns `ScottPlot.Plottable.ScatterPlot`
-* Parameters
-  * `double` **`x1`**
-  * `double` **`y1`**
-  * `double` **`x2`**
-  * `double` **`y2`**
-  * `System.Drawing.Color?` **`color`**
-  * `float` **`lineWidth`**
+
+**Summary:** Add a line (a scatter plot with two points) to the plot
+
+**Parameters:**
+* `double` x1
+* `double` y1
+* `double` x2
+* `double` y2
+* `Drawing.Color?` color
+* `float` lineWidth
+
+**Returns:**
+* `ScottPlot.Plottable.ScatterPlot`
+
 ## AddLine()
-_Add a line (a scatter plot with two points) to the plot_
-* Returns `ScottPlot.Plottable.ScatterPlot`
-* Parameters
-  * `double` **`slope`**
-  * `double` **`offset`**
-  * `ValueTuple`2[Double,Double]` **`xLimits`**
-  * `System.Drawing.Color?` **`color`**
-  * `float` **`lineWidth`**
+
+> **WARNING:** This method does not have XML documentation
+
+**Parameters:**
+* `double` slope
+* `double` offset
+* `ValueTuple<T>` xLimits
+* `Drawing.Color?` color
+* `float` lineWidth
+
+**Returns:**
+* `ScottPlot.Plottable.ScatterPlot`
+
 ## AddOHLCs()
-_Add OHLC (open, high, low, close) data to the plot_
-* Returns `ScottPlot.Plottable.FinancePlot`
-* Parameters
-  * `ScottPlot.OHLC[]` **`ohlcs`**
+
+**Summary:** Add OHLC (open, high, low, close) data to the plot
+
+**Parameters:**
+* `ScottPlot.OHLC[]` ohlcs
+
+**Returns:**
+* `ScottPlot.Plottable.FinancePlot`
+
 ## AddPie()
-_Add a pie chart to the plot_
-* Returns `ScottPlot.Plottable.PiePlot`
-* Parameters
-  * `double[]` **`values`**
-  * `Boolean` **`hideGridAndFrame`**
+
+**Summary:** Add a pie chart to the plot
+
+**Parameters:**
+* `Double[]` values
+* `Boolean` hideGridAndFrame
+
+**Returns:**
+* `ScottPlot.Plottable.PiePlot`
+
 ## AddPoint()
-_Add a point (a scatter plot with a single marker)_
-* Returns `ScottPlot.Plottable.ScatterPlot`
-* Parameters
-  * `double` **`x`**
-  * `double` **`y`**
-  * `System.Drawing.Color?` **`color`**
-  * `float` **`size`**
-  * `ScottPlot.MarkerShape` **`shape`**
+
+**Summary:** Add a point (a scatter plot with a single marker)
+
+**Parameters:**
+* `double` x
+* `double` y
+* `Drawing.Color?` color
+* `float` size
+* `ScottPlot.MarkerShape` shape
+
+**Returns:**
+* `ScottPlot.Plottable.ScatterPlot`
+
 ## AddPolygon()
-_Add a polygon to the plot_
-* Returns `ScottPlot.Plottable.Polygon`
-* Parameters
-  * `double[]` **`xs`**
-  * `double[]` **`ys`**
-  * `System.Drawing.Color?` **`fillColor`**
-  * `double` **`lineWidth`**
-  * `System.Drawing.Color?` **`lineColor`**
+
+**Summary:** Add a polygon to the plot
+
+**Parameters:**
+* `Double[]` xs
+* `Double[]` ys
+* `Drawing.Color?` fillColor
+* `double` lineWidth
+* `Drawing.Color?` lineColor
+
+**Returns:**
+* `ScottPlot.Plottable.Polygon`
+
 ## AddPolygons()
-_Add many polygons using an optimized rendering method_
-* Returns `ScottPlot.Plottable.Polygons`
-* Parameters
-  * `Collections.Generic.List`1[Collections.Generic.List`1[ValueTuple`2[Double,Double]]]` **`polys`**
-  * `System.Drawing.Color?` **`fillColor`**
-  * `double` **`lineWidth`**
-  * `System.Drawing.Color?` **`lineColor`**
+
+> **WARNING:** This method does not have XML documentation
+
+**Parameters:**
+* `Collections.Generic.List<T>` polys
+* `Drawing.Color?` fillColor
+* `double` lineWidth
+* `Drawing.Color?` lineColor
+
+**Returns:**
+* `ScottPlot.Plottable.Polygons`
+
 ## AddPopulation()
-_Add a population to the plot_
-* Returns `ScottPlot.Plottable.PopulationPlot`
-* Parameters
-  * `ScottPlot.Statistics.Population` **`population`**
-  * `string` **`label`**
+
+**Summary:** Add a population to the plot
+
+**Parameters:**
+* `ScottPlot.Statistics.Population` population
+* `string` label
+
+**Returns:**
+* `ScottPlot.Plottable.PopulationPlot`
+
 ## AddPopulations()
-_Add multiple populations to the plot as a single series_
-* Returns `ScottPlot.Plottable.PopulationPlot`
-* Parameters
-  * `ScottPlot.Statistics.Population[]` **`populations`**
-  * `string` **`label`**
+
+**Summary:** Add multiple populations to the plot as a single series
+
+**Parameters:**
+* `ScottPlot.Statistics.Population[]` populations
+* `string` label
+
+**Returns:**
+* `ScottPlot.Plottable.PopulationPlot`
+
 ## AddPopulations()
-_Add multiple populations to the plot as a single series_
-* Returns `ScottPlot.Plottable.PopulationPlot`
-* Parameters
-  * `ScottPlot.Statistics.PopulationMultiSeries` **`multiSeries`**
+
+**Summary:** Add multiple populations to the plot as a single series
+
+**Parameters:**
+* `ScottPlot.Statistics.PopulationMultiSeries` multiSeries
+
+**Returns:**
+* `ScottPlot.Plottable.PopulationPlot`
+
 ## AddRadar()
-_Add a radar plot_
-* Returns `ScottPlot.Plottable.RadarPlot`
-* Parameters
-  * `Double[,]` **`values`**
-  * `Boolean` **`independentAxes`**
-  * `double[]` **`maxValues`**
-  * `Boolean` **`disableFrameAndGrid`**
+
+> **WARNING:** This method does not have XML documentation
+
+**Parameters:**
+* `Double[,]` values
+* `Boolean` independentAxes
+* `Double[]` maxValues
+* `Boolean` disableFrameAndGrid
+
+**Returns:**
+* `ScottPlot.Plottable.RadarPlot`
+
 ## AddScaleBar()
-_Add an L-shaped scalebar to the corner of the plot_
-* Returns `ScottPlot.Plottable.ScaleBar`
-* Parameters
-  * `double` **`width`**
-  * `double` **`height`**
-  * `string` **`xLabel`**
-  * `string` **`yLabel`**
+
+**Summary:** Add an L-shaped scalebar to the corner of the plot
+
+**Parameters:**
+* `double` width
+* `double` height
+* `string` xLabel
+* `string` yLabel
+
+**Returns:**
+* `ScottPlot.Plottable.ScaleBar`
+
 ## AddScatter()
-_Add a scatter plot from X/Y pairs. 
-            Lines and markers are shown by default.
-            Scatter plots are slower than Signal plots._
-* Returns `ScottPlot.Plottable.ScatterPlot`
-* Parameters
-  * `double[]` **`xs`**
-  * `double[]` **`ys`**
-  * `System.Drawing.Color?` **`color`**
-  * `float` **`lineWidth`**
-  * `float` **`markerSize`**
-  * `ScottPlot.MarkerShape` **`markerShape`**
-  * `ScottPlot.LineStyle` **`lineStyle`**
-  * `string` **`label`**
+
+**Summary:** Add a scatter plot from X/Y pairs. Lines and markers are shown by default. Scatter plots are slower than Signal plots.
+
+**Parameters:**
+* `Double[]` xs
+* `Double[]` ys
+* `Drawing.Color?` color
+* `float` lineWidth
+* `float` markerSize
+* `ScottPlot.MarkerShape` markerShape
+* `ScottPlot.LineStyle` lineStyle
+* `string` label
+
+**Returns:**
+* `ScottPlot.Plottable.ScatterPlot`
+
 ## AddScatterLines()
-_Add a scatter plot from X/Y pairs connected by lines (no markers).
-            Scatter plots are slower than Signal plots._
-* Returns `ScottPlot.Plottable.ScatterPlot`
-* Parameters
-  * `double[]` **`xs`**
-  * `double[]` **`ys`**
-  * `System.Drawing.Color?` **`color`**
-  * `float` **`lineWidth`**
-  * `ScottPlot.LineStyle` **`lineStyle`**
-  * `string` **`label`**
+
+**Summary:** Add a scatter plot from X/Y pairs connected by lines (no markers). Scatter plots are slower than Signal plots.
+
+**Parameters:**
+* `Double[]` xs
+* `Double[]` ys
+* `Drawing.Color?` color
+* `float` lineWidth
+* `ScottPlot.LineStyle` lineStyle
+* `string` label
+
+**Returns:**
+* `ScottPlot.Plottable.ScatterPlot`
+
 ## AddScatterList()
-_Scatter plot with Add() and Clear() methods for updating data_
-* Returns `ScottPlot.Plottable.ScatterPlotList`
-* Parameters
-  * `System.Drawing.Color?` **`color`**
-  * `float` **`lineWidth`**
-  * `float` **`markerSize`**
-  * `string` **`label`**
-  * `ScottPlot.MarkerShape` **`markerShape`**
-  * `ScottPlot.LineStyle` **`lineStyle`**
+
+**Summary:** Scatter plot with Add() and Clear() methods for updating data
+
+**Parameters:**
+* `Drawing.Color?` color
+* `float` lineWidth
+* `float` markerSize
+* `string` label
+* `ScottPlot.MarkerShape` markerShape
+* `ScottPlot.LineStyle` lineStyle
+
+**Returns:**
+* `ScottPlot.Plottable.ScatterPlotList`
+
 ## AddScatterPoints()
-_Add a scatter plot from X/Y pairs using markers at points (no lines).
-            Scatter plots are slower than Signal plots._
-* Returns `ScottPlot.Plottable.ScatterPlot`
-* Parameters
-  * `double[]` **`xs`**
-  * `double[]` **`ys`**
-  * `System.Drawing.Color?` **`color`**
-  * `float` **`markerSize`**
-  * `ScottPlot.MarkerShape` **`markerShape`**
-  * `string` **`label`**
+
+**Summary:** Add a scatter plot from X/Y pairs using markers at points (no lines). Scatter plots are slower than Signal plots.
+
+**Parameters:**
+* `Double[]` xs
+* `Double[]` ys
+* `Drawing.Color?` color
+* `float` markerSize
+* `ScottPlot.MarkerShape` markerShape
+* `string` label
+
+**Returns:**
+* `ScottPlot.Plottable.ScatterPlot`
+
 ## AddSignal()
-_Signal plots have evenly-spaced X points and render very fast._
-* Returns `ScottPlot.Plottable.SignalPlot`
-* Parameters
-  * `double[]` **`ys`**
-  * `double` **`sampleRate`**
-  * `System.Drawing.Color?` **`color`**
-  * `string` **`label`**
+
+**Summary:** Signal plots have evenly-spaced X points and render very fast.
+
+**Parameters:**
+* `Double[]` ys
+* `double` sampleRate
+* `Drawing.Color?` color
+* `string` label
+
+**Returns:**
+* `ScottPlot.Plottable.SignalPlot`
+
 ## AddSignalConst()
-_SignalConts plots have evenly-spaced X points and render faster than Signal plots
-            but data in source arrays cannot be changed after it is loaded.
-            Methods can be used to update all or portions of the data._
-* Returns `ScottPlot.Plottable.SignalPlotConst`1[T]`
-* Parameters
-  * `T[]` **`ys`**
-  * `double` **`sampleRate`**
-  * `System.Drawing.Color?` **`color`**
-  * `string` **`label`**
+
+**Summary:** SignalConts plots have evenly-spaced X points and render faster than Signal plots but data in source arrays cannot be changed after it is loaded. Methods can be used to update all or portions of the data.
+
+**Parameters:**
+* `T[]` ys
+* `double` sampleRate
+* `Drawing.Color?` color
+* `string` label
+
+**Returns:**
+* `SignalPlotConst<T>`
+
 ## AddSignalXY()
-_Speed-optimized plot for Ys with unevenly-spaced ascending Xs_
-* Returns `ScottPlot.Plottable.SignalPlotXY`
-* Parameters
-  * `double[]` **`xs`**
-  * `double[]` **`ys`**
-  * `System.Drawing.Color?` **`color`**
-  * `string` **`label`**
+
+**Summary:** Speed-optimized plot for Ys with unevenly-spaced ascending Xs
+
+**Parameters:**
+* `Double[]` xs
+* `Double[]` ys
+* `Drawing.Color?` color
+* `string` label
+
+**Returns:**
+* `ScottPlot.Plottable.SignalPlotXY`
+
 ## AddSignalXYConst()
-_Speed-optimized plot for Ys with unevenly-spaced ascending Xs.
-            Faster than SignalXY but values cannot be modified after loading._
-* Returns `ScottPlot.Plottable.SignalPlotXYConst`2[TX,TY]`
-* Parameters
-  * `TX[]` **`xs`**
-  * `TY[]` **`ys`**
-  * `System.Drawing.Color?` **`color`**
-  * `string` **`label`**
+
+**Summary:** Speed-optimized plot for Ys with unevenly-spaced ascending Xs. Faster than SignalXY but values cannot be modified after loading.
+
+**Parameters:**
+* `TX[]` xs
+* `TY[]` ys
+* `Drawing.Color?` color
+* `string` label
+
+**Returns:**
+* `SignalPlotXYConst<T>`
+
 ## AddText()
-_Display text at specific X/Y coordinates_
-* Returns `ScottPlot.Plottable.Text`
-* Parameters
-  * `string` **`label`**
-  * `double` **`x`**
-  * `double` **`y`**
-  * `float` **`size`**
-  * `System.Drawing.Color?` **`color`**
+
+**Summary:** Display text at specific X/Y coordinates
+
+**Parameters:**
+* `string` label
+* `double` x
+* `double` y
+* `float` size
+* `Drawing.Color?` color
+
+**Returns:**
+* `ScottPlot.Plottable.Text`
+
 ## AddText()
-_Display text at specific X/Y coordinates_
-* Returns `ScottPlot.Plottable.Text`
-* Parameters
-  * `string` **`label`**
-  * `double` **`x`**
-  * `double` **`y`**
-  * `ScottPlot.Drawing.Font` **`font`**
+
+**Summary:** Display text at specific X/Y coordinates
+
+**Parameters:**
+* `string` label
+* `double` x
+* `double` y
+* `ScottPlot.Drawing.Font` font
+
+**Returns:**
+* `ScottPlot.Plottable.Text`
+
 ## AddTooltip()
-_Display a text bubble that points to an X/Y location on the plot_
-* Returns `ScottPlot.Plottable.Tooltip`
-* Parameters
-  * `string` **`label`**
-  * `double` **`x`**
-  * `double` **`y`**
+
+**Summary:** Display a text bubble that points to an X/Y location on the plot
+
+**Parameters:**
+* `string` label
+* `double` x
+* `double` y
+
+**Returns:**
+* `ScottPlot.Plottable.Tooltip`
+
 ## AddVectorField()
-_Add a 2D vector field to the plot_
-* Returns `ScottPlot.Plottable.VectorField`
-* Parameters
-  * `ScottPlot.Statistics.Vector2[,]` **`vectors`**
-  * `double[]` **`xs`**
-  * `double[]` **`ys`**
-  * `string` **`label`**
-  * `System.Drawing.Color?` **`color`**
-  * `ScottPlot.Drawing.Colormap` **`colormap`**
-  * `double` **`scaleFactor`**
+
+> **WARNING:** This method does not have XML documentation
+
+**Parameters:**
+* `ScottPlot.Statistics.Vector2[,]` vectors
+* `Double[]` xs
+* `Double[]` ys
+* `string` label
+* `Drawing.Color?` color
+* `ScottPlot.Drawing.Colormap` colormap
+* `double` scaleFactor
+
+**Returns:**
+* `ScottPlot.Plottable.VectorField`
+
 ## AddVerticalLine()
-_Add a vertical axis line at a specific Y position_
-* Returns `ScottPlot.Plottable.VLine`
-* Parameters
-  * `double` **`x`**
-  * `System.Drawing.Color?` **`color`**
-  * `float` **`width`**
-  * `ScottPlot.LineStyle` **`style`**
-  * `string` **`label`**
+
+**Summary:** Add a vertical axis line at a specific Y position
+
+**Parameters:**
+* `double` x
+* `Drawing.Color?` color
+* `float` width
+* `ScottPlot.LineStyle` style
+* `string` label
+
+**Returns:**
+* `ScottPlot.Plottable.VLine`
+
 ## AddVerticalSpan()
-_Add a horizontal span (shades the region between two X positions)_
-* Returns `ScottPlot.Plottable.VSpan`
-* Parameters
-  * `double` **`yMin`**
-  * `double` **`yMax`**
-  * `System.Drawing.Color?` **`color`**
-  * `string` **`label`**
+
+**Summary:** Add a horizontal span (shades the region between two X positions)
+
+**Parameters:**
+* `double` yMin
+* `double` yMax
+* `Drawing.Color?` color
+* `string` label
+
+**Returns:**
+* `ScottPlot.Plottable.VSpan`
+
 ## AxisAuto()
-_Automatically adjust axis limits to fit the data (with a little extra margin)_
-* Returns `Void`
-* Parameters
-  * `double` **`horizontalMargin`**
-  * `double` **`verticalMargin`**
+
+**Summary:** Automatically adjust axis limits to fit the data (with a little extra margin)
+
+**Parameters:**
+* `double` horizontalMargin
+* `double` verticalMargin
+
+**Returns:**
+* `Void`
+
 ## AxisAutoX()
-_Automatically adjust axis limits to fit the data (with a little extra margin)_
-* Returns `Void`
-* Parameters
-  * `double` **`margin`**
+
+**Summary:** Automatically adjust axis limits to fit the data (with a little extra margin)
+
+**Parameters:**
+* `double` margin
+
+**Returns:**
+* `Void`
+
 ## AxisAutoY()
-_Automatically adjust axis limits to fit the data (with a little extra margin)_
-* Returns `Void`
-* Parameters
-  * `double` **`margin`**
+
+**Summary:** Automatically adjust axis limits to fit the data (with a little extra margin)
+
+**Parameters:**
+* `double` margin
+
+**Returns:**
+* `Void`
+
 ## AxisPan()
-_Pan by a delta defined in coordinates_
-* Returns `Void`
-* Parameters
-  * `double` **`dx`**
-  * `double` **`dy`**
+
+**Summary:** Pan by a delta defined in coordinates
+
+**Parameters:**
+* `double` dx
+* `double` dy
+
+**Returns:**
+* `Void`
+
 ## AxisScale()
-_Adjust axis limits to achieve a certain pixel scale (units per pixel)_
-* Returns `Void`
-* Parameters
-  * `Double?` **`unitsPerPixelX`**
-  * `Double?` **`unitsPerPixelY`**
+
+**Summary:** Adjust axis limits to achieve a certain pixel scale (units per pixel)
+
+**Parameters:**
+* `Double?` unitsPerPixelX
+* `Double?` unitsPerPixelY
+
+**Returns:**
+* `Void`
+
 ## AxisScaleLock()
-_Lock X and Y axis scales (units per pixel) together to protect symmetry of circles and squares_
-* Returns `Void`
-* Parameters
-  * `Boolean` **`enable`**
+
+**Summary:** Lock X and Y axis scales (units per pixel) together to protect symmetry of circles and squares
+
+**Parameters:**
+* `Boolean` enable
+
+**Returns:**
+* `Void`
+
 ## AxisZoom()
-_Zoom by a fraction (zoom in if fraction > 1)_
-* Returns `Void`
-* Parameters
-  * `double` **`xFrac`**
-  * `double` **`yFrac`**
-  * `Double?` **`zoomToX`**
-  * `Double?` **`zoomToY`**
-  * `int` **`xAxisIndex`**
-  * `int` **`yAxisIndex`**
+
+**Summary:** Zoom by a fraction (zoom in if fraction > 1)
+
+**Parameters:**
+* `double` xFrac
+* `double` yFrac
+* `Double?` zoomToX
+* `Double?` zoomToY
+* `int` xAxisIndex
+* `int` yAxisIndex
+
+**Returns:**
+* `Void`
+
 ## Benchmark()
-_Display render benchmark information on the plot_
-* Returns `Void`
-* Parameters
-  * `Boolean` **`enable`**
+
+**Summary:** Display render benchmark information on the plot
+
+**Parameters:**
+* `Boolean` enable
+
+**Returns:**
+* `Void`
+
 ## BenchmarkToggle()
-***ERROR: XML DOCS NOT FOUND!***
-* Returns `Void`
-* Parameters
+
+> **WARNING:** This method does not have XML documentation
+
+**Parameters:**
+
+**Returns:**
+* `Void`
+
 ## Clear()
-***ERROR: XML DOCS NOT FOUND!***
-* Returns `Void`
-* Parameters
+
+**Summary:** Clear all plottables
+
+**Parameters:**
+
+**Returns:**
+* `Void`
+
 ## Clear()
-_Remove all plottables of the given type_
-* Returns `Void`
-* Parameters
-  * `Type` **`plottableType`**
+
+**Summary:** Remove all plottables of the given type
+
+**Parameters:**
+* `Type` plottableType
+
+**Returns:**
+* `Void`
+
 ## Colorset()
-_Change the default color palette for new plottables_
-* Returns `Void`
-* Parameters
-  * `ScottPlot.Drawing.Palette` **`colorset`**
+
+**Summary:** Change the default color palette for new plottables
+
+**Parameters:**
+* `ScottPlot.Drawing.Palette` colorset
+
+**Returns:**
+* `Void`
+
 ## Copy()
-***ERROR: XML DOCS NOT FOUND!***
-* Returns `ScottPlot.Plot`
-* Parameters
+
+**Summary:** Return a new Plot with all the same Plottables (and some of the styles) of this one. This is called when you right-click a plot in a control and hit "open in new window".
+
+**Parameters:**
+
+**Returns:**
+* `ScottPlot.Plot`
+
 ## Equals()
-***ERROR: XML DOCS NOT FOUND!***
-* Returns `Boolean`
-* Parameters
-  * `Object` **`obj`**
+
+> **WARNING:** This method does not have XML documentation
+
+**Parameters:**
+* `Object` obj
+
+**Returns:**
+* `Boolean`
+
 ## Frame()
-_Configure color and visibility of the frame that outlines the data area (lines along the edges of the primary axes)_
-* Returns `Void`
-* Parameters
-  * `Boolean?` **`visible`**
-  * `System.Drawing.Color?` **`color`**
-  * `Boolean?` **`left`**
-  * `Boolean?` **`right`**
-  * `Boolean?` **`bottom`**
-  * `Boolean?` **`top`**
+
+**Summary:** Configure color and visibility of the frame that outlines the data area (lines along the edges of the primary axes)
+
+**Parameters:**
+* `Boolean?` visible
+* `Drawing.Color?` color
+* `Boolean?` left
+* `Boolean?` right
+* `Boolean?` bottom
+* `Boolean?` top
+
+**Returns:**
+* `Void`
+
 ## Frameless()
-***ERROR: XML DOCS NOT FOUND!***
-* Returns `Void`
-* Parameters
+
+**Summary:** Set size of the primary axes to zero so the data area covers the whole figure
+
+**Parameters:**
+
+**Returns:**
+* `Void`
+
 ## get_Version()
-***ERROR: XML DOCS NOT FOUND!***
-* Returns `String`
-* Parameters
+
+> **WARNING:** This method does not have XML documentation
+
+**Parameters:**
+
+**Returns:**
+* `string`
+
 ## get_XAxis()
-***ERROR: XML DOCS NOT FOUND!***
-* Returns `ScottPlot.Renderable.Axis`
-* Parameters
+
+> **WARNING:** This method does not have XML documentation
+
+**Parameters:**
+
+**Returns:**
+* `ScottPlot.Renderable.Axis`
+
 ## get_XAxis2()
-***ERROR: XML DOCS NOT FOUND!***
-* Returns `ScottPlot.Renderable.Axis`
-* Parameters
+
+> **WARNING:** This method does not have XML documentation
+
+**Parameters:**
+
+**Returns:**
+* `ScottPlot.Renderable.Axis`
+
 ## get_YAxis()
-***ERROR: XML DOCS NOT FOUND!***
-* Returns `ScottPlot.Renderable.Axis`
-* Parameters
+
+> **WARNING:** This method does not have XML documentation
+
+**Parameters:**
+
+**Returns:**
+* `ScottPlot.Renderable.Axis`
+
 ## get_YAxis2()
-***ERROR: XML DOCS NOT FOUND!***
-* Returns `ScottPlot.Renderable.Axis`
-* Parameters
+
+> **WARNING:** This method does not have XML documentation
+
+**Parameters:**
+
+**Returns:**
+* `ScottPlot.Renderable.Axis`
+
 ## GetAxisLimits()
-_Get limits for the given axes_
-* Returns `ScottPlot.AxisLimits`
-* Parameters
-  * `int` **`xAxisIndex`**
-  * `int` **`yAxisIndex`**
+
+**Summary:** Get limits for the given axes
+
+**Parameters:**
+* `int` xAxisIndex
+* `int` yAxisIndex
+
+**Returns:**
+* `ScottPlot.AxisLimits`
+
 ## GetCoordinate()
-_Retrun the coordinate (in plot space) for the given pixel_
-* Returns `ValueTuple`2[Double,Double]`
-* Parameters
-  * `float` **`xPixel`**
-  * `float` **`yPixel`**
+
+**Summary:** Retrun the coordinate (in plot space) for the given pixel
+
+**Parameters:**
+* `float` xPixel
+* `float` yPixel
+
+**Returns:**
+* `ValueTuple<T>`
+
 ## GetCoordinateX()
-_Retrun the coordinate (in plot space) for the given pixel_
-* Returns `Double`
-* Parameters
-  * `float` **`xPixel`**
+
+**Summary:** Retrun the coordinate (in plot space) for the given pixel
+
+**Parameters:**
+* `float` xPixel
+
+**Returns:**
+* `double`
+
 ## GetCoordinateY()
-_Retrun the coordinate (in plot space) for the given pixel_
-* Returns `Double`
-* Parameters
-  * `float` **`yPixel`**
+
+**Summary:** Retrun the coordinate (in plot space) for the given pixel
+
+**Parameters:**
+* `float` yPixel
+
+**Returns:**
+* `double`
+
 ## GetDraggables()
-***ERROR: XML DOCS NOT FOUND!***
-* Returns `ScottPlot.Plottable.IDraggable[]`
-* Parameters
+
+**Summary:** Return a copy of the list of draggable plottables
+
+**Parameters:**
+
+**Returns:**
+* `ScottPlot.Plottable.IDraggable[]`
+
 ## GetDraggableUnderMouse()
-_Return the draggable plottable under the mouse cursor (or null if there isn't one)_
-* Returns `ScottPlot.Plottable.IDraggable`
-* Parameters
-  * `double` **`pixelX`**
-  * `double` **`pixelY`**
-  * `int` **`snapDistancePixels`**
+
+**Summary:** Return the draggable plottable under the mouse cursor (or null if there isn't one)
+
+**Parameters:**
+* `double` pixelX
+* `double` pixelY
+* `int` snapDistancePixels
+
+**Returns:**
+* `ScottPlot.Plottable.IDraggable`
+
 ## GetHashCode()
-***ERROR: XML DOCS NOT FOUND!***
-* Returns `Int32`
-* Parameters
+
+> **WARNING:** This method does not have XML documentation
+
+**Parameters:**
+
+**Returns:**
+* `int`
+
 ## GetLegendBitmap()
-***ERROR: XML DOCS NOT FOUND!***
-* Returns `System.Drawing.Bitmap`
-* Parameters
+
+**Summary:** Return a new Bitmap containing only the legend
+
+**Parameters:**
+
+**Returns:**
+* `Drawing.Bitmap`
+
 ## GetNextColor()
-_Return a new color from the Pallette based on the number of plottables already in the plot.
-            Use this to ensure every plottable gets a unique color._
-* Returns `System.Drawing.Color`
-* Parameters
-  * `double` **`alpha`**
+
+**Summary:** Return a new color from the Pallette based on the number of plottables already in the plot. Use this to ensure every plottable gets a unique color.
+
+**Parameters:**
+* `double` alpha
+
+**Returns:**
+* `Drawing.Color`
+
 ## GetPixel()
-_Retrun the pixel location of the given coordinate (in plot space)_
-* Returns `ValueTuple`2[Single,Single]`
-* Parameters
-  * `double` **`x`**
-  * `double` **`y`**
+
+**Summary:** Retrun the pixel location of the given coordinate (in plot space)
+
+**Parameters:**
+* `double` x
+* `double` y
+
+**Returns:**
+* `ValueTuple<T>`
+
 ## GetPixelX()
-_Retrun the pixel location of the given coordinate (in plot space)_
-* Returns `Single`
-* Parameters
-  * `double` **`x`**
+
+**Summary:** Retrun the pixel location of the given coordinate (in plot space)
+
+**Parameters:**
+* `double` x
+
+**Returns:**
+* `float`
+
 ## GetPixelY()
-_Retrun the pixel location of the given coordinate (in plot space)_
-* Returns `Single`
-* Parameters
-  * `double` **`y`**
+
+**Summary:** Retrun the pixel location of the given coordinate (in plot space)
+
+**Parameters:**
+* `double` y
+
+**Returns:**
+* `float`
+
 ## GetPlottables()
-***ERROR: XML DOCS NOT FOUND!***
-* Returns `ScottPlot.Plottable.IPlottable[]`
-* Parameters
+
+**Summary:** Return a copy of the list of plottables
+
+**Parameters:**
+
+**Returns:**
+* `ScottPlot.Plottable.IPlottable[]`
+
 ## GetSettings()
-_Get access to the plot settings module (not exposed by default because its internal API changes frequently)_
-* Returns `ScottPlot.Settings`
-* Parameters
-  * `Boolean` **`showWarning`**
+
+**Summary:** Get access to the plot settings module (not exposed by default because its internal API changes frequently)
+
+**Parameters:**
+* `Boolean` showWarning
+
+**Returns:**
+* `ScottPlot.Settings`
+
 ## GetType()
-***ERROR: XML DOCS NOT FOUND!***
-* Returns `Type`
-* Parameters
+
+> **WARNING:** This method does not have XML documentation
+
+**Parameters:**
+
+**Returns:**
+* `Type`
+
 ## Grid()
-_Customize basic options for the primary X and Y axes. 
-            Call XAxis and YAxis methods to further customize individual axes._
-* Returns `Void`
-* Parameters
-  * `Boolean?` **`enable`**
-  * `System.Drawing.Color?` **`color`**
-  * `ScottPlot.LineStyle?` **`lineStyle`**
+
+**Summary:** Customize basic options for the primary X and Y axes. Call XAxis and YAxis methods to further customize individual axes.
+
+**Parameters:**
+* `Boolean?` enable
+* `Drawing.Color?` color
+* `ScottPlot.LineStyle?` lineStyle
+
+**Returns:**
+* `Void`
+
 ## Layout()
-_Set padding around the data area by defining the minimum size and padding for all axes_
-* Returns `Void`
-* Parameters
-  * `Single?` **`left`**
-  * `Single?` **`right`**
-  * `Single?` **`bottom`**
-  * `Single?` **`top`**
-  * `Single?` **`padding`**
+
+**Summary:** Set padding around the data area by defining the minimum size and padding for all axes
+
+**Parameters:**
+* `Single?` left
+* `Single?` right
+* `Single?` bottom
+* `Single?` top
+* `Single?` padding
+
+**Returns:**
+* `Void`
+
 ## Legend()
-_Set legend visibility and location. Save the returned object for additional customizations._
-* Returns `ScottPlot.Renderable.Legend`
-* Parameters
-  * `Boolean` **`enable`**
-  * `ScottPlot.Alignment` **`location`**
+
+**Summary:** Set legend visibility and location. Save the returned object for additional customizations.
+
+**Parameters:**
+* `Boolean` enable
+* `ScottPlot.Alignment` location
+
+**Returns:**
+* `ScottPlot.Renderable.Legend`
+
 ## MatchLayout()
-_Adjust this axis layout based on the layout of a source plot_
-* Returns `Void`
-* Parameters
-  * `ScottPlot.Plot` **`sourcePlot`**
-  * `Boolean` **`horizontal`**
-  * `Boolean` **`vertical`**
+
+**Summary:** Adjust this axis layout based on the layout of a source plot
+
+**Parameters:**
+* `ScottPlot.Plot` sourcePlot
+* `Boolean` horizontal
+* `Boolean` vertical
+
+**Returns:**
+* `Void`
+
 ## Remove()
-_Remove a specific plottable_
-* Returns `Void`
-* Parameters
-  * `ScottPlot.Plottable.IPlottable` **`plottable`**
+
+**Summary:** Remove a specific plottable
+
+**Parameters:**
+* `ScottPlot.Plottable.IPlottable` plottable
+
+**Returns:**
+* `Void`
+
 ## Render()
-_Render the plot onto a new Bitmap (using size defined by Plot.Width and Plot.Height)_
-* Returns `System.Drawing.Bitmap`
-* Parameters
-  * `Boolean` **`lowQuality`**
+
+**Summary:** Render the plot onto a new Bitmap (using size defined by Plot.Width and Plot.Height)
+
+**Parameters:**
+* `Boolean` lowQuality
+
+**Returns:**
+* `Drawing.Bitmap`
+
 ## Render()
-_Render the plot onto a new Bitmap of the given dimensions_
-* Returns `System.Drawing.Bitmap`
-* Parameters
-  * `int` **`width`**
-  * `int` **`height`**
-  * `Boolean` **`lowQuality`**
+
+**Summary:** Render the plot onto a new Bitmap of the given dimensions
+
+**Parameters:**
+* `int` width
+* `int` height
+* `Boolean` lowQuality
+
+**Returns:**
+* `Drawing.Bitmap`
+
 ## Render()
-_Render the plot onto an existing bitmap_
-* Returns `System.Drawing.Bitmap`
-* Parameters
-  * `System.Drawing.Bitmap` **`bmp`**
-  * `Boolean` **`lowQuality`**
+
+**Summary:** Render the plot onto an existing bitmap
+
+**Parameters:**
+* `Drawing.Bitmap` bmp
+* `Boolean` lowQuality
+
+**Returns:**
+* `Drawing.Bitmap`
+
 ## RenderLock()
-***ERROR: XML DOCS NOT FOUND!***
-* Returns `Void`
-* Parameters
+
+**Summary:** Wait for the current render to finish, then prevent future renders until RenderUnlock() is called.
+
+**Parameters:**
+
+**Returns:**
+* `Void`
+
 ## RenderUnlock()
-***ERROR: XML DOCS NOT FOUND!***
-* Returns `Void`
-* Parameters
+
+**Summary:** Release the render lock, allowing renders to proceed.
+
+**Parameters:**
+
+**Returns:**
+* `Void`
+
 ## SaveFig()
-_Save the plot as an image file and return the full path of the new file_
-* Returns `String`
-* Parameters
-  * `string` **`filePath`**
+
+**Summary:** Save the plot as an image file and return the full path of the new file
+
+**Parameters:**
+* `string` filePath
+
+**Returns:**
+* `string`
+
 ## SetAxisLimits()
-_Set limits for the given axes_
-* Returns `Void`
-* Parameters
-  * `Double?` **`xMin`**
-  * `Double?` **`xMax`**
-  * `Double?` **`yMin`**
-  * `Double?` **`yMax`**
-  * `int` **`xAxisIndex`**
-  * `int` **`yAxisIndex`**
+
+**Summary:** Set limits for the given axes
+
+**Parameters:**
+* `Double?` xMin
+* `Double?` xMax
+* `Double?` yMin
+* `Double?` yMax
+* `int` xAxisIndex
+* `int` yAxisIndex
+
+**Returns:**
+* `Void`
+
 ## SetAxisLimits()
-_Set limits for the given axes_
-* Returns `Void`
-* Parameters
-  * `ScottPlot.AxisLimits` **`limits`**
-  * `int` **`xAxisIndex`**
-  * `int` **`yAxisIndex`**
+
+**Summary:** Set limits for the given axes
+
+**Parameters:**
+* `ScottPlot.AxisLimits` limits
+* `int` xAxisIndex
+* `int` yAxisIndex
+
+**Returns:**
+* `Void`
+
 ## SetAxisLimitsX()
-_Set limits for the primary X axis_
-* Returns `Void`
-* Parameters
-  * `double` **`xMin`**
-  * `double` **`xMax`**
+
+**Summary:** Set limits for the primary X axis
+
+**Parameters:**
+* `double` xMin
+* `double` xMax
+
+**Returns:**
+* `Void`
+
 ## SetAxisLimitsY()
-_Set limits for the primary Y axis_
-* Returns `Void`
-* Parameters
-  * `double` **`yMin`**
-  * `double` **`yMax`**
+
+**Summary:** Set limits for the primary Y axis
+
+**Parameters:**
+* `double` yMin
+* `double` yMax
+
+**Returns:**
+* `Void`
+
 ## SetCulture()
-_Set the culture to use for number-to-string converstion for tick labels of all axes_
-* Returns `Void`
-* Parameters
-  * `Globalization.CultureInfo` **`culture`**
+
+**Summary:** Set the culture to use for number-to-string converstion for tick labels of all axes
+
+**Parameters:**
+* `Globalization.CultureInfo` culture
+
+**Returns:**
+* `Void`
+
 ## SetCulture()
-_Set the culture to use for number-to-string converstion for tick labels of all axes_
-* Returns `Void`
-* Parameters
-  * `string` **`shortDatePattern`**
-  * `string` **`decimalSeparator`**
-  * `string` **`numberGroupSeparator`**
-  * `Int32?` **`decimalDigits`**
-  * `Int32?` **`numberNegativePattern`**
-  * `Int32[]` **`numberGroupSizes`**
+
+**Summary:** Set the culture to use for number-to-string converstion for tick labels of all axes
+
+**Parameters:**
+* `string` shortDatePattern
+* `string` decimalSeparator
+* `string` numberGroupSeparator
+* `Int32?` decimalDigits
+* `Int32?` numberNegativePattern
+* `Int32[]` numberGroupSizes
+
+**Returns:**
+* `Void`
+
 ## SetSize()
-_Set the default size for new renders_
-* Returns `Void`
-* Parameters
-  * `float` **`width`**
-  * `float` **`height`**
+
+**Summary:** Set the default size for new renders
+
+**Parameters:**
+* `float` width
+* `float` height
+
+**Returns:**
+* `Void`
+
 ## SetViewLimits()
-_Set limits of the view for the primary axes (you cannot zoom, pan, or set axis limits beyond these boundaries)_
-* Returns `Void`
-* Parameters
-  * `double` **`xMin`**
-  * `double` **`xMax`**
-  * `double` **`yMin`**
-  * `double` **`yMax`**
+
+**Summary:** Set limits of the view for the primary axes (you cannot zoom, pan, or set axis limits beyond these boundaries)
+
+**Parameters:**
+* `double` xMin
+* `double` xMax
+* `double` yMin
+* `double` yMax
+
+**Returns:**
+* `Void`
+
 ## Style()
-_Set colors of all plot components using pre-defined styles_
-* Returns `Void`
-* Parameters
-  * `ScottPlot.Style` **`style`**
+
+**Summary:** Set colors of all plot components using pre-defined styles
+
+**Parameters:**
+* `ScottPlot.Style` style
+
+**Returns:**
+* `Void`
+
 ## Style()
-_Set the color of specific plot components_
-* Returns `Void`
-* Parameters
-  * `System.Drawing.Color?` **`figureBackground`**
-  * `System.Drawing.Color?` **`dataBackground`**
-  * `System.Drawing.Color?` **`grid`**
-  * `System.Drawing.Color?` **`tick`**
-  * `System.Drawing.Color?` **`axisLabel`**
-  * `System.Drawing.Color?` **`titleLabel`**
+
+**Summary:** Set the color of specific plot components
+
+**Parameters:**
+* `Drawing.Color?` figureBackground
+* `Drawing.Color?` dataBackground
+* `Drawing.Color?` grid
+* `Drawing.Color?` tick
+* `Drawing.Color?` axisLabel
+* `Drawing.Color?` titleLabel
+
+**Returns:**
+* `Void`
+
 ## Title()
-_Set the label for the horizontal axis above the plot (XAxis2)._
-* Returns `Void`
-* Parameters
-  * `string` **`label`**
-  * `Boolean` **`bold`**
+
+**Summary:** Set the label for the horizontal axis above the plot (XAxis2).
+
+**Parameters:**
+* `string` label
+* `Boolean` bold
+
+**Returns:**
+* `Void`
+
 ## ToString()
-***ERROR: XML DOCS NOT FOUND!***
-* Returns `String`
-* Parameters
+
+> **WARNING:** This method does not have XML documentation
+
+**Parameters:**
+
+**Returns:**
+* `string`
+
 ## Validate()
-_Throw an exception if any plottable contains an invalid state. Deep validation is more thorough but slower._
-* Returns `Void`
-* Parameters
-  * `Boolean` **`deep`**
+
+**Summary:** Throw an exception if any plottable contains an invalid state. Deep validation is more thorough but slower.
+
+**Parameters:**
+* `Boolean` deep
+
+**Returns:**
+* `Void`
+
 ## XLabel()
-_Set the label for the vertical axis to the right of the plot (XAxis)._
-* Returns `Void`
-* Parameters
-  * `string` **`label`**
+
+**Summary:** Set the label for the vertical axis to the right of the plot (XAxis).
+
+**Parameters:**
+* `string` label
+
+**Returns:**
+* `Void`
+
 ## XTicks()
-_Manually define X axis tick labels_
-* Returns `Void`
-* Parameters
-  * `string[]` **`labels`**
+
+**Summary:** Manually define X axis tick labels
+
+**Parameters:**
+* `String[]` labels
+
+**Returns:**
+* `Void`
+
 ## XTicks()
-_Manually define X axis tick positions and labels_
-* Returns `Void`
-* Parameters
-  * `double[]` **`positions`**
-  * `string[]` **`labels`**
+
+**Summary:** Manually define X axis tick positions and labels
+
+**Parameters:**
+* `Double[]` positions
+* `String[]` labels
+
+**Returns:**
+* `Void`
+
 ## YLabel()
-_Set the label for the vertical axis to the right of the plot (YAxis2)._
-* Returns `Void`
-* Parameters
-  * `string` **`label`**
+
+**Summary:** Set the label for the vertical axis to the right of the plot (YAxis2).
+
+**Parameters:**
+* `string` label
+
+**Returns:**
+* `Void`
+
 ## YTicks()
-_Manually define Y axis tick labels_
-* Returns `Void`
-* Parameters
-  * `string[]` **`labels`**
+
+**Summary:** Manually define Y axis tick labels
+
+**Parameters:**
+* `String[]` labels
+
+**Returns:**
+* `Void`
+
 ## YTicks()
-_Manually define Y axis tick positions and labels_
-* Returns `Void`
-* Parameters
-  * `double[]` **`positions`**
-  * `string[]` **`labels`**
+
+**Summary:** Manually define Y axis tick positions and labels
+
+**Parameters:**
+* `Double[]` positions
+* `String[]` labels
+
+**Returns:**
+* `Void`

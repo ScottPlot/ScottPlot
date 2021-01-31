@@ -39,6 +39,20 @@ namespace ScottPlot.Cookbook
         }
 
         /// <summary>
+        /// Return the XML summary of the given method, or NULL if it doesn't exist
+        /// </summary>
+        public string GetSummary(MethodInfo mi)
+        {
+            string xmlName = XmlName(mi);
+            foreach (var m in Methods)
+            {
+                if (m.Name == xmlName)
+                    return m.Summary;
+            }
+            return null;
+        }
+
+        /// <summary>
         /// Return the member name of a method as it would appear in the XML documentation
         /// </summary>
         public static string XmlName(MethodInfo mi)
@@ -79,39 +93,34 @@ namespace ScottPlot.Cookbook
         }
 
         /// <summary>
-        /// Return a pretty description of the full method
+        /// Return common forms of common types
         /// </summary>
         /// <returns></returns>
-        public static string MethodSignature(MethodInfo mi)
+        public static string PrettyType(Type type)
         {
-            string name = mi.DeclaringType.FullName + "." + mi.Name;
-            if (mi.IsGenericMethod)
-                name += "<T>";
-            List<string> paramLabels = new List<string>();
-            foreach (var p in mi.GetParameters())
+            string pretty = type.FullName ?? type.Name;
+
+            // special case for nullables
+            if (pretty.Contains("Nullable"))
+                pretty = type.FullName.Split(',')[0].Split('[').Last() + "?";
+
+            // special case for generics
+            if (pretty.Contains("`") && !pretty.Contains("``") && !pretty.Contains("Nullable"))
+                pretty = pretty.Split('`')[0] + "<T>";
+
+            // TODO: add more replacements for language shortcuts
+            pretty = pretty.Replace("System.", "");
+            pretty = pretty switch
             {
-                string paramType = p.ParameterType.Name;
-                if (p.ToString().Contains("Nullable"))
-                    paramType = p.ToString().Split('[')[1].Split(']')[0];
+                "String" => "string",
+                "Double" => "double",
+                "Single" => "float",
+                "Byte" => "byte",
+                "Int32" => "int",
+                _ => pretty
+            };
 
-                // TODO: add more replacements for language shortcuts
-                paramType = paramType.Replace("System.", "");
-                paramType = paramType switch
-                {
-                    "String" => "string",
-                    "Double" => "double",
-                    "Single" => "float",
-                    "Byte" => "byte",
-                    "Int32" => "int",
-                    _ => paramType
-                };
-
-                if (p.ToString().Contains("Nullable"))
-                    paramType += "?";
-                paramLabels.Add($"{paramType} {p.Name}");
-            }
-            string sig = name + "(" + string.Join(", ", paramLabels) + ")";
-            return sig;
+            return pretty;
         }
     }
 }

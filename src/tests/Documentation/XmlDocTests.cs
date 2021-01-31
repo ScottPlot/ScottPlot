@@ -11,13 +11,10 @@ namespace ScottPlotTests.Documentation
     class XmlDocTests
     {
         private ScottPlot.Cookbook.XmlDoc XD;
+        string XmlPath = "../../../../../src/ScottPlot/ScottPlot.xml";
 
         [OneTimeSetUp]
-        public void LoadDocs()
-        {
-            string xmlPath = "../../../../../src/ScottPlot/ScottPlot.xml";
-            XD = new ScottPlot.Cookbook.XmlDoc(xmlPath);
-        }
+        public void LoadDocs() => XD = new ScottPlot.Cookbook.XmlDoc(XmlPath);
 
         [Test]
         public void Test_XML_Load()
