@@ -43,7 +43,7 @@ namespace ScottPlotTests.Documentation
                 if (obsolete)
                     continue;
                 string summary = XD.GetSummary(mi);
-                sb.AppendLine($"[**{mi.Name}()**](#{mi.Name}())|{summary}");
+                sb.AppendLine($"[**{mi.Name}**](#{mi.Name})|{summary}");
             }
 
             //
@@ -59,7 +59,7 @@ namespace ScottPlotTests.Documentation
                 if (obsolete)
                     continue;
                 string summary = XD.GetSummary(mi);
-                sb.AppendLine($"[**{mi.Name}()**](#{mi.Name}())|{summary}");
+                sb.AppendLine($"[**{mi.Name}**](#{mi.Name})|{summary}");
             }
 
             // add a section for each method
