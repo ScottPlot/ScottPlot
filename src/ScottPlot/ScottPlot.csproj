@@ -34,6 +34,10 @@ Release demo: https://swharden.com/scottplot/demo</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/swharden/ScottPlot</RepositoryUrl>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net461|AnyCPU'">
+    <DocumentationFile>C:\Users\scott\Documents\GitHub\ScottPlot\src\ScottPlot\ScottPlot.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="System.Drawing.Common" Version="5.0.0" />
     <None Include="icon.png" Pack="true" PackagePath="\" />
