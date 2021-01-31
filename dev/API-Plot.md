@@ -5,120 +5,120 @@ This document was generated for `ScottPlot 4.1.4-beta`
 ### Methods to Manipulate the Plot
 Method | Summary
 ---|---
-[**Add()**](#Add())|Add a plottable to the plot
-[**AddAxis()**](#AddAxis())|Create and return an additional axis
-[**AxisAuto()**](#AxisAuto())|Automatically adjust axis limits to fit the data (with a little extra margin)
-[**AxisAutoX()**](#AxisAutoX())|Automatically adjust axis limits to fit the data (with a little extra margin)
-[**AxisAutoY()**](#AxisAutoY())|Automatically adjust axis limits to fit the data (with a little extra margin)
-[**AxisPan()**](#AxisPan())|Pan by a delta defined in coordinates
-[**AxisScale()**](#AxisScale())|Adjust axis limits to achieve a certain pixel scale (units per pixel)
-[**AxisScaleLock()**](#AxisScaleLock())|Lock X and Y axis scales (units per pixel) together to protect symmetry of circles and squares
-[**AxisZoom()**](#AxisZoom())|Zoom by a fraction (zoom in if fraction > 1)
-[**Benchmark()**](#Benchmark())|Display render benchmark information on the plot
-[**BenchmarkToggle()**](#BenchmarkToggle())|
-[**Clear()**](#Clear())|Clear all plottables
-[**Clear()**](#Clear())|Remove all plottables of the given type
-[**Colorset()**](#Colorset())|Change the default color palette for new plottables
-[**Copy()**](#Copy())|Return a new Plot with all the same Plottables (and some of the styles) of this one. This is called when you right-click a plot in a control and hit "open in new window".
-[**Equals()**](#Equals())|
-[**Frame()**](#Frame())|Configure color and visibility of the frame that outlines the data area (lines along the edges of the primary axes)
-[**Frameless()**](#Frameless())|Set size of the primary axes to zero so the data area covers the whole figure
-[**get_Version()**](#get_Version())|
-[**get_XAxis()**](#get_XAxis())|
-[**get_XAxis2()**](#get_XAxis2())|
-[**get_YAxis()**](#get_YAxis())|
-[**get_YAxis2()**](#get_YAxis2())|
-[**GetAxisLimits()**](#GetAxisLimits())|Get limits for the given axes
-[**GetCoordinate()**](#GetCoordinate())|Retrun the coordinate (in plot space) for the given pixel
-[**GetCoordinateX()**](#GetCoordinateX())|Retrun the coordinate (in plot space) for the given pixel
-[**GetCoordinateY()**](#GetCoordinateY())|Retrun the coordinate (in plot space) for the given pixel
-[**GetDraggables()**](#GetDraggables())|Return a copy of the list of draggable plottables
-[**GetDraggableUnderMouse()**](#GetDraggableUnderMouse())|Return the draggable plottable under the mouse cursor (or null if there isn't one)
-[**GetHashCode()**](#GetHashCode())|
-[**GetLegendBitmap()**](#GetLegendBitmap())|Return a new Bitmap containing only the legend
-[**GetNextColor()**](#GetNextColor())|Return a new color from the Pallette based on the number of plottables already in the plot. Use this to ensure every plottable gets a unique color.
-[**GetPixel()**](#GetPixel())|Retrun the pixel location of the given coordinate (in plot space)
-[**GetPixelX()**](#GetPixelX())|Retrun the pixel location of the given coordinate (in plot space)
-[**GetPixelY()**](#GetPixelY())|Retrun the pixel location of the given coordinate (in plot space)
-[**GetPlottables()**](#GetPlottables())|Return a copy of the list of plottables
-[**GetSettings()**](#GetSettings())|Get access to the plot settings module (not exposed by default because its internal API changes frequently)
-[**GetType()**](#GetType())|
-[**Grid()**](#Grid())|Customize basic options for the primary X and Y axes. Call XAxis and YAxis methods to further customize individual axes.
-[**Layout()**](#Layout())|Set padding around the data area by defining the minimum size and padding for all axes
-[**Legend()**](#Legend())|Set legend visibility and location. Save the returned object for additional customizations.
-[**MatchLayout()**](#MatchLayout())|Adjust this axis layout based on the layout of a source plot
-[**Remove()**](#Remove())|Remove a specific plottable
-[**Render()**](#Render())|Render the plot onto a new Bitmap (using size defined by Plot.Width and Plot.Height)
-[**Render()**](#Render())|Render the plot onto a new Bitmap of the given dimensions
-[**Render()**](#Render())|Render the plot onto an existing bitmap
-[**RenderLock()**](#RenderLock())|Wait for the current render to finish, then prevent future renders until RenderUnlock() is called.
-[**RenderUnlock()**](#RenderUnlock())|Release the render lock, allowing renders to proceed.
-[**SaveFig()**](#SaveFig())|Save the plot as an image file and return the full path of the new file
-[**SetAxisLimits()**](#SetAxisLimits())|Set limits for the given axes
-[**SetAxisLimits()**](#SetAxisLimits())|Set limits for the given axes
-[**SetAxisLimitsX()**](#SetAxisLimitsX())|Set limits for the primary X axis
-[**SetAxisLimitsY()**](#SetAxisLimitsY())|Set limits for the primary Y axis
-[**SetCulture()**](#SetCulture())|Set the culture to use for number-to-string converstion for tick labels of all axes
-[**SetCulture()**](#SetCulture())|Set the culture to use for number-to-string converstion for tick labels of all axes
-[**SetSize()**](#SetSize())|Set the default size for new renders
-[**SetViewLimits()**](#SetViewLimits())|Set limits of the view for the primary axes (you cannot zoom, pan, or set axis limits beyond these boundaries)
-[**Style()**](#Style())|Set colors of all plot components using pre-defined styles
-[**Style()**](#Style())|Set the color of specific plot components
-[**Title()**](#Title())|Set the label for the horizontal axis above the plot (XAxis2).
-[**ToString()**](#ToString())|
-[**Validate()**](#Validate())|Throw an exception if any plottable contains an invalid state. Deep validation is more thorough but slower.
-[**XLabel()**](#XLabel())|Set the label for the vertical axis to the right of the plot (XAxis).
-[**XTicks()**](#XTicks())|Manually define X axis tick labels
-[**XTicks()**](#XTicks())|Manually define X axis tick positions and labels
-[**YLabel()**](#YLabel())|Set the label for the vertical axis to the right of the plot (YAxis2).
-[**YTicks()**](#YTicks())|Manually define Y axis tick labels
-[**YTicks()**](#YTicks())|Manually define Y axis tick positions and labels
+[**Add**](#Add)|Add a plottable to the plot
+[**AddAxis**](#AddAxis)|Create and return an additional axis
+[**AxisAuto**](#AxisAuto)|Automatically adjust axis limits to fit the data (with a little extra margin)
+[**AxisAutoX**](#AxisAutoX)|Automatically adjust axis limits to fit the data (with a little extra margin)
+[**AxisAutoY**](#AxisAutoY)|Automatically adjust axis limits to fit the data (with a little extra margin)
+[**AxisPan**](#AxisPan)|Pan by a delta defined in coordinates
+[**AxisScale**](#AxisScale)|Adjust axis limits to achieve a certain pixel scale (units per pixel)
+[**AxisScaleLock**](#AxisScaleLock)|Lock X and Y axis scales (units per pixel) together to protect symmetry of circles and squares
+[**AxisZoom**](#AxisZoom)|Zoom by a fraction (zoom in if fraction > 1)
+[**Benchmark**](#Benchmark)|Display render benchmark information on the plot
+[**BenchmarkToggle**](#BenchmarkToggle)|
+[**Clear**](#Clear)|Clear all plottables
+[**Clear**](#Clear)|Remove all plottables of the given type
+[**Colorset**](#Colorset)|Change the default color palette for new plottables
+[**Copy**](#Copy)|Return a new Plot with all the same Plottables (and some of the styles) of this one. This is called when you right-click a plot in a control and hit "open in new window".
+[**Equals**](#Equals)|
+[**Frame**](#Frame)|Configure color and visibility of the frame that outlines the data area (lines along the edges of the primary axes)
+[**Frameless**](#Frameless)|Set size of the primary axes to zero so the data area covers the whole figure
+[**get_Version**](#get_Version)|
+[**get_XAxis**](#get_XAxis)|
+[**get_XAxis2**](#get_XAxis2)|
+[**get_YAxis**](#get_YAxis)|
+[**get_YAxis2**](#get_YAxis2)|
+[**GetAxisLimits**](#GetAxisLimits)|Get limits for the given axes
+[**GetCoordinate**](#GetCoordinate)|Retrun the coordinate (in plot space) for the given pixel
+[**GetCoordinateX**](#GetCoordinateX)|Retrun the coordinate (in plot space) for the given pixel
+[**GetCoordinateY**](#GetCoordinateY)|Retrun the coordinate (in plot space) for the given pixel
+[**GetDraggables**](#GetDraggables)|Return a copy of the list of draggable plottables
+[**GetDraggableUnderMouse**](#GetDraggableUnderMouse)|Return the draggable plottable under the mouse cursor (or null if there isn't one)
+[**GetHashCode**](#GetHashCode)|
+[**GetLegendBitmap**](#GetLegendBitmap)|Return a new Bitmap containing only the legend
+[**GetNextColor**](#GetNextColor)|Return a new color from the Pallette based on the number of plottables already in the plot. Use this to ensure every plottable gets a unique color.
+[**GetPixel**](#GetPixel)|Retrun the pixel location of the given coordinate (in plot space)
+[**GetPixelX**](#GetPixelX)|Retrun the pixel location of the given coordinate (in plot space)
+[**GetPixelY**](#GetPixelY)|Retrun the pixel location of the given coordinate (in plot space)
+[**GetPlottables**](#GetPlottables)|Return a copy of the list of plottables
+[**GetSettings**](#GetSettings)|Get access to the plot settings module (not exposed by default because its internal API changes frequently)
+[**GetType**](#GetType)|
+[**Grid**](#Grid)|Customize basic options for the primary X and Y axes. Call XAxis and YAxis methods to further customize individual axes.
+[**Layout**](#Layout)|Set padding around the data area by defining the minimum size and padding for all axes
+[**Legend**](#Legend)|Set legend visibility and location. Save the returned object for additional customizations.
+[**MatchLayout**](#MatchLayout)|Adjust this axis layout based on the layout of a source plot
+[**Remove**](#Remove)|Remove a specific plottable
+[**Render**](#Render)|Render the plot onto a new Bitmap (using size defined by Plot.Width and Plot.Height)
+[**Render**](#Render)|Render the plot onto a new Bitmap of the given dimensions
+[**Render**](#Render)|Render the plot onto an existing bitmap
+[**RenderLock**](#RenderLock)|Wait for the current render to finish, then prevent future renders until RenderUnlock() is called.
+[**RenderUnlock**](#RenderUnlock)|Release the render lock, allowing renders to proceed.
+[**SaveFig**](#SaveFig)|Save the plot as an image file and return the full path of the new file
+[**SetAxisLimits**](#SetAxisLimits)|Set limits for the given axes
+[**SetAxisLimits**](#SetAxisLimits)|Set limits for the given axes
+[**SetAxisLimitsX**](#SetAxisLimitsX)|Set limits for the primary X axis
+[**SetAxisLimitsY**](#SetAxisLimitsY)|Set limits for the primary Y axis
+[**SetCulture**](#SetCulture)|Set the culture to use for number-to-string converstion for tick labels of all axes
+[**SetCulture**](#SetCulture)|Set the culture to use for number-to-string converstion for tick labels of all axes
+[**SetSize**](#SetSize)|Set the default size for new renders
+[**SetViewLimits**](#SetViewLimits)|Set limits of the view for the primary axes (you cannot zoom, pan, or set axis limits beyond these boundaries)
+[**Style**](#Style)|Set colors of all plot components using pre-defined styles
+[**Style**](#Style)|Set the color of specific plot components
+[**Title**](#Title)|Set the label for the horizontal axis above the plot (XAxis2).
+[**ToString**](#ToString)|
+[**Validate**](#Validate)|Throw an exception if any plottable contains an invalid state. Deep validation is more thorough but slower.
+[**XLabel**](#XLabel)|Set the label for the vertical axis to the right of the plot (XAxis).
+[**XTicks**](#XTicks)|Manually define X axis tick labels
+[**XTicks**](#XTicks)|Manually define X axis tick positions and labels
+[**YLabel**](#YLabel)|Set the label for the vertical axis to the right of the plot (YAxis2).
+[**YTicks**](#YTicks)|Manually define Y axis tick labels
+[**YTicks**](#YTicks)|Manually define Y axis tick positions and labels
 ### Shortcuts for Adding Plottables
 Method | Summary
 ---|---
-[**AddAnnotation()**](#AddAnnotation())|Display text in the data area at a pixel location (not a X/Y coordinates)
-[**AddArrow()**](#AddArrow())|Display an arrow pointing to a spot in coordinate space
-[**AddBar()**](#AddBar())|Add a bar plot for the given values. Bars will be placed at X positions 0, 1, 2, etc.
-[**AddBar()**](#AddBar())|Add a bar plot for the given values using defined bar positions
-[**AddBar()**](#AddBar())|Add a bar plot (values +/- errors) using defined positions
-[**AddBarGroups()**](#AddBarGroups())|Create a series of bar plots and customize the ticks and legend
-[**AddCandlesticks()**](#AddCandlesticks())|Add candlesticks to the chart from OHLC (open, high, low, close) data
-[**AddColorbar()**](#AddColorbar())|Add a colorbar to display a colormap beside the data area
-[**AddColorbar()**](#AddColorbar())|Add a colorbar initialized with settings from a heatmap
-[**AddFill()**](#AddFill())|Create a polygon to fill the area between Y values and a baseline.
-[**AddFill()**](#AddFill())|Create a polygon to fill the area between Y values of two curves.
-[**AddFillAboveAndBelow()**](#AddFillAboveAndBelow())|Create a polygon to fill the area between Y values and a baseline that uses two different colors for area above and area below the baseline.
-[**AddFunction()**](#AddFunction())|
-[**AddHeatmap()**](#AddHeatmap())|
-[**AddHorizontalLine()**](#AddHorizontalLine())|Add a horizontal axis line at a specific Y position
-[**AddHorizontalSpan()**](#AddHorizontalSpan())|Add a horizontal span (shades the region between two X positions)
-[**AddImage()**](#AddImage())|Display an image at a specific coordinate
-[**AddLine()**](#AddLine())|Add a line (a scatter plot with two points) to the plot
-[**AddLine()**](#AddLine())|
-[**AddOHLCs()**](#AddOHLCs())|Add OHLC (open, high, low, close) data to the plot
-[**AddPie()**](#AddPie())|Add a pie chart to the plot
-[**AddPoint()**](#AddPoint())|Add a point (a scatter plot with a single marker)
-[**AddPolygon()**](#AddPolygon())|Add a polygon to the plot
-[**AddPolygons()**](#AddPolygons())|
-[**AddPopulation()**](#AddPopulation())|Add a population to the plot
-[**AddPopulations()**](#AddPopulations())|Add multiple populations to the plot as a single series
-[**AddPopulations()**](#AddPopulations())|Add multiple populations to the plot as a single series
-[**AddRadar()**](#AddRadar())|
-[**AddScaleBar()**](#AddScaleBar())|Add an L-shaped scalebar to the corner of the plot
-[**AddScatter()**](#AddScatter())|Add a scatter plot from X/Y pairs. Lines and markers are shown by default. Scatter plots are slower than Signal plots.
-[**AddScatterLines()**](#AddScatterLines())|Add a scatter plot from X/Y pairs connected by lines (no markers). Scatter plots are slower than Signal plots.
-[**AddScatterList()**](#AddScatterList())|Scatter plot with Add() and Clear() methods for updating data
-[**AddScatterPoints()**](#AddScatterPoints())|Add a scatter plot from X/Y pairs using markers at points (no lines). Scatter plots are slower than Signal plots.
-[**AddSignal()**](#AddSignal())|Signal plots have evenly-spaced X points and render very fast.
-[**AddSignalConst()**](#AddSignalConst())|SignalConts plots have evenly-spaced X points and render faster than Signal plots but data in source arrays cannot be changed after it is loaded. Methods can be used to update all or portions of the data.
-[**AddSignalXY()**](#AddSignalXY())|Speed-optimized plot for Ys with unevenly-spaced ascending Xs
-[**AddSignalXYConst()**](#AddSignalXYConst())|Speed-optimized plot for Ys with unevenly-spaced ascending Xs. Faster than SignalXY but values cannot be modified after loading.
-[**AddText()**](#AddText())|Display text at specific X/Y coordinates
-[**AddText()**](#AddText())|Display text at specific X/Y coordinates
-[**AddTooltip()**](#AddTooltip())|Display a text bubble that points to an X/Y location on the plot
-[**AddVectorField()**](#AddVectorField())|
-[**AddVerticalLine()**](#AddVerticalLine())|Add a vertical axis line at a specific Y position
-[**AddVerticalSpan()**](#AddVerticalSpan())|Add a horizontal span (shades the region between two X positions)
+[**AddAnnotation**](#AddAnnotation)|Display text in the data area at a pixel location (not a X/Y coordinates)
+[**AddArrow**](#AddArrow)|Display an arrow pointing to a spot in coordinate space
+[**AddBar**](#AddBar)|Add a bar plot for the given values. Bars will be placed at X positions 0, 1, 2, etc.
+[**AddBar**](#AddBar)|Add a bar plot for the given values using defined bar positions
+[**AddBar**](#AddBar)|Add a bar plot (values +/- errors) using defined positions
+[**AddBarGroups**](#AddBarGroups)|Create a series of bar plots and customize the ticks and legend
+[**AddCandlesticks**](#AddCandlesticks)|Add candlesticks to the chart from OHLC (open, high, low, close) data
+[**AddColorbar**](#AddColorbar)|Add a colorbar to display a colormap beside the data area
+[**AddColorbar**](#AddColorbar)|Add a colorbar initialized with settings from a heatmap
+[**AddFill**](#AddFill)|Create a polygon to fill the area between Y values and a baseline.
+[**AddFill**](#AddFill)|Create a polygon to fill the area between Y values of two curves.
+[**AddFillAboveAndBelow**](#AddFillAboveAndBelow)|Create a polygon to fill the area between Y values and a baseline that uses two different colors for area above and area below the baseline.
+[**AddFunction**](#AddFunction)|
+[**AddHeatmap**](#AddHeatmap)|
+[**AddHorizontalLine**](#AddHorizontalLine)|Add a horizontal axis line at a specific Y position
+[**AddHorizontalSpan**](#AddHorizontalSpan)|Add a horizontal span (shades the region between two X positions)
+[**AddImage**](#AddImage)|Display an image at a specific coordinate
+[**AddLine**](#AddLine)|Add a line (a scatter plot with two points) to the plot
+[**AddLine**](#AddLine)|
+[**AddOHLCs**](#AddOHLCs)|Add OHLC (open, high, low, close) data to the plot
+[**AddPie**](#AddPie)|Add a pie chart to the plot
+[**AddPoint**](#AddPoint)|Add a point (a scatter plot with a single marker)
+[**AddPolygon**](#AddPolygon)|Add a polygon to the plot
+[**AddPolygons**](#AddPolygons)|
+[**AddPopulation**](#AddPopulation)|Add a population to the plot
+[**AddPopulations**](#AddPopulations)|Add multiple populations to the plot as a single series
+[**AddPopulations**](#AddPopulations)|Add multiple populations to the plot as a single series
+[**AddRadar**](#AddRadar)|
+[**AddScaleBar**](#AddScaleBar)|Add an L-shaped scalebar to the corner of the plot
+[**AddScatter**](#AddScatter)|Add a scatter plot from X/Y pairs. Lines and markers are shown by default. Scatter plots are slower than Signal plots.
+[**AddScatterLines**](#AddScatterLines)|Add a scatter plot from X/Y pairs connected by lines (no markers). Scatter plots are slower than Signal plots.
+[**AddScatterList**](#AddScatterList)|Scatter plot with Add() and Clear() methods for updating data
+[**AddScatterPoints**](#AddScatterPoints)|Add a scatter plot from X/Y pairs using markers at points (no lines). Scatter plots are slower than Signal plots.
+[**AddSignal**](#AddSignal)|Signal plots have evenly-spaced X points and render very fast.
+[**AddSignalConst**](#AddSignalConst)|SignalConts plots have evenly-spaced X points and render faster than Signal plots but data in source arrays cannot be changed after it is loaded. Methods can be used to update all or portions of the data.
+[**AddSignalXY**](#AddSignalXY)|Speed-optimized plot for Ys with unevenly-spaced ascending Xs
+[**AddSignalXYConst**](#AddSignalXYConst)|Speed-optimized plot for Ys with unevenly-spaced ascending Xs. Faster than SignalXY but values cannot be modified after loading.
+[**AddText**](#AddText)|Display text at specific X/Y coordinates
+[**AddText**](#AddText)|Display text at specific X/Y coordinates
+[**AddTooltip**](#AddTooltip)|Display a text bubble that points to an X/Y location on the plot
+[**AddVectorField**](#AddVectorField)|
+[**AddVerticalLine**](#AddVerticalLine)|Add a vertical axis line at a specific Y position
+[**AddVerticalSpan**](#AddVerticalSpan)|Add a horizontal span (shades the region between two X positions)
 
 ## Add()
 
