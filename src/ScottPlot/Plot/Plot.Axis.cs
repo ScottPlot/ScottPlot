@@ -220,34 +220,34 @@ namespace ScottPlot
         #region coordinate/pixel conversions
 
         /// <summary>
-        /// Retrun the coordinate (in plot space) for the given pixel
+        /// Return the coordinate (in plot space) for the given pixel
         /// </summary>
         public (double x, double y) GetCoordinate(float xPixel, float yPixel) =>
             (settings.XAxis.Dims.GetUnit(xPixel), settings.YAxis.Dims.GetUnit(yPixel));
 
         /// <summary>
-        /// Retrun the coordinate (in plot space) for the given pixel
+        /// Return the X position (in plot space) for the given pixel column
         /// </summary>
         public double GetCoordinateX(float xPixel) => settings.XAxis.Dims.GetUnit(xPixel);
 
         /// <summary>
-        /// Retrun the coordinate (in plot space) for the given pixel
+        /// Return the Y position (in plot space) for the given pixel row
         /// </summary>
         public double GetCoordinateY(float yPixel) => settings.YAxis.Dims.GetUnit(yPixel);
 
         /// <summary>
-        /// Retrun the pixel location of the given coordinate (in plot space)
+        /// Return the pixel location of the given coordinate (in plot space)
         /// </summary>
         public (float xPixel, float yPixel) GetPixel(double x, double y) =>
             (settings.XAxis.Dims.GetPixel(x), settings.YAxis.Dims.GetPixel(y));
 
         /// <summary>
-        /// Retrun the pixel location of the given coordinate (in plot space)
+        /// Return the pixel column of the given horizontal coordinate (in plot space)
         /// </summary>
         public float GetPixelX(double x) => settings.XAxis.Dims.GetPixel(x);
 
         /// <summary>
-        /// Retrun the pixel location of the given coordinate (in plot space)
+        /// Return the pixel row of the given vertical coordinate (in plot space)
         /// </summary>
         public float GetPixelY(double y) => settings.YAxis.Dims.GetPixel(y);
 

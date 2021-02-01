@@ -22,18 +22,18 @@ Method | Summary
 [**Frame**](#Frame)|Configure color and visibility of the frame that outlines the data area (lines along the edges of the primary axes)
 [**Frameless**](#Frameless)|Give the plot a frameless appearance by setting the size of all axes to zero. This causes the data area to go right up to the edge of the plot.
 [**GetAxisLimits**](#GetAxisLimits)|Get limits for the given axes
-[**GetCoordinate**](#GetCoordinate)|Retrun the coordinate (in plot space) for the given pixel
-[**GetCoordinateX**](#GetCoordinateX)|Retrun the coordinate (in plot space) for the given pixel
-[**GetCoordinateY**](#GetCoordinateY)|Retrun the coordinate (in plot space) for the given pixel
+[**GetCoordinate**](#GetCoordinate)|Return the coordinate (in plot space) for the given pixel
+[**GetCoordinateX**](#GetCoordinateX)|Return the X position (in plot space) for the given pixel column
+[**GetCoordinateY**](#GetCoordinateY)|Return the Y position (in plot space) for the given pixel row
 [**GetDraggables**](#GetDraggables)|Return a copy of the list of draggable plottables
 [**GetDraggableUnderMouse**](#GetDraggableUnderMouse)|Return the draggable plottable under the mouse cursor (or null if there isn't one)
 [**GetGuid**](#GetGuid)|Every plot has a globally unique ID (GUID)
 [**GetHashCode**](#GetHashCode)|Returns an integer unique to this instance (based on the GUID)
 [**GetLegendBitmap**](#GetLegendBitmap)|Return a new Bitmap containing only the legend
 [**GetNextColor**](#GetNextColor)|Return a new color from the Pallette based on the number of plottables already in the plot. Use this to ensure every plottable gets a unique color.
-[**GetPixel**](#GetPixel)|Retrun the pixel location of the given coordinate (in plot space)
-[**GetPixelX**](#GetPixelX)|Retrun the pixel location of the given coordinate (in plot space)
-[**GetPixelY**](#GetPixelY)|Retrun the pixel location of the given coordinate (in plot space)
+[**GetPixel**](#GetPixel)|Return the pixel location of the given coordinate (in plot space)
+[**GetPixelX**](#GetPixelX)|Return the pixel column of the given horizontal coordinate (in plot space)
+[**GetPixelY**](#GetPixelY)|Return the pixel row of the given vertical coordinate (in plot space)
 [**GetPlottables**](#GetPlottables)|Return a copy of the list of plottables
 [**GetSettings**](#GetSettings)|Get access to the plot settings module (not exposed by default because its internal API changes frequently)
 [**GetType**](#GetType)|
@@ -859,7 +859,7 @@ Method | Summary
 
 ## GetCoordinate()
 
-**Summary:** Retrun the coordinate (in plot space) for the given pixel
+**Summary:** Return the coordinate (in plot space) for the given pixel
 
 **Parameters:**
 * `float` xPixel
@@ -870,7 +870,7 @@ Method | Summary
 
 ## GetCoordinateX()
 
-**Summary:** Retrun the coordinate (in plot space) for the given pixel
+**Summary:** Return the X position (in plot space) for the given pixel column
 
 **Parameters:**
 * `float` xPixel
@@ -880,7 +880,7 @@ Method | Summary
 
 ## GetCoordinateY()
 
-**Summary:** Retrun the coordinate (in plot space) for the given pixel
+**Summary:** Return the Y position (in plot space) for the given pixel row
 
 **Parameters:**
 * `float` yPixel
@@ -948,7 +948,7 @@ Method | Summary
 
 ## GetPixel()
 
-**Summary:** Retrun the pixel location of the given coordinate (in plot space)
+**Summary:** Return the pixel location of the given coordinate (in plot space)
 
 **Parameters:**
 * `double` x
@@ -959,7 +959,7 @@ Method | Summary
 
 ## GetPixelX()
 
-**Summary:** Retrun the pixel location of the given coordinate (in plot space)
+**Summary:** Return the pixel column of the given horizontal coordinate (in plot space)
 
 **Parameters:**
 * `double` x
@@ -969,7 +969,7 @@ Method | Summary
 
 ## GetPixelY()
 
-**Summary:** Retrun the pixel location of the given coordinate (in plot space)
+**Summary:** Return the pixel row of the given vertical coordinate (in plot space)
 
 **Parameters:**
 * `double` y
