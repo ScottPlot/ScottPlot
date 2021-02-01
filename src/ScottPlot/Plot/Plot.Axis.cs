@@ -43,17 +43,17 @@ namespace ScottPlot
         #region shortcuts: axis label, tick, and grid
 
         /// <summary>
-        /// Set the label for the vertical axis to the right of the plot (XAxis). 
+        /// Set the label for the vertical axis to the right of the plot (XAxis)
         /// </summary>
         public void XLabel(string label) => XAxis.Label(label);
 
         /// <summary>
-        /// Set the label for the vertical axis to the right of the plot (YAxis2). 
+        /// Set the label for the vertical axis to the right of the plot (YAxis2)
         /// </summary>
         public void YLabel(string label) => YAxis.Label(label);
 
         /// <summary>
-        /// Set the label for the horizontal axis above the plot (XAxis2). 
+        /// Set the label for the horizontal axis above the plot (XAxis2)
         /// </summary>
         public void Title(string label, bool bold = true) => XAxis2.Label(label, bold: bold);
 
@@ -137,7 +137,7 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Manually define X axis tick labels
+        /// Manually define X axis tick labels using consecutive integer positions (0, 1, 2, etc.)
         /// </summary>
         public void XTicks(string[] labels) => XTicks(DataGen.Consecutive(labels.Length), labels);
 
@@ -148,7 +148,7 @@ namespace ScottPlot
             XAxis.ManualTickPositions(positions, labels);
 
         /// <summary>
-        /// Manually define Y axis tick labels
+        /// Manually define Y axis tick labels using consecutive integer positions (0, 1, 2, etc.)
         /// </summary>
         public void YTicks(string[] labels) => YTicks(DataGen.Consecutive(labels.Length), labels);
 
@@ -298,7 +298,9 @@ namespace ScottPlot
             settings.AxisSet(limits, xAxisIndex, yAxisIndex);
 
         /// <summary>
-        /// Set limits of the view for the primary axes (you cannot zoom, pan, or set axis limits beyond these boundaries)
+        /// Set limits of the view for the primary axes. 
+        /// View limits define the boundaries of axis limits.
+        /// You cannot zoom, pan, or set axis limits beyond view limits.
         /// </summary>
         public void SetViewLimits(
             double xMin = double.NegativeInfinity, double xMax = double.PositiveInfinity,

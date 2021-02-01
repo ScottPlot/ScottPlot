@@ -27,6 +27,7 @@ namespace ScottPlotTests.Cookbook
                                                 .Where(x => !x.GetCustomAttributes<ObsoleteAttribute>().Any())
                                                 .Where(x => !x.Name.StartsWith("get_")) // ignore auto-properties
                                                 .Where(x => x.Name != "GetType") // ignore special methods
+                                                .Where(x => x.Name != "ToString") // ignore special methods
                                                 .OrderBy(x => x.Name)
                                                 .ToArray();
         }
