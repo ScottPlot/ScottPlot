@@ -70,7 +70,7 @@ namespace ScottPlotTests.Plot
             plt.AxisScaleLock(true);
             plt.AxisAuto();
 
-            plt.SetSize(width, height);
+            plt.Resize(width, height);
 
             var (xUnitsPerPixel, yUnitsPerPixel) = getUnitsPerPixel(plt);
             Assert.AreEqual(xUnitsPerPixel, yUnitsPerPixel, xUnitsPerPixel * 0.000001);

@@ -22,7 +22,7 @@ namespace ScottPlot
                 throw new ArgumentException("width and height must each be greater than 0");
 
             StyleTools.SetStyle(this, ScottPlot.Style.Default);
-            SetSize(width, height);
+            Resize(width, height);
         }
 
         public override string ToString() =>
@@ -118,9 +118,9 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Set the default size for new renders
+        /// Update the default size for new renders
         /// </summary>
-        public void SetSize(float width, float height) => settings.Resize(width, height);
+        public void Resize(float width, float height) => settings.Resize(width, height);
 
         /// <summary>
         /// Return a new color from the Pallette based on the number of plottables already in the plot.
