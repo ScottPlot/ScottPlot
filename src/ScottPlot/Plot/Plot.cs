@@ -104,8 +104,11 @@ namespace ScottPlot
         #region plot settings and styling
 
         /// <summary>
-        /// Get access to the plot settings module (not exposed by default because its internal API changes frequently)
+        /// The Settings module stores manages plot state and advanced configuration.
+        /// Its class structure changes frequently, and users are highly advised not to interact with it directly.
+        /// This method returns the settings module for advanced users and developers to interact with.
         /// </summary>
+        /// <param name="showWarning">Show a warning message indicating this method is only intended for developers</param>
         public Settings GetSettings(bool showWarning = true)
         {
             if (showWarning)
