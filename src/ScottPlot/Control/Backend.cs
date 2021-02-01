@@ -337,7 +337,7 @@ namespace ScottPlot.Control
             if (Configuration.DoubleClickBenchmark == false)
                 return;
 
-            Plot.BenchmarkToggle();
+            Plot.Benchmark(!Plot.Benchmark(null));
             Render();
         }
 

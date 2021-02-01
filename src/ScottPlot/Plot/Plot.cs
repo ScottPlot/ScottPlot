@@ -188,12 +188,18 @@ namespace ScottPlot
         #endregion
 
         #region renderable customization
-
         /// <summary>
-        /// Display render benchmark information on the plot
+        /// If enabled, the benchmark displays render information in the corner of the plot.
         /// </summary>
-        public void Benchmark(bool enable = true) => settings.BenchmarkMessage.IsVisible = enable;
-        public void BenchmarkToggle() => settings.BenchmarkMessage.IsVisible = !settings.BenchmarkMessage.IsVisible;
+        /// <param name="enable">True/false defines whether benchmark is enabled. Null will not change the benchmark.</param>
+        /// <returns>true if the benchmark is enabled</returns>
+        public bool Benchmark(bool? enable = true)
+        {
+            if (enable.HasValue)
+                settings.BenchmarkMessage.IsVisible = enable.Value;
+
+            return settings.BenchmarkMessage.IsVisible;
+        }
 
         /// <summary>
         /// Set legend visibility and location. Save the returned object for additional customizations.
