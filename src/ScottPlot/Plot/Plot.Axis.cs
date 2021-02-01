@@ -74,12 +74,12 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Set size of the primary axes to zero so the data area covers the whole figure
+        /// Give the plot a frameless appearance by setting the size of all axes to zero.
+        /// This causes the data area to go right up to the edge of the plot.
         /// </summary>
         public void Frameless()
         {
-            var primaryAxes = new Renderable.Axis[] { XAxis, XAxis2, YAxis, YAxis2 };
-            foreach (var axis in primaryAxes)
+            foreach (var axis in settings.Axes)
                 axis.Hide();
         }
 
