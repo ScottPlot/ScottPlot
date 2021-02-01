@@ -15,9 +15,6 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Platform;
 using Avalonia.VisualTree;
-using ScottPlot.Avalonia;
-using ScottPlot.Ticks;
-using ScottPlot.Interactive;
 using Ava = Avalonia;
 using Avalonia.Threading;
 

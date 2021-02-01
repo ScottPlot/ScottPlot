@@ -3,12 +3,17 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using ScottPlot.Avalonia;
-using ScottPlot.Interactive;
 using System;
 using System.Collections.Generic;
 
 namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 {
+    public struct ContextMenuItem
+    {
+        public string itemName;
+        public Action onClick;
+    }
+
     public class RightClickMenu : Window
     {
         AvaPlot avaPlot1;
