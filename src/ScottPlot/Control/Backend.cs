@@ -39,9 +39,11 @@
  *   
  */
 
+using ScottPlot.Plottable;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -71,6 +73,29 @@ namespace ScottPlot.Control
 
         public void Reset(float width, float height) =>
             Reset(width, height, new Plot());
+
+        /// <summary>
+        /// Return a copy of the list of draggable plottables
+        /// </summary>
+        /// <returns></returns>
+        private IDraggable[] GetDraggables() => 
+            Settings.Plottables.Where(x => x is IDraggable).Select(x => (IDraggable)x).ToArray();
+
+        /// <summary>
+        /// Return the draggable plottable under the mouse cursor (or null if there isn't one)
+        /// </summary>
+        private IDraggable GetDraggableUnderMouse(double pixelX, double pixelY, int snapDistancePixels = 5)
+        {
+            double snapWidth = Settings.XAxis.Dims.UnitsPerPx * snapDistancePixels;
+            double snapHeight = Settings.YAxis.Dims.UnitsPerPx * snapDistancePixels;
+
+            foreach (IDraggable draggable in GetDraggables())
+                if (draggable.IsUnderMouse(Plot.GetCoordinateX((float)pixelX), Plot.GetCoordinateY((float)pixelY), snapWidth, snapHeight))
+                    if (draggable.DragEnabled)
+                        return draggable;
+
+            return null;
+        }
 
         public static string GetHelpMessage()
         {
@@ -180,7 +205,7 @@ namespace ScottPlot.Control
             IsMiddleDown = input.MiddleWasJustPressed;
             IsRightDown = input.RightWasJustPressed;
             IsLeftDown = input.LeftWasJustPressed;
-            PlottableBeingDragged = Plot.GetDraggableUnderMouse(input.X, input.Y);
+            PlottableBeingDragged = GetDraggableUnderMouse(input.X, input.Y);
             Settings.MouseDown(input.X, input.Y);
         }
 
@@ -272,7 +297,7 @@ namespace ScottPlot.Control
 
         private void UpdateCursor(InputState input)
         {
-            var draggableUnderCursor = Plot.GetDraggableUnderMouse(input.X, input.Y);
+            var draggableUnderCursor = GetDraggableUnderMouse(input.X, input.Y);
             Cursor = (draggableUnderCursor is null) ? ScottPlot.Cursor.Arrow : draggableUnderCursor.DragCursor;
             CursorChanged(null, EventArgs.Empty);
         }

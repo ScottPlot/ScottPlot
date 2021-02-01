@@ -86,28 +86,6 @@ namespace ScottPlot
         /// <returns></returns>
         public IPlottable[] GetPlottables() => settings.Plottables.ToArray();
 
-        /// <summary>
-        /// Return a copy of the list of draggable plottables
-        /// </summary>
-        /// <returns></returns>
-        public IDraggable[] GetDraggables() => settings.Plottables.Where(x => x is IDraggable).Select(x => (IDraggable)x).ToArray();
-
-        /// <summary>
-        /// Return the draggable plottable under the mouse cursor (or null if there isn't one)
-        /// </summary>
-        public IDraggable GetDraggableUnderMouse(double pixelX, double pixelY, int snapDistancePixels = 5)
-        {
-            double snapWidth = GetSettings(false).XAxis.Dims.UnitsPerPx * snapDistancePixels;
-            double snapHeight = GetSettings(false).YAxis.Dims.UnitsPerPx * snapDistancePixels;
-
-            foreach (IDraggable draggable in GetDraggables())
-                if (draggable.IsUnderMouse(GetCoordinateX((float)pixelX), GetCoordinateY((float)pixelY), snapWidth, snapHeight))
-                    if (draggable.DragEnabled)
-                        return draggable;
-
-            return null;
-        }
-
         #endregion
 
         #region plottable validation
