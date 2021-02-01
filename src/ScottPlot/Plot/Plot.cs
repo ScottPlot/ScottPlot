@@ -219,7 +219,7 @@ namespace ScottPlot
 
         #endregion
 
-        #region copy
+        #region copy and equals
 
         /// <summary>
         /// Return a new Plot with all the same Plottables (and some of the styles) of this one.
@@ -242,6 +242,27 @@ namespace ScottPlot
 
             return newPlot;
         }
+
+        /// <summary>
+        /// The GUID helps identify individual plots
+        /// </summary>
+        private readonly Guid Guid = Guid.NewGuid();
+
+        /// <summary>
+        /// Every plot has a globally unique ID (GUID)
+        /// </summary>
+        public string GetGuid() => Guid.ToString();
+
+        /// <summary>
+        /// Returns true if the given plot is the exact same plot as this one
+        /// </summary>
+        public override bool Equals(object obj) => obj.GetHashCode() == GetHashCode();
+
+        /// <summary>
+        /// Returns an integer unique to this instance (based on the GUID)
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode() => Guid.GetHashCode();
 
         #endregion
     }
