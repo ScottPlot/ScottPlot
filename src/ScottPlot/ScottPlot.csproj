@@ -33,6 +33,7 @@ Release demo: https://swharden.com/scottplot/demo</PackageReleaseNotes>
     <Company>Harden Technologies, LLC</Company>
     <RepositoryUrl>https://github.com/swharden/ScottPlot</RepositoryUrl>
     <DocumentationFile>ScottPlot.xml</DocumentationFile>
+    <NoWarn>1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

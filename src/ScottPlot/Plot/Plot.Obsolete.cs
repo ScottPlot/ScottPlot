@@ -162,10 +162,6 @@ namespace ScottPlot
         /// <summary>
         /// Create a series of bar plots given a 2D dataset
         /// </summary>
-        /// <param name="groupLabels">displayed as horizontal axis tick labels</param>
-        /// <param name="seriesLabels">displayed in the legend</param>
-        /// <param name="ys">Array of arrays (one per series) that contan one point per group</param>
-        /// <returns></returns>
         [Obsolete("Use AddBarGroups() and customize the object it returns")]
         public BarPlot[] PlotBarGroups(
                 string[] groupLabels,

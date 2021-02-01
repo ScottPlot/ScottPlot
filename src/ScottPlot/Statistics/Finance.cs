@@ -10,7 +10,9 @@ namespace ScottPlot.Statistics
         /// <summary>
         /// Simple moving average
         /// </summary>
+        /// <param name="values">number of values to use for each calculation</param>
         /// <param name="period">number of values to use for each calculation</param>
+        /// <param name="trimNan">only return data where values are present for the whole period</param>
         public static double[] SMA(double[] values, int period, bool trimNan = true)
         {
             if (period < 2)
@@ -42,6 +44,7 @@ namespace ScottPlot.Statistics
         /// <summary>
         /// Simple moving standard deviation
         /// </summary>
+        /// <param name="values"></param>
         /// <param name="period">number of values to use for each calculation</param>
         public static double[] SMStDev(double[] values, int period)
         {
@@ -72,6 +75,7 @@ namespace ScottPlot.Statistics
         /// <summary>
         /// Simple moving average
         /// </summary>
+        /// <param name="ohlcs"></param>
         /// <param name="period">number of OHLCs to use for each calculation</param>
         public static double[] SMA(OHLC[] ohlcs, int period)
         {
@@ -84,6 +88,7 @@ namespace ScottPlot.Statistics
         /// <summary>
         /// Bollinger Bands
         /// </summary>
+        /// <param name="values"></param>
         /// <param name="period">number of OHLCs to use for each calculation</param>
         /// <param name="multiplier">number of standard deviations from the mean</param>
         public static (double[] sma, double[] lower, double[] upper) Bollinger(double[] values, int period, double multiplier = 2)
@@ -105,6 +110,7 @@ namespace ScottPlot.Statistics
         /// <summary>
         /// Bollinger Bands
         /// </summary>
+        /// <param name="ohlcs"></param>
         /// <param name="period">number of OHLCs to use for each calculation</param>
         /// <param name="multiplier">number of standard deviations from the mean</param>
         public static (double[] sma, double[] lower, double[] upper) Bollinger(OHLC[] ohlcs, int period, double multiplier = 2)
