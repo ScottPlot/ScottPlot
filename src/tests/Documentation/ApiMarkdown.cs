@@ -42,6 +42,8 @@ namespace ScottPlotTests.Documentation
                 bool obsolete = mi.GetCustomAttributes<ObsoleteAttribute>().Any();
                 if (obsolete)
                     continue;
+                if (mi.Name.StartsWith("get_"))
+                    continue;
                 string summary = XD.GetSummary(mi);
                 sb.AppendLine($"[**{mi.Name}**](#{mi.Name})|{summary}");
             }
@@ -58,6 +60,8 @@ namespace ScottPlotTests.Documentation
                 bool obsolete = mi.GetCustomAttributes<ObsoleteAttribute>().Any();
                 if (obsolete)
                     continue;
+                if (mi.Name.StartsWith("get_"))
+                    continue;
                 string summary = XD.GetSummary(mi);
                 sb.AppendLine($"[**{mi.Name}**](#{mi.Name})|{summary}");
             }
@@ -67,6 +71,8 @@ namespace ScottPlotTests.Documentation
             {
                 bool obsolete = mi.GetCustomAttributes<ObsoleteAttribute>().Any();
                 if (obsolete)
+                    continue;
+                if (mi.Name.StartsWith("get_"))
                     continue;
 
                 sb.AppendLine();

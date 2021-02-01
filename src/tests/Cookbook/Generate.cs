@@ -25,6 +25,7 @@ namespace ScottPlotTests.Cookbook
             PlotMethods = typeof(ScottPlot.Plot).GetMethods()
                                                 .Where(x => x.IsPublic)
                                                 .Where(x => !x.GetCustomAttributes<ObsoleteAttribute>().Any())
+                                                .Where(x => !x.Name.StartsWith("get_")) // ignore auto-properties
                                                 .OrderBy(x => x.Name)
                                                 .ToArray();
         }

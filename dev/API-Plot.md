@@ -17,23 +17,18 @@ Method | Summary
 [**Benchmark**](#Benchmark)|If enabled, the benchmark displays render information in the corner of the plot.
 [**Clear**](#Clear)|Clear all plottables
 [**Clear**](#Clear)|Remove all plottables of the given type
-[**Colorset**](#Colorset)|Change the default color palette for new plottables
 [**Copy**](#Copy)|Return a new Plot with all the same Plottables (and some of the styles) of this one. This is called when you right-click a plot in a control and hit "open in new window".
-[**Equals**](#Equals)|
+[**Equals**](#Equals)|Returns true if the given plot is the exact same plot as this one
 [**Frame**](#Frame)|Configure color and visibility of the frame that outlines the data area (lines along the edges of the primary axes)
-[**Frameless**](#Frameless)|Set size of the primary axes to zero so the data area covers the whole figure
-[**get_Version**](#get_Version)|
-[**get_XAxis**](#get_XAxis)|
-[**get_XAxis2**](#get_XAxis2)|
-[**get_YAxis**](#get_YAxis)|
-[**get_YAxis2**](#get_YAxis2)|
+[**Frameless**](#Frameless)|Give the plot a frameless appearance by setting the size of all axes to zero. This causes the data area to go right up to the edge of the plot.
 [**GetAxisLimits**](#GetAxisLimits)|Get limits for the given axes
 [**GetCoordinate**](#GetCoordinate)|Retrun the coordinate (in plot space) for the given pixel
 [**GetCoordinateX**](#GetCoordinateX)|Retrun the coordinate (in plot space) for the given pixel
 [**GetCoordinateY**](#GetCoordinateY)|Retrun the coordinate (in plot space) for the given pixel
 [**GetDraggables**](#GetDraggables)|Return a copy of the list of draggable plottables
 [**GetDraggableUnderMouse**](#GetDraggableUnderMouse)|Return the draggable plottable under the mouse cursor (or null if there isn't one)
-[**GetHashCode**](#GetHashCode)|
+[**GetGuid**](#GetGuid)|Every plot has a globally unique ID (GUID)
+[**GetHashCode**](#GetHashCode)|Returns an integer unique to this instance (based on the GUID)
 [**GetLegendBitmap**](#GetLegendBitmap)|Return a new Bitmap containing only the legend
 [**GetNextColor**](#GetNextColor)|Return a new color from the Pallette based on the number of plottables already in the plot. Use this to ensure every plottable gets a unique color.
 [**GetPixel**](#GetPixel)|Retrun the pixel location of the given coordinate (in plot space)
@@ -46,6 +41,7 @@ Method | Summary
 [**Layout**](#Layout)|Set padding around the data area by defining the minimum size and padding for all axes
 [**Legend**](#Legend)|Set legend visibility and location. Save the returned object for additional customizations.
 [**MatchLayout**](#MatchLayout)|Adjust this axis layout based on the layout of a source plot
+[**Palette**](#Palette)|The palette defines the default colors given to plottables when they are added
 [**Remove**](#Remove)|Remove a specific plottable
 [**Render**](#Render)|Render the plot onto a new Bitmap (using size defined by Plot.Width and Plot.Height)
 [**Render**](#Render)|Render the plot onto a new Bitmap of the given dimensions
@@ -807,16 +803,6 @@ Method | Summary
 **Returns:**
 * `Void`
 
-## Colorset()
-
-**Summary:** Change the default color palette for new plottables
-
-**Parameters:**
-* `ScottPlot.Drawing.Palette` colorset
-
-**Returns:**
-* `Void`
-
 ## Copy()
 
 **Summary:** Return a new Plot with all the same Plottables (and some of the styles) of this one. This is called when you right-click a plot in a control and hit "open in new window".
@@ -828,7 +814,7 @@ Method | Summary
 
 ## Equals()
 
-> **WARNING:** This method does not have XML documentation
+**Summary:** Returns true if the given plot is the exact same plot as this one
 
 **Parameters:**
 * `Object` obj
@@ -853,57 +839,12 @@ Method | Summary
 
 ## Frameless()
 
-**Summary:** Set size of the primary axes to zero so the data area covers the whole figure
+**Summary:** Give the plot a frameless appearance by setting the size of all axes to zero. This causes the data area to go right up to the edge of the plot.
 
 **Parameters:**
 
 **Returns:**
 * `Void`
-
-## get_Version()
-
-> **WARNING:** This method does not have XML documentation
-
-**Parameters:**
-
-**Returns:**
-* `string`
-
-## get_XAxis()
-
-> **WARNING:** This method does not have XML documentation
-
-**Parameters:**
-
-**Returns:**
-* `ScottPlot.Renderable.Axis`
-
-## get_XAxis2()
-
-> **WARNING:** This method does not have XML documentation
-
-**Parameters:**
-
-**Returns:**
-* `ScottPlot.Renderable.Axis`
-
-## get_YAxis()
-
-> **WARNING:** This method does not have XML documentation
-
-**Parameters:**
-
-**Returns:**
-* `ScottPlot.Renderable.Axis`
-
-## get_YAxis2()
-
-> **WARNING:** This method does not have XML documentation
-
-**Parameters:**
-
-**Returns:**
-* `ScottPlot.Renderable.Axis`
 
 ## GetAxisLimits()
 
@@ -968,9 +909,18 @@ Method | Summary
 **Returns:**
 * `ScottPlot.Plottable.IDraggable`
 
+## GetGuid()
+
+**Summary:** Every plot has a globally unique ID (GUID)
+
+**Parameters:**
+
+**Returns:**
+* `string`
+
 ## GetHashCode()
 
-> **WARNING:** This method does not have XML documentation
+**Summary:** Returns an integer unique to this instance (based on the GUID)
 
 **Parameters:**
 
@@ -1103,6 +1053,16 @@ Method | Summary
 
 **Returns:**
 * `Void`
+
+## Palette()
+
+**Summary:** The palette defines the default colors given to plottables when they are added
+
+**Parameters:**
+* `ScottPlot.Drawing.Palette` palette
+
+**Returns:**
+* `ScottPlot.Drawing.Palette`
 
 ## Remove()
 
