@@ -33,15 +33,23 @@
 
 * See [**Releases**](https://github.com/swharden/ScottPlot/releases) for source code and notes for all versions
 
-* **`ScottPlot 4.1`** is being actively-developed and is currently available as a pre-release package on NuGet. This version is faster than 4.0, supports multiple axes, and has a simpler API and a better cookbook.
+* **`ScottPlot 4.1`** is being actively-developed and is currently available as a pre-release package on NuGet. This version is faster than 4.0, supports multiple axes, and has a simpler API and a much better cookbook.
 
 * **`ScottPlot 4.0`** is stable, available on NuGet, and has its own [branch](https://github.com/swharden/ScottPlot/branches) for continued bug fixes and refinements. However, new features are no longer being developed for this version.
+
+### Plot in the Cloud
+
+**This figure is an example of ScottPlot running in the cloud.** Once daily an [Azure Function](https://azure.microsoft.com/en-us/services/functions/) logs the number of stars this repository has and creates a graph of the star history using ScottPlot. Since the output is simply a static image accessible by a URL, it can be displayed in places where JavaScript is not permitted like in this readme file. Rendering plots server-side allows automatically-updating plots to be displayed in many interesting places. Source code can be found in the [StarGraph](https://github.com/swharden/StarGraph) repository.
+
+<p align="center">
+  <img src="https://swhardendev.z13.web.core.windows.net/packagestats/scottplot-stars.png">
+</p>
 
 ### Developer Notes
 
 * **Minimum Supported Platforms:** .NET Core 2.0 and .NET Framework 4.6.1 ([see details](https://swharden.com/scottplot/#supported-platforms))
 
-* **The [ScottPlot Roadmap](dev/roadmap.md)** summarizes ScottPlot's origins and tracks development goals
+* **The [ScottPlot Roadmap](dev/roadmap.md)** summarizes ScottPlot's origins and tracks development goals. If there is a pinned _Triaged Tasks and Features_ issue on the [issues page](https://github.com/ScottPlot/ScottPlot/issues), it likely indicates what I am currently working on.
 
 * **Contributions are welcome!** See [contributing.md](CONTRIBUTING.md) to get started
 
