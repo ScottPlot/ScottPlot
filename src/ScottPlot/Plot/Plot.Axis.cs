@@ -159,7 +159,7 @@ namespace ScottPlot
             YAxis.ManualTickPositions(positions, labels);
 
         /// <summary>
-        /// Set the culture to use for number-to-string converstion for tick labels of all axes
+        /// Set the culture to use for number-to-string converstion for tick labels of all axes.
         /// </summary>
         public void SetCulture(System.Globalization.CultureInfo culture)
         {
@@ -168,7 +168,9 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Set the culture to use for number-to-string converstion for tick labels of all axes
+        /// Set the culture to use for number-to-string converstion for tick labels of all axes.
+        /// This overload allows you to manually define every format string, 
+        /// allowing extensive customization of number and date formatting.
         /// </summary>
         /// <param name="shortDatePattern"></param>
         /// <param name="decimalSeparator">Separates the decimal digits</param>

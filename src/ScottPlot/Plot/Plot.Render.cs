@@ -104,6 +104,7 @@ namespace ScottPlot
 
         /// <summary>
         /// Wait for the current render to finish, then prevent future renders until RenderUnlock() is called.
+        /// Locking rendering is required if you intend to modify plottables while rendering is occurring in another thread.
         /// </summary>
         public void RenderLock()
         {
@@ -124,7 +125,7 @@ namespace ScottPlot
         #region render helper methods
 
         /// <summary>
-        /// Render the plot onto a new Bitmap (using size defined by Plot.Width and Plot.Height)
+        /// Render the plot onto a new Bitmap (using the size given when the plot was created or resized)
         /// </summary>
         public Bitmap Render(bool lowQuality = false) =>
              Render(settings.Width, settings.Height, lowQuality);
@@ -149,7 +150,7 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Save the plot as an image file and return the full path of the new file
+        /// Save the plot as an image and return the full path of the file
         /// </summary>
         public string SaveFig(string filePath)
         {

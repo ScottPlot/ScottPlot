@@ -189,7 +189,7 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Set legend visibility and location. Save the returned object for additional customizations.
+        /// Configure legend visibility and location and return the Legend object to allow additional customizations
         /// </summary>
         public Renderable.Legend Legend(bool enable = true, Alignment location = Alignment.LowerRight)
         {
