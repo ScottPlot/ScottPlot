@@ -3,6 +3,7 @@ using ScottPlot.Cookbook;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,6 +14,20 @@ namespace ScottPlotTests.Cookbook
         const string SourceFolder = "../../../../cookbook/ScottPlot.Cookbook";
         const string CookbookFolder = "./cookbook";
         const string RecipeFolder = "./cookbook/source";
+        const string XmlDocPath = "../../../../../src/ScottPlot/ScottPlot.xml";
+        XmlDoc XD;
+        MethodInfo[] PlotMethods;
+
+        [OneTimeSetUp]
+        public void Setup()
+        {
+            XD = new XmlDoc(XmlDocPath);
+            PlotMethods = typeof(ScottPlot.Plot).GetMethods()
+                                                .Where(x => x.IsPublic)
+                                                .Where(x => !x.GetCustomAttributes<ObsoleteAttribute>().Any())
+                                                .OrderBy(x => x.Name)
+                                                .ToArray();
+        }
 
         [Test]
         public void Test_Cookbook_Generate()
@@ -22,6 +37,7 @@ namespace ScottPlotTests.Cookbook
             BuildRecipeImagesAndCode();
             CopyResourceFiles();
             BuildRecipePages();
+            BuildApiPage();
             BuildIndexPage();
         }
 
@@ -79,10 +95,26 @@ namespace ScottPlotTests.Cookbook
             allPage.SaveAs("all_recipes.html", "All Recipes");
         }
 
+        private void BuildApiPage()
+        {
+            var index = new ScottPlot.Cookbook.Site.IndexPage(CookbookFolder, SourceFolder);
+            index.AddPlotApiTableWithoutPlottables(XD, PlotMethods);
+            index.AddPlotApiTablePlottables(XD, PlotMethods);
+            index.AddPlotApiDetails(XD, PlotMethods);
+            index.SaveAs("api.html", "Plot API");
+        }
+
         private void BuildIndexPage()
         {
             var index = new ScottPlot.Cookbook.Site.IndexPage(CookbookFolder, SourceFolder);
+
+            // add recipes
             index.AddLinksToRecipes();
+
+            // add API table
+            index.AddPlotApiTableWithoutPlottables(XD, PlotMethods, "api.html");
+            index.AddPlotApiTablePlottables(XD, PlotMethods, "api.html");
+
             index.SaveAs("index.html", null);
             Console.WriteLine($"View Cookbook: {System.IO.Path.GetFullPath(CookbookFolder)}/index.html");
         }

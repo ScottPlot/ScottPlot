@@ -122,5 +122,19 @@ namespace ScottPlot.Cookbook
 
             return pretty;
         }
+
+        /// <summary>
+        /// Return a pretty formatted function signature
+        /// </summary>
+        public static string PrettySignature(MethodInfo mi, bool returnType = false)
+        {
+            string funcName = returnType ? PrettyType(mi.ReturnType) + " " : "";
+            funcName = funcName + mi.DeclaringType.Name + "." + mi.Name;
+            if (mi.IsGenericMethod)
+                funcName += "<T>";
+            string ps = string.Join(", ", mi.GetParameters().Select(p => $"{PrettyType(p.ParameterType)} {p.Name}"));
+            funcName += $"({ps})";
+            return funcName;
+        }
     }
 }

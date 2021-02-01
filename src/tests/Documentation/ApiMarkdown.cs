@@ -30,7 +30,7 @@ namespace ScottPlotTests.Documentation
             sb.AppendLine();
             sb.AppendLine($"This document was generated for `ScottPlot {ScottPlot.Plot.Version}`");
 
-            // add a table at the top
+            // table without AddPlottable() methods
             sb.AppendLine("### Methods to Manipulate the Plot");
             sb.AppendLine("Method | Summary");
             sb.AppendLine("---|---");
@@ -46,7 +46,7 @@ namespace ScottPlotTests.Documentation
                 sb.AppendLine($"[**{mi.Name}**](#{mi.Name})|{summary}");
             }
 
-            //
+            // table of AddPlottable() methods
             sb.AppendLine("### Shortcuts for Adding Plottables");
             sb.AppendLine("Method | Summary");
             sb.AppendLine("---|---");

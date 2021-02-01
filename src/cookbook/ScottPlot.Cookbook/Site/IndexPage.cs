@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace ScottPlot.Cookbook.Site
@@ -22,6 +24,93 @@ namespace ScottPlot.Cookbook.Site
             DivEnd();
         }
 
+        private void AddTableRow(string[] columnNames, bool header = false)
+        {
+            string trStyle = header ? "style='font-weight: 600; background-color: #f6f8fa;'" : "";
+            AddHTML($"<tr {trStyle}>");
+            foreach (var name in columnNames)
+                AddHTML($"<td>{name}</td>");
+            AddHTML("</tr>");
+        }
+
+        public void AddPlotApiTableWithoutPlottables(XmlDoc xd, MethodInfo[] plotMethods, string linkPrefix = "")
+        {
+            AddGroupHeader("Methods to Manipulate Plots");
+            AddHTML("These methods act on the Plot to configure styling or behavior.");
+
+            AddHTML("<table>");
+            AddTableRow(new string[] { "Method", "Summary" }, true);
+
+            foreach (MethodInfo mi in plotMethods)
+            {
+                bool isAddPlottableMethod = mi.Name.StartsWith("Add") && mi.Name.Length > 3 && !mi.Name.Contains("Axis");
+                if (isAddPlottableMethod)
+                    continue;
+                string summary = xd.GetSummary(mi);
+
+                string url = Sanitize(mi.Name);
+                string name = $"<a href='{linkPrefix}#{url}'><strong>{mi.Name}</strong></a>";
+                AddTableRow(new string[] { name, summary });
+            }
+
+            AddHTML("</table>");
+        }
+
+        public void AddPlotApiTablePlottables(XmlDoc xd, MethodInfo[] plotMethods, string linkPrefix = "")
+        {
+            AddGroupHeader("Helper Methods for Adding Plottables");
+            AddHTML("These methods make it easy to add specific plottable to the plot. ");
+            AddHTML("Common styling configuration is available as optional arguments, and these methods return " +
+                "the plottable they create so you can interact with it directly to further customize styling " +
+                "or udpate data after adding it to the plot.");
+
+            AddHTML("<table>");
+            AddTableRow(new string[] { "Method", "Summary" }, true);
+
+            foreach (MethodInfo mi in plotMethods)
+            {
+                bool isAddPlottableMethod = mi.Name.StartsWith("Add") && mi.Name.Length > 3 && !mi.Name.Contains("Axis");
+                if (!isAddPlottableMethod)
+                    continue;
+                string summary = xd.GetSummary(mi);
+
+                string url = Sanitize(mi.Name);
+                string name = $"<a href='{linkPrefix}#{url}'><strong>{mi.Name}</strong></a>";
+                AddTableRow(new string[] { name, summary });
+            }
+
+            AddHTML("</table>");
+        }
+
+        public void AddPlotApiDetails(XmlDoc xd, MethodInfo[] plotMethods)
+        {
+            foreach (MethodInfo mi in plotMethods)
+            {
+                string name = mi.Name;
+                string url = Sanitize(name);
+                string summary = xd.GetSummary(mi);
+                string returnType = XmlDoc.PrettyType(mi.ReturnType);
+                string signature = XmlDoc.PrettySignature(mi);
+
+                AddGroupHeader(name, marginTop: "4em");
+
+                AddHTML($"<div><strong>Summary:</strong></div>");
+                AddHTML($"<ul><li>{summary}</li></ul>");
+
+                AddHTML($"<div><strong>Parameters:</strong></div>");
+                AddHTML("<ul>");
+                foreach (var p in mi.GetParameters())
+                    AddHTML($"<li><code>{XmlDoc.PrettyType(p.ParameterType)}</code> {p.Name}</li>");
+                AddHTML("</ul>");
+
+                AddHTML($"<div><strong>Returns:</strong></div>");
+                AddHTML($"<ul><li><code>{returnType}</code></li></ul>");
+
+                AddHTML($"<div><strong>Signature:</strong></div>");
+                AddHTML($"<ul><li><code>{signature}</code></li></ul>");
+            }
+        }
+
         private void AddRecipeGroup(string groupName, IRecipe[] recipes)
         {
             DivStart("categorySection");
@@ -31,10 +120,10 @@ namespace ScottPlot.Cookbook.Site
             DivEnd();
         }
 
-        private void AddGroupHeader(string title)
+        private void AddGroupHeader(string title, string marginTop = "1em")
         {
             string anchor = Sanitize(title);
-            SB.AppendLine($"<h2 style='margin-top: 1em;'>");
+            SB.AppendLine($"<h2 style='margin-top: {marginTop};'>");
             SB.AppendLine($"<a href='#{anchor}' name='{anchor}' style='color: black; text-decoration: none; font-weight: 600;'>{title}</a>");
             SB.AppendLine($"</h2>");
         }
