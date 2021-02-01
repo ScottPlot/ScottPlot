@@ -142,7 +142,7 @@ namespace ScottPlot
         /// Return a new Bitmap containing only the legend
         /// </summary>
         /// <returns></returns>
-        public Bitmap GetLegendBitmap()
+        public Bitmap RenderLegend()
         {
             Render();
             return settings.CornerLegend.GetBitmap();
