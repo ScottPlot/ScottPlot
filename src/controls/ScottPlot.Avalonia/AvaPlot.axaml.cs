@@ -37,7 +37,7 @@ namespace ScottPlot.Avalonia
 
         private readonly Control.ControlBackEnd Backend;
         //private readonly Dictionary<ScottPlot.Cursor, System.Windows.Input.Cursor> Cursors;
-        private Ava.Controls.Image PlotImage = new Ava.Controls.Image();
+        private readonly Ava.Controls.Image PlotImage = new Ava.Controls.Image();
         private readonly DispatcherTimer PlottableCountTimer = new DispatcherTimer();
 
         [Obsolete("Reference Plot instead of plt")]
@@ -163,15 +163,11 @@ namespace ScottPlot.Avalonia
 
         public static Ava.Media.Imaging.Bitmap BmpImageFromBmp(System.Drawing.Bitmap bmp)
         {
-            using (var memory = new System.IO.MemoryStream())
-            {
-                bmp.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
-                memory.Position = 0;
-
-                var bitmapImage = new Ava.Media.Imaging.Bitmap(memory);
-
-                return bitmapImage;
-            }
+            using var memory = new System.IO.MemoryStream();
+            bmp.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
+            memory.Position = 0;
+            var bitmapImage = new Ava.Media.Imaging.Bitmap(memory);
+            return bitmapImage;
         }
 
         public void DefaultRightClickEvent(object sender, EventArgs e)
@@ -186,11 +182,13 @@ namespace ScottPlot.Avalonia
             HelpMenuItem.Click += RightClickMenu_Help_Click;
 
             var cm = new ContextMenu();
-            List<MenuItem> cmItems = new List<MenuItem>();
-            cmItems.Add(SaveImageMenuItem);
-            //cmItems.Add(CopyImageMenuItem);
-            cmItems.Add(AutoAxisMenuItem);
-            cmItems.Add(HelpMenuItem);
+            List<MenuItem> cmItems = new List<MenuItem>
+            {
+                SaveImageMenuItem,
+                //CopyImageMenuItem,
+                AutoAxisMenuItem,
+                HelpMenuItem
+            };
             cm.Items = cmItems;
             cm.Open(this);
         }
@@ -200,29 +198,23 @@ namespace ScottPlot.Avalonia
         private void RightClickMenu_AutoAxis_Click(object sender, EventArgs e) { Plot.AxisAuto(); Render(); }
         private async void RightClickMenu_SaveImage_Click(object sender, EventArgs e)
         {
-            SaveFileDialog savefile = new SaveFileDialog();
-            savefile.InitialFileName = "ScottPlot.png";
+            SaveFileDialog savefile = new SaveFileDialog { InitialFileName = "ScottPlot.png" };
 
-            var filtersPNG = new FileDialogFilter();
-            filtersPNG.Name = "PNG Files";
+            var filtersPNG = new FileDialogFilter { Name = "PNG Files" };
             filtersPNG.Extensions.Add("png");
 
-            var filtersJPEG = new FileDialogFilter();
-            filtersJPEG.Name = "JPG Files";
+            var filtersJPEG = new FileDialogFilter { Name = "JPG Files" };
             filtersJPEG.Extensions.Add("jpg");
             filtersJPEG.Extensions.Add("jpeg");
 
-            var filtersBMP = new FileDialogFilter();
-            filtersBMP.Name = "BMP Files";
+            var filtersBMP = new FileDialogFilter { Name = "BMP Files" };
             filtersBMP.Extensions.Add("bmp");
 
-            var filtersTIFF = new FileDialogFilter();
-            filtersTIFF.Name = "TIF Files";
+            var filtersTIFF = new FileDialogFilter { Name = "TIF Files" };
             filtersTIFF.Extensions.Add("tif");
             filtersTIFF.Extensions.Add("tiff");
 
-            var filtersGeneric = new FileDialogFilter();
-            filtersGeneric.Name = "All Files";
+            var filtersGeneric = new FileDialogFilter { Name = "All Files" };
             filtersGeneric.Extensions.Add("*");
 
             savefile.Filters.Add(filtersPNG);

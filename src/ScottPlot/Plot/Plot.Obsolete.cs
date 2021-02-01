@@ -34,9 +34,9 @@ namespace ScottPlot
             bool shadow = false
             )
         {
-            fontColor = fontColor ?? Color.Black;
-            fillColor = fillColor ?? Color.Yellow;
-            lineColor = lineColor ?? Color.Black;
+            fontColor ??= Color.Black;
+            fillColor ??= Color.Yellow;
+            lineColor ??= Color.Black;
 
             fontColor = Color.FromArgb((int)(255 * fontAlpha), fontColor.Value.R, fontColor.Value.G, fontColor.Value.B);
             fillColor = Color.FromArgb((int)(255 * fillAlpha), fillColor.Value.R, fillColor.Value.G, fillColor.Value.B);
@@ -601,7 +601,7 @@ namespace ScottPlot
             string label = null
             )
         {
-            colors = colors ?? Enumerable.Range(0, values.Length).Select(i => settings.PlottablePalette.GetColor(i)).ToArray();
+            colors ??= Enumerable.Range(0, values.Length).Select(i => settings.PlottablePalette.GetColor(i)).ToArray();
 
             PiePlot pie = new PiePlot(values, sliceLabels, colors)
             {

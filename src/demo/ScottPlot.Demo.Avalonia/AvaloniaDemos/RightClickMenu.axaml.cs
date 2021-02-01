@@ -16,7 +16,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 
     public class RightClickMenu : Window
     {
-        AvaPlot avaPlot1;
+        private readonly AvaPlot avaPlot1;
 
         public RightClickMenu()
         {
@@ -30,18 +30,20 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             avaPlot1.Plot.AddSignal(DataGen.Cos(51));
             avaPlot1.Render();
 
-            List<ContextMenuItem> contextMenu = new List<ContextMenuItem>();
-            contextMenu.Add(new ContextMenuItem()
+            List<ContextMenuItem> contextMenu = new List<ContextMenuItem>
             {
-                itemName = "Add Sine Wave",
-                onClick = AddSine
-            });
+                new ContextMenuItem()
+                {
+                    itemName = "Add Sine Wave",
+                    onClick = AddSine
+                },
 
-            contextMenu.Add(new ContextMenuItem()
-            {
-                itemName = "Clear Plot",
-                onClick = ClearPlot
-            });
+                new ContextMenuItem()
+                {
+                    itemName = "Clear Plot",
+                    onClick = ClearPlot
+                }
+            };
 
             //avaPlot1.SetContextMenu(contextMenu);
         }
