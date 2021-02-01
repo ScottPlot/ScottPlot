@@ -303,3 +303,4 @@ dev/nuget/nuget.exe
 .vscode/launch.json
 .vscode/tasks.json
 tests/data/sample.csproj
+src/ScottPlot/ScottPlot.xml
