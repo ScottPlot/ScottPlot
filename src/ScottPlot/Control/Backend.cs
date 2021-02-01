@@ -78,7 +78,7 @@ namespace ScottPlot.Control
         /// Return a copy of the list of draggable plottables
         /// </summary>
         /// <returns></returns>
-        private IDraggable[] GetDraggables() => 
+        private IDraggable[] GetDraggables() =>
             Settings.Plottables.Where(x => x is IDraggable).Select(x => (IDraggable)x).ToArray();
 
         /// <summary>
