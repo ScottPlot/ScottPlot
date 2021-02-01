@@ -265,7 +265,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[] data = DataGen.RandomWalk(1000);
 
             plt.Style(Style.Gray1);
-            plt.Colorset(Drawing.Palette.OneHalfDark);
+            plt.Palette(Drawing.Palette.OneHalfDark);
 
             var sig = plt.AddSignal(data);
             sig.MarkerSize = 0;

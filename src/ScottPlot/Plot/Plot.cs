@@ -148,9 +148,15 @@ namespace ScottPlot
         public Color GetNextColor(double alpha = 1) => Color.FromArgb((byte)(alpha * 255), settings.GetNextColor());
 
         /// <summary>
-        /// Change the default color palette for new plottables
+        /// The palette defines the default colors given to plottables when they are added
         /// </summary>
-        public void Colorset(Drawing.Palette colorset) => settings.PlottablePalette = colorset;
+        /// <param name="palette">New palette to use (or null for no change)</param>
+        /// <returns>The pallete currently in use</returns>
+        public Drawing.Palette Palette(Drawing.Palette palette)
+        {
+            settings.PlottablePalette ??= palette;
+            return settings.PlottablePalette;
+        }
 
         /// <summary>
         /// Set colors of all plot components using pre-defined styles
