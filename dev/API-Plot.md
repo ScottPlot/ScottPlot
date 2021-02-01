@@ -14,8 +14,7 @@ Method | Summary
 [**AxisScale**](#AxisScale)|Adjust axis limits to achieve a certain pixel scale (units per pixel)
 [**AxisScaleLock**](#AxisScaleLock)|Lock X and Y axis scales (units per pixel) together to protect symmetry of circles and squares
 [**AxisZoom**](#AxisZoom)|Zoom by a fraction (zoom in if fraction > 1)
-[**Benchmark**](#Benchmark)|Display render benchmark information on the plot
-[**BenchmarkToggle**](#BenchmarkToggle)|
+[**Benchmark**](#Benchmark)|If enabled, the benchmark displays render information in the corner of the plot.
 [**Clear**](#Clear)|Clear all plottables
 [**Clear**](#Clear)|Remove all plottables of the given type
 [**Colorset**](#Colorset)|Change the default color palette for new plottables
@@ -781,22 +780,13 @@ Method | Summary
 
 ## Benchmark()
 
-**Summary:** Display render benchmark information on the plot
+**Summary:** If enabled, the benchmark displays render information in the corner of the plot.
 
 **Parameters:**
-* `Boolean` enable
+* `Boolean?` enable
 
 **Returns:**
-* `Void`
-
-## BenchmarkToggle()
-
-> **WARNING:** This method does not have XML documentation
-
-**Parameters:**
-
-**Returns:**
-* `Void`
+* `Boolean`
 
 ## Clear()
 
