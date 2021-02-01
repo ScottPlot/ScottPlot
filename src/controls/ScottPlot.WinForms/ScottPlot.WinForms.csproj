@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>net472;net5.0-windows</TargetFrameworks>
     <UseWindowsForms>true</UseWindowsForms>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>net461;net5.0-windows</TargetFrameworks>
     <UseWPF>true</UseWPF>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
