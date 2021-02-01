@@ -1,7 +1,7 @@
 # ScottPlot.Plot API
 Virtually all functionality in ScottPlot is achieved by calling methods of the Plot module.
 
-This document was generated for `ScottPlot 4.1.4-beta`
+This document was generated for `ScottPlot 4.1.5-beta`
 ### Methods to Manipulate the Plot
 Method | Summary
 ---|---
@@ -25,48 +25,44 @@ Method | Summary
 [**GetCoordinate**](#GetCoordinate)|Return the coordinate (in plot space) for the given pixel
 [**GetCoordinateX**](#GetCoordinateX)|Return the X position (in plot space) for the given pixel column
 [**GetCoordinateY**](#GetCoordinateY)|Return the Y position (in plot space) for the given pixel row
-[**GetDraggables**](#GetDraggables)|Return a copy of the list of draggable plottables
-[**GetDraggableUnderMouse**](#GetDraggableUnderMouse)|Return the draggable plottable under the mouse cursor (or null if there isn't one)
 [**GetGuid**](#GetGuid)|Every plot has a globally unique ID (GUID)
 [**GetHashCode**](#GetHashCode)|Returns an integer unique to this instance (based on the GUID)
-[**GetLegendBitmap**](#GetLegendBitmap)|Return a new Bitmap containing only the legend
 [**GetNextColor**](#GetNextColor)|Return a new color from the Pallette based on the number of plottables already in the plot. Use this to ensure every plottable gets a unique color.
 [**GetPixel**](#GetPixel)|Return the pixel location of the given coordinate (in plot space)
 [**GetPixelX**](#GetPixelX)|Return the pixel column of the given horizontal coordinate (in plot space)
 [**GetPixelY**](#GetPixelY)|Return the pixel row of the given vertical coordinate (in plot space)
 [**GetPlottables**](#GetPlottables)|Return a copy of the list of plottables
-[**GetSettings**](#GetSettings)|Get access to the plot settings module (not exposed by default because its internal API changes frequently)
-[**GetType**](#GetType)|
+[**GetSettings**](#GetSettings)|The Settings module stores manages plot state and advanced configuration. Its class structure changes frequently, and users are highly advised not to interact with it directly. This method returns the settings module for advanced users and developers to interact with.
 [**Grid**](#Grid)|Customize basic options for the primary X and Y axes. Call XAxis and YAxis methods to further customize individual axes.
 [**Layout**](#Layout)|Set padding around the data area by defining the minimum size and padding for all axes
-[**Legend**](#Legend)|Set legend visibility and location. Save the returned object for additional customizations.
+[**Legend**](#Legend)|Configure legend visibility and location and return the Legend object to allow additional customizations
 [**MatchLayout**](#MatchLayout)|Adjust this axis layout based on the layout of a source plot
 [**Palette**](#Palette)|The palette defines the default colors given to plottables when they are added
 [**Remove**](#Remove)|Remove a specific plottable
-[**Render**](#Render)|Render the plot onto a new Bitmap (using size defined by Plot.Width and Plot.Height)
+[**Render**](#Render)|Render the plot onto a new Bitmap (using the size given when the plot was created or resized)
 [**Render**](#Render)|Render the plot onto a new Bitmap of the given dimensions
 [**Render**](#Render)|Render the plot onto an existing bitmap
-[**RenderLock**](#RenderLock)|Wait for the current render to finish, then prevent future renders until RenderUnlock() is called.
+[**RenderLegend**](#RenderLegend)|Return a new Bitmap containing only the legend
+[**RenderLock**](#RenderLock)|Wait for the current render to finish, then prevent future renders until RenderUnlock() is called. Locking rendering is required if you intend to modify plottables while rendering is occurring in another thread.
 [**RenderUnlock**](#RenderUnlock)|Release the render lock, allowing renders to proceed.
-[**SaveFig**](#SaveFig)|Save the plot as an image file and return the full path of the new file
+[**Resize**](#Resize)|Update the default size for new renders
+[**SaveFig**](#SaveFig)|Save the plot as an image and return the full path of the file
 [**SetAxisLimits**](#SetAxisLimits)|Set limits for the given axes
 [**SetAxisLimits**](#SetAxisLimits)|Set limits for the given axes
 [**SetAxisLimitsX**](#SetAxisLimitsX)|Set limits for the primary X axis
 [**SetAxisLimitsY**](#SetAxisLimitsY)|Set limits for the primary Y axis
-[**SetCulture**](#SetCulture)|Set the culture to use for number-to-string converstion for tick labels of all axes
-[**SetCulture**](#SetCulture)|Set the culture to use for number-to-string converstion for tick labels of all axes
-[**SetSize**](#SetSize)|Set the default size for new renders
-[**SetViewLimits**](#SetViewLimits)|Set limits of the view for the primary axes (you cannot zoom, pan, or set axis limits beyond these boundaries)
+[**SetCulture**](#SetCulture)|Set the culture to use for number-to-string converstion for tick labels of all axes.
+[**SetCulture**](#SetCulture)|Set the culture to use for number-to-string converstion for tick labels of all axes. This overload allows you to manually define every format string, allowing extensive customization of number and date formatting.
+[**SetViewLimits**](#SetViewLimits)|Set limits of the view for the primary axes. View limits define the boundaries of axis limits. You cannot zoom, pan, or set axis limits beyond view limits.
 [**Style**](#Style)|Set colors of all plot components using pre-defined styles
 [**Style**](#Style)|Set the color of specific plot components
-[**Title**](#Title)|Set the label for the horizontal axis above the plot (XAxis2).
-[**ToString**](#ToString)|
+[**Title**](#Title)|Set the label for the horizontal axis above the plot (XAxis2)
 [**Validate**](#Validate)|Throw an exception if any plottable contains an invalid state. Deep validation is more thorough but slower.
-[**XLabel**](#XLabel)|Set the label for the vertical axis to the right of the plot (XAxis).
-[**XTicks**](#XTicks)|Manually define X axis tick labels
+[**XLabel**](#XLabel)|Set the label for the vertical axis to the right of the plot (XAxis)
+[**XTicks**](#XTicks)|Manually define X axis tick labels using consecutive integer positions (0, 1, 2, etc.)
 [**XTicks**](#XTicks)|Manually define X axis tick positions and labels
-[**YLabel**](#YLabel)|Set the label for the vertical axis to the right of the plot (YAxis2).
-[**YTicks**](#YTicks)|Manually define Y axis tick labels
+[**YLabel**](#YLabel)|Set the label for the vertical axis to the right of the plot (YAxis2)
+[**YTicks**](#YTicks)|Manually define Y axis tick labels using consecutive integer positions (0, 1, 2, etc.)
 [**YTicks**](#YTicks)|Manually define Y axis tick positions and labels
 ### Shortcuts for Adding Plottables
 Method | Summary
@@ -888,27 +884,6 @@ Method | Summary
 **Returns:**
 * `double`
 
-## GetDraggables()
-
-**Summary:** Return a copy of the list of draggable plottables
-
-**Parameters:**
-
-**Returns:**
-* `ScottPlot.Plottable.IDraggable[]`
-
-## GetDraggableUnderMouse()
-
-**Summary:** Return the draggable plottable under the mouse cursor (or null if there isn't one)
-
-**Parameters:**
-* `double` pixelX
-* `double` pixelY
-* `int` snapDistancePixels
-
-**Returns:**
-* `ScottPlot.Plottable.IDraggable`
-
 ## GetGuid()
 
 **Summary:** Every plot has a globally unique ID (GUID)
@@ -926,15 +901,6 @@ Method | Summary
 
 **Returns:**
 * `int`
-
-## GetLegendBitmap()
-
-**Summary:** Return a new Bitmap containing only the legend
-
-**Parameters:**
-
-**Returns:**
-* `Drawing.Bitmap`
 
 ## GetNextColor()
 
@@ -988,22 +954,13 @@ Method | Summary
 
 ## GetSettings()
 
-**Summary:** Get access to the plot settings module (not exposed by default because its internal API changes frequently)
+**Summary:** The Settings module stores manages plot state and advanced configuration. Its class structure changes frequently, and users are highly advised not to interact with it directly. This method returns the settings module for advanced users and developers to interact with.
 
 **Parameters:**
 * `Boolean` showWarning
 
 **Returns:**
 * `ScottPlot.Settings`
-
-## GetType()
-
-> **WARNING:** This method does not have XML documentation
-
-**Parameters:**
-
-**Returns:**
-* `Type`
 
 ## Grid()
 
@@ -1033,7 +990,7 @@ Method | Summary
 
 ## Legend()
 
-**Summary:** Set legend visibility and location. Save the returned object for additional customizations.
+**Summary:** Configure legend visibility and location and return the Legend object to allow additional customizations
 
 **Parameters:**
 * `Boolean` enable
@@ -1076,7 +1033,7 @@ Method | Summary
 
 ## Render()
 
-**Summary:** Render the plot onto a new Bitmap (using size defined by Plot.Width and Plot.Height)
+**Summary:** Render the plot onto a new Bitmap (using the size given when the plot was created or resized)
 
 **Parameters:**
 * `Boolean` lowQuality
@@ -1107,9 +1064,18 @@ Method | Summary
 **Returns:**
 * `Drawing.Bitmap`
 
+## RenderLegend()
+
+**Summary:** Return a new Bitmap containing only the legend
+
+**Parameters:**
+
+**Returns:**
+* `Drawing.Bitmap`
+
 ## RenderLock()
 
-**Summary:** Wait for the current render to finish, then prevent future renders until RenderUnlock() is called.
+**Summary:** Wait for the current render to finish, then prevent future renders until RenderUnlock() is called. Locking rendering is required if you intend to modify plottables while rendering is occurring in another thread.
 
 **Parameters:**
 
@@ -1125,9 +1091,20 @@ Method | Summary
 **Returns:**
 * `Void`
 
+## Resize()
+
+**Summary:** Update the default size for new renders
+
+**Parameters:**
+* `float` width
+* `float` height
+
+**Returns:**
+* `Void`
+
 ## SaveFig()
 
-**Summary:** Save the plot as an image file and return the full path of the new file
+**Summary:** Save the plot as an image and return the full path of the file
 
 **Parameters:**
 * `string` filePath
@@ -1186,7 +1163,7 @@ Method | Summary
 
 ## SetCulture()
 
-**Summary:** Set the culture to use for number-to-string converstion for tick labels of all axes
+**Summary:** Set the culture to use for number-to-string converstion for tick labels of all axes.
 
 **Parameters:**
 * `Globalization.CultureInfo` culture
@@ -1196,7 +1173,7 @@ Method | Summary
 
 ## SetCulture()
 
-**Summary:** Set the culture to use for number-to-string converstion for tick labels of all axes
+**Summary:** Set the culture to use for number-to-string converstion for tick labels of all axes. This overload allows you to manually define every format string, allowing extensive customization of number and date formatting.
 
 **Parameters:**
 * `string` shortDatePattern
@@ -1209,20 +1186,9 @@ Method | Summary
 **Returns:**
 * `Void`
 
-## SetSize()
-
-**Summary:** Set the default size for new renders
-
-**Parameters:**
-* `float` width
-* `float` height
-
-**Returns:**
-* `Void`
-
 ## SetViewLimits()
 
-**Summary:** Set limits of the view for the primary axes (you cannot zoom, pan, or set axis limits beyond these boundaries)
+**Summary:** Set limits of the view for the primary axes. View limits define the boundaries of axis limits. You cannot zoom, pan, or set axis limits beyond view limits.
 
 **Parameters:**
 * `double` xMin
@@ -1260,7 +1226,7 @@ Method | Summary
 
 ## Title()
 
-**Summary:** Set the label for the horizontal axis above the plot (XAxis2).
+**Summary:** Set the label for the horizontal axis above the plot (XAxis2)
 
 **Parameters:**
 * `string` label
@@ -1268,15 +1234,6 @@ Method | Summary
 
 **Returns:**
 * `Void`
-
-## ToString()
-
-> **WARNING:** This method does not have XML documentation
-
-**Parameters:**
-
-**Returns:**
-* `string`
 
 ## Validate()
 
@@ -1290,7 +1247,7 @@ Method | Summary
 
 ## XLabel()
 
-**Summary:** Set the label for the vertical axis to the right of the plot (XAxis).
+**Summary:** Set the label for the vertical axis to the right of the plot (XAxis)
 
 **Parameters:**
 * `string` label
@@ -1300,7 +1257,7 @@ Method | Summary
 
 ## XTicks()
 
-**Summary:** Manually define X axis tick labels
+**Summary:** Manually define X axis tick labels using consecutive integer positions (0, 1, 2, etc.)
 
 **Parameters:**
 * `String[]` labels
@@ -1321,7 +1278,7 @@ Method | Summary
 
 ## YLabel()
 
-**Summary:** Set the label for the vertical axis to the right of the plot (YAxis2).
+**Summary:** Set the label for the vertical axis to the right of the plot (YAxis2)
 
 **Parameters:**
 * `string` label
@@ -1331,7 +1288,7 @@ Method | Summary
 
 ## YTicks()
 
-**Summary:** Manually define Y axis tick labels
+**Summary:** Manually define Y axis tick labels using consecutive integer positions (0, 1, 2, etc.)
 
 **Parameters:**
 * `String[]` labels
