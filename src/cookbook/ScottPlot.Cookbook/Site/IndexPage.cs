@@ -48,8 +48,15 @@ namespace ScottPlot.Cookbook.Site
                     continue;
                 string summary = xd.GetSummary(mi);
 
-                string url = Sanitize(mi.Name);
-                string name = $"<a href='{linkPrefix}#{url}'><strong>{mi.Name}</strong></a>";
+                // format differently if it's a real method or an auto-property
+                string itemName = mi.Name;
+                if (mi.Name.StartsWith("get_") || mi.Name.StartsWith("set_"))
+                    itemName = itemName.Replace("get_", "").Replace("set_", "");
+                else
+                    itemName += "()";
+
+                string url = Sanitize(itemName);
+                string name = $"<a href='{linkPrefix}#{url}'><strong>{itemName}</strong></a>";
                 AddTableRow(new string[] { name, summary });
             }
 
@@ -74,8 +81,15 @@ namespace ScottPlot.Cookbook.Site
                     continue;
                 string summary = xd.GetSummary(mi);
 
+                // format differently if it's a real method or an auto-property
+                string itemName = mi.Name;
+                if (mi.Name.StartsWith("get_") || mi.Name.StartsWith("set_"))
+                    itemName = itemName.Replace("get_", "").Replace("set_", "");
+                else
+                    itemName += "()";
+
                 string url = Sanitize(mi.Name);
-                string name = $"<a href='{linkPrefix}#{url}'><strong>{mi.Name}</strong></a>";
+                string name = $"<a href='{linkPrefix}#{url}'><strong>{itemName}</strong></a>";
                 AddTableRow(new string[] { name, summary });
             }
 
@@ -92,22 +106,43 @@ namespace ScottPlot.Cookbook.Site
                 string returnType = XmlDoc.PrettyType(mi.ReturnType);
                 string signature = XmlDoc.PrettySignature(mi);
 
-                AddGroupHeader(name, marginTop: "4em");
+                // format differently if it's a real method or an auto-property
+                string itemName = mi.Name;
+                if (mi.Name.StartsWith("get_") || mi.Name.StartsWith("set_"))
+                    itemName = itemName.Replace("get_", "").Replace("set_", "");
+                else
+                    itemName += "()";
+
+                AddGroupHeader(itemName, marginTop: "4em");
 
                 AddHTML($"<div><strong>Summary:</strong></div>");
                 AddHTML($"<ul><li>{summary}</li></ul>");
 
-                AddHTML($"<div><strong>Parameters:</strong></div>");
-                AddHTML("<ul>");
-                foreach (var p in mi.GetParameters())
-                    AddHTML($"<li><code>{XmlDoc.PrettyType(p.ParameterType)}</code> {p.Name}</li>");
-                AddHTML("</ul>");
+                bool isAutoProperty = mi.Name.StartsWith("get_") || mi.Name.StartsWith("set_");
+                if (isAutoProperty)
+                {
+                    // this method is an auto-property describing a field
 
-                AddHTML($"<div><strong>Returns:</strong></div>");
-                AddHTML($"<ul><li><code>{returnType}</code></li></ul>");
+                    signature = signature.Replace("()", "").Replace("get_", "").Replace("set_", "");
+                    AddHTML($"<div><strong>Field:</strong></div>");
+                    AddHTML($"<ul><li><code>{signature}</code></li></ul>");
+                }
+                else
+                {
+                    // this method is a traditional method with inputs and outputs
 
-                AddHTML($"<div><strong>Signature:</strong></div>");
-                AddHTML($"<ul><li><code>{signature}</code></li></ul>");
+                    AddHTML($"<div><strong>Parameters:</strong></div>");
+                    AddHTML("<ul>");
+                    foreach (var p in mi.GetParameters())
+                        AddHTML($"<li><code>{XmlDoc.PrettyType(p.ParameterType)}</code> {p.Name}</li>");
+                    AddHTML("</ul>");
+
+                    AddHTML($"<div><strong>Returns:</strong></div>");
+                    AddHTML($"<ul><li><code>{returnType}</code></li></ul>");
+
+                    AddHTML($"<div><strong>Signature:</strong></div>");
+                    AddHTML($"<ul><li><code>{signature}</code></li></ul>");
+                }
             }
         }
 

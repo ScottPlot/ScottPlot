@@ -7,35 +7,35 @@ Method | Summary
 ---|---
 [**Add**](#Add)|Add a plottable to the plot
 [**AddAxis**](#AddAxis)|Create and return an additional axis
-[**AxisAuto**](#AxisAuto)|Automatically adjust axis limits to fit the data (with a little extra margin)
-[**AxisAutoX**](#AxisAutoX)|Automatically adjust axis limits to fit the data (with a little extra margin)
+[**AxisAuto**](#AxisAuto)|Automatically adjust axis limits to fit the data
+[**AxisAutoX**](#AxisAutoX)|Automatically adjust axis limits to fit the data
 [**AxisAutoY**](#AxisAutoY)|Automatically adjust axis limits to fit the data (with a little extra margin)
-[**AxisPan**](#AxisPan)|Pan by a delta defined in coordinates
+[**AxisPan**](#AxisPan)|Pan the primary X and Y axis without affecting zoom
 [**AxisScale**](#AxisScale)|Adjust axis limits to achieve a certain pixel scale (units per pixel)
 [**AxisScaleLock**](#AxisScaleLock)|Lock X and Y axis scales (units per pixel) together to protect symmetry of circles and squares
-[**AxisZoom**](#AxisZoom)|Zoom by a fraction (zoom in if fraction > 1)
+[**AxisZoom**](#AxisZoom)|Zoom in or out. The amount of zoom is defined as a fraction of the current axis span.
 [**Benchmark**](#Benchmark)|If enabled, the benchmark displays render information in the corner of the plot.
 [**Clear**](#Clear)|Clear all plottables
 [**Clear**](#Clear)|Remove all plottables of the given type
-[**Copy**](#Copy)|Return a new Plot with all the same Plottables (and some of the styles) of this one. This is called when you right-click a plot in a control and hit "open in new window".
+[**Copy**](#Copy)|Return a new Plot with all the same Plottables (and some of the styles) of this one.
 [**Equals**](#Equals)|Returns true if the given plot is the exact same plot as this one
-[**Frame**](#Frame)|Configure color and visibility of the frame that outlines the data area (lines along the edges of the primary axes)
+[**Frame**](#Frame)|Configure color and visibility of the frame that outlines the data area. Note that the axis lines of all 4 primary axes touch each other, giving the appearance of a rectangle framing the data area. This method allows the user to customize these lines as a group or individually.
 [**Frameless**](#Frameless)|Give the plot a frameless appearance by setting the size of all axes to zero. This causes the data area to go right up to the edge of the plot.
-[**GetAxisLimits**](#GetAxisLimits)|Get limits for the given axes
-[**GetCoordinate**](#GetCoordinate)|Return the coordinate (in plot space) for the given pixel
-[**GetCoordinateX**](#GetCoordinateX)|Return the X position (in plot space) for the given pixel column
-[**GetCoordinateY**](#GetCoordinateY)|Return the Y position (in plot space) for the given pixel row
-[**GetGuid**](#GetGuid)|Every plot has a globally unique ID (GUID)
+[**GetAxisLimits**](#GetAxisLimits)|Returns the current limits for a given pair of axes.
+[**GetCoordinate**](#GetCoordinate)|Return the coordinate (in coordinate space) for the given pixel
+[**GetCoordinateX**](#GetCoordinateX)|Return the X position (in coordinate space) for the given pixel column
+[**GetCoordinateY**](#GetCoordinateY)|Return the Y position (in coordinate space) for the given pixel row
+[**GetGuid**](#GetGuid)|Every plot has a globally unique ID (GUID) that can help differentiate it from other plots
 [**GetHashCode**](#GetHashCode)|Returns an integer unique to this instance (based on the GUID)
 [**GetNextColor**](#GetNextColor)|Return a new color from the Pallette based on the number of plottables already in the plot. Use this to ensure every plottable gets a unique color.
-[**GetPixel**](#GetPixel)|Return the pixel location of the given coordinate (in plot space)
-[**GetPixelX**](#GetPixelX)|Return the pixel column of the given horizontal coordinate (in plot space)
-[**GetPixelY**](#GetPixelY)|Return the pixel row of the given vertical coordinate (in plot space)
+[**GetPixel**](#GetPixel)|Return the pixel for the given point in coordinate space
+[**GetPixelX**](#GetPixelX)|Return the horizontal pixel location given position in coordinate space
+[**GetPixelY**](#GetPixelY)|Return the vertical pixel location given position in coordinate space
 [**GetPlottables**](#GetPlottables)|Return a copy of the list of plottables
 [**GetSettings**](#GetSettings)|The Settings module stores manages plot state and advanced configuration. Its class structure changes frequently, and users are highly advised not to interact with it directly. This method returns the settings module for advanced users and developers to interact with.
-[**Grid**](#Grid)|Customize basic options for the primary X and Y axes. Call XAxis and YAxis methods to further customize individual axes.
+[**Grid**](#Grid)|Customize basic options for the primary X and Y axes. Call XAxis.Grid() and YAxis.Grid() to further customize grid settings.
 [**Layout**](#Layout)|Set padding around the data area by defining the minimum size and padding for all axes
-[**Legend**](#Legend)|Configure legend visibility and location and return the Legend object to allow additional customizations
+[**Legend**](#Legend)|Configure legend visibility and location. Optionally you can further customize the legend by interacting with the object it returns.
 [**MatchLayout**](#MatchLayout)|Adjust this axis layout based on the layout of a source plot
 [**Palette**](#Palette)|The palette defines the default colors given to plottables when they are added
 [**Remove**](#Remove)|Remove a specific plottable
@@ -46,9 +46,9 @@ Method | Summary
 [**RenderLock**](#RenderLock)|Wait for the current render to finish, then prevent future renders until RenderUnlock() is called. Locking rendering is required if you intend to modify plottables while rendering is occurring in another thread.
 [**RenderUnlock**](#RenderUnlock)|Release the render lock, allowing renders to proceed.
 [**Resize**](#Resize)|Update the default size for new renders
-[**SaveFig**](#SaveFig)|Save the plot as an image and return the full path of the file
-[**SetAxisLimits**](#SetAxisLimits)|Set limits for the given axes
-[**SetAxisLimits**](#SetAxisLimits)|Set limits for the given axes
+[**SaveFig**](#SaveFig)|Save the plot as an image
+[**SetAxisLimits**](#SetAxisLimits)|Set limits for the a given pair of axes
+[**SetAxisLimits**](#SetAxisLimits)|Set limits for a pair of axes
 [**SetAxisLimitsX**](#SetAxisLimitsX)|Set limits for the primary X axis
 [**SetAxisLimitsY**](#SetAxisLimitsY)|Set limits for the primary Y axis
 [**SetCulture**](#SetCulture)|Set the culture to use for number-to-string converstion for tick labels of all axes.
@@ -57,7 +57,7 @@ Method | Summary
 [**Style**](#Style)|Set colors of all plot components using pre-defined styles
 [**Style**](#Style)|Set the color of specific plot components
 [**Title**](#Title)|Set the label for the horizontal axis above the plot (XAxis2)
-[**Validate**](#Validate)|Throw an exception if any plottable contains an invalid state. Deep validation is more thorough but slower.
+[**Validate**](#Validate)|Throw an exception if any plottable contains an invalid state.
 [**XLabel**](#XLabel)|Set the label for the vertical axis to the right of the plot (XAxis)
 [**XTicks**](#XTicks)|Manually define X axis tick labels using consecutive integer positions (0, 1, 2, etc.)
 [**XTicks**](#XTicks)|Manually define X axis tick positions and labels
@@ -694,7 +694,7 @@ Method | Summary
 
 ## AxisAuto()
 
-**Summary:** Automatically adjust axis limits to fit the data (with a little extra margin)
+**Summary:** Automatically adjust axis limits to fit the data
 
 **Parameters:**
 * `double` horizontalMargin
@@ -705,7 +705,7 @@ Method | Summary
 
 ## AxisAutoX()
 
-**Summary:** Automatically adjust axis limits to fit the data (with a little extra margin)
+**Summary:** Automatically adjust axis limits to fit the data
 
 **Parameters:**
 * `double` margin
@@ -725,7 +725,7 @@ Method | Summary
 
 ## AxisPan()
 
-**Summary:** Pan by a delta defined in coordinates
+**Summary:** Pan the primary X and Y axis without affecting zoom
 
 **Parameters:**
 * `double` dx
@@ -757,7 +757,7 @@ Method | Summary
 
 ## AxisZoom()
 
-**Summary:** Zoom by a fraction (zoom in if fraction > 1)
+**Summary:** Zoom in or out. The amount of zoom is defined as a fraction of the current axis span.
 
 **Parameters:**
 * `double` xFrac
@@ -801,7 +801,7 @@ Method | Summary
 
 ## Copy()
 
-**Summary:** Return a new Plot with all the same Plottables (and some of the styles) of this one. This is called when you right-click a plot in a control and hit "open in new window".
+**Summary:** Return a new Plot with all the same Plottables (and some of the styles) of this one.
 
 **Parameters:**
 
@@ -820,7 +820,7 @@ Method | Summary
 
 ## Frame()
 
-**Summary:** Configure color and visibility of the frame that outlines the data area (lines along the edges of the primary axes)
+**Summary:** Configure color and visibility of the frame that outlines the data area. Note that the axis lines of all 4 primary axes touch each other, giving the appearance of a rectangle framing the data area. This method allows the user to customize these lines as a group or individually.
 
 **Parameters:**
 * `Boolean?` visible
@@ -844,7 +844,7 @@ Method | Summary
 
 ## GetAxisLimits()
 
-**Summary:** Get limits for the given axes
+**Summary:** Returns the current limits for a given pair of axes.
 
 **Parameters:**
 * `int` xAxisIndex
@@ -855,7 +855,7 @@ Method | Summary
 
 ## GetCoordinate()
 
-**Summary:** Return the coordinate (in plot space) for the given pixel
+**Summary:** Return the coordinate (in coordinate space) for the given pixel
 
 **Parameters:**
 * `float` xPixel
@@ -866,7 +866,7 @@ Method | Summary
 
 ## GetCoordinateX()
 
-**Summary:** Return the X position (in plot space) for the given pixel column
+**Summary:** Return the X position (in coordinate space) for the given pixel column
 
 **Parameters:**
 * `float` xPixel
@@ -876,7 +876,7 @@ Method | Summary
 
 ## GetCoordinateY()
 
-**Summary:** Return the Y position (in plot space) for the given pixel row
+**Summary:** Return the Y position (in coordinate space) for the given pixel row
 
 **Parameters:**
 * `float` yPixel
@@ -886,7 +886,7 @@ Method | Summary
 
 ## GetGuid()
 
-**Summary:** Every plot has a globally unique ID (GUID)
+**Summary:** Every plot has a globally unique ID (GUID) that can help differentiate it from other plots
 
 **Parameters:**
 
@@ -914,7 +914,7 @@ Method | Summary
 
 ## GetPixel()
 
-**Summary:** Return the pixel location of the given coordinate (in plot space)
+**Summary:** Return the pixel for the given point in coordinate space
 
 **Parameters:**
 * `double` x
@@ -925,7 +925,7 @@ Method | Summary
 
 ## GetPixelX()
 
-**Summary:** Return the pixel column of the given horizontal coordinate (in plot space)
+**Summary:** Return the horizontal pixel location given position in coordinate space
 
 **Parameters:**
 * `double` x
@@ -935,7 +935,7 @@ Method | Summary
 
 ## GetPixelY()
 
-**Summary:** Return the pixel row of the given vertical coordinate (in plot space)
+**Summary:** Return the vertical pixel location given position in coordinate space
 
 **Parameters:**
 * `double` y
@@ -964,7 +964,7 @@ Method | Summary
 
 ## Grid()
 
-**Summary:** Customize basic options for the primary X and Y axes. Call XAxis and YAxis methods to further customize individual axes.
+**Summary:** Customize basic options for the primary X and Y axes. Call XAxis.Grid() and YAxis.Grid() to further customize grid settings.
 
 **Parameters:**
 * `Boolean?` enable
@@ -990,7 +990,7 @@ Method | Summary
 
 ## Legend()
 
-**Summary:** Configure legend visibility and location and return the Legend object to allow additional customizations
+**Summary:** Configure legend visibility and location. Optionally you can further customize the legend by interacting with the object it returns.
 
 **Parameters:**
 * `Boolean` enable
@@ -1104,7 +1104,7 @@ Method | Summary
 
 ## SaveFig()
 
-**Summary:** Save the plot as an image and return the full path of the file
+**Summary:** Save the plot as an image
 
 **Parameters:**
 * `string` filePath
@@ -1114,7 +1114,7 @@ Method | Summary
 
 ## SetAxisLimits()
 
-**Summary:** Set limits for the given axes
+**Summary:** Set limits for the a given pair of axes
 
 **Parameters:**
 * `Double?` xMin
@@ -1129,7 +1129,7 @@ Method | Summary
 
 ## SetAxisLimits()
 
-**Summary:** Set limits for the given axes
+**Summary:** Set limits for a pair of axes
 
 **Parameters:**
 * `ScottPlot.AxisLimits` limits
@@ -1237,7 +1237,7 @@ Method | Summary
 
 ## Validate()
 
-**Summary:** Throw an exception if any plottable contains an invalid state. Deep validation is more thorough but slower.
+**Summary:** Throw an exception if any plottable contains an invalid state.
 
 **Parameters:**
 * `Boolean` deep

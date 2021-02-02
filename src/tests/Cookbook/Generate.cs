@@ -21,14 +21,17 @@ namespace ScottPlotTests.Cookbook
         [OneTimeSetUp]
         public void Setup()
         {
+            string NameToOrderBy(string autoPropertyMethodName) =>
+                autoPropertyMethodName.Replace("get_", "")
+                                      .Replace("set_", "")
+                                      .ToLower();
+
             XD = new XmlDoc(XmlDocPath);
             PlotMethods = typeof(ScottPlot.Plot).GetMethods()
                                                 .Where(x => x.IsPublic)
                                                 .Where(x => !x.GetCustomAttributes<ObsoleteAttribute>().Any())
-                                                .Where(x => !x.Name.StartsWith("get_")) // ignore auto-properties
                                                 .Where(x => x.Name != "GetType") // ignore special methods
-                                                .Where(x => x.Name != "ToString") // ignore special methods
-                                                .OrderBy(x => x.Name)
+                                                .OrderBy(x => NameToOrderBy(x.Name))
                                                 .ToArray();
         }
 

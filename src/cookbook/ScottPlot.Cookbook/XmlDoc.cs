@@ -52,11 +52,20 @@ namespace ScottPlot.Cookbook
             return null;
         }
 
+        public static string XmlName(FieldInfo fi)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Return the member name of a method as it would appear in the XML documentation
         /// </summary>
         public static string XmlName(MethodInfo mi)
         {
+            // simple return for auto-properties
+            if (mi.Name.StartsWith("get_"))
+                return "P:" + mi.DeclaringType.FullName + "." + mi.Name.Replace("get_", "");
+
             // start with the method name
             string name = "M:" + mi.DeclaringType.FullName + "." + mi.Name;
 
