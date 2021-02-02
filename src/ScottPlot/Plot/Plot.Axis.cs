@@ -45,21 +45,34 @@ namespace ScottPlot
         /// <summary>
         /// Set the label for the vertical axis to the right of the plot (XAxis)
         /// </summary>
+        /// <param name="label">new text</param>
         public void XLabel(string label) => XAxis.Label(label);
 
         /// <summary>
         /// Set the label for the vertical axis to the right of the plot (YAxis2)
         /// </summary>
+        /// <param name="label">new text</param>
         public void YLabel(string label) => YAxis.Label(label);
 
         /// <summary>
         /// Set the label for the horizontal axis above the plot (XAxis2)
         /// </summary>
+        /// <param name="label">new text</param>
+        /// <param name="bold">controls font weight</param>
         public void Title(string label, bool bold = true) => XAxis2.Label(label, bold: bold);
 
         /// <summary>
-        /// Configure color and visibility of the frame that outlines the data area (lines along the edges of the primary axes)
+        /// Configure color and visibility of the frame that outlines the data area.
+        /// Note that the axis lines of all 4 primary axes touch each other, 
+        /// giving the appearance of a rectangle framing the data area.
+        /// This method allows the user to customize these lines as a group or individually.
         /// </summary>
+        /// <param name="visible">visibility of the frames for the 4 primary axes</param>
+        /// <param name="color">color for the 4 primary axis lines</param>
+        /// <param name="left">visibility of the left axis (YAxis) line</param>
+        /// <param name="right">visibility of the right axis (YAxis2) line</param>
+        /// <param name="bottom">visibility of the bottom axis (XAxis) line</param>
+        /// <param name="top">visibility of the top axis (XAxis2) line</param>
         public void Frame(bool? visible = null, Color? color = null, bool? left = null, bool? right = null, bool? bottom = null, bool? top = null)
         {
             var primaryAxes = new Renderable.Axis[] { XAxis, XAxis2, YAxis, YAxis2 };
@@ -85,8 +98,11 @@ namespace ScottPlot
 
         /// <summary>
         /// Customize basic options for the primary X and Y axes. 
-        /// Call XAxis and YAxis methods to further customize individual axes.
+        /// Call XAxis.Grid() and YAxis.Grid() to further customize grid settings.
         /// </summary>
+        /// <param name="enable">sets visibility of X and Y grid lines</param>
+        /// <param name="color">sets color of of X and Y grid lines</param>
+        /// <param name="lineStyle">defines the style for X and Y grid lines</param>
         public void Grid(bool? enable = null, Color? color = null, LineStyle? lineStyle = null)
         {
             if (enable.HasValue)
@@ -102,6 +118,11 @@ namespace ScottPlot
         /// <summary>
         /// Set padding around the data area by defining the minimum size and padding for all axes
         /// </summary>
+        /// <param name="left">YAxis size (in pixels) that defines the area to the left of the plot</param>
+        /// <param name="right">YAxis2 size (in pixels) that defines the area to the right of the plot</param>
+        /// <param name="bottom">XAxis size (in pixels) that defines the area to the bottom of the plot</param>
+        /// <param name="top">XAxis2 size (in pixels) that defines the area to the top of the plot</param>
+        /// <param name="padding">Customize the default padding between axes and the edge of the plot</param>
         public void Layout(float? left = null, float? right = null, float? bottom = null, float? top = null, float? padding = 5)
         {
             YAxis.Layout(padding, left);
@@ -113,6 +134,9 @@ namespace ScottPlot
         /// <summary>
         /// Adjust this axis layout based on the layout of a source plot
         /// </summary>
+        /// <param name="sourcePlot">plot to use for layout reference</param>
+        /// <param name="horizontal">if true, horizontal layout will be matched</param>
+        /// <param name="vertical">if true, vertical layout will be matched</param>
         public void MatchLayout(Plot sourcePlot, bool horizontal = true, bool vertical = true)
         {
             if (!sourcePlot.GetSettings(showWarning: false).AllAxesHaveBeenSet)
@@ -139,28 +163,35 @@ namespace ScottPlot
         /// <summary>
         /// Manually define X axis tick labels using consecutive integer positions (0, 1, 2, etc.)
         /// </summary>
+        /// <param name="labels">new tick labels for the X axis</param>
         public void XTicks(string[] labels) => XTicks(DataGen.Consecutive(labels.Length), labels);
 
         /// <summary>
         /// Manually define X axis tick positions and labels
         /// </summary>
+        /// <param name="positions">positions on the X axis</param>
+        /// <param name="labels">new tick labels for the X axis</param>
         public void XTicks(double[] positions = null, string[] labels = null) =>
             XAxis.ManualTickPositions(positions, labels);
 
         /// <summary>
         /// Manually define Y axis tick labels using consecutive integer positions (0, 1, 2, etc.)
         /// </summary>
+        /// <param name="labels">new tick labels for the Y axis</param>
         public void YTicks(string[] labels) => YTicks(DataGen.Consecutive(labels.Length), labels);
 
         /// <summary>
         /// Manually define Y axis tick positions and labels
         /// </summary>
+        /// <param name="positions">positions on the Y axis</param>
+        /// <param name="labels">new tick labels for the Y axis</param>
         public void YTicks(double[] positions = null, string[] labels = null) =>
             YAxis.ManualTickPositions(positions, labels);
 
         /// <summary>
         /// Set the culture to use for number-to-string converstion for tick labels of all axes.
         /// </summary>
+        /// <param name="culture">standard culture</param>
         public void SetCulture(System.Globalization.CultureInfo culture)
         {
             foreach (var axis in settings.Axes)
@@ -176,7 +207,7 @@ namespace ScottPlot
         /// <param name="decimalSeparator">Separates the decimal digits</param>
         /// <param name="numberGroupSeparator">Separates large numbers ito groups of digits for readability</param>
         /// <param name="decimalDigits">Number of digits after the numberDecimalSeparator</param>
-        /// <param name="numberNegativePattern"></param>
+        /// <param name="numberNegativePattern">Appearance of negative numbers</param>
         /// <param name="numberGroupSizes">Sizes of decimal groups which are separated by the numberGroupSeparator</param>
         public void SetCulture(string shortDatePattern = null, string decimalSeparator = null, string numberGroupSeparator = null,
             int? decimalDigits = null, int? numberNegativePattern = null, int[] numberGroupSizes = null)
@@ -192,7 +223,12 @@ namespace ScottPlot
         /// <summary>
         /// Create and return an additional axis
         /// </summary>
-        public Renderable.Axis AddAxis(Renderable.Edge edge, int axisIndex, string title = null, System.Drawing.Color? color = null)
+        /// <param name="edge">Edge of the plot the new axis will belong to</param>
+        /// <param name="axisIndex">Only plottables with the same axis index will use this axis</param>
+        /// <param name="title">defualt label to use for the axis</param>
+        /// <param name="color">defualt color to use for the axis</param>
+        /// <returns>The axis that was just created and added to the plot. You can further customize it by interacting with it.</returns>
+        public Renderable.Axis AddAxis(Renderable.Edge edge, int axisIndex, string title = null, Color? color = null)
         {
             if (axisIndex <= 1)
                 throw new ArgumentException("The default axes already occupy indexes 0 and 1. Additional axes require higher indexes.");
@@ -222,35 +258,49 @@ namespace ScottPlot
         #region coordinate/pixel conversions
 
         /// <summary>
-        /// Return the coordinate (in plot space) for the given pixel
+        /// Return the coordinate (in coordinate space) for the given pixel
         /// </summary>
+        /// <param name="xPixel">horizontal pixel location</param>
+        /// <param name="yPixel">vertical pixel location</param>
+        /// <returns>point in coordinate space</returns>
         public (double x, double y) GetCoordinate(float xPixel, float yPixel) =>
             (settings.XAxis.Dims.GetUnit(xPixel), settings.YAxis.Dims.GetUnit(yPixel));
 
         /// <summary>
-        /// Return the X position (in plot space) for the given pixel column
+        /// Return the X position (in coordinate space) for the given pixel column
         /// </summary>
+        /// <param name="xPixel">horizontal pixel location</param>
+        /// <returns>horizontal position in coordinate space</returns>
         public double GetCoordinateX(float xPixel) => settings.XAxis.Dims.GetUnit(xPixel);
 
         /// <summary>
-        /// Return the Y position (in plot space) for the given pixel row
+        /// Return the Y position (in coordinate space) for the given pixel row
         /// </summary>
+        /// <param name="yPixel">vertical pixel location</param>
+        /// <returns>vertical position in coordinate space</returns>
         public double GetCoordinateY(float yPixel) => settings.YAxis.Dims.GetUnit(yPixel);
 
         /// <summary>
-        /// Return the pixel location of the given coordinate (in plot space)
+        /// Return the pixel for the given point in coordinate space
         /// </summary>
+        /// <param name="x">horizontal coordinate</param>
+        /// <param name="y">vertical coordinate</param>
+        /// <returns>pixel location</returns>
         public (float xPixel, float yPixel) GetPixel(double x, double y) =>
             (settings.XAxis.Dims.GetPixel(x), settings.YAxis.Dims.GetPixel(y));
 
         /// <summary>
-        /// Return the pixel column of the given horizontal coordinate (in plot space)
+        /// Return the horizontal pixel location given position in coordinate space
         /// </summary>
+        /// <param name="x">horizontal coordinate</param>
+        /// <returns>horizontal pixel position</returns>
         public float GetPixelX(double x) => settings.XAxis.Dims.GetPixel(x);
 
         /// <summary>
-        /// Return the pixel row of the given vertical coordinate (in plot space)
+        /// Return the vertical pixel location given position in coordinate space
         /// </summary>
+        /// <param name="y">vertical coordinate</param>
+        /// <returns>vertical pixel position</returns>
         public float GetPixelY(double y) => settings.YAxis.Dims.GetPixel(y);
 
         #endregion
@@ -258,8 +308,11 @@ namespace ScottPlot
         #region axis limits: get and set
 
         /// <summary>
-        /// Get limits for the given axes
+        /// Returns the current limits for a given pair of axes.
         /// </summary>
+        /// <param name="xAxisIndex">which axis index to reference</param>
+        /// <param name="yAxisIndex">which axis index to reference</param>
+        /// <returns>current limits</returns>
         public AxisLimits GetAxisLimits(int xAxisIndex = 0, int yAxisIndex = 0)
         {
             (double xMin, double xMax) = settings.GetXAxis(xAxisIndex).Dims.RationalLimits();
@@ -268,8 +321,14 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Set limits for the given axes
+        /// Set limits for the a given pair of axes
         /// </summary>
+        /// <param name="xMin">lower limit of the horizontal axis</param>
+        /// <param name="xMax">upper limit of the horizontal axis</param>
+        /// <param name="yMin">lower limit of the vertical axis</param>
+        /// <param name="yMax">upper limit of the vertical axis</param>
+        /// <param name="xAxisIndex">index of the axis the horizontal limits apply to</param>
+        /// <param name="yAxisIndex">index of the axis the vertical limits apply to</param>
         public void SetAxisLimits(
             double? xMin = null, double? xMax = null,
             double? yMin = null, double? yMax = null,
@@ -284,16 +343,23 @@ namespace ScottPlot
         /// <summary>
         /// Set limits for the primary X axis
         /// </summary>
+        /// <param name="xMin">lower limit of the horizontal axis</param>
+        /// <param name="xMax">upper limit of the horizontal axis</param>
         public void SetAxisLimitsX(double xMin, double xMax) => SetAxisLimits(xMin, xMax, null, null);
 
         /// <summary>
         /// Set limits for the primary Y axis
         /// </summary>
+        /// <param name="yMin">lower limit of the vertical axis</param>
+        /// <param name="yMax">upper limit of the vertical axis</param>
         public void SetAxisLimitsY(double yMin, double yMax) => SetAxisLimits(null, null, yMin, yMax);
 
         /// <summary>
-        /// Set limits for the given axes
+        /// Set limits for a pair of axes
         /// </summary>
+        /// <param name="limits">new limits</param>
+        /// <param name="xAxisIndex">index of the axis the horizontal limits apply to</param>
+        /// <param name="yAxisIndex">index of the axis the vertical limits apply to</param>
         public void SetAxisLimits(AxisLimits limits, int xAxisIndex = 0, int yAxisIndex = 0) =>
             settings.AxisSet(limits, xAxisIndex, yAxisIndex);
 
@@ -302,6 +368,10 @@ namespace ScottPlot
         /// View limits define the boundaries of axis limits.
         /// You cannot zoom, pan, or set axis limits beyond view limits.
         /// </summary>
+        /// <param name="xMin">lower limit of the horizontal axis</param>
+        /// <param name="xMax">upper limit of the horizontal axis</param>
+        /// <param name="yMin">lower limit of the vertical axis</param>
+        /// <param name="yMax">upper limit of the vertical axis</param>
         public void SetViewLimits(
             double xMin = double.NegativeInfinity, double xMax = double.PositiveInfinity,
             double yMin = double.NegativeInfinity, double yMax = double.PositiveInfinity)
@@ -315,14 +385,17 @@ namespace ScottPlot
         #region axis limits: fit to plottable data
 
         /// <summary>
-        /// Automatically adjust axis limits to fit the data (with a little extra margin)
+        /// Automatically adjust axis limits to fit the data
         /// </summary>
+        /// <param name="horizontalMargin">amount of space to the left and right of the data (as a fraction of its width)</param>
+        /// <param name="verticalMargin">amount of space above and below the data (as a fraction of its height)</param>
         public void AxisAuto(double horizontalMargin = .05, double verticalMargin = .1) =>
             settings.AxisAutoAll(horizontalMargin, verticalMargin);
 
         /// <summary>
-        /// Automatically adjust axis limits to fit the data (with a little extra margin)
+        /// Automatically adjust axis limits to fit the data
         /// </summary>
+        /// <param name="margin">amount of space to the left and right of the data (as a fraction of its width)</param>
         public void AxisAutoX(double margin = .05)
         {
             if (settings.AllAxesHaveBeenSet == false)
@@ -336,6 +409,7 @@ namespace ScottPlot
         /// <summary>
         /// Automatically adjust axis limits to fit the data (with a little extra margin)
         /// </summary>
+        /// <param name="margin">amount of space above and below the data (as a fraction of its height)</param>
         public void AxisAutoY(double margin = .1)
         {
             if (settings.AllAxesHaveBeenSet == false)
@@ -353,6 +427,8 @@ namespace ScottPlot
         /// <summary>
         /// Adjust axis limits to achieve a certain pixel scale (units per pixel)
         /// </summary>
+        /// <param name="unitsPerPixelX">zoom so 1 pixel equals this many horizontal units in coordinate space</param>
+        /// <param name="unitsPerPixelY">zoom so 1 pixel equals this many vertical units in coordinate space</param>
         public void AxisScale(double? unitsPerPixelX = null, double? unitsPerPixelY = null)
         {
             if (unitsPerPixelX != null)
@@ -371,6 +447,7 @@ namespace ScottPlot
         /// <summary>
         /// Lock X and Y axis scales (units per pixel) together to protect symmetry of circles and squares
         /// </summary>
+        /// <param name="enable">if true, scales are locked</param>
         public void AxisScaleLock(bool enable)
         {
             settings.AxisAutoUnsetAxes();
@@ -384,8 +461,14 @@ namespace ScottPlot
         #region axis limits: pan and zoom
 
         /// <summary>
-        /// Zoom by a fraction (zoom in if fraction > 1)
+        /// Zoom in or out. The amount of zoom is defined as a fraction of the current axis span.
         /// </summary>
+        /// <param name="xFrac">horizontal zoom (>1 means zoom in)</param>
+        /// <param name="yFrac">vertical zoom (>1 means zoom in)</param>
+        /// <param name="zoomToX">if defined, zoom will be centered at this point</param>
+        /// <param name="zoomToY">if defined, zoom will be centered at this point</param>
+        /// <param name="xAxisIndex">index of the axis to zoom</param>
+        /// <param name="yAxisIndex">index of the axis to zoom</param>
         public void AxisZoom(
             double xFrac = 1, double yFrac = 1,
             double? zoomToX = null, double? zoomToY = null,
@@ -402,8 +485,10 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Pan by a delta defined in coordinates
+        /// Pan the primary X and Y axis without affecting zoom
         /// </summary>
+        /// <param name="dx">horizontal distance to pan (in coordinate units)</param>
+        /// <param name="dy">vertical distance to pan (in coordinate units)</param>
         public void AxisPan(double dx = 0, double dy = 0)
         {
             if (!settings.AllAxesHaveBeenSet)
