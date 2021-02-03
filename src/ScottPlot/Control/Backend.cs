@@ -219,7 +219,7 @@ namespace ScottPlot.Control
         private bool IsZoomingRectangle;
         public void MouseMove(InputState input)
         {
-            IsZoomingRectangle = IsMiddleDown || (IsLeftDown && input.AltDown);
+            IsZoomingRectangle = (IsMiddleDown || (IsLeftDown && input.AltDown)) && Configuration.MiddleClickDragZoom;
             MouseLocationX = input.X;
             MouseLocationY = input.Y;
             if (PlottableBeingDragged != null)
