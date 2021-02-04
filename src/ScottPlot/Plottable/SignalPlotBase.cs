@@ -168,22 +168,31 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Replace a single Y value
         /// </summary>
+        /// <param name="index">array index to replace</param>
+        /// <param name="newValue">new value</param>
         public void Update(int index, T newValue) => Strategy.updateElement(index, newValue);
 
         /// <summary>
         /// Replace a range of Y values
         /// </summary>
+        /// <param name="firstIndex">index to begin replacing</param>
+        /// <param name="lastIndex">last index to replace</param>
+        /// <param name="newData">source for new data</param>
+        /// <param name="fromData">source data offset</param>
         public void Update(int firstIndex, int lastIndex, T[] newData, int fromData = 0) =>
             Strategy.updateRange(firstIndex, lastIndex, newData, fromData);
 
         /// <summary>
         /// Replace all Y values from the given index through the end of the array
         /// </summary>
+        /// <param name="firstIndex">first index to begin replacing</param>
+        /// <param name="newData">new values</param>
         public void Update(int firstIndex, T[] newData) => Update(firstIndex, newData.Length, newData);
 
         /// <summary>
         /// Replace all Y values with new ones
         /// </summary>
+        /// <param name="newData">new Y values</param>
         public void Update(T[] newData) => Update(0, newData.Length, newData);
 
         public virtual AxisLimits GetAxisLimits()
@@ -670,6 +679,11 @@ namespace ScottPlot.Plottable
                 throw new InvalidOperationException("Two fill colors needs to be specified if fill above and below is used");
         }
 
+        /// <summary>
+        /// Return the X/Y coordinates of the point nearest the X position
+        /// </summary>
+        /// <param name="x">X position in plot space</param>
+        /// <returns></returns>
         public (double x, double y, int index) GetPointNearestX(double x)
         {
             int index = (int)((x - OffsetX) / SamplePeriod);
