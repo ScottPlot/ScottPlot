@@ -11,7 +11,7 @@ using System.Text;
 
 namespace ScottPlot.Plottable
 {
-    public class SignalPlotBase<T> : IPlottable, IHasPoints, IExportable where T : struct, IComparable
+    public class SignalPlotBase<T> : IPlottable, IHasPoints where T : struct, IComparable
     {
         protected IMinMaxSearchStrategy<T> Strategy = new SegmentedTreeMinMaxSearchStrategy<T>();
         protected bool MaxRenderIndexLowerYSPromise = false;
@@ -576,19 +576,6 @@ namespace ScottPlot.Plottable
         {
             string label = string.IsNullOrWhiteSpace(this.Label) ? "" : $" ({this.Label})";
             return $"PlottableSignalBase{label} with {PointCount} points ({typeof(T).Name})";
-        }
-
-        public void SaveCSV(string filePath, string delimiter = ", ", string separator = "\n")
-        {
-            System.IO.File.WriteAllText(filePath, GetCSV(delimiter, separator));
-        }
-
-        public string GetCSV(string delimiter = ", ", string separator = "\n")
-        {
-            StringBuilder csv = new StringBuilder();
-            for (int i = 0; i < _Ys.Length; i++)
-                csv.AppendFormat(CultureInfo.InvariantCulture, "{0}{1}{2}{3}", OffsetX + i * _SamplePeriod, delimiter, Strategy.SourceElement(i) + OffsetY, separator);
-            return csv.ToString();
         }
 
         public int PointCount { get => _Ys.Length; }

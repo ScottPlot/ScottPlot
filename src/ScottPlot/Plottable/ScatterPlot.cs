@@ -9,13 +9,15 @@ using System.Text;
 
 namespace ScottPlot.Plottable
 {
-    public class ScatterPlot : IPlottable, IHasPoints, IExportable
+    public class ScatterPlot : IPlottable, IHasPoints
     {
         // data
         public double[] Xs { get; private set; }
         public double[] Ys { get; private set; }
         public double[] XError { get; set; }
         public double[] YError { get; set; }
+
+        public int PointCount => Ys.Length;
 
         // customization
         public bool IsVisible { get; set; } = true;
@@ -256,21 +258,6 @@ namespace ScottPlot.Plottable
                         MarkerTools.DrawMarker(gfx, points[i], MarkerShape, MarkerSize, Color);
             }
         }
-
-        public void SaveCSV(string filePath, string delimiter = ", ", string separator = "\n")
-        {
-            System.IO.File.WriteAllText(filePath, GetCSV(delimiter, separator));
-        }
-
-        public string GetCSV(string delimiter = ", ", string separator = "\n")
-        {
-            StringBuilder csv = new StringBuilder();
-            for (int i = 0; i < Ys.Length; i++)
-                csv.AppendFormat(CultureInfo.InvariantCulture, "{0}{1}{2}{3}", Xs[i], delimiter, Ys[i], separator);
-            return csv.ToString();
-        }
-
-        public int PointCount { get => Ys.Length; }
 
         public LegendItem[] GetLegendItems()
         {

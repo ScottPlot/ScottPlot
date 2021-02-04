@@ -4,7 +4,7 @@ using System.Drawing;
 namespace ScottPlot.Plottable
 {
     [Obsolete("This plot type is deprecated: Use a regular scatter plot and call GetPointNearest(). See examples in documentation.", true)]
-    public class ScatterPlotHighlight : ScatterPlot, IPlottable, IExportable, IHasPoints, IHasHighlightablePoints
+    public class ScatterPlotHighlight : ScatterPlot, IPlottable, IHasPoints, IHasHighlightablePoints
     {
         public MarkerShape highlightedShape = MarkerShape.openCircle;
         public float highlightedMarkerSize = 10;
