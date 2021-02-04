@@ -10,6 +10,9 @@ namespace ScottPlot.Plottable
     /// </summary>
     public class HLine : AxisLine
     {
+        /// <summary>
+        /// Y position to render the line
+        /// </summary>
         public double Y { get => Position; set => Position = value; }
         public override string ToString() => $"Horizontal line at Y={Y}";
         public HLine() : base(true) { }
@@ -20,6 +23,9 @@ namespace ScottPlot.Plottable
     /// </summary>
     public class VLine : AxisLine
     {
+        /// <summary>
+        /// X position to render the line
+        /// </summary>
         public double X { get => Position; set => Position = value; }
         public override string ToString() => $"Vertical line at X={X}";
         public VLine() : base(false) { }
@@ -45,6 +51,10 @@ namespace ScottPlot.Plottable
         public Cursor DragCursor => IsHorizontal ? Cursor.NS : Cursor.WE;
         public double DragLimitMin = double.NegativeInfinity;
         public double DragLimitMax = double.PositiveInfinity;
+
+        /// <summary>
+        /// This event is invoked after the line is dragged 
+        /// </summary>
         public event EventHandler Dragged = delegate { };
 
         public AxisLine(bool isHorizontal)
@@ -85,6 +95,12 @@ namespace ScottPlot.Plottable
             }
         }
 
+        /// <summary>
+        /// Move the line to a new coordinate in plot space.
+        /// </summary>
+        /// <param name="coordinateX">new X position</param>
+        /// <param name="coordinateY">new Y position</param>
+        /// <param name="fixedSize">This argument is ignored</param>
         public void DragTo(double coordinateX, double coordinateY, bool fixedSize)
         {
             if (!DragEnabled)
@@ -106,6 +122,14 @@ namespace ScottPlot.Plottable
             Dragged(this, EventArgs.Empty);
         }
 
+        /// <summary>
+        /// Return True if the line is within a certain number of pixels (snap) to the mouse
+        /// </summary>
+        /// <param name="coordinateX">mouse position (coordinate space)</param>
+        /// <param name="coordinateY">mouse position (coordinate space)</param>
+        /// <param name="snapX">snap distance (pixels)</param>
+        /// <param name="snapY">snap distance (pixels)</param>
+        /// <returns></returns>
         public bool IsUnderMouse(double coordinateX, double coordinateY, double snapX, double snapY) =>
             IsHorizontal ?
             Math.Abs(Position - coordinateY) <= snapY :
