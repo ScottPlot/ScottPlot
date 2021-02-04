@@ -273,7 +273,11 @@ namespace ScottPlot.Plottable
             return new LegendItem[] { singleLegendItem };
         }
 
-
+        /// <summary>
+        /// Return the X/Y coordinates of the point nearest the X position
+        /// </summary>
+        /// <param name="x">X position in plot space</param>
+        /// <returns></returns>
         public (double x, double y, int index) GetPointNearestX(double x)
         {
             double minDistance = Math.Abs(Xs[0] - x);
@@ -291,6 +295,11 @@ namespace ScottPlot.Plottable
             return (Xs[minIndex], Ys[minIndex], minIndex);
         }
 
+        /// <summary>
+        /// Return the X/Y coordinates of the point nearest the Y position
+        /// </summary>
+        /// <param name="y">Y position in plot space</param>
+        /// <returns></returns>
         public (double x, double y, int index) GetPointNearestY(double y)
         {
             double minDistance = Math.Abs(Ys[0] - y);
