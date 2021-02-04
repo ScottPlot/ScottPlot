@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Drawing;
 using ScottPlot.Drawing;
-using System.Data;
 
 namespace ScottPlot.Plottable
 {
@@ -100,7 +99,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public void RenderCandles(PlotDimensions dims, Bitmap bmp, bool lowQuality)
+        private void RenderCandles(PlotDimensions dims, Bitmap bmp, bool lowQuality)
         {
             double fractionalTickWidth = .7;
             float boxWidth = 10;
@@ -111,42 +110,41 @@ namespace ScottPlot.Plottable
                 boxWidth = (float)(spacingPx / 2 * fractionalTickWidth);
             }
 
-            using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
-            using (Pen pen = new Pen(Color.Magenta))
-            using (SolidBrush brush = new SolidBrush(Color.Magenta))
+            using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality);
+            using Pen pen = new Pen(Color.Magenta);
+            using SolidBrush brush = new SolidBrush(Color.Magenta);
+
+            for (int i = 0; i < OHLCs.Length; i++)
             {
-                for (int i = 0; i < OHLCs.Length; i++)
-                {
-                    var ohlc = OHLCs[i];
-                    var ohlcTime = (Sequential) ? i : ohlc.time;
-                    float pixelX = dims.GetPixelX(ohlcTime);
+                var ohlc = OHLCs[i];
+                var ohlcTime = (Sequential) ? i : ohlc.time;
+                float pixelX = dims.GetPixelX(ohlcTime);
 
-                    if (AutoWidth == false)
-                        boxWidth = (float)(ohlc.timeSpan * dims.PxPerUnitX / 2 * fractionalTickWidth);
+                if (AutoWidth == false)
+                    boxWidth = (float)(ohlc.timeSpan * dims.PxPerUnitX / 2 * fractionalTickWidth);
 
-                    pen.Color = ohlc.closedHigher ? ColorUp : ColorDown;
-                    brush.Color = ohlc.closedHigher ? ColorUp : ColorDown;
-                    pen.Width = (boxWidth >= 2) ? 2 : 1;
+                pen.Color = ohlc.closedHigher ? ColorUp : ColorDown;
+                brush.Color = ohlc.closedHigher ? ColorUp : ColorDown;
+                pen.Width = (boxWidth >= 2) ? 2 : 1;
 
-                    // the wick below the box
-                    PointF wickLowBot = new PointF(pixelX, dims.GetPixelY(ohlc.low));
-                    PointF wickLowTop = new PointF(pixelX, dims.GetPixelY(ohlc.lowestOpenClose));
-                    gfx.DrawLine(pen, wickLowBot, wickLowTop);
+                // the wick below the box
+                PointF wickLowBot = new PointF(pixelX, dims.GetPixelY(ohlc.low));
+                PointF wickLowTop = new PointF(pixelX, dims.GetPixelY(ohlc.lowestOpenClose));
+                gfx.DrawLine(pen, wickLowBot, wickLowTop);
 
-                    // the wick above the box
-                    PointF wickHighBot = new PointF(pixelX, dims.GetPixelY(ohlc.highestOpenClose));
-                    PointF wickHighTop = new PointF(pixelX, dims.GetPixelY(ohlc.high));
-                    gfx.DrawLine(pen, wickHighBot, wickHighTop);
+                // the wick above the box
+                PointF wickHighBot = new PointF(pixelX, dims.GetPixelY(ohlc.highestOpenClose));
+                PointF wickHighTop = new PointF(pixelX, dims.GetPixelY(ohlc.high));
+                gfx.DrawLine(pen, wickHighBot, wickHighTop);
 
-                    // the candle
-                    PointF boxLowerLeft = new PointF(pixelX, dims.GetPixelY(ohlc.lowestOpenClose));
-                    PointF boxUpperRight = new PointF(pixelX, dims.GetPixelY(ohlc.highestOpenClose));
-                    gfx.FillRectangle(brush, boxLowerLeft.X - boxWidth, boxUpperRight.Y, boxWidth * 2, boxLowerLeft.Y - boxUpperRight.Y);
-                }
+                // the candle
+                PointF boxLowerLeft = new PointF(pixelX, dims.GetPixelY(ohlc.lowestOpenClose));
+                PointF boxUpperRight = new PointF(pixelX, dims.GetPixelY(ohlc.highestOpenClose));
+                gfx.FillRectangle(brush, boxLowerLeft.X - boxWidth, boxUpperRight.Y, boxWidth * 2, boxLowerLeft.Y - boxUpperRight.Y);
             }
         }
 
-        public void RenderOhlc(PlotDimensions dims, Bitmap bmp, bool lowQuality)
+        private void RenderOhlc(PlotDimensions dims, Bitmap bmp, bool lowQuality)
         {
             double fractionalTickWidth = .7;
             float boxWidth = 10;
@@ -157,33 +155,31 @@ namespace ScottPlot.Plottable
                 boxWidth = (float)(spacingPx / 2 * fractionalTickWidth);
             }
 
-            using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
-            using (Pen pen = new Pen(Color.Magenta))
+            using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality);
+            using Pen pen = new Pen(Color.Magenta);
+            for (int i = 0; i < OHLCs.Length; i++)
             {
-                for (int i = 0; i < OHLCs.Length; i++)
-                {
-                    var ohlc = OHLCs[i];
-                    var ohlcTime = (Sequential) ? i : ohlc.time;
-                    float pixelX = dims.GetPixelX(ohlcTime);
+                var ohlc = OHLCs[i];
+                var ohlcTime = (Sequential) ? i : ohlc.time;
+                float pixelX = dims.GetPixelX(ohlcTime);
 
-                    if (AutoWidth == false)
-                        boxWidth = (float)(ohlc.timeSpan * dims.PxPerUnitX / 2 * fractionalTickWidth);
+                if (AutoWidth == false)
+                    boxWidth = (float)(ohlc.timeSpan * dims.PxPerUnitX / 2 * fractionalTickWidth);
 
-                    pen.Color = ohlc.closedHigher ? ColorUp : ColorDown;
-                    pen.Width = (boxWidth >= 2) ? 2 : 1;
+                pen.Color = ohlc.closedHigher ? ColorUp : ColorDown;
+                pen.Width = (boxWidth >= 2) ? 2 : 1;
 
-                    // the main line
-                    PointF wickTop = new PointF(pixelX, dims.GetPixelY(ohlc.low));
-                    PointF wickBot = new PointF(pixelX, dims.GetPixelY(ohlc.high));
-                    gfx.DrawLine(pen, wickBot, wickTop);
+                // the main line
+                PointF wickTop = new PointF(pixelX, dims.GetPixelY(ohlc.low));
+                PointF wickBot = new PointF(pixelX, dims.GetPixelY(ohlc.high));
+                gfx.DrawLine(pen, wickBot, wickTop);
 
-                    // open and close lines
-                    float xPx = wickTop.X;
-                    float yPxOpen = dims.GetPixelY(ohlc.open);
-                    float yPxClose = dims.GetPixelY(ohlc.close);
-                    gfx.DrawLine(pen, xPx - boxWidth, yPxOpen, xPx, yPxOpen);
-                    gfx.DrawLine(pen, xPx + boxWidth, yPxClose, xPx, yPxClose);
-                }
+                // open and close lines
+                float xPx = wickTop.X;
+                float yPxOpen = dims.GetPixelY(ohlc.open);
+                float yPxClose = dims.GetPixelY(ohlc.close);
+                gfx.DrawLine(pen, xPx - boxWidth, yPxOpen, xPx, yPxOpen);
+                gfx.DrawLine(pen, xPx + boxWidth, yPxClose, xPx, yPxClose);
             }
         }
     }
