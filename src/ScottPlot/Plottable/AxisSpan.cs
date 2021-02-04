@@ -50,6 +50,10 @@ namespace ScottPlot.Plottable
         public double DragLimitMin = double.NegativeInfinity;
         public double DragLimitMax = double.PositiveInfinity;
         public Cursor DragCursor => IsHorizontal ? Cursor.WE : Cursor.NS;
+
+        /// <summary>
+        /// This event is invoked after the line is dragged 
+        /// </summary>
         public event EventHandler Dragged = delegate { };
 
         public AxisSpan(bool isHorizontal)
@@ -85,6 +89,15 @@ namespace ScottPlot.Plottable
 
         private enum Edge { Edge1, Edge2, Neither };
         Edge edgeUnderMouse = Edge.Neither;
+
+        /// <summary>
+        /// Return True if either span edge is within a certain number of pixels (snap) to the mouse
+        /// </summary>
+        /// <param name="coordinateX">mouse position (coordinate space)</param>
+        /// <param name="coordinateY">mouse position (coordinate space)</param>
+        /// <param name="snapX">snap distance (pixels)</param>
+        /// <param name="snapY">snap distance (pixels)</param>
+        /// <returns></returns>
         public bool IsUnderMouse(double coordinateX, double coordinateY, double snapX, double snapY)
         {
             if (IsHorizontal)
@@ -109,6 +122,12 @@ namespace ScottPlot.Plottable
             return edgeUnderMouse != Edge.Neither;
         }
 
+        /// <summary>
+        /// Move the span to a new coordinate in plot space.
+        /// </summary>
+        /// <param name="coordinateX">new X position</param>
+        /// <param name="coordinateY">new Y position</param>
+        /// <param name="fixedSize">if True, both edges will be moved to maintain the size of the span</param>
         public void DragTo(double coordinateX, double coordinateY, bool fixedSize)
         {
             if (!DragEnabled)
