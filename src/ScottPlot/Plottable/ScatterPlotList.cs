@@ -39,18 +39,27 @@ namespace ScottPlot.Plottable
             }
         }
 
+        /// <summary>
+        /// Clear the list of points
+        /// </summary>
         public void Clear()
         {
             Xs.Clear();
             Ys.Clear();
         }
 
+        /// <summary>
+        /// Add a single point to the list
+        /// </summary>
         public void Add(double x, double y)
         {
             Xs.Add(x);
             Ys.Add(y);
         }
 
+        /// <summary>
+        /// Add multiple points to the list
+        /// </summary>
         public void AddRange(double[] xs, double[] ys)
         {
             if (xs is null)
