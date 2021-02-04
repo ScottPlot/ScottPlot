@@ -217,7 +217,7 @@ namespace ScottPlot.Plottable
             List<PointF> linePoints = new List<PointF>(visibleIndex2 - visibleIndex1 + 2);
             if (visibleIndex2 > _Ys.Length - 2)
                 visibleIndex2 = _Ys.Length - 2;
-            if (visibleIndex2 > MaxRenderIndex)
+            if (visibleIndex2 > MaxRenderIndex - 1)
                 visibleIndex2 = MaxRenderIndex - 1;
             if (visibleIndex1 < 0)
                 visibleIndex1 = 0;
