@@ -80,7 +80,7 @@ Method | Summary
 [**AddFill**](#AddFill)|Create a polygon to fill the area between Y values of two curves.
 [**AddFillAboveAndBelow**](#AddFillAboveAndBelow)|Create a polygon to fill the area between Y values and a baseline that uses two different colors for area above and area below the baseline.
 [**AddFunction**](#AddFunction)|
-[**AddHeatmap**](#AddHeatmap)|
+[**AddHeatmap**](#AddHeatmap)|Add a heatmap to the plot
 [**AddHorizontalLine**](#AddHorizontalLine)|Add a horizontal axis line at a specific Y position
 [**AddHorizontalSpan**](#AddHorizontalSpan)|Add a horizontal span (shades the region between two X positions)
 [**AddImage**](#AddImage)|Display an image at a specific coordinate
@@ -94,7 +94,7 @@ Method | Summary
 [**AddPopulation**](#AddPopulation)|Add a population to the plot
 [**AddPopulations**](#AddPopulations)|Add multiple populations to the plot as a single series
 [**AddPopulations**](#AddPopulations)|Add multiple populations to the plot as a single series
-[**AddRadar**](#AddRadar)|
+[**AddRadar**](#AddRadar)|Add a radar plot
 [**AddScaleBar**](#AddScaleBar)|Add an L-shaped scalebar to the corner of the plot
 [**AddScatter**](#AddScatter)|Add a scatter plot from X/Y pairs. Lines and markers are shown by default. Scatter plots are slower than Signal plots.
 [**AddScatterLines**](#AddScatterLines)|Add a scatter plot from X/Y pairs connected by lines (no markers). Scatter plots are slower than Signal plots.
@@ -107,7 +107,7 @@ Method | Summary
 [**AddText**](#AddText)|Display text at specific X/Y coordinates
 [**AddText**](#AddText)|Display text at specific X/Y coordinates
 [**AddTooltip**](#AddTooltip)|Display a text bubble that points to an X/Y location on the plot
-[**AddVectorField**](#AddVectorField)|
+[**AddVectorField**](#AddVectorField)|Add a 2D vector field to the plot
 [**AddVerticalLine**](#AddVerticalLine)|Add a vertical axis line at a specific Y position
 [**AddVerticalSpan**](#AddVerticalSpan)|Add a horizontal span (shades the region between two X positions)
 
@@ -298,7 +298,7 @@ Method | Summary
 
 ## AddHeatmap()
 
-> **WARNING:** This method does not have XML documentation
+**Summary:** Add a heatmap to the plot
 
 **Parameters:**
 * `Double[,]` intensities
@@ -472,7 +472,7 @@ Method | Summary
 
 ## AddRadar()
 
-> **WARNING:** This method does not have XML documentation
+**Summary:** Add a radar plot
 
 **Parameters:**
 * `Double[,]` values
@@ -651,7 +651,7 @@ Method | Summary
 
 ## AddVectorField()
 
-> **WARNING:** This method does not have XML documentation
+**Summary:** Add a 2D vector field to the plot
 
 **Parameters:**
 * `ScottPlot.Statistics.Vector2[,]` vectors

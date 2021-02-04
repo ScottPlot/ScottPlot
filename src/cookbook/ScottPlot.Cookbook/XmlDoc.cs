@@ -62,12 +62,23 @@ namespace ScottPlot.Cookbook
         /// </summary>
         public static string XmlName(MethodInfo mi)
         {
+            // simple return for events
+            if (mi.Name.StartsWith("add_"))
+                return "E:" + mi.DeclaringType.FullName + "." + mi.Name.Replace("add_", "");
+            if (mi.Name.StartsWith("remove_"))
+                return "E:" + mi.DeclaringType.FullName + "." + mi.Name.Replace("remove_", "");
+
             // simple return for auto-properties
             if (mi.Name.StartsWith("get_"))
                 return "P:" + mi.DeclaringType.FullName + "." + mi.Name.Replace("get_", "");
 
             // start with the method name
-            string name = "M:" + mi.DeclaringType.FullName + "." + mi.Name;
+            string baseName = mi.DeclaringType.FullName;
+            if (baseName is null)
+                baseName = mi.DeclaringType.ToString();
+            if (baseName.Contains("[["))
+                baseName = baseName.Split('[')[0];
+            string name = "M:" + baseName + "." + mi.Name;
 
             // determine XML names for each parameter
             ParameterInfo[] parameters = mi.GetParameters();
@@ -87,7 +98,18 @@ namespace ScottPlot.Cookbook
 
                 // special formatting for nullable generic types
                 if (parameterNames[i].StartsWith("System.Nullable"))
+                {
                     parameterNames[i] = "System.Nullable{" + pt.GetGenericArguments()[0] + "}";
+                    if (pt.IsArray)
+                    {
+                        int dimensions = pt.GetArrayRank();
+                        string[] insides = Enumerable.Range(0, dimensions).Select(x => "0:").ToArray();
+                        parameterNames[i] += "[" + string.Join(",", insides) + "]";
+                    }
+                }
+
+                // hack for multidimensional arrays
+                parameterNames[i] = parameterNames[i].Replace("[,]", "[0:,0:]");
             }
 
             // add XML parameters to the method name

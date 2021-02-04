@@ -1,10 +1,8 @@
 ﻿using NUnit.Framework;
+using ScottPlot.Plottable;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace ScottPlotTests.Documentation
@@ -18,6 +16,7 @@ namespace ScottPlotTests.Documentation
         XDocument Doc;
         MethodInfo[] PlotMethods;
         FieldInfo[] PlotFields;
+        Type[] PlottableTypes;
 
         [OneTimeSetUp]
         public void LoadDocs()
@@ -25,15 +24,22 @@ namespace ScottPlotTests.Documentation
             Doc = XDocument.Load(XmlDocPath);
             PlotMethods = typeof(ScottPlot.Plot)
                           .GetMethods()
-                          .Where(x => !x.GetCustomAttributes<ObsoleteAttribute>().Any()) // ignore obsolete
-                                                                                         //.Where(x => !x.Name.StartsWith("get_")) // ignore auto-properties
-                          .Where(x => x.Name != "GetType") // ignore special methods
+                          .Where(x => !x.GetCustomAttributes<ObsoleteAttribute>().Any())
+                          .Where(x => x.Name != "GetType")
                           .ToArray();
 
             PlotFields = typeof(ScottPlot.Plot)
                          .GetFields()
-                         .Where(x => !x.GetCustomAttributes<ObsoleteAttribute>().Any()) // ignore obsolete
+                         .Where(x => !x.GetCustomAttributes<ObsoleteAttribute>().Any())
                          .ToArray();
+
+            PlottableTypes = Assembly.GetAssembly(typeof(ScatterPlot))
+                     .GetTypes()
+                     .Where(x => x.Namespace == typeof(ScatterPlot).Namespace)
+                     .Where(x => x.IsClass)
+                     .Where(x => !x.IsInterface)
+                     .Where(x => !x.GetCustomAttributes<ObsoleteAttribute>().Any())
+                     .ToArray();
         }
 
         private XElement GetXmlFor(FieldInfo fi) =>
@@ -95,12 +101,14 @@ namespace ScottPlotTests.Documentation
         }
 
         [Test]
-        public void Test_PlotAPI_MethodsAreDocumented()
+        public void Test_Plot_Methods_HaveXmlDocumentation()
         {
             foreach (MethodInfo mi in PlotMethods)
             {
                 if (mi.Name.StartsWith("Add"))
                     continue;
+
+
                 XElement xml = GetXmlFor(mi);
                 AssertDocumentedSummary(mi, xml);
                 AssertDocumentedReturns(mi, xml);
@@ -109,12 +117,51 @@ namespace ScottPlotTests.Documentation
         }
 
         [Test]
-        public void Test_PlotAPIFieldsAreDocumented()
+        public void Test_Plot_Fields_HaveXmlDocumentation()
         {
+            // note: at the time this test was created, the Plot module has no public fields
             foreach (FieldInfo fi in PlotFields)
             {
                 XElement xml = GetXmlFor(fi);
                 Console.WriteLine(fi);
+            }
+        }
+
+        [Test]
+        public void Test_Plottable_Methods_HaveXmlDocumentation()
+        {
+            string[] interfaceMethodNames = typeof(IPlottable).GetMethods().Select(x => x.Name).ToArray();
+            string[] ignoredMethodNames = { "ToString", "GetType", "Equals", "GetHashCode" };
+
+            foreach (Type plottableType in PlottableTypes)
+            {
+                MethodInfo[] mis = plottableType
+                                   .GetMethods()
+                                   .Where(x => !interfaceMethodNames.Contains(x.Name))
+                                   .Where(x => !ignoredMethodNames.Contains(x.Name))
+                                   .Where(x => !x.Name.StartsWith("get_")) // auto-properties
+                                   .Where(x => !x.Name.StartsWith("set_")) // auto-properties
+                                   .Where(x => !x.Name.StartsWith("add_")) // events
+                                   .Where(x => !x.GetCustomAttributes<ObsoleteAttribute>().Any())
+                                   .ToArray();
+
+                foreach (var mi in mis)
+                {
+                    // TODO: figure out how to do XML name lookups for inherited generics
+
+                    if (mi.DeclaringType.FullName != null &&
+                        mi.DeclaringType.FullName.Contains("SignalPlot"))
+                        continue;
+
+                    if (mi.ReflectedType.FullName != null &&
+                        mi.ReflectedType.FullName.Contains("SignalPlot"))
+                        continue;
+
+                    Console.WriteLine(mi.DeclaringType.FullName);
+
+                    XElement xml = GetXmlFor(mi);
+                    AssertDocumentedSummary(mi, xml);
+                }
             }
         }
     }
