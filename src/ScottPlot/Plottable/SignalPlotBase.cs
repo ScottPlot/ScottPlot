@@ -11,7 +11,7 @@ using System.Text;
 
 namespace ScottPlot.Plottable
 {
-    public class SignalPlotBase<T> : IPlottable, IHasPoints where T : struct, IComparable
+    public abstract class SignalPlotBase<T> : IPlottable, IHasPoints where T : struct, IComparable
     {
         protected IMinMaxSearchStrategy<T> Strategy = new SegmentedTreeMinMaxSearchStrategy<T>();
         protected bool MaxRenderIndexLowerYSPromise = false;
