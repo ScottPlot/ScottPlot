@@ -30,9 +30,9 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
             // Additional customizations are available
             var fancy = plt.AddAnnotation("Fancy Annotation", 10, 40);
-            fancy.FontSize = 24;
-            fancy.FontName = "Impact";
-            fancy.FontColor = Color.Red;
+            fancy.Font.Size = 24;
+            fancy.Font.Name = "Impact";
+            fancy.Font.Color = Color.Red;
             fancy.Shadow = false;
             fancy.BackgroundColor = Color.FromArgb(25, Color.Blue);
             fancy.BorderWidth = 2;

@@ -47,15 +47,16 @@ namespace ScottPlot
                 X = xPixel,
                 Y = yPixel,
                 Label = label,
-                FontSize = (float)fontSize,
-                FontName = fontName,
-                FontColor = fontColor.Value,
                 Background = fill,
                 BackgroundColor = fillColor.Value,
                 BorderWidth = (float)lineWidth,
                 BorderColor = lineColor.Value,
                 Shadow = shadow
             };
+
+            plottable.Font.Size = (float)fontSize;
+            plottable.Font.Name = fontName;
+            plottable.Font.Color = fontColor.Value;
 
             Add(plottable);
             return plottable;

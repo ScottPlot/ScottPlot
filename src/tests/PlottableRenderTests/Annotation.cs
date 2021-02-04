@@ -15,7 +15,8 @@ namespace ScottPlotTests.PlottableRenderTests
             var plt = new ScottPlot.Plot(400, 300);
 
             // start with default settings
-            var pa = new ScottPlot.Plottable.Annotation() { Label = "Hello", X = 10, Y = 10, FontSize = 36 };
+            var pa = new ScottPlot.Plottable.Annotation() { Label = "Hello", X = 10, Y = 10 };
+            pa.Font.Size = 36;
             plt.Add(pa);
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
 
