@@ -217,16 +217,17 @@ namespace ScottPlot.Control
         public (float x, float y) GetMousePixel() => (MouseLocationX, MouseLocationY);
 
         private bool IsZoomingRectangle;
-        private bool AltWasPressed;
+        private bool IsZoomingWithAlt;
         public void MouseMove(InputState input)
         {
-            if (IsZoomingRectangle && AltWasPressed && !input.AltDown)
-            {
-                ApplyZoomRectangle(input);
-            }
+            bool altWasLifted = IsZoomingWithAlt && !input.AltDown;
+            if (IsZoomingRectangle && altWasLifted)
+                Settings.ZoomRectangle.Clear();
 
-            IsZoomingRectangle = (IsMiddleDown || (IsLeftDown && input.AltDown)) && Configuration.MiddleClickDragZoom;
-
+            IsZoomingWithAlt = IsLeftDown && input.AltDown;
+            bool isMiddleClickDragZooming = IsMiddleDown;
+            bool isZooming = IsZoomingWithAlt || isMiddleClickDragZooming;
+            IsZoomingRectangle = isZooming && Configuration.MiddleClickDragZoom;
 
             MouseLocationX = input.X;
             MouseLocationY = input.Y;
@@ -240,8 +241,6 @@ namespace ScottPlot.Control
                 MouseMovedToZoomRectangle(input);
             else
                 MouseMovedWithoutInteraction(input);
-
-            AltWasPressed = input.AltDown;
         }
 
         private void MouseMovedToDragPlottable(InputState input)
