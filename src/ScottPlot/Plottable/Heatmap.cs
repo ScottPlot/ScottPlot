@@ -18,7 +18,7 @@ namespace ScottPlot.Plottable
         private double Max;
         private int Width;
         private int Height;
-        private Bitmap BmpHeatmap;
+        protected Bitmap BmpHeatmap;
 
         // these fields are customized by the user
         public string Label;
@@ -170,7 +170,7 @@ namespace ScottPlot.Plottable
             return new LegendItem[] { singleLegendItem };
         }
 
-        public AxisLimits GetAxisLimits()
+        public virtual AxisLimits GetAxisLimits()
         {
             if (BmpHeatmap is null)
                 return new AxisLimits();
@@ -193,7 +193,7 @@ namespace ScottPlot.Plottable
                 RenderAxis(dims, bmp, lowQuality);
         }
 
-        private void RenderHeatmap(PlotDimensions dims, Bitmap bmp, bool lowQuality)
+        protected virtual void RenderHeatmap(PlotDimensions dims, Bitmap bmp, bool lowQuality)
         {
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             {

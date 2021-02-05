@@ -16,7 +16,6 @@ using ScottPlot.Plottable;
 using ScottPlot.Statistics;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 
@@ -268,6 +267,62 @@ namespace ScottPlot
                 AxisScaleLock(true);
 
             var plottable = new Heatmap();
+            plottable.Update(intensities, colormap);
+            Add(plottable);
+
+            return plottable;
+        }
+
+        /// <summary>
+        /// Add coordinated heatmap to the plot
+        /// </summary>
+        public CoordinatedHeatmap AddHeatMapCoordinated(double[,] intensities, double? xMin = null, double? xMax = null, double? yMin = null, double? yMax = null, Drawing.Colormap colormap = null)
+        {
+            var plottable = new CoordinatedHeatmap();
+
+            // Solve all possible null combinations, if the boundaries are only partially provided use Step = 1;
+            if (xMin == null && xMax == null)
+            {
+                plottable.XMin = 0;
+                plottable.XMax = 0 + intensities.GetLength(0);
+            }
+            else if (xMin == null)
+            {
+                plottable.XMax = xMax.Value;
+                plottable.XMin = xMax.Value - intensities.GetLength(0);
+            }
+            else if (xMax == null)
+            {
+                plottable.XMin = xMin.Value;
+                plottable.XMax = xMin.Value + intensities.GetLength(0);
+            }
+            else
+            {
+                plottable.XMin = xMin.Value;
+                plottable.XMax = xMax.Value;
+            }
+
+            if (yMin == null && yMax == null)
+            {
+                plottable.YMin = 0;
+                plottable.YMax = 0 + intensities.GetLength(1);
+            }
+            else if (yMin == null)
+            {
+                plottable.YMax = yMax.Value;
+                plottable.YMin = yMax.Value - intensities.GetLength(1);
+            }
+            else if (yMax == null)
+            {
+                plottable.YMin = yMin.Value;
+                plottable.YMax = yMin.Value + intensities.GetLength(1);
+            }
+            else
+            {
+                plottable.YMin = yMin.Value;
+                plottable.YMax = yMax.Value;
+            }
+
             plottable.Update(intensities, colormap);
             Add(plottable);
 
