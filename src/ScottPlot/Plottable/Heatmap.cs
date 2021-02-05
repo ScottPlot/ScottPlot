@@ -194,20 +194,20 @@ namespace ScottPlot.Plottable
 
                 if (BackgroundImage != null && !DisplayImageAbove)
                     gfx.DrawImage(
-                            BackgroundImage,
-                            destRect,
-                            0,
-                            0,
-                            BackgroundImage.Width,
-                            BackgroundImage.Height,
-                            GraphicsUnit.Pixel,
-                            attr);
+                            image: BackgroundImage,
+                            destRect: destRect,
+                            srcX: 0,
+                            srcY: 0,
+                            srcWidth: BackgroundImage.Width,
+                            srcHeight: BackgroundImage.Height,
+                            srcUnit: GraphicsUnit.Pixel,
+                            imageAttr: attr);
 
                 gfx.DrawImage(
-                        BmpHeatmap,
-                        destRect,
-                        0,
-                        0,
+                        image: BmpHeatmap,
+                        destRect: destRect,
+                        srcX: 0,
+                        srcY: 0,
                         BmpHeatmap.Width,
                         BmpHeatmap.Height,
                         GraphicsUnit.Pixel,
@@ -215,14 +215,14 @@ namespace ScottPlot.Plottable
 
                 if (BackgroundImage != null && DisplayImageAbove)
                     gfx.DrawImage(
-                            BackgroundImage,
-                            destRect,
-                            0,
-                            0,
-                            BackgroundImage.Width,
-                            BackgroundImage.Height,
-                            GraphicsUnit.Pixel,
-                            attr);
+                            image: BackgroundImage,
+                            destRect: destRect,
+                            srcX: 0,
+                            srcY: 0,
+                            srcWidth: BackgroundImage.Width,
+                            srcHeight: BackgroundImage.Height,
+                            srcUnit: GraphicsUnit.Pixel,
+                            imageAttr: attr);
             }
         }
 
