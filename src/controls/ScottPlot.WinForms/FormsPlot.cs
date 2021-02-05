@@ -71,8 +71,8 @@ namespace ScottPlot
         private void PictureBox1_MouseMove(object sender, MouseEventArgs e) { Backend.MouseMove(GetInputState(e)); base.OnMouseMove(e); }
 
         // Windows Forms does not yet support DPI scaling, but hopefully this won't be broken when it does.
-        private ScottPlot.Control.IInputState GetInputState(MouseEventArgs e) =>
-            new ScottPlot.Control.DPICorrectedInputState(new ScottPlot.Control.InputState()
+        private ScottPlot.Control.InputState GetInputState(MouseEventArgs e) =>
+            new ScottPlot.Control.InputState()
             {
                 X = e.X,
                 Y = e.Y,
@@ -84,7 +84,7 @@ namespace ScottPlot
                 AltDown = ModifierKeys.HasFlag(Keys.Alt),
                 WheelScrolledUp = e.Delta > 0,
                 WheelScrolledDown = e.Delta < 0,
-            }, Backend.DPIFactor);
+            };
 
         public void DefaultRightClickEvent(object sender, EventArgs e) => DefaultRightClickMenu.Show(System.Windows.Forms.Cursor.Position);
         private void RightClickMenu_Copy_Click(object sender, EventArgs e) => Clipboard.SetImage(Plot.Render());

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ScottPlot.Control
 {
-    public class InputState : IInputState
+    public class InputState
     {
         public float X { get; set; } = float.NaN;
         public float Y { get; set; } = float.NaN;
