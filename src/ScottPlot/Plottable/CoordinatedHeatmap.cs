@@ -6,6 +6,10 @@ using System.Drawing.Imaging;
 
 namespace ScottPlot.Plottable
 {
+    /// <summary>
+    /// This variation of the Heatmap renders intensity data as a rectangle 
+    /// sized to fit user-defined axis limits
+    /// </summary>
     public class CoordinatedHeatmap : Heatmap
     {
         public double XMin { get; set; }
