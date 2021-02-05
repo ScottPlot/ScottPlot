@@ -1,6 +1,7 @@
 ﻿using ScottPlot.Drawing;
 using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -198,29 +199,48 @@ namespace ScottPlot.Plottable
             using (Graphics gfx = GDI.Graphics(bmp, dims, lowQuality))
             {
                 gfx.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+                gfx.PixelOffsetMode = PixelOffsetMode.Half;
 
-                double minScale = Math.Min(dims.PxPerUnitX, dims.PxPerUnitY);
+                int fromX = (int)Math.Round(dims.GetPixelX(0));
+                int fromY = (int)Math.Round(dims.GetPixelY(Height));
+                int width = (int)Math.Round(dims.GetPixelX(Width) - fromX);
+                int height = (int)Math.Round(dims.GetPixelY(0) - fromY);
+                Rectangle destRect = new Rectangle(fromX, fromY, width, height);
+
+                ImageAttributes attr = new ImageAttributes();
+                attr.SetWrapMode(WrapMode.TileFlipXY);
 
                 if (BackgroundImage != null && !DisplayImageAbove)
                     gfx.DrawImage(
-                        BackgroundImage,
-                        dims.GetPixelX(0),
-                        dims.GetPixelY(0) - (float)(Height * minScale),
-                        (float)(Width * minScale), (float)(Height * minScale));
+                            image: BackgroundImage,
+                            destRect: destRect,
+                            srcX: 0,
+                            srcY: 0,
+                            srcWidth: BackgroundImage.Width,
+                            srcHeight: BackgroundImage.Height,
+                            srcUnit: GraphicsUnit.Pixel,
+                            imageAttr: attr);
 
                 gfx.DrawImage(
-                    BmpHeatmap,
-                    dims.GetPixelX(0),
-                    dims.GetPixelY(0) - (float)(Height * minScale),
-                    (float)(Width * minScale),
-                    (float)(Height * minScale));
+                        image: BmpHeatmap,
+                        destRect: destRect,
+                        srcX: 0,
+                        srcY: 0,
+                        BmpHeatmap.Width,
+                        BmpHeatmap.Height,
+                        GraphicsUnit.Pixel,
+                        attr);
 
                 if (BackgroundImage != null && DisplayImageAbove)
-                    gfx.DrawImage(BackgroundImage,
-                        dims.GetPixelX(0),
-                        dims.GetPixelY(0) - (float)(Height * minScale),
-                        (float)(Width * minScale),
-                        (float)(Height * minScale));
+                    gfx.DrawImage(
+                            image: BackgroundImage,
+                            destRect: destRect,
+                            srcX: 0,
+                            srcY: 0,
+                            srcWidth: BackgroundImage.Width,
+                            srcHeight: BackgroundImage.Height,
+                            srcUnit: GraphicsUnit.Pixel,
+                            imageAttr: attr);
             }
         }
 
