@@ -8,7 +8,7 @@ using System.Xml.Linq;
 
 namespace ScottPlot.Cookbook
 {
-    public class XmlMethodInfo
+    public class MemberInfo
     {
         public string Name;
         public string Summary;
@@ -16,7 +16,7 @@ namespace ScottPlot.Cookbook
 
     public class XmlDoc
     {
-        public readonly List<XmlMethodInfo> Methods = new List<XmlMethodInfo>();
+        public readonly Dictionary<string, MemberInfo> MemberInfos = new Dictionary<string, MemberInfo>();
 
         public XmlDoc(string xmlFilePath)
         {
@@ -34,28 +34,32 @@ namespace ScottPlot.Cookbook
                 xmlSummary = xmlSummary.Replace("\n", " ").Replace("\r", " ");
                 while (xmlSummary.Contains("  "))
                     xmlSummary = xmlSummary.Replace("  ", " ").Trim();
-                Methods.Add(new XmlMethodInfo() { Name = xmlName, Summary = xmlSummary });
+                MemberInfos[xmlName] = new MemberInfo() { Name = xmlName, Summary = xmlSummary };
             }
         }
 
         /// <summary>
         /// Return the XML summary of the given method, or NULL if it doesn't exist
         /// </summary>
-        public string GetSummary(MethodInfo mi)
-        {
-            string xmlName = XmlName(mi);
-            foreach (var m in Methods)
-            {
-                if (m.Name == xmlName)
-                    return m.Summary;
-            }
-            return null;
-        }
+        public string GetSummary(MethodInfo mi) => GetSummary(XmlName(mi));
+
+        /// <summary>
+        /// Return the XML summary of the given XML member name, or NULL if it doesn't exist
+        /// </summary>
+        public string GetSummary(string xmlName) =>
+            MemberInfos.ContainsKey(xmlName) ? MemberInfos[xmlName].Summary : null;
+
+        /// <summary>
+        /// Return the XML summary of the given type, or NULL if it doesn't exist
+        /// </summary>
+        public string GetSummary(Type type) => GetSummary(XmlName(type));
 
         public static string XmlName(FieldInfo fi)
         {
             throw new NotImplementedException();
         }
+
+        public static string XmlName(Type type) => "T:" + type.FullName;
 
         /// <summary>
         /// Return the member name of a method as it would appear in the XML documentation

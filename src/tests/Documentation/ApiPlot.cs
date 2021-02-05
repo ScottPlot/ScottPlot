@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using ScottPlot.Cookbook;
 using ScottPlot.Plottable;
 using System;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace ScottPlotTests.Documentation
     {
         string XmlDocPath = "../../../../../src/ScottPlot/ScottPlot.xml";
         XDocument Doc;
+        XmlDoc XmlDoc;
         MethodInfo[] PlotMethods;
         FieldInfo[] PlotFields;
         Type[] PlottableTypes;
@@ -22,6 +24,8 @@ namespace ScottPlotTests.Documentation
         public void LoadDocs()
         {
             Doc = XDocument.Load(XmlDocPath);
+            XmlDoc = new XmlDoc(XmlDocPath);
+
             PlotMethods = typeof(ScottPlot.Plot)
                           .GetMethods()
                           .Where(x => !x.GetCustomAttributes<ObsoleteAttribute>().Any())
@@ -33,17 +37,14 @@ namespace ScottPlotTests.Documentation
                          .Where(x => !x.GetCustomAttributes<ObsoleteAttribute>().Any())
                          .ToArray();
 
-            PlottableTypes = Assembly.GetAssembly(typeof(ScatterPlot))
-                     .GetTypes()
-                     .Where(x => x.Namespace == typeof(ScatterPlot).Namespace)
-                     .Where(x => x.IsClass)
-                     .Where(x => !x.IsInterface)
-                     .Where(x => !x.GetCustomAttributes<ObsoleteAttribute>().Any())
-                     .ToArray();
+            PlottableTypes = ScottPlot.Cookbook.Locate.GetPlottableTypes();
         }
 
         private XElement GetXmlFor(FieldInfo fi) =>
             GetXmlFor(ScottPlot.Cookbook.XmlDoc.XmlName(fi));
+
+        private XElement GetXmlFor(Type type) =>
+            GetXmlFor(ScottPlot.Cookbook.XmlDoc.XmlName(type));
 
         private XElement GetXmlFor(MethodInfo mi) =>
             GetXmlFor(ScottPlot.Cookbook.XmlDoc.XmlName(mi));
@@ -108,7 +109,6 @@ namespace ScottPlotTests.Documentation
                 if (mi.Name.StartsWith("Add"))
                     continue;
 
-
                 XElement xml = GetXmlFor(mi);
                 AssertDocumentedSummary(mi, xml);
                 AssertDocumentedReturns(mi, xml);
@@ -128,26 +128,23 @@ namespace ScottPlotTests.Documentation
         }
 
         [Test]
-        public void Test_Plottable_Methods_HaveXmlDocumentation()
+        public void Test_Plottable_Classes_HaveXmlDocumentation()
         {
-            string[] interfaceMethodNames = typeof(IPlottable).GetMethods().Select(x => x.Name).ToArray();
-            string[] ignoredMethodNames = { "ToString", "GetType", "Equals", "GetHashCode" };
-
             foreach (Type plottableType in PlottableTypes)
             {
-                MethodInfo[] mis = plottableType
-                                   .GetMethods()
-                                   .Where(x => !interfaceMethodNames.Contains(x.Name))
-                                   .Where(x => !ignoredMethodNames.Contains(x.Name))
-                                   .Where(x => !x.Name.StartsWith("get_")) // auto-properties
-                                   .Where(x => !x.Name.StartsWith("set_")) // auto-properties
-                                   .Where(x => !x.Name.StartsWith("add_")) // events
-                                   .Where(x => !x.GetCustomAttributes<ObsoleteAttribute>().Any())
-                                   .ToArray();
+                string classSummary = XmlDoc.GetSummary(plottableType);
+                Assert.IsNotNull(classSummary, $"Plottable {plottableType} requires class-level <summary> documentation");
+            }
+        }
 
-                foreach (var mi in mis)
+        [Test]
+        public void Test_Plottable_Methods_HaveXmlDocumentation()
+        {
+            foreach (Type plottableType in PlottableTypes)
+            {
+                foreach (var mi in Locate.GetNotablePlottableMethods(plottableType))
                 {
-                    // TODO: figure out how to do XML name lookups for inherited generics
+                    // TODO: figure out how to do XML name lookups for inherited generics!
 
                     if (mi.DeclaringType.FullName != null &&
                         mi.DeclaringType.FullName.Contains("SignalPlot"))
@@ -156,8 +153,6 @@ namespace ScottPlotTests.Documentation
                     if (mi.ReflectedType.FullName != null &&
                         mi.ReflectedType.FullName.Contains("SignalPlot"))
                         continue;
-
-                    Console.WriteLine(mi.DeclaringType.FullName);
 
                     XElement xml = GetXmlFor(mi);
                     AssertDocumentedSummary(mi, xml);

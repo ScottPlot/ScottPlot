@@ -33,10 +33,11 @@ namespace ScottPlot.Cookbook.Site
             AddHTML("</tr>");
         }
 
-        public void AddPlotApiTableWithoutPlottables(XmlDoc xd, MethodInfo[] plotMethods, string linkPrefix = "")
+        public void AddPlotApiTableWithoutPlottables(XmlDoc xd, MethodInfo[] plotMethods)
         {
-            AddGroupHeader("Methods to Manipulate Plots");
-            AddHTML("These methods act on the Plot to configure styling or behavior.");
+            string linkPrefix = "api-plot.html";
+            AddGroupHeader("The Plot API");
+            AddHTML("Interact with the Plot module to configure styling or behavior.");
 
             AddHTML("<table>");
             AddTableRow(new string[] { "Method", "Summary" }, true);
@@ -58,6 +59,28 @@ namespace ScottPlot.Cookbook.Site
                 string url = Sanitize(itemName);
                 string name = $"<a href='{linkPrefix}#{url}'><strong>{itemName}</strong></a>";
                 AddTableRow(new string[] { name, summary });
+            }
+
+            AddHTML("</table>");
+        }
+
+        public void AddPlottableApiTable(XmlDoc xd)
+        {
+            AddGroupHeader("Plottable Types");
+            AddHTML("This table lists the types of plottable objects that can be added to a plot. " +
+            "Many of these plottable types have helper methods to easily create, customize, and add them to the plot. " +
+            "Public methods, properties, and fields of plottables can be used to customize their behavior and styling.");
+
+            AddHTML("<table>");
+            AddTableRow(new string[] { "Method", "Summary" }, true);
+
+            foreach (Type plottableType in Locate.GetPlottableTypes())
+            {
+                string summary = xd.GetSummary(plottableType);
+                string name = Locate.TypeName(plottableType);
+                string url = Locate.TypeName(plottableType, urlSafe: true);
+                string html = $"<a href='api-plottable-{url}.html'><strong>{name}</strong></a>";
+                AddTableRow(new string[] { html, summary });
             }
 
             AddHTML("</table>");
@@ -183,6 +206,39 @@ namespace ScottPlot.Cookbook.Site
                 string recipeUrl = $"{categoryPageName}#{recipe.ID}".ToLower();
                 string imageUrl = $"source/{recipe.ID}{ExtThumb}".ToLower();
                 SB.AppendLine($"<a href='{recipeUrl}'><img src='{imageUrl}' style='padding: 10px;'/></a>");
+            }
+        }
+
+        public void AddPlottableDetails(XmlDoc xd, Type plottableType)
+        {
+            string typeName = Locate.TypeName(plottableType);
+            string typeUrl = Locate.TypeName(plottableType, urlSafe: true);
+
+            AddHTML($"<div>This page describes <code>ScottPlot.Plottable.{typeName}</code></div>");
+
+            string classSummary = xd.GetSummary(plottableType);
+            AddHTML($"<div><strong>Summary:</strong> {classSummary}</div>");
+
+            foreach (MethodInfo mi in Locate.GetNotablePlottableMethods(plottableType))
+            {
+                string methodSummary = xd.GetSummary(mi);
+                string returnType = XmlDoc.PrettyType(mi.ReturnType);
+                string signature = XmlDoc.PrettySignature(mi);
+
+                AddGroupHeader(mi.Name + "()");
+                AddHTML($"<div><strong>Summary:</strong> {methodSummary}</div>");
+
+                AddHTML($"<div><strong>Parameters:</strong></div>");
+                AddHTML("<ul>");
+                foreach (var p in mi.GetParameters())
+                    AddHTML($"<li><code>{XmlDoc.PrettyType(p.ParameterType)}</code> {p.Name}</li>");
+                AddHTML("</ul>");
+
+                AddHTML($"<div><strong>Returns:</strong></div>");
+                AddHTML($"<ul><li><code>{returnType}</code></li></ul>");
+
+                AddHTML($"<div><strong>Signature:</strong></div>");
+                AddHTML($"<ul><li><code>{signature}</code></li></ul>");
             }
         }
     }
