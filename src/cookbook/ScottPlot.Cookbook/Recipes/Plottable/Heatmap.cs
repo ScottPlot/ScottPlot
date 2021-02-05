@@ -170,8 +170,8 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         public string ID => "heatmap_coordinated";
         public string Title => "Coordinated Heatmap";
         public string Description =>
-            "CoordinatedHeatmap is Heatmap stretched to provided boundaries" +
-            "Coordinatedheatmap used to display two-dimensional distributions on a rectangular surface";
+            "CoordinatedHeatmap is type of Heatmap stretched to fit user-defined boundaries in coordinate space. " +
+            "This plot type displays two-dimensional intensities on a rectangular surface according to a colormap.";
 
         public void ExecuteRecipe(Plot plt)
         {
@@ -182,7 +182,7 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             double[,] intensities = Tools.XYToIntensities(mode: IntensityMode.Gaussian,
                 xs: xs, ys: ys, width: 50, height: 50, sampleWidth: 4);
 
-            var hmc = plt.AddHeatMapCoordinated(intensities, -100, 500, 200, 201);
+            var hmc = plt.AddHeatMapCoordinated(intensities, xMin: -100, xMax: 500, yMin: 200, yMax: 201);
             var cb = plt.AddColorbar(hmc);
         }
     }
