@@ -218,7 +218,7 @@ namespace ScottPlot
             List<PointF> linePoints = new List<PointF>(visibleIndex2 - visibleIndex1 + 2);
             if (visibleIndex2 > _ys.Length - 2)
                 visibleIndex2 = _ys.Length - 2;
-            if (visibleIndex2 > maxRenderIndex)
+            if (visibleIndex2 > maxRenderIndex - 1)
                 visibleIndex2 = maxRenderIndex - 1;
             if (visibleIndex1 < 0)
                 visibleIndex1 = 0;
