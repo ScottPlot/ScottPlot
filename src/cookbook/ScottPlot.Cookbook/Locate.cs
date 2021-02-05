@@ -1,7 +1,9 @@
-﻿using System;
+﻿using ScottPlot.Plottable;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace ScottPlot.Cookbook
@@ -95,6 +97,37 @@ namespace ScottPlot.Cookbook
             sb2.AppendLine($"To run tests from Visual Studio, click 'Test' and select 'Run All Tests'.");
             sb2.AppendLine($"To run tests from the command line, run 'dotnet test' in the src folder.");
             return sb2.ToString();
+        }
+
+        public static Type[] GetPlottableTypes() =>
+            Assembly.GetAssembly(typeof(Plottable.ScatterPlot))
+                     .GetTypes()
+                     .Where(x => x.Namespace == typeof(Plottable.ScatterPlot).Namespace)
+                     .Where(x => x.GetInterfaces().Contains(typeof(Plottable.IPlottable)))
+                     .Where(x => !x.IsAbstract)
+                     .Where(x => !x.GetCustomAttributes<ObsoleteAttribute>().Any())
+                     .ToArray();
+
+        public static string TypeName(Type type, bool urlSafe = false)
+        {
+            string name = type.Name.Split('`')[0];
+            if (type.IsGenericType)
+                name += urlSafe ? "-T" : "<T>";
+            return name;
+        }
+
+        public static MethodInfo[] GetNotablePlottableMethods(Type plottableType)
+        {
+            string[] interfaceMethodNames = typeof(IPlottable).GetMethods().Select(x => x.Name).ToArray();
+            string[] ignoredMethodNames = { "ToString", "GetType", "Equals", "GetHashCode" };
+            return plottableType.GetMethods()
+                                .Where(x => !interfaceMethodNames.Contains(x.Name))
+                                .Where(x => !ignoredMethodNames.Contains(x.Name))
+                                .Where(x => !x.Name.StartsWith("get_")) // auto-properties
+                                .Where(x => !x.Name.StartsWith("set_")) // auto-properties
+                                .Where(x => !x.Name.StartsWith("add_")) // events
+                                .Where(x => !x.GetCustomAttributes<ObsoleteAttribute>().Any())
+                                .ToArray();
         }
     }
 }

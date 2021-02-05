@@ -9,13 +9,19 @@ using System.Text;
 
 namespace ScottPlot.Plottable
 {
-    public class ScatterPlot : IPlottable, IHasPoints, IExportable
+    /// <summary>
+    /// The scatter plot renders X/Y pairs as points and/or connected lines.
+    /// Scatter plots can be extremely slow for large datasets, so use Signal plots in these situations.
+    /// </summary>
+    public class ScatterPlot : IPlottable, IHasPoints
     {
         // data
         public double[] Xs { get; private set; }
         public double[] Ys { get; private set; }
         public double[] XError { get; set; }
         public double[] YError { get; set; }
+
+        public int PointCount => Ys.Length;
 
         // customization
         public bool IsVisible { get; set; } = true;
@@ -257,21 +263,6 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public void SaveCSV(string filePath, string delimiter = ", ", string separator = "\n")
-        {
-            System.IO.File.WriteAllText(filePath, GetCSV(delimiter, separator));
-        }
-
-        public string GetCSV(string delimiter = ", ", string separator = "\n")
-        {
-            StringBuilder csv = new StringBuilder();
-            for (int i = 0; i < Ys.Length; i++)
-                csv.AppendFormat(CultureInfo.InvariantCulture, "{0}{1}{2}{3}", Xs[i], delimiter, Ys[i], separator);
-            return csv.ToString();
-        }
-
-        public int PointCount { get => Ys.Length; }
-
         public LegendItem[] GetLegendItems()
         {
             var singleLegendItem = new LegendItem()
@@ -286,7 +277,11 @@ namespace ScottPlot.Plottable
             return new LegendItem[] { singleLegendItem };
         }
 
-
+        /// <summary>
+        /// Return the X/Y coordinates of the point nearest the X position
+        /// </summary>
+        /// <param name="x">X position in plot space</param>
+        /// <returns></returns>
         public (double x, double y, int index) GetPointNearestX(double x)
         {
             double minDistance = Math.Abs(Xs[0] - x);
@@ -304,6 +299,11 @@ namespace ScottPlot.Plottable
             return (Xs[minIndex], Ys[minIndex], minIndex);
         }
 
+        /// <summary>
+        /// Return the X/Y coordinates of the point nearest the Y position
+        /// </summary>
+        /// <param name="y">Y position in plot space</param>
+        /// <returns></returns>
         public (double x, double y, int index) GetPointNearestY(double y)
         {
             double minDistance = Math.Abs(Ys[0] - y);

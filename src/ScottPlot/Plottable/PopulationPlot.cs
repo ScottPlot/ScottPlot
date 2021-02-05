@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Drawing;
 using System.Linq;
-using ScottPlot.Ticks;
 using ScottPlot.Drawing;
-using ScottPlot.Renderable;
 using ScottPlot.Statistics;
-using System.Data;
 
 namespace ScottPlot.Plottable
 {
+    /// <summary>
+    /// Population plots are designed to show collections of data.
+    /// A Population is a 1D array of values, and statistics are calculated automatically.
+    /// Populations can be displayed as bar plots, box plots, or scatter plots.
+    /// Public methods, fields, and properties allow extensive customization.
+    /// This plottable supports higher-order grouping (groups of groups).
+    /// </summary>
     public class PopulationPlot : IPlottable
     {
         public readonly PopulationMultiSeries MultiSeries;
@@ -175,7 +179,7 @@ namespace ScottPlot.Plottable
 
         public enum Position { Hide, Center, Left, Right }
 
-        public static void Scatter(PlotDimensions dims, Bitmap bmp, bool lowQuality, Population pop, Random rand,
+        private static void Scatter(PlotDimensions dims, Bitmap bmp, bool lowQuality, Population pop, Random rand,
             double popLeft, double popWidth, Color fillColor, Color edgeColor, byte alpha, Position position)
         {
             // adjust edges to accomodate special positions
@@ -204,7 +208,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public static void Distribution(PlotDimensions dims, Bitmap bmp, bool lowQuality, Population pop, Random rand,
+        private static void Distribution(PlotDimensions dims, Bitmap bmp, bool lowQuality, Population pop, Random rand,
             double popLeft, double popWidth, Color color, Position position, LineStyle lineStyle)
         {
             // adjust edges to accomodate special positions
@@ -237,7 +241,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public static void MeanAndError(PlotDimensions dims, Bitmap bmp, bool lowQuality, Population pop, Random rand,
+        private static void MeanAndError(PlotDimensions dims, Bitmap bmp, bool lowQuality, Population pop, Random rand,
             double popLeft, double popWidth, Color color, Position position, bool useStdErr = false)
         {
             // adjust edges to accomodate special positions
@@ -280,7 +284,7 @@ namespace ScottPlot.Plottable
             }
         }
 
-        public static void Bar(PlotDimensions dims, Bitmap bmp, bool lowQuality, Population pop, Random rand,
+        private static void Bar(PlotDimensions dims, Bitmap bmp, bool lowQuality, Population pop, Random rand,
             double popLeft, double popWidth, Color color, Position position, bool useStdErr = false)
         {
             // adjust edges to accomodate special positions
@@ -336,7 +340,7 @@ namespace ScottPlot.Plottable
         public enum BoxFormat { StdevStderrMean, OutlierQuartileMedian }
         public enum HorizontalAlignment { Left, Center, Right }
 
-        public static void Box(PlotDimensions dims, Bitmap bmp, bool lowQuality, Population pop, Random rand,
+        private static void Box(PlotDimensions dims, Bitmap bmp, bool lowQuality, Population pop, Random rand,
             double popLeft, double popWidth, Color color, Position position, BoxFormat boxFormat,
             HorizontalAlignment errorAlignment = HorizontalAlignment.Right)
         {

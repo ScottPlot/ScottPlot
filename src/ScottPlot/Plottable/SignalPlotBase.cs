@@ -11,7 +11,7 @@ using System.Text;
 
 namespace ScottPlot.Plottable
 {
-    public class SignalPlotBase<T> : IPlottable, IHasPoints, IExportable where T : struct, IComparable
+    public abstract class SignalPlotBase<T> : IPlottable, IHasPoints where T : struct, IComparable
     {
         protected IMinMaxSearchStrategy<T> Strategy = new SegmentedTreeMinMaxSearchStrategy<T>();
         protected bool MaxRenderIndexLowerYSPromise = false;
@@ -168,22 +168,31 @@ namespace ScottPlot.Plottable
         /// <summary>
         /// Replace a single Y value
         /// </summary>
+        /// <param name="index">array index to replace</param>
+        /// <param name="newValue">new value</param>
         public void Update(int index, T newValue) => Strategy.updateElement(index, newValue);
 
         /// <summary>
         /// Replace a range of Y values
         /// </summary>
+        /// <param name="firstIndex">index to begin replacing</param>
+        /// <param name="lastIndex">last index to replace</param>
+        /// <param name="newData">source for new data</param>
+        /// <param name="fromData">source data offset</param>
         public void Update(int firstIndex, int lastIndex, T[] newData, int fromData = 0) =>
             Strategy.updateRange(firstIndex, lastIndex, newData, fromData);
 
         /// <summary>
         /// Replace all Y values from the given index through the end of the array
         /// </summary>
+        /// <param name="firstIndex">first index to begin replacing</param>
+        /// <param name="newData">new values</param>
         public void Update(int firstIndex, T[] newData) => Update(firstIndex, newData.Length, newData);
 
         /// <summary>
         /// Replace all Y values with new ones
         /// </summary>
+        /// <param name="newData">new Y values</param>
         public void Update(T[] newData) => Update(0, newData.Length, newData);
 
         public virtual AxisLimits GetAxisLimits()
@@ -578,19 +587,6 @@ namespace ScottPlot.Plottable
             return $"PlottableSignalBase{label} with {PointCount} points ({typeof(T).Name})";
         }
 
-        public void SaveCSV(string filePath, string delimiter = ", ", string separator = "\n")
-        {
-            System.IO.File.WriteAllText(filePath, GetCSV(delimiter, separator));
-        }
-
-        public string GetCSV(string delimiter = ", ", string separator = "\n")
-        {
-            StringBuilder csv = new StringBuilder();
-            for (int i = 0; i < _Ys.Length; i++)
-                csv.AppendFormat(CultureInfo.InvariantCulture, "{0}{1}{2}{3}", OffsetX + i * _SamplePeriod, delimiter, Strategy.SourceElement(i) + OffsetY, separator);
-            return csv.ToString();
-        }
-
         public int PointCount { get => _Ys.Length; }
 
         public LegendItem[] GetLegendItems()
@@ -683,6 +679,11 @@ namespace ScottPlot.Plottable
                 throw new InvalidOperationException("Two fill colors needs to be specified if fill above and below is used");
         }
 
+        /// <summary>
+        /// Return the X/Y coordinates of the point nearest the X position
+        /// </summary>
+        /// <param name="x">X position in plot space</param>
+        /// <returns></returns>
         public (double x, double y, int index) GetPointNearestX(double x)
         {
             int index = (int)((x - OffsetX) / SamplePeriod);

@@ -16,6 +16,8 @@ namespace ScottPlot
         /// <summary>
         /// A ScottPlot stores data in plottable objects and draws it on a bitmap when Render() is called
         /// </summary>
+        /// <param name="width">default width (pixels) to use when rendering</param>
+        /// <param name="height">default height (pixels) to use when rendering</param>
         public Plot(int width = 800, int height = 600)
         {
             if (width <= 0 || height <= 0)
@@ -25,6 +27,10 @@ namespace ScottPlot
             Resize(width, height);
         }
 
+        /// <summary>
+        /// Brief description of this plot
+        /// </summary>
+        /// <returns>plot description</returns>
         public override string ToString() =>
             $"ScottPlot ({settings.Width}x{settings.Height}) " +
             $"with {settings.Plottables.Count:n0} plottables";
@@ -47,6 +53,7 @@ namespace ScottPlot
         /// <summary>
         /// Add a plottable to the plot
         /// </summary>
+        /// <param name="plottable">a plottable the user created</param>
         public void Add(IPlottable plottable) => settings.Plottables.Add(plottable);
 
         /// <summary>
@@ -61,6 +68,7 @@ namespace ScottPlot
         /// <summary>
         /// Remove all plottables of the given type
         /// </summary>
+        /// <param name="plottableType">all plottables of this type will be removed</param>
         public void Clear(Type plottableType)
         {
             settings.Plottables.RemoveAll(x => x.GetType() == plottableType);
@@ -72,6 +80,7 @@ namespace ScottPlot
         /// <summary>
         /// Remove a specific plottable
         /// </summary>
+        /// <param name="plottable">The plottable to remove</param>
         public void Remove(IPlottable plottable)
         {
             settings.Plottables.Remove(plottable);
@@ -83,7 +92,7 @@ namespace ScottPlot
         /// <summary>
         /// Return a copy of the list of plottables
         /// </summary>
-        /// <returns></returns>
+        /// <returns>list of plottables</returns>
         public IPlottable[] GetPlottables() => settings.Plottables.ToArray();
 
         #endregion
@@ -91,8 +100,9 @@ namespace ScottPlot
         #region plottable validation
 
         /// <summary>
-        /// Throw an exception if any plottable contains an invalid state. Deep validation is more thorough but slower.
+        /// Throw an exception if any plottable contains an invalid state.
         /// </summary>
+        /// <param name="deep">Check every individual value for validity. This is more thorough, but slower.</param>
         public void Validate(bool deep = true)
         {
             foreach (var plottable in settings.Plottables)
@@ -109,6 +119,7 @@ namespace ScottPlot
         /// This method returns the settings module for advanced users and developers to interact with.
         /// </summary>
         /// <param name="showWarning">Show a warning message indicating this method is only intended for developers</param>
+        /// <returns>Settings used by the plot</returns>
         public Settings GetSettings(bool showWarning = true)
         {
             if (showWarning)
@@ -120,12 +131,16 @@ namespace ScottPlot
         /// <summary>
         /// Update the default size for new renders
         /// </summary>
+        /// <param name="width">width (pixels) for future renders</param>
+        /// <param name="height">height (pixels) for future renders</param>
         public void Resize(float width, float height) => settings.Resize(width, height);
 
         /// <summary>
         /// Return a new color from the Pallette based on the number of plottables already in the plot.
         /// Use this to ensure every plottable gets a unique color.
         /// </summary>
+        /// <param name="alpha">value from 0 (transparent) to 1 (opaque)</param>
+        /// <returns>new color</returns>
         public Color GetNextColor(double alpha = 1) => Color.FromArgb((byte)(alpha * 255), settings.GetNextColor());
 
         /// <summary>
@@ -142,11 +157,18 @@ namespace ScottPlot
         /// <summary>
         /// Set colors of all plot components using pre-defined styles
         /// </summary>
+        /// <param name="style">a pre-defined style</param>
         public void Style(Style style) => StyleTools.SetStyle(this, style);
 
         /// <summary>
         /// Set the color of specific plot components
         /// </summary>
+        /// <param name="figureBackground">Color for area beneath the axis ticks and labels and around the data area</param>
+        /// <param name="dataBackground">Color for area inside the data frame but beneath the grid and plottables</param>
+        /// <param name="grid">Color for grid lines</param>
+        /// <param name="tick">Color for axis tick marks and frame lines</param>
+        /// <param name="axisLabel">Color for axis labels and tick labels</param>
+        /// <param name="titleLabel">Color for the top axis label (XAxis2's title)</param>
         public void Style(
             Color? figureBackground = null,
             Color? dataBackground = null,
@@ -189,8 +211,12 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Configure legend visibility and location and return the Legend object to allow additional customizations
+        /// Configure legend visibility and location. 
+        /// Optionally you can further customize the legend by interacting with the object it returns.
         /// </summary>
+        /// <param name="enable">whether or not the legend is visible</param>
+        /// <param name="location">position of the legend relative to the data area</param>
+        /// <returns>The legend itself. Use public fields to further customize its appearance and behavior.</returns>
         public Renderable.Legend Legend(bool enable = true, Alignment location = Alignment.LowerRight)
         {
             settings.CornerLegend.IsVisible = enable;
@@ -204,8 +230,8 @@ namespace ScottPlot
 
         /// <summary>
         /// Return a new Plot with all the same Plottables (and some of the styles) of this one.
-        /// This is called when you right-click a plot in a control and hit "open in new window".
         /// </summary>
+        /// <returns>A new plot similar to this one.</returns>
         public Plot Copy()
         {
             Settings oldSettings = settings;
@@ -230,19 +256,22 @@ namespace ScottPlot
         private readonly Guid Guid = Guid.NewGuid();
 
         /// <summary>
-        /// Every plot has a globally unique ID (GUID)
+        /// Every plot has a globally unique ID (GUID) that can help differentiate it from other plots
         /// </summary>
+        /// <returns>A string representing the GUID</returns>
         public string GetGuid() => Guid.ToString();
 
         /// <summary>
         /// Returns true if the given plot is the exact same plot as this one
         /// </summary>
+        /// <param name="obj">the plot to compare this one to</param>
+        /// <returns>true if the two plots have the same GUID</returns>
         public override bool Equals(object obj) => obj.GetHashCode() == GetHashCode();
 
         /// <summary>
         /// Returns an integer unique to this instance (based on the GUID)
         /// </summary>
-        /// <returns></returns>
+        /// <returns>An integer representing the GUID</returns>
         public override int GetHashCode() => Guid.GetHashCode();
 
         #endregion

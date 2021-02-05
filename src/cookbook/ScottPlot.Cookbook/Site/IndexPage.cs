@@ -33,10 +33,11 @@ namespace ScottPlot.Cookbook.Site
             AddHTML("</tr>");
         }
 
-        public void AddPlotApiTableWithoutPlottables(XmlDoc xd, MethodInfo[] plotMethods, string linkPrefix = "")
+        public void AddPlotApiTableWithoutPlottables(XmlDoc xd, MethodInfo[] plotMethods)
         {
-            AddGroupHeader("Methods to Manipulate Plots");
-            AddHTML("These methods act on the Plot to configure styling or behavior.");
+            string linkPrefix = "api-plot.html";
+            AddGroupHeader("The Plot API");
+            AddHTML("Interact with the Plot module to configure styling or behavior.");
 
             AddHTML("<table>");
             AddTableRow(new string[] { "Method", "Summary" }, true);
@@ -48,9 +49,38 @@ namespace ScottPlot.Cookbook.Site
                     continue;
                 string summary = xd.GetSummary(mi);
 
-                string url = Sanitize(mi.Name);
-                string name = $"<a href='{linkPrefix}#{url}'><strong>{mi.Name}</strong></a>";
+                // format differently if it's a real method or an auto-property
+                string itemName = mi.Name;
+                if (mi.Name.StartsWith("get_") || mi.Name.StartsWith("set_"))
+                    itemName = itemName.Replace("get_", "").Replace("set_", "");
+                else
+                    itemName += "()";
+
+                string url = Sanitize(itemName);
+                string name = $"<a href='{linkPrefix}#{url}'><strong>{itemName}</strong></a>";
                 AddTableRow(new string[] { name, summary });
+            }
+
+            AddHTML("</table>");
+        }
+
+        public void AddPlottableApiTable(XmlDoc xd)
+        {
+            AddGroupHeader("Plottable Types");
+            AddHTML("This table lists the types of plottable objects that can be added to a plot. " +
+            "Many of these plottable types have helper methods to easily create, customize, and add them to the plot. " +
+            "Public methods, properties, and fields of plottables can be used to customize their behavior and styling.");
+
+            AddHTML("<table>");
+            AddTableRow(new string[] { "Method", "Summary" }, true);
+
+            foreach (Type plottableType in Locate.GetPlottableTypes())
+            {
+                string summary = xd.GetSummary(plottableType);
+                string name = Locate.TypeName(plottableType);
+                string url = Locate.TypeName(plottableType, urlSafe: true);
+                string html = $"<a href='api-plottable-{url}.html'><strong>{name}</strong></a>";
+                AddTableRow(new string[] { html, summary });
             }
 
             AddHTML("</table>");
@@ -74,8 +104,15 @@ namespace ScottPlot.Cookbook.Site
                     continue;
                 string summary = xd.GetSummary(mi);
 
+                // format differently if it's a real method or an auto-property
+                string itemName = mi.Name;
+                if (mi.Name.StartsWith("get_") || mi.Name.StartsWith("set_"))
+                    itemName = itemName.Replace("get_", "").Replace("set_", "");
+                else
+                    itemName += "()";
+
                 string url = Sanitize(mi.Name);
-                string name = $"<a href='{linkPrefix}#{url}'><strong>{mi.Name}</strong></a>";
+                string name = $"<a href='{linkPrefix}#{url}'><strong>{itemName}</strong></a>";
                 AddTableRow(new string[] { name, summary });
             }
 
@@ -92,22 +129,43 @@ namespace ScottPlot.Cookbook.Site
                 string returnType = XmlDoc.PrettyType(mi.ReturnType);
                 string signature = XmlDoc.PrettySignature(mi);
 
-                AddGroupHeader(name, marginTop: "4em");
+                // format differently if it's a real method or an auto-property
+                string itemName = mi.Name;
+                if (mi.Name.StartsWith("get_") || mi.Name.StartsWith("set_"))
+                    itemName = itemName.Replace("get_", "").Replace("set_", "");
+                else
+                    itemName += "()";
+
+                AddGroupHeader(itemName, marginTop: "4em");
 
                 AddHTML($"<div><strong>Summary:</strong></div>");
                 AddHTML($"<ul><li>{summary}</li></ul>");
 
-                AddHTML($"<div><strong>Parameters:</strong></div>");
-                AddHTML("<ul>");
-                foreach (var p in mi.GetParameters())
-                    AddHTML($"<li><code>{XmlDoc.PrettyType(p.ParameterType)}</code> {p.Name}</li>");
-                AddHTML("</ul>");
+                bool isAutoProperty = mi.Name.StartsWith("get_") || mi.Name.StartsWith("set_");
+                if (isAutoProperty)
+                {
+                    // this method is an auto-property describing a field
 
-                AddHTML($"<div><strong>Returns:</strong></div>");
-                AddHTML($"<ul><li><code>{returnType}</code></li></ul>");
+                    signature = signature.Replace("()", "").Replace("get_", "").Replace("set_", "");
+                    AddHTML($"<div><strong>Field:</strong></div>");
+                    AddHTML($"<ul><li><code>{signature}</code></li></ul>");
+                }
+                else
+                {
+                    // this method is a traditional method with inputs and outputs
 
-                AddHTML($"<div><strong>Signature:</strong></div>");
-                AddHTML($"<ul><li><code>{signature}</code></li></ul>");
+                    AddHTML($"<div><strong>Parameters:</strong></div>");
+                    AddHTML("<ul>");
+                    foreach (var p in mi.GetParameters())
+                        AddHTML($"<li><code>{XmlDoc.PrettyType(p.ParameterType)}</code> {p.Name}</li>");
+                    AddHTML("</ul>");
+
+                    AddHTML($"<div><strong>Returns:</strong></div>");
+                    AddHTML($"<ul><li><code>{returnType}</code></li></ul>");
+
+                    AddHTML($"<div><strong>Signature:</strong></div>");
+                    AddHTML($"<ul><li><code>{signature}</code></li></ul>");
+                }
             }
         }
 
@@ -148,6 +206,51 @@ namespace ScottPlot.Cookbook.Site
                 string recipeUrl = $"{categoryPageName}#{recipe.ID}".ToLower();
                 string imageUrl = $"source/{recipe.ID}{ExtThumb}".ToLower();
                 SB.AppendLine($"<a href='{recipeUrl}'><img src='{imageUrl}' style='padding: 10px;'/></a>");
+            }
+        }
+
+        public void AddPlottableDetails(XmlDoc xd, Type plottableType)
+        {
+            string typeName = Locate.TypeName(plottableType);
+            string typeUrl = Locate.TypeName(plottableType, urlSafe: true);
+
+            AddHTML($"<div><strong>This page describes <code>ScottPlot.Plottable.{typeName}</code></strong></div>");
+
+            string classSummary = xd.GetSummary(plottableType);
+            AddHTML($"<div><strong>Summary:</strong> {classSummary}</div>");
+
+            AddHTML($"<blockquote>" +
+                "⚠️ <strong>Only public methods are shown below.</strong> " +
+                "This plot type likely has properties and fields to customize its behavior and styling, " +
+                "but they do not appear on this page. " +
+                "</blockquote>");
+
+            // TODO: fix URLs for generic types
+            string apimundoUrl =
+                "https://apimundo.com/organizations/nuget-org/nuget-feeds/public/packages/ScottPlot/versions/latest?" +
+                "tab=types&namespace=ScottPlot.Plottable&type=ScottPlot.Plottable." + typeName;
+            AddHTML($"<div>💡 Read more on Apimundo: <a href='{apimundoUrl}'>ScottPlot.Plottable.{typeName}</a></div>");
+
+            foreach (MethodInfo mi in Locate.GetNotablePlottableMethods(plottableType))
+            {
+                string methodSummary = xd.GetSummary(mi);
+                string returnType = XmlDoc.PrettyType(mi.ReturnType);
+                string signature = XmlDoc.PrettySignature(mi);
+
+                AddGroupHeader(mi.Name + "()");
+                AddHTML($"<div><strong>Summary:</strong> {methodSummary}</div>");
+
+                AddHTML($"<div><strong>Parameters:</strong></div>");
+                AddHTML("<ul>");
+                foreach (var p in mi.GetParameters())
+                    AddHTML($"<li><code>{XmlDoc.PrettyType(p.ParameterType)}</code> {p.Name}</li>");
+                AddHTML("</ul>");
+
+                AddHTML($"<div><strong>Returns:</strong></div>");
+                AddHTML($"<ul><li><code>{returnType}</code></li></ul>");
+
+                AddHTML($"<div><strong>Signature:</strong></div>");
+                AddHTML($"<ul><li><code>{signature}</code></li></ul>");
             }
         }
     }

@@ -2,6 +2,9 @@
 
 namespace ScottPlot.Plottable
 {
+    /// <summary>
+    /// A variation of the SignalPlot optimized for unevenly-spaced ascending X values.
+    /// </summary>
     public class SignalPlotXY : SignalPlotXYGeneric<double, double>
     {
 

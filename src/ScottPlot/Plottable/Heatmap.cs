@@ -7,6 +7,10 @@ using System.Runtime.InteropServices;
 
 namespace ScottPlot.Plottable
 {
+    /// <summary>
+    /// A heatmap displays a 2D array of intensities as small rectangles on the plot
+    /// colored according to their intensity value according to a colormap.
+    /// </summary>
     public class Heatmap : IPlottable
     {
         // these fields are updated when the intensities are analyzed
@@ -31,6 +35,9 @@ namespace ScottPlot.Plottable
         public int XAxisIndex { get; set; } = 0;
         public int YAxisIndex { get; set; } = 0;
 
+        public string ColorbarMin { get; private set; }
+        public string ColorbarMax { get; private set; }
+
         public Heatmap()
         {
             AxisOffsets = new double[] { 0, 0 };
@@ -38,13 +45,17 @@ namespace ScottPlot.Plottable
             Colormap = Colormap.Viridis;
         }
 
+        /// <summary>
+        /// This method analyzes the intensities and colormap to create a bitmap
+        /// with a single pixel for every intensity value. The bitmap is stored
+        /// and displayed (without anti-alias interpolation) when Render() is called.
+        /// </summary>
+        /// <param name="intensities">2D array of data for the heatmap (null values are not shown)</param>
+        /// <param name="colormap">update the Colormap to use this colormap</param>
+        /// <param name="min">minimum intensity (according to the colormap)</param>
+        /// <param name="max">maximum intensity (according to the colormap)</param>
         public void Update(double?[,] intensities, Colormap colormap = null, double? min = null, double? max = null)
         {
-            /* This method analyzes the intensities and colormap to create a bitmap
-             * with a single pixel for every intensity value. The bitmap is stored
-             * and displayed (without anti-alias interpolation) when Render() is called.
-             */
-
             Width = intensities.GetLength(1);
             Height = intensities.GetLength(0);
             Colormap = colormap ?? Colormap;
@@ -91,9 +102,16 @@ namespace ScottPlot.Plottable
             BmpHeatmap.UnlockBits(bmpData);
         }
 
-        public string ColorbarMin { get; private set; }
-        public string ColorbarMax { get; private set; }
 
+        /// <summary>
+        /// This method analyzes the intensities and colormap to create a bitmap
+        /// with a single pixel for every intensity value. The bitmap is stored
+        /// and displayed (without anti-alias interpolation) when Render() is called.
+        /// </summary>
+        /// <param name="intensities">2D array of data for the heatmap (all values are shown)</param>
+        /// <param name="colormap">update the Colormap to use this colormap</param>
+        /// <param name="min">minimum intensity (according to the colormap)</param>
+        /// <param name="max">maximum intensity (according to the colormap)</param>
         public void Update(double[,] intensities, Colormap colormap = null, double? min = null, double? max = null)
         {
             double?[,] tmp = new double?[intensities.GetLength(0), intensities.GetLength(1)];

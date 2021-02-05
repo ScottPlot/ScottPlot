@@ -21,14 +21,17 @@ namespace ScottPlotTests.Cookbook
         [OneTimeSetUp]
         public void Setup()
         {
+            string NameToOrderBy(string autoPropertyMethodName) =>
+                autoPropertyMethodName.Replace("get_", "")
+                                      .Replace("set_", "")
+                                      .ToLower();
+
             XD = new XmlDoc(XmlDocPath);
             PlotMethods = typeof(ScottPlot.Plot).GetMethods()
                                                 .Where(x => x.IsPublic)
                                                 .Where(x => !x.GetCustomAttributes<ObsoleteAttribute>().Any())
-                                                .Where(x => !x.Name.StartsWith("get_")) // ignore auto-properties
                                                 .Where(x => x.Name != "GetType") // ignore special methods
-                                                .Where(x => x.Name != "ToString") // ignore special methods
-                                                .OrderBy(x => x.Name)
+                                                .OrderBy(x => NameToOrderBy(x.Name))
                                                 .ToArray();
         }
 
@@ -40,7 +43,8 @@ namespace ScottPlotTests.Cookbook
             BuildRecipeImagesAndCode();
             CopyResourceFiles();
             BuildRecipePages();
-            BuildApiPage();
+            BuildPlotApiPage();
+            BuildPlottableApiPages();
             BuildIndexPage();
         }
 
@@ -98,13 +102,26 @@ namespace ScottPlotTests.Cookbook
             allPage.SaveAs("all_recipes.html", "All Recipes");
         }
 
-        private void BuildApiPage()
+        private void BuildPlotApiPage()
         {
             var index = new ScottPlot.Cookbook.Site.IndexPage(CookbookFolder, SourceFolder);
             index.AddPlotApiTableWithoutPlottables(XD, PlotMethods);
             index.AddPlotApiTablePlottables(XD, PlotMethods);
             index.AddPlotApiDetails(XD, PlotMethods);
-            index.SaveAs("api.html", "Plot API");
+            index.SaveAs("api-plot.html", "Plot API");
+        }
+
+        private void BuildPlottableApiPages()
+        {
+            foreach (Type plottableType in Locate.GetPlottableTypes())
+            {
+                var index = new ScottPlot.Cookbook.Site.IndexPage(CookbookFolder, SourceFolder);
+                index.AddPlottableDetails(XD, plottableType);
+
+                string typeName = Locate.TypeName(plottableType);
+                string typeUrl = Locate.TypeName(plottableType, urlSafe: true);
+                index.SaveAs($"api-plottable-{typeUrl}.html", typeName);
+            }
         }
 
         private void BuildIndexPage()
@@ -114,9 +131,10 @@ namespace ScottPlotTests.Cookbook
             // add recipes
             index.AddLinksToRecipes();
 
-            // add API table
-            index.AddPlotApiTableWithoutPlottables(XD, PlotMethods, "api.html");
-            index.AddPlotApiTablePlottables(XD, PlotMethods, "api.html");
+            // add API tables
+            index.AddPlotApiTableWithoutPlottables(XD, PlotMethods);
+            index.AddPlotApiTablePlottables(XD, PlotMethods);
+            index.AddPlottableApiTable(XD);
 
             index.SaveAs("index.html", null);
             Console.WriteLine($"View Cookbook: {System.IO.Path.GetFullPath(CookbookFolder)}/index.html");

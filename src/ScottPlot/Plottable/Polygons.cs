@@ -6,6 +6,11 @@ using ScottPlot.Drawing;
 
 namespace ScottPlot.Plottable
 {
+    /// <summary>
+    /// Polygons are multiple Polygon objects.
+    /// This plot type is faster alternative for rendering a large number of polygons
+    /// compared to adding a bunch of individual Polygon objects to the plot.
+    /// </summary>
     public class Polygons : IPlottable
     {
         // data

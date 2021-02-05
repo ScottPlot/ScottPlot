@@ -6,6 +6,10 @@ using System.Linq;
 
 namespace ScottPlot.Plottable
 {
+    /// <summary>
+    /// A pie plot displays a collection of values as a circle.
+    /// Pie plots with a hollow center are donut plots.
+    /// </summary>
     public class PiePlot : IPlottable
     {
         public double[] Values;

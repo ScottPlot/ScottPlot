@@ -13,6 +13,9 @@ namespace ScottPlot
         /// <summary>
         /// Render the plot onto an existing bitmap
         /// </summary>
+        /// <param name="bmp">an existing bitmap to render onto</param>
+        /// <param name="lowQuality"></param>
+        /// <returns>the same bitmap that was passed in (but was rendered onto)</returns>
         public Bitmap Render(Bitmap bmp, bool lowQuality = false)
         {
             while (IsRenderLocked) { }
@@ -33,7 +36,6 @@ namespace ScottPlot
             IsRendering = false;
             return bmp;
         }
-
 
         private void RenderBeforePlottables(Bitmap bmp, bool lowQuality)
         {
@@ -127,12 +129,18 @@ namespace ScottPlot
         /// <summary>
         /// Render the plot onto a new Bitmap (using the size given when the plot was created or resized)
         /// </summary>
+        /// <param name="lowQuality">if true, anti-aliasing will be disabled for this render</param>
+        /// <returns>the Bitmap that was created</returns>
         public Bitmap Render(bool lowQuality = false) =>
              Render(settings.Width, settings.Height, lowQuality);
 
         /// <summary>
         /// Render the plot onto a new Bitmap of the given dimensions
         /// </summary>
+        /// <param name="width">width (pixels) for this render</param>
+        /// <param name="height">height (pixels) for this render</param>
+        /// <param name="lowQuality">if true, anti-aliasing will be disabled for this render</param>
+        /// <returns>the Bitmap that was created</returns>
         public Bitmap Render(int width, int height, bool lowQuality = false) =>
             Render(new Bitmap(Math.Max(1, width), Math.Max(1, height), PixelFormat.Format32bppPArgb), lowQuality);
 
@@ -142,7 +150,7 @@ namespace ScottPlot
         /// <summary>
         /// Return a new Bitmap containing only the legend
         /// </summary>
-        /// <returns></returns>
+        /// <returns>new bitmap containing the legend</returns>
         public Bitmap RenderLegend()
         {
             Render();
@@ -150,8 +158,10 @@ namespace ScottPlot
         }
 
         /// <summary>
-        /// Save the plot as an image and return the full path of the file
+        /// Save the plot as an image
         /// </summary>
+        /// <param name="filePath">file path for the images (existing files will be overwritten)</param>
+        /// <returns>Full path for the image that was saved</returns>
         public string SaveFig(string filePath)
         {
             Bitmap bmp = Render();

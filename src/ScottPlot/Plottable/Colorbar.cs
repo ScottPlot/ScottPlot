@@ -9,6 +9,10 @@ using System.Text;
 
 namespace ScottPlot.Plottable
 {
+    /// <summary>
+    /// A colorbar translates numeric intensity values to colors.
+    /// The Colorbar plot type displays a Colorbar along an edge of the plot.
+    /// </summary>
     public class Colorbar : IPlottable
     {
         public Renderable.Edge Edge = Renderable.Edge.Right;
@@ -28,18 +32,31 @@ namespace ScottPlot.Plottable
             UpdateColormap(colormap ?? Colormap.Viridis);
         }
 
+        /// <summary>
+        /// Clear all tick marks and labels
+        /// </summary>
         public void ClearTicks()
         {
             TickFractions.Clear();
             TickLabels.Clear();
         }
 
+        /// <summary>
+        /// Add a tick mark and label
+        /// </summary>
+        /// <param name="fraction">from 0 (darkest) to 1 (brightest)</param>
+        /// <param name="label">string displayed beside the tick</param>
         public void AddTick(double fraction, string label)
         {
             TickFractions.Add(fraction);
             TickLabels.Add(label);
         }
 
+        /// <summary>
+        /// Add tick marks and labels
+        /// </summary>
+        /// <param name="fractions">from 0 (darkest) to 1 (brightest)</param>
+        /// <param name="labels">strings displayed beside the ticks</param>
         public void AddTicks(double[] fractions, string[] labels)
         {
             if (fractions.Length != labels.Length)
@@ -52,6 +69,11 @@ namespace ScottPlot.Plottable
             }
         }
 
+        /// <summary>
+        /// Define a tick marks and labels
+        /// </summary>
+        /// <param name="fractions">from 0 (darkest) to 1 (brightest)</param>
+        /// <param name="labels">strings displayed beside the ticks</param>
         public void SetTicks(double[] fractions, string[] labels)
         {
             ClearTicks();
@@ -68,6 +90,9 @@ namespace ScottPlot.Plottable
                 throw new InvalidOperationException("Tick labels and positions must have the same length");
         }
 
+        /// <summary>
+        /// Re-Render the colorbar using a new colormap
+        /// </summary>
         public void UpdateColormap(Colormap newColormap)
         {
             Colormap = newColormap;
@@ -80,9 +105,22 @@ namespace ScottPlot.Plottable
             BmpScale = GetBitmap();
         }
 
+        /// <summary>
+        /// Return a Bitmap of just the color portion of the colorbar.
+        /// The width is defined by the Width field
+        /// The height will be 256
+        /// </summary>
+        /// <returns></returns>
         public Bitmap GetBitmap() =>
             Colormap.Colorbar(Colormap, Width, 256, true);
 
+        /// <summary>
+        /// Return a Bitmap of just the color portion of the colorbar
+        /// </summary>
+        /// <param name="width">width of the Bitmap</param>
+        /// <param name="height">height of the Bitmap</param>
+        /// <param name="vertical">if true, colormap will be vertically oriented (tall and skinny)</param>
+        /// <returns></returns>
         public Bitmap GetBitmap(int width, int height, bool vertical = true) =>
             Colormap.Colorbar(Colormap, width, height, vertical);
 

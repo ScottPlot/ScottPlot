@@ -25,12 +25,6 @@ namespace ScottPlot.Plottable
         public string Label;
 
         public readonly Drawing.Font Font = new Drawing.Font();
-        public Color FontColor { set => Font.Color = value; }
-        public string FontName { set => Font.Name = value; }
-        public float FontSize { set => Font.Size = value; }
-        public bool FontBold { set => Font.Bold = value; }
-        public Alignment Alignment { set => Font.Alignment = value; }
-        public float Rotation { set => Font.Rotation = value; }
 
         public bool Background = true;
         public Color BackgroundColor = Color.Yellow;
@@ -63,30 +57,32 @@ namespace ScottPlot.Plottable
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            using (var gfx = GDI.Graphics(bmp, lowQuality))
-            using (var font = GDI.Font(Font))
-            using (var fontBrush = new SolidBrush(Font.Color))
-            using (var shadowBrush = new SolidBrush(ShadowColor))
-            using (var backgroundBrush = new SolidBrush(BackgroundColor))
-            using (var borderPen = new Pen(BorderColor, BorderWidth))
-            {
-                SizeF size = GDI.MeasureString(gfx, Label, font);
+            if (!IsVisible)
+                return;
 
-                double x = (X >= 0) ? X : dims.DataWidth + X - size.Width;
-                double y = (Y >= 0) ? Y : dims.DataHeight + Y - size.Height;
-                PointF location = new PointF((float)x + dims.DataOffsetX, (float)y + dims.DataOffsetY);
+            using var gfx = GDI.Graphics(bmp, lowQuality);
+            using var font = GDI.Font(Font);
+            using var fontBrush = new SolidBrush(Font.Color);
+            using var shadowBrush = new SolidBrush(ShadowColor);
+            using var backgroundBrush = new SolidBrush(BackgroundColor);
+            using var borderPen = new Pen(BorderColor, BorderWidth);
 
-                if (Background && Shadow)
-                    gfx.FillRectangle(shadowBrush, location.X + 5, location.Y + 5, size.Width, size.Height);
+            SizeF size = GDI.MeasureString(gfx, Label, font);
 
-                if (Background)
-                    gfx.FillRectangle(backgroundBrush, location.X, location.Y, size.Width, size.Height);
+            double x = (X >= 0) ? X : dims.DataWidth + X - size.Width;
+            double y = (Y >= 0) ? Y : dims.DataHeight + Y - size.Height;
+            PointF location = new PointF((float)x + dims.DataOffsetX, (float)y + dims.DataOffsetY);
 
-                if (Border)
-                    gfx.DrawRectangle(borderPen, location.X, location.Y, size.Width, size.Height);
+            if (Background && Shadow)
+                gfx.FillRectangle(shadowBrush, location.X + 5, location.Y + 5, size.Width, size.Height);
 
-                gfx.DrawString(Label, font, fontBrush, location);
-            }
+            if (Background)
+                gfx.FillRectangle(backgroundBrush, location.X, location.Y, size.Width, size.Height);
+
+            if (Border)
+                gfx.DrawRectangle(borderPen, location.X, location.Y, size.Width, size.Height);
+
+            gfx.DrawString(Label, font, fontBrush, location);
         }
     }
 }

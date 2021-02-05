@@ -16,22 +16,6 @@ namespace ScottPlotTests.Documentation
         [OneTimeSetUp]
         public void LoadDocs() => XD = new ScottPlot.Cookbook.XmlDoc(XmlPath);
 
-        [Test]
-        public void Test_XML_Load()
-        {
-            Console.WriteLine($"Found {XD.Methods.Count} documented methods.");
-
-            var plotMethods = XD.Methods.Where(x => x.Name.Contains("ScottPlot.Plot."));
-            Console.WriteLine($"Found {plotMethods.Count()} documented Plot methods.");
-
-            foreach (var dm in plotMethods)
-            {
-                Console.WriteLine($"");
-                Console.WriteLine($"{dm.Name}");
-                Console.WriteLine($"{dm.Summary}");
-            }
-        }
-
         private string PlotMethodXmlName(string methodName, int parameterCount)
         {
             MethodInfo[] infos = typeof(ScottPlot.Plot).GetMethods()
