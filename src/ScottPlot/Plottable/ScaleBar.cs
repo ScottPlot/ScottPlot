@@ -4,6 +4,9 @@ using ScottPlot.Drawing;
 
 namespace ScottPlot.Plottable
 {
+    /// <summary>
+    /// An L-shaped scalebar rendered in the corner of the data area
+    /// </summary>
     public class ScaleBar : IPlottable
     {
         /// <summary>

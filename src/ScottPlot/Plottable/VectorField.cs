@@ -7,6 +7,9 @@ using System.Linq;
 
 namespace ScottPlot.Plottable
 {
+    /// <summary>
+    /// The VectorField displays arrows representing a 2D array of 2D vectors
+    /// </summary>
     public class VectorField : IPlottable
     {
         // data

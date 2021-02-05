@@ -2,6 +2,11 @@
 
 namespace ScottPlot.Plottable
 {
+    /// <summary>
+    /// A signal plot displays evenly-spaced data.
+    /// Instead of X/Y pairs, signal plots take Y values and a sample rate.
+    /// Optional X and Y offsets can further customize the data.
+    /// </summary>
     public class SignalPlot : SignalPlotBase<double>
     {
         public SignalPlot() : base()

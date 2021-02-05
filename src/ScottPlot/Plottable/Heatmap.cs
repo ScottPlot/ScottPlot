@@ -7,6 +7,10 @@ using System.Runtime.InteropServices;
 
 namespace ScottPlot.Plottable
 {
+    /// <summary>
+    /// A heatmap displays a 2D array of intensities as small rectangles on the plot
+    /// colored according to their intensity value according to a colormap.
+    /// </summary>
     public class Heatmap : IPlottable
     {
         // these fields are updated when the intensities are analyzed

@@ -5,6 +5,10 @@ using System.Linq;
 
 namespace ScottPlot.Plottable
 {
+    /// <summary>
+    /// A tooltip displays a text bubble pointing to a specific location in X/Y space.
+    /// The position of the bubble moves according to the axis limits to best display the text in the data area.
+    /// </summary>
     public class Tooltip : IPlottable
     {
         public string Label { get; set; }

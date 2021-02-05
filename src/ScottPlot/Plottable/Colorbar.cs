@@ -9,6 +9,10 @@ using System.Text;
 
 namespace ScottPlot.Plottable
 {
+    /// <summary>
+    /// A colorbar translates numeric intensity values to colors.
+    /// The Colorbar plot type displays a Colorbar along an edge of the plot.
+    /// </summary>
     public class Colorbar : IPlottable
     {
         public Renderable.Edge Edge = Renderable.Edge.Right;

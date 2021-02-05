@@ -9,6 +9,10 @@ using System.Text;
 
 namespace ScottPlot.Plottable
 {
+    /// <summary>
+    /// The scatter plot renders X/Y pairs as points and/or connected lines.
+    /// Scatter plots can be extremely slow for large datasets, so use Signal plots in these situations.
+    /// </summary>
     public class ScatterPlot : IPlottable, IHasPoints
     {
         // data

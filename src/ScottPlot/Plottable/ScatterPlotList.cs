@@ -5,6 +5,10 @@ using System.Drawing;
 
 namespace ScottPlot.Plottable
 {
+    /// <summary>
+    /// A collection of X/Y coordinates that can be displayed as markers and/or connected lines.
+    /// Unlike the regular ScatterPlot, this plot type has Add() methods to easily add data.
+    /// </summary>
     public class ScatterPlotList : IPlottable
     {
         private readonly List<double> Xs = new List<double>();

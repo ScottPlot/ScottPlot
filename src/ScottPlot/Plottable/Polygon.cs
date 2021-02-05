@@ -5,6 +5,10 @@ using System.Drawing;
 
 namespace ScottPlot.Plottable
 {
+    /// <summary>
+    /// A polygon is a collection of X/Y points that are all connected to form a closed shape.
+    /// Polygons can be optionally filled with a color or a gradient.
+    /// </summary>
     public class Polygon : IPlottable
     {
         // data

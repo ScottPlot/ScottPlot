@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Drawing;
 using System.Linq;
-using ScottPlot.Ticks;
 using ScottPlot.Drawing;
-using ScottPlot.Renderable;
 using ScottPlot.Statistics;
-using System.Data;
 
 namespace ScottPlot.Plottable
 {
+    /// <summary>
+    /// Population plots are designed to show collections of data.
+    /// A Population is a 1D array of values, and statistics are calculated automatically.
+    /// Populations can be displayed as bar plots, box plots, or scatter plots.
+    /// Public methods, fields, and properties allow extensive customization.
+    /// This plottable supports higher-order grouping (groups of groups).
+    /// </summary>
     public class PopulationPlot : IPlottable
     {
         public readonly PopulationMultiSeries MultiSeries;

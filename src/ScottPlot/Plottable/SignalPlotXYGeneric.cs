@@ -8,6 +8,11 @@ using System.Runtime.InteropServices;
 
 namespace ScottPlot.Plottable
 {
+    /// <summary>
+    /// A variation of the SignalPlotConst optimized for unevenly-spaced ascending X values.
+    /// </summary>
+    /// <typeparam name="TX"></typeparam>
+    /// <typeparam name="TY"></typeparam>
     public class SignalPlotXYGeneric<TX, TY> : SignalPlotBase<TY> where TX : struct, IComparable where TY : struct, IComparable
     {
         private TX[] _Xs;
