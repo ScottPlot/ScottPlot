@@ -214,10 +214,22 @@ namespace ScottPlot.Cookbook.Site
             string typeName = Locate.TypeName(plottableType);
             string typeUrl = Locate.TypeName(plottableType, urlSafe: true);
 
-            AddHTML($"<div>This page describes <code>ScottPlot.Plottable.{typeName}</code></div>");
+            AddHTML($"<div><strong>This page describes <code>ScottPlot.Plottable.{typeName}</code></strong></div>");
 
             string classSummary = xd.GetSummary(plottableType);
             AddHTML($"<div><strong>Summary:</strong> {classSummary}</div>");
+
+            AddHTML($"<blockquote>" +
+                "⚠️ <strong>Only public methods are shown below.</strong> " +
+                "This plot type likely has properties and fields to customize its behavior and styling, " +
+                "but they do not appear on this page. " +
+                "</blockquote>");
+
+            // TODO: fix URLs for generic types
+            string apimundoUrl =
+                "https://apimundo.com/organizations/nuget-org/nuget-feeds/public/packages/ScottPlot/versions/latest?" +
+                "tab=types&namespace=ScottPlot.Plottable&type=ScottPlot.Plottable." + typeName;
+            AddHTML($"<div>💡 Read more on Apimundo: <a href='{apimundoUrl}'>ScottPlot.Plottable.{typeName}</a></div>");
 
             foreach (MethodInfo mi in Locate.GetNotablePlottableMethods(plottableType))
             {
