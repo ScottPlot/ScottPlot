@@ -30,7 +30,7 @@
                 $"![]({url})";
 
             Html = linkToItself ?
-                $"<a href='{url}'><img src='{url}' /></a>" :
+                $"<a href='{url}'><img src='{url}' class='mw-100' /></a>" :
                 $"<img src='{url}' class='mw-100' />";
 
             if (center)
