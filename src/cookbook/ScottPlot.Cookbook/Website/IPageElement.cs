@@ -3,6 +3,8 @@
     interface IPageElement
     {
         public string Markdown { get; }
-        public string Html { get; }
+
+        // Enable this to support dual Markdown and HTML exporting
+        //public string HTML { get; }
     }
 }

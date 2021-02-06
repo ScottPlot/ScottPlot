@@ -1,12 +1,12 @@
 ﻿namespace ScottPlot.Cookbook.Website
 {
-    class Image : IPageElement
+    class Thumbnail : IPageElement
     {
         public string Markdown { get; private set; }
 
-        public Image(string url, bool linkToItself, bool center)
+        public Thumbnail(string url, string thumbUrl, bool center)
         {
-            Markdown = linkToItself ? $"[![]({url})]({url})" : $"![]({url})";
+            Markdown = $"[![]({thumbUrl})]({url})";
 
             if (center)
                 Markdown = $"<div class='text-center'>\n\n{Markdown}\n\n</div>";

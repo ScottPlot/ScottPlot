@@ -5,21 +5,16 @@ using System.Text;
 
 namespace ScottPlot.Cookbook.Website.Pages
 {
-    public class CookbookIndex : Page
+    public class CookbookIndex : MarkdownPage
     {
         public CookbookIndex()
         {
-            Title = $"ScottPlot {ScottPlotVersion} Cookbook";
-            Description = $"Code examples and API documentation for ScottPlot {ScottPlotVersion}";
+            Title = $"ScottPlot {Plot.Version} Cookbook";
+            Description = $"Code examples and API documentation for ScottPlot {Plot.Version}";
 
-            // The HTML template has large text indicating this page is the cookbook.
-            // Since Markdown does not use a template, this information has to be added manually.
-            //AddMarkdown($"# ScottPlot {ScottPlotVersion} Cookbook", htmlToo: false);
-            AddHtml("<div class='display-5 my-3'><a href='./' style='color: black;'>" +
-                $"ScottPlot {ScottPlotVersion} Cookbook</a></div>", markdownToo: true);
+            Add("<div class='display-5 my-3'><a href='./' style='color: black;'>" +
+                $"ScottPlot {Plot.Version} Cookbook</a></div>");
 
-            // The HTML template has warnings that documentation is version specific.
-            // Since Markdown does not use a template, this information has to be added manually.
             AddVersionWarning();
 
             AddRecipeCards();
@@ -33,10 +28,10 @@ namespace ScottPlot.Cookbook.Website.Pages
 
             AddHeading("Recipes", 2);
 
-            AddParagraph($"<strong>Concepts:</strong> " + string.Join(", ",
+            Add($"<strong>Concepts:</strong> " + string.Join(", ",
                 nonPlottableCategories.Select(x => $"<a href='#{Sanitize(x)}'>{x}</a>")));
 
-            AddParagraph($"<strong>Plottables:</strong> " + string.Join(", ",
+            Add($"<strong>Plottables:</strong> " + string.Join(", ",
                 plottableCategories.Select(x => $"<a href='#{Sanitize(x)}'>{x.Split(':')[1]}</a>")));
 
             AddSpacer();
@@ -44,10 +39,10 @@ namespace ScottPlot.Cookbook.Website.Pages
             foreach (string categoryName in categoryNames)
             {
                 AddHeading(categoryName, 2);
-                AddHtml("<div class='row'>", true);
+                Add("<div class='row'>");
                 foreach (IRecipe recipe in Locate.GetRecipes(categoryName))
                     AddRecipeCard(recipe);
-                AddHtml("</div>", true);
+                Add("</div>");
                 AddSpacer();
             }
         }

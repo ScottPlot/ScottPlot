@@ -4,15 +4,13 @@ using System.Text;
 
 namespace ScottPlot.Cookbook.Website
 {
-    class ListItem : IPageElement
+    class RawText : IPageElement
     {
         public string Markdown { get; private set; }
-        public string Html { get; private set; }
 
-        public ListItem(string text)
+        public RawText(string str)
         {
-            Markdown = $"* {text}";
-            Html = $"<li>{text}</li>";
+            Markdown = str;
         }
     }
 }
