@@ -27,7 +27,7 @@ namespace ScottPlot.Cookbook.Website.Pages
             AddHeading(recipe.Title, 2);
             AddParagraph(recipe.Description);
             AddCodeBlock(Locate.RecipeSourceCode(recipe), "cs");
-            AddImage($"images/{recipe.ID}.png", center: true);
+            AddImage($"images/{Sanitize(recipe.ID)}.png", center: true);
         }
     }
 }
