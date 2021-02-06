@@ -1,0 +1,68 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{title}} - ScottPlot {{version}} Cookbook</title>
+    <meta name='description' content='{{description}}' />
+    <link rel="shortcut icon" href="https://swharden.com/scottplot/scottplot.ico" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css" rel="stylesheet">
+
+    <style>
+        a {
+            text-decoration: none;
+        }
+
+            a:hover {
+                text-decoration: underline;
+            }
+    </style>
+
+    <!-- Analytics -->
+    <script async src='https://www.googletagmanager.com/gtag/js?id=UA-560719-1'></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-560719-1');
+    </script>
+
+</head>
+<body>
+    <div class="container">
+
+        <div class="my-5">
+            <header class="mt-4">
+                <div class="display-1 text-center">
+                    ScottPlot <span style="opacity: .5;">
+                        <a href="index.html" style="color: inherit;">Cookbook</a>
+                    </span>
+                </div>
+            </header>
+
+            <nav class="my-3 text-center fs-4 fw-light mb-4">
+                <div>
+                    This cookbook is specific to <strong>ScottPlot {{version}}</strong>
+                </div>
+                <div>
+                    Refer to <strong><a href='https://swharden.com/scottplot'>ScottPlot Website</a></strong>
+                    for complete documentation
+                </div>
+            </nav>
+        </div>
+
+        <article>
+            {{content}}
+        </article>
+
+    </div>
+
+    <footer class="p-5 text-center" style="opacity: .3;">
+        This page was generated for ScottPlot {{version}} on {{date}} using .NET {{dotnetVersion}}
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+</body>
+</html>

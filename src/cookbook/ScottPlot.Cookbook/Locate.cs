@@ -25,6 +25,8 @@ namespace ScottPlot.Cookbook
 
         public static string[] GetCategories() => GetRecipes().Select(x => x.Category).Distinct().ToArray();
 
+        public static string[] GetCategoriesInDisplayOrder() => GetCategorizedRecipes().Select(x => x.Key).ToArray();
+
         public static IRecipe[] GetRecipes(string category) => GetRecipes().Where(x => x.Category == category).ToArray();
 
         public static List<KeyValuePair<string, IRecipe[]>> GetCategorizedRecipes()
@@ -67,6 +69,8 @@ namespace ScottPlot.Cookbook
 
             return categorizedRecipeList;
         }
+
+        public static string RecipeSourceCode(IRecipe recipe) => RecipeSourceCode(recipe.ID);
 
         public static string RecipeSourceCode(string id)
         {

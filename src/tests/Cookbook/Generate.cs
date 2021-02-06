@@ -1,7 +1,10 @@
 ﻿using NUnit.Framework;
 using ScottPlot.Cookbook;
+using ScottPlot.Cookbook.Website;
+using ScottPlot.Cookbook.Website.Pages;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -11,64 +14,63 @@ namespace ScottPlotTests.Cookbook
 {
     class Generate
     {
-        const string SourceFolder = "../../../../cookbook/ScottPlot.Cookbook";
-        const string CookbookFolder = "./cookbook";
-        const string RecipeFolder = "./cookbook/source";
-        const string XmlDocPath = "../../../../../src/ScottPlot/ScottPlot.xml";
+        string SourceFolder = "../../../../cookbook/ScottPlot.Cookbook";
+        string CookbookFolder = "./cookbook";
+        string RecipeFolder = "./cookbook/source";
+        string ImagesFolder = "./website/images";
+        string XmlDocPath = "../../../../../src/ScottPlot/ScottPlot.xml";
+        string WebsitePath = "./website";
+        string TemplatePath = "../../../../../src/cookbook/ScottPlot.Cookbook/Resources/Template-4.1.html";
+        string TemplateHtml;
         XmlDoc XD;
         MethodInfo[] PlotMethods;
 
         [OneTimeSetUp]
         public void Setup()
         {
-            string NameToOrderBy(string autoPropertyMethodName) =>
-                autoPropertyMethodName.Replace("get_", "")
-                                      .Replace("set_", "")
-                                      .ToLower();
+            SourceFolder = Path.GetFullPath(SourceFolder);
+            CookbookFolder = Path.GetFullPath(CookbookFolder);
+            RecipeFolder = Path.GetFullPath(RecipeFolder);
+            ImagesFolder = Path.GetFullPath(ImagesFolder);
+            XmlDocPath = Path.GetFullPath(XmlDocPath);
+            TemplatePath = Path.GetFullPath(TemplatePath);
+            WebsitePath = Path.GetFullPath(WebsitePath);
+            TemplateHtml = File.ReadAllText(TemplatePath);
+
+            EnsureDirectoryExistsAndIsEmpty(CookbookFolder);
+            EnsureDirectoryExistsAndIsEmpty(RecipeFolder);
+            EnsureDirectoryExistsAndIsEmpty(WebsitePath);
+            EnsureDirectoryExistsAndIsEmpty(ImagesFolder);
 
             XD = new XmlDoc(XmlDocPath);
             PlotMethods = typeof(ScottPlot.Plot).GetMethods()
                                                 .Where(x => x.IsPublic)
                                                 .Where(x => !x.GetCustomAttributes<ObsoleteAttribute>().Any())
                                                 .Where(x => x.Name != "GetType") // ignore special methods
-                                                .OrderBy(x => NameToOrderBy(x.Name))
+                                                .OrderBy(x => x.Name.Replace("get_", "").Replace("set_", "").ToLower())
                                                 .ToArray();
         }
 
+        private void EnsureDirectoryExistsAndIsEmpty(string path)
+        {
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+            foreach (string filePath in Directory.GetFiles(path, "*.*"))
+                File.Delete(filePath);
+        }
+
         [Test]
-        public void Test_Cookbook_Generate()
-        {
-            EnsureCookbookFoldersExist();
-            CleanCookbookFolders();
-            BuildRecipeImagesAndCode();
-            CopyResourceFiles();
-            BuildRecipePages();
-            BuildPlotApiPage();
-            BuildPlottableApiPages();
-            BuildIndexPage();
-        }
-
-        private void EnsureCookbookFoldersExist()
-        {
-            if (!System.IO.Directory.Exists(CookbookFolder))
-                System.IO.Directory.CreateDirectory(CookbookFolder);
-            if (!System.IO.Directory.Exists(RecipeFolder))
-                System.IO.Directory.CreateDirectory(RecipeFolder);
-        }
-
-        private void CleanCookbookFolders()
-        {
-            foreach (string filePath in System.IO.Directory.GetFiles(CookbookFolder, "*.*"))
-                System.IO.File.Delete(filePath);
-            foreach (string filePath in System.IO.Directory.GetFiles(RecipeFolder, "*.*"))
-                System.IO.File.Delete(filePath);
-        }
-
-        private void BuildRecipeImagesAndCode()
+        public void Test_Cookbook_GenerateCodeAndImages()
         {
             var chef = new Chef();
-            chef.CreateCookbookImages(RecipeFolder);
+            chef.CreateCookbookImages(ImagesFolder);
             chef.CreateCookbookSource(SourceFolder, RecipeFolder);
+
+            //CopyResourceFiles();
+            //BuildRecipePages();
+            //BuildPlotApiPage();
+            //BuildPlottableApiPages();
+            //BuildIndexPage();
         }
 
         private void CopyResourceFiles()
@@ -138,6 +140,28 @@ namespace ScottPlotTests.Cookbook
 
             index.SaveAs("index.html", null);
             Console.WriteLine($"View Cookbook: {System.IO.Path.GetFullPath(CookbookFolder)}/index.html");
+        }
+
+
+        [Test]
+        public void Test_Generate_CookbookCategoryPages()
+        {
+            foreach (var categoryName in Locate.GetCategories())
+            {
+                var page = new RecipeCategoryPage(categoryName);
+                string htmlPath = Path.Combine(WebsitePath, $"cookbook-{Page.Sanitize(categoryName)}.html");
+                page.SaveHtml(htmlPath, TemplateHtml);
+                Console.WriteLine(htmlPath);
+            }
+        }
+
+        [Test]
+        public void Test_Generate_CookIndexPage()
+        {
+            var page = new CookbookIndex();
+            string htmlPath = Path.Combine(WebsitePath, "index.html");
+            page.SaveHtml(htmlPath, TemplateHtml);
+            Console.WriteLine(htmlPath);
         }
     }
 }
