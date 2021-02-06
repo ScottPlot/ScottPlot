@@ -14,11 +14,11 @@ namespace ScottPlot.Cookbook
         public string Summary;
     }
 
-    public class XmlDoc
+    public class XmlDocOld
     {
         public readonly Dictionary<string, MemberInfo> MemberInfos = new Dictionary<string, MemberInfo>();
 
-        public XmlDoc(string xmlFilePath)
+        public XmlDocOld(string xmlFilePath)
         {
             // validate input
             xmlFilePath = Path.GetFullPath(xmlFilePath);

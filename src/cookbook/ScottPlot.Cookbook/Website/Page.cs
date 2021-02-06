@@ -11,7 +11,7 @@ namespace ScottPlot.Cookbook.Website
     /// This class represents a markdown page that will become a single page on the website.
     /// At present it only exports Markdown, but HTML could be added to IPageElement to support HTML too.
     /// </summary>
-    public class MarkdownPage
+    public class Page
     {
         private readonly List<IPageElement> Elements = new List<IPageElement>();
         public string Title;

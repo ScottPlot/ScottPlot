@@ -32,9 +32,9 @@ namespace ScottPlot.Cookbook.Website
             Markdown = string.Join("", sb.ToString().Split('\n').Select(x => x.Trim()));
         }
         private static string GetRecipeUrl(IRecipe recipe) =>
-            $"cookbook-{MarkdownPage.Sanitize(recipe.Category)}#{MarkdownPage.Sanitize(recipe.Title)}";
+            $"cookbook-{Page.Sanitize(recipe.Category)}#{Page.Sanitize(recipe.Title)}";
 
         private static string GetThumbnailUrl(IRecipe recipe) =>
-            $"images/{MarkdownPage.Sanitize(recipe.ID)}_thumb.jpg";
+            $"images/{Page.Sanitize(recipe.ID)}_thumb.jpg";
     }
 }

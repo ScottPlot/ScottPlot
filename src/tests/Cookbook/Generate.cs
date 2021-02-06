@@ -56,7 +56,7 @@ namespace ScottPlotTests.Cookbook
         {
             foreach (var categoryName in Locate.GetCategories())
             {
-                string folderName = $"cookbook-{MarkdownPage.Sanitize(categoryName)}";
+                string folderName = $"cookbook-{Page.Sanitize(categoryName)}";
                 string folderPath = Path.Combine(WebsitePath, folderName);
                 CreateEmptyDirectory(folderPath);
                 string mdFilePath = Path.Combine(folderPath, "index.md");
@@ -70,8 +70,19 @@ namespace ScottPlotTests.Cookbook
         [Test]
         public void Test_Generate_CookIndexPage()
         {
-            var page = new CookbookIndex();
+            var page = new CookbookIndexPage();
             string mdPath = Path.Combine(WebsitePath, "index.md");
+            page.SaveMarkdown(mdPath);
+            Console.WriteLine(Path.GetFullPath(mdPath));
+        }
+
+        [Test]
+        public void Test_Generate_ApiIndexPage()
+        {
+            var page = new ApiIndexPage();
+
+            CreateEmptyDirectory(WebsitePath + "/api");
+            string mdPath = Path.Combine(WebsitePath, "api/index.md");
             page.SaveMarkdown(mdPath);
             Console.WriteLine(Path.GetFullPath(mdPath));
         }

@@ -15,7 +15,7 @@ namespace ScottPlotTests.Documentation
     {
         string XmlDocPath = "../../../../../src/ScottPlot/ScottPlot.xml";
         XDocument Doc;
-        XmlDoc XmlDoc;
+        XmlDocOld XmlDoc;
         MethodInfo[] PlotMethods;
         FieldInfo[] PlotFields;
         Type[] PlottableTypes;
@@ -24,7 +24,7 @@ namespace ScottPlotTests.Documentation
         public void LoadDocs()
         {
             Doc = XDocument.Load(XmlDocPath);
-            XmlDoc = new XmlDoc(XmlDocPath);
+            XmlDoc = new XmlDocOld(XmlDocPath);
 
             PlotMethods = typeof(ScottPlot.Plot)
                           .GetMethods()
@@ -41,13 +41,13 @@ namespace ScottPlotTests.Documentation
         }
 
         private XElement GetXmlFor(FieldInfo fi) =>
-            GetXmlFor(ScottPlot.Cookbook.XmlDoc.XmlName(fi));
+            GetXmlFor(ScottPlot.Cookbook.XmlDocOld.XmlName(fi));
 
         private XElement GetXmlFor(Type type) =>
-            GetXmlFor(ScottPlot.Cookbook.XmlDoc.XmlName(type));
+            GetXmlFor(ScottPlot.Cookbook.XmlDocOld.XmlName(type));
 
         private XElement GetXmlFor(MethodInfo mi) =>
-            GetXmlFor(ScottPlot.Cookbook.XmlDoc.XmlName(mi));
+            GetXmlFor(ScottPlot.Cookbook.XmlDocOld.XmlName(mi));
 
         private XElement GetXmlFor(string memberName)
         {

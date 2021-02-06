@@ -12,12 +12,12 @@ namespace ScottPlotTests.Documentation
 {
     class ApiMarkdown
     {
-        private ScottPlot.Cookbook.XmlDoc XD;
+        private ScottPlot.Cookbook.XmlDocOld XD;
         string XmlDocPath = "../../../../../src/ScottPlot/ScottPlot.xml";
         string ApiMarkdownPath = "../../../../../dev/API-Plot.md";
 
         [OneTimeSetUp]
-        public void LoadDocs() => XD = new ScottPlot.Cookbook.XmlDoc(XmlDocPath);
+        public void LoadDocs() => XD = new ScottPlot.Cookbook.XmlDocOld(XmlDocPath);
 
         [Test]
         public void Test_API_Plot()
@@ -88,10 +88,10 @@ namespace ScottPlotTests.Documentation
 
                 sb.AppendLine($"\n**Parameters:**");
                 foreach (var p in mi.GetParameters())
-                    sb.AppendLine($"* `{ScottPlot.Cookbook.XmlDoc.PrettyType(p.ParameterType)}` {p.Name}");
+                    sb.AppendLine($"* `{ScottPlot.Cookbook.XmlDocOld.PrettyType(p.ParameterType)}` {p.Name}");
 
                 sb.AppendLine($"\n**Returns:**");
-                sb.AppendLine($"* `{ScottPlot.Cookbook.XmlDoc.PrettyType(mi.ReturnType)}`");
+                sb.AppendLine($"* `{ScottPlot.Cookbook.XmlDocOld.PrettyType(mi.ReturnType)}`");
             }
 
             File.WriteAllText(ApiMarkdownPath, sb.ToString());

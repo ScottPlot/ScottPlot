@@ -5,9 +5,9 @@ using System.Text;
 
 namespace ScottPlot.Cookbook.Website.Pages
 {
-    public class CookbookIndex : MarkdownPage
+    public class CookbookIndexPage : Page
     {
-        public CookbookIndex()
+        public CookbookIndexPage()
         {
             Title = $"ScottPlot {Plot.Version} Cookbook";
             Description = $"Code examples and API documentation for ScottPlot {Plot.Version}";

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ScottPlot.Cookbook.Website.Pages
 {
-    public class RecipeCategoryPage : MarkdownPage
+    public class RecipeCategoryPage : Page
     {
         public RecipeCategoryPage(string categoryName)
         {
