@@ -7,7 +7,7 @@
 
         public Paragraph(string text)
         {
-            Markdown = text;
+            Markdown = Page.ReplaceHtmlWithMarkdown(text);
             Html = $"<p>{text}</p>";
         }
     }

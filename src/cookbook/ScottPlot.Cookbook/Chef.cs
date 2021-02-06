@@ -29,7 +29,7 @@ namespace ScottPlot.Cookbook
         {
             outputPath = Path.GetFullPath(outputPath);
             if (!Directory.Exists(outputPath))
-                throw new ArgumentException($"output path does not exist: {outputPath}");
+                Directory.CreateDirectory(outputPath);
 
             var recipes = Locate.GetRecipes();
             Console.WriteLine($"Cooking {recipes.Length} recipes in: {outputPath}");

@@ -16,7 +16,9 @@ namespace ScottPlot.Cookbook.Website.Pages
             if (recipes.Length == 0)
                 throw new InvalidOperationException($"no recipes found of category {categoryName}");
 
-            AddHtml($"<div class='display-5 my-3'>{categoryName}</div>");
+            AddHtml($"<div class='display-5 mt-3'><a href='../' style='color: black;'>ScottPlot {ScottPlotVersion} Cookbook</a></div>", markdownToo: true);
+            AddHtml($"<div class='fs-1 fw-light mb-4'><a href='./' style='color: black;'>{categoryName}</a></div>", markdownToo: true);
+            AddVersionWarning();
 
             foreach (IRecipe recipe in recipes)
                 AddRecipe(recipe);
@@ -27,7 +29,7 @@ namespace ScottPlot.Cookbook.Website.Pages
             AddHeading(recipe.Title, 2);
             AddParagraph(recipe.Description);
             AddCodeBlock(Locate.RecipeSourceCode(recipe), "cs");
-            AddImage($"images/{Sanitize(recipe.ID)}.png", center: true);
+            AddImage($"../images/{Sanitize(recipe.ID)}.png", center: true);
         }
     }
 }

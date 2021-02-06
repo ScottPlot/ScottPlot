@@ -33,10 +33,14 @@ namespace ScottPlot.Cookbook.Website
         public void AddHeading(string text, int level = 1) =>
             Add(new Heading(text, level));
 
-        public void AddHtml(string html) => Add(new RawHtml(html));
+        public void AddHtml(string html, bool markdownToo) => Add(new RawHtml(html, markdownToo));
 
-        public void StartUl() => Add(new RawHtml("<ul>"));
-        public void EndUl() => Add(new RawHtml("</ul>"));
+        public void AddMarkdown(string md, bool htmlToo) => Add(new RawMarkdown(md, htmlToo));
+
+        public void AddVersionWarning() => Add(new VersionWarning());
+
+        public void StartUl() => Add(new RawHtml("<ul>", markdownToo: false));
+        public void EndUl() => Add(new RawHtml("</ul>", markdownToo: false));
         public void AddLi(string text) => Add(new ListItem(text));
 
         public void AddParagraph(string text) => Add(new Paragraph(text));
@@ -99,13 +103,19 @@ namespace ScottPlot.Cookbook.Website
 
         public static string Sanitize(string s)
         {
-            s = s.ToLower().Replace(" ", "_").Replace(":", "");
-            s = Regex.Replace(s, "[^a-zA-Z0-9_.]+", "", RegexOptions.Compiled);
+            s = s.ToLower().Replace(" ", "-").Replace(":", "");
+            s = Regex.Replace(s, "[^a-zA-Z0-9-_.]+", "", RegexOptions.Compiled);
             return s;
         }
 
-        public static string GetCategoryUrl(IRecipe recipe) => $"cookbook-{Sanitize(recipe.Category)}.html";
-        public static string GetRecipeUrl(IRecipe recipe) => $"cookbook-{Sanitize(recipe.Category)}.html#{Sanitize(recipe.Title)}";
+        public static string ReplaceHtmlWithMarkdown(string html) =>
+             html.Replace("<strong>", "**")
+                 .Replace("</strong>", "**")
+                 .Replace("<i>", "_")
+                 .Replace("</i>", "_");
+
+        public static string GetCategoryUrl(IRecipe recipe) => $"cookbook-{Sanitize(recipe.Category)}";
+        public static string GetRecipeUrl(IRecipe recipe) => $"cookbook-{Sanitize(recipe.Category)}#{Sanitize(recipe.Title)}";
         public static string GetImageUrl(IRecipe recipe) => $"images/{Sanitize(recipe.ID)}.png";
         public static string GetThumbnailUrl(IRecipe recipe) => $"images/{Sanitize(recipe.ID)}_thumb.jpg";
     }

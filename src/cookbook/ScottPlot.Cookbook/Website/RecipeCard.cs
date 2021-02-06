@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ScottPlot.Cookbook.Website
@@ -11,8 +12,6 @@ namespace ScottPlot.Cookbook.Website
 
         public RecipeCard(IRecipe recipe)
         {
-            Markdown = "not supported";
-
             StringBuilder sb = new StringBuilder();
             sb.AppendLine($"<div class='col-md-4 mb-3'>");
             sb.AppendLine($"  <div class='card'>");
@@ -31,6 +30,9 @@ namespace ScottPlot.Cookbook.Website
             sb.AppendLine($"</div>");
 
             Html = sb.ToString();
+
+            // put a huge HTML block in markdown
+            Markdown = string.Join("", Html.Split('\n').Select(x => x.Trim()));
         }
     }
 }

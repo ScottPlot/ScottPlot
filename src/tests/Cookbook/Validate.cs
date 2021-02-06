@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using ScottPlot.Cookbook.Site;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -106,7 +105,8 @@ namespace ScottPlotTests.Cookbook
         {
             var recipes = ScottPlot.Cookbook.Locate.GetRecipes();
             int uniqueFull = recipes.Select(x => x.Category).Distinct().Count();
-            int uniqueClean = recipes.Select(x => x.Category).Select(x => RecipesPage.Sanitize(x)).Distinct().Count();
+            int uniqueClean = recipes.Select(x => x.Category)
+                .Select(x => ScottPlot.Cookbook.Website.Page.Sanitize(x)).Distinct().Count();
             Assert.AreEqual(uniqueClean, uniqueFull);
         }
     }

@@ -4,16 +4,16 @@ using System.Text;
 
 namespace ScottPlot.Cookbook.Website
 {
-    class RawHtml : IPageElement
+    class RawMarkdown : IPageElement
     {
         public string Markdown { get; private set; } = "";
 
         public string Html { get; private set; }
 
-        public RawHtml(string html, bool markdownToo)
+        public RawMarkdown(string md, bool htmlToo = true)
         {
-            Html = html;
-            Markdown = markdownToo ? html : "";
+            Markdown = md;
+            Html = htmlToo ? $"<p>{md}</p>" : "";
         }
     }
 }

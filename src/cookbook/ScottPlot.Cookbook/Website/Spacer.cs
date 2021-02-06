@@ -7,7 +7,7 @@
 
         public Spacer()
         {
-            Markdown = $"\n\n\n";
+            Markdown = $"\n\n<hr class='my-4 invisible'>\n\n";
             Html = $"<hr class='my-4 invisible'>";
         }
     }
