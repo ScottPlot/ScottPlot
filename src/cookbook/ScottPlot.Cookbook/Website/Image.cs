@@ -31,7 +31,7 @@
 
             Html = linkToItself ?
                 $"<a href='{url}'><img src='{url}' /></a>" :
-                $"<img src='{url}' />";
+                $"<img src='{url}' class='mw-100' />";
 
             if (center)
             {
