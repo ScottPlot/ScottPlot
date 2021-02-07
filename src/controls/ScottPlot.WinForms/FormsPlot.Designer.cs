@@ -113,13 +113,14 @@ namespace ScottPlot
             this.PlottableCountTimer.Interval = 10;
             this.PlottableCountTimer.Tick += new System.EventHandler(this.PlottableCountTimer_Tick);
             // 
-            // SPControl
+            // FormsPlot
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.pictureBox1);
-            this.Name = "SPControl";
+            this.Name = "FormsPlot";
             this.Size = new System.Drawing.Size(400, 300);
+            this.Load += new System.EventHandler(this.FormsPlot_Load);
             this.SizeChanged += new System.EventHandler(this.OnSizeChanged);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.DefaultRightClickMenu.ResumeLayout(false);
