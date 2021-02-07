@@ -5,9 +5,9 @@ using System.Text;
 
 namespace ScottPlot.Cookbook.Website.Pages
 {
-    public class RecipeCategoryPage : Page
+    public class CookbookCategoryPage : Page
     {
-        public RecipeCategoryPage(string categoryName)
+        public CookbookCategoryPage(string categoryName)
         {
             Title = categoryName;
             Description = $"Example plots and source code demonstrating {categoryName}";
@@ -17,13 +17,13 @@ namespace ScottPlot.Cookbook.Website.Pages
                 throw new InvalidOperationException($"no recipes found of category {categoryName}");
 
             Add($"<div class='display-5 mt-3'>" +
-                $"<a href='../' style='color: black;'>ScottPlot {Plot.Version} Cookbook</a>" +
+                $"<a href='../../' style='color: black;'>ScottPlot {Plot.Version} Cookbook</a>" +
                 $"</div>" +
                 $"<div class='fs-1 fw-light mb-4'>" +
                 $"<a href='./' style='color: black;'>{categoryName}</a>" +
                 "</div>");
 
-            AddVersionWarning();
+            AddVersionWarning("cookbook page");
 
             foreach (IRecipe recipe in recipes)
                 AddRecipe(recipe);
@@ -34,7 +34,7 @@ namespace ScottPlot.Cookbook.Website.Pages
             AddHeading(recipe.Title, 2);
             Add(recipe.Description);
             AddCodeBlock(Locate.RecipeSourceCode(recipe), "cs");
-            AddImage($"../images/{Sanitize(recipe.ID)}.png", center: true);
+            AddImage($"../../images/{Sanitize(recipe.ID)}.png", center: true);
         }
     }
 }

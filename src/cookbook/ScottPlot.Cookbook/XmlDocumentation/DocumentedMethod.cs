@@ -10,28 +10,40 @@ namespace ScottPlot.Cookbook.XmlDocumentation
     public class DocumentedMethod : DocumentedItem
     {
         public readonly string Signature;
-        public readonly Dictionary<string, string> ParameterNotesByName = new Dictionary<string, string>();
+        public readonly string ReturnType;
+        public readonly DocumentedParameter[] Parameters;
 
         public DocumentedMethod(MethodInfo info, XDocument doc)
         {
             XmlName = GetXmlName(info);
             Name = info.IsGenericMethod ? info.Name.Split('`')[0] + "<T>" : info.Name;
             FullName = info.DeclaringType.Name + "." + Name;
+            ReturnType = PrettyType(info.ReturnType);
 
-            // GENERATE SIGNATURE
-            string returnType = PrettyType(info.ReturnType);
-            var paramStrings = info.GetParameters().Select(p => $"{p.Name} {PrettyType(p.ParameterType)}");
-            Signature = $"{returnType} {FullName}(" + string.Join(", ", paramStrings) + ")";
-
-            // LOAD PARAMETER NOTES
+            // LOAD PARAMETER NOTES FROM XML
+            var paramNotesByName = new Dictionary<string, string>();
             var memberXml = GetMemberXml(doc, XmlName);
             if (memberXml != null)
             {
                 HasXmlDocumentation = true;
                 Summary = CleanSummary(memberXml.Element("summary")?.Value);
                 foreach (var p in memberXml.Elements("param"))
-                    ParameterNotesByName.Add(p.Attribute("name").Value, p.Value);
+                    paramNotesByName.Add(p.Attribute("name").Value, p.Value);
             }
+
+            // ANALYZE REFLECTED PARAMETERS
+            Parameters = info
+                .GetParameters()
+                .Select(p => new DocumentedParameter()
+                {
+                    Name = p.Name,
+                    Type = PrettyType(p.ParameterType),
+                    Summary = paramNotesByName.ContainsKey(p.Name) ? paramNotesByName[p.Name] : "",
+                })
+                .ToArray();
+
+            // GENERATE SIGNATURE BASED ON PARAMETERS
+            Signature = $"{ReturnType} {FullName}(" + string.Join(", ", Parameters.Select(p => $"{p.Type} {p.Name}")) + ")";
         }
 
         public static string GetXmlName(MethodInfo info)

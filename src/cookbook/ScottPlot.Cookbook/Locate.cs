@@ -160,6 +160,12 @@ namespace ScottPlot.Cookbook
             .OrderBy(x => x.Name)
             .ToArray();
 
+        public static MethodInfo[] GetPlotMethodsOnlyAdd() =>
+            GetPlotMethods().Where(x => x.Name.StartsWith("Add")).ToArray();
+
+        public static MethodInfo[] GetPlotMethodsNoAdd() =>
+            GetPlotMethods().Where(x => !x.Name.StartsWith("Add")).ToArray();
+
         public static PropertyInfo[] GetPlotProperties() =>
             typeof(Plot)
             .GetProperties()

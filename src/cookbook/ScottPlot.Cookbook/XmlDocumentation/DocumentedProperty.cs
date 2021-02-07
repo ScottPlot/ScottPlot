@@ -8,11 +8,21 @@ namespace ScottPlot.Cookbook.XmlDocumentation
 {
     public class DocumentedProperty : DocumentedItem
     {
+        public string Type { get; private set; }
+        public bool CanRead { get; private set; }
+        public bool CanWrite { get; private set; }
+
         public DocumentedProperty(PropertyInfo info, XDocument doc)
         {
             XmlName = GetXmlName(info);
             Name = info.Name;
-            FullName = info.DeclaringType.FullName + "." + info.Name;
+            string baseType = info.DeclaringType.ToString();
+            if (baseType.Contains("`"))
+                baseType = baseType.Split('`')[0] + "<T>";
+            FullName = baseType + "." + info.Name;
+            Type = PrettyType(info.PropertyType);
+            CanRead = info.CanRead;
+            CanWrite = info.CanWrite;
 
             var memberXml = GetMemberXml(doc, XmlName);
             if (memberXml != null)

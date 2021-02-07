@@ -32,19 +32,18 @@ namespace ScottPlotTests.Cookbook
         [OneTimeSetUp]
         public void Setup()
         {
-            CreateEmptyDirectory(RecipeFolder);
-            CreateEmptyDirectory(WebsitePath);
+            CreateFolder(RecipeFolder);
+            CreateFolder(WebsitePath);
         }
 
-        private static void CreateEmptyDirectory(string path)
+        private static void CreateFolder(string path)
         {
-            if (Directory.Exists(path))
-                Directory.Delete(path, recursive: true);
-            Directory.CreateDirectory(path);
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
         }
 
         [Test]
-        public void Test_Cookbook_GenerateCodeAndImages()
+        public void Test_Cookbook_ImagesAndCode()
         {
             var chef = new Chef();
             chef.CreateCookbookImages(Path.Join(WebsitePath, "images"));
@@ -52,40 +51,57 @@ namespace ScottPlotTests.Cookbook
         }
 
         [Test]
-        public void Test_Generate_CookbookCategoryPages()
+        public void Test_Webpage_CookbookCategoryPages()
         {
+            string cookbookFolder = Path.Combine(WebsitePath, "category");
+            CreateFolder(cookbookFolder);
             foreach (var categoryName in Locate.GetCategories())
             {
-                string folderName = $"cookbook-{Page.Sanitize(categoryName)}";
-                string folderPath = Path.Combine(WebsitePath, folderName);
-                CreateEmptyDirectory(folderPath);
-                string mdFilePath = Path.Combine(folderPath, "index.md");
+                var page = new CookbookCategoryPage(categoryName);
 
-                var page = new RecipeCategoryPage(categoryName);
+                string categoryFolder = Path.Combine(cookbookFolder, Page.Sanitize(categoryName));
+                CreateFolder(categoryFolder);
+                string mdFilePath = Path.Combine(categoryFolder, "index.md");
                 page.SaveMarkdown(mdFilePath);
                 Console.WriteLine(Path.GetFullPath(mdFilePath));
             }
         }
 
         [Test]
-        public void Test_Generate_CookIndexPage()
+        public void Test_Webpage_CookIndexPage()
         {
-            var page = new CookbookIndexPage();
+            var page = new CookbookHomePage();
             string mdPath = Path.Combine(WebsitePath, "index.md");
             page.SaveMarkdown(mdPath);
             Console.WriteLine(Path.GetFullPath(mdPath));
         }
 
         [Test]
-        public void Test_Generate_ApiIndexPage()
+        public void Test_Webpage_PlotApi()
         {
-            var page = new ApiIndexPage();
-
-            CreateEmptyDirectory(WebsitePath + "/api");
-            string mdPath = Path.Combine(WebsitePath, "api/index.md");
-            page.SaveMarkdown(mdPath);
+            var page = new PlotApiPage();
+            string mdFilePath = Path.Combine(WebsitePath, "api/plot/index.md");
+            CreateFolder(Path.GetDirectoryName(mdFilePath));
+            page.SaveMarkdown(mdFilePath);
             Console.WriteLine();
-            Console.WriteLine(Path.GetFullPath(mdPath));
+            Console.WriteLine(Path.GetFullPath(mdFilePath));
+        }
+
+        [Test]
+        public void Test_Webpage_ForEveryPlottable()
+        {
+            string plottableFolder = WebsitePath + "/api/plottable";
+            CreateFolder(plottableFolder);
+            foreach (var plottableType in Locate.GetPlottableTypes())
+            {
+                var page = new PlottableApiPage(plottableType);
+                string thisPlottableFolder = plottableFolder + "/" + Page.Sanitize(plottableType.Name);
+                CreateFolder(thisPlottableFolder);
+                string mdPath = thisPlottableFolder + "/index.md";
+                //CreateFolder(thisPlottableFolder);
+                page.SaveMarkdown(mdPath);
+                Console.WriteLine(Path.GetFullPath(mdPath));
+            }
         }
     }
 }
