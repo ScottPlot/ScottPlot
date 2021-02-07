@@ -70,7 +70,7 @@ namespace ScottPlot
         private void OnRightClicked(object sender, EventArgs e) => RightClicked?.Invoke(this, e);
         private void OnAxesChanged(object sender, EventArgs e) => AxesChanged?.Invoke(this, e);
         private void OnSizeChanged(object sender, EventArgs e) => Backend.Resize((float)ActualWidth * DisplayScale.ScaleRatio, (float)ActualHeight * DisplayScale.ScaleRatio);
-        
+
         private void OnMouseDown(object sender, MouseButtonEventArgs e) { CaptureMouse(); Backend.MouseDown(GetInputState(e)); }
         private void OnMouseUp(object sender, MouseButtonEventArgs e) { Backend.MouseUp(GetInputState(e)); ReleaseMouseCapture(); }
         private void OnDoubleClick(object sender, MouseButtonEventArgs e) => Backend.DoubleClick();
