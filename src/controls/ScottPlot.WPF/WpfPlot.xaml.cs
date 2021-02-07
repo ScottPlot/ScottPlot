@@ -23,6 +23,7 @@ namespace ScottPlot
         private readonly Dictionary<ScottPlot.Cursor, System.Windows.Input.Cursor> Cursors;
         private readonly System.Windows.Controls.Image PlotImage = new System.Windows.Controls.Image();
         private readonly DispatcherTimer PlottableCountTimer = new DispatcherTimer();
+        private readonly ScottPlot.Control.DisplayScale DisplayScale = new Control.DisplayScale();
 
         [Obsolete("Reference Plot instead of plt")]
         public ScottPlot.Plot plt => Plot;
@@ -79,8 +80,8 @@ namespace ScottPlot
         private ScottPlot.Control.InputState GetInputState(MouseEventArgs e, double? delta = null) =>
             new ScottPlot.Control.InputState()
             {
-                X = (float)e.GetPosition(this).X * Backend.DisplayScale.ScaleFactor,
-                Y = (float)e.GetPosition(this).Y * Backend.DisplayScale.ScaleFactor,
+                X = (float)e.GetPosition(this).X * DisplayScale.ScaleRatio,
+                Y = (float)e.GetPosition(this).Y * DisplayScale.ScaleRatio,
                 LeftWasJustPressed = e.LeftButton == MouseButtonState.Pressed,
                 RightWasJustPressed = e.RightButton == MouseButtonState.Pressed,
                 MiddleWasJustPressed = e.MiddleButton == MouseButtonState.Pressed,

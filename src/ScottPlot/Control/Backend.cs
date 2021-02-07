@@ -58,14 +58,12 @@ namespace ScottPlot.Control
         public event EventHandler RightClicked = delegate { };
 
         public readonly Configuration Configuration = new Configuration();
-        public readonly DisplayScale DisplayScale = new DisplayScale();
         public ScottPlot.Plot Plot { get; private set; }
 
         private ScottPlot.Settings Settings;
         private System.Drawing.Bitmap Bmp;
         private readonly List<System.Drawing.Bitmap> OldBitmaps = new List<System.Drawing.Bitmap>();
         public ScottPlot.Cursor Cursor { get; private set; } = ScottPlot.Cursor.Arrow;
-        public readonly float DPIFactor = Drawing.GDI.GetDPIScale();
 
         private readonly Queue<InputState> MouseWheelQueue = new Queue<InputState>();
         private readonly Stopwatch MouseWheelStopwatch = new Stopwatch();

@@ -70,7 +70,6 @@ namespace ScottPlot
         private void PictureBox1_MouseWheel(object sender, MouseEventArgs e) => Backend.MouseWheel(GetInputState(e));
         private void PictureBox1_MouseMove(object sender, MouseEventArgs e) { Backend.MouseMove(GetInputState(e)); base.OnMouseMove(e); }
 
-        // Windows Forms does not yet support DPI scaling, but hopefully this won't be broken when it does.
         private ScottPlot.Control.InputState GetInputState(MouseEventArgs e) =>
             new ScottPlot.Control.InputState()
             {
