@@ -70,7 +70,7 @@ namespace ScottPlot
         private void PictureBox1_MouseWheel(object sender, MouseEventArgs e) => Backend.MouseWheel(GetInputState(e));
         private void PictureBox1_MouseMove(object sender, MouseEventArgs e) { Backend.MouseMove(GetInputState(e)); base.OnMouseMove(e); }
 
-        private static ScottPlot.Control.InputState GetInputState(MouseEventArgs e) =>
+        private ScottPlot.Control.InputState GetInputState(MouseEventArgs e) =>
             new ScottPlot.Control.InputState()
             {
                 X = e.X,

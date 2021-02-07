@@ -18,6 +18,17 @@ namespace ScottPlot.Drawing
         private const float xMultiplierMacOS = 82.82f / 72;
         private const float yMultiplierMacOS = 27.16f / 20;
 
+        /// <summary>
+        /// Return the display scale ratio being used.
+        /// A scaling ratio of 1.0 means scaling is not active.
+        /// </summary>
+        public static float GetScaleRatio()
+        {
+            const int DEFAULT_DPI = 96;
+            using Graphics gfx = GDI.Graphics(new Bitmap(1, 1));
+            return gfx.DpiX / DEFAULT_DPI;
+        }
+
         public static SizeF MeasureString(string text, Font font)
         {
             using (Bitmap bmp = new Bitmap(1, 1))

@@ -23,6 +23,7 @@ namespace ScottPlot
         private readonly Dictionary<ScottPlot.Cursor, System.Windows.Input.Cursor> Cursors;
         private readonly System.Windows.Controls.Image PlotImage = new System.Windows.Controls.Image();
         private readonly DispatcherTimer PlottableCountTimer = new DispatcherTimer();
+        private readonly ScottPlot.Control.DisplayScale DisplayScale = new Control.DisplayScale();
 
         [Obsolete("Reference Plot instead of plt")]
         public ScottPlot.Plot plt => Plot;
@@ -68,7 +69,7 @@ namespace ScottPlot
         private void OnCursorChanged(object sender, EventArgs e) => Cursor = Cursors[Backend.Cursor];
         private void OnRightClicked(object sender, EventArgs e) => RightClicked?.Invoke(sender, e);
         private void OnAxesChanged(object sender, EventArgs e) => AxesChanged?.Invoke(sender, e);
-        private void OnSizeChanged(object sender, EventArgs e) => Backend.Resize((float)ActualWidth, (float)ActualHeight);
+        private void OnSizeChanged(object sender, EventArgs e) => Backend.Resize((float)ActualWidth * DisplayScale.ScaleRatio, (float)ActualHeight * DisplayScale.ScaleRatio);
 
         private void OnMouseDown(object sender, MouseButtonEventArgs e) { CaptureMouse(); Backend.MouseDown(GetInputState(e)); }
         private void OnMouseUp(object sender, MouseButtonEventArgs e) { Backend.MouseUp(GetInputState(e)); ReleaseMouseCapture(); }
@@ -79,8 +80,8 @@ namespace ScottPlot
         private ScottPlot.Control.InputState GetInputState(MouseEventArgs e, double? delta = null) =>
             new ScottPlot.Control.InputState()
             {
-                X = (float)e.GetPosition(this).X,
-                Y = (float)e.GetPosition(this).Y,
+                X = (float)e.GetPosition(this).X * DisplayScale.ScaleRatio,
+                Y = (float)e.GetPosition(this).Y * DisplayScale.ScaleRatio,
                 LeftWasJustPressed = e.LeftButton == MouseButtonState.Pressed,
                 RightWasJustPressed = e.RightButton == MouseButtonState.Pressed,
                 MiddleWasJustPressed = e.MiddleButton == MouseButtonState.Pressed,

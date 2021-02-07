@@ -212,7 +212,11 @@ namespace ScottPlot.Control
         private float MouseLocationX;
         private float MouseLocationY;
 
-        public (double x, double y) GetMouseCoordinates() => Plot.GetCoordinate(MouseLocationX, MouseLocationY);
+        public (double x, double y) GetMouseCoordinates()
+        {
+            (double x, double y) = Plot.GetCoordinate(MouseLocationX, MouseLocationY);
+            return (double.IsNaN(x) ? 0 : x, double.IsNaN(y) ? 0 : y);
+        }
 
         public (float x, float y) GetMousePixel() => (MouseLocationX, MouseLocationY);
 
