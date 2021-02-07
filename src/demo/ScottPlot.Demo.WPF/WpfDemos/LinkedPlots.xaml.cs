@@ -17,27 +17,34 @@ namespace ScottPlot.Demo.WPF.WpfDemos
     /// </summary>
     public partial class LinkedPlots : Window
     {
+        readonly WpfPlot[] WpfPlots;
+
         public LinkedPlots()
         {
             InitializeComponent();
             wpfPlot1.Plot.AddSignal(DataGen.Sin(51));
             wpfPlot2.Plot.AddSignal(DataGen.Cos(51));
+
+            // create a list of plot controls we can easily iterate through later
+            WpfPlots = new WpfPlot[] { wpfPlot1, wpfPlot2 };
         }
 
-        private void AxesChanged1(object sender, EventArgs e)
+        private void AxesChanged(object sender, EventArgs e)
         {
-            wpfPlot2.Configuration.AxesChangedEventEnabled = false; // disable this to prevent an infinite loop
-            wpfPlot2.Plot.SetAxisLimits(wpfPlot1.Plot.GetAxisLimits());
-            wpfPlot2.Render();
-            wpfPlot2.Configuration.AxesChangedEventEnabled = true;
-        }
+            WpfPlot changedPlot = (WpfPlot)sender;
+            var newAxisLimits = changedPlot.Plot.GetAxisLimits();
 
-        private void AxesChanged2(object sender, EventArgs e)
-        {
-            wpfPlot1.Configuration.AxesChangedEventEnabled = false; // disable this to prevent an infinite loop
-            wpfPlot1.Plot.SetAxisLimits(wpfPlot2.Plot.GetAxisLimits());
-            wpfPlot1.Render();
-            wpfPlot1.Configuration.AxesChangedEventEnabled = true;
+            foreach (WpfPlot wp in WpfPlots)
+            {
+                if (wp == changedPlot)
+                    continue;
+
+                // disable events briefly to prevent an infinite loop
+                wp.Configuration.AxesChangedEventEnabled = false;
+                wp.Plot.SetAxisLimits(newAxisLimits);
+                wp.Render();
+                wp.Configuration.AxesChangedEventEnabled = true;
+            }
         }
     }
 }

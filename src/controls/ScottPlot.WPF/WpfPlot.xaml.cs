@@ -66,8 +66,8 @@ namespace ScottPlot
         private void OnBitmapChanged(object sender, EventArgs e) => PlotImage.Source = BmpImageFromBmp(Backend.GetLatestBitmap());
         private void OnBitmapUpdated(object sender, EventArgs e) => PlotImage.Source = BmpImageFromBmp(Backend.GetLatestBitmap());
         private void OnCursorChanged(object sender, EventArgs e) => Cursor = Cursors[Backend.Cursor];
-        private void OnRightClicked(object sender, EventArgs e) => RightClicked?.Invoke(sender, e);
-        private void OnAxesChanged(object sender, EventArgs e) => AxesChanged?.Invoke(sender, e);
+        private void OnRightClicked(object sender, EventArgs e) => RightClicked?.Invoke(this, e);
+        private void OnAxesChanged(object sender, EventArgs e) => AxesChanged?.Invoke(this, e);
         private void OnSizeChanged(object sender, EventArgs e) => Backend.Resize((float)ActualWidth, (float)ActualHeight);
 
         private void OnMouseDown(object sender, MouseButtonEventArgs e) { CaptureMouse(); Backend.MouseDown(GetInputState(e)); }
