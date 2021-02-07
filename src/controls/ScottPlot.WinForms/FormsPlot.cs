@@ -64,8 +64,8 @@ namespace ScottPlot
         private void OnBitmapChanged(object sender, EventArgs e) { pictureBox1.Image = Backend.GetLatestBitmap(); }
         private void OnCursorChanged(object sender, EventArgs e) => Cursor = Cursors[Backend.Cursor];
         private void OnSizeChanged(object sender, EventArgs e) => Backend.Resize(Width, Height);
-        private void OnAxesChanged(object sender, EventArgs e) => AxesChanged?.Invoke(sender, e);
-        private void OnRightClicked(object sender, EventArgs e) => RightClicked?.Invoke(sender, e);
+        private void OnAxesChanged(object sender, EventArgs e) => AxesChanged?.Invoke(this, e);
+        private void OnRightClicked(object sender, EventArgs e) => RightClicked?.Invoke(this, e);
         private void PictureBox1_MouseDown(object sender, MouseEventArgs e) => Backend.MouseDown(GetInputState(e));
         private void PictureBox1_MouseUp(object sender, MouseEventArgs e) => Backend.MouseUp(GetInputState(e));
         private void PictureBox1_DoubleClick(object sender, EventArgs e) => Backend.DoubleClick();

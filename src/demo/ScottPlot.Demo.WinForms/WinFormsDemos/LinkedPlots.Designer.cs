@@ -55,33 +55,33 @@
             // 
             // formsPlot1
             // 
+            this.formsPlot1.BackColor = System.Drawing.Color.Transparent;
             this.formsPlot1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.formsPlot1.Location = new System.Drawing.Point(5, 3);
             this.formsPlot1.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.formsPlot1.Name = "formsPlot1";
             this.formsPlot1.Size = new System.Drawing.Size(731, 201);
             this.formsPlot1.TabIndex = 0;
-            this.formsPlot1.AxesChanged += new System.EventHandler(this.formsPlot1_AxesChanged);
             // 
             // formsPlot2
             // 
+            this.formsPlot2.BackColor = System.Drawing.Color.Transparent;
             this.formsPlot2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.formsPlot2.Location = new System.Drawing.Point(5, 210);
             this.formsPlot2.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.formsPlot2.Name = "formsPlot2";
             this.formsPlot2.Size = new System.Drawing.Size(731, 201);
             this.formsPlot2.TabIndex = 1;
-            this.formsPlot2.AxesChanged += new System.EventHandler(this.formsPlot2_AxesChanged);
             // 
-            // cbProcessEvents
+            // cbLinked
             // 
             this.cbLinked.AutoSize = true;
             this.cbLinked.Checked = true;
             this.cbLinked.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbLinked.Location = new System.Drawing.Point(18, 14);
             this.cbLinked.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.cbLinked.Name = "cbProcessEvents";
-            this.cbLinked.Size = new System.Drawing.Size(103, 19);
+            this.cbLinked.Name = "cbLinked";
+            this.cbLinked.Size = new System.Drawing.Size(119, 19);
             this.cbLinked.TabIndex = 1;
             this.cbLinked.Text = "link axes together";
             this.cbLinked.UseVisualStyleBackColor = true;

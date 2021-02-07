@@ -8,8 +8,7 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
 {
     public class LinkedPlots : Window
     {
-        AvaPlot avaPlot1;
-        AvaPlot avaPlot2;
+        AvaPlot[] AvaPlots;
 
         public LinkedPlots()
         {
@@ -22,15 +21,15 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             double[] dataSin = DataGen.Sin(pointCount);
             double[] dataCos = DataGen.Cos(pointCount);
 
-            avaPlot1 = this.Find<AvaPlot>("avaPlot1");
-            avaPlot2 = this.Find<AvaPlot>("avaPlot2");
+            AvaPlot avaPlot1 = this.Find<AvaPlot>("avaPlot1");
+            AvaPlot avaPlot2 = this.Find<AvaPlot>("avaPlot2");
+            AvaPlots = new AvaPlot[] { avaPlot1, avaPlot2 };
 
             avaPlot1.Plot.AddScatter(dataXs, dataSin);
             avaPlot1.Render();
 
             avaPlot2.Plot.AddScatter(dataXs, dataCos);
             avaPlot2.Render();
-
         }
 
         private void InitializeComponent()
@@ -38,16 +37,22 @@ namespace ScottPlot.Demo.Avalonia.AvaloniaDemos
             AvaloniaXamlLoader.Load(this);
         }
 
-        private void axisChanged1(object sender, EventArgs e)
+        private void AxesChanged(object sender, EventArgs e)
         {
-            avaPlot2.Plot.SetAxisLimits(avaPlot1.Plot.GetAxisLimits());
-            avaPlot2.Render();
-        }
+            AvaPlot changedPlot = (AvaPlot)sender;
+            var newAxisLimits = changedPlot.Plot.GetAxisLimits();
 
-        private void axisChanged2(object sender, EventArgs e)
-        {
-            avaPlot1.Plot.SetAxisLimits(avaPlot2.Plot.GetAxisLimits());
-            avaPlot1.Render();
+            foreach (AvaPlot ap in AvaPlots)
+            {
+                if (ap == changedPlot)
+                    continue;
+
+                // disable this briefly to avoid infinite loop
+                ap.Configuration.AxesChangedEventEnabled = false;
+                ap.Plot.SetAxisLimits(newAxisLimits);
+                ap.Render();
+                ap.Configuration.AxesChangedEventEnabled = true;
+            }
         }
     }
 }
