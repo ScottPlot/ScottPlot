@@ -10,20 +10,16 @@ namespace ScottPlot.Cookbook.XmlDocumentation
 {
     public class XmlDoc
     {
-        public readonly string AssemblyName;
         public readonly Dictionary<string, Member> XmlMembers = new Dictionary<string, Member>();
 
         public XmlDoc(string xmlFilePath)
         {
             XDocument doc = XDocument.Load(xmlFilePath);
-
-            AssemblyName = doc.XPathSelectElement("/doc/assembly/name").Value;
-
             foreach (XElement elem in doc.XPathSelectElement("/doc/members").Elements())
             {
-                Member member = new Member(elem);
-                string xmlName = member.Name;
-                XmlMembers.Add(xmlName, member);
+                Member member = new Member();
+                member.Update(elem);
+                XmlMembers.Add(member.XmlName, member);
             }
         }
 

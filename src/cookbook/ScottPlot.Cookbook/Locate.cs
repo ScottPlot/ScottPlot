@@ -134,5 +134,29 @@ namespace ScottPlot.Cookbook
                                 .Where(x => !x.GetCustomAttributes<ObsoleteAttribute>().Any())
                                 .ToArray();
         }
+
+        public static MethodInfo[] GetPlotMethods() =>
+            typeof(Plot)
+            .GetMethods()
+            .Where(x => x.IsPublic)
+            .Where(x => !x.Name.StartsWith("get_"))
+            .Where(x => !x.Name.StartsWith("set_"))
+            .Where(x => x.Name != "GetType")
+            .Where(x => x.Name != "ToString")
+            .Where(x => !x.GetCustomAttributes<ObsoleteAttribute>().Any())
+            .OrderBy(x => x.Name)
+            .ToArray();
+
+        public static PropertyInfo[] GetPlotProperties() =>
+            typeof(Plot)
+            .GetProperties()
+            .Where(x => !x.GetCustomAttributes<ObsoleteAttribute>().Any())
+            .ToArray();
+
+        public static FieldInfo[] GetPlotFields() =>
+            typeof(Plot)
+            .GetFields()
+            .Where(x => !x.GetCustomAttributes<ObsoleteAttribute>().Any())
+            .ToArray();
     }
 }
