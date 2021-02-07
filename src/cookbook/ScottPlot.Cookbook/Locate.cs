@@ -130,6 +130,7 @@ namespace ScottPlot.Cookbook
                                 .Where(x => !x.Name.StartsWith("get_")) // auto-properties
                                 .Where(x => !x.Name.StartsWith("set_")) // auto-properties
                                 .Where(x => !x.Name.StartsWith("add_")) // events
+                                .Where(x => !x.Name.StartsWith("remove_")) // events
                                 .Where(x => !x.GetCustomAttributes<ObsoleteAttribute>().Any())
                                 .ToArray();
         }

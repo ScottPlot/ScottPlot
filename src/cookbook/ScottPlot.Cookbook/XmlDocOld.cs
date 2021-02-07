@@ -8,7 +8,7 @@ using System.Xml.Linq;
 
 namespace ScottPlot.Cookbook
 {
-    public class MemberInfo
+    public class MemberInfoOld
     {
         public string Name;
         public string Summary;
@@ -16,7 +16,7 @@ namespace ScottPlot.Cookbook
 
     public class XmlDocOld
     {
-        public readonly Dictionary<string, MemberInfo> MemberInfos = new Dictionary<string, MemberInfo>();
+        public readonly Dictionary<string, MemberInfoOld> MemberInfos = new Dictionary<string, MemberInfoOld>();
 
         public XmlDocOld(string xmlFilePath)
         {
@@ -34,7 +34,7 @@ namespace ScottPlot.Cookbook
                 xmlSummary = xmlSummary.Replace("\n", " ").Replace("\r", " ");
                 while (xmlSummary.Contains("  "))
                     xmlSummary = xmlSummary.Replace("  ", " ").Trim();
-                MemberInfos[xmlName] = new MemberInfo() { Name = xmlName, Summary = xmlSummary };
+                MemberInfos[xmlName] = new MemberInfoOld() { Name = xmlName, Summary = xmlSummary };
             }
         }
 
