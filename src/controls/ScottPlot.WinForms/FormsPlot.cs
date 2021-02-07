@@ -13,13 +13,13 @@ namespace ScottPlot
         public event EventHandler RightClicked;
         private readonly ScottPlot.Control.ControlBackEnd Backend;
         private readonly Dictionary<ScottPlot.Cursor, System.Windows.Forms.Cursor> Cursors;
+        private bool IsDesignerMode = Process.GetCurrentProcess().ProcessName == "devenv";
 
         [Obsolete("Reference Plot instead of plt")]
         public ScottPlot.Plot plt => Plot;
 
         public FormsPlot()
         {
-            // TODO: something different in designer mode
             Backend = new ScottPlot.Control.ControlBackEnd(Width, Height);
             Backend.BitmapChanged += new EventHandler(OnBitmapChanged);
             Backend.BitmapUpdated += new EventHandler(OnBitmapUpdated);
@@ -41,8 +41,11 @@ namespace ScottPlot
             InitializeComponent();
             pictureBox1.BackColor = System.Drawing.Color.Transparent;
             BackColor = System.Drawing.Color.Transparent;
+            Plot.Style(figureBackground: BackColor);
             pictureBox1.MouseWheel += PictureBox1_MouseWheel;
             RightClicked += DefaultRightClickEvent;
+            if (IsDesignerMode)
+                Plot.Title($"ScottPlot {Plot.Version}");
         }
 
         public (double x, double y) GetMouseCoordinates() => Backend.GetMouseCoordinates();
@@ -52,18 +55,17 @@ namespace ScottPlot
         private void PlottableCountTimer_Tick(object sender, EventArgs e) => Backend.RenderIfPlottableCountChanged();
         public void Render(bool lowQuality = false, bool skipIfCurrentlyRendering = false)
         {
-            // TODO: if "skipIfCurrentlyRendering", setup a timer to render later
             Application.DoEvents();
             Backend.Render(lowQuality, skipIfCurrentlyRendering);
         }
 
+        private void FormsPlot_Load(object sender, EventArgs e) { OnSizeChanged(null, null); }
         private void OnBitmapUpdated(object sender, EventArgs e) { Application.DoEvents(); pictureBox1.Invalidate(); }
         private void OnBitmapChanged(object sender, EventArgs e) { pictureBox1.Image = Backend.GetLatestBitmap(); }
         private void OnCursorChanged(object sender, EventArgs e) => Cursor = Cursors[Backend.Cursor];
         private void OnSizeChanged(object sender, EventArgs e) => Backend.Resize(Width, Height);
         private void OnAxesChanged(object sender, EventArgs e) => AxesChanged?.Invoke(sender, e);
         private void OnRightClicked(object sender, EventArgs e) => RightClicked?.Invoke(sender, e);
-
         private void PictureBox1_MouseDown(object sender, MouseEventArgs e) => Backend.MouseDown(GetInputState(e));
         private void PictureBox1_MouseUp(object sender, MouseEventArgs e) => Backend.MouseUp(GetInputState(e));
         private void PictureBox1_DoubleClick(object sender, EventArgs e) => Backend.DoubleClick();
