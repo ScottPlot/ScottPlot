@@ -18,37 +18,6 @@ namespace ScottPlot.Cookbook.Website.Pages
             AddVersionWarning();
 
             AddRecipeCards();
-
-            AddApiLinks();
-        }
-
-        private void AddApiLinks()
-        {
-            string xmlPath = "../../../../../src/ScottPlot/ScottPlot.xml";
-            var doc = new XmlDocumentation.XmlDoc(xmlPath);
-
-            AddHeading("Plot Module API", 2);
-            foreach (var info in Locate.GetPlotMethods().Where(x => !x.Name.StartsWith("Add")))
-            {
-                var d = doc.Lookup(info);
-                d.Update(info);
-                Add($"<a href='api/#{Sanitize(d.ShortName)}'><strong>{d.ShortName}()</strong></a> - {d.Summary}");
-            }
-
-            AddHeading("Methods to Create Plottables", 2);
-            foreach (var info in Locate.GetPlotMethods().Where(x => x.Name.StartsWith("Add")))
-            {
-                var d = doc.Lookup(info);
-                d.Update(info);
-                Add($"<a href='api/#{Sanitize(d.ShortName)}'><strong>{d.ShortName}()</a></strong> - {d.Summary}");
-            }
-
-            AddHeading("Plottable Types", 2);
-            foreach (Type plottableType in Locate.GetPlottableTypes())
-            {
-                var d = doc.Lookup(plottableType);
-                Add($"<a href='api/#{Sanitize(plottableType.Name)}'><strong>{plottableType.Name}</strong></a> - {d.Summary}");
-            }
         }
 
         private void AddRecipeCards()

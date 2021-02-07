@@ -3,12 +3,13 @@ using System;
 using ScottPlot.Cookbook.XmlDocumentation;
 using System.IO;
 using System.Reflection;
+using System.Xml.Linq;
 
 namespace ScottPlotTests.Documentation
 {
-    class XmlDocTests
+    class DocumentationTests
     {
-        XmlDoc Doc;
+        XDocument LoadedXmlDocument;
 
         [OneTimeSetUp]
         public void Setup()
@@ -17,7 +18,7 @@ namespace ScottPlotTests.Documentation
             if (!File.Exists(xmlPath))
                 throw new InvalidOperationException("XML documentation file not found. Rebuild solution.");
             xmlPath = Path.GetFullPath(xmlPath);
-            Doc = new XmlDoc(xmlPath);
+            LoadedXmlDocument = XDocument.Load(xmlPath);
         }
 
         [Test]
@@ -25,9 +26,9 @@ namespace ScottPlotTests.Documentation
         {
             foreach (MethodInfo info in ScottPlot.Cookbook.Locate.GetPlotMethods())
             {
-                string summary = Doc.Lookup(info).Summary;
-                Console.WriteLine($"{info}: {summary}");
-                Assert.IsNotNull(summary);
+                var method = new DocumentedMethod(info, LoadedXmlDocument);
+                Assert.IsTrue(method.HasXmlDocumentation);
+                Assert.IsNotNull(method.Summary);
             }
         }
 
@@ -36,9 +37,8 @@ namespace ScottPlotTests.Documentation
         {
             foreach (PropertyInfo info in ScottPlot.Cookbook.Locate.GetPlotProperties())
             {
-                string summary = Doc.Lookup(info).Summary;
-                Console.WriteLine($"{info}: {summary}");
-                Assert.IsNotNull(summary);
+                var p = new DocumentedProperty(info, LoadedXmlDocument);
+                Assert.IsNotNull(p.Summary);
             }
         }
 
@@ -47,9 +47,8 @@ namespace ScottPlotTests.Documentation
         {
             foreach (FieldInfo info in ScottPlot.Cookbook.Locate.GetPlotFields())
             {
-                string summary = Doc.Lookup(info).Summary;
-                Console.WriteLine($"{info}: {summary}");
-                Assert.IsNotNull(summary);
+                var f = new DocumentedField(info, LoadedXmlDocument);
+                Assert.IsNotNull(f.Summary);
             }
         }
 
@@ -58,9 +57,8 @@ namespace ScottPlotTests.Documentation
         {
             foreach (Type plottableType in ScottPlot.Cookbook.Locate.GetPlottableTypes())
             {
-                string summary = Doc.Lookup(plottableType).Summary;
-                Console.WriteLine($"{plottableType}: {summary}");
-                Assert.IsNotNull(summary);
+                var t = new DocumentedClass(plottableType, LoadedXmlDocument);
+                Assert.IsNotNull(t.Summary);
             }
         }
 
@@ -71,12 +69,16 @@ namespace ScottPlotTests.Documentation
             {
                 foreach (MethodInfo info in ScottPlot.Cookbook.Locate.GetNotablePlottableMethods(plottableType))
                 {
+                    // skip abstract methods
+                    if (info.DeclaringType.IsAbstract)
+                        continue;
+
                     // skip inherited methods
                     if (info.DeclaringType.FullName is null)
                         continue;
 
-                    string summary = Doc.Lookup(info).Summary;
-                    Assert.IsNotNull(summary);
+                    var m = new DocumentedMethod(info, LoadedXmlDocument);
+                    Assert.IsNotNull(m.Summary);
                 }
             }
         }

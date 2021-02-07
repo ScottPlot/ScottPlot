@@ -48,25 +48,6 @@ namespace ScottPlot.Cookbook.Website
 
         public void AddRecipeCard(IRecipe recipe) => Add(new RecipeCard(recipe));
 
-        public void AddMethodInfo(XmlDocumentation.Member member, int level = 1)
-        {
-            AddHeading($"{member.ShortName}()", level);
-            Add($"**Summary:** {member.Summary}");
-            Add($"**Signature:** `{member.GetSignature()}`");
-
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"**Parameters:**");
-            foreach (var pName in member.ParamNames)
-            {
-                string pNotes = member.ParamNotes.ContainsKey(pName)
-                    ? "- " + member.ParamNotes[pName]
-                    : null;
-
-                sb.AppendLine($"* `{member.ParamTypes[pName]}` **{pName}** {pNotes}");
-            }
-            Add(sb.ToString());
-        }
-
         public string GetMarkdown(bool header = true)
         {
             StringBuilder sb = new StringBuilder();

@@ -84,6 +84,7 @@ namespace ScottPlotTests.Cookbook
             CreateEmptyDirectory(WebsitePath + "/api");
             string mdPath = Path.Combine(WebsitePath, "api/index.md");
             page.SaveMarkdown(mdPath);
+            Console.WriteLine();
             Console.WriteLine(Path.GetFullPath(mdPath));
         }
     }

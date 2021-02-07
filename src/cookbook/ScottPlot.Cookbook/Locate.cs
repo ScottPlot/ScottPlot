@@ -119,6 +119,19 @@ namespace ScottPlot.Cookbook
                 name += urlSafe ? "-T" : "<T>";
             return name;
         }
+        public static PropertyInfo[] GetNotablePlottableProperties(Type plottableType)
+        {
+            return plottableType.GetProperties()
+                                .Where(x => !x.GetCustomAttributes<ObsoleteAttribute>().Any())
+                                .ToArray();
+        }
+
+        public static FieldInfo[] GetNotablePlottableFields(Type plottableType)
+        {
+            return plottableType.GetFields()
+                                .Where(x => !x.GetCustomAttributes<ObsoleteAttribute>().Any())
+                                .ToArray();
+        }
 
         public static MethodInfo[] GetNotablePlottableMethods(Type plottableType)
         {

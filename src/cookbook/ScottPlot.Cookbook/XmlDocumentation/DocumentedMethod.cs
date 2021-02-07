@@ -2,51 +2,36 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
+using System.Text;
 using System.Xml.Linq;
-using System.Xml.XPath;
 
 namespace ScottPlot.Cookbook.XmlDocumentation
 {
-    public class XmlDoc
+    public class DocumentedMethod : DocumentedItem
     {
-        public readonly Dictionary<string, Member> XmlMembers = new Dictionary<string, Member>();
+        public readonly string Signature;
+        public readonly Dictionary<string, string> ParameterNotesByName = new Dictionary<string, string>();
 
-        public XmlDoc(string xmlFilePath)
+        public DocumentedMethod(MethodInfo info, XDocument doc)
         {
-            XDocument doc = XDocument.Load(xmlFilePath);
-            foreach (XElement elem in doc.XPathSelectElement("/doc/members").Elements())
+            XmlName = GetXmlName(info);
+            Name = info.IsGenericMethod ? info.Name.Split('`')[0] + "<T>" : info.Name;
+            FullName = info.DeclaringType.Name + "." + Name;
+
+            // GENERATE SIGNATURE
+            string returnType = PrettyType(info.ReturnType);
+            var paramStrings = info.GetParameters().Select(p => $"{p.Name} {PrettyType(p.ParameterType)}");
+            Signature = $"{returnType} {FullName}(" + string.Join(", ", paramStrings) + ")";
+
+            // LOAD PARAMETER NOTES
+            var memberXml = GetMemberXml(doc, XmlName);
+            if (memberXml != null)
             {
-                Member member = new Member();
-                member.Update(elem);
-                XmlMembers.Add(member.XmlName, member);
+                HasXmlDocumentation = true;
+                Summary = CleanSummary(memberXml.Element("summary")?.Value);
+                foreach (var p in memberXml.Elements("param"))
+                    ParameterNotesByName.Add(p.Attribute("name").Value, p.Value);
             }
-        }
-
-        public Member Lookup(MethodInfo info) => XmlMembers[GetXmlName(info)];
-
-        public Member Lookup(PropertyInfo info) => XmlMembers[GetXmlName(info)];
-
-        public Member Lookup(FieldInfo info) => XmlMembers[GetXmlName(info)];
-
-        public Member Lookup(Type type) => XmlMembers[GetXmlName(type)];
-
-        public static string GetXmlName(PropertyInfo info)
-        {
-            string fullName = info.DeclaringType.FullName + "." + info.Name;
-            return "P:" + fullName;
-        }
-
-        public static string GetXmlName(FieldInfo info)
-        {
-            string fullName = info.DeclaringType.FullName + "." + info.Name;
-            return "F:" + fullName;
-        }
-
-        public static string GetXmlName(Type type)
-        {
-            string fullName = type.FullName;
-            return "T:" + fullName;
         }
 
         public static string GetXmlName(MethodInfo info)
@@ -77,12 +62,6 @@ namespace ScottPlot.Cookbook.XmlDocumentation
 
             if (paramNames.Any())
                 xmlName += "(" + string.Join(",", paramNames) + ")";
-
-            // manual tweaks for methods I can't figure out:
-
-            // For some reason Reflection treats T as a double
-            if (xmlName.Contains("M:ScottPlot.Plottable.SignalPlotBase`1.Update"))
-                xmlName = xmlName.Replace("System.Double", "`0");
 
             return xmlName;
         }
