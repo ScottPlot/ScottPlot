@@ -1,44 +1,43 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ScottPlot.Demo.WinForms.WinFormsDemos
 {
     public partial class LinkedPlots : Form
     {
+        readonly FormsPlot[] FormsPlots;
+
         public LinkedPlots()
         {
             InitializeComponent();
             formsPlot1.Plot.AddSignal(DataGen.Sin(51));
             formsPlot2.Plot.AddSignal(DataGen.Cos(51));
+
+            // create a list of plot controls we can easily iterate through later
+            FormsPlots = new FormsPlot[] { formsPlot1, formsPlot2 };
+            foreach (var fp in FormsPlots)
+                fp.AxesChanged += OnAxesChanged;
         }
 
-        private void formsPlot1_AxesChanged(object sender, EventArgs e)
+        private void OnAxesChanged(object sender, EventArgs e)
         {
             if (cbLinked.Checked == false)
                 return;
 
-            formsPlot2.Configuration.AxesChangedEventEnabled = false; // disable this to avoid an infinite loop
-            formsPlot2.Plot.SetAxisLimits(formsPlot1.Plot.GetAxisLimits());
-            formsPlot2.Render();
-            formsPlot2.Configuration.AxesChangedEventEnabled = true;
-        }
+            FormsPlot changedPlot = (FormsPlot)sender;
+            var newAxisLimits = changedPlot.Plot.GetAxisLimits();
 
-        private void formsPlot2_AxesChanged(object sender, EventArgs e)
-        {
-            if (cbLinked.Checked == false)
-                return;
+            foreach (var fp in FormsPlots)
+            {
+                if (fp == changedPlot)
+                    continue;
 
-            formsPlot1.Configuration.AxesChangedEventEnabled = false; // disable this to avoid an infinite loop
-            formsPlot1.Plot.SetAxisLimits(formsPlot2.Plot.GetAxisLimits());
-            formsPlot1.Render();
-            formsPlot1.Configuration.AxesChangedEventEnabled = true;
+                // disable events briefly to avoid an infinite loop
+                fp.Configuration.AxesChangedEventEnabled = false;
+                fp.Plot.SetAxisLimits(newAxisLimits);
+                fp.Render();
+                fp.Configuration.AxesChangedEventEnabled = true;
+            }
         }
     }
 }
