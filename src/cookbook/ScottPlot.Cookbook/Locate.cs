@@ -25,6 +25,8 @@ namespace ScottPlot.Cookbook
 
         public static string[] GetCategories() => GetRecipes().Select(x => x.Category).Distinct().ToArray();
 
+        public static string[] GetCategoriesInDisplayOrder() => GetCategorizedRecipes().Select(x => x.Key).ToArray();
+
         public static IRecipe[] GetRecipes(string category) => GetRecipes().Where(x => x.Category == category).ToArray();
 
         public static List<KeyValuePair<string, IRecipe[]>> GetCategorizedRecipes()
@@ -67,6 +69,8 @@ namespace ScottPlot.Cookbook
 
             return categorizedRecipeList;
         }
+
+        public static string RecipeSourceCode(IRecipe recipe) => RecipeSourceCode(recipe.ID);
 
         public static string RecipeSourceCode(string id)
         {
@@ -115,6 +119,19 @@ namespace ScottPlot.Cookbook
                 name += urlSafe ? "-T" : "<T>";
             return name;
         }
+        public static PropertyInfo[] GetNotablePlottableProperties(Type plottableType)
+        {
+            return plottableType.GetProperties()
+                                .Where(x => !x.GetCustomAttributes<ObsoleteAttribute>().Any())
+                                .ToArray();
+        }
+
+        public static FieldInfo[] GetNotablePlottableFields(Type plottableType)
+        {
+            return plottableType.GetFields()
+                                .Where(x => !x.GetCustomAttributes<ObsoleteAttribute>().Any())
+                                .ToArray();
+        }
 
         public static MethodInfo[] GetNotablePlottableMethods(Type plottableType)
         {
@@ -126,8 +143,39 @@ namespace ScottPlot.Cookbook
                                 .Where(x => !x.Name.StartsWith("get_")) // auto-properties
                                 .Where(x => !x.Name.StartsWith("set_")) // auto-properties
                                 .Where(x => !x.Name.StartsWith("add_")) // events
+                                .Where(x => !x.Name.StartsWith("remove_")) // events
                                 .Where(x => !x.GetCustomAttributes<ObsoleteAttribute>().Any())
                                 .ToArray();
         }
+
+        public static MethodInfo[] GetPlotMethods() =>
+            typeof(Plot)
+            .GetMethods()
+            .Where(x => x.IsPublic)
+            .Where(x => !x.Name.StartsWith("get_"))
+            .Where(x => !x.Name.StartsWith("set_"))
+            .Where(x => x.Name != "GetType")
+            .Where(x => x.Name != "ToString")
+            .Where(x => !x.GetCustomAttributes<ObsoleteAttribute>().Any())
+            .OrderBy(x => x.Name)
+            .ToArray();
+
+        public static MethodInfo[] GetPlotMethodsOnlyAdd() =>
+            GetPlotMethods().Where(x => x.Name.StartsWith("Add")).ToArray();
+
+        public static MethodInfo[] GetPlotMethodsNoAdd() =>
+            GetPlotMethods().Where(x => !x.Name.StartsWith("Add")).ToArray();
+
+        public static PropertyInfo[] GetPlotProperties() =>
+            typeof(Plot)
+            .GetProperties()
+            .Where(x => !x.GetCustomAttributes<ObsoleteAttribute>().Any())
+            .ToArray();
+
+        public static FieldInfo[] GetPlotFields() =>
+            typeof(Plot)
+            .GetFields()
+            .Where(x => !x.GetCustomAttributes<ObsoleteAttribute>().Any())
+            .ToArray();
     }
 }

@@ -60,6 +60,14 @@ namespace ScottPlot.Plottable
             return new AxisLimits(newXMin, newXMax, baseLimits.YMin, baseLimits.YMax);
         }
 
+        /// <summary>
+        /// TODO: document this
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="from"></param>
+        /// <param name="length"></param>
+        /// <param name="dims"></param>
+        /// <returns></returns>
         public IEnumerable<PointF> ProcessInterval(int x, int from, int length, PlotDimensions dims)
         {
             TX start = (TX)Convert.ChangeType(dims.XMin + dims.XSpan / dims.DataWidth * x, typeof(TX));
