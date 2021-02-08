@@ -155,38 +155,28 @@ namespace ScottPlot.Plottable
 
             if (XError == null)
             {
-                limits[0] = Xs.Skip(from).Take(to - from + 1).Min();
-                limits[1] = Xs.Skip(from).Take(to - from + 1).Max();
+                var XsRange = Xs.Skip(from).Take(to - from + 1);
+                limits[0] = XsRange.Min();
+                limits[1] = XsRange.Max();
             }
             else
             {
-                limits[0] = Xs[from] - XError[from];
-                limits[1] = Xs[from] + XError[from];
-                for (int i = from; i <= to; i++)
-                {
-                    if (Xs[i] - XError[i] < limits[0])
-                        limits[0] = Xs[i] - XError[i];
-                    if (Xs[i] + XError[i] > limits[0])
-                        limits[1] = Xs[i] + XError[i];
-                }
+                var XsAndError = Xs.Zip(XError, (x, e) => (x, e)).Skip(from).Take(to - from + 1);
+                limits[0] = XsAndError.Min(p => p.x - p.e);
+                limits[1] = XsAndError.Max(p => p.x + p.e);
             }
 
             if (YError == null)
             {
-                limits[2] = Ys.Skip(from).Take(to - from + 1).Min();
-                limits[3] = Ys.Skip(from).Take(to - from + 1).Max();
+                var YsRange = Ys.Skip(from).Take(to - from + 1);
+                limits[2] = YsRange.Min();
+                limits[3] = YsRange.Max();
             }
             else
             {
-                limits[2] = Ys[from] - YError[from];
-                limits[3] = Ys[from] + YError[from];
-                for (int i = from; i <= to; i++)
-                {
-                    if (Ys[i] - YError[i] < limits[2])
-                        limits[2] = Ys[i] - YError[i];
-                    if (Ys[i] + YError[i] > limits[3])
-                        limits[3] = Ys[i] + YError[i];
-                }
+                var YsAndError = Ys.Zip(XError, (y, e) => (y, e)).Skip(from).Take(to - from + 1);
+                limits[2] = YsAndError.Min(p => p.y - p.e);
+                limits[3] = YsAndError.Max(p => p.y + p.e);
             }
 
             if (double.IsNaN(limits[0]) || double.IsNaN(limits[1]))
