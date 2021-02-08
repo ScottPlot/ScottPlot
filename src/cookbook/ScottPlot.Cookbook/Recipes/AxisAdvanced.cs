@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot.Statistics;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -369,6 +370,38 @@ namespace ScottPlot.Cookbook.Recipes
             // decorate the plot
             plt.Title("Scatter Plot of Polar Data");
             plt.AxisScaleLock(true);
+        }
+    }
+
+    class Image : IRecipe
+    {
+        public string Category => "Advanced Axis Features";
+        public string ID => "asis_image";
+        public string Title => "Images as Axis Labels";
+        public string Description => "Images can be used as axis labels to allow for things like LaTeX axis labels.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[] xs = DataGen.Range(-5, 5, .5);
+            double[] ys = DataGen.Range(-5, 5, .5);
+            Vector2[,] vectors = new Vector2[xs.Length, ys.Length];
+            double r = 0.5;
+
+
+            for (int i = 0; i < xs.Length; i++)
+            {
+                for (int j = 0; j < ys.Length; j++)
+                {
+                    double x = ys[j];
+                    double y = -9.81 / r * Math.Sin(xs[i]);
+
+                    vectors[i, j] = new Vector2(x, y);
+                }
+            }
+
+            plt.AddVectorField(vectors, xs, ys, colormap: Drawing.Colormap.Turbo);
+            plt.XAxis.ImageLabel(new Bitmap("Images/theta.bmp"));
+            plt.YAxis.ImageLabel(new Bitmap("Images/d_theta_dt.bmp"));
         }
     }
 }
