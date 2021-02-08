@@ -143,10 +143,10 @@ namespace ScottPlot.Renderable
         /// Set the axis label to be an image.
         /// </summary>
         public void ImageLabel(Bitmap img)
-		{
+        {
             IsVisible = true;
             AxisLabel.ImageLabel = img;
-		}
+        }
 
         /// <summary>
         /// Set color of every component of this axis (label, line, tick marks, and tick labels)
@@ -380,7 +380,7 @@ namespace ScottPlot.Renderable
                 PixelSize = 0;
 
                 if (AxisLabel.IsVisible)
-                    PixelSize += GDI.MeasureString(AxisLabel.Label, AxisLabel.Font).Height;
+                    PixelSize += AxisLabel.Measure().Height;
 
                 if (AxisTicks.TickLabelVisible)
                 {
