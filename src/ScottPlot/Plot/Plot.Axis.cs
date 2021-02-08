@@ -562,7 +562,7 @@ namespace ScottPlot
         [Obsolete("use GetAxisLimits() and SetAxisLimits()", true)]
         public void Axis(AxisLimits limits, int xAxisIndex = 0, int yAxisIndex = 0) => throw new NotImplementedException();
 
-        [Obsolete("use AxisEqualScale()", true)]
+        [Obsolete("use AxisScaleLock()", true)]
         public bool EqualAxis;
 
         [Obsolete("Use AxisAuto()", true)]
