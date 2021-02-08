@@ -2,7 +2,21 @@
 
 _See [roadmap.md](roadmap.md) for ScottPlot's history and future plans_
 
-## ScottPlot 4.1.6-beta ⚠️ in development
+## ScottPlot 4.1.7-beta ⚠️ in development
+
+## ScottPlot 4.1.6-beta
+* Fixed single point render bug in Signal plots (#744, #745) _Thanks @at2software and @StendProg_
+* Improved display scaling support for WPF control (#721, #720) _Thanks @bclehmann_
+* User control `OnAxesChanged` events now send the control itself as the sender object (#743, #756) _Thanks @at2software_
+* Fixed configuration bug related to Alt + middle-click-drag-zoom (#741) _Thanks @JS-BGResearch and @bclehmann_
+* Fixed render bug related to ALT + middle-click-drag zoom box (#742) _Thanks @bclehmann_
+* Fixed render bug for extremely small plots (#735)
+* Added a coordinated heatmap plot type (#707) _Thanks @StendProg_
+* Improved appearance of heatmap edges (#713) _Thanks @StendProg_
+* Improved design-time rendering of Windows Forms control
+* Added and expanded XML documentation for Plot and Plottable classes
+* Created a new cookbook website generator that combines reflection with XML documentation (#727, #738, #756)
+* ScottPlot is now a reserved prefix on NuGet
 
 ## ScottPlot 4.1.5-beta
 * Helper methods were added for creating scatter plots with just lines (`AddScatterLines()`) or just markers (`AddScatterPoints()`).

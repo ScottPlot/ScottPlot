@@ -1,1 +1,1 @@
-explorer ..\..\src\tests\bin\Release\net5.0\cookbook
+explorer ..\..\src\tests\bin\Release\net5.0\
