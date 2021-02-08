@@ -29,18 +29,26 @@ namespace ScottPlot
             settings.LayoutAuto();
             settings.EnforceEqualAxisScales();
 
-            RenderBeforePlottables(bmp, lowQuality);
-            RenderPlottables(bmp, lowQuality);
-            RenderAfterPlottables(bmp, lowQuality);
+            PlotDimensions primaryDims = settings.GetPlotDimensions(0, 0);
+            RenderClear(bmp, lowQuality, primaryDims);
+            if (primaryDims.DataWidth > 0 && primaryDims.DataHeight > 0)
+            {
+                RenderBeforePlottables(bmp, lowQuality, primaryDims);
+                RenderPlottables(bmp, lowQuality);
+                RenderAfterPlottables(bmp, lowQuality, primaryDims);
+            }
 
             IsRendering = false;
             return bmp;
         }
 
-        private void RenderBeforePlottables(Bitmap bmp, bool lowQuality)
+        private void RenderClear(Bitmap bmp, bool lowQuality, PlotDimensions primaryDims)
         {
-            PlotDimensions dims = settings.GetPlotDimensions(0, 0);
-            settings.FigureBackground.Render(dims, bmp, lowQuality);
+            settings.FigureBackground.Render(primaryDims, bmp, lowQuality);
+        }
+
+        private void RenderBeforePlottables(Bitmap bmp, bool lowQuality, PlotDimensions dims)
+        {
             settings.DataBackground.Render(dims, bmp, lowQuality);
 
             foreach (var axis in settings.Axes)
@@ -84,9 +92,8 @@ namespace ScottPlot
             }
         }
 
-        private void RenderAfterPlottables(Bitmap bmp, bool lowQuality)
+        private void RenderAfterPlottables(Bitmap bmp, bool lowQuality, PlotDimensions dims)
         {
-            PlotDimensions dims = settings.GetPlotDimensions(0, 0);
             settings.CornerLegend.UpdateLegendItems(GetPlottables());
             settings.CornerLegend.Render(dims, bmp, lowQuality);
 
