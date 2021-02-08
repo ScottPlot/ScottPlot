@@ -400,23 +400,9 @@ namespace ScottPlot.Cookbook.Recipes
             }
 
             plt.AddVectorField(vectors, xs, ys, colormap: Drawing.Colormap.Turbo);
-
-            // Loading images from resources
-            Bitmap theta;
-            using (var strean = new System.IO.MemoryStream(Properties.Resources.theta))
-            {
-                theta = new Bitmap(strean);
-            }
-
-            Bitmap d_theta_dt;
-            using (var strean = new System.IO.MemoryStream(Properties.Resources.d_theta_dt))
-            {
-                d_theta_dt = new Bitmap(strean);
-            }
-
-            // Setting the axis labels to the images
-            plt.XAxis.ImageLabel(theta);
-            plt.YAxis.ImageLabel(d_theta_dt);
+;
+            plt.XAxis.ImageLabel(new Bitmap("Images/theta.png"));
+            plt.YAxis.ImageLabel(new Bitmap("Images/d_theta_dt.png"));
         }
     }
 }
