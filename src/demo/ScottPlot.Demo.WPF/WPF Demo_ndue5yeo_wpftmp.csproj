@@ -1,0 +1,81 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFrameworks>net48;net5.0-windows</TargetFrameworks>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\controls\ScottPlot.WPF\ScottPlot.WPF.csproj" />
+    <ProjectReference Include="..\..\cookbook\ScottPlot.Cookbook\ScottPlot.Cookbook.csproj" />
+    <ProjectReference Include="..\..\ScottPlot\ScottPlot.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="icon.ico">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\mscorlib.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\PresentationCore.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\PresentationFramework.dll" />
+    <ReferencePath Include="C:\Users\benny\source\repos\ScottPlot\src\cookbook\ScottPlot.Cookbook\bin\Debug\netstandard2.0\ScottPlot.Cookbook.dll" />
+    <ReferencePath Include="C:\Users\benny\source\repos\ScottPlot\src\ScottPlot\bin\Debug\net461\ScottPlot.dll" />
+    <ReferencePath Include="C:\Users\benny\source\repos\ScottPlot\src\controls\ScottPlot.WPF\bin\Debug\net461\ScottPlot.WPF.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Core.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Data.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.dll" />
+    <ReferencePath Include="C:\Users\benny\.nuget\packages\system.drawing.common\5.0.0\ref\net461\System.Drawing.Common.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Drawing.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.IO.Compression.FileSystem.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Numerics.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\System.Runtime.InteropServices.RuntimeInformation.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Runtime.Serialization.dll" />
+    <ReferencePath Include="C:\Program Files\dotnet\sdk\NuGetFallbackFolder\system.valuetuple\4.5.0\ref\net47\System.ValueTuple.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Windows.Controls.Ribbon.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Xaml.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Xml.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Xml.Linq.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\UIAutomationClient.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\UIAutomationClientsideProviders.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\UIAutomationProvider.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\UIAutomationTypes.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\WindowsBase.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\Facades\netstandard.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="C:\Users\benny\source\repos\ScottPlot\src\demo\ScottPlot.Demo.WPF\obj\Debug\net48\CookbookControl.g.cs" />
+    <Compile Include="C:\Users\benny\source\repos\ScottPlot\src\demo\ScottPlot.Demo.WPF\obj\Debug\net48\CookbookWindow.g.cs" />
+    <Compile Include="C:\Users\benny\source\repos\ScottPlot\src\demo\ScottPlot.Demo.WPF\obj\Debug\net48\MainWindow.g.cs" />
+    <Compile Include="C:\Users\benny\source\repos\ScottPlot\src\demo\ScottPlot.Demo.WPF\obj\Debug\net48\WpfDemos\AxisLimits.g.cs" />
+    <Compile Include="C:\Users\benny\source\repos\ScottPlot\src\demo\ScottPlot.Demo.WPF\obj\Debug\net48\WpfDemos\Layout.g.cs" />
+    <Compile Include="C:\Users\benny\source\repos\ScottPlot\src\demo\ScottPlot.Demo.WPF\obj\Debug\net48\WpfDemos\LinkedPlots.g.cs" />
+    <Compile Include="C:\Users\benny\source\repos\ScottPlot\src\demo\ScottPlot.Demo.WPF\obj\Debug\net48\WpfDemos\LiveDataFixed.g.cs" />
+    <Compile Include="C:\Users\benny\source\repos\ScottPlot\src\demo\ScottPlot.Demo.WPF\obj\Debug\net48\WpfDemos\LiveDataGrowing.g.cs" />
+    <Compile Include="C:\Users\benny\source\repos\ScottPlot\src\demo\ScottPlot.Demo.WPF\obj\Debug\net48\WpfDemos\ManyPlots.g.cs" />
+    <Compile Include="C:\Users\benny\source\repos\ScottPlot\src\demo\ScottPlot.Demo.WPF\obj\Debug\net48\WpfDemos\MouseTracker.g.cs" />
+    <Compile Include="C:\Users\benny\source\repos\ScottPlot\src\demo\ScottPlot.Demo.WPF\obj\Debug\net48\WpfDemos\PlotInScrollViewer.g.cs" />
+    <Compile Include="C:\Users\benny\source\repos\ScottPlot\src\demo\ScottPlot.Demo.WPF\obj\Debug\net48\WpfDemos\PlotViewer.g.cs" />
+    <Compile Include="C:\Users\benny\source\repos\ScottPlot\src\demo\ScottPlot.Demo.WPF\obj\Debug\net48\WpfDemos\RightClickMenu.g.cs" />
+    <Compile Include="C:\Users\benny\source\repos\ScottPlot\src\demo\ScottPlot.Demo.WPF\obj\Debug\net48\WpfDemos\ShowValueOnHover.g.cs" />
+    <Compile Include="C:\Users\benny\source\repos\ScottPlot\src\demo\ScottPlot.Demo.WPF\obj\Debug\net48\WpfDemos\ToggleVisibility.g.cs" />
+    <Compile Include="C:\Users\benny\source\repos\ScottPlot\src\demo\ScottPlot.Demo.WPF\obj\Debug\net48\WpfDemos\TransparentBackground.g.cs" />
+    <Compile Include="C:\Users\benny\source\repos\ScottPlot\src\demo\ScottPlot.Demo.WPF\obj\Debug\net48\WpfDemos\WpfConfig.g.cs" />
+    <Compile Include="C:\Users\benny\source\repos\ScottPlot\src\demo\ScottPlot.Demo.WPF\obj\Debug\net48\App.g.cs" />
+    <Compile Include="C:\Users\benny\source\repos\ScottPlot\src\demo\ScottPlot.Demo.WPF\obj\Debug\net48\GeneratedInternalTypeHelper.g.cs" />
+  </ItemGroup>
+</Project>

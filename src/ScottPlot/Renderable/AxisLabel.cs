@@ -22,7 +22,15 @@ namespace ScottPlot.Renderable
         {
             if (ImageLabel != null)
             {
-                return new SizeF(ImageLabel.Width, ImageLabel.Height * 1.5f);
+                SizeF size = new SizeF(ImageLabel.Width * 1.5f, ImageLabel.Height * 1.5f);
+                if (Edge == Edge.Left || Edge == Edge.Right) // Swapping required because Height is the distance orthogonal to the axis, i.e. YAxis labels are treated as if they're rotated 90 degrees.
+                {
+                    float tmp = size.Width;
+                    size.Width = size.Height;
+                    size.Height = tmp;
+                }
+
+                return size;
             }
             else
             {
@@ -40,7 +48,7 @@ namespace ScottPlot.Renderable
             float x = dataCenterX;
             float y = dataCenterY;
             int rotation = 0;
-            bool subtractPadding = false;
+            bool subtract = false;
 
             using (var gfx = GDI.Graphics(bmp, lowQuality))
             using (var font = GDI.Font(Font))
@@ -51,7 +59,7 @@ namespace ScottPlot.Renderable
                 {
                     sf.LineAlignment = StringAlignment.Far;
                     y = dims.DataOffsetY + dims.DataHeight + PixelOffset + PixelSize;
-                    subtractPadding = true;
+                    subtract = true;
                 }
                 else if (Edge == Edge.Top)
                 {
@@ -75,20 +83,47 @@ namespace ScottPlot.Renderable
                     throw new NotImplementedException();
                 }
 
-                float padding = subtractPadding ? -PixelSizePadding : PixelSizePadding;
+                float padding = subtract ? -PixelSizePadding : PixelSizePadding;
                 gfx.TranslateTransform(x, y);
-                gfx.RotateTransform(rotation);
 
                 if (ImageLabel == null)
                 {
+                    gfx.RotateTransform(rotation);
                     gfx.DrawString(Label, font, brush, 0, padding, sf);
                 }
                 else
                 {
-                    gfx.DrawImage(ImageLabel, -ImageLabel.Width / 2, -3 * ImageLabel.Height / 2);
-                }
-                gfx.ResetTransform();
+                    float xOffset = 0;
+                    float yOffset = 0;
 
+                    switch (Edge)
+                    {
+                        case Edge.Top:
+                            xOffset = -ImageLabel.Width / 2;
+                            yOffset = ImageLabel.Height / 4;
+                            break;
+
+                        case Edge.Bottom:
+                            xOffset = -ImageLabel.Width / 2;
+                            yOffset = -3 * ImageLabel.Height / 2;
+                            break;
+
+                        case Edge.Left:
+                            xOffset = 0;
+                            yOffset = -ImageLabel.Height / 2;
+                            break;
+
+                        case Edge.Right:
+                            xOffset = -3 * ImageLabel.Width / 2;
+                            yOffset = -ImageLabel.Height / 2;
+                            break;
+
+                    }
+
+                    gfx.DrawImage(ImageLabel, xOffset, yOffset);
+                }
+
+                gfx.ResetTransform();
             }
         }
     }

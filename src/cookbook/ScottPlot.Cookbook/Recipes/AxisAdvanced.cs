@@ -401,7 +401,9 @@ namespace ScottPlot.Cookbook.Recipes
 
             plt.AddVectorField(vectors, xs, ys, colormap: Drawing.Colormap.Turbo);
             plt.XAxis.ImageLabel(new Bitmap("Images/theta.bmp"));
+            plt.XAxis2.ImageLabel(new Bitmap("Images/theta.bmp"));
             plt.YAxis.ImageLabel(new Bitmap("Images/d_theta_dt.bmp"));
+            plt.YAxis2.ImageLabel(new Bitmap("Images/d_theta_dt.bmp"));
         }
     }
 }
