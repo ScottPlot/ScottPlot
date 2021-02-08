@@ -3,9 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Globalization;
 using System.Linq;
-using System.Text;
 
 namespace ScottPlot.Plottable
 {
@@ -40,9 +38,9 @@ namespace ScottPlot.Plottable
         public float ArrowheadWidth = 0;
         public float ArrowheadLength = 0;
 
-        // TODO: support limited render indexes
-        public int? MinRenderIndex { set { throw new NotImplementedException(); } }
-        public int? MaxRenderIndex { set { throw new NotImplementedException(); } }
+        // TODO: think about better/additional API ?
+        public int? MinRenderIndex { get; set; }
+        public int? MaxRenderIndex { get; set; }
 
         public ScatterPlot(double[] xs, double[] ys, double[] errorX = null, double[] errorY = null)
         {
@@ -100,6 +98,21 @@ namespace ScottPlot.Plottable
             Validate.AssertHasElements("ys", Ys);
             Validate.AssertEqualLength("xs and ys", Xs, Ys);
 
+            if (MaxRenderIndex != null)
+            {
+                if ((MaxRenderIndex > Ys.Length - 1) || MaxRenderIndex < 0)
+                    throw new IndexOutOfRangeException("maxRenderIndex must be a valid index for ys[]");
+            }
+
+            if (MinRenderIndex != null)
+            {
+                if (MinRenderIndex < 0)
+                    throw new IndexOutOfRangeException("minRenderIndex must be between 0 and maxRenderIndex");
+                if (MaxRenderIndex != null && MinRenderIndex > MaxRenderIndex)
+                    throw new IndexOutOfRangeException("minRenderIndex must be between 0 and maxRenderIndex");
+            }
+
+
             if (XError != null)
             {
                 Validate.AssertHasElements("errorX", Xs);
@@ -134,20 +147,22 @@ namespace ScottPlot.Plottable
         public AxisLimits GetAxisLimits()
         {
             ValidateData(deep: false);
+            int from = MinRenderIndex ?? 0;
+            int to = MaxRenderIndex ?? (Xs.Length - 1);
 
             // TODO: don't use an array for this
             double[] limits = new double[4];
 
             if (XError == null)
             {
-                limits[0] = Xs.Min();
-                limits[1] = Xs.Max();
+                limits[0] = Xs.Skip(from).Take(to - from + 1).Min();
+                limits[1] = Xs.Skip(from).Take(to - from + 1).Max();
             }
             else
             {
-                limits[0] = Xs[0] - XError[0];
-                limits[1] = Xs[0] + XError[0];
-                for (int i = 1; i < Xs.Length; i++)
+                limits[0] = Xs[from] - XError[from];
+                limits[1] = Xs[from] + XError[from];
+                for (int i = from; i <= to; i++)
                 {
                     if (Xs[i] - XError[i] < limits[0])
                         limits[0] = Xs[i] - XError[i];
@@ -158,14 +173,14 @@ namespace ScottPlot.Plottable
 
             if (YError == null)
             {
-                limits[2] = Ys.Min();
-                limits[3] = Ys.Max();
+                limits[2] = Ys.Skip(from).Take(to - from + 1).Min();
+                limits[3] = Ys.Skip(from).Take(to - from + 1).Max();
             }
             else
             {
-                limits[2] = Ys[0] - YError[0];
-                limits[3] = Ys[0] + YError[0];
-                for (int i = 1; i < Ys.Length; i++)
+                limits[2] = Ys[from] - YError[from];
+                limits[3] = Ys[from] + YError[from];
+                for (int i = from; i <= to; i++)
                 {
                     if (Ys[i] - YError[i] < limits[2])
                         limits[2] = Ys[i] - YError[i];
@@ -196,22 +211,24 @@ namespace ScottPlot.Plottable
             using (var penLine = GDI.Pen(Color, LineWidth, LineStyle, true))
             using (var penLineError = GDI.Pen(Color, ErrorLineWidth, LineStyle.Solid, true))
             {
-                PointF[] points = new PointF[Xs.Length];
-                for (int i = 0; i < Xs.Length; i++)
+                int from = MinRenderIndex ?? 0;
+                int to = MaxRenderIndex ?? (Xs.Length - 1);
+                PointF[] points = new PointF[to - from + 1];
+                for (int i = from; i <= to; i++)
                 {
                     float x = dims.GetPixelX(Xs[i]);
                     float y = dims.GetPixelY(Ys[i]);
                     if (float.IsNaN(x) || float.IsNaN(y))
                         throw new NotImplementedException("Data must not contain NaN");
-                    points[i] = new PointF(x, y);
+                    points[i - from] = new PointF(x, y);
                 }
 
                 if (YError != null)
                 {
                     for (int i = 0; i < points.Count(); i++)
                     {
-                        float yBot = dims.GetPixelY(Ys[i] - YError[i]);
-                        float yTop = dims.GetPixelY(Ys[i] + YError[i]);
+                        float yBot = dims.GetPixelY(Ys[i + from] - YError[i + from]);
+                        float yTop = dims.GetPixelY(Ys[i + from] + YError[i + from]);
                         gfx.DrawLine(penLineError, points[i].X, yBot, points[i].X, yTop);
                         gfx.DrawLine(penLineError, points[i].X - ErrorCapSize, yBot, points[i].X + ErrorCapSize, yBot);
                         gfx.DrawLine(penLineError, points[i].X - ErrorCapSize, yTop, points[i].X + ErrorCapSize, yTop);
@@ -222,8 +239,8 @@ namespace ScottPlot.Plottable
                 {
                     for (int i = 0; i < points.Length; i++)
                     {
-                        float xLeft = dims.GetPixelX(Xs[i] - XError[i]);
-                        float xRight = dims.GetPixelX(Xs[i] + XError[i]);
+                        float xLeft = dims.GetPixelX(Xs[i + from] - XError[i + from]);
+                        float xRight = dims.GetPixelX(Xs[i + from] + XError[i + from]);
                         gfx.DrawLine(penLineError, xLeft, points[i].Y, xRight, points[i].Y);
                         gfx.DrawLine(penLineError, xLeft, points[i].Y - ErrorCapSize, xLeft, points[i].Y + ErrorCapSize);
                         gfx.DrawLine(penLineError, xRight, points[i].Y - ErrorCapSize, xRight, points[i].Y + ErrorCapSize);
@@ -284,9 +301,11 @@ namespace ScottPlot.Plottable
         /// <returns></returns>
         public (double x, double y, int index) GetPointNearestX(double x)
         {
-            double minDistance = Math.Abs(Xs[0] - x);
+            int from = MinRenderIndex ?? 0;
+            int to = MaxRenderIndex ?? (Xs.Length - 1);
+            double minDistance = Math.Abs(Xs[from] - x);
             int minIndex = 0;
-            for (int i = 1; i < Xs.Length; i++)
+            for (int i = from; i <= to; i++)
             {
                 double currDistance = Math.Abs(Xs[i] - x);
                 if (currDistance < minDistance)
@@ -306,9 +325,11 @@ namespace ScottPlot.Plottable
         /// <returns></returns>
         public (double x, double y, int index) GetPointNearestY(double y)
         {
-            double minDistance = Math.Abs(Ys[0] - y);
+            int from = MinRenderIndex ?? 0;
+            int to = MaxRenderIndex ?? (Ys.Length - 1);
+            double minDistance = Math.Abs(Ys[from] - y);
             int minIndex = 0;
-            for (int i = 1; i < Ys.Length; i++)
+            for (int i = from; i <= to; i++)
             {
                 double currDistance = Math.Abs(Ys[i] - y);
                 if (currDistance < minDistance)
@@ -329,7 +350,10 @@ namespace ScottPlot.Plottable
         /// <param name="xyRatio">Ratio of pixels per unit (X/Y) when rendered</param>
         public (double x, double y, int index) GetPointNearest(double x, double y, double xyRatio = 1)
         {
-            List<(double x, double y)> points = Xs.Zip(Ys, (first, second) => (first, second)).ToList();
+            int from = MinRenderIndex ?? 0;
+            int to = MaxRenderIndex ?? (Ys.Length - 1);
+
+            List<(double x, double y)> points = Xs.Zip(Ys, (first, second) => (first, second)).Skip(from).Take(to - from + 1).ToList();
 
             double xyRatioSquared = xyRatio * xyRatio;
             double pointDistanceSquared(double x1, double y1) =>
