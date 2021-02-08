@@ -130,6 +130,7 @@ namespace ScottPlot.Renderable
         public string Label(string label = null, Color? color = null, float? size = null, bool? bold = null, string fontName = null)
         {
             AxisLabel.IsVisible = true;
+            AxisLabel.ImageLabel = null;
             AxisLabel.Label = label ?? AxisLabel.Label;
             AxisLabel.Font.Color = color ?? AxisLabel.Font.Color;
             AxisLabel.Font.Size = size ?? AxisLabel.Font.Size;
@@ -137,6 +138,15 @@ namespace ScottPlot.Renderable
             AxisLabel.Font.Name = fontName ?? AxisLabel.Font.Name;
             return AxisLabel.Label;
         }
+
+        /// <summary>
+        /// Set the axis label to be an image.
+        /// </summary>
+        public void ImageLabel(Bitmap img)
+		{
+            IsVisible = true;
+            AxisLabel.ImageLabel = img;
+		}
 
         /// <summary>
         /// Set color of every component of this axis (label, line, tick marks, and tick labels)
