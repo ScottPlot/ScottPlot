@@ -24,6 +24,10 @@ namespace ScottPlot.Renderable
 
             float dataCenterX = dims.DataOffsetX + dims.DataWidth / 2;
             float dataCenterY = dims.DataOffsetY + dims.DataHeight / 2;
+            float x = dataCenterX;
+            float y = dataCenterY;
+            int rotation = 0;
+            bool subtractPadding = false;
 
             using (var gfx = GDI.Graphics(bmp, lowQuality))
             using (var font = GDI.Font(Font))
@@ -33,41 +37,37 @@ namespace ScottPlot.Renderable
                 if (Edge == Edge.Bottom)
                 {
                     sf.LineAlignment = StringAlignment.Far;
-                    float y = dims.DataOffsetY + dims.DataHeight + PixelOffset + PixelSize;
-                    gfx.TranslateTransform(dataCenterX, y);
-                    gfx.DrawString(Label, font, brush, 0, -PixelSizePadding, sf);
-                    gfx.ResetTransform();
+                    y = dims.DataOffsetY + dims.DataHeight + PixelOffset + PixelSize;
+                    subtractPadding = true;
                 }
                 else if (Edge == Edge.Top)
                 {
                     sf.LineAlignment = StringAlignment.Near;
-                    float y = dims.DataOffsetY - PixelOffset - PixelSize;
-                    gfx.TranslateTransform(dataCenterX, y);
-                    gfx.DrawString(Label, font, brush, 0, PixelSizePadding, sf);
-                    gfx.ResetTransform();
+                    y = dims.DataOffsetY - PixelOffset - PixelSize;
                 }
                 else if (Edge == Edge.Left)
                 {
                     sf.LineAlignment = StringAlignment.Near;
-                    float x = dims.DataOffsetX - PixelOffset - PixelSize;
-                    gfx.TranslateTransform(x, dataCenterY);
-                    gfx.RotateTransform(-90);
-                    gfx.DrawString(Label, font, brush, 0, PixelSizePadding, sf);
-                    gfx.ResetTransform();
+                    x = dims.DataOffsetX - PixelOffset - PixelSize;
+                    rotation = -90;
                 }
                 else if (Edge == Edge.Right)
                 {
                     sf.LineAlignment = StringAlignment.Near;
-                    float x = dims.DataOffsetX + dims.DataWidth + PixelOffset + PixelSize;
-                    gfx.TranslateTransform(x, dataCenterY);
-                    gfx.RotateTransform(90);
-                    gfx.DrawString(Label, font, brush, 0, PixelSizePadding, sf);
-                    gfx.ResetTransform();
+                    x = dims.DataOffsetX + dims.DataWidth + PixelOffset + PixelSize;
+                    rotation = 90;
                 }
                 else
                 {
                     throw new NotImplementedException();
                 }
+
+                float padding = subtractPadding ? -PixelSizePadding : PixelSizePadding;
+                gfx.TranslateTransform(x, y);
+                gfx.RotateTransform(rotation);
+                gfx.DrawString(Label, font, brush, 0, padding, sf);
+                gfx.ResetTransform();
+
             }
         }
     }
