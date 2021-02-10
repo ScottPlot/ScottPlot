@@ -1,36 +1,69 @@
 ﻿using ScottPlot.Drawing;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Text;
 
 namespace ScottPlot.Renderable
 {
     public class AxisLabel : IRenderable
     {
+        /// <summary>
+        /// Controls whether this axis occupies space and is displayed
+        /// </summary>
         public bool IsVisible { get; set; } = true;
-        public string Label = null;
-        public Bitmap ImageLabel = null;
-        public Drawing.Font Font = new Drawing.Font() { Size = 16 };
+
+        /// <summary>
+        /// Edge of the data area this axis represents
+        /// </summary>
         public Edge Edge;
+
+        /// <summary>
+        /// Axis title
+        /// </summary>
+        public string Label = null;
+
+        /// <summary>
+        /// Font options for the axis title
+        /// </summary>
+        public Drawing.Font Font = new Drawing.Font() { Size = 16 };
+
+        /// <summary>
+        /// Set this field to display a bitmap instead of a text axis label
+        /// </summary>
+        public Bitmap ImageLabel = null;
+
+        /// <summary>
+        /// Padding (in pixels) around the image label
+        /// </summary>
+        public float ImagePadding = 5;
+
+        /// <summary>
+        /// Amount of padding (in pixels) to surround the contents of this axis
+        /// </summary>
         public float PixelSizePadding;
 
+        /// <summary>
+        /// Distance to offset this axis to account for multiple axes
+        /// </summary>
         public float PixelOffset;
+
+        /// <summary>
+        /// Exact size (in pixels) of the contents of this this axis
+        /// </summary>
         public float PixelSize;
 
+        /// <summary>
+        /// Return the size of the contents of this axis.
+        /// Returned dimensions are screen-accurate (even if this axis is rotated).
+        /// </summary>
+        /// <returns></returns>
         public SizeF Measure()
         {
             if (ImageLabel != null)
             {
-                SizeF size = new SizeF(ImageLabel.Width * 1.5f, ImageLabel.Height * 1.5f);
-                if (Edge == Edge.Left || Edge == Edge.Right) // Swapping required because Height is the distance orthogonal to the axis, i.e. YAxis labels are treated as if they're rotated 90 degrees.
-                {
-                    float tmp = size.Width;
-                    size.Width = size.Height;
-                    size.Height = tmp;
-                }
-
-                return size;
+                bool ImageIsRotated = (Edge == Edge.Left || Edge == Edge.Right);
+                float width = ImageIsRotated ? ImageLabel.Height : ImageLabel.Width;
+                float height = ImageIsRotated ? ImageLabel.Width : ImageLabel.Height;
+                return new SizeF(width + ImagePadding, height + ImagePadding);
             }
             else
             {
@@ -43,88 +76,98 @@ namespace ScottPlot.Renderable
             if (IsVisible == false || (string.IsNullOrWhiteSpace(Label) && ImageLabel == null))
                 return;
 
-            float dataCenterX = dims.DataOffsetX + dims.DataWidth / 2;
-            float dataCenterY = dims.DataOffsetY + dims.DataHeight / 2;
-            float x = dataCenterX;
-            float y = dataCenterY;
-            int rotation = 0;
-            bool subtract = false;
+            using var gfx = GDI.Graphics(bmp, lowQuality);
+            (float x, float y, int rotation) = GetAxisCenter(dims);
 
-            using (var gfx = GDI.Graphics(bmp, lowQuality))
-            using (var font = GDI.Font(Font))
-            using (var brush = GDI.Brush(Font.Color))
-            using (var sf = GDI.StringFormat(HorizontalAlignment.Center, VerticalAlignment.Lower))
+            if (ImageLabel is null)
+                RenderTextLabel(gfx, x, y, rotation);
+            else
+                RenderImageLabel(gfx, x, y, rotation);
+        }
+
+        private void RenderImageLabel(Graphics gfx, float x, float y, int rotation)
+        {
+            // TODO: use ImagePadding instead of fractional padding
+
+            float xOffset = Edge switch
             {
-                if (Edge == Edge.Bottom)
-                {
-                    sf.LineAlignment = StringAlignment.Far;
-                    y = dims.DataOffsetY + dims.DataHeight + PixelOffset + PixelSize;
-                    subtract = true;
-                }
-                else if (Edge == Edge.Top)
-                {
-                    sf.LineAlignment = StringAlignment.Near;
-                    y = dims.DataOffsetY - PixelOffset - PixelSize;
-                }
-                else if (Edge == Edge.Left)
-                {
-                    sf.LineAlignment = StringAlignment.Near;
-                    x = dims.DataOffsetX - PixelOffset - PixelSize;
-                    rotation = -90;
-                }
-                else if (Edge == Edge.Right)
-                {
-                    sf.LineAlignment = StringAlignment.Near;
-                    x = dims.DataOffsetX + dims.DataWidth + PixelOffset + PixelSize;
-                    rotation = 90;
-                }
-                else
-                {
-                    throw new NotImplementedException();
-                }
+                Edge.Left => 0,
+                Edge.Right => -3 * ImageLabel.Width / 2,
+                Edge.Bottom => -ImageLabel.Width / 2,
+                Edge.Top => -ImageLabel.Width / 2,
+                _ => throw new NotImplementedException()
+            };
 
-                float padding = subtract ? -PixelSizePadding : PixelSizePadding;
-                gfx.TranslateTransform(x, y);
+            float yOffset = Edge switch
+            {
+                Edge.Left => -ImageLabel.Height / 2,
+                Edge.Right => -ImageLabel.Height / 2,
+                Edge.Bottom => -3 * ImageLabel.Height / 2,
+                Edge.Top => ImageLabel.Height / 4,
+                _ => throw new NotImplementedException()
+            };
 
-                if (ImageLabel == null)
-                {
-                    gfx.RotateTransform(rotation);
-                    gfx.DrawString(Label, font, brush, 0, padding, sf);
-                }
-                else
-                {
-                    float xOffset = 0;
-                    float yOffset = 0;
+            gfx.TranslateTransform(x, y);
+            gfx.DrawImage(ImageLabel, xOffset, yOffset);
+            gfx.ResetTransform();
+        }
 
-                    switch (Edge)
-                    {
-                        case Edge.Top:
-                            xOffset = -ImageLabel.Width / 2;
-                            yOffset = ImageLabel.Height / 4;
-                            break;
+        private void RenderTextLabel(Graphics gfx, float x, float y, int rotation)
+        {
+            // TODO: should padding be inverted if "bottom or right"?
+            float padding = (Edge == Edge.Bottom) ? -PixelSizePadding : PixelSizePadding;
 
-                        case Edge.Bottom:
-                            xOffset = -ImageLabel.Width / 2;
-                            yOffset = -3 * ImageLabel.Height / 2;
-                            break;
+            using var font = GDI.Font(Font);
+            using var brush = GDI.Brush(Font.Color);
+            using var sf = GDI.StringFormat(HorizontalAlignment.Center, VerticalAlignment.Lower);
+            sf.LineAlignment = Edge switch
+            {
+                Edge.Left => StringAlignment.Near,
+                Edge.Right => StringAlignment.Near,
+                Edge.Bottom => StringAlignment.Far,
+                Edge.Top => StringAlignment.Near,
+                _ => throw new NotImplementedException()
+            };
 
-                        case Edge.Left:
-                            xOffset = 0;
-                            yOffset = -ImageLabel.Height / 2;
-                            break;
+            gfx.TranslateTransform(x, y);
+            gfx.RotateTransform(rotation);
+            gfx.DrawString(Label, font, brush, 0, padding, sf);
+            gfx.ResetTransform();
+        }
 
-                        case Edge.Right:
-                            xOffset = -3 * ImageLabel.Width / 2;
-                            yOffset = -ImageLabel.Height / 2;
-                            break;
+        /// <summary>
+        /// Return the point and rotation representing the center of the base of this axis
+        /// </summary>
+        private (float x, float y, int rotation) GetAxisCenter(PlotDimensions dims)
+        {
+            int rotation = Edge switch
+            {
+                Edge.Left => -90,
+                Edge.Right => 90,
+                Edge.Bottom => 0,
+                Edge.Top => 0,
+                _ => throw new NotImplementedException()
+            };
 
-                    }
+            float x = Edge switch
+            {
+                Edge.Left => dims.DataOffsetX - PixelOffset - PixelSize,
+                Edge.Right => dims.DataOffsetX + dims.DataWidth + PixelOffset + PixelSize,
+                Edge.Bottom => dims.DataOffsetX + dims.DataWidth / 2,
+                Edge.Top => dims.DataOffsetX + dims.DataWidth / 2,
+                _ => throw new NotImplementedException()
+            };
 
-                    gfx.DrawImage(ImageLabel, xOffset, yOffset);
-                }
+            float y = Edge switch
+            {
+                Edge.Left => dims.DataOffsetY + dims.DataHeight / 2,
+                Edge.Right => dims.DataOffsetY + dims.DataHeight / 2,
+                Edge.Bottom => dims.DataOffsetY + dims.DataHeight + PixelOffset + PixelSize,
+                Edge.Top => dims.DataOffsetY - PixelOffset - PixelSize,
+                _ => throw new NotImplementedException()
+            };
 
-                gfx.ResetTransform();
-            }
+            return (x, y, rotation);
         }
     }
 }
