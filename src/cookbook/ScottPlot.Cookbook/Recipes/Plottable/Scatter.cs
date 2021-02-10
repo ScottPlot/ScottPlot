@@ -153,4 +153,38 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             sp.LineStyle = LineStyle.Dot;
         }
     }
+
+    public class LinePlot : IRecipe
+    {
+        public string Category => "Plottable: Scatter Plot";
+        public string ID => "scatter_lineplot";
+        public string Title => "Lines Only";
+        public string Description => "A shortcut method makes it easy " +
+            "to create a scatter plot with just lines (no markers)";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[] xs = DataGen.Consecutive(51);
+            double[] ys = DataGen.Sin(51);
+
+            plt.AddScatterLines(xs, ys, Color.Red, 3);
+        }
+    }
+
+    public class PointsPlot : IRecipe
+    {
+        public string Category => "Plottable: Scatter Plot";
+        public string ID => "scatter_pointsplot";
+        public string Title => "Markers Only";
+        public string Description => "A shortcut method makes it easy to create a scatter plot " +
+            "where markers are displayed at every point (without any connecting lines)";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[] xs = DataGen.Consecutive(51);
+            double[] ys = DataGen.Sin(51);
+
+            plt.AddScatterPoints(xs, ys, Color.Navy, 10, MarkerShape.filledDiamond);
+        }
+    }
 }
