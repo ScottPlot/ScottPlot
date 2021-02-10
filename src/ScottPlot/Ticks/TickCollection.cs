@@ -64,8 +64,9 @@ namespace ScottPlot.Ticks
             }
             else
             {
-                tickPositionsMajor = manualTickPositions; double min = verticalAxis ? dims.YMin : dims.XMin;
-                double max = verticalAxis ? dims.YMax : dims.YMin;
+                tickPositionsMajor = manualTickPositions;
+                double min = verticalAxis ? dims.YMin : dims.XMin;
+                double max = verticalAxis ? dims.YMax : dims.XMax;
                 tickPositionsMajor = manualTickPositions.Where(x => x >= min && x <= max).ToArray();
                 tickPositionsMinor = null;
                 tickLabels = manualTickLabels;
