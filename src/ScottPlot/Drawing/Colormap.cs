@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using ScottPlot.Ticks;
 
@@ -54,7 +55,17 @@ namespace ScottPlot.Drawing
             return $"Colormap {Name}";
         }
 
-        public static Colormap[] GetColormaps()
+        public static Colormap[] GetColormaps() =>
+            Assembly
+                .GetExecutingAssembly()
+                .GetTypes()
+                .Where(type => type.Namespace == "ScottPlot.Drawing.Colormaps")
+                .Select(colormapType => (IColormap)Activator.CreateInstance(colormapType))
+                .Select(colormapInstance => new Colormap(colormapInstance))
+                .ToArray();
+
+        [Obsolete("https://github.com/ScottPlot/ScottPlot/issues/767")]
+        public static Colormap[] GetColormapsOld()
         {
             IColormap[] ics = AppDomain.CurrentDomain.GetAssemblies()
                                 .SelectMany(s => s.GetTypes())
