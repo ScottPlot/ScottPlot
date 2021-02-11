@@ -130,12 +130,28 @@ namespace ScottPlot.Renderable
         public string Label(string label = null, Color? color = null, float? size = null, bool? bold = null, string fontName = null)
         {
             AxisLabel.IsVisible = true;
+            AxisLabel.ImageLabel = null;
             AxisLabel.Label = label ?? AxisLabel.Label;
             AxisLabel.Font.Color = color ?? AxisLabel.Font.Color;
             AxisLabel.Font.Size = size ?? AxisLabel.Font.Size;
             AxisLabel.Font.Bold = bold ?? AxisLabel.Font.Bold;
             AxisLabel.Font.Name = fontName ?? AxisLabel.Font.Name;
             return AxisLabel.Label;
+        }
+
+        /// <summary>
+        /// Display a custom image as the axis label instead of text
+        /// </summary>
+        /// <param name="img">The image to display where the label should go</param>
+        /// <param name="padInside">pixels of padding between the inner image edge and the data area</param>
+        /// <param name="padOutside">pixels of padding between the outer image edge and the figure edge</param>
+        public void ImageLabel(Bitmap img, float padInside = 5, float padOutside = 5)
+        {
+
+            IsVisible = true;
+            AxisLabel.ImageLabel = img;
+            AxisLabel.ImagePaddingToDataArea = padInside;
+            AxisLabel.ImagePaddingToFigureEdge = padOutside;
         }
 
         /// <summary>
@@ -259,7 +275,6 @@ namespace ScottPlot.Renderable
             float? rotation = null)
         {
             AxisTicks.TickLabelFont.Color = color ?? AxisTicks.TickLabelFont.Color;
-            AxisTicks.TickLabelFont.Color = color ?? AxisTicks.TickLabelFont.Color;
             AxisTicks.TickLabelFont.Name = fontName ?? AxisTicks.TickLabelFont.Name;
             AxisTicks.TickLabelFont.Size = fontSize ?? AxisTicks.TickLabelFont.Size;
             AxisTicks.TickLabelFont.Bold = fontBold ?? AxisTicks.TickLabelFont.Bold;
@@ -370,7 +385,7 @@ namespace ScottPlot.Renderable
                 PixelSize = 0;
 
                 if (AxisLabel.IsVisible)
-                    PixelSize += GDI.MeasureString(AxisLabel.Label, AxisLabel.Font).Height;
+                    PixelSize += AxisLabel.Measure().Height;
 
                 if (AxisTicks.TickLabelVisible)
                 {

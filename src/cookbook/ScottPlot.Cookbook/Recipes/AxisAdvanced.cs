@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot.Statistics;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -369,6 +370,52 @@ namespace ScottPlot.Cookbook.Recipes
             // decorate the plot
             plt.Title("Scatter Plot of Polar Data");
             plt.AxisScaleLock(true);
+        }
+    }
+
+    class Image : IRecipe
+    {
+        public string Category => "Advanced Axis Features";
+        public string ID => "asis_image";
+        public string Title => "Images as Axis Labels";
+        public string Description => "Images can be used as axis labels to allow for things like LaTeX axis labels.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            // create an interesting plot
+            double[] xs = DataGen.Range(-5, 5, .5);
+            double[] ys = DataGen.Range(-5, 5, .5);
+            Vector2[,] vectors = new Vector2[xs.Length, ys.Length];
+            for (int i = 0; i < xs.Length; i++)
+                for (int j = 0; j < ys.Length; j++)
+                    vectors[i, j] = new Vector2(ys[j], -15 * Math.Sin(xs[i]));
+            plt.AddVectorField(vectors, xs, ys, colormap: Drawing.Colormap.Turbo);
+
+            // use images as axis labels
+            plt.XAxis.ImageLabel(new Bitmap("Images/theta.png"));
+            plt.YAxis.ImageLabel(new Bitmap("Images/d_theta_dt.png"));
+        }
+    }
+
+    class ImageTransparent : IRecipe
+    {
+        public string Category => "Advanced Axis Features";
+        public string ID => "asis_imageTransparent";
+        public string Title => "Transparent Images Axis Labels";
+        public string Description =>
+            "Transparency in PNGs is respected, but JPEG files do not support transparency.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            plt.Style(Style.Light2);
+            plt.AddSignal(DataGen.Sin(51));
+            plt.AddSignal(DataGen.Cos(51));
+
+            // vertical axis label uses a transparent PNG
+            plt.YAxis.ImageLabel(new Bitmap("Images/d_theta_dt.png"));
+
+            // horizontal axis label uses a non-transparent JPEG
+            plt.XAxis.ImageLabel(new Bitmap("Images/theta.jpg"));
         }
     }
 }

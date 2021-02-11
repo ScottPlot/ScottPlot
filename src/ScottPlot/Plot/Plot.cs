@@ -191,7 +191,7 @@ namespace ScottPlot
                 axis.Line(color: tick);
             }
 
-            XAxis2.TickLabelStyle(color: titleLabel);
+            XAxis2.Label(color: titleLabel);
         }
 
         #endregion

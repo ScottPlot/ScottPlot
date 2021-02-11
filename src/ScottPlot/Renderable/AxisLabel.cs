@@ -1,74 +1,182 @@
 ﻿using ScottPlot.Drawing;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Text;
 
 namespace ScottPlot.Renderable
 {
     public class AxisLabel : IRenderable
     {
+        /// <summary>
+        /// Controls whether this axis occupies space and is displayed
+        /// </summary>
         public bool IsVisible { get; set; } = true;
-        public string Label = null;
-        public Drawing.Font Font = new Drawing.Font() { Size = 16 };
+
+        /// <summary>
+        /// Edge of the data area this axis represents
+        /// </summary>
         public Edge Edge;
+
+        /// <summary>
+        /// Axis title
+        /// </summary>
+        public string Label = null;
+
+        /// <summary>
+        /// Font options for the axis title
+        /// </summary>
+        public Drawing.Font Font = new Drawing.Font() { Size = 16 };
+
+        /// <summary>
+        /// Set this field to display a bitmap instead of a text axis label
+        /// </summary>
+        public Bitmap ImageLabel = null;
+
+        /// <summary>
+        /// Padding (in pixels) between the image and the edge of the data area
+        /// </summary>
+        public float ImagePaddingToDataArea = 5;
+
+        /// <summary>
+        /// Padding (in pixels) between the image and the edge of the figure
+        /// </summary>
+        public float ImagePaddingToFigureEdge = 5;
+
+        /// <summary>
+        /// Total amount (in pixels) to pad the image when measuring axis size
+        /// </summary>
+        public float ImagePadding => ImagePaddingToDataArea + ImagePaddingToFigureEdge;
+
+        /// <summary>
+        /// Amount of padding (in pixels) to surround the contents of this axis
+        /// </summary>
         public float PixelSizePadding;
 
+        /// <summary>
+        /// Distance to offset this axis to account for multiple axes
+        /// </summary>
         public float PixelOffset;
+
+        /// <summary>
+        /// Exact size (in pixels) of the contents of this this axis
+        /// </summary>
         public float PixelSize;
+
+        /// <summary>
+        /// Return the size of the contents of this axis.
+        /// Returned dimensions are screen-accurate (even if this axis is rotated).
+        /// </summary>
+        /// <returns></returns>
+        public SizeF Measure()
+        {
+            if (ImageLabel != null)
+            {
+                return (Edge == Edge.Bottom || Edge == Edge.Top)
+                    ? new SizeF(ImageLabel.Width, ImageLabel.Height + ImagePadding)
+                    : new SizeF(ImageLabel.Height, ImageLabel.Width + ImagePadding);
+            }
+            else
+            {
+                return GDI.MeasureString(Label, Font);
+            }
+        }
 
         public void Render(PlotDimensions dims, Bitmap bmp, bool lowQuality = false)
         {
-            if (IsVisible == false || string.IsNullOrWhiteSpace(Label))
+            if (IsVisible == false || (string.IsNullOrWhiteSpace(Label) && ImageLabel == null))
                 return;
 
-            float dataCenterX = dims.DataOffsetX + dims.DataWidth / 2;
-            float dataCenterY = dims.DataOffsetY + dims.DataHeight / 2;
+            using var gfx = GDI.Graphics(bmp, lowQuality);
+            (float x, float y) = GetAxisCenter(dims);
 
-            using (var gfx = GDI.Graphics(bmp, lowQuality))
-            using (var font = GDI.Font(Font))
-            using (var brush = GDI.Brush(Font.Color))
-            using (var sf = GDI.StringFormat(HorizontalAlignment.Center, VerticalAlignment.Lower))
+            if (ImageLabel is null)
+                RenderTextLabel(gfx, x, y);
+            else
+                RenderImageLabel(gfx, x, y);
+        }
+
+        private void RenderImageLabel(Graphics gfx, float x, float y)
+        {
+            // TODO: use ImagePadding instead of fractional padding
+
+            float xOffset = Edge switch
             {
-                if (Edge == Edge.Bottom)
-                {
-                    sf.LineAlignment = StringAlignment.Far;
-                    float y = dims.DataOffsetY + dims.DataHeight + PixelOffset + PixelSize;
-                    gfx.TranslateTransform(dataCenterX, y);
-                    gfx.DrawString(Label, font, brush, 0, -PixelSizePadding, sf);
-                    gfx.ResetTransform();
-                }
-                else if (Edge == Edge.Top)
-                {
-                    sf.LineAlignment = StringAlignment.Near;
-                    float y = dims.DataOffsetY - PixelOffset - PixelSize;
-                    gfx.TranslateTransform(dataCenterX, y);
-                    gfx.DrawString(Label, font, brush, 0, PixelSizePadding, sf);
-                    gfx.ResetTransform();
-                }
-                else if (Edge == Edge.Left)
-                {
-                    sf.LineAlignment = StringAlignment.Near;
-                    float x = dims.DataOffsetX - PixelOffset - PixelSize;
-                    gfx.TranslateTransform(x, dataCenterY);
-                    gfx.RotateTransform(-90);
-                    gfx.DrawString(Label, font, brush, 0, PixelSizePadding, sf);
-                    gfx.ResetTransform();
-                }
-                else if (Edge == Edge.Right)
-                {
-                    sf.LineAlignment = StringAlignment.Near;
-                    float x = dims.DataOffsetX + dims.DataWidth + PixelOffset + PixelSize;
-                    gfx.TranslateTransform(x, dataCenterY);
-                    gfx.RotateTransform(90);
-                    gfx.DrawString(Label, font, brush, 0, PixelSizePadding, sf);
-                    gfx.ResetTransform();
-                }
-                else
-                {
-                    throw new NotImplementedException();
-                }
-            }
+                Edge.Left => ImagePaddingToFigureEdge,
+                Edge.Right => -ImageLabel.Width - ImagePaddingToFigureEdge,
+                Edge.Bottom => -ImageLabel.Width,
+                Edge.Top => -ImageLabel.Width,
+                _ => throw new NotImplementedException()
+            };
+
+            float yOffset = Edge switch
+            {
+                Edge.Left => -ImageLabel.Height,
+                Edge.Right => -ImageLabel.Height,
+                Edge.Bottom => -ImageLabel.Height - ImagePaddingToFigureEdge,
+                Edge.Top => 0 + ImagePaddingToFigureEdge,
+                _ => throw new NotImplementedException()
+            };
+
+            gfx.TranslateTransform(x, y);
+            gfx.DrawImage(ImageLabel, xOffset, yOffset);
+            gfx.ResetTransform();
+        }
+
+        private void RenderTextLabel(Graphics gfx, float x, float y)
+        {
+            // TODO: should padding be inverted if "bottom or right"?
+            float padding = (Edge == Edge.Bottom) ? -PixelSizePadding : PixelSizePadding;
+
+            int rotation = Edge switch
+            {
+                Edge.Left => -90,
+                Edge.Right => 90,
+                Edge.Bottom => 0,
+                Edge.Top => 0,
+                _ => throw new NotImplementedException()
+            };
+
+            using var font = GDI.Font(Font);
+            using var brush = GDI.Brush(Font.Color);
+            using var sf = GDI.StringFormat(HorizontalAlignment.Center, VerticalAlignment.Lower);
+            sf.LineAlignment = Edge switch
+            {
+                Edge.Left => StringAlignment.Near,
+                Edge.Right => StringAlignment.Near,
+                Edge.Bottom => StringAlignment.Far,
+                Edge.Top => StringAlignment.Near,
+                _ => throw new NotImplementedException()
+            };
+
+            gfx.TranslateTransform(x, y);
+            gfx.RotateTransform(rotation);
+            gfx.DrawString(Label, font, brush, 0, padding, sf);
+            gfx.ResetTransform();
+        }
+
+        /// <summary>
+        /// Return the point and rotation representing the center of the base of this axis
+        /// </summary>
+        private (float x, float y) GetAxisCenter(PlotDimensions dims)
+        {
+            float x = Edge switch
+            {
+                Edge.Left => dims.DataOffsetX - PixelOffset - PixelSize,
+                Edge.Right => dims.DataOffsetX + dims.DataWidth + PixelOffset + PixelSize,
+                Edge.Bottom => dims.DataOffsetX + dims.DataWidth / 2,
+                Edge.Top => dims.DataOffsetX + dims.DataWidth / 2,
+                _ => throw new NotImplementedException()
+            };
+
+            float y = Edge switch
+            {
+                Edge.Left => dims.DataOffsetY + dims.DataHeight / 2,
+                Edge.Right => dims.DataOffsetY + dims.DataHeight / 2,
+                Edge.Bottom => dims.DataOffsetY + dims.DataHeight + PixelOffset + PixelSize,
+                Edge.Top => dims.DataOffsetY - PixelOffset - PixelSize,
+                _ => throw new NotImplementedException()
+            };
+
+            return (x, y);
         }
     }
 }
