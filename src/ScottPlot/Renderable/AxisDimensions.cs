@@ -94,7 +94,8 @@ namespace ScottPlot.Renderable
 
         public void Zoom(double frac = 1, double? zoomTo = null)
         {
-            zoomTo = zoomTo ?? Center;
+            zoomTo ??= Center;
+            (Min, Max) = RationalLimits();
             double spanLeft = zoomTo.Value - Min;
             double spanRight = Max - zoomTo.Value;
             Min = zoomTo.Value - spanLeft / frac;
