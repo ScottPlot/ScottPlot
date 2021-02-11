@@ -202,6 +202,8 @@ namespace ScottPlot.Control
         private ScottPlot.Plottable.IDraggable PlottableBeingDragged = null;
         public void MouseDown(InputState input)
         {
+            if (!Settings.AllAxesHaveBeenSet)
+                Plot.SetAxisLimits(Plot.GetAxisLimits());
             IsMiddleDown = input.MiddleWasJustPressed;
             IsRightDown = input.RightWasJustPressed;
             IsLeftDown = input.LeftWasJustPressed;
@@ -384,6 +386,9 @@ namespace ScottPlot.Control
         /// </summary>
         public void MouseWheel(InputState input)
         {
+            if (!Settings.AllAxesHaveBeenSet)
+                Plot.SetAxisLimits(Plot.GetAxisLimits());
+
             // this method is suitable for WinForms
             MouseWheelQueue.Enqueue(input);
             _ = MouseWheelQueueProcessorAsync(sendUpdateEvents: true);
