@@ -140,15 +140,18 @@ namespace ScottPlot.Renderable
         }
 
         /// <summary>
-        /// Set the axis label to be an image.
+        /// Display a custom image as the axis label instead of text
         /// </summary>
-        public void ImageLabel(Bitmap img, float padNear = 5, float padFar = 5)
+        /// <param name="img">The image to display where the label should go</param>
+        /// <param name="padInside">pixels of padding between the inner image edge and the data area</param>
+        /// <param name="padOutside">pixels of padding between the outer image edge and the figure edge</param>
+        public void ImageLabel(Bitmap img, float padInside = 5, float padOutside = 5)
         {
-            
+
             IsVisible = true;
             AxisLabel.ImageLabel = img;
-            AxisLabel.ImagePaddingNear = padNear;
-            AxisLabel.ImagePaddingFar = padFar;
+            AxisLabel.ImagePaddingToDataArea = padInside;
+            AxisLabel.ImagePaddingToFigureEdge = padOutside;
         }
 
         /// <summary>

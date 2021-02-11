@@ -32,9 +32,19 @@ namespace ScottPlot.Renderable
         public Bitmap ImageLabel = null;
 
         /// <summary>
-        /// Padding (in pixels) around the image label
+        /// Padding (in pixels) between the image and the edge of the data area
         /// </summary>
-        public float ImagePadding = 5;
+        public float ImagePaddingToDataArea = 5;
+
+        /// <summary>
+        /// Padding (in pixels) between the image and the edge of the figure
+        /// </summary>
+        public float ImagePaddingToFigureEdge = 5;
+
+        /// <summary>
+        /// Total amount (in pixels) to pad the image when measuring axis size
+        /// </summary>
+        public float ImagePadding => ImagePaddingToDataArea + ImagePaddingToFigureEdge;
 
         /// <summary>
         /// Amount of padding (in pixels) to surround the contents of this axis
@@ -60,10 +70,9 @@ namespace ScottPlot.Renderable
         {
             if (ImageLabel != null)
             {
-                bool ImageIsRotated = (Edge == Edge.Left || Edge == Edge.Right);
-                float width = ImageIsRotated ? ImageLabel.Height : ImageLabel.Width;
-                float height = ImageIsRotated ? ImageLabel.Width : ImageLabel.Height;
-                return new SizeF(width + ImagePadding, height + ImagePadding);
+                return (Edge == Edge.Bottom || Edge == Edge.Top)
+                    ? new SizeF(ImageLabel.Width, ImageLabel.Height + ImagePadding)
+                    : new SizeF(ImageLabel.Height, ImageLabel.Width + ImagePadding);
             }
             else
             {
@@ -77,33 +86,33 @@ namespace ScottPlot.Renderable
                 return;
 
             using var gfx = GDI.Graphics(bmp, lowQuality);
-            (float x, float y, int rotation) = GetAxisCenter(dims);
+            (float x, float y) = GetAxisCenter(dims);
 
             if (ImageLabel is null)
-                RenderTextLabel(gfx, x, y, rotation);
+                RenderTextLabel(gfx, x, y);
             else
-                RenderImageLabel(gfx, x, y, rotation);
+                RenderImageLabel(gfx, x, y);
         }
 
-        private void RenderImageLabel(Graphics gfx, float x, float y, int rotation)
+        private void RenderImageLabel(Graphics gfx, float x, float y)
         {
             // TODO: use ImagePadding instead of fractional padding
 
             float xOffset = Edge switch
             {
-                Edge.Left => 0,
-                Edge.Right => -3 * ImageLabel.Width / 2,
-                Edge.Bottom => -ImageLabel.Width / 2,
-                Edge.Top => -ImageLabel.Width / 2,
+                Edge.Left => ImagePaddingToFigureEdge,
+                Edge.Right => -ImageLabel.Width - ImagePaddingToFigureEdge,
+                Edge.Bottom => -ImageLabel.Width,
+                Edge.Top => -ImageLabel.Width,
                 _ => throw new NotImplementedException()
             };
 
             float yOffset = Edge switch
             {
-                Edge.Left => -ImageLabel.Height / 2,
-                Edge.Right => -ImageLabel.Height / 2,
-                Edge.Bottom => -3 * ImageLabel.Height / 2,
-                Edge.Top => ImageLabel.Height / 4,
+                Edge.Left => -ImageLabel.Height,
+                Edge.Right => -ImageLabel.Height,
+                Edge.Bottom => -ImageLabel.Height - ImagePaddingToFigureEdge,
+                Edge.Top => 0 + ImagePaddingToFigureEdge,
                 _ => throw new NotImplementedException()
             };
 
@@ -112,10 +121,19 @@ namespace ScottPlot.Renderable
             gfx.ResetTransform();
         }
 
-        private void RenderTextLabel(Graphics gfx, float x, float y, int rotation)
+        private void RenderTextLabel(Graphics gfx, float x, float y)
         {
             // TODO: should padding be inverted if "bottom or right"?
             float padding = (Edge == Edge.Bottom) ? -PixelSizePadding : PixelSizePadding;
+
+            int rotation = Edge switch
+            {
+                Edge.Left => -90,
+                Edge.Right => 90,
+                Edge.Bottom => 0,
+                Edge.Top => 0,
+                _ => throw new NotImplementedException()
+            };
 
             using var font = GDI.Font(Font);
             using var brush = GDI.Brush(Font.Color);
@@ -138,17 +156,8 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// Return the point and rotation representing the center of the base of this axis
         /// </summary>
-        private (float x, float y, int rotation) GetAxisCenter(PlotDimensions dims)
+        private (float x, float y) GetAxisCenter(PlotDimensions dims)
         {
-            int rotation = Edge switch
-            {
-                Edge.Left => -90,
-                Edge.Right => 90,
-                Edge.Bottom => 0,
-                Edge.Top => 0,
-                _ => throw new NotImplementedException()
-            };
-
             float x = Edge switch
             {
                 Edge.Left => dims.DataOffsetX - PixelOffset - PixelSize,
@@ -167,7 +176,7 @@ namespace ScottPlot.Renderable
                 _ => throw new NotImplementedException()
             };
 
-            return (x, y, rotation);
+            return (x, y);
         }
     }
 }
