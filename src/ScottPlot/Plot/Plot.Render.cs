@@ -151,8 +151,8 @@ namespace ScottPlot
         public Bitmap Render(int width, int height, bool lowQuality = false) =>
             Render(new Bitmap(Math.Max(1, width), Math.Max(1, height), PixelFormat.Format32bppPArgb), lowQuality);
 
-        [Obsolete("Call the Render() method", true)]
-        public Bitmap GetBitmap() => null; // bitmaps are no longer pre-rendered and stored
+        [Obsolete("Call Render() without arguments instead of using this method")]
+        public Bitmap GetBitmap(bool renderFirst = true, bool lowQuality = false) => Render(lowQuality);
 
         /// <summary>
         /// Return a new Bitmap containing only the legend
