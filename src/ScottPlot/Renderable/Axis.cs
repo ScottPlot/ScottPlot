@@ -142,10 +142,13 @@ namespace ScottPlot.Renderable
         /// <summary>
         /// Set the axis label to be an image.
         /// </summary>
-        public void ImageLabel(Bitmap img)
+        public void ImageLabel(Bitmap img, float padNear = 5, float padFar = 5)
         {
+            
             IsVisible = true;
             AxisLabel.ImageLabel = img;
+            AxisLabel.ImagePaddingNear = padNear;
+            AxisLabel.ImagePaddingFar = padFar;
         }
 
         /// <summary>
@@ -268,7 +271,6 @@ namespace ScottPlot.Renderable
             bool? fontBold = null,
             float? rotation = null)
         {
-            AxisTicks.TickLabelFont.Color = color ?? AxisTicks.TickLabelFont.Color;
             AxisTicks.TickLabelFont.Color = color ?? AxisTicks.TickLabelFont.Color;
             AxisTicks.TickLabelFont.Name = fontName ?? AxisTicks.TickLabelFont.Name;
             AxisTicks.TickLabelFont.Size = fontSize ?? AxisTicks.TickLabelFont.Size;
