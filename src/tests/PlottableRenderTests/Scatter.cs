@@ -332,5 +332,49 @@ namespace ScottPlotTests.PlottableRenderTests
 
             Assert.That(after.IsLighterThan(before));
         }
+
+        [Test]
+        public void Test_Scatter_ZoomWorksWithTwoPoints()
+        {
+            // Tests a bug where plots with a single point (axis span 0) can't zoom
+            // https://github.com/ScottPlot/ScottPlot/issues/768
+
+            double[] dataX = { 42, 3 };
+            double[] dataY = { 303, 5 };
+
+            // create a scatter plot with a single point
+            var plt = new ScottPlot.Plot(400, 300);
+            plt.AddScatter(dataX, dataY);
+            var bmp1 = TestTools.GetLowQualityBitmap(plt);
+
+            // zoom in
+            plt.AxisZoom(2, 2);
+            var bmp2 = TestTools.GetLowQualityBitmap(plt);
+
+            // ensure the bitmap changed
+            Assert.AreNotEqual(ScottPlot.Tools.BitmapHash(bmp1), ScottPlot.Tools.BitmapHash(bmp2));
+        }
+
+        [Test]
+        public void Test_Scatter_ZoomWorksWithOnePoint()
+        {
+            // Tests a bug where plots with a single point (axis span 0) can't zoom
+            // https://github.com/ScottPlot/ScottPlot/issues/768
+
+            double[] dataX = { 42 };
+            double[] dataY = { 303 };
+
+            // create a scatter plot with a single point
+            var plt = new ScottPlot.Plot(400, 300);
+            plt.AddScatter(dataX, dataY);
+            var bmp1 = TestTools.GetLowQualityBitmap(plt);
+
+            // zoom in
+            plt.AxisZoom(2, 2);
+            var bmp2 = TestTools.GetLowQualityBitmap(plt);
+
+            // ensure the bitmap changed
+            Assert.AreNotEqual(ScottPlot.Tools.BitmapHash(bmp1), ScottPlot.Tools.BitmapHash(bmp2));
+        }
     }
 }
