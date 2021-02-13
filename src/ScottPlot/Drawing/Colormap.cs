@@ -56,26 +56,30 @@ namespace ScottPlot.Drawing
         }
 
         public static Colormap[] GetColormaps() =>
-            Assembly
-                .GetExecutingAssembly()
-                .GetTypes()
-                .Where(type => type.Namespace == "ScottPlot.Drawing.Colormaps")
-                .Select(colormapType => (IColormap)Activator.CreateInstance(colormapType))
-                .Select(colormapInstance => new Colormap(colormapInstance))
+                typeof(Colormap)
+                .GetProperties()
+                .Where(x => x.PropertyType == typeof(Colormap))
+                .Select(x => (Colormap)x.GetValue(x))
                 .ToArray();
 
-        [Obsolete("https://github.com/ScottPlot/ScottPlot/issues/767")]
-        public static Colormap[] GetColormapsOld()
-        {
-            IColormap[] ics = AppDomain.CurrentDomain.GetAssemblies()
-                                .SelectMany(s => s.GetTypes())
-                                .Where(p => p.IsInterface == false)
-                                .Where(p => p.ToString().StartsWith("ScottPlot.Drawing.Colormaps."))
-                                .Select(x => x.ToString())
-                                .Select(path => (IColormap)Activator.CreateInstance(Type.GetType(path)))
-                                .ToArray();
+        public static string[] GetColormapNames() =>
+            typeof(Colormap)
+            .GetProperties()
+            .Where(x => x.PropertyType == typeof(Colormap))
+            .Select(x => x.Name)
+            .ToArray();
 
-            return ics.Select(x => new Colormap(x)).ToArray();
+        public static Colormap GetColormapByName(string name)
+        {
+            var matchingCmaps = typeof(Colormap)
+                                .GetProperties()
+                                .Where(x => x.PropertyType == typeof(Colormap))
+                                .Where(x => x.Name == name)
+                                .Select(x => (Colormap)x.GetValue(x));
+
+            return matchingCmaps.Any()
+                ? matchingCmaps.First()
+                : throw new ArgumentException($"No colormap named '{name}' exists");
         }
 
         public (byte r, byte g, byte b) GetRGB(byte value)

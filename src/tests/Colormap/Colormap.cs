@@ -5,8 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-#pragma warning disable CS0618 // Type or member is obsolete
-
 namespace ScottPlotTests.Colormap
 {
     class Colormap
@@ -14,24 +12,27 @@ namespace ScottPlotTests.Colormap
         [Test]
         public void Test_Colormap_MultipleRequests()
         {
-            var plt = new ScottPlot.Plot();
-            var txt = plt.AddSignal(ScottPlot.DataGen.Sin(51));
-            var bmp = plt.Render();
+            var colormaps = ScottPlot.Drawing.Colormap.GetColormaps();
+            Assert.IsNotNull(colormaps);
+            Assert.IsNotEmpty(colormaps);
+        }
 
-            var colormaps1 = ScottPlot.Drawing.Colormap.GetColormaps();
-            Assert.IsNotNull(colormaps1);
-            Assert.IsNotEmpty(colormaps1);
+        [Test]
+        public void Test_Colormap_GetColormapNames()
+        {
+            string[] names = ScottPlot.Drawing.Colormap.GetColormapNames();
+            Assert.IsNotNull(names);
+            Assert.IsNotEmpty(names);
+            Assert.Contains("Blues", names);
+            Assert.Contains("Viridis", names);
+        }
 
-            var colormaps2 = ScottPlot.Drawing.Colormap.GetColormaps();
-            Assert.IsNotNull(colormaps2);
-            Assert.IsNotEmpty(colormaps2);
-
-            var oldColormaps = ScottPlot.Drawing.Colormap.GetColormapsOld();
-            for (int i = 0; i < oldColormaps.Length; i++)
-            {
-                Console.WriteLine(colormaps2[i].Name);
-                Assert.AreEqual(colormaps2[i].Name, oldColormaps[i].Name);
-            }
+        [Test]
+        public void Test_Colormap_GetColormapByName()
+        {
+            ScottPlot.Drawing.Colormap cmap = ScottPlot.Drawing.Colormap.GetColormapByName("Inferno");
+            Assert.IsNotNull(cmap);
+            Assert.AreEqual("Inferno", cmap.Name);
         }
     }
 }
