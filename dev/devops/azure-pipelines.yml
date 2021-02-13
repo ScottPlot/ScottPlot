@@ -53,7 +53,7 @@ steps:
   inputs:
     command: 'custom'
     custom: 'format'
-    arguments: '-w src/ScottPlot.sln --dry-run --check'
+    arguments: '-w src/ScottPlot.sln --check'
 
 ### INSTALL NUGET AND RESTORE PACKAGES
 
