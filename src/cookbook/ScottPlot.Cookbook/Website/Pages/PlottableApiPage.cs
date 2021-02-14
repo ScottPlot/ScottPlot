@@ -17,9 +17,6 @@ namespace ScottPlot.Cookbook.Website.Pages
             var xmlDoc = GetXmlDoc();
             var classDoc = new DocumentedClass(plottableType, xmlDoc);
 
-            Add("<div class='display-5 my-3'><a href='../../' style='color: black;'>" +
-                $"ScottPlot {Plot.Version}</a> API</div>");
-
             Add($"<div class='display-5 mt-3'>" +
                 $"<a href='../../' style='color: black;'>ScottPlot {Plot.Version} Cookbook</a>" +
                 $"</div>" +
