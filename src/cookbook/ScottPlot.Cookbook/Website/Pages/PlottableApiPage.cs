@@ -30,6 +30,9 @@ namespace ScottPlot.Cookbook.Website.Pages
             Add($"**Summary:** {classDoc.Summary}");
             Add($"**Full name:** `{classDoc.FullName}`");
 
+            Add($"**{plottableType.Name} Public API:**");
+            Add("![](TOC)");
+
             AddHeading("Fields", 2);
             foreach (var field in plottableType.GetFields().Select(x => new DocumentedField(x, xmlDoc)))
                 AddDetailedInfo(field);
