@@ -63,6 +63,11 @@ namespace ScottPlot.Plottable
             ScaleMin = min;
             ScaleMax = max;
 
+            if (Width > 1e6 || Height > 1e6)
+                throw new ArgumentException("Heatmaps may not have an edge larger than 1 million values");
+            if (Width * Height > 1e7)
+                throw new ArgumentException("Heatmaps may not have more than 10 million total values");
+
             double?[] intensitiesFlattened = intensities.Cast<double?>().ToArray();
             Min = double.PositiveInfinity;
             Max = double.NegativeInfinity;
