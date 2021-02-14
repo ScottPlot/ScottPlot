@@ -22,9 +22,9 @@ Release cookbook: https://swharden.com/scottplot/cookbook
 Release demo: https://swharden.com/scottplot/demo</PackageReleaseNotes>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <Version>4.1.6-beta</Version>
-    <AssemblyVersion>4.1.6.0</AssemblyVersion>
-    <FileVersion>4.1.6.0</FileVersion>
+    <Version>4.1.7-beta</Version>
+    <AssemblyVersion>4.1.7.0</AssemblyVersion>
+    <FileVersion>4.1.7.0</FileVersion>
     <LangVersion>latest</LangVersion>
     <SignAssembly>true</SignAssembly>
     <DelaySign>false</DelaySign>

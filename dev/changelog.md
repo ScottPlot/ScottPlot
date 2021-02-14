@@ -2,7 +2,15 @@
 
 _See [roadmap.md](roadmap.md) for ScottPlot's history and future plans_
 
-## ScottPlot 4.1.7-beta ⚠️ in development
+## ScottPlot 4.1.8-beta ⚠️ in development
+
+## ScottPlot 4.1.7-beta
+* Added support for image axis labels (#759, #446, #716) _Thanks @bclehmann_
+* Added `MinRenderIndex` and `MaxRenderIndex` support to Scatter plots (#737, #763) _Thanks @StendProg_
+* Improved display of horizontal manual axis tick labels (#724, #762) _Thanks @inqb and @Saklut_
+* Added support for listing and retrieving colormaps by their names (#767, #773) _Thanks @StendProg_
+* Enabled mouse pan and zoom for plots with infinitely small width and height (#768, #733, #764) _Thanks @saklanmazozgur_
+* A descriptive exception is now thrown when attempting to create heatmaps of unsupported dimensions (#722) _Thanks @Matthias-C_
 
 ## ScottPlot 4.1.6-beta
 * Fixed single point render bug in Signal plots (#744, #745) _Thanks @at2software and @StendProg_
