@@ -280,19 +280,19 @@ namespace ScottPlot.DataStructures
                 return;
             }
             // first iteration on source array that virtualy bottom of tree
-            if ((l & 1) != 1) // l is left child
+            if ((l & 1) == 1) // l is right child
             {
                 lowestValueT = MinExp(lowestValueT, sourceArray[l]);
                 highestValueT = MaxExp(highestValueT, sourceArray[l]);
             }
-            if ((r & 1) == 1) // r is right child
+            if ((r & 1) != 1) // r is left child
             {
                 lowestValueT = MinExp(lowestValueT, sourceArray[r]);
                 highestValueT = MaxExp(highestValueT, sourceArray[r]);
             }
             // go up from array to bottom of Tree
-            l = (l + n) / 2;
-            r = (r + n) / 2;
+            l = (l + n + 1) / 2;
+            r = (r + n - 1) / 2;
             // next iterations on tree
             while (l <= r)
             {

@@ -152,5 +152,18 @@ namespace ScottPlotTests.MinMaxSearchStrategies
             Assert.AreEqual(-1000, min);
             Assert.AreEqual(-1000, max);
         }
+
+        [Test]
+        public void MinMaxRangeQuerryDouble_Issue783Bug_ReturnCorrect()
+        {
+            double[] sourceArray = new double[] { 105.02, 104.82, 104.84, 104.84 };
+            var strategy = CreateStrategy<double>();
+            strategy.SourceArray = sourceArray;
+
+            double min, max;
+            strategy.MinMaxRangeQuery(1, 2, out min, out max);
+            Assert.AreEqual(104.82, min);
+            Assert.AreEqual(104.84, max);
+        }
     }
 }
