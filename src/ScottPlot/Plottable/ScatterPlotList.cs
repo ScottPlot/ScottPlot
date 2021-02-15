@@ -109,9 +109,6 @@ namespace ScottPlot.Plottable
             {
                 if (LineStyle != LineStyle.None && LineWidth > 0 && Count > 1)
                 {
-                    for (int i = 0; i < Count; i++)
-                        Console.WriteLine(points[i]);
-
                     gfx.DrawLines(linePen, points);
                 }
 
