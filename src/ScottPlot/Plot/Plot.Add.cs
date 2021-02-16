@@ -457,13 +457,24 @@ namespace ScottPlot
         /// <summary>
         /// Add a point (a scatter plot with a single marker)
         /// </summary>
-        public ScatterPlot AddPoint(double x, double y, Color? color = null, float size = 5, MarkerShape shape = MarkerShape.filledCircle)
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="color">color of the marker</param>
+        /// <param name="size">size of the marker</param>
+        /// <param name="shape">maker shape</param>
+        /// <param name="label">text to appear in the legend</param>
+        /// <returns>
+        /// The scatter plot that was created and added to the plot. 
+        /// Interact with its public fields and methods to customize style and update data.
+        /// </returns>
+        public ScatterPlot AddPoint(double x, double y, Color? color = null, float size = 5, MarkerShape shape = MarkerShape.filledCircle, string label = null)
         {
             var plottable = new ScatterPlot(new double[] { x }, new double[] { y })
             {
                 Color = color ?? settings.GetNextColor(),
                 MarkerSize = size,
-                MarkerShape = shape
+                MarkerShape = shape,
+                Label = label
             };
             Add(plottable);
             return plottable;
