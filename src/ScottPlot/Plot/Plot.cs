@@ -23,7 +23,7 @@ namespace ScottPlot
             if (width <= 0 || height <= 0)
                 throw new ArgumentException("width and height must each be greater than 0");
 
-            StyleTools.SetStyle(this, ScottPlot.Style.Default);
+            Style(ScottPlot.Style.Default);
             Resize(width, height);
         }
 
