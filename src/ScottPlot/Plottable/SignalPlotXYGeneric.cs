@@ -94,12 +94,12 @@ namespace ScottPlot.Plottable
 
             var pointsCount = endIndex - startIndex;
 
-            yield return new PointF(x, dims.GetPixelY(Strategy.SourceElement(startIndex)));
+            yield return new PointF(x + dims.DataOffsetX, dims.GetPixelY(Strategy.SourceElement(startIndex)));
             if (pointsCount > 1)
             {
-                yield return new PointF(x, dims.GetPixelY(min));
-                yield return new PointF(x, dims.GetPixelY(max));
-                yield return new PointF(x, dims.GetPixelY(Strategy.SourceElement(endIndex - 1)));
+                yield return new PointF(x + dims.DataOffsetX, dims.GetPixelY(min));
+                yield return new PointF(x + dims.DataOffsetX, dims.GetPixelY(max));
+                yield return new PointF(x + dims.DataOffsetX, dims.GetPixelY(Strategy.SourceElement(endIndex - 1)));
             }
         }
 
@@ -182,7 +182,7 @@ namespace ScottPlot.Plottable
                 // this fix extreme zoom in bug
                 if (PointBefore.Length > 0 && PointsToDraw.Length >= 2)
                 {
-                    float x0 = -1;
+                    float x0 = -1 + dims.DataOffsetX;
                     float y0 = PointsToDraw[1].Y + (PointsToDraw[0].Y - PointsToDraw[1].Y) * (x0 - PointsToDraw[1].X) / (PointsToDraw[0].X - PointsToDraw[1].X);
                     PointsToDraw[0] = new PointF(x0, y0);
                 }
@@ -193,14 +193,10 @@ namespace ScottPlot.Plottable
                     PointF lastPoint = PointsToDraw[PointsToDraw.Length - 2];
                     PointF afterPoint = PointsToDraw[PointsToDraw.Length - 1];
 
-                    float x1 = dims.DataWidth;
+                    float x1 = dims.DataWidth + dims.DataOffsetX;
                     float y1 = lastPoint.Y + (afterPoint.Y - lastPoint.Y) * (x1 - lastPoint.X) / (afterPoint.X - lastPoint.X);
                     PointsToDraw[PointsToDraw.Length - 1] = new PointF(x1, y1);
                 }
-
-                // correct points for data offset
-                for (int i = 0; i < PointsToDraw.Length; i++)
-                    PointsToDraw[i].X += dims.DataOffsetX;
 
                 // Draw lines
                 if (PointsToDraw.Length > 1)
