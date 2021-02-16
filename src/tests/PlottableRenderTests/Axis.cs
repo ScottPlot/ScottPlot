@@ -19,12 +19,12 @@ namespace ScottPlotTests.PlottableRenderTests
 
             // start with default settings
             var bmp1 = TestTools.GetLowQualityBitmap(plt);
-            TestTools.SaveFig(bmp1, "1");
+            //TestTools.SaveFig(bmp1, "1");
 
             // make the grid darker
             plt.Grid(color: System.Drawing.Color.Black);
             var bmp2 = TestTools.GetLowQualityBitmap(plt);
-            TestTools.SaveFig(bmp2, "2");
+            //TestTools.SaveFig(bmp2, "2");
 
             // measure what changed
             var before = new MeanPixel(bmp1);
