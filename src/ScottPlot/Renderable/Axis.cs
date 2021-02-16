@@ -363,7 +363,9 @@ namespace ScottPlot.Renderable
         /// </summary>
         public void Hide()
         {
-            IsVisible = false;
+            AxisLine.IsVisible = false;
+            AxisTicks.MajorTickVisible = false;
+            AxisTicks.MinorTickVisible = false;
             PixelSizeMinimum = 0;
             PixelSizeMaximum = 0;
             PixelSizePadding = 0;
