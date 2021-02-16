@@ -2,7 +2,15 @@
 
 _See [roadmap.md](roadmap.md) for ScottPlot's history and future plans_
 
-## ScottPlot 4.1.8-beta ⚠️ in development
+## ScottPlot 4.1.9-beta ⚠️ in development
+
+## ScottPlot 4.1.8-beta
+* Improved validation and error reporting for large heatmaps (#772) _Thanks @Matthias-C_
+* Removed noisy console output in `ScatterPlotList` (#780) _Thanks @Scr0nch_
+* Improved rendering bug in signal plots (#783, #788) _Thanks @AlgoExecutor and @StendProg_
+* Fix bug that hid grid lines in frameless plots (#779)
+* Improved appearance of marker-only scatter plots in the legend (#790) _Thanks @AlgoExecutor_
+* `AddPoint()` now has a `label` argument to match `AddScatter()` (#787) _Thanks @AlgoExecutor_
 
 ## ScottPlot 4.1.7-beta
 * Added support for image axis labels (#759, #446, #716) _Thanks @bclehmann_
