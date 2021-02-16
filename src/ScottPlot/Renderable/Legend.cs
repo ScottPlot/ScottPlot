@@ -145,8 +145,11 @@ namespace ScottPlot.Renderable
                     else
                     {
                         // draw a line
-                        using (var linePen = GDI.Pen(item.color, item.lineWidth, item.lineStyle, false))
+                        if (item.lineWidth > 0 && item.lineStyle != LineStyle.None)
+                        {
+                            using var linePen = GDI.Pen(item.color, item.lineWidth, item.lineStyle, false);
                             gfx.DrawLine(linePen, lineX1, lineY, lineX2, lineY);
+                        }
 
                         // and perhaps a marker in the middle of the line
                         float lineXcenter = (lineX1 + lineX2) / 2;
