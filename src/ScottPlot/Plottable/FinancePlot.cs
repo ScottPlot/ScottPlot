@@ -141,6 +141,11 @@ namespace ScottPlot.Plottable
                 PointF boxLowerLeft = new PointF(pixelX, dims.GetPixelY(ohlc.lowestOpenClose));
                 PointF boxUpperRight = new PointF(pixelX, dims.GetPixelY(ohlc.highestOpenClose));
                 gfx.FillRectangle(brush, boxLowerLeft.X - boxWidth, boxUpperRight.Y, boxWidth * 2, boxLowerLeft.Y - boxUpperRight.Y);
+
+                if (ohlc.open == ohlc.close) // doji sesssion
+                {
+                    gfx.DrawLine(pen, boxLowerLeft.X - boxWidth, boxLowerLeft.Y, boxLowerLeft.X + boxWidth, boxLowerLeft.Y);
+                }
             }
         }
 
