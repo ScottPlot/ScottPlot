@@ -51,10 +51,10 @@ namespace ScottPlot.Renderable
             }
         }
 
-        public Bitmap GetBitmap()
+        public Bitmap GetBitmap(bool lowQuality)
         {
             using (var bmpTemp = new Bitmap(1, 1))
-            using (var gfxTemp = GDI.Graphics(bmpTemp, true))
+            using (var gfxTemp = GDI.Graphics(bmpTemp, lowQuality))
             using (var font = GDI.Font(Font))
             {
                 var (maxLabelWidth, maxLabelHeight, width, height) = GetDimensions(gfxTemp, LegendItems, font);
@@ -95,12 +95,6 @@ namespace ScottPlot.Renderable
             using (var textBrush = new SolidBrush(Font.Color))
             using (var outlinePen = new Pen(OutlineColor))
             {
-                if (AntiAlias)
-                {
-                    gfx.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                    gfx.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-                }
-
                 RectangleF rectShadow = new RectangleF(locationX + ShadowOffsetX, locationY + ShadowOffsetY, width, height);
                 RectangleF rectFill = new RectangleF(locationX, locationY, width, height);
 
