@@ -1,5 +1,5 @@
-﻿using ScottPlot.Ticks.DateTimeTickUnits;
-using ScottPlot.Drawing;
+﻿using ScottPlot.Drawing;
+using ScottPlot.Ticks.DateTimeTickUnits;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -131,7 +131,7 @@ namespace ScottPlot.Ticks
 
             if (low < high)
             {
-                low = Math.Max(low, new DateTime( 0100, 1, 1, 0, 0, 0).ToOADate()); // minimum OADate value
+                low = Math.Max(low, new DateTime(0100, 1, 1, 0, 0, 0).ToOADate()); // minimum OADate value
                 high = Math.Min(high, DateTime.MaxValue.ToOADate());
 
                 var dtManualUnits = (verticalAxis) ? manualDateTimeSpacingUnitY : manualDateTimeSpacingUnitX;
