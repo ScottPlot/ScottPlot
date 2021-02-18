@@ -131,7 +131,7 @@ namespace ScottPlot.Ticks
 
             if (low < high)
             {
-                low = Math.Max(low, DateTime.MinValue.ToOADate());
+                low = Math.Max(low, new DateTime( 0100, 1, 1, 0, 0, 0).ToOADate()); // minimum OADate value
                 high = Math.Min(high, DateTime.MaxValue.ToOADate());
 
                 var dtManualUnits = (verticalAxis) ? manualDateTimeSpacingUnitY : manualDateTimeSpacingUnitX;
