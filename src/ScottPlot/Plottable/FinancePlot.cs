@@ -157,6 +157,9 @@ namespace ScottPlot.Plottable
                     // the candle
                     pen.Color = ohlc.closedHigher ? ColorUp : ColorDown;
                     gfx.FillRectangle(brush, boxLowerLeft.X - boxWidth, boxUpperRight.Y, boxWidth * 2, boxLowerLeft.Y - boxUpperRight.Y);
+
+                    pen.Color = SeparateWickColor ? WickColor : pen.Color;
+                    gfx.DrawRectangle(pen, boxLowerLeft.X - boxWidth, boxUpperRight.Y - 1, boxWidth * 2, boxLowerLeft.Y - boxUpperRight.Y + 2);
                 }
 
             }
