@@ -38,6 +38,8 @@ namespace ScottPlot.Plottable
         public int YAxisIndex { get; set; } = 0;
         public Color ColorUp = Color.LightGreen;
         public Color ColorDown = Color.LightCoral;
+        public Color WickColor = Color.LightGray;
+        public bool SeparateWickColor = true;
 
         public AxisLimits GetAxisLimits()
         {
@@ -110,10 +112,10 @@ namespace ScottPlot.Plottable
                 boxWidth = (float)(spacingPx / 2 * fractionalTickWidth);
             }
 
+
             using Graphics gfx = GDI.Graphics(bmp, dims, lowQuality);
             using Pen pen = new Pen(Color.Magenta);
             using SolidBrush brush = new SolidBrush(Color.Magenta);
-
             for (int i = 0; i < OHLCs.Length; i++)
             {
                 var ohlc = OHLCs[i];
@@ -127,6 +129,11 @@ namespace ScottPlot.Plottable
                 brush.Color = ohlc.closedHigher ? ColorUp : ColorDown;
                 pen.Width = (boxWidth >= 2) ? 2 : 1;
 
+                if (SeparateWickColor)
+                {
+                    pen.Color = WickColor;
+                }
+
                 // the wick below the box
                 PointF wickLowBot = new PointF(pixelX, dims.GetPixelY(ohlc.low));
                 PointF wickLowTop = new PointF(pixelX, dims.GetPixelY(ohlc.lowestOpenClose));
@@ -137,15 +144,21 @@ namespace ScottPlot.Plottable
                 PointF wickHighTop = new PointF(pixelX, dims.GetPixelY(ohlc.high));
                 gfx.DrawLine(pen, wickHighBot, wickHighTop);
 
-                // the candle
+
                 PointF boxLowerLeft = new PointF(pixelX, dims.GetPixelY(ohlc.lowestOpenClose));
                 PointF boxUpperRight = new PointF(pixelX, dims.GetPixelY(ohlc.highestOpenClose));
-                gfx.FillRectangle(brush, boxLowerLeft.X - boxWidth, boxUpperRight.Y, boxWidth * 2, boxLowerLeft.Y - boxUpperRight.Y);
 
                 if (ohlc.open == ohlc.close) // doji sesssion
                 {
                     gfx.DrawLine(pen, boxLowerLeft.X - boxWidth, boxLowerLeft.Y, boxLowerLeft.X + boxWidth, boxLowerLeft.Y);
                 }
+                else
+                {
+                    // the candle
+                    pen.Color = ohlc.closedHigher ? ColorUp : ColorDown;
+                    gfx.FillRectangle(brush, boxLowerLeft.X - boxWidth, boxUpperRight.Y, boxWidth * 2, boxLowerLeft.Y - boxUpperRight.Y);
+                }
+
             }
         }
 
