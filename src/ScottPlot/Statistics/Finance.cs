@@ -81,7 +81,7 @@ namespace ScottPlot.Statistics
         {
             double[] closingPrices = new double[ohlcs.Length];
             for (int i = 0; i < ohlcs.Length; i++)
-                closingPrices[i] = ohlcs[i].close;
+                closingPrices[i] = ohlcs[i].Close;
             return SMA(closingPrices, period);
         }
 
@@ -117,7 +117,7 @@ namespace ScottPlot.Statistics
         {
             double[] closingPrices = new double[ohlcs.Length];
             for (int i = 0; i < ohlcs.Length; i++)
-                closingPrices[i] = ohlcs[i].close;
+                closingPrices[i] = ohlcs[i].Close;
             var (sma, lower, upper) = Bollinger(closingPrices, period, multiplier);
 
             // skip the first points which all contain NaN

@@ -6,57 +6,71 @@ using System.Threading.Tasks;
 
 namespace ScottPlot
 {
+    /// <summary>
+    /// This class holds open/high/low/close (OHLC) price data over a time range.
+    /// </summary>
     public class OHLC
     {
-        public double open;
-        public double high;
-        public double low;
-        public double close;
-        public double time;
-        public double timeSpan = 1;
+        public double Open;
+        public double High;
+        public double Low;
+        public double Close;
+        public DateTime DateTime;
+        public TimeSpan TimeSpan;
 
-        public double highestOpenClose;
-        public double lowestOpenClose;
-        public bool closedHigher;
+        private bool IsNanOrInfinity(double val) => double.IsInfinity(val) || double.IsNaN(val);
 
-        private bool IsNanOrInf(double val) => double.IsInfinity(val) || double.IsNaN(val);
-
-        public bool IsValid => !IsNanOrInf(open) && !IsNanOrInf(close) &&
-                               !IsNanOrInf(low) && !IsNanOrInf(high) &&
-                               !IsNanOrInf(time) && !IsNanOrInf(timeSpan) &&
-                               !IsNanOrInf(highestOpenClose) && !IsNanOrInf(lowestOpenClose);
-
-        public OHLC(double open, double high, double low, double close, DateTime dateTime, double timeSpan = 1)
+        public bool IsValid
         {
-            this.open = open;
-            this.high = high;
-            this.low = low;
-            this.close = close;
-            time = dateTime.ToOADate();
-            this.timeSpan = timeSpan;
-
-            highestOpenClose = Math.Max(open, close);
-            lowestOpenClose = Math.Min(open, close);
-            closedHigher = (close > open);
+            get
+            {
+                if (IsNanOrInfinity(Open)) return false;
+                if (IsNanOrInfinity(High)) return false;
+                if (IsNanOrInfinity(Low)) return false;
+                if (IsNanOrInfinity(Close)) return false;
+                return true;
+            }
         }
 
-        public OHLC(double open, double high, double low, double close, double time, double timeSpan = 1)
-        {
-            this.open = open;
-            this.high = high;
-            this.low = low;
-            this.close = close;
-            this.time = time;
-            this.timeSpan = timeSpan;
+        public override string ToString() =>
+            $"OHLC: open={Open}, high={High}, low={Low}, close={Close}, start={DateTime}, span={TimeSpan}";
 
-            highestOpenClose = Math.Max(open, close);
-            lowestOpenClose = Math.Min(open, close);
-            closedHigher = (close > open);
+        /// <summary>
+        /// OHLC price over a specific period of time
+        /// </summary>
+        /// <param name="open">opening price</param>
+        /// <param name="high">maximum price</param>
+        /// <param name="low">minimum price</param>
+        /// <param name="close">closing price</param>
+        /// <param name="timeStart">open time</param>
+        /// <param name="timeSpan">width of the OHLC</param>
+        public OHLC(double open, double high, double low, double close, DateTime timeStart, TimeSpan timeSpan)
+        {
+            Open = open;
+            High = high;
+            Low = low;
+            Close = close;
+            DateTime = timeStart;
+            TimeSpan = timeSpan;
         }
 
-        public override string ToString()
+        /// <summary>
+        /// OHLC price over a specific period of time
+        /// </summary>
+        /// <param name="open">opening price</param>
+        /// <param name="high">maximum price</param>
+        /// <param name="low">minimum price</param>
+        /// <param name="close">closing price</param>
+        /// <param name="timeStart">open time (DateTime.ToOADate() units)</param>
+        /// <param name="timeSpan">width of the OHLC in days</param>
+        public OHLC(double open, double high, double low, double close, double timeStart, double timeSpan = 1)
         {
-            return $"OHLC: open={open}, high={high}, low={low}, close={close}, timestamp={time}";
+            Open = open;
+            High = high;
+            Low = low;
+            Close = close;
+            DateTime = DateTime.FromOADate(timeStart);
+            TimeSpan = TimeSpan.FromDays(timeSpan);
         }
     }
 }

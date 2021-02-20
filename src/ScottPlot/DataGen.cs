@@ -201,8 +201,8 @@ namespace ScottPlot
                 while ((dt.DayOfWeek == DayOfWeek.Saturday) || (dt.DayOfWeek == DayOfWeek.Sunday))
                     dt = dt + TimeSpan.FromDays(1);
 
-                ohlcs[i].time = dt.ToOADate();
-                ohlcs[i].timeSpan = delta.TotalDays;
+                ohlcs[i].DateTime = dt;
+                ohlcs[i].TimeSpan = delta;
             }
 
             return ohlcs;

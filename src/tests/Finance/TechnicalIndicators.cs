@@ -60,7 +60,7 @@ namespace ScottPlotTests.Finance
 
             // replace timestamps with a series of numbers starting at 0
             for (int i = 0; i < ohlcs.Length; i++)
-                ohlcs[i].time = i;
+                ohlcs[i].DateTime = DateTime.FromOADate(i);
 
             var plt = new ScottPlot.Plot(600, 400);
             plt.AddCandlesticks(ohlcs);
@@ -90,7 +90,7 @@ namespace ScottPlotTests.Finance
 
             // replace timestamps with a series of numbers starting at 0
             for (int i = 0; i < ohlcs.Length; i++)
-                ohlcs[i].time = i;
+                ohlcs[i].DateTime = DateTime.FromOADate(i);
 
             var plt = new ScottPlot.Plot(600, 400);
             plt.AddCandlesticks(ohlcs);

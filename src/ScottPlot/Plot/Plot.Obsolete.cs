@@ -245,17 +245,15 @@ namespace ScottPlot
             bool sequential = false
             )
         {
-            FinancePlot ohlc = new FinancePlot()
+            FinancePlot plottable = new FinancePlot(ohlcs)
             {
-                OHLCs = ohlcs,
                 Candle = true,
-                AutoWidth = autoWidth,
                 Sequential = sequential,
                 ColorUp = colorUp ?? ColorTranslator.FromHtml("#26a69a"),
                 ColorDown = colorDown ?? ColorTranslator.FromHtml("#ef5350")
             };
-            Add(ohlc);
-            return ohlc;
+            Add(plottable);
+            return plottable;
         }
 
         [Obsolete("Use AddScatter() and customize it for no line, no marker, and errorbars as desired")]
@@ -577,17 +575,15 @@ namespace ScottPlot
             bool sequential = false
             )
         {
-            FinancePlot ohlc = new FinancePlot()
+            FinancePlot plottable = new FinancePlot(ohlcs)
             {
-                OHLCs = ohlcs,
                 Candle = false,
-                AutoWidth = autoWidth,
                 Sequential = sequential,
                 ColorUp = colorUp ?? ColorTranslator.FromHtml("#26a69a"),
                 ColorDown = colorDown ?? ColorTranslator.FromHtml("#ef5350")
             };
-            Add(ohlc);
-            return ohlc;
+            Add(plottable);
+            return plottable;
         }
 
         [Obsolete("use AddPie() and customize the object it returns")]

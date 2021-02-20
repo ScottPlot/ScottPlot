@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 
 namespace ScottPlot.Cookbook.Recipes.Plottable
 {
@@ -100,20 +98,14 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
         public void ExecuteRecipe(Plot plt)
         {
-            // generate sample stock prices
             OHLC[] ohlcs = DataGen.RandomStockPrices(null, 75);
-            double[] xs = DataGen.Consecutive(ohlcs.Length);
+            var candlePlot = plt.AddCandlesticks(ohlcs);
 
-            // calculate SMAs of different durations using helper methods
-            double[] sma8xs = xs.Skip(8).ToArray();
-            double[] sma8ys = Statistics.Finance.SMA(ohlcs, 8);
-            double[] sma20xs = xs.Skip(20).ToArray();
-            double[] sma20ys = Statistics.Finance.SMA(ohlcs, 20);
+            var sma8 = candlePlot.GetSMA(8);
+            plt.AddScatter(sma8.xs, sma8.ys, markerSize: 0, color: Color.Blue, lineWidth: 2);
 
-            // plot technical indicators as scatter plots above the financial chart
-            plt.AddCandlesticks(ohlcs);
-            plt.AddScatter(sma8xs, sma8ys, markerSize: 0, color: Color.Blue, lineWidth: 2);
-            plt.AddScatter(sma20xs, sma20ys, markerSize: 0, color: Color.Navy, lineWidth: 2);
+            var sma20 = candlePlot.GetSMA(20);
+            plt.AddScatter(sma20.xs, sma20.ys, markerSize: 0, color: Color.Navy, lineWidth: 2);
         }
     }
 
@@ -128,19 +120,13 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
 
         public void ExecuteRecipe(Plot plt)
         {
-            // generate sample stock prices
             OHLC[] ohlcs = DataGen.RandomStockPrices(null, 100);
-            double[] xs = DataGen.Consecutive(ohlcs.Length);
+            var candlePlot = plt.AddCandlesticks(ohlcs);
 
-            // calculate the bands and the time range they cover
-            double[] xs2 = xs.Skip(20).ToArray();
-            (var sma, var bolL, var bolU) = Statistics.Finance.Bollinger(ohlcs, 20);
-
-            // plot technical indicators as scatter plots above the financial chart
-            plt.AddCandlesticks(ohlcs);
-            plt.AddScatter(xs2, sma, markerSize: 0, color: Color.Blue);
-            plt.AddScatter(xs2, bolL, markerSize: 0, color: Color.Blue, lineStyle: LineStyle.Dash);
-            plt.AddScatter(xs2, bolU, markerSize: 0, color: Color.Blue, lineStyle: LineStyle.Dash);
+            var bol = candlePlot.GetBollingerBands(20);
+            plt.AddScatter(bol.xs, bol.sma, markerSize: 0, color: Color.Blue);
+            plt.AddScatter(bol.xs, bol.lower, markerSize: 0, color: Color.Blue, lineStyle: LineStyle.Dash);
+            plt.AddScatter(bol.xs, bol.upper, markerSize: 0, color: Color.Blue, lineStyle: LineStyle.Dash);
         }
     }
 
@@ -216,19 +202,17 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
         {
             // add some random candles
             OHLC[] prices = DataGen.RandomStockPrices(null, 100, TimeSpan.FromMinutes(5));
-            double[] xs = prices.Select(x => x.time).ToArray();
+            double[] xs = prices.Select(x => x.DateTime.ToOADate()).ToArray();
             var candlePlot = plt.AddCandlesticks(prices);
             candlePlot.YAxisIndex = 1;
 
             plt.XAxis.DateTimeFormat(true);
 
             // add SMA indicators for 8 and 20 days
-            double[] sma8xs = xs.Skip(8).ToArray();
-            double[] sma8ys = Statistics.Finance.SMA(prices, 8);
-            double[] sma20xs = xs.Skip(20).ToArray();
-            double[] sma20ys = Statistics.Finance.SMA(prices, 20);
-            var sma8plot = plt.AddScatterLines(sma8xs, sma8ys, Color.Cyan, 2, label: "8 day SMA");
-            var sma20plot = plt.AddScatterLines(sma20xs, sma20ys, Color.Yellow, 2, label: "20 day SMA");
+            var sma8 = candlePlot.GetSMA(8);
+            var sma20 = candlePlot.GetSMA(20);
+            var sma8plot = plt.AddScatterLines(sma8.xs, sma8.ys, Color.Cyan, 2, label: "8 day SMA");
+            var sma20plot = plt.AddScatterLines(sma20.xs, sma20.ys, Color.Yellow, 2, label: "20 day SMA");
             sma8plot.YAxisIndex = 1;
             sma20plot.YAxisIndex = 1;
 

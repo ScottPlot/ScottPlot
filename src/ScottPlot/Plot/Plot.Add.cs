@@ -146,9 +146,8 @@ namespace ScottPlot
         /// </summary>
         public FinancePlot AddCandlesticks(OHLC[] ohlcs)
         {
-            FinancePlot plottable = new FinancePlot()
+            FinancePlot plottable = new FinancePlot(ohlcs)
             {
-                OHLCs = ohlcs,
                 Candle = true,
                 ColorUp = ColorTranslator.FromHtml("#26a69a"),
                 ColorDown = ColorTranslator.FromHtml("#ef5350"),
@@ -422,9 +421,8 @@ namespace ScottPlot
         /// </summary>
         public FinancePlot AddOHLCs(OHLC[] ohlcs)
         {
-            FinancePlot plottable = new FinancePlot()
+            FinancePlot plottable = new FinancePlot(ohlcs)
             {
-                OHLCs = ohlcs,
                 Candle = false,
                 ColorUp = ColorTranslator.FromHtml("#26a69a"),
                 ColorDown = ColorTranslator.FromHtml("#ef5350"),
