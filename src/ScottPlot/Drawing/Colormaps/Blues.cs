@@ -5,6 +5,8 @@ namespace ScottPlot.Drawing.Colormaps
 {
     public class Blues : IColormap
     {
+        public string Name => "Blues";
+
         public (byte r, byte g, byte b) GetRGB(byte value)
         {
             byte[] bytes = BitConverter.GetBytes(argb[value]);

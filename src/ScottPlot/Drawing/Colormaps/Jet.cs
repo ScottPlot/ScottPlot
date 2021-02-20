@@ -11,6 +11,8 @@ namespace ScottPlot.Drawing.Colormaps
 {
     public class Jet : IColormap
     {
+        public string Name => "Jet";
+
         public (byte r, byte g, byte b) GetRGB(byte value)
         {
             byte[] bytes = BitConverter.GetBytes(rgb[value]);

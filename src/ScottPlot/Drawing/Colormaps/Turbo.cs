@@ -8,6 +8,8 @@ namespace ScottPlot.Drawing.Colormaps
 {
     public class Turbo : IColormap
     {
+        public string Name => "Turbo";
+
         public (byte r, byte g, byte b) GetRGB(byte value)
         {
             byte[] bytes = BitConverter.GetBytes(argb[value]);

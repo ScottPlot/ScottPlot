@@ -103,5 +103,16 @@ namespace ScottPlotTests.Colormap
             var availableColormaps = factory.GetAvailableColormaps();
             CollectionAssert.DoesNotContain(availableColormaps.Select(cm => cm.Name), Name);
         }
+
+        [Test]
+        public void GetAvailableColormaps_KeysMustMatchNames()
+        {
+            var factory = new ColormapFactory();
+            foreach (string keyName in factory.GetAvailableNames())
+            {
+                var cmap = factory.CreateOrThrow(keyName);
+                Assert.AreEqual(keyName, cmap.Name);
+            }
+        }
     }
 }

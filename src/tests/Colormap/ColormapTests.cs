@@ -1,13 +1,14 @@
 ﻿using NUnit.Framework;
+using ScottPlot.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ScottPlotTests.Colormap
+namespace ScottPlotTests.ColormapTests
 {
-    class Colormap
+    class ColormapTests
     {
         [Test]
         public void Test_Colormap_MultipleRequests()
@@ -33,6 +34,14 @@ namespace ScottPlotTests.Colormap
             ScottPlot.Drawing.Colormap cmap = ScottPlot.Drawing.Colormap.GetColormapByName("Inferno");
             Assert.IsNotNull(cmap);
             Assert.AreEqual("Inferno", cmap.Name);
+        }
+
+        [Test]
+        public void Test_Colormaps_HaveUniqueNames()
+        {
+            var fac = new ColormapFactory();
+            IEnumerable<string> names = fac.GetAvailableNames();
+            Assert.AreEqual(names.Distinct().Count(), names.Count());
         }
     }
 }

@@ -40,15 +40,13 @@ namespace ScottPlot.Drawing
 
         private readonly IColormap ThisColormap;
 
-        private static readonly ColormapFactory ColormapFactory = new ColormapFactory();
+        public string Name => ThisColormap.Name;
 
-        // TODO: move name into IColormap
-        public readonly string Name;
+        private static readonly ColormapFactory ColormapFactory = new ColormapFactory();
 
         public Colormap(IColormap colormap)
         {
             ThisColormap = colormap ?? ColormapFactory.GetDefaultColormap();
-            Name = ThisColormap.GetType().Name;
         }
 
         public override string ToString() => $"Colormap {Name}";
