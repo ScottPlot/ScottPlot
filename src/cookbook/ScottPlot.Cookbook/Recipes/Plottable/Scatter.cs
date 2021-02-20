@@ -187,4 +187,21 @@ namespace ScottPlot.Cookbook.Recipes.Plottable
             plt.AddScatterPoints(xs, ys, Color.Navy, 10, MarkerShape.filledDiamond);
         }
     }
+
+    public class StepPlot : IRecipe
+    {
+        public string Category => "Plottable: Scatter Plot";
+        public string ID => "scatter_stepplot";
+        public string Title => "Step Plot";
+        public string Description => "A step plot is a special type of scatter plot where points " +
+            "are connected by right angles instead of straight lines.";
+
+        public void ExecuteRecipe(Plot plt)
+        {
+            double[] xs = DataGen.Consecutive(51);
+            double[] ys = DataGen.Sin(51);
+
+            plt.AddScatterStep(xs, ys);
+        }
+    }
 }

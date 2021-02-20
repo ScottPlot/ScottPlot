@@ -658,6 +658,28 @@ namespace ScottPlot
         }
 
         /// <summary>
+        /// Add a step plot is a type of line plot where points are connected with right angles instead of straight lines.
+        /// </summary>
+        public ScatterPlot AddScatterStep(
+            double[] xs,
+            double[] ys,
+            Color? color = null,
+            float lineWidth = 1,
+            string label = null)
+        {
+            var plottable = new ScatterPlot(xs, ys, null, null)
+            {
+                Color = color ?? GetNextColor(),
+                LineWidth = lineWidth,
+                Label = label,
+                MarkerSize = 0,
+                StepDisplay = true
+            };
+            Add(plottable);
+            return plottable;
+        }
+
+        /// <summary>
         /// Scatter plot with Add() and Clear() methods for updating data
         /// </summary>
         public ScatterPlotList AddScatterList(
